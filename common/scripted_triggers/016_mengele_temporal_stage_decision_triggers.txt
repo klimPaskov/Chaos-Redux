@@ -1,0 +1,125 @@
+# Event 016 Mengele Temporal Mechanics decision gates, COUNTRY scope.
+# Family ID 14 owns private receipt array index 13. The native Prototype
+# presentation is authoritative with Götterdämmerung; the paid decision
+# Prototype exists only without it. No trigger reads Kruger board receipts.
+
+brilliant_scientist_mengele_temporal_decision_receipt_is_empty = {
+	OR = {
+		NOT = { has_country_flag = mengele_event016_provider_receipts_initialized }
+		AND = {
+			has_country_flag = mengele_event016_provider_receipts_initialized
+			check_variable = { var = mengele_event016_active_project_stage_entries^13 value = constant:brilliant_scientist_project_stage.none compare = equals }
+		}
+	}
+}
+
+brilliant_scientist_mengele_temporal_theory_decision_visible = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_temporal_decision_receipt_is_empty = yes
+	NOT = { has_country_flag = mengele_event016_temporal_theory_completed }
+}
+brilliant_scientist_mengele_temporal_prototype_decision_visible = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_temporal_decision_receipt_is_empty = yes
+	has_country_flag = mengele_event016_temporal_theory_completed
+	NOT = { has_country_flag = mengele_event016_temporal_prototype_completed }
+	NOT = { has_dlc = "Gotterdammerung" }
+	NOT = { is_special_project_completed = sp:sp_brilliant_scientist_temporal_mechanics }
+}
+brilliant_scientist_mengele_temporal_deployment_decision_visible = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_temporal_decision_receipt_is_empty = yes
+	has_country_flag = mengele_event016_temporal_prototype_completed
+	NOT = { has_country_flag = mengele_event016_temporal_deployment_completed }
+}
+brilliant_scientist_mengele_temporal_weaponization_decision_visible = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_temporal_decision_receipt_is_empty = yes
+	has_country_flag = mengele_event016_temporal_deployment_completed
+	NOT = { has_country_flag = mengele_event016_temporal_weaponization_completed }
+}
+
+# Keep predecessor/route requirements separate from inclusive affordability.
+brilliant_scientist_mengele_temporal_theory_decision_requirements = {
+	brilliant_scientist_mengele_temporal_theory_decision_visible = yes
+}
+brilliant_scientist_mengele_temporal_prototype_decision_requirements = {
+	brilliant_scientist_mengele_temporal_prototype_decision_visible = yes
+}
+brilliant_scientist_mengele_temporal_deployment_decision_requirements = {
+	brilliant_scientist_mengele_temporal_deployment_decision_visible = yes
+}
+brilliant_scientist_mengele_temporal_weaponization_decision_requirements = {
+	brilliant_scientist_mengele_temporal_weaponization_decision_visible = yes
+}
+
+brilliant_scientist_mengele_temporal_theory_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.temporal_theory_civilian_factories }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_stage_cost.temporal_theory_support_equipment } }
+	check_variable = { var = political_power value = constant:brilliant_scientist_project_stage_cost.temporal_theory_political_power compare = greater_than_or_equals }
+}
+brilliant_scientist_mengele_temporal_prototype_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_fallback_prototype.temporal_civilian_factories }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_fallback_prototype.temporal_support_equipment } }
+	NOT = { has_fuel < constant:brilliant_scientist_project_fallback_prototype.temporal_fuel }
+	check_variable = { var = political_power value = constant:brilliant_scientist_project_fallback_prototype.temporal_political_power compare = greater_than_or_equals }
+}
+brilliant_scientist_mengele_temporal_deployment_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.temporal_deployment_civilian_factories }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_stage_cost.temporal_deployment_support_equipment } }
+	NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.temporal_deployment_fuel }
+	check_variable = { var = political_power value = constant:brilliant_scientist_project_stage_cost.temporal_deployment_political_power compare = greater_than_or_equals }
+}
+brilliant_scientist_mengele_temporal_weaponization_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.temporal_weaponization_civilian_factories }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_stage_cost.temporal_weaponization_support_equipment } }
+	NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.temporal_weaponization_fuel }
+	check_variable = { var = political_power value = constant:brilliant_scientist_project_stage_cost.temporal_weaponization_political_power compare = greater_than_or_equals }
+}
+
+# Fixed callbacks cancel only if the exact private stage receipt disappears
+# or the provider loses authority. Resource depletion after payment is safe.
+brilliant_scientist_mengele_temporal_theory_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^13 value = constant:brilliant_scientist_project_stage.theory compare = equals }
+}
+brilliant_scientist_mengele_temporal_prototype_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^13 value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+}
+brilliant_scientist_mengele_temporal_deployment_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^13 value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+}
+brilliant_scientist_mengele_temporal_weaponization_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^13 value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+}
+
+brilliant_scientist_mengele_temporal_theory_decision_cancel_trigger = {
+	OR = { NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes } NOT = { brilliant_scientist_mengele_temporal_theory_decision_receipt_matches = yes } }
+}
+brilliant_scientist_mengele_temporal_prototype_decision_cancel_trigger = {
+	OR = { NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes } NOT = { brilliant_scientist_mengele_temporal_prototype_decision_receipt_matches = yes } }
+}
+brilliant_scientist_mengele_temporal_deployment_decision_cancel_trigger = {
+	OR = { NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes } NOT = { brilliant_scientist_mengele_temporal_deployment_decision_receipt_matches = yes } }
+}
+brilliant_scientist_mengele_temporal_weaponization_decision_cancel_trigger = {
+	OR = { NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes } NOT = { brilliant_scientist_mengele_temporal_weaponization_decision_receipt_matches = yes } }
+}
+
+# Country scope. Each AI caution gate is true when the stage has no spare
+# civilian factories beyond its own quote, including an exact equality.
+brilliant_scientist_mengele_temporal_theory_decision_no_spare_factories = {
+	NOT = { num_of_civilian_factories_available_for_projects > constant:brilliant_scientist_project_stage_cost.temporal_theory_civilian_factories }
+}
+brilliant_scientist_mengele_temporal_prototype_decision_no_spare_factories = {
+	NOT = { num_of_civilian_factories_available_for_projects > constant:brilliant_scientist_project_fallback_prototype.temporal_civilian_factories }
+}
+brilliant_scientist_mengele_temporal_deployment_decision_no_spare_factories = {
+	NOT = { num_of_civilian_factories_available_for_projects > constant:brilliant_scientist_project_stage_cost.temporal_deployment_civilian_factories }
+}
+brilliant_scientist_mengele_temporal_weaponization_decision_no_spare_factories = {
+	NOT = { num_of_civilian_factories_available_for_projects > constant:brilliant_scientist_project_stage_cost.temporal_weaponization_civilian_factories }
+}
