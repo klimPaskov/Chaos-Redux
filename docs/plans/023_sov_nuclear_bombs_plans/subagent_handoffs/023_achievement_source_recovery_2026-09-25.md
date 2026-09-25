@@ -53,8 +53,16 @@ Parent audit identified `processed_png/achievement_layers/023_sov_nuclear_bombs_
 The canonical processor was used to regenerate all package triplets from `processed_png/achievement_subject_layers/`; `--force` targeted only the package output directory, never runtime. The seven separate audit runs all returned `AUDIT OK`, confirming strict 64x64 BGRA triplets and source-layer equality.
 
 ```powershell
-python -B .agents/skills/chaos-redux-event-assets/tools/process_achievement_icons.py --completed "docs/assets/023_sov_nuclear_bombs/processed_png/achievement_subject_layers/$id.png" --grey "docs/assets/023_sov_nuclear_bombs/processed_png/achievement_subject_layers/$($id)_grey.png" --not-eligible "docs/assets/023_sov_nuclear_bombs/processed_png/achievement_subject_layers/$($id)_not_eligible.png" --achievement-id $id --output-dir docs/assets/023_sov_nuclear_bombs/dds/achievements --write-png --force
-python -B .agents/skills/chaos-redux-event-assets/tools/process_achievement_icons.py --input docs/assets/023_sov_nuclear_bombs/processed_png/achievement_subject_layers --achievement-id <achievement_id> --output-dir docs/assets/023_sov_nuclear_bombs/dds/achievements --audit
+$assetRoot = "docs/assets/023_sov_nuclear_bombs"
+$ids = @("023_sov_nuclear_bombs_a_hundred_suns","023_sov_nuclear_bombs_the_bomb_never_fell","023_sov_nuclear_bombs_ultimatum_without_ash","023_sov_nuclear_bombs_scattered_arsenal","023_sov_nuclear_bombs_firebreak","023_sov_nuclear_bombs_first_and_last","023_sov_nuclear_bombs_the_last_telephone")
+foreach ($id in $ids) {
+  python -B .agents/skills/chaos-redux-event-assets/tools/process_achievement_icons.py --completed "$assetRoot/processed_png/achievement_subject_layers/$id.png" --grey "$assetRoot/processed_png/achievement_subject_layers/$($id)_grey.png" --not-eligible "$assetRoot/processed_png/achievement_subject_layers/$($id)_not_eligible.png" --achievement-id $id --output-dir "$assetRoot/dds/achievements" --write-png --force
+  if ($LASTEXITCODE -ne 0) { throw "Processor failed for $id" }
+}
+foreach ($id in $ids) {
+  python -B .agents/skills/chaos-redux-event-assets/tools/process_achievement_icons.py --input "$assetRoot/processed_png/achievement_subject_layers" --achievement-id $id --output-dir "$assetRoot/dds/achievements" --audit
+  if ($LASTEXITCODE -ne 0) { throw "Processor audit failed for $id" }
+}
 python -B docs/assets/023_sov_nuclear_bombs/tools/build_achievement_source_recovery_sheets.py
 ```
 

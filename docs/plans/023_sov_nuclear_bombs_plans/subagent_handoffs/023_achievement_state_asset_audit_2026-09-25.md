@@ -27,3 +27,9 @@ The canonical achievement contact sheet was inspected first, followed by all 18 
 No decoded DDS PNG was used as a source master or processing input, and no reconstruction or replacement generation was performed. There are no retained Event 023 achievement-ID-matched source PNGs under `source_png/` and no processed masters under `processed_png/`; therefore source prompts/hashes, production-time template use, and source-to-output compositing equality remain unverified. No concrete visual defect was observed to justify replacement art.
 
 The full family table, per-triplet state pixel-difference counts, alpha details, canonical reference scope, and static check results are in `docs/assets/023_sov_nuclear_bombs/notes/achievement_state_audit_2026-09-25.md`. Runtime DDS files, GFX, definitions, localisation, spreadsheets, and unrelated assets were not modified. Live HOI4 consumer validation remains outside this audit.
+
+## Parent reconciliation, 2026-09-25
+
+The seven missing source-master and 21 missing processed-input findings above are **superseded** by `023_achievement_source_recovery_2026-09-25.md`. That handoff records seven unchanged native ImageGen masters matching historical SHA-256 values, 21 derived subject-state inputs, 21 processed composites, and package DDS files byte-equal to runtime DDS files. The earlier absence finding remains an accurate dated snapshot and does not describe the recovered package.
+
+The exact original `docs/assets/023_sov_nuclear_bombs/prompts/icon_prompt_set.md` is absent, so per-icon prompt provenance is **blocked** by that missing record; no prompt was inferred or reconstructed. Static source-to-output recovery is **implemented** within the recovery handoff's limits, while live achievement consumer rendering and visual sign-off remain `needs_user_review`.

@@ -61,3 +61,9 @@ If the authoritative catalog workbook mirrors these passages, `chaosx_spreadshee
 - Skipped: live game, post-edit event popup rendering, shared GUI long-text layout acceptance, runtime scripted-localisation expansion, native stockpile/mission behavior, and workbook comparison. The user owns live consumer acceptance; the parent owns source integration and spreadsheet routing. No simplification or substitute validation is presented as completion.
 
 Skills applied: `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-super-events`, `chaos-redux-improvement-loop`, and `chaos-redux-subagents`; none was modified.
+
+## Parent reconciliation, 2026-09-25
+
+The workbook-uninspected/mismatch-unknown item above is **superseded** by `023_event_catalog_alignment_2026-09-25.md`: authoritative Event 23 `Events!E24/F24` now exactly match the Evolution II and III localisation bodies, export succeeded, and the parent independently checked the workbook and Events CSV. The historical audit did not edit either file; `To Be Reworked` and blank cluster/world-end fields remain.
+
+Unrelated prose and dynamic-text opportunities, the `Suspected` state design conflict, shared Event Details secrecy/text fit, GUI render, runtime token expansion, and user-owned live consumer review remain **unresolved** or `needs_user_review` as described above. Current workbook alignment does not resolve them, and the partial read-only MCP artifacts above are not a complete event or presentation acceptance result.

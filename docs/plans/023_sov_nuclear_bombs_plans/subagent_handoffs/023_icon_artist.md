@@ -109,3 +109,9 @@ There are no omissions within the requested icon scope: category, all seven post
 The source batch provenance is the one documentation caveat: the native-transparent source PNGs predated this subagent's processing pass, and the prior worker did not leave per-call ImageGen prompt files. The sources were not regenerated or altered; the accepted prompt set is recorded in `prompts/icon_prompt_set.md`, and the source pixels, alpha, and DDS round-trips are fully checksum-verified in `notes/icon_validation.md`.
 
 No commit was created.
+
+## Parent reconciliation, 2026-09-25
+
+The retained-prompt-set claim above is **superseded** as a current file claim: `docs/assets/023_sov_nuclear_bombs/prompts/icon_prompt_set.md` is absent. Exact per-icon prompt provenance is **blocked** by the missing original record; the wording above is a historical production assertion, not grounds to reconstruct a prompt. The seven achievement native source masters and 21 derived states have since been recovered with hash and DDS-equivalence evidence in `023_achievement_source_recovery_2026-09-25.md`, superseding any current missing-master implication.
+
+Parent source wiring, current manifest, and GFX files are present as recorded in `docs/events/023_sov_nuclear_bombs.md` and `023_parent_completion_report_2026-09-25.md`; the worker-time pending-wiring instruction above is **superseded** for current status. Static recovery is **implemented** within the recovery handoff's limits, and live icon/achievement rendering remains `needs_user_review`.

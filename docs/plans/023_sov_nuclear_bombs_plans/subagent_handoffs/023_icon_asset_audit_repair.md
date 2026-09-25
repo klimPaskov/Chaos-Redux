@@ -134,3 +134,9 @@ The exact retained generation prompt summaries are in `docs/assets/023_sov_nucle
 - The canonical achievement README/CATALOG/contact-sheet inventory reports more reference entries than the currently present individual achievement files; this reference-library inconsistency did not block Event 023 production and was not edited.
 - No absent Event 023 family or missing `device_disablement` decision icon was added; the audit covers exactly the 24 decision files currently present.
 - No background-removal fallback was used, and no clipped or visibly matted edge was found in the processed/runtime outputs. Native achievement source edge alpha was at most 4 where the source canvas was touched, while every processed subject retained a transparent containment guard.
+
+## Parent reconciliation, 2026-09-25
+
+The achievement-master/source-layer provenance claims above are retained as this worker's dated record. The later absence finding in `023_achievement_state_asset_audit_2026-09-25.md` is **superseded** by `023_achievement_source_recovery_2026-09-25.md`, which independently recovered seven hash-matched native masters and 21 derived states and proved package/runtime DDS equality. The recovery handoff also records one non-visual processed-PNG encoding/hash difference for `scattered_arsenal_grey`; use its current hashes and pixel-equivalence finding for present status.
+
+The cited exact `docs/assets/023_sov_nuclear_bombs/prompts/icon_prompt_set.md` is absent, so original per-icon prompt provenance is **blocked** by the missing file; prompt summaries above are historical claims, not a recovered original. The worker-time pending-GFX instruction is **superseded** by the current manifest/GFX evidence in `docs/events/023_sov_nuclear_bombs.md` and `023_parent_completion_report_2026-09-25.md`. Static source recovery is **implemented** within the recovery handoff's limits, and live consumer rendering remains `needs_user_review`.

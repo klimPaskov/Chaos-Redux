@@ -193,3 +193,9 @@ Skipped meaningful validation and exact blockers:
 ## Simplifications, omissions, and blockers
 
 No prose fallback, invented capability, gameplay simplification, or placeholder was introduced. The only omissions are the read-only MCP visual validations and workbook confirmation listed above, each blocked by tool exposure or owner boundaries rather than treated as complete.
+
+## Parent reconciliation, 2026-09-25
+
+This audit's workbook-uninspected statement and Evolution II/III catalog handoff are **superseded** as current catalog status by `023_event_catalog_alignment_2026-09-25.md`. The authoritative `Events!E24/F24` now match the in-game localisation bodies exactly; the exporter succeeded, and the parent independently verified the workbook and Events CSV. Event 23 remains `To Be Reworked` with blank cluster/world-end fields. This handoff's original scope statement remains true for the historical localisation patch.
+
+The route-exposure observations above describe this auditor's session only. Later Event 23 event inspect/render and GUI attempts are documented in `023_parent_completion_report_2026-09-25.md` and the 2026-09-25 audit resumés; exposure does not establish service health or a successful production text render. The `needs_user_review` live text/layout limit remains, as do the unrelated localisation issues listed above. The seven achievement source masters were recovered in `023_achievement_source_recovery_2026-09-25.md`; its missing exact prompt and live consumer limits remain open.
