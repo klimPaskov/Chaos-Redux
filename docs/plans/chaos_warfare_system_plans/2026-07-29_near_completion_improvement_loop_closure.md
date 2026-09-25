@@ -4,7 +4,7 @@ Date: 2026-07-29
 
 Status: no new improvement addendum; broad expansion is closed, and the later user-authorized supported-core disposition treats unavailable engine-bound surfaces as explicit omissions
 
-Current-status note: the later camp integration resolves the accepted playable nerve-suppression requirement through Gas-Chamber Saturation Drills and the existing exact camp transaction. References below to the entire nerve-suppression family being blocked are historical; only the separate legacy selected-state occupation operation remains unavailable.
+Current-status note: the later camp integration resolves the accepted playable nerve-suppression requirement through Gas-Chamber Saturation Drills and the existing exact camp transaction. The separate selected-state Sarin/Soman occupation attack decisions and their adapter were retired on 2026-09-25 under the accepted removal of decision-based CBRN attacks. References below to their availability or a pending condition hook are historical; the current source-of-truth map is `docs/systems/cbrn_warfare/cbrn_occupation_and_nerve_suppression.md`.
 
 ## Stop or continue recommendation
 

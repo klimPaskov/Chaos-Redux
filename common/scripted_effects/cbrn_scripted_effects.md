@@ -298,7 +298,7 @@ Required temporary metadata:
 - `cbrn_action_delivery_route`
 - `cbrn_action_severity`
 
-Nerve use through cylinder, projector, artillery, armored delivery, or air delivery additionally requires `cbrn_action_late_agent_route_authorized = constant:cbrn_proof.supplied`, set only by the mapped late technology/doctrine gate. Nerve Suppression accepts nerve agents only.
+Nerve use through cylinder, projector, artillery, armored delivery, or air delivery additionally requires `cbrn_action_late_agent_route_authorized = constant:cbrn_proof.supplied`, set only by the mapped late technology/doctrine gate. The `nerve_suppression` route identifier remains for historical occupation action records; the occupied-state Sarin and Soman attack decisions are retired.
 
 Required payload inputs: positive `cbrn_action_payload_required`, positive `cbrn_action_payload_consumed`, and `cbrn_action_payload_consumed_proof`. The proof is valid only after a real CBRN payload-debit helper removes equipment.
 
@@ -567,7 +567,7 @@ Side effects:
 
 Internal helpers are `cbrn_dispatch_set_source_and_context`, `cbrn_dispatch_set_evidence_floor`, `cbrn_dispatch_apply_first_exposure_shock`, `cbrn_dispatch_apply_unit_damage`, `cbrn_dispatch_apply_mask_losses`, `cbrn_dispatch_apply_state_consequences`, `cbrn_dispatch_apply_condemnation`, and `cbrn_dispatch_record_actor_history`. They share the validated temporary record and must not be called directly by route adapters.
 
-The internal `cbrn_bind_action_victim_country` helper binds the selected state's controller for ordinary battlefield and strategic delivery. For the occupation-only `nerve_suppression` route it binds the selected state's owner, so evidence, retaliation, and Condemnation name the occupied population's country rather than the occupying actor.
+The internal `cbrn_bind_action_victim_country` helper binds the selected state's controller for ordinary battlefield and strategic delivery. Its retained `nerve_suppression` route branch binds the selected state's owner for historical occupation action records; no current occupied-state attack decision calls that branch.
 
 Example:
 
@@ -913,21 +913,20 @@ Example:
 chaosx_apply_starting_cbrn_mask_profiles = yes
 ```
 
-## CBRN occupation and nerve-suppression effects
+## CBRN occupation and historical nerve-suppression effects
 
-These subsystem-specific effects live in `cbrn_occupation_effects.txt`. They are not part of the generic dynamic-effect library because their exact-state record, occupation-law, and evidence-row contracts are used only by the occupation CBRN surface.
+These subsystem-specific effects live in `cbrn_occupation_effects.txt`. The user-approved 2026-09-25 retirement removed the direct occupied-state Sarin and Soman attack decisions without an owned-state native replacement. Retained helpers serve occupation laws, external aid, and historical exact-record aftermath; this source description does not claim a new attack path.
 
 ### Authorization, law, and protective-aid effects
 
-- `cbrn_occupation_authorize_coercive_security` and `cbrn_occupation_authorize_protected_administration` recheck their exact institutional gates and set only their named authorization flags.
+- `cbrn_occupation_authorize_coercive_security` and `cbrn_occupation_authorize_protected_administration` recheck their exact institutional gates and set only their named authorization flags. The coercive authorization decision is hidden compatibility code; Protected Occupation Administration remains selectable.
 - `cbrn_occupation_set_coercive_security_state`, `cbrn_occupation_set_protected_administration_state`, and `cbrn_occupation_clear_state_policy` are state-scoped law adapters for an exact occupied state.
+- `cbrn_occupation_register_external_aid_reservation` and `cbrn_occupation_close_external_aid_reservation` count paid in-flight projects once. The decision reserves exact-state mask models at selection, pays Political Power only after a positive reservation, and refunds unused masks on cancellation or invalid completion.
 - `cbrn_occupation_execute_external_protective_aid` is country scoped and requires the caller to bind `cbrn_occupation_target_state`. It binds the donor as `cbrn_distribution_external_supplier`, consumes only the selected state's reserved model receipts, records actual consumed and delivered crates, updates donor and recipient history, and grants a bounded opinion record. An invalid target or missing donor produces no delivery proof; the matching refund helper returns unused crates to an existing original donor.
 
-### Nerve-suppression transaction
+### Retained historical operation and record effects
 
-`cbrn_occupation_execute_nerve_suppression` is country scoped. Required inputs are the regular event target `cbrn_occupation_target_state`, `cbrn_occupation_requested_agent` set to Sarin or Soman, and every exact condition variable required by `cbrn_occupation_action_conditions_are_supplied`. The target must retain CBRN Coercive Security, resistance, control, war ownership, a ready detachment, no allied force risk, an explicit target-loss clearance record, and no cooldown. The startup initializer clears every legacy release, weather, terrain, density, command, evidence-control, forecast-confidence, command-integration, and friendly-risk value; it never supplies a neutral receipt. The route therefore remains fail-closed until `cbrn_occupation_current_version_condition_hook_verified` is backed by a proven current-version exact-state provider.
-
-The effect resets the shared action context, checks repeat use, debits the real agent payload first, debits masks, decontamination equipment, CBRN instruments, support equipment, trucks, and Command Power only after payload proof, resolves target protection, then calls the shared chemical action preparation and dispatch pipeline. Only a proven shared dispatch applies the temporary suppression modifier, state contamination and death history, trauma, cooldown, delayed backlash event, exact responsible-country pointer, exact chemical-record UID, and national repetition records. Rejected input produces no state consequence and never selects an alternate state or agent.
+`cbrn_occupation_apply_accepted_operation_state` and `cbrn_occupation_record_country_history` remain in source to preserve the existing state and country receipt format. The bounded source search found no current decision or other script caller for those writers after the attack retirement; their presence is historical compatibility, not evidence of a live release. The direct `cbrn_occupation_execute_nerve_suppression` preparation, payment, and dispatch helper is absent.
 
 ### Exact evidence and disclosure effects
 
@@ -937,7 +936,7 @@ The effect resets the shared action context, checks repeat use, debits the real 
 
 ### Delayed aftermath and cleanup effects
 
-`cbrn_occupation_apply_delayed_backlash` is state scoped and runs only from the exact scheduled state event when the stored due day and responsible controller still agree. It applies bounded resistance and compliance backlash, an occupier-scoped dynamic modifier, and at most one eligible neighboring occupied-state spillover. `cbrn_occupation_decay_state_trauma` advances one exact state's annual self-scheduled trauma step. `cbrn_occupation_end_responsible_country_operational_modifiers` removes occupier-specific temporary benefits when control changes while retaining historical trauma, evidence, deaths, and responsibility. No helper performs a broad country or state pulse.
+`cbrn_occupation_apply_delayed_backlash` is state scoped and runs only from the exact scheduled state event when the stored due day and responsible controller still agree. It applies bounded resistance and compliance backlash, an occupier-scoped dynamic modifier, and at most one eligible neighboring occupied-state spillover. `cbrn_occupation_decay_state_trauma` advances one exact state's annual self-scheduled trauma step. `cbrn_occupation_end_responsible_country_operational_modifiers` removes occupier-specific temporary benefits when control changes while retaining historical trauma, evidence, deaths, and responsibility. No helper performs a broad country or state pulse, and these readers do not start a new attack.
 
 ## Chaos Warfare doctrine effects
 
@@ -1150,7 +1149,7 @@ It never estimates a target, substitutes a state, dispatches from idle aircraft,
 
 ## Camp, occupation, and headquarters adapters
 
-`cbrn_camp_effects.txt` and `cbrn_occupation_effects.txt` remain route-specific adapters. Camp efficiency may be improved by the accepted terminal doctrine and extreme policy, but those effects do not create, reveal, or authorize camps or other extermination infrastructure. Nerve suppression consumes the exact restricted-site package and records protection failure, deaths, contamination, medical saturation, resistance trauma, evidence, attribution, and diplomatic consequence through the shared contract.
+`cbrn_camp_effects.txt` and `cbrn_occupation_effects.txt` remain separate subsystem adapters. Camp nerve methods use the active restricted-site transaction and its own payload and consequence records. Occupation helpers retain law, aid, and historical nerve-suppression aftermath; they do not turn the camp method into an owned-state native raid or revive the retired Sarin and Soman decisions.
 
 `cbrn_hq_effects.txt` owns Army Headquarters preparation and regimental-support operating packages. It debits essential equipment, filter wear, decontamination, instruments, transport, fuel, medical capacity, and manpower using finite preparation, active, upkeep, cooldown, and cleanup events. It is the theater layer; regimental support remains the division layer. None of these helpers performs a broad all-country periodic pulse.
 

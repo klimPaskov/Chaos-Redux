@@ -72,7 +72,7 @@ Final weights belong in constants and country AI strategies.
 | target has masks but weak decon | blister agent |
 | target has advanced protection | avoid choking, use conventional or persistent combined operation |
 | low desired deaths | incapacitant or malodor profile |
-| occupation high resistance | nerve suppression only under route and policy |
+| occupation high resistance | no decision-based chemical attack; use native battlefield raids where their target and policy gates allow |
 | high sanction vulnerability | no use or retaliation-only local use |
 
 ## Target selection

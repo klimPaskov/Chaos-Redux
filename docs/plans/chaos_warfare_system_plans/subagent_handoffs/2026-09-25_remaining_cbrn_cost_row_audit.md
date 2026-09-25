@@ -2,6 +2,8 @@
 
 Date: 2026-09-25. Status: read-only audit handoff; recommendations are unresolved proposals, not accepted design. The audit excludes `cbrn_assign_decontamination_corridor`; the parent reports its cleanup patch committed as `e3694c5d9` and owns its companion doctrine changes.
 
+Disposition of finding 1: implemented through the accepted retirement of the two dormant occupied-state attack decisions, their seven-type payment row, and the direct payment/execution helpers. The text below records the pre-retirement audit and is not a description of current gameplay. Findings 2–5 retain their own dispositions and evidence requirements.
+
 Scope was limited to player-facing CBRN decision payment rows, linked constants, scripted triggers/effects, and localisation. I read the required offline Paradox wiki decision and syntax pages, the installed HOI4 documentation, and relevant vanilla decision precedents. No gameplay, localisation, or other documentation files were changed. This handoff is the only file changed by this subagent.
 
 ## Prioritized findings

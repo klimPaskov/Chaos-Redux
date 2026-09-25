@@ -2,6 +2,8 @@
 
 Audit date: 2026-07-25.
 
+Disposition of the Sarin/Soman decision findings: superseded by the user-approved 2026-09-25 retirement. The two occupied-state attack decisions and their direct execution adapter have been removed; the entries below document the earlier source, not current actions. Current behavior is mapped in `docs/systems/cbrn_warfare/cbrn_occupation_and_nerve_suppression.md`.
+
 Scope was limited to engine and transaction safety for the Stage 9 occupation package.
 
 No assets, GFX, shared pipelines, specs, matrices, or unrelated gameplay files were edited.

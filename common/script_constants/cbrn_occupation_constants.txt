@@ -2,13 +2,11 @@
 # CHAOS REDUX - CBRN OCCUPATION BACKEND CONSTANTS
 # ============================================================================
 # Overview:
-# - Centralizes the exact policy states, procurement debit, target gates,
-#   short-term suppression records, delayed trauma, repeat-use escalation,
-#   coverup/discovery records, and targeted timing used by the occupation
-#   backend.
-# - The shared payload category remains authoritative for the nerve lot debit:
-#   cbrn_payload_route_cost.nerve_suppression. This file does not duplicate
-#   that shared cost.
+# - Centralizes occupation policy states, legacy law AI thresholds,
+#   stored suppression aftermath, coverup and discovery records, and
+#   targeted aid and historical-event timing.
+# - The generic nerve-suppression payload route remains in shared CBRN
+#   constants for historical consequence consumers.
 # - State modifiers consume the values in this file directly or through
 #   bounded state variables refreshed by subsystem-specific effects.
 # ============================================================================
@@ -189,32 +187,12 @@ cbrn_occupation_condemnation = {
 	coverup_discovery_context_gain = 8
 }
 
-cbrn_occupation_action_receipt = {
-	schema = {
-		any_key = yes
-		data = fixed_point
-	}
-
-	# Occupation suppression is a selected-state ground operation. These are
-	# bounded command-receipt values, not a weather estimator or passive scan.
-	release_efficiency = 0.90
-	weather = 0.95
-	terrain = 1.00
-	target_density = 0.95
-	command = 0.90
-	evidence_control = 0.80
-	forecast_confidence = 0.80
-	command_integration = 0.75
-	base_friendly_risk = 0.20
-}
-
 cbrn_occupation_timing = {
 	schema = {
 		any_key = yes
 		data = int
 	}
 
-	operation_preparation_days = 21
 	protective_aid_days = 21
 	protective_aid_reenable_days = 90
 	coverup_reenable_days = 30
@@ -257,8 +235,6 @@ cbrn_occupation_decision_ai = {
 	disabled = 0
 	authorize_coercive_security = 25
 	authorize_protected_administration = 80
-	nerve_suppression_sarin = 20
-	nerve_suppression_soman = 30
 	protective_aid = 40
 	protective_aid_own_core_factor = 5
 	protective_aid_allied_core_factor = 2

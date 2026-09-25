@@ -479,49 +479,41 @@ if = {
 }
 ```
 
-## CBRN occupation and nerve-suppression triggers
+## CBRN occupation and historical nerve-suppression triggers
 
-These subsystem-specific, side-effect-free triggers live in `cbrn_occupation_triggers.txt`. They remain outside the generic dynamic-trigger library because only the occupation CBRN decision, law, delayed-event, and control-change surfaces consume them.
+These subsystem-specific triggers live in `cbrn_occupation_triggers.txt`. The user-approved 2026-09-25 retirement removed the direct occupied-state Sarin and Soman attack decisions without an owned-state native replacement. Retained triggers support occupation laws, protective aid, exact historical records, delayed aftermath, and control-change cleanup.
 
-### Authorization, visibility, and stock gates
+### Authorization, visibility, and hidden law-compatibility gates
 
 - `cbrn_occupation_coercive_security_authorization_requirements` requires Armor mastery 3, Armored Agent Delivery, a completed Sarin or Soman project, and advanced protection.
 - `cbrn_occupation_protected_administration_authorization_requirements` requires Basic Gas Masks and advanced protection.
-- `cbrn_occupation_category_visible` accepts an authorization route, established program, persistent nerve-suppression history, or a real occupied non-core state.
-- `cbrn_occupation_country_has_sarin_suppression_stock` and `cbrn_occupation_country_has_soman_suppression_stock` require the exact technology, completed project, and complete shared route payload debit.
+- `cbrn_occupation_category_visible` accepts historical nerve-suppression records, an active external-aid reservation, the protected occupation route in a controlled non-core state, or a real external-aid target.
+- `cbrn_occupation_country_has_sarin_suppression_stock` and `cbrn_occupation_country_has_soman_suppression_stock` require the exact technology, completed project, and complete legacy route payload stock. They feed the retained coercive-law AI gate only; they do not authorize or debit an attack.
 - `cbrn_occupation_country_has_non_payload_operation_costs` requires the full mask, decontamination, instrument, support-equipment, truck, and Command Power package.
 - `cbrn_occupation_country_has_adequate_protection` requires advanced protection plus high military mask, respiratory, skin, antidote, decontamination, and medical coverage.
 
-Scope is country unless named as a state trigger. Missing stock, project, technology, readiness, or protection fails closed. These checks never grant authorization, create payload, or populate an absent variable.
+The last two stock and protection gates also feed only the retained coercive-law AI gate. The coercive authorization decision is hidden with `visible = { always = no }`, while Protected Occupation Administration remains a current decision and law. These predicates do not select a target or provide a Sarin or Soman decision action.
 
-### Exact operation-input and target gates
+### State and historical record gates
 
-`cbrn_occupation_current_version_condition_hook_verified` is the hard current-version provider gate. It returns false because installed documentation exposes weather and terrain only in combatant scope and no exact selected-state target-loss forecast provider is available.
+`cbrn_occupation_state_is_occupied_non_core` identifies a populated state controlled by ROOT, owned by another existing country, and neither owned nor cored by ROOT. `cbrn_occupation_state_has_allied_force_risk` detects an allied non-ROOT division in the state and is still referenced by the separate regimental-support trigger file. Neither is an attack target selector in the occupation decision file.
 
-`cbrn_occupation_action_conditions_are_supplied` requires that verified-provider gate and validates every explicit release-efficiency, weather, terrain, target-density, command, evidence-control, forecast-confidence, command-integration, and friendly-risk input against the shared bounds. It does not calculate, infer, or default any condition.
+`cbrn_occupation_state_can_record_coverup` requires the responsible-country pointer, last action date, `nerve_suppression` route, and stored exact chemical-record UID. The response and discovery gates add actor, current-control, prior-response, and one-time exclusions according to the action. `cbrn_occupation_state_delayed_backlash_is_due` and `cbrn_occupation_state_can_decay_trauma` read only the recorded exact state's due day and trauma; they do not produce an attack.
 
-`cbrn_occupation_country_can_prepare_nerve_suppression` requires both occupation authorizations, the doctrine and formation unlocks, extreme-use policy, Chemical Readiness 70, command integration, all non-payload costs, advanced protection, and the complete explicit condition package. `cbrn_occupation_country_can_execute_nerve_suppression` additionally requires an exact regular event target, one valid and eligible Sarin or Soman agent, complete payload stock, a still-valid occupied target, and continued war with the state's owner.
+The former condition-hook, preparation, execution, cooldown, and valid nerve-target triggers are absent from the current source. A stored historical record remains readable, but there is no direct occupied-state decision attack to prepare or execute.
 
-The state target chain also requires the explicit `cbrn_occupation_target_loss_risk_cleared` state record. No active writer supplies that record; state control changes clear it.
+### Coercive-law AI compatibility
 
-- `cbrn_occupation_state_is_occupied_non_core`: ROOT controls a populated state owned by another existing country and does not own or core it.
-- `cbrn_occupation_state_has_ready_nerve_detachment`: ROOT has a physically present Nerve Suppression Detachment at or above the centralized strength and organization thresholds.
-- `cbrn_occupation_state_has_allied_force_risk`: an allied non-ROOT division is physically present.
-- `cbrn_occupation_state_cooldown_is_clear`: neither timed flag nor stored due day blocks reuse.
-- `cbrn_occupation_state_is_valid_nerve_target`: combines the exact occupation law, resistance, cooldown, ready detachment, allied-risk exclusion, and positive target-loss clearance.
+`cbrn_occupation_ai_coercive_route_requirements` and `cbrn_occupation_ai_can_select_coercive_law` remain for the law's existing-record AI gate in `common/occupation_laws/chaosx_occupation_laws.txt`. They read doctrine, policy, protection, stock, costs, readiness, force, Condemnation, import exposure, and route constraints. They have no preparation or execution caller for a current attack. The hidden coercive authorization decision makes new player or AI authorization unavailable through this decision category.
 
-The target-loss clearance flag is not synthesized by this file. Until a verified current-version native forecast hook supplies it and the required weather and terrain variables, the release path remains unavailable rather than estimating the result.
-
-### Route-aware AI gates
-
-`cbrn_occupation_ai_coercive_route_requirements` and `cbrn_occupation_ai_can_select_coercive_law` require real doctrine, extreme policy, advanced protection, an eligible nerve stockpile, one fielded suppression detachment, tolerable Condemnation and import vulnerability, no mask replacement backlog, and an accepted aggressive route. `cbrn_occupation_ai_can_prepare_nerve_suppression` applies the same political and material restraint to the timed operation.
-
-`cbrn_occupation_state_is_ai_target` adds high resistance plus explicit strategic-priority and ordinary-garrison-failure state flags. `cbrn_occupation_ai_can_use_nerve_suppression` adds exact target material gates, control-risk clearance, no allied force risk, no defensive or censured refusal state unless an accepted route relaxes it, and no compliance or inspection agreement. Missing strategic, garrison-failure, agreement, or loss-risk proof is never inferred.
+The former Sarin and Soman decision AI weights received only an unbound partial-score baseline in `docs/plans/chaos_warfare_system_plans/2026-09-25_cbrn_occupation_probability_baseline_fixture.json`: 96 inputs remain unresolved, and no normalized choice was established. Post-edit comparison and surviving law or aid weighted scenarios remain with the parent and `chaosx_ai_probability_auditor`.
 
 ### Protective aid, exact records, and aftermath
 
 - `cbrn_occupation_country_can_supply_external_protective_aid` requires an established program, real mask stock, and two available Civilian Factories.
-- `cbrn_occupation_state_can_receive_external_protective_aid` requires a populated state controlled by another country, non-core status under that controller, no conflicting project, and a real occupied-distribution gap.
+- `cbrn_occupation_external_aid_payment_ready` adds Political Power and exact target eligibility to the same gate used by the decision's `available` and `custom_cost_trigger` clauses.
+- `cbrn_occupation_country_can_continue_external_protective_aid` and `cbrn_occupation_state_remains_external_protective_aid_target` keep a paid reservation in flight without retesting the already committed stock or factories; the latter still requires an exact occupied target, emergency, and distribution need.
+- `cbrn_occupation_state_can_receive_external_protective_aid` requires that target, no conflicting project or active reservation, and a positive real-mask quote. `cbrn_occupation_state_has_donor_external_aid_reservation` recognizes only the original donor's exact-state receipt.
 - `cbrn_occupation_state_can_start_coverup`, `cbrn_occupation_state_can_admit_release`, and `cbrn_occupation_state_can_permit_inspection` require a stored exact nerve-suppression record belonging to ROOT and enforce their distinct control and prior-response exclusions.
 - `cbrn_occupation_state_can_record_discovery` permits one discovery against a stored exact record; `cbrn_occupation_state_delayed_backlash_is_due` and `cbrn_occupation_state_can_decay_trauma` gate only the exact state's self-scheduled aftermath events.
 

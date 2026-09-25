@@ -320,7 +320,7 @@ Doctrine cannot reduce confirmed use to zero. Latent responsibility is released 
 
 ### AI garrison exploit
 
-Nerve suppression requires a targeted decision and payload. A support company alone does not provide unlimited state suppression.
+The retired occupied-state nerve-suppression decisions grant no attacks. Native battlefield raids require their defined weapon and payload, while the separate camp method uses its own bounded payload transaction. A support company alone does not release an agent.
 
 ### Air estimator exploit
 

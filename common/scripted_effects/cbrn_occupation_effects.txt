@@ -2,51 +2,16 @@
 # CHAOS REDUX - CBRN OCCUPATION SCRIPTED EFFECTS
 # ============================================================================
 # Overview:
-# - Owns the exact-state backend for CBRN Coercive Security, Protected
-#   Occupation Administration, and targeted Nerve Agent Suppression.
-# - Calls the shared CBRN payload, protection, exposure-record, and
-#   consequence dispatchers. This file never reimplements deaths,
-#   contamination, medical saturation, evidence, attribution, Condemnation,
-#   Air Cleanliness, or confirmed-use history.
-# - Stores bounded state trauma, short-lived suppression records, responsible
-#   country/action snapshots, repeat-use memory, cooldowns, coverup inputs,
-#   discovery inputs, and targeted delayed backlash. Callers own event or
-#   decision selection and must bind cbrn_occupation_target_state first.
-# - No camp, genocide, broad pulse, target-selection fallback, or condition
-#   estimator is defined here. Exact state law overrides and output records
-#   are deliberate adapters for the owned decision surfaces.
-#
-# Internal contract:
-# - Country-scope operation callers set cbrn_occupation_requested_agent to the
-#   cbrn_agent.sarin or cbrn_agent.soman enum. No selected-state condition
-#   receipt is synthesized: the route stays closed until a verified
-#   current-version hook supplies the complete exact-state receipt.
-# - State-scope delayed helpers are called only for the exact state whose
-#   stored due-day flag is being processed. The backlash helper is called from
-#   the responsible-country scope so ROOT is the recorded occupier.
-# - Shared payload debit is the first mutation in the operation chain. The
-#   operation cost debit occurs only after a positive shared payload proof.
-# - Every public helper leaves a proof or persistent record for its caller;
-#   transient input cleanup is explicit and never clears historical records.
+# - Owns occupation-law state, external protective-aid delivery, exact
+#   chemical-record disclosure, and historical nerve-suppression aftermath.
+# - Stored action readers preserve deaths, contamination, evidence,
+#   attribution, Condemnation, trauma, and discovery without a new attack.
+# - State-scope delayed helpers process only the exact recorded state.
+# - Aid uses model-specific reserved respirator crates and returns unused
+#   stock to the original supplier when delivery cannot finish.
+# - No direct nerve-agent preparation, payment, or attack dispatcher lives
+#   here. Native CBRN battlefield attacks are defined by raid types.
 # ============================================================================
-
-cbrn_occupation_initialize_action_conditions = {
-	# Startup must not manufacture an estimator or fixed condition package.
-	# Clear legacy receipts so existing histories also remain fail-closed.
-	clear_variable = cbrn_occupation_release_efficiency
-	clear_variable = cbrn_occupation_weather_mult
-	clear_variable = cbrn_occupation_terrain_mult
-	clear_variable = cbrn_occupation_target_density_mult
-	clear_variable = cbrn_occupation_command_mult
-	clear_variable = cbrn_occupation_evidence_control_mult
-	clear_variable = cbrn_occupation_forecast_confidence
-	clear_variable = cbrn_occupation_command_integration
-	clear_variable = cbrn_occupation_base_friendly_risk
-}
-
-cbrn_occupation_bind_current_state_target = {
-	save_event_target_as = cbrn_occupation_target_state
-}
 
 cbrn_occupation_authorize_coercive_security = {
 	set_temp_variable = { cbrn_occupation_authorization_proof = constant:cbrn_proof.missing }
@@ -231,183 +196,6 @@ cbrn_occupation_execute_external_protective_aid = {
 		limit = { has_event_target = cbrn_occupation_target_state }
 		event_target:cbrn_occupation_target_state = { cbrn_refund_external_state_mask_reservation = yes }
 	}
-}
-
-cbrn_occupation_pay_operation_costs = {
-	set_temp_variable = { cbrn_occupation_cost_payment_proof = constant:cbrn_proof.missing }
-	set_temp_variable = { cbrn_occupation_paid_gas_masks = constant:cbrn_math.zero }
-	set_temp_variable = { cbrn_occupation_paid_decontamination_equipment = constant:cbrn_math.zero }
-	set_temp_variable = { cbrn_occupation_paid_cbrn_instruments = constant:cbrn_math.zero }
-	set_temp_variable = { cbrn_occupation_paid_support_equipment = constant:cbrn_math.zero }
-	set_temp_variable = { cbrn_occupation_paid_motorized_equipment = constant:cbrn_math.zero }
-	set_temp_variable = { cbrn_occupation_paid_command_power = constant:cbrn_math.zero }
-	if = {
-		limit = {
-			check_variable = {
-				var = cbrn_action_payload_consumed_proof
-				value = constant:cbrn_proof.supplied
-				compare = equals
-			}
-			cbrn_occupation_country_has_non_payload_operation_costs = yes
-		}
-		set_temp_variable = { cbrn_occupation_cost_debit = constant:cbrn_occupation_cost.gas_masks }
-		multiply_temp_variable = { cbrn_occupation_cost_debit = constant:cbrn_payload_math.negation_multiplier }
-		add_equipment_to_stockpile = { type = gas_mask_equipment amount = cbrn_occupation_cost_debit }
-		set_temp_variable = { cbrn_occupation_paid_gas_masks = constant:cbrn_occupation_cost.gas_masks }
-
-		set_temp_variable = { cbrn_occupation_cost_debit = constant:cbrn_occupation_cost.decontamination_equipment }
-		multiply_temp_variable = { cbrn_occupation_cost_debit = constant:cbrn_payload_math.negation_multiplier }
-		add_equipment_to_stockpile = { type = decontamination_equipment amount = cbrn_occupation_cost_debit }
-		set_temp_variable = { cbrn_occupation_paid_decontamination_equipment = constant:cbrn_occupation_cost.decontamination_equipment }
-
-		set_temp_variable = { cbrn_occupation_cost_debit = constant:cbrn_occupation_cost.cbrn_instruments }
-		multiply_temp_variable = { cbrn_occupation_cost_debit = constant:cbrn_payload_math.negation_multiplier }
-		add_equipment_to_stockpile = { type = cbrn_instrument_equipment amount = cbrn_occupation_cost_debit }
-		set_temp_variable = { cbrn_occupation_paid_cbrn_instruments = constant:cbrn_occupation_cost.cbrn_instruments }
-
-		set_temp_variable = { cbrn_occupation_cost_debit = constant:cbrn_occupation_cost.support_equipment }
-		multiply_temp_variable = { cbrn_occupation_cost_debit = constant:cbrn_payload_math.negation_multiplier }
-		add_equipment_to_stockpile = { type = support_equipment amount = cbrn_occupation_cost_debit }
-		set_temp_variable = { cbrn_occupation_paid_support_equipment = constant:cbrn_occupation_cost.support_equipment }
-
-		set_temp_variable = { cbrn_occupation_cost_debit = constant:cbrn_occupation_cost.motorized_equipment }
-		multiply_temp_variable = { cbrn_occupation_cost_debit = constant:cbrn_payload_math.negation_multiplier }
-		add_equipment_to_stockpile = { type = motorized_equipment amount = cbrn_occupation_cost_debit }
-		set_temp_variable = { cbrn_occupation_paid_motorized_equipment = constant:cbrn_occupation_cost.motorized_equipment }
-
-		set_temp_variable = { cbrn_occupation_cost_debit = constant:cbrn_occupation_cost.command_power }
-		multiply_temp_variable = { cbrn_occupation_cost_debit = constant:cbrn_payload_math.negation_multiplier }
-		add_command_power = cbrn_occupation_cost_debit
-		set_temp_variable = { cbrn_occupation_paid_command_power = constant:cbrn_occupation_cost.command_power }
-		set_temp_variable = { cbrn_occupation_cost_payment_proof = constant:cbrn_proof.supplied }
-	}
-}
-
-cbrn_occupation_detect_repeat_use = {
-	set_temp_variable = { cbrn_occupation_repeat_use = constant:cbrn_math.zero }
-	set_temp_variable = { cbrn_occupation_elapsed_days = constant:cbrn_math.zero }
-	if = {
-		limit = { has_event_target = cbrn_occupation_target_state }
-		event_target:cbrn_occupation_target_state = {
-			if = {
-				limit = { has_variable = cbrn_occupation_last_action_date }
-				set_temp_variable = { cbrn_occupation_elapsed_days = global.num_days }
-				subtract_from_temp_variable = { cbrn_occupation_elapsed_days = cbrn_occupation_last_action_date }
-				if = {
-					limit = {
-						check_variable = {
-							var = cbrn_occupation_elapsed_days
-							value = constant:cbrn_math.zero
-							compare = greater_than
-						}
-						check_variable = {
-							var = cbrn_occupation_elapsed_days
-							value = constant:cbrn_occupation_timing.repeat_window_days
-							compare = less_than_or_equals
-						}
-					}
-					set_temp_variable = { cbrn_occupation_repeat_use = constant:cbrn_math.one }
-				}
-			}
-		}
-	}
-}
-
-cbrn_occupation_bind_shared_action_target = {
-	set_temp_variable = { cbrn_action_target_state_supplied = constant:cbrn_proof.missing }
-	if = {
-		limit = { has_event_target = cbrn_occupation_target_state }
-		event_target:cbrn_occupation_target_state = {
-			save_event_target_as = cbrn_action_target_state
-		}
-		set_temp_variable = { cbrn_action_target_state_supplied = constant:cbrn_proof.supplied }
-	}
-}
-
-cbrn_occupation_set_action_conditions = {
-	set_temp_variable = { cbrn_action_release_efficiency_mult = cbrn_occupation_release_efficiency }
-	set_temp_variable = { cbrn_action_weather_mult = cbrn_occupation_weather_mult }
-	set_temp_variable = { cbrn_action_terrain_mult = cbrn_occupation_terrain_mult }
-	set_temp_variable = { cbrn_action_target_density_mult = cbrn_occupation_target_density_mult }
-	set_temp_variable = { cbrn_action_command_mult = cbrn_occupation_command_mult }
-	set_temp_variable = { cbrn_action_evidence_control_mult = cbrn_occupation_evidence_control_mult }
-	set_temp_variable = { cbrn_action_forecast_confidence = cbrn_occupation_forecast_confidence }
-	set_temp_variable = { cbrn_action_command_integration = cbrn_occupation_command_integration }
-	set_temp_variable = { cbrn_action_base_friendly_risk = cbrn_occupation_base_friendly_risk }
-	set_temp_variable = { cbrn_action_doctrine_condemnation_mult = constant:cbrn_math.one }
-	if = {
-		limit = { check_variable = { cbrn_occupation_repeat_use > constant:cbrn_math.zero } }
-		set_temp_variable = { cbrn_action_context_condemnation_mult = constant:cbrn_occupation_condemnation.repeat_use_context_mult }
-	}
-	else = {
-		set_temp_variable = { cbrn_action_context_condemnation_mult = constant:cbrn_occupation_condemnation.single_use_context_mult }
-	}
-	set_temp_variable = { cbrn_action_conditions_resolved_proof = constant:cbrn_proof.supplied }
-}
-
-cbrn_occupation_execute_nerve_suppression = {
-	set_temp_variable = { cbrn_occupation_operation_result = constant:cbrn_action_result.rejected }
-	cbrn_reset_action_context = yes
-	cbrn_occupation_detect_repeat_use = yes
-	if = {
-		limit = { cbrn_occupation_country_can_execute_nerve_suppression = yes }
-		cbrn_occupation_bind_shared_action_target = yes
-		set_temp_variable = { cbrn_action_weapon_class = constant:cbrn_weapon_class.chemical }
-		set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.nerve }
-		set_temp_variable = { cbrn_action_agent = cbrn_occupation_requested_agent }
-		set_temp_variable = { cbrn_action_delivery_route = constant:cbrn_delivery_route.nerve_suppression }
-		set_temp_variable = { cbrn_action_severity = constant:cbrn_operation_severity.persistent }
-		cbrn_set_default_payload_requirement_for_action = yes
-		cbrn_try_debit_action_payload = yes
-		if = {
-			limit = {
-				check_variable = {
-					var = cbrn_action_payload_consumed_proof
-					value = constant:cbrn_proof.supplied
-					compare = equals
-				}
-				check_variable = { cbrn_action_payload_consumed > constant:cbrn_math.zero }
-			}
-			cbrn_occupation_pay_operation_costs = yes
-			if = {
-				limit = {
-					check_variable = {
-						var = cbrn_occupation_cost_payment_proof
-						value = constant:cbrn_proof.supplied
-						compare = equals
-					}
-				}
-				cbrn_resolve_action_target_protection = yes
-				cbrn_occupation_set_action_conditions = yes
-				cbrn_prepare_chemical_action_record = yes
-				if = {
-					limit = {
-						check_variable = {
-							var = cbrn_action_result
-							value = constant:cbrn_action_result.accepted
-							compare = equals
-						}
-					}
-					cbrn_dispatch_chemical_action_record = yes
-					if = {
-						limit = {
-							check_variable = {
-								var = cbrn_action_dispatch_proof
-								value = constant:cbrn_proof.supplied
-								compare = equals
-							}
-						}
-						set_temp_variable = { cbrn_occupation_operation_result = constant:cbrn_action_result.accepted }
-						event_target:cbrn_occupation_target_state = {
-							cbrn_occupation_apply_accepted_operation_state = yes
-						}
-						cbrn_occupation_record_country_history = yes
-					}
-				}
-			}
-		}
-	}
-	set_variable = { cbrn_occupation_last_operation_result = cbrn_occupation_operation_result }
 }
 
 cbrn_occupation_refresh_trauma_modifier = {
@@ -1381,9 +1169,4 @@ cbrn_occupation_cleanup_expired_state_records = {
 		clear_variable = cbrn_occupation_active_until_day
 		migration_persecution_clear_owner_state = yes
 	}
-}
-
-cbrn_occupation_clear_transient_action_inputs = {
-	clear_variable = cbrn_occupation_requested_agent
-	clear_variable = cbrn_occupation_requested_coverup_action
 }

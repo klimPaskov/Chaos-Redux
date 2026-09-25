@@ -1,215 +1,49 @@
-# CBRN Occupation and Nerve Suppression
+# CBRN occupation, protective aid, and historical nerve-suppression records
 
-## Purpose
+## Current source-of-truth map
 
-The supported occupation CBRN system provides Protected Occupation Administration and real protective aid to foreign-occupied civilians during an exact chemical alert, chemical contamination incident, biological outbreak, or recorded nerve-suppression trauma. This incident gate prevents the global state-target decision from listing every ordinary occupied state. CBRN Coercive Security and the old mobile nerve-suppression operation are retained as inactive compatibility code because the installed engine surface does not provide the selected-state condition and target-loss receipts required by that route. The accepted nerve-suppression gameplay route instead belongs to Gas-Chamber Saturation Drills: the doctrine mastery unlocks nerve-agent camp methods once a nerve agent is researched, and the established camp transaction supplies the exact target, payload debit, deaths, contamination, evidence, and consequence record.
+| Surface | Current disposition | Source evidence |
+| --- | --- | --- |
+| Occupied-state Sarin and Soman attack decisions | Retired by the user-approved 2026-09-25 decision to remove decision-based CBRN attacks without an owned-state native replacement. | `common/decisions/cbrn_occupation_decisions.txt` has no Sarin or Soman attack entry; `common/scripted_effects/cbrn_occupation_effects.txt` has no direct nerve-suppression execution helper. |
+| Protected Occupation Administration | Retained occupation law and authorization decision. | `common/decisions/cbrn_occupation_decisions.txt`; `common/occupation_laws/chaosx_occupation_laws.txt`; `common/scripted_effects/cbrn_occupation_effects.txt`. |
+| CBRN Coercive Security | Hidden compatibility authorization and retained law for prior records; it does not provide a current attack action. | The `cbrn_authorize_coercive_security` decision has `visible = { always = no }`; the law and its AI compatibility gates remain in `common/occupation_laws/chaosx_occupation_laws.txt` and `common/scripted_triggers/cbrn_occupation_triggers.txt`. |
+| External protective aid | Retained state-targeted, timed decision with selection-time mask reservation and cancellation or failed-delivery refund. | `cbrn_deploy_protective_aid` in `common/decisions/cbrn_occupation_decisions.txt`; reservation and delivery helpers in `common/scripted_effects/cbrn_protection_effects.txt` and `common/scripted_effects/cbrn_occupation_effects.txt`. |
+| Exact-record disclosure and aftermath | Retained for historical nerve-suppression records; these readers do not create a new attack. | Four record-response decisions, exact UID helpers, trauma, discovery, backlash, and control-change helpers in the occupation decision, effect, and trigger files. |
+| Native battlefield CBRN attacks | Separate native raid surface. | `common/raids/cbrn_chemical_land_raids.txt` and `common/raids/cbrn_chemical_air_raids.txt`; the parent owns the final raid-category and wiring review. |
+| Camp nerve-agent method | Separate camp transaction and infrastructure. | `common/scripted_effects/cbrn_camp_effects.txt` and the camp repression decision and effect files; it is not an occupied-state attack replacement. |
 
-The doctrine does not create a camp by itself, but its third Toxic Armored Warfare mastery authorizes a stronger and more efficient nerve-agent method in an already active camp network. A researched Tabun, Sarin, or Soman technology and enough matching cylinders are the only additional method requirements. The camp system retains ownership of infrastructure, responsibility, resistance, discovery, evidence, deaths, contamination, and Condemnation.
+Implementation evidence in this table describes the current source snapshot; it does not establish live-game behavior or final integration approval. The parent reviews final source and required MCP evidence, and live-game validation belongs to the user.
 
-The mastered nerve method multiplies the selected agent's killing factor by 2.25, reduces activation and monthly payload consumption to 45 percent of standard, reduces generated evidence to 55 percent of standard, and adds agent-scaled resistance suppression. These values are centralized in `common/script_constants/camp_repression_rework_constants.txt`.
+## Occupation laws
 
-## Legacy occupation compatibility
+Protected Occupation Administration requires Basic Gas Masks and advanced protection. Its one-time authorization costs 50 Political Power, and the law increases garrison and protective-equipment burden while supporting compliance and limiting resistance in vulnerable occupied territory.
 
-The following occupation-policy and mobile-detachment material describes retained inactive compatibility surfaces. It is not a prerequisite for the supported camp method.
+CBRN Coercive Security and its authorization flag remain for compatibility with existing policy records. The authorization decision is hidden for both player and AI, and its retained stock, protection, and route predicates serve the law compatibility gate only. The old `concentration` law identifier remains a hidden, unselectable migration token with no gameplay modifiers; its native fallback is Military Governor.
 
-### Occupation policies
-
-### CBRN Coercive Security (inactive compatibility)
-
-Authorization costs 75 Political Power and requires Armor mastery 3, Armored Agent Delivery, an eligible completed nerve-agent project, and advanced protection.
-
-The identifier and law effects remain for migration, but no player or AI can newly authorize this route. Existing records do not release an agent or create a consequence by themselves.
-
-The AI cannot newly authorize or select this law.
-
-### Protected Occupation Administration
-
-Authorization costs 50 Political Power and requires Basic Gas Masks plus advanced protection.
-
-The law increases garrison and protective-equipment burden while reducing garrison damage, improving compliance, and limiting resistance in contaminated or vulnerable occupied territory. It blocks offensive nerve suppression because a target must use CBRN Coercive Security.
-
-Defensive and democratic AI profiles prefer this law, especially in chemically or biologically contaminated states.
-
-### Legacy migration
-
-The old `concentration` occupation-law identifier remains as a hidden, unselectable migration token with no gameplay modifiers. Its native fallback is Military Governor. It is not displayed as a doctrine reward and is not an alias for CBRN Coercive Security.
-
-### Nerve Agent Suppression Detachment
-
-The regimental support unit is an eligibility and protection layer rather than a passive state-wide weapon.
-
-An exact target state must contain a ROOT-owned division whose template includes `cbrn_nerve_suppression_detachment` at or above 50 percent strength and 40 percent organization. Adding the detachment to a template never releases payload automatically.
-
-The operation requires:
-
-- an occupied, populated, non-core state controlled by the actor and owned by another existing country;
-- CBRN Coercive Security in that exact state;
-- Resistance above 25;
-- no active suppression, delayed backlash, or 270-day state cooldown;
-- no allied non-actor divisions in the state;
-- continued war with the state's owner;
-- positive target-loss clearance from a verified native source;
-- Armor mastery 3, Armored Agent Delivery, Nerve Agent Suppression Formation, advanced protection, and extreme-use policy;
-- Chemical Readiness of at least 70 and initialized command integration;
-- high military mask, respiratory, skin, antidote, decontamination, and medical protection;
-- complete exact release-efficiency, weather, terrain, density, command, evidence-control, forecast-confidence, command-integration, and friendly-risk inputs.
-
-Sarin and Soman are separate 21-day targeted preparations. They share one purpose-built Nerve Suppression decision icon because they are variants of the same operation, while each decision keeps its own technology, project, stock, localisation, and action-agent record.
-
-Starting either preparation reserves the exact state for that preparation window. Completion, cancellation, timed expiry, and state-control change all clear the reservation, so the two agent variants cannot be queued concurrently against one state and the reservation never substitutes for final target revalidation.
-
-### Real operation cost
-
-The selected agent uses the shared `cbrn_payload_route_cost.nerve_suppression` amount from real Sarin or Soman lot stock.
-
-Every accepted release also consumes:
-
-| Resource | Amount |
-| --- | ---: |
-| Gas-mask equipment | 40 |
-| Decontamination equipment | 30 |
-| CBRN instruments | 15 |
-| Support equipment | 40 |
-| Trucks | 20 |
-| Command Power | 30 |
-
-The shared payload debit is the first mutation. The non-payload package is debited only after native payload-reservation proof. The exact target, costs, policy, war, unit presence, protection, target-loss clearance, and condition inputs are checked again on mission completion.
-
-No cancellation or rejection fabricates a replacement payload, alternate agent, alternate state, inferred condition, or refund outside the native reservation contract.
-
-### Shared exposure pipeline
-
-Nerve suppression uses the same chemical action pipeline as other chemical delivery methods.
-
-The sequence is:
-
-1. bind the exact target state;
-2. identify Sarin or Soman;
-3. set the Nerve Suppression route and persistent chemical-operation severity;
-4. reserve and consume the real payload;
-5. consume the complete protection, logistics, and command package;
-6. resolve target military and civilian protection;
-7. validate every explicit condition input;
-8. prepare one shared chemical action record;
-9. dispatch disruption, military deaths, civilian deaths, contamination, medical saturation, evidence, attribution, Condemnation, Air Cleanliness, use history, and retaliation consequences;
-10. apply occupation-specific suppression and aftermath only after the shared dispatch proves acceptance.
-
-Doctrine can increase physical potency and ease later operation access through its accepted institutions. Integrated CBRN Command can reduce the Condemnation portion. Doctrine never lowers evidence, attribution, deaths, contamination, medical saturation, resistance trauma, domestic consequences, accidents, use history, or forensic history.
-
-## Immediate and delayed state effects
-
-An accepted operation reduces Resistance by 25 and applies Active Nerve Suppression for 60 days.
-
-The active modifier reduces garrison need and immediate garrison damage while lowering resistance target, local factories, local resources, hostile movement, and hostile supply efficiency.
-
-The state receives 25 trauma, plus 15 for repeat use within 730 days, capped at 100. Trauma continuously increases resistance target and growth and reduces compliance gain through a bounded dynamic modifier.
-
-After 60 days, the exact state receives delayed backlash. The backlash restores Resistance, reduces Compliance, applies a 180-day disruption and radicalization modifier, and can affect at most one eligible neighboring occupied non-core state when trauma or civilian deaths cross the centralized threshold.
-
-Trauma decays by five points through a self-scheduled exact-state event every 365 days. No daily, weekly, monthly, or annual all-country pulse is used.
-
-Control change removes the former occupier's active suppression, backlash, and active seal benefits. It retains the responsible-country pointer, casualties, contamination, trauma, exact record UID, concealment history, and discovery liability.
-
-## Evidence, attribution, and coverup
-
-The exact chemical record UID created by the shared action is stored on the state. Every later suppression, disclosure, admission, inspection, or liberation operation searches only for that UID.
-
-If the exact row is absent, the action fails closed. There is no latest-record, same-country, same-agent, or random-row fallback.
-
-### Seal the state
-
-Seal State costs 40 Political Power.
-
-It suppresses up to 10 evidence points on the exact row, adds 15 Resistance and coverup pressure, records permanent concealment history, and applies a 60-day state modifier with local factory, resource, and resistance-growth penalties. It creates hidden coverup liability that remains discoverable after the timed seal ends.
-
-### Destroy contaminated records
-
-Destroy Contaminated Records costs 60 Political Power.
-
-It suppresses up to 25 evidence points on the exact row, adds 30 Resistance and coverup pressure, and creates major hidden coverup liability. The action does not remove the chemical record, responsible actor, deaths, contamination, payload, attribution history, or use history.
-
-### Admit accidental release
-
-Admit Accidental Release costs 20 Political Power.
-
-It remains available to the responsible country after control or current-policy loss because disclosure is gated by persistent action history rather than present authorization. It advances the exact row to confirmed attribution, publishes discoverable coverup liability, ends an active seal, clears coverup pressure, adds bounded public chemical context, and adds bounded atrocity context when the confirmed population-targeting record qualifies.
-
-Calling the release an accident does not rewrite the deliberate-use record.
-
-### Permit inspection
-
-Permit Inspection costs 35 Political Power and requires current control of the exact state.
-
-It adds 20 evidence to the exact row, exposes discoverable concealment, ends an active seal, activates the national inspection framework, clears coverup pressure, and adds bounded atrocity context if attribution becomes confirmed.
-
-Chemical, atrocity, and coverup Condemnation are separate source buckets. The chemical source owns weapon use. Atrocity and coverup add smaller contextual amounts, preventing the same deaths from being counted at full value in every bucket.
+The separate Nerve Agent Suppression Detachment is still defined in the regimental-support subsystem pending the accepted unit consolidation. Its presence does not release an agent, and this occupation package has no current Sarin or Soman preparation, payment, target-selection, or attack action.
 
 ## Protective aid to occupied civilians
 
-Deploy Protective Aid is a 21-day state-targeted mission costing 25 Political Power and two Civilian Factories.
+Deploy Protective Aid is a 21-day state-targeted project with 25 Political Power and two Civilian Factories committed at selection. The donor needs an established CBRN program and real respirator stock. The target must be a populated state controlled by another country, non-core to that controller, under a chemical alert, chemical contamination, biological outbreak, or recorded nerve-suppression trauma, and still below its occupied-population protection target.
 
-The donor must have an established CBRN program and real respirator stock. The target must be a populated foreign-controlled state that is not a core of its controller, has no conflicting project, and remains below the occupied-population protection target.
+The cost quote and affordability gate use the same exact-state respirator requirement. Selection reserves the donor's real mask models against that state before debiting Political Power; the in-flight project uses continuation and reserved-target checks rather than requiring the committed stock or factories to remain free. Completion consumes at most the reserved receipts, records actual consumed and useful crates, updates the recipient and donor ledgers, and refunds unused crates. Cancellation, lost target validity, or failed delivery closes the reservation and returns unused stock to the existing original donor. The reservation counter prevents a paid in-flight project from disappearing from the decision surface or being closed twice.
 
-The distribution helper:
+Aid changes civilian protection and records a bounded opinion effect. It does not create equipment, erase chemical history, or reduce Condemnation. Source-level AI modifiers favor the donor's own cores, allied cores, and states with recorded trauma; no normalized AI selection outcome has been established for this documentation pass.
 
-- calculates exact population-scaled effective-coverage need;
-- applies local infrastructure, urban, occupation, fitting, filter, civil-defence, and designer factors;
-- consumes the donor's real reconditioned, basic, improved, advanced, and sealed stock in model order;
-- credits the exact state model ledgers and the current controller's aggregate civilian ledger;
-- records consumed and useful crates separately;
-- preserves later state-control transfer accounting;
-- creates no equipment and grants no Condemnation reduction.
+## Historical record, disclosure, and aftermath
 
-The lawful state owner records received aid and a bounded opinion modifier toward the donor.
+The retained response decisions are Seal State, Destroy Contaminated Records, Admit Accidental Release, and Permit Inspection. They require the recorded responsible country and the exact chemical-record UID for a historical nerve-suppression action. Seal and destruction can suppress evidence on that exact row and create concealment liability; admission and inspection can advance attribution and reveal liability. None substitutes a latest-row or same-country record if the exact UID is missing, and none erases the action, casualties, contamination, or use history.
 
-## AI
+Stored state trauma retains its resistance and compliance effects and its exact-state decay schedule. A pending delayed backlash remains tied to its due day and responsible controller. A control change removes temporary operational benefits while retaining responsibility, trauma, evidence, deaths, and discovery liability. These readers and scheduled effects preserve historical aftermath; the retired occupied-state attack route does not generate new records for them.
 
-Ordinary AI cannot use nerve suppression casually.
+## Separate camp method and native raids
 
-Its operation target requires Resistance above 50, a strategic-priority record, explicit proof that ordinary garrison methods are failing, positive target-loss clearance, a ready detachment, no allied force risk, no active compliance or inspection agreement, and all player material and policy requirements.
+The doctrine-linked nerve method in an active camp network remains a camp repression action with its own site, payload, death, contamination, evidence, and consequence transaction. It is governed by camp files and does not restore the retired mobile occupied-state Sarin or Soman decisions.
 
-Democratic, defensive, formally censured, highly import-vulnerable, high-Condemnation, mask-short, and non-aggressive profiles refuse the operation unless an accepted extreme route explicitly relaxes the political refusal. Material, protection, target, and friendly-risk gates are never relaxed.
+The native chemical land and air raid types remain the battlefield chemical attack route. The occupation documentation does not infer an owned-state raid target or a replacement action from their existence.
 
-Protective-aid AI prefers its own cores under foreign occupation, allied cores, and states carrying nerve-suppression trauma.
+## Evidence limits and follow-up
 
-## Assets and wiring
+The 2026-09-25 occupation probability baseline fixture at `docs/plans/chaos_warfare_system_plans/2026-09-25_cbrn_occupation_probability_baseline_fixture.json` is an unbound, partial score result for the former Sarin and Soman decision candidates: 96 inputs were unresolved, and it established no normalized choice. Its post-edit comparison and any surviving weighted-surface scenario review belong to the parent and the probability auditor. Source presence and exposed MCP tool names alone do not prove service health or a completed read-only scenario audit.
 
-Runtime decision assets live under `gfx/interface/decisions/cbrn_occupation/`.
-
-Runtime state-modifier assets live under `gfx/interface/state_modifiers/cbrn_occupation/`.
-
-`interface/cbrn_occupation.gfx` registers:
-
-- `GFX_decision_category_cbrn_occupation_measures`;
-- `GFX_decision_cbrn_authorize_coercive_security`;
-- `GFX_decision_cbrn_adopt_protected_occupation`;
-- `GFX_decision_cbrn_nerve_suppression`;
-- `GFX_decision_cbrn_deploy_protective_aid`;
-- `GFX_decision_cbrn_seal_state`;
-- `GFX_decision_cbrn_destroy_contaminated_records`;
-- `GFX_decision_cbrn_admit_accidental_release`;
-- `GFX_decision_cbrn_permit_inspection`;
-- `GFX_modifiers_cbrn_nerve_suppression_active`;
-- `GFX_modifiers_cbrn_nerve_suppression_trauma`;
-- `GFX_modifiers_cbrn_occupation_backlash`;
-- `GFX_modifiers_cbrn_occupation_state_sealed`.
-
-Working sources, processed PNGs, DDS quality evidence, manifests, crosswalks, and handoff notes live under `docs/assets/chaos_warfare_system/stage_9_occupation_cbrn/`.
-
-No existing Chaos Redux or `gfx/interface/military_raids` asset is overwritten or resized into another asset type.
-
-## Current engine limit
-
-Current Hearts of Iron IV 1.19 documentation and installed script surfaces expose state terrain only through country-scoped ownership checks and expose combat terrain, weather, and temperature only in combatant scope. The native raid success-factor surface has no weather factor, and no verified selected-state target-loss forecast is available.
-
-The occupation release requires exact selected-state weather, terrain, and hold-risk proof. Those inputs therefore remain fail-closed. The decision backend, costs, target validation, shared exposure pipeline, forensic records, AI, aftermath, localisation, and assets are implemented, but the release cannot become available until a verified native current-version hook supplies the accepted inputs.
-
-The current source audit found no active writer for the nine occupation condition inputs or for the target-loss clearance record. Startup explicitly clears any legacy condition values, `cbrn_occupation_current_version_condition_hook_verified` returns false, and every target requires the target-loss clearance state flag. The shared caller only copies values after a verified native adapter has supplied them, so the operation is intentionally not reachable in the present engine surface. Adding a synthetic writer, neutral condition values, or a latest-state inference would violate the exact-receipt requirement.
-
-No estimator, synthetic default, inferred condition, or hidden fallback is retained.
-
-## Future extension candidates
-
-Future work can add medical-relief follow-up that spends real support and medical capacity to accelerate trauma decay, a verified native foreign-intelligence operation against exact storage records, and a state-targeted compensation route that trades political control and equipment for bounded compliance recovery.
-
-These extensions must preserve the exact action UID, responsible-country pointer, historical deaths, contamination, attribution, and coverup records. They must not introduce a periodic world scan or treat humanitarian relief as erasing weapon-use accountability.
+The parent must review final raid categories, retained law and aid AI, localisation, assets, exact-record consumers, and any required MCP evidence before an integration claim. No live-game result is asserted here.
