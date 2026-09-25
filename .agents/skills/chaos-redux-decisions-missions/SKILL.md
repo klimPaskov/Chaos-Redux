@@ -78,6 +78,10 @@ If the objective is “place divisions here,” “hold this capital,” “secu
 
 Do not make the player pay a second click after already satisfying the goal.
 
+### Extending staged decision families
+
+Before extending a staged family, inventory its exact decision IDs, triggers, localisation keys, cost sources, and icon references; retain working stages and add only the missing ones. When a decision path substitutes for a native special project without its DLC, keep the native project authoritative when available. Gate the substitute with a private family receipt and exact stage literals. Use one authoritative cost source for display, affordability, and payment, and verify icon tokens against their owning sprite definitions. Route the existing family's AI-weight baseline and subsequent changes through `chaosx_ai_probability_auditor`.
+
 ## 4. Dynamic values
 
 Everything that acts like cost, duration, cooldown, support, chance, pressure, threat, reward, mission difficulty, influence, aid amount, or AI willingness should be dynamic by default.
