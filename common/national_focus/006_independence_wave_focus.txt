@@ -165,6 +165,8 @@ focus_tree = {
 		available = { can_use_independence_wave_full_focus_framework = yes }
 		completion_reward = {
 			custom_effect_tooltip = independence_wave_inventory_the_state_tt
+			if = { limit = { is_independence_wave_kar_package = yes } custom_effect_tooltip = independence_wave_kar_inventory_focus_tt }
+			if = { limit = { is_independence_wave_cri_package = yes } custom_effect_tooltip = independence_wave_cri_inventory_focus_tt }
 			hidden_effect = {
 				set_country_flag = independence_wave_focus_state_inventory_complete
 				independence_wave_focus_reward_administration = yes
@@ -185,6 +187,8 @@ focus_tree = {
 				if = { limit = { original_tag = KUR is_independence_wave_kurdistan_package = yes } independence_wave_kur_focus_secure_kurdish_communities = yes }
 				if = { limit = { original_tag = FER is_independence_wave_far_eastern_package = yes } independence_wave_fer_focus_secure_railway_ports = yes }
 				if = { limit = { original_tag = UDM is_independence_wave_udm_package = yes } independence_wave_udm_focus_secure_rail_communities = yes }
+				if = { limit = { is_independence_wave_kar_package = yes } independence_wave_kar_focus_reconcile_forest_supply_records = yes }
+				if = { limit = { is_independence_wave_cri_package = yes } independence_wave_cri_focus_register_land_and_return_rolls = yes }
 			}
 		}
 		ai_will_do = { base = constant:independence_wave_focus_ai.urgent }
@@ -3498,12 +3502,17 @@ shared_focus = {
 	available = { can_use_independence_wave_additive_focus_overlay = yes }
 	completion_reward = {
 		custom_effect_tooltip = independence_wave_overlay_address_former_host_tt
-			hidden_effect = {
+		if = {
+			limit = { is_independence_wave_tra_package = yes }
+			custom_effect_tooltip = independence_wave_tra_overlay_address_former_host_tt
+		}
+		hidden_effect = {
 			set_country_flag = independence_wave_overlay_host_policy_open
 			independence_wave_focus_reward_public_settlement = yes
 			if = { limit = { is_independence_wave_bos_package = yes } independence_wave_bos_focus_settle_yugoslav_ledgers = yes }
 			if = { limit = { is_independence_wave_bax_package = yes } independence_wave_bax_focus_settle_greek_ledgers = yes }
 			if = { limit = { is_independence_wave_bbx_package = yes } independence_wave_bbx_focus_settle_hellenic_ledgers = yes }
+			if = { limit = { is_independence_wave_tra_package = yes } independence_wave_tra_focus_arbitrate_danube_border = yes }
 		}
 	}
 	ai_will_do = { base = constant:independence_wave_focus_ai.high }
