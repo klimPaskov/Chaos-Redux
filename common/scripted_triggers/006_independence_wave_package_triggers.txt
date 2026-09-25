@@ -11,6 +11,16 @@ is_independence_wave_candidate_anchor_available = {
 		exists = yes
 		controls_state = PREV
 		NOT = { is_soviet_collapse_active_origin_country = yes }
+		# During automatic allocation the first weight pass has already reserved
+		# each ready anchor's host. An unprotectable host leaves this pool.
+		OR = {
+			NOT = { has_global_flag = independence_wave_hosts_preselected }
+			AND = {
+				is_in_array = { array = global.liberation_plan_hosts value = THIS }
+				has_country_flag = liberation_release_plan_host
+				check_variable = { var = liberation_release_plan_id value = global.liberation_plan_id compare = equals }
+			}
+		}
 	}
 	NOT = { controller = { is_soviet_collapse_active_origin_country = yes } }
 	NOT = { is_liberation_release_current_reserved_state = yes }

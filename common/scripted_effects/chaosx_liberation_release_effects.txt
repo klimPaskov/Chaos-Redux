@@ -17,6 +17,11 @@
 # ---------------------------------------------------------------------------
 
 liberation_release_clear_plan_scope_marks = {
+	clr_global_flag = independence_wave_host_preselection_collecting
+	clr_global_flag = independence_wave_host_preselection_reserving
+	clr_global_flag = independence_wave_hosts_preselected
+	clear_array = global.independence_wave_preselection_hosts
+	clear_array = global.independence_wave_preselection_anchors
 	for_each_scope_loop = {
 		array = global.liberation_plan_states
 		clr_state_flag = liberation_release_reserved_state
@@ -230,9 +235,11 @@ liberation_release_measure_candidate_host_loss_capacity = {
 # Host, country, and exact-state reservations
 # ---------------------------------------------------------------------------
 
-# COUNTRY scope. Selects the accepted host-survival priority (existing row,
-# owned/controlled capital, controlled core, controlled state, uncontrolled
-# core, then any owned state) and reserves it.
+# COUNTRY scope. Reuses a current host row or selects a surviving state before
+# the candidate reservation. Event 006 prefers an owned, controlled capital,
+# then non-anchor cores, anchor cores, non-anchor owned states, and anchor-owned
+# states. Other release plans retain their prior controlled-state before
+# uncontrolled-core fallback. Event 006 excludes impassable fallback seats.
 # Output: liberation_candidate_reject_reason.
 liberation_release_select_first_host_state_candidate = {
 	set_temp_variable = { liberation_host_state_selection_complete = constant:liberation_release_limit.minimum }
@@ -250,6 +257,8 @@ liberation_release_select_and_reserve_host_state = {
 	if = {
 		limit = {
 			is_independence_wave_join_plan_context_active = yes
+			NOT = { has_global_flag = independence_wave_host_preselection_reserving }
+			NOT = { has_global_flag = independence_wave_hosts_preselected }
 			has_event_target = liberation_candidate_anchor
 			event_target:liberation_candidate_anchor = {
 				is_owned_by = PREV
@@ -265,7 +274,27 @@ liberation_release_select_and_reserve_host_state = {
 			is_in_array = { array = global.liberation_plan_hosts value = THIS }
 			has_variable = liberation_release_protected_state
 			check_variable = { var = liberation_release_plan_id value = global.liberation_plan_id compare = equals }
-			var:liberation_release_protected_state = { is_liberation_release_host_protection_candidate = yes }
+			var:liberation_release_protected_state = {
+				is_owned_by = PREV
+				is_liberation_release_current_protected_state = yes
+				OR = {
+					AND = {
+						has_global_flag = independence_wave_host_preselection_reserving
+						NOT = { is_in_array = { array = global.independence_wave_preselection_anchors value = THIS } }
+					}
+					AND = {
+						NOT = { has_global_flag = independence_wave_host_preselection_reserving }
+						OR = {
+							NOT = { has_event_target = liberation_candidate_anchor }
+							NOT = { state = event_target:liberation_candidate_anchor }
+							AND = {
+								is_independence_wave_join_plan_context_active = yes
+								NOT = { has_global_flag = independence_wave_hosts_preselected }
+							}
+						}
+					}
+				}
+			}
 		}
 		var:liberation_release_protected_state = { save_event_target_as = liberation_candidate_protected_state }
 		set_temp_variable = { liberation_host_protection_source = constant:liberation_host_protection_source.existing }
@@ -275,7 +304,10 @@ liberation_release_select_and_reserve_host_state = {
 			capital_scope = {
 				is_owned_by = PREV
 				is_controlled_by = PREV
-				is_liberation_release_host_protection_candidate = yes
+				OR = {
+					is_liberation_release_host_protection_candidate = yes
+					is_liberation_release_preselection_anchor_candidate = yes
+				}
 			}
 		}
 		capital_scope = { save_event_target_as = liberation_candidate_protected_state }
@@ -286,6 +318,10 @@ liberation_release_select_and_reserve_host_state = {
 			any_owned_state = {
 				is_core_of = PREV
 				is_controlled_by = PREV
+				OR = {
+					NOT = { has_global_flag = independence_wave_host_preselection_reserving }
+					impassable = no
+				}
 				is_liberation_release_host_protection_candidate = yes
 			}
 		}
@@ -294,6 +330,10 @@ liberation_release_select_and_reserve_host_state = {
 			limit = {
 				is_core_of = PREV
 				is_controlled_by = PREV
+				OR = {
+					NOT = { has_global_flag = independence_wave_host_preselection_reserving }
+					impassable = no
+				}
 				is_liberation_release_host_protection_candidate = yes
 			}
 			add_to_temp_array = { liberation_host_state_candidates = THIS }
@@ -304,6 +344,7 @@ liberation_release_select_and_reserve_host_state = {
 	}
 	else_if = {
 		limit = {
+			NOT = { has_global_flag = independence_wave_host_preselection_reserving }
 			any_owned_state = {
 				is_controlled_by = PREV
 				is_liberation_release_host_protection_candidate = yes
@@ -325,6 +366,10 @@ liberation_release_select_and_reserve_host_state = {
 		limit = {
 			any_owned_state = {
 				is_core_of = PREV
+				OR = {
+					NOT = { has_global_flag = independence_wave_host_preselection_reserving }
+					impassable = no
+				}
 				is_liberation_release_host_protection_candidate = yes
 			}
 		}
@@ -332,6 +377,10 @@ liberation_release_select_and_reserve_host_state = {
 		every_owned_state = {
 			limit = {
 				is_core_of = PREV
+				OR = {
+					NOT = { has_global_flag = independence_wave_host_preselection_reserving }
+					impassable = no
+				}
 				is_liberation_release_host_protection_candidate = yes
 			}
 			add_to_temp_array = { liberation_host_state_candidates = THIS }
@@ -342,14 +391,156 @@ liberation_release_select_and_reserve_host_state = {
 	}
 	else_if = {
 		limit = {
+			has_global_flag = independence_wave_host_preselection_reserving
 			any_owned_state = {
+				is_core_of = PREV
+				is_controlled_by = PREV
+				impassable = no
+				is_liberation_release_preselection_anchor_candidate = yes
+			}
+		}
+		clear_temp_array = liberation_host_state_candidates
+		every_owned_state = {
+			limit = {
+				is_core_of = PREV
+				is_controlled_by = PREV
+				impassable = no
+				is_liberation_release_preselection_anchor_candidate = yes
+			}
+			add_to_temp_array = { liberation_host_state_candidates = THIS }
+		}
+		liberation_release_select_first_host_state_candidate = yes
+		clear_temp_array = liberation_host_state_candidates
+		set_temp_variable = { liberation_host_protection_source = constant:liberation_host_protection_source.owned_core }
+	}
+	else_if = {
+		limit = {
+			has_global_flag = independence_wave_host_preselection_reserving
+			any_owned_state = {
+				is_core_of = PREV
+				impassable = no
+				is_liberation_release_preselection_anchor_candidate = yes
+			}
+		}
+		clear_temp_array = liberation_host_state_candidates
+		every_owned_state = {
+			limit = {
+				is_core_of = PREV
+				impassable = no
+				is_liberation_release_preselection_anchor_candidate = yes
+			}
+			add_to_temp_array = { liberation_host_state_candidates = THIS }
+		}
+		liberation_release_select_first_host_state_candidate = yes
+		clear_temp_array = liberation_host_state_candidates
+		set_temp_variable = { liberation_host_protection_source = constant:liberation_host_protection_source.owned_core }
+	}
+	else_if = {
+		limit = {
+			has_global_flag = independence_wave_host_preselection_reserving
+			any_owned_state = {
+				is_controlled_by = PREV
+				impassable = no
 				is_liberation_release_host_protection_candidate = yes
 			}
 		}
 		clear_temp_array = liberation_host_state_candidates
 		every_owned_state = {
 			limit = {
+				is_controlled_by = PREV
+				impassable = no
 				is_liberation_release_host_protection_candidate = yes
+			}
+			add_to_temp_array = { liberation_host_state_candidates = THIS }
+		}
+		liberation_release_select_first_host_state_candidate = yes
+		clear_temp_array = liberation_host_state_candidates
+		set_temp_variable = { liberation_host_protection_source = constant:liberation_host_protection_source.owned_state }
+	}
+	else_if = {
+		limit = {
+			any_owned_state = {
+				OR = {
+					NOT = { has_global_flag = independence_wave_host_preselection_reserving }
+					impassable = no
+				}
+				is_liberation_release_host_protection_candidate = yes
+			}
+		}
+		clear_temp_array = liberation_host_state_candidates
+		every_owned_state = {
+			limit = {
+				OR = {
+					NOT = { has_global_flag = independence_wave_host_preselection_reserving }
+					impassable = no
+				}
+				is_liberation_release_host_protection_candidate = yes
+			}
+			add_to_temp_array = { liberation_host_state_candidates = THIS }
+		}
+		liberation_release_select_first_host_state_candidate = yes
+		clear_temp_array = liberation_host_state_candidates
+		set_temp_variable = { liberation_host_protection_source = constant:liberation_host_protection_source.owned_state }
+	}
+	else_if = {
+		limit = {
+			has_global_flag = independence_wave_host_preselection_reserving
+			any_owned_state = {
+				NOT = { is_core_of = PREV }
+				is_controlled_by = PREV
+				impassable = no
+				is_liberation_release_preselection_anchor_candidate = yes
+			}
+		}
+		clear_temp_array = liberation_host_state_candidates
+		every_owned_state = {
+			limit = {
+				NOT = { is_core_of = PREV }
+				is_controlled_by = PREV
+				impassable = no
+				is_liberation_release_preselection_anchor_candidate = yes
+			}
+			add_to_temp_array = { liberation_host_state_candidates = THIS }
+		}
+		liberation_release_select_first_host_state_candidate = yes
+		clear_temp_array = liberation_host_state_candidates
+		set_temp_variable = { liberation_host_protection_source = constant:liberation_host_protection_source.owned_state }
+	}
+	else_if = {
+		limit = {
+			has_global_flag = independence_wave_host_preselection_reserving
+			any_owned_state = {
+				NOT = { is_core_of = PREV }
+				impassable = no
+				is_liberation_release_preselection_anchor_candidate = yes
+			}
+		}
+		clear_temp_array = liberation_host_state_candidates
+		every_owned_state = {
+			limit = {
+				NOT = { is_core_of = PREV }
+				impassable = no
+				is_liberation_release_preselection_anchor_candidate = yes
+			}
+			add_to_temp_array = { liberation_host_state_candidates = THIS }
+		}
+		liberation_release_select_first_host_state_candidate = yes
+		clear_temp_array = liberation_host_state_candidates
+		set_temp_variable = { liberation_host_protection_source = constant:liberation_host_protection_source.owned_state }
+	}
+	else_if = {
+		limit = {
+			has_global_flag = independence_wave_host_preselection_reserving
+			any_owned_state = {
+				impassable = no
+				is_liberation_release_preselection_anchor_candidate = yes
+			}
+		}
+		clear_temp_array = liberation_host_state_candidates
+		every_owned_state = {
+			limit = {
+				impassable = no
+				is_liberation_release_preselection_anchor_candidate = yes
 			}
 			add_to_temp_array = { liberation_host_state_candidates = THIS }
 		}
@@ -386,9 +577,21 @@ liberation_release_reserve_host_state = {
 				is_owned_by = event_target:liberation_candidate_host
 				is_liberation_release_current_protected_state = yes
 				OR = {
-					NOT = { has_event_target = liberation_candidate_anchor }
-					NOT = { state = event_target:liberation_candidate_anchor }
-					is_independence_wave_join_plan_context_active = yes
+					AND = {
+						has_global_flag = independence_wave_host_preselection_reserving
+						NOT = { is_in_array = { array = global.independence_wave_preselection_anchors value = THIS } }
+					}
+					AND = {
+						NOT = { has_global_flag = independence_wave_host_preselection_reserving }
+						OR = {
+							NOT = { has_event_target = liberation_candidate_anchor }
+							NOT = { state = event_target:liberation_candidate_anchor }
+							AND = {
+								is_independence_wave_join_plan_context_active = yes
+								NOT = { has_global_flag = independence_wave_hosts_preselected }
+							}
+						}
+					}
 				}
 			}
 		}
@@ -405,7 +608,10 @@ liberation_release_reserve_host_state = {
 			}
 			event_target:liberation_candidate_protected_state = {
 				is_owned_by = event_target:liberation_candidate_host
-				is_liberation_release_host_protection_candidate = yes
+				OR = {
+					is_liberation_release_host_protection_candidate = yes
+					is_liberation_release_preselection_anchor_candidate = yes
+				}
 			}
 		}
 		event_target:liberation_candidate_host = {
@@ -474,7 +680,10 @@ liberation_release_add_country_reservation = {
 				NOT = { is_liberation_release_current_reserved_state = yes }
 				OR = {
 					NOT = { is_liberation_release_current_protected_state = yes }
-					is_independence_wave_join_plan_context_active = yes
+					AND = {
+						is_independence_wave_join_plan_context_active = yes
+						NOT = { has_global_flag = independence_wave_hosts_preselected }
+					}
 				}
 			}
 			event_target:liberation_candidate_primary_host = {
@@ -764,6 +973,7 @@ liberation_release_cleanup_unused_host_reservations = {
 		}
 		if = {
 			limit = {
+				NOT = { has_global_flag = independence_wave_hosts_preselected }
 				has_event_target = liberation_rollback_host
 				NOT = { is_in_array = { array = global.liberation_plan_primary_hosts value = event_target:liberation_rollback_host } }
 				event_target:liberation_rollback_host = {
@@ -1497,8 +1707,9 @@ liberation_release_restore_host_capitals_before_execution = {
 	}
 }
 
-# Moves a host capital only when its current capital is one of the frozen
-# release rows. The protected state was selected before lock and is guaranteed
+# Moves a host capital when its current capital is in a frozen release row or
+# is no longer an owned and controlled functioning seat. The protected state
+# was selected before lock and is guaranteed
 # to survive the incident. This runs while the plan is locked, before any state
 # ownership mutation, so a failed relocation can stop execution cleanly.
 liberation_release_prepare_host_capitals_for_execution = {
@@ -1542,7 +1753,18 @@ liberation_release_prepare_host_capitals_for_execution = {
 				limit = {
 					check_variable = { liberation_host_capital_relocation_failure = constant:liberation_plan_reject_reason.none }
 					event_target:liberation_host_capital_country = {
-						capital_scope = { is_in_array = { array = global.liberation_plan_states value = THIS } }
+						capital_scope = {
+							OR = {
+								is_in_array = { array = global.liberation_plan_states value = THIS }
+								AND = {
+									has_global_flag = liberation_release_plan_includes_event6
+									OR = {
+										NOT = { is_owned_by = PREV }
+										NOT = { is_controlled_by = PREV }
+									}
+								}
+							}
+						}
 					}
 				}
 				event_target:liberation_host_capital_country = {

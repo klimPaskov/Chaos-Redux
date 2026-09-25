@@ -147,21 +147,39 @@ is_liberation_release_state_available_for_reservation = {
 		}
 		AND = {
 			is_independence_wave_join_plan_context_active = yes
+			NOT = { has_global_flag = independence_wave_hosts_preselected }
 			is_liberation_release_current_protected_state = yes
 		}
 	}
 }
 
-# STATE scope. A protected remnant must never be the mandatory anchor currently
-# being evaluated for release. Event 005 supplies the alias before host
-# protection; callers without an anchor retain the ordinary protection rules.
+# STATE scope. During Event 006 preselection, ordinary fallback seats exclude
+# every positive-weight anchor; other callers use the current anchor alias.
 is_liberation_release_host_protection_candidate = {
 	NOT = { is_liberation_release_current_reserved_state = yes }
 	NOT = { is_liberation_release_current_protected_state = yes }
 	OR = {
-		NOT = { has_event_target = liberation_candidate_anchor }
-		NOT = { state = event_target:liberation_candidate_anchor }
+		AND = {
+			has_global_flag = independence_wave_host_preselection_reserving
+			NOT = { is_in_array = { array = global.independence_wave_preselection_anchors value = THIS } }
+		}
+		AND = {
+			NOT = { has_global_flag = independence_wave_host_preselection_reserving }
+			OR = {
+				NOT = { has_event_target = liberation_candidate_anchor }
+				NOT = { state = event_target:liberation_candidate_anchor }
+			}
+		}
 	}
+}
+
+# STATE scope. Event 006 may protect a positive-weight anchor only when it is
+# the required last-resort core or owned-state remnant for its host.
+is_liberation_release_preselection_anchor_candidate = {
+	has_global_flag = independence_wave_host_preselection_reserving
+	is_in_array = { array = global.independence_wave_preselection_anchors value = THIS }
+	NOT = { is_liberation_release_current_reserved_state = yes }
+	NOT = { is_liberation_release_current_protected_state = yes }
 }
 
 liberation_release_country_arrays_are_aligned = {

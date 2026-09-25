@@ -78,6 +78,11 @@ independence_wave_prepare_runtime_possible_country_registry = {
 }
 
 independence_wave_begin_plan_contribution = {
+	clr_global_flag = independence_wave_host_preselection_collecting
+	clr_global_flag = independence_wave_host_preselection_reserving
+	clr_global_flag = independence_wave_hosts_preselected
+	clear_array = global.independence_wave_preselection_hosts
+	clear_array = global.independence_wave_preselection_anchors
 	independence_wave_reconcile_breakaway_sponsorship_queue = yes
 	# Capture writes temporary tuning values in a nested scripted effect; seed
 	# the outer frame so the values remain available when the plan row is built.
@@ -127,6 +132,135 @@ independence_wave_begin_plan_contribution = {
 	clear_array = global.independence_wave_plan_sponsorship_generations
 	clear_array = global.independence_wave_plan_sponsorship_opening_strengths
 	clear_array = global.independence_wave_plan_sponsorship_routes
+}
+
+# STATE scope. The first positive-weight pass calls this only for exact states
+# in the current package registry. Ownership is read before any release.
+independence_wave_collect_possible_state_host = {
+	owner = {
+		if = {
+			limit = {
+				exists = yes
+				NOT = { is_in_array = { array = global.independence_wave_preselection_hosts value = THIS } }
+			}
+			add_to_array = { array = global.independence_wave_preselection_hosts value = THIS }
+		}
+	}
+}
+
+# STATE scope. The frozen chaos band admits extended territory from tier 3.
+independence_wave_collect_possible_extended_host = {
+	if = {
+		limit = {
+			check_variable = {
+				var = global.independence_wave_plan_chaos_band
+				value = constant:independence_wave_chaos_band.chaos_tier
+				compare = greater_than_or_equals
+			}
+		}
+		independence_wave_collect_possible_state_host = yes
+	}
+}
+
+# COUNTRY scope. Mirrors only compact/extended state declarations in the
+# current-map package reservation registry. Called for a ready positive-weight
+# candidate before any draw, never for a scenario-only or unready package.
+# This does not reserve territory or alter package weights.
+independence_wave_collect_possible_optional_hosts_for_candidate = {
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_001 } } 133 = { independence_wave_collect_possible_state_host = yes } 120 = { independence_wave_collect_possible_extended_host = yes } 136 = { independence_wave_collect_possible_extended_host = yes } 933 = { independence_wave_collect_possible_extended_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_005 } } 977 = { independence_wave_collect_possible_state_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_008 } } 42 = { independence_wave_collect_possible_extended_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_009 } } 53 = { independence_wave_collect_possible_state_host = yes } 54 = { independence_wave_collect_possible_state_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_013 } } 172 = { independence_wave_collect_possible_extended_host = yes } 806 = { independence_wave_collect_possible_extended_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_022 } } 163 = { independence_wave_collect_possible_state_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_023 } } 76 = { independence_wave_collect_possible_state_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_024 } } 764 = { independence_wave_collect_possible_extended_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_025 } } 764 = { independence_wave_collect_possible_extended_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_026 } } 970 = { independence_wave_collect_possible_extended_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_028 } } 805 = { independence_wave_collect_possible_extended_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_029 } } 804 = { independence_wave_collect_possible_extended_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_033 } } 147 = { independence_wave_collect_possible_state_host = yes } 215 = { independence_wave_collect_possible_extended_host = yes } 216 = { independence_wave_collect_possible_extended_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_035 } } 191 = { independence_wave_collect_possible_state_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_039 } } 238 = { independence_wave_collect_possible_state_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_042 } } 89 = { independence_wave_collect_possible_state_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_043 } } 256 = { independence_wave_collect_possible_state_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_050 } } 262 = { independence_wave_collect_possible_extended_host = yes } 581 = { independence_wave_collect_possible_extended_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_051 } } 644 = { independence_wave_collect_possible_extended_host = yes } 876 = { independence_wave_collect_possible_extended_host = yes } 877 = { independence_wave_collect_possible_extended_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_053 } } 40 = { independence_wave_collect_possible_extended_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_073 } } 856 = { independence_wave_collect_possible_state_host = yes } 855 = { independence_wave_collect_possible_extended_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_074 } } 857 = { independence_wave_collect_possible_state_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_085 } } 451 = { independence_wave_collect_possible_state_host = yes } 663 = { independence_wave_collect_possible_state_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_086 } } 661 = { independence_wave_collect_possible_state_host = yes } 662 = { independence_wave_collect_possible_extended_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_089 } } 887 = { independence_wave_collect_possible_state_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_133 } } 431 = { independence_wave_collect_possible_state_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_137 } } 444 = { independence_wave_collect_possible_state_host = yes } 988 = { independence_wave_collect_possible_state_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_138 } } 987 = { independence_wave_collect_possible_state_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_139 } } 787 = { independence_wave_collect_possible_state_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_144 } } 427 = { independence_wave_collect_possible_state_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_149 } } 432 = { independence_wave_collect_possible_state_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_159 } } 993 = { independence_wave_collect_possible_state_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_166 } } 670 = { independence_wave_collect_possible_state_host = yes } 1068 = { independence_wave_collect_possible_extended_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_169 } } 619 = { independence_wave_collect_possible_state_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_170 } } 746 = { independence_wave_collect_possible_state_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_173 } } 630 = { independence_wave_collect_possible_extended_host = yes } 631 = { independence_wave_collect_possible_extended_host = yes } 642 = { independence_wave_collect_possible_extended_host = yes } 727 = { independence_wave_collect_possible_extended_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_175 } } 1072 = { independence_wave_collect_possible_extended_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_180 } } 860 = { independence_wave_collect_possible_state_host = yes } 861 = { independence_wave_collect_possible_state_host = yes } 862 = { independence_wave_collect_possible_state_host = yes } 863 = { independence_wave_collect_possible_state_host = yes } 466 = { independence_wave_collect_possible_extended_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_182 } } 332 = { independence_wave_collect_possible_state_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_183 } } 386 = { independence_wave_collect_possible_state_host = yes } 473 = { independence_wave_collect_possible_state_host = yes } }
+	if = { limit = { check_variable = { independence_wave_candidate_package_id = constant:independence_wave_package_id.iw_196 } } 691 = { independence_wave_collect_possible_state_host = yes } 692 = { independence_wave_collect_possible_state_host = yes } 694 = { independence_wave_collect_possible_state_host = yes } }
+}
+
+# COUNTRY scope. The first automatic weight pass publishes ready anchors and
+# primary or optional territory hosts into bounded arrays. Reserve each host before the first draw;
+# the second weight pass then removes anchors that hit a protected remnant.
+# Input: open Event 006 automatic contribution. Output: shared host rows and
+# independence_wave_hosts_preselected. No ownership or capital is changed.
+independence_wave_preselect_automatic_hosts = {
+	clear_array = global.independence_wave_preselection_hosts
+	clear_array = global.independence_wave_preselection_anchors
+	set_temp_variable = { independence_wave_candidate_weight = constant:independence_wave_allocation_factor.zero }
+	set_temp_variable = { independence_wave_candidate_package_id = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_candidate_reservation_group = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_candidate_region = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_candidate_depth = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_candidate_archetype = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_candidate_disposition = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_candidate_uses_registered_tag = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_candidate_earliest_band = constant:independence_wave_chaos_band.world_collapse }
+	set_temp_variable = { independence_wave_candidate_dispatch_id = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_execution_package_id = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_wave_chaos_band = global.independence_wave_plan_chaos_band }
+	set_temp_variable = { independence_wave_total_automatic_weight = constant:independence_wave_allocation_factor.zero }
+	set_temp_variable = { independence_wave_region_01_total_weight = constant:independence_wave_allocation_factor.zero }
+	set_temp_variable = { independence_wave_region_02_total_weight = constant:independence_wave_allocation_factor.zero }
+	set_temp_variable = { independence_wave_region_03_total_weight = constant:independence_wave_allocation_factor.zero }
+	set_temp_variable = { independence_wave_region_04_total_weight = constant:independence_wave_allocation_factor.zero }
+	set_temp_variable = { independence_wave_region_05_total_weight = constant:independence_wave_allocation_factor.zero }
+	set_temp_variable = { independence_wave_region_06_total_weight = constant:independence_wave_allocation_factor.zero }
+	set_temp_variable = { independence_wave_region_07_total_weight = constant:independence_wave_allocation_factor.zero }
+	set_temp_variable = { independence_wave_region_08_total_weight = constant:independence_wave_allocation_factor.zero }
+	set_temp_variable = { independence_wave_region_09_total_weight = constant:independence_wave_allocation_factor.zero }
+	set_temp_variable = { independence_wave_region_10_total_weight = constant:independence_wave_allocation_factor.zero }
+	set_temp_variable = { independence_wave_region_11_total_weight = constant:independence_wave_allocation_factor.zero }
+	set_temp_variable = { independence_wave_region_12_total_weight = constant:independence_wave_allocation_factor.zero }
+	set_temp_variable = { independence_wave_region_13_total_weight = constant:independence_wave_allocation_factor.zero }
+	set_temp_variable = { independence_wave_region_14_total_weight = constant:independence_wave_allocation_factor.zero }
+	set_global_flag = independence_wave_host_preselection_collecting
+	independence_wave_prepare_all_automatic_weights = yes
+	clr_global_flag = independence_wave_host_preselection_collecting
+	set_global_flag = independence_wave_host_preselection_reserving
+	for_each_scope_loop = {
+		array = global.independence_wave_preselection_hosts
+		if = {
+			limit = { NOT = { is_in_array = { array = global.liberation_plan_hosts value = THIS } } }
+			set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none }
+			liberation_release_select_and_reserve_host_state = yes
+		}
+	}
+	clr_global_flag = independence_wave_host_preselection_reserving
+	clear_array = global.independence_wave_preselection_hosts
+	clear_array = global.independence_wave_preselection_anchors
+	set_global_flag = independence_wave_hosts_preselected
 }
 
 # Inputs: event targets `liberation_candidate_country`,
@@ -399,7 +533,14 @@ independence_wave_try_candidate_compact_state = {
 		}
 		owner = { save_event_target_as = liberation_candidate_state_host }
 		set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none }
-		event_target:liberation_candidate_state_host = { liberation_release_select_and_reserve_host_state = yes }
+		if = {
+			limit = {
+				has_global_flag = independence_wave_hosts_preselected
+				NOT = { event_target:liberation_candidate_state_host = { is_in_array = { array = global.liberation_plan_hosts value = THIS } } }
+			}
+			set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.host_survival }
+		}
+		else = { event_target:liberation_candidate_state_host = { liberation_release_select_and_reserve_host_state = yes } }
 		if = {
 			limit = { check_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none } }
 			# Host-capacity measurement publishes a temporary result from a nested
@@ -433,7 +574,14 @@ independence_wave_try_candidate_extended_state = {
 		}
 		owner = { save_event_target_as = liberation_candidate_state_host }
 		set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none }
-		event_target:liberation_candidate_state_host = { liberation_release_select_and_reserve_host_state = yes }
+		if = {
+			limit = {
+				has_global_flag = independence_wave_hosts_preselected
+				NOT = { event_target:liberation_candidate_state_host = { is_in_array = { array = global.liberation_plan_hosts value = THIS } } }
+			}
+			set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.host_survival }
+		}
+		else = { event_target:liberation_candidate_state_host = { liberation_release_select_and_reserve_host_state = yes } }
 		if = {
 			limit = { check_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none } }
 			# Host-capacity measurement publishes a temporary result from a nested
@@ -568,6 +716,8 @@ independence_wave_expand_selected_optional_territory = {
 		independence_wave_expand_selected_packages_for_current_phase = yes
 	}
 	set_temp_variable = { independence_wave_reservation_phase = constant:independence_wave_reservation_phase.anchors }
+	clr_global_flag = independence_wave_hosts_preselected
+	liberation_release_cleanup_unused_host_reservations = yes
 	if = {
 		limit = { has_global_flag = independence_wave_plan_optional_expansion_failed }
 		clr_global_flag = independence_wave_plan_contribution_ready
@@ -798,6 +948,27 @@ independence_wave_calculate_candidate_allocation_weight = {
 			}
 			set_temp_variable = { independence_wave_candidate_weight = constant:independence_wave_allocation_weight.minimum }
 		}
+	}
+	if = {
+		limit = {
+			has_global_flag = independence_wave_host_preselection_collecting
+			check_variable = { var = independence_wave_candidate_weight value = constant:independence_wave_allocation_factor.zero compare = greater_than }
+			has_event_target = liberation_candidate_anchor
+			has_event_target = liberation_candidate_primary_host
+		}
+		event_target:liberation_candidate_anchor = {
+			if = {
+				limit = { NOT = { is_in_array = { array = global.independence_wave_preselection_anchors value = THIS } } }
+				add_to_array = { array = global.independence_wave_preselection_anchors value = THIS }
+			}
+		}
+		event_target:liberation_candidate_primary_host = {
+			if = {
+				limit = { NOT = { is_in_array = { array = global.independence_wave_preselection_hosts value = THIS } } }
+				add_to_array = { array = global.independence_wave_preselection_hosts value = THIS }
+			}
+		}
+		independence_wave_collect_possible_optional_hosts_for_candidate = yes
 	}
 	set_temp_variable = { independence_wave_execution_package_id = 0 }
 }
@@ -1090,6 +1261,11 @@ independence_wave_commit_wave_history = {
 
 # Must run before a shared-plan abort clears the country array.
 independence_wave_clear_plan_contribution = {
+	clr_global_flag = independence_wave_host_preselection_collecting
+	clr_global_flag = independence_wave_host_preselection_reserving
+	clr_global_flag = independence_wave_hosts_preselected
+	clear_array = global.independence_wave_preselection_hosts
+	clear_array = global.independence_wave_preselection_anchors
 	clr_global_flag = independence_wave_plan_optional_expansion_failed
 	for_each_scope_loop = {
 		array = global.liberation_plan_countries
