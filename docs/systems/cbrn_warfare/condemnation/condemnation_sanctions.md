@@ -408,7 +408,7 @@ Every displayed condemnation payment uses the same score multiplier as its debit
 
 The score boundaries are inclusive. A value below `0` is treated as `0`, `0` is exactly `1x`, `500` is exactly `2x`, `1000` is exactly `3x`, and a value above `1000` is treated as `1000` and remains `3x`. This keeps the cost row, affordability trigger, and hidden debit on one quote.
 
-The targeted monthly pulse refreshes the inspection burden after disclosure, decay, and any evasion discovery have updated condemnation, so the next month's Consumer Goods requirement follows the resulting score.
+The targeted monthly pulse refreshes the inspection burden after disclosure, decay, and any evasion discovery have updated condemnation, so the next month's Consumer Goods requirement follows the resulting score. The score-linked modifier is created once when inspections begin and carries the same 180-day expiry as the flag and base idea; the pulse removes it if inspections end early.
 
 ## Target choices
 

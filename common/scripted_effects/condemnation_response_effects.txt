@@ -41,10 +41,6 @@ condemnation_refresh_inspection_burden = {
 	}
 	if = {
 		limit = { has_country_flag = condemnation_inspections_active }
-		if = {
-			limit = { NOT = { has_dynamic_modifier = { modifier = condemnation_inspection_score_burden } } }
-			add_dynamic_modifier = { modifier = condemnation_inspection_score_burden }
-		}
 		force_update_dynamic_modifier = yes
 	}
 	else_if = {
@@ -69,6 +65,7 @@ condemnation_accept_inspections = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.inspection }
 	set_country_flag = { flag = condemnation_inspections_active days = var:condemnation_response_days }
 	add_timed_idea = { idea = condemnation_inspection_burden days = var:condemnation_response_days }
+	add_dynamic_modifier = { modifier = condemnation_inspection_score_burden days = condemnation_response_days }
 	condemnation_refresh_inspection_burden = yes
 	add_to_variable = { condemnation_decay_credit = constant:condemnation_compliance_credit.inspection }
 	clamp_variable = { var = condemnation_decay_credit min = 0 max = constant:condemnation_compliance_credit.maximum }
