@@ -771,7 +771,8 @@ bio_stockpile_safety_start_monitor = {
 # controlled operational facility after a prior verified project registration.
 # The random state scope is evaluated only when the targeted monitor event is
 # already due; it is never a world-wide periodic scan. If no eligible facility
-# exists, the preceding clear leaves monitoring fail-closed.
+# exists, the preceding clear leaves monitoring fail-closed. The calling due
+# event schedules the next check after a valid pointer is restored.
 bio_stockpile_safety_reselect_arsenal_if_needed = {
 	if = {
 		limit = { bio_stockpile_safety_arsenal_reselection_is_needed = yes }
@@ -791,7 +792,6 @@ bio_stockpile_safety_reselect_arsenal_if_needed = {
 				set_country_flag = bio_stockpile_safety_arsenal_designated
 				set_country_flag = bio_stockpile_safety_arsenal_designation_history
 				bio_stockpile_safety_refresh_risk_band = yes
-				bio_stockpile_safety_start_monitor = yes
 			}
 		}
 	}
