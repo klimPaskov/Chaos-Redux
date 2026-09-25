@@ -1,11 +1,11 @@
 # ============================================================================
-# CHAOS REDUX - 1936 CBRN PROTECTIVE-EQUIPMENT STARTING PROFILES
+# CHAOS REDUX - CBRN PROTECTIVE-EQUIPMENT STARTING PROFILES
 # ============================================================================
 # Overview:
-# - Applies the accepted gas-mask matrix as tuned 1936 crate totals.
+# - Applies the accepted force-scaled military coverage at either bookmark.
 # - Converts each country's military target into issue against its actual
-#   deployed manpower and each already-distributed civilian share into
-#   population-scaled state distribution against actual controlled core states.
+#   deployed manpower; historically sourced civilian issue uses its own
+#   population-scaled state distribution.
 # - Imported emergency profiles receive real crates and profile-aware AI
 #   without a free domestic production technology or established program.
 # - Keeps technology, warehouse stock, military issue, civilian distribution,
@@ -30,6 +30,17 @@ cbrn_apply_starting_mask_profile = {
 		}
 	}
 	chaosx_startup_sync_chemical_technology_unlocks = yes
+	# Historical bookmarks retain the profile's knowledge and institutions,
+	# but their actual masks come from the force-scaled military receipt below.
+	# Suppress the archival fixed grant and civilian percentage before either
+	# can touch warehouse or state ledgers.
+	if = {
+		limit = { has_country_flag = cbrn_historical_1936_force_scaled_protection }
+		set_temp_variable = { cbrn_starting_mask_basic = constant:cbrn_math.zero }
+		set_temp_variable = { cbrn_starting_mask_improved = constant:cbrn_math.zero }
+		set_temp_variable = { cbrn_starting_military_issue_target = constant:cbrn_math.zero }
+		set_temp_variable = { cbrn_starting_civilian_distribution_target = constant:cbrn_math.zero }
+	}
 
 	if = {
 		limit = { check_variable = { cbrn_starting_mask_basic > constant:cbrn_math.zero } }
@@ -101,10 +112,10 @@ cbrn_apply_starting_imported_mask_profile = {
 	clr_country_flag = cbrn_starting_imported_masks_only
 }
 
-# The 1936 British profile replaces the common fixed warehouse grant with a
+# The British historical profile replaces the common fixed warehouse grant with a
 # force-scaled real stock receipt: 75% active issue and 25% replacement reserve.
-# It runs after the common profile, whose ENG branch deliberately grants no
-# fixed crates when the historical 1936 flag is present.
+# It runs after the common profile, which grants no fixed crates when the
+# historical force-scaled flag is present.
 chaosx_apply_historical_eng_1936_force_scaled_profile = {
 	if = {
 		limit = {
@@ -146,13 +157,6 @@ chaosx_apply_starting_cbrn_mask_profiles = {
 			set_temp_variable = { cbrn_starting_mask_improved = constant:cbrn_starting_masks.ENG.improved }
 			set_temp_variable = { cbrn_starting_military_issue_target = constant:cbrn_starting_masks.ENG.military_issue_target }
 			set_temp_variable = { cbrn_starting_civilian_distribution_target = constant:cbrn_starting_masks.ENG.civilian_distribution_target }
-			if = {
-				limit = { has_country_flag = cbrn_historical_1936_force_scaled_protection }
-				set_temp_variable = { cbrn_starting_mask_basic = constant:cbrn_math.zero }
-				set_temp_variable = { cbrn_starting_mask_improved = constant:cbrn_math.zero }
-				set_temp_variable = { cbrn_starting_military_issue_target = cbrn_historical_1936_military_issue_target }
-				set_temp_variable = { cbrn_starting_civilian_distribution_target = cbrn_historical_1936_civilian_distribution_target }
-			}
 			set_temp_variable = { cbrn_starting_registration_proof = constant:cbrn_starting_masks.ENG.registration }
 			set_temp_variable = { cbrn_starting_program_profile = constant:cbrn_protection_program_profile.mass_civil_defence }
 			cbrn_apply_starting_mask_profile = yes

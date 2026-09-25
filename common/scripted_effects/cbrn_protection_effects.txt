@@ -1977,10 +1977,9 @@ cbrn_start_protection_maintenance_job = {
 }
 
 # The historical 1939 British receipt is a target for civilian masks already
-# issued. Reconcile it after the common starting profile, which has issued
-# military masks and may have issued civilian masks from its own stock. Only the remaining
-# civilian requirement may add historically supplied masks to the warehouse;
-# the normal state distributor then debits real stock and credits state ledgers.
+# issued. Reconcile it after military issue and its replacement reserve. Only
+# stock above that military reserve can reduce the civilian grant; the normal
+# state distributor then debits real stock and credits state ledgers.
 cbrn_apply_historical_uk_1939_civilian_issue = {
 	if = {
 		limit = {
@@ -2025,7 +2024,13 @@ cbrn_apply_historical_uk_1939_civilian_issue = {
 			set_temp_variable = { cbrn_uk_civilian_stock_need = cbrn_uk_civilian_issue_shortfall }
 			multiply_temp_variable = { cbrn_uk_civilian_stock_need = constant:cbrn_mask_distribution.urban_or_capital_cost_mult }
 			multiply_temp_variable = { cbrn_uk_civilian_stock_need = constant:cbrn_mask_distribution.low_infrastructure_cost_mult }
-			subtract_from_temp_variable = { cbrn_uk_civilian_stock_need = cbrn_mask_reserve_crates }
+			set_temp_variable = { cbrn_uk_military_reserved_stock = cbrn_military_mask_requirement }
+			multiply_temp_variable = { cbrn_uk_military_reserved_stock = cbrn_historical_1936_replacement_reserve_ratio }
+			round_temp_variable = cbrn_uk_military_reserved_stock
+			set_temp_variable = { cbrn_uk_civilian_available_stock = cbrn_mask_reserve_crates }
+			subtract_from_temp_variable = { cbrn_uk_civilian_available_stock = cbrn_uk_military_reserved_stock }
+			clamp_temp_variable = { var = cbrn_uk_civilian_available_stock min = constant:cbrn_math.zero }
+			subtract_from_temp_variable = { cbrn_uk_civilian_stock_need = cbrn_uk_civilian_available_stock }
 			clamp_temp_variable = { var = cbrn_uk_civilian_stock_need min = constant:cbrn_math.zero }
 			round_temp_variable = cbrn_uk_civilian_stock_need
 			if = {
@@ -2052,6 +2057,21 @@ cbrn_apply_historical_uk_1939_civilian_issue = {
 					state_population_k > constant:cbrn_math.zero
 				}
 				cbrn_distribute_requested_masks_to_state = yes
+			}
+			# A disrupted state can cost more than the pre-grant estimate. Any
+			# resulting shortfall is supplied to the military reserve, not taken
+			# from its approved quarter-force floor.
+			cbrn_refresh_country_mask_snapshot = yes
+			set_temp_variable = { cbrn_uk_military_reserve_shortfall = cbrn_uk_military_reserved_stock }
+			subtract_from_temp_variable = { cbrn_uk_military_reserve_shortfall = cbrn_mask_reserve_crates }
+			clamp_temp_variable = { var = cbrn_uk_military_reserve_shortfall min = constant:cbrn_math.zero }
+			round_temp_variable = cbrn_uk_military_reserve_shortfall
+			if = {
+				limit = { check_variable = { cbrn_uk_military_reserve_shortfall > constant:cbrn_math.zero } }
+				add_equipment_to_stockpile = {
+					type = gas_mask_equipment_1
+					amount = cbrn_uk_military_reserve_shortfall
+				}
 			}
 		}
 		set_country_flag = cbrn_uk_1939_mass_respirator_issue_applied

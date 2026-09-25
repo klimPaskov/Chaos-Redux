@@ -48,8 +48,9 @@ chaosx_apply_startup_history_grants = {
 		POL = { chaosx_startup_recruit_dated_pol_cbrn_characters = yes }
 		SOV = { chaosx_startup_recruit_dated_sov_cbrn_characters = yes }
 		USA = { chaosx_startup_recruit_dated_usa_cbrn_characters = yes }
+		# Both historical bookmarks use the same military coverage bands, sized
+		# against the deployed force at the selected start date.
 		every_country = {
-			limit = { date < 1939.01.01 }
 			chaosx_startup_mark_1936_cbrn_force_scaled_profile = yes
 		}
 		every_country = {
@@ -155,14 +156,13 @@ chaosx_startup_mark_historical_1939_cbrn_setup = {
 	}
 }
 
-# The 1936 history package uses a force-scaled military receipt instead of the
-# fixed warehouse matrix. The shared matrix still owns the actual profile
+# Historical starts use a force-scaled military receipt instead of the fixed
+# warehouse matrix. The shared matrix still owns the actual profile
 # lifecycle, registration, readiness, and maintenance setup; this marker only
 # supplies the historical band that the startup reconciliation consumes.
 chaosx_startup_mark_1936_cbrn_force_scaled_profile = {
 	if = {
 		limit = {
-			date < 1939.01.01
 			OR = {
 				tag = ENG
 				tag = FRA
@@ -211,9 +211,6 @@ chaosx_startup_mark_1936_cbrn_force_scaled_profile = {
 		set_variable = {
 			cbrn_historical_1936_replacement_reserve_ratio = constant:startup_history_protection_targets.replacement_reserve_ratio_1936
 		}
-		set_variable = {
-			cbrn_historical_1936_civilian_distribution_target = constant:startup_history_protection_targets.civilian_distribution_target_1936
-		}
 		if = {
 			limit = {
 				OR = {
@@ -248,15 +245,14 @@ chaosx_startup_mark_1936_cbrn_force_scaled_profile = {
 	}
 }
 
-# Reconcile the common fixed 1936 profile into the historical force-scaled
+# Reconcile the common fixed profile into the historical force-scaled
 # receipt for every marked country except ENG, whose shared core helper owns the
 # same transaction. This preserves pre-existing stock, removes only the common
-# startup receipt's issued/civilian accounting, issues the correct active share
+# startup profile's issued/civilian accounting, issues the correct active share
 # from real stock, and leaves the separate replacement reserve in the warehouse.
 chaosx_apply_historical_1936_force_scaled_profile = {
 	if = {
 		limit = {
-			date < 1939.01.01
 			NOT = { tag = ENG }
 			has_country_flag = cbrn_historical_1936_force_scaled_protection
 			has_country_flag = cbrn_historical_1936_profile_snapshot_ready
@@ -764,21 +760,6 @@ chaosx_startup_grant_eng = {
 				}
 				set_variable = {
 					cbrn_startup_uk_1939_civilian_distribution_target = constant:startup_history_civil_defence_targets.uk_1939_civilian_distribution_target
-				}
-			}
-			else = {
-				# The 1936 profile is a force-scaled military issue with a
-				# separate replacement reserve; no fixed civilian receipt is
-				# written before the documented 1939 issue.
-				set_country_flag = cbrn_historical_1936_force_scaled_protection
-				set_variable = {
-					cbrn_historical_1936_military_issue_target = constant:startup_history_protection_targets.uk_military_issue_target_1936
-				}
-				set_variable = {
-					cbrn_historical_1936_replacement_reserve_ratio = constant:startup_history_protection_targets.replacement_reserve_ratio_1936
-				}
-				set_variable = {
-					cbrn_historical_1936_civilian_distribution_target = constant:startup_history_protection_targets.uk_civilian_distribution_target_1936
 				}
 			}
 			if = {

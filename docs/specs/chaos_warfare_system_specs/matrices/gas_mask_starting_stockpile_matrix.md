@@ -1,19 +1,19 @@
 # Gas-Mask Starting Stockpile Matrix
 
-> **1936 historical source disposition, 2026-09-20:** The original fixed crate rows below are retained as archival calibration proposals. The implemented 1936 startup contract is force-scaled for every profile tag: established majors receive 75% active military issue, Italy 100%, Japan 50%, and all remaining profile tags 25%, with a separate 25% replacement reserve and zero fixed civilian issue. `chaosx_apply_historical_eng_1936_force_scaled_profile` owns the ENG transaction in `common/scripted_effects/cbrn_starting_protection_effects.txt`; `chaosx_apply_historical_1936_force_scaled_profile` reconciles the other profile tags in `common/scripted_effects/chaosx_startup_history_effects.txt`. The dated 1939 helper `cbrn_apply_historical_uk_1939_civilian_issue` issues British civilians from real warehouse stock and grants only its measured shortfall toward a 40,000-crate target. These are bounded source findings under the user's accepted historical-start requirement in the [CBRN amendment](../specs/13_2026_09_20_accepted_cbrn_overhaul.md), with runtime and MCP validation unresolved.
+> **Accepted historical-start disposition, 2026-09-25:** The user explicitly selected the approved force-scaled military bands and 25% reserve for the 1939 bookmark as well as 1936, retaining Britain's separately sourced 1939 civilian issue and starting all other profile countries with zero civilian mask coverage pending country-specific evidence. The original fixed crate rows below remain archival calibration proposals, not startup grants. Each bookmark measures military need from its own deployed forces. Established majors receive 75% active military issue, Italy 100%, Japan 50%, and all remaining profile tags 25%, with a separate 25% replacement reserve. `chaosx_apply_historical_eng_1936_force_scaled_profile` owns the ENG military transaction in `common/scripted_effects/cbrn_starting_protection_effects.txt`; `chaosx_apply_historical_1936_force_scaled_profile` reconciles the other profile tags in `common/scripted_effects/chaosx_startup_history_effects.txt`. Their legacy `1936` identifiers also serve the 1939 bookmark. The dated helper `cbrn_apply_historical_uk_1939_civilian_issue` issues British civilians from real warehouse stock above the military reserve and grants only its measured shortfall toward a 40,000-crate target. Runtime and MCP validation remain unresolved.
 
-## Implemented 1936 startup bands
+## Historical-bookmark startup bands
 
-The live startup reconciliation applies the following approved gameplay bands to the 41 countries present in the common starting-mask profile. The values are deployed-force ratios, not fixed archival crate totals; the helper restores any pre-existing mask stock before adding only the active-issue and replacement-reserve shortfall.
+The live startup reconciliation applies the following approved gameplay bands to the 41 countries present in the common starting-mask profile at either bookmark. The values are deployed-force ratios, not fixed archival crate totals; the helper restores any pre-existing mask stock before adding only the active-issue and replacement-reserve shortfall. Military percentages are gameplay calibration, not claims about exact historical inventories.
 
-| Profile band | Countries | Active military issue | Replacement reserve | Civilian issue at 1936 start |
+| Profile band | Countries | Active military issue | Replacement reserve | Civilian issue at either start, except Britain 1939 |
 | --- | --- | ---: | ---: | ---: |
 | Established major | ENG, FRA, GER, SOV, USA | 75% | 25% | 0% |
 | Active war | ITA | 100% | 25% | 0% |
 | Limited programme | JAP | 50% | 25% | 0% |
 | Smaller defensive | POL, CZE, BEL, HOL, CAN, AST, NZL, SAF, ROM, YUG, TUR, SPR, CHI, PRC, SHX, GXC, YUN, XSM, SIK, MAN, BUL, HUN, GRE, RAJ, AUS, POR, SWE, NOR, DEN, FIN, BRA, ARG, MEX, CHL | 25% | 25% | 0% |
 
-The 1939 British civilian issue is a separate dated real-equipment transaction and is not included in the 1936 civilian column.
+The 1939 British civilian issue is a separate dated real-equipment transaction and is not included in the baseline civilian column. Other 1939 industrial, research, and personnel grants keep their existing date gates.
 
 ## Equipment unit
 
@@ -37,9 +37,9 @@ The military conversion already reflects a military set using more material than
 
 Add 5 to 25 percent according to First World War experience, civil-defence institutions, industry, and doctrine.
 
-## Country targets
+## Archived country proposals, not startup grants
 
-Exact values require current 1936 core population and OOB data. Bands below are acceptance ranges.
+These older fixed-stock and civilian ranges were not accepted as historical starting inventory. The implemented bands above use each bookmark's deployed force; country-specific civilian starts outside Britain require separate evidence.
 
 | Country or profile | Civilian coverage target | Military issue target | Starting crates target | Starting tech | Program identity | Confidence |
 | --- | ---: | ---: | ---: | --- | --- | --- |
@@ -75,7 +75,7 @@ Starting crates do not mean all civilians are protected. Country history can beg
 - registered population bonus
 - military issue reserve
 
-The 1936 Britain source profile begins with military issue and a real replacement reserve, without mass civilian distribution. The separate 1939 bookmark performs its dated civilian issue from real equipment. Other country rows retain their prior proposal status until their current sources and historical basis are reconciled.
+Britain begins 1936 with military issue and a real replacement reserve, without mass civilian distribution. The separate 1939 bookmark performs its dated civilian issue from real equipment after protecting the military reserve. Other countries begin either bookmark without civilian distribution until their country-specific sources and historical basis are reconciled. Their archival rows above retain proposal status.
 
 ## Production target after alert
 
