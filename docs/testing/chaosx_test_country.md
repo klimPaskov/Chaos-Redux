@@ -191,13 +191,13 @@ Event 023's package-owned carrier is `sov_nuclear_bombs_cxt_extension_event023`,
 
 Event 027's package-owned carrier is `chaosx_cxt_extension_event027_doctrine_research`, and its idempotent setup effect is `chaosx_cxt_extension_event027_doctrine_research_apply`. The carrier is registered from `common/on_actions/027_doctrine_research_cxt_on_actions.txt` and the setup dispatcher is implemented in `common/scripted_effects/027_doctrine_research_cxt_effects.txt`; it initializes the Event 027 adapter and ledger only for the CXT fixture and never creates a research batch.
 
-Event 016's existing `chaosx_cxt_extension_event016_alien_infantry_apply` also reconciles only CXT's registered Portal beachheads, rebuilds only already-recorded physical Singularity sites, and selects the Anthrax operational agent once that native technology is present and no selection or transaction exists.
+Event 016's existing `chaosx_cxt_extension_event016_alien_infantry_apply` also reconciles only CXT's registered Portal beachheads and rebuilds only already-recorded physical Singularity sites.
 Invalid pending construction receipts remain with the native callback or project cleanup; this CXT pass does not fabricate sites.
 Its Singularity pass also rebuilds existing private Directorate site rows through their own ledger and does not grant a command node, power link, project stage, or terminal request.
 The same carrier grants the six conventional Weaponization packages through the provenance-free core only when their durable receipt is missing and then reconciles their existing modifiers.
 This exposes the ordinary Wonder-Technology Operations category without assigning Kruger, creating a native project ledger, fabricating event-source history, or executing a paid directive.
 The shared computation-slot marker keeps repeated extension synchronization idempotent.
-It does not create a breach, start a raid, produce a payload, authorize a release, or clear a pending biological operation.
+It does not select a biological agent, create a breach, start a raid, produce a payload, authorize a release, or clear a pending biological operation.
 The existing package carrier and startup/tag-specific registration hooks own this coverage; no additional global tick is introduced.
 
 Event 039's package-owned carrier is `chaosx_cxt_extension_event039_assassin_forces`, its setup effect is `chaosx_cxt_extension_event039_assassin_forces_apply`, and its complete unit-family provider is `chaos_unit_family_provider_524`. The provider is registered from `common/on_actions/039_murder_mystery_on_actions.txt` and implemented in `common/scripted_effects/039_murder_mystery_event19_effects.txt` with the full thirteen-callback Event 019 contract.
