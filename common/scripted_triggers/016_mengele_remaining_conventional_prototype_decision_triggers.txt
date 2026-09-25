@@ -1,0 +1,105 @@
+# Event 016 private no-DLC Prototype gates, COUNTRY scope.
+# Family IDs 2/4/5 use private receipt indices 1/3/4.
+# Existing conventional triggers own empty-receipt predicates and later stages.
+
+# Electronics private Prototype gates.
+brilliant_scientist_mengele_electronics_prototype_decision_visible = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_electronics_decision_receipt_is_empty = yes
+	has_country_flag = mengele_event016_electronics_theory_completed
+	NOT = { has_country_flag = mengele_event016_electronics_prototype_completed }
+	NOT = { has_dlc = "Gotterdammerung" }
+	NOT = { is_special_project_completed = sp:sp_air_radar }
+}
+
+brilliant_scientist_mengele_electronics_prototype_decision_requirements = {
+	brilliant_scientist_mengele_electronics_prototype_decision_visible = yes
+}
+
+brilliant_scientist_mengele_electronics_prototype_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_fallback_prototype.electronics_civilian_factories }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_fallback_prototype.electronics_support_equipment } }
+	NOT = { has_fuel < constant:brilliant_scientist_project_fallback_prototype.electronics_fuel }
+	check_variable = { var = political_power value = constant:brilliant_scientist_project_fallback_prototype.electronics_political_power compare = greater_than_or_equals }
+}
+
+brilliant_scientist_mengele_electronics_prototype_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^1 value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+}
+
+brilliant_scientist_mengele_electronics_prototype_decision_cancel_trigger = {
+	OR = { NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes } NOT = { brilliant_scientist_mengele_electronics_prototype_decision_receipt_matches = yes } }
+}
+
+brilliant_scientist_mengele_electronics_prototype_low_factory_margin = {
+	NOT = { num_of_civilian_factories_available_for_projects > constant:brilliant_scientist_project_fallback_prototype.electronics_civilian_factories }
+}
+
+# Rocketry private Prototype gates.
+brilliant_scientist_mengele_rocketry_prototype_decision_visible = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_rocketry_decision_receipt_is_empty = yes
+	has_country_flag = mengele_event016_rocketry_theory_completed
+	NOT = { has_country_flag = mengele_event016_rocketry_prototype_completed }
+	NOT = { has_dlc = "Gotterdammerung" }
+	NOT = { OR = { is_special_project_completed = sp:sp_rockets_flying_bomb is_special_project_completed = sp:sp_air_jet_engine } }
+}
+
+brilliant_scientist_mengele_rocketry_prototype_decision_requirements = {
+	brilliant_scientist_mengele_rocketry_prototype_decision_visible = yes
+}
+
+brilliant_scientist_mengele_rocketry_prototype_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_fallback_prototype.rocketry_civilian_factories }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_fallback_prototype.rocketry_support_equipment } }
+	NOT = { has_fuel < constant:brilliant_scientist_project_fallback_prototype.rocketry_fuel }
+	check_variable = { var = political_power value = constant:brilliant_scientist_project_fallback_prototype.rocketry_political_power compare = greater_than_or_equals }
+}
+
+brilliant_scientist_mengele_rocketry_prototype_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^3 value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+}
+
+brilliant_scientist_mengele_rocketry_prototype_decision_cancel_trigger = {
+	OR = { NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes } NOT = { brilliant_scientist_mengele_rocketry_prototype_decision_receipt_matches = yes } }
+}
+
+brilliant_scientist_mengele_rocketry_prototype_low_factory_margin = {
+	NOT = { num_of_civilian_factories_available_for_projects > constant:brilliant_scientist_project_fallback_prototype.rocketry_civilian_factories }
+}
+
+# High Energy private Prototype gates.
+brilliant_scientist_mengele_high_energy_prototype_decision_visible = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_high_energy_decision_receipt_is_empty = yes
+	has_country_flag = mengele_event016_high_energy_theory_completed
+	NOT = { has_country_flag = mengele_event016_high_energy_prototype_completed }
+	NOT = { has_dlc = "Gotterdammerung" }
+	NOT = { is_special_project_completed = sp:sp_nuclear_reactor }
+}
+
+brilliant_scientist_mengele_high_energy_prototype_decision_requirements = {
+	brilliant_scientist_mengele_high_energy_prototype_decision_visible = yes
+}
+
+brilliant_scientist_mengele_high_energy_prototype_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_fallback_prototype.high_energy_civilian_factories }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_fallback_prototype.high_energy_support_equipment } }
+	NOT = { has_fuel < constant:brilliant_scientist_project_fallback_prototype.high_energy_fuel }
+	check_variable = { var = political_power value = constant:brilliant_scientist_project_fallback_prototype.high_energy_political_power compare = greater_than_or_equals }
+}
+
+brilliant_scientist_mengele_high_energy_prototype_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^4 value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+}
+
+brilliant_scientist_mengele_high_energy_prototype_decision_cancel_trigger = {
+	OR = { NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes } NOT = { brilliant_scientist_mengele_high_energy_prototype_decision_receipt_matches = yes } }
+}
+
+brilliant_scientist_mengele_high_energy_prototype_low_factory_margin = {
+	NOT = { num_of_civilian_factories_available_for_projects > constant:brilliant_scientist_project_fallback_prototype.high_energy_civilian_factories }
+}

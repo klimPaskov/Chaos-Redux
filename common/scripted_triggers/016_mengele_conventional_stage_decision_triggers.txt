@@ -130,8 +130,10 @@ brilliant_scientist_mengele_electronics_deployment_decision_requirements = {
 	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
 	brilliant_scientist_mengele_electronics_decision_receipt_is_empty = yes
 	brilliant_scientist_mengele_electronics_deployment_decision_visible = yes
-	has_tech = radio_detection
-	is_special_project_completed = sp:sp_air_radar
+	OR = {
+		NOT = { has_dlc = "Gotterdammerung" }
+		AND = { has_tech = radio_detection is_special_project_completed = sp:sp_air_radar }
+	}
 	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.electronics_deployment_military_factories }
 	NOT = { has_resources_in_country = { resource = rubber amount < @MENGELE_ELECTRONICS_DEPLOYMENT_RUBBER } }
 }
@@ -167,7 +169,7 @@ brilliant_scientist_mengele_electronics_weaponization_decision_requirements = {
 	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
 	brilliant_scientist_mengele_electronics_decision_receipt_is_empty = yes
 	brilliant_scientist_mengele_electronics_weaponization_decision_visible = yes
-	OR = { has_tech = centimetric_radar has_tech = phased_array }
+	OR = { NOT = { has_dlc = "Gotterdammerung" } has_tech = centimetric_radar has_tech = phased_array }
 	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.electronics_weaponization_military_factories }
 	NOT = { has_resources_in_country = { resource = rubber amount < @MENGELE_ELECTRONICS_WEAPONIZATION_RUBBER } }
 }
@@ -346,7 +348,7 @@ brilliant_scientist_mengele_rocketry_deployment_decision_requirements = {
 	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
 	brilliant_scientist_mengele_rocketry_decision_receipt_is_empty = yes
 	brilliant_scientist_mengele_rocketry_deployment_decision_visible = yes
-	OR = { is_special_project_completed = sp:sp_rockets_ballistic_missile is_special_project_completed = sp:sp_air_axial_jet_engine }
+	OR = { NOT = { has_dlc = "Gotterdammerung" } is_special_project_completed = sp:sp_rockets_ballistic_missile is_special_project_completed = sp:sp_air_axial_jet_engine }
 	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.rocketry_deployment_military_factories }
 	NOT = { has_resources_in_country = { resource = tungsten amount < @MENGELE_ROCKETRY_DEPLOYMENT_TUNGSTEN } }
 	NOT = { has_resources_in_country = { resource = rubber amount < @MENGELE_ROCKETRY_DEPLOYMENT_RUBBER } }
@@ -454,7 +456,7 @@ brilliant_scientist_mengele_high_energy_deployment_decision_requirements = {
 	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
 	brilliant_scientist_mengele_high_energy_decision_receipt_is_empty = yes
 	brilliant_scientist_mengele_high_energy_deployment_decision_visible = yes
-	OR = { is_special_project_completed = sp:sp_commercial_nuclear_reactor is_special_project_completed = sp:sp_nuclear_bomb }
+	OR = { NOT = { has_dlc = "Gotterdammerung" } is_special_project_completed = sp:sp_commercial_nuclear_reactor is_special_project_completed = sp:sp_nuclear_bomb }
 	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.high_energy_deployment_military_factories }
 	NOT = { has_resources_in_country = { resource = tungsten amount < @MENGELE_HIGH_ENERGY_DEPLOYMENT_TUNGSTEN } }
 	NOT = { has_resources_in_country = { resource = chromium amount < @MENGELE_HIGH_ENERGY_DEPLOYMENT_CHROMIUM } }
