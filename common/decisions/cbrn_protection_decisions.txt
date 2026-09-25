@@ -139,9 +139,16 @@ cbrn_program_management_category = {
 		}
 		target_trigger = { FROM = { cbrn_target_can_receive_exported_masks = yes } }
 		available = {
-			cbrn_country_has_exportable_mask_stock = yes
+			hidden_trigger = { cbrn_country_has_exportable_mask_stock = yes }
 			FROM = { cbrn_target_can_receive_exported_masks = yes }
 		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				cbrn_country_has_exportable_mask_stock = yes
+				NOT = { num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.export_masks_factories }
+			}
+		}
+		custom_cost_text = cbrn_export_protective_equipment_extra_cost
 		complete_effect = { custom_effect_tooltip = cbrn_export_protective_equipment_begin_tt }
 		remove_effect = {
 			custom_effect_tooltip = cbrn_export_protective_equipment_complete_tt
