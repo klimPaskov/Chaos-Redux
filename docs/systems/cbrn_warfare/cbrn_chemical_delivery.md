@@ -93,7 +93,6 @@ The division layer carries real essential payload equipment:
 | Projector Battery | 60 strategic-agent lots |
 | Chemical Ammunition Train | 120 filled shell lots |
 | Light, Medium, or Heavy Armored Delivery Detachment | 60 strategic-agent lots |
-| Nerve Suppression Detachment | 40 strategic-agent lots |
 
 These standing needs produce native reinforcement-shortage scaling. They do not pay for an operation. A delivery adapter must also remove the route's national expenditure before exposure is calculated.
 

@@ -1,6 +1,6 @@
 # Chaos Warfare doctrine, institutions, and officer corps
 
-> **Overhaul reconciliation in progress:** The user's accepted [2026-09-20 CBRN amendment](../../specs/chaos_warfare_system_specs/specs/13_2026_09_20_accepted_cbrn_overhaul.md) controls combined bonus caps, policy count, unit consolidation, and native CBRN High Command where this older current-system description conflicts. Do not treat the remaining older numerical examples as final overhaul validation until the parent reviews the complete source and balance evidence.
+> **Overhaul reconciliation in progress:** The accepted [2026-09-20 CBRN amendment](../../specs/chaos_warfare_system_specs/specs/13_2026_09_20_accepted_cbrn_overhaul.md) supersedes the older establishment mission, paid remediation, five-step authority ladder, and separate offensive preparation described later in this file. The [implementation ledger](../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md) records current policy, units, balance arithmetic, and validation limits. Do not use the older sections as current gameplay instructions.
 
 ## Current source arithmetic and validation limit
 

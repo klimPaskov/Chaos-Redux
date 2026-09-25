@@ -1,5 +1,7 @@
 # CBRN regimental support and Chaos Assault Battalion
 
+**Disposition: superseded for the current roster and delivery loop.** This is the pre-consolidation Stage 3 design record. Use the [unit consolidation guide](../cbrn_unit_consolidation.md) for playable units and the [native raid migration guide](../cbrn_native_raid_migration.md) for operation payments, preparation, and outcomes. The old Hazard Pioneer, Nerve Suppression, Field Epidemiology, and Medical Countermeasure detachments and the manual attack-adapter descriptions below are historical, not current player unlocks.
+
 ## Purpose
 
 CBRN regimental support is the division layer of the conditional warfare system. Army Headquarters owns theater preparation and abilities; these units put protection, reconnaissance, decontamination, delivery organization, medical response, and biosecurity inside individual divisions.
