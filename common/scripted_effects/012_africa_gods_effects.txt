@@ -3412,8 +3412,16 @@ gods_of_africa_withdraw_owned_protection_relations = {
 	clear_variable = gods_of_africa_protection_market_access_host
 }
 
+gods_of_africa_clear_protection_report_outcomes = {
+	clr_country_flag = gods_of_africa_protection_convoys_delivered
+	clr_country_flag = gods_of_africa_protection_trains_delivered
+	clr_country_flag = gods_of_africa_protection_intelligence_shared
+	clr_country_flag = gods_of_africa_protection_capital_rebuilt
+}
+
 gods_of_africa_withdraw_protection_package = {
 	gods_of_africa_withdraw_owned_protection_relations = yes
+	gods_of_africa_clear_protection_report_outcomes = yes
 	if = {
 		limit = { has_country_flag = gods_of_africa_protection_reception_created }
 		migration_clear_gods_of_africa_reception_service = yes
@@ -3518,6 +3526,7 @@ gods_of_africa_share_enemy_intelligence = {
 						navy_intel = constant:gods_of_africa_transaction.protection_intelligence_amount
 						airforce_intel = constant:gods_of_africa_transaction.protection_intelligence_amount
 					}
+					set_country_flag = gods_of_africa_protection_intelligence_shared
 				}
 			}
 		}
@@ -3553,6 +3562,7 @@ gods_of_africa_deliver_protection_transport = {
 					type = convoy_1
 					amount = constant:gods_of_africa_transaction.transport_amount
 				}
+				set_country_flag = gods_of_africa_protection_convoys_delivered
 			}
 		}
 		else_if = {
@@ -3571,6 +3581,7 @@ gods_of_africa_deliver_protection_transport = {
 					type = train_equipment
 					amount = constant:gods_of_africa_transaction.transport_amount
 				}
+				set_country_flag = gods_of_africa_protection_trains_delivered
 			}
 		}
 	}
@@ -3598,6 +3609,7 @@ gods_of_africa_rebuild_protected_partner_capital = {
 				instant_build = yes
 			}
 		}
+		set_country_flag = gods_of_africa_protection_capital_rebuilt
 	}
 }
 
@@ -3605,6 +3617,7 @@ gods_of_africa_protect_partner = {
 	if = {
 		limit = { gods_of_africa_protection_package_is_affordable = yes }
 		save_event_target_as = gods_of_africa_protected_participant
+		gods_of_africa_clear_protection_report_outcomes = yes
 		event_target:africa_host = {
 			set_temp_variable = { equipment_stockpile_removal_amount = constant:gods_of_africa_transaction.protection_infantry_equipment }
 			remove_infantry_equipment_from_stockpile = yes
