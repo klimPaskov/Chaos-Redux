@@ -200,6 +200,20 @@ The shared computation-slot marker keeps repeated extension synchronization idem
 It does not select a biological agent, create a breach, start a raid, produce a payload, authorize a release, or clear a pending biological operation.
 The existing package carrier and startup/tag-specific registration hooks own this coverage; no additional global tick is introduced.
 
+### Event 016 native inventory probe
+
+`chaosx_cxt_event016_probe_native_inventory` is a separate, explicit country-scope console effect for an initialized CXT, invoked as `e chaosx_cxt_event016_probe_native_inventory` while CXT is selected.
+It has no parameters or gameplay outputs and is never called by the normal package carrier.
+Each invocation clears and rebuilds three CXT-only observation arrays: `chaosx_cxt_event016_observed_native_families` contains the thirteen directly mapped native families plus Biological Weapons only when all six agent projects are completed and Singularity only when all six component projects are completed; `chaosx_cxt_event016_observed_biological_agents` contains the six project-backed agent IDs; and `chaosx_cxt_event016_observed_singularity_components` contains the six project-backed component IDs.
+The values are the existing `brilliant_scientist_project_family`, `brilliant_scientist_biological_agent`, and `brilliant_scientist_singularity_component` constants, and the three arrays are observations rather than provider receipts or registration inputs.
+The probe also refreshes `chaosx_cxt_event016_probe_dlc_available` for Gotterdammerung and `chaosx_cxt_event016_probe_provider_gate_closed` when no Kruger current-host flag or Mengele provider receipt initializer exists and the Mengele provider gate is false.
+For a country other than initialized CXT, the effect has no side effects; repeated invocation is idempotent.
+
+This probe verifies installed native project inventory and the ordinary CXT provider-gate boundary only.
+CXT's generic setup already completes the native projects, including the six Singularity components, before an authentic Mengele provider can own their callbacks; the probe cannot establish native clock/payment, provider Theory through Weaponization receipts, cancellation/refund, DHR positive five-receipt behavior, or provider cleanup.
+Those scenarios require real provider decision and native-project lifecycles in both DLC states, so a populated observation array must never be read as provider completion history.
+No second Singularity registration, Kruger host identity, provider stage history, biological raid reservation, or periodic grant is created here.
+
 Event 039's package-owned carrier is `chaosx_cxt_extension_event039_assassin_forces`, its setup effect is `chaosx_cxt_extension_event039_assassin_forces_apply`, and its complete unit-family provider is `chaos_unit_family_provider_524`. The provider is registered from `common/on_actions/039_murder_mystery_on_actions.txt` and implemented in `common/scripted_effects/039_murder_mystery_event19_effects.txt` with the full thirteen-callback Event 019 contract.
 
 Event 024's package-owned carrier is `chaosx_cxt_extension_event024_video_game_in_sweden`, and its idempotent setup effect is `chaosx_cxt_extension_event024_video_game_in_sweden_apply`. The carrier is modifier-free and is registered by `common/on_actions/024_video_game_in_sweden_cxt_on_actions.txt`; the setup effect is implemented in `common/scripted_effects/024_video_game_in_sweden_cxt_effects.txt`. The fixture exposes only `video_game_in_sweden_cxt_fixture_ready` and the documented event and Reliance bounds after CXT initialization; it never fires Event24, selects a Swedish host, grants the staged ideas, creates a commander trait, opens the decision category, or spends country resources.

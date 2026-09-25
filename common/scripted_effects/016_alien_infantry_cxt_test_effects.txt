@@ -18,6 +18,70 @@ alien_infantry_register_cxt_test_content = {
 	chaosx_test_country_register_extension_effect = yes
 }
 
+# COUNTRY scope, explicit CXT console probe after initialization. These arrays
+# record completed native project objects only; they are not provider receipts
+# and never feed the Event 016 registry, decision lifecycle, or DHR gate.
+# Repeating the probe rebuilds its private observations without granting work.
+chaosx_cxt_event016_probe_native_inventory = {
+	if = {
+		limit = { tag = CXT has_country_flag = chaosx_test_country_initialized }
+		clear_array = chaosx_cxt_event016_observed_native_families
+		clear_array = chaosx_cxt_event016_observed_biological_agents
+		clear_array = chaosx_cxt_event016_observed_singularity_components
+		clr_country_flag = chaosx_cxt_event016_probe_dlc_available
+		clr_country_flag = chaosx_cxt_event016_probe_provider_gate_closed
+		if = { limit = { has_dlc = "Gotterdammerung" } set_country_flag = chaosx_cxt_event016_probe_dlc_available }
+		if = {
+			limit = {
+				NOT = { has_country_flag = brilliant_scientist_current_host }
+				NOT = { has_country_flag = mengele_event016_provider_receipts_initialized }
+				NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+			}
+			set_country_flag = chaosx_cxt_event016_probe_provider_gate_closed
+		}
+
+		if = { limit = { is_special_project_completed = sp:sp_brilliant_scientist_computational_engine } add_to_array = { array = chaosx_cxt_event016_observed_native_families value = constant:brilliant_scientist_project_family.computation } }
+		if = { limit = { is_special_project_completed = sp:sp_air_radar } add_to_array = { array = chaosx_cxt_event016_observed_native_families value = constant:brilliant_scientist_project_family.electronics } }
+		if = { limit = { is_special_project_completed = sp:sp_brilliant_scientist_advanced_materials } add_to_array = { array = chaosx_cxt_event016_observed_native_families value = constant:brilliant_scientist_project_family.materials } }
+		if = { limit = { OR = { is_special_project_completed = sp:sp_rockets_flying_bomb is_special_project_completed = sp:sp_air_jet_engine } } add_to_array = { array = chaosx_cxt_event016_observed_native_families value = constant:brilliant_scientist_project_family.rocketry } }
+		if = { limit = { is_special_project_completed = sp:sp_nuclear_reactor } add_to_array = { array = chaosx_cxt_event016_observed_native_families value = constant:brilliant_scientist_project_family.high_energy } }
+		if = { limit = { is_special_project_completed = sp:sp_brilliant_scientist_biomedical_acceleration } add_to_array = { array = chaosx_cxt_event016_observed_native_families value = constant:brilliant_scientist_project_family.biomedical } }
+		if = { limit = { is_special_project_completed = sp:sp_brilliant_scientist_quantum_transit } add_to_array = { array = chaosx_cxt_event016_observed_native_families value = constant:brilliant_scientist_project_family.teleportation } }
+		if = { limit = { is_special_project_completed = sp:sp_brilliant_scientist_cloning } add_to_array = { array = chaosx_cxt_event016_observed_native_families value = constant:brilliant_scientist_project_family.cloning } }
+		if = { limit = { is_special_project_completed = sp:sp_brilliant_scientist_autonomous_cognition } add_to_array = { array = chaosx_cxt_event016_observed_native_families value = constant:brilliant_scientist_project_family.robotics } }
+		if = { limit = { is_special_project_completed = sp:sp_brilliant_scientist_paleogenetics } add_to_array = { array = chaosx_cxt_event016_observed_native_families value = constant:brilliant_scientist_project_family.paleogenetics } }
+		if = { limit = { is_special_project_completed = sp:sp_brilliant_scientist_xenobiological_synthesis } add_to_array = { array = chaosx_cxt_event016_observed_native_families value = constant:brilliant_scientist_project_family.xenobiological_synthesis } }
+		if = { limit = { is_special_project_completed = sp:sp_brilliant_scientist_alien_arms } add_to_array = { array = chaosx_cxt_event016_observed_native_families value = constant:brilliant_scientist_project_family.alien_arms } }
+		if = { limit = { is_special_project_completed = sp:sp_brilliant_scientist_temporal_mechanics } add_to_array = { array = chaosx_cxt_event016_observed_native_families value = constant:brilliant_scientist_project_family.temporal } }
+
+		if = { limit = { is_special_project_completed = sp:anthrax_bomb } add_to_array = { array = chaosx_cxt_event016_observed_biological_agents value = constant:brilliant_scientist_biological_agent.anthrax } }
+		if = { limit = { is_special_project_completed = sp:plague_bomb } add_to_array = { array = chaosx_cxt_event016_observed_biological_agents value = constant:brilliant_scientist_biological_agent.plague } }
+		if = { limit = { is_special_project_completed = sp:tularemia_bomb } add_to_array = { array = chaosx_cxt_event016_observed_biological_agents value = constant:brilliant_scientist_biological_agent.tularemia } }
+		if = { limit = { is_special_project_completed = sp:smallpox_bomb } add_to_array = { array = chaosx_cxt_event016_observed_biological_agents value = constant:brilliant_scientist_biological_agent.smallpox } }
+		if = { limit = { is_special_project_completed = sp:weaponize_the_zombies } add_to_array = { array = chaosx_cxt_event016_observed_biological_agents value = constant:brilliant_scientist_biological_agent.weaponized_zombies } }
+		if = { limit = { is_special_project_completed = sp:black_plague_weaponization_program } add_to_array = { array = chaosx_cxt_event016_observed_biological_agents value = constant:brilliant_scientist_biological_agent.black_plague } }
+		if = {
+			limit = {
+				is_in_array = { array = chaosx_cxt_event016_observed_biological_agents value = constant:brilliant_scientist_biological_agent.anthrax }
+				is_in_array = { array = chaosx_cxt_event016_observed_biological_agents value = constant:brilliant_scientist_biological_agent.plague }
+				is_in_array = { array = chaosx_cxt_event016_observed_biological_agents value = constant:brilliant_scientist_biological_agent.tularemia }
+				is_in_array = { array = chaosx_cxt_event016_observed_biological_agents value = constant:brilliant_scientist_biological_agent.smallpox }
+				is_in_array = { array = chaosx_cxt_event016_observed_biological_agents value = constant:brilliant_scientist_biological_agent.weaponized_zombies }
+				is_in_array = { array = chaosx_cxt_event016_observed_biological_agents value = constant:brilliant_scientist_biological_agent.black_plague }
+			}
+			add_to_array = { array = chaosx_cxt_event016_observed_native_families value = constant:brilliant_scientist_project_family.biological_weapons }
+		}
+
+		if = { limit = { is_special_project_completed = sp:sp_brilliant_scientist_singularity_command_core } add_to_array = { array = chaosx_cxt_event016_observed_singularity_components value = constant:brilliant_scientist_singularity_component.command_core } }
+		if = { limit = { is_special_project_completed = sp:sp_brilliant_scientist_singularity_power_link } add_to_array = { array = chaosx_cxt_event016_observed_singularity_components value = constant:brilliant_scientist_singularity_component.power_link } }
+		if = { limit = { is_special_project_completed = sp:sp_brilliant_scientist_singularity_containment_lattice } add_to_array = { array = chaosx_cxt_event016_observed_singularity_components value = constant:brilliant_scientist_singularity_component.containment_lattice } }
+		if = { limit = { is_special_project_completed = sp:sp_brilliant_scientist_singularity_temporal_authenticator } add_to_array = { array = chaosx_cxt_event016_observed_singularity_components value = constant:brilliant_scientist_singularity_component.temporal_authenticator } }
+		if = { limit = { is_special_project_completed = sp:sp_brilliant_scientist_singularity_delivery_architecture } add_to_array = { array = chaosx_cxt_event016_observed_singularity_components value = constant:brilliant_scientist_singularity_component.delivery_architecture } }
+		if = { limit = { is_special_project_completed = sp:sp_brilliant_scientist_singularity_fail_deadly_governor } add_to_array = { array = chaosx_cxt_event016_observed_singularity_components value = constant:brilliant_scientist_singularity_component.fail_deadly_governor } }
+		if = { limit = { check_variable = { var = chaosx_cxt_event016_observed_singularity_components^num value = constant:brilliant_scientist_singularity.component_count compare = equals } } add_to_array = { array = chaosx_cxt_event016_observed_native_families value = constant:brilliant_scientist_project_family.singularity } }
+	}
+}
+
 chaosx_cxt_extension_event016_alien_infantry_apply = {
 	# The existing package carrier also exposes the six neutral conventional
 	# packages. Test grants do not create Kruger project or source history.
