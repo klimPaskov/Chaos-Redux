@@ -17,6 +17,7 @@ Event-owned orchestration, validation, adapters, and lifecycle helpers belong in
 - [apply_state_population_loss_without_recruitable_manpower_gain](#apply_state_population_loss_without_recruitable_manpower_gain)
 - [apply_exact_state_civilian_population_loss](#apply_exact_state_civilian_population_loss)
 - [stockpile_debit_helpers](#stockpile_debit_helpers)
+- [cbrn_debit_motorized_stockpile_oldest_first](#cbrn_debit_motorized_stockpile_oldest_first)
 - [owner_owned_apis](#owner_owned_apis)
 - [maintenance_notes](#maintenance_notes)
 
@@ -297,6 +298,30 @@ remove_support_equipment_from_stockpile = yes
 set_temp_variable = { fuel_stockpile_removal_amount = 500 }
 remove_fuel_from_stockpile = yes
 ```
+
+## cbrn_debit_motorized_stockpile_oldest_first
+
+Purpose: debit a requested number of CBRN trucks from the country's real motorized stockpile, taking `motorized_equipment_0` before `motorized_equipment_1`, and report how many trucks were actually removed.
+
+Scope: country.
+
+Input: caller-set temporary `cbrn_motorized_stock_debit_requested`, expressed as a nonnegative whole truck count. The helper reads this input without changing it.
+
+Outputs: temporary `cbrn_motorized_stock_debit_completed` is the total removed from both models; temporary `cbrn_motorized_stock_debit_remaining` is the unmet part of the nonnegative request. Both are overwritten on every call.
+
+Defaults: an unset request has no inferred value and is a caller error. A zero or negative request removes zero trucks. Each model's available stock is floored at zero, and each debit is limited to that model's actual stock and the remaining request. The caller must round any calculated price before showing and passing it so the display and debit use the same whole count.
+
+Side effects: removes up to the requested number of `motorized_equipment_0` and then `motorized_equipment_1` from the scoped country's stockpile. It writes only temporary working variables and the two outputs; it creates no persistent flags, variables, or event targets and needs no cleanup. The helper does not grant the operation or enforce affordability: the caller must check full affordability before debiting, then use `completed` for consumption records and block the operation if any request remains.
+
+Example, inside the paying country scope after the caller has calculated and displayed the same integer cost:
+
+```txt
+set_temp_variable = { cbrn_motorized_stock_debit_requested = cbrn_hq_motorized_debit }
+cbrn_debit_motorized_stockpile_oldest_first = yes
+add_to_variable = { cbrn_hq_motorized_losses_total = cbrn_motorized_stock_debit_completed }
+```
+
+The separate `remove_motorized_equipment_from_stockpile` helper is a legacy archetype debit and has no actual-payment output. CBRN callers that need exact payment should use this model-specific helper.
 
 ## owner_owned_apis
 

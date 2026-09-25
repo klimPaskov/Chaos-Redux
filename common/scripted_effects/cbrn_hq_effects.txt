@@ -5,7 +5,7 @@
 # - Calculates readiness-adjusted preparation and exact affected-force bands.
 # - Debits real activation/upkeep stores and the command-power band remainder.
 # - Schedules bounded hidden leader events and targeted capacity restoration.
-# - Provides model-aware decontamination and instrument family debit helpers.
+# - Uses model-aware decontamination, instrument, and motorized family debits.
 # - Never selects a state, consumes an unspecified payload, or records exposure.
 # ============================================================================
 
@@ -265,10 +265,9 @@ cbrn_hq_debit_operating_package = {
 		}
 		if = {
 			limit = { check_variable = { var = cbrn_hq_motorized_debit value = constant:cbrn_math.zero compare = greater_than } }
-			set_temp_variable = { cbrn_hq_direct_equipment_debit = cbrn_hq_motorized_debit }
-			multiply_temp_variable = { cbrn_hq_direct_equipment_debit = -1 }
-			add_equipment_to_stockpile = { type = motorized_equipment_1 amount = cbrn_hq_direct_equipment_debit }
-			add_to_variable = { cbrn_hq_motorized_losses_total = cbrn_hq_motorized_debit }
+			set_temp_variable = { cbrn_motorized_stock_debit_requested = cbrn_hq_motorized_debit }
+			cbrn_debit_motorized_stockpile_oldest_first = yes
+			add_to_variable = { cbrn_hq_motorized_losses_total = cbrn_motorized_stock_debit_completed }
 		}
 		if = {
 			limit = { check_variable = { var = cbrn_hq_fuel_debit value = constant:cbrn_math.zero compare = greater_than } }

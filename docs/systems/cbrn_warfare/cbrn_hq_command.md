@@ -38,7 +38,7 @@ The `chemical_operations_commander` trait reduces preparation time by 30 percent
 
 The commander’s exact battalion count selects light, standard, or mass operating packages. The thresholds and packages are centralized in `common/script_constants/cbrn_hq_constants.txt`.
 
-Chemical Readiness is a derived status refreshed from issued military masks, filter condition, decontamination capacity, instruments, and training. It changes preparation time but is not a separate resource that the player buys. Equipment debits use real stock, and filter consumption passes through the shared military-mask loss helper.
+Chemical Readiness is a derived status refreshed from issued military masks, filter condition, decontamination capacity, instruments, and training. It changes preparation time but is not a separate resource that the player buys. Equipment debits use real stock, including oldest-model-first truck expenditure for protective orders; filter consumption passes through the shared military-mask loss helper.
 
 ## Native offensive operations
 

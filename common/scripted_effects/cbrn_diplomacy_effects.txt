@@ -1189,12 +1189,9 @@ cbrn_diplomacy_pay_international_decon_cost = {
 	cbrn_hq_debit_decontamination_stock_oldest_first = yes
 	add_to_variable = { cbrn_diplomacy_decon_equipment_spent = cbrn_hq_family_debit_completed }
 
-	set_temp_variable = { cbrn_diplomacy_equipment_debit = constant:cbrn_diplomacy_cost.decon_trucks }
-	multiply_temp_variable = { cbrn_diplomacy_equipment_debit = constant:cbrn_payload_math.negation_multiplier }
-	add_equipment_to_stockpile = {
-		type = motorized_equipment_1
-		amount = cbrn_diplomacy_equipment_debit
-	}
+	set_temp_variable = { cbrn_motorized_stock_debit_requested = constant:cbrn_diplomacy_cost.decon_trucks }
+	cbrn_debit_motorized_stockpile_oldest_first = yes
+	add_to_variable = { cbrn_diplomacy_trucks_spent = cbrn_motorized_stock_debit_completed }
 }
 
 # State scope. ROOT is the foreign sponsor.

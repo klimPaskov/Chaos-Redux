@@ -729,6 +729,40 @@ remove_motorized_equipment_from_stockpile = {
 	add_equipment_to_stockpile = { type = motorized_equipment amount = equipment_stockpile_removal_amount }
 }
 
+# Country-scope CBRN motorized debit. The caller supplies the requested truck
+# count; completed and remaining report the actual model-specific transaction.
+cbrn_debit_motorized_stockpile_oldest_first = {
+	set_temp_variable = { cbrn_motorized_stock_debit_remaining = cbrn_motorized_stock_debit_requested }
+	clamp_temp_variable = { var = cbrn_motorized_stock_debit_remaining min = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_motorized_stock_debit_completed = constant:cbrn_math.zero }
+
+	set_temp_variable = { cbrn_motorized_stock_model_available = num_equipment@motorized_equipment_0 }
+	clamp_temp_variable = { var = cbrn_motorized_stock_model_available min = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_motorized_stock_model_take = cbrn_motorized_stock_debit_remaining }
+	clamp_temp_variable = { var = cbrn_motorized_stock_model_take min = constant:cbrn_math.zero max = cbrn_motorized_stock_model_available }
+	if = {
+		limit = { check_variable = { var = cbrn_motorized_stock_model_take value = constant:cbrn_math.zero compare = greater_than } }
+		set_temp_variable = { cbrn_motorized_stock_model_debit = cbrn_motorized_stock_model_take }
+		multiply_temp_variable = { cbrn_motorized_stock_model_debit = -1 }
+		add_equipment_to_stockpile = { type = motorized_equipment_0 amount = cbrn_motorized_stock_model_debit }
+		subtract_from_temp_variable = { cbrn_motorized_stock_debit_remaining = cbrn_motorized_stock_model_take }
+		add_to_temp_variable = { cbrn_motorized_stock_debit_completed = cbrn_motorized_stock_model_take }
+	}
+
+	set_temp_variable = { cbrn_motorized_stock_model_available = num_equipment@motorized_equipment_1 }
+	clamp_temp_variable = { var = cbrn_motorized_stock_model_available min = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_motorized_stock_model_take = cbrn_motorized_stock_debit_remaining }
+	clamp_temp_variable = { var = cbrn_motorized_stock_model_take min = constant:cbrn_math.zero max = cbrn_motorized_stock_model_available }
+	if = {
+		limit = { check_variable = { var = cbrn_motorized_stock_model_take value = constant:cbrn_math.zero compare = greater_than } }
+		set_temp_variable = { cbrn_motorized_stock_model_debit = cbrn_motorized_stock_model_take }
+		multiply_temp_variable = { cbrn_motorized_stock_model_debit = -1 }
+		add_equipment_to_stockpile = { type = motorized_equipment_1 amount = cbrn_motorized_stock_model_debit }
+		subtract_from_temp_variable = { cbrn_motorized_stock_debit_remaining = cbrn_motorized_stock_model_take }
+		add_to_temp_variable = { cbrn_motorized_stock_debit_completed = cbrn_motorized_stock_model_take }
+	}
+}
+
 remove_convoys_from_stockpile = {
 	multiply_temp_variable = { equipment_stockpile_removal_amount = -1 }
 	add_equipment_to_stockpile = { type = convoy_1 amount = equipment_stockpile_removal_amount }
