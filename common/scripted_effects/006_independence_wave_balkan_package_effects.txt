@@ -2776,6 +2776,72 @@ independence_wave_change_tra_settlement_values = {
 	}
 }
 
+# Country scope. These one-time decision callbacks apply the accepted REG-03
+# companion only when its paid receipt and matching mutually exclusive branch
+# are both present and no prior generation has awarded it. Each helper supplies
+# both deltas so temporary values from an earlier effect cannot leak. Award
+# flags survive package cleanup while additive carrier focus history survives;
+# a full-tree reload clears them alongside that tree's completion history.
+independence_wave_tra_apply_district_assembly_focus_companion = {
+	if = {
+		limit = { is_independence_wave_tra_package = yes has_country_flag = independence_wave_tra_assembly_convened has_completed_focus = independence_wave_tra_seat_the_district_assembly NOT = { has_country_flag = independence_wave_tra_district_assembly_focus_companion_awarded } }
+		set_country_flag = independence_wave_tra_district_assembly_focus_companion_awarded
+		set_temp_variable = { independence_wave_tra_federal_delta = constant:independence_wave_transylvania_pressure.minor_gain }
+		set_temp_variable = { independence_wave_tra_frontier_delta = constant:independence_wave_value.minimum }
+		independence_wave_change_tra_settlement_values = yes
+	}
+}
+
+independence_wave_tra_apply_frontier_guard_focus_companion = {
+	if = {
+		limit = { is_independence_wave_tra_package = yes has_country_flag = independence_wave_tra_defectors_screened has_completed_focus = independence_wave_tra_mandate_the_frontier_guard NOT = { has_country_flag = independence_wave_tra_frontier_guard_focus_companion_awarded } }
+		set_country_flag = independence_wave_tra_frontier_guard_focus_companion_awarded
+		set_temp_variable = { independence_wave_tra_frontier_delta = constant:independence_wave_transylvania_pressure.minor_gain }
+		set_temp_variable = { independence_wave_tra_federal_delta = constant:independence_wave_value.minimum }
+		independence_wave_change_tra_settlement_values = yes
+	}
+}
+
+independence_wave_bos_apply_cantonal_guarantees_focus_companion = {
+	if = {
+		limit = { is_independence_wave_bos_package = yes has_country_flag = independence_wave_bos_cantonal_council_convened has_completed_focus = independence_wave_bos_bind_cantonal_guarantees NOT = { has_country_flag = independence_wave_bos_cantonal_guarantees_focus_companion_awarded } }
+		set_country_flag = independence_wave_bos_cantonal_guarantees_focus_companion_awarded
+		set_temp_variable = { independence_wave_bos_civic_delta = constant:independence_wave_bosnia_pressure.minor_gain }
+		set_temp_variable = { independence_wave_bos_defence_delta = constant:independence_wave_value.minimum }
+		independence_wave_change_bos_ledgers = yes
+	}
+}
+
+independence_wave_bos_apply_mountain_veterans_focus_companion = {
+	if = {
+		limit = { is_independence_wave_bos_package = yes has_country_flag = independence_wave_bos_garrisons_screened has_completed_focus = independence_wave_bos_commission_mountain_veterans NOT = { has_country_flag = independence_wave_bos_mountain_veterans_focus_companion_awarded } }
+		set_country_flag = independence_wave_bos_mountain_veterans_focus_companion_awarded
+		set_temp_variable = { independence_wave_bos_defence_delta = constant:independence_wave_bosnia_pressure.minor_gain }
+		set_temp_variable = { independence_wave_bos_civic_delta = constant:independence_wave_value.minimum }
+		independence_wave_change_bos_ledgers = yes
+	}
+}
+
+independence_wave_mac_apply_village_appeals_focus_companion = {
+	if = {
+		limit = { is_independence_wave_mac_package = yes has_country_flag = independence_wave_mac_community_council_convened has_completed_focus = independence_wave_mac_ratify_village_appeals NOT = { has_country_flag = independence_wave_mac_village_appeals_focus_companion_awarded } }
+		set_country_flag = independence_wave_mac_village_appeals_focus_companion_awarded
+		set_temp_variable = { independence_wave_mac_civic_delta = constant:independence_wave_macedonia_pressure.minor_gain }
+		set_temp_variable = { independence_wave_mac_defence_delta = constant:independence_wave_value.minimum }
+		independence_wave_change_mac_ledgers = yes
+	}
+}
+
+independence_wave_mac_apply_mountain_veterans_focus_companion = {
+	if = {
+		limit = { is_independence_wave_mac_package = yes has_country_flag = independence_wave_mac_networks_screened has_completed_focus = independence_wave_mac_screen_mountain_veterans NOT = { has_country_flag = independence_wave_mac_mountain_veterans_focus_companion_awarded } }
+		set_country_flag = independence_wave_mac_mountain_veterans_focus_companion_awarded
+		set_temp_variable = { independence_wave_mac_defence_delta = constant:independence_wave_macedonia_pressure.minor_gain }
+		set_temp_variable = { independence_wave_mac_civic_delta = constant:independence_wave_value.minimum }
+		independence_wave_change_mac_ledgers = yes
+	}
+}
+
 # COUNTRY scope. Shared-overlay callback for IW-023. The former-host focus
 # strengthens both federal legitimacy and frontier cohesion through local
 # border arbitration before regional ambitions open.

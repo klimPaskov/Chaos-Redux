@@ -11,7 +11,17 @@ IW-029 is the Bosnia carrier overlay for the Independence Wave. It reuses the va
 - Setup adapter: `independence_wave_setup_iw_029_bosnia`.
 - Final validation: `independence_wave_validate_iw_029_bosnia`.
 - Cleanup adapter: `independence_wave_cleanup_iw_029_bosnia`.
-- Event 006 uses the shared generic focus framework with all five government routes, four host routes, the Danube formable family, the ambition ledger, the internal power-struggle type, signature module, league route, and p29 mountain-frontier force mapping. When the installed carrier exposes `austro_hungarian_releasable_focus`, setup selects the additive overlay so the meaningful vanilla BOS tree is preserved; otherwise it selects the full shared framework. The five BOS focus hooks are called from the shared overlay completion rewards.
+- Event 006 uses the shared generic focus framework with all five government routes, four host routes, the Danube formable family, the ambition ledger, the internal power-struggle type, signature module, league route, and p29 mountain-frontier force mapping. When the installed carrier exposes `austro_hungarian_releasable_focus`, setup selects the additive overlay so the meaningful vanilla BOS tree is preserved; otherwise it selects the full shared framework. The five BOS package hooks remain attached to shared overlay milestones, and the five REG-03 Sarajevo and Drina focuses are imported into both the full framework and the Austro-Hungarian carrier.
+
+## REG-03 focus group
+
+The group opens with a Sarajevo service board, surveys Drina passes and depots, then chooses cantonal guarantees or a mountain-veteran commission before publishing the Drina corridor docket. Its four-focus route costs 24 focus units, or 168 days at normal speed, and requires state 104 to remain the controlled capital. The opening focus raises Drina civic mandate by 5 and the survey raises mountain defence by 5. The mutually exclusive civic branch raises mandate by 10 and lowers defence by 5; the military branch reverses those changes. The docket raises both ledgers by 5 and requires a successful paid cantonal council or garrison-screening project.
+
+The matching paid project contributes an additional 5 points to the selected branch ledger whether it succeeds before or after the focus. Cancellation grants no companion reward. Its durable awarded marker follows completed focus history on the retained carrier; a full-framework reload clears both together. These focuses do not reopen depots, settle Yugoslav ledgers, open the Danube network, transfer territory, or bypass existing project costs.
+
+The complete focus IDs, reward ordering, source wiring, and validation limits are documented in [REG-03 Danube Package Focus Groups](reg03_danube_focus_groups.md).
+
+The group reuses five existing sprites defined in `interface/006_independence_wave.gfx`; their exact texture paths and all focus and tooltip localisation keys are listed in [REG-03 Danube Package Focus Groups](reg03_danube_focus_groups.md).
 
 ## Visible mechanics
 
@@ -32,4 +42,4 @@ The force mapping is p29 (`mountain_frontier`, military tradition 66) with the d
 
 ## Future deepening
 
-The shared generic overlay currently calls the five `independence_wave_bos_focus_*` hooks at its founding, administration, force, former-host, and network milestones. A later accepted package tranche may add researched historical flags or additional sourced male consumers, but this carrier remains fail-closed until those assets and the independent country, decision, localisation, AI, host-survival, and MCP checks are recorded.
+The shared generic overlay calls the five `independence_wave_bos_focus_*` hooks at its founding, administration, force, former-host, and network milestones. The REG-03 focus group is separate from those callbacks and preserves the existing paid-project gates. It has no custom `ai_will_do` weights because the current probability adapter omits imported shared focuses and the recorded baseline lacks typed campaign inputs; route-aware AI selection remains unresolved. A later accepted package tranche may add researched historical flags or additional sourced male consumers, but this carrier remains fail-closed until those assets and the independent country, decision, localisation, AI, host-survival, and MCP checks are recorded.

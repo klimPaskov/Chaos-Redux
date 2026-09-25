@@ -57,6 +57,23 @@ focus_tree = {
 	shared_focus = independence_wave_fij_convene_constituent_congress_focus
 	shared_focus = independence_wave_fij_open_labor_shipping_board_focus
 	shared_focus = independence_wave_fij_ratify_island_compact_focus
+	# Import the REG-03 Danube groups into the full framework. Exact-package
+	# branch gates ensure that only the matching package's route is visible.
+	shared_focus = independence_wave_tra_register_district_authorities
+	shared_focus = independence_wave_tra_account_for_rails_and_mines
+	shared_focus = independence_wave_tra_seat_the_district_assembly
+	shared_focus = independence_wave_tra_mandate_the_frontier_guard
+	shared_focus = independence_wave_tra_publish_border_arbitration_docket
+	shared_focus = independence_wave_bos_convene_sarajevo_service_board
+	shared_focus = independence_wave_bos_map_drina_passes_and_depots
+	shared_focus = independence_wave_bos_bind_cantonal_guarantees
+	shared_focus = independence_wave_bos_commission_mountain_veterans
+	shared_focus = independence_wave_bos_publish_drina_corridor_docket
+	shared_focus = independence_wave_mac_register_vardar_municipal_offices
+	shared_focus = independence_wave_mac_survey_vardar_rail_and_grain
+	shared_focus = independence_wave_mac_ratify_village_appeals
+	shared_focus = independence_wave_mac_screen_mountain_veterans
+	shared_focus = independence_wave_mac_publish_vardar_arbitration_docket
 	shared_focus = independence_wave_iw043_convene_volga_ural_federal_congress
 	shared_focus = independence_wave_iw043_convene_idel_ural_compact
 	# Import disconnected IW-043 economy and emergency spurs explicitly; shared
@@ -4263,4 +4280,409 @@ shared_focus = {
 	available = { is_independence_wave_fij_package = yes has_stable_independence_wave_fij_congress = yes is_independence_wave_recognized_or_later = yes NOT = { has_decision = independence_wave_fij_ratify_island_compact } }
 	completion_reward = { custom_effect_tooltip = independence_wave_fij_ratify_island_compact_focus_tt hidden_effect = { independence_wave_fij_focus_ratify_island_compact = yes } }
 	ai_will_do = { base = constant:independence_wave_focus_ai.cautious modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor has_independence_wave_severe_host_threat = yes } }
+}
+
+# ---------------------------------------------------------------------------
+# REG-03 Danube package groups. The full framework shifts these branches to
+# the open right-hand lane; the preserved Austro-Hungarian carrier keeps them
+# beside the shared overlay. Exact package gates prevent cross-package access.
+# ---------------------------------------------------------------------------
+
+shared_focus = {
+	id = independence_wave_tra_register_district_authorities
+	icon = GFX_goal_independence_wave_founding_administration
+	prerequisite = { focus = independence_wave_prepare_capital_administration focus = independence_wave_overlay_take_stock_of_independence }
+	relative_position_id = independence_wave_overlay_take_stock_of_independence
+	x = 3
+	y = 6
+	offset = { x = -35 trigger = { can_use_independence_wave_full_focus_framework = yes } }
+	cost = @independence_wave_focus_short
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = { is_independence_wave_tra_package = yes has_independence_wave_generic_focus_contract = yes }
+	available = { is_independence_wave_tra_package = yes has_independence_wave_generic_focus_contract = yes 84 = { is_owned_and_controlled_by = ROOT is_capital = yes } }
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_tra_register_district_authorities_tt
+		hidden_effect = {
+			set_temp_variable = { independence_wave_tra_federal_delta = constant:independence_wave_transylvania_pressure.minor_gain }
+			set_temp_variable = { independence_wave_tra_frontier_delta = constant:independence_wave_value.minimum }
+			independence_wave_change_tra_settlement_values = yes
+		}
+	}
+}
+
+shared_focus = {
+	id = independence_wave_tra_account_for_rails_and_mines
+	icon = GFX_goal_independence_wave_infrastructure_authority
+	prerequisite = { focus = independence_wave_tra_register_district_authorities }
+	relative_position_id = independence_wave_tra_register_district_authorities
+	x = 0
+	y = 1
+	cost = @independence_wave_focus_short
+	search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_INFRASTRUCTURE }
+	allow_branch = { is_independence_wave_tra_package = yes has_independence_wave_generic_focus_contract = yes }
+	available = { is_independence_wave_tra_package = yes has_independence_wave_generic_focus_contract = yes 84 = { is_owned_and_controlled_by = ROOT is_capital = yes } }
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_tra_account_for_rails_and_mines_tt
+		hidden_effect = {
+			set_temp_variable = { independence_wave_tra_federal_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_tra_frontier_delta = constant:independence_wave_transylvania_pressure.minor_gain }
+			independence_wave_change_tra_settlement_values = yes
+		}
+	}
+}
+
+shared_focus = {
+	id = independence_wave_tra_seat_the_district_assembly
+	icon = GFX_goal_independence_wave_popular_councils
+	prerequisite = { focus = independence_wave_tra_account_for_rails_and_mines }
+	mutually_exclusive = { focus = independence_wave_tra_mandate_the_frontier_guard }
+	relative_position_id = independence_wave_tra_account_for_rails_and_mines
+	x = -1
+	y = 1
+	cost = @independence_wave_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = { is_independence_wave_tra_package = yes has_independence_wave_generic_focus_contract = yes }
+	available = { is_independence_wave_tra_package = yes has_independence_wave_generic_focus_contract = yes 84 = { is_owned_and_controlled_by = ROOT is_capital = yes } }
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_tra_seat_the_district_assembly_tt
+		if = { limit = { has_country_flag = independence_wave_tra_assembly_convened NOT = { has_country_flag = independence_wave_tra_district_assembly_focus_companion_awarded } } custom_effect_tooltip = independence_wave_tra_district_assembly_focus_bonus_tt }
+		hidden_effect = {
+			set_temp_variable = { independence_wave_tra_federal_delta = constant:independence_wave_transylvania_pressure.standard_gain }
+			set_temp_variable = { independence_wave_tra_frontier_delta = constant:independence_wave_transylvania_pressure.minor_loss }
+			independence_wave_change_tra_settlement_values = yes
+			if = {
+				limit = { has_country_flag = independence_wave_tra_assembly_convened NOT = { has_country_flag = independence_wave_tra_district_assembly_focus_companion_awarded } }
+				set_country_flag = independence_wave_tra_district_assembly_focus_companion_awarded
+				set_temp_variable = { independence_wave_tra_federal_delta = constant:independence_wave_transylvania_pressure.minor_gain }
+				set_temp_variable = { independence_wave_tra_frontier_delta = constant:independence_wave_value.minimum }
+				independence_wave_change_tra_settlement_values = yes
+			}
+		}
+	}
+}
+
+shared_focus = {
+	id = independence_wave_tra_mandate_the_frontier_guard
+	icon = GFX_goal_independence_wave_army_integration
+	prerequisite = { focus = independence_wave_tra_account_for_rails_and_mines }
+	mutually_exclusive = { focus = independence_wave_tra_seat_the_district_assembly }
+	relative_position_id = independence_wave_tra_account_for_rails_and_mines
+	x = 1
+	y = 1
+	cost = @independence_wave_focus_standard
+	search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_WAR_SUPPORT }
+	allow_branch = { is_independence_wave_tra_package = yes has_independence_wave_generic_focus_contract = yes }
+	available = { is_independence_wave_tra_package = yes has_independence_wave_generic_focus_contract = yes 84 = { is_owned_and_controlled_by = ROOT is_capital = yes } }
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_tra_mandate_the_frontier_guard_tt
+		if = { limit = { has_country_flag = independence_wave_tra_defectors_screened NOT = { has_country_flag = independence_wave_tra_frontier_guard_focus_companion_awarded } } custom_effect_tooltip = independence_wave_tra_frontier_guard_focus_bonus_tt }
+		hidden_effect = {
+			set_temp_variable = { independence_wave_tra_frontier_delta = constant:independence_wave_transylvania_pressure.standard_gain }
+			set_temp_variable = { independence_wave_tra_federal_delta = constant:independence_wave_transylvania_pressure.minor_loss }
+			independence_wave_change_tra_settlement_values = yes
+			if = {
+				limit = { has_country_flag = independence_wave_tra_defectors_screened NOT = { has_country_flag = independence_wave_tra_frontier_guard_focus_companion_awarded } }
+				set_country_flag = independence_wave_tra_frontier_guard_focus_companion_awarded
+				set_temp_variable = { independence_wave_tra_frontier_delta = constant:independence_wave_transylvania_pressure.minor_gain }
+				set_temp_variable = { independence_wave_tra_federal_delta = constant:independence_wave_value.minimum }
+				independence_wave_change_tra_settlement_values = yes
+			}
+		}
+	}
+}
+
+shared_focus = {
+	id = independence_wave_tra_publish_border_arbitration_docket
+	icon = GFX_goal_independence_wave_former_host_settlement
+	prerequisite = { focus = independence_wave_tra_seat_the_district_assembly focus = independence_wave_tra_mandate_the_frontier_guard }
+	relative_position_id = independence_wave_tra_account_for_rails_and_mines
+	x = 0
+	y = 2
+	cost = @independence_wave_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = { is_independence_wave_tra_package = yes has_independence_wave_generic_focus_contract = yes }
+	available = {
+		is_independence_wave_tra_package = yes
+		has_independence_wave_generic_focus_contract = yes
+		84 = { is_owned_and_controlled_by = ROOT is_capital = yes }
+		custom_override_tooltip = {
+			tooltip = independence_wave_tra_docket_paid_recorded_tt
+			not_tooltip = independence_wave_tra_docket_paid_requirement_tt
+			OR = { has_country_flag = independence_wave_tra_assembly_convened has_country_flag = independence_wave_tra_defectors_screened }
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_tra_publish_border_arbitration_docket_tt
+		hidden_effect = {
+			set_temp_variable = { independence_wave_tra_federal_delta = constant:independence_wave_transylvania_pressure.minor_gain }
+			set_temp_variable = { independence_wave_tra_frontier_delta = constant:independence_wave_transylvania_pressure.minor_gain }
+			independence_wave_change_tra_settlement_values = yes
+		}
+	}
+}
+
+shared_focus = {
+	id = independence_wave_bos_convene_sarajevo_service_board
+	icon = GFX_goal_independence_wave_founding_administration
+	prerequisite = { focus = independence_wave_prepare_capital_administration focus = independence_wave_overlay_take_stock_of_independence }
+	relative_position_id = independence_wave_overlay_take_stock_of_independence
+	x = 3
+	y = 6
+	offset = { x = -35 trigger = { can_use_independence_wave_full_focus_framework = yes } }
+	cost = @independence_wave_focus_short
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = { is_independence_wave_bos_package = yes has_independence_wave_generic_focus_contract = yes }
+	available = { is_independence_wave_bos_package = yes has_independence_wave_generic_focus_contract = yes 104 = { is_owned_and_controlled_by = ROOT is_capital = yes } }
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_bos_convene_sarajevo_service_board_tt
+		hidden_effect = {
+			set_temp_variable = { independence_wave_bos_civic_delta = constant:independence_wave_bosnia_pressure.minor_gain }
+			set_temp_variable = { independence_wave_bos_defence_delta = constant:independence_wave_value.minimum }
+			independence_wave_change_bos_ledgers = yes
+		}
+	}
+}
+
+shared_focus = {
+	id = independence_wave_bos_map_drina_passes_and_depots
+	icon = GFX_goal_independence_wave_infrastructure_authority
+	prerequisite = { focus = independence_wave_bos_convene_sarajevo_service_board }
+	relative_position_id = independence_wave_bos_convene_sarajevo_service_board
+	x = 0
+	y = 1
+	cost = @independence_wave_focus_short
+	search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_INFRASTRUCTURE }
+	allow_branch = { is_independence_wave_bos_package = yes has_independence_wave_generic_focus_contract = yes }
+	available = { is_independence_wave_bos_package = yes has_independence_wave_generic_focus_contract = yes 104 = { is_owned_and_controlled_by = ROOT is_capital = yes } }
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_bos_map_drina_passes_and_depots_tt
+		hidden_effect = {
+			set_temp_variable = { independence_wave_bos_civic_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_bos_defence_delta = constant:independence_wave_bosnia_pressure.minor_gain }
+			independence_wave_change_bos_ledgers = yes
+		}
+	}
+}
+
+shared_focus = {
+	id = independence_wave_bos_bind_cantonal_guarantees
+	icon = GFX_goal_independence_wave_popular_councils
+	prerequisite = { focus = independence_wave_bos_map_drina_passes_and_depots }
+	mutually_exclusive = { focus = independence_wave_bos_commission_mountain_veterans }
+	relative_position_id = independence_wave_bos_map_drina_passes_and_depots
+	x = -1
+	y = 1
+	cost = @independence_wave_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = { is_independence_wave_bos_package = yes has_independence_wave_generic_focus_contract = yes }
+	available = { is_independence_wave_bos_package = yes has_independence_wave_generic_focus_contract = yes 104 = { is_owned_and_controlled_by = ROOT is_capital = yes } }
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_bos_bind_cantonal_guarantees_tt
+		if = { limit = { has_country_flag = independence_wave_bos_cantonal_council_convened NOT = { has_country_flag = independence_wave_bos_cantonal_guarantees_focus_companion_awarded } } custom_effect_tooltip = independence_wave_bos_cantonal_guarantees_focus_bonus_tt }
+		hidden_effect = {
+			set_temp_variable = { independence_wave_bos_civic_delta = constant:independence_wave_bosnia_pressure.standard_gain }
+			set_temp_variable = { independence_wave_bos_defence_delta = constant:independence_wave_bosnia_pressure.minor_loss }
+			independence_wave_change_bos_ledgers = yes
+			if = {
+				limit = { has_country_flag = independence_wave_bos_cantonal_council_convened NOT = { has_country_flag = independence_wave_bos_cantonal_guarantees_focus_companion_awarded } }
+				set_country_flag = independence_wave_bos_cantonal_guarantees_focus_companion_awarded
+				set_temp_variable = { independence_wave_bos_civic_delta = constant:independence_wave_bosnia_pressure.minor_gain }
+				set_temp_variable = { independence_wave_bos_defence_delta = constant:independence_wave_value.minimum }
+				independence_wave_change_bos_ledgers = yes
+			}
+		}
+	}
+}
+
+shared_focus = {
+	id = independence_wave_bos_commission_mountain_veterans
+	icon = GFX_goal_independence_wave_army_integration
+	prerequisite = { focus = independence_wave_bos_map_drina_passes_and_depots }
+	mutually_exclusive = { focus = independence_wave_bos_bind_cantonal_guarantees }
+	relative_position_id = independence_wave_bos_map_drina_passes_and_depots
+	x = 1
+	y = 1
+	cost = @independence_wave_focus_standard
+	search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_WAR_SUPPORT }
+	allow_branch = { is_independence_wave_bos_package = yes has_independence_wave_generic_focus_contract = yes }
+	available = { is_independence_wave_bos_package = yes has_independence_wave_generic_focus_contract = yes 104 = { is_owned_and_controlled_by = ROOT is_capital = yes } }
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_bos_commission_mountain_veterans_tt
+		if = { limit = { has_country_flag = independence_wave_bos_garrisons_screened NOT = { has_country_flag = independence_wave_bos_mountain_veterans_focus_companion_awarded } } custom_effect_tooltip = independence_wave_bos_mountain_veterans_focus_bonus_tt }
+		hidden_effect = {
+			set_temp_variable = { independence_wave_bos_defence_delta = constant:independence_wave_bosnia_pressure.standard_gain }
+			set_temp_variable = { independence_wave_bos_civic_delta = constant:independence_wave_bosnia_pressure.minor_loss }
+			independence_wave_change_bos_ledgers = yes
+			if = {
+				limit = { has_country_flag = independence_wave_bos_garrisons_screened NOT = { has_country_flag = independence_wave_bos_mountain_veterans_focus_companion_awarded } }
+				set_country_flag = independence_wave_bos_mountain_veterans_focus_companion_awarded
+				set_temp_variable = { independence_wave_bos_defence_delta = constant:independence_wave_bosnia_pressure.minor_gain }
+				set_temp_variable = { independence_wave_bos_civic_delta = constant:independence_wave_value.minimum }
+				independence_wave_change_bos_ledgers = yes
+			}
+		}
+	}
+}
+
+shared_focus = {
+	id = independence_wave_bos_publish_drina_corridor_docket
+	icon = GFX_goal_independence_wave_former_host_settlement
+	prerequisite = { focus = independence_wave_bos_bind_cantonal_guarantees focus = independence_wave_bos_commission_mountain_veterans }
+	relative_position_id = independence_wave_bos_map_drina_passes_and_depots
+	x = 0
+	y = 2
+	cost = @independence_wave_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = { is_independence_wave_bos_package = yes has_independence_wave_generic_focus_contract = yes }
+	available = {
+		is_independence_wave_bos_package = yes
+		has_independence_wave_generic_focus_contract = yes
+		104 = { is_owned_and_controlled_by = ROOT is_capital = yes }
+		custom_override_tooltip = {
+			tooltip = independence_wave_bos_docket_paid_recorded_tt
+			not_tooltip = independence_wave_bos_docket_paid_requirement_tt
+			OR = { has_country_flag = independence_wave_bos_cantonal_council_convened has_country_flag = independence_wave_bos_garrisons_screened }
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_bos_publish_drina_corridor_docket_tt
+		hidden_effect = {
+			set_temp_variable = { independence_wave_bos_civic_delta = constant:independence_wave_bosnia_pressure.minor_gain }
+			set_temp_variable = { independence_wave_bos_defence_delta = constant:independence_wave_bosnia_pressure.minor_gain }
+			independence_wave_change_bos_ledgers = yes
+		}
+	}
+}
+
+shared_focus = {
+	id = independence_wave_mac_register_vardar_municipal_offices
+	icon = GFX_goal_independence_wave_founding_administration
+	prerequisite = { focus = independence_wave_prepare_capital_administration }
+	relative_position_id = independence_wave_overlay_take_stock_of_independence
+	x = 3
+	y = 6
+	offset = { x = -35 trigger = { can_use_independence_wave_full_focus_framework = yes } }
+	cost = @independence_wave_focus_short
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = { is_independence_wave_mac_package = yes can_use_independence_wave_full_focus_framework = yes }
+	available = { is_independence_wave_mac_package = yes has_independence_wave_generic_focus_contract = yes 106 = { is_owned_and_controlled_by = ROOT is_capital = yes } }
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_mac_register_vardar_municipal_offices_tt
+		hidden_effect = {
+			set_temp_variable = { independence_wave_mac_civic_delta = constant:independence_wave_macedonia_pressure.minor_gain }
+			set_temp_variable = { independence_wave_mac_defence_delta = constant:independence_wave_value.minimum }
+			independence_wave_change_mac_ledgers = yes
+		}
+	}
+}
+
+shared_focus = {
+	id = independence_wave_mac_survey_vardar_rail_and_grain
+	icon = GFX_goal_independence_wave_infrastructure_authority
+	prerequisite = { focus = independence_wave_mac_register_vardar_municipal_offices }
+	relative_position_id = independence_wave_mac_register_vardar_municipal_offices
+	x = 0
+	y = 1
+	cost = @independence_wave_focus_short
+	search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_INFRASTRUCTURE }
+	allow_branch = { is_independence_wave_mac_package = yes can_use_independence_wave_full_focus_framework = yes }
+	available = { is_independence_wave_mac_package = yes has_independence_wave_generic_focus_contract = yes 106 = { is_owned_and_controlled_by = ROOT is_capital = yes } }
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_mac_survey_vardar_rail_and_grain_tt
+		hidden_effect = {
+			set_temp_variable = { independence_wave_mac_civic_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_mac_defence_delta = constant:independence_wave_macedonia_pressure.minor_gain }
+			independence_wave_change_mac_ledgers = yes
+		}
+	}
+}
+
+shared_focus = {
+	id = independence_wave_mac_ratify_village_appeals
+	icon = GFX_goal_independence_wave_popular_councils
+	prerequisite = { focus = independence_wave_mac_survey_vardar_rail_and_grain }
+	mutually_exclusive = { focus = independence_wave_mac_screen_mountain_veterans }
+	relative_position_id = independence_wave_mac_survey_vardar_rail_and_grain
+	x = -1
+	y = 1
+	cost = @independence_wave_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = { is_independence_wave_mac_package = yes can_use_independence_wave_full_focus_framework = yes }
+	available = { is_independence_wave_mac_package = yes has_independence_wave_generic_focus_contract = yes 106 = { is_owned_and_controlled_by = ROOT is_capital = yes } }
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_mac_ratify_village_appeals_tt
+		if = { limit = { has_country_flag = independence_wave_mac_community_council_convened NOT = { has_country_flag = independence_wave_mac_village_appeals_focus_companion_awarded } } custom_effect_tooltip = independence_wave_mac_village_appeals_focus_bonus_tt }
+		hidden_effect = {
+			set_temp_variable = { independence_wave_mac_civic_delta = constant:independence_wave_macedonia_pressure.standard_gain }
+			set_temp_variable = { independence_wave_mac_defence_delta = constant:independence_wave_macedonia_pressure.minor_loss }
+			independence_wave_change_mac_ledgers = yes
+			if = {
+				limit = { has_country_flag = independence_wave_mac_community_council_convened NOT = { has_country_flag = independence_wave_mac_village_appeals_focus_companion_awarded } }
+				set_country_flag = independence_wave_mac_village_appeals_focus_companion_awarded
+				set_temp_variable = { independence_wave_mac_civic_delta = constant:independence_wave_macedonia_pressure.minor_gain }
+				set_temp_variable = { independence_wave_mac_defence_delta = constant:independence_wave_value.minimum }
+				independence_wave_change_mac_ledgers = yes
+			}
+		}
+	}
+}
+
+shared_focus = {
+	id = independence_wave_mac_screen_mountain_veterans
+	icon = GFX_goal_independence_wave_army_integration
+	prerequisite = { focus = independence_wave_mac_survey_vardar_rail_and_grain }
+	mutually_exclusive = { focus = independence_wave_mac_ratify_village_appeals }
+	relative_position_id = independence_wave_mac_survey_vardar_rail_and_grain
+	x = 1
+	y = 1
+	cost = @independence_wave_focus_standard
+	search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_WAR_SUPPORT }
+	allow_branch = { is_independence_wave_mac_package = yes can_use_independence_wave_full_focus_framework = yes }
+	available = { is_independence_wave_mac_package = yes has_independence_wave_generic_focus_contract = yes 106 = { is_owned_and_controlled_by = ROOT is_capital = yes } }
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_mac_screen_mountain_veterans_tt
+		if = { limit = { has_country_flag = independence_wave_mac_networks_screened NOT = { has_country_flag = independence_wave_mac_mountain_veterans_focus_companion_awarded } } custom_effect_tooltip = independence_wave_mac_mountain_veterans_focus_bonus_tt }
+		hidden_effect = {
+			set_temp_variable = { independence_wave_mac_defence_delta = constant:independence_wave_macedonia_pressure.standard_gain }
+			set_temp_variable = { independence_wave_mac_civic_delta = constant:independence_wave_macedonia_pressure.minor_loss }
+			independence_wave_change_mac_ledgers = yes
+			if = {
+				limit = { has_country_flag = independence_wave_mac_networks_screened NOT = { has_country_flag = independence_wave_mac_mountain_veterans_focus_companion_awarded } }
+				set_country_flag = independence_wave_mac_mountain_veterans_focus_companion_awarded
+				set_temp_variable = { independence_wave_mac_defence_delta = constant:independence_wave_macedonia_pressure.minor_gain }
+				set_temp_variable = { independence_wave_mac_civic_delta = constant:independence_wave_value.minimum }
+				independence_wave_change_mac_ledgers = yes
+			}
+		}
+	}
+}
+
+shared_focus = {
+	id = independence_wave_mac_publish_vardar_arbitration_docket
+	icon = GFX_goal_independence_wave_former_host_settlement
+	prerequisite = { focus = independence_wave_mac_ratify_village_appeals focus = independence_wave_mac_screen_mountain_veterans }
+	relative_position_id = independence_wave_mac_survey_vardar_rail_and_grain
+	x = 0
+	y = 2
+	cost = @independence_wave_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = { is_independence_wave_mac_package = yes can_use_independence_wave_full_focus_framework = yes }
+	available = {
+		is_independence_wave_mac_package = yes
+		has_independence_wave_generic_focus_contract = yes
+		106 = { is_owned_and_controlled_by = ROOT is_capital = yes }
+		custom_override_tooltip = {
+			tooltip = independence_wave_mac_docket_paid_recorded_tt
+			not_tooltip = independence_wave_mac_docket_paid_requirement_tt
+			OR = { has_country_flag = independence_wave_mac_community_council_convened has_country_flag = independence_wave_mac_networks_screened }
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_mac_publish_vardar_arbitration_docket_tt
+		hidden_effect = {
+			set_temp_variable = { independence_wave_mac_civic_delta = constant:independence_wave_macedonia_pressure.minor_gain }
+			set_temp_variable = { independence_wave_mac_defence_delta = constant:independence_wave_macedonia_pressure.minor_gain }
+			independence_wave_change_mac_ledgers = yes
+		}
+	}
 }
