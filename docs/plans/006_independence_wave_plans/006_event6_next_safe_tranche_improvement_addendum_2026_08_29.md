@@ -38,7 +38,7 @@ The next first-footprint row, IW-108 Buganda, is also not patchable. `subagent_h
 
 The automatic-selector zero-country observation is not a safe repair target. `subagent_handoffs/006_allocator_runtime_probe_no_change_2026-08-30.md` found no concrete false source gate and explicitly rejects weakening the selector or adding a fallback. A parent patch requires a specific failing-condition receipt from the planner phase, selected and rejected arrays, pool-exhausted state, or a package wrapper and weight output; source inference alone is insufficient.
 
-Current read-only Event MCP evidence is partial rather than blocking: `hoi4.event_inspect` and `hoi4.event_render` for `chaosx.nr6.1` completed at revision `3ab4ef70be0beb8fdb94320b71fc0769ac1bf50c76f6529abc50afc42fb1d20e`, selected five overview nodes, and returned linked trace and render artifacts, but helper projection remains absent and 8,553 workspace nodes remain unresolved. This supports no new event-chain patch or runtime completion claim. No weighted surface is advanced by this continuation; any AI, MTTH, random-pool, decision-score, mission-score, or focus-weight conclusion still requires `hoi4.probability_inspect` and the named `chaosx_ai_probability_auditor` route before and after an owner patch. No technology surface is included in this continuation, and the installed package has no Technology Tree Viewer, so no technology-tree conclusion is available.
+At the 2026-08-30 evidence cut, read-only Event MCP evidence was partial: `hoi4.event_inspect` and `hoi4.event_render` for `chaosx.nr6.1` completed at revision `3ab4ef70be0beb8fdb94320b71fc0769ac1bf50c76f6529abc50afc42fb1d20e`, selected five overview nodes, and returned linked trace and render artifacts, but helper projection was absent and 8,553 workspace nodes remained unresolved. This supports no runtime completion claim. No weighted surface was advanced by that continuation; any AI, MTTH, random-pool, decision-score, mission-score, or focus-weight conclusion still requires `hoi4.probability_inspect` and the named `chaosx_ai_probability_auditor` route before and after an owner patch. No technology surface was included in that continuation, and the installed package has no Technology Tree Viewer, so no technology-tree conclusion follows.
 
 ### Exact next owners and transition gates
 
@@ -93,12 +93,12 @@ This pass is distinct: it owns a current scenario publication defect and the sho
 
 | Priority | Item | Disposition | Recommended next owner | Completion dependency |
 | --- | --- | --- | --- | --- |
-| P0 | SCN-008 failure-publication boundary repair | **ACCEPTED** | `chaosx_decision_mission_auditor` for the bounded source patch; Event 006 parent for final event integration review | Source patch, static failure-path assertion, current event inspect/render/compare evidence |
+| P0 | SCN-008 failure-publication boundary repair | **IMPLEMENTED / SOURCE-STATIC CLOSED** | Event 006 parent for final event integration review | Success-only publication and queued-result lock are source-implemented; static failure/result-lock matrix passes, while focused MCP evidence is partial and semantic compare/lifecycle evidence remain open |
 | P1 | IW-179 grounded identity and portrait-source packet | **ACCEPTED** | `chaosx_portrait_creator` | Defensible Micronesian/Pohnpeian/Carolinian adult male identity or authentic institutional consumer, period/role evidence, full-resolution source, explicit rights |
 | P1 | IW-179 atomic central admission | **BLOCKED** | `chaosx_country_package_auditor`, then Event 006 parent | Identity gate, source placeholder, package audit, map/event/probability evidence |
 | P1 | FORM-48 HBX/HAW/FSM reachability | **QUEUED** | `chaosx_decision_mission_auditor` with `chaosx_country_package_auditor`, then parent | IW-179 admission plus exact three-member consent and transaction proofs |
-| P1 | SCN-008 32-cell execution dossier | **ACCEPTED AFTER P0** | `chaosx_event_completion_auditor` | Publication fix plus current event/map/probability routes |
-| P2 | League phase and charter reachability dossier | **QUEUED** | `chaosx_decision_mission_auditor` with `chaosx_event_completion_auditor` | Current event/focus/GUI/probability routes; no new League code by default |
+| P1 | SCN-008 32-cell execution dossier | **IN PROGRESS / STRUCTURAL PARTIAL** | `chaosx_event_completion_auditor`, then Event 006 parent | Current 32-cell static pass and focused Event MCP artifacts exist; helper/lifecycle, map, typed probability, semantic compare, and user-owned runtime evidence remain open |
+| P2 | League phase and charter reachability dossier | **IN PROGRESS / RETRY CALLER REPAIRED; DOSSIER OPEN** | `chaosx_decision_mission_auditor` with `chaosx_event_completion_auditor`, then parent | Retry caller is source-implemented; broader event/focus/GUI/probability and user-owned runtime evidence remain open, with no new League expansion by default |
 | P0 evidence gate | Allocator, SCN-008, FORM-48, League, focus, and package AI | **BLOCKED** | `chaosx_ai_probability_auditor` | Working `hoi4.probability_inspect`, named evaluation scenarios, same-scenario compare after any owner patch |
 | Stop line | New package batch, focus branch, GUI, formable family, or super-event | **REJECTED** | None | Adds breadth without closing the current execution and evidence gaps |
 
@@ -368,16 +368,16 @@ These results constrain later patches but do not prove the unresolved execution,
 
 ## Implementation and audit order
 
-1. Apply and review the P0 SCN-008 failure-publication patch without changing scenario outcomes, release counts, art, or localisation.
-2. Add the narrow source assertion and rerun the 32-cell static matrix.
-3. Recover current Event MCP inspection/render/compare and prove success, failure, rollback, relaunch, and reset publication order.
+1. Completed: implement and review the P0 SCN-008 success-only publication boundary and queued-result lock without changing scenario outcomes, release counts, art, or player-facing localisation; see `subagent_handoffs/006_event6_scn008_dead_option_repair_2026-09-20.md` and `subagent_handoffs/006_event6_scn008_mcp_refresh_2026-09-25.md`.
+2. Completed for current source: `.tools/audit_event6_scenario_matrix.py` passes all 32 cells and eight edge cases and verifies the result-pending setter, acknowledgement/reset cleanup, launch barrier, and busy status; this remains static evidence.
+3. Current Event MCP inspect/render artifacts for the launch barrier and public result are focused/partial at revision `cc097d15c00f15159a92e4fc4de590cfe2b67224170be81d9d17e55e0c16c587`; semantic comparison returned `EVENT_REVISION_NOT_CACHED`, and full `state_flow` returned `INTERNAL_ERROR`. Continue lifecycle and scenario evidence work from `subagent_handoffs/006_event6_scn008_mcp_refresh_2026-09-25.md`.
 4. Route IW-179 to `chaosx_portrait_creator`; leave every gameplay gate closed until its source and rights packet is accepted.
 5. If the packet fails, record IW-179 and FORM-48 as blocked and stop; do not choose a fallback identity.
 6. If the packet passes, run a package-local country, portrait, asset, localisation, focus, decision, and AI audit before central admission.
 7. Admit IW-179 atomically through automatic, Join, SCN-008, validation, and cleanup dispatches; rerun and recompute every allocator count.
 8. Audit FORM-48 through its exact three-member scenarios before setting `independence_wave_form48_readiness_attested`.
 9. Produce the SCN-008 32-cell and League reachability dossiers with current Event, focus, map, GUI, and probability artifacts.
-10. Run the same-scenario probability compare for every owner-applied weighted or eligibility change, including the five currently dirty package triggers.
+10. Run the same-scenario probability compare for every owner-applied weighted or eligibility change, including the five provisional package eligibility changes committed in `3098ed9d2`.
 11. Re-run country-package, decision/mission, focus, localisation, asset, portrait, probability, and whole-event completion audits.
 12. Update the source-of-truth map, resume packet, manifests, and authoritative workbook only from accepted implementation facts.
 
@@ -391,7 +391,7 @@ These results constrain later patches but do not prove the unresolved execution,
 - Do not add a second focus tree, League phase, charter pillar, scenario mode, formable family, Statehood tab, scripted GUI, super-event, achievement, 3D model, or custom unit.
 - Do not select a substitute for super-event 23 audio without explicit rights clearance and approval.
 - Do not repeat the resolved decision-cost, foundation-lock, localisation-normalization, ASSET-004, portrait-consumer, or focus-geometry fixes.
-- Do not claim completion from static validator success while the mandatory MCP routes remain unavailable.
+- Do not claim completion from static validator success or focused MCP partials while required lifecycle, comparison, map, probability, GUI, runtime, and user-owned live evidence remains open.
 
 ## Promotion rule
 

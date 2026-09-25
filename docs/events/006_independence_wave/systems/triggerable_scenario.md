@@ -23,7 +23,8 @@ The scenario does not bypass living-tag protection, Event 005 origin ownership, 
 6. The allocator changes its expected release count to the number that actually passed every reservation proof.
 7. The ordinary Event 006 lock, host-capital preparation, country creation, state transfer, package initialization, history commit, and Liberation commit execute once.
 8. Only a committed release receives intensity and type setup.
-9. The summary event freezes release, host, war, league, territory, force, and blocked-candidate values. It copies selected rows into the released ledger only when the committed flag is present; a failed or rolled-back plan keeps those rows in the blocked ledger with the transaction failure reason.
+9. The summary event freezes release, host, war, league, territory, force, and blocked-candidate values. It copies selected rows into the released ledger only when the committed flag is present; a failed or rolled-back plan discards its diagnostics and publishes no Event 006 result or ledger.
+10. A committed run sets a result-pending flag before queuing its one-day-delayed report. The launch barrier and player-facing status hold further runs until the report option records the ledger view and clears the flag, keeping the shared summary bound to the run that scheduled it.
 
 The global plan arrays remain authoritative until the summary is frozen. Type-specific wars, patron channels, and league setup occur only after the ownership transaction commits.
 
@@ -55,7 +56,7 @@ The scenario writes an AI seed to every released country. Package and route AI s
 
 ## Summary and Rejection Ledger
 
-`chaosx.triggerable_scenarios.80` reports the frozen result. When allocation produced rejection rows, the launching player can open `independence_wave_scenario_ledger_category` and inspect every blocked registry row with zero-reward Previous, Next, and Close controls. A pre-allocation barrier failure exposes its transaction proof but does not invent candidate rows.
+`chaosx.triggerable_scenarios.80` reports the frozen result for a committed run. The result-pending flag prevents another scenario from replacing the shared summary before the report is acknowledged. When allocation produced rejection rows, the launching player can open `independence_wave_scenario_ledger_category` and inspect every blocked registry row with zero-reward Previous, Next, and Close controls. A pre-allocation barrier failure exposes its transaction proof but does not invent candidate rows. A failed or rolled-back run discards its diagnostics and exposes no Event 006 result or ledger under the success-only publication guard.
 
 The 55 disabled selectable rows are appended after bound-package failures with reason `unbound_current_map`. The 13 non-selectable vanilla route overlays remain visible through their exact carrier routes, not as release candidates. Their registry tags and IDs remain visible even when the country has no runtime localisation because disabled identities are not silently replaced by nearby states.
 

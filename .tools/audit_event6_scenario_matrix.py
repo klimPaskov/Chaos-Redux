@@ -115,6 +115,7 @@ def main() -> int:
 	scenario = read("common/scripted_effects/006_independence_wave_scenario_effects.txt")
 	scenario_triggers = read("common/scripted_triggers/006_independence_wave_triggers.txt")
 	scenario_event = read("events/006_independence_wave.txt")
+	scenario_localisation = read("common/scripted_localisation/chaosx_scripted_localisation_scenarios.txt")
 	planner = read("common/scripted_effects/006_independence_wave_package_planner_effects.txt")
 	shared = read("common/scripted_effects/chaosx_liberation_release_effects.txt")
 	joint = read("common/scripted_effects/005_006_liberations_collision_effects.txt")
@@ -163,6 +164,14 @@ def main() -> int:
 		r"(?m)^[ \t]*set_country_flag = independence_wave_scenario_ledger_visible[ \t]*$",
 		gameplay,
 	)
+	result_pending_setters = re.findall(
+		r"(?m)^[ \t]*set_global_flag = independence_wave_scenario_result_pending[ \t]*$",
+		gameplay,
+	)
+	result_pending_clearers = re.findall(
+		r"(?m)^[ \t]*clr_global_flag = independence_wave_scenario_result_pending[ \t]*$",
+		gameplay,
+	)
 	scenario_result_dispatches = re.findall(
 		r"(?m)^[ \t]*country_event = \{ id = chaosx\.triggerable_scenarios\.80\b[^}\r\n]*\}[ \t]*$",
 		gameplay,
@@ -179,6 +188,8 @@ def main() -> int:
 	success_80 = success_branch.find("country_event = { id = chaosx.triggerable_scenarios.80")
 	require(len(commit_setters) == 1, f"SCN-008 publication receipt has {len(commit_setters)} global setters; expected one", errors)
 	require(len(ledger_setters) == 1, f"SCN-008 ledger visibility has {len(ledger_setters)} country setters; expected one", errors)
+	require(len(result_pending_setters) == 1, f"SCN-008 queued result has {len(result_pending_setters)} pending setters; expected one", errors)
+	require(len(result_pending_clearers) == 2, f"SCN-008 queued result has {len(result_pending_clearers)} pending clearers; expected report acknowledgement plus summary reset", errors)
 	require(len(scenario_result_dispatches) == 1, f"SCN-008 result event has {len(scenario_result_dispatches)} dispatch call sites; expected one", errors)
 	require(len(scenario_2_dispatches) == 1, f"SCN-008 Event 006 log has {len(scenario_2_dispatches)} dispatches in its trigger; expected one", errors)
 	require(len(scenario_80_dispatches) == 1, f"SCN-008 result dispatch has {len(scenario_80_dispatches)} trigger-local call sites; expected one", errors)
@@ -204,10 +215,49 @@ def main() -> int:
 	require(
 		result_event
 		and "has_global_flag = independence_wave_scenario_committed" in result_event
+		and "has_global_flag = independence_wave_scenario_result_pending" in result_event
 		and "NOT = { has_global_flag = independence_wave_scenario_failed }" in result_event
 		and "NOT = { has_global_flag = independence_wave_scenario_finalization_failed }" in result_event
 		and result_event.count("set_country_flag = independence_wave_scenario_ledger_visible") == 1,
 		"SCN-008 result event does not require the current commit receipt before exposing the ledger",
+		errors,
+	)
+	try:
+		result_option = extract_block_containing(
+			result_event,
+			"name = chaosx.triggerable_scenarios.80.a",
+			"option = {",
+		)
+		summary_reset = extract_script_block(scenario, "independence_wave_scenario_reset_summary")
+		transaction_barrier = extract_script_block(scenario_triggers, "independence_wave_scenario_transaction_barrier_is_open")
+		busy_status = extract_block_containing(
+			scenario_localisation,
+			"localization_key = chaosx.scenarios.launch_status.independence_wave.transaction_busy",
+			"text = {",
+		)
+	except ValueError as exc:
+		errors.append(str(exc))
+		result_option = ""
+		summary_reset = ""
+		transaction_barrier = ""
+		busy_status = ""
+	require(
+		result_option
+		and "has_global_flag = independence_wave_scenario_result_pending" in result_option
+		and result_option.find("set_country_flag = independence_wave_scenario_ledger_visible")
+			< result_option.find("clr_global_flag = independence_wave_scenario_result_pending"),
+		"SCN-008 report acknowledgement does not publish the ledger before releasing the result lock",
+		errors,
+	)
+	require(
+		"NOT = { has_global_flag = independence_wave_scenario_result_pending }" in transaction_barrier
+		and "clr_global_flag = independence_wave_scenario_result_pending" in summary_reset,
+		"SCN-008 launch barrier or summary reset does not manage the queued-result lock",
+		errors,
+	)
+	require(
+		"has_global_flag = independence_wave_scenario_result_pending" in busy_status,
+		"SCN-008 launch status does not explain the queued-result transaction lock",
 		errors,
 	)
 	publication_visibility = (
@@ -339,6 +389,8 @@ def main() -> int:
 	publication_census = {
 		"commit_setter_count": len(commit_setters),
 		"ledger_visible_setter_count": len(ledger_setters),
+		"result_pending_setter_count": len(result_pending_setters),
+		"result_pending_clearer_count": len(result_pending_clearers),
 		"scenario_result_dispatch_count": len(scenario_result_dispatches),
 		"scenario_log_dispatch_count": len(scenario_2_dispatches),
 		"scenario_result_dispatch_order": "chaosx.nr6.2 -> chaosx.triggerable_scenarios.80",
