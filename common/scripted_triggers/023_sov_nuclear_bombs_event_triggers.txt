@@ -19,6 +19,18 @@ sov_nuclear_bombs_event_actor_is_valid = {
 	NOT = { sov_nuclear_bombs_terminal_world_state_is_active = yes }
 }
 
+# Opening-only predicate. It deliberately does not require the Event 23 ledger
+# because the opening doctrine creates that ledger. The automatic Fire-Once
+# dispatcher and the delayed opening event both use it so a missing SOV tag or
+# terminal world state cannot consume the event without a valid recipient.
+sov_nuclear_bombs_event_opening_actor_is_valid = {
+	tag = SOV
+	exists = yes
+	NOT = { has_global_flag = settings_chaos_meter_disabled }
+	NOT = { has_global_flag = sov_nuclear_bombs_ledger_active }
+	NOT = { sov_nuclear_bombs_terminal_world_state_is_active = yes }
+}
+
 sov_nuclear_bombs_event_can_open_command = {
 	sov_nuclear_bombs_event_actor_is_valid = yes
 	NOT = { has_country_flag = sov_nuclear_bombs_command_locked }
