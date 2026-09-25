@@ -1,5 +1,7 @@
 # Base zombie regeneration: dependency gate handoff (2026-09-19)
 
+Disposition, 2026-09-25: Superseded by the user's instruction to remove the base zombie asset package. The job root and runtime files cited below no longer exist; this is historical evidence only.
+
 This handoff is historical. The current user-selected Meshy 7 zombie package, 64-credit lineage, runtime files, and acceptance limits are recorded at `docs/assets/002_zombie_outbreak/models_3d/zombies/manifest.md` and `validation/current_runtime_audit_20260920.json`; all "current" and "final" claims below describe earlier candidates.
 
 ## Historical documentation disposition: clean final v3, 2026-09-20

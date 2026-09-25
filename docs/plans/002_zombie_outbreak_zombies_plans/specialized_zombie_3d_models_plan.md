@@ -2,7 +2,7 @@
 
 Status: reference packages ready; Meshy generation is blocked by the verified provider credit gate.
 
-This plan covers the seven requested non-armored specialized zombie sub-units. The base `zombies` model remains unchanged, and `armored_undead_zombies`, `armored_necrotic_zombies`, and `armored_demonic_zombies` are explicitly out of scope.
+This plan covers the seven requested non-armored specialized zombie sub-units. The base `zombies` 3D package was removed at the user's request on 2026-09-25 and is outside this plan; `armored_undead_zombies`, `armored_necrotic_zombies`, and `armored_demonic_zombies` are also out of scope.
 
 ## Runtime scope
 

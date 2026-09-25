@@ -1,5 +1,7 @@
 # Base Zombie geometry and action repair
 
+Disposition, 2026-09-25: Superseded by removal of the base zombie model package. All geometry and action paths below are historical only.
+
 Status: `in progress; no runtime promotion approved`.
 
 The parent authorized completing the existing non-firearm Base Zombie package through the verified Blender adapter, preserving the source geometry and valid actions, restoring missing components, and supplying sourced audio and bespoke counters.

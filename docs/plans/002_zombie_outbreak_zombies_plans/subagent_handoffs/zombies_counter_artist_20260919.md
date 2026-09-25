@@ -1,5 +1,7 @@
 # Zombie counter artist handoff — 2026-09-19
 
+Disposition, 2026-09-25: The newly produced base-zombie counters were removed at the user's request and the three live base-icon DDS files were restored to their pre-rework versions. The production paths below are historical only.
+
 Status: `needs_user_review`.
 
 Asset id: `chaosx.event002.zombies`.

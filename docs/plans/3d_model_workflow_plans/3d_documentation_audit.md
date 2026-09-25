@@ -1,5 +1,7 @@
 # 3D model pipeline documentation audit
 
+Disposition, 2026-09-25: Base-zombie job-root and re-authoring-queue references below are historical. The user requested removal of that model package, and its runtime files and job root were deleted.
+
 Read-only audit of the 3D model pipeline documentation surface, cross-checked against the pipeline code.
 
 Audit scope: `.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md`, `.tools/3d_pipeline/README.md`, the `chaosx_3d_model_pipeline` paragraphs of `.agents/skills/chaos-redux-subagents/SKILL.md` (lines 56 and 159-169), `.codex/agents/chaosx_3d_model_pipeline.toml`, `docs/systems/3d_model_pipeline/**`, and the top level of `docs/plans/3d_model_workflow_plans/*.md` (the `adapter_recovery_drafts/**` subtree was excluded from the audit scope).

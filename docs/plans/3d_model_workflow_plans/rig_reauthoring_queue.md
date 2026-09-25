@@ -2,7 +2,8 @@
 
 Every repository Python path that created or edited bones, skin weights, or keyframes has been deleted from the 3D pipeline, and the pipeline policy now permits none.
 The rigs, weight sets, and actions that those scripts produced remain in the shipped job evidence and runtime packages, so each affected model is queued here for genuine re-authoring live in Blender.
-Nothing in this queue is deleted or unwired: the assets keep working until a re-authored replacement passes the acceptance rules and the parent wires it.
+The base zombie package was removed at the user's request on 2026-09-25 and is no longer in this queue.
+The remaining assets keep working until a re-authored replacement passes the acceptance rules and the parent wires it.
 
 Acceptance basis: the user directed that no repository script may rig a model, that the shortcut scripts be removed, and that the models whose rigs and actions came from them be queued for re-authoring.
 This document is the queue; it does not itself accept or reject any existing asset.
@@ -19,11 +20,10 @@ Files that merely echo the adapter's whole operation registry are not counted as
 The provider-ingestion operations `import_animation_action`, `import_bvh_animation_action`, and `retime_animation_action` are part of the preferred Meshy route, so their use is not by itself grounds for re-authoring and they are not listed as removed operations here.
 Reported classes are derived from the specific removed operations found in that job's evidence, so a job listed for actions alone is not claimed to have a script-generated rig.
 
-## Queued models (20)
+## Queued models (19)
 
 | Job root | Removed operations found in executed evidence | Implicated artifacts | Evidence files |
 | --- | --- | --- | --- |
-| `002_zombie_outbreak/models_3d/zombies` | `author_measured_creature_action`, `author_measured_creature_rig`, `repair_explicit_skin`, `repair_explicit_skin_batch` | rig, skin weights, actions | 105 |
 | `012_africa/models_3d/disaster_wardens` | `author_creature_action`, `author_creature_rig`, `correct_action_grounding` | rig, actions | 16 |
 | `012_africa/models_3d/forest_giants` | `attach_rigid_component`, `author_creature_action`, `author_creature_rig`, `author_measured_creature_action`, `author_measured_creature_rig`, `correct_action_grounding` | rig, actions, component assembly / scale | 94 |
 | `012_africa/models_3d/gorilla_heavy_infantry` | `attach_rigid_component`, `author_creature_action`, `author_creature_rig`, `author_measured_creature_action`, `author_measured_creature_rig`, `correct_action_grounding`, `inspect_fitted_humanoid_source` | rig, actions, component assembly / scale, rig-source inspection only | 117 |

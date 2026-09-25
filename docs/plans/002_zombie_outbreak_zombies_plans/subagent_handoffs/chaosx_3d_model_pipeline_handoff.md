@@ -1,5 +1,7 @@
 # Zombies 3D model pipeline handoff
 
+Disposition, 2026-09-25: Superseded by the user's instruction to remove the current base zombie work. The base model job, runtime mesh, actions, textures, entity, and dedicated sounds described below were deleted. The base and Wendigo battalions use `sprite = infantry`; this handoff is historical evidence only.
+
 Status: complete asset package and runtime registration. User-owned live HOI4 verification remains pending.
 
 ## Package and gates

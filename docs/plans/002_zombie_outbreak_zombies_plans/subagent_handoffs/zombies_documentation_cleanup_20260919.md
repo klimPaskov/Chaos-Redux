@@ -1,5 +1,7 @@
 # Base zombie 3D and audio documentation cleanup, 2026-09-19
 
+Disposition, 2026-09-25: Superseded by removal of the base zombie model and dedicated audio assets. References to its job root and runtime files below are historical only.
+
 Scope: `chaosx.event002.zombies` base model lineage, final repaired rig/actions, death v9, shared base-zombie runtime audio, the one Meshy rig attempt, and the dated specialized-audio intake where its base-zombie observations had become stale. This is documentation reconciliation only; the parent owns runtime edits and final review, and the user owns live-game validation.
 
 ## Source-of-truth map

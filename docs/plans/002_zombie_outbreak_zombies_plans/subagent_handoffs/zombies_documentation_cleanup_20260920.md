@@ -1,5 +1,7 @@
 # Base zombie 3D documentation cleanup handoff, 2026-09-20
 
+Disposition, 2026-09-25: Superseded by removal of the base zombie model package at the user's request. The current-source map below describes deleted files and must not be used for production.
+
 ## Scope and files changed
 
 - Updated `docs/assets/002_zombie_outbreak/models_3d/zombies/manifest.md` with the current clean final v3 source-of-truth section and an explicit historical-status boundary.
