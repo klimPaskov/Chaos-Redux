@@ -1,0 +1,32 @@
+# Event 016 private Directorate Singularity terminal choice.
+# The paid four-stage project path and physical site construction precede this
+# explicit final authorization. The shared Fallout request owns the transition.
+
+mengele_clone_army_category = {
+	mengele_event016_authorize_singularity_detonation = {
+		icon = GFX_decision_brilliant_scientist_project_strategic_singularity_weaponization
+		visible = {
+			hidden_trigger = {
+				brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+				brilliant_scientist_singularity_scenario_is_enabled = yes
+				has_country_flag = mengele_event016_singularity_weaponization_completed
+				NOT = { has_country_flag = mengele_event016_singularity_terminal_fired }
+				NOT = { has_global_flag = world_end }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = mengele_event016_singularity_terminal_requirements_tt
+				hidden_trigger = { brilliant_scientist_mengele_singularity_terminal_is_ready = yes }
+			}
+		}
+		complete_effect = {
+			hidden_effect = { brilliant_scientist_mengele_execute_singularity_terminal = yes }
+			if = {
+				limit = { has_country_flag = mengele_event016_singularity_terminal_committed }
+				custom_effect_tooltip = mengele_event016_singularity_terminal_authorized_tt
+			}
+		}
+		ai_will_do = { base = constant:brilliant_scientist_krg_ai.never }
+	}
+}

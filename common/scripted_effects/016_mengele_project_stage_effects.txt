@@ -1562,6 +1562,17 @@ brilliant_scientist_mengele_reconcile_project_availability = {
 
 brilliant_scientist_mengele_cleanup_provider_receipts = {
 	set_temp_variable = { mengele_event016_provider_cleanup_applied = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = mengele_event016_singularity_construction_receipt_active
+				brilliant_scientist_mengele_singularity_site_pending_receipt_is_present = yes
+				check_variable = { var = mengele_event016_singularity_site_state_entries^num value = constant:brilliant_scientist_value.zero compare = greater_than }
+			}
+		}
+		brilliant_scientist_mengele_singularity_construction_cleanup = yes
+		brilliant_scientist_mengele_singularity_site_retire_all = yes
+	}
 	brilliant_scientist_mengele_cleanup_computation_incident = yes
 	brilliant_scientist_mengele_cleanup_conventional_incidents = yes
 	brilliant_scientist_mengele_cleanup_singularity_incident = yes

@@ -28721,10 +28721,31 @@ fallout_explicit_terminal_request_is_valid = {
 		fallout_request_source_is_chemical = yes
 		fallout_request_source_is_biological = yes
 		fallout_request_source_is_mixed = yes
-		fallout_request_source_is_strategic_singularity = yes
+		AND = {
+			fallout_request_source_is_strategic_singularity = yes
+			fallout_strategic_singularity_request_actor_is_valid = yes
+		}
 	}
 	NOT = { has_global_flag = world_end }
 	NOT = { has_global_flag = world_end_disabled }
+}
+
+# COUNTRY coordinator scope. The actor was saved by the source request and must
+# still own a submitted terminal receipt before the shared world-end lock.
+fallout_strategic_singularity_request_actor_is_valid = {
+	has_event_target = fallout_request_actor
+	event_target:fallout_request_actor = {
+		OR = {
+			AND = {
+				has_country_flag = brilliant_scientist_kruger_state
+				has_country_flag = brilliant_scientist_terminal_commitment_singularity
+				has_country_flag = brilliant_scientist_singularity_prelock_chaos_recorded
+				has_country_flag = brilliant_scientist_singularity_consequences_recorded
+				has_country_flag = brilliant_scientist_singularity_fallout_request_submitted
+			}
+			brilliant_scientist_mengele_singularity_request_actor_is_valid = yes
+		}
+	}
 }
 
 # Supported scope: COUNTRY. The manual scenario is an explicit player action.

@@ -1,0 +1,182 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 PRIVATE MENGELE SINGULARITY FALLOUT ADAPTER
+# ============================================================================
+# COUNTRY scope. The registered Directorate alone owns these prelock, request,
+# retry, consequence, and fired receipts. The shared Fallout request and lock
+# continue to own the world-end transition and presentation queue.
+# No effect in this file writes Kruger's private project or terminal receipts.
+
+brilliant_scientist_mengele_apply_singularity_prelock_chaos = {
+	if = {
+		limit = { NOT = { has_country_flag = mengele_event016_singularity_prelock_chaos_recorded } }
+		set_country_flag = mengele_event016_singularity_prelock_chaos_recorded
+		set_temp_variable = { mengele_event016_singularity_chaos_deficit = constant:chaos_meter_tier_range.tier_final.plus }
+		if = {
+			limit = { has_variable = global.chaos_meter_value }
+			subtract_from_temp_variable = { mengele_event016_singularity_chaos_deficit = global.chaos_meter_value }
+		}
+		clamp_temp_variable = { var = mengele_event016_singularity_chaos_deficit min = constant:brilliant_scientist_value.zero }
+		if = {
+			limit = { check_variable = { mengele_event016_singularity_chaos_deficit > constant:brilliant_scientist_value.zero } }
+			set_temp_variable = { chaos_change = mengele_event016_singularity_chaos_deficit }
+			set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.brilliant_scientist_singularity }
+			set_temp_variable = { chaos_history_reason_custom = constant:brilliant_scientist_value.one }
+			save_event_target_as = chaos_history_actor
+			add_chaos_meter_value = yes
+		}
+	}
+}
+
+# The shared strategic-singularity consequence values are applied once to the
+# current Directorate actor, with a private receipt instead of Kruger's flag.
+brilliant_scientist_mengele_apply_singularity_terminal_consequences = {
+	if = {
+		limit = { NOT = { has_country_flag = mengele_event016_singularity_consequences_recorded } }
+		set_country_flag = mengele_event016_singularity_consequences_recorded
+		set_temp_variable = { chaos_deaths_change = constant:brilliant_scientist_singularity_consequence.civilian_deaths }
+		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.strategic_singularity }
+		set_temp_variable = { chaos_deaths_is_civilian = constant:brilliant_scientist_value.one }
+		set_temp_variable = { chaos_deaths_target_country = THIS }
+		set_temp_variable = { chaos_deaths_has_target_country = constant:brilliant_scientist_value.one }
+		chaos_meter_register_deaths = yes
+		set_temp_variable = { chaos_deaths_change = constant:brilliant_scientist_singularity_consequence.military_deaths }
+		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.strategic_singularity }
+		set_temp_variable = { chaos_deaths_is_civilian = constant:brilliant_scientist_value.zero }
+		set_temp_variable = { chaos_deaths_target_country = THIS }
+		set_temp_variable = { chaos_deaths_has_target_country = constant:brilliant_scientist_value.one }
+		chaos_meter_register_deaths = yes
+		set_temp_variable = { air_contamination_delta_bp = constant:brilliant_scientist_singularity_consequence.air_contamination_bp }
+		set_temp_variable = { air_contamination_source_id = constant:air_contamination_source.fallout }
+		set_temp_variable = { air_contamination_source_current_bp = global.air_contamination_fallout_bp }
+		set_temp_variable = { air_contamination_skip_fallout_evaluation = constant:brilliant_scientist_value.one }
+		air_contamination_apply_delta_bp = yes
+		set_temp_variable = { condemnation_source_type = constant:condemnation_source.nuclear }
+		set_temp_variable = { condemnation_base_gain = constant:brilliant_scientist_singularity_consequence.condemnation_base }
+		set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+		set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.doomsday }
+		set_temp_variable = { condemnation_civilian_deaths = constant:brilliant_scientist_singularity_consequence.civilian_deaths }
+		set_temp_variable = { condemnation_contamination_value = constant:brilliant_scientist_singularity_consequence.condemnation_contamination }
+		set_temp_variable = { condemnation_context_type = constant:condemnation_context.strategic_singularity }
+		condemnation_add_source = yes
+		set_country_flag = used_unconventional_weapon
+		air_cleanliness_treaty_on_unconventional_use = yes
+	}
+}
+
+# The shared request can be queued while another country owns the coordinator.
+# Rejection clears only the private submitted receipt and schedules one retry.
+brilliant_scientist_mengele_schedule_singularity_fallout_retry = {
+	if = {
+		limit = {
+			has_country_flag = mengele_event016_singularity_terminal_committed
+			has_country_flag = mengele_event016_singularity_prelock_chaos_recorded
+			brilliant_scientist_mengele_singularity_terminal_commit_state_is_ready = yes
+			NOT = { has_country_flag = mengele_event016_singularity_fallout_request_submitted }
+			NOT = { has_country_flag = mengele_event016_singularity_fallout_retry_pending }
+			NOT = { has_global_flag = world_end }
+		}
+		set_country_flag = mengele_event016_singularity_fallout_retry_pending
+		set_temp_variable = { mengele_event016_singularity_retry_days = constant:brilliant_scientist_super_event_runtime.fallout_retry_days }
+		country_event = { id = chaosx.nr16.901 days = mengele_event016_singularity_retry_days }
+	}
+}
+
+brilliant_scientist_mengele_recover_rejected_singularity_fallout_request = {
+	if = {
+		limit = {
+			has_country_flag = mengele_event016_singularity_fallout_request_submitted
+			NOT = { has_country_flag = mengele_event016_singularity_terminal_fired }
+		}
+		clr_country_flag = mengele_event016_singularity_fallout_request_submitted
+		set_country_flag = mengele_event016_singularity_fallout_request_rejected
+		if = {
+			limit = { NOT = { has_variable = mengele_event016_singularity_fallout_retry_count } }
+			set_variable = { mengele_event016_singularity_fallout_retry_count = constant:brilliant_scientist_value.zero }
+		}
+		add_to_variable = { mengele_event016_singularity_fallout_retry_count = constant:brilliant_scientist_value.one }
+		brilliant_scientist_mengele_schedule_singularity_fallout_retry = yes
+	}
+}
+
+# A player decision and the hidden retry event call this same idempotent entry.
+brilliant_scientist_mengele_execute_singularity_terminal = {
+	if = {
+		limit = { brilliant_scientist_mengele_singularity_terminal_commit_state_is_ready = yes }
+		set_country_flag = mengele_event016_singularity_terminal_committed
+		brilliant_scientist_mengele_apply_singularity_prelock_chaos = yes
+		if = {
+			limit = { check_variable = { global.chaos_meter_value > constant:chaos_meter_tier_range.tier_final.min } }
+			if = {
+				limit = { fallout_request_ledger_is_free = yes }
+				brilliant_scientist_mengele_apply_singularity_terminal_consequences = yes
+				set_country_flag = mengele_event016_singularity_fallout_request_submitted
+				clr_country_flag = mengele_event016_singularity_fallout_request_rejected
+				if = {
+					limit = { NOT = { has_variable = mengele_event016_singularity_detonation_date } }
+					set_variable = { mengele_event016_singularity_detonation_date = global.date }
+				}
+				save_event_target_as = fallout_request_actor_input
+				set_temp_variable = { fallout_request_source_input = constant:fallout_request_source.strategic_singularity }
+				set_temp_variable = { fallout_request_intensity_input = constant:fallout_request_intensity.maximum }
+				fallout_request_aftermath = yes
+				if = {
+					limit = {
+						has_country_flag = mengele_event016_singularity_fallout_request_submitted
+						NOT = { has_global_flag = fallout_request_pending }
+						NOT = { has_global_flag = fallout_request_locked }
+					}
+					brilliant_scientist_mengele_recover_rejected_singularity_fallout_request = yes
+				}
+			}
+			else = { brilliant_scientist_mengele_schedule_singularity_fallout_retry = yes }
+		}
+	}
+}
+
+# Called only in the saved request-actor scope after the shared Fallout lock.
+brilliant_scientist_mengele_queue_singularity_super_event_for_actor = {
+	set_temp_variable = { brilliant_scientist_super_event_id = constant:brilliant_scientist_super_event.strategic_singularity }
+	add_to_array = {
+		array = global.brilliant_scientist_super_event_queue_id_entries
+		value = brilliant_scientist_super_event_id
+	}
+	add_to_array = {
+		array = global.brilliant_scientist_super_event_queue_actor_entries
+		value = THIS
+	}
+	brilliant_scientist_try_dispatch_super_event_queue = yes
+	brilliant_scientist_schedule_super_event_queue_retry = yes
+}
+
+brilliant_scientist_mengele_finalize_singularity_after_fallout_lock = {
+	if = {
+		limit = { brilliant_scientist_mengele_singularity_fallout_finalize_is_ready = yes }
+		set_country_flag = mengele_event016_singularity_terminal_fired
+		set_global_flag = world_end_brilliant_scientist_singularity
+		set_global_flag = brilliant_scientist_singularity_terminal_fired
+		set_global_flag = brilliant_scientist_lab_world_permanently_cancelled
+		set_country_flag = brilliant_scientist_all_actions_locked_after_world_end
+		set_variable = { global.world_end_event_id = constant:brilliant_scientist_event.id }
+		brilliant_scientist_mengele_queue_singularity_super_event_for_actor = yes
+		# The active Kruger threat has a durable actor target because this actor
+		# may be a separate Directorate country.
+		if = {
+			limit = { has_event_target = brilliant_scientist_world_threat_actor }
+			event_target:brilliant_scientist_world_threat_actor = {
+				if = {
+					limit = { has_country_flag = brilliant_scientist_world_threat_active }
+					brilliant_scientist_close_world_threat_interval = yes
+					clr_country_flag = brilliant_scientist_world_threat_active
+					brilliant_scientist_refresh_directorate_idea_lifecycle = yes
+				}
+			}
+			clear_global_event_target = brilliant_scientist_world_threat_actor
+		}
+		clr_global_flag = world_threat_source_brilliant_scientist
+		refresh_world_threat_state = yes
+		clr_country_flag = mengele_event016_singularity_fallout_retry_pending
+		clr_country_flag = mengele_event016_singularity_fallout_request_rejected
+		clr_country_flag = mengele_event016_singularity_fallout_request_submitted
+		brilliant_scientist_mengele_cleanup_provider_receipts = yes
+	}
+}

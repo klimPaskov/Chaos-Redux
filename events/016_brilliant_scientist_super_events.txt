@@ -24,18 +24,35 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		clr_country_flag = brilliant_scientist_singularity_fallout_retry_pending
 		if = {
-			limit = {
-				has_country_flag = brilliant_scientist_kruger_state
-				has_country_flag = brilliant_scientist_terminal_commitment_singularity
-				has_country_flag = brilliant_scientist_singularity_prelock_chaos_recorded
-				NOT = { has_country_flag = brilliant_scientist_singularity_fallout_request_submitted }
-				NOT = { has_global_flag = brilliant_scientist_singularity_terminal_fired }
-				NOT = { has_global_flag = world_end }
+			limit = { has_country_flag = mengele_event016_singularity_fallout_retry_pending }
+			clr_country_flag = mengele_event016_singularity_fallout_retry_pending
+			if = {
+				limit = {
+					has_country_flag = mengele_event016_singularity_terminal_committed
+					has_country_flag = mengele_event016_singularity_prelock_chaos_recorded
+					brilliant_scientist_mengele_singularity_terminal_commit_state_is_ready = yes
+					NOT = { has_country_flag = mengele_event016_singularity_fallout_request_submitted }
+					NOT = { has_country_flag = mengele_event016_singularity_terminal_fired }
+				}
+				brilliant_scientist_mengele_execute_singularity_terminal = yes
+				brilliant_scientist_mengele_schedule_singularity_fallout_retry = yes
 			}
-			brilliant_scientist_execute_singularity_terminal = yes
-			brilliant_scientist_schedule_singularity_fallout_retry = yes
+		}
+		else = {
+			clr_country_flag = brilliant_scientist_singularity_fallout_retry_pending
+			if = {
+				limit = {
+					has_country_flag = brilliant_scientist_kruger_state
+					has_country_flag = brilliant_scientist_terminal_commitment_singularity
+					has_country_flag = brilliant_scientist_singularity_prelock_chaos_recorded
+					NOT = { has_country_flag = brilliant_scientist_singularity_fallout_request_submitted }
+					NOT = { has_global_flag = brilliant_scientist_singularity_terminal_fired }
+					NOT = { has_global_flag = world_end }
+				}
+				brilliant_scientist_execute_singularity_terminal = yes
+				brilliant_scientist_schedule_singularity_fallout_retry = yes
+			}
 		}
 	}
 }

@@ -1,0 +1,64 @@
+# Event 016 Directorate Singularity construction gates and exact callback identity.
+# COUNTRY scope unless entered through the selected STATE decision target.
+
+brilliant_scientist_mengele_singularity_construction_command_node_is_unlocked = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	OR = {
+		has_country_flag = mengele_event016_singularity_command_core_completed
+		AND = {
+			NOT = { has_dlc = "Gotterdammerung" }
+			has_country_flag = mengele_event016_singularity_prototype_completed
+		}
+	}
+	brilliant_scientist_mengele_singularity_site_needs_command_node = yes
+}
+
+brilliant_scientist_mengele_singularity_construction_power_link_is_unlocked = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	OR = {
+		has_country_flag = mengele_event016_singularity_power_link_completed
+		AND = {
+			NOT = { has_dlc = "Gotterdammerung" }
+			has_country_flag = mengele_event016_singularity_prototype_completed
+		}
+	}
+	brilliant_scientist_mengele_singularity_site_needs_power_link = yes
+}
+
+brilliant_scientist_mengele_singularity_construction_can_begin_command_node = {
+	brilliant_scientist_mengele_singularity_construction_command_node_is_unlocked = yes
+	NOT = { has_country_flag = mengele_event016_singularity_construction_receipt_active }
+	NOT = { brilliant_scientist_mengele_singularity_site_pending_receipt_is_present = yes }
+	brilliant_scientist_can_pay_singularity_command_node = yes
+}
+
+brilliant_scientist_mengele_singularity_construction_can_begin_power_link = {
+	brilliant_scientist_mengele_singularity_construction_power_link_is_unlocked = yes
+	NOT = { has_country_flag = mengele_event016_singularity_construction_receipt_active }
+	NOT = { brilliant_scientist_mengele_singularity_site_pending_receipt_is_present = yes }
+	brilliant_scientist_can_pay_singularity_power_link = yes
+}
+
+# The exact native callback must match the stored payment receipt. A missing
+# physical pending row still allows this matching callback to refund its cost.
+brilliant_scientist_mengele_singularity_construction_callback_matches_receipt = {
+	has_country_flag = mengele_event016_singularity_construction_receipt_active
+	brilliant_scientist_mengele_singularity_site_selected_state_scope_is_valid = yes
+	has_variable = mengele_event016_singularity_construction_receipt_state
+	has_variable = mengele_event016_singularity_construction_receipt_role
+	has_variable = mengele_event016_singularity_construction_receipt_quantity
+	has_variable = mengele_event016_singularity_construction_receipt_political_power
+	has_variable = mengele_event016_singularity_construction_receipt_support_equipment
+	has_variable = mengele_event016_singularity_construction_receipt_trucks
+	has_variable = mengele_event016_singularity_construction_receipt_fuel
+	has_variable = mengele_event016_singularity_construction_receipt_manpower
+	check_variable = { var = mengele_event016_singularity_site_selected_role value = mengele_event016_singularity_construction_expected_role compare = equals }
+	check_variable = { var = mengele_event016_singularity_construction_receipt_role value = mengele_event016_singularity_construction_expected_role compare = equals }
+	check_variable = { var = mengele_event016_singularity_construction_receipt_state value = event_target:mengele_event016_singularity_site_selected_state compare = equals }
+	check_variable = { var = mengele_event016_singularity_construction_receipt_quantity value = mengele_event016_singularity_site_selected_quantity compare = equals }
+	check_variable = { var = mengele_event016_singularity_construction_receipt_quantity value = constant:brilliant_scientist_value.one compare = equals }
+	OR = {
+		NOT = { brilliant_scientist_mengele_singularity_site_pending_receipt_is_present = yes }
+		brilliant_scientist_mengele_singularity_site_pending_callback_matches_receipt = yes
+	}
+}

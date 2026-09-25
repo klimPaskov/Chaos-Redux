@@ -81,6 +81,17 @@ chaosx_cxt_extension_event016_alien_infantry_apply = {
 		}
 		brilliant_scientist_singularity_site_reconcile_receipts = yes
 	}
+	# The Directorate's physical network has its own receipt ledger. Rebuild
+	# recorded rows only; CXT does not create a site or authorize detonation.
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = mengele_event016_singularity_site_pending
+				check_variable = { var = mengele_event016_singularity_site_state_entries^num value = constant:brilliant_scientist_value.zero compare = greater_than }
+			}
+		}
+		brilliant_scientist_mengele_singularity_site_reconcile_receipts = yes
+	}
 	# Registration helpers reject duplicates, so these calls also repair an
 	# existing CXT save whose older Event 016 carrier contained only aliens.
 	set_temp_variable = {

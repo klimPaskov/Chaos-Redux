@@ -39317,7 +39317,11 @@ fallout_clear_pending_request_envelope = {
 			has_event_target = fallout_request_actor
 		}
 		event_target:fallout_request_actor = {
-			brilliant_scientist_recover_rejected_singularity_fallout_request = yes
+			if = {
+				limit = { has_country_flag = mengele_event016_singularity_fallout_request_submitted }
+				brilliant_scientist_mengele_recover_rejected_singularity_fallout_request = yes
+			}
+			else = { brilliant_scientist_recover_rejected_singularity_fallout_request = yes }
 		}
 	}
 	clr_global_flag = fallout_request_pending
@@ -39484,7 +39488,11 @@ fallout_lock_transition = {
 				has_event_target = fallout_request_actor
 			}
 			event_target:fallout_request_actor = {
-				brilliant_scientist_finalize_singularity_after_fallout_lock = yes
+				if = {
+					limit = { brilliant_scientist_mengele_singularity_fallout_finalize_is_ready = yes }
+					brilliant_scientist_mengele_finalize_singularity_after_fallout_lock = yes
+				}
+				else = { brilliant_scientist_finalize_singularity_after_fallout_lock = yes }
 			}
 		}
 	}
