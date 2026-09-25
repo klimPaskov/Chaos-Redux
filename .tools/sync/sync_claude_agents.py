@@ -37,8 +37,9 @@ Conversion rules
 ----------------
 1. `name` is converted from snake_case to hyphen-case for consistency with the
    Qoder, Cursor, and opencode generated-name convention
-   (`chaosx_repo_explorer` -> `chaosx-repo-explorer`). The mapping is written
-   to `.claude/agent-map.md`.
+   (`chaosx_repo_explorer` -> `chaosx-repo-explorer`) and written into the
+   YAML frontmatter, which Claude Code requires to register the subagent. The
+   mapping is written to `.claude/agent-map.md`.
 2. `description` is copied verbatim into the YAML frontmatter.
 3. `developer_instructions` becomes the Markdown system-prompt body, with the
    same runtime-neutral substitutions used by the other generators plus the
@@ -272,12 +273,14 @@ def yaml_quote(value):
     return '"{}"'.format(escaped)
 
 
-def render_agent(description, body, src_name):
+def render_agent(claude_name, description, body, src_name):
+    # Claude Code registers a subagent only when its frontmatter has `name`.
     lines = [
         "---",
         "# Generated from .codex/agents/{} by python .tools/sync/sync_claude_agents.py. Do not hand-edit.".format(
             src_name
         ),
+        "name: {}".format(claude_name),
         "description: {}".format(yaml_quote(description)),
         "model: inherit",
         "---",
@@ -449,7 +452,9 @@ def main():
         claude_name = name.replace("_", "-")
         out_path = CLAUDE_AGENTS / "{}.md".format(claude_name)
         expected_files.add(out_path.name)
-        content = render_agent(description, apply_substitutions(instructions), toml_path.name)
+        content = render_agent(
+            claude_name, description, apply_substitutions(instructions), toml_path.name
+        )
 
         if not out_path.exists():
             write_if_changed(out_path, content)
