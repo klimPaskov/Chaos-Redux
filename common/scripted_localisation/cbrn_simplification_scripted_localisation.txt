@@ -1,8 +1,8 @@
 # ============================================================================
 # CHAOS REDUX - CBRN POLICY AND TRAINING STATUS TEXT
 # ============================================================================
-# Country-scoped decision-category descriptions read these three-state policy
-# and protective-training labels without storing duplicate gameplay flags.
+# Country-scoped decision-category descriptions read policy, protection, and
+# training status from current technology and equipment without duplicate flags.
 # ============================================================================
 
 defined_text = {
@@ -38,5 +38,37 @@ defined_text = {
 	text = {
 		trigger = { always = yes }
 		localization_key = cbrn_training_status_none
+	}
+}
+
+defined_text = {
+	name = GetCBRNOperationalStatus
+	text = {
+		trigger = {
+			OR = {
+				NOT = { has_variable = cbrn_military_mask_requirement }
+				check_variable = { cbrn_military_mask_requirement < constant:cbrn_math.one }
+			}
+		}
+		localization_key = cbrn_operational_status_no_field_force
+	}
+	text = {
+		trigger = { NOT = { has_tech = basic_gas_masks } }
+		localization_key = cbrn_operational_status_training_needed
+	}
+	text = {
+		trigger = { check_variable = { cbrn_military_mask_shortage_crates > constant:cbrn_math.zero } }
+		localization_key = cbrn_operational_status_equipment_short
+	}
+	text = {
+		trigger = { check_variable = { cbrn_military_mask_filter_condition < constant:cbrn_mask_filters.condition_full } }
+		localization_key = cbrn_operational_status_filter_replacement
+	}
+	text = {
+		trigger = { check_variable = { cbrn_decontamination_capacity = constant:cbrn_math.zero } }
+		localization_key = cbrn_operational_status_cleanup_needed
+	}
+	text = {
+		localization_key = cbrn_operational_status_supported
 	}
 }
