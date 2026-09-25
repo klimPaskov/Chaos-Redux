@@ -36,6 +36,8 @@ Uncommitted Medical Capacity and Biological Security contribute half their curre
 
 The national investment decisions create these capacities from real equipment instead of granting a free baseline.
 
+Where a response pays trucks, its generic motorized requirement spends the oldest available model first from the real stockpile, using the same whole-truck price shown to the player.
+
 | Investment | Immediate cost | Duration | Completion |
 | --- | --- | --- | --- |
 | Expand Medical Countermeasure Stores | 50 Political Power, 120 Support Equipment, 40 Trucks | 90 days | +20 Medical Capacity |
@@ -205,7 +207,7 @@ The mission adds 15 Surveillance, 15 Containment, and 15 Medical Response to tha
 
 It adds 20 evidence points to each active ordinary agent record in the state and reduces the same record's concealment by 5.
 
-The requesting country gains 8 Condemnation decay credit through the existing compliance ledger.
+The requesting country earns 8 points toward faster Condemnation recovery through international cooperation.
 
 A country with a real biological stockpile loses attribution control and risks exposing 20% of its actual hidden biological evidence.
 

@@ -211,7 +211,7 @@ All triggers in this section are country scoped, side-effect free, and fail clos
 ### Visibility and emergency context
 
 - `cbrn_protection_program_category_visible`: true for an established program/reserve, Basic Service Respirators, real respirator stock, or confirmed enemy chemical use.
-- `cbrn_civil_defence_category_visible`: requires an actual chemical emergency, enemy chemical capability, or active biological outbreak.
+- `cbrn_civil_defence_category_visible`: requires an actual chemical emergency, enemy chemical capability, an active biological outbreak, or a continuing civilian distribution program. The category remains visible while such a condition holds even if no chemical-response decision is currently available.
 - `cbrn_country_has_public_chemical_emergency`: true only for confirmed enemy use, an exact scripted raid alert, or actual controlled-state contamination.
 
 These triggers never inspect aircraft presence and cannot qualify idle chemical-capable aircraft.
