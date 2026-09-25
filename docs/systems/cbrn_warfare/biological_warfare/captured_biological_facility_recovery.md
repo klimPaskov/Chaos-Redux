@@ -2,19 +2,19 @@
 
 ## Overview
 
-Captured biological arsenals are resolved through native land raids. There is no decision-based deployment path. The controller must assign a division containing a Biosecurity Assault Detachment to an Army Headquarters with a Medical and Biosecurity section, reserve a route-specific package of protective and containment equipment, and prepare either a secure-and-preserve raid or a safe-destruction raid.
+Captured biological stockpile sites are resolved through native land raids. The controller must assign a division containing a Biosecurity Assault Detachment to an Army Headquarters with a CBRN Medical and Biosecurity Section, reserve a route-specific package of protective and containment equipment, and prepare either a secure-and-preserve raid or a safe-destruction raid.
 
-The system tracks one exact designated national arsenal state. Hearts of Iron IV stores equipment nationally rather than inside states, so the first hostile capture of that designated arsenal moves the former custodian's currently unallocated Anthrax, Plague, Tularemia, and Smallpox payloads into an exact state ledger. Payload already reserved by a native raid is not part of the national stockpile snapshot and is therefore not counted twice. This is a declared gameplay representation of a centralized arsenal, not a claim that every national payload was historically stored in one building.
+The system tracks one internally registered national stockpile site. Hearts of Iron IV stores equipment nationally rather than inside states, so the first hostile capture of that site moves the former custodian's currently unallocated Anthrax, Plague, Tularemia, and Smallpox payloads into an exact state ledger. Payload already reserved by a native raid is not part of the national stockpile snapshot and is therefore not counted twice. This is a gameplay representation of a centralized stockpile, not a claim that every national payload was historically stored in one building.
 
 ## Capture and control sequence
 
-1. A country designates its one stockpile-safety arsenal state through the existing arsenal system.
+1. A verified special project registers its facility state as the national stockpile site. When no project facility scope exists, registration waits for a supported source or a bounded internal reselection of an earlier verified program.
 2. `on_state_control_changed` receives the exact new controller, old controller, and changed state. It does not search for a substitute state.
 3. On the first hostile capture, the system snapshots the former custodian's four live unallocated payload counts, removes those exact aggregate amounts across all equipment producers once, and stores them on the changed state.
 4. The state records the original custodian, current controller, remaining payload by agent, total hazard, and one delayed hazard due date.
 5. A further third-party control change keeps the same payload ledger and updates only the exact controller pointer.
-6. The former custodian may explicitly designate a replacement arsenal while the original site is occupied. That deliberate relocation clears the country's active pointer but preserves the captured state's original-custodian and payload records.
-7. Recapture by the original custodian restores the exact remaining payload. If no replacement arsenal exists, the original designation and source are rebound to the retaken state; if a replacement exists, its active designation remains untouched and the obsolete marker is cleared from the retaken site.
+6. If the former custodian's active pointer becomes invalid, the next already scheduled country monitor may bind another owned, controlled, operational facility. This internal repair leaves the captured site's original-custodian and payload records intact.
+7. Recapture by the original custodian restores the exact remaining payload. The retaken site becomes the monitored stockpile site when no other valid site has taken its place. Otherwise the other site's active pointer remains and the obsolete marker is cleared from the retaken site.
 8. If the facility remains unresolved when its targeted state event matures, a bounded share of one available agent is debited and enters the shared ordinary biological lifecycle as a captured-facility accident. The same exact state may schedule another check only while payload remains.
 
 No daily, weekly, monthly, or all-country sampling pulse is used.
