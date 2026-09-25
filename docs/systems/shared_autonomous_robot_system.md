@@ -38,7 +38,17 @@ The equipment art sprite is `GFX_autonomous_robot_equipment_medium` and the oper
 
 Runtime model files are installed under `gfx/models/units/autonomous_robot/`, entity definitions under `gfx/entities/`, sourced audio under `sound/shared_robot_system/autonomous_robot/`, and sound definitions under `sound/autonomous_robot_sound.asset`.
 
-Move and retreat synchronize the licensed servo and armored-footfall package. Attack and support attack synchronize the licensed dual-MG burst to the visible forearm recoil, idle uses the mechanical loop, and death uses the destruction recording. The immutable evidence derivatives remain OGG files; runtime copies are deterministically converted to the installed positional-unit precedent of 44.1 kHz, mono, 16-bit PCM WAV. The provider-neutral selection one-shot is registered as `autonomous_robot_select_sfx`; HOI4 exposes ordinary land-unit selection through country/original-tag infantry voice templates rather than a subunit entity callback, so it is deliberately not assigned to a country-wide voice token that would replace ordinary infantry voices.
+Move and retreat synchronize the licensed servo and armored-footfall package, while idle uses the mechanical loop.
+Attack and support attack emit the installed vanilla machine-gun muzzle flash, smoke, and light from the exported `robot_muzzle_l` and `robot_muzzle_r` locators, with one short recorded gunshot at each discharge.
+The two guns alternate every three frames, beginning at frames 16 and 19 in attack and frames 24 and 27 in support attack, with six frames between discharges from the same gun at 24 FPS.
+Death plays a recorded destruction cue at frame 8 and an armored ground impact at frame 69.
+The new runtime gun and destruction WAVs are 44.1 kHz mono PCM16, and their hashes match the retained source-derived candidates in `docs/assets/shared_robot_system/models_3d/autonomous_robot/attempts/20260906_weaponfree_blender/evidence/finalize_20260912/audio/replacement_research/`.
+The gun cue is a mechanical 0.12-second excerpt from [Cymeon's film-shoot machine-gun recording](https://freesound.org/people/Cymeon/sounds/205901/), licensed CC0.
+The destruction cue is a mechanically faded excerpt from [unfa's raw firecracker recording](https://freesound.org/people/unfa/sounds/609588/), licensed CC0; it is used as a sound effect and not for model training.
+The gun excerpt's measured amplitude onset is 0.00177 seconds after the entity trigger, below one 24 FPS frame.
+The older long machine-gun burst and death WAVs remain archived in the runtime folder but are not referenced by the current robot entity states.
+The provider-neutral selection one-shot is registered as `autonomous_robot_select_sfx`; HOI4 exposes ordinary land-unit selection through country/original-tag infantry voice templates rather than a subunit entity callback, so it is deliberately not assigned to a country-wide voice token that would replace ordinary infantry voices.
+The agent could inspect source pages, file formats, runtime identifiers, exported locators, and frame alignment offline; audible quality and in-game playback remain for user review.
 
 The production manifest, provider lineage, animation contact sheets, io_pdx_mesh reimport evidence, source-audio licences, transformations, and checksums are preserved under `docs/assets/shared_robot_system/models_3d/autonomous_robot/`. The permanent production handoff is `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/autonomous_robot_3d_model_handoff.md`.
 
