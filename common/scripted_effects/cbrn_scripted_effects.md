@@ -786,20 +786,31 @@ ENG = { country_event = { id = cbrn_protection.3 days = 0 } }
 
 Country-scope bounded debits. Inputs are `cbrn_support_equipment_debit_requested` or `cbrn_train_equipment_debit_requested`; missing/negative requests become zero. Outputs are the matching `*_debit_completed` temporary variables. Side effects: removes only stock actually available.
 
+### cbrn_debit_protection_political_power
+
+Country-scope debit used by four custom-cost protection cards. Input: temporary positive `cbrn_protection_pp_debit_requested`, set from the same shared constant as the displayed row and inclusive affordability trigger. Output: temporary signed `cbrn_protection_pp_payment`. Defaults: callers must supply the price and pass their affordability gate; this effect has no independent fallback price. Side effect: subtracts Political Power once when the decision is selected. The decision's `ai_hint_pp_cost` mirrors the same constant because its cost is wholly custom.
+
+Example:
+
+```txt
+set_temp_variable = { cbrn_protection_pp_debit_requested = constant:cbrn_protection_decision_cost.recondition_masks_pp }
+cbrn_debit_protection_political_power = yes
+```
+
 ### National project begin/complete effects
 
 The following effects are paired decision handlers:
 
 | Effects | Purpose and side effects |
 | --- | --- |
-| `cbrn_begin_national_respirator_reserve` / `cbrn_complete_national_respirator_reserve` | Debits support equipment, establishes the program/reserve, raises readiness, and starts maintenance. |
-| `cbrn_begin_population_registration` / `cbrn_complete_population_registration` | Debits support equipment and manpower, applies population-fitting loss, establishes fitting/civil-defence flags only when masks remain, raises readiness, and records rejected stock for reconditioning. |
+| `cbrn_begin_national_respirator_reserve` / `cbrn_complete_national_respirator_reserve` | Debits support equipment, establishes the program/reserve, refreshes derived readiness, and starts maintenance. |
+| `cbrn_begin_population_registration` / `cbrn_complete_population_registration` | Debits support equipment and manpower, applies population-fitting loss, establishes fitting/civil-defence flags only when masks remain, refreshes derived readiness, and records rejected stock for reconditioning. |
 | `cbrn_begin_field_army_mask_issue` / `cbrn_complete_field_army_mask_issue` | Debits support equipment, then runs real field-army issue. |
-| `cbrn_begin_mask_reconditioning` / `cbrn_complete_mask_reconditioning` | Debits support equipment, recovers reconditioned crates, and may fire the weighted defective-batch event. |
-| `cbrn_begin_civilian_mask_industry_conversion` / `cbrn_complete_civilian_mask_industry_conversion` | Debits support equipment and converts the timed factory burden into a tuned basic-mask batch. |
-| `cbrn_begin_simplified_filter_program` / `cbrn_complete_simplified_filter_program` | Debits support equipment, adds a basic batch, and starts a timed low-cost/lower-effectiveness filter program. |
+| `cbrn_begin_mask_reconditioning` / `cbrn_complete_mask_reconditioning` | Debits Political Power and support equipment, recovers reconditioned crates, and may fire the weighted defective-batch event. |
+| `cbrn_begin_civilian_mask_industry_conversion` / `cbrn_complete_civilian_mask_industry_conversion` | Debits Political Power and support equipment, then converts the timed factory commitment into a tuned basic-mask batch. |
+| `cbrn_begin_simplified_filter_program` / `cbrn_complete_simplified_filter_program` | Debits Political Power and support equipment, adds a basic batch, and starts a timed low-cost/lower-effectiveness filter program. |
 
-Scope: country. Inputs/defaults are the real decision gates and centralized constants; direct calls bypass political-power/factory costs and therefore should remain inside the matching decisions. Outputs are persistent flags, stock, readiness, and maintenance state.
+Scope: country. Inputs/defaults are the real decision gates and centralized constants; direct calls bypass some decision gates and the factory commitment, so these handlers remain inside their matching decisions. Outputs are persistent flags, stock, derived readiness, and maintenance state.
 
 Example:
 
@@ -815,13 +826,15 @@ Scope: state. Input for begin: `cbrn_project_duration_days`. Defaults: duration 
 
 ### cbrn_resolve_defective_reconditioned_batch
 
-Removes the configured fraction of the recorded reconditioned batch, adds replacement demand, lowers readiness, and clears the event ledger.
+Removes the configured fraction of the recorded reconditioned batch, adds replacement demand, refreshes derived readiness from the stock snapshot, and clears the batch record.
 
 Scope: country. Input: persistent `cbrn_reconditioned_batch_size`. Defaults: no recorded batch does nothing. Output: refreshed stock snapshot. Side effects: real reconditioned stock loss.
 
 ### cbrn_export_masks_to_protection_partner, cbrn_import_masks_from_protection_partner, and cbrn_license_respirator_design_from_partner
 
 Country-scope procurement handlers using regular event target `cbrn_protection_trade_partner`. Invalid or stale partners fail closed. Export accepts a faction partner or exact humanitarian-carve-out recipient, sends a real 500-crate family shipment, records bilateral aid totals and recipient opinion, and gives a small capped decay credit only when the exporter already follows a verified Condemnation-compliance path; offense history is unchanged. Import remains restricted to an allied supplier, sends real partner stock to the caller, and marks the supplier with a timed allied-request production signal. Licensing grants one gas-mask research bonus from an eligible allied partner. All successful paths refresh relevant readiness and maintenance state.
+
+`cbrn_begin_protective_equipment_export` runs in the paying country at selection, calls `cbrn_debit_protection_political_power` with the export price, and has no other side effect. The timed export's mask shipment remains in `remove_effect`, so cancellation spends the already paid Political Power but sends no respirators.
 
 ## CBRN exact-state raid response adapter
 

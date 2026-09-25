@@ -42,6 +42,12 @@ cbrn_country_has_exportable_mask_stock = {
 	}
 }
 
+cbrn_can_pay_protective_equipment_export = {
+	cbrn_country_has_exportable_mask_stock = yes
+	NOT = { num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.export_masks_factories }
+	NOT = { has_political_power < constant:cbrn_protection_decision_cost.export_masks_pp }
+}
+
 cbrn_country_needs_imported_masks = {
 	NOT = {
 		has_equipment = {
@@ -295,6 +301,7 @@ cbrn_can_replace_military_mask_filters = {
 }
 
 cbrn_can_recondition_damaged_masks = {
+	NOT = { has_political_power < constant:cbrn_protection_decision_cost.recondition_masks_pp }
 	OR = {
 		check_variable = { cbrn_reconditionable_mask_cache > constant:cbrn_math.zero }
 		check_variable = { cbrn_mask_replacement_demand > constant:cbrn_math.zero }
@@ -310,6 +317,7 @@ cbrn_can_recondition_damaged_masks = {
 }
 
 cbrn_can_convert_civilian_mask_industry = {
+	NOT = { has_political_power < constant:cbrn_protection_decision_cost.convert_industry_pp }
 	has_tech = basic_gas_masks
 	NOT = {
 		num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.convert_industry_factories
@@ -322,6 +330,7 @@ cbrn_can_convert_civilian_mask_industry = {
 }
 
 cbrn_can_simplify_filters_for_mass_issue = {
+	NOT = { has_political_power < constant:cbrn_protection_decision_cost.simplify_filters_pp }
 	has_tech = basic_gas_masks
 	NOT = { has_country_flag = cbrn_simplified_filter_program_active }
 	NOT = {

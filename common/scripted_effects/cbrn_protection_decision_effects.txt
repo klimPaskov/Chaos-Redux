@@ -6,7 +6,7 @@
 # CHAOS REDUX - CBRN PROTECTIVE-EQUIPMENT DECISION EFFECTS
 # ============================================================================
 # Overview:
-# - Pays real support-equipment, train, and respirator costs for national and
+# - Pays real Political Power, support-equipment, train, and respirator costs for national and
 #   state protective programs.
 # - Resolves field issue, population-scaled distribution, filters, damaged-mask
 #   reconditioning, allied transfers, and procurement projects.
@@ -46,6 +46,12 @@ cbrn_debit_requested_train_equipment = {
 		}
 		set_temp_variable = { cbrn_train_equipment_debit_completed = cbrn_train_equipment_debit_local }
 	}
+}
+
+cbrn_debit_protection_political_power = {
+	set_temp_variable = { cbrn_protection_pp_payment = cbrn_protection_pp_debit_requested }
+	multiply_temp_variable = { cbrn_protection_pp_payment = constant:cbrn_math.negation_multiplier }
+	add_political_power = cbrn_protection_pp_payment
 }
 
 cbrn_begin_national_respirator_reserve = {
@@ -256,6 +262,8 @@ cbrn_complete_occupied_distribution_program = {
 }
 
 cbrn_begin_mask_reconditioning = {
+	set_temp_variable = { cbrn_protection_pp_debit_requested = constant:cbrn_protection_decision_cost.recondition_masks_pp }
+	cbrn_debit_protection_political_power = yes
 	set_temp_variable = { cbrn_support_equipment_debit_requested = constant:cbrn_protection_decision_cost.recondition_masks_support }
 	cbrn_debit_requested_support_equipment = yes
 }
@@ -302,6 +310,8 @@ cbrn_resolve_defective_reconditioned_batch = {
 }
 
 cbrn_begin_civilian_mask_industry_conversion = {
+	set_temp_variable = { cbrn_protection_pp_debit_requested = constant:cbrn_protection_decision_cost.convert_industry_pp }
+	cbrn_debit_protection_political_power = yes
 	set_temp_variable = { cbrn_support_equipment_debit_requested = constant:cbrn_protection_decision_cost.convert_industry_support }
 	cbrn_debit_requested_support_equipment = yes
 }
@@ -317,8 +327,15 @@ cbrn_complete_civilian_mask_industry_conversion = {
 }
 
 cbrn_begin_simplified_filter_program = {
+	set_temp_variable = { cbrn_protection_pp_debit_requested = constant:cbrn_protection_decision_cost.simplify_filters_pp }
+	cbrn_debit_protection_political_power = yes
 	set_temp_variable = { cbrn_support_equipment_debit_requested = constant:cbrn_protection_decision_cost.simplify_filters_support }
 	cbrn_debit_requested_support_equipment = yes
+}
+
+cbrn_begin_protective_equipment_export = {
+	set_temp_variable = { cbrn_protection_pp_debit_requested = constant:cbrn_protection_decision_cost.export_masks_pp }
+	cbrn_debit_protection_political_power = yes
 }
 
 cbrn_complete_simplified_filter_program = {
