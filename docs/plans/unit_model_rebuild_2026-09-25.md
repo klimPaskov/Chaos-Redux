@@ -22,7 +22,7 @@ The proposed revision is `docs/assets/002_zombie_outbreak/models_3d/zombies/refs
 The user approved the revised exact image and 64-credit ceiling on 2026-09-25, authorizing the bounded base zombie Meshy work from that SHA-256 input.
 No Meshy call is authorized for the rejected image or a different revision.
 
-The planned paid operations are one Meshy 7 textured body (30 credits), one eligible-humanoid rig attempt (5), and seven or eight suitable action presets (21–24), for 56–59 credits.
+The planned paid operations are one Meshy 7 textured body (30 credits), one eligible-humanoid rig attempt (5), and up to eight suitable action presets (24), for at most 59 credits before a remesh.
 The rig's included walk counts toward movement only if it passes zombie movement review.
 At most one necessary remesh raises the model ceiling to 64 credits.
 The 64-credit ceiling is a review figure, not an authorization to submit a paid call before image review.
@@ -30,12 +30,30 @@ Poor rigging or an unsuitable action moves to deliberately authored Blender skel
 The action roles are idle, move, attack, defend, support attack, retreat, training, and death; action content and timing must fit an unarmed shambler rather than reuse a single generic loop.
 The parent owns HOI4 runtime, sound and counter wiring; the model worker owns the bounded source and export package.
 
+### 2026-09-25 production status
+
+The approved base-zombie reference was submitted once to Meshy 7.
+The textured body task `01a0d867-77fa-77c6-8978-54811dc54881` cost 30 credits, the sole remesh task `01a0d87a-2242-722b-a67f-e8caabc60527` cost 5, and the sole rig task `01a0d8ab-75d5-73b0-9861-44b202bf341a` cost 5: 40 of the approved 64-credit ceiling has been spent.
+The Meshy `Frankenstein Walk` action task `01a0d8e5-fc14-7142-ac18-1358d38fcb77` cost 3 credits; its source FBX SHA-256 is `5b34db443f2014d6abec39b0329ab940624b26f05ff51ce4084836a70f68df17`.
+Visual review rejected this action for final movement use because the gait remains upright and human-like, with about 0.105 m of foot float or ground penetration at sampled loop phases; no second paid move attempt is allowed.
+The seven one-attempt Meshy presets for idle, attack, defend, support attack, retreat, training, and death all succeeded and consumed the remaining 21 credits; their exported FBXs still require independent import, render, and role-fit review before acceptance.
+Their tasks are `01a0d901-756e-74cf-92f0-5e81b0628a65` (idle, action 11), `01a0d901-df3b-75f3-9f5a-94c16fcf3a28` (attack, action 214), `01a0d901-ce9a-7161-aa19-aba0cefbd0b2` (defend, action 139), `01a0d901-d24e-7637-b96e-7b9d75da6c34` (support attack, action 198), `01a0d901-d56b-7426-9c5d-5d7bfc5473ad` (retreat, action 638), `01a0d901-d925-7661-83b1-079545900a76` (training, action 87), and `01a0d901-dc85-7472-a71a-6beae45c2d9e` (death, action 189).
+Total provider spend is 64 of the approved 64-credit ceiling; no further Meshy task fits the approved budget.
+The next movement test is the professionally sourced CC0 zombie-grandma walk, isolated from runtime and the approved model input.
+The remeshed body has unresolved open-edge topology, and the 24-bone rig lacks finger, thumb, and jaw articulation.
+The rig's included walk is an upright ordinary gait with almost static arms and fails the required zombie movement role.
+The verified Blender adapter has no operation to author bones, skin weights, or skeletal keyframes, and the installed interactive Blender Lab MCP is not exposed in this task session, so the required manual rig and full-action fallback has no callable authoring route.
+The model is not offline ready: no accepted eight-action set, PDX export/reimport proof, or runtime entity wiring exists.
+The bespoke three-surface counter art is parent-reviewed and installed at its existing large-counter, map-counter, and text-icon runtime paths; live consumer validation remains with the user.
+A CC0 zombie vocal source archive and a separate CC0 zombie walk package are preserved; the walk is under isolated compatibility review and the sound clips still need role classification and action-frame synchronization.
+The `zombies` subunit remains on the existing `infantry` sprite until the blocker is resolved and all acceptance evidence passes.
+
 ### Base zombie runtime preflight
 
 `common/units/zombies.txt` supplies the current `zombies` sprite assignment, which will point to the exported custom entity only after the accepted runtime asset exists.
 The model requires new `gfx/entities/chaosx_zombies.gfx` and `.asset` registrations and a matching `gfx/models/units/chaosx_zombies/` mesh, textures, action exports, and animation registration.
 The existing `sound/chaosx_zombies_sound.asset` defines zombie idle, move, attack, and death soundeffects, but its header and active consumers must be reviewed when the entity is wired.
-The existing `interface/chaosx_subuniticons.gfx` and `interface/chaosx_texticons.gfx` already name base zombie counter and text-icon consumers; their actual DDS art must become a distinct vanilla-green base zombie icon family derived from the accepted model identity.
+The existing `interface/chaosx_subuniticons.gfx` and `interface/chaosx_texticons.gfx` already name base zombie counter and text-icon consumers; those paths now contain the distinct two-frame vanilla-green base zombie icon family derived from the approved image, with processing and hashes documented in the local ignored asset workspace.
 The Blender adapter's job-root allowlist and dependency lock currently list specialized zombie jobs but not the new `zombies` job, so this route must be added and verified before export.
 No runtime file is to point to a reference-only or unproven provider candidate.
 
