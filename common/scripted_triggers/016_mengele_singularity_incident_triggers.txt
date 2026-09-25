@@ -1,0 +1,71 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 PRIVATE MENGELE SINGULARITY INCIDENT TRIGGERS
+# ============================================================================
+# These country-scope gates own only the provider's private component incident and direct recovery receipt.
+
+brilliant_scientist_mengele_singularity_incident_provider_is_valid = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+}
+
+brilliant_scientist_mengele_singularity_incident_stage_is_valid = {
+	check_variable = {
+		var = mengele_event016_requested_stage
+		value = constant:brilliant_scientist_project_stage.prototype
+		compare = equals
+	}
+}
+
+brilliant_scientist_mengele_singularity_incident_is_active = {
+	has_country_flag = mengele_event016_singularity_incident_active
+}
+
+brilliant_scientist_mengele_singularity_incident_recovery_is_active = {
+	has_country_flag = mengele_event016_singularity_incident_recovery_active
+	has_variable = mengele_event016_singularity_incident_recovery_cost_political_power
+	has_variable = mengele_event016_singularity_incident_recovery_cost_support_equipment
+	has_variable = mengele_event016_singularity_incident_recovery_cost_fuel
+}
+
+brilliant_scientist_mengele_singularity_incident_recovery_can_pay_direct_costs = {
+	check_variable = {
+		var = political_power
+		value = constant:brilliant_scientist_project_board.response_technical_political_power
+		compare = greater_than_or_equals
+	}
+	NOT = {
+		has_equipment = {
+			support_equipment < constant:brilliant_scientist_project_board.response_technical_support_equipment
+		}
+	}
+	NOT = { has_fuel < constant:brilliant_scientist_project_board.response_technical_fuel }
+}
+
+brilliant_scientist_mengele_singularity_incident_recovery_can_pay = {
+	brilliant_scientist_mengele_singularity_incident_recovery_can_pay_direct_costs = yes
+	NOT = {
+		num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_board.response_technical_civilian_factories
+	}
+}
+
+brilliant_scientist_mengele_singularity_incident_recovery_can_start = {
+	brilliant_scientist_mengele_singularity_incident_recovery_can_debit = yes
+	NOT = {
+		num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_board.response_technical_civilian_factories
+	}
+}
+
+# The native decision may reserve factories before its completion callback runs.
+brilliant_scientist_mengele_singularity_incident_recovery_can_debit = {
+	brilliant_scientist_mengele_singularity_incident_is_active = yes
+	brilliant_scientist_mengele_singularity_incident_provider_is_valid = yes
+	NOT = { has_country_flag = mengele_event016_singularity_incident_recovery_active }
+	NOT = { brilliant_scientist_mengele_singularity_incident_recovery_is_active = yes }
+	NOT = { has_variable = mengele_event016_singularity_incident_recovery_cost_political_power }
+	NOT = { has_variable = mengele_event016_singularity_incident_recovery_cost_support_equipment }
+	NOT = { has_variable = mengele_event016_singularity_incident_recovery_cost_fuel }
+	brilliant_scientist_mengele_singularity_incident_recovery_can_pay_direct_costs = yes
+}
+
+brilliant_scientist_mengele_singularity_incident_recovery_receipt_is_current = {
+	brilliant_scientist_mengele_singularity_incident_recovery_is_active = yes
+}

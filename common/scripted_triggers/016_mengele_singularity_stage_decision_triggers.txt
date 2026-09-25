@@ -1,0 +1,180 @@
+# Event 016 private Mengele Strategic Singularity decision gates.
+# COUNTRY scope. Singularity is family ID 15, so its private receipt row is 14.
+# The native six-component Prototype callback remains separately authenticated.
+
+brilliant_scientist_mengele_singularity_decision_receipt_is_empty = {
+	OR = {
+		NOT = { has_country_flag = mengele_event016_provider_receipts_initialized }
+		AND = {
+			has_country_flag = mengele_event016_provider_receipts_initialized
+			check_variable = { var = mengele_event016_active_project_stage_entries^14 value = constant:brilliant_scientist_project_stage.none compare = equals }
+		}
+	}
+}
+
+brilliant_scientist_mengele_singularity_theory_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^14 value = constant:brilliant_scientist_project_stage.theory compare = equals }
+}
+
+brilliant_scientist_mengele_singularity_prototype_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^14 value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+}
+
+brilliant_scientist_mengele_singularity_deployment_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^14 value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+}
+
+brilliant_scientist_mengele_singularity_weaponization_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^14 value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+}
+
+brilliant_scientist_mengele_singularity_theory_decision_visible = {
+	OR = {
+		brilliant_scientist_mengele_singularity_theory_decision_receipt_matches = yes
+		AND = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			brilliant_scientist_singularity_scenario_is_enabled = yes
+			brilliant_scientist_mengele_singularity_decision_receipt_is_empty = yes
+			NOT = { has_country_flag = mengele_event016_singularity_theory_completed }
+		}
+	}
+}
+
+brilliant_scientist_mengele_singularity_prototype_decision_visible = {
+	OR = {
+		brilliant_scientist_mengele_singularity_prototype_decision_receipt_matches = yes
+		AND = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			brilliant_scientist_singularity_scenario_is_enabled = yes
+			brilliant_scientist_mengele_singularity_decision_receipt_is_empty = yes
+			has_country_flag = mengele_event016_singularity_theory_completed
+			NOT = { has_country_flag = mengele_event016_singularity_prototype_completed }
+			NOT = { has_dlc = "Gotterdammerung" }
+		}
+	}
+}
+
+brilliant_scientist_mengele_singularity_deployment_decision_visible = {
+	OR = {
+		brilliant_scientist_mengele_singularity_deployment_decision_receipt_matches = yes
+		AND = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			brilliant_scientist_singularity_scenario_is_enabled = yes
+			brilliant_scientist_mengele_singularity_decision_receipt_is_empty = yes
+			has_country_flag = mengele_event016_singularity_prototype_completed
+			NOT = { has_country_flag = mengele_event016_singularity_deployment_completed }
+		}
+	}
+}
+
+brilliant_scientist_mengele_singularity_weaponization_decision_visible = {
+	OR = {
+		brilliant_scientist_mengele_singularity_weaponization_decision_receipt_matches = yes
+		AND = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			brilliant_scientist_singularity_scenario_is_enabled = yes
+			brilliant_scientist_mengele_singularity_decision_receipt_is_empty = yes
+			has_country_flag = mengele_event016_singularity_deployment_completed
+			NOT = { has_country_flag = mengele_event016_singularity_weaponization_completed }
+		}
+	}
+}
+
+brilliant_scientist_mengele_singularity_theory_decision_requirements = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_singularity_scenario_is_enabled = yes
+	brilliant_scientist_mengele_singularity_decision_receipt_is_empty = yes
+	NOT = { has_country_flag = mengele_event016_singularity_theory_completed }
+}
+
+brilliant_scientist_mengele_singularity_prototype_decision_requirements = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_singularity_scenario_is_enabled = yes
+	brilliant_scientist_mengele_singularity_decision_receipt_is_empty = yes
+	has_country_flag = mengele_event016_singularity_theory_completed
+	NOT = { has_country_flag = mengele_event016_singularity_prototype_completed }
+	NOT = { has_dlc = "Gotterdammerung" }
+}
+
+brilliant_scientist_mengele_singularity_deployment_decision_requirements = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_singularity_scenario_is_enabled = yes
+	brilliant_scientist_mengele_singularity_decision_receipt_is_empty = yes
+	has_country_flag = mengele_event016_singularity_prototype_completed
+	NOT = { has_country_flag = mengele_event016_singularity_deployment_completed }
+	brilliant_scientist_has_required_singularity_facilities = yes
+}
+
+brilliant_scientist_mengele_singularity_weaponization_decision_requirements = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_singularity_scenario_is_enabled = yes
+	brilliant_scientist_mengele_singularity_decision_receipt_is_empty = yes
+	has_country_flag = mengele_event016_singularity_deployment_completed
+	NOT = { has_country_flag = mengele_event016_singularity_weaponization_completed }
+	brilliant_scientist_has_required_singularity_facilities = yes
+}
+
+brilliant_scientist_mengele_singularity_theory_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.singularity_theory_civilian_factories }
+	NOT = { check_variable = { var = political_power value = constant:brilliant_scientist_project_stage_cost.singularity_theory_political_power compare = less_than } }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_stage_cost.singularity_theory_support_equipment } }
+}
+
+brilliant_scientist_mengele_singularity_prototype_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_fallback_prototype.singularity_civilian_factories }
+	NOT = { check_variable = { var = political_power value = constant:brilliant_scientist_project_fallback_prototype.singularity_political_power compare = less_than } }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_fallback_prototype.singularity_support_equipment } }
+	NOT = { has_fuel < constant:brilliant_scientist_project_fallback_prototype.singularity_fuel }
+}
+
+brilliant_scientist_mengele_singularity_deployment_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.singularity_deployment_civilian_factories }
+	NOT = { check_variable = { var = political_power value = constant:brilliant_scientist_project_stage_cost.singularity_deployment_political_power compare = less_than } }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_stage_cost.singularity_deployment_support_equipment } }
+	NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.singularity_deployment_fuel }
+}
+
+brilliant_scientist_mengele_singularity_weaponization_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.singularity_weaponization_civilian_factories }
+	NOT = { check_variable = { var = political_power value = constant:brilliant_scientist_project_stage_cost.singularity_weaponization_political_power compare = less_than } }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_stage_cost.singularity_weaponization_support_equipment } }
+	NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.singularity_weaponization_fuel }
+}
+
+brilliant_scientist_mengele_singularity_theory_decision_cancel_trigger = {
+	OR = {
+		NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		NOT = { brilliant_scientist_singularity_scenario_is_enabled = yes }
+		NOT = { brilliant_scientist_mengele_singularity_theory_decision_receipt_matches = yes }
+	}
+}
+
+brilliant_scientist_mengele_singularity_prototype_decision_cancel_trigger = {
+	OR = {
+		NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		NOT = { brilliant_scientist_singularity_scenario_is_enabled = yes }
+		NOT = { brilliant_scientist_mengele_singularity_prototype_decision_receipt_matches = yes }
+	}
+}
+
+brilliant_scientist_mengele_singularity_deployment_decision_cancel_trigger = {
+	OR = {
+		NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		NOT = { brilliant_scientist_singularity_scenario_is_enabled = yes }
+		NOT = { brilliant_scientist_mengele_singularity_deployment_decision_receipt_matches = yes }
+		NOT = { brilliant_scientist_has_required_singularity_facilities = yes }
+	}
+}
+
+brilliant_scientist_mengele_singularity_weaponization_decision_cancel_trigger = {
+	OR = {
+		NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		NOT = { brilliant_scientist_singularity_scenario_is_enabled = yes }
+		NOT = { brilliant_scientist_mengele_singularity_weaponization_decision_receipt_matches = yes }
+		NOT = { brilliant_scientist_has_required_singularity_facilities = yes }
+	}
+}

@@ -2334,16 +2334,24 @@ brilliant_scientist_can_pay_singularity_fail_deadly_governor_fallback = {
 }
 
 brilliant_scientist_can_research_singularity_component = {
-	brilliant_scientist_is_current_host = yes
-	has_country_flag = brilliant_scientist_kruger_state
-	has_country_flag = brilliant_scientist_singularity_facilities_verified
 	brilliant_scientist_has_required_singularity_facilities = yes
 	brilliant_scientist_singularity_scenario_is_enabled = yes
-	NOT = { has_country_flag = brilliant_scientist_project_incident_active }
-	check_variable = {
-		var = brilliant_scientist_project_stage_entries^14
-		value = constant:brilliant_scientist_project_stage.theory
-		compare = greater_than_or_equals
+	OR = {
+		AND = {
+			brilliant_scientist_is_current_host = yes
+			has_country_flag = brilliant_scientist_kruger_state
+			has_country_flag = brilliant_scientist_singularity_facilities_verified
+			NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+			check_variable = {
+				var = brilliant_scientist_project_stage_entries^14
+				value = constant:brilliant_scientist_project_stage.theory
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			brilliant_scientist_can_research_mengele_singularity_prototype = yes
+			NOT = { brilliant_scientist_mengele_singularity_incident_is_active = yes }
+		}
 	}
 }
 

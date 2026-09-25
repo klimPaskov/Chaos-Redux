@@ -91,6 +91,10 @@ function test(n,s) {
   if(definitions[k])return definitions[k].every(x=>test(x,s));
   if(k==="has_country_flag")return s.flags.has(v);
   if(k==="has_variable")return Object.hasOwn(s.vars||{},v);
+  if(k==="is_in_array"){
+    const d=Object.fromEntries(v.map(x=>[x.k,x.v]));
+    return (s.arrays?.[d.array]||[]).includes(number(d.value,s));
+  }
   if(k==="has_dynamic_modifier")return s.modifiers.includes(Array.isArray(v)?v.find(x=>x.k==="modifier").v:v);
   if(k==="has_tech")return s.techs.has(v);
   if(k==="is_special_project_completed")return s.projects.has(v);
@@ -166,6 +170,7 @@ function effects(seq,s) {
   for(const n of seq){
     if(s.effectStubs?.[n.k]){s.effectStubs[n.k](s);continue;}
     if(n.k==="if"){last=n.v.find(x=>x.k==="limit").v.every(x=>test(x,s));if(last)effects(n.v.filter(x=>x.k!=="limit"),s);}
+    else if(n.k==="else_if"){if(!last){last=n.v.find(x=>x.k==="limit").v.every(x=>test(x,s));if(last)effects(n.v.filter(x=>x.k!=="limit"),s);}}
     else if(n.k==="else"){if(!last)effects(n.v,s);}
     else if(n.k==="hidden_effect")effects(n.v,s);
     else if(n.k==="custom_effect_tooltip")s.tooltips.push(n.v);
@@ -180,6 +185,7 @@ function effects(seq,s) {
       target[key]=(n.k==="set_variable"?0:(target[key]||0))+number(x.v,s);
     }
     else if(n.k==="clear_variable")delete s.vars[n.v];
+    else if(n.k==="clear_array")s.arrays[n.v]=[];
     else if(n.k==="add_political_power")s.pp+=number(n.v,s);
     else if(n.k==="add_fuel")s.fuel+=number(n.v,s);
     else if(n.k==="add_equipment_to_stockpile"){
@@ -291,7 +297,7 @@ for(let mask=0;mask<64;mask++)for(const mode of ["valid","invalid_owner","no_the
   check("singularity",label+" Prototype modifier once",s.modifiers.filter(x=>x==="brilliant_scientist_singularity_prototype").length===(expected.length===6?1:0));
   check("singularity",label+" nine outer values restored",equal(saved(s),before));
   check("singularity",label+" native read only and no custom grant",equal([...s.projects],nativeBefore)&&s.calls.length===0);
-  check("singularity",label+" no payment mutation",Object.keys(s.vars).every(k=>k==="mengele_event016_singularity_component_count")&&Object.values(s.arrays).every(a=>a.every(x=>x===0)));
+  check("singularity",label+" no payment mutation",Object.keys(s.vars).every(k=>k==="mengele_event016_singularity_component_count")&&Object.entries(s.arrays).every(([k,a])=>k==="mengele_event016_singularity_component_entries"||a.every(x=>x===0)));
   check("singularity",label+" no terminal or foreign history",[...s.flags].every(x=>x.startsWith("mengele_event016_singularity_")||x==="mengele_event016_provider_receipts_initialized"));
  }
 }

@@ -1,0 +1,201 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 PRIVATE MENGELE SINGULARITY INCIDENT EFFECTS
+# ============================================================================
+# This country-scope core records a deterministic private Prototype component incident and owns its paid technical recovery.
+# The native risky reward callback must authenticate its component outcome and bind mengele_event016_requested_stage to Prototype before recording.
+# The native risky reward uses the private weighted dispatcher after its baseline audit.
+# No helper here changes another provider's project, component, incident, or terminal state.
+
+# A real native risky Prototype reward may produce one private incident.
+# The weight is the existing Prototype capacity multiplied by its existing accident factor.
+# The complementary entry keeps the two outcomes within the shared zero-to-maximum range.
+brilliant_scientist_mengele_dispatch_singularity_incident = {
+	set_temp_variable = { mengele_event016_singularity_incident_dispatched = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_singularity_incident_recorded = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = {
+			brilliant_scientist_mengele_singularity_incident_provider_is_valid = yes
+			brilliant_scientist_mengele_singularity_incident_stage_is_valid = yes
+			NOT = { brilliant_scientist_mengele_singularity_incident_is_active = yes }
+			NOT = { has_country_flag = mengele_event016_singularity_incident_recovery_active }
+		}
+		set_temp_variable = { mengele_event016_singularity_incident_pressure = constant:brilliant_scientist_project_board.capacity_prototype }
+		multiply_temp_variable = { mengele_event016_singularity_incident_pressure = constant:brilliant_scientist_accident.prototype_stage_factor }
+		clamp_temp_variable = {
+			var = mengele_event016_singularity_incident_pressure
+			min = constant:brilliant_scientist_accident.minimum
+			max = constant:brilliant_scientist_accident.maximum
+		}
+		set_temp_variable = { mengele_event016_singularity_incident_complement = constant:brilliant_scientist_accident.maximum }
+		subtract_from_temp_variable = { mengele_event016_singularity_incident_complement = mengele_event016_singularity_incident_pressure }
+		random_list = {
+			var:mengele_event016_singularity_incident_pressure = { brilliant_scientist_mengele_record_singularity_incident = yes }
+			var:mengele_event016_singularity_incident_complement = { }
+		}
+		if = {
+			limit = { check_variable = { var = mengele_event016_singularity_incident_recorded value = constant:brilliant_scientist_value.one compare = equals } }
+			set_temp_variable = { mengele_event016_singularity_incident_dispatched = constant:brilliant_scientist_value.one }
+		}
+	}
+}
+
+# A valid risky Prototype outcome records one active incident and permanent history.
+brilliant_scientist_mengele_record_singularity_incident = {
+	set_temp_variable = { mengele_event016_singularity_incident_recorded = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = {
+			brilliant_scientist_mengele_singularity_incident_provider_is_valid = yes
+			brilliant_scientist_mengele_singularity_incident_stage_is_valid = yes
+			NOT = { brilliant_scientist_mengele_singularity_incident_is_active = yes }
+			NOT = { has_country_flag = mengele_event016_singularity_incident_recovery_active }
+		}
+		set_country_flag = mengele_event016_singularity_incident_active
+		set_country_flag = mengele_event016_singularity_incident_history
+		if = {
+			limit = { NOT = { has_variable = mengele_event016_singularity_incident_history_count } }
+			set_variable = { mengele_event016_singularity_incident_history_count = constant:brilliant_scientist_value.zero }
+		}
+		add_to_variable = { mengele_event016_singularity_incident_history_count = constant:brilliant_scientist_value.one }
+		if = {
+			limit = {
+				NOT = {
+					has_dynamic_modifier = { modifier = brilliant_scientist_mengele_singularity_incident }
+				}
+			}
+			add_dynamic_modifier = { modifier = brilliant_scientist_mengele_singularity_incident }
+		}
+		set_temp_variable = { mengele_event016_singularity_incident_recorded = constant:brilliant_scientist_value.one }
+	}
+}
+
+# Clearing transient incident state retains incident and recovery histories.
+brilliant_scientist_mengele_clear_singularity_incident = {
+	clr_country_flag = mengele_event016_singularity_incident_active
+	if = {
+		limit = { has_dynamic_modifier = { modifier = brilliant_scientist_mengele_singularity_incident } }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_mengele_singularity_incident }
+	}
+}
+
+# The native decision reserves civilian factories, while this callback debits and receipts only three direct costs.
+brilliant_scientist_mengele_begin_singularity_incident_recovery = {
+	set_temp_variable = { mengele_event016_singularity_incident_recovery_started = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = { brilliant_scientist_mengele_singularity_incident_recovery_can_debit = yes }
+		set_variable = {
+			mengele_event016_singularity_incident_recovery_cost_political_power = constant:brilliant_scientist_project_board.response_technical_political_power
+		}
+		set_variable = {
+			mengele_event016_singularity_incident_recovery_cost_support_equipment = constant:brilliant_scientist_project_board.response_technical_support_equipment
+		}
+		set_variable = {
+			mengele_event016_singularity_incident_recovery_cost_fuel = constant:brilliant_scientist_project_board.response_technical_fuel
+		}
+		set_temp_variable = {
+			mengele_event016_singularity_incident_recovery_payment_political_power = mengele_event016_singularity_incident_recovery_cost_political_power
+		}
+		set_temp_variable = {
+			mengele_event016_singularity_incident_recovery_payment_support_equipment = mengele_event016_singularity_incident_recovery_cost_support_equipment
+		}
+		set_temp_variable = {
+			mengele_event016_singularity_incident_recovery_payment_fuel = mengele_event016_singularity_incident_recovery_cost_fuel
+		}
+		multiply_temp_variable = {
+			mengele_event016_singularity_incident_recovery_payment_political_power = constant:brilliant_scientist_directorate_value.negative_one
+		}
+		multiply_temp_variable = {
+			mengele_event016_singularity_incident_recovery_payment_support_equipment = constant:brilliant_scientist_directorate_value.negative_one
+		}
+		multiply_temp_variable = {
+			mengele_event016_singularity_incident_recovery_payment_fuel = constant:brilliant_scientist_directorate_value.negative_one
+		}
+		add_political_power = mengele_event016_singularity_incident_recovery_payment_political_power
+		add_equipment_to_stockpile = {
+			type = support_equipment
+			amount = mengele_event016_singularity_incident_recovery_payment_support_equipment
+		}
+		add_fuel = mengele_event016_singularity_incident_recovery_payment_fuel
+		set_country_flag = mengele_event016_singularity_incident_recovery_active
+		set_temp_variable = { mengele_event016_singularity_incident_recovery_started = constant:brilliant_scientist_value.one }
+	}
+}
+
+# The exact receipt is cleared before one refund; malformed orphan fields are retired without an inferred refund.
+brilliant_scientist_mengele_cancel_singularity_incident_recovery = {
+	set_temp_variable = { mengele_event016_singularity_incident_recovery_cancelled = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = { brilliant_scientist_mengele_singularity_incident_recovery_receipt_is_current = yes }
+		set_temp_variable = {
+			mengele_event016_singularity_incident_recovery_refund_political_power = mengele_event016_singularity_incident_recovery_cost_political_power
+		}
+		set_temp_variable = {
+			mengele_event016_singularity_incident_recovery_refund_support_equipment = mengele_event016_singularity_incident_recovery_cost_support_equipment
+		}
+		set_temp_variable = {
+			mengele_event016_singularity_incident_recovery_refund_fuel = mengele_event016_singularity_incident_recovery_cost_fuel
+		}
+		clr_country_flag = mengele_event016_singularity_incident_recovery_active
+		clear_variable = mengele_event016_singularity_incident_recovery_cost_political_power
+		clear_variable = mengele_event016_singularity_incident_recovery_cost_support_equipment
+		clear_variable = mengele_event016_singularity_incident_recovery_cost_fuel
+		add_political_power = mengele_event016_singularity_incident_recovery_refund_political_power
+		add_equipment_to_stockpile = {
+			type = support_equipment
+			amount = mengele_event016_singularity_incident_recovery_refund_support_equipment
+		}
+		add_fuel = mengele_event016_singularity_incident_recovery_refund_fuel
+		set_temp_variable = { mengele_event016_singularity_incident_recovery_cancelled = constant:brilliant_scientist_value.one }
+	}
+	if = {
+		limit = { NOT = { brilliant_scientist_mengele_singularity_incident_recovery_is_active = yes } }
+		clr_country_flag = mengele_event016_singularity_incident_recovery_active
+		clear_variable = mengele_event016_singularity_incident_recovery_cost_political_power
+		clear_variable = mengele_event016_singularity_incident_recovery_cost_support_equipment
+		clear_variable = mengele_event016_singularity_incident_recovery_cost_fuel
+	}
+	if = {
+		limit = { NOT = { brilliant_scientist_mengele_singularity_incident_provider_is_valid = yes } }
+		brilliant_scientist_mengele_clear_singularity_incident = yes
+	}
+}
+
+# A valid timer completion consumes the receipt and clears the penalty before recording permanent recovery history.
+brilliant_scientist_mengele_finish_singularity_incident_recovery = {
+	set_temp_variable = { mengele_event016_singularity_incident_recovery_finished = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = {
+			brilliant_scientist_mengele_singularity_incident_recovery_receipt_is_current = yes
+			brilliant_scientist_mengele_singularity_incident_is_active = yes
+			brilliant_scientist_mengele_singularity_incident_provider_is_valid = yes
+		}
+		clr_country_flag = mengele_event016_singularity_incident_recovery_active
+		clear_variable = mengele_event016_singularity_incident_recovery_cost_political_power
+		clear_variable = mengele_event016_singularity_incident_recovery_cost_support_equipment
+		clear_variable = mengele_event016_singularity_incident_recovery_cost_fuel
+		brilliant_scientist_mengele_clear_singularity_incident = yes
+		set_country_flag = mengele_event016_singularity_recovery_history
+		if = {
+			limit = { NOT = { has_variable = mengele_event016_singularity_recovery_history_count } }
+			set_variable = { mengele_event016_singularity_recovery_history_count = constant:brilliant_scientist_value.zero }
+		}
+		add_to_variable = { mengele_event016_singularity_recovery_history_count = constant:brilliant_scientist_value.one }
+		set_temp_variable = { mengele_event016_singularity_incident_recovery_finished = constant:brilliant_scientist_value.one }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = mengele_event016_singularity_incident_recovery_finished
+				value = constant:brilliant_scientist_value.zero
+				compare = equals
+			}
+		}
+		brilliant_scientist_mengele_cancel_singularity_incident_recovery = yes
+	}
+}
+
+# Parent cleanup calls this before broader provider teardown and never removes learned or permanent history.
+brilliant_scientist_mengele_cleanup_singularity_incident = {
+	brilliant_scientist_mengele_cancel_singularity_incident_recovery = yes
+	remove_decision = mengele_event016_singularity_incident_recovery
+	brilliant_scientist_mengele_clear_singularity_incident = yes
+}
