@@ -61,13 +61,10 @@ The sponsor consumes:
 
 - 100 gas masks;
 - 60 decontamination sets;
-- 30 CBRN instruments;
-- 40 support equipment;
 - 25 trucks;
-- 10 convoys;
 - two civilian factories for 45 days.
 
-Masks, decontamination sets, and instruments are removed oldest model first through the established equipment-family debit helpers. The state stores the exact provider, initial recipient controller, and start date. Cancellation and completion revalidate that exact provider and original recipient-controller, peace between them, and at least one continuing alliance, subject, inspection, observer, or exact humanitarian-corridor access route. A controller change, war, or loss of every authorized access route cancels the mission without refund or cleanup.
+The three equipment payments appear in the decision cost row; the ongoing factory assignment appears in its requirement and start-effect text. Masks and decontamination sets are removed oldest model first through the established equipment-family debit helpers. Trucks are deducted from stock at mission start. Instruments, generic support equipment, and convoys are neither required nor deducted for this exact-state relief mission. The state stores the exact provider, initial recipient controller, and start date. Cancellation and completion revalidate that exact provider and original recipient-controller, peace between them, and at least one continuing alliance, subject, inspection, observer, or exact humanitarian-corridor access route. A controller change, war, or loss of every authorized access route cancels the mission without refund or cleanup.
 
 At completion the mission removes contamination according to the current state band:
 
