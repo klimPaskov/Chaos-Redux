@@ -1,0 +1,32 @@
+# Event 016 private Biomedical Prototype decision gates, COUNTRY scope.
+# Family ID 6 uses receipt index 5; the existing conventional trigger file
+# owns the other Biomedical stages and the shared empty-receipt predicate.
+
+brilliant_scientist_mengele_biomedical_prototype_decision_visible = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_biomedical_decision_receipt_is_empty = yes
+	has_country_flag = mengele_event016_biomedical_theory_completed
+	NOT = { has_country_flag = mengele_event016_biomedical_prototype_completed }
+	NOT = { has_dlc = "Gotterdammerung" }
+	NOT = { is_special_project_completed = sp:sp_brilliant_scientist_biomedical_acceleration }
+}
+
+brilliant_scientist_mengele_biomedical_prototype_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_fallback_prototype.biomedical_civilian_factories }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_fallback_prototype.biomedical_support_equipment } }
+	NOT = { has_fuel < constant:brilliant_scientist_project_fallback_prototype.biomedical_fuel }
+	check_variable = { var = political_power value = constant:brilliant_scientist_project_fallback_prototype.biomedical_political_power compare = greater_than_or_equals }
+}
+
+brilliant_scientist_mengele_biomedical_prototype_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^5 value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+}
+
+brilliant_scientist_mengele_biomedical_prototype_decision_cancel_trigger = {
+	OR = { NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes } NOT = { brilliant_scientist_mengele_biomedical_prototype_decision_receipt_matches = yes } }
+}
+
+brilliant_scientist_mengele_biomedical_prototype_low_factory_margin = {
+	NOT = { num_of_civilian_factories_available_for_projects > constant:brilliant_scientist_project_fallback_prototype.biomedical_civilian_factories }
+}
