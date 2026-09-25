@@ -813,8 +813,11 @@ has_independence_wave_formable_discovery_gate = {
 		AND = {
 			check_variable = { independence_wave_formable_discovery_mode = constant:independence_wave_formable_discovery.revealed_by_league_state }
 			OR = {
+				# Route eligibility alone is not League-state evidence. These receipts
+				# mark an opened regional conference, active charter vote, or membership.
+				has_global_flag = independence_wave_regional_conferences_opened
+				has_global_flag = independence_wave_charter_vote_open
 				has_country_flag = independence_wave_league_member
-				has_country_flag = independence_wave_league_route_available
 				has_country_flag = independence_wave_formable_league_reveal_ready
 			}
 		}

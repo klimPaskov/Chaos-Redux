@@ -2,7 +2,7 @@
 
 ## Acceptance and scope
 
-**Disposition: accepted and queued for asset production.** The user approved the full Event 006 work, and Part 4 of the accepted focus-tree specification requires coordinated route icons that are not all identical. The 2026-09-03 focus-gap inventory found the generic former-host settlement icon repeated across 13 core focus nodes and package overlays. This package gives the twelve former-host route choices distinct art while retaining the shared policy root on its existing icon.
+**Disposition: implemented.** The user approved the full Event 006 work, and Part 4 of the accepted focus-tree specification requires coordinated route icons that are not all identical. The 2026-09-03 focus-gap inventory found the generic former-host settlement icon repeated across core focus nodes and package overlays. This package gives the twelve former-host route choices distinct art while retaining the shared policy root on its existing icon; the implementation and post-integration MCP evidence are recorded in `006_event6_focus_audit_remediation_2026-09-25.md`.
 
 Produce twelve original, static national-focus icons in the established Event 006 visual family. Keep all gameplay rewards, prerequisites, AI weights, localization, and focus geometry unchanged. The parent owns sprite registration, focus references, runtime integration, final validation, and commit.
 
@@ -34,6 +34,6 @@ Produce twelve original, static national-focus icons in the established Event 00
 
 ## Wiring and acceptance checks
 
-The parent will register each base and `_shine` sprite in `interface/006_independence_wave.gfx`, then update only the twelve matching `icon =` lines in `common/national_focus/006_independence_wave_focus.txt`. The root focus `independence_wave_define_former_host_policy` and every package overlay keep their existing references.
+The parent registered each base and `_shine` sprite in `interface/006_independence_wave.gfx` and updated only the twelve matching `icon =` lines in `common/national_focus/006_independence_wave_focus.txt`. The root focus `independence_wave_define_former_host_policy` and every package overlay keep their existing references. All twelve runtime DDS files passed exact processed-PNG decode comparison and unique-payload checks; the parent completed the shared-tree inspect, render, and raster review recorded in `006_event6_focus_audit_remediation_2026-09-25.md`, while package-overlay geometry remains unresolved.
 
 The artist handoff must list each source/native-alpha image, processed image, runtime DDS, prompt record, contact sheet, exact dimensions, alpha-channel evidence, DDS decode/round-trip result, and visual uniqueness review. The parent will verify all twelve output files, inspect the contact sheet, confirm every registered texture resolves, and run the mandatory Event 006 focus inspect/render/raster review after wiring. No gameplay or weighted-logic change is part of this icon package.
