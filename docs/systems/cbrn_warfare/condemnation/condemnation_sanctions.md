@@ -408,6 +408,8 @@ Every displayed condemnation payment uses the same score multiplier as its debit
 
 The score boundaries are inclusive. A value below `0` is treated as `0`, `0` is exactly `1x`, `500` is exactly `2x`, `1000` is exactly `3x`, and a value above `1000` is treated as `1000` and remains `3x`. This keeps the cost row, affordability trigger, and hidden debit on one quote.
 
+The targeted monthly pulse refreshes the inspection burden after disclosure, decay, and any evasion discovery have updated condemnation, so the next month's Consumer Goods requirement follows the resulting score.
+
 ## Target choices
 
 ### Compliance
