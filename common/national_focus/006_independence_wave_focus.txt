@@ -74,6 +74,18 @@ focus_tree = {
 	shared_focus = independence_wave_mac_ratify_village_appeals
 	shared_focus = independence_wave_mac_screen_mountain_veterans
 	shared_focus = independence_wave_mac_publish_vardar_arbitration_docket
+	# REG-04 Karelia and Crimea country groups are imported only by the full
+	# Event 006 framework; their active-origin and capital gates remain in source.
+	shared_focus = independence_wave_kar_register_border_districts
+	shared_focus = independence_wave_kar_survey_forest_railheads
+	shared_focus = independence_wave_kar_guarantee_language_appeals
+	shared_focus = independence_wave_kar_commission_border_ski_guard
+	shared_focus = independence_wave_kar_publish_border_transit_docket
+	shared_focus = independence_wave_cri_register_tenure_petitions
+	shared_focus = independence_wave_cri_chart_peninsula_services
+	shared_focus = independence_wave_cri_ratify_land_hearings
+	shared_focus = independence_wave_cri_audit_peninsular_service_rolls
+	shared_focus = independence_wave_cri_publish_rights_and_transit_docket
 	shared_focus = independence_wave_iw043_convene_volga_ural_federal_congress
 	shared_focus = independence_wave_iw043_convene_idel_ural_compact
 	# Import disconnected IW-043 economy and emergency spurs explicitly; shared
@@ -204,9 +216,20 @@ focus_tree = {
 				if = { limit = { original_tag = KUR is_independence_wave_kurdistan_package = yes } independence_wave_kur_focus_secure_kurdish_communities = yes }
 				if = { limit = { original_tag = FER is_independence_wave_far_eastern_package = yes } independence_wave_fer_focus_secure_railway_ports = yes }
 				if = { limit = { original_tag = UDM is_independence_wave_udm_package = yes } independence_wave_udm_focus_secure_rail_communities = yes }
-				if = { limit = { is_independence_wave_kar_package = yes } independence_wave_kar_focus_reconcile_forest_supply_records = yes }
-				if = { limit = { is_independence_wave_cri_package = yes } independence_wave_cri_focus_register_land_and_return_rolls = yes }
+				if = {
+					limit = { is_independence_wave_kar_package = yes }
+					independence_wave_kc_capture_focus_ledgers_before_reward = yes
+					independence_wave_kc_reset_reg04_focus_deltas = yes
+					independence_wave_kar_focus_reconcile_forest_supply_records = yes
+				}
+				if = {
+					limit = { is_independence_wave_cri_package = yes }
+					independence_wave_kc_capture_focus_ledgers_before_reward = yes
+					independence_wave_kc_reset_reg04_focus_deltas = yes
+					independence_wave_cri_focus_register_land_and_return_rolls = yes
+				}
 			}
+			independence_wave_kc_report_new_stability_compact = yes
 		}
 		ai_will_do = { base = constant:independence_wave_focus_ai.urgent }
 	}
@@ -4318,7 +4341,7 @@ shared_focus = {
 	x = 0
 	y = 1
 	cost = @independence_wave_focus_short
-	search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_INFRASTRUCTURE }
+	search_filters = { FOCUS_FILTER_INDUSTRY }
 	allow_branch = { is_independence_wave_tra_package = yes has_independence_wave_generic_focus_contract = yes }
 	available = { is_independence_wave_tra_package = yes has_independence_wave_generic_focus_contract = yes 84 = { is_owned_and_controlled_by = ROOT is_capital = yes } }
 	completion_reward = {
@@ -4451,7 +4474,7 @@ shared_focus = {
 	x = 0
 	y = 1
 	cost = @independence_wave_focus_short
-	search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_INFRASTRUCTURE }
+	search_filters = { FOCUS_FILTER_INDUSTRY }
 	allow_branch = { is_independence_wave_bos_package = yes has_independence_wave_generic_focus_contract = yes }
 	available = { is_independence_wave_bos_package = yes has_independence_wave_generic_focus_contract = yes 104 = { is_owned_and_controlled_by = ROOT is_capital = yes } }
 	completion_reward = {
@@ -4584,7 +4607,7 @@ shared_focus = {
 	x = 0
 	y = 1
 	cost = @independence_wave_focus_short
-	search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_INFRASTRUCTURE }
+	search_filters = { FOCUS_FILTER_INDUSTRY }
 	allow_branch = { is_independence_wave_mac_package = yes can_use_independence_wave_full_focus_framework = yes }
 	available = { is_independence_wave_mac_package = yes has_independence_wave_generic_focus_contract = yes 106 = { is_owned_and_controlled_by = ROOT is_capital = yes } }
 	completion_reward = {
@@ -4683,6 +4706,324 @@ shared_focus = {
 			set_temp_variable = { independence_wave_mac_civic_delta = constant:independence_wave_macedonia_pressure.minor_gain }
 			set_temp_variable = { independence_wave_mac_defence_delta = constant:independence_wave_macedonia_pressure.minor_gain }
 			independence_wave_change_mac_ledgers = yes
+		}
+	}
+}
+
+# ------------------------------------------------------------------------
+# REG-04 Karelia and Crimea focus groups. These country-specific routes are
+# available only on the full Event 006 framework and fail closed if setup or
+# the controlled capital anchor is lost.
+# ------------------------------------------------------------------------
+
+shared_focus = {
+	id = independence_wave_kar_register_border_districts
+	icon = GFX_goal_independence_wave_founding_administration
+	prerequisite = { focus = independence_wave_prepare_capital_administration }
+	relative_position_id = independence_wave_overlay_take_stock_of_independence
+	x = 3
+	y = 6
+	offset = { x = -35 trigger = { can_use_independence_wave_full_focus_framework = yes } }
+	cost = @independence_wave_focus_short
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = { can_use_independence_wave_kar_reg04_focus_group = yes }
+	available = { can_use_independence_wave_kar_reg04_focus_group = yes }
+	completion_reward = {
+		if = {
+			limit = { can_use_independence_wave_kar_reg04_focus_group = yes }
+			custom_effect_tooltip = independence_wave_kar_register_border_districts_tt
+			hidden_effect = {
+				independence_wave_kc_capture_focus_ledgers_before_reward = yes
+				independence_wave_kc_reset_reg04_focus_deltas = yes
+				set_temp_variable = { independence_wave_kc_mandate_delta = constant:independence_wave_karelia_crimea_pressure.minor_gain }
+				independence_wave_kc_apply_reg04_focus_deltas = yes
+			}
+			independence_wave_kc_report_new_stability_compact = yes
+		}
+	}
+}
+
+shared_focus = {
+	id = independence_wave_kar_survey_forest_railheads
+	icon = GFX_goal_independence_wave_infrastructure_authority
+	prerequisite = { focus = independence_wave_kar_register_border_districts }
+	relative_position_id = independence_wave_kar_register_border_districts
+	x = 0
+	y = 1
+	cost = @independence_wave_focus_short
+	search_filters = { FOCUS_FILTER_INDUSTRY }
+	allow_branch = { can_use_independence_wave_kar_reg04_focus_group = yes }
+	available = { can_use_independence_wave_kar_reg04_focus_group = yes }
+	completion_reward = {
+		if = {
+			limit = { can_use_independence_wave_kar_reg04_focus_group = yes }
+			custom_effect_tooltip = independence_wave_kar_survey_forest_railheads_tt
+			hidden_effect = {
+				independence_wave_kc_capture_focus_ledgers_before_reward = yes
+				independence_wave_kc_reset_reg04_focus_deltas = yes
+				set_temp_variable = { independence_wave_kc_forest_delta = constant:independence_wave_karelia_crimea_pressure.minor_gain }
+				independence_wave_kc_apply_reg04_focus_deltas = yes
+			}
+			independence_wave_kc_report_new_stability_compact = yes
+		}
+	}
+}
+
+shared_focus = {
+	id = independence_wave_kar_guarantee_language_appeals
+	icon = GFX_goal_independence_wave_popular_councils
+	prerequisite = { focus = independence_wave_kar_survey_forest_railheads }
+	mutually_exclusive = { focus = independence_wave_kar_commission_border_ski_guard }
+	relative_position_id = independence_wave_kar_survey_forest_railheads
+	x = -1
+	y = 1
+	cost = @independence_wave_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = { can_use_independence_wave_kar_reg04_focus_group = yes }
+	available = { can_use_independence_wave_kar_reg04_focus_group = yes }
+	completion_reward = {
+		if = {
+			limit = { can_use_independence_wave_kar_reg04_focus_group = yes }
+			custom_effect_tooltip = independence_wave_kar_guarantee_language_appeals_tt
+			if = {
+				limit = { has_country_flag = independence_wave_kar_language_commission_convened NOT = { has_country_flag = independence_wave_kar_language_appeals_focus_companion_awarded } }
+				custom_effect_tooltip = independence_wave_kar_guarantee_language_appeals_companion_tt
+			}
+			hidden_effect = {
+				independence_wave_kc_capture_focus_ledgers_before_reward = yes
+				independence_wave_kc_reset_reg04_focus_deltas = yes
+				set_temp_variable = { independence_wave_kc_mandate_delta = constant:independence_wave_karelia_crimea_pressure.standard_gain }
+				set_temp_variable = { independence_wave_kc_forest_delta = constant:independence_wave_karelia_crimea_pressure.minor_loss }
+				independence_wave_kc_apply_reg04_focus_deltas = yes
+				independence_wave_kar_award_language_appeals_companion = yes
+			}
+			independence_wave_kc_report_new_stability_compact = yes
+		}
+	}
+}
+
+shared_focus = {
+	id = independence_wave_kar_commission_border_ski_guard
+	icon = GFX_goal_independence_wave_army_integration
+	prerequisite = { focus = independence_wave_kar_survey_forest_railheads }
+	mutually_exclusive = { focus = independence_wave_kar_guarantee_language_appeals }
+	relative_position_id = independence_wave_kar_survey_forest_railheads
+	x = 1
+	y = 1
+	cost = @independence_wave_focus_standard
+	search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_WAR_SUPPORT }
+	allow_branch = { can_use_independence_wave_kar_reg04_focus_group = yes }
+	available = { can_use_independence_wave_kar_reg04_focus_group = yes }
+	completion_reward = {
+		if = {
+			limit = { can_use_independence_wave_kar_reg04_focus_group = yes }
+			custom_effect_tooltip = independence_wave_kar_commission_border_ski_guard_tt
+			if = {
+				limit = { has_country_flag = independence_wave_kar_ski_guard_formed NOT = { has_country_flag = independence_wave_kar_ski_guard_focus_companion_awarded } }
+				custom_effect_tooltip = independence_wave_kar_commission_border_ski_guard_companion_tt
+			}
+			hidden_effect = {
+				independence_wave_kc_capture_focus_ledgers_before_reward = yes
+				independence_wave_kc_reset_reg04_focus_deltas = yes
+				set_temp_variable = { independence_wave_kc_forest_delta = constant:independence_wave_karelia_crimea_pressure.standard_gain }
+				set_temp_variable = { independence_wave_kc_mandate_delta = constant:independence_wave_karelia_crimea_pressure.minor_loss }
+				independence_wave_kc_apply_reg04_focus_deltas = yes
+				independence_wave_kar_award_ski_guard_companion = yes
+			}
+			independence_wave_kc_report_new_stability_compact = yes
+		}
+	}
+}
+
+shared_focus = {
+	id = independence_wave_kar_publish_border_transit_docket
+	icon = GFX_goal_independence_wave_former_host_settlement
+	prerequisite = { OR = { focus = independence_wave_kar_guarantee_language_appeals focus = independence_wave_kar_commission_border_ski_guard } }
+	relative_position_id = independence_wave_kar_survey_forest_railheads
+	x = 0
+	y = 2
+	cost = @independence_wave_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = { can_use_independence_wave_kar_reg04_focus_group = yes }
+	available = {
+		can_use_independence_wave_kar_reg04_focus_group = yes
+		custom_override_tooltip = {
+			tooltip = independence_wave_kar_publish_border_transit_docket_paid_recorded_tt
+			not_tooltip = independence_wave_kar_publish_border_transit_docket_paid_gate_tt
+			OR = {
+				AND = { has_completed_focus = independence_wave_kar_guarantee_language_appeals has_country_flag = independence_wave_kar_language_commission_convened }
+				AND = { has_completed_focus = independence_wave_kar_commission_border_ski_guard has_country_flag = independence_wave_kar_ski_guard_formed }
+			}
+		}
+	}
+	completion_reward = {
+		if = {
+			limit = { can_use_independence_wave_kar_reg04_focus_group = yes }
+			custom_effect_tooltip = independence_wave_kar_publish_border_transit_docket_tt
+			hidden_effect = {
+				independence_wave_kc_capture_focus_ledgers_before_reward = yes
+				independence_wave_kc_reset_reg04_focus_deltas = yes
+				set_temp_variable = { independence_wave_kc_forest_delta = constant:independence_wave_karelia_crimea_pressure.minor_gain }
+				set_temp_variable = { independence_wave_kc_mandate_delta = constant:independence_wave_karelia_crimea_pressure.minor_gain }
+				independence_wave_kc_apply_reg04_focus_deltas = yes
+			}
+			independence_wave_kc_report_new_stability_compact = yes
+		}
+	}
+}
+
+shared_focus = {
+	id = independence_wave_cri_register_tenure_petitions
+	icon = GFX_goal_independence_wave_founding_administration
+	prerequisite = { focus = independence_wave_prepare_capital_administration }
+	relative_position_id = independence_wave_overlay_take_stock_of_independence
+	x = 3
+	y = 6
+	offset = { x = -35 trigger = { can_use_independence_wave_full_focus_framework = yes } }
+	cost = @independence_wave_focus_short
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = { can_use_independence_wave_cri_reg04_focus_group = yes }
+	available = { can_use_independence_wave_cri_reg04_focus_group = yes }
+	completion_reward = {
+		if = {
+			limit = { can_use_independence_wave_cri_reg04_focus_group = yes }
+			custom_effect_tooltip = independence_wave_cri_register_tenure_petitions_tt
+			hidden_effect = {
+				independence_wave_kc_capture_focus_ledgers_before_reward = yes
+				independence_wave_kc_reset_reg04_focus_deltas = yes
+				set_temp_variable = { independence_wave_kc_settlement_delta = constant:independence_wave_karelia_crimea_pressure.minor_gain }
+				independence_wave_kc_apply_reg04_focus_deltas = yes
+			}
+			independence_wave_kc_report_new_stability_compact = yes
+		}
+	}
+}
+
+shared_focus = {
+	id = independence_wave_cri_chart_peninsula_services
+	icon = GFX_goal_independence_wave_infrastructure_authority
+	prerequisite = { focus = independence_wave_cri_register_tenure_petitions }
+	relative_position_id = independence_wave_cri_register_tenure_petitions
+	x = 0
+	y = 1
+	cost = @independence_wave_focus_short
+	search_filters = { FOCUS_FILTER_INDUSTRY }
+	allow_branch = { can_use_independence_wave_cri_reg04_focus_group = yes }
+	available = { can_use_independence_wave_cri_reg04_focus_group = yes }
+	completion_reward = {
+		if = {
+			limit = { can_use_independence_wave_cri_reg04_focus_group = yes }
+			custom_effect_tooltip = independence_wave_cri_chart_peninsula_services_tt
+			hidden_effect = {
+				independence_wave_kc_capture_focus_ledgers_before_reward = yes
+				independence_wave_kc_reset_reg04_focus_deltas = yes
+				set_temp_variable = { independence_wave_kc_return_delta = constant:independence_wave_karelia_crimea_pressure.minor_gain }
+				independence_wave_kc_apply_reg04_focus_deltas = yes
+			}
+			independence_wave_kc_report_new_stability_compact = yes
+		}
+	}
+}
+
+shared_focus = {
+	id = independence_wave_cri_ratify_land_hearings
+	icon = GFX_goal_independence_wave_popular_councils
+	prerequisite = { focus = independence_wave_cri_chart_peninsula_services }
+	mutually_exclusive = { focus = independence_wave_cri_audit_peninsular_service_rolls }
+	relative_position_id = independence_wave_cri_chart_peninsula_services
+	x = -1
+	y = 1
+	cost = @independence_wave_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = { can_use_independence_wave_cri_reg04_focus_group = yes }
+	available = { can_use_independence_wave_cri_reg04_focus_group = yes }
+	completion_reward = {
+		if = {
+			limit = { can_use_independence_wave_cri_reg04_focus_group = yes }
+			custom_effect_tooltip = independence_wave_cri_ratify_land_hearings_tt
+			if = {
+				limit = { has_country_flag = independence_wave_cri_land_claims_surveyed NOT = { has_country_flag = independence_wave_cri_land_hearings_focus_companion_awarded } }
+				custom_effect_tooltip = independence_wave_cri_ratify_land_hearings_companion_tt
+			}
+			hidden_effect = {
+				independence_wave_kc_capture_focus_ledgers_before_reward = yes
+				independence_wave_kc_reset_reg04_focus_deltas = yes
+				set_temp_variable = { independence_wave_kc_settlement_delta = constant:independence_wave_karelia_crimea_pressure.standard_gain }
+				set_temp_variable = { independence_wave_kc_return_delta = constant:independence_wave_karelia_crimea_pressure.minor_loss }
+				independence_wave_kc_apply_reg04_focus_deltas = yes
+				independence_wave_cri_award_land_hearings_companion = yes
+			}
+			independence_wave_kc_report_new_stability_compact = yes
+		}
+	}
+}
+
+shared_focus = {
+	id = independence_wave_cri_audit_peninsular_service_rolls
+	icon = GFX_goal_independence_wave_army_integration
+	prerequisite = { focus = independence_wave_cri_chart_peninsula_services }
+	mutually_exclusive = { focus = independence_wave_cri_ratify_land_hearings }
+	relative_position_id = independence_wave_cri_chart_peninsula_services
+	x = 1
+	y = 1
+	cost = @independence_wave_focus_standard
+	search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_WAR_SUPPORT }
+	allow_branch = { can_use_independence_wave_cri_reg04_focus_group = yes }
+	available = { can_use_independence_wave_cri_reg04_focus_group = yes }
+	completion_reward = {
+		if = {
+			limit = { can_use_independence_wave_cri_reg04_focus_group = yes }
+			custom_effect_tooltip = independence_wave_cri_audit_peninsular_service_rolls_tt
+			if = {
+				limit = { has_country_flag = independence_wave_cri_peninsular_services_screened NOT = { has_country_flag = independence_wave_cri_service_rolls_focus_companion_awarded } }
+				custom_effect_tooltip = independence_wave_cri_audit_peninsular_service_rolls_companion_tt
+			}
+			hidden_effect = {
+				independence_wave_kc_capture_focus_ledgers_before_reward = yes
+				independence_wave_kc_reset_reg04_focus_deltas = yes
+				set_temp_variable = { independence_wave_kc_return_delta = constant:independence_wave_karelia_crimea_pressure.standard_gain }
+				set_temp_variable = { independence_wave_kc_settlement_delta = constant:independence_wave_karelia_crimea_pressure.minor_loss }
+				independence_wave_kc_apply_reg04_focus_deltas = yes
+				independence_wave_cri_award_service_rolls_companion = yes
+			}
+			independence_wave_kc_report_new_stability_compact = yes
+		}
+	}
+}
+
+shared_focus = {
+	id = independence_wave_cri_publish_rights_and_transit_docket
+	icon = GFX_goal_independence_wave_former_host_settlement
+	prerequisite = { OR = { focus = independence_wave_cri_ratify_land_hearings focus = independence_wave_cri_audit_peninsular_service_rolls } }
+	relative_position_id = independence_wave_cri_chart_peninsula_services
+	x = 0
+	y = 2
+	cost = @independence_wave_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = { can_use_independence_wave_cri_reg04_focus_group = yes }
+	available = {
+		can_use_independence_wave_cri_reg04_focus_group = yes
+		custom_override_tooltip = {
+			tooltip = independence_wave_cri_publish_rights_and_transit_docket_paid_recorded_tt
+			not_tooltip = independence_wave_cri_publish_rights_and_transit_docket_paid_gate_tt
+			OR = {
+				AND = { has_completed_focus = independence_wave_cri_ratify_land_hearings has_country_flag = independence_wave_cri_land_claims_surveyed }
+				AND = { has_completed_focus = independence_wave_cri_audit_peninsular_service_rolls has_country_flag = independence_wave_cri_peninsular_services_screened }
+			}
+		}
+	}
+	completion_reward = {
+		if = {
+			limit = { can_use_independence_wave_cri_reg04_focus_group = yes }
+			custom_effect_tooltip = independence_wave_cri_publish_rights_and_transit_docket_tt
+			hidden_effect = {
+				independence_wave_kc_capture_focus_ledgers_before_reward = yes
+				independence_wave_kc_reset_reg04_focus_deltas = yes
+				set_temp_variable = { independence_wave_kc_return_delta = constant:independence_wave_karelia_crimea_pressure.minor_gain }
+				set_temp_variable = { independence_wave_kc_settlement_delta = constant:independence_wave_karelia_crimea_pressure.minor_gain }
+				independence_wave_kc_apply_reg04_focus_deltas = yes
+			}
+			independence_wave_kc_report_new_stability_compact = yes
 		}
 	}
 }

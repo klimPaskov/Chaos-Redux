@@ -668,7 +668,7 @@ The detailed regional matrix is in `matrices/006_regional_overlay_matrix.csv`.
 
 Acceptance basis: the user approved Event 006 implementation broadly on 2026-09-25 and selected the recommended path to retain the root-level shared-focus design while recording the current MCP render limitation. This acceptance applies to the bounded IW-023/TRA, IW-029/BOS, and IW-026/MAC groups below; it does not authorize a new country tree or duplicated carrier definitions.
 
-Each group has five shared-focus IDs in a four-focus route: a 5-day administrative root, a 5-day transport or logistics step, one selected 7-day branch from a mutually exclusive pair, and a 7-day capstone. The selected sequence costs 24 focus units (168 days at normal speed), while each package's existing 420-day founding crisis and paid-project requirements remain in force. The root and descendants use exact package gates and the currently selected full-framework or reviewed additive-carrier contract. TRA and BOS are imported into the full tree and the retained Austro-Hungarian carrier; MAC is imported into the full tree.
+Each group has five shared-focus IDs in a four-focus route: a 5-unit administrative root, a 5-unit transport or logistics step, one selected 7-unit branch from a mutually exclusive pair, and a 7-unit capstone. The selected sequence costs 24 focus units (168 days at normal speed), while each package's existing 420-day founding crisis and paid-project requirements remain in force. The root and descendants use exact package gates and the currently selected full-framework or reviewed additive-carrier contract. TRA and BOS are imported into the full tree and the retained Austro-Hungarian carrier; MAC is imported into the full tree.
 
 | Package | Root and logistics step | Mutually exclusive branch choices | Capstone |
 | --- | --- | --- | --- |
@@ -679,6 +679,18 @@ Each group has five shared-focus IDs in a four-focus route: a 5-day administrati
 Opening and logistics focuses grant `minor_gain` to one package ledger. Each branch grants `standard_gain` to its favored ledger and `minor_loss` to the other. The matching paid council or screening action contributes one further `minor_gain` only after its cost is paid successfully, whether its receipt predates or follows the branch focus. The capstone requires either that paid receipt and grants `minor_gain` to both ledgers. All changes use the existing package ledger helpers, clamps, and lifecycle refresh; they never set a paid-project receipt, resolve a mission, settle former-host ledgers, open a network, transfer territory, grant a core, or supply FORM-08 consent. Six `*_focus_companion_awarded` flags prevent the companion from repeating when a retained additive carrier keeps completed focus history across package cleanup; reloading the full framework clears those flags together with the reset focus history. Existing icons are reused and each focus receives matching title, description, and effect tooltip localisation.
 
 The shared-focus inspector currently counts only direct `focus = {}` definitions and omits imported root-level `shared_focus` definitions. Its renders therefore cannot prove this attachment or layout. The user approved retaining the shared design and recording that MCP layout evidence as blocked; source inspection does not substitute for the required MCP evidence. The AI numeric-weight portion remains behind a complete typed baseline and a same-scenario probability comparison.
+
+### Accepted REG-04 Karelia and Crimea groups (2026-09-26)
+
+Acceptance basis: the parent accepted the exact KAR/CRI group design in `docs/plans/006_independence_wave_plans/006_event6_reg04_eastern_packages_focus_groups_improvement_addendum_2026-09-25.md` on 2026-09-26 under the user's explicit “i approve everything” direction for the active Event 006 rework. This applies Part 4's highlighted-package group requirement and Part 5's Level 2 and REG-04 rules to IW-033/KAR and IW-041/CRI; it does not accept a Don package or resolve Kuban.
+
+Each package receives one five-focus shared group in the existing full Event 006 tree: 5/5/7/7 focus-cost units (168 days selected route), rooted after `independence_wave_prepare_capital_administration`. A selected civilian or service branch is mutually exclusive with its frontier or military branch, and one docket requires the matching paid-action receipt. KAR uses state 146 and its Forest Supply/Civic Mandate ledgers; CRI uses state 137 and its Return Capacity/Land Settlement ledgers. Root, every descendant, and every reward helper require the exact package, an active Event 006 origin, the full-tree contract, and the package anchor owned, controlled, and capital. No focus grants a state, claim, core, paid receipt, government, mission completion, former-host settlement, or network entry.
+
+Opening and logistics focuses add `minor_gain` to their named ledgers; the selected branch adds `standard_gain` to one ledger and `minor_loss` to the other; a matching paid project gives one additional `minor_gain` only after successful payment; and the docket adds `minor_gain` to both ledgers. All changes use the existing clamped Karelia/Crimea ledger effect and lifecycle refresh. Existing 210-day KAR/CRI founding missions, costs, project durations, cancel triggers, and failure effects remain in force. Group descriptions and tooltips retain the ledger and package terminology in the accepted addendum, including bounded “up to” gains and conditional stability-state wording.
+
+The root-level `shared_focus` definitions are imported only into the full Event 006 tree. The current focus MCP inspector and renderers omit imported shared nodes, so attachment, placement, overlap, and icon visibility remain blocked at MCP; this does not authorize duplicate direct-focus fallbacks. No numeric focus AI weights are accepted here: route-aware AI remains unresolved until the probability adapter can evaluate complete typed campaign fixtures and imported-node candidates. IW-039/DON remains blocked pending its own country package and collision review. IW-040/KUB remains a separate highlighted-package focus-group coverage question.
+
+**Implementation evidence (2026-09-26):** `common/national_focus/006_independence_wave_focus.txt` contains the ten exact KAR/CRI root-level shared definitions and ten full-tree imports; the package triggers, clamped ledger helpers, eight paid-project transition callbacks, four companion rewards with both completion orders, focus-history reset, and 40 focus localisation keys are in the corresponding Event 006 source files. The four branch tooltips describe maximum changes under the 0–100 ledger clamp, and the four payment-after-focus callbacks display their existing companion tooltip. The three older REG-03 logistics filters that used an unregistered vanilla filter were also narrowed to the supported industry filter. This is an implemented KAR/CRI source tranche under the acceptance basis above, not a whole REG-04 or Event 006 completion claim. The [mechanic reference](../../../events/006_independence_wave/reg04_karelia_crimea_focus_groups.md) records the exact identifiers, timing, icons, and limitations. Latest post-source `hoi4.focus_inspect` returned `FOCUS_INSPECTED` at revision `37bea85bc7f0d6734120a2c6d3ca93b755684cced4e945430467efe86a534a0d` with 184 direct nodes, 196 connectors, and unchanged layout hash `a4d2d61f7c8f879a7e98ea8e6befc1b6c561138f0373355b91508b4056ad03e7`; [inspect](hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/dfc584b8c7ff6b1a7423e40dca2e4a1a814de5e9b3825d05d6b677a9a24716c0/05039cf547c2780df4d10860d614f8b7e6df3a4e31071b56993f15b544b05cca/focus-inspect.37bea85bc7f0d673.json), [HTML render](hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/64cfaf95a4b345b57fc1a6926c07fb27db62a57697e482e681eef56eb314ddc9/6ecb8d2a060756b1a9abaeacb99939ca33b97f80fe2d51c99e2acdf05bd0c6d5/independence_wave_focus_tree.focus.html), and [SVG render](hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/5086d880824847a69a40978a74727d27f869e94a735828bcfccb315258f70109/3f86a3b5f4b91fb342fff8868b3545bb7934d313e1870d924ea535dd01c14de0/independence_wave_focus_tree.focus.svg) omit imported nodes, leaving group layout evidence blocked. The bounded focus and decision audit handoffs are integrated; localization patch handoffs record the current key evidence. The focus AI probability audit remains partial because the exact prior scenario set and complete candidate pool are unavailable; deadline feasibility, DON, and KUB remain unresolved as stated above.
 
 ## Country ambition modules
 
@@ -713,14 +725,7 @@ Themes:
 - relation to a wider Mesopotamian formable
 - defensive mountain and river corridor strategy
 
-The implemented IW-058 lane opens on the Mosul anchor, keeps Assyrian,
-Chaldean, Syriac, and Aramean guarantees distinct, and separates church-civic,
-civic-assembly, and temporary Levies guardianship routes. Its Mesopotamian
-settlement branch exposes the FORM-18 congress and the sovereign-autonomy
-alternative. The terminal ratification focus is the sole caller for the final
-`.5810` settlement presentation. The sovereign compact writes its mode and
-records first, then the focus presents the final settlement after its exact
-proof gate.
+The implemented IW-058 lane opens on the Mosul anchor, keeps Assyrian, Chaldean, Syriac, and Aramean guarantees distinct, and separates church-civic, civic-assembly, and temporary Levies guardianship routes. Its Mesopotamian settlement branch exposes the FORM-18 congress and the sovereign-autonomy alternative. The terminal ratification focus is the sole caller for the final `.5810` settlement presentation. The sovereign compact writes its mode and records first, then the focus presents the final settlement after its exact proof gate.
 
 ### Mesopotamia
 
@@ -744,13 +749,7 @@ Themes:
 - Idel-Ural or Volga-Ural formable paths
 - Event 5 origin separation
 
-The implemented IW-043 lane opens as a modern Middle Volga Congress at the
-Kazan anchor. Its four rights clauses, river-security mechanics, religious
-settlement, and emergency route feed two mutually exclusive constitutional
-capstones. The federal capstone leads to the paid FORM-12 congress. The
-restoration capstone leads to the paid FORM-13 compact. Both paths preserve
-member sovereignty through staged integration and use sole route-proof writers
-for the two Volga signature achievements.
+The implemented IW-043 lane opens as a modern Middle Volga Congress at the Kazan anchor. Its four rights clauses, river-security mechanics, religious settlement, and emergency route feed two mutually exclusive constitutional capstones. The federal capstone leads to the paid FORM-12 congress. The restoration capstone leads to the paid FORM-13 compact. Both paths preserve member sovereignty through staged integration and use sole route-proof writers for the two Volga signature achievements.
 
 ### Asante
 

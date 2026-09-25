@@ -77,16 +77,11 @@ Signature countries include the highlighted packages in Part 4.
 
 Acceptance basis: the user approved Event 006 implementation broadly on 2026-09-25 and selected the recommended path to retain shared-focus definitions while recording the MCP shared-focus rendering limitation. The Part 4 accepted group contract applies to Level 2 featured regional packages IW-023/TRA, IW-029/BOS, and IW-026/MAC. Their five-node groups, package-specific institutional themes, exact focus IDs, ledger rewards, paid-action receipts, and shared carrier imports are listed in the accepted REG-03 section of Part 4 and the implementation detail plan `docs/plans/006_independence_wave_plans/006_event6_reg03_danube_package_focus_groups_improvement_addendum_2026-09-25.md`.
 
-The former Level 2 focus-group waiver for IW-033/KAR and IW-041/CRI is superseded by this user decision. Their existing shared-focus ledger callbacks remain narrow adapters and do not satisfy the country-specific group requirement; REG-04 groups remain an open implementation surface. The separate Don gap remains open as well.
+The former Level 2 focus-group waiver for IW-033/KAR and IW-041/CRI is superseded by the accepted parent decision recorded in Part 4 on 2026-09-26. Their older inventory callbacks remain narrow adapters, while ten distinct KAR/CRI shared-focus nodes and their paid companion paths are implemented at source level under the accepted Part 4 and [REG-04 addendum](../../../plans/006_independence_wave_plans/006_event6_reg04_eastern_packages_focus_groups_improvement_addendum_2026-09-25.md) design. The [mechanic reference](../../../events/006_independence_wave/reg04_karelia_crimea_focus_groups.md) records the source files, nominal timing, localisation and reused icons. MCP layout evidence for imported nodes and route-aware AI remain unresolved, the separate IW-039/DON package gap remains blocked, and IW-040/KUB's distinct highlighted-group requirement remains open. Event 006 remains **HOLD / PARTIAL**.
 
 ## Concrete Event 006 signature package tranche: IW-043 and IW-058
 
-The bounded implementation contract for the two signature packages is recorded
-in `docs/events/006_independence_wave/systems/iw043_iw058_signature_packages.md` and
-the dated package audits under
-`docs/plans/006_independence_wave_plans/subagent_handoffs/`. Those references
-are evidence for the concrete tranche; the package rules in this specification
-remain the design authority.
+The bounded implementation contract for the two signature packages is recorded in `docs/events/006_independence_wave/systems/iw043_iw058_signature_packages.md` and the dated package audits under `docs/plans/006_independence_wave_plans/subagent_handoffs/`. Those references are evidence for the concrete tranche; the package rules in this specification remain the design authority.
 
 | Package | Carrier and origin | Implemented base surface | Held extension boundary |
 | --- | --- | --- | --- |
@@ -95,38 +90,18 @@ remain the design authority.
 
 Implementation reconciliation (2026-08-14): the installed map identifies state 256 as Chuvashia and state 833 as Mari El. The current FORM-12/FORM-13 generated consumers therefore use state 833 for the MEL member slot, while the `256` value in the historical IW-043 research row is retained as public-baseline traceability only. State 256 is not a MEL alias, and this reconciliation does not promote IW-043, IW-047, or either formable beyond their existing admission gates.
 
-Both packages reuse their vanilla carriers and do not create standalone country
-histories. Each has four institutional character entries. All eight visible
-institutional portraits are male and are not advisor, officer, or commander
-assets. The exact shared runtime registry admits both packages after the
-content, origin, anchor, force, identity, politics, and asset receipts pass.
-FORM-12, FORM-13, and FORM-18 are operational for their exact Event 006
-carriers. Their member ledgers preserve sovereignty and use staged integration
-instead of annexation, subject creation, or blanket cores. The vanilla
-compatibility guard still suppresses only the active Event 006 CHU or ASY
-shortcuts and preserves ordinary and Event 005 behavior. No fallback, broad
-opening cores, or custom Event 006 advisor asset is authorized.
+Both packages reuse their vanilla carriers and do not create standalone country histories. Each has four institutional character entries. All eight visible institutional portraits are male and are not advisor, officer, or commander assets. The exact shared runtime registry admits both packages after the content, origin, anchor, force, identity, politics, and asset receipts pass.
+FORM-12, FORM-13, and FORM-18 are operational for their exact Event 006 carriers. Their member ledgers preserve sovereignty and use staged integration instead of annexation, subject creation, or blanket cores. The vanilla compatibility guard still suppresses only the active Event 006 CHU or ASY shortcuts and preserves ordinary and Event 005 behavior. No fallback, broad opening cores, or custom Event 006 advisor asset is authorized.
 
-The package political surface is centralized rather than left as dead
-localisation. Opening setup and signature or shared-government route adapters
-apply the package-specific ruling-party, popularity, election-law, and final
-party-name profiles, then attach the matching institutional leader. Cleanup
-removes those package-owned political and leader receipts without overwriting
-the vanilla carrier history.
+The package political surface is centralized rather than left as dead localisation. Opening setup and signature or shared-government route adapters apply the package-specific ruling-party, popularity, election-law, and final party-name profiles, then attach the matching institutional leader. Cleanup removes those package-owned political and leader receipts without overwriting the vanilla carrier history.
 
 ## Leadership model
 
-The event cannot create hundreds of convincing historical leaders without
-research. The same source gate applies to country leaders, route leaders,
-commanders, and named officeholders. It therefore uses three leadership modes.
+The event cannot create hundreds of convincing historical leaders without research. The same source gate applies to country leaders, route leaders, commanders, and named officeholders. It therefore uses three leadership modes.
 
 ### Sourced real leader or institution
 
-Required whenever the country, movement, dynasty, institution, autonomy claim,
-regional identity, indigenous polity, separatist project, or restoration has a
-real historical basis. The package must use a real male person appropriate to
-the place and period, or sourced archival material for the actual institution
-when the leader identity is collective.
+Required whenever the country, movement, dynasty, institution, autonomy claim, regional identity, indigenous polity, separatist project, or restoration has a real historical basis. The package must use a real male person appropriate to the place and period, or sourced archival material for the actual institution when the leader identity is collective.
 
 Requirements:
 
@@ -140,17 +115,9 @@ Requirements:
 
 ### Generated fictional high-chaos leader
 
-Permitted only when both the country and leader are truly fictional and belong
-to a high-chaos package. A generated leader is never a substitute for missing
-research on a real or plausibly historical country.
+Permitted only when both the country and leader are truly fictional and belong to a high-chaos package. A generated leader is never a substitute for missing research on a real or plausibly historical country.
 
-`high_chaos_only` or a Layer D/E pool position does not by itself make a
-country fictional. Every one of the current 206 registry rows describes a real
-community, historical polity, restoration, regional movement, or otherwise
-grounded political identity and therefore remains in sourced mode. Generated
-fictional portraits require a later explicit source-design classification of a
-new truly fictional high-chaos country or route; agents must not infer that
-classification from chaos intensity, tag novelty, or alternate borders.
+`high_chaos_only` or a Layer D/E pool position does not by itself make a country fictional. Every one of the current 206 registry rows describes a real community, historical polity, restoration, regional movement, or otherwise grounded political identity and therefore remains in sourced mode. Generated fictional portraits require a later explicit source-design classification of a new truly fictional high-chaos country or route; agents must not infer that classification from chaos intensity, tag novelty, or alternate borders.
 
 Requirements:
 
@@ -160,23 +127,18 @@ Requirements:
 - plausible personal name rather than generic office title
 - route-specific traits and background
 - memorable, internally coherent high-chaos design using extraordinary invented
-  ceremonial dress, regalia, body adornment, ritual objects, altered uniforms,
-  or similarly distinctive fictional cultural motifs
+  ceremonial dress, regalia, body adornment, ritual objects, altered uniforms, or similarly distinctive fictional cultural motifs
 - reject normal-looking, conventionally dressed, or interchangeable generated
   officeholders; the visual absurdity must be specific to the invented polity
 - do not borrow or exaggerate sacred objects or cultural traits of a real people
 - no generic face, modern prop, meme treatment, gore, or stereotype or
   caricature of a real culture
 
-For Event 6, the 2026-07-16 user direction supersedes the earlier mixed-gender
-pool: no female leader, commander, collective portrait subject, or character
-metadata is used.
+For Event 6, the 2026-07-16 user direction supersedes the earlier mixed-gender pool: no female leader, commander, collective portrait subject, or character metadata is used.
 
 ### Institutional leadership
 
-Used for councils, assemblies, juntas, congresses, traditional bodies,
-committees, regencies, or collective authorities. A collective authority in a
-real or plausibly historical country must use sourced real archival material.
+Used for councils, assemblies, juntas, congresses, traditional bodies, committees, regencies, or collective authorities. A collective authority in a real or plausibly historical country must use sourced real archival material.
 Generated institutional art is limited to truly fictional high-chaos countries.
 
 Requirements:
@@ -189,9 +151,7 @@ Requirements:
 - no personal random name
 - route that can later preserve the institution or replace it with a personal leader
 
-Institutional leadership does not bypass source research. If neither a suitable
-real leader nor authentic institutional source can be established for a
-historically grounded package, that package remains blocked.
+Institutional leadership does not bypass source research. If neither a suitable real leader nor authentic institutional source can be established for a historically grounded package, that package remains blocked.
 
 ## Party and ideology adaptation
 
