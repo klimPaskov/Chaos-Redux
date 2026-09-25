@@ -64,7 +64,8 @@ gods_of_africa_initialize_system = {
 
 # COUNTRY scope on the host. The date variable is deliberately used instead
 # of a timed flag so the 180-day boundary remains inspectable and generation
-# safe across saves and event chains.
+# safe across saves and event chains. Evolution I starts this interval; the
+# host-establishment date may predate Evolution I by many months.
 gods_of_africa_start_consolidation = {
 	if = {
 		limit = {
@@ -77,8 +78,7 @@ gods_of_africa_start_consolidation = {
 		}
 		set_country_flag = gods_of_africa_consolidation_pending
 		set_country_flag = gods_of_africa_activation_clock_scheduled
-		if = { limit = { has_variable = africa_host_established_day } set_variable = { gods_of_africa_consolidation_start_day = africa_host_established_day } }
-		else = { set_variable = { gods_of_africa_consolidation_start_day = global.num_days } }
+		set_variable = { gods_of_africa_consolidation_start_day = global.num_days }
 		set_variable = { gods_of_africa_consolidation_due_day = gods_of_africa_consolidation_start_day }
 		add_to_variable = { gods_of_africa_consolidation_due_day = constant:gods_of_africa_timing.consolidation_days }
 		set_variable = { gods_of_africa_restoration_generation = africa_host_generation }
