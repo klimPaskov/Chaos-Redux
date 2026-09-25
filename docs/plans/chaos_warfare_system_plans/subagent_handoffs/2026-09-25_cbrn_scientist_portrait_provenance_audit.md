@@ -14,6 +14,8 @@ All 12 dual-role specialist cards resolve through `interface/cbrn_historical_adv
 
 These checks establish runtime path and dimensions only; they do not establish portrait identity, style lineage, or source provenance from filenames.
 
+The [runtime inventory](../../../assets/portraits/cbrn_scientist_runtime_inventory_2026-09-25.md) records every exact sprite path, DDS dimension, and SHA-256 hash reviewed here.
+
 ## Provenance gaps
 
 The exact archive paths documented by `docs/systems/cbrn_warfare/cbrn_historical_scientists.md` are absent: `docs/assets/portraits/016_brilliant_scientist/manifest.md`, `input_mapping.json`, `research_sources.md`, and the `subjects/` directory.

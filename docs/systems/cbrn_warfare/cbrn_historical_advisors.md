@@ -54,7 +54,7 @@ Other named scientists remain on the existing generation path.
 The large portraits remain under `gfx/leaders/scientists/` and remain registered by the existing scientist portrait file.
 Advisor DDS files live under `gfx/interface/advisors/cbrn/` and are registered by `interface/cbrn_historical_advisors.gfx`.
 Political-advisor cards are assigned through `portraits.civilian.small`; theorist cards are assigned through `portraits.army.small`; the full scientist portrait remains `portraits.army.large`.
-The previously documented actual-workflow package at `docs/assets/chaos_warfare_historical_advisors/v2_actual_workflow/` is absent from the current workspace. All twelve card sprites and 65x67 DDS files resolve, but their source/template hashes and visual-review record are not independently available. The [2026-09-25 portrait audit](../../plans/chaos_warfare_system_plans/subagent_handoffs/2026-09-25_cbrn_scientist_portrait_provenance_audit.md) records this limit.
+The previously documented actual-workflow package at `docs/assets/chaos_warfare_historical_advisors/v2_actual_workflow/` is absent from the current workspace. All twelve card sprites and 65x67 DDS files resolve, but their source/template hashes and visual-review record are not independently available. The [runtime inventory](../../assets/portraits/cbrn_scientist_runtime_inventory_2026-09-25.md) records the current card files, and the [2026-09-25 portrait audit](../../plans/chaos_warfare_system_plans/subagent_handoffs/2026-09-25_cbrn_scientist_portrait_provenance_audit.md) records this limit.
 
 ## Future extensions
 

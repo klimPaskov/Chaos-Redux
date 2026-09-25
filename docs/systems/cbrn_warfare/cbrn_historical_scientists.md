@@ -134,7 +134,7 @@ The twelve dual-role specialists currently have wired 65x67 advisor cards under 
 
 No new scientist-trait icons, specialization icons, or advisor sprites are required.
 
-The previously documented portrait archive at `docs/assets/portraits/016_brilliant_scientist/` is absent from the current workspace. All 67 large portrait sprites resolve to 156x210 DDS files, but the missing per-person mapping and source packages leave image attribution, rights, crop records, and source-placeholder or styled-final status unresolved. The [2026-09-25 portrait audit](../../plans/chaos_warfare_system_plans/subagent_handoffs/2026-09-25_cbrn_scientist_portrait_provenance_audit.md) records the runtime crosswalk and exact evidence gap.
+The previously documented portrait archive at `docs/assets/portraits/016_brilliant_scientist/` is absent from the current workspace. All 67 large portrait sprites resolve to 156x210 DDS files, but the missing per-person mapping and source packages leave image attribution, rights, crop records, and source-placeholder or styled-final status unresolved. The [runtime inventory](../../assets/portraits/cbrn_scientist_runtime_inventory_2026-09-25.md) records file hashes and dimensions; the [2026-09-25 portrait audit](../../plans/chaos_warfare_system_plans/subagent_handoffs/2026-09-25_cbrn_scientist_portrait_provenance_audit.md) records the evidence gap.
 
 ## Historical research basis
 
