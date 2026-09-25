@@ -1,8 +1,7 @@
 # Portal Raider reusable unit and raid API
 
 `portal_raider` is a shared land-unit family, not a Kruger-owned identity. Event 016 unlocks it through Portal Warfare, Event 019 can request it through the generic infantry-spawn provider, and later event packages may reuse the same subunit, equipment, and counter contract without copying Event 016 state.
-The runtime package remains pending the existing-geometry recovery and export gates in the final completion contract.
-Model regeneration is forbidden; body geometry, the approved existing firearm, and recoverable rig/action work are the inputs for closure.
+The user's explicit 2026-09-25 decision says the Portal Raider, alien, and autonomous robot units already have good models and must remain untouched, followed by “don't create any models.” The older Portal Raider recovery and export directions below are historical only, superseded as active work by the [final completion contract](../../../specs/016_brilliant_scientist_specs/specs/016_final_completion_contract.md). Do not create, inspect, modify, regenerate, rig, animate, export, or otherwise touch any 3D/model asset or unit package under this task. Model acceptance and live-consumer status remain unresolved from the documentation evidence; no new model inspection was performed.
 
 ## Unit contract
 
@@ -42,22 +41,21 @@ The raid does not require Warren Kruger. His active authority raises AI interest
 - Defender sealing decision: `brilliant_scientist_seal_recaptured_portal_breach`
 - State cleanup effect: `brilliant_scientist_portal_cleanup_beachhead`
 - Country registry cleanup effect: `brilliant_scientist_portal_cleanup_country_beachheads`
-- Runtime entity and preview animation: pending the existing-model runtime tranche; gameplay and counter wiring alone do not establish model acceptance.
+- Runtime entity and preview animation: historical handoffs record package-specific status, but current acceptance is unresolved; this entry does not queue model work.
 
-## Required visual, sound, and counter assets
+## Historical visual, sound, and counter evidence
 
-The evidence package is rooted at `docs/assets/shared_portal_raider_system/models_3d/portal_raider/`.
-The accepted closure route preserves the existing body and recovers its rig, attaches the approved existing retro firearm with two-hand contact, provides a stable muzzle attachment, and finishes distinct actions, particles, light, and synchronized sourced sound.
-Final runtime promotion requires actual-byte export/reimport evidence and matching entity/action consumers; the historical generation failure does not authorize regeneration or replacement geometry.
+Earlier handoffs located evidence at `docs/assets/shared_portal_raider_system/models_3d/portal_raider/`; this documentation pass did not inspect that package.
+The earlier closure route proposed preserving the body, recovering the rig, attaching the retro firearm, and finishing actions and effects. That proposal is superseded as active production direction by the September 25 no-model decision. Prior export/reimport requirements remain historical acceptance criteria only and do not authorize work on the model.
 
-- `gfx/models/units/portal_raider/portal_raider.mesh`, material DDS maps, and real skeletal action files remain future recovery outputs rather than accepted runtime files.
-- `gfx/entities/portal_raider.gfx` and `gfx/entities/portal_raider.asset` remain future recovery outputs; no runtime entity or preview hook is registered until an accepted model package exists.
-- `sound/portal_raider_sound.asset` and synchronized licensed audio remain future recovery outputs.
+- Earlier handoffs named `gfx/models/units/portal_raider/portal_raider.mesh`, material DDS maps, and skeletal actions as recovery outputs; their current status was not verified here.
+- Earlier handoffs named `gfx/entities/portal_raider.gfx` and `gfx/entities/portal_raider.asset` as recovery outputs; their current registration was not verified here.
+- Earlier handoffs named `sound/portal_raider_sound.asset` and synchronized licensed audio as recovery outputs; their current status was not verified here.
 - `gfx/interface/counters/divisions_large/unit_portal_raider_icon.dds` and `gfx/interface/counters/divisions_small/onmap_unit_portal_raider_icon.dds` are complete and wired through `interface/portal_raider_system.gfx`; these counters do not imply model/entity completion.
 - The active subunit-icon GFX registry entries for both counter tokens are complete and wired.
 - The already registered technology and equipment icon sprites used by the technology, equipment, production, and raid surfaces remain unchanged.
 
-The unit model must remain identity-neutral: protective goggles, an insulated period-compatible military-laboratory suit, a compact coil-and-cable teleportation backpack, and a retro ray rifle without country, ideology, event, Kruger, or organization insignia. Runtime animation cannot use transform-only substitutes.
+The historical design called for an identity-neutral unit with protective goggles, an insulated suit, a teleportation backpack, and a retro ray rifle. This description is retained as context and does not authorize model inspection or changes.
 
 ## Future extensions
 
