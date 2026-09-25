@@ -26,6 +26,8 @@ No gameplay source was changed for this inspection, and no campaign execution, r
 
 ## Remaining evidence
 
-Event 012 still requires source-linked lifecycle and scenario evidence that isolates its owner, generation, Evolution I clock, activation gate, and teardown paths.
+Source review now links the owner-local Evolution I and SCN-011 initializers to the idempotent consolidation clock, `.600` revalidation, and generation guard. The annexation bridge routes a disappearing host through `africa_begin_host_transfer`, whose source cancels the old Gods generation before the shared host pointer changes; the capitulation hook uses the same cleanup, and the initializer rejects a delayed callback from the cancelled generation. The implementation document records these call paths and their bounded candidate-census handoff.
+
+Runtime scenario evidence remains outstanding for the activation boundary, host loss during consolidation, host loss after activation, and successor-generation reinitialization. The aggregate state-flow artifact cannot isolate those Event 012 outcomes.
 
 The accepted focus-route scope, weighted AI scenario comparisons, and live-game validation remain separate completion gates.

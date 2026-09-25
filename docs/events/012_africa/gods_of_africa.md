@@ -20,6 +20,8 @@ That sweep stores candidates on the host, increments `gods_of_africa_candidate_c
 
 During host succession, `africa_host_transfer_stage_scalar_ledger` stages the old host's generation, Gods candidate count, census flag, and candidate array alongside the wider Event 012 ledger. `africa_host_transfer_restore_world_order_state` rebuilds the successor's candidate array and census state before the successor closes staging, while generation guards prevent delayed callbacks from resolving against the old host. A suspended transfer intentionally retains its inspectable staging docket until the transfer is resolved; this persistence is source evidence and remains bounded by the transfer lifecycle.
 
+On annexation, the Event 012 world-order `on_annex` bridge calls `africa_begin_host_transfer` for the current host while the annexed country remains available as `FROM`; that effect invokes `gods_of_africa_cancel_on_unifier_loss` before changing the shared host pointer. The unifier's `on_capitulation` callback invokes the same cleanup. It removes live participant and contract state, removes their missions, withdraws owned protection services, closes the scheduled-clock receipts, clears the active registry, and sets public Strength to zero. Host-transfer staging carries the bounded candidate census for a successor but does not move the active Gods participant registry or public Strength. The initializer and activation trigger reject the old generation's loss receipt, so a delayed `.600` cannot restart its former authority; a fresh participant registration resets Wrath and hidden relationship history for its new generation.
+
 ## Public values
 
 The player sees exactly two values:
