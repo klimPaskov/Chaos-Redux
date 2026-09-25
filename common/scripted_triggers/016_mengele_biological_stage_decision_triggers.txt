@@ -1,0 +1,154 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 MENGELE BIOLOGICAL STAGE DECISION TRIGGERS
+# ============================================================================
+# Country-scope gates for the private Biological Weapons family (ID 12,
+# zero-based receipt index 11). Native pathogen projects and equipment remain
+# the authoritative payload and raid state. These triggers never read the
+# Kruger board or write a second biological stockpile.
+# ============================================================================
+
+brilliant_scientist_mengele_biological_decision_receipt_is_empty = {
+	OR = {
+		NOT = { has_country_flag = mengele_event016_provider_receipts_initialized }
+		AND = {
+			has_country_flag = mengele_event016_provider_receipts_initialized
+			check_variable = { var = mengele_event016_active_project_stage_entries^11 value = constant:brilliant_scientist_project_stage.none compare = equals }
+		}
+	}
+}
+
+# A completed project is adopted after Theory; it cannot start a second clock.
+brilliant_scientist_mengele_biological_native_prototype_presentation_available = {
+	has_dlc = "Gotterdammerung"
+	brilliant_scientist_can_research_mengele_biological_weapons_prototype = yes
+}
+
+brilliant_scientist_mengele_biological_theory_decision_visible = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_biological_decision_receipt_is_empty = yes
+	NOT = { has_country_flag = mengele_event016_biological_weapons_theory_completed }
+}
+
+brilliant_scientist_mengele_biological_prototype_decision_visible = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_biological_decision_receipt_is_empty = yes
+	has_country_flag = mengele_event016_biological_weapons_theory_completed
+	NOT = { has_country_flag = mengele_event016_biological_weapons_prototype_completed }
+	NOT = { brilliant_scientist_mengele_biological_native_prototype_presentation_available = yes }
+	NOT = {
+		OR = {
+			is_special_project_completed = sp:anthrax_bomb
+			is_special_project_completed = sp:plague_bomb
+			is_special_project_completed = sp:tularemia_bomb
+			is_special_project_completed = sp:smallpox_bomb
+			is_special_project_completed = sp:weaponize_the_zombies
+			is_special_project_completed = sp:black_plague_weaponization_program
+		}
+	}
+}
+
+brilliant_scientist_mengele_biological_deployment_decision_visible = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_biological_decision_receipt_is_empty = yes
+	has_country_flag = mengele_event016_biological_weapons_prototype_completed
+	NOT = { has_country_flag = mengele_event016_biological_weapons_deployment_completed }
+}
+
+brilliant_scientist_mengele_biological_weaponization_decision_visible = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_biological_decision_receipt_is_empty = yes
+	has_country_flag = mengele_event016_biological_weapons_deployment_completed
+	NOT = { has_country_flag = mengele_event016_biological_weapons_weaponization_completed }
+}
+
+brilliant_scientist_mengele_biological_theory_decision_requirements = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_biological_decision_receipt_is_empty = yes
+	NOT = { has_country_flag = mengele_event016_biological_weapons_theory_completed }
+}
+
+brilliant_scientist_mengele_biological_prototype_decision_requirements = {
+	brilliant_scientist_mengele_biological_prototype_decision_visible = yes
+}
+
+brilliant_scientist_mengele_biological_deployment_decision_requirements = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_biological_decision_receipt_is_empty = yes
+	has_country_flag = mengele_event016_biological_weapons_prototype_completed
+}
+
+brilliant_scientist_mengele_biological_weaponization_decision_requirements = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_biological_decision_receipt_is_empty = yes
+	has_country_flag = mengele_event016_biological_weapons_deployment_completed
+}
+
+brilliant_scientist_mengele_biological_theory_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.biological_weapons_theory_civilian_factories }
+	NOT = { check_variable = { var = political_power value = constant:brilliant_scientist_project_stage_cost.biological_weapons_theory_political_power compare = less_than } }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_stage_cost.biological_weapons_theory_support_equipment } }
+}
+
+brilliant_scientist_mengele_biological_prototype_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_fallback_prototype.biological_weapons_civilian_factories }
+	NOT = { check_variable = { var = political_power value = constant:brilliant_scientist_project_fallback_prototype.biological_weapons_political_power compare = less_than } }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_fallback_prototype.biological_weapons_support_equipment } }
+	NOT = { has_fuel < constant:brilliant_scientist_project_fallback_prototype.biological_weapons_fuel }
+}
+
+brilliant_scientist_mengele_biological_deployment_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.biological_weapons_deployment_civilian_factories }
+	NOT = { check_variable = { var = political_power value = constant:brilliant_scientist_project_stage_cost.biological_weapons_deployment_political_power compare = less_than } }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_stage_cost.biological_weapons_deployment_support_equipment } }
+	NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.biological_weapons_deployment_fuel }
+}
+
+brilliant_scientist_mengele_biological_weaponization_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.biological_weapons_weaponization_civilian_factories }
+	NOT = { check_variable = { var = political_power value = constant:brilliant_scientist_project_stage_cost.biological_weapons_weaponization_political_power compare = less_than } }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_stage_cost.biological_weapons_weaponization_support_equipment } }
+	NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.biological_weapons_weaponization_fuel }
+}
+
+brilliant_scientist_mengele_biological_theory_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^11 value = constant:brilliant_scientist_project_stage.theory compare = equals }
+}
+brilliant_scientist_mengele_biological_prototype_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^11 value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+}
+brilliant_scientist_mengele_biological_deployment_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^11 value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+}
+brilliant_scientist_mengele_biological_weaponization_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^11 value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+}
+
+# Payment is already captured at start; resource loss does not cancel a timer.
+brilliant_scientist_mengele_biological_theory_decision_cancel_trigger = {
+	OR = {
+		NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		NOT = { brilliant_scientist_mengele_biological_theory_decision_receipt_matches = yes }
+	}
+}
+brilliant_scientist_mengele_biological_prototype_decision_cancel_trigger = {
+	OR = {
+		NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		NOT = { brilliant_scientist_mengele_biological_prototype_decision_receipt_matches = yes }
+	}
+}
+brilliant_scientist_mengele_biological_deployment_decision_cancel_trigger = {
+	OR = {
+		NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		NOT = { brilliant_scientist_mengele_biological_deployment_decision_receipt_matches = yes }
+	}
+}
+brilliant_scientist_mengele_biological_weaponization_decision_cancel_trigger = {
+	OR = {
+		NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		NOT = { brilliant_scientist_mengele_biological_weaponization_decision_receipt_matches = yes }
+	}
+}

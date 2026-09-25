@@ -862,8 +862,22 @@ brilliant_scientist_biological_weapons_prototype = {
 
 brilliant_scientist_biological_weapons_deployment = {
 	icon = GFX_idea_generic_research_bonus
-	enable = { brilliant_scientist_is_current_host = yes }
-	remove_trigger = { NOT = { brilliant_scientist_is_current_host = yes } }
+	enable = {
+		OR = {
+			brilliant_scientist_is_current_host = yes
+			AND = {
+				brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+				has_country_flag = mengele_event016_biological_weapons_deployment_completed
+			}
+		}
+	}
+	remove_trigger = {
+		NOT = { brilliant_scientist_is_current_host = yes }
+		NOT = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			has_country_flag = mengele_event016_biological_weapons_deployment_completed
+		}
+	}
 	army_attack_factor = constant:brilliant_scientist_project_modifier.deployment_minor
 	max_planning_factor = constant:brilliant_scientist_project_modifier.deployment_minor
 	special_project_speed_factor = constant:brilliant_scientist_project_modifier.deployment_minor
@@ -871,8 +885,22 @@ brilliant_scientist_biological_weapons_deployment = {
 
 brilliant_scientist_biological_weapons_weaponization = {
 	icon = GFX_idea_generic_research_bonus
-	enable = { brilliant_scientist_is_current_host = yes }
-	remove_trigger = { NOT = { brilliant_scientist_is_current_host = yes } }
+	enable = {
+		OR = {
+			brilliant_scientist_is_current_host = yes
+			AND = {
+				brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+				has_country_flag = mengele_event016_biological_weapons_weaponization_completed
+			}
+		}
+	}
+	remove_trigger = {
+		NOT = { brilliant_scientist_is_current_host = yes }
+		NOT = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			has_country_flag = mengele_event016_biological_weapons_weaponization_completed
+		}
+	}
 	army_attack_factor = constant:brilliant_scientist_project_modifier.weaponization_standard
 	max_planning_factor = constant:brilliant_scientist_project_modifier.weaponization_standard
 	intel_network_gain_factor = constant:brilliant_scientist_project_modifier.weaponization_standard
