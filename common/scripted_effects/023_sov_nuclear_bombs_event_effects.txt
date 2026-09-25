@@ -2377,33 +2377,35 @@ sov_nuclear_bombs_narrow_demand = {
 }
 
 sov_nuclear_bombs_back_down = {
-	set_country_flag = sov_nuclear_bombs_coercion_backed_down
-	clr_country_flag = sov_nuclear_bombs_coercion_open
-	clr_country_flag = sov_nuclear_bombs_ultimatum_issued
-	clr_country_flag = sov_nuclear_bombs_ultimatum_response_mission_active
-	clr_country_flag = sov_nuclear_bombs_coercion_settlement_open
 	if = {
-		limit = { has_event_target = sov_nuclear_bombs_coercion_target }
-		event_target:sov_nuclear_bombs_coercion_target = {
-			clr_country_flag = sov_nuclear_bombs_ultimatum_pending
-			clr_country_flag = sov_nuclear_bombs_response_accepted
-			clr_country_flag = sov_nuclear_bombs_response_partial
-			clr_country_flag = sov_nuclear_bombs_response_delayed
-			clr_country_flag = sov_nuclear_bombs_response_refused
-			clr_country_flag = sov_nuclear_bombs_response_exposed
-			clr_country_flag = sov_nuclear_bombs_response_foreign_support
-			clr_country_flag = sov_nuclear_bombs_response_evacuation
-			clr_country_flag = sov_nuclear_bombs_response_sabotage
-			clr_country_flag = sov_nuclear_bombs_response_retaliation
+		limit = { NOT = { has_country_flag = sov_nuclear_bombs_ultimatum_response_mission_active } }
+		set_country_flag = sov_nuclear_bombs_coercion_backed_down
+		clr_country_flag = sov_nuclear_bombs_coercion_open
+		clr_country_flag = sov_nuclear_bombs_ultimatum_issued
+		clr_country_flag = sov_nuclear_bombs_coercion_settlement_open
+		if = {
+			limit = { has_event_target = sov_nuclear_bombs_coercion_target }
+			event_target:sov_nuclear_bombs_coercion_target = {
+				clr_country_flag = sov_nuclear_bombs_ultimatum_pending
+				clr_country_flag = sov_nuclear_bombs_response_accepted
+				clr_country_flag = sov_nuclear_bombs_response_partial
+				clr_country_flag = sov_nuclear_bombs_response_delayed
+				clr_country_flag = sov_nuclear_bombs_response_refused
+				clr_country_flag = sov_nuclear_bombs_response_exposed
+				clr_country_flag = sov_nuclear_bombs_response_foreign_support
+				clr_country_flag = sov_nuclear_bombs_response_evacuation
+				clr_country_flag = sov_nuclear_bombs_response_sabotage
+				clr_country_flag = sov_nuclear_bombs_response_retaliation
+			}
+			clear_global_event_target = sov_nuclear_bombs_coercion_target
+			clear_global_event_target = sov_nuclear_bombs_coercion_actor
 		}
-		clear_global_event_target = sov_nuclear_bombs_coercion_target
-		clear_global_event_target = sov_nuclear_bombs_coercion_actor
+		set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.custody }
+		set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.demonstrative_deterrence }
+		sov_nuclear_bombs_set_posture = yes
+		add_to_variable = { sov_nuclear_bombs_credibility = constant:sov_nuclear_bombs_tuning.ultimatum_credibility_loss }
+		sov_nuclear_bombs_achievement_refresh_receipts = yes
 	}
-	set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.custody }
-	set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.demonstrative_deterrence }
-	sov_nuclear_bombs_set_posture = yes
-	add_to_variable = { sov_nuclear_bombs_credibility = constant:sov_nuclear_bombs_tuning.ultimatum_credibility_loss }
-	sov_nuclear_bombs_achievement_refresh_receipts = yes
 }
 
 sov_nuclear_bombs_technical_certification = {
