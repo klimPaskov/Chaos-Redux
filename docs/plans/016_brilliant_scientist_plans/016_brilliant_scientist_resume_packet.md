@@ -1,5 +1,7 @@
 # Event 016 Brilliant Scientist resume packet
 
+> **Current model-work precedence, 2026-09-25:** The user directed that the Portal Raider, alien, and autonomous robot models remain untouched and then said “don't create any models.” This decision controls all Event 016 3D/model packages: do not create, inspect, edit, regenerate, rig, animate, export, or otherwise touch any model asset or unit package. The recovery intake, adapter/runtime gates, model-package queue, and model continuation language below are historical snapshots, superseded as active work by the [final completion contract](../../specs/016_brilliant_scientist_specs/specs/016_final_completion_contract.md). The dated evidence remains available, but no model acceptance or production authorization follows from this packet.
+
 Date: 2026-07-14
 
 ## Current curator checkpoint, 2026-09-05

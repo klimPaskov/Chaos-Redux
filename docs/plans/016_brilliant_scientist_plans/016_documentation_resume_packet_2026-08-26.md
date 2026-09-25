@@ -1,5 +1,7 @@
 # Event 016 documentation resume packet
 
+> **Current model-work precedence, 2026-09-25:** The user directed that the Portal Raider, alien, and autonomous robot models remain untouched and then said “don't create any models.” This decision controls all Event 016 3D/model packages: do not create, inspect, edit, regenerate, rig, animate, export, or otherwise touch any model asset or unit package. The model rows, “next owner” assignments, recovery decision, and per-package gates below are historical snapshot text, superseded as active work by the [final completion contract](../../specs/016_brilliant_scientist_specs/specs/016_final_completion_contract.md). They preserve prior evidence without establishing current model acceptance or authorizing a 3D worker.
+
 Date: 2026-08-26
 
 Status: Documentation-only resume packet for parent review; Event 016 remains incomplete.
