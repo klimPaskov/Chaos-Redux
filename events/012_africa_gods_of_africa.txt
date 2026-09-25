@@ -202,8 +202,86 @@ country_event = {
 			custom_effect_tooltip = gods_of_africa_protection_service_market_access_tt
 		}
 		if = {
+			limit = {
+				NOT = {
+					event_target:gods_of_africa_protected_participant = {
+						has_market_access_with = event_target:africa_host
+					}
+				}
+			}
+			if = {
+				limit = { NOT = { has_dlc = "Arms Against Tyranny" } }
+				custom_effect_tooltip = gods_of_africa_protection_service_market_missing_dlc_tt
+			}
+			else_if = {
+				limit = { NOT = { has_country_flag = gods_of_africa_focus_sanctuary_unlocked } }
+				custom_effect_tooltip = gods_of_africa_protection_service_market_capability_locked_tt
+			}
+			else = {
+				custom_effect_tooltip = gods_of_africa_protection_service_market_unconfirmed_tt
+			}
+		}
+		if = {
 			limit = { event_target:gods_of_africa_protected_participant = { has_country_flag = gods_of_africa_protection_intelligence_shared } }
 			custom_effect_tooltip = gods_of_africa_protection_service_intelligence_tt
+		}
+		if = {
+			limit = {
+				NOT = {
+					event_target:gods_of_africa_protected_participant = {
+						has_country_flag = gods_of_africa_protection_intelligence_shared
+					}
+				}
+			}
+			if = {
+				limit = { NOT = { has_dlc = "La Resistance" } }
+				custom_effect_tooltip = gods_of_africa_protection_service_intelligence_missing_dlc_tt
+			}
+			else_if = {
+				limit = { NOT = { has_country_flag = gods_of_africa_focus_security_unlocked } }
+				custom_effect_tooltip = gods_of_africa_protection_service_intelligence_capability_locked_tt
+			}
+			else_if = {
+				limit = {
+					event_target:africa_host = {
+						NOT = { has_intelligence_agency = yes }
+					}
+				}
+				custom_effect_tooltip = gods_of_africa_protection_service_intelligence_host_agency_missing_tt
+			}
+			else_if = {
+				limit = {
+					event_target:gods_of_africa_protected_participant = {
+						NOT = { has_intelligence_agency = yes }
+					}
+				}
+				custom_effect_tooltip = gods_of_africa_protection_service_intelligence_participant_agency_missing_tt
+			}
+			else_if = {
+				limit = { event_target:africa_host = { NOT = { has_war = yes } } }
+				custom_effect_tooltip = gods_of_africa_protection_service_intelligence_no_war_tt
+			}
+			else_if = {
+				limit = {
+					event_target:africa_host = {
+						NOT = {
+							any_enemy_country = {
+								limit = {
+									exists = yes
+									NOT = { has_capitulated = yes }
+									event_target:gods_of_africa_protected_participant = {
+										NOT = { has_war_with = PREV }
+									}
+								}
+							}
+						}
+					}
+				}
+				custom_effect_tooltip = gods_of_africa_protection_service_intelligence_no_eligible_enemy_tt
+			}
+			else = {
+				custom_effect_tooltip = gods_of_africa_protection_service_intelligence_unconfirmed_tt
+			}
 		}
 		if = {
 			limit = { event_target:gods_of_africa_protected_participant = { has_country_flag = gods_of_africa_protection_convoys_delivered } }
