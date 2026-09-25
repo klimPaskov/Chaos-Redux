@@ -269,15 +269,17 @@ If IW-179 has not yet been admitted, its expected executable probability remains
 
 If IW-179 has been admitted, the same scenario family must be evaluated before and after the admission with identical candidate order and world-state fixtures.
 
-## Queued P2: League reachability, not League expansion
+## P2: League reachability, bounded retry repair implemented; lifecycle evidence remains open
+
+Disposition (2026-09-25): the source-backed `CongressFailed -> RegionalConferences` caller gap is repaired through DM45 and recorded in `subagent_handoffs/006_event6_league_retry_repair_2026-09-25.md`. The retry waits for the centralized standard cooldown and requires the reconciled active-origin or network-member count to exceed its failure-time snapshot; the existing DM45 AI score block is unchanged. Strict flag audit passed, while the required same-scenario probability comparison is partial with 17 unresolved inputs, and no runtime proof is claimed. This bounded implementation does not close the full League lifecycle dossier.
 
 The League architecture is already deep enough.
 
 The current source includes the minimum-living-origin calculation, founder/member registries, regional conferences, congress preparation, founding congress, charter vote, five charter pillars, five route proposals, formal and durable phases, leadership challenge, expulsion, war mandates, crisis, reform, split, reunification, dissolution, shared reserve, and cleanup.
 
-Adding another charter, phase, institution, GUI, focus route, or event chain would be bloat until the authored path is proven reachable.
+Adding another charter, phase, institution, GUI, focus route, or event chain would be bloat until the accepted League paths are proven through source, MCP, probability, and runtime evidence.
 
-The next owner should audit these exact surfaces:
+The 2026-09-22 source audit covered these exact surfaces and found the uncalled retry transition; the parent repair now addresses that finding. Remaining work is to close the listed lifecycle scenarios with complete source, MCP, probability, and runtime evidence:
 
 - `common/scripted_triggers/006_independence_wave_triggers.txt`: `has_valid_independence_wave_league_route`, `can_independence_wave_form_league`, `has_independence_wave_durable_league`, `can_independence_wave_mark_league_durable`, and League array alignment.
 - `common/scripted_effects/006_independence_wave_effects.txt`: founder/member registration, congress preparation and failure, charter vote, consultative/formal/durable proclamation, confidence and values, crisis, reform, split, reunification, dissolution, and cleanup.

@@ -2664,19 +2664,30 @@ independence_wave_complete_congress_preparation = {
 independence_wave_fail_congress = {
 	if = {
 		limit = { check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.congress_preparation } }
+		independence_wave_reconcile_registries = yes
 		independence_wave_clear_league_phase_flags = yes
 		set_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.congress_failed }
 		set_variable = { global.independence_wave_congress_failure_date = global.date }
+		set_variable = { global.independence_wave_congress_failure_active_country_count = global.independence_wave_active_country_count }
+		set_variable = { global.independence_wave_congress_failure_member_count = global.independence_wave_network_member_count }
+		set_temp_variable = { independence_wave_congress_retry_cooldown_days = constant:independence_wave_decision_cooldown.standard }
+		set_global_flag = {
+			flag = independence_wave_congress_retry_cooldown
+			days = independence_wave_congress_retry_cooldown_days
+		}
 		clr_country_flag = independence_wave_congress_preparation_complete
 	}
 }
 
 independence_wave_reopen_regional_conferences = {
 	if = {
-		limit = { check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.congress_failed } }
+		limit = { can_independence_wave_retry_congress = yes }
 		independence_wave_clear_league_phase_flags = yes
 		set_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.regional_conferences }
 		set_variable = { global.independence_wave_congress_retry_date = global.date }
+		clr_global_flag = independence_wave_congress_retry_cooldown
+		clear_variable = global.independence_wave_congress_failure_active_country_count
+		clear_variable = global.independence_wave_congress_failure_member_count
 	}
 }
 

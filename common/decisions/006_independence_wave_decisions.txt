@@ -2688,10 +2688,19 @@ independence_wave_league_category = {
 				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.informal_network }
 				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.regional_conferences }
 				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.congress_preparation }
+				can_independence_wave_retry_congress = yes
 			}
 		}
 		selectable_mission = yes
-		available = { can_pay_independence_wave_strategic_cost = yes }
+		available = {
+			can_pay_independence_wave_strategic_cost = yes
+			OR = {
+				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.informal_network }
+				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.regional_conferences }
+				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.congress_preparation }
+				can_independence_wave_retry_congress = yes
+			}
+		}
 		custom_cost_trigger = { can_pay_independence_wave_strategic_cost = yes }
 		custom_cost_text = independence_wave_cost_strategic
 		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_STANDARD }
@@ -2700,7 +2709,11 @@ independence_wave_league_category = {
 		complete_effect = {
 			independence_wave_decision_pay_strategic = yes
 			set_country_flag = independence_wave_dm45_congress_contribution_complete
-			independence_wave_open_regional_conference = yes
+			if = {
+				limit = { can_independence_wave_retry_congress = yes }
+				independence_wave_reopen_regional_conferences = yes
+			}
+			else = { independence_wave_open_regional_conference = yes }
 			independence_wave_register_league_founder = yes
 			independence_wave_complete_congress_preparation = yes
 			independence_wave_open_charter_vote = yes

@@ -438,6 +438,20 @@ can_independence_wave_open_regional_conference = {
 	check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.informal_network }
 }
 
+can_independence_wave_retry_congress = {
+	check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.congress_failed }
+	NOT = { has_global_flag = independence_wave_congress_retry_cooldown }
+	can_independence_wave_lead_network = yes
+	check_variable = { var = global.independence_wave_active_country_count value = constant:independence_wave_league.minimum_living_origins compare = greater_than_or_equals }
+	check_variable = { var = global.independence_wave_network_member_count value = constant:independence_wave_league.formation_members compare = greater_than_or_equals }
+	has_variable = global.independence_wave_congress_failure_active_country_count
+	has_variable = global.independence_wave_congress_failure_member_count
+	OR = {
+		check_variable = { var = global.independence_wave_active_country_count value = var:global.independence_wave_congress_failure_active_country_count compare = greater_than }
+		check_variable = { var = global.independence_wave_network_member_count value = var:global.independence_wave_congress_failure_member_count compare = greater_than }
+	}
+}
+
 can_independence_wave_form_league = {
 	can_independence_wave_lead_network = yes
 	has_country_flag = independence_wave_congress_preparation_complete
