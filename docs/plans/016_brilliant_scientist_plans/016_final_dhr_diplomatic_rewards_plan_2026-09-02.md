@@ -1,7 +1,7 @@
 # Event016 DHR diplomatic reward closure plan
 
 Status: the two paid-advisor contracts are accepted, promoted to the Alien Infantry and D’Rhonda specification, implemented, and reviewed in `subagent_handoffs/016_final_dhr_advisor_reward_implementation_2026-09-02.md`.
-The four remaining diplomatic reward contracts are queued for owner implementation review; the Synod no-DLC accord alternative specifically awaits user approval.
+The Covenant ratification gate and three-regime integration contract are implemented in `subagent_handoffs/016_dhr_route_receipt_gates_2026-09-25.md`. The map-exchange receipt continues to gate the Covenant compact. The separate paid terrestrial partner accord remains queued. The Synod no-DLC accord alternative specifically awaits user approval. The current MCP comparison limits in that handoff prevent a final acceptance claim.
 The following findings describe the pre-implementation baseline, not a claim that all six rewards remain untouched.
 The accepted advisor tranche preserves the 88-focus layout and has a corrected same-fixture MCP probability comparison in `subagent_handoffs/016_final_dhr_advisor_reward_probability_2026-09-02.md`.
 

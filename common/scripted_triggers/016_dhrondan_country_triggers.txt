@@ -137,6 +137,25 @@ dhrondan_world_order_route_is_complete = {
 	has_country_flag = dhrondan_world_order_route_complete
 }
 
+# COUNTRY scope on DHR. Each regime earns its postwar integration contract
+# through its own world-order focus rather than sharing an unearned unlock.
+dhrondan_integration_route_contract_is_ready = {
+	OR = {
+		AND = {
+			dhrondan_is_imperial_regime = yes
+			has_country_flag = dhrondan_subject_world_protocol_ready
+		}
+		AND = {
+			dhrondan_is_synod_regime = yes
+			has_country_flag = dhrondan_optimal_order_administration_ready
+		}
+		AND = {
+			dhrondan_is_covenant_regime = yes
+			has_country_flag = dhrondan_enclave_congress_invited
+		}
+	}
+}
+
 # COUNTRY scope on DHR during a running reclamation state decision. The state
 # target remains FROM, so both territorial and diplomatic legality are checked
 # again at completion rather than only when the decision starts.
@@ -167,6 +186,7 @@ dhrondan_enclave_decision_can_complete = {
 # integration is intentionally postwar and cancels if any war begins.
 dhrondan_integration_decision_can_complete = {
 	dhrondan_country_is_active = yes
+	dhrondan_integration_route_contract_is_ready = yes
 	has_country_flag = dhrondan_integration_started
 	has_war = no
 	FROM = { dhrondan_state_can_be_integrated = yes }
@@ -198,6 +218,7 @@ dhrondan_compact_response_is_valid = {
 	event_target:dhrondan_diplomatic_actor = {
 		exists = yes
 		dhrondan_is_covenant_regime = yes
+		has_country_flag = dhrondan_two_world_covenant_ratified
 		is_subject = no
 		NOT = { has_war_with = event_target:dhrondan_diplomatic_recipient }
 		NOT = { has_non_aggression_pact_with = event_target:dhrondan_diplomatic_recipient }

@@ -71,8 +71,8 @@ The `dhrondan_sovereignty_category` contains four targeted surfaces:
 
 - `dhrondan_reclaim_landing_site` prepares a take-state war goal for a marked DHR claim held by another country and keeps that state unavailable for a duplicate demand until the war-goal authorization expires.
 - `dhrondan_establish_enclave_supply_bridge` supports a controlled landing enclave outside the capital’s home area and resolves the crisis once every such enclave is bridged.
-- `dhrondan_integrate_reclaimed_landing_site` adds a DHR core to a recovered marked state and records postwar integration.
-- `dhrondan_offer_two_world_compact` sends a formal recognition and non-aggression proposal to a valid partner after the Covenant integration route begins; a government that has already ratified a compact cannot be targeted again.
+- `dhrondan_integrate_reclaimed_landing_site` adds a DHR core to a recovered marked state and records postwar integration after the active regime establishes its own political mandate. The Imperial Subject World Protocol, Synod Optimal Order administration, or Covenant Enclave Congress receipt is required when the target list is built and again when the timed decision finishes. A lost mandate cancels the timer without awarding a core.
+- `dhrondan_offer_two_world_compact` sends a formal recognition and non-aggression proposal to a valid partner after the Covenant integration route begins and the Two-World Covenant is ratified. A government that has already ratified a compact cannot be targeted again. The recipient response rechecks ratification before diplomacy or rewards can be committed.
 
 Country event `.49` owns the compact recipient’s response; `.50` reports ratification to DHR, `.51` reports refusal, and hidden `.52` is an actor-owned deadline check.
 The targeted decision captures regular `dhrondan_diplomatic_actor` and `dhrondan_diplomatic_recipient` targets before dispatch, alongside the persistent current `dhrondan_diplomatic_offer_target`.
