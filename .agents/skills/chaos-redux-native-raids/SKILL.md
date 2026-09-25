@@ -19,10 +19,12 @@ Treat the installed documentation as the authority for native fields and scope, 
 - In `success_levels`, both `actor_effects` and `victim_effects` begin in `RAID_INSTANCE` scope; their names organize outcome UI, not scope. Enter `var:actor_country`, `var:victim_country`, or `var:target_state` explicitly before country or state effects. `ROOT` remains the raid instance inside those nested blocks.
 - If an existing country helper needs the actor country as `ROOT`, fire an immediate hidden actor `country_event` from `var:actor_country`. Save the necessary actor, victim, and target scopes as regular event targets in the originating chain before firing it. Regular event targets carry into events fired by that chain; temporary variables do not. Recheck the pointers in the receiving event before applying effects.
 - For outcome dispatch across several raid types, use disjoint marker families with an exact-one selection check, or separate fixed hidden event IDs. Do not use one country or global pending scalar to identify a raid: concurrent raids can overwrite it.
+- For an external achievement with delayed release proof, credit it only when an actual `success_levels` callback carries the exact required outcome marker and the release proof has been accepted. Carry the marker within that callback/event chain and make family credit idempotent; raid creation or preparation without a callback proves no outcome.
 
 ## Cost and final gate
 
 - Put equipment required to create a raid in native `essential_equipment`; the installed raid documentation says it is collected after creation. Put Command Power allocation in native `command_power`. Do not debit those resources again in scripted outcome effects or add a scripted refund for the same payment.
+- Keep raid gates distinct: `visible` controls type display, `available` whether a raid can be prepared, and `launchable` whether it can start. The installed documentation does not establish whether a prepared instance remains visible after the type's `visible` gate closes; record that as a live-game question instead of claiming either behavior.
 - At resolution, recheck the exact target and current policy that authorize the effect, including the actor, victim, state, and province where relevant. If the final gate can reject the effect, make the outcome tooltip conditional or neutral; do not promise an impact that may not occur.
 - Do not promise cancellation refunds or resource recovery without verified engine behavior for that precise case.
 
