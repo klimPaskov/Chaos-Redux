@@ -56,8 +56,16 @@ independence_wave_cor_corsica_category = {
 		desc = independence_wave_cor_secure_mountain_post_road_desc
 		icon = GFX_decision_independence_wave_cor_mountain_communes
 		visible = { is_independence_wave_cor_package = yes NOT = { has_country_flag = independence_wave_cor_mountain_post_road_secured } }
-		available = { can_pay_independence_wave_security_light_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_cor_active_project = yes } }
-		custom_cost_trigger = { can_pay_independence_wave_security_light_cost = yes }
+		available = {
+			can_pay_independence_wave_security_light_cost = yes
+			NOT = { num_of_civilian_factories_available_for_projects < constant:independence_wave_decision_cost.civilian_factory_light }
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_cor_active_project = yes }
+		}
+		custom_cost_trigger = {
+			can_pay_independence_wave_security_light_cost = yes
+			NOT = { num_of_civilian_factories_available_for_projects < constant:independence_wave_decision_cost.civilian_factory_light }
+		}
 		custom_cost_text = independence_wave_cost_security_light_factory
 		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_LIGHT }
 		days_remove = constant:independence_wave_decision_duration.standard
@@ -198,8 +206,8 @@ independence_wave_arx_sardinia_category = {
 		desc = independence_wave_arx_restore_cagliari_shipping_office_desc
 		icon = GFX_decision_independence_wave_arx_shipping
 		visible = { is_independence_wave_arx_package = yes NOT = { has_country_flag = independence_wave_arx_cagliari_shipping_office_restored } }
-		available = { can_pay_independence_wave_diplomatic_standard_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_arx_active_project = yes } }
-		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		available = { can_pay_independence_wave_diplomatic_standard_factory_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_arx_active_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_factory_cost = yes }
 		custom_cost_text = independence_wave_cost_diplomatic_standard_factory
 		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_LIGHT }
 		days_remove = constant:independence_wave_decision_duration.standard
