@@ -10,7 +10,7 @@ The parent read the workbook without editing it and confirmed `Events!A71 = 70`,
 
 The parent reran the mandated exporter from the repository root and reported success with unchanged CSV files. A read-only check of the present CSVs matched the reported SHA-256 fingerprints: Events `fe6e2437151c9971cae0b48573ddf2fb1657247dc45cb6c068e7644b65cfb165`, Clusters `276964d65cad082f678c7bbfff4d8e89d99930b1f3707b1d8dd07ba1e3755d8a`, and Scenarios `8b944de19817b3887eac22e3d12437e62990273c8b0db1c6f27928f349d4b2e7`. The current Events CSV row for Event 070 contains only its ID `70`.
 
-This curator edited only this Markdown handoff. The workbook, CSVs, gameplay source, and accepted spec were not changed by this pass. The catalog disposition is `implemented`, while the older focus-route and report-art decisions and probability, MCP, runtime, and live-game evidence remain unresolved or blocked in their owning handoffs.
+This curator edited only this Markdown handoff. The workbook, CSVs, and gameplay source were not changed by this pass. The catalog disposition is `implemented`, and Part 6 now records the user's accepted `.611`–`.613` response-art and `.614` protection-art mapping; image-content approval and game-scale/live-playback review remain pending. The older focus-route decision and probability, MCP, runtime, and live-game evidence remain unresolved or blocked in their owning handoffs.
 
 ## Prior parent and worker record, retained as dated evidence
 

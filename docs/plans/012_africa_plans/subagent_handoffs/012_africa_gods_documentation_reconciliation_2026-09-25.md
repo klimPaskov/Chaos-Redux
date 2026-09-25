@@ -35,7 +35,7 @@ The accepted Part 3 block, the protection-feedback handoff, and `docs\events\012
 | --- | --- | --- |
 | Older Event 012 focus-route promises | `unresolved` | Part 3 line 989 reserves their scope for separate user direction. The parent must decide whether any older route promise returns to active implementation scope. |
 | Judgment Reach distinct payoff and historical Sanctuary ID | `unresolved` | The current witness is consumed but its independent gameplay gate or intended naming disposition is not established by the bounded accepted decision. |
-| `.611`-`.614` report-art reuse | `unresolved` | Current event source reuses art, while no explicit acceptance of that presentation choice was found in the named decision block or art handoff. |
+| `.611`–`.614` report-art reuse | `promoted into an accepted spec` | The user explicitly accepted response-art reuse for `.611`–`.613` and dedicated protection art for `.614` on 2026-09-25; Part 6 records the mapping. Image-content approval and game-scale/live-playback validation remain unresolved. |
 | Event 012/013 and Migration runtime scenarios | `unresolved` | Source shows preflight, receipt, and cleanup call sites, but no no-card, card-open, mission-resolution, host-loss, third-party relation rewrite, or capacity-result execution proof was supplied. |
 | AI probability compare handoff | `blocked` | The auditor lacked an immutable pre-edit source for a valid `before.path`, and its named fixtures did not bind target scopes, variables, full eligible candidate pools, and external factors. Attempted compare and evaluation routes returned the errors retained in that handoff. |
 
@@ -65,6 +65,6 @@ The targeted Markdown hard-wrap check found no accidental mid-sentence or mid-cl
 
 ## Parent decisions and remaining risk
 
-The parent should keep the accepted protection cost and service boundary separate from the unresolved older focus routes. The parent still needs an explicit art-reuse disposition, full scenario and owner-system evidence, and final integration review before any Event 012 completion claim. The current focus inspect's unrelated aggregate blocking diagnostic, the partial event projection, and the probability comparison blocker must remain visible in the parent review. User-owned live-game validation remains outstanding.
+The parent should keep the accepted protection cost and service boundary separate from the unresolved older focus routes. The report-art mapping is accepted and recorded in Part 6, but image-content approval, full scenario and owner-system evidence, and final integration review are still needed before any Event 012 completion claim. The current focus inspect's unrelated aggregate blocking diagnostic, the partial event projection, and the probability comparison blocker must remain visible in the parent review. User-owned live-game validation remains outstanding.
 
 Skills used: `chaos-redux-subagents`, `chaos-redux-events`, `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, and `chaos-redux-event-assets`. No skill was created or updated.

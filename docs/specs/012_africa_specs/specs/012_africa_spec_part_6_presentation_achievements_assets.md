@@ -502,6 +502,10 @@ Installed event-picture package:
 
 Report images use the project report-card process. News images are black and white. Final super-event images use strong central composition at the project target size.
 
+### Gods of Africa report-image reuse
+
+Accepted design, 2026-09-25: the user selected the existing `GFX_report_event_012_africa_gods_response` image for events `.611`–`.613` and the dedicated `GFX_report_event_012_africa_gods_protection` image for event `.614`. This accepts the sprite mapping only; it does not establish image-content approval, game-scale readability, playback review, or live-game validation.
+
 ## Country and leader asset package
 
 The final implementation needs:

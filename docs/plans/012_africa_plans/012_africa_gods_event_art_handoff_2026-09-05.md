@@ -1,8 +1,8 @@
 # Event 012 Gods of Africa generated event-art handoff
 
-Status: implemented asset production; current working-tree source wiring is evidenced, while live visual review, playback, and promotion remain pending.
+Status: implemented asset production; current working-tree source wiring and parent review of the event-art contact sheet are evidenced, while live-game scale and playback validation remain pending.
 
-Reconciliation note, 2026-09-05: the asset package itself changed no GFX or gameplay files, but the current parent working tree now contains the Event 012 report sprite declarations and decision-category picture consumers described below. This source evidence supersedes the narrower pending-wiring wording without constituting parent or user approval.
+Reconciliation note, 2026-09-25: the parent visually reviewed `docs/assets/012_africa_gods_of_africa/review/contact_sheet.png`. The eight report cards and decision-category picture form a coherent period-style family with no visible crop or artifact concern at contact-sheet scale. The user accepted reuse of `GFX_report_event_012_africa_gods_response` for events `.611`–`.613` and `GFX_report_event_012_africa_gods_protection` for `.614`; this accepts the sprite mapping only, while image-content approval, native runtime display, live-game readability, playback, and user validation remain pending.
 
 ## Scope and source mode
 
@@ -33,6 +33,8 @@ All report processed PNG corners decode as fully transparent while retaining non
 ## Consumer crosswalk and parent wiring
 
 The eight report sprites are consumed by `events/012_africa_gods_of_africa.txt` at `chaosx.nr12.601`, `.602`, `.603`, `.604`, `.605`, `.608`, `.609`, and `.610`, and their declarations are present in the current working-tree `interface/012_africa_event_pictures.gfx`.
+
+Events `.611`–`.613` reuse the existing response sprite, and `.614` uses the dedicated protection sprite, as accepted in the user's 2026-09-25 presentation decision and recorded in Part 6 of the accepted specification. No image or GFX changes were needed for this mapping; image-content approval and game-scale validation remain pending.
 
 The current working-tree `common/decisions/categories/012_africa_gods_categories.txt` contains `picture = GFX_decision_cat_picture_012_africa_gods` for both active categories. The category picture source and consumer wiring are therefore evidenced, while the choice to share it and live visual acceptance remain parent/user decisions.
 
