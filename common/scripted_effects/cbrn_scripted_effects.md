@@ -873,7 +873,7 @@ State-scope explicit alert cleanup. It clears only `cbrn_chemical_raid_alert_act
 
 ### Exact-state response effects
 
-`cbrn_apply_hospital_utility_protection` and `cbrn_apply_civilian_shelter_movement` recalculate and debit their population-scaled real mask/support/train costs before setting timed protective flags/modifiers. `cbrn_apply_chemical_alarm` creates warning protection plus factory/movement disruption. `cbrn_apply_industrial_continuity_order` preserves local output while marking the shared exposure pipeline to increase civilian exposure. Missing equipment prevents the protected effects from being set.
+`cbrn_apply_hospital_utility_protection` debits the mask and support amounts quoted when the exact-state alert begins, then pays political power and sets the timed protection only after both equipment debits complete. This preserves one displayed and charged amount even if state population changes during the alert. `cbrn_apply_civilian_shelter_movement` recalculates and debits its population-scaled support/train costs before setting its timed modifier. `cbrn_apply_chemical_alarm` creates warning protection plus factory/movement disruption. `cbrn_apply_industrial_continuity_order` preserves local output while marking the shared exposure pipeline to increase civilian exposure. Missing equipment prevents the protected effects from being set.
 
 ## CBRN starting protection profiles
 

@@ -501,7 +501,13 @@ cbrn_state_can_protect_hospitals_and_utilities = {
 	is_controlled_by = ROOT
 	cbrn_state_has_exact_chemical_raid_alert = yes
 	NOT = { has_state_flag = cbrn_hospitals_utilities_secured }
+	# Resource affordability is in the cost row so a shortfall does not hide the target.
+}
+
+cbrn_state_hospital_payment_ready = {
+	cbrn_state_can_protect_hospitals_and_utilities = yes
 	cbrn_state_has_hospital_response_resources = yes
+	ROOT = { NOT = { has_political_power < constant:cbrn_protection_decision_cost.protect_hospitals_pp } }
 }
 
 cbrn_state_can_move_civilians_to_shelters = {

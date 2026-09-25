@@ -305,7 +305,8 @@ All are state scoped, side-effect free, and require `cbrn_chemical_raid_alert_ac
 - `cbrn_state_has_exact_chemical_raid_alert`: exact alert flag only.
 - `cbrn_state_has_hospital_response_resources`: the controller has the population-scaled mask/support amounts stored on the state.
 - `cbrn_state_has_shelter_response_resources`: the controller has the population-scaled support/train amounts stored on the state.
-- `cbrn_state_can_protect_hospitals_and_utilities`: exact alert, no prior hospital response, and full real resources.
+- `cbrn_state_can_protect_hospitals_and_utilities`: exact alert and no prior hospital response; the target remains visible during a stock shortage.
+- `cbrn_state_hospital_payment_ready`: the same target, its quoted mask/support equipment, and the political-power payment are all available. The decision cost row, availability, and hidden payment guard share this gate.
 - `cbrn_state_can_move_civilians_to_shelters`: exact alert, no shelter/industry-continuity conflict, and full real resources.
 - `cbrn_state_can_sound_chemical_alarm`: exact alert and no alarm already active.
 - `cbrn_state_can_keep_industry_operating`: exact alert and no shelter/continuity conflict.
@@ -315,9 +316,7 @@ The resource checks use meta triggers to inject the state-calculated dynamic equ
 Example:
 
 ```txt
-available = {
-	FROM = { cbrn_state_can_protect_hospitals_and_utilities = yes }
-}
+custom_cost_trigger = { hidden_trigger = { FROM = { cbrn_state_hospital_payment_ready = yes } } }
 ```
 
 ## CBRN protection procurement and AI profiles

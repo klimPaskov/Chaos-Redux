@@ -489,19 +489,26 @@ cbrn_clear_exact_state_chemical_raid_alert = {
 }
 
 cbrn_apply_hospital_utility_protection = {
-	cbrn_calculate_state_raid_response_costs = yes
-	set_temp_variable = { cbrn_mask_stock_debit_requested = cbrn_response_hospital_mask_cost }
-	controller = { cbrn_debit_mask_stockpile_oldest_first = yes }
-	set_temp_variable = { cbrn_support_equipment_debit_requested = cbrn_response_hospital_support_cost }
-	controller = { cbrn_debit_requested_support_equipment = yes }
 	if = {
-		limit = {
-			check_variable = { var = cbrn_mask_stock_debit_completed value = cbrn_response_hospital_mask_cost compare = greater_than_or_equals }
-			check_variable = { var = cbrn_support_equipment_debit_completed value = cbrn_response_hospital_support_cost compare = greater_than_or_equals }
+		limit = { cbrn_state_hospital_payment_ready = yes }
+		set_temp_variable = { cbrn_mask_stock_debit_requested = cbrn_response_hospital_mask_cost }
+		controller = { cbrn_debit_mask_stockpile_oldest_first = yes }
+		set_temp_variable = { cbrn_support_equipment_debit_requested = cbrn_response_hospital_support_cost }
+		controller = { cbrn_debit_requested_support_equipment = yes }
+		if = {
+			limit = {
+				check_variable = { var = cbrn_mask_stock_debit_completed value = cbrn_response_hospital_mask_cost compare = greater_than_or_equals }
+				check_variable = { var = cbrn_support_equipment_debit_completed value = cbrn_response_hospital_support_cost compare = greater_than_or_equals }
+			}
+			ROOT = {
+				set_temp_variable = { cbrn_hospital_pp_payment = constant:cbrn_protection_decision_cost.protect_hospitals_pp }
+				multiply_temp_variable = { cbrn_hospital_pp_payment = constant:cbrn_math.negation_multiplier }
+				add_political_power = cbrn_hospital_pp_payment
+			}
+			set_temp_variable = { cbrn_response_duration_local = constant:cbrn_protection_decision_timing.response_effect_days }
+			set_state_flag = { flag = cbrn_hospitals_utilities_secured days = var:cbrn_response_duration_local }
+			add_dynamic_modifier = { modifier = cbrn_hospitals_utilities_protected days = cbrn_response_duration_local }
 		}
-		set_temp_variable = { cbrn_response_duration_local = constant:cbrn_protection_decision_timing.response_effect_days }
-		set_state_flag = { flag = cbrn_hospitals_utilities_secured days = var:cbrn_response_duration_local }
-		add_dynamic_modifier = { modifier = cbrn_hospitals_utilities_protected days = cbrn_response_duration_local }
 	}
 }
 

@@ -1,0 +1,9 @@
+# Chemical raid civil defence
+
+Civil Defence response decisions appear only after a verified chemical-raid warning is attached to a controlled state. The alert records a bounded population-scaled quote for hospital respirator crates and Support Equipment. The hospital target remains listed during a shortage, and its cost row shows Political Power plus those two real stockpile payments. The same gate protects the hidden effect, so a paid response cannot be activated from a stale or unaffordable target. The response protects medical capacity for the configured duration and reduces chemical-exposure medical saturation.
+
+The hospital effect consumes respirator models through the oldest-first mask debit helper and Support Equipment through the shared support debit helper. It uses the amounts stored when the alert began, so state-population changes during that alert cannot change the quoted bill. Political Power is deducted after both equipment debits report completion. Repeated selection is blocked by the active hospital-response state flag and decision re-enable interval.
+
+The decision uses `GFX_decision_cbrn_protect_hospitals_and_utilities` from `interface/cbrn_protection.gfx`. The row uses vanilla `£pol_power`, the registered `GFX_gas_mask_equipment_1_medium` respirator icon from `interface/cbrn_protection.gfx`, and `GFX_support_equipment_text_icon` from `interface/chaosx_texticons.gfx`. Their referenced DDS files remain in their existing `gfx/interface/technologies/` and `gfx/texticons/` locations. No new icon is required for this correction.
+
+Future work should use native decision-list evidence at 2560×1440 and 1920×1080 to verify the three icons, line width, and blocked state. The current MCP GUI renderer does not expose this ordinary decision-list consumer, so that check remains open for user live-game review.

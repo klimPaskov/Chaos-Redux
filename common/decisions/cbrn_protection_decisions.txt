@@ -13,6 +13,7 @@
 @CR_SC_CBRN_PROTECTION_DECISION_COST_REGISTER_POPULATION_FACTORIES = 2
 @CR_SC_CBRN_PROTECTION_DECISION_COST_REPLACE_FILTERS_FACTORIES = 1
 @CR_SC_CBRN_PROTECTION_DECISION_COST_SIMPLIFY_FILTERS_FACTORIES = 2
+@CR_SC_CBRN_PROTECTION_DECISION_COST_PROTECT_HOSPITALS_PP_AI_HINT = 10
 # ============================================================================
 # CHAOS REDUX - CBRN PROTECTIVE-EQUIPMENT AND CIVIL-DEFENCE DECISIONS
 # ============================================================================
@@ -339,12 +340,15 @@ cbrn_civil_defence_category = {
 		icon = GFX_decision_cbrn_protect_hospitals_and_utilities
 		state_target = yes
 		on_map_mode = map_and_decisions_view
-		cost = constant:cbrn_protection_decision_cost.protect_hospitals_pp
+		cost = constant:cbrn_math.zero
+		ai_hint_pp_cost = @CR_SC_CBRN_PROTECTION_DECISION_COST_PROTECT_HOSPITALS_PP_AI_HINT
 		days_re_enable = constant:cbrn_protection_decision_timing.response_reenable_days
 		visible = { any_controlled_state = { has_state_flag = cbrn_chemical_raid_alert_active } }
 		target_root_trigger = { any_controlled_state = { has_state_flag = cbrn_chemical_raid_alert_active } }
 		target_trigger = { FROM = { cbrn_state_can_protect_hospitals_and_utilities = yes } }
-		available = { FROM = { cbrn_state_can_protect_hospitals_and_utilities = yes } }
+		available = { hidden_trigger = { FROM = { cbrn_state_hospital_payment_ready = yes } } }
+		custom_cost_trigger = { hidden_trigger = { FROM = { cbrn_state_hospital_payment_ready = yes } } }
+		custom_cost_text = cbrn_protect_hospitals_and_utilities_cost
 		complete_effect = {
 			custom_effect_tooltip = cbrn_protect_hospitals_and_utilities_complete_tt
 			hidden_effect = { FROM = { cbrn_apply_hospital_utility_protection = yes } }
