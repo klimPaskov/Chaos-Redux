@@ -1,6 +1,6 @@
 # Assets and achievement
 
-> **2026-09-20 native-raid boundary:** The accepted CBRN overhaul moves Japan's chemical and biological campaign attacks to native raids with multi-day preparation and engine-reserved payment. No documented raid lifecycle hook has yet proved that reservation during a one-day Black Friday sale can credit this achievement before the later outcome. The five-family design below remains accepted for transactions with a confirmed receipt; Japan native raid eligibility is unresolved, and the retired attack-decision adapter is not evidence for it. See the [CBRN amendment](../chaos_warfare_system_specs/specs/13_2026_09_20_accepted_cbrn_overhaul.md) and [requirement ledger](../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md).
+> **2026-09-25 accepted native-raid rule:** The user approved crediting a discounted Japan chemical or biological native raid when its successful release resolves, even after the one-day sale ends. The raid must have been prepared under either Black Friday price tier, pass the normal natural-sale and human-country disqualifiers, and complete through its native outcome. It contributes one equipment family after successful accepted resolution; failed, limited, canceled, or invalid attempts contribute none. No reservation-time receipt is inferred. See the [CBRN amendment](../chaos_warfare_system_specs/specs/13_2026_09_20_accepted_cbrn_overhaul.md) and [requirement ledger](../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md).
 
 ## Visual package
 
@@ -55,7 +55,7 @@ The implementation agent must write the final achievement name and description a
 
 ### Player challenge
 
-During one naturally selected Event 26 sale, one human-controlled country must complete paid actions from five distinct registered cost-surface families before the next daily tick.
+During one naturally selected Event 26 sale, one human-controlled country must commit paid actions from five distinct registered cost-surface families. A discounted Japan native CBRN raid prepared during the sale may supply the equipment family when it succeeds after expiry.
 
 The five families must include:
 
@@ -68,7 +68,7 @@ The five families must include:
 A transaction counts when:
 
 - Event 26 came from automatic random selection
-- the sale is active
+- the sale is active when an ordinary purchase commits, or a qualifying native raid is prepared during the sale
 - the transaction had a positive ordinary current cost
 - the country paid a positive discounted amount
 - the action completed or committed successfully
@@ -88,11 +88,11 @@ The achievement cannot unlock when:
 - the transaction was refunded or rolled back before successful completion
 - the transaction was an AI action
 - the same logical family is repeated
-- the event has already expired
+- an ordinary purchase is made after the sale expires, or a native raid is first prepared after expiry
 
 ### Tracking
 
-Track progress per human country for the current active sale. Store one credited flag or family ledger entry per logical family. Clear temporary progress after expiry. Award the achievement immediately when the fifth valid family completes.
+Track progress per human country for the one natural sale. Store one credited family entry per logical family and retain it after expiry until any qualifying native raid resolves. Award the achievement immediately when the fifth valid family completes; ordinary post-expiry purchases never add progress.
 
 A refundable action should count only after successful final commitment. This avoids complicated rollback of achievement progress.
 

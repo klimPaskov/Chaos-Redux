@@ -54,13 +54,13 @@ The earlier 104-component adapter inventory is a historical source checkpoint co
 
 ## Achievement
 
-Japan's native campaign raids have sale-priced variants, but the engine reservation occurs before a multi-day preparation resolves. A Black Friday achievement credit at reservation time has no documented callback proof, so these raids are not counted as verified achievement transactions in this document. The removed Japan attack decisions and their former registry rows are historical evidence only.
+Japan's discounted native chemical and biological campaign raids reserve their payload through the raid engine when prepared during the sale. A successful, accepted outcome credits one equipment family when it resolves, including after the sale expires. Failure, limited success, cancellation, and invalid releases add no achievement family. Both the ordinary discount and Evolution I discount qualify. The removed Japan attack decisions and their former registry rows are historical evidence only.
 
-`026_black_friday_five_departments` uses the shared transaction receipt and final registry family IDs.
+`026_black_friday_five_departments` uses shared transaction receipts for ordinary purchases and the native outcome proof for discounted Japan raids. Both use the final registry family IDs.
 
 It requires five distinct qualifying families in one natural human-controlled sale, including an institutional family, a material or commitment family, and a non-political-power family.
 
-AI, free, refunded, repeated-family, manual, forced, and post-expiry transactions do not count.
+AI, free, refunded, repeated-family, manual, forced, and ordinary post-expiry transactions do not count. A raid cannot first obtain a discounted variant after expiry.
 
 ## Assets and interface wiring
 

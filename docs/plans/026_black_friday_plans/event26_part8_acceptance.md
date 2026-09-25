@@ -90,6 +90,13 @@ A source mirror verified the thirty-bit family eligibility matcher separately. T
 | `BF-X12` | Adapter-blocked | Remaining multi-component refunds need owner transaction receipts and completion/failure callbacks; the bounded adapters have source-level refund paths but no live proof. |
 | `BF-X13` | Source; Live-blocked; Adapter-blocked | The bounded owners commit one registry-defined primary family per logical transaction, while all other owners remain unconnected and no live achievement proof exists. |
 | `BF-X14` | Source; Live-blocked | Payer-scoped receipts prevent quote overwrite in the framework; simultaneous country proof requires live multiplayer. |
+| `BF-X15` | Source; MCP-partial; Live-blocked | A discounted Japan native raid created during a natural sale carries an immutable price marker; a successful accepted chemical or biological release credits one equipment family after expiry. The event inspector omits the scripted helper lifecycle, and live delayed launch/outcome proof is pending. |
+| `BF-X16` | Source; MCP-partial; Live-blocked | Both sale and Evolution I marker tiers, plus success and critical-success markers, reach the same one-family helper. Native post-expiry presentation and resolution remain unverified. |
+| `BF-X17` | Source; Live-blocked | Failure and limited success lack the success marker; canceled raids have no outcome credit, and invalid release/dispatch lacks the acceptance proof. Native cancellation and lost-target behavior require live evidence. |
+| `BF-X18` | Source; Live-blocked | Human/Japan, natural activation, sale-sequence, and manual/forced/debug disqualifiers guard the delayed helper. AI and forbidden sale routes cannot credit the family; runtime proof remains open. |
+| `BF-X19` | Source; Live-blocked | Refunding the last committed institutional receipt removes its family from the array; the final award checks the current array, not the old cached flag. Non-political payment uses current committed-receipt proof or successful native equipment proof. Runtime refund sequencing remains unverified. |
+
+Matching before/after event traces for `chaosx_japan_cbrn_raid.1` both returned `EVENT_INSPECTED_PARTIAL` at graph revision `811e61df0f66e2986e5ba3d637f8f755945d0c067de0b312c964852355901694`. The graph does not expand these scripted-effect helpers, and the state render selected no helper nodes. The attempted `hoi4.event_compare` returned `EVENT_REVISION_NOT_CACHED`; no graph-difference or native lifecycle claim follows from MCP. The artifact URIs and source review are recorded in the CBRN completion report.
 
 ## Cost-family coverage
 

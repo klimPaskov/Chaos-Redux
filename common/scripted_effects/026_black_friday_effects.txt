@@ -51,39 +51,18 @@ black_friday_initialize_runtime = {
 	black_friday_update_calendar_flag = yes
 }
 
-# Clear only the current sale's achievement progress. The receipt ledger is
-# deliberately retained so a refundable payment can still be settled or
-# refunded after the one-day sale has expired.
-black_friday_clear_current_sale_transaction_state = {
-	every_country = {
-		clear_array = black_friday_achievement_family_ids
-		set_variable = { black_friday_achievement_family_count = constant:black_friday_event.zero_date }
-		clr_country_flag = black_friday_achievement_has_institutional_family
-		clr_country_flag = black_friday_achievement_has_material_family
-		clr_country_flag = black_friday_achievement_has_non_political_family
-	}
-}
-
 black_friday_prepare_achievement_progress = {
 	clear_array = black_friday_achievement_family_ids
 	set_variable = { black_friday_achievement_family_count = constant:black_friday_event.zero_date }
 	set_variable = { black_friday_achievement_active_sale_sequence = global.black_friday_sale_sequence }
+	set_variable = { black_friday_achievement_non_political_receipt_count = constant:black_friday_event.zero_date }
 	clr_country_flag = black_friday_achievement_has_institutional_family
 	clr_country_flag = black_friday_achievement_has_material_family
-	clr_country_flag = black_friday_achievement_has_non_political_family
+	clr_country_flag = black_friday_achievement_native_non_political_payment
 }
 
-black_friday_add_achievement_family = {
-	if = {
-		limit = {
-			check_variable = {
-				var = black_friday_achievement_active_sale_sequence
-				value = global.black_friday_sale_sequence
-				compare = not_equals
-			}
-		}
-		black_friday_prepare_achievement_progress = yes
-	}
+# The component ledger supplies one immutable non-PP proof per paid receipt.
+black_friday_scan_receipt_non_political_payment = {
 	set_temp_variable = { black_friday_purchase_has_non_political_paid_component = constant:universal_cost_framework.zero }
 	set_temp_variable = { black_friday_purchase_component_cursor = constant:universal_cost_framework.zero }
 	while_loop_effect = {
@@ -118,6 +97,12 @@ black_friday_add_achievement_family = {
 		}
 		add_to_temp_variable = { black_friday_purchase_component_cursor = constant:universal_cost_framework.one }
 	}
+}
+
+# Shared primary-family credit accepts either a committed universal receipt or
+# a proven native equipment reservation. The caller supplies the family ID;
+# non-political payment is tracked from actual committed receipts and raids.
+black_friday_credit_achievement_family = {
 	if = {
 		limit = {
 			NOT = {
@@ -206,29 +191,48 @@ black_friday_add_achievement_family = {
 			}
 			set_country_flag = black_friday_achievement_has_material_family
 		}
-		if = {
-			limit = {
-				check_variable = {
-					var = black_friday_purchase_has_non_political_paid_component
-					value = constant:universal_cost_framework.one
-					compare = equals
-				}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = black_friday_achievement_family_count
+				value = constant:black_friday_event.achievement_target_family_count
+				compare = greater_than_or_equals
 			}
-			set_country_flag = black_friday_achievement_has_non_political_family
-		}
-		if = {
-			limit = {
-				check_variable = {
-					var = black_friday_achievement_family_count
-					value = constant:black_friday_event.achievement_target_family_count
-					compare = greater_than_or_equals
-				}
-				has_country_flag = black_friday_achievement_has_institutional_family
-				has_country_flag = black_friday_achievement_has_material_family
-				has_country_flag = black_friday_achievement_has_non_political_family
+			OR = {
+				is_in_array = { array = black_friday_achievement_family_ids value = constant:universal_cost_family.laws }
+				is_in_array = { array = black_friday_achievement_family_ids value = constant:universal_cost_family.personnel }
+				is_in_array = { array = black_friday_achievement_family_ids value = constant:universal_cost_family.officer_corps }
+				is_in_array = { array = black_friday_achievement_family_ids value = constant:universal_cost_family.intelligence }
 			}
-			set_country_flag = black_friday_achievement_awarded
+			OR = {
+				is_in_array = { array = black_friday_achievement_family_ids value = constant:universal_cost_family.equipment }
+				is_in_array = { array = black_friday_achievement_family_ids value = constant:universal_cost_family.convoys }
+				is_in_array = { array = black_friday_achievement_family_ids value = constant:universal_cost_family.trains }
+				is_in_array = { array = black_friday_achievement_family_ids value = constant:universal_cost_family.fuel }
+				is_in_array = { array = black_friday_achievement_family_ids value = constant:universal_cost_family.factory_commitment }
+				is_in_array = { array = black_friday_achievement_family_ids value = constant:universal_cost_family.consumer_goods }
+				is_in_array = { array = black_friday_achievement_family_ids value = constant:universal_cost_family.special_project }
+				is_in_array = { array = black_friday_achievement_family_ids value = constant:universal_cost_family.state_project }
+			}
+			OR = {
+				has_country_flag = black_friday_achievement_native_non_political_payment
+				check_variable = { var = black_friday_achievement_non_political_receipt_count value = constant:black_friday_event.zero_date compare = greater_than }
+			}
 		}
+		set_country_flag = black_friday_achievement_awarded
+	}
+}
+
+# Native sale raids have no universal-cost receipt callback. Their unique
+# discounted raid definition reserves real payload equipment when prepared;
+# the owner calls this only after a successful accepted outcome.
+black_friday_credit_native_japan_cbrn_raid_family = {
+	if = {
+		limit = { black_friday_achievement_can_credit_native_japan_raid = yes }
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+		set_country_flag = black_friday_achievement_native_non_political_payment
+		black_friday_credit_achievement_family = yes
 	}
 }
 
@@ -251,6 +255,17 @@ black_friday_record_achievement_transaction = {
 				}
 			}
 		}
+		if = {
+			limit = {
+				check_variable = {
+					var = black_friday_achievement_active_sale_sequence
+					value = global.black_friday_sale_sequence
+					compare = not_equals
+				}
+			}
+			black_friday_prepare_achievement_progress = yes
+		}
+		black_friday_scan_receipt_non_political_payment = yes
 		add_to_array = {
 			array = black_friday_achievement_transaction_ids
 			value = black_friday_purchase_transaction_id
@@ -262,6 +277,10 @@ black_friday_record_achievement_transaction = {
 		add_to_array = {
 			array = black_friday_achievement_transaction_sale_sequences
 			value = global.black_friday_sale_sequence
+		}
+		add_to_array = {
+			array = black_friday_achievement_transaction_non_political_paid
+			value = black_friday_purchase_has_non_political_paid_component
 		}
 		if = {
 			limit = {
@@ -278,7 +297,11 @@ black_friday_record_achievement_transaction = {
 				array = black_friday_achievement_transaction_states
 				value = constant:black_friday_event.achievement_transaction_committed
 			}
-			black_friday_add_achievement_family = yes
+			if = {
+				limit = { check_variable = { var = black_friday_purchase_has_non_political_paid_component value = constant:universal_cost_framework.one compare = equals } }
+				add_to_variable = { black_friday_achievement_non_political_receipt_count = constant:black_friday_event.one }
+			}
+			black_friday_credit_achievement_family = yes
 		}
 	}
 }
@@ -339,10 +362,14 @@ black_friday_confirm_achievement_transaction = {
 			set_variable = {
 				black_friday_achievement_transaction_states^black_friday_achievement_transaction_index = constant:black_friday_event.achievement_transaction_committed
 			}
+			if = {
+				limit = { check_variable = { var = black_friday_achievement_transaction_non_political_paid^black_friday_achievement_transaction_index value = constant:universal_cost_framework.one compare = equals } }
+				add_to_variable = { black_friday_achievement_non_political_receipt_count = constant:black_friday_event.one }
+			}
 			set_temp_variable = {
 				black_friday_purchase_family_id = black_friday_achievement_transaction_family_ids^black_friday_achievement_transaction_index
 			}
-			black_friday_add_achievement_family = yes
+			black_friday_credit_achievement_family = yes
 		}
 	}
 }
@@ -366,6 +393,15 @@ black_friday_retract_achievement_transaction = {
 					}
 				}
 			}
+			if = {
+				limit = {
+					check_variable = { var = black_friday_achievement_transaction_states^black_friday_achievement_transaction_index value = constant:black_friday_event.achievement_transaction_committed compare = equals }
+					check_variable = { var = black_friday_achievement_transaction_non_political_paid^black_friday_achievement_transaction_index value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = black_friday_achievement_non_political_receipt_count value = constant:black_friday_event.zero_date compare = greater_than }
+					check_variable = { var = black_friday_achievement_transaction_sale_sequences^black_friday_achievement_transaction_index value = global.black_friday_sale_sequence compare = equals }
+				}
+				subtract_from_variable = { black_friday_achievement_non_political_receipt_count = constant:black_friday_event.one }
+			}
 			set_variable = {
 				black_friday_achievement_transaction_states^black_friday_achievement_transaction_index = constant:black_friday_event.achievement_transaction_refunded
 			}
@@ -387,6 +423,13 @@ black_friday_retract_achievement_transaction = {
 					black_friday_purchase_family_id = black_friday_achievement_transaction_family_ids^black_friday_achievement_transaction_index
 				}
 				set_temp_variable = { black_friday_achievement_family_still_used = constant:black_friday_event.zero_date }
+				if = {
+					limit = {
+						has_country_flag = black_friday_achievement_native_non_political_payment
+						check_variable = { var = black_friday_purchase_family_id value = constant:universal_cost_family.equipment compare = equals }
+					}
+					set_temp_variable = { black_friday_achievement_family_still_used = constant:black_friday_event.one }
+				}
 				set_temp_variable = { black_friday_achievement_transaction_cursor = constant:black_friday_event.zero_date }
 				while_loop_effect = {
 					limit = {
@@ -1815,7 +1858,6 @@ black_friday_expire_sale = {
 		set_variable = { global.black_friday_state = constant:black_friday_event.state_expired }
 		set_variable = { global.black_friday_expiration_date = global.num_days }
 		black_friday_clear_active_status = yes
-		black_friday_clear_current_sale_transaction_state = yes
 		log = "CHAOS REDUX BLACK FRIDAY: Sale expired on the daily pulse"
 	}
 }

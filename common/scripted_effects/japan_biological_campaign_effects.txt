@@ -196,6 +196,10 @@ japan_bio_campaign_resolve_native_raid_outcome = {
 			set_variable = { japan_bio_campaign_next_allowed_day = global.num_days }
 			add_to_variable = { japan_bio_campaign_next_allowed_day = japan_bio_campaign_actor_cooldown_days }
 			if = {
+				limit = { check_variable = { var = japan_bio_campaign_dispatch_status value = constant:bio_lifecycle_proof.supplied compare = equals } }
+				black_friday_credit_native_japan_cbrn_raid_family = yes
+			}
+			if = {
 				limit = { check_variable = { var = japan_cbrn_raid_price_tier value = constant:japan_cbrn_raid_price.sale compare = equals } }
 				set_country_flag = japan_bio_campaign_black_friday_purchase_history
 				set_variable = { japan_bio_campaign_last_price_tier = japan_cbrn_raid_price_tier }

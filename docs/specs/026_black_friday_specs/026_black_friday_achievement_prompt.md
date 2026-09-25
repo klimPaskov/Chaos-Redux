@@ -4,7 +4,7 @@ Implement one Chaos Redux achievement for Event 26 using the working ID `026_bla
 
 ## Unlock contract
 
-During one naturally selected Black Friday sale, one human-controlled country must complete paid actions from five distinct registered cost-surface families before the sale expires.
+During one naturally selected Black Friday sale, one human-controlled country must commit paid actions from five distinct registered cost-surface families. By the user's 2026-09-25 decision, a discounted Japan native chemical or biological raid prepared during the sale may credit its equipment family after expiry when it resolves successfully.
 
 The credited families must include:
 
@@ -16,11 +16,11 @@ A transaction counts only when its ordinary current cost was positive, its disco
 
 ## Disqualifiers
 
-Do not unlock when Event 26 was started through Force Trigger Mode, ordinary manual settings launch, debug setup, or a triggerable substitute. Do not count AI transactions, free actions, refunded actions, failed transactions, or payments after expiry.
+Do not unlock when Event 26 was started through Force Trigger Mode, ordinary manual settings launch, debug setup, or a triggerable substitute. Do not count AI transactions, free actions, refunded actions, failed transactions, ordinary payments after expiry, or native raids first prepared after expiry.
 
 ## Tracking
 
-Track progress per human country for the active sale. Credit a family after final successful commitment. Store enough family state to prevent duplicate credit. Clear temporary progress after expiry. Award immediately when the fifth valid family completes and all composition requirements are satisfied.
+Track progress per human country for the natural sale. Credit an ordinary family after final successful commitment and a discounted native raid's equipment family only after its successful accepted outcome. Store enough family state to prevent duplicate credit and retain the sale's progress after expiry for delayed outcomes. Award immediately when the fifth valid family completes and all composition requirements are satisfied.
 
 Use the same family IDs as the final cost surface registry. Do not create a second achievement-only classification system.
 
@@ -42,6 +42,6 @@ The description must explain five different purchase types during one natural Bl
 
 ## Validation
 
-Test successful unlock, repeated-family rejection, missing non-political resource rejection, force-trigger rejection, manual-launch rejection, refund rejection, AI rejection, expiry cleanup, save and reload, and one valid completion at both 50 percent and 75 percent sale strength.
+Test successful unlock, repeated-family rejection, missing non-political resource rejection, force-trigger rejection, manual-launch rejection, refund rejection, AI rejection, post-expiry ordinary-purchase rejection, delayed native-raid success and critical success at both discount tiers, failed or canceled raid rejection, save and reload, and one valid completion at both 50 percent and 75 percent sale strength.
 
 Report every file changed, final IDs, localisation keys, asset paths, tracking state, validation result, and blocker. Do not mark the achievement complete while the cost family registry or asset triplet is incomplete.

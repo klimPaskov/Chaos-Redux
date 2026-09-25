@@ -117,6 +117,34 @@ black_friday_achievement_is_valid_sale = {
 	NOT = { has_country_flag = black_friday_achievement_awarded }
 }
 
+# Native Japan campaign raids reserve equipment when prepared during the sale
+# and resolve after its one-day window. Only a successful, accepted outcome
+# may credit the already-open sale sequence; ordinary purchases still use the
+# active-sale trigger above.
+black_friday_achievement_can_credit_native_japan_raid = {
+	black_friday_achievement_possible_campaign_is_valid = yes
+	original_tag = JAP
+	black_friday_is_fired = yes
+	has_global_flag = black_friday_natural_activation
+	NOT = { has_global_flag = black_friday_force_disqualified }
+	NOT = { has_global_flag = black_friday_manual_disqualified }
+	NOT = { has_country_flag = black_friday_achievement_awarded }
+	has_variable = black_friday_achievement_active_sale_sequence
+	check_variable = {
+		var = black_friday_achievement_active_sale_sequence
+		value = global.black_friday_sale_sequence
+		compare = equals
+	}
+	OR = {
+		has_event_target = japan_cbrn_raid_price_sale
+		has_event_target = japan_cbrn_raid_price_evolution
+	}
+	OR = {
+		has_event_target = japan_cbrn_raid_outcome_success
+		has_event_target = japan_cbrn_raid_outcome_critical_success
+	}
+}
+
 black_friday_achievement_is_complete = {
 	black_friday_achievement_possible_campaign_is_valid = yes
 	has_country_flag = black_friday_achievement_awarded

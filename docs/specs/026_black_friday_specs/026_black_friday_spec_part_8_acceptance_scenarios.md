@@ -88,6 +88,11 @@ A forced launch cannot prove natural selection or weekday gating.
 | `BF-X12` | The multi-resource action in `BF-X11` is refunded | Each paid component returns once and no ordinary amount is refunded |
 | `BF-X13` | A multi-resource action completes during achievement tracking | It credits only its registry-defined primary family |
 | `BF-X14` | Two players quote country-specific costs at the same time | Neither quote overwrites the other payer's amount or display |
+| `BF-X15` | Prepare a discounted Japan chemical or biological raid during a natural sale; it succeeds after expiry | The equipment family credits once when the accepted release resolves, with no post-expiry ordinary purchase |
+| `BF-X16` | Repeat `BF-X15` for Evolution I and for critical success | The 75 percent tier and critical outcome follow the same single-family rule |
+| `BF-X17` | A discounted raid fails, has limited success, is canceled, loses its valid target, or cannot dispatch | No achievement family credits from that raid |
+| `BF-X18` | A discounted raid resolves after a manual, forced, debug, or AI sale | No achievement family credits from that raid |
+| `BF-X19` | A paid institutional family is refunded before a delayed qualifying raid resolves | The removed institutional family cannot satisfy the final five-family check |
 
 ## Cost family coverage scenarios
 
