@@ -174,7 +174,7 @@ AUTHORITY = {
 # Fixed Claude Code model tier per role. `opus` covers design, architecture,
 # implementation, and gatekeeping audits whose mistakes are expensive; `sonnet`
 # covers research, asset production, exploration, and text or documentation
-# upkeep; `haiku` covers mechanical transcription. The parent can still pass an
+# upkeep, including spreadsheet transcription. The parent can still pass an
 # explicit model override for a single spawn.
 CLAUDE_MODELS = {
     "chaosx_3d_model_pipeline": "opus",
@@ -196,7 +196,7 @@ CLAUDE_MODELS = {
     "chaosx_skill_maintainer": "sonnet",
     "chaosx_super_event_audio_researcher": "sonnet",
     "chaosx_super_event_text_researcher": "sonnet",
-    "chaosx_spreadsheet_doc_worker": "haiku",
+    "chaosx_spreadsheet_doc_worker": "sonnet",
 }
 
 # Project-scoped Claude Code MCP servers. The server names and launch commands
