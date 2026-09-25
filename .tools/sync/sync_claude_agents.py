@@ -48,8 +48,10 @@ Conversion rules
    and `fork_turns="none"` mechanics are replaced with that statement instead
    of being carried into the generated prompt.
 4. Codex-only fields (`model`, `model_reasoning_effort`, `sandbox_mode`,
-   `nickname_candidates`) are dropped. Claude Code gets `model: inherit` so the
-   parent session chooses the model.
+   `nickname_candidates`) are dropped. Claude Code gets a fixed `model:` alias
+   from `CLAUDE_MODELS` so each role runs on a tier sized to its work instead
+   of inheriting the parent session's model. A TOML agent without an entry
+   stops the sync, so every new role needs an explicit tier.
 5. Claude Code has no Claude-specific tool allowlist that reproduces the Codex
    authority classes safely, so no `tools:` key is emitted. Authority
    (read-only, patch-capable, asset/research) is enforced by the system-prompt
@@ -169,6 +171,34 @@ AUTHORITY = {
     "chaosx_3d_model_pipeline": "asset / research (web)",
 }
 
+# Fixed Claude Code model tier per role. `opus` covers design, architecture,
+# implementation, and gatekeeping audits whose mistakes are expensive; `sonnet`
+# covers research, asset production, exploration, and text or documentation
+# upkeep; `haiku` covers mechanical transcription. The parent can still pass an
+# explicit model override for a single spawn.
+CLAUDE_MODELS = {
+    "chaosx_3d_model_pipeline": "opus",
+    "chaosx_ai_probability_auditor": "opus",
+    "chaosx_country_package_auditor": "opus",
+    "chaosx_decision_mission_auditor": "opus",
+    "chaosx_event_completion_auditor": "opus",
+    "chaosx_event_ui_worker": "opus",
+    "chaosx_focus_tree_auditor": "opus",
+    "chaosx_improvement_loop_planner": "opus",
+    "chaosx_scripted_system_architect": "opus",
+    "chaosx_asset_source_researcher": "sonnet",
+    "chaosx_documentation_curator": "sonnet",
+    "chaosx_generated_event_art": "sonnet",
+    "chaosx_icon_artist": "sonnet",
+    "chaosx_localisation_auditor": "sonnet",
+    "chaosx_portrait_creator": "sonnet",
+    "chaosx_repo_explorer": "sonnet",
+    "chaosx_skill_maintainer": "sonnet",
+    "chaosx_super_event_audio_researcher": "sonnet",
+    "chaosx_super_event_text_researcher": "sonnet",
+    "chaosx_spreadsheet_doc_worker": "haiku",
+}
+
 # Project-scoped Claude Code MCP servers. The server names and launch commands
 # mirror `.cursor/mcp.json` and `.opencode/opencode.json`. `cwd` is set for every
 # server because Claude Code launches a stdio server from an unspecified
@@ -244,10 +274,11 @@ Codex remains the primary workflow. `.codex/agents/*.toml` files are Codex
 definitions, not Claude Code subagent prompts. Invoke a subagent from this table
 by its Claude Code name with the `Agent` tool. Claude Code subagents always run
 in an isolated context window, so the parent prompt must still be fully
-explicit.
+explicit. Each subagent runs on the fixed model tier in the table, set by
+`CLAUDE_MODELS` in the generator; the parent may override it for one spawn.
 
-| Canonical (Codex) | Claude Code | Authority |
-| --- | --- | --- |
+| Canonical (Codex) | Claude Code | Model | Authority |
+| --- | --- | --- | --- |
 {rows}
 
 Authority classes follow the `chaos-redux-subagents` skill. This generator emits
@@ -273,7 +304,7 @@ def yaml_quote(value):
     return '"{}"'.format(escaped)
 
 
-def render_agent(claude_name, description, body, src_name):
+def render_agent(claude_name, description, model, body, src_name):
     # Claude Code registers a subagent only when its frontmatter has `name`.
     lines = [
         "---",
@@ -282,7 +313,7 @@ def render_agent(claude_name, description, body, src_name):
         ),
         "name: {}".format(claude_name),
         "description: {}".format(yaml_quote(description)),
-        "model: inherit",
+        "model: {}".format(model),
         "---",
         "",
         body.rstrip(),
@@ -448,12 +479,17 @@ def main():
 
         if name not in AUTHORITY:
             unmapped.append(name)
+        model = CLAUDE_MODELS.get(name)
+        if not model:
+            sys.exit(
+                "ERROR: {} has no CLAUDE_MODELS entry; assign it a model tier".format(name)
+            )
 
         claude_name = name.replace("_", "-")
         out_path = CLAUDE_AGENTS / "{}.md".format(claude_name)
         expected_files.add(out_path.name)
         content = render_agent(
-            claude_name, description, apply_substitutions(instructions), toml_path.name
+            claude_name, description, model, apply_substitutions(instructions), toml_path.name
         )
 
         if not out_path.exists():
@@ -465,8 +501,8 @@ def main():
             unchanged.append(claude_name)
 
         rows.append(
-            "| `{}` | `{}` | {} |".format(
-                name, claude_name, AUTHORITY.get(name, "unmapped")
+            "| `{}` | `{}` | `{}` | {} |".format(
+                name, claude_name, model, AUTHORITY.get(name, "unmapped")
             )
         )
 
