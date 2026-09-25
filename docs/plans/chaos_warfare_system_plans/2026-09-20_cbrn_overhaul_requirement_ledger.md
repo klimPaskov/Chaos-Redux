@@ -4,7 +4,7 @@
 
 The acceptance basis is the user's explicit 2026-09-20 request to implement the CBRN overhaul. [`../../specs/chaos_warfare_system_specs/specs/13_2026_09_20_accepted_cbrn_overhaul.md`](../../specs/chaos_warfare_system_specs/specs/13_2026_09_20_accepted_cbrn_overhaul.md) records that accepted design and supersedes incompatible earlier proposals. Earlier numbered specifications, matrices, prompts, stage plans, and handoffs remain useful for detail and historical evidence only where they agree with the amendment. Current source and MCP artifacts establish implementation facts but do not establish approval. The parent owns final integration, audit review, and completion claims.
 
-All rows below are **accepted and queued for integration evidence**. This status means the design is authorized, while source review, specialist handoffs, MCP evidence, and final validation remain open. Individual owner changes during this task must not be silently promoted to package completion.
+The table below preserves the accepted requirements and their original evidence criteria. The dated disposition table immediately after it is the current status; the preliminary handoffs farther down are historical snapshots, not current completion claims. Source implementation can be recorded without treating unresolved engine, visual, or scenario evidence as complete.
 
 | ID | Accepted requirement | Prior design or likely owner surface | Evidence needed to change disposition |
 | --- | --- | --- | --- |
@@ -23,6 +23,26 @@ All rows below are **accepted and queued for integration evidence**. This status
 | CBRN-13 | Four named commander traits, service-based Chemical Operations Commander, native CBRN High Command; remove Field-Validated Planner. | `specs/02_doctrine_architecture.md`; trait owner; Event 24 docs and source. | Trait definitions, awards/cleanup, High Command role, Event 24 removal and localisation/icon audit. |
 | CBRN-14 | Plague gate/image/zero-capacity, famine/migration glyphs, chemical-warfare facility, zombie category/bomb art, CXT portrait, `SWE_wargames` icon. | `specs/12_ui_localisation_assets_achievements.md`; asset and wiring owners. | Final files, sprite registrations, consumer inspection, visual review, ownership manifests. |
 | CBRN-15 | Complete ancillary repairs without unapproved fallback or invented implementation equivalence. | Owner handoffs and `documentation_state.md`. | Exact issue list, source revisions, final audits and parent review. |
+
+## Current dispositions — 2026-09-25
+
+| ID | Disposition | Current evidence and limit |
+| --- | --- | --- |
+| CBRN-01 | Implemented in source; scenario validation unresolved | Three named decisions, 5 Command Power and 90-day reassessment are present. Policy `decision_ai_will_do` MCP inspection found three policy candidates, but the three-scenario evaluation was partial with all nine candidate/scenario results unresolved. |
+| CBRN-02 | Implemented in source | Two CBRN category IDs remain; separate event-specific raid categories are outside this count. Native category consumer evidence remains open. |
+| CBRN-03 | Implemented in source; engine lifecycle blocked | Land delivery definitions use native origin, state, assigned division, intel, preparation and essential equipment. Installed documentation does not establish creation/cancellation refund behavior, while native raid AI has no supported probability adapter. |
+| CBRN-04 | Implemented in source; consumer validation unresolved | Stock-based military-first and threatened-civilian issue, bounded maintenance, and Civil Defence gating are present. Exact live shortage/replacement behavior remains unproven. |
+| CBRN-05 | Implemented in source; association unresolved | Three HQ sections and five protective orders remain; paid offensive preparation was retired. Native raid callbacks cannot identify the precise assigned division's HQ from the documented actor-country scope. |
+| CBRN-06 | Implemented in source; consumer validation unresolved | The retained roles and three armored chassis variants have source definitions; eighteen legacy agent-tank IDs are inactive compatibility entries and absent normal/CXT unlocks. Designer and shortage behavior remain unproven. |
+| CBRN-07 | Source budget implemented; effective-stat proof unresolved | Strict legal source products fit the listed caps in the balance table below, including artillery doctrine. Engine aggregation and commander defense-skill conversion are not established. |
+| CBRN-08 | Research-cost source implemented; layout unresolved | Cost bands are in technology source. The MCP folder renders include all CBRN nodes and resolve all requested sprite IDs, but their placement records mark `@`-constant geometry unresolved, so the images cannot establish the final in-game layout. The screenshot's disconnected appearance still needs a trustworthy post-change comparison. |
+| CBRN-09 | Implemented in source; payment scenarios unresolved | Shared condemnation calculations, inspection pulse and disclosure consequences exist. Boundary payments below/at/above requirement and engine deductions remain to be proven. |
+| CBRN-10 | Implemented in source; route validation unresolved | Eight project choices and advanced route gates exist. Project-card visibility, research/event idempotence and rewards remain to be demonstrated with complete scenario evidence. |
+| CBRN-11 | Implemented in source; historical/asset validation unresolved | Fifty-five scientist and twelve specialist records, 1936 profile source and distinct 1939 setup exist. The per-character portrait provenance and country-by-country start grants have not been fully confirmed. |
+| CBRN-12 | Implemented in source; consumer validation unresolved | Three generic twelve-node families, six historical names and two fictional organizations are defined. Native MIO card, ownership, icon and combined equipment effects remain to be proven. |
+| CBRN-13 | Implemented in source; service validation unresolved | Four requested traits and native High Command are defined; retired Field-Validated Planner references were removed. Commander-service and completed-raid award behavior lacks complete engine evidence. |
+| CBRN-14 | Partially implemented; layout and material evidence blockers | Event 020 funded and zero-capacity offline GUI states now render legibly at both required resolutions. Technology placement cannot be accepted from the current geometry-unresolved MCP folder images; facility shader response lacks consumer proof. Other family asset audit was source-positive. |
+| CBRN-15 | Unresolved | Event 026 sale-day achievement cannot count a delayed native raid under its existing one-day receipt rule with documented hooks. Raid refund, exact HQ association, viewer comparison coverage, and remaining consumer evidence are listed in the dated completion report. |
 
 ## Preliminary MIO source and asset contract
 
