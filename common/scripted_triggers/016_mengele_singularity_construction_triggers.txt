@@ -25,18 +25,52 @@ brilliant_scientist_mengele_singularity_construction_power_link_is_unlocked = {
 	brilliant_scientist_mengele_singularity_site_needs_power_link = yes
 }
 
-brilliant_scientist_mengele_singularity_construction_can_begin_command_node = {
+# Country-scope cost rows deliberately exclude route, site, and active-timer
+# requirements. The native begin callback rechecks direct costs without
+# counting civilian factories already reserved by the timed decision.
+brilliant_scientist_mengele_singularity_construction_can_afford_command_node = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_board.singularity_node_civilian_factories }
+	brilliant_scientist_mengele_singularity_construction_can_pay_direct_command_node = yes
+}
+
+brilliant_scientist_mengele_singularity_construction_can_pay_direct_command_node = {
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_board.singularity_node_support_equipment } }
+	NOT = { has_equipment = { motorized_equipment < constant:brilliant_scientist_project_board.singularity_node_trucks } }
+	NOT = { has_fuel < constant:brilliant_scientist_project_board.singularity_node_fuel }
+	check_variable = { var = manpower value = constant:brilliant_scientist_project_board.singularity_node_manpower compare = greater_than_or_equals }
+	check_variable = { var = political_power value = constant:brilliant_scientist_project_board.singularity_node_political_power compare = greater_than_or_equals }
+}
+
+brilliant_scientist_mengele_singularity_construction_can_afford_power_link = {
+	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_board.singularity_link_civilian_factories }
+	brilliant_scientist_mengele_singularity_construction_can_pay_direct_power_link = yes
+}
+
+brilliant_scientist_mengele_singularity_construction_can_pay_direct_power_link = {
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_board.singularity_link_support_equipment } }
+	NOT = { has_equipment = { motorized_equipment < constant:brilliant_scientist_project_board.singularity_link_trucks } }
+	NOT = { has_fuel < constant:brilliant_scientist_project_board.singularity_link_fuel }
+	check_variable = { var = manpower value = constant:brilliant_scientist_project_board.singularity_link_manpower compare = greater_than_or_equals }
+	check_variable = { var = political_power value = constant:brilliant_scientist_project_board.singularity_link_political_power compare = greater_than_or_equals }
+}
+
+# Once the native timed decision has begun, its civilian_factory_use may have
+# reserved the same factories already. Recheck direct debits and physical
+# requirements without counting that reservation a second time.
+brilliant_scientist_mengele_singularity_construction_can_begin_command_node_after_native_reservation = {
 	brilliant_scientist_mengele_singularity_construction_command_node_is_unlocked = yes
 	NOT = { has_country_flag = mengele_event016_singularity_construction_receipt_active }
 	NOT = { brilliant_scientist_mengele_singularity_site_pending_receipt_is_present = yes }
-	brilliant_scientist_can_pay_singularity_command_node = yes
+	brilliant_scientist_has_required_singularity_facilities = yes
+	brilliant_scientist_mengele_singularity_construction_can_pay_direct_command_node = yes
 }
 
-brilliant_scientist_mengele_singularity_construction_can_begin_power_link = {
+brilliant_scientist_mengele_singularity_construction_can_begin_power_link_after_native_reservation = {
 	brilliant_scientist_mengele_singularity_construction_power_link_is_unlocked = yes
 	NOT = { has_country_flag = mengele_event016_singularity_construction_receipt_active }
 	NOT = { brilliant_scientist_mengele_singularity_site_pending_receipt_is_present = yes }
-	brilliant_scientist_can_pay_singularity_power_link = yes
+	brilliant_scientist_has_required_singularity_facilities = yes
+	brilliant_scientist_mengele_singularity_construction_can_pay_direct_power_link = yes
 }
 
 # The exact native callback must match the stored payment receipt. A missing

@@ -15,8 +15,9 @@ Absent or malformed direct-payment fields produce no reconstructed refund from c
 
 ## Transaction steps
 
-The begin core checks the private provider, the role-specific unlock and live need, absence of another paid reservation, affordability, and the exact selected state.
-It reserves a private pending physical row first, rechecks affordability, then snapshots the five direct costs and debits Political Power, Support Equipment, trucks, fuel, and manpower once.
+The begin core checks the private provider, the role-specific unlock and live need, absence of another paid reservation, direct-resource affordability, and the exact selected state after the native timer may already have reserved civilian factories.
+The visible cost row checks only factories and the five spendable resource amounts, while a separate requirement tooltip covers route, facility, selected site, and active construction state.
+It reserves a private pending physical row first, rechecks direct-resource affordability without double-counting the native factory reservation, then snapshots the five direct costs and debits Political Power, Support Equipment, trucks, fuel, and manpower once.
 If the reservation or affordability check fails, no payment remains and the pending row is cancelled.
 The decision's `civilian_factory_use` reserves and releases factories through the native lifecycle; the scripted receipt never grants or refunds factories.
 

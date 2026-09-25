@@ -20,6 +20,7 @@ The finalizer also records the shared `brilliant_scientist_singularity_terminal_
 
 The existing shared Fallout request receives `fallout_request_source.strategic_singularity`, `fallout_request_intensity.maximum`, and a regular actor target.
 The shared coordinator revalidates the saved actor's provider, physical network, facilities, stage, scenario, and submitted receipt before locking the world-end state, then dispatches to the private finalizer for this actor or to the existing Kruger finalizer for its actor.
+After lock, dispatch uses the actor's private submitted receipt, and the provider finalizer requires the accepted request identity and shared lock flags rather than rechecking prelock provider membership.
 The private finalizer sets the shared Strategic Singularity world-end identity and queues the existing Strategic Singularity super-event with `THIS`, the saved provider actor, because a later coordinator callback need not retain that actor as `ROOT`.
 The Kruger threat activation stores `brilliant_scientist_world_threat_actor` as a global event target; ordinary threat shutdown, defeat, and Kruger terminal paths clear it, while this provider terminal uses it to settle a separate active Kruger threat interval before clearing the shared source marker.
 

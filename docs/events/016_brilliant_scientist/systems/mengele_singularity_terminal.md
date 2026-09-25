@@ -7,6 +7,7 @@ The terminal decision is an explicit final choice after the paid project stages 
 The prelock callback records one provider commitment, raises Chaos beyond the final threshold once, and applies the existing Strategic Singularity consequence values once.
 It submits the existing strategic-singularity source and maximum intensity to the shared Fallout request with the Directorate saved as the actor.
 The shared coordinator revalidates that actor's provider-owned request receipt, current physical network, controlled facilities, stage, and scenario before locking `world_end`, then calls the provider finalizer from the saved actor scope.
+The post-lock dispatch uses the submitted actor receipt, so a Mengele request cannot enter Kruger's finalizer if the private finalizer guard fails.
 Rejection clears only the submitted receipt and schedules a bounded retry through the existing hidden Event 016 `.901` callback while the programme, physical network, and scenario remain valid.
 The accepted lock records a private durable fired flag, sets the shared Strategic Singularity world-end identity, and sends the existing super-event through its queue with the actual provider actor.
 It closes any active Kruger world-threat interval through its saved threat-actor target and refreshes shared world-threat state after the lock.

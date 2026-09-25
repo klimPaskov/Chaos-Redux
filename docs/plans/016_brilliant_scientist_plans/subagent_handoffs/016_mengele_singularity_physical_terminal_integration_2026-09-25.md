@@ -48,6 +48,18 @@ The construction AI auditor corrected its MCP scenario schema and obtained `PROB
 
 The Event 016 CXT fixture still needs its full fifteen-family, native Prototype, component, biological-agent, DHR, and provider-cleanup scenario matrix, and the event workbook and export need alignment after implementation facts are settled.
 The existing static CXT special-project inventory already names all six Singularity components, the Event 016 native prototypes, the six biological-agent projects, and DHR; this tranche adds no duplicate project registration or fabricated provider receipts.
+
+## Post-commit decision audit follow-up
+
+The independent decision audit in `016_mengele_singularity_decision_audit_2026-09-25.md` found a conditional Kruger finalizer fallthrough and cost-versus-requirement tooltip mixing after commit `6abe7b9cf`.
+The Fallout adapter now dispatches by the saved actor's submitted receipt, and the private post-lock gate retains accepted request identity without rechecking prelock provider membership.
+Construction cost rows now use resource-and-factory affordability triggers, while route, site, facility, and active-slot conditions use separate requirement tooltips; the duplicate cost tooltip was removed.
+The native begin callback rechecks only direct resources after possible factory reservation, so the exact 5/6-free-factory source path does not double-charge capacity; callback timing still needs engine acceptance.
+Terminal requirement text now names scenario, Chaos Meter, incident, and competing world-end locks.
+Focused `hoi4.event_inspect` lint after this patch returned `EVENT_INSPECTED_PARTIAL`, revision `0106e3d60ec54fc3aee99358e16e371c895ba21d24260b46ba2318536924e62f`, zero blocking diagnostics and zero skipped sources, with artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/3213284c8100499646c8932ed91b13acf422dd91a356621a239dac1c3b5790a8/32c5ed6887f9f73587f263270c14869787a9341326120efd6581d3c20ba0d7bb/event-lint-0106e3d60ec5.json`.
+The matching `hoi4.event_render` neighborhood returned `EVENT_RENDERED_PARTIAL`, five selected nodes, zero blocking diagnostics and zero skipped sources, with manifest `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/1c492c9d996c790c08fbcf3ba14688ca28099778752c88bdc12de6d344b60504/3a0fc15b9d0b5ad9c5bfc7134a209810703a2c249aacbfc4033d7bebfb00abf3/event-neighborhood-0106e3d60ec5-manifest.json`.
+Both event tools deferred workspace-wide helper and lifecycle analysis, and neither validates decision callback ordering or the post-lock helper dispatch.
+The accepted Kruger-equivalent construction resource payments remain unchanged despite the general four-type decision guideline; icon-first presentation and native decision GUI evidence remain unresolved.
 The required event, decision, localisation, country, and final completion audits, broader focus and UI checks, and user-owned live acceptance remain outside this source tranche.
 Current physical validity suppresses a facility-less row, but no generic building-destruction callback was identified in the offline wiki, vanilla documentation, or vanilla on-action sources; if the facility is rebuilt without an explicit invalidation consumer, the old row becomes live again. Persistent destruction semantics remain unresolved and are not claimed as implemented.
 No invented engine outcome or unapproved fallback is recorded here.

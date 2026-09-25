@@ -5,6 +5,8 @@ A qualifying target is an owned and controlled state with a land, air, nuclear, 
 Native Singularity component completion unlocks the corresponding site role with Gotterdammerung; the paid Prototype receipt unlocks both roles in the no-DLC decision route.
 
 The decision reserves a private site row before it spends direct resources.
+Its cost row is limited to affordability, and a separate requirement tooltip explains the route, facilities, controlled site, and free construction slot.
+After the native timer may reserve the factories, the begin effect checks direct resources again without counting that reservation as a second factory cost.
 It charges the same construction costs and waits the same duration as the existing Kruger actions, while native `civilian_factory_use` owns the temporary factory commitment.
 Its callback matches the saved state, role, quantity, and direct-cost receipt before it can complete or refund a row.
 An invalid provider, captured state, or lost facility cancels unresolved work and refunds its saved direct payment once.
