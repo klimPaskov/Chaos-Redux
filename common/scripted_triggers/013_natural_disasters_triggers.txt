@@ -1376,13 +1376,19 @@ natural_disaster_can_begin_foreign_relief = {
 	NOT = { has_country_flag = natural_disaster_outbound_relief_active }
 }
 
-natural_disaster_can_offer_neighbor_relief = {
-	natural_disaster_can_begin_foreign_relief = yes
+# COUNTRY scope for the neighbor-relief custom-cost state. Keep this limited to
+# the five material stocks debited by natural_disaster_pay_neighbor_relief.
+natural_disaster_can_pay_neighbor_relief = {
 	has_manpower > constant:natural_disaster_cost_gate.rescue_manpower
 	has_equipment = { support_equipment_1 > constant:natural_disaster_cost_gate.foreign_support_equipment }
 	has_equipment = { motorized_equipment_1 > constant:natural_disaster_cost_gate.foreign_trucks }
 	has_equipment = { convoy_1 > constant:natural_disaster_cost_gate.foreign_convoys }
 	has_fuel > constant:natural_disaster_cost_gate.foreign_fuel
+}
+
+natural_disaster_can_offer_neighbor_relief = {
+	natural_disaster_can_begin_foreign_relief = yes
+	natural_disaster_can_pay_neighbor_relief = yes
 }
 
 natural_disaster_can_offer_port_lifeline = {
@@ -1538,13 +1544,16 @@ natural_disaster_can_route_inbound_relief = {
 	has_fuel > constant:natural_disaster_cost_gate.warning_fuel
 	has_stability > constant:natural_disaster_cost_gate_fixed.warning_stability
 	has_war_support > constant:natural_disaster_cost_gate_fixed.foreign_relief_war_support
+	# Require exactly the transport route the completion effect will charge.
 	OR = {
 		AND = {
 			has_country_flag = natural_disaster_inbound_relief_route_convoy
+			NOT = { has_country_flag = natural_disaster_inbound_relief_route_rail }
 			has_equipment = { convoy_1 > constant:natural_disaster_cost_gate.warning_convoys }
 		}
 		AND = {
 			has_country_flag = natural_disaster_inbound_relief_route_rail
+			NOT = { has_country_flag = natural_disaster_inbound_relief_route_convoy }
 			has_equipment = { train_equipment > constant:natural_disaster_cost_gate.warning_trains }
 		}
 	}

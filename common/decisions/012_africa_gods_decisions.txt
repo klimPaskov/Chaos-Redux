@@ -19,6 +19,10 @@
 # validated entry points and keep their presentation phases mutually exclusive.
 # ============================================================================
 
+# The AI hint requires a file-scoped literal. Keep it aligned with the shared
+# gods_of_africa_transaction.protection_pp_cost constant.
+@GODS_OF_AFRICA_PROTECTION_PP_COST = 10
+
 gods_of_africa_participant_category = {
 	gods_of_africa_demand_mission = {
 		name = gods_of_africa_demand_mission
@@ -881,6 +885,10 @@ gods_of_africa_host_category = {
 				has_country_flag = gods_of_africa_focus_shelter_unlocked
 				has_country_flag = gods_of_africa_focus_reserve_unlocked
 				has_country_flag = gods_of_africa_focus_security_unlocked
+				has_country_flag = gods_of_africa_focus_logistics_support_unlocked
+				has_country_flag = gods_of_africa_focus_relief_unlocked
+				has_country_flag = gods_of_africa_focus_expedition_unlocked
+				has_country_flag = gods_of_africa_focus_sanctuary_unlocked
 			}
 		}
 		target_trigger = {
@@ -888,7 +896,7 @@ gods_of_africa_host_category = {
 				exists = yes
 				has_country_flag = gods_of_africa_participant
 				NOT = { has_country_flag = gods_of_africa_defiant }
-				gods_of_africa_protection_package_is_affordable = yes
+				gods_of_africa_participant_can_receive_protection = yes
 			}
 		}
 		visible = {
@@ -897,6 +905,10 @@ gods_of_africa_host_category = {
 				has_country_flag = gods_of_africa_focus_shelter_unlocked
 				has_country_flag = gods_of_africa_focus_reserve_unlocked
 				has_country_flag = gods_of_africa_focus_security_unlocked
+				has_country_flag = gods_of_africa_focus_logistics_support_unlocked
+				has_country_flag = gods_of_africa_focus_relief_unlocked
+				has_country_flag = gods_of_africa_focus_expedition_unlocked
+				has_country_flag = gods_of_africa_focus_sanctuary_unlocked
 			}
 		}
 		available = {
@@ -907,7 +919,8 @@ gods_of_africa_host_category = {
 				gods_of_africa_protection_package_is_affordable = yes
 			}
 		}
-		custom_cost_trigger = { gods_of_africa_active_host_is_valid = yes }
+		ai_hint_pp_cost = @GODS_OF_AFRICA_PROTECTION_PP_COST
+		custom_cost_trigger = { gods_of_africa_host_can_fund_protection = yes }
 		custom_cost_text = gods_of_africa_protection_cost
 		cost = 0
 		fire_only_once = no

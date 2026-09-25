@@ -601,13 +601,16 @@ gods_of_africa_extreme_gate_is_open = {
 	check_variable = { var = gods_of_africa_offense_count value = constant:gods_of_africa_value.catastrophe_offense_gate compare = greater_than_or_equals }
 }
 
-# COUNTRY scope on a participant. Protection is a real transaction owned by
-# the Event 012 host, not a free flag: the host must have the common defence
-# reserve, infantry equipment, and fuel, and cannot repeat it during cooldown.
-gods_of_africa_protection_package_is_affordable = {
+# COUNTRY scope on a participant. This identifies a reliable, peaceful partner
+# whose protection interval has elapsed and who still belongs to the active
+# Event 012 generation. It deliberately does not test the host's resources so
+# an eligible target can remain visible while the protection cost is blocked.
+gods_of_africa_participant_can_receive_protection = {
 	gods_of_africa_participant_generation_is_current = yes
+	gods_of_africa_participant_is_registered = yes
 	NOT = { has_country_flag = gods_of_africa_defiant }
 	has_country_flag = gods_of_africa_reliable_memory_applied
+	NOT = { has_war_with = event_target:africa_host }
 	has_event_target = africa_host
 	OR = {
 		NOT = { has_variable = gods_of_africa_protection_due_day }
@@ -618,15 +621,31 @@ gods_of_africa_protection_package_is_affordable = {
 		}
 	}
 	event_target:africa_host = {
-		NOT = { has_equipment = { infantry_equipment < constant:gods_of_africa_transaction.protection_infantry_equipment } }
-		NOT = { has_fuel < constant:gods_of_africa_transaction.protection_fuel }
-		NOT = { has_political_power < constant:gods_of_africa_transaction.protection_pp_cost }
-		has_variable = africa_common_defence_stockpile
-		check_variable = {
-			var = africa_common_defence_stockpile
-			value = constant:gods_of_africa_transaction.protection_infantry_equipment
-			compare = greater_than_or_equals
-		}
+		gods_of_africa_active_host_is_valid = yes
+	}
+}
+
+# COUNTRY scope on the Event 012 host. The same gate drives the protection
+# decision's normal/blocked custom cost and the transaction preflight.
+gods_of_africa_host_can_fund_protection = {
+	gods_of_africa_active_host_is_valid = yes
+	NOT = { has_equipment = { infantry_equipment < constant:gods_of_africa_transaction.protection_infantry_equipment } }
+	NOT = { has_fuel < constant:gods_of_africa_transaction.protection_fuel }
+	NOT = { has_political_power < constant:gods_of_africa_transaction.protection_pp_cost }
+	has_variable = africa_common_defence_stockpile
+	check_variable = {
+		var = africa_common_defence_stockpile
+		value = constant:gods_of_africa_transaction.protection_infantry_equipment
+		compare = greater_than_or_equals
+	}
+}
+
+# COUNTRY scope on a participant. The package is affordable only when both
+# the relationship and the host's real stockpile requirements pass.
+gods_of_africa_protection_package_is_affordable = {
+	gods_of_africa_participant_can_receive_protection = yes
+	event_target:africa_host = {
+		gods_of_africa_host_can_fund_protection = yes
 	}
 }
 

@@ -4548,7 +4548,8 @@ natural_disaster_aftermath_category = {
 		visible = { has_country_flag = natural_disaster_inbound_relief_active }
 		available = {
 			has_variable = natural_disaster_inbound_relief_state
-			var:natural_disaster_inbound_relief_state = { natural_disaster_state_has_open_card = yes }
+			var:natural_disaster_inbound_relief_state = { natural_disaster_state_has_recovery_card = yes }
+			natural_disaster_can_route_inbound_relief = yes
 		}
 		priority = @ND_PRIORITY_RELIEF
 		custom_cost_trigger = {
@@ -4556,34 +4557,38 @@ natural_disaster_aftermath_category = {
 		}
 		custom_cost_text = natural_disaster_cost_inbound_relief_routed
 		complete_effect = {
-			set_temp_variable = { nd_warning_manpower_cost = constant:natural_disaster_cost.warning_manpower }
-			multiply_temp_variable = { nd_warning_manpower_cost = -1 }
-			add_manpower = nd_warning_manpower_cost
 			if = {
-				limit = { has_country_flag = natural_disaster_inbound_relief_route_rail }
-				set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_trains }
-				multiply_temp_variable = { nd_warning_transport_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = train_equipment
-					amount = nd_warning_transport_cost
+				limit = {
+					has_variable = natural_disaster_inbound_relief_state
+					var:natural_disaster_inbound_relief_state = { natural_disaster_state_has_recovery_card = yes }
+					natural_disaster_can_route_inbound_relief = yes
 				}
-			}
-			else = {
-				set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_convoys }
-				multiply_temp_variable = { nd_warning_transport_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = convoy_1
-					amount = nd_warning_transport_cost
+				set_temp_variable = { nd_warning_manpower_cost = constant:natural_disaster_cost.warning_manpower }
+				multiply_temp_variable = { nd_warning_manpower_cost = -1 }
+				add_manpower = nd_warning_manpower_cost
+				if = {
+					limit = { has_country_flag = natural_disaster_inbound_relief_route_rail }
+					set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_trains }
+					multiply_temp_variable = { nd_warning_transport_cost = -1 }
+					add_equipment_to_stockpile = {
+						type = train_equipment
+						amount = nd_warning_transport_cost
+					}
 				}
-			}
-			set_temp_variable = { nd_warning_fuel_cost = constant:natural_disaster_cost.warning_fuel }
-			multiply_temp_variable = { nd_warning_fuel_cost = -1 }
-			add_fuel = nd_warning_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.warning_stability
-			add_war_support = constant:natural_disaster_cost_fixed.foreign_relief_war_support
-			set_country_flag = natural_disaster_inbound_relief_route_secured
-			if = {
-				limit = { has_variable = natural_disaster_inbound_relief_state }
+				else = {
+					set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_convoys }
+					multiply_temp_variable = { nd_warning_transport_cost = -1 }
+					add_equipment_to_stockpile = {
+						type = convoy_1
+						amount = nd_warning_transport_cost
+					}
+				}
+				set_temp_variable = { nd_warning_fuel_cost = constant:natural_disaster_cost.warning_fuel }
+				multiply_temp_variable = { nd_warning_fuel_cost = -1 }
+				add_fuel = nd_warning_fuel_cost
+				add_stability = constant:natural_disaster_cost_fixed.warning_stability
+				add_war_support = constant:natural_disaster_cost_fixed.foreign_relief_war_support
+				set_country_flag = natural_disaster_inbound_relief_route_secured
 				set_temp_variable = { natural_disaster_relief_status_value = constant:natural_disaster_relief_status.route_secured }
 				var:natural_disaster_inbound_relief_state = { natural_disaster_set_foreign_relief_status = yes }
 			}
@@ -4632,6 +4637,7 @@ natural_disaster_aftermath_category = {
 					natural_disaster_set_foreign_relief_status = yes
 				}
 			}
+			natural_disaster_clear_gods_of_africa_neighbor_relief_receipt = yes
 			remove_mission = natural_disaster_inbound_relief_mission
 			clr_country_flag = natural_disaster_inbound_relief_active
 			clr_country_flag = natural_disaster_inbound_relief_route_secured
@@ -4732,7 +4738,7 @@ natural_disaster_aftermath_category = {
 								var = natural_disaster_rescue_score
 								value = constant:natural_disaster_aftermath.rescue_partial_score
 								compare = greater_than_or_equals
-							}
+						}
 						}
 						set_state_flag = natural_disaster_phase_partial
 						set_state_flag = {
@@ -6181,6 +6187,7 @@ natural_disaster_aftermath_category = {
 			}
 		}
 		cancel_effect = {
+			natural_disaster_clear_gods_of_africa_neighbor_relief_receipt = yes
 			if = {
 				limit = { has_variable = natural_disaster_inbound_relief_state }
 				var:natural_disaster_inbound_relief_state = {
@@ -6212,6 +6219,7 @@ natural_disaster_aftermath_category = {
 			consumer_goods_factor = @ND_CONSTRUCTION_BURDEN
 		}
 		complete_effect = {
+			natural_disaster_clear_gods_of_africa_neighbor_relief_receipt = yes
 			set_country_flag = {
 				flag = natural_disaster_inbound_relief_capacity_bonus
 				days = @ND_STABILIZATION_ACTION_LOCK_DAYS
@@ -6307,6 +6315,7 @@ natural_disaster_aftermath_category = {
 			natural_disaster_schedule_capacity_refill = yes
 		}
 		timeout_effect = {
+			natural_disaster_clear_gods_of_africa_neighbor_relief_receipt = yes
 			if = {
 				limit = { has_variable = natural_disaster_inbound_relief_state }
 				var:natural_disaster_inbound_relief_state = {
@@ -6351,6 +6360,9 @@ natural_disaster_foreign_relief_category = {
 		target_root_trigger = {
 			natural_disaster_can_offer_neighbor_relief = yes
 		}
+		available = {
+			natural_disaster_can_offer_neighbor_relief = yes
+		}
 		target_trigger = {
 			FROM = {
 				exists = yes
@@ -6367,35 +6379,72 @@ natural_disaster_foreign_relief_category = {
 				}
 				natural_disaster_country_has_open_aftermath = yes
 				NOT = { has_country_flag = natural_disaster_inbound_relief_active }
+				# Match the card selector: an unresolved-territory card cannot receive this package.
 				any_controlled_state = {
 					natural_disaster_state_has_recovery_card = yes
+					NOT = { has_state_flag = natural_disaster_recovery_unresolved_territory }
 				}
 			}
 		}
 		priority = @ND_PRIORITY_RELIEF
 		fixed_random_seed = no
 		custom_cost_trigger = {
-			natural_disaster_can_offer_neighbor_relief = yes
+			natural_disaster_can_pay_neighbor_relief = yes
 		}
 		custom_cost_text = natural_disaster_cost_neighbor_relief
 		complete_effect = {
-			natural_disaster_pay_neighbor_relief = yes
-			FROM = {
-				set_country_flag = natural_disaster_inbound_relief_active
-				set_country_flag = natural_disaster_relief_variant_neighbor_convoy
-				set_variable = { natural_disaster_inbound_relief_donor = ROOT }
-				set_temp_variable = { natural_disaster_priority_variant = constant:natural_disaster_relief_variant.neighbor_convoy }
-				set_temp_variable = { natural_disaster_priority_phase = 0 }
-				set_temp_variable = { natural_disaster_priority_selected = 0 }
-				natural_disaster_select_priority_open_card = yes
-				if = {
-					limit = { check_variable = { natural_disaster_priority_selected > 0 } }
-					event_target:natural_disaster_priority_open_card_state = {
-						natural_disaster_set_inbound_relief_route_from_state = yes
-						set_state_flag = natural_disaster_inbound_relief_active
-						controller = {
-							set_variable = { natural_disaster_inbound_relief_state = PREV }
-							activate_mission = natural_disaster_inbound_relief_mission
+			if = {
+				limit = {
+					gods_of_africa_active_host_is_valid = yes
+					has_country_flag = gods_of_africa_focus_relief_unlocked
+					FROM = { has_country_flag = gods_of_africa_protected }
+				}
+				FROM = { save_event_target_as = gods_of_africa_protected_participant }
+				natural_disaster_offer_neighbor_relief_for_gods_of_africa = yes
+			}
+			else = {
+				FROM = {
+					# Recheck the recipient and select an actionable card before charging or setting inbound flags.
+					if = {
+						limit = {
+							exists = yes
+							ROOT = { natural_disaster_can_offer_neighbor_relief = yes }
+							is_in_array = {
+								array = global.natural_disaster_relief_recipient_countries
+								value = THIS
+							}
+							NOT = { tag = ROOT }
+							NOT = { has_war_with = ROOT }
+							OR = {
+								is_neighbor_of = ROOT
+								is_in_faction_with = ROOT
+								is_subject_of = ROOT
+								AND = {
+									ROOT = { is_major = yes }
+									is_on_same_continent_as = ROOT
+								}
+							}
+							natural_disaster_country_has_open_aftermath = yes
+							NOT = { has_country_flag = natural_disaster_inbound_relief_active }
+						}
+						set_temp_variable = { natural_disaster_priority_variant = constant:natural_disaster_relief_variant.neighbor_convoy }
+						set_temp_variable = { natural_disaster_priority_phase = 0 }
+						set_temp_variable = { natural_disaster_priority_selected = 0 }
+						natural_disaster_select_priority_open_card = yes
+						if = {
+							limit = { check_variable = { natural_disaster_priority_selected > 0 } }
+							ROOT = { natural_disaster_pay_neighbor_relief = yes }
+							set_country_flag = natural_disaster_inbound_relief_active
+							set_country_flag = natural_disaster_relief_variant_neighbor_convoy
+							set_variable = { natural_disaster_inbound_relief_donor = ROOT }
+							event_target:natural_disaster_priority_open_card_state = {
+								natural_disaster_set_inbound_relief_route_from_state = yes
+								set_state_flag = natural_disaster_inbound_relief_active
+								controller = {
+									set_variable = { natural_disaster_inbound_relief_state = PREV }
+									activate_mission = natural_disaster_inbound_relief_mission
+								}
+							}
 						}
 					}
 				}

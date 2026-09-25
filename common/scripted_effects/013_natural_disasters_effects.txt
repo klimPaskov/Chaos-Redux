@@ -6899,6 +6899,89 @@ natural_disaster_pay_neighbor_relief = {
 	natural_disaster_begin_outbound_relief_light_burden = yes
 }
 
+# Country scope: the Event 013 neighbor-relief choice calls this when its
+# selected recipient is protected by an active Gods of Africa compact and the
+# donor has completed the relief focus. The regular event target
+# gods_of_africa_protected_participant must point at that recipient.
+# The donor receipt is valid only while the resulting inbound mission is open.
+# A rejected preflight leaves the donor unpaid and the receipt unset.
+natural_disaster_offer_neighbor_relief_for_gods_of_africa = {
+	clr_country_flag = natural_disaster_gods_of_africa_neighbor_relief_offered
+	if = {
+		limit = {
+			natural_disaster_can_offer_neighbor_relief = yes
+			has_event_target = gods_of_africa_protected_participant
+		}
+		save_event_target_as = natural_disaster_gods_relief_donor
+		event_target:gods_of_africa_protected_participant = {
+			if = {
+				limit = {
+					exists = yes
+					is_in_array = {
+						array = global.natural_disaster_relief_recipient_countries
+						value = THIS
+					}
+					NOT = { tag = event_target:natural_disaster_gods_relief_donor }
+					NOT = { has_war_with = event_target:natural_disaster_gods_relief_donor }
+					OR = {
+						is_neighbor_of = event_target:natural_disaster_gods_relief_donor
+						is_in_faction_with = event_target:natural_disaster_gods_relief_donor
+						is_subject_of = event_target:natural_disaster_gods_relief_donor
+						AND = {
+							event_target:natural_disaster_gods_relief_donor = { is_major = yes }
+							is_on_same_continent_as = event_target:natural_disaster_gods_relief_donor
+						}
+					}
+					natural_disaster_country_has_open_aftermath = yes
+					NOT = { has_country_flag = natural_disaster_inbound_relief_active }
+					any_controlled_state = {
+						natural_disaster_state_has_recovery_card = yes
+						NOT = { has_state_flag = natural_disaster_recovery_unresolved_territory }
+					}
+				}
+				set_temp_variable = { natural_disaster_priority_variant = constant:natural_disaster_relief_variant.neighbor_convoy }
+				# The selector treats the warning-phase value as its any-phase sentinel.
+				set_temp_variable = { natural_disaster_priority_phase = constant:natural_disaster_phase.warning }
+				natural_disaster_select_priority_open_card = yes
+				if = {
+					limit = { check_variable = { natural_disaster_priority_selected > 0 } }
+					event_target:natural_disaster_gods_relief_donor = { natural_disaster_pay_neighbor_relief = yes }
+					set_country_flag = natural_disaster_gods_of_africa_neighbor_relief_active
+					set_country_flag = natural_disaster_inbound_relief_active
+					set_country_flag = natural_disaster_relief_variant_neighbor_convoy
+					set_variable = { natural_disaster_inbound_relief_donor = event_target:natural_disaster_gods_relief_donor }
+					event_target:natural_disaster_priority_open_card_state = {
+						natural_disaster_set_inbound_relief_route_from_state = yes
+						set_state_flag = natural_disaster_inbound_relief_active
+						controller = {
+							set_variable = { natural_disaster_inbound_relief_state = PREV }
+							activate_mission = natural_disaster_inbound_relief_mission
+						}
+					}
+					event_target:natural_disaster_gods_relief_donor = {
+						set_country_flag = natural_disaster_gods_of_africa_neighbor_relief_offered
+					}
+				}
+			}
+		}
+	}
+}
+
+# Recipient country scope. Invoke before clearing the inbound donor pointer on
+# every mission resolution, refusal, or recovery-state transfer.
+natural_disaster_clear_gods_of_africa_neighbor_relief_receipt = {
+	if = {
+		limit = {
+			has_country_flag = natural_disaster_gods_of_africa_neighbor_relief_active
+			has_variable = natural_disaster_inbound_relief_donor
+		}
+		var:natural_disaster_inbound_relief_donor = {
+			clr_country_flag = natural_disaster_gods_of_africa_neighbor_relief_offered
+		}
+	}
+	clr_country_flag = natural_disaster_gods_of_africa_neighbor_relief_active
+}
+
 natural_disaster_pay_port_lifeline_relief = {
 	set_temp_variable = { natural_disaster_relief_manpower_cost = constant:natural_disaster_cost.foreign_port_manpower }
 	multiply_temp_variable = { natural_disaster_relief_manpower_cost = -1 }
@@ -7200,6 +7283,7 @@ natural_disaster_release_special_state_missions = {
 				has_variable = natural_disaster_inbound_relief_state
 				check_variable = { var = natural_disaster_inbound_relief_state value = PREV compare = equals }
 			}
+			natural_disaster_clear_gods_of_africa_neighbor_relief_receipt = yes
 			if = { limit = { has_active_mission = natural_disaster_inbound_relief_mission } remove_mission = natural_disaster_inbound_relief_mission }
 			clr_country_flag = natural_disaster_inbound_relief_active
 			clr_country_flag = natural_disaster_inbound_relief_route_secured
@@ -7662,6 +7746,7 @@ natural_disaster_release_transferred_state_pointers = {
 			has_variable = natural_disaster_inbound_relief_state
 			check_variable = { var = natural_disaster_inbound_relief_state value = event_target:natural_disaster_transfer_state compare = equals }
 		}
+		natural_disaster_clear_gods_of_africa_neighbor_relief_receipt = yes
 		if = { limit = { has_active_mission = natural_disaster_inbound_relief_mission } remove_mission = natural_disaster_inbound_relief_mission }
 		clr_country_flag = natural_disaster_inbound_relief_active
 		clr_country_flag = natural_disaster_inbound_relief_route_secured
