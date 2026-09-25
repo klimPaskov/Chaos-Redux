@@ -8,11 +8,12 @@ The temporary selectors are `mengele_event016_project_family` and `mengele_event
 Family IDs are one-based and receipt array indexes are family ID minus one.
 `brilliant_scientist_mengele_initialize_project_stage_receipts` extends each receipt array independently to the shared family count by appending zeros, preserving existing values and never truncating longer arrays.
 The size-based migration expands the earlier initialized one-slot Computation schema and becomes a no-op at fifteen slots.
-When the private component initialization marker is absent, it reconstructs the component count from surviving private flags without erasing them.
+When the private component-entry initialization marker is absent, it reconstructs the component array from surviving private flags and derives the count without erasing the flags.
 
 The completion flags are `mengele_event016_<family>_theory_completed`, `mengele_event016_<family>_prototype_completed`, `mengele_event016_<family>_deployment_completed`, and `mengele_event016_<family>_weaponization_completed`. Singularity also keeps six provider-owned component flags and a component count for idempotent native component callbacks.
 
-`brilliant_scientist_mengele_begin_project_stage` validates the strict active-program-owner predicate, request, predecessor, quote, payment, and empty receipt before debiting political power, support equipment, and fuel. Civilian-factory/CIC quotes are stored in the receipt but never reserved or refunded by this API; the native parent decision owns that quote.
+`brilliant_scientist_mengele_begin_project_stage` validates the strict active-program-owner predicate, request, predecessor, quote, payment, and empty receipt before debiting political power, support equipment, and fuel.
+Civilian-factory/CIC quotes are stored in the receipt but never reserved or refunded by this API; the native parent decision owns that quote.
 
 `brilliant_scientist_mengele_cancel_project_stage` and `brilliant_scientist_mengele_finish_project_stage` authenticate the exact family/stage receipt, snapshot direct costs, clear the slot, and refund once when no output is accepted. Repeated callbacks see an empty slot and are no-ops.
 
@@ -53,7 +54,9 @@ brilliant_scientist_mengele_initialize_project_stage_receipts = yes
 
 Teleportation, Cloning, Robotics, Paleogenetics, Xenobiological Synthesis, Alien Arms, and Temporal Deployment use `chaosx_grant_custom_operational_technology`. Their Weaponization branches establish the operational package first and then call `chaosx_grant_custom_technology_upgrade`, with the existing custom selector and upgrade constants. Selectors are reset after each call.
 
-Biological Weapons and Singularity Deployment/Weaponization deliberately set `mengele_event016_stage_output_gap` and refund the direct receipt. No public/native adapter is source-proven inside this ownership boundary for those late stages.
+Biological Weapons uses the native biological-operations route for its late output.
+Singularity Deployment and Weaponization set only private stage flags and their existing stage modifiers after a valid paid receipt.
+They do not establish physical construction, arm the device, alter Chaos, or submit a Fallout request; those later actions require independent live-site and terminal guards.
 
 ## Native adapters
 
@@ -123,7 +126,8 @@ It retains the existing Computation incident cleanup hook and invokes aggregate 
 Each family refunds only its exact stored recovery receipt before removing its native recovery decision, clears transient penalties and payment state, and preserves permanent history and learned technology.
 The existing provider-loss, defeat, transfer, and terminal callers of the provider cleanup helper therefore include these recoveries without another scheduler or world scan.
 
-The parent still owns native project output call sites, Biological Weapons public/native adapter wiring, Strategic Singularity component dispatch, decision integration, localisation, and all event/special-project definitions. This tranche does not claim full Event 016 portfolio completion.
+The parent still owns native project visibility, risky prototype callbacks, Strategic Singularity stage and terminal decisions, provider Fallout integration, localisation, and all event/special-project definitions.
+This tranche does not claim full Event 016 portfolio completion.
 
 ## Validation evidence
 
@@ -138,6 +142,6 @@ No new icons, localisation, GUI, event, focus, model, or asset files are require
 
 The parent still owns non-Computation decision presentation, reserve requirements, factory commitments, and literal stage callbacks.
 Singularity's paid component presentation must establish authentic private component receipts before Prototype entry, and its native six-component completion already delivers Prototype without another payment.
-Biological Weapons and Singularity late-stage outputs remain unresolved as described above.
+Singularity's paid late-stage flags and modifiers are implemented; playable decisions, physical build proof, and the terminal/Fallout route remain open.
 Longer-than-current receipt arrays are preserved without truncation, but the current cleanup contract visits only the fifteen defined families.
 The migration cannot reconstruct missing historical payment values and does not fabricate them from current quotes.

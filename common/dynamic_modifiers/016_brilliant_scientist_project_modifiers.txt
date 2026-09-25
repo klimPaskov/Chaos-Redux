@@ -1106,8 +1106,22 @@ brilliant_scientist_singularity_prototype = {
 
 brilliant_scientist_singularity_deployment = {
 	icon = GFX_idea_generic_research_bonus
-	enable = { brilliant_scientist_is_current_host = yes }
-	remove_trigger = { NOT = { brilliant_scientist_is_current_host = yes } }
+	enable = {
+		OR = {
+			brilliant_scientist_is_current_host = yes
+			AND = {
+				brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+				has_country_flag = mengele_event016_singularity_deployment_completed
+			}
+		}
+	}
+	remove_trigger = {
+		NOT = { brilliant_scientist_is_current_host = yes }
+		NOT = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			has_country_flag = mengele_event016_singularity_deployment_completed
+		}
+	}
 	command_power_gain = constant:brilliant_scientist_project_modifier.deployment_major
 	max_command_power_mult = constant:brilliant_scientist_project_modifier.deployment_standard
 	planning_speed = constant:brilliant_scientist_project_modifier.deployment_major
@@ -1115,8 +1129,22 @@ brilliant_scientist_singularity_deployment = {
 
 brilliant_scientist_singularity_weaponization = {
 	icon = GFX_idea_generic_research_bonus
-	enable = { brilliant_scientist_is_current_host = yes }
-	remove_trigger = { NOT = { brilliant_scientist_is_current_host = yes } }
+	enable = {
+		OR = {
+			brilliant_scientist_is_current_host = yes
+			AND = {
+				brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+				has_country_flag = mengele_event016_singularity_weaponization_completed
+			}
+		}
+	}
+	remove_trigger = {
+		NOT = { brilliant_scientist_is_current_host = yes }
+		NOT = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			has_country_flag = mengele_event016_singularity_weaponization_completed
+		}
+	}
 	army_org_factor = constant:brilliant_scientist_project_modifier.weaponization_minor
 	command_power_gain = constant:brilliant_scientist_project_modifier.weaponization_standard
 	army_attack_factor = constant:brilliant_scientist_project_modifier.weaponization_standard

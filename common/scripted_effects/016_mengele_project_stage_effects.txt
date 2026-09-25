@@ -1297,8 +1297,16 @@ brilliant_scientist_mengele_apply_family_stage_output = {
 				set_temp_variable = { mengele_event016_project_output_applied = constant:brilliant_scientist_value.one }
 			}
 			if = {
-				limit = { OR = { check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals } check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals } } }
-				set_temp_variable = { mengele_event016_stage_output_gap = constant:brilliant_scientist_value.one }
+				limit = { check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals } }
+				set_country_flag = mengele_event016_singularity_deployment_completed
+				add_dynamic_modifier = { modifier = brilliant_scientist_singularity_deployment }
+				set_temp_variable = { mengele_event016_project_output_applied = constant:brilliant_scientist_value.one }
+			}
+			if = {
+				limit = { check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals } }
+				set_country_flag = mengele_event016_singularity_weaponization_completed
+				add_dynamic_modifier = { modifier = brilliant_scientist_singularity_weaponization }
+				set_temp_variable = { mengele_event016_project_output_applied = constant:brilliant_scientist_value.one }
 			}
 		}
 	}
@@ -1501,6 +1509,8 @@ brilliant_scientist_mengele_restore_deployment_project_modifiers = {
 		if = { limit = { has_country_flag = mengele_event016_temporal_deployment_completed NOT = { has_dynamic_modifier = brilliant_scientist_temporal_deployment } } add_dynamic_modifier = { modifier = brilliant_scientist_temporal_deployment } }
 		if = { limit = { has_country_flag = mengele_event016_biological_weapons_deployment_completed NOT = { has_dynamic_modifier = brilliant_scientist_biological_weapons_deployment } } add_dynamic_modifier = { modifier = brilliant_scientist_biological_weapons_deployment } }
 		if = { limit = { has_country_flag = mengele_event016_biological_weapons_weaponization_completed NOT = { has_dynamic_modifier = brilliant_scientist_biological_weapons_weaponization } } add_dynamic_modifier = { modifier = brilliant_scientist_biological_weapons_weaponization } }
+		if = { limit = { has_country_flag = mengele_event016_singularity_deployment_completed NOT = { has_dynamic_modifier = brilliant_scientist_singularity_deployment } } add_dynamic_modifier = { modifier = brilliant_scientist_singularity_deployment } }
+		if = { limit = { has_country_flag = mengele_event016_singularity_weaponization_completed NOT = { has_dynamic_modifier = brilliant_scientist_singularity_weaponization } } add_dynamic_modifier = { modifier = brilliant_scientist_singularity_weaponization } }
 		force_update_dynamic_modifier = yes
 	}
 }
