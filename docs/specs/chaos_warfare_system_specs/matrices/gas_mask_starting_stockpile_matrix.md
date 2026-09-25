@@ -13,7 +13,7 @@ The live startup reconciliation applies the following approved gameplay bands to
 | Limited programme | JAP | 50% | 25% | 0% |
 | Smaller defensive | POL, CZE, BEL, HOL, CAN, AST, NZL, SAF, ROM, YUG, TUR, SPR, CHI, PRC, SHX, GXC, YUN, XSM, SIK, MAN, BUL, HUN, GRE, RAJ, AUS, POR, SWE, NOR, DEN, FIN, BRA, ARG, MEX, CHL | 25% | 25% | 0% |
 
-The 1939 British civilian issue is a separate dated real-equipment transaction and is not included in the baseline civilian column. Britain's dated startup branch also requests one military factory for an ongoing basic-respirator production line, documented in the [1939 industry correction](../corrections/2026-09-25_britain_1939_respirator_production.md). Other 1939 industrial, research, and personnel grants keep their existing date gates.
+The 1939 British civilian issue is a separate dated real-equipment transaction and is not included in the baseline civilian column. The [generic civilian-start cleanup](../corrections/2026-09-26_historical_civilian_start_cleanup.md) removes the obsolete percentages from active script constants and the common profile distributor. Britain's dated startup branch also requests one military factory for an ongoing basic-respirator production line, documented in the [1939 industry correction](../corrections/2026-09-25_britain_1939_respirator_production.md). Other 1939 industrial, research, and personnel grants keep their existing date gates.
 
 ## Equipment unit
 

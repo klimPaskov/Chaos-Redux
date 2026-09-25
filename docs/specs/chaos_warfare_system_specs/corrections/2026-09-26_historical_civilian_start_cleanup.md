@@ -1,0 +1,11 @@
+# Historical civilian respirator starting profiles
+
+**Acceptance basis:** The user selected force-scaled military mask issue and a 25% military reserve at both historical bookmarks, with Britain's separately sourced 1939 civilian issue and zero starting civilian coverage elsewhere until country-specific distribution evidence is available.
+
+The common 41-country startup profile retained obsolete civilian-issue percentages in `cbrn_starting_masks`, then assigned a temporary percentage for each country. The force-scaled historical flag set that percentage to zero before issue, but the old values remained an executable fallback and looked like accepted inventory. The generic `cbrn_apply_starting_mask_profile` no longer contains a civilian state-distribution path, and the 41 obsolete civilian fields and assignments are removed. Military issue, technology knowledge, registration, program identity, maintenance, and the dated British civilian receipt remain in their respective paths.
+
+The German [Seventh Implementing Regulation to the Air Protection Law, 23 May 1939](https://digital.ub.uni-paderborn.de/download/pdf/7538265.pdf), required self-protection equipment in covered residential air-protection communities and required people assigned to self-protection duty to obtain a *Volksgasmaske* within a later prescribed period. It does not give a national issue count, stock total, completion date, or factory assignment. It supports German civil-defence institutions without supporting a 20% German starting civilian mask grant. No German equipment or industry grant is added on this basis.
+
+The original numerical civilian proposals remain in the archived section of `matrices/gas_mask_starting_stockpile_matrix.md` as historical planning data, not script constants. Future country-specific civilian issue requires a dated source, a separate real-equipment transaction, and an explicit acceptance record. This edit adds no equipment archetype, CXT package, localisation, or icon.
+
+Source validation counts 41 profile tags, 41 removed generic civilian assignments, zero remaining generic civilian starting-issue references in the active source files, and the separate British dated helper. It does not prove final state inventories or maintenance behavior in the engine; those remain open in the completion report.
