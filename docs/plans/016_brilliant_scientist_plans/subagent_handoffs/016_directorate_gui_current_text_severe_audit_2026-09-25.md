@@ -69,7 +69,7 @@ The tool result’s shared revision differs from the scenario revisions recorded
 
 ## Render, state, and comparison evidence
 
-No fresh hoi4.gui_render call, image review, click-region render, hierarchy view, or current-source comparison was performed after the user directed this task to finish from evidence already obtained and not start further long MCP calls. This is an explicit evidence gap, not an MCP route failure.
+No fresh hoi4.gui_render call, image review, click-region render, hierarchy view, or current-source comparison was performed after the parent directed this task to finish from evidence already obtained and not start further long MCP calls. This is an explicit evidence gap, not an MCP route failure.
 
 The supplied 2026-09-25 baseline handoff has historical collapsed/expanded production images and a three-resolution view at 1366x768, 1920x1080, and 2560x1440, all at UI scale 1. That handoff says its generic expanded fixture leaves numeric values and dynamic localisation unresolved, so those images cannot establish current actual-text fidelity. The 2026-09-02 closure handoff records actual normal-expanded, normal-collapsed, severe-host, and severe-sovereign fixtures and historical render artifacts; their source revision predates the fresh inspect revision above.
 
@@ -125,3 +125,7 @@ The requested references/visual-review.md was absent at .agents/skills/chaos-red
 - No model, 3D asset, sound, or counter work was performed.
 
 Simplifications and omissions in this audit: current-source render and visual comparison were omitted under the parent's bounded handoff instruction; the remaining state, source-reading, and image-review gaps are reported as unresolved rather than passed.
+
+## Parent follow-up: explicit branch fixture
+
+The parent reran `hoi4.gui_inspect` for `kruger_directorate_container` with `generatedScenarios.enabled = false` and explicit visibility: compact panel and open button hidden, full panel and close button visible. It returned `GUI_INSPECTED` with validation passed and no blocking click-region conflict at scenario `e016_severe_typed`; [inspect artifact](hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/90cca14c31b147f46f6b305189ac2dbcca51b2910f4b177c2c2714ab0e41a87f/f1a584fcb7b7774ff7deb9f064cf3cdcef68ab26f06861eaf1852bd423e3aa83/gui-inspect.c13e9987cfa736fb.json). Despite the scenario ID, only visibility was supplied; no severe-state values or actual text were supplied. The inspector still counted 16 nonblocking visible overlaps from layered elements. This resolves the generic fixture's 100% open/close collision as an omitted-visibility input, without asserting that actual engine flag evaluation was tested. Dynamic text and severe-state image review remain unresolved.
