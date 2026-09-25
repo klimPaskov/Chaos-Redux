@@ -24,11 +24,12 @@ The same review gives a country opened after Evolution II the bounded neighborin
 
 The Event 006 selected actor and anchor remain regular event targets and expire with their effect chain.
 `event021_parent_prepare_route_evidence` and `event021_parent_find_event6_package` bind `random_civil_war_event6_selection_owner` to the actual host and clear its `random_civil_war_event6_selected_actor_valid` and `random_civil_war_event6_selected_anchor_valid` country flags before selection.
-The finder publishes each validity flag only with the corresponding pointer; a valid anchor with no actor remains the supported dormant-carrier absence case.
+The finder publishes each validity flag only with the corresponding pointer; every selected Event 006 anchor excludes the host capital, reserved states, active-front states, and scenario-reserved states on both primary and secondary paths. A valid anchor with no actor remains the supported dormant-carrier absence case.
 `independence_wave_capture_event021_adapter_actor` resets actor validity and publishes it only with a matching existing carrier, preserving failed-release detection even when a previous actor pointer remains in the chain.
 Every selected-target presence gate also requires the matching flag through the selection-owner target, including actor-scoped package preparation.
+`event021_parent_capture_event6_previous_capital` enters `capital_scope` only after proving the carrier owns a capital, then retains that state as a chain-local rollback target. Both Event 006 opening rollback paths return the anchor first and restore the prior capital only if the saved state still belongs to the selected carrier. The adapter capital transfer also sets `remember_old_capital = yes` for engine-side recovery if the newly assigned anchor is later lost.
 `event021_parent_prepare_event6_adapter_actor` marks the carrier while the shared Event 006 package setup is open and snapshots any pre-existing Event 021 generation value. `event021_parent_cleanup_failed_event6_adapter_actor` calls the documented generation-local `independence_wave_reset_current_generation` while the carrier is still in scope, restores that prior generation value, clears Event 021's package, opening, route, and crisis transaction values, and clears the transient preparation/package-ready bridge flags before a newly released carrier is annexed or a dormant pre-existing carrier is returned. The marker and snapshot are cleared by the common transaction cleanup after a successful opening or rollback.
-`event021_parent_clear_event6_package_transaction` invalidates both flags on the host after success or rollback; rollback consumes the pointers before invalidation.
+`event021_parent_clear_event6_package_transaction` invalidates the selected-actor and selected-anchor flags plus the prior-capital guard on the host after success or rollback; rollback consumes the pointers before invalidation.
 No target is rebound to a null stand-in or converted to a global target.
 Inputs are the existing package registry and host; outputs are the selected targets and explicit validity flags, with absent flags as the default.
 There are no tuning constants, weights, or player-facing changes in this lifecycle contract.
@@ -95,6 +96,7 @@ Identity preparation stores `random_civil_war_generation_before_plan`, and core 
 It clears the provisional snapshot but keeps the committed generation and recurrence memory.
 Core crisis cleanup releases `random_civil_war_generation_seeded` so a later eligible crisis can advance one generation within the existing generation gate.
 Example: a failed generation-two attempt from generation one restores generation one; a successful attempt retains generation two and consumes the prior recurrence window.
+`event021_prepare_recurrence` opens a single earliest-to-latest window only after reconstruction and only when the recurrence score is high enough. Its date base is no earlier than the stored target-cooldown or successor-grace expiry, and it sets the next country review to the earliest date. Low-risk countries receive no recurrence window. Later due reviews preserve those stored dates; an unsuccessful final-window review schedules one bounded expiry check after the latest date.
 
 `event021_parent_prepare_route_evidence` clears and recomputes recoverable political-competition, military-loyalty, regional-grievance, and state-capacity receipts from current conditions before every route selection, preventing stale weakness from renewing its own pressure or eligibility.
 
@@ -139,7 +141,7 @@ It does not run predecessor core cleanup before annexation, because `on_annex` n
 Example: claimant A replaces government B while front C survives; the annex callback rebinds C to A rather than unregistering C as collateral cleanup.
 This documents the scripted promotion path; natural engine civil-war annexation, continuing-front obligations, and runtime ordering still require their own evidence.
 
-`event021_parent_prepare_annex_successor` is restricted to the vanilla `on_annex` context, with ROOT as winner and FROM as annexed country.
+`event021_parent_prepare_annex_successor` runs from the vanilla `on_civil_war_end_before_annexation` and `on_annex` contexts, with ROOT as winner and FROM as the annexed country.
 Before FROM cleanup, it recognizes a surviving ordinary opposition actor only when its explicit host pointer names FROM, FROM retains the government role, and both countries have matching crisis IDs.
 It copies historical receipts and marks succession without annexing, declaring war, or granting an award.
 This covers natural engine victory before the next bounded settlement review; Event 006 independence actors and unrelated annexers do not receive ordinary-successor status.

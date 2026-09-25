@@ -1247,6 +1247,7 @@ event021_clear_received_sponsor_commitment_receipt = {
 	clr_country_flag = random_civil_war_sponsor_commitment_received
 	clr_country_flag = event021_sponsor_recorded
 	clear_variable = random_civil_war_sponsor_id
+	clear_variable = random_civil_war_sponsor_scope
 	clear_variable = random_civil_war_sponsor_recipient_id
 	clear_variable = random_civil_war_sponsor_front_id
 	clear_variable = random_civil_war_sponsor_support_amount
@@ -1788,13 +1789,13 @@ event021_apply_settlement = {
 	event021_add_authority = yes
 	set_variable = { random_civil_war_pending_pressure_delta = constant:random_civil_war_pressure.settlement_relief }
 	event021_reduce_pressure = yes
-	event021_prepare_recurrence = yes
 	event021_update_achievement_state = yes
 }
 
 # COUNTRY scope. Computes a recurrence score from unresolved pressure,
-# post-war memory, settlement quality, and persistent network flags. It marks
-# recurrence eligibility but never immediately starts another crisis.
+# post-war memory, settlement quality, and persistent network flags. High-risk
+# countries receive one finite recurrence window and a due review date. Review
+# calls do not slide the stored window, and this helper never opens a crisis.
 event021_prepare_recurrence = {
 	set_variable = { random_civil_war_recurrence_score = constant:random_civil_war_value.zero }
 	if = {
@@ -1828,10 +1829,52 @@ event021_prepare_recurrence = {
 		max = constant:random_civil_war_pressure.maximum
 	}
 	if = {
+		limit = {
+			random_civil_war_is_normal_human_country = yes
+			NOT = { random_civil_war_has_terminal_lock = yes }
+			random_civil_war_recurrence_score_high = yes
+			OR = {
+				NOT = { has_country_flag = random_civil_war_recent_target }
+				has_variable = random_civil_war_recent_target_until
+			}
+			OR = {
+				NOT = { has_variable = random_civil_war_recurrence_earliest_date }
+				NOT = { has_variable = random_civil_war_recurrence_latest_date }
+			}
+		}
+		set_temp_variable = { event021_recurrence_window_base_date = global.date }
+		if = {
+			limit = {
+				has_variable = random_civil_war_recent_target_until
+				check_variable = {
+					var = random_civil_war_recent_target_until
+					value = event021_recurrence_window_base_date
+					compare = greater_than
+				}
+			}
+			set_temp_variable = { event021_recurrence_window_base_date = random_civil_war_recent_target_until }
+		}
+		if = {
+			limit = {
+				has_variable = random_civil_war_successor_grace_until
+				check_variable = {
+					var = random_civil_war_successor_grace_until
+					value = event021_recurrence_window_base_date
+					compare = greater_than
+				}
+			}
+			set_temp_variable = { event021_recurrence_window_base_date = random_civil_war_successor_grace_until }
+		}
+		set_variable = { random_civil_war_recurrence_earliest_date = event021_recurrence_window_base_date }
+		add_to_variable = { random_civil_war_recurrence_earliest_date = constant:random_civil_war_timing.recurrence_minimum_days }
+		set_variable = { random_civil_war_recurrence_latest_date = event021_recurrence_window_base_date }
+		add_to_variable = { random_civil_war_recurrence_latest_date = constant:random_civil_war_timing.recurrence_maximum_days }
+		set_variable = { random_civil_war_recurrence_review_date = random_civil_war_recurrence_earliest_date }
+		set_variable = { random_civil_war_next_review_date = random_civil_war_recurrence_earliest_date }
+	}
+	if = {
 		limit = { random_civil_war_recurrence_valid = yes }
 		set_country_flag = random_civil_war_recurrence_eligible
-		set_variable = { random_civil_war_recurrence_review_date = global.date }
-		add_to_variable = { random_civil_war_recurrence_review_date = constant:random_civil_war_timing.recurrence_minimum_days }
 	}
 	else = { clr_country_flag = random_civil_war_recurrence_eligible }
 }

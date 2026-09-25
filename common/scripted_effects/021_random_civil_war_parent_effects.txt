@@ -186,15 +186,10 @@ event021_parent_find_event6_package = {
 						is_controlled_by = ROOT
 						state_population_k > constant:event021_parent_tuning.minimum_state_population_k
 						check_variable = { infrastructure_level > constant:random_civil_war_value.zero }
-						OR = {
-							NOT = { has_global_flag = random_civil_war_event6_secondary_search_active }
-							AND = {
-								NOT = { is_capital = yes }
-								NOT = { is_in_array = { array = global.random_civil_war_reserved_states value = THIS } }
-								NOT = { is_in_array = { array = global.random_civil_war_front_states value = THIS } }
-								NOT = { is_in_array = { array = global.random_civil_war_scenario_reserved_states value = THIS } }
-							}
-						}
+						NOT = { is_capital = yes }
+						NOT = { is_in_array = { array = global.random_civil_war_reserved_states value = THIS } }
+						NOT = { is_in_array = { array = global.random_civil_war_front_states value = THIS } }
+						NOT = { is_in_array = { array = global.random_civil_war_scenario_reserved_states value = THIS } }
 					}
 					OR = {
 						NOT = { has_event_target = liberation_candidate_country }
@@ -837,6 +832,7 @@ event021_parent_review_recurrence_window = {
 						}
 					}
 					set_variable = { random_civil_war_next_review_date = random_civil_war_recurrence_latest_date }
+					add_to_variable = { random_civil_war_next_review_date = constant:random_civil_war_value.one }
 				}
 			}
 		}
@@ -3832,6 +3828,43 @@ event021_parent_capture_event6_selected_actor = {
 	clear_variable = independence_wave_event021_adapter_package_id
 }
 
+# COUNTRY scope on the original host. Saves the selected carrier's prior
+# capital only when it currently owns one. This is a chain-local state target
+# paired with an explicit host flag so a later carrier in the same chain cannot
+# reuse a stale capital receipt.
+event021_parent_capture_event6_previous_capital = {
+	clr_country_flag = random_civil_war_event6_previous_capital_saved
+	if = {
+		limit = {
+			has_event_target = random_civil_war_event6_selected_actor
+			event_target:random_civil_war_event6_selected_actor = {
+				any_owned_state = { is_capital = yes }
+			}
+		}
+		event_target:random_civil_war_event6_selected_actor = {
+			capital_scope = { save_event_target_as = random_civil_war_event6_previous_capital }
+		}
+		set_country_flag = random_civil_war_event6_previous_capital_saved
+	}
+}
+
+# COUNTRY scope on the selected Event 006 carrier during rollback. The state
+# must still exist and belong to this exact carrier before capital restoration.
+event021_parent_restore_event6_previous_capital = {
+	if = {
+		limit = {
+			event_target:random_civil_war_event6_selection_owner = { has_country_flag = random_civil_war_event6_previous_capital_saved }
+			has_event_target = random_civil_war_event6_previous_capital
+			event_target:random_civil_war_event6_previous_capital = {
+				exists = yes
+				is_owned_by = event_target:random_civil_war_event6_selected_actor
+			}
+		}
+		set_capital = { state = event_target:random_civil_war_event6_previous_capital remember_old_capital = no }
+	}
+	event_target:random_civil_war_event6_selection_owner = { clr_country_flag = random_civil_war_event6_previous_capital_saved }
+}
+
 # COUNTRY scope on the released actor. This prepares and validates the Event
 # 006 package in adapter mode. The package setup is shared through Event 006's
 # package-only adapter entry, but Event 006's origin-history, fired count,
@@ -3986,6 +4019,7 @@ event021_parent_abort_event6_opening = {
 	if = {
 		limit = { has_event_target = random_civil_war_event6_selected_actor has_event_target = random_civil_war_event6_selection_owner event_target:random_civil_war_event6_selection_owner = { has_country_flag = random_civil_war_event6_selected_actor_valid } }
 		event_target:random_civil_war_event6_selected_actor = {
+			event021_parent_restore_event6_previous_capital = yes
 			event021_parent_cleanup_failed_event6_adapter_actor = yes
 			clr_country_flag = random_civil_war_active
 			clr_country_flag = random_civil_war_opposition_side
@@ -4085,6 +4119,7 @@ event021_parent_clear_event6_package_transaction = {
 	clear_variable = random_civil_war_event6_candidate_archetype
 	clear_variable = random_civil_war_event6_opening_state_count
 	clear_variable = random_civil_war_event6_previous_generation
+	clr_country_flag = random_civil_war_event6_previous_capital_saved
 	clr_country_flag = random_civil_war_event6_secondary_plan_frozen
 	clr_country_flag = random_civil_war_event6_selected_actor_valid
 	clr_country_flag = random_civil_war_event6_selected_anchor_valid
@@ -4118,6 +4153,7 @@ event021_parent_abort_event6_secondary_front = {
 		event_target:random_civil_war_event6_selected_actor = {
 			if = { limit = { has_country_flag = random_civil_war_front_registered } event021_unregister_front = yes }
 			if = { limit = { has_country_flag = random_civil_war_theater_registered } event021_unregister_active_theater = yes }
+			event021_parent_restore_event6_previous_capital = yes
 			event021_parent_cleanup_failed_event6_adapter_actor = yes
 			clr_country_flag = random_civil_war_active
 			clr_country_flag = random_civil_war_opposition_side
@@ -4187,6 +4223,7 @@ event021_parent_try_event6_secondary_front = {
 					NOT = { is_capital = yes }
 					NOT = { is_in_array = { array = global.random_civil_war_reserved_states value = THIS } }
 					NOT = { is_in_array = { array = global.random_civil_war_front_states value = THIS } }
+					NOT = { is_in_array = { array = global.random_civil_war_scenario_reserved_states value = THIS } }
 				}
 			}
 			set_global_flag = random_civil_war_event6_secondary_front_pending
@@ -4222,6 +4259,7 @@ event021_parent_try_event6_secondary_front = {
 			set_variable = { global.random_civil_war_event6_pending_opening_state_count = constant:random_civil_war_value.one }
 			event021_parent_release_event6_selected_package = yes
 			event021_parent_capture_event6_selected_actor = yes
+			event021_parent_capture_event6_previous_capital = yes
 			if = {
 				limit = { has_event_target = random_civil_war_event6_selected_actor has_event_target = random_civil_war_event6_selection_owner event_target:random_civil_war_event6_selection_owner = { has_country_flag = random_civil_war_event6_selected_actor_valid } }
 				event_target:random_civil_war_event6_selected_anchor = {
@@ -4229,7 +4267,7 @@ event021_parent_try_event6_secondary_front = {
 					set_state_controller_to = event_target:random_civil_war_event6_selected_actor
 				}
 				event_target:random_civil_war_event6_selected_actor = {
-					set_capital = { state = event_target:random_civil_war_event6_selected_anchor remember_old_capital = no }
+					set_capital = { state = event_target:random_civil_war_event6_selected_anchor remember_old_capital = yes }
 					set_variable = { random_civil_war_event6_package_id = global.random_civil_war_event6_pending_package_id }
 					set_variable = { random_civil_war_event6_candidate_region = global.random_civil_war_event6_pending_region }
 					set_variable = { random_civil_war_event6_candidate_depth = global.random_civil_war_event6_pending_depth }
@@ -4357,6 +4395,7 @@ event021_parent_start_event6_front = {
 			event021_parent_clear_transfer_flags = yes
 			event021_parent_release_event6_selected_package = yes
 			event021_parent_capture_event6_selected_actor = yes
+			event021_parent_capture_event6_previous_capital = yes
 			if = {
 				limit = { has_event_target = random_civil_war_event6_selected_actor has_event_target = random_civil_war_event6_selection_owner event_target:random_civil_war_event6_selection_owner = { has_country_flag = random_civil_war_event6_selected_actor_valid } }
 				event_target:random_civil_war_global_anchor_state = {
@@ -4364,7 +4403,7 @@ event021_parent_start_event6_front = {
 					set_state_controller_to = event_target:random_civil_war_event6_selected_actor
 				}
 				event_target:random_civil_war_event6_selected_actor = {
-					set_capital = { state = event_target:random_civil_war_global_anchor_state remember_old_capital = no }
+					set_capital = { state = event_target:random_civil_war_global_anchor_state remember_old_capital = yes }
 					set_variable = { random_civil_war_event6_package_id = global.random_civil_war_event6_pending_package_id }
 					set_variable = { random_civil_war_event6_candidate_region = global.random_civil_war_event6_pending_region }
 					set_variable = { random_civil_war_event6_candidate_depth = global.random_civil_war_event6_pending_depth }
@@ -4919,9 +4958,8 @@ event021_parent_end_event6_war = {
 	}
 }
 
-# on_annex only: ROOT is the winner and FROM the disappearing country.
-# Natural engine civil-war victory can precede the bounded settlement review,
-# so publish the same explicit successor proof before FROM's registry cleanup.
+# Both pre-annex civil-war and annex callbacks use ROOT for the winner and FROM
+# for the disappearing country. Publish successor proof before registry cleanup.
 event021_parent_prepare_annex_successor = {
 	if = {
 		limit = {
@@ -5378,6 +5416,7 @@ event021_parent_select_settlement_obligation = {
 	clear_variable = random_civil_war_settlement_obligation_start_date
 	clear_variable = random_civil_war_settlement_obligation_anchor_state
 	clear_variable = random_civil_war_settlement_obligation_actor_id
+	clear_variable = random_civil_war_settlement_sponsor_scope
 	clear_variable = random_civil_war_settlement_terms_hold_until
 	clr_country_flag = random_civil_war_settlement_obligation_active
 	clr_country_flag = random_civil_war_settlement_obligation_fulfilled
@@ -5397,8 +5436,9 @@ event021_parent_select_settlement_obligation = {
 		set_variable = { random_civil_war_settlement_obligation = constant:event021_settlement_obligation.recognition }
 	}
 	else_if = {
-		limit = { has_country_flag = random_civil_war_sponsor_evidence_active }
+		limit = { event021_sponsor_repayment_receipt_valid = yes }
 		set_variable = { random_civil_war_settlement_obligation = constant:event021_settlement_obligation.sponsor_repayment }
+		set_variable = { random_civil_war_settlement_sponsor_scope = random_civil_war_sponsor_scope }
 	}
 	else_if = {
 		limit = {

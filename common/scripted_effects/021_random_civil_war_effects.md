@@ -68,7 +68,7 @@ All tuning values are read from `common/script_constants/021_random_civil_war_co
 It removes the disappearing country's own memberships and rebinds surviving host-linked front/theater records only after explicit same-crisis successor proof; unrelated annexation uses teardown.
 Scope rebinding is not proof that the engine transferred actual wars.
 
-`event021_apply_settlement`, `event021_prepare_recurrence`, and `event021_reconstruction_tick` move a completed theater through terms, recurrence memory, and finite reconstruction.
+`event021_apply_settlement` records terms and starts finite reconstruction. After reconstruction and settlement obligations are complete, `event021_prepare_recurrence` scores the durable outcome and schedules a bounded post-cooldown review window; `event021_reconstruction_tick` applies the interim recovery changes.
 
 `event021_update_achievement_state` writes achievement receipts only when normal-campaign eligibility remains true.
 
