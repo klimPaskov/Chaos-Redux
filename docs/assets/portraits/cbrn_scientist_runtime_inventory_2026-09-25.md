@@ -2,7 +2,7 @@
 
 Date: 2026-09-25.
 
-Status: runtime-only inventory; this file records registered DDS paths, header dimensions, and SHA-256 hashes for the current 67-character CBRN scientist roster.
+Status: runtime-only inventory of the 67 scientist portraits approved by the user on 2026-09-25; this file records registered DDS paths, header dimensions, and SHA-256 hashes.
 
 This inventory does not establish that a texture depicts the named character or document its source, attribution, license, redistribution rights, crop, review, or provider history. For every character in this inventory, source identity, attribution, rights, crop, and `source_placeholder` versus `styled_final` status remain unverified.
 

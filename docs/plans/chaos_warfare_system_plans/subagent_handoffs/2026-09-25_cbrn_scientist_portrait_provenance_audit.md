@@ -2,7 +2,7 @@
 
 Date: 2026-09-25.
 
-Status: read-only audit complete; per-person portrait provenance remains unresolved because the documented source archives are unavailable in the current workspace.
+Status: read-only audit complete. Subsequent user disposition on 2026-09-25: the 67 portraits already in the mod are approved, and recovering the missing source archives is not required for this overhaul. The historical provenance observations below remain factual audit records, not a current completion blocker.
 
 ## Runtime crosswalk
 
