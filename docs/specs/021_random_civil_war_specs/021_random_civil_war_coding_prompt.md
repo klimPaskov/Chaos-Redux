@@ -207,7 +207,7 @@ The cluster counts as one pacing event.
 
 ## Triggerable scenario
 
-Add the manual scenario with a verified free ID. Do not assume `SCN-014` without checking the live registry.
+Use `SCN-018` for the manual scenario. The authoritative workbook was checked on 2026-09-25 and contains one unique `SCN-018` row for The Fracture Cascade. Do not create a second scenario ID for this feature.
 
 Working title: The Fracture Cascade.
 

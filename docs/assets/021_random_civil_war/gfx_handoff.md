@@ -57,5 +57,5 @@ The root runtime textures are the active consumer family; the fifteen legacy DDS
 
 ## Handoff boundary
 
-The package is source- and asset-audited for the current `Needs Testing` phase.
-Visual inspection and runtime consumer validation remain part of the user-owned live acceptance pass, and the reused Event 006 package provenance remains explicitly blocked where recorded in its separate audit.
+The runtime inventory is wired for the current `Needs Testing` phase, but six original source/master PNGs are absent from the current worktree, so their source lineage remains blocked in the owned-asset crosswalk.
+Thirty-two missing processed previews have been restored from exact current DDS round-trips without changing runtime artwork; in-game consumer validation remains part of the user-owned live acceptance pass, and reused Event 006 package provenance remains explicitly blocked where recorded in its separate audit.

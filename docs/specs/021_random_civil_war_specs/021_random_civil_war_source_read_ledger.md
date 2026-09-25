@@ -88,6 +88,8 @@ The catalogs are export snapshots. The authoritative event workbook was not supp
 - `SCN-014` appears to be the next numerical slot, but the package does not reserve it
 - the implementation agent must verify the live workbook and registry before assigning an ID
 
+Current resolution — 2026-09-25: the historical candidate above is superseded. The parent verified the authoritative workbook `Scenarios` sheet, which contains one unique `SCN-018` row for The Fracture Cascade and no duplicate scenario IDs. This satisfies the user's verified-free-ID requirement; implementation remains `Needs Testing`.
+
 ## Planning-environment sources that were unavailable
 
 The following required implementation sources could not be read because they were not mounted or exposed:

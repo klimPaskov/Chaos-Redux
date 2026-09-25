@@ -6,6 +6,10 @@ This manifest covers the forty active Event 021-owned runtime textures wired thr
 The complete row-level source, processed-PNG, runtime-DDS, dimension, alpha, repair, and consumer evidence is maintained in `docs/events/021_random_civil_war/owned_asset_crosswalk.md` and `validation/visual_asset_audit_2026-09-01.md`.
 The six Event 006 package families reused by Event 021 are separately owned and remain in `validation/reused_event006_asset_audit_2026-09-02.md`.
 
+The 2026-09-25 provenance recheck found six source/master PNGs missing: the opening report, both news images, the category picture, Reconstruction, and Relief Corridor.
+The thirty-two missing processed-PNG previews were restored from their matching current DDS round-trip PNGs without changing runtime art; these restored files are not replacements for missing source masters.
+The six source rows remain blocked for reproducible source-to-runtime lineage, and the earlier visual audit is historical evidence rather than a current source-package pass for them.
+
 ## Production record
 
 The scene and icon masters use official ImageGen native-alpha generation where the consumer requires transparent unused canvas, with the original source PNG retained under `source_png/` and the processed PNG retained under `processed_png/`.
@@ -13,7 +17,8 @@ The documented achievement alpha repairs use the recorded border-connected trans
 No background-removal fallback was used for the five dedicated prompt-backed icon sources listed under `prompts/`.
 The required visual directions and prompt constraints are recorded in `docs/specs/021_random_civil_war_specs/021_random_civil_war_asset_prompt.md`, while the accepted source-specific prompt text is retained in `prompts/` and the visual audit.
 
-Every runtime DDS was inspected at native size, checked for the established one-level BGRA contract, and compared pixel-for-pixel with its processed PNG.
+The 2026-09-01 visual audit records native-size DDS inspection, the established one-level BGRA contract, and pixel comparison with the then-present processed PNGs.
+The current crosswalk supersedes its source-lineage status for the six assets named above and records the round-trip restoration of thirty-two processed PNGs.
 The review contact sheets are `contact_sheets/icon_artist_021_missing_icons_contact_sheet.png`, `contact_sheets/icon_artist_021_contrast_review.png`, and the achievement review sheets under `validation/alpha_edge_repair_2026-09-02/contact_sheet/`.
 No runtime reference points into `docs/assets/`.
 

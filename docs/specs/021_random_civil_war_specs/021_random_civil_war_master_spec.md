@@ -3416,7 +3416,7 @@ The exact cluster tier system should follow the live cluster framework.
 
 Working scenario name: `The Fracture Cascade`.
 
-The scenario ID is not locked by this package. `SCN-014` is the next visible number after the supplied export, but implementation must verify the authoritative workbook and live registry before reserving it.
+**Parent resolution — 2026-09-25:** `SCN-018` is the assigned ID for The Fracture Cascade. The user's implementation prompt requires a verified free ID without prescribing its number. The authoritative workbook's `Scenarios` sheet contains exactly one `SCN-018` row for The Fracture Cascade and no duplicate scenario IDs. This resolves the earlier `SCN-014` candidate; the scenario remains `Needs Testing`, not finally accepted.
 
 The scenario is separate from:
 
