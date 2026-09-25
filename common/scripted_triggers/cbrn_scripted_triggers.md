@@ -276,10 +276,10 @@ The four work queries and the category-presentation predicates are country scope
 
 - `cbrn_state_has_priority_distribution_gap`: effective coverage below 50 percent.
 - `cbrn_state_has_full_distribution_gap`: effective coverage below 95 percent.
-- `cbrn_state_has_emergency_distribution_gap`: effective coverage below 35 percent.
+- `cbrn_state_has_emergency_distribution_gap`: a positive live emergency issue requirement remains below the 35-percent effective-coverage target after fitting, filter quality, and local delivery costs are applied.
 - `cbrn_state_has_occupied_distribution_gap`: effective coverage below 50 percent.
 
-Absent `cbrn_civilian_mask_effective_coverage` counts as a gap. The value is written by `cbrn_refresh_state_civilian_mask_snapshot` and includes fitting and filter condition.
+For the other distribution gaps, absent `cbrn_civilian_mask_effective_coverage` counts as a gap. That snapshot is written by `cbrn_refresh_state_civilian_mask_snapshot` and includes fitting and filter condition. The emergency gap reconstructs current coverage from state ledgers instead of relying on a possibly stale snapshot.
 
 ### Composite distribution targets
 
@@ -287,6 +287,8 @@ Absent `cbrn_civilian_mask_effective_coverage` counts as a gap. The value is wri
 - `cbrn_state_can_receive_full_distribution`: valid ROOT core, registered/fitted ROOT population, and full gap.
 - `cbrn_state_has_emergency_context`: an exact alert for this state or real contamination in this state. Country-wide confirmed enemy use does not qualify a clean, unalerted state.
 - `cbrn_state_can_receive_emergency_masks`: ROOT-controlled populated state with emergency context, an emergency gap, and no surge already used for the current verified alert; formal reserve/registration is deliberately not required.
+- `cbrn_quote_emergency_state_mask_reservation`: state-scope live quote. Inputs: ROOT paying country and selected state. Outputs: uncapped `cbrn_reservation_quote_state_need` and five-model-stock-capped `cbrn_mask_reservation_quote`. It supplies the emergency cost row and positive-gap check without writing lasting state or stock changes.
+- `cbrn_country_can_pay_emergency_state_mask_distribution`: ROOT-scope inclusive gate for the public emergency, selected FROM state, exact Political Power boundary, and positive capped respirator quote. Both decision availability and custom-cost readiness use this predicate.
 - `cbrn_state_can_receive_occupied_masks`: valid non-core controlled state with an exact alert or contamination and an occupied gap.
 - `cbrn_state_can_replace_civilian_filters`: valid state with distributed masks and worn filters.
 

@@ -386,14 +386,9 @@ cbrn_state_has_full_distribution_gap = {
 }
 
 cbrn_state_has_emergency_distribution_gap = {
-	OR = {
-		NOT = { has_variable = cbrn_civilian_mask_effective_coverage }
-		check_variable = {
-			var = cbrn_civilian_mask_effective_coverage
-			value = constant:cbrn_mask_distribution.emergency_target_percent
-			compare = less_than
-		}
-	}
+	set_temp_variable = { cbrn_reservation_quote_state_need = constant:cbrn_math.zero }
+	cbrn_quote_emergency_state_mask_reservation = yes
+	check_variable = { cbrn_reservation_quote_state_need > constant:cbrn_math.zero }
 }
 
 cbrn_state_has_occupied_distribution_gap = {
@@ -477,6 +472,10 @@ cbrn_country_has_occupied_distribution_work = {
 # callers sum state needs and cap the total against real model stock.
 cbrn_quote_occupied_state_mask_reservation = {
 	set_temp_variable = { cbrn_reservation_quote_state_need = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_reservation_quote_target = constant:cbrn_protection_program_effect.occupied_distribution_target }
+	set_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_protection_program_effect.occupied_distribution_cost_mult }
+	set_temp_variable = { cbrn_reservation_quote_effectiveness = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_reservation_quote_new_filter = constant:cbrn_mask_filters.condition_full }
 	cbrn_quote_state_mask_reservation_internal = yes
 }
 
@@ -484,10 +483,43 @@ cbrn_quote_external_state_mask_reservation = {
 	set_temp_variable = { cbrn_reservation_quote_state_need = constant:cbrn_math.zero }
 	set_temp_variable = { cbrn_mask_reservation_available_stock = constant:cbrn_math.zero }
 	set_temp_variable = { cbrn_mask_reservation_quote = constant:cbrn_math.zero }
+	cbrn_quote_occupied_state_mask_reservation = yes
+	ROOT = { cbrn_quote_available_mask_stock_for_reservation = yes }
+	set_temp_variable = { cbrn_mask_reservation_quote = cbrn_reservation_quote_state_need }
+	clamp_temp_variable = { var = cbrn_mask_reservation_quote min = constant:cbrn_math.zero max = cbrn_mask_reservation_available_stock }
+}
+
+# State scope; the same live coverage and delivery calculation as occupied
+# distribution, with the emergency order's target, wastage, and filter quality.
+# The uncapped state need drives target visibility; the stock-capped quote is
+# the actual one-click respirator payment shown in the cost row.
+cbrn_quote_emergency_state_mask_reservation = {
+	set_temp_variable = { cbrn_reservation_quote_state_need = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_reservation_available_stock = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_reservation_quote = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_reservation_quote_target = constant:cbrn_mask_distribution.emergency_target }
+	set_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_mask_distribution.emergency_cost_mult }
+	multiply_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_mask_distribution.emergency_wastage_mult }
+	set_temp_variable = { cbrn_reservation_quote_effectiveness = constant:cbrn_mask_distribution.emergency_effectiveness_mult }
+	set_temp_variable = { cbrn_reservation_quote_new_filter = constant:cbrn_mask_filters.emergency_condition }
 	cbrn_quote_state_mask_reservation_internal = yes
 	ROOT = { cbrn_quote_available_mask_stock_for_reservation = yes }
 	set_temp_variable = { cbrn_mask_reservation_quote = cbrn_reservation_quote_state_need }
 	clamp_temp_variable = { var = cbrn_mask_reservation_quote min = constant:cbrn_math.zero max = cbrn_mask_reservation_available_stock }
+	always = yes
+}
+
+# Country scope, selected decision state in FROM. An exact 10 PP balance and
+# any positive stock-capped crate quote suffice; the cost row uses this gate.
+cbrn_country_can_pay_emergency_state_mask_distribution = {
+	cbrn_country_has_public_chemical_emergency = yes
+	NOT = { has_political_power < constant:cbrn_protection_decision_cost.emergency_distribution_pp }
+	FROM = {
+		cbrn_state_can_receive_emergency_masks = yes
+		set_temp_variable = { cbrn_mask_reservation_quote = constant:cbrn_math.zero }
+		cbrn_quote_emergency_state_mask_reservation = yes
+		check_variable = { cbrn_mask_reservation_quote > constant:cbrn_math.zero }
+	}
 }
 
 # Country-scope stock count. The five concrete models match the distributor;
@@ -552,19 +584,24 @@ cbrn_quote_state_mask_reservation_internal = {
 	set_temp_variable = { cbrn_reservation_quote_requirement = state_population_k }
 	multiply_temp_variable = { cbrn_reservation_quote_requirement = constant:cbrn_mask_scale.civilian_crates_per_population_k }
 	set_temp_variable = { cbrn_reservation_quote_existing_crates = constant:cbrn_math.zero }
-	set_temp_variable = { cbrn_reservation_quote_model = cbrn_civilian_mask_basic_crates }
+	set_temp_variable = { cbrn_reservation_quote_model = constant:cbrn_math.zero }
+	if = { limit = { has_variable = cbrn_civilian_mask_basic_crates } set_temp_variable = { cbrn_reservation_quote_model = cbrn_civilian_mask_basic_crates } }
 	clamp_temp_variable = { var = cbrn_reservation_quote_model min = constant:cbrn_math.zero }
 	add_to_temp_variable = { cbrn_reservation_quote_existing_crates = cbrn_reservation_quote_model }
-	set_temp_variable = { cbrn_reservation_quote_model = cbrn_civilian_mask_reconditioned_crates }
+	set_temp_variable = { cbrn_reservation_quote_model = constant:cbrn_math.zero }
+	if = { limit = { has_variable = cbrn_civilian_mask_reconditioned_crates } set_temp_variable = { cbrn_reservation_quote_model = cbrn_civilian_mask_reconditioned_crates } }
 	clamp_temp_variable = { var = cbrn_reservation_quote_model min = constant:cbrn_math.zero }
 	add_to_temp_variable = { cbrn_reservation_quote_existing_crates = cbrn_reservation_quote_model }
-	set_temp_variable = { cbrn_reservation_quote_model = cbrn_civilian_mask_improved_crates }
+	set_temp_variable = { cbrn_reservation_quote_model = constant:cbrn_math.zero }
+	if = { limit = { has_variable = cbrn_civilian_mask_improved_crates } set_temp_variable = { cbrn_reservation_quote_model = cbrn_civilian_mask_improved_crates } }
 	clamp_temp_variable = { var = cbrn_reservation_quote_model min = constant:cbrn_math.zero }
 	add_to_temp_variable = { cbrn_reservation_quote_existing_crates = cbrn_reservation_quote_model }
-	set_temp_variable = { cbrn_reservation_quote_model = cbrn_civilian_mask_advanced_crates }
+	set_temp_variable = { cbrn_reservation_quote_model = constant:cbrn_math.zero }
+	if = { limit = { has_variable = cbrn_civilian_mask_advanced_crates } set_temp_variable = { cbrn_reservation_quote_model = cbrn_civilian_mask_advanced_crates } }
 	clamp_temp_variable = { var = cbrn_reservation_quote_model min = constant:cbrn_math.zero }
 	add_to_temp_variable = { cbrn_reservation_quote_existing_crates = cbrn_reservation_quote_model }
-	set_temp_variable = { cbrn_reservation_quote_model = cbrn_civilian_mask_sealed_crates }
+	set_temp_variable = { cbrn_reservation_quote_model = constant:cbrn_math.zero }
+	if = { limit = { has_variable = cbrn_civilian_mask_sealed_crates } set_temp_variable = { cbrn_reservation_quote_model = cbrn_civilian_mask_sealed_crates } }
 	clamp_temp_variable = { var = cbrn_reservation_quote_model min = constant:cbrn_math.zero }
 	add_to_temp_variable = { cbrn_reservation_quote_existing_crates = cbrn_reservation_quote_model }
 	set_temp_variable = { cbrn_reservation_quote_existing_coverage = constant:cbrn_math.zero }
@@ -573,7 +610,8 @@ cbrn_quote_state_mask_reservation_internal = {
 			check_variable = { cbrn_reservation_quote_requirement > constant:cbrn_math.zero }
 			check_variable = { cbrn_reservation_quote_existing_crates > constant:cbrn_math.zero }
 		}
-		set_temp_variable = { cbrn_reservation_quote_fit = cbrn_civilian_mask_fit_points }
+		set_temp_variable = { cbrn_reservation_quote_fit = constant:cbrn_math.zero }
+		if = { limit = { has_variable = cbrn_civilian_mask_fit_points } set_temp_variable = { cbrn_reservation_quote_fit = cbrn_civilian_mask_fit_points } }
 		divide_temp_variable = { cbrn_reservation_quote_fit = cbrn_reservation_quote_existing_crates }
 		clamp_temp_variable = { var = cbrn_reservation_quote_fit min = constant:cbrn_math.zero max = constant:cbrn_math.one }
 		set_temp_variable = { cbrn_reservation_quote_filter = constant:cbrn_mask_filters.condition_full }
@@ -588,9 +626,6 @@ cbrn_quote_state_mask_reservation_internal = {
 		clamp_temp_variable = { var = cbrn_reservation_quote_existing_coverage min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
 	}
 
-	set_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_protection_program_effect.occupied_distribution_cost_mult }
-	set_temp_variable = { cbrn_reservation_quote_effectiveness = constant:cbrn_math.one }
-	set_temp_variable = { cbrn_reservation_quote_new_filter = constant:cbrn_mask_filters.condition_full }
 	clamp_temp_variable = { var = cbrn_reservation_quote_cost min = constant:cbrn_action_input_bounds.condition_mult_min max = constant:cbrn_action_input_bounds.condition_mult_max }
 	clamp_temp_variable = { var = cbrn_reservation_quote_effectiveness min = constant:cbrn_math.zero max = constant:cbrn_math.one }
 	clamp_temp_variable = { var = cbrn_reservation_quote_new_filter min = constant:cbrn_mask_filters.condition_minimum max = constant:cbrn_mask_filters.condition_maximum }
@@ -616,7 +651,6 @@ cbrn_quote_state_mask_reservation_internal = {
 		}
 	}
 	clamp_temp_variable = { var = cbrn_reservation_quote_cost min = constant:cbrn_action_input_bounds.condition_mult_min max = constant:cbrn_action_input_bounds.condition_mult_max }
-	set_temp_variable = { cbrn_reservation_quote_target = constant:cbrn_protection_program_effect.occupied_distribution_target }
 	clamp_temp_variable = { var = cbrn_reservation_quote_target min = constant:cbrn_math.zero max = constant:cbrn_math.one }
 	set_temp_variable = { cbrn_reservation_quote_effective_needed = cbrn_reservation_quote_requirement }
 	multiply_temp_variable = { cbrn_reservation_quote_effective_needed = cbrn_reservation_quote_target }

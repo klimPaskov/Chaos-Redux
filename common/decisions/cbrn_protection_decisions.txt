@@ -14,6 +14,7 @@
 @CR_SC_CBRN_PROTECTION_DECISION_COST_REPLACE_FILTERS_FACTORIES = 1
 @CR_SC_CBRN_PROTECTION_DECISION_COST_SIMPLIFY_FILTERS_FACTORIES = 2
 @CR_SC_CBRN_PROTECTION_DECISION_COST_PROTECT_HOSPITALS_PP_AI_HINT = 10
+@CR_SC_CBRN_PROTECTION_DECISION_COST_EMERGENCY_DISTRIBUTION_PP_AI_HINT = 10
 @CR_SC_CBRN_PROTECTION_DECISION_COST_OCCUPIED_DISTRIBUTION_PP_AI_HINT = 25
 @CR_SC_CBRN_PROTECTION_DECISION_COST_RECONDITION_MASKS_PP_AI_HINT = 10
 @CR_SC_CBRN_PROTECTION_DECISION_COST_CONVERT_INDUSTRY_PP_AI_HINT = 30
@@ -260,21 +261,26 @@ cbrn_civil_defence_category = {
 		icon = GFX_decision_cbrn_emergency_state_mask_distribution
 		state_target = yes
 		on_map_mode = map_and_decisions_view
-		cost = constant:cbrn_protection_decision_cost.emergency_distribution_pp
+		ai_hint_pp_cost = @CR_SC_CBRN_PROTECTION_DECISION_COST_EMERGENCY_DISTRIBUTION_PP_AI_HINT
 		days_re_enable = constant:cbrn_protection_decision_timing.emergency_distribution_reenable_days
 		visible = { cbrn_country_has_public_chemical_emergency = yes }
 		target_root_trigger = {
 			cbrn_country_has_public_chemical_emergency = yes
-			cbrn_country_has_any_mask_stock = yes
 		}
 		target_trigger = { FROM = { cbrn_state_can_receive_emergency_masks = yes } }
 		available = {
-			cbrn_country_has_any_mask_stock = yes
-			FROM = { cbrn_state_can_receive_emergency_masks = yes }
+			hidden_trigger = { cbrn_country_can_pay_emergency_state_mask_distribution = yes }
 		}
+		custom_cost_trigger = { hidden_trigger = { cbrn_country_can_pay_emergency_state_mask_distribution = yes } }
+		custom_cost_text = cbrn_emergency_state_mask_distribution_cost
 		complete_effect = {
 			custom_effect_tooltip = cbrn_emergency_state_mask_distribution_complete_tt
-			hidden_effect = { FROM = { cbrn_complete_emergency_state_distribution = yes } }
+			hidden_effect = {
+				if = {
+					limit = { cbrn_country_can_pay_emergency_state_mask_distribution = yes }
+					FROM = { cbrn_complete_emergency_state_distribution = yes }
+				}
+			}
 		}
 		ai_will_do = {
 			base = constant:cbrn_protection_ai.base_response

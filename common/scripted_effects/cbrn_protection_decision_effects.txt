@@ -143,14 +143,22 @@ cbrn_complete_full_state_distribution = {
 }
 
 cbrn_complete_emergency_state_distribution = {
+	set_temp_variable = { cbrn_distribution_consumed_crates = constant:cbrn_math.zero }
 	cbrn_distribute_emergency_masks_to_state = yes
-	set_state_flag = cbrn_emergency_distribution_surge_used
-	set_temp_variable = { cbrn_emergency_distribution_disruption_duration = constant:cbrn_protection_decision_timing.emergency_distribution_disruption_days }
-	add_dynamic_modifier = {
-		modifier = cbrn_emergency_distribution_disruption
-		days = cbrn_emergency_distribution_disruption_duration
+	if = {
+		limit = { check_variable = { cbrn_distribution_consumed_crates > constant:cbrn_math.zero } }
+		set_state_flag = cbrn_emergency_distribution_surge_used
+		set_temp_variable = { cbrn_emergency_distribution_disruption_duration = constant:cbrn_protection_decision_timing.emergency_distribution_disruption_days }
+		add_dynamic_modifier = {
+			modifier = cbrn_emergency_distribution_disruption
+			days = cbrn_emergency_distribution_disruption_duration
+		}
+		controller = {
+			set_temp_variable = { cbrn_protection_pp_debit_requested = constant:cbrn_protection_decision_cost.emergency_distribution_pp }
+			cbrn_debit_protection_political_power = yes
+			cbrn_start_protection_maintenance_job = yes
+		}
 	}
-	controller = { cbrn_start_protection_maintenance_job = yes }
 }
 
 cbrn_complete_occupied_state_distribution = {
