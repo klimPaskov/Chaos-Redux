@@ -261,6 +261,10 @@ Durable-settlement certification revalidates its disarmament and nonterminal con
 
 ## Existing-model runtime contract
 
+**Current user decision, 2026-09-25:** The Portal Raider, alien, and autonomous robot units already have good models. Do not do anything to those models, and do not create any models. This supersedes the model-production directions below for the current Event 016 task. The older directions remain here as historical design context, not an instruction to regenerate, edit, rig, animate, export, or otherwise touch existing 3D packages. Continue non-model gameplay, UI, documentation, and audit work without treating new model production as authorized. No model acceptance or runtime proof is inferred from this scope correction.
+
+### Historical model direction, superseded for this task
+
 The user explicitly answered the closure exception question on 2026-09-08: "Use the new weapon-free regeneration workflow".
 This accepted amendment supersedes the earlier no-regeneration restriction for firearm-bearing clone, robot, Portal Raider, and Alien Infantry bodies.
 Generate weapon-free bodies through Meshy 7, then use GPT-6-astra Blender rigging, weights, separately modeled firearms and held components, and genuine skeletal actions without Meshy rigging or animation submissions.
@@ -280,11 +284,11 @@ If a selected candidate cannot pass an export, firearm, or animation gate, the e
 
 ## Completion and evidence boundary
 
-Closure proceeds through reviewed commits for the contract, technology and API rework, unit and equipment mechanics, raid and strategic-action lifecycles, Directorate and containment, KRG and DHR presentation, existing-model runtime completion, and final evidence and catalog alignment.
+Closure proceeds through reviewed commits for the contract, technology and API rework, unit and equipment mechanics, raid and strategic-action lifecycles, Directorate and containment, KRG and DHR presentation, and final evidence and catalog alignment. The 2026-09-25 user decision removes model creation and changes to existing models from this task's work.
 
 MCP inspection, rendering, comparison, and supported rewrite routes are mandatory for technologies, events, probabilities, focus trees, the Directorate GUI, and relevant maps. Weighted changes require the same named baseline and post-change scenarios. The final planner and mapped auditors run before a near-completion claim.
 
-The repository reaches `ready for user live acceptance` only after every accepted mechanic is wired, old generic-unit identifiers and unresolved asset references are gone, every model package passes its applicable weapon-free rebuild or preserved-geometry recovery gates, required MCP comparisons and audit findings are resolved, and documentation, localisation, manifests, Event Log, Event Details, achievements, super-events, workbook, and exports agree.
+The repository reaches `ready for user live acceptance` only after every accepted non-model mechanic is wired, old generic-unit identifiers and unresolved asset references are gone, required MCP comparisons and audit findings are resolved, and documentation, localisation, manifests, Event Log, Event Details, achievements, super-events, workbook, and exports agree. Any model-package acceptance claim must use existing evidence; this task may not generate that evidence by changing or recreating models.
 An exact recorded blocker preserves the recovery task; it does not satisfy a completion gate or permit a ready-for-acceptance claim.
 
 The agent does not launch Hearts of Iron IV. In-game completion remains subject to the user's acceptance.
