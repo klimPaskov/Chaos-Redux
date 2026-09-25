@@ -39,7 +39,7 @@ Four duplicate or alternate candidates were archived without creating duplicate 
 
 The user identified `6925d2612b927.image_00001.dds` as Erich Traub, and it now replaces the existing Traub runtime DDS under the stable character and sprite contract. `s-l1200_00001.dds` is explicitly ignored and retained as `not_needed` evidence without an identity or runtime assignment.
 
-The durable asset evidence is under `docs/assets/portraits/016_brilliant_scientist/`, with the full manifest at `docs/assets/portraits/016_brilliant_scientist/manifest.md` and the portrait-worker handoff at `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_scientist_portrait_install_2026-08-14.md`.
+At the time of this handoff, the asset evidence was reported under `docs/assets/portraits/016_brilliant_scientist/`, with a full manifest and portrait-worker handoff. The archive is absent from the 2026-09-25 workspace; the later [portrait provenance audit](2026-09-25_cbrn_scientist_portrait_provenance_audit.md) supersedes this handoff's current-evidence claim while preserving its historical installation account.
 
 ## Independent audits
 

@@ -4,8 +4,8 @@
 
 Selected historical scientists already represented in Chaos Redux can serve both as special-project scientists and as named national advisors or theorists.
 
-Each person remains one static character with one identity and one accepted large scientist portrait.
-The advisor role uses a separate 65x67 dossier card generated through the repository advisor workflow.
+Each person remains one static character with one identity and one wired large scientist portrait.
+The advisor role uses a separate wired 65x67 dossier card; its source and review package is unresolved.
 
 ## Roster
 
@@ -51,11 +51,10 @@ Other named scientists remain on the existing generation path.
 
 ## Assets and wiring
 
-The accepted large portraits remain under `gfx/leaders/scientists/` and remain registered by the existing scientist portrait file.
+The large portraits remain under `gfx/leaders/scientists/` and remain registered by the existing scientist portrait file.
 Advisor DDS files live under `gfx/interface/advisors/cbrn/` and are registered by `interface/cbrn_historical_advisors.gfx`.
 Political-advisor cards are assigned through `portraits.civilian.small`; theorist cards are assigned through `portraits.army.small`; the full scientist portrait remains `portraits.army.large`.
-The accepted actual-workflow package contains decoded source portraits, native and 4x review PNGs, the canonical-template composition, explicit transform parameters, source/template/processed/runtime hashes, and an independent visual review under `docs/assets/chaos_warfare_historical_advisors/v2_actual_workflow/`.
-The older top-level card evidence remains preserved for comparison and is not the current production record.
+The previously documented actual-workflow package at `docs/assets/chaos_warfare_historical_advisors/v2_actual_workflow/` is absent from the current workspace. All twelve card sprites and 65x67 DDS files resolve, but their source/template hashes and visual-review record are not independently available. The [2026-09-25 portrait audit](../../plans/chaos_warfare_system_plans/subagent_handoffs/2026-09-25_cbrn_scientist_portrait_provenance_audit.md) records this limit.
 
 ## Future extensions
 
