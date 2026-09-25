@@ -31,14 +31,8 @@ gods_of_africa_participant_category = {
 		activation = { always = no }
 		days_mission_timeout = constant:gods_of_africa_demand.maximum_mission_timeout
 		is_good = no
-		visible = {
-			gods_of_africa_participant_host_is_active = yes
-			gods_of_africa_participant_generation_is_current = yes
-			has_country_flag = gods_of_africa_demand_active
-			NOT = { has_country_flag = gods_of_africa_defiant }
-		}
-		# Response decisions resolve the mission; it is intentionally not an
-		# auto-completing objective. The owner timeout path handles failure.
+		# Owner effects start this timer explicitly. Response decisions resolve
+		# it; disabled availability leaves timeout as the failure path.
 		available = { hidden_trigger = { always = no } }
 		cancel_trigger = {
 			OR = {
@@ -66,12 +60,8 @@ gods_of_africa_participant_category = {
 		activation = { always = no }
 		days_mission_timeout = constant:gods_of_africa_timing.defiance_review_days
 		is_good = no
-		visible = {
-			gods_of_africa_participant_host_is_active = yes
-			gods_of_africa_participant_generation_is_current = yes
-			has_country_flag = gods_of_africa_defiant
-			has_country_flag = gods_of_africa_reconciliation_pending
-		}
+		# Owner effects start this review timer; the host decision and timeout
+		# resolve it, so the mission itself cannot be completed by clicking.
 		available = { hidden_trigger = { always = no } }
 		cancel_trigger = {
 			OR = {
