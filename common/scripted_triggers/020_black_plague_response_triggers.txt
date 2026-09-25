@@ -881,10 +881,11 @@ black_plague_can_pay_warren_purge = {
 black_plague_can_pay_medical_reserve_batch = {
 	black_plague_country_has_response_capacity_two = yes
 	NOT = { has_country_flag = black_plague_medical_reserve_batch_active }
+	# Personnel and trucks must be available for the batch but are not consumed.
 	NOT = { num_of_civilian_factories_available_for_projects < constant:black_plague_medical_reserve_cost.civilian_factories }
-	NOT = { has_manpower < constant:black_plague_medical_reserve_cost.manpower }
+	NOT = { has_manpower < constant:black_plague_medical_reserve_requirements.available_manpower }
 	NOT = { has_equipment = { support_equipment < constant:black_plague_medical_reserve_cost.support_equipment } }
-	NOT = { has_equipment = { motorized_equipment < constant:black_plague_medical_reserve_cost.motorized_equipment } }
+	NOT = { has_equipment = { motorized_equipment < constant:black_plague_medical_reserve_requirements.available_motorized_equipment } }
 	NOT = { has_fuel < constant:black_plague_medical_reserve_cost.fuel }
 	check_variable = {
 		var = black_plague_medical_reserve_room
