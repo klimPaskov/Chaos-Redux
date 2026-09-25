@@ -1,0 +1,25 @@
+# Event 23 reserve-dispersion source availability handoff
+
+Disposition: implemented in a bounded scripted-trigger patch. This handoff records source and documentation evidence, not live-game execution.
+
+## Changed surface and helper map
+
+| Helper | Scope and inputs | Output and side effects | Call site |
+| --- | --- | --- | --- |
+| `sov_nuclear_bombs_event_has_disperse_source` | Soviet country scope from the `available` block of the state-targeted `sov_nuclear_bombs_disperse_reserve_package` decision; `FROM` is its candidate destination state. | True only when an owned, controlled, registered, usable depot with at least one assigned device has a different internal state identity from `FROM`. The helper has no persistent output or side effect. | `common/decisions/023_sov_nuclear_bombs_decisions.txt`, `sov_nuclear_bombs_disperse_reserve_package.available`. |
+
+Before this patch, the helper could count the destination as the only assigned source. After this patch, `check_variable = { var = THIS.id value = FROM.id compare = not_equals }` excludes that state inside the existing `any_owned_state` scan. The decision file needed no call-site change because `available` already invokes the helper while `state_target = yes` supplies `FROM`.
+
+The offline `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md` states that a state-targeted decision supplies its candidate state as `FROM`, including in `available`. `paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md` defines `THIS` as the current scope, `PREV` as the containing scope, `ROOT` as the decision actor, and `FROM` as the targeted decision scope. `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` defines state-scope `id` as the internal state identity and permits scope-qualified variable reads and `check_variable` comparisons. The installed `documentation/triggers_documentation.md` lists both `any_owned_state` in country scope and `check_variable` in any scope. Vanilla `common/scripted_triggers/00_scripted_triggers.txt` compares a current state's `id` inside an `any_state` trigger. Therefore inside this helper, `ROOT` and `PREV` are the Soviet country, `THIS` is each candidate source state, and `FROM` remains the selected destination state. No `event_target:` is needed before the click.
+
+## Constants, targets, cleanup, and migration
+
+No tuning constant or probability weight changed. The existing `sov_nuclear_bombs_ledger.one` threshold remains the source quantity gate. No new flag, variable, event target, or lifecycle path was introduced. On click, the decision still saves `FROM` as global `sov_nuclear_bombs_selected_state`, selects a distinct source, and charges only after the locked-source validation. The existing `sov_nuclear_bombs_clear_disperse_selection` and `sov_nuclear_bombs_clear_selected_state` paths handle invalid selection, completion, and cancellation. The availability change leaves the one-device subtraction and addition in `sov_nuclear_bombs_disperse_reserve` untouched. Migration is one predicate addition in the existing helper and zero call-site edits.
+
+## Validation and limits
+
+Focused source checks confirmed one live call site for `sov_nuclear_bombs_event_has_disperse_source`, that it is inside the state-targeted decision's `available` block, and that the source selector excludes the destination flag before its one-device transfer. The resulting predicate has the intended static cases: one eligible assigned depot that is also the selected destination yields no source; a distinct eligible assigned depot yields a source; an unassigned or invalid distinct depot does not. The owned trigger and existing selector still differ in candidate breadth because the selector uses `random_owned_controlled_state`; this patch preserves the existing conservative availability contract and does not broaden the source pool.
+
+Read-only `hoi4.event_inspect` returned a full workspace scan at revision `f2bef062927c4fa5982bb5f90a0c2de8749b715c4291144927ef0f15269962d2` and a trace requested for `chaosx.nr23.1` at the same revision. Trace artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/69eacd1728f02f79d6604ab9e0977a4072260e4facd07bbb6ce7100d64f9f190/05f32352aad92ed646edcc51f935922465388d5626361165f2073bae30ef7265/event-trace-f2bef062927c.json`. Its diagnostics are workspace-wide and do not establish decision-trigger execution. No task-specific MCP decision availability evaluator or live-game result was available, so the scope conclusion rests on the cited documentation, vanilla precedent, and focused source checks. The parent retains final integration review and the existing Event 23 AI probability audit remains unresolved separately. No simplification or fallback was made in this patch.
+
+Changed files: `common/scripted_triggers/023_sov_nuclear_bombs_event_triggers.txt` and this handoff. Skills used: `chaos-redux-subagents`, `chaos-redux-events`, and `chaos-redux-decisions-missions`; none was changed. No decision ID, localisation key, cost, weight, GUI, event chain, or map data was changed.

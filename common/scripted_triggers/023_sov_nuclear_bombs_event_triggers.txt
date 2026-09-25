@@ -974,9 +974,12 @@ sov_nuclear_bombs_event_has_secure_storage_network = {
 	}
 }
 
+# Country scope in a state-targeted decision: FROM is the destination state.
+# Compare internal state identities so the destination cannot supply itself.
 sov_nuclear_bombs_event_has_disperse_source = {
 	any_owned_state = {
 		is_controlled_by = PREV
+		check_variable = { var = THIS.id value = FROM.id compare = not_equals }
 		sov_nuclear_bombs_state_is_registered = yes
 		NOT = { has_state_flag = sov_nuclear_bombs_site_missing }
 		NOT = { has_state_flag = sov_nuclear_bombs_site_dismantled }
