@@ -2,6 +2,8 @@
 
 Disposition: unresolved. This is current source and MCP evidence for the owner queue, not design acceptance or whole-event completion.
 
+> **Parent reconciliation after this snapshot:** The subsequent explicit collapsed and expanded `kruger_directorate_container` fixtures passed current `hoi4.gui_inspect`/`hoi4.gui_render` at three resolutions with no blocking click-region conflict; see `016_directorate_current_gui_evidence_2026-09-25.md`. The current source also contains four Biological Weapons rows in `common/decisions/016_mengele_biological_stage_decisions.txt` and four Singularity rows in `common/decisions/016_mengele_singularity_stage_decisions.txt`, with matching stage output branches in `common/scripted_effects/016_mengele_project_stage_effects.txt`; the missing-row and refunded-output findings below describe the earlier snapshot. The generic project-board selector contract and broader provider transaction evidence remain unresolved. The user has since directed that no models be created; the Temporal Guard source-recovery action below is canceled.
+
 ## Directorate GUI click regions
 
 The current root is `kruger_directorate_container` in `interface/016_brilliant_scientist_directorate.gui`, attached by `common/scripted_guis/016_brilliant_scientist_directorate_scripted_gui.txt`. The scripted GUI gives the compact and full panels opposing `brilliant_scientist_directorate_gui_collapsed` visibility and opposing open/close click-enabled triggers. The no-runtime-visibility MCP fixture reported a 100% open/close overlap in both named scenarios; setting the country flag alone still reported that overlap because the inspector did not resolve nested panel visibility from the scripted GUI.
