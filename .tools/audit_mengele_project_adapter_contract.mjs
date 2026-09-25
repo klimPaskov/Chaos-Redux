@@ -159,8 +159,14 @@ for(const [f,index]of families)for(const stage of ["theory","deployment","weapon
     a("DLC native needed",!gate(h+"_requirements",{...s,projects:new Set()}));
     a("noDLC predecessor",gate(h+"_requirements",{...s,dlc:false,projects:new Set()}));
   }
-  if(["electronics","rocketry","high_energy"].includes(f)&&stage==="deployment")
-    a("native needed without DLC",!gate(h+"_requirements",{...s,dlc:false,projects:new Set()}));
+  if(["electronics","rocketry","high_energy"].includes(f)&&stage==="deployment"){
+    a("DLC native needed",!gate(h+"_requirements",{...s,projects:new Set()}));
+    a("noDLC predecessor",gate(h+"_requirements",{...s,dlc:false,projects:new Set()}));
+  }
+  if(f==="electronics"&&stage==="weaponization"){
+    a("DLC radar needed",!gate(h+"_requirements",{...s,techs:new Set()}));
+    a("noDLC predecessor",gate(h+"_requirements",{...s,dlc:false,techs:new Set()}));
+  }
 }
 for(const[f]of families)check("initialization",f+" empty uninitialized",
   gate("brilliant_scientist_mengele_"+f+"_decision_receipt_is_empty",{flags:new Set(),active:{}}));
@@ -248,7 +254,10 @@ for(const[f,custom,native]of mapping){
  const id=constants["constant:brilliant_scientist_project_family."+f];
  const make=()=>({valid:true,flags:new Set([theory,proto]),projects:new Set(["sp:sp_brilliant_scientist_"+native]),
    temp:{mengele_event016_native_grant_family:id,brilliant_scientist_project_family:901,
-     mengele_event016_project_family:902,mengele_event016_requested_stage:903},calls:[],grantResult:1});
+     mengele_event016_project_family:902,mengele_event016_requested_stage:903},calls:[],grantResult:1,
+   cloneCompletionCalls:0,effectStubs:{germany_mengele_complete_cloning_project:s=>{
+     s.cloneCompletionCalls++;s.flags.add("germany_mengele_cloning_project_completed");
+   }}});
  for(const mode of ["valid","invalid_owner","no_theory","no_prototype","no_native","neutral_failure","noncustom"]){
    const s=make();if(mode==="invalid_owner")s.valid=false;if(mode==="no_theory")s.flags.delete(theory);
    if(mode==="no_prototype")s.flags.delete(proto);if(mode==="no_native")s.projects.clear();
@@ -259,7 +268,9 @@ for(const[f,custom,native]of mapping){
    check("grant",f+" "+mode+" result",s.temp.mengele_event016_native_operational_grant_applied===(mode==="valid"?1:0));
    check("grant",f+" "+mode+" cleanup",["mengele_event016_native_grant_family","chaosx_custom_technology_family","chaosx_custom_technology_source"].every(k=>s.temp[k]===0));
    check("grant",f+" "+mode+" selector preservation",s.temp.brilliant_scientist_project_family===901&&s.temp.mengele_event016_project_family===902&&s.temp.mengele_event016_requested_stage===903);
-   check("grant",f+" "+mode+" history preservation",JSON.stringify([...s.flags])===JSON.stringify(oldFlags));
+   const expectedFlags=f==="cloning"&&mode==="valid"?[...oldFlags,"germany_mengele_cloning_project_completed"]:oldFlags;
+   check("grant",f+" "+mode+" history preservation",JSON.stringify([...s.flags])===JSON.stringify(expectedFlags));
+   check("grant",f+" "+mode+" dedicated clone completion",s.cloneCompletionCalls===(f==="cloning"&&mode==="valid"?1:0));
    if(expected)check("grant",f+" "+mode+" mapped provenance",s.calls[0][0]===constants["constant:chaosx_custom_technology_family."+custom]&&s.calls[0][1]===constants["constant:mengele_event016_project_stage.provenance_mengele"]);
  }
 }
@@ -280,7 +291,8 @@ const outerKeys=["mengele_event016_project_family","mengele_event016_requested_s
  "mengele_event016_project_output_authorized","mengele_event016_project_availability_reconciled","brilliant_scientist_singularity_component"];
 const makeAdoption=f=>({valid:true,flags:new Set([`mengele_event016_${f}_theory_completed`]),projects:new Set(),
  temp:Object.fromEntries(outerKeys.map((k,i)=>[k,i===0?constants["constant:brilliant_scientist_project_family."+f]:i===1?1:i===3?1:910+i])),
- vars:{mengele_event016_singularity_component_count:0},arrays:{},calls:[],grantResult:1,modifiers:[],refreshes:0,availabilityCalls:0});
+ vars:{mengele_event016_singularity_component_count:0},arrays:{},calls:[],grantResult:1,modifiers:[],refreshes:0,availabilityCalls:0,
+ effectStubs:{germany_mengele_complete_cloning_project:s=>s.flags.add("germany_mengele_cloning_project_completed")}});
 const saved=s=>outerKeys.map(k=>s.temp[k]);
 const equal=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
 for(let mask=0;mask<64;mask++)for(const mode of ["valid","invalid_owner","no_theory"]){

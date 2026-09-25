@@ -4,7 +4,7 @@
 
 `brilliant_scientist_mengele_grant_native_custom_operational_package` is a private country-scope adapter from authenticated Event 016 native Prototype history to the existing neutral seven-family operational technology API.
 It serves the native callback bridge and the parent-owned post-Theory adoption helper.
-It creates no project family, technology, payment, native completion, facility, incident, or public meter.
+It creates no project family, payment, native completion, facility, incident, or public meter; authenticated Cloning completion invokes the existing dedicated Mengele clone effect and may grant its Aryan refinement technology.
 
 ## Input, result, and defaults
 
@@ -42,6 +42,9 @@ Conventional families, Biological Weapons, Singularity, zero, and unrelated fami
 The chosen branch sets `chaosx_custom_technology_family`.
 Immediately before its single neutral API call, it sets `chaosx_custom_technology_source = constant:mengele_event016_project_stage.provenance_mengele`.
 The existing `chaosx_grant_custom_operational_technology` owns idempotent technology installation, neutral provenance, and runtime reconciliation.
+After an authenticated native Cloning grant succeeds, the bridge completes the dedicated Mengele cloning project once, including its clone equipment and revolt readiness effect.
+If the master-race claim exists and Aryan refinement technology is still absent, the same successful grant selects that refinement and its formation template.
+Repeated native callbacks cannot repeat the dedicated completion effect because its completed flag guards it.
 
 The helper clears `chaosx_custom_technology_family`, `chaosx_custom_technology_source`, and its private input `mengele_event016_native_grant_family` on every exit path.
 The neutral API's own result and working variables retain the neutral API's documented lifecycle.
