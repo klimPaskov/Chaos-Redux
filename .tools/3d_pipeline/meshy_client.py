@@ -115,6 +115,9 @@ class MeshyClient:
         self.wrapper = self.repo_root / ".tools" / "3d_pipeline" / "wrappers" / "run_meshy_mcp.cmd"
         if not self.wrapper.exists():
             raise FileNotFoundError(self.wrapper)
+        self.route_lock = json.loads(
+            (self.repo_root / ".tools/3d_pipeline/config/dependencies.lock.json").read_text(encoding="utf-8")
+        )["routes"]["meshy_mcp"]
         if self.job_root is not None:
             self.sequence = len(list((self.job_root / "provider" / "requests").glob("*.json")))
         else:
@@ -140,8 +143,8 @@ class MeshyClient:
             "timestamp": utc_now(),
             "provider": "meshy",
             "server_package": "@meshy-ai/meshy-mcp-server",
-            "server_version": os.environ.get("MESHY_MCP_VERSION", "0.4.0"),
-            "server_compatibility": json.loads((self.repo_root / ".tools/3d_pipeline/config/dependencies.lock.json").read_text(encoding="utf-8"))["routes"]["meshy_mcp"]["compatibility_revision"],
+            "server_version": self.route_lock["version"],
+            "server_compatibility": self.route_lock["compatibility_revision"],
             "tool": tool,
             "paid": paid,
             "request": redacted_arguments,

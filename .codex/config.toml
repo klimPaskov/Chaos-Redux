@@ -15,8 +15,8 @@ startup_timeout_sec = 120
 tool_timeout_sec = 180
 default_tools_approval_mode = "auto"
 
-# Production Meshy route. The wrapper enforces the MESHY_API_KEY hard gate and
-# pins the official server package through MESHY_MCP_VERSION.
+# Production Meshy route. The wrapper enforces the MESHY_API_KEY gate and
+# reads the exact package and SDK versions from the dependency lock.
 [mcp_servers.meshy]
 enabled = true
 required = false
@@ -28,7 +28,7 @@ args = [
   "C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.tools/3d_pipeline/wrappers/run_meshy_mcp.cmd"
 ]
 cwd = "C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux"
-env_vars = ["MESHY_API_KEY", "MESHY_MCP_VERSION"]
+env_vars = ["MESHY_API_KEY"]
 startup_timeout_sec = 120.0
 tool_timeout_sec = 1800.0
 default_tools_approval_mode = "auto"
@@ -107,11 +107,10 @@ enabled_tools = [
 CHAOS_REDUX_MOD_ROOT = "C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux"
 CHAOS_REDUX_3D_JOB_ROOT = "C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/docs/assets/chaos_redux_3d_model_pilots/models_3d"
 
-# Development-only official Blender Lab route. It remains installed and
-# available for controlled diagnostics, but is disabled for production runs
-# because its general code tool is outside the production allowlist.
+# Live Blender authoring route. The production adapter remains the bounded
+# route for unattended processing, export, and reimport.
 [mcp_servers.blender_lab_dev]
-enabled = false
+enabled = true
 required = false
 command = "cmd.exe"
 args = [
@@ -121,10 +120,26 @@ args = [
   "C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.tools/3d_pipeline/wrappers/run_blender_lab_mcp.cmd"
 ]
 cwd = "C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux"
-env_vars = ["MESHY_API_KEY"]
 startup_timeout_sec = 120.0
 tool_timeout_sec = 1800.0
-default_tools_approval_mode = "prompt"
+default_tools_approval_mode = "auto"
+enabled_tools = [
+  "execute_blender_code",
+  "get_blendfile_summary_datablocks",
+  "get_blendfile_summary_missing_files",
+  "get_blendfile_summary_path_info",
+  "get_object_detail_summary",
+  "get_objects_summary",
+  "get_screenshot_of_area_as_image",
+  "get_screenshot_of_window_as_image",
+  "render_thumbnail_to_path",
+  "render_viewport_to_path",
+  "search_api_docs",
+  "search_manual_docs"
+]
+
+[mcp_servers.blender_lab_dev.env]
+BLENDER_MCP_PORT = "9877"
 
 [agents.chaosx_3d_model_pipeline]
 description = "Creates, rigs, animates, processes, exports, audits, and documents bounded Chaos Redux HOI4 3D model packages exclusively through Meshy 7, including Internet-sourced custom-unit sound design and bespoke vanilla-green counter handoffs. Normal planned model and required animation spend is pre-authorized; only failure-driven extra paid recovery requires confirmation."

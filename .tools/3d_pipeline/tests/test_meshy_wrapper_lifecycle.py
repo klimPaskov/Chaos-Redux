@@ -27,7 +27,7 @@ def _meshy_entry() -> Path:
 	lock = json.loads(LOCK_PATH.read_text(encoding="utf-8"))
 	route = lock["routes"]["meshy_mcp"]
 	runtime = REPO_ROOT / ".tmp" / (
-		f"meshy_mcp_compat_v4_{route['version'].replace('.', '_')}_"
+		f"meshy_mcp_native_{route['version'].replace('.', '_')}_"
 		f"sdk_{route['resolved_dependencies']['modelcontextprotocol_sdk']['version'].replace('.', '_')}"
 	)
 	return runtime / "node_modules" / "@meshy-ai" / "meshy-mcp-server" / "dist" / "index.js"

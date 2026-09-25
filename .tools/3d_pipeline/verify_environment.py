@@ -1,27 +1,17 @@
-"""Verify the hard-gated provider and local 3D dependency routes."""
+"""Verify the installed 3D dependency routes against the observed lock."""
 
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import shutil
+import socket
 import subprocess
 import sys
 from pathlib import Path
 from typing import Any, Dict, List
 
-
-if not os.environ.get("MESHY_API_KEY", "").strip():
-    print(
-        "MESHY_API_KEY is missing or blank. Stop. Run this PowerShell command, "
-        "then restart the shell or Codex:\n\n"
-        '[Environment]::SetEnvironmentVariable(\n'
-        '    "MESHY_API_KEY",\n'
-        '    "msy_your_actual_key_here",\n'
-        '    "User"\n'
-        ")\n"
-    )
-    raise SystemExit(2)
 
 PIPELINE_ROOT = Path(__file__).resolve().parent
 REPO_ROOT = PIPELINE_ROOT.parents[1]
@@ -45,7 +35,18 @@ def command_version(command: List[str]) -> str:
 
 
 def main() -> int:
-    probe_meshy = "--probe-meshy" in sys.argv[1:]
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--probe-meshy", action="store_true", help="List tools and read Meshy balance")
+    parser.add_argument("--probe-blender-lab", action="store_true", help="Check the live Lab bridge and tool list")
+    parser.add_argument("--blender-only", action="store_true", help="Skip Meshy runtime checks")
+    parser.add_argument("--report", type=Path, default=PIPELINE_ROOT / "reports/environment_report.json")
+    args = parser.parse_args()
+    if args.blender_only and args.probe_meshy:
+        parser.error("--blender-only and --probe-meshy cannot be combined")
+    if args.probe_meshy and not os.environ.get("MESHY_API_KEY", "").strip():
+        print("MESHY_API_KEY is required only for --probe-meshy. Set it in the environment before probing.")
+        return 2
+    probe_meshy = args.probe_meshy
     lock_path = PIPELINE_ROOT / "config" / "dependencies.lock.json"
     lock = json.loads(lock_path.read_text(encoding="utf-8"))
     findings: List[Dict[str, Any]] = []
@@ -56,8 +57,9 @@ def main() -> int:
         if not ok:
             findings.append({"check": name, "detail": detail})
 
-    npx = shutil.which("npx.exe") or shutil.which("npx")
-    check("npx", bool(npx), npx or "npx.exe not found")
+    if not args.blender_only:
+        npx = shutil.which("npx.exe") or shutil.which("npx")
+        check("npx", bool(npx), npx or "npx.exe not found")
     uv = shutil.which("uv.exe") or shutil.which("uv")
     check("uv", bool(uv), uv or "uv.exe not found")
 
@@ -65,7 +67,7 @@ def main() -> int:
     runtime_slug = meshy_lock["version"].replace(".", "_")
     sdk_lock = meshy_lock["resolved_dependencies"]["modelcontextprotocol_sdk"]
     sdk_slug = sdk_lock["version"].replace(".", "_")
-    meshy_runtime = REPO_ROOT / ".tmp" / f"meshy_mcp_compat_v4_{runtime_slug}_sdk_{sdk_slug}"
+    meshy_runtime = REPO_ROOT / ".tmp" / f"meshy_mcp_native_{runtime_slug}_sdk_{sdk_slug}"
     meshy_manifest = meshy_runtime / "node_modules" / "@meshy-ai" / "meshy-mcp-server" / "package.json"
     sdk_manifest = meshy_runtime / "node_modules" / "@modelcontextprotocol" / "sdk" / "package.json"
     sdk_entries = [sdk_manifest.parent / item for item in sdk_lock["required_entry_points"]]
@@ -94,7 +96,7 @@ def main() -> int:
                 str(sdk_entry),
             )
 
-    if not probe_meshy:
+    if not probe_meshy and not args.blender_only:
         check_meshy_runtime()
 
     adapter_lock = lock["routes"]["blender_hoi4_adapter"]
@@ -131,15 +133,16 @@ def main() -> int:
     check("blender_executable", blender_path.exists(), str(blender_path))
     if blender_path.exists():
         version_text = command_version([str(blender_path), "--version"])
-        check("blender_version", "Blender 5.1.2" in version_text, version_text.splitlines()[:3])
-    blender_shortcut = Path(lock["routes"]["blender"]["shortcut"])
-    blender_launcher = Path(lock["routes"]["blender"]["launcher"])
-    check("blender_shortcut", blender_shortcut.exists(), str(blender_shortcut))
-    check("blender_launcher", blender_launcher.exists(), str(blender_launcher))
+        expected_version = lock["routes"]["blender"]["version"]
+        check("blender_version", f"Blender {expected_version}" in version_text, version_text.splitlines()[:3])
+    for name in ("shortcut", "launcher"):
+        optional_path = lock["routes"]["blender"].get(name)
+        if optional_path:
+            check(f"blender_{name}", Path(optional_path).exists(), optional_path)
 
     blender_project = REPO_ROOT / lock["routes"]["blender_lab_mcp"]["server_project"]
     check("blender_lab_mcp_checkout", (blender_project / "pyproject.toml").exists(), str(blender_project))
-    if blender_project.exists():
+    if (blender_project / "pyproject.toml").exists():
         git_root = blender_project.parent
         commit = command_version(["git", "-C", str(git_root), "rev-parse", "HEAD"])
         check(
@@ -147,42 +150,69 @@ def main() -> int:
             commit == lock["routes"]["blender_lab_mcp"]["commit"],
             {"expected": lock["routes"]["blender_lab_mcp"]["commit"], "actual": commit},
         )
+        project_text = (blender_project / "pyproject.toml").read_text(encoding="utf-8")
+        server_version = lock["routes"]["blender_lab_mcp"]["verified_server_version"]
+        check("blender_lab_mcp_version", f'version = "{server_version}"' in project_text, server_version)
 
-    addon_manifest = Path(
-        "C:/Users/klimp/AppData/Roaming/Blender Foundation/Blender/5.1/"
-        "extensions/lab_blender_org/mcp/blender_manifest.toml"
-    )
+    addon_lock = lock["routes"]["blender_mcp_addon"]
+    addon_manifest = Path(addon_lock["installed_manifest"])
     check("blender_mcp_addon_manifest", addon_manifest.exists(), str(addon_manifest))
     if addon_manifest.exists():
         addon_text = addon_manifest.read_text(encoding="utf-8")
         check(
             "blender_mcp_addon_version",
-            'version = "1.0.0"' in addon_text and 'id = "mcp"' in addon_text,
+            f'version = "{addon_lock["version"]}"' in addon_text
+            and f'id = "{addon_lock["id"]}"' in addon_text,
             str(addon_manifest),
         )
+    if args.probe_blender_lab:
+        port = int(addon_lock["socket_port"])
+        try:
+            with socket.create_connection(("127.0.0.1", port), timeout=3):
+                pass
+            check("blender_lab_bridge", True, f"127.0.0.1:{port}")
+            os.environ["BLENDER_MCP_PORT"] = str(port)
+            lab_wrapper = REPO_ROOT / lock["routes"]["blender_lab_mcp"]["wrapper"]
+            lab_listed = call_stdio(
+                ["cmd.exe", "/d", "/c", "call", str(lab_wrapper)],
+                list_tools=True, timeout_seconds=180, cwd=REPO_ROOT,
+            )
+            lab_tools = {item.get("name") for item in lab_listed.get("tools", [])}
+            check("blender_lab_tools", "execute_blender_code" in lab_tools,
+                  {"tool_count": len(lab_tools), "authoring_tool": "execute_blender_code"})
+        except Exception as exc:
+            check("blender_lab_bridge", False, str(exc))
 
-    io_archive = REPO_ROOT / ".tools" / "3d_pipeline" / "vendor" / "io_pdx_mesh" / "blender-io_pdx_mesh.zip"
+    io_lock = lock["routes"]["io_pdx_mesh"]
+    io_archive = REPO_ROOT / ".tools" / "3d_pipeline" / "vendor" / "io_pdx_mesh" / io_lock["asset"]
     check("io_pdx_mesh_archive", io_archive.exists(), str(io_archive))
     if io_archive.exists():
         digest = sha256_file(io_archive)
         check(
             "io_pdx_mesh_archive_sha256",
-            digest == lock["routes"]["io_pdx_mesh"]["sha256"],
-            {"expected": lock["routes"]["io_pdx_mesh"]["sha256"], "actual": digest},
+            digest == io_lock["sha256"],
+            {"expected": io_lock["sha256"], "actual": digest},
         )
+    compat_archive = REPO_ROOT / io_lock["compat_archive"]
+    compat_hash = sha256_file(compat_archive) if compat_archive.exists() else None
+    check("io_pdx_mesh_compat_archive_sha256", compat_hash == io_lock["compat_archive_sha256"],
+          {"expected": io_lock["compat_archive_sha256"], "actual": compat_hash})
 
-    io_manifest = Path(
-        "C:/Users/klimp/AppData/Roaming/Blender Foundation/Blender/5.1/"
-        "extensions/user_default/io_pdx_mesh/blender_manifest.toml"
-    )
+    io_manifest = Path(io_lock["installed_manifest"])
     check("io_pdx_mesh_installed", io_manifest.exists(), str(io_manifest))
     if io_manifest.exists():
         io_text = io_manifest.read_text(encoding="utf-8")
         check(
             "io_pdx_mesh_version",
-            'id = "io_pdx_mesh"' in io_text and 'version = "0.91.0"' in io_text,
+            f'id = "{io_lock["installed_extension_id"]}"' in io_text
+            and f'version = "{io_lock["version"]}"' in io_text,
             str(io_manifest),
         )
+        for relative, expected in io_lock.get("installed_patch_files_sha256", {}).items():
+            installed_file = io_manifest.parent / relative
+            actual = sha256_file(installed_file) if installed_file.exists() else None
+            check(f"io_pdx_mesh_patch:{relative}", actual == expected,
+                  {"expected": expected, "actual": actual})
 
     meshy_report: Dict[str, Any] = {}
     if probe_meshy:
@@ -224,7 +254,7 @@ def main() -> int:
             )
             meshy_report = {
                 "route": "verified",
-                "server_version": os.environ.get("MESHY_MCP_VERSION", "0.4.0"),
+                "server_version": meshy_lock["version"],
                 "tools": sorted(live_tools),
                 "image_model": "meshy-7",
                 "public_result": _payload(result),
@@ -255,14 +285,14 @@ def main() -> int:
 
     report = {
         "timestamp": utc_now(),
-        "hard_gate": "passed",
+        "hard_gate": "failed" if findings else "passed",
         "repository_root": str(REPO_ROOT),
         "lock": lock,
         "checks": checks,
         "findings": findings,
         "meshy": meshy_report,
     }
-    report_path = PIPELINE_ROOT / "reports" / "environment_report.json"
+    report_path = args.report
     write_json(report_path, report)
     print(json.dumps({"report": str(report_path), "findings": findings}, indent=2))
     return 1 if findings else 0

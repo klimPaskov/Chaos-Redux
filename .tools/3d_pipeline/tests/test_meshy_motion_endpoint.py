@@ -10,6 +10,7 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / ".tools/3d_pipeline"))
 from meshy_client import MeshyClient
+from test_meshy_wrapper_lifecycle import MESHY_ENTRY
 
 
 class MotionTests(unittest.TestCase):
@@ -40,7 +41,7 @@ class MotionTests(unittest.TestCase):
             transport.assert_not_called()
 
     def test_runtime_motion_routes_and_no_paid_retry(self):
-        runtime = ROOT / ".tmp/meshy_mcp_compat_v4_0_4_0_sdk_1_29_0/node_modules/@meshy-ai/meshy-mcp-server/dist"
+        runtime = MESHY_ENTRY.parent
         script = r'''
 import assert from "node:assert/strict";
 import { pathToFileURL } from "node:url";

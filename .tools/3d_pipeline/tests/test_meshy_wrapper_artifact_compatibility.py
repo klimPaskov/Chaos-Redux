@@ -9,10 +9,10 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from test_meshy_wrapper_lifecycle import Probe, REPO_ROOT
+from test_meshy_wrapper_lifecycle import Probe, REPO_ROOT, MESHY_ENTRY
 
 
-RUNTIME = REPO_ROOT / ".tmp" / "meshy_mcp_compat_v4_0_4_0_sdk_1_29_0"
+RUNTIME = MESHY_ENTRY.parents[4]
 TASKS_MODULE = (
 	RUNTIME
 	/ "node_modules"

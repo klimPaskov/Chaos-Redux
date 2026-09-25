@@ -1,4 +1,4 @@
-// Official Text-to-Motion compatibility tools for locked Meshy MCP 0.4.0.
+// Text-to-Motion compatibility tools for the exact Meshy MCP version in the dependency lock.
 // Loaded only by the repository patch; all provider traffic uses its official client.
 import { z } from "zod";
 import fs from "node:fs";

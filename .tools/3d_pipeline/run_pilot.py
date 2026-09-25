@@ -59,6 +59,9 @@ from pack_pdx_material import (  # noqa: E402
 
 STATIC_ASSET_KINDS = {"static", "building", "static_building"}
 REFERENCE_CALIBRATED_ASSET_KINDS = {"humanoid", "creature", "building", "static_building"}
+MESHY_SERVER_VERSION = json.loads(
+    (PIPELINE_ROOT / "config/dependencies.lock.json").read_text(encoding="utf-8")
+)["routes"]["meshy_mcp"]["version"]
 
 
 def task_file(job: Path, stage: str) -> Path:
@@ -178,7 +181,7 @@ def save_task(
         "input_stage": input_stage,
         "provider": {
             "server_package": "@meshy-ai/meshy-mcp-server",
-            "server_version": os.environ.get("MESHY_MCP_VERSION", "0.4.0"),
+            "server_version": MESHY_SERVER_VERSION,
         },
         "recorded_at": utc_now(),
     }
@@ -376,7 +379,7 @@ def provider_task(
             "input_stage": input_stage,
             "provider": {
                 "server_package": "@meshy-ai/meshy-mcp-server",
-                "server_version": os.environ.get("MESHY_MCP_VERSION", "0.4.0"),
+                "server_version": MESHY_SERVER_VERSION,
             },
             "created_at": utc_now(),
         },

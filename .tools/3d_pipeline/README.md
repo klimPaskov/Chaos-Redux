@@ -17,7 +17,7 @@ one approved reference image
 
 For work that calls Meshy, first verify a non-blank `MESHY_API_KEY` environment variable. Blender-only repairs of existing models skip this provider gate.
 
-Meshy model selection is live-route gated. Meshy 7 is the only accepted generation model. Inspect the repository-owned `meshy_image_to_3d` declaration before paid work and pass explicit `ai_model: meshy-7`; the wrapper applies a deterministic compatibility patch when the official Meshy API changes before the published MCP package. Require `tools/list` proof, record the exact provider model, and never use an alias, relabel an older output, or bypass MCP with a hidden REST call.
+Meshy model selection is live-route gated. Meshy 7 is the only accepted generation model. Inspect the repository-owned `meshy_image_to_3d` declaration before paid work and pass explicit `ai_model: meshy-7`; the wrapper applies a deterministic patch for the artifact and motion capabilities this pipeline uses. Require `tools/list` proof, record the exact provider model, and never use an alias, relabel an older output, or bypass MCP with a hidden REST call.
 
 The compatibility patch must be idempotent and UTF-8 stable. Verify it with two consecutive schema probes and reject patched runtime files above the wrapper's size guard. The shared stdio client owns cleanup of descendants created by each exact wrapper process so repeated status polls do not leave provider servers running after the call returns.
 
@@ -59,9 +59,9 @@ From the repository root, verify the selected Meshy MCP route, the pinned offici
 
 The lock and schema evidence surfaces are `.tools/3d_pipeline/config/dependencies.lock.json`, `.tools/3d_pipeline/config/meshy_tool_schema.lock.json`, and `.tools/3d_pipeline/config/blender_hoi4_adapter.json`.
 
-Treat `.tools/3d_pipeline/config/dependencies.lock.json` as the authoritative record for the currently resolved Meshy, Blender, `chaosx_blender_hoi4`, Blender Lab MCP, and `io_pdx_mesh` versions and checksums. Do not duplicate fixed adapter versions in this README because the bootstrap may resolve a newer compatible route.
+Treat `.tools/3d_pipeline/config/dependencies.lock.json` as the authoritative record for the currently verified Meshy, Blender, `chaosx_blender_hoi4`, Blender Lab MCP, and `io_pdx_mesh` versions and checksums. Resolve and verify updates before changing that evidence; there is no one-command repository bootstrap for this stack.
 
-The isolated Blender Lab MCP route is locked at tag `v1.0.0`, commit `03004fd0216bfe5e0a3d9ac9b47d5efadc3d78c4`, with verified server version `1.28.1` in the current dependency lock.
+The current verified installation uses Blender 5.2.2, Blender Lab MCP/add-on 1.0.3, Meshy MCP 0.5.2 with SDK 1.30.1, and io_pdx_mesh 0.91 with a separate Python 3.13 compatibility archive. The lock holds the exact revisions, paths, and checksums. The original io_pdx_mesh release archive remains intact; rebuild its three-site compatibility archive with `python .tools/3d_pipeline/build_io_pdx_py313_compat.py` after verifying the upstream checksum.
 
 Record exact package versions, git heads, route and wrapper identifiers, schema versions, actual tool names, paid flags, required arguments, input exclusivity, adapter arguments, task IDs, response IDs, dependency-lock evidence, and artifact checksums.
 
@@ -77,13 +77,15 @@ Lock the official `@meshy-ai/meshy-mcp-server` and its transitive `@modelcontext
 
 After install and patch, run two consecutive `tools/list` probes and one concurrent probe pair through `wrappers/run_meshy_mcp.cmd`; every response must expose `meshy_image_to_3d` with `meshy-7`, then run a live `meshy_check_balance` probe through the same route. Snapshot process IDs matching the exact wrapper or provider entrypoint before each probe and require that no probe-started ID survives after it; processes belonging to another concurrent task are not leaks and must not be terminated. On Windows, attach each stdio wrapper to a kill-on-close Job Object or equivalent process-tree owner because descendants can outlive JSON-RPC completion; only descendants started by the current probe that remain alive after cleanup fail the health gate.
 
-The existing unattended Meshy route is `wrappers/run_meshy_mcp.cmd`, and the existing unattended Blender route is `wrappers/run_blender_hoi4_adapter.cmd`, which exposes structured job-root-bounded `chaosx_blender_hoi4_*` operations and no arbitrary Blender Python, shell, URL, or unrestricted absolute write path.
+The unattended Meshy route is `wrappers/run_meshy_mcp.cmd`. The official 0.5.2 package exposes Meshy 7; the repository compatibility patch retains the artifact selector and Text-to-Motion tools needed by this pipeline. The unattended Blender route is `wrappers/run_blender_hoi4_adapter.cmd`, which exposes structured job-root-bounded `chaosx_blender_hoi4_*` operations and no arbitrary Blender Python, shell, URL, or unrestricted absolute write path.
 
-A running Blender process is not bridge evidence. Probe `127.0.0.1:<socket_port>` using `blender_mcp_addon.socket_port` from the dependency lock; when the endpoint is absent, start the lock-selected Blender executable hidden with `--background --online-mode --command blender_mcp --host 127.0.0.1 --port <socket_port>`, then reprobe and record the listening process before using the adapter.
+The production adapter launches its own factory-startup background Blender worker for each operation; it does not connect to the Blender Lab socket. The Lab server is the separate live authoring route for components, rigs, weights, and keyframes that the adapter cannot author. Before using Lab, probe `127.0.0.1:<socket_port>` from the lock; when absent, start the locked Blender executable hidden with `--background --online-mode --command blender_mcp --host 127.0.0.1 --port <socket_port>`, then reprobe. The Lab route is enabled in `.codex/config.toml` with an explicit tool allowlist and remains subject to the job and source path boundaries in the 3D skill.
 
 Bones, skin weights, and keyframes produced by live authoring are created and edited only inside that live bridge session, where the model agent works on the approved working checkpoint, reviews the deformation and the motion visually, and saves the accepted result as a job checkpoint. An ingested provider action is checkpointed inside the same job root and reviewed with the same deformation, contact, and role-motion evidence.
 
-Verify the locked Blender Lab MCP version and live interface before using the bridge session for authoring or for isolated development inspection.
+Verify the locked Blender Lab MCP version, installed add-on, live tools, and bridge before authoring. Use the accepted job checkpoint with the adapter for export and reimport.
+
+Run `python .tools/3d_pipeline/verify_environment.py --blender-only --probe-blender-lab --report <task-report.json>` for a Blender-only lock and live bridge check, or `python .tools/3d_pipeline/verify_environment.py --probe-meshy --probe-blender-lab --report <task-report.json>` to include the live Meshy tool and balance probe. Omit `--probe-blender-lab` when only the independent adapter is needed and the Lab bridge is intentionally stopped. Do not rely on a version check alone for release acceptance: after any Blender or io_pdx_mesh update, export both a real skinned `.mesh` and a multi-frame `.anim`, then reimport the resulting bytes and inspect the armature and action. These probes use a temporary copy and leave model sources intact.
 
 Keep viewer, inspector, renderer, and comparison tools read-only, and record an absent capability such as a Technology Tree Viewer rather than inventing one.
 

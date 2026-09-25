@@ -9,17 +9,20 @@ if ([string]::IsNullOrWhiteSpace($env:MESHY_API_KEY)) {
 	throw "MESHY_API_KEY is missing. Stop before starting Meshy."
 }
 
-$packageVersion = if ([string]::IsNullOrWhiteSpace($env:MESHY_MCP_VERSION)) { "0.4.0" } else { $env:MESHY_MCP_VERSION }
 $repoRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot "..\..\..")).Path
 $dependencyLockPath = Join-Path $repoRoot ".tools\3d_pipeline\config\dependencies.lock.json"
 $dependencyLock = Get-Content -LiteralPath $dependencyLockPath -Raw | ConvertFrom-Json
+$packageVersion = $dependencyLock.routes.meshy_mcp.version
+if (-not [string]::IsNullOrWhiteSpace($env:MESHY_MCP_VERSION) -and $env:MESHY_MCP_VERSION -ne $packageVersion) {
+	throw "MESHY_MCP_VERSION differs from the dependency lock."
+}
 $sdkVersion = $dependencyLock.routes.meshy_mcp.resolved_dependencies.modelcontextprotocol_sdk.version
 if ([string]::IsNullOrWhiteSpace($sdkVersion)) {
 	throw "The dependency lock does not define the Meshy MCP SDK compatibility version."
 }
 $runtimeVersionSlug = $packageVersion.Replace(".", "_")
 $sdkVersionSlug = $sdkVersion.Replace(".", "_")
-$runtimeRoot = Join-Path $repoRoot ".tmp\meshy_mcp_compat_v4_${runtimeVersionSlug}_sdk_$sdkVersionSlug"
+$runtimeRoot = Join-Path $repoRoot ".tmp\meshy_mcp_native_${runtimeVersionSlug}_sdk_$sdkVersionSlug"
 $packageRoot = Join-Path $runtimeRoot "node_modules\@meshy-ai\meshy-mcp-server"
 $manifestPath = Join-Path $packageRoot "package.json"
 $sdkManifestPath = Join-Path $runtimeRoot "node_modules\@modelcontextprotocol\sdk\package.json"
@@ -76,71 +79,9 @@ if (
 	}
 }
 
-$constantsPath = Join-Path $packageRoot "dist\constants.js"
-$constantsTypesPath = Join-Path $packageRoot "dist\constants.d.ts"
 $generationToolPath = Join-Path $packageRoot "dist\tools\generation.js"
-$generationSchemaPath = Join-Path $packageRoot "dist\schemas\generation.js"
 $compatibilityPatchPath = Join-Path $PSScriptRoot "patch_meshy_mcp.mjs"
 $utf8NoBom = [System.Text.UTF8Encoding]::new($false)
-
-$constantsText = [System.IO.File]::ReadAllText($constantsPath, $utf8NoBom)
-$constantsPattern = '(?ms)(export var AIModel;\s*\(function \(AIModel\) \{\s*).*?(\s*\}\)\(AIModel \|\| \(AIModel = \{\}\)\);)'
-$constantsMatch = [regex]::Match($constantsText, $constantsPattern)
-if (-not $constantsMatch.Success) {
-	throw "Meshy MCP AI model constants no longer match the compatibility wrapper."
-}
-$constantsReplacement = 'export var AIModel;' + "`n" + '(function (AIModel) {' + "`n" + '    AIModel["MESHY_7"] = "meshy-7";' + "`n" + '    AIModel["LATEST"] = "latest";' + "`n" + '})(AIModel || (AIModel = {}));'
-$constantsText = $constantsText.Remove($constantsMatch.Index, $constantsMatch.Length).Insert($constantsMatch.Index, $constantsReplacement)
-[System.IO.File]::WriteAllText($constantsPath, $constantsText, $utf8NoBom)
-
-$constantsTypesText = [System.IO.File]::ReadAllText($constantsTypesPath, $utf8NoBom)
-$constantsTypesPattern = '(?ms)(export declare enum AIModel \{\s*).*?(\s*\})'
-$constantsTypesMatch = [regex]::Match($constantsTypesText, $constantsTypesPattern)
-if (-not $constantsTypesMatch.Success) {
-	throw "Meshy MCP AI model type declaration no longer matches the compatibility wrapper."
-}
-$constantsTypesReplacement = 'export declare enum AIModel {' + "`n" + '    MESHY_7 = "meshy-7",' + "`n" + '    LATEST = "latest"' + "`n" + '}'
-$constantsTypesText = $constantsTypesText.Remove($constantsTypesMatch.Index, $constantsTypesMatch.Length).Insert($constantsTypesMatch.Index, $constantsTypesReplacement)
-[System.IO.File]::WriteAllText($constantsTypesPath, $constantsTypesText, $utf8NoBom)
-
-$toolText = [System.IO.File]::ReadAllText($generationToolPath, $utf8NoBom)
-$gatePattern = '(?ms)            // (?:hd_texture|Meshy).*?            if \(params\.save_pre_remeshed_model'
-$gateReplacement = @'
-            // Meshy 7 accepts image enhancement. Lighting removal is omitted
-            // because it is not part of the Meshy 7 image-to-3D request.
-            const isMeshy7Image = params.ai_model === "meshy-7" || params.ai_model === "latest" || !params.ai_model;
-            if (isMeshy7Image) {
-                if (params.hd_texture !== undefined) {
-                    request.hd_texture = params.hd_texture;
-                }
-                if (params.image_enhancement !== undefined) {
-                    request.image_enhancement = params.image_enhancement;
-                }
-            }
-            if (params.save_pre_remeshed_model
-'@
-$gateMatch = [regex]::Match($toolText, $gatePattern)
-if (-not $gateMatch.Success) {
-	throw "Meshy MCP image-to-3D parameter gate no longer matches the compatibility wrapper."
-}
-$normalizedGate = $gateReplacement.TrimStart("`r", "`n")
-$toolText = $toolText.Remove($gateMatch.Index, $gateMatch.Length).Insert($gateMatch.Index, $normalizedGate)
-$toolText = [regex]::Replace($toolText, 'meshy-\d+', 'meshy-7')
-$toolText = $toolText.Replace('"meshy-7", "meshy-7", "meshy-7"', '"meshy-7"')
-[System.IO.File]::WriteAllText($generationToolPath, $toolText, $utf8NoBom)
-
-$schemaText = [System.IO.File]::ReadAllText($generationSchemaPath, $utf8NoBom)
-$schemaText = [regex]::Replace($schemaText, 'meshy-\d+', 'meshy-7')
-$schemaText = $schemaText.Replace("'meshy-7', 'meshy-7', or 'latest'", "'meshy-7'")
-$schemaText = $schemaText.Replace("'meshy-7', 'meshy-7', 'meshy-7', or 'latest'", "'meshy-7'")
-[System.IO.File]::WriteAllText($generationSchemaPath, $schemaText, $utf8NoBom)
-
-Get-ChildItem -LiteralPath (Join-Path $packageRoot "dist") -Recurse -Filter "*.js" | ForEach-Object {
-	$runtimeText = [System.IO.File]::ReadAllText($_.FullName, $utf8NoBom)
-	$runtimeText = [regex]::Replace($runtimeText, '(?i)meshy-\d+', 'meshy-7')
-	$runtimeText = [regex]::Replace($runtimeText, 'Meshy \d+', 'Meshy 7')
-	[System.IO.File]::WriteAllText($_.FullName, $runtimeText, $utf8NoBom)
-}
 
 $compatibilityHashesJson = & $nodeExe $compatibilityPatchPath $packageRoot $repoRoot
 if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($compatibilityHashesJson)) {
