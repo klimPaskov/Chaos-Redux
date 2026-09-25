@@ -12,7 +12,7 @@ The contact chain consumes the shared provider-neutral `alien_infantry` package 
 
 The Kruger and KRG gate requires all five operational domains. Alien Arms, Rocketry, and High Energy use their existing operational deployment triggers. Computation and Advanced Materials require Deployment or later and reject suspended, damaged, dismantled, or stolen family ledgers.
 
-The Mengele bridge requires completed Directorate Alien Arms, Materials, and Computation projects together with `rocket_engines` and `atomic_research`. Those two vanilla technologies are the D’Rhondan-specific stand-ins for operational Rocketry and High Energy because the cloned Directorate portfolio has no identical Event 016 stage ledgers for those families. This mapping does not claim an Event 016 deployment receipt.
+The Mengele bridge requires the five learned operational package receipts for Computation, Advanced Materials, Rocketry, High Energy, and Alien Infantry. Project completion markers and ordinary rocket or atomic technologies alone do not authorize the craft. The Kruger and KRG gate retains its separate project-stage checks.
 
 An active or later-appointed Kruger host with `antarctica_success` completes the craft once through `dhrondan_try_apply_antarctic_craft_bypass`. The narrow callers are the existing alien-artifact contact reconcile path and the successful Kruger transfer-recipient reconcile path. Event 036 spacecraft evidence is never read by this bypass.
 
