@@ -14,8 +14,6 @@
 
 @CBRN_DOCTRINE_TECHNOLOGY_GRANT_LEVEL = 1
 # Timed flag fields use the variable form of the shared script constant.
-# The cleanup assignment literal is an existing separate route.
-@CBRN_DOCTRINE_THEATER_CLEANUP_ASSIGNMENT_DAYS = 28
 
 cbrn_doctrine_raise_readiness_to_minimum = {
 	cbrn_refresh_country_mask_snapshot = yes
@@ -72,28 +70,18 @@ cbrn_chaos_warfare_adopt = {
 cbrn_pay_theater_decontamination_assignment = {
 	ROOT = {
 		if = {
-			limit = { cbrn_country_can_pay_theater_decontamination_assignment = yes }
+			limit = {
+				cbrn_country_can_pay_theater_decontamination_assignment = yes
+				cbrn_country_has_theater_decontamination_support_stores = yes
+			}
 			set_temp_variable = { cbrn_hq_family_debit_requested = constant:cbrn_doctrine_cleanup_assignment_cost.decontamination_equipment }
 			cbrn_hq_debit_decontamination_stock_oldest_first = yes
-			set_temp_variable = { cbrn_mask_stock_debit_requested = constant:cbrn_doctrine_cleanup_assignment_cost.gas_masks }
-			cbrn_debit_mask_stockpile_oldest_first = yes
-			set_temp_variable = { cbrn_doctrine_cleanup_support_debit = constant:cbrn_doctrine_cleanup_assignment_cost.support_equipment }
-			multiply_temp_variable = { cbrn_doctrine_cleanup_support_debit = constant:cbrn_doctrine_value.negation_multiplier }
-			add_equipment_to_stockpile = {
-				type = support_equipment_1
-				amount = cbrn_doctrine_cleanup_support_debit
-			}
-			set_temp_variable = { cbrn_motorized_stock_debit_requested = constant:cbrn_doctrine_cleanup_assignment_cost.motorized_equipment }
-			cbrn_debit_motorized_stockpile_oldest_first = yes
 			set_temp_variable = { cbrn_doctrine_cleanup_fuel_debit = constant:cbrn_doctrine_cleanup_assignment_cost.fuel }
 			multiply_temp_variable = { cbrn_doctrine_cleanup_fuel_debit = constant:cbrn_doctrine_value.negation_multiplier }
 			add_fuel = cbrn_doctrine_cleanup_fuel_debit
 			set_temp_variable = { cbrn_doctrine_cleanup_command_power_debit = constant:cbrn_doctrine_cleanup_assignment_cost.command_power }
 			multiply_temp_variable = { cbrn_doctrine_cleanup_command_power_debit = constant:cbrn_doctrine_value.negation_multiplier }
 			add_command_power = cbrn_doctrine_cleanup_command_power_debit
-			set_temp_variable = { cbrn_doctrine_cleanup_political_power_debit = constant:cbrn_doctrine_cleanup_assignment_cost.political_power }
-			multiply_temp_variable = { cbrn_doctrine_cleanup_political_power_debit = constant:cbrn_doctrine_value.negation_multiplier }
-			add_political_power = cbrn_doctrine_cleanup_political_power_debit
 			set_country_flag = cbrn_doctrine_cleanup_assignment_paid
 		}
 	}
@@ -103,6 +91,13 @@ cbrn_apply_theater_decontamination_assignment = {
 	ROOT = { cbrn_pay_theater_decontamination_assignment = yes }
 	if = {
 		limit = { ROOT = { has_country_flag = cbrn_doctrine_cleanup_assignment_paid } }
+		ROOT = {
+			set_temp_variable = { cbrn_cleanup_assignment_days = constant:cbrn_doctrine_timing.theater_cleanup_assignment_days }
+			set_country_flag = {
+				flag = cbrn_hq_decontamination_assignment_committed
+				days = var:cbrn_cleanup_assignment_days
+			}
+		}
 		cbrn_apply_theater_decontamination_assignment_paid = yes
 	}
 	ROOT = { clr_country_flag = cbrn_doctrine_cleanup_assignment_paid }
@@ -171,9 +166,10 @@ cbrn_apply_theater_decontamination_assignment_paid = {
 		add_to_variable = { cbrn_doctrine_cleanup_points_total = cbrn_doctrine_cleanup_completed }
 	}
 
+	set_temp_variable = { cbrn_cleanup_assignment_days = constant:cbrn_doctrine_timing.theater_cleanup_assignment_days }
 	set_state_flag = {
 		flag = cbrn_hq_decontamination_corridor_assigned
-		days = @CBRN_DOCTRINE_THEATER_CLEANUP_ASSIGNMENT_DAYS
+		days = var:cbrn_cleanup_assignment_days
 	}
 }
 

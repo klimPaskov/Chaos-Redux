@@ -14,6 +14,8 @@ The raid interface has exactly two CBRN categories: **Chemical Raids** and **Bio
 
 Military and civilian mask issue is automatic and debits actual stock. Civil Defence decisions appear for a real threat, outbreak, contamination, or response need. No world-wide periodic country iteration is authorized.
 
+The exact-state theater decontamination assignment has three upfront payments and separate non-consumed support-stock requirements, as specified in [`../corrections/2026-09-25_theater_decontamination_cost.md`](../corrections/2026-09-25_theater_decontamination_cost.md). This follows the accepted shorter-loop and readable-cost requirements without changing its contamination output.
+
 The six headquarters roles consolidate to **Operations and Intelligence**, **Protection and Decontamination**, and **Medical and Biosecurity**. Division support uses one **Protection Company** and one **Field Medical Company**; nerve suppression is an upgrade within the accepted structure. Remove eighteen agent-specific chemical-tank companies and retain three armored chassis roles.
 
 The fully combined legal CBRN bonuses are capped at army attack and organisation +5% each, planning +15%, coordination +8%, reinforce chance +2 percentage points, and conventional attack, defense, and breakthrough +15% per stat. Dedicated CBRN static bonuses cap at +35% and conditional hazard bonuses at +50%. Artillery doctrine conventional soft attack caps at +10%. Technology costs use the 50%, 75%, and 100% relative cost bands. These are combined caps, not a separate allowance for each source.

@@ -153,7 +153,7 @@ The shared exposure calculation applies this value only to the Condemnation base
 
 An active Army HQ Decontamination Corridor plus Theater Exploitation exposes a state-targeted assignment decision. It requires a controlled state with actual chemical contamination and permits one national assignment every 28 days.
 
-Each assignment is paid at the point of use. It costs 5 Political Power, 4 Command Power, 40 Decontamination Equipment, 100 Gas Masks, 20 Support Equipment, 2 Motorized Equipment, and 300 Fuel. Decontamination stock, masks, and motorized equipment are debited from their oldest available models, while support equipment, fuel, and command power use their native stockpiles. A shortage prevents the assignment from starting; the assignment does not create free cleanup capacity.
+Each assignment spends 4 Command Power, 40 Decontamination Equipment, and 300 Fuel at deployment. The column also needs at least 100 Gas Masks, 20 Support Equipment, and 2 Motorized Equipment in the stockpile, but it does not consume those support stores for the assignment. Decontamination stock is debited from the oldest available model. The decision requires both the payment and support stores before dispatch; a failed payment applies neither cleanup nor the 28-day national lock.
 
 Cleanup output depends on the current contamination class:
 
@@ -162,7 +162,7 @@ Cleanup output depends on the current contamination class:
 - Severe: 5 points
 - Catastrophic: 3 points.
 
-The current Theater Contamination source multiplier for this output is 1.10 before the compatible MIO cleanup factors shown above. The effect calls the state contamination ledger and records only the amount actually removed. It does not erase evidence, attribution, deaths, Condemnation, or confirmed-use history. The national assignment lock preserves the exact-state boundary; its current duration requires source and engine review before acceptance.
+The current Theater Contamination source multiplier for this output is 1.10 before the compatible MIO cleanup factors shown above. The effect calls the state contamination record and records only the amount actually removed. It does not erase evidence, attribution, deaths, Condemnation, or confirmed-use history. The national and selected-state assignment locks use the same 28-day tuning constant; their in-game expiration remains a live validation item.
 
 ## Officer corps and high command
 
