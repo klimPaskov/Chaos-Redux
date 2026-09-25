@@ -198,46 +198,24 @@ set_temp_variable = { cbrn_requested_use_policy = constant:cbrn_use_policy.battl
 cbrn_set_use_policy = yes
 ```
 
-## cbrn_set_chemical_readiness_cap
+## cbrn_refresh_country_readiness_status
 
-Sets an institutional Chemical Readiness cap and immediately brings current readiness inside it.
+Derives Chemical Readiness from current military mask coverage, decontamination capacity, protective-equipment research, and Chaos Warfare specialization.
 
 Scope: country.
 
-Input: temporary `cbrn_requested_readiness_cap`.
+Inputs: current protection snapshot variables and researched technologies.
 
-Defaults: an absent input changes nothing; country data is initialized first.
+Defaults: the status is recalculated from available coverage and training; callers do not supply a purchased readiness delta.
 
-Outputs: persistent `chemical_readiness_cap` and possibly reduced `chemical_readiness`.
+Outputs: persistent `chemical_readiness` and the full-scale `chemical_readiness_cap`, bounded to the 0–100 meter.
 
-Side effects: both values are bounded to 0 through 100. Milestone, institution, equipment, and HQ callers own the requested cap.
+Side effects: none outside the current country. Normal callers refresh the country mask snapshot, which invokes this derivation after stockpile and issue changes.
 
 Example:
 
 ```txt
-set_temp_variable = { cbrn_requested_readiness_cap = constant:cbrn_readiness.operational_cap }
-cbrn_set_chemical_readiness_cap = yes
-```
-
-## cbrn_modify_chemical_readiness
-
-Adds a signed readiness change without allowing the value to exceed its institutional cap or fall below zero.
-
-Scope: country.
-
-Input: temporary `cbrn_readiness_delta`.
-
-Defaults: an absent input changes nothing; country data is initialized first.
-
-Output: persistent `chemical_readiness`.
-
-Side effects: none outside the current country.
-
-Example:
-
-```txt
-set_temp_variable = { cbrn_readiness_delta = 5 }
-cbrn_modify_chemical_readiness = yes
+cbrn_refresh_country_mask_snapshot = yes
 ```
 
 ## cbrn_calculate_action_protection

@@ -27,38 +27,6 @@ cbrn_apply_historical_actor_chemical_advisor_modifiers = {
 	}
 }
 
-# Country scope. Adjusts the local readiness delta without changing caller data.
-cbrn_apply_historical_readiness_advisor_modifiers = {
-	if = {
-		limit = {
-			has_idea_with_trait = chaos_warfare_chemical_theorist_trait
-			check_variable = { cbrn_readiness_delta_local > constant:cbrn_math.zero }
-		}
-		multiply_temp_variable = { cbrn_readiness_delta_local = constant:cbrn_historical_advisor.chemical_theorist_readiness_gain_mult }
-	}
-	else_if = {
-		limit = {
-			has_idea_with_trait = chaos_warfare_chemical_theorist_trait
-			check_variable = { cbrn_readiness_delta_local < constant:cbrn_math.zero }
-		}
-		multiply_temp_variable = { cbrn_readiness_delta_local = constant:cbrn_historical_advisor.chemical_theorist_readiness_cost_mult }
-	}
-	if = {
-		limit = {
-			has_idea_with_trait = cbrn_toxicological_weaponization_director_trait
-			check_variable = { cbrn_readiness_delta_local > constant:cbrn_math.zero }
-		}
-		multiply_temp_variable = { cbrn_readiness_delta_local = constant:cbrn_historical_advisor.toxicological_director_readiness_gain_mult }
-	}
-	else_if = {
-		limit = {
-			has_idea_with_trait = cbrn_toxicological_weaponization_director_trait
-			check_variable = { cbrn_readiness_delta_local < constant:cbrn_math.zero }
-		}
-		multiply_temp_variable = { cbrn_readiness_delta_local = constant:cbrn_historical_advisor.toxicological_director_readiness_cost_mult }
-	}
-}
-
 # Country scope. The exact target state event target must already exist.
 cbrn_apply_historical_target_chemical_advisor_modifiers = {
 	set_temp_variable = { cbrn_action_historical_medical_saturation_mult = constant:cbrn_math.one }

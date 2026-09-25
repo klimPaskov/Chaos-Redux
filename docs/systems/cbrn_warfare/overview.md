@@ -33,7 +33,7 @@ Military mask accounting keeps two native surfaces distinct: protection reads ac
 
 ### National
 
-- Chemical Readiness, 0 to 100, capped by actual milestones and institutions
+- Chemical Readiness, a 0–100 output derived from military mask coverage, decontamination capacity, protective research, and specialization
 - one of three use policies: Retaliation Only, Battlefield Authorization, or Unrestricted Authorization
 - decontamination, medical, biological-security, attribution-control, and command-integration capacities
 - real protective and offensive stockpiles
