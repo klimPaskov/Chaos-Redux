@@ -32,7 +32,7 @@ Shared resource reserve fields are requirements owned by the parent adapter, not
 ## Component integrity helper
 
 `brilliant_scientist_mengele_singularity_components_are_complete` is a read-only country-scope trigger with no parameters, defaults, writes, or event targets.
-Its input is the private component count and six private completion flags, and its output is true only when the count equals the shared six-component total and all command-core, power-link, containment-lattice, temporal-authenticator, delivery-architecture, and fail-deadly-governor flags exist.
+Its input is the private component array, its derived count, and six private completion flags, and its output is true only when both lengths equal the shared six-component total and all command-core, power-link, containment-lattice, temporal-authenticator, delivery-architecture, and fail-deadly-governor flags exist.
 The Singularity Prototype predecessor branch and authenticated native completion branch both call it.
 Five flags fail both gates even when the count says six, and a wrong count fails even when all six flags exist.
 
@@ -86,7 +86,11 @@ Source inventory and scenario evidence are in `docs/plans/016_brilliant_scientis
 Rocketry accepts either Flying Bomb or Air Jet Engine completion, matching its native alternative-project gate; it does not require both.
 Biological Weapons authenticates its existing native-project alternatives.
 
-`brilliant_scientist_mengele_record_native_project_prototype` accepts a private family selector or copies the existing native family selector, then routes all ordinary families through the generic adapter. `brilliant_scientist_mengele_record_singularity_component` authenticates the exact component selector and native special project, records its provider component flag once, and records the Singularity Prototype only after all six components are present. It does not call the Kruger component registry or create Kruger history.
+`brilliant_scientist_mengele_record_native_project_prototype` accepts a private family selector or copies the existing native family selector, then routes all ordinary families through the generic adapter.
+`brilliant_scientist_mengele_record_singularity_component` authenticates the exact component selector and native special project, appends that component to the private array only when absent, derives the count from the array, sets its provider completion flag, and records the Singularity Prototype only after all six components are present.
+Its result marker stays false for an already recorded component; a duplicate callback cannot create another receipt.
+Initialization reconstructs the array once from durable provider component flags when migrating an earlier provider receipt schema.
+It does not call the Kruger component registry or create Kruger history.
 
 The bridge effect `brilliant_scientist_record_mengele_project_prototype` invokes the native adapter for Electronics, Rocketry, High Energy, Cloning, Biological Weapons, and all previously supported families. Custom native families then receive the existing custom operational API. `brilliant_scientist_record_mengele_singularity_component` is available for the parent Strategic Singularity output branch.
 

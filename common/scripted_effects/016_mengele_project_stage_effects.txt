@@ -33,16 +33,18 @@ brilliant_scientist_mengele_initialize_project_stage_receipts = {
 	}
 	set_country_flag = mengele_event016_provider_receipts_initialized
 	if = {
-		limit = { NOT = { has_country_flag = mengele_event016_singularity_components_initialized } }
-		# Recover the derived count from authentic private flags without erasing them.
-		set_variable = { mengele_event016_singularity_component_count = constant:brilliant_scientist_value.zero }
-		if = { limit = { has_country_flag = mengele_event016_singularity_command_core_completed } add_to_variable = { mengele_event016_singularity_component_count = constant:brilliant_scientist_value.one } }
-		if = { limit = { has_country_flag = mengele_event016_singularity_power_link_completed } add_to_variable = { mengele_event016_singularity_component_count = constant:brilliant_scientist_value.one } }
-		if = { limit = { has_country_flag = mengele_event016_singularity_containment_lattice_completed } add_to_variable = { mengele_event016_singularity_component_count = constant:brilliant_scientist_value.one } }
-		if = { limit = { has_country_flag = mengele_event016_singularity_temporal_authenticator_completed } add_to_variable = { mengele_event016_singularity_component_count = constant:brilliant_scientist_value.one } }
-		if = { limit = { has_country_flag = mengele_event016_singularity_delivery_architecture_completed } add_to_variable = { mengele_event016_singularity_component_count = constant:brilliant_scientist_value.one } }
-		if = { limit = { has_country_flag = mengele_event016_singularity_fail_deadly_governor_completed } add_to_variable = { mengele_event016_singularity_component_count = constant:brilliant_scientist_value.one } }
+		limit = { NOT = { has_country_flag = mengele_event016_singularity_component_entries_initialized } }
+		# Rebuild the private array from durable native receipts when upgrading the provider schema.
+		clear_array = mengele_event016_singularity_component_entries
+		if = { limit = { has_country_flag = mengele_event016_singularity_command_core_completed } add_to_array = { array = mengele_event016_singularity_component_entries value = constant:brilliant_scientist_singularity_component.command_core } }
+		if = { limit = { has_country_flag = mengele_event016_singularity_power_link_completed } add_to_array = { array = mengele_event016_singularity_component_entries value = constant:brilliant_scientist_singularity_component.power_link } }
+		if = { limit = { has_country_flag = mengele_event016_singularity_containment_lattice_completed } add_to_array = { array = mengele_event016_singularity_component_entries value = constant:brilliant_scientist_singularity_component.containment_lattice } }
+		if = { limit = { has_country_flag = mengele_event016_singularity_temporal_authenticator_completed } add_to_array = { array = mengele_event016_singularity_component_entries value = constant:brilliant_scientist_singularity_component.temporal_authenticator } }
+		if = { limit = { has_country_flag = mengele_event016_singularity_delivery_architecture_completed } add_to_array = { array = mengele_event016_singularity_component_entries value = constant:brilliant_scientist_singularity_component.delivery_architecture } }
+		if = { limit = { has_country_flag = mengele_event016_singularity_fail_deadly_governor_completed } add_to_array = { array = mengele_event016_singularity_component_entries value = constant:brilliant_scientist_singularity_component.fail_deadly_governor } }
+		set_variable = { mengele_event016_singularity_component_count = mengele_event016_singularity_component_entries^num }
 		set_country_flag = mengele_event016_singularity_components_initialized
+		set_country_flag = mengele_event016_singularity_component_entries_initialized
 	}
 }
 
@@ -1417,13 +1419,18 @@ brilliant_scientist_mengele_record_singularity_component = {
 	if = {
 		limit = { brilliant_scientist_mengele_singularity_component_native_output_is_authentic = yes }
 		brilliant_scientist_mengele_initialize_project_stage_receipts = yes
-		if = { limit = { check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.command_core compare = equals } NOT = { has_country_flag = mengele_event016_singularity_command_core_completed } } set_country_flag = mengele_event016_singularity_command_core_completed add_to_variable = { mengele_event016_singularity_component_count = constant:brilliant_scientist_value.one } set_temp_variable = { mengele_event016_native_component_recorded = constant:brilliant_scientist_value.one } }
-		if = { limit = { check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.power_link compare = equals } NOT = { has_country_flag = mengele_event016_singularity_power_link_completed } } set_country_flag = mengele_event016_singularity_power_link_completed add_to_variable = { mengele_event016_singularity_component_count = constant:brilliant_scientist_value.one } set_temp_variable = { mengele_event016_native_component_recorded = constant:brilliant_scientist_value.one } }
-		if = { limit = { check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.containment_lattice compare = equals } NOT = { has_country_flag = mengele_event016_singularity_containment_lattice_completed } } set_country_flag = mengele_event016_singularity_containment_lattice_completed add_to_variable = { mengele_event016_singularity_component_count = constant:brilliant_scientist_value.one } set_temp_variable = { mengele_event016_native_component_recorded = constant:brilliant_scientist_value.one } }
-		if = { limit = { check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.temporal_authenticator compare = equals } NOT = { has_country_flag = mengele_event016_singularity_temporal_authenticator_completed } } set_country_flag = mengele_event016_singularity_temporal_authenticator_completed add_to_variable = { mengele_event016_singularity_component_count = constant:brilliant_scientist_value.one } set_temp_variable = { mengele_event016_native_component_recorded = constant:brilliant_scientist_value.one } }
-		if = { limit = { check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.delivery_architecture compare = equals } NOT = { has_country_flag = mengele_event016_singularity_delivery_architecture_completed } } set_country_flag = mengele_event016_singularity_delivery_architecture_completed add_to_variable = { mengele_event016_singularity_component_count = constant:brilliant_scientist_value.one } set_temp_variable = { mengele_event016_native_component_recorded = constant:brilliant_scientist_value.one } }
-		if = { limit = { check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.fail_deadly_governor compare = equals } NOT = { has_country_flag = mengele_event016_singularity_fail_deadly_governor_completed } } set_country_flag = mengele_event016_singularity_fail_deadly_governor_completed add_to_variable = { mengele_event016_singularity_component_count = constant:brilliant_scientist_value.one } set_temp_variable = { mengele_event016_native_component_recorded = constant:brilliant_scientist_value.one } }
-		set_temp_variable = { mengele_event016_native_component_recorded = constant:brilliant_scientist_value.one }
+		if = {
+			limit = { NOT = { is_in_array = { array = mengele_event016_singularity_component_entries value = brilliant_scientist_singularity_component } } }
+			add_to_array = { array = mengele_event016_singularity_component_entries value = brilliant_scientist_singularity_component }
+			set_variable = { mengele_event016_singularity_component_count = mengele_event016_singularity_component_entries^num }
+			if = { limit = { check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.command_core compare = equals } } set_country_flag = mengele_event016_singularity_command_core_completed }
+			else_if = { limit = { check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.power_link compare = equals } } set_country_flag = mengele_event016_singularity_power_link_completed }
+			else_if = { limit = { check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.containment_lattice compare = equals } } set_country_flag = mengele_event016_singularity_containment_lattice_completed }
+			else_if = { limit = { check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.temporal_authenticator compare = equals } } set_country_flag = mengele_event016_singularity_temporal_authenticator_completed }
+			else_if = { limit = { check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.delivery_architecture compare = equals } } set_country_flag = mengele_event016_singularity_delivery_architecture_completed }
+			else_if = { limit = { check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.fail_deadly_governor compare = equals } } set_country_flag = mengele_event016_singularity_fail_deadly_governor_completed }
+			set_temp_variable = { mengele_event016_native_component_recorded = constant:brilliant_scientist_value.one }
+		}
 		if = {
 			limit = {
 				brilliant_scientist_mengele_singularity_components_are_complete = yes
