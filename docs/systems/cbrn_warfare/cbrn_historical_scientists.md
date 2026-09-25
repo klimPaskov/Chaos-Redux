@@ -104,7 +104,7 @@ Each relevant grant recruits the prewar/established characters exactly once afte
 
 Prewar and established 1939 expertise is available at scenario start, while later wartime identities enter the scientist pool on their documented dates. Scientist availability remains separate from offensive authorization.
 
-The dual-role advisor cards use current-date gates for documented appointments: Paul Fildes after 1 January 1939, Gerhard Schrader after 31 December 1936, Kurt Blome after 1 January 1942, Masaji Kitano after 1 January 1942, Franciszek Witaszek after 1 September 1939, Grigory Mairanovsky after 1 January 1937, Frank Olson after 1 January 1943, and Ira Baldwin after 1 January 1942.
+The dual-role advisor cards use current-date gates for documented appointments: Paul Fildes from 1 January 1940, Gerhard Schrader after 31 December 1936, Kurt Blome after 1 January 1942, Masaji Kitano after 1 January 1942, Franciszek Witaszek after 1 September 1939, Grigory Mairanovsky after 1 January 1937, Frank Olson after 1 January 1943, and Ira Baldwin after 1 January 1942. Fildes remains available as a scientist at the 1939 bookmark; only his Porton Down biological-warfare advisor appointment waits for the department's 1940 establishment.
 
 Howard Florey and Alexander Fleming remain available as medical countermeasure advisors, while Shiro Ishii and Ivan Mikhailovich Velikanov remain available for their established pre-war command or research roles.
 
