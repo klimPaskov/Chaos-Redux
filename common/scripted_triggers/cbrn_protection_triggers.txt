@@ -424,6 +424,18 @@ cbrn_state_has_emergency_context = {
 	}
 }
 
+cbrn_state_needs_civilian_decontamination = {
+	state_population_k > constant:cbrn_math.zero
+	OR = {
+		cbrn_state_has_emergency_context = yes
+		AND = {
+			has_variable = cbrn_civilian_mask_crates
+			check_variable = { cbrn_civilian_mask_crates > constant:cbrn_math.zero }
+			controller = { cbrn_country_faces_enemy_chemical_capability = yes }
+		}
+	}
+}
+
 cbrn_state_can_receive_emergency_masks = {
 	is_controlled_by = ROOT
 	state_population_k > constant:cbrn_math.zero

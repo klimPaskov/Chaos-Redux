@@ -23,6 +23,7 @@ on_actions = {
 	# ROOT is the new controller, FROM is the old controller, and FROM.FROM is
 	# the transferred state. Distributed masks remain in the state, suffer
 	# turnover/occupation loss, and never return to either national reserve.
+	# A threatened state's field-kit demand is reassigned even without masks.
 	on_state_control_changed = {
 		effect = {
 			# An undelivered state receipt belongs to its original supplier even
@@ -52,6 +53,18 @@ on_actions = {
 					ROOT = { save_event_target_as = cbrn_new_state_controller }
 					FROM = { save_event_target_as = cbrn_old_state_controller }
 					FROM.FROM = { cbrn_transfer_state_civilian_mask_ledger = yes }
+				}
+				# A threatened state can change hands without carrying any issued
+				# civilian masks. Recalculate both country kit pools in that case too.
+				if = {
+					limit = {
+						FROM.FROM = {
+							cbrn_state_has_emergency_context = yes
+							NOT = { check_variable = { cbrn_civilian_mask_crates > constant:cbrn_math.zero } }
+						}
+					}
+					FROM = { cbrn_refresh_country_civilian_decontamination_pool = yes }
+					ROOT = { cbrn_refresh_country_civilian_decontamination_pool = yes }
 				}
 			}
 		}

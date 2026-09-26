@@ -608,9 +608,9 @@ cbrn_refresh_country_mask_snapshot = yes
 
 ### cbrn_refresh_state_civilian_mask_snapshot
 
-Rebuilds one state's effective civilian protection from population, distributed model crates, fitting points, filter condition, registration, civil-defence institutions, exact-state alert choices, and the controller's medical/decontamination capacity. Fitting- and filter-adjusted coverage continues to measure the share of the population reached; each respiratory, skin, or warning protection component uses the lower of that coverage and the weighted model-quality score. Partial issue therefore remains valuable while full basic issue cannot exceed its accepted 55-point respiratory ceiling.
+Rebuilds one state's effective civilian protection from population, distributed model crates, fitting points, filter condition, registration, civil-defence institutions, exact-state alert choices, the controller's medical capacity, and its current stock-backed civilian decontamination fraction. Fitting- and filter-adjusted coverage continues to measure the share of the population reached; each respiratory, skin, or warning protection component uses the lower of that coverage and the weighted model-quality score. Partial issue therefore remains valuable while full basic issue cannot exceed its accepted 55-point respiratory ceiling.
 
-Scope: state. Inputs: persistent state ledger and current controller. Defaults: zero coverage when population or usable stock is zero. Outputs include raw and effective coverage, respiratory/skin/warning protection, decontamination and medical protection, and `cbrn_civilian_mask_effective_coverage`. Side effects: only derived state variables are rewritten.
+Scope: state. Inputs: persistent state ledger and current controller. Defaults: zero coverage when population or usable stock is zero; civilian cleanup is zero without an exact emergency or a mask-equipped state facing an enemy chemical capability, researched field kits, and a positive shared equipment fraction. Outputs include raw and effective coverage, respiratory/skin/warning protection, decontamination and medical protection, and `cbrn_civilian_mask_effective_coverage`. Side effects: only derived state variables are rewritten.
 
 Example:
 
@@ -620,11 +620,27 @@ event_target:cbrn_action_target_state = {
 }
 ```
 
+### cbrn_calculate_state_civilian_decontamination_requirement
+
+Scope: state. Inputs: population, exact alert or contamination, and any pre-issued civilian masks under an enemy chemical threat. Defaults: zero without an actual state emergency or that preparation. Output: `cbrn_civilian_decontamination_requirement_kits`, rounded upward from one kit per 100,000 people. Side effects: rewrites only that derived state requirement.
+
+### cbrn_refresh_country_civilian_decontamination_pool
+
+Scope: country. Inputs: live decontamination-equipment stock, kits in armies, deployed-army manpower, controlled states, exact alerts, contamination, and Field Decontamination Kits research. Defaults: zero usable civilian coverage without research or eligible demand. Outputs: stockpile kits, actual stock reserved for any uncovered army requirement, remaining civilian kits, combined threatened-state demand, coverage fraction, and shortage. It applies that same fraction to each eligible state's demand, so allocations across states cannot exceed the shared stock. Side effects: refreshes derived country and controlled-state variables; it does not move or spend kits. The existing country maintenance event, exact-alert changes, control transfer, and action resolver call it without a worldwide pulse.
+
+```txt
+cbrn_refresh_country_civilian_decontamination_pool = yes
+```
+
+### cbrn_refresh_state_civilian_decontamination_snapshot
+
+Scope: state. Inputs: current controller's pooled coverage and institutional cleanup capacity. Defaults: zero if the state lacks an emergency or prior mask issue against an enemy chemical capability, or if the controller lacks Field Decontamination Kits research. Outputs: population-scaled demand, proportional kit allocation, and equipment-limited decontamination protection. Side effects: rewrites derived state variables without debiting equipment.
+
 ### cbrn_resolve_action_target_protection
 
 Resolves both military and civilian protection for the exact `cbrn_action_target_state`, then runs the shared agent-class calculator for each population.
 
-Scope: attacker-country action chain. Required input: a valid regular event target `cbrn_action_target_state` plus `cbrn_action_agent_class`. Defaults: invalid or missing protection data leaves the final proof missing. Outputs: military and civilian effective protection, casualty/disruption/contamination multipliers, and `cbrn_action_protection_resolved_proof`. Side effects: refreshes only target/controller snapshot variables and consumes no equipment.
+Scope: attacker-country action chain. Required input: a valid regular event target `cbrn_action_target_state` plus `cbrn_action_agent_class`. Defaults: invalid or missing protection data leaves the final proof missing. Outputs: military and civilian effective protection, casualty/disruption/contamination multipliers, and `cbrn_action_protection_resolved_proof`. Side effects: refreshes the controller's live civilian kit pool before the exact target snapshot, then reads the military and civilian layers without consuming equipment.
 
 Example:
 
@@ -638,7 +654,7 @@ cbrn_resolve_action_target_protection = yes
 
 These country effects record that a post-start research, doctrine, special project, or incident has made the corresponding native decision family relevant. Starting capabilities are deliberately not treated as presentation permission.
 
-Scope: country. Inputs: none. Defaults: repeated calls are idempotent. Outputs: the matching country visibility flag. Side effects: decision-category visibility only; no capability, stock, readiness, or consequence value changes.
+Scope: country. Inputs: none. Defaults: repeated calls are idempotent. Outputs: the matching country visibility flag. The protection-surface variant also starts the existing bounded maintenance job so Field Decontamination Kits research can support civilian allocation without prior mask research. No variant grants equipment, readiness, or a consequence value.
 
 ### cbrn_hide_inherited_decision_surfaces_at_game_start
 
@@ -773,7 +789,9 @@ Scope: country. Inputs: current stock by model. Defaults: empty stock produces n
 
 Transfers distributed civilian protection after `on_state_control_changed` without refunding either controller.
 
-Scope: transferred state. Required regular event targets: `cbrn_old_state_controller` and `cbrn_new_state_controller`. Defaults: the caller only invokes it for a non-empty state ledger. Outputs: surviving state stock and controller aggregate totals. Side effects: clears projects and exact-alert responses, removes their dynamic modifiers, applies turnover/occupation survival and filter loss, charges lost stock to replacement demand, and moves aggregate ownership.
+Scope: transferred state. Required regular event targets: `cbrn_old_state_controller` and `cbrn_new_state_controller`. Defaults: the caller only invokes it for a non-empty state ledger. Outputs: surviving state stock and controller aggregate totals. Side effects: clears projects and exact-alert responses, removes their dynamic modifiers, applies turnover/occupation survival and filter loss, charges lost stock to replacement demand, moves aggregate ownership, and recalculates both controllers' civilian cleanup-kit pools.
+
+The same `on_state_control_changed` callback separately refreshes both country kit pools for a threatened state with no issued-mask ledger, so the original mask-ledger gate cannot leave decontamination demand attached to the previous controller. This state-specific hook remains under the existing world-rewrite callback guard.
 
 ### cbrn_start_protection_maintenance_job
 
@@ -871,7 +889,7 @@ State-scope population calculator for hospital/utility masks and support equipme
 
 Fail-closed state-scope public adapter for a verified current-version raid/operation hook.
 
-Required temporary proof: `cbrn_exact_state_alert_verified = constant:cbrn_proof.supplied`. Optional input: `cbrn_raid_alert_duration_days`, clamped to 1Ã¢â‚¬â€œ30 days and defaulting to 7. Outputs: exact-state alert flag and response costs. Side effects: clears stale response choices before opening the new alert. It does not infer aircraft activity, create contamination, or estimate a continuous mission.
+Required temporary proof: `cbrn_exact_state_alert_verified = constant:cbrn_proof.supplied`. Optional input: `cbrn_raid_alert_duration_days`, clamped to 1 to 30 days and defaulting to 7. Outputs: exact-state alert flag and response costs. Side effects: clears stale response choices before opening the new alert and recalculates the controller's civilian cleanup-kit pool. It does not infer aircraft activity, create contamination, or estimate a continuous mission.
 
 Example:
 
@@ -885,7 +903,7 @@ event_target:raid_target_state = {
 
 ### cbrn_clear_exact_state_chemical_raid_alert
 
-State-scope explicit alert cleanup. It clears only `cbrn_chemical_raid_alert_active`; timed response modifiers retain their own durations unless state control changes.
+State-scope explicit alert cleanup. It clears only `cbrn_chemical_raid_alert_active` and recalculates the controller's civilian cleanup-kit pool; timed response modifiers retain their own durations unless state control changes.
 
 ### Exact-state response effects
 

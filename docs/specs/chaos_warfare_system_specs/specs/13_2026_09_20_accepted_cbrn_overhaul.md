@@ -16,6 +16,8 @@ Basic authorized chemical and ordinary biological battlefield raids must remain 
 
 Military and civilian mask issue is automatic and debits actual stock. Civil Defence decisions appear for a real threat, outbreak, contamination, or response need. No world-wide periodic country iteration is authorized.
 
+The accepted real-equipment and military-priority requirements also govern civilian field cleanup through the [field-kit allocation correction](../corrections/2026-09-26_civilian_decontamination_field_kit_pool.md). Its one-kit-per-100,000-civilians demand is an implementation calibration, not a claim about historical inventories; the correction defines the eligible threatened states and bounded refresh hooks.
+
 The user's 2026-09-25 follow-up selects click-time reservation for the timed Occupied Population and Protective Aid decisions. Each action must quote and remove its exact calculated respirator-crate commitment when selected, use no more than that reservation at completion, and refund unused crates on cancellation or target invalidation. A higher later coverage requirement cannot silently charge additional stock. The visible cost row must match the reserved amount; an estimate is not accepted as an exact payment.
 
 The exact-state theater decontamination assignment has three upfront payments and separate non-consumed support-stock requirements, as specified in [`../corrections/2026-09-25_theater_decontamination_cost.md`](../corrections/2026-09-25_theater_decontamination_cost.md). This follows the accepted shorter-loop and readable-cost requirements without changing its contamination output.

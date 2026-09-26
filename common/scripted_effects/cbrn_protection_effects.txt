@@ -8,8 +8,8 @@
 # - Resolves respiratory, skin, antidote, decontamination, medical, and warning
 #   layers into agent-class-specific casualty, disruption, and contamination
 #   multipliers.
-# - Reads real equipment and issue ledgers before resolving six protection
-#   layers for each chemical action.
+# - Pools field cleanup kits across threatened civilian states after military
+#   priority, then resolves six protection layers for each chemical action.
 # ============================================================================
 
 cbrn_initialize_country_data = {
@@ -86,6 +86,26 @@ cbrn_initialize_country_data = {
 	if = {
 		limit = { NOT = { has_variable = cbrn_medical_capacity } }
 		set_variable = { cbrn_medical_capacity = constant:cbrn_capacity_default.medical }
+	}
+	if = {
+		limit = { NOT = { has_variable = cbrn_civilian_decontamination_coverage_fraction } }
+		set_variable = { cbrn_civilian_decontamination_coverage_fraction = constant:cbrn_math.zero }
+	}
+	if = {
+		limit = { NOT = { has_variable = cbrn_civilian_decontamination_pool_kits } }
+		set_variable = { cbrn_civilian_decontamination_pool_kits = constant:cbrn_math.zero }
+	}
+	if = {
+		limit = { NOT = { has_variable = cbrn_civilian_decontamination_military_reserve_kits } }
+		set_variable = { cbrn_civilian_decontamination_military_reserve_kits = constant:cbrn_math.zero }
+	}
+	if = {
+		limit = { NOT = { has_variable = cbrn_civilian_decontamination_demand_kits } }
+		set_variable = { cbrn_civilian_decontamination_demand_kits = constant:cbrn_math.zero }
+	}
+	if = {
+		limit = { NOT = { has_variable = cbrn_civilian_decontamination_shortage_kits } }
+		set_variable = { cbrn_civilian_decontamination_shortage_kits = constant:cbrn_math.zero }
 	}
 	if = {
 		limit = { NOT = { has_variable = cbrn_biological_security } }
@@ -203,6 +223,8 @@ cbrn_initialize_country_data = {
 			OR = {
 				has_tech = basic_gas_masks
 				has_equipment = { gas_mask_equipment > constant:cbrn_math.zero }
+				has_tech = field_decontamination_kits
+				has_equipment = { decontamination_equipment > constant:cbrn_math.zero }
 			}
 		}
 		cbrn_start_protection_maintenance_job = yes
@@ -783,6 +805,83 @@ cbrn_refresh_country_mask_snapshot = {
 	cbrn_achievement_record_country_protection_snapshot = yes
 }
 
+# Civilian field kits are a shared, non-debited stockpile pool. Deployed
+# equipment covers the army first; stock replaces any remaining army gap before
+# it can support threatened civilian states. Each state receives the same
+# fraction of its population-scaled kit requirement, so one kit is never
+# counted at full strength in several states at once.
+cbrn_calculate_state_civilian_decontamination_requirement = {
+	set_variable = { cbrn_civilian_decontamination_requirement_kits = constant:cbrn_math.zero }
+	if = {
+		limit = { cbrn_state_needs_civilian_decontamination = yes }
+		set_variable = { cbrn_civilian_decontamination_requirement_kits = state_population_k }
+		multiply_variable = { cbrn_civilian_decontamination_requirement_kits = constant:cbrn_decontamination_scale.kits_per_population_k }
+		set_temp_variable = { cbrn_civilian_decontamination_exact_need = cbrn_civilian_decontamination_requirement_kits }
+		round_variable = cbrn_civilian_decontamination_requirement_kits
+		if = {
+			limit = { check_variable = { var = cbrn_civilian_decontamination_requirement_kits value = cbrn_civilian_decontamination_exact_need compare = less_than } }
+			add_to_variable = { cbrn_civilian_decontamination_requirement_kits = constant:cbrn_math.one }
+		}
+	}
+}
+
+cbrn_refresh_state_civilian_decontamination_snapshot = {
+	cbrn_calculate_state_civilian_decontamination_requirement = yes
+	set_variable = { cbrn_civilian_decontamination_allocated_kits = constant:cbrn_math.zero }
+	set_variable = { cbrn_civilian_decontamination_protection = constant:cbrn_math.zero }
+	if = {
+		limit = {
+			cbrn_state_needs_civilian_decontamination = yes
+			controller = { has_tech = field_decontamination_kits }
+		}
+		controller = {
+			set_temp_variable = { cbrn_state_controller_decon_fraction = cbrn_civilian_decontamination_coverage_fraction }
+			set_temp_variable = { cbrn_state_controller_decon_capacity = cbrn_decontamination_capacity }
+		}
+		set_variable = { cbrn_civilian_decontamination_allocated_kits = cbrn_civilian_decontamination_requirement_kits }
+		multiply_variable = { cbrn_civilian_decontamination_allocated_kits = cbrn_state_controller_decon_fraction }
+		set_variable = { cbrn_civilian_decontamination_protection = cbrn_state_controller_decon_capacity }
+		multiply_variable = { cbrn_civilian_decontamination_protection = cbrn_state_controller_decon_fraction }
+	}
+	clamp_variable = { var = cbrn_civilian_decontamination_protection min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+}
+
+cbrn_refresh_country_civilian_decontamination_pool = {
+	cbrn_refresh_country_mask_snapshot = yes
+	set_variable = { cbrn_civilian_decontamination_stockpile_kits = num_equipment@decontamination_equipment }
+	set_variable = { cbrn_civilian_decontamination_deployed_kits = num_equipment_in_armies@decontamination_equipment }
+	clamp_variable = { var = cbrn_civilian_decontamination_stockpile_kits min = constant:cbrn_math.zero }
+	clamp_variable = { var = cbrn_civilian_decontamination_deployed_kits min = constant:cbrn_math.zero }
+	set_variable = { cbrn_civilian_decontamination_military_reserve_kits = cbrn_military_decontamination_requirement }
+	subtract_from_variable = { cbrn_civilian_decontamination_military_reserve_kits = cbrn_civilian_decontamination_deployed_kits }
+	clamp_variable = { var = cbrn_civilian_decontamination_military_reserve_kits min = constant:cbrn_math.zero max = cbrn_civilian_decontamination_stockpile_kits }
+	set_variable = { cbrn_civilian_decontamination_pool_kits = cbrn_civilian_decontamination_stockpile_kits }
+	subtract_from_variable = { cbrn_civilian_decontamination_pool_kits = cbrn_civilian_decontamination_military_reserve_kits }
+	set_variable = { cbrn_civilian_decontamination_demand_kits = constant:cbrn_math.zero }
+	every_controlled_state = {
+		limit = { cbrn_state_needs_civilian_decontamination = yes }
+		cbrn_calculate_state_civilian_decontamination_requirement = yes
+		PREV = { add_to_variable = { cbrn_civilian_decontamination_demand_kits = PREV.cbrn_civilian_decontamination_requirement_kits } }
+	}
+	set_variable = { cbrn_civilian_decontamination_covered_kits = constant:cbrn_math.zero }
+	set_variable = { cbrn_civilian_decontamination_coverage_fraction = constant:cbrn_math.zero }
+	if = {
+		limit = {
+			has_tech = field_decontamination_kits
+			check_variable = { cbrn_civilian_decontamination_demand_kits > constant:cbrn_math.zero }
+		}
+		set_variable = { cbrn_civilian_decontamination_covered_kits = cbrn_civilian_decontamination_pool_kits }
+		clamp_variable = { var = cbrn_civilian_decontamination_covered_kits max = cbrn_civilian_decontamination_demand_kits }
+		set_variable = { cbrn_civilian_decontamination_coverage_fraction = cbrn_civilian_decontamination_covered_kits }
+		divide_variable = { cbrn_civilian_decontamination_coverage_fraction = cbrn_civilian_decontamination_demand_kits }
+		clamp_variable = { var = cbrn_civilian_decontamination_coverage_fraction min = constant:cbrn_math.zero max = constant:cbrn_math.one }
+	}
+	set_variable = { cbrn_civilian_decontamination_shortage_kits = cbrn_civilian_decontamination_demand_kits }
+	subtract_from_variable = { cbrn_civilian_decontamination_shortage_kits = cbrn_civilian_decontamination_covered_kits }
+	clamp_variable = { var = cbrn_civilian_decontamination_shortage_kits min = constant:cbrn_math.zero }
+	every_controlled_state = { cbrn_refresh_state_civilian_decontamination_snapshot = yes }
+}
+
 cbrn_refresh_state_civilian_mask_snapshot = {
 	cbrn_initialize_state_protection = yes
 
@@ -888,10 +987,9 @@ cbrn_refresh_state_civilian_mask_snapshot = {
 
 	controller = {
 		cbrn_initialize_country_data = yes
-		set_temp_variable = { cbrn_state_controller_decon_capacity = cbrn_decontamination_capacity }
 		set_temp_variable = { cbrn_state_controller_medical_capacity = cbrn_medical_capacity }
 	}
-	set_variable = { cbrn_civilian_decontamination_protection = cbrn_state_controller_decon_capacity }
+	cbrn_refresh_state_civilian_decontamination_snapshot = yes
 	set_variable = { cbrn_civilian_medical_protection = cbrn_state_controller_medical_capacity }
 	if = {
 		limit = { has_state_flag = cbrn_hospitals_utilities_secured }
@@ -913,6 +1011,7 @@ cbrn_resolve_action_target_protection = {
 	set_temp_variable = { cbrn_action_protection_resolved_proof = constant:cbrn_proof.missing }
 
 	event_target:cbrn_action_target_state = {
+		controller = { cbrn_refresh_country_civilian_decontamination_pool = yes }
 		cbrn_refresh_state_civilian_mask_snapshot = yes
 		set_temp_variable = { cbrn_target_civilian_respiratory = cbrn_civilian_respiratory_protection }
 		set_temp_variable = { cbrn_target_civilian_skin = cbrn_civilian_skin_protection }
@@ -2245,6 +2344,8 @@ cbrn_transfer_state_civilian_mask_ledger = {
 		cbrn_refresh_country_mask_snapshot = yes
 		cbrn_start_protection_maintenance_job = yes
 	}
+	event_target:cbrn_old_state_controller = { cbrn_refresh_country_civilian_decontamination_pool = yes }
+	event_target:cbrn_new_state_controller = { cbrn_refresh_country_civilian_decontamination_pool = yes }
 }
 
 cbrn_run_protection_maintenance_cycle = {
@@ -2296,6 +2397,7 @@ cbrn_run_protection_maintenance_cycle = {
 		}
 	}
 	cbrn_refresh_country_mask_snapshot = yes
+	cbrn_refresh_country_civilian_decontamination_pool = yes
 }
 
 cbrn_start_protection_maintenance_job = {

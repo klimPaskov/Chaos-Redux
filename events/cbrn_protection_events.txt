@@ -2,11 +2,11 @@
 # CHAOS REDUX - CBRN PROTECTION MAINTENANCE EVENTS
 # ============================================================================
 # Overview:
-# - Runs one self-scheduled country maintenance job for countries with mask
-#   technology or real protective stock.
+# - Runs one self-scheduled country maintenance job for countries with mask or
+#   decontamination technology or real protective stock.
 # - Issues and services masks from the actual stockpile every cycle, and
 #   applies reserve/issued-equipment storage loss every twelfth cycle.
-# - Stops itself when the country has no program and no protected stock.
+# - Stops itself when the country has no protective program or stock.
 # ============================================================================
 
 add_namespace = cbrn_protection
@@ -25,6 +25,8 @@ country_event = {
 					check_variable = { cbrn_mask_reserve_crates > constant:cbrn_math.zero }
 					check_variable = { cbrn_military_mask_crates > constant:cbrn_math.zero }
 					check_variable = { cbrn_civilian_mask_total_crates > constant:cbrn_math.zero }
+					has_tech = field_decontamination_kits
+					has_equipment = { decontamination_equipment > constant:cbrn_math.zero }
 				}
 			}
 			cbrn_run_protection_maintenance_cycle = yes
