@@ -4,8 +4,9 @@
 # IW-040 reuses vanilla KUB and state 234 Krasnodar. This adapter owns
 # the Rada-cohesion and mounted-readiness ledgers, four route governments,
 # former-host settlement, network/ambition hooks, full shared Event 006 focus
-# framework, the p40 mounted-frontier force contract, and cleanup. Central
-# content attestation deliberately remains a parent-owned admission decision.
+# framework, the IW-040 five-focus land/service group and its paid receipts,
+# the p40 mounted-frontier force contract, and cleanup. Central content
+# attestation deliberately remains a parent-owned admission decision.
 # ============================================================================
 
 independence_wave_remove_kub_package_ideas = {
@@ -63,6 +64,38 @@ independence_wave_change_kub_compact_values = {
 		}
 		independence_wave_refresh_kub_compact_lifecycle = yes
 		independence_wave_refresh_country_state = yes
+	}
+}
+
+independence_wave_kub_capture_focus_ledgers_before_reward = {
+	if = {
+		limit = { can_use_independence_wave_kub_reg04_focus_group = yes }
+		set_temp_variable = { independence_wave_kub_rada_before_reward = independence_wave_kub_rada_cohesion }
+		set_temp_variable = { independence_wave_kub_mounted_before_reward = independence_wave_kub_mounted_readiness }
+	}
+}
+
+independence_wave_kub_report_new_stability_compact = {
+	if = {
+		limit = {
+			can_use_independence_wave_kub_reg04_focus_group = yes
+			has_country_flag = independence_wave_kub_compact_stabilized
+			NOT = {
+				AND = {
+					check_variable = {
+						var = independence_wave_kub_rada_before_reward
+						value = constant:independence_wave_kuban_pressure.stable
+						compare = greater_than_or_equals
+					}
+					check_variable = {
+						var = independence_wave_kub_mounted_before_reward
+						value = constant:independence_wave_kuban_pressure.stable
+						compare = greater_than_or_equals
+					}
+				}
+			}
+		}
+		custom_effect_tooltip = independence_wave_kub_compact_stability_reached_tt
 	}
 }
 
@@ -325,6 +358,34 @@ independence_wave_kub_focus_integrate_border_guards = {
 	}
 }
 
+independence_wave_kub_award_non_host_petitions_companion = {
+	if = {
+		limit = {
+			can_use_independence_wave_kub_reg04_focus_group = yes
+			has_country_flag = independence_wave_kub_community_compacts_project_paid
+			NOT = { has_country_flag = independence_wave_kub_non_host_petitions_focus_companion_awarded }
+		}
+		set_country_flag = independence_wave_kub_non_host_petitions_focus_companion_awarded
+		set_temp_variable = { independence_wave_kub_rada_delta = constant:independence_wave_kuban_pressure.minor_gain }
+		set_temp_variable = { independence_wave_kub_mounted_delta = constant:independence_wave_value.minimum }
+		independence_wave_change_kub_compact_values = yes
+	}
+}
+
+independence_wave_kub_award_mounted_service_companion = {
+	if = {
+		limit = {
+			can_use_independence_wave_kub_reg04_focus_group = yes
+			has_country_flag = independence_wave_kub_border_guards_project_paid
+			NOT = { has_country_flag = independence_wave_kub_mounted_service_focus_companion_awarded }
+		}
+		set_country_flag = independence_wave_kub_mounted_service_focus_companion_awarded
+		set_temp_variable = { independence_wave_kub_rada_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_kub_mounted_delta = constant:independence_wave_kuban_pressure.minor_gain }
+		independence_wave_change_kub_compact_values = yes
+	}
+}
+
 independence_wave_kub_focus_settle_former_host_ledgers = {
 	if = {
 		limit = { NOT = { has_country_flag = independence_wave_kub_host_ledgers_settled } }
@@ -363,6 +424,8 @@ independence_wave_setup_iw_040_kuban = {
 	clr_country_flag = independence_wave_command_roster_ready
 	clr_country_flag = independence_wave_kub_roster_checkpoint
 	clr_country_flag = independence_wave_kub_project_failure_applied
+	clr_country_flag = independence_wave_kub_community_compacts_project_paid
+	clr_country_flag = independence_wave_kub_border_guards_project_paid
 	clr_country_flag = independence_wave_kub_compact_crisis_resolved
 	clr_country_flag = independence_wave_kub_compact_crisis_failed
 	clr_country_flag = independence_wave_kub_provisional_authority
@@ -490,6 +553,8 @@ independence_wave_cleanup_iw_040_kuban = {
 		clear_variable = independence_wave_kub_rada_cohesion
 		clear_variable = independence_wave_kub_mounted_readiness
 		clr_country_flag = independence_wave_kub_project_failure_applied
+		clr_country_flag = independence_wave_kub_community_compacts_project_paid
+		clr_country_flag = independence_wave_kub_border_guards_project_paid
 		clr_country_flag = independence_wave_kub_roster_checkpoint
 		clr_country_flag = independence_wave_kub_conservatism_role_added
 		clr_country_flag = independence_wave_command_roster_ready

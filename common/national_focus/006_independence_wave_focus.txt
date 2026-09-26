@@ -86,6 +86,12 @@ focus_tree = {
 	shared_focus = independence_wave_cri_ratify_land_hearings
 	shared_focus = independence_wave_cri_audit_peninsular_service_rolls
 	shared_focus = independence_wave_cri_publish_rights_and_transit_docket
+	# Import the IW-040 Kuban land and mounted-service group into the full tree.
+	shared_focus = independence_wave_kub_record_stanitsa_petitions
+	shared_focus = independence_wave_kub_reconcile_grain_and_rail_registers
+	shared_focus = independence_wave_kub_hear_non_host_petitions
+	shared_focus = independence_wave_kub_audit_mounted_service_roll
+	shared_focus = independence_wave_kub_publish_land_and_service_docket
 	shared_focus = independence_wave_iw043_convene_volga_ural_federal_congress
 	shared_focus = independence_wave_iw043_convene_idel_ural_compact
 	# Import disconnected IW-043 economy and emergency spurs explicitly; shared
@@ -5024,6 +5030,171 @@ shared_focus = {
 				independence_wave_kc_apply_reg04_focus_deltas = yes
 			}
 			independence_wave_kc_report_new_stability_compact = yes
+		}
+	}
+}
+
+shared_focus = {
+	id = independence_wave_kub_record_stanitsa_petitions
+	icon = GFX_goal_independence_wave_founding_administration
+	prerequisite = { focus = independence_wave_prepare_capital_administration }
+	relative_position_id = independence_wave_overlay_take_stock_of_independence
+	x = 3
+	y = 6
+	offset = { x = -35 trigger = { can_use_independence_wave_full_focus_framework = yes } }
+	cost = @independence_wave_focus_short
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = { can_use_independence_wave_kub_reg04_focus_group = yes }
+	available = { can_use_independence_wave_kub_reg04_focus_group = yes }
+	completion_reward = {
+		if = {
+			limit = { can_use_independence_wave_kub_reg04_focus_group = yes }
+			custom_effect_tooltip = independence_wave_kub_record_stanitsa_petitions_tt
+			hidden_effect = {
+				independence_wave_kub_capture_focus_ledgers_before_reward = yes
+				set_temp_variable = { independence_wave_kub_rada_delta = constant:independence_wave_kuban_pressure.minor_gain }
+				set_temp_variable = { independence_wave_kub_mounted_delta = constant:independence_wave_value.minimum }
+				independence_wave_change_kub_compact_values = yes
+			}
+			independence_wave_kub_report_new_stability_compact = yes
+		}
+	}
+}
+
+shared_focus = {
+	id = independence_wave_kub_reconcile_grain_and_rail_registers
+	icon = GFX_goal_independence_wave_infrastructure_authority
+	prerequisite = { focus = independence_wave_kub_record_stanitsa_petitions }
+	relative_position_id = independence_wave_kub_record_stanitsa_petitions
+	x = 0
+	y = 1
+	cost = @independence_wave_focus_short
+	search_filters = { FOCUS_FILTER_INDUSTRY }
+	allow_branch = { can_use_independence_wave_kub_reg04_focus_group = yes }
+	available = { can_use_independence_wave_kub_reg04_focus_group = yes }
+	completion_reward = {
+		if = {
+			limit = { can_use_independence_wave_kub_reg04_focus_group = yes }
+			custom_effect_tooltip = independence_wave_kub_reconcile_grain_and_rail_registers_tt
+			hidden_effect = {
+				independence_wave_kub_capture_focus_ledgers_before_reward = yes
+				set_temp_variable = { independence_wave_kub_rada_delta = constant:independence_wave_value.minimum }
+				set_temp_variable = { independence_wave_kub_mounted_delta = constant:independence_wave_kuban_pressure.minor_gain }
+				independence_wave_change_kub_compact_values = yes
+			}
+			independence_wave_kub_report_new_stability_compact = yes
+		}
+	}
+}
+
+shared_focus = {
+	id = independence_wave_kub_hear_non_host_petitions
+	icon = GFX_goal_independence_wave_popular_councils
+	prerequisite = { focus = independence_wave_kub_reconcile_grain_and_rail_registers }
+	mutually_exclusive = { focus = independence_wave_kub_audit_mounted_service_roll }
+	relative_position_id = independence_wave_kub_reconcile_grain_and_rail_registers
+	x = -1
+	y = 1
+	cost = @independence_wave_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = { can_use_independence_wave_kub_reg04_focus_group = yes }
+	available = { can_use_independence_wave_kub_reg04_focus_group = yes }
+	completion_reward = {
+		if = {
+			limit = { can_use_independence_wave_kub_reg04_focus_group = yes }
+			custom_effect_tooltip = independence_wave_kub_hear_non_host_petitions_tt
+			if = {
+				limit = {
+					has_country_flag = independence_wave_kub_community_compacts_project_paid
+					NOT = { has_country_flag = independence_wave_kub_non_host_petitions_focus_companion_awarded }
+				}
+				custom_effect_tooltip = independence_wave_kub_hear_non_host_petitions_companion_tt
+			}
+			hidden_effect = {
+				independence_wave_kub_capture_focus_ledgers_before_reward = yes
+				set_temp_variable = { independence_wave_kub_rada_delta = constant:independence_wave_kuban_pressure.standard_gain }
+				set_temp_variable = { independence_wave_kub_mounted_delta = constant:independence_wave_kuban_pressure.minor_loss }
+				independence_wave_change_kub_compact_values = yes
+				independence_wave_kub_award_non_host_petitions_companion = yes
+			}
+			independence_wave_kub_report_new_stability_compact = yes
+		}
+	}
+}
+
+shared_focus = {
+	id = independence_wave_kub_audit_mounted_service_roll
+	icon = GFX_goal_independence_wave_army_integration
+	prerequisite = { focus = independence_wave_kub_reconcile_grain_and_rail_registers }
+	mutually_exclusive = { focus = independence_wave_kub_hear_non_host_petitions }
+	relative_position_id = independence_wave_kub_reconcile_grain_and_rail_registers
+	x = 1
+	y = 1
+	cost = @independence_wave_focus_standard
+	search_filters = { FOCUS_FILTER_MANPOWER }
+	allow_branch = { can_use_independence_wave_kub_reg04_focus_group = yes }
+	available = { can_use_independence_wave_kub_reg04_focus_group = yes }
+	completion_reward = {
+		if = {
+			limit = { can_use_independence_wave_kub_reg04_focus_group = yes }
+			custom_effect_tooltip = independence_wave_kub_audit_mounted_service_roll_tt
+			if = {
+				limit = {
+					has_country_flag = independence_wave_kub_border_guards_project_paid
+					NOT = { has_country_flag = independence_wave_kub_mounted_service_focus_companion_awarded }
+				}
+				custom_effect_tooltip = independence_wave_kub_audit_mounted_service_roll_companion_tt
+			}
+			hidden_effect = {
+				independence_wave_kub_capture_focus_ledgers_before_reward = yes
+				set_temp_variable = { independence_wave_kub_rada_delta = constant:independence_wave_kuban_pressure.minor_loss }
+				set_temp_variable = { independence_wave_kub_mounted_delta = constant:independence_wave_kuban_pressure.standard_gain }
+				independence_wave_change_kub_compact_values = yes
+				independence_wave_kub_award_mounted_service_companion = yes
+			}
+			independence_wave_kub_report_new_stability_compact = yes
+		}
+	}
+}
+
+shared_focus = {
+	id = independence_wave_kub_publish_land_and_service_docket
+	icon = GFX_goal_independence_wave_former_host_settlement
+	prerequisite = { OR = { focus = independence_wave_kub_hear_non_host_petitions focus = independence_wave_kub_audit_mounted_service_roll } }
+	relative_position_id = independence_wave_kub_reconcile_grain_and_rail_registers
+	x = 0
+	y = 2
+	cost = @independence_wave_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = { can_use_independence_wave_kub_reg04_focus_group = yes }
+	available = {
+		can_use_independence_wave_kub_reg04_focus_group = yes
+		custom_override_tooltip = {
+			tooltip = independence_wave_kub_publish_land_and_service_docket_paid_recorded_tt
+			not_tooltip = independence_wave_kub_publish_land_and_service_docket_paid_gate_tt
+			OR = {
+				AND = {
+					has_completed_focus = independence_wave_kub_hear_non_host_petitions
+					has_country_flag = independence_wave_kub_community_compacts_project_paid
+				}
+				AND = {
+					has_completed_focus = independence_wave_kub_audit_mounted_service_roll
+					has_country_flag = independence_wave_kub_border_guards_project_paid
+				}
+			}
+		}
+	}
+	completion_reward = {
+		if = {
+			limit = { can_use_independence_wave_kub_reg04_focus_group = yes }
+			custom_effect_tooltip = independence_wave_kub_publish_land_and_service_docket_tt
+			hidden_effect = {
+				independence_wave_kub_capture_focus_ledgers_before_reward = yes
+				set_temp_variable = { independence_wave_kub_rada_delta = constant:independence_wave_kuban_pressure.minor_gain }
+				set_temp_variable = { independence_wave_kub_mounted_delta = constant:independence_wave_kuban_pressure.minor_gain }
+				independence_wave_change_kub_compact_values = yes
+			}
+			independence_wave_kub_report_new_stability_compact = yes
 		}
 	}
 }

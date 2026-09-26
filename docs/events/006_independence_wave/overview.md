@@ -1,8 +1,10 @@
 # Event 006: Independence Wave
 
-## Current reconciliation note (2026-09-20)
+## Current reconciliation note (2026-09-26; extends the 2026-09-20 audit baseline)
 
 The current whole-event disposition remains **HOLD / PARTIAL** at 32 content-attested selectable packages across 29 compatible reservation groups, 40 runtime adapters, and 161 unattested selectable rows. The exact automatic ladder remains `3 / 4 / 5 / 7 / 10`, World Collapse remains at `10`, and the no-pre-event contract remains absolute.
+
+The accepted IW-040/KUB land and mounted-service focus group is implemented at source level with five root-level shared nodes, matching paid-action receipts, and a repaired pre-mission government-choice gate. Post-change focus MCP inspect/render still omit imported root-level nodes, so KUB attachment and layout remain blocked as MCP evidence; complete route-aware AI, campaign probability, and founding deadline evidence remain open. The [KUB package reference](kuban_package.md), [implementation handoff](../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_iw040_kuban_focus_group_implementation_2026-09-26.md), and [source-of-truth map](../../plans/006_independence_wave_plans/006_source_of_truth_map.md) hold the bounded details. This tranche does not change the broader package-attestation count or Event 006 **HOLD / PARTIAL** status.
 
 The fresh 2026-09-20 Event MCP continuation records a bounded `chaosx.nr6.1` lint with zero blocking diagnostics and zero skipped sources at source revision `626a662a56db61a0386081b02132ff95f2a34151083147f5e121798d68a7f7ff`. Helper and lifecycle projections remain deferred, so this structural receipt does not widen runtime, package-admission, or Join evidence. See `../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_event_mcp_refresh_continuation_2026-09-20.md`.
 

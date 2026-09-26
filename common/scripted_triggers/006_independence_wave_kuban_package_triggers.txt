@@ -2,8 +2,10 @@
 # CHAOS REDUX - EVENT 006 IW-040 KUBAN COSSACK HOST PACKAGE TRIGGERS
 # ============================================================================
 # Exact IW-040 identity, state-234 origin, roster, route, force, and completion
-# proofs. Central content attestation and normal/scenario preflight are admitted;
-# current MCP engine receipts remain unavailable while the workspace manifest is invalid.
+# proofs, plus the founding-government entry and five-focus group gates. Central
+# content attestation and normal/scenario preflight are admitted. The focus MCP
+# omits imported root-level shared focuses; other current MCP limits are recorded
+# in the IW-040 package reference.
 # ============================================================================
 
 is_independence_wave_kub_package = {
@@ -15,10 +17,38 @@ is_independence_wave_kub_package = {
 is_independence_wave_kub_project_ready = {
 	is_independence_wave_kub_package = yes
 	has_country_flag = independence_wave_iw_040_setup_complete
-	# The ordinary project layer opens only after the founding compact mission
-	# resolves; while it is active, the mission remains the sole opening action.
+	# The ordinary project layer opens after the founding compact resolves. The
+	# four government choices use a separate gate so the mission can meet its
+	# own government requirement without opening unrelated projects.
 	has_country_flag = independence_wave_kub_compact_crisis_resolved
 	NOT = { has_country_flag = independence_wave_kub_compact_crisis_failed }
+}
+
+is_independence_wave_kub_government_choice_open = {
+	is_independence_wave_kub_package = yes
+	has_country_flag = independence_wave_iw_040_setup_complete
+	has_active_mission = independence_wave_kub_hold_mounted_compact_together
+	NOT = { has_country_flag = independence_wave_kub_compact_crisis_resolved }
+	NOT = { has_country_flag = independence_wave_kub_compact_crisis_failed }
+	NOT = { has_independence_wave_kub_route_government = yes }
+}
+
+has_independence_wave_kub_active_government_project = {
+	OR = {
+		has_decision = independence_wave_kub_ratify_constitutional_autonomy
+		has_decision = independence_wave_kub_adopt_agrarian_compact
+		has_decision = independence_wave_kub_convene_socialist_councils
+		has_decision = independence_wave_kub_establish_mounted_emergency_command
+	}
+}
+
+can_use_independence_wave_kub_reg04_focus_group = {
+	is_independence_wave_active_country = yes
+	is_independence_wave_kub_package = yes
+	has_complete_independence_wave_iw_040_package_setup = yes
+	can_use_independence_wave_full_focus_framework = yes
+	has_independence_wave_generic_focus_contract = yes
+	234 = { is_owned_and_controlled_by = ROOT is_capital = yes }
 }
 
 has_independence_wave_kub_unsettled_host = {

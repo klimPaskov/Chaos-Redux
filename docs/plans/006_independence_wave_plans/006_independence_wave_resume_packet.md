@@ -14,6 +14,14 @@ The long provenance list below preserves dated implementation history. Current r
 
 The 2026-09-02 country-shell consolidation is committed in `2617931b1b730f617ad99c3c363503b4465f38d6`: 85 researched Event 006 tags share seven exact graphical-culture shells, their former per-tag RGB values are preserved in the complete vanilla-compatible `common/countries/colors.txt` override, and the 17 inert reservation tags remain on the unchanged shared reservation shell. This removes 78 country-definition files and saves 44,482 shell bytes without changing country history, admission, allocation, Join, gameplay, localisation, assets, or the no-pre-event contract. Handoff: `subagent_handoffs/006_event6_country_shell_merge_audit_2026-09-02.md`.
 
+## Resume next: IW-040/KUB focus-group tranche (2026-09-26)
+
+This section supersedes the IW-040/KUB `unresolved` clause in the preceding dated KAR/CRI report; it does not alter the KAR/CRI contract. The exact five-focus Kuban land and mounted-service group is accepted and implemented at source level in [Part 4](../../specs/006_independence_wave_specs/specs/006_independence_wave_spec_part_4_focus_tree_architecture.md), with source status in the [KUB implementation handoff](subagent_handoffs/006_event6_iw040_kuban_focus_group_implementation_2026-09-26.md) and gameplay details in the [KUB package reference](../events/006_independence_wave/kuban_package.md).
+
+The existing government-choice entry cycle is repaired: the four paid government projects can start one at a time during the active founding mission; every ordinary project remains gated behind mission success. Separate success-only paid receipts support both branch companion orders and the matching docket. Existing mission requirements and government costs, durations, and route effects remain in place.
+
+The user-selected root-level `shared_focus` design remains in force. Post-change focus inspection and render still omit imported nodes; the five KUB nodes' attachment, layout, connector geometry, and icon visibility remain blocked as MCP evidence. Native decision-row cost wrapping, route-aware AI, complete campaign probability scenarios, deadline feasibility, event-chain evidence, broader KUB admission blockers, and user-owned live validation remain open. Event 006 stays **HOLD / PARTIAL**; continue from the whole-event objective and source-of-truth map rather than treating this package tranche as completion.
+
 ## Current authority override (2026-09-25 validation refresh)
 
 ### 2026-09-25 bounded audit evidence and next steps

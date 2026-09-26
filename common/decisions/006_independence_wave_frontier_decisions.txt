@@ -716,7 +716,7 @@ independence_wave_kub_mounted_compact_category = {
 		icon = GFX_decision_independence_wave_army_integration_actions
 		visible = {
 			is_independence_wave_kub_project_ready = yes
-			NOT = { has_country_flag = independence_wave_kub_guards_integrated }
+			NOT = { has_country_flag = independence_wave_kub_border_guards_project_paid }
 		}
 		available = {
 			is_independence_wave_kub_project_ready = yes
@@ -733,7 +733,28 @@ independence_wave_kub_mounted_compact_category = {
 		}
 		remove_effect = {
 			custom_effect_tooltip = independence_wave_kub_guards_effect_tt
-			independence_wave_kub_focus_integrate_border_guards = yes
+			custom_effect_tooltip = independence_wave_kub_border_guards_project_paid_tt
+			if = {
+				limit = {
+					can_use_independence_wave_kub_reg04_focus_group = yes
+					has_completed_focus = independence_wave_kub_audit_mounted_service_roll
+					NOT = { has_country_flag = independence_wave_kub_mounted_service_focus_companion_awarded }
+				}
+				custom_effect_tooltip = independence_wave_kub_audit_mounted_service_roll_companion_tt
+			}
+			hidden_effect = {
+				independence_wave_kub_capture_focus_ledgers_before_reward = yes
+				independence_wave_kub_focus_integrate_border_guards = yes
+				set_country_flag = independence_wave_kub_border_guards_project_paid
+				if = {
+					limit = {
+						can_use_independence_wave_kub_reg04_focus_group = yes
+						has_completed_focus = independence_wave_kub_audit_mounted_service_roll
+					}
+					independence_wave_kub_award_mounted_service_companion = yes
+				}
+				independence_wave_kub_report_new_stability_compact = yes
+			}
 		}
 		cancel_trigger = {
 			OR = {
@@ -760,7 +781,7 @@ independence_wave_kub_mounted_compact_category = {
 		icon = GFX_decision_independence_wave_government_actions
 		visible = {
 			is_independence_wave_kub_project_ready = yes
-			NOT = { has_country_flag = independence_wave_kub_communities_guaranteed }
+			NOT = { has_country_flag = independence_wave_kub_community_compacts_project_paid }
 		}
 		available = {
 			is_independence_wave_kub_project_ready = yes
@@ -778,7 +799,28 @@ independence_wave_kub_mounted_compact_category = {
 		}
 		remove_effect = {
 			custom_effect_tooltip = independence_wave_kub_communities_effect_tt
-			independence_wave_kub_focus_guarantee_mounted_communities = yes
+			custom_effect_tooltip = independence_wave_kub_community_compacts_project_paid_tt
+			if = {
+				limit = {
+					can_use_independence_wave_kub_reg04_focus_group = yes
+					has_completed_focus = independence_wave_kub_hear_non_host_petitions
+					NOT = { has_country_flag = independence_wave_kub_non_host_petitions_focus_companion_awarded }
+				}
+				custom_effect_tooltip = independence_wave_kub_hear_non_host_petitions_companion_tt
+			}
+			hidden_effect = {
+				independence_wave_kub_capture_focus_ledgers_before_reward = yes
+				independence_wave_kub_focus_guarantee_mounted_communities = yes
+				set_country_flag = independence_wave_kub_community_compacts_project_paid
+				if = {
+					limit = {
+						can_use_independence_wave_kub_reg04_focus_group = yes
+						has_completed_focus = independence_wave_kub_hear_non_host_petitions
+					}
+					independence_wave_kub_award_non_host_petitions_companion = yes
+				}
+				independence_wave_kub_report_new_stability_compact = yes
+			}
 		}
 		cancel_trigger = {
 			OR = {
@@ -888,15 +930,15 @@ independence_wave_kub_mounted_compact_category = {
 		desc = independence_wave_kub_ratify_constitutional_autonomy_desc
 		icon = GFX_decision_independence_wave_government_actions
 		visible = {
-			is_independence_wave_kub_project_ready = yes
+			is_independence_wave_kub_government_choice_open = yes
 			has_independence_wave_constitutional_route = yes
 			NOT = { has_independence_wave_kub_route_government = yes }
 		}
 		available = {
-			is_independence_wave_kub_project_ready = yes
+			is_independence_wave_kub_government_choice_open = yes
 			can_pay_independence_wave_kub_administration_light_cost = yes
 			capital_scope = { is_controlled_by = ROOT }
-			NOT = { has_independence_wave_kub_active_package_project = yes }
+			NOT = { has_independence_wave_kub_active_government_project = yes }
 		}
 		custom_cost_trigger = { can_pay_independence_wave_kub_administration_light_cost = yes }
 		custom_cost_text = independence_wave_kub_cost_administration_light
@@ -933,15 +975,15 @@ independence_wave_kub_mounted_compact_category = {
 		desc = independence_wave_kub_adopt_agrarian_compact_desc
 		icon = GFX_decision_independence_wave_government_actions
 		visible = {
-			is_independence_wave_kub_project_ready = yes
+			is_independence_wave_kub_government_choice_open = yes
 			has_independence_wave_traditional_route = yes
 			NOT = { has_independence_wave_kub_route_government = yes }
 		}
 		available = {
-			is_independence_wave_kub_project_ready = yes
+			is_independence_wave_kub_government_choice_open = yes
 			can_pay_independence_wave_diplomatic_standard_cost = yes
 			capital_scope = { is_controlled_by = ROOT }
-			NOT = { has_independence_wave_kub_active_package_project = yes }
+			NOT = { has_independence_wave_kub_active_government_project = yes }
 		}
 		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
 		custom_cost_text = independence_wave_cost_diplomatic_standard
@@ -977,15 +1019,15 @@ independence_wave_kub_mounted_compact_category = {
 		desc = independence_wave_kub_convene_socialist_councils_desc
 		icon = GFX_decision_independence_wave_government_actions
 		visible = {
-			is_independence_wave_kub_project_ready = yes
+			is_independence_wave_kub_government_choice_open = yes
 			has_independence_wave_popular_council_route = yes
 			NOT = { has_independence_wave_kub_route_government = yes }
 		}
 		available = {
-			is_independence_wave_kub_project_ready = yes
+			is_independence_wave_kub_government_choice_open = yes
 			can_pay_independence_wave_kub_administration_light_cost = yes
 			capital_scope = { is_controlled_by = ROOT }
-			NOT = { has_independence_wave_kub_active_package_project = yes }
+			NOT = { has_independence_wave_kub_active_government_project = yes }
 		}
 		custom_cost_trigger = { can_pay_independence_wave_kub_administration_light_cost = yes }
 		custom_cost_text = independence_wave_kub_cost_administration_light
@@ -1022,15 +1064,15 @@ independence_wave_kub_mounted_compact_category = {
 		desc = independence_wave_kub_establish_mounted_emergency_command_desc
 		icon = GFX_decision_independence_wave_army_integration_actions
 		visible = {
-			is_independence_wave_kub_project_ready = yes
+			is_independence_wave_kub_government_choice_open = yes
 			has_independence_wave_emergency_military_route = yes
 			NOT = { has_independence_wave_kub_route_government = yes }
 		}
 		available = {
-			is_independence_wave_kub_project_ready = yes
+			is_independence_wave_kub_government_choice_open = yes
 			can_pay_independence_wave_security_major_cost = yes
 			capital_scope = { is_controlled_by = ROOT }
-			NOT = { has_independence_wave_kub_active_package_project = yes }
+			NOT = { has_independence_wave_kub_active_government_project = yes }
 		}
 		custom_cost_trigger = { can_pay_independence_wave_security_major_cost = yes }
 		custom_cost_text = independence_wave_cost_security_major
