@@ -200,6 +200,16 @@ The shared computation-slot marker keeps repeated extension synchronization idem
 It does not select a biological agent, create a breach, start a raid, produce a payload, authorize a release, or clear a pending biological operation.
 The existing package carrier and startup/tag-specific registration hooks own this coverage; no additional global tick is introduced.
 
+`chaosx_test_country_event016_mengele_provider_fixture_decision` is a separate player-triggered CXT setup for exercising the real Mengele provider decision category.
+It calls `chaosx_cxt_event016_enable_mengele_provider_fixture` in `common/scripted_effects/016_alien_infantry_cxt_test_effects.txt`; it adds no carrier or on-action hook.
+It sets the existing Mengele scenario-country marker and test-state idea, opens the existing provider registry, initializes the private receipt arrays, and reconciles project availability only when CXT is selected and initialized.
+The fixture writes no Theory, Prototype, Deployment, Weaponization, component, or native-project completion receipts and spends no project resources.
+The test-country setup is a test-only provider path; it does not create a Kruger host identity or change any model or model asset.
+Enable this fixture before using the broad “Complete Research and Projects” debug decision when checking native clocks, callbacks, or provider decision costs.
+That broad completion shortcut bypasses native project clocks and payments, so its resulting project inventory is observation data rather than native transaction evidence.
+After fixture activation, use the existing provider decisions and real special-project UI in separate Gotterdammerung-present and Gotterdammerung-absent sessions.
+The CXT scenario does not certify the exact Rocketry alternative callback, Electronics technology callback, provider timer race, six-agent raid transactions, DHR five-receipt matrix, six-component de-duplication, or Fallout retry; those remain separate acceptance cases.
+
 ### Event 016 native inventory probe
 
 `chaosx_cxt_event016_probe_native_inventory` is a separate, explicit country-scope console effect for an initialized CXT, invoked as `e chaosx_cxt_event016_probe_native_inventory` while CXT is selected.

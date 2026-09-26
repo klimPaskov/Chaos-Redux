@@ -4,6 +4,8 @@
 # Overview:
 # - Registers every reusable Event 016 project-force unit and concrete
 #   equipment type, plus the D'Rhondan envoy project, with the shared CXT bus.
+# - Provides a separate player-triggered CXT-only Mengele provider-stage mode
+#   without fabricating any stage or native-project completion receipt.
 # - Keeps ordinary Event 016 recruitment rules intact while giving CXT a
 #   recruitable ten-battalion landing cohort for designer and stat validation.
 # - The carrier and setup effect are idempotent; daily CXT work only registers
@@ -16,6 +18,33 @@ alien_infantry_register_cxt_test_content = {
 		value = token:chaosx_cxt_extension_event016_alien_infantry
 	}
 	chaosx_test_country_register_extension_effect = yes
+}
+
+# COUNTRY scope. Player-triggered CXT-only setup for the real Mengele provider
+# decision surface. It creates no stage receipt, native completion, or package.
+chaosx_cxt_event016_enable_mengele_provider_fixture = {
+	if = {
+		limit = {
+			tag = CXT
+			has_country_flag = chaosx_test_country_initialized
+			NOT = { has_country_flag = chaosx_cxt_event016_mengele_provider_fixture_ready }
+		}
+		set_country_flag = mengele_clone_army_scenario_country
+		if = {
+			limit = { NOT = { has_idea = mengele_clone_army_scenario_state } }
+			add_ideas = mengele_clone_army_scenario_state
+		}
+		set_country_flag = mengele_clone_focus_directorate_project_registry
+		brilliant_scientist_mengele_initialize_project_stage_receipts = yes
+		brilliant_scientist_mengele_reconcile_project_availability = yes
+		if = {
+			limit = {
+				brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+				has_country_flag = mengele_event016_provider_receipts_initialized
+			}
+			set_country_flag = chaosx_cxt_event016_mengele_provider_fixture_ready
+		}
+	}
 }
 
 # COUNTRY scope, explicit CXT console probe after initialization. These arrays
