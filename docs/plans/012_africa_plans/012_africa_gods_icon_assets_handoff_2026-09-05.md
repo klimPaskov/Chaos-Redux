@@ -1,8 +1,8 @@
 # Event 012 Gods of Africa icon asset handoff
 
-Status: source art, target-size PNGs, and final DDS files are complete for the accepted 27-icon inventory, and current working-tree GFX and consumer wiring is evidenced; live visual review and promotion remain pending.
+Status: source art, target-size PNGs, and final DDS files are complete for the accepted 27-icon inventory; parent visual review and current working-tree GFX/consumer wiring are evidenced; live-game scale and playback validation remain pending.
 
-Reconciliation note, 2026-09-05: the asset package itself changed no GFX, gameplay, localisation, or spreadsheet files, but the current parent working tree now contains the proposed aliases and the Event 012 decision, idea, focus, and category consumers described below. This source evidence supersedes the narrower pending-wiring wording without constituting parent or user approval.
+Reconciliation note, 2026-09-25: the parent reviewed the contact sheet and all 27 processed PNGs at native size. No visible transparency, crop, or motif issue was found at those scales. This is art-file review only; live-game readability, playback, and user validation remain pending.
 
 ## Scope and references
 
@@ -88,15 +88,15 @@ The mechanic and idea targets are 64x64, decision targets are 32x32, and focus t
 
 No GFX, gameplay, GUI, focus, decision, idea, localisation, or spreadsheet files were edited by this package.
 
-The current working tree contains the proposed sprite aliases in `interface/012_africa.gfx`, and the listed decision, idea, and focus consumers now reference the generated aliases; the parent should still review the contact sheet and native-size PNGs before accepting the wiring.
+The current working tree contains the proposed sprite aliases in `interface/012_africa.gfx`, and the listed decision, idea, and focus consumers now reference the generated aliases. The parent reviewed `docs/assets/012_africa_gods_icons/contact_sheet.png` and all 27 native-size processed PNGs on 2026-09-25; live-game scale and playback review remain pending.
 
-The six existing `gods_of_africa` idea pictures now have matching aliases in `interface/012_africa.gfx`, with consumers in `common/ideas/012_africa_gods_ideas.txt`; live visual review remains open.
+The six existing `gods_of_africa` idea pictures now have matching aliases in `interface/012_africa.gfx`, with consumers in `common/ideas/012_africa_gods_ideas.txt`; their processed artwork was included in the parent visual review, while live-game readability remains open.
 
 The current participant decision file retains generic or Charter-family sprites for demand-mission, reconciliation, and defensive paths that were outside the accepted five-response/six-action inventory; those paths remain explicitly unchanged, while the listed generated consumers use their corresponding aliases.
 
 The current focus overlay now references the eight Gods-specific family aliases in `common/national_focus/012_africa_continental_focus_tree.txt`; the asset package did not edit that gameplay file, and the latest focus MCP inspect/render reports no blocking diagnostics while layout warnings and live review remain open.
 
-Strength and Wrath have no current GFX or scripted-GUI consumer in the inspected source; their proposed aliases and DDS files are ready for the parent-owned consumer decision.
+Strength and Wrath now appear as inline text icons in the standard Gods of Africa participant and host category descriptions. Their existing sprites are registered with `legacy_lazy_load = no` for text-icon use; no dedicated scripted GUI was introduced. Native-size review is documented, while rendered game-scale readability and live consumer display remain unverified.
 
 No custom elephant asset was produced because `common/units/012_africa_elephant_forces.txt` intentionally binds `sprite = elephantry`, the installed vanilla sprite, and the accepted scope forbids creating a replacement elephant binary.
 
