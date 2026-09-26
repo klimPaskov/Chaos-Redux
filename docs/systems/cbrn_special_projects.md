@@ -37,6 +37,8 @@ Mengele's biological and xenobiological Theory, Prototype, Deployment, and Weapo
 
 The Event 016 project-board prototype fallback rows for Biomedical Acceleration, Xenobiological Synthesis, and Biological Weapons reuse those bindings; the biomedical prototype also has its own four exact-constant getters. The board keeps its native Political Power payment, effect-paid equipment and fuel, and assigned civilian factories. The private Mengele biomedical decision instead uses its custom payment path. Source mapping confirms these distinctions, but native cost-row composition has not been rendered to prove that Political Power appears only once.
 
+The linked Cloning and Paleogenetics routes bind their four original Mengele stage rows, four factory-commitment tooltips, and project-board fallback costs through the same exact-constant presentation file. Their stage payments and research grants are unchanged. Native ready, blocked, and hover consumers remain a separate visual-validation limit.
+
 ## Vanilla project integration
 
 The `on_project_completion` callback and relevant technology completion callbacks call `cbrn_sync_vanilla_project_integrations`, which is safe to repeat.
