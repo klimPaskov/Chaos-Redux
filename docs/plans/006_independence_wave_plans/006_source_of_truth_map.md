@@ -30,6 +30,10 @@ Part 5 accepts exact-identity source research for vanilla `KUB_ivanis_vasily_nik
 
 Parent source arithmetic gives a conditional witness for all eight KUB focus-branch/government combinations: the three existing generic KUB callbacks, two common group steps, and one selected branch reach both stability thresholds before the government effect. The six-focus sequence takes 224 nominal days; sequential completion of the longest government project gives 404 days against the 600-day mission. The [source-arithmetic handoff](subagent_handoffs/006_event6_iw040_kuban_founding_source_arithmetic_2026-09-26.md) assumes the chosen route is affordable and state 234/capital control persist. It does not prove engine timing, resource sufficiency, AI choice, or late-start behavior; typed campaign and AI evidence remain open.
 
+## IW-039/DON capital and DHC collision blocker (2026-09-26)
+
+The candidate and installed-map bindings list states 245/Millerovo and 238/Volgodonsk in both their anchor and compact fields, while the current planner shell provisionally makes 245 the required anchor and 238 optional compact. That division has not been accepted as the exact package contract. The host remnant is SOV state 219, and `RG-DON-KUBAN` has capacity one per wave. The current package planner also has an archetype mismatch (`mountain_or_frontier` in the shell versus `mounted_mobile` in the force mapping). Vanilla DON's capital is state 218; Event 005 DHC also uses capital 218 and conflicts over 218/238. No accepted Event 006 capital or both-order DHC policy resolves this. The current [preflight](subagent_handoffs/006_iw039_don_capital_dhc_collision_preflight_2026-09-26.md) records a fresh selected-state map MCP receipt and an unaccepted source-aligned proposal; IW-039 remains **blocked** pending design resolution and the required event-order collision evidence. Do not add state 218 or bypass the package gate by assumption.
+
 ## Current authority override (2026-09-25 validation refresh)
 
 ### 2026-09-25 bounded audit evidence integration

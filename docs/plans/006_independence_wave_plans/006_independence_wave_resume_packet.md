@@ -26,6 +26,10 @@ The user-selected root-level `shared_focus` design remains in force. Post-change
 
 The grounded IW-040 Ivanis portrait repair is accepted under Part 5, but two independent source reviews leave it `blocked` at the rights gate. No source placeholder, crop, DDS, sprite, or package wiring exists; see `../assets/portraits/006_independence_wave/portrait_KUB_ivanis_vasily_nikolaevich_source_research_blocked_2026-09-26.md` and `subagent_handoffs/006_iw040_kuban_ivanis_portrait_source_placeholder_2026-09-26.md`. Preserve the vanilla portrait contract outside Event 006. If a source later clears and a placeholder is installed, it remains `replacement_pending` until the user supplies the HOI4-styled final through RunPod.
 
+## Next: resolve the IW-039/DON capital and DHC policy
+
+IW-039 remains blocked. Its candidate and installed-map bindings list states 245/Millerovo and 238/Volgodonsk in both anchor and compact fields, while the current source shell provisionally assigns 245 as required anchor and 238 as optional compact. Vanilla DON history capital is 218; Event 005 DHC also uses 218 and conflicts over 218/238. `RG-DON-KUBAN` allows one package per wave. No accepted design selects the unique Event 006 anchor/capital or says whether DON and DHC may coexist when either event fires first. Review the [current preflight](subagent_handoffs/006_iw039_don_capital_dhc_collision_preflight_2026-09-26.md) before gameplay implementation; its 245-capital/mutual-exclusion path is only a proposal. The current source also has a `mountain_or_frontier` versus `mounted_mobile` archetype mismatch. Do not add state 218 or promote IW-039 while these gates remain open.
+
 ## Current authority override (2026-09-25 validation refresh)
 
 ### 2026-09-25 bounded audit evidence and next steps
