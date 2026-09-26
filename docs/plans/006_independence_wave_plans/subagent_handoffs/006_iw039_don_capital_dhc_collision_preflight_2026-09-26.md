@@ -1,6 +1,6 @@
 # IW-039 Cossack Don capital and DHC collision preflight
 
-**Disposition:** `blocked` pending an explicit Event 006 anchor/capital and DON-versus-DHC coexistence policy. No gameplay or specification choice was made in this preflight.
+**Disposition:** accepted and queued for IW-039 package implementation. The user explicitly selected the 245 anchor/capital, optional 238 compact, and both-order DHC exclusion policy below; package implementation and its remaining readiness gates are still open.
 
 ## Accepted design and current binding
 
@@ -16,7 +16,11 @@ The current region trigger registry prevents a second package in `RG-DON-KUBAN` 
 
 Vanilla DON's country history sets capital state 218, Rostov Area. Event 006's accepted IW-039 binding does not include state 218. The 2026-08-10 IW-039 preflight records that Event 005's Don Host Emergency Circle (DHC) uses capital 218 and transfers/claims states 218 and 238. Current Event 005 source sets `soviet_collapse_don_host_successor` and capital 218 in `common/scripted_effects/005_soviet_collapse_effects.txt:22505-22510`; its DHC spawn path calls `soviet_collapse_setup_dhc_successor` at `:23531`. The older preflight contains the detailed DHC state and collision review at `subagent_handoffs/006_iw039_preflight_2026_08_10.md`.
 
-The accepted documents do not select one unique Event 006 anchor from 245/238, decide whether active Event 006 DON moves its capital from vanilla state 218, decide whether state 218 joins its territory, or decide whether DON may coexist with DHC. The previous preflight explicitly says not to select a capital or transfer the compact set until a DON-versus-DHC ownership matrix is explicit and tested in both event orders. It proposes guarding DHC ownership/control and frozen reservations for 218/238, then adding reverse guards so Event 005 cannot create or overwrite a live Event 006 DON. These are proposals in the preflight, not accepted design.
+At the time of this initial preflight, the accepted documents did not select a unique Event 006 anchor, capital, or DHC coexistence policy. That gap is now resolved by the user's explicit decision recorded below; the package still requires implementation and the specified event-order validation.
+
+## Accepted user decision (2026-09-26)
+
+Acceptance basis: the user chose “Use 245 as Event 006 anchor/capital; 238 is optional compact; exclude DHC in both event orders.” This selects state 245/Millerovo as IW-039's unique required anchor and capital, allows state 238/Volgodonsk only as optional compact territory, and keeps vanilla DON capital/state 218 outside Event 006. The Event 005 DHC and Event 006 IW-039 must be mutually exclusive regardless of which event would execute first. Reject IW-039 if DHC is live or an Event 005 reservation conflicts with states 218/238; once IW-039 is active, block Event 005 from creating or overwriting DHC across the same DON/Volgodonsk collision. Preserve the capacity-one `RG-DON-KUBAN` limit and protected SOV state 219. This is accepted design; it does not claim source implementation or engine proof.
 
 ## Current MCP map receipt
 
@@ -24,10 +28,10 @@ Read-only `hoi4_map_inspect` inspected states 218, 219, 234, 238, and 245 in wor
 
 The installed binding and earlier focused preflight agree that states 218, 219, 234, 238, and 245 are currently Soviet-owned; 219 is the protected SOV remnant, 234 is IW-040/KUB's anchor, 238 is the DHC overlap and IW-039 compact, and 245 is the IW-039 anchor. This does not prove the campaign-time owner/controller matrix or DHC event-order behavior.
 
-## Concrete choices for parent/user resolution
+## Implementation contract and remaining gates
 
-One source-aligned proposal is to accept the source shell's 245 required anchor and 238 optional compact, move the active Event 006 DON capital to 245, keep vanilla history and its ordinary 218 capital outside Event 006, and make DHC and Event 006 IW-039 mutually exclusive in both event orders. Under that proposal, a live DHC or an Event 005 reservation over 218/238 blocks IW-039; an active Event 006 IW-039 blocks DHC creation rather than allowing Event 005 to reclaim state 238. `RG-DON-KUBAN` remains capacity one, so DON and KUB cannot both be selected in one automatic wave. This is a recommendation for resolution, not accepted design.
+Implement the accepted 245/238/218 split and DHC mutual exclusion in both event orders. Preserve vanilla DON history and ordinary capital outside the Event 006 package, keep SOV's state 219 remnant, and retain `RG-DON-KUBAN` capacity one per wave. The current planner shell's archetype mismatch and all other package gates remain to be resolved.
 
-The alternative is to retain vanilla capital 218 and revise the package territory/capital and DHC collision contract explicitly, including which country can own or control 218 and 238 when either event fires first. The package remains blocked until that matrix and its event-order checks are accepted. Do not silently add state 218, use a nearby-state substitute, or set the content-ready flag to bypass admission.
+The alternative that retains state 218 as the active Event 006 capital was not selected. Do not add state 218, use a nearby-state substitute, or set the content-ready flag to bypass admission.
 
 No source, trigger, capital, reservation group, attestation, setup, cleanup, localisation, focus, decision, mission, asset, or spec was changed by this preflight. Event 006 remains **HOLD / PARTIAL**.
