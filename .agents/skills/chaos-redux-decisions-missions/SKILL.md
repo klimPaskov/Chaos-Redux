@@ -45,8 +45,6 @@ Apply the [content and interaction budget](../chaos-redux-scripted-gui/SKILL.md#
 
 ## 3. Decision and mission types
 
-Use the right tool for the job.
-
 ### Clickable decisions
 
 Use clickable decisions when the player chooses to start an action, spend resources, accept risk, begin a project, send aid, escalate, negotiate, or select a target.
@@ -458,7 +456,6 @@ Example recognition progression:
 
 Do not create a separate idea for every mission if the same institution is clearly growing.
 
-
 ## 15. Focus and decision integration
 
 Focuses and decisions should be designed together.
@@ -491,7 +488,6 @@ Industry decision families should generally do real map work, such as building o
 
 Expansion decision families should generally create real strategic options, such as claims, cores, war goals, protectorates, leagues, declarations, border incidents, treaties, ultimatums, or postwar settlement choices.
 
-
 ### 15.1 Progressive decision categories
 
 Decision categories should evolve as the focus tree develops.
@@ -521,7 +517,6 @@ Examples:
 
 If a focus branch says it changes the country, the decision layer should reflect that change.
 
-
 ### 15.2 Route-aware decision depth
 
 A decision family unlocked by a focus path must have enough content to matter.
@@ -546,7 +541,6 @@ Advisor, leader, and council decisions should match the route that unlocked them
 
 Decision families can include achievement tracking when they support difficult route completions, rare combinations, expansion victories, internal reform, or survival under high-chaos conditions.
 
-
 ### 15.3 Decision pacing, tradeoffs, and visible effects
 
 Decision categories unlocked by focuses should progress over time.
@@ -562,7 +556,6 @@ Do not overuse mutually exclusive decision paths. Use them when the choices repr
 Important decision families should define failure states. Failed reforms, failed influence balancing, failed expansion, failed military centralisation, failed construction, or failed diplomacy should create visible follow-up problems where the mechanic supports it.
 
 Decision localisation should describe the visible baseline effect of the decision. Do not reveal hidden outcomes, secret variables, hidden follow-up events, or future surprise branches. The player should understand the public action and likely visible direction without being spoiled.
-
 
 ### 15.4 Special mechanic values and faction goals
 
@@ -592,7 +585,6 @@ Important event-created factions should usually have a mechanic such as cohesion
 
 A faction should not form just because one country exists. Use minimum membership, crisis pressure, ideological compatibility, war state, diplomatic preparation, or regional logic.
 
-
 ### 15.5 Mechanic presentation, value clarity, and faction outcomes
 
 Special mechanic values must be visible somewhere the player can understand them. A decision category can show values in its header, a custom scripted GUI, a progress meter, a scripted localisation tooltip, or national spirit tooltips.
@@ -607,14 +599,11 @@ Decision systems for shared trees or shared mechanics must still feel country-sp
 
 Important thresholds, caps, gains, losses, duration bands, AI weights, and scaling values should be centralized in script constants or a documented tuning file. Do not scatter magic numbers across decision files, events, focuses, scripted effects, and scripted triggers.
 
-
 ### 15.6 Reward dumps and exploit checks
 
 Avoid one-time reward dumps as the main decision or mission design. A decision or mission can give units, equipment, factories, buildings, resources, or influence, but important decisions should usually connect to a repeatable system, timed objective family, mechanic value, advisor path, route branch, or long-term gameplay loop.
 
-A large decision system should not become a sequence of buttons that only give free rewards.
-
-A large decision system should also not become a sequence of tiny fairy-dusted rewards. Repeated minor modifiers, token stockpiles, small stability changes, and tiny production nudges are not better than reward dumps when they do not change play. Treat low-impact reward dust as a design failure unless it is part of a visible cumulative system with clear thresholds and consequences.
+A large decision system should not become a sequence of buttons that only give free rewards, nor a sequence of tiny fairy-dusted rewards. Repeated minor modifiers, token stockpiles, small stability changes, and tiny production nudges are not better than reward dumps when they do not change play. Treat low-impact reward dust as a design failure unless it is part of a visible cumulative system with clear thresholds and consequences.
 
 Balance review must include exploit checks and impact checks. The question is not only whether the decision can be abused. The question is also whether a reasonable player would notice the reward, care about the failure, and plan around the system.
 
@@ -635,7 +624,6 @@ Check for:
 - AI taking decisions that create broken loops
 
 Fix exploits with route locks, flags, cooldowns, dynamic costs, limited targets, escalating costs, one-time completion flags, scripted triggers, AI limits, or cleanup effects.
-
 
 ### 15.7 Decision category clutter control
 
@@ -732,7 +720,7 @@ When reviewing existing Chaos Redux decision categories, produce a category pres
 | Category id | Owner system | Current presentation | Picture eligibility, including existing UI and animations | Recommended layer | Picture or GUI reason | Missing asset or implementation |
 | --- | --- | --- | --- | --- | --- | --- |
 
-Apply the eligibility gate before identifying existing categories that would benefit from a static or animated category picture and currently lack one. Categories with complex UI, meters, additional custom controls, rich interactive panels, or other animations are ineligible, not missing picture assets. Do not add a picture to every category. Keep ordinary categories ordinary when a picture would add no useful identity, territorial context, or state feedback.
+Apply the eligibility gate above before identifying existing categories that would benefit from a static or animated category picture and currently lack one. Categories that the gate excludes because of complex UI, meters, additional custom controls, rich interactive panels, or other animations are ineligible, not missing picture assets. Do not add a picture to every category. Keep ordinary categories ordinary when a picture would add no useful identity, territorial context, or state feedback.
 
 ## Formable nation decisions
 
@@ -795,7 +783,7 @@ AI must use the same formation conditions and decision logic without depending o
 
 Hidden formables need extra care. A hidden formable can be locked behind an event, secret focus, rare ideology, high chaos, special leader, historical artifact, super-event, achievement route, or scripted GUI investigation. Hidden does not mean undocumented. The implementation handoff must still define all triggers, effects, assets, and cleanup.
 
-## Formation missions and integration projects
+### Formation missions and integration projects
 
 Large formables should usually need post-formation work. Use missions or decision chains for integration when instant cores would be too strong.
 
@@ -826,16 +814,16 @@ Every gameplay-changing GUI action follows the same cost, affordability, require
 
 For each gameplay-changing control, document:
 
-- its action and target;
-- visible costs and requirement summary, with a precise action/blocked-reason tooltip;
-- shared availability and affordability checks;
-- the single payment path and scripted effect or decision action;
-- AI equivalent where AI countries can use the mechanic;
-- cleanup when the target, route, action, or mechanic becomes invalid.
+- its action and target
+- visible costs and requirement summary, with a precise action/blocked-reason tooltip
+- shared availability and affordability checks
+- the single payment path and scripted effect or decision action
+- AI equivalent where AI countries can use the mechanic
+- cleanup when the target, route, action, or mechanic becomes invalid
 
 Do not add actions to fill layout space or manufacture depth. Merge duplicate actions and remove controls whose result does not change play. Information and navigation controls follow [click regions and state behavior](../chaos-redux-scripted-gui/SKILL.md#click-regions-overlap-and-state-behavior); they do not require an invented gameplay effect.
 
-## Animated decision category presentation
+### Animated decision category presentation
 
 Animation is optional. First apply the same category-picture eligibility gate to static and animated pictures, then decide whether a static picture is sufficient. Use an animated category picture or animated GUI sprite only when motion makes a changing state easier to notice or strengthens a category whose identity depends on active propaganda, mobilization, escalating crisis, or transformation. An animated picture remains a simple-category alternative and must not accompany existing animated GUI. Every animated category picture needs a static fallback.
 

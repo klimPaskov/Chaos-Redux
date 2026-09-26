@@ -122,7 +122,7 @@ The puzzle does not use event targets. Scripted GUI context cannot safely use ev
 2. Copy the manifest and write the state-scope helper first. Prove the helper against the existing decision `available` trigger before changing presentation.
 3. Replace decision availability and AI checks with `territory_qualifies`; preserve unrelated route, ideology, cost, and reveal gates around that call.
 4. Replace each copied piece and summary branch with generated wrappers and the same helper. Remove only duplicate owner/control/core clauses; do not move mechanic design into the helper.
-5. Add the bounded refresh effect and call it from existing scoped state-changing effects. Do not add a new on-action or world scan merely to feed the display.
+5. When the owner's verified GUI contract requires a country variable (setup step 6), add the bounded refresh effect and call it from existing scoped state-changing effects. Do not add a new on-action or world scan merely to feed the display.
 6. Validate old and new decision results against the same named scenarios, then remove obsolete flags/variables after the parent confirms no other system reads them.
 
 ## Ownership boundaries
