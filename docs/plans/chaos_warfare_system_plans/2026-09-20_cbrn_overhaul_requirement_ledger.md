@@ -62,6 +62,8 @@ The [Event 020 Stock Reserves cost-binding correction](../../specs/020_black_pla
 
 The [Event 020 duration and goal binding correction](../../specs/020_black_plague_specs/corrections/2026-09-26_response_duration_and_goal_bindings.md) removes every remaining non-cost raw constant expression from the response localisation file through eight shared quotes. The unresolved Event 020 count is now 502 raw occurrences across 156 cost-related lines; their payment budgets and native presentation remain open.
 
+The [Seal Food Stores and Clear Sewers budget correction](../../specs/020_black_plague_specs/corrections/2026-09-26_seal_and_sewers_payment_budget.md) gives each action two real debits, support equipment and fuel, plus its existing civilian-factory and Response Capacity commitments. Personnel and trucks remain on-hand requirements, and the token 1% Stability debit and gate are removed. Both three-icon rows and their hovers now quote source values; the Response Capacity hover uses a dedicated registered 18×18 texticon. The broader Event 020 count falls to 488 raw expressions in 150 other cost lines. The current native decision render still clips the shared window to 0×0, so these player-facing consumers remain unverified.
+
 The [historical civilian-start correction](../../specs/chaos_warfare_system_specs/corrections/2026-09-26_historical_civilian_start_cleanup.md) strengthens CBRN-11 source evidence: all 41 legacy civilian percentages and the generic state distributor have been removed from active startup script. This does not resolve the remaining engine inventory and country-specific 1939 industry evidence limits.
 
 ## Preliminary MIO source and asset contract

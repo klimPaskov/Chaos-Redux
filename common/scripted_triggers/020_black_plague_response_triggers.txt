@@ -737,13 +737,16 @@ black_plague_can_pay_clean_city_rats = {
 
 black_plague_can_pay_seal_food_stores = {
 	black_plague_response_target_has_current_quotes = yes
-	black_plague_country_has_response_capacity_one = yes
+	check_variable = {
+		var = black_plague_response_capacity_remaining
+		value = constant:black_plague_response_burden.seal_food_stores
+		compare = greater_than_or_equals
+	}
 	NOT = { num_of_civilian_factories_available_for_projects < constant:black_plague_response_factories.seal_food_stores }
 	NOT = { has_manpower < FROM.black_plague_quote_seal_stores_manpower }
 	NOT = { has_equipment = { support_equipment < FROM.black_plague_quote_seal_stores_support } }
 	NOT = { has_equipment = { motorized_equipment < FROM.black_plague_quote_seal_stores_motorized } }
 	meta_trigger = { text = { NOT = { has_fuel < [FUEL] } } FUEL = "[?FROM.black_plague_quote_seal_stores_fuel|.0]" }
-	NOT = { has_stability < constant:black_plague_response_cost_seal_food_stores.stability }
 }
 
 black_plague_can_pay_clear_sewers = {
@@ -754,7 +757,6 @@ black_plague_can_pay_clear_sewers = {
 	NOT = { has_equipment = { support_equipment < FROM.black_plague_quote_clear_sewers_support } }
 	NOT = { has_equipment = { motorized_equipment < FROM.black_plague_quote_clear_sewers_motorized } }
 	meta_trigger = { text = { NOT = { has_fuel < [FUEL] } } FUEL = "[?FROM.black_plague_quote_clear_sewers_fuel|.0]" }
-	NOT = { has_stability < constant:black_plague_response_cost_clear_sewers.stability }
 }
 
 black_plague_can_pay_flea_control = {
