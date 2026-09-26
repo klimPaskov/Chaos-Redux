@@ -1,9 +1,10 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 005 / EVENT 006 LIBERATIONS COLLISION TRIGGERS
 # ============================================================================
-# Read-only contracts for the synchronized cluster incident and Event 005's
-# contribution metadata. The shared coordinator remains authoritative for
-# country, state, host, anchor, and lifecycle validation.
+# Read-only contracts for the synchronized cluster incident, Event 005's
+# contribution metadata, and the DHC/IW-039 cross-event exclusion. The shared
+# coordinator remains authoritative for country, state, host, anchor, and
+# lifecycle validation.
 # ============================================================================
 
 liberations_joint_cluster_selected_both_members = {
@@ -24,6 +25,22 @@ can_liberations_joint_prepare_incident = {
 	SOV = { NOT = { has_country_flag = soviet_collapse_joint_opening_presentation_pending } }
 	can_liberation_release_reset_plan = yes
 	liberations_joint_cluster_selected_both_members = yes
+}
+
+# COUNTRY scope. Event 005 and Event 006 call this before reserving or
+# transferring the shared Don/Volgodonsk states. DHC cannot coexist with an
+# active or pending IW-039, and IW-039 cannot enter while DHC or a conflicting
+# Event 005 state reservation exists.
+is_don_dhc_cross_event_collision_clear = {
+	DHC = { exists = no }
+	DON = {
+		NOT = { has_country_flag = liberation_release_reserved_country }
+		NOT = { has_country_flag = independence_wave_pending_package }
+		NOT = { has_country_flag = independence_wave_origin_prepared }
+		NOT = { is_independence_wave_active_country = yes }
+	}
+	218 = { NOT = { is_liberation_release_current_reserved_state = yes } }
+	238 = { NOT = { is_liberation_release_current_reserved_state = yes } }
 }
 
 soviet_collapse_joint_plan_metadata_arrays_are_aligned = {

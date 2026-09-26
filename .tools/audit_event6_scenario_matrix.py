@@ -15,7 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 MATRIX = ROOT / "docs/plans/006_independence_wave_plans/subagent_handoffs/006_scn008_32_cell_static_acceptance_2026_08_02.md"
-EDGE_MATRIX = ROOT / "docs/plans/006_independence_wave_plans/subagent_handoffs/006_scn008_edge_case_static_matrix_2026_08_02.md"
+EDGE_MATRIX = ROOT / "docs/plans/006_independence_wave_plans/006_event6_scn008_edge_case_source_matrix_current_2026-09-25.md"
 
 
 def read(relative: str) -> str:
@@ -119,6 +119,10 @@ def main() -> int:
 	planner = read("common/scripted_effects/006_independence_wave_package_planner_effects.txt")
 	shared = read("common/scripted_effects/chaosx_liberation_release_effects.txt")
 	joint = read("common/scripted_effects/005_006_liberations_collision_effects.txt")
+	collision_triggers = read("common/scripted_triggers/005_006_liberations_collision_triggers.txt")
+	soviet_triggers = read("common/scripted_triggers/005_soviet_collapse_triggers.txt")
+	soviet_effects = read("common/scripted_effects/005_soviet_collapse_effects.txt")
+	region_triggers = read("common/scripted_triggers/006_independence_wave_package_region_triggers_registry.txt")
 	dispatch = read("common/scripted_triggers/006_independence_wave_package_dispatch_triggers.txt")
 	decisions = read("common/decisions/006_independence_wave_decisions.txt")
 	categories = read("common/decisions/categories/006_independence_wave_categories.txt")
@@ -303,7 +307,7 @@ def main() -> int:
 		intensity_cells = [cell for cell in cell_ids if cell.rsplit("/", 1)[-1] == intensity]
 		require(len(intensity_cells) == 8, f"32-cell receipt does not contain eight {intensity} cells", errors)
 
-	edge_ids = re.findall(r"`(EDGE-SCN-\d{3})`", edges)
+	edge_ids = re.findall(r"(?m)^\|\s*`(EDGE-SCN-\d{3})`", edges)
 	require(len(edge_ids) == 8 and len(set(edge_ids)) == 8, f"expected eight unique SCN-008 edge cases, found {len(set(edge_ids))}", errors)
 	for case_id in (f"EDGE-SCN-{index:03d}" for index in range(1, 9)):
 		require(case_id in edges, f"edge receipt is missing {case_id}", errors)
@@ -315,6 +319,7 @@ def main() -> int:
 		"protected-host remnant": "is_liberation_release_host_protection_candidate",
 		"optional trim rollback": "independence_wave_record_optional_state_trim",
 		"Event 005 ordering": "soviet_collapse_joint_allocate_opening_republics = yes",
+		"DON/DHC cross-event exclusion": "is_don_dhc_cross_event_collision_clear",
 		"single shared lock": "liberation_release_lock_plan = yes",
 		"repeat-launch barrier": "independence_wave_scenario_transaction_barrier_is_open",
 		"repeat-launch reset": "independence_wave_scenario_reset_summary",
@@ -330,10 +335,61 @@ def main() -> int:
 	}
 	for label, needle in witnesses.items():
 		require(
-			any(needle in source for source in (scenario, scenario_triggers, scenario_event, planner, shared, joint, dispatch, decisions)),
+			any(needle in source for source in (scenario, scenario_triggers, scenario_event, planner, shared, joint, collision_triggers, soviet_triggers, soviet_effects, region_triggers, dispatch, decisions)),
 			f"missing static witness: {label} ({needle})",
 			errors,
 		)
+
+	try:
+		don_dhc_guard = extract_script_block(collision_triggers, "is_don_dhc_cross_event_collision_clear")
+		dhc_spawn_trigger = extract_script_block(soviet_triggers, "can_soviet_collapse_spawn_dhc")
+		dhc_spawn_effect = extract_script_block(soviet_effects, "soviet_collapse_spawn_dhc_if_enabled")
+		don_plan_trigger = extract_script_block(region_triggers, "can_plan_independence_wave_package_iw_039")
+	except ValueError as exc:
+		errors.append(str(exc))
+		don_dhc_guard = ""
+		dhc_spawn_trigger = ""
+		dhc_spawn_effect = ""
+		don_plan_trigger = ""
+	require("DHC = { exists = no }" in don_dhc_guard, "DON/DHC exclusion does not reject an existing DHC", errors)
+	for state_id in (218, 238):
+		require(
+			f"{state_id} = {{ NOT = {{ is_liberation_release_current_reserved_state = yes }} }}" in don_dhc_guard,
+			f"DON/DHC exclusion does not reject a conflicting state-{state_id} reservation",
+			errors,
+		)
+	for marker in (
+		"has_country_flag = liberation_release_reserved_country",
+		"has_country_flag = independence_wave_pending_package",
+		"has_country_flag = independence_wave_origin_prepared",
+		"is_independence_wave_active_country = yes",
+	):
+		require(marker in don_dhc_guard, f"DON/DHC exclusion does not test pending/active DON marker {marker}", errors)
+	require(
+		"is_don_dhc_cross_event_collision_clear = yes" in dhc_spawn_trigger,
+		"ordinary Event 005 DHC eligibility bypasses the shared collision guard",
+		errors,
+	)
+	require(
+		"is_don_dhc_cross_event_collision_clear = yes" in don_plan_trigger,
+		"Event 006 IW-039 eligibility bypasses the shared DHC collision guard",
+		errors,
+	)
+	force_all_position = dhc_spawn_effect.find("has_global_flag = soviet_collapse_force_all_chaos_successors")
+	force_all_guard = dhc_spawn_effect.find("is_don_dhc_cross_event_collision_clear = yes", force_all_position)
+	require(
+		force_all_position >= 0 and force_all_guard > force_all_position,
+		"Event 005 force-all DHC path bypasses the shared DON collision guard",
+		errors,
+	)
+	edge_005_rows = [line for line in edges.splitlines() if "EDGE-SCN-005" in line]
+	require(
+		len(edge_005_rows) == 1
+		and "both event orders" in edge_005_rows[0]
+		and "force-all DHC creation" in edge_005_rows[0],
+		"current EDGE-SCN-005 does not document both-order normal and force-all DHC exclusion",
+		errors,
+	)
 	committed_gate = scenario_summary.find("has_global_flag = independence_wave_scenario_committed")
 	released_append = scenario_summary.find(
 		"add_to_array = { array = global.independence_wave_scenario_released_package_ids"
@@ -377,7 +433,7 @@ def main() -> int:
 	)
 
 	rows = [
-		{"id": case_id, "source_receipt": "006_scn008_edge_case_static_matrix_2026_08_02.md"}
+		{"id": case_id, "source_receipt": "006_event6_scn008_edge_case_source_matrix_current_2026-09-25.md"}
 		for case_id in edge_ids
 	]
 	if errors:
