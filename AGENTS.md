@@ -206,6 +206,10 @@ Clausewitz script is picky. Follow these rules strictly.
     - If no existing effect fits, create a new dynamic effect and document it in the markdown file of the same name (`common/scripted_effects/chaosx_dynamic_effects.md`) in the same change.
     - Keep effect docs explicit: purpose, scope, inputs/outputs, defaults, side effects, and a usage example.
 14. If MTTH (mean time to happen) variables are required to reduce AI/script clutter (especially in ai_will_do blocks) by centralizing weighted logic, use the `chaos-redux-mtth` skill and follow its MTTH guidance before implementing.
+15. Some engine values and triggers fail silently.
+    - Read manpower through `manpower_k`, `max_manpower_k`, or `max_available_manpower_k` (values in thousands), or through `has_manpower`. The plain `manpower`, `max_manpower`, and `max_available_manpower` dynamic variables are deprecated and overflow at about 2.1 million.
+    - `collection_size` comparisons are inclusive, so `value > 3` means at least 3.
+    - `scope_exists` is always true on a variable scope. Validate a stored target with an object-specific check such as `exists = yes` or `country_exists` instead.
 
 ### Meta effect example
 
@@ -291,6 +295,7 @@ Localisation and UI must always be kept in sync with gameplay changes.
    - Define icons in `interface/...` and keep naming stable.
    - When something needs icons, define them in a correct `.gfx` file.
    - Register new UI assets before requesting art so filenames do not need to change later.
+7. A flag trigger such as `has_country_flag` inside a player-visible requirement block (`available`, `allow`, `bypass`, and similar) uses the flag name as its tooltip localisation key, so an unlocalised flag shows its raw identifier to the player. Give a player-meaningful flag a localisation key, or wrap implementation-only checks in `hidden_trigger` and state the real requirement with `custom_trigger_tooltip`.
 
 ## 3. Naming and Prefix Rules
 
