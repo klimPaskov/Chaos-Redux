@@ -145,6 +145,8 @@ An active Army HQ Decontamination Corridor plus Theater Exploitation exposes a s
 
 Each assignment spends 4 Command Power, 40 Decontamination Equipment, and 300 Fuel at deployment. The column also needs at least 100 Gas Masks, 20 Support Equipment, and 2 Motorized Equipment in the stockpile, but it does not consume those support stores for the assignment. Decontamination stock is debited from the oldest available model. The decision requires both the payment and support stores before dispatch; a failed payment applies neither cleanup nor the 28-day national lock.
 
+The cost row's three texticons use scripted-localisation trigger quotes from the same `cbrn_doctrine_cleanup_assignment_cost` constants as its affordability checks and payment. Each amount remains visible in a ready or shortage colour without raw constant interpolation; native decision-list rendering of that row remains unverified.
+
 Cleanup output depends on the current contamination class:
 
 - Trace or Local: 10 points

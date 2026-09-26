@@ -4,30 +4,55 @@
 defined_text = {
 	name = GetCbrnCleanupCommandCost
 	text = {
-		trigger = { command_power < constant:cbrn_doctrine_cleanup_assignment_cost.command_power }
+		trigger = {
+			set_temp_variable = { cbrn_cleanup_command_cost_quote = constant:cbrn_doctrine_cleanup_assignment_cost.command_power }
+			command_power < constant:cbrn_doctrine_cleanup_assignment_cost.command_power
+		}
 		localization_key = cbrn_cleanup_command_cost_short
 	}
-	text = { localization_key = cbrn_cleanup_command_cost_ready }
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_cleanup_command_cost_quote = constant:cbrn_doctrine_cleanup_assignment_cost.command_power }
+			always = yes
+		}
+		localization_key = cbrn_cleanup_command_cost_ready
+	}
 }
 
 defined_text = {
 	name = GetCbrnCleanupEquipmentCost
 	text = {
 		trigger = {
+			set_temp_variable = { cbrn_cleanup_equipment_cost_quote = constant:cbrn_doctrine_cleanup_assignment_cost.decontamination_equipment }
 			has_equipment = {
 				decontamination_equipment < constant:cbrn_doctrine_cleanup_assignment_cost.decontamination_equipment
 			}
 		}
 		localization_key = cbrn_cleanup_equipment_cost_short
 	}
-	text = { localization_key = cbrn_cleanup_equipment_cost_ready }
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_cleanup_equipment_cost_quote = constant:cbrn_doctrine_cleanup_assignment_cost.decontamination_equipment }
+			always = yes
+		}
+		localization_key = cbrn_cleanup_equipment_cost_ready
+	}
 }
 
 defined_text = {
 	name = GetCbrnCleanupFuelCost
 	text = {
-		trigger = { has_fuel < constant:cbrn_doctrine_cleanup_assignment_cost.fuel }
+		trigger = {
+			set_temp_variable = { cbrn_cleanup_fuel_cost_quote = constant:cbrn_doctrine_cleanup_assignment_cost.fuel }
+			has_fuel < constant:cbrn_doctrine_cleanup_assignment_cost.fuel
+		}
 		localization_key = cbrn_cleanup_fuel_cost_short
 	}
-	text = { localization_key = cbrn_cleanup_fuel_cost_ready }
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_cleanup_fuel_cost_quote = constant:cbrn_doctrine_cleanup_assignment_cost.fuel }
+			always = yes
+		}
+		localization_key = cbrn_cleanup_fuel_cost_ready
+	}
 }
