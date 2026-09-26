@@ -38,4 +38,8 @@ The edited English localisation retained UTF-8 BOM encoding and had no duplicate
 
 The `.610` success report, the protection effect tooltip, and the Security focus description all resolve the current 5/10 intelligence amount through `GetGodsOfAfricaProtectionIntelAmount`. The `.610` cooldown effect text now includes both the Reciprocal Covenant and Continental Reserve reductions.
 
+## Parent follow-up to completion-audit findings
+
+The completion auditor's initial source crosswalk found stale protection feedback before commit `e2a14dfc7`. That commit resolves the report amount and cooldown findings: `.610` uses the doctrine-aware scripted localization, the effect and Security focus descriptions report the active 5/10 intelligence amount, and the cooldown text includes both reductions. This closes the text mismatch at source; it does not prove the custom localization renders correctly in the live game.
+
 No AI score or probability source changed in this tranche. The named-scenario probability evidence and same-scenario comparison remain under audit because the existing adapter reports incomplete candidate pools. The Event 012 focused event inspection remains partial, runtime and live-save behavior remains unverified by the agent, and broader Part 8 route promises remain unresolved outside the accepted overlay scope.
