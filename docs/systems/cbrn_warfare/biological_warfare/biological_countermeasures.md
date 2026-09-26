@@ -49,7 +49,7 @@ The investment totals are gameplay tuning rather than historical estimates.
 
 ## Surveillance
 
-Activating the Biological Surveillance Network consumes 40 Political Power, 80 CBRN Instruments, 60 Support Equipment, and 20 Trucks.
+Activating the Biological Surveillance Network consumes 40 Political Power, 80 CBRN Instruments, and 60 Support Equipment. It requires 20 Trucks on hand without consuming them.
 
 It also commits 10 Medical Capacity for the life of the program.
 
@@ -65,7 +65,7 @@ The program's continuing national idea imposes 3% Consumer Goods and -5% Politic
 
 Field hospitals target one controlled state with a detected ordinary outbreak.
 
-The deployment consumes 10 Command Power, 120 Support Equipment, 60 Trucks, and 20 CBRN Instruments when ordered.
+The deployment consumes 10 Political Power, 120 Support Equipment, and 60 Trucks when ordered. It requires 20 CBRN Instruments on hand without consuming them.
 
 The order immediately reserves 8 Medical Capacity on the selected state so parallel deployments cannot spend the same response teams twice.
 
@@ -79,13 +79,13 @@ The exact state stores the original provider country and exact committed amount.
 
 When the last ordinary episode in that state ends, cleanup restores the 8 Medical Capacity to that original provider if it still exists.
 
-If the deployment cannot arrive, the reserved Medical Capacity returns to its provider, but Political Power, Command Power, equipment, and supplies already spent do not.
+If the deployment cannot arrive, the reserved Medical Capacity returns to its provider, but Political Power and equipment already spent do not.
 
 ## Exact-state quarantine
 
 Quarantine targets one controlled state with a detected ordinary outbreak.
 
-The order consumes 25 Political Power, 10 Command Power, 80 Support Equipment, 40 Trucks, 200 Infantry Equipment, 1,000 Manpower, and 1% Stability.
+The order consumes 25 Political Power, 10 Command Power, 40 Trucks, and 1,000 Manpower. It requires 80 Support Equipment and 200 Infantry Equipment on hand without consuming them.
 
 The state stores the ordering country and current ordinary-outbreak cycle.
 
@@ -143,6 +143,8 @@ Each course consumes 10 Political Power, 50 Support Equipment, and 20 Trucks.
 
 The first dispatched course in a state immediately commits 5 Medical Capacity, preventing parallel courses from overcommitting the national reserve.
 
+The targeted decision's cost hover states whether this course makes a new Medical Capacity commitment or uses the medical team already committed in that state.
+
 The commitment remains while at least one Anthrax, Plague, or Tularemia treatment course is active or in transit in that state.
 
 It returns to the recorded provider when the last treated agent recovers or when the last paid course cannot arrive.
@@ -163,7 +165,7 @@ Courses after the first use weaker agent-specific growth and death multipliers, 
 
 Smallpox vaccination requires Integrated Epidemic Control and a real Smallpox threat.
 
-The 180-day national program consumes 150 Political Power, 250 Support Equipment, 100 Trucks, and 50 CBRN Instruments.
+The 180-day national program consumes 150 Political Power, 250 Support Equipment, and 50 CBRN Instruments. It requires 100 Trucks on hand without consuming them.
 
 It commits 10 Medical Capacity and imposes 25% Consumer Goods and -25% Political Power Gain while active.
 
@@ -193,7 +195,7 @@ Access requires an active observer or inspection arrangement, an allied relation
 
 Pariah and defiance routes cannot use the mission unless the existing Condemnation system provides a compliance path.
 
-The request consumes 30 Political Power, 50 Support Equipment, 25 Trucks, and 20 CBRN Instruments.
+The request consumes 30 Political Power, 50 Support Equipment, and 25 Trucks. It requires 20 CBRN Instruments on hand without consuming them.
 
 The request immediately reserves 8 Medical Capacity on the exact state so parallel missions cannot spend the same teams twice.
 
@@ -217,7 +219,7 @@ The mission never fabricates an offensive program or a donor country.
 
 An outbreak containment mission targets one controlled state that already has active quarantine and either a field hospital or an international medical mission.
 
-Starting the mission consumes 35 Political Power, 15 Command Power, 150 Support Equipment, 75 Trucks, and 40 CBRN Instruments.
+Starting the mission consumes 35 Political Power, 15 Command Power, and 150 Support Equipment. It requires 75 Trucks and 40 CBRN Instruments on hand without consuming them.
 
 It commits 10 Medical Capacity until resolution.
 
@@ -236,13 +238,13 @@ The mission records the exact starting intensity and increments an exact state-o
 
 There is no country, state, or world scan for spread accounting.
 
-Full success requires the provider to retain at least 5 uncommitted Medical Capacity, preserve the quarantine and a field hospital or international mission, retain the final sustainment stores, prevent new outbound spread, keep control of the state, and reduce every active agent below the recorded starting maximum.
+Full success requires the provider to retain at least 5 uncommitted Medical Capacity, preserve the quarantine and a field hospital or international mission, retain the final sustainment stocks, prevent new outbound spread, keep control of the state, and reduce every active agent below the recorded starting maximum.
 
-A full success consumes a final 75 Support Equipment, 30 Trucks, and 10 CBRN Instruments, lowers active-agent intensity by 15, lowers exposed share by 0.05, lowers medical saturation by 15, and grants 1% Stability.
+A full success consumes a final 75 Support Equipment and requires 30 Trucks and 10 CBRN Instruments still on hand without consuming them. It lowers active-agent intensity by 15, lowers exposed share by 0.05, lowers medical saturation by 15, and grants 1% Stability.
 
 Partial success requires the provider to retain the same Medical Capacity and final stores, keep control, prevent new outbound spread, keep at least one response measure active, and prevent every active agent from rising above the recorded starting maximum.
 
-A partial success consumes the final sustainment stores, lowers active-agent intensity by 5, lowers exposed share by 0.01, and lowers medical saturation by 5.
+A partial success consumes the final 75 Support Equipment and requires 30 Trucks and 10 CBRN Instruments still on hand without consuming them. It lowers active-agent intensity by 5, lowers exposed share by 0.01, and lowers medical saturation by 5.
 
 Failure raises active-agent intensity by 10, exposed share by 0.02, and medical saturation by 10 in the exact mission state.
 

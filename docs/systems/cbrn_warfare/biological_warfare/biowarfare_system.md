@@ -104,6 +104,8 @@ Quarantine consumes Political Power, Command Power, trucks, and manpower. Suppor
 
 Sustain Containment commits Medical Capacity and consumes Political Power, Command Power, and Support Equipment when ordered. Trucks and CBRN Instruments must be on hand but are not consumed at selection. A continuing success or partial success consumes another Support Equipment shipment only if the smaller transport and instrument requirements remain met when the mission ends; otherwise the response fails and its medical teams return.
 
+An Anthrax, Plague, or Tularemia treatment course consumes Political Power, Support Equipment, and trucks. The first supported course in a state commits a medical team; later courses in the same state reuse that team. The cost hover tells you whether the selected state needs a new Medical Capacity commitment.
+
 ## Stockpile Safety and Accidents
 
 One exact owned biowarfare facility is designated as the national arsenal.
