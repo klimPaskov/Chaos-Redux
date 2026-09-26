@@ -465,13 +465,15 @@ An exposed target evasion route adds coverup condemnation from base `16` at majo
 | Join arms embargo | New pair pays `ceil(6 x m)` convoys and `3% x m` fuel | Creates arms pair and native embargo claim where supported |
 | Escalate strategic, total, or pariah embargo | Requires an existing pair, sufficient target tier, `ceil(2 x m)` convoys, and `1% x m` fuel | Raises pair tier and continuing enforcement burden without charging the initial-pair cost again |
 | Abstain | No direct stockpile cost, review lasts `180` days | Records abstention; the last victim and active sanction participants gain negative opinion of the abstainer |
-| Humanitarian carve-out | `5` convoys for `180` days | Reduces effective target pressure through carve-out relief |
+| Humanitarian carve-out | `ceil(5 x m)` convoys for `180` days | Reduces effective target pressure through carve-out relief |
 | Quiet breach | `ceil(8 x m)` convoys, `4% x m` fuel, and `ceil(300 x m)` infantry equipment for `120` days | Adds target evasion pressure and exposure while risking discovery. AI use requires estimated dependency of at least `40` after dependency relief and a pair score below `105` |
-| Tighten enforcement | `6` convoys for `180` days | Removes quiet-breach status, raises enforcement burden, and reduces target relief |
-| Shield ally | `8` convoys for `180` days | Adds shield relief, supporting opinion, and `1` fatigue |
+| Tighten enforcement | `ceil(6 x m)` convoys for `180` days | Removes quiet-breach status, raises enforcement burden, and reduces target relief |
+| Shield ally | `ceil(8 x m)` convoys for `180` days | Adds shield relief, supporting opinion, and `1` fatigue |
 | Withdraw sanctions | No direct cost | Clears the condemnation pair and releases only the condemnation native-embargo claim |
 
 ## AI roles
+
+The automatic participant path quotes the condemned target's score before affordability checks, using the same scaled convoy requirements as its payment effects. At target scores `0`, `500`, and `1000`, humanitarian carve-outs require `5`, `10`, and `15` convoys, while tight enforcement requires `6`, `12`, and `18`; exactly the quoted amount is sufficient.
 
 Participant AI is automatic and score-driven:
 

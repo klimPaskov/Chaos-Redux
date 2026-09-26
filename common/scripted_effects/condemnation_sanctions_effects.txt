@@ -1923,6 +1923,14 @@ condemnation_recalculate_participants_apply = {
 		limit = { exists = yes }
 		set_temp_variable = { condemnation_pair_participant = THIS }
 		set_temp_variable = { condemnation_pair_target = var:condemnation_recalculation_target }
+		# Affordability must quote the target's score, as the payment effects do.
+		set_temp_variable = { condemnation_cost_score_override = constant:condemnation_cost.cost_multiplier_score_minimum }
+		var:condemnation_recalculation_target = {
+			if = {
+				limit = { has_variable = condemnation_total }
+				set_temp_variable = { condemnation_cost_score_override = condemnation_total }
+			}
+		}
 		condemnation_cleanup_pair_statuses = yes
 		var:condemnation_recalculation_target = { condemnation_calculate_pair_score = yes }
 		condemnation_read_pair_record = yes
@@ -2091,7 +2099,7 @@ condemnation_recalculate_participants_apply = {
 				if = {
 					limit = {
 						check_variable = { condemnation_pair_is_active > constant:condemnation_tier.normal }
-						NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.carveout_convoys } }
+						condemnation_can_pay_carveout_cost = yes
 						OR = {
 							has_government = democratic
 							check_variable = { var = condemnation_pair_trade_dependency value = constant:condemnation_ai.carveout_dependency compare = greater_than_or_equals }
@@ -2118,7 +2126,7 @@ condemnation_recalculate_participants_apply = {
 							}
 						}
 						check_variable = { var = condemnation_pair_score value = constant:condemnation_participant_band.lead_enforcement compare = greater_than_or_equals }
-						NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.tight_enforcement_convoys } }
+						condemnation_can_pay_tight_enforcement_cost = yes
 						var:condemnation_recalculation_target = { NOT = { is_in_array = { array = condemnation_tight_enforcement_participants value = PREV } } }
 					}
 					var:condemnation_recalculation_target = { condemnation_apply_tight_enforcement = yes }
