@@ -56,6 +56,8 @@ The same correction now applies stock-backed cleanup coverage to the military ch
 
 The [native battlefield AI gate follow-up](2026-09-26_native_battlefield_ai_policy_gate_followup.md) records a separate CBRN-03 limitation: generic vanilla-doctrine AI with Battlefield Authorization still fails the ordinary chemical and biological first-use target predicate because the source route flags have no active writers. Native raid `ai_will_do` is not exposed by the installed probability adapter, and the specialist audit stopped on an access-token refresh failure before a formal scenario comparison. The AI parity claim remains incomplete.
 
+The [MIO neighboring-asset reaudit](2026-09-26_mio_neighbor_asset_source_reaudit.md) strengthens CBRN-12/14 source evidence: the three accepted generic IDs each have twelve traits, all 21 declared archetypes have exact 48×48 badge sprites, all eight distinct generic trait-icon tokens resolve to installed vanilla GFX, and current short names replace the old clipped Biological Security Directorate identity. Native MIO list/detail rendering and combined effect behavior remain unverified.
+
 The [historical civilian-start correction](../../specs/chaos_warfare_system_specs/corrections/2026-09-26_historical_civilian_start_cleanup.md) strengthens CBRN-11 source evidence: all 41 legacy civilian percentages and the generic state distributor have been removed from active startup script. This does not resolve the remaining engine inventory and country-specific 1939 industry evidence limits.
 
 ## Preliminary MIO source and asset contract
