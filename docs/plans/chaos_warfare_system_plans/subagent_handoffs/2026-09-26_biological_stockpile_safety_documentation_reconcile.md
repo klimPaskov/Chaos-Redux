@@ -81,4 +81,6 @@ The parent has reconciled the captured-facility document's explicit relocation s
 
 Parent resolution: removed the repair helper's `bio_stockpile_safety_start_monitor` call in the same tranche. The due event now owns its next scheduled check, while initial project registration still starts the monitor. Focused pre- and post-edit MCP traces were partial, so exact runtime cadence remains unverified.
 
+Parent resolution: removed the unreferenced `bio_stockpile_safety_designation` and `bio_stockpile_safety_ai` constant groups. The legacy `selected_state` pointer-source enum remains an active capture-restoration compatibility value.
+
 Meaningful live-game raid targeting, event cadence, incident odds, AI route choice, and end-to-end capture validation were skipped because agents do not run HOI4 and the partial MCP event and probability results do not prove them. No completion claim for the CBRN package is made.
