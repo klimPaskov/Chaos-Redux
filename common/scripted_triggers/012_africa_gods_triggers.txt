@@ -764,6 +764,87 @@ gods_of_africa_can_change_priority = {
 
 # Final settlement outcome checks are intentionally separate so a decision can
 # present exactly one legal outcome while the effect remains authoritative.
+gods_of_africa_final_favored_support_is_valid = {
+	OR = {
+		AND = {
+			event_target:africa_host = { check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.reciprocal_covenant } }
+			OR = {
+				check_variable = { var = gods_of_africa_compliance_count value = constant:gods_of_africa_doctrine_effect.reciprocal_favored_minimum_compliance compare = greater_than_or_equals }
+				check_variable = { var = gods_of_africa_aid_count value = constant:gods_of_africa_value.one compare = greater_than_or_equals }
+			}
+		}
+		AND = {
+			event_target:africa_host = { check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.sovereign_exaction } }
+			OR = {
+				check_variable = { var = gods_of_africa_compliance_count value = constant:gods_of_africa_doctrine_effect.sovereign_exaction_favored_minimum_compliance compare = greater_than_or_equals }
+				check_variable = { var = gods_of_africa_aid_count value = constant:gods_of_africa_doctrine_effect.sovereign_exaction_favored_minimum_aid compare = greater_than_or_equals }
+			}
+		}
+		AND = {
+			event_target:africa_host = {
+				OR = {
+					check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.strategic_ambiguity }
+					check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_value.zero }
+				}
+			}
+			OR = {
+				check_variable = { var = gods_of_africa_compliance_count value = constant:gods_of_africa_value.favored_minimum_compliance compare = greater_than_or_equals }
+				check_variable = { var = gods_of_africa_aid_count value = constant:gods_of_africa_value.one compare = greater_than_or_equals }
+			}
+		}
+	}
+}
+
+gods_of_africa_final_failure_count_is_acceptable = {
+	OR = {
+		AND = {
+			event_target:africa_host = { check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.strategic_ambiguity } }
+			OR = {
+				NOT = { has_variable = gods_of_africa_demand_failures }
+				check_variable = { var = gods_of_africa_demand_failures value = constant:gods_of_africa_doctrine_effect.strategic_ambiguity_respected_failure_ceiling compare = less_than }
+			}
+		}
+		AND = {
+			event_target:africa_host = {
+				OR = {
+					check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_value.zero }
+					check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.reciprocal_covenant }
+					check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.sovereign_exaction }
+				}
+			}
+			OR = {
+				NOT = { has_variable = gods_of_africa_demand_failures }
+				check_variable = { var = gods_of_africa_demand_failures value = constant:gods_of_africa_value.respected_failure_ceiling compare = less_than }
+			}
+		}
+	}
+}
+
+gods_of_africa_final_refusal_count_is_acceptable = {
+	OR = {
+		AND = {
+			event_target:africa_host = { check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.strategic_ambiguity } }
+			OR = {
+				NOT = { has_variable = gods_of_africa_refusal_count }
+				check_variable = { var = gods_of_africa_refusal_count value = constant:gods_of_africa_doctrine_effect.strategic_ambiguity_respected_refusal_ceiling compare = less_than }
+			}
+		}
+		AND = {
+			event_target:africa_host = {
+				OR = {
+					check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_value.zero }
+					check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.reciprocal_covenant }
+					check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.sovereign_exaction }
+				}
+			}
+			OR = {
+				NOT = { has_variable = gods_of_africa_refusal_count }
+				check_variable = { var = gods_of_africa_refusal_count value = constant:gods_of_africa_value.respected_refusal_ceiling compare = less_than }
+			}
+		}
+	}
+}
+
 gods_of_africa_final_favored_is_valid = {
 	gods_of_africa_participant_generation_is_current = yes
 	NOT = { has_country_flag = gods_of_africa_defiant }
@@ -778,14 +859,7 @@ gods_of_africa_final_favored_is_valid = {
 		NOT = { has_variable = gods_of_africa_wrath }
 		check_variable = { gods_of_africa_wrath < constant:gods_of_africa_value.regional_strength }
 	}
-	OR = {
-		check_variable = {
-			var = gods_of_africa_compliance_count
-			value = constant:gods_of_africa_value.favored_minimum_compliance
-			compare = greater_than_or_equals
-		}
-		check_variable = { gods_of_africa_aid_count > constant:gods_of_africa_value.zero }
-	}
+	gods_of_africa_final_favored_support_is_valid = yes
 }
 
 gods_of_africa_final_respected_is_valid = {
@@ -794,14 +868,8 @@ gods_of_africa_final_respected_is_valid = {
 	NOT = { has_country_flag = gods_of_africa_enemy_marked }
 	NOT = { has_country_flag = gods_of_africa_offender }
 	NOT = { has_country_flag = gods_of_africa_broken_treaty }
-	OR = {
-		NOT = { has_variable = gods_of_africa_demand_failures }
-		check_variable = { gods_of_africa_demand_failures < constant:gods_of_africa_value.respected_failure_ceiling }
-	}
-	OR = {
-		NOT = { has_variable = gods_of_africa_refusal_count }
-		check_variable = { gods_of_africa_refusal_count < constant:gods_of_africa_value.respected_refusal_ceiling }
-	}
+	gods_of_africa_final_failure_count_is_acceptable = yes
+	gods_of_africa_final_refusal_count_is_acceptable = yes
 	OR = {
 		NOT = { has_variable = gods_of_africa_wrath }
 		check_variable = { gods_of_africa_wrath < constant:gods_of_africa_value.respected_wrath_ceiling }

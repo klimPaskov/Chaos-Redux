@@ -1311,6 +1311,10 @@ gods_of_africa_calculate_demand_deadline = {
 	else_if = { limit = { check_variable = { gods_of_africa_contract_band = constant:gods_of_africa_demand.severe_band } } add_to_variable = { gods_of_africa_contract_deadline = constant:gods_of_africa_demand.deadline_severe } }
 	else_if = { limit = { check_variable = { gods_of_africa_contract_band = constant:gods_of_africa_demand.punitive_band } } add_to_variable = { gods_of_africa_contract_deadline = constant:gods_of_africa_demand.deadline_punitive } }
 	else = { add_to_variable = { gods_of_africa_contract_deadline = constant:gods_of_africa_demand.deadline_emergency } }
+	if = {
+		limit = { check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.strategic_ambiguity } }
+		add_to_variable = { gods_of_africa_contract_deadline = constant:gods_of_africa_doctrine_effect.strategic_ambiguity_deadline_extension_days }
+	}
 }
 
 gods_of_africa_clear_substitute_slots = {
@@ -2077,6 +2081,23 @@ gods_of_africa_evaluate_punishment = {
 			}
 			set_variable = { gods_of_africa_punishment_intent_tier = constant:gods_of_africa_punishment.ultimatum }
 		}
+		if = {
+			limit = {
+				has_event_target = africa_host
+				event_target:africa_host = { check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.reciprocal_covenant } }
+				check_variable = { var = gods_of_africa_punishment_intent_tier value = constant:gods_of_africa_punishment.pressure compare = greater_than }
+			}
+			subtract_from_variable = { gods_of_africa_punishment_intent_tier = constant:gods_of_africa_doctrine_effect.reciprocal_punishment_tier_reduction }
+		}
+		else_if = {
+			limit = {
+				has_event_target = africa_host
+				event_target:africa_host = { check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.sovereign_exaction } }
+				has_country_flag = gods_of_africa_offender
+				check_variable = { var = gods_of_africa_punishment_intent_tier value = constant:gods_of_africa_punishment.ultimatum compare = less_than }
+			}
+			add_to_variable = { gods_of_africa_punishment_intent_tier = constant:gods_of_africa_doctrine_effect.sovereign_exaction_punishment_tier_increase }
+		}
 		if = { limit = { gods_of_africa_extreme_gate_is_open = yes } set_variable = { gods_of_africa_punishment_intent_tier = constant:gods_of_africa_punishment.catastrophe } }
 		set_variable = { gods_of_africa_pending_punishment_tier = gods_of_africa_punishment_intent_tier }
 		if = {
@@ -2156,13 +2177,27 @@ gods_of_africa_apply_punishment = {
 		# ceiling computed above.
 		if = {
 			limit = { check_variable = { gods_of_africa_pending_punishment_tier = constant:gods_of_africa_punishment.pressure } }
-			add_stability = constant:gods_of_africa_punishment_effect.pressure_stability_loss
-			add_war_support = constant:gods_of_africa_punishment_effect.pressure_war_support_loss
+			if = {
+				limit = { event_target:africa_host = { check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.strategic_ambiguity } } }
+				add_stability = constant:gods_of_africa_punishment_effect.ambiguity_pressure_stability_loss
+				add_war_support = constant:gods_of_africa_punishment_effect.ambiguity_pressure_war_support_loss
+			}
+			else = {
+				add_stability = constant:gods_of_africa_punishment_effect.pressure_stability_loss
+				add_war_support = constant:gods_of_africa_punishment_effect.pressure_war_support_loss
+			}
 		}
 		if = {
 			limit = { check_variable = { gods_of_africa_pending_punishment_tier = constant:gods_of_africa_punishment.disruption } }
-			add_stability = constant:gods_of_africa_punishment_effect.disruption_stability_loss
-			add_war_support = constant:gods_of_africa_punishment_effect.disruption_war_support_loss
+			if = {
+				limit = { event_target:africa_host = { check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.strategic_ambiguity } } }
+				add_stability = constant:gods_of_africa_punishment_effect.ambiguity_disruption_stability_loss
+				add_war_support = constant:gods_of_africa_punishment_effect.ambiguity_disruption_war_support_loss
+			}
+			else = {
+				add_stability = constant:gods_of_africa_punishment_effect.disruption_stability_loss
+				add_war_support = constant:gods_of_africa_punishment_effect.disruption_war_support_loss
+			}
 			if = {
 				limit = { NOT = { has_country_flag = gods_of_africa_transport_secured } }
 				random_controlled_state = {
@@ -2172,8 +2207,15 @@ gods_of_africa_apply_punishment = {
 		}
 		if = {
 			limit = { check_variable = { gods_of_africa_pending_punishment_tier = constant:gods_of_africa_punishment.crisis } }
-			add_stability = constant:gods_of_africa_punishment_effect.crisis_stability_loss
-			add_war_support = constant:gods_of_africa_punishment_effect.crisis_war_support_loss
+			if = {
+				limit = { event_target:africa_host = { check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.strategic_ambiguity } } }
+				add_stability = constant:gods_of_africa_punishment_effect.ambiguity_crisis_stability_loss
+				add_war_support = constant:gods_of_africa_punishment_effect.ambiguity_crisis_war_support_loss
+			}
+			else = {
+				add_stability = constant:gods_of_africa_punishment_effect.crisis_stability_loss
+				add_war_support = constant:gods_of_africa_punishment_effect.crisis_war_support_loss
+			}
 			if = {
 				limit = { NOT = { has_country_flag = gods_of_africa_transport_secured } }
 				random_controlled_state = {
@@ -2187,8 +2229,15 @@ gods_of_africa_apply_punishment = {
 		}
 		if = {
 			limit = { check_variable = { gods_of_africa_pending_punishment_tier = constant:gods_of_africa_punishment.ultimatum } }
-			add_stability = constant:gods_of_africa_punishment_effect.ultimatum_stability_loss
-			add_war_support = constant:gods_of_africa_punishment_effect.ultimatum_war_support_loss
+			if = {
+				limit = { event_target:africa_host = { check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.strategic_ambiguity } } }
+				add_stability = constant:gods_of_africa_punishment_effect.ambiguity_ultimatum_stability_loss
+				add_war_support = constant:gods_of_africa_punishment_effect.ambiguity_ultimatum_war_support_loss
+			}
+			else = {
+				add_stability = constant:gods_of_africa_punishment_effect.ultimatum_stability_loss
+				add_war_support = constant:gods_of_africa_punishment_effect.ultimatum_war_support_loss
+			}
 			if = {
 				limit = { NOT = { has_country_flag = gods_of_africa_transport_secured } }
 				random_controlled_state = {
@@ -2237,7 +2286,10 @@ gods_of_africa_apply_punishment = {
 		event_target:africa_host = { add_opinion_modifier = { target = event_target:gods_of_africa_memory_participant modifier = gods_of_africa_punishment } }
 		if = {
 			limit = {
-				event_target:africa_host = { has_country_flag = gods_of_africa_focus_sanctions_unlocked }
+				OR = {
+					event_target:africa_host = { has_country_flag = gods_of_africa_focus_sanctions_unlocked }
+					event_target:africa_host = { check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.strategic_ambiguity } }
+				}
 				has_country_flag = gods_of_africa_offender
 			}
 			add_opinion_modifier = { target = event_target:africa_host modifier = gods_of_africa_sanctions }
@@ -3519,12 +3571,24 @@ gods_of_africa_share_enemy_intelligence = {
 				}
 				save_event_target_as = gods_of_africa_protection_enemy
 				event_target:gods_of_africa_protected_participant = {
-					add_intel = {
-						target = event_target:gods_of_africa_protection_enemy
-						civilian_intel = constant:gods_of_africa_transaction.protection_intelligence_amount
-						army_intel = constant:gods_of_africa_transaction.protection_intelligence_amount
-						navy_intel = constant:gods_of_africa_transaction.protection_intelligence_amount
-						airforce_intel = constant:gods_of_africa_transaction.protection_intelligence_amount
+					if = {
+						limit = { event_target:africa_host = { check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.strategic_ambiguity } } }
+						add_intel = {
+							target = event_target:gods_of_africa_protection_enemy
+							civilian_intel = constant:gods_of_africa_doctrine_effect.strategic_ambiguity_protection_intelligence_amount
+							army_intel = constant:gods_of_africa_doctrine_effect.strategic_ambiguity_protection_intelligence_amount
+							navy_intel = constant:gods_of_africa_doctrine_effect.strategic_ambiguity_protection_intelligence_amount
+							airforce_intel = constant:gods_of_africa_doctrine_effect.strategic_ambiguity_protection_intelligence_amount
+						}
+					}
+					else = {
+						add_intel = {
+							target = event_target:gods_of_africa_protection_enemy
+							civilian_intel = constant:gods_of_africa_transaction.protection_intelligence_amount
+							army_intel = constant:gods_of_africa_transaction.protection_intelligence_amount
+							navy_intel = constant:gods_of_africa_transaction.protection_intelligence_amount
+							airforce_intel = constant:gods_of_africa_transaction.protection_intelligence_amount
+						}
 					}
 					set_country_flag = gods_of_africa_protection_intelligence_shared
 				}
@@ -3635,6 +3699,10 @@ gods_of_africa_protect_partner = {
 		set_variable = { gods_of_africa_protection_due_day = global.num_days }
 		add_to_variable = { gods_of_africa_protection_due_day = constant:gods_of_africa_transaction.protection_cooldown_days }
 		if = {
+			limit = { event_target:africa_host = { check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.reciprocal_covenant } } }
+			subtract_from_variable = { gods_of_africa_protection_due_day = constant:gods_of_africa_doctrine_effect.reciprocal_protection_cooldown_reduction_days }
+		}
+		if = {
 			limit = { event_target:africa_host = { has_country_flag = gods_of_africa_focus_reserve_unlocked } }
 			subtract_from_variable = { gods_of_africa_protection_due_day = constant:gods_of_africa_transaction.reserve_protection_cooldown_reduction_days }
 		}
@@ -3662,6 +3730,14 @@ gods_of_africa_protect_partner = {
 		gods_of_africa_grant_owned_protection_relations = yes
 		gods_of_africa_share_enemy_intelligence = yes
 		set_variable = { gods_of_africa_wrath_request = constant:gods_of_africa_wrath.protection_magnitude }
+		if = {
+			limit = { event_target:africa_host = { check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.reciprocal_covenant } } }
+			set_variable = { gods_of_africa_wrath_request = constant:gods_of_africa_doctrine_effect.reciprocal_protection_wrath_relief }
+		}
+		else_if = {
+			limit = { event_target:africa_host = { check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.sovereign_exaction } } }
+			set_variable = { gods_of_africa_wrath_request = constant:gods_of_africa_doctrine_effect.sovereign_exaction_protection_wrath_relief }
+		}
 		set_variable = { gods_of_africa_wrath_direction = constant:gods_of_africa_wrath.direction_decrease }
 		gods_of_africa_apply_wrath = yes
 		set_variable = { gods_of_africa_history_kind_request = constant:gods_of_africa_history_kind.aid }

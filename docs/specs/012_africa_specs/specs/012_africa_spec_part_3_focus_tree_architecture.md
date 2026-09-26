@@ -987,3 +987,17 @@ Accepted scope: Event 012 protection must remain at or below four spendable cost
 Current implementation evidence, not a separate price approval: the protection transaction uses infantry equipment, fuel, and political power, and may add at most one shortage-checked convoy or train shipment. The matching `africa_common_defence_stockpile` decrement is bookkeeping for that same physical infantry-equipment transfer, not a second spendable payment or cost type. The reserve must still cover the transfer, and its amount remains disclosed. The optional transport shipment remains at most the fourth spendable type. The separate Event 013 choice is not invoked or charged by the protection click.
 
 This acceptance resolves only the named transaction and service choices. It does not promote the older focus-route promises elsewhere in this package; their scope remains unresolved pending the user's separate direction.
+
+## 2026-09-26 accepted design decisions: Gods of Africa doctrine consequences
+
+Acceptance basis: the active user goal explicitly requires the accepted Event 012 overlay doctrines to reshape demands, protection, retaliation, and final settlement. The following consequence matrix is the parent's concrete implementation of those authorized surfaces. It keeps the existing three doctrine identifiers and does not promote the older Part 8 focus-route promises.
+
+| Doctrine | Demands | Protection | Retaliation | Hidden final settlement |
+| --- | --- | --- | --- | --- |
+| Reciprocal Covenant | Demand amounts use the existing 90% scale. | The repeat interval shortens by 30 days and protection lowers Wrath by 4. | Punishment intent falls by one tier, with Pressure as the floor; the existing first-failure, Strength, and catastrophe gates still apply. | Favored standing needs two fulfilled demands or one recorded support action. |
+| Sovereign Exaction | Demand amounts use the existing 120% scale. | Protection lowers Wrath by 1. | A host-marked proven offender raises punishment intent by one tier when intent is below Ultimatum; the normal first-failure and Strength ceilings still apply, and catastrophe remains behind its full gate. | Favored standing needs four fulfilled demands or two recorded support actions. |
+| Strategic Ambiguity | Each frozen deadline gains 30 days without changing the quoted amount. | Enemy intelligence rises from 5 to 10 in each shared category when the existing Arms/agency/security/war gates pass. | Direct stability and war-support losses are halved; marked proven offenders also receive the existing diplomatic sanctions memory. Strength and catastrophe gates are unchanged. | Respected standing tolerates up to two demand failures and two refusals, subject to the existing offender, treaty, Wrath, and defiance exclusions; Favored support remains at three fulfilled demands or one recorded support action. |
+
+These effects reuse the current protection transaction and its four-spendable-cost-type maximum. They add no public value, payment type, random pool, or AI weight. The numeric tuning is centralized in `common/script_constants/012_africa_gods_constants.txt`; current probability-adapter limitations remain separate from implementation evidence.
+
+The support-history threshold reads the existing hidden `gods_of_africa_aid_count`, which records participant voluntary aid and the host's leniency or protection actions. It adds no visible relationship meter and does not change the four settlement names.
