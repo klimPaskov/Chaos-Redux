@@ -18,6 +18,11 @@
 @CBRN_SP_REGENERATIVE_STEEL = 3
 @CBRN_SP_REGENERATIVE_RUBBER = 4
 @CBRN_SP_REGENERATIVE_CHROMIUM = 2
+# Stat fields inside sub_unit_bonus and equipment_bonus reject script constants.
+@CBRN_SP_SMOKE_MECHANIZED_BREAKTHROUGH = 0.06
+@CBRN_SP_FILTERS_MASK_IC_INCREASE = 0.12
+@CBRN_SP_ANTIBIOTICS_FIELD_HOSPITAL_TRICKLEBACK = 0.05
+@CBRN_SP_ANTIBIOTICS_CBRN_MEDICAL_TRICKLEBACK = 0.08
 @CBRN_SP_ANTISERUM_STEEL = 3
 @CBRN_SP_ANTISERUM_RUBBER = 4
 @CBRN_SP_ANTISERUM_CHROMIUM = 2
@@ -33,7 +38,7 @@ sp_cbrn_mechanized_smoke_screens = {
 	ai_will_do = { base = constant:cbrn_project_ai.defensive_base }
 	project_output = {
 		sub_unit_bonus = {
-			mechanized = { breakthrough = constant:cbrn_project_cost.smoke_mechanized_breakthrough }
+			mechanized = { breakthrough = @CBRN_SP_SMOKE_MECHANIZED_BREAKTHROUGH }
 		}
 		country_effects = {
 			custom_effect_tooltip = sp_cbrn_mechanized_smoke_screens_complete_tt
@@ -84,8 +89,10 @@ sp_cbrn_self_renewing_filters = {
 	ai_will_do = { base = constant:cbrn_project_ai.advanced_base }
 	project_output = {
 		equipment_bonus = {
-			gas_mask_equipment = { build_cost_ic = constant:cbrn_project_cost.filters_mask_ic_increase }
-			instant = yes
+			gas_mask_equipment = {
+				build_cost_ic = @CBRN_SP_FILTERS_MASK_IC_INCREASE
+				instant = yes
+			}
 		}
 		country_effects = {
 			custom_effect_tooltip = sp_cbrn_self_renewing_filters_complete_tt
@@ -160,8 +167,8 @@ sp_cbrn_field_antibiotics = {
 	ai_will_do = { base = constant:cbrn_project_ai.defensive_base }
 	project_output = {
 		sub_unit_bonus = {
-			field_hospital = { casualty_trickleback = constant:cbrn_project_cost.antibiotics_field_hospital_trickleback }
-			cbrn_medical_countermeasure_detachment = { casualty_trickleback = constant:cbrn_project_cost.antibiotics_cbrn_medical_trickleback }
+			field_hospital = { casualty_trickleback = @CBRN_SP_ANTIBIOTICS_FIELD_HOSPITAL_TRICKLEBACK }
+			cbrn_medical_countermeasure_detachment = { casualty_trickleback = @CBRN_SP_ANTIBIOTICS_CBRN_MEDICAL_TRICKLEBACK }
 		}
 		country_effects = {
 			custom_effect_tooltip = sp_cbrn_field_antibiotics_complete_tt
