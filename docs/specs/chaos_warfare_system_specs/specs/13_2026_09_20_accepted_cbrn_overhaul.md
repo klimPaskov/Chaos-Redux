@@ -54,4 +54,6 @@ The accepted visual repairs cover the plague gate, plague image, zero-capacity p
 
 Event 020's unsupported cost interpolation and exact displayed-payment boundary follow the [shared response cost correction](../../020_black_plague_specs/corrections/2026-09-26_shared_response_cost_quotes_and_boundaries.md). That source correction does not accept the still-dense decision rows or substitute source checks for native visual and transaction evidence.
 
+The [Event 020 public-language correction](../../020_black_plague_specs/corrections/2026-09-27_response_public_language.md) removes internal ledger and meter prose from ten active descriptions while leaving genuine Rat Council records in the story. It does not resolve the decision-list and cost-row presentation blockers.
+
 Ancillary repairs follow the owner implementation handoffs and must be recorded with exact files, identifiers, source evidence, and remaining validation. No unapproved fallback, proxy, or substitute is accepted by this amendment.
