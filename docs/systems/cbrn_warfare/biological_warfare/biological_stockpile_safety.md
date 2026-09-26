@@ -8,7 +8,15 @@ This document describes the current source behavior. Source inspection does not 
 
 ## Arsenal registration and repair
 
-The four biological special projects register their first qualifying exact facility through `facility_state_effects` when the project supplies that state context. Registration stores `bio_stockpile_safety_arsenal_state` on the owning country and `bio_stockpile_safety_arsenal_actor` on the state, then starts `cbrn_bio_safety.1`. The source has no active `bio_designate_national_biological_arsenal` decision or matching localisation. If a scripted project completion supplies no facility state and no previous designation history, this source path does not establish an arsenal pointer or schedule its monitor.
+The four biological special projects register their first qualifying exact facility through `facility_state_effects` when the project supplies that state context. Registration stores `bio_stockpile_safety_arsenal_state` on the owning country and `bio_stockpile_safety_arsenal_actor` on the state, then starts `cbrn_bio_safety.1`. The source has no active `bio_designate_national_biological_arsenal` decision or matching localisation. Vanilla `complete_special_project` skips facility-state effects even when a state argument is supplied. UWR's scripted successor setup therefore registers its exact eligible Tver facility after completing its agent projects and issuing its initial stockpile. The dedicated pointer-source value survives hostile capture and recapture. Other scripted completions without an exact supported facility state and no prior designation history still do not establish an arsenal pointer or schedule its monitor.
+
+| UWR setup case | Source behavior |
+| --- | --- |
+| Tver is owned, controlled, eligible, and has a positive facility level | State 247 becomes the exact arsenal, even if damaged; its damage enters the risk snapshot. |
+| Force-all spawn starts without a Tver facility | Setup can register Tver only if its existing facility-construction step succeeds there. |
+| Tver has no eligible positive-level facility after setup | Registration fails closed; no pointer or monitor is fabricated. |
+| A valid arsenal pointer already exists | Setup does not replace it or schedule another initial monitor. |
+| An earlier designation exists but its pointer is invalid | Setup leaves capture history intact; the bounded due-event repair owns any later replacement. |
 
 On a due monitor event, `bio_stockpile_safety_reselect_arsenal_if_needed` checks whether a country with prior verified designation history has lost a valid pointer. It clears the old designation and may select one random owned, controlled, eligible state with an operational `biowarfare_facility`. This is a bounded internal repair in the affected country, not a player relocation action. If no candidate exists, the cleared pointer has no monitor due date and the event does not schedule another check through that path. The state selection is random among eligible candidates; the source applies no core-state, infrastructure, outbreak-avoidance, or frontline ranking.
 

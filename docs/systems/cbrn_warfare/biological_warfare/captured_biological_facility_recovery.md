@@ -8,7 +8,7 @@ The system tracks one internally registered national stockpile site. Hearts of I
 
 ## Capture and control sequence
 
-1. A verified special project registers its facility state as the national stockpile site. When no project facility scope exists, registration waits for a supported source or a bounded internal reselection of an earlier verified program.
+1. A verified special project registers its facility state as the national stockpile site. UWR's scripted successor setup instead registers its exact eligible Tver facility after completing its agent projects. Other completions without project facility scope wait for a supported exact source or a bounded internal reselection of an earlier verified program.
 2. `on_state_control_changed` receives the exact new controller, old controller, and changed state. It does not search for a substitute state.
 3. On the first hostile capture, the system snapshots the former custodian's four live unallocated payload counts, removes those exact aggregate amounts across all equipment producers once, and stores them on the changed state.
 4. The state records the original custodian, current controller, remaining payload by agent, total hazard, and one delayed hazard due date.

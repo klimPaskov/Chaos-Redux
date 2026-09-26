@@ -11,6 +11,7 @@ The country is led by Ivan Mikhailovich Velikanov and is built around forbidden 
 1. `can_soviet_collapse_spawn_uwr` checks the high-chaos successor gate, tag existence, collapse pressure, depot vulnerability, and state 247 biowarfare facility ownership/control.
 2. `soviet_collapse_spawn_uwr_if_enabled` cores and transfers state 247 to `UWR`.
 3. `soviet_collapse_setup_uwr_successor` loads `UWR_soviet_collapse_focus_tree`, grants the experimental warfare idea, initial manpower, biowarfare and chemical facilities, an experiment camp, heavy biological and chemical payload stockpiles, advanced gas technology, starting breakthroughs, and random chaos special-project unlocks.
+   The scripted project completions do not execute facility-state outputs. After those grants, the setup registers the exact eligible Tver facility as the biological arsenal. A damaged Tver facility with a positive total level still registers so its stockpile risk can be monitored. If Tver has no eligible positive-level facility after setup, registration fails closed; it does not assign a random national facility.
 4. The high-chaos evolution log records stage `unconventional_warfare_stage` and fires `chaosx.nr5_custom.43`.
 
 ## Focus Tree

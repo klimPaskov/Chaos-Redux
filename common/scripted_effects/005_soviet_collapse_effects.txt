@@ -21809,6 +21809,57 @@ soviet_collapse_uwr_build_biowarfare_facility = {
 	}
 }
 
+# Country scope. Script completion does not run project facility-state effects.
+# UWR owns only Tver at this point; register its exact positive-level facility.
+soviet_collapse_uwr_register_biological_arsenal = {
+	save_event_target_as = soviet_collapse_uwr_biological_owner
+	if = {
+		limit = {
+			247 = {
+				scope_exists = yes
+				impassable = no
+				is_owned_by = event_target:soviet_collapse_uwr_biological_owner
+				is_controlled_by = event_target:soviet_collapse_uwr_biological_owner
+				bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+				biowarfare_facility > constant:bio_stockpile_safety_risk.facility_level_trigger_floor
+			}
+		}
+		247 = { save_event_target_as = soviet_collapse_uwr_biological_facility }
+	}
+	if = {
+		limit = {
+			has_event_target = soviet_collapse_uwr_biological_facility
+			NOT = { bio_stockpile_safety_arsenal_pointer_is_valid = yes }
+			NOT = { has_country_flag = bio_stockpile_safety_arsenal_designation_history }
+		}
+		event_target:soviet_collapse_uwr_biological_facility = {
+			if = {
+				limit = {
+					scope_exists = yes
+					impassable = no
+					is_owned_by = event_target:soviet_collapse_uwr_biological_owner
+					is_controlled_by = event_target:soviet_collapse_uwr_biological_owner
+					bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+					biowarfare_facility > constant:bio_stockpile_safety_risk.facility_level_trigger_floor
+				}
+				event_target:soviet_collapse_uwr_biological_owner = { cbrn_initialize_country_data = yes }
+				set_state_flag = bio_stockpile_safety_arsenal_complex
+				set_variable = { bio_stockpile_safety_arsenal_actor = event_target:soviet_collapse_uwr_biological_owner }
+				set_variable = { bio_stockpile_safety_arsenal_designated_date = global.num_days }
+				event_target:soviet_collapse_uwr_biological_owner = {
+					set_variable = { bio_stockpile_safety_arsenal_state = event_target:soviet_collapse_uwr_biological_facility }
+					set_variable = { bio_stockpile_safety_arsenal_pointer_source = constant:bio_stockpile_safety_pointer_source.scripted_project_exact_facility }
+					set_variable = { bio_stockpile_safety_last_designation_date = global.num_days }
+					set_country_flag = bio_stockpile_safety_arsenal_designated
+					set_country_flag = bio_stockpile_safety_arsenal_designation_history
+					bio_stockpile_safety_refresh_risk_band = yes
+					bio_stockpile_safety_start_monitor = yes
+				}
+			}
+		}
+	}
+}
+
 soviet_collapse_uwr_build_cw_facility = {
 	random_owned_controlled_state = {
 		limit = {
@@ -22318,6 +22369,7 @@ soviet_collapse_setup_uwr_successor = {
 		soman = 1
 	}
 	soviet_collapse_uwr_stockpile_absurd_payloads = yes
+	soviet_collapse_uwr_register_biological_arsenal = yes
 	grant_random_chaos_special_project_available_tech = yes
 	grant_random_chaos_special_project_available_tech = yes
 	soviet_collapse_spawn_custom_splinter_assault_columns = yes

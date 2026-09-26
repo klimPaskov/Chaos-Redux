@@ -68,8 +68,8 @@ bio_stockpile_safety_incident_is_doomsday_release = {
 
 # Country scope. The pointer is the only accepted arsenal state. The caller
 # must set the designation flag and source after an exact special-project
-# facility proof or a bounded internal repair. No completed-project lookup is
-# attempted here.
+# facility proof, an exact facility built by a scripted project setup, or a
+# bounded internal repair. No completed-project lookup is attempted here.
 bio_stockpile_safety_arsenal_pointer_source_is_valid = {
 	has_variable = bio_stockpile_safety_arsenal_pointer_source
 	OR = {
@@ -81,6 +81,11 @@ bio_stockpile_safety_arsenal_pointer_source_is_valid = {
 		check_variable = {
 			var = bio_stockpile_safety_arsenal_pointer_source
 			value = constant:bio_stockpile_safety_pointer_source.verified_special_project_facility
+			compare = equals
+		}
+		check_variable = {
+			var = bio_stockpile_safety_arsenal_pointer_source
+			value = constant:bio_stockpile_safety_pointer_source.scripted_project_exact_facility
 			compare = equals
 		}
 	}
