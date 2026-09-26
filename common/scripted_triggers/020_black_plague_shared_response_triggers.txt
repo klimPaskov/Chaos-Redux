@@ -98,54 +98,49 @@ black_plague_shared_royal_node_state_can_start_action = {
 	ROOT = { black_plague_country_can_direct_response = yes }
 }
 
-# The common floor prevents an action from draining an unavailable stockpile;
-# the action effect applies the population scale before payment.
-black_plague_shared_country_can_pay_standard_materials = {
-	has_equipment = { support_equipment > constant:black_plague_shared_cost.standard_support_equipment }
-	has_equipment = { motorized_equipment > constant:black_plague_shared_cost.standard_motorized_equipment }
-	has_fuel > constant:black_plague_shared_cost.standard_fuel
-}
-
+# National knowledge work and the Royal Node strike pay this fixed bundle.
 black_plague_shared_country_can_pay_country_materials = {
-	has_equipment = { support_equipment > constant:black_plague_shared_cost.country_support_equipment }
-	has_equipment = { motorized_equipment > constant:black_plague_shared_cost.country_motorized_equipment }
-	has_fuel > constant:black_plague_shared_cost.country_fuel
+	NOT = { has_equipment = { support_equipment < constant:black_plague_shared_cost.country_support_equipment } }
+	NOT = { has_equipment = { motorized_equipment < constant:black_plague_shared_cost.country_motorized_equipment } }
+	NOT = { has_fuel < constant:black_plague_shared_cost.country_fuel }
 }
 
 black_plague_shared_country_can_pay_royal_node = {
 	black_plague_shared_country_can_pay_country_materials = yes
-	has_equipment = { infantry_equipment > constant:black_plague_shared_cost.country_infantry_equipment }
-	has_manpower > constant:black_plague_shared_cost.country_manpower
-	command_power > constant:black_plague_shared_cost.country_command_power
+	NOT = { has_equipment = { infantry_equipment < constant:black_plague_shared_cost.country_infantry_equipment } }
+	NOT = { has_manpower < constant:black_plague_shared_cost.country_manpower }
+	NOT = { command_power < constant:black_plague_shared_cost.country_command_power }
 }
 
 # STATE scope; ROOT is the responding country. The begin effect scales the
 # standard payment by population, so the target gate mirrors all four bands.
+# Each state band checks the rounded bundle paid at selection. There is no
+# separate national stock floor on these selected-state actions.
 black_plague_shared_state_can_pay_scaled_materials = {
 	OR = {
 		AND = {
 			check_variable = { var = state_population_k value = constant:black_plague_shared_scale.large_population_k compare = less_than }
 			ROOT = {
-				has_equipment = { support_equipment > constant:black_plague_shared_cost.scaled_min_support_equipment }
-				has_equipment = { motorized_equipment > constant:black_plague_shared_cost.scaled_min_motorized_equipment }
-				has_fuel > constant:black_plague_shared_cost.scaled_min_fuel
+				NOT = { has_equipment = { support_equipment < constant:black_plague_shared_cost.scaled_min_support_equipment } }
+				NOT = { has_equipment = { motorized_equipment < constant:black_plague_shared_cost.scaled_min_motorized_equipment } }
+				NOT = { has_fuel < constant:black_plague_shared_cost.scaled_min_fuel }
 			}
 		}
 		AND = {
 			check_variable = { var = state_population_k value = constant:black_plague_shared_scale.large_population_k compare = greater_than_or_equals }
 			check_variable = { var = state_population_k value = constant:black_plague_shared_scale.metropolitan_population_k compare = less_than }
 			ROOT = {
-				has_equipment = { support_equipment > constant:black_plague_shared_cost.scaled_large_support_equipment }
-				has_equipment = { motorized_equipment > constant:black_plague_shared_cost.scaled_large_motorized_equipment }
-				has_fuel > constant:black_plague_shared_cost.scaled_large_fuel
+				NOT = { has_equipment = { support_equipment < constant:black_plague_shared_cost.scaled_large_support_equipment } }
+				NOT = { has_equipment = { motorized_equipment < constant:black_plague_shared_cost.scaled_large_motorized_equipment } }
+				NOT = { has_fuel < constant:black_plague_shared_cost.scaled_large_fuel }
 			}
 		}
 		AND = {
 			check_variable = { var = state_population_k value = constant:black_plague_shared_scale.metropolitan_population_k compare = greater_than_or_equals }
 			ROOT = {
-				has_equipment = { support_equipment > constant:black_plague_shared_cost.scaled_metropolitan_support_equipment }
-				has_equipment = { motorized_equipment > constant:black_plague_shared_cost.scaled_metropolitan_motorized_equipment }
-				has_fuel > constant:black_plague_shared_cost.scaled_metropolitan_fuel
+				NOT = { has_equipment = { support_equipment < constant:black_plague_shared_cost.scaled_metropolitan_support_equipment } }
+				NOT = { has_equipment = { motorized_equipment < constant:black_plague_shared_cost.scaled_metropolitan_motorized_equipment } }
+				NOT = { has_fuel < constant:black_plague_shared_cost.scaled_metropolitan_fuel }
 			}
 		}
 	}
@@ -171,24 +166,20 @@ black_plague_shared_country_can_pay_scaled_selected_state = {
 # same selected-state affordability check used by the ordinary board actions.
 black_plague_shared_country_can_pay_scaled_selected_state_with_trains = {
 	black_plague_shared_country_can_pay_scaled_selected_state = yes
-	has_equipment = { train_equipment > constant:black_plague_shared_cost.standard_trains }
+	NOT = { has_equipment = { train_equipment < constant:black_plague_shared_cost.standard_trains } }
 }
 
 # STATE scope: Prepared / Exposed actions.
 black_plague_shared_can_start_sentinel_surveillance = {
 	black_plague_shared_state_can_start_action = yes
 	black_plague_shared_state_is_prepared_or_exposed = yes
-	ROOT = {
-		NOT = { has_country_flag = black_plague_shared_sentinel_surveillance_active }
-		black_plague_shared_country_can_pay_standard_materials = yes
-	}
+	ROOT = { NOT = { has_country_flag = black_plague_shared_sentinel_surveillance_active } }
 }
 
 black_plague_shared_can_start_transport_inspections = {
 	black_plague_shared_state_can_start_action = yes
 	black_plague_shared_state_is_prepared_or_exposed = yes
 	black_plague_shared_state_is_coastal_hub = yes
-	ROOT = { black_plague_shared_country_can_pay_standard_materials = yes }
 }
 
 black_plague_shared_can_start_prevention_law = {
@@ -206,7 +197,6 @@ black_plague_shared_can_start_border_corridor = {
 	any_neighbor_state = {
 		black_plague_state_is_established = yes
 	}
-	ROOT = { black_plague_shared_country_can_pay_standard_materials = yes }
 }
 
 black_plague_shared_can_start_port_inspections = {
@@ -214,8 +204,7 @@ black_plague_shared_can_start_port_inspections = {
 	black_plague_shared_state_is_prepared_or_exposed = yes
 	black_plague_shared_state_is_coastal_hub = yes
 	ROOT = {
-		black_plague_shared_country_can_pay_standard_materials = yes
-		has_equipment = { train_equipment > constant:black_plague_shared_cost.standard_trains }
+		NOT = { has_equipment = { train_equipment < constant:black_plague_shared_cost.standard_trains } }
 	}
 }
 
@@ -224,21 +213,18 @@ black_plague_shared_can_start_troop_restrictions = {
 	black_plague_shared_state_is_prepared_or_exposed = yes
 	black_plague_shared_state_has_military_route = yes
 	ROOT = {
-		command_power > constant:black_plague_shared_cost.standard_command_power
-		black_plague_shared_country_can_pay_standard_materials = yes
+		NOT = { command_power < constant:black_plague_shared_cost.standard_command_power }
 	}
 }
 
 black_plague_shared_can_start_field_hospitals = {
 	black_plague_shared_state_can_start_action = yes
 	black_plague_state_is_threatened = yes
-	ROOT = { black_plague_shared_country_can_pay_standard_materials = yes }
 }
 
 black_plague_shared_can_start_civilian_travel = {
 	black_plague_shared_state_can_start_action = yes
 	black_plague_shared_state_is_prepared_or_exposed = yes
-	ROOT = { black_plague_shared_country_can_pay_standard_materials = yes }
 }
 
 # STATE scope: Infected actions.
@@ -247,23 +233,20 @@ black_plague_shared_can_start_relief_corridor = {
 	black_plague_shared_state_is_infected_or_worse = yes
 	OR = { has_state_flag = black_plague_quarantine_active has_state_flag = black_plague_cordon_active }
 	ROOT = {
-		black_plague_shared_country_can_pay_standard_materials = yes
-		has_equipment = { train_equipment > constant:black_plague_shared_cost.standard_trains }
+		NOT = { has_equipment = { train_equipment < constant:black_plague_shared_cost.standard_trains } }
 	}
 }
 
 black_plague_shared_can_start_burial_sanitation = {
 	black_plague_shared_state_can_start_action = yes
 	black_plague_shared_state_is_infected_or_worse = yes
-	ROOT = { black_plague_shared_country_can_pay_standard_materials = yes }
 }
 
 black_plague_shared_can_start_transport_seal = {
 	black_plague_shared_state_can_start_action = yes
 	OR = { black_plague_state_is_severe = yes black_plague_state_is_collapsed = yes }
 	ROOT = {
-		black_plague_shared_country_can_pay_country_materials = yes
-		command_power > constant:black_plague_shared_cost.country_command_power
+		NOT = { command_power < constant:black_plague_shared_cost.country_command_power }
 	}
 }
 
@@ -271,8 +254,7 @@ black_plague_shared_can_start_evacuation = {
 	black_plague_shared_state_can_start_action = yes
 	black_plague_shared_state_is_prepared_or_exposed = yes
 	ROOT = {
-		black_plague_shared_country_can_pay_standard_materials = yes
-		has_equipment = { train_equipment > constant:black_plague_shared_cost.standard_trains }
+		NOT = { has_equipment = { train_equipment < constant:black_plague_shared_cost.standard_trains } }
 	}
 }
 
@@ -280,7 +262,6 @@ black_plague_shared_can_start_foreign_medical_mission = {
 	black_plague_shared_state_can_start_action = yes
 	black_plague_shared_state_is_infected_or_worse = yes
 	ROOT = {
-		black_plague_shared_country_can_pay_country_materials = yes
 		NOT = { has_country_flag = black_plague_shared_foreign_medical_mission_active }
 	}
 }
@@ -289,59 +270,48 @@ black_plague_shared_can_start_foreign_medical_mission = {
 black_plague_shared_can_start_maintain_containment = {
 	black_plague_shared_state_can_start_action = yes
 	black_plague_state_is_contained = yes
-	ROOT = { black_plague_shared_country_can_pay_standard_materials = yes }
 }
 
 black_plague_shared_can_start_controlled_reopening = {
 	black_plague_shared_state_can_start_action = yes
 	black_plague_state_is_contained = yes
 	NOT = { has_state_flag = black_plague_quarantine_active }
-	ROOT = { black_plague_shared_country_can_pay_standard_materials = yes }
 }
 
 black_plague_shared_can_start_residual_tracing = {
 	black_plague_shared_state_can_start_action = yes
 	black_plague_shared_state_is_contained_or_recovery = yes
-	ROOT = { black_plague_shared_country_can_pay_standard_materials = yes }
 }
 
 black_plague_shared_can_start_personnel_rotation = {
 	black_plague_shared_state_can_start_action = yes
 	black_plague_shared_state_is_contained_or_recovery = yes
-	ROOT = { black_plague_shared_country_can_pay_standard_materials = yes }
 }
 
 black_plague_shared_can_start_administration = {
 	black_plague_shared_state_can_start_action = yes
 	black_plague_shared_state_is_recovery = yes
-	ROOT = { black_plague_shared_country_can_pay_country_materials = yes }
 }
 
 black_plague_shared_can_start_rebuild = {
 	black_plague_shared_state_can_start_action = yes
 	black_plague_shared_state_is_recovery = yes
-	ROOT = { black_plague_shared_country_can_pay_country_materials = yes }
 }
 
 black_plague_shared_can_start_household_support = {
 	black_plague_shared_state_can_start_action = yes
 	black_plague_shared_state_is_recovery = yes
-	ROOT = { black_plague_shared_country_can_pay_country_materials = yes }
 }
 
 black_plague_shared_can_start_preserve_surveillance = {
 	black_plague_shared_state_can_start_action = yes
 	black_plague_state_is_cured = yes
-	ROOT = {
-		NOT = { has_country_flag = black_plague_shared_sentinel_surveillance_active }
-		black_plague_shared_country_can_pay_standard_materials = yes
-	}
+	ROOT = { NOT = { has_country_flag = black_plague_shared_sentinel_surveillance_active } }
 }
 
 black_plague_shared_can_start_remove_restrictions = {
 	black_plague_shared_state_can_start_action = yes
 	black_plague_state_is_cured = yes
-	ROOT = { black_plague_shared_country_can_pay_standard_materials = yes }
 }
 
 # COUNTRY scope: knowledge actions. These decisions use the dedicated Black
@@ -507,29 +477,25 @@ black_plague_shared_can_fortify_anti_rat_line = {
 	black_plague_shared_state_can_start_action = yes
 	black_plague_state_is_threatened = yes
 	NOT = { black_plague_state_is_rat_controlled = yes }
-	ROOT = { black_plague_shared_country_can_pay_country_materials = yes }
 }
 
 black_plague_shared_can_armored_clearance = {
 	black_plague_shared_state_can_start_action = yes
 	black_plague_response_state_has_rat_occupation_history = yes
 	ROOT = {
-		has_equipment = { infantry_equipment > constant:black_plague_shared_cost.country_infantry_equipment }
-		black_plague_shared_country_can_pay_standard_materials = yes
+		NOT = { has_equipment = { infantry_equipment < constant:black_plague_shared_cost.country_infantry_equipment } }
 	}
 }
 
 black_plague_shared_can_air_reconnaissance = {
 	black_plague_shared_state_can_start_action = yes
 	black_plague_response_state_has_rat_occupation_history = yes
-	ROOT = { black_plague_shared_country_can_pay_standard_materials = yes }
 }
 
 black_plague_shared_can_liberate_and_quarantine = {
 	black_plague_shared_state_can_start_action = yes
 	black_plague_response_state_has_rat_occupation_history = yes
 	ROOT = {
-		black_plague_shared_country_can_pay_country_materials = yes
 		black_plague_response_state_has_containment_force = yes
 	}
 }
@@ -589,12 +555,12 @@ black_plague_shared_crown_mission_target_success = {
 }
 
 black_plague_shared_country_can_pay_crown_strike = {
-	has_equipment = { support_equipment > constant:black_plague_shared_result.crown_strike_support_equipment }
-	has_equipment = { motorized_equipment > constant:black_plague_shared_result.crown_strike_motorized_equipment }
-	has_equipment = { infantry_equipment > constant:black_plague_shared_result.crown_strike_infantry_equipment }
-	has_manpower > constant:black_plague_shared_result.crown_strike_manpower
-	has_fuel > constant:black_plague_shared_result.crown_strike_fuel
-	command_power > constant:black_plague_shared_result.crown_strike_command_power
+	NOT = { has_equipment = { support_equipment < constant:black_plague_shared_result.crown_strike_support_equipment } }
+	NOT = { has_equipment = { motorized_equipment < constant:black_plague_shared_result.crown_strike_motorized_equipment } }
+	NOT = { has_equipment = { infantry_equipment < constant:black_plague_shared_result.crown_strike_infantry_equipment } }
+	NOT = { has_manpower < constant:black_plague_shared_result.crown_strike_manpower }
+	NOT = { has_fuel < constant:black_plague_shared_result.crown_strike_fuel }
+	NOT = { command_power < constant:black_plague_shared_result.crown_strike_command_power }
 	NOT = { num_of_available_civilian_factories < constant:black_plague_shared_result.crown_strike_civilian_factories }
 	black_plague_country_has_response_capacity_five = yes
 }
@@ -631,12 +597,12 @@ black_plague_shared_can_strike_crown = {
 # as contaminated historical sites. This operation seals one site at a time;
 # it never clears the disease phase or removes ordinary countermeasure work.
 black_plague_shared_country_can_pay_royal_seal = {
-	has_equipment = { support_equipment > constant:black_plague_shared_result.royal_seal_support_equipment }
-	has_equipment = { motorized_equipment > constant:black_plague_shared_result.royal_seal_motorized_equipment }
-	has_equipment = { infantry_equipment > constant:black_plague_shared_result.royal_seal_infantry_equipment }
-	has_manpower > constant:black_plague_shared_result.royal_seal_manpower
-	has_fuel > constant:black_plague_shared_result.royal_seal_fuel
-	command_power > constant:black_plague_shared_result.royal_seal_command_power
+	NOT = { has_equipment = { support_equipment < constant:black_plague_shared_result.royal_seal_support_equipment } }
+	NOT = { has_equipment = { motorized_equipment < constant:black_plague_shared_result.royal_seal_motorized_equipment } }
+	NOT = { has_equipment = { infantry_equipment < constant:black_plague_shared_result.royal_seal_infantry_equipment } }
+	NOT = { has_manpower < constant:black_plague_shared_result.royal_seal_manpower }
+	NOT = { has_fuel < constant:black_plague_shared_result.royal_seal_fuel }
+	NOT = { command_power < constant:black_plague_shared_result.royal_seal_command_power }
 	NOT = { num_of_available_civilian_factories < constant:black_plague_shared_result.royal_seal_civilian_factories }
 	black_plague_country_has_response_capacity_three = yes
 }

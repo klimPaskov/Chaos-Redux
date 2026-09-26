@@ -465,7 +465,8 @@ black_plague_reset_response_payment = {
 	set_temp_variable = { black_plague_response_payment_medical_reserve = constant:black_plague_response_value.zero }
 }
 
-# COUNTRY scope. Positive input variables become exact negative transactions.
+# COUNTRY scope. Positive input variables become negative transactions. Trucks
+# debit the real model 0/1 stockpile and record only the completed amount.
 black_plague_pay_response_cost = {
 	if = {
 		limit = { check_variable = { black_plague_response_payment_manpower > constant:black_plague_response_value.zero } }
@@ -490,10 +491,9 @@ black_plague_pay_response_cost = {
 	}
 	if = {
 		limit = { check_variable = { black_plague_response_payment_motorized > constant:black_plague_response_value.zero } }
-		add_to_variable = { black_plague_response_motorized_spent = black_plague_response_payment_motorized }
-		set_temp_variable = { black_plague_response_payment_debit = black_plague_response_payment_motorized }
-		multiply_temp_variable = { black_plague_response_payment_debit = constant:black_plague_response_value.negative_one }
-		add_equipment_to_stockpile = { type = motorized_equipment_1 amount = black_plague_response_payment_debit }
+		set_temp_variable = { cbrn_motorized_stock_debit_requested = black_plague_response_payment_motorized }
+		cbrn_debit_motorized_stockpile_oldest_first = yes
+		add_to_variable = { black_plague_response_motorized_spent = cbrn_motorized_stock_debit_completed }
 	}
 	if = {
 		limit = { check_variable = { black_plague_response_payment_trains > constant:black_plague_response_value.zero } }

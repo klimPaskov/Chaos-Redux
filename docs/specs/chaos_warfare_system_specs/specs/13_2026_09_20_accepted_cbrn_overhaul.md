@@ -44,4 +44,6 @@ The four accepted commander traits are **Biological Operations Veteran**, **Haza
 
 The accepted visual repairs cover the plague gate, plague image, zero-capacity presentation, famine and migration glyphs, chemical-warfare facility, zombie category art and bomb icon, CXT leader portrait, and `SWE_wargames` icon. These require final consumer wiring and asset evidence before completion claims.
 
+Event 020's unsupported cost interpolation and exact displayed-payment boundary follow the [shared response cost correction](../../020_black_plague_specs/corrections/2026-09-26_shared_response_cost_quotes_and_boundaries.md). That source correction does not accept the still-dense decision rows or substitute source checks for native visual and transaction evidence.
+
 Ancillary repairs follow the owner implementation handoffs and must be recorded with exact files, identifiers, source evidence, and remaining validation. No unapproved fallback, proxy, or substitute is accepted by this amendment.

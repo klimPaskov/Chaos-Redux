@@ -12,16 +12,27 @@ defined_text = {
 	text = {
 		trigger = {
 			check_variable = { var = state_population_k value = constant:black_plague_shared_scale.metropolitan_population_k compare = greater_than_or_equals }
+			set_temp_variable = { black_plague_shared_support_quote = constant:black_plague_shared_cost.standard_support_equipment }
+			multiply_temp_variable = { black_plague_shared_support_quote = constant:black_plague_shared_scale.metropolitan }
 		}
-		localization_key = black_plague_shared_support_amount_metropolitan
+		localization_key = black_plague_shared_support_amount_value
 	}
 	text = {
 		trigger = {
 			check_variable = { var = state_population_k value = constant:black_plague_shared_scale.large_population_k compare = greater_than_or_equals }
+			set_temp_variable = { black_plague_shared_support_quote = constant:black_plague_shared_cost.standard_support_equipment }
+			multiply_temp_variable = { black_plague_shared_support_quote = constant:black_plague_shared_scale.large }
 		}
-		localization_key = black_plague_shared_support_amount_large
+		localization_key = black_plague_shared_support_amount_value
 	}
-	text = { localization_key = black_plague_shared_support_amount_minimum }
+	text = {
+		trigger = {
+			set_temp_variable = { black_plague_shared_support_quote = constant:black_plague_shared_cost.standard_support_equipment }
+			multiply_temp_variable = { black_plague_shared_support_quote = constant:black_plague_shared_scale.minimum }
+			always = yes
+		}
+		localization_key = black_plague_shared_support_amount_value
+	}
 }
 
 defined_text = {
@@ -29,16 +40,26 @@ defined_text = {
 	text = {
 		trigger = {
 			check_variable = { var = state_population_k value = constant:black_plague_shared_scale.metropolitan_population_k compare = greater_than_or_equals }
+			set_temp_variable = { black_plague_shared_motorized_quote = constant:black_plague_shared_cost.standard_motorized_equipment }
+			multiply_temp_variable = { black_plague_shared_motorized_quote = constant:black_plague_shared_scale.metropolitan }
 		}
-		localization_key = black_plague_shared_motorized_amount_metropolitan
+		localization_key = black_plague_shared_motorized_amount_value
 	}
 	text = {
 		trigger = {
 			check_variable = { var = state_population_k value = constant:black_plague_shared_scale.large_population_k compare = greater_than_or_equals }
+			set_temp_variable = { black_plague_shared_motorized_quote = constant:black_plague_shared_cost.standard_motorized_equipment }
+			multiply_temp_variable = { black_plague_shared_motorized_quote = constant:black_plague_shared_scale.large }
 		}
-		localization_key = black_plague_shared_motorized_amount_large
+		localization_key = black_plague_shared_motorized_amount_value
 	}
-	text = { localization_key = black_plague_shared_motorized_amount_minimum }
+	text = {
+		trigger = {
+			set_temp_variable = { black_plague_shared_motorized_quote = constant:black_plague_shared_cost.scaled_min_motorized_equipment }
+			always = yes
+		}
+		localization_key = black_plague_shared_motorized_amount_value
+	}
 }
 
 defined_text = {
@@ -46,14 +67,739 @@ defined_text = {
 	text = {
 		trigger = {
 			check_variable = { var = state_population_k value = constant:black_plague_shared_scale.metropolitan_population_k compare = greater_than_or_equals }
+			set_temp_variable = { black_plague_shared_fuel_quote = constant:black_plague_shared_cost.standard_fuel }
+			multiply_temp_variable = { black_plague_shared_fuel_quote = constant:black_plague_shared_scale.metropolitan }
 		}
-		localization_key = black_plague_shared_fuel_amount_metropolitan
+		localization_key = black_plague_shared_fuel_amount_value
 	}
 	text = {
 		trigger = {
 			check_variable = { var = state_population_k value = constant:black_plague_shared_scale.large_population_k compare = greater_than_or_equals }
+			set_temp_variable = { black_plague_shared_fuel_quote = constant:black_plague_shared_cost.standard_fuel }
+			multiply_temp_variable = { black_plague_shared_fuel_quote = constant:black_plague_shared_scale.large }
 		}
-		localization_key = black_plague_shared_fuel_amount_large
+		localization_key = black_plague_shared_fuel_amount_value
 	}
-	text = { localization_key = black_plague_shared_fuel_amount_minimum }
+	text = {
+		trigger = {
+			set_temp_variable = { black_plague_shared_fuel_quote = constant:black_plague_shared_cost.standard_fuel }
+			multiply_temp_variable = { black_plague_shared_fuel_quote = constant:black_plague_shared_scale.minimum }
+			always = yes
+		}
+		localization_key = black_plague_shared_fuel_amount_value
+	}
+}
+
+# These quotes read the same script constants as the shared decision costs and effects.
+
+defined_text = {
+	name = GetBlackPlague020LastResponseHoldCivilianFactoriesQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_hold_civilian_factories = constant:black_plague_last_response.hold_civilian_factories } always = yes }
+		localization_key = black_plague_020_quote_last_response_hold_civilian_factories_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020LastResponseHoldCommandPowerQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_hold_command_power = constant:black_plague_last_response.hold_command_power } always = yes }
+		localization_key = black_plague_020_quote_last_response_hold_command_power_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020LastResponseHoldFuelQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_hold_fuel = constant:black_plague_last_response.hold_fuel } always = yes }
+		localization_key = black_plague_020_quote_last_response_hold_fuel_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020LastResponseHoldInfantryEquipmentQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_hold_infantry_equipment = constant:black_plague_last_response.hold_infantry_equipment } always = yes }
+		localization_key = black_plague_020_quote_last_response_hold_infantry_equipment_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020LastResponseHoldManpowerQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_hold_manpower = constant:black_plague_last_response.hold_manpower } always = yes }
+		localization_key = black_plague_020_quote_last_response_hold_manpower_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020LastResponseHoldMotorizedEquipmentQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_hold_motorized_equipment = constant:black_plague_last_response.hold_motorized_equipment } always = yes }
+		localization_key = black_plague_020_quote_last_response_hold_motorized_equipment_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020LastResponseHoldStabilityCostQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_hold_stability_cost = constant:black_plague_last_response.hold_stability_cost } always = yes }
+		localization_key = black_plague_020_quote_last_response_hold_stability_cost_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020LastResponseHoldSupportEquipmentQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_hold_support_equipment = constant:black_plague_last_response.hold_support_equipment } always = yes }
+		localization_key = black_plague_020_quote_last_response_hold_support_equipment_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020LastResponseHoldTrainsQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_hold_trains = constant:black_plague_last_response.hold_trains } always = yes }
+		localization_key = black_plague_020_quote_last_response_hold_trains_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020LastResponseHoldWarSupportCostQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_hold_war_support_cost = constant:black_plague_last_response.hold_war_support_cost } always = yes }
+		localization_key = black_plague_020_quote_last_response_hold_war_support_cost_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020LastResponseRefugeCivilianFactoriesQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_refuge_civilian_factories = constant:black_plague_last_response.refuge_civilian_factories } always = yes }
+		localization_key = black_plague_020_quote_last_response_refuge_civilian_factories_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020LastResponseRefugeCommandPowerQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_refuge_command_power = constant:black_plague_last_response.refuge_command_power } always = yes }
+		localization_key = black_plague_020_quote_last_response_refuge_command_power_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020LastResponseRefugeFuelQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_refuge_fuel = constant:black_plague_last_response.refuge_fuel } always = yes }
+		localization_key = black_plague_020_quote_last_response_refuge_fuel_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020LastResponseRefugeInfantryEquipmentQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_refuge_infantry_equipment = constant:black_plague_last_response.refuge_infantry_equipment } always = yes }
+		localization_key = black_plague_020_quote_last_response_refuge_infantry_equipment_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020LastResponseRefugeManpowerQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_refuge_manpower = constant:black_plague_last_response.refuge_manpower } always = yes }
+		localization_key = black_plague_020_quote_last_response_refuge_manpower_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020LastResponseRefugeMotorizedEquipmentQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_refuge_motorized_equipment = constant:black_plague_last_response.refuge_motorized_equipment } always = yes }
+		localization_key = black_plague_020_quote_last_response_refuge_motorized_equipment_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020LastResponseRefugeStabilityCostQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_refuge_stability_cost = constant:black_plague_last_response.refuge_stability_cost } always = yes }
+		localization_key = black_plague_020_quote_last_response_refuge_stability_cost_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020LastResponseRefugeSupportEquipmentQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_refuge_support_equipment = constant:black_plague_last_response.refuge_support_equipment } always = yes }
+		localization_key = black_plague_020_quote_last_response_refuge_support_equipment_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020LastResponseRefugeTrainsQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_refuge_trains = constant:black_plague_last_response.refuge_trains } always = yes }
+		localization_key = black_plague_020_quote_last_response_refuge_trains_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020LastResponseRefugeWarSupportCostQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_refuge_war_support_cost = constant:black_plague_last_response.refuge_war_support_cost } always = yes }
+		localization_key = black_plague_020_quote_last_response_refuge_war_support_cost_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedBurdenCountryProgramQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_burden_country_program = constant:black_plague_shared_burden.country_program } always = yes }
+		localization_key = black_plague_020_quote_shared_burden_country_program_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedBurdenHeavyQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_burden_heavy = constant:black_plague_shared_burden.heavy } always = yes }
+		localization_key = black_plague_020_quote_shared_burden_heavy_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedBurdenMediumQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_burden_medium = constant:black_plague_shared_burden.medium } always = yes }
+		localization_key = black_plague_020_quote_shared_burden_medium_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedCostCountryCommandPowerQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_cost_country_command_power = constant:black_plague_shared_cost.country_command_power } always = yes }
+		localization_key = black_plague_020_quote_shared_cost_country_command_power_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedCostCountryFuelQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_cost_country_fuel = constant:black_plague_shared_cost.country_fuel } always = yes }
+		localization_key = black_plague_020_quote_shared_cost_country_fuel_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedCostCountryInfantryEquipmentQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_cost_country_infantry_equipment = constant:black_plague_shared_cost.country_infantry_equipment } always = yes }
+		localization_key = black_plague_020_quote_shared_cost_country_infantry_equipment_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedCostCountryManpowerQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_cost_country_manpower = constant:black_plague_shared_cost.country_manpower } always = yes }
+		localization_key = black_plague_020_quote_shared_cost_country_manpower_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedCostCountryMotorizedEquipmentQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_cost_country_motorized_equipment = constant:black_plague_shared_cost.country_motorized_equipment } always = yes }
+		localization_key = black_plague_020_quote_shared_cost_country_motorized_equipment_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedCostCountrySupportEquipmentQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_cost_country_support_equipment = constant:black_plague_shared_cost.country_support_equipment } always = yes }
+		localization_key = black_plague_020_quote_shared_cost_country_support_equipment_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedCostEmergencyCountermeasureCivilianFactoriesQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_cost_emergency_countermeasure_civilian_factories = constant:black_plague_shared_cost.emergency_countermeasure_civilian_factories } always = yes }
+		localization_key = black_plague_020_quote_shared_cost_emergency_countermeasure_civilian_factories_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedCostStabilityLossQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_cost_stability_loss = constant:black_plague_shared_cost.stability_loss } always = yes }
+		localization_key = black_plague_020_quote_shared_cost_stability_loss_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedCostStandardCommandPowerQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_cost_standard_command_power = constant:black_plague_shared_cost.standard_command_power } always = yes }
+		localization_key = black_plague_020_quote_shared_cost_standard_command_power_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedCostStandardTrainsQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_cost_standard_trains = constant:black_plague_shared_cost.standard_trains } always = yes }
+		localization_key = black_plague_020_quote_shared_cost_standard_trains_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationAirReconnaissanceSweepQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_air_reconnaissance_sweep = constant:black_plague_shared_duration.air_reconnaissance_sweep } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_air_reconnaissance_sweep_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationArmoredClearanceQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_armored_clearance = constant:black_plague_shared_duration.armored_clearance } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_armored_clearance_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationBurialSanitationQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_burial_sanitation = constant:black_plague_shared_duration.burial_sanitation } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_burial_sanitation_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationCloseThreatenedCorridorQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_close_threatened_corridor = constant:black_plague_shared_duration.close_threatened_corridor } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_close_threatened_corridor_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationCondemnFutureWeaponizationQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_condemn_future_weaponization = constant:black_plague_shared_duration.condemn_future_weaponization } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_condemn_future_weaponization_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationControlledReopeningQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_controlled_reopening = constant:black_plague_shared_duration.controlled_reopening } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_controlled_reopening_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationEmergencyCountermeasureDriveQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_emergency_countermeasure_drive = constant:black_plague_shared_duration.emergency_countermeasure_drive } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_emergency_countermeasure_drive_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationEvacuateThreatenedPerimeterQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_evacuate_threatened_perimeter = constant:black_plague_shared_duration.evacuate_threatened_perimeter } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_evacuate_threatened_perimeter_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationForeignMedicalMissionQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_foreign_medical_mission = constant:black_plague_shared_duration.foreign_medical_mission } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_foreign_medical_mission_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationFortifyCordonLineQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_fortify_cordon_line = constant:black_plague_shared_duration.fortify_cordon_line } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_fortify_cordon_line_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationHoardProtocolQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_hoard_protocol = constant:black_plague_shared_duration.hoard_protocol } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_hoard_protocol_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationInspectTransportHubsQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_inspect_transport_hubs = constant:black_plague_shared_duration.inspect_transport_hubs } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_inspect_transport_hubs_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationInternationalInspectionCompactQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_international_inspection_compact = constant:black_plague_shared_duration.international_inspection_compact } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_international_inspection_compact_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationInternationalMedicalMissionQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_international_medical_mission = constant:black_plague_shared_duration.international_medical_mission } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_international_medical_mission_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationLiberateAndQuarantineQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_liberate_and_quarantine = constant:black_plague_shared_duration.liberate_and_quarantine } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_liberate_and_quarantine_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationMaintainContainmentQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_maintain_containment = constant:black_plague_shared_duration.maintain_containment } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_maintain_containment_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationMemorialBiosecurityCharterQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_memorial_biosecurity_charter = constant:black_plague_shared_duration.memorial_biosecurity_charter } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_memorial_biosecurity_charter_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationPopulationRecoveryProgramQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_population_recovery_program = constant:black_plague_shared_duration.population_recovery_program } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_population_recovery_program_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationPortInspectionsQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_port_inspections = constant:black_plague_shared_duration.port_inspections } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_port_inspections_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationPrepositionFieldHospitalsQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_preposition_field_hospitals = constant:black_plague_shared_duration.preposition_field_hospitals } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_preposition_field_hospitals_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationPreserveSentinelSurveillanceQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_preserve_sentinel_surveillance = constant:black_plague_shared_duration.preserve_sentinel_surveillance } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_preserve_sentinel_surveillance_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationPublishFindingsQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_publish_findings = constant:black_plague_shared_duration.publish_findings } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_publish_findings_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationRebuildHospitalsTransportQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_rebuild_hospitals_transport = constant:black_plague_shared_duration.rebuild_hospitals_transport } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_rebuild_hospitals_transport_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationReconstructionVigilanceQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_reconstruction_vigilance = constant:black_plague_shared_duration.reconstruction_vigilance } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_reconstruction_vigilance_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationReliefCorridorQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_relief_corridor = constant:black_plague_shared_duration.relief_corridor } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_relief_corridor_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationRemoveEmergencyRestrictionsQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_remove_emergency_restrictions = constant:black_plague_shared_duration.remove_emergency_restrictions } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_remove_emergency_restrictions_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationRestoreLocalAdministrationQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_restore_local_administration = constant:black_plague_shared_duration.restore_local_administration } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_restore_local_administration_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationRestrictTroopRoutesQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_restrict_troop_routes = constant:black_plague_shared_duration.restrict_troop_routes } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_restrict_troop_routes_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationRestrictedAllianceExchangeQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_restricted_alliance_exchange = constant:black_plague_shared_duration.restricted_alliance_exchange } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_restricted_alliance_exchange_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationRotateExhaustedPersonnelQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_rotate_exhausted_personnel = constant:black_plague_shared_duration.rotate_exhausted_personnel } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_rotate_exhausted_personnel_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationSealAllTransportQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_seal_all_transport = constant:black_plague_shared_duration.seal_all_transport } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_seal_all_transport_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationSealRoyalBurrowsQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_seal_royal_burrows = constant:black_plague_shared_duration.seal_royal_burrows } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_seal_royal_burrows_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationSentinelSurveillanceQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_sentinel_surveillance = constant:black_plague_shared_duration.sentinel_surveillance } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_sentinel_surveillance_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationStealForeignProgressQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_steal_foreign_progress = constant:black_plague_shared_duration.steal_foreign_progress } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_steal_foreign_progress_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationStrikeRoyalNodeQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_strike_royal_node = constant:black_plague_shared_duration.strike_royal_node } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_strike_royal_node_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationStrikeTheCrownQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_strike_the_crown = constant:black_plague_shared_duration.strike_the_crown } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_strike_the_crown_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationStrongerPreventionLawQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_stronger_prevention_law = constant:black_plague_shared_duration.stronger_prevention_law } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_stronger_prevention_law_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationSupportSurvivingHouseholdsQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_support_surviving_households = constant:black_plague_shared_duration.support_surviving_households } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_support_surviving_households_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationSuspendCivilianTravelQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_suspend_civilian_travel = constant:black_plague_shared_duration.suspend_civilian_travel } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_suspend_civilian_travel_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedDurationTraceResidualClustersQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_duration_trace_residual_clusters = constant:black_plague_shared_duration.trace_residual_clusters } always = yes }
+		localization_key = black_plague_020_quote_shared_duration_trace_residual_clusters_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedResultCrownStrikeCivilianFactoriesQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_crown_strike_civilian_factories = constant:black_plague_shared_result.crown_strike_civilian_factories } always = yes }
+		localization_key = black_plague_020_quote_shared_result_crown_strike_civilian_factories_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedResultCrownStrikeCommandPowerQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_crown_strike_command_power = constant:black_plague_shared_result.crown_strike_command_power } always = yes }
+		localization_key = black_plague_020_quote_shared_result_crown_strike_command_power_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedResultCrownStrikeFuelQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_crown_strike_fuel = constant:black_plague_shared_result.crown_strike_fuel } always = yes }
+		localization_key = black_plague_020_quote_shared_result_crown_strike_fuel_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedResultCrownStrikeInfantryEquipmentQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_crown_strike_infantry_equipment = constant:black_plague_shared_result.crown_strike_infantry_equipment } always = yes }
+		localization_key = black_plague_020_quote_shared_result_crown_strike_infantry_equipment_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedResultCrownStrikeManpowerQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_crown_strike_manpower = constant:black_plague_shared_result.crown_strike_manpower } always = yes }
+		localization_key = black_plague_020_quote_shared_result_crown_strike_manpower_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedResultCrownStrikeMotorizedEquipmentQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_crown_strike_motorized_equipment = constant:black_plague_shared_result.crown_strike_motorized_equipment } always = yes }
+		localization_key = black_plague_020_quote_shared_result_crown_strike_motorized_equipment_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020ResponseBurdenCrownStrikeQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_response_burden_crown_strike = constant:black_plague_response_burden.crown_strike } always = yes }
+		localization_key = black_plague_020_quote_response_burden_crown_strike_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedResultCrownStrikeSupportEquipmentQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_crown_strike_support_equipment = constant:black_plague_shared_result.crown_strike_support_equipment } always = yes }
+		localization_key = black_plague_020_quote_shared_result_crown_strike_support_equipment_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedResultRoyalSealCivilianFactoriesQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_royal_seal_civilian_factories = constant:black_plague_shared_result.royal_seal_civilian_factories } always = yes }
+		localization_key = black_plague_020_quote_shared_result_royal_seal_civilian_factories_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedResultRoyalSealCommandPowerQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_royal_seal_command_power = constant:black_plague_shared_result.royal_seal_command_power } always = yes }
+		localization_key = black_plague_020_quote_shared_result_royal_seal_command_power_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedResultRoyalSealFuelQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_royal_seal_fuel = constant:black_plague_shared_result.royal_seal_fuel } always = yes }
+		localization_key = black_plague_020_quote_shared_result_royal_seal_fuel_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedResultRoyalSealInfantryEquipmentQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_royal_seal_infantry_equipment = constant:black_plague_shared_result.royal_seal_infantry_equipment } always = yes }
+		localization_key = black_plague_020_quote_shared_result_royal_seal_infantry_equipment_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedResultRoyalSealManpowerQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_royal_seal_manpower = constant:black_plague_shared_result.royal_seal_manpower } always = yes }
+		localization_key = black_plague_020_quote_shared_result_royal_seal_manpower_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedResultRoyalSealMotorizedEquipmentQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_royal_seal_motorized_equipment = constant:black_plague_shared_result.royal_seal_motorized_equipment } always = yes }
+		localization_key = black_plague_020_quote_shared_result_royal_seal_motorized_equipment_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedResultRoyalSealResponseBurdenQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_royal_seal_response_burden = constant:black_plague_shared_result.royal_seal_response_burden } always = yes }
+		localization_key = black_plague_020_quote_shared_result_royal_seal_response_burden_value
+	}
+}
+
+defined_text = {
+	name = GetBlackPlague020SharedResultRoyalSealSupportEquipmentQuote
+	text = {
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_royal_seal_support_equipment = constant:black_plague_shared_result.royal_seal_support_equipment } always = yes }
+		localization_key = black_plague_020_quote_shared_result_royal_seal_support_equipment_value
+	}
 }
