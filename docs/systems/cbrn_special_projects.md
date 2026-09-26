@@ -33,6 +33,8 @@ Ordinary completion calls the corresponding idempotent custom operational-techno
 `sp_mengele_cloning` remains story-only and calls the same clone API on completion after its existing Germany/Mengele effects.
 No path grants the same operational package twice or fabricates Event 016 project history for an ordinary discoverer.
 
+Mengele's biological and xenobiological Theory, Prototype, Deployment, and Weaponization decisions quote their existing stage or fallback project costs through `common/scripted_localisation/016_mengele_stage_value_localisation.txt`. The inline rows show Political Power, support equipment, and fuel where applicable; the separate stage text shows civilian factories committed until work ends. These presentation bindings do not pay resources or alter the project completion contract, and native decision-list rendering remains unverified.
+
 ## Vanilla project integration
 
 The `on_project_completion` callback and relevant technology completion callbacks call `cbrn_sync_vanilla_project_integrations`, which is safe to repeat.
