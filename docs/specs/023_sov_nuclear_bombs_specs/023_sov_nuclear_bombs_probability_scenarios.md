@@ -8,6 +8,8 @@ Every audit starts with `hoi4.probability_inspect`.
 
 The auditor must state whether the candidate pool and external factors are complete. It must distinguish exact, bounded, sampled, score-only, and unresolved results.
 
+The user's Event 23 goal explicitly requires AI major first use to remain impossible below Evolution IV and states that High Chaos alone never permits it. The `P23_FIRST_USE_HIGH_CHAOS_EVO4_ABSENT` case records this accepted gate as a separate named scenario.
+
 ## Evolution timing scenarios
 
 ### `P23_EVO1_HIDDEN_NORMAL`
@@ -467,6 +469,21 @@ State:
 Expected:
 
 - First-use eligibility is false.
+
+### `P23_FIRST_USE_HIGH_CHAOS_EVO4_ABSENT`
+
+State:
+
+- Chaos 1100.
+- Evolution III active and Evolution IV absent or disabled.
+- A nuclear-major target is at war with the Soviet Union.
+- Severe strategic loss, valid delivery, sufficient Readiness and Integrity, and no stand-down otherwise satisfy the first-use gates.
+
+Expected:
+
+- First-use authorization eligibility is false, and no major first-use launch can become available or execute.
+- Chaos and the other severe conditions do not substitute for Evolution IV.
+- Report any raw AI willingness score separately from decision availability and executable eligibility.
 
 ### `P23_FIRST_USE_TIER_1000_SEVERE_RARE`
 

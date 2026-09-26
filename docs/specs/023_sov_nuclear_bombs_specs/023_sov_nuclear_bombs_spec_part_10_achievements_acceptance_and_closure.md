@@ -323,6 +323,13 @@ Case 1:
 
 Expected: Soviet AI major first use remains impossible.
 
+Case 1a:
+
+- Chaos 1000 or more.
+- Evolution IV is absent or disabled, with every other severe first-use gate satisfied.
+
+Expected: Soviet AI major first use remains impossible because High Chaos does not replace Evolution IV.
+
 Case 2:
 
 - Chaos 1000 or more.
