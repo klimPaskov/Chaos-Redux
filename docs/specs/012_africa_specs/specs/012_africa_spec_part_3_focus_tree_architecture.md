@@ -1001,3 +1001,11 @@ Acceptance basis: the active user goal explicitly requires the accepted Event 01
 These effects reuse the current protection transaction and its four-spendable-cost-type maximum. They add no public value, payment type, random pool, or AI weight. The numeric tuning is centralized in `common/script_constants/012_africa_gods_constants.txt`; current probability-adapter limitations remain separate from implementation evidence.
 
 The support-history threshold reads the existing hidden `gods_of_africa_aid_count`, which records participant voluntary aid and the host's leniency or protection actions. It adds no visible relationship meter and does not change the four settlement names.
+
+## 2026-09-26 parent implementation decision: participant roster capacity
+
+Acceptance basis: the active user goal requires independent enrollment of every valid major and player country while retaining a bounded registry. The current installed vanilla and Chaos Redux `country_tags` files contain 609 distinct country-tag definitions, so the parent set `gods_of_africa_timing.max_participants` to 640. The one-time census and later owner-local onboarding remain bounded; the larger ceiling fits every currently defined tag without introducing a recurring world scan. This does not prove maximum-roster decision-list readability or live enrollment behavior, which remain validation items.
+
+## 2026-09-26 parent implementation decision: participant roster capacity
+
+Acceptance basis: the active user goal requires independent enrollment of every valid major and player country while retaining a bounded registry. The current installed vanilla and Chaos Redux `country_tags` files contain 609 distinct country-tag definitions, so the parent set `gods_of_africa_timing.max_participants` to 640. The one-time census and later owner-local onboarding remain bounded; the larger ceiling fits every currently defined tag without introducing a recurring world scan. This does not prove maximum-roster decision-list readability or live enrollment behavior, which remain validation items.
