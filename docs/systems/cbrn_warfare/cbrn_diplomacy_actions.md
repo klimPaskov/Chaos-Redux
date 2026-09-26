@@ -6,6 +6,8 @@ The CBRN international-response layer adds material inspection pressure, exact-s
 
 The accepted design source is `docs/specs/chaos_warfare_system_specs/specs/09_condemnation_deaths_air_cleanliness_and_diplomacy.md`. This implementation also follows the consequence and evidence mappings under `docs/specs/chaos_warfare_system_specs/matrices/`.
 
+Player-facing costs, durations, evidence gains, and cleanup amounts in `localisation/english/cbrn_diplomacy_l_english.yml` use `common/scripted_localisation/cbrn_diplomacy_value_localisation.txt` to quote the same script constants as the decisions and effects. Inline rows show immediate equipment costs and the forensic factory assignment; cost hover text explains when equipment is spent and how long factories remain committed without repeating the payment amounts. The exact action and episode records below remain internal accounting, while the visible text describes attacks, outbreaks, evidence, and responsibility.
+
 ## Demand Inspections
 
 `cbrn_demand_inspections` targets one existing country at Formal Censure or above. The demanding country must be present in that target's exact active sanctions-participant array. The target must not already have active international inspections, an active refused-inspection policy, or another active CBRN inspection demand, the two countries must not be at war, and the sender must not be inside its 60-day inspection-demand cooldown.
