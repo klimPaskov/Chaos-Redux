@@ -15,6 +15,7 @@ This document describes the implemented system. The accepted design source remai
 | Country state, source gains, tiers, pair scoring, native embargo ownership, decay, cleanup, and scalable penalties | `common/scripted_effects/condemnation_sanctions_effects.txt` |
 | Compliance, defiance, and evasion effects | `common/scripted_effects/condemnation_response_effects.txt` |
 | Tier, cost, pair-validity, and relation-rule triggers | `common/scripted_triggers/condemnation_sanctions_triggers.txt` |
+| Nominal sanction-review duration localisation | `common/scripted_localisation/condemnation_review_durations.txt` |
 | New lend-lease diplomacy gates during arms sanctions | `common/scripted_triggers/zz_condemnation_diplomacy_overrides.txt` (late-load override of the vanilla trigger names) |
 | Target and participant decisions | `common/decisions/condemnation_sanctions_decisions.txt` |
 | Decision category visibility | `common/decisions/categories/condemnation_sanctions_categories.txt` |
@@ -407,6 +408,8 @@ AI participants with active pairs gain fatigue equal to `1 + 25%` of the pair's 
 Every displayed condemnation payment uses the same score multiplier as its debit: `m = 1 + score / 500`, with the score clamped to `0` through `1000`. A score of `0` therefore uses `1x`, a score of `500` uses `2x`, and a score of `1000` uses `3x`. Convoys, equipment, and experience round up to the next whole unit when the scaled result is fractional. Fuel payments remain fixed-point fractions of fuel capacity and the same fraction is subtracted from the fuel ratio. Target response decisions read the acting country's own condemnation total; participant decisions read the selected target's total through `FROM` in the decision, cost row, and payment effect.
 
 The score boundaries are inclusive. A value below `0` is treated as `0`, `0` is exactly `1x`, `500` is exactly `2x`, `1000` is exactly `3x`, and a value above `1000` is treated as `1000` and remains `3x`. This keeps the cost row, affordability trigger, and hidden debit on one quote.
+
+Sanction tier descriptions show nominal review periods from the same four `condemnation_duration_days` constants used by pair renewal. Their scripted-localisation triggers bind temporary quote variables before text rendering. The separate Condemnation detail expiry text reports the live bilateral review state; nominal periods are not presented as days remaining.
 
 The targeted monthly pulse refreshes the inspection burden after disclosure, decay, and any evasion discovery have updated condemnation, so the next month's Consumer Goods requirement follows the resulting score. The score-linked modifier is created once when inspections begin and carries the same 180-day expiry as the flag and base idea; the pulse removes it if inspections end early.
 
