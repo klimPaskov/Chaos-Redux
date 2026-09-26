@@ -17,7 +17,6 @@ Use this skill together with:
 - `chaos-redux-subagents` before routing focus audits, improvement plans, or active small patches
 - the installed `hoi4-agent-tools` MCP server for mandatory `hoi4.focus_inspect` and `hoi4.focus_render` work, plus bounded `hoi4.focus_rewrite` work. Use it to inspect, render, lint, compare, and improve focus-tree structure, then review every returned layout and diagnostic. Route every in-scope focus weight through `chaosx_ai_probability_auditor`. If the required MCP route is unavailable, record the exact blocker and do not treat source-only review as equivalent. MCP does not replace required source review, wiki and vanilla documentation checks, repository validation, or parent review.
 
-
 ## 1. Required checks
 
 Before editing focus files:
@@ -153,7 +152,6 @@ The implementation agent owns:
 
 The final tree must preserve the route logic and gameplay intent from the spec.
 
-
 ### 4.1 Route plausibility and ideology restraint
 
 Do not build political paths to satisfy an ideology quota.
@@ -190,7 +188,6 @@ A major tree should usually include:
 - late-game ambition path
 
 Do not collapse everything into one political ladder.
-
 
 ### 5.1 Lean opening, national constraints, and staged complexity
 
@@ -386,7 +383,6 @@ Decision categories should evolve with focus progress. Early focuses may unlock 
 
 The fixed-purpose exception is narrow. A country is fixed-purpose only when its concept clearly cannot support normal politics, such as a death-state, machine-state, plague-state, or pure destruction actor. It still needs meaningful internal branches around method, hierarchy, economy, recruitment, expansion, and endgame.
 
-
 ### 5.4 Real branch depth standard
 
 A branch does not count as a real branch unless it has enough content to change gameplay.
@@ -476,7 +472,6 @@ Required table columns:
 
 Missing, renamed, merged, simplified, fallback, or replaced routes must be reported.
 
-
 ### 5.8 Route visibility, pacing, tradeoffs, and failure states
 
 A major route should leave visible evidence in the game. This can include map changes, new decisions, new units, new advisors, changed leader, changed flag, changed cosmetic name, new faction behavior, new focus availability, changed diplomacy, or a visible mechanic. A route that only changes hidden variables or tiny modifiers is not meaningful.
@@ -494,7 +489,6 @@ Do not overuse mutual exclusions. Mutually exclusive paths should represent real
 Important routes should define failure states. A failed political reform can empower radicals. Failed expansion can trigger backlash or settlement. Failed industry can create dependency. Failed foreign-aid balancing can create a client state. Failed military centralization can create rogue generals or militias.
 
 Focus and decision localisation should tell the player the visible baseline effect of the route or action. It should not reveal hidden effects, secret outcomes, hidden variables, or future surprises. The player should understand what the focus visibly does, such as moving toward military rule, opening an industry program, unlocking a public diplomatic route, forming a League office, or preparing border claims, without being told about hidden follow-up effects.
-
 
 #### Strategic time horizons
 
@@ -582,7 +576,6 @@ A commitment mechanic should:
 
 Use consequences that fit the commitment. Do not default every missed deadline to a civil war.
 
-
 ### 5.9 Special mechanics, values, and faction rules
 
 Large focus trees should interact with the event or country special mechanic. A major tree should not sit beside the mechanic without changing it.
@@ -615,7 +608,6 @@ Important internal struggles should consider a balance of power or equivalent me
 When a focus tree creates or leads a faction, league, bloc, compact, coalition, or alliance, that faction needs goals and rules. Define membership conditions, joining logic, refusal logic, expulsion logic where relevant, war goals, shared decisions, AI behavior, victory conditions, and failure conditions. Important event-created factions should usually have a mechanic such as cohesion, shared command, war council support, joint reserves, recognition, member confidence, sponsor pressure, or strategic goals.
 
 Factions should not form too easily. Define minimum membership, crisis conditions, ideological compatibility, war pressure, diplomatic preparation, and regional logic.
-
 
 ### 5.10 Mechanic presentation, validity, and shared-tree rules
 
@@ -655,7 +647,6 @@ When a route changes leader, ideology, faction, cosmetic name, flag, advisor ros
 
 Important mechanic thresholds, caps, gains, losses, duration bands, AI weights, and scaling values should be centralized in script constants or a clearly documented tuning file. Do not scatter magic numbers across focus files, decisions, events, scripted effects, and scripted triggers.
 
-
 ### 5.11 Reward dumps and exploit checks
 
 Avoid one-time reward dumps as the main design. A focus can give factories, units, equipment, resources, or buildings, but important focuses should often unlock a repeatable decision, timed mission family, production route, advisor, mechanic, route branch, or long-term gameplay system.
@@ -677,7 +668,6 @@ Before claiming completion, review the tree for exploits:
 - route switching to collect incompatible rewards
 
 If an exploit is possible, fix it with limits, flags, dynamic costs, cooldowns, route locks, scripted triggers, AI limits, or one-time completion flags.
-
 
 ### 5.12 Decision category clutter control
 
@@ -730,7 +720,6 @@ Bad expansion branches:
 - a straight list of generic claims with no diplomacy or consequences
 - claims hidden inside the political branch with no separate strategic route
 - expansion focuses that do not unlock wars, claims, cores, decisions, treaties, or interventions
-
 
 ### 6.1 Early action and limited-war architecture
 
@@ -801,7 +790,6 @@ Examples of route families:
 - death-state actor
 
 Fixed-purpose chaos countries can have narrower political design. For example, a country whose entire identity is death, plague, machine rule, or total destruction may have one ideological purpose. Even then, its tree should still create mechanical choices inside that purpose, such as doctrine, expansion method, internal hierarchy, recruitment, economy, and endgame ambition.
-
 
 ### 7.1 Leader and institution customization
 
@@ -921,13 +909,13 @@ When a focus grants, unlocks, removes, or redirects a technology, doctrine, or r
 
 Small numeric modifiers can support a focus, but they should not be the main point of most focuses.
 
-### No fairy-dust reward standard
+### 8.1 No fairy-dust reward standard
 
 Fairy-dusted values are prohibited. Do not spread many tiny bonuses across a focus tree and present them as depth. Values such as `+2%`, `+3%`, `+7%`, `12`, `18`, tiny political power grants, tiny stability or war support changes, token equipment, and slight generic production bonuses are completion-blocking defects unless an engine-defined formula or hard technical constraint requires that exact value.
 
 Use round balance values in multiples of 5 wherever the value is authored for gameplay tuning. Prefer values such as `5`, `10`, `15`, `20`, `25`, and corresponding percentage values. Do not use arbitrary-looking values such as `2`, `3`, `7`, `12`, `18`, or `23` for focus rewards, mechanic gains or losses, thresholds, caps, durations, AI weights, or costs without a documented reason. Engine-required values, binary flags, coordinate values, dates, state ids, and formula-derived results are exempt.
 
-A focus tree with repeated fairy-dusted rewards must be rejected during audit. Do not excuse the pattern because each individual value is technically useful. Merge weak rewards, strengthen them into meaningful round values, turn them into staged upgrades, or replace them with decisions, missions, map changes, units, advisors, laws, mechanics, or route access.
+A focus tree with repeated fairy-dusted rewards must be rejected during audit. Do not excuse the pattern because each individual value is technically useful. Merge weak rewards into fewer stronger focuses, strengthen them into meaningful round values, turn them into staged idea upgrades, or replace them with decisions, missions, map changes, units or unit paths, advisors, laws, mechanics or mechanic thresholds, or route access.
 
 A focus reward should usually do at least one of these:
 
@@ -941,8 +929,6 @@ A focus reward should usually do at least one of these:
 If a focus mainly gives a small flat modifier, the implementation must justify why that modifier matters. It can be acceptable as one part of a larger reward package, a frequent stack, a temporary crisis push, or a final adjustment to an existing mechanic. It is not acceptable as the whole reward for an important focus.
 
 A 5 percent modifier can be meaningful when the affected statistic is sensitive, the effect belongs to a larger reward package, the route builds a visible stack toward a threshold, or the modifier completes a staged idea. Judge the gameplay impact and context, not the number in isolation.
-
-Do not scatter many tiny modifiers across a tree to create the appearance of progression. Combine weak rewards into fewer stronger focuses, convert them into staged idea upgrades, or replace them with decisions, missions, map changes, unit paths, advisors, mechanic thresholds, or route access.
 
 Completion reports and focus audits must flag fairy-dust rewards. A route with many tiny standalone rewards should be treated as incomplete until the rewards are merged, strengthened, connected to a mechanic, or replaced with visible gameplay.
 
@@ -985,9 +971,9 @@ Every important starting idea should have a lifecycle:
 - failure or corruption form
 - final form or removal path
 
-### National spirit count limit
+### 9.1 National spirit count limit
 
-A focus tree must never grant or maintain more than three focus-tree-created national spirits at the same time for one country. This is a hard maximum. Treat three as an upper bound.
+A focus tree must never grant or maintain more than three focus-tree-created national spirits at the same time for one country. This is a hard maximum.
 
 Before adding a fourth spirit, the implementation must upgrade, replace, merge, transform, or remove one of the existing three. Starting national spirits that belong to the same focus-tree package count toward this limit when the tree is responsible for their lifecycle. Temporary timed modifiers do not count when they are clearly short-lived and are not being used to evade the limit.
 
@@ -995,7 +981,7 @@ Prefer one staged national spirit with several lifecycle forms over several sepa
 
 Audits and completion reports must list the maximum number of simultaneously active focus-tree-created national spirits for every major route. A route exceeding three is incomplete until the spirits are consolidated.
 
-### National spirit reward complexity standard
+### 9.2 National spirit reward complexity standard
 
 Do not use national spirits as easy badges for completing shallow focus lines. A national spirit should represent an institution, doctrine, crisis condition, political identity, economic system, military structure, foreign relationship, or special mechanic that changes how the country plays.
 
@@ -1040,7 +1026,7 @@ A focus that unlocks a decision family should state:
 
 A decision family unlocked by focuses should reference the relevant route in docs and localisation.
 
-### Focus routes that lead to formable nations
+### 10.1 Focus routes that lead to formable nations
 
 A focus tree can prepare, reveal, enable, or stabilize a formable nation, but the final formation should usually be handled by a decision when state control matters. Use focuses to build the political claim. Use decisions to verify the map and perform the formation.
 
@@ -1125,7 +1111,6 @@ Good mutual exclusions include:
 Do not use mutual exclusions for branches that should logically coexist, such as army and industry.
 
 When a route becomes impossible, use bypasses or availability logic cleanly.
-
 
 A route must not depend forever on one external country taking one scripted action.
 
@@ -1283,7 +1268,7 @@ Focus-tree assets must not reuse one uniform colour palette across the whole tre
 
 Do not solve asset variety by taking the same composition and changing only its hue. Vary subject matter, framing, lighting, contrast, symbols, materials, and background treatment while keeping the tree visually coherent and readable in the HOI4 interface.
 
-### Animated leader portraits and visual route payoffs
+### 15.1 Animated leader portraits and visual route payoffs
 
 Focus trees should consider animated portraits or animated route emblems for major political transformations. Use them for route payoffs such as a supernatural leader reveal, a restored dynasty, a revolutionary cult, a final formable proclamation, or a high-chaos state identity.
 
@@ -1299,7 +1284,7 @@ Formation routes should usually combine focus preparation with a decision that v
 
 Hidden formables can be routed through secret focuses, events, leader changes, chaos tiers, ancient artifacts, internal factions, or custom GUI investigation. Hidden content should still have a full implementation handoff. It needs reveal logic, visibility rules, localisation, assets, AI handling, post-formation gameplay, and disqualifiers.
 
-Animated leader portraits and animated route emblems should be reserved for major transformations. Use them when the route payoff changes the country's identity, reveals a high-chaos leader, forms a new state, or completes a dramatic ideological break. Keep a static fallback and ensure the animation has a clear trigger and cleanup state.
+Animated leader portraits and animated route emblems should be reserved for major transformations under section 15.1: route payoffs that change the country's identity, reveal a high-chaos leader, form a new state, or complete a dramatic ideological break. Keep a static fallback and ensure the animation has a clear trigger and cleanup state.
 
 ## Subagent patches for focus trees
 
