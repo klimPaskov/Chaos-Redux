@@ -119,12 +119,13 @@ bio_countermeasure_complete_biosecurity_capacity_investment = {
 
 bio_countermeasure_pay_surveillance_network = {
 	cbrn_initialize_country_data = yes
+	set_temp_variable = { bio_countermeasure_pp_debit = constant:bio_countermeasure_cost.surveillance_pp }
+	multiply_temp_variable = { bio_countermeasure_pp_debit = constant:bio_lifecycle_math.negation }
+	add_political_power = bio_countermeasure_pp_debit
 	set_temp_variable = { bio_countermeasure_instrument_cost = constant:bio_countermeasure_cost.surveillance_instruments }
 	bio_countermeasure_debit_instrument_equipment = yes
 	set_temp_variable = { bio_countermeasure_support_cost = constant:bio_countermeasure_cost.surveillance_support }
 	bio_countermeasure_debit_support_equipment = yes
-	set_temp_variable = { bio_countermeasure_truck_cost = constant:bio_countermeasure_cost.surveillance_trucks }
-	bio_countermeasure_debit_motorized_equipment = yes
 	subtract_from_variable = { cbrn_medical_capacity = constant:bio_countermeasure_capacity.surveillance_medical_commitment }
 	clamp_variable = { var = cbrn_medical_capacity min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
 	set_country_flag = bio_surveillance_capacity_committed
@@ -462,10 +463,11 @@ bio_countermeasure_cleanup_current_agent_antibiotic_service = {
 
 bio_countermeasure_pay_vaccination_program = {
 	cbrn_initialize_country_data = yes
+	set_temp_variable = { bio_countermeasure_pp_debit = constant:bio_countermeasure_cost.vaccination_pp }
+	multiply_temp_variable = { bio_countermeasure_pp_debit = constant:bio_lifecycle_math.negation }
+	add_political_power = bio_countermeasure_pp_debit
 	set_temp_variable = { bio_countermeasure_support_cost = constant:bio_countermeasure_cost.vaccination_support }
 	bio_countermeasure_debit_support_equipment = yes
-	set_temp_variable = { bio_countermeasure_truck_cost = constant:bio_countermeasure_cost.vaccination_trucks }
-	bio_countermeasure_debit_motorized_equipment = yes
 	set_temp_variable = { bio_countermeasure_instrument_cost = constant:bio_countermeasure_cost.vaccination_instruments }
 	bio_countermeasure_debit_instrument_equipment = yes
 	subtract_from_variable = { cbrn_medical_capacity = constant:bio_countermeasure_capacity.vaccination_medical_commitment }

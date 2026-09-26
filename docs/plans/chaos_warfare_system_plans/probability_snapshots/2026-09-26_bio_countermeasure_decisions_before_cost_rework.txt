@@ -1,0 +1,1317 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_BIO_COUNTERMEASURE_AI_HIGH_OPINION_THRESHOLD = 75
+# ============================================================================
+# CHAOS REDUX - BIOLOGICAL WARFARE DISEASE CONTAINMENT DECISIONS
+# ============================================================================
+# Overview:
+# - Preserves the Black Plague response-state selector.
+# - Builds national Medical Capacity and Biological Security from real stores.
+# - Provides exact-state quarantine, field hospital, antibiotics, and
+#   international medical responses for detected ordinary-pathogen outbreaks.
+# - Provides intensity-banded containment missions with full, partial, and
+#   failed outcomes from exact state conditions.
+# - Keeps exact bilateral border closures and their relation-rule foundation.
+# - Ordinary Anthrax, Plague, Tularemia, and Smallpox remain separate from the
+#   weaponized-zombie system.
+# ============================================================================
+
+chaosx_disease_containment_category = {
+	black_plague_select_response_state = {
+		icon = GFX_decision_black_plague_quarantine
+		state_target = any_controlled_state
+		on_map_mode = map_only
+		visible = {
+			is_ai = no
+			disease_containment_board_is_black_plague_selected = yes
+			black_plague_country_has_selectable_response_state = yes
+		}
+		target_root_trigger = {
+			disease_containment_board_is_black_plague_selected = yes
+			black_plague_country_has_selectable_response_state = yes
+		}
+		target_trigger = {
+			FROM = { black_plague_response_state_is_selectable = yes }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = black_plague_select_response_state_available_tt
+				disease_containment_board_is_black_plague_selected = yes
+				FROM = { black_plague_response_state_is_selectable = yes }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = black_plague_select_response_state_tt
+			black_plague_select_response_state_from_decision = yes
+		}
+		ai_will_do = { base = constant:disease_containment_board_value.zero }
+	}
+
+	bio_expand_medical_capacity = {
+		icon = GFX_decision_bio_expand_medical_capacity
+		# The shared Event 26 owner adapter owns the real PP component so the
+		# delayed investment cannot be charged twice by the native decision cost.
+		cost = 0
+		days_remove = constant:bio_countermeasure_timing.capacity_investment_days
+		visible = {
+			has_tech = tech_field_hospital
+			OR = {
+				NOT = { has_variable = cbrn_medical_capacity }
+				check_variable = {
+					var = cbrn_medical_capacity
+					value = constant:bio_countermeasure_capacity.medical_investment_max_start
+					compare = less_than_or_equals
+				}
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = bio_expand_medical_capacity_available_tt
+				bio_countermeasure_can_expand_medical_capacity = yes
+			}
+		}
+		custom_cost_trigger = { black_friday_can_pay_bio_expand_medical_capacity = yes }
+		custom_cost_text = bio_expand_medical_capacity_cost
+		complete_effect = {
+			custom_effect_tooltip = bio_expand_medical_capacity_effect_tt
+			black_friday_pay_bio_expand_medical_capacity = yes
+		}
+		remove_effect = {
+			if = {
+				limit = { has_country_flag = black_friday_bio_medical_investment_paid }
+				bio_countermeasure_complete_medical_capacity_investment = yes
+				clr_country_flag = black_friday_bio_medical_investment_paid
+			}
+		}
+		ai_will_do = {
+			base = constant:bio_countermeasure_ai.base
+			modifier = {
+				factor = constant:bio_countermeasure_ai.active_outbreak_factor
+				bio_countermeasure_country_has_any_detected_outbreak = yes
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.chinese_emergency_factor
+				bio_countermeasure_is_chinese_emergency_profile = yes
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.low_industry_factor
+				num_of_civilian_factories < constant:bio_countermeasure_ai.minimum_industry_small
+			}
+		}
+	}
+
+	bio_expand_biosecurity_capacity = {
+		icon = GFX_decision_bio_expand_biosecurity_capacity
+		cost = constant:bio_countermeasure_cost.expand_biosecurity_pp
+		days_remove = constant:bio_countermeasure_timing.capacity_investment_days
+		visible = {
+			has_tech = chemical_detection_paper
+			OR = {
+				has_tech = bio_surveillance_networks
+				has_tech = pathogen_handling_protocols
+			}
+			OR = {
+				NOT = { has_variable = cbrn_biological_security }
+				check_variable = {
+					var = cbrn_biological_security
+					value = constant:bio_countermeasure_capacity.biosecurity_investment_max_start
+					compare = less_than_or_equals
+				}
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = bio_expand_biosecurity_capacity_available_tt
+				bio_countermeasure_can_expand_biosecurity_capacity = yes
+			}
+		}
+		custom_cost_trigger = { bio_countermeasure_can_expand_biosecurity_capacity = yes }
+		custom_cost_text = bio_expand_biosecurity_capacity_cost
+		complete_effect = {
+			custom_effect_tooltip = bio_expand_biosecurity_capacity_effect_tt
+			bio_countermeasure_pay_expand_biosecurity_capacity = yes
+		}
+		remove_effect = { bio_countermeasure_complete_biosecurity_capacity_investment = yes }
+		ai_will_do = {
+			base = constant:bio_countermeasure_ai.base
+			modifier = {
+				factor = constant:bio_countermeasure_ai.active_outbreak_factor
+				OR = {
+					bio_countermeasure_country_has_any_detected_outbreak = yes
+					condemnation_has_biological_stockpile = yes
+				}
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.prepared_factor
+				has_tech = sealed_containment_laboratories
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.low_industry_factor
+				num_of_civilian_factories < constant:bio_countermeasure_ai.minimum_industry_small
+			}
+		}
+	}
+
+	bio_activate_surveillance_network = {
+		icon = GFX_decision_bio_activate_surveillance_network
+		cost = constant:bio_countermeasure_cost.surveillance_pp
+		days_remove = constant:bio_countermeasure_timing.surveillance_activation_days
+		visible = {
+			has_tech = bio_surveillance_networks
+			NOT = { has_idea = bio_surveillance_network_idea }
+			NOT = { has_country_flag = bio_surveillance_network_activation_in_progress }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = bio_activate_surveillance_network_available_tt
+				bio_countermeasure_can_activate_surveillance_network = yes
+			}
+		}
+		custom_cost_trigger = { bio_countermeasure_can_activate_surveillance_network = yes }
+		custom_cost_text = bio_activate_surveillance_network_cost
+		complete_effect = {
+			custom_effect_tooltip = bio_activate_surveillance_network_effect_tt
+			bio_countermeasure_pay_surveillance_network = yes
+		}
+		remove_effect = { bio_countermeasure_activate_surveillance_network = yes }
+		ai_will_do = {
+			base = constant:bio_countermeasure_ai.high
+			modifier = {
+				factor = constant:bio_countermeasure_ai.active_outbreak_factor
+				bio_countermeasure_country_has_any_detected_outbreak = yes
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.democratic_factor
+				has_government = democratic
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.chinese_emergency_factor
+				bio_countermeasure_is_chinese_emergency_profile = yes
+			}
+		}
+	}
+
+	bio_stand_down_surveillance_network = {
+		icon = GFX_decision_bio_activate_surveillance_network
+		cost = constant:cbrn_math.zero
+		days_remove = constant:bio_countermeasure_timing.surveillance_stand_down_days
+		visible = { has_idea = bio_surveillance_network_idea }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = bio_stand_down_surveillance_network_available_tt
+				has_idea = bio_surveillance_network_idea
+			}
+		}
+		complete_effect = { custom_effect_tooltip = bio_stand_down_surveillance_network_effect_tt }
+		remove_effect = { bio_countermeasure_stand_down_surveillance_network = yes }
+		ai_will_do = {
+			base = constant:bio_countermeasure_ai.low
+			modifier = {
+				factor = constant:bio_countermeasure_ai.disabled
+				OR = {
+					bio_countermeasure_country_has_any_detected_outbreak = yes
+					has_war = yes
+				}
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.safe_revoke_factor
+				NOT = { bio_countermeasure_country_has_any_detected_outbreak = yes }
+				has_war = no
+			}
+		}
+	}
+
+	deploy_field_hospitals = {
+		icon = GFX_decision_deploy_field_hospitals
+		state_target = any_controlled_state
+		on_map_mode = map_only
+		cost = constant:bio_countermeasure_cost.field_hospital_pp
+		days_remove = constant:bio_countermeasure_timing.field_hospital_deployment_days
+		target_root_trigger = { bio_countermeasure_country_has_any_detected_outbreak = yes }
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				bio_lifecycle_state_has_any_detected_outbreak = yes
+				has_variable = bio_ordinary_outbreak_cycle
+				NOT = { has_state_flag = field_hospitals_deployed }
+				NOT = { has_state_flag = bio_field_hospital_capacity_committed }
+				NOT = { has_state_flag = bio_field_hospital_deployment_pending }
+			}
+		}
+		visible = {
+			FROM = {
+				bio_lifecycle_state_has_any_detected_outbreak = yes
+				NOT = { has_state_flag = field_hospitals_deployed }
+				NOT = { has_state_flag = bio_field_hospital_capacity_committed }
+				NOT = { has_state_flag = bio_field_hospital_deployment_pending }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = deploy_field_hospitals_available_tt
+				bio_countermeasure_can_deploy_field_hospital = yes
+				FROM = {
+					is_controlled_by = ROOT
+					bio_lifecycle_state_has_any_detected_outbreak = yes
+					has_variable = bio_ordinary_outbreak_cycle
+					NOT = { has_state_flag = field_hospitals_deployed }
+					NOT = { has_state_flag = bio_field_hospital_capacity_committed }
+					NOT = { has_state_flag = bio_field_hospital_deployment_pending }
+				}
+			}
+		}
+		custom_cost_trigger = { bio_countermeasure_can_deploy_field_hospital = yes }
+		custom_cost_text = deploy_field_hospitals_cost
+		complete_effect = {
+			custom_effect_tooltip = deploy_field_hospitals_effect_tt
+			bio_countermeasure_pay_field_hospital = yes
+			FROM = { bio_countermeasure_reserve_field_hospital_capacity = yes }
+		}
+		remove_effect = {
+			if = {
+				limit = {
+					FROM = { bio_countermeasure_field_hospital_order_is_current = yes }
+				}
+				FROM = { bio_countermeasure_apply_field_hospital = yes }
+			}
+			else = { FROM = { bio_countermeasure_release_field_hospital_reservation = yes } }
+		}
+		ai_will_do = {
+			base = constant:bio_countermeasure_ai.high
+			modifier = {
+				factor = constant:bio_countermeasure_ai.smallpox_factor
+				FROM = { has_state_flag = bio_agent_4_detected }
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.plague_factor
+				FROM = { has_state_flag = bio_agent_2_detected }
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.chinese_emergency_factor
+				bio_countermeasure_is_chinese_emergency_profile = yes
+			}
+		}
+	}
+
+	quarantine_measures = {
+		icon = GFX_decision_bio_quarantine_state
+		state_target = any_controlled_state
+		on_map_mode = map_only
+		cost = constant:bio_countermeasure_cost.quarantine_pp
+		days_remove = constant:bio_countermeasure_timing.quarantine_deployment_days
+		target_root_trigger = { bio_countermeasure_country_has_any_detected_outbreak = yes }
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				bio_lifecycle_state_has_any_detected_outbreak = yes
+				has_variable = bio_ordinary_outbreak_cycle
+				NOT = { has_state_flag = quarantine_measures_active }
+				NOT = { has_state_flag = bio_quarantine_deployment_pending }
+			}
+		}
+		visible = {
+			FROM = {
+				bio_lifecycle_state_has_any_detected_outbreak = yes
+				NOT = { has_state_flag = quarantine_measures_active }
+				NOT = { has_state_flag = bio_quarantine_deployment_pending }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = quarantine_measures_available_tt
+				bio_countermeasure_can_impose_quarantine = yes
+				FROM = {
+					is_controlled_by = ROOT
+					bio_lifecycle_state_has_any_detected_outbreak = yes
+					has_variable = bio_ordinary_outbreak_cycle
+					NOT = { has_state_flag = quarantine_measures_active }
+					NOT = { has_state_flag = bio_quarantine_deployment_pending }
+				}
+			}
+		}
+		custom_cost_trigger = { bio_countermeasure_can_impose_quarantine = yes }
+		custom_cost_text = quarantine_measures_cost
+		complete_effect = {
+			custom_effect_tooltip = quarantine_measures_effect_tt
+			bio_countermeasure_pay_quarantine = yes
+			FROM = { bio_countermeasure_record_quarantine_order = yes }
+		}
+		remove_effect = {
+			if = {
+				limit = {
+					FROM = { bio_countermeasure_quarantine_order_is_current = yes }
+				}
+				FROM = { bio_countermeasure_apply_quarantine = yes }
+			}
+			else = { FROM = { bio_countermeasure_clear_quarantine_order = yes } }
+		}
+		ai_will_do = {
+			base = constant:bio_countermeasure_ai.high
+			modifier = {
+				factor = constant:bio_countermeasure_ai.smallpox_factor
+				FROM = { has_state_flag = bio_agent_4_detected }
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.plague_factor
+				FROM = { has_state_flag = bio_agent_2_detected }
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.authoritarian_quarantine_factor
+				bio_countermeasure_is_authoritarian_profile = yes
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.low_stability_factor
+				has_stability < constant:bio_countermeasure_ai.weak_stability_threshold
+			}
+		}
+	}
+
+	close_border_to_infected_neighbor = {
+		icon = GFX_decision_bio_border_control
+		target_array = neighbors
+		cost = constant:bio_countermeasure_cost.border_close_pp
+		target_root_trigger = { has_neighbor_with_active_biowarfare_outbreak = yes }
+		target_trigger = { has_biowarfare_outbreak_in_border_proximity_from = yes }
+		visible = { NOT = { is_in_array = { closed_bio_borders = FROM } } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = close_border_to_infected_neighbor_available_tt
+				NOT = { is_in_array = { closed_bio_borders = FROM } }
+				has_biowarfare_outbreak_in_border_proximity_from = yes
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = close_border_to_infected_neighbor_effect_tt
+			add_to_array = {
+				array = closed_bio_borders
+				value = FROM
+			}
+			if = {
+				limit = { NOT = { has_country_flag = bio_border_relation_override_active } }
+				add_relation_rule_override = {
+					trigger = bio_border_closure_relation_target
+					usage_desc = bio_border_closure_usage_desc
+					can_access_market = no
+				}
+				add_relation_rule_override = {
+					trigger = bio_border_closure_relation_target
+					usage_desc = bio_border_closure_usage_desc
+					can_send_volunteers = no
+				}
+				set_country_flag = bio_border_relation_override_active
+			}
+			bio_countermeasure_start_border_cleanup_job = yes
+		}
+		ai_will_do = {
+			base = constant:bio_border_controls.ai.close_base
+			modifier = {
+				factor = constant:bio_countermeasure_ai.disabled
+				NOT = {
+					OR = {
+						has_smallpox_outbreak_in_border_proximity_from = yes
+						has_plague_outbreak_in_border_proximity_from = yes
+					}
+				}
+			}
+			modifier = {
+				add = constant:bio_border_controls.ai.close_add_smallpox
+				has_smallpox_outbreak_in_border_proximity_from = yes
+			}
+			modifier = {
+				add = constant:bio_border_controls.ai.close_add_plague
+				has_plague_outbreak_in_border_proximity_from = yes
+			}
+			modifier = {
+				factor = constant:bio_border_controls.ai.close_factor_high_opinion
+				has_opinion = {
+					target = FROM
+					value > @CR_SC_BIO_COUNTERMEASURE_AI_HIGH_OPINION_THRESHOLD
+				}
+			}
+			modifier = {
+				factor = constant:bio_border_controls.ai.close_factor_at_war
+				has_war_with = FROM
+			}
+		}
+	}
+
+	reopen_border_to_infected_neighbor = {
+		icon = GFX_decision_bio_border_control
+		target_array = neighbors
+		cost = constant:bio_countermeasure_cost.border_reopen_pp
+		target_trigger = {
+			FROM = {
+				exists = yes
+				is_neighbor_of = ROOT
+			}
+		}
+		visible = { is_in_array = { closed_bio_borders = FROM } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = reopen_border_to_infected_neighbor_available_tt
+				is_in_array = { closed_bio_borders = FROM }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = reopen_border_to_infected_neighbor_effect_tt
+			remove_from_array = {
+				array = closed_bio_borders
+				value = FROM
+			}
+			bio_countermeasure_remove_border_overrides_if_unused = yes
+		}
+		ai_will_do = {
+			base = constant:bio_border_controls.ai.reopen_base
+			modifier = {
+				add = constant:bio_border_controls.ai.reopen_add_when_safe
+				NOT = { has_biowarfare_outbreak_in_border_proximity_from = yes }
+			}
+			modifier = {
+				factor = constant:bio_border_controls.ai.reopen_factor_while_infected
+				has_biowarfare_outbreak_in_border_proximity_from = yes
+			}
+		}
+	}
+
+	develop_anthrax_antibiotics_retroactively = {
+		icon = GFX_decision_bio_anthrax_antibiotics
+		cost = constant:bio_countermeasure_cost.antibiotic_development_pp
+		days_remove = constant:bio_countermeasure_timing.anthrax_development_days
+		visible = {
+			bio_countermeasure_anthrax_threat_exists = yes
+			NOT = { has_country_flag = anthrax_antibiotics_research_started }
+			NOT = { has_country_flag = developing_anthrax_antibiotics_retroactively }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = develop_anthrax_antibiotics_retroactively_available_tt
+				bio_countermeasure_anthrax_threat_exists = yes
+				NOT = { has_country_flag = anthrax_antibiotics_research_started }
+				NOT = { has_country_flag = developing_anthrax_antibiotics_retroactively }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = develop_anthrax_antibiotics_retroactively_effect_tt
+			set_country_flag = developing_anthrax_antibiotics_retroactively
+			add_ideas = developing_anthrax_antibiotics_research_slowdown
+		}
+		remove_effect = {
+			set_country_flag = anthrax_antibiotics_research_started
+			clr_country_flag = developing_anthrax_antibiotics_retroactively
+			remove_ideas = developing_anthrax_antibiotics_research_slowdown
+		}
+		ai_will_do = {
+			base = constant:bio_countermeasure_ai.high
+			modifier = {
+				factor = constant:bio_countermeasure_ai.active_outbreak_factor
+				bio_countermeasure_country_has_detected_anthrax = yes
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.low_industry_factor
+				num_of_civilian_factories < constant:bio_countermeasure_ai.minimum_industry_small
+			}
+		}
+	}
+
+	anthrax_antibiotics_mass_production = {
+		icon = GFX_decision_bio_anthrax_antibiotics
+		cost = constant:bio_countermeasure_cost.antibiotic_production_pp
+		days_remove = constant:bio_countermeasure_timing.anthrax_production_days
+		visible = {
+			bio_countermeasure_anthrax_threat_exists = yes
+			has_country_flag = anthrax_antibiotics_research_started
+			NOT = { has_idea = anthrax_antibiotics_mass_production_idea }
+			NOT = { has_country_flag = anthrax_antibiotics_production_in_progress }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = anthrax_antibiotics_mass_production_available_tt
+				has_country_flag = anthrax_antibiotics_research_started
+				NOT = { has_idea = anthrax_antibiotics_mass_production_idea }
+				NOT = { has_country_flag = anthrax_antibiotics_production_in_progress }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = anthrax_antibiotics_mass_production_effect_tt
+			set_country_flag = anthrax_antibiotics_production_in_progress
+		}
+		remove_effect = {
+			add_ideas = anthrax_antibiotics_mass_production_idea
+			clr_country_flag = anthrax_antibiotics_production_in_progress
+		}
+		ai_will_do = {
+			base = constant:bio_countermeasure_ai.high
+			modifier = {
+				factor = constant:bio_countermeasure_ai.active_outbreak_factor
+				bio_countermeasure_country_has_detected_anthrax = yes
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.low_industry_factor
+				num_of_civilian_factories < constant:bio_countermeasure_ai.minimum_industry_standard
+			}
+		}
+	}
+
+	revoke_anthrax_antibiotics_mass_production = {
+		icon = GFX_decision_bio_anthrax_antibiotics
+		cost = constant:cbrn_math.zero
+		days_remove = constant:bio_countermeasure_timing.antibiotic_shutdown_days
+		visible = { has_idea = anthrax_antibiotics_mass_production_idea }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = revoke_anthrax_antibiotics_mass_production_available_tt
+				has_idea = anthrax_antibiotics_mass_production_idea
+			}
+		}
+		complete_effect = { custom_effect_tooltip = revoke_anthrax_antibiotics_mass_production_effect_tt }
+		remove_effect = { remove_ideas = anthrax_antibiotics_mass_production_idea }
+		ai_will_do = {
+			base = constant:bio_countermeasure_ai.low
+			modifier = {
+				factor = constant:bio_countermeasure_ai.disabled
+				bio_countermeasure_country_has_detected_anthrax = yes
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.safe_revoke_factor
+				NOT = { bio_countermeasure_anthrax_threat_exists = yes }
+			}
+		}
+	}
+
+	bio_distribute_anthrax_antibiotics = {
+		icon = GFX_decision_bio_anthrax_antibiotics
+		state_target = any_controlled_state
+		on_map_mode = map_only
+		cost = constant:bio_countermeasure_cost.antibiotic_distribution_pp
+		days_remove = constant:bio_countermeasure_timing.antibiotic_distribution_days
+		target_root_trigger = {
+			has_idea = anthrax_antibiotics_mass_production_idea
+			bio_countermeasure_country_has_detected_anthrax = yes
+		}
+		target_trigger = { FROM = { bio_countermeasure_state_can_receive_anthrax_antibiotics = yes } }
+		visible = { FROM = { bio_countermeasure_state_can_receive_anthrax_antibiotics = yes } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = bio_distribute_anthrax_antibiotics_available_tt
+				has_idea = anthrax_antibiotics_mass_production_idea
+				bio_countermeasure_can_distribute_antibiotics = yes
+				FROM = { bio_countermeasure_state_can_receive_anthrax_antibiotics = yes }
+			}
+		}
+		custom_cost_trigger = { bio_countermeasure_can_distribute_antibiotics = yes }
+		custom_cost_text = bio_distribute_antibiotics_cost
+		complete_effect = {
+			custom_effect_tooltip = bio_distribute_anthrax_antibiotics_effect_tt
+			bio_countermeasure_pay_antibiotic_distribution = yes
+			FROM = {
+				bio_countermeasure_record_anthrax_antibiotic_order = yes
+			}
+		}
+		remove_effect = {
+			if = {
+				limit = {
+					FROM = { bio_countermeasure_anthrax_antibiotic_order_is_current = yes }
+				}
+				FROM = { bio_countermeasure_apply_anthrax_antibiotic_course = yes }
+			}
+			else = { FROM = { bio_countermeasure_clear_anthrax_antibiotic_order = yes } }
+			FROM = { bio_countermeasure_release_antibiotic_service_if_unused = yes }
+		}
+		ai_will_do = {
+			base = constant:bio_countermeasure_ai.urgent
+			modifier = {
+				factor = constant:bio_countermeasure_ai.chinese_emergency_factor
+				bio_countermeasure_is_chinese_emergency_profile = yes
+			}
+		}
+	}
+
+	develop_plague_antibiotics_retroactively = {
+		icon = GFX_decision_bio_plague_antibiotics
+		cost = constant:bio_countermeasure_cost.antibiotic_development_pp
+		days_remove = constant:bio_countermeasure_timing.plague_development_days
+		visible = {
+			bio_countermeasure_plague_threat_exists = yes
+			NOT = { has_country_flag = plague_antibiotics_research_started }
+			NOT = { has_country_flag = developing_plague_antibiotics_retroactively }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = develop_plague_antibiotics_retroactively_available_tt
+				bio_countermeasure_plague_threat_exists = yes
+				NOT = { has_country_flag = plague_antibiotics_research_started }
+				NOT = { has_country_flag = developing_plague_antibiotics_retroactively }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = develop_plague_antibiotics_retroactively_effect_tt
+			set_country_flag = developing_plague_antibiotics_retroactively
+			add_ideas = developing_plague_antibiotics_research_slowdown
+		}
+		remove_effect = {
+			set_country_flag = plague_antibiotics_research_started
+			clr_country_flag = developing_plague_antibiotics_retroactively
+			remove_ideas = developing_plague_antibiotics_research_slowdown
+		}
+		ai_will_do = {
+			base = constant:bio_countermeasure_ai.urgent
+			modifier = {
+				factor = constant:bio_countermeasure_ai.active_outbreak_factor
+				bio_countermeasure_country_has_detected_plague = yes
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.low_industry_factor
+				num_of_civilian_factories < constant:bio_countermeasure_ai.minimum_industry_standard
+			}
+		}
+	}
+
+	plague_antibiotics_mass_production = {
+		icon = GFX_decision_bio_plague_antibiotics
+		cost = constant:bio_countermeasure_cost.antibiotic_production_pp
+		days_remove = constant:bio_countermeasure_timing.plague_production_days
+		visible = {
+			bio_countermeasure_plague_threat_exists = yes
+			has_country_flag = plague_antibiotics_research_started
+			NOT = { has_idea = plague_antibiotics_mass_production_idea }
+			NOT = { has_country_flag = plague_antibiotics_production_in_progress }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = plague_antibiotics_mass_production_available_tt
+				has_country_flag = plague_antibiotics_research_started
+				NOT = { has_idea = plague_antibiotics_mass_production_idea }
+				NOT = { has_country_flag = plague_antibiotics_production_in_progress }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = plague_antibiotics_mass_production_effect_tt
+			set_country_flag = plague_antibiotics_production_in_progress
+		}
+		remove_effect = {
+			add_ideas = plague_antibiotics_mass_production_idea
+			clr_country_flag = plague_antibiotics_production_in_progress
+		}
+		ai_will_do = {
+			base = constant:bio_countermeasure_ai.urgent
+			modifier = {
+				factor = constant:bio_countermeasure_ai.active_outbreak_factor
+				bio_countermeasure_country_has_detected_plague = yes
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.low_industry_factor
+				num_of_civilian_factories < constant:bio_countermeasure_ai.minimum_industry_large
+			}
+		}
+	}
+
+	revoke_plague_antibiotics_mass_production = {
+		icon = GFX_decision_bio_plague_antibiotics
+		cost = constant:cbrn_math.zero
+		days_remove = constant:bio_countermeasure_timing.antibiotic_shutdown_days
+		visible = { has_idea = plague_antibiotics_mass_production_idea }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = revoke_plague_antibiotics_mass_production_available_tt
+				has_idea = plague_antibiotics_mass_production_idea
+			}
+		}
+		complete_effect = { custom_effect_tooltip = revoke_plague_antibiotics_mass_production_effect_tt }
+		remove_effect = { remove_ideas = plague_antibiotics_mass_production_idea }
+		ai_will_do = {
+			base = constant:bio_countermeasure_ai.low
+			modifier = {
+				factor = constant:bio_countermeasure_ai.disabled
+				bio_countermeasure_country_has_detected_plague = yes
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.safe_revoke_factor
+				NOT = { bio_countermeasure_plague_threat_exists = yes }
+			}
+		}
+	}
+
+	bio_distribute_plague_antibiotics = {
+		icon = GFX_decision_bio_plague_antibiotics
+		state_target = any_controlled_state
+		on_map_mode = map_only
+		cost = constant:bio_countermeasure_cost.antibiotic_distribution_pp
+		days_remove = constant:bio_countermeasure_timing.antibiotic_distribution_days
+		target_root_trigger = {
+			has_idea = plague_antibiotics_mass_production_idea
+			bio_countermeasure_country_has_detected_plague = yes
+		}
+		target_trigger = { FROM = { bio_countermeasure_state_can_receive_plague_antibiotics = yes } }
+		visible = { FROM = { bio_countermeasure_state_can_receive_plague_antibiotics = yes } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = bio_distribute_plague_antibiotics_available_tt
+				has_idea = plague_antibiotics_mass_production_idea
+				bio_countermeasure_can_distribute_antibiotics = yes
+				FROM = { bio_countermeasure_state_can_receive_plague_antibiotics = yes }
+			}
+		}
+		custom_cost_trigger = { bio_countermeasure_can_distribute_antibiotics = yes }
+		custom_cost_text = bio_distribute_antibiotics_cost
+		complete_effect = {
+			custom_effect_tooltip = bio_distribute_plague_antibiotics_effect_tt
+			bio_countermeasure_pay_antibiotic_distribution = yes
+			FROM = {
+				bio_countermeasure_record_plague_antibiotic_order = yes
+			}
+		}
+		remove_effect = {
+			if = {
+				limit = {
+					FROM = { bio_countermeasure_plague_antibiotic_order_is_current = yes }
+				}
+				FROM = { bio_countermeasure_apply_plague_antibiotic_course = yes }
+			}
+			else = { FROM = { bio_countermeasure_clear_plague_antibiotic_order = yes } }
+			FROM = { bio_countermeasure_release_antibiotic_service_if_unused = yes }
+		}
+		ai_will_do = {
+			base = constant:bio_countermeasure_ai.critical
+			modifier = {
+				factor = constant:bio_countermeasure_ai.chinese_emergency_factor
+				bio_countermeasure_is_chinese_emergency_profile = yes
+			}
+		}
+	}
+
+	develop_tularemia_antibiotics_retroactively = {
+		icon = GFX_decision_bio_tularemia_antibiotics
+		cost = constant:bio_countermeasure_cost.antibiotic_development_pp
+		days_remove = constant:bio_countermeasure_timing.tularemia_development_days
+		visible = {
+			bio_countermeasure_tularemia_threat_exists = yes
+			NOT = { has_country_flag = tularemia_antibiotics_research_started }
+			NOT = { has_country_flag = developing_tularemia_antibiotics_retroactively }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = develop_tularemia_antibiotics_retroactively_available_tt
+				bio_countermeasure_tularemia_threat_exists = yes
+				NOT = { has_country_flag = tularemia_antibiotics_research_started }
+				NOT = { has_country_flag = developing_tularemia_antibiotics_retroactively }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = develop_tularemia_antibiotics_retroactively_effect_tt
+			set_country_flag = developing_tularemia_antibiotics_retroactively
+			add_ideas = developing_tularemia_antibiotics_research_slowdown
+		}
+		remove_effect = {
+			set_country_flag = tularemia_antibiotics_research_started
+			clr_country_flag = developing_tularemia_antibiotics_retroactively
+			remove_ideas = developing_tularemia_antibiotics_research_slowdown
+		}
+		ai_will_do = {
+			base = constant:bio_countermeasure_ai.high
+			modifier = {
+				factor = constant:bio_countermeasure_ai.active_outbreak_factor
+				bio_countermeasure_country_has_detected_tularemia = yes
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.low_industry_factor
+				num_of_civilian_factories < constant:bio_countermeasure_ai.minimum_industry_tiny
+			}
+		}
+	}
+
+	tularemia_antibiotics_mass_production = {
+		icon = GFX_decision_bio_tularemia_antibiotics
+		cost = constant:bio_countermeasure_cost.antibiotic_production_pp
+		days_remove = constant:bio_countermeasure_timing.tularemia_production_days
+		visible = {
+			bio_countermeasure_tularemia_threat_exists = yes
+			has_country_flag = tularemia_antibiotics_research_started
+			NOT = { has_idea = tularemia_antibiotics_mass_production_idea }
+			NOT = { has_country_flag = tularemia_antibiotics_production_in_progress }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = tularemia_antibiotics_mass_production_available_tt
+				has_country_flag = tularemia_antibiotics_research_started
+				NOT = { has_idea = tularemia_antibiotics_mass_production_idea }
+				NOT = { has_country_flag = tularemia_antibiotics_production_in_progress }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = tularemia_antibiotics_mass_production_effect_tt
+			set_country_flag = tularemia_antibiotics_production_in_progress
+		}
+		remove_effect = {
+			add_ideas = tularemia_antibiotics_mass_production_idea
+			clr_country_flag = tularemia_antibiotics_production_in_progress
+		}
+		ai_will_do = {
+			base = constant:bio_countermeasure_ai.high
+			modifier = {
+				factor = constant:bio_countermeasure_ai.active_outbreak_factor
+				bio_countermeasure_country_has_detected_tularemia = yes
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.low_industry_factor
+				num_of_civilian_factories < constant:bio_countermeasure_ai.minimum_industry_small
+			}
+		}
+	}
+
+	revoke_tularemia_antibiotics_mass_production = {
+		icon = GFX_decision_bio_tularemia_antibiotics
+		cost = constant:cbrn_math.zero
+		days_remove = constant:bio_countermeasure_timing.antibiotic_shutdown_days
+		visible = { has_idea = tularemia_antibiotics_mass_production_idea }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = revoke_tularemia_antibiotics_mass_production_available_tt
+				has_idea = tularemia_antibiotics_mass_production_idea
+			}
+		}
+		complete_effect = { custom_effect_tooltip = revoke_tularemia_antibiotics_mass_production_effect_tt }
+		remove_effect = { remove_ideas = tularemia_antibiotics_mass_production_idea }
+		ai_will_do = {
+			base = constant:bio_countermeasure_ai.low
+			modifier = {
+				factor = constant:bio_countermeasure_ai.disabled
+				bio_countermeasure_country_has_detected_tularemia = yes
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.safe_revoke_factor
+				NOT = { bio_countermeasure_tularemia_threat_exists = yes }
+			}
+		}
+	}
+
+	bio_distribute_tularemia_antibiotics = {
+		icon = GFX_decision_bio_tularemia_antibiotics
+		state_target = any_controlled_state
+		on_map_mode = map_only
+		cost = constant:bio_countermeasure_cost.antibiotic_distribution_pp
+		days_remove = constant:bio_countermeasure_timing.antibiotic_distribution_days
+		target_root_trigger = {
+			has_idea = tularemia_antibiotics_mass_production_idea
+			bio_countermeasure_country_has_detected_tularemia = yes
+		}
+		target_trigger = { FROM = { bio_countermeasure_state_can_receive_tularemia_antibiotics = yes } }
+		visible = { FROM = { bio_countermeasure_state_can_receive_tularemia_antibiotics = yes } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = bio_distribute_tularemia_antibiotics_available_tt
+				has_idea = tularemia_antibiotics_mass_production_idea
+				bio_countermeasure_can_distribute_antibiotics = yes
+				FROM = { bio_countermeasure_state_can_receive_tularemia_antibiotics = yes }
+			}
+		}
+		custom_cost_trigger = { bio_countermeasure_can_distribute_antibiotics = yes }
+		custom_cost_text = bio_distribute_antibiotics_cost
+		complete_effect = {
+			custom_effect_tooltip = bio_distribute_tularemia_antibiotics_effect_tt
+			bio_countermeasure_pay_antibiotic_distribution = yes
+			FROM = {
+				bio_countermeasure_record_tularemia_antibiotic_order = yes
+			}
+		}
+		remove_effect = {
+			if = {
+				limit = {
+					FROM = { bio_countermeasure_tularemia_antibiotic_order_is_current = yes }
+				}
+				FROM = { bio_countermeasure_apply_tularemia_antibiotic_course = yes }
+			}
+			else = { FROM = { bio_countermeasure_clear_tularemia_antibiotic_order = yes } }
+			FROM = { bio_countermeasure_release_antibiotic_service_if_unused = yes }
+		}
+		ai_will_do = {
+			base = constant:bio_countermeasure_ai.urgent
+			modifier = {
+				factor = constant:bio_countermeasure_ai.chinese_emergency_factor
+				bio_countermeasure_is_chinese_emergency_profile = yes
+			}
+		}
+	}
+
+	smallpox_vaccination_mass_program = {
+		icon = GFX_decision_biowarfare_smallpox_vaccination
+		cost = constant:bio_countermeasure_cost.vaccination_pp
+		days_remove = constant:bio_countermeasure_timing.vaccination_activation_days
+		visible = {
+			bio_countermeasure_smallpox_threat_exists = yes
+			has_tech = integrated_epidemic_control
+			NOT = { has_idea = smallpox_vaccination_program_idea }
+			NOT = { has_country_flag = smallpox_vaccination_program_in_progress }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = smallpox_vaccination_mass_program_available_tt
+				bio_countermeasure_smallpox_threat_exists = yes
+				bio_countermeasure_can_activate_vaccination_program = yes
+			}
+		}
+		custom_cost_trigger = { bio_countermeasure_can_activate_vaccination_program = yes }
+		custom_cost_text = smallpox_vaccination_mass_program_cost
+		complete_effect = {
+			custom_effect_tooltip = smallpox_vaccination_mass_program_effect_tt
+			bio_countermeasure_pay_vaccination_program = yes
+		}
+		remove_effect = { bio_countermeasure_activate_vaccination_program = yes }
+		ai_will_do = {
+			base = constant:bio_countermeasure_ai.urgent
+			modifier = {
+				factor = constant:bio_countermeasure_ai.smallpox_factor
+				bio_countermeasure_country_has_detected_smallpox = yes
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.democratic_factor
+				has_government = democratic
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.low_industry_factor
+				num_of_civilian_factories < constant:bio_countermeasure_ai.minimum_industry_mass
+			}
+		}
+	}
+
+	revoke_smallpox_vaccination_mass_program = {
+		icon = GFX_decision_biowarfare_smallpox_vaccination
+		cost = constant:cbrn_math.zero
+		days_remove = constant:bio_countermeasure_timing.vaccination_shutdown_days
+		visible = { has_idea = smallpox_vaccination_program_idea }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = revoke_smallpox_vaccination_mass_program_available_tt
+				has_idea = smallpox_vaccination_program_idea
+			}
+		}
+		complete_effect = { custom_effect_tooltip = revoke_smallpox_vaccination_mass_program_effect_tt }
+		remove_effect = { bio_countermeasure_revoke_vaccination_program = yes }
+		ai_will_do = {
+			base = constant:bio_countermeasure_ai.low
+			modifier = {
+				factor = constant:bio_countermeasure_ai.disabled
+				bio_countermeasure_smallpox_threat_exists = yes
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.safe_revoke_factor
+				NOT = { bio_countermeasure_smallpox_threat_exists = yes }
+				has_war = no
+			}
+		}
+	}
+
+	bio_request_international_medical_mission = {
+		icon = GFX_decision_bio_international_medical_mission
+		state_target = any_controlled_state
+		on_map_mode = map_only
+		cost = constant:bio_countermeasure_cost.international_mission_pp
+		days_remove = constant:bio_countermeasure_timing.international_mission_deployment_days
+		target_root_trigger = {
+			bio_countermeasure_country_has_any_detected_outbreak = yes
+			bio_countermeasure_has_international_access = yes
+		}
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				bio_lifecycle_state_has_any_detected_outbreak = yes
+				has_variable = bio_ordinary_outbreak_cycle
+				NOT = { has_state_flag = bio_international_medical_mission_active }
+				NOT = { has_state_flag = bio_international_mission_capacity_committed }
+				NOT = { has_state_flag = bio_international_medical_mission_pending }
+			}
+		}
+		visible = {
+			FROM = {
+				bio_lifecycle_state_has_any_detected_outbreak = yes
+				NOT = { has_state_flag = bio_international_medical_mission_active }
+				NOT = { has_state_flag = bio_international_mission_capacity_committed }
+				NOT = { has_state_flag = bio_international_medical_mission_pending }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = bio_request_international_medical_mission_available_tt
+				bio_countermeasure_can_request_international_mission = yes
+				FROM = {
+					is_controlled_by = ROOT
+					bio_lifecycle_state_has_any_detected_outbreak = yes
+					has_variable = bio_ordinary_outbreak_cycle
+					NOT = { has_state_flag = bio_international_medical_mission_active }
+					NOT = { has_state_flag = bio_international_mission_capacity_committed }
+					NOT = { has_state_flag = bio_international_medical_mission_pending }
+				}
+			}
+		}
+		custom_cost_trigger = { bio_countermeasure_can_request_international_mission = yes }
+		custom_cost_text = bio_request_international_medical_mission_cost
+		complete_effect = {
+			custom_effect_tooltip = bio_request_international_medical_mission_effect_tt
+			bio_countermeasure_pay_international_mission = yes
+			FROM = { bio_countermeasure_reserve_international_mission_capacity = yes }
+		}
+		remove_effect = {
+			if = {
+				limit = {
+					FROM = { bio_countermeasure_international_mission_order_is_current = yes }
+				}
+				FROM = { bio_countermeasure_apply_international_mission = yes }
+			}
+			else = { FROM = { bio_countermeasure_release_international_mission_reservation = yes } }
+		}
+		ai_will_do = {
+			base = constant:bio_countermeasure_ai.base
+			modifier = {
+				factor = constant:bio_countermeasure_ai.smallpox_factor
+				FROM = { has_state_flag = bio_agent_4_detected }
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.plague_factor
+				FROM = { has_state_flag = bio_agent_2_detected }
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.democratic_factor
+				has_government = democratic
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.chinese_emergency_factor
+				bio_countermeasure_is_chinese_emergency_profile = yes
+			}
+		}
+	}
+
+	bio_sustain_containment_isolated = {
+		name = bio_sustain_containment
+		desc = bio_sustain_containment_desc
+		icon = GFX_decision_bio_sustain_containment
+		state_target = any_controlled_state
+		on_map_mode = map_only
+		cost = constant:bio_countermeasure_cost.containment_mission_pp
+		days_remove = constant:bio_countermeasure_timing.containment_isolated_days
+		target_root_trigger = {
+			bio_countermeasure_country_has_any_detected_outbreak = yes
+			bio_countermeasure_can_start_containment_mission = yes
+		}
+		target_trigger = {
+			FROM = {
+				bio_countermeasure_state_can_start_containment_mission = yes
+				bio_countermeasure_state_is_containment_isolated_band = yes
+			}
+		}
+		visible = {
+			FROM = {
+				bio_lifecycle_state_has_any_detected_outbreak = yes
+				NOT = { has_state_flag = bio_containment_mission_active }
+				bio_countermeasure_state_is_containment_isolated_band = yes
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sustain_containment_available_tt
+				bio_countermeasure_can_start_containment_mission = yes
+				FROM = {
+					bio_countermeasure_state_can_start_containment_mission = yes
+					bio_countermeasure_state_is_containment_isolated_band = yes
+				}
+			}
+		}
+		custom_cost_trigger = { bio_countermeasure_can_start_containment_mission = yes }
+		custom_cost_text = bio_sustain_containment_cost
+		complete_effect = {
+			custom_effect_tooltip = bio_sustain_containment_isolated_effect_tt
+			bio_countermeasure_pay_containment_mission = yes
+			FROM = { bio_countermeasure_start_containment_mission = yes }
+		}
+		remove_effect = { FROM = { bio_countermeasure_resolve_containment_mission = yes } }
+		ai_will_do = {
+			base = constant:bio_countermeasure_ai.containment_isolated
+			modifier = {
+				factor = constant:bio_countermeasure_ai.smallpox_factor
+				FROM = { has_state_flag = bio_agent_4_detected }
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.chinese_emergency_factor
+				bio_countermeasure_is_chinese_emergency_profile = yes
+			}
+		}
+	}
+
+	bio_sustain_containment_local = {
+		name = bio_sustain_containment
+		desc = bio_sustain_containment_desc
+		icon = GFX_decision_bio_sustain_containment
+		state_target = any_controlled_state
+		on_map_mode = map_only
+		cost = constant:bio_countermeasure_cost.containment_mission_pp
+		days_remove = constant:bio_countermeasure_timing.containment_local_days
+		target_root_trigger = {
+			bio_countermeasure_country_has_any_detected_outbreak = yes
+			bio_countermeasure_can_start_containment_mission = yes
+		}
+		target_trigger = {
+			FROM = {
+				bio_countermeasure_state_can_start_containment_mission = yes
+				bio_countermeasure_state_is_containment_local_band = yes
+			}
+		}
+		visible = {
+			FROM = {
+				bio_lifecycle_state_has_any_detected_outbreak = yes
+				NOT = { has_state_flag = bio_containment_mission_active }
+				bio_countermeasure_state_is_containment_local_band = yes
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sustain_containment_available_tt
+				bio_countermeasure_can_start_containment_mission = yes
+				FROM = {
+					bio_countermeasure_state_can_start_containment_mission = yes
+					bio_countermeasure_state_is_containment_local_band = yes
+				}
+			}
+		}
+		custom_cost_trigger = { bio_countermeasure_can_start_containment_mission = yes }
+		custom_cost_text = bio_sustain_containment_cost
+		complete_effect = {
+			custom_effect_tooltip = bio_sustain_containment_local_effect_tt
+			bio_countermeasure_pay_containment_mission = yes
+			FROM = { bio_countermeasure_start_containment_mission = yes }
+		}
+		remove_effect = { FROM = { bio_countermeasure_resolve_containment_mission = yes } }
+		ai_will_do = {
+			base = constant:bio_countermeasure_ai.containment_local
+			modifier = {
+				factor = constant:bio_countermeasure_ai.smallpox_factor
+				FROM = { has_state_flag = bio_agent_4_detected }
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.plague_factor
+				FROM = { has_state_flag = bio_agent_2_detected }
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.chinese_emergency_factor
+				bio_countermeasure_is_chinese_emergency_profile = yes
+			}
+		}
+	}
+
+	bio_sustain_containment_regional = {
+		name = bio_sustain_containment
+		desc = bio_sustain_containment_desc
+		icon = GFX_decision_bio_sustain_containment
+		state_target = any_controlled_state
+		on_map_mode = map_only
+		cost = constant:bio_countermeasure_cost.containment_mission_pp
+		days_remove = constant:bio_countermeasure_timing.containment_regional_days
+		target_root_trigger = {
+			bio_countermeasure_country_has_any_detected_outbreak = yes
+			bio_countermeasure_can_start_containment_mission = yes
+		}
+		target_trigger = {
+			FROM = {
+				bio_countermeasure_state_can_start_containment_mission = yes
+				bio_countermeasure_state_is_containment_regional_band = yes
+			}
+		}
+		visible = {
+			FROM = {
+				bio_lifecycle_state_has_any_detected_outbreak = yes
+				NOT = { has_state_flag = bio_containment_mission_active }
+				bio_countermeasure_state_is_containment_regional_band = yes
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sustain_containment_available_tt
+				bio_countermeasure_can_start_containment_mission = yes
+				FROM = {
+					bio_countermeasure_state_can_start_containment_mission = yes
+					bio_countermeasure_state_is_containment_regional_band = yes
+				}
+			}
+		}
+		custom_cost_trigger = { bio_countermeasure_can_start_containment_mission = yes }
+		custom_cost_text = bio_sustain_containment_cost
+		complete_effect = {
+			custom_effect_tooltip = bio_sustain_containment_regional_effect_tt
+			bio_countermeasure_pay_containment_mission = yes
+			FROM = { bio_countermeasure_start_containment_mission = yes }
+		}
+		remove_effect = { FROM = { bio_countermeasure_resolve_containment_mission = yes } }
+		ai_will_do = {
+			base = constant:bio_countermeasure_ai.containment_regional
+			modifier = {
+				factor = constant:bio_countermeasure_ai.smallpox_factor
+				FROM = { has_state_flag = bio_agent_4_detected }
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.plague_factor
+				FROM = { has_state_flag = bio_agent_2_detected }
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.chinese_emergency_factor
+				bio_countermeasure_is_chinese_emergency_profile = yes
+			}
+		}
+	}
+
+	bio_sustain_containment_severe = {
+		name = bio_sustain_containment
+		desc = bio_sustain_containment_desc
+		icon = GFX_decision_bio_sustain_containment
+		state_target = any_controlled_state
+		on_map_mode = map_only
+		cost = constant:bio_countermeasure_cost.containment_mission_pp
+		days_remove = constant:bio_countermeasure_timing.containment_severe_days
+		target_root_trigger = {
+			bio_countermeasure_country_has_any_detected_outbreak = yes
+			bio_countermeasure_can_start_containment_mission = yes
+		}
+		target_trigger = {
+			FROM = {
+				bio_countermeasure_state_can_start_containment_mission = yes
+				bio_countermeasure_state_is_containment_severe_band = yes
+			}
+		}
+		visible = {
+			FROM = {
+				bio_lifecycle_state_has_any_detected_outbreak = yes
+				NOT = { has_state_flag = bio_containment_mission_active }
+				bio_countermeasure_state_is_containment_severe_band = yes
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sustain_containment_available_tt
+				bio_countermeasure_can_start_containment_mission = yes
+				FROM = {
+					bio_countermeasure_state_can_start_containment_mission = yes
+					bio_countermeasure_state_is_containment_severe_band = yes
+				}
+			}
+		}
+		custom_cost_trigger = { bio_countermeasure_can_start_containment_mission = yes }
+		custom_cost_text = bio_sustain_containment_cost
+		complete_effect = {
+			custom_effect_tooltip = bio_sustain_containment_severe_effect_tt
+			bio_countermeasure_pay_containment_mission = yes
+			FROM = { bio_countermeasure_start_containment_mission = yes }
+		}
+		remove_effect = { FROM = { bio_countermeasure_resolve_containment_mission = yes } }
+		ai_will_do = {
+			base = constant:bio_countermeasure_ai.containment_severe
+			modifier = {
+				factor = constant:bio_countermeasure_ai.smallpox_factor
+				FROM = { has_state_flag = bio_agent_4_detected }
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.plague_factor
+				FROM = { has_state_flag = bio_agent_2_detected }
+			}
+			modifier = {
+				factor = constant:bio_countermeasure_ai.chinese_emergency_factor
+				bio_countermeasure_is_chinese_emergency_profile = yes
+			}
+		}
+	}
+}

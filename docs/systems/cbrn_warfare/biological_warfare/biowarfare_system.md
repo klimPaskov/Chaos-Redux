@@ -96,6 +96,8 @@ Available responses include:
 
 A strong response can slow spread, reduce damage, and eventually clear contamination.
 
+National bio-surveillance and Smallpox vaccination use Political Power, CBRN Instruments, Support Equipment, and Medical Capacity committed until their respective programs stand down. Each also needs transport on hand when selected, but the trucks are not consumed by establishing the program. The decision's cost row shows the upfront Political Power and equipment payment; its cost hover explains the Medical Capacity commitment and truck requirement. The current tuned amounts and durations come from `common/script_constants/biological_countermeasure_constants.txt`.
+
 ## Stockpile Safety and Accidents
 
 One exact owned biowarfare facility is designated as the national arsenal.
