@@ -118,6 +118,8 @@ Chemical Air Interdiction is an eligibility marker only in this stage. It create
 
 Policy changes are decisions with a 90-day reassessment lock and a five-Command-Power cost. The current decisions have zero native Political Power cost and call the shared policy effect after their exact availability gates pass. Doctrine progression does not change national policy automatically.
 
+One `cbrn_doctrine_policy_command_power_cost.policy_change` constant supplies the inclusive affordability gate, all three hidden click payments, and the scripted-localisation cost quote. The reassessment text reads the same `cbrn_doctrine_timing.policy_reassessment_days` constant used by the timed flag. The click effect checks affordability again before accepting the requested policy, so a failed payment cannot change authority.
+
 | Policy | Command Power | Reassessment | Source decision |
 | --- | ---: | --- | --- |
 | Retaliation Only | 5 | 90 days | `cbrn_choose_retaliation_only` |

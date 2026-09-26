@@ -434,7 +434,11 @@ cbrn_record_native_operations_track_complete = {
 }
 
 cbrn_change_chaos_warfare_use_policy = {
-	cbrn_set_use_policy = yes
+	set_temp_variable = { cbrn_policy_change_accepted = constant:cbrn_proof.missing }
+	if = {
+		limit = { cbrn_can_pay_policy_change = yes }
+		cbrn_set_use_policy = yes
+	}
 	if = {
 		limit = { check_variable = { var = cbrn_policy_change_accepted value = constant:cbrn_proof.supplied compare = equals } }
 		set_temp_variable = { cbrn_doctrine_command_power_cost = cbrn_policy_command_power_cost }
