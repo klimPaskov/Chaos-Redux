@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Static audit of Chaos Redux English localisation against the script tree.
 
-This tool answers four source-only questions without running the game:
+This tool answers five source-only questions without running the game:
 
 1. Does every localisation file parse as `key: "value"` under an `l_english:`
    header, and does it keep its UTF-8 BOM?
@@ -12,6 +12,8 @@ This tool answers four source-only questions without running the game:
    defined here? Those render as raw key names in game.
 4. Which defined keys are never referenced by any script token or
    `[bracket]` command? Those are candidates for removal.
+5. Which flags checked in a displayed decision, mission, or focus requirement
+   have no localisation key? Their tooltips show the raw flag identifier.
 
 The token test is deliberately conservative. A key counts as live when its
 exact name appears as a token anywhere in the non-localisation tree, so a key
@@ -86,6 +88,7 @@ class Findings:
 		self.dynamic_candidates: List[Tuple[str, str]] = []
 		self.dead_keys: List[Tuple[str, str]] = []
 		self.encoding_artifacts: List[Tuple[str, int, str]] = []
+		self.exposed_flags: List[Tuple[str, str]] = []
 		self.key_count = 0
 		self.file_count = 0
 
@@ -598,6 +601,92 @@ def collect_referenced_keys(
 			findings.literal_names.append((literal, sorted(quoted[literal])[:2]))
 
 
+# A flag trigger inside a displayed requirement block uses the flag name as its
+# tooltip localisation key, so an undefined key shows the raw flag identifier.
+# Displayed blocks are decision and mission `available` and focus `available`
+# and `bypass`, plus every scripted trigger they call, followed transitively.
+# Checks inside `hidden_trigger` or `custom_trigger_tooltip` are not displayed.
+VANILLA_LOCALISATION_DIR = Path(
+	"C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/localisation/english"
+)
+REQUIREMENT_BLOCKS = {"available", "bypass"}
+UNDISPLAYED_BLOCKS = {"hidden_trigger", "custom_trigger_tooltip"}
+# Names followed by `[` are assembled at runtime by meta effects and are skipped.
+FLAG_CHECK = r"has_(?:country|state|global)_flag\s*=\s*(?:\{[^}]*?flag\s*=\s*([A-Za-z0-9_@.]+)(?![A-Za-z0-9_@.\[])[^}]*\}|([A-Za-z0-9_@.]+)(?![A-Za-z0-9_@.\[]))"
+REQUIREMENT_TOKEN = re.compile(r"([A-Za-z0-9_@:.^\-]+)\s*=\s*(\{|yes\b)|\}|" + FLAG_CHECK)
+
+
+def scan_requirement_file(path: Path, visit) -> None:
+	"""Call visit(kind, value, stack, line) for block opens, `x = yes` calls, and flag checks."""
+	stack: List[str] = []
+	for number, raw in enumerate(read_text(path).splitlines(), 1):
+		for match in REQUIREMENT_TOKEN.finditer(raw.split("#", 1)[0]):
+			if match.group(0) == "}":
+				if stack:
+					stack.pop()
+			elif match.group(2) == "{":
+				stack.append(match.group(1))
+				visit("open", match.group(1), stack, number)
+			elif match.group(1):
+				visit("call", match.group(1), stack, number)
+			else:
+				visit("flag", match.group(3) or match.group(4), stack, number)
+
+
+def audit_requirement_flags(definitions: Dict[str, List[Tuple[str, int]]], findings: Findings) -> None:
+	known = set(definitions)
+	if VANILLA_LOCALISATION_DIR.is_dir():
+		for path in VANILLA_LOCALISATION_DIR.rglob("*.yml"):
+			for line in read_text(path).splitlines():
+				match = re.match(r"\s*([^\s:#]+):\d*\s*\"", line)
+				if match:
+					known.add(match.group(1))
+	triggers: Dict[str, Tuple[List[Tuple[str, str]], Set[str]]] = {}
+	for path in sorted((REPO_ROOT / "common" / "scripted_triggers").rglob("*.txt")):
+		relative = path.relative_to(REPO_ROOT).as_posix()
+		current: List[Optional[str]] = [None]
+
+		def visit_trigger(kind, value, stack, number, relative=relative, current=current):
+			if kind == "open" and len(stack) == 1:
+				current[0] = value
+				triggers[value] = ([], set())
+			elif current[0] and stack and not UNDISPLAYED_BLOCKS.intersection(stack):
+				if kind == "call":
+					triggers[current[0]][1].add(value)
+				elif kind == "flag":
+					triggers[current[0]][0].append((value, f"{relative}:{number}"))
+
+		scan_requirement_file(path, visit_trigger)
+	exposed: Dict[str, str] = {}
+	called: Set[str] = set()
+	for folder in ("decisions", "national_focus"):
+		for path in sorted((REPO_ROOT / "common" / folder).rglob("*.txt")):
+			relative = path.relative_to(REPO_ROOT).as_posix()
+
+			def visit_consumer(kind, value, stack, number, relative=relative):
+				if not REQUIREMENT_BLOCKS.intersection(stack) or UNDISPLAYED_BLOCKS.intersection(stack):
+					return
+				if kind == "flag":
+					exposed.setdefault(value, f"{relative}:{number}")
+				elif kind == "call" and value in triggers:
+					called.add(value)
+
+			scan_requirement_file(path, visit_consumer)
+	pending = list(called)
+	while pending:
+		name = pending.pop()
+		flags, calls = triggers[name]
+		for flag, site in flags:
+			exposed.setdefault(flag, site)
+		for callee in calls:
+			if callee in triggers and callee not in called:
+				called.add(callee)
+				pending.append(callee)
+	findings.exposed_flags = sorted(
+		(flag, site) for flag, site in exposed.items() if flag not in known and "@" not in flag
+	)
+
+
 def emit_report(findings: Findings) -> None:
 	print("=" * 78)
 	print("Chaos Redux static localisation audit")
@@ -614,6 +703,7 @@ def emit_report(findings: Findings) -> None:
 	print(f"literal (non-key) names : {len(findings.literal_names)}")
 	print(f"missing event t/d keys  : {len(findings.missing_event_content)}")
 	print(f"dead keys               : {len(findings.dead_keys)}")
+	print(f"unlocalised req. flags  : {len(findings.exposed_flags)}")
 
 	def section(title: str, rows: List[str], limit: int = 40) -> None:
 		print()
@@ -647,6 +737,11 @@ def emit_report(findings: Findings) -> None:
 		limit=20,
 	)
 	section("dead keys", [f"{k}  ({src})" for k, src in findings.dead_keys], limit=80)
+	section(
+		"unlocalised flags in displayed requirements",
+		[f"{flag}  ({site})" for flag, site in findings.exposed_flags],
+		limit=40,
+	)
 
 
 def write_json(findings: Findings, destination: Path) -> None:
@@ -672,6 +767,7 @@ def write_json(findings: Findings, destination: Path) -> None:
 			{"key": k, "role": r, "sources": s} for k, r, s in findings.missing_event_content
 		],
 		"dead_keys": [{"key": k, "file": f} for k, f in findings.dead_keys],
+		"exposed_flags": [{"flag": k, "site": s} for k, s in findings.exposed_flags],
 	}
 	destination.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
 	print(f"\nwrote {destination}")
@@ -715,6 +811,7 @@ def main() -> int:
 		file=sys.stderr,
 	)
 	audit_event_loc_keys(events, definitions)
+	audit_requirement_flags(definitions, findings)
 
 	emit_report(findings)
 	if arguments.json:
