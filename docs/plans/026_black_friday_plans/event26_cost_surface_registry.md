@@ -435,3 +435,7 @@ No live game launch was performed, and Event 26 remains disabled in the default 
 This document must be updated after every owner adapter or static variant change, exported only as part of the authoritative documentation change, and frozen against the exact implementation commit before Event 26 is re-enabled.
 
 Any remaining `blocked_pending_evidence` row is a completion blocker and must be reported explicitly.
+
+## BF-BIO medical-capacity sale boundary
+
+The three BF-BIO rows above keep their source_adapter_bounded_pending_live status. The CBRN owner corrected the active-sale affordability gate on 2026-09-26: both decision availability and the Event 026 payment effect now use the medical investment's technology/capacity prerequisite without requiring full-price support equipment or trucks before checking the discounted quote. The inactive path retains its full-price stock gate. The normal three-icon row reads the owning cost constants, and the shared Event 026 transaction still performs the sale quote, debit, receipt, and incomplete-payment refund. See docs/specs/chaos_warfare_system_specs/corrections/2026-09-26_black_friday_medical_capacity_sale_boundary.md. Native decision-row, discounted exact-boundary, and delayed completion evidence remain pending.

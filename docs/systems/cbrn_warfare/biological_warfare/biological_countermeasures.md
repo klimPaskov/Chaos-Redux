@@ -45,6 +45,8 @@ Where a response pays trucks, its generic motorized requirement spends the oldes
 
 An investment can begin only when the full 20-point gain fits under the normal capacity ceiling.
 
+During Event 026's Black Friday sale, Medical Countermeasure Stores uses the discounted Political Power, Support Equipment, and truck quote for its availability check and payment. The displayed sale prices are sufficient when owned exactly; ordinary prices apply outside the sale.
+
 The investment totals are gameplay tuning rather than historical estimates.
 
 ## Surveillance

@@ -92,7 +92,7 @@ bio_countermeasure_smallpox_threat_exists = {
 	}
 }
 
-bio_countermeasure_can_expand_medical_capacity = {
+bio_countermeasure_can_expand_medical_capacity_prerequisites = {
 	has_tech = tech_field_hospital
 	OR = {
 		NOT = { has_variable = cbrn_medical_capacity }
@@ -102,6 +102,10 @@ bio_countermeasure_can_expand_medical_capacity = {
 			compare = less_than_or_equals
 		}
 	}
+}
+
+bio_countermeasure_can_expand_medical_capacity = {
+	bio_countermeasure_can_expand_medical_capacity_prerequisites = yes
 	NOT = { has_equipment = { support_equipment < constant:bio_countermeasure_cost.expand_medical_support } }
 	NOT = { has_equipment = { motorized_equipment < constant:bio_countermeasure_cost.expand_medical_trucks } }
 }
