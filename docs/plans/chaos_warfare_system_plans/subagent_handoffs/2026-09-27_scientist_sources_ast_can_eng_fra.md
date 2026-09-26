@@ -1,6 +1,6 @@
 # Historical CBRN Scientist Source Audit: AST, CAN, ENG, and FRA
 
-**Parent disposition after this read-only snapshot:** Haldane's historical-start restriction was promoted into the [accepted lifecycle correction](../../../specs/chaos_warfare_system_specs/corrections/2026-09-27_scientist_lifecycle_and_field.md). All other person-specific proposals in this handoff remain unresolved. The line references and "current" assignments below describe the pre-correction source reviewed by the auditor.
+**Parent disposition after this read-only snapshot:** Haldane's historical-start restriction was promoted into the [accepted lifecycle correction](../../../specs/chaos_warfare_system_specs/corrections/2026-09-27_scientist_lifecycle_and_field.md). Kellaway's, Banting's, and Henderson's recruitment floors and Maass's prewar skill calibration were promoted into the [Allied scientist correction](../../../specs/chaos_warfare_system_specs/corrections/2026-09-27_allied_scientist_wartime_recruitment.md). All other person-specific proposals in this handoff remain unresolved. The line references and "current" assignments below describe the pre-correction source reviewed by the auditor.
 
 **Disposition: unresolved.** This handoff records evidence and proposed corrections for parent review; none of the proposals has been applied or accepted by this audit. The source audit covers only the 19 scientist-only IDs with AST, CAN, ENG, and FRA prefixes in `common/characters/cbrn_historical_scientists.txt`.
 

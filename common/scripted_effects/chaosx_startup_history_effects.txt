@@ -45,6 +45,8 @@ chaosx_apply_startup_history_grants = {
 		chaosx_startup_grant_tur = yes
 		chaosx_startup_grant_usa = yes
 		chaosx_startup_grant_yug = yes
+		AST = { chaosx_startup_recruit_dated_ast_cbrn_characters = yes }
+		CAN = { chaosx_startup_recruit_dated_can_cbrn_characters = yes }
 		ENG = { chaosx_startup_recruit_dated_eng_cbrn_characters = yes }
 		GER = { chaosx_startup_recruit_dated_ger_cbrn_characters = yes }
 		JAP = { chaosx_startup_recruit_dated_jap_cbrn_characters = yes }
@@ -388,6 +390,30 @@ chaosx_apply_historical_1936_force_scaled_profile = {
 # tag-specific daily hooks, so a 1936 game receives a person on the documented
 # historical date while a 1939 game receives every person whose role already
 # existed at that bookmark. Character flags are written only after recruitment.
+chaosx_startup_recruit_dated_ast_cbrn_characters = {
+	if = {
+		limit = {
+			# Kellaway's chemical-defence service belongs to the wartime
+			# pathology and scientific-liaison period; Jan 1 is a 1942 floor.
+			date > 1941.12.31
+			NOT = { has_character = AST_charles_kellaway }
+		}
+		recruit_character = AST_charles_kellaway
+	}
+}
+
+chaosx_startup_recruit_dated_can_cbrn_characters = {
+	if = {
+		limit = {
+			# Banting's chemical-injury research followed wartime
+			# mobilization; Jan 1 is a conservative 1940 access floor.
+			date > 1939.12.31
+			NOT = { has_character = CAN_frederick_banting }
+		}
+		recruit_character = CAN_frederick_banting
+	}
+}
+
 chaosx_startup_recruit_dated_eng_cbrn_characters = {
 	if = {
 		limit = {
@@ -413,7 +439,9 @@ chaosx_startup_recruit_dated_eng_cbrn_characters = {
 	}
 	if = {
 		limit = {
-			date > 1939.12.31
+			# Henderson's Porton aerosol appointment is documented in
+			# early summer 1940; June 1 is a month-level gameplay floor.
+			date > 1940.05.31
 			NOT = { has_character = ENG_david_w_w_henderson }
 		}
 		recruit_character = ENG_david_w_w_henderson
