@@ -18,6 +18,10 @@ The five root-level nodes are imported only by `independence_wave_focus_tree` an
 
 Post-filter-fix `hoi4.focus_inspect` reports 184 direct nodes and 196 connectors at revision `79f302324aed7f2504e252e51cdd1bc9e6b86da510ba41894186258846b5a911`, with zero crossings/intersections, zero too-close pairs, one 10-column long connector, and the unchanged layout hash `a4d2d61f7c8f879a7e98ea8e6befc1b6c561138f0373355b91508b4056ad03e7`; the matching `hoi4.focus_render` returned `FOCUS_RENDERED`. Because the MCP importer omits root-level shared focuses, attachment and group layout remain **blocked as MCP evidence** under the user's selected shared-focus design. Complete route-aware AI and campaign probability evidence remain unresolved; the event-chain receipt, broader package blockers, native decision-row fit, and live validation are also open. The [implementation handoff](subagent_handoffs/006_event6_iw040_kuban_focus_group_implementation_2026-09-26.md) and [Kuban package reference](../events/006_independence_wave/kuban_package.md) carry the detailed source and limits. Event 006 remains **HOLD / PARTIAL**.
 
+### IW-040 government-choice AI audit (2026-09-26)
+
+The read-only KUB decision audit found the `decision_ai_will_do` adapter empty, then inspected a 23-candidate incomplete `mission_ai_will_do` pool with four matching decisions. Its 15-scenario evaluation used an incomplete fixture and is not campaign evidence; the sweep could not bind the KUB ledger variable, and a valid same-scenario comparison lacks a distinct pre-edit MCP source path. Existing source scores are recorded but are not click probabilities. No numeric weights changed. The handoff `subagent_handoffs/006_event6_iw040_kuban_decision_ai_probability_audit_2026-09-26.md` records the exact revisions, artifacts, and missing typed inputs. Route-aware AI and deadline feasibility remain unresolved.
+
 ## Current authority override (2026-09-25 validation refresh)
 
 ### 2026-09-25 bounded audit evidence integration

@@ -41,7 +41,7 @@ The package uses the ordinary decision category and shared focus surfaces, with 
 - The accepted vanilla Ivanis portrait contract is `needs_user_review` because the installed DLC's large portrait texture is missing; no grounded replacement or fallback may be wired without explicit identity and rights approval. Evidence: `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw040_kuban_portrait_gap_2026-09-19.md`.
 - The focus MCP reads and renders the direct Event 006 tree but omits imported root-level `shared_focus` definitions; it cannot prove this KUB group’s attachment, layout, connector geometry, or icon visibility. The selected user path retains the shared design and records this imported-node layout evidence as blocked.
 - The shared security and KUB strategic cost strings have three values inline and list all four cost/commitment entries in their full tooltips. Native decision-row wrapping was not rendered, so fit remains unverified.
-- No complete typed campaign probability comparison or current event-chain completion receipt is available, so route-aware focus AI, mission deadline feasibility, and quantitative balance remain unresolved.
+- The read-only IW-040 government-choice audit found an empty `decision_ai_will_do` adapter and an incomplete mission-score pool; its 15-scenario evaluation was an invalid fixture probe, and the sweep and compare produced no valid campaign evidence. See `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_iw040_kuban_decision_ai_probability_audit_2026-09-26.md`. Route-aware AI, mission deadline feasibility, quantitative balance, and a current event-chain completion receipt remain unresolved.
 - The package has not been live-launched or save/load validated.
 
 ## Future plans
