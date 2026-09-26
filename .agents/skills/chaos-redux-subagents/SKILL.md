@@ -55,6 +55,8 @@ Use `chaosx_generated_event_art` for generated non-icon art, including fictional
 
 Use `chaosx_icon_artist` for focus icons, idea icons, national spirit icons, officer corps icons, decision icons, decision category icons, achievement icons, tech icons, formable seals, scripted GUI icons, and small animated icon or button sprites.
 
+For icon briefs using the curated `.agents/skills/chaos-redux-event-assets/assets/ultimate_hoi4_gfx/` companion collection, give the artist the catalog entry and intended role. The collection is optional style/composition reference; only catalog-approved persistent backdrops may be credited compositing layers beneath original ImageGen subjects. Pass the exact vanilla or Chaos Redux consumer and canonical `vanilla_reference/` family for size, alpha, states, and wiring. Keep the original layer and output-manifest provenance; route all character portraits to `chaosx_portrait_creator` under the existing source-mode gate.
+
 Use `chaosx_3d_model_pipeline` for bounded Meshy 7 custom HOI4 3D model work covering geometry, provider candidates, Blender processing, model textures, rigs, skeletal actions, Internet-sourced unit-audio research, bespoke vanilla-green custom-unit counter requirements and handoffs, `.mesh`/`.anim` export, QA evidence, and runtime handoffs.
 
 Use `chaosx_super_event_text_researcher` for super-event main quotes, exact wording checks, attribution confidence, source comparison, button text, cultural remarks, slogans, allusions, and short references.

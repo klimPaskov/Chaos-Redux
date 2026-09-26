@@ -16,7 +16,9 @@ Start every review with:
 - `vanilla_reference/CATALOG.md` for exact source provenance, native canvas, frame count, and owning definition
 - `vanilla_reference/REFERENCE_MANIFEST.md` for the reviewed file list and the HOI4 framing notes of each reference family
 
-Reference PNGs teach framing, scale, transparency, style, and engine pipeline. They are review material only: never recolor, trace, wire, or ship them as runtime assets.
+The canonical Vanilla reference PNGs teach framing, scale, transparency, style, and engine pipeline. They are review material only: never recolor, trace, wire, or ship them as runtime assets.
+
+`ultimate_hoi4_gfx/` is a separate, curated companion collection pinned to the upstream tree recorded in its catalog, not a vanilla reference family or a full upstream mirror. Read its `README.md` and `CATALOG.md`, then the skill's [companion-use rules](../references/ultimate-hoi4-gfx.md) before selecting an item. Most pieces, including focus icon pieces and backgrounds, are composition or style references only. A catalog-approved persistent backdrop, particularly a decision-category icon background, may be retained as a credited compositing layer under an original ImageGen subject. Keep the source layer separate from the final art and record its provenance in the output manifest. Local lowercase snake_case filenames may differ from upstream; use the catalog's original path and hash to trace each item. Installed vanilla and Chaos Redux consumers, with `vanilla_reference/`, still govern dimensions, alpha, states, and wiring.
 
 ## Reference families
 
