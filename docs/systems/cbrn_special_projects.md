@@ -35,6 +35,8 @@ No path grants the same operational package twice or fabricates Event 016 projec
 
 Mengele's biological and xenobiological Theory, Prototype, Deployment, and Weaponization decisions quote their existing stage or fallback project costs through `common/scripted_localisation/016_mengele_stage_value_localisation.txt`. The inline rows show Political Power, support equipment, and fuel where applicable; the separate stage text shows civilian factories committed until work ends. These presentation bindings do not pay resources or alter the project completion contract, and native decision-list rendering remains unverified.
 
+The Event 016 project-board prototype fallback rows for Biomedical Acceleration, Xenobiological Synthesis, and Biological Weapons reuse those bindings; the biomedical prototype also has its own four exact-constant getters. The board keeps its native Political Power payment, effect-paid equipment and fuel, and assigned civilian factories. The private Mengele biomedical decision instead uses its custom payment path. Source mapping confirms these distinctions, but native cost-row composition has not been rendered to prove that Political Power appears only once.
+
 ## Vanilla project integration
 
 The `on_project_completion` callback and relevant technology completion callbacks call `cbrn_sync_vanilla_project_integrations`, which is safe to repeat.
