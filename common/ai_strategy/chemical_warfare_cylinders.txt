@@ -45,6 +45,7 @@ cbrn_payload_pressure_retaliatory = {
 		cbrn_ai_can_expand_offensive_cbrn_production = yes
 		cbrn_ai_has_retaliatory_arsenal_posture = yes
 		NOT = { cbrn_ai_has_battlefield_program_posture = yes }
+		NOT = { cbrn_ai_can_expand_basic_battlefield_supply = yes }
 		NOT = { cbrn_ai_has_strategic_program_posture = yes }
 	}
 	abort_when_not_enabled = yes
@@ -148,6 +149,46 @@ cbrn_payload_pressure_battlefield = {
 	ai_strategy = {
 		type = equipment_variant_production_factor
 		id = behavioral_agent_payload
+		value = @CBRN_PAYLOAD_PRESSURE_BATTLEFIELD
+	}
+}
+
+# Ordinary authorized Battlefield policy under a vanilla doctrine pressures
+# only early agent families. Equipment availability still follows research.
+# Chaos Warfare retains its separate nine-family specialized pressure block.
+cbrn_payload_pressure_basic_battlefield = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = {
+		cbrn_ai_can_expand_basic_battlefield_supply = yes
+		NOT = { has_doctrine = chaos_warfare }
+		NOT = { cbrn_ai_has_strategic_program_posture = yes }
+		OR = {
+			has_tech = chlorine_gas
+			has_tech = phosgene
+			has_tech = mustard_gas
+			has_tech = lewisite
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_variant_production_factor
+		id = chlorine_agent_payload
+		value = @CBRN_PAYLOAD_PRESSURE_BATTLEFIELD
+	}
+	ai_strategy = {
+		type = equipment_variant_production_factor
+		id = phosgene_agent_payload
+		value = @CBRN_PAYLOAD_PRESSURE_BATTLEFIELD
+	}
+	ai_strategy = {
+		type = equipment_variant_production_factor
+		id = mustard_agent_payload
+		value = @CBRN_PAYLOAD_PRESSURE_BATTLEFIELD
+	}
+	ai_strategy = {
+		type = equipment_variant_production_factor
+		id = lewisite_agent_payload
 		value = @CBRN_PAYLOAD_PRESSURE_BATTLEFIELD
 	}
 }
@@ -268,7 +309,7 @@ cbrn_payload_pressure_desperate = {
 cbrn_payload_british_phosgene_reserve = {
 	allowed = { original_tag = ENG }
 	enable = {
-		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		cbrn_ai_can_expand_ordinary_chemical_supply = yes
 		has_tech = phosgene
 		has_equipment = { phosgene_agent_lot_1 < @CBRN_PAYLOAD_TARGET_BRITAIN }
 	}
@@ -284,7 +325,7 @@ cbrn_payload_british_phosgene_reserve = {
 cbrn_payload_french_phosgene_reserve = {
 	allowed = { original_tag = FRA }
 	enable = {
-		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		cbrn_ai_can_expand_ordinary_chemical_supply = yes
 		has_tech = phosgene
 		has_equipment = { phosgene_agent_lot_1 < @CBRN_PAYLOAD_TARGET_FRANCE }
 	}
@@ -359,7 +400,7 @@ cbrn_payload_german_strategic_sarin = {
 cbrn_payload_german_pre_nerve_mustard = {
 	allowed = { original_tag = GER }
 	enable = {
-		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		cbrn_ai_can_expand_ordinary_chemical_supply = yes
 		NOT = { has_tech = tabun }
 		has_tech = mustard_gas
 		has_equipment = { mustard_agent_lot_1 < @CBRN_PAYLOAD_TARGET_GERMANY }
@@ -376,7 +417,7 @@ cbrn_payload_german_pre_nerve_mustard = {
 cbrn_payload_soviet_mustard_reserve = {
 	allowed = { original_tag = SOV }
 	enable = {
-		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		cbrn_ai_can_expand_ordinary_chemical_supply = yes
 		has_tech = mustard_gas
 		has_equipment = { mustard_agent_lot_1 < @CBRN_PAYLOAD_TARGET_SOVIET }
 	}
@@ -392,7 +433,7 @@ cbrn_payload_soviet_mustard_reserve = {
 cbrn_payload_american_lewisite_reserve = {
 	allowed = { original_tag = USA }
 	enable = {
-		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		cbrn_ai_can_expand_ordinary_chemical_supply = yes
 		has_tech = lewisite
 		has_equipment = { lewisite_agent_lot_1 < @CBRN_PAYLOAD_TARGET_USA }
 	}
@@ -408,7 +449,7 @@ cbrn_payload_american_lewisite_reserve = {
 cbrn_payload_american_mustard_bridge = {
 	allowed = { original_tag = USA }
 	enable = {
-		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		cbrn_ai_can_expand_ordinary_chemical_supply = yes
 		has_tech = mustard_gas
 		NOT = { has_tech = lewisite }
 		has_equipment = { mustard_agent_lot_1 < @CBRN_PAYLOAD_TARGET_USA }
@@ -425,7 +466,7 @@ cbrn_payload_american_mustard_bridge = {
 cbrn_payload_italian_mustard_reserve = {
 	allowed = { original_tag = ITA }
 	enable = {
-		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		cbrn_ai_can_expand_ordinary_chemical_supply = yes
 		has_tech = mustard_gas
 		has_equipment = { mustard_agent_lot_1 < @CBRN_PAYLOAD_TARGET_ITALY }
 	}
@@ -441,7 +482,7 @@ cbrn_payload_italian_mustard_reserve = {
 cbrn_payload_japanese_mustard_reserve = {
 	allowed = { original_tag = JAP }
 	enable = {
-		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		cbrn_ai_can_expand_ordinary_chemical_supply = yes
 		has_tech = mustard_gas
 		has_equipment = { mustard_agent_lot_1 < @CBRN_PAYLOAD_TARGET_JAPAN }
 	}
@@ -574,7 +615,7 @@ cbrn_payload_generic_battlefield_mustard = {
 		}
 	}
 	enable = {
-		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		cbrn_ai_can_expand_ordinary_chemical_supply = yes
 		NOT = { cbrn_ai_has_strategic_program_posture = yes }
 		has_tech = mustard_gas
 		has_equipment = { mustard_agent_lot_1 < @CBRN_PAYLOAD_TARGET_GENERIC }
@@ -604,7 +645,7 @@ cbrn_payload_generic_battlefield_phosgene = {
 		}
 	}
 	enable = {
-		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		cbrn_ai_can_expand_ordinary_chemical_supply = yes
 		NOT = { cbrn_ai_has_strategic_program_posture = yes }
 		has_tech = phosgene
 		NOT = { has_tech = mustard_gas }
@@ -635,7 +676,7 @@ cbrn_payload_generic_battlefield_chlorine = {
 		}
 	}
 	enable = {
-		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		cbrn_ai_can_expand_ordinary_chemical_supply = yes
 		NOT = { cbrn_ai_has_strategic_program_posture = yes }
 		has_tech = chlorine_gas
 		NOT = { has_tech = phosgene }

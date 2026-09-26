@@ -1,0 +1,450 @@
+# ============================================================================
+# CHAOS REDUX - ROUTE-AWARE CBRN RESEARCH AI
+# ============================================================================
+# Overview:
+# - Protects before expanding an offensive program.
+# - Uses confirmed attacks, known enemy capability, contamination, outbreaks,
+#   explicit doctrine routes, and country identities instead of Condemnation as
+#   a threat proxy.
+# - Keeps each offensive profile on a narrow historical agent family.
+# - Does not authorize use, create targets, or bypass project requirements.
+# - `ai_strategy.value` does not parse script constants in this context, so the
+#   values below are centralized as file-local constants.
+# ============================================================================
+
+@CBRN_AI_RESEARCH_FOUNDATION = 15
+@CBRN_AI_RESEARCH_KNOWN_THREAT = 60
+@CBRN_AI_RESEARCH_EMERGENCY = 150
+@CBRN_AI_RESEARCH_FORCE = 100
+@CBRN_AI_RESEARCH_AGENT_PRIMARY = 80
+@CBRN_AI_RESEARCH_AGENT_SECONDARY = 40
+@CBRN_AI_RESEARCH_COUNTERMEASURE = 120
+
+cbrn_research_protective_foundation = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = {
+		OR = {
+			cbrn_country_has_program = yes
+			has_doctrine = chaos_warfare
+			cbrn_country_faces_enemy_chemical_capability = yes
+			cbrn_world_has_confirmed_chemical_use = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = basic_gas_masks
+		value = @CBRN_AI_RESEARCH_FOUNDATION
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = improved_gas_masks
+		value = @CBRN_AI_RESEARCH_FOUNDATION
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = advanced_gas_masks
+		value = @CBRN_AI_RESEARCH_FOUNDATION
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = field_decontamination_kits
+		value = @CBRN_AI_RESEARCH_FOUNDATION
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = chemical_detection_paper
+		value = @CBRN_AI_RESEARCH_FOUNDATION
+	}
+}
+
+cbrn_research_known_chemical_threat = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = {
+		has_war = yes
+		OR = {
+			cbrn_country_faces_enemy_chemical_capability = yes
+			cbrn_world_has_confirmed_chemical_use = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = basic_gas_masks
+		value = @CBRN_AI_RESEARCH_KNOWN_THREAT
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = improved_gas_masks
+		value = @CBRN_AI_RESEARCH_KNOWN_THREAT
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = advanced_gas_masks
+		value = @CBRN_AI_RESEARCH_KNOWN_THREAT
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = field_decontamination_kits
+		value = @CBRN_AI_RESEARCH_KNOWN_THREAT
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = chemical_detection_paper
+		value = @CBRN_AI_RESEARCH_KNOWN_THREAT
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = mobile_sampling_laboratories
+		value = @CBRN_AI_RESEARCH_KNOWN_THREAT
+	}
+}
+
+cbrn_research_chemical_emergency = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = {
+		OR = {
+			has_enemy_used_chemical_weapons = yes
+			cbrn_country_controls_chemical_contamination = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = basic_gas_masks
+		value = @CBRN_AI_RESEARCH_EMERGENCY
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = improved_gas_masks
+		value = @CBRN_AI_RESEARCH_EMERGENCY
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = advanced_gas_masks
+		value = @CBRN_AI_RESEARCH_EMERGENCY
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = field_decontamination_kits
+		value = @CBRN_AI_RESEARCH_EMERGENCY
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = mobile_wash_columns
+		value = @CBRN_AI_RESEARCH_EMERGENCY
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = chemical_detection_paper
+		value = @CBRN_AI_RESEARCH_EMERGENCY
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = mobile_sampling_laboratories
+		value = @CBRN_AI_RESEARCH_EMERGENCY
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = mobile_cbrn_hospitals
+		value = @CBRN_AI_RESEARCH_EMERGENCY
+	}
+}
+
+cbrn_research_chemical_emergency_force_basic_masks = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = {
+		NOT = { has_tech = basic_gas_masks }
+		OR = {
+			has_enemy_used_chemical_weapons = yes
+			cbrn_country_controls_chemical_contamination = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_tech
+		id = basic_gas_masks
+		value = @CBRN_AI_RESEARCH_FORCE
+	}
+}
+
+cbrn_research_chemical_emergency_force_improved_masks = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = {
+		has_tech = basic_gas_masks
+		NOT = { has_tech = improved_gas_masks }
+		OR = {
+			has_enemy_used_chemical_weapons = yes
+			cbrn_country_controls_chemical_contamination = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_tech
+		id = improved_gas_masks
+		value = @CBRN_AI_RESEARCH_FORCE
+	}
+}
+
+cbrn_research_chemical_emergency_force_advanced_masks = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = {
+		has_tech = improved_gas_masks
+		NOT = { has_tech = advanced_gas_masks }
+		OR = {
+			has_enemy_used_chemical_weapons = yes
+			cbrn_country_controls_chemical_contamination = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_tech
+		id = advanced_gas_masks
+		value = @CBRN_AI_RESEARCH_FORCE
+	}
+}
+
+cbrn_research_lewisite_countermeasure = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = {
+		has_war = yes
+		NOT = { has_tech = dimercaprol }
+		any_enemy_country = { has_tech = lewisite }
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = dimercaprol
+		value = @CBRN_AI_RESEARCH_COUNTERMEASURE
+	}
+}
+
+cbrn_research_biological_emergency = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = {
+		OR = {
+			bio_countermeasure_country_has_any_detected_outbreak = yes
+			has_active_biowarfare_outbreak = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = pathogen_handling_protocols
+		value = @CBRN_AI_RESEARCH_EMERGENCY
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = sealed_containment_laboratories
+		value = @CBRN_AI_RESEARCH_EMERGENCY
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = field_epidemiology_teams
+		value = @CBRN_AI_RESEARCH_EMERGENCY
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = mobile_cbrn_hospitals
+		value = @CBRN_AI_RESEARCH_EMERGENCY
+	}
+}
+
+# Offensive research remains behind protection plus an explicit battlefield,
+# first-use, or confirmed-retaliation posture. Each profile receives one
+# primary family and, at most, one historical follow-on.
+
+cbrn_research_british_retaliatory_agents = {
+	allowed = { original_tag = ENG }
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		OR = {
+			cbrn_ai_route_allows_first_use = yes
+			has_enemy_used_chemical_weapons = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = phosgene
+		value = @CBRN_AI_RESEARCH_AGENT_PRIMARY
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = mustard_gas
+		value = @CBRN_AI_RESEARCH_AGENT_SECONDARY
+	}
+}
+
+cbrn_research_french_artillery_agents = {
+	allowed = { original_tag = FRA }
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		OR = {
+			cbrn_ai_has_battlefield_cbrn_profile = yes
+			has_enemy_used_chemical_weapons = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = phosgene
+		value = @CBRN_AI_RESEARCH_AGENT_PRIMARY
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = mustard_gas
+		value = @CBRN_AI_RESEARCH_AGENT_SECONDARY
+	}
+}
+
+cbrn_research_german_nerve_agents = {
+	allowed = { original_tag = GER }
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		OR = {
+			cbrn_ai_has_battlefield_cbrn_profile = yes
+			has_enemy_used_chemical_weapons = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = mustard_gas
+		value = @CBRN_AI_RESEARCH_AGENT_SECONDARY
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = tabun
+		value = @CBRN_AI_RESEARCH_AGENT_PRIMARY
+	}
+}
+
+cbrn_research_soviet_artillery_agents = {
+	allowed = { original_tag = SOV }
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		OR = {
+			cbrn_ai_has_battlefield_cbrn_profile = yes
+			has_enemy_used_chemical_weapons = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = mustard_gas
+		value = @CBRN_AI_RESEARCH_AGENT_PRIMARY
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = phosgene
+		value = @CBRN_AI_RESEARCH_AGENT_SECONDARY
+	}
+}
+
+cbrn_research_american_lewisite_agents = {
+	allowed = { original_tag = USA }
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		OR = {
+			cbrn_ai_route_allows_first_use = yes
+			has_enemy_used_chemical_weapons = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = mustard_gas
+		value = @CBRN_AI_RESEARCH_AGENT_SECONDARY
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = lewisite
+		value = @CBRN_AI_RESEARCH_AGENT_PRIMARY
+	}
+}
+
+cbrn_research_italian_battlefield_agents = {
+	allowed = { original_tag = ITA }
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		OR = {
+			cbrn_ai_has_battlefield_cbrn_profile = yes
+			has_enemy_used_chemical_weapons = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = mustard_gas
+		value = @CBRN_AI_RESEARCH_AGENT_PRIMARY
+	}
+}
+
+cbrn_research_japanese_theater_agents = {
+	allowed = { original_tag = JAP }
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		OR = {
+			cbrn_ai_has_battlefield_cbrn_profile = yes
+			has_enemy_used_chemical_weapons = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = mustard_gas
+		value = @CBRN_AI_RESEARCH_AGENT_PRIMARY
+	}
+}
+
+cbrn_research_generic_authorized_agents = {
+	allowed = {
+		NOT = { is_actual_nonhuman_country = yes }
+		NOT = {
+			OR = {
+				original_tag = ENG
+				original_tag = FRA
+				original_tag = GER
+				original_tag = SOV
+				original_tag = USA
+				original_tag = ITA
+				original_tag = JAP
+			}
+		}
+	}
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		OR = {
+			cbrn_ai_route_allows_first_use = yes
+			has_enemy_used_chemical_weapons = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = chlorine_gas
+		value = @CBRN_AI_RESEARCH_AGENT_PRIMARY
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = mustard_gas
+		value = @CBRN_AI_RESEARCH_AGENT_SECONDARY
+	}
+}

@@ -262,13 +262,35 @@ cbrn_research_biological_emergency = {
 # first-use, or confirmed-retaliation posture. Each profile receives one
 # primary family and, at most, one historical follow-on.
 
+# A prepared wartime retaliation program can research one basic agent before
+# selecting Battlefield Authorization. This breaks the otherwise circular
+# research-to-policy gate without giving the AI advanced agent knowledge.
+cbrn_research_basic_chemical_policy_bootstrap = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = {
+		has_war = yes
+		cbrn_policy_is_retaliation_authority = yes
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		NOT = { cbrn_ai_is_losing_near_capitulation = yes }
+		NOT = { cbrn_chaos_warfare_has_agent_technology = yes }
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = chlorine_gas
+		value = @CBRN_AI_RESEARCH_AGENT_PRIMARY
+	}
+}
+
 cbrn_research_british_retaliatory_agents = {
 	allowed = { original_tag = ENG }
 	enable = {
-		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		cbrn_ai_can_expand_ordinary_chemical_supply = yes
 		OR = {
 			cbrn_ai_route_allows_first_use = yes
 			has_enemy_used_chemical_weapons = yes
+			cbrn_ai_policy_authorizes_ordinary_battlefield_first_use = yes
 		}
 	}
 	abort_when_not_enabled = yes
@@ -288,10 +310,11 @@ cbrn_research_british_retaliatory_agents = {
 cbrn_research_french_artillery_agents = {
 	allowed = { original_tag = FRA }
 	enable = {
-		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		cbrn_ai_can_expand_ordinary_chemical_supply = yes
 		OR = {
 			cbrn_ai_has_battlefield_cbrn_profile = yes
 			has_enemy_used_chemical_weapons = yes
+			cbrn_ai_policy_authorizes_ordinary_battlefield_first_use = yes
 		}
 	}
 	abort_when_not_enabled = yes
@@ -331,13 +354,32 @@ cbrn_research_german_nerve_agents = {
 	}
 }
 
+# Vanilla-doctrine Germany may continue its ordinary Mustard programme under
+# deliberate Battlefield Authorization. Tabun remains in the doctrine-gated
+# research strategy above and receives no basic-policy weight.
+cbrn_research_german_basic_mustard = {
+	allowed = { original_tag = GER }
+	enable = {
+		cbrn_ai_can_expand_basic_battlefield_supply = yes
+		NOT = { has_doctrine = chaos_warfare }
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = mustard_gas
+		value = @CBRN_AI_RESEARCH_AGENT_SECONDARY
+	}
+}
+
 cbrn_research_soviet_artillery_agents = {
 	allowed = { original_tag = SOV }
 	enable = {
-		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		cbrn_ai_can_expand_ordinary_chemical_supply = yes
 		OR = {
 			cbrn_ai_has_battlefield_cbrn_profile = yes
 			has_enemy_used_chemical_weapons = yes
+			cbrn_ai_policy_authorizes_ordinary_battlefield_first_use = yes
 		}
 	}
 	abort_when_not_enabled = yes
@@ -357,10 +399,11 @@ cbrn_research_soviet_artillery_agents = {
 cbrn_research_american_lewisite_agents = {
 	allowed = { original_tag = USA }
 	enable = {
-		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		cbrn_ai_can_expand_ordinary_chemical_supply = yes
 		OR = {
 			cbrn_ai_route_allows_first_use = yes
 			has_enemy_used_chemical_weapons = yes
+			cbrn_ai_policy_authorizes_ordinary_battlefield_first_use = yes
 		}
 	}
 	abort_when_not_enabled = yes
@@ -380,10 +423,11 @@ cbrn_research_american_lewisite_agents = {
 cbrn_research_italian_battlefield_agents = {
 	allowed = { original_tag = ITA }
 	enable = {
-		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		cbrn_ai_can_expand_ordinary_chemical_supply = yes
 		OR = {
 			cbrn_ai_has_battlefield_cbrn_profile = yes
 			has_enemy_used_chemical_weapons = yes
+			cbrn_ai_policy_authorizes_ordinary_battlefield_first_use = yes
 		}
 	}
 	abort_when_not_enabled = yes
@@ -398,10 +442,11 @@ cbrn_research_italian_battlefield_agents = {
 cbrn_research_japanese_theater_agents = {
 	allowed = { original_tag = JAP }
 	enable = {
-		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		cbrn_ai_can_expand_ordinary_chemical_supply = yes
 		OR = {
 			cbrn_ai_has_battlefield_cbrn_profile = yes
 			has_enemy_used_chemical_weapons = yes
+			cbrn_ai_policy_authorizes_ordinary_battlefield_first_use = yes
 		}
 	}
 	abort_when_not_enabled = yes
@@ -429,10 +474,14 @@ cbrn_research_generic_authorized_agents = {
 		}
 	}
 	enable = {
-		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		OR = {
+			cbrn_ai_can_expand_offensive_cbrn_production = yes
+			cbrn_ai_can_expand_basic_battlefield_supply = yes
+		}
 		OR = {
 			cbrn_ai_route_allows_first_use = yes
 			has_enemy_used_chemical_weapons = yes
+			cbrn_ai_policy_authorizes_ordinary_battlefield_first_use = yes
 		}
 	}
 	abort_when_not_enabled = yes

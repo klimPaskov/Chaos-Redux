@@ -15,7 +15,7 @@ Weaponized zombies remain outside this selector.
 The four ordinary-agent special projects use the country-scope gates in `common/scripted_triggers/cbrn_ai_posture_triggers.txt`.
 
 1. Every normal first project requires Pathogen Handling Protocols, Rapid Outbreak Response, at least eight Military Factories, no conventional infantry, support, artillery, or motorized reserve deficit, a stable mask and countermeasure base, and an accepted biological posture.
-2. A battlefield program chooses Tularemia as its first project.
+2. A Chaos Warfare battlefield program or a protected vanilla-doctrine country with deliberately selected Battlefield Authorization can choose Tularemia as its first project.
 3. A retaliatory, strategic, or exact desperate program chooses Anthrax as its first project.
 4. A strategic or exact desperate program may advance from Tularemia or Anthrax to Plague.
 5. Smallpox requires a completed Plague project and either an explicit desperate-release route or an unrestricted major-power strategic program with at least twenty Military Factories, Fail-Safe Containment Facilities, and a Controlled or Strained arsenal.
@@ -38,8 +38,8 @@ The normal generic selector maintains one strongest route-appropriate family:
 
 | Program state | Payload family |
 | --- | --- |
-| Battlefield route with only Tularemia completed | Tularemia |
-| Retaliatory or early strategic route with Anthrax completed | Anthrax |
+| Doctrine or basic selected-policy Battlefield route with only Tularemia completed | Tularemia |
+| Retaliatory, basic selected-policy, or early strategic route with Anthrax completed | Anthrax |
 | Strategic route with Plague but no Smallpox | Plague |
 | Unrestricted fail-safe strategic route with Smallpox | Smallpox |
 
@@ -48,6 +48,8 @@ The Japan-China selector can maintain both Anthrax and Plague because its separa
 The desperate selector maintains only the strongest completed family and is the sole production branch permitted during Dangerous or Critical arsenal risk.
 
 Every production strategy stops at its file-local stock target and aborts immediately when its route, containment, protection, supply, industry, project-output technology, or exact risk gate no longer passes.
+
+The [vanilla-doctrine basic supply correction](../../specs/chaos_warfare_system_specs/corrections/2026-09-26_vanilla_doctrine_ai_basic_supply.md) adds only an ordinary selected-policy route to normal project research and Tularemia or Anthrax safe surplus production. It does not loosen the complete Controlled or Strained arsenal proof or the Plague, Smallpox, Japan-China, desperate, or Event 016 gates.
 
 No generic infantry-equipment production factor is used because the biological models currently share the infantry equipment type and a category-wide factor would also affect unrelated infantry equipment.
 

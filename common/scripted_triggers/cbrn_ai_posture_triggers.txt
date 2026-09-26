@@ -141,6 +141,30 @@ cbrn_ai_can_expand_offensive_cbrn_production = {
 	}
 }
 
+# Country scope. The three-policy model permits ordinary battlefield stores
+# under vanilla doctrine after explicit authorization and real protection.
+# This narrow supply route never substitutes for Chaos Warfare specialization,
+# strategic posture, an agent project, or an individual equipment unlock.
+cbrn_ai_can_expand_basic_battlefield_supply = {
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = {
+		num_of_military_factories < constant:cbrn_ai_posture.offensive_program_minimum_military_factories
+	}
+	NOT = { cbrn_ai_has_conventional_army_deficit = yes }
+	cbrn_ai_has_stable_protective_base = yes
+	cbrn_ai_policy_authorizes_ordinary_battlefield_first_use = yes
+}
+
+# Country scope. Existing retaliation/doctrine routes keep their ordinary
+# chemical lots, while the exact selected-policy route adds vanilla-doctrine
+# supply without changing the advanced or strategic strategy predicates.
+cbrn_ai_can_expand_ordinary_chemical_supply = {
+	OR = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		cbrn_ai_can_expand_basic_battlefield_supply = yes
+	}
+}
+
 cbrn_ai_has_safe_biological_stockpile_context = {
 	bio_stockpile_safety_risk_context_is_valid = yes
 	OR = {
@@ -193,6 +217,7 @@ cbrn_ai_can_research_biological_agent_project = {
 			OR = {
 				cbrn_ai_has_retaliatory_arsenal_posture = yes
 				cbrn_ai_has_battlefield_program_posture = yes
+				cbrn_ai_can_expand_basic_battlefield_supply = yes
 				cbrn_ai_has_strategic_program_posture = yes
 				cbrn_ai_has_japan_china_biological_campaign_posture = yes
 			}
@@ -210,7 +235,10 @@ cbrn_ai_can_research_biological_agent_project = {
 cbrn_ai_should_research_tularemia_project = {
 	cbrn_ai_can_research_biological_agent_project = yes
 	cbrn_ai_has_no_ordinary_biological_agent_project = yes
-	cbrn_ai_has_battlefield_program_posture = yes
+	OR = {
+		cbrn_ai_has_battlefield_program_posture = yes
+		cbrn_ai_can_expand_basic_battlefield_supply = yes
+	}
 	NOT = { cbrn_ai_has_retaliatory_arsenal_posture = yes }
 	NOT = { cbrn_ai_has_strategic_program_posture = yes }
 	NOT = { cbrn_ai_has_desperate_release_posture = yes }
@@ -282,6 +310,7 @@ cbrn_ai_can_expand_safe_biological_production = {
 	OR = {
 		cbrn_ai_has_retaliatory_arsenal_posture = yes
 		cbrn_ai_has_battlefield_program_posture = yes
+		cbrn_ai_can_expand_basic_battlefield_supply = yes
 		cbrn_ai_has_strategic_program_posture = yes
 		cbrn_ai_has_japan_china_biological_campaign_posture = yes
 	}
