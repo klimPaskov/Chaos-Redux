@@ -1,6 +1,6 @@
 # Event 021 Random Civil War GFX handoff
 
-The source of truth for sprite registration is `interface/021_random_civil_war.gfx`.
+The source of truth for explicit sprite registration is `interface/021_random_civil_war.gfx`. Achievement triplets use HOI4's exact-ID lookup from the root `gfx/achievements/` folder and do not have per-achievement GFX sprites.
 The source of truth for asset lineage and per-consumer status is `manifest.md` plus `docs/events/021_random_civil_war/owned_asset_crosswalk.md`.
 All paths below are runtime paths and do not point into `docs/assets/`.
 
@@ -43,16 +43,7 @@ All paths below are runtime paths and do not point into `docs/assets/`.
 
 ## Achievements
 
-Each achievement below has a completed sprite, a `_grey` sprite, and a `_not_eligible` sprite under `gfx/achievements/`.
-
-- `GFX_achievement_021_random_civil_war_hold_the_center*` serves `021_random_civil_war_hold_the_center`.
-- `GFX_achievement_021_random_civil_war_no_state_left_behind*` serves `021_random_civil_war_no_state_left_behind`.
-- `GFX_achievement_021_random_civil_war_a_flag_of_our_own*` serves `021_random_civil_war_a_flag_of_our_own`.
-- `GFX_achievement_021_random_civil_war_war_within_a_war*` serves `021_random_civil_war_war_within_a_war`.
-- `GFX_achievement_021_random_civil_war_the_terms_hold*` serves `021_random_civil_war_the_terms_hold`.
-- `GFX_achievement_021_random_civil_war_fractals_of_sovereignty*` serves `021_random_civil_war_fractals_of_sovereignty`.
-
-The wildcard notation above stands only for the three registered suffixes and does not introduce a fourth state.
+The six achievement IDs in `common/achievements/chaos_redux_achievements.txt` each resolve a completed DDS plus `_grey` and `_not_eligible` variants directly from `gfx/achievements/`; this matches the installed vanilla achievement-ID lookup convention. No per-achievement GFX sprites are registered.
 The root runtime textures are the active consumer family; the fifteen legacy DDS files under `gfx/interface/achievements/021_random_civil_war/` remain preserved historical orphans and are not wired.
 
 ## Handoff boundary
