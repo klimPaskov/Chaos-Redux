@@ -117,3 +117,7 @@ Part 7 says decision willingness should consider stockpile reserve, front need, 
 - Simulation was not run because no uncertain inputs or distributions were declared. Sequence analysis was not run because this is not a complete custom weighted pool with cadence and state transitions.
 - No live game, runtime test, or HOI4 launch was performed.
 - No source or AI weight was edited. This report is the only requested output file.
+
+## Parent source-arithmetic follow-up (2026-09-26)
+
+The parent separately traced the source ledger deltas for the existing capital-administration, Inventory the State, and Bind the First Oath focuses; both new common KUB group steps and each branch; and all four government effects. This produces eight branch/government outcomes at or above both stable thresholds. A conservative sequential schedule is 224 nominal focus days plus the 180-day agrarian project, or 404 days within the 600-day mission. This is a source-derived route witness conditional on paying the selected project cost and maintaining state 234/capital control; it does not validate engine timing, resource sufficiency, AI choice, late starts, or probabilities. The detailed arithmetic is in `006_event6_iw040_kuban_founding_source_arithmetic_2026-09-26.md`.

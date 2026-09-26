@@ -31,6 +31,7 @@ The government-choice decisions use `is_independence_wave_kub_government_choice_
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_iw040_kuban_focus_tree_audit_2026-09-26.md`
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_iw040_kuban_decision_mission_audit_2026-09-26.md`
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_iw040_kuban_decision_ai_probability_audit_2026-09-26.md`
+- `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_iw040_kuban_founding_source_arithmetic_2026-09-26.md`
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_iw040_kuban_localisation_audit_2026-09-26.md`
 
 The read-only localisation audit found all 22 scoped keys present exactly once, with no missing callers or duplicates, and confirmed both English files retain UTF-8 BOMs. Parent follow-up clarifies that both paid projects satisfy the matching route requirement for the Land and Service Docket, shortens the companion text, specifies the former-host claim, and replaces the semicolon join in the branch effect lines. The loss tooltips currently display `minor_gain` as the positive magnitude of `minor_loss`; the two values are +5 and -5 in the current shared KUB pressure ladder. If they are tuned separately in the future, update this presentation with the actual loss magnitude.
@@ -40,6 +41,8 @@ The focus-tree audit handoff confirms the five-node route and reward gates, and 
 The decision/mission audit confirmed the source-level cycle repair and both receipt orders, and identified three shared cost labels with four values inline. Parent follow-up reduced `independence_wave_cost_security_standard`, `independence_wave_cost_security_major`, and the KUB strategic cost label to three inline values while retaining all paid resources and factory commitment in their full tooltips. No affordability condition, cost amount, payment effect, or duration changed. Native decision-row wrapping is still unverified.
 
 The read-only KUB government-choice AI audit used `decision_ai_will_do` and its mission-adapter fallback, but the required input pool remained incomplete and its constructed 15-scenario evaluation was invalid fixture evidence. The sweep could not bind the KUB ledger variable; no valid same-scenario comparison exists because the MCP workspace has no distinct pre-edit source path. Existing source scores were documented but not treated as probabilities. No numeric AI weights changed; route-aware choice and deadline feasibility remain unresolved. The exact evidence and MCP artifacts are in the linked probability-audit handoff.
+
+Parent source arithmetic then traced the three existing generic ledger callbacks, the KUB focus branch, and each route-government ledger delta. It yields eight source-level combinations that reach 60/60 before the paid docket and a conservative 404-day sequential path (224 focus days plus the longest 180-day government project). That witness assumes the selected government's cost is affordable and state 234/capital control persists; it does not prove resource sufficiency, AI selection, or engine timing. Details and values are in the linked source-arithmetic handoff.
 
 ## Evidence and limits
 
