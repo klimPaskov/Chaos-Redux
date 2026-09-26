@@ -75,7 +75,7 @@ The four exact state selectors are `bio_operative_release_anthrax_target_state`,
 
 ## cbrn_country_has_program
 
-Country-scope trigger. Returns true when the country has the explicit `cbrn_program_established` flag or currently uses the `chaos_warfare` grand doctrine. This preserves legacy doctrine adoption while program decisions are migrated.
+Country-scope trigger. Returns true when the country has the explicit `cbrn_program_established` flag, uses the `chaos_warfare` grand doctrine, or knows Basic Gas Masks. Basic protection research can therefore establish a defensive program under a vanilla doctrine without granting offensive authority.
 
 Inputs: none. Defaults: false. Side effects: none.
 

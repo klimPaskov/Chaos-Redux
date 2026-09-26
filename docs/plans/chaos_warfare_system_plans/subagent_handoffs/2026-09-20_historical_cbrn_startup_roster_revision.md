@@ -2,6 +2,8 @@
 
 Status: implemented in the owned startup, character, constants, history recruitment, on-action, localisation, and documentation surfaces. The original static-recruitment claim was corrected: documented later wartime identities are now recruited by date-gated helpers and bounded country callbacks, while prewar and established 1939 personnel remain available at the supported bookmarks. The 1936 starting mask matrix now reconciles every profile tag into the approved force-scaled military band plus a separate replacement reserve. No commit was created; the parent agent owns integration and final review.
 
+Disposition of the six original Beria, Conant, Gutzeit, Ding-Schuler, Merck, and Baldwin gate dates in the tables below: **superseded** by the [2026-09-27 availability correction](../../../specs/chaos_warfare_system_specs/corrections/2026-09-27_scientist_availability_dates.md). This handoff preserves the earlier source rationale as history; use that correction and current character/recruitment source for playable dates. The user's portrait approval remains in force.
+
 ## Changed files
 
 - `common/characters/cbrn_historical_specialists.txt`: separated scientist competence from advisor authorization and added current-date gates for the documented later appointments.
@@ -286,7 +288,7 @@ The following evidence ledger records the earliest historical basis used for the
 | `USA_james_b_conant` | NDRC coordination of wartime chemical research belongs to the 1940s mobilisation. | Recruited after `date > 1939.12.31`; scientist-only. |
 | `USA_winford_lee_lewis` | Lewisite development dates to the First World War and supports chemical-agent expertise. | Static scientist in 1936/1939; scientist-only. |
 
-At the 1936 bookmark the roster contains 45 established identities. At the 1939-01-01 bookmark it contains 49: the 45 static identities plus Paul Fildes, Gerhard Schrader, Lavrentiy Beria, and Grigory Mairanovsky. The remaining 18 identities enter only after their individual later gates; no post-date character is attached to either supported bookmark. A 1939 bookmark later than 1 September 1939 additionally admits the three German occupation-period entries and Franciszek Witaszek, while Henderson and Conant open on 1 January 1940.
+At the 1936 bookmark the roster contains 45 established identities. At the 1939-01-01 bookmark it contains 49: the 45 static identities plus Paul Fildes, Gerhard Schrader, Lavrentiy Beria, and Grigory Mairanovsky. The remaining 18 identities enter only after individual later gates; no post-date character is attached to either supported bookmark. After 1 September 1939 the occupation-period recruits include Joachim Mrugowsky and Franciszek Witaszek, while the corrected Gutzeit, Ding-Schuler, Henderson, Conant, Merck, and Baldwin gates remain later as recorded in the availability correction.
 
 Roster audit results: 67 unique ids, 12 dual-role and 55 scientist-only entries, country counts AST 3 / CAN 3 / ENG 14 / FRA 2 / GER 15 / JAP 4 / POL 3 / SOV 9 / USA 14, specialization counts BW 43 / CW 24, and skill counts 1:6 / 2:6 / 3:27 / 4:28. No skill 5, duplicate id, duplicate portrait, or trait outside the reviewed vocabulary was introduced.
 
