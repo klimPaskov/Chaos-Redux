@@ -21,6 +21,6 @@ The source audit reports a 32-cell matrix and eight edge-case IDs with static wi
 
 ## Source evidence and limits
 
-The 2026-09-25 `chaosx_event_completion_auditor` handoff records the current source census and its exact static limits in `subagent_handoffs/006_event6_scn008_completion_audit_2026-09-25.md`. The accepted publication rule is stated in Part 6 and the P0 addendum: only a committed run exposes the Event 006 result; a failed or rolled-back run exposes no Event 006 result or ledger and clears provisional diagnostics.
+The 2026-09-25 `chaosx_event_completion_auditor` handoff records the current source census and its exact static limits in `subagent_handoffs/006_event6_scn008_completion_audit_2026-09-25.md`. The accepted publication rule is stated in Part 6 and the P0 addendum: only a committed run exposes the Event 006 result; a failed or rolled-back run exposes no Event 006 result or ledger and clears provisional diagnostics. The 2026-09-26 parent follow-up removes the unreachable transaction-failure fallback from the delayed .80 event’s status localizer; blocked-row rejection explanations remain in the committed internal ledger. See subagent_handoffs/006_event6_scn008_failure_localisation_cleanup_2026-09-26.md.
 
 This matrix does not claim an executed result for any row. The 32-cell and edge-case receipts lack complete current campaign outcomes, and helper/lifecycle MCP coverage, full candidate-map validity, weighted target-selector coverage, rollback/relaunch traces, and save/load behavior remain unresolved.
