@@ -1,23 +1,33 @@
-# Vanilla reference expansion manifest
+# Reference provenance manifest
 
-This manifest records the scripted GUI full-render set added on 2026-09-12 and the 147 review references added during the 2026-08-04 audit.
+This manifest records the native-size scripted GUI and interface reference shelf and the 147 review references from the 2026-08-04 audit. The files are review material, not runtime assets.
 
-The source is the installed vanilla HOI4 build at `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/`; the review files are lossless RGBA PNG decodes and are not runtime assets.
+The vanilla source root is `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/`. Frame counts follow each owning definition. Counters with separate normal/inverted textures retain separate source files; air strips retain the full native 60x12 or 58x11 canvas with two frames.
 
-Frame counts follow the owning vanilla definition. Counters with separate normal/inverted textures retain their separate source files; air strips retain the full native 60x12 or 58x11 canvas with two frames.
+## Scripted GUI and native interface views
 
-## Scripted GUI full renders — 2026-09-12
+The rendered views use the production `ScriptedGuiStudio.renderAndStore` code in locally built `hoi4-agent-tools` 3.4.2 at code commit `da1c473ab60b40a8be7933fa640adcb310428bfc`. The connected 3.0.7 `hoi4.gui_inspect` call timed out after 180 seconds on the Chaos Redux workspace, so this section records local renderer output rather than a successful call through that older MCP transport. Scenarios are in `scripted_guis/render_scenarios.json`. Every full render is 1920x1080 at UI scale 1, and every cropped PNG is pixel-equal to its stated rectangle in the full PNG without scaling.
 
-These exact 1920x1080 PNGs were produced by `hoi4.gui_render` from MCP workspace `mod_chaos_redux_ea3b2d67c2c0` with state `normal` and UI scale `1`. The saved files were reconstructed with bounded resource reads and their SHA-256 values match the MCP artifact hashes.
+| View | Native crop | Source rectangle (x,y,w,h) | Source revision | Cropped PNG SHA-256 | Full PNG SHA-256 |
+| --- | --- | --- | --- | --- | --- |
+| Options Video: `scripted_guis/general_settings/options_video_mcp.png`; `scripted_guis/source_full/options_video_full.png` | 480x527 | 720,340,480,527 | `56061a00f302d248d249fb64652474db5df204ae07bb921e3357fc12f3d81b9a` | `de4c0ecab69a6a1f38e778d893982f5812741610a1a67eb812704953a02d6eed` | `8485e64eb51e244e5abee93d7d65deaeeee63c053b347a6aa3524abf480db5ec` |
+| Škoda Priority: `scripted_guis/institutional_boards/skoda_priority_mcp.png`; `scripted_guis/source_full/skoda_priority_full.png` | 552x516 | 0,540,552,516 | `b0be28f35b8363e3961a3a46b4b3efa8b3cabff29169eb4cc3825b01b828d249` | `ca914e5e72fbac3f274a45b164cb2e8e5d1e072edbea82c00904649ba0b991ef` | `3d8bb3b7f3f9075669e49f8c69581acefe329726ad3888c38b10dc4de9ff1364` |
+| Chaos Redux Tag Manager: `scripted_guis/chaos_redux/settings/tag_manager_mcp.png`; `scripted_guis/source_full/tag_manager_full.png` | 400x404 | 1240,100,400,404 | `4b43b8113f812050bbb886c33fea4c24f91311fbb4ac13c36fdbf5c6dbc60be8` | `c559a9deb1480d82db0d94cfcd11d9fc552fb9ddfb58cb3459efac0a96391abe` | `554c87b6be75142ae58677578096fc027435392d93ae41f0983b608758e4555e` |
+| Chaos Redux Event Log: `scripted_guis/chaos_redux/event_log/events_tab_mcp.png`; `scripted_guis/source_full/event_log_events_full.png` | 527x534 | 760,240,527,534 | `cf0f1edd29195d18b4f56a4f2334a7f610d09ce40b15b2bf6d08cdbd74fd64e1` | `e71a7b31387ea8dc52ae07bf09f969c3235542da862f6c4957218880f2f97766` | `17b5d30974ee68eac464110f2166ffdc494c510f9f8a1c136228cd8c10416711` |
+| Chaos Redux Chaos Meter Deaths: `scripted_guis/chaos_redux/chaos_meter/deaths_mcp.png`; `scripted_guis/source_full/chaos_meter_deaths_full.png` | 527x534 | 760,240,527,534 | `cba4f3f63a56f207a87b169e245d22fed36670cfcfe55d6dbc1cec3dff389c6c` | `fd64673bd07cc2bc4c6a4ea3453a1220bc87cbca4fb6babfc80a180953bf26b4` | `fb7fbbfcf26b743d141759c2d4dcf8b8da200a512c2ef434e68cf23e8d195e42` |
+| Chaos Redux Chaos Meter Status: `scripted_guis/chaos_redux/chaos_meter/status_mcp.png`; `scripted_guis/source_full/chaos_meter_status_full.png` | 527x534 | 760,240,527,534 | `1c8ae577b44a3748d5e61e59ea2e2c3b9fc26d82451d43f32d4122534f449e42` | `39ea855de37808a35a6eeef4f1688336d5c5cb4aefbdfc87b7ca4672d75beb80` | `9a12a6a4f4512b9d1b7ddbf6161b7076c96c0ec7cfff22ccc87ea2c15a1836c4` |
 
-| Family | Window | Review PNG | Interface source | Scripted-GUI source | Native dimensions | MCP artifact SHA-256 | Hard diagnostic |
-| --- | --- | --- | --- | --- | ---: | --- | --- |
-| `scripted_guis/campaign_progress` | `sov_propaganda_campaigns_ui_window` | `scripted_guis/campaign_progress/sov_propaganda_campaigns_ui_window_full.png` | `interface/sov_propaganda_campaigns_scripted_gui.gui` | `common/scripted_guis/SOV_propaganda_campaigns_scripted_gui.txt` | 1920x1080 | `43508684734414a6762bb3bc30081914cc72bcc93fbb65042a20507dd5ac8f38` | None |
-| `scripted_guis/escalation_status` | `war_escalation_decision_ui_window` | `scripted_guis/escalation_status/war_escalation_decision_ui_window_full.png` | `interface/war_escalation_scripted_gui.gui` | `common/scripted_guis/war_escalation_scripted_gui.txt` | 1920x1080 | `59b0053fb2ed87e3d40e9eb4dad3c4e37d0e7964b791f0fdc38abecfccfe8351` | None |
-| `scripted_guis/faction_relations` | `bul_internal_factions_decision_ui_window` | `scripted_guis/faction_relations/bul_internal_factions_decision_ui_window_full.png` | `interface/bul_internal_factions_scripted_gui.gui` | `common/scripted_guis/BUL_internal_factions_scripted_gui.txt` | 1920x1080 | `241cbe4892f6100bbc236554da50b2a7b4dbdeee00b8c2b3ca5236f0da3a6383` | None |
-| `scripted_guis/institutional_boards` | `usa_congress_decision_ui_window` | `scripted_guis/institutional_boards/usa_congress_decision_ui_window_full.png` | `interface/usa_congress_scripted_gui.gui` | `common/scripted_guis/USA_congress_scripted_gui.txt` | 1920x1080 | `758dce0b72dc5d588c50e31874239ca0abdbaa8e499c13977d1511ebe6620cb7` | Installed `GFX_decision_category_usa_congress_house_ui` width is not divisible by 21 frames. |
-| `scripted_guis/meters_and_pressure` | `sov_paranoia_system_ui_window` | `scripted_guis/meters_and_pressure/sov_paranoia_system_ui_window_full.png` | `interface/sov_paranoia_system_scripted_gui.gui` | `common/scripted_guis/SOV_paranoia_system_scripted_gui.txt` | 1920x1080 | `a36cc55fd2ed748d0d43dd93e233f6d5e5a474cd2ca761df512b5d8a870b9a06` | Installed `GFX_SOV_paranoia_needle` width is not divisible by 21 frames. |
-| `scripted_guis/regional_investment` | `raj_local_leaders_investments_decision_ui_window` | `scripted_guis/regional_investment/raj_local_leaders_investments_decision_ui_window_full.png` | `interface/raj_local_leaders_investments_decision_ui.gui` | `common/scripted_guis/RAJ_local_leaders_investments_scripted_gui.txt` | 1920x1080 | `deb61f411f897c24395de601ce1cef1a6682b8263c392d4ce0cd584d005a1531` | None |
+The Options scenario reads installed `interface/settings.gui`. The Škoda focus inlay reads `interface/CZE_industry_focus_scripted_gui.gui`, `interface/cze_skoda_focus.gfx`, and `common/focus_inlay_windows/cze_industry_focus_inlay_window.txt`; its isolated render is positioned so the installed 552x516 background is not clipped. Chaos Redux Settings, Event Log, and Chaos Meter read their respective mod `interface/*.gui` and `common/scripted_guis/*.txt` definitions listed in `CATALOG.md`.
+
+The exact user-supplied game capture files are:
+
+| View | Source capture | Native crop | Shelf SHA-256 |
+| --- | --- | --- | --- |
+| Options Video | `Screenshot 2026-09-13 123221.png` | 477x526 | `39400d4d688934c309d487302cffb7ee15c8d7807145bfaf149f27b97827f345` |
+| Škoda Priority | `Screenshot 2026-09-13 123505.png` | 552x521 | `e214221d1b4e3bd4969ac5bbb3571fa1791637ca471da8e037971d627f6a212c` |
+| Chaos Redux Tag Manager | `Screenshot 2026-09-13 123735.png` | 401x407 | `ec6f4c74d8bfc600d5431acae4287488320b570c659bb952ce8b05410dec5933` |
+
+The Event Log view declares an empty Events tab. Chaos Meter uses the source-defined initial zero state. These are repeatable offline states; without corresponding game captures, whole-window visual parity is unmeasured. GUI validation diagnostics and dynamic runtime behavior are not erased by the visual review of these cropped states.
 
 ## Visual asset expansion — 2026-08-04
 

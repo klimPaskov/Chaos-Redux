@@ -13,15 +13,15 @@ Reference PNGs are never runtime mod assets. Do not wire, ship, trace, recolor, 
 - Vanilla source root: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/`
 - Installed build at extraction: `Operation Postern v1.19.2.0.a729 (d245)`
 - Texture extraction date: `2026-07-16`
-- MCP scripted GUI render date: `2026-09-12`
+- Scripted GUI reference review date: `2026-09-26`
 - Review format: lossless RGBA PNG decoded from source DDS, TGA, or PNG
 - Pixel policy: preserve the source texture canvas exactly; do not crop, stretch, repaint, or normalize transparent bounds during extraction
-- Inventory: 440 reference PNGs across 43 semantic folders, excluding contact sheets
-- Rebuild and validation tool: `.tools/extract_hoi4_asset_references.py`
+- Inventory: use the current per-family coverage in `CATALOG.md`; contact sheets, full-screen render provenance, and achievement workflow templates are excluded from reference counts
+- Scripted GUI contact-sheet builder: `scripted_guis/build_contact_sheets.py`
 
-The generated [CATALOG.md](CATALOG.md) records the exact source, source kind, native dimensions, related definition, and local contact sheet for every reference. Vanilla HOI4 entries are distinguished from explicitly marked Chaos Redux source and migrated legacy review copies.
+The [CATALOG.md](CATALOG.md) records the exact source, source kind, native dimensions, related definition, and local contact sheet for every reference. Vanilla HOI4 entries are distinguished from explicitly marked Chaos Redux source and migrated legacy review copies.
 
-The checksum- and frame-level provenance for the 147 references added in the 2026-08-04 audit and the MCP-rendered scripted GUI set added on 2026-09-12 is recorded in [REFERENCE_MANIFEST.md](REFERENCE_MANIFEST.md).
+The checksum and frame-level provenance for the 147 audited texture references, along with source revisions and crop bounds for the scripted GUI views, is recorded in [REFERENCE_MANIFEST.md](REFERENCE_MANIFEST.md).
 
 Common icon families — national focus, ideas, decisions, decision categories, technologies, and achievement states — contain at least 15 references. Every other tracked icon family contains at least 5. Counts exclude contact sheets. The reusable achievement not-eligible overlay is stored separately from the examples at `icons/achievements/template/overlay.png`, but is a workflow input and is excluded from the contact sheet and inventory count.
 
@@ -79,14 +79,13 @@ Unit visual pipelines:
 
 Scripted GUI layouts:
 
-- `scripted_guis/meters_and_pressure/`
+- `scripted_guis/general_settings/`
 - `scripted_guis/institutional_boards/`
-- `scripted_guis/faction_relations/`
-- `scripted_guis/regional_investment/`
-- `scripted_guis/campaign_progress/`
-- `scripted_guis/escalation_status/`
+- `scripted_guis/chaos_redux/settings/`
+- `scripted_guis/chaos_redux/event_log/`
+- `scripted_guis/chaos_redux/chaos_meter/`
 
-These families are not interchangeable. Follow the cataloged native canvas, transparency, frame order, and owning definition. Model materials are UV references paired with mesh/entity definitions; they are not 2D icons, renders, or concept sheets. Scripted GUI full renders establish native structural precedents and must be paired with their installed `.gui` and `common/scripted_guis` sources.
+These families are not interchangeable. Follow the cataloged native canvas, transparency, frame order, and owning definition. Model materials are UV references paired with mesh/entity definitions; they are not 2D icons, renders, or concept sheets. Interface references pair in-game captures or source-backed offline renders with their owning `.gui`, focus-inlay, and `common/scripted_guis` definitions; see `scripted_guis/README.md` for their distinct evidence levels.
 
 ### Decision category picture references
 
@@ -98,4 +97,4 @@ These user-provided PNGs and `contact_sheet.png` are review-only reference mater
 
 ## Maintenance
 
-The texture allowlist is maintained by `.tools/extract_hoi4_asset_references.py`. Scripted GUI full renders are added through the mandatory HOI4 MCP inspect/render workflow and documented under `scripted_guis/`. When adding a reference, record its exact provenance, choose the correct semantic folder, keep the coverage floor, regenerate that folder’s contact sheet, and update the catalog or the checksum manifest. Do not recreate the old shared contact-sheet directory or add new reference images beside this tree.
+Scripted GUI views belong under `scripted_guis/` with source, scenario, full-render, crop, and MCP route evidence; record an unavailable route explicitly. When adding a reference, record its exact provenance, choose the correct semantic folder, keep the coverage floor, regenerate that folder’s contact sheet, and update the catalog and checksum manifest. Do not recreate a shared contact-sheet directory or add reference images outside this tree.
