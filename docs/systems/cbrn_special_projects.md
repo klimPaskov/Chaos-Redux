@@ -10,12 +10,12 @@ There is no separate administrative unlock decision or routine world-iteration a
 | --- | --- | --- |
 | Mechanized Smoke Screens | Basic masks and motorized infantry | Mechanized breakthrough and a protected-advance exposure reduction only while the country has actual mask stock; steel and rubber are consumed during development. |
 | Collective Protection Systems | Improved masks and sealed containment | Shelter and sealed-crew exposure reduction, with vanilla flame-tank and engineering-vehicle integrations after their own prerequisites; development uses steel and rubber. |
-| Self-Renewing Filters | Advanced masks and Collective Protection Systems | Mask replacement losses fall by 35%, while mask production IC rises by 12%; the research requires rubber and chromium. |
+| Self-Renewing Filters — fictional | Advanced masks and Collective Protection Systems | Mask replacement losses fall by 35%, while mask production IC rises by 12%; the research requires rubber and chromium. |
 | Phantom Mist | Tabun, fail-safe containment, an offensive chemical project, and unrestricted authorization | A fictional specialized disruption agent causes only one quarter of ordinary casualty damage while increasing disruption; the project spends three breakthrough points and advanced resources. |
 | Mass Vaccine Production | Biological surveillance and pathogen handling | Agent-specific prevention is applied to anthrax, plague, tularemia, and smallpox; no universal vaccine or automatic outbreak cleanup is created. |
 | Field Antibiotics | Rapid outbreak response and pathogen handling | Field hospitals and CBRN medical detachments recover more casualties, while treatment effects apply only to susceptible anthrax, plague, and tularemia infections. |
 | Regenerative Serum | Fail-safe containment and Field Antibiotics | A fictional recovery serum raises army recovery by 5% and civilian goods demand by 2%, and acts as a cloning research precursor. |
-| Broad-Spectrum Antiserum | Integrated epidemic control, vaccines, and field antibiotics | Emergency mortality reduction applies to eligible active outbreaks, without curing or preventing every pathogen. |
+| Broad-Spectrum Antiserum — fictional | Integrated epidemic control, vaccines, and field antibiotics | Emergency mortality reduction applies to eligible active outbreaks, without curing or preventing every pathogen. |
 
 The matching definitions are in `common/special_projects/projects/cbrn_special_projects.txt`.
 Project constants, country-scope discovery triggers, completion effects, and reusable prototype rewards have dedicated CBRN files.
