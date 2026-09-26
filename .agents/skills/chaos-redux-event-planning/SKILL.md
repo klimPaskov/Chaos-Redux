@@ -32,7 +32,7 @@ Inspecting the repo is mandatory, but the specification should not read like a t
 
 ## Specification folder convention
 
-From now on, event source specifications should live in event-specific subfolders under `docs/specs/`.
+Event source specifications should live in event-specific subfolders under `docs/specs/`.
 
 Use this shape:
 
@@ -98,7 +98,7 @@ Avoid obvious lines such as:
 - the coding agent should use valid syntax
 - the system should respect existing global settings
 
-Those are baseline system responsibilities. Include technical notes only when they prevent a likely mistake, explain non-obvious behavior, or define a unique rule for this event. Otherwise, its just noise.
+Those are baseline system responsibilities. Include technical notes only when they prevent a likely mistake, explain non-obvious behavior, or define a unique rule for this event. Otherwise, it's just noise.
 
 Do not create negative capability notes for absent event surfaces. If an event does not have a world-end scenario, do not mention world-end scenarios. If an event does not have a manual triggerable scenario, do not mention triggerable scenarios. Do not write sections, bullets, event-detail notes, spreadsheet-facing summaries, implementation prompts, or player-facing text that say `no world-end scenario`, `does not have a world-end scenario`, `no manual triggerable scenario`, `does not have a triggerable scenario`, or similar absence wording. Omit the surface completely unless it actually exists or the user explicitly asks for an explanation of why it is absent.
 
@@ -121,9 +121,9 @@ Do not provide pasteable localisation. Do not include `sample line`, `possible l
 
 Text direction should avoid bland map-summary framing and generic communications clichés. Do not make the emotional center of an event a changed map, a line of advance, a staff-table scene, a failed broadcast, or another stock image of crisis administration.
 
-When planning player-facing warning, threat, suspicious-report, and escalation text, do not instruct the coding agent to say that something is a warning, that something is not a warning, that a threat is coming, or that a danger signal has appeared. The text should show the pattern through partial information: fearful witnesses, rumours, anomalies, mysterious powers seen, etc
+When planning player-facing warning, threat, suspicious-report, and escalation text, do not instruct the coding agent to say that something is a warning, that something is not a warning, that a threat is coming, or that a danger signal has appeared. The text should show the pattern through partial information: fearful witnesses, rumours, anomalies, mysterious powers seen, and similar signs.
 
-A report can make the player uneasy without naming the unease. Use mystery, information gaps, fear, rumours, etc. The player should infer that something may be wrong from the content and consequences, not from a label.
+A report can make the player uneasy without naming the unease. Use mystery, information gaps, fear, rumours, and similar techniques. The player should infer that something may be wrong from the content and consequences, not from a label.
 
 When a concept benefits from mystery, fantasy, surrealism, myth, occult signs, prophecy, impossible resolve, strange energy, or unclear public rumours, state that direction clearly without drafting the final prose.
 
@@ -269,7 +269,7 @@ A good focus-tree spec should answer:
 - what each path changes mechanically
 - which paths are mutually exclusive
 - which paths can cooperate or converge
-- which paths are hidden, rare, chaos-locked, evolution-locked, foreign-aid-locked, or crisis-locked, etc
+- which paths are hidden, rare, chaos-locked, evolution-locked, foreign-aid-locked, crisis-locked, or similarly gated
 - what kinds of focuses belong in each path
 - what kinds of rewards each path uses
 - what decisions, missions, units, ideas, leaders, flags, claims, buildings, factions, or events each path should unlock
@@ -417,7 +417,6 @@ Example table:
 
 Reject specs where a country starts with too many unrelated ideas, where every focus creates a separate idea, or where negative ideas cannot be meaningfully addressed through play.
 
-
 #### Focus, politics, expansion, and decision integration
 
 When planning a major focus tree, define more than politics and industry. A large tree needs a distinct expansion, reunification, liberation, settlement, or regional ambition branch. This branch should be separate from the main political tree and separate from the industry tree.
@@ -426,12 +425,9 @@ Expansion branches should define real strategic effects, such as claims, cores, 
 
 Political branches should change politics directly. Define ideology paths, ruling party shifts, party popularity changes, leader changes, advisor unlocks, advisor discounts, laws, councils, juntas, congresses, committees, faction struggles, cosmetic names, and flag changes where they fit. Leader changes imply portrait needs. Route both sourced real portraits and generated fictional or symbolic portraits to `chaosx_portrait_creator`.
 
-Fixed-purpose chaos countries can have narrower politics when their identity demands it. A death-state, plague-state, machine-state, or pure destruction actor may have one ideological purpose. Even then, the tree should still provide meaningful internal choices inside that purpose, such as doctrine, expansion method, recruitment, economy, hierarchy, or endgame ambition.
-
 Focus trees and decision systems must be planned together. Focuses should unlock or change decisions and missions. Industry focuses can unlock construction decisions. Military focuses can unlock unit, depot, border, or offensive missions. Diplomacy focuses can unlock recognition, aid, volunteer, and influence decisions. Expansion focuses can unlock declarations, league votes, protectorate demands, border incidents, claims, cores, war goals, and settlement decisions.
 
 For each major focus path, describe which decision or mission families it unlocks and how those decisions expand the mechanic.
-
 
 #### Branch interaction, payoff, and country identity
 
@@ -443,7 +439,7 @@ Every major branch needs a clear payoff. A political branch can end in a new gov
 
 A good focus path should unlock new gameplay, not only stats. The plan should describe decisions, missions, units, advisors, leaders, laws, claims, cores, war goals, buildings, events, mechanics, route access, and AI behavior where they fit. Flat modifiers are supporting rewards, not the main design.
 
-Political routes should update the visible country package where relevant: leader, leader portrait, advisor roster, high command, ruling party, party names, ideology drift or swap, cosmetic name, flag, ideas, and AI strategy. Leader changes imply portrait needs.
+Political routes should update the visible country package where relevant: leader, leader portrait, advisor roster, high command, ruling party, party names, ideology drift or swap, cosmetic name, flag, ideas, and AI strategy.
 
 Expansion branches should create consequences. Claims, cores, and war goals should interact with diplomacy, factions, resistance, foreign guarantees, local leagues, legitimacy, threat, or postwar settlement decisions.
 
@@ -451,8 +447,7 @@ Industry branches should create map or production changes. Define factories, inf
 
 Decision categories should evolve with focus progress. Early focuses may unlock basic decisions. Later focuses should add new targets, stronger actions, cheaper costs, new risks, or new mission families. A decision category should feel different after a route develops.
 
-The fixed-purpose exception is narrow. A country is fixed-purpose only when its concept clearly cannot support normal politics, such as a death-state, machine-state, plague-state, or pure destruction actor. It still needs meaningful internal branches around method, hierarchy, economy, recruitment, expansion, and endgame.
-
+The fixed-purpose exception is narrow. A country is fixed-purpose only when its concept clearly cannot support normal politics, such as a death-state, machine-state, plague-state, or pure destruction actor, and such a country may then have one ideological purpose and narrower politics. Even then, the tree still needs meaningful internal choices and branches inside that purpose, such as doctrine, method, expansion, recruitment, economy, hierarchy, and endgame ambition.
 
 #### Branch depth, AI, localisation, and aftermath
 
@@ -472,7 +467,6 @@ Large focus trees should include achievement hooks for difficult route completio
 
 The final implementation prompt should ask for a route coverage table comparing required routes against implemented routes. Missing, renamed, merged, simplified, fallback, or replaced routes must be reported.
 
-
 #### Route visibility, pacing, tradeoffs, and failure states
 
 A major route should leave visible evidence in the game. The spec should describe what the player actually sees or gains: map changes, decisions, units, advisors, leaders, flags, cosmetic names, faction behavior, focus availability, diplomacy, or visible mechanics. A route that only changes hidden variables or tiny modifiers is not meaningful.
@@ -486,7 +480,6 @@ Do not overuse mutual exclusions. Mutually exclusive paths should represent real
 Important routes should define failure states. A failed political reform can empower radicals. Failed expansion can trigger backlash or settlement. Failed industry can create dependency. Failed foreign-aid balancing can create a client state. Failed military centralization can create rogue generals or militias.
 
 Focus and decision localisation should describe the visible baseline effect of the route or action. It should not reveal hidden effects, secret outcomes, hidden variables, or future surprises. The player-facing text should explain the public action and visible direction, not the hidden implementation.
-
 
 #### Special mechanics, dynamic values, and faction systems
 
@@ -535,7 +528,6 @@ AI must understand mechanic values. It should know when to lower threat, build l
 
 For every special mechanic, the completion report should list mechanic values, what changes them, what they unlock, UI and localisation coverage, AI behavior, focus hooks, decision hooks, event hooks, and balance checks.
 
-
 #### Mechanic presentation, faction outcomes, validity, and tuning
 
 Every special mechanic should define where the player sees its public state: decision category header, custom scripted GUI, progress meter, scripted localisation tooltip, focus tooltip, national spirit tooltip, or another clear presentation surface. The player-facing state must fit within the public-facing mechanic value budget. Hidden internal values may remain entirely internal when the player does not need to track them directly. Do not create extra UI surfaces only to expose more counters.
@@ -556,7 +548,6 @@ Shared trees are allowed, but they must have country-specific localisation, rout
 
 Important mechanic thresholds, caps, gains, losses, duration bands, AI weights, and scaling values should be centralized in script constants or a clearly documented tuning file. Do not scatter magic numbers across decisions, events, focuses, scripted effects, and scripted triggers.
 
-
 #### Reward dumps and exploit checks
 
 Avoid one-time reward dumps as the main design. A focus, decision, or mission can give factories, units, equipment, resources, buildings, or influence, but important content should often unlock a repeatable decision, timed mission family, production route, advisor, mechanic, route branch, or long-term gameplay system.
@@ -566,7 +557,6 @@ One-time rewards are acceptable when they fit the story and balance. They should
 Balance planning should include exploit checks. Look for free unit loops, repeated factory rewards, cheap construction loops, equipment farming, influence farming, puppet abuse, war-goal spam, claim or core spam, advisor discount stacking, bypass abuse, mission success farming, and decisions that can be clicked without meaningful cost or risk.
 
 The spec should tell the implementation agent how to prevent abuse with flags, cooldowns, dynamic costs, escalating costs, one-time completion flags, route locks, target limits, AI limits, cleanup effects, or scripted triggers.
-
 
 #### Decision category clutter control
 
@@ -645,7 +635,6 @@ The implementation agent should:
 
 The spec should give enough creative and structural direction that the agent cannot make a shallow generic tree, while still allowing the agent to build a clean in-game layout.
 
-
 ### 3.6 Focus tree visual planning standard
 
 Focus tree visuals should help the user and implementation agent understand the intended branch structure. The spec may include a high-level branch diagram, lane map, or route sketch for major trees, but it should not try to lock every final focus coordinate unless the user explicitly asks for that.
@@ -669,7 +658,6 @@ When a special mechanic belongs directly to the focus tree and needs to stay vis
 If the spec creates a graph or diagram, it should be treated as a design guide unless the user says it must match the final in-game tree exactly. The implementation agent may adjust the final layout to make the actual HOI4 tree cleaner.
 
 Do not spend excessive planning effort forcing exact graph coordinates if the result becomes ugly, brittle, or unhelpful. A clear path architecture is more important than a fake exact graph.
-
 
 ### 3.7 Achievement design standard
 
@@ -738,7 +726,7 @@ Use two separate entry-path concepts when the event supports both.
 
 If both entry paths exist, write both explicitly under one evolution. For example, an event may have an active evolution that unlocks a focus path for an already spawned country, while a later first firing may start with multiple spawned countries.
 
-Each chaos tier can have only one evolution stage. The maximum amount of evolutions is 5.
+Each chaos tier can have only one evolution stage. The maximum number of evolutions is 5.
 
 Good evolutions can include:
 
@@ -929,7 +917,6 @@ Do not say only that a cooldown is 30 days or a pressure increase is 5. Say what
 
 Dynamic behavior should still be readable. Define cause and effect clearly so the player can learn the pattern through events and decisions. Dynamic does not mean public-facing. Internal calculations can track many values when useful, while the public layer should summarize them into one or two values when possible, three when needed, and never more than four persistent values the player must actively track for the mechanic.
 
-
 ### 3.10 Cost and sacrifice design standard
 
 Political power and command power are useful, but they are usually the least interesting costs. Do not let major decisions, missions, focuses, or crisis responses become a long list of political power and command power purchases.
@@ -956,7 +943,6 @@ Costs should be dynamic. The amount and type of cost should react to country siz
 Map blocked localisation for nonstandard costs. The player should understand whether they lack infantry equipment, support equipment, divisions in the right state, local support, army XP, fuel, rail control, relations, foreign route access, or another requirement.
 
 For every major decision family, include at least one cost or requirement that is not political power or command power unless the spec explains why that family is purely bureaucratic.
-
 
 ### 3.11 AI strategy and behavior mapping standard
 
@@ -1195,7 +1181,7 @@ For every planned new unit family, define:
 
 Every new custom unit family must also receive a voice and sound design pass. A custom unit should not inherit ordinary infantry voices, weapon sounds, vehicle sounds, or movement sounds by accident when those sounds conflict with its identity.
 
-Every new custom unit family must also receive original counters for every counter surface it uses. The plan must name the exact installed-vanilla definition and DDS, matching skill-local counter family, runtime consumers and tokens, required states and sizes, final paths, sampled vanilla green palette, and `chaosx_icon_artist` handoff. Missing vanilla-reference inspection blocks counter production, reused counters, arbitrary green, and unreferenced imitations are not final.
+Every new custom unit family must also receive original counters for every counter surface it uses. The plan must name the exact installed-vanilla definition and DDS, matching skill-local counter family, runtime consumers and tokens, required states and sizes, final paths, sampled vanilla green palette, and `chaosx_icon_artist` handoff. Missing vanilla-reference inspection blocks counter production; reused counters, arbitrary green, and unreferenced imitations are not final.
 
 For each custom unit family, define:
 
@@ -1207,7 +1193,7 @@ For each custom unit family, define:
 - synchronization needs for attack, movement, recoil, impact, death, destruction, and other visible actions
 - source mode, rights, attribution, file format, sound identifiers, runtime consumers, looping behavior, volume, distance, and mix direction
 - which vanilla sounds can be reused, with a concrete reason that they fit the unit
-- which sounds require new Internet sourcing and which approved vanilla or sourced files can be reused, recording, generation, synthesis, and manual authoring are forbidden
+- which sounds require new Internet sourcing and which approved vanilla or sourced files can be reused; recording, generation, synthesis, and manual authoring are forbidden
 
 Sound design is part of the unit identity and runtime package. A visually or mechanically custom unit with no planned voice or sound treatment is incomplete unless the spec explains why silence or an existing sound set is intentional.
 
@@ -1273,7 +1259,7 @@ If the user does not provide a ready reference image, plan exactly one clean Mes
 
 Meshy 7 is the generation model. The plan must forbid silent downgrade and require the exact live model identifier in provider evidence.
 
-Plan firearm-bearing units, including current firearm models, as fresh Meshy 7 weapon-free bodies from exactly one prepared weapon-free input, followed directly by Blender rigging, weights, manual actions, and separately modeled/attached firearms and held props; no Meshy rig/action attempt is required. Archive source equipment identity and permit weapon removal, pose cleanup, and source-informed restoration of body detail. Always plan completion of every missing required component in Blender without renewed approval, with an element-to-geometry/material/attachment/action/export matrix and calibrated budgets that permit modest reduction to accommodate additions. Existing non-firearm repairs use Blender directly without a Meshy key. Other new models get one Meshy rig attempt and one action attempt per role on a usable rig, then Blender after the first failure, unusable result, or unsupported stage. Keep valid outputs, no paid rig/action retries, provider balance/provenance gates, verified bounded modeling support, semantic/deformation/contact checks, and export/reimport proof. Other provider/source substitutions retain separate approval.
+Plan firearm-bearing units, including current firearm models, as fresh Meshy 7 weapon-free bodies from exactly one prepared weapon-free input, with a separate Meshy 7 geometry task for each required firearm or other held item from its own single item-only image, then the Meshy rig and receipt-verified provider actions for the body, and live Blender fitting, attachment, rigid controls, and contact corrections for each firearm and held prop. Archive source equipment identity and permit weapon removal, pose cleanup, and source-informed restoration of body detail. Always plan completion of every missing required component in Blender without renewed approval, with an element-to-geometry/material/attachment/action/export matrix and calibrated budgets that permit modest reduction to accommodate additions. Existing non-firearm repairs use Blender directly without a Meshy key. Other provider-eligible bipedal models get one Meshy rig attempt and one action attempt per role on a usable rig, then live Blender authoring after the first failure, unusable result, or unsupported stage; non-bipedal anatomy goes directly to live Blender authoring. Keep valid outputs, no paid rig/action retries, provider balance/provenance gates, verified bounded modeling support, semantic/deformation/contact checks, and export/reimport proof. Other provider/source substitutions retain separate approval.
 
 Never plan a side-profile sheet, turnaround board, collage, or multi-view board as a Meshy input. Blender QA views and contact sheets are review evidence only and must never be sent to Meshy.
 
@@ -1289,7 +1275,7 @@ The model package must plan provider lineage, Blender source and normalized/repa
 
 The asset prompt must distinguish provider source files from final runtime copies. It must require a final hash-aware synchronization step so an older mapped texture, mesh, entity, or animation cannot overwrite the approved runtime candidate.
 
-Route production to `chaosx_3d_model_pipeline`. Supply job root, selected firearm-body/direct-repair/general route, input/reference status, source equipment identity, component inventory, profile, vanilla scale, actions, sound/effect synchronization, counter consumers, dependency lock, provider preflight where needed, calibrated budgets, and handoff path. Meshy 7 owns body generation; Blender owns required component completion and the route-specific rigs/actions. Require preserved source lineage, actual modeling/authoring routes, contact/deformation/semantic review, export/reimport proof, and no renewed approval for required components or authorized Blender work.
+Route production to `chaosx_3d_model_pipeline`. Supply job root, selected firearm-body/direct-repair/general route, input/reference status, source equipment identity, component inventory, profile, vanilla scale, actions, sound/effect synchronization, counter consumers, dependency lock, provider preflight where needed, calibrated budgets, and handoff path. Meshy 7 owns body and held-item geometry generation and the provider rig/action stage for eligible bipeds; Blender owns required component completion, firearm and item fitting and attachment, and every rig or action the provider route does not cover. Require preserved source lineage, actual modeling/authoring routes, contact/deformation/semantic review, export/reimport proof, and no renewed approval for required components or authorized Blender work.
 
 The coding-agent prompt must state that the main implementation agent owns `.asset`, entity, `.gfx`, unit/building/gameplay wiring, valid province and state placement, final source and MCP validation, and review of available in-game evidence. The user performs live runtime validation.
 
@@ -1488,7 +1474,7 @@ Leader portraits can have animated variants for major route reveals, high-chaos 
 
 ## 9. Super-event planning
 
-If the event needs a super-event, design the super-event as part of the event emotional and gameplay pacing.
+If the event needs a super-event, design the super-event as part of the event's emotional and gameplay pacing.
 
 A super-event should not be used only because something large happens. It should mark a moment that changes how the player understands the campaign, the event chain, the world state, or the stakes of the current crisis.
 
@@ -1614,7 +1600,7 @@ Important super-event boundary: this planning skill may define super-event role,
 5. Avoid staged contrast formulas. Do not write sentences or paired clauses built as `claim X while officials Y`, `reports say X while authorities Y`, `people do X before governments Y`, `X happens before Y admits it`, or similar. Do not manufacture tension by contrasting unofficial fear with official denial, silence, delay, admission, or reaction. Write the observed fear, behaviour, rumours, anomalies, and consequences directly.
 6. Absolutely avoid empty dramatic filler. Do not lean on vague intensity words when concrete detail would do the work.
 7. Do not paste instruction text, task labels, prompt fragments, or process notes into in-game text, specs, docs, localisation, spreadsheet fields, or reports.
-    - For example, when I say: `Do not reveal the hidden mechanics here.`, don't write `This path purposely doesn't reveal the hidden mechanics`
+    - For example, when I say: `Do not reveal the hidden mechanics here.`, don't write `This path purposely doesn't reveal the hidden mechanics`.
 
 ### General localisation handoff
 
@@ -1636,7 +1622,6 @@ The handoff should list each needed text surface and describe its direction:
 
 The coding agent writes the final in-game text during implementation. The planning spec should not provide final prose for the coding agent to paste.
 
-
 ## 11. Specification shape
 
 Do not force the specification into a fixed template.
@@ -1647,7 +1632,7 @@ The specification should still be easy for a coding agent to use. Use clear head
 
 For major events, split the spec into parts if needed. Do not compress deep design just to fit one file.
 
-Only include sections for surfaces that exist or that need design. If a world-end scenario, manual triggerable scenario, super-event, focus tree, custom country, achievement set, or asset family is absent, omit that section instead of writing that it is absent. Because negative notes create noise and can mislead later agents into thinking the absence is a designed feature.
+Only include sections for surfaces that exist or that need design. If a world-end scenario, manual triggerable scenario, super-event, focus tree, custom country, achievement set, or asset family is absent, omit that section instead of writing that it is absent, because negative notes create noise and can mislead later agents into thinking the absence is a designed feature.
 
 ## 12. Depth, file splitting, and continuation prompts
 
@@ -1767,7 +1752,7 @@ Reference mapping:
 - super-event images: supplemental `event_art/super_event/` plus the live Chaos Redux super-event UI
 - technology icons: `icons/technologies/`
 - special-project icons: `icons/special_projects/`
-- achievement states: `icons/achievements/`. The reusable not-eligible overlay is `icons/achievements/overlay.png`
+- achievement states: `icons/achievements/`. The reusable not-eligible overlay is `icons/achievements/template/overlay.png`
 - decisions and missions: their separate folders under `icons/`
 - decision category icons: `icons/decision_categories/`
 - decision category pictures: `icons/decision_categories/pictures/`
@@ -1942,7 +1927,6 @@ Create sequential files:
 
 Do not repeat earlier sections unless needed for clarity.
 
-
 ### 18.1 Final ZIP package requirement
 
 The final chat-facing output must be delivered as one ZIP file containing every necessary file for the planning handoff. Individual files may also be linked for convenience, but the ZIP is the main deliverable.
@@ -1991,7 +1975,7 @@ Use a top-level `<event_id>_<event_slug>_plans/` folder only when the ZIP contai
 
 Do not force generic packaging-only folders such as `specs/`, `prompts/`, `research/`, or `matrices/` when descriptive repo-ready files in the event folder are clearer. Subfolders are allowed when a very large package genuinely benefits from them.
 
-The goal prompt inside the package should be between 3500 and 4000 characters when the task needs that detail, and it must never exceed 4000 characters.
+The goal prompt inside the package follows the character limits in [Goal prompt file](#goal-prompt-file).
 
 ## 19. Final prompt files
 
