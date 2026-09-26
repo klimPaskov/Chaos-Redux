@@ -38,6 +38,10 @@ No new gameplay simplification was found in the doctrine diff. Accepted report-a
 
 Recommended parent actions: obtain a valid specialist weighted-scenario pass and current event-graph comparison or record the exact route limits, exercise the named owner-system scenarios, review the focus branch and decision row at game scale, and keep the older Part 8 scope question separate. Do not promote the Gods goal to complete until those acceptance gates close.
 
+## Parent roster-cap follow-up — 2026-09-26
+
+`gods_of_africa_timing.max_participants` is now 640, above the 609 distinct country tags in the installed vanilla and Chaos Redux sources. The bounded census can therefore hold every currently defined tag that passes the major/player and validity filters. This expands the maximum possible targeted decision-array instances; the probability adapter has not bound those instances, and normal-panel row density remains unverified. Numeric AI priorities were not changed by the cap correction, but no target-choice balance conclusion is inferred.
+
 ## Parent focus-evidence update — 2026-09-26
 
 After the doctrine-aware intelligence amount was added to the Security focus description, a fresh `hoi4.focus_inspect` returned `FOCUS_INSPECTED` and `hoi4.focus_render` returned `FOCUS_RENDERED`; both passed validation with no blockers and 20 nonblocking diagnostics in workspace `mod_chaos_redux_ea3b2d67c2c0`. Inspect artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/cc9521e71dda8ab74252e73fec5082f251b430add0206396e7f41101de471503/c306e683f054959ee8f8286ebfd86a970da6b0536dfd35647d8cb0344e172df1/focus-inspect.9192af4ce74fb4b9.json`. Rendered SVG: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/287ae7bdb710aa3c911d4713b5e067d7fe8bafb10b48ce5bb96ec64f72d3dd87/d2883e71bf7e49aab143ab4e1e17537a72cde8d94ca3c181e2ff9e5947dcbf6/africa_continental_focus_tree.focus.svg`. This is structural evidence only; focus raster appearance and game-scale readability remain open.
