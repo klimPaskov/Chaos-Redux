@@ -164,14 +164,14 @@ infantry_spawn_derivative_operations_category = {
 				tooltip = infantry_spawn_derivative_rally_zombie_band_requirements_tt
 				infantry_spawn_derivative_is_zombie = yes
 				NOT = { has_country_flag = infantry_spawn_derivative_reinforcement_cooldown }
-				check_variable = { var = manpower value = constant:infantry_spawn_derivative_reinforcement.zombie_manpower_cost compare = greater_than_or_equals }
+				NOT = { has_manpower < constant:infantry_spawn_derivative_reinforcement.zombie_manpower_cost }
 				check_variable = { var = num_equipment@infantry_equipment value = constant:infantry_spawn_derivative_reinforcement.zombie_infantry_equipment_cost compare = greater_than_or_equals }
 				infantry_spawn_country_has_eligible_state = yes
 				infantry_spawn_all_ledgers_are_aligned = yes
 			}
 		}
 		custom_cost_trigger = {
-			check_variable = { var = manpower value = constant:infantry_spawn_derivative_reinforcement.zombie_manpower_cost compare = greater_than_or_equals }
+			NOT = { has_manpower < constant:infantry_spawn_derivative_reinforcement.zombie_manpower_cost }
 			check_variable = { var = num_equipment@infantry_equipment value = constant:infantry_spawn_derivative_reinforcement.zombie_infantry_equipment_cost compare = greater_than_or_equals }
 		}
 		custom_cost_text = infantry_spawn_derivative_rally_zombie_band_cost
@@ -292,7 +292,7 @@ infantry_spawn_derivative_operations_category = {
 			base = constant:infantry_spawn_derivative_ai_weight.standard
 			modifier = {
 				factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor
-				FROM = { check_variable = { var = manpower value = constant:infantry_spawn_derivative_expansion.zombie_neighbor_manpower_capacity compare = greater_than_or_equals } }
+				FROM = { NOT = { has_manpower < constant:infantry_spawn_derivative_expansion.zombie_neighbor_manpower_capacity } }
 			}
 			modifier = {
 				factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor

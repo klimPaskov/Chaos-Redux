@@ -4314,7 +4314,7 @@ chaos_unit_family_provider_501_event19_evaluate_management = {
 			infantry_spawn_country_has_eligible_state = yes
 			check_variable = { var = army_experience value = constant:event19_zombie_family.training_army_experience_cost compare = greater_than_or_equals }
 			check_variable = { var = num_equipment@infantry_equipment value = constant:event19_zombie_family.training_infantry_equipment_cost compare = greater_than_or_equals }
-			check_variable = { var = manpower value = constant:event19_zombie_family.training_manpower_cost compare = greater_than_or_equals }
+			NOT = { has_manpower < constant:event19_zombie_family.training_manpower_cost }
 		}
 		set_temp_variable = { infantry_spawn_family_provider_can_train = 1 }
 	}
@@ -4322,7 +4322,7 @@ chaos_unit_family_provider_501_event19_evaluate_management = {
 		limit = {
 			check_variable = { infantry_spawn_family_live_division_count > 0 }
 			check_variable = { var = num_equipment@infantry_equipment value = constant:event19_zombie_family.sustainment_infantry_equipment_cost compare = greater_than_or_equals }
-			check_variable = { var = manpower value = constant:event19_zombie_family.sustainment_manpower_cost compare = greater_than_or_equals }
+			NOT = { has_manpower < constant:event19_zombie_family.sustainment_manpower_cost }
 		}
 		set_temp_variable = { infantry_spawn_family_provider_can_sustain = 1 }
 	}

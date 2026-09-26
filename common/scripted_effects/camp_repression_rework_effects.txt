@@ -1266,7 +1266,7 @@ camp_rework_apply_ai_cap = {
 	# Transport and personnel shortages reduce reach before they block an
 	# already operating network. Each dimension uses a separately tunable cap.
 	if = {
-		limit = { check_variable = { var = manpower value = constant:camp_rework_cost.expansion_manpower compare = less_than } }
+		limit = { has_manpower < constant:camp_rework_cost.expansion_manpower }
 		subtract_from_variable = { camp_ai_active_site_cap = constant:camp_rework_ai_cap.resource_cap_reduction }
 	}
 	if = {
@@ -1383,7 +1383,7 @@ camp_rework_apply_ai_cap = {
 				value = camp_ai_active_site_cap
 				compare = less_than
 			}
-			check_variable = { var = manpower value = constant:camp_rework_cost.activation_manpower compare = greater_than }
+			has_manpower > constant:camp_rework_cost.activation_manpower
 			NOT = {
 				OR = {
 					has_capitulated = yes
@@ -3008,7 +3008,7 @@ camp_rework_rebuild_country_gui_actions = {
 				NOT = { has_country_flag = camp_gui_country_action_2_cooldown }
 				check_variable = { camp_active_site_count > 0 }
 				NOT = { has_political_power < constant:camp_rework_cost.guard_pp }
-				check_variable = { var = manpower value = constant:camp_rework_cost.guard_manpower compare = greater_than }
+				has_manpower > constant:camp_rework_cost.guard_manpower
 				command_power > constant:camp_rework_cost.guard_command
 				has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
 			}
@@ -3020,7 +3020,7 @@ camp_rework_rebuild_country_gui_actions = {
 				NOT = { has_country_flag = camp_rework_expansion_frozen }
 				NOT = { has_active_mission = germany_auschwitz_evidence_destruction_mission }
 				NOT = { has_political_power < constant:camp_rework_cost.evidence_pp }
-				check_variable = { var = manpower value = constant:camp_rework_cost.activation_manpower compare = greater_than }
+				has_manpower > constant:camp_rework_cost.activation_manpower
 				command_power > constant:camp_rework_cost.evidence_command
 				has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 				88 = {
@@ -3038,7 +3038,7 @@ camp_rework_rebuild_country_gui_actions = {
 				NOT = { has_country_flag = germany_auschwitz_complex_dismantled }
 				NOT = { has_active_mission = germany_auschwitz_dismantlement_mission }
 				NOT = { has_political_power < constant:camp_rework_cost.dismantle_pp }
-				check_variable = { var = manpower value = constant:camp_rework_cost.dismantle_manpower compare = greater_than }
+				has_manpower > constant:camp_rework_cost.dismantle_manpower
 				has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 				88 = {
 					is_valid_camp_active_site_state = yes
@@ -3081,7 +3081,7 @@ camp_rework_rebuild_country_gui_actions = {
 				OR = { has_country_flag = japan_biowarfare_reform_route NOT = { has_government = fascism } }
 				NOT = { has_country_flag = camp_rework_japan_shutdown_mission_active }
 				NOT = { has_political_power < constant:camp_rework_cost.dismantle_pp }
-				check_variable = { var = manpower value = constant:camp_rework_cost.dismantle_manpower compare = greater_than }
+				has_manpower > constant:camp_rework_cost.dismantle_manpower
 				has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 			}
 			set_country_flag = camp_gui_country_action_2_available
@@ -3152,7 +3152,7 @@ camp_rework_rebuild_country_gui_actions = {
 			limit = {
 				has_war = yes
 				check_variable = { forced_labor_quota > 0 }
-				check_variable = { var = manpower value = constant:camp_rework_soviet.release_manpower compare = less_than }
+				has_manpower < constant:camp_rework_soviet.release_manpower
 				NOT = { has_country_flag = camp_gui_country_action_3_cooldown }
 				NOT = { has_political_power < constant:camp_rework_cost.review_pp }
 			}
@@ -3168,7 +3168,7 @@ camp_rework_rebuild_country_gui_actions = {
 				}
 				NOT = { has_country_flag = sov_gulag_dismantlement_active }
 				NOT = { has_political_power < constant:camp_rework_cost.dismantle_pp }
-				check_variable = { var = manpower value = constant:camp_rework_cost.dismantle_manpower compare = greater_than }
+				has_manpower > constant:camp_rework_cost.dismantle_manpower
 				has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 			}
 			set_country_flag = camp_gui_country_action_4_available
@@ -3230,7 +3230,7 @@ camp_rework_rebuild_country_gui_actions = {
 				has_active_camp_network = yes
 				NOT = { has_country_flag = camp_gui_country_action_4_cooldown }
 				NOT = { has_political_power < constant:camp_rework_cost.guard_pp }
-				check_variable = { var = manpower value = constant:camp_rework_cost.guard_manpower compare = greater_than }
+				has_manpower > constant:camp_rework_cost.guard_manpower
 				has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
 				has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 				has_variable = camp_selected_state_id
@@ -3406,7 +3406,7 @@ camp_rework_rebuild_country_gui_actions = {
 				has_active_camp_network = yes
 				OR = { check_variable = { libyan_resistance_pressure > constant:camp_rework_threshold.band_medium } has_country_flag = ita_focus_colonial_security_corps }
 				NOT = { has_decision = ita_colonial_security_sweep }
-				check_variable = { var = manpower value = constant:camp_rework_cost.guard_manpower compare = greater_than }
+				has_manpower > constant:camp_rework_cost.guard_manpower
 				has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
 				has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 				has_variable = camp_selected_state_id
@@ -3799,7 +3799,7 @@ camp_rework_route_country_specific_action = {
 		limit = {
 			check_variable = { camp_rework_action_id = constant:camp_rework_action.camp_repression_close_dormant_legacy_site }
 			has_variable = camp_rework_action_state_id
-			check_variable = { var = manpower value = constant:camp_rework_cost.dismantle_manpower compare = greater_than }
+			has_manpower > constant:camp_rework_cost.dismantle_manpower
 			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 			var:camp_rework_action_state_id = { is_valid_camp_dormant_reform_state = yes }
 		}
@@ -3869,7 +3869,7 @@ camp_rework_gui_expand_selected_pool = {
 						NOT = { extermination_camp > 0 }
 					}
 					NOT = { has_political_power < constant:camp_rework_cost.expansion_pp }
-					check_variable = { var = manpower value = constant:camp_rework_cost.expansion_manpower compare = greater_than }
+					has_manpower > constant:camp_rework_cost.expansion_manpower
 					has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 					has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
 				}
@@ -3881,7 +3881,7 @@ camp_rework_gui_expand_selected_pool = {
 						NOT = { concentration_camp > 0 }
 					}
 					NOT = { has_political_power < constant:camp_rework_cost.activation_pp }
-					check_variable = { var = manpower value = constant:camp_rework_cost.activation_manpower compare = greater_than }
+					has_manpower > constant:camp_rework_cost.activation_manpower
 					command_power > constant:camp_rework_cost.activation_command
 					has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 				}
@@ -3945,7 +3945,7 @@ camp_rework_gui_allocate_guards = {
 			has_active_camp_network = yes
 			NOT = { has_country_flag = camp_rework_guards_allocated }
 			NOT = { has_political_power < constant:camp_rework_cost.guard_pp }
-			check_variable = { var = manpower value = constant:camp_rework_cost.guard_manpower compare = greater_than }
+			has_manpower > constant:camp_rework_cost.guard_manpower
 			command_power > constant:camp_rework_cost.guard_command
 			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
 		}

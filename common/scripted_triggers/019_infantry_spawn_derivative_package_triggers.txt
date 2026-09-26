@@ -210,7 +210,7 @@ infantry_spawn_derivative_can_authorize_zombie_training = {
 	NOT = { is_in_array = { array = infantry_spawn_trainable_family_ids value = constant:event19_zombie_family.family_id } }
 	check_variable = { var = army_experience value = constant:event19_zombie_family.training_army_experience_cost compare = greater_than_or_equals }
 	check_variable = { var = num_equipment@infantry_equipment value = constant:event19_zombie_family.training_infantry_equipment_cost compare = greater_than_or_equals }
-	check_variable = { var = manpower value = constant:event19_zombie_family.training_manpower_cost compare = greater_than_or_equals }
+	NOT = { has_manpower < constant:event19_zombie_family.training_manpower_cost }
 }
 
 infantry_spawn_derivative_can_manifest_ghost = {
@@ -239,7 +239,7 @@ infantry_spawn_derivative_can_pay_family_sustainment = {
 		AND = {
 			infantry_spawn_derivative_is_zombie = yes
 			check_variable = { var = num_equipment@infantry_equipment value = constant:event19_zombie_family.sustainment_infantry_equipment_cost compare = greater_than_or_equals }
-			check_variable = { var = manpower value = constant:event19_zombie_family.sustainment_manpower_cost compare = greater_than_or_equals }
+			NOT = { has_manpower < constant:event19_zombie_family.sustainment_manpower_cost }
 		}
 		AND = {
 			infantry_spawn_derivative_is_ghost = yes
@@ -275,7 +275,7 @@ infantry_spawn_derivative_can_offer_zombie_containment = {
 	NOT = { has_country_flag = infantry_spawn_derivative_submission_warning_active }
 	NOT = { has_war = yes }
 	NOT = { has_political_power < constant:infantry_spawn_derivative_decision_cost.zombie_containment_pp }
-	check_variable = { var = manpower value = constant:infantry_spawn_derivative_decision_cost.zombie_containment_manpower compare = greater_than_or_equals }
+	NOT = { has_manpower < constant:infantry_spawn_derivative_decision_cost.zombie_containment_manpower }
 	check_variable = { var = num_equipment@infantry_equipment value = constant:infantry_spawn_derivative_decision_cost.zombie_containment_equipment compare = greater_than_or_equals }
 }
 
@@ -373,7 +373,7 @@ infantry_spawn_derivative_can_start_zombie_district_integration = {
 	NOT = { has_country_flag = infantry_spawn_derivative_integration_active }
 	NOT = { has_war = yes }
 	NOT = { has_political_power < constant:infantry_spawn_derivative_decision_cost.zombie_integration_pp }
-	check_variable = { var = manpower value = constant:infantry_spawn_derivative_decision_cost.zombie_integration_manpower compare = greater_than_or_equals }
+	NOT = { has_manpower < constant:infantry_spawn_derivative_decision_cost.zombie_integration_manpower }
 	check_variable = { var = num_equipment@infantry_equipment value = constant:infantry_spawn_derivative_decision_cost.zombie_integration_equipment compare = greater_than_or_equals }
 }
 

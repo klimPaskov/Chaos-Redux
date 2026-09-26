@@ -5606,7 +5606,7 @@ infantry_spawn_pay_selected_request_costs = {
 			check_variable = { var = num_equipment@motorized_equipment value = infantry_spawn_request_truck_cost compare = greater_than_or_equals }
 			check_variable = { var = num_equipment@train_equipment value = infantry_spawn_request_train_cost compare = greater_than_or_equals }
 			check_variable = { var = fuel_k value = infantry_spawn_request_fuel_cost_k compare = greater_than_or_equals }
-			check_variable = { var = manpower value = infantry_spawn_request_manpower_cost compare = greater_than_or_equals }
+			NOT = { has_manpower < infantry_spawn_request_manpower_cost }
 		}
 		set_temp_variable = { infantry_spawn_request_negative_payment = 0 }
 		subtract_from_temp_variable = { infantry_spawn_request_negative_payment = infantry_spawn_request_xp_cost }
@@ -5828,7 +5828,7 @@ infantry_spawn_snapshot_management_request_payment_resources = {
 	set_temp_variable = { infantry_spawn_request_pre_payment_army_experience = army_experience }
 	set_temp_variable = { infantry_spawn_request_pre_payment_political_power = political_power }
 	set_temp_variable = { infantry_spawn_request_pre_payment_command_power = command_power }
-	set_temp_variable = { infantry_spawn_request_pre_payment_manpower = manpower }
+	set_temp_variable = { infantry_spawn_request_pre_payment_manpower_k = manpower_k }
 	set_temp_variable = { infantry_spawn_request_pre_payment_fuel_k = fuel_k }
 	set_temp_variable = { infantry_spawn_request_pre_payment_infantry_equipment = num_equipment@infantry_equipment }
 	set_temp_variable = { infantry_spawn_request_pre_payment_support_equipment = num_equipment@support_equipment }
@@ -5849,7 +5849,7 @@ infantry_spawn_verify_management_request_payment_resources_restored = {
 				NOT = { check_variable = { var = army_experience value = infantry_spawn_request_pre_payment_army_experience compare = equals } }
 				NOT = { check_variable = { var = political_power value = infantry_spawn_request_pre_payment_political_power compare = equals } }
 				NOT = { check_variable = { var = command_power value = infantry_spawn_request_pre_payment_command_power compare = equals } }
-				NOT = { check_variable = { var = manpower value = infantry_spawn_request_pre_payment_manpower compare = equals } }
+				NOT = { check_variable = { var = manpower_k value = infantry_spawn_request_pre_payment_manpower_k compare = equals } }
 				NOT = { check_variable = { var = fuel_k value = infantry_spawn_request_pre_payment_fuel_k compare = equals } }
 				NOT = { check_variable = { var = num_equipment@infantry_equipment value = infantry_spawn_request_pre_payment_infantry_equipment compare = equals } }
 				NOT = { check_variable = { var = num_equipment@support_equipment value = infantry_spawn_request_pre_payment_support_equipment compare = equals } }
@@ -5920,7 +5920,7 @@ infantry_spawn_snapshot_management_request_transaction = {
 	set_temp_variable = { infantry_spawn_request_snapshot_army_experience = army_experience }
 	set_temp_variable = { infantry_spawn_request_snapshot_political_power = political_power }
 	set_temp_variable = { infantry_spawn_request_snapshot_command_power = command_power }
-	set_temp_variable = { infantry_spawn_request_snapshot_manpower = manpower }
+	set_temp_variable = { infantry_spawn_request_snapshot_manpower_k = manpower_k }
 	set_temp_variable = { infantry_spawn_request_snapshot_fuel_k = fuel_k }
 	set_temp_variable = { infantry_spawn_request_snapshot_infantry_equipment = num_equipment@infantry_equipment }
 	set_temp_variable = { infantry_spawn_request_snapshot_support_equipment = num_equipment@support_equipment }
