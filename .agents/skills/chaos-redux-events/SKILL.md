@@ -18,9 +18,7 @@ When an event implementation creates broad visible text, spawn `chaosx_localisat
 
 ## Working model
 
-An event spans several implementation surfaces.
-
-Treat every event as a contract across some or all of these surfaces:
+Treat every event as a contract across some or all of these implementation surfaces:
 
 - event definition and subevents
 - random-event classification and registration
@@ -69,7 +67,7 @@ For large or multi-surface event work, use project subagents to keep the main im
 - Spawn `chaosx_focus_tree_auditor` after creating or heavily changing focus trees.
 - Spawn `chaosx_ai_probability_auditor` for every in-scope AI weight, MTTH, random-selection, or weighted-pool surface before completion.
 - Spawn `chaosx_event_completion_auditor` before claiming a large event, event rework, or spec-driven implementation is complete.
-- Spawn `chaosx_spreadsheet_doc_worker` after implementation when docs, catalog rows, manifests, route coverage tables, or spreadsheet-style records need to match the final repo state.
+- Spawn `chaosx_spreadsheet_doc_worker` after implementation when the event catalog workbook rows need to match the final repo state. Docs, manifests, and route coverage tables stay with the parent or `chaosx_documentation_curator`.
 
 Subagents do not remove the main agent's responsibility to wire, review, validate, and report honestly.
 
@@ -186,7 +184,7 @@ Baseline progression can use whatever state, flags, variables, decisions, or eve
 For actual evolutions, the usual pattern is:
 
 1. the evolution condition becomes available from the current campaign state
-2. the evolved incident, track, or milestone fires through dynamic pacing (an evolution never happens instantly, it uses MTTH. It can take a good amount of time before an evolution happens, the base should be like 90 days, but it could be more or less, depending on the evolution. Some happen instantly, for events that haven't fired yet for example, which just makes the initial firing more intense)
+2. the evolved incident, track, or milestone fires through MTTH-based dynamic pacing rather than instantly, and it can take a good amount of time: the base should be around 90 days, but it can be more or less depending on the evolution. Some happen instantly, for example for events that haven't fired yet, which makes the initial firing more intense
 3. set the shared evolution context variables
 4. record the evolution log entry through the shared pipeline
 5. unlock or adjust the new behavior, tag, decision set, focus branch, or rare variant
@@ -233,7 +231,7 @@ Event-log defaults must keep unreworked events disabled by default. An event tha
 
 ## World-end scenarios
 
-A world-end scenario is a terminal branch that changes the campaign into a resolved or end-state condition, not just a large disaster or strong major event. World-end scenario is chosen based on the world state. World-end scenario can only be triggered when the chaos value is over 1000.
+A world-end scenario is a terminal branch that changes the campaign into a resolved or end-state condition, not just a large disaster or strong major event. It is chosen based on the world state and can only be triggered when the chaos value is over 1000.
 
 ### World-end scenario implementation
 
@@ -437,7 +435,7 @@ Touch the relevant systems in the same change:
 - AI strategies or templates if the event changes how AI should respond
 - special-country exclusions if the event touches broad civilian, political, migration, or ideology systems
 - Chaos Meter hooks when the event owns Chaos-changing outcomes
-- shared country classification when the event creates or manages chaos countries: register every such country in `is_special_chaos_country` in `common/scripted_triggers/chaosx_dynamic_triggers.txt`, document it in `common/scripted_triggers/chaosx_dynamic_triggers.md`, also register/document it in `is_actual_nonhuman_country` when it is actually nonhuman, and avoid adding separate event-local classification triggers for the same concept
+- shared country classification when the event creates or manages chaos countries, as required under [Event-created country setup and audit](#event-created-country-setup-and-audit)
 - and much more
 
 Keep the complete bodies of `is_special_chaos_country`, `is_actual_nonhuman_country`, and `uses_normal_civilian_systems` inside `hidden_trigger`. Player-facing callers that need to explain eligibility must provide a concise custom tooltip instead of exposing the classifiers' tags, flags, or provider triggers.
@@ -479,7 +477,7 @@ Verify registration convergence, repeated requests, and refresh while a request 
 
 ### 5. Event log integration
 
-Events must appear in Chaos Redux’s event log, wire the full log contract in the same change.
+Events must appear in Chaos Redux’s event log, so wire the full log contract in the same change.
 
 Script ownership:
 
@@ -500,7 +498,7 @@ Required actor plumbing when a flag should appear:
 - use a default actor only when the event should show a meaningful actor before or without a fired history row
 - if fired history should override the default actor, keep the history-context flow intact
 - for random-event history rows, remember that the generic fired-event handler records the row before the target event's `immediate` block runs. If the actor is created or refreshed inside that event, move that preparation into a shared pre-fire helper and call it before `record_events_log_history_entry`
-- for evolution rows with actors, save the country as `events_log_evolution_actor` and set `events_log_evolution_has_actor = 1` immediately before `record_events_log_evolution_entry = yes`. No-actor entries should let the shared logger default `events_log_evolution_has_actor` to `0`
+- for evolution rows with actors and no-actor entries, follow the `events_log_evolution_actor` and `events_log_evolution_has_actor` rule under [Evolution implementation](#evolution-implementation)
 
 Required detail-view plumbing:
 
@@ -565,8 +563,8 @@ Cluster firing rules:
 
 - Automatic cluster firing happens from `try_fire_event_cluster_for_selected_event` after a member event is selected.
 - Automatic firing respects cluster unlock tier, cooldown, one-time state, member eligibility, optional participation rolls, and runtime context.
-- Manual firing from Settings uses `force_fire_event_cluster_by_temp_id`. it bypasses tier, cooldown, disabled-state, and member availability checks. Runtime context can still fail if the event cannot build the required scopes.
-- Cluster history rows are recorded by `record_events_log_cluster_entry`. cluster catalogue rows are rebuilt by `rebuild_events_log_cluster_view`.
+- Manual firing from Settings uses `force_fire_event_cluster_by_temp_id`. It bypasses tier, cooldown, disabled-state, and member availability checks. Runtime context can still fail if the event cannot build the required scopes.
+- Cluster history rows are recorded by `record_events_log_cluster_entry`. Cluster catalogue rows are rebuilt by `rebuild_events_log_cluster_view`.
 
 When inlining a multi-condition scripted trigger inside `NOT`, keep the conditions in an explicit `AND` block; sibling conditions in `NOT` use NOR semantics.
 Preserve the original rejection behavior when either a shared precondition or the native legality check fails.
@@ -605,11 +603,7 @@ If the event shows or drives a super event, wire the whole package:
 - update player-facing localisation in the correct `.yml` files
 - update `music/chaosx_music_track_list.html`, the canonical audio catalogue, with the final track, super-event id, source, and rights details. If you can't get all the info from the file metadata and the user didn't provide the author or the name of the piece, then ask the user to do so.
 
-Use `chaos-redux-super-events` whenever an event includes a super-event.
-
-That skill handles super-event title direction, description tone, quote research, cultural remark selection, audio research, source documentation, and super-event presentation rules.
-
-This skill handles implementation wiring: slot, flags, localisation, image, audio ID, scripted localisation, `.gfx`, docs, and spreadsheet updates.
+Use `chaos-redux-super-events` whenever an event includes a super-event. That skill handles super-event title direction, description tone, quote research, cultural remark selection, audio research, source documentation, and super-event presentation rules. This skill handles implementation wiring: slot, flags, localisation, image, audio ID, scripted localisation, `.gfx`, docs, and spreadsheet updates.
 
 ### 9. World-end integration
 
@@ -618,11 +612,11 @@ If the event can produce a terminal scenario:
 - keep the world-end flagging explicit and centralized
 - make sure the terminal branch is distinguishable from ordinary major-event escalation
 - gate later random events, branches, or systems that should no longer operate after the terminal state
-- make the docs and spreadsheet, all agree on what the terminal branch actually is
+- make the docs and spreadsheet agree on what the terminal branch actually is
 
 If the branch is dramatic but not actually terminal, treat it as a major escalation evolution or super-event instead of world-end.
 
-### World threat framework
+## World threat framework
 
 If an event or mechanic creates an existential external threat that should push other systems toward cooperation, integrate it with the shared world-threat framework instead of inventing a new one-off flag.
 
@@ -648,7 +642,7 @@ Event-specific documentation belongs in `docs/events/`.
 
 Preferred naming pattern:
 
-- `docs/events/<zero_padded_id>_<slug>.md`, so exactly like with event script files.
+- `docs/events/<zero_padded_id>_<slug>.md`, matching the event script file naming
 
 Keep one canonical doc per event chain instead of splitting mechanics across multiple top-level docs unless the user explicitly asks for that.
 
@@ -785,7 +779,7 @@ For every generated asset:
 1. Create the base artwork by following the official `$imagegen` skill workflow through `chaos-redux-event-assets`.
 2. Save the original generated image as a source PNG in the active event-scoped temporary `docs/assets/<event_id>_<event_slug>/` workspace.
 3. Create a processed PNG preview at the correct HOI4 target size in that temporary workspace.
-4. Convert the processed PNG to DDS 32 bit unsigned BGRB 8.8.8.8.
+4. Convert the processed PNG to DDS 32 bit unsigned BGRA 8.8.8.8.
 5. Move the DDS into the correct mod asset folder.
 6. Add or update the matching sprite definition in the correct `.gfx` file.
 7. Update localisation, docs, and event spreadsheet entries that reference the asset.
@@ -826,7 +820,7 @@ Before closing an event task, verify:
 14. `docs/events/` is updated.
 15. `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is updated, then `.tools/export_event_catalog_csv.py` is run so all three export-only CSV snapshots are refreshed.
 16. If assets are required, `chaos-redux-event-assets` has been used.
-17. During active work, generated assets are resized, converted to DDS 32 bit unsigned BGRB 8.8.8.8, moved into the correct folders, wired in `.gfx`, and recorded in the temporary asset manifest and crosswalk. Before completion, durable facts are promoted and the event-scoped `docs/assets/<event_id>_<event_slug>/` workspace is deleted, with no runtime reference left to it.
+17. During active work, generated assets are resized, converted to DDS 32 bit unsigned BGRA 8.8.8.8, moved into the correct folders, wired in `.gfx`, and recorded in the temporary asset manifest and crosswalk. Before completion, durable facts are promoted and the event-scoped `docs/assets/<event_id>_<event_slug>/` workspace is deleted, with no runtime reference left to it.
 18. Spec-mapped mechanics, routes, countries, decisions, achievements, assets, and super-events are implemented or clearly reported as blocked, merged, renamed, skipped, or simplified.
 19. Dynamic values, concrete costs, mechanic visibility, decision category filtering, and effect strength are checked where the spec calls for them.
 20. Focus trees preserve route structure, focus filters, varied rewards, idea lifecycles, route-specific AI, and visible branch payoffs where relevant.
