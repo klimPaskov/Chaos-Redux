@@ -140,6 +140,8 @@ Rejected candidates recover their original owner and controller and are excluded
 Naval candidates require a coast.
 If the world has no legal candidate, the allocator terminates and records an explicit per-type missing-campus flag and aggregate provisioning-incomplete flag; it does not attempt illegal construction or substitute another facility.
 
+Scripted completion of CXT's Anthrax, Plague, Tularemia, and Smallpox projects does not run their facility-state effects. After special facilities are provisioned and the initial stockpile is filled, CXT registers an arsenal only when exactly one owned, controlled, inhabited, eligible state has a positive biowarfare-facility level. The registration records that exact state as the scripted-project facility, refreshes risk, and starts the existing idempotent country monitor. Zero or multiple eligible campuses set `chaosx_test_country_bio_arsenal_registration_blocked` and leave the monitor unstarted; a prior designation or designation history is never replaced. This fixture uses existing CBRN facility and monitor assets and needs no new icon or sprite.
+
 The `anomaly_signal_beacon_pilot` building is excluded because its definition is a non-buildable 3D asset pilot without a special-project specialization.
 
 Facilities, doctrines, and general systems do not use the project, equipment, or sub-unit definition arrays. A future package exposes a package-owned idempotent `_apply` helper and registers its hidden-idea carrier through the extension bus. The helper checks a stable package flag or the relevant building/system state before applying direct effects such as `set_building_level`, doctrine completion, or system bootstrap.

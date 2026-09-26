@@ -8,6 +8,8 @@
 # - Enumerates the runtime technology database, consumes registered projects,
 #   equipment, units, and package setup effects, activates Chaos Warfare, and
 #   turns on the shared CBRN and camp systems.
+# - Registers an arsenal only when CXT has one exact eligible bio campus after
+#   scripted project completion and facility provisioning.
 # - Leaves all subsequent grants to CXT-only debug decisions.
 # ============================================================================
 
@@ -217,6 +219,67 @@ chaosx_test_country_build_special_facilities = {
 	chaosx_test_country_provision_facility_type = yes
 }
 
+# Country scope. Scripted project completion skips facility_state_effects, so
+# bind the already-built CXT biowarfare campus only when exactly one owned and
+# controlled candidate exists. An absent or ambiguous campus fails closed.
+chaosx_test_country_register_unique_bio_arsenal = {
+	if = {
+		limit = {
+			tag = CXT
+			is_special_project_completed = sp:anthrax_bomb
+			is_special_project_completed = sp:plague_bomb
+			is_special_project_completed = sp:tularemia_bomb
+			is_special_project_completed = sp:smallpox_bomb
+			NOT = { bio_stockpile_safety_arsenal_pointer_is_valid = yes }
+			NOT = { has_country_flag = bio_stockpile_safety_arsenal_designation_history }
+		}
+		clr_country_flag = chaosx_test_country_bio_arsenal_registration_blocked
+		set_temp_variable = { chaosx_test_country_bio_arsenal_candidate_count = constant:cbrn_math.zero }
+		every_owned_state = {
+			limit = {
+				is_controlled_by = ROOT
+				impassable = no
+				bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+				biowarfare_facility > constant:bio_stockpile_safety_risk.facility_level_trigger_floor
+			}
+			add_to_temp_variable = { chaosx_test_country_bio_arsenal_candidate_count = constant:cbrn_math.one }
+			save_event_target_as = chaosx_test_country_bio_arsenal_candidate
+		}
+		if = {
+			limit = {
+				check_variable = { var = chaosx_test_country_bio_arsenal_candidate_count value = constant:cbrn_math.one compare = equals }
+				has_event_target = chaosx_test_country_bio_arsenal_candidate
+			}
+			event_target:chaosx_test_country_bio_arsenal_candidate = {
+				if = {
+					limit = {
+						is_owned_by = ROOT
+						is_controlled_by = ROOT
+						impassable = no
+						bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+						biowarfare_facility > constant:bio_stockpile_safety_risk.facility_level_trigger_floor
+					}
+					set_state_flag = bio_stockpile_safety_arsenal_complex
+					set_variable = { bio_stockpile_safety_arsenal_actor = ROOT }
+					set_variable = { bio_stockpile_safety_arsenal_designated_date = global.num_days }
+					ROOT = {
+						cbrn_initialize_country_data = yes
+						set_variable = { bio_stockpile_safety_arsenal_state = event_target:chaosx_test_country_bio_arsenal_candidate }
+						set_variable = { bio_stockpile_safety_arsenal_pointer_source = constant:bio_stockpile_safety_pointer_source.scripted_project_exact_facility }
+						set_variable = { bio_stockpile_safety_last_designation_date = global.num_days }
+						set_country_flag = bio_stockpile_safety_arsenal_designated
+						set_country_flag = bio_stockpile_safety_arsenal_designation_history
+						bio_stockpile_safety_refresh_risk_band = yes
+						bio_stockpile_safety_start_monitor = yes
+					}
+				}
+				else = { ROOT = { set_country_flag = chaosx_test_country_bio_arsenal_registration_blocked } }
+			}
+		}
+		else = { set_country_flag = chaosx_test_country_bio_arsenal_registration_blocked }
+	}
+}
+
 chaosx_test_country_complete_chaos_warfare = {
 	set_grand_doctrine = chaos_warfare
 	set_sub_doctrine = extermination_columns
@@ -354,6 +417,7 @@ chaosx_test_country_initial_setup = {
 	chaosx_test_country_activate_camp_systems = yes
 	log = "CXT_SETUP_TRACE phase=stockpile date=[?global.date|.3]"
 	chaosx_test_country_fill_stockpile = yes
+	chaosx_test_country_register_unique_bio_arsenal = yes
 	log = "CXT_SETUP_TRACE phase=resources date=[?global.date|.3]"
 	chaosx_test_country_refill_resources = yes
 	log = "CXT_SETUP_TRACE phase=static_roster date=[?global.date|.3]"
