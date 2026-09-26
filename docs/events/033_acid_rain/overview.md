@@ -1,6 +1,6 @@
 # Event 033 Acid Rain
 
-Event 033 is a Major Chaos level 2 member of Severe Natural Disasters. It can fire independently or as the sixth optional cluster member after Event 13's five logical slots, and both routes enter the same host-authoritative generation runtime.
+Event 033 is a Major Chaos level 2 member of Severe Natural Disasters. It can fire independently or as the sixth optional cluster member after Event 13's five logical slots, and both routes enter the same host-authoritative generation runtime. A cluster queue reserves its launch, while major-event weights and the event timer reset only when Event 33 actually dispatches.
 
 ## Player loop
 

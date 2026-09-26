@@ -119,6 +119,8 @@ initialize_event_cluster_system = {
 		add_to_array = { array = global.event_cluster_unlock_tier_entries value = constant:event_cluster_random_stuff.unlock_tier }
 	}
 	clr_country_flag = event_cluster_member_fire_context
+	clr_country_flag = event_cluster_initial_trigger_dispatch
+	clr_country_flag = event_cluster_initial_major_dispatched
 
 	event_cluster_ensure_probability_state = yes
 	random_stuff_cluster_ensure_state = yes
@@ -3215,7 +3217,7 @@ event_cluster_schedule_next_pending_member = {
 	country_event = { id = chaosx.event_clusters.2 days = event_cluster_next_member_delay_days }
 }
 
-event_cluster_prepare_acid_rain_major_contract = {
+event_cluster_prepare_acid_rain_reservation = {
 	set_temp_variable = { event_cluster_acid_rain_selected = constant:acid_rain_runtime.zero }
 	if = {
 		limit = { check_variable = { event_cluster_id = constant:event_cluster_id.natural_disasters } }
@@ -3232,13 +3234,11 @@ event_cluster_prepare_acid_rain_major_contract = {
 	if = {
 		limit = { check_variable = { event_cluster_acid_rain_selected = constant:acid_rain_runtime.one } }
 		set_global_flag = acid_rain_cluster_reserved
-		set_global_flag = acid_rain_cluster_major_pacing_pending
 	}
 }
 
-event_cluster_cancel_acid_rain_major_contract = {
+event_cluster_cancel_acid_rain_reservation = {
 	clr_global_flag = acid_rain_cluster_reserved
-	clr_global_flag = acid_rain_cluster_major_pacing_pending
 }
 
 event_cluster_release_acid_rain_reservation_from_pending_queue = {
@@ -4843,7 +4843,7 @@ fire_event_cluster_by_temp_id = {
 				# re-evaluate it after preflight: transactional preparations such as the
 				# Liberations joint incident intentionally change the state being tested.
 				# Delayed members receive their own immediate evaluator recheck.
-				event_cluster_prepare_acid_rain_major_contract = yes
+				event_cluster_prepare_acid_rain_reservation = yes
 				set_temp_variable = { event_fire_dispatched = 0 }
 				set_temp_variable = { event_id = temp_event_cluster_firing_order_event_id_entries^0 }
 				set_temp_variable = { event_cluster_current_member_batch_index = temp_event_cluster_firing_order_batch_index_entries^0 }
@@ -4852,10 +4852,14 @@ fire_event_cluster_by_temp_id = {
 				set_temp_variable = { event_cluster_current_member_event013_target_country = temp_event_cluster_firing_order_event013_target_country_entries^0 }
 				set_temp_variable = { event_cluster_current_member_event013_family = temp_event_cluster_firing_order_event013_family_entries^0 }
 				set_temp_variable = { event_cluster_current_member_event013_variant = temp_event_cluster_firing_order_event013_variant_entries^0 }
+				clr_country_flag = event_cluster_initial_major_dispatched
+				set_country_flag = event_cluster_initial_trigger_dispatch
 				fire_event_cluster_member_by_temp_id = yes
+				clr_country_flag = event_cluster_initial_trigger_dispatch
 				if = {
 					limit = { check_variable = { event_fire_dispatched < 1 } }
-					event_cluster_cancel_acid_rain_major_contract = yes
+					event_cluster_cancel_acid_rain_reservation = yes
+					clr_country_flag = event_cluster_initial_major_dispatched
 				}
 				if = {
 					limit = { check_variable = { event_fire_dispatched > 0 } }

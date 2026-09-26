@@ -8,7 +8,7 @@ Its completed checklist items are retained source-implementation claims, not ind
 - In the captured working-tree documents, this file's catalogue gives Negative Economy Chaos level 2, while the catalogue in [event_clusters.md](event_clusters.md) gives level 1.
 - The common Severe-member floor is T3, while the runtime reference describes Acid Rain participation from Gathering Storm, T1, onward.
 The documents do not explain the acceptance basis and scope of that exception together.
-- The general pacing rule describes one minor update for repeatable clusters, while the Natural Disasters record describes a Major update when the prepared queue contains Acid Rain.
+- The 2026-09-26 user decision requires major-event weights to reset when a Major member actually fires in any cluster. Runtime pacing follows that decision. The other unresolved inputs below remain separate.
 - The worked small-cluster example starts with two eligible logical rows but subsequently describes a trigger, a required row, and optional rows.
 The optional-decay example continues that setup with another optional row.
 - The High-severity support example says no other row is base-eligible while also describing an eligible trigger.
@@ -372,11 +372,13 @@ A manual cluster force transitions from selected cluster to cluster-only gate by
 
 ## 6. Pacing, cooldown, and history
 
-A successful cluster activation applies one cluster pacing update and one cluster cooldown update for the complete batch.
+A successful cluster activation applies one aggregate event-count and repeatable-recovery update, plus one cluster cooldown update for the complete batch. A later Major member can reset major state and the timer at its actual dispatch.
 
-The number of member rows that dispatch does not multiply pacing or cooldown updates.
+The number of member rows that dispatch does not multiply the aggregate event count, repeatable recovery update, or cluster cooldown.
 
-The cluster pacing path counts a repeatable or one-time cluster once for global timer compression and dynamic major-event gain.
+The cluster pacing path counts a repeatable or one-time cluster once for global event totals and repeatable-event recovery. A Major trigger selects Major pacing after synchronous dispatch. A later Major member resets major-event weights, the minor-since-major count, and the event timer when it actually dispatches, without adding another global event count or repeatable recovery update. A delayed member that is skipped does not reset major weighting.
+
+Random Stuff retains the opening minor event's single global pacing update. A Major event actually dispatched in its bulk batch resets major weighting and the timer without adding another global count.
 
 A major cluster, when intentionally registered, uses its major pacing path once and resets major-event weights once.
 
@@ -596,7 +598,7 @@ Source review, static checks, MCP artifacts, and user-owned live-game validation
 - [x] Activation bases, factors, fatigue, previous-participation ratio, rounding, and clamps match this contract.
 - [x] Optional table values, accepted-row decay, ordering, and guaranteed dispatch match this contract.
 - [x] Stable logical rows, primary duplicate trigger rows, batch state, delayed rechecks, invalidation, overlapping-batch isolation, and versioned history are implemented.
-- [x] Successful cluster pacing and cooldown update exactly once, and manual memory remains isolated.
+- [x] Successful clusters count one aggregate event and apply one cooldown. Any actually fired Major member resets major state without adding another event count, and manual memory remains isolated.
 - [x] Successful history snapshots include activation and member fields without recomputation, and delayed invalidation settles chance and roll to N/A sentinels.
 - [x] Event Logs and Settings expose the required chance, availability, role, severity, effective minimum, sort, and N/A behavior in source.
 - [x] Fury, Tensions Rising, and Black Plague use the corrected cluster-row severities.

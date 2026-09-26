@@ -141,7 +141,7 @@ The table is unchanged by cluster member severity.
 
 Event Chaos Level gating happens during ordinary event selection and does not count as a cluster activation.
 
-A successful fixed-member cluster activation applies one cluster pacing and cooldown update regardless of member count. Random Stuff is attempted after ordinary minor pacing and therefore applies no second aggregate pacing update.
+A successful fixed-member cluster activation contributes one global event count, one repeatable recovery update, and one cooldown regardless of member count. A Major trigger takes Major pacing, and a later Major member resets major weights and the timer when it actually dispatches. Random Stuff is attempted after ordinary minor pacing and therefore adds no second aggregate count or recovery update, while an actually dispatched Major bulk member still resets major state.
 Its selected events still obey their independent Event Chaos Levels.
 
 A valid failed cluster activation roll does not apply cluster pacing or a cluster cooldown update and returns to ordinary standalone handling.

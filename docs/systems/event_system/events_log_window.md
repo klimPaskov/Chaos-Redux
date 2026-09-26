@@ -203,7 +203,7 @@ A failed delayed recheck invalidates the row with N/A and the first canonical re
 
 Overlapping batches remain isolated.
 
-A successful fixed-member cluster activation applies one pacing and one cooldown update for the complete batch. Random Stuff reuses the opening ordinary minor event's pacing update and applies only its successful automatic cooldown.
+A successful fixed-member cluster activation contributes one global event count, one repeatable recovery update, and one cooldown for the complete batch. A Major trigger takes Major pacing, and a later Major member resets major weights and the timer at dispatch. Random Stuff reuses the opening minor event's aggregate count and recovery update, while any Major bulk member resets major state when it actually dispatches.
 
 Automatic fatigue increases by one after a successful activation and decreases by one after a valid failed activation roll.
 

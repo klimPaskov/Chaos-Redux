@@ -1092,8 +1092,14 @@ on_minor_event_global_pacing_update = {
 
 on_major_event_global_pacing_update = {
 	add_to_variable = { global.total_events_fired = 1 }
-	set_variable = { global.minor_events_since_major = 0 }
 	update_repeatable_event_weights = yes
+	reset_major_event_pacing_state = yes
+}
+
+# The major-only state transition can also follow a delayed cluster member or
+# Random Stuff draw without adding another global event count or recovery step.
+reset_major_event_pacing_state = {
+	set_variable = { global.minor_events_since_major = 0 }
 	reset_unfired_major_event_weights = yes
 	on_major_event_timer_update = yes
 	set_variable = { global.current_major_event_weight = 0 }
@@ -1102,8 +1108,8 @@ on_major_event_global_pacing_update = {
 
 on_event_cluster_global_pacing_update = {
 	if = {
-		limit = { has_global_flag = acid_rain_cluster_major_pacing_pending }
-		clr_global_flag = acid_rain_cluster_major_pacing_pending
+		limit = { has_country_flag = event_cluster_initial_major_dispatched }
+		clr_country_flag = event_cluster_initial_major_dispatched
 		on_major_event_global_pacing_update = yes
 	}
 	else = {
@@ -1223,7 +1229,16 @@ on_major_event_fired = {
 
 	# Reset system state
 	if = {
-		limit = { NOT = { has_country_flag = event_cluster_member_fire_context } }
+		limit = { has_country_flag = event_cluster_member_fire_context }
+		if = {
+			limit = { has_country_flag = event_cluster_initial_trigger_dispatch }
+			set_country_flag = event_cluster_initial_major_dispatched
+		}
+		else = {
+			reset_major_event_pacing_state = yes
+		}
+	}
+	else = {
 		on_major_event_global_pacing_update = yes
 	}
 

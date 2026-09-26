@@ -56,11 +56,13 @@ The event-system helpers live in `common/scripted_effects/chaosx_logic_effects.t
 
 ## Cluster Pacing
 
-Each successful cluster activation applies global pacing once for the complete batch. One-time and repeatable clusters count as one minor global pacing event, so `apply_dynamic_major_weight_gain_after_minor` runs once regardless of the number of dispatched members. Member events fire in `event_cluster_member_fire_context`, which suppresses additional timer or major-gain updates.
+Each successful cluster activation contributes one global event count and one repeatable-event recovery update for the complete batch. A one-time or repeatable cluster whose first dispatched member is not Major starts with Minor pacing, so `apply_dynamic_major_weight_gain_after_minor` runs once regardless of the number of members. A Major trigger takes Major pacing instead.
+
+Member events fire in `event_cluster_member_fire_context`. When a delayed Major member actually dispatches, it resets unfired major weights, the minor-since-major count, and the event timer. This does not add a second global event count or repeatable-event recovery update. A delayed member that becomes unavailable does not reset the weights.
 
 When one selected event succeeds in several cluster activation rolls, uniform arbitration selects one winning cluster before dispatch. Losing successful candidates apply no pacing, while the winner still contributes exactly one aggregate pacing update.
 
-Random Stuff is a post-minor-event exception: the ordinary minor event that opens its attempt has already applied that one pacing update, so the bonus batch suppresses member pacing and does not apply a second aggregate gain.
+Random Stuff is a post-minor-event exception: the ordinary minor event that opens its attempt has already applied that one pacing update, so the bonus batch does not add a second aggregate gain. A Major event actually dispatched by the bulk batch still resets major weights and the timer.
 
 An intentionally registered major cluster uses the major pacing path and resets major weights once for the cluster.
 

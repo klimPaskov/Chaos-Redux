@@ -159,9 +159,9 @@ After batch settlement, historical values never recompute from current Chaos tie
 
 Automatic fatigue and previous-participation memory exclude manual forcing.
 
-A successful fixed-member cluster activation applies one pacing and one cooldown update regardless of member count.
+A successful fixed-member cluster activation contributes one global event count, one repeatable recovery update, and one cooldown regardless of member count. A Major trigger selects Major pacing, and a later Major member resets major weights and the timer only when it dispatches.
 
-For Random Stuff, the ordinary minor event that opened the attempt already supplied the single pacing update, while the successful bonus batch supplies only its 240-day cluster cooldown.
+For Random Stuff, the ordinary minor event that opened the attempt already supplied the aggregate pacing update, while the successful bonus batch supplies its 240-day cluster cooldown. A Major bulk draw resets major weights and the timer when it actually dispatches.
 
 ## Detail-window selection state
 
