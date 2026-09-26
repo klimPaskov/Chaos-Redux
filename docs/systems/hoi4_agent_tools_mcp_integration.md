@@ -17,6 +17,10 @@ The mod containing the MCP working directory is the writable source root. The in
 
 The registration contains no credentials. Keep HTTP bearer tokens in environment variables, never in tracked config.
 
+The Codex registration allows 120 seconds for startup and 600 seconds per tool call.
+Keep source selectors and GUI scenario matrices bounded; complex source renders can take several minutes.
+Use negotiated task support only after confirming it in the connected client and server.
+
 ## Tool routes
 
 | Capability | MCP tools | Source access |
