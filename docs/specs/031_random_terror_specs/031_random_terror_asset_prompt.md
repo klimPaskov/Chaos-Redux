@@ -62,7 +62,7 @@ They should not become a visual disclaimer pasted onto otherwise stereotyped art
 
 Before creating each asset type, read the reference-library rules and inspect the matching contact sheet and source catalog under:
 
-`C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/`
+`C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/`
 
 Inspect the exact installed-vanilla consumer and closest Chaos Redux precedent where engine behavior or final canvas matters.
 

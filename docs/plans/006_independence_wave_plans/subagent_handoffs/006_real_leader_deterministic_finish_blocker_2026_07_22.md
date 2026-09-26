@@ -127,7 +127,7 @@ nearest-neighbour scale:
 - `ice_sveinn_bjornsson.png`
 
 The canonical PNGs come from
-`.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/`.
+`.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/`.
 
 ## Recommendation
 

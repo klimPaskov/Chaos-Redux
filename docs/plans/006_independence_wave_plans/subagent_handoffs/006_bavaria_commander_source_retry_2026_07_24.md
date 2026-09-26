@@ -58,7 +58,7 @@ No gameplay, `.gfx`, localisation, workbook, readiness, or skill files were edit
 
 No ImageGen output, processed 156x210 portrait, DDS, or fallback was created.
 
-The next processor must use the unchanged master and exact crop as identity evidence, use `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/commanders/` only as the role-style reference family, and stop for an independent likeness/style/provenance audit before DDS conversion or runtime wiring.
+The next processor must use the unchanged master and exact crop as identity evidence, use `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/commanders/` only as the role-style reference family, and stop for an independent likeness/style/provenance audit before DDS conversion or runtime wiring.
 
 ## Files created
 

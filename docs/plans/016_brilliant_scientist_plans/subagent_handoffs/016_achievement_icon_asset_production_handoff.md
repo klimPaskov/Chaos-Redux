@@ -22,7 +22,7 @@ The exact 17 identity ids are `016_brilliant_scientist_borrowed_century`, `016_b
 
 ## Validation evidence
 
-- Canonical reference contact sheet inspected before generation: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements/contact_sheet.png`.
+- Canonical reference contact sheet inspected before generation: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements/contact_sheet.png`.
 - Generated masters were visually reviewed and retain 1254x1254 dimensions, exceeding the required 512x512 minimum.
 - All 17 alpha outputs have transparent corners and no retained flat chroma-key background.
 - All 51 processed PNGs report `64x64`, `RGBA`, and transparent corners.

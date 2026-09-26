@@ -98,7 +98,7 @@ Attribution and ShareAlike obligations in the source ledger remain mandatory. No
 The existing counter package passes the file, format, palette, and visual-comparison audit; live consumer validation remains parent-owned.
 
 - Exact installed definition: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/interface/subuniticons.gfx`, SHA-256 `0d7b62caf328b3c296ec27ab85318f3cc78cc760b02923538bf5240815963335`.
-- Matching skill-local reference families: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/counters_large/contact_sheet.png` and `units/land/map_counters/contact_sheet.png`.
+- Matching skill-local reference families: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/counters_large/contact_sheet.png` and `units/land/map_counters/contact_sheet.png`.
 - Large consumer: `GFX_group_autonomous_robot_icon` and `GFX_unit_autonomous_robot_icon_medium`; `152x42`, two `76x42` frames; runtime DDS SHA-256 `147cf90c3d053947640f7865f1dade6d8ffaba99942e8401ed4575d53db61b09`.
 - On-map consumer: `GFX_unit_autonomous_robot_icon_medium_white`; `60x12`, two `30x12` frames; runtime DDS SHA-256 `bdeb527f8a73494b918adec27c26aec97c299f51ad00d2da2946a37a278edd4b`.
 - Frame order: green selected state first, pale/white alternate state second; BGRA 32-bit uncompressed with alpha.

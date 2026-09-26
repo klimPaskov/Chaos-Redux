@@ -40,9 +40,9 @@ No checkerboard, matte, halo, opaque square, or chroma background is present in 
 
 ## Canonical reference evidence
 
-The required canonical library README and catalog were inspected under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/`.
+The required canonical library README and catalog were inspected under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/`.
 
-The exact contact sheet inspected was `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decision_categories/contact_sheet.png`.
+The exact contact sheet inspected was `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decision_categories/contact_sheet.png`.
 
 The installed-vanilla category family was checked against `decision_category_generic.png` (`51x40`), `decision_category_border_conflicts.png` (`52x40`), `decision_category_border_war.png` (`52x40`), `decision_category_generic_crisis.png` (`52x39`), `decision_category_infiltration.png` (`50x40`), and `decision_category_generic_prospect_for_resources.png` (`52x41`).
 

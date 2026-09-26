@@ -20,7 +20,7 @@ Installed `interface/_leader_portraits.gfx` currently maps `GFX_portrait_Grigory
 
 The current generic vanilla textures are 156x210 DXT1 DDS files, not identity sources: `Portrait_Asia_Generic_2.dds` SHA-256 `75ea54febbfb76011e9827d0c30feb82bd4747bcb0c976c9bb3e1792ab1d360c`, and `Portrait_Asia_Generic_3.dds` SHA-256 `7931b57e900ca175b0fd1c297584f8f755ebbc887655ef5670f967157d6feb7d`. They remain untouched.
 
-The matching role shelf was inspected at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/contact_sheet.png`; it contains eight lossless 156x210 leader references and is style evidence only, never a face source.
+The matching role shelf was inspected at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/contact_sheet.png`; it contains eight lossless 156x210 leader references and is style evidence only, never a face source.
 
 ## Grigory Gurkin evidence
 

@@ -67,7 +67,7 @@ All assets in this package are planned, not produced. A numerical target from th
 
 Use the canonical asset root from the supplied planning skill:
 
-`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\vanilla_reference`
+`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\gfx_references`
 
 Inspect its catalog and matching categories before production. Relevant subfolders include `icons/national_focus`, `icons/ideas`, `icons/achievements`, `icons/decision_categories`, `event_art/news`, `event_art/report`, `event_art/super_event`, `flags`, `portraits/leaders`, and the actual unit pipelines. Resolve the repository's current mounted path rather than assuming this old Windows path is the live checkout.
 

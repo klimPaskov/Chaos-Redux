@@ -12,7 +12,7 @@ Visual direction: empty chair and absent authority, severed command knot, gloved
 
 Safety review: no intentional real-person likeness, no real religion, no ethnic or national identity claims, no crescent, no Alamut, no hashish, no generic ninja imagery, no readable generated text, no watermarks, no UI, and no graphic bodies.
 
-Canonical references inspected: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/report/`, `event_art/news/`, and `event_art/super_event/`, including their contact sheets and catalog dimensions.
+Canonical references inspected: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report/`, `event_art/news/`, and `event_art/super_event/`, including their contact sheets and catalog dimensions.
 
 Processing evidence: report sources were processed with `.agents/skills/chaos-redux-event-assets/tools/process_report_event_image.py` into 210x176 sepia tilted cards with transparent corners; news sources were cover-cropped to 397x153 grayscale PNGs with deterministic Lanczos resampling, autocontrast, and 1.12 contrast; super-event sources were cover-cropped to 457x328 PNGs.
 

@@ -16,7 +16,7 @@ character edit, or runtime admission.
 - Raw source-locked repaint: `repaints/ARX/Vittorio_Verne_identity_preserve_imagegen.png`.
 - Deterministic candidate: `processed/ARX/Vittorio_Verne_156x210.png`.
 - Processor contact sheet: `review/Vittorio_Verne_processor_review.png`.
-- Role-specific full-size commander reference pack under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/army_large/`.
+- Role-specific full-size commander reference pack under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/army_large/`.
 - Source/rights/role evidence in `006_arx_roster_source_audit_2026_07_26.md`.
 
 ## Separate gates

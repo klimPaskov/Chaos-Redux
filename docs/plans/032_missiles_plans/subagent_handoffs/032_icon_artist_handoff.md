@@ -41,7 +41,7 @@ One initial `long_reach_grey` generation was fully transparent and was rejected.
 
 ## Reference evidence
 
-The matching canonical contact sheets were inspected before individual references under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/`. The inspected families were decision categories, ideas, decisions, missions, achievements, state modifiers, modifiers, and military raids.
+The matching canonical contact sheets were inspected before individual references under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/`. The inspected families were decision categories, ideas, decisions, missions, achievements, state modifiers, modifiers, and military raids.
 
 The visual review sheets are `docs/assets/032_missiles/icon_artist/review/preexisting_source_contact_sheet.png`, `achievement_source_contact_sheet.png`, `processed_decisions_contact_sheet.png`, `processed_missions_contact_sheet.png`, and `achievement_final_contact_sheet.png`.
 

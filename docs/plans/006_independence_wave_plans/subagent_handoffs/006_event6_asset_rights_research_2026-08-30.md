@@ -31,7 +31,7 @@ The latest technical audit is `docs/plans/006_independence_wave_plans/subagent_h
 
 The current source-repair note is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_asset_source_repairs_2026-08-29.md`.
 
-The canonical HOI4 reference library used for the asset-class comparison is `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/`, especially its `flags/normal`, `flags/medium`, `flags/small`, and event-art catalogues.
+The canonical HOI4 reference library used for the asset-class comparison is `.agents/skills/chaos-redux-event-assets/assets/gfx_references/`, especially its `flags/normal`, `flags/medium`, `flags/small`, and event-art catalogues.
 
 No source image was downloaded, copied, generated, cropped, processed, converted, or promoted during this tranche.
 

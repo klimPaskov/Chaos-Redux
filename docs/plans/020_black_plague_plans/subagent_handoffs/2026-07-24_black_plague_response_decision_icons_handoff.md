@@ -23,7 +23,7 @@ This handoff covers only visual production and evidence for the response decisio
 
 ## Processing evidence
 
-The canonical decisions contact sheet at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decisions/contact_sheet.png` was inspected before generation. The official imagegen built-in tool produced the seven new sources on flat magenta chroma-key fields. The installed `remove_chroma_key.py` helper created RGBA intermediates. A deterministic Pillow pass trimmed only transparent margins, fit each silhouette inside a 31×30 safe area, and centered it on the 33×32 decision canvas. The repository `convert_to_dds.py` tool produced the final one-level uncompressed BGRA DDS files.
+The canonical decisions contact sheet at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decisions/contact_sheet.png` was inspected before generation. The official imagegen built-in tool produced the seven new sources on flat magenta chroma-key fields. The installed `remove_chroma_key.py` helper created RGBA intermediates. A deterministic Pillow pass trimmed only transparent margins, fit each silhouette inside a 31×30 safe area, and centered it on the 33×32 decision canvas. The repository `convert_to_dds.py` tool produced the final one-level uncompressed BGRA DDS files.
 
 ## Validation and remaining review
 

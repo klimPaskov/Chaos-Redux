@@ -72,7 +72,7 @@ The handoff file itself is this file and is intentionally not assigned a self-re
 
 ## Reference and consumer evidence
 
-The inspected canonical families were `event_art/report`, `event_art/news`, `event_art/super_event`, and `icons/decision_categories/pictures` under the canonical `vanilla_reference` root. The active vanilla category consumer was inspected in `interface/countrydecisionview.gui`; the category picture slot uses the 114x101 family represented by the installed vanilla decision-category DDS examples. The mod’s category registry target is `interface/chaosx_decision_category_pictures.gfx`, and the super-event registry target is `interface/chaosx_super_events.gfx`.
+The inspected canonical families were `event_art/report`, `event_art/news`, `event_art/super_event`, and `icons/decision_categories/pictures` under the canonical `gfx_references` root. The active vanilla category consumer was inspected in `interface/countrydecisionview.gui`; the category picture slot uses the 114x101 family represented by the installed vanilla decision-category DDS examples. The mod’s category registry target is `interface/chaosx_decision_category_pictures.gfx`, and the super-event registry target is `interface/chaosx_super_events.gfx`.
 
 The parent must add the sprite entries and connect the seven proposed sprites to the Event 028 event report/news consumers, first-reveal super-event consumer, and recovery decision category. Existing stale Event 028 picture entries were left untouched because this package is not authorized to edit GFX.
 

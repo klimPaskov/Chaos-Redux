@@ -25,12 +25,12 @@ The retained sheets were inspected at native display size, and disposable local-
 
 ## Role-reference evidence
 
-The canonical commander family contact sheet is `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/commanders/contact_sheet.png`, SHA-256 `1a64051c0ef9c8a67a4e2ffd12a150f27a8a208f0affd37dc5964f8e2606227f`.
+The canonical commander family contact sheet is `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/commanders/contact_sheet.png`, SHA-256 `1a64051c0ef9c8a67a4e2ffd12a150f27a8a208f0affd37dc5964f8e2606227f`.
 The curated commander family contact sheet is `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/commanders/contact_sheet.png`, SHA-256 `ab02faef684f7b8b62806ec98edb671b61a37dd806762d604155db3119c3c8de`.
-The inspected canonical navy commander reference is `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/commanders/generic_africa_navy_2.png`, native `156x210`, SHA-256 `a608d7554187cd944130862e09ed4279fd5311f16a6735d07cf357148d11250f`.
+The inspected canonical navy commander reference is `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/commanders/generic_africa_navy_2.png`, native `156x210`, SHA-256 `a608d7554187cd944130862e09ed4279fd5311f16a6735d07cf357148d11250f`.
 The matching curated navy commander copy is `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/commanders/generic_africa_navy_2.png`, native `156x210`, byte-identical SHA-256 `a608d7554187cd944130862e09ed4279fd5311f16a6735d07cf357148d11250f`.
-The inspected canonical land commander reference is `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/commanders/ita_pietro_badoglio.png`, native `156x210`, SHA-256 `9f4f2a5a8d3260ab24866821d3c4edfc75d7bdb1cd0444124d518f7854890e9f`.
-The inspected leader-family style reference is `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/den_thorvald_stauning.png`, native `156x210`, SHA-256 `08732002182bdcb2bff3d78b142cc2b3d75adbdb29d4115f9e89ca5bdc6a21b6`.
+The inspected canonical land commander reference is `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/commanders/ita_pietro_badoglio.png`, native `156x210`, SHA-256 `9f4f2a5a8d3260ab24866821d3c4edfc75d7bdb1cd0444124d518f7854890e9f`.
+The inspected leader-family style reference is `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/den_thorvald_stauning.png`, native `156x210`, SHA-256 `08732002182bdcb2bff3d78b142cc2b3d75adbdb29d4115f9e89ca5bdc6a21b6`.
 No reference PNG was copied, recoloured, traced, or wired, and any reference-mod identity use is disclosure-only rather than a source or art license.
 
 ## Independent verdicts

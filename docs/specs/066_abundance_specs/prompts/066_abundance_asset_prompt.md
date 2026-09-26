@@ -18,8 +18,8 @@ Read:
 Inspect the exact installed game and Chaos Redux consumer before final processing.
 Inspect these canonical reference families first:
 
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/report/`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements/`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report/`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements/`
 
 Review each folder's contact sheet and provenance catalog.
 Create the required contact sheet and update the skill-local reference documentation only when the canonical sheet is genuinely missing.

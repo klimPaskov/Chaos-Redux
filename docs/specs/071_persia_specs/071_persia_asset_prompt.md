@@ -6,7 +6,7 @@ Produce the complete accepted visual and unit asset package for Event 071 using 
 
 Read the actual repository asset rules, converters, existing Event 071 assets, Iranian and regional assets, live consumers, and canonical reference catalog. The planning archive contained no asset reference images, converters, or installed game files. Do not claim they were inspected during planning.
 
-The canonical reference root recorded by the supplied skill is `C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\vanilla_reference`. Resolve its current actual repository mount. Inspect the matching focus, idea, decision, mission, achievement, flag, portrait, news, report, super-event, unit, and interface references before creating each family.
+The canonical reference root recorded by the supplied skill is `C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\gfx_references`. Resolve its current actual repository mount. Inspect the matching focus, idea, decision, mission, achievement, flag, portrait, news, report, super-event, unit, and interface references before creating each family.
 
 Use the actual consumer's required format and the prescribed conversion tools. Preserve source PNGs, prompts, generation provenance, licenses, processed sources, native-size reviews, and final paths. Do not use a visually plausible export that fails the required format checks.
 

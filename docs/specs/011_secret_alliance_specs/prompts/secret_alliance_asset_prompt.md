@@ -18,12 +18,12 @@ Do not edit gameplay, localisation, GUI, GFX, event, decision, idea, achievement
 
 Before generation or processing, inspect the matching repository reference folders:
 
-- report images: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/report`
-- news images: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/news`
-- super-event images: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/super_event`
-- decisions and category icons: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decisions`
-- ideas: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/ideas`
-- achievements: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements`
+- report images: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report`
+- news images: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/news`
+- super-event images: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/super_event`
+- decisions and category icons: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decisions`
+- ideas: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/ideas`
+- achievements: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements`
 
 Record the references inspected in the manifest and GFX handoff.
 

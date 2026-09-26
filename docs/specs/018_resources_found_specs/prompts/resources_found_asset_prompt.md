@@ -86,14 +86,14 @@ The cave species must have one coherent identity across leader portrait, flags, 
 Inspect before production:
 
 ```text
-.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/report
-.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/news
-.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/super_event
-.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/ideas
-.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/national_focus
-.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decisions
-.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements
-.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/flags/normal
+.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report
+.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/news
+.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/super_event
+.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/ideas
+.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/national_focus
+.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decisions
+.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements
+.agents/skills/chaos-redux-event-assets/assets/gfx_references/flags/normal
 ```
 
 Record which references were inspected in the manifest.

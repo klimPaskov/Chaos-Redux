@@ -36,7 +36,7 @@ SKILL_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_TEMPLATE = (
 	SKILL_ROOT
 	/ "assets"
-	/ "vanilla_reference"
+	/ "gfx_references"
 	/ "portraits"
 	/ "advisors"
 	/ "advisor_template.png"

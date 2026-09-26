@@ -18,7 +18,7 @@ Before final completion, promote durable provenance, prompt, review, and runtime
 
 Before producing each family, inspect the matching canonical references and contact sheet under:
 
-`.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/`
+`.agents/skills/chaos-redux-event-assets/assets/gfx_references/`
 
 Required families include:
 

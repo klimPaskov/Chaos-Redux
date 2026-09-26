@@ -4,7 +4,7 @@ This handoff covers six original static decision-category pictures requested for
 
 The pictures are classified as `static_category_picture`, not small category icons, scripted-GUI backgrounds, or full mechanic-window assets.
 
-The canonical family inspected before generation was `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decision_categories/pictures/`, including its README, CATALOG, and labeled contact sheet; the family uses a 114x101 review canvas and the generated outputs use that exact active consumer canvas.
+The canonical family inspected before generation was `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decision_categories/pictures/`, including its README, CATALOG, and labeled contact sheet; the family uses a 114x101 review canvas and the generated outputs use that exact active consumer canvas.
 
 The native ImageGen masters are retained under `docs/assets/decision_category_formable_state_puzzle/source/` and the processed RGBA previews are retained under `docs/assets/decision_category_formable_state_puzzle/processed/`.
 

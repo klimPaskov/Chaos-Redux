@@ -16,7 +16,7 @@ Built-in ImageGen was used for every source. Strip prompts and source PNGs are r
 
 ## Exact references
 
-Inspected canonical `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/buildings/contact_sheet.png` and the matching buildings folder before generation. Decoded installed vanilla strip frames 1, 2, 3, 5, 9, 11, 13, 30, and 31 plus current mod frames 32 and 33. Compared native 46x46 and nearest-neighbour enlargement. Confirmed standalone footprint against vanilla `building_fort_icon.dds` / canonical `fort.png` at 27x23.
+Inspected canonical `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/buildings/contact_sheet.png` and the matching buildings folder before generation. Decoded installed vanilla strip frames 1, 2, 3, 5, 9, 11, 13, 30, and 31 plus current mod frames 32 and 33. Compared native 46x46 and nearest-neighbour enlargement. Confirmed standalone footprint against vanilla `building_fort_icon.dds` / canonical `fort.png` at 27x23.
 
 ## Before and after behavior
 

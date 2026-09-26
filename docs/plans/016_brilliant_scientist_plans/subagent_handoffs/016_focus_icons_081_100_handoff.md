@@ -10,7 +10,7 @@ This tranche covers the exact national-focus IDs `KRG_accept_the_stabilization_w
 
 The source mode is built-in ImageGen with one distinct call per focus. No animation was requested or produced.
 
-The canonical style reference was `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/national_focus/contact_sheet.png`; those reference images were used for style review only.
+The canonical style reference was `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/national_focus/contact_sheet.png`; those reference images were used for style review only.
 
 ## Delivered files
 

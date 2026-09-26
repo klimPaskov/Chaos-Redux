@@ -24,7 +24,7 @@ No candidate should be excluded from the existing named-scientist roster solely 
 
 ## Repository identity and portrait verification
 
-The relevant canonical asset reference was inspected at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/`. Its `README.md`, `CATALOG.md`, and `REFERENCE_MANIFEST.md` identify `portraits/advisors/` as the native advisor/theorist dossier family and show 65x67 advisor examples. The existing scientist entries below are 156x210 full portraits used through the startup `army.large` field, so this audit does not propose a canvas change.
+The relevant canonical asset reference was inspected at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/`. Its `README.md`, `CATALOG.md`, and `REFERENCE_MANIFEST.md` identify `portraits/advisors/` as the native advisor/theorist dossier family and show 65x67 advisor examples. The existing scientist entries below are 156x210 full portraits used through the startup `army.large` field, so this audit does not propose a canvas change.
 
 All hashes below are SHA-256 hashes of the existing runtime DDS at audit time. Every candidate DDS reported a `DDS ` header and 156x210 dimensions.
 

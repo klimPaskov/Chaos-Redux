@@ -6,13 +6,13 @@ Scope completed: bespoke large and on-map two-frame counter strips for exactly `
 
 ## Vanilla inspection
 
-The canonical reference root used was `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference`; no project-local visual-reference copy was used.
+The canonical reference root used was `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references`; no project-local visual-reference copy was used.
 
-The large-land contact sheet inspected before individual references was `assets/vanilla_reference/units/land/counters_large/contact_sheet.png`.
+The large-land contact sheet inspected before individual references was `assets/gfx_references/units/land/counters_large/contact_sheet.png`.
 
 The individual large references inspected were `unit_infantry_icon.png` (SHA-256 `CAF241717AF26CA1688742A86BE1A8A89C5A9B8CABA41410B4CF799827AD1972`), `unit_medium_tank_icon.png` (SHA-256 `95106F5538194B02189570747EA06B278E2BBF14455D85159B9542073826FCFE`), and `unit_motorized_icon.png` (SHA-256 `7CEC9A7C70CC7A021E187A1832BE3E9828BB27E3C901BA75E62EB9C4E803880C`), each native `152x42` with adjacent `76x42` frames.
 
-The land-map contact sheet inspected before individual references was `assets/vanilla_reference/units/land/map_counters/contact_sheet.png`.
+The land-map contact sheet inspected before individual references was `assets/gfx_references/units/land/map_counters/contact_sheet.png`.
 
 The individual map references inspected were `onmap_infantry.png` (SHA-256 `5A6274E5847CBE9D030B547B9C2BB723215269B234BEF227A43F273B22DC42B9`), `amphibious_tank.png` (SHA-256 `1018E8ED6BBF23BDB01997CEA90B57C12E686B417E4ACD05577A05F09BB8B034`), and `amphibious_mechanized.png` (SHA-256 `2F48152EA5D645A9545BE2A51C7292C6D03AB5F1B23B23D55BEEE11E10FB2B17`), each native `60x12` with adjacent `30x12` frames.
 

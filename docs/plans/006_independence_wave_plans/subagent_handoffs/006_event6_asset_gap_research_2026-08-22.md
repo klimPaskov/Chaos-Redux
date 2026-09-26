@@ -14,7 +14,7 @@ No gameplay, event, focus, idea, decision, localisation, GUI, history, country, 
 
 The asset rules used for this audit are in `.agents/skills/chaos-redux-event-assets/SKILL.md`.
 
-The canonical review library is `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/`.
+The canonical review library is `.agents/skills/chaos-redux-event-assets/assets/gfx_references/`.
 
 The accepted Event 006 source materials are `docs/specs/006_independence_wave_specs/matrices/006_asset_family_registry.csv`, `docs/specs/006_independence_wave_specs/research/006_source_register.csv`, `docs/specs/006_independence_wave_specs/prompts/independence_wave_asset_prompt.md`, `docs/specs/006_independence_wave_specs/prompts/independence_wave_super_event_prompt.md`, `docs/specs/006_independence_wave_specs/prompts/independence_wave_achievement_prompt.md`, `docs/specs/006_independence_wave_specs/research/006_super_event_audio_research.md`, and `docs/specs/006_independence_wave_specs/research/006_super_event_text_research.md`.
 
@@ -123,7 +123,7 @@ It records built-in ImageGen source masters as project-controlled and containing
 
 The canonical decision-category icon and picture shelves are review references only.
 
-The accepted Event 006 registry does not define a missing category-picture production row, so no category image should be copied from `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decision_categories/pictures/`.
+The accepted Event 006 registry does not define a missing category-picture production row, so no category image should be copied from `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decision_categories/pictures/`.
 
 ## Highest-confidence production tranche
 

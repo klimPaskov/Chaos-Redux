@@ -30,7 +30,7 @@ Installed vanilla inspection was read-only and covered:
 
 The matching canonical contact sheets were inspected first from the one allowed root:
 
-`C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference`
+`C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references`
 
 Specifically, `units/land/counters_large/contact_sheet.png` and `units/land/map_counters/contact_sheet.png` were reviewed before the individual infantry references. Those references established the two-frame order, 152×42 and 60×12 canvases, alpha behavior, silhouette scale, border/shading conventions, and state contrast.
 

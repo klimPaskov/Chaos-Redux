@@ -35,11 +35,11 @@ The source-clearance authority and its complete package were checked:
 The canonical visual references and provenance instructions were checked:
 
 - `.agents/skills/chaos-redux-event-assets/SKILL.md`, including the real-person, commander, ownership, independent-audit, and DDS boundaries.
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/README.md`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/CATALOG.md`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/CATALOG.md`
 - `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/README.md`
 - `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/REFERENCE_MANIFEST.md`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/commanders/contact_sheet.png` and all nine canonical commander PNGs.
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/commanders/contact_sheet.png` and all nine canonical commander PNGs.
 - `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/commanders/contact_sheet.png` and all eight curated commander PNGs.
 - The selected commander style controls `eng_bernard_montgomery.png` and `ger_erwin_von_witzleben.png` were inspected directly.
 

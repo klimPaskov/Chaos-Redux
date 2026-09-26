@@ -12,8 +12,8 @@ The audit does not claim package completion, runtime wiring completion, or live 
 
 ## Reference and consumer inspection
 
-- Canonical report family: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/report/`, its `contact_sheet.png`, root `README.md`, and root `CATALOG.md`.
-- Canonical decision-category picture family: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decision_categories/pictures/`, its `contact_sheet.png`, root `README.md`, and root `CATALOG.md`.
+- Canonical report family: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report/`, its `contact_sheet.png`, root `README.md`, and root `CATALOG.md`.
+- Canonical decision-category picture family: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decision_categories/pictures/`, its `contact_sheet.png`, root `README.md`, and root `CATALOG.md`.
 - Vanilla report consumer precedent: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/interface/eventpictures.gfx`, including `GFX_report_event_001`, `GFX_report_event_airplane_crash`, and `GFX_report_event_soldiers_parade`.
 - Vanilla category-picture consumer precedent: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/interface/decisions.gfx`, including `GFX_decision_cat_picture_naval_treaties`, `GFX_decision_cat_picture_1936_election`, and `GFX_decision_cat_picture_faction_management_bulgaria`.
 - Category presentation consumer: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/interface/countrydecisionview.gui`, including the `decision_category_desc` picture region.

@@ -22,7 +22,7 @@ The required offline Paradox wiki pages were consulted, including Data structure
 
 The relevant installed vanilla scripting documentation was consulted, including `documentation/script_concept_documentation.md`, with targeted effects/triggers documentation searches for portrait and sprite usage.
 
-The installed vanilla portrait consumers and the matching role reference shelf were inspected: leader references under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/`, commander references under `.../portraits/commanders/`, and the advisor family to confirm that the 65x67 advisor surface is not a substitute for a 156x210 leader or commander.
+The installed vanilla portrait consumers and the matching role reference shelf were inspected: leader references under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/`, commander references under `.../portraits/commanders/`, and the advisor family to confirm that the 65x67 advisor surface is not a substitute for a 156x210 leader or commander.
 
 The attributed source URLs, source-page captures, identity captures, crop records, and rights notes below are carried forward from the prior portrait research handoffs and current archive files; they are evidence records, not a new rights grant.
 

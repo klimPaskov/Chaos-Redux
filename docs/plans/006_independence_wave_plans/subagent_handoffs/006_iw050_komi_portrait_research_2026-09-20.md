@@ -36,7 +36,7 @@ Project ownership searches covered `common/characters`, `history/countries`, `gf
 
 The only live project references are the existing package documentation and the fail-closed roster guard; no project-defined character or exact portrait asset was cloned.
 
-The installed vanilla leader references under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/` were inspected as role and framing references, and they are 156x210 leader portraits rather than identity evidence.
+The installed vanilla leader references under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/` were inspected as role and framing references, and they are 156x210 leader portraits rather than identity evidence.
 
 ## Source and identity research
 

@@ -5,7 +5,7 @@ This active package contains seven independently generated constitutional identi
 ## Source and reference basis
 
 - Source mode: built-in OpenAI ImageGen for every flag and emblem master. No external image, vanilla texture, or prior mod art was used as an image input.
-- Reference review: canonical `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/flags/` and `icons/factions/` were inspected before generation. Vanilla dimensions and TGA origin conventions were followed.
+- Reference review: canonical `.agents/skills/chaos-redux-event-assets/assets/gfx_references/flags/` and `icons/factions/` were inspected before generation. Vanilla dimensions and TGA origin conventions were followed.
 - Flags are flat orthographic designs; emblems use transparent chroma-key removal with the installed `remove_chroma_key.py` helper, then deterministic alpha-bounds crop and 64x64 canvas placement.
 - All seven route identity packages are alternate-history or supernatural symbolic assets, not depictions of real institutions or people.
 

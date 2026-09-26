@@ -35,7 +35,7 @@ All five use the `civilian.large` slot and full `156x210` opaque leader textures
 
 Source mode for every portrait is `fictional_high_chaos` with native built-in ImageGen. The five prompt files and source PNGs are co-located under `docs/assets/039_murder_mystery/portraits/`. Native ImageGen output files came from `C:/Users/klimp/.codex/generated_images/01a04f14-ad5b-7750-9523-3cbe24871a9b/` and remain there in addition to the copied repository evidence.
 
-The matching installed-vanilla reference family was inspected at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/`, including its contact sheet and `156x210` opaque leader examples. The installed vanilla `ICE_sveinn_bjornsson` character/GFX/DDS precedent was also checked.
+The matching installed-vanilla reference family was inspected at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/`, including its contact sheet and `156x210` opaque leader examples. The installed vanilla `ICE_sveinn_bjornsson` character/GFX/DDS precedent was also checked.
 
 Rights status is synthetic native ImageGen output with no Internet source, third-party photograph, attribution, or public-domain claim. No real person or real religion, ethnicity, historical society, anarchist tradition, or extremist group is used as identity coding. The visual motif is limited to empty chairs, severed command knots, and restrained hand-mask props; no crescents, Alamut, hashish, ninja imagery, generic full-face masks, modern tactical gear, gore, weapons, generated text, or watermarks were accepted.
 

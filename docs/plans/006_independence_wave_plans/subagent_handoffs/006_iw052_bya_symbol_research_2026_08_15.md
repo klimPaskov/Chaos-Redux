@@ -120,7 +120,7 @@ To reopen the asset lane, the parent must either approve the installed vanilla t
 ## Validation and handoff inventory
 
 - Read-only carrier checks covered the installed country tag, country definition, history, country color, normal/medium/small ideology ladders, dimensions, and byte hashes listed above.
-- The canonical reference root was checked at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference`; it contains no BYA reference that could establish provenance or authorize a replacement.
+- The canonical reference root was checked at `.agents/skills/chaos-redux-event-assets/assets/gfx_references`; it contains no BYA reference that could establish provenance or authorize a replacement.
 - The installed vanilla documentation directory contains no dedicated flag-art provenance document; the installed TGA files and country/tag/history files are the authoritative carrier surfaces reviewed here.
 - No external source file was downloaded, so no external hash, processed preview, or conversion output exists.
 - No `.gfx` handoff is appropriate because no new runtime asset exists and vanilla ideology flags use the existing engine naming convention.

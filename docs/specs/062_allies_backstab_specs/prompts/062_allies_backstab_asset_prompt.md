@@ -41,8 +41,8 @@ Asset workers may create source files, processed PNG files, final DDS files, con
 
 Before production, inspect:
 
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/README.md`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/CATALOG.md`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/CATALOG.md`
 - the matching contact sheet for every asset family
 - exact installed vanilla and current Chaos Redux sprite consumers
 

@@ -12,10 +12,10 @@ Use generated period-documentary artwork because the scenes are fictional and ph
 
 Inspect these reference families before production:
 
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/README.md`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/CATALOG.md`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/report/`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements/`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/CATALOG.md`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report/`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements/`
 
 ## Report-event image requirements
 

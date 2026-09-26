@@ -28,8 +28,8 @@ Matches are limited to the vanilla `KOM_pavel_murashev` character/history/token 
 
 The matching installed-vanilla role family was inspected before source research:
 
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/README.md` and `CATALOG.md`.
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/contact_sheet.png` (eight full `156x210` country-leader references).
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md` and `CATALOG.md`.
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/contact_sheet.png` (eight full `156x210` country-leader references).
 - Installed `GFX_portrait_Pavel_Murashev` texture path and dimensions from `_leader_portraits.gfx` above.
 
 The references establish the full country-leader canvas and framing family only. They are not identity sources and were not copied or used as runtime art.

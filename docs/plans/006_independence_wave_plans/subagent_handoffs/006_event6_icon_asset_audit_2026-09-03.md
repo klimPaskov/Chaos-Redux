@@ -62,7 +62,7 @@ The matrix and accepted central manifest are `docs/specs/006_independence_wave_s
 
 The accepted source masters and processed previews are under `docs/assets/006_independence_wave/source_png/` and `docs/assets/006_independence_wave/processed_png/`, with accepted package archives for IW-043/IW-058, IW-093/IW-098, and FORM-05.
 
-The matching canonical vanilla contact sheets and representative native references were inspected from the single approved root `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference` under `icons/national_focus`, `icons/ideas`, `icons/decisions`, `icons/missions`, `icons/decision_categories`, and `icons/achievements`.
+The matching canonical vanilla contact sheets and representative native references were inspected from the single approved root `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references` under `icons/national_focus`, `icons/ideas`, `icons/decisions`, `icons/missions`, `icons/decision_categories`, and `icons/achievements`.
 
 The canonical focus family is transparent, centred, and ornate; the idea family is compact and transparent; decisions are simple 32x32 silhouettes; mission references are small state-dot treatments; compact categories are approximately 52x40; category pictures are approximately 114x101; achievement references are 64x64 framed triplets.
 

@@ -52,7 +52,7 @@ Package root: `docs/assets/006_independence_wave/sourced_portrait_refinishes_202
 | Deterministic candidate | `processed_png/portrait_WLS_independence_wave_national_council.png`; `156x210` RGBA; SHA-256 `B51594925EE5754DE7A795BCB0BBDD37C7DFFDEF85B411F960A22D33BEAF6667`; decoded RGBA SHA-256 `B402D41BA604A6EAA69087DDFE0E2EF439BEFE13C6CE7C946AD23254FA820B80` |
 | Candidate metadata | `processed_png/portrait_WLS_independence_wave_national_council.png.json`; SHA-256 `AB072D9033254F31CD71651B7A090E5E54AD6EB847CF15B0316E7F5DB86BEEA4`; status `candidate_requires_visual_approval`; role family `leader`; source kind `real` |
 | Style sheet | `review/WLS_david_grenfell_leader_style_sheet.png`; `1344x464` RGBA; SHA-256 `A1A7A59F5176C041531538CE9E75C7EA1EE0DC2133ACB99E2B15F23DA2066C4D` |
-| Canonical style references | `den_thorvald_stauning.png` and `fin_carl_mannerheim.png` from `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders`; quick-reference sheet also shows `ire_eamon_de_valera.png` |
+| Canonical style references | `den_thorvald_stauning.png` and `fin_carl_mannerheim.png` from `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders`; quick-reference sheet also shows `ire_eamon_de_valera.png` |
 
 ### Major George Frederick Myddleton Cornwallis-West package
 
@@ -69,7 +69,7 @@ Package root: `docs/assets/006_independence_wave/sourced_portrait_refinishes_202
 | Deterministic candidate | `processed_png/portrait_WLS_independence_wave_mountain_commandant.png`; `156x210` RGBA; SHA-256 `C8B287458F5BF34DA81A7EAF4A10C3BB3DC1364A80BBB16BC6231D40F8BCC833`; decoded RGBA SHA-256 `0DCFBDDB29D4DEC1DAC9F025D4AB6628E0E49EF04F7A20575DB9F43A75E05E91` |
 | Candidate metadata | `processed_png/portrait_WLS_independence_wave_mountain_commandant.png.json`; SHA-256 `07D7FDC9849D3F26D1B82949E70D77F2D29BE73B2DA3FEAAA14156F29582F570`; status `candidate_requires_visual_approval`; role family `commander`; source kind `real` |
 | Style sheet | `review/WLS_george_cornwallis_west_commander_style_sheet.png`; `1344x464` RGBA; SHA-256 `0B92D324B84A7FB1735E2CFF91081A1D3545098007284AD6FEAB7F39354C5A43` |
-| Canonical style references | `eng_bernard_montgomery.png` and `ger_erwin_von_witzleben.png` from `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/commanders`; quick-reference sheet also shows `ger_erwin_von_witzleben.png` |
+| Canonical style references | `eng_bernard_montgomery.png` and `ger_erwin_von_witzleben.png` from `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/commanders`; quick-reference sheet also shows `ger_erwin_von_witzleben.png` |
 
 ## Grenfell gate verdicts
 

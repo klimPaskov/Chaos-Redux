@@ -27,7 +27,7 @@ A sponsor's factory commitment can use an event-owned dynamic modifier if the in
 
 Generated symbolic art is appropriate for the action icons, category emblem, idea icon, achievement subjects, and non-identifying alternate-history report scenes. Existing native country flags and leader portraits supply country identity. Do not generate a historical person's face to fill a generic diplomatic image.
 
-The event-assets worker must inspect the canonical reference root `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/`, its README, catalog, and matching contact sheets before generation. Those visual references were not in the uploaded archive and have not been visually checked for this package.
+The event-assets worker must inspect the canonical reference root `.agents/skills/chaos-redux-event-assets/assets/gfx_references/`, its README, catalog, and matching contact sheets before generation. Those visual references were not in the uploaded archive and have not been visually checked for this package.
 
 Report source scenes are generated unframed, then processed to the documented consumer. Do not draw fake text, slogans, country names, numerical Influence bars, or an HOI4 window into a runtime event picture. The black-and-white news crop must remain readable at 397×153.
 

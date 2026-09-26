@@ -50,7 +50,7 @@ Rights/provenance verdict: `NOT REACHED`; there is no candidate image to license
 
 ## Vanilla portrait reference review
 
-The required canonical country-leader reference family at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/` was inspected, including its labeled `contact_sheet.png`, `README.md`, and `CATALOG.md`.
+The required canonical country-leader reference family at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/` was inspected, including its labeled `contact_sheet.png`, `README.md`, and `CATALOG.md`.
 
 The role family contains eight review-only `156x210` leader examples with HOI4 head-and-shoulders framing; it is a style and dimensions control only and contains no Boris Berman source.
 

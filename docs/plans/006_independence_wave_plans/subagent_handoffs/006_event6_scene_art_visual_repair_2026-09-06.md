@@ -10,7 +10,7 @@ No gameplay, localisation, GUI, `.gfx`, or source asset file was changed by this
 
 ## Scope and evidence
 
-Canonical visual references were inspected only under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference`, including the `event_art/report`, `event_art/news`, and `event_art/super_event` families and their contact sheets.
+Canonical visual references were inspected only under `.agents/skills/chaos-redux-event-assets/assets/gfx_references`, including the `event_art/report`, `event_art/news`, and `event_art/super_event` families and their contact sheets.
 
 The Event 006 source and processing chains were traced through the package manifests and handoffs, the current consolidated runtime registry `interface/006_independence_wave_small_assets.gfx`, the Event 006 event definitions, `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt`, and `interface/006_independence_wave.gui`.
 

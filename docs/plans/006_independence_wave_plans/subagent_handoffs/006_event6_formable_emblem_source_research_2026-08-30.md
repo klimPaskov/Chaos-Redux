@@ -65,7 +65,7 @@ FORM-04 result: no defensible sourced or redistributable common emblem was found
 - Existing FORM-03 package: `docs/assets/006_independence_wave/low_countries_form03_2026_07_15/`.
 - Existing FORM-04 flag package: `docs/assets/006_independence_wave/form01_02_04_flags_2026_07_15/`.
 - Runtime registry and handoff: `interface/006_independence_wave_small_assets.gfx` and `docs/assets/006_independence_wave/gfx_handoff.md`.
-- Relevant offline references: `paradox_wiki/Interface modding - Hearts of Iron 4 Wiki.md`, `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`, vanilla documentation directory, and the canonical `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/` flag/faction-emblem references.
+- Relevant offline references: `paradox_wiki/Interface modding - Hearts of Iron 4 Wiki.md`, `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`, vanilla documentation directory, and the canonical `.agents/skills/chaos-redux-event-assets/assets/gfx_references/` flag/faction-emblem references.
 
 ## Handoff and blockers
 

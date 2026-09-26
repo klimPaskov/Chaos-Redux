@@ -146,7 +146,7 @@ Avoid: Readable generated text, giant coins, demonic merchants, modern banking i
 
 Working asset ID: `riches_found_category_picture`.
 
-Reference family: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decision_categories/pictures/`.
+Reference family: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decision_categories/pictures/`.
 
 The asset worker must inspect the contact sheet and the actual runtime consumer before locking size.
 

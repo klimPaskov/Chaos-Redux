@@ -20,6 +20,6 @@ Validation: PASS. The source and processed PNGs retain native transparent alpha 
 
 Provenance: Generated with the official built-in ImageGen workflow on 2026-08-30 with a genuine transparent background request. No external source and no background-removal fallback were used. The source is an original period-industrial composition of a sealed olive-green casing in a precision jig with wrenches, micrometer, and reactor-control hardware, distinct from the existing Event 023 mission icons. Processing used the existing Event 023 contained Lanczos resize convention with a one-pixel inset and transparent-fringe clamp.
 
-Canonical reference: inspected `icons/missions/contact_sheet.png` and all five individual mission references under the single canonical `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference` root before generation. The existing Event 023 mission contact sheet was refreshed with the source, processed, and DDS round-trip row.
+Canonical reference: inspected `icons/missions/contact_sheet.png` and all five individual mission references under the single canonical `.agents/skills/chaos-redux-event-assets/assets/gfx_references` root before generation. The existing Event 023 mission contact sheet was refreshed with the source, processed, and DDS round-trip row.
 
 No blocker. No `.gfx`, gameplay, localisation, GUI, workbook, portrait, flag, counter, animation, or 3D files were edited.

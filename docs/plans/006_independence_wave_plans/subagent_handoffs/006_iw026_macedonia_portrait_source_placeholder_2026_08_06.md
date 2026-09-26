@@ -41,7 +41,7 @@ All files below are under `docs/assets/006_independence_wave/iw026_macedonia_por
 - Exact source crop used rectangle `(1,0,507,681)` with `decoded_pixels_equal=true` and matching RGBA SHA-256 `a6709b818d5f93c3019735c4226140c6c5b4f658b7259bf3438eca3ad4765deb`.
 - The candidate was resized from the exact crop with Pillow 11.1.0 LANCZOS to RGB 156x210, with no repaint, retouch, recolour, padding, or synthetic fill.
 - DDS header was checked as uncompressed RGBA32 at 156x210 with exact 131,168-byte length; decoding its payload reproduced PNG RGBA SHA-256 `e4f9025a117d8d83e2febff8e1f57978c23451d2f8d561f82b8ecb97dd0943eb` exactly.
-- The visual review sheet compares source master, explicit crop, 4x source-placeholder candidate, and the installed vanilla leader reference `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/fin_carl_mannerheim.png`. The candidate is attributable and suitably head-and-shoulders/bust framed for source-placeholder use, while its archival/low-resolution appearance is retained rather than hidden.
+- The visual review sheet compares source master, explicit crop, 4x source-placeholder candidate, and the installed vanilla leader reference `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/fin_carl_mannerheim.png`. The candidate is attributable and suitably head-and-shoulders/bust framed for source-placeholder use, while its archival/low-resolution appearance is retained rather than hidden.
 
 ## State, skipped checks, and remaining gates
 

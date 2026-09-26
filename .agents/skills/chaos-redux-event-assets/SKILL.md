@@ -131,25 +131,25 @@ This skill owns its visual-reference library under:
 
 `C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets`
 
-`assets/vanilla_reference/` is the canonical semantic library, with Vanilla HOI4 as the primary source and explicitly marked Chaos Redux examples where needed. Do not route reference work through project-root asset folders or another skill-local copy.
+`assets/gfx_references/` is the canonical semantic library, with Vanilla HOI4 as the primary source and explicitly marked Chaos Redux examples where needed. Do not route reference work through project-root asset folders or another skill-local copy.
 
 Start with:
 
-- library rules and contact sheets: `assets/vanilla_reference/README.md`
-- exact source provenance and dimensions: `assets/vanilla_reference/CATALOG.md`
+- library rules and contact sheets: `assets/gfx_references/README.md`
+- exact source provenance and dimensions: `assets/gfx_references/CATALOG.md`
 
-Unless a path below begins with `assets/`, interpret it relative to `assets/vanilla_reference/`.
+Unless a path below begins with `assets/`, interpret it relative to `assets/gfx_references/`.
 
 Every semantic reference directory contains its own `contact_sheet.png`; there is no shared `contact_sheets/` directory. Contact sheets are labeled with filenames and native dimensions, and are review aids rather than reference examples themselves. Common icon families (focus, ideas, decisions, decision categories, technologies, and achievement states) have at least 15 references, while other tracked texture and icon families have at least 5. The interface library covers complex vanilla scripted GUIs and other native interfaces, with meaningful functional compositions for each distinct layout family. Crop MCP renders to useful UI bounds; full-window images dominated by empty space are unsuitable reference examples. Retain full-render source, source window/files, original resolution and UI scale, and crop bounds in provenance so each crop can be traced back to its native layout.
 
 #### Canonical portrait paths
 
-- country leaders: `assets/vanilla_reference/portraits/leaders/`
-- army and navy commanders: `assets/vanilla_reference/portraits/commanders/`
-- operatives: `assets/vanilla_reference/portraits/operatives/`
-- advisors and high-command dossier cards: `assets/vanilla_reference/portraits/advisors/`
+- country leaders: `assets/gfx_references/portraits/leaders/`
+- army and navy commanders: `assets/gfx_references/portraits/commanders/`
+- operatives: `assets/gfx_references/portraits/operatives/`
+- advisors and high-command dossier cards: `assets/gfx_references/portraits/advisors/`
 
-The leader reference shelf at `assets/vanilla_reference/portraits/leaders/` is the direct portrait folder for agents that need one. It holds only byte-aligned copies of the curated leader references from `assets/vanilla_reference/portraits/`, is never a separate source of truth or a runtime asset folder, and uses `vanilla_reference/REFERENCE_MANIFEST.md` for the current file list. Do not wire any reference shelf into runtime GFX, and do not infer advisor assets from it. Country leaders, commanders, and operatives are full `156x210` portrait textures. For portrait work, inspect the canonical role-specific contact sheet. Advisor and high-command dossier references are native `65x67` cards and use their own canonical contact sheet; do not substitute full leader, commander, or operative portraits for this family.
+The leader reference shelf at `assets/gfx_references/portraits/leaders/` is the direct portrait folder for agents that need one. It holds only byte-aligned copies of the curated leader references from `assets/gfx_references/portraits/`, is never a separate source of truth or a runtime asset folder, and uses `gfx_references/REFERENCE_MANIFEST.md` for the current file list. Do not wire any reference shelf into runtime GFX, and do not infer advisor assets from it. Country leaders, commanders, and operatives are full `156x210` portrait textures. For portrait work, inspect the canonical role-specific contact sheet. Advisor and high-command dossier references are native `65x67` cards and use their own canonical contact sheet; do not substitute full leader, commander, or operative portraits for this family.
 
 #### Canonical flag and event-art paths
 
@@ -196,7 +196,7 @@ Accept only clean interface references rendered under plausible, internally cons
 
 The canonical decision category picture family is:
 
-`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\vanilla_reference\icons\decision_categories\pictures`
+`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\gfx_references\icons\decision_categories\pictures`
 
 This family contains the larger visual pictures used to establish a decision category's theme or territorial context. It is separate from the small category icon family at `icons/decision_categories/`.
 
@@ -222,11 +222,11 @@ The semantic tree is not a bank of interchangeable pictures. Use the folder for 
 
 The reusable achievement creation inputs live under `icons/achievements/template/`. The actual supplied filenames are `achievement_template.png` (completed background), `achievement_template_grey.png` (grey and not-eligible background), and `overlay.png` (unchanged red-cross not-eligible overlay). They are workflow inputs rather than reference examples, so they are excluded from the achievement contact sheet and coverage count. Preserve these supplied files byte-for-byte and at their exact native alignment.
 
-Do not add new reference images outside the skill-local `assets/` root. Add Vanilla HOI4 and Chaos Redux semantic references under `assets/vanilla_reference/` with exact provenance, dimensions, and contact-sheet coverage recorded in its catalog. Keep reusable source components under `assets/visual_components/` and record their native canvas and role in its catalog.
+Do not add new reference images outside the skill-local `assets/` root. Add Vanilla HOI4 and Chaos Redux semantic references under `assets/gfx_references/` with exact provenance, dimensions, and contact-sheet coverage recorded in its catalog. Keep reusable source components under `assets/visual_components/` and record their native canvas and role in its catalog.
 
-Before generating, sourcing, processing, or wiring an asset, read the library rules, inspect the matching category and contact sheet, and follow the vanilla source path in the catalog to its owning `.gfx`, `.gui`, `.asset`, or `.mesh` definition when engine behavior matters. Canonical vanilla reference PNGs are never final assets: do not wire, recolor, trace, or ship them. If no category matches, inspect the closest canonical category plus a direct vanilla or established Chaos Redux precedent before choosing a style.
+Before generating, sourcing, processing, or wiring an asset, read the library rules, inspect the matching category and contact sheet, and follow the cataloged source path to its owning `.gfx`, `.gui`, `.asset`, or `.mesh` definition when engine behavior matters. Canonical GFX reference PNGs are never final assets: do not wire, recolor, trace, or ship them. If no category matches, inspect the closest canonical category plus a direct vanilla or established Chaos Redux precedent before choosing a style.
 
-For matching icon and portrait briefs, inspect `assets/visual_components/CATALOG.md` and the relevant contact sheet after the exact vanilla or Chaos Redux consumer and `assets/vanilla_reference/` family. The catalog role governs whether a component is only a visual reference or may also be a persistent background layer. Keep every used component source and ImageGen source separate from the processed preview and final DDS; record the local catalog entry, role, and layer path in the output manifest. The exact consumer still governs dimensions, alpha, states, and wiring, and achievement templates and state rules still apply.
+For matching icon and portrait briefs, inspect `assets/visual_components/CATALOG.md` and the relevant contact sheet after the exact vanilla or Chaos Redux consumer and `assets/gfx_references/` family. The catalog role governs whether a component is only a visual reference or may also be a persistent background layer. Keep every used component source and ImageGen source separate from the processed preview and final DDS; record the local catalog entry, role, and layer path in the output manifest. The exact consumer still governs dimensions, alpha, states, and wiring, and achievement templates and state rules still apply.
 
 When validating inherited GUI or GFX references, check both the mod and installed vanilla roots before declaring a DDS or other resource missing. A missing literal `effectFile` `.lua` path alone does not prove a missing asset. Inspect matching installed-vanilla `.gfx` declarations and the associated shader resource before reporting a missing source. Record the exact declaration, resource path, and lookup evidence without assuming a generic `.lua` to `.shader` mapping. Source linkage evidence does not prove rendered behavior or live-game correctness.
 
@@ -398,16 +398,16 @@ Read the matching canonical catalog entries and inspect the owning `.gfx`, `.gui
 
 Achievement icons should be compact and readable at 64x64.
 
-Inspect `assets/vanilla_reference/icons/achievements/contact_sheet.png` and the matching individual references before creating an achievement icon. The contact sheet and reference examples are review material, while the `template/` folder below is a separate workflow-input folder excluded from the achievement reference count.
+Inspect `assets/gfx_references/icons/achievements/contact_sheet.png` and the matching individual references before creating an achievement icon. The contact sheet and reference examples are review material, while the `template/` folder below is a separate workflow-input folder excluded from the achievement reference count.
 
 #### Supplied templates
 
 Use these exact supplied workflow inputs and do not invent, rename, move, resize, crop, trim, recolor, redraw, filter, or replace them:
 
 ```text
-assets/vanilla_reference/icons/achievements/template/achievement_template.png
-assets/vanilla_reference/icons/achievements/template/achievement_template_grey.png
-assets/vanilla_reference/icons/achievements/template/overlay.png
+assets/gfx_references/icons/achievements/template/achievement_template.png
+assets/gfx_references/icons/achievements/template/achievement_template_grey.png
+assets/gfx_references/icons/achievements/template/overlay.png
 ```
 
 `achievement_template.png` is the completed-state background, `achievement_template_grey.png` is the grey and not-eligible background, and `overlay.png` is the unchanged red-cross not-eligible overlay. The supplied files are 64x64 workflow inputs. Verify their integrity against SHA-256 `248DB006611EB3942550C43DF83802AA6FB24761035FC928B5D34586C0C4C5BA`, `70E073694C1A7D9FE40C63B1EB2E987A8A45B3FFD15CCF789EEAA5B843B90022`, and `89BC80C6AC975BF6F1FF000FF3070B20C337BFB8B8AE966AE35A5540C004D6DD` respectively.
@@ -547,7 +547,7 @@ A static picture is the normal choice after the eligibility gate passes. Use an 
 
 Before production, inspect:
 
-`assets/vanilla_reference/icons/decision_categories/pictures/contact_sheet.png`
+`assets/gfx_references/icons/decision_categories/pictures/contact_sheet.png`
 
 Also inspect the exact active consumer to confirm canvas, crop, alpha, frame behavior, and runtime path. The reference family uses `114x101`, but the consumer decides the final target.
 
@@ -630,7 +630,7 @@ Every portrait follows [references/portrait-production.md](references/portrait-p
 
 ### Advisor and high-command portrait icons
 
-Advisor, theorist, military-high-command, and officer-corps portrait icons are a separate asset type. Inspect `assets/vanilla_reference/portraits/advisors/` before work. The final target is native `65x67`, with a recognisable HOI4-styled head-and-shoulders portrait, a dark irregular dossier frame where the approved reference family uses one, and transparent outer corners. Do not infer this family from a character or small-portrait consumer; it must be present in the accepted requirement set.
+Advisor, theorist, military-high-command, and officer-corps portrait icons are a separate asset type. Inspect `assets/gfx_references/portraits/advisors/` before work. The final target is native `65x67`, with a recognisable HOI4-styled head-and-shoulders portrait, a dark irregular dossier frame where the approved reference family uses one, and transparent outer corners. Do not infer this family from a character or small-portrait consumer; it must be present in the accepted requirement set.
 
 Apply the fail-closed [Portrait source-mode gate](#portrait-source-mode-gate) to advisor and high-command subjects. For a fictional subject in the allowed class, `chaosx_portrait_creator` uses native ImageGen to create a distinct full-resolution portrait master. Never reuse a leader crop. For real people, complete the shared source and provenance gate before preparing the native card; [Country-leader, commander, operative, and named-officeholder portraits](#country-leader-commander-operative-and-named-officeholder-portraits) governs the portrait handoff and fallback. Institutional or collective briefs must state whether the result is people-free or includes a governing group, and never imply that invented faces are sourced historical individuals.
 
@@ -773,11 +773,11 @@ Classify the requested deliverable before creating art: equipment/technology ill
 
 #### 2D icon and counter generation contract
 
-Every new custom unit or subunit requires bespoke counter art for every runtime counter surface it uses. Before production, inspect the exact installed-vanilla counter definition and DDS plus the matching skill-local family under `assets/vanilla_reference/units/`. Match the sampled vanilla green palette, canvas, frame order, alpha/background treatment, border, silhouette, shading, contrast, and state behavior. Reused counters, renamed existing counters, generic placeholders, arbitrary green, and final art made without recorded vanilla inspection are forbidden. Route production to `chaosx_icon_artist`, and block when the exact references are unavailable.
+Every new custom unit or subunit requires bespoke counter art for every runtime counter surface it uses. Before production, inspect the exact installed-vanilla counter definition and DDS plus the matching skill-local family under `assets/gfx_references/units/`. Match the sampled vanilla green palette, canvas, frame order, alpha/background treatment, border, silhouette, shading, contrast, and state behavior. Reused counters, renamed existing counters, generic placeholders, arbitrary green, and final art made without recorded vanilla inspection are forbidden. Route production to `chaosx_icon_artist`, and block when the exact references are unavailable.
 
 Apply this contract to every small template, facility, or unit icon, including large land counters and division-template emblems.
 
-Before generation, inspect the actual installed-vanilla consumer definition and DDS, plus the exact matching reference family and contact sheet under `assets/vanilla_reference/`. Record the owning `.gfx`, `.gui`, unit, building, or template definition, runtime token or sprite, native canvas, frame count and order, frame or state semantics, alpha and background treatment, border, sampled palette, silhouette footprint, shading, and contrast. If the consumer, DDS, or matching reference family cannot be inspected, mark the asset `blocked` instead of guessing.
+Before generation, inspect the actual installed-vanilla consumer definition and DDS, plus the exact matching reference family and contact sheet under `assets/gfx_references/`. Record the owning `.gfx`, `.gui`, unit, building, or template definition, runtime token or sprite, native canvas, frame count and order, frame or state semantics, alpha and background treatment, border, sampled palette, silhouette footprint, shading, and contrast. If the consumer, DDS, or matching reference family cannot be inspected, mark the asset `blocked` instead of guessing.
 
 Use the built-in ImageGen tool for each distinct final asset and retain its exact prompt and native source PNG in the evidence package. Generate the icon or glyph as real raster source art with a genuine transparent background in the initial call. Pixel art, pixel-grid or nearest-neighbor final scaling, primitive local drawings, SVG-only reconstruction, resized cross-type substitutes, opaque backgrounds, and generic white duplicates are prohibited. Nearest-neighbor is permitted only for enlarged inspection previews.
 
@@ -955,7 +955,7 @@ Small template, facility, unit, counter, and emblem packages always require a na
 
 The canonical decision category picture reference family always requires:
 
-`assets/vanilla_reference/icons/decision_categories/pictures/contact_sheet.png`
+`assets/gfx_references/icons/decision_categories/pictures/contact_sheet.png`
 
 Create or refresh that sheet whenever reference images are added, removed, renamed, or replaced. Show filenames and native dimensions. Record user-provided reference images as user-provided in the catalog and do not treat them as runtime-ready assets.
 

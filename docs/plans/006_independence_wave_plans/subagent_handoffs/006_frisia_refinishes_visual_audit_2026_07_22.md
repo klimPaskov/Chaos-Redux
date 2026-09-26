@@ -127,15 +127,15 @@ contains no DDS and no runtime registration, as stated by its explicit scope.
 
 | File | SHA-256 |
 |---|---|
-| `vanilla_reference/README.md` | `e6a2f4a4cfdce04d4c0682103b6c5d38a98557d40e7491cb9f3a9a869eb59c52` |
-| `vanilla_reference/CATALOG.md` | `72fdd8110bdfc42cce194afae44d45e6373501342b5dca5049594be4fdd1aa37` |
-| `vanilla_reference/portraits/leaders/contact_sheet.png` (all 8 leader refs) | `8966ae351d1fe8fc13d47ca1c59ec3d8a34da9101ce5fd65f7acff3421bd0401` |
-| `vanilla_reference/portraits/commanders/contact_sheet.png` (all 5 commander refs) | `d62a4b80265533c93669a5eef267dff8db2021a01c1f31dcb73102bf1cc20ca9` |
-| `vanilla_reference/portraits/leaders/ire_eamon_de_valera.png` | `ff5f8689f1e8ea75bf88bea4c4a87dcf60518b1e062ea53be4a9ceff3509dcb0` |
-| `vanilla_reference/portraits/leaders/den_thorvald_stauning.png` | `08732002182bdcb2bff3d78b142cc2b3d75adbdb29d4115f9e89ca5bdc6a21b6` |
-| `vanilla_reference/portraits/leaders/ice_sveinn_bjornsson.png` | `860726d268873f21ae0dbd6fb170482f50fad6393882b97b2b7b7a1814189d14` |
-| `vanilla_reference/portraits/commanders/generic_africa_navy_1.png` | `6351227cc9a7416698d2b94e87ea07fb1cf97afe8874cbee2015a3362cfcb0ec` |
-| `vanilla_reference/portraits/commanders/generic_africa_navy_2.png` | `a608d7554187cd944130862e09ed4279fd5311f16a6735d07cf357148d11250f` |
+| `gfx_references/README.md` | `e6a2f4a4cfdce04d4c0682103b6c5d38a98557d40e7491cb9f3a9a869eb59c52` |
+| `gfx_references/CATALOG.md` | `72fdd8110bdfc42cce194afae44d45e6373501342b5dca5049594be4fdd1aa37` |
+| `gfx_references/portraits/leaders/contact_sheet.png` (all 8 leader refs) | `8966ae351d1fe8fc13d47ca1c59ec3d8a34da9101ce5fd65f7acff3421bd0401` |
+| `gfx_references/portraits/commanders/contact_sheet.png` (all 5 commander refs) | `d62a4b80265533c93669a5eef267dff8db2021a01c1f31dcb73102bf1cc20ca9` |
+| `gfx_references/portraits/leaders/ire_eamon_de_valera.png` | `ff5f8689f1e8ea75bf88bea4c4a87dcf60518b1e062ea53be4a9ceff3509dcb0` |
+| `gfx_references/portraits/leaders/den_thorvald_stauning.png` | `08732002182bdcb2bff3d78b142cc2b3d75adbdb29d4115f9e89ca5bdc6a21b6` |
+| `gfx_references/portraits/leaders/ice_sveinn_bjornsson.png` | `860726d268873f21ae0dbd6fb170482f50fad6393882b97b2b7b7a1814189d14` |
+| `gfx_references/portraits/commanders/generic_africa_navy_1.png` | `6351227cc9a7416698d2b94e87ea07fb1cf97afe8874cbee2015a3362cfcb0ec` |
+| `gfx_references/portraits/commanders/generic_africa_navy_2.png` | `a608d7554187cd944130862e09ed4279fd5311f16a6735d07cf357148d11250f` |
 
 ## Method and residual risks
 

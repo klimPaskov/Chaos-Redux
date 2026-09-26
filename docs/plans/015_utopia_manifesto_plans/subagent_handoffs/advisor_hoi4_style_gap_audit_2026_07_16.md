@@ -17,7 +17,7 @@ This is not a dimensions-only problem and cannot be repaired by substituting the
 
 ### Canonical vanilla references
 
-All six reference PNGs in `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/advisors/` were inspected at native resolution and compared with their original vanilla DDS sources. The decoded DDS pixels match the reference PNGs exactly; all are RGBA `65x67`:
+All six reference PNGs in `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/advisors/` were inspected at native resolution and compared with their original vanilla DDS sources. The decoded DDS pixels match the reference PNGs exactly; all are RGBA `65x67`:
 
 | Reference | Vanilla source |
 |---|---|

@@ -197,7 +197,7 @@ Required parent-facing sprites and textures:
 
 Exact installed consumer inspection is complete. `interface/subuniticons.gfx` defines both infantry and cavalry families as two-frame strips. The inspected large DDS files are 152x42 with two 76x42 cells; the inspected map DDS files are 60x12 with two 30x12 cells. The closest creature precedent is cavalry: large SHA-256 `F17C1865E48D3AC542F34751FD151BAF0C5700DA661E6C800008020A33B87306`, map SHA-256 `249C498E73DC22DEE532C7648EDFF1A1347DD72AB2314AE31ED973CD370524B1`. The current infantry references are large SHA-256 `B33A8E3B69CC789EB0E31BA99F4E5BA4E5B0A8B51EC1A7A7F709C3516F720C23` and map SHA-256 `58AB78662C2A64A519B8D5D144582E7B2785915BD0A0A822696D87A9DE6F766C`.
 
-The matching skill-local families and contact sheets were inspected at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/counters_large/` and `map_counters/`. Sampled installed large-counter greens range from dark anchors such as `(68,99,68)` and `(73,106,73)` through highlights such as `(125,149,125)` and `(129,152,129)`; exact shading and alpha requirements are in `counter/handoff.md`.
+The matching skill-local families and contact sheets were inspected at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/counters_large/` and `map_counters/`. Sampled installed large-counter greens range from dark anchors such as `(68,99,68)` and `(73,106,73)` through highlights such as `(125,149,125)` and `(129,152,129)`; exact shading and alpha requirements are in `counter/handoff.md`.
 
 Counter status: **blocked only on original `chaosx_icon_artist` production and parent review/wiring.** No copied, recolored, renamed, placeholder, or arbitrary-green counter was made.
 

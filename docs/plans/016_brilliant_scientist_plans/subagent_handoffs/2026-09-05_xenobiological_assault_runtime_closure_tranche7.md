@@ -176,7 +176,7 @@ Counter authority: docs/plans/016_brilliant_scientist_plans/subagent_handoffs/01
 
 Exact consumer: common/units/016_brilliant_scientist_project_forces.txt#xenobiological_assault_organism. Current unit consumer facts are sprite = xenobiological_assault_organism and map_icon_category = armored. Parent owns final migration and live review.
 
-Installed definition inspected: C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/interface/subuniticons.gfx. Closest installed creature reference: GFX_unit_cavalry_icon_medium and the cavalry large and on-map DDS pair. Matching skill-local reference families are .agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/counters_large/ and .agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/map_counters/.
+Installed definition inspected: C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/interface/subuniticons.gfx. Closest installed creature reference: GFX_unit_cavalry_icon_medium and the cavalry large and on-map DDS pair. Matching skill-local reference families are .agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/counters_large/ and .agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/map_counters/.
 
 Vanilla frame contract: large canvas 152x42, two adjacent 76x42 frames, and small/on-map canvas 60x12, two adjacent 30x12 frames. Alpha range is 0..255. Large normal state uses a restrained muted green silhouette and alternate state uses pale grey/white schematic linework. Sampled installed green ladder includes (73,106,73), (68,99,68), (84,115,84), (100,128,100), (112,138,112), and (129,152,129). Arbitrary green, recolor, reused vanilla art, and generic placeholders are forbidden.
 

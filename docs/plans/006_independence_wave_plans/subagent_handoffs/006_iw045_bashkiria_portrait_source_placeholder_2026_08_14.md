@@ -43,7 +43,7 @@ Evidence is consolidated under [the Event 006 portrait archive](../../../assets/
 - `BSK_yakov_bykin_review.md`: identity/framing/provenance review and vanilla comparison.
 - The canonical installed-token reference remains in the skill-local leader reference shelf; its source PNG is not duplicated into the consolidated Event 006 archive.
 
-The canonical installed-leader reference family and contact sheet at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/` were inspected before processing.
+The canonical installed-leader reference family and contact sheet at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/` were inspected before processing.
 
 ## Ownership search and runtime gate
 

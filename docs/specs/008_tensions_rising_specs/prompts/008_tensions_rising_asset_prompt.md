@@ -65,10 +65,10 @@ Only produce this if the current Event Log UI has an accepted sprite surface for
 
 Inspect the matching Chaos Redux reference folders before generation or processing:
 
-- report event images: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/report`
-- news event images: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/news`
-- decisions: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decisions`
-- achievements: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements`
+- report event images: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report`
+- news event images: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/news`
+- decisions: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decisions`
+- achievements: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements`
 
 ## Manifest requirements
 

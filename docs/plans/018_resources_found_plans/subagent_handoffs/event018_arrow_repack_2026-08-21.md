@@ -13,7 +13,7 @@ The exact installed sources were:
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/interface/arrow_left_small.dds`
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/interface/arrow_right_small.dds`
 
-The canonical `assets/vanilla_reference` library README and catalog were inspected. It has no navigation-control/arrow reference family or matching contact sheet, so the exact installed source DDS files above are the authoritative visual references. No project-local visual-reference copy, compatibility shelf, or alternate parent asset directory was used.
+The canonical `assets/gfx_references` library README and catalog were inspected. It has no navigation-control/arrow reference family or matching contact sheet, so the exact installed source DDS files above are the authoritative visual references. No project-local visual-reference copy, compatibility shelf, or alternate parent asset directory was used.
 
 ## Runtime files and hashes
 

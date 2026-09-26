@@ -62,7 +62,7 @@ Status: closed; do not count this as a remaining blocker.
 
 ### P2 - Open: the manifest still cites removed project-reference folders
 
-`docs/assets/019_infantry_spawn/manifest.md:9` says the package inspected `.agents/skills/chaos-redux-event-assets/assets/{report_event,decisions,ideas,focuses,achievements,flags}`. All six cited directories are absent. Current references live under `assets/vanilla_reference/` and are routed through the skill catalog.
+`docs/assets/019_infantry_spawn/manifest.md:9` says the package inspected `.agents/skills/chaos-redux-event-assets/assets/{report_event,decisions,ideas,focuses,achievements,flags}`. All six cited directories are absent. Current references live under `assets/gfx_references/` and are routed through the skill catalog.
 
 This does not alter runtime pixels, but it weakens reproducibility and makes the reference record factually stale. Replace the brace-expanded paths with the exact existing catalog/reference paths actually inspected.
 

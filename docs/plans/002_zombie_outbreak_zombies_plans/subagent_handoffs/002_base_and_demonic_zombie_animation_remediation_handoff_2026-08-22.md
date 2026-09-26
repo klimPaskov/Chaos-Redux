@@ -321,7 +321,7 @@ The exact base counter consumers are:
 - `GFX_unit_zombies_icon_medium` -> `gfx/interface/counters/divisions_large/zombies_icon.dds`, `152x42`, two `76x42` frames
 - `GFX_unit_zombies_icon_medium_white` -> `gfx/interface/counters/divisions_small/onmap_unit_zombies_icon.dds`, `60x12`, two `30x12` frames
 
-The installed references are `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/interface/subuniticons.gfx`, `.../gfx/interface/counters/divisions_large/unit_infantry_icon.dds`, and `.../gfx/interface/counters/divisions_small/onmap_unit_infantry_icon.dds`. The matching skill-local families are `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/counters_large/` and `units/land/map_counters/`. The sampled large-counter green anchors include `#496A49`, `#4A6B4A`, `#537253`, and `#648064`.
+The installed references are `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/interface/subuniticons.gfx`, `.../gfx/interface/counters/divisions_large/unit_infantry_icon.dds`, and `.../gfx/interface/counters/divisions_small/onmap_unit_infantry_icon.dds`. The matching skill-local families are `.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/counters_large/` and `units/land/map_counters/`. The sampled large-counter green anchors include `#496A49`, `#4A6B4A`, `#537253`, and `#648064`.
 
 This pass does not assert that the existing base counter or audio provenance satisfies a fresh package completion gate. The parent must either promote existing durable evidence into the new base job or carry explicit companion blockers. No audio or counter was copied, generated, or edited here.
 

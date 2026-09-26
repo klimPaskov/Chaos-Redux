@@ -44,7 +44,7 @@ The repository files `gfx/flags/KOM_democratic.tga`, `gfx/flags/medium/KOM_democ
 
 ## Sourced candidate review
 
-The canonical reference root was inspected at `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/`. Its `flags/contact_sheet.png` shows the normal, medium, and small review family, but it contains no KOM-specific review PNG. The existing 2026-08-14 symbol handoff was rechecked, and the Commons metadata was refreshed through the named source pages.
+The canonical reference root was inspected at `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/`. Its `flags/contact_sheet.png` shows the normal, medium, and small review family, but it contains no KOM-specific review PNG. The existing 2026-08-14 symbol handoff was rechecked, and the Commons metadata was refreshed through the named source pages.
 
 | Candidate | Source and rights evidence | Date/identity fit | Gate disposition |
 | --- | --- | --- | --- |

@@ -15,14 +15,14 @@ Create the complete visual asset package for Chaos Redux Event 20 Black Plague. 
 
 Inspect these folders before work:
 
-- idea and national spirit icons: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/ideas`
-- focus icons: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/national_focus`
-- decision and decision category icons: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decisions`
-- report event images: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/report`
-- news event images: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/news`
-- super-event images: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/super_event`
-- achievements: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements`
-- flags: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/flags/normal`
+- idea and national spirit icons: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/ideas`
+- focus icons: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/national_focus`
+- decision and decision category icons: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decisions`
+- report event images: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report`
+- news event images: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/news`
+- super-event images: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/super_event`
+- achievements: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements`
+- flags: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/flags/normal`
 
 ## Disease and crisis-board package
 

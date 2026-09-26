@@ -42,9 +42,9 @@ The candidate's plain side cap and undecorated British/Welsh field tunic follow 
 
 - `AGENTS.md`.
 - `.agents/skills/chaos-redux-event-assets/SKILL.md` in full, including the grounded real-person gate, ownership gate, commander `156x210` requirement, and canonical reference rules.
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/README.md`.
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/CATALOG.md` commander rows.
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/commanders/contact_sheet.png` and the curated commander contact sheet.
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md`.
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/CATALOG.md` commander rows.
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/commanders/contact_sheet.png` and the curated commander contact sheet.
 - `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/README.md` and `REFERENCE_MANIFEST.md`.
 - Required offline Paradox wiki core pages were consulted; no engine/script behavior was changed by this visual audit.
 

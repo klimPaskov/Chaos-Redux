@@ -186,16 +186,16 @@ unsuffixed files are not merely dormant documentation assets.
 #### Generated-package hash-ledger defect
 
 The in-flight migration of prompt/reference paths from the retired
-`assets/flags/` directory to the canonical `assets/vanilla_reference/flags/`
+`assets/flags/` directory to the canonical `assets/gfx_references/flags/`
 directory changed path strings but left three legacy SHA-256 values. As a
 result, `hashes.sha256` currently fails against all three migrated technical
 reference inputs:
 
 | Canonical reference path | Ledger SHA-256 | Current file SHA-256 |
 |---|---|---|
-| `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/flags/normal/arm_uk.png` | `69b612800eb642be2004ccf1ae263fc014ce555f6c0204eff6b607962308b38c` | `0852be44f8f75579b9677904673c6ca254158a33da6b680df96d55b28ffbb9e9` |
-| `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/flags/normal/arg_gen_nazism_party.png` | `07007cca92ff9f8a6544858a985aed5a6133a4f5e313dbd7169ea4ee491951e9` | `cbb5400e93cb0aacaa82193eb4555ba70619bdaa1f0c0198f0fc556ae7a432ac` |
-| `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/flags/normal/anu_fascism.png` | `aec2babab5bced21a7665583118307446cd5f10d3d3895e39ff7a93359d5cc34` | `b0633149ca295792b63561638db340f7bcab4ad22a21179963781350b1a1b243` |
+| `.agents/skills/chaos-redux-event-assets/assets/gfx_references/flags/normal/arm_uk.png` | `69b612800eb642be2004ccf1ae263fc014ce555f6c0204eff6b607962308b38c` | `0852be44f8f75579b9677904673c6ca254158a33da6b680df96d55b28ffbb9e9` |
+| `.agents/skills/chaos-redux-event-assets/assets/gfx_references/flags/normal/arg_gen_nazism_party.png` | `07007cca92ff9f8a6544858a985aed5a6133a4f5e313dbd7169ea4ee491951e9` | `cbb5400e93cb0aacaa82193eb4555ba70619bdaa1f0c0198f0fc556ae7a432ac` |
+| `.agents/skills/chaos-redux-event-assets/assets/gfx_references/flags/normal/anu_fascism.png` | `aec2babab5bced21a7665583118307446cd5f10d3d3895e39ff7a93359d5cc34` | `b0633149ca295792b63561638db340f7bcab4ad22a21179963781350b1a1b243` |
 
 The first two rows are the ARX/ASX technical presentation references. The third
 belongs to ICX but shares the same generated package. The final flag source and
@@ -429,7 +429,7 @@ be authored at the 32x32 decision surface; do not resize focus or idea art.
 ## Canonical reference packs
 
 The canonical skill-local library is
-`.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/`. Its
+`.agents/skills/chaos-redux-event-assets/assets/gfx_references/`. Its
 `README.md` and `CATALOG.md` identify vanilla build Operation Postern
 v1.19.2.0.a729, extraction date 2026-07-16, exact vanilla source paths, native
 dimensions, and owning definitions. Reference PNGs are review inputs only and

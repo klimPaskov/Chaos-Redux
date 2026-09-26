@@ -100,7 +100,7 @@ Use a strange-incident report only if the implemented event family uses it enoug
 
 Create one static category picture after inspecting:
 
-`.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decision_categories/pictures`
+`.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decision_categories/pictures`
 
 Use the verified runtime canvas. The current reference-family canvas is `114x101`, not a universal assumption.
 

@@ -14,7 +14,7 @@ Inspect the matching canonical reference catalogs, contact sheets, and live cons
 
 For decision-category pictures, inspect:
 
-`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\vanilla_reference\icons\decision_categories\pictures`
+`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\gfx_references\icons\decision_categories\pictures`
 
 The reference family uses `114x101`, but verify the actual consumer before choosing the final canvas.
 

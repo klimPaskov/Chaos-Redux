@@ -37,7 +37,7 @@ The normal files are `82x52` and `12810` bytes, the medium files are `41x26` and
 
 The offline `paradox_wiki/Country creation - Hearts of Iron 4 Wiki.md:322-342` page states that country flags are TGA files automatically assigned from their filenames, that a non-specific `TAG.tga` is the fallback when an ideology-specific flag is absent, and that the standard ladder is `82x52`, `41x26`, and `10x7`.
 
-The canonical flag reference family was inspected at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/flags/`, including its `README.md`, `CATALOG.md`, and `contact_sheet.png`. The installed vanilla `BEL_beligca_fascism.tga` ladder has image type `2`, `24`-bit depth, descriptor `0`, and dimensions `82x52` / `41x26` / `10x7`, matching the existing Event 031 TGA encoding and origin convention used by this repair.
+The canonical flag reference family was inspected at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/flags/`, including its `README.md`, `CATALOG.md`, and `contact_sheet.png`. The installed vanilla `BEL_beligca_fascism.tga` ladder has image type `2`, `24`-bit depth, descriptor `0`, and dimensions `82x52` / `41x26` / `10x7`, matching the existing Event 031 TGA encoding and origin convention used by this repair.
 
 ## Runtime roundtrip evidence
 

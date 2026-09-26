@@ -18,7 +18,7 @@ The accepted source mode permits a period-fit Sindh flag, emblem, institutional 
 
 The relevant `chaos-redux-event-assets` sections were consulted: source rules, canonical references, standard flag sizes, flag contract, DDS and TGA requirements, provenance, manifests, contact sheets, handoffs, and blocked-asset handling.
 
-The canonical reference root was read at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/README.md` and `CATALOG.md`, and the canonical `flags/contact_sheet.png` was inspected.
+The canonical reference root was read at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md` and `CATALOG.md`, and the canonical `flags/contact_sheet.png` was inspected.
 
 The offline wiki pages consulted before source review were `Data structures`, `Triggers`, `Effects`, `Modifiers`, `Localisation`, `Scopes`, `On actions`, `Event modding`, `Decision modding`, `Idea modding`, `AI modding`, `Graphical asset modding`, `Country creation`, and `Portrait modding` under `paradox_wiki/`.
 

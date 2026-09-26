@@ -24,7 +24,7 @@ No `.gfx`, `.gui`, gameplay, localisation, spreadsheet, focus, decision, or even
 - Generator: OpenAI built-in `image_gen`.
 - Generation run: `019faa2e-89ff-7922-b4ad-999c037bb6d2`.
 - Source mode: `generated_imagegen` because the panel is fictional/symbolic UI art with no real person, place, event, or archival object.
-- Canonical reference inspected: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/report/contact_sheet.png` for restrained period paper/brass surface treatment only. No vanilla art was reused.
+- Canonical reference inspected: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report/contact_sheet.png` for restrained period paper/brass surface treatment only. No vanilla art was reused.
 
 ## Dimensions and SHA-256
 

@@ -102,7 +102,7 @@ The installed definition and skill-local families establish the exact land-count
 - Frame 1 is the alternate/template schematic state: a separate sparse pale/white glyph inside a dark outlined panel, not a white repaint of frame 0.
 - Transparent unused canvas, centered compact bounds, restrained shading, readable native-size contrast, and exact no-gap frame boundaries are required.
 
-The canonical reference families are `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/counters_large/` and `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/map_counters/`. Their contact sheets have SHA-256 `CD7ABDF70B38498D03744990BA91BFFF808686B1E8891049B8A78AD58E9B4243` and `23374FC38F26FC382DF60800C1086E074AC6BE46CDCD86B3EADDE686A99C8C26` respectively.
+The canonical reference families are `.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/counters_large/` and `.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/map_counters/`. Their contact sheets have SHA-256 `CD7ABDF70B38498D03744990BA91BFFF808686B1E8891049B8A78AD58E9B4243` and `23374FC38F26FC382DF60800C1086E074AC6BE46CDCD86B3EADDE686A99C8C26` respectively.
 
 Sampled dominant opaque green values from installed vanilla large infantry frame 0 include RGB `73,106,73` (`#496A49`), `74,107,74` (`#4A6B4A`), `83,114,83` (`#537253`), and `100,128,100` (`#648064`). These are palette anchors with antialiasing, shadow, and highlight variation; arbitrary green is forbidden.
 

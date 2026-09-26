@@ -75,9 +75,9 @@ Recommended if defensible sources are found:
 Inspect:
 
 ```text
-.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/report/
-.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/news/
-.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decision_categories/pictures/
+.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report/
+.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/news/
+.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decision_categories/pictures/
 ```
 
 The decision-category-picture folder must contain `contact_sheet.png` labelled with filenames and native dimensions. If missing, create it and update the reference README and catalog before selecting the Event 22 size.

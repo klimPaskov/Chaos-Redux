@@ -8,7 +8,7 @@ Result: complete. All 16 runtime scene files decode at their exact native consum
 
 ## Evidence and reference basis
 
-The canonical visual reference root was inspected only at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/`. The matching `event_art/report`, `event_art/news`, and `event_art/super_event` reference families and contact sheets establish the 210x176 report-card, 397x153 opaque monochrome news, and 457x328 opaque super-event treatments used below.
+The canonical visual reference root was inspected only at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/`. The matching `event_art/report`, `event_art/news`, and `event_art/super_event` reference families and contact sheets establish the 210x176 report-card, 397x153 opaque monochrome news, and 457x328 opaque super-event treatments used below.
 
 The audit followed the asset, event, super-event, and subagent instructions in `.agents/skills/chaos-redux-event-assets/SKILL.md`, `.agents/skills/chaos-redux-events/SKILL.md`, `.agents/skills/chaos-redux-super-events/SKILL.md`, and `.agents/skills/chaos-redux-subagents/SKILL.md`, together with the required offline Paradox wiki pages and the relevant vanilla graphical/interface documentation.
 

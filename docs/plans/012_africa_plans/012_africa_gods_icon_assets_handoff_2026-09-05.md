@@ -8,7 +8,7 @@ Reconciliation note, 2026-09-25: the parent reviewed the contact sheet and all 2
 
 This package follows the accepted Gods of Africa asset prompt and the current consumers in `common/ideas/012_africa_gods_ideas.txt`, `common/decisions/012_africa_gods_decisions.txt`, and `common/national_focus/012_africa_continental_focus_tree.txt`.
 
-The matching canonical contact sheets were inspected before generation at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/ideas/contact_sheet.png`, `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/national_focus/contact_sheet.png`, `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decisions/contact_sheet.png`, `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/missions/contact_sheet.png`, and `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decision_categories/contact_sheet.png`.
+The matching canonical contact sheets were inspected before generation at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/ideas/contact_sheet.png`, `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/national_focus/contact_sheet.png`, `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decisions/contact_sheet.png`, `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/missions/contact_sheet.png`, and `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decision_categories/contact_sheet.png`.
 
 The official ImageGen skill was used for every source PNG with genuine transparent-background instructions in the initial call, and no background-removal fallback was used.
 

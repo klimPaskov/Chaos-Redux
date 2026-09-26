@@ -16,7 +16,7 @@ No final HOI4-style portrait was requested or supplied. The correct state is `so
 
 The audit read `AGENTS.md`, `.agents/skills/chaos-redux-comfyui/SKILL.md`, `.agents/skills/chaos-redux-event-assets/SKILL.md`, the offline Paradox wiki pages for Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, Character modding, Portrait modding, Graphical asset modding, Country creation, State modding, and National focus modding, and the installed vanilla documentation for effects, triggers, modifiers, localisation objects/formatting, dynamic variables, and script concepts.
 
-The installed vanilla `history/countries/NAV - Navarra.txt`, vanilla `interface/_leader_portraits.gfx`, the project character consumer, and the canonical role-reference families `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/` and `portraits/commanders/` were inspected. The commander family has native full `156x210` references and its contact sheet is `portraits/commanders/contact_sheet.png`.
+The installed vanilla `history/countries/NAV - Navarra.txt`, vanilla `interface/_leader_portraits.gfx`, the project character consumer, and the canonical role-reference families `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/` and `portraits/commanders/` were inspected. The commander family has native full `156x210` references and its contact sheet is `portraits/commanders/contact_sheet.png`.
 
 ## Identity, source, date, and rights
 

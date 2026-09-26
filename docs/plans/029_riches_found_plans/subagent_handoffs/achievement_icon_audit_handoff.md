@@ -44,9 +44,9 @@ The machine audit lists every concrete source, processed, evidence DDS, decoded 
 
 ## Canonical reference and template evidence
 
-The canonical reference family was inspected from `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements/`, beginning with `contact_sheet.png` and then the individual vanilla color, grey, and not-eligible references.
+The canonical reference family was inspected from `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements/`, beginning with `contact_sheet.png` and then the individual vanilla color, grey, and not-eligible references.
 
-The exact immutable template inputs were inspected from `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements/template/`.
+The exact immutable template inputs were inspected from `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements/template/`.
 
 | Template input | SHA-256 | Dimensions |
 |---|---|---:|

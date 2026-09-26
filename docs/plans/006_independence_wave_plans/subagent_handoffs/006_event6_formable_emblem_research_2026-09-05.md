@@ -25,7 +25,7 @@ The shared league mark is also not source-closable by reusing the League of Nati
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_visual_asset_audit_2026-09-03.md` — visual audit confirms ASSET-046 is blocked and that FORM-05/FORM-48 are the only present family-emblem packages.
 - `docs/assets/006_independence_wave/form05_mediterranean_assets_2026_07_16/manifest.md`, `docs/assets/006_independence_wave/form39_melanesian_federation_identity_2026_07_27/manifest.md`, and `docs/assets/006_independence_wave/form48_pacific_assets_2026_07_17/manifest.md` — existing FORM-05/39/48 source modes and review states.
 - `interface/006_independence_wave_small_assets.gfx` and `interface/006_independence_wave.gfx` — only `GFX_independence_wave_formable_form_05` and `GFX_independence_wave_formable_form_48` are registered; no `GFX_independence_wave_league_emblem` exists.
-- Canonical review material `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/README.md`, `CATALOG.md`, `flags/contact_sheet.png`, and `icons/factions/contact_sheet.png` — vanilla flag ladders and faction-logo surfaces are reference material only, not ASSET-046 sources.
+- Canonical review material `.agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md`, `CATALOG.md`, `flags/contact_sheet.png`, and `icons/factions/contact_sheet.png` — vanilla flag ladders and faction-logo surfaces are reference material only, not ASSET-046 sources.
 
 ## External source and rights checks
 

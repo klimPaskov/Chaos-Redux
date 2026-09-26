@@ -8,7 +8,7 @@ This handoff closes the provenance gap for the four installed famine/migration d
 
 The exact consumers inspected were `GFX_famine_category` and `GFX_famine_category_picture` in `interface/famine_system.gfx`, `GFX_migration_category` and `GFX_migration_category_picture` in `interface/migration_system.gfx`, and their matching `famine_decision_category` and `migration_decision_category` definitions.
 
-The category icon canvas is 52x40 with native transparency, and the category picture canvas is 114x101 with an opaque full-canvas background matching the inspected canonical `vanilla_reference/icons/decision_categories` and `icons/decision_categories/pictures` families.
+The category icon canvas is 52x40 with native transparency, and the category picture canvas is 114x101 with an opaque full-canvas background matching the inspected canonical `gfx_references/icons/decision_categories` and `icons/decision_categories/pictures` families.
 
 ## Completed assets
 

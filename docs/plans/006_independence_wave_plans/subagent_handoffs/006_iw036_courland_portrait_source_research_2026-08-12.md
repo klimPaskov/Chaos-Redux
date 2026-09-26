@@ -10,7 +10,7 @@ IW-036 is a grounded historical regional package. The bounded plan requires a pe
 
 Portrait role references inspected before research:
 
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/contact_sheet.png` and its male leader references (`den_thorvald_stauning.png`, `fin_carl_mannerheim.png`, `ice_sveinn_bjornsson.png`, `ire_eamon_de_valera.png`). All canonical leader textures are full `156x210` portraits.
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/contact_sheet.png` and its male leader references (`den_thorvald_stauning.png`, `fin_carl_mannerheim.png`, `ice_sveinn_bjornsson.png`, `ire_eamon_de_valera.png`). All canonical leader textures are full `156x210` portraits.
 - Offline `paradox_wiki/Portrait modding - Hearts of Iron 4 Wiki.md`: portraits are normally `156x210`; portrait sprite definitions belong in a `.gfx` file and point to the leader texture.
 - Vanilla `interface/_leader_portraits.gfx` and `common/characters/FIN.txt` (Mannerheim precedent): large leader portrait points to `gfx/leaders/<TAG>/portrait_<tag>_<name>.dds`; small idea art is a separate surface and must not be inferred for this package.
 

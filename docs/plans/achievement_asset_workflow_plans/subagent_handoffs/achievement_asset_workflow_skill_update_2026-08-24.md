@@ -4,13 +4,13 @@ Date: 2026-08-24.
 
 ## Changed files
 
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements/achievement_template.png` is the exact user-supplied completed-state background, SHA-256 `248DB006611EB3942550C43DF83802AA6FB24761035FC928B5D34586C0C4C5BA`.
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements/achievement_template_grey.png` is the exact user-supplied grey and not-eligible background, SHA-256 `70E073694C1A7D9FE40C63B1EB2E987A8A45B3FFD15CCF789EEAA5B843B90022`.
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements/achievement_template.png` is the exact user-supplied completed-state background, SHA-256 `248DB006611EB3942550C43DF83802AA6FB24761035FC928B5D34586C0C4C5BA`.
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements/achievement_template_grey.png` is the exact user-supplied grey and not-eligible background, SHA-256 `70E073694C1A7D9FE40C63B1EB2E987A8A45B3FFD15CCF789EEAA5B843B90022`.
 - The authoritative source files were `C:/Users/klimp/Downloads/achievement_template.png` and `C:/Users/klimp/Downloads/achievement_template_grey.png`; repository copies were hash-checked byte-for-byte.
 - `.agents/skills/chaos-redux-event-assets/tools/process_achievement_icons.py` now preserves complete native 64x64 state triplets, accepts mixed current DDS inputs, writes strict canonical DDS triplets, and supports explicit, directory, dry-run, and audit modes.
 - `.agents/skills/chaos-redux-event-assets/SKILL.md` now requires the native unchanged-state-layer contract, complete triplets, strict output layout, mixed-DDS fallback behavior, explicit source/output separation, and the narrow templated-border rerun guard.
 - `.agents/skills/chaos-redux-event-assets/tools/README.md` documents the same processor contract and commands.
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/README.md` and `CATALOG.md` document both user-provided backgrounds, the existing unchanged overlay, provenance, hashes, and exclusion from achievement reference counts and contact sheets.
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md` and `CATALOG.md` document both user-provided backgrounds, the existing unchanged overlay, provenance, hashes, and exclusion from achievement reference counts and contact sheets.
 
 ## Exact behavior
 

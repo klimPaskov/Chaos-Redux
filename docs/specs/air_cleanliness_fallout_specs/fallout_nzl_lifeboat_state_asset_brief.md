@@ -8,14 +8,14 @@ The historical and cultural reference ledger is `docs/assets/fallout_world_end/n
 
 Asset workers must inspect the event-assets catalog and the matching vanilla references:
 
-- focus icons under `assets/vanilla_reference/icons/national_focus/`
-- ideas under `assets/vanilla_reference/icons/ideas/`
+- focus icons under `assets/gfx_references/icons/national_focus/`
+- ideas under `assets/gfx_references/icons/ideas/`
 - decisions, missions, and categories under their separate icon folders
-- achievements under `assets/vanilla_reference/icons/achievements/`
-- leaders under `assets/vanilla_reference/portraits/leaders/`
-- advisors under `assets/vanilla_reference/portraits/advisors/`
-- report images under `assets/vanilla_reference/event_art/report/`
-- flags under `assets/vanilla_reference/flags/`
+- achievements under `assets/gfx_references/icons/achievements/`
+- leaders under `assets/gfx_references/portraits/leaders/`
+- advisors under `assets/gfx_references/portraits/advisors/`
+- report images under `assets/gfx_references/event_art/report/`
+- flags under `assets/gfx_references/flags/`
 
 ## Flags
 

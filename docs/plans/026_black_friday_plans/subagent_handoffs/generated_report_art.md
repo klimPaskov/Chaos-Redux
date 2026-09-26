@@ -26,7 +26,7 @@ Status: `parent_visual_reviewed_2026-08-30`; the generated source, processed pre
 
 The source was made with the official built-in ImageGen route from the saved prompt at `docs/assets/026_black_friday/prompts/black_friday_report_prompt.txt`. It is fictional period documentary art, so generation fits the requested alternate-history purchasing scene and no external provenance applies.
 
-The matching canonical reference family inspected was `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/report/contact_sheet.png`; its catalog confirms the `210x176` report-event family.
+The matching canonical reference family inspected was `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report/contact_sheet.png`; its catalog confirms the `210x176` report-event family.
 
 The source was processed with `.agents/skills/chaos-redux-event-assets/tools/process_report_event_image.py` and converted with `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`. The converter used the repository script's BGRA ffmpeg fallback because `texconv` was unavailable.
 

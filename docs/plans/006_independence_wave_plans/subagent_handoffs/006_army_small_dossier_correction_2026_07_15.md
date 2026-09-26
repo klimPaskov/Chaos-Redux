@@ -88,12 +88,12 @@ unchanged by the parent and were outside this correction's write set.
 
 ### Canonical reference library and extractor
 
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/CATALOG.md`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/README.md`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/flags/contact_sheet.png`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/advisors/army_small_ger_erwin_rommel.png`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/advisors/army_small_ger_friedrich_paulus.png`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/advisors/army_small_ger_gunther_von_kluge.png`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/CATALOG.md`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/flags/contact_sheet.png`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/advisors/army_small_ger_erwin_rommel.png`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/advisors/army_small_ger_friedrich_paulus.png`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/advisors/army_small_ger_gunther_von_kluge.png`
 - `.tools/extract_hoi4_asset_references.py`
 
 ### Correction package

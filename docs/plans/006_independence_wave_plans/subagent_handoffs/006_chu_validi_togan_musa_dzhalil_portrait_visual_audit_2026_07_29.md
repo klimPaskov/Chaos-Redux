@@ -22,7 +22,7 @@ Identity is a separate non-compensable gate, and the visual passes above do not 
 
 I compared each unchanged source master, exact decoded-pixel crop, raw original-size repaint, deterministic `156x210` candidate, and processor review sheet at native size and at a 4x nearest-neighbour inspection scale.
 The review sheet was treated as supporting evidence only and not as a substitute for the direct source-to-candidate comparison.
-I also read the crop-equality JSON, processing metadata, dedicated grounded-repaint provenance JSON where present, repaint prompt, current asset manifest/hash ledger, and the canonical leader reference README, catalog, contact sheet, and selected references under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/`.
+I also read the crop-equality JSON, processing metadata, dedicated grounded-repaint provenance JSON where present, repaint prompt, current asset manifest/hash ledger, and the canonical leader reference README, catalog, contact sheet, and selected references under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/`.
 The canonical references supplied only HOI4 brush, value, palette, and framing controls and did not supply either subject's face.
 
 ## Candidate evidence
@@ -109,7 +109,7 @@ The current 2026-07-28 package `manifest.md` and `hashes.sha256` do not yet cont
 
 ## Canonical reference evidence
 
-The leader-family references used by the processor and this audit are `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/den_thorvald_stauning.png` (`156x210`, SHA-256 `08732002182bdcb2bff3d78b142cc2b3d75adbdb29d4115f9e89ca5bdc6a21b6`) and `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/fin_carl_mannerheim.png` (`156x210`, SHA-256 `7e78e33e0b691b96b584393f2d363c07a302320f7e6300bda0fff261aa98d49e`).
+The leader-family references used by the processor and this audit are `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/den_thorvald_stauning.png` (`156x210`, SHA-256 `08732002182bdcb2bff3d78b142cc2b3d75adbdb29d4115f9e89ca5bdc6a21b6`) and `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/fin_carl_mannerheim.png` (`156x210`, SHA-256 `7e78e33e0b691b96b584393f2d363c07a302320f7e6300bda0fff261aa98d49e`).
 Both candidates use these references for painted leader-family style only; neither reference supplies identity, clothing, or route symbolism.
 
 ## Parent follow-up and no-wire boundary

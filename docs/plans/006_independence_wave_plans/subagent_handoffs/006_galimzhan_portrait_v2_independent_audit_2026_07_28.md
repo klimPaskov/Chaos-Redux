@@ -32,7 +32,7 @@ The exact generation handle is `exec-2971dbe3-49e7-4412-9842-1071b85557a9`. The 
 
 ## Canonical style references
 
-The processor and audit used only the canonical leader family at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/` for style, framing, and tonal comparison.
+The processor and audit used only the canonical leader family at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/` for style, framing, and tonal comparison.
 
 | Reference | SHA-256 | Audit comparison |
 |---|---|---|

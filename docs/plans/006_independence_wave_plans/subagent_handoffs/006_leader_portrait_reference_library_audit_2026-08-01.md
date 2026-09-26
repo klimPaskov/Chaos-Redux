@@ -13,7 +13,7 @@ No gameplay, `.gfx`, localisation, advisor-card, or runtime asset files were cha
 ## Findings
 
 - The pack contains 6 country-leader PNGs and 9 army/navy-commander PNGs, all visually male-presenting and all native `156x210` RGBA portraits.
-- Every pack portrait is byte-identical to its mapped canonical file under `assets/vanilla_reference/portraits/`; the manifest SHA-256 values match the actual pack and canonical bytes for all 15 rows.
+- Every pack portrait is byte-identical to its mapped canonical file under `assets/gfx_references/portraits/`; the manifest SHA-256 values match the actual pack and canonical bytes for all 15 rows.
 - The CATALOG-mapped Vanilla HOI4 DDS sources exist in the installed game for every pack row, and each catalog row is marked `Vanilla HOI4`; Pillow decoded all 15 DDS files to `156x210` pixels identical to the canonical PNGs.
 - `leaders/contact_sheet.png` is `660x560` RGB with SHA-256 `19320E58B96B1A5C2766392D5F332C1F56E8A3720AA0A47FA5970971B6B6A79E`; it displays the six manifest leader files and its manifest evidence matches.
 - `commanders/contact_sheet.png` is `660x840` RGB with SHA-256 `86C9A2D6C66CC6A7274D41327C424CB733BBCDAF31F38F155DAB9BD30A209D90`; it displays the nine manifest commander files and its manifest evidence matches.

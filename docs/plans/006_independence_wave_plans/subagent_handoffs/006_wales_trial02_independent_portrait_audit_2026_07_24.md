@@ -59,7 +59,7 @@ Package root: `docs/assets/006_independence_wave/sourced_portrait_refinishes_202
 | Deterministic candidate | `processed_png/portrait_WLS_independence_wave_national_council.png`; `156x210` RGBA; SHA-256 `0DF68C70BDDDB8E65B78271181709A95EF58F840FA11DDCBCDAAAB2DCA2D73E5`; decoded RGBA SHA-256 `8513388558F764D7F680A6F7FC313BA9F00584980954FB96F0BE060C2881550C` |
 | Candidate metadata | `processed_png/portrait_WLS_independence_wave_national_council.png.json`; SHA-256 `55574D22847243B1448E203D6196BB9F35EA5CE24ADF9128865493664BB26490`; status `candidate_requires_visual_approval`; role family `leader`; source kind `real` |
 | Style sheet | `review/WLS_david_grenfell_leader_style_sheet.png`; `1344x464` RGBA; SHA-256 `06AB7C079AD6BF9A64C4B4EDAD353ECCDF7B54A708CA8F6CB916D5E46432E336` |
-| Canonical style references | `den_thorvald_stauning.png` SHA-256 `08732002182bdcb2bff3d78b142cc2b3d75adbdb29d4115f9e89ca5bdc6a21b6` and `fin_carl_mannerheim.png` SHA-256 `7e78e33e0b691b96b584393f2d363c07a302320f7e6300bda0fff261aa98d49e` from `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders`; both were inspected native and 4x |
+| Canonical style references | `den_thorvald_stauning.png` SHA-256 `08732002182bdcb2bff3d78b142cc2b3d75adbdb29d4115f9e89ca5bdc6a21b6` and `fin_carl_mannerheim.png` SHA-256 `7e78e33e0b691b96b584393f2d363c07a302320f7e6300bda0fff261aa98d49e` from `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders`; both were inspected native and 4x |
 
 ### Major George Frederick Myddleton Cornwallis-West package
 
@@ -77,7 +77,7 @@ Package root: `docs/assets/006_independence_wave/sourced_portrait_refinishes_202
 | Deterministic candidate | `processed_png/portrait_WLS_independence_wave_mountain_commandant.png`; `156x210` RGBA; SHA-256 `B2AE3AA92304B5F16235BB95EB3FFA23BA662E0470874C7A943BE940540D9BE7`; decoded RGBA SHA-256 `A52BBE4CA47150B93407AFC99D3F37AEFF773D15FADBD7F37B16DB42C67161C0` |
 | Candidate metadata | `processed_png/portrait_WLS_independence_wave_mountain_commandant.png.json`; SHA-256 `BF2173164F092F4329E09E81941AE48BC32D8326768E422F9F191021404F8180`; status `candidate_requires_visual_approval`; role family `commander`; source kind `real` |
 | Style sheet | `review/WLS_george_cornwallis_west_commander_style_sheet.png`; `1344x464` RGBA; SHA-256 `292BD1C99F685DBA7B8B58033FB5C51BC0C140343CF9E0CDE2460D34949C2807` |
-| Canonical style references | `eng_bernard_montgomery.png` SHA-256 `39b03871d7451ca96712a5ccf3c056528693f82642776e6c5e297e041943944e` and `ger_erwin_von_witzleben.png` SHA-256 `10f4a1108f9d440213f70fb5802349a2291f298f9d132644241119561577d5b6` from `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/commanders`; both were inspected native and 4x |
+| Canonical style references | `eng_bernard_montgomery.png` SHA-256 `39b03871d7451ca96712a5ccf3c056528693f82642776e6c5e297e041943944e` and `ger_erwin_von_witzleben.png` SHA-256 `10f4a1108f9d440213f70fb5802349a2291f298f9d132644241119561577d5b6` from `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/commanders`; both were inspected native and 4x |
 
 ## Grenfell gate verdicts
 

@@ -16,7 +16,7 @@ The parent-facing runtime convention supplied for the original task was preserve
 
 ## Reference inspection
 
-The matching canonical contact sheets were inspected before individual references under the one authorized root `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference`: `icons/decision_categories/contact_sheet.png`, `icons/decisions/contact_sheet.png`, `icons/missions/contact_sheet.png`, `icons/ideas/contact_sheet.png`, and `icons/achievements/contact_sheet.png`.
+The matching canonical contact sheets were inspected before individual references under the one authorized root `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references`: `icons/decision_categories/contact_sheet.png`, `icons/decisions/contact_sheet.png`, `icons/missions/contact_sheet.png`, `icons/ideas/contact_sheet.png`, and `icons/achievements/contact_sheet.png`.
 
 Individual canonical references then inspected were `icons/decision_categories/decision_category_generic_crisis.png`, `icons/decisions/decision_generic_disband_irregulars.png`, `icons/missions/decision_chl_mapuche_organizations_mission.png`, `icons/ideas/idea_generic_oppression.png`, and the `icons/achievements/30_minutes_of_hel.png` state family plus its template and overlay references.
 

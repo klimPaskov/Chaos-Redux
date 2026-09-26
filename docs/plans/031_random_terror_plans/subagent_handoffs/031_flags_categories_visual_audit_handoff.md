@@ -8,9 +8,9 @@ Disposition: the assigned visuals pass the asset-level audit and need no regener
 
 ## Reference and inspection basis
 
-The flag family was compared against the canonical vanilla reference set under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/flags`, including the normal, medium, and small tiers.
+The flag family was compared against the canonical vanilla reference set under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/flags`, including the normal, medium, and small tiers.
 
-The decision-category family was compared against the canonical 114x101 full-canvas references under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decision_categories/pictures`.
+The decision-category family was compared against the canonical 114x101 full-canvas references under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decision_categories/pictures`.
 
 Every final flag was opened individually at native dimensions and at enlarged nearest-neighbour scale: 37 normal 82x52 files, 37 medium 41x26 files, and 37 small 10x7 files.
 

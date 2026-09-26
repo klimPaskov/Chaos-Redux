@@ -32,7 +32,7 @@ The accepted Event 006 sources checked were `docs/specs/006_independence_wave_sp
 
 The current package and source handoffs checked were `006_iw057_fer_identity_roster_symbol_receipt_addendum_2026_08_15.md`, `006_iw057_fer_flag_symbol_research_current_2026_08_15.md`, `006_iw057_fer_symbol_flag_research_handoff_2026_08_15.md`, `006_iw057_fer_next_tranche_planner_handoff_2026_08_15.md`, `006_iw057_far_eastern_republic_package_core_2026_08_15.md`, `006_iw057_far_eastern_republic_package_audit_2026_08_15.md`, `006_iw057_far_eastern_authority_docs_reconciliation_2026_08_15.md`, and `006_iw057_fer_symbol_sources_2026_08_15/fer_symbol_gate_status.md`.
 
-The canonical reference root checked was `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/README.md`, `CATALOG.md`, `REFERENCE_MANIFEST.md`, and `flags/` with its normal, medium, small, and contact-sheet shelves.
+The canonical reference root checked was `.agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md`, `CATALOG.md`, `REFERENCE_MANIFEST.md`, and `flags/` with its normal, medium, small, and contact-sheet shelves.
 
 The canonical reference root contains 21 generic flag references and no FER-specific reference; its README marks every extracted reference as review-only and forbids wiring or copying it into runtime.
 

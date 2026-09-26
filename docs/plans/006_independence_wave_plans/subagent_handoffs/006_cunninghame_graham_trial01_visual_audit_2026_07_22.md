@@ -15,17 +15,17 @@ Named package files:
 
 Canonical leader reference family inspected:
 
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/README.md`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/CATALOG.md`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/contact_sheet.png`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/afg_mohammed_zahir_shah.png`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/africa_generic_1.png`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/den_thorvald_stauning.png`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/eth_haile_selassie.png`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/fin_carl_mannerheim.png`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/ice_sveinn_bjornsson.png`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/ire_eamon_de_valera.png`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/lux_charlotte.png`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/CATALOG.md`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/contact_sheet.png`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/afg_mohammed_zahir_shah.png`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/africa_generic_1.png`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/den_thorvald_stauning.png`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/eth_haile_selassie.png`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/fin_carl_mannerheim.png`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/ice_sveinn_bjornsson.png`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/ire_eamon_de_valera.png`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/lux_charlotte.png`
 
 No other project, runtime, GFX, gameplay, localisation, manifest, or skill files were edited. The offline Paradox wiki core pages required by `AGENTS.md` were loaded; no engine/script behavior was changed by this audit.
 

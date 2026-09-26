@@ -27,7 +27,7 @@ This is a read-only recommendation handoff. It does not select or implement a fa
 - Vanilla documentation directory. No flag- or raster-asset-specific official documentation was present for this narrow source-authoring question.
 - `.agents/skills/chaos-redux-event-assets/SKILL.md`, especially section 20, Flags.
 - `C:/Users/klimp/.codex/skills/.system/imagegen/SKILL.md` and its prompting reference.
-- Canonical flat references and their provenance: `assets/vanilla_reference/README.md`, `assets/vanilla_reference/CATALOG.md`, the normal/medium/small flag ladders, and `assets/vanilla_reference/flags/contact_sheet.png`. ARG, ARM_UK, and ANU were inspected individually as representative flat-ink references.
+- Canonical flat references and their provenance: `assets/gfx_references/README.md`, `assets/gfx_references/CATALOG.md`, the normal/medium/small flag ladders, and `assets/gfx_references/flags/contact_sheet.png`. ARG, ARM_UK, and ANU were inspected individually as representative flat-ink references.
 - Event 019 requirements in `docs/specs/019_infantry_spawn_specs/specs/019_infantry_spawn_spec_part_6_derivative_countries.md` and `docs/specs/019_infantry_spawn_specs/prompts/019_infantry_spawn_asset_prompt.md`.
 - The Regional Flag Matrix in `docs/assets/019_infantry_spawn/manifest.md`.
 - The rejected pilot set at `docs/assets/019_infantry_spawn/source_png/flags/rejected_generation_evidence_2026_07_16/pilot_methods/` and the existing blocker report at `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_regional_flag_flat_source_blocker_options_2026_07_17.md`.

@@ -20,7 +20,7 @@ The exact runtime basenames remain the parent-owned names recorded below; this h
 
 ## Evidence reviewed
 
-The audit used the Event 006 asset prompt, the ASSET-044 and ASSET-046 registries, the formable-family registry, the prior flag and emblem provenance handoffs, the existing source manifests and contact sheets, and the canonical vanilla reference root at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference`.
+The audit used the Event 006 asset prompt, the ASSET-044 and ASSET-046 registries, the formable-family registry, the prior flag and emblem provenance handoffs, the existing source manifests and contact sheets, and the canonical vanilla reference root at `.agents/skills/chaos-redux-event-assets/assets/gfx_references`.
 
 The relevant prior evidence is retained in `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_flag_provenance_research_2026-09-05.md` and `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_formable_emblem_research_2026-09-05.md`.
 

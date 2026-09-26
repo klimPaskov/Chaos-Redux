@@ -22,7 +22,7 @@ At full result size (`1086x1448`, SHA-256 `a9033e201a25a3d8412feab6d4b50480729e2
 
 At the processed `156x210` size, `processed_png/portrait_SCO_independence_wave_territorial_commandant.png` remains readable as the same broad-faced, moustached, cap-wearing officer and follows the full commander-portrait canvas; alpha is fully opaque.
 
-No medals, text, flag, watermark, modern object, advisor frame, or `_small` treatment was added, and the restrained painted background and brush texture match the canonical HOI4 commander family inspected under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/commanders/`.
+No medals, text, flag, watermark, modern object, advisor frame, or `_small` treatment was added, and the restrained painted background and brush texture match the canonical HOI4 commander family inspected under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/commanders/`.
 
 The cap badge is retained in the source position and broad silhouette with no added medal set, but its fine heraldic detail is necessarily reconstructed beyond a 200x250 source and remains the only visual-review uncertainty.
 

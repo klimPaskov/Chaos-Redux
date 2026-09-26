@@ -6,7 +6,7 @@ The reviewer did not produce the source, ImageGen, or processor artifacts. The r
 
 ## Scope and method
 
-The review covered the immutable archival masters and exact crops in `docs/assets/006_independence_wave/sourced_portrait_clearance_2026_07_24/wales_two_role_retry_03/`, the retry-04 raw ImageGen results, deterministic `156x210` candidates, metadata, review sheets, and the canonical role references under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/` and `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/commanders/`.
+The review covered the immutable archival masters and exact crops in `docs/assets/006_independence_wave/sourced_portrait_clearance_2026_07_24/wales_two_role_retry_03/`, the retry-04 raw ImageGen results, deterministic `156x210` candidates, metadata, review sheets, and the canonical role references under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/` and `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/commanders/`.
 
 Each candidate was compared against its unchanged source master, exact crop, raw repaint, processed `156x210` PNG, and role-specific references at native size and at a 4x nearest-neighbour enlargement. The review sheet was treated as evidence only; it does not replace the separate source/crop comparison. Male-only compliance, source identity, portrait-family style, crop/provenance chain, and runtime-surface constraints were checked independently.
 
@@ -87,13 +87,13 @@ The processor sheets and independent comparisons used only the role-specific can
 
 ### Leader references
 
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/den_thorvald_stauning.png` (`156x210`, SHA-256 `08732002182bdcb2bff3d78b142cc2b3d75adbdb29d4115f9e89ca5bdc6a21b6`).
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/fin_carl_mannerheim.png` (`156x210`, SHA-256 `7e78e33e0b691b96b584393f2d363c07a302320f7e6300bda0fff261aa98d49e`).
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/den_thorvald_stauning.png` (`156x210`, SHA-256 `08732002182bdcb2bff3d78b142cc2b3d75adbdb29d4115f9e89ca5bdc6a21b6`).
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/fin_carl_mannerheim.png` (`156x210`, SHA-256 `7e78e33e0b691b96b584393f2d363c07a302320f7e6300bda0fff261aa98d49e`).
 
 ### Commander references
 
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/commanders/eng_bernard_montgomery.png` (`156x210`, SHA-256 `39b03871d7451ca96712a5ccf3c056528693f82642776e6c5e297e041943944e`).
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/commanders/ger_erwin_von_witzleben.png` (`156x210`, SHA-256 `10f4a1108f9d440213f70fb5802349a2291f298f9d132644241119561577d5b6`).
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/commanders/eng_bernard_montgomery.png` (`156x210`, SHA-256 `39b03871d7451ca96712a5ccf3c056528693f82642776e6c5e297e041943944e`).
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/commanders/ger_erwin_von_witzleben.png` (`156x210`, SHA-256 `10f4a1108f9d440213f70fb5802349a2291f298f9d132644241119561577d5b6`).
 
 ## Handoff and shelf rules
 

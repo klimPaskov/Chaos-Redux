@@ -143,7 +143,7 @@ No native ImageGen replacement was justified.
 
 ## Canonical references and runtime path audit
 
-The canonical reference contact sheets and matching references were inspected only under `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/`.
+The canonical reference contact sheets and matching references were inspected only under `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/`.
 
 The inspected families were `icons/national_focus`, `icons/ideas`, `icons/decisions`, `icons/missions`, and `icons/achievements`, including the achievement template inputs.
 

@@ -62,7 +62,7 @@ Alexander's source is a centered solo head-and-shoulders photograph with a manua
 
 The passport crop preserves the complete government document, including its FER heading and crest, and is explicitly institutional evidence rather than a person portrait.
 
-The installed vanilla leader-reference shelf at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/` and its contact sheet were reviewed; the reference outputs are 156x210 runtime portraits, but none was used as a source or substitute.
+The installed vanilla leader-reference shelf at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/` and its contact sheet were reviewed; the reference outputs are 156x210 runtime portraits, but none was used as a source or substitute.
 
 ## Source-placeholder and runtime state
 

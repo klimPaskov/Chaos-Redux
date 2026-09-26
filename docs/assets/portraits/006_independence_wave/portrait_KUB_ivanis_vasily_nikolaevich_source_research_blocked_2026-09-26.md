@@ -26,7 +26,7 @@ The exact installed character is `KUB_ivanis_vasily_nikolaevich` in `common/char
 
 The installed No Step Back definition in `dlc/dlc034_no_step_back/interface/nsb_portraits.gfx` maps the large sprite to `gfx/leaders/KUB/portrait_KUB_ivanis_vasily_nikolaevich.dds`, but the referenced large DDS is absent from the installed game tree. The installed No Step Back small definition in `dlc/dlc034_no_step_back/interface/nsb_ideas_characters.gfx` maps the small sprite to `gfx/interface/ideas/idea_KUB_ivanis_vasily_nikolaevich.dds`; that file exists at 65x67 RGBA, 17,548 bytes, SHA-256 `c215128b588ffff5b03fc1885e0619dcc66cac31798b6cc3b514f48f31a26e93`.
 
-The canonical role reference inspected was `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/contact_sheet.png` and the native 156x210 `afg_mohammed_zahir_shah.png` sample. The actual installed 65x67 small Ivanis DDS was decoded and inspected separately.
+The canonical role reference inspected was `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/contact_sheet.png` and the native 156x210 `afg_mohammed_zahir_shah.png` sample. The actual installed 65x67 small Ivanis DDS was decoded and inspected separately.
 
 The current project scan found no exact subject token in `common/characters/`, `history/countries/`, `interface/`, `gfx/`, or `localisation/`; no matching new Event 006 portrait sprite exists in the shared portrait registry; and no target runtime DDS exists. Existing KUB package references remain under the parent agent's ownership and were not changed.
 

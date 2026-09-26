@@ -4,7 +4,7 @@ Date: 2026-08-02
 
 ## Completed asset scope
 
-Exactly eight independent generated report-card masters were created with the official built-in ImageGen workflow after inspecting the canonical report family at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/report`. The scenes are fictional or alternate-history 1936–1945 period-documentary photographs with no readable text, logos, watermarks, modern props, UI, or 3D content.
+Exactly eight independent generated report-card masters were created with the official built-in ImageGen workflow after inspecting the canonical report family at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report`. The scenes are fictional or alternate-history 1936–1945 period-documentary photographs with no readable text, logos, watermarks, modern props, UI, or 3D content.
 
 All eight were processed with `.agents/skills/chaos-redux-event-assets/tools/process_report_event_image.py` using canvas `210x176`, card `192x153`, border `2`, angle `3`, transparent corners, soft shadow, sepia tone, and deterministic grain. All eight were converted with `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py` to one-level uncompressed BGRA DDS at `210x176` and exact length `147968` bytes.
 

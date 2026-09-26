@@ -69,7 +69,7 @@ The current mod audit found no approved IW-095/DAH portrait consumer in the foll
 
 Installed vanilla `common/characters/DAH.txt` contains advisor-only generic African portrait slots and no named country leader, corps commander, or field marshal for Dahomey. Vanilla `interface/_random_portraits.gfx` and the matching generic African DDS are technical framing references only and cannot be used as Casimir, an Abomey council member, or any other identity substitute.
 
-The matching installed/reference leader family is the 156x210 full portrait family represented by `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/contact_sheet.png` and its named leader references. `africa_generic_1.png` is explicitly a technical framing reference, not an identity reference.
+The matching installed/reference leader family is the 156x210 full portrait family represented by `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/contact_sheet.png` and its named leader references. `africa_generic_1.png` is explicitly a technical framing reference, not an identity reference.
 
 ## Archive and processing state
 

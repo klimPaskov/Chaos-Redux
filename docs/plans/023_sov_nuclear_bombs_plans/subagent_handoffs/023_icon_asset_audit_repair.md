@@ -8,7 +8,7 @@ Scope: Event 023 (`sov_nuclear_bombs`) small gameplay icon families only. Audite
 
 The required Event 023 asset prompt, Part 8, Part 10, current asset manifest, current GFX handoff, repository `AGENTS.md`, and `.agents/skills/chaos-redux-event-assets/SKILL.md` were read before the audit.
 
-The inspected canonical reference families were the contact sheet, README, CATALOG, and individual images under the one approved root `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference` for `icons/decision_categories`, `icons/ideas`, `icons/decisions`, `icons/missions`, and `icons/achievements`.
+The inspected canonical reference families were the contact sheet, README, CATALOG, and individual images under the one approved root `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references` for `icons/decision_categories`, `icons/ideas`, `icons/decisions`, `icons/missions`, and `icons/achievements`.
 
 The installed vanilla consumer precedents inspected were `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/interface/decisions.gfx`, `interface/ideas.gfx`, vanilla decision-category consumers, decision consumers, idea consumers, and the strict 64x64 vanilla achievement DDS layout. Relevant Chaos Redux category, idea, decision, mission, and achievement GFX precedents were also inspected for folder placement and naming; no GFX file was changed.
 

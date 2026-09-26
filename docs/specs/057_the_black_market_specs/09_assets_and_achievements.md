@@ -34,7 +34,7 @@ The asset package does not need a grounded person or institutional portrait.
 
 Before production, asset workers must inspect the exact matching reference families under:
 
-`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\vanilla_reference`
+`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\gfx_references`
 
 Required families:
 

@@ -19,7 +19,7 @@ The candidate was reviewed independently from the producer package at native siz
 - Processor metadata: `processed/ARX/Pietro_Pinna_Parpaglia_156x210.png.json`.
 - Processor review sheet: `review/Pietro_Pinna_Parpaglia_processor_review.png`.
 - The requested `portraits/country_leader_large/` directory is absent in this checkout.
-- The actual canonical country-leader family `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/` and the male-only quick-reference pack `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/leaders/` were inspected instead.
+- The actual canonical country-leader family `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/` and the male-only quick-reference pack `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/leaders/` were inspected instead.
 - The processor metadata selects canonical `den_thorvald_stauning.png` and `fin_carl_mannerheim.png` as style references, and the full canonical leader contact sheet was also reviewed.
 
 ## Separate verdicts

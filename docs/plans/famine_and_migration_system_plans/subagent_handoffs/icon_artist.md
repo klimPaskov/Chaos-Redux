@@ -22,7 +22,7 @@ Status: complete for the assigned icon surfaces and the Deaths texticon follow-u
 
 ## Generation and reference evidence
 
-The built-in ImageGen tool was available and used for each original icon/achievement master with genuine transparent background requested in the initial call. No reference PNG was copied, traced, recolored, or used as runtime art. The canonical contact sheets and catalogs were inspected first at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference` for decisions, decision categories, category pictures, state modifiers, and achievements.
+The built-in ImageGen tool was available and used for each original icon/achievement master with genuine transparent background requested in the initial call. No reference PNG was copied, traced, recolored, or used as runtime art. The canonical contact sheets and catalogs were inspected first at `.agents/skills/chaos-redux-event-assets/assets/gfx_references` for decisions, decision categories, category pictures, state modifiers, and achievements.
 
 Achievement gray states were derived as grayscale from each completed master; not-eligible states were derived by compositing the canonical `icons/achievements/overlay.png` over that grayscale state, following the skill contract.
 

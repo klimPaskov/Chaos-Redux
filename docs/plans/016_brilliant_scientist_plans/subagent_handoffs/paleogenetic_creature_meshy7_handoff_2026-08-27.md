@@ -158,7 +158,7 @@ Role synchronization cannot be finalized until the corresponding provider action
 - Installed definition: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/interface/subuniticons.gfx`
 - Large reference: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/interface/counters/divisions_large/unit_infantry_icon.dds`
 - On-map reference: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/interface/counters/divisions_small/onmap_unit_infantry_icon.dds`
-- Matching skill-local families: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/counters_large/` and `.../map_counters/`
+- Matching skill-local families: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/counters_large/` and `.../map_counters/`
 - Large strip: 152 x 42 RGBA, `noOfFrames = 2`, two 76 x 42 frames, transparent unused canvas, black/gray silhouette and border treatment with muted vanilla green shading. Dominant sampled opaque green is RGB `73,106,73`; observed shade family includes `74,107,74`, `83,114,83`, `100,128,100`, `116,141,116`, and `125,149,125`.
 - On-map strip: 60 x 12 RGBA, `noOfFrames = 2`, two 30 x 12 frames, transparent unused canvas, compact black/grayscale/white state treatment; it is not an arbitrary-green miniature.
 - Required large token: `GFX_unit_paleogenetic_creature_icon_medium`

@@ -8,7 +8,7 @@ The icon artist did not edit GFX or GUI definitions, gameplay scripts, localisat
 
 ## Canonical references and inspected consumer families
 
-The only reference root used was `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference`.
+The only reference root used was `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references`.
 
 Before generation, the matching contact sheets and selected individual references were inspected for ideas, national focus, decisions, missions, decision categories, achievements, technologies, special projects, officer-corps spirits, factions, land/air/naval counters, division-template emblems, and equipment technology art.
 

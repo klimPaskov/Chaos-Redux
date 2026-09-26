@@ -98,9 +98,9 @@ inspected. The relevant style references named by the package and their hashes
 are:
 
 ```text
-08732002182BDCB2BFF3D78B142CC2B3D75DBDB29D4115F9E89CA5BDC6A21B6  .agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/den_thorvald_stauning.png
-7E78E33E0B691B96B584393F2D363C07A302320F7E6300BDA0FFF261AA98D49E  .agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/fin_carl_mannerheim.png
-8966AE351D1FE8FC13D47CA1C59EC3D8A34DA9101CE5FD65F7ACFF3421BD0401  .agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/contact_sheet.png
+08732002182BDCB2BFF3D78B142CC2B3D75DBDB29D4115F9E89CA5BDC6A21B6  .agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/den_thorvald_stauning.png
+7E78E33E0B691B96B584393F2D363C07A302320F7E6300BDA0FFF261AA98D49E  .agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/fin_carl_mannerheim.png
+8966AE351D1FE8FC13D47CA1C59EC3D8A34DA9101CE5FD65F7ACFF3421BD0401  .agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/contact_sheet.png
 ```
 
 For completeness, the other six leader refs in that same inspected family
@@ -117,8 +117,8 @@ textures are 156x210; the BRI processed PNG matches that native canvas.
 Reference-library file hashes:
 
 ```text
-E6A2F4A4CFDCE04D4C0682103B6C5D38A98557D40E7491CB9F3A9A869EB59C52  .agents/skills/chaos-redux-event-assets/assets/vanilla_reference/README.md
-72FDD8110BDFC42CCE194AFAE44D45E6373501342B5DCA5049594BE4FDD1AA37  .agents/skills/chaos-redux-event-assets/assets/vanilla_reference/CATALOG.md
+E6A2F4A4CFDCE04D4C0682103B6C5D38A98557D40E7491CB9F3A9A869EB59C52  .agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md
+72FDD8110BDFC42CCE194AFAE44D45E6373501342B5DCA5049594BE4FDD1AA37  .agents/skills/chaos-redux-event-assets/assets/gfx_references/CATALOG.md
 ```
 
 ## Runtime handoff and residual risks

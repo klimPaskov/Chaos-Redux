@@ -145,5 +145,5 @@ No new source archive was added; the existing local Commons geometry master and 
 - Current source-of-truth authority: `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`.
 - Prior NAV/GLC flag admission resolution: `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw013_iw015_flag_admission_resolution_current_2026-08-12.md`.
 - Existing generated NAV package: `docs/assets/006_independence_wave/iw013_nav_flags_2026_08_13/`.
-- Canonical flag reference library: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/README.md`, `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/CATALOG.md`, and `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/flags/`.
+- Canonical flag reference library: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md`, `.agents/skills/chaos-redux-event-assets/assets/gfx_references/CATALOG.md`, and `.agents/skills/chaos-redux-event-assets/assets/gfx_references/flags/`.
 - Asset rules: relevant flag, source, handoff, and blocked-asset sections of `.agents/skills/chaos-redux-event-assets/SKILL.md`.

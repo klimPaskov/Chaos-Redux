@@ -4,7 +4,7 @@ Produce the complete Airship visual package through `chaos-redux-event-assets`, 
 
 ## Inspect actual references first
 
-Use the canonical project reference library under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/`. The supplied skill records the user's installation root as `C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\vanilla_reference`. Resolve the current real repository location instead of assuming this Windows path exists in another environment.
+Use the canonical project reference library under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/`. The supplied skill records the user's installation root as `C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\gfx_references`. Resolve the current real repository location instead of assuming this Windows path exists in another environment.
 
 Inspect the matching contact sheets and individual native-size examples for report images, news, super-events, decision icons, ideas, and achievements. Recover and visually inspect the actual Airship route maps and marker assets before proposing changes. If a required reference contact sheet is missing, build and label it from the real reference images and update the reference README and catalog according to the skill. Do not claim to have inspected an image based only on its filename.
 

@@ -37,10 +37,10 @@ Decoded copies are preserved at:
 
 Skill-local reference families inspected:
 
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/counters_large/`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/counters_large/contact_sheet.png`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/map_counters/`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/map_counters/contact_sheet.png`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/counters_large/`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/counters_large/contact_sheet.png`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/map_counters/`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/map_counters/contact_sheet.png`
 
 ## Frame and palette contract
 

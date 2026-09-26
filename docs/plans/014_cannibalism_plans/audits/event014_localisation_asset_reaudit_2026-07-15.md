@@ -106,7 +106,7 @@ The four decoded scenes are action-heavy, compositionally distinct, and do not r
 
 The live achievement registry contains 18 Event 014 achievements. `interface/014_cannibalism_achievements.gfx` contains 54 unique sprites: completed, grey, and not-eligible states for every achievement. All 54 runtime DDS files are 64x64 and have distinct hashes.
 
-The current processor copies each grey variant and alpha-composites the exact required overlay from `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements/overlay.png`, SHA-256 `89bc80c6ac975bf6f1ff000ff3070b20c337bfb8b8ae966ae35a5540c004d6dd`. Its validation ledger contains 54 complete rows, with package and runtime DDS hashes aligned.
+The current processor copies each grey variant and alpha-composites the exact required overlay from `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements/overlay.png`, SHA-256 `89bc80c6ac975bf6f1ff000ff3070b20c337bfb8b8ae966ae35a5540c004d6dd`. Its validation ledger contains 54 complete rows, with package and runtime DDS hashes aligned.
 
 ## Licensed audio and wiring
 

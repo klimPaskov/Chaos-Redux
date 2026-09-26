@@ -68,7 +68,7 @@ The user alone supplies any later HOI4-style grounded final through RunPod; RunP
 
 ## Portrait references and current runtime state
 
-The matching canonical leader reference family was inspected at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/`, including `contact_sheet.png` and the corresponding `CATALOG.md` rows.
+The matching canonical leader reference family was inspected at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/`, including `contact_sheet.png` and the corresponding `CATALOG.md` rows.
 
 The installed vanilla leader examples `gfx/leaders/AFG/Portrait_Afghanistan_Mohammed_Zahir_Shah.dds`, `gfx/leaders/DEN/Portrait_Denmark_Thorvald_Stauning.dds`, and `gfx/leaders/ETH/Portrait_Ethiopia_Haile_Selassie.dds` are 156x210 textures registered through `interface/_leader_portraits.gfx`.
 

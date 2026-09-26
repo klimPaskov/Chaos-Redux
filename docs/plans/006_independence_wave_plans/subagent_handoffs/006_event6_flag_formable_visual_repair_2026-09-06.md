@@ -12,7 +12,7 @@ The audit covered the 102 Event 006 registered country tags, their normal/medium
 
 The Chaos Redux event-assets guidance was read from .agents/skills/chaos-redux-event-assets/SKILL.md, including the canonical-reference, flag-ladder, state-puzzle, manifest, DDS, handoff, and blocker sections.
 
-The canonical vanilla presentation references were inspected at .agents/skills/chaos-redux-event-assets/assets/vanilla_reference/README.md, .agents/skills/chaos-redux-event-assets/assets/vanilla_reference/CATALOG.md, flags/contact_sheet.png, and icons/factions/contact_sheet.png.
+The canonical vanilla presentation references were inspected at .agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md, .agents/skills/chaos-redux-event-assets/assets/gfx_references/CATALOG.md, flags/contact_sheet.png, and icons/factions/contact_sheet.png.
 
 Existing source authority remains docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_flag_provenance_research_2026-09-05.md, docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_flag_emblem_source_repair_2026-09-05.md, and docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_visual_asset_audit_2026-09-03.md.
 

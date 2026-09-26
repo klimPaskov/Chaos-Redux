@@ -93,7 +93,7 @@ The processed candidate remains readable as a full head-and-shoulders leader at 
 
 The candidate is darker and more heavily brushed than the canonical references, but the modeled planes, muted palette, quiet background, and clear face remain within the HOI4 country-leader family.
 
-The style-only references inspected are `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/den_thorvald_stauning.png`, `156x210` RGBA, SHA-256 `08732002182BDCB2BFF3D78B142CC2B3D75ADBDB29D4115F9E89CA5BDC6A21B6`, and `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/fin_carl_mannerheim.png`, `156x210` RGBA, SHA-256 `7E78E33E0B691B96B584393F2D363C07A302320F7E6300BDA0FFF261AA98D49E`.
+The style-only references inspected are `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/den_thorvald_stauning.png`, `156x210` RGBA, SHA-256 `08732002182BDCB2BFF3D78B142CC2B3D75ADBDB29D4115F9E89CA5BDC6A21B6`, and `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/fin_carl_mannerheim.png`, `156x210` RGBA, SHA-256 `7E78E33E0B691B96B584393F2D363C07A302320F7E6300BDA0FFF261AA98D49E`.
 
 The candidate/reference panel checks were strict pixel checks against the current review script.
 

@@ -16,7 +16,7 @@ The source gate is enforced by `common/scripted_triggers/006_independence_wave_p
 
 ## Reference review
 
-The matching installed-Vanilla leader reference family was inspected at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/`, including its labeled contact sheet and `CATALOG.md`. The shelf contains eight full `156x210` leader references extracted from Vanilla HOI4 build `Operation Postern v1.19.2.0.a729 (d245)`, and the inspected contact sheet is `1200x498`, SHA-256 `8966ae351d1fe8fc13d47ca1c59ec3d8a34da9101ce5fd65f7acff3421bd0401`.
+The matching installed-Vanilla leader reference family was inspected at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/`, including its labeled contact sheet and `CATALOG.md`. The shelf contains eight full `156x210` leader references extracted from Vanilla HOI4 build `Operation Postern v1.19.2.0.a729 (d245)`, and the inspected contact sheet is `1200x498`, SHA-256 `8966ae351d1fe8fc13d47ca1c59ec3d8a34da9101ce5fd65f7acff3421bd0401`.
 
 These references control only full-leader framing, scale, transparency, and restrained HOI4 presentation. They are not identity sources and cannot justify reusing a Vanilla face or a regional generic.
 

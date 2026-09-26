@@ -50,13 +50,13 @@ byte-for-byte to their processed PNG pixel data.
 |---|---|---|
 | `contact_sheets/BAY_held_schobert_source_crop_result_canonical_contact_sheet.png` | `1012x580`, RGB PNG | `85960b3437a8efc4358eee7c1b1f98f13a1001e60cbda4ba4708f0e7469d009` |
 | `contact_sheets/BAY_held_schobert_source_crop_result_canonical_contact_sheet_4x.png` | `4048x2320`, RGB PNG | `7d486859792371ff97ccede7c1b1f98f13a1001e60cbda4ba4708f0e7469d009` |
-| `vanilla_reference/portraits/leaders/den_thorvald_stauning.png` | `156x210` | `08732002182bdcb2bff3d78b142cc2b3d75adbdb29d4115f9e89ca5bdc6a21b6` |
-| `vanilla_reference/portraits/leaders/ire_eamon_de_valera.png` | `156x210` | `ff5f8689f1e8ea75bf88bea4c4a87dcf60518b1e062ea53be4a9ceff3509dcb0` |
-| `vanilla_reference/portraits/commanders/generic_africa_land_1.png` | `156x210` | `17d875344719b09a03ef32cc3329971778a738c4ac20210f6cbb7394a1e7585f` |
-| `vanilla_reference/portraits/commanders/generic_africa_land_3.png` | `156x210` | `76731af64301c3c68eee012a9eb9f001f4a11561e42bbb13cae0949ea5535b0b` |
+| `gfx_references/portraits/leaders/den_thorvald_stauning.png` | `156x210` | `08732002182bdcb2bff3d78b142cc2b3d75adbdb29d4115f9e89ca5bdc6a21b6` |
+| `gfx_references/portraits/leaders/ire_eamon_de_valera.png` | `156x210` | `ff5f8689f1e8ea75bf88bea4c4a87dcf60518b1e062ea53be4a9ceff3509dcb0` |
+| `gfx_references/portraits/commanders/generic_africa_land_1.png` | `156x210` | `17d875344719b09a03ef32cc3329971778a738c4ac20210f6cbb7394a1e7585f` |
+| `gfx_references/portraits/commanders/generic_africa_land_3.png` | `156x210` | `76731af64301c3c68eee012a9eb9f001f4a11561e42bbb13cae0949ea5535b0b` |
 
 The last four rows are the actual canonical files under
-`.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/`.
+`.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/`.
 The package metadata/prompts use the obsolete non-existent prefix
 `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/`; the hashes
 match the real canonical files, but those path strings must be corrected before
@@ -272,7 +272,7 @@ or Schobert.
    rights status are unresolved. Keep `NEEDS_REVISION`; no runtime promotion.
 2. **Canonical-reference path defect:** metadata/prompts name the obsolete
    `assets/leader_portraits/` prefix. The actual canonical root is
-   `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/`.
+   `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/`.
    Hashes are correct, but the path strings need correction before final
    provenance promotion.
 3. **Schobert role caveat:** the source proves Bavarian infantry/army command,

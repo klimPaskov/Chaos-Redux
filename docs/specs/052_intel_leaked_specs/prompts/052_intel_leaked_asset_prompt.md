@@ -26,7 +26,7 @@ Preserve acceptable existing art. Replace an asset only when the audit finds a r
 Use the single reference root:
 
 ```text
-C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\vanilla_reference
+C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\gfx_references
 ```
 
 Inspect:

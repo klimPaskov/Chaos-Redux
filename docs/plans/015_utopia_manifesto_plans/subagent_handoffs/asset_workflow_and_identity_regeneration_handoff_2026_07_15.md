@@ -19,8 +19,8 @@ The reusable rules are recorded in:
 
 - `.agents/skills/chaos-redux-event-assets/SKILL.md`
 - `.agents/skills/chaos-redux-event-assets/assets/README.md`
-- `assets/vanilla_reference/portraits/advisors/`
-- `assets/vanilla_reference/portraits/leaders/`
+- `assets/gfx_references/portraits/advisors/`
+- `assets/gfx_references/portraits/leaders/`
 
 The skill now treats flags as flat identity designs and assets rather than scene artwork while still requiring ImageGen authorship and preservation of generated heraldic detail. It separately defines the advisor master-plus-overlay workflow and the people-free institutional-leader workflow.
 
@@ -130,8 +130,8 @@ Current registry proof:
 - `.agents/skills/chaos-redux-event-assets/assets/README.md`
 - the retired advisor dossier asset kit
 - `the retired portrait-processing utility`
-- `assets/vanilla_reference/portraits/advisors/`
-- `assets/vanilla_reference/portraits/leaders/`
+- `assets/gfx_references/portraits/advisors/`
+- `assets/gfx_references/portraits/leaders/`
 - `gfx/flags/UTOPIA_MANIFESTO_*.tga`
 - `gfx/flags/medium/UTOPIA_MANIFESTO_*.tga`
 - `gfx/flags/small/UTOPIA_MANIFESTO_*.tga`

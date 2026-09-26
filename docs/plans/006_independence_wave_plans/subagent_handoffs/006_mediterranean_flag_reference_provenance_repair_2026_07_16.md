@@ -26,7 +26,7 @@ byte-distinct canonical review PNGs were the historical generation inputs.
 
 Before the repair, a path-only migration had changed both the prompt input
 lists and the live ledger paths from the retired `assets/flags/` references to
-the current `assets/vanilla_reference/flags/normal/` references. The three old
+the current `assets/gfx_references/flags/normal/` references. The three old
 SHA-256 values remained beside the new paths. This produced two defects at
 once: all three live ledger rows failed, and the prompt record implied that the
 current canonical bytes had been used in historical ImageGen calls.
@@ -46,9 +46,9 @@ After the repair:
 
 | Reference | Before: migrated path with stale legacy hash | After: live canonical path/hash | Preserved historical generation input |
 |---|---|---|---|
-| `ARM_UK` / ARX | `.../vanilla_reference/flags/normal/arm_uk.png` + `69b612800eb642be2004ccf1ae263fc014ce555f6c0204eff6b607962308b38c` | `.../vanilla_reference/flags/normal/arm_uk.png` + `0852be44f8f75579b9677904673c6ca254158a33da6b680df96d55b28ffbb9e9` | `.../assets/flags/ARM_UK.png` + `69b612800eb642be2004ccf1ae263fc014ce555f6c0204eff6b607962308b38c` |
-| `ARG_gen_nazism_party` / ASX | `.../vanilla_reference/flags/normal/arg_gen_nazism_party.png` + `07007cca92ff9f8a6544858a985aed5a6133a4f5e313dbd7169ea4ee491951e9` | `.../vanilla_reference/flags/normal/arg_gen_nazism_party.png` + `cbb5400e93cb0aacaa82193eb4555ba70619bdaa1f0c0198f0fc556ae7a432ac` | `.../assets/flags/ARG_gen_nazism_party.png` + `07007cca92ff9f8a6544858a985aed5a6133a4f5e313dbd7169ea4ee491951e9` |
-| `ANU_fascism` / ICX | `.../vanilla_reference/flags/normal/anu_fascism.png` + `aec2babab5bced21a7665583118307446cd5f10d3d3895e39ff7a93359d5cc34` | `.../vanilla_reference/flags/normal/anu_fascism.png` + `b0633149ca295792b63561638db340f7bcab4ad22a21179963781350b1a1b243` | `.../assets/flags/ANU_fascism.png` + `aec2babab5bced21a7665583118307446cd5f10d3d3895e39ff7a93359d5cc34` |
+| `ARM_UK` / ARX | `.../gfx_references/flags/normal/arm_uk.png` + `69b612800eb642be2004ccf1ae263fc014ce555f6c0204eff6b607962308b38c` | `.../gfx_references/flags/normal/arm_uk.png` + `0852be44f8f75579b9677904673c6ca254158a33da6b680df96d55b28ffbb9e9` | `.../assets/flags/ARM_UK.png` + `69b612800eb642be2004ccf1ae263fc014ce555f6c0204eff6b607962308b38c` |
+| `ARG_gen_nazism_party` / ASX | `.../gfx_references/flags/normal/arg_gen_nazism_party.png` + `07007cca92ff9f8a6544858a985aed5a6133a4f5e313dbd7169ea4ee491951e9` | `.../gfx_references/flags/normal/arg_gen_nazism_party.png` + `cbb5400e93cb0aacaa82193eb4555ba70619bdaa1f0c0198f0fc556ae7a432ac` | `.../assets/flags/ARG_gen_nazism_party.png` + `07007cca92ff9f8a6544858a985aed5a6133a4f5e313dbd7169ea4ee491951e9` |
+| `ANU_fascism` / ICX | `.../gfx_references/flags/normal/anu_fascism.png` + `aec2babab5bced21a7665583118307446cd5f10d3d3895e39ff7a93359d5cc34` | `.../gfx_references/flags/normal/anu_fascism.png` + `b0633149ca295792b63561638db340f7bcab4ad22a21179963781350b1a1b243` | `.../assets/flags/ANU_fascism.png` + `aec2babab5bced21a7665583118307446cd5f10d3d3895e39ff7a93359d5cc34` |
 
 The `ANU_fascism` record applies to the selected ICX generation and both
 retained rejected ICX edit calls.

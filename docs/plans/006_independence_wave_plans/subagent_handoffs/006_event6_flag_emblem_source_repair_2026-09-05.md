@@ -28,7 +28,7 @@ The parent asset prompt was read at `docs/specs/006_independence_wave_specs/prom
 
 The relevant source, flag-ladder, canonical-reference, provenance, rights, conversion, handoff, formable, and blocked-state sections of `.agents/skills/chaos-redux-event-assets/SKILL.md` were read.
 
-The canonical review shelf was read at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/README.md` and `CATALOG.md`, and visually inspected at `flags/contact_sheet.png` and `icons/factions/contact_sheet.png`. The canonical shelf is review material only and does not prove identity, ownership, or redistribution rights.
+The canonical review shelf was read at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md` and `CATALOG.md`, and visually inspected at `flags/contact_sheet.png` and `icons/factions/contact_sheet.png`. The canonical shelf is review material only and does not prove identity, ownership, or redistribution rights.
 
 The accepted/current Event 006 references were read at `docs/specs/006_independence_wave_specs/matrices/006_asset_family_registry.csv`, `docs/specs/006_independence_wave_specs/matrices/006_formable_family_registry.csv`, `docs/specs/006_independence_wave_specs/quality/package_manifest.md`, `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_visual_asset_audit_2026-09-03.md`, `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_flag_provenance_research_2026-09-05.md`, and `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_formable_emblem_research_2026-09-05.md`.
 

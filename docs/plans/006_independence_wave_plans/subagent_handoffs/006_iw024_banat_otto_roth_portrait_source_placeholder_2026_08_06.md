@@ -49,7 +49,7 @@ The candidate was converted with `.agents/skills/chaos-redux-event-assets/tools/
 
 ## Review, gate, and blockers
 
-Producer review passed for male identity, attribution, public-domain record, circa-1930 era fit, head-and-shoulders framing, caption exclusion, full leader canvas, and preservation of visible face, hairline, expression, collar, tie, shoulders, and source tonal structure. Canonical installed-vanilla country-leader references were inspected from `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/contact_sheet.png` and the eight native `156x210` references. Independent parent source-placeholder admission review also passed at native and 4x nearest-neighbour scale.
+Producer review passed for male identity, attribution, public-domain record, circa-1930 era fit, head-and-shoulders framing, caption exclusion, full leader canvas, and preservation of visible face, hairline, expression, collar, tie, shoulders, and source tonal structure. Canonical installed-vanilla country-leader references were inspected from `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/contact_sheet.png` and the eight native `156x210` references. Independent parent source-placeholder admission review also passed at native and 4x nearest-neighbour scale.
 
 AXX package admission is **source-attested and conditionally selectable**. The package has a central dispatch adapter, content attestation, identity-specific setup/final/cleanup path, character roster, AI profile, state-82 anchor, and flat alternate-history flag handoff. The runtime portrait remains an unchanged source placeholder under the current historical-portrait policy, not a styled final.
 

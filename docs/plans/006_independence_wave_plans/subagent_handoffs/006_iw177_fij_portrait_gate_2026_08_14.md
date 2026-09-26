@@ -81,7 +81,7 @@ The Commons search results otherwise returned the retained National Archives of 
 
 The exact and variant terms `Sukuna`, `Lala Sukuna`, `Josefa Lalabalavu`, `Vanayaliyali Sukuna`, `Vishnu Deo`, and `Vishnu_Deo` were checked across project and targeted installed-vanilla `common/characters`, `history/countries`, `gfx/leaders`, `interface`, and `localisation` roots. No pre-existing vanilla or Chaos Redux character/portrait owner was found. The only project localisation match is the existing FIJ consumer itself. No transfer or clone is authorized.
 
-The canonical installed-vanilla country-leader reference family was inspected at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/`, including the `156x210` leader references and contact sheet. The retained Sukuna visual audit compares against `den_thorvald_stauning.png` and `fin_carl_mannerheim.png`; this confirms framing/style only and does not supply identity or rights.
+The canonical installed-vanilla country-leader reference family was inspected at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/`, including the `156x210` leader references and contact sheet. The retained Sukuna visual audit compares against `den_thorvald_stauning.png` and `fin_carl_mannerheim.png`; this confirms framing/style only and does not supply identity or rights.
 
 The offline Paradox portrait and graphical-asset pages confirm the full `156x210` leader surface and `.gfx` `spriteType`/`texturefile` relationship. Vanilla documentation was consulted for `set_country_leader_portrait`, `set_leader_portrait`, and portrait sprite usage. These engine references do not waive source, date, or rights gates.
 

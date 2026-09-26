@@ -38,7 +38,7 @@ Avoid modern machinery, modern streets, modern uniforms, contemporary protective
 
 Before creating each family, inspect the matching contact sheet and catalog under:
 
-`.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/`
+`.agents/skills/chaos-redux-event-assets/assets/gfx_references/`
 
 Required families include:
 

@@ -24,7 +24,7 @@ All selected sources visibly echo the approved fictional feral cult-warrior refe
 - `gfx/interface/counters/divisions_large/unit_infantry_icon.dds` is an uncompressed 152x42 two-frame strip with two 76x42 frames.
 - `gfx/interface/counters/divisions_small/onmap_unit_infantry_icon.dds` is an uncompressed 60x12 two-frame strip with two 30x12 frames.
 - `gfx/texticons/unit_irregular_infantry_icon_small.dds` is an uncompressed 60x12 two-frame strip with two 30x12 frames.
-- Canonical skill-local contact sheets and references were inspected under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/counters_large/` and `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/map_counters/` before generation.
+- Canonical skill-local contact sheets and references were inspected under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/counters_large/` and `.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/map_counters/` before generation.
 - The normal large/texticon frames use the installed sampled vanilla-green ramp, including the dominant `(73,106,73)` anchor. The normal on-map frame uses the inspected neutral grayscale treatment. Frame 1 preserves the installed pale/selected state behavior. Transparent unused canvas, two-frame ordering, and alpha corners are preserved.
 
 ## Ready-to-copy parent definitions

@@ -64,9 +64,9 @@ character, recruitment, portrait, or officeholder ownership.
 Per the current `chaos-redux-event-assets` section 4, I inspected both required
 reference families and the matching quick-reference sheets:
 
-- canonical leaders: `assets/vanilla_reference/portraits/leaders/` and its
+- canonical leaders: `assets/gfx_references/portraits/leaders/` and its
   `contact_sheet.png`;
-- canonical commanders: `assets/vanilla_reference/portraits/commanders/` and
+- canonical commanders: `assets/gfx_references/portraits/commanders/` and
   its `contact_sheet.png`;
 - permitted leader quick-reference: `assets/leader_portraits/leaders/` and
   `contact_sheet.png`;

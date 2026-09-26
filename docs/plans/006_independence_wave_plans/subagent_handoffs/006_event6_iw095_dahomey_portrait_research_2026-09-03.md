@@ -38,7 +38,7 @@ The targeted audit found no DAH/IW-095 named portrait consumer or roster entry i
 
 Installed vanilla `common/characters/DAH.txt` contains only generic advisor, high-command, and theorist entries with generic African portrait slots. Installed `history/countries/DAH - Dahomey.txt` recruits those generic advisors and contains no named 1936 country leader. Therefore no existing DAH portrait mapping can be reused for IW-095.
 
-The matching review family is the full 156x210 leader/commander portrait family in `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/contact_sheet.png`. `africa_generic_1.png` and other generic references are framing/technical references only and are forbidden as identity fallbacks.
+The matching review family is the full 156x210 leader/commander portrait family in `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/contact_sheet.png`. `africa_generic_1.png` and other generic references are framing/technical references only and are forbidden as identity fallbacks.
 
 ## Runtime and processing state
 

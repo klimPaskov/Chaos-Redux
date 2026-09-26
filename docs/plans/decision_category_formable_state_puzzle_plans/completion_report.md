@@ -28,7 +28,7 @@ The other 27 formable categories retain static presentation for explicit applica
 
 ## Reference family and reusable template
 
-The canonical review-only reference family is `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decision_categories/pictures/`.
+The canonical review-only reference family is `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decision_categories/pictures/`.
 It contains the 13 user-provided 114x101 PNGs and a labeled `contact_sheet.png`.
 The family is documented in the reference `README.md` and `CATALOG.md` and is not referenced by runtime GFX.
 

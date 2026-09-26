@@ -24,7 +24,7 @@ No shared GUI, scripted GUI, scripted localisation, trigger, gameplay, event, fo
 
 The parent-provided consumer is the shared Event Details evolution portrait property `[GetEventsLogSelectedEvolutionPortrait]`, displayed by `interface/chaosx_events_log_popup.gui` `events_log_evolution_details_portrait` at `{ x = 34 y = 20 }`, scale `0.60`, in a clipped `160x160` frame. The worker did not modify those shared files.
 
-The required canonical family was the single canonical reference root at `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders`. Its `contact_sheet.png` was inspected before the individual 156x210 leader references. The existing Event 31 entity portrait was inspected as the identity and static-fallback master.
+The required canonical family was the single canonical reference root at `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders`. Its `contact_sheet.png` was inspected before the individual 156x210 leader references. The existing Event 31 entity portrait was inspected as the identity and static-fallback master.
 
 Vanilla/repository animated-sprite precedents inspected: offline `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md` `frameAnimatedSpriteType` section, vanilla animated definitions under `interface/`, and repository `interface/014_cannibalism.gfx` and `interface/005_soviet_collapse.gfx`. These establish one-row horizontal sheets, `noOfFrames`, `animation_rate_fps`, `looping`, `play_on_show`, and optional `pause_on_loop` fields.
 

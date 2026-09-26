@@ -66,7 +66,7 @@ identical to their canonical counterparts:
 - `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/leaders/den_thorvald_stauning.png` — `08732002182BDCB2BFF3D78B142CC2B3D75ADBDB29D4115F9E89CA5BDC6A21B6`
 - `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/leaders/ire_eamon_de_valera.png` — `FF5F8689F1E8EA75BF88BEA4C4A87DCF60518B1E062EA53BE4A9CEFF3509DCB0`
 - `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/leaders/afg_mohammed_zahir_shah.png` — `F606BC3C6204E0DBD35D8EDCEB21F87AE6F93A0AE7AD657382C7E9043E8907A0`
-- Canonical family sheet: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/contact_sheet.png` — `8966AE351D1FE8FC13D47CA1C59EC3D8A34DA9101CE5FD65F7ACFF3421BD0401`
+- Canonical family sheet: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/contact_sheet.png` — `8966AE351D1FE8FC13D47CA1C59EC3D8A34DA9101CE5FD65F7ACFF3421BD0401`
 - Male quick-reference sheet: `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/leaders/contact_sheet.png` — `BF1AC6A6ED7F1D91B3FA8E4069C7B9F396BB63F450AF1FE340005F7981A3CB60`
 
 The references were used only to judge quiet background, controlled value range,

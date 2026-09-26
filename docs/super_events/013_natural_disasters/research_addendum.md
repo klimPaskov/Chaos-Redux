@@ -106,7 +106,7 @@ gfx/super_events/013_natural_disasters/super_event_nd_abnormal_disaster_age.dds
 
 Proposed sprite: `GFX_super_event_nd_abnormal_disaster_age` in `interface/chaosx_super_events.gfx` after a slot is assigned. The eventual manifest must record the exact prompt, generated source, processed preview, 32-bit DDS conversion, and status. No third-party image license or public-domain claim should be attached to generated art.
 
-The canonical reference folder `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/super_event` is available in this checkout. The producing asset pass should compare against its per-type contact sheet, the current Event 013 `457x328` super-event images, and the active Chaos Redux super-event UI before generation.
+The canonical reference folder `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/super_event` is available in this checkout. The producing asset pass should compare against its per-type contact sheet, the current Event 013 `457x328` super-event images, and the active Chaos Redux super-event UI before generation.
 
 ### Audio candidate and rights
 

@@ -31,7 +31,7 @@ The current-map authority is `docs/plans/006_independence_wave_plans/package_bin
 
 The latest package boundary is recorded by `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_completion_audit_current_2026-08-29.md` and `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`. Those records agree that IW-095 is package-local at state `776` but centrally blocked by identity, rights, neutral flag/emblem, approved portrait roster, central adapter and Join receipts, typed probability evidence, and current MCP artifacts.
 
-The canonical review-only flag family was inspected at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/flags/contact_sheet.png`. Its catalog records 21 vanilla flag references across the normal, medium, and small ladders and contains no DAH-specific reference. The canonical library is a framing/reference set and does not grant redistribution rights.
+The canonical review-only flag family was inspected at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/flags/contact_sheet.png`. Its catalog records 21 vanilla flag references across the normal, medium, and small ladders and contains no DAH-specific reference. The canonical library is a framing/reference set and does not grant redistribution rights.
 
 ## Current-map and carrier evidence
 

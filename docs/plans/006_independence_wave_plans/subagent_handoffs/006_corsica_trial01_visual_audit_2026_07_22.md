@@ -42,8 +42,8 @@ I also read both identity-preserve prompt records, `hashes.sha256`, the review-
 only `gfx_handoff.md`, and the complete trial manifest. The package's prompt
 constraints agree with the grounded male, identity-preserving policy. The
 canonical style families inspected were the only permitted references:
-`assets/vanilla_reference/portraits/leaders/` and
-`assets/vanilla_reference/portraits/commanders/`, including each family's
+`assets/gfx_references/portraits/leaders/` and
+`assets/gfx_references/portraits/commanders/`, including each family's
 `contact_sheet.png` and cataloged native `156x210` examples.
 
 ## Source authority and rights
@@ -102,7 +102,7 @@ fictional/generated substitute.
 4. **Reference-route provenance is not compliant.** The manifest names
    `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/leaders/contact_sheet.png`
    as the style-only reference. This audit route permits only the canonical
-   `assets/vanilla_reference/` family; no skill-local quick-reference pack may
+   `assets/gfx_references/` family; no skill-local quick-reference pack may
    serve as a generation/reference input. Replace or formally reconcile that
    provenance before admission.
 
@@ -151,7 +151,7 @@ subject, or fictional/generated substitute is present.
 3. **Reference-route provenance is not compliant.** The manifest names
    `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/commanders/contact_sheet.png`
    as the style-only reference. This audit route permits only the canonical
-   `assets/vanilla_reference/` family; no skill-local quick-reference pack may
+   `assets/gfx_references/` family; no skill-local quick-reference pack may
    serve as a generation/reference input. Replace or formally reconcile that
    provenance before admission.
 
@@ -172,7 +172,7 @@ audit.
 2. Add the required subject-ownership search evidence and any guarded transfer
    contract to the portrait manifest/handoff for both names.
 3. Replace the disallowed skill-local quick-reference provenance with the
-   canonical `assets/vanilla_reference/portraits/` family and retain the exact
+   canonical `assets/gfx_references/portraits/` family and retain the exact
    permitted reference paths in the manifest/prompts.
 4. For Landry, retain and hash an explicit source-derived head-and-shoulders
    crop (or provide equivalent immutable crop coordinates and provenance) and

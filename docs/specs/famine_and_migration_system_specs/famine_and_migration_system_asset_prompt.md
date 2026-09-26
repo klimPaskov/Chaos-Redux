@@ -12,10 +12,10 @@ Before production:
 
 - read `AGENTS.md`
 - read `chaos-redux-event-assets`
-- inspect `assets/vanilla_reference/README.md` and `CATALOG.md`
+- inspect `assets/gfx_references/README.md` and `CATALOG.md`
 - inspect the matching contact sheet for every asset type
 - inspect the active vanilla or Chaos Redux sprite and GUI consumer
-- inspect the decision category picture family at `assets/vanilla_reference/icons/decision_categories/pictures`
+- inspect the decision category picture family at `assets/gfx_references/icons/decision_categories/pictures`
 - create or update the picture-family contact sheet and catalog only if the local library is missing required reference evidence
 
 Do not wire reference PNGs into runtime files.

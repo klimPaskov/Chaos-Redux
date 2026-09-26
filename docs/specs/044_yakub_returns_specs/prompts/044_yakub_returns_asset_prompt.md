@@ -41,7 +41,7 @@ Create fictional successor portraits only after the country and focus implementa
 
 Inspect:
 
-- `assets/vanilla_reference/portraits/leaders/`
+- `assets/gfx_references/portraits/leaders/`
 - `assets/leader_portraits/`
 
 No advisor or high-command dossier portrait family is authorized by this prompt unless the implemented focus tree explicitly adds named advisors and the parent expands the requirement set.
@@ -71,9 +71,9 @@ Final sizes:
 
 Inspect:
 
-- `assets/vanilla_reference/flags/normal/`
-- `assets/vanilla_reference/flags/medium/`
-- `assets/vanilla_reference/flags/small/`
+- `assets/gfx_references/flags/normal/`
+- `assets/gfx_references/flags/medium/`
+- `assets/gfx_references/flags/small/`
 
 ## Faction emblem
 
@@ -91,7 +91,7 @@ The emblem should communicate congress, transnational organization, Black self-g
 
 Inspect:
 
-`assets/vanilla_reference/icons/factions/`
+`assets/gfx_references/icons/factions/`
 
 ## Report-event images
 
@@ -134,7 +134,7 @@ Suggested sprite form:
 
 Inspect:
 
-`assets/vanilla_reference/event_art/report/`
+`assets/gfx_references/event_art/report/`
 
 ## News images
 
@@ -154,7 +154,7 @@ Suggested basenames:
 
 Inspect:
 
-`assets/vanilla_reference/event_art/news/`
+`assets/gfx_references/event_art/news/`
 
 ## Decision category pictures
 
@@ -180,7 +180,7 @@ Optional replacement category pictures may be produced only after the implementa
 
 Inspect:
 
-`assets/vanilla_reference/icons/decision_categories/pictures/`
+`assets/gfx_references/icons/decision_categories/pictures/`
 
 If the family contact sheet is missing, create and catalog it before production. Never wire reference images into runtime files.
 
@@ -221,9 +221,9 @@ Create a distinct decision-category icon with a movement emblem, podium, or meet
 
 Inspect:
 
-- `assets/vanilla_reference/icons/decisions/`
-- `assets/vanilla_reference/icons/decision_categories/`
-- `assets/vanilla_reference/icons/missions/` for mission art
+- `assets/gfx_references/icons/decisions/`
+- `assets/gfx_references/icons/decision_categories/`
+- `assets/gfx_references/icons/missions/` for mission art
 
 ## Idea and national-spirit icons
 
@@ -248,7 +248,7 @@ Likely route families:
 
 Inspect:
 
-`assets/vanilla_reference/icons/ideas/`
+`assets/gfx_references/icons/ideas/`
 
 ## Focus icons
 
@@ -273,7 +273,7 @@ Do not resize idea or decision art into focus icons. Do not use pseudo-scientifi
 
 Inspect:
 
-`assets/vanilla_reference/icons/national_focus/`
+`assets/gfx_references/icons/national_focus/`
 
 ## Achievement icons
 
@@ -300,7 +300,7 @@ Final achievement filenames must match the final achievement IDs and remain dire
 
 Inspect:
 
-`assets/vanilla_reference/icons/achievements/`
+`assets/gfx_references/icons/achievements/`
 
 ## Super-event image coordination
 
@@ -322,7 +322,7 @@ Suggested sprite family:
 
 Inspect:
 
-`assets/vanilla_reference/event_art/super_event/`
+`assets/gfx_references/event_art/super_event/`
 
 ## Animation and 3D scope
 

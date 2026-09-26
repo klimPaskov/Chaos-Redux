@@ -10,9 +10,9 @@ All fourteen portraits were regenerated as original fictional bald or severely s
 
 ImageGen was called separately for every portrait. Every call used these three vanilla portraits as style, crop-language, value-range, and paint-finish references only:
 
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/den_thorvald_stauning.png`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/ire_eamon_de_valera.png`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/fin_carl_mannerheim.png`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/den_thorvald_stauning.png`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/ire_eamon_de_valera.png`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/fin_carl_mannerheim.png`
 
 No referenced identity, face, clothing, pose, or insignia was copied. The set contains no modern equipment or materials, prison or restraint imagery, living Indigenous sacred motifs, or graphic injury.
 

@@ -9,7 +9,7 @@ Gameplay scope: none; no Event 006 script, localisation, runtime asset, spreadsh
 
 The reusable asset-reference library is organized under
 `.agents/skills/chaos-redux-event-assets/assets/`, with the canonical examples
-under `assets/vanilla_reference/`. It contains 283 cataloged reference PNGs in
+under `assets/gfx_references/`. It contains 283 cataloged reference PNGs in
 37 semantic families, 37 local contact sheets, and one separately documented
 achievement workflow overlay that is intentionally excluded from the reference
 count and contact sheet.
@@ -44,7 +44,7 @@ conversion decoded pixel-for-pixel identically to the approved PNG candidate.
   - places all normal flags under `flags/normal/`;
   - labels the flag sheet with `normal/`, `medium/`, and `small/` relative paths
     so same-basename flag ladder entries are unambiguous.
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/`
   - canonical semantic reference tree;
   - regenerated local contact sheets;
   - regenerated `CATALOG.md` with source type, exact source path, canvas, owning
@@ -136,7 +136,7 @@ probed; neither tool was deleted.
 | `units/models_3d/naval_materials` | 5 |
 | **Total** | **283** |
 
-`assets/vanilla_reference/icons/achievements/overlay.png` is the retained
+`assets/gfx_references/icons/achievements/overlay.png` is the retained
 64x64 not-eligible compositing input. It is deliberately not counted as a
 reference and is not placed on the achievement contact sheet.
 
@@ -156,7 +156,7 @@ The migration has 99 tracked legacy PNG deletions.
   - old `focus_GER_strengthen_the_waffen_ss.png` was an 86x85 crop, while the
     current vanilla source canvas is 100x88.
 
-Four stale untracked files directly under `vanilla_reference/flags/` were
+Four stale untracked files directly under `gfx_references/flags/` were
 removed only after byte-for-byte comparison with their new `flags/normal/`
 copies: `afg_second_empire_neutrality.png`, `anu_fascism.png`,
 `arg_gen_nazism_party.png`, and `arm_uk.png`.

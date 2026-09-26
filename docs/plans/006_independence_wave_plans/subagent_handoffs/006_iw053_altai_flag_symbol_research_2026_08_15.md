@@ -23,7 +23,7 @@ The vanilla identity is `common/country_tags/00_countries.txt` → `countries/Al
 
 ## Canonical vanilla reference and installed ALT ladder
 
-The canonical reference root was inspected at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference`, including `README.md`, `CATALOG.md`, and `flags/contact_sheet.png`. The reference build is Operation Postern v1.19.2.0.a729 (d245), extracted 2026-07-16. The canonical set contains no ALT-specific historical reference.
+The canonical reference root was inspected at `.agents/skills/chaos-redux-event-assets/assets/gfx_references`, including `README.md`, `CATALOG.md`, and `flags/contact_sheet.png`. The reference build is Operation Postern v1.19.2.0.a729 (d245), extracted 2026-07-16. The canonical set contains no ALT-specific historical reference.
 
 The installed ladder contains exactly four ideology variants at each standard size and no no-suffix `ALT.tga`:
 

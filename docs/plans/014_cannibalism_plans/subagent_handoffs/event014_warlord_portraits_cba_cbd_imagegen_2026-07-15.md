@@ -34,7 +34,7 @@ docs/assets/014_cannibalism/leader_portraits_refresh/cba_cbd/contact_sheets/cba_
 
 ## Source generation and quality gate
 
-All final calls used the three canonical vanilla leader portraits under .agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/ as style-only references. Prompts required a fictional adult male, restrained HOI4 portrait finish, open ruined environment, regional plausibility without caricature, face-adjacent disturbing action, and absolute exclusion of prisons, text, flags, real-person likenesses, and graphic injury.
+All final calls used the three canonical vanilla leader portraits under .agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/ as style-only references. Prompts required a fictional adult male, restrained HOI4 portrait finish, open ruined environment, regional plausibility without caricature, face-adjacent disturbing action, and absolute exclusion of prisons, text, flags, real-person likenesses, and graphic injury.
 
 Generation accounting:
 

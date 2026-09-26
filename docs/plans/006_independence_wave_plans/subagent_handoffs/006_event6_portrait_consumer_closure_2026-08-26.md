@@ -24,7 +24,7 @@ The 38 existing consumers remain governed by their prior source-placeholder/pack
 - The three GFX files therefore expose 64 unique Event 006 portrait sprite/texture pairs, with no duplicate names, duplicate texture pairs, or missing registered DDS textures.
 - `common/characters/006_independence_wave_characters_registry.txt` contains 47 unique Event 006 portrait GFX references, all resolved to definitions. The remaining effect-owned consumers are referenced by their package scripted effects, including BRI, BSK, MNT, RHI, BAY, SCO, WLS, YAK, and the RHI/BAY vanilla-character paths.
 - `gfx/leaders/006_independence_wave/` currently contains 70 runtime DDS files; all 70 passed the same strict legacy portrait-contract validator, and 38 of them are exact byte matches for supplied output DDS files listed below.
-- The installed-vanilla leader and commander references under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/` were used as the full-portrait `156x210` framing baseline. Advisor-card references were not used as a substitute.
+- The installed-vanilla leader and commander references under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/` were used as the full-portrait `156x210` framing baseline. Advisor-card references were not used as a substitute.
 
 Relevant prior authority records are `006_portrait_wiring_supplied_runtime_2026-08-22.md`, `006_event6_portrait_gap_reaudit_2026-08-25.md`, `006_iw013_iw015_user_supplied_portrait_final_audit_2026-08-26.md`, and the per-package source handoffs referenced by those records.
 

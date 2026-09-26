@@ -70,7 +70,7 @@ Event 006 portrait ownership: interface/006_independence_wave_portraits_registry
 
 Event 006 identity ownership: the scoped mod census found no exact Sir Lancelot or Lancelot Graham character, portrait, GFX, or runtime consumer. Incidental mentions of J. J. Graham in a translation citation and R. B. Cunninghame Graham in Scotland localisation are unrelated and do not establish ownership.
 
-Canonical visual reference: the installed-vanilla leader family was cross-checked through .agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/contact_sheet.png and CATALOG.md. The role-specific reference family is 156x210; no vanilla face or portrait file was reused.
+Canonical visual reference: the installed-vanilla leader family was cross-checked through .agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/contact_sheet.png and CATALOG.md. The role-specific reference family is 156x210; no vanilla face or portrait file was reused.
 
 ## Gate results
 

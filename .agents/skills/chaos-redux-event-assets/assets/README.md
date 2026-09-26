@@ -8,15 +8,15 @@ Every active Chaos Redux skill and asset-routing agent must use this exact skill
 
 `C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets`
 
-The organized canonical library is `vanilla_reference/`, and the curated leader-portrait references live directly at `vanilla_reference/portraits/leaders/` as the explicit portrait path for agents that need it; that folder is review-only and stays byte-aligned with the family contact sheet beside it.
+The organized canonical library is `gfx_references/`, and the curated leader-portrait references live directly at `gfx_references/portraits/leaders/` as the explicit portrait path for agents that need it; that folder is review-only and stays byte-aligned with the family contact sheet beside it.
 
 Start every review with:
 
-- `vanilla_reference/README.md` for library and contact-sheet rules
-- `vanilla_reference/CATALOG.md` for exact source provenance, native canvas, frame count, and owning definition
-- `vanilla_reference/REFERENCE_MANIFEST.md` for the reviewed file list and the HOI4 framing notes of each reference family
+- `gfx_references/README.md` for library and contact-sheet rules
+- `gfx_references/CATALOG.md` for exact source provenance, native canvas, frame count, and owning definition
+- `gfx_references/REFERENCE_MANIFEST.md` for the reviewed file list and the HOI4 framing notes of each reference family
 
-The canonical Vanilla reference PNGs teach framing, scale, transparency, style, and engine pipeline. They are review material only: never recolor, trace, wire, or ship them as runtime assets.
+The canonical GFX reference PNGs teach framing, scale, transparency, style, and engine pipeline. The catalog identifies each source as Vanilla HOI4, Chaos Redux, or other documented material. They are review material only: never recolor, trace, wire, or ship them as runtime assets.
 
 ## Reference families
 
@@ -44,7 +44,7 @@ Gameplay icons:
 - `visual_components/focus_pieces/` and `visual_components/focus_backgrounds/` (composition references for ImageGen focus art)
 - `visual_components/national_spirit_backgrounds/` (idea, national-spirit, and decision-category backgrounds; only catalog `background_template` entries may be final backdrop layers)
 
-Use `visual_components/CATALOG.md` to find the local file, native canvas, alpha, and role. Inspect the exact installed consumer and matching `vanilla_reference/` family first. A `background_template` may sit beneath original ImageGen subject art only when that consumer fits. Keep the component layer and ImageGen source separate from the processed preview and DDS, and record the catalog entry and role in the output manifest. Achievement templates and state derivation retain their own rules.
+Use `visual_components/CATALOG.md` to find the local file, native canvas, alpha, and role. Inspect the exact installed consumer and matching `gfx_references/` family first. A `background_template` may sit beneath original ImageGen subject art only when that consumer fits. Keep the component layer and ImageGen source separate from the processed preview and DDS, and record the catalog entry and role in the output manifest. Achievement templates and state derivation retain their own rules.
 
 Unit visual pipelines:
 
@@ -65,7 +65,7 @@ Fictional councils, committees, juntas, boards, offices, and symbolic bodies mus
 
 ## Advisor and high-command dossier portraits
 
-Advisor, theorist, military-high-command, officer-corps, and army-small dossier portraits are a separate, explicitly authorized asset family. The canonical style references live under `vanilla_reference/portraits/advisors/`; they are native `65x67` review inputs and are not runtime art. Never infer this family from a character or small-portrait consumer when the accepted requirement does not request it.
+Advisor, theorist, military-high-command, officer-corps, and army-small dossier portraits are a separate, explicitly authorized asset family. The canonical style references live under `gfx_references/portraits/advisors/`; they are native `65x67` review inputs and are not runtime art. Never infer this family from a character or small-portrait consumer when the accepted requirement does not request it.
 
 When the accepted design calls for the shared `advisor_template.png` dossier surface, prepare each native `65x67` candidate with the bundled `tools/create_advisor_icon.py` compositor documented in `tools/README.md`; otherwise use a deterministic, task-specific/manual image workflow. Retain source and processed PNGs, exact dimensions, crop/composition notes, provenance, comparison sheet, stable sprite name, and runtime path in distinct repo-contained artifacts. Grounded real people must complete the sourced identity gate through an independently approved `156x210` candidate first; fictional high-chaos or impossible/supernatural subjects may use an approved generated master. Never directly resize a full portrait into the card or draw replacement card art from primitive geometry.
 

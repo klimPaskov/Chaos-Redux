@@ -16,10 +16,10 @@ Both original `gpt-6-astra` 3D workflow tokens remain intact here.
 | `SKILL.md` | `implemented` editorial changes and narrow authority corrections; parent review pending | Reviewed inherited headings and wording; all original inline literals, tables, and fenced examples preserved. |
 | `assets/README.md` | `implemented` editorial reflow; noted design conflicts `unresolved` | Every original prose/list detail retained; hard-wrapped paragraphs and list continuations joined. |
 | `tools/README.md` | `implemented` editorial reflow and prerequisite move | Every original detail retained; grounded/generated advisor source gate moved before compositor use. |
-| `assets/vanilla_reference/README.md` | `implemented` review; unchanged | Existing library order is coherent; exact provenance and canvas facts retained byte-for-byte. |
-| `assets/vanilla_reference/CATALOG.md` | `implemented` review; unchanged | Data-heavy catalog retained byte-for-byte, including every asset row, dimension, path, and coverage value. |
-| `assets/vanilla_reference/REFERENCE_MANIFEST.md` | `implemented` review; unchanged | Data-heavy provenance manifest retained byte-for-byte, including every hash, frame count, path, and diagnostic. |
-| `assets/vanilla_reference/interface/README.md` | `implemented` review; seven local links `unresolved` | Kept exact original paths and categories; links target absent resources in this directory. |
+| `assets/gfx_references/README.md` | `implemented` review; unchanged | Existing library order is coherent; exact provenance and canvas facts retained byte-for-byte. |
+| `assets/gfx_references/CATALOG.md` | `implemented` review; unchanged | Data-heavy catalog retained byte-for-byte, including every asset row, dimension, path, and coverage value. |
+| `assets/gfx_references/REFERENCE_MANIFEST.md` | `implemented` review; unchanged | Data-heavy provenance manifest retained byte-for-byte, including every hash, frame count, path, and diagnostic. |
+| `assets/gfx_references/interface/README.md` | `implemented` review; seven local links `unresolved` | Kept exact original paths and categories; links target absent resources in this directory. |
 
 ## Full-read inventory and reference limits
 
@@ -69,7 +69,7 @@ The related `chaos-redux-3d-model-pipeline/SKILL.md` includes separate Meshy 7 f
 No intended-rule authority was established for changing this production choice during editorial cleanup.
 Retained exact owned 3D prose and passed this cross-skill conflict to the 3D owner; decision needed: the approved source of separate firearm geometry.
 
-4. `assets/vanilla_reference/interface/README.md` has seven existing broken local links: `contact_sheet.png`, `meters_and_pressure/`, `institutional_boards/`, `faction_relations/`, `regional_investment/`, `campaign_progress/`, and `escalation_status/`.
+4. `assets/gfx_references/interface/README.md` has seven existing broken local links: `contact_sheet.png`, `meters_and_pressure/`, `institutional_boards/`, `faction_relations/`, `regional_investment/`, `campaign_progress/`, and `escalation_status/`.
 The catalog and manifest use the separate `scripted_guis/` shelf.
 Preserved every literal path and row under the user's exact-path rule; decision needed: whether this interface README is to be relocated/relinked to that shelf or populated with its documented family.
 No image was synthesized, copied, or moved as a substitute.
@@ -139,7 +139,7 @@ Revision: 75 lines, SHA-256 `057e6c5e7520aabb4f6ec03c6fa2d58cd97ee263fe70e1ce8c2
 | 128–128 | 73–73 | Retained all content; whitespace joined only. |
 | 130–130 | 75–75 | Retained all content; whitespace joined only. |
 
-### `assets/vanilla_reference/CATALOG.md`
+### `assets/gfx_references/CATALOG.md`
 
 Original: 411 lines, SHA-256 `6a670fd5ffb9aefa134fe3e2ce685ca720fab703d725c01579f4c1364618e3dd`.
 Revision: 411 lines, SHA-256 `6a670fd5ffb9aefa134fe3e2ce685ca720fab703d725c01579f4c1364618e3dd`.
@@ -147,7 +147,7 @@ Revision: 411 lines, SHA-256 `6a670fd5ffb9aefa134fe3e2ce685ca720fab703d725c01579
 Original lines 1–411 → revision lines 1–411: retained byte-for-byte.
 This map covers every prose passage, table row, path, dimension, frame count, value, and checksum in the file.
 
-### `assets/vanilla_reference/interface/README.md`
+### `assets/gfx_references/interface/README.md`
 
 Original: 34 lines, SHA-256 `1f924984ce9855ffd90c742a21630e4642e8d7b47a93c694ba29debbc9ee049a`.
 Revision: 34 lines, SHA-256 `1f924984ce9855ffd90c742a21630e4642e8d7b47a93c694ba29debbc9ee049a`.
@@ -155,7 +155,7 @@ Revision: 34 lines, SHA-256 `1f924984ce9855ffd90c742a21630e4642e8d7b47a93c694ba2
 Original lines 1–34 → revision lines 1–34: retained byte-for-byte.
 This map covers every prose passage, table row, path, dimension, frame count, value, and checksum in the file.
 
-### `assets/vanilla_reference/README.md`
+### `assets/gfx_references/README.md`
 
 Original: 101 lines, SHA-256 `437ace845579f63f5fd6ac922c8f1e34889c484c539ec2c675df0a2a3b9eaf22`.
 Revision: 101 lines, SHA-256 `437ace845579f63f5fd6ac922c8f1e34889c484c539ec2c675df0a2a3b9eaf22`.
@@ -163,7 +163,7 @@ Revision: 101 lines, SHA-256 `437ace845579f63f5fd6ac922c8f1e34889c484c539ec2c675
 Original lines 1–101 → revision lines 1–101: retained byte-for-byte.
 This map covers every prose passage, table row, path, dimension, frame count, value, and checksum in the file.
 
-### `assets/vanilla_reference/REFERENCE_MANIFEST.md`
+### `assets/gfx_references/REFERENCE_MANIFEST.md`
 
 Original: 172 lines, SHA-256 `da45a4f0cf9bc7e27d37d000b493a90c58c447463afd2b74af697490a7bcb841`.
 Revision: 172 lines, SHA-256 `da45a4f0cf9bc7e27d37d000b493a90c58c447463afd2b74af697490a7bcb841`.

@@ -12,7 +12,7 @@ The two assets are `ready_for_parent_review` and remain pending the parent-owned
 
 The consumer is the installed vanilla `interface/countrydiplomacyview.gui` block `national_spirit_ideas_grid`, with `slotsize = { width = 60 height = 68 }`.
 
-The matching canonical reference family inspected before generation was `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/ideas`, starting with `contact_sheet.png` and then the individual idea references `generic_wall_line.png`, `idea_generic_constitutional_guarantee.png`, `idea_den_danish_produce.png`, and `idea_generic_flexible_foreign_policy.png`.
+The matching canonical reference family inspected before generation was `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/ideas`, starting with `contact_sheet.png` and then the individual idea references `generic_wall_line.png`, `idea_generic_constitutional_guarantee.png`, `idea_den_danish_produce.png`, and `idea_generic_flexible_foreign_policy.png`.
 
 The existing stable sprites and runtime texture paths remain unchanged in `interface/035_great_depression.gfx`.
 

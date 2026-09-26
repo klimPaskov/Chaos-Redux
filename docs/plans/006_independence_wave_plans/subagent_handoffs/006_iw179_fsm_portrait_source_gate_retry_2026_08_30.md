@@ -8,7 +8,7 @@ The consumer remains `FSM_independence_wave_inter_island_congress_chair`, with t
 
 ## Research performed
 
-The canonical installed-vanilla leader reference shelf was inspected at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/`, including its labeled contact sheet and catalog. The role reference family is eight full `156x210` leader portraits; it supplies framing and scale guidance only and is not a source of identity.
+The canonical installed-vanilla leader reference shelf was inspected at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/`, including its labeled contact sheet and catalog. The role reference family is eight full `156x210` leader portraits; it supplies framing and scale guidance only and is not a source of identity.
 
 The current mod, installed vanilla character/leader surfaces, and the Event 006 source handoffs were checked for exact and variant FSM, Pohnpeian, Carolinian, Chuukese, Yapese, and Palauan names before considering any source. No safe existing portrait ownership or transferable portrait consumer was found for the candidates below.
 

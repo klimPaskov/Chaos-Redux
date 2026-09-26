@@ -36,7 +36,7 @@ Each achievement has the required root completed, `_grey`, and `_not_eligible` D
 
 ## Reference and visual evidence
 
-The canonical contact sheets were inspected before individual references from the exact skill-local root `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference`.
+The canonical contact sheets were inspected before individual references from the exact skill-local root `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references`.
 
 The inspected canonical families were `icons/decision_categories`, `icons/decisions`, `icons/missions`, `icons/ideas`, and `icons/achievements`, including the canonical achievement template files under `icons/achievements/template`.
 

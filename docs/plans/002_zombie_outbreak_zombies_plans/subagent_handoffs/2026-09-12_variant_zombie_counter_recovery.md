@@ -14,7 +14,7 @@ The installed vanilla definition was read from `C:/Program Files (x86)/Steam/ste
 
 The exact installed references were read from `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/interface/counters/divisions_large/unit_infantry_icon.dds` and `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/interface/counters/divisions_small/onmap_unit_infantry_icon.dds`.
 
-The canonical contact sheets were inspected before the individual reference PNGs at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/counters_large/contact_sheet.png` and `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/map_counters/contact_sheet.png`.
+The canonical contact sheets were inspected before the individual reference PNGs at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/counters_large/contact_sheet.png` and `.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/map_counters/contact_sheet.png`.
 
 The canonical individual review PNGs were `.../units/land/counters_large/unit_infantry_icon.png` and `.../units/land/map_counters/onmap_infantry.png` under that same canonical reference root.
 

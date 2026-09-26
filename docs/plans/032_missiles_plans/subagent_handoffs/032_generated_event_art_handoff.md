@@ -6,7 +6,7 @@ Audit date: 2026-09-01.
 
 Scope: the three existing generated full-canvas assets in `docs/assets/032_missiles/`.
 
-The audit used the Event 32 asset prompt, the Event 32 asset specification, the existing asset prompts and manifest, and only the matching canonical reference families under `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/`.
+The audit used the Event 32 asset prompt, the Event 32 asset specification, the existing asset prompts and manifest, and only the matching canonical reference families under `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/`.
 
 ## Overall decision
 

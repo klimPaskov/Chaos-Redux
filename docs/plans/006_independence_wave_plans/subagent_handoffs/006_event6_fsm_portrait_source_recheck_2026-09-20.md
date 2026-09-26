@@ -18,7 +18,7 @@ The portrait sprite remains `GFX_portrait_FSM_independence_wave_inter_island_con
 
 The runtime path remains `gfx/leaders/006_independence_wave/portrait_FSM_independence_wave_inter_island_congress_chair.dds`.
 
-The matching installed-Vanilla country-leader reference family was checked at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/`, including its labeled `contact_sheet.png` and `CATALOG.md` entries.
+The matching installed-Vanilla country-leader reference family was checked at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/`, including its labeled `contact_sheet.png` and `CATALOG.md` entries.
 
 That family establishes the required full leader canvas as `156x210`; the AFG, DEN, and ETH examples in the catalog are framing references only and are not identity sources.
 

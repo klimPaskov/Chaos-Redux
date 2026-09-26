@@ -22,7 +22,7 @@ spriteType = { name = "GFX_super_event_087_rat_king_defeat_aftermath" texturefil
 - Processed PNG: `docs/assets/020_black_plague/super_event_art/processed_png/super_event_087_rat_king_defeat_aftermath.png` (457x328 RGB, SHA-256 `f0909708b26a6047507756c457a828a308fd1cdf20c82dcf52bc36c3b69ad95e`).
 - Contact sheet: `docs/assets/020_black_plague/super_event_art/contact_sheet.png` (review only).
 - DDS: SHA-256 `cf7e5f8b21c6a88d26f9700b4232770469c34572d98789054e3b593b5508cbb5`, exact 599,712-byte one-level BGRA legacy header, declared 457x328, pixel-format flags 65, BGRA masks, texture caps `0x1000`, alpha range 255-255.
-- Canonical references inspected: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/super_event/contact_sheet.png` and its super-event catalog rows, plus existing Event 020 source/processed images 085 and 086.
+- Canonical references inspected: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/super_event/contact_sheet.png` and its super-event catalog rows, plus existing Event 020 source/processed images 085 and 086.
 
 ## Visual fit and boundary
 

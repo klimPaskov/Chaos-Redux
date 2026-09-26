@@ -17,7 +17,7 @@ The user's 2026-09-25 request explicitly authorized auditing and repairing Event
 
 ## Production and evidence
 
-The canonical Vanilla reference contact sheet at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decisions/contact_sheet.png` was inspected before individual references. Its 15 decision references are predominantly `33x32`; the explicitly provided active candidate surfaces are `32x32`. The individual Vanilla references `decision_bol_reintegrate_acre_state.png`, `decision_generic_disband_irregulars.png`, and `decision_border_war.png` were inspected from that same canonical folder.
+The canonical Vanilla reference contact sheet at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decisions/contact_sheet.png` was inspected before individual references. Its 15 decision references are predominantly `33x32`; the explicitly provided active candidate surfaces are `32x32`. The individual Vanilla references `decision_bol_reintegrate_acre_state.png`, `decision_generic_disband_irregulars.png`, and `decision_border_war.png` were inspected from that same canonical folder.
 
 The current decoded runtime reference PNGs were inspected at `docs/assets/021_random_civil_war/validation/full_runtime_audit/decision_021_reconstruction.png` and `decision_021_relief_corridor.png`. Their SHA-256 values match the corresponding active processed PNGs exactly: reconstruction `F073B2707435AB9C8E23A9B40E5482BB3420BCE4E4CD6615BA8F2D85BE99E9B5`; relief corridor `EC484C981A7FCA001EA771FE9A9FD82C43E5CC99BB78F205A68D91A50B75B68`.
 

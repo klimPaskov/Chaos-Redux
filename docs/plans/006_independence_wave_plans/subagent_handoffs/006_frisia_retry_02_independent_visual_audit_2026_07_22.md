@@ -13,7 +13,7 @@ the two unchanged source masters, all raw ImageGen masters, the three retained
 prompts, `manifest.md`, `gfx_handoff.md`, `hashes.sha256`, and
 `contact_sheets/native_source_result_style_comparison.png`. I also inspected the
 canonical role families and contact sheets at
-`.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/`
+`.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/`
 and `.../portraits/commanders/`.
 
 The package contains only sourced real male subjects and portrait evidence. No

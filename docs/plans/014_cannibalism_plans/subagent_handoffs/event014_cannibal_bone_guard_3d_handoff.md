@@ -108,7 +108,7 @@ Exact source-page and direct-download URLs, immutable originals, original hashes
 - Texticon: `GFX_unit_cannibal_bone_guard_icon_small` -> `gfx/texticons/unit_cannibal_bone_guard_icon_small.dds`, SHA-256 `c3b380aaf7d42bfa6e838ab172db313762fab7e68913c9693fc41f175ee5ed32`.
 - Large canvas: 152x42, two 76x42 frames. Small/texticon: 60x12, two 30x12 frames.
 - Installed definitions: `interface/subuniticons.gfx` and `interface/texticons.gfx`; installed DDS precedents are the infantry large/on-map and irregular-infantry texticon strips.
-- Matching skill-local reference families: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/counters_large/` and `map_counters/`.
+- Matching skill-local reference families: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/counters_large/` and `map_counters/`.
 - Palette evidence: dominant normal large/texticon green `(73,106,73)`, neutral grayscale on-map normal state, pale selected state, transparent unused canvas.
 - Detailed audit: `docs/assets/014_cannibalism/models_3d/cannibal_bone_guard/evidence/counter_audit.md`.
 - Parent handoff: `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_cannibal_counter_art_handoff.md`.

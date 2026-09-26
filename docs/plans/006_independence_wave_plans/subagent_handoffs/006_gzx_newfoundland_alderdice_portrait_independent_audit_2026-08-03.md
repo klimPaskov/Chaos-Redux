@@ -23,7 +23,7 @@ The crop metadata's output file hash is `2de7e259356702311b68a1eca7354fb10401ee3
 
 ## Canonical leader-family comparison
 
-I inspected the canonical shelf and its contact sheet at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/`. The shelf is native `156x210` RGBA country-leader art. The closest role/style controls used for this review were:
+I inspected the canonical shelf and its contact sheet at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/`. The shelf is native `156x210` RGBA country-leader art. The closest role/style controls used for this review were:
 
 - `den_thorvald_stauning.png` (`156x210`, SHA-256 `08732002182bdcb2bff3d78b142cc2b3d75adbdb29d4115f9e89ca5bdc6a21b6`)
 - `ice_sveinn_bjornsson.png` (`156x210`, SHA-256 `860726d268873f21ae0dbd6fb170482f50fad6393882b97b2b7b7a1814189d14`)

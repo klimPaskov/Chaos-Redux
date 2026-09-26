@@ -5,7 +5,7 @@
 - Asset under review: `idea_doctor_warren_kruger_stage_0.dds`
 - Runtime path: `gfx/interface/ideas/016_brilliant_scientist/idea_doctor_warren_kruger_stage_0.dds`
 - Approved identity source requested for comparison: `gfx/leaders/KRG/leader_doctor_warren_kruger_stage_0.dds`
-- Canonical role references inspected before individual comparison: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/advisors/contact_sheet.png`, with `generic_europe_1.png` as the named family reference.
+- Canonical role references inspected before individual comparison: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/advisors/contact_sheet.png`, with `generic_europe_1.png` as the named family reference.
 
 ## Verdict
 

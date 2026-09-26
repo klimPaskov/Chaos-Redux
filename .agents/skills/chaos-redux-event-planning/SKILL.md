@@ -611,7 +611,7 @@ Use a full scripted GUI only when the player must manage several interacting val
 
 The asset handoff should point to this canonical picture reference family:
 
-`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\vanilla_reference\icons\decision_categories\pictures`
+`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\gfx_references\icons\decision_categories\pictures`
 
 If its `contact_sheet.png` is missing, the implementation prompt should require the asset agent to create it, label each reference with its filename and native dimensions, and update the reference README and catalog. The references and contact sheet are review-only assets.
 
@@ -1299,7 +1299,7 @@ Every country package must include flags. Required flag coverage includes normal
 
 Every new flag uses `$imagegen`. For a real or historically attested country, movement, party, military authority, or restoration path, the asset prompt must first require reliable design research and a cited reference. Imagegen then reconstructs that exact design as a flat flag under the reference constraint. It must not produce waving fabric, painterly flag artwork, scenery, gradients, perspective, fake lettering, or invented heraldry. The asset prompt must require a manual geometry, colour, orientation, and symbol comparison before HOI4 flag resizing. Fictional and alternate flags also use imagegen, while remaining flat flag designs rather than illustrations.
 
-Historical or real leaders must not be generated, and grounded polities must not receive invented substitute people. Treat a polity as grounded when it existed in whole or in part, represents a real community, or claims continuity from a real institution. The spec must identify its real portrait or institutional-material needs and instruct `chaosx_portrait_creator` to source attributed material, document source and license status, choose an explicit head-and-shoulders crop for a person, prepare the placeholder, and review the user-supplied HOI4-style final against the canonical reference root `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference` plus its role-specific contact sheet. Generated one-person portraits are reserved for wholly fictional leaders of wholly fictional, deliberately high-chaos polities and must be created and processed by the portrait worker. Fictional councils and symbolic bodies should use people-free institutional compositions.
+Historical or real leaders must not be generated, and grounded polities must not receive invented substitute people. Treat a polity as grounded when it existed in whole or in part, represents a real community, or claims continuity from a real institution. The spec must identify its real portrait or institutional-material needs and instruct `chaosx_portrait_creator` to source attributed material, document source and license status, choose an explicit head-and-shoulders crop for a person, prepare the placeholder, and review the user-supplied HOI4-style final against the canonical reference root `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references` plus its role-specific contact sheet. Generated one-person portraits are reserved for wholly fictional leaders of wholly fictional, deliberately high-chaos polities and must be created and processed by the portrait worker. Fictional councils and symbolic bodies should use people-free institutional compositions.
 
 When an asset source is historically sensitive, disputed, or politically loaded, the asset prompt must require source notes and a clear distinction between sourced historical use and fictional alternate-history invention.
 
@@ -1729,7 +1729,7 @@ When a spec or asset prompt asks for generated or sourced assets, tell the asset
 
 Use this single canonical reference root:
 
-`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\vanilla_reference`
+`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\gfx_references`
 
 The catalog and every category below are relative to that exact folder:
 
@@ -1765,9 +1765,9 @@ Reference mapping:
 
 The decision category picture family is a separate reference surface. Its exact path is:
 
-`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\vanilla_reference\icons\decision_categories\pictures`
+`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\gfx_references\icons\decision_categories\pictures`
 
-The implementation or asset prompt must require `contact_sheet.png` in that folder. If it is missing, the asset agent should build it from the references, label filenames and native dimensions, and update `assets/vanilla_reference/README.md` and `assets/vanilla_reference/CATALOG.md` before producing new category pictures.
+The implementation or asset prompt must require `contact_sheet.png` in that folder. If it is missing, the asset agent should build it from the references, label filenames and native dimensions, and update `assets/gfx_references/README.md` and `assets/gfx_references/CATALOG.md` before producing new category pictures.
 
 The event spec does not need to analyze those images itself. It should make the handoff explicit so the asset agent knows which example set to inspect before generation, sourcing, cropping, or wiring.
 

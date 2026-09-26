@@ -24,7 +24,7 @@ This records parent visual acceptance and current runtime byte equality only; no
 
 ## Reference and consumer audit
 
-The matching canonical contact sheets were inspected before the individual references from `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/counters_large` and `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/map_counters`.
+The matching canonical contact sheets were inspected before the individual references from `.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/counters_large` and `.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/map_counters`.
 
 The installed consumer definition was read from `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/interface/subuniticons.gfx`.
 

@@ -52,7 +52,7 @@ Installed vanilla references inspected:
 - `common/scripted_effects/INS_scripted_effects.txt`: `indonesia_transfer_BLI` transfers `INS_dewa_geg` when BLI exists and has a fallback search when it does not.
 - Vanilla runtime source exists at `gfx/leaders/INS/portrait_INS_dewa_geg.dds`; it is not copied or replaced.
 
-Matching role references inspected before any production: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/` and its `contact_sheet.png`; all displayed leader references are native `156x210` HOI4 leader portraits. No reference image was used as a face source.
+Matching role references inspected before any production: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/` and its `contact_sheet.png`; all displayed leader references are native `156x210` HOI4 leader portraits. No reference image was used as a face source.
 
 ## Required next gate if the parent reopens the package
 

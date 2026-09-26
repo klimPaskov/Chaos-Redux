@@ -32,7 +32,7 @@ The crop rectangle is `[372,401,1497,1915]`, YuNet found exactly one face at `[8
 
 The deterministic RGB `156x210` Pillow LANCZOS candidate has SHA-256 `470c6d4f6213c3ca7a0451e3440a5534b1e50333eec456f43cab204ad3644f34`; it is reconstructed in memory from the exact crop for DDS validation and is intentionally not retained as a PNG in the consolidated parent/processed archive.
 
-The canonical installed leader reference family at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/` and its contact sheet were inspected before processing.
+The canonical installed leader reference family at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/` and its contact sheet were inspected before processing.
 
 ## Runtime DDS
 

@@ -38,7 +38,7 @@ The sequence progresses by authority threshold from ten subdued delegate nodes t
 
 ## QA evidence
 
-- Canonical reference inspected before generation: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/factions/contact_sheet.png` plus individual faction logo plates. Reference art is review-only.
+- Canonical reference inspected before generation: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/factions/contact_sheet.png` plus individual faction logo plates. Reference art is review-only.
 - Geometry evidence: `notes/*_geometry_metrics.json` reports identical master alpha masks on every processed frame for both assets.
 - DDS evidence: `docs/assets/012_africa/charter_ui/animations/dds_pixel_parity.json` reports exact PNG-to-DDS pixel parity, valid legacy BGRA headers, exact lengths, declared dimensions, and alpha range 0–255 for all four runtime DDS files.
 - Runtime paths match the existing `interface/012_africa_charter.gfx` registrations exactly. Existing `.gfx`, `.gui`, scripted GUI, triggers, gameplay, localisation, and spreadsheet files were not edited.

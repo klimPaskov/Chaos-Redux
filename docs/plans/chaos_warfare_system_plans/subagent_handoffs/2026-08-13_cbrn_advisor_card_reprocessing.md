@@ -20,7 +20,7 @@ The twelve grounded historical sources are the existing approved local files `gf
 
 ## Cover-fit geometry and processing evidence
 
-- Canonical template: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/advisors/advisor_template.png`.
+- Canonical template: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/advisors/advisor_template.png`.
 - Template dimensions and hash: `65x67`, `8f594ef62afba6fdec58de66a80609350dcfe884320b11e6cb6220f1a0e19f58`.
 - Measured opening center: `24.76151027919129, 30.645146882359736`.
 - Measured opening fill plane: `30.477406015014285 x 45.09450833210553`.

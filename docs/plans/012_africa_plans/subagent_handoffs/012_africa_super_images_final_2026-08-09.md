@@ -27,7 +27,7 @@ Continental Wars uses a shattered railway bridge, armored trains, period aircraf
 
 The World uses a diverse global council, an empty final seat, a six-part continental seal, lowered standards, and a damaged industrial horizon to communicate exhausted finality without a planet explosion.
 
-The canonical reference family inspected was `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/super_event/`, especially the 457x328 contact sheet and League Formation institutional composition. Generation used the built-in `$imagegen` workflow, with full prompts and output ids in `docs/assets/012_africa/super_events/images_final/prompts/generation_prompts.md`.
+The canonical reference family inspected was `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/super_event/`, especially the 457x328 contact sheet and League Formation institutional composition. Generation used the built-in `$imagegen` workflow, with full prompts and output ids in `docs/assets/012_africa/super_events/images_final/prompts/generation_prompts.md`.
 
 ## Package contents
 

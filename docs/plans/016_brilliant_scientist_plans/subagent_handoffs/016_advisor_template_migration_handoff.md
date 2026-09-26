@@ -12,7 +12,7 @@ The migration covers Stage I, Stage II, and the six Stage III and six Stage IV r
 
 - Compositor: `.agents/skills/chaos-redux-event-assets/tools/create_advisor_icon.py`
 - Compositor SHA-256: `0080C7BA20C7A19B50C49885B66B775C1967B2CAAAEDCB63230725CB3656E0B0`
-- Canonical template: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/advisors/advisor_template.png`
+- Canonical template: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/advisors/advisor_template.png`
 - Canonical template SHA-256: `8F594EF62AFBA6FDEC58DE66A80609350DCFE884320B11E6CB6220F1A0E19F58`
 - Source handling: load the complete portrait, resize it to the native `65x67` advisor canvas, apply one uniform no-warp transform, and alpha-composite the untouched template once on top.
 - Shared transform: rotation `-6`, offset `-1 -1` from template opening center `25 32.5`, final portrait center `24 31.5`, and sepia strength `0.18`.

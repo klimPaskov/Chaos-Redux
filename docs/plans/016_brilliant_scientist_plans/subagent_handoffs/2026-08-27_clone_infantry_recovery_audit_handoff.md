@@ -197,7 +197,7 @@ The separate `counter_art/aryan_clone_infantry` family is outside this generic p
 
 The inspected installed-vanilla definitions and DDS precedents are `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/interface/subuniticons.gfx`, `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/interface/counters/divisions_large/unit_infantry_icon.dds`, and `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/interface/counters/divisions_small/onmap_unit_infantry_icon.dds`.
 
-The matching repository reference family is `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/`.
+The matching repository reference family is `.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/`.
 
 Recorded vanilla-green samples are RGBA `(73,106,73,255)`, `(74,107,74,255)`, `(83,114,83,255)`, `(100,128,100,255)`, and `(116,141,116,255)`.
 

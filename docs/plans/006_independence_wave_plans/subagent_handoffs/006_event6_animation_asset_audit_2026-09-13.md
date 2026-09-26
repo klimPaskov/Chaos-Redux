@@ -69,7 +69,7 @@ A heuristic finds a few green-dominant low-alpha edge samples around the league 
 
 ## Reference and engine evidence
 
-The matching canonical reference root was used exclusively for visual-reference inspection: `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/interface/README.md`, `interface/vanilla/_review_contact_sheet.png`, `interface/chaos_redux/chaos_meter/chaos_meter_deaths_window.png`, and `interface/vanilla/design_and_organization/unitleader_trait_tree_window.png`.
+The matching canonical reference root was used exclusively for visual-reference inspection: `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/interface/README.md`, `interface/vanilla/_review_contact_sheet.png`, `interface/chaos_redux/chaos_meter/chaos_meter_deaths_window.png`, and `interface/vanilla/design_and_organization/unitleader_trait_tree_window.png`.
 
 The offline `Graphical asset modding`, `Interface modding`, and `Scripted GUI modding` wiki pages and installed scripted-GUI documentation were reviewed, along with vanilla `frameAnimatedSpriteType` precedents in `interface/alerts.gfx`, `countryconstructionsview.gfx`, `nationalfocusview.gfx`, `landcombat.gfx`, and `unitview.gfx`.
 

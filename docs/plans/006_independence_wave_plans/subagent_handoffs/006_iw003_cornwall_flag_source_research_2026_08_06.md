@@ -21,7 +21,7 @@ The existing ACX normal, medium, and small triplets are already flag-art complet
 
 The allowed design is one centered upright white cross on an otherwise solid black field, with no text, seal, crown, pole, fabric folds, perspective, shadow, or additional charge. The retained source SVG is 500x300 and uses a 60-pixel cross stroke; the retained 1920x1152 raster is a 5:3 grayscale flat master with pure black `#000000` and pure white `#FFFFFF`. In that raster the vertical arm occupies x=845–1074 and the horizontal arm occupies y=461–690, which is a geometric proportion check rather than a claim about a historical surviving flag.
 
-The final HOI4 ladder follows the repository contract: normal 82x52, medium 41x26, and small 10x7. The installed TGA files are uncompressed 32-bit BGRA with bottom-left origin. Keep the unsuffixed ACX family only; there are no ideology or cosmetic variants. The canonical presentation references are `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/flags/normal/arm.png`, `medium/arm.png`, and `small/arm.png`; they are layout references, not source history.
+The final HOI4 ladder follows the repository contract: normal 82x52, medium 41x26, and small 10x7. The installed TGA files are uncompressed 32-bit BGRA with bottom-left origin. Keep the unsuffixed ACX family only; there are no ideology or cosmetic variants. The canonical presentation references are `.agents/skills/chaos-redux-event-assets/assets/gfx_references/flags/normal/arm.png`, `medium/arm.png`, and `small/arm.png`; they are layout references, not source history.
 
 ## Existing source, processed, and runtime files
 

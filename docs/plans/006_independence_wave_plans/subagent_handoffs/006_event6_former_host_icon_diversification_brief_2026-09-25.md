@@ -8,7 +8,7 @@ Produce twelve original, static national-focus icons in the established Event 00
 
 ## Visual and file contract
 
-- Match the ornate, painterly, compact heraldic treatment visible in `docs/assets/006_independence_wave/contact_sheets/006_icon_focuses_contact_sheet.png` and the installed vanilla national-focus icon contact sheet at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/national_focus/contact_sheet.png`.
+- Match the ornate, painterly, compact heraldic treatment visible in `docs/assets/006_independence_wave/contact_sheets/006_icon_focuses_contact_sheet.png` and the installed vanilla national-focus icon contact sheet at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/national_focus/contact_sheet.png`.
 - Build each icon for the 94x86 in-game focus canvas, with a transparent unused canvas. Request native transparency in the initial ImageGen call and preserve the alpha channel through processing and DDS conversion.
 - Use legible central silhouettes, strong separation at 94x86, period-appropriate materials, and a shared restrained slate, aged-gold, parchment, and muted-red palette. Do not include readable text, letters, numbers, or a background plate that fills the transparent canvas.
 - Make all twelve compositions visibly distinct. Do not make a set of recolors or reuse one central silhouette with small prop swaps.

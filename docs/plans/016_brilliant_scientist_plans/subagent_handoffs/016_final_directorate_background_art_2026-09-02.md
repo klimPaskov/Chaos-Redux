@@ -45,7 +45,7 @@ Reference evidence:
 - Current processed and decoded compact PNGs: docs/assets/016_brilliant_scientist/directorate_ui/compact_refresh/processed_png/directorate_background.png and compact_refresh/decoded_dds/directorate_background.png, both SHA-256 381E2BA8C1A0B6DB21F2CEFC72BB6DA5DB30FE4FEB43B7A3DC5AC0AB51725056.
 - Historical pre-repair runtime DDS baseline was SHA-256 380F0AF0B9A77D19A692B2A86B8D31D12BC14DA3B297F996A80B61A0F7563534.
 - Parent-installed active runtime DDS at gfx/interface/016_brilliant_scientist/directorate/directorate_background.dds is SHA-256 C476E06B722EE6C41A07B85AFDD257B2232744F9D50185A2D0AD5068D080026D and matches the selected v3 DDS.
-- Nearest canonical family inspected: .agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/report/contact_sheet.png, SHA-256 A50A2532A14E129584F21EA67B847A0E329C245187B57D5C577D10A265C0AEA4. It was consulted only for opaque canvas/background treatment because the canonical shelf has no dedicated scripted-GUI panel family.
+- Nearest canonical family inspected: .agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report/contact_sheet.png, SHA-256 A50A2532A14E129584F21EA67B847A0E329C245187B57D5C577D10A265C0AEA4. It was consulted only for opaque canvas/background treatment because the canonical shelf has no dedicated scripted-GUI panel family.
 
 Processing:
 

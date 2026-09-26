@@ -24,7 +24,7 @@ The country-package specification explicitly keeps Komi distinct from Tatar, Chu
 
 ## Installed KOM ladder evidence
 
-Authoritative source root requested by the repository is `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/flags/`, with `medium/` and `small/` subfolders. The canonical review library was inspected at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/`; it contains the flag family contact sheet and flag references but no KOM-specific review PNG.
+Authoritative source root requested by the repository is `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/flags/`, with `medium/` and `small/` subfolders. The canonical review library was inspected at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/`; it contains the flag family contact sheet and flag references but no KOM-specific review PNG.
 
 ### First complete snapshot observed during this audit
 

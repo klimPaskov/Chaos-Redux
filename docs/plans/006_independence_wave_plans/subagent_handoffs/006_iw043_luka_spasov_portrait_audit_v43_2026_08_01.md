@@ -81,9 +81,9 @@ At native `156x210`, the candidate remains readable as a head-and-shoulders lead
 
 The candidate is darker and more heavily brushed than the inspected references, but it remains within the subdued painted leader family and retains facial readability.
 
-The reviewed style-only references are `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/den_thorvald_stauning.png`, `156x210` RGBA, SHA-256 `08732002182BDCB2BFF3D78B142CC2B3D75ADBDB29D4115F9E89CA5BDC6A21B6`, and `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/fin_carl_mannerheim.png`, `156x210` RGBA, SHA-256 `7E78E33E0B691B96B584393F2D363C07A302320F7E6300BDA0FFF261AA98D49E`.
+The reviewed style-only references are `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/den_thorvald_stauning.png`, `156x210` RGBA, SHA-256 `08732002182BDCB2BFF3D78B142CC2B3D75ADBDB29D4115F9E89CA5BDC6A21B6`, and `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/fin_carl_mannerheim.png`, `156x210` RGBA, SHA-256 `7E78E33E0B691B96B584393F2D363C07A302320F7E6300BDA0FFF261AA98D49E`.
 
-The canonical leader reference contact sheet inspected before this audit is `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/contact_sheet.png`, `1200x498` RGBA, SHA-256 `8966AE351D1FE8FC13D47CA1C59EC3D8A34DA9101CE5FD65F7ACFF3421BD0401`.
+The canonical leader reference contact sheet inspected before this audit is `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/contact_sheet.png`, `1200x498` RGBA, SHA-256 `8966AE351D1FE8FC13D47CA1C59EC3D8A34DA9101CE5FD65F7ACFF3421BD0401`.
 
 No facial substitution, beautification, eye opening, invented decoration, unsupported rank mark, text, watermark, modern UI, or second subject was observed in the raw repaint or candidate.
 

@@ -242,7 +242,7 @@ Read before review:
 - `.agents/skills/chaos-redux-event-assets/SKILL.md` in full, including the
   grounded portrait source-mode gate, real-person edit sequence, subject
   ownership gate, canonical reference routing, and full `156x210` requirement.
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/README.md`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md`
   and `CATALOG.md`.
 - `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/README.md`
   and `REFERENCE_MANIFEST.md`.

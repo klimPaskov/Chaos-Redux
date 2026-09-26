@@ -97,7 +97,7 @@ Processing was identical and explicit for all four:
 - crop `[5, 0, 1075, 1440]`
 - `--source-kind collective`
 - output `156x210`
-- per-portrait comparison against `assets/vanilla_reference/portraits/leaders`
+- per-portrait comparison against `assets/gfx_references/portraits/leaders`
 - `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py --width 156 --height 210`
 
 Review sheets:

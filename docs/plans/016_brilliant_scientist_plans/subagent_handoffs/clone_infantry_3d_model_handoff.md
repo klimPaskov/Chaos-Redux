@@ -65,7 +65,7 @@ Installed vanilla references inspected:
 - `interface/Technologies.gfx`.
 - `gfx/interface/archetypes/archetype_infantry_equipment.dds`: 81x23.
 - `gfx/interface/technologies/infantry_equipment_0.dds`: 120x24.
-- Matching skill-local families under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/map_counters/` and `units/equipment/technology_art/`.
+- Matching skill-local families under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/map_counters/` and `units/equipment/technology_art/`.
 
 Sampled muted green evidence includes RGBA `(73,106,73,255)`, `(74,107,74,255)`, `(83,114,83,255)`, `(100,128,100,255)`, and `(116,141,116,255)`. Final outputs and comparison evidence are recorded in `counter_art/manifest.md`, `counter_art/gfx_handoff.md`, and `counter_art/evidence/contact_sheet.png`. Parent owns all `.gfx` registration and consumer wiring.
 

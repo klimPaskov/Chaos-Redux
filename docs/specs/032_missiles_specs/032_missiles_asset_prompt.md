@@ -27,16 +27,16 @@ All planned Event 32 art is static.
 
 Inspect the matching canonical reference folders and their contact sheets:
 
-- report art: `assets/vanilla_reference/event_art/report/`
-- news art: `assets/vanilla_reference/event_art/news/`
-- decision category icons: `assets/vanilla_reference/icons/decision_categories/`
-- decision category pictures: `assets/vanilla_reference/icons/decision_categories/pictures/`
-- idea icons: `assets/vanilla_reference/icons/ideas/`
-- decision icons: `assets/vanilla_reference/icons/decisions/`
-- mission icons: `assets/vanilla_reference/icons/missions/`
-- achievement icons: `assets/vanilla_reference/icons/achievements/`
-- state modifier icons: `assets/vanilla_reference/icons/state_modifiers/`
-- military raid icons: `assets/vanilla_reference/icons/military_raids/`
+- report art: `assets/gfx_references/event_art/report/`
+- news art: `assets/gfx_references/event_art/news/`
+- decision category icons: `assets/gfx_references/icons/decision_categories/`
+- decision category pictures: `assets/gfx_references/icons/decision_categories/pictures/`
+- idea icons: `assets/gfx_references/icons/ideas/`
+- decision icons: `assets/gfx_references/icons/decisions/`
+- mission icons: `assets/gfx_references/icons/missions/`
+- achievement icons: `assets/gfx_references/icons/achievements/`
+- state modifier icons: `assets/gfx_references/icons/state_modifiers/`
+- military raid icons: `assets/gfx_references/icons/military_raids/`
 - modifier and texticon precedents: the exact installed consumer and the closest canonical modifier family
 
 If the decision-category picture contact sheet is missing, create it first, label filenames and native dimensions, and update the reference README and catalog before making the Event 32 picture.

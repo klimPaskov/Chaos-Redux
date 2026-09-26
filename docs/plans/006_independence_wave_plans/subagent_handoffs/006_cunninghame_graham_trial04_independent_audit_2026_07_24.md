@@ -116,7 +116,7 @@ The identity gate is non-compensable and passes only because the identity-critic
 
 The candidate is a full opaque `156x210` painted leader portrait with modeled facial planes, restrained warm-gray period toning, a quiet backdrop, readable head-and-shoulders framing, and no text, watermark, UI, modern prop, or raw photographic finish.
 
-The candidate was compared with canonical and curated male leader references, including `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/den_thorvald_stauning.png`, whose SHA-256 is `08732002182BDCB2BFF3D78B142CC2B3D75ADBDB29D4115F9E89CA5BDC6A21B6`.
+The candidate was compared with canonical and curated male leader references, including `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/den_thorvald_stauning.png`, whose SHA-256 is `08732002182BDCB2BFF3D78B142CC2B3D75ADBDB29D4115F9E89CA5BDC6A21B6`.
 
 The other canonical leader references inspected were `ire_eamon_de_valera.png` SHA-256 `FF5F8689F1E8EA75BF88BEA4C4A87DCF60518B1E062EA53BE4A9CEFF3509DCB0`, `fin_carl_mannerheim.png` SHA-256 `7E78E33E0B691B96B584393F2D363C07A302320F7E6300BDA0FFF261AA98D49E`, and `ice_sveinn_bjornsson.png` SHA-256 `860726D268873F21AE0DBD6FB170482F50FAD6393882B97B2B7B7A1814189D14`.
 

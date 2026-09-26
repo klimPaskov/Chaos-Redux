@@ -136,8 +136,8 @@ The source and period reading is therefore `PASS` for Galician identity geometry
 
 ## Canonical reference-root check
 
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/README.md:21-28,72,83-85,124-126` identifies the extracted vanilla root, review-only contact sheets, and the normal/medium/small flag reference families.
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/CATALOG.md:19,98-122` inventories the 21-file review-only flag shelf and its sample source paths.
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md:21-28,72,83-85,124-126` identifies the extracted vanilla root, review-only contact sheets, and the normal/medium/small flag reference families.
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/CATALOG.md:19,98-122` inventories the 21-file review-only flag shelf and its sample source paths.
 - The canonical reference root contains zero files named `GLC` or `Galicia`; `flags/contact_sheet.png` is therefore not a GLC candidate comparison sheet.
 - No new contact sheet is required because this audit selected no competing authored candidates and does not create a replacement asset.
 - The installed vanilla source paths above remain the authoritative binary evidence for this carrier audit; no vanilla binary was copied into the canonical reference shelf or the mod.

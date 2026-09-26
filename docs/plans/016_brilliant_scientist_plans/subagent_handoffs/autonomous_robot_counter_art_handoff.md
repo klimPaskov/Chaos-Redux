@@ -41,8 +41,8 @@ The parent owns the final `.gfx` file and runtime consumer wiring. Event016 and 
 
 The matching canonical contact sheets were inspected before generation at:
 
-- `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/counters_large/contact_sheet.png`.
-- `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/map_counters/contact_sheet.png`.
+- `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/counters_large/contact_sheet.png`.
+- `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/map_counters/contact_sheet.png`.
 
 The exact installed definitions were inspected in `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/interface/subuniticons.gfx` (SHA-256 `0d7b62caf328b3c296ec27ab85318f3cc78cc760b02923538bf5240815963335`). Medium armor and mechanized definitions both use two-frame large `152x42` textures, while their white on-map definitions use two-frame `60x12` textures. Installed references are legacy `124`-byte-header, 32-bit uncompressed BGRA DDS with alpha transparency and masks `0x00ff0000`, `0x0000ff00`, `0x000000ff`, `0xff000000`.
 

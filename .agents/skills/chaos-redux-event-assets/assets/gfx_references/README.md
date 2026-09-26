@@ -2,7 +2,7 @@
 
 This directory is the single canonical review library for the asset workflows used by Chaos Redux, Slop Redux, and agentic HOI4 Modding:
 
-`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\vanilla_reference`
+`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\gfx_references`
 
 It is organized by the owning visual surface so an agent can compare the right canvas, transparency treatment, frame layout, or event-art presentation before creating an original asset. The other two mod repositories must reference this directory directly; their local copies are legacy review copies and are not workflow inputs.
 

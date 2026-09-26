@@ -4,7 +4,7 @@
 
 This handoff covers the bounded Event 006 non-icon scene-art surface requested by the parent agent: ASSET-001–006, ASSET-039 panel art, ASSET-046 FORM-05 and FORM-48 emblems, ASSET-048 FORM-03 report art, the accepted regional report scenes, and the four final `category*.dds` textures under `gfx/interface/decisions/006_independence_wave/`.
 
-The source, processed, and final DDS stages were visually reviewed at the native consumer sizes, using only the matching families in `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference`.
+The source, processed, and final DDS stages were visually reviewed at the native consumer sizes, using only the matching families in `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references`.
 
 No source-art or processing defect was found that justifies a repair. No image was regenerated, no source or processed PNG was replaced, no DDS was rewritten, and no `.gfx`, GUI, event, decision, localisation, gameplay, or spreadsheet file was edited.
 

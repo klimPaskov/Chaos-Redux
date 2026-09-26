@@ -43,7 +43,7 @@ The 45 native output IDs and prompt evidence are retained in `docs/assets/031_ra
 
 The prompts explicitly excluded real persons, real extremist symbols, sacred branding, depictions of deities, national flags, readable text, modern gear, gore, stereotypes, and caricatures. No generated source was used as a proxy for a grounded historical identity.
 
-The installed-reference review used `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/contact_sheet.png`, `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/commanders/contact_sheet.png`, `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/advisors/contact_sheet.png`, and the corresponding portrait rows in `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/CATALOG.md`.
+The installed-reference review used `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/contact_sheet.png`, `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/commanders/contact_sheet.png`, `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/advisors/contact_sheet.png`, and the corresponding portrait rows in `.agents/skills/chaos-redux-event-assets/assets/gfx_references/CATALOG.md`.
 
 ## Processing, dimensions, and hashes
 

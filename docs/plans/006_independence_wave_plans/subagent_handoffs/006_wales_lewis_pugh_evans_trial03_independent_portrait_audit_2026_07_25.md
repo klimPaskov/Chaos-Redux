@@ -74,13 +74,13 @@ Disposable enlarged inspection files were created only under `%TEMP%\\wls_evans_
 
 ### Canonical commander references and stable consumer
 
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/README.md`.
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/CATALOG.md` commander rows.
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/commanders/contact_sheet.png`.
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md`.
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/CATALOG.md` commander rows.
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/commanders/contact_sheet.png`.
 - `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/README.md`.
 - `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/REFERENCE_MANIFEST.md`.
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/commanders/eng_bernard_montgomery.png`.
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/commanders/ger_erwin_von_witzleben.png`.
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/commanders/eng_bernard_montgomery.png`.
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/commanders/ger_erwin_von_witzleben.png`.
 - `common/scripted_effects/006_independence_wave_scotland_wales_package_effects.txt:275-300`.
 - `interface/006_independence_wave_region_01_portraits.gfx:66-69`.
 - `localisation/english/006_independence_wave_scotland_wales_l_english.yml:7`.

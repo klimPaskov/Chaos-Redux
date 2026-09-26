@@ -10,7 +10,7 @@ No source frame, processed frame, sheet PNG, runtime DDS, GFX definition, or GUI
 
 ## Required reference review
 
-The canonical reference root used was `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference`.
+The canonical reference root used was `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references`.
 
 The matching family was `icons/decision_categories/`. I inspected `icons/decision_categories/contact_sheet.png` first, then `decision_category_generic.png` (51x40 RGBA), `decision_category_generic_crisis.png` (52x39 RGBA), `decision_category_border_conflicts.png` (52x40 RGBA), and `decision_category_generic_democracy.png` (52x40 RGBA) individually at native size. The family establishes compact, centered, transparent-corner category icon treatment; the accepted Event 006 brief target remains the parent-provided 64x64 canvas.
 

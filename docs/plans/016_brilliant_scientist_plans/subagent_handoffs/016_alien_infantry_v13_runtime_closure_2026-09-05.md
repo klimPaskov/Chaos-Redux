@@ -231,7 +231,7 @@ interface/alien_infantry_system.gfx maps GFX_group_alien_infantry_icon and GFX_u
 
 The installed vanilla definition is C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/interface/subuniticons.gfx with SHA-256 0D7B62CAF328B3C296EC27AB85318F3CC78CC760B02923538BF5240815963335.
 
-The matching skill-local reference families are .agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/counters_large/ and .agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/map_counters/.
+The matching skill-local reference families are .agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/counters_large/ and .agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/map_counters/.
 
 The recorded vanilla palette anchor is RGB 73,106,73, sampled from the decoded installed reference; frame order, alpha behavior, and border treatment are recorded in runtime/counter_handoff.md.
 

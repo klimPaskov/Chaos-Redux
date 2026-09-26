@@ -146,7 +146,7 @@ Installed references still match:
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/interface/counters/divisions_large/unit_infantry_icon.dds`, SHA-256 `b33a8e3b69cc789eb0e31ba99f4e5ba4e5b0a8b51ec1a7a7f709c3516f720c23`.
 - The same definition file, `GFX_unit_infantry_icon_medium_white`, `noOfFrames = 2`.
 - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/interface/counters/divisions_small/onmap_unit_infantry_icon.dds`, SHA-256 `58ab78662c2a64a519b8d5d144582e7b2785915bd0a0a822696d87a9de6f766c`.
-- Skill-local families: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/counters_large/` and `units/land/map_counters/`, including their contact sheets.
+- Skill-local families: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/counters_large/` and `units/land/map_counters/`, including their contact sheets.
 - Recorded large-counter green: dominant RGB `(73,106,73)`, range `(20,34,21)` through `(154,175,147)`.
 
 Packaged DDS hashes still match their manifest:

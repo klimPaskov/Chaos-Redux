@@ -8,7 +8,7 @@ This bounded visual audit found no new source-safe icon, picture, animation, ach
 
 I read `AGENTS.md`, `chaos-redux-event-assets/SKILL.md`, `chaos-redux-decisions-missions/SKILL.md`, `chaos-redux-focus-trees/SKILL.md`, `chaos-redux-scripted-gui/SKILL.md`, the official `imagegen` skill, the required offline Paradox wiki pages, and the installed vanilla interface/scripted-GUI documentation before inspecting the Event 006 files.
 
-The canonical contact sheets were inspected before individual references: `assets/vanilla_reference/icons/national_focus/contact_sheet.png`, `ideas/contact_sheet.png`, `decisions/contact_sheet.png`, `missions/contact_sheet.png`, `decision_categories/contact_sheet.png`, `decision_categories/pictures/contact_sheet.png`, `achievements/contact_sheet.png`, and the report/news/super-event sheets. No project-local visual-reference copy was used.
+The canonical contact sheets were inspected before individual references: `assets/gfx_references/icons/national_focus/contact_sheet.png`, `ideas/contact_sheet.png`, `decisions/contact_sheet.png`, `missions/contact_sheet.png`, `decision_categories/contact_sheet.png`, `decision_categories/pictures/contact_sheet.png`, `achievements/contact_sheet.png`, and the report/news/super-event sheets. No project-local visual-reference copy was used.
 
 The Event 006 source evidence remains under `docs/assets/006_independence_wave/`, including `manifest.md`, `gfx_handoff.md`, the five icon contact sheets, the decoded-DDS contact sheet, `animations/manifest.md`, `animations/animation_build_report.json`, and the existing formable state-registry packages.
 

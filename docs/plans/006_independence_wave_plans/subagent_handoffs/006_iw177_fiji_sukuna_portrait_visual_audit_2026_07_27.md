@@ -23,7 +23,7 @@ No DDS conversion, `.gfx` edit, gameplay edit, or localisation edit was performe
 - Identity-preservation prompt: `docs/assets/006_independence_wave/fiji_source_clearance_2026_07_27/prompts/ratu_sir_lala_sukuna_identity_preserve_imagegen.md`.
 - Source and rights ledger: `docs/assets/006_independence_wave/fiji_source_clearance_2026_07_27/source_manifest.json`.
 - Existing asset handoff: `docs/assets/006_independence_wave/fiji_source_clearance_2026_07_27/gfx_handoff.md`.
-- Canonical leader reference library and contact sheet: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/`.
+- Canonical leader reference library and contact sheet: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/`.
 - Processor-selected vanilla references: `den_thorvald_stauning.png` and `fin_carl_mannerheim.png`, both from the canonical leader directory.
 
 The source master itself is retained and recorded by the manifest as `ratu_sir_lala_sukuna_source.jpg`; the visual comparison began from the immutable exact crop as required by the parent scope.

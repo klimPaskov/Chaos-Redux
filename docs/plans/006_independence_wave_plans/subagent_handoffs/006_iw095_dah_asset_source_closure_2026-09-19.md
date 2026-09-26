@@ -26,8 +26,8 @@ The parent retains ownership of route selection, cosmetic tags, basename approva
 
 - `AGENTS.md`.
 - `.agents/skills/chaos-redux-event-assets/SKILL.md`, including the flag ladder, provenance, rights, source-package, and handoff rules.
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/README.md`.
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/CATALOG.md` and its `flags/contact_sheet.png` reference family.
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md`.
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/CATALOG.md` and its `flags/contact_sheet.png` reference family.
 - `paradox_wiki/Country creation - Hearts of Iron 4 Wiki.md` for the `gfx/flags` ladder, TGA format, and normal/medium/small dimensions.
 - `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md` for graphical asset paths and `.gfx` context.
 - `paradox_wiki/Cosmetic tag modding - Hearts of Iron 4 Wiki.md` and the relevant `Flags` section in `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`.

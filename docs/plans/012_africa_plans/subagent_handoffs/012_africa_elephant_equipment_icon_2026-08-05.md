@@ -34,7 +34,7 @@ No second model, generic fallback, copied vanilla icon, unrelated unit art, game
 
 ## Exact reference evidence
 
-The canonical contact sheet was inspected first at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/equipment/technology_art/contact_sheet.png`.
+The canonical contact sheet was inspected first at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/equipment/technology_art/contact_sheet.png`.
 
 The selected installed-vanilla precedent is `support_equipment_1.png` at 133x55 RGBA with transparent background, registered as `GFX_tech_support_medium` in the installed `interface/Technologies.gfx` and backed by `gfx/interface/technologies/support_equipment_1.dds` at 133x55.
 

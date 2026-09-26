@@ -52,7 +52,7 @@ paths are in both package metadata records.
 
 The required canonical reference roots were inspected directly:
 
-- `assets/vanilla_reference/README.md` and `CATALOG.md`;
+- `assets/gfx_references/README.md` and `CATALOG.md`;
 - `assets/leader_portraits/README.md`, `REFERENCE_MANIFEST.md`, and role contact sheets;
 - canonical leader family sheet for Held style (`den_thorvald_stauning`, `ire_eamon_de_valera`);
 - canonical commander family sheet for Schobert style (`generic_africa_land_1`, `generic_africa_land_3`).

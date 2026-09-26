@@ -83,7 +83,7 @@ The metadata state remains `candidate_requires_visual_approval`, which is correc
 
 ## Canonical Vanilla HOI4 references
 
-The role-specific canonical folder is `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/`.
+The role-specific canonical folder is `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/`.
 
 Its contact sheet contains eight full-size `156x210` leader references, including the selected `den_thorvald_stauning.png` and `fin_carl_mannerheim.png` references.
 
@@ -93,8 +93,8 @@ The selected canonical files were inspected at native size and at disposable nea
 
 | Reference | SHA-256 | Role evidence |
 | --- | --- | --- |
-| `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/den_thorvald_stauning.png` | `08732002182bdcb2bff3d78b142cc2b3d75adbdb29d4115f9e89ca5bdc6a21b6` | Full-size Vanilla civilian country-leader style reference. |
-| `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/fin_carl_mannerheim.png` | `7e78e33e0b691b96b584393f2d363c07a302320f7e6300bda0fff261aa98d49e` | Full-size Vanilla leader-family style reference. |
+| `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/den_thorvald_stauning.png` | `08732002182bdcb2bff3d78b142cc2b3d75adbdb29d4115f9e89ca5bdc6a21b6` | Full-size Vanilla civilian country-leader style reference. |
+| `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/fin_carl_mannerheim.png` | `7e78e33e0b691b96b584393f2d363c07a302320f7e6300bda0fff261aa98d49e` | Full-size Vanilla leader-family style reference. |
 
 The processor review sheet is a style and framing aid and is not treated as identity evidence for Thomas.
 

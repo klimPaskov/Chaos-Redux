@@ -9,7 +9,7 @@ Disposition: **PASS for both candidate PNGs; parent may convert and wire after r
 
 I inspected the unchanged archival masters, exact crops and equality JSON, raw ImageGen repaints, deterministic `156x210` candidates, both trial manifests, prompts, processor metadata, review sheets, canonical role references, and the curated male quick-reference sheets at native size and at a disposable nearest-neighbour `4x` inspection scale.
 
-The canonical role references were `.../assets/vanilla_reference/portraits/leaders/den_thorvald_stauning.png`, `.../assets/vanilla_reference/portraits/leaders/fin_carl_mannerheim.png`, `.../assets/vanilla_reference/portraits/commanders/eng_bernard_montgomery.png`, and `.../assets/vanilla_reference/portraits/commanders/ger_erwin_von_witzleben.png`; the curated male pack sheets were `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/leaders/contact_sheet.png` and `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/commanders/contact_sheet.png`.
+The canonical role references were `.../assets/gfx_references/portraits/leaders/den_thorvald_stauning.png`, `.../assets/gfx_references/portraits/leaders/fin_carl_mannerheim.png`, `.../assets/gfx_references/portraits/commanders/eng_bernard_montgomery.png`, and `.../assets/gfx_references/portraits/commanders/ger_erwin_von_witzleben.png`; the curated male pack sheets were `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/leaders/contact_sheet.png` and `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/commanders/contact_sheet.png`.
 
 The trial-02 workspaces contain no generated subject substitute, female asset, advisor card, dossier card, `_small` derivative, or DDS output.
 

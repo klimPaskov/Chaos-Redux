@@ -31,7 +31,7 @@ All eight requested unit folders retain original counter-art evidence. The packa
 
 ## Vanilla reference gate
 
-The canonical skill-local root inspected before generation was C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units. Contact sheets were inspected first for land/counters_large and land/map_counters, followed by unit_infantry_icon.png and onmap_infantry.png.
+The canonical skill-local root inspected before generation was C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/units. Contact sheets were inspected first for land/counters_large and land/map_counters, followed by unit_infantry_icon.png and onmap_infantry.png.
 
 The exact installed definition file inspected was C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/interface/subuniticons.gfx. The large precedent is GFX_unit_infantry_icon_medium -> gfx/interface/counters/divisions_large/unit_infantry_icon.dds, noOfFrames = 2. The on-map precedent is GFX_unit_infantry_icon_medium_white -> gfx/interface/counters/divisions_small/onmap_unit_infantry_icon.dds, noOfFrames = 2. Installed reference DDS SHA-256 values are recorded per-unit in counters/manifest.json.
 

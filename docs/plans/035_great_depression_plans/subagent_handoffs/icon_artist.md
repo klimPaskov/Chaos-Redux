@@ -8,12 +8,12 @@ No gameplay, localisation, workbook, or `.gfx` file was edited. The existing `gf
 
 | Family | Count | Exact runtime folder | Reference family | Status |
 | --- | ---: | --- | --- | --- |
-| Decision category and six doctrines plus Cabinet Review | 8 | `gfx/interface/decisions/035_great_depression/` | `vanilla_reference/icons/decision_categories/` and `icons/decisions/` | ready; needs parent binding review |
-| Mapped missions | 8 | `gfx/interface/decisions/035_great_depression/` | `vanilla_reference/icons/missions/` | ready; needs parent binding review |
-| Conditions, six doctrine legacies, and recovery scar | 12 | `gfx/interface/ideas/035_great_depression/` | `vanilla_reference/icons/ideas/` | ready; needs parent binding review |
-| State statuses | 8 | `gfx/interface/state_modifiers/035_great_depression/` | `vanilla_reference/icons/state_modifiers/` | ready; needs parent binding review |
+| Decision category and six doctrines plus Cabinet Review | 8 | `gfx/interface/decisions/035_great_depression/` | `gfx_references/icons/decision_categories/` and `icons/decisions/` | ready; needs parent binding review |
+| Mapped missions | 8 | `gfx/interface/decisions/035_great_depression/` | `gfx_references/icons/missions/` | ready; needs parent binding review |
+| Conditions, six doctrine legacies, and recovery scar | 12 | `gfx/interface/ideas/035_great_depression/` | `gfx_references/icons/ideas/` | ready; needs parent binding review |
+| State statuses | 8 | `gfx/interface/state_modifiers/035_great_depression/` | `gfx_references/icons/state_modifiers/` | ready; needs parent binding review |
 | Evolutions | 3 | `gfx/interface/decisions/035_great_depression/` | decision/event-local icon precedent | ready; needs parent binding review |
-| Achievement state assets | 21 (7 triplets) | `gfx/achievements/` | `vanilla_reference/icons/achievements/` | ready; canonical 64x64 family |
+| Achievement state assets | 21 (7 triplets) | `gfx/achievements/` | `gfx_references/icons/achievements/` | ready; canonical 64x64 family |
 
 ## Exact file inventory and checksums
 
@@ -81,7 +81,7 @@ The machine-readable equivalent of this inventory is `docs/assets/035_great_depr
 
 ## Reference and processing evidence
 
-Canonical reference contact sheets were inspected before individual references. The exact canonical root was `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference`.
+Canonical reference contact sheets were inspected before individual references. The exact canonical root was `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references`.
 
 - Decision categories: `icons/decision_categories/contact_sheet.png`, with `decision_category_generic_crisis.png`, `decision_category_generic.png`, and `decision_category_generic_arms_trade.png` inspected individually.
 - Decisions: `icons/decisions/contact_sheet.png`, with `decision_usa_congress.png`, `decision_generic_intelligence_operation.png`, and `decision_generic_disband_irregulars.png` inspected individually.

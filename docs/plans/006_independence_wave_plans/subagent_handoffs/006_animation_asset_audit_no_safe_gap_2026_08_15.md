@@ -27,7 +27,7 @@ Each package retains `brief.md`, `frame_plan.md`, independent ImageGen source fr
 - All eight runtime DDS files pass the legacy one-level BGRA checks: 128-byte header, exact declared dimensions and byte length, 32-bit RGBA pixel format, BGRA masks, and `DDSCAPS_TEXTURE`.
 - `animation_build_report.json` covers 56 files with zero missing files and zero size or SHA-256 mismatches.
 - Contact sheets show distinct state-specific authored changes for all four families, and all GIF previews contain the expected number of distinct frames.
-- The canonical decision-category contact sheet and individual Vanilla references were inspected from `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decision_categories/`; the installed `frameAnimatedSpriteType` precedent was inspected in Vanilla `interface/alerts.gfx` and `interface/countryconstructionsview.gfx`, together with the offline graphical-asset, interface, and scripted-GUI wiki pages.
+- The canonical decision-category contact sheet and individual Vanilla references were inspected from `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decision_categories/`; the installed `frameAnimatedSpriteType` precedent was inspected in Vanilla `interface/alerts.gfx` and `interface/countryconstructionsview.gfx`, together with the offline graphical-asset, interface, and scripted-GUI wiki pages.
 
 ## Parent-owned wiring status
 

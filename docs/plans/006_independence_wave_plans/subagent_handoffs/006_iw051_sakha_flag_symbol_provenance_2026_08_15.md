@@ -69,7 +69,7 @@ The small-file digests are recorded from the read-only check and should still be
 
 There is no no-suffix `YAK.tga` in the installed ladder. The normal/medium/small ideology-specific files are therefore the installed carrier surface. The normal neutral file was inspected in memory and is a plain white-over-green field with no observed emblem; that visual observation is not treated as a historical match to the 1926 flag.
 
-The canonical project reference root was also inspected at `C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\vanilla_reference\flags\README.md`, `CATALOG.md`, and `contact_sheet.png`. Those references confirm the native normal/medium/small ladder convention and do not establish YAK historical provenance or an asset license.
+The canonical project reference root was also inspected at `C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\gfx_references\flags\README.md`, `CATALOG.md`, and `contact_sheet.png`. Those references confirm the native normal/medium/small ladder convention and do not establish YAK historical provenance or an asset license.
 
 ## Historical Sakha/Yakut symbol research
 

@@ -160,7 +160,7 @@ Full per-file evidence is under:
 
 The required offline wiki core pages plus Country creation, Cosmetic tag modding, Localisation, and Interface modding were consulted. Relevant official vanilla cosmetic-tag effect/trigger documentation was read. Vanilla GER ideology variants and normal/medium/small TGA headers were inspected.
 
-The event-assets skill's canonical `assets/vanilla_reference/flags/normal` reference directory is available in this checkout. The current Wendigo files and prior Event 014 generated sources were inspected alongside the complete normal/medium/small flag ladder and its per-type contact sheet. No alternate source mode or non-generated substitute was used.
+The event-assets skill's canonical `assets/gfx_references/flags/normal` reference directory is available in this checkout. The current Wendigo files and prior Event 014 generated sources were inspected alongside the complete normal/medium/small flag ladder and its per-type contact sheet. No alternate source mode or non-generated substitute was used.
 
 ## Safety and scope
 

@@ -231,7 +231,7 @@ The required large and on-map counter strips exist in the runtime tree and match
 
 The installed vanilla definition uses `noOfFrames = 2`.
 
-The matching skill-local families are `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/counters_large/` and `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/map_counters/`.
+The matching skill-local families are `.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/counters_large/` and `.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/map_counters/`.
 
 The sampled vanilla-green anchor is RGB `(73,106,73)`, with adjacent `(74,107,74)`.
 

@@ -14,9 +14,9 @@ Before adding anything, inspect actual repository consumers, existing Event 81 a
 
 Canonical reference root in the supplied project instructions:
 
-`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\vanilla_reference`
+`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\gfx_references`
 
-Resolve the corresponding checkout-relative `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/` path in the active environment. Read its README and CATALOG. Inspect the matching family's contact sheet and native examples. If a category-picture contact sheet is missing, build and label it from actual references, then update the reference README and CATALOG before producing category pictures. Do not infer approval from a plan or from an inaccessible reference path.
+Resolve the corresponding checkout-relative `.agents/skills/chaos-redux-event-assets/assets/gfx_references/` path in the active environment. Read its README and CATALOG. Inspect the matching family's contact sheet and native examples. If a category-picture contact sheet is missing, build and label it from actual references, then update the reference README and CATALOG before producing category pictures. Do not infer approval from a plan or from an inaccessible reference path.
 
 The supplied planning archive lacked those visual references. Record an honest blocker if they remain unavailable. A description of the expected style is not evidence of visual comparison.
 

@@ -16,8 +16,8 @@ The approved processor was `.agents/skills/chaos-redux-event-assets/tools/proces
 
 ## Inputs and staged evidence
 
-- Completed background: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements/achievement_template.png`, SHA-256 `248DB006611EB3942550C43DF83802AA6FB24761035FC928B5D34586C0C4C5BA`.
-- Grey/not-eligible background: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements/achievement_template_grey.png`, SHA-256 `70E073694C1A7D9FE40C63B1EB2E987A8A45B3FFD15CCF789EEAA5B843B90022`.
+- Completed background: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements/achievement_template.png`, SHA-256 `248DB006611EB3942550C43DF83802AA6FB24761035FC928B5D34586C0C4C5BA`.
+- Grey/not-eligible background: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements/achievement_template_grey.png`, SHA-256 `70E073694C1A7D9FE40C63B1EB2E987A8A45B3FFD15CCF789EEAA5B843B90022`.
 - Immutable source snapshot: `C:\Users\klimp\AppData\Local\Temp\chaosx_achievement_runtime_backgrounds_20260824\source\`.
 - Staged DDS outputs: `C:\Users\klimp\AppData\Local\Temp\chaosx_achievement_runtime_backgrounds_20260824\output\`.
 - Staged decoded review PNGs: `C:\Users\klimp\AppData\Local\Temp\chaosx_achievement_runtime_backgrounds_20260824\output\review\`.

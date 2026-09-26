@@ -41,7 +41,7 @@ The processor metadata is `processing_metadata.json` with SHA-256 `841E4DECAEF78
 
 The review sheet is `review/AGX_pieter_reenalda_commander_style_sheet.png` with SHA-256 `AC44475681DE159973EEADD8A7140AE3848D3EDE74B5DD1444A914B93EE8A167`.
 
-The processor selected `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/commanders/eng_bernard_montgomery.png` with SHA-256 `39B03871D7451CA96712A5CCF3C056528693F82642776E6C5E297E041943944E` and `ger_erwin_von_witzleben.png` with SHA-256 `10F4A1108F9D440213F70FB5802349A2291F298F9D132644241119561577D5B6`.
+The processor selected `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/commanders/eng_bernard_montgomery.png` with SHA-256 `39B03871D7451CA96712A5CCF3C056528693F82642776E6C5E297E041943944E` and `ger_erwin_von_witzleben.png` with SHA-256 `10F4A1108F9D440213F70FB5802349A2291F298F9D132644241119561577D5B6`.
 
 All eight entries in `hashes.sha256` matched on audit. The processor hash matched the checked-in tool, and the metadata-recorded source, output, and review hashes matched the files on disk.
 

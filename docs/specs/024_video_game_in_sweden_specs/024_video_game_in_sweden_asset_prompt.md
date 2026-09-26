@@ -23,16 +23,16 @@ The technology is deliberately anachronistic. Clothing, room design, photography
 
 Before production, inspect the exact canonical reference family and its contact sheet for each asset type:
 
-- Report art: `assets/vanilla_reference/event_art/report/`
-- Decision category picture: `assets/vanilla_reference/icons/decision_categories/pictures/`
-- Ideas: `assets/vanilla_reference/icons/ideas/`
-- Decisions: `assets/vanilla_reference/icons/decisions/`
-- Commander traits: `assets/vanilla_reference/icons/commander_traits/`
-- Achievements: `assets/vanilla_reference/icons/achievements/`
+- Report art: `assets/gfx_references/event_art/report/`
+- Decision category picture: `assets/gfx_references/icons/decision_categories/pictures/`
+- Ideas: `assets/gfx_references/icons/ideas/`
+- Decisions: `assets/gfx_references/icons/decisions/`
+- Commander traits: `assets/gfx_references/icons/commander_traits/`
+- Achievements: `assets/gfx_references/icons/achievements/`
 
 For the decision category picture family, require:
 
-`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\vanilla_reference\icons\decision_categories\pictures`
+`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\gfx_references\icons\decision_categories\pictures`
 
 If `contact_sheet.png` is missing, create it from the reference images, label filenames and native dimensions, and update the reference README and catalog before production. Reference assets are review material and must not be shipped, recolored, traced, or wired.
 

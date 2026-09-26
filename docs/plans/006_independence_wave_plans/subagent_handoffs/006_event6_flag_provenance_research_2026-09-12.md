@@ -16,7 +16,7 @@ The existing runtime ladders and evidence packages are preserved exactly as foun
 
 ## Authority and method
 
-The relevant sourcing, provenance, flag-ladder, alias, blocker, and handoff sections of `.agents/skills/chaos-redux-event-assets/SKILL.md` were read, together with the canonical review root `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/README.md`, `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/CATALOG.md`, and `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/flags/`.
+The relevant sourcing, provenance, flag-ladder, alias, blocker, and handoff sections of `.agents/skills/chaos-redux-event-assets/SKILL.md` were read, together with the canonical review root `.agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md`, `.agents/skills/chaos-redux-event-assets/assets/gfx_references/CATALOG.md`, and `.agents/skills/chaos-redux-event-assets/assets/gfx_references/flags/`.
 
 The accepted row is `ASSET-044` in `docs/specs/006_independence_wave_specs/matrices/006_asset_family_registry.csv`, which requires normal, medium, and small country-flag ladders at `82x52`, `41x26`, and `10x7`.
 

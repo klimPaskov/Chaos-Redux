@@ -4,7 +4,7 @@ Date: 2026-08-02.
 
 Reviewer: `/root/event012_real_portrait_independent_review`, independent of the producer.
 
-Scope: I compared the five current immutable source crops, the current raw source-locked repaint outputs, the processed `156x210` PNGs, the source manifest and handoff files, and the canonical country-leader references under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/`.
+Scope: I compared the five current immutable source crops, the current raw source-locked repaint outputs, the processed `156x210` PNGs, the source manifest and handoff files, and the canonical country-leader references under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/`.
 
 No source, crop, raw repaint, processed PNG, DDS, `.gfx`, gameplay, character, localisation, or source-package file was edited by this review except for this handoff.
 

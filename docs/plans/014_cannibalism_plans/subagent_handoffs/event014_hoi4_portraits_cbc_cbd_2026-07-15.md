@@ -21,9 +21,9 @@ No interface, localisation, gameplay, Hannibal, shared manifest, aggregate promp
 
 Every generation call used these same three images as **style-only** references:
 
-1. `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/den_thorvald_stauning.png`
-2. `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/ire_eamon_de_valera.png`
-3. `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/fin_carl_mannerheim.png`
+1. `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/den_thorvald_stauning.png`
+2. `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/ire_eamon_de_valera.png`
+3. `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/fin_carl_mannerheim.png`
 
 They were used only for finish, restrained bust framing, softly brushed background treatment, and controlled value range. Prompts explicitly prohibited copying or blending the depicted identities, facial features, clothing, insignia, or poses.
 

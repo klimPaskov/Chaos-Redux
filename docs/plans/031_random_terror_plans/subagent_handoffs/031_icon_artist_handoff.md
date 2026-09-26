@@ -38,7 +38,7 @@ The three existing opaque decision-category picture DDS files under `gfx/interfa
 
 ## Processing and validation
 
-The canonical reference contact sheets were inspected before individual references under the single approved root `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference`, covering focuses, ideas, decisions, missions, achievements, and factions.
+The canonical reference contact sheets were inspected before individual references under the single approved root `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references`, covering focuses, ideas, decisions, missions, achievements, and factions.
 
 All static PNGs were converted with `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py` at the exact processed dimensions. Achievement triplets were emitted with `.agents/skills/chaos-redux-event-assets/tools/process_achievement_icons.py --write-png` and audited with `--audit`; all 12 triplets reported strict 64x64 BGRA and source-layer equality.
 

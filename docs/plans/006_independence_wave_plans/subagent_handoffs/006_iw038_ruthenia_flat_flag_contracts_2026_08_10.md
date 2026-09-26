@@ -129,5 +129,5 @@ After the parent accepts the contracts, the asset owner must generate one flat s
 ## Skills and references used
 
 - `chaos-redux-event-assets` for source, rights, flat-flag, ladder, and handoff requirements.
-- Canonical vanilla reference root `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference` for flag ladder dimensions and flat orthographic conventions.
+- Canonical vanilla reference root `.agents/skills/chaos-redux-event-assets/assets/gfx_references` for flag ladder dimensions and flat orthographic conventions.
 - Offline Paradox wiki core pages were opened as required by `AGENTS.md`; no gameplay syntax was changed.

@@ -61,7 +61,7 @@ Full per-file validation notes and the manifest row are in `docs/assets/023_sov_
 
 ## Reference audit
 
-The canonical decision family was inspected before generation at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decisions/`, beginning with `contact_sheet.png`, then the individual canonical `decision_generic_disband_irregulars.png`, `decision_generic_intelligence_operation.png`, and `decision_border_war.png` references.
+The canonical decision family was inspected before generation at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decisions/`, beginning with `contact_sheet.png`, then the individual canonical `decision_generic_disband_irregulars.png`, `decision_generic_intelligence_operation.png`, and `decision_border_war.png` references.
 
 Existing Event 023 decision peers were inspected only as runtime-family neighbors for visual distinctness, not used as source art: `authentication`, `dismantlement`, `device_assembly`, `hold_abort`, `depot_recall`, and `storage_hardening`.
 

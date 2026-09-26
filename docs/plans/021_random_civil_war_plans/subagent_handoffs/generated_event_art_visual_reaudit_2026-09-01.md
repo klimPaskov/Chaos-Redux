@@ -12,7 +12,7 @@ Event 021 custom GUI, animation, super-event, and 3D asset surfaces were not int
 
 ## Reference and consumer inspection
 
-The canonical reference root was used directly at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference`.
+The canonical reference root was used directly at `.agents/skills/chaos-redux-event-assets/assets/gfx_references`.
 
 Opened and compared the canonical report family contact sheet and anchor references, the canonical news family contact sheet and anchor references, and the canonical `icons/decision_categories/pictures/contact_sheet.png` plus native-size category-picture anchor references.
 

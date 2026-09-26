@@ -31,7 +31,7 @@ The exact installed definitions and DDS files were inspected before processing:
 - `interface/subuniticons.gfx#GFX_unit_infantry_icon_medium_white` -> `gfx/interface/counters/divisions_small/onmap_unit_infantry_icon.dds`, `60x12`, `noOfFrames = 2`.
 - `interface/texticons.gfx#GFX_unit_infantry_icon_small` -> `gfx/texticons/unit_infantry_icon_small.dds`, `60x12`, `noOfFrames = 2`, `legacy_lazy_load = no`.
 
-The canonical contact sheets under the skill-local `vanilla_reference/units/land/counters_large/` and `map_counters/` folders were inspected before individual references. Palette, alpha bounds, frame order, and visual scale evidence is recorded in `counter_handoff/validation/installed_definition_audit.json` and `counter_handoff/validation/reference_stats.json`.
+The canonical contact sheets under the skill-local `gfx_references/units/land/counters_large/` and `map_counters/` folders were inspected before individual references. Palette, alpha bounds, frame order, and visual scale evidence is recorded in `counter_handoff/validation/installed_definition_audit.json` and `counter_handoff/validation/reference_stats.json`.
 
 `counter_handoff/validation/dds_roundtrip.json` records `pixel_equal = true`, `different_channels = 0`, and `max_channel_difference = 0` for all three outputs. Each output is a native-size, one-level, uncompressed BGRA DDS with valid header masks, texture caps, exact file length, and transparent pixels.
 

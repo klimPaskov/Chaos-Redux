@@ -52,11 +52,11 @@ dossier treatment, or post-generation face edit.
 I inspected the canonical root README/CATALOG and the role-specific leader and
 commander contact sheets. The direct comparisons were:
 
-- `assets/vanilla_reference/portraits/leaders/contact_sheet.png` plus
+- `assets/gfx_references/portraits/leaders/contact_sheet.png` plus
   `den_thorvald_stauning.png`, `fin_carl_mannerheim.png`,
   `ice_sveinn_bjornsson.png`, and `ire_eamon_de_valera.png` for the common
   HOI4 painted finish, quiet background, value control, and native framing.
-- `assets/vanilla_reference/portraits/commanders/contact_sheet.png` plus
+- `assets/gfx_references/portraits/commanders/contact_sheet.png` plus
   `generic_africa_navy_1.png` and `generic_africa_navy_2.png` for full naval
   commander framing and readable cap/upper-torso treatment.
 - The retired `assets/leader_portraits/` sheets were checked only to confirm

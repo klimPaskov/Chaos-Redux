@@ -311,7 +311,7 @@ This hierarchy prevents presentation inflation.
 
 Before every asset family, inspect:
 
-- exact matching `assets/vanilla_reference/` shelf and contact sheet
+- exact matching `assets/gfx_references/` shelf and contact sheet
 - source path and owning vanilla or Chaos Redux definition
 - native size, frame count, alpha, crop, and consumer
 - at least one installed vanilla or Chaos Redux runtime precedent

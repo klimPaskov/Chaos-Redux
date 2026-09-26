@@ -19,10 +19,10 @@ source photograph, every retained full ImageGen master, and every native
 
 Canonical comparisons:
 
-- Jarres and Cachin: `assets/vanilla_reference/portraits/leaders/contact_sheet.png`
+- Jarres and Cachin: `assets/gfx_references/portraits/leaders/contact_sheet.png`
   and the cataloged `den_thorvald_stauning`, `fin_carl_mannerheim`,
   `ice_sveinn_bjornsson`, and `ire_eamon_de_valera` references.
-- Devin's command role: `assets/vanilla_reference/portraits/commanders/contact_sheet.png`
+- Devin's command role: `assets/gfx_references/portraits/commanders/contact_sheet.png`
   for role framing, with the leader family for the common painted finish and
   quiet background/value treatment.
 

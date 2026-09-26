@@ -18,7 +18,7 @@ A fresh exact-fixture `hoi4.gui_inspect` retry on 2026-09-05 completed with 48 i
 
 The audit followed `AGENTS.md`, `.agents/skills/chaos-redux-event-assets/SKILL.md`, `.agents/skills/chaos-redux-events/SKILL.md`, `.agents/skills/chaos-redux-subagents/SKILL.md`, `.agents/skills/chaos-redux-focus-trees/SKILL.md`, `.agents/skills/chaos-redux-decisions-missions/SKILL.md`, `.agents/skills/chaos-redux-frame-animation/SKILL.md`, `.agents/skills/chaos-redux-super-events/SKILL.md`, and `.agents/skills/chaos-redux-comfyui/SKILL.md`.
 
-The accepted matrix is `docs/specs/006_independence_wave_specs/matrices/006_asset_family_registry.csv`. The matching offline Paradox wiki pages, installed vanilla documentation, installed vanilla GFX and GUI precedents, and the canonical reference families under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/` were consulted before the source and runtime checks.
+The accepted matrix is `docs/specs/006_independence_wave_specs/matrices/006_asset_family_registry.csv`. The matching offline Paradox wiki pages, installed vanilla documentation, installed vanilla GFX and GUI precedents, and the canonical reference families under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/` were consulted before the source and runtime checks.
 
 Every accepted family was traced as `consumer -> sprite or direct filename -> interface definition or engine convention -> runtime file`. Source masters, processed PNGs, final DDS or TGA files, native-size outputs, enlarged review views, family contact sheets, and the available focus or GUI renders were inspected. Final DDS files were decoded from their actual bytes, including both repaired files and all four animation sheets plus static fallbacks.
 

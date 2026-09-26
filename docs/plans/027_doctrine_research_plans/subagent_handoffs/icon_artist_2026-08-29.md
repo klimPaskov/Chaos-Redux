@@ -14,8 +14,8 @@ The artwork does not reuse or imitate the official Doctrine of Choice achievemen
 
 ## References inspected
 
-- Canonical contact sheet: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements/contact_sheet.png`.
-- Canonical individual references: `30_minutes_of_hel`, `assuming_direct_control`, `britzkrieg`, `crusader_kings_2`, and `the_revolution_triumphant`, each inspected in completed, grey, and not-eligible form under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements/`.
+- Canonical contact sheet: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements/contact_sheet.png`.
+- Canonical individual references: `30_minutes_of_hel`, `assuming_direct_control`, `britzkrieg`, `crusader_kings_2`, and `the_revolution_triumphant`, each inspected in completed, grey, and not-eligible form under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements/`.
 - Installed Vanilla achievement DDS family: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/achievements/`.
 - Installed strict sample family members were 64x64, 16,512-byte, one-level, uncompressed 32-bit BGRA with opaque alpha and the canonical masks; the installed `the_revolution_triumphant` triplet is a compressed legacy exception and was not copied or used as a runtime source.
 - Existing Chaos Redux convention inspected in `interface/chaosx_achievements.gfx`: `GFX_achievement_<full_id>` aliases point to root-level `gfx/achievements/<full_id>{,_grey,_not_eligible}.dds` paths.

@@ -13,7 +13,7 @@ Scope: source-only research for the grounded male leader and historical-symbol r
 
 The map evidence is `docs/plans/006_independence_wave_plans/package_bindings/006_current_installed_map_package_bindings.csv` and the current Iberian package audit `subagent_handoffs/006_iw013_iw015_iberian_package_audit_2026-08-03.md`. No FORM-07, allocator, or map change is implied by this asset handoff.
 
-The portrait role family is the vanilla country-leader `portraits/leaders/` family: final game texture `156x210`, not an advisor/dossier or `_small` card. The canonical style reference inspected was `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/contact_sheet.png`.
+The portrait role family is the vanilla country-leader `portraits/leaders/` family: final game texture `156x210`, not an advisor/dossier or `_small` card. The canonical style reference inspected was `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/contact_sheet.png`.
 
 ## Ownership gate
 

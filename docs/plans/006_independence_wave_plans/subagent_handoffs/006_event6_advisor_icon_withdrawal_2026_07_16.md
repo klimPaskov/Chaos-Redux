@@ -29,7 +29,7 @@ renamed to male fictional specialists before their package could be admitted.
 
 The AJX package was reduced to its distinct Municipal Neutral Commission focus
 icon and its focus-only evidence. The generic vanilla advisor reference library
-under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/` is not
+under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/` is not
 an Event 006 gameplay icon set and remains available as reusable skill guidance.
 
 ## Gameplay boundary

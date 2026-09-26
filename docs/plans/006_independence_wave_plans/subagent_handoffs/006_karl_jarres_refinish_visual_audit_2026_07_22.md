@@ -20,7 +20,7 @@ generated substitute and no fallback is authorised.
 - Trial source: `docs/assets/006_independence_wave/sourced_portrait_refinishes_2026_07_22/imagegen_sources/RHI/RHI_karl_jarres_hoi4_trial_01.png`
 - Refined source: `.../imagegen_sources/RHI/RHI_karl_jarres_hoi4_refined_02.png`
 - Native review PNG: `docs/assets/006_independence_wave/sourced_portrait_refinishes_2026_07_22/processed_png/RHI/RHI_karl_jarres_hoi4.png`
-- Canonical family: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/CATALOG.md` entry and `portraits/leaders/contact_sheet.png`; representative native references reviewed were Stauning, Mannerheim, Björnsson, and Zahir Shah.
+- Canonical family: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/CATALOG.md` entry and `portraits/leaders/contact_sheet.png`; representative native references reviewed were Stauning, Mannerheim, Björnsson, and Zahir Shah.
 - Provenance/processing ledgers: `docs/assets/006_independence_wave/sourced_portrait_replacements_2026_07_22/active_vanilla_conflict_retry/manifest.md` and `docs/assets/006_independence_wave/sourced_portrait_refinishes_2026_07_22/manifest.md`.
 
 ## Provenance and source consistency

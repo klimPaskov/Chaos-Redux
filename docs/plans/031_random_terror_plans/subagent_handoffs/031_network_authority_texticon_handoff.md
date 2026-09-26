@@ -19,7 +19,7 @@ The parent owns the sprite name, inline token, `.gfx` registration, localisation
 
 The required Event 31 contact sheets were inspected before individual source selection: `docs/assets/031_random_terror/contact_sheets/031_idea_icons_contact_sheet.png` and `docs/assets/031_random_terror/contact_sheets/031_decision_mission_icons_contact_sheet.png`.
 
-The canonical reference contact sheets `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/ideas/contact_sheet.png` and `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decisions/contact_sheet.png` were inspected from the single canonical reference root.
+The canonical reference contact sheets `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/ideas/contact_sheet.png` and `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decisions/contact_sheet.png` were inspected from the single canonical reference root.
 
 The closest approved Event 31 source is `docs/assets/031_random_terror/processed_png/idea_random_terror_network_directorate.png` and its runtime counterpart `gfx/interface/ideas/031_random_terror/idea_random_terror_network_directorate.dds`.
 

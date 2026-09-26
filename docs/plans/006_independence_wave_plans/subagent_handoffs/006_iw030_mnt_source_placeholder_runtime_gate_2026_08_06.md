@@ -46,7 +46,7 @@ Installed-vanilla ownership search covered `Plamenac`, `Jovan Plamenac`, `Jovan_
 
 ## Reference and processing review
 
-The canonical full leader family at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/` and its `contact_sheet.png` were inspected; all eight references are native `156x210`. The canonical commander family at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/commanders/` and its contact sheet were also inspected; all nine references are native `156x210`. The Plamenac master, exact crop, and source placeholder were compared at native size and enlarged inspection scale against those role families. Identity and framing are readable, with no generated or repainted detail, but provenance remains independently unapproved.
+The canonical full leader family at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/` and its `contact_sheet.png` were inspected; all eight references are native `156x210`. The canonical commander family at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/commanders/` and its contact sheet were also inspected; all nine references are native `156x210`. The Plamenac master, exact crop, and source placeholder were compared at native size and enlarged inspection scale against those role families. Identity and framing are readable, with no generated or repainted detail, but provenance remains independently unapproved.
 
 The existing package review sheet is `docs/assets/006_independence_wave/iw030_mnt_leader_source_research_current_2026_08_03/review/mnt_leader_source_placeholder_contact_sheet.png`. No source image was altered, filtered, or replaced in this tranche.
 

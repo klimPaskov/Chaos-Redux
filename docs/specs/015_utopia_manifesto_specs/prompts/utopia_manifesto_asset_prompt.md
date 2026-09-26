@@ -15,14 +15,14 @@ All route and asset labels below are working labels, not final localisation.
 
 Before producing each asset type, inspect the matching Chaos Redux reference folder.
 
-- report images: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/report`
-- news images: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/news`
-- super-event images: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/super_event`
-- focus icons: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/national_focus`
-- idea icons: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/ideas`
-- decision icons: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decisions`
-- achievement icons: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements`
-- flags: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/flags/normal`
+- report images: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report`
+- news images: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/news`
+- super-event images: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/super_event`
+- focus icons: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/national_focus`
+- idea icons: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/ideas`
+- decision icons: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decisions`
+- achievement icons: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements`
+- flags: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/flags/normal`
 
 ## Working output package
 

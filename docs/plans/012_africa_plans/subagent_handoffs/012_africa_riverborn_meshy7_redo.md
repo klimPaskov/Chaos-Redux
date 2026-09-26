@@ -66,7 +66,7 @@ Status: `needs_user_review`. Existing bespoke bytes/evidence were preserved; no 
 - Tokens: `unit_riverborn_icon`, `onmap_unit_riverborn_icon`; large `152x42` two `76x42` frames; map `60x12` two `30x12` frames.
 - Definition: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/interface/subuniticons.gfx`, `GFX_unit_infantry_icon_medium` and `_white`, both two frames.
 - Installed DDS hashes: large `B33A8E3B69CC789EB0E31BA99F4E5BA4E5B0A8B51EC1A7A7F709C3516F720C23`; map `58AB78662C2A64A519B8D5D144582E7B2785915BD0A0A822696D87A9DE6F766C`.
-- Skill-local families: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/counters_large/` and `.../units/land/map_counters/`, including named references/contact sheets.
+- Skill-local families: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/counters_large/` and `.../units/land/map_counters/`, including named references/contact sheets.
 - Palette: dominant RGB `73,106,73`, range `20,34,21` through `154,175,147`; map family uses inspected neutral grayscale.
 - Outputs: `counters/dds/unit_riverborn_icon.dds` SHA-256 `CD28C94D31E7A8936F546AA1B06828CBB58A8AF2170E1A0E8FF1CDE4334E2A83`; `counters/dds/onmap_unit_riverborn_icon.dds` SHA-256 `E104BFE350AA75828CD8981E837BAAB563DDAB21ED5E8CC97AF730DA01783BAF`.
 - Exact header/frame/alpha/bounds/round-trip and artist handoff: `counters/manifest.json`, `counters/contact_sheet.png`, `counters/gfx_handoff.md`. Parent must visually accept before promotion.

@@ -19,8 +19,8 @@ Both packages remain closed for runtime wiring. The archival identities and righ
 
 The complete `chaos-redux-event-assets` skill and the canonical reference library were read before review. The canonical root README states that reference PNGs are style-only and never runtime inputs. The role families and exact files inspected were:
 
-- Leader contact sheet: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/contact_sheet.png` — `1200x498`, RGBA, SHA-256 `8966ae351d1fe8fc13d47ca1c59ec3d8a34da9101ce5fd65f7acff3421bd0401`.
-- Commander contact sheet (required because Harpe is also a corps commander): `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/commanders/contact_sheet.png` — `1200x498`, RGBA, SHA-256 `d62a4b80265533c93669a5eef267dff8db2021a01c1f31dcb73102bf1cc20ca9`.
+- Leader contact sheet: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/contact_sheet.png` — `1200x498`, RGBA, SHA-256 `8966ae351d1fe8fc13d47ca1c59ec3d8a34da9101ce5fd65f7acff3421bd0401`.
+- Commander contact sheet (required because Harpe is also a corps commander): `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/commanders/contact_sheet.png` — `1200x498`, RGBA, SHA-256 `d62a4b80265533c93669a5eef267dff8db2021a01c1f31dcb73102bf1cc20ca9`.
 - `portraits/leaders/fin_carl_mannerheim.png` — `156x210`, RGBA, SHA-256 `7e78e33e0b691b96b584393f2d363c07a302320f7e6300bda0fff261aa98d49e`.
 - `portraits/leaders/den_thorvald_stauning.png` — `156x210`, RGBA, SHA-256 `08732002182bdcb2bff3d78b142cc2b3d75adbdb29d4115f9e89ca5bdc6a21b6`.
 - `portraits/leaders/ice_sveinn_bjornsson.png` — `156x210`, RGBA, SHA-256 `860726d268873f21ae0dbd6fb170482f50fad6393882b97b2b7b7a1814189d14`.

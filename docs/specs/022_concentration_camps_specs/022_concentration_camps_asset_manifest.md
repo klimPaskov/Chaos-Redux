@@ -18,14 +18,14 @@ Every asset agent must use `fork_context=false` and receive a context-complete p
 
 Inspect these current project references before production:
 
-- report event images: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/report/`
-- news event images: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/news/`
-- decision category icons: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decision_categories/`
-- decision category pictures: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decision_categories/pictures/`
-- decision icons: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decisions/`
-- mission icons: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/missions/`
-- idea icons: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/ideas/`
-- achievement icons: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements/`
+- report event images: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report/`
+- news event images: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/news/`
+- decision category icons: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decision_categories/`
+- decision category pictures: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decision_categories/pictures/`
+- decision icons: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decisions/`
+- mission icons: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/missions/`
+- idea icons: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/ideas/`
+- achievement icons: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements/`
 
 The decision-category-picture folder must have a labelled `contact_sheet.png` with filenames and native dimensions. If missing, the asset worker must create it and update the reference README and catalog before locking the Event 22 picture dimensions.
 

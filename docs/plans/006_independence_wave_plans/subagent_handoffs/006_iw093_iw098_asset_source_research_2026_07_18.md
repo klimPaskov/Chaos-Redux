@@ -70,7 +70,7 @@ The parent implementation/art agent owns final generation and wiring. When appro
 
 ## Vanilla and current-mod compatibility findings
 
-* Canonical vanilla references under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/` include generic Africa leader/commander portraits at `156×210`, but no identity portrait for Prempeh II, Hasan, or Siddiq. A generic reference is not an acceptable real-person substitute.
+* Canonical vanilla references under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/` include generic Africa leader/commander portraits at `156×210`, but no identity portrait for Prempeh II, Hasan, or Siddiq. A generic reference is not an acceptable real-person substitute.
 * Vanilla Hearts of Iron IV contains `SOK_communism`, `SOK_democratic`, `SOK_fascism`, and `SOK_neutrality` flag families in normal/medium/small sizes, but no unsuffixed `SOK.tga` baseline. These are ideological assets and have no evidence of representing a 1936 Sokoto civic flag.
 * No vanilla `DOX`, `GHA`, or Asante-specific flag family was found, and the current mod has no `DOX.tga`/`SOK.tga` route-specific base family or relevant identity portrait. The parent owns any new filenames and `.gfx` wiring; this source pass intentionally did not edit them.
 

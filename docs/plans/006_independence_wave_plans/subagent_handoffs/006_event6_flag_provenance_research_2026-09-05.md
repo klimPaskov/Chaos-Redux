@@ -36,7 +36,7 @@ The relevant sourced-asset guidance was read from .agents/skills/chaos-redux-eve
 
 The required offline flag conventions were checked in paradox_wiki/Country creation - Hearts of Iron 4 Wiki.md, paradox_wiki/Cosmetic tag modding - Hearts of Iron 4 Wiki.md, paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md, and paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md. The core offline wiki pages required by AGENTS.md were also consulted.
 
-The canonical presentation shelf was checked at .agents/skills/chaos-redux-event-assets/assets/vanilla_reference/README.md, .agents/skills/chaos-redux-event-assets/assets/vanilla_reference/CATALOG.md, and .agents/skills/chaos-redux-event-assets/assets/vanilla_reference/flags/. It is a presentation reference only and does not prove identity or rights.
+The canonical presentation shelf was checked at .agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md, .agents/skills/chaos-redux-event-assets/assets/gfx_references/CATALOG.md, and .agents/skills/chaos-redux-event-assets/assets/gfx_references/flags/. It is a presentation reference only and does not prove identity or rights.
 
 The installed vanilla documentation directory was inspected, including documentation/triggers_documentation.md for cosmetic-tag trigger conventions. No vanilla documentation file supplies a mod redistribution licence for installed flag binaries.
 

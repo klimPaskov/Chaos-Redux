@@ -67,6 +67,6 @@ No source evidence was lost for the six previously attested package families ARX
 - Runtime DDS: `gfx/leaders/006_independence_wave/`.
 - Source-placeholder policy: `docs/assets/portraits/006_independence_wave/SOURCE_PLACEHOLDER_POLICY.md`.
 - Existing conversion handoff: `docs/plans/006_independence_wave_plans/subagent_handoffs/006_historical_portrait_source_placeholder_2026_08_03.md`.
-- Canonical vanilla references: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/`.
+- Canonical vanilla references: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/`.
 
 Conclusion: the 15 current source-to-crop-to-PNG-to-DDS chains are intact. Twelve rows are clear for source-placeholder use on retained provenance, DOX is clear only as an unchanged source placeholder, and SOK Dikko remains `NEEDS_REVIEW` for rights/era admission. The principal remaining work is manifest/alias normalization and removing the stale styled-prompt ambiguity from the durable archive; no gameplay or GFX change is required for this audit.

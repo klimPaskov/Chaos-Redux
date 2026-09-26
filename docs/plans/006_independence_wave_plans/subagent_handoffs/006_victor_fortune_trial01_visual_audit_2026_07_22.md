@@ -59,14 +59,14 @@ Refinish package:
 
 Canonical commander references:
 
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/README.md`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/CATALOG.md` (commander rows)
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/commanders/contact_sheet.png`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/commanders/generic_africa_land_1.png`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/commanders/generic_africa_land_2.png`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/commanders/generic_africa_land_3.png`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/commanders/generic_africa_navy_1.png`
-- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/commanders/generic_africa_navy_2.png`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/CATALOG.md` (commander rows)
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/commanders/contact_sheet.png`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/commanders/generic_africa_land_1.png`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/commanders/generic_africa_land_2.png`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/commanders/generic_africa_land_3.png`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/commanders/generic_africa_navy_1.png`
+- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/commanders/generic_africa_navy_2.png`
 
 ## Evidence checks
 

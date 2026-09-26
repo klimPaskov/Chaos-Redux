@@ -86,7 +86,7 @@ The CXT test-country extension must unlock all nine custom sub-units, create one
 
 Every family requires its own large division-template counter, small on-map counter, and text icon.
 
-The counters use the exact installed vanilla infantry counter definitions and decoded DDS files as the consumer reference, plus the matching skill-local land-counter family under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/`.
+The counters use the exact installed vanilla infantry counter definitions and decoded DDS files as the consumer reference, plus the matching skill-local land-counter family under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/`.
 
 Final paths use `gfx/interface/counters/divisions_large/unit_<subunit>_icon.dds`, `gfx/interface/counters/divisions_small/onmap_unit_<subunit>_icon.dds`, and `gfx/texticons/unit_<subunit>_icon_small.dds`, with definitions in `interface/chaosx_subuniticons.gfx` and `interface/chaosx_texticons.gfx`.
 

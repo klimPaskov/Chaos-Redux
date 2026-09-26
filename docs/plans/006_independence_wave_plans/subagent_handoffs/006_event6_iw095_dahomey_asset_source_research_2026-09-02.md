@@ -45,7 +45,7 @@ DAH_fascism.tga    f3c18ee3f5e04de13ad96086fd39c474361b0499e31c4b4aee810308504c0
 
 The mod has zero `DAH*.tga` files in each of `gfx/flags/`, `gfx/flags/medium/`, and `gfx/flags/small/`, so the current carrier falls through to vanilla tag-named flags. There are no DAH/IW-095 matches in `common/country_tags/006_independence_wave_countries.txt`, `common/countries/006_independence_wave_shared_african.txt`, `interface/006_independence_wave.gfx`, or `interface/006_independence_wave_small_assets.gfx`. Standard HOI4 flag lookup needs no `.gfx` sprite definition; a future route must use a stable cosmetic-tag/basename ladder instead.
 
-The canonical review root `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/` and `flags/contact_sheet.png` were inspected. The sheet contains 21 review-only flag references and no DAH reference. The current Chaos Redux Event 006 route precedent `ASY_independence_wave_civic_federationX.tga` was also checked at all three sizes (`82x52`, `41x26`, `10x7`, type-2 32-bit, descriptor `8`); it demonstrates a separate route-specific ladder, not a base-tag replacement.
+The canonical review root `.agents/skills/chaos-redux-event-assets/assets/gfx_references/` and `flags/contact_sheet.png` were inspected. The sheet contains 21 review-only flag references and no DAH reference. The current Chaos Redux Event 006 route precedent `ASY_independence_wave_civic_federationX.tga` was also checked at all three sizes (`82x52`, `41x26`, `10x7`, type-2 32-bit, descriptor `8`); it demonstrates a separate route-specific ladder, not a base-tag replacement.
 
 There are no `IW-095`, `DAH`, Dahomey, Abomey, or Danhomè outputs under `docs/assets/006_independence_wave/`; no source/processed/runtime asset package or handoff basename exists.
 

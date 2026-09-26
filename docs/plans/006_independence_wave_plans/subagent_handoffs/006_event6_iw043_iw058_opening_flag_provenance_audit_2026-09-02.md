@@ -125,7 +125,7 @@ The live runtime SHA-256 values above were re-read on 2026-09-02 and match the p
 
 The required offline wiki flag conventions were checked in `paradox_wiki/Cosmetic tag modding - Hearts of Iron 4 Wiki.md` and `paradox_wiki/Country creation - Hearts of Iron 4 Wiki.md`: filename-based flag ladders use uncompressed 32-bit TGA, bottom-left origin, and normal/medium/small dimensions of 82x52, 41x26, and 10x7.
 
-The canonical review shelf is `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/flags/contact_sheet.png` (SHA-256 `cbf35c6f96347537a5d8e781b198e5949a6515f959f1bc12b55d35847cb36b3e`) from the extracted Vanilla HOI4 flag family; it shows the expected clean, flat, minimal geometry.
+The canonical review shelf is `.agents/skills/chaos-redux-event-assets/assets/gfx_references/flags/contact_sheet.png` (SHA-256 `cbf35c6f96347537a5d8e781b198e5949a6515f959f1bc12b55d35847cb36b3e`) from the extracted Vanilla HOI4 flag family; it shows the expected clean, flat, minimal geometry.
 
 Installed Vanilla HOI4 references were checked under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/flags/` and its `medium/` and `small/` folders.
 

@@ -30,9 +30,9 @@ No files outside this handoff were edited.
 
 The offline portrait and graphics references consulted were paradox_wiki/Portrait modding - Hearts of Iron 4 Wiki.md, paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md, and paradox_wiki/Interface modding - Hearts of Iron 4 Wiki.md.
 
-The canonical reference-library rules and catalog were consulted at .agents/skills/chaos-redux-event-assets/assets/vanilla_reference/README.md and .agents/skills/chaos-redux-event-assets/assets/vanilla_reference/CATALOG.md.
+The canonical reference-library rules and catalog were consulted at .agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md and .agents/skills/chaos-redux-event-assets/assets/gfx_references/CATALOG.md.
 
-The role-specific canonical commander folder and contact sheet were consulted at .agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/commanders/ and .agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/commanders/contact_sheet.png.
+The role-specific canonical commander folder and contact sheet were consulted at .agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/commanders/ and .agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/commanders/contact_sheet.png.
 
 The selected commander references were inspected at native 156x210 and at deterministic nearest-neighbour 4x 624x840 enlargement: eng_bernard_montgomery.png and ger_erwin_von_witzleben.png.
 

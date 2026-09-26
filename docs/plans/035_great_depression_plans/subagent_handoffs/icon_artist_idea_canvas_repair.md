@@ -10,7 +10,7 @@ The runtime basenames, sprite names, texture paths, and existing GFX wiring rema
 
 ## Consumer and reference evidence
 
-The active consumer is the installed vanilla `interface/countrydiplomacyview.gui` block `national_spirit_ideas_grid`, with `slotsize = { width = 60 height = 68 }`. The inspected canonical reference family was the single approved folder `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/ideas`, including its contact sheet and individual idea references. The 60x68 target follows that consumer and the inspected idea family.
+The active consumer is the installed vanilla `interface/countrydiplomacyview.gui` block `national_spirit_ideas_grid`, with `slotsize = { width = 60 height = 68 }`. The inspected canonical reference family was the single approved folder `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/ideas`, including its contact sheet and individual idea references. The 60x68 target follows that consumer and the inspected idea family.
 
 ## Processing and alpha policy
 

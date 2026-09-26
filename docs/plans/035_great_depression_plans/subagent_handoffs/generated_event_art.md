@@ -8,7 +8,7 @@ Production scope: non-portrait generated report, news, decision-category picture
 
 Source mode: official built-in ImageGen for all eight assets. These are fictional country-neutral period scenes. No external source was used and no historical source attribution is claimed.
 
-Canonical references inspected: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/report/contact_sheet.png`, `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/news/contact_sheet.png`, `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/super_event/contact_sheet.png`, and `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decision_categories/pictures/contact_sheet.png`.
+Canonical references inspected: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report/contact_sheet.png`, `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/news/contact_sheet.png`, `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/super_event/contact_sheet.png`, and `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decision_categories/pictures/contact_sheet.png`.
 
 Processing evidence: report scenes used `.agents/skills/chaos-redux-event-assets/tools/process_report_event_image.py`; news and category scenes used deterministic smooth crop/resize and monochrome or contrast processing; every DDS used `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`. All final DDS files passed strict legacy BGRA header, one-level, exact-length, dimension, and alpha validation and were decoded back into `docs/assets/035_great_depression/processed_png/decoded_dds/`.
 

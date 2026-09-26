@@ -10,7 +10,7 @@ Scope: correct all sixteen Event 015 advisor portraits to the native HOI4 adviso
 
 All sixteen Event 015 advisors now use independently cropped `65x67` advisor dossier cards produced by `the retired portrait-processing utility advisor`. Every output has the dark bevelled vanilla-style card, paper overlay, and transparent outer corners required by the repository advisor pipeline. These are not square leader portraits and were not made by shrinking the existing leader-format crop.
 
-Each source master is a distinct fictional ImageGen-created person. All sixteen sources supported a readable independent head-and-shoulders crop, so no source was blocked and no regeneration or fallback was used. Each processed PNG was reviewed at native size, at nearest-neighbour enlargement, and beside the repository references in `assets/vanilla_reference/portraits/advisors`.
+Each source master is a distinct fictional ImageGen-created person. All sixteen sources supported a readable independent head-and-shoulders crop, so no source was blocked and no regeneration or fallback was used. Each processed PNG was reviewed at native size, at nearest-neighbour enlargement, and beside the repository references in `assets/gfx_references/portraits/advisors`.
 
 The approved PNGs were converted with `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py --width 65 --height 67`. Package and runtime DDS files are byte-identical. Existing character IDs, sprite handles, texture paths, `.gfx` definitions, and character references were preserved; this correction made no gameplay, localisation, character, or `.gfx` edits.
 
@@ -66,7 +66,7 @@ Every path in this section is repo-relative and written in full.
 - Every crop is an explicit head-and-shoulders crop selected from the high-resolution source master; none reuses a leader-format crop.
 - All sixteen native-size icons retain a readable face and silhouette at `65x67`.
 - The nearest-neighbour enlargement review found no clipped eyes, displaced faces, unreadable silhouettes, frame breaks, or paper-overlay failures.
-- Per-asset comparison sheets show the same visual grammar as `assets/vanilla_reference/portraits/advisors`: dark bevelled dossier card, aged paper inset, and transparent outer corners.
+- Per-asset comparison sheets show the same visual grammar as `assets/gfx_references/portraits/advisors`: dark bevelled dossier card, aged paper inset, and transparent outer corners.
 - All sixteen candidates were approved. No source was rejected, regenerated, substituted, or treated as a fallback.
 - The mandated portrait processor's soft frame shadow produces corner alpha `[0, 0, 4, 0]` in corner order top-left, top-right, bottom-left, bottom-right. The lower-left value is about `1.6%` opacity at the extreme pixel and remains visually transparent; it is consistent across all sixteen processor outputs and was retained rather than hand-altered after processing.
 

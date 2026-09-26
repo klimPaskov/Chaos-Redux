@@ -15,7 +15,7 @@ Both textures are native `94x86` RGBA focus icons with transparent corners, matc
 
 Source mode: generated fictional symbolic art using the official built-in ImageGen workflow, followed by the approved chroma-key-to-alpha helper and deterministic native-size processing. The generated source masters were original per focus and were not copied, resized, recoloured, or relabelled from an existing icon.
 
-Canonical reference contact sheet inspected before generation: `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/national_focus/contact_sheet.png`.
+Canonical reference contact sheet inspected before generation: `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/national_focus/contact_sheet.png`.
 
 Installed vanilla focus DDS inspected before generation: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/interface/goals/focus_AFG_helmand_river_authority.dds` (`100x88`, RGBA, transparent corners, thick dark outline and compact emblem footprint).
 

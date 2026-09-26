@@ -86,8 +86,8 @@ The small installed family is neutral gray/white; no green-dominant pixels were 
 
 Canonical review-only families inspected before generation:
 
-- `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/counters_large/contact_sheet.png`.
-- `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/map_counters/contact_sheet.png`.
+- `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/counters_large/contact_sheet.png`.
+- `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/map_counters/contact_sheet.png`.
 - `.../units/land/counters_large/unit_infantry_icon.png`, 152x42, SHA-256 `caf241717af26ca1688742a86be1a8a89c5a9b8caba41410b4cf799827ad1972`.
 - `.../units/land/map_counters/onmap_infantry.png`, 60x12, SHA-256 `5a6274e5847cbe9d030b547b9c2bb723215269b234bef227a43f273b22dc42b9`.
 

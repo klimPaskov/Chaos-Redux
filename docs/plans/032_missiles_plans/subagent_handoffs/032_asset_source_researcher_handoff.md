@@ -18,7 +18,7 @@ The exact local registries inspected were `interface/chaosx_pictures.gfx`, `inte
 
 The installed vanilla consumers inspected were `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/interface/eventpictures.gfx`, `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/interface/decisions.gfx`, nearby vanilla decision-category definitions, and the installed DDS examples under `gfx/event_pictures` and `gfx/interface/decisions`.
 
-The canonical review-only reference root inspected was `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference`, including its `README.md`, `CATALOG.md`, report contact sheet, news contact sheet, decision-category icon contact sheet, and decision-category picture contact sheet.
+The canonical review-only reference root inspected was `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references`, including its `README.md`, `CATALOG.md`, report contact sheet, news contact sheet, decision-category icon contact sheet, and decision-category picture contact sheet.
 
 ## Executive findings
 

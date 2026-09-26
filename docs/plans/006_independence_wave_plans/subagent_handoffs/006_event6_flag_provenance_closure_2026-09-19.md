@@ -14,7 +14,7 @@ The accepted asset row is `ASSET-044` in `docs/specs/006_independence_wave_specs
 
 The accepted Part 7 rules require historically attested flags and symbols to be sourced and documented, community or traditional symbols to receive source review, distinct route designs rather than ideology recolours, and untouched Vanilla flags to remain untouched when the representation is registered-tag reuse.
 
-The source authority is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_flag_provenance_research_2026-09-12.md`, with the current asset registry, `docs/specs/006_independence_wave_specs/research/006_tag_collision_and_reuse_audit.md`, current package bindings, exact runtime consumers, and the canonical review root `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/` used as cross-checks.
+The source authority is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_flag_provenance_research_2026-09-12.md`, with the current asset registry, `docs/specs/006_independence_wave_specs/research/006_tag_collision_and_reuse_audit.md`, current package bindings, exact runtime consumers, and the canonical review root `.agents/skills/chaos-redux-event-assets/assets/gfx_references/` used as cross-checks.
 
 No gameplay, localisation, GFX, GUI, country, focus, decision, event, spreadsheet, central admission, runtime flag, or source-package file was edited.
 
@@ -33,7 +33,7 @@ No gameplay, localisation, GFX, GUI, country, focus, decision, event, spreadshee
 
 ## Canonical reference and technical boundary
 
-The canonical Vanilla flat-flag references were inspected at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/flags/normal/`, `medium/`, and `small/`, together with `flags/contact_sheet.png` and `CATALOG.md`. They establish presentation precedent only: clean flat fields, readable symbols, and `82x52`, `41x26`, and `10x7` ladders. They do not establish rights for Vanilla binaries or historical ownership for an Event 006 identity.
+The canonical Vanilla flat-flag references were inspected at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/flags/normal/`, `medium/`, and `small/`, together with `flags/contact_sheet.png` and `CATALOG.md`. They establish presentation precedent only: clean flat fields, readable symbols, and `82x52`, `41x26`, and `10x7` ladders. They do not establish rights for Vanilla binaries or historical ownership for an Event 006 identity.
 
 The current HOI4 runtime contract is TGA, not DDS: `gfx/flags/<basename>.tga`, `gfx/flags/medium/<basename>.tga`, and `gfx/flags/small/<basename>.tga`, with uncompressed 32-bit BGRA, eight-bit alpha, and bottom-left origin. No DDS, `.gfx`, or sprite registration was created or inferred from this pass.
 

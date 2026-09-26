@@ -4,7 +4,7 @@
 
 This audit traces every Event 31 visual from gameplay or interface consumer to registered sprite and runtime file, then reverses the inventory from each runtime file back to an intended consumer, source record, processed output, and DDS or TGA round trip.
 
-The comparison baseline is the installed Hearts of Iron IV 1.19.2 asset family and the canonical Chaos Redux reference library under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference`.
+The comparison baseline is the installed Hearts of Iron IV 1.19.2 asset family and the canonical Chaos Redux reference library under `.agents/skills/chaos-redux-event-assets/assets/gfx_references`.
 
 Every assigned final is reviewed at native scale and enlarged scale for crop, overflow, bleed, clipping, alpha, centering, aspect ratio, subject hierarchy, normal-zoom readability, and family consistency.
 

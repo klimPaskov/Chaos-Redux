@@ -34,7 +34,7 @@ The asset ledger at `docs/plans/006_independence_wave_plans/asset_research/006_p
 
 The accepted sensitive-identity rules are `docs/specs/006_independence_wave_specs/research/006_sensitive_identity_research_rules.md`.
 
-The canonical review library is `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/`.
+The canonical review library is `.agents/skills/chaos-redux-event-assets/assets/gfx_references/`.
 
 Its flags shelf contains a 21-reference review contact sheet and no DAH-specific reference; it is review-only and does not grant a runtime redistribution licence.
 
@@ -106,7 +106,7 @@ Because no candidate cleared the source gate, no source file, processed PNG prev
 
 ## Safe paths and owner handoff
 
-The canonical review-only flag sheet is `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/flags/contact_sheet.png`.
+The canonical review-only flag sheet is `.agents/skills/chaos-redux-event-assets/assets/gfx_references/flags/contact_sheet.png`.
 
 The installed vanilla DAH files under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/flags/` and its `medium/` and `small/` subfolders are safe audit inputs only, not safe runtime copies.
 

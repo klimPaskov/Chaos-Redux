@@ -38,7 +38,7 @@ Events `.611`–`.613` reuse the existing response sprite, and `.614` uses the d
 
 The current working-tree `common/decisions/categories/012_africa_gods_categories.txt` contains `picture = GFX_decision_cat_picture_012_africa_gods` for both active categories. The category picture source and consumer wiring are therefore evidenced, while the choice to share it and live visual acceptance remain parent/user decisions.
 
-The canonical reference families inspected were `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/report/contact_sheet.png` and `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decision_categories/pictures/contact_sheet.png`. Report references establish the 210x176 sepia card treatment and category references establish the 114x101 institutional-picture family.
+The canonical reference families inspected were `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report/contact_sheet.png` and `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decision_categories/pictures/contact_sheet.png`. Report references establish the 210x176 sepia card treatment and category references establish the 114x101 institutional-picture family.
 
 ## Review and omissions
 

@@ -11,7 +11,7 @@ This handoff is an asset audit only. It does not edit gameplay, character defini
 - The v76 manifest, audit, GFX handoff, per-subject processing metadata, source-locked prompts, raw repaints, processed 156x210 candidates, and both v76 review sheets.
 - The unchanged v15 source masters, exact-crop PNGs, and decoded-pixel equality JSON files.
 - The v75 source ledger and eligibility record for identity, birth, 1936 role, source date, rights, and placeholder-name disposition.
-- Canonical vanilla leader references `den_thorvald_stauning.png` and `fin_carl_mannerheim.png` and canonical commander reference `ita_pietro_badoglio.png` under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/`.
+- Canonical vanilla leader references `den_thorvald_stauning.png` and `fin_carl_mannerheim.png` and canonical commander reference `ita_pietro_badoglio.png` under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/`.
 - Each subject was compared source master -> exact crop -> raw repaint -> 156x210 candidate at native scale and in the enlarged v76 comparison sheet. The candidates were also compared against the applicable vanilla leader or commander family.
 
 ## Independent disposition summary

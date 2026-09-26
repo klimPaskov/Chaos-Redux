@@ -43,9 +43,9 @@ The source, processed, and runtime SHA-256 values still match the existing pictu
 
 ## Reference and consumer evidence
 
-The inspected canonical individual images were the five files under `assets/vanilla_reference/event_art/report/`, the five files under `assets/vanilla_reference/event_art/news/`, the five files under `assets/vanilla_reference/event_art/super_event/`, and all thirteen files under `assets/vanilla_reference/icons/decision_categories/pictures/`.
+The inspected canonical individual images were the five files under `assets/gfx_references/event_art/report/`, the five files under `assets/gfx_references/event_art/news/`, the five files under `assets/gfx_references/event_art/super_event/`, and all thirteen files under `assets/gfx_references/icons/decision_categories/pictures/`.
 
-The matching canonical contact sheets, README, and CATALOG were also inspected from that same `assets/vanilla_reference` root.
+The matching canonical contact sheets, README, and CATALOG were also inspected from that same `assets/gfx_references` root.
 
 The installed vanilla consumer definitions inspected were `interface/eventwindow.gui`, `interface/eventpictures.gfx`, and `interface/decisions.gfx` under the installed Hearts of Iron IV directory.
 

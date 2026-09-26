@@ -4265,7 +4265,7 @@ Working asset ID:
 
 Reference family:
 
-`assets/vanilla_reference/icons/decision_categories/pictures`
+`assets/gfx_references/icons/decision_categories/pictures`
 
 Target direction:
 

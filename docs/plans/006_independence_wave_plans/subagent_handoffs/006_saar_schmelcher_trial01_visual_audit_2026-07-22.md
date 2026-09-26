@@ -10,7 +10,7 @@ texture overwrite authorized**
 
 Inspected only the requested trial package, its source-authority package, and
 the canonical leader-portrait family under
-`.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/`:
+`.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/`:
 
 - Trial manifest:
   `docs/assets/006_independence_wave/sourced_portrait_refinishes_2026_07_22/saar_schmelcher_trial_01/manifest.md`

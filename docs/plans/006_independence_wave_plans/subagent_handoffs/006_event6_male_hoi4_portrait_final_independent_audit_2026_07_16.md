@@ -15,7 +15,7 @@ The two non-blocking caveats are recorded below: ACX/AEX are deliberately unregi
 - Package: `docs/assets/006_independence_wave/portrait_regeneration_male_hoi4_2026_07_16/`
 - Runtime: `gfx/leaders/006_independence_wave/`
 - Runtime registrations and consumers under `interface/`, `common/characters/`, and `common/scripted_effects/`
-- Canonical skill references under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/`
+- Canonical skill references under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/`
 - Vanilla restore registrations and characters under the installed Hearts of Iron IV tree
 
 ## Independent inventory result

@@ -56,7 +56,7 @@ The existing `GFX_clone_infantry_access_tech_medium` remains at `gfx/interface/t
 
 ## Reference and validation evidence
 
-The canonical technology contact sheet and individual technology reference family were inspected under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/technologies`.
+The canonical technology contact sheet and individual technology reference family were inspected under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/technologies`.
 
 Installed vanilla `interface/Technologies.gfx` and representative `gfx/interface/technologies/infantry3.dds` were inspected before generation.
 

@@ -12,7 +12,7 @@ The accepted presentation requirements are in `docs/specs/006_independence_wave_
 
 The current path authority is `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md:5,275,281,285`, which places the consolidated non-portrait sprite definitions in `interface/006_independence_wave_small_assets.gfx` and the Statehood Ledger definitions in `interface/006_independence_wave.gfx`.
 
-The canonical semantic references were checked under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/`, including the report, news, super-event, flag, icon, and animation contact sheets and their catalog entries.
+The canonical semantic references were checked under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/`, including the report, news, super-event, flag, icon, and animation contact sheets and their catalog entries.
 
 The audit compared the current runtime files with the named package manifests and handoffs, parsed the three current Event 006 GFX registries for duplicate sprite names and missing texture paths, checked image dimensions and DDS/TGA headers, inspected the generated event-scene and flag contact sheets, and searched for event consumers.
 

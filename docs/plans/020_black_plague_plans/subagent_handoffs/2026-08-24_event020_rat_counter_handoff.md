@@ -30,7 +30,7 @@ Per-frame source crops are retained under `counters/source/frames/`. The process
 
 ## Installed-vanilla inspection
 
-The canonical contact sheets were inspected first at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/counters_large/contact_sheet.png` and `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/map_counters/contact_sheet.png`. The individual reference PNGs were then inspected at `unit_infantry_icon.png` and `onmap_infantry.png` in those same canonical folders.
+The canonical contact sheets were inspected first at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/counters_large/contact_sheet.png` and `.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/map_counters/contact_sheet.png`. The individual reference PNGs were then inspected at `unit_infantry_icon.png` and `onmap_infantry.png` in those same canonical folders.
 
 The exact installed definitions are `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/interface/subuniticons.gfx#GFX_unit_infantry_icon_medium` and `#GFX_unit_infantry_icon_medium_white`. Their DDS sources are `gfx/interface/counters/divisions_large/unit_infantry_icon.dds` and `gfx/interface/counters/divisions_small/onmap_unit_infantry_icon.dds`, both with `noOfFrames = 2`, and their SHA-256 values are recorded in `counters/validation/installed_definition_audit.json`.
 

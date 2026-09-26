@@ -33,16 +33,16 @@ Before production, inspect the matching canonical reference folder and its `cont
 
 At minimum inspect:
 
-- `assets/vanilla_reference/event_art/report/`
-- `assets/vanilla_reference/event_art/news/`
-- `assets/vanilla_reference/event_art/super_event/`
-- `assets/vanilla_reference/icons/decisions/`
-- `assets/vanilla_reference/icons/decision_categories/`
-- `assets/vanilla_reference/icons/decision_categories/pictures/`
-- `assets/vanilla_reference/icons/ideas/`
-- `assets/vanilla_reference/icons/national_focus/`
-- `assets/vanilla_reference/icons/achievements/`
-- `assets/vanilla_reference/portraits/leaders/` for any leader-sized institutional portrait consumer
+- `assets/gfx_references/event_art/report/`
+- `assets/gfx_references/event_art/news/`
+- `assets/gfx_references/event_art/super_event/`
+- `assets/gfx_references/icons/decisions/`
+- `assets/gfx_references/icons/decision_categories/`
+- `assets/gfx_references/icons/decision_categories/pictures/`
+- `assets/gfx_references/icons/ideas/`
+- `assets/gfx_references/icons/national_focus/`
+- `assets/gfx_references/icons/achievements/`
+- `assets/gfx_references/portraits/leaders/` for any leader-sized institutional portrait consumer
 
 If a required contact sheet is missing, build and document it before production according to the skill. Reference assets remain review material and cannot be traced, recolored, or shipped.
 

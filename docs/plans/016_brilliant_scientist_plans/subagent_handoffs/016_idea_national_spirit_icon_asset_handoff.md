@@ -10,7 +10,7 @@ This subagent did not edit gameplay, localisation, focus, idea, decision, event,
 
 ## Canonical references and source mode
 
-Before generation, I inspected the one canonical reference family at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/ideas/contact_sheet.png` and the matching `icons/ideas` entries in `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/CATALOG.md`.
+Before generation, I inspected the one canonical reference family at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/ideas/contact_sheet.png` and the matching `icons/ideas` entries in `.agents/skills/chaos-redux-event-assets/assets/gfx_references/CATALOG.md`.
 
 The canonical sheet shows compact HOI4 spirit-style compositions with strong centered silhouettes, aged texture, dark outlines, and transparent unused canvas. The reference PNGs were review material only and were not used as final art.
 

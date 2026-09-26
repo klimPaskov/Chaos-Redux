@@ -35,7 +35,7 @@ Each registered `_shine` sprite reuses its corresponding base DDS through the ex
 
 ## Generation evidence
 
-All eight icons were generated independently with the official built-in ImageGen tool after inspecting the canonical contact sheet at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/national_focus/contact_sheet.png`.
+All eight icons were generated independently with the official built-in ImageGen tool after inspecting the canonical contact sheet at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/national_focus/contact_sheet.png`.
 
 ImageGen output paths and full prompts are recorded in `docs/assets/012_africa_priority_focus_icons/prompts/prompts.md`.
 

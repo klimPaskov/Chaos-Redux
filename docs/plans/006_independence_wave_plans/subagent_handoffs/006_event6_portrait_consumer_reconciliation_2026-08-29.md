@@ -40,7 +40,7 @@ The selected supplied files are under `C:/Users/klimp/Documents/ComfyUI Workflow
 
 The prior source handoffs retain the deterministic crop, processed-PNG, and historical DDS evidence. The crop records are: AXX `[18,5,609,800]` to `591x795`; BAX `[70,20,350,397]` to `280x377`; BBX `[150,55,450,459]` to `300x404`; BOS `[101,10,801,955]` to `700x945`; KOS `[0,0,249,389]` unchanged; and MAC `[1,0,507,681]` to `506x681`. The historical processed candidates are canonical `156x210` outputs recorded in the source manifests, and the current supplied/runtime bytes—not a newly generated fallback—are the selected runtime evidence.
 
-Rights and identity review is recorded in the dated source/package handoffs. The records preserve the historical identities and source-visible facial geometry, age, expression, clothing, and tonal structure. The matching vanilla leader reference family was inspected at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/`, including the native `156x210` contact sheet. No conflicting live vanilla or Chaos Redux person owner was found for these six identities.
+Rights and identity review is recorded in the dated source/package handoffs. The records preserve the historical identities and source-visible facial geometry, age, expression, clothing, and tonal structure. The matching vanilla leader reference family was inspected at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/portraits/leaders/`, including the native `156x210` contact sheet. No conflicting live vanilla or Chaos Redux person owner was found for these six identities.
 
 ## Existing wiring and checks
 

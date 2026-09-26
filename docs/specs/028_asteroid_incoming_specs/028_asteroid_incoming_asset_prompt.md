@@ -13,7 +13,7 @@ Read `AGENTS.md`, `chaos-redux-event-assets`, the matching canonical reference f
 
 ## Reference gate
 
-Before production, inspect `assets/vanilla_reference/README.md`, `CATALOG.md`, and the exact contact sheet for each asset family. Follow the owning installed-vanilla sprite or GUI consumer. Reference images are review material and must not be shipped, traced, recolored, or reused as final art.
+Before production, inspect `assets/gfx_references/README.md`, `CATALOG.md`, and the exact contact sheet for each asset family. Follow the owning installed-vanilla sprite or GUI consumer. Reference images are review material and must not be shipped, traced, recolored, or reused as final art.
 
 Generated art uses the official ImageGen route. If that route is unavailable, mark the affected rows blocked. Do not substitute primitive shapes, unrelated icons, local drawings, or resized assets from another family.
 

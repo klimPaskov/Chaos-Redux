@@ -88,7 +88,7 @@ Vanilla `common/characters/KUR.txt` uses the country-leader portrait tokens `GFX
 
 The installed vanilla flag ladder contains `gfx/flags/KUR.tga`, `KUR_communism.tga`, `KUR_fascism.tga`, `KUR_neutrality.tga`, `KUR_FRA.tga`, and `KUR_france_democratic.tga`, with corresponding medium and small variants, plus separate `greater_kurdistan_*` and `IRQ_kurdistan_tag_*` families. These are proprietary vanilla runtime assets and should remain authoritative unless the parent explicitly approves a new, sourced and reconstructed flag package.
 
-The canonical review-only reference root at `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference` was inspected. Its flags contact sheet contains vanilla ladder examples but no KUR-specific reference. No canonical reference was copied into the repository.
+The canonical review-only reference root at `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references` was inspected. Its flags contact sheet contains vanilla ladder examples but no KUR-specific reference. No canonical reference was copied into the repository.
 
 ## Historical symbol and flag candidates
 

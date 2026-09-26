@@ -70,7 +70,7 @@ No gameplay, event, focus, decision, country, history, AI, localisation, GUI, GF
 - Consumers/tokens: `unit_pan_sappers_icon` and `onmap_unit_pan_sappers_icon`.
 - Package outputs: `counters/dds/unit_pan_sappers_icon.dds` SHA-256 `13f4405910cfe1e6767abc692e641af2b1d27bd46577cbd13953e08e2303a378`; `counters/dds/onmap_unit_pan_sappers_icon.dds` SHA-256 `ad035e3c116bb691dc45dc18303e94bb4da3e2e46a09f2f8fbd91a1563d94b37`.
 - Installed definitions: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/interface/subuniticons.gfx`; precedents `gfx/interface/counters/divisions_large/unit_infantry_icon.dds` and `gfx/interface/counters/divisions_small/onmap_unit_infantry_icon.dds`.
-- Skill references: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/counters_large/unit_infantry_icon.png` and `units/land/map_counters/onmap_infantry.png`, plus family contact sheets.
+- Skill references: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/units/land/counters_large/unit_infantry_icon.png` and `units/land/map_counters/onmap_infantry.png`, plus family contact sheets.
 - Contract: 152x42/two 76x42 frames and 60x12/two 30x12 frames; sampled dominant green RGB `(73,106,73)` with range `(20,34,21)` through `(154,175,147)`.
 - Parent-owned GFX/runtime promotion remains pending. Do not promote the current human-miner identity as visually approved without explicit acceptance.
 
