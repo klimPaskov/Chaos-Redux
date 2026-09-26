@@ -2,7 +2,7 @@
 
 Date: 2026-09-26.
 
-Disposition: `unresolved` for probability delta. The post-edit source inspect is current, but the custom-pool adapter still does not discover a complete candidate pool or represent the required campaign states. `hoi4.probability_compare` was not called because no supported, complete scenario set can be built from the available evidence.
+Disposition: `unresolved` for probability delta. The post-edit source inspect is current, but the custom-pool adapter still does not discover a complete candidate pool or represent the required campaign states. `hoi4.probability_compare` was attempted with the exact before/after paths and the five named scenarios, then rejected at input validation because every scenario lacked the required `state` record.
 
 No gameplay source was edited during this pass. This report is separate from the baseline handoff so the baseline record remains intact.
 
@@ -34,9 +34,21 @@ The post-edit draw calls `event021_parent_remove_scenario_target_tickets`. That 
 
 The manual selection base weights, scenario budget shares, and load factors are unchanged in the reviewed selection path. The source change removes the prior conditional residual-ticket/reselection path at source level. This confirms the scripted behavior delta only. It does not establish a numeric selection-probability delta or runtime engine outcome.
 
+Repetition and exploit risk: before the change, a selected country with more tickets than the fixed removal count could remain in the pool for a later draw when the budget allowed another draw. The new helper removes every matching ticket from the remaining pool, closing that source-level repeated-selection path. Repetition frequency and downstream duplicate-plan or commit safety remain unmeasured.
+
+## Source weights and modifier trace
+
+The source assigns base tickets by intensity and major status as follows: Low uses minor 4 and major 1, Medium uses 2 and 2, and High uses minor 1 and major 3. The manual draw-budget shares are Low 0.10, Medium 0.25, High 0.50, and Maximum 1.00; Maximum bypasses weighted sampling and copies every eligible country once.
+
+`adjust_individual_crisis_candidate_ticket_weight` passes each base value through `individual_crisis_apply_candidate_ticket_curve`: active load zero multiplies by `load_zero_tickets = 4`, load one by `load_one_tickets = 2`, and load two by `load_two_tickets = 1`; the shared eligibility cap is `active_cap = 3`. These are source values only; MCP produced no per-candidate adjusted tickets, modifier trace, ranking, or probability.
+
+The source uses repeated country scopes as ticket entries and `random_scope_in_array` for the draw, so this is a probability-proportional ticket pool rather than an `ai_will_do` score race, event-option `ai_chance`, or MTTH timing surface. The candidate predicate does not require `is_ai = no`, so eligible AI-controlled normal countries may be in the pool. AI willingness validity is not applicable to this manual selection surface.
+
+The reviewed weighted-surface sources are `common/scripted_effects/021_random_civil_war_parent_effects.txt` (`event021_parent_add_scenario_target_to_weighted_pool`, `event021_parent_remove_scenario_target_tickets`, and `random_civil_war_trigger_manual_scenario`), `common/scripted_triggers/021_random_civil_war_parent_triggers.txt` (`event021_parent_scenario_country_eligible`, type and opening-state preflights, and `event021_parent_event6_dormant_candidate`), `common/scripted_triggers/021_random_civil_war_triggers.txt` (`random_civil_war_is_normal_human_country`), `common/scripted_effects/individual_crisis_targeting_effects.txt` (`adjust_individual_crisis_candidate_ticket_weight` and `individual_crisis_apply_candidate_ticket_curve`), `common/scripted_triggers/individual_crisis_targeting_triggers.txt` (`individual_crisis_load_is_below_cap` and derived provider load), `common/script_constants/021_random_civil_war_constants.txt`, `common/script_constants/individual_crisis_targeting_constants.txt`, and `common/scripted_effects/006_independence_wave_event021_adapter_registry_effects.txt` (static Event 006 package allowlist and actor mapping).
+
 ## Named scenario coverage
 
-The comparison uses the same five scenario IDs from the baseline handoff. No scenario set was submitted, so none has a scenario hash or evaluated before/after result.
+The compare attempt used the same five scenario IDs from the baseline handoff. No scenario hash or evaluated before/after result was produced.
 
 | Scenario ID | Before/after candidate-pool completeness | Required inputs still unavailable | Classification |
 | --- | --- | --- | --- |
@@ -46,16 +58,24 @@ The comparison uses the same five scenario IDs from the baseline handoff. No sce
 | `E021-MANUAL-SELECTED-COUNTRY-REMAINS-2026-09-26` | Incomplete on both sides. No complete pre-draw ticket array was represented. | Full candidate array, per-country adjusted tickets, draw budget, and live eligibility values. | Source-level change confirmed. Probability delta unresolved. |
 | `E021-MANUAL-EVENT006-PACKAGES-2026-09-26` | The 32-ID package allowlist is source-enumerable, but the available package subset and the weighted country roster are incomplete. | Registry initialization, cursor and reservations, actor readiness, valid anchor ownership/state, scenario type, and country/load/eligibility state. | Unresolved. |
 
-The adapter contract documented for this connected route accepts scenario actors, flat primitive state, flags, and explicitly named scopes. It does not bind typed Clausewitz numeric variables or compound triggers. The five case descriptions and baseline handoff do not provide actual candidate tags, complete country rosters, or exact runtime state. No scenario fixture, country tag, or candidate weight was invented.
+The adapter contract documented for this connected route accepts an actor string, flat primitive state, flags, and explicitly named scopes. It does not bind typed Clausewitz numeric variables or compound triggers. The five case descriptions and baseline handoff do not provide actual candidate tags, complete country rosters, or exact runtime state. No actor roster, country fixture, candidate manifest, or typed Clausewitz state was invented.
 
 The source-complete Event 006 adapter package ID list and the detailed per-scenario input gaps are preserved in the [baseline handoff](event021_manual_scenario_probability_baseline_2026-09-26.md).
 
 ## Comparison result and skipped routes
 
-`hoi4.probability_compare` requires a `scenarioSet`. The live tool schema exposes that field as required, while the available evidence cannot populate a complete and honest set for these dynamic pools. The compare call was therefore skipped, not attempted and rejected. There is no comparison ID, compare artifact, scenario hash, numeric delta, or rendered comparison view.
+`hoi4.probability_compare` was called with adapter `custom_weighted_pool`, `before.path` set to the exact pre-edit capture, `after.path` set to the exact post-edit source, and scenario set ID `E021-MANUAL-COUNTRY-POOL-2026-09-26` containing the five scenario IDs above. Each scenario record contained only its supplied ID because no supported actor or campaign state was available. The MCP route returned `MCP error -32602` with `Invalid input: expected record, received undefined at scenarioSet.scenarios[0].state` and the same error for scenario indexes 1, 2, 3, and 4.
 
-`hoi4.probability_evaluate`, `hoi4.probability_sweep`, and `hoi4.probability_sequence` were also not run. Their scenario traces require the same unavailable candidate pool and runtime values. `hoi4.probability_simulate` was not run because no uncertain-input distributions or seed were declared. `hoi4.probability_render` was not run because no analysis ID exists to render.
+The route rejected the request before source comparison; the paths were submitted, but their resolution by the comparison analyzer is not evidenced. There is no comparison ID, compare artifact, scenario hash, numeric delta, or rendered comparison view.
 
-Result class: `exact` for the supplied and verified file hashes, direct inspect fields, and the source-level removal-loop change. `unresolved` for all before/after probability values, rankings, dominance, starvation, rank reversal, repetition frequency, and numerical delta. No sampled or score-only output was produced. The inspect artifacts are adapter/source discovery evidence and do not certify a probability comparison.
+`hoi4.probability_evaluate` and `hoi4.probability_sweep` were not run because the same named scenarios cannot be submitted with complete supported campaign states or a complete candidate pool. `hoi4.probability_sequence` was not run because no complete declared ticket pool and state-transition manifest exists. `hoi4.probability_simulate` was not run because no uncertain-input distributions or seed were declared. `hoi4.probability_render` was not run because the rejected comparison produced no analysis ID to render.
+
+Result class: `exact` for the verified file hashes, direct inspect fields, and the source diff showing the removal-loop replacement. `bounded` for the source-level behavior that a selected country is removed from the remaining ticket pool before a later draw. `unresolved` for all before/after probability values, rankings, dominance, starvation, rank reversal, repetition frequency, and numerical delta. No sampled or score-only output was produced. The inspect artifacts are adapter/source discovery evidence and do not certify a probability comparison.
+
+The relevant offline wiki references consulted were the `Data structures`, `Effects`, `Triggers`, `Scopes`, `AI modding`, and `Event modding` pages, with the remaining AGENTS.md core pages opened as instructed. Relevant array semantics were checked in the vanilla `documentation/effects_documentation.md` entries for `random_scope_in_array` and `remove_from_temp_array`, and `documentation/script_concept_documentation.md` for arrays and collections.
+
+Recommended follow-up: the baseline recommendation to remove all selected-country tickets is implemented by `event021_parent_remove_scenario_target_tickets` in `common/scripted_effects/021_random_civil_war_parent_effects.txt`; no additional weight, score, or draw-budget change is supported by this comparison. Keep those values unchanged until a supported MCP scenario representation can provide the complete country roster, type/intensity, derived provider load, eligibility gates, and Event 006 state where applicable, then rerun the same five scenarios through inspect/evaluate/sweep/compare and render the comparison. Do not infer a numeric balance delta from this source diff.
+
+Structural `event_inspect` and `event_render` were not invoked because this handoff is limited to the weighted scripted-effect pool and makes no event-chain topology or rendered-chain claim.
 
 No balance approval or Event 021 completion claim is made. The source change closes the fixed-four residual-ticket mechanism in the reviewed code, while its probability impact remains unmeasured by the MCP adapter.
