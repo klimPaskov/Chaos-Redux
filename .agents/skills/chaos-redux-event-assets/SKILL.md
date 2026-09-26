@@ -22,7 +22,7 @@ Route file production through narrow project subagents. The main agent provides 
 - `chaosx_generated_event_art` for generated non-icon event art, including fictional or alternate-history report images, news images, super-event images, ImageGen-created flat flag designs, faction emblems, UI panels, generated decision category pictures, and progression-state base art. It does not own character portrait masters or finals.
 - `chaosx_icon_artist` for focus, idea, national-spirit, officer-corps, decision, decision-category, mission, achievement, technology, intelligence-agency, intelligence-operation, commander-trait, medal, military-raid, state-modifier, MIO, faction, building, modifier icons, and exact state-piece graphics derived from verified map geometry
 
-Flags are a flat graphic-design pipeline, not event artwork. Historical flag research establishes the documented geometry, colours, and symbols, ImageGen still produces the final clean flat design under [Flags](#flags).
+Flags are a flat graphic-design pipeline, not event artwork. Historical flag research establishes the documented geometry, colours, and symbols, but ImageGen still produces the final clean flat design under [Flags](#flags).
 
 For animated work, route by asset type first. Then require the chosen asset subagent to follow `chaos-redux-frame-animation` for frame plans, per-frame source art, normalization, contact sheets, preview GIFs, frame sheets, static fallbacks, and animation handoffs.
 
@@ -30,7 +30,7 @@ Asset subagents may create sources, processed PNG previews, final DDS files, con
 
 Asset subagents must not edit `.gfx`, localisation, GUI, event, focus, idea, decision, scripted effect, scripted trigger, on_action, history, country, or spreadsheet files unless the parent explicitly grants that scope. The portrait worker has a standing narrow exception for portrait-specific `.gfx` entries and existing character portrait references.
 
-The main agent owns final non-portrait `.gfx` sprite definitions, gameplay references, docs alignment, spreadsheet alignment, and validation. The portrait worker owns portrait-specific `.gfx` and existing character portrait references. When an asset change requires catalog alignment, update only the authoritative XLSX and run `python .tools/export_event_catalog_csv.py`, the three CSV files are export-only and must not be edited directly.
+The main agent owns final non-portrait `.gfx` sprite definitions, gameplay references, docs alignment, spreadsheet alignment, and validation. The portrait worker owns portrait-specific `.gfx` and existing character portrait references. When an asset change requires catalog alignment, update only the authoritative XLSX and run `python .tools/export_event_catalog_csv.py`; the three CSV files are export-only and must not be edited directly.
 
 A good parent prompt to an asset subagent includes the event id, asset list, asset type, target size, source mode, final DDS folder, sprite name if already registered, reference folder, visual direction, source constraints, and anything the subagent must mark blocked instead of substituting.
 
@@ -140,7 +140,7 @@ Start with:
 
 Unless a path below begins with `assets/`, interpret it relative to `assets/vanilla_reference/`, except the `scripted_guis/` layout paths, which are relative to the skill-local `assets/` root.
 
-Every semantic reference directory contains its own `contact_sheet.png`, there is no shared `contact_sheets/` directory. Contact sheets are labeled with filenames and native dimensions, and are review aids rather than reference examples themselves. Common icon families (focus, ideas, decisions, decision categories, technologies, and achievement states) have at least 15 references, while other tracked texture and icon families have at least 5. The interface library covers complex vanilla scripted GUIs and other native interfaces, with meaningful functional compositions for each distinct layout family. Crop MCP renders to useful UI bounds; full-window images dominated by empty space are unsuitable reference examples. Retain full-render source, source window/files, original resolution and UI scale, and crop bounds in provenance so each crop can be traced back to its native layout.
+Every semantic reference directory contains its own `contact_sheet.png`; there is no shared `contact_sheets/` directory. Contact sheets are labeled with filenames and native dimensions, and are review aids rather than reference examples themselves. Common icon families (focus, ideas, decisions, decision categories, technologies, and achievement states) have at least 15 references, while other tracked texture and icon families have at least 5. The interface library covers complex vanilla scripted GUIs and other native interfaces, with meaningful functional compositions for each distinct layout family. Crop MCP renders to useful UI bounds; full-window images dominated by empty space are unsuitable reference examples. Retain full-render source, source window/files, original resolution and UI scale, and crop bounds in provenance so each crop can be traced back to its native layout.
 
 #### Canonical portrait paths
 
@@ -149,7 +149,7 @@ Every semantic reference directory contains its own `contact_sheet.png`, there i
 - operatives: `assets/vanilla_reference/portraits/operatives/`
 - advisors and high-command dossier cards: `assets/vanilla_reference/portraits/advisors/`
 
-The leader reference shelf at `assets/vanilla_reference/portraits/leaders/` is the direct portrait folder for agents that need one, it holds byte-aligned copies of the curated leader references from `assets/vanilla_reference/portraits/`, and it uses `vanilla_reference/REFERENCE_MANIFEST.md` for the current file list. Do not wire any reference shelf into runtime GFX, and do not infer advisor assets from it. Country leaders, commanders, and operatives are full `156x210` portrait textures. For portrait work, inspect the canonical role-specific contact sheet. Advisor and high-command dossier references are native `65x67` cards and use their own canonical contact sheet, do not substitute full leader, commander, or operative portraits for this family.
+The leader reference shelf at `assets/vanilla_reference/portraits/leaders/` is the direct portrait folder for agents that need one. It holds only byte-aligned copies of the curated leader references from `assets/vanilla_reference/portraits/`, is never a separate source of truth or a runtime asset folder, and uses `vanilla_reference/REFERENCE_MANIFEST.md` for the current file list. Do not wire any reference shelf into runtime GFX, and do not infer advisor assets from it. Country leaders, commanders, and operatives are full `156x210` portrait textures. For portrait work, inspect the canonical role-specific contact sheet. Advisor and high-command dossier references are native `65x67` cards and use their own canonical contact sheet; do not substitute full leader, commander, or operative portraits for this family.
 
 #### Canonical flag and event-art paths
 
@@ -223,7 +223,7 @@ The semantic tree is not a bank of interchangeable pictures. Use the folder for 
 
 The reusable achievement creation inputs live under `icons/achievements/template/`. The actual supplied filenames are `achievement_template.png` (completed background), `achievement_template_grey.png` (grey and not-eligible background), and `overlay.png` (unchanged red-cross not-eligible overlay). They are workflow inputs rather than reference examples, so they are excluded from the achievement contact sheet and coverage count. Preserve these supplied files byte-for-byte and at their exact native alignment.
 
-Do not add new reference images outside the skill-local `assets/` root. Add semantic references under `assets/vanilla_reference/` with exact provenance, dimensions, and contact-sheet coverage recorded in its catalog. The `assets/vanilla_reference/portraits/leaders/` shelf is the direct-reference portrait folder: it holds only byte-aligned copies of the curated leader references, and it is never a separate source of truth or a runtime asset folder.
+Do not add new reference images outside the skill-local `assets/` root. Add semantic references under `assets/vanilla_reference/` with exact provenance, dimensions, and contact-sheet coverage recorded in its catalog.
 
 Before generating, sourcing, processing, or wiring an asset, read the library rules, inspect the matching category and contact sheet, and follow the vanilla source path in the catalog to its owning `.gfx`, `.gui`, `.asset`, or `.mesh` definition when engine behavior matters. Reference PNGs are never final assets: do not wire, recolor, trace, or ship them. If no category matches, inspect the closest canonical category plus a direct vanilla or established Chaos Redux precedent before choosing a style.
 
@@ -247,7 +247,7 @@ For generated World War II-era report/news/super-event images:
 - avoid modern streets, uniforms, props, weapons, vehicles, signage, UI overlays, cinematic color grading, and readable generated text
 - keep the source PNG, processed preview, final DDS, prompt, and manifest entry
 - record the source mode as generated and explain why generation fit better than sourcing
-- never use text-only generation, a name, a description, or a substitute face to fabricate a real person's likeness, use [Country-leader, commander, operative, and named-officeholder portraits](#country-leader-commander-operative-and-named-officeholder-portraits) for grounded portraits
+- never use text-only generation, a name, a description, or a substitute face to fabricate a real person's likeness; use [Country-leader, commander, operative, and named-officeholder portraits](#country-leader-commander-operative-and-named-officeholder-portraits) for grounded portraits
 
 Follow the repository web research rules from `AGENTS.md` when searching for source images.
 
@@ -354,24 +354,26 @@ Shared visual themes are allowed only when every icon is still designed for its 
 - officer corps spirit icons should follow the vanilla officer corps spirit look and 45x45 transparent style
 - achievement icons should follow achievement presentation rules and variant rules
 - intelligence-agency and intelligence-operation icons must follow their own agency or operation UI precedent rather than a generic decision treatment
-- commander traits, medals, military raids, state modifiers, MIOs, factions, buildings, and modifier icons must follow the matching canonical folder and owning vanilla definition, do not force these families onto a blanket 32x32 or 64x64 canvas
+- commander traits, medals, military raids, state modifiers, MIOs, factions, buildings, and modifier icons must follow the matching canonical folder and owning vanilla definition; do not force these families onto a blanket 32x32 or 64x64 canvas
 - frame strips, indexed building sprites, and multi-state modifier art must retain their frame order and frame count rather than being treated as a single standalone icon
 
 If a mechanic needs matching focus, idea, and decision visuals, build them as a coordinated icon family. A coordinated family can share subjects, symbols, colors, and lore cues, but each member still needs separate source art or a separate generated output designed for its target size and UI role.
 
 The manifest must record the exact asset type for every icon and should note when icons are part of a coordinated family. Do not mark an icon complete if it only exists as a resized version of another icon type.
 
+The idea and national spirit, focus, and decision icon families below all apply the shared generation, text, transparency, and separate-source rules; for each, a user-provided or specifically requested source takes precedence.
+
 ### Idea and national spirit icons
 
-Use compact HOI4 symbolic art with aged texture, strong contrast, a clear silhouette, and readable meaning at `64x64`, usually without a full focus frame. Use `idea_` and inspect `icons/ideas/` plus its catalog row. Apply the shared generation, text, transparency, and separate-source rules; a user-provided or specifically requested source takes precedence.
+Use compact HOI4 symbolic art with aged texture, strong contrast, a clear silhouette, and readable meaning at `64x64`, usually without a full focus frame. Use `idea_` and inspect `icons/ideas/` plus its catalog row.
 
 ### Focus icons
 
-Use HOI4 focus art with a strong central symbol, clear silhouette, aged texture, painterly detail, and readable contrast tied to the focus tree story, ideology, or gameplay purpose; avoid generic thumbnails. Use `goal_` and nominal `94x86`, inspecting `icons/national_focus/`, its catalog row, and the owning sprite/current vanilla precedent before selecting the actual canvas. Apply the shared generation, text, transparency, and separate-source rules; a user-provided or specifically requested source takes precedence.
+Use HOI4 focus art with a strong central symbol, clear silhouette, aged texture, painterly detail, and readable contrast tied to the focus tree story, ideology, or gameplay purpose; avoid generic thumbnails. Use `goal_` and nominal `94x86`, inspecting `icons/national_focus/`, its catalog row, and the owning sprite/current vanilla precedent before selecting the actual canvas.
 
 ### Decision icons
 
-Compose decision icons for `32x32` readability with simple central symbols, strong contrast, and limited interior detail. Use `decision_` or `decision_category_` for category icons, and inspect `icons/decisions/`, `icons/missions/`, or `icons/decision_categories/` with the owning consumer. Missions use the decision pipeline with mission-specific semantic readability. Apply the shared generation, text, transparency, and separate-source rules; a user-provided or specifically requested source takes precedence.
+Compose decision icons for `32x32` readability with simple central symbols, strong contrast, and limited interior detail. Use `decision_` or `decision_category_` for category icons, and inspect `icons/decisions/`, `icons/missions/`, or `icons/decision_categories/` with the owning consumer. Missions use the decision pipeline with mission-specific semantic readability.
 
 ### Additional gameplay icon families
 
@@ -497,7 +499,7 @@ News images are `397x153` black-and-white documentary photographs or period pres
 
 Super-event images are `457x328` scenes with strong central composition, a dramatic theme, readable subjects, enough contrast for HOI4 UI, and no generated text or small-detail clutter. Apply Asset source rules for archival versus fictional imagery and era fit, and Generate and refine source art for scene-art requirements and documented user exceptions.
 
-If a super-event needs an audio cue, use `chaos-redux-super-events` and research a suitable public domain or clearly licensed recording. Register the final cue as sound from the event-scoped `sound/<event_id>_<event_slug>/` folder. Never create event or super-event audio from generated test tones, primitive waveforms, beeps, noise beds, or local oscillator output, that includes sine, square, triangle, and sawtooth waveforms.
+If a super-event needs an audio cue, use `chaos-redux-super-events` and research a suitable public domain or clearly licensed recording. Register the final cue as sound from the event-scoped `sound/<event_id>_<event_slug>/` folder. Never create event or super-event audio from generated test tones, primitive waveforms, beeps, noise beds, or local oscillator output, including sine, square, triangle, and sawtooth waveforms.
 
 Document each track's title, composer, performer or recording source where relevant, checked license or public-domain status, source link, thematic fit, suggested in-game use, and editing notes. Do not claim public-domain status without checking; mark an unclear license uncertain or unsuitable.
 
@@ -621,11 +623,11 @@ Every portrait follows [references/portrait-production.md](references/portrait-p
 
 ### Advisor and high-command portrait icons
 
-Advisor, theorist, military-high-command, and officer-corps portrait icons are a separate asset type. Inspect `assets/vanilla_reference/portraits/advisors/` before work. The final target is native `65x67`, with a recognisable HOI4-styled head-and-shoulders portrait, a dark irregular dossier frame where the approved reference family uses one, and transparent outer corners. Do not infer this family from a character or small-portrait consumer, it must be present in the accepted requirement set.
+Advisor, theorist, military-high-command, and officer-corps portrait icons are a separate asset type. Inspect `assets/vanilla_reference/portraits/advisors/` before work. The final target is native `65x67`, with a recognisable HOI4-styled head-and-shoulders portrait, a dark irregular dossier frame where the approved reference family uses one, and transparent outer corners. Do not infer this family from a character or small-portrait consumer; it must be present in the accepted requirement set.
 
-Apply the fail-closed [Portrait source-mode gate](#portrait-source-mode-gate) to advisor and high-command subjects. For a fictional subject in the allowed class, `chaosx_portrait_creator` uses native ImageGen to create a distinct full-resolution portrait master. Never reuse a leader crop. For real people, complete the shared source and provenance gate before preparing the native card, [Country-leader, commander, operative, and named-officeholder portraits](#country-leader-commander-operative-and-named-officeholder-portraits) governs the portrait handoff and fallback. Institutional or collective briefs must state whether the result is people-free or includes a governing group, never imply that invented faces are sourced historical individuals.
+Apply the fail-closed [Portrait source-mode gate](#portrait-source-mode-gate) to advisor and high-command subjects. For a fictional subject in the allowed class, `chaosx_portrait_creator` uses native ImageGen to create a distinct full-resolution portrait master. Never reuse a leader crop. For real people, complete the shared source and provenance gate before preparing the native card; [Country-leader, commander, operative, and named-officeholder portraits](#country-leader-commander-operative-and-named-officeholder-portraits) governs the portrait handoff and fallback. Institutional or collective briefs must state whether the result is people-free or includes a governing group, and never imply that invented faces are sourced historical individuals.
 
-Keep a repo-contained provenance manifest for every native card. Record the source mode, source and candidate dimensions, exact crop or composition notes, generation or editing inputs, attribution or ImageGen record, reviewer, date, and runtime path. Keep each source, processed PNG, review sheet, and metadata file in a distinct path, do not split out or bypass an individual source to weaken provenance.
+Keep a repo-contained provenance manifest for every native card. Record the source mode, source and candidate dimensions, exact crop or composition notes, generation or editing inputs, attribution or ImageGen record, reviewer, date, and runtime path. Keep each source, processed PNG, review sheet, and metadata file in a distinct path; do not split out or bypass an individual source to weaken provenance.
 
 Use `.agents/skills/chaos-redux-event-assets/tools/create_advisor_icon.py` for native `65x67` advisor-template composition. Use the canonical `portraits/advisors/advisor_template.png` as one exact, untouched top layer rather than reconstructing its frame, paper, or shadows from separate elements. Load the complete approved source canvas without pre-cropping or pre-warping it. Measure the opening center, rotated width and height, and angle from the actual template. Canonical cards must use that exact opening-fill plane, match the angle within `0.05` degrees, and use a `0 0` center offset.
 
@@ -639,7 +641,7 @@ Generate and retain a separate placement study for every person and inspect the 
 
 Retain transform metadata for the source, template, measured opening geometry, selected placement, `opening_fill_size`, `under_frame_fill_size`, `covering_content_size`, `covering_content_center`, `frame_clip_pixels`, `under_frame_bleed_pixels`, and `resampling_edge_guard_pixels`, together with the explicit fit flags `source_pre_crop=false`, `frame_clip=true`, and `stretch=false`, plus the study, alignment overlay, processed PNG, and runtime DDS. Automated evidence must report `opening_alpha_gap_pixels=0`, `inner_edge_alpha_gap_pixels=0`, and `exterior_alpha_leak_pixels=0` in the alpha-coverage record. Review the native card and nearest-neighbour enlargement against contrasting solid backgrounds and checker backgrounds, and compare subject scale and frame integrity with the vanilla advisor/high-command references. Keep this workflow generic. Event-specific advisor names belong in the asset manifest or handoff, never in this reusable skill. The reusable command contract and review checklist are documented under `tools/README.md` in the advisor and high-command dossier section.
 
-Do not shrink, pad, or directly wire a `156x210` leader, commander, or operative portrait. Compose the subject independently inside the native card with a deterministic, task-specific/manual workflow and retain the exact crop, face placement, dimensions, and review evidence. Do not draw replacement frame, paper, seal, bevel, patina, emblem, writing, or shadow artwork from primitive geometry, and do not advertise a missing shared processor.
+Do not shrink, pad, or directly wire a `156x210` leader, commander, or operative portrait. Compose the subject independently inside the native card, through the `create_advisor_icon.py` workflow above when the accepted design calls for the shared `advisor_template.png` surface or otherwise with a deterministic, task-specific/manual workflow, and retain the exact crop, face placement, dimensions, and review evidence. Do not draw replacement frame, paper, seal, bevel, patina, emblem, writing, or shadow artwork from primitive geometry.
 
 Check the native `65x67` candidate against the canonical advisor and high-command references. Confirm composition, face readability, frame silhouette and palette, paper geometry and opacity where present, transparent corners, texture continuity, and the absence of holes or fringe. Record any deterministic dimension or alpha checks as evidence, but treat visual approval as a separate human gate.
 
@@ -753,7 +755,7 @@ Animated leader portrait packages must include:
 
 Treat every unit visual as a domain-and-surface-specific pipeline. Inspect the matching catalog entries, contact sheet, and owning vanilla definition before deciding what the task needs.
 
-- `units/equipment/technology_art/` contains flat 2D equipment illustrations used by equipment and technology sprites. Native canvases vary, follow the owning `interface/*.gfx` sprite.
+- `units/equipment/technology_art/` contains flat 2D equipment illustrations used by equipment and technology sprites. Native canvases vary; follow the owning `interface/*.gfx` sprite.
 - `units/land/counters_large/` contains large frame-aware land-unit strips. Preserve the cataloged `noOfFrames`, frame order, per-frame footprint, and transparent bounds.
 - `units/land/map_counters/` contains land map-counter art. It is not a large division-designer strip.
 - `units/land/division_template_emblems/` contains division-template identity emblems. It is not equipment art or map-counter art.
@@ -764,7 +766,7 @@ Classify the requested deliverable before creating art: equipment/technology ill
 
 #### 2D icon and counter generation contract
 
-Every new custom unit or subunit requires bespoke counter art for every runtime counter surface it uses. Before production, inspect the exact installed-vanilla counter definition and DDS plus the matching skill-local family under `assets/vanilla_reference/units/`. Match the sampled vanilla green palette, canvas, frame order, alpha/background treatment, border, silhouette, shading, contrast, and state behavior. Reused counters, renamed existing counters, generic placeholders, arbitrary green, and final art made without recorded vanilla inspection are forbidden. Route production to `chaosx_icon_artist`, block when the exact references are unavailable.
+Every new custom unit or subunit requires bespoke counter art for every runtime counter surface it uses. Before production, inspect the exact installed-vanilla counter definition and DDS plus the matching skill-local family under `assets/vanilla_reference/units/`. Match the sampled vanilla green palette, canvas, frame order, alpha/background treatment, border, silhouette, shading, contrast, and state behavior. Reused counters, renamed existing counters, generic placeholders, arbitrary green, and final art made without recorded vanilla inspection are forbidden. Route production to `chaosx_icon_artist`, and block when the exact references are unavailable.
 
 Apply this contract to every small template, facility, or unit icon, including large land counters and division-template emblems.
 
@@ -794,11 +796,11 @@ Every 3D asset brief must identify the asset profile, deterministic job root, pr
 
 For humanoid units, calibrate against the installed vanilla infantry source mesh and entity rather than an assumed real-world height or arbitrary entity scale. Apply the entity scale exactly once and record the source-height-to-runtime-height crosswalk.
 
-Provider source files are immutable evidence. Working geometry must be repaired so it has no holes, loose or non-manifold geometry, degenerate triangles, missing components, or zero-weight deforming vertices. Use the verified PDX shader and packed specular map convention, never route raw grayscale roughness into the PDX specular channel because that creates chrome-black surfaces.
+Provider source files are immutable evidence. Working geometry must be repaired so it has no holes, loose or non-manifold geometry, degenerate triangles, missing components, or zero-weight deforming vertices. Use the verified PDX shader and packed specular map convention; never route raw grayscale roughness into the PDX specular channel because that creates chrome-black surfaces.
 
-For animated units, select the route in `chaos-redux-3d-model-pipeline`: firearm bodies are freshly generated weapon-free in Meshy 7 and go directly to Blender rigging, weights, manual animation, and separate equipment modeling; existing non-firearm repairs use Blender directly; other new models receive one Meshy rig/action attempt before Blender fallback. Preserve source evidence and require complete component inventories, anatomy/deformation/contact checks, real articulated semantic motion, FPS/frame/loop/root review, and `.anim` export/reimport proof. Missing required elements must be modeled/restored without renewed approval. Actual unavailable operations remain blockers; static poses, transform-only substitutes, and role aliases cannot pass.
+For animated units, select the route in `chaos-redux-3d-model-pipeline`: firearm units receive a fresh weapon-free Meshy 7 body plus a separate Meshy 7 geometry task for each required firearm or other held item, then the Meshy rig and receipt-verified provider actions for the body; existing non-firearm repairs use Blender directly; other provider-eligible bipedal models try each Meshy rig/action stage once, and non-bipedal anatomy or rejected, missing, or faulty provider results fall back to live Blender authoring. Preserve source evidence and require complete component inventories, anatomy/deformation/contact checks, real articulated semantic motion, FPS/frame/loop/root review, and `.anim` export/reimport proof. Missing required elements must be modeled/restored without renewed approval. Actual unavailable operations remain blockers; static poses, transform-only substitutes, and role aliases cannot pass.
 
-For every firearm-bearing unit, including existing firearm models, prepare exactly one weapon-free body image using source-informed weapon removal and pose/body cleanup, retain source firearm identity for Blender reconstruction, and generate a fresh Meshy 7 body. Skip Meshy rig/animation attempts. Use Blender to rig, weight, animate, model missing required parts and separate firearms/held props, and attach them with weapon bones, parenting, and constraints. Complete trigger-hand, support-hand/foregrip, stock/shoulder, muzzle, aim/fire/recoil/recovery, and ground-contact review on the assembled model and every relevant action. Keep intended identity, non-anime period style, source licensing/provenance, and native-alpha requirements. Modest reduction to fit required added equipment inside calibrated budgets is preauthorized; omission is not.
+For every firearm-bearing unit, including existing firearm models, prepare exactly one weapon-free body image using source-informed weapon removal and pose/body cleanup, retain source firearm identity for a separate firearm-only input, generate a fresh Meshy 7 body and a separate Meshy 7 geometry task for each required firearm, and ingest the Meshy rig and receipt-verified provider actions for the body. Use Blender to model missing required parts and to fit and attach each firearm and held prop with weapon bones, parenting, rigid controls, locators, and constraints. Complete trigger-hand, support-hand/foregrip, stock/shoulder, muzzle, aim/fire/recoil/recovery, and ground-contact review on the assembled model and every relevant action. Keep intended identity, non-anime period style, source licensing/provenance, and native-alpha requirements. Modest reduction to fit required added equipment inside calibrated budgets is preauthorized; omission is not.
 
 For every firing runtime state, the 3D handoff must identify the exact discharge frame/time and verified muzzle or weapon locator/node, plus the matching particle/beam/muzzle effect, light where the weapon calls for one, and licensed sourced `soundeffect`. Attack, defend, support_attack, and any other firing state are independent consumers. A silent or particleless firing state is incomplete, and an unrelated vanilla weapon family must not be silently reused. The 3D worker supplies the action → discharge frame/time → locator/node → particle/light → soundeffect → source/license → runtime entity consumer → evidence/status crosswalk. The parent owns final entity, particle, sound-definition, and runtime wiring. Non-firing armed actions do not require particles or gunshot audio merely because the unit is armed.
 
@@ -808,7 +810,7 @@ The asset worker owns source files, checkpoints, processed textures, previews, e
 
 ### DDS conversion
 
-Final PNG assets must be converted to DDS using the repository's standard DDS conversion workflow. The converter lives only at `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`, `.tools/convert_to_dds.py` is obsolete, and active skills, agents, scripts, and handoffs must not restore or call it.
+Final PNG assets must be converted to DDS using the repository's standard DDS conversion workflow. The converter lives only at `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`; `.tools/convert_to_dds.py` is obsolete, and active skills, agents, scripts, and handoffs must not restore or call it.
 
 The output must be compatible with Chaos Redux's expected 32-bit BGRA or B8G8R8A8-style DDS workflow.
 
@@ -851,14 +853,14 @@ Use this folder form:
 <event_id>_<event_slug>
 ```
 
-Place the event folder directly under the asset category folder, for example `gfx/event_pictures/014_cannibalism/` or `gfx/interface/ideas/014_cannibalism/`. Do not insert a project namespace layer such as `gfx/event_pictures/chaos_redux/014_cannibalism/`, the mod root already provides the project namespace.
+Place the event folder directly under the asset category folder, for example `gfx/event_pictures/014_cannibalism/` or `gfx/interface/ideas/014_cannibalism/`. Do not insert a project namespace layer such as `gfx/event_pictures/chaos_redux/014_cannibalism/`; the mod root already provides the project namespace.
 
 Do not leave new event assets loose in category roots such as `gfx/event_pictures/`, `gfx/super_events/`, `gfx/interface/ideas/`, `gfx/interface/goals/`, `gfx/interface/decisions/`, or `gfx/leaders/` unless that root placement is an engine-facing lookup requirement.
 
 Root-only and engine-convention exceptions:
 
 - `gfx/achievements/` must keep achievement DDS files directly in the root. Do not create `gfx/achievements/<event_id>_<event_slug>/` subfolders unless a new engine behavior has been verified locally. Achievement filenames must match the full achievement ids from `common/achievements/`, so event-owned achievement ids and triplet filenames should use `<event_id>_<event_slug>_<achievement_name>{,_grey,_not_eligible}.dds` or the exact established id if it includes an ordinal.
-- `gfx/flags/`, `gfx/flags/medium/`, and `gfx/flags/small/` must keep HOI4 tag/ideology filenames. Do not put flags into event folders, use cosmetic tags or route-specific tag filenames when an event needs transformed flags.
+- `gfx/flags/`, `gfx/flags/medium/`, and `gfx/flags/small/` must keep HOI4 tag/ideology filenames. Do not put flags into event folders; use cosmetic tags or route-specific tag filenames when an event needs transformed flags.
 
 Shared or non-event systems may use a clear shared/system folder. Do not force shared assets into an event folder just to avoid a root directory.
 
@@ -972,7 +974,7 @@ For every animation family, also record the purpose and the direction or state s
 
 For every real-person portrait row, link the unchanged source, explicit crop, wired placeholder, user-supplied final when available, role references, comparison evidence, reviewer, and likeness/framing/provenance verdict. Style quality cannot compensate for identity failure.
 
-Audit exact rows, not counts. An extra asset or animation cannot satisfy an absent accepted row unless an explicit accepted design amendment identifies that row and names the replacement, link that amendment in the crosswalk. Any missing source package, runtime registration, live consumer, required state or visibility binding, or current audit record leaves the row incomplete.
+Audit exact rows, not counts. An extra asset or animation cannot satisfy an absent accepted row unless an explicit accepted design amendment identifies that row and names the replacement; link that amendment in the crosswalk. Any missing source package, runtime registration, live consumer, required state or visibility binding, or current audit record leaves the row incomplete.
 
 After a late user correction or accepted spec, manifest-plan, or animation-plan change, rebuild the crosswalk against the current repository and attach a fresh coverage diff listing added, removed or replaced, changed, and still-uncovered rows. Do not reuse the prior audit or its totals for the completion claim.
 
