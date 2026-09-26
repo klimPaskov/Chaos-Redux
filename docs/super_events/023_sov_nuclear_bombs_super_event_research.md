@@ -68,7 +68,7 @@ No companion OGG is retained; the installed sound route consumes the verified PC
 
 Composition rights: the 1830 Berlioz composition is public domain. The IMSLP work record identifies the work, composer, 1830 composition date, 1845 first publication, and a public-domain score source.
 
-Recording rights: the Internet Archive item identifies the 1962 recording and declares `Public Domain Mark 1.0` usage. The Wikimedia Commons FLAC page identifies the same recording as public domain and records the performer, source, and 1962 date. The local evidence retains the FLAC source metadata; no OGG derivative is shipped or retained in this package.
+Recording rights: the Internet Archive item identifies the 1962 recording and declares `Public Domain Mark 1.0` usage. The Wikimedia Commons file page identifies Deutsche Grammophon as the source, dates the recording to 1 January 1962, credits Igor Markevitch and the Orchestre Lamoureux, and marks the recording public domain because the performers' and producers' rights have expired under the cited EU terms. The local evidence retains the FLAC source metadata; no OGG derivative is shipped or retained in this package.
 
 Usage terms: no attribution or share-alike condition is stated on the Public Domain Mark record. This package retains attribution as a conservative credit and preserves the source pages and metadata beside the original download. The recording is embedded as an edited excerpt in a larger game mod and is not distributed as a standalone recording.
 
@@ -169,13 +169,11 @@ The 115-second excerpt meets the repository's normal one-to-two-minute super-eve
 | Gustav Holst, *The Planets*, “Mars” | Existing Chaos Redux catalogue entry `super-event 30` already uses the Skidmore College Orchestra / Musopen recording. | **REJECTED FOR UNIQUENESS.** Reusing the existing exchange-like war cue is not approved for Event 023. |
 | Johannes Brahms, *Tragic Overture*, Op. 81 | Existing Event 028 research note selected the Czech National Symphony Orchestra / Musopen recording for the asteroid impact cue. | **REJECTED FOR UNIQUENESS.** The existing parent package already claims this exact recording for another super-event. |
 
-## Parent wiring handoff
+## Parent wiring reconciliation
 
-The parent wiring pass verified playback audio ID `108` and visible super-event slot `108`; the runtime wrappers, sound file, sprite, and Event 023 constant use the same stable allocation.
+Rechecked 2026-09-26: the current runtime uses playback audio ID `108` and visible super-event slot `108`. The reciprocal-exchange path sets the current audio id from the Event 23 constant, sets the matching timed visibility flag, and calls the settings-aware playback helper for human countries.
 
-The parent should add one canonical `music/chaosx_music_track_list.html` row containing the final path, Event 023 super-event ID, source title, Berlioz, Markevitch / Orchestre Lamoureux, 01:55 duration, Public Domain Mark 1.0 recording status, and the attribution text above.
-
-The parent should register the base sound definition and settings-volume wrappers, set the unique current super-event audio ID, and call the settings-aware playback helper. Those files remain intentionally untouched by this handoff.
+The current `interface/chaosx_super_events.gfx` entry resolves the Event 23 image, `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt` maps slot `108` to that sprite and to the `.108` title, description, remark, and quote keys, and `sound/chaosx_sound.asset` registers the dedicated WAV plus all six volume wrappers. The canonical `music/chaosx_music_track_list.html` row records the track, source, rights status, 01:55 duration, final SHA-256, and the Event 23 slot.
 
 ## Uncertainty and blockers
 
@@ -183,4 +181,4 @@ No audio-production blocker remains: the source is legitimate, the original is p
 
 The visible slot `108`, playback audio ID `108`, sprite, sound wrappers, and Event 023 constants were reported aligned by the source-wiring pass. The answered-exchange trigger and live sound, timing, and image consumer review remain open.
 
-The source records provide public-domain status rather than a jurisdiction-specific legal opinion, so the package retains the source pages, Public Domain Mark reference, attribution, and hashes as evidence.
+The Wikimedia Commons public-domain declaration and the Internet Archive Public Domain Mark support the recording's reuse, while neither source gives a jurisdiction-specific legal opinion. The package retains both source-page captures, the Public Domain Mark reference, attribution, and matching source/final hashes as evidence. The source record also warns that copyright status can differ by jurisdiction.
