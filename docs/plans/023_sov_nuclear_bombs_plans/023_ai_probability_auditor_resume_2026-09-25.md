@@ -10,7 +10,7 @@ The source logic does express the intended Evolution IV severe-first-use gate: A
 
 One source-level AI-score risk remains for owner review: `sov_nuclear_bombs_give_final_authorization` has base `0.10`, applies `constant:sov_nuclear_bombs_ai.severe_loss_factor` (currently `1.50`) when `sov_nuclear_bombs_event_can_authorize_first_use` is true, and applies a zero factor only below Evolution III. Absence of the severe gate does not itself zero that base term. This is a raw willingness-score observation, not proof the decision is eligible or that a major strike can execute. Test this exact context before deciding whether the AI score needs a strict severe-gate zero for unconfirmed first use.
 
-The MTTH constants are currently 180/240/300/360 days for Evolutions I–IV. The probability scenario spec describes design centers of 120 days for Evolution I, 120 days for Evolution II, and 180 days for Evolution III. This is a source/spec discrepancy, not an MCP timing result; modifiers and gates have not been evaluated into effective timing.
+Initial-audit correction (2026-09-26): this handoff recorded the pre-reconciliation 180/240/300/360-day constants. Commit `cbb163549` changed the current source bases to 120/120/180/90 days for Evolutions I–IV. Part 5 recommends 180 days for Evolution III (line 162) and 90 days for Evolution IV (line 214); the 90-day figure was misattributed to Evolution III in the earlier parent report. The Evolution III base therefore matches the named scenarios' 180-day design center. The user chose to defer tuning, and no timing change is authorized here. Effective named-scenario timing remains unresolved because modifiers and gates have not been evaluated by a valid MCP scenario pass.
 
 ## MCP surface, version, and evidence
 

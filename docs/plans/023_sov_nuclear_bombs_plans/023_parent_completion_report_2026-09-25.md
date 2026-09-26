@@ -32,7 +32,7 @@ Technology inspection and rendering covered the real `atomic_research` route but
 
 The probability routes inspected the Event 23 MTTH source, four-entry test random list, and 81-candidate mission source. Random-list evaluation, mission evaluation, readiness sweep, and same-scenario comparison all returned partial artifacts with unresolved dynamic or nested Clausewitz state. The MTTH adapter reported no weighted surfaces. No normalized probability or live balance claim is made.
 
-The user explicitly directed that the Evolution III timing conflict remain untuned: the named probability scenarios call for a center near or above 180 days, while the accepted evolution spec recommends a 90-day base MTTH. Leave the current source timing unchanged until a valid named-scenario MCP pass can reconcile those expectations; this deferral is not approval of either value.
+Timing correction (2026-09-26): the earlier pass misattributed the Evolution IV recommendation to Evolution III. Part 5 recommends 180 days for Evolution III (line 162) and 90 days for Evolution IV (line 214), while current source bases are 120/120/180/90 days for Evolutions I–IV. Evolution III therefore matches the named scenarios' 180-day design center at the base-value level. The user chose to defer tuning; no timing change is made, and effective named-scenario timing remains unverified because the MCP adapter has not resolved the required context and modifiers.
 
 ## Visual and workbook audit
 
