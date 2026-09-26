@@ -342,22 +342,62 @@ def main() -> int:
 
 	try:
 		don_dhc_guard = extract_script_block(collision_triggers, "is_don_dhc_cross_event_collision_clear")
+		dhc_creation_guard = extract_script_block(collision_triggers, "is_soviet_collapse_dhc_creation_clear")
+		dhc_runtime_preflight = extract_script_block(collision_triggers, "is_iw039_dhc_runtime_preflight_clear")
 		dhc_spawn_trigger = extract_script_block(soviet_triggers, "can_soviet_collapse_spawn_dhc")
 		dhc_spawn_effect = extract_script_block(soviet_effects, "soviet_collapse_spawn_dhc_if_enabled")
 		don_plan_trigger = extract_script_block(region_triggers, "can_plan_independence_wave_package_iw_039")
+		package_runtime_preflight = extract_script_block(dispatch, "is_independence_wave_runtime_package_preflight_ready")
 	except ValueError as exc:
 		errors.append(str(exc))
 		don_dhc_guard = ""
+		dhc_creation_guard = ""
+		dhc_runtime_preflight = ""
 		dhc_spawn_trigger = ""
 		dhc_spawn_effect = ""
 		don_plan_trigger = ""
+		package_runtime_preflight = ""
 	require("DHC = { exists = no }" in don_dhc_guard, "DON/DHC exclusion does not reject an existing DHC", errors)
+	require("has_country_flag = soviet_collapse_don_host_successor" in don_dhc_guard, "IW-039 candidate gate does not reject the DHC successor receipt", errors)
 	for state_id in (218, 238):
+		try:
+			candidate_state = extract_named_block(don_dhc_guard, str(state_id))
+		except ValueError as exc:
+			errors.append(str(exc))
+			candidate_state = ""
 		require(
-			f"{state_id} = {{ NOT = {{ is_liberation_release_current_reserved_state = yes }} }}" in don_dhc_guard,
-			f"DON/DHC exclusion does not reject a conflicting state-{state_id} reservation",
+			"is_liberation_release_current_reserved_state = yes" in candidate_state
+			and "liberation_plan_owner.soviet_collapse" in candidate_state,
+			f"DON/DHC exclusion does not reject an Event 005 state-{state_id} reservation",
 			errors,
 		)
+		require("is_owned_by = DHC" in candidate_state and "is_controlled_by = DHC" in candidate_state, f"IW-039 candidate gate does not check DHC ownership/control of state {state_id}", errors)
+	require(
+		"owner = { is_soviet_collapse_active_origin_country = yes }" in don_dhc_guard
+		and "controller = { is_soviet_collapse_active_origin_country = yes }" in don_dhc_guard,
+		"IW-039 candidate gate does not check active Event 005 ownership/control of the conflict states",
+		errors,
+	)
+	require(
+		"DHC = { exists = no }" in dhc_creation_guard
+		and "has_country_flag = soviet_collapse_don_host_successor" in dhc_creation_guard,
+		"Event 005 DHC creation guard does not reject an existing or previously tagged DHC",
+		errors,
+	)
+	for marker in (
+		"has_country_flag = liberation_release_reserved_country",
+		"has_country_flag = independence_wave_pending_package",
+		"has_country_flag = independence_wave_origin_prepared",
+		"is_independence_wave_active_country = yes",
+	):
+		require(marker in dhc_creation_guard, f"Event 005 DHC creation guard does not protect pending/active DON marker {marker}", errors)
+	require(
+		"owner = { is_soviet_collapse_active_origin_country = yes }" not in dhc_creation_guard
+		and "controller = { is_soviet_collapse_active_origin_country = yes }" not in dhc_creation_guard
+		and "is_liberation_release_current_reserved_state = yes" not in dhc_creation_guard,
+		"Event 005 DHC creation guard is blocked by the normal active SOV host owner",
+		errors,
+	)
 	for marker in (
 		"has_country_flag = liberation_release_reserved_country",
 		"has_country_flag = independence_wave_pending_package",
@@ -371,7 +411,7 @@ def main() -> int:
 		errors,
 	)
 	require(
-		"is_don_dhc_cross_event_collision_clear = yes" in dhc_spawn_trigger,
+		"is_soviet_collapse_dhc_creation_clear = yes" in dhc_spawn_trigger,
 		"ordinary Event 005 DHC eligibility bypasses the shared collision guard",
 		errors,
 	)
@@ -381,10 +421,56 @@ def main() -> int:
 		errors,
 	)
 	force_all_position = dhc_spawn_effect.find("has_global_flag = soviet_collapse_force_all_chaos_successors")
-	force_all_guard = dhc_spawn_effect.find("is_don_dhc_cross_event_collision_clear = yes", force_all_position)
+	force_all_guard = dhc_spawn_effect.find("is_soviet_collapse_dhc_creation_clear = yes", force_all_position)
 	require(
 		force_all_position >= 0 and force_all_guard > force_all_position,
 		"Event 005 force-all DHC path bypasses the shared DON collision guard",
+		errors,
+	)
+	for state_id in (218, 238):
+		try:
+			preflight_state = extract_named_block(dhc_runtime_preflight, str(state_id))
+		except ValueError as exc:
+			errors.append(str(exc))
+			preflight_state = ""
+		require("is_owned_by = DHC" in preflight_state and "is_controlled_by = DHC" in preflight_state, f"IW-039 final preflight does not check DHC ownership/control of state {state_id}", errors)
+		require(
+			"owner = { is_soviet_collapse_active_origin_country = yes }" in preflight_state
+			and "controller = { is_soviet_collapse_active_origin_country = yes }" in preflight_state,
+			f"IW-039 final preflight does not reject active Event 005 ownership/control of state {state_id}",
+			errors,
+		)
+	require("has_country_flag = soviet_collapse_don_host_successor" in dhc_runtime_preflight, "IW-039 final preflight misses the DHC successor receipt", errors)
+	try:
+		preflight_218 = extract_named_block(dhc_runtime_preflight, "218")
+		preflight_238 = extract_named_block(dhc_runtime_preflight, "238")
+	except ValueError as exc:
+		errors.append(str(exc))
+		preflight_218 = ""
+		preflight_238 = ""
+	require(
+		"is_liberation_release_current_reserved_state = yes" in preflight_218
+		and "liberation_plan_owner.soviet_collapse" in preflight_218
+		and "liberation_release_package_id" in preflight_218
+		and "independence_wave_package_id.iw_039" in preflight_218,
+		"IW-039 final preflight permits an Event 005 reservation or an IW-039 reservation of excluded state 218",
+		errors,
+	)
+	require(
+		"is_liberation_release_current_reserved_state = yes" in preflight_238
+		and "liberation_plan_owner.soviet_collapse" in preflight_238,
+		"IW-039 final preflight does not distinguish Event 005 state-238 reservations from trim-eligible compact reservations",
+		errors,
+	)
+	require(
+		"check_variable = { var = liberation_release_package_id value = constant:independence_wave_package_id.iw_039 compare = equals }" in dhc_runtime_preflight,
+		"IW-039 final preflight does not distinguish its optional 238 reservation from Event 005 reservations",
+		errors,
+	)
+	require(
+		"is_iw039_dhc_runtime_preflight_clear = yes" in package_runtime_preflight
+		and "independence_wave_execution_package_id = constant:independence_wave_package_id.iw_039" in package_runtime_preflight,
+		"Event 006 final package preflight does not run the IW-039 DHC collision proof",
 		errors,
 	)
 	edge_005_rows = [line for line in edges.splitlines() if "EDGE-SCN-005" in line]

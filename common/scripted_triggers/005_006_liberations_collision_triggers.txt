@@ -27,20 +27,95 @@ can_liberations_joint_prepare_incident = {
 	liberations_joint_cluster_selected_both_members = yes
 }
 
-# COUNTRY scope. Event 005 and Event 006 call this before reserving or
-# transferring the shared Don/Volgodonsk states. DHC cannot coexist with an
-# active or pending IW-039, and IW-039 cannot enter while DHC or a conflicting
-# Event 005 state reservation exists.
+# COUNTRY scope. Event 006 calls this before assigning any IW-039 candidate
+# weight. It rejects DHC receipts/ownership, active Event 005 control of the
+# conflict states, and Event 005-owned current-plan reservations before the
+# donor country is reserved. Other unavailable optional compact states can be
+# trimmed by the ordinary reservation helper.
 is_don_dhc_cross_event_collision_clear = {
 	DHC = { exists = no }
+	NOT = { DHC = { has_country_flag = soviet_collapse_don_host_successor } }
 	DON = {
 		NOT = { has_country_flag = liberation_release_reserved_country }
 		NOT = { has_country_flag = independence_wave_pending_package }
 		NOT = { has_country_flag = independence_wave_origin_prepared }
 		NOT = { is_independence_wave_active_country = yes }
 	}
-	218 = { NOT = { is_liberation_release_current_reserved_state = yes } }
-	238 = { NOT = { is_liberation_release_current_reserved_state = yes } }
+	218 = {
+		NOT = { is_owned_by = DHC }
+		NOT = { is_controlled_by = DHC }
+		NOT = { owner = { is_soviet_collapse_active_origin_country = yes } }
+		NOT = { controller = { is_soviet_collapse_active_origin_country = yes } }
+		NOT = {
+			AND = {
+				is_liberation_release_current_reserved_state = yes
+				check_variable = { var = liberation_release_plan_owner value = constant:liberation_plan_owner.soviet_collapse compare = equals }
+			}
+		}
+	}
+	238 = {
+		NOT = { is_owned_by = DHC }
+		NOT = { is_controlled_by = DHC }
+		NOT = { owner = { is_soviet_collapse_active_origin_country = yes } }
+		NOT = { controller = { is_soviet_collapse_active_origin_country = yes } }
+		NOT = {
+			AND = {
+				is_liberation_release_current_reserved_state = yes
+				check_variable = { var = liberation_release_plan_owner value = constant:liberation_plan_owner.soviet_collapse compare = equals }
+			}
+		}
+	}
+}
+
+# COUNTRY scope for Event 005's own DHC creation entry. Do not let the
+# cross-event host-owner check above suppress ordinary DHC behavior merely
+# because SOV is the active Event 005 owner of the states being transferred.
+is_soviet_collapse_dhc_creation_clear = {
+	DHC = { exists = no }
+	NOT = { DHC = { has_country_flag = soviet_collapse_don_host_successor } }
+	DON = {
+		NOT = { has_country_flag = liberation_release_reserved_country }
+		NOT = { has_country_flag = independence_wave_pending_package }
+		NOT = { has_country_flag = independence_wave_origin_prepared }
+		NOT = { is_independence_wave_active_country = yes }
+	}
+}
+
+# COUNTRY scope for the final Event 006 pre-release proof on the already
+# reserved DON carrier. State 218 cannot be reserved by IW-039. State 238 may
+# be reserved by IW-039 as optional compact territory; a competing non-Event
+# 005 reservation is left to the ordinary compact-trim path.
+is_iw039_dhc_runtime_preflight_clear = {
+	DHC = { exists = no }
+	NOT = { DHC = { has_country_flag = soviet_collapse_don_host_successor } }
+	218 = {
+		NOT = { is_owned_by = DHC }
+		NOT = { is_controlled_by = DHC }
+		NOT = { owner = { is_soviet_collapse_active_origin_country = yes } }
+		NOT = { controller = { is_soviet_collapse_active_origin_country = yes } }
+		NOT = {
+			AND = {
+				is_liberation_release_current_reserved_state = yes
+				check_variable = { var = liberation_release_plan_owner value = constant:liberation_plan_owner.soviet_collapse compare = equals }
+			}
+		}
+		NOT = {
+			AND = {
+				is_liberation_release_current_reserved_state = yes
+				check_variable = { var = liberation_release_package_id value = constant:independence_wave_package_id.iw_039 compare = equals }
+			}
+		}
+	}
+	238 = {
+		NOT = { is_owned_by = DHC }
+		NOT = { is_controlled_by = DHC }
+		NOT = { owner = { is_soviet_collapse_active_origin_country = yes } }
+		NOT = { controller = { is_soviet_collapse_active_origin_country = yes } }
+		OR = {
+			NOT = { is_liberation_release_current_reserved_state = yes }
+			NOT = { check_variable = { var = liberation_release_plan_owner value = constant:liberation_plan_owner.soviet_collapse compare = equals } }
+		}
+	}
 }
 
 soviet_collapse_joint_plan_metadata_arrays_are_aligned = {
