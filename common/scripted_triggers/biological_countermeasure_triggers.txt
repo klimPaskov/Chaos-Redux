@@ -411,9 +411,11 @@ bio_countermeasure_can_request_international_mission = {
 bio_countermeasure_can_start_containment_mission = {
 	NOT = { has_political_power < constant:bio_countermeasure_cost.containment_mission_pp }
 	has_variable = cbrn_medical_capacity
+	set_temp_variable = { bio_containment_start_capacity_required = constant:bio_countermeasure_capacity.containment_mission_medical_commitment }
+	add_to_temp_variable = { bio_containment_start_capacity_required = constant:bio_countermeasure_capacity.containment_mission_remaining_medical_floor }
 	check_variable = {
 		var = cbrn_medical_capacity
-		value = constant:bio_countermeasure_capacity.containment_mission_medical_commitment
+		value = bio_containment_start_capacity_required
 		compare = greater_than_or_equals
 	}
 	NOT = { command_power < constant:bio_countermeasure_cost.containment_mission_command_power }
@@ -447,7 +449,7 @@ bio_countermeasure_state_can_start_containment_mission = {
 	}
 }
 
-bio_countermeasure_containment_mission_record_is_current = {
+bio_countermeasure_containment_mission_record_matches_cycle = {
 	has_state_flag = bio_containment_mission_active
 	has_state_flag = bio_containment_mission_capacity_committed
 	has_variable = bio_containment_mission_provider
@@ -455,6 +457,10 @@ bio_countermeasure_containment_mission_record_is_current = {
 	has_variable = bio_containment_mission_cycle
 	has_variable = bio_ordinary_outbreak_cycle
 	check_variable = { var = bio_containment_mission_cycle value = bio_ordinary_outbreak_cycle compare = equals }
+}
+
+bio_countermeasure_containment_mission_record_is_current = {
+	bio_countermeasure_containment_mission_record_matches_cycle = yes
 	is_controlled_by = var:bio_containment_mission_provider
 }
 

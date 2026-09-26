@@ -223,7 +223,7 @@ An outbreak containment mission targets one controlled state that already has ac
 
 Starting the mission consumes 35 Political Power, 15 Command Power, and 150 Support Equipment. It requires 75 Trucks and 40 CBRN Instruments on hand without consuming them.
 
-It commits 10 Medical Capacity until resolution.
+It commits 10 Medical Capacity until resolution. Selection requires 15 available so 5 remain uncommitted for a continuing success or partial success.
 
 The reservation is guarded by an explicit capacity marker, and the mission stores the current ordinary-outbreak cycle.
 
@@ -249,6 +249,8 @@ Partial success requires the provider to retain the same Medical Capacity and fi
 A partial success consumes the final 75 Support Equipment and requires 30 Trucks and 10 CBRN Instruments still on hand without consuming them. It lowers active-agent intensity by 5, lowers exposed share by 0.01, and lowers medical saturation by 5.
 
 Failure raises active-agent intensity by 10, exposed share by 0.02, and medical saturation by 10 in the exact mission state.
+
+Losing control of the state during the same active outbreak cycle also follows this failure path at resolution. A later outbreak cycle or a state whose ordinary episode has already ended only clears the stale mission record and returns its committed medical teams.
 
 An outbreak that fully recovers before mission resolution counts as a full success without consuming unnecessary final sustainment stores.
 

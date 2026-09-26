@@ -8,6 +8,8 @@ Before this correction, the custom row displayed the discounted quote, but the d
 
 The decision also supplies an `ai_hint_pp_cost` from its ordinary Political Power constant. Its native `cost = 0` avoids a second engine debit, but the AI still needs a saving hint for the custom Political Power payment. The hint is conservatively based on the ordinary cost during a sale; native parsing of the constant-valued hint remains unverified.
 
+The custom row's hover repeats the selected normal or sale quote with all three texticons and explains selection-time payment and incomplete-transaction refund. The ordinary effect tooltip describes the later Medical Capacity gain without duplicating the upfront cost.
+
 Source evidence: `common/decisions/biowarfare_disease_containment_decisions.txt`, `common/scripted_triggers/biological_countermeasure_triggers.txt`, `common/scripted_triggers/026_black_friday_triggers.txt`, `common/scripted_effects/026_black_friday_effects.txt`, `common/scripted_localisation/biological_countermeasure_value_localisation.txt`, and `localisation/english/chaosx_decisions_l_english.yml`. Event 026's transaction owner checks the three quoted resources again before paying, records their receipts, and refunds an incomplete transaction. The existing `GFX_decision_bio_expand_medical_capacity` decision sprite and registered Political Power, Support Equipment, and motorized texticons are reused; no new asset is required.
 
 Source checks prove the active-sale path no longer invokes the full-price stock helper and that the normal row reads the owning constants. They do not prove the native row render, engine parser behavior for the quote, exact stock tests in game, or Event 026's delayed transaction result. Those remain validation blockers.
