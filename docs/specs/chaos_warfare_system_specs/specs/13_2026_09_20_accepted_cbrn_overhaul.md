@@ -36,7 +36,11 @@ The eight accepted projects are **Mechanized Smoke Screens**, **Collective Prote
 
 Historical starting profiles must be grounded in country and program evidence, including starting stock, research, facilities, and usable route state where authorized. The roster requires 67 scientists. Three generic CBRN MIO families have twelve-node trees. National organizations include ICI, IG Farben, DuPont, Rhône-Poulenc, Montecatini, and Showa Denko, plus two explicitly fictional advanced organizations. Source the historical identities and do not present the fictional organizations as historical.
 
+The [DuPont national signature correction](../corrections/2026-09-27_dupont_polymer_mio_signature.md) differentiates polymer protective-clothing production from ICI's filter durability while preserving the inherited twelve-node tree and equipment-cost tradeoff.
+
 The [six-date scientist availability correction](../corrections/2026-09-27_scientist_availability_dates.md) aligns program-role recruitment with sourced wartime appointments while retaining separate policy and doctrine authorization. It records year-only access calibrations and leaves unresolved individual trait attributions for later review.
+
+The [scientist lifecycle and field correction](../corrections/2026-09-27_scientist_lifecycle_and_field.md) resolves further source-supported roster mismatches while preserving unresolved individual skill and trait questions as proposals.
 
 The user's 2026-09-25 follow-up explicitly selects the force-scaled military mask bands for both historical bookmarks: 75% active issue for established majors, 100% for Italy, 50% for Japan, 25% for smaller defensive profiles, and a separate 25% reserve against each bookmark's deployed-force requirement. The percentages are gameplay calibration, not exact historical inventory claims. Britain alone receives a separately sourced 1939 civilian mask issue; other countries begin with zero civilian coverage until country-specific evidence supports a grant. Dated research, personnel, industry, and offensive-stock distinctions remain separate.
 

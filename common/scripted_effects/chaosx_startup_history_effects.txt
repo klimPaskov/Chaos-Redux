@@ -391,6 +391,21 @@ chaosx_apply_historical_1936_force_scaled_profile = {
 chaosx_startup_recruit_dated_eng_cbrn_characters = {
 	if = {
 		limit = {
+			# Contemporary obituaries place Haldane's death in mid-March 1936.
+			date < 1936.03.14
+			NOT = { has_character = ENG_john_scott_haldane }
+		}
+		recruit_character = ENG_john_scott_haldane
+	}
+	if = {
+		limit = {
+			date > 1936.03.13
+			has_character = ENG_john_scott_haldane
+		}
+		retire_character = ENG_john_scott_haldane
+	}
+	if = {
+		limit = {
 			date > 1938.12.31
 			NOT = { has_character = ENG_paul_fildes }
 		}
@@ -427,7 +442,9 @@ chaosx_startup_recruit_dated_ger_cbrn_characters = {
 	}
 	if = {
 		limit = {
-			date > 1942.01.01
+			# Blome's documented biological-program assignment followed
+			# the June-July 1943 institute correspondence and conference.
+			date > 1943.06.30
 			NOT = { has_character = GER_kurt_blome }
 		}
 		recruit_character = GER_kurt_blome
@@ -468,6 +485,50 @@ chaosx_startup_recruit_dated_ger_cbrn_characters = {
 			NOT = { has_character = GER_otto_bickenbach }
 		}
 		recruit_character = GER_otto_bickenbach
+	}
+	if = {
+		limit = {
+			# The Medical Case judgment records Mrugowsky attending the
+			# prisoner-test authorization conference by 29 December 1941.
+			date > 1941.12.28
+			has_character = GER_joachim_mrugowsky
+			NOT = { has_country_flag = mrugowsky_inhumane_trait_awarded }
+		}
+		GER_joachim_mrugowsky = { add_scientist_trait = scientist_trait_inhumane }
+		set_country_flag = mrugowsky_inhumane_trait_awarded
+	}
+	if = {
+		limit = {
+			# Rose's support of the Dachau malaria experiments is
+			# documented by his 17 April 1942 endorsement.
+			date > 1942.04.16
+			has_character = GER_gerhard_rose
+			NOT = { has_country_flag = rose_inhumane_trait_awarded }
+		}
+		GER_gerhard_rose = { add_scientist_trait = scientist_trait_inhumane }
+		set_country_flag = rose_inhumane_trait_awarded
+	}
+	if = {
+		limit = {
+			# Hirt's first documented prisoner mustard-agent experiment was
+			# conducted on 25 November 1942.
+			date > 1942.11.24
+			has_character = GER_august_hirt
+			NOT = { has_country_flag = hirt_inhumane_cw_trait_awarded }
+		}
+		GER_august_hirt = { add_scientist_trait = scientist_trait_inhumane_cw }
+		set_country_flag = hirt_inhumane_cw_trait_awarded
+	}
+	if = {
+		limit = {
+			# Bickenbach's first documented prisoner phosgene experiments
+			# occurred in June 1943; June 1 is a month-level gameplay floor.
+			date > 1943.05.31
+			has_character = GER_otto_bickenbach
+			NOT = { has_country_flag = bickenbach_inhumane_cw_trait_awarded }
+		}
+		GER_otto_bickenbach = { add_scientist_trait = scientist_trait_inhumane_cw }
+		set_country_flag = bickenbach_inhumane_cw_trait_awarded
 	}
 	if = {
 		limit = {
@@ -554,6 +615,24 @@ chaosx_startup_recruit_dated_pol_cbrn_characters = {
 chaosx_startup_recruit_dated_sov_cbrn_characters = {
 	if = {
 		limit = {
+			# Velikanov is absent from the later historical bookmark after
+			# his documented 8 April 1938 execution; a 1936 campaign may diverge.
+			date < 1938.04.08
+			NOT = { has_character = SOV_ivan_mikhailovich_velikanov }
+		}
+		recruit_character = SOV_ivan_mikhailovich_velikanov
+	}
+	if = {
+		limit = {
+			# Fishman is absent from the later historical bookmark after his
+			# documented 5 June 1937 arrest; a 1936 campaign may diverge.
+			date < 1937.06.05
+			NOT = { has_character = SOV_yakov_fishman }
+		}
+		recruit_character = SOV_yakov_fishman
+	}
+	if = {
+		limit = {
 			# Beria became Soviet NKVD People's Commissar on 25 November 1938.
 			date > 1938.11.24
 			NOT = { has_character = SOV_lavrentiy_pavlovich_beria }
@@ -566,6 +645,17 @@ chaosx_startup_recruit_dated_sov_cbrn_characters = {
 			NOT = { has_character = SOV_grigory_mairanovsky }
 		}
 		recruit_character = SOV_grigory_mairanovsky
+	}
+	if = {
+		limit = {
+			# The secret toxicology laboratory and prisoner poison tests
+			# are documented in 1938; Jan 1 is a year-level access floor.
+			date > 1937.12.31
+			has_character = SOV_grigory_mairanovsky
+			NOT = { has_country_flag = mairanovsky_inhumane_cw_trait_awarded }
+		}
+		SOV_grigory_mairanovsky = { add_scientist_trait = scientist_trait_inhumane_cw }
+		set_country_flag = mairanovsky_inhumane_cw_trait_awarded
 	}
 	if = {
 		limit = { has_character = SOV_lavrentiy_pavlovich_beria }
@@ -584,7 +674,8 @@ chaosx_startup_recruit_dated_sov_cbrn_characters = {
 chaosx_startup_recruit_dated_usa_cbrn_characters = {
 	if = {
 		limit = {
-			date > 1943.01.01
+			# Olson's 1943 Detrick arrival is year-level evidence.
+			date > 1942.12.31
 			NOT = { has_character = USA_frank_olson }
 		}
 		recruit_character = USA_frank_olson

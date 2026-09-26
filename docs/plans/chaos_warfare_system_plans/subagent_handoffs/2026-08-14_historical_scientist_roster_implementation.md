@@ -1,5 +1,7 @@
 # Historical scientist roster implementation handoff
 
+**Disposition: superseded for present-day availability, skill, and trait claims.** This is a dated implementation snapshot. The accepted 2026-09-20 overhaul, [six-date correction](../../../specs/chaos_warfare_system_specs/corrections/2026-09-27_scientist_availability_dates.md), and [lifecycle and field correction](../../../specs/chaos_warfare_system_specs/corrections/2026-09-27_scientist_lifecycle_and_field.md) control the current roster. The 67 definitions remain, but 42 direct and 25 dated recruitment paths replace the unconditional-start description below; four inhumane traits now arrive at sourced later dates. Individual source-audit proposals remain unresolved until accepted and implemented.
+
 Date: 2026-08-14.
 
 ## Outcome

@@ -1,5 +1,7 @@
 # CBRN MIO and industrial concern redesign handoff
 
+**Disposition: historical implementation snapshot, superseded for DuPont's national signature and maximum protection reliability.** The [accepted polymer signature correction](../../../specs/chaos_warfare_system_specs/corrections/2026-09-27_dupont_polymer_mio_signature.md) moves DuPont's override to Protective Clothing Sets. The former +31% DuPont advanced-mask reliability figure below is no longer current; the source maximum on that path is ICI's +30%. Other owner evidence remains scoped to its dated review and still needs native MIO validation.
+
 Disposition: implemented in source; final asset and engine evidence remain pending.
 Acceptance basis: the parent task authorized three functional MIO families, six historical national identities, two advanced project institutions, broad nonduplicative industrial concerns, twelve-node trees, bounded bonuses, and exact equipment badges.
 
