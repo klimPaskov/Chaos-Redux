@@ -13,9 +13,7 @@ Do not add this skill to `AGENTS.md`, `chaos-redux-subagents`, completion-audit 
 
 ### 1. Capability gate
 
-This skill does not itself grant Windows desktop control.
-
-Before starting, verify that the active Codex environment can:
+This skill does not itself grant Windows desktop control. Before starting, verify that the active Codex environment can:
 
 - see and control the Windows desktop
 - capture and save screenshots
@@ -118,7 +116,7 @@ Preserve unrelated uncommitted changes. Do not reset or clean the repository. Be
 Use this startup sequence:
 
 1. Record the current repository commit, branch, changed files, and test scope.
-2. Record timestamps for `error.log`, `game.log`, `setup.log`, `text.og` and `exceptions.log` when present.
+2. Record timestamps for `error.log`, `game.log`, `setup.log`, `text.log`, and `exceptions.log` when present.
 3. Launch:
 
 ```powershell
@@ -132,7 +130,7 @@ Start-Process -FilePath 'C:\Users\klimp\OneDrive\Desktop\hoi4.exe - Shortcut.lnk
 8. Triage only the current-run delta.
 9. If a target-mod blocking error exists, close HOI4 and enter the repair loop before starting a campaign.
 10. If no target-mod blocking error exists, start or load the dedicated test game.
-11. Use save files as well for debugging, they can sometimes be useful.
+11. Use save files for debugging as well; they can sometimes be useful.
 
 The clean-start gate passes when the current launch reaches the main menu and a country map without a new attributable blocking error. It does not require every harmless engine warning to disappear.
 

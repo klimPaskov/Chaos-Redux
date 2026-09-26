@@ -26,7 +26,7 @@ Use this skill with `chaos-redux-event-assets`.
 
 Use `$imagegen` for generated frame art. If `$imagegen` is unavailable, stop and report the blocker. Do not invent another image generation route.
 
-Every animation asset and every animation frame must use ChatGPT Images 2.5 Sunburst only for generation, iteration, edits, and final frames, including seed images and quick drafts. Never use Flare for animation work; its quick-generation route applies only to static assets. Sunburst-only animation generation and editing is required to preserve pixel consistency across frames: stable canvas, transparent bounds, anchors, silhouette, palette, edge treatment, lighting, proportions, and unchanged regions. Model choice does not replace frame-to-frame validation or drift checks. When the active image tool exposes no model selector, retain Sunburst as the required named model when selection is available and accurately record the actual exposed execution path without claiming an unreported backend model.
+Every animation asset and every animation frame must use ChatGPT Images 2.5 Sunburst only for generation, iteration, edits, and final frames, including seed images and quick drafts. Never use Flare for animation work; its quick-generation route applies only to static assets. Sunburst-only animation generation and editing is required to preserve pixel consistency across frames: stable canvas, transparent bounds, anchors, silhouette, palette, edge treatment, lighting, proportions, and unchanged regions. Model choice does not replace frame-to-frame validation or drift checks. Sunburst remains the required named model wherever selection is available; when the active image tool exposes no model selector, accurately record the actual exposed execution path without claiming an unreported backend model.
 
 Read the event-assets skill's integrated [Generate and refine source art](../chaos-redux-event-assets/SKILL.md#generate-and-refine-source-art) workflow for reference roles, focused edits, and candidate lineage. After accepting the generated seed, prefer an accepted seed or neighbouring accepted frame as the edit target for each subsequent generated frame, state the exact motion-state delta, and preserve the seed's subject, camera, palette, canvas, and anchor invariants. Record the input candidate for each frame and each repair, restate transparency in every edit, and compare all accepted frames with the seed to catch accumulated drift and loop discontinuity. Every frame still requires its own real generated or sourced visual state; improved edit consistency does not authorize transform-only motion.
 
@@ -161,9 +161,7 @@ Recommended frame plan table:
 
 For loops, the first and last frames must connect cleanly. Either repeat the first frame at the end only in the GIF preview, or make the final frame visually close enough to frame 000 that the loop does not pop.
 
-Use enough real source frames for the motion to be smooth. More sprites are better than a choppy loop when the target surface and texture size can reasonably support them, especially for subtle pulses, breathing light, drifting particles, animated portraits, and slow UI state changes.
-
-Do not be lazy with frame count. Do not choose a small number of frames just to finish faster, and do not hide a rough low-frame loop behind filters, transforms, or opacity tricks. If a low frame count is used, the brief must justify it with the target size, performance cost, or intentionally stepped motion.
+Use enough real source frames for the motion to be smooth. More sprites are better than a choppy loop when the target surface and texture size can reasonably support them, especially for subtle pulses, breathing light, drifting particles, animated portraits, and slow UI state changes. Do not choose a small number of frames just to finish faster, and do not hide a rough low-frame loop behind filters, transforms, or opacity tricks. If a low frame count is used, the brief must justify it with the target size, performance cost, or intentionally stepped motion.
 
 ## 9. Generation rules
 
@@ -379,9 +377,9 @@ Required workflow:
 2. Record the exact vanilla element coordinates, scale, and parent containers used to reach that element.
 3. Create a separate independent overlay container in a Chaos Redux `.gui` file. Do not edit vanilla GUI files for the overlay unless the task explicitly requires a vanilla GUI override.
 4. Wire that container through `common/scripted_guis/` with the right context:
-	- `player_context` for the current/player/tagged country.
-	- `diplomacy_target_context` for an overlay that should appear only in the diplomacy tab for the active diplomacy target.
-	- `selected_country_context` for selected-country surfaces that are not tied to the diplomacy tab.
+   - `player_context` for the current/player/tagged country.
+   - `diplomacy_target_context` for an overlay that should appear only in the diplomacy tab for the active diplomacy target.
+   - `selected_country_context` for selected-country surfaces that are not tied to the diplomacy tab.
 5. Parent the scripted GUI to a known token or independent window when possible, then position the overlay from the chosen parent surface.
 6. Use `alwaystransparent = yes` on decorative overlay icons so the overlay does not block UI interaction.
 7. Document both the parent window and the coordinate source in the asset handoff.
@@ -389,31 +387,31 @@ Required workflow:
 Reusable implementation pattern:
 
 1. Inspect the vanilla portrait surface and record:
-	- the independent window name or scripted GUI parent token to attach to
-	- every nested parent between the attachment point and the portrait
-	- the portrait element name, `position`, `scale`, frame element, and tab/container visibility
+   - the independent window name or scripted GUI parent token to attach to
+   - every nested parent between the attachment point and the portrait
+   - the portrait element name, `position`, `scale`, frame element, and tab/container visibility
 2. Define the animation sprites in a `.gfx` file:
-	- `spriteType` for the static fallback
-	- `frameAnimatedSpriteType` for the sheet, with `noOfFrames`, `animation_rate_fps`, `looping`, and `play_on_show`
+   - `spriteType` for the static fallback
+   - `frameAnimatedSpriteType` for the sheet, with `noOfFrames`, `animation_rate_fps`, `looping`, and `play_on_show`
 3. Define one independent overlay container in a `.gui` file:
-	- `containerWindowType` must be top-level under `guiTypes`, not nested inside another container
-	- container `position` is the tunable overlay origin
-	- container `size` should fit the overlay frame. Use `clipping = no` for portrait effects that extend beyond the portrait
-	- child `iconType` should usually use `position = { x = 0 y = 0 }`, the animated sprite, matching portrait `scale`, and `alwaystransparent = yes`
+   - `containerWindowType` must be top-level under `guiTypes`, not nested inside another container
+   - container `position` is the tunable overlay origin
+   - container `size` should fit the overlay frame. Use `clipping = no` for portrait effects that extend beyond the portrait
+   - child `iconType` should usually use `position = { x = 0 y = 0 }`, the animated sprite, matching portrait `scale`, and `alwaystransparent = yes`
 4. Wire one scripted GUI entry:
-	- set `window_name` to the independent overlay container
-	- use `diplomacy_target_context` plus `parent_window_token = selected_country_view_diplomacy` for diplomacy-tab-only target overlays
-	- use `player_context` plus a politics parent for current-country overlays
-	- set `ai_enabled = { always = no }` unless the GUI has actual AI actions
+   - set `window_name` to the independent overlay container
+   - use `diplomacy_target_context` plus `parent_window_token = selected_country_view_diplomacy` for diplomacy-tab-only target overlays
+   - use `player_context` plus a politics parent for current-country overlays
+   - set `ai_enabled = { always = no }` unless the GUI has actual AI actions
 5. Gate both the scripted GUI and the icon by the same target-scoped trigger:
-	- put the actor/state trigger in `visible = { ... }`
-	- also add `<icon_name>_visible = { ... }` under `triggers`
-	- if non-actor countries show the overlay, fix the context or trigger scope. Do not solve it with coordinate changes or duplicated GUI files
+   - put the actor/state trigger in `visible = { ... }`
+   - also add `<icon_name>_visible = { ... }` under `triggers`
+   - if non-actor countries show the overlay, fix the context or trigger scope. Do not solve it with coordinate changes or duplicated GUI files
 6. Align coordinates in this order:
-	- start from the vanilla portrait coordinate relative to the chosen parent token/window
-	- if using a higher independent parent, add nested parent offsets manually
-	- if the parent token already maps to a nested tab/body surface, do not add that surface's offset again
-	- tune only the top-level overlay container `position` after live visual feedback. Keep the child icon at `{ x = 0 y = 0 }` unless the source frame has a bad anchor
+   - start from the vanilla portrait coordinate relative to the chosen parent token/window
+   - if using a higher independent parent, add nested parent offsets manually
+   - if the parent token already maps to a nested tab/body surface, do not add that surface's offset again
+   - tune only the top-level overlay container `position` after live visual feedback. Keep the child icon at `{ x = 0 y = 0 }` unless the source frame has a bad anchor
 7. Record the final parent token/window, context type, trigger name, overlay origin, scale, vanilla reference file, portrait element, and any manual visual offset in `gfx_handoff.md`.
 
 Parent-window rule:
@@ -479,7 +477,7 @@ Before marking an animation complete, verify:
 - final DDS files exist in the correct location
 - the manifest records source mode, frame count, timing, frame size, sheet size, paths, and status
 - `gfx_handoff.md` names the static and animated sprites
-- Before full completion, durable sprite and frame facts from the temporary `gfx_handoff.md` are copied into permanent event or plan documentation, then the event-scoped workspace is deleted.
+- before full completion, durable sprite and frame facts from the temporary `gfx_handoff.md` are copied into permanent event or plan documentation, then the event-scoped workspace is deleted
 - scripted GUI leader overlays parent to a valid loaded window, not an unverified nested `*_instance`
 - leader overlay handoffs record the vanilla file, portrait element, parent window, context type, position, scale, and any summed offsets
 - no fake transform-only animation is being presented as final art

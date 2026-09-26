@@ -7,9 +7,7 @@ description: Use when recursively deepening Chaos Redux mechanics, events, focus
 
 Use this skill for loop improvement of Chaos Redux events and event-adjacent systems when a feature works, has a draft, or has an audit result, but the design still feels thin, generic, disconnected, static, or too small for the idea.
 
-This skill writes expansion specs. It is not a checklist and it is not a code patch skill. The structure of each addendum should follow the mechanic. Some addenda need a route map. Some need a country package matrix. Some need a UI description. Some need a short design note that changes one decision category. The output should be open in form and concrete in content.
-
-Use the `chaosx_improvement_loop_planner` subagent when the parent agent wants a plan-writing helper.
+This skill writes expansion specs. It is not a checklist for the main agent to mechanically fill in, and it is not a code patch skill. The structure of each addendum should follow the mechanic: some addenda need a route map, some a country package matrix, some a UI description, and some a short design note that changes one decision category. The output should be open in form and concrete in content. Planner subagent use is covered under [Subagent behavior](#subagent-behavior).
 
 ## Event loop improvement role
 
@@ -17,7 +15,7 @@ This skill is the main event-improvement loop for Chaos Redux. It is used after 
 
 The loop should expand ideas and existing mechanics thoroughly using `chaos-redux-event-planning` as the quality standard. It should turn rough systems into playable designs with regional logic, player choices, AI behavior, consequences, visual support, and implementation-ready handoffs. It is especially useful for large event reworks where the first implementation pass creates many surfaces that now need deeper connections.
 
-The loop should not write a checklist for the main agent to mechanically fill in. It should write a real expansion spec. The spec can include narrative paths, decision families, focus route architecture, country packages, formables, state groups, scripted GUI concepts, animated sprite needs, super-event thresholds, achievements, and acceptance criteria when those make the feature stronger.
+The spec can include narrative paths, decision families, focus route architecture, country packages, formables, state groups, scripted GUI concepts, animated sprite needs, super-event thresholds, achievements, and acceptance criteria when those make the feature stronger.
 
 ## Core purpose
 
@@ -133,7 +131,7 @@ Do not turn every gap into more buttons. Some features need fewer buttons and cl
 
 ## What the addendum should contain
 
-The structure should follow the mechanic. Write naturally, but make the design complete enough for implementation.
+Write naturally, but make the design complete enough for implementation.
 
 A strong addendum usually explains:
 
@@ -206,7 +204,7 @@ Formables should matter when a country earns a larger identity. They can be publ
 
 A formable addendum should explain the formation fantasy and the proof required. It should name the region clearly, describe required state groups or exact states when known, explain whether subjects or allies count, define the decision that forms it, and describe the cost of integration.
 
-Formation can change tag or cosmetic tag, country name, adjective, flag, emblem, leader, party names, ideology, cores, claims, compliance, resistance, focus access, overlay routes, decisions, integration missions, faction behavior, diplomatic reactions, super-event eligibility, and achievements
+Formation can change tag or cosmetic tag, country name, adjective, flag, emblem, leader, party names, ideology, cores, claims, compliance, resistance, focus access, overlay routes, decisions, integration missions, faction behavior, diplomatic reactions, super-event eligibility, and achievements.
 
 Hidden formables require more design, not less. Define how the player discovers them, what conditions reveal the decision, what routes disqualify them, what assets are needed, how AI treats them, and how post-formation gameplay avoids instant runaway power.
 
@@ -240,7 +238,7 @@ Visual improvement should support mechanic clarity. It should not become decorat
 
 When an improvement changes a unit, building, creature, vehicle, aircraft, naval object, or map entity, include a 3D model review instead of treating the model as a final-render detail. Check whether the feature needs a static prop, a calibrated humanoid unit, a domain-specific mesh, or a building entity, then name the vanilla mesh/entity precedent, source-height/entity-scale crosswalk, one-image Meshy input rule, PDX material mapping, required skeletal actions, `.mesh`/`.anim` exports, reimport evidence, valid map placement, and live consumer.
 
-Route bounded production to `chaosx_3d_model_pipeline`. Firearm-bearing units, including current models, require fresh Meshy 7 weapon-free bodies from one weapon-free image, then direct Blender rigs, weights, manual animation, and separate modeled/attached firearms and held props; skip Meshy rig/action attempts. Existing non-firearm repairs use Blender directly; other new models try each Meshy rig/action stage once before Blender fallback. Require completion of every missing model element without renewed approval, source equipment identity and component coverage, modest budget-preserving reduction where needed, actual modeling/authoring capability, articulated role/contact/deformation proof, and export/reimport evidence. Retain source licensing, native-alpha rules, Internet-sourced audio, bespoke counter gates, and parent ownership of runtime wiring and final review. The parent reviews source, MCP, and available in-game evidence. The user performs live-consumer and in-game validation.
+Route bounded production to `chaosx_3d_model_pipeline`. Firearm-bearing units, including current models, require fresh Meshy 7 weapon-free bodies from one weapon-free image and a separate Meshy 7 geometry task for each required firearm or other held item, then the Meshy rig and receipt-verified provider actions for the body, with firearm fitting, attachment, rigid controls, and contact corrections authored live in Blender. Existing non-firearm repairs use Blender directly; other provider-eligible bipedal models try each Meshy rig/action stage once, and non-bipedal anatomy or rejected, missing, or faulty provider results fall back to live Blender authoring. Require completion of every missing model element without renewed approval, source equipment identity and component coverage, modest budget-preserving reduction where needed, actual modeling/authoring capability, articulated role/contact/deformation proof, and export/reimport evidence. Retain source licensing, native-alpha rules, Internet-sourced audio, bespoke counter gates, and parent ownership of runtime wiring and final review. The parent reviews source, MCP, and available in-game evidence. The user performs live-consumer and in-game validation.
 
 An asset addendum can define route-specific report images, decision icons, idea icons, focus icon families, flags, portraits, faction emblems, scripted GUI panels, animated sprites, animated portrait variants, progression states, and contact sheets.
 
@@ -272,7 +270,7 @@ Use `chaosx_improvement_loop_planner` when the parent agent wants a helper to wr
 
 The planner should be deployed during implementation when a large event has gained enough new content that the design needs a second pass. It should use `chaos-redux-event-planning` to expand the idea deeply, research historical and regional connections, define mechanics that the main agent can implement, and explain how the addendum should be promoted into specs if accepted.
 
-The planner should not be deployed again for the same event until its previous addendum has been implemented, folded into specs, queued with a reason, or rejected with a reason. Audit subagents should point to the latest unresolved addendum before asking for another planner pass.
+The planner should not be deployed again for the same event until its previous addendum is resolved as described under [Deployment cadence](#deployment-cadence). Audit subagents should point to the latest unresolved addendum before asking for another planner pass.
 
 Audit subagents should use this skill when they find shallow design. They may include a compact improvement handoff in their audit. If the gap is broad enough to require new design, they should recommend `chaosx_improvement_loop_planner` or write a bounded plan if the parent explicitly asked for that kind of audit output.
 

@@ -73,11 +73,11 @@ Gate exact ledgers, capacity, source, cohort amount, and outcome totals to the s
 
 Before accepting the system, trace every population-changing call site and prove that each accepted movement has exactly one origin debit and at most one measured destination credit. The following are separate and must not be conflated:
 
-- physical origin debit.
-- route-death slice of that debit.
-- survivor credit in the destination state.
-- state and country reception-ledger deltas.
-- cohort outcome totals and map projection flags.
+- physical origin debit
+- route-death slice of that debit
+- survivor credit in the destination state
+- state and country reception-ledger deltas
+- cohort outcome totals and map projection flags
 
 Owner adapters may submit pressure, route, border, capacity, or policy proof, but only the transfer owner changes population. Outcome and projection helpers may change ledgers, flags, modifiers, or cohort metadata, but never create the population they describe. A failed route, invalid destination, failed credit, or failed reception delta must leave the corresponding physical and accounting ledgers unchanged.
 

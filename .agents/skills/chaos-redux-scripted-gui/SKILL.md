@@ -27,7 +27,7 @@ Before source changes, record:
 - acceptance basis: explicit user direction or the parent's recorded selection within the current authorization
 - reference region to native element/ID mapping, including interaction, assets, and states
 - engine constraints and justified deviations, with supporting documentation or source evidence
-- missing assets and their production owners.
+- missing assets and their production owners
 
 A file's existence, its placement in specs, a date, or an old status label does not establish approval. Existing authorization can support parent acceptance without another permission request. Do not silently drop behavior or substitute a fallback when adapting the image. Unresolved design changes follow the repository's acceptance rules.
 

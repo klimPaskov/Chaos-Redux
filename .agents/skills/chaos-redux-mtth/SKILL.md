@@ -5,7 +5,7 @@ description: Define and use HOI4 MTTH variables safely (base/modifiers, file-sco
 
 # Chaos Redux MTTH Variables
 
-## Scope and References
+## Scope and references
 
 Use MTTH variables to compute a value from a base plus modifiers, then inject that value into other logic.
 

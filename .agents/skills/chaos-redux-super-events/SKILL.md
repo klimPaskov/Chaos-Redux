@@ -5,13 +5,7 @@ description: Use when designing, researching, wiring, or documenting Chaos Redux
 
 # Chaos Redux Super Events
 
-Use this skill when a Chaos Redux task creates, updates, researches, or wires a super-event.
-
-This skill covers presentation, localisation, quote selection, audio research, image handoff, implementation wiring, and documentation.
-
-General event implementation belongs to `chaos-redux-events`.
-
-Visual asset sourcing and processing belongs to `chaos-redux-event-assets`.
+Use this skill when a Chaos Redux task creates, updates, researches, or wires a super-event. It covers presentation, localisation, quote selection, audio research, image handoff, implementation wiring, and documentation. General event implementation belongs to `chaos-redux-events`, and visual asset sourcing and processing belongs to `chaos-redux-event-assets`.
 
 ## 1. Core purpose
 
@@ -80,7 +74,7 @@ Use `chaos-redux-event-assets` for:
 - sprite handoff notes for main-agent `.gfx` wiring
 - asset manifests
 
-Super-event images may be sourced or generated. Prefer generated images for fictional, alternate-history, symbolic, supernatural, high-chaos, or emotionally specific moments. Use sourced images when the visual must depict real historical material.
+Super-event images may be sourced or generated; section 19 sets the default source mode for each kind of moment.
 
 ### This skill
 
@@ -108,7 +102,6 @@ For actual research work, use the narrow project subagents instead of making one
 The main agent owns acceptance and runtime placement of the researcher's final game-ready `.wav`, final localisation, scripted localisation, slot wiring, settings-aware sound playback wiring, audio id wiring, sound definition wiring, `.gfx` image wiring, event trigger wiring, docs alignment, and spreadsheet alignment. When spreadsheet alignment is needed, edit only the authoritative XLSX and then run `python .tools/export_event_catalog_csv.py`. Never edit the three CSV exports directly.
 
 The quote, remark, audio, and image subagents produce research notes, final files where applicable, and handoff notes. For audio, the subagent delivers the final game-ready `.wav`. The main agent accepts and places that file in the runtime sound folder without requiring an intermediate derivative. They do not edit event files, localisation files, `.gfx` files, GUI files, sound definition files, or spreadsheet rows unless the parent prompt explicitly expands their scope.
-
 
 ## 4. Super-event design role
 
@@ -239,8 +232,6 @@ Possible sources include:
 
 Examples of the kind of source that may be considered include Steely Dan lyrics, a line from *The Lord of the Rings*, a film line, or a book line, but only if the reference genuinely fits the event.
 
-Use the repository web research workflow from `AGENTS.md` to verify the exact wording and source of any referenced line.
-
 For modern copyrighted songs, films, books, or games, keep the line very short. Prefer a short fragment, a title-like reference, or a paraphrased allusion when a direct quote would be too long.
 
 Avoid generic button text such as:
@@ -252,16 +243,13 @@ Avoid generic button text such as:
 
 The button text should be short enough to fit well in-game.
 
-Document the cultural source in the super-event research note when the button text is a reference.
+Document the cultural source in the super-event research note when the button text is a reference. Research and verify it through the cultural remark workflow in section 10.
 
 ## 9. Quote rules
 
 The quote (`.q`) should deepen the super-event.
 
-Do not invent or misattribute quotes.
-Use a quote only when it fits the specific event.
-
-Use the repository web research workflow from `AGENTS.md` to find and verify real quotes.
+Do not invent or misattribute quotes. Use a quote only when it fits the specific event, and find and verify it through the quote research workflow in section 10.
 
 Prefer quotes that can be checked against a reliable source. Primary sources are best. If a primary source is not available, use reputable quote collections, archives, books, speeches, scripture references, or other traceable sources.
 
@@ -344,7 +332,7 @@ The button text (`.a`) can be a meaningful remark or cultural reference.
 
 This is separate from the main quote (`.q`).
 
-Use the repository web research workflow from `AGENTS.md` to find and verify cultural references.
+Use the repository web research workflow from `AGENTS.md` to find and verify cultural references, including the exact wording and source of any referenced line.
 
 Good cultural remark sources can include:
 
@@ -358,8 +346,6 @@ Good cultural remark sources can include:
 - political or military catchphrases
 
 The remark should fit the super-event's tone. It can be ironic, grim, darkly funny, understated, reverent, fatalistic, or bitter.
-
-For modern copyrighted works, keep the direct quote very short. Prefer brief fragments, paraphrased allusions, or title-like references when possible.
 
 For every cultural remark candidate, document:
 
@@ -420,8 +406,6 @@ The final cue should be an intentional musical recording by default, such as a c
 Never create or accept a super-event track from generated test tones, primitive waveforms, signal-generator output, metronome clicks, generated beeps, simple oscillator layers, noise beds, or quick local synthesis. This includes sine, square, triangle, sawtooth, and similar waveforms, even when mixed with noise or effects. If no real licensed track is available, stop and report the blocker instead of manufacturing a cue.
 
 Never describe a final cue with placeholder provenance such as "restored legacy", "legacy audio package", "repository history", or similar implementation-history wording in player-facing or attribution documentation. The canonical audio catalogue at `music/chaosx_music_track_list.html` and the audio docs must name the actual source title, creator or composer, performer or recording source when known, source URL, license, and duration. Use attribution status `verified` only after the title and creator/composer are identified and the source/license have been checked.
-
-The final cue should be chosen intentionally.
 
 ## 13. Audio research rules
 
@@ -548,7 +532,7 @@ Fallbacks are not allowed without discussing them with the user. If final audio 
 
 ## 17. Audio documentation
 
-Always update `music/chaosx_music_track_list.html`, the canonical audio catalogue, for every super-event track. Every final super-event track must have a row in that table, and the row must show the super-event ID using the track. User-approved reuse must list every affected ID and the audio docs must explain why reuse was approved.
+Always update `music/chaosx_music_track_list.html`, the canonical audio catalogue, for every super-event track, with the row and reuse documentation required by section 14, step 10.
 
 Update any additional audio documentation used by the repo.
 
@@ -774,7 +758,7 @@ Before closing a super-event task, confirm:
 20. The base sound definition in `sound/chaosx_sound.asset` points to the correct `.wav`.
 21. Required settings-volume soundeffect wrappers point to the base sound and follow the helper naming contract.
 22. `music/chaosx_music_track_list.html` records the final track, source/rights details, and super-event ID or IDs.
-23. The audio id is specific to the super-event or intentionally shared and documented.
+23. The audio id is specific to the super-event, or its shared use was explicitly approved by the user and documented.
 24. `global.current_super_event_audio_id` is set correctly.
 25. `play_current_super_event_sound = yes` uses the settings-aware sound helper.
 26. Scripted localisation is updated, including `GetSuperEventImage`. Otherwise the slot can show default art while the text/audio work.
