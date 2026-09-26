@@ -693,6 +693,19 @@
 @dah_network_convoy = 0.06
 @dah_network_consumer = -0.03
 
+@don_emergency_stores_supply = 0.10
+@don_emergency_stores_training = 0.05
+@don_unratified_mandate_stability = -0.05
+@don_assembly_stability = 0.05
+@don_constitutional_organization = 0.05
+@don_emergency_organization = 0.08
+@don_reviewed_stability = 0.05
+@don_reviewed_organization = 0.05
+@don_chartered_supply = -0.05
+@don_chartered_organization = 0.05
+@don_failed_charter_stability = -0.05
+@don_failed_charter_supply = 0.05
+
 ideas = {
 	country = {
 
@@ -4591,6 +4604,92 @@ ideas = {
 				stability_factor = @dah_emergency_stability
 				army_defence_factor = @dah_emergency_defence
 				army_org_factor = @dah_emergency_org
+			}
+		}
+
+		# SOURCE: docs/events/006_independence_wave/systems/iw039_don_millerovo_host_charter.md
+		don_millerovo_emergency_stores = {
+			picture = independence_wave_fragmented_command
+			allowed = { original_tag = DON }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				supply_consumption_factor = @don_emergency_stores_supply
+				training_time_factor = @don_emergency_stores_training
+			}
+		}
+
+		don_millerovo_stores_secured = {
+			picture = independence_wave_founding_identity
+			allowed = { original_tag = DON }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				supply_consumption_factor = @don_chartered_supply
+			}
+		}
+
+		don_unratified_service_mandate = {
+			picture = independence_wave_improvised_government
+			allowed = { original_tag = DON }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				stability_factor = @don_unratified_mandate_stability
+			}
+		}
+
+		don_elected_host_assembly = {
+			picture = independence_wave_improvised_government
+			allowed = { original_tag = DON }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				stability_factor = @don_assembly_stability
+			}
+		}
+
+		don_constitutional_district_compact = {
+			picture = independence_wave_founding_identity
+			allowed = { original_tag = DON }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_org_factor = @don_constitutional_organization
+			}
+		}
+
+		don_emergency_host_staff = {
+			picture = independence_wave_fragmented_command
+			allowed = { original_tag = DON }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_org_factor = @don_emergency_organization
+			}
+		}
+
+		don_reviewed_civilian_command = {
+			picture = independence_wave_improvised_government
+			allowed = { original_tag = DON }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				stability_factor = @don_reviewed_stability
+				army_org_factor = @don_reviewed_organization
+			}
+		}
+
+		don_chartered_host_service = {
+			picture = independence_wave_founding_identity
+			allowed = { original_tag = DON }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				supply_consumption_factor = @don_chartered_supply
+				army_org_factor = @don_chartered_organization
+			}
+		}
+
+		don_fractured_host_charter = {
+			picture = independence_wave_post_release_instability
+			allowed = { original_tag = DON }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				stability_factor = @don_failed_charter_stability
+				supply_consumption_factor = @don_failed_charter_supply
 			}
 		}
 

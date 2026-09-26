@@ -1,0 +1,268 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-039 DON MILLEROVO CHARTER DECISIONS
+# ============================================================================
+# The package mission, serialized paid projects, three government settlements,
+# and time-limited emergency review are gated by exact DON origin and anchor.
+# ============================================================================
+
+# `ai_hint_pp_cost` requires a literal amount, so these file-scoped hints mirror
+# the authoritative DON script constants used by availability and payment.
+@CR_SC_DON_RAILHEAD_AI_PP_HINT = 25
+@CR_SC_DON_PETITION_AI_PP_HINT = 20
+@CR_SC_DON_GOVERNMENT_AI_PP_HINT = 30
+@CR_SC_DON_REVIEW_AI_PP_HINT = 10
+
+independence_wave_don_millerovo_charter_category = {
+	independence_wave_don_hold_millerovo_charter = {
+		name = independence_wave_don_hold_millerovo_charter
+		desc = independence_wave_don_hold_millerovo_charter_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		activation = {
+			is_independence_wave_don_package = yes
+			has_country_flag = independence_wave_iw_039_don_setup_complete
+			NOT = { has_country_flag = independence_wave_don_charter_complete }
+			NOT = { has_country_flag = independence_wave_don_charter_failed }
+		}
+		available = { always = no }
+		days_mission_timeout = constant:independence_wave_don_duration.founding_charter
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_don_package = yes }
+				NOT = { has_independence_wave_don_anchor_control = yes }
+				has_country_flag = independence_wave_don_charter_complete
+				has_country_flag = independence_wave_don_charter_failed
+				has_independence_wave_don_charter_success_conditions = yes
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { has_independence_wave_don_charter_success_conditions = yes }
+				custom_effect_tooltip = independence_wave_don_charter_succeeded_tt
+				independence_wave_don_finish_charter = yes
+			}
+			else_if = {
+				limit = { has_independence_wave_don_package_generation = yes }
+				independence_wave_don_fail_charter = yes
+			}
+		}
+		timeout_effect = {
+			custom_effect_tooltip = independence_wave_don_charter_failed_tt
+			independence_wave_don_fail_charter = yes
+		}
+		is_good = no
+		ai_will_do = { base = constant:independence_wave_decision_ai.urgent }
+	}
+
+	independence_wave_don_review_emergency_host_staff = {
+		name = independence_wave_don_review_emergency_host_staff
+		desc = independence_wave_don_review_emergency_host_staff_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		activation = {
+			is_independence_wave_don_package = yes
+			has_country_flag = independence_wave_don_emergency_host_staff
+			NOT = { has_country_flag = independence_wave_don_emergency_review_complete }
+			NOT = { has_country_flag = independence_wave_don_emergency_review_failed }
+		}
+		available = { always = no }
+		days_mission_timeout = constant:independence_wave_don_duration.emergency_civilian_review
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_don_package = yes }
+				NOT = { has_independence_wave_don_anchor_control = yes }
+				has_country_flag = independence_wave_don_emergency_review_complete
+				has_country_flag = independence_wave_don_emergency_review_failed
+				has_country_flag = independence_wave_don_charter_failed
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { has_country_flag = independence_wave_don_emergency_review_complete }
+				custom_effect_tooltip = independence_wave_don_emergency_review_complete_tt
+			}
+			else_if = {
+				limit = { has_independence_wave_don_package_generation = yes }
+				set_country_flag = independence_wave_don_emergency_review_failed
+				custom_effect_tooltip = independence_wave_don_emergency_review_failed_tt
+				independence_wave_don_fail_charter = yes
+			}
+		}
+		timeout_effect = {
+			custom_effect_tooltip = independence_wave_don_emergency_review_failed_tt
+			set_country_flag = independence_wave_don_emergency_review_failed
+			independence_wave_don_fail_charter = yes
+		}
+		is_good = yes
+		ai_will_do = { base = constant:independence_wave_decision_ai.urgent }
+	}
+
+	independence_wave_don_audit_millerovo_railhead = {
+		name = independence_wave_don_audit_millerovo_railhead
+		desc = independence_wave_don_audit_millerovo_railhead_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_don_project_ready = yes
+			has_completed_focus = independence_wave_don_survey_rail_and_remount_stores
+			NOT = { has_country_flag = independence_wave_don_railhead_receipt }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = independence_wave_don_railhead_available_tt
+				can_start_independence_wave_don_railhead_project = yes
+			}
+		}
+		custom_cost_trigger = { can_pay_independence_wave_don_railhead_cost = yes }
+		custom_cost_text = independence_wave_don_cost_railhead
+		ai_hint_pp_cost = @CR_SC_DON_RAILHEAD_AI_PP_HINT
+		days_remove = constant:independence_wave_decision_duration.short
+		complete_effect = { independence_wave_don_pay_railhead_project = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_don_railhead_complete_tt
+			independence_wave_don_complete_railhead_survey = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_don_project_ready = yes }
+				NOT = { has_independence_wave_don_anchor_control = yes }
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = independence_wave_don_railhead_interrupted_tt
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_don_hear_district_petitions = {
+		name = independence_wave_don_hear_district_petitions
+		desc = independence_wave_don_hear_district_petitions_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_don_project_ready = yes
+			has_completed_focus = independence_wave_don_hear_land_and_service_claims
+			NOT = { has_country_flag = independence_wave_don_petition_receipt }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = independence_wave_don_petitions_available_tt
+				can_start_independence_wave_don_petition_project = yes
+			}
+		}
+		custom_cost_trigger = { can_pay_independence_wave_don_petition_cost = yes }
+		custom_cost_text = independence_wave_don_cost_petitions
+		ai_hint_pp_cost = @CR_SC_DON_PETITION_AI_PP_HINT
+		days_remove = constant:independence_wave_decision_duration.rapid
+		complete_effect = { independence_wave_don_pay_petition_project = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_don_petitions_complete_tt
+			independence_wave_don_complete_petition_hearing = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_don_project_ready = yes }
+				NOT = { has_independence_wave_don_anchor_control = yes }
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = independence_wave_don_petitions_interrupted_tt
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_don_elect_host_assembly = {
+		name = independence_wave_don_elect_host_assembly
+		desc = independence_wave_don_elect_host_assembly_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { has_independence_wave_don_government_requirements = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = independence_wave_don_government_available_tt
+				can_choose_independence_wave_don_government = yes
+			}
+		}
+		custom_cost_trigger = { can_pay_independence_wave_don_government_cost = yes }
+		custom_cost_text = independence_wave_don_cost_government
+		ai_hint_pp_cost = @CR_SC_DON_GOVERNMENT_AI_PP_HINT
+		fire_only_once = yes
+		complete_effect = {
+			independence_wave_don_pay_government_settlement = yes
+			custom_effect_tooltip = independence_wave_don_assembly_settled_tt
+			independence_wave_don_choose_elected_host_assembly = yes
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_don_ratify_district_compact = {
+		name = independence_wave_don_ratify_district_compact
+		desc = independence_wave_don_ratify_district_compact_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { has_independence_wave_don_government_requirements = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = independence_wave_don_constitutional_available_tt
+				can_choose_independence_wave_don_constitutional_government = yes
+			}
+		}
+		custom_cost_trigger = { can_pay_independence_wave_don_constitutional_cost = yes }
+		custom_cost_text = independence_wave_don_cost_constitutional
+		ai_hint_pp_cost = @CR_SC_DON_GOVERNMENT_AI_PP_HINT
+		fire_only_once = yes
+		complete_effect = {
+			independence_wave_don_pay_government_settlement = yes
+			independence_wave_don_pay_constitutional_charge = yes
+			custom_effect_tooltip = independence_wave_don_constitutional_settled_tt
+			independence_wave_don_choose_constitutional_district_compact = yes
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_war = yes }
+		}
+	}
+
+	independence_wave_don_establish_emergency_host_staff = {
+		name = independence_wave_don_establish_emergency_host_staff
+		desc = independence_wave_don_establish_emergency_host_staff_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = { has_independence_wave_don_government_requirements = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = independence_wave_don_government_available_tt
+				can_choose_independence_wave_don_government = yes
+			}
+		}
+		custom_cost_trigger = { can_pay_independence_wave_don_government_cost = yes }
+		custom_cost_text = independence_wave_don_cost_government
+		ai_hint_pp_cost = @CR_SC_DON_GOVERNMENT_AI_PP_HINT
+		fire_only_once = yes
+		complete_effect = {
+			independence_wave_don_pay_government_settlement = yes
+			custom_effect_tooltip = independence_wave_don_emergency_settled_tt
+			independence_wave_don_choose_emergency_host_staff = yes
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_war = yes }
+		}
+	}
+
+	independence_wave_don_review_civilian_command = {
+		name = independence_wave_don_review_civilian_command
+		desc = independence_wave_don_review_civilian_command_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_don_emergency_review_open = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = independence_wave_don_emergency_review_available_tt
+				can_complete_independence_wave_don_emergency_review = yes
+			}
+		}
+		custom_cost_trigger = { can_pay_independence_wave_don_emergency_review_cost = yes }
+		custom_cost_text = independence_wave_don_cost_emergency_review
+		ai_hint_pp_cost = @CR_SC_DON_REVIEW_AI_PP_HINT
+		fire_only_once = yes
+		complete_effect = {
+			independence_wave_don_pay_emergency_review = yes
+			custom_effect_tooltip = independence_wave_don_emergency_review_complete_tt
+			independence_wave_don_complete_emergency_review = yes
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.urgent }
+	}
+}

@@ -1,5 +1,13 @@
 # Source specification acceptance checklist
 
+## Current authority and evidence boundary (2026-09-26)
+
+The accepted full Event 006 specification remains the design authority; implementation counts and blockers are reconciled in `../../../plans/006_independence_wave_plans/006_source_of_truth_map.md`. The current static boundary is 32 content-attested selectable packages across 29 compatible reservation groups, 41 runtime adapters, and 161 unattested selectable non-overlay rows. IW-039/DON is one of nine adapter-only fail-closed rows. The accepted automatic ladder remains 3/4/5/7/10, with World Collapse at 10. The static allocator, 32-cell/eight-edge SCN-008 matrix, country API, 102 flag families, and repository localisation audit pass; they do not prove the unadmitted package runtime or full-event completion.
+
+The user accepted the Millerovo host/district council, three settlements, 245 anchor/capital, optional 238, exclusion of 218, SOV 219 protection, both-order DHC exclusion, Event 006-only DON OOB suppression and one p39 force after valid muster, five imported shared focuses, accepted affordability contract, and FORM-11 as a separate flag-only later gate without carrier, action, consumer, or auto-formation. The [current parent resolution](../../../plans/006_independence_wave_plans/subagent_handoffs/006_iw039_don_parent_source_resolution_2026-09-26.md) records source-order fixes for payment, focus visibility, mission terminal gates, capital requirements, cancellation feedback, and player localisation. Central IW-039 content attestation remains withheld.
+
+The exact-cost and state/collision/muster scenarios are still unexecuted; typed AI/probability evidence is partial; the technology inspect/render calls timed out; focus MCP still omits imported DON nodes; the native decision panel render is blank/clipped; conditional Sidorin reuse remains gated and unused under the accepted no-portrait-dependency baseline; the two incident-event sketches remain unresolved; and the current flag-only FORM-11 gate has no implementation consumer. This checklist remains **HOLD / PARTIAL** until every whole-event package, formable, event, focus, decision, AI, asset, UI, documentation, catalog, and completion requirement has current evidence.
+
 ## Current evidence reconciliation (2026-09-19)
 
 The 2026-09-19 IW-095 package completion audit at `../../../plans/006_independence_wave_plans/subagent_handoffs/006_iw095_package_completion_2026-09-19.md` is the current package-local evidence authority and leaves central admission fail-closed.
