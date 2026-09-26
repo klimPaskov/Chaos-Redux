@@ -102,6 +102,8 @@ Field hospitals and international medical missions instead consume Political Pow
 
 Quarantine consumes Political Power, Command Power, trucks, and manpower. Support and infantry equipment must be on hand to staff the cordon, but remain in the stockpile. The cordon strains local production and raises resistance while slowing disease.
 
+Sustain Containment commits Medical Capacity and consumes Political Power, Command Power, and Support Equipment when ordered. Trucks and CBRN Instruments must be on hand but are not consumed at selection. A continuing success or partial success consumes another Support Equipment shipment only if the smaller transport and instrument requirements remain met when the mission ends; otherwise the response fails and its medical teams return.
+
 ## Stockpile Safety and Accidents
 
 One exact owned biowarfare facility is designated as the national arsenal.
