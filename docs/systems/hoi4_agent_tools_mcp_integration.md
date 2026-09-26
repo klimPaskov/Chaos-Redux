@@ -17,21 +17,31 @@ The mod containing the MCP working directory is the writable source root. The in
 
 The registration contains no credentials. Keep HTTP bearer tokens in environment variables, never in tracked config.
 
-## Available tools
+## Tool routes
 
-| Capability | Installed tools | Source access |
+| Capability | MCP tools | Source access |
 | --- | --- | --- |
-| Focus Tree Workbench | `hoi4.focus_inspect`, `hoi4.focus_render`, `hoi4.focus_rewrite` | inspect/render do not write source (they produce artifacts); rewrite writes the configured mod through the shared transaction engine |
+| Focus Tree Workbench | `hoi4.focus_inspect`, `hoi4.focus_render`, `hoi4.focus_raster`, `hoi4.focus_rewrite` | inspect/render/raster produce evidence; rewrite writes the configured mod through the shared transaction engine |
 | Scripted GUI Studio | `hoi4.gui_inspect`, `hoi4.gui_render`, `hoi4.gui_rewrite` | inspect/render do not write source (they produce artifacts); rewrite writes the configured mod |
 | Agent Nudger | `hoi4.map_inspect`, `hoi4.map_render`, `hoi4.map_rewrite` | inspect/render do not write source (they produce artifacts); rewrite writes the configured mod |
 | Event Chain Viewer | `hoi4.event_inspect`, `hoi4.event_render`, `hoi4.event_compare` | read-only |
-| Technology Tree Viewer | none in the installed package | unavailable; do not invent a wrapper or claim this check passed |
+| Technology trees | `hoi4.tech_inspect`, `hoi4.tech_render`, `hoi4.tech_compare` | read-only source and visual evidence |
+| Local references | `hoi4.reference_context`, `hoi4.reference_search`, `hoi4.reference_read`, `hoi4.source_lookup` | read-only offline wiki, installed documentation, and exact source definitions/usages |
+| Probability and AI | `hoi4.probability_inspect`, `hoi4.probability_evaluate`, `hoi4.probability_sweep`, `hoi4.probability_simulate`, `hoi4.probability_sequence`, `hoi4.probability_compare`, `hoi4.probability_render` | read-only scenario evidence |
+| Cross-system analysis | `hoi4.impact_inspect`, `hoi4.decision_inspect`, `hoi4.mechanic_test`, `hoi4.package_check`, `hoi4.scenario_test` | read-only source and declared-scenario evidence |
 
 Large JSON, SVG, PNG, HTML, diagnostics, plans, and diffs are linked through `hoi4-agent://` MCP resources. Source files remain authoritative.
+When reading an artifact resource, use the configured MCP server key `hoi4_agent_tools`; the npm package name `hoi4-agent-tools` is not the resource server identifier. Follow the returned byte-range continuation until the resource is complete.
 
 ## Existing workflow ownership
 
-Use the skill that owns the current work. `chaos-redux-focus-trees` owns focus inspection and layout evidence; `chaos-redux-events` owns event-chain inspection; `chaos-redux-scripted-gui` owns GUI reference-to-native design and mandatory Scripted GUI Studio visual evidence; `chaos-redux-decisions-missions` retains GUI action costs, requirements, effects, AI, cleanup, and balance; map-touching workflows may use Agent Nudger. Technology, doctrine, country, event, and focus work should use a Technology Tree Viewer only after a server version actually exposes one. There is no central MCP skill or router.
+Use the skill that owns the current work. `chaos-redux-focus-trees` owns focus inspection and layout evidence; `chaos-redux-events` owns event-chain inspection; `chaos-redux-scripted-gui` owns GUI reference-to-native design and mandatory visual evidence; `chaos-redux-decisions-missions` retains GUI action costs, requirements, effects, AI, cleanup, and balance. Technology and map work use their domain inspect, render, compare, and rewrite routes. There is no central MCP skill or router.
+
+## Local reference workflow
+
+Call `hoi4.reference_context` for the work surface, then `hoi4.reference_search` and `hoi4.reference_read` for the exact rule or command. `hoi4.source_lookup` finds exact vanilla and Chaos Redux definitions, override status, and indexed usages. Keep the source path, line span, and revision with implementation notes. The offline wiki under `paradox_wiki/` and installed game documentation are the source material; do not fetch the Paradox Wiki website. Read only the sections relevant to the task. A citation bundle is a navigation result, so read the cited sections that support each decision. If a reference root is unavailable or sections are skipped, inspect the local files directly and record the missing coverage. Installed game documentation takes precedence for current syntax; verify a vanilla source precedent when possible.
+
+Check the connected tool list and live schemas before using any route. Domain-specific inspect, render, compare, and declared scenarios remain necessary for implementation evidence; reference retrieval does not replace them.
 
 ## Writes and recovery
 
@@ -50,4 +60,4 @@ Focus, GUI, map, and event renders are deterministic offline evidence, not game 
 
 Use stdio for local agents. For a separate process, run `hoi4-agent-tools-http --config PATH` with loopback binding, a long bearer token supplied through the configured environment variable, an exact origin allowlist, and explicit workspace grants. Non-loopback deployments need HTTPS, OAuth/OIDC, isolation, and the package limits described in the standalone `docs/http.md`.
 
-If tools are missing, check `npm list --global hoi4-agent-tools --depth=0`, confirm the project is trusted, and restart Codex. Call the domain tool you need directly while the MCP `cwd` is the target mod. Re-run the Inspector or the package integration tests after upgrades. The current Technology Tree Viewer gap is a package limitation, not a Chaos Redux workflow rule.
+If tools are missing, check `npm list --global hoi4-agent-tools --depth=0`, confirm the project is trusted, and restart Codex. Call the domain tool you need directly while the MCP `cwd` is the target mod. Verify the package with its Inspector and integration tests when a required route is absent.
