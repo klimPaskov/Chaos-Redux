@@ -18,8 +18,6 @@ Start every review with:
 
 The canonical Vanilla reference PNGs teach framing, scale, transparency, style, and engine pipeline. They are review material only: never recolor, trace, wire, or ship them as runtime assets.
 
-`ultimate_hoi4_gfx/` is a separate, curated companion collection pinned to the upstream tree recorded in its catalog, not a vanilla reference family or a full upstream mirror. Read its `README.md` and `CATALOG.md`, then the skill's [companion-use rules](../references/ultimate-hoi4-gfx.md) before selecting an item. Most pieces, including focus icon pieces and backgrounds, are composition or style references only. A catalog-approved persistent backdrop, particularly a decision-category icon background, may be retained as a credited compositing layer under an original ImageGen subject. Keep the source layer separate from the final art and record its provenance in the output manifest. Local lowercase snake_case filenames may differ from upstream; use the catalog's original path and hash to trace each item. Installed vanilla and Chaos Redux consumers, with `vanilla_reference/`, still govern dimensions, alpha, states, and wiring.
-
 ## Reference families
 
 Portraits and character references:
@@ -28,6 +26,7 @@ Portraits and character references:
 - `portraits/commanders/`
 - `portraits/operatives/`
 - `portraits/advisors/` (native `65x67` dossier-card references)
+- `visual_components/portrait_backdrops/` (framing references under the normal portrait identity and source-mode rules)
 
 Flags and event art:
 
@@ -42,6 +41,10 @@ Gameplay icons:
 - `icons/decisions/`, `icons/missions/`, `icons/decision_categories/`, and `icons/achievements/`
 - `icons/officer_corps_spirits/`, `icons/balance_of_power/`, `icons/intelligence_agency/`, and `icons/intelligence_operations/`
 - the separate `commander_traits`, `medals`, `military_raids`, `state_modifiers`, `military_industrial_organizations`, `factions`, `buildings`, and `modifiers` folders under `icons/`
+- `visual_components/focus_pieces/` and `visual_components/focus_backgrounds/` (composition references for ImageGen focus art)
+- `visual_components/national_spirit_backgrounds/` (idea, national-spirit, and decision-category backgrounds; only catalog `background_template` entries may be final backdrop layers)
+
+Use `visual_components/CATALOG.md` to find the local file, native canvas, alpha, and role. Inspect the exact installed consumer and matching `vanilla_reference/` family first. A `background_template` may sit beneath original ImageGen subject art only when that consumer fits. Keep the component layer and ImageGen source separate from the processed preview and DDS, and record the catalog entry and role in the output manifest. Achievement templates and state derivation retain their own rules.
 
 Unit visual pipelines:
 

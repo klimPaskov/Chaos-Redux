@@ -222,11 +222,11 @@ The semantic tree is not a bank of interchangeable pictures. Use the folder for 
 
 The reusable achievement creation inputs live under `icons/achievements/template/`. The actual supplied filenames are `achievement_template.png` (completed background), `achievement_template_grey.png` (grey and not-eligible background), and `overlay.png` (unchanged red-cross not-eligible overlay). They are workflow inputs rather than reference examples, so they are excluded from the achievement contact sheet and coverage count. Preserve these supplied files byte-for-byte and at their exact native alignment.
 
-Do not add new reference images outside the skill-local `assets/` root. Add Vanilla HOI4 and Chaos Redux semantic references under `assets/vanilla_reference/` with exact provenance, dimensions, and contact-sheet coverage recorded in its catalog. Keep curated external collections in their own cataloged folders under `assets/`.
+Do not add new reference images outside the skill-local `assets/` root. Add Vanilla HOI4 and Chaos Redux semantic references under `assets/vanilla_reference/` with exact provenance, dimensions, and contact-sheet coverage recorded in its catalog. Keep reusable source components under `assets/visual_components/` and record their native canvas and role in its catalog.
 
-Before generating, sourcing, processing, or wiring an asset, read the library rules, inspect the matching category and contact sheet, and follow the vanilla source path in the catalog to its owning `.gfx`, `.gui`, `.asset`, or `.mesh` definition when engine behavior matters. Reference PNGs are never final assets: do not wire, recolor, trace, or ship them. If no category matches, inspect the closest canonical category plus a direct vanilla or established Chaos Redux precedent before choosing a style.
+Before generating, sourcing, processing, or wiring an asset, read the library rules, inspect the matching category and contact sheet, and follow the vanilla source path in the catalog to its owning `.gfx`, `.gui`, `.asset`, or `.mesh` definition when engine behavior matters. Canonical vanilla reference PNGs are never final assets: do not wire, recolor, trace, or ship them. If no category matches, inspect the closest canonical category plus a direct vanilla or established Chaos Redux precedent before choosing a style.
 
-For the curated `assets/ultimate_hoi4_gfx/` companion collection, read [references/ultimate-hoi4-gfx.md](references/ultimate-hoi4-gfx.md) and its catalog before use. It supplies optional composition and style references; only catalog-approved persistent backdrops may become credited layers beneath original ImageGen subject art. Exact vanilla or Chaos Redux consumers and `assets/vanilla_reference/` remain authoritative for dimensions, alpha, states, and wiring.
+For matching icon and portrait briefs, inspect `assets/visual_components/CATALOG.md` and the relevant contact sheet after the exact vanilla or Chaos Redux consumer and `assets/vanilla_reference/` family. The catalog role governs whether a component is only a visual reference or may also be a persistent background layer. Keep every used component source and ImageGen source separate from the processed preview and final DDS; record the local catalog entry, role, and layer path in the output manifest. The exact consumer still governs dimensions, alpha, states, and wiring, and achievement templates and state rules still apply.
 
 When validating inherited GUI or GFX references, check both the mod and installed vanilla roots before declaring a DDS or other resource missing. A missing literal `effectFile` `.lua` path alone does not prove a missing asset. Inspect matching installed-vanilla `.gfx` declarations and the associated shader resource before reporting a missing source. Record the exact declaration, resource path, and lookup evidence without assuming a generic `.lua` to `.shader` mapping. Source linkage evidence does not prove rendered behavior or live-game correctness.
 
@@ -368,13 +368,19 @@ The idea and national spirit, focus, and decision icon families below all apply 
 
 Use compact HOI4 symbolic art with aged texture, strong contrast, a clear silhouette, and readable meaning at `64x64`, usually without a full focus frame. Use `idea_` and inspect `icons/ideas/` plus its catalog row.
 
+Inspect `assets/visual_components/national_spirit_backgrounds/contact_sheet.png` for matching background treatment. A catalog `background_template` may sit beneath original ImageGen subject art when the exact idea or national-spirit consumer fits; keep the template source as a separate layer.
+
 ### Focus icons
 
 Use HOI4 focus art with a strong central symbol, clear silhouette, aged texture, painterly detail, and readable contrast tied to the focus tree story, ideology, or gameplay purpose; avoid generic thumbnails. Use `goal_` and nominal `94x86`, inspecting `icons/national_focus/`, its catalog row, and the owning sprite/current vanilla precedent before selecting the actual canvas.
 
+Inspect `assets/visual_components/focus_pieces/contact_sheet.png` and `assets/visual_components/focus_backgrounds/contact_sheet.png` for optional subject scale, framing, and composition cues in the ImageGen prompt. These components are references; create the icon's subject as original ImageGen art.
+
 ### Decision icons
 
 Compose decision icons for `32x32` readability with simple central symbols, strong contrast, and limited interior detail. Use `decision_` or `decision_category_` for category icons, and inspect `icons/decisions/`, `icons/missions/`, or `icons/decision_categories/` with the owning consumer. Missions use the decision pipeline with mission-specific semantic readability.
+
+For a decision-category icon, inspect `assets/visual_components/national_spirit_backgrounds/decision_category_background_blue_roundel.png` as a cataloged background candidate. Composite it only when the exact category consumer fits, beneath an original ImageGen subject. Do not transfer that background to ordinary decision or mission icons by resizing it.
 
 ### Additional gameplay icon families
 
