@@ -30,6 +30,8 @@ Use the relevant sections of these core topics from `paradox_wiki/`:
 - AI modding
 
 For GUI work, consult the pertinent Interface modding and Scripted GUI modding sections. For country creation, national focuses, equipment, divisions, or technology, consult the corresponding wiki sections. Search for exact commands and read their sections when the syntax matters. Do not rely on memory when a local reference exists. If `hoi4.reference_context` reports a missing or skipped source, locate the relevant local file directly or report the gap.
+When a live result includes `omittedSources`, those required sources were excluded by the result limit; increase the limit or use targeted `hoi4.reference_search` and `hoi4.reference_read` before claiming coverage.
+Unlike `omittedSources`, `missing` identifies absent files; a limit of 1 can retain only installed documentation, while a limit of 2 or more can retain both available required source kinds.
 
 Web access:
 
