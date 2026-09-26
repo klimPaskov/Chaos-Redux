@@ -107,7 +107,9 @@ Event 006 suppresses the vanilla `DON_cossack_host` opening divisions for this r
 
 FORM-11 remains a separate, later-gated regional objective and cannot be auto-formed by an IW-039 focus or release effect. No carrier or exact accession implementation is selected here; any future carrier must obey the X-tag rule and the accepted exclusion of state 218.
 
-The package may use the existing vanilla Sidorin portrait only after its source, DLC availability, sprite, and role consumer pass audit. Do not create an Event 006 portrait dependency or substitute another face. The portrait-consumer audit is a remaining implementation gate.
+The package may use the existing vanilla Sidorin portrait only after its source, DLC availability, sprite, and role consumer pass audit. Do not create an Event 006 portrait dependency or substitute another face.
+
+**Portrait reuse status (2026-09-26):** the read-only consumer audit found the large and small Sidorin sprites only under No Step Back; `descriptor.mod` does not require that DLC, current Event 006 sources have no Sidorin consumer, and the archived Commons photo does not prove the vanilla DDS source lineage. The exact vanilla character and sprite registrations remain valid for their existing DLC consumers, but Event 006 portrait reuse is `blocked` until DLC availability, source lineage, visual/role review, and an actual approved consumer are established. No new portrait asset, sprite, or Event 006 wiring exists or is authorized as a substitute.
 
 The proposed political-power, command-power, equipment, factory, project-duration, and founding-mission values remain unresolved pending source-based affordability and completion-order review. The numeric benchmarks in the addendum are not accepted tuning values. The charter structure, OOB boundary, separate FORM-11 scope, and portrait boundary are accepted; acceptance does not establish runtime behavior, historical fact, affordability, or IW-039 admission.
 
