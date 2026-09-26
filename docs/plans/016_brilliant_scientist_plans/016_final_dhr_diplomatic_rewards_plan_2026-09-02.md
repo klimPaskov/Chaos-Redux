@@ -1,7 +1,7 @@
 # Event016 DHR diplomatic reward closure plan
 
 Status: the two paid-advisor contracts are accepted, promoted to the Alien Infantry and D’Rhonda specification, implemented, and reviewed in `subagent_handoffs/016_final_dhr_advisor_reward_implementation_2026-09-02.md`.
-The Covenant ratification gate and three-regime integration contract are implemented in `subagent_handoffs/016_dhr_route_receipt_gates_2026-09-25.md`. The map-exchange receipt continues to gate the Covenant compact. The separate paid terrestrial partner accord remains queued. The Synod no-DLC accord alternative specifically awaits user approval. The current MCP comparison limits in that handoff prevent a final acceptance claim.
+The Covenant ratification gate and three-regime integration contract are implemented in `subagent_handoffs/016_dhr_route_receipt_gates_2026-09-25.md`. The map-exchange receipt continues to gate the Covenant compact. The paid terrestrial partner accord is implemented in the scoped source files listed below. On 2026-09-26, the user explicitly approved reciprocal military access for both countries when Arms Against Tyranny is absent, after the partner accepts the offer; the 75-PP cost, consent, accord receipts, and tooltip remain required. This umbrella plan remains partial: four focus completion rewards still call `dhrondan_focus_add_diplomatic_credit`, so the full scan/removal/deprecation step remains queued. The accord’s implementation and validation limits are recorded in `subagent_handoffs/016_dhr_terrestrial_partner_accord_implementation_2026-09-26.md`; the Event 016 workbook and CSV synchronization is recorded in `subagent_handoffs/016_dhr_partner_accord_catalog_sync_2026-09-26.md`.
 The following findings describe the pre-implementation baseline, not a claim that all six rewards remain untouched.
 The accepted advisor tranche preserves the 88-focus layout and has a corrected same-fixture MCP probability comparison in `subagent_handoffs/016_final_dhr_advisor_reward_probability_2026-09-02.md`.
 
@@ -94,11 +94,13 @@ On partner acceptance, perform route-specific tangible actions only after the ki
 | Synod | If `has_dlc = "Arms Against Tyranny"`, both countries receive reciprocal market access through `give_market_access`. | Set the same idempotent root/target receipts; do not add generic opinion-only reward. |
 | Covenant | Both countries grant reciprocal military access and receive the explicit cultural/embassy agreement marker represented by `dhrondan_terrestrial_partner_accord`. | Set the same root/target receipts; preserve any pre-existing NAP rather than creating a compact NAP. |
 
-The Synod no-DLC behavior needs parent choice before implementation. The recommended native fallback is reciprocal military access with a clear no-DLC tooltip, because it remains a meaningful access agreement without claiming a DLC-only market-access effect. If that fallback is not accepted, the decision must be unavailable when the DLC is absent, with the reason shown explicitly; do not silently substitute a market effect or grant unilateral access.
+User-approved Synod no-DLC behavior (2026-09-26): when Arms Against Tyranny is absent, the offer remains available and, after explicit partner acceptance, both countries exchange military access. The 75-PP cost, partner consent, matching accord receipts, and tooltip remain in effect. With the DLC, the Synod instead grants mutual market access. Neither outcome changes an existing non-aggression pact.
 
-Partner acceptance must not set `dhrondan_diplomatic_compact_concluded`, `dhrondan_two_world_compact_partner`, or compact achievement receipts, and must not call the default compact NAP effect. A target's existing NAP is left intact. Refusal and expiry clear the kind flag and offer pointers without relation effects or partner receipts, then allow retry after the existing cooldown. Existing `.50`/`.51` IDs may be reused with conditional partner report text/effects, but their default compact reports must remain unchanged and no report may claim compact ratification for a partner accord.
+The parent also accepts one bilateral `dhrondan_terrestrial_partner_accord` opinion marker for the Imperial and Covenant routes, worth 25 opinion with 0.5 decay. The Covenant route requires the embassy agreement marker; using the same marker for the Imperial route gives the guarantee/access accord a consistent diplomatic record. Its value is half the existing +50 Two-World Compact marker. The Synod receives access as its tangible agreement and no added opinion modifier.
 
-Add only the required dedicated localisation keys in `localisation/english/016_dhrondan_country_l_english.yml` during implementation, keeping the file UTF-8 with BOM. The planned keys are `dhrondan_offer_terrestrial_partner_accord`, `dhrondan_offer_terrestrial_partner_accord_desc`, `dhrondan_terrestrial_partner_target_requirements_tt`, `chaosx.nr16.49.partner.t`, `chaosx.nr16.49.partner.d`, `dhrondan_partner_accord_imperial_accept_effect_tt`, `dhrondan_partner_accord_synod_accept_effect_tt`, `dhrondan_partner_accord_covenant_accept_effect_tt`, `dhrondan_partner_accord_refuse_effect_tt`, and `dhrondan_partner_accord_expired_effect_tt`. Reuse the existing event picture and decision icons.
+Partner acceptance must not set `dhrondan_diplomatic_compact_concluded`, `dhrondan_two_world_compact_partner`, or compact achievement receipts, and must not call the default compact NAP effect. A target's existing NAP is left intact. Refusal and expiry clear the kind flag and offer pointers without relation effects or partner receipts, then allow retry after the existing cooldown. Partner acceptance is confirmed in the consenting country's `.49` popup and does not queue a separate `.50` report to DHR; `.50` and `.51` remain compact-only reports. No report may claim compact ratification for a partner accord.
+
+Add the dedicated localisation keys in `localisation/english/016_dhrondan_country_l_english.yml` during implementation, keeping the file UTF-8 with BOM. Give each partner regime and DLC outcome an accurate `.49` consent description, and keep `.50` localisation specific to compact ratification. Reuse the existing event picture and decision icons.
 
 ### 6. Enclave congress: route-specific integration contract
 
@@ -119,7 +121,7 @@ Use the helper in the existing `dhrondan_integrate_reclaimed_landing_site` root 
 | Regime | Focus rewards that become live | Tangible route action |
 | --- | --- | --- |
 | Imperial | Shared translation receipt unlocks Thel; map receipt and partner-selection receipt unlock the partner offer; route contract keeps subject-world integration paid and gated. | A consented `.49` accord gives guarantee plus reciprocal military access; integration remains paid core conversion. |
-| Synod | Shared translation receipt unlocks Thel; map receipt and partner-selection receipt unlock the partner offer; route contract keeps optimal-order integration paid and gated. | A consented `.49` accord gives reciprocal market access when the DLC exists, or the parent-approved native equivalent when it does not. |
+| Synod | Shared translation receipt unlocks Thel; map receipt and partner-selection receipt unlock the partner offer; route contract keeps optimal-order integration paid and gated. | A consented `.49` accord gives mutual market access with Arms Against Tyranny, or user-approved reciprocal military access without the DLC. |
 | Covenant | Delegates receipt unlocks Rae; translation receipt unlocks Thel; map receipt continues to gate compact and also enables the partner offer; ratification receipt gates compact; congress receipt gates integration. | Compact remains the existing Covenant-only NAP/acceptance path; independent partner acceptance gives reciprocal military access and cultural/embassy agreement. |
 
 No route gains a new focus, country, spirit, GUI, super-event, or achievement. No route receives free cohorts, free laser guns, or a recurring stockpile reward.
@@ -132,11 +134,12 @@ The six focus-specific flags are legitimate historical receipts because each has
 
 ## `.49` transaction risks and safeguards
 
-The native popup has one active actor offer, actor/recipient event-target pointers, an actor delivered bit, an expiry date, and a global recipient pointer. The kind flag must be set before firing `.49`, included in every response validity/commit branch, and cleared with the offer. A stale or mismatched popup must not clear a newer offer. The partner target can enter a war, become a subject, capitulate, disappear, or receive a partner accord while the popup is open; the response trigger must revalidate all of these states and the expiry path must only close the owned offer.
+The native popup has one active actor offer, actor/recipient event-target pointers, an actor delivered bit, an expiry date, and a global recipient pointer. The kind flag must be set before firing `.49`, included in every response validity/commit branch, and cleared with the offer. A stale or mismatched popup must not clear a newer offer. DHR must remain independent when the offer launches, and the partner target can enter a war, become a subject, capitulate, disappear, or receive a partner accord while the popup is open; the response trigger must revalidate all of these states and the expiry path must only close the owned offer.
 
 The current event framework documents a native same-pair annexation/release caveat: a popup already delivered to a target may be invalidated by target destruction or scope changes. The new branch should rely on the existing pointer/expiry cleanup and safe invalid response, not add a periodic world scan. A legacy save with no kind flag must continue to be treated as the default compact offer; the partner branch must never infer kind from a generic active flag.
 
 Partner acceptance is idempotent through the root/target receipt pair. Once either receipt exists, the target query and root decision must reject another partner offer. The route actions must be applied only inside the validated acceptance branch, so paying PP or refusing/expiring cannot grant access. Existing NAP partners remain legal candidates for the accord, but the accord does not manufacture or overwrite that NAP.
+The partner refusal option precedes acceptance only while a partner offer is active; this makes timeout a no-consent outcome without changing the compact offer's existing acceptance-first order.
 
 ## AI and balance ownership
 
@@ -146,11 +149,11 @@ The probability owner must establish named baseline scenarios for Imperial, Syno
 
 ## Implementation order and dependencies
 
-1. Parent reviews and accepts this plan, including the Synod no-DLC behavior and the choice to broaden Thel to all three existing regimes.
+1. Parent accepts the plan, including the choice to broaden Thel to all three existing regimes; the user separately approved the Synod no-DLC reciprocal military-access outcome on 2026-09-26.
 2. Run a full common/generated scan for `dhrondan_focus_add_diplomatic_credit`, `dhrondan_diplomatic_credit_established`, and all six receipt flags before retiring the helper.
 3. Add the route-contract trigger and target-candidate trigger, then wire the existing compact root ratification gate and existing integration decision route gate.
 4. Add the paid partner decision in the existing sovereignty category, reusing its icon, cost, response window, cooldown, and `.49` offer launch pattern.
-5. Add kind-aware offer cleanup/validation and `.49`/`.50`/`.51` conditional handling, preserving the no-kind compact path byte-for-byte in behavior.
+5. Add kind-aware offer cleanup/validation and `.49` conditional handling, preserving the no-kind compact path in behavior; keep `.50` and `.51` compact-only.
 6. Add the route-specific partner acceptance actions, idempotent receipts, one bilateral opinion marker if accepted, advisor availability gates, and dedicated localisation.
 7. Remove the six generic helper calls and retire the helper only after the scan confirms no external consumer. Optional focus custom effect tooltips may then be added without changing IDs, coordinates, or AI weights.
 8. Run bounded syntax/reference scans and the required focus MCP inspect/render/raster/compare after any actual focus-source edit. The parent owns final implementation review, probability baseline/compare, and live gameplay validation.
@@ -171,7 +174,7 @@ The MCP report contained one unrelated vanilla diagnostic, `FOCUS_LOCALISATION_R
 
 This is intentionally a bounded reward-closure plan, not a diplomacy-system redesign. It adds no new event ID, GUI, category, branch, country, spirit, achievement, or asset. The existing foreign-operation category is not repurposed because its `brilliant_scientist_is_valid_foreign_actor` trigger rejects DHR's nonhuman/special package.
 
-The Synod market-access action is DLC-gated by the vanilla precedent in the Austria focus tree. The parent must choose and review the reciprocal-military-access fallback or an explicit no-DLC unavailability rule before implementation. No unilateral access is acceptable, and no consent can be inferred from PP payment.
+The Synod market-access action is DLC-gated by the vanilla precedent in the Austria focus tree. The implemented no-DLC action is the user-approved reciprocal military-access outcome after explicit acceptance. No unilateral access is granted, and PP payment does not imply consent.
 
 The existing native `.49` same-pair target-destruction caveat remains; kind-aware pointer/expiry cleanup is the bounded mitigation, not a new polling system. The current focus layout, route structure, and AI weights are unchanged, and no probability claim is made until the named auditor runs the baseline/compare workflow.
 

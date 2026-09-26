@@ -214,4 +214,48 @@ dhrondan_sovereignty_category = {
 		days_re_enable = constant:dhrondan_decision_duration.repeat_cooldown
 		ai_will_do = { base = constant:dhrondan_ai.preferred }
 	}
+
+	dhrondan_offer_terrestrial_partner_accord = {
+		icon = GFX_decision_dhrondan_two_world_compact
+		target_root_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = dhrondan_partner_accord_root_requirements_tt
+				dhrondan_terrestrial_partner_accord_decision_is_ready = yes
+			}
+		}
+		target_trigger = {
+			FROM = {
+				custom_trigger_tooltip = {
+					tooltip = dhrondan_terrestrial_partner_target_requirements_tt
+					dhrondan_is_valid_terrestrial_partner_candidate = yes
+				}
+			}
+		}
+		available = {
+			FROM = { dhrondan_is_valid_terrestrial_partner_candidate = yes }
+			custom_trigger_tooltip = {
+				tooltip = dhrondan_diplomatic_offer_active_tt
+				NOT = { has_country_flag = dhrondan_diplomatic_offer_active }
+			}
+		}
+		cost = constant:dhrondan_decision_cost.diplomatic_compact
+		complete_effect = {
+			clr_country_flag = dhrondan_diplomatic_offer_delivered
+			set_country_flag = dhrondan_diplomatic_offer_partner_accord
+			set_country_flag = dhrondan_diplomatic_offer_active
+			save_event_target_as = dhrondan_diplomatic_actor
+			dhrondan_refresh_compact_expiry = yes
+			FROM = {
+				save_event_target_as = dhrondan_diplomatic_recipient
+				save_global_event_target_as = dhrondan_diplomatic_offer_target
+				country_event = { id = chaosx.nr16.49 }
+			}
+			if = {
+				limit = { dhrondan_compact_watchdog_matches_offer = yes }
+				dhrondan_schedule_compact_expiry = yes
+			}
+		}
+		days_re_enable = constant:dhrondan_decision_duration.repeat_cooldown
+		ai_will_do = { base = constant:dhrondan_ai.standard }
+	}
 }

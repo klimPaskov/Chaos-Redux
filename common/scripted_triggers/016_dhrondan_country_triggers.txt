@@ -113,6 +113,35 @@ dhrondan_is_valid_compact_partner = {
 	NOT = { has_country_flag = dhrondan_two_world_compact_partner }
 }
 
+# COUNTRY scope on a proposed terrestrial partner, with DHR as ROOT.
+# Existing non-aggression pacts are allowed; the accord is not a compact.
+dhrondan_is_valid_terrestrial_partner_candidate = {
+	exists = yes
+	NOT = { tag = DHR }
+	is_subject = no
+	has_capitulated = no
+	NOT = { has_war_with = ROOT }
+	NOT = { has_country_flag = dhrondan_terrestrial_partner_accord_partner }
+}
+
+# COUNTRY scope on DHR while discovering a new targeted partner offer.
+dhrondan_terrestrial_partner_accord_decision_is_ready = {
+	dhrondan_country_is_active = yes
+	is_subject = no
+	NOT = { has_global_flag = world_end }
+	dhrondan_world_order_decisions_are_unlocked = yes
+	dhrondan_focus_has_access_map_exchange = yes
+	has_country_flag = dhrondan_terrestrial_partner_selection_open
+	has_war = no
+	NOT = { has_country_flag = dhrondan_diplomatic_offer_active }
+	NOT = { has_country_flag = dhrondan_terrestrial_partner_accord_concluded }
+	OR = {
+		dhrondan_is_imperial_regime = yes
+		dhrondan_is_synod_regime = yes
+		dhrondan_is_covenant_regime = yes
+	}
+}
+
 # COUNTRY scope on DHR. These are the explicit consumers for the focus-owned
 # world-order contract. The decision surfaces still retain their route and
 # state legality checks below, so the marker only makes the promised unlock
@@ -207,32 +236,66 @@ dhrondan_compact_receipt_matches_recipient = {
 	}
 }
 
-# COUNTRY scope on the recipient of Event .49. Visibility and response legality
-# share this gate, but option effects additionally require the delivered receipt.
+# COUNTRY scope on the recipient of Event .49. Response visibility and option
+# legality both require the delivered receipt, live deadline, and matching kind.
+# The explicit no-kind branch preserves legacy compact behavior.
+dhrondan_is_valid_current_partner_accord_recipient = {
+	exists = yes
+	NOT = { tag = DHR }
+	is_subject = no
+	has_capitulated = no
+	NOT = { has_war_with = event_target:dhrondan_diplomatic_actor }
+	NOT = { has_country_flag = dhrondan_terrestrial_partner_accord_partner }
+}
+
 dhrondan_compact_response_is_valid = {
 	dhrondan_compact_receipt_matches_recipient = yes
 	exists = yes
 	NOT = { has_global_flag = world_end }
-	is_subject = no
-	NOT = { has_country_flag = dhrondan_two_world_compact_partner }
 	event_target:dhrondan_diplomatic_actor = {
-		exists = yes
-		dhrondan_is_covenant_regime = yes
-		has_country_flag = dhrondan_two_world_covenant_ratified
-		is_subject = no
-		NOT = { has_war_with = event_target:dhrondan_diplomatic_recipient }
-		NOT = { has_non_aggression_pact_with = event_target:dhrondan_diplomatic_recipient }
+		has_country_flag = dhrondan_diplomatic_offer_delivered
+		has_variable = dhrondan_diplomatic_offer_expiry_num_days
+		check_variable = { dhrondan_diplomatic_offer_expiry_num_days > global.num_days }
+	}
+	OR = {
+		AND = {
+			is_subject = no
+			NOT = { has_country_flag = dhrondan_two_world_compact_partner }
+			event_target:dhrondan_diplomatic_actor = {
+				exists = yes
+				NOT = { has_country_flag = dhrondan_diplomatic_offer_partner_accord }
+				dhrondan_is_covenant_regime = yes
+				has_country_flag = dhrondan_two_world_covenant_ratified
+				is_subject = no
+				NOT = { has_war_with = event_target:dhrondan_diplomatic_recipient }
+				NOT = { has_non_aggression_pact_with = event_target:dhrondan_diplomatic_recipient }
+			}
+		}
+		AND = {
+			event_target:dhrondan_diplomatic_actor = {
+				exists = yes
+				has_country_flag = dhrondan_diplomatic_offer_partner_accord
+				dhrondan_country_is_active = yes
+				dhrondan_world_order_decisions_are_unlocked = yes
+				dhrondan_focus_has_access_map_exchange = yes
+				has_country_flag = dhrondan_terrestrial_partner_selection_open
+				NOT = { has_country_flag = dhrondan_terrestrial_partner_accord_concluded }
+				has_war = no
+				is_subject = no
+				OR = {
+					dhrondan_is_imperial_regime = yes
+					dhrondan_is_synod_regime = yes
+					dhrondan_is_covenant_regime = yes
+				}
+			}
+			dhrondan_is_valid_current_partner_accord_recipient = yes
+		}
 	}
 }
 
 # COUNTRY scope on the recipient, evaluated at the actual option click/timeout.
 dhrondan_compact_response_can_commit = {
 	dhrondan_compact_response_is_valid = yes
-	event_target:dhrondan_diplomatic_actor = {
-		has_country_flag = dhrondan_diplomatic_offer_delivered
-		has_variable = dhrondan_diplomatic_offer_expiry_num_days
-		check_variable = { dhrondan_diplomatic_offer_expiry_num_days > global.num_days }
-	}
 }
 
 # COUNTRY scope on DHR in Event .52. An old watchdog cannot address a different

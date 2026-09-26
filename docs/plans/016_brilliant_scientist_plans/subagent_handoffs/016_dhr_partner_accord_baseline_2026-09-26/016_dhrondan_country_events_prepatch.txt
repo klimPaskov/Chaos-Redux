@@ -1,0 +1,153 @@
+add_namespace = chaosx.nr16
+
+@DHR_POSITIVE_OPINION_THRESHOLD = 25
+@DHR_NEGATIVE_OPINION_THRESHOLD = -25
+# Native popup field; keep equal to dhrondan_decision_duration.compact_response_timeout.
+@DHR_COMPACT_RESPONSE_TIMEOUT_DAYS = 13
+
+# ============================================================================
+# CHAOS REDUX - EVENT 016 EMPIRE OF D'RHONDA COUNTRY EVENTS (.48-.52)
+# ============================================================================
+# The formation headline is presentation-only. The diplomatic events resolve
+# player- or AI-started targeted decisions and never poll the world.
+# ============================================================================
+
+news_event = {
+	id = chaosx.nr16.48
+	title = chaosx.nr16.48.t
+	desc = chaosx.nr16.48.d
+	picture = GFX_news_event_016_dhrondan_sovereignty
+	is_triggered_only = yes
+	major = yes
+	option = { name = chaosx.nr16.48.a }
+}
+
+country_event = {
+	id = chaosx.nr16.49
+	title = chaosx.nr16.49.t
+	desc = chaosx.nr16.49.d
+	picture = GFX_report_event_016_dhrondan_diplomatic_compact
+	is_triggered_only = yes
+	timeout_days = @DHR_COMPACT_RESPONSE_TIMEOUT_DAYS
+	trigger = {
+		exists = yes
+		dhrondan_compact_receipt_matches_recipient = yes
+		event_target:dhrondan_diplomatic_actor = {
+			exists = yes
+			NOT = { has_country_flag = dhrondan_diplomatic_offer_delivered }
+			has_variable = dhrondan_diplomatic_offer_expiry_num_days
+			check_variable = { dhrondan_diplomatic_offer_expiry_num_days > global.num_days }
+		}
+	}
+	immediate = {
+		event_target:dhrondan_diplomatic_actor = {
+			set_country_flag = dhrondan_diplomatic_offer_delivered
+			dhrondan_refresh_compact_expiry = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr16.49.a
+		trigger = { dhrondan_compact_response_is_valid = yes }
+		ai_chance = {
+			base = constant:dhrondan_event_ai.accept_base
+			modifier = {
+				factor = constant:dhrondan_event_ai.friendly_factor
+				has_opinion = {
+					target = event_target:dhrondan_diplomatic_actor
+					value > @DHR_POSITIVE_OPINION_THRESHOLD
+				}
+			}
+			modifier = { factor = constant:dhrondan_event_ai.covenant_factor has_government = democratic }
+		}
+		custom_effect_tooltip = dhrondan_compact_accept_effect_tt
+		hidden_effect = {
+			if = {
+				limit = { dhrondan_compact_response_can_commit = yes }
+				diplomatic_relation = { country = event_target:dhrondan_diplomatic_actor relation = non_aggression_pact active = yes }
+				add_opinion_modifier = { target = event_target:dhrondan_diplomatic_actor modifier = dhrondan_two_world_compact }
+				set_country_flag = dhrondan_two_world_compact_partner
+				event_target:dhrondan_diplomatic_actor = {
+					add_opinion_modifier = { target = event_target:dhrondan_diplomatic_recipient modifier = dhrondan_two_world_compact }
+					set_country_flag = dhrondan_diplomatic_compact_concluded
+					add_stability = constant:dhrondan_decision_reward.stability_small
+					dhrondan_clear_diplomatic_offer = yes
+					country_event = { id = chaosx.nr16.50 }
+				}
+			}
+			else = { dhrondan_close_owned_compact_response = yes }
+		}
+	}
+
+	option = {
+		name = chaosx.nr16.49.b
+		trigger = { dhrondan_compact_response_is_valid = yes }
+		ai_chance = {
+			base = constant:dhrondan_event_ai.refuse_base
+			modifier = {
+				factor = constant:dhrondan_event_ai.hostile_factor
+				has_opinion = {
+					target = event_target:dhrondan_diplomatic_actor
+					value < @DHR_NEGATIVE_OPINION_THRESHOLD
+				}
+			}
+		}
+		custom_effect_tooltip = dhrondan_compact_refuse_effect_tt
+		hidden_effect = {
+			if = {
+				limit = { dhrondan_compact_response_can_commit = yes }
+				add_opinion_modifier = { target = event_target:dhrondan_diplomatic_actor modifier = dhrondan_compact_refused }
+				event_target:dhrondan_diplomatic_actor = {
+					dhrondan_clear_diplomatic_offer = yes
+					country_event = { id = chaosx.nr16.51 }
+				}
+			}
+			else = { dhrondan_close_owned_compact_response = yes }
+		}
+	}
+
+	option = {
+		name = chaosx.nr16.49.c
+		trigger = { NOT = { dhrondan_compact_response_is_valid = yes } }
+		custom_effect_tooltip = dhrondan_compact_expired_effect_tt
+		hidden_effect = { dhrondan_close_owned_compact_response = yes }
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.50
+	title = chaosx.nr16.50.t
+	desc = chaosx.nr16.50.d
+	picture = GFX_report_event_016_dhrondan_diplomatic_compact
+	is_triggered_only = yes
+	option = { name = chaosx.nr16.50.a }
+}
+
+country_event = {
+	id = chaosx.nr16.51
+	title = chaosx.nr16.51.t
+	desc = chaosx.nr16.51.d
+	picture = GFX_report_event_016_dhrondan_diplomatic_compact
+	is_triggered_only = yes
+	option = { name = chaosx.nr16.51.a }
+}
+
+# Actor-owned deadline check. Original actor/recipient pointers must still match
+# the receipt. Delivery extends the deadline once; early or duplicate watchdogs
+# follow that deadline and never unlock a popup merely because legality changed.
+country_event = {
+	id = chaosx.nr16.52
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { dhrondan_compact_watchdog_matches_offer = yes }
+	immediate = {
+		if = {
+			limit = {
+				has_variable = dhrondan_diplomatic_offer_expiry_num_days
+				check_variable = { dhrondan_diplomatic_offer_expiry_num_days > global.num_days }
+			}
+			dhrondan_schedule_compact_expiry = yes
+		}
+		else = { dhrondan_clear_diplomatic_offer = yes }
+	}
+}

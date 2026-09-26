@@ -67,33 +67,40 @@ All twelve characters are recruited once by the dormant DHR country-history file
 
 ## Decisions and diplomatic events
 
-The `dhrondan_sovereignty_category` contains four targeted surfaces:
+The `dhrondan_sovereignty_category` contains five targeted surfaces:
 
 - `dhrondan_reclaim_landing_site` prepares a take-state war goal for a marked DHR claim held by another country and keeps that state unavailable for a duplicate demand until the war-goal authorization expires.
 - `dhrondan_establish_enclave_supply_bridge` supports a controlled landing enclave outside the capital’s home area and resolves the crisis once every such enclave is bridged.
 - `dhrondan_integrate_reclaimed_landing_site` adds a DHR core to a recovered marked state and records postwar integration after the active regime establishes its own political mandate. The Imperial Subject World Protocol, Synod Optimal Order administration, or Covenant Enclave Congress receipt is required when the target list is built and again when the timed decision finishes. A lost mandate cancels the timer without awarding a core.
 - `dhrondan_offer_two_world_compact` sends a formal recognition and non-aggression proposal to a valid partner after the Covenant integration route begins and the Two-World Covenant is ratified. A government that has already ratified a compact cannot be targeted again. The recipient response rechecks ratification before diplomacy or rewards can be committed.
+- `dhrondan_offer_terrestrial_partner_accord` offers one paid, consent-based agreement after map exchange and partner selection. It requires independent DHR under the Imperial, Synod, or Covenant regime, costs the existing 75-PP diplomatic price, permits a current non-aggression pact, and records at most one concluded partner accord for DHR.
 
-Country event `.49` owns the compact recipient’s response; `.50` reports ratification to DHR, `.51` reports refusal, and hidden `.52` is an actor-owned deadline check.
+Country event `.49` owns both the legacy compact response and the partner-accord response; `.50` remains the compact-ratification report, `.51` remains the compact-refusal report, and hidden `.52` is an actor-owned deadline check. Partner acceptance is confirmed in the consenting country's `.49` popup; it does not queue a second report to DHR.
 The targeted decision captures regular `dhrondan_diplomatic_actor` and `dhrondan_diplomatic_recipient` targets before dispatch, alongside the persistent current `dhrondan_diplomatic_offer_target`.
-One active offer is permitted, and `.49` admits only the matching, undelivered receipt before its deadline.
+One active offer is permitted. An absent `dhrondan_diplomatic_offer_partner_accord` flag preserves legacy compact behavior; the positive kind flag is set before dispatch for a partner accord, and `.49` admits only the matching delivered receipt before its deadline.
 First delivery marks `dhrondan_diplomatic_offer_delivered` and starts the explicit thirteen-day native response window, followed by one day of cleanup grace.
 The functional receipt `dhrondan_diplomatic_offer_expiry_num_days` is measured on `global.num_days`; response commitment, watchdog comparison, and remaining-delay scheduling use that same elapsed-day axis.
 An early watchdog follows the recorded deadline, while an exact-deadline or late watchdog clears the matching transient offer without changing permanent compact history.
 
-Valid offers expose accept and refuse; invalid offers expose only the no-agreement response.
-Every actual accept/refuse effect separately rechecks the delivered receipt, both original parties, the current recipient, deadline, country existence, independence, Covenant route, peace, and absence of an existing pact.
-A valid acceptance grants the non-aggression pact, mutual opinion modifiers, partner history, and the existing DHR stability reward once.
-A valid refusal applies the existing refusal opinion modifier once.
+Valid offers expose accept and refuse; invalid or expired offers expose only the no-agreement response.
+For partner accords, the first valid visible option is a route-specific refusal, so the native timeout cannot treat silence as consent. Legacy compact offers retain their original acceptance-first order.
+Every actual accept/refuse effect rechecks the receipt, both original parties, the current recipient, delivery deadline, country existence, independence, route, peace, and offer kind.
+The compact branch remains Covenant-only and retains its non-aggression pact, compact history, stability reward, and refusal opinion effect.
+An accepted Imperial partner accord guarantees the selected country, grants reciprocal military access, adds a bilateral partner opinion marker, and records matching DHR and partner receipts.
+An accepted Synod accord grants mutual market access with Arms Against Tyranny; when that DLC is absent, explicit acceptance grants reciprocal military access instead. Both outcomes record the same DHR and partner receipts and leave any existing non-aggression pact intact.
+An accepted Covenant partner accord grants reciprocal military access and the bilateral partner opinion marker, without creating compact history or a non-aggression pact.
+A declined or expired partner accord changes no diplomatic relation and records no partner receipt; the partner recipient’s `.49` reply is the complete refusal interaction, and the existing decision cooldown governs when another offer may be made.
+The opinion marker is `dhrondan_terrestrial_partner_accord`, worth 25 opinion with the existing 0.5 decay rate. Its value sits below the compact’s +50 recognition effect and distinguishes an embassy accord from compact ratification.
 If the situation changes while a popup is open, its visible response closes only its owned receipt without diplomacy, rewards, or penalties.
 An unmatched old popup cannot clear an offer for a different recipient.
 
 The active lock is not released early merely because war, subject status, route, or other response legality changes.
 The native timeout resolves the visible response through the same guarded option effects.
-The watchdog checks its original actor and recipient against the current receipt and clears only after `dhrondan_diplomatic_offer_expiry_date`; an early matching watchdog schedules the remaining deadline instead of polling every day.
+The watchdog checks its original actor and recipient against the current receipt and clears only after `dhrondan_diplomatic_offer_expiry_num_days`; an early matching watchdog schedules the remaining deadline instead of polling every day.
 A different-recipient watchdog does nothing, and an early same-pair watchdog follows the current deadline rather than releasing the current lock.
 Country initialization restores the current receipt’s regular pointers and preserves its expiry; an undated active receipt receives one response window without redispatching the popup or applying rewards.
-The private finalizer clears active, delivered, expiry, and current-target state together while leaving permanent partner and concluded-compact history intact.
+The private finalizer clears active, delivered, offer-kind, expiry, and current-target state together while leaving permanent partner, concluded-accord, and concluded-compact history intact.
+Partner refusal is resolved by the recipient’s `.49` response and sends no separate DHR report; this avoids attributing the compact-specific `.51` report to a different agreement.
 
 The regular pointers identify countries, not an immutable numeric popup generation.
 Native timeout behavior for an already-open popup after recipient annexation and re-release is not established by the consulted documentation or MCP tools.
@@ -107,7 +114,7 @@ The shared event log continues to treat the root Event 016 history row as Doctor
 
 DHR formation does not rewrite that historical actor to the later-created alien country.
 
-Instead, the existing Event 016 Event Details entry appends the sovereignty aftermath after `dhrondan_sovereignty_formed`; events `.48` through `.52` remain consequence popups under the same root event rather than new random-event catalog rows.
+Instead, the existing Event 016 Event Details entry appends the sovereignty aftermath after `dhrondan_sovereignty_formed`; events `.48` through `.52` remain consequence popups under the same root event rather than new random-event catalog rows. The aftermath detail also describes the route-specific, partner-consented access accord.
 
 The existing `Not From Here` achievement accepts either its original Kruger provenance proof or a completed DHR sovereign route with postwar integration and a concluded Two-World Compact.
 
@@ -121,7 +128,7 @@ Three route strategy surfaces give Imperial Continuity an infantry-heavy force p
 
 Decision weights favor urgent enclave support, systematic integration, Imperial reclamation, and Covenant diplomacy.
 
-Compact acceptance and refusal use distinct opinion and government modifiers rather than a fixed outcome.
+Compact acceptance and refusal use distinct opinion and government modifiers rather than a fixed outcome. Partner acceptance receives the same route-aware military, guarantee, or market-access effects regardless of AI-controlled or player-controlled choice; no focus weight changes were made for this decision.
 
 ## Assets and stable wiring
 
@@ -134,6 +141,7 @@ The country package consumes these sprites and runtime paths:
 - Enclave supply decision: `GFX_decision_dhrondan_enclave_supply`.
 - State integration decision: `GFX_decision_dhrondan_state_integration`.
 - Two-World Compact decision: `GFX_decision_dhrondan_two_world_compact`.
+- Terrestrial Partner Accord decision: reuses `GFX_decision_dhrondan_two_world_compact` and the existing `GFX_report_event_016_dhrondan_diplomatic_compact` picture; no new art or GUI is required.
 - Portrait sprites: `interface/016_dhrondan_portraits.gfx`.
 - Full portraits: `gfx/leaders/DHR/`.
 - Advisor, high-command, and commander cards: `gfx/interface/ideas/016_dhrondan/`.

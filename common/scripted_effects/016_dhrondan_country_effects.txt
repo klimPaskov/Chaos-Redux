@@ -268,8 +268,68 @@ dhrondan_install_covenant_regime = {
 dhrondan_clear_diplomatic_offer = {
 	clr_country_flag = dhrondan_diplomatic_offer_active
 	clr_country_flag = dhrondan_diplomatic_offer_delivered
+	clr_country_flag = dhrondan_diplomatic_offer_partner_accord
 	clear_variable = dhrondan_diplomatic_offer_expiry_num_days
 	clear_global_event_target = dhrondan_diplomatic_offer_target
+}
+
+# COUNTRY scope on the consenting partner after the .49 receipt is revalidated.
+# Route effects are bilateral where the native effect is directional.
+dhrondan_complete_terrestrial_partner_accord = {
+	set_country_flag = dhrondan_terrestrial_partner_accord_partner
+	if = {
+		limit = { event_target:dhrondan_diplomatic_actor = { dhrondan_is_imperial_regime = yes } }
+		event_target:dhrondan_diplomatic_actor = {
+			give_guarantee = event_target:dhrondan_diplomatic_recipient
+			give_military_access = event_target:dhrondan_diplomatic_recipient
+			add_opinion_modifier = {
+				target = event_target:dhrondan_diplomatic_recipient
+				modifier = dhrondan_terrestrial_partner_accord
+			}
+			set_country_flag = dhrondan_terrestrial_partner_accord_concluded
+		}
+		give_military_access = event_target:dhrondan_diplomatic_actor
+		add_opinion_modifier = {
+			target = event_target:dhrondan_diplomatic_actor
+			modifier = dhrondan_terrestrial_partner_accord
+		}
+	}
+	if = {
+		limit = { event_target:dhrondan_diplomatic_actor = { dhrondan_is_synod_regime = yes } }
+		if = {
+			limit = { event_target:dhrondan_diplomatic_actor = { has_dlc = "Arms Against Tyranny" } }
+			event_target:dhrondan_diplomatic_actor = {
+				give_market_access = event_target:dhrondan_diplomatic_recipient
+				set_country_flag = dhrondan_terrestrial_partner_accord_concluded
+			}
+		}
+		else = {
+			event_target:dhrondan_diplomatic_actor = {
+				give_military_access = event_target:dhrondan_diplomatic_recipient
+				set_country_flag = dhrondan_terrestrial_partner_accord_concluded
+			}
+			give_military_access = event_target:dhrondan_diplomatic_actor
+		}
+	}
+	if = {
+		limit = { event_target:dhrondan_diplomatic_actor = { dhrondan_is_covenant_regime = yes } }
+		event_target:dhrondan_diplomatic_actor = {
+			give_military_access = event_target:dhrondan_diplomatic_recipient
+			add_opinion_modifier = {
+				target = event_target:dhrondan_diplomatic_recipient
+				modifier = dhrondan_terrestrial_partner_accord
+			}
+			set_country_flag = dhrondan_terrestrial_partner_accord_concluded
+		}
+		give_military_access = event_target:dhrondan_diplomatic_actor
+		add_opinion_modifier = {
+			target = event_target:dhrondan_diplomatic_actor
+			modifier = dhrondan_terrestrial_partner_accord
+		}
+	}
+	event_target:dhrondan_diplomatic_actor = {
+		dhrondan_clear_diplomatic_offer = yes
+	}
 }
 
 # COUNTRY scope on the recipient. A stale/unmatched popup has no side effects.
