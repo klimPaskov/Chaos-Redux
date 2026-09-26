@@ -231,6 +231,32 @@ def main() -> int:
             live_tools = {item.get("name"): item for item in listed.get("tools", [])}
             required_tools = set(meshy_lock["verified_tools"])
             missing_tools = sorted(required_tools - set(live_tools))
+            schema_lock = json.loads(
+                (PIPELINE_ROOT / "config/meshy_tool_schema.lock.json").read_text(encoding="utf-8")
+            )
+            check(
+                "meshy_mcp_schema_lock_versions",
+                schema_lock.get("server_version") == meshy_lock["version"]
+                and schema_lock.get("compatibility_sdk_version") == sdk_lock["version"]
+                and schema_lock.get("schema_revision") == meshy_lock["compatibility_revision"],
+                {
+                    "server_version": schema_lock.get("server_version"),
+                    "sdk_version": schema_lock.get("compatibility_sdk_version"),
+                    "schema_revision": schema_lock.get("schema_revision"),
+                },
+            )
+            schema_entries = schema_lock.get("required_tools", {})
+            mismatched_schemas = sorted(
+                name for name in required_tools
+                if name not in schema_entries
+                or schema_entries[name].get("live_input_schema")
+                != live_tools.get(name, {}).get("inputSchema")
+            )
+            check(
+                "meshy_mcp_schema_lock_inputs",
+                not mismatched_schemas,
+                {"required_count": len(required_tools), "mismatched": mismatched_schemas},
+            )
             image_schema = live_tools.get("meshy_image_to_3d", {}).get("inputSchema", {})
             schema_text = json.dumps(image_schema, sort_keys=True)
             check(
@@ -252,14 +278,21 @@ def main() -> int:
                 cwd=REPO_ROOT,
                 lifecycle_receipt=balance_lifecycle,
             )
+            balance_value = _payload(result).get("balance")
+            balance_ok = (
+                not result.get("isError")
+                and isinstance(balance_value, (int, float))
+                and not isinstance(balance_value, bool)
+                and balance_value >= 0
+            )
             meshy_report = {
-                "route": "verified",
+                "route": "verified" if balance_ok else "failed",
                 "server_version": meshy_lock["version"],
                 "tools": sorted(live_tools),
                 "image_model": "meshy-7",
-                "public_result": _payload(result),
+                "balance_probe_ok": balance_ok,
             }
-            check("meshy_mcp_balance_probe", True, meshy_report["public_result"])
+            check("meshy_mcp_balance_probe", balance_ok, {"numeric_balance_returned": balance_ok})
             lifecycle_receipts = {
                 "tools_list": schema_lifecycle,
                 "balance": balance_lifecycle,

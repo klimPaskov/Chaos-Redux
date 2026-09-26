@@ -1,31 +1,34 @@
 {
-  "balance_probe": {
-    "content": [
-      {
-        "text": "# Meshy Credit Balance\n\n**Balance**: 382 credits",
-        "type": "text"
-      }
-    ],
-    "structuredContent": {
-      "balance": 382
-    }
-  },
+  "balance_probe_ok": true,
   "cleanup": {
     "owned_process_ids_at_cleanup": [],
     "ownership": "windows_job_object",
-    "root_pid": 34896,
+    "root_pid": 21368,
     "surviving_process_ids": []
   },
+  "compatibility_revision": "meshy-7-v7-motion-0.5.2",
   "image_to_3d_any_of": null,
   "image_to_3d_image_arguments": {
     "ai_model": {
-      "default": "latest",
-      "description": "AI model: 'meshy-7' (default, currently resolves to Meshy 7). IMPORTANT: Before calling this tool, ask the user which model to use and explain the differences: meshy-7/latest = best quality (20 credits), meshy-7 = previous gen (5 credits)",
-      "enum": [
-        "meshy-7",
-        "latest"
+      "anyOf": [
+        {
+          "enum": [
+            "meshy-5",
+            "meshy-6",
+            "meshy-7",
+            "latest"
+          ],
+          "type": "string"
+        },
+        {
+          "enum": [
+            "meshy-t1",
+            "meshy-t2"
+          ],
+          "type": "string"
+        }
       ],
-      "type": "string"
+      "description": "AI model. Standard generation: 'meshy-5', 'meshy-6', 'meshy-7', or 'latest' (default \u2014 resolves to Meshy 7 here). Smart Topology generation (set model_type: 'smart-topology'): 'meshy-t2' (default, recommended \u2014 native part separation) or 'meshy-t1'. IMPORTANT: Before calling this tool, ask the user which model to use and explain the trade-off: meshy-7/latest = best quality (20 credits mesh, 30 textured); meshy-t2 smart-topology = clean part-separated geometry and much cheaper (5 credits mesh, 15 textured); meshy-5 = previous gen (5 credits). NOTE: passing remove_lighting with 'latest' keeps the task on Meshy 6."
     },
     "file_path": {
       "description": "ABSOLUTE path to LOCAL image (.jpg/.png). PREFERRED for local files. Server auto-encodes. Example: /Users/me/photo.jpg. NEVER manually base64-encode.",
@@ -62,7 +65,11 @@
   ],
   "image_to_3d_present": true,
   "image_to_3d_required": [],
+  "meshy_7_exposed": true,
   "multi_image_tool_present": true,
+  "sdk_version": "1.30.1",
+  "server_version": "0.5.2",
+  "timestamp": "2026-09-26T10:40:10Z",
   "tool_count": 29,
   "tool_names": [
     "meshy_analyze_printability",

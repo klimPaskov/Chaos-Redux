@@ -40,7 +40,7 @@ def _windows_processes() -> dict[int, dict[str, Any]]:
 	"""Return one non-secret CIM snapshot keyed by PID."""
 
 	script = r"""
-$items = @(Get-CimInstance Win32_Process | Select-Object ProcessId, ParentProcessId, Name, CommandLine)
+$items = @(Get-CimInstance Win32_Process | Select-Object ProcessId, ParentProcessId, CreationDate, Name, CommandLine)
 ConvertTo-Json -InputObject @($items) -Compress
 """
 	completed = subprocess.run(
@@ -72,11 +72,19 @@ def _descendants(root_pid: int, snapshot: dict[int, dict[str, Any]]) -> set[int]
 	return owned
 
 
-def _wait_absent(pids: set[int], timeout: float = 15.0) -> set[int]:
+def _process_identity(item: dict[str, Any]) -> tuple[Any, Any, Any]:
+	return item.get("CreationDate"), item.get("Name"), item.get("CommandLine")
+
+
+def _wait_absent(identities: dict[int, tuple[Any, Any, Any]], timeout: float = 15.0) -> set[int]:
 	deadline = time.monotonic() + timeout
-	remaining = set(pids)
+	remaining = set(identities)
 	while remaining and time.monotonic() < deadline:
-		remaining &= set(_windows_processes())
+		current = _windows_processes()
+		remaining = {
+			pid for pid in remaining
+			if pid in current and _process_identity(current[pid]) == identities[pid]
+		}
 		if remaining:
 			time.sleep(0.1)
 	return remaining
@@ -153,7 +161,7 @@ class Probe:
 			+ "".join(self.stderr)[-2000:]
 		)
 
-	def capture_owned_tree(self) -> set[int]:
+	def capture_owned_tree(self) -> dict[int, tuple[Any, Any, Any]]:
 		snapshot = _windows_processes()
 		self.owned_pids = _descendants(self.process.pid, snapshot)
 		owned_items = [snapshot[pid] for pid in self.owned_pids if pid in snapshot]
@@ -173,7 +181,10 @@ class Probe:
 			raise AssertionError(
 			f"Expected one exact PowerShell wrapper and one exact Node child; got {owned_items!r}"
 		)
-		return self.owned_pids
+		return {
+			pid: _process_identity(snapshot[pid])
+			for pid in self.owned_pids if pid in snapshot
+		}
 
 	def close_stdin_and_wait(self) -> int:
 		assert self.process.stdin is not None
@@ -239,7 +250,7 @@ class MeshyWrapperLifecycleTests(unittest.TestCase):
 				self._assert_schema(response)
 
 			owned = [probe.capture_owned_tree() for probe in probes]
-			self.assertEqual(set(), owned[0] & owned[1])
+			self.assertEqual(set(), set(owned[0]) & set(owned[1]))
 			for probe in probes:
 				assert probe.process.stdin is not None
 				probe.process.stdin.close()
@@ -299,7 +310,11 @@ class MeshyWrapperLifecycleTests(unittest.TestCase):
 				if str(finding.get("check", "")).startswith("meshy_mcp")
 			]
 			self.assertEqual([], meshy_findings)
-			self.assertTrue(unrelated_owned <= set(_windows_processes()))
+			current = _windows_processes()
+			self.assertTrue(all(
+				pid in current and _process_identity(current[pid]) == identity
+				for pid, identity in unrelated_owned.items()
+			))
 			self.assertEqual(0, probe.close_stdin_and_wait())
 			self.assertEqual(set(), _wait_absent(unrelated_owned))
 		finally:

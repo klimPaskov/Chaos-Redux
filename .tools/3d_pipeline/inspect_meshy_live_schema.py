@@ -27,6 +27,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT / ".tools" / "3d_pipeline"))
 
 from lib.mcp_stdio import MCPRouteError, call_stdio  # noqa: E402
+from lib.paths import utc_now  # noqa: E402
 
 WRAPPER = REPO_ROOT / ".tools" / "3d_pipeline" / "wrappers" / "run_meshy_mcp.cmd"
 IMAGE_ARGUMENTS = (
@@ -58,6 +59,12 @@ def main() -> int:
         print("MESHY_API_KEY is missing or blank; refusing to start the route.")
         return 2
 
+    lock = json.loads(
+        (REPO_ROOT / ".tools/3d_pipeline/config/dependencies.lock.json").read_text(
+            encoding="utf-8"
+        )
+    )["routes"]["meshy_mcp"]
+
     command = ["cmd.exe", "/c", str(WRAPPER)]
     receipt: dict[str, object] = {}
 
@@ -75,16 +82,29 @@ def main() -> int:
         arguments={},
         timeout_seconds=300,
     )
+    balance_value = balance.get("structuredContent", {}).get("balance")
+    if (
+        balance.get("isError")
+        or not isinstance(balance_value, (int, float))
+        or isinstance(balance_value, bool)
+        or balance_value < 0
+    ):
+        raise MCPRouteError("Meshy balance probe did not return a numeric balance")
 
     image_tool = tools.get("meshy_image_to_3d", {})
     schema = image_tool.get("inputSchema", {})
     properties = schema.get("properties", {})
 
     report = {
+        "timestamp": utc_now(),
         "wrapper": str(WRAPPER.relative_to(REPO_ROOT)).replace("\\", "/"),
+        "server_version": lock["version"],
+        "sdk_version": lock["resolved_dependencies"]["modelcontextprotocol_sdk"]["version"],
+        "compatibility_revision": lock["compatibility_revision"],
         "tool_count": len(tools),
         "tool_names": sorted(tools),
         "image_to_3d_present": "meshy_image_to_3d" in tools,
+        "meshy_7_exposed": '"meshy-7"' in json.dumps(schema, sort_keys=True),
         "image_to_3d_required": schema.get("required", []),
         "image_to_3d_any_of": schema.get("anyOf", schema.get("oneOf")),
         "image_to_3d_image_arguments": {
@@ -96,7 +116,7 @@ def main() -> int:
             if "image" in name.lower() and name not in IMAGE_ARGUMENTS
         ),
         "multi_image_tool_present": "meshy_multi_image_to_3d" in tools,
-        "balance_probe": balance,
+        "balance_probe_ok": True,
         "cleanup": receipt,
     }
 
