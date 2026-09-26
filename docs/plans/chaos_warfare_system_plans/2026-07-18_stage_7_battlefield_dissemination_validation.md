@@ -1,5 +1,7 @@
 # Stage 7 Battlefield Biological Dissemination Validation
 
+Disposition: superseded for the theater-authorization and route-AI rows by the accepted [vanilla-doctrine access correction](../../specs/chaos_warfare_system_specs/corrections/2026-09-26_vanilla_doctrine_biological_battlefield_access.md). The rows below preserve the 2026-07-18 source snapshot and are not current gate evidence.
+
 Status: implementation, primary source validation, scripted-system audit, localisation audit, and main-agent tranche audit complete. One bounded completion-auditor attempt returned unavailable evidence and is not counted as a pass. Stage 7 and the overall Chaos Warfare goal remain incomplete.
 
 ## Accepted route correction

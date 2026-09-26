@@ -4,7 +4,7 @@ Chemical and biological attacks use the native raid planner under `chemical_raid
 Chemical air attacks retain their existing native air raids; chemical ground attacks use state targets, an assigned land division, a supply-node origin, a native preparation timer, and one agent-specific payload reservation.
 Biological strategic air attacks, battlefield dissemination, supply-chain sabotage, and captured-facility recovery appear under `biological_raids`.
 The unrelated Brilliant Scientist portal raid keeps its own category.
-Ordinary battlefield biological raids require Theater CBRN Headquarters technology, full Chemical Readiness, battlefield-use authority, and the matching completed agent project.
+Ordinary battlefield biological raids require Pathogen Handling Protocols, full equipment-derived protection readiness, battlefield-use authority, and the matching completed agent project. Theater CBRN Headquarters remains a Chaos Warfare specialization rather than a basic raid gate.
 Their fixed 21-day native preparation is the whole attack preparation; an active Combined CBRN Overmatch headquarters order is not required.
 
 ## Operation flow

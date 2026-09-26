@@ -3,7 +3,8 @@
 # ============================================================================
 # Overview:
 # - Owns initialization and clamping for national CBRN capacity values.
-# - Derives Chemical Readiness from issued masks, decontamination, and training.
+# - Derives Chemical Readiness from issued masks, real decontamination equipment,
+#   and training.
 # - Resolves respiratory, skin, antidote, decontamination, medical, and warning
 #   layers into agent-class-specific casualty, disruption, and contamination
 #   multipliers.
@@ -228,7 +229,7 @@ cbrn_refresh_country_readiness_status = {
 	set_variable = { chemical_readiness_cap = constant:cbrn_readiness.full_cap }
 	set_variable = { chemical_readiness = cbrn_military_mask_coverage }
 	multiply_variable = { chemical_readiness = constant:cbrn_readiness_status.military_coverage_weight }
-	set_temp_variable = { cbrn_readiness_decontamination_component = cbrn_decontamination_capacity }
+	set_temp_variable = { cbrn_readiness_decontamination_component = cbrn_military_decontamination_coverage }
 	multiply_temp_variable = { cbrn_readiness_decontamination_component = constant:cbrn_readiness_status.decontamination_capacity_weight }
 	add_to_variable = { chemical_readiness = cbrn_readiness_decontamination_component }
 	if = {
@@ -582,6 +583,32 @@ cbrn_refresh_country_mask_snapshot = {
 	set_variable = { cbrn_military_mask_requirement = deployed_army_manpower_k }
 	multiply_variable = { cbrn_military_mask_requirement = constant:cbrn_mask_scale.military_crates_per_manpower_k }
 	clamp_variable = { var = cbrn_military_mask_requirement min = constant:cbrn_math.zero }
+	set_variable = { cbrn_military_decontamination_requirement = deployed_army_manpower_k }
+	multiply_variable = { cbrn_military_decontamination_requirement = constant:cbrn_decontamination_scale.kits_per_manpower_k }
+	set_temp_variable = { cbrn_decontamination_exact_need = cbrn_military_decontamination_requirement }
+	round_variable = cbrn_military_decontamination_requirement
+	if = {
+		limit = { check_variable = { var = cbrn_military_decontamination_requirement value = cbrn_decontamination_exact_need compare = less_than } }
+		add_to_variable = { cbrn_military_decontamination_requirement = constant:cbrn_math.one }
+	}
+	set_variable = { cbrn_military_decontamination_kits = num_equipment@decontamination_equipment }
+	add_to_variable = { cbrn_military_decontamination_kits = num_equipment_in_armies@decontamination_equipment }
+	clamp_variable = { var = cbrn_military_decontamination_kits min = constant:cbrn_math.zero }
+	set_variable = { cbrn_military_decontamination_shortage_kits = cbrn_military_decontamination_requirement }
+	subtract_from_variable = { cbrn_military_decontamination_shortage_kits = cbrn_military_decontamination_kits }
+	clamp_variable = { var = cbrn_military_decontamination_shortage_kits min = constant:cbrn_math.zero }
+	set_variable = { cbrn_military_decontamination_coverage = constant:cbrn_math.zero }
+	if = {
+		limit = {
+			has_tech = field_decontamination_kits
+			check_variable = { var = cbrn_military_decontamination_requirement value = constant:cbrn_math.zero compare = greater_than }
+			check_variable = { var = cbrn_military_decontamination_kits value = constant:cbrn_math.zero compare = greater_than }
+		}
+		set_variable = { cbrn_military_decontamination_coverage = cbrn_military_decontamination_kits }
+		multiply_variable = { cbrn_military_decontamination_coverage = constant:cbrn_meter.maximum }
+		divide_variable = { cbrn_military_decontamination_coverage = cbrn_military_decontamination_requirement }
+		clamp_variable = { var = cbrn_military_decontamination_coverage min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+	}
 	set_variable = { cbrn_military_mask_shortage_crates = cbrn_military_mask_requirement }
 	subtract_from_variable = { cbrn_military_mask_shortage_crates = cbrn_military_mask_crates }
 	clamp_variable = { var = cbrn_military_mask_shortage_crates min = constant:cbrn_math.zero }

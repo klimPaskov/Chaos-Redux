@@ -10,6 +10,8 @@ The national use policies are exactly **Retaliation Only**, **Battlefield Author
 
 The raid interface has exactly two CBRN categories: **Chemical Raids** and **Biological Raids**. Native land delivery covers cylinder, projector, artillery, and armored roles. Each actual raid uses an exact selected state, a supply-node origin, an assigned division, army intelligence, a matching weapon and native preparation. Human and AI use the same executable path. Older per-agent raid-type definitions may remain only where required inside these two categories; they are not extra categories. Any earlier proposed strategic, agent-specific, or recovery category must be reconciled against this exact-two-category requirement before promotion.
 
+Basic authorized chemical and ordinary biological battlefield raids must remain available to a country using a vanilla grand doctrine after normal research, production, protection, and project requirements. Theater CBRN Headquarters is a Chaos Warfare specialization, not an ordinary biological-raid prerequisite.
+
 ## Protection, units, and limits
 
 Military and civilian mask issue is automatic and debits actual stock. Civil Defence decisions appear for a real threat, outbreak, contamination, or response need. No world-wide periodic country iteration is authorized.

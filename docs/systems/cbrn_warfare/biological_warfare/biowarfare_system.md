@@ -40,6 +40,8 @@ That means:
 
 Deliberate battlefield and strategic deployment uses dedicated native raids.
 
+Ordinary battlefield raids require Pathogen Handling Protocols, full derived protection readiness, a completed agent project, matching payload, and battlefield-use authority. Theater CBRN Headquarters is an advanced Chaos Warfare certification, not a prerequisite for these basic attacks.
+
 Operative release uses the intelligence-operation route, while food, water, and medical sabotage uses its separate covert route.
 
 The historical Japan-China campaign uses exact-state Anthrax and Plague operations on its explicit route, and the exceptional doomsday release uses `biological_stockpile_doomsday_raid` under the shared biological raid category.
