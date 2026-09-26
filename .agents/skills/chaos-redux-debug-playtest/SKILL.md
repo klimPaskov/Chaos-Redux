@@ -265,6 +265,8 @@ Recommended screenshot names:
 
 Do not put ordinary save files in Git by default. Record the dedicated save name and save path in `run_manifest.md`.
 
+Before the run, confirm with the user that the game writes plain-text saves (`save_as_binary=no` in the HOI4 `settings.txt`); do not edit that file yourself. Plain-text saves let `chaos-redux-save-inspection` read the real runtime state at every checkpoint. Name checkpoint saves after the test step, such as `qa_<run_id>_020_event_006_pre` and `..._post`, and record in `setup_commands.md` which inspector commands produced each piece of evidence.
+
 ## Smoke tests and catalog planning
 
 ### 12. Chaos Redux smoke test
@@ -342,11 +344,11 @@ For each event in scope:
 5. Capture the popup or first visible state.
 6. Check title, description, options, image, actor, flag, sound, and localisation.
 7. Select each important option in separate checkpoints.
-8. Verify immediate effects occur once.
+8. Verify immediate effects occur once. Save immediately before and after the option and run the inspector's `diff` on the acting country and global data; the diff is the authoritative list of what the option changed.
 9. Verify follow-up events, decisions, ideas, variables, targets, countries, units, and map changes.
 10. Check History and Event Details.
 11. Advance time to observe scheduled behavior, MTTH behavior, cleanup, and AI response.
-12. Save and reload when the feature persists.
+12. Save and reload when the feature persists. Use the console `savecheck` command and `diff` its `Test_01` and `Test_02` saves; any Chaos Redux value that differs did not survive the reload.
 13. Inspect the fresh log delta.
 14. Capture a pass screenshot or issue screenshot.
 
@@ -576,6 +578,8 @@ Observe:
 - excessive whole-world iteration symptoms
 - unexpected performance degradation
 
+Save at the start and end of the pass. Tally AI outcomes across countries with the inspector's `find` or `flatten --in countries`, and run `footprint` on both saves to catch script state that grows without cleanup.
+
 Do not implement a new `on_daily`, `on_weekly`, `on_monthly`, or other all-country iteration as a live-fix shortcut unless the user has explicitly authorized that design under `AGENTS.md`.
 
 ## Defect routing and acceptance
@@ -614,7 +618,8 @@ A Chaos Redux fix passes only when:
 - one nearby regression check passes
 - Event Logs, Chaos Meter, docs, catalog, or other dependent surfaces remain aligned when applicable
 - screenshots show the corrected state when the issue was visual
-- save and reload passes when persistent state changed
+- save and reload passes when persistent state changed, shown by a `savecheck` diff without Chaos Redux differences
+- a before-and-after save diff shows the intended state change and no unrelated change when the fix touched persistent state
 
 Do not accept a fix solely because the parser error disappeared.
 

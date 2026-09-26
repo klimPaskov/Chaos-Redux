@@ -79,6 +79,7 @@ Use repo skills as required implementation guidance.
 - Use `chaos-redux-mtth` when MTTH logic or weighted timing would reduce clutter or make AI and release logic clearer.
 - Use `chaos-redux-subagents` when coordinating project custom subagents, routing bounded work, or defining parent/subagent ownership boundaries.
 - Use `chaos-redux-improvement-loop` when an implemented or planned mechanic needs recursive depth expansion, spec addenda, improvement handoffs, or checks for shallow, duplicated, generic, disconnected, or low-impact content.
+- Use `chaos-redux-save-inspection` whenever the user supplies a save, and when runtime state would settle a question that source reading cannot: why a decision or focus is unavailable, what an action changed, whether state survives save and reload, what the AI did, whether script state leaks, or how an engine rule behaves.
 
 ### HOI4 MCP
 
@@ -327,7 +328,7 @@ When implementing any new mechanic, follow this checklist:
 13. Confirm that all decisions and event options or other effects have proper trigger tooltips and effect descriptions.
 14. Respect the repository style and naming rules so new content blends with existing Chaos Redux code.
 15. For systems that touch or are related to bio/chemical warfare, review any related docs, and verify integration across events, on_actions, decisions, contamination effects, scripted logic, etc.
-16. When the user reports an issue after new changes were made, assume the game has already been reloaded. Do not default to restart/reload advice. Do not ask for, request, or search for logs. If the user did not paste any error lines, treat it as having no error lines to use. Do not tell the user to run in-game validation. Assume they will always verify changes in a live session and in a new save. Do not mention old saves. Agents must not launch or run Hearts of Iron IV for in-game testing; all in-game testing and live consumer validation belong to the user.
+16. When the user reports an issue after new changes were made, assume the game has already been reloaded. Do not default to restart/reload advice. Do not ask for, request, or search for logs. If the user did not paste any error lines, treat it as having no error lines to use. Do not tell the user to run in-game validation. Assume they will always verify changes in a live session and in a new save. Do not mention old saves. When the user supplies a save, read it with `chaos-redux-save-inspection` before forming a hypothesis. Agents must not launch or run Hearts of Iron IV for in-game testing; all in-game testing and live consumer validation belong to the user.
 17. Unapproved fallbacks are forbidden and MUST ALWAYS be discussed with the user. A wired sourced portrait remains an explicitly pending source placeholder until the user supplies its HOI4-style replacement.
 18. When the user reports that something is wrong and you can't figure out what exactly, then add temporary debug code (for example: `log = "my debug log"`) that exposes the relevant runtime values needed to understand the issue, and remove every debug line you added once the issue is resolved.
 19. When an error is reported or discovered after your changes, treat it as caused by your current change set. Do not speculate that the project was already broken before your work.
