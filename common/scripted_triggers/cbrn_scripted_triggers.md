@@ -586,12 +586,14 @@ The following country-scope triggers return true only when the named non-researc
 - `cbrn_can_set_retaliation_authority_policy`: policy-change gate and not already at Retaliation Only.
 - `cbrn_can_set_limited_battlefield_policy`: policy-change gate and not already at Battlefield Authorization. The retained internal name is a compatibility identifier for the direct three-policy model.
 - `cbrn_can_set_unrestricted_policy`: policy-change gate, Terminal CBRN Command, and not already at Unrestricted Authorization.
+- `cbrn_ai_policy_authorizes_ordinary_battlefield_first_use`: country-scope, side-effect-free check for exactly the selected Battlefield Authorization or Unrestricted Authorization values. It excludes the retired numeric policy value 4. Only the ordinary chemical and biological native land-raid AI target predicates use this additional first-use route; all exact war, enemy, research, protection, project, and raid-payment checks remain separate.
+- `cbrn_ai_can_choose_ordinary_battlefield_policy`: country-scope AI decision score gate. Retaliation Only, war, stable protection, limited readiness, no conventional stock deficit or near-capitulation, and ordinary chemical research or safe biological research with an ordinary agent project are required. It does not require Chaos Warfare doctrine or change policy itself.
 - `cbrn_ai_route_allows_first_use`: explicit first-use/unrestricted route, high-chaos Soviet successor, or mapped Japan-China chemical campaign context.
 - `cbrn_ai_route_allows_unrestricted_use`: explicit unrestricted route or high-chaos Soviet successor.
 - `cbrn_ai_has_defensive_cbrn_profile`: mass civil defence, prepared power, civil-defence network, or an ordinary democratic country without an accepted first-use route.
 - `cbrn_ai_has_battlefield_cbrn_profile`: military-first profile or accepted first-use route.
 
-These triggers provide differentiated weights only. They do not bypass institutions, readiness, Command Power, payload stock, operation cost, cooldown, or shared consequence accounting.
+The ordinary battlefield AI policy helper changes willingness to select the visible 5-Command-Power policy decision. Its exact selected-policy companion permits the two ordinary native land-raid AI target gates to consider that policy. Neither helper bypasses institutions, readiness, Command Power, payload stock, exact target, operation cost, cooldown, or shared consequence accounting. The broader first-use helper remains unchanged for strategic and exceptional consumers.
 
 Example:
 

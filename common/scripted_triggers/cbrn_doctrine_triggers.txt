@@ -407,6 +407,41 @@ cbrn_can_set_unrestricted_policy = {
 	NOT = { cbrn_policy_allows_extreme_use = yes }
 }
 
+# Country scope. Only a deliberately selected Battlefield or Unrestricted
+# policy permits ordinary native battlefield AI first use. Legacy policy value
+# 4 is not a selectable authorization and does not qualify here.
+cbrn_ai_policy_authorizes_ordinary_battlefield_first_use = {
+	has_variable = cbrn_use_policy
+	OR = {
+		check_variable = { var = cbrn_use_policy value = constant:cbrn_use_policy.battlefield_authorization compare = equals }
+		check_variable = { var = cbrn_use_policy value = constant:cbrn_use_policy.unrestricted_authorization compare = equals }
+	}
+}
+
+# Country scope. A vanilla-doctrine AI may deliberately choose ordinary
+# Battlefield Authorization once it has a credible protected land program.
+# Individual raids still enforce their exact target, project, payload, and
+# assigned-unit requirements.
+cbrn_ai_can_choose_ordinary_battlefield_policy = {
+	has_war = yes
+	cbrn_policy_is_retaliation_authority = yes
+	cbrn_ai_has_stable_protective_base = yes
+	cbrn_country_has_limited_readiness = yes
+	NOT = { cbrn_ai_has_conventional_army_deficit = yes }
+	NOT = { cbrn_ai_is_losing_near_capitulation = yes }
+	OR = {
+		has_tech = chlorine_gas
+		has_tech = phosgene
+		has_tech = mustard_gas
+		has_tech = lewisite
+		AND = {
+			bio_battlefield_ai_has_safe_domestic_program = yes
+			bio_battlefield_country_has_any_agent_project = yes
+			cbrn_country_has_full_readiness = yes
+		}
+	}
+}
+
 cbrn_ai_route_allows_first_use = {
 	OR = {
 		has_country_flag = cbrn_chaos_warfare_first_use_ai_route

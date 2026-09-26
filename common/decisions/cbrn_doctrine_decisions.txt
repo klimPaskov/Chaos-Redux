@@ -79,6 +79,7 @@ cbrn_operations_category = {
 		ai_will_do = {
 			base = constant:cbrn_doctrine_ai.retaliation_policy_base
 			modifier = { factor = constant:cbrn_doctrine_ai.retaliation_enemy_use_factor has_enemy_used_chemical_weapons = yes }
+			modifier = { factor = constant:cbrn_doctrine_ai.wartime_battlefield_retention_factor has_war = yes cbrn_ai_policy_authorizes_ordinary_battlefield_first_use = yes }
 		}
 	}
 
@@ -103,10 +104,12 @@ cbrn_operations_category = {
 		}
 		ai_will_do = {
 			base = constant:cbrn_doctrine_ai.limited_policy_base
+			modifier = { add = constant:cbrn_doctrine_ai.ordinary_battlefield_policy_add cbrn_ai_can_choose_ordinary_battlefield_policy = yes }
 			modifier = { add = constant:cbrn_doctrine_ai.aggressive_route_add cbrn_ai_route_allows_first_use = yes }
 			modifier = { add = constant:cbrn_doctrine_ai.theater_first_use_add has_idea = cbrn_theater_contamination_doctrine_spirit }
 			modifier = { factor = constant:cbrn_doctrine_ai.controlled_first_use_factor has_idea = chemical_command_reagent_optimization_spirit }
 			modifier = { factor = constant:cbrn_doctrine_ai.nonhuman_factor is_actual_nonhuman_country = yes }
+			modifier = { factor = constant:cbrn_doctrine_ai.unrestricted_policy_retention_factor cbrn_policy_allows_extreme_use = yes }
 		}
 	}
 
