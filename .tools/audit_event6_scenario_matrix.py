@@ -366,6 +366,11 @@ def main() -> int:
 	):
 		require(marker in don_dhc_guard, f"DON/DHC exclusion does not test pending/active DON marker {marker}", errors)
 	require(
+		"has_country_flag = independence_wave_origin_committed" not in don_dhc_guard,
+		"DON/DHC exclusion can remain latched after Event 006 marks the origin ended",
+		errors,
+	)
+	require(
 		"is_don_dhc_cross_event_collision_clear = yes" in dhc_spawn_trigger,
 		"ordinary Event 005 DHC eligibility bypasses the shared collision guard",
 		errors,

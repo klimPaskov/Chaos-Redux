@@ -8,7 +8,7 @@ The user explicitly accepted state 245/Millerovo as the required Event 006 ancho
 
 ## Source changes
 
-`common/scripted_triggers/005_006_liberations_collision_triggers.txt:34-46` adds `is_don_dhc_cross_event_collision_clear`. In country scope it rejects an existing DHC, a DON carrier marked reserved/pending/prepared or active for Event 006, and current-plan reservations of states 218 or 238. It relies on the active-origin classifier, which treats an ended Event 006 origin as inactive, so ordinary DHC behavior can resume after Event 006 cleanup.
+`common/scripted_triggers/005_006_liberations_collision_triggers.txt:34-45` adds `is_don_dhc_cross_event_collision_clear`. In country scope it rejects an existing DHC, a DON carrier marked reserved/pending/prepared or active for Event 006, and current-plan reservations of states 218 or 238. It relies on `is_independence_wave_active_country`, which treats an ended Event 006 origin as inactive; it deliberately does not latch on the historical `independence_wave_origin_committed` receipt, so ordinary DHC behavior can resume after Event 006 cleanup.
 
 `common/scripted_triggers/005_soviet_collapse_triggers.txt:8194-8208` calls the shared guard from normal `can_soviet_collapse_spawn_dhc`, before the existing 218/238 Soviet ownership and control tests.
 
@@ -26,6 +26,7 @@ The accepted design's source-level cases are:
 - Event 005 has current-plan reservations on state 218 or 238 but has not yet created DHC: the shared guard fails and IW-039 receives no candidate weight.
 - Event 006 has reserved or marked DON pending/prepared/committed/active while Event 005 reaches DHC creation: the shared guard fails before Event 005 transfers either state.
 - None of those DHC/DON markers or state reservations is present: the interlock passes, leaving the existing package, ownership, host-survival, origin, and attestation gates to decide eligibility.
+- Event 006 has ended and its current release reservations are cleared: the active-origin predicate is false, so the Event 005 DHC path is not permanently suppressed by a historical commit receipt.
 
 These are source-condition witnesses; they do not execute the scenarios in Clausewitz or prove event-order behavior in a running campaign. `python .tools/audit_event6_scenario_matrix.py` passed with 32 unique mode/intensity cells, eight edge IDs, and the expected success-only publication census. Its SCN-008 edge witness is static and does not execute any of the cases above.
 
