@@ -46,6 +46,8 @@ The table below preserves the accepted requirements and their original evidence 
 
 The [native chemical land raid contract audit](2026-09-26_native_chemical_land_raid_contract_audit.md) adds CBRN-03 source evidence across all 55 definitions and 220 outcome callbacks, including exact route and agent markers and no second scripted debit. The installed native raid documentation and partial event MCP graph still do not establish creation, cancellation, or refund behavior, so the engine-lifecycle disposition is unchanged.
 
+The [Event 016 biological outcome-text correction](../../specs/chaos_warfare_system_specs/corrections/2026-09-26_event016_biological_raid_outcome_text.md) makes shared success and accident tooltips conditional on a viable release because the hidden actor-country bridge rechecks target, war, policy, and project context. The neighboring ordinary battlefield family already has a context-rejected tooltip helper. The Event 016 focused MCP event render selected no nodes, so native raid-panel presentation remains unproved.
+
 The [historical civilian-start correction](../../specs/chaos_warfare_system_specs/corrections/2026-09-26_historical_civilian_start_cleanup.md) strengthens CBRN-11 source evidence: all 41 legacy civilian percentages and the generic state distributor have been removed from active startup script. This does not resolve the remaining engine inventory and country-specific 1939 industry evidence limits.
 
 ## Preliminary MIO source and asset contract
