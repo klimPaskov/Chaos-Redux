@@ -142,13 +142,13 @@ bio_countermeasure_can_activate_surveillance_network = {
 
 bio_countermeasure_can_deploy_field_hospital = {
 	has_tech = tech_field_hospital
+	NOT = { has_political_power < constant:bio_countermeasure_cost.field_hospital_pp }
 	has_variable = cbrn_medical_capacity
 	check_variable = {
 		var = cbrn_medical_capacity
 		value = constant:bio_countermeasure_capacity.field_hospital_medical_commitment
 		compare = greater_than_or_equals
 	}
-	NOT = { command_power < constant:bio_countermeasure_cost.field_hospital_command_power }
 	NOT = { has_equipment = { support_equipment < constant:bio_countermeasure_cost.field_hospital_support } }
 	NOT = { has_equipment = { motorized_equipment < constant:bio_countermeasure_cost.field_hospital_trucks } }
 	NOT = { has_equipment = { cbrn_instrument_equipment < constant:bio_countermeasure_cost.field_hospital_instruments } }
@@ -389,6 +389,7 @@ bio_countermeasure_has_international_access = {
 
 bio_countermeasure_can_request_international_mission = {
 	bio_countermeasure_has_international_access = yes
+	NOT = { has_political_power < constant:bio_countermeasure_cost.international_mission_pp }
 	has_variable = cbrn_medical_capacity
 	check_variable = {
 		var = cbrn_medical_capacity
