@@ -147,6 +147,8 @@ Each assignment spends 4 Command Power, 40 Decontamination Equipment, and 300 Fu
 
 The cost row's three texticons use scripted-localisation trigger quotes from the same `cbrn_doctrine_cleanup_assignment_cost` constants as its affordability checks and payment. Each amount remains visible in a ready or shortage colour without raw constant interpolation; native decision-list rendering of that row remains unverified.
 
+The assignment requirement and result descriptions and the Theater Contamination, Terminal Hazard, Mask Discipline, and Hazard Assault Cadres spirit tooltips use `common/scripted_localisation/cbrn_doctrine_value_localisation.txt`. Each tooltip prepares its numeric values from the same doctrine, biological, raid, and cleanup constants consumed by gameplay before formatting the player text. `localisation/english/cbrn_doctrine_l_english.yml` contains no raw constant interpolation; native spirit-tooltip rendering remains unverified.
+
 Cleanup output depends on the current contamination class:
 
 - Trace or Local: 10 points

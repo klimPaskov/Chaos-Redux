@@ -1,0 +1,90 @@
+# ============================================================================
+# CHAOS REDUX - CBRN DOCTRINE DESCRIPTION VALUES
+# ============================================================================
+# Overview:
+# - Country-scoped tooltip bindings quote current doctrine, biological, raid,
+#   protection, and cleanup constants through temporary variables.
+# - These triggers change no gameplay state. Localisation owns the prose and
+#   formatting; script constants remain the single source of numeric values.
+# ============================================================================
+
+defined_text = {
+	name = GetCbrnDeconAssignmentRequirementsValue
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_loc_decon_assignment_days = constant:cbrn_doctrine_timing.theater_cleanup_assignment_days }
+			set_temp_variable = { cbrn_loc_decon_required_masks = constant:cbrn_doctrine_cleanup_assignment_requirement.gas_masks }
+			set_temp_variable = { cbrn_loc_decon_required_support = constant:cbrn_doctrine_cleanup_assignment_requirement.support_equipment }
+			set_temp_variable = { cbrn_loc_decon_required_trucks = constant:cbrn_doctrine_cleanup_assignment_requirement.motorized_equipment }
+			always = yes
+		}
+		localization_key = cbrn_assign_decontamination_corridor_requirements_value
+	}
+}
+
+defined_text = {
+	name = GetCbrnDeconAssignmentEffectValue
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_loc_decon_trace_clearance = constant:cbrn_doctrine_cleanup.trace_or_local_points }
+			set_temp_variable = { cbrn_loc_decon_serious_clearance = constant:cbrn_doctrine_cleanup.serious_points }
+			set_temp_variable = { cbrn_loc_decon_severe_clearance = constant:cbrn_doctrine_cleanup.severe_points }
+			set_temp_variable = { cbrn_loc_decon_catastrophic_clearance = constant:cbrn_doctrine_cleanup.catastrophic_points }
+			set_temp_variable = { cbrn_loc_decon_theater_mult = constant:cbrn_doctrine_spirit.theater_contamination.cleanup_output_mult }
+			always = yes
+		}
+		localization_key = cbrn_assign_decontamination_corridor_effect_value
+	}
+}
+
+defined_text = {
+	name = GetCbrnTheaterContaminationSpiritValue
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_loc_theater_delivery_dose = constant:cbrn_doctrine_spirit.theater_contamination.delivery_dose_mult }
+			set_temp_variable = { cbrn_loc_theater_bio_death = constant:bio_lifecycle_doctrine.theater_contamination.death_mult }
+			set_temp_variable = { cbrn_loc_theater_raid_refund = constant:bio_strategic_raid_command.theater_refund_share }
+			set_temp_variable = { cbrn_loc_theater_cleanup = constant:cbrn_doctrine_spirit.theater_contamination.cleanup_output_mult }
+			always = yes
+		}
+		localization_key = cbrn_theater_contamination_doctrine_spirit_value
+	}
+}
+
+defined_text = {
+	name = GetCbrnTerminalHazardSpiritValue
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_loc_terminal_chemical_death = constant:cbrn_doctrine_spirit.terminal_hazard.casualty_mult }
+			set_temp_variable = { cbrn_loc_terminal_bio_death = constant:bio_lifecycle_doctrine.terminal_hazard.death_mult }
+			set_temp_variable = { cbrn_loc_terminal_raid_refund = constant:bio_strategic_raid_command.terminal_refund_share }
+			set_temp_variable = { cbrn_loc_terminal_camp_death = constant:cbrn_doctrine_spirit.terminal_hazard.camp_killing_efficiency_mult }
+			set_temp_variable = { cbrn_loc_terminal_condemnation = constant:cbrn_doctrine_spirit.terminal_hazard.condemnation_mult }
+			always = yes
+		}
+		localization_key = cbrn_terminal_hazard_doctrine_spirit_value
+	}
+}
+
+defined_text = {
+	name = GetCbrnMaskDisciplineSpiritValue
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_loc_mask_consumption = constant:cbrn_doctrine_spirit.mask_discipline.military_mask_consumption_mult }
+			always = yes
+		}
+		localization_key = cbrn_mask_discipline_spirit_value
+	}
+}
+
+defined_text = {
+	name = GetCbrnHazardAssaultCadresSpiritValue
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_loc_hazard_attack = constant:cbrn_doctrine_spirit.hazard_assault_cadres.unit_attack_factor }
+			set_temp_variable = { cbrn_loc_hazard_defence = constant:cbrn_doctrine_spirit.hazard_assault_cadres.unit_defence_factor }
+			always = yes
+		}
+		localization_key = cbrn_hazard_assault_cadres_spirit_value
+	}
+}
