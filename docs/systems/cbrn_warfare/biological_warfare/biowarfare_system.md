@@ -100,6 +100,8 @@ National bio-surveillance and Smallpox vaccination use Political Power, CBRN Ins
 
 Field hospitals and international medical missions instead consume Political Power, Support Equipment, and trucks while committing Medical Capacity until the deployment ends. They require CBRN Instruments on hand without consuming them. If the target outbreak ends before deployment, the committed medical teams return; spent supplies remain spent.
 
+Quarantine consumes Political Power, Command Power, trucks, and manpower. Support and infantry equipment must be on hand to staff the cordon, but remain in the stockpile. The cordon strains local production and raises resistance while slowing disease.
+
 ## Stockpile Safety and Accidents
 
 One exact owned biowarfare facility is designated as the national arsenal.

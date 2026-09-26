@@ -76,15 +76,6 @@ bio_countermeasure_debit_instrument_equipment = {
 	}
 }
 
-bio_countermeasure_debit_infantry_equipment = {
-	set_temp_variable = { bio_countermeasure_equipment_debit = bio_countermeasure_infantry_cost }
-	multiply_temp_variable = { bio_countermeasure_equipment_debit = constant:bio_lifecycle_math.negation }
-	add_equipment_to_stockpile = {
-		type = infantry_equipment
-		amount = bio_countermeasure_equipment_debit
-	}
-}
-
 bio_countermeasure_pay_command_power = {
 	set_temp_variable = { bio_countermeasure_command_power_debit = bio_countermeasure_command_power_cost }
 	multiply_temp_variable = { bio_countermeasure_command_power_debit = constant:bio_lifecycle_math.negation }
@@ -207,18 +198,16 @@ bio_countermeasure_apply_field_hospital = {
 }
 
 bio_countermeasure_pay_quarantine = {
-	set_temp_variable = { bio_countermeasure_support_cost = constant:bio_countermeasure_cost.quarantine_support }
-	bio_countermeasure_debit_support_equipment = yes
+	set_temp_variable = { bio_countermeasure_pp_debit = constant:bio_countermeasure_cost.quarantine_pp }
+	multiply_temp_variable = { bio_countermeasure_pp_debit = constant:bio_lifecycle_math.negation }
+	add_political_power = bio_countermeasure_pp_debit
 	set_temp_variable = { bio_countermeasure_truck_cost = constant:bio_countermeasure_cost.quarantine_trucks }
 	bio_countermeasure_debit_motorized_equipment = yes
-	set_temp_variable = { bio_countermeasure_infantry_cost = constant:bio_countermeasure_cost.quarantine_infantry }
-	bio_countermeasure_debit_infantry_equipment = yes
 	set_temp_variable = { bio_countermeasure_command_power_cost = constant:bio_countermeasure_cost.quarantine_command_power }
 	bio_countermeasure_pay_command_power = yes
 	set_temp_variable = { bio_countermeasure_manpower_debit = constant:bio_countermeasure_cost.quarantine_manpower }
 	multiply_temp_variable = { bio_countermeasure_manpower_debit = constant:bio_lifecycle_math.negation }
 	add_manpower = bio_countermeasure_manpower_debit
-	add_stability = constant:bio_countermeasure_cost.quarantine_stability
 }
 
 bio_countermeasure_apply_quarantine = {
