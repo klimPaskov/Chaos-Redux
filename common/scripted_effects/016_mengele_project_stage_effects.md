@@ -78,6 +78,25 @@ An absent native completion, failed Theory output, invalid owner, or duplicate f
 The helper is not called by stage-output or availability reconciliation, so nested Prototype output cannot recursively adopt another stage.
 Callers continue using `brilliant_scientist_mengele_finish_project_stage = yes`; they must not invoke the internal adoption helper as an independent grant API.
 
+## Exact native later-stage receipts
+
+The exact native later-stage output wrappers settle only Electronics Deployment, Electronics Weaponization, Rocketry Deployment and Weaponization, and High Energy Deployment and Weaponization.
+Project outputs call their ID-specific wrapper from the existing `country_effects` block; the `radio_detection`, `centimetric_radar`, and `phased_array` technology definitions call their matching hidden `on_research_complete` wrapper.
+Electronics Deployment requires both the `sp_air_radar` output marker and `radio_detection`; the marker flag is set only for a valid Mengele provider and is removed by provider cleanup.
+
+`brilliant_scientist_mengele_settle_exact_native_later_stage` requires the strict provider gate, a valid family/stage/source tuple, the exact private predecessor, and an empty matching active receipt.
+It calls `brilliant_scientist_mengele_apply_family_stage_output` once, records the exact native source in the aligned `mengele_event016_native_later_stage_deployment_source_entries` or `mengele_event016_native_later_stage_weaponization_source_entries` array, and never starts, cancels, refunds, or converts a paid receipt.
+The source arrays are append-only initialized to the fifteen-family count and are cleared with provider receipts.
+If the matching paid receipt is active, native settlement fails closed and leaves that existing receipt to its current decision lifecycle; this hook adds no retry scheduler or timer policy.
+
+The native source table rejects cross-family and cross-stage tuples.
+Rocketry records which of its two exact alternatives settled each stage, while repeated or opposite-alternative completions cannot replace a completed provider receipt.
+High Energy records the exact reactor, nuclear-bomb, thermonuclear-bomb, or warhead project that settled its corresponding stage.
+
+The mod-side project and technology files mirror nine existing installed vanilla project definitions and three existing vanilla technology definitions because partial same-ID merging is not established by the inspected documentation or reference mods.
+The mirrors preserve their current vanilla definitions and add only hidden Event 016 completion calls; review them against the installed vanilla sources after game updates.
+No project or technology IDs are added.
+
 `brilliant_scientist_mengele_reconcile_reused_native_project_prototypes` is a country-scope, no-argument completion adapter for Electronics, Rocketry, High Energy, and Biological Weapons.
 The separate strict-Mengele branch of `on_project_completion` calls it; the existing Kruger synchronization and historical capture remain host-only.
 It uses four private family selectors and the existing authentic recording API, which requires matching Theory and native completion and rejects an already-recorded Prototype.
@@ -125,8 +144,9 @@ The gameplay invocation boundary is documented in `docs/plans/016_brilliant_scie
 It retains the existing Computation incident cleanup hook and invokes aggregate cleanup for the five conventional private incidents before the stage-receipt loop.
 Each family refunds only its exact stored recovery receipt before removing its native recovery decision, clears transient penalties and payment state, and preserves permanent history and learned technology.
 The existing provider-loss, defeat, transfer, and terminal callers of the provider cleanup helper therefore include these recoveries without another scheduler or world scan.
+Cleanup also removes the exact native later-stage source arrays and the Electronics radar-pair marker while preserving learned neutral packages and completed native projects.
 
-The parent still owns native project visibility, risky prototype callbacks, Strategic Singularity stage and terminal decisions, provider Fallout integration, localisation, and all event/special-project definitions.
+The parent still owns native project visibility, pending Prototype receipts, Strategic Singularity stage and terminal decisions, provider Fallout integration, localisation, and the remaining event/special-project definitions.
 This tranche does not claim full Event 016 portfolio completion.
 
 ## Validation evidence
@@ -135,6 +155,11 @@ Current quote and migration evidence is recorded in `docs/plans/016_brilliant_sc
 Source-model tests cover all fifteen quotes, inclusive affordability, settlement, concurrent receipts, migration, and component integrity.
 Current full `state_flow` and narrow `trace` MCP inspections for `chaosx.nr16.901` both timed out after 180 seconds, so current engine lifecycle, render, and comparison evidence remain blocked.
 Earlier focused traces are historical evidence only.
+The exact native output source copies were compared against the installed vanilla definitions, and their only semantic additions are the hidden marker calls.
+Post-change `hoi4.tech_inspect` traces for `radio_detection`, `centimetric_radar`, and `phased_array` each timed out after 180 seconds; a narrower refreshed explain query for `centimetric_radar` timed out after 180 seconds as well.
+The focused `centimetric_radar` `hoi4.tech_render` attempt then returned `Transport closed`, so no post-change technology render or compare was produced.
+The MCP package exposes no special-project-specific route.
+The exact output hooks therefore have source evidence but no current MCP graph evidence or live-game acceptance.
 
 No new icons, localisation, GUI, event, focus, model, or asset files are required by this helper layer.
 

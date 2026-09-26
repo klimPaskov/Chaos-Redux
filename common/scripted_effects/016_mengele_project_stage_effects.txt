@@ -31,6 +31,14 @@ brilliant_scientist_mengele_initialize_project_stage_receipts = {
 		limit = { check_variable = { mengele_event016_active_cost_civilian_factory_commitment_entries^num < constant:brilliant_scientist_event.project_family_count } }
 		add_to_array = { array = mengele_event016_active_cost_civilian_factory_commitment_entries value = constant:brilliant_scientist_value.zero }
 	}
+	while_loop_effect = {
+		limit = { check_variable = { mengele_event016_native_later_stage_deployment_source_entries^num < constant:brilliant_scientist_event.project_family_count } }
+		add_to_array = { array = mengele_event016_native_later_stage_deployment_source_entries value = constant:mengele_event016_native_later_stage_source.none }
+	}
+	while_loop_effect = {
+		limit = { check_variable = { mengele_event016_native_later_stage_weaponization_source_entries^num < constant:brilliant_scientist_event.project_family_count } }
+		add_to_array = { array = mengele_event016_native_later_stage_weaponization_source_entries value = constant:mengele_event016_native_later_stage_source.none }
+	}
 	set_country_flag = mengele_event016_provider_receipts_initialized
 	if = {
 		limit = { NOT = { has_country_flag = mengele_event016_singularity_component_entries_initialized } }
@@ -56,6 +64,7 @@ brilliant_scientist_mengele_prepare_project_index = {
 brilliant_scientist_mengele_clear_project_stage_selectors = {
 	set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.none }
 	set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.none }
+	set_temp_variable = { mengele_event016_native_later_stage_source = constant:mengele_event016_native_later_stage_source.none }
 	set_temp_variable = { mengele_event016_project_index = constant:brilliant_scientist_value.zero }
 }
 
@@ -1319,6 +1328,144 @@ brilliant_scientist_mengele_apply_family_stage_output = {
 	set_temp_variable = { mengele_event016_project_output_authorized = constant:brilliant_scientist_value.zero }
 }
 
+# COUNTRY scope. Settle one mapped native completion through the same provider
+# output API, without opening a paid receipt or changing native project costs.
+brilliant_scientist_mengele_settle_exact_native_later_stage = {
+	set_temp_variable = { mengele_event016_native_later_stage_settled = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			brilliant_scientist_mengele_native_later_stage_request_is_valid = yes
+		}
+		brilliant_scientist_mengele_initialize_project_stage_receipts = yes
+		if = {
+			limit = {
+				brilliant_scientist_mengele_project_stage_predecessor_is_valid = yes
+				brilliant_scientist_mengele_project_stage_receipt_is_empty = yes
+			}
+			brilliant_scientist_mengele_prepare_project_index = yes
+			set_temp_variable = { mengele_event016_project_output_authorized = constant:brilliant_scientist_value.one }
+			brilliant_scientist_mengele_apply_family_stage_output = yes
+			if = {
+				limit = { check_variable = { var = mengele_event016_project_output_applied value = constant:brilliant_scientist_value.one compare = equals } }
+				if = {
+					limit = { check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals } }
+					set_variable = { mengele_event016_native_later_stage_deployment_source_entries^mengele_event016_project_index = mengele_event016_native_later_stage_source }
+				}
+				if = {
+					limit = { check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals } }
+					set_variable = { mengele_event016_native_later_stage_weaponization_source_entries^mengele_event016_project_index = mengele_event016_native_later_stage_source }
+				}
+				set_temp_variable = { mengele_event016_native_later_stage_settled = constant:brilliant_scientist_value.one }
+			}
+		}
+	}
+	set_temp_variable = { mengele_event016_project_output_authorized = constant:brilliant_scientist_value.zero }
+	brilliant_scientist_mengele_clear_project_stage_selectors = yes
+}
+
+brilliant_scientist_mengele_mark_native_electronics_radar_project_output = {
+	if = {
+		limit = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		set_country_flag = mengele_event016_native_electronics_radar_project_output_seen
+		if = {
+			limit = { has_tech = radio_detection }
+			brilliant_scientist_mengele_settle_native_electronics_deployment_from_radar = yes
+		}
+	}
+}
+
+brilliant_scientist_mengele_settle_native_electronics_deployment_from_radar = {
+	if = {
+		limit = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			has_country_flag = mengele_event016_native_electronics_radar_project_output_seen
+			has_tech = radio_detection
+		}
+		set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.electronics }
+		set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.deployment }
+		set_temp_variable = { mengele_event016_native_later_stage_source = constant:mengele_event016_native_later_stage_source.electronics_radar_pair }
+		brilliant_scientist_mengele_settle_exact_native_later_stage = yes
+	}
+}
+
+brilliant_scientist_mengele_native_completion_radio_detection = {
+	if = {
+		limit = { has_country_flag = mengele_event016_native_electronics_radar_project_output_seen }
+		brilliant_scientist_mengele_settle_native_electronics_deployment_from_radar = yes
+	}
+}
+
+brilliant_scientist_mengele_native_completion_centimetric_radar = {
+	set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.electronics }
+	set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.weaponization }
+	set_temp_variable = { mengele_event016_native_later_stage_source = constant:mengele_event016_native_later_stage_source.electronics_centimetric_radar }
+	brilliant_scientist_mengele_settle_exact_native_later_stage = yes
+}
+
+brilliant_scientist_mengele_native_completion_phased_array = {
+	set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.electronics }
+	set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.weaponization }
+	set_temp_variable = { mengele_event016_native_later_stage_source = constant:mengele_event016_native_later_stage_source.electronics_phased_array }
+	brilliant_scientist_mengele_settle_exact_native_later_stage = yes
+}
+
+brilliant_scientist_mengele_native_completion_sp_rockets_ballistic_missile = {
+	set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.rocketry }
+	set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.deployment }
+	set_temp_variable = { mengele_event016_native_later_stage_source = constant:mengele_event016_native_later_stage_source.rocketry_ballistic_missile }
+	brilliant_scientist_mengele_settle_exact_native_later_stage = yes
+}
+
+brilliant_scientist_mengele_native_completion_sp_air_axial_jet_engine = {
+	set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.rocketry }
+	set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.deployment }
+	set_temp_variable = { mengele_event016_native_later_stage_source = constant:mengele_event016_native_later_stage_source.rocketry_axial_jet_engine }
+	brilliant_scientist_mengele_settle_exact_native_later_stage = yes
+}
+
+brilliant_scientist_mengele_native_completion_sp_rockets_long_range_ballistic_missile = {
+	set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.rocketry }
+	set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.weaponization }
+	set_temp_variable = { mengele_event016_native_later_stage_source = constant:mengele_event016_native_later_stage_source.rocketry_long_range_ballistic_missile }
+	brilliant_scientist_mengele_settle_exact_native_later_stage = yes
+}
+
+brilliant_scientist_mengele_native_completion_sp_air_supersonic_jet = {
+	set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.rocketry }
+	set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.weaponization }
+	set_temp_variable = { mengele_event016_native_later_stage_source = constant:mengele_event016_native_later_stage_source.rocketry_supersonic_jet }
+	brilliant_scientist_mengele_settle_exact_native_later_stage = yes
+}
+
+brilliant_scientist_mengele_native_completion_sp_commercial_nuclear_reactor = {
+	set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.high_energy }
+	set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.deployment }
+	set_temp_variable = { mengele_event016_native_later_stage_source = constant:mengele_event016_native_later_stage_source.high_energy_commercial_reactor }
+	brilliant_scientist_mengele_settle_exact_native_later_stage = yes
+}
+
+brilliant_scientist_mengele_native_completion_sp_nuclear_bomb = {
+	set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.high_energy }
+	set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.deployment }
+	set_temp_variable = { mengele_event016_native_later_stage_source = constant:mengele_event016_native_later_stage_source.high_energy_nuclear_bomb }
+	brilliant_scientist_mengele_settle_exact_native_later_stage = yes
+}
+
+brilliant_scientist_mengele_native_completion_sp_thermo_nuclear_bomb = {
+	set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.high_energy }
+	set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.weaponization }
+	set_temp_variable = { mengele_event016_native_later_stage_source = constant:mengele_event016_native_later_stage_source.high_energy_thermonuclear_bomb }
+	brilliant_scientist_mengele_settle_exact_native_later_stage = yes
+}
+
+brilliant_scientist_mengele_native_completion_sp_nuclear_warheads = {
+	set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.high_energy }
+	set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.weaponization }
+	set_temp_variable = { mengele_event016_native_later_stage_source = constant:mengele_event016_native_later_stage_source.high_energy_nuclear_warheads }
+	brilliant_scientist_mengele_settle_exact_native_later_stage = yes
+}
+
 # COUNTRY scope. Called only after the paid Theory receipt has settled and its
 # incident has been dispatched. Native completion is evidence, never replayed.
 # Preserve the outer callback's selectors/results across the Prototype adapter.
@@ -1589,8 +1736,11 @@ brilliant_scientist_mengele_cleanup_provider_receipts = {
 			if = { limit = { check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.none compare = greater_than } } brilliant_scientist_mengele_cancel_project_stage = yes set_temp_variable = { mengele_event016_provider_cleanup_applied = constant:brilliant_scientist_value.one } }
 			add_to_temp_variable = { mengele_event016_cleanup_index = constant:brilliant_scientist_value.one }
 		}
+		clear_array = mengele_event016_native_later_stage_deployment_source_entries
+		clear_array = mengele_event016_native_later_stage_weaponization_source_entries
 	}
 	clr_country_flag = mengele_event016_native_computation_prototype_pending
+	clr_country_flag = mengele_event016_native_electronics_radar_project_output_seen
 	clr_country_flag = directorate_special_project_computation_available
 	clr_country_flag = directorate_special_project_electronics_available
 	clr_country_flag = directorate_special_project_materials_available

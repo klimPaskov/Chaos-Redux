@@ -83,6 +83,58 @@ brilliant_scientist_mengele_project_stage_request_is_valid = {
 	}
 }
 
+# COUNTRY scope. Authenticate only the exact existing native outputs mapped to
+# Electronics, Rocketry, and High Energy later provider stages.
+brilliant_scientist_mengele_native_later_stage_request_is_valid = {
+	OR = {
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.electronics compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			check_variable = { var = mengele_event016_native_later_stage_source value = constant:mengele_event016_native_later_stage_source.electronics_radar_pair compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.electronics compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			OR = {
+				check_variable = { var = mengele_event016_native_later_stage_source value = constant:mengele_event016_native_later_stage_source.electronics_centimetric_radar compare = equals }
+				check_variable = { var = mengele_event016_native_later_stage_source value = constant:mengele_event016_native_later_stage_source.electronics_phased_array compare = equals }
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.rocketry compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			OR = {
+				check_variable = { var = mengele_event016_native_later_stage_source value = constant:mengele_event016_native_later_stage_source.rocketry_ballistic_missile compare = equals }
+				check_variable = { var = mengele_event016_native_later_stage_source value = constant:mengele_event016_native_later_stage_source.rocketry_axial_jet_engine compare = equals }
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.rocketry compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			OR = {
+				check_variable = { var = mengele_event016_native_later_stage_source value = constant:mengele_event016_native_later_stage_source.rocketry_long_range_ballistic_missile compare = equals }
+				check_variable = { var = mengele_event016_native_later_stage_source value = constant:mengele_event016_native_later_stage_source.rocketry_supersonic_jet compare = equals }
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.high_energy compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			OR = {
+				check_variable = { var = mengele_event016_native_later_stage_source value = constant:mengele_event016_native_later_stage_source.high_energy_commercial_reactor compare = equals }
+				check_variable = { var = mengele_event016_native_later_stage_source value = constant:mengele_event016_native_later_stage_source.high_energy_nuclear_bomb compare = equals }
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.high_energy compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			OR = {
+				check_variable = { var = mengele_event016_native_later_stage_source value = constant:mengele_event016_native_later_stage_source.high_energy_thermonuclear_bomb compare = equals }
+				check_variable = { var = mengele_event016_native_later_stage_source value = constant:mengele_event016_native_later_stage_source.high_energy_nuclear_warheads compare = equals }
+			}
+		}
+	}
+}
+
 # COUNTRY scope. Authenticate the entire private component chain, not only its count.
 brilliant_scientist_mengele_singularity_components_are_complete = {
 	check_variable = { var = mengele_event016_singularity_component_count value = constant:brilliant_scientist_singularity.component_count compare = equals }
