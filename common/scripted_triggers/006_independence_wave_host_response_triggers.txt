@@ -1,0 +1,55 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 HOST RESPONSE TRIGGERS
+# ============================================================================
+# Overview:
+# - Proves a live former host's exact state-loss response receipt belongs to
+#   the active committed Event 006 plan and its aligned source host row.
+# - Reads only the parent-owned host queue and committed shared plan arrays.
+# - Does not dispatch events, scan countries, or use weighted behavior.
+# ============================================================================
+
+# COUNTRY scope. The host row index is internal evidence, not a public option
+# parameter. Plan ID is the response generation token for existing host tags.
+has_current_independence_wave_host_response_receipt = {
+	exists = yes
+	has_country_flag = independence_wave_host_response_pending
+	has_global_flag = independence_wave_country_opening_report_pending
+	has_global_flag = liberation_release_plan_includes_event6
+	check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.committed }
+	has_variable = global.liberation_plan_id
+	has_variable = global.independence_wave_host_response_remaining_count
+	check_variable = { global.independence_wave_host_response_remaining_count > constant:independence_wave_host_response_value.zero }
+	check_variable = { var = global.independence_wave_host_response_remaining_count value = global.independence_wave_host_response_hosts^num compare = less_than_or_equals }
+	check_variable = { var = global.independence_wave_host_response_last_built_plan_id value = global.liberation_plan_id compare = equals }
+	is_in_array = { array = global.independence_wave_host_response_hosts value = THIS }
+	liberation_release_host_arrays_are_aligned = yes
+	has_variable = independence_wave_host_response_plan_id
+	check_variable = { var = independence_wave_host_response_plan_id value = global.liberation_plan_id compare = equals }
+	has_variable = independence_wave_host_response_host_row
+	check_variable = { var = independence_wave_host_response_host_row value = constant:independence_wave_plan.first_array_index compare = greater_than_or_equals }
+	check_variable = { var = independence_wave_host_response_host_row value = global.liberation_plan_hosts^num compare = less_than }
+	var:global.liberation_plan_hosts^independence_wave_host_response_host_row = { tag = PREV }
+	has_variable = independence_wave_host_response_tier
+	OR = {
+		check_variable = { independence_wave_host_response_tier = constant:independence_wave_host_response_tier.limited }
+		check_variable = { independence_wave_host_response_tier = constant:independence_wave_host_response_tier.severe }
+		check_variable = { independence_wave_host_response_tier = constant:independence_wave_host_response_tier.remnant }
+	}
+	has_variable = independence_wave_host_response_event6_loss_count
+	check_variable = { independence_wave_host_response_event6_loss_count > constant:independence_wave_host_response_value.zero }
+	has_variable = independence_wave_host_response_pre_release_state_count
+	check_variable = { independence_wave_host_response_pre_release_state_count > constant:independence_wave_host_response_value.zero }
+	check_variable = { var = independence_wave_host_response_event6_loss_count value = independence_wave_host_response_pre_release_state_count compare = less_than_or_equals }
+	check_variable = { var = independence_wave_host_response_pre_release_state_count value = global.liberation_plan_host_owned_state_snapshots^independence_wave_host_response_host_row compare = equals }
+	has_variable = independence_wave_host_response_protected_state
+	check_variable = { var = independence_wave_host_response_protected_state value = global.liberation_plan_host_protected_states^independence_wave_host_response_host_row compare = equals }
+	has_variable = independence_wave_host_response_original_capital
+	check_variable = { var = independence_wave_host_response_original_capital value = global.liberation_plan_host_original_capitals^independence_wave_host_response_host_row compare = equals }
+	NOT = {
+		AND = {
+			has_global_flag = independence_wave_join_conversion_active
+			check_variable = { var = global.independence_wave_join_active_plan_id value = global.liberation_plan_id compare = equals }
+		}
+	}
+}
+

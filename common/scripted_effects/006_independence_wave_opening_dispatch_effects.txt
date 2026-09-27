@@ -33,6 +33,7 @@ independence_wave_prepare_committed_country_opening_queue = {
 			check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.committed }
 			has_global_flag = liberation_release_plan_includes_event6
 			has_global_flag = liberation_release_joint_plan_executed
+			NOT = { has_global_flag = independence_wave_join_conversion_active }
 			has_variable = global.liberation_plan_id
 			check_variable = { global.liberation_plan_id > constant:independence_wave_planner.no_candidates }
 			has_variable = global.liberation_plan_committed_date
@@ -218,12 +219,17 @@ independence_wave_dispatch_committed_country_opening_queue = {
 		}
 		if = {
 			limit = { check_variable = { var = independence_wave_opening_validated_countries^num value = independence_wave_opening_report_counts^0 compare = equals } }
+			set_global_flag = independence_wave_opening_response_queue_pending
+			set_variable = { global.independence_wave_opening_response_plan_id = global.liberation_plan_id }
+			set_variable = { global.independence_wave_opening_responses_remaining = independence_wave_opening_validated_countries^num }
 			set_variable = { independence_wave_opening_dispatched_plan_id = independence_wave_opening_report_plan_ids^0 }
 			set_temp_variable = { independence_wave_opening_index = constant:independence_wave_plan.first_array_index }
 			while_loop_effect = {
 				limit = { check_variable = { var = independence_wave_opening_index value = independence_wave_opening_report_counts^0 compare = less_than } }
 				var:independence_wave_opening_actor_countries^independence_wave_opening_index = {
 					set_variable = { independence_wave_opening_plan_id = PREV.independence_wave_opening_dispatched_plan_id }
+					set_variable = { independence_wave_opening_response_plan_id = PREV.independence_wave_opening_dispatched_plan_id }
+					clear_variable = independence_wave_opening_response_counted_plan_id
 					set_variable = { independence_wave_opening_generation_id = independence_wave_generation_id }
 					set_variable = { independence_wave_opening_package_id = independence_wave_package_id }
 					set_country_flag = independence_wave_opening_pending
@@ -315,7 +321,9 @@ independence_wave_resolve_country_opening_civilian_administration = {
 			independence_wave_decision_apply_host_deltas = yes
 		}
 		independence_wave_schedule_iw043_iw058_opening_followup_events = yes
+		independence_wave_host_response_complete_country_opening = yes
 	}
+	else = { independence_wave_host_response_skip_invalid_country_opening = yes }
 }
 
 # COUNTRY scope. The perimeter command gains more security from stronger
@@ -381,7 +389,9 @@ independence_wave_resolve_country_opening_frontier_security = {
 			independence_wave_decision_apply_host_deltas = yes
 		}
 		independence_wave_schedule_iw043_iw058_opening_followup_events = yes
+		independence_wave_host_response_complete_country_opening = yes
 	}
+	else = { independence_wave_host_response_skip_invalid_country_opening = yes }
 }
 
 

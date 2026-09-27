@@ -113,7 +113,7 @@ Every released country receives immediate setup.
 - opening focus or overlay access
 - AI route seed
 
-Every host receives one crisis state for each released country or one consolidated crisis when several releases come from the same host.
+Every distinct former host receives one consolidated crisis response for all of its losses in the committed Event 006 wave, as specified in the accepted host-response defaults below.
 
 Nearby majors and regional powers receive interest scores rather than one popup per country. High-interest states can receive targeted recognition, intervention, or patron events.
 
@@ -624,13 +624,13 @@ After the public Event 006 report, the host-response event should differ accordi
 
 ### Accepted host response defaults (2026-09-27)
 
-Acceptance basis: the user accepted the proposed host-response defaults and later approved all outstanding recommendations.
+Acceptance basis: on 2026-09-27 the user accepted Event 006-only loss measurement, host aggregation, post-opening dispatch, and deterministic AI, then explicitly selected the recommended thresholds: limited below 50 percent, severe at 50 percent or more, and capital remnant if only the protected state remains or the original capital is lost while no more than two states remain.
 
 Measure each former host's loss as the number of distinct states transferred by the committed Event 006 release divided by that host's pre-release state count. Exclude Event 005, Join conversions, and every other origin from the numerator. Aggregate all Event 006 losses to one response for each distinct former host in the wave.
 
-Dispatch the host responses after the public report is acknowledged and the released countries have received their opening choices. A host qualifies for the capital-remnant response when only its protected state remains, or when its original capital is no longer controlled by the host and the host has no more than two states remaining. This remnant condition overrides the loss-share tiers. Otherwise, classify a loss below 50 percent as limited secession and a loss of 50 percent or more as severe partition.
+Dispatch the host responses after the public report is acknowledged and the released countries have received their opening choices. A host qualifies for the capital-remnant response when only its protected state remains, or when the host no longer owns its original capital and has no more than two states remaining. This remnant condition overrides the loss-share tiers. Otherwise, classify a loss below 50 percent as limited secession and a loss of 50 percent or more as severe partition.
 
-AI hosts select deterministically from the classified tier and their live host-relation ledgers. The three tiers retain the response content below; this accepted mapping defines classification, aggregation, and dispatch order without claiming that the host-response events are implemented.
+AI hosts select deterministically from the classified tier and their live host-relation ledgers. The three tiers retain the response content below; this accepted mapping defines classification, aggregation, and dispatch order. Current implementation evidence and limits are recorded in the Event 006 source map and dated host-response handoff.
 
 ### Limited secession
 

@@ -1,0 +1,355 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 FORMER-HOST RESPONSE OUTCOMES
+# Overview:
+# - Apply one limited, severe, or capital-remnant response to a live host.
+# - Change claims only on distinct states transferred by this Event 006 plan.
+# - Update matching-generation bilateral ledgers for primary former hosts.
+# - Preserve a host-level receipt for optional-state secondary hosts.
+# ============================================================================
+
+# COUNTRY scope: clear only the eight bilateral deltas used by one response.
+independence_wave_host_response_clear_child_deltas = {
+	set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_value.minimum }
+}
+
+# COUNTRY scope: apply the selected host action to each live, matching-generation
+# Event 006 child whose primary former host is this response host.
+independence_wave_host_response_update_primary_child_ledgers = {
+	if = {
+		limit = {
+			has_current_independence_wave_host_response_receipt = yes
+			independence_wave_plan_metadata_arrays_are_aligned = yes
+			liberation_release_country_arrays_are_aligned = yes
+		}
+		save_event_target_as = independence_wave_host_response_ledger_host
+		set_temp_variable = { independence_wave_host_response_ledger_country_index = constant:independence_wave_plan.first_array_index }
+		while_loop_effect = {
+			limit = { check_variable = { var = independence_wave_host_response_ledger_country_index value = global.independence_wave_plan_selected_count compare = less_than } }
+			set_temp_variable = { independence_wave_host_response_ledger_country_row = global.independence_wave_plan_country_row_indices^independence_wave_host_response_ledger_country_index }
+			if = {
+				limit = {
+					check_variable = { var = global.liberation_plan_country_owners^independence_wave_host_response_ledger_country_row value = constant:liberation_plan_owner.independence_wave compare = equals }
+					var:global.liberation_plan_primary_hosts^independence_wave_host_response_ledger_country_row = { tag = event_target:independence_wave_host_response_ledger_host }
+				}
+				var:global.liberation_plan_countries^independence_wave_host_response_ledger_country_row = {
+					if = {
+						limit = {
+							is_independence_wave_active_country = yes
+							has_country_flag = independence_wave_origin_committed
+							has_country_flag = independence_wave_package_setup_complete
+							has_country_flag = independence_wave_opening_resolved
+							has_variable = independence_wave_generation_id
+							has_variable = independence_wave_opening_generation_id
+							check_variable = { var = independence_wave_generation_id value = independence_wave_opening_generation_id compare = equals }
+							has_variable = independence_wave_opening_response_plan_id
+							check_variable = { var = independence_wave_opening_response_plan_id value = global.independence_wave_host_response_plan_id compare = equals }
+							has_variable = independence_wave_package_id
+							check_variable = { var = independence_wave_package_id value = global.liberation_plan_package_ids^independence_wave_host_response_ledger_country_row compare = equals }
+							has_variable = independence_wave_former_host
+							check_variable = { var = independence_wave_former_host value = event_target:independence_wave_host_response_ledger_host compare = equals }
+						}
+						set_temp_variable = { independence_wave_host_outcome_input = constant:independence_wave_host_outcome.guarded_coexistence }
+						independence_wave_host_response_clear_child_deltas = yes
+						if = {
+							limit = { check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.limited_negotiate compare = equals } }
+							set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+							set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_major_loss }
+							set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+							set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+							set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+							set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_decision_effect.bilateral_standard }
+							set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+							set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_decision_effect.bilateral_major_loss }
+						}
+						else_if = {
+							limit = { check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.limited_pressure compare = equals } }
+							set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_standard }
+							set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard }
+							set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_minor }
+							set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+							set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_standard }
+							set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_decision_effect.bilateral_minor }
+						}
+						else_if = {
+							limit = {
+								OR = {
+									check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.limited_reclamation compare = equals }
+									check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.severe_command compare = equals }
+								}
+							}
+							set_temp_variable = { independence_wave_host_outcome_input = constant:independence_wave_host_outcome.reclamation_conflict }
+							set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_major }
+							set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_major }
+							set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_minor }
+							set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_decision_effect.bilateral_minor }
+							set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_decision_effect.bilateral_minor }
+							set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_major }
+							set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_decision_effect.bilateral_major }
+						}
+						else_if = {
+							limit = { check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.severe_relief compare = equals } }
+							set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+							set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+							set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+							set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+							set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+							set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_decision_effect.bilateral_major }
+							set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+							set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+						}
+						else_if = {
+							limit = { check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.severe_settlement compare = equals } }
+							set_temp_variable = { independence_wave_host_outcome_input = constant:independence_wave_host_outcome.recognized_separation }
+							set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_major_loss }
+							set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_major_loss }
+							set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+							set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+							set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+							set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_decision_effect.bilateral_major }
+							set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+							set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_decision_effect.bilateral_major_loss }
+						}
+						else_if = {
+							limit = { check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.remnant_continuity compare = equals } }
+							set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor }
+							set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_minor }
+							set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_minor }
+							set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+							set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_minor }
+							set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_decision_effect.bilateral_minor }
+						}
+						else_if = {
+							limit = { check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.remnant_regional_identity compare = equals } }
+							set_temp_variable = { independence_wave_host_outcome_input = constant:independence_wave_host_outcome.recognized_separation }
+							set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_major_loss }
+							set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_major_loss }
+							set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+							set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+							set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+							set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_decision_effect.bilateral_major }
+							set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_major_loss }
+							set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_decision_effect.bilateral_major_loss }
+						}
+						independence_wave_set_host_outcome = yes
+						independence_wave_decision_apply_host_deltas = yes
+					}
+				}
+			}
+			add_to_temp_variable = { independence_wave_host_response_ledger_country_index = constant:independence_wave_plan.loop_increment }
+		}
+	}
+}
+
+# COUNTRY scope: turn exact selected Event 006 state transfers into or out of
+# host claims. Event 005 rows, optional states from another host, and unrelated
+# historical claims never enter this pass.
+independence_wave_host_response_apply_state_claim_policy = {
+	if = {
+		limit = { has_current_independence_wave_host_response_receipt = yes }
+		save_event_target_as = independence_wave_host_response_claim_host
+		set_temp_variable = { independence_wave_host_response_claim_state_index = constant:independence_wave_plan.first_array_index }
+		while_loop_effect = {
+			limit = { check_variable = { var = independence_wave_host_response_claim_state_index value = global.liberation_plan_states^num compare = less_than } }
+			set_temp_variable = { independence_wave_host_response_claim_state_role = global.liberation_plan_state_roles^independence_wave_host_response_claim_state_index }
+			if = {
+				limit = {
+					check_variable = { var = global.liberation_plan_state_country_owners^independence_wave_host_response_claim_state_index value = constant:liberation_plan_owner.independence_wave compare = equals }
+					OR = {
+						check_variable = { independence_wave_host_response_claim_state_role = constant:liberation_plan_state_role.anchor }
+						check_variable = { independence_wave_host_response_claim_state_role = constant:liberation_plan_state_role.compact }
+						check_variable = { independence_wave_host_response_claim_state_role = constant:liberation_plan_state_role.extended }
+					}
+					var:global.liberation_plan_state_hosts^independence_wave_host_response_claim_state_index = { tag = event_target:independence_wave_host_response_claim_host }
+				}
+				var:global.liberation_plan_states^independence_wave_host_response_claim_state_index = {
+					if = {
+						limit = {
+							is_claimed_by = event_target:independence_wave_host_response_claim_host
+							OR = {
+								check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.limited_negotiate compare = equals }
+								check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.severe_settlement compare = equals }
+								check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.remnant_regional_identity compare = equals }
+								AND = {
+									check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.severe_relief compare = equals }
+									OR = {
+										check_variable = { var = independence_wave_host_response_claim_state_role value = constant:liberation_plan_state_role.compact compare = equals }
+										check_variable = { var = independence_wave_host_response_claim_state_role value = constant:liberation_plan_state_role.extended compare = equals }
+									}
+								}
+								AND = {
+									OR = {
+										check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.limited_pressure compare = equals }
+										check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.severe_command compare = equals }
+										check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.remnant_continuity compare = equals }
+									}
+									OR = {
+										check_variable = { var = independence_wave_host_response_claim_state_role value = constant:liberation_plan_state_role.compact compare = equals }
+										check_variable = { var = independence_wave_host_response_claim_state_role value = constant:liberation_plan_state_role.extended compare = equals }
+									}
+								}
+							}
+						}
+						remove_claim_by = event_target:independence_wave_host_response_claim_host
+					}
+					if = {
+						limit = {
+							NOT = { is_claimed_by = event_target:independence_wave_host_response_claim_host }
+							OR = {
+								check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.limited_reclamation compare = equals }
+								AND = {
+									OR = {
+										check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.limited_pressure compare = equals }
+										check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.severe_command compare = equals }
+										check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.remnant_continuity compare = equals }
+									}
+									check_variable = { var = independence_wave_host_response_claim_state_role value = constant:liberation_plan_state_role.anchor compare = equals }
+								}
+							}
+						}
+						add_claim_by = event_target:independence_wave_host_response_claim_host
+					}
+				}
+			}
+			add_to_temp_variable = { independence_wave_host_response_claim_state_index = constant:independence_wave_plan.loop_increment }
+		}
+	}
+}
+
+# COUNTRY scope: every player option and the hidden AI resolver enter here with
+# one action token. The response receipt prevents duplicate application.
+independence_wave_host_response_apply_current_action = {
+	if = {
+		limit = {
+			has_current_independence_wave_host_response_receipt = yes
+			OR = {
+				check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.limited_negotiate compare = equals }
+				check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.limited_pressure compare = equals }
+				check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.limited_reclamation compare = equals }
+				check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.severe_command compare = equals }
+				check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.severe_relief compare = equals }
+				check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.severe_settlement compare = equals }
+				check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.remnant_continuity compare = equals }
+				check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.remnant_regional_identity compare = equals }
+			}
+		}
+		set_variable = { independence_wave_host_response_last_action = independence_wave_host_response_action_input }
+		set_variable = { independence_wave_host_response_last_tier = independence_wave_host_response_tier }
+		if = {
+			limit = { NOT = { has_variable = independence_wave_host_response_waves_received } }
+			set_variable = { independence_wave_host_response_waves_received = constant:independence_wave_host_response_value.zero }
+		}
+		if = {
+			limit = { NOT = { has_variable = independence_wave_host_response_total_event6_states_lost } }
+			set_variable = { independence_wave_host_response_total_event6_states_lost = constant:independence_wave_host_response_value.zero }
+		}
+		add_to_variable = { independence_wave_host_response_waves_received = constant:independence_wave_host_response_value.one }
+		add_to_variable = { independence_wave_host_response_total_event6_states_lost = independence_wave_host_response_event6_loss_count }
+		clr_country_flag = independence_wave_host_response_reclamation_prepared
+		clr_country_flag = independence_wave_host_response_remnant_legal_continuity
+		clr_country_flag = independence_wave_host_response_remnant_regional_identity
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.severe_command compare = equals }
+					check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.severe_relief compare = equals }
+					check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.severe_settlement compare = equals }
+				}
+			}
+			set_temp_variable = { independence_wave_host_response_idea_days = constant:independence_wave_host_response_duration.partition_crisis_days }
+			add_timed_idea = { idea = independence_wave_host_partition_crisis days = independence_wave_host_response_idea_days }
+		}
+		if = {
+			limit = {
+				check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.limited_reclamation compare = equals }
+			}
+			set_country_flag = independence_wave_host_response_reclamation_prepared
+			set_temp_variable = { independence_wave_host_response_idea_days = constant:independence_wave_host_response_duration.reclamation_preparation_days }
+			add_timed_idea = { idea = independence_wave_host_reclamation_burden days = independence_wave_host_response_idea_days }
+		}
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.remnant_continuity compare = equals }
+					check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.remnant_regional_identity compare = equals }
+				}
+			}
+			set_temp_variable = { independence_wave_host_response_idea_days = constant:independence_wave_host_response_duration.remnant_government_days }
+			add_timed_idea = { idea = independence_wave_host_remnant_emergency_government days = independence_wave_host_response_idea_days }
+			set_country_flag = independence_wave_host_response_outside_guarantee_opportunity_open
+		}
+		if = {
+			limit = { check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.remnant_continuity compare = equals } }
+			set_country_flag = independence_wave_host_response_remnant_legal_continuity
+		}
+		if = {
+			limit = { check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.remnant_regional_identity compare = equals } }
+			set_country_flag = independence_wave_host_response_remnant_regional_identity
+		}
+		independence_wave_host_response_apply_state_claim_policy = yes
+		independence_wave_host_response_update_primary_child_ledgers = yes
+		independence_wave_host_response_complete_current_host = yes
+	}
+	else = { independence_wave_host_response_skip_invalid_current_host = yes }
+}
+
+independence_wave_host_response_apply_limited_negotiate = {
+	set_temp_variable = { independence_wave_host_response_action_input = constant:independence_wave_host_response_action.limited_negotiate }
+	independence_wave_host_response_apply_current_action = yes
+}
+
+independence_wave_host_response_apply_limited_pressure = {
+	set_temp_variable = { independence_wave_host_response_action_input = constant:independence_wave_host_response_action.limited_pressure }
+	independence_wave_host_response_apply_current_action = yes
+}
+
+independence_wave_host_response_apply_limited_reclamation = {
+	set_temp_variable = { independence_wave_host_response_action_input = constant:independence_wave_host_response_action.limited_reclamation }
+	independence_wave_host_response_apply_current_action = yes
+}
+
+independence_wave_host_response_apply_severe_command_priority = {
+	set_temp_variable = { independence_wave_host_response_action_input = constant:independence_wave_host_response_action.severe_command }
+	independence_wave_host_response_apply_current_action = yes
+}
+
+independence_wave_host_response_apply_severe_relief_priority = {
+	set_temp_variable = { independence_wave_host_response_action_input = constant:independence_wave_host_response_action.severe_relief }
+	independence_wave_host_response_apply_current_action = yes
+}
+
+independence_wave_host_response_apply_severe_settlement_priority = {
+	set_temp_variable = { independence_wave_host_response_action_input = constant:independence_wave_host_response_action.severe_settlement }
+	independence_wave_host_response_apply_current_action = yes
+}
+
+independence_wave_host_response_apply_remnant_legal_continuity = {
+	set_temp_variable = { independence_wave_host_response_action_input = constant:independence_wave_host_response_action.remnant_continuity }
+	independence_wave_host_response_apply_current_action = yes
+}
+
+independence_wave_host_response_apply_remnant_regional_identity = {
+	set_temp_variable = { independence_wave_host_response_action_input = constant:independence_wave_host_response_action.remnant_regional_identity }
+	independence_wave_host_response_apply_current_action = yes
+}
+
+independence_wave_host_response_apply_ai_action = {
+	if = {
+		limit = { has_current_independence_wave_host_response_receipt = yes }
+		if = {
+			limit = { check_variable = { var = independence_wave_host_response_ai_action value = constant:independence_wave_host_response_action.none compare = equals } }
+			independence_wave_host_response_skip_invalid_current_host = yes
+		}
+		else = {
+			set_temp_variable = { independence_wave_host_response_action_input = independence_wave_host_response_ai_action }
+			independence_wave_host_response_apply_current_action = yes
+		}
+	}
+	else = { independence_wave_host_response_skip_invalid_current_host = yes }
+}

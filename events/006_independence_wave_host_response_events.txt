@@ -1,0 +1,129 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 FORMER-HOST RESPONSE EVENTS
+# Overview:
+# - Present one aggregated response to each living host that lost Event 006
+#   territory in the committed wave.
+# - Route by the accepted limited, severe, and capital-remnant tiers.
+# - Resolve AI hosts deterministically from the tier and current host ledgers.
+# - Use the accepted shared ASSET-002 host-crisis report image.
+# ============================================================================
+
+add_namespace = chaosx.nr6
+
+@CR_SC_INDEPENDENCE_WAVE_HOST_RESPONSE_TIMEOUT_DAYS = 13
+
+country_event = {
+	id = chaosx.nr6.60
+	title = chaosx.nr6.60.t
+	desc = chaosx.nr6.60.d
+	picture = GFX_report_event_006_asset_002_host_crisis
+	is_triggered_only = yes
+	timeout_days = @CR_SC_INDEPENDENCE_WAVE_HOST_RESPONSE_TIMEOUT_DAYS
+	trigger = {
+		has_current_independence_wave_host_response_receipt = yes
+		check_variable = { var = independence_wave_host_response_tier value = constant:independence_wave_host_response_tier.limited compare = equals }
+	}
+
+	option = {
+		name = chaosx.nr6.60.a
+		custom_effect_tooltip = chaosx.nr6.60.a.tt
+		hidden_effect = { independence_wave_host_response_apply_limited_negotiate = yes }
+	}
+	option = {
+		name = chaosx.nr6.60.b
+		custom_effect_tooltip = chaosx.nr6.60.b.tt
+		hidden_effect = { independence_wave_host_response_apply_limited_pressure = yes }
+	}
+	option = {
+		name = chaosx.nr6.60.c
+		custom_effect_tooltip = chaosx.nr6.60.c.tt
+		hidden_effect = { independence_wave_host_response_apply_limited_reclamation = yes }
+	}
+}
+
+country_event = {
+	id = chaosx.nr6.61
+	title = chaosx.nr6.61.t
+	desc = chaosx.nr6.61.d
+	picture = GFX_report_event_006_asset_002_host_crisis
+	is_triggered_only = yes
+	timeout_days = @CR_SC_INDEPENDENCE_WAVE_HOST_RESPONSE_TIMEOUT_DAYS
+	trigger = {
+		has_current_independence_wave_host_response_receipt = yes
+		check_variable = { var = independence_wave_host_response_tier value = constant:independence_wave_host_response_tier.severe compare = equals }
+	}
+
+	option = {
+		name = chaosx.nr6.61.a
+		custom_effect_tooltip = chaosx.nr6.61.a.tt
+		hidden_effect = { independence_wave_host_response_apply_severe_command_priority = yes }
+	}
+	option = {
+		name = chaosx.nr6.61.b
+		custom_effect_tooltip = chaosx.nr6.61.b.tt
+		hidden_effect = { independence_wave_host_response_apply_severe_relief_priority = yes }
+	}
+	option = {
+		name = chaosx.nr6.61.c
+		custom_effect_tooltip = chaosx.nr6.61.c.tt
+		hidden_effect = { independence_wave_host_response_apply_severe_settlement_priority = yes }
+	}
+}
+
+country_event = {
+	id = chaosx.nr6.62
+	title = chaosx.nr6.62.t
+	desc = chaosx.nr6.62.d
+	picture = GFX_report_event_006_asset_002_host_crisis
+	is_triggered_only = yes
+	timeout_days = @CR_SC_INDEPENDENCE_WAVE_HOST_RESPONSE_TIMEOUT_DAYS
+	trigger = {
+		has_current_independence_wave_host_response_receipt = yes
+		check_variable = { var = independence_wave_host_response_tier value = constant:independence_wave_host_response_tier.remnant compare = equals }
+	}
+
+	option = {
+		name = chaosx.nr6.62.a
+		custom_effect_tooltip = chaosx.nr6.62.a.tt
+		hidden_effect = { independence_wave_host_response_apply_remnant_legal_continuity = yes }
+	}
+	option = {
+		name = chaosx.nr6.62.b
+		custom_effect_tooltip = chaosx.nr6.62.b.tt
+		hidden_effect = { independence_wave_host_response_apply_remnant_regional_identity = yes }
+	}
+}
+
+# The delayed router validates the frozen host receipt before sending a human
+# response event or resolving an AI host without a weighted pool.
+country_event = {
+	id = chaosx.nr6.63
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { has_current_independence_wave_host_response_receipt = yes }
+			if = {
+				limit = { is_ai = yes }
+				independence_wave_host_response_resolve_ai_action = yes
+				independence_wave_host_response_apply_ai_action = yes
+			}
+			else_if = {
+				limit = { check_variable = { var = independence_wave_host_response_tier value = constant:independence_wave_host_response_tier.limited compare = equals } }
+				country_event = { id = chaosx.nr6.60 }
+			}
+			else_if = {
+				limit = { check_variable = { var = independence_wave_host_response_tier value = constant:independence_wave_host_response_tier.severe compare = equals } }
+				country_event = { id = chaosx.nr6.61 }
+			}
+			else_if = {
+				limit = { check_variable = { var = independence_wave_host_response_tier value = constant:independence_wave_host_response_tier.remnant compare = equals } }
+				country_event = { id = chaosx.nr6.62 }
+			}
+			else = { independence_wave_host_response_skip_invalid_current_host = yes }
+		}
+		else = { independence_wave_host_response_skip_invalid_current_host = yes }
+	}
+}
+

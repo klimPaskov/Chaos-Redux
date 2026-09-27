@@ -109,8 +109,10 @@ country_event = {
 		set_variable = { global.independence_wave_last_presentation_date = global.date }
 		hidden_effect = {
 			independence_wave_dispatch_committed_country_opening_queue = yes
-			clr_global_flag = independence_wave_country_opening_report_pending
-			clear_variable = global.independence_wave_country_opening_report_plan_id
+			if = {
+				limit = { NOT = { has_global_flag = independence_wave_opening_response_queue_pending } }
+				independence_wave_host_response_dispatch_after_openings = yes
+			}
 		}
 	}
 }
@@ -123,6 +125,7 @@ country_event = {
 	desc = chaosx.nr6.41.d
 	picture = GFX_report_event_006_country_opening
 	is_triggered_only = yes
+	timeout_days = @CR_SC_INDEPENDENCE_WAVE_PUBLIC_REPORT_TIMEOUT_DAYS
 	trigger = { has_current_independence_wave_opening_receipt = yes }
 
 	option = {
@@ -143,29 +146,32 @@ country_event = {
 	id = chaosx.nr6.42
 	hidden = yes
 	is_triggered_only = yes
-	trigger = { has_current_independence_wave_opening_receipt = yes }
 
 	immediate = {
 		if = {
-			limit = { is_ai = yes }
+			limit = { has_current_independence_wave_opening_receipt = yes }
 			if = {
-				limit = {
-					OR = {
-						is_at_war = yes
-						has_independence_wave_severe_host_threat = yes
-						check_variable = { var = independence_wave_security value = constant:independence_wave_security_band.organized compare = less_than }
-						check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.armed compare = less_than }
-						AND = {
-							has_independence_wave_opening_security_force_profile = yes
-							check_variable = { var = independence_wave_security value = constant:independence_wave_security_band.prepared compare = less_than }
+				limit = { is_ai = yes }
+				if = {
+					limit = {
+						OR = {
+							is_at_war = yes
+							has_independence_wave_severe_host_threat = yes
+							check_variable = { var = independence_wave_security value = constant:independence_wave_security_band.organized compare = less_than }
+							check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.armed compare = less_than }
+							AND = {
+								has_independence_wave_opening_security_force_profile = yes
+								check_variable = { var = independence_wave_security value = constant:independence_wave_security_band.prepared compare = less_than }
+							}
 						}
 					}
+					independence_wave_resolve_country_opening_frontier_security = yes
 				}
-				independence_wave_resolve_country_opening_frontier_security = yes
+				else = { independence_wave_resolve_country_opening_civilian_administration = yes }
 			}
-			else = { independence_wave_resolve_country_opening_civilian_administration = yes }
+			else = { country_event = { id = chaosx.nr6.41 } }
 		}
-		else = { country_event = { id = chaosx.nr6.41 } }
+		else = { independence_wave_host_response_skip_invalid_country_opening = yes }
 	}
 }
 

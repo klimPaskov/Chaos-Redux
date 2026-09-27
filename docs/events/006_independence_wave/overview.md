@@ -1,6 +1,6 @@
 # Event 006: Independence Wave
 
-The accepted Part 2 country-opening family is implemented at source level after acknowledgement of the public wave report. See the [country-opening mechanic](country_opening.md), [country-opening asset manifest](country_opening_asset_manifest.md), and [implementation handoff](../../plans/006_independence_wave_plans/subagent_handoffs/006_country_opening_post_report_implementation_2026-09-27.md). Event 006 remains **HOLD / PARTIAL** as documented below.
+The accepted Part 2 country-opening family and former-host response family are implemented at source level after acknowledgement of the public wave report. See the [country-opening mechanic](country_opening.md), [country-opening asset manifest](country_opening_asset_manifest.md), [former-host response mechanic](host_response.md), and their dated implementation handoffs in the Event 006 plan folder. The host-response source, partial event MCP evidence, and bounded localisation and catalog reviews are recorded in the [implementation handoff](../../plans/006_independence_wave_plans/subagent_handoffs/006_host_response_implementation_2026-09-27.md), [localisation audit](../../plans/006_independence_wave_plans/subagent_handoffs/006_host_response_localisation_audit_2026-09-27.md), and [catalog alignment handoff](../../plans/006_independence_wave_plans/subagent_handoffs/006_host_response_catalog_alignment_2026-09-27.md). Event 006 remains **HOLD / PARTIAL** as documented below.
 
 ## Current reconciliation note (2026-09-27; extends the 2026-09-20 audit baseline)
 

@@ -1,0 +1,17 @@
+# Event 006 former-host response outcome effects
+
+These country-scope effects apply the player or deterministic AI choice for one host that lost Event 006 states in the current committed wave.
+
+`independence_wave_host_response_apply_current_action` takes the temporary `independence_wave_host_response_action_input` action token from the Event 006 host-response action enum. It validates the host's current plan receipt, updates the host's cumulative Event 006 response count, adds the timed partition, remnant-government, or reclamation idea appropriate to the action, applies claim policy to the exact Event 006 state rows recorded for this host, changes matching-generation bilateral ledgers for released countries whose primary former host matches this host, then closes the host response receipt. It does not change ownership, cores, tags, capitals, or Event 005 data.
+
+`independence_wave_host_response_apply_state_claim_policy` reads the committed `global.liberation_plan_states`, owner, host, and role arrays. Negotiation and the remnant regional-identity choice remove this host's claims from transferred Event 006 states. Pressure, emergency command, and legal continuity preserve claims on anchor states while releasing compact and extended claims. Reclamation preparation claims every distinct transferred Event 006 state. A severe settlement releases all claims. The shared release validator has already rejected duplicate state rows, and the host filter prevents one former host from changing another host's claims.
+
+`independence_wave_host_response_update_primary_child_ledgers` touches only the selected Event 006 country rows whose recorded primary host matches the current response host. It revalidates the current Event 006 origin, package, generation, and opening receipt before applying the existing host-outcome and eight-dimension bilateral-ledger helpers. A secondary host that owned only optional released states receives its own host response and territorial claims; the effect does not overwrite the child's separate primary-host ledger.
+
+The eight option adapters map the limited conference, pressure, and reclamation choices; the severe command, relief, and settlement priorities; and the remnant legal-continuity or regional-identity choices to the shared action effect. Hidden AI resolution supplies one of the same action tokens without a weighted pool. Its validation or first-contact fallback is documented in [`006_independence_wave_host_response_effects.md`](006_independence_wave_host_response_effects.md).
+
+The remnant choices set `independence_wave_host_response_outside_guarantee_opportunity_open`; a later accepted foreign-reaction tranche must consume that opportunity. The limited reclamation choice adds claims and a temporary preparation idea but does not declare war.
+
+Partition, remnant-government, and reclamation ideas use the existing Event 006 `fragmented_command` and `improvised_government` idea sprites. Their modifier tuning is file-scoped at the top of `common/ideas/006_independence_wave_host_response_ideas.txt`; their timed durations are centralized in `common/script_constants/006_independence_wave_host_response_timing_constants.txt`.
+
+No `on_action`, world-country scan, decision weight, event `ai_chance`, or random outcome is added. The parent-owned orchestration effect retains the shared reset barrier until every human response option resolves or times out and every hidden AI response finishes.

@@ -1,0 +1,238 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 POST-REPORT HOST RESPONSE ORCHESTRATION
+# Overview:
+# - Keep the committed plan open through all generation-checked country
+#   openings and the one aggregated response for every Event 006 state-losing
+#   host.
+# - Reconcile stale opening and host callbacks without a periodic world scan.
+# - Release the report/reset barrier after every host option resolves or its
+#   documented event timeout closes the receipt.
+# ============================================================================
+
+# COUNTRY scope: count one valid country-opening choice. The actor keeps its
+# response plan receipt until the host phase ends so the exact generation can
+# still be checked by a later host response.
+independence_wave_host_response_complete_country_opening = {
+	if = {
+		limit = {
+			has_global_flag = independence_wave_opening_response_queue_pending
+			has_global_flag = independence_wave_country_opening_report_pending
+			has_variable = global.independence_wave_country_opening_report_plan_id
+			has_variable = independence_wave_opening_response_plan_id
+			check_variable = { var = independence_wave_opening_response_plan_id value = global.independence_wave_country_opening_report_plan_id compare = equals }
+			has_variable = global.independence_wave_opening_responses_remaining
+			check_variable = { global.independence_wave_opening_responses_remaining > constant:independence_wave_host_response_value.zero }
+			NOT = { check_variable = { var = independence_wave_opening_response_counted_plan_id value = global.independence_wave_country_opening_report_plan_id compare = equals } }
+		}
+		set_variable = { independence_wave_opening_response_counted_plan_id = global.independence_wave_country_opening_report_plan_id }
+		subtract_from_variable = { global.independence_wave_opening_responses_remaining = constant:independence_wave_host_response_value.one }
+		if = {
+			limit = { check_variable = { global.independence_wave_opening_responses_remaining = constant:independence_wave_host_response_value.zero } }
+			clr_global_flag = independence_wave_opening_response_queue_pending
+			independence_wave_host_response_dispatch_after_openings = yes
+		}
+	}
+}
+
+# COUNTRY scope: the hidden .42 callback uses this path when its receipt became
+# invalid after the .2 option was dispatched. Only a selected Event 006 row in
+# the still-committed plan can consume one pending count.
+independence_wave_host_response_skip_invalid_country_opening = {
+	if = {
+		limit = {
+			has_global_flag = independence_wave_opening_response_queue_pending
+			has_global_flag = independence_wave_country_opening_report_pending
+			has_variable = global.independence_wave_country_opening_report_plan_id
+			check_variable = { var = global.independence_wave_country_opening_report_plan_id value = global.liberation_plan_id compare = equals }
+			has_variable = global.independence_wave_opening_responses_remaining
+			check_variable = { global.independence_wave_opening_responses_remaining > constant:independence_wave_host_response_value.zero }
+			NOT = { check_variable = { var = independence_wave_opening_response_counted_plan_id value = global.independence_wave_country_opening_report_plan_id compare = equals } }
+		}
+		save_event_target_as = independence_wave_host_response_invalid_opening_actor
+		set_temp_variable = { independence_wave_host_response_invalid_actor_found = constant:independence_wave_host_response_value.zero }
+		set_temp_variable = { independence_wave_host_response_invalid_actor_index = constant:independence_wave_plan.first_array_index }
+		while_loop_effect = {
+			limit = { check_variable = { var = independence_wave_host_response_invalid_actor_index value = global.independence_wave_plan_selected_count compare = less_than } }
+			set_temp_variable = { independence_wave_response_invalid_actor_row = global.independence_wave_plan_country_row_indices^independence_wave_host_response_invalid_actor_index }
+			if = {
+				limit = { check_variable = { var = global.liberation_plan_country_owners^independence_wave_response_invalid_actor_row value = constant:liberation_plan_owner.independence_wave compare = equals }
+				}
+				var:global.liberation_plan_countries^independence_wave_response_invalid_actor_row = {
+					if = {
+						limit = { tag = event_target:independence_wave_host_response_invalid_opening_actor }
+						set_temp_variable = { independence_wave_host_response_invalid_actor_found = constant:independence_wave_host_response_value.one }
+					}
+				}
+			}
+			add_to_temp_variable = { independence_wave_host_response_invalid_actor_index = constant:independence_wave_plan.loop_increment }
+		}
+		if = {
+			limit = { check_variable = { independence_wave_host_response_invalid_actor_found = constant:independence_wave_host_response_value.one } }
+			set_variable = { independence_wave_opening_response_counted_plan_id = global.independence_wave_country_opening_report_plan_id }
+			subtract_from_variable = { global.independence_wave_opening_responses_remaining = constant:independence_wave_host_response_value.one }
+			if = {
+				limit = { check_variable = { global.independence_wave_opening_responses_remaining = constant:independence_wave_host_response_value.zero } }
+				clr_global_flag = independence_wave_opening_response_queue_pending
+				independence_wave_host_response_dispatch_after_openings = yes
+			}
+		}
+	}
+}
+
+# COUNTRY scope: called by the last opening callback after it changes the
+# actor's host ledgers. The helper freezes one receipt per distinct Event 006
+# state-losing host while the committed shared plan is still locked.
+independence_wave_host_response_dispatch_after_openings = {
+	if = {
+		limit = {
+			has_global_flag = independence_wave_country_opening_report_pending
+			has_variable = global.independence_wave_country_opening_report_plan_id
+			check_variable = { var = global.independence_wave_country_opening_report_plan_id value = global.liberation_plan_id compare = equals }
+			check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.committed }
+			NOT = { check_variable = { var = global.independence_wave_host_response_dispatch_plan_id value = global.liberation_plan_id compare = equals } }
+		}
+		set_variable = { global.independence_wave_host_response_dispatch_plan_id = global.liberation_plan_id }
+		independence_wave_host_response_build_queue_after_openings = yes
+		if = {
+			limit = {
+				has_variable = global.independence_wave_host_response_remaining_count
+				check_variable = { global.independence_wave_host_response_remaining_count > constant:independence_wave_host_response_value.zero }
+				check_variable = { var = global.independence_wave_host_response_remaining_count value = global.independence_wave_host_response_hosts^num compare = equals }
+				check_variable = { var = global.independence_wave_host_response_last_built_plan_id value = global.liberation_plan_id compare = equals }
+			}
+			set_global_flag = independence_wave_host_response_queue_pending
+			set_variable = { global.independence_wave_host_response_plan_id = global.liberation_plan_id }
+			set_temp_variable = { independence_wave_host_response_event_delay = constant:independence_wave_host_response_timing.dispatch_after_openings_days }
+			for_each_scope_loop = {
+				array = global.independence_wave_host_response_hosts
+				if = {
+					limit = { has_current_independence_wave_host_response_receipt = yes }
+					country_event = { id = chaosx.nr6.63 days = independence_wave_host_response_event_delay }
+				}
+				else = { independence_wave_host_response_skip_invalid_current_host = yes }
+			}
+		}
+		else = {
+			if = {
+				limit = { NOT = { has_variable = global.independence_wave_host_response_remaining_count } }
+				set_variable = { global.independence_wave_host_response_last_failed_plan_id = global.liberation_plan_id }
+			}
+			else_if = {
+				limit = { check_variable = { global.independence_wave_host_response_remaining_count = constant:independence_wave_host_response_value.zero } }
+				set_variable = { global.independence_wave_host_response_last_failed_plan_id = global.liberation_plan_id }
+			}
+			independence_wave_host_response_finish_plan = yes
+		}
+	}
+}
+
+# COUNTRY scope: an option or AI result completes one live host response.
+independence_wave_host_response_complete_current_host = {
+	if = {
+		limit = {
+			has_country_flag = independence_wave_host_response_pending
+			has_global_flag = independence_wave_host_response_queue_pending
+			has_variable = global.independence_wave_host_response_plan_id
+			has_variable = independence_wave_host_response_plan_id
+			check_variable = { var = independence_wave_host_response_plan_id value = global.independence_wave_host_response_plan_id compare = equals }
+			check_variable = { var = global.independence_wave_host_response_plan_id value = global.liberation_plan_id compare = equals }
+			check_variable = { global.independence_wave_host_response_remaining_count > constant:independence_wave_host_response_value.zero }
+		}
+		clr_country_flag = independence_wave_host_response_pending
+		set_variable = { independence_wave_host_response_resolved_plan_id = global.independence_wave_host_response_plan_id }
+		clear_variable = independence_wave_host_response_plan_id
+		clear_variable = independence_wave_host_response_tier
+		clear_variable = independence_wave_host_response_event6_loss_count
+		clear_variable = independence_wave_host_response_pre_release_state_count
+		clear_variable = independence_wave_host_response_protected_state
+		clear_variable = independence_wave_host_response_original_capital
+		clear_variable = independence_wave_host_response_host_row
+		clear_variable = independence_wave_host_response_ai_action
+		subtract_from_variable = { global.independence_wave_host_response_remaining_count = constant:independence_wave_host_response_value.one }
+		if = {
+			limit = { check_variable = { global.independence_wave_host_response_remaining_count = constant:independence_wave_host_response_value.zero } }
+			independence_wave_host_response_finish_plan = yes
+		}
+	}
+}
+
+# COUNTRY scope: close an invalid receipt when the hidden router rejects it or
+# the deterministic AI resolver returns no valid action. This handler applies
+# no gameplay outcome.
+independence_wave_host_response_skip_invalid_current_host = {
+	if = {
+		limit = {
+			has_country_flag = independence_wave_host_response_pending
+			has_global_flag = independence_wave_host_response_queue_pending
+			has_variable = global.independence_wave_host_response_plan_id
+			has_variable = independence_wave_host_response_plan_id
+			check_variable = { var = independence_wave_host_response_plan_id value = global.independence_wave_host_response_plan_id compare = equals }
+			check_variable = { var = global.independence_wave_host_response_plan_id value = global.liberation_plan_id compare = equals }
+			check_variable = { global.independence_wave_host_response_remaining_count > constant:independence_wave_host_response_value.zero }
+		}
+		independence_wave_host_response_complete_current_host = yes
+	}
+}
+
+# COUNTRY scope: clear every plan-scoped actor and host receipt, then release
+# the single global report/reset barrier. Persistent host actions and ledgers
+# remain available for later waves.
+independence_wave_host_response_finish_plan = {
+	if = {
+		limit = { has_global_flag = independence_wave_country_opening_report_pending }
+		set_temp_variable = { independence_wave_host_response_finishing_plan_id = global.liberation_plan_id }
+		if = {
+			limit = { has_variable = global.independence_wave_plan_selected_count }
+			set_temp_variable = { independence_wave_host_response_cleanup_index = constant:independence_wave_plan.first_array_index }
+			while_loop_effect = {
+				limit = { check_variable = { var = independence_wave_host_response_cleanup_index value = global.independence_wave_plan_selected_count compare = less_than } }
+				set_temp_variable = { independence_wave_host_response_cleanup_row = global.independence_wave_plan_country_row_indices^independence_wave_host_response_cleanup_index }
+				var:global.liberation_plan_countries^independence_wave_host_response_cleanup_row = {
+					if = {
+						limit = {
+							has_variable = independence_wave_opening_response_plan_id
+							check_variable = { var = independence_wave_opening_response_plan_id value = independence_wave_host_response_finishing_plan_id compare = equals }
+						}
+						clear_variable = independence_wave_opening_response_plan_id
+					}
+					if = {
+						limit = {
+							has_variable = independence_wave_opening_response_counted_plan_id
+							check_variable = { var = independence_wave_opening_response_counted_plan_id value = independence_wave_host_response_finishing_plan_id compare = equals }
+						}
+						clear_variable = independence_wave_opening_response_counted_plan_id
+					}
+				}
+				add_to_temp_variable = { independence_wave_host_response_cleanup_index = constant:independence_wave_plan.loop_increment }
+			}
+		}
+		for_each_scope_loop = {
+			array = global.independence_wave_host_response_hosts
+			if = {
+				limit = {
+					has_variable = independence_wave_host_response_plan_id
+					check_variable = { var = independence_wave_host_response_plan_id value = independence_wave_host_response_finishing_plan_id compare = equals }
+				}
+				clr_country_flag = independence_wave_host_response_pending
+				clear_variable = independence_wave_host_response_plan_id
+				clear_variable = independence_wave_host_response_tier
+				clear_variable = independence_wave_host_response_event6_loss_count
+				clear_variable = independence_wave_host_response_pre_release_state_count
+				clear_variable = independence_wave_host_response_protected_state
+				clear_variable = independence_wave_host_response_original_capital
+				clear_variable = independence_wave_host_response_host_row
+				clear_variable = independence_wave_host_response_ai_action
+			}
+		}
+		clear_array = global.independence_wave_host_response_hosts
+		clear_variable = global.independence_wave_host_response_remaining_count
+		clear_variable = global.independence_wave_host_response_plan_id
+		clear_variable = global.independence_wave_host_response_dispatch_plan_id
+		clear_variable = global.independence_wave_opening_response_plan_id
+		clear_variable = global.independence_wave_opening_responses_remaining
+		clear_variable = global.independence_wave_country_opening_report_plan_id
+		clear_global_flag = independence_wave_opening_response_queue_pending
+		clear_global_flag = independence_wave_host_response_queue_pending
+		clr_global_flag = independence_wave_country_opening_report_pending
+	}
+}
