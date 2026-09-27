@@ -9,6 +9,7 @@
 
 @ANTI_ZOMBIE_BOMB_DAYS_TO_PREPARE = 10
 @ANTI_ZOMBIE_BOMB_COMMAND_POWER = 10
+@ANTI_ZOMBIE_BOMB_PAYLOAD = 1
 @ANTI_ZOMBIE_BOMB_UNIT_MIN_TACTICAL_BOMBERS = 25
 @ANTI_ZOMBIE_BOMB_UNIT_MIN_STRATEGIC_BOMBERS = 10
 @ANTI_ZOMBIE_BOMB_PLANE_LOSS_FAILURE = 0.45
@@ -57,6 +58,7 @@ types = {
 		equipment_icon = GFX_zombie_cure_bomb_equipment_medium
 
 		command_power = @ANTI_ZOMBIE_BOMB_COMMAND_POWER
+		essential_equipment = { zombie_cure_bomb_equipment = @ANTI_ZOMBIE_BOMB_PAYLOAD }
 
 		ai_will_do = {
 			base = @ANTI_ZOMBIE_BOMB_AI_BASE
@@ -122,6 +124,7 @@ types = {
 		}
 		launchable = {
 			has_active_zombie_cure = yes
+			var:target_state = { is_anti_zombie_bomb_target_state = yes }
 			OR = {
 				tag = FROM
 				is_in_faction_with = FROM
@@ -226,10 +229,17 @@ types = {
 					raid_add_unit_experience = @ANTI_ZOMBIE_BOMB_RAID_XP_LIMITED
 				}
 				victim_effects = {
-					var:target_state = {
-						custom_effect_tooltip = raid_zombie_cure_strike_tt
-						apply_zombie_decontamination_state_modifier = yes
+					if = {
+						limit = {
+							var:actor_country = { has_active_zombie_cure = yes }
+							var:target_state = { is_anti_zombie_bomb_target_state = yes }
+						}
+						var:target_state = {
+							custom_effect_tooltip = raid_zombie_cure_strike_tt
+							apply_zombie_decontamination_state_modifier = yes
+						}
 					}
+					else = { custom_effect_tooltip = raid_zombie_cure_strike_no_effect_tt }
 				}
 			}
 			success = {
@@ -242,10 +252,17 @@ types = {
 					raid_add_unit_experience = @ANTI_ZOMBIE_BOMB_RAID_XP_SUCCESS
 				}
 				victim_effects = {
-					var:target_state = {
-						custom_effect_tooltip = raid_zombie_cure_strike_tt
-						apply_zombie_decontamination_state_modifier = yes
+					if = {
+						limit = {
+							var:actor_country = { has_active_zombie_cure = yes }
+							var:target_state = { is_anti_zombie_bomb_target_state = yes }
+						}
+						var:target_state = {
+							custom_effect_tooltip = raid_zombie_cure_strike_tt
+							apply_zombie_decontamination_state_modifier = yes
+						}
 					}
+					else = { custom_effect_tooltip = raid_zombie_cure_strike_no_effect_tt }
 				}
 			}
 			critical_success = {
@@ -254,10 +271,17 @@ types = {
 					raid_add_unit_experience = @ANTI_ZOMBIE_BOMB_RAID_XP_CRITICAL
 				}
 				victim_effects = {
-					var:target_state = {
-						custom_effect_tooltip = raid_zombie_cure_strike_tt
-						apply_zombie_decontamination_state_modifier = yes
+					if = {
+						limit = {
+							var:actor_country = { has_active_zombie_cure = yes }
+							var:target_state = { is_anti_zombie_bomb_target_state = yes }
+						}
+						var:target_state = {
+							custom_effect_tooltip = raid_zombie_cure_strike_tt
+							apply_zombie_decontamination_state_modifier = yes
+						}
 					}
+					else = { custom_effect_tooltip = raid_zombie_cure_strike_no_effect_tt }
 				}
 			}
 		}
