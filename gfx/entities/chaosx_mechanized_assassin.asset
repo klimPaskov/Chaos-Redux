@@ -1,0 +1,88 @@
+# Event 039 Mechanized Assassin entity: a dark gunmetal four-wheeled armoured car with a traversing machine-gun turret.
+# It follows the vanilla armoured-car entity (USA_mechanized_entity): barrel muzzle particle, track dust from the rear wheels, and the vanilla vehicle sounds.
+# Actions run at 30 FPS; each event time is (frame - first frame) / 30 at the authored beat it voices.
+
+entity = {
+	name = "mechanized_assassin_entity"
+	pdxmesh = "chaosx_mechanized_assassin_mesh"
+	default_state = "idle"
+
+	state = {
+		name = "idle"
+		animation = "idle"
+		animation_blend_time = 0.3
+		animation_speed = 1.0
+		looping = yes
+	}
+	state = {
+		name = "move"
+		animation = "move"
+		animation_blend_time = 0.3
+		animation_speed = 1.0
+		looping = yes
+		event = { time = 0 node = "left_tracks" particle = "tank_moving_tracks_particle" keep_particle = no trigger_once = yes }
+		event = { time = 0 node = "right_tracks" particle = "tank_moving_tracks_particle" keep_particle = no trigger_once = yes }
+		event = { trigger_once = yes sound = { soundeffect = "motorized_unit_move_animation" } }
+	}
+	state = {
+		name = "retreat"
+		animation = "retreat"
+		animation_blend_time = 0.3
+		animation_speed = 1.0
+		looping = yes
+		event = { time = 0 node = "left_tracks" particle = "tank_moving_tracks_particle" keep_particle = no trigger_once = yes }
+		event = { time = 0 node = "right_tracks" particle = "tank_moving_tracks_particle" keep_particle = no trigger_once = yes }
+		event = { trigger_once = yes sound = { soundeffect = "motorized_unit_move_animation" } }
+	}
+	state = {
+		name = "attack"
+		animation = "attack"
+		animation_blend_time = 0.0
+		animation_speed = 1.0
+		looping = yes
+		# The turret traverses left, fires a recoiling burst at frame 24, traverses right, and fires again at frame 48.
+		event = { time = 0 node = "barrel" particle = "mechanized_attack_barrel_particle" keep_particle = yes }
+		event = { time = 0.7667 sound = { soundeffect = "mechanized_units_mg_fire" } }
+		event = { time = 1.5667 sound = { soundeffect = "mechanized_units_mg_fire" } }
+	}
+	state = {
+		name = "support_attack"
+		animation = "support_attack"
+		animation_blend_time = 0.3
+		animation_speed = 1.0
+		looping = yes
+		# Wider suppressive sweeps: bursts at frames 30 and 60.
+		event = { time = 0 node = "barrel" particle = "mechanized_attack_barrel_particle" keep_particle = yes }
+		event = { time = 0.9667 sound = { soundeffect = "mechanized_units_mg_fire" } }
+		event = { time = 1.9667 sound = { soundeffect = "mechanized_units_mg_fire" } }
+	}
+	state = {
+		name = "defend"
+		animation = "defend"
+		animation_blend_time = 0.0
+		animation_speed = 1.0
+		looping = yes
+		# Rocks back under fire with the turret swung to cover, answering at frames 8 and 24.
+		event = { time = 0 node = "barrel" particle = "mechanized_attack_barrel_particle" keep_particle = yes }
+		event = { time = 0.2333 sound = { soundeffect = "mechanized_units_mg_fire" } }
+		event = { time = 0.7667 sound = { soundeffect = "mechanized_units_mg_fire" } }
+	}
+	state = {
+		name = "training"
+		animation = "training"
+		animation_blend_time = 0.3
+		animation_speed = 1.0
+		looping = yes
+	}
+	state = {
+		name = "death"
+		animation = "death"
+		animation_blend_time = 0.3
+		animation_speed = 1.0
+		looping = no
+		# The nose drops onto the front wheels and the turret swings aside by frame 25.
+	}
+
+	# The mesh is fitted to the vanilla armoured car's length, so the vanilla entity scale applies once.
+	scale = 0.6
+}

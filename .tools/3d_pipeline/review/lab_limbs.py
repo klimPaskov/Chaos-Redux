@@ -19,7 +19,7 @@ survey  Open cfg["blend"] in rest pose and report, for each entry of cfg["probes
 
 rig     For each limb in cfg["limbs"]:
           {"name": "ArmUpperL", "parent": "Spine02",
-           "select": {"boxes": [...], "exclude": [...]},
+           "select": {"boxes": [...], "cylinders": [{"a", "b", "r"}], "exclude": [...]},
            "joints": [[x,y,z], [x,y,z], ...],      # root -> tip, rest world units, >= 2 points
            "feather": 0.35}                         # optional seam blend distance (rest units)
         builds one bone per joint segment (<name>_1, <name>_2, ...) chained under "parent",
@@ -45,6 +45,9 @@ keys    For each action in cfg["keys"] ({action: {frame: {bone: value}}}), remov
                "Spine"; the bone the limbs hang from). A bone's segment runs from its head to
                cfg["tips"][bone] (a child bone name or a rest-world point) or, by default, to its
                only child's head, else its tail; this matters for rigs whose bones have stub tails.
+          spin turns the bone from its rest pose by spin[1] degrees about the rest-world axis
+               spin[0] through its head, carried through cfg["carry_bone"] like dir; unlike dir it
+               keeps roll and is not limited to 180 degrees (wheels, rotors, turret traverse).
           loc  offsets the bone's head from its rest position by (dx, dy, dz) rest-world units
                (body bob, crouches, collapses).
         cfg["create"] = {action: [first, last]} makes new empty actions first (bound to the rig).
@@ -54,8 +57,19 @@ keys    For each action in cfg["keys"] ({action: {frame: {bone: value}}}), remov
         the floor (run it after authoring, on every role; untouched frames stay as authored).
         Every number is authored by the agent; nothing is generated. Saves cfg["out"].
 
-import  Start a working blend from a shipped runtime model: cfg["mesh"] (a .mesh file, imported with
-        its skeleton and locators through io_pdx_mesh) is saved to cfg["out"]; the mesh object is
+locate  For each cfg["locators"] entry {"name", "bone", "world": [x,y,z], "world_rotation_wxyz":
+        [1,0,0,0]}, print the bone-head-local position (armature units) and xyzw rotation that the
+        adapter's author_locator needs so the locator sits at that rest-world point with that
+        rest-world orientation (vanilla vehicle barrel and track locators are world-identity).
+        Read-only; nothing is saved.
+
+mark    Re-tag cfg["blend"] for the adapter (working/export-approved objects, PDX shader properties,
+        mesh index, 30 fps scene rate) and save cfg["out"]; for checkpoints made before a tagging fix.
+
+import  Start a working blend from a shipped runtime model, cfg["mesh"] (a .mesh file, imported with
+        its skeleton and locators through io_pdx_mesh), or from an unrigged provider model, cfg["glb"]
+        (turned by "yaw_deg" about Z so it faces -Y, scaled so its extent along "fit": {"axis", "size"}
+        matches the vanilla reference, grounded, and centred); the result is saved to cfg["out"]; the mesh object is
         renamed cfg.get("body", "char1.001") and the armature cfg.get("armature", "Armature.001")
         so the other modes and the export tools find them. Use it for a unit whose editable source
         is gone but whose geometry is worth keeping.
@@ -82,16 +96,28 @@ def _in_box(p, box):
     return all(min(lo[i], hi[i]) <= p[i] <= max(lo[i], hi[i]) for i in range(3))
 
 
+def _in_cylinder(p, cyl):
+    """cyl = {"a": [x,y,z], "b": [x,y,z], "r": radius}: inside the capped cylinder on axis a-b."""
+    a, b = Vector(cyl["a"]), Vector(cyl["b"])
+    d = b - a
+    t = (Vector(p) - a).dot(d) / d.length_squared
+    return 0.0 <= t <= 1.0 and (Vector(p) - (a + d * t)).length <= cyl["r"]
+
+
 def _select(points, sel):
-    keep = [i for i, p in enumerate(points) if any(_in_box(p, b) for b in sel["boxes"])]
+    """A vertex is selected when it lies in any of sel["boxes"] or sel["cylinders"] (wheels,
+    drums, barrels) and in none of sel["exclude"] (boxes)."""
+    keep = [i for i, p in enumerate(points)
+            if any(_in_box(p, b) for b in sel.get("boxes", [])) or any(_in_cylinder(p, c) for c in sel.get("cylinders", []))]
     return [i for i in keep if not any(_in_box(points[i], b) for b in sel.get("exclude", []))]
 
 
 def _open(cfg):
     bpy.ops.wm.open_mainfile(filepath=cfg["blend"])
-    rig = bpy.data.objects[cfg.get("armature", "Armature.001")]
+    rig = bpy.data.objects.get(cfg.get("armature", "Armature.001"))
     body = bpy.data.objects[cfg.get("body", "char1.001")]
-    rig.data.pose_position = "REST"
+    if rig is not None:
+        rig.data.pose_position = "REST"
     bpy.context.view_layer.update()
     return rig, body
 
@@ -167,7 +193,7 @@ def survey(cfg):
     lo = Vector([min(p[i] for p in pts) for i in range(3)])
     hi = Vector([max(p[i] for p in pts) for i in range(3)])
     report = {"body_bounds": [list(lo), list(hi)], "bones": {}, "probes": {}}
-    for b in rig.data.bones:
+    for b in (rig.data.bones if rig else []):
         report["bones"][b.name] = [round(c, 3) for c in (rig.matrix_world @ b.head_local)]
     for probe in cfg.get("probes", []):
         idx = _select(pts, probe)
@@ -381,6 +407,28 @@ def rig_limbs(cfg):
     return report
 
 
+def _continuous(pb, act, frame):
+    """Keep a new quaternion key in the same hemisphere as the bone's previous key. Blender
+    interpolates quaternion channels component-wise, so a sign flip between neighbouring keys
+    swings the bone the long way round (a wheel spin snaps backward)."""
+    if act is None:
+        return
+    from lab_actions import fcurves
+    path = f'pose.bones["{pb.name}"].rotation_quaternion'
+    curves = {fc.array_index: fc for fc in fcurves(act) if fc.data_path == path}
+    if len(curves) < 4:
+        return
+    prev = [None] * 4
+    for i in range(4):
+        keys = [k for k in curves[i].keyframe_points if k.co.x < frame]
+        if not keys:
+            return
+        prev[i] = max(keys, key=lambda k: k.co.x).co.y
+    q = pb.rotation_quaternion
+    if sum(a * b for a, b in zip(prev, q)) < 0:
+        pb.rotation_quaternion = -q
+
+
 def _floor_chains(cfg, rig, bind_action):
     """Measured floor correction for authored limb chains (the chain analogue of lab_items'
     floor_items). cfg["floor"] = {"actions": [...], "chains": {"TentFrontL": ["TentFrontL_1", ...]},
@@ -430,6 +478,7 @@ def _floor_chains(cfg, rig, bind_action):
                     pb.rotation_mode = "QUATERNION"
                     pb.matrix = Matrix.Translation(h) @ rot.to_4x4() @ Matrix.Translation(-h) @ pb.matrix
                     bpy.context.view_layer.update()
+                    _continuous(pb, act, f)
                     pb.keyframe_insert("rotation_quaternion", frame=f)
                     turned = True
                 fixed[chain] += int(turned)
@@ -505,6 +554,19 @@ def key_limbs(cfg):
                     pb.matrix = Matrix.Translation(delta) @ pb.matrix
                     bpy.context.view_layer.update()
                     pb.keyframe_insert("location", frame=f)
+                if "spin" in spec:
+                    axis, deg = spec["spin"]
+                    axis = Vector(axis).normalized()
+                    if bone != carry_name:
+                        axis = (mw @ rig.pose.bones[carry_name].matrix).to_3x3().normalized() @ carry_rest.inverted() @ axis
+                    pb.rotation_quaternion = Quaternion()
+                    bpy.context.view_layer.update()
+                    rot = r_world.inverted() @ Quaternion(axis, math.radians(deg)).to_matrix() @ r_world
+                    h = pb.head.copy()
+                    pb.matrix = Matrix.Translation(h) @ rot.to_4x4() @ Matrix.Translation(-h) @ pb.matrix
+                    bpy.context.view_layer.update()
+                    _continuous(pb, act, f)
+                    pb.keyframe_insert("rotation_quaternion", frame=f)
                 if "dir" in spec:
                     swing, lift = spec["dir"]
                     goal = Quaternion(Vector((0, 0, 1)), math.radians(swing)) @ seg(bone, False)
@@ -516,6 +578,7 @@ def key_limbs(cfg):
                     h = pb.head.copy()
                     pb.matrix = Matrix.Translation(h) @ rot.to_4x4() @ Matrix.Translation(-h) @ pb.matrix
                     bpy.context.view_layer.update()
+                    _continuous(pb, act, f)
                     pb.keyframe_insert("rotation_quaternion", frame=f)
         report[action] = {"bones": bones, "frames": sorted(int(f) for f in frames)}
     if cfg.get("floor"):
@@ -529,6 +592,20 @@ def key_limbs(cfg):
     return report
 
 
+def locate(cfg):
+    rig, _ = _open(cfg)
+    out = {}
+    for loc in cfg["locators"]:
+        bone = rig.data.bones[loc["bone"]]
+        frame = rig.matrix_world @ bone.matrix_local
+        pos = frame.inverted() @ Vector(loc["world"])
+        rot = frame.to_quaternion().inverted() @ Quaternion(loc.get("world_rotation_wxyz", [1, 0, 0, 0]))
+        out[loc["name"]] = {"bone": loc["bone"], "bone_local_position": [round(c, 6) for c in pos],
+                            "bone_local_rotation_xyzw": [round(c, 6) for c in (rot.x, rot.y, rot.z, rot.w)]}
+    print("SURVEY", json.dumps({"locators": out}))
+    return out
+
+
 def _mark_working(rig, body):
     """Tag the objects the way the adapter's prepare step does, so its partition and export
     operations treat a mesh that came from a runtime import or a new skeleton as the working unit."""
@@ -536,15 +613,45 @@ def _mark_working(rig, body):
         if o is not None:
             o["chaosx_working"] = True
     body["chaosx_export_approved"] = True
+    # io_pdx_mesh writes the scene frame rate into every .anim. A factory-startup scene runs at 24
+    # fps; the pipeline's actions and entity event times are authored at 30 fps (the provider rate).
+    bpy.context.scene.render.fps = 30
+    bpy.context.scene.render.fps_base = 1.0
     for m in body.data.materials:
         if m is not None:
             m["chaosx_pdx_shader"] = "PdxMeshAdvanced"
+            # io_pdx_mesh's own shader property: a runtime .mesh import already carries it; a glTF
+            # import does not, and the partition step rejects a material without it.
+            if not m.get("shader"):
+                m["shader"] = "PdxMeshAdvanced"
+    try:
+        from bl_ext.user_default.io_pdx_mesh.pdx_blender.blender_import_export import set_mesh_index
+        set_mesh_index(body.data, 0)
+    except ImportError:
+        pass
+
+
+def mark(cfg):
+    """Re-tag an existing checkpoint (cfg["blend"] -> cfg["out"]) for the adapter's partition step."""
+    rig, body = _open(cfg)
+    _mark_working(rig, body)
+    if rig is not None:
+        rig.data.pose_position = "POSE"
+    bpy.ops.wm.save_as_mainfile(filepath=cfg["out"])
+    print("IMPORT", json.dumps({"marked": body.name, "materials": [m.name for m in body.data.materials if m]}))
 
 
 def import_runtime(cfg):
-    from bl_ext.user_default.io_pdx_mesh.pdx_blender import blender_import_export as pdx
     bpy.ops.wm.read_factory_settings(use_empty=True)
-    pdx.import_meshfile(cfg["mesh"], imp_mesh=True, imp_skel=True, imp_locs=True, join_materials=True, bonespace=False)
+    if cfg.get("glb"):
+        # A provider model with no rig (vehicles, props): imported, then turned by "yaw_deg" about Z,
+        # scaled so its extent along "fit.axis" equals "fit.size", grounded, and centred in X/Y.
+        bpy.ops.import_scene.gltf(filepath=cfg["glb"])
+        for o in [o for o in bpy.data.objects if o.type != "MESH"]:
+            bpy.data.objects.remove(o, do_unlink=True)
+    else:
+        from bl_ext.user_default.io_pdx_mesh.pdx_blender import blender_import_export as pdx
+        pdx.import_meshfile(cfg["mesh"], imp_mesh=True, imp_skel=True, imp_locs=True, join_materials=True, bonespace=False)
     meshes = [o for o in bpy.data.objects if o.type == "MESH"]
     if len(meshes) > 1:
         for o in bpy.context.view_layer.objects:
@@ -553,6 +660,18 @@ def import_runtime(cfg):
         bpy.ops.object.join()
     body = next(o for o in bpy.data.objects if o.type == "MESH")
     body.name = cfg.get("body", "char1.001")
+    if cfg.get("glb"):
+        body.parent = None
+        body.data.transform(body.matrix_world)
+        body.matrix_world = Matrix.Identity(4)
+        body.data.transform(Matrix.Rotation(math.radians(cfg.get("yaw_deg", 0.0)), 4, "Z"))
+        co = [v.co for v in body.data.vertices]
+        lo = Vector([min(c[i] for c in co) for i in range(3)])
+        hi = Vector([max(c[i] for c in co) for i in range(3)])
+        fit = cfg.get("fit")
+        k = fit["size"] / (hi - lo)[fit["axis"]] if fit else 1.0
+        centre = Vector(((lo.x + hi.x) / 2, (lo.y + hi.y) / 2, lo.z))
+        body.data.transform(Matrix.Scale(k, 4) @ Matrix.Translation(-centre))
     rig = next((o for o in bpy.data.objects if o.type == "ARMATURE"), None)
     if rig:
         rig.name = cfg.get("armature", "Armature.001")
@@ -571,7 +690,7 @@ def import_runtime(cfg):
 
 def run(config_path=None):
     cfg = json.load(open(config_path, encoding="utf-8")) if config_path else _cfg()
-    return {"survey": survey, "rig": rig_limbs, "skeleton": build_skeleton, "keys": key_limbs,
+    return {"survey": survey, "locate": locate, "mark": mark, "rig": rig_limbs, "skeleton": build_skeleton, "keys": key_limbs,
             "import": import_runtime}[cfg["mode"]](cfg)
 
 

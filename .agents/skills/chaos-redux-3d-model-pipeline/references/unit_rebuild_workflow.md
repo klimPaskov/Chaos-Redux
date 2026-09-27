@@ -142,7 +142,25 @@ Fitting rules:
 - `grip_along` is measured from the butt (0) to the head (1); the grip centres on the real shaft cross-section.
 - `contacts` reports the off-hand distance to the shaft per frame; a two-handed weapon whose off-hand drifts far from the shaft needs a live pose correction or an honest note in the handoff.
 - `floor_items` runs the measured floor correction on the listed actions: on frames where any sampled item vertex sinks below the floor it re-keys only the carrying bone about its head until the lowest point rests at the clearance height. List every role; frames above the floor are untouched. A wrist that is itself at the floor (fists pounding the ground) cannot lift the item fully; report the residual.
+- `aim_items` runs before the floor pass on firing roles: provider actions made for an empty body often hold the weapon raised or across the chest. Each frame re-keys only the carrying bone toward a level axis (`elevation_deg`), keeping the heading unless `heading` and `heading_weight` pull it toward the unit's facing (`[0, -1]`); `max_deg` clamps the wrist. Review the result, then time shots only on frames where the measured muzzle axis is level and forward.
+- A pistol-grip weapon lays its barrel along the hand bone's Y (`head_to: "Y"`) with the grip hanging out of the fist (`side: "-Z"`, `side_to: "Z"` on Meshy rigs); iterate the Z offset in small steps until the grip sits inside the fist in the side close-up.
+- The muzzle locator for a held firearm uses `head_bone_local` and the vanilla rifle muzzle orientation (weapon forward on the locator's local −Y, up on +Z); on a Meshy hand holding a weapon along +Y with the grip toward +Z that is `bone_local_rotation_xyzw [1, 0, 0, 0]`.
 - Review the final `sheet_items.png` for every role, then use `textures_atlas/` as the texture source in step 7 and `--diffuse <atlas>/base_color.png` for later action reviews.
+
+## 6c. Vehicles and variants
+
+A provider vehicle arrives unrigged; build it with `lab_limbs` as for a creature:
+
+1. `import` with `"glb"`, `yaw_deg` so it faces −Y, and `fit` to the vanilla precedent's length (the armoured car `US_mechanized_01.mesh` is about 7.35 long at entity scale 0.6).
+2. `skeleton` with a non-deform `root` and a `chassis` bone carrying the whole mesh, then `rig` the moving parts: a wheel bone per wheel selected with `cylinders` (`a`, `b` on the axle, `r` just under the measured tyre radius so fenders stay on the chassis; survey the wheel boxes first), and a turret bone pointing forward.
+3. `keys`: wheels use `{"spin": [[1, 0, 0], degrees]}` (a `dir` key cannot pass 180° and tears the wheel), keyed every 60° so interpolation turns the right way; key the chassis rotation (`dir [0, 0]`) and location in every action, or a pose from another action leaks in.
+4. `locate` converts measured rest-world points into `author_locator` inputs. Vanilla vehicle locators are world-identity: `barrel` on the turret or weapon bone at the gun tip, `left_tracks` (+X) and `right_tracks` (−X) on the chassis at the rear wheels' ground contact.
+5. `mark` re-tags a checkpoint for the partition step (PDX shader properties, mesh index, 30 fps) and is run on the last checkpoint before export.
+6. `lab_finalize` with `"root": "root"` grounds the actions; ground contact is then 4 mm in every frame, which also cancels chassis bob.
+
+A variant that shares a unit's mesh and actions (an elite company) gets its own diffuse from `texture_variant.py <spec.json>` (spec format in its docstring; it dyes low-saturation cloth toward a tint and keeps skin and the item cells), converted with `pdx_textures.py` under the variant's stem.
+Register it as a second `pdxmesh` with the same mesh file and animations in a separate `<stem>_variants.gfx` (so rewiring the base unit does not overwrite it), and as an entity `clone` of the base entity that overrides only `pdxmesh`, as vanilla does for artillery variants.
+Render the variants side by side before converting; a near-black base needs `value_scale` above 1 for a dye to read at map scale.
 
 ## 7. Export
 
@@ -198,3 +216,11 @@ Point `sub_units` `sprite` at the entity (`sprite = x` resolves `x_entity`), and
 | A weapon or nozzle needs a particle node | the item is joined into the body mesh | `lab_items` reports `head_bone_local`; pass it to `author_locator` and orient the locator like the vanilla precedent (flame-tank `flamethrower` emits along local +Z, local +Y up) |
 | Appendage root tears into spikes in fast poses | the root stays weighted to a provider bone while the rest follows the new chain | re-rig with `feather` |
 | A quadruped or creature never moves properly | it was skinned to an unrelated template rig (a cave monster on an elephant rig with howdah and rider bones) | `lab_limbs` `skeleton` on the existing mesh, then author gaits with `keys` |
+| Wheel spin tears the mesh or snaps backwards | `dir` keys take the shortest rotation and cannot pass 180° | `spin` keys about the axle in 60° steps; weight each wheel rigidly inside a measured cylinder |
+| An action shows another action's pose (a tilted idle) | the bone has no key in that action, so the last evaluated pose stays | key every animated bone in every action, even at rest values |
+| Grounding lifts a vehicle or creature by many units mid-action | a sparse-keyed root: each new key shifted the next frame's interpolated pose before its offset was added | fixed in `lab_actions.ground_action` (offsets apply to the pose captured before keying) |
+| Entity sounds drift late against the motion | a factory-startup blend exports at 24 fps while the pipeline times events at 30 | `lab_limbs` `import` and `mark` set the scene to 30 fps; check `fps` in the exported `.txt` dump |
+| Partition error "nonempty PDX material" on a glTF-imported model | the material lacks io_pdx's `shader` property | `lab_limbs` `mark` |
+| The MCP adapter rejects a new job with the default job root | the running server read its config before the job override was added | call the adapter through `provider_intake.adapter(...)`, which starts a fresh server |
+| Review renders silently missing | the tag plus action name pushes the path past 260 characters | short `--tag` and `--out` names |
+| Firing role never points the weapon forward | the provider motion was authored empty-handed | `lab_items` `aim_items`, then time shots on measured aim frames |

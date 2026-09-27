@@ -17,7 +17,8 @@ Config (JSON):
   "prefix": "chaosx_unit",                      # actions are <prefix>_<role>
   "roles": ["idle", "move", ...],
   "replace": {"<prefix>_idle": "<prefix>_idle2"},  # optional: retire a rejected action for its replacement
-  "armature": "Armature.001", "meshes": ["char1.001"]
+  "armature": "Armature.001", "meshes": ["char1.001"],
+  "root": "Hips"                                # the bone keyed for grounding ("root" on vehicles and creatures)
 }
 
 Steps: retire replaced actions, ground every role (lab_actions.ground_all: root keyed so the
@@ -45,7 +46,7 @@ def run(config_path):
     for old, new in cfg.get("replace", {}).items():
         bpy.data.actions[old].name = "rejected_" + old
         bpy.data.actions[new].name = old
-    result = la.ground_all(rig, meshes, cfg["prefix"], cfg["roles"])
+    result = la.ground_all(rig, meshes, cfg["prefix"], cfg["roles"], root=cfg.get("root", "Hips"))
     bpy.ops.wm.save_as_mainfile(filepath=cfg["out"])
     summary = {k: (v.get("offset_range") if isinstance(v, dict) else v) for k, v in result.items()}
     print("FINAL", json.dumps(summary))

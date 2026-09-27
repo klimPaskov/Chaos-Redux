@@ -44,7 +44,7 @@ def main():
     p.add_argument("--out", required=True, help="job-relative export folder")
     p.add_argument("--role", action="append", required=True, help="role=action_name")
     p.add_argument("--install", help="mod-relative runtime folder")
-    p.add_argument("--textures", help="folder containing <stem>_diffuse/_specular/_normal.dds")
+    p.add_argument("--textures", help="job-relative (or absolute) folder containing <stem>_diffuse/_specular/_normal.dds")
     a = p.parse_args()
 
     job = pi.job_root(a.job)
@@ -70,7 +70,8 @@ def main():
                  "frames": [exp.get("frame_start"), exp.get("frame_end")], "fps": exp.get("fps"),
                  "reimport_contact_min_max": [min(contact), max(contact)] if contact else None,
                  "proof_blend": proof.get("proof_blend"), "previews": proof.get("previews", [])[:3]}
-        # An .anim of a few KB means no channel animated: usually an unbound action slot.
+        # An .anim of a few KB means no channel animated: usually an unbound action slot. Small rigs
+        # (a vehicle with a handful of bones) legitimately stay near this size; check their reimport.
         if (exp.get("anim_bytes") or 0) < 10000:
             entry["warning"] = "suspiciously small .anim; check the action slot binds to the armature"
         report["roles"][role] = entry
@@ -81,7 +82,8 @@ def main():
         installed = {}
         files = [job / mesh_rel] + [job / r["anim_rel"] for r in report["roles"].values()]
         if a.textures:
-            files += [Path(a.textures) / f"{a.stem}_{m}.dds" for m in ("diffuse", "specular", "normal")]
+            tex = Path(a.textures) if Path(a.textures).is_absolute() else job / a.textures
+            files += [tex / f"{a.stem}_{m}.dds" for m in ("diffuse", "specular", "normal")]
         for src in files:
             shutil.copy2(src, dest / src.name)
             installed[src.name] = {"source": digest(src), "runtime": digest(dest / src.name)}

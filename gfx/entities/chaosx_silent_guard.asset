@@ -1,0 +1,89 @@
+# Event 039 Silent Guard entity: a trench-coated, helmeted urban guard with a folding-stock submachine gun.
+# Three-round SMG bursts (one vanilla burst sound each) fire from the weapon's muzzle locator only on frames where the measured muzzle axis is level and forward.
+# Actions run at 30 FPS; each event time is (frame - first frame) / 30.
+
+entity = {
+	name = "silent_guard_entity"
+	pdxmesh = "chaosx_silent_guard_mesh"
+	default_state = "idle"
+
+	state = {
+		name = "idle"
+		animation = "idle"
+		animation_blend_time = 0.3
+		animation_speed = 1.0
+		looping = yes
+	}
+	state = {
+		name = "move"
+		animation = "move"
+		animation_blend_time = 0.3
+		animation_speed = 1.0
+		looping = yes
+		event = { trigger_once = yes sound = { soundeffect = "infantry_move_animation" } }
+	}
+	state = {
+		name = "retreat"
+		animation = "retreat"
+		animation_blend_time = 0.3
+		animation_speed = 1.0
+		looping = yes
+		event = { trigger_once = yes sound = { soundeffect = "infantry_move_animation" } }
+	}
+	state = {
+		name = "attack"
+		animation = "attack"
+		animation_blend_time = 0.2
+		animation_speed = 1.0
+		looping = yes
+		# Chest-level bursts on the level frames 23 and 93.
+		event = { time = 0.6667 node = "muzzle" particle = "mg_muzzle_particle" keep_particle = yes light = "mg_muzzle_flash" sound = { soundeffect = "infantry_mg_attack" } }
+		event = { time = 0.7667 node = "muzzle" particle = "mg_muzzle_particle" keep_particle = yes light = "mg_muzzle_flash" }
+		event = { time = 0.8667 node = "muzzle" particle = "mg_muzzle_particle" keep_particle = yes light = "mg_muzzle_flash" }
+		event = { time = 3.0000 node = "muzzle" particle = "mg_muzzle_particle" keep_particle = yes light = "mg_muzzle_flash" sound = { soundeffect = "infantry_mg_attack" } }
+		event = { time = 3.1000 node = "muzzle" particle = "mg_muzzle_particle" keep_particle = yes light = "mg_muzzle_flash" }
+		event = { time = 3.2000 node = "muzzle" particle = "mg_muzzle_particle" keep_particle = yes light = "mg_muzzle_flash" }
+	}
+	state = {
+		name = "support_attack"
+		animation = "support_attack"
+		animation_blend_time = 0.3
+		animation_speed = 1.0
+		looping = yes
+		# Bursts at frames 8 and 93, while the muzzle is level.
+		event = { time = 0.1667 node = "muzzle" particle = "mg_muzzle_particle" keep_particle = yes light = "mg_muzzle_flash" sound = { soundeffect = "infantry_mg_attack" } }
+		event = { time = 0.2667 node = "muzzle" particle = "mg_muzzle_particle" keep_particle = yes light = "mg_muzzle_flash" }
+		event = { time = 0.3667 node = "muzzle" particle = "mg_muzzle_particle" keep_particle = yes light = "mg_muzzle_flash" }
+		event = { time = 3.0000 node = "muzzle" particle = "mg_muzzle_particle" keep_particle = yes light = "mg_muzzle_flash" sound = { soundeffect = "infantry_mg_attack" } }
+		event = { time = 3.1000 node = "muzzle" particle = "mg_muzzle_particle" keep_particle = yes light = "mg_muzzle_flash" }
+		event = { time = 3.2000 node = "muzzle" particle = "mg_muzzle_particle" keep_particle = yes light = "mg_muzzle_flash" }
+	}
+	state = {
+		name = "defend"
+		animation = "defend"
+		animation_blend_time = 0.2
+		animation_speed = 1.0
+		looping = yes
+		# One answering burst at frame 31 after the flinch.
+		event = { time = 1.0000 node = "muzzle" particle = "mg_muzzle_particle" keep_particle = yes light = "mg_muzzle_flash" sound = { soundeffect = "infantry_mg_attack" } }
+		event = { time = 1.1000 node = "muzzle" particle = "mg_muzzle_particle" keep_particle = yes light = "mg_muzzle_flash" }
+		event = { time = 1.2000 node = "muzzle" particle = "mg_muzzle_particle" keep_particle = yes light = "mg_muzzle_flash" }
+	}
+	state = {
+		name = "training"
+		animation = "training"
+		animation_blend_time = 0.3
+		animation_speed = 1.0
+		looping = yes
+	}
+	state = {
+		name = "death"
+		animation = "death"
+		animation_blend_time = 0.3
+		animation_speed = 1.0
+		looping = no
+	}
+
+	# The mesh is calibrated to the vanilla infantry source height, so the vanilla entity scale applies once.
+	scale = 0.8
+}

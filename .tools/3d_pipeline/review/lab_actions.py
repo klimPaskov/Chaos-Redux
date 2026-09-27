@@ -91,13 +91,17 @@ def ground_action(rig, meshes, source, new_name, target=0.004, root="Hips"):
     scale = rig.matrix_world.to_scale().z
     pb = rig.pose.bones[root]
     f0, f1 = map(int, act.frame_range)
-    offsets = {}
+    offsets, base = {}, {}
     for f in range(f0, f1 + 1):
         bpy.context.scene.frame_set(f)
         offsets[f] = target - _lowest(meshes)
+        # Capture the ungrounded pose first: when the bone has sparse keys (a vehicle or creature
+        # root), a key inserted at frame f changes the interpolated pose at f + 1, and adding the
+        # offset to that would stack every earlier offset.
+        base[f] = pb.matrix.copy()
     for f, dz in offsets.items():
         bpy.context.scene.frame_set(f)
-        m = pb.matrix.copy()
+        m = base[f].copy()
         m.translation.z += dz / scale
         pb.matrix = m
         bpy.context.view_layer.update()

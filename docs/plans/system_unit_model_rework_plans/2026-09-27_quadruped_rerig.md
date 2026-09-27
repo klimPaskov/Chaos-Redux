@@ -21,6 +21,7 @@ The measured `floor` pass then kept every leg chain on the ground; all eight act
 - Cave monster: `gfx/models/units/018_resources_found_cave_monster/`, `gfx/entities/018_resources_found_cave_monster.gfx/.asset` (the five brood aliases are kept); contract `docs/systems/3d_model_pipeline/resources_found_cave_monster_model.md`.
 - Plague carriers: `gfx/models/units/012_africa_plague_carriers/`, `gfx/entities/chaosx_plague_carriers.gfx/.asset` (entity `plague_carriers_entity`, accepted scale 1.0 kept); the emptied shared `012_africa_strange_forces` files are removed.
 - Both use their existing sourced sounds, timed to the authored beats.
+- Both animation sets are exported at 30 fps (cave monster `export/v5`, plague carriers `export/v4`), the rate their entity event times assume; the meshes are byte-identical to the earlier exports.
 
 ## Out of scope
 

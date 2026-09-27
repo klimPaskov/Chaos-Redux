@@ -30,6 +30,8 @@ Config (JSON, absolute paths):
      "offset": [0, 0.03, 0]      # grip position in the bone frame, in fractions of rig height
   }],
   "contacts": [{"item": "halberd", "bone": "LeftHand", "offset": [0, 0.03, 0]}],   # off-hand checks
+  "aim_items": {"actions": ["chaosx_x_attack"], "elevation_deg": 0, "max_deg": 45,
+                "frames": {"chaosx_x_attack": [3, 122]}},   # optional measured aim fix for firing roles
   "floor_items": {"actions": ["chaosx_x_death"], "clearance": 0.01},   # optional measured floor fix
   # items_report.json records each item's head_bone_local: pass it to the adapter's
   # author_locator (parent_bone = the item's bone) for a muzzle or nozzle particle node.
@@ -247,6 +249,60 @@ def _purge_unused():
             bpy.data.images.remove(img)
 
 
+def _aim_items(cfg, rig, placed):
+    """Measured aim correction for firing roles, run before the floor pass. Provider actions made
+    for an empty-handed body often hold a weapon raised or lowered while the unit is meant to
+    fire. For each action in cfg["aim_items"]["actions"] (optionally limited to "frames" [f0, f1]
+    per action), every frame re-keys only the carrying bone, turned about its head so the item's
+    butt-to-head axis pitches toward "elevation_deg" (default 0, level) while keeping its current
+    heading (or facing -Y when the axis is near vertical), by at most "max_deg" (default 45) and
+    scaled by "strength" (default 1). "heading": [x, y] with "heading_weight" (0-1) also swings a
+    weapon held across the body toward that ground direction (the unit faces -Y). Returns per-action [min, max] corrections in degrees."""
+    from lab_actions import bind_action
+    opts = cfg.get("aim_items") or {}
+    names = opts.get("items") or list(placed)
+    elev = math.radians(opts.get("elevation_deg", 0.0))
+    max_turn = math.radians(opts.get("max_deg", 45.0))
+    strength = opts.get("strength", 1.0)
+    ranges = opts.get("frames", {})
+    out = {}
+    for name in opts.get("actions", []):
+        act = bpy.data.actions[name]
+        bind_action(rig, act)
+        f0, f1 = ranges.get(name) or list(map(int, act.frame_range))
+        turns = []
+        for f in range(int(f0), int(f1) + 1):
+            bpy.context.scene.frame_set(f)
+            for iname in names:
+                pl = placed[iname]
+                pb = rig.pose.bones[pl["bone"]]
+                m = bone_frame(rig, pl["bone"], pose=True)
+                a, b = (m @ e for e in pl["axis_ends_bone_space"])
+                d = (b - a).normalized()
+                heading = Vector((d.x, d.y, 0.0))
+                heading = heading.normalized() if heading.length > 0.3 else Vector((0.0, -1.0, 0.0))
+                if opts.get("heading"):
+                    want = Vector((*opts["heading"], 0.0)).normalized()
+                    heading = heading.lerp(want, opts.get("heading_weight", 1.0)).normalized()
+                goal = heading * math.cos(elev) + Vector((0.0, 0.0, math.sin(elev)))
+                angle = d.angle(goal)
+                if angle < 1e-4:
+                    turns.append(0.0)
+                    continue
+                turn = min(angle * strength, max_turn)
+                axis = d.cross(goal).normalized()
+                rot = mathutils.Quaternion(axis, turn).to_matrix().to_4x4()
+                pivot = m.translation
+                world = rig.matrix_world @ pb.matrix
+                pb.matrix = rig.matrix_world.inverted() @ (Matrix.Translation(pivot) @ rot @ Matrix.Translation(-pivot) @ world)
+                bpy.context.view_layer.update()
+                pb.keyframe_insert("rotation_quaternion" if pb.rotation_mode == "QUATERNION" else
+                                   ("rotation_axis_angle" if pb.rotation_mode == "AXIS_ANGLE" else "rotation_euler"), frame=f)
+                turns.append(math.degrees(turn))
+        out[name] = [round(min(turns), 1), round(max(turns), 1)] if turns else []
+    return out
+
+
 def _floor_items(cfg, rig, placed, height):
     """Measured floor correction for held items, the item analogue of lab_actions.ground_action.
     For each action named in cfg["floor_items"]["actions"], every frame where any sampled item vertex
@@ -436,6 +492,7 @@ def run(config_path=None):
               "items": {k: {"bone": v["bone"], "scale": v["scale"],
                             "axis_ends_bone_space": [list(e) for e in v["axis_ends_bone_space"]],
                             "head_bone_local": v["head_bone_local"]} for k, v in placed.items()},
+              "aim_turn_deg": _aim_items(cfg, rig, placed),
               "floor_fixed_frames": _floor_items(cfg, rig, placed, height),
               "contacts": _measure(cfg, rig, body, placed, height), "triangles": sum(len(p.vertices) - 2 for p in body.data.polygons)}
     _render(cfg, rig, body, height)
