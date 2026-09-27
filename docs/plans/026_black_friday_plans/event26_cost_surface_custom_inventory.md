@@ -90,7 +90,7 @@ Each row is an owner-level exact inventory entry. The status is a completion blo
 | `camp_repression_colonial_country_decisions.txt` | 1 / `243` | 1 / `248` | blocked_pending_owner_adapter |
 | `camp_repression_generic_decisions.txt` | 10 / `73, 240, 306, 429, 549, 619, 689, 781, 861, 918` | 10 / `78, 245, 311, 434, 554, 624, 698, 786, 865, 922` | blocked_pending_owner_adapter |
 | `camp_repression_major_country_decisions.txt` | 20 / `43, 92, 176, 218, 254, 305, 349, 526, 683, 737, 765, 791, 831, 918, 1073, 1132, 1213, 1253, 1282, 1375` | 20 / `48, 97, 181, 223, 259, 310, 353, 531, 688, 742, 770, 796, 836, 922, 1078, 1137, 1217, 1258, 1287, 1380` | blocked_pending_owner_adapter |
-| `cbrn_diplomacy_decisions.txt` | 3 / `35, 109, 207` | 3 / `38, 112, 210` | current_source_unadapted_model_families_and_factory_commitments |
+| `cbrn_diplomacy_decisions.txt` | 3 / `35, 109, 207` | 3 / `38, 112, 210` | one_inspection_adapter_two_unadapted |
 | `cbrn_doctrine_decisions.txt` | 4 / `15, 62, 88, 118` | 4 / `16, 63, 89, 119` | one_unadapted_theater_three_fixed_policy_exceptions |
 | `cbrn_occupation_decisions.txt` | 1 / `122` | 1 / `123` | current_source_unadapted_timed_mask_reservation_and_factory_commitment |
 | `cbrn_protection_decisions.txt` | 8 / `55, 83, 114, 151, 274, 307, 357, 380` | 8 / `56, 84, 115, 152, 275, 308, 358, 381` | one_shelter_adapter_seven_unadapted |
@@ -107,7 +107,7 @@ The scan found one text-only owner entry: `common/decisions/020_black_plague_rat
 
 ## Bounded owner-adapter tranche
 
-The current source adapters cover 104 registered logical cost components across ten bounded owner tranches: five Communist-spread logical actions with 15 components, seventeen reachable Fury decisions with 42 components, the Japan chemical campaign attack with two components, biological medical-capacity expansion with three components, CBRN civilian-shelter movement with three components, the two Japan biological campaign agents with eight components, four Germany Mengele command-power actions with four components, the D'Rhondan alien-infantry landing reservation with one component, ten adapted Random Faction actions with 21 components, and the Africa elephant logistics contract with five components.
+The earlier bounded adapters covered 104 registered logical cost components across ten owner tranches. The inspection-demand adapter adds two logical cost components, bringing the current bounded source-adapter count to 106 across eleven tranches; its one instrument-family component is recorded as up to three concrete model receipt rows for exact refunds. The historical Japan decision components in the earlier count are superseded by native raid prices.
 
 The bounded adapters prepare each owner's ordinary current component values, quote the active sale ratio, check all quoted components before payment, debit only the quoted amounts, record one payer-scoped transaction with one row per component, settle the logical transaction after all receipts succeed, and pass the registry-defined primary family to the achievement ledger. Owner-specific payloads retain explicit external refund acknowledgements, and the D'Rhondan reservation and Africa logistics contract retain their target, delayed-resolution, and owner-contract semantics outside the shared payment contract. The native source inventory remains exhaustive, but these tranches do not close the remaining owner rows, delayed commitments, inaccessible engine surfaces, probability evidence, or live display/payment/save evidence.
 

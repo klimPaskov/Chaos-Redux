@@ -6,7 +6,7 @@ The CBRN international-response layer adds material inspection pressure, exact-s
 
 The accepted design source is `docs/specs/chaos_warfare_system_specs/specs/09_condemnation_deaths_air_cleanliness_and_diplomacy.md`. This implementation also follows the consequence and evidence mappings under `docs/specs/chaos_warfare_system_specs/matrices/`.
 
-Player-facing costs, durations, evidence gains, and cleanup amounts in `localisation/english/cbrn_diplomacy_l_english.yml` use `common/scripted_localisation/cbrn_diplomacy_value_localisation.txt` to quote the same script constants as the decisions and effects. Inline rows show immediate equipment costs and the forensic factory assignment; cost hover text explains when equipment is spent and how long factories remain committed without repeating the payment amounts. The exact action and episode records below remain internal accounting, while the visible text describes attacks, outbreaks, evidence, and responsibility.
+Player-facing durations, evidence gains, cleanup amounts, and the other diplomacy costs in `localisation/english/cbrn_diplomacy_l_english.yml` use `common/scripted_localisation/cbrn_diplomacy_value_localisation.txt` to quote the same script constants as the decisions and effects. Demand Inspections uses the sale-aware temporary quote set by its shared affordability trigger, so its inline row matches the immediate payment at ordinary or discounted prices. Inline rows show immediate equipment costs and the forensic factory assignment; cost hover text explains when equipment is spent and how long factories remain committed without repeating the payment amounts. The exact action and episode records below remain internal accounting, while the visible text describes attacks, outbreaks, evidence, and responsibility.
 
 ## Demand Inspections
 
@@ -16,6 +16,8 @@ The demanding country consumes:
 
 - 10 CBRN instruments;
 - 10 support equipment.
+
+During an active Event 026 equipment sale, both payments use the same whole-unit quote: five of each at the ordinary sale ratio or three of each at the stronger evolution ratio. The instrument debit takes the oldest available models first. One payer-scoped receipt records the exact models and support equipment, refunds a failed partial payment, and settles before the diplomatic demand starts. The ordinary 10-and-10 path remains the default when the sale source is inactive.
 
 The target receives the 30-day `cbrn_answer_inspection_demand_mission`. The mission directs the target to `Accept International Inspections` or `Refuse the Inspectors` in the `Condemnation Response` category. Accepting grants inspectors access and clears the demand. Refusing inspections or allowing a still-valid demand to time out clears the demand and records the normal public blocked-inspection Coverup source. If the demanding country no longer exists, the deadline only clears the stale demand. The timeout guard prevents mission removal from recursively resolving the same refusal twice.
 

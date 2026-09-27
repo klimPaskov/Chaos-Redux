@@ -917,6 +917,36 @@ universal_cost_pay_component = {
 		}
 		if = {
 			limit = {
+				check_variable = { var = universal_cost_payment_resource_kind value = constant:universal_cost_resource_kind.cbrn_instrument_equipment_1 compare = equals }
+				universal_cost_component_is_affordable = yes
+			}
+			set_temp_variable = { universal_cost_payment_delta = universal_cost_payment_amount }
+			multiply_temp_variable = { universal_cost_payment_delta = constant:universal_cost_framework.negative_one }
+			add_equipment_to_stockpile = { type = cbrn_instrument_equipment_1 amount = universal_cost_payment_delta }
+			set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_success }
+		}
+		if = {
+			limit = {
+				check_variable = { var = universal_cost_payment_resource_kind value = constant:universal_cost_resource_kind.cbrn_instrument_equipment_2 compare = equals }
+				universal_cost_component_is_affordable = yes
+			}
+			set_temp_variable = { universal_cost_payment_delta = universal_cost_payment_amount }
+			multiply_temp_variable = { universal_cost_payment_delta = constant:universal_cost_framework.negative_one }
+			add_equipment_to_stockpile = { type = cbrn_instrument_equipment_2 amount = universal_cost_payment_delta }
+			set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_success }
+		}
+		if = {
+			limit = {
+				check_variable = { var = universal_cost_payment_resource_kind value = constant:universal_cost_resource_kind.cbrn_instrument_equipment_3 compare = equals }
+				universal_cost_component_is_affordable = yes
+			}
+			set_temp_variable = { universal_cost_payment_delta = universal_cost_payment_amount }
+			multiply_temp_variable = { universal_cost_payment_delta = constant:universal_cost_framework.negative_one }
+			add_equipment_to_stockpile = { type = cbrn_instrument_equipment_3 amount = universal_cost_payment_delta }
+			set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_success }
+		}
+		if = {
+			limit = {
 				check_variable = {
 					var = universal_cost_payment_resource_kind
 					value = constant:universal_cost_resource_kind.motorized_equipment
@@ -1079,6 +1109,21 @@ universal_cost_credit_component = {
 				check_variable = { var = universal_cost_payment_resource_kind value = constant:universal_cost_resource_kind.support_equipment_1 compare = equals }
 			}
 			add_equipment_to_stockpile = { type = support_equipment_1 amount = universal_cost_payment_amount }
+			set_temp_variable = { universal_cost_credit_result = constant:universal_cost_framework.result_success }
+		}
+		if = {
+			limit = { check_variable = { var = universal_cost_payment_resource_kind value = constant:universal_cost_resource_kind.cbrn_instrument_equipment_1 compare = equals } }
+			add_equipment_to_stockpile = { type = cbrn_instrument_equipment_1 amount = universal_cost_payment_amount }
+			set_temp_variable = { universal_cost_credit_result = constant:universal_cost_framework.result_success }
+		}
+		if = {
+			limit = { check_variable = { var = universal_cost_payment_resource_kind value = constant:universal_cost_resource_kind.cbrn_instrument_equipment_2 compare = equals } }
+			add_equipment_to_stockpile = { type = cbrn_instrument_equipment_2 amount = universal_cost_payment_amount }
+			set_temp_variable = { universal_cost_credit_result = constant:universal_cost_framework.result_success }
+		}
+		if = {
+			limit = { check_variable = { var = universal_cost_payment_resource_kind value = constant:universal_cost_resource_kind.cbrn_instrument_equipment_3 compare = equals } }
+			add_equipment_to_stockpile = { type = cbrn_instrument_equipment_3 amount = universal_cost_payment_amount }
 			set_temp_variable = { universal_cost_credit_result = constant:universal_cost_framework.result_success }
 		}
 		if = {

@@ -249,6 +249,28 @@ cbrn_diplomacy_pay_inspection_demand_cost = {
 	}
 }
 
+# Country scope. The caller has already paid the exact quoted instruments and
+# support equipment and validated cbrn_diplomacy_target_country. This helper
+# owns only the issued demand, cooldown, and target mission.
+cbrn_diplomacy_open_paid_inspection_demand = {
+	add_to_variable = { cbrn_inspection_demands_issued = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_inspection_sender_cooldown_days = constant:cbrn_diplomacy_duration.inspection_sender_cooldown_days }
+	set_country_flag = {
+		flag = cbrn_inspection_demand_sender_cooldown
+		days = var:cbrn_inspection_sender_cooldown_days
+	}
+	event_target:cbrn_diplomacy_target_country = {
+		set_country_flag = cbrn_inspection_demand_active
+		set_variable = { cbrn_inspection_demand_source = ROOT }
+		set_variable = { cbrn_inspection_demand_date = global.num_days }
+		add_opinion_modifier = {
+			target = ROOT
+			modifier = cbrn_inspection_demanded
+		}
+		activate_mission = cbrn_answer_inspection_demand_mission
+	}
+}
+
 cbrn_diplomacy_send_inspection_demand = {
 	if = {
 		limit = {
@@ -259,22 +281,7 @@ cbrn_diplomacy_send_inspection_demand = {
 			}
 		}
 		cbrn_diplomacy_pay_inspection_demand_cost = yes
-		add_to_variable = { cbrn_inspection_demands_issued = constant:cbrn_math.one }
-		set_temp_variable = { cbrn_inspection_sender_cooldown_days = constant:cbrn_diplomacy_duration.inspection_sender_cooldown_days }
-		set_country_flag = {
-			flag = cbrn_inspection_demand_sender_cooldown
-			days = var:cbrn_inspection_sender_cooldown_days
-		}
-		event_target:cbrn_diplomacy_target_country = {
-			set_country_flag = cbrn_inspection_demand_active
-			set_variable = { cbrn_inspection_demand_source = ROOT }
-			set_variable = { cbrn_inspection_demand_date = global.num_days }
-			add_opinion_modifier = {
-				target = ROOT
-				modifier = cbrn_inspection_demanded
-			}
-			activate_mission = cbrn_answer_inspection_demand_mission
-		}
+		cbrn_diplomacy_open_paid_inspection_demand = yes
 	}
 }
 

@@ -25,7 +25,7 @@ Scope: payer country.
 
 Input: temporary `universal_cost_affordability_resource_kind`.
 
-Result: true for the sixteen resource kinds implemented by the shared native payment and credit branches: `political_power`, `command_power`, `army_experience`, `navy_experience`, `air_experience`, `manpower`, `fuel`, `infantry_equipment`, `support_equipment`, `support_equipment_1`, `motorized_equipment`, `train_equipment`, `train_equipment_1`, `convoy`, `stability`, and `war_support`.
+Result: true for the nineteen resource kinds implemented by the shared native payment and credit branches: `political_power`, `command_power`, `army_experience`, `navy_experience`, `air_experience`, `manpower`, `fuel`, `infantry_equipment`, `support_equipment`, `support_equipment_1`, `cbrn_instrument_equipment_1`, `cbrn_instrument_equipment_2`, `cbrn_instrument_equipment_3`, `motorized_equipment`, `train_equipment`, `train_equipment_1`, `convoy`, `stability`, and `war_support`.
 
 `custom_adapter` is deliberately false so owner adapters remain responsible for their own payment, refund, and external-resource semantics.
 
@@ -34,6 +34,7 @@ Side effects: none.
 Native trigger evidence: `political_power`, `command_power`, `has_manpower`, and `has_fuel` use their documented country resource triggers; `army_experience` uses `has_army_experience`; and all equipment kinds use the documented `has_equipment` trigger with the exact archetype or concrete equipment token recorded by the resource kind.
 
 The native branches for Army Experience, Navy Experience, Air Experience, Stability, War Support, `support_equipment_1`, and `train_equipment_1` are grounded in the installed vanilla documentation at `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md` and the installed equipment definitions at `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/units/equipment/support.txt` and `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/units/equipment/trains.txt`.
+The three CBRN instrument tokens are concrete models defined in `common/units/equipment/cbrn_protective_equipment.txt`; each affordability branch checks only its named model, not the shared archetype or a mixed-stock total.
 
 ## universal_cost_component_is_affordable
 
@@ -41,7 +42,7 @@ Scope: payer country.
 
 Inputs: temporary `universal_cost_affordability_resource_kind` and `universal_cost_affordability_amount`.
 
-Result: true for zero or negative amounts, or when the payer has an inclusive amount of one of the sixteen supported native resources.
+Result: true for zero or negative amounts, or when the payer has an inclusive amount of one of the nineteen supported native resources.
 
 Unsupported commitment/resource kinds return false and must be checked by the owner adapter.
 
