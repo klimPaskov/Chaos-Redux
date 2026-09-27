@@ -20,6 +20,8 @@ The current delivery MIO permits Persistent Agent Formulation after Stable Choki
 
 ## Superseded six-family implementation account
 
+> Historical snapshot only. Every present-tense family name, readiness gate, AI preference, source path, and asset promise in the sections below describes the retired six-family design. Use the current three-family contract above and the [accepted overhaul amendment](../../specs/chaos_warfare_system_specs/specs/13_2026_09_20_accepted_cbrn_overhaul.md) for ongoing work; native MIO list/detail visuals and combined effects remain unverified.
+
 ## Purpose
 
 The CBRN designer layer uses the current Hearts of Iron IV Military Industrial Organization database. It contains six generic families: Chemical Munitions Combine, Aerosol and Air Delivery Bureau, Protective Equipment Consortium, Mobile Decontamination Works, Biological Security Directorate, and Medical Countermeasure Directorate. Each organization affects an exact custom equipment family and explicitly mapped completed-trait checks; none grants broad bonuses to ordinary artillery, aircraft, infantry equipment, trucks, or support equipment.

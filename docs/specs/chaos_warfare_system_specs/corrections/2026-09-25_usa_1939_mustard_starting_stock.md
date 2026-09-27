@@ -4,6 +4,8 @@ Acceptance basis: the user's 2026-09-20 CBRN overhaul requests separate sourced 
 
 The [U.S. defence history](https://www.denix.osd.mil/rcwmprogram/history/) records Edgewood Arsenal's 1937 rehabilitation of its mustard-production line and additional output that year. The history does not define the mod's abstract `mustard_agent_lot_1` unit or prove how much remained in either bookmark. Therefore historical tonnage is not converted into lots, and no starting HOI4 production line is granted.
 
+The Army's more detailed [*Chemical Warfare Service: From Laboratory to Field*](https://www.govinfo.gov/content/pkg/GOVPUB-D114-PURL-gpo94181/pdf/GOVPUB-D114-PURL-gpo94181.pdf), Chapter III, pp. 52 and 63, describes the restored mustard plant's 1937 run as lasting only two weeks, with large-scale production beginning in 1940. It also places the replacement phosgene plant's opening in July 1941 after a 1939 design. Those dates support the separate 1939 mustard reserve and phosgene knowledge, but not a continuous mustard or phosgene factory line at the August 1939 bookmark. The current absence of that line is an evidence-based historical choice, not an unfinished production grant.
+
 | Bookmark | U.S. mustard lots | Cylinder at 40 | Projector at 70 | Artillery at 120 | Armored at 80 |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | January 1936 | 240 | 6 | 3 | 2 | 3 |

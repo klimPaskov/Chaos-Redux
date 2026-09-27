@@ -100,9 +100,11 @@ Event 016 Biomedical Acceleration integrates at the existing exact-state respons
 | Stage 2 sprites | `interface/cbrn_protection.gfx` |
 | Stage 2 implementation evidence | `docs/plans/chaos_warfare_system_plans/2026-07-13_stage_2_protective_equipment.md` |
 
-The mapped units, Army Headquarters layer, doctrine, officer corps, route adapters, payloads, biological lifecycle, designers, achievements, and consequence dispatcher have separate implementation and audit records under `docs/plans/chaos_warfare_system_plans/`. The five-tab operational GUI and several visual-animation surfaces remain explicitly tracked there as audit items rather than being represented as completed by this overview.
+The mapped units, Army Headquarters layer, doctrine, officer corps, route adapters, payloads, biological lifecycle, designers, achievements, and consequence dispatcher have separate implementation and audit records under `docs/plans/chaos_warfare_system_plans/`. Current status and evidence limits are in the [accepted overhaul amendment](../../specs/chaos_warfare_system_specs/specs/13_2026_09_20_accepted_cbrn_overhaul.md), [requirement ledger](../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md), and [completion report](../../plans/chaos_warfare_system_plans/2026-09-25_cbrn_overhaul_completion_report.md); this overview does not establish a five-tab GUI or native visual proof.
 
 ## Asset registry
+
+> The family inventory and future-stage list below preserve the earlier Stage 2 plan. Their six-family MIO, six-HQ, and readiness-seal/window-animation targets were superseded or left without an accepted consumer by the 2026-09-20 overhaul; they are not current completion requirements. The accepted amendment and current requirement ledger control their disposition.
 
 Stage 2 assets live under `docs/assets/chaos_warfare_system/stage_2_protective_equipment/`. `interface/cbrn_protection.gfx` registers purpose-built final DDS art for eleven technologies, fourteen equipment/model cards, two decision categories, nineteen decisions, five exact-state response modifiers, and the defective-reconditioned-batch report event. No placeholder or cross-type resized substitute is used.
 

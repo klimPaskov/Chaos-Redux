@@ -6,7 +6,7 @@ Chaos Redux provides a static roster of 67 historical scientists for the chemica
 
 Twelve established dual-role characters remain in `common/characters/cbrn_historical_specialists.txt`, while 55 scientist-only characters live in `common/characters/cbrn_historical_scientists.txt`.
 
-The startup compatibility effects recruit prewar and established 1939 identities at the appropriate bookmark and date-gate later wartime identities through bounded country callbacks. They preserve the established `chaosx_scientist_*` identity flags used by events and scripted triggers after the corresponding character is recruited.
+The startup compatibility effects recruit prewar and established 1939 identities at the appropriate bookmark and date-gate later wartime identities through bounded country callbacks. The current source roster has 39 direct and 28 dated recruitment paths, with no second path for any of the 67 scientists. These are source counts; engine recruitment at either bookmark remains unverified. The effects preserve the established `chaosx_scientist_*` identity flags used by events and scripted triggers after the corresponding character is recruited.
 
 ## Historical calibration
 
@@ -22,7 +22,7 @@ No scientist receives skill 5.
 
 Traits use the existing vanilla scientist vocabulary plus `scientist_trait_inhumane` and `scientist_trait_inhumane_cw` for historically documented coercive human experimentation.
 
-The inhumane traits describe method and conduct, not greater historical stature; low-skill perpetrators remain low-skill even when that trait is present.
+The inhumane traits describe method and conduct, not greater historical stature; low-skill perpetrators remain low-skill even when that trait is present. The roster table identifies later awards by date rather than implying the trait exists at recruitment.
 
 ## Roster
 
@@ -31,7 +31,7 @@ The inhumane traits describe method and conduct, not greater historical stature;
 | Australia | Howard Walter Florey | Biological warfare | 4 | Brilliant Theorist, Resourceful |
 | Australia | Charles Kellaway | Chemical warfare | 3 | Bright, Resourceful |
 | Australia | Frank Macfarlane Burnet | Biological warfare | 4 | Brilliant Theorist, Fast Learner |
-| Canada | Otto Maass | Chemical warfare | 4 | Brilliant Theorist, Resourceful |
+| Canada | Otto Maass | Chemical warfare | 3 | Brilliant Theorist, Resourceful |
 | Canada | Frederick Banting | Chemical warfare | 4 | Brilliant Theorist, Bright |
 | Canada | Claude E. Dolman | Biological warfare | 3 | Bright, Resourceful |
 | United Kingdom | Paul Fildes | Biological warfare | 4 | Brilliant Theorist, Resourceful |
@@ -57,17 +57,17 @@ The inhumane traits describe method and conduct, not greater historical stature;
 | Germany | Kurt Gutzeit | Biological warfare | 1 | Inhumane |
 | Germany | Sigmund Rascher | Biological warfare | 1 | Inhumane |
 | Germany | Josef Mengele | Biological warfare | 1 | Inhumane |
-| Germany | August Hirt | Chemical warfare | 1 | Inhumane CW |
+| Germany | August Hirt | Chemical warfare | 1 | Inhumane CW from 25 November 1942 |
 | Germany | Ferdinand Flury | Chemical warfare | 3 | Bright |
 | Germany | Otto Ambros | Chemical warfare | 3 | Gifted Engineer |
-| Germany | Otto Bickenbach | Chemical warfare | 2 | Inhumane CW |
+| Germany | Otto Bickenbach | Chemical warfare | 2 | Inhumane CW from 1 June 1943 |
 | Germany | Richard Kuhn | Chemical warfare | 4 | Genius |
-| Germany | Gerhard Rose | Biological warfare | 3 | Bright, Inhumane |
-| Germany | Joachim Mrugowsky | Biological warfare | 3 | Inhumane |
+| Germany | Gerhard Rose | Biological warfare | 3 | Bright; Inhumane from 17 April 1942 |
+| Germany | Joachim Mrugowsky | Biological warfare | 3 | Inhumane from 29 December 1941 |
 | Germany | Erwin Ding-Schuler | Biological warfare | 2 | Inhumane |
 | Japan | Shiro Ishii | Biological warfare | 3 | Resourceful, Inhumane |
 | Japan | Masaji Kitano | Biological warfare | 3 | Bright, Inhumane |
-| Japan | Chikahiko Koizumi | Biological warfare | 1 | None |
+| Japan | Chikahiko Koizumi | Chemical warfare | 3 | None |
 | Japan | Ryoichi Naito | Biological warfare | 3 | Bright, Resourceful |
 | Poland | Franciszek Witaszek | Biological warfare | 2 | Resourceful |
 | Poland | Rudolf Weigl | Biological warfare | 4 | Bright, Resourceful |
@@ -77,36 +77,36 @@ The inhumane traits describe method and conduct, not greater historical stature;
 | Soviet Union | Lavrentiy Pavlovich Beria | Biological warfare | 1 | None |
 | Soviet Union | Georgy Gause | Biological warfare | 3 | Bright, Resourceful |
 | Soviet Union | Nikolai Ginsburg | Biological warfare | 3 | Brilliant Theorist, Resourceful |
-| Soviet Union | Sergei Muromtsev | Chemical warfare | 3 | Inhumane CW |
+| Soviet Union | Sergei Muromtsev | Chemical warfare | 3 | None; field-specific skill source unresolved |
 | Soviet Union | Zinaida Yermolyeva | Biological warfare | 4 | Bright, Resourceful |
 | Soviet Union | Nikolay Zelinsky | Chemical warfare | 4 | Bright, Gifted Engineer |
 | Soviet Union | Yakov Fishman | Chemical warfare | 3 | Resourceful |
-| United States | Frank Olson | Biological warfare | 3 | Bright, Gifted Engineer |
+| United States | Frank Olson | Biological warfare | 3 | Bright |
 | United States | Ira Baldwin | Biological warfare | 4 | Resourceful, Gifted Engineer |
 | United States | Murray Sanders | Biological warfare | 3 | Bright, Resourceful |
 | United States | Stanhope Bayne-Jones | Biological warfare | 3 | Bright, Resourceful |
 | United States | William A. Hagan | Biological warfare | 3 | Gifted Engineer, Resourceful |
 | United States | Karl Friedrich Meyer | Biological warfare | 4 | Brilliant Theorist, Resourceful |
-| United States | Theodor Rosebury | Biological warfare | 4 | Bright, Gifted Engineer |
-| United States | Edwin Broun Fred | Biological warfare | 4 | Brilliant Theorist, Resourceful |
+| United States | Theodor Rosebury | Biological warfare | 3 | Bright, Gifted Engineer |
+| United States | Edwin Broun Fred | Biological warfare | 3 | Brilliant Theorist, Resourceful |
 | United States | George W. Merck | Biological warfare | 4 | Brilliant Theorist, Resourceful |
 | United States | James Stevens Simmons | Biological warfare | 4 | Brilliant Theorist, Resourceful |
 | United States | Cornelius P. Rhoads | Chemical warfare | 4 | Bright, Resourceful |
-| United States | Dean S. Tarbell | Chemical warfare | 2 | Bright, Gifted Engineer |
+| United States | Dean S. Tarbell | Chemical warfare | 2 | Bright |
 | United States | James B. Conant | Chemical warfare | 4 | Genius, Brilliant Theorist |
 | United States | Winford Lee Lewis | Chemical warfare | 4 | Gifted Engineer, Brilliant Theorist |
 
 ## Startup behavior
 
-The established `on_startup` dispatcher continues to call country-scoped grant effects; no world-iteration on action was added. The dated roster repair uses only `on_daily_ENG`, `on_daily_GER`, `on_daily_JAP`, `on_daily_POL`, `on_daily_SOV`, and `on_daily_USA` in `common/on_actions/cbrn_historical_startup_on_actions.txt`.
+The established `on_startup` dispatcher continues to call country-scoped grant effects; no world-iteration on action was added. The dated roster repair uses country-specific `on_daily_AST`, `on_daily_CAN`, `on_daily_ENG`, `on_daily_GER`, `on_daily_JAP`, `on_daily_POL`, `on_daily_SOV`, and `on_daily_USA` callbacks in `common/on_actions/cbrn_historical_startup_on_actions.txt`.
 
 Each relevant grant recruits the prewar/established characters exactly once after confirming that the country exists. Dated helpers guard every later recruitment with `has_character` and the current date, then write the identity flag after the character exists.
 
-Prewar and established 1939 expertise is available at scenario start, while later wartime identities enter the scientist pool on their documented dates. Scientist availability remains separate from offensive authorization.
+Eligible prewar expertise is available at the applicable scenario start, while later wartime identities enter the scientist pool on documented or explicitly calibrated dates. Kellaway opens in 1942, Banting in 1940, Henderson in June 1940, Hirt on 25 November 1942, Rhoads on 30 March 1943, and Tarbell in 1942; Haldane, Fishman, and Velikanov are excluded from the August 1939 start under their source-supported lifecycle limits. Scientist availability remains separate from offensive authorization. The [lifecycle](../../specs/chaos_warfare_system_specs/corrections/2026-09-27_scientist_lifecycle_and_field.md), [Allied chronology](../../specs/chaos_warfare_system_specs/corrections/2026-09-27_allied_scientist_wartime_recruitment.md), and [German, Soviet, and American calibration](../../specs/chaos_warfare_system_specs/corrections/2026-09-27_german_american_scientist_calibration.md) notes give the acceptance basis, source distinctions, and unresolved person-specific questions.
 
-The dual-role advisor cards use current-date gates for documented appointments: Paul Fildes from 1 January 1940, Gerhard Schrader after 31 December 1936, Kurt Blome after 1 January 1942, Masaji Kitano after 1 January 1942, Franciszek Witaszek after 1 September 1939, Grigory Mairanovsky after 1 January 1937, Frank Olson after 1 January 1943, and Ira Baldwin after 1 January 1942. Fildes remains available as a scientist at the 1939 bookmark; only his Porton Down biological-warfare advisor appointment waits for the department's 1940 establishment.
+The dual-role advisor cards use current-date gates for their documented or calibrated appointments: Paul Fildes from 1 January 1940, Gerhard Schrader after 31 December 1936, Kurt Blome from 1 July 1943, Masaji Kitano after 1 January 1942, Franciszek Witaszek from 1 July 1940, Grigory Mairanovsky from 1 January 1938, Frank Olson from 1 January 1943, and Ira Baldwin after 1 January 1942. Fildes remains available as a scientist at the 1939 bookmark; only his Porton Down biological-warfare advisor appointment waits for the department's 1940 establishment. Olson's advisor role is Aerobiology Specialist, while his scientist skill remains 3.
 
-Howard Florey and Alexander Fleming remain available as medical countermeasure advisors, while Shiro Ishii and Ivan Mikhailovich Velikanov remain available for their established pre-war command or research roles.
+Howard Florey and Alexander Fleming remain available as medical countermeasure advisors, while Shiro Ishii has an established prewar command role. Ivan Mikhailovich Velikanov remains eligible for his prewar research role only at the January 1936 start, consistent with the documented April 1938 death used for the August 1939 bookmark exclusion.
 
 Both historical bookmarks mark every country in the starting mask matrix for force-scaled reconciliation: established majors use a 75% military issue target, Italy 100%, Japan 50%, and all remaining profile tags 25%, with a separate 25% replacement reserve and zero fixed civilian distribution. Each bookmark measures its own deployed force. The common profile retains knowledge and program identity but suppresses archival fixed stock and civilian issue; the startup effect snapshots pre-existing mask models and issues the active band from real stock, with ENG using the shared core helper for the same transaction. The 1939 British startup writes `cbrn_historical_civilian_mask_issue` and `cbrn_uk_1939_mass_respirator_issue`, passes the 40,000-crate civilian respirator assumption to the core CBRN profile owner, and queues ENG-root `cbrn_protection.3` so the inclusive target is reconciled against real stock above the military reserve once. The shared percentages are a gameplay calibration accepted by the user on 2026-09-25, not claims about exact historical inventory.
 
