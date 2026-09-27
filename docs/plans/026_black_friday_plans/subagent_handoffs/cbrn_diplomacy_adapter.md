@@ -1,5 +1,7 @@
 # Event 26 CBRN diplomacy adapter handoff
 
+Disposition: superseded by `../event26_cost_surface_registry.md` and `2026-09-27_cbrn_sponsor_decon_sale_implementation.md`. The rejection and cost description below are historical evidence from before the CBRN simplification; current source has two material adapters and a one-factory sale variant for the remaining sponsorship action.
+
 ## Disposition
 
 Status: REJECTED and BLOCKED.
