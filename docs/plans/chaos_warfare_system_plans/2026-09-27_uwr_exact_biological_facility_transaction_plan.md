@@ -1,6 +1,8 @@
 # UWR Tver Directorate exact biological facility transaction
 
-**Disposition: unresolved, pending the user's explicit choice about treating the newly built site as the arsenal for a biological project completed by the following random reward.** This is an implementation handoff, not approval to register the facility. The accepted CBRN plan forbids fabricated stockpile-safety sites; the [generic grant audit](2026-09-27_random_biological_grant_facility_scope.md) keeps callers without an exact site reward-only.
+**Disposition: superseded by the [accepted UWR exact-site correction](../../specs/chaos_warfare_system_specs/corrections/2026-09-27_uwr_exact_biological_project_site.md).** The user chose an exact eligible facility on 2026-09-27, and the current source uses existing UWR facility rewards to prefer Tver, then binds the verified site through a caller wrapper. The older random-site transaction proposal below is retained as design history and is not the implemented contract.
+
+At the time of this plan, the accepted CBRN design forbade fabricated stockpile-safety sites and the [generic grant audit](2026-09-27_random_biological_grant_facility_scope.md) found callers without an exact facility input. The later correction resolves that UWR source gap; native construction and monitoring remain unverified.
 
 `UWR_tver_pathogen_directorate` calls `soviet_collapse_uwr_build_biowarfare_facility`, stockpile setup, then `grant_random_chaos_special_project_available_tech` in `common/national_focus/005_soviet_collapse_custom_splinters.txt:1434-1440`. The builder in `common/scripted_effects/005_soviet_collapse_effects.txt:21805-21814` constructs a real `biowarfare_facility` in one randomly selected owned and controlled state but exports no state pointer. Its separate registration helper at `:21818-21866` requires exact state 247 and belongs to successor setup after four completed biological projects; it cannot prove the site selected by the later focus.
 
