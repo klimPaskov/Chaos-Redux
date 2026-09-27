@@ -16,10 +16,38 @@ grant_random_chaos_special_project_available_tech = {
 	if = {
 		limit = {
 			OR = {
-				NOT = { has_tech = anthrax_bomb_delivery_systems }
-				NOT = { has_tech = plague_bomb_delivery_systems }
-				NOT = { has_tech = tularemia_bomb_delivery_systems }
-				NOT = { has_tech = smallpox_bomb_delivery_systems }
+				AND = {
+					NOT = { has_tech = anthrax_bomb_delivery_systems }
+					OR = {
+						NOT = { tag = UWR }
+						is_special_project_completed = sp:anthrax_bomb
+						soviet_collapse_uwr_random_bio_site_is_valid = yes
+					}
+				}
+				AND = {
+					NOT = { has_tech = plague_bomb_delivery_systems }
+					OR = {
+						NOT = { tag = UWR }
+						is_special_project_completed = sp:plague_bomb
+						soviet_collapse_uwr_random_bio_site_is_valid = yes
+					}
+				}
+				AND = {
+					NOT = { has_tech = tularemia_bomb_delivery_systems }
+					OR = {
+						NOT = { tag = UWR }
+						is_special_project_completed = sp:tularemia_bomb
+						soviet_collapse_uwr_random_bio_site_is_valid = yes
+					}
+				}
+				AND = {
+					NOT = { has_tech = smallpox_bomb_delivery_systems }
+					OR = {
+						NOT = { tag = UWR }
+						is_special_project_completed = sp:smallpox_bomb
+						soviet_collapse_uwr_random_bio_site_is_valid = yes
+					}
+				}
 				NOT = { has_tech = zombie_disease_bomb_delivery_systems }
 				NOT = { is_special_project_completed = sp:black_plague_weaponization_program }
 				NOT = { has_tech = sarin }
@@ -30,40 +58,80 @@ grant_random_chaos_special_project_available_tech = {
 		set_temp_variable = { chaos_random_dhrondan_envoy_craft_roll = constant:dhrondan_contact.project_selector_weight }
 		random_list = {
 			10 = {
-				modifier = { factor = 0 has_tech = anthrax_bomb_delivery_systems }
-				if = {
-					limit = { NOT = { is_special_project_completed = sp:anthrax_bomb } }
-					complete_special_project = { project = sp:anthrax_bomb show_modifiers = no }
+				modifier = {
+					factor = 0
+					OR = {
+						has_tech = anthrax_bomb_delivery_systems
+						AND = {
+							tag = UWR
+							NOT = { is_special_project_completed = sp:anthrax_bomb }
+							NOT = { soviet_collapse_uwr_random_bio_site_is_valid = yes }
+						}
+					}
 				}
-				set_technology = { anthrax_bomb_delivery_systems = 1 }
-				set_country_flag = chaos_random_special_project_granted
+				if = {
+					limit = { NOT = { is_special_project_completed = sp:anthrax_bomb } OR = { NOT = { tag = UWR } soviet_collapse_uwr_random_bio_site_is_valid = yes } }
+					complete_special_project = { project = sp:anthrax_bomb show_modifiers = no }
+					if = { limit = { tag = UWR is_special_project_completed = sp:anthrax_bomb soviet_collapse_uwr_random_bio_site_is_valid = yes } soviet_collapse_uwr_register_random_biological_arsenal = yes }
+				}
+				if = { limit = { is_special_project_completed = sp:anthrax_bomb } set_technology = { anthrax_bomb_delivery_systems = 1 } set_country_flag = chaos_random_special_project_granted }
 			}
 			10 = {
-				modifier = { factor = 0 has_tech = plague_bomb_delivery_systems }
-				if = {
-					limit = { NOT = { is_special_project_completed = sp:plague_bomb } }
-					complete_special_project = { project = sp:plague_bomb show_modifiers = no }
+				modifier = {
+					factor = 0
+					OR = {
+						has_tech = plague_bomb_delivery_systems
+						AND = {
+							tag = UWR
+							NOT = { is_special_project_completed = sp:plague_bomb }
+							NOT = { soviet_collapse_uwr_random_bio_site_is_valid = yes }
+						}
+					}
 				}
-				set_technology = { plague_bomb_delivery_systems = 1 }
-				set_country_flag = chaos_random_special_project_granted
+				if = {
+					limit = { NOT = { is_special_project_completed = sp:plague_bomb } OR = { NOT = { tag = UWR } soviet_collapse_uwr_random_bio_site_is_valid = yes } }
+					complete_special_project = { project = sp:plague_bomb show_modifiers = no }
+					if = { limit = { tag = UWR is_special_project_completed = sp:plague_bomb soviet_collapse_uwr_random_bio_site_is_valid = yes } soviet_collapse_uwr_register_random_biological_arsenal = yes }
+				}
+				if = { limit = { is_special_project_completed = sp:plague_bomb } set_technology = { plague_bomb_delivery_systems = 1 } set_country_flag = chaos_random_special_project_granted }
 			}
 			8 = {
-				modifier = { factor = 0 has_tech = tularemia_bomb_delivery_systems }
-				if = {
-					limit = { NOT = { is_special_project_completed = sp:tularemia_bomb } }
-					complete_special_project = { project = sp:tularemia_bomb show_modifiers = no }
+				modifier = {
+					factor = 0
+					OR = {
+						has_tech = tularemia_bomb_delivery_systems
+						AND = {
+							tag = UWR
+							NOT = { is_special_project_completed = sp:tularemia_bomb }
+							NOT = { soviet_collapse_uwr_random_bio_site_is_valid = yes }
+						}
+					}
 				}
-				set_technology = { tularemia_bomb_delivery_systems = 1 }
-				set_country_flag = chaos_random_special_project_granted
+				if = {
+					limit = { NOT = { is_special_project_completed = sp:tularemia_bomb } OR = { NOT = { tag = UWR } soviet_collapse_uwr_random_bio_site_is_valid = yes } }
+					complete_special_project = { project = sp:tularemia_bomb show_modifiers = no }
+					if = { limit = { tag = UWR is_special_project_completed = sp:tularemia_bomb soviet_collapse_uwr_random_bio_site_is_valid = yes } soviet_collapse_uwr_register_random_biological_arsenal = yes }
+				}
+				if = { limit = { is_special_project_completed = sp:tularemia_bomb } set_technology = { tularemia_bomb_delivery_systems = 1 } set_country_flag = chaos_random_special_project_granted }
 			}
 			6 = {
-				modifier = { factor = 0 has_tech = smallpox_bomb_delivery_systems }
-				if = {
-					limit = { NOT = { is_special_project_completed = sp:smallpox_bomb } }
-					complete_special_project = { project = sp:smallpox_bomb show_modifiers = no }
+				modifier = {
+					factor = 0
+					OR = {
+						has_tech = smallpox_bomb_delivery_systems
+						AND = {
+							tag = UWR
+							NOT = { is_special_project_completed = sp:smallpox_bomb }
+							NOT = { soviet_collapse_uwr_random_bio_site_is_valid = yes }
+						}
+					}
 				}
-				set_technology = { smallpox_bomb_delivery_systems = 1 }
-				set_country_flag = chaos_random_special_project_granted
+				if = {
+					limit = { NOT = { is_special_project_completed = sp:smallpox_bomb } OR = { NOT = { tag = UWR } soviet_collapse_uwr_random_bio_site_is_valid = yes } }
+					complete_special_project = { project = sp:smallpox_bomb show_modifiers = no }
+					if = { limit = { tag = UWR is_special_project_completed = sp:smallpox_bomb soviet_collapse_uwr_random_bio_site_is_valid = yes } soviet_collapse_uwr_register_random_biological_arsenal = yes }
+				}
+				if = { limit = { is_special_project_completed = sp:smallpox_bomb } set_technology = { smallpox_bomb_delivery_systems = 1 } set_country_flag = chaos_random_special_project_granted }
 			}
 			8 = {
 				modifier = { factor = 0 has_tech = zombie_disease_bomb_delivery_systems }

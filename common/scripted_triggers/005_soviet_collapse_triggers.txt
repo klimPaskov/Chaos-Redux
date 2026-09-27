@@ -8815,6 +8815,60 @@ has_soviet_collapse_uwr_blacksite_expansion_capacity = {
 	}
 }
 
+# Country scope. The existing UWR facility reward attempts Tver first when
+# UWR controls an eligible empty site, then verifies the resulting level.
+soviet_collapse_uwr_tver_is_eligible_for_bio_facility_attempt = {
+	tag = UWR
+	247 = {
+		scope_exists = yes
+		impassable = no
+		is_owned_by = PREV
+		is_controlled_by = PREV
+		bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+		NOT = { biowarfare_facility > 0 }
+		NOT = { cw_facility > 0 }
+	}
+}
+
+# Country scope. Positive exact Tver facility for a first designation only.
+soviet_collapse_uwr_exact_tver_bio_site_is_valid = {
+	tag = UWR
+	247 = {
+		scope_exists = yes
+		impassable = no
+		is_owned_by = PREV
+		is_controlled_by = PREV
+		bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+		biowarfare_facility > constant:bio_stockpile_safety_risk.facility_level_trigger_floor
+	}
+}
+
+# Country scope. The short-lived ready flag is reset by the UWR wrapper on
+# every roll, so a previous event target cannot authorize a later roll.
+soviet_collapse_uwr_random_bio_site_is_valid = {
+	tag = UWR
+	has_event_target = soviet_collapse_uwr_random_bio_site
+	has_country_flag = soviet_collapse_uwr_random_bio_site_ready
+	event_target:soviet_collapse_uwr_random_bio_site = {
+		scope_exists = yes
+		impassable = no
+		is_owned_by = PREV
+		is_controlled_by = PREV
+		bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+		biowarfare_facility > constant:bio_stockpile_safety_risk.facility_level_trigger_floor
+	}
+	OR = {
+		AND = {
+			bio_stockpile_safety_arsenal_pointer_is_valid = yes
+			var:bio_stockpile_safety_arsenal_state = { state = event_target:soviet_collapse_uwr_random_bio_site }
+		}
+		AND = {
+			NOT = { has_country_flag = bio_stockpile_safety_arsenal_designation_history }
+			247 = { state = event_target:soviet_collapse_uwr_random_bio_site }
+		}
+	}
+}
+
 has_soviet_collapse_uwr_experiment_camp_capacity = {
 	any_owned_state = {
 		is_controlled_by = ROOT

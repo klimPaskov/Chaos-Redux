@@ -21799,13 +21799,71 @@ soviet_collapse_uwr_overclock_blacksite_network = {
 }
 
 soviet_collapse_uwr_build_biowarfare_facility = {
-	random_owned_controlled_state = {
-		limit = {
-			NOT = { biowarfare_facility > 0 }
-			NOT = { cw_facility > 0 }
+	clr_country_flag = soviet_collapse_uwr_exact_tver_bio_facility_built
+	if = {
+		limit = { soviet_collapse_uwr_tver_is_eligible_for_bio_facility_attempt = yes }
+		247 = {
+			construct_building_in_random_province = { biowarfare_facility = 1 }
+			if = {
+				limit = { biowarfare_facility > constant:bio_stockpile_safety_risk.facility_level_trigger_floor }
+				PREV = { set_country_flag = soviet_collapse_uwr_exact_tver_bio_facility_built }
+				soviet_collapse_mark_uwr_blacksite_state_for_aftermath = yes
+			}
 		}
-		construct_building_in_random_province = { biowarfare_facility = 1 }
-		soviet_collapse_mark_uwr_blacksite_state_for_aftermath = yes
+	}
+	if = {
+		limit = { NOT = { has_country_flag = soviet_collapse_uwr_exact_tver_bio_facility_built } }
+		random_owned_controlled_state = {
+			limit = {
+				NOT = { biowarfare_facility > 0 }
+				NOT = { cw_facility > 0 }
+			}
+			construct_building_in_random_province = { biowarfare_facility = 1 }
+			soviet_collapse_mark_uwr_blacksite_state_for_aftermath = yes
+		}
+	}
+	clr_country_flag = soviet_collapse_uwr_exact_tver_bio_facility_built
+}
+
+# Country scope. Bind a short-lived exact site for one random CBRN roll.
+# A valid monitored arsenal wins; otherwise only positive-level Tver may be
+# used, and a prior failed/lost designation may not be silently replaced.
+soviet_collapse_uwr_roll_project_with_exact_bio_site = {
+	clr_country_flag = soviet_collapse_uwr_random_bio_site_ready
+	if = {
+		limit = { bio_stockpile_safety_arsenal_pointer_is_valid = yes }
+		var:bio_stockpile_safety_arsenal_state = {
+			save_event_target_as = soviet_collapse_uwr_random_bio_site
+		}
+		set_country_flag = soviet_collapse_uwr_random_bio_site_ready
+	}
+	else_if = {
+		limit = {
+			NOT = { has_country_flag = bio_stockpile_safety_arsenal_designation_history }
+			soviet_collapse_uwr_exact_tver_bio_site_is_valid = yes
+		}
+		247 = { save_event_target_as = soviet_collapse_uwr_random_bio_site }
+		set_country_flag = soviet_collapse_uwr_random_bio_site_ready
+	}
+	grant_random_chaos_special_project_available_tech = yes
+	clr_country_flag = soviet_collapse_uwr_random_bio_site_ready
+}
+
+# Country scope. Register only the exact state bound by the current roll.
+# Completed-project technology repairs never call this effect.
+soviet_collapse_uwr_register_random_biological_arsenal = {
+	if = {
+		limit = {
+			soviet_collapse_uwr_random_bio_site_is_valid = yes
+			NOT = { bio_stockpile_safety_arsenal_pointer_is_valid = yes }
+			NOT = { has_country_flag = bio_stockpile_safety_arsenal_designation_history }
+			247 = { state = event_target:soviet_collapse_uwr_random_bio_site }
+		}
+		save_event_target_as = soviet_collapse_uwr_biological_owner
+		event_target:soviet_collapse_uwr_random_bio_site = {
+			save_event_target_as = soviet_collapse_uwr_biological_facility
+		}
+		soviet_collapse_uwr_apply_exact_biological_arsenal_designation = yes
 	}
 }
 
@@ -21826,11 +21884,20 @@ soviet_collapse_uwr_register_biological_arsenal = {
 		}
 		247 = { save_event_target_as = soviet_collapse_uwr_biological_facility }
 	}
+	soviet_collapse_uwr_apply_exact_biological_arsenal_designation = yes
+}
+
+# Country scope. Shared exact-Tver registration for setup and a selected
+# incomplete ordinary biological project. Inputs are the short-lived owner
+# and facility targets; both are revalidated before durable writes.
+soviet_collapse_uwr_apply_exact_biological_arsenal_designation = {
 	if = {
 		limit = {
+			has_event_target = soviet_collapse_uwr_biological_owner
 			has_event_target = soviet_collapse_uwr_biological_facility
 			NOT = { bio_stockpile_safety_arsenal_pointer_is_valid = yes }
 			NOT = { has_country_flag = bio_stockpile_safety_arsenal_designation_history }
+			247 = { state = event_target:soviet_collapse_uwr_biological_facility }
 		}
 		event_target:soviet_collapse_uwr_biological_facility = {
 			if = {
@@ -22370,8 +22437,8 @@ soviet_collapse_setup_uwr_successor = {
 	}
 	soviet_collapse_uwr_stockpile_absurd_payloads = yes
 	soviet_collapse_uwr_register_biological_arsenal = yes
-	grant_random_chaos_special_project_available_tech = yes
-	grant_random_chaos_special_project_available_tech = yes
+	soviet_collapse_uwr_roll_project_with_exact_bio_site = yes
+	soviet_collapse_uwr_roll_project_with_exact_bio_site = yes
 	soviet_collapse_spawn_custom_splinter_assault_columns = yes
 	soviet_collapse_apply_high_chaos_neighbor_expansion_plan = yes
 	add_ai_strategy = { type = conquer id = SOV value = @soviet_collapse_chaos_expansion_soviet_ai_strategy }
