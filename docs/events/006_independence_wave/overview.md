@@ -1,5 +1,7 @@
 # Event 006: Independence Wave
 
+The accepted Part 2 country-opening family is implemented at source level after acknowledgement of the public wave report. See the [country-opening mechanic](country_opening.md), [country-opening asset manifest](country_opening_asset_manifest.md), and [implementation handoff](../../plans/006_independence_wave_plans/subagent_handoffs/006_country_opening_post_report_implementation_2026-09-27.md). Event 006 remains **HOLD / PARTIAL** as documented below.
+
 ## Current reconciliation note (2026-09-27; extends the 2026-09-20 audit baseline)
 
 The current whole-event disposition remains **HOLD / PARTIAL** at 32 content-attested selectable packages across 29 compatible reservation groups, 41 runtime adapters, and 161 unattested selectable rows. The exact automatic ladder remains `3 / 4 / 5 / 7 / 10`, World Collapse remains at `10`, and the no-pre-event contract remains absolute.

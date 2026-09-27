@@ -154,7 +154,7 @@ The planner treats the entire wave as one allocation problem.
 8. Assign shared focus content or the additive Independence Wave overlay.
 9. create host relation state and border claims.
 10. Register the country in the current wave and wider Independence Wave network.
-11. Fire the wave summary and country opening events.
+11. Fire the committed public wave summary. After its option is acknowledged, dispatch the tailored country opening for each eligible live Event 006 country.
 
 The release must be deterministic after the plan is locked. A country should not disappear from the plan because an earlier release changed ownership during the same execution sequence.
 
@@ -304,7 +304,7 @@ The event supports several player perspectives.
 
 ### Player controls a released country
 
-The player immediately receives the country opening event, mechanic summary, first survival mission, focus access, and an explanation of the former host relationship.
+After acknowledging the public wave summary, the player receives the country opening event, mechanic summary, first survival mission, focus access, and an explanation of the former host relationship.
 
 ### Player controls a host
 

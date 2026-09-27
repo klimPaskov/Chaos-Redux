@@ -1670,14 +1670,24 @@ country_event = {
 }
 
 # BEGIN SOURCE: events/006_independence_wave_iw043_iw058.txt
-# IW-043 / IW-058 incident chains. Event IDs, triggers, options, and effects remain unchanged.
+# IW-043 / IW-058 incident chains. The introduction triggers consume generation-matched post-report receipts; package option effects remain unchanged.
 country_event = {
 	id = chaosx.nr006.4301
 	title = chaosx.nr006.4301.t
 	desc = chaosx.nr006.4301.desc
 	picture = GFX_report_event_independence_wave_iw043
 	is_triggered_only = yes
-	trigger = { is_independence_wave_iw043_country = yes }
+	trigger = {
+		is_independence_wave_iw043_country = yes
+		has_country_flag = independence_wave_opening_resolved
+		has_country_flag = independence_wave_iw043_opening_event_pending
+		check_variable = { var = independence_wave_iw043_opening_event_generation_id value = independence_wave_generation_id compare = equals }
+	}
+
+	immediate = {
+		clr_country_flag = independence_wave_iw043_opening_event_pending
+		clear_variable = independence_wave_iw043_opening_event_generation_id
+	}
 
 	option = {
 		name = chaosx.nr006.4301.a
@@ -2221,7 +2231,17 @@ country_event = {
 	desc = chaosx.nr006.5801.desc
 	picture = GFX_report_event_independence_wave_iw058
 	is_triggered_only = yes
-	trigger = { is_independence_wave_iw058_country = yes }
+	trigger = {
+		is_independence_wave_iw058_country = yes
+		has_country_flag = independence_wave_opening_resolved
+		has_country_flag = independence_wave_iw058_opening_event_pending
+		check_variable = { var = independence_wave_iw058_opening_event_generation_id value = independence_wave_generation_id compare = equals }
+	}
+
+	immediate = {
+		clr_country_flag = independence_wave_iw058_opening_event_pending
+		clear_variable = independence_wave_iw058_opening_event_generation_id
+	}
 
 	option = {
 		name = chaosx.nr006.5801.a

@@ -1368,11 +1368,6 @@ independence_wave_setup_iw043_middle_volga = {
 				set_country_flag = independence_wave_formable_identity_adapter_ready
 				set_country_flag = independence_wave_formable_integration_adapter_ready
 				set_country_flag = independence_wave_formable_member_policy_audited
-				if = {
-					limit = { NOT = { has_country_flag = independence_wave_iw043_opening_event_fired } }
-					country_event = { id = chaosx.nr006.4301 }
-					set_country_flag = independence_wave_iw043_opening_event_fired
-				}
 				set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_planner.selected }
 				set_temp_variable = { independence_wave_iw043_setup_result = constant:independence_wave_planner.selected }
 			}
@@ -1486,11 +1481,6 @@ independence_wave_setup_iw058_assyria = {
 				set_country_flag = independence_wave_formable_identity_adapter_ready
 				set_country_flag = independence_wave_formable_integration_adapter_ready
 				set_country_flag = independence_wave_formable_member_policy_audited
-				if = {
-					limit = { NOT = { has_country_flag = independence_wave_iw058_opening_event_fired } }
-					country_event = { id = chaosx.nr006.5801 }
-					set_country_flag = independence_wave_iw058_opening_event_fired
-				}
 				set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_planner.selected }
 				set_temp_variable = { independence_wave_iw058_setup_result = constant:independence_wave_planner.selected }
 			}
@@ -1647,6 +1637,8 @@ independence_wave_cleanup_iw043_middle_volga = {
 		# repeatable Event 006 generation.
 		clr_country_flag = independence_wave_iw043_constitutional_capstone_complete
 		clr_country_flag = independence_wave_iw043_opening_event_fired
+		clr_country_flag = independence_wave_iw043_opening_event_pending
+		clear_variable = independence_wave_iw043_opening_event_generation_id
 		clr_country_flag = iw043_package_incident_opened
 		clr_country_flag = iw043_bolgar_constitutional_memory_adopted
 		clr_country_flag = iw043_chamber_of_peoples_settlement_complete
@@ -1923,6 +1915,8 @@ independence_wave_cleanup_iw058_assyria = {
 		if = { limit = { has_country_flag = independence_wave_iw058_cosmetic_active } drop_cosmetic_tag = yes }
 		clr_country_flag = independence_wave_iw058_constitutional_capstone_complete
 		clr_country_flag = independence_wave_iw058_opening_event_fired
+		clr_country_flag = independence_wave_iw058_opening_event_pending
+		clear_variable = independence_wave_iw058_opening_event_generation_id
 		clr_country_flag = iw058_package_incident_opened
 		clr_country_flag = iw058_anchor_crisis_active
 		clr_country_flag = iw058_anchor_defense_mission_complete
@@ -2867,5 +2861,34 @@ independence_wave_write_iw058_host_conflict_survived = {
 		clr_country_flag = iw058_host_reclamation_conflict_active
 		clr_country_flag = iw058_severe_security_crisis_active
 		set_temp_variable = { independence_wave_iw058_achievement_writer_result = constant:independence_wave_iw_formable_adapter.attested }
+	}
+}
+
+# COUNTRY scope. These package introductions follow the shared country-opening
+# choice so setup cannot interrupt the public Event 006 report or its posture.
+independence_wave_schedule_iw043_iw058_opening_followup_events = {
+	if = {
+		limit = {
+			is_independence_wave_iw043_country = yes
+			has_country_flag = independence_wave_package_setup_complete
+			NOT = { has_country_flag = independence_wave_iw043_opening_event_fired }
+		}
+		set_temp_variable = { independence_wave_package_opening_followup_delay = constant:independence_wave_opening_timing.package_followup_days }
+		set_variable = { independence_wave_iw043_opening_event_generation_id = independence_wave_generation_id }
+		set_country_flag = independence_wave_iw043_opening_event_pending
+		country_event = { id = chaosx.nr006.4301 days = independence_wave_package_opening_followup_delay }
+		set_country_flag = independence_wave_iw043_opening_event_fired
+	}
+	if = {
+		limit = {
+			is_independence_wave_iw058_country = yes
+			has_country_flag = independence_wave_package_setup_complete
+			NOT = { has_country_flag = independence_wave_iw058_opening_event_fired }
+		}
+		set_temp_variable = { independence_wave_package_opening_followup_delay = constant:independence_wave_opening_timing.package_followup_days }
+		set_variable = { independence_wave_iw058_opening_event_generation_id = independence_wave_generation_id }
+		set_country_flag = independence_wave_iw058_opening_event_pending
+		country_event = { id = chaosx.nr006.5801 days = independence_wave_package_opening_followup_delay }
+		set_country_flag = independence_wave_iw058_opening_event_fired
 	}
 }

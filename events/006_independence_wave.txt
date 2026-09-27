@@ -1,7 +1,9 @@
 # Some fields in this file reject script-constant tokens.
-# These file-scoped values mirror the authoritative shared constants.
+# Existing file-scoped values mirror shared constants; the report timeout is
+# kept local because `timeout_days` is an @-constant event field.
 @CR_SC_INDEPENDENCE_WAVE_DECISION_GATE_DIPLOMATIC_ACCEPTANCE_OPINION = 25
 @CR_SC_INDEPENDENCE_WAVE_VALUE_MINIMUM = 0
+@CR_SC_INDEPENDENCE_WAVE_PUBLIC_REPORT_TIMEOUT_DAYS = 13
 add_namespace = chaosx.nr6
 add_namespace = chaosx.nr006
 
@@ -12,6 +14,7 @@ country_event = {
 	id = chaosx.nr6.1
 	hidden = yes
 	is_triggered_only = yes
+	trigger = { NOT = { has_global_flag = independence_wave_country_opening_report_pending } }
 
 	immediate = {
 		clr_global_flag = independence_wave_event_log_actor_ready
@@ -42,6 +45,7 @@ country_event = {
 				}
 				set_global_flag = independence_wave_event_log_actor_ready
 			}
+			independence_wave_prepare_committed_country_opening_queue = yes
 			country_event = { id = chaosx.nr6.2 }
 		}
 		else = {
@@ -51,7 +55,14 @@ country_event = {
 			clr_global_flag = independence_wave_joint_presentation_pending
 			independence_wave_prepare_and_execute_standalone_incident = yes
 			if = {
-				limit = { has_global_flag = independence_wave_standalone_incident_committed }
+				limit = {
+					has_global_flag = independence_wave_standalone_incident_committed
+					check_variable = {
+						var = global.independence_wave_presentation_country_count
+						value = constant:independence_wave_planner.no_candidates
+						compare = greater_than
+					}
+				}
 				# The overlay runtime is a post-commit surface. A failed or
 				# cancelled standalone attempt never unlocks it.
 				set_global_flag = independence_wave_event6_runtime_unlocked
@@ -62,6 +73,7 @@ country_event = {
 					}
 					set_global_flag = independence_wave_event_log_actor_ready
 				}
+				independence_wave_prepare_committed_country_opening_queue = yes
 				country_event = { id = chaosx.nr6.2 }
 			}
 		}
@@ -76,8 +88,10 @@ country_event = {
 	desc = chaosx.nr6.2.d
 	picture = GFX_report_event_006_asset_001_wave_summary
 	is_triggered_only = yes
+	timeout_days = @CR_SC_INDEPENDENCE_WAVE_PUBLIC_REPORT_TIMEOUT_DAYS
 
 	trigger = {
+		NOT = { has_global_flag = independence_wave_country_opening_report_pending }
 		check_variable = {
 			var = global.independence_wave_presentation_country_count
 			value = constant:independence_wave_planner.no_candidates
@@ -85,9 +99,73 @@ country_event = {
 		}
 	}
 
+	immediate = {
+		set_global_flag = independence_wave_country_opening_report_pending
+		set_variable = { global.independence_wave_country_opening_report_plan_id = global.liberation_plan_id }
+	}
+
 	option = {
 		name = chaosx.nr6.2.a
 		set_variable = { global.independence_wave_last_presentation_date = global.date }
+		hidden_effect = {
+			independence_wave_dispatch_committed_country_opening_queue = yes
+			clr_global_flag = independence_wave_country_opening_report_pending
+			clear_variable = global.independence_wave_country_opening_report_plan_id
+		}
+	}
+}
+
+# Country-specific founding posture. The hidden router is dispatched only from
+# the acknowledged public report and carries a generation-scoped actor receipt.
+country_event = {
+	id = chaosx.nr6.41
+	title = chaosx.nr6.41.t
+	desc = chaosx.nr6.41.d
+	picture = GFX_report_event_006_country_opening
+	is_triggered_only = yes
+	trigger = { has_current_independence_wave_opening_receipt = yes }
+
+	option = {
+		name = chaosx.nr6.41.a
+		custom_effect_tooltip = chaosx.nr6.41.a.tt
+		hidden_effect = { independence_wave_resolve_country_opening_civilian_administration = yes }
+	}
+
+	option = {
+		name = chaosx.nr6.41.b
+		custom_effect_tooltip = chaosx.nr6.41.b.tt
+		hidden_effect = { independence_wave_resolve_country_opening_frontier_security = yes }
+	}
+}
+
+# AI countries use the same two posture effects without a weighted option pool.
+country_event = {
+	id = chaosx.nr6.42
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { has_current_independence_wave_opening_receipt = yes }
+
+	immediate = {
+		if = {
+			limit = { is_ai = yes }
+			if = {
+				limit = {
+					OR = {
+						is_at_war = yes
+						has_independence_wave_severe_host_threat = yes
+						check_variable = { var = independence_wave_security value = constant:independence_wave_security_band.organized compare = less_than }
+						check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.armed compare = less_than }
+						AND = {
+							has_independence_wave_opening_security_force_profile = yes
+							check_variable = { var = independence_wave_security value = constant:independence_wave_security_band.prepared compare = less_than }
+						}
+					}
+				}
+				independence_wave_resolve_country_opening_frontier_security = yes
+			}
+			else = { independence_wave_resolve_country_opening_civilian_administration = yes }
+		}
+		else = { country_event = { id = chaosx.nr6.41 } }
 	}
 }
 

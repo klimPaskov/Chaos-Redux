@@ -1,0 +1,58 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 COUNTRY OPENING TRIGGERS
+# Overview:
+# - Admits only the exact committed country generation captured for a public
+#   Event 006 report.
+# - Supplies deterministic AI posture routing from war, host threat, force
+#   strength, force profile, and live Statehood values.
+# - Never scans countries or changes country state.
+# ============================================================================
+
+has_current_independence_wave_opening_receipt = {
+	is_independence_wave_package_content_active = yes
+	has_country_flag = independence_wave_active_origin
+	has_country_flag = independence_wave_origin_committed
+	has_country_flag = independence_wave_package_setup_complete
+	has_country_flag = independence_wave_origin_package_validated
+	has_country_flag = independence_wave_opening_pending
+	NOT = { has_country_flag = independence_wave_opening_resolved }
+	has_variable = independence_wave_generation_id
+	has_variable = independence_wave_package_id
+	has_variable = independence_wave_opening_plan_id
+	has_variable = independence_wave_opening_generation_id
+	has_variable = independence_wave_opening_package_id
+	check_variable = { var = independence_wave_generation_id value = independence_wave_opening_generation_id compare = equals }
+	check_variable = { var = independence_wave_package_id value = independence_wave_opening_package_id compare = equals }
+	check_variable = { var = independence_wave_opening_plan_id value = constant:independence_wave_planner.no_candidates compare = greater_than }
+	has_variable = independence_wave_region
+	has_valid_independence_wave_region = yes
+	has_variable = independence_wave_package_archetype
+	has_variable = independence_wave_force_profile
+	has_valid_independence_wave_force_profile = yes
+	has_variable = independence_wave_force_level
+	OR = {
+		check_variable = { independence_wave_force_level = constant:liberation_force_level.fragile }
+		check_variable = { independence_wave_force_level = constant:liberation_force_level.viable }
+		check_variable = { independence_wave_force_level = constant:liberation_force_level.armed }
+		check_variable = { independence_wave_force_level = constant:liberation_force_level.high_chaos }
+	}
+	has_variable = independence_wave_former_host
+	has_variable = independence_wave_anchor_state
+	var:independence_wave_anchor_state = { is_owned_by = ROOT is_controlled_by = ROOT }
+	has_variable = independence_wave_host_outcome
+	has_variable = independence_wave_legitimacy
+	has_variable = independence_wave_recognition
+	has_variable = independence_wave_capacity
+	has_variable = independence_wave_security
+	has_variable = independence_wave_instability
+}
+
+has_independence_wave_opening_security_force_profile = {
+	OR = {
+		check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.territorial_defense }
+		check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.industrial_security }
+		check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.mountain_frontier }
+		check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.mounted_mobile }
+		check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.desert_nomadic }
+	}
+}

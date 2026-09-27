@@ -26,7 +26,8 @@ flowchart TD
     R --> S[Apply Event 6 origin and package]
     S --> T[Create government, values, ideas, forces, focus content, and AI]
     T --> U[Create host relations and network records]
-    U --> V[Fire country openings, host crises, and wave summary]
+    U --> V[Fire committed public wave summary]
+    V --> W[After acknowledgement, resolve country openings, then dispatch one response per former host]
 ```
 
 ## Priority order when a conflict appears

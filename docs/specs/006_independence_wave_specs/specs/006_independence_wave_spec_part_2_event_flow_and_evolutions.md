@@ -602,9 +602,35 @@ The event direction should mention:
 
 The player option should establish an early governing posture. The exact text may be serious, proud, anxious, traditional, revolutionary, military, religious, or darkly ironic depending on the package. Final wording belongs to implementation.
 
+### Accepted country opening implementation map (2026-09-27)
+
+Acceptance basis: the user authorized implementation of every accepted Part 2 requirement, including a tailored opening for each country in a committed Event 006 wave. This mapping completes the existing family requirement without adding a country, historical officeholder, tag, or alternate route.
+
+The visible opening follows acknowledgement of the committed public report `chaosx.nr6.2`. Event `chaosx.nr6.41` presents the human posture choice and hidden event `chaosx.nr6.42` resolves it for AI countries. The queue is captured from the committed Event 006-owned country rows and dispatched by the single report option, once for each live Event 006 country. It never includes an Event 005 row, a Join conversion, a failed plan, or a rolled-back release. Per-generation identity checks prevent delayed content from reaching a later use of the same country tag. The report recipient holds a global pending receipt until its sole option dispatches; plan reset and a second report are held while that receipt is live. The actor router is scheduled one day after the report option so each opener follows the public acknowledgement.
+
+Assemble the opening from the released country's retained data. Its text names the country and region, the government or movement that took power, the capital or anchor, the source of its first security forces, the former host and its current condition, and the most urgent public problem selected from the country's live statehood values and host pressure. Use the package's actual ruling party, anchor state, force profile, former-host pointer, host outcome, region, and five country values. Describe the force's recruitment origin separately from its brigade template, using the profile's local, industrial, inherited, frontier, coastal, mobile, riverine, or volunteer source. Missing required data fails closed rather than displaying a generic replacement.
+
+The posture choice presents civilian administration and frontier security as distinct early priorities. Civilian administration raises legitimacy, recognition, and capacity, improves network standing, reduces founding instability, and accepts limited exposure in security. Gains ease for values already in established bands; war, severe host threat, and a fragile starting force increase the security tradeoff, while strained instability receives stronger relief. Where the former host survives, this posture moderates bilateral claims, hostility, obligations, domestic pressure, and reconquest fear while advancing border settlement.
+
+Frontier security strengthens security according to the current Security band, starting force level, and force profile. It costs legitimacy, Capacity, and network standing; it increases Instability only during war or under a severe threat from a surviving former host. Against a living former host, it increases bilateral hostility and domestic pressure while reducing fear of reconquest. AI countries choose deterministically from active war, host threat, security strength, and the starting force profile, then receive the same posture effects as human countries. Both postures use the shared country, host, and network delta helpers and existing delta constants and grant no territory, claims, forces, paid receipts, or automatic government route. They update the public statehood values and host/network ledgers that later focuses, decisions, missions, and AI already read.
+
+The existing IW-043 and IW-058 package introductions follow the shared posture choice by one day. Package setup does not interrupt the public report or country opening.
+
+Use a single new shared report image for the country-opening family, registered within ASSET-048. It depicts a provisional local authority taking its first decisions alongside the source of its security forces, without a real leader, a national flag, generated writing, or invented heraldry. Register the stable sprite and 210×176 runtime DDS in the existing Event 006 report-image family before production.
+
 ## Post-event host response family
 
 After the public Event 006 report, the host-response event should differ according to the share of territory lost.
+
+### Accepted host response defaults (2026-09-27)
+
+Acceptance basis: the user accepted the proposed host-response defaults and later approved all outstanding recommendations.
+
+Measure each former host's loss as the number of distinct states transferred by the committed Event 006 release divided by that host's pre-release state count. Exclude Event 005, Join conversions, and every other origin from the numerator. Aggregate all Event 006 losses to one response for each distinct former host in the wave.
+
+Dispatch the host responses after the public report is acknowledged and the released countries have received their opening choices. A host qualifies for the capital-remnant response when only its protected state remains, or when its original capital is no longer controlled by the host and the host has no more than two states remaining. This remnant condition overrides the loss-share tiers. Otherwise, classify a loss below 50 percent as limited secession and a loss of 50 percent or more as severe partition.
+
+AI hosts select deterministically from the classified tier and their live host-relation ledgers. The three tiers retain the response content below; this accepted mapping defines classification, aggregation, and dispatch order without claiming that the host-response events are implemented.
 
 ### Limited secession
 
