@@ -106,6 +106,36 @@ def ground_action(rig, meshes, source, new_name, target=0.004, root="Hips"):
     return {"action": new_name, "offset_range": [min(offsets.values()), max(offsets.values())], "after_min_max": [min(after), max(after)]}
 
 
+def ground_all(rig, meshes, prefix, roles, target=0.004, root="Hips"):
+    """Ground every <prefix>_<role> action, keep the ungrounded provider copy as
+    provider_<prefix>_<role>_ungrounded, then repair slots and clear NLA tracks so the
+    checkpoint is ready for partitioning. Returns per-role offset ranges."""
+    out = {}
+    for role in roles:
+        name = f"{prefix}_{role}"
+        out[role] = ground_action(rig, meshes, name, name + "_grounded", target, root)
+        bpy.data.actions[name].name = f"provider_{name}_ungrounded"
+        bpy.data.actions[name + "_grounded"].name = name
+    out["slots_fixed"] = fix_slot_identifiers(rig, prefix)
+    out["nla_cleared"] = clear_nla_and_drivers()
+    # Provider FBX imports can leave zero-user packed images; Blender drops them on save, which the
+    # partition step reports as "changed image content or image datablock identities".
+    # Remove every image that no material node uses (a first orphan's ".001" twin survives a
+    # users==0 sweep), keeping viewer images.
+    for mat in [m for m in bpy.data.materials if m.users == 0]:
+        bpy.data.materials.remove(mat)   # FBX imports leave orphan materials that keep their images "used"
+    used = set()
+    for mat in bpy.data.materials:
+        if mat.node_tree:
+            used |= {n.image.name for n in mat.node_tree.nodes if n.type == "TEX_IMAGE" and n.image}
+    orphans = [im.name for im in bpy.data.images if im.source != "VIEWER" and im.name not in used]
+    for name in orphans:
+        bpy.data.images.remove(bpy.data.images[name])
+    out["orphan_images_removed"] = orphans
+    bind_action(rig, bpy.data.actions[f"{prefix}_{roles[0]}"])
+    return out
+
+
 def _prev_quat(action, bone, frame):
     fcs = fcurves(action)
     comps = []

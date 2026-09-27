@@ -36,7 +36,10 @@ def digest(path):
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--job", required=True)
-    p.add_argument("--blend", required=True, help="job-relative export checkpoint")
+    p.add_argument("--blend", required=True, help="job-relative export checkpoint (created by --partition-from when given)")
+    p.add_argument("--partition-from", help="job-relative grounded checkpoint to partition into --blend first")
+    p.add_argument("--armature", default="Armature.001")
+    p.add_argument("--mesh-name", action="append", help="mesh object(s) to partition, default char1.001")
     p.add_argument("--stem", required=True)
     p.add_argument("--out", required=True, help="job-relative export folder")
     p.add_argument("--role", action="append", required=True, help="role=action_name")
@@ -45,6 +48,11 @@ def main():
     a = p.parse_args()
 
     job = pi.job_root(a.job)
+    if a.partition_from:
+        part = pi.adapter("partition_skeletal_mesh_export_batches", {
+            "job_id": a.job, "blend_rel": a.partition_from, "expected_source_sha256": digest(job / a.partition_from),
+            "checkpoint_rel": a.blend, "target_armature_name": a.armature, "target_mesh_names": a.mesh_name or ["char1.001"]})
+        print("partition", part.get("status"), flush=True)
     report = {"blend": a.blend, "blend_sha256": digest(job / a.blend), "roles": {}}
     mesh_rel = f"{a.out}/{a.stem}.mesh"
     mesh = pi.adapter("export_mesh", {"job_id": a.job, "blend_rel": a.blend, "output_rel": mesh_rel})

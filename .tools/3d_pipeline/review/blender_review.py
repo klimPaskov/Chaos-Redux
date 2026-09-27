@@ -226,15 +226,15 @@ def mode_actions():
             bpy.context.scene.frame_set(f)
             pb = rig.pose.bones
             fwd = mathutils.Vector(REQ.get("forward", [0, -1, 0]))
-            if names.get("hand_l") in pb:
+            if names.get("hand_l") and names["hand_l"] in pb:
                 measure["reach_l"].append((mw @ pb[names["hand_l"]].head).dot(fwd))
                 measure["reach_r"].append((mw @ pb[names["hand_r"]].head).dot(fwd))
-            if names.get("toe_l") in pb:
+            if names.get("toe_l") and names["toe_l"] in pb:
                 measure["toe_l"].append((mw @ pb[names["toe_l"]].head).z)
                 measure["toe_r"].append((mw @ pb[names["toe_r"]].head).z)
-            if names.get("jaw") in pb:
+            if names.get("jaw") and names["jaw"] in pb:
                 measure["jaw"].append(pb[names["jaw"]].rotation_quaternion.angle * 57.2958)
-            if names.get("spine") in pb:
+            if names.get("spine") and names["spine"] in pb:
                 measure["spine_z"].append((mw @ pb[names["spine"]].head).z)
         rep = {"frames": [f0, f1], "fps": bpy.context.scene.render.fps,
                "min_z": [min(s[1] for s in scan), max(s[1] for s in scan)],

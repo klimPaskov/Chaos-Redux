@@ -1,4 +1,6 @@
-# Chaos Redux specialized zombie entity for demonic_zombies.
+# Chaos Redux demonic zombie entity: a winged, grinning ghoul.
+# Actions run at 30 FPS; each event time is (frame - first frame) / 30 at the measured phase it voices.
+# The wings ride their own spine-rooted bones, so they flare in attacks, wrap forward in defence, and splay in death.
 
 entity = {
 	name = "chaosx_demonic_zombies_entity"
@@ -8,41 +10,64 @@ entity = {
 	state = {
 		name = "attack"
 		animation = "attack"
-		animation_blend_time = 0.0
+		animation_blend_time = 0.2
 		animation_speed = 1.0
 		looping = no
 		next_state = "attack"
-		event = { sound = { soundeffect = "chaosx_zombie_attack" } }
+		# Crouch and spring: claw slashes peak at frames 35-39, 65-71, and 105.
+		event = { time = 0.6000 sound = { soundeffect = "chaosx_demonic_zombie_attack" } }
+		event = { time = 1.1000 sound = { soundeffect = "chaosx_base_zombie_grab_contact" } }
+		event = { time = 2.1000 sound = { soundeffect = "chaosx_base_zombie_grab_contact" } }
+		event = { time = 3.4000 sound = { soundeffect = "chaosx_base_zombie_grab_contact" } }
 	}
 	state = {
 		name = "defend"
-		animation = "attack"
+		animation = "defend"
 		animation_blend_time = 0.3
 		animation_speed = 1.0
-		event = { sound = { soundeffect = "chaosx_zombie_attack" } }
+		looping = yes
+		# Side-step dodges at frames 10 and 22 behind forward-wrapped wings.
+		event = { trigger_once = yes sound = { soundeffect = "chaosx_zombie_idle" } }
 	}
 	state = {
 		name = "support_attack"
-		animation = "attack"
+		animation = "support_attack"
 		animation_blend_time = 0.3
 		animation_speed = 1.0
-		event = { sound = { soundeffect = "chaosx_zombie_attack" } }
+		looping = no
+		next_state = "support_attack"
+		# Leap with both claws spread at frames 43-46, pin at 63, scream from 80.
+		event = { time = 1.3333 sound = { soundeffect = "chaosx_demonic_zombie_scream" } }
+		event = { time = 2.0000 sound = { soundeffect = "chaosx_base_zombie_grab_contact" } }
+		event = { time = 2.5667 sound = { soundeffect = "chaosx_demonic_zombie_attack" } }
 	}
 	state = {
 		name = "move"
 		animation = "move"
-		animation_blend_time = 1.0
+		animation_blend_time = 0.5
 		animation_speed = 1.0
 		looping = yes
-		event = { sound = { soundeffect = "chaosx_zombie_move" } }
+		# Clawed-foot plants: right 22, 64, 109, 152, 195, 241; left 37, 92, 132, 175, 219.
+		event = { time = 0.7000 sound = { soundeffect = "chaosx_zombie_move" } }
+		event = { time = 1.2000 sound = { soundeffect = "chaosx_zombie_move" } }
+		event = { time = 2.1000 sound = { soundeffect = "chaosx_zombie_move" } }
+		event = { time = 3.0333 sound = { soundeffect = "chaosx_zombie_move" } }
+		event = { time = 3.6000 sound = { soundeffect = "chaosx_zombie_move" } }
+		event = { time = 4.3667 sound = { soundeffect = "chaosx_zombie_move" } }
+		event = { time = 5.0333 sound = { soundeffect = "chaosx_zombie_move" } }
+		event = { time = 5.8000 sound = { soundeffect = "chaosx_zombie_move" } }
+		event = { time = 6.4667 sound = { soundeffect = "chaosx_zombie_move" } }
+		event = { time = 7.2667 sound = { soundeffect = "chaosx_zombie_move" } }
+		event = { time = 8.0000 sound = { soundeffect = "chaosx_zombie_move" } }
 	}
 	state = {
 		name = "retreat"
-		animation = "move"
+		animation = "retreat"
 		animation_blend_time = 0.3
 		animation_speed = 1.0
 		looping = yes
-		event = { sound = { soundeffect = "chaosx_zombie_move" } }
+		event = { time = 0.0667 sound = { soundeffect = "chaosx_zombie_move" } }
+		event = { time = 1.4000 sound = { soundeffect = "chaosx_zombie_move" } }
 	}
 	state = {
 		name = "death"
@@ -50,7 +75,10 @@ entity = {
 		animation_blend_time = 0.3
 		animation_speed = 1.0
 		looping = no
-		event = { sound = { soundeffect = "chaosx_zombie_death" } }
+		# Thrown backward; the body and splayed wings reach the ground near frame 42.
+		event = { time = 0.1000 node = "Head" particle = "blood_particle" keep_particle = yes }
+		event = { time = 0.1000 sound = { soundeffect = "chaosx_demonic_zombie_scream" } }
+		event = { time = 1.3667 sound = { soundeffect = "chaosx_base_zombie_body_fall" } }
 	}
 	state = {
 		name = "idle"
@@ -58,9 +86,21 @@ entity = {
 		animation_blend_time = 0.3
 		animation_speed = 1.0
 		looping = yes
-		event = { sound = { soundeffect = "chaosx_zombie_idle" } }
+		event = { trigger_once = yes sound = { soundeffect = "chaosx_zombie_idle" } }
 	}
-	state = { name = "training" animation = "idle" animation_blend_time = 0.3 animation_speed = 1.0 looping = yes }
+	state = {
+		name = "training"
+		animation = "training"
+		animation_blend_time = 0.3
+		animation_speed = 1.0
+		looping = yes
+		# Angry stomps land at frames 9, 25, and 40 with the wings flared.
+		event = { time = 0.1000 sound = { soundeffect = "chaosx_demonic_zombie_scream" } }
+		event = { time = 0.2667 sound = { soundeffect = "chaosx_zombie_move" } }
+		event = { time = 0.8000 sound = { soundeffect = "chaosx_zombie_move" } }
+		event = { time = 1.3000 sound = { soundeffect = "chaosx_zombie_move" } }
+	}
 
+	# The mesh keeps the vanilla infantry source height, so the vanilla entity scale applies once.
 	scale = 0.8
 }

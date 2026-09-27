@@ -335,6 +335,20 @@ Repair rejected roles in the live Blender session while preserving accepted geom
 
 Hold loop coverage, root policy, ground contact, export, and reimport evidence to `Action evidence and ground contacts`, and record the authoring or ingestion session, the accepted checkpoint, the authored or ingested bones and channels, and the role phases for every action.
 
+## Rebuilding existing units with the review tools
+
+Follow `references/unit_rebuild_workflow.md` for every rebuild or new provider-eligible biped. It is the ordered route: free triage of the shipped model, identity sources (portraits plus renders of the current model), portrait-grounded reference, provider generation, intake, action review and grounding, export, and runtime wiring.
+
+Use the repository tools instead of ad hoc scripts:
+
+- `.tools/3d_pipeline/review/review_cli.py` — read-only background-Blender triage, reference renders, action review with floor contact and phase measurement, and comparison sheets.
+- `.tools/3d_pipeline/review/provider_intake.py` — downloads, calibrates, writes verified provenance, and chains provider action imports from a manifest.
+- `.tools/3d_pipeline/review/lab_actions.py` — live Lab helpers for grounding, slot repair, NLA cleanup, and authored bone-direction keys.
+- `.tools/3d_pipeline/review/pdx_textures.py` — profile-driven PDX diffuse, specular, and normal DDS maps from provider PBR maps.
+- `.tools/3d_pipeline/review/export_package.py` — mesh and action export with a reimport proof per role and optional hash-checked runtime install.
+
+A reference that looks generic beside the unit's portrait is rejected before any geometry credit is spent. Provider actions are ingested, grounded, reviewed from at least two views, and re-authored in Blender when a role reads as the wrong character.
+
 ## Blender processing and checkpoints
 
 Use a versioned scene template with protected provider-source, working, rig, action, export, reference, and evidence collections. Unattended work must use the verified repository-owned allowlisted adapter. Do not expose unrestricted Blender Python, shell commands, arbitrary URLs, or paths outside the job and approved reference roots. A development-only Blender route is allowed only in the isolated profile and only after the parent verifies its installation and actual callable interface.

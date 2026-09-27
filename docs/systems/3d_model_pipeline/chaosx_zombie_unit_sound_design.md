@@ -41,16 +41,31 @@ The actions run at 30 FPS, and every event time is `(frame − first frame) / 30
 | `death` | vanilla `blood_particle` at the `Head` bone and the defeated cry at 0.10 s; body fall 2.13 s (frame 65 impact) |
 | `idle` (looping) | shared idle moan once |
 
+## Variant voices
+
+`sound/chaosx_zombie_variant_sounds.asset` gives each variant its own voice family from the CC0 [Zombies Sound Pack](https://opengameart.org/content/zombies-sound-pack) by artisticdude.
+The 24 numbered clips were classified by a listening review (Gemini audio judge) into roles and characters, then grouped so no clip is shared between variants:
+
+| Variant | Effects | Clips |
+|---|---|---|
+| Demonic | `chaosx_demonic_zombie_attack`, `chaosx_demonic_zombie_scream` | 14, 13; 9 |
+| Infected | `chaosx_infected_zombie_attack`, `chaosx_infected_zombie_pain` | 10, 23; 11 |
+| Mutant | `chaosx_mutant_zombie_attack`, `chaosx_mutant_zombie_roar` | 4, 7; 12 |
+| Necrotic | `chaosx_necrotic_zombie_rattle` | 15, 17, 20 |
+| Parasitic | `chaosx_parasitic_zombie_gurgle`, `chaosx_parasitic_zombie_feed` | 18, 21; 19 |
+| Rabid | `chaosx_rabid_zombie_attack` | 5, 6, 8 |
+| Undead | `chaosx_undead_zombie_grunt`, `chaosx_undead_zombie_pain`, `chaosx_undead_zombie_moan` | 1, 2, 3; 22, 24; 16 |
+
+The package is built by `.tools/3d_pipeline/review/sound_pack.py` from `docs/assets/002_zombie_outbreak/models_3d/zombie_variant_sound_spec.json`; `zombie_variant_sound_receipts.json` beside it records every source hash, trim window, gain, and runtime hash.
+Each variant entity times these voices, the shared footsteps, the base contact and body-fall impacts, and the vanilla `blood_particle` to phases measured on its own exported actions.
+
 ## Shared package
 
-The shared package in `sound/chaosx_zombies_sound.asset` is consumed by the specialized zombie entities, by the base entity's idle, defend, move, and retreat states, and by the `ZZZ_infantry_idle` country selection voice.
-It defines 15 retained WAV files: three idle moans, six footsteps, three attacks, and three deaths.
-The specialized entities consume the generic `chaosx_zombie_attack` and `chaosx_zombie_death` effects.
-
+The shared package in `sound/chaosx_zombies_sound.asset` keeps three idle moans and six footsteps: the variants and the base zombie use the footstep effect, several use the idle moan, and `ZZZ_infantry_idle` uses the moans as the country selection voice.
 The three idle sounds come from [Zombie noises and moans](https://opengameart.org/content/zombie-noises-and-moans) by ianzazz, labeled CC0.
 The footsteps come from [Footsteps](https://opengameart.org/content/footsteps-0) by GboxMikeFozzy, labeled CC0.
 The original source archive for the idle sounds was recorded as `https://opengameart.org/sites/default/files/zombienoises.zip` with SHA-256 `D2C90AD199AB95396DD7F5D21083B3BB7BE7090A9B4A97CE7173233C6FCC72D6`.
-The older three attack and three death WAVs remain for specialized consumers; five of those six still lack a durable per-file source-to-runtime mapping, so their provenance remains unresolved.
+The older shared attack and death effects, whose WAVs mostly lacked a source-to-runtime mapping, had no consumer after the variant rebuild and were removed with their files.
 
 ## Validation limits
 

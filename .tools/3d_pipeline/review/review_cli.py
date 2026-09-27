@@ -114,6 +114,10 @@ def cmd_actions(a):
         req["bones"] = HUMANOID_BONES
     if a.bones:
         req["bones"] = json.loads(a.bones)
+    if a.frame:
+        req["frames"] = {spec.split("=")[0]: [int(f) for f in spec.split("=")[1].split(",")] for spec in a.frame}
+    if a.res:
+        req["res"] = [int(v) for v in a.res.split("x")]
     run_worker(req)
     print(contact_sheet(a.out, a.tag, os.path.join(a.out, f"sheet_{a.tag}.png"), cell=(120, 160)))
 
@@ -140,6 +144,8 @@ def main():
     c.add_argument("--mesh", action="append", required=True); c.add_argument("--action", action="append", required=True)
     c.add_argument("--out", required=True); c.add_argument("--tag", default="act"); c.add_argument("--samples", type=int, default=8)
     c.add_argument("--view", action="append"); c.add_argument("--humanoid", action="store_true"); c.add_argument("--bones")
+    c.add_argument("--frame", action="append", help="action=f1,f2,... renders exactly these frames for that action")
+    c.add_argument("--res", help="WIDTHxHEIGHT per render, default 360x480")
     m = sub.add_parser("compare"); m.add_argument("--row", nargs="+", action="append", required=True); m.add_argument("--out", required=True)
     a = p.parse_args()
     {"triage": cmd_triage, "legacy-ref": cmd_legacy_ref, "glb-ref": cmd_glb_ref, "actions": cmd_actions, "compare": cmd_compare}[a.cmd](a)
