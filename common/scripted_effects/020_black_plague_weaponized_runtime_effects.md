@@ -23,7 +23,7 @@ The bridge initializes private snapshots on every call with the shared exposure 
 
 `black_plague_apply_exposure` remains the only exposure mutation. Its temporary `black_plague_exposure_result` is copied immediately to `black_plague_weaponized_runtime_bridge_result`; temporary variables are scope-less, so the country-scope caller reads that result directly after the state block returns. A value of `constant:black_plague_value.one` is the only accepted result.
 
-The wrapper does not call `bio_lifecycle_dispatch_seed`, `black_plague_start_natural_outbreak`, or `black_plague_weaponization_deliver_to_state`. It does not debit or refund payload, fabricate an origin, set a recognition/report flag, or create public attribution history. The existing shared exposure effect owns weaponized state provenance and state registration.
+The wrapper does not call `bio_lifecycle_dispatch_seed`, `black_plague_start_natural_outbreak`, or `black_plague_weaponization_complete_native_raid_release`. It does not debit or refund payload, fabricate an origin, set a recognition/report flag, or create public attribution history. The existing shared exposure effect owns weaponized state provenance and state registration.
 
 ## Scheduler receipt contract
 
@@ -43,7 +43,7 @@ The bridge does not block on `black_plague_system_eradicated`. The existing acti
 
 `brilliant_scientist_dispatch_black_plague_release` retains the existing ordinary lifecycle proof, then calls `black_plague_apply_weaponized_exposure_runtime` after assigning the weaponized exposure inputs. Event 016 gates its Black Plague provenance and weaponization history on `black_plague_weaponized_runtime_bridge_result = constant:black_plague_value.one`, not on ordinary lifecycle proof alone.
 
-The native `black_plague_weaponization_deliver_to_state` call site uses the same wrapper before its own payload, support-equipment, Command Power, and fuel debits. Exact bridge acceptance gates the native payment, attribution, history, cooldown, condemnation, and report effects, so a rejected state cannot consume a public-delivery package.
+The native `black_plague_weaponization_complete_native_raid_release` call site uses the same wrapper after the raid has reserved one payload, support equipment, and Command Power. The hidden actor event validates its saved actor, victim, target state, war, and current authorization before requesting exposure. Exact bridge acceptance gates attribution, history, cooldown, condemnation, and the report. The raid system alone owns equipment payment and cancellation handling; the helper makes no second debit or refund. An invalid final context never seeds an outbreak, even if a reserved operation has already resolved.
 
 Both call sites must invoke the helper in the target STATE scope with the actor country as `ROOT` and set the same temporary amount, route, and weaponized provenance inputs that they currently pass to `black_plague_apply_exposure`.
 

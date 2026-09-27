@@ -4,7 +4,7 @@
 # Country and state gates for the abstract Black Plague weaponization program.
 # The project reuses the native plague_bomb technology and stockpile while
 # adding Event 020 attribution, accidents, countermeasure pressure, and the
-# shared disease-board delivery route.
+# shared Biological Raids delivery route.
 # ============================================================================
 
 # COUNTRY scope. A live Kruger biological program and the reusable Directorate
@@ -84,19 +84,44 @@ black_plague_weaponization_approach_can_continue = {
 	NOT = { has_country_flag = black_plague_weaponization_approach_chosen }
 }
 
+# COUNTRY scope while the selected project posture occupies one civilian
+# factory. The selected-approach and defensive-conversion flags are receipts of
+# work already begun, so this continuation gate must not reuse the start gate.
+black_plague_weaponization_approach_commitment_is_valid = {
+	exists = yes
+	NOT = { has_global_flag = world_end }
+	has_global_flag = black_plague_system_active
+	is_special_project_being_researched = sp:black_plague_weaponization_program
+	has_country_flag = black_plague_weaponization_approach_chosen
+}
+
 black_plague_weaponization_can_choose_approach = {
 	black_plague_weaponization_approach_can_continue = yes
-	has_equipment = { support_equipment > constant:black_plague_weaponization_program.approach_support_equipment }
-	has_equipment = { motorized_equipment > constant:black_plague_weaponization_program.approach_motorized_equipment }
-	command_power > constant:black_plague_weaponization_program.approach_command_power
-	has_fuel > constant:black_plague_weaponization_program.approach_fuel
+	NOT = { has_equipment = { support_equipment < constant:black_plague_weaponization_program.approach_support_equipment } }
+	NOT = { command_power < constant:black_plague_weaponization_program.approach_command_power }
+}
+
+# Pre-selection quote gate. The factory may already be reserved when
+# complete_effect rechecks the material payment, so that effect calls the
+# material helper above without rechecking free factories.
+black_plague_weaponization_approach_is_affordable = {
+	black_plague_weaponization_can_choose_approach = yes
+	NOT = { num_of_civilian_factories_available_for_projects < constant:black_plague_weaponization_program.approach_civilian_factories }
+	NOT = {
+		OR = {
+			has_decision = black_plague_weaponization_safety_first
+			has_decision = black_plague_weaponization_military_acceleration
+			has_decision = black_plague_weaponization_dual_use
+			has_decision = black_plague_weaponization_defensive_conversion
+		}
+	}
 }
 
 black_plague_weaponization_can_begin = {
 	black_plague_weaponization_project_is_available = yes
-	has_equipment = { support_equipment > constant:black_plague_weaponization_program.minimum_support_equipment }
-	has_equipment = { motorized_equipment > constant:black_plague_weaponization_program.minimum_motorized_equipment }
-	has_fuel > constant:black_plague_weaponization_program.minimum_fuel
+	NOT = { has_equipment = { support_equipment < constant:black_plague_weaponization_program.minimum_support_equipment } }
+	NOT = { has_equipment = { motorized_equipment < constant:black_plague_weaponization_program.minimum_motorized_equipment } }
+	NOT = { has_fuel < constant:black_plague_weaponization_program.minimum_fuel }
 }
 
 # COUNTRY scope. Delivery stays available after the actor's own outbreak has
@@ -119,21 +144,19 @@ black_plague_weaponization_delivery_actor_is_valid = {
 	}
 }
 
-# COUNTRY scope. Native delivery integration remains mandatory: a completed
-# plague_bomb project or its delivery technology plus one real payload.
-black_plague_weaponization_delivery_is_ready = {
+# COUNTRY scope while the expansion or destruction factory commitment runs.
+# Payment stock and the absence of a cooldown are start-only checks. A present
+# action-specific cooldown is a positive receipt that the click effect settled.
+black_plague_weaponization_expansion_commitment_is_valid = {
 	black_plague_weaponization_delivery_actor_is_valid = yes
 	has_country_flag = black_plague_weaponization_complete
-	has_country_flag = black_plague_weaponized_delivery_ready
-	OR = {
-		is_special_project_completed = sp:plague_bomb
-		has_tech = plague_bomb_delivery_systems
-	}
-	has_equipment = { plague_bomb_1 > 0 }
-	has_equipment = { support_equipment > constant:black_plague_weaponization_program.delivery_support_equipment }
-	command_power > constant:black_plague_weaponization_program.delivery_command_power
-	has_fuel > constant:black_plague_weaponization_program.delivery_fuel
-	NOT = { has_country_flag = black_plague_weaponization_delivery_cooldown }
+	has_country_flag = black_plague_weaponization_stockpile_expansion_cooldown
+}
+
+black_plague_weaponization_destruction_commitment_is_valid = {
+	black_plague_weaponization_delivery_actor_is_valid = yes
+	has_country_flag = black_plague_weaponization_complete
+	has_country_flag = black_plague_weaponization_stockpile_destroy_cooldown
 }
 
 # COUNTRY scope. Post-project stockpile controls remain inside the shared
@@ -146,10 +169,15 @@ black_plague_weaponization_can_expand_stockpile = {
 	has_country_flag = black_plague_weaponized_delivery_ready
 	NOT = { has_country_flag = black_plague_weaponization_defensive_conversion }
 	NOT = { has_country_flag = black_plague_weaponization_stockpile_expansion_cooldown }
-	has_equipment = { support_equipment > constant:black_plague_weaponization_program.stockpile_expansion_support_equipment }
-	has_equipment = { motorized_equipment > constant:black_plague_weaponization_program.stockpile_expansion_motorized_equipment }
-	command_power > constant:black_plague_weaponization_program.stockpile_expansion_command_power
-	has_fuel > constant:black_plague_weaponization_program.stockpile_expansion_fuel
+	NOT = { has_equipment = { support_equipment < constant:black_plague_weaponization_program.stockpile_expansion_support_equipment } }
+	NOT = { has_fuel < constant:black_plague_weaponization_program.stockpile_expansion_fuel }
+}
+
+black_plague_weaponization_expansion_is_affordable = {
+	black_plague_weaponization_can_expand_stockpile = yes
+	NOT = { num_of_civilian_factories_available_for_projects < constant:black_plague_weaponization_program.stockpile_expansion_civilian_factories }
+	NOT = { has_decision = black_plague_weaponization_expand_stockpile }
+	NOT = { has_decision = black_plague_weaponization_destroy_stockpile }
 }
 
 # COUNTRY scope. Destruction is a deliberate safety action and can be used
@@ -161,26 +189,89 @@ black_plague_weaponization_can_destroy_stockpile = {
 	NOT = { has_country_flag = black_plague_weaponization_defensive_conversion }
 	has_equipment = { plague_bomb_1 > 0 }
 	NOT = { has_country_flag = black_plague_weaponization_stockpile_destroy_cooldown }
-	has_equipment = { support_equipment > constant:black_plague_weaponization_program.stockpile_destroy_support_equipment }
-	command_power > constant:black_plague_weaponization_program.stockpile_destroy_command_power
-	has_fuel > constant:black_plague_weaponization_program.stockpile_destroy_fuel
+	NOT = { has_equipment = { support_equipment < constant:black_plague_weaponization_program.stockpile_destroy_support_equipment } }
+	NOT = { command_power < constant:black_plague_weaponization_program.stockpile_destroy_command_power }
 }
 
-# STATE scope. ROOT is the actor country when used from a state-targeted
-# decision. The native payload can seed any reachable enemy human state, and
-# black_plague_apply_exposure handles clear and cured states without a bypass.
-black_plague_weaponization_target_state_is_valid = {
-	scope_exists = yes
-	CONTROLLER = {
-		exists = yes
-		has_war_with = ROOT
+black_plague_weaponization_destruction_is_affordable = {
+	black_plague_weaponization_can_destroy_stockpile = yes
+	NOT = { num_of_civilian_factories_available_for_projects < constant:black_plague_weaponization_program.stockpile_destroy_civilian_factories }
+	NOT = { has_decision = black_plague_weaponization_destroy_stockpile }
+	NOT = { has_decision = black_plague_weaponization_expand_stockpile }
+}
+
+# COUNTRY scope. The native raid type stays visible after the project is
+# complete even when its real payload or supporting crates are out of stock;
+# essential_equipment and command_power own the native creation payment.
+black_plague_weaponization_native_raid_is_visible = {
+	black_plague_weaponization_delivery_actor_is_valid = yes
+	has_country_flag = black_plague_weaponization_complete
+	has_country_flag = black_plague_weaponized_delivery_ready
+	NOT = { has_country_flag = black_plague_weaponization_defensive_conversion }
+	OR = {
+		is_special_project_completed = sp:plague_bomb
+		has_tech = plague_bomb_delivery_systems
 	}
+}
+
+# STATE scope. Country, war, policy, and stock are checked separately so the
+# native raid's exact candidate state remains the single exposure target.
+black_plague_weaponization_native_raid_state_is_valid = {
 	black_plague_state_can_receive_exposure = yes
 	NOT = { black_plague_state_is_rat_controlled = yes }
 	NOT = { has_state_flag = black_plague_weaponized_provenance }
 }
 
-black_plague_weaponization_delivery_state_is_valid = {
-	ROOT = { black_plague_weaponization_delivery_is_ready = yes }
-	black_plague_weaponization_target_state_is_valid = yes
+# COUNTRY scope with FROM as the exact proposed victim and var:target_state as
+# the native raid's selected state. This gate has no country-wide iterator.
+black_plague_weaponization_native_raid_target_is_visible = {
+	FROM = {
+		exists = yes
+		NOT = { is_actual_nonhuman_country = yes }
+	}
+	has_war_with = FROM
+	NOT = { is_in_faction_with = FROM }
+	NOT = { is_subject_of = FROM }
+	FROM = { NOT = { is_subject_of = ROOT } }
+	var:target_state = {
+		is_controlled_by = FROM
+		black_plague_weaponization_native_raid_state_is_valid = yes
+	}
+}
+
+# COUNTRY scope. Native essential_equipment and command_power are deliberately
+# absent from these script gates; both are reserved once by raid creation.
+black_plague_weaponization_native_raid_can_prepare = {
+	black_plague_weaponization_native_raid_is_visible = yes
+	black_plague_weaponization_native_raid_target_is_visible = yes
+	cbrn_policy_allows_strategic_use_against_from = yes
+}
+
+black_plague_weaponization_native_raid_can_launch = {
+	black_plague_weaponization_native_raid_can_prepare = yes
+}
+
+black_plague_weaponization_native_raid_ai_may_launch = {
+	black_plague_weaponization_native_raid_can_prepare = yes
+}
+
+# COUNTRY scope in the fixed hidden actor outcome event. The native callback
+# saved chain-local pointers before entering this country scope; the raid has
+# already reserved its equipment and Command Power, so none is checked here.
+black_plague_weaponization_native_raid_bridge_context_is_valid = {
+	has_event_target = black_plague_weaponization_raid_actor
+	has_event_target = black_plague_weaponization_raid_victim
+	has_event_target = black_plague_weaponization_raid_target_state
+	event_target:black_plague_weaponization_raid_actor = { tag = ROOT }
+	event_target:black_plague_weaponization_raid_victim = { exists = yes }
+	event_target:black_plague_weaponization_raid_target_state = {
+		black_plague_weaponization_native_raid_state_is_valid = yes
+		CONTROLLER = {
+			tag = event_target:black_plague_weaponization_raid_victim
+			has_war_with = ROOT
+		}
+	}
+	black_plague_weaponization_native_raid_is_visible = yes
+	event_target:black_plague_weaponization_raid_victim = { set_temp_variable = { cbrn_retaliation_target_id = id } }
+	cbrn_policy_allows_strategic_use_against_target_id = yes
 }
