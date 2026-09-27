@@ -2086,82 +2086,227 @@ black_friday_pay_bio_expand_medical_capacity = {
 }
 
 # ---------------------------------------------------------------------------
-# CBRN inspection demand owner adapter
+# CBRN diplomacy instrument/support owner adapters
 # ---------------------------------------------------------------------------
 
-# Country scope. One preflighted concrete component of the inspection purchase.
+# Country scope. One preflighted concrete component of an instrument/support purchase.
 # A failed receipt or a mismatched physical debit is credited immediately; prior
 # recorded components are refunded by the calling transaction.
-black_friday_cbrn_inspection_pay_record_component = {
+black_friday_cbrn_bundle_pay_record_component = {
 	if = {
 		limit = {
-			check_variable = { var = black_friday_cbrn_inspection_all_paid value = constant:universal_cost_framework.one compare = equals }
-			check_variable = { var = black_friday_cbrn_inspection_component_paid value = constant:universal_cost_framework.zero compare = greater_than }
+			check_variable = { var = black_friday_cbrn_bundle_all_paid value = constant:universal_cost_framework.one compare = equals }
+			check_variable = { var = black_friday_cbrn_bundle_component_paid value = constant:universal_cost_framework.zero compare = greater_than }
 		}
-		set_temp_variable = { universal_cost_payment_resource_kind = black_friday_cbrn_inspection_component_kind }
-		set_temp_variable = { universal_cost_payment_amount = black_friday_cbrn_inspection_component_paid }
+		set_temp_variable = { universal_cost_payment_resource_kind = black_friday_cbrn_bundle_component_kind }
+		set_temp_variable = { universal_cost_payment_amount = black_friday_cbrn_bundle_component_paid }
 		universal_cost_pay_component = yes
 		if = {
 			limit = { check_variable = { var = universal_cost_payment_result value = constant:universal_cost_framework.result_success compare = equals } }
-			set_temp_variable = { black_friday_cbrn_inspection_component_after = constant:universal_cost_framework.invalid_index }
+			set_temp_variable = { black_friday_cbrn_bundle_component_after = constant:universal_cost_framework.invalid_index }
 			if = {
-				limit = { check_variable = { var = black_friday_cbrn_inspection_component_kind value = constant:universal_cost_resource_kind.cbrn_instrument_equipment_1 compare = equals } }
-				set_temp_variable = { black_friday_cbrn_inspection_component_after = num_equipment@cbrn_instrument_equipment_1 }
+				limit = { check_variable = { var = black_friday_cbrn_bundle_component_kind value = constant:universal_cost_resource_kind.cbrn_instrument_equipment_1 compare = equals } }
+				set_temp_variable = { black_friday_cbrn_bundle_component_after = num_equipment@cbrn_instrument_equipment_1 }
 			}
 			else_if = {
-				limit = { check_variable = { var = black_friday_cbrn_inspection_component_kind value = constant:universal_cost_resource_kind.cbrn_instrument_equipment_2 compare = equals } }
-				set_temp_variable = { black_friday_cbrn_inspection_component_after = num_equipment@cbrn_instrument_equipment_2 }
+				limit = { check_variable = { var = black_friday_cbrn_bundle_component_kind value = constant:universal_cost_resource_kind.cbrn_instrument_equipment_2 compare = equals } }
+				set_temp_variable = { black_friday_cbrn_bundle_component_after = num_equipment@cbrn_instrument_equipment_2 }
 			}
 			else_if = {
-				limit = { check_variable = { var = black_friday_cbrn_inspection_component_kind value = constant:universal_cost_resource_kind.cbrn_instrument_equipment_3 compare = equals } }
-				set_temp_variable = { black_friday_cbrn_inspection_component_after = num_equipment@cbrn_instrument_equipment_3 }
+				limit = { check_variable = { var = black_friday_cbrn_bundle_component_kind value = constant:universal_cost_resource_kind.cbrn_instrument_equipment_3 compare = equals } }
+				set_temp_variable = { black_friday_cbrn_bundle_component_after = num_equipment@cbrn_instrument_equipment_3 }
 			}
 			else_if = {
-				limit = { check_variable = { var = black_friday_cbrn_inspection_component_kind value = constant:universal_cost_resource_kind.support_equipment_1 compare = equals } }
-				set_temp_variable = { black_friday_cbrn_inspection_component_after = num_equipment@support_equipment_1 }
+				limit = { check_variable = { var = black_friday_cbrn_bundle_component_kind value = constant:universal_cost_resource_kind.support_equipment_1 compare = equals } }
+				set_temp_variable = { black_friday_cbrn_bundle_component_after = num_equipment@support_equipment_1 }
 			}
-			set_temp_variable = { black_friday_cbrn_inspection_component_actual = black_friday_cbrn_inspection_component_before }
-			subtract_from_temp_variable = { black_friday_cbrn_inspection_component_actual = black_friday_cbrn_inspection_component_after }
+			set_temp_variable = { black_friday_cbrn_bundle_component_actual = black_friday_cbrn_bundle_component_before }
+			subtract_from_temp_variable = { black_friday_cbrn_bundle_component_actual = black_friday_cbrn_bundle_component_after }
 			if = {
-				limit = { check_variable = { var = black_friday_cbrn_inspection_component_actual value = black_friday_cbrn_inspection_component_paid compare = equals } }
+				limit = { check_variable = { var = black_friday_cbrn_bundle_component_actual value = black_friday_cbrn_bundle_component_paid compare = equals } }
 				set_temp_variable = { universal_cost_transaction_id = black_friday_owner_transaction_id }
-				set_temp_variable = { universal_cost_transaction_component_id = black_friday_cbrn_inspection_component_id }
-				set_temp_variable = { universal_cost_transaction_resource_kind = black_friday_cbrn_inspection_component_kind }
+				set_temp_variable = { universal_cost_transaction_component_id = black_friday_cbrn_bundle_component_id }
+				set_temp_variable = { universal_cost_transaction_resource_kind = black_friday_cbrn_bundle_component_kind }
 				set_temp_variable = { universal_cost_transaction_resource_id = constant:universal_cost_framework.zero }
-				set_temp_variable = { universal_cost_transaction_ordinary_cost = black_friday_cbrn_inspection_component_ordinary }
-				set_temp_variable = { universal_cost_transaction_quoted_cost = black_friday_cbrn_inspection_component_paid }
-				set_temp_variable = { universal_cost_transaction_actual_paid_cost = black_friday_cbrn_inspection_component_actual }
+				set_temp_variable = { universal_cost_transaction_ordinary_cost = black_friday_cbrn_bundle_component_ordinary }
+				set_temp_variable = { universal_cost_transaction_quoted_cost = black_friday_cbrn_bundle_component_paid }
+				set_temp_variable = { universal_cost_transaction_actual_paid_cost = black_friday_cbrn_bundle_component_actual }
 				set_temp_variable = { universal_cost_transaction_source_id = constant:universal_cost_framework.black_friday_source_id }
 				set_temp_variable = { universal_cost_transaction_primary_component = constant:universal_cost_framework.zero }
 				if = {
-					limit = { check_variable = { var = black_friday_cbrn_inspection_component_kind value = constant:universal_cost_resource_kind.support_equipment_1 compare = equals } }
-					set_temp_variable = { universal_cost_transaction_primary_component = black_friday_cbrn_inspection_component_id }
+					limit = { check_variable = { var = black_friday_cbrn_bundle_component_kind value = constant:universal_cost_resource_kind.support_equipment_1 compare = equals } }
+					set_temp_variable = { universal_cost_transaction_primary_component = black_friday_cbrn_bundle_component_id }
 				}
 				universal_cost_record_transaction = yes
 				if = {
 					limit = { check_variable = { var = universal_cost_record_transaction_result value = constant:universal_cost_framework.result_success compare = not_equals } }
-					set_temp_variable = { universal_cost_payment_amount = black_friday_cbrn_inspection_component_actual }
+					set_temp_variable = { universal_cost_payment_amount = black_friday_cbrn_bundle_component_actual }
 					universal_cost_credit_component = yes
-					set_temp_variable = { black_friday_cbrn_inspection_all_paid = constant:universal_cost_framework.zero }
+					set_temp_variable = { black_friday_cbrn_bundle_all_paid = constant:universal_cost_framework.zero }
 				}
 			}
 			else = {
 				if = {
-					limit = { check_variable = { var = black_friday_cbrn_inspection_component_actual value = constant:universal_cost_framework.zero compare = greater_than } }
-					set_temp_variable = { universal_cost_payment_amount = black_friday_cbrn_inspection_component_actual }
+					limit = { check_variable = { var = black_friday_cbrn_bundle_component_actual value = constant:universal_cost_framework.zero compare = greater_than } }
+					set_temp_variable = { universal_cost_payment_amount = black_friday_cbrn_bundle_component_actual }
 					universal_cost_credit_component = yes
 				}
-				set_temp_variable = { black_friday_cbrn_inspection_all_paid = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_cbrn_bundle_all_paid = constant:universal_cost_framework.zero }
 			}
 		}
-		else = { set_temp_variable = { black_friday_cbrn_inspection_all_paid = constant:universal_cost_framework.zero } }
+		else = { set_temp_variable = { black_friday_cbrn_bundle_all_paid = constant:universal_cost_framework.zero } }
 	}
 }
 
-# Country scope. Rechecks the sale, target, aggregate quote, and every concrete
+# Country scope. Rechecks the sale, aggregate quote, and every concrete
 # stockpile before allocating one payer-scoped receipt. All model draws use the
 # pre-debit balances, oldest first. Ordinary model allocations describe the
-# undiscounted counterfactual and never cause an extra debit.
+# undiscounted counterfactual and never cause an extra debit. Callers supply
+# ordinary costs, trigger-visible quotes, and one achievement family.
+black_friday_pay_cbrn_equipment_bundle = {
+	set_temp_variable = { black_friday_cbrn_bundle_payment_success = constant:universal_cost_framework.zero }
+	set_temp_variable = { universal_cost_source_query_id = constant:universal_cost_framework.black_friday_source_id }
+	if = {
+		limit = {
+			black_friday_is_active = yes
+			universal_cost_source_is_active = yes
+		}
+		set_temp_variable = { universal_cost_quote_ordinary_cost = black_friday_cbrn_bundle_ordinary_instruments }
+		set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.equipment }
+		set_temp_variable = { universal_cost_quote_rounding_quantum = constant:universal_cost_framework.default_rounding_quantum }
+		universal_cost_quote_integer = yes
+		set_temp_variable = { black_friday_cbrn_bundle_instrument_paid = universal_cost_quote_final_cost }
+		set_temp_variable = { black_friday_cbrn_bundle_instrument_source_count = universal_cost_quote_source_count }
+		set_temp_variable = { universal_cost_quote_ordinary_cost = black_friday_cbrn_bundle_ordinary_support }
+		set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.equipment }
+		set_temp_variable = { universal_cost_quote_rounding_quantum = constant:universal_cost_framework.default_rounding_quantum }
+		universal_cost_quote_integer = yes
+		set_temp_variable = { black_friday_cbrn_bundle_support_paid = universal_cost_quote_final_cost }
+		set_temp_variable = { black_friday_cbrn_bundle_support_source_count = universal_cost_quote_source_count }
+		set_temp_variable = { universal_cost_quote_resource_kind = constant:universal_cost_resource_kind.support_equipment_1 }
+		universal_cost_check_quote_affordable = yes
+		set_temp_variable = { black_friday_cbrn_bundle_support_affordability = universal_cost_quote_affordable }
+		if = {
+			limit = {
+				check_variable = { var = black_friday_cbrn_bundle_instrument_source_count value = constant:universal_cost_framework.zero compare = greater_than }
+				check_variable = { var = black_friday_cbrn_bundle_support_source_count value = constant:universal_cost_framework.zero compare = greater_than }
+				check_variable = { var = black_friday_cbrn_bundle_instrument_paid value = black_friday_cbrn_bundle_instrument_cost compare = equals }
+				check_variable = { var = black_friday_cbrn_bundle_support_paid value = black_friday_cbrn_bundle_support_cost compare = equals }
+				check_variable = { var = black_friday_cbrn_bundle_instrument_paid value = constant:universal_cost_framework.zero compare = greater_than }
+				check_variable = { var = black_friday_cbrn_bundle_support_paid value = constant:universal_cost_framework.zero compare = greater_than }
+				check_variable = { var = num_equipment@cbrn_instrument_equipment value = black_friday_cbrn_bundle_instrument_paid compare = greater_than_or_equals }
+				check_variable = { var = black_friday_cbrn_bundle_support_affordability value = constant:universal_cost_framework.result_success compare = equals }
+			}
+			set_temp_variable = { black_friday_cbrn_bundle_stock_1 = num_equipment@cbrn_instrument_equipment_1 }
+			set_temp_variable = { black_friday_cbrn_bundle_stock_2 = num_equipment@cbrn_instrument_equipment_2 }
+			set_temp_variable = { black_friday_cbrn_bundle_stock_3 = num_equipment@cbrn_instrument_equipment_3 }
+			set_temp_variable = { black_friday_cbrn_bundle_support_stock = num_equipment@support_equipment_1 }
+			set_temp_variable = { black_friday_cbrn_bundle_paid_remaining = black_friday_cbrn_bundle_instrument_paid }
+			set_temp_variable = { black_friday_cbrn_bundle_paid_1 = black_friday_cbrn_bundle_paid_remaining }
+			clamp_temp_variable = { var = black_friday_cbrn_bundle_paid_1 min = constant:universal_cost_framework.zero max = black_friday_cbrn_bundle_stock_1 }
+			subtract_from_temp_variable = { black_friday_cbrn_bundle_paid_remaining = black_friday_cbrn_bundle_paid_1 }
+			set_temp_variable = { black_friday_cbrn_bundle_paid_2 = black_friday_cbrn_bundle_paid_remaining }
+			clamp_temp_variable = { var = black_friday_cbrn_bundle_paid_2 min = constant:universal_cost_framework.zero max = black_friday_cbrn_bundle_stock_2 }
+			subtract_from_temp_variable = { black_friday_cbrn_bundle_paid_remaining = black_friday_cbrn_bundle_paid_2 }
+			set_temp_variable = { black_friday_cbrn_bundle_paid_3 = black_friday_cbrn_bundle_paid_remaining }
+			clamp_temp_variable = { var = black_friday_cbrn_bundle_paid_3 min = constant:universal_cost_framework.zero max = black_friday_cbrn_bundle_stock_3 }
+			subtract_from_temp_variable = { black_friday_cbrn_bundle_paid_remaining = black_friday_cbrn_bundle_paid_3 }
+			set_temp_variable = { black_friday_cbrn_bundle_ordinary_remaining = black_friday_cbrn_bundle_ordinary_instruments }
+			set_temp_variable = { black_friday_cbrn_bundle_ordinary_1 = black_friday_cbrn_bundle_ordinary_remaining }
+			clamp_temp_variable = { var = black_friday_cbrn_bundle_ordinary_1 min = constant:universal_cost_framework.zero max = black_friday_cbrn_bundle_stock_1 }
+			subtract_from_temp_variable = { black_friday_cbrn_bundle_ordinary_remaining = black_friday_cbrn_bundle_ordinary_1 }
+			set_temp_variable = { black_friday_cbrn_bundle_ordinary_2 = black_friday_cbrn_bundle_ordinary_remaining }
+			clamp_temp_variable = { var = black_friday_cbrn_bundle_ordinary_2 min = constant:universal_cost_framework.zero max = black_friday_cbrn_bundle_stock_2 }
+			subtract_from_temp_variable = { black_friday_cbrn_bundle_ordinary_remaining = black_friday_cbrn_bundle_ordinary_2 }
+			set_temp_variable = { black_friday_cbrn_bundle_ordinary_3 = black_friday_cbrn_bundle_ordinary_remaining }
+			clamp_temp_variable = { var = black_friday_cbrn_bundle_ordinary_3 min = constant:universal_cost_framework.zero max = black_friday_cbrn_bundle_stock_3 }
+			subtract_from_temp_variable = { black_friday_cbrn_bundle_ordinary_remaining = black_friday_cbrn_bundle_ordinary_3 }
+			# Rows without a paid model are not recorded. Transfer their ordinary
+			# counterfactual share to a model that the sale actually consumed.
+			if = {
+				limit = { check_variable = { var = black_friday_cbrn_bundle_paid_1 value = constant:universal_cost_framework.zero compare = equals } }
+				add_to_temp_variable = { black_friday_cbrn_bundle_ordinary_remaining = black_friday_cbrn_bundle_ordinary_1 }
+				set_temp_variable = { black_friday_cbrn_bundle_ordinary_1 = constant:universal_cost_framework.zero }
+			}
+			if = {
+				limit = { check_variable = { var = black_friday_cbrn_bundle_paid_2 value = constant:universal_cost_framework.zero compare = equals } }
+				add_to_temp_variable = { black_friday_cbrn_bundle_ordinary_remaining = black_friday_cbrn_bundle_ordinary_2 }
+				set_temp_variable = { black_friday_cbrn_bundle_ordinary_2 = constant:universal_cost_framework.zero }
+			}
+			if = {
+				limit = { check_variable = { var = black_friday_cbrn_bundle_paid_3 value = constant:universal_cost_framework.zero compare = equals } }
+				add_to_temp_variable = { black_friday_cbrn_bundle_ordinary_remaining = black_friday_cbrn_bundle_ordinary_3 }
+				set_temp_variable = { black_friday_cbrn_bundle_ordinary_3 = constant:universal_cost_framework.zero }
+			}
+			if = {
+				limit = { check_variable = { var = black_friday_cbrn_bundle_paid_3 value = constant:universal_cost_framework.zero compare = greater_than } }
+				add_to_temp_variable = { black_friday_cbrn_bundle_ordinary_3 = black_friday_cbrn_bundle_ordinary_remaining }
+			}
+			else_if = {
+				limit = { check_variable = { var = black_friday_cbrn_bundle_paid_2 value = constant:universal_cost_framework.zero compare = greater_than } }
+				add_to_temp_variable = { black_friday_cbrn_bundle_ordinary_2 = black_friday_cbrn_bundle_ordinary_remaining }
+			}
+			else = { add_to_temp_variable = { black_friday_cbrn_bundle_ordinary_1 = black_friday_cbrn_bundle_ordinary_remaining } }
+			if = {
+				limit = {
+					check_variable = { var = black_friday_cbrn_bundle_paid_remaining value = constant:universal_cost_framework.zero compare = equals }
+					NOT = { has_equipment = { cbrn_instrument_equipment_1 < black_friday_cbrn_bundle_paid_1 } }
+					NOT = { has_equipment = { cbrn_instrument_equipment_2 < black_friday_cbrn_bundle_paid_2 } }
+					NOT = { has_equipment = { cbrn_instrument_equipment_3 < black_friday_cbrn_bundle_paid_3 } }
+					NOT = { has_equipment = { support_equipment_1 < black_friday_cbrn_bundle_support_paid } }
+				}
+				black_friday_allocate_owner_transaction = yes
+				set_temp_variable = { black_friday_cbrn_bundle_all_paid = constant:universal_cost_framework.one }
+				set_temp_variable = { black_friday_cbrn_bundle_component_kind = constant:universal_cost_resource_kind.cbrn_instrument_equipment_1 }
+				set_temp_variable = { black_friday_cbrn_bundle_component_id = constant:universal_cost_resource_kind.cbrn_instrument_equipment_1 }
+				set_temp_variable = { black_friday_cbrn_bundle_component_before = black_friday_cbrn_bundle_stock_1 }
+				set_temp_variable = { black_friday_cbrn_bundle_component_paid = black_friday_cbrn_bundle_paid_1 }
+				set_temp_variable = { black_friday_cbrn_bundle_component_ordinary = black_friday_cbrn_bundle_ordinary_1 }
+				black_friday_cbrn_bundle_pay_record_component = yes
+				set_temp_variable = { black_friday_cbrn_bundle_component_kind = constant:universal_cost_resource_kind.cbrn_instrument_equipment_2 }
+				set_temp_variable = { black_friday_cbrn_bundle_component_id = constant:universal_cost_resource_kind.cbrn_instrument_equipment_2 }
+				set_temp_variable = { black_friday_cbrn_bundle_component_before = black_friday_cbrn_bundle_stock_2 }
+				set_temp_variable = { black_friday_cbrn_bundle_component_paid = black_friday_cbrn_bundle_paid_2 }
+				set_temp_variable = { black_friday_cbrn_bundle_component_ordinary = black_friday_cbrn_bundle_ordinary_2 }
+				black_friday_cbrn_bundle_pay_record_component = yes
+				set_temp_variable = { black_friday_cbrn_bundle_component_kind = constant:universal_cost_resource_kind.cbrn_instrument_equipment_3 }
+				set_temp_variable = { black_friday_cbrn_bundle_component_id = constant:universal_cost_resource_kind.cbrn_instrument_equipment_3 }
+				set_temp_variable = { black_friday_cbrn_bundle_component_before = black_friday_cbrn_bundle_stock_3 }
+				set_temp_variable = { black_friday_cbrn_bundle_component_paid = black_friday_cbrn_bundle_paid_3 }
+				set_temp_variable = { black_friday_cbrn_bundle_component_ordinary = black_friday_cbrn_bundle_ordinary_3 }
+				black_friday_cbrn_bundle_pay_record_component = yes
+				set_temp_variable = { black_friday_cbrn_bundle_component_kind = constant:universal_cost_resource_kind.support_equipment_1 }
+				set_temp_variable = { black_friday_cbrn_bundle_component_id = constant:universal_cost_resource_kind.support_equipment }
+				set_temp_variable = { black_friday_cbrn_bundle_component_before = black_friday_cbrn_bundle_support_stock }
+				set_temp_variable = { black_friday_cbrn_bundle_component_paid = black_friday_cbrn_bundle_support_paid }
+				set_temp_variable = { black_friday_cbrn_bundle_component_ordinary = black_friday_cbrn_bundle_ordinary_support }
+				black_friday_cbrn_bundle_pay_record_component = yes
+				if = {
+					limit = { check_variable = { var = black_friday_cbrn_bundle_all_paid value = constant:universal_cost_framework.one compare = equals } }
+					set_temp_variable = { universal_cost_transaction_id = black_friday_owner_transaction_id }
+					universal_cost_settle_transaction = yes
+					if = {
+						limit = { check_variable = { var = universal_cost_settle_transaction_result value = constant:universal_cost_framework.result_success compare = equals } }
+						add_to_variable = { cbrn_diplomacy_instruments_spent = black_friday_cbrn_bundle_instrument_paid }
+						set_temp_variable = { black_friday_purchase_transaction_id = black_friday_owner_transaction_id }
+						set_temp_variable = { black_friday_purchase_family_id = black_friday_cbrn_bundle_family_id }
+						set_temp_variable = { black_friday_purchase_ordinary_cost = black_friday_cbrn_bundle_ordinary_instruments }
+						set_temp_variable = { black_friday_purchase_actual_paid_cost = black_friday_cbrn_bundle_instrument_paid }
+						black_friday_record_achievement_transaction = yes
+						set_temp_variable = { black_friday_cbrn_bundle_payment_success = constant:universal_cost_framework.one }
+					}
+				}
+				if = {
+					limit = { check_variable = { var = black_friday_cbrn_bundle_payment_success value = constant:universal_cost_framework.zero compare = equals } }
+					set_temp_variable = { universal_cost_transaction_id = black_friday_owner_transaction_id }
+					universal_cost_refund_transaction = yes
+				}
+			}
+		}
+	}
+}
+
+# Country scope. The inspection owner retains its exact target and ordinary path.
 black_friday_pay_cbrn_demand_inspections = {
 	set_temp_variable = { black_friday_cbrn_inspection_payment_success = constant:universal_cost_framework.zero }
 	set_temp_variable = { universal_cost_source_query_id = constant:universal_cost_framework.black_friday_source_id }
@@ -2176,138 +2321,13 @@ black_friday_pay_cbrn_demand_inspections = {
 			}
 			black_friday_can_pay_cbrn_demand_inspections = yes
 		}
-		set_temp_variable = { universal_cost_quote_ordinary_cost = constant:cbrn_diplomacy_cost.inspection_instruments }
-		set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.equipment }
-		set_temp_variable = { universal_cost_quote_rounding_quantum = constant:universal_cost_framework.default_rounding_quantum }
-		universal_cost_quote_integer = yes
-		set_temp_variable = { black_friday_cbrn_inspection_instrument_paid = universal_cost_quote_final_cost }
-		set_temp_variable = { black_friday_cbrn_inspection_instrument_source_count = universal_cost_quote_source_count }
-		set_temp_variable = { universal_cost_quote_ordinary_cost = constant:cbrn_diplomacy_cost.inspection_support }
-		set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.equipment }
-		set_temp_variable = { universal_cost_quote_rounding_quantum = constant:universal_cost_framework.default_rounding_quantum }
-		universal_cost_quote_integer = yes
-		set_temp_variable = { black_friday_cbrn_inspection_support_paid = universal_cost_quote_final_cost }
-		set_temp_variable = { black_friday_cbrn_inspection_support_source_count = universal_cost_quote_source_count }
-		set_temp_variable = { universal_cost_quote_resource_kind = constant:universal_cost_resource_kind.support_equipment_1 }
-		universal_cost_check_quote_affordable = yes
-		set_temp_variable = { black_friday_cbrn_inspection_support_affordability = universal_cost_quote_affordable }
-		if = {
-			limit = {
-				check_variable = { var = black_friday_cbrn_inspection_instrument_source_count value = constant:universal_cost_framework.zero compare = greater_than }
-				check_variable = { var = black_friday_cbrn_inspection_support_source_count value = constant:universal_cost_framework.zero compare = greater_than }
-				check_variable = { var = black_friday_cbrn_inspection_instrument_paid value = black_friday_cbrn_inspection_instrument_cost compare = equals }
-				check_variable = { var = black_friday_cbrn_inspection_support_paid value = black_friday_cbrn_inspection_support_cost compare = equals }
-				check_variable = { var = black_friday_cbrn_inspection_instrument_paid value = constant:universal_cost_framework.zero compare = greater_than }
-				check_variable = { var = black_friday_cbrn_inspection_support_paid value = constant:universal_cost_framework.zero compare = greater_than }
-				check_variable = { var = num_equipment@cbrn_instrument_equipment value = black_friday_cbrn_inspection_instrument_paid compare = greater_than_or_equals }
-				check_variable = { var = black_friday_cbrn_inspection_support_affordability value = constant:universal_cost_framework.result_success compare = equals }
-			}
-			set_temp_variable = { black_friday_cbrn_inspection_stock_1 = num_equipment@cbrn_instrument_equipment_1 }
-			set_temp_variable = { black_friday_cbrn_inspection_stock_2 = num_equipment@cbrn_instrument_equipment_2 }
-			set_temp_variable = { black_friday_cbrn_inspection_stock_3 = num_equipment@cbrn_instrument_equipment_3 }
-			set_temp_variable = { black_friday_cbrn_inspection_support_stock = num_equipment@support_equipment_1 }
-			set_temp_variable = { black_friday_cbrn_inspection_paid_remaining = black_friday_cbrn_inspection_instrument_paid }
-			set_temp_variable = { black_friday_cbrn_inspection_paid_1 = black_friday_cbrn_inspection_paid_remaining }
-			clamp_temp_variable = { var = black_friday_cbrn_inspection_paid_1 min = constant:universal_cost_framework.zero max = black_friday_cbrn_inspection_stock_1 }
-			subtract_from_temp_variable = { black_friday_cbrn_inspection_paid_remaining = black_friday_cbrn_inspection_paid_1 }
-			set_temp_variable = { black_friday_cbrn_inspection_paid_2 = black_friday_cbrn_inspection_paid_remaining }
-			clamp_temp_variable = { var = black_friday_cbrn_inspection_paid_2 min = constant:universal_cost_framework.zero max = black_friday_cbrn_inspection_stock_2 }
-			subtract_from_temp_variable = { black_friday_cbrn_inspection_paid_remaining = black_friday_cbrn_inspection_paid_2 }
-			set_temp_variable = { black_friday_cbrn_inspection_paid_3 = black_friday_cbrn_inspection_paid_remaining }
-			clamp_temp_variable = { var = black_friday_cbrn_inspection_paid_3 min = constant:universal_cost_framework.zero max = black_friday_cbrn_inspection_stock_3 }
-			subtract_from_temp_variable = { black_friday_cbrn_inspection_paid_remaining = black_friday_cbrn_inspection_paid_3 }
-			set_temp_variable = { black_friday_cbrn_inspection_ordinary_remaining = constant:cbrn_diplomacy_cost.inspection_instruments }
-			set_temp_variable = { black_friday_cbrn_inspection_ordinary_1 = black_friday_cbrn_inspection_ordinary_remaining }
-			clamp_temp_variable = { var = black_friday_cbrn_inspection_ordinary_1 min = constant:universal_cost_framework.zero max = black_friday_cbrn_inspection_stock_1 }
-			subtract_from_temp_variable = { black_friday_cbrn_inspection_ordinary_remaining = black_friday_cbrn_inspection_ordinary_1 }
-			set_temp_variable = { black_friday_cbrn_inspection_ordinary_2 = black_friday_cbrn_inspection_ordinary_remaining }
-			clamp_temp_variable = { var = black_friday_cbrn_inspection_ordinary_2 min = constant:universal_cost_framework.zero max = black_friday_cbrn_inspection_stock_2 }
-			subtract_from_temp_variable = { black_friday_cbrn_inspection_ordinary_remaining = black_friday_cbrn_inspection_ordinary_2 }
-			set_temp_variable = { black_friday_cbrn_inspection_ordinary_3 = black_friday_cbrn_inspection_ordinary_remaining }
-			clamp_temp_variable = { var = black_friday_cbrn_inspection_ordinary_3 min = constant:universal_cost_framework.zero max = black_friday_cbrn_inspection_stock_3 }
-			subtract_from_temp_variable = { black_friday_cbrn_inspection_ordinary_remaining = black_friday_cbrn_inspection_ordinary_3 }
-			# Rows without a paid model are not recorded. Transfer their ordinary
-			# counterfactual share to a model that the sale actually consumed.
-			if = {
-				limit = { check_variable = { var = black_friday_cbrn_inspection_paid_1 value = constant:universal_cost_framework.zero compare = equals } }
-				add_to_temp_variable = { black_friday_cbrn_inspection_ordinary_remaining = black_friday_cbrn_inspection_ordinary_1 }
-				set_temp_variable = { black_friday_cbrn_inspection_ordinary_1 = constant:universal_cost_framework.zero }
-			}
-			if = {
-				limit = { check_variable = { var = black_friday_cbrn_inspection_paid_2 value = constant:universal_cost_framework.zero compare = equals } }
-				add_to_temp_variable = { black_friday_cbrn_inspection_ordinary_remaining = black_friday_cbrn_inspection_ordinary_2 }
-				set_temp_variable = { black_friday_cbrn_inspection_ordinary_2 = constant:universal_cost_framework.zero }
-			}
-			if = {
-				limit = { check_variable = { var = black_friday_cbrn_inspection_paid_3 value = constant:universal_cost_framework.zero compare = equals } }
-				add_to_temp_variable = { black_friday_cbrn_inspection_ordinary_remaining = black_friday_cbrn_inspection_ordinary_3 }
-				set_temp_variable = { black_friday_cbrn_inspection_ordinary_3 = constant:universal_cost_framework.zero }
-			}
-			if = {
-				limit = { check_variable = { var = black_friday_cbrn_inspection_paid_3 value = constant:universal_cost_framework.zero compare = greater_than } }
-				add_to_temp_variable = { black_friday_cbrn_inspection_ordinary_3 = black_friday_cbrn_inspection_ordinary_remaining }
-			}
-			else_if = {
-				limit = { check_variable = { var = black_friday_cbrn_inspection_paid_2 value = constant:universal_cost_framework.zero compare = greater_than } }
-				add_to_temp_variable = { black_friday_cbrn_inspection_ordinary_2 = black_friday_cbrn_inspection_ordinary_remaining }
-			}
-			else = { add_to_temp_variable = { black_friday_cbrn_inspection_ordinary_1 = black_friday_cbrn_inspection_ordinary_remaining } }
-			if = {
-				limit = {
-					check_variable = { var = black_friday_cbrn_inspection_paid_remaining value = constant:universal_cost_framework.zero compare = equals }
-					NOT = { has_equipment = { cbrn_instrument_equipment_1 < black_friday_cbrn_inspection_paid_1 } }
-					NOT = { has_equipment = { cbrn_instrument_equipment_2 < black_friday_cbrn_inspection_paid_2 } }
-					NOT = { has_equipment = { cbrn_instrument_equipment_3 < black_friday_cbrn_inspection_paid_3 } }
-					NOT = { has_equipment = { support_equipment_1 < black_friday_cbrn_inspection_support_paid } }
-				}
-				black_friday_allocate_owner_transaction = yes
-				set_temp_variable = { black_friday_cbrn_inspection_all_paid = constant:universal_cost_framework.one }
-				set_temp_variable = { black_friday_cbrn_inspection_component_kind = constant:universal_cost_resource_kind.cbrn_instrument_equipment_1 }
-				set_temp_variable = { black_friday_cbrn_inspection_component_id = constant:universal_cost_resource_kind.cbrn_instrument_equipment_1 }
-				set_temp_variable = { black_friday_cbrn_inspection_component_before = black_friday_cbrn_inspection_stock_1 }
-				set_temp_variable = { black_friday_cbrn_inspection_component_paid = black_friday_cbrn_inspection_paid_1 }
-				set_temp_variable = { black_friday_cbrn_inspection_component_ordinary = black_friday_cbrn_inspection_ordinary_1 }
-				black_friday_cbrn_inspection_pay_record_component = yes
-				set_temp_variable = { black_friday_cbrn_inspection_component_kind = constant:universal_cost_resource_kind.cbrn_instrument_equipment_2 }
-				set_temp_variable = { black_friday_cbrn_inspection_component_id = constant:universal_cost_resource_kind.cbrn_instrument_equipment_2 }
-				set_temp_variable = { black_friday_cbrn_inspection_component_before = black_friday_cbrn_inspection_stock_2 }
-				set_temp_variable = { black_friday_cbrn_inspection_component_paid = black_friday_cbrn_inspection_paid_2 }
-				set_temp_variable = { black_friday_cbrn_inspection_component_ordinary = black_friday_cbrn_inspection_ordinary_2 }
-				black_friday_cbrn_inspection_pay_record_component = yes
-				set_temp_variable = { black_friday_cbrn_inspection_component_kind = constant:universal_cost_resource_kind.cbrn_instrument_equipment_3 }
-				set_temp_variable = { black_friday_cbrn_inspection_component_id = constant:universal_cost_resource_kind.cbrn_instrument_equipment_3 }
-				set_temp_variable = { black_friday_cbrn_inspection_component_before = black_friday_cbrn_inspection_stock_3 }
-				set_temp_variable = { black_friday_cbrn_inspection_component_paid = black_friday_cbrn_inspection_paid_3 }
-				set_temp_variable = { black_friday_cbrn_inspection_component_ordinary = black_friday_cbrn_inspection_ordinary_3 }
-				black_friday_cbrn_inspection_pay_record_component = yes
-				set_temp_variable = { black_friday_cbrn_inspection_component_kind = constant:universal_cost_resource_kind.support_equipment_1 }
-				set_temp_variable = { black_friday_cbrn_inspection_component_id = constant:universal_cost_resource_kind.support_equipment }
-				set_temp_variable = { black_friday_cbrn_inspection_component_before = black_friday_cbrn_inspection_support_stock }
-				set_temp_variable = { black_friday_cbrn_inspection_component_paid = black_friday_cbrn_inspection_support_paid }
-				set_temp_variable = { black_friday_cbrn_inspection_component_ordinary = constant:cbrn_diplomacy_cost.inspection_support }
-				black_friday_cbrn_inspection_pay_record_component = yes
-				if = {
-					limit = { check_variable = { var = black_friday_cbrn_inspection_all_paid value = constant:universal_cost_framework.one compare = equals } }
-					set_temp_variable = { universal_cost_transaction_id = black_friday_owner_transaction_id }
-					universal_cost_settle_transaction = yes
-					if = {
-						limit = { check_variable = { var = universal_cost_settle_transaction_result value = constant:universal_cost_framework.result_success compare = equals } }
-						add_to_variable = { cbrn_diplomacy_instruments_spent = black_friday_cbrn_inspection_instrument_paid }
-						set_temp_variable = { black_friday_purchase_transaction_id = black_friday_owner_transaction_id }
-						set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.diplomatic }
-						set_temp_variable = { black_friday_purchase_ordinary_cost = constant:cbrn_diplomacy_cost.inspection_instruments }
-						set_temp_variable = { black_friday_purchase_actual_paid_cost = black_friday_cbrn_inspection_instrument_paid }
-						black_friday_record_achievement_transaction = yes
-						set_temp_variable = { black_friday_cbrn_inspection_payment_success = constant:universal_cost_framework.one }
-					}
-				}
-				if = {
-					limit = { check_variable = { var = black_friday_cbrn_inspection_payment_success value = constant:universal_cost_framework.zero compare = equals } }
-					set_temp_variable = { universal_cost_transaction_id = black_friday_owner_transaction_id }
-					universal_cost_refund_transaction = yes
-				}
-			}
-		}
+		set_temp_variable = { black_friday_cbrn_bundle_ordinary_instruments = constant:cbrn_diplomacy_cost.inspection_instruments }
+		set_temp_variable = { black_friday_cbrn_bundle_ordinary_support = constant:cbrn_diplomacy_cost.inspection_support }
+		set_temp_variable = { black_friday_cbrn_bundle_instrument_cost = black_friday_cbrn_inspection_instrument_cost }
+		set_temp_variable = { black_friday_cbrn_bundle_support_cost = black_friday_cbrn_inspection_support_cost }
+		set_temp_variable = { black_friday_cbrn_bundle_family_id = constant:universal_cost_family.diplomatic }
+		black_friday_pay_cbrn_equipment_bundle = yes
+		set_temp_variable = { black_friday_cbrn_inspection_payment_success = black_friday_cbrn_bundle_payment_success }
 	}
 }
 
@@ -2326,6 +2346,71 @@ black_friday_apply_cbrn_inspection_demand = {
 		}
 	}
 	else = { cbrn_diplomacy_send_inspection_demand = yes }
+}
+
+# Country scope with FROM as the exact controlled state. The owner must have
+# locked one forensic record before this payer-scoped material purchase runs.
+# The native decision modifier owns the one-factory commitment for its timer.
+black_friday_pay_cbrn_forensic_publication = {
+	set_temp_variable = { black_friday_cbrn_forensic_payment_success = constant:universal_cost_framework.zero }
+	set_temp_variable = { universal_cost_source_query_id = constant:universal_cost_framework.black_friday_source_id }
+	if = {
+		limit = {
+			black_friday_is_active = yes
+			universal_cost_source_is_active = yes
+			FROM = {
+				is_controlled_by = ROOT
+				has_state_flag = cbrn_forensic_publication_active
+				has_variable = cbrn_forensic_selected_source
+			}
+		}
+		set_temp_variable = { black_friday_cbrn_bundle_ordinary_instruments = constant:cbrn_diplomacy_cost.forensic_instruments }
+		set_temp_variable = { black_friday_cbrn_bundle_ordinary_support = constant:cbrn_diplomacy_cost.forensic_support }
+		set_temp_variable = { black_friday_cbrn_bundle_instrument_cost = black_friday_cbrn_forensic_instrument_cost }
+		set_temp_variable = { black_friday_cbrn_bundle_support_cost = black_friday_cbrn_forensic_support_cost }
+		set_temp_variable = { black_friday_cbrn_bundle_family_id = constant:universal_cost_family.diplomatic }
+		black_friday_pay_cbrn_equipment_bundle = yes
+		set_temp_variable = { black_friday_cbrn_forensic_payment_success = black_friday_cbrn_bundle_payment_success }
+	}
+}
+
+# Country scope with FROM as the exact state. Selection locks the historical
+# chemical row or biological seed before payment. A failed sale payment clears
+# that lock, allowing the decision's cancel trigger to end the native timer.
+# A successful purchase settles at selection; remove_effect publishes later.
+black_friday_apply_cbrn_forensic_publication = {
+	set_temp_variable = { universal_cost_source_query_id = constant:universal_cost_framework.black_friday_source_id }
+	if = {
+		limit = {
+			black_friday_is_active = yes
+			universal_cost_source_is_active = yes
+		}
+		if = {
+			limit = {
+				FROM = {
+					is_controlled_by = ROOT
+					cbrn_state_has_shareable_forensic_evidence = yes
+				}
+				black_friday_cbrn_forensic_materials_are_affordable = yes
+			}
+			FROM = { cbrn_diplomacy_begin_forensic_publication = yes }
+			if = {
+				limit = { FROM = { has_state_flag = cbrn_forensic_publication_active } }
+				black_friday_pay_cbrn_forensic_publication = yes
+				if = {
+					limit = { check_variable = { var = black_friday_cbrn_forensic_payment_success value = constant:universal_cost_framework.zero compare = equals } }
+					FROM = { cbrn_diplomacy_cancel_forensic_publication = yes }
+				}
+			}
+		}
+	}
+	else = {
+		FROM = { cbrn_diplomacy_begin_forensic_publication = yes }
+		if = {
+			limit = { FROM = { has_state_flag = cbrn_forensic_publication_active } }
+			cbrn_diplomacy_pay_forensic_publication_cost = yes
+		}
+	}
 }
 
 # ---------------------------------------------------------------------------

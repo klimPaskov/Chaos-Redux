@@ -83,7 +83,7 @@ cbrn_international_response_category = {
 		}
 		target_root_trigger = {
 			NOT = { is_actual_nonhuman_country = yes }
-			cbrn_country_can_pay_forensic_publication_cost = yes
+			black_friday_can_pay_cbrn_share_forensic_evidence = yes
 			OR = {
 				has_intelligence_agency = yes
 				has_tech = chemical_detection_paper
@@ -97,9 +97,9 @@ cbrn_international_response_category = {
 			}
 		}
 		available = {
+			hidden_trigger = { black_friday_can_pay_cbrn_share_forensic_evidence = yes }
 			custom_trigger_tooltip = {
 				tooltip = cbrn_share_forensic_evidence_requirements_tt
-				cbrn_country_can_pay_forensic_publication_cost = yes
 				FROM = {
 					is_controlled_by = ROOT
 					cbrn_state_has_shareable_forensic_evidence = yes
@@ -107,18 +107,12 @@ cbrn_international_response_category = {
 			}
 		}
 		custom_cost_trigger = {
-			hidden_trigger = { cbrn_country_can_pay_forensic_publication_cost = yes }
+			hidden_trigger = { black_friday_can_pay_cbrn_share_forensic_evidence = yes }
 		}
 		custom_cost_text = cbrn_share_forensic_evidence_cost
 		complete_effect = {
 			custom_effect_tooltip = cbrn_share_forensic_evidence_begin_tt
-			hidden_effect = {
-				FROM = { cbrn_diplomacy_begin_forensic_publication = yes }
-				if = {
-					limit = { FROM = { has_state_flag = cbrn_forensic_publication_active } }
-					cbrn_diplomacy_pay_forensic_publication_cost = yes
-				}
-			}
+			hidden_effect = { black_friday_apply_cbrn_forensic_publication = yes }
 		}
 		remove_effect = {
 			custom_effect_tooltip = cbrn_share_forensic_evidence_complete_tt
