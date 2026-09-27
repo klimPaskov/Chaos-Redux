@@ -1187,20 +1187,6 @@ cbrn_diplomacy_cancel_forensic_publication = {
 	cbrn_diplomacy_clear_forensic_publication_lock = yes
 }
 
-cbrn_diplomacy_pay_international_decon_cost = {
-	set_temp_variable = { cbrn_mask_stock_debit_requested = constant:cbrn_diplomacy_cost.decon_masks }
-	cbrn_debit_mask_stockpile_oldest_first = yes
-	add_to_variable = { cbrn_diplomacy_masks_spent = cbrn_mask_stock_debit_completed }
-
-	set_temp_variable = { cbrn_hq_family_debit_requested = constant:cbrn_diplomacy_cost.decon_equipment }
-	cbrn_hq_debit_decontamination_stock_oldest_first = yes
-	add_to_variable = { cbrn_diplomacy_decon_equipment_spent = cbrn_hq_family_debit_completed }
-
-	set_temp_variable = { cbrn_motorized_stock_debit_requested = constant:cbrn_diplomacy_cost.decon_trucks }
-	cbrn_debit_motorized_stockpile_oldest_first = yes
-	add_to_variable = { cbrn_diplomacy_trucks_spent = cbrn_motorized_stock_debit_completed }
-}
-
 # State scope. ROOT is the foreign sponsor.
 cbrn_diplomacy_begin_international_decon_mission = {
 	set_state_flag = cbrn_international_decon_mission_active
@@ -1305,6 +1291,8 @@ cbrn_diplomacy_complete_international_decon_mission = {
 	}
 
 	clr_state_flag = cbrn_international_decon_mission_active
+	clr_state_flag = cbrn_international_decon_ordinary_variant_active
+	clr_state_flag = cbrn_international_decon_sale_variant_active
 	set_temp_variable = { cbrn_diplomacy_state_cooldown_days = constant:cbrn_diplomacy_duration.decon_state_cooldown_days }
 	set_state_flag = {
 		flag = cbrn_international_decon_mission_cooldown
@@ -1317,6 +1305,8 @@ cbrn_diplomacy_complete_international_decon_mission = {
 
 cbrn_diplomacy_cancel_international_decon_mission = {
 	clr_state_flag = cbrn_international_decon_mission_active
+	clr_state_flag = cbrn_international_decon_ordinary_variant_active
+	clr_state_flag = cbrn_international_decon_sale_variant_active
 	clear_variable = cbrn_international_decon_provider
 	clear_variable = cbrn_international_decon_recipient
 	clear_variable = cbrn_international_decon_start_date

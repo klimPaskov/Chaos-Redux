@@ -21,13 +21,6 @@ cbrn_country_can_pay_forensic_publication_cost = {
 	NOT = { num_of_civilian_factories_available_for_projects < constant:cbrn_diplomacy_factory_use.forensic_publication }
 }
 
-cbrn_country_can_pay_international_decon_cost = {
-	NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_diplomacy_cost.decon_masks } }
-	NOT = { has_equipment = { decontamination_equipment < constant:cbrn_diplomacy_cost.decon_equipment } }
-	NOT = { has_equipment = { motorized_equipment < constant:cbrn_diplomacy_cost.decon_trucks } }
-	NOT = { num_of_civilian_factories_available_for_projects < constant:cbrn_diplomacy_factory_use.decon_mission }
-}
-
 # Country scope. The caller must set temporary cbrn_retaliation_target_id from
 # one exact live country scope before calling this trigger.
 cbrn_country_has_active_retaliation_right_against_target_id = {
@@ -346,6 +339,14 @@ cbrn_state_can_receive_international_decontamination_from_root = {
 			}
 		}
 	}
+}
+
+# State scope; ROOT is the provider viewing its running timed decision. The
+# variant flag is checked by each decision after this shared exact-owner proof.
+cbrn_state_has_active_international_decon_from_root = {
+	has_state_flag = cbrn_international_decon_mission_active
+	has_variable = cbrn_international_decon_provider
+	var:cbrn_international_decon_provider = { tag = ROOT }
 }
 
 # State scope. Revalidates the exact provider-recipient relationship recorded

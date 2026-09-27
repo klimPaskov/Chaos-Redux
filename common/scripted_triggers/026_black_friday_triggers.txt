@@ -462,6 +462,73 @@ black_friday_can_pay_cbrn_share_forensic_evidence = {
 	black_friday_cbrn_forensic_materials_are_affordable = yes
 }
 
+# Country scope. The sale's one-day source controls which native factory
+# variant is shown. The factory is a pre-click cost; after selection only the
+# material quote may be rechecked because the timer has reserved capacity.
+black_friday_cbrn_decon_sale_source_is_active = {
+	black_friday_is_active = yes
+	set_temp_variable = { universal_cost_source_query_id = constant:universal_cost_framework.black_friday_source_id }
+	universal_cost_source_is_active = yes
+}
+
+black_friday_cbrn_decon_sale_materials_are_affordable = {
+	black_friday_cbrn_decon_sale_source_is_active = yes
+	set_temp_variable = { black_friday_quote_ordinary_cost = constant:cbrn_diplomacy_cost.decon_masks }
+	set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.equipment }
+	black_friday_quote_custom_cost = yes
+	set_temp_variable = { black_friday_cbrn_decon_masks_cost = black_friday_quote_final_cost }
+	set_temp_variable = { black_friday_cbrn_decon_masks_affordable = constant:universal_cost_framework.zero }
+	if = {
+		limit = { check_variable = { var = num_equipment@gas_mask_equipment value = black_friday_cbrn_decon_masks_cost compare = greater_than_or_equals } }
+		set_temp_variable = { black_friday_cbrn_decon_masks_affordable = constant:universal_cost_framework.one }
+	}
+
+	set_temp_variable = { black_friday_quote_ordinary_cost = constant:cbrn_diplomacy_cost.decon_equipment }
+	set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.equipment }
+	black_friday_quote_custom_cost = yes
+	set_temp_variable = { black_friday_cbrn_decon_equipment_cost = black_friday_quote_final_cost }
+	set_temp_variable = { black_friday_cbrn_decon_equipment_affordable = constant:universal_cost_framework.zero }
+	if = {
+		limit = { check_variable = { var = num_equipment@decontamination_equipment value = black_friday_cbrn_decon_equipment_cost compare = greater_than_or_equals } }
+		set_temp_variable = { black_friday_cbrn_decon_equipment_affordable = constant:universal_cost_framework.one }
+	}
+
+	set_temp_variable = { black_friday_quote_ordinary_cost = constant:cbrn_diplomacy_cost.decon_trucks }
+	set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.equipment }
+	black_friday_quote_custom_cost = yes
+	set_temp_variable = { black_friday_cbrn_decon_trucks_cost = black_friday_quote_final_cost }
+	set_temp_variable = { black_friday_cbrn_decon_trucks_affordable = constant:universal_cost_framework.zero }
+	if = {
+		limit = { check_variable = { var = num_equipment@motorized_equipment value = black_friday_cbrn_decon_trucks_cost compare = greater_than_or_equals } }
+		set_temp_variable = { black_friday_cbrn_decon_trucks_affordable = constant:universal_cost_framework.one }
+	}
+	set_temp_variable = { black_friday_cbrn_decon_factory_cost = constant:cbrn_diplomacy_factory_use.decon_mission_sale }
+	check_variable = { var = black_friday_cbrn_decon_masks_affordable value = constant:universal_cost_framework.one compare = equals }
+	check_variable = { var = black_friday_cbrn_decon_equipment_affordable value = constant:universal_cost_framework.one compare = equals }
+	check_variable = { var = black_friday_cbrn_decon_trucks_affordable value = constant:universal_cost_framework.one compare = equals }
+}
+
+black_friday_can_pay_cbrn_sponsor_decontamination_sale = {
+	black_friday_cbrn_decon_sale_materials_are_affordable = yes
+	NOT = { num_of_civilian_factories_available_for_projects < constant:cbrn_diplomacy_factory_use.decon_mission_sale }
+}
+
+black_friday_cbrn_decon_ordinary_materials_are_affordable = {
+	NOT = { black_friday_cbrn_decon_sale_source_is_active = yes }
+	set_temp_variable = { black_friday_cbrn_decon_masks_cost = constant:cbrn_diplomacy_cost.decon_masks }
+	set_temp_variable = { black_friday_cbrn_decon_equipment_cost = constant:cbrn_diplomacy_cost.decon_equipment }
+	set_temp_variable = { black_friday_cbrn_decon_trucks_cost = constant:cbrn_diplomacy_cost.decon_trucks }
+	set_temp_variable = { black_friday_cbrn_decon_factory_cost = constant:cbrn_diplomacy_factory_use.decon_mission }
+	check_variable = { var = num_equipment@gas_mask_equipment value = constant:cbrn_diplomacy_cost.decon_masks compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@decontamination_equipment value = constant:cbrn_diplomacy_cost.decon_equipment compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@motorized_equipment value = constant:cbrn_diplomacy_cost.decon_trucks compare = greater_than_or_equals }
+}
+
+black_friday_can_pay_cbrn_sponsor_decontamination_ordinary = {
+	black_friday_cbrn_decon_ordinary_materials_are_affordable = yes
+	NOT = { num_of_civilian_factories_available_for_projects < constant:cbrn_diplomacy_factory_use.decon_mission }
+}
+
 black_friday_can_pay_cbrn_move_civilians_to_shelters = {
 	if = {
 		limit = {

@@ -2414,6 +2414,509 @@ black_friday_apply_cbrn_forensic_publication = {
 }
 
 # ---------------------------------------------------------------------------
+# CBRN sponsor decontamination owner adapter
+# ---------------------------------------------------------------------------
+
+# Country scope. One planned concrete draw. The caller snapshots stock before
+# payment, then checks the exact model balance after the native debit.
+black_friday_cbrn_decon_pay_record_component = {
+	if = {
+		limit = {
+			check_variable = { var = black_friday_cbrn_decon_all_paid value = constant:universal_cost_framework.one compare = equals }
+			check_variable = { var = black_friday_cbrn_decon_component_paid value = constant:universal_cost_framework.zero compare = greater_than }
+		}
+		set_temp_variable = { universal_cost_payment_resource_kind = black_friday_cbrn_decon_component_kind }
+		set_temp_variable = { universal_cost_payment_amount = black_friday_cbrn_decon_component_paid }
+		universal_cost_pay_component = yes
+		set_temp_variable = { black_friday_cbrn_decon_component_after = constant:universal_cost_framework.invalid_index }
+		if = {
+			limit = { check_variable = { var = black_friday_cbrn_decon_component_kind value = constant:universal_cost_resource_kind.gas_mask_equipment_reconditioned compare = equals } }
+			set_temp_variable = { black_friday_cbrn_decon_component_after = num_equipment@gas_mask_equipment_reconditioned }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_friday_cbrn_decon_component_kind value = constant:universal_cost_resource_kind.gas_mask_equipment_1 compare = equals } }
+			set_temp_variable = { black_friday_cbrn_decon_component_after = num_equipment@gas_mask_equipment_1 }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_friday_cbrn_decon_component_kind value = constant:universal_cost_resource_kind.gas_mask_equipment_2 compare = equals } }
+			set_temp_variable = { black_friday_cbrn_decon_component_after = num_equipment@gas_mask_equipment_2 }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_friday_cbrn_decon_component_kind value = constant:universal_cost_resource_kind.gas_mask_equipment_3 compare = equals } }
+			set_temp_variable = { black_friday_cbrn_decon_component_after = num_equipment@gas_mask_equipment_3 }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_friday_cbrn_decon_component_kind value = constant:universal_cost_resource_kind.gas_mask_equipment_4 compare = equals } }
+			set_temp_variable = { black_friday_cbrn_decon_component_after = num_equipment@gas_mask_equipment_4 }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_friday_cbrn_decon_component_kind value = constant:universal_cost_resource_kind.decontamination_equipment_1 compare = equals } }
+			set_temp_variable = { black_friday_cbrn_decon_component_after = num_equipment@decontamination_equipment_1 }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_friday_cbrn_decon_component_kind value = constant:universal_cost_resource_kind.decontamination_equipment_2 compare = equals } }
+			set_temp_variable = { black_friday_cbrn_decon_component_after = num_equipment@decontamination_equipment_2 }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_friday_cbrn_decon_component_kind value = constant:universal_cost_resource_kind.decontamination_equipment_3 compare = equals } }
+			set_temp_variable = { black_friday_cbrn_decon_component_after = num_equipment@decontamination_equipment_3 }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_friday_cbrn_decon_component_kind value = constant:universal_cost_resource_kind.motorized_equipment_0 compare = equals } }
+			set_temp_variable = { black_friday_cbrn_decon_component_after = num_equipment@motorized_equipment_0 }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_friday_cbrn_decon_component_kind value = constant:universal_cost_resource_kind.motorized_equipment_1 compare = equals } }
+			set_temp_variable = { black_friday_cbrn_decon_component_after = num_equipment@motorized_equipment_1 }
+		}
+		set_temp_variable = { black_friday_cbrn_decon_component_actual = black_friday_cbrn_decon_component_before }
+		subtract_from_temp_variable = { black_friday_cbrn_decon_component_actual = black_friday_cbrn_decon_component_after }
+		if = {
+			limit = {
+				check_variable = { var = universal_cost_payment_result value = constant:universal_cost_framework.result_success compare = equals }
+				check_variable = { var = black_friday_cbrn_decon_component_actual value = black_friday_cbrn_decon_component_paid compare = equals }
+			}
+			set_temp_variable = { universal_cost_transaction_id = black_friday_owner_transaction_id }
+			set_temp_variable = { universal_cost_transaction_component_id = black_friday_cbrn_decon_component_kind }
+			set_temp_variable = { universal_cost_transaction_resource_kind = black_friday_cbrn_decon_component_kind }
+			set_temp_variable = { universal_cost_transaction_resource_id = constant:universal_cost_framework.zero }
+			set_temp_variable = { universal_cost_transaction_ordinary_cost = black_friday_cbrn_decon_component_ordinary }
+			set_temp_variable = { universal_cost_transaction_quoted_cost = black_friday_cbrn_decon_component_paid }
+			set_temp_variable = { universal_cost_transaction_actual_paid_cost = black_friday_cbrn_decon_component_actual }
+			set_temp_variable = { universal_cost_transaction_source_id = black_friday_cbrn_decon_receipt_source_id }
+			set_temp_variable = { universal_cost_transaction_primary_component = constant:universal_cost_framework.zero }
+			universal_cost_record_transaction = yes
+			if = {
+				limit = { check_variable = { var = universal_cost_record_transaction_result value = constant:universal_cost_framework.result_success compare = not_equals } }
+				set_temp_variable = { universal_cost_payment_amount = black_friday_cbrn_decon_component_actual }
+				universal_cost_credit_component = yes
+				set_temp_variable = { black_friday_cbrn_decon_all_paid = constant:universal_cost_framework.zero }
+			}
+		}
+		else = {
+			if = {
+				limit = { check_variable = { var = black_friday_cbrn_decon_component_actual value = constant:universal_cost_framework.zero compare = greater_than } }
+				set_temp_variable = { universal_cost_payment_amount = black_friday_cbrn_decon_component_actual }
+				universal_cost_credit_component = yes
+			}
+			set_temp_variable = { black_friday_cbrn_decon_all_paid = constant:universal_cost_framework.zero }
+		}
+	}
+}
+
+# Country scope. Plans every oldest-first draw before the first debit for the
+# requested ordinary or sale variant. Requotes must match the current variant.
+black_friday_pay_cbrn_decon_sponsorship = {
+	set_temp_variable = { black_friday_cbrn_decon_payment_success = constant:universal_cost_framework.zero }
+	set_temp_variable = { black_friday_cbrn_decon_variant_valid = constant:universal_cost_framework.zero }
+	set_temp_variable = { black_friday_cbrn_decon_receipt_source_id = constant:universal_cost_framework.zero }
+	set_temp_variable = { universal_cost_source_query_id = constant:universal_cost_framework.black_friday_source_id }
+	if = {
+		limit = {
+			check_variable = { var = black_friday_cbrn_decon_requested_sale_variant value = constant:universal_cost_framework.two compare = equals }
+			black_friday_cbrn_decon_sale_source_is_active = yes
+			FROM = { cbrn_state_can_receive_international_decontamination_from_root = yes }
+			black_friday_cbrn_decon_sale_materials_are_affordable = yes
+		}
+		set_temp_variable = { universal_cost_quote_ordinary_cost = constant:cbrn_diplomacy_cost.decon_masks }
+		set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.equipment }
+		set_temp_variable = { universal_cost_quote_rounding_quantum = constant:universal_cost_framework.default_rounding_quantum }
+		universal_cost_quote_integer = yes
+		set_temp_variable = { black_friday_cbrn_decon_masks_requote = universal_cost_quote_final_cost }
+		set_temp_variable = { black_friday_cbrn_decon_masks_source_count = universal_cost_quote_source_count }
+		set_temp_variable = { universal_cost_quote_ordinary_cost = constant:cbrn_diplomacy_cost.decon_equipment }
+		set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.equipment }
+		set_temp_variable = { universal_cost_quote_rounding_quantum = constant:universal_cost_framework.default_rounding_quantum }
+		universal_cost_quote_integer = yes
+		set_temp_variable = { black_friday_cbrn_decon_equipment_requote = universal_cost_quote_final_cost }
+		set_temp_variable = { black_friday_cbrn_decon_equipment_source_count = universal_cost_quote_source_count }
+		set_temp_variable = { universal_cost_quote_ordinary_cost = constant:cbrn_diplomacy_cost.decon_trucks }
+		set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.equipment }
+		set_temp_variable = { universal_cost_quote_rounding_quantum = constant:universal_cost_framework.default_rounding_quantum }
+		universal_cost_quote_integer = yes
+		set_temp_variable = { black_friday_cbrn_decon_trucks_requote = universal_cost_quote_final_cost }
+		set_temp_variable = { black_friday_cbrn_decon_trucks_source_count = universal_cost_quote_source_count }
+		if = {
+			limit = {
+				check_variable = { var = black_friday_cbrn_decon_masks_source_count value = constant:universal_cost_framework.zero compare = greater_than }
+				check_variable = { var = black_friday_cbrn_decon_equipment_source_count value = constant:universal_cost_framework.zero compare = greater_than }
+				check_variable = { var = black_friday_cbrn_decon_trucks_source_count value = constant:universal_cost_framework.zero compare = greater_than }
+			}
+			set_temp_variable = { black_friday_cbrn_decon_variant_valid = constant:universal_cost_framework.one }
+			set_temp_variable = { black_friday_cbrn_decon_receipt_source_id = constant:universal_cost_framework.black_friday_source_id }
+		}
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = black_friday_cbrn_decon_requested_sale_variant value = constant:universal_cost_framework.one compare = equals }
+			NOT = { black_friday_cbrn_decon_sale_source_is_active = yes }
+			FROM = { cbrn_state_can_receive_international_decontamination_from_root = yes }
+			black_friday_cbrn_decon_ordinary_materials_are_affordable = yes
+		}
+		set_temp_variable = { black_friday_cbrn_decon_masks_requote = constant:cbrn_diplomacy_cost.decon_masks }
+		set_temp_variable = { black_friday_cbrn_decon_equipment_requote = constant:cbrn_diplomacy_cost.decon_equipment }
+		set_temp_variable = { black_friday_cbrn_decon_trucks_requote = constant:cbrn_diplomacy_cost.decon_trucks }
+		set_temp_variable = { black_friday_cbrn_decon_masks_source_count = constant:universal_cost_framework.zero }
+		set_temp_variable = { black_friday_cbrn_decon_equipment_source_count = constant:universal_cost_framework.zero }
+		set_temp_variable = { black_friday_cbrn_decon_trucks_source_count = constant:universal_cost_framework.zero }
+		set_temp_variable = { black_friday_cbrn_decon_variant_valid = constant:universal_cost_framework.one }
+	}
+	if = {
+		limit = { check_variable = { var = black_friday_cbrn_decon_variant_valid value = constant:universal_cost_framework.one compare = equals } }
+		if = {
+			limit = {
+				check_variable = { var = black_friday_cbrn_decon_masks_requote value = black_friday_cbrn_decon_masks_cost compare = equals }
+				check_variable = { var = black_friday_cbrn_decon_masks_requote value = constant:universal_cost_framework.zero compare = greater_than }
+				check_variable = { var = black_friday_cbrn_decon_equipment_requote value = black_friday_cbrn_decon_equipment_cost compare = equals }
+				check_variable = { var = black_friday_cbrn_decon_equipment_requote value = constant:universal_cost_framework.zero compare = greater_than }
+				check_variable = { var = black_friday_cbrn_decon_trucks_requote value = black_friday_cbrn_decon_trucks_cost compare = equals }
+				check_variable = { var = black_friday_cbrn_decon_trucks_requote value = constant:universal_cost_framework.zero compare = greater_than }
+				check_variable = { var = num_equipment@gas_mask_equipment value = black_friday_cbrn_decon_masks_requote compare = greater_than_or_equals }
+				check_variable = { var = num_equipment@decontamination_equipment value = black_friday_cbrn_decon_equipment_requote compare = greater_than_or_equals }
+				check_variable = { var = num_equipment@motorized_equipment value = black_friday_cbrn_decon_trucks_requote compare = greater_than_or_equals }
+			}
+			set_temp_variable = { black_friday_cbrn_decon_all_affordable = constant:universal_cost_framework.one }
+			set_temp_variable = { black_friday_cbrn_decon_masks_remaining = black_friday_cbrn_decon_masks_requote }
+			set_temp_variable = { black_friday_cbrn_decon_stock_gas_mask_equipment_reconditioned = num_equipment@gas_mask_equipment_reconditioned }
+			set_temp_variable = { black_friday_cbrn_decon_paid_gas_mask_equipment_reconditioned = black_friday_cbrn_decon_masks_remaining }
+			clamp_temp_variable = { var = black_friday_cbrn_decon_paid_gas_mask_equipment_reconditioned min = constant:universal_cost_framework.zero max = black_friday_cbrn_decon_stock_gas_mask_equipment_reconditioned }
+			subtract_from_temp_variable = { black_friday_cbrn_decon_masks_remaining = black_friday_cbrn_decon_paid_gas_mask_equipment_reconditioned }
+			set_temp_variable = { universal_cost_affordability_resource_kind = constant:universal_cost_resource_kind.gas_mask_equipment_reconditioned }
+			set_temp_variable = { universal_cost_affordability_amount = black_friday_cbrn_decon_paid_gas_mask_equipment_reconditioned }
+			if = {
+				limit = { NOT = { universal_cost_component_is_affordable = yes } }
+				set_temp_variable = { black_friday_cbrn_decon_all_affordable = constant:universal_cost_framework.zero }
+			}
+			set_temp_variable = { black_friday_cbrn_decon_stock_gas_mask_equipment_1 = num_equipment@gas_mask_equipment_1 }
+			set_temp_variable = { black_friday_cbrn_decon_paid_gas_mask_equipment_1 = black_friday_cbrn_decon_masks_remaining }
+			clamp_temp_variable = { var = black_friday_cbrn_decon_paid_gas_mask_equipment_1 min = constant:universal_cost_framework.zero max = black_friday_cbrn_decon_stock_gas_mask_equipment_1 }
+			subtract_from_temp_variable = { black_friday_cbrn_decon_masks_remaining = black_friday_cbrn_decon_paid_gas_mask_equipment_1 }
+			set_temp_variable = { universal_cost_affordability_resource_kind = constant:universal_cost_resource_kind.gas_mask_equipment_1 }
+			set_temp_variable = { universal_cost_affordability_amount = black_friday_cbrn_decon_paid_gas_mask_equipment_1 }
+			if = {
+				limit = { NOT = { universal_cost_component_is_affordable = yes } }
+				set_temp_variable = { black_friday_cbrn_decon_all_affordable = constant:universal_cost_framework.zero }
+			}
+			set_temp_variable = { black_friday_cbrn_decon_stock_gas_mask_equipment_2 = num_equipment@gas_mask_equipment_2 }
+			set_temp_variable = { black_friday_cbrn_decon_paid_gas_mask_equipment_2 = black_friday_cbrn_decon_masks_remaining }
+			clamp_temp_variable = { var = black_friday_cbrn_decon_paid_gas_mask_equipment_2 min = constant:universal_cost_framework.zero max = black_friday_cbrn_decon_stock_gas_mask_equipment_2 }
+			subtract_from_temp_variable = { black_friday_cbrn_decon_masks_remaining = black_friday_cbrn_decon_paid_gas_mask_equipment_2 }
+			set_temp_variable = { universal_cost_affordability_resource_kind = constant:universal_cost_resource_kind.gas_mask_equipment_2 }
+			set_temp_variable = { universal_cost_affordability_amount = black_friday_cbrn_decon_paid_gas_mask_equipment_2 }
+			if = {
+				limit = { NOT = { universal_cost_component_is_affordable = yes } }
+				set_temp_variable = { black_friday_cbrn_decon_all_affordable = constant:universal_cost_framework.zero }
+			}
+			set_temp_variable = { black_friday_cbrn_decon_stock_gas_mask_equipment_3 = num_equipment@gas_mask_equipment_3 }
+			set_temp_variable = { black_friday_cbrn_decon_paid_gas_mask_equipment_3 = black_friday_cbrn_decon_masks_remaining }
+			clamp_temp_variable = { var = black_friday_cbrn_decon_paid_gas_mask_equipment_3 min = constant:universal_cost_framework.zero max = black_friday_cbrn_decon_stock_gas_mask_equipment_3 }
+			subtract_from_temp_variable = { black_friday_cbrn_decon_masks_remaining = black_friday_cbrn_decon_paid_gas_mask_equipment_3 }
+			set_temp_variable = { universal_cost_affordability_resource_kind = constant:universal_cost_resource_kind.gas_mask_equipment_3 }
+			set_temp_variable = { universal_cost_affordability_amount = black_friday_cbrn_decon_paid_gas_mask_equipment_3 }
+			if = {
+				limit = { NOT = { universal_cost_component_is_affordable = yes } }
+				set_temp_variable = { black_friday_cbrn_decon_all_affordable = constant:universal_cost_framework.zero }
+			}
+			set_temp_variable = { black_friday_cbrn_decon_stock_gas_mask_equipment_4 = num_equipment@gas_mask_equipment_4 }
+			set_temp_variable = { black_friday_cbrn_decon_paid_gas_mask_equipment_4 = black_friday_cbrn_decon_masks_remaining }
+			clamp_temp_variable = { var = black_friday_cbrn_decon_paid_gas_mask_equipment_4 min = constant:universal_cost_framework.zero max = black_friday_cbrn_decon_stock_gas_mask_equipment_4 }
+			subtract_from_temp_variable = { black_friday_cbrn_decon_masks_remaining = black_friday_cbrn_decon_paid_gas_mask_equipment_4 }
+			set_temp_variable = { universal_cost_affordability_resource_kind = constant:universal_cost_resource_kind.gas_mask_equipment_4 }
+			set_temp_variable = { universal_cost_affordability_amount = black_friday_cbrn_decon_paid_gas_mask_equipment_4 }
+			if = {
+				limit = { NOT = { universal_cost_component_is_affordable = yes } }
+				set_temp_variable = { black_friday_cbrn_decon_all_affordable = constant:universal_cost_framework.zero }
+			}
+			set_temp_variable = { black_friday_cbrn_decon_masks_ordinary_remaining = constant:cbrn_diplomacy_cost.decon_masks }
+			set_temp_variable = { black_friday_cbrn_decon_ordinary_gas_mask_equipment_reconditioned = black_friday_cbrn_decon_masks_ordinary_remaining }
+			clamp_temp_variable = { var = black_friday_cbrn_decon_ordinary_gas_mask_equipment_reconditioned min = constant:universal_cost_framework.zero max = black_friday_cbrn_decon_stock_gas_mask_equipment_reconditioned }
+			subtract_from_temp_variable = { black_friday_cbrn_decon_masks_ordinary_remaining = black_friday_cbrn_decon_ordinary_gas_mask_equipment_reconditioned }
+			set_temp_variable = { black_friday_cbrn_decon_ordinary_gas_mask_equipment_1 = black_friday_cbrn_decon_masks_ordinary_remaining }
+			clamp_temp_variable = { var = black_friday_cbrn_decon_ordinary_gas_mask_equipment_1 min = constant:universal_cost_framework.zero max = black_friday_cbrn_decon_stock_gas_mask_equipment_1 }
+			subtract_from_temp_variable = { black_friday_cbrn_decon_masks_ordinary_remaining = black_friday_cbrn_decon_ordinary_gas_mask_equipment_1 }
+			set_temp_variable = { black_friday_cbrn_decon_ordinary_gas_mask_equipment_2 = black_friday_cbrn_decon_masks_ordinary_remaining }
+			clamp_temp_variable = { var = black_friday_cbrn_decon_ordinary_gas_mask_equipment_2 min = constant:universal_cost_framework.zero max = black_friday_cbrn_decon_stock_gas_mask_equipment_2 }
+			subtract_from_temp_variable = { black_friday_cbrn_decon_masks_ordinary_remaining = black_friday_cbrn_decon_ordinary_gas_mask_equipment_2 }
+			set_temp_variable = { black_friday_cbrn_decon_ordinary_gas_mask_equipment_3 = black_friday_cbrn_decon_masks_ordinary_remaining }
+			clamp_temp_variable = { var = black_friday_cbrn_decon_ordinary_gas_mask_equipment_3 min = constant:universal_cost_framework.zero max = black_friday_cbrn_decon_stock_gas_mask_equipment_3 }
+			subtract_from_temp_variable = { black_friday_cbrn_decon_masks_ordinary_remaining = black_friday_cbrn_decon_ordinary_gas_mask_equipment_3 }
+			set_temp_variable = { black_friday_cbrn_decon_ordinary_gas_mask_equipment_4 = black_friday_cbrn_decon_masks_ordinary_remaining }
+			clamp_temp_variable = { var = black_friday_cbrn_decon_ordinary_gas_mask_equipment_4 min = constant:universal_cost_framework.zero max = black_friday_cbrn_decon_stock_gas_mask_equipment_4 }
+			subtract_from_temp_variable = { black_friday_cbrn_decon_masks_ordinary_remaining = black_friday_cbrn_decon_ordinary_gas_mask_equipment_4 }
+			if = {
+				limit = { check_variable = { var = black_friday_cbrn_decon_paid_gas_mask_equipment_reconditioned value = constant:universal_cost_framework.zero compare = equals } }
+				add_to_temp_variable = { black_friday_cbrn_decon_masks_ordinary_remaining = black_friday_cbrn_decon_ordinary_gas_mask_equipment_reconditioned }
+				set_temp_variable = { black_friday_cbrn_decon_ordinary_gas_mask_equipment_reconditioned = constant:universal_cost_framework.zero }
+			}
+			if = {
+				limit = { check_variable = { var = black_friday_cbrn_decon_paid_gas_mask_equipment_1 value = constant:universal_cost_framework.zero compare = equals } }
+				add_to_temp_variable = { black_friday_cbrn_decon_masks_ordinary_remaining = black_friday_cbrn_decon_ordinary_gas_mask_equipment_1 }
+				set_temp_variable = { black_friday_cbrn_decon_ordinary_gas_mask_equipment_1 = constant:universal_cost_framework.zero }
+			}
+			if = {
+				limit = { check_variable = { var = black_friday_cbrn_decon_paid_gas_mask_equipment_2 value = constant:universal_cost_framework.zero compare = equals } }
+				add_to_temp_variable = { black_friday_cbrn_decon_masks_ordinary_remaining = black_friday_cbrn_decon_ordinary_gas_mask_equipment_2 }
+				set_temp_variable = { black_friday_cbrn_decon_ordinary_gas_mask_equipment_2 = constant:universal_cost_framework.zero }
+			}
+			if = {
+				limit = { check_variable = { var = black_friday_cbrn_decon_paid_gas_mask_equipment_3 value = constant:universal_cost_framework.zero compare = equals } }
+				add_to_temp_variable = { black_friday_cbrn_decon_masks_ordinary_remaining = black_friday_cbrn_decon_ordinary_gas_mask_equipment_3 }
+				set_temp_variable = { black_friday_cbrn_decon_ordinary_gas_mask_equipment_3 = constant:universal_cost_framework.zero }
+			}
+			if = {
+				limit = { check_variable = { var = black_friday_cbrn_decon_paid_gas_mask_equipment_4 value = constant:universal_cost_framework.zero compare = equals } }
+				add_to_temp_variable = { black_friday_cbrn_decon_masks_ordinary_remaining = black_friday_cbrn_decon_ordinary_gas_mask_equipment_4 }
+				set_temp_variable = { black_friday_cbrn_decon_ordinary_gas_mask_equipment_4 = constant:universal_cost_framework.zero }
+			}
+			if = {
+				limit = { check_variable = { var = black_friday_cbrn_decon_paid_gas_mask_equipment_4 value = constant:universal_cost_framework.zero compare = greater_than } }
+				add_to_temp_variable = { black_friday_cbrn_decon_ordinary_gas_mask_equipment_4 = black_friday_cbrn_decon_masks_ordinary_remaining }
+			}
+			else_if = {
+				limit = { check_variable = { var = black_friday_cbrn_decon_paid_gas_mask_equipment_3 value = constant:universal_cost_framework.zero compare = greater_than } }
+				add_to_temp_variable = { black_friday_cbrn_decon_ordinary_gas_mask_equipment_3 = black_friday_cbrn_decon_masks_ordinary_remaining }
+			}
+			else_if = {
+				limit = { check_variable = { var = black_friday_cbrn_decon_paid_gas_mask_equipment_2 value = constant:universal_cost_framework.zero compare = greater_than } }
+				add_to_temp_variable = { black_friday_cbrn_decon_ordinary_gas_mask_equipment_2 = black_friday_cbrn_decon_masks_ordinary_remaining }
+			}
+			else_if = {
+				limit = { check_variable = { var = black_friday_cbrn_decon_paid_gas_mask_equipment_1 value = constant:universal_cost_framework.zero compare = greater_than } }
+				add_to_temp_variable = { black_friday_cbrn_decon_ordinary_gas_mask_equipment_1 = black_friday_cbrn_decon_masks_ordinary_remaining }
+			}
+			else_if = {
+				limit = { check_variable = { var = black_friday_cbrn_decon_paid_gas_mask_equipment_reconditioned value = constant:universal_cost_framework.zero compare = greater_than } }
+				add_to_temp_variable = { black_friday_cbrn_decon_ordinary_gas_mask_equipment_reconditioned = black_friday_cbrn_decon_masks_ordinary_remaining }
+			}
+			set_temp_variable = { black_friday_cbrn_decon_equipment_remaining = black_friday_cbrn_decon_equipment_requote }
+			set_temp_variable = { black_friday_cbrn_decon_stock_decontamination_equipment_1 = num_equipment@decontamination_equipment_1 }
+			set_temp_variable = { black_friday_cbrn_decon_paid_decontamination_equipment_1 = black_friday_cbrn_decon_equipment_remaining }
+			clamp_temp_variable = { var = black_friday_cbrn_decon_paid_decontamination_equipment_1 min = constant:universal_cost_framework.zero max = black_friday_cbrn_decon_stock_decontamination_equipment_1 }
+			subtract_from_temp_variable = { black_friday_cbrn_decon_equipment_remaining = black_friday_cbrn_decon_paid_decontamination_equipment_1 }
+			set_temp_variable = { universal_cost_affordability_resource_kind = constant:universal_cost_resource_kind.decontamination_equipment_1 }
+			set_temp_variable = { universal_cost_affordability_amount = black_friday_cbrn_decon_paid_decontamination_equipment_1 }
+			if = {
+				limit = { NOT = { universal_cost_component_is_affordable = yes } }
+				set_temp_variable = { black_friday_cbrn_decon_all_affordable = constant:universal_cost_framework.zero }
+			}
+			set_temp_variable = { black_friday_cbrn_decon_stock_decontamination_equipment_2 = num_equipment@decontamination_equipment_2 }
+			set_temp_variable = { black_friday_cbrn_decon_paid_decontamination_equipment_2 = black_friday_cbrn_decon_equipment_remaining }
+			clamp_temp_variable = { var = black_friday_cbrn_decon_paid_decontamination_equipment_2 min = constant:universal_cost_framework.zero max = black_friday_cbrn_decon_stock_decontamination_equipment_2 }
+			subtract_from_temp_variable = { black_friday_cbrn_decon_equipment_remaining = black_friday_cbrn_decon_paid_decontamination_equipment_2 }
+			set_temp_variable = { universal_cost_affordability_resource_kind = constant:universal_cost_resource_kind.decontamination_equipment_2 }
+			set_temp_variable = { universal_cost_affordability_amount = black_friday_cbrn_decon_paid_decontamination_equipment_2 }
+			if = {
+				limit = { NOT = { universal_cost_component_is_affordable = yes } }
+				set_temp_variable = { black_friday_cbrn_decon_all_affordable = constant:universal_cost_framework.zero }
+			}
+			set_temp_variable = { black_friday_cbrn_decon_stock_decontamination_equipment_3 = num_equipment@decontamination_equipment_3 }
+			set_temp_variable = { black_friday_cbrn_decon_paid_decontamination_equipment_3 = black_friday_cbrn_decon_equipment_remaining }
+			clamp_temp_variable = { var = black_friday_cbrn_decon_paid_decontamination_equipment_3 min = constant:universal_cost_framework.zero max = black_friday_cbrn_decon_stock_decontamination_equipment_3 }
+			subtract_from_temp_variable = { black_friday_cbrn_decon_equipment_remaining = black_friday_cbrn_decon_paid_decontamination_equipment_3 }
+			set_temp_variable = { universal_cost_affordability_resource_kind = constant:universal_cost_resource_kind.decontamination_equipment_3 }
+			set_temp_variable = { universal_cost_affordability_amount = black_friday_cbrn_decon_paid_decontamination_equipment_3 }
+			if = {
+				limit = { NOT = { universal_cost_component_is_affordable = yes } }
+				set_temp_variable = { black_friday_cbrn_decon_all_affordable = constant:universal_cost_framework.zero }
+			}
+			set_temp_variable = { black_friday_cbrn_decon_equipment_ordinary_remaining = constant:cbrn_diplomacy_cost.decon_equipment }
+			set_temp_variable = { black_friday_cbrn_decon_ordinary_decontamination_equipment_1 = black_friday_cbrn_decon_equipment_ordinary_remaining }
+			clamp_temp_variable = { var = black_friday_cbrn_decon_ordinary_decontamination_equipment_1 min = constant:universal_cost_framework.zero max = black_friday_cbrn_decon_stock_decontamination_equipment_1 }
+			subtract_from_temp_variable = { black_friday_cbrn_decon_equipment_ordinary_remaining = black_friday_cbrn_decon_ordinary_decontamination_equipment_1 }
+			set_temp_variable = { black_friday_cbrn_decon_ordinary_decontamination_equipment_2 = black_friday_cbrn_decon_equipment_ordinary_remaining }
+			clamp_temp_variable = { var = black_friday_cbrn_decon_ordinary_decontamination_equipment_2 min = constant:universal_cost_framework.zero max = black_friday_cbrn_decon_stock_decontamination_equipment_2 }
+			subtract_from_temp_variable = { black_friday_cbrn_decon_equipment_ordinary_remaining = black_friday_cbrn_decon_ordinary_decontamination_equipment_2 }
+			set_temp_variable = { black_friday_cbrn_decon_ordinary_decontamination_equipment_3 = black_friday_cbrn_decon_equipment_ordinary_remaining }
+			clamp_temp_variable = { var = black_friday_cbrn_decon_ordinary_decontamination_equipment_3 min = constant:universal_cost_framework.zero max = black_friday_cbrn_decon_stock_decontamination_equipment_3 }
+			subtract_from_temp_variable = { black_friday_cbrn_decon_equipment_ordinary_remaining = black_friday_cbrn_decon_ordinary_decontamination_equipment_3 }
+			if = {
+				limit = { check_variable = { var = black_friday_cbrn_decon_paid_decontamination_equipment_1 value = constant:universal_cost_framework.zero compare = equals } }
+				add_to_temp_variable = { black_friday_cbrn_decon_equipment_ordinary_remaining = black_friday_cbrn_decon_ordinary_decontamination_equipment_1 }
+				set_temp_variable = { black_friday_cbrn_decon_ordinary_decontamination_equipment_1 = constant:universal_cost_framework.zero }
+			}
+			if = {
+				limit = { check_variable = { var = black_friday_cbrn_decon_paid_decontamination_equipment_2 value = constant:universal_cost_framework.zero compare = equals } }
+				add_to_temp_variable = { black_friday_cbrn_decon_equipment_ordinary_remaining = black_friday_cbrn_decon_ordinary_decontamination_equipment_2 }
+				set_temp_variable = { black_friday_cbrn_decon_ordinary_decontamination_equipment_2 = constant:universal_cost_framework.zero }
+			}
+			if = {
+				limit = { check_variable = { var = black_friday_cbrn_decon_paid_decontamination_equipment_3 value = constant:universal_cost_framework.zero compare = equals } }
+				add_to_temp_variable = { black_friday_cbrn_decon_equipment_ordinary_remaining = black_friday_cbrn_decon_ordinary_decontamination_equipment_3 }
+				set_temp_variable = { black_friday_cbrn_decon_ordinary_decontamination_equipment_3 = constant:universal_cost_framework.zero }
+			}
+			if = {
+				limit = { check_variable = { var = black_friday_cbrn_decon_paid_decontamination_equipment_3 value = constant:universal_cost_framework.zero compare = greater_than } }
+				add_to_temp_variable = { black_friday_cbrn_decon_ordinary_decontamination_equipment_3 = black_friday_cbrn_decon_equipment_ordinary_remaining }
+			}
+			else_if = {
+				limit = { check_variable = { var = black_friday_cbrn_decon_paid_decontamination_equipment_2 value = constant:universal_cost_framework.zero compare = greater_than } }
+				add_to_temp_variable = { black_friday_cbrn_decon_ordinary_decontamination_equipment_2 = black_friday_cbrn_decon_equipment_ordinary_remaining }
+			}
+			else_if = {
+				limit = { check_variable = { var = black_friday_cbrn_decon_paid_decontamination_equipment_1 value = constant:universal_cost_framework.zero compare = greater_than } }
+				add_to_temp_variable = { black_friday_cbrn_decon_ordinary_decontamination_equipment_1 = black_friday_cbrn_decon_equipment_ordinary_remaining }
+			}
+			set_temp_variable = { black_friday_cbrn_decon_trucks_remaining = black_friday_cbrn_decon_trucks_requote }
+			set_temp_variable = { black_friday_cbrn_decon_stock_motorized_equipment_0 = num_equipment@motorized_equipment_0 }
+			set_temp_variable = { black_friday_cbrn_decon_paid_motorized_equipment_0 = black_friday_cbrn_decon_trucks_remaining }
+			clamp_temp_variable = { var = black_friday_cbrn_decon_paid_motorized_equipment_0 min = constant:universal_cost_framework.zero max = black_friday_cbrn_decon_stock_motorized_equipment_0 }
+			subtract_from_temp_variable = { black_friday_cbrn_decon_trucks_remaining = black_friday_cbrn_decon_paid_motorized_equipment_0 }
+			set_temp_variable = { universal_cost_affordability_resource_kind = constant:universal_cost_resource_kind.motorized_equipment_0 }
+			set_temp_variable = { universal_cost_affordability_amount = black_friday_cbrn_decon_paid_motorized_equipment_0 }
+			if = {
+				limit = { NOT = { universal_cost_component_is_affordable = yes } }
+				set_temp_variable = { black_friday_cbrn_decon_all_affordable = constant:universal_cost_framework.zero }
+			}
+			set_temp_variable = { black_friday_cbrn_decon_stock_motorized_equipment_1 = num_equipment@motorized_equipment_1 }
+			set_temp_variable = { black_friday_cbrn_decon_paid_motorized_equipment_1 = black_friday_cbrn_decon_trucks_remaining }
+			clamp_temp_variable = { var = black_friday_cbrn_decon_paid_motorized_equipment_1 min = constant:universal_cost_framework.zero max = black_friday_cbrn_decon_stock_motorized_equipment_1 }
+			subtract_from_temp_variable = { black_friday_cbrn_decon_trucks_remaining = black_friday_cbrn_decon_paid_motorized_equipment_1 }
+			set_temp_variable = { universal_cost_affordability_resource_kind = constant:universal_cost_resource_kind.motorized_equipment_1 }
+			set_temp_variable = { universal_cost_affordability_amount = black_friday_cbrn_decon_paid_motorized_equipment_1 }
+			if = {
+				limit = { NOT = { universal_cost_component_is_affordable = yes } }
+				set_temp_variable = { black_friday_cbrn_decon_all_affordable = constant:universal_cost_framework.zero }
+			}
+			set_temp_variable = { black_friday_cbrn_decon_trucks_ordinary_remaining = constant:cbrn_diplomacy_cost.decon_trucks }
+			set_temp_variable = { black_friday_cbrn_decon_ordinary_motorized_equipment_0 = black_friday_cbrn_decon_trucks_ordinary_remaining }
+			clamp_temp_variable = { var = black_friday_cbrn_decon_ordinary_motorized_equipment_0 min = constant:universal_cost_framework.zero max = black_friday_cbrn_decon_stock_motorized_equipment_0 }
+			subtract_from_temp_variable = { black_friday_cbrn_decon_trucks_ordinary_remaining = black_friday_cbrn_decon_ordinary_motorized_equipment_0 }
+			set_temp_variable = { black_friday_cbrn_decon_ordinary_motorized_equipment_1 = black_friday_cbrn_decon_trucks_ordinary_remaining }
+			clamp_temp_variable = { var = black_friday_cbrn_decon_ordinary_motorized_equipment_1 min = constant:universal_cost_framework.zero max = black_friday_cbrn_decon_stock_motorized_equipment_1 }
+			subtract_from_temp_variable = { black_friday_cbrn_decon_trucks_ordinary_remaining = black_friday_cbrn_decon_ordinary_motorized_equipment_1 }
+			if = {
+				limit = { check_variable = { var = black_friday_cbrn_decon_paid_motorized_equipment_0 value = constant:universal_cost_framework.zero compare = equals } }
+				add_to_temp_variable = { black_friday_cbrn_decon_trucks_ordinary_remaining = black_friday_cbrn_decon_ordinary_motorized_equipment_0 }
+				set_temp_variable = { black_friday_cbrn_decon_ordinary_motorized_equipment_0 = constant:universal_cost_framework.zero }
+			}
+			if = {
+				limit = { check_variable = { var = black_friday_cbrn_decon_paid_motorized_equipment_1 value = constant:universal_cost_framework.zero compare = equals } }
+				add_to_temp_variable = { black_friday_cbrn_decon_trucks_ordinary_remaining = black_friday_cbrn_decon_ordinary_motorized_equipment_1 }
+				set_temp_variable = { black_friday_cbrn_decon_ordinary_motorized_equipment_1 = constant:universal_cost_framework.zero }
+			}
+			if = {
+				limit = { check_variable = { var = black_friday_cbrn_decon_paid_motorized_equipment_1 value = constant:universal_cost_framework.zero compare = greater_than } }
+				add_to_temp_variable = { black_friday_cbrn_decon_ordinary_motorized_equipment_1 = black_friday_cbrn_decon_trucks_ordinary_remaining }
+			}
+			else_if = {
+				limit = { check_variable = { var = black_friday_cbrn_decon_paid_motorized_equipment_0 value = constant:universal_cost_framework.zero compare = greater_than } }
+				add_to_temp_variable = { black_friday_cbrn_decon_ordinary_motorized_equipment_0 = black_friday_cbrn_decon_trucks_ordinary_remaining }
+			}
+			if = {
+				limit = {
+					check_variable = { var = black_friday_cbrn_decon_all_affordable value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = black_friday_cbrn_decon_masks_remaining value = constant:universal_cost_framework.zero compare = equals }
+					check_variable = { var = black_friday_cbrn_decon_equipment_remaining value = constant:universal_cost_framework.zero compare = equals }
+					check_variable = { var = black_friday_cbrn_decon_trucks_remaining value = constant:universal_cost_framework.zero compare = equals }
+				}
+				black_friday_allocate_owner_transaction = yes
+				set_temp_variable = { black_friday_cbrn_decon_all_paid = constant:universal_cost_framework.one }
+				set_temp_variable = { black_friday_cbrn_decon_component_kind = constant:universal_cost_resource_kind.gas_mask_equipment_reconditioned }
+				set_temp_variable = { black_friday_cbrn_decon_component_before = black_friday_cbrn_decon_stock_gas_mask_equipment_reconditioned }
+				set_temp_variable = { black_friday_cbrn_decon_component_paid = black_friday_cbrn_decon_paid_gas_mask_equipment_reconditioned }
+				set_temp_variable = { black_friday_cbrn_decon_component_ordinary = black_friday_cbrn_decon_ordinary_gas_mask_equipment_reconditioned }
+				black_friday_cbrn_decon_pay_record_component = yes
+				set_temp_variable = { black_friday_cbrn_decon_component_kind = constant:universal_cost_resource_kind.gas_mask_equipment_1 }
+				set_temp_variable = { black_friday_cbrn_decon_component_before = black_friday_cbrn_decon_stock_gas_mask_equipment_1 }
+				set_temp_variable = { black_friday_cbrn_decon_component_paid = black_friday_cbrn_decon_paid_gas_mask_equipment_1 }
+				set_temp_variable = { black_friday_cbrn_decon_component_ordinary = black_friday_cbrn_decon_ordinary_gas_mask_equipment_1 }
+				black_friday_cbrn_decon_pay_record_component = yes
+				set_temp_variable = { black_friday_cbrn_decon_component_kind = constant:universal_cost_resource_kind.gas_mask_equipment_2 }
+				set_temp_variable = { black_friday_cbrn_decon_component_before = black_friday_cbrn_decon_stock_gas_mask_equipment_2 }
+				set_temp_variable = { black_friday_cbrn_decon_component_paid = black_friday_cbrn_decon_paid_gas_mask_equipment_2 }
+				set_temp_variable = { black_friday_cbrn_decon_component_ordinary = black_friday_cbrn_decon_ordinary_gas_mask_equipment_2 }
+				black_friday_cbrn_decon_pay_record_component = yes
+				set_temp_variable = { black_friday_cbrn_decon_component_kind = constant:universal_cost_resource_kind.gas_mask_equipment_3 }
+				set_temp_variable = { black_friday_cbrn_decon_component_before = black_friday_cbrn_decon_stock_gas_mask_equipment_3 }
+				set_temp_variable = { black_friday_cbrn_decon_component_paid = black_friday_cbrn_decon_paid_gas_mask_equipment_3 }
+				set_temp_variable = { black_friday_cbrn_decon_component_ordinary = black_friday_cbrn_decon_ordinary_gas_mask_equipment_3 }
+				black_friday_cbrn_decon_pay_record_component = yes
+				set_temp_variable = { black_friday_cbrn_decon_component_kind = constant:universal_cost_resource_kind.gas_mask_equipment_4 }
+				set_temp_variable = { black_friday_cbrn_decon_component_before = black_friday_cbrn_decon_stock_gas_mask_equipment_4 }
+				set_temp_variable = { black_friday_cbrn_decon_component_paid = black_friday_cbrn_decon_paid_gas_mask_equipment_4 }
+				set_temp_variable = { black_friday_cbrn_decon_component_ordinary = black_friday_cbrn_decon_ordinary_gas_mask_equipment_4 }
+				black_friday_cbrn_decon_pay_record_component = yes
+				set_temp_variable = { black_friday_cbrn_decon_component_kind = constant:universal_cost_resource_kind.decontamination_equipment_1 }
+				set_temp_variable = { black_friday_cbrn_decon_component_before = black_friday_cbrn_decon_stock_decontamination_equipment_1 }
+				set_temp_variable = { black_friday_cbrn_decon_component_paid = black_friday_cbrn_decon_paid_decontamination_equipment_1 }
+				set_temp_variable = { black_friday_cbrn_decon_component_ordinary = black_friday_cbrn_decon_ordinary_decontamination_equipment_1 }
+				black_friday_cbrn_decon_pay_record_component = yes
+				set_temp_variable = { black_friday_cbrn_decon_component_kind = constant:universal_cost_resource_kind.decontamination_equipment_2 }
+				set_temp_variable = { black_friday_cbrn_decon_component_before = black_friday_cbrn_decon_stock_decontamination_equipment_2 }
+				set_temp_variable = { black_friday_cbrn_decon_component_paid = black_friday_cbrn_decon_paid_decontamination_equipment_2 }
+				set_temp_variable = { black_friday_cbrn_decon_component_ordinary = black_friday_cbrn_decon_ordinary_decontamination_equipment_2 }
+				black_friday_cbrn_decon_pay_record_component = yes
+				set_temp_variable = { black_friday_cbrn_decon_component_kind = constant:universal_cost_resource_kind.decontamination_equipment_3 }
+				set_temp_variable = { black_friday_cbrn_decon_component_before = black_friday_cbrn_decon_stock_decontamination_equipment_3 }
+				set_temp_variable = { black_friday_cbrn_decon_component_paid = black_friday_cbrn_decon_paid_decontamination_equipment_3 }
+				set_temp_variable = { black_friday_cbrn_decon_component_ordinary = black_friday_cbrn_decon_ordinary_decontamination_equipment_3 }
+				black_friday_cbrn_decon_pay_record_component = yes
+				set_temp_variable = { black_friday_cbrn_decon_component_kind = constant:universal_cost_resource_kind.motorized_equipment_0 }
+				set_temp_variable = { black_friday_cbrn_decon_component_before = black_friday_cbrn_decon_stock_motorized_equipment_0 }
+				set_temp_variable = { black_friday_cbrn_decon_component_paid = black_friday_cbrn_decon_paid_motorized_equipment_0 }
+				set_temp_variable = { black_friday_cbrn_decon_component_ordinary = black_friday_cbrn_decon_ordinary_motorized_equipment_0 }
+				black_friday_cbrn_decon_pay_record_component = yes
+				set_temp_variable = { black_friday_cbrn_decon_component_kind = constant:universal_cost_resource_kind.motorized_equipment_1 }
+				set_temp_variable = { black_friday_cbrn_decon_component_before = black_friday_cbrn_decon_stock_motorized_equipment_1 }
+				set_temp_variable = { black_friday_cbrn_decon_component_paid = black_friday_cbrn_decon_paid_motorized_equipment_1 }
+				set_temp_variable = { black_friday_cbrn_decon_component_ordinary = black_friday_cbrn_decon_ordinary_motorized_equipment_1 }
+				black_friday_cbrn_decon_pay_record_component = yes
+				if = {
+					limit = { check_variable = { var = black_friday_cbrn_decon_all_paid value = constant:universal_cost_framework.one compare = equals } }
+					set_temp_variable = { universal_cost_transaction_id = black_friday_owner_transaction_id }
+					universal_cost_settle_transaction = yes
+					if = {
+						limit = { check_variable = { var = universal_cost_settle_transaction_result value = constant:universal_cost_framework.result_success compare = equals } }
+						add_to_variable = { cbrn_diplomacy_masks_spent = black_friday_cbrn_decon_masks_requote }
+						add_to_variable = { cbrn_diplomacy_decon_equipment_spent = black_friday_cbrn_decon_equipment_requote }
+						add_to_variable = { cbrn_diplomacy_trucks_spent = black_friday_cbrn_decon_trucks_requote }
+						if = {
+							limit = { check_variable = { var = black_friday_cbrn_decon_requested_sale_variant value = constant:universal_cost_framework.two compare = equals } }
+							set_temp_variable = { black_friday_purchase_transaction_id = black_friday_owner_transaction_id }
+							set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.diplomatic }
+							set_temp_variable = { black_friday_purchase_ordinary_cost = constant:cbrn_diplomacy_cost.decon_masks }
+							set_temp_variable = { black_friday_purchase_actual_paid_cost = black_friday_cbrn_decon_masks_requote }
+							black_friday_record_achievement_transaction = yes
+						}
+						set_temp_variable = { black_friday_cbrn_decon_payment_success = constant:universal_cost_framework.one }
+					}
+				}
+				if = {
+					limit = { check_variable = { var = black_friday_cbrn_decon_payment_success value = constant:universal_cost_framework.zero compare = equals } }
+					set_temp_variable = { universal_cost_transaction_id = black_friday_owner_transaction_id }
+					universal_cost_refund_transaction = yes
+				}
+			}
+		}
+	}
+}
+
+# Country scope, FROM exact target state. Native timed decision already
+# reserved one factory; failure leaves no mission flag for cancel_trigger.
+black_friday_apply_cbrn_decon_sponsorship = {
+	set_temp_variable = { black_friday_cbrn_decon_payment_success = constant:universal_cost_framework.zero }
+	if = {
+		limit = {
+			OR = {
+				AND = {
+					check_variable = { var = black_friday_cbrn_decon_requested_sale_variant value = constant:universal_cost_framework.two compare = equals }
+					black_friday_cbrn_decon_sale_source_is_active = yes
+				}
+				AND = {
+					check_variable = { var = black_friday_cbrn_decon_requested_sale_variant value = constant:universal_cost_framework.one compare = equals }
+					NOT = { black_friday_cbrn_decon_sale_source_is_active = yes }
+				}
+			}
+		}
+		black_friday_pay_cbrn_decon_sponsorship = yes
+		if = {
+			limit = { check_variable = { var = black_friday_cbrn_decon_payment_success value = constant:universal_cost_framework.one compare = equals } }
+			FROM = { cbrn_diplomacy_begin_international_decon_mission = yes }
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
 # CBRN shelter owner adapter
 # ---------------------------------------------------------------------------
 
