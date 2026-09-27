@@ -104,6 +104,8 @@ Technology is the only surface here with a documented runtime database array. Th
 
 A package that adds one of those surfaces must register an idempotent setup effect and a modifier-free hidden-idea carrier. The carrier id matches the setup effect name before its `_apply` suffix. The package registers the carrier from a bounded existing-country `on_startup` scope and can repeat registration from an additive `on_daily_CXT` fallback. Daily registration sets `chaosx_test_country_registered_sync_pending` when new content appears; it never applies grants. Initial setup consumes all available carriers, and later content waits for **Apply Registered Systems**.
 
+The anti-zombie cure payload package registers concrete `zombie_cure_bomb_1` through `chaosx_cxt_extension_zombie_cure_payload_apply` and its modifier-free carrier. Initial setup completes `sp:zombie_cure_bomb`, then the registered equipment stockpile pass grants the normal CXT fixture amount. When the carrier is discovered later, the player uses **Apply Registered Systems** to add the token and **Refill Equipment** to grant stock; repeated application only registers the same token once.
+
 The setup effect may publish a special-project object, equipment token, frontline token, or support token through these helpers:
 
 ```text
