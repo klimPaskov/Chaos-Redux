@@ -50,19 +50,44 @@ cbrn_program_management_category = {
 			}
 		}
 		available = {
-			hidden_trigger = { cbrn_can_recondition_damaged_masks = yes }
+			hidden_trigger = { cbrn_recondition_masks_can_start = yes }
 		}
-		custom_cost_trigger = { hidden_trigger = { cbrn_can_recondition_damaged_masks = yes } }
+		custom_cost_trigger = { hidden_trigger = { cbrn_recondition_masks_can_start = yes } }
 		custom_cost_text = cbrn_recondition_old_masks_extra_cost
 		complete_effect = {
-			custom_effect_tooltip = cbrn_recondition_old_masks_begin_tt
-			hidden_effect = { cbrn_begin_mask_reconditioning = yes }
+			hidden_effect = {
+				clr_country_flag = cbrn_recondition_payment_failed
+				if = {
+					limit = { black_friday_is_active = yes }
+					black_friday_pay_cbrn_recondition_masks = yes
+					if = {
+						limit = { check_variable = { var = black_friday_cbrn_recondition_masks_payment_success value = constant:universal_cost_framework.zero compare = equals } }
+						set_country_flag = cbrn_recondition_payment_failed
+					}
+				}
+				else = {
+					if = {
+						limit = { black_friday_can_pay_cbrn_recondition_masks = yes }
+						cbrn_begin_mask_reconditioning = yes
+					}
+					else = { set_country_flag = cbrn_recondition_payment_failed }
+				}
+			}
+			if = {
+				limit = { hidden_trigger = { NOT = { has_country_flag = cbrn_recondition_payment_failed } } }
+				custom_effect_tooltip = cbrn_recondition_old_masks_begin_tt
+			}
 		}
 		remove_effect = {
-			custom_effect_tooltip = cbrn_recondition_old_masks_complete_tt
-			hidden_effect = { cbrn_complete_mask_reconditioning = yes }
+			if = {
+				limit = { NOT = { has_country_flag = cbrn_recondition_payment_failed } }
+				custom_effect_tooltip = cbrn_recondition_old_masks_complete_tt
+				hidden_effect = { cbrn_complete_mask_reconditioning = yes }
+			}
+			hidden_effect = { clr_country_flag = cbrn_recondition_payment_failed }
 		}
-		cancel_trigger = { OR = { NOT = { exists = yes } has_capitulated = yes } }
+		cancel_trigger = { OR = { NOT = { exists = yes } has_capitulated = yes hidden_trigger = { has_country_flag = cbrn_recondition_payment_failed } } }
+		cancel_effect = { hidden_effect = { clr_country_flag = cbrn_recondition_payment_failed } }
 		ai_will_do = {
 			base = constant:cbrn_protection_ai.base_procurement
 			modifier = { factor = constant:cbrn_protection_ai.low_stock_factor cbrn_country_needs_imported_masks = yes }
@@ -78,19 +103,44 @@ cbrn_program_management_category = {
 		modifier = { civilian_factory_use = @CR_SC_CBRN_PROTECTION_DECISION_COST_CONVERT_INDUSTRY_FACTORIES }
 		visible = { has_tech = basic_gas_masks }
 		available = {
-			hidden_trigger = { cbrn_can_convert_civilian_mask_industry = yes }
+			hidden_trigger = { cbrn_convert_mask_industry_can_start = yes }
 		}
-		custom_cost_trigger = { hidden_trigger = { cbrn_can_convert_civilian_mask_industry = yes } }
+		custom_cost_trigger = { hidden_trigger = { cbrn_convert_mask_industry_can_start = yes } }
 		custom_cost_text = cbrn_convert_civilian_mask_industry_extra_cost
 		complete_effect = {
-			custom_effect_tooltip = cbrn_convert_civilian_mask_industry_begin_tt
-			hidden_effect = { cbrn_begin_civilian_mask_industry_conversion = yes }
+			hidden_effect = {
+				clr_country_flag = cbrn_convert_mask_industry_payment_failed
+				if = {
+					limit = { black_friday_is_active = yes }
+					black_friday_pay_cbrn_convert_mask_industry = yes
+					if = {
+						limit = { check_variable = { var = black_friday_cbrn_convert_mask_industry_payment_success value = constant:universal_cost_framework.zero compare = equals } }
+						set_country_flag = cbrn_convert_mask_industry_payment_failed
+					}
+				}
+				else = {
+					if = {
+						limit = { black_friday_can_pay_cbrn_convert_mask_industry = yes }
+						cbrn_begin_civilian_mask_industry_conversion = yes
+					}
+					else = { set_country_flag = cbrn_convert_mask_industry_payment_failed }
+				}
+			}
+			if = {
+				limit = { hidden_trigger = { NOT = { has_country_flag = cbrn_convert_mask_industry_payment_failed } } }
+				custom_effect_tooltip = cbrn_convert_civilian_mask_industry_begin_tt
+			}
 		}
 		remove_effect = {
-			custom_effect_tooltip = cbrn_convert_civilian_mask_industry_complete_tt
-			hidden_effect = { cbrn_complete_civilian_mask_industry_conversion = yes }
+			if = {
+				limit = { NOT = { has_country_flag = cbrn_convert_mask_industry_payment_failed } }
+				custom_effect_tooltip = cbrn_convert_civilian_mask_industry_complete_tt
+				hidden_effect = { cbrn_complete_civilian_mask_industry_conversion = yes }
+			}
+			hidden_effect = { clr_country_flag = cbrn_convert_mask_industry_payment_failed }
 		}
-		cancel_trigger = { OR = { NOT = { exists = yes } has_capitulated = yes } }
+		cancel_trigger = { OR = { NOT = { exists = yes } has_capitulated = yes hidden_trigger = { has_country_flag = cbrn_convert_mask_industry_payment_failed } } }
+		cancel_effect = { hidden_effect = { clr_country_flag = cbrn_convert_mask_industry_payment_failed } }
 		ai_will_do = {
 			base = constant:cbrn_protection_ai.base_procurement
 			modifier = { factor = constant:cbrn_protection_ai.low_stock_factor cbrn_country_needs_imported_masks = yes }
@@ -109,19 +159,44 @@ cbrn_program_management_category = {
 			NOT = { has_country_flag = cbrn_simplified_filter_program_active }
 		}
 		available = {
-			hidden_trigger = { cbrn_can_simplify_filters_for_mass_issue = yes }
+			hidden_trigger = { cbrn_simplify_filters_can_start = yes }
 		}
-		custom_cost_trigger = { hidden_trigger = { cbrn_can_simplify_filters_for_mass_issue = yes } }
+		custom_cost_trigger = { hidden_trigger = { cbrn_simplify_filters_can_start = yes } }
 		custom_cost_text = cbrn_simplify_filters_for_mass_issue_extra_cost
 		complete_effect = {
-			custom_effect_tooltip = cbrn_simplify_filters_for_mass_issue_begin_tt
-			hidden_effect = { cbrn_begin_simplified_filter_program = yes }
+			hidden_effect = {
+				clr_country_flag = cbrn_simplify_filters_payment_failed
+				if = {
+					limit = { black_friday_is_active = yes }
+					black_friday_pay_cbrn_simplify_filters = yes
+					if = {
+						limit = { check_variable = { var = black_friday_cbrn_simplify_filters_payment_success value = constant:universal_cost_framework.zero compare = equals } }
+						set_country_flag = cbrn_simplify_filters_payment_failed
+					}
+				}
+				else = {
+					if = {
+						limit = { black_friday_can_pay_cbrn_simplify_filters = yes }
+						cbrn_begin_simplified_filter_program = yes
+					}
+					else = { set_country_flag = cbrn_simplify_filters_payment_failed }
+				}
+			}
+			if = {
+				limit = { hidden_trigger = { NOT = { has_country_flag = cbrn_simplify_filters_payment_failed } } }
+				custom_effect_tooltip = cbrn_simplify_filters_for_mass_issue_begin_tt
+			}
 		}
 		remove_effect = {
-			custom_effect_tooltip = cbrn_simplify_filters_for_mass_issue_complete_tt
-			hidden_effect = { cbrn_complete_simplified_filter_program = yes }
+			if = {
+				limit = { NOT = { has_country_flag = cbrn_simplify_filters_payment_failed } }
+				custom_effect_tooltip = cbrn_simplify_filters_for_mass_issue_complete_tt
+				hidden_effect = { cbrn_complete_simplified_filter_program = yes }
+			}
+			hidden_effect = { clr_country_flag = cbrn_simplify_filters_payment_failed }
 		}
-		cancel_trigger = { OR = { NOT = { exists = yes } has_capitulated = yes } }
+		cancel_trigger = { OR = { NOT = { exists = yes } has_capitulated = yes hidden_trigger = { has_country_flag = cbrn_simplify_filters_payment_failed } } }
+		cancel_effect = { hidden_effect = { clr_country_flag = cbrn_simplify_filters_payment_failed } }
 		ai_will_do = {
 			base = constant:cbrn_protection_ai.base_procurement
 			modifier = { factor = constant:cbrn_protection_ai.mass_civil_defence_factor cbrn_profile_is_mass_civil_defence = yes }

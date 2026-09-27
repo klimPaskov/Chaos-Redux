@@ -1,5 +1,5 @@
-# Procurement cost text colors each stockpile payment and factory commitment separately.
-# Country-scope decision cost rows use the same constants as their inclusive gates.
+# Procurement cost text colors each spendable payment independently.
+# Sale-adapted PP/support rows use Event 026 quotes; factory use stays in tooltips.
 
 defined_text = {
 	name = GetCbrnOccupiedMaskReservationQuote
@@ -37,100 +37,109 @@ defined_text = {
 defined_text = {
 	name = GetCbrnReconditionPoliticalCost
 	text = {
-		trigger = { has_political_power < constant:cbrn_protection_decision_cost.recondition_masks_pp }
+		trigger = {
+			black_friday_quote_cbrn_recondition_masks = yes
+			OR = {
+				check_variable = { var = black_friday_cbrn_recondition_masks_quote_valid value = constant:universal_cost_framework.zero compare = equals }
+				check_variable = { var = black_friday_cbrn_recondition_masks_pp_affordable value = constant:universal_cost_framework.zero compare = equals }
+			}
+		}
 		localization_key = cbrn_recondition_political_cost_short
 	}
-	text = { localization_key = cbrn_recondition_political_cost_ready }
+	text = {
+		trigger = { black_friday_quote_cbrn_recondition_masks = yes }
+		localization_key = cbrn_recondition_political_cost_ready
+	}
 }
 
 defined_text = {
 	name = GetCbrnReconditionSupportCost
 	text = {
 		trigger = {
-			has_equipment = {
-				support_equipment < constant:cbrn_protection_decision_cost.recondition_masks_support
+			black_friday_quote_cbrn_recondition_masks = yes
+			OR = {
+				check_variable = { var = black_friday_cbrn_recondition_masks_quote_valid value = constant:universal_cost_framework.zero compare = equals }
+				check_variable = { var = black_friday_cbrn_recondition_masks_support_affordable value = constant:universal_cost_framework.zero compare = equals }
 			}
 		}
 		localization_key = cbrn_recondition_support_cost_short
 	}
-	text = { localization_key = cbrn_recondition_support_cost_ready }
-}
-
-defined_text = {
-	name = GetCbrnReconditionFactoryCost
 	text = {
-		trigger = {
-			num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.recondition_masks_factories
-		}
-		localization_key = cbrn_recondition_factory_cost_short
+		trigger = { black_friday_quote_cbrn_recondition_masks = yes }
+		localization_key = cbrn_recondition_support_cost_ready
 	}
-	text = { localization_key = cbrn_recondition_factory_cost_ready }
 }
 
 defined_text = {
 	name = GetCbrnConvertPoliticalCost
 	text = {
-		trigger = { has_political_power < constant:cbrn_protection_decision_cost.convert_industry_pp }
+		trigger = {
+			black_friday_quote_cbrn_convert_mask_industry = yes
+			OR = {
+				check_variable = { var = black_friday_cbrn_convert_mask_industry_quote_valid value = constant:universal_cost_framework.zero compare = equals }
+				check_variable = { var = black_friday_cbrn_convert_mask_industry_pp_affordable value = constant:universal_cost_framework.zero compare = equals }
+			}
+		}
 		localization_key = cbrn_convert_political_cost_short
 	}
-	text = { localization_key = cbrn_convert_political_cost_ready }
+	text = {
+		trigger = { black_friday_quote_cbrn_convert_mask_industry = yes }
+		localization_key = cbrn_convert_political_cost_ready
+	}
 }
 
 defined_text = {
 	name = GetCbrnConvertSupportCost
 	text = {
 		trigger = {
-			has_equipment = {
-				support_equipment < constant:cbrn_protection_decision_cost.convert_industry_support
+			black_friday_quote_cbrn_convert_mask_industry = yes
+			OR = {
+				check_variable = { var = black_friday_cbrn_convert_mask_industry_quote_valid value = constant:universal_cost_framework.zero compare = equals }
+				check_variable = { var = black_friday_cbrn_convert_mask_industry_support_affordable value = constant:universal_cost_framework.zero compare = equals }
 			}
 		}
 		localization_key = cbrn_convert_support_cost_short
 	}
-	text = { localization_key = cbrn_convert_support_cost_ready }
-}
-
-defined_text = {
-	name = GetCbrnConvertFactoryCost
 	text = {
-		trigger = {
-			num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.convert_industry_factories
-		}
-		localization_key = cbrn_convert_factory_cost_short
+		trigger = { black_friday_quote_cbrn_convert_mask_industry = yes }
+		localization_key = cbrn_convert_support_cost_ready
 	}
-	text = { localization_key = cbrn_convert_factory_cost_ready }
 }
 
 defined_text = {
 	name = GetCbrnSimplifyPoliticalCost
 	text = {
-		trigger = { has_political_power < constant:cbrn_protection_decision_cost.simplify_filters_pp }
+		trigger = {
+			black_friday_quote_cbrn_simplify_filters = yes
+			OR = {
+				check_variable = { var = black_friday_cbrn_simplify_filters_quote_valid value = constant:universal_cost_framework.zero compare = equals }
+				check_variable = { var = black_friday_cbrn_simplify_filters_pp_affordable value = constant:universal_cost_framework.zero compare = equals }
+			}
+		}
 		localization_key = cbrn_simplify_political_cost_short
 	}
-	text = { localization_key = cbrn_simplify_political_cost_ready }
+	text = {
+		trigger = { black_friday_quote_cbrn_simplify_filters = yes }
+		localization_key = cbrn_simplify_political_cost_ready
+	}
 }
 
 defined_text = {
 	name = GetCbrnSimplifySupportCost
 	text = {
 		trigger = {
-			has_equipment = {
-				support_equipment < constant:cbrn_protection_decision_cost.simplify_filters_support
+			black_friday_quote_cbrn_simplify_filters = yes
+			OR = {
+				check_variable = { var = black_friday_cbrn_simplify_filters_quote_valid value = constant:universal_cost_framework.zero compare = equals }
+				check_variable = { var = black_friday_cbrn_simplify_filters_support_affordable value = constant:universal_cost_framework.zero compare = equals }
 			}
 		}
 		localization_key = cbrn_simplify_support_cost_short
 	}
-	text = { localization_key = cbrn_simplify_support_cost_ready }
-}
-
-defined_text = {
-	name = GetCbrnSimplifyFactoryCost
 	text = {
-		trigger = {
-			num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.simplify_filters_factories
-		}
-		localization_key = cbrn_simplify_factory_cost_short
+		trigger = { black_friday_quote_cbrn_simplify_filters = yes }
+		localization_key = cbrn_simplify_support_cost_ready
 	}
-	text = { localization_key = cbrn_simplify_factory_cost_ready }
 }
 
 defined_text = {

@@ -300,8 +300,7 @@ cbrn_can_replace_military_mask_filters = {
 	}
 }
 
-cbrn_can_recondition_damaged_masks = {
-	NOT = { has_political_power < constant:cbrn_protection_decision_cost.recondition_masks_pp }
+cbrn_recondition_masks_has_nonpayment_requirements = {
 	OR = {
 		check_variable = { cbrn_reconditionable_mask_cache > constant:cbrn_math.zero }
 		check_variable = { cbrn_mask_replacement_demand > constant:cbrn_math.zero }
@@ -309,37 +308,74 @@ cbrn_can_recondition_damaged_masks = {
 	NOT = {
 		num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.recondition_masks_factories
 	}
+}
+
+cbrn_can_recondition_damaged_masks = {
+	cbrn_recondition_masks_has_nonpayment_requirements = yes
+	NOT = { has_political_power < constant:cbrn_protection_decision_cost.recondition_masks_pp }
 	NOT = {
 		has_equipment = {
-			support_equipment < constant:cbrn_protection_decision_cost.recondition_masks_support
+			support_equipment_1 < constant:cbrn_protection_decision_cost.recondition_masks_support
 		}
 	}
 }
 
-cbrn_can_convert_civilian_mask_industry = {
-	NOT = { has_political_power < constant:cbrn_protection_decision_cost.convert_industry_pp }
+cbrn_recondition_masks_can_start = {
+	cbrn_recondition_masks_has_nonpayment_requirements = yes
+	OR = {
+		AND = { black_friday_is_active = yes black_friday_can_pay_cbrn_recondition_masks = yes }
+		AND = { NOT = { black_friday_is_active = yes } cbrn_can_recondition_damaged_masks = yes }
+	}
+}
+
+cbrn_convert_mask_industry_has_nonpayment_requirements = {
 	has_tech = basic_gas_masks
 	NOT = {
 		num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.convert_industry_factories
 	}
+}
+
+cbrn_can_convert_civilian_mask_industry = {
+	cbrn_convert_mask_industry_has_nonpayment_requirements = yes
+	NOT = { has_political_power < constant:cbrn_protection_decision_cost.convert_industry_pp }
 	NOT = {
 		has_equipment = {
-			support_equipment < constant:cbrn_protection_decision_cost.convert_industry_support
+			support_equipment_1 < constant:cbrn_protection_decision_cost.convert_industry_support
 		}
 	}
 }
 
-cbrn_can_simplify_filters_for_mass_issue = {
-	NOT = { has_political_power < constant:cbrn_protection_decision_cost.simplify_filters_pp }
+cbrn_convert_mask_industry_can_start = {
+	cbrn_convert_mask_industry_has_nonpayment_requirements = yes
+	OR = {
+		AND = { black_friday_is_active = yes black_friday_can_pay_cbrn_convert_mask_industry = yes }
+		AND = { NOT = { black_friday_is_active = yes } cbrn_can_convert_civilian_mask_industry = yes }
+	}
+}
+
+cbrn_simplify_filters_has_nonpayment_requirements = {
 	has_tech = basic_gas_masks
 	NOT = { has_country_flag = cbrn_simplified_filter_program_active }
 	NOT = {
 		num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.simplify_filters_factories
 	}
+}
+
+cbrn_can_simplify_filters_for_mass_issue = {
+	cbrn_simplify_filters_has_nonpayment_requirements = yes
+	NOT = { has_political_power < constant:cbrn_protection_decision_cost.simplify_filters_pp }
 	NOT = {
 		has_equipment = {
-			support_equipment < constant:cbrn_protection_decision_cost.simplify_filters_support
+			support_equipment_1 < constant:cbrn_protection_decision_cost.simplify_filters_support
 		}
+	}
+}
+
+cbrn_simplify_filters_can_start = {
+	cbrn_simplify_filters_has_nonpayment_requirements = yes
+	OR = {
+		AND = { black_friday_is_active = yes black_friday_can_pay_cbrn_simplify_filters = yes }
+		AND = { NOT = { black_friday_is_active = yes } cbrn_can_simplify_filters_for_mass_issue = yes }
 	}
 }
 

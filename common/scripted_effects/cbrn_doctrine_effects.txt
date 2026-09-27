@@ -88,7 +88,17 @@ cbrn_pay_theater_decontamination_assignment = {
 }
 
 cbrn_apply_theater_decontamination_assignment = {
-	ROOT = { cbrn_pay_theater_decontamination_assignment = yes }
+	ROOT = {
+		if = {
+			limit = { black_friday_is_active = yes }
+			black_friday_pay_cbrn_theater_assignment = yes
+			if = {
+				limit = { check_variable = { var = black_friday_cbrn_theater_assignment_payment_success value = constant:universal_cost_framework.one compare = equals } }
+				set_country_flag = cbrn_doctrine_cleanup_assignment_paid
+			}
+		}
+		else = { cbrn_pay_theater_decontamination_assignment = yes }
+	}
 	if = {
 		limit = { ROOT = { has_country_flag = cbrn_doctrine_cleanup_assignment_paid } }
 		ROOT = {

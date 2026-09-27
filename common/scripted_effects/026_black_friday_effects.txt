@@ -55,47 +55,26 @@ black_friday_prepare_achievement_progress = {
 	clear_array = black_friday_achievement_family_ids
 	set_variable = { black_friday_achievement_family_count = constant:black_friday_event.zero_date }
 	set_variable = { black_friday_achievement_active_sale_sequence = global.black_friday_sale_sequence }
+	set_variable = { black_friday_achievement_indexed_sale_sequence = global.black_friday_sale_sequence }
 	set_variable = { black_friday_achievement_non_political_receipt_count = constant:black_friday_event.zero_date }
 	clr_country_flag = black_friday_achievement_has_institutional_family
 	clr_country_flag = black_friday_achievement_has_material_family
 	clr_country_flag = black_friday_achievement_native_non_political_payment
 }
 
-# The component ledger supplies one immutable non-PP proof per paid receipt.
+# The indexed receipt stores the count of still-unrefunded non-PP payments.
 black_friday_scan_receipt_non_political_payment = {
 	set_temp_variable = { black_friday_purchase_has_non_political_paid_component = constant:universal_cost_framework.zero }
-	set_temp_variable = { black_friday_purchase_component_cursor = constant:universal_cost_framework.zero }
-	while_loop_effect = {
-		limit = {
-			check_variable = {
-				var = black_friday_purchase_component_cursor
-				value = universal_cost_component_transaction_ids^num
-				compare = less_than
-			}
-		}
+	set_temp_variable = { black_friday_purchase_receipt_proof_valid = constant:universal_cost_framework.zero }
+	set_temp_variable = { universal_cost_transaction_lookup_id = black_friday_purchase_transaction_id }
+	universal_cost_find_transaction_row = yes
+	if = {
+		limit = { check_variable = { var = universal_cost_transaction_is_indexed value = constant:universal_cost_framework.one compare = equals } }
+		set_temp_variable = { black_friday_purchase_receipt_proof_valid = constant:universal_cost_framework.one }
 		if = {
-			limit = {
-				check_variable = {
-					var = universal_cost_component_transaction_ids^black_friday_purchase_component_cursor
-					value = black_friday_purchase_transaction_id
-					compare = equals
-				}
-				check_variable = {
-					var = universal_cost_component_actual_paid_costs^black_friday_purchase_component_cursor
-					value = constant:universal_cost_framework.zero
-					compare = greater_than
-				}
-				NOT = {
-					check_variable = {
-						var = universal_cost_component_resource_kinds^black_friday_purchase_component_cursor
-						value = constant:universal_cost_resource_kind.political_power
-						compare = equals
-					}
-				}
-			}
+			limit = { check_variable = { var = universal_cost_transaction_non_political_paid_component_count^universal_cost_transaction_found_index value = constant:universal_cost_framework.zero compare = greater_than } }
 			set_temp_variable = { black_friday_purchase_has_non_political_paid_component = constant:universal_cost_framework.one }
 		}
-		add_to_temp_variable = { black_friday_purchase_component_cursor = constant:universal_cost_framework.one }
 	}
 }
 
@@ -236,11 +215,53 @@ black_friday_credit_native_japan_cbrn_raid_family = {
 	}
 }
 
+# Input: black_friday_purchase_family_id. Count only committed receipts from
+# this sale; native raid family proof remains the separate country flag.
+black_friday_add_committed_achievement_family = {
+	if = {
+		limit = { check_variable = { var = black_friday_achievement_indexed_sale_sequence value = global.black_friday_sale_sequence compare = equals } }
+		if = {
+			limit = { check_variable = { var = black_friday_achievement_family_generation_@var:black_friday_purchase_family_id value = global.black_friday_sale_sequence compare = not_equals } }
+			set_variable = { black_friday_achievement_family_generation_@var:black_friday_purchase_family_id = global.black_friday_sale_sequence }
+			set_variable = { black_friday_achievement_family_committed_count_@var:black_friday_purchase_family_id = constant:black_friday_event.zero_date }
+		}
+		add_to_variable = { black_friday_achievement_family_committed_count_@var:black_friday_purchase_family_id = constant:black_friday_event.one }
+		black_friday_credit_achievement_family = yes
+	}
+}
+
+black_friday_remove_committed_achievement_family = {
+	if = {
+		limit = {
+			check_variable = { var = black_friday_achievement_indexed_sale_sequence value = global.black_friday_sale_sequence compare = equals }
+			check_variable = { var = black_friday_achievement_family_generation_@var:black_friday_purchase_family_id value = global.black_friday_sale_sequence compare = equals }
+			check_variable = { var = black_friday_achievement_family_committed_count_@var:black_friday_purchase_family_id value = constant:black_friday_event.zero_date compare = greater_than }
+		}
+		subtract_from_variable = { black_friday_achievement_family_committed_count_@var:black_friday_purchase_family_id = constant:black_friday_event.one }
+		if = {
+			limit = {
+				check_variable = { var = black_friday_achievement_family_committed_count_@var:black_friday_purchase_family_id value = constant:black_friday_event.zero_date compare = equals }
+				is_in_array = { array = black_friday_achievement_family_ids value = black_friday_purchase_family_id }
+				NOT = { has_country_flag = black_friday_achievement_awarded }
+				NOT = {
+					AND = {
+						has_country_flag = black_friday_achievement_native_non_political_payment
+						check_variable = { var = black_friday_purchase_family_id value = constant:universal_cost_family.equipment compare = equals }
+					}
+				}
+			}
+			remove_from_array = { array = black_friday_achievement_family_ids value = black_friday_purchase_family_id }
+			subtract_from_variable = { black_friday_achievement_family_count = constant:black_friday_event.one }
+		}
+	}
+}
+
 # Inputs: black_friday_purchase_transaction_id, black_friday_purchase_family_id,
 # black_friday_purchase_ordinary_cost, black_friday_purchase_actual_paid_cost,
 # and optional positive black_friday_purchase_is_refundable. Owners call this
 # after the shared receipt was recorded and after the real debit succeeded.
 black_friday_record_achievement_transaction = {
+	set_temp_variable = { black_friday_purchase_achievement_pointer = black_friday_achievement_row_plus_one_@var:black_friday_purchase_transaction_id }
 	if = {
 		limit = {
 			black_friday_achievement_is_valid_sale = yes
@@ -248,12 +269,8 @@ black_friday_record_achievement_transaction = {
 			check_variable = { black_friday_purchase_family_id > 0 }
 			check_variable = { black_friday_purchase_ordinary_cost > 0 }
 			check_variable = { black_friday_purchase_actual_paid_cost > 0 }
-			NOT = {
-				is_in_array = {
-					array = black_friday_achievement_transaction_ids
-					value = black_friday_purchase_transaction_id
-				}
-			}
+			check_variable = { var = black_friday_purchase_achievement_pointer value = constant:universal_cost_framework.zero compare = equals }
+			check_variable = { var = universal_cost_transaction_row_plus_one_@var:black_friday_purchase_transaction_id value = constant:universal_cost_framework.zero compare = greater_than }
 		}
 		if = {
 			limit = {
@@ -266,76 +283,89 @@ black_friday_record_achievement_transaction = {
 			black_friday_prepare_achievement_progress = yes
 		}
 		black_friday_scan_receipt_non_political_payment = yes
-		add_to_array = {
-			array = black_friday_achievement_transaction_ids
-			value = black_friday_purchase_transaction_id
-		}
-		add_to_array = {
-			array = black_friday_achievement_transaction_family_ids
-			value = black_friday_purchase_family_id
-		}
-		add_to_array = {
-			array = black_friday_achievement_transaction_sale_sequences
-			value = global.black_friday_sale_sequence
-		}
-		add_to_array = {
-			array = black_friday_achievement_transaction_non_political_paid
-			value = black_friday_purchase_has_non_political_paid_component
-		}
 		if = {
 			limit = {
-				has_variable = black_friday_purchase_is_refundable
-				check_variable = { black_friday_purchase_is_refundable > 0 }
+				check_variable = { var = black_friday_purchase_receipt_proof_valid value = constant:universal_cost_framework.one compare = equals }
+				check_variable = { var = black_friday_achievement_indexed_sale_sequence value = global.black_friday_sale_sequence compare = equals }
 			}
 			add_to_array = {
-				array = black_friday_achievement_transaction_states
-				value = constant:black_friday_event.achievement_transaction_pending
+				array = black_friday_achievement_transaction_ids
+				value = black_friday_purchase_transaction_id
 			}
-		}
-		else = {
 			add_to_array = {
-				array = black_friday_achievement_transaction_states
-				value = constant:black_friday_event.achievement_transaction_committed
+				array = black_friday_achievement_transaction_family_ids
+				value = black_friday_purchase_family_id
+			}
+			add_to_array = {
+				array = black_friday_achievement_transaction_sale_sequences
+				value = global.black_friday_sale_sequence
+			}
+			add_to_array = {
+				array = black_friday_achievement_transaction_non_political_paid
+				value = black_friday_purchase_has_non_political_paid_component
 			}
 			if = {
-				limit = { check_variable = { var = black_friday_purchase_has_non_political_paid_component value = constant:universal_cost_framework.one compare = equals } }
-				add_to_variable = { black_friday_achievement_non_political_receipt_count = constant:black_friday_event.one }
+				limit = {
+					has_variable = black_friday_purchase_is_refundable
+					check_variable = { black_friday_purchase_is_refundable > 0 }
+				}
+				add_to_array = {
+					array = black_friday_achievement_transaction_states
+					value = constant:black_friday_event.achievement_transaction_pending
+				}
 			}
-			black_friday_credit_achievement_family = yes
+			else = {
+				add_to_array = {
+					array = black_friday_achievement_transaction_states
+					value = constant:black_friday_event.achievement_transaction_committed
+				}
+				if = {
+					limit = { check_variable = { var = black_friday_purchase_has_non_political_paid_component value = constant:universal_cost_framework.one compare = equals } }
+					add_to_variable = { black_friday_achievement_non_political_receipt_count = constant:black_friday_event.one }
+				}
+				black_friday_add_committed_achievement_family = yes
+			}
+			set_temp_variable = { black_friday_purchase_achievement_pointer = black_friday_achievement_transaction_ids^num }
+			set_variable = { black_friday_achievement_row_plus_one_@var:black_friday_purchase_transaction_id = black_friday_purchase_achievement_pointer }
 		}
 	}
 }
 
 black_friday_find_achievement_transaction = {
 	set_temp_variable = { black_friday_achievement_transaction_index = constant:universal_cost_framework.invalid_index }
-	set_temp_variable = { black_friday_achievement_transaction_cursor = constant:black_friday_event.zero_date }
-	while_loop_effect = {
-		limit = {
-			check_variable = {
-				var = black_friday_achievement_transaction_cursor
-				value = black_friday_achievement_transaction_ids^num
-				compare = less_than
-			}
-			check_variable = {
-				var = black_friday_achievement_transaction_index
-				value = constant:universal_cost_framework.invalid_index
-				compare = equals
-			}
-		}
+	set_temp_variable = { black_friday_achievement_lookup_result = constant:universal_cost_framework.result_no_op }
+	set_temp_variable = { black_friday_achievement_row_pointer = black_friday_achievement_row_plus_one_@var:black_friday_purchase_transaction_id }
+	if = {
+		limit = { check_variable = { var = black_friday_achievement_row_pointer value = constant:universal_cost_framework.zero compare = greater_than } }
+		set_temp_variable = { black_friday_achievement_candidate_index = black_friday_achievement_row_pointer }
+		subtract_from_temp_variable = { black_friday_achievement_candidate_index = constant:universal_cost_framework.one }
 		if = {
 			limit = {
-				check_variable = {
-					var = black_friday_achievement_transaction_ids^black_friday_achievement_transaction_cursor
-					value = black_friday_purchase_transaction_id
-					compare = equals
-				}
+				check_variable = { var = black_friday_achievement_candidate_index value = black_friday_achievement_transaction_ids^num compare = less_than }
+				check_variable = { var = black_friday_achievement_transaction_ids^black_friday_achievement_candidate_index value = black_friday_purchase_transaction_id compare = equals }
 			}
-			set_temp_variable = {
-				black_friday_achievement_transaction_index = black_friday_achievement_transaction_cursor
-			}
+			set_temp_variable = { black_friday_achievement_transaction_index = black_friday_achievement_candidate_index }
+			set_temp_variable = { black_friday_achievement_lookup_result = constant:universal_cost_framework.result_success }
 		}
-		add_to_temp_variable = { black_friday_achievement_transaction_cursor = constant:black_friday_event.one }
+		else = { set_temp_variable = { black_friday_achievement_lookup_result = constant:universal_cost_framework.result_rejected } }
 	}
+	else_if = {
+		limit = { check_variable = { var = black_friday_achievement_transaction_ids^num value = constant:universal_cost_framework.legacy_scan_max_rows compare = less_than_or_equals } }
+		set_temp_variable = { black_friday_achievement_transaction_cursor = constant:black_friday_event.zero_date }
+		while_loop_effect = {
+			limit = {
+				check_variable = { var = black_friday_achievement_transaction_cursor value = black_friday_achievement_transaction_ids^num compare = less_than }
+				check_variable = { var = black_friday_achievement_transaction_index value = constant:universal_cost_framework.invalid_index compare = equals }
+			}
+			if = {
+				limit = { check_variable = { var = black_friday_achievement_transaction_ids^black_friday_achievement_transaction_cursor value = black_friday_purchase_transaction_id compare = equals } }
+				set_temp_variable = { black_friday_achievement_transaction_index = black_friday_achievement_transaction_cursor }
+				set_temp_variable = { black_friday_achievement_lookup_result = constant:universal_cost_framework.result_success }
+			}
+			add_to_temp_variable = { black_friday_achievement_transaction_cursor = constant:black_friday_event.one }
+		}
+	}
+	else = { set_temp_variable = { black_friday_achievement_lookup_result = constant:universal_cost_framework.result_rejected } }
 }
 
 black_friday_confirm_achievement_transaction = {
@@ -346,8 +376,27 @@ black_friday_confirm_achievement_transaction = {
 			check_variable = { black_friday_purchase_transaction_id > 0 }
 		}
 		black_friday_find_achievement_transaction = yes
+		set_temp_variable = { universal_cost_transaction_lookup_id = black_friday_purchase_transaction_id }
+		universal_cost_find_transaction_row = yes
+		set_temp_variable = { black_friday_purchase_current_non_political_paid = constant:universal_cost_framework.zero }
 		if = {
 			limit = {
+				check_variable = { var = universal_cost_transaction_is_indexed value = constant:universal_cost_framework.one compare = equals }
+				check_variable = { var = universal_cost_transaction_non_political_paid_component_count^universal_cost_transaction_found_index value = constant:universal_cost_framework.zero compare = greater_than }
+			}
+			set_temp_variable = { black_friday_purchase_current_non_political_paid = constant:universal_cost_framework.one }
+		}
+		if = {
+			limit = {
+				check_variable = { var = black_friday_achievement_lookup_result value = constant:universal_cost_framework.result_success compare = equals }
+				check_variable = { var = black_friday_achievement_row_pointer value = constant:universal_cost_framework.zero compare = greater_than }
+				check_variable = { var = black_friday_achievement_indexed_sale_sequence value = global.black_friday_sale_sequence compare = equals }
+				check_variable = { var = universal_cost_transaction_is_indexed value = constant:universal_cost_framework.one compare = equals }
+				check_variable = { var = universal_cost_transaction_states^universal_cost_transaction_found_index value = constant:universal_cost_framework.transaction_state_settled compare = equals }
+				OR = {
+					check_variable = { var = black_friday_achievement_transaction_non_political_paid^black_friday_achievement_transaction_index value = constant:universal_cost_framework.zero compare = equals }
+					check_variable = { var = black_friday_purchase_current_non_political_paid value = constant:universal_cost_framework.one compare = equals }
+				}
 				check_variable = {
 					var = black_friday_achievement_transaction_index
 					value = constant:universal_cost_framework.invalid_index
@@ -362,14 +411,15 @@ black_friday_confirm_achievement_transaction = {
 			set_variable = {
 				black_friday_achievement_transaction_states^black_friday_achievement_transaction_index = constant:black_friday_event.achievement_transaction_committed
 			}
+			set_variable = { black_friday_achievement_transaction_non_political_paid^black_friday_achievement_transaction_index = black_friday_purchase_current_non_political_paid }
 			if = {
-				limit = { check_variable = { var = black_friday_achievement_transaction_non_political_paid^black_friday_achievement_transaction_index value = constant:universal_cost_framework.one compare = equals } }
+				limit = { check_variable = { var = black_friday_purchase_current_non_political_paid value = constant:universal_cost_framework.one compare = equals } }
 				add_to_variable = { black_friday_achievement_non_political_receipt_count = constant:black_friday_event.one }
 			}
 			set_temp_variable = {
 				black_friday_purchase_family_id = black_friday_achievement_transaction_family_ids^black_friday_achievement_transaction_index
 			}
-			black_friday_credit_achievement_family = yes
+			black_friday_add_committed_achievement_family = yes
 		}
 	}
 }
@@ -380,101 +430,44 @@ black_friday_retract_achievement_transaction = {
 		black_friday_find_achievement_transaction = yes
 		if = {
 			limit = {
-				check_variable = {
-					var = black_friday_achievement_transaction_index
-					value = constant:universal_cost_framework.invalid_index
-					compare = greater_than
-				}
-				NOT = {
-					check_variable = {
-						var = black_friday_achievement_transaction_states^black_friday_achievement_transaction_index
-						value = constant:black_friday_event.achievement_transaction_refunded
-						compare = equals
-					}
-				}
+				check_variable = { var = black_friday_achievement_lookup_result value = constant:universal_cost_framework.result_success compare = equals }
+				check_variable = { var = black_friday_achievement_row_pointer value = constant:universal_cost_framework.zero compare = greater_than }
+				check_variable = { var = black_friday_achievement_transaction_index value = constant:universal_cost_framework.invalid_index compare = greater_than }
+				NOT = { check_variable = { var = black_friday_achievement_transaction_states^black_friday_achievement_transaction_index value = constant:black_friday_event.achievement_transaction_refunded compare = equals } }
 			}
+			set_temp_variable = { black_friday_achievement_retraction_allowed = constant:universal_cost_framework.one }
+			set_temp_variable = { black_friday_purchase_family_id = black_friday_achievement_transaction_family_ids^black_friday_achievement_transaction_index }
 			if = {
 				limit = {
 					check_variable = { var = black_friday_achievement_transaction_states^black_friday_achievement_transaction_index value = constant:black_friday_event.achievement_transaction_committed compare = equals }
-					check_variable = { var = black_friday_achievement_transaction_non_political_paid^black_friday_achievement_transaction_index value = constant:universal_cost_framework.one compare = equals }
-					check_variable = { var = black_friday_achievement_non_political_receipt_count value = constant:black_friday_event.zero_date compare = greater_than }
 					check_variable = { var = black_friday_achievement_transaction_sale_sequences^black_friday_achievement_transaction_index value = global.black_friday_sale_sequence compare = equals }
+					OR = {
+						check_variable = { var = black_friday_achievement_indexed_sale_sequence value = global.black_friday_sale_sequence compare = not_equals }
+						check_variable = { var = black_friday_achievement_family_generation_@var:black_friday_purchase_family_id value = global.black_friday_sale_sequence compare = not_equals }
+						check_variable = { var = black_friday_achievement_family_committed_count_@var:black_friday_purchase_family_id value = constant:black_friday_event.zero_date compare = less_than_or_equals }
+					}
 				}
-				subtract_from_variable = { black_friday_achievement_non_political_receipt_count = constant:black_friday_event.one }
-			}
-			set_variable = {
-				black_friday_achievement_transaction_states^black_friday_achievement_transaction_index = constant:black_friday_event.achievement_transaction_refunded
+				set_temp_variable = { black_friday_achievement_retraction_allowed = constant:universal_cost_framework.zero }
 			}
 			if = {
-				limit = {
-					check_variable = {
-						var = black_friday_achievement_active_sale_sequence
-						value = global.black_friday_sale_sequence
-						compare = equals
-					}
-					check_variable = {
-						var = black_friday_achievement_transaction_sale_sequences^black_friday_achievement_transaction_index
-						value = global.black_friday_sale_sequence
-						compare = equals
-					}
-					NOT = { has_country_flag = black_friday_achievement_awarded }
-				}
-				set_temp_variable = {
-					black_friday_purchase_family_id = black_friday_achievement_transaction_family_ids^black_friday_achievement_transaction_index
-				}
-				set_temp_variable = { black_friday_achievement_family_still_used = constant:black_friday_event.zero_date }
+				limit = { check_variable = { var = black_friday_achievement_retraction_allowed value = constant:universal_cost_framework.one compare = equals } }
 				if = {
 					limit = {
-						has_country_flag = black_friday_achievement_native_non_political_payment
-						check_variable = { var = black_friday_purchase_family_id value = constant:universal_cost_family.equipment compare = equals }
+						check_variable = { var = black_friday_achievement_transaction_states^black_friday_achievement_transaction_index value = constant:black_friday_event.achievement_transaction_committed compare = equals }
+						check_variable = { var = black_friday_achievement_transaction_non_political_paid^black_friday_achievement_transaction_index value = constant:universal_cost_framework.one compare = equals }
+						check_variable = { var = black_friday_achievement_non_political_receipt_count value = constant:black_friday_event.zero_date compare = greater_than }
+						check_variable = { var = black_friday_achievement_transaction_sale_sequences^black_friday_achievement_transaction_index value = global.black_friday_sale_sequence compare = equals }
 					}
-					set_temp_variable = { black_friday_achievement_family_still_used = constant:black_friday_event.one }
-				}
-				set_temp_variable = { black_friday_achievement_transaction_cursor = constant:black_friday_event.zero_date }
-				while_loop_effect = {
-					limit = {
-						check_variable = {
-							var = black_friday_achievement_transaction_cursor
-							value = black_friday_achievement_transaction_ids^num
-							compare = less_than
-						}
-					}
-					if = {
-						limit = {
-							check_variable = {
-								var = black_friday_achievement_transaction_family_ids^black_friday_achievement_transaction_cursor
-								value = black_friday_purchase_family_id
-								compare = equals
-							}
-							check_variable = {
-								var = black_friday_achievement_transaction_sale_sequences^black_friday_achievement_transaction_cursor
-								value = global.black_friday_sale_sequence
-								compare = equals
-							}
-							check_variable = {
-								var = black_friday_achievement_transaction_states^black_friday_achievement_transaction_cursor
-								value = constant:black_friday_event.achievement_transaction_committed
-								compare = equals
-							}
-						}
-						set_temp_variable = { black_friday_achievement_family_still_used = constant:black_friday_event.one }
-					}
-					add_to_temp_variable = { black_friday_achievement_transaction_cursor = constant:black_friday_event.one }
+					subtract_from_variable = { black_friday_achievement_non_political_receipt_count = constant:black_friday_event.one }
 				}
 				if = {
 					limit = {
-						check_variable = {
-							var = black_friday_achievement_family_still_used
-							value = constant:black_friday_event.zero_date
-							compare = equals
-						}
+						check_variable = { var = black_friday_achievement_transaction_states^black_friday_achievement_transaction_index value = constant:black_friday_event.achievement_transaction_committed compare = equals }
+						check_variable = { var = black_friday_achievement_transaction_sale_sequences^black_friday_achievement_transaction_index value = global.black_friday_sale_sequence compare = equals }
 					}
-					remove_from_array = {
-						array = black_friday_achievement_family_ids
-						value = black_friday_purchase_family_id
-					}
-					subtract_from_variable = { black_friday_achievement_family_count = constant:black_friday_event.one }
+					black_friday_remove_committed_achievement_family = yes
 				}
+				set_variable = { black_friday_achievement_transaction_states^black_friday_achievement_transaction_index = constant:black_friday_event.achievement_transaction_refunded }
 			}
 		}
 	}
@@ -551,6 +544,7 @@ black_friday_allocate_owner_transaction = {
 	}
 	add_to_variable = { black_friday_transaction_sequence = constant:black_friday_event.one }
 	set_temp_variable = { black_friday_owner_transaction_id = black_friday_transaction_sequence }
+	set_variable = { universal_cost_allocated_transaction_id_@var:black_friday_owner_transaction_id = black_friday_owner_transaction_id }
 }
 
 # The owner-family bridge below accepts one logical Fury purchase as four
@@ -3178,15 +3172,17 @@ black_friday_refund_alien_infantry_landing_transaction = {
 			universal_cost_transaction_component_id = constant:black_friday_event.owner_component_alien_laser_reserve
 		}
 		universal_cost_mark_component_refunded = yes
-		set_temp_variable = {
-			black_friday_purchase_transaction_id = alien_infantry_landing_universal_transaction_id
+		if = {
+			limit = { check_variable = { var = universal_cost_mark_component_refunded_result value = constant:universal_cost_framework.result_success compare = equals } }
+			set_temp_variable = { black_friday_purchase_transaction_id = alien_infantry_landing_universal_transaction_id }
+			black_friday_retract_achievement_transaction = yes
+			set_temp_variable = { universal_cost_transaction_id = alien_infantry_landing_universal_transaction_id }
+			universal_cost_refund_transaction = yes
+			if = {
+				limit = { check_variable = { var = universal_cost_refund_transaction_result value = constant:universal_cost_framework.result_success compare = equals } }
+				clear_variable = alien_infantry_landing_universal_transaction_id
+			}
 		}
-		black_friday_retract_achievement_transaction = yes
-		set_temp_variable = {
-			universal_cost_transaction_id = alien_infantry_landing_universal_transaction_id
-		}
-		universal_cost_refund_transaction = yes
-		clear_variable = alien_infantry_landing_universal_transaction_id
 	}
 }
 
@@ -3199,11 +3195,12 @@ black_friday_settle_alien_infantry_landing_transaction = {
 			universal_cost_transaction_id = alien_infantry_landing_universal_transaction_id
 		}
 		universal_cost_settle_transaction = yes
-		set_temp_variable = {
-			black_friday_purchase_transaction_id = alien_infantry_landing_universal_transaction_id
+		if = {
+			limit = { check_variable = { var = universal_cost_settle_transaction_result value = constant:universal_cost_framework.result_success compare = equals } }
+			set_temp_variable = { black_friday_purchase_transaction_id = alien_infantry_landing_universal_transaction_id }
+			black_friday_confirm_achievement_transaction = yes
+			clear_variable = alien_infantry_landing_universal_transaction_id
 		}
-		black_friday_confirm_achievement_transaction = yes
-		clear_variable = alien_infantry_landing_universal_transaction_id
 	}
 }
 
@@ -3273,6 +3270,7 @@ black_friday_refund_africa_elephant_logistics_transaction = {
 	universal_cost_find_component_row = yes
 	if = {
 		limit = {
+			check_variable = { var = universal_cost_component_lookup_result value = constant:universal_cost_framework.result_success compare = equals }
 			check_variable = { var = universal_cost_component_found_index value = constant:universal_cost_framework.invalid_index compare = greater_than }
 			check_variable = {
 				var = universal_cost_component_refunded_states^universal_cost_component_found_index
@@ -3287,6 +3285,11 @@ black_friday_refund_africa_elephant_logistics_transaction = {
 		}
 		set_temp_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_elephant_equipment }
 		universal_cost_mark_component_refunded = yes
+		if = {
+			limit = { check_variable = { var = universal_cost_mark_component_refunded_result value = constant:universal_cost_framework.result_success compare = not_equals } }
+			multiply_temp_variable = { black_friday_africa_logistics_refund_amount = constant:universal_cost_framework.negative_one }
+			add_equipment_to_stockpile = { type = chaosx_elephant_equipment_1 amount = black_friday_africa_logistics_refund_amount }
+		}
 	}
 	set_temp_variable = { universal_cost_transaction_id = black_friday_owner_transaction_id }
 	universal_cost_refund_transaction = yes
@@ -3675,4 +3678,394 @@ black_friday_entry_event = {
 		set_variable = { global.black_friday_dispatch_mode = constant:black_friday_event.dispatch_manual }
 	}
 	black_friday_select_or_activate = yes
+}
+
+# Country scope. Inputs are the ordinary PP and exact support_equipment_1
+# amounts plus the trigger-side displayed quotes. This helper does not apply
+# the CBRN project outcome or debit the owner's legacy payment effects.
+# Output: black_friday_cbrn_protection_pair_payment_success.
+black_friday_pay_cbrn_protection_pair = {
+	set_temp_variable = { black_friday_cbrn_protection_pair_payment_success = constant:universal_cost_framework.zero }
+	set_temp_variable = { black_friday_cbrn_protection_pair_sale = constant:universal_cost_framework.zero }
+	set_temp_variable = { black_friday_cbrn_protection_pair_quote_matches = constant:universal_cost_framework.zero }
+	set_temp_variable = { black_friday_cbrn_protection_pair_pp_requote = black_friday_cbrn_protection_pair_ordinary_pp }
+	set_temp_variable = { black_friday_cbrn_protection_pair_support_requote = black_friday_cbrn_protection_pair_ordinary_support }
+	set_temp_variable = { black_friday_cbrn_protection_pair_source_id = constant:universal_cost_framework.zero }
+	if = {
+		limit = { black_friday_is_active = yes }
+		set_temp_variable = { black_friday_cbrn_protection_pair_sale = constant:universal_cost_framework.one }
+		set_temp_variable = { universal_cost_source_query_id = constant:universal_cost_framework.black_friday_source_id }
+		if = {
+			limit = { universal_cost_source_is_active = yes }
+			set_temp_variable = { universal_cost_quote_ordinary_cost = black_friday_cbrn_protection_pair_ordinary_pp }
+			set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.political_power }
+			set_temp_variable = { universal_cost_quote_rounding_quantum = constant:universal_cost_framework.default_rounding_quantum }
+			universal_cost_quote_integer = yes
+			set_temp_variable = { black_friday_cbrn_protection_pair_pp_requote = universal_cost_quote_final_cost }
+			set_temp_variable = { black_friday_cbrn_protection_pair_pp_source_count = universal_cost_quote_source_count }
+			set_temp_variable = { universal_cost_quote_ordinary_cost = black_friday_cbrn_protection_pair_ordinary_support }
+			set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.equipment }
+			set_temp_variable = { universal_cost_quote_rounding_quantum = constant:universal_cost_framework.default_rounding_quantum }
+			universal_cost_quote_integer = yes
+			set_temp_variable = { black_friday_cbrn_protection_pair_support_requote = universal_cost_quote_final_cost }
+			set_temp_variable = { black_friday_cbrn_protection_pair_support_source_count = universal_cost_quote_source_count }
+			if = {
+				limit = {
+					check_variable = { var = black_friday_cbrn_protection_pair_pp_source_count value = constant:universal_cost_framework.zero compare = greater_than }
+					check_variable = { var = black_friday_cbrn_protection_pair_support_source_count value = constant:universal_cost_framework.zero compare = greater_than }
+				}
+				set_temp_variable = { black_friday_cbrn_protection_pair_source_id = constant:universal_cost_framework.black_friday_source_id }
+			}
+		}
+	}
+	if = {
+		limit = {
+			check_variable = { var = black_friday_cbrn_protection_pair_pp_requote value = black_friday_cbrn_protection_pair_pp_cost compare = equals }
+			check_variable = { var = black_friday_cbrn_protection_pair_support_requote value = black_friday_cbrn_protection_pair_support_cost compare = equals }
+			check_variable = { var = black_friday_cbrn_protection_pair_pp_requote value = constant:universal_cost_framework.zero compare = greater_than }
+			check_variable = { var = black_friday_cbrn_protection_pair_support_requote value = constant:universal_cost_framework.zero compare = greater_than }
+			OR = {
+				check_variable = { var = black_friday_cbrn_protection_pair_sale value = constant:universal_cost_framework.zero compare = equals }
+				check_variable = { var = black_friday_cbrn_protection_pair_source_id value = constant:universal_cost_framework.black_friday_source_id compare = equals }
+			}
+		}
+		set_temp_variable = { black_friday_cbrn_protection_pair_quote_matches = constant:universal_cost_framework.one }
+	}
+	if = {
+		limit = { check_variable = { var = black_friday_cbrn_protection_pair_quote_matches value = constant:universal_cost_framework.one compare = equals } }
+		set_temp_variable = { universal_cost_quote_resource_kind = constant:universal_cost_resource_kind.political_power }
+		set_temp_variable = { universal_cost_quote_final_cost = black_friday_cbrn_protection_pair_pp_requote }
+		universal_cost_check_quote_affordable = yes
+		set_temp_variable = { black_friday_cbrn_protection_pair_pp_affordability = universal_cost_quote_affordable }
+		set_temp_variable = { universal_cost_quote_resource_kind = constant:universal_cost_resource_kind.support_equipment_1 }
+		set_temp_variable = { universal_cost_quote_final_cost = black_friday_cbrn_protection_pair_support_requote }
+		universal_cost_check_quote_affordable = yes
+		set_temp_variable = { black_friday_cbrn_protection_pair_support_affordability = universal_cost_quote_affordable }
+		if = {
+			limit = {
+				check_variable = { var = black_friday_cbrn_protection_pair_pp_affordability value = constant:universal_cost_framework.result_success compare = equals }
+				check_variable = { var = black_friday_cbrn_protection_pair_support_affordability value = constant:universal_cost_framework.result_success compare = equals }
+			}
+			black_friday_allocate_owner_transaction = yes
+			set_temp_variable = { black_friday_cbrn_protection_pair_pp_recorded = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_cbrn_protection_pair_support_recorded = constant:universal_cost_framework.zero }
+			set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.political_power }
+			set_temp_variable = { universal_cost_payment_amount = black_friday_cbrn_protection_pair_pp_requote }
+			universal_cost_pay_component = yes
+			if = {
+				limit = { check_variable = { var = universal_cost_payment_result value = constant:universal_cost_framework.result_success compare = equals } }
+				set_temp_variable = { universal_cost_transaction_id = black_friday_owner_transaction_id }
+				set_temp_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_political_power }
+				set_temp_variable = { universal_cost_transaction_resource_kind = constant:universal_cost_resource_kind.political_power }
+				set_temp_variable = { universal_cost_transaction_resource_id = constant:universal_cost_framework.zero }
+				set_temp_variable = { universal_cost_transaction_ordinary_cost = black_friday_cbrn_protection_pair_ordinary_pp }
+				set_temp_variable = { universal_cost_transaction_quoted_cost = black_friday_cbrn_protection_pair_pp_requote }
+				set_temp_variable = { universal_cost_transaction_actual_paid_cost = black_friday_cbrn_protection_pair_pp_requote }
+				set_temp_variable = { universal_cost_transaction_source_id = black_friday_cbrn_protection_pair_source_id }
+				set_temp_variable = { universal_cost_transaction_primary_component = constant:universal_cost_framework.zero }
+				universal_cost_record_transaction = yes
+				if = {
+					limit = { check_variable = { var = universal_cost_record_transaction_result value = constant:universal_cost_framework.result_success compare = equals } }
+					set_temp_variable = { black_friday_cbrn_protection_pair_pp_recorded = constant:universal_cost_framework.one }
+				}
+				else = {
+					set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.political_power }
+					set_temp_variable = { universal_cost_payment_amount = black_friday_cbrn_protection_pair_pp_requote }
+					universal_cost_credit_component = yes
+				}
+			}
+			if = {
+				limit = { check_variable = { var = black_friday_cbrn_protection_pair_pp_recorded value = constant:universal_cost_framework.one compare = equals } }
+				set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.support_equipment_1 }
+				set_temp_variable = { universal_cost_payment_amount = black_friday_cbrn_protection_pair_support_requote }
+				universal_cost_pay_component = yes
+				if = {
+					limit = { check_variable = { var = universal_cost_payment_result value = constant:universal_cost_framework.result_success compare = equals } }
+					set_temp_variable = { universal_cost_transaction_id = black_friday_owner_transaction_id }
+					set_temp_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_support_equipment }
+					set_temp_variable = { universal_cost_transaction_resource_kind = constant:universal_cost_resource_kind.support_equipment_1 }
+					set_temp_variable = { universal_cost_transaction_resource_id = constant:universal_cost_framework.zero }
+					set_temp_variable = { universal_cost_transaction_ordinary_cost = black_friday_cbrn_protection_pair_ordinary_support }
+					set_temp_variable = { universal_cost_transaction_quoted_cost = black_friday_cbrn_protection_pair_support_requote }
+					set_temp_variable = { universal_cost_transaction_actual_paid_cost = black_friday_cbrn_protection_pair_support_requote }
+					set_temp_variable = { universal_cost_transaction_source_id = black_friday_cbrn_protection_pair_source_id }
+					set_temp_variable = { universal_cost_transaction_primary_component = constant:black_friday_event.owner_component_support_equipment }
+					universal_cost_record_transaction = yes
+					if = {
+						limit = { check_variable = { var = universal_cost_record_transaction_result value = constant:universal_cost_framework.result_success compare = equals } }
+						set_temp_variable = { black_friday_cbrn_protection_pair_support_recorded = constant:universal_cost_framework.one }
+					}
+					else = {
+						set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.support_equipment_1 }
+						set_temp_variable = { universal_cost_payment_amount = black_friday_cbrn_protection_pair_support_requote }
+						universal_cost_credit_component = yes
+					}
+				}
+			}
+			if = {
+				limit = { check_variable = { var = black_friday_cbrn_protection_pair_support_recorded value = constant:universal_cost_framework.one compare = equals } }
+				set_temp_variable = { universal_cost_transaction_id = black_friday_owner_transaction_id }
+				universal_cost_settle_transaction = yes
+				if = {
+					limit = { check_variable = { var = universal_cost_settle_transaction_result value = constant:universal_cost_framework.result_success compare = equals } }
+					set_temp_variable = { black_friday_cbrn_protection_pair_payment_success = constant:universal_cost_framework.one }
+					if = {
+						limit = { check_variable = { var = black_friday_cbrn_protection_pair_sale value = constant:universal_cost_framework.one compare = equals } }
+						set_temp_variable = { black_friday_purchase_transaction_id = black_friday_owner_transaction_id }
+						set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+						set_temp_variable = { black_friday_purchase_ordinary_cost = black_friday_cbrn_protection_pair_ordinary_support }
+						set_temp_variable = { black_friday_purchase_actual_paid_cost = black_friday_cbrn_protection_pair_support_requote }
+						set_temp_variable = { black_friday_purchase_is_refundable = constant:universal_cost_framework.zero }
+						black_friday_record_achievement_transaction = yes
+					}
+				}
+			}
+			if = {
+				limit = {
+					check_variable = { var = black_friday_cbrn_protection_pair_payment_success value = constant:universal_cost_framework.zero compare = equals }
+					check_variable = { var = black_friday_cbrn_protection_pair_pp_recorded value = constant:universal_cost_framework.one compare = equals }
+				}
+				set_temp_variable = { universal_cost_transaction_id = black_friday_owner_transaction_id }
+				universal_cost_refund_transaction = yes
+			}
+		}
+	}
+}
+
+black_friday_pay_cbrn_recondition_masks = {
+	set_temp_variable = { black_friday_cbrn_recondition_masks_payment_success = constant:universal_cost_framework.zero }
+	if = {
+		limit = { black_friday_can_pay_cbrn_recondition_masks = yes }
+		black_friday_pay_cbrn_protection_pair = yes
+		set_temp_variable = { black_friday_cbrn_recondition_masks_payment_success = black_friday_cbrn_protection_pair_payment_success }
+	}
+}
+
+black_friday_pay_cbrn_convert_mask_industry = {
+	set_temp_variable = { black_friday_cbrn_convert_mask_industry_payment_success = constant:universal_cost_framework.zero }
+	if = {
+		limit = { black_friday_can_pay_cbrn_convert_mask_industry = yes }
+		black_friday_pay_cbrn_protection_pair = yes
+		set_temp_variable = { black_friday_cbrn_convert_mask_industry_payment_success = black_friday_cbrn_protection_pair_payment_success }
+	}
+}
+
+black_friday_pay_cbrn_simplify_filters = {
+	set_temp_variable = { black_friday_cbrn_simplify_filters_payment_success = constant:universal_cost_framework.zero }
+	if = {
+		limit = { black_friday_can_pay_cbrn_simplify_filters = yes }
+		black_friday_pay_cbrn_protection_pair = yes
+		set_temp_variable = { black_friday_cbrn_simplify_filters_payment_success = black_friday_cbrn_protection_pair_payment_success }
+	}
+}
+
+# Country scope. One native component debit and receipt append. The caller
+# supplies exact kind/id, ordinary and payable amount, and primary component.
+# A paid component whose receipt append fails is credited immediately; earlier
+# recorded components are refunded by the enclosing theater transaction.
+black_friday_cbrn_theater_pay_record_component = {
+	if = {
+		limit = {
+			check_variable = { var = black_friday_cbrn_theater_all_paid value = constant:universal_cost_framework.one compare = equals }
+			check_variable = { var = black_friday_cbrn_theater_component_paid value = constant:universal_cost_framework.zero compare = greater_than }
+		}
+		set_temp_variable = { universal_cost_payment_resource_kind = black_friday_cbrn_theater_component_kind }
+		set_temp_variable = { universal_cost_payment_amount = black_friday_cbrn_theater_component_paid }
+		universal_cost_pay_component = yes
+		if = {
+			limit = { check_variable = { var = universal_cost_payment_result value = constant:universal_cost_framework.result_success compare = equals } }
+			set_temp_variable = { universal_cost_transaction_id = black_friday_owner_transaction_id }
+			set_temp_variable = { universal_cost_transaction_component_id = black_friday_cbrn_theater_component_id }
+			set_temp_variable = { universal_cost_transaction_resource_kind = black_friday_cbrn_theater_component_kind }
+			set_temp_variable = { universal_cost_transaction_resource_id = constant:universal_cost_framework.zero }
+			set_temp_variable = { universal_cost_transaction_ordinary_cost = black_friday_cbrn_theater_component_ordinary }
+			set_temp_variable = { universal_cost_transaction_quoted_cost = black_friday_cbrn_theater_component_paid }
+			set_temp_variable = { universal_cost_transaction_actual_paid_cost = black_friday_cbrn_theater_component_paid }
+			set_temp_variable = { universal_cost_transaction_source_id = black_friday_cbrn_theater_source_id }
+			set_temp_variable = { universal_cost_transaction_primary_component = black_friday_cbrn_theater_component_primary }
+			universal_cost_record_transaction = yes
+			if = {
+				limit = { check_variable = { var = universal_cost_record_transaction_result value = constant:universal_cost_framework.result_success compare = not_equals } }
+				set_temp_variable = { universal_cost_payment_resource_kind = black_friday_cbrn_theater_component_kind }
+				set_temp_variable = { universal_cost_payment_amount = black_friday_cbrn_theater_component_paid }
+				universal_cost_credit_component = yes
+				set_temp_variable = { black_friday_cbrn_theater_all_paid = constant:universal_cost_framework.zero }
+			}
+		}
+		else = { set_temp_variable = { black_friday_cbrn_theater_all_paid = constant:universal_cost_framework.zero } }
+	}
+}
+
+# Assign the full ordinary decontamination counterfactual to the first model
+# actually paid. Other model rows keep zero ordinary cost; their positive paid
+# amounts still preserve exact-model stock and refund identity.
+black_friday_cbrn_theater_pay_decon_model = {
+	if = {
+		limit = {
+			check_variable = { var = black_friday_cbrn_theater_all_paid value = constant:universal_cost_framework.one compare = equals }
+			check_variable = { var = black_friday_cbrn_theater_component_paid value = constant:universal_cost_framework.zero compare = greater_than }
+		}
+		set_temp_variable = { black_friday_cbrn_theater_component_ordinary = constant:universal_cost_framework.zero }
+		set_temp_variable = { black_friday_cbrn_theater_component_primary = constant:universal_cost_framework.zero }
+		if = {
+			limit = { check_variable = { var = black_friday_cbrn_theater_primary_model_assigned value = constant:universal_cost_framework.zero compare = equals } }
+			set_temp_variable = { black_friday_cbrn_theater_component_ordinary = constant:cbrn_doctrine_cleanup_assignment_cost.decontamination_equipment }
+			set_temp_variable = { black_friday_cbrn_theater_component_primary = black_friday_cbrn_theater_component_id }
+		}
+		black_friday_cbrn_theater_pay_record_component = yes
+		if = {
+			limit = { check_variable = { var = black_friday_cbrn_theater_all_paid value = constant:universal_cost_framework.one compare = equals } }
+			set_temp_variable = { black_friday_cbrn_theater_primary_model_assigned = constant:universal_cost_framework.one }
+		}
+	}
+}
+
+# Country scope. The decision owner checks the exact state and applies its
+# non-payment outcome only when payment_success is one. Gas masks, support,
+# and motorized stock remain nonconsumed requirements.
+black_friday_pay_cbrn_theater_assignment = {
+	set_temp_variable = { black_friday_cbrn_theater_assignment_payment_success = constant:universal_cost_framework.zero }
+	if = {
+		limit = {
+			black_friday_can_pay_cbrn_theater_assignment = yes
+			cbrn_country_has_theater_decontamination_support_stores = yes
+		}
+		set_temp_variable = { black_friday_cbrn_theater_sale = constant:universal_cost_framework.zero }
+		set_temp_variable = { black_friday_cbrn_theater_source_id = constant:universal_cost_framework.zero }
+		set_temp_variable = { black_friday_cbrn_theater_requote_valid = constant:universal_cost_framework.one }
+		set_temp_variable = { black_friday_cbrn_theater_command_power_requote = constant:cbrn_doctrine_cleanup_assignment_cost.command_power }
+		set_temp_variable = { black_friday_cbrn_theater_decontamination_requote = constant:cbrn_doctrine_cleanup_assignment_cost.decontamination_equipment }
+		set_temp_variable = { black_friday_cbrn_theater_fuel_requote = constant:cbrn_doctrine_cleanup_assignment_cost.fuel }
+		if = {
+			limit = { black_friday_is_active = yes }
+			set_temp_variable = { black_friday_cbrn_theater_sale = constant:universal_cost_framework.one }
+			set_temp_variable = { black_friday_cbrn_theater_requote_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { universal_cost_source_query_id = constant:universal_cost_framework.black_friday_source_id }
+			if = {
+				limit = { universal_cost_source_is_active = yes }
+				set_temp_variable = { universal_cost_quote_ordinary_cost = constant:cbrn_doctrine_cleanup_assignment_cost.command_power }
+				set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.command_power }
+				set_temp_variable = { universal_cost_quote_rounding_quantum = constant:universal_cost_framework.default_rounding_quantum }
+				universal_cost_quote_integer = yes
+				set_temp_variable = { black_friday_cbrn_theater_command_power_requote = universal_cost_quote_final_cost }
+				set_temp_variable = { black_friday_cbrn_theater_command_power_source_count = universal_cost_quote_source_count }
+				set_temp_variable = { universal_cost_quote_ordinary_cost = constant:cbrn_doctrine_cleanup_assignment_cost.decontamination_equipment }
+				set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.equipment }
+				set_temp_variable = { universal_cost_quote_rounding_quantum = constant:universal_cost_framework.default_rounding_quantum }
+				universal_cost_quote_integer = yes
+				set_temp_variable = { black_friday_cbrn_theater_decontamination_requote = universal_cost_quote_final_cost }
+				set_temp_variable = { black_friday_cbrn_theater_decontamination_source_count = universal_cost_quote_source_count }
+				set_temp_variable = { universal_cost_quote_ordinary_cost = constant:cbrn_doctrine_cleanup_assignment_cost.fuel }
+				set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.fuel }
+				set_temp_variable = { universal_cost_quote_rounding_quantum = constant:universal_cost_framework.default_rounding_quantum }
+				universal_cost_quote_integer = yes
+				set_temp_variable = { black_friday_cbrn_theater_fuel_requote = universal_cost_quote_final_cost }
+				set_temp_variable = { black_friday_cbrn_theater_fuel_source_count = universal_cost_quote_source_count }
+				if = {
+					limit = {
+						check_variable = { var = black_friday_cbrn_theater_command_power_source_count value = constant:universal_cost_framework.zero compare = greater_than }
+						check_variable = { var = black_friday_cbrn_theater_decontamination_source_count value = constant:universal_cost_framework.zero compare = greater_than }
+						check_variable = { var = black_friday_cbrn_theater_fuel_source_count value = constant:universal_cost_framework.zero compare = greater_than }
+					}
+					set_temp_variable = { black_friday_cbrn_theater_source_id = constant:universal_cost_framework.black_friday_source_id }
+					set_temp_variable = { black_friday_cbrn_theater_requote_valid = constant:universal_cost_framework.one }
+				}
+			}
+		}
+		if = {
+			limit = {
+				check_variable = { var = black_friday_cbrn_theater_requote_valid value = constant:universal_cost_framework.one compare = equals }
+				check_variable = { var = black_friday_cbrn_theater_command_power_requote value = black_friday_cbrn_theater_command_power_cost compare = equals }
+				check_variable = { var = black_friday_cbrn_theater_decontamination_requote value = black_friday_cbrn_theater_decontamination_cost compare = equals }
+				check_variable = { var = black_friday_cbrn_theater_fuel_requote value = black_friday_cbrn_theater_fuel_cost compare = equals }
+				check_variable = { var = black_friday_cbrn_theater_command_power_requote value = constant:universal_cost_framework.zero compare = greater_than }
+				check_variable = { var = black_friday_cbrn_theater_decontamination_requote value = constant:universal_cost_framework.zero compare = greater_than }
+				check_variable = { var = black_friday_cbrn_theater_fuel_requote value = constant:universal_cost_framework.zero compare = greater_than }
+			}
+			set_temp_variable = { black_friday_cbrn_theater_decon_remaining = black_friday_cbrn_theater_decontamination_requote }
+			set_temp_variable = { black_friday_cbrn_theater_decon_stock_1 = num_equipment@decontamination_equipment_1 }
+			set_temp_variable = { black_friday_cbrn_theater_decon_paid_1 = black_friday_cbrn_theater_decon_remaining }
+			clamp_temp_variable = { var = black_friday_cbrn_theater_decon_paid_1 min = constant:universal_cost_framework.zero max = black_friday_cbrn_theater_decon_stock_1 }
+			subtract_from_temp_variable = { black_friday_cbrn_theater_decon_remaining = black_friday_cbrn_theater_decon_paid_1 }
+			set_temp_variable = { black_friday_cbrn_theater_decon_stock_2 = num_equipment@decontamination_equipment_2 }
+			set_temp_variable = { black_friday_cbrn_theater_decon_paid_2 = black_friday_cbrn_theater_decon_remaining }
+			clamp_temp_variable = { var = black_friday_cbrn_theater_decon_paid_2 min = constant:universal_cost_framework.zero max = black_friday_cbrn_theater_decon_stock_2 }
+			subtract_from_temp_variable = { black_friday_cbrn_theater_decon_remaining = black_friday_cbrn_theater_decon_paid_2 }
+			set_temp_variable = { black_friday_cbrn_theater_decon_stock_3 = num_equipment@decontamination_equipment_3 }
+			set_temp_variable = { black_friday_cbrn_theater_decon_paid_3 = black_friday_cbrn_theater_decon_remaining }
+			clamp_temp_variable = { var = black_friday_cbrn_theater_decon_paid_3 min = constant:universal_cost_framework.zero max = black_friday_cbrn_theater_decon_stock_3 }
+			subtract_from_temp_variable = { black_friday_cbrn_theater_decon_remaining = black_friday_cbrn_theater_decon_paid_3 }
+			set_temp_variable = { universal_cost_quote_resource_kind = constant:universal_cost_resource_kind.command_power }
+			set_temp_variable = { universal_cost_quote_final_cost = black_friday_cbrn_theater_command_power_requote }
+			universal_cost_check_quote_affordable = yes
+			set_temp_variable = { black_friday_cbrn_theater_command_power_preflight = universal_cost_quote_affordable }
+			set_temp_variable = { universal_cost_quote_resource_kind = constant:universal_cost_resource_kind.fuel }
+			set_temp_variable = { universal_cost_quote_final_cost = black_friday_cbrn_theater_fuel_requote }
+			universal_cost_check_quote_affordable = yes
+			set_temp_variable = { black_friday_cbrn_theater_fuel_preflight = universal_cost_quote_affordable }
+			if = {
+				limit = {
+					check_variable = { var = black_friday_cbrn_theater_decon_remaining value = constant:universal_cost_framework.zero compare = equals }
+					check_variable = { var = black_friday_cbrn_theater_command_power_preflight value = constant:universal_cost_framework.result_success compare = equals }
+					check_variable = { var = black_friday_cbrn_theater_fuel_preflight value = constant:universal_cost_framework.result_success compare = equals }
+					NOT = { has_equipment = { decontamination_equipment_1 < black_friday_cbrn_theater_decon_paid_1 } }
+					NOT = { has_equipment = { decontamination_equipment_2 < black_friday_cbrn_theater_decon_paid_2 } }
+					NOT = { has_equipment = { decontamination_equipment_3 < black_friday_cbrn_theater_decon_paid_3 } }
+				}
+				black_friday_allocate_owner_transaction = yes
+				set_temp_variable = { black_friday_cbrn_theater_all_paid = constant:universal_cost_framework.one }
+				set_temp_variable = { black_friday_cbrn_theater_primary_model_assigned = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_cbrn_theater_component_id = constant:black_friday_event.owner_component_command_power }
+				set_temp_variable = { black_friday_cbrn_theater_component_kind = constant:universal_cost_resource_kind.command_power }
+				set_temp_variable = { black_friday_cbrn_theater_component_ordinary = constant:cbrn_doctrine_cleanup_assignment_cost.command_power }
+				set_temp_variable = { black_friday_cbrn_theater_component_paid = black_friday_cbrn_theater_command_power_requote }
+				set_temp_variable = { black_friday_cbrn_theater_component_primary = constant:universal_cost_framework.zero }
+				black_friday_cbrn_theater_pay_record_component = yes
+				set_temp_variable = { black_friday_cbrn_theater_component_id = constant:universal_cost_resource_kind.decontamination_equipment_1 }
+				set_temp_variable = { black_friday_cbrn_theater_component_kind = constant:universal_cost_resource_kind.decontamination_equipment_1 }
+				set_temp_variable = { black_friday_cbrn_theater_component_paid = black_friday_cbrn_theater_decon_paid_1 }
+				black_friday_cbrn_theater_pay_decon_model = yes
+				set_temp_variable = { black_friday_cbrn_theater_component_id = constant:universal_cost_resource_kind.decontamination_equipment_2 }
+				set_temp_variable = { black_friday_cbrn_theater_component_kind = constant:universal_cost_resource_kind.decontamination_equipment_2 }
+				set_temp_variable = { black_friday_cbrn_theater_component_paid = black_friday_cbrn_theater_decon_paid_2 }
+				black_friday_cbrn_theater_pay_decon_model = yes
+				set_temp_variable = { black_friday_cbrn_theater_component_id = constant:universal_cost_resource_kind.decontamination_equipment_3 }
+				set_temp_variable = { black_friday_cbrn_theater_component_kind = constant:universal_cost_resource_kind.decontamination_equipment_3 }
+				set_temp_variable = { black_friday_cbrn_theater_component_paid = black_friday_cbrn_theater_decon_paid_3 }
+				black_friday_cbrn_theater_pay_decon_model = yes
+				set_temp_variable = { black_friday_cbrn_theater_component_id = constant:black_friday_event.owner_component_fuel }
+				set_temp_variable = { black_friday_cbrn_theater_component_kind = constant:universal_cost_resource_kind.fuel }
+				set_temp_variable = { black_friday_cbrn_theater_component_ordinary = constant:cbrn_doctrine_cleanup_assignment_cost.fuel }
+				set_temp_variable = { black_friday_cbrn_theater_component_paid = black_friday_cbrn_theater_fuel_requote }
+				set_temp_variable = { black_friday_cbrn_theater_component_primary = constant:universal_cost_framework.zero }
+				black_friday_cbrn_theater_pay_record_component = yes
+				if = {
+					limit = {
+						check_variable = { var = black_friday_cbrn_theater_all_paid value = constant:universal_cost_framework.one compare = equals }
+						check_variable = { var = black_friday_cbrn_theater_primary_model_assigned value = constant:universal_cost_framework.one compare = equals }
+					}
+					set_temp_variable = { universal_cost_transaction_id = black_friday_owner_transaction_id }
+					universal_cost_settle_transaction = yes
+					if = {
+						limit = { check_variable = { var = universal_cost_settle_transaction_result value = constant:universal_cost_framework.result_success compare = equals } }
+						set_temp_variable = { black_friday_cbrn_theater_assignment_payment_success = constant:universal_cost_framework.one }
+						if = {
+							limit = { check_variable = { var = black_friday_cbrn_theater_sale value = constant:universal_cost_framework.one compare = equals } }
+							set_temp_variable = { black_friday_purchase_transaction_id = black_friday_owner_transaction_id }
+							set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+							set_temp_variable = { black_friday_purchase_ordinary_cost = constant:cbrn_doctrine_cleanup_assignment_cost.decontamination_equipment }
+							set_temp_variable = { black_friday_purchase_actual_paid_cost = black_friday_cbrn_theater_decontamination_requote }
+							set_temp_variable = { black_friday_purchase_is_refundable = constant:universal_cost_framework.zero }
+							black_friday_record_achievement_transaction = yes
+						}
+					}
+				}
+				if = {
+					limit = { check_variable = { var = black_friday_cbrn_theater_assignment_payment_success value = constant:universal_cost_framework.zero compare = equals } }
+					set_temp_variable = { universal_cost_transaction_id = black_friday_owner_transaction_id }
+					universal_cost_refund_transaction = yes
+				}
+			}
+		}
+	}
 }

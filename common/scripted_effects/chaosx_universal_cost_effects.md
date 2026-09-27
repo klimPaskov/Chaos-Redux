@@ -22,9 +22,16 @@ An active source is a row in those arrays, and source expiry is the idempotent r
 
 Transaction receipts are regular arrays on the payer country, so quote and payment scratch never share mutable global state between payers.
 
-The transaction arrays retain logical rows in `universal_cost_transaction_ids`, `universal_cost_transaction_states`, `universal_cost_transaction_component_counts`, `universal_cost_transaction_source_ids`, `universal_cost_transaction_primary_component_ids`, `universal_cost_transaction_total_ordinary_costs`, `universal_cost_transaction_total_quoted_costs`, `universal_cost_transaction_total_paid_costs`, and `universal_cost_transaction_total_refunded_costs`.
+The transaction arrays retain logical rows in `universal_cost_transaction_ids`, `universal_cost_transaction_states`, `universal_cost_transaction_component_counts`, `universal_cost_transaction_component_head_plus_one`, `universal_cost_transaction_component_tail_plus_one`, `universal_cost_transaction_non_political_paid_component_count`, `universal_cost_transaction_source_ids`, `universal_cost_transaction_primary_component_ids`, `universal_cost_transaction_total_ordinary_costs`, `universal_cost_transaction_total_quoted_costs`, `universal_cost_transaction_total_paid_costs`, and `universal_cost_transaction_total_refunded_costs`.
 
-The component arrays are `universal_cost_component_transaction_ids`, `universal_cost_component_ids`, `universal_cost_component_resource_kinds`, `universal_cost_component_resource_ids`, `universal_cost_component_ordinary_costs`, `universal_cost_component_quoted_costs`, `universal_cost_component_actual_paid_costs`, `universal_cost_component_source_ids`, and `universal_cost_component_refunded_states`.
+The component arrays are `universal_cost_component_transaction_ids`, `universal_cost_component_ids`, `universal_cost_component_resource_kinds`, `universal_cost_component_resource_ids`, `universal_cost_component_ordinary_costs`, `universal_cost_component_quoted_costs`, `universal_cost_component_actual_paid_costs`, `universal_cost_component_source_ids`, `universal_cost_component_refunded_states`, and `universal_cost_component_next_plus_one`.
+
+Each new transaction stores its payer-scoped row plus one in `universal_cost_transaction_row_plus_one_@var:universal_cost_transaction_id`. Zero means that no direct index exists. Its head and tail arrays link only its own components, and every component's next pointer is another row plus one or zero. A new receipt may therefore be found and refunded without traversing historical transactions or unrelated components, even when transactions append components in an interleaved order. The component count is limited to `constant:universal_cost_framework.max_components_per_transaction` (999) for one logical receipt; the total history arrays have no scripted-loop row cap for indexed receipts.
+
+The current owner allocator writes `universal_cost_allocated_transaction_id_@var:transaction_id` as a numeric proof before first payment. A new row requires this proof, consumes it after creation, and writes its direct row pointer. An absent map without allocation proof is a legacy lookup, not evidence that the ID is free. Legacy lookups and refunds use the original arrays only when the relevant array has at most `constant:universal_cost_framework.legacy_scan_max_rows` (1,000) rows; otherwise they return a rejected result without crediting or settling. There is no automatic migration of older rows. Keep all arrays and refunded states as transaction and achievement evidence.
+
+The non-political paid component count includes only positive, currently unrefunded components whose resource kind is not Political Power. Recording increments it and the first successful native refund or owner acknowledgment decrements it. Event 026 reads this count for receipt proof and keeps its own per-sale committed-family counts and direct achievement row index for later reversal.
+Event 026 stores `black_friday_achievement_row_plus_one_@var:transaction_id` after appending a complete achievement row. For the active sale it stores `black_friday_achievement_family_committed_count_@var:family_id` with a family-specific sale generation; native raid equipment-family proof remains a separate flag. Pending receipts increase those counts only on confirmation, committed refunds decrease them once, and a family disappears only when its committed count reaches zero without native raid proof. An already-active sale from a save made before these counters were introduced cannot have its historic family multiplicities reconstructed from the family-presence array; its unindexed achievement reversal fails closed until a later sale begins with indexed accounting.
 
 ## universal_cost_source_register
 
@@ -250,18 +257,29 @@ Purpose: append one paid component to a payer-scoped receipt and aggregate it un
 
 Scope: payer country.
 
-Inputs: positive `universal_cost_transaction_id`, positive unique `universal_cost_transaction_component_id`, positive `universal_cost_transaction_resource_kind`, non-negative `universal_cost_transaction_ordinary_cost`, `universal_cost_transaction_quoted_cost`, and `universal_cost_transaction_actual_paid_cost`, plus optional `universal_cost_transaction_resource_id`, `universal_cost_transaction_source_id`, and positive `universal_cost_transaction_primary_component`.
+Inputs: positive owner-allocated `universal_cost_transaction_id`, positive unique `universal_cost_transaction_component_id`, positive `universal_cost_transaction_resource_kind`, non-negative `universal_cost_transaction_ordinary_cost`, `universal_cost_transaction_quoted_cost`, and `universal_cost_transaction_actual_paid_cost`, plus optional `universal_cost_transaction_resource_id`, `universal_cost_transaction_source_id`, and positive `universal_cost_transaction_primary_component`.
 
 Outputs: `universal_cost_record_transaction_result` and `universal_cost_recorded_component_index`.
 
 Defaults: a new transaction row starts in recorded/refundable state; repeated component ids, reused refunded/settled transaction ids, negative amounts, and actual-paid values that differ from the quote are rejected.
 
-Side effects: appends the component, updates aligned totals, and retains actual paid amount as the only refund basis.
+Side effects: appends the component, updates aligned totals and the transaction's component links, and retains actual paid amount as the only refund basis. A first row consumes the allocator proof; an existing indexed transaction can accept another distinct component while recorded. A map-absent legacy row cannot be extended through the linked path.
 
 Multi-resource contract: call once per component with the same logical transaction id and a different component id, then settle or refund the transaction once.
 For an aggregate stockpile quote distributed across concrete models, the owner must use one distinct component id per model and record exact model-specific quoted and paid amounts while preserving the single aggregate ordinary and quoted totals.
 If sale affordability permits fewer units than the ordinary price, any unfilled ordinary counterfactual amount may be assigned to a participating model's ordinary receipt field or a zero-paid model component; that amount is accounting only and must never be debited.
 The shared record helper requires quoted and actual-paid amounts to match per component but does not independently apply a sale ratio to each component.
+
+## Internal ledger helpers
+
+The following internal helpers maintain the same payer-country scope as `universal_cost_record_transaction`.
+`universal_cost_find_transaction_row` accepts temporary `universal_cost_transaction_lookup_id` and returns `universal_cost_transaction_found_index`, `universal_cost_transaction_is_indexed`, and `universal_cost_transaction_lookup_result`; it validates a targeted row pointer or performs a bounded legacy scan, and has no side effects.
+`universal_cost_find_component_row` accepts temporary transaction and component lookup IDs and returns `universal_cost_component_found_index` and `universal_cost_component_lookup_result`; it traverses and validates every link for an indexed receipt, or performs a bounded legacy scan, and has no side effects.
+`universal_cost_validate_component_chain` accepts the current transaction ID and row index and returns temporary `universal_cost_chain_valid`; it checks count, every pointer and transaction ID, and the tail before crediting, and has no side effects.
+`universal_cost_refund_component_at_cursor` accepts the current component cursor and credits its stored actual-paid amount only when still unrefunded; it changes the component state, refund totals, and current non-political count after a successful credit.
+`universal_cost_decrement_non_political_paid_count` accepts the current transaction and component row indices and decrements the current non-political component count only for a positive non-Political-Power component's first refund acknowledgment.
+
+For example, an owner that has allocated ID `black_friday_owner_transaction_id` sets `universal_cost_transaction_id` to that ID and calls `universal_cost_record_transaction = yes` once per component; on a failed later component it calls `universal_cost_refund_transaction = yes` with the same ID and checks `universal_cost_refund_transaction_result` before claiming rollback.
 
 ## universal_cost_settle_transaction
 
@@ -303,7 +321,7 @@ Outputs: `universal_cost_refund_transaction_result`, `universal_cost_refund_tota
 
 Defaults: unknown or settled/refunded rows are no-ops; unsupported positive components remain pending and return `result_partial`.
 
-Side effects: native components are credited once, their per-component state changes to refunded, and a fully refunded row changes to the refunded transaction state.
+Side effects: an indexed transaction's complete linked chain is validated before any credit. Native components are credited once, their per-component state changes to refunded, and a fully refunded row changes to the refunded transaction state. A repeat call skips already-refunded components, while an invalid linked chain returns rejected before any credit.
 
 ## Engine boundary
 
