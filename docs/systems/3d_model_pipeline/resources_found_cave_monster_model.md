@@ -10,7 +10,7 @@ Current disposition: `implemented` for the static runtime package. `docs/plans/0
 - Canonical entity: `resources_found_cave_monster_entity`.
 - Runtime model folder: `gfx/models/units/018_resources_found_cave_monster/`.
 - Entity scale: `0.8` exactly once. Pre-export Blender working-geometry height is `7.3518247977`, giving a calibrated effective height of `5.8814598382`. Parsed exported-runtime AABB height is `7.3563573360`, giving the authoritative byte-level runtime effective vertical extent of `5.8850858688`. The disclosed delta is `0.0045325383` source units or `0.0036260306` effective units.
-- Mesh: 30,000 triangles, 14,998 working vertices, one UV map, 17-bone nonhumanoid rig, no zero-weight deforming vertices.
+- Mesh: 18,927 vertices in four skinned streams on a 19-bone creature skeleton (see below), no unweighted vertices.
 - Material: `PdxMeshAdvanced` with the stable diffuse, normal, and specular DDS maps in the same runtime folder.
 
 The unit system resolves a sub-unit `sprite` through `<sprite>_entity`. The five aliases below clone the canonical entity so every cave-brood role receives the same mesh, actions, scale, and sound states without duplicate model packages:
@@ -25,40 +25,33 @@ The unit system resolves a sub-unit `sprite` through `<sprite>_entity`. The five
 
 The aliases live in `gfx/entities/018_resources_found_cave_monster.asset`. The five large counters are `152x42` two-frame DDS strips and the five on-map counters are `60x12` two-frame DDS strips, registered in `interface/chaosx_subuniticons.gfx` and copied to the two runtime counter folders.
 
-## Skeletal actions
+## Skeleton and actions
 
-All actions are 24 FPS, in-place, grounded, and reimported through the repository-locked `io_pdx_mesh` route. The hard-weighted semantic rig uses a restrained angle envelope to preserve clean plated silhouettes without mesh shear.
+The creature's original rig was an elephant template (trunk, howdah, and rider bones) that the stone-plated body never fitted, so every action was near-static.
+On 2026-09-27 the shipped mesh was kept and given its own 19-bone creature skeleton with `lab_limbs.py` (`import`, then `skeleton`): a non-deforming root, hips and chest along the body, neck and head, a two-bone tail, and three bones per leg placed on joints measured from the leg pieces below the belly; the whole mesh was heat-weighted to it.
+Eight actions were authored with `lab_limbs.py` `keys` at 30 FPS, followed by its measured floor pass on every role:
 
-| Runtime action | Frames | Loop | Runtime binding |
-| --- | ---: | --- | --- |
-| `resources_found_cave_monster_idle` | 0-48 | yes | idle/training |
-| `resources_found_cave_monster_move` | 0-24 | yes | move/retreat |
-| `resources_found_cave_monster_attack` | 0-32 | no | attack/defend/support attack |
-| `resources_found_cave_monster_death` | 0-36 | no | death |
+| Action | Frames | What it shows |
+| --- | ---: | --- |
+| idle | 1-80 | breathing, head turning to look around, tail sway |
+| move | 1-41 | four-beat walk (rear right, front left, rear left, front right) with body bob |
+| retreat | 1-41 | the walk played backward |
+| defend | 1-50 | drops low behind the plated shoulders, head down |
+| attack | 1-60 | crouch, lunge, and jaw snap at frame 24 |
+| support_attack | 1-70 | rears onto the hind legs, slams the forelimbs down, roars |
+| training | 1-80 | alternate forepaw strikes with a roar between |
+| death | 1-70 | staggers and collapses onto its belly, legs splayed |
 
-These four actions bind across the eight entity states, so the `defend` and `support_attack` states play the attack action, `retreat` plays the move action, and `training` plays the idle action.
-The acceptance for those state bindings is recorded in `docs/plans/018_resources_found_plans/cave_monster_current_package_manifest.md`, whose acceptance basis states that the installed four-action set and its `defend`/`support_attack` to attack, `retreat` to move, and `training` to idle bindings are intentional for the accepted current package.
-That is an accepted intentional exception for this package, and the entity consumes only the four actions registered in `gfx/entities/018_resources_found_cave_monster.gfx`.
-
-The final source-to-runtime action hashes and static reimport conclusions are recorded in `docs/plans/018_resources_found_plans/subagent_handoffs/cave_monster_3d_model_handoff.md` and `docs/plans/018_resources_found_plans/018_cave_monster_3d_integration_addendum.md`. Static reimports contain the 17-bone rig and 30,000-polygon mesh with contact ranges within approximately `+/-0.000015 m`.
+All eight are reimport-proven from `docs/assets/018_resources_found/models_3d/cave_monster/export/v4/`; the death settles about 0.1 unit (1.5% of height) into the ground as the belly lands.
+The runtime maps are the existing diffuse, normal, and specular DDS files.
 
 ## Sound synchronization
 
-The four immutable sources are public-domain or CC0 recordings documented with attribution and checksums in `docs/plans/018_resources_found_plans/subagent_handoffs/cave_monster_3d_model_handoff.md`. The parent runtime uses mechanically converted PCM WAVs only:
-
-- Idle ambience is a state-entry bed that stops on state change.
-- Move and retreat trigger four short gravel contacts at `0.125`, `0.375`, `0.625`, and `0.875` seconds.
-- Attack, defend, and support attack trigger a bounded roar at `0.60` seconds, shortly before frame 16.
-- Death triggers a bounded gravel collapse at `0.75` seconds, at frame 18.
-
-Definitions are in `sound/chaosx_resources_found_cave_monster_sound.asset`, and the timed events are in the canonical entity asset. No generated, synthesized, placeholder, or unlicensed sound is permitted.
+The four sourced effects in `sound/chaosx_resources_found_cave_monster_sound.asset` (public-domain or CC0, attribution and checksums in `docs/plans/018_resources_found_plans/subagent_handoffs/cave_monster_3d_model_handoff.md`) are timed to the authored beats: the four gravel footfalls on the four walk contacts, the bounded roar on the bite, the slam, and the pawing, the idle growl in defend and the training roar, and the gravel collapse at the start of the death with a footfall when the body lands.
 
 ## Validation boundary
 
-The model, actions, materials, counters, aliases, and sound definitions have static and adapter/reimport evidence. A 2026-08-10 runtime-byte reimport freshly confirmed the 17-bone, 30,000-triangle mesh and all four actions. Fresh mesh, attack, death, and five-frame idle/move previews rendered from temporary byte-identical runtime copies. Idle and move quarter phases visibly differ while midpoint and end frames return exactly to the neutral decoded pixels; sampled contacts remain between approximately `-0.00000020` and `+0.00001316` source units. The combined idle/move contact sheet SHA-256 is `FC5D8A8AB3CCA0BE8143B7767DC55EE710E60CC7D4691C825958C8C5E03258AB`.
-
-The same reconstruction mechanically inspected all ten counter strips and passed both frames, alpha bounds, family differentiation, vanilla olive-green large frame 0, grayscale disabled large frame 1, and the grayscale on-map precedent. Parent visual review also passed the contact sheet. All seven runtime WAVs are mono 44.1 kHz 16-bit PCM with zero clipped samples. The four immutable source hashes, source intervals, fades, unity-gain finding, sample-addressed attack trim, and normalized FFmpeg commands are preserved in `docs/plans/018_resources_found_plans/subagent_handoffs/event018_cave_audio_recipe_reconstruction_2026-08-10.md`; six current cues reproduce byte-for-byte and movement foot 02 differs only at its final sample by one least-significant 16-bit unit. Auditory balance, idle overlap, and live action synchronization remain unproven.
-
-Static model/action visual closure is complete under the user's explicit no-HOI4-testing override. Live HOI4 consumer validation and audible playback were not performed, so normal-map-zoom presentation, entity-state transitions, sound synchronization, and runtime audible density are not claimed as in-game evidence.
-
-The former `docs/assets/018_resources_found/models_3d/cave_monster/` and `docs/assets/018_resources_found/models_3d/cave_monster_static_closure/` evidence roots are absent from the current checkout. Neither was a runtime dependency. Their durable findings remain in the current package manifest and named handoffs, but the missing source image, checkpoints, selected exports, reimport artifacts, and job metadata cannot be reconstructed from documentation alone.
+The rebuilt mesh and all eight actions have adapter partition, export, and actual-byte reimport evidence under `docs/assets/018_resources_found/models_3d/cave_monster/export/v4/export_report.json`, with rendered side and three-quarter review sheets under `blender/working/v3/review/`.
+The counters were not changed; their earlier mechanical inspection still applies.
+All seven runtime WAVs are the existing sourced cues; their recipes are in `docs/plans/018_resources_found_plans/subagent_handoffs/event018_cave_audio_recipe_reconstruction_2026-08-10.md`.
+Live HOI4 playback, map-zoom presentation, and audible balance belong to the user.

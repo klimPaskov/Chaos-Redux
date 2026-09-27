@@ -1,5 +1,7 @@
 # Event 018 cave monster current package manifest
 
+Disposition: `superseded` — on 2026-09-27 the cave monster was re-rigged on its own 19-bone creature skeleton with eight distinct authored actions; the current contract is `docs/systems/3d_model_pipeline/resources_found_cave_monster_model.md` and this manifest records the earlier four-action package only.
+
 Date: 2026-09-12.
 
 Disposition: `implemented` for the current static runtime package.

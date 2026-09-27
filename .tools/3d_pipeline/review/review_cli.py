@@ -145,10 +145,11 @@ def cmd_compare(a):
 
 def cmd_blender(a):
     script = Path(a.script) if Path(a.script).is_absolute() else Path(__file__).resolve().parent / a.script
-    cmd = [blender_exe(), "--background", "--factory-startup", "--python", str(script), "--", os.path.abspath(a.config)]
+    cmd = [blender_exe(), "--background", "--factory-startup", "--addons", "bl_ext.user_default.io_pdx_mesh",
+           "--python", str(script), "--", os.path.abspath(a.config)]
     proc = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
     keep = [l for l in (proc.stdout + proc.stderr).splitlines()
-            if l.startswith(("FINAL", "ITEMS", "SURVEY", "LIMBS", "KEYS", "SKELETON")) or "Error" in l or "Traceback" in l or l.startswith("  File")]
+            if l.startswith(("FINAL", "ITEMS", "SURVEY", "LIMBS", "KEYS", "SKELETON", "IMPORT")) or "Error" in l or "Traceback" in l or l.startswith("  File")]
     print("\n".join(keep))
     if proc.returncode != 0 or any("Traceback" in l for l in keep):
         sys.exit(proc.returncode or 1)

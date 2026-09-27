@@ -54,6 +54,12 @@ keys    For each action in cfg["keys"] ({action: {frame: {bone: value}}}), remov
         the floor (run it after authoring, on every role; untouched frames stay as authored).
         Every number is authored by the agent; nothing is generated. Saves cfg["out"].
 
+import  Start a working blend from a shipped runtime model: cfg["mesh"] (a .mesh file, imported with
+        its skeleton and locators through io_pdx_mesh) is saved to cfg["out"]; the mesh object is
+        renamed cfg.get("body", "char1.001") and the armature cfg.get("armature", "Armature.001")
+        so the other modes and the export tools find them. Use it for a unit whose editable source
+        is gone but whose geometry is worth keeping.
+
 Common keys: "blend", "out", "armature" (default "Armature.001"), "body" (default "char1.001").
 """
 import json
@@ -258,8 +264,8 @@ def build_skeleton(cfg):
         bpy.data.objects.remove(old, do_unlink=True)
     rig = bpy.data.objects.new(name, bpy.data.armatures.new(name))
     bpy.context.scene.collection.objects.link(rig)
-    for o in bpy.context.view_layer.objects:
-        o.select_set(False)
+    bpy.context.view_layer.update()
+    bpy.ops.object.select_all(action="DESELECT")
     bpy.context.view_layer.objects.active = rig
     rig.select_set(True)
     bpy.ops.object.mode_set(mode="EDIT")
@@ -286,6 +292,7 @@ def build_skeleton(cfg):
     body.parent = rig
     mod = body.modifiers.new("Armature", "ARMATURE")
     mod.object = rig
+    _mark_working(rig, body)
     bpy.ops.wm.save_as_mainfile(filepath=cfg["out"])
     report = {"bones": len(rig.data.bones), "vertices": len(pts), "weighted": len(weights), "unweighted": unweighted}
     print("SKELETON", json.dumps(report))
@@ -522,9 +529,50 @@ def key_limbs(cfg):
     return report
 
 
+def _mark_working(rig, body):
+    """Tag the objects the way the adapter's prepare step does, so its partition and export
+    operations treat a mesh that came from a runtime import or a new skeleton as the working unit."""
+    for o in (rig, body):
+        if o is not None:
+            o["chaosx_working"] = True
+    body["chaosx_export_approved"] = True
+    for m in body.data.materials:
+        if m is not None:
+            m["chaosx_pdx_shader"] = "PdxMeshAdvanced"
+
+
+def import_runtime(cfg):
+    from bl_ext.user_default.io_pdx_mesh.pdx_blender import blender_import_export as pdx
+    bpy.ops.wm.read_factory_settings(use_empty=True)
+    pdx.import_meshfile(cfg["mesh"], imp_mesh=True, imp_skel=True, imp_locs=True, join_materials=True, bonespace=False)
+    meshes = [o for o in bpy.data.objects if o.type == "MESH"]
+    if len(meshes) > 1:
+        for o in bpy.context.view_layer.objects:
+            o.select_set(o in meshes)
+        bpy.context.view_layer.objects.active = meshes[0]
+        bpy.ops.object.join()
+    body = next(o for o in bpy.data.objects if o.type == "MESH")
+    body.name = cfg.get("body", "char1.001")
+    rig = next((o for o in bpy.data.objects if o.type == "ARMATURE"), None)
+    if rig:
+        rig.name = cfg.get("armature", "Armature.001")
+    _mark_working(rig, body)
+    # The runtime maps live outside the job; the adapter only accepts packed or job-local images.
+    for img in bpy.data.images:
+        if img.source == "FILE" and not img.packed_file:
+            img.pack()
+    bpy.ops.wm.save_as_mainfile(filepath=cfg["out"])
+    report = {"body": body.name, "vertices": len(body.data.vertices), "armature": rig.name if rig else None,
+              "bones": len(rig.data.bones) if rig else 0,
+              "locators": [o.name for o in bpy.data.objects if o.type == "EMPTY"]}
+    print("IMPORT", json.dumps(report))
+    return report
+
+
 def run(config_path=None):
     cfg = json.load(open(config_path, encoding="utf-8")) if config_path else _cfg()
-    return {"survey": survey, "rig": rig_limbs, "skeleton": build_skeleton, "keys": key_limbs}[cfg["mode"]](cfg)
+    return {"survey": survey, "rig": rig_limbs, "skeleton": build_skeleton, "keys": key_limbs,
+            "import": import_runtime}[cfg["mode"]](cfg)
 
 
 if __name__ == "__main__" and "--" in sys.argv:
