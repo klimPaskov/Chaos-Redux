@@ -36,6 +36,8 @@ The report event uses `GFX_report_event_026_black_friday` and `gfx/event_picture
 
 The shared Events list and Event Details framework provide the truthful disabled, eligible, reserved, active, fired, evolution, premise, source, actorless-history, and debug mappings. The achievement key is `026_black_friday_five_departments`.
 
+The Evolution I threshold and discount, and the achievement's five-family target, are displayed through `common/scripted_localisation/026_black_friday_scripted_localisation.txt` from the same script constants used by their conditions. The [binding handoff](../plans/026_black_friday_plans/subagent_handoffs/event026_constant_text_binding.md) records the vanilla precedent and the still-partial event render.
+
 For that achievement, an ordinary paid purchase must commit during a naturally selected sale. A discounted native Japan chemical or biological raid prepared during the sale contributes the equipment family only when a successful accepted release resolves, even after expiry. The outcome marker, native reservation, human-country eligibility, and sale sequence are checked without a synthetic purchase receipt. Failed or canceled raids do not credit a family. Existing family progress remains until the delayed outcome; ordinary post-expiry purchases remain ineligible.
 
 ## Validation record
