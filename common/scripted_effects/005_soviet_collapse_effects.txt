@@ -22414,18 +22414,35 @@ soviet_collapse_setup_uwr_successor = {
 	soviet_collapse_uwr_build_starting_blacksite_network = yes
 	add_breakthrough_progress = { specialization = specialization_biowarfare value = constant:soviet_collapse_uwr_balance.breakthrough_gain }
 	add_breakthrough_progress = { specialization = specialization_cw value = constant:soviet_collapse_uwr_balance.breakthrough_gain }
-	complete_special_project = { project = sp:anthrax_bomb show_modifiers = no }
-	complete_special_project = { project = sp:plague_bomb show_modifiers = no }
-	complete_special_project = { project = sp:tularemia_bomb show_modifiers = no }
-	complete_special_project = { project = sp:smallpox_bomb show_modifiers = no }
+	if = {
+		limit = { soviet_collapse_uwr_exact_tver_bio_site_is_valid = yes }
+		if = {
+			limit = { NOT = { is_special_project_completed = sp:anthrax_bomb } }
+			complete_special_project = { project = sp:anthrax_bomb show_modifiers = no }
+		}
+		if = {
+			limit = { NOT = { is_special_project_completed = sp:plague_bomb } }
+			complete_special_project = { project = sp:plague_bomb show_modifiers = no }
+		}
+		if = {
+			limit = { NOT = { is_special_project_completed = sp:tularemia_bomb } }
+			complete_special_project = { project = sp:tularemia_bomb show_modifiers = no }
+		}
+		if = {
+			limit = { NOT = { is_special_project_completed = sp:smallpox_bomb } }
+			complete_special_project = { project = sp:smallpox_bomb show_modifiers = no }
+		}
+		set_technology = {
+			anthrax_bomb_delivery_systems = 1
+			plague_bomb_delivery_systems = 1
+			tularemia_bomb_delivery_systems = 1
+			smallpox_bomb_delivery_systems = 1
+		}
+	}
 	complete_special_project = { project = sp:sp_cw_sarin_program show_modifiers = no }
 	complete_special_project = { project = sp:sp_cw_soman_program show_modifiers = no }
 	set_technology = {
 		pathogen_handling_protocols = 1
-		anthrax_bomb_delivery_systems = 1
-		plague_bomb_delivery_systems = 1
-		tularemia_bomb_delivery_systems = 1
-		smallpox_bomb_delivery_systems = 1
 		chlorine_gas = 1
 		phosgene = 1
 		mustard_gas = 1
@@ -22436,7 +22453,10 @@ soviet_collapse_setup_uwr_successor = {
 		soman = 1
 	}
 	soviet_collapse_uwr_stockpile_absurd_payloads = yes
-	soviet_collapse_uwr_register_biological_arsenal = yes
+	if = {
+		limit = { soviet_collapse_uwr_exact_tver_bio_site_is_valid = yes }
+		soviet_collapse_uwr_register_biological_arsenal = yes
+	}
 	soviet_collapse_uwr_roll_project_with_exact_bio_site = yes
 	soviet_collapse_uwr_roll_project_with_exact_bio_site = yes
 	soviet_collapse_spawn_custom_splinter_assault_columns = yes
