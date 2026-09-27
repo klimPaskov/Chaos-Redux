@@ -1,6 +1,6 @@
 # Event 020 weaponization value localisation handoff
 
-Disposition: implemented for the bounded localisation patch. The decision-based attack described below was subsequently superseded by the accepted [native one-payload raid migration](../2026-09-27_weaponized_plague_native_raid_migration.md): its cost keys and attack-only getters were removed, and the approach factory getter was renamed to match its continuing production action. The remaining multi-resource production cost presentation and native display remain unresolved.
+Disposition: implemented for the bounded localisation patch. The decision-based attack described below was subsequently superseded by the accepted [native one-payload raid migration](../2026-09-27_weaponized_plague_native_raid_migration.md): its cost keys and attack-only getters were removed, and the approach factory getter was renamed to match its continuing production action. The later [production-cost correction](../../../specs/020_black_plague_specs/corrections/2026-09-27_weaponization_cost_timer_budget.md) supersedes this handoff's original four-resource payment list and places every remaining payment and factory commitment in three-value rows. Native display remains unresolved.
 
 ## Scope and files
 

@@ -105,19 +105,14 @@ black_plague_weaponization_trigger_accident = {
 	country_event = { id = chaosx_nr20_weaponization.1 }
 }
 
-# COUNTRY scope. The four approach decisions pay real material, military, and
-# fuel costs before changing the scientific posture.
+# COUNTRY scope. The four approaches spend support crates and Command Power
+# once when selected; the native decision holds its factory commitment.
 black_plague_weaponization_pay_approach_cost = {
 	set_temp_variable = { equipment_stockpile_removal_amount = constant:black_plague_weaponization_program.approach_support_equipment }
 	remove_support_equipment_from_stockpile = yes
-	set_temp_variable = { equipment_stockpile_removal_amount = constant:black_plague_weaponization_program.approach_motorized_equipment }
-	remove_motorized_equipment_from_stockpile = yes
 	set_temp_variable = { black_plague_weaponization_command_debit = constant:black_plague_weaponization_program.approach_command_power }
 	multiply_temp_variable = { black_plague_weaponization_command_debit = -1 }
 	add_command_power = black_plague_weaponization_command_debit
-	set_temp_variable = { black_plague_weaponization_fuel_debit = constant:black_plague_weaponization_program.approach_fuel }
-	set_temp_variable = { fuel_stockpile_removal_amount = black_plague_weaponization_fuel_debit }
-	remove_fuel_from_stockpile = yes
 }
 
 black_plague_weaponization_choose_safety_first = {
@@ -231,11 +226,6 @@ black_plague_weaponization_expand_stockpile = {
 		limit = { black_plague_weaponization_can_expand_stockpile = yes }
 		set_temp_variable = { equipment_stockpile_removal_amount = constant:black_plague_weaponization_program.stockpile_expansion_support_equipment }
 		remove_support_equipment_from_stockpile = yes
-		set_temp_variable = { equipment_stockpile_removal_amount = constant:black_plague_weaponization_program.stockpile_expansion_motorized_equipment }
-		remove_motorized_equipment_from_stockpile = yes
-		set_temp_variable = { black_plague_weaponization_expansion_command_debit = constant:black_plague_weaponization_program.stockpile_expansion_command_power }
-		multiply_temp_variable = { black_plague_weaponization_expansion_command_debit = -1 }
-		add_command_power = black_plague_weaponization_expansion_command_debit
 		set_temp_variable = { black_plague_weaponization_expansion_fuel_debit = constant:black_plague_weaponization_program.stockpile_expansion_fuel }
 		set_temp_variable = { fuel_stockpile_removal_amount = black_plague_weaponization_expansion_fuel_debit }
 		remove_fuel_from_stockpile = yes
@@ -263,9 +253,6 @@ black_plague_weaponization_destroy_stockpile = {
 		set_temp_variable = { black_plague_weaponization_destruction_command_debit = constant:black_plague_weaponization_program.stockpile_destroy_command_power }
 		multiply_temp_variable = { black_plague_weaponization_destruction_command_debit = -1 }
 		add_command_power = black_plague_weaponization_destruction_command_debit
-		set_temp_variable = { black_plague_weaponization_destruction_fuel_debit = constant:black_plague_weaponization_program.stockpile_destroy_fuel }
-		set_temp_variable = { fuel_stockpile_removal_amount = black_plague_weaponization_destruction_fuel_debit }
-		remove_fuel_from_stockpile = yes
 		clr_country_flag = black_plague_weaponization_stockpile_active
 		set_country_flag = black_plague_weaponization_stockpile_destroyed_history
 		subtract_from_variable = { black_plague_weaponization_risk = constant:black_plague_weaponization_program.stockpile_destroy_risk_loss }

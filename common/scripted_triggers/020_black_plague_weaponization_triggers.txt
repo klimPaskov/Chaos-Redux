@@ -84,12 +84,37 @@ black_plague_weaponization_approach_can_continue = {
 	NOT = { has_country_flag = black_plague_weaponization_approach_chosen }
 }
 
+# COUNTRY scope while the selected project posture occupies one civilian
+# factory. The selected-approach and defensive-conversion flags are receipts of
+# work already begun, so this continuation gate must not reuse the start gate.
+black_plague_weaponization_approach_commitment_is_valid = {
+	exists = yes
+	NOT = { has_global_flag = world_end }
+	has_global_flag = black_plague_system_active
+	is_special_project_being_researched = sp:black_plague_weaponization_program
+	has_country_flag = black_plague_weaponization_approach_chosen
+}
+
 black_plague_weaponization_can_choose_approach = {
 	black_plague_weaponization_approach_can_continue = yes
 	NOT = { has_equipment = { support_equipment < constant:black_plague_weaponization_program.approach_support_equipment } }
-	NOT = { has_equipment = { motorized_equipment < constant:black_plague_weaponization_program.approach_motorized_equipment } }
 	NOT = { command_power < constant:black_plague_weaponization_program.approach_command_power }
-	NOT = { has_fuel < constant:black_plague_weaponization_program.approach_fuel }
+}
+
+# Pre-selection quote gate. The factory may already be reserved when
+# complete_effect rechecks the material payment, so that effect calls the
+# material helper above without rechecking free factories.
+black_plague_weaponization_approach_is_affordable = {
+	black_plague_weaponization_can_choose_approach = yes
+	NOT = { num_of_civilian_factories_available_for_projects < constant:black_plague_weaponization_program.approach_civilian_factories }
+	NOT = {
+		OR = {
+			has_decision = black_plague_weaponization_safety_first
+			has_decision = black_plague_weaponization_military_acceleration
+			has_decision = black_plague_weaponization_dual_use
+			has_decision = black_plague_weaponization_defensive_conversion
+		}
+	}
 }
 
 black_plague_weaponization_can_begin = {
@@ -119,6 +144,21 @@ black_plague_weaponization_delivery_actor_is_valid = {
 	}
 }
 
+# COUNTRY scope while the expansion or destruction factory commitment runs.
+# Payment stock and the absence of a cooldown are start-only checks. A present
+# action-specific cooldown is a positive receipt that the click effect settled.
+black_plague_weaponization_expansion_commitment_is_valid = {
+	black_plague_weaponization_delivery_actor_is_valid = yes
+	has_country_flag = black_plague_weaponization_complete
+	has_country_flag = black_plague_weaponization_stockpile_expansion_cooldown
+}
+
+black_plague_weaponization_destruction_commitment_is_valid = {
+	black_plague_weaponization_delivery_actor_is_valid = yes
+	has_country_flag = black_plague_weaponization_complete
+	has_country_flag = black_plague_weaponization_stockpile_destroy_cooldown
+}
+
 # COUNTRY scope. Post-project stockpile controls remain inside the shared
 # disease category. Expansion creates one additional native payload; it does
 # not grant instant delivery and remains exposed to the ordinary accident
@@ -130,9 +170,14 @@ black_plague_weaponization_can_expand_stockpile = {
 	NOT = { has_country_flag = black_plague_weaponization_defensive_conversion }
 	NOT = { has_country_flag = black_plague_weaponization_stockpile_expansion_cooldown }
 	NOT = { has_equipment = { support_equipment < constant:black_plague_weaponization_program.stockpile_expansion_support_equipment } }
-	NOT = { has_equipment = { motorized_equipment < constant:black_plague_weaponization_program.stockpile_expansion_motorized_equipment } }
-	NOT = { command_power < constant:black_plague_weaponization_program.stockpile_expansion_command_power }
 	NOT = { has_fuel < constant:black_plague_weaponization_program.stockpile_expansion_fuel }
+}
+
+black_plague_weaponization_expansion_is_affordable = {
+	black_plague_weaponization_can_expand_stockpile = yes
+	NOT = { num_of_civilian_factories_available_for_projects < constant:black_plague_weaponization_program.stockpile_expansion_civilian_factories }
+	NOT = { has_decision = black_plague_weaponization_expand_stockpile }
+	NOT = { has_decision = black_plague_weaponization_destroy_stockpile }
 }
 
 # COUNTRY scope. Destruction is a deliberate safety action and can be used
@@ -146,7 +191,13 @@ black_plague_weaponization_can_destroy_stockpile = {
 	NOT = { has_country_flag = black_plague_weaponization_stockpile_destroy_cooldown }
 	NOT = { has_equipment = { support_equipment < constant:black_plague_weaponization_program.stockpile_destroy_support_equipment } }
 	NOT = { command_power < constant:black_plague_weaponization_program.stockpile_destroy_command_power }
-	NOT = { has_fuel < constant:black_plague_weaponization_program.stockpile_destroy_fuel }
+}
+
+black_plague_weaponization_destruction_is_affordable = {
+	black_plague_weaponization_can_destroy_stockpile = yes
+	NOT = { num_of_civilian_factories_available_for_projects < constant:black_plague_weaponization_program.stockpile_destroy_civilian_factories }
+	NOT = { has_decision = black_plague_weaponization_destroy_stockpile }
+	NOT = { has_decision = black_plague_weaponization_expand_stockpile }
 }
 
 # COUNTRY scope. The native raid type stays visible after the project is
