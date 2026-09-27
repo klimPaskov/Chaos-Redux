@@ -311,20 +311,20 @@ Both achievements have complete, grey, and not-eligible DDS states registered in
 
 ## Asset inventory and wiring
 
-The package contains separate original source art by consumer type, processed PNG review outputs, final DDS files, prompt records, manifests, checksums, and decoded round-trip evidence under `docs/assets/024_video_game_in_sweden/`.
+The current source wiring selects 30 Event24-owned runtime DDS files. Source and processed PNG provenance is tracked separately in the asset manifest; its review and runtime DDS comparison remain pending.
 
 The report picture is full-canvas period documentary art and the category picture is a full-canvas static decision picture.
 
 The icon families use native transparent source output and preserve alpha through processing and DDS conversion.
 
-The following final DDS list is exhaustive for Event24-owned runtime art and contains 32 files, with 30 worker-owned files and 2 parent-owned full-canvas pictures. The related pre-existing news event `chaosx.news.24` also consumes `GFX_news_hoi` from `gfx/event_pictures/024_hearts_of_iron/news_hoi.dds`. That 397x153 legacy news surface was decoded and inspected against the canonical news family and is intentionally retained because the accepted asset inventory authorizes no custom news-picture row. The category also consumes the installed vanilla `GFX_decision_category_generic_crisis` icon, which is shared and remains outside the Event24 package file count.
+The current Event24-owned runtime inventory contains 30 DDS files: 4 bespoke ideas, 17 decisions, 1 Rulebook Commander trait, 6 achievement states, and 2 full-canvas pictures. The experimental-war-game spirit instead selects installed vanilla `SWE_wargames` through `common/ideas/024_hearts_of_iron_ideas.txt`; its `GFX_idea_SWE_wargames` sprite and DDS are supplied by the installed game. The related pre-existing news event `chaosx.news.24` also consumes `GFX_news_hoi` from `gfx/event_pictures/024_hearts_of_iron/news_hoi.dds`. That legacy news surface remains outside the Event24-owned count. The category also consumes the installed vanilla `GFX_decision_category_generic_crisis` icon, which remains outside the count.
 
 | Consumer | Final DDS | Sprite | Owning definition |
 | --- | --- | --- | --- |
 | Report picture | `gfx/event_pictures/024_video_game_in_sweden/024_video_game_in_sweden_report_release.dds` | `GFX_report_event_024_video_game_in_sweden_release` | `interface/chaosx_pictures.gfx` |
 | Related legacy news picture | `gfx/event_pictures/024_hearts_of_iron/news_hoi.dds` | `GFX_news_hoi` | `interface/chaosx_pictures.gfx` |
 | Decision category picture | `gfx/interface/decisions/024_video_game_in_sweden/024_video_game_in_sweden_category.dds` | `GFX_decision_category_picture_024_video_game_in_sweden` | `interface/chaosx_decision_category_pictures.gfx` |
-| Idea | `gfx/interface/ideas/024_video_game_in_sweden/024_video_game_in_sweden_experimental_war_game.dds` | `GFX_idea_024_video_game_in_sweden_experimental` | `interface/chaosx_ideas.gfx` |
+| Experimental-war-game idea, installed vanilla | `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/interface/ideas/idea_SWE_wargames.dds` | `GFX_idea_SWE_wargames` | Installed `interface/ideas.gfx`; selected by `common/ideas/024_hearts_of_iron_ideas.txt` |
 | Idea | `gfx/interface/ideas/024_video_game_in_sweden/024_video_game_in_sweden_gamified_staff_culture.dds` | `GFX_idea_024_video_game_in_sweden_staff_culture` | `interface/chaosx_ideas.gfx` |
 | Idea | `gfx/interface/ideas/024_video_game_in_sweden/024_video_game_in_sweden_national_strategy_craze.dds` | `GFX_idea_024_video_game_in_sweden_national_craze` | `interface/chaosx_ideas.gfx` |
 | Idea | `gfx/interface/ideas/024_video_game_in_sweden/024_video_game_in_sweden_simulation_orthodoxy.dds` | `GFX_idea_024_video_game_in_sweden_orthodoxy` | `interface/chaosx_ideas.gfx` |
@@ -352,9 +352,9 @@ The following final DDS list is exhaustive for Event24-owned runtime art and con
 
 The 18 clickable Event24 decisions use 17 unique bespoke Event24 decision DDS files registered in `interface/chaosx_decisions.gfx`. The full and narrow reality-audit decisions share the single `GFX_decision_024_video_game_in_sweden_reality_audit` sprite. The four primary icons `video_game_expand_access`, `video_game_conclude_trial`, `video_game_officer_league`, and `video_game_separate_policy` were added to the same manifest and GFX registration as the other Event24 decisions.
 
-No placeholder, transform-only animation, sourced portrait, or unmanifested Event24-owned asset is used by the event. The shared vanilla category icon is separately traced and documented in `docs/assets/024_video_game_in_sweden/notes/visual_asset_audit.md`.
+The earlier runtime review found no placeholder or cross-family resized substitute. The restored source and processed PNG package is recorded in `docs/assets/024_video_game_in_sweden/manifest.md`; current source-to-DDS review remains pending. The shared vanilla category icon is separately traced in `docs/assets/024_video_game_in_sweden/notes/visual_asset_audit.md`.
 
-The 2026-09-04 visual audit opened every source/master PNG, processed PNG, intermediate achievement DDS, every accepted Event24 runtime DDS, and the related legacy news DDS individually at original resolution. It found no visual or wiring defect, and the accepted runtime DDS files match their processed PNGs exactly. The full audit table and machine-readable evidence are retained under `docs/assets/024_video_game_in_sweden/notes/`, including `related_runtime_asset_audit.json` for the retained news surface.
+The 2026-09-04 visual review covered the former 32-file inventory, before the accepted 2026-09-20 retirement of Field-Validated Planner and the later explicit instruction to use vanilla `SWE_wargames` for the experimental spirit. The custom experimental-war-game DDS and its `interface/chaosx_ideas.gfx` sprite remain as unused archival assets, outside the 30-file active inventory. The earlier review is historical evidence for those pixels; current source-to-DDS comparison of the restored PNGs and live visual confirmation remain pending.
 
 ## Implemented surfaces and future depth
 

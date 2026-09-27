@@ -23,3 +23,9 @@ The reverse trace found 18 clickable decision consumers, 4 mission consumers, 5 
 ## Remaining risks
 
 No icon placeholder or copied generic icon remains in the Event 24 decision set. The complete audit table and machine-readable evidence are under `docs/assets/024_video_game_in_sweden/notes/`. In-game visual confirmation remains user-owned.
+
+## Current disposition
+
+This handoff records the earlier 30-file icon package. The user's explicit 2026-09-20 decision retired Field-Validated Planner and its icon, and the later explicit visual instruction selects installed vanilla `SWE_wargames` for the experimental-war-game spirit. Current gameplay selects four bespoke idea sprites and one vanilla idea sprite; only Rulebook Commander remains as a trait consumer. The current active worker-owned inventory is 28 DDS files: 4 bespoke ideas, 17 decisions, 1 commander trait, and 6 achievement states. The custom experimental source PNG, processed PNG, DDS, and GFX registration remain unused archival records.
+
+The earlier temporary-workspace gap count predates the current source and processed PNG restoration in `docs/assets/024_video_game_in_sweden/manifest.md`; its present completeness and source-to-runtime equality require parent review. The prior final DDS files remain present except for the retired Field-Validated Planner DDS. The earlier visual review remains historical evidence for the assets it inspected, including the custom experimental icon that no longer has a runtime consumer.
