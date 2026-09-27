@@ -41,6 +41,18 @@ cbrn_apply_historical_target_chemical_advisor_modifiers = {
 		multiply_temp_variable = { cbrn_action_civilian_casualty_mult = constant:cbrn_historical_advisor.medical_chemical_casualty_mult }
 		set_temp_variable = { cbrn_action_historical_medical_saturation_mult = constant:cbrn_historical_advisor.medical_chemical_saturation_mult }
 	}
+	if = {
+		limit = {
+			has_event_target = cbrn_action_target_state
+			event_target:cbrn_action_target_state = {
+				CONTROLLER = {
+					has_idea_with_trait = cbrn_activated_carbon_protection_trait
+					check_variable = { cbrn_military_mask_coverage > constant:cbrn_math.zero }
+				}
+			}
+		}
+		multiply_temp_variable = { cbrn_action_military_casualty_mult = constant:cbrn_historical_advisor.zelinsky_protected_military_casualty_mult }
+	}
 }
 
 # State scope. Reads the exact seed actor and modifies only operational snapshots.
@@ -109,5 +121,34 @@ bio_lifecycle_apply_historical_target_advisor_modifiers = {
 		multiply_temp_variable = { bio_death_countermeasure_mult = constant:cbrn_historical_advisor.medical_biological_death_mult }
 		multiply_temp_variable = { bio_medical_countermeasure_mult = constant:cbrn_historical_advisor.medical_biological_saturation_mult }
 		add_to_temp_variable = { bio_detection_environment_add = constant:cbrn_historical_advisor.medical_biological_detection_add }
+	}
+	if = {
+		limit = {
+			CONTROLLER = { has_idea_with_trait = cbrn_antibiotic_production_coordinator_trait }
+			OR = {
+				AND = {
+					check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
+					has_state_flag = bio_anthrax_antibiotics_active
+				}
+				AND = {
+					check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.plague compare = equals }
+					has_state_flag = bio_plague_antibiotics_active
+				}
+				AND = {
+					check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.tularemia compare = equals }
+					has_state_flag = bio_tularemia_antibiotics_active
+				}
+			}
+		}
+		multiply_temp_variable = { bio_medical_countermeasure_mult = constant:cbrn_historical_advisor.heatley_active_antibiotic_saturation_mult }
+	}
+	if = {
+		limit = {
+			CONTROLLER = {
+				has_idea_with_trait = cbrn_epidemiological_survey_director_trait
+				has_idea = bio_surveillance_network_idea
+			}
+		}
+		multiply_temp_variable = { bio_growth_countermeasure_mult = constant:cbrn_historical_advisor.bayne_jones_active_surveillance_growth_mult }
 	}
 }

@@ -4,9 +4,9 @@
 
 Chaos Redux provides a static roster of 67 historical scientists for the chemical-warfare and biological-warfare special-project specializations.
 
-Twelve established dual-role characters remain in `common/characters/cbrn_historical_specialists.txt`, while 55 scientist-only characters live in `common/characters/cbrn_historical_scientists.txt`.
+Fifteen dual-role characters live in `common/characters/cbrn_historical_specialists.txt`, while 52 scientist-only characters live in `common/characters/cbrn_historical_scientists.txt`.
 
-The startup compatibility effects recruit prewar and established 1939 identities at the appropriate bookmark and date-gate later wartime identities through bounded country callbacks. The current source roster has 39 direct and 28 dated recruitment paths, with no second path for any of the 67 scientists. These are source counts; engine recruitment at either bookmark remains unverified. The effects preserve the established `chaosx_scientist_*` identity flags used by events and scripted triggers after the corresponding character is recruited.
+The startup compatibility effects recruit prewar and established 1939 identities at the appropriate bookmark and date-gate later wartime identities through bounded country callbacks. After the [Kuhn availability correction](../../specs/chaos_warfare_system_specs/corrections/2026-09-27_richard_kuhn_availability.md), the current source roster has 38 direct and 29 dated recruitment paths, with no second path for any of the 67 scientists. These are source counts; engine recruitment at either bookmark remains unverified. The effects preserve the established `chaosx_scientist_*` identity flags used by events and scripted triggers after the corresponding character is recruited.
 
 ## Historical calibration
 
@@ -14,7 +14,7 @@ Ratings represent the scientist's demonstrated expertise, program responsibility
 
 The file-scoped rating scale is inexperienced `1`, skilled `2`, experienced `3`, and expert `4`.
 
-Skill 4 is reserved for major field authorities, program leaders, or scientists whose work decisively established a method or capability.
+Skill 4 is reserved for major field authorities or scientists whose own work decisively established a method or capability; program administration alone does not establish expert research skill.
 
 Skill 1 identifies administrators or perpetrators whose direct scientific record does not justify a higher rating, even when the supplied portrait or historical connection warranted inclusion in the requested roster.
 
@@ -89,12 +89,14 @@ The inhumane traits describe method and conduct, not greater historical stature;
 | United States | Karl Friedrich Meyer | Biological warfare | 4 | Brilliant Theorist, Resourceful |
 | United States | Theodor Rosebury | Biological warfare | 3 | Bright, Gifted Engineer |
 | United States | Edwin Broun Fred | Biological warfare | 3 | Brilliant Theorist, Resourceful |
-| United States | George W. Merck | Biological warfare | 4 | Brilliant Theorist, Resourceful |
+| United States | George W. Merck | Biological warfare | 2 | Resourceful |
 | United States | James Stevens Simmons | Biological warfare | 4 | Brilliant Theorist, Resourceful |
 | United States | Cornelius P. Rhoads | Chemical warfare | 4 | Bright, Resourceful |
 | United States | Dean S. Tarbell | Chemical warfare | 2 | Bright |
 | United States | James B. Conant | Chemical warfare | 4 | Genius, Brilliant Theorist |
 | United States | Winford Lee Lewis | Chemical warfare | 4 | Gifted Engineer, Brilliant Theorist |
+
+Kuhn's source-supported chemical-warfare access begins through the GER-only callback on 1 January 1940, not at the 1936 static start. Merck retains his 1942 recruitment floor while the [individual calibration](../../specs/chaos_warfare_system_specs/corrections/2026-09-27_george_w_merck_scientist_calibration.md) represents his industrial research leadership at biological skill 2 rather than expert pathogen research.
 
 ## Startup behavior
 
@@ -107,6 +109,22 @@ Eligible prewar expertise is available at the applicable scenario start, while l
 The dual-role advisor cards use current-date gates for their documented or calibrated appointments: Paul Fildes from 1 January 1940, Gerhard Schrader after 31 December 1936, Kurt Blome from 1 July 1943, Masaji Kitano after 1 January 1942, Franciszek Witaszek from 1 July 1940, Grigory Mairanovsky from 1 January 1938, Frank Olson from 1 January 1943, and Ira Baldwin after 1 January 1942. Fildes remains available as a scientist at the 1939 bookmark; only his Porton Down biological-warfare advisor appointment waits for the department's 1940 establishment. Olson's advisor role is Aerobiology Specialist, while his scientist skill remains 3.
 
 Howard Florey and Alexander Fleming remain available as medical countermeasure advisors, while Shiro Ishii has an established prewar command role. Ivan Mikhailovich Velikanov remains eligible for his prewar research role only at the January 1936 start, consistent with the documented April 1938 death used for the August 1939 bookmark exclusion.
+
+## Defensive appointments
+
+These appointments use existing scientists and remain available without Chaos Warfare or an offensive-use policy. Each costs 100 Political Power and occupies a political-advisor slot, so appointing one displaces another advisor rather than supplying a free permanent layer.
+
+| Advisor | Historical basis | Appointment gate | Conditional contribution |
+| --- | --- | --- | --- |
+| Nikolay Zelinsky, Soviet Union | [Russian Academy of Sciences institute history](https://zioc.ru/institute/zelinskij-n.-d) documents his activated-carbon respirator work and production before the 1936 start. | Collective Protection Systems project. | Issued military respirators reduce military casualties from chemical exposure by 3%; civilian protection and crate consumption are unchanged. |
+| Norman Heatley, United Kingdom | [Oxford History of Science Museum](https://www.mhs.ox.ac.uk/backfromthedead/exhibition/production/index.html) documents the 1940 penicillin production apparatus and 1941 scale-up. | After 1939 and Field Antibiotics project. | Active anthrax, plague, or tularemia antibiotic courses reduce medical saturation by a further 5%; smallpox receives no antibiotic benefit. |
+| Stanhope Bayne-Jones, United States | [National Library of Medicine](https://findingaids.nlm.nih.gov/repositories/4/resources/969) dates his wartime epidemiological and preventive-medicine service to 1941–42. | After 1941 and Mass Vaccine Production project. | An active Surveillance Network reduces outbreak growth by a further 5%. |
+
+The medical and outbreak bonuses enter the existing response floors, which cap the added protection from combined response sources. Zelinsky's chemical contribution enters the existing mask-anchored casualty floor; no mask-replacement multiplier is added.
+
+The new small advisor cards belong under `gfx/interface/advisors/cbrn/` and use `GFX_idea_ENG_norman_heatley`, `GFX_idea_SOV_nikolay_zelinsky`, and `GFX_idea_USA_stanhope_bayne_jones` in `interface/cbrn_historical_advisors.gfx`. The approved full scientist portraits remain the source for these cards; the final DDS cards and sprite entries must be checked against the active advisor consumer before this appointment package is claimed complete.
+
+Future work can give operational logistics a distinct appointment once a non-duplicative bounded effect and source-supported candidate are established. The roster's remaining individual skill/date reviews and native AI appointment ranking remain separately open.
 
 Both historical bookmarks mark every country in the starting mask matrix for force-scaled reconciliation: established majors use a 75% military issue target, Italy 100%, Japan 50%, and all remaining profile tags 25%, with a separate 25% replacement reserve and zero fixed civilian distribution. Each bookmark measures its own deployed force. The common profile retains knowledge and program identity but suppresses archival fixed stock and civilian issue; the startup effect snapshots pre-existing mask models and issues the active band from real stock, with ENG using the shared core helper for the same transaction. The 1939 British startup writes `cbrn_historical_civilian_mask_issue` and `cbrn_uk_1939_mass_respirator_issue`, passes the 40,000-crate civilian respirator assumption to the core CBRN profile owner, and queues ENG-root `cbrn_protection.3` so the inclusive target is reconciled against real stock above the military reserve once. The shared percentages are a gameplay calibration accepted by the user on 2026-09-25, not claims about exact historical inventory.
 
