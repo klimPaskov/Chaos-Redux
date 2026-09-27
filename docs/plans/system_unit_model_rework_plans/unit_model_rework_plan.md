@@ -1,6 +1,6 @@
 # Chaos Redux Unit Model Rework Plan
 
-Disposition: `accepted and queued` — the user approved the plan and its defaults on 2026-09-27 (“okay, go ahead”): ceilings of 70 (route A), 105 (route B), and 40 (route D) credits, Mummy Stagger first for the zombie walk, zombie-variant routes decided after free triage, and the autonomous robot first, then the base zombie. Model 1 is `implemented`; the rest remain queued in that order.
+Disposition: `accepted and queued` — the user approved the plan and its defaults on 2026-09-27 (“okay, go ahead”): ceilings of 70 (route A), 105 (route B), and 40 (route D) credits, Mummy Stagger first for the zombie walk, zombie-variant routes decided after free triage, and the autonomous robot first, then the base zombie. Models 1 and 2 are `implemented`; the rest remain queued in that order.
 
 Scope from the user (2026-09-27): rebuild the Chaos Redux unit models from scratch one at a time, with Meshy body generation, one Meshy rig attempt and one set of suitable preset actions, Blender completion of any poor rig or action, separately generated equipped items, full HOI4 export and wiring, sourced synchronized sound, a unique counter, and multi-angle reimport QA of every action. The autonomous robot, portal raider, and alien infantry stay as they are, except that the autonomous robot receives shooting particles and deeper sound design. The trailer capture is paused until the models are ready.
 
@@ -42,7 +42,7 @@ Only lead-battalion units render as 3D map models; support-company sprites (CBRN
 | # | Model | Consumers | Current state (observed) | Proposed route | Credits |
 |---|---|---|---|---|---|
 | 1 | **Autonomous robot** (polish only) | `autonomous_robot` | Implemented 2026-09-27: attack states loop, visible recoil in `attack`, `support_attack`, and `defend`, braced `defend` bursts with muzzle particles, smoke, light, and report, and layered CC0 heave, casing, venting, motor-death, blast, and debris sounds (job evidence `evidence/audio/polish_20260927/README.md`) | F | **0** |
-| 2 | **Base zombie** | base zombie entity (unwired) | Approved input, body, remesh, rig, 7 paid Meshy clips downloaded (64 credits already spent); walk rejected; 90k topology review, export, wiring open | Finish existing lineage; buy one walk | **3–6** |
+| 2 | **Base zombie** | base `zombies` battalion (`chaosx_zombies_entity`) | Implemented 2026-09-27: training re-authored from boxing into zombie claw-and-feed choreography, attack and training grounded, death arms re-authored, mesh reduced to the 30k project norm, eight actions exported and reimport-proven, CC BY/CC0 voices and impacts wired (handoff `docs/plans/002_zombie_outbreak_zombies_plans/subagent_handoffs/2026-09-27_base_zombie_rebuild_runtime.md`) | Blender completion of the existing lineage | **0** |
 | 3–9 | Demonic, infected, mutant, necrotic, parasitic, rabid, undead zombies | 7 zombie types plus 3 armored variants | Separate meshes with 4 actions each; quality unreviewed | E where the design is a reskin of the base body, A where the silhouette differs (demonic, mutant, parasitic likely) | 70–450 |
 | 10 | Clone infantry (and Aryan clone variant) | `clone_infantry`, `aryan_clone_infantry` | 9 actions; firearm unit | B, variant by E | 103–109 |
 | 11 | Chaos assault battalion | `chaos_battalion` | 4 actions; firearm unit | B | 93–99 |
