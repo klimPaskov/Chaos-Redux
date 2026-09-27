@@ -2,6 +2,10 @@
 # These file-scoped values mirror the authoritative shared constants.
 @CR_SC_CBRN_OCCUPATION_DECISION_COST_PROTECTIVE_AID_FACTORIES = 2
 @CR_SC_CBRN_OCCUPATION_DECISION_COST_PROTECTIVE_AID_PP_AI_HINT = 25
+# Fixed AI saving hints mirror the two ordinary cover-up prices; the actual
+# charge and eligibility still use the live Condemnation-scaled quote.
+@CR_SC_CBRN_OCCUPATION_SEAL_STATE_PP_AI_HINT = 40
+@CR_SC_CBRN_OCCUPATION_DESTROY_RECORDS_PP_AI_HINT = 60
 # ============================================================================
 # CHAOS REDUX - CBRN OCCUPATION DECISIONS
 # ============================================================================
@@ -11,8 +15,8 @@
 #   exact-record concealment or disclosure choices.
 # - The hidden coercive-authorization token is retained for occupation-law
 #   compatibility. Sarin and Soman attacks are not decision actions.
-# - Aid debits real stock, while record choices modify only their exact
-#   historical chemical record and its consequences.
+# - Aid debits real stock; record choices use exact historical chemical
+#   records and Condemnation-scaled Political Power for concealment.
 # ============================================================================
 
 cbrn_occupation_measures_category = {
@@ -216,7 +220,9 @@ cbrn_occupation_measures_category = {
 		icon = GFX_decision_cbrn_seal_state
 		state_target = any_controlled_state
 		on_map_mode = map_and_decisions_view
-		cost = constant:cbrn_occupation_decision_cost.seal_state_pp
+		ai_hint_pp_cost = @CR_SC_CBRN_OCCUPATION_SEAL_STATE_PP_AI_HINT
+		custom_cost_trigger = { hidden_trigger = { cbrn_occupation_can_pay_seal_state_pp = yes } }
+		custom_cost_text = cbrn_seal_state_cost
 		days_re_enable = constant:cbrn_occupation_timing.coverup_reenable_days
 
 		target_root_trigger = {
@@ -232,18 +238,14 @@ cbrn_occupation_measures_category = {
 				tooltip = cbrn_seal_state_requirements_tt
 				hidden_trigger = { FROM = { cbrn_occupation_state_can_start_coverup = yes } }
 			}
+			hidden_trigger = { cbrn_occupation_can_pay_seal_state_pp = yes }
 		}
 
 		complete_effect = {
 			custom_effect_tooltip = cbrn_seal_state_effect_tt
 			hidden_effect = {
-				FROM = {
-					set_variable = {
-						cbrn_occupation_requested_coverup_action = constant:cbrn_occupation_coverup_action.seal_state
-					}
-					cbrn_occupation_apply_requested_coverup_action = yes
-					clear_variable = cbrn_occupation_requested_coverup_action
-				}
+				set_temp_variable = { cbrn_occupation_coverup_payment_action = constant:cbrn_occupation_coverup_action.seal_state }
+				cbrn_occupation_execute_paid_coverup = yes
 			}
 		}
 
@@ -263,7 +265,9 @@ cbrn_occupation_measures_category = {
 		icon = GFX_decision_cbrn_destroy_contaminated_records
 		state_target = any_controlled_state
 		on_map_mode = map_and_decisions_view
-		cost = constant:cbrn_occupation_decision_cost.destroy_records_pp
+		ai_hint_pp_cost = @CR_SC_CBRN_OCCUPATION_DESTROY_RECORDS_PP_AI_HINT
+		custom_cost_trigger = { hidden_trigger = { cbrn_occupation_can_pay_destroy_records_pp = yes } }
+		custom_cost_text = cbrn_destroy_contaminated_records_cost
 		days_re_enable = constant:cbrn_occupation_timing.coverup_reenable_days
 
 		target_root_trigger = {
@@ -279,18 +283,14 @@ cbrn_occupation_measures_category = {
 				tooltip = cbrn_destroy_contaminated_records_requirements_tt
 				hidden_trigger = { FROM = { cbrn_occupation_state_can_start_coverup = yes } }
 			}
+			hidden_trigger = { cbrn_occupation_can_pay_destroy_records_pp = yes }
 		}
 
 		complete_effect = {
 			custom_effect_tooltip = cbrn_destroy_contaminated_records_effect_tt
 			hidden_effect = {
-				FROM = {
-					set_variable = {
-						cbrn_occupation_requested_coverup_action = constant:cbrn_occupation_coverup_action.destroy_records
-					}
-					cbrn_occupation_apply_requested_coverup_action = yes
-					clear_variable = cbrn_occupation_requested_coverup_action
-				}
+				set_temp_variable = { cbrn_occupation_coverup_payment_action = constant:cbrn_occupation_coverup_action.destroy_records }
+				cbrn_occupation_execute_paid_coverup = yes
 			}
 		}
 

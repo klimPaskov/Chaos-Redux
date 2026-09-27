@@ -34,7 +34,7 @@ The [same-mask hazard budget correction](../corrections/2026-09-27_same_mask_haz
 
 ## Condemnation and projects
 
-Condemnation is bounded from 0 to 1000. The equipment cost multiplier is `1 + Condemnation / 500`, with whole equipment requirements rounded up. Inspection imposes 5–15% consumer goods for 180 days. The Condemnation specification records the same accepted limits; the final owner must validate the full source and interface contract.
+Condemnation is bounded from 0 to 1000. Concealment payments retain their existing resource types and use `1 + Condemnation / 500`, with whole equipment requirements rounded up; Political Power retains fixed-point precision. The two occupation cover-up decisions keep Political Power as their sole price under the [bounded correction](../corrections/2026-09-27_occupation_coverup_pp_scale.md). Inspection imposes 5–15% consumer goods for 180 days. The Condemnation specification records the same accepted limits; the final owner must validate the full source and interface contract.
 
 The eight accepted projects are **Mechanized Smoke Screens**, **Collective Protection Systems**, **Self-Renewing Filters** (fictional), **Phantom Mist** (fictional), **Mass Vaccine Production**, **Field Antibiotics**, **Regenerative Serum** (fictional), and **Broad-Spectrum Antiserum** (fictional). Existing advanced biomedical, cloning, exotic, and Mengele routes remain available. Event alternatives must be idempotent rather than duplicating rewards or grants.
 
