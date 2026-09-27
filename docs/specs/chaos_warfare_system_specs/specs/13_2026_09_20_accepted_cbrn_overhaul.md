@@ -40,6 +40,10 @@ The eight accepted projects are **Mechanized Smoke Screens**, **Collective Prote
 
 The [random CBRN project reward guard](../corrections/2026-09-27_random_project_repeat_reward_guard.md) preserves missing-technology recovery without repeating a completed project's outputs or a completed zombie profile. It does not resolve the separate exact-facility provenance requirement for scripted biological grants.
 
+The user's 2026-09-27 follow-up directs UWR random biological project grants to establish an exact eligible facility before awarding an incomplete biological project. The facility must come from an already-budgeted UWR construction reward; chemical, zombie, completed-project technology-repair, and other nonbiological draws must not create one. A grant with no verified exact site remains unavailable rather than fabricating an arsenal from an arbitrary owned state. The site and any stockpile-safety registration must refer to the same state and preserve prior designation history.
+
+The user's later 2026-09-27 answer applies the same verified-Tver requirement to the four direct ordinary-biological project completions in the exceptional force-all UWR successor setup. Their matching delivery technologies must not be granted from that startup branch if Tver does not have a positive eligible biowarfare facility. Other startup projects and country rewards retain their own contracts.
+
 ## Starts, people, organizations, and traits
 
 Historical starting profiles must be grounded in country and program evidence, including starting stock, research, facilities, and usable route state where authorized. The roster requires 67 scientists. Three generic CBRN MIO families have twelve-node trees. National organizations include ICI, IG Farben, DuPont, Rhône-Poulenc, Montecatini, and Showa Denko, plus two explicitly fictional advanced organizations. Source the historical identities and do not present the fictional organizations as historical.
