@@ -113,14 +113,31 @@ country_event = {
 
 # A native raid callback enters here with actor-country scope. The exact
 # actor, victim, and state were saved by the RAID_INSTANCE before dispatch.
-# Failure and limited success have only native raid losses and history; they
-# do not seed an outbreak or award an accepted release.
+# Failure has only native raid losses and history; qualifying limited,
+# successful, and critical deliveries use increasingly severe exposure inputs.
+country_event = {
+	id = chaosx_nr20_weaponization.8
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		hidden_effect = {
+			set_temp_variable = { black_plague_weaponization_raid_exposure = constant:black_plague_weaponization_program.delivery_exposure_limited }
+			set_temp_variable = { black_plague_weaponization_raid_condemnation = constant:black_plague_weaponization_program.condemnation_delivery_limited }
+			black_plague_weaponization_complete_native_raid_release = yes
+		}
+	}
+}
+
 country_event = {
 	id = chaosx_nr20_weaponization.9
 	hidden = yes
 	is_triggered_only = yes
 	immediate = {
-		hidden_effect = { black_plague_weaponization_complete_native_raid_release = yes }
+		hidden_effect = {
+			set_temp_variable = { black_plague_weaponization_raid_exposure = constant:black_plague_weaponization_program.delivery_exposure }
+			set_temp_variable = { black_plague_weaponization_raid_condemnation = constant:black_plague_weaponization_program.condemnation_delivery }
+			black_plague_weaponization_complete_native_raid_release = yes
+		}
 	}
 }
 
@@ -129,6 +146,10 @@ country_event = {
 	hidden = yes
 	is_triggered_only = yes
 	immediate = {
-		hidden_effect = { black_plague_weaponization_complete_native_raid_release = yes }
+		hidden_effect = {
+			set_temp_variable = { black_plague_weaponization_raid_exposure = constant:black_plague_weaponization_program.delivery_exposure_critical }
+			set_temp_variable = { black_plague_weaponization_raid_condemnation = constant:black_plague_weaponization_program.condemnation_delivery_critical }
+			black_plague_weaponization_complete_native_raid_release = yes
+		}
 	}
 }

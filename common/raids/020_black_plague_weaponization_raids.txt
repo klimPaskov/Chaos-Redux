@@ -6,8 +6,9 @@
 #   native raid system, with Command Power allocated by the raid itself.
 # - Uses the existing Biological Raids category, plague map icon, air-base
 #   origin, and plague-strike bomber and delivery-chance precedents.
-# - Success and critical outcomes carry the exact actor, victim, and state into
-#   fixed hidden actor events. They own the final release gate and consequences.
+# - Limited, successful, and critical outcomes carry the exact actor, victim,
+#   and state into fixed hidden actor events. Those events own the final release
+#   gate and scaled consequences.
 # - No scripted payload, support-equipment, Command Power, or fuel payment is
 #   made in these callbacks.
 # ============================================================================
@@ -162,6 +163,12 @@ types = {
 				custom_sound = generic_bioweapon_aerosol
 				actor_effects = {
 					var:actor_country = { custom_effect_tooltip = black_plague_weaponization_native_raid_limited_actor_tt }
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = black_plague_weaponization_raid_actor }
+						var:victim_country = { save_event_target_as = black_plague_weaponization_raid_victim }
+						var:target_state = { save_event_target_as = black_plague_weaponization_raid_target_state }
+						var:actor_country = { country_event = { id = chaosx_nr20_weaponization.8 } }
+					}
 					raid_damage_units = { plane_loss = @BLACK_PLAGUE_RAID_LIMITED_PLANE_LOSS ratio = yes }
 					raid_add_unit_experience = @BLACK_PLAGUE_RAID_XP_LIMITED
 					add_raid_history_entry = yes

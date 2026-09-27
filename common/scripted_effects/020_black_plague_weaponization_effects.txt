@@ -293,15 +293,21 @@ black_plague_weaponization_process_stockpile = {
 	}
 }
 
-# COUNTRY scope after a successful native Biological Raid. The raid has already
-# reserved its payload, support crates, and Command Power. This effect only
-# releases exposure after the exact target and policy pass their final gate.
+# COUNTRY scope after a limited, successful, or critical native Biological Raid.
+# The hidden outcome event supplies temporary black_plague_weaponization_raid_exposure
+# and black_plague_weaponization_raid_condemnation. The raid has already reserved
+# its payload, support crates, and Command Power. This effect only releases
+# exposure after the exact target and policy pass their final gate.
 black_plague_weaponization_complete_native_raid_release = {
 	if = {
-		limit = { black_plague_weaponization_native_raid_bridge_context_is_valid = yes }
+		limit = {
+			black_plague_weaponization_native_raid_bridge_context_is_valid = yes
+			has_variable = black_plague_weaponization_raid_exposure
+			has_variable = black_plague_weaponization_raid_condemnation
+		}
 		event_target:black_plague_weaponization_raid_target_state = {
 			save_event_target_as = black_plague_weaponization_delivery_state
-			set_temp_variable = { black_plague_exposure_amount = constant:black_plague_weaponization_program.delivery_exposure }
+			set_temp_variable = { black_plague_exposure_amount = black_plague_weaponization_raid_exposure }
 			set_temp_variable = { black_plague_exposure_route = constant:black_plague_route.biological_strike }
 			set_temp_variable = { black_plague_exposure_provenance = constant:black_plague_provenance.weaponized }
 			black_plague_apply_weaponized_exposure_runtime = yes
@@ -333,11 +339,11 @@ black_plague_weaponization_complete_native_raid_release = {
 			set_country_flag = used_bioweapon
 			set_country_flag = used_unconventional_weapon
 			set_temp_variable = { condemnation_source_type = constant:condemnation_source.biological }
-			set_temp_variable = { condemnation_base_gain = constant:black_plague_weaponization_program.condemnation_delivery }
+			set_temp_variable = { condemnation_base_gain = black_plague_weaponization_raid_condemnation }
 			set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
 			set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.mass_death }
-			set_temp_variable = { condemnation_civilian_deaths = constant:black_plague_weaponization_program.delivery_exposure }
-			set_temp_variable = { condemnation_contamination_value = constant:black_plague_weaponization_program.delivery_exposure }
+			set_temp_variable = { condemnation_civilian_deaths = black_plague_weaponization_raid_exposure }
+			set_temp_variable = { condemnation_contamination_value = black_plague_weaponization_raid_exposure }
 			set_temp_variable = { condemnation_context_type = constant:condemnation_context.biological_strike }
 			set_temp_variable = { condemnation_victim_country = event_target:black_plague_weaponization_raid_victim }
 			condemnation_add_source = yes
