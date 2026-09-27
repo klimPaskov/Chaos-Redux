@@ -227,6 +227,10 @@ def mode_actions():
     mw = rig.matrix_world
     names = REQ.get("bones", {})
     report = {}
+    # Render files name the role only (the shared "<prefix>_" is dropped): long job paths plus full
+    # action names exceed the Windows 260-character path limit and the render save fails.
+    common = os.path.commonprefix(REQ["actions"]) if len(REQ["actions"]) > 1 else ""
+    common = common[:common.rfind("_") + 1]
     for act_name in REQ["actions"]:
         act = bpy.data.actions[act_name]
         use_action(rig, act)
@@ -273,7 +277,7 @@ def mode_actions():
         for f in sample:
             bpy.context.scene.frame_set(f)
             for view in REQ.get("views", ["front", "side", "three_quarter"]):
-                shoot(cam, objs, view, os.path.join(out, f"{REQ.get('tag', 'act')}__{act_name}__{f:03d}__{view}.png"))
+                shoot(cam, objs, view, os.path.join(out, f"{REQ.get('tag', 'act')}__{act_name[len(common):]}__{f:03d}__{view}.png"))
         report[act_name] = rep
         print("ACTION", act_name, json.dumps(rep))
     json.dump(report, open(os.path.join(out, REQ.get("report", "actions_report.json")), "w"), indent=1)

@@ -112,6 +112,20 @@ The same helpers are available in a live Lab session through `import lab_actions
 Grounding flattens deliberate jumps; review the rendered sheet after grounding.
 Re-author any role that reads as the wrong character (for example a boxer's guard on a zombie) with `la.pose_bone_directions`, keeping the provider legs, and review every change from at least two views.
 
+## 6a. Extra appendages and non-provider creatures
+
+Meshy rigs two arms and two legs.
+Wings, a second pair of arms, tentacles, tails, and growths either follow the nearest provider bone (wings wrapping the head, a second arm pair weighted to `Hips`) or do not move.
+`lab_limbs.py` handles them in four config-driven modes, run headless with `review_cli.py blender --script lab_limbs.py --config <cfg.json>` (formats in its docstring):
+
+1. `survey` measures the rest pose. Probes report vertex counts, bounds, the bones a region currently follows (`weights`), per-axis histograms (`hist`), and connected pieces (`components`). Cutting the torso core away with `exclude` leaves each appendage as its own piece with a root, tip, and centreline to place joints on.
+2. `rig` builds one bone chain per appendage from those joints, parented to a torso bone, and heat-weights only the selected vertices through a welded duplicate (provider meshes are triangle soup, which heat weighting rejects on the original). Where an appendage's root stays fused to a provider-weighted region, set `feather` (about 4% of rig height) so the seam blends instead of tearing.
+3. `skeleton` builds a whole skeleton for a creature the provider cannot rig at all (quadrupeds), replacing any template rig, and heat-weights the full mesh.
+4. `keys` keys chains per action from authored `[swing, lift]` angles (and `loc` offsets for body bob), carried through a torso bone so limbs follow the body; `tips` defines segment directions on rigs whose bones have stub tails; `create` makes new actions. Run its `floor` pass on every role afterwards: it re-keys a chain's first bone on frames where the chain sinks below the ground (deaths and slams).
+
+Review every role with `review_cli.py actions` from front and side, and zoom into the appendage roots in the fastest poses for tearing.
+Mirror the right side, but offset looping roles by half a cycle so the two sides do not move in lockstep.
+
 ## 6b. Held items
 
 `lab_items.py` fits each item to its carrying bone, packs body and item textures into one atlas so the unit keeps one PDX material, joins the items into the body mesh weighted 1.0 to that bone, and renders and measures the result.
@@ -178,3 +192,9 @@ Point `sub_units` `sprite` at the entity (`sprite = x` resolves `x_entity`), and
 | Winged, tailed, or caped anatomy follows the arms | Meshy's humanoid rig has no bones for it | add bones live, weight a welded duplicate with heat weighting, map weights back by position, author keys as absolute directions through the spine pose |
 | A giant or heavy creature looks infantry-sized | calibrated to the vanilla source height | `prepare.height_scale` (about 1.15–1.3) in the intake manifest |
 | Weapon sinks through the ground in slams and deaths | provider motion was authored empty-handed | `lab_items` `floor_items` on every role |
+| Triage shows identical frame ranges and heights across actions | the importer writes each `.anim` into the rig's bound action | fixed in `blender_review` triage (unbind and reset before each import); re-triage anything judged with the old tool |
+| Render save fails with "cannot save" on long job paths | Windows 260-character path limit | review tools drop the shared action prefix from file names |
+| Adapter `author_locator` fails a round-trip check of a few 1e-4 | Meshy armature units are about 20x world units | the adapter tolerance is relative to coordinate size (lock updated) |
+| A weapon or nozzle needs a particle node | the item is joined into the body mesh | `lab_items` reports `head_bone_local`; pass it to `author_locator` and orient the locator like the vanilla precedent (flame-tank `flamethrower` emits along local +Z, local +Y up) |
+| Appendage root tears into spikes in fast poses | the root stays weighted to a provider bone while the rest follows the new chain | re-rig with `feather` |
+| A quadruped or creature never moves properly | it was skinned to an unrelated template rig (a cave monster on an elephant rig with howdah and rider bones) | `lab_limbs` `skeleton` on the existing mesh, then author gaits with `keys` |

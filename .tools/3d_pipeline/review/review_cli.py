@@ -148,7 +148,7 @@ def cmd_blender(a):
     cmd = [blender_exe(), "--background", "--factory-startup", "--python", str(script), "--", os.path.abspath(a.config)]
     proc = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
     keep = [l for l in (proc.stdout + proc.stderr).splitlines()
-            if l.startswith(("FINAL", "ITEMS")) or "Error" in l or "Traceback" in l or l.startswith("  File")]
+            if l.startswith(("FINAL", "ITEMS", "SURVEY", "LIMBS", "KEYS", "SKELETON")) or "Error" in l or "Traceback" in l or l.startswith("  File")]
     print("\n".join(keep))
     if proc.returncode != 0 or any("Traceback" in l for l in keep):
         sys.exit(proc.returncode or 1)
