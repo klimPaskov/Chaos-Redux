@@ -38,6 +38,8 @@ Condemnation is bounded from 0 to 1000. The equipment cost multiplier is `1 + Co
 
 The eight accepted projects are **Mechanized Smoke Screens**, **Collective Protection Systems**, **Self-Renewing Filters** (fictional), **Phantom Mist** (fictional), **Mass Vaccine Production**, **Field Antibiotics**, **Regenerative Serum** (fictional), and **Broad-Spectrum Antiserum** (fictional). Existing advanced biomedical, cloning, exotic, and Mengele routes remain available. Event alternatives must be idempotent rather than duplicating rewards or grants.
 
+The [random CBRN project reward guard](../corrections/2026-09-27_random_project_repeat_reward_guard.md) preserves missing-technology recovery without repeating a completed project's outputs or a completed zombie profile. It does not resolve the separate exact-facility provenance requirement for scripted biological grants.
+
 ## Starts, people, organizations, and traits
 
 Historical starting profiles must be grounded in country and program evidence, including starting stock, research, facilities, and usable route state where authorized. The roster requires 67 scientists. Three generic CBRN MIO families have twelve-node trees. National organizations include ICI, IG Farben, DuPont, Rhône-Poulenc, Montecatini, and Showa Denko, plus two explicitly fictional advanced organizations. Source the historical identities and do not present the fictional organizations as historical.

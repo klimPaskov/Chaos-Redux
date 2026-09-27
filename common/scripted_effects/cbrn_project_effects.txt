@@ -6,6 +6,8 @@
 #   event-family rewards.
 # - Keeps biological, chemical, and weaponized-zombie project grants outside
 #   the shared cross-system dynamic-effect registry.
+# - A missing delivery technology can still be restored after its project is
+#   complete; completion outputs and zombie profiles are not awarded twice.
 # - The stable public identifier is retained without a wrapper or alias.
 # ============================================================================
 
@@ -29,31 +31,46 @@ grant_random_chaos_special_project_available_tech = {
 		random_list = {
 			10 = {
 				modifier = { factor = 0 has_tech = anthrax_bomb_delivery_systems }
-				complete_special_project = { project = sp:anthrax_bomb show_modifiers = no }
+				if = {
+					limit = { NOT = { is_special_project_completed = sp:anthrax_bomb } }
+					complete_special_project = { project = sp:anthrax_bomb show_modifiers = no }
+				}
 				set_technology = { anthrax_bomb_delivery_systems = 1 }
 				set_country_flag = chaos_random_special_project_granted
 			}
 			10 = {
 				modifier = { factor = 0 has_tech = plague_bomb_delivery_systems }
-				complete_special_project = { project = sp:plague_bomb show_modifiers = no }
+				if = {
+					limit = { NOT = { is_special_project_completed = sp:plague_bomb } }
+					complete_special_project = { project = sp:plague_bomb show_modifiers = no }
+				}
 				set_technology = { plague_bomb_delivery_systems = 1 }
 				set_country_flag = chaos_random_special_project_granted
 			}
 			8 = {
 				modifier = { factor = 0 has_tech = tularemia_bomb_delivery_systems }
-				complete_special_project = { project = sp:tularemia_bomb show_modifiers = no }
+				if = {
+					limit = { NOT = { is_special_project_completed = sp:tularemia_bomb } }
+					complete_special_project = { project = sp:tularemia_bomb show_modifiers = no }
+				}
 				set_technology = { tularemia_bomb_delivery_systems = 1 }
 				set_country_flag = chaos_random_special_project_granted
 			}
 			6 = {
 				modifier = { factor = 0 has_tech = smallpox_bomb_delivery_systems }
-				complete_special_project = { project = sp:smallpox_bomb show_modifiers = no }
+				if = {
+					limit = { NOT = { is_special_project_completed = sp:smallpox_bomb } }
+					complete_special_project = { project = sp:smallpox_bomb show_modifiers = no }
+				}
 				set_technology = { smallpox_bomb_delivery_systems = 1 }
 				set_country_flag = chaos_random_special_project_granted
 			}
 			8 = {
 				modifier = { factor = 0 has_tech = zombie_disease_bomb_delivery_systems }
-				randomize_and_complete_weaponized_zombie_project = yes
+				if = {
+					limit = { NOT = { is_special_project_completed = sp:weaponize_the_zombies } }
+					randomize_and_complete_weaponized_zombie_project = yes
+				}
 				set_technology = { zombie_disease_bomb_delivery_systems = 1 }
 				set_country_flag = chaos_random_special_project_granted
 			}
@@ -64,14 +81,23 @@ grant_random_chaos_special_project_available_tech = {
 			}
 			8 = {
 				modifier = { factor = 0 has_tech = sarin }
-				complete_special_project = { project = sp:sp_cw_sarin_program show_modifiers = no }
+				if = {
+					limit = { NOT = { is_special_project_completed = sp:sp_cw_sarin_program } }
+					complete_special_project = { project = sp:sp_cw_sarin_program show_modifiers = no }
+				}
 				set_technology = { sarin = 1 }
 				set_country_flag = chaos_random_special_project_granted
 			}
 			6 = {
 				modifier = { factor = 0 has_tech = soman }
-				complete_special_project = { project = sp:sp_cw_sarin_program show_modifiers = no }
-				complete_special_project = { project = sp:sp_cw_soman_program show_modifiers = no }
+				if = {
+					limit = { NOT = { is_special_project_completed = sp:sp_cw_sarin_program } }
+					complete_special_project = { project = sp:sp_cw_sarin_program show_modifiers = no }
+				}
+				if = {
+					limit = { NOT = { is_special_project_completed = sp:sp_cw_soman_program } }
+					complete_special_project = { project = sp:sp_cw_soman_program show_modifiers = no }
+				}
 				set_technology = { sarin = 1 soman = 1 }
 				set_country_flag = chaos_random_special_project_granted
 			}
