@@ -4666,7 +4666,11 @@ def author_locator(req: Dict[str, Any]) -> Dict[str, Any]:
     bpy.context.view_layer.update()
     actual = _locator_bone_world(rig, bone_name).inverted() @ locator.matrix_world
     delta = max(abs(actual[row][col] - local[row][col]) for row in range(4) for col in range(4))
-    if not math.isfinite(delta) or delta > LOCATOR_TRANSFORM_TOLERANCE:
+    # Float32 bone matrices round-trip with an error proportional to the coordinate size; Meshy
+    # rigs keep armature units about 20x world units, so a nozzle 60 units along a hand bone
+    # legitimately differs by a few 1e-4. The tolerance is relative beyond unit magnitude.
+    tolerance = LOCATOR_TRANSFORM_TOLERANCE * max(1.0, max(abs(float(v)) for v in position))
+    if not math.isfinite(delta) or delta > tolerance:
         raise RuntimeError(f"Locator bone-local transform did not round-trip through Blender parenting: {delta}")
     _validate_registered_locator(locator, rig, bone_name, registration)
     if actions_before != {action.name: _export_checkpoint_action_snapshot(action) for action in bpy.data.actions}:

@@ -31,6 +31,8 @@ Config (JSON, absolute paths):
   }],
   "contacts": [{"item": "halberd", "bone": "LeftHand", "offset": [0, 0.03, 0]}],   # off-hand checks
   "floor_items": {"actions": ["chaosx_x_death"], "clearance": 0.01},   # optional measured floor fix
+  # items_report.json records each item's head_bone_local: pass it to the adapter's
+  # author_locator (parent_bone = the item's bone) for a muzzle or nozzle particle node.
   "review": {"out_dir": "<dir>", "actions": ["chaosx_x_attack"], "samples": 6, "res": [420, 560],
              "closeup": 0.35}   # optional hand close-ups, width as a fraction of the framed extent
 }
@@ -155,7 +157,12 @@ def _place(item, rig, spec, height):
     # so floor checks use the real surface, not the shaft ends.
     step = max(1, len(co) // 400)
     points = [local @ c for c in co[::step]]
-    return {"bone": spec["bone"], "axis_ends_bone_space": ends, "points_bone_space": points, "scale": scale}
+    # The head end in the bone's own local space and armature units: the input the adapter's
+    # author_locator operation takes for a muzzle or nozzle locator on this item.
+    bone = rig.data.bones[spec["bone"]]
+    bone_local = (rig.matrix_world @ bone.matrix_local).inverted() @ (bone_frame(rig, spec["bone"]) @ ends[1])
+    return {"bone": spec["bone"], "axis_ends_bone_space": ends, "points_bone_space": points, "scale": scale,
+            "head_bone_local": list(bone_local)}
 
 
 def _atlas_uvs(obj, rect):
@@ -356,11 +363,16 @@ def _render(cfg, rig, body, height):
     sc.camera = cam
     views = {"front": (0, -1, 0), "side": (1, 0, 0), "three_quarter": (0.6, -0.8, 0.15)}
     shots = [("rest", None, None)]
-    for name in rev.get("actions", []):
+    names = rev.get("actions", [])
+    # File names use the role only (the shared "<prefix>_" is dropped): long job paths plus full
+    # action names exceed the Windows 260-character path limit and the render save fails.
+    common = os.path.commonprefix(names) if len(names) > 1 else ""
+    common = common[:common.rfind("_") + 1]
+    for name in names:
         act = bpy.data.actions[name]
         f0, f1 = map(int, act.frame_range)
         n = rev.get("samples", 6)
-        shots += [(name, act, round(f0 + (f1 - f0) * i / (n - 1))) for i in range(n)]
+        shots += [(name[len(common):], act, round(f0 + (f1 - f0) * i / (n - 1))) for i in range(n)]
     for tag, act, frame in shots:
         if act:
             bind_action(rig, act)
@@ -422,7 +434,8 @@ def run(config_path=None):
     _purge_unused()
     report = {"rest_height": height, "atlas": atlas,
               "items": {k: {"bone": v["bone"], "scale": v["scale"],
-                            "axis_ends_bone_space": [list(e) for e in v["axis_ends_bone_space"]]} for k, v in placed.items()},
+                            "axis_ends_bone_space": [list(e) for e in v["axis_ends_bone_space"]],
+                            "head_bone_local": v["head_bone_local"]} for k, v in placed.items()},
               "floor_fixed_frames": _floor_items(cfg, rig, placed, height),
               "contacts": _measure(cfg, rig, body, placed, height), "triangles": sum(len(p.vertices) - 2 for p in body.data.polygons)}
     _render(cfg, rig, body, height)
