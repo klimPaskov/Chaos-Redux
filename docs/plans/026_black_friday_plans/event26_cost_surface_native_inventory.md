@@ -2,6 +2,8 @@
 
 This is the exact native `cost =` declaration inventory used by the Event 26 cost-family registry on 2026-09-02. It covers every top-level Chaos Redux decision file, including literal zero/free sentinels that are retained as explicit non-purchase evidence.
 
+The aggregate and all rows except the four CBRN diplomacy, doctrine, occupation, and protection owners remain the 2026-09-02 snapshot. Those four owner rows were refreshed against current source on 2026-09-27; their mixed-date counts must not be summed into a new aggregate.
+
 ## Scan contract
 
 The scan searched every `*.txt` directly under `common/decisions/` for a line matching `^\s*cost\s*=`. Counts are split by the literal `cost = 0` sentinel and every declaration is listed by one-based source line. The inventory is source evidence, not proof that the engine exposes a generic display/payment hook.
@@ -65,10 +67,10 @@ The scan searched every `*.txt` directly under `common/decisions/` for a line ma
 | `camp_repression_generic_decisions.txt` | 16 | 12 | 4 | `15, 29, 42, 56, 72, 239, 305, 428, 548, 588, 618, 688, 780, 822, 860, 917` |
 | `camp_repression_major_country_decisions.txt` | 29 | 29 | 0 | `42, 91, 175, 217, 253, 304, 348, 525, 569, 608, 635, 649, 682, 736, 764, 790, 830, 867, 892, 917, 1072, 1131, 1171, 1191, 1212, 1252, 1281, 1341, 1374` |
 | `cbrn_battlefield_operation_decisions.txt` | 4 | 4 | 0 | `47, 106, 166, 230` |
-| `cbrn_diplomacy_decisions.txt` | 3 | 0 | 3 | `21, 82, 191` |
-| `cbrn_doctrine_decisions.txt` | 16 | 16 | 0 | `20, 58, 94, 184, 204, 224, 244, 264, 288, 312, 339, 366, 393, 422, 451, 488` |
-| `cbrn_occupation_decisions.txt` | 7 | 7 | 0 | `22, 55, 312, 412, 459, 503, 550` |
-| `cbrn_protection_decisions.txt` | 19 | 18 | 1 | `31, 67, 102, 138, 169, 205, 237, 272, 312, 351, 391, 435, 480, 506, 546, 589, 611, 635, 656` |
+| `cbrn_diplomacy_decisions.txt` | 0 | 0 | 0 | None; active purchases use custom-cost rows. |
+| `cbrn_doctrine_decisions.txt` | 0 | 0 | 0 | None; active purchases use custom-cost rows. |
+| `cbrn_occupation_decisions.txt` | 6 | 6 | 0 | `21, 54, 219, 266, 310, 357` |
+| `cbrn_protection_decisions.txt` | 4 | 4 | 0 | `181, 220, 398, 419` |
 | `chemical_warfare_decisions.txt` | 2 | 2 | 0 | `8, 78` |
 | `condemnation_sanctions_decisions.txt` | 36 | 0 | 36 | `13, 22, 44, 64, 84, 100, 126, 151, 177, 204, 225, 245, 266, 281, 295, 309, 323, 339, 359, 379, 390, 401, 410, 421, 432, 443, 456, 480, 504, 528, 552, 564, 578, 592, 606, 623` |
 | `fallout_consolidated_decisions.txt` | 12 | 12 | 0 | `45, 96, 169, 1492, 1719, 1751, 2508, 2531, 2562, 2622, 2692, 2833` |

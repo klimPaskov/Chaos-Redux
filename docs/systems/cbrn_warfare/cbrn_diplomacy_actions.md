@@ -6,7 +6,7 @@ The CBRN international-response layer adds material inspection pressure, exact-s
 
 The accepted design source is `docs/specs/chaos_warfare_system_specs/specs/09_condemnation_deaths_air_cleanliness_and_diplomacy.md`. This implementation also follows the consequence and evidence mappings under `docs/specs/chaos_warfare_system_specs/matrices/`.
 
-Player-facing costs, durations, evidence gains, and cleanup amounts in `localisation/english/cbrn_diplomacy_l_english.yml` use `common/scripted_localisation/cbrn_diplomacy_value_localisation.txt` to quote the same script constants as the decisions and effects. Inline rows show immediate equipment costs and the forensic factory assignment; cost hover text explains when equipment is spent and how long factories remain committed without repeating the payment amounts. The exact action and episode records below remain internal accounting, while the visible text describes attacks, outbreaks, evidence, and responsibility.
+Player-facing durations, evidence gains, cleanup amounts, and the remaining diplomacy costs in `localisation/english/cbrn_diplomacy_l_english.yml` use `common/scripted_localisation/cbrn_diplomacy_value_localisation.txt` to quote the same script constants as the decisions and effects. Demand Inspections and Forensic Publication use sale-aware temporary quotes set by their shared affordability triggers, so their inline rows match immediate payment at ordinary or discounted prices. Inline rows show equipment costs and the forensic factory assignment; cost hover text explains when equipment is spent and how long factories remain committed without repeating the payment amounts. The exact action and episode records below remain internal accounting, while the visible text describes attacks, outbreaks, evidence, and responsibility.
 
 ## Demand Inspections
 
@@ -16,6 +16,8 @@ The demanding country consumes:
 
 - 10 CBRN instruments;
 - 10 support equipment.
+
+During an active Event 026 equipment sale, both payments use the same whole-unit quote: five of each at the ordinary sale ratio or three of each at the stronger evolution ratio. The instrument debit takes the oldest available models first. One payer-scoped receipt records the exact models and support equipment, refunds a failed partial payment, and settles before the diplomatic demand starts. The ordinary 10-and-10 path remains the default when the sale source is inactive.
 
 The target receives the 30-day `cbrn_answer_inspection_demand_mission`. The mission directs the target to `Accept International Inspections` or `Refuse the Inspectors` in the `Condemnation Response` category. Accepting grants inspectors access and clears the demand. Refusing inspections or allowing a still-valid demand to time out clears the demand and records the normal public blocked-inspection Coverup source. If the demanding country no longer exists, the deadline only clears the stale demand. The timeout guard prevents mission removal from recursively resolving the same refusal twice.
 
@@ -28,6 +30,8 @@ The publishing country consumes:
 - 20 CBRN instruments;
 - 15 support equipment;
 - one civilian factory for 21 days.
+
+During an active Event 026 equipment sale, the two immediate equipment payments become ten instruments and eight support crates, or five instruments and four support crates at the stronger ratio. The one-factory native commitment remains one after whole-unit rounding, and its timer releases capacity on completion or cancellation. The selected record is locked before material payment; one concrete-model receipt settles at selection and credits the single diplomatic purchase family only after the upfront debit succeeds. Cancellation later clears the record lock but does not return the already spent equipment, matching the ordinary action contract. The completion callback publishes the selected evidence without another payment or achievement credit.
 
 When the action begins, the system selects and locks the eligible record with the greatest evidence value. Equal evidence keeps the earlier candidate in the fixed inspection order. A later attack or outbreak cannot replace the locked record while the timer is active. Biological weapon potency never affects selection: Tularemia, Anthrax, Plague, and Smallpox receive no different publication priority, just as their delivery success remains separate from their consequence hierarchy.
 

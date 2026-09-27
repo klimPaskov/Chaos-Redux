@@ -2,6 +2,8 @@
 
 This is the exact source inventory used by the Event 26 cost-family registry on 2026-09-02. It is generated from the implementation worktree, not from a handpicked sample. No implementation commit has been frozen yet, so the registry remains disabled by default.
 
+The aggregate counts and all rows except the four `cbrn_diplomacy_decisions.txt`, `cbrn_doctrine_decisions.txt`, `cbrn_occupation_decisions.txt`, and `cbrn_protection_decisions.txt` rows remain the 2026-09-02 snapshot. Those four rows were refreshed against current source on 2026-09-27 after the CBRN overhaul; do not add the mixed-date rows to infer a new aggregate.
+
 ## Scan contract
 
 The scan searched every `*.txt` under the installed Chaos Redux and Vanilla decision directories for exact `custom_cost_trigger =` and `custom_cost_text =` consumer occurrences. Line numbers below are one-based source lines in the exact file named. A custom-cost occurrence is not treated as covered merely because its tooltip exists: the owner must expose ordinary current component amounts, affordability, payment, display, refund, AI, and save-state behavior through the public universal adapter.
@@ -88,10 +90,10 @@ Each row is an owner-level exact inventory entry. The status is a completion blo
 | `camp_repression_colonial_country_decisions.txt` | 1 / `243` | 1 / `248` | blocked_pending_owner_adapter |
 | `camp_repression_generic_decisions.txt` | 10 / `73, 240, 306, 429, 549, 619, 689, 781, 861, 918` | 10 / `78, 245, 311, 434, 554, 624, 698, 786, 865, 922` | blocked_pending_owner_adapter |
 | `camp_repression_major_country_decisions.txt` | 20 / `43, 92, 176, 218, 254, 305, 349, 526, 683, 737, 765, 791, 831, 918, 1073, 1132, 1213, 1253, 1282, 1375` | 20 / `48, 97, 181, 223, 259, 310, 353, 531, 688, 742, 770, 796, 836, 922, 1078, 1137, 1217, 1258, 1287, 1380` | blocked_pending_owner_adapter |
-| `cbrn_diplomacy_decisions.txt` | 3 / `37, 113, 212` | 3 / `40, 116, 215` | documented_rejected_over_budget_and_factory_commitment |
-| `cbrn_doctrine_decisions.txt` | 1 / `134` | 1 / `135` | documented_rejected_seven_component_cross_owner_payment |
-| `cbrn_occupation_decisions.txt` | 2 / `92, 203` | 2 / `96, 207` | documented_rejected_dynamic_delayed_payment_and_commitment |
-| `cbrn_protection_decisions.txt` | 8 / `44, 80, 113, 152, 185, 216, 250, 617` | 8 / `45, 81, 114, 153, 186, 217, 251, 618` | source_adapter_bounded_pending_live |
+| `cbrn_diplomacy_decisions.txt` | 3 / `35, 109, 201` | 3 / `38, 112, 204` | inspection_and_forensic_adapted_decontamination_unadapted |
+| `cbrn_doctrine_decisions.txt` | 4 / `15, 62, 88, 118` | 4 / `16, 63, 89, 119` | one_unadapted_theater_three_fixed_policy_exceptions |
+| `cbrn_occupation_decisions.txt` | 1 / `122` | 1 / `123` | current_source_unadapted_timed_mask_reservation_and_factory_commitment |
+| `cbrn_protection_decisions.txt` | 8 / `55, 83, 114, 151, 274, 307, 357, 380` | 8 / `56, 84, 115, 152, 275, 308, 358, 381` | one_shelter_adapter_seven_unadapted |
 | `condemnation_sanctions_decisions.txt` | 20 / `108, 159, 185, 248, 326, 362, 382, 393, 413, 424, 435, 446, 462, 486, 510, 534, 570, 584, 598, 615` | 20 / `109, 160, 186, 249, 327, 363, 383, 394, 414, 425, 436, 447, 463, 487, 511, 535, 571, 585, 599, 616` | blocked_pending_owner_adapter |
 | `fallout_consolidated_decisions.txt` | 41 / `319, 382, 432, 480, 530, 583, 632, 681, 728, 780, 830, 877, 932, 983, 1033, 1080, 1133, 1188, 1247, 1316, 1383, 1452, 1493, 1554, 1593, 1636, 1680, 1784, 1834, 1888, 1946, 2017, 2116, 2159, 2229, 2317, 2355, 2394, 2431, 2468, 2778` | 41 / `320, 383, 433, 481, 531, 584, 633, 682, 729, 781, 831, 878, 933, 984, 1034, 1081, 1134, 1193, 1252, 1321, 1388, 1457, 1500, 1558, 1598, 1641, 1684, 1788, 1838, 1894, 1951, 2022, 2122, 2163, 2242, 2318, 2356, 2395, 2432, 2469, 2781` | blocked_pending_owner_adapter |
 | `famine_decisions.txt` | 10 / `244, 393, 514, 617, 780, 910, 997, 1200, 1321, 1385` | 10 / `243, 392, 513, 616, 779, 909, 996, 1199, 1320, 1384` | blocked_pending_owner_adapter |
@@ -105,7 +107,7 @@ The scan found one text-only owner entry: `common/decisions/020_black_plague_rat
 
 ## Bounded owner-adapter tranche
 
-The current source adapters cover 104 registered logical cost components across ten bounded owner tranches: five Communist-spread logical actions with 15 components, seventeen reachable Fury decisions with 42 components, the Japan chemical campaign attack with two components, biological medical-capacity expansion with three components, CBRN civilian-shelter movement with three components, the two Japan biological campaign agents with eight components, four Germany Mengele command-power actions with four components, the D'Rhondan alien-infantry landing reservation with one component, ten adapted Random Faction actions with 21 components, and the Africa elephant logistics contract with five components.
+The earlier bounded adapters covered 104 registered logical cost components across ten owner tranches. The inspection-demand and forensic-publication adapters add two material components each, bringing the current bounded source-adapter count to 108 across eleven tranches; each instrument-family component is recorded as up to three concrete model receipt rows for exact rollback. Forensic Publication's one native civilian-factory commitment remains one at both whole-unit sale ratios and is recorded separately from the four material adapter components. The historical Japan decision components in the earlier count are superseded by native raid prices.
 
 The bounded adapters prepare each owner's ordinary current component values, quote the active sale ratio, check all quoted components before payment, debit only the quoted amounts, record one payer-scoped transaction with one row per component, settle the logical transaction after all receipts succeed, and pass the registry-defined primary family to the achievement ledger. Owner-specific payloads retain explicit external refund acknowledgements, and the D'Rhondan reservation and Africa logistics contract retain their target, delayed-resolution, and owner-contract semantics outside the shared payment contract. The native source inventory remains exhaustive, but these tranches do not close the remaining owner rows, delayed commitments, inaccessible engine surfaces, probability evidence, or live display/payment/save evidence.
 

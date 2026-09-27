@@ -374,6 +374,94 @@ black_friday_cbrn_state_can_move_civilians_to_shelters = {
 	}
 }
 
+# Country scope. The inspection demand displays and checks the same whole-unit
+# equipment-family quote used by its payment adapter. Instrument models remain
+# a single player-facing cost even though the receipt records exact models.
+black_friday_can_pay_cbrn_demand_inspections = {
+	if = {
+		limit = {
+			black_friday_is_active = yes
+			set_temp_variable = { universal_cost_source_query_id = constant:universal_cost_framework.black_friday_source_id }
+			universal_cost_source_is_active = yes
+		}
+		set_temp_variable = { black_friday_quote_ordinary_cost = constant:cbrn_diplomacy_cost.inspection_instruments }
+		set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.equipment }
+		black_friday_quote_custom_cost = yes
+		set_temp_variable = { black_friday_cbrn_inspection_instrument_cost = black_friday_quote_final_cost }
+		set_temp_variable = { black_friday_cbrn_inspection_instrument_affordable = constant:universal_cost_framework.zero }
+		if = {
+			limit = { check_variable = { var = num_equipment@cbrn_instrument_equipment value = black_friday_cbrn_inspection_instrument_cost compare = greater_than_or_equals } }
+			set_temp_variable = { black_friday_cbrn_inspection_instrument_affordable = constant:universal_cost_framework.one }
+		}
+
+		set_temp_variable = { black_friday_quote_ordinary_cost = constant:cbrn_diplomacy_cost.inspection_support }
+		set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.equipment }
+		black_friday_quote_custom_cost = yes
+		set_temp_variable = { black_friday_cbrn_inspection_support_cost = black_friday_quote_final_cost }
+		set_temp_variable = { black_friday_current_resource_kind = constant:universal_cost_resource_kind.support_equipment_1 }
+		set_temp_variable = { black_friday_cbrn_inspection_support_affordable = constant:universal_cost_framework.zero }
+		if = {
+			limit = { black_friday_active_component_is_affordable = yes }
+			set_temp_variable = { black_friday_cbrn_inspection_support_affordable = constant:universal_cost_framework.one }
+		}
+		check_variable = { var = black_friday_cbrn_inspection_instrument_affordable value = constant:universal_cost_framework.one compare = equals }
+		check_variable = { var = black_friday_cbrn_inspection_support_affordable value = constant:universal_cost_framework.one compare = equals }
+	}
+	else = {
+		set_temp_variable = { black_friday_cbrn_inspection_instrument_cost = constant:cbrn_diplomacy_cost.inspection_instruments }
+		set_temp_variable = { black_friday_cbrn_inspection_support_cost = constant:cbrn_diplomacy_cost.inspection_support }
+		cbrn_country_can_pay_inspection_demand_cost = yes
+	}
+}
+
+# Country scope. This material-only check is safe to re-run after a timed
+# decision has already reserved its native civilian factory. The public click
+# gate below checks that factory before selection.
+black_friday_cbrn_forensic_materials_are_affordable = {
+	if = {
+		limit = {
+			black_friday_is_active = yes
+			set_temp_variable = { universal_cost_source_query_id = constant:universal_cost_framework.black_friday_source_id }
+			universal_cost_source_is_active = yes
+		}
+		set_temp_variable = { black_friday_quote_ordinary_cost = constant:cbrn_diplomacy_cost.forensic_instruments }
+		set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.equipment }
+		black_friday_quote_custom_cost = yes
+		set_temp_variable = { black_friday_cbrn_forensic_instrument_cost = black_friday_quote_final_cost }
+		set_temp_variable = { black_friday_cbrn_forensic_instrument_affordable = constant:universal_cost_framework.zero }
+		if = {
+			limit = { check_variable = { var = num_equipment@cbrn_instrument_equipment value = black_friday_cbrn_forensic_instrument_cost compare = greater_than_or_equals } }
+			set_temp_variable = { black_friday_cbrn_forensic_instrument_affordable = constant:universal_cost_framework.one }
+		}
+
+		set_temp_variable = { black_friday_quote_ordinary_cost = constant:cbrn_diplomacy_cost.forensic_support }
+		set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.equipment }
+		black_friday_quote_custom_cost = yes
+		set_temp_variable = { black_friday_cbrn_forensic_support_cost = black_friday_quote_final_cost }
+		set_temp_variable = { black_friday_current_resource_kind = constant:universal_cost_resource_kind.support_equipment_1 }
+		set_temp_variable = { black_friday_cbrn_forensic_support_affordable = constant:universal_cost_framework.zero }
+		if = {
+			limit = { black_friday_active_component_is_affordable = yes }
+			set_temp_variable = { black_friday_cbrn_forensic_support_affordable = constant:universal_cost_framework.one }
+		}
+		check_variable = { var = black_friday_cbrn_forensic_instrument_affordable value = constant:universal_cost_framework.one compare = equals }
+		check_variable = { var = black_friday_cbrn_forensic_support_affordable value = constant:universal_cost_framework.one compare = equals }
+	}
+	else = {
+		set_temp_variable = { black_friday_cbrn_forensic_instrument_cost = constant:cbrn_diplomacy_cost.forensic_instruments }
+		set_temp_variable = { black_friday_cbrn_forensic_support_cost = constant:cbrn_diplomacy_cost.forensic_support }
+		NOT = { has_equipment = { cbrn_instrument_equipment < constant:cbrn_diplomacy_cost.forensic_instruments } }
+		NOT = { has_equipment = { support_equipment_1 < constant:cbrn_diplomacy_cost.forensic_support } }
+	}
+}
+
+# The one-factory commitment remains one at both sale ratios, so the native
+# timer owns its reservation and release; only the equipment quote varies.
+black_friday_can_pay_cbrn_share_forensic_evidence = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:cbrn_diplomacy_factory_use.forensic_publication }
+	black_friday_cbrn_forensic_materials_are_affordable = yes
+}
+
 black_friday_can_pay_cbrn_move_civilians_to_shelters = {
 	if = {
 		limit = {

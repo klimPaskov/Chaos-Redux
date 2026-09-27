@@ -184,6 +184,9 @@ The following native kinds are dispatched by both `universal_cost_pay_component`
 | `infantry_equipment` | 5 | `NOT = { has_equipment = { infantry_equipment < universal_cost_affordability_amount } }` | `add_equipment_to_stockpile = { type = infantry_equipment amount = universal_cost_payment_delta }` | `add_equipment_to_stockpile = { type = infantry_equipment amount = universal_cost_payment_amount }` |
 | `support_equipment` | 6 | `NOT = { has_equipment = { support_equipment < universal_cost_affordability_amount } }` | `add_equipment_to_stockpile = { type = support_equipment amount = universal_cost_payment_delta }` | `add_equipment_to_stockpile = { type = support_equipment amount = universal_cost_payment_amount }` |
 | `support_equipment_1` | 11 | `NOT = { has_equipment = { support_equipment_1 < universal_cost_affordability_amount } }` | `add_equipment_to_stockpile = { type = support_equipment_1 amount = universal_cost_payment_delta }` | `add_equipment_to_stockpile = { type = support_equipment_1 amount = universal_cost_payment_amount }` |
+| `cbrn_instrument_equipment_1` | 17 | `NOT = { has_equipment = { cbrn_instrument_equipment_1 < universal_cost_affordability_amount } }` | `add_equipment_to_stockpile = { type = cbrn_instrument_equipment_1 amount = universal_cost_payment_delta }` | `add_equipment_to_stockpile = { type = cbrn_instrument_equipment_1 amount = universal_cost_payment_amount }` |
+| `cbrn_instrument_equipment_2` | 18 | `NOT = { has_equipment = { cbrn_instrument_equipment_2 < universal_cost_affordability_amount } }` | `add_equipment_to_stockpile = { type = cbrn_instrument_equipment_2 amount = universal_cost_payment_delta }` | `add_equipment_to_stockpile = { type = cbrn_instrument_equipment_2 amount = universal_cost_payment_amount }` |
+| `cbrn_instrument_equipment_3` | 19 | `NOT = { has_equipment = { cbrn_instrument_equipment_3 < universal_cost_affordability_amount } }` | `add_equipment_to_stockpile = { type = cbrn_instrument_equipment_3 amount = universal_cost_payment_delta }` | `add_equipment_to_stockpile = { type = cbrn_instrument_equipment_3 amount = universal_cost_payment_amount }` |
 | `motorized_equipment` | 7 | `NOT = { has_equipment = { motorized_equipment_1 < universal_cost_affordability_amount } }` | `add_equipment_to_stockpile = { type = motorized_equipment_1 amount = universal_cost_payment_delta }` | `add_equipment_to_stockpile = { type = motorized_equipment_1 amount = universal_cost_payment_amount }` |
 | `train_equipment` | 8 | `NOT = { has_equipment = { train_equipment < universal_cost_affordability_amount } }` | `add_equipment_to_stockpile = { type = train_equipment amount = universal_cost_payment_delta }` | `add_equipment_to_stockpile = { type = train_equipment amount = universal_cost_payment_amount }` |
 | `train_equipment_1` | 12 | `NOT = { has_equipment = { train_equipment_1 < universal_cost_affordability_amount } }` | `add_equipment_to_stockpile = { type = train_equipment_1 amount = universal_cost_payment_delta }` | `add_equipment_to_stockpile = { type = train_equipment_1 amount = universal_cost_payment_amount }` |
@@ -195,7 +198,8 @@ Evidence for the three added native branches is the installed vanilla documentat
 
 The installed equipment definitions corroborate the concrete aliases at `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/units/equipment/support.txt` (`support_equipment_1`) and `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/units/equipment/trains.txt` (`train_equipment_1`).
 
-Event 026 consumes these exact aliases in `common/scripted_effects/026_black_friday_effects.txt` and `common/scripted_triggers/026_black_friday_triggers.txt`, so the framework keeps their resource-kind ids distinct while dispatching the exact native equipment tokens.
+Event 026 consumes the support and train aliases in `common/scripted_effects/026_black_friday_effects.txt` and `common/scripted_triggers/026_black_friday_triggers.txt`, so the framework keeps their resource-kind ids distinct while dispatching the exact native equipment tokens.
+The CBRN instrument kinds dispatch only their concrete models from `common/units/equipment/cbrn_protective_equipment.txt`, preserving model identity for a later receipt refund.
 
 ## universal_cost_pay_component
 
@@ -207,7 +211,7 @@ Inputs: temporary `universal_cost_payment_resource_kind` and positive `universal
 
 Output: temporary `universal_cost_payment_result`.
 
-Supported kinds: Political Power, Command Power, Army Experience, Navy Experience, Air Experience, Stability, War Support, Manpower, Fuel, Infantry Equipment, Support Equipment, Support Equipment 1, Motorized Equipment 1, Train Equipment, Train Equipment 1, and Convoy 1.
+Supported kinds: Political Power, Command Power, Army Experience, Navy Experience, Air Experience, Stability, War Support, Manpower, Fuel, Infantry Equipment, Support Equipment, Support Equipment 1, CBRN Instrument Equipment 1 through 3, Motorized Equipment 1, Train Equipment, Train Equipment 1, and Convoy 1.
 
 Defaults: zero and negative amounts are successful no-ops; unsupported kinds do not mutate the payer and return `result_no_op`.
 
@@ -242,6 +246,9 @@ Defaults: a new transaction row starts in recorded/refundable state; repeated co
 Side effects: appends the component, updates aligned totals, and retains actual paid amount as the only refund basis.
 
 Multi-resource contract: call once per component with the same logical transaction id and a different component id, then settle or refund the transaction once.
+For an aggregate stockpile quote distributed across concrete models, the owner must use one distinct component id per model and record exact model-specific quoted and paid amounts while preserving the single aggregate ordinary and quoted totals.
+If sale affordability permits fewer units than the ordinary price, any unfilled ordinary counterfactual amount may be assigned to a participating model's ordinary receipt field or a zero-paid model component; that amount is accounting only and must never be debited.
+The shared record helper requires quoted and actual-paid amounts to match per component but does not independently apply a sale ratio to each component.
 
 ## universal_cost_settle_transaction
 
@@ -289,7 +296,7 @@ Side effects: native components are credited once, their per-component state cha
 
 The engine does not provide one generic effect that accepts an arbitrary dynamic resource token, one generic value for every ordinary purchase modifier, a dynamic global-flag name, or a transactional rollback spanning unrelated native effects.
 
-The framework therefore uses numeric source/family/resource enums, aligned arrays, sixteen fixed native payment branches, fixed-point quanta for deliberate Stability and War Support payments, and an explicit owner adapter for factory commitments, technology, advisor, idea, operation, equipment-design, and other inaccessible surfaces.
+The framework therefore uses numeric source/family/resource enums, aligned arrays, nineteen fixed native payment branches, fixed-point quanta for deliberate Stability and War Support payments, and an explicit owner adapter for factory commitments, technology, advisor, idea, operation, equipment-design, and other inaccessible surfaces.
 
 The native resource contract includes Political Power, Command Power, Army Experience, Navy Experience, Air Experience, Manpower, Fuel, Infantry Equipment, Support Equipment, Motorized Equipment, Trains, Convoys, Stability, and War Support. Stability and War Support callers must pass `constant:universal_cost_fixed_point_quantum.stability` or `constant:universal_cost_fixed_point_quantum.war_support` as their rounding quantum; integer callers use the default one-unit quantum.
 
