@@ -1,0 +1,44 @@
+# Chemical raid tooltip family localisation handoff
+
+Status: implemented within the assigned localisation scope. Parent review and live-game presentation remain open.
+
+## Scope and changed keys
+
+- `localisation/english/cbrn_chemical_land_raids_l_english.yml`: `raid_chemical_land_{cylinder,projector,artillery,armored}_failure_actor_tt` and `raid_chemical_phantom_mist_failure_actor_tt`.
+- `localisation/english/japan_cbrn_campaign_raids_l_english.yml`: `raid_japan_{chemical,bio}_{failure,limited,success,critical}_actor_tt`.
+- `localisation/english/chaosx_raids_l_english.yml`: `tooltip_raid_category_chemical_raids`, `raid_type_chemical_{sarin_strike,sarin_rocket_strike,chlorine_strike}_desc`, and `raid_chemical_air_{chlorine,phosgene,mustard,lewisite,tabun,sarin,soman,malodor,behavioral,sarin_rocket,soman_rocket}_tt`.
+- `localisation/english/cbrn_doomsday_raids_l_english.yml`: `raid_type_{chemical,biological}_stockpile_doomsday_raid_desc`, `{chemical,biological}_doomsday_raid_{success,critical}_tt`.
+
+## Audit and effect comparison
+
+The land and Japan failure actor tooltips said collected payload and support stores were **lost** after failure. The installed raid documentation only establishes that `essential_equipment` is collected after raid creation. The new text describes the failed release and leaves later equipment disposition unstated. The Japan biological line retains the possible evidence exposure. The neighboring Japan outcome lines state the conditional release and concrete harm in shorter sentences. The sarin air and rocket descriptions no longer claim a failed outcome loses payload.
+
+The chemical air outcome tooltips said consequences were “recorded” or cited an “exact payload debit” and “native raid result”. They now name agent-specific injuries, contamination, disruption, medical pressure, evidence, and Condemnation in conditional terms. The `cbrn_chemical_air_bridge.1` event and `cbrn_resolve_chemical_air_raid_outcome` helper can reject a release if the actor, victim, target, or policy context no longer qualifies, so no generic outcome tooltip promises an impact on every result. The doomsday success and critical tooltips likewise condition release on final authorization and target checks. The doomsday descriptions state collection of one of each named agent at preparation and the successful resolver's consumption of remaining national stocks.
+
+Source cross-check: `common/raids/cbrn_chemical_land_raids.txt`, `cbrn_chemical_air_raids.txt`, `japan_cbrn_campaign_raids.txt`, and `cbrn_doomsday_raids.txt`; `events/cbrn_chemical_air_bridge_events.txt`, `events/japan_cbrn_campaign_raid_bridge.txt`; `common/scripted_effects/cbrn_chemical_raid_effects.txt`, `cbrn_chemical_doomsday_effects.txt`, and `JAP_chemical_campaign_effects.txt`. The source comments and the installed raid contract agree on native collection, but neither proves cancellation refund or destruction at failure. No refund or destruction was added to text. A vanilla raid reference is `C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\common\raids\paratrooper_raids.txt`, including `essential_equipment` near line 69 and `success_levels` near line 175.
+
+## Audit results
+
+- Missing keys in the assigned outcome surface: none found. All changed tooltip keys are present and called by the relevant raid definitions.
+- Duplicate keys: none among 376 keys in the four assigned files.
+- Scripted localisation issues: none in the assigned files. No scripted localisation call or dynamic token was changed.
+- Dynamic text opportunities: the broad land failure lines could name the agent and selected state dynamically, but doing so would require bound tooltip or caller changes outside this assignment. Existing `$LOCATION$` target-name tokens remain intact.
+- Cross-surface mismatch: the event catalog workbook was not inspected or edited. Spreadsheet owner should review the four doomsday description keys and the chemical air presentation keys above if they are mirrored there. No known exact catalog wording mismatch is claimed.
+- Encoding: all four edited files retain UTF-8 BOM. No file encoding concern found.
+- Quotations: no sourced or attributed quotation occurs in the changed keys; no quote was altered.
+- Prose quality: the removed “lost” clauses were unsupported assertions; “recorded,” “exact payload debit,” “native raid result,” and “full operation profile” obscured the player-visible consequence. Long lists of abstract consequence nouns were replaced by agent-specific injuries or disruption. Repeated outcome boilerplate was shortened. Semicolons introduced during drafting were removed from changed sentences. Unchanged route-specific terms, costs, evidence history, and Condemnation remain.
+
+## Documentation and MCP evidence
+
+- Offline wiki: `paradox_wiki/Localisation - Hearts of Iron 4 Wiki.md` lines 260–275, revision `1a8f72362a34b4bb653186746b9fae0b98e463205cb02f12ccf2c3d9ccd3a064`, read through `hoi4.reference_read`. Installed localisation formatter documentation: `C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\documentation\loc_formatter_documentation.md` lines 1–2, revision `1fbd9a031fd09100d79bac08dec3c16e19468f23516c5e67c67578156282af08`.
+- Installed raid contract: `C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\common\raids\_documentation.md` lines 16–90 and 135–204, revision `eac06474fcbde3920523b9b49364f7797851c0cc45f4f0ef41321999a93be43e`; `essential_equipment` collection is at lines 167–174. The route does not document cancellation refund or outcome destruction.
+- `hoi4.event_inspect` traces for `cbrn_chemical_air_bridge.1`, `chaosx_japan_cbrn_raid.1`, and `chaosx_cbrn_doom_raid.1` returned `EVENT_INSPECTED_PARTIAL`, graph revision `c667b1897a5180f60b8895da5d08653ca6a4387b25419e98251c72bdfa1545df`. Their trace resources are `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/4450a8ac4052b4a2cd5e514131c4cb4a49d46299eb7104a12c41ef87b1945f16/ad638683f2f40e7090c9efbc0efb9e9aba72459372ce2ab224c7256aff624a5d/event-trace-c667b1897a51.json`, `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/200594fec836620e52f71994048fb9b1d64254b4a601120c04f2b017fe7672f1/b4a7f877f96879876b97d456c6f53494d6864397f2cd2d652c35441f6f3cecbd/event-trace-c667b1897a51.json`, and `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/51fe01ed717abf6a431049314b60b0295df13085cfed5d8a8a7fa3b7ed2e6a71/81c416b94c13f4d7237981e9da55325d356cdba70348234037071e22d286f395/event-trace-c667b1897a51.json`.
+- `hoi4.event_render` options for those three hidden bridge events returned `EVENT_RENDERED_PARTIAL` at the same revision, but selected zero nodes. It therefore does not establish visual text fit or exact hidden-event coverage. The chemical, Japan, and doomsday render JSON resources are `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/89c5adf3b2511e6a280796adaf0b7894d841a41033bafeda839e54e5a7d327b9/7ffcde53b7fa5ea19d81c0fc7008d9b18d866ff1fb9a5934636e942f31e8152d/event-options-c667b1897a51.json`, `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/333daf0a3fd7c50d08b08aa33c74aab1df9b54692ea2304a7888aebc0faa17bd/7d035ce3b9e47d1cd451014370f748b9b2fb869929e6089c275501111b70ca51/event-options-c667b1897a51.json`, and `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/d7594acdc4b8710096bc7b431126272474b421238d522699d27c2e9e9a928071/5eeab0e7c7fdd5ef0c627ed869d007fcb9d0dce92ebd7d983d45d5b9ae3b1d86/event-options-c667b1897a51.json`.
+- `hoi4.source_lookup` returned zero definitions for the vanilla `mine_sabotage_raid` with `kind = raid`, so the vanilla file above was read directly. This is a source-lookup indexing limit, not proof the vanilla raid is absent.
+- The exposed read-only technology inspect/render/compare routes were listed separately. No standalone Technology Tree Viewer tool was exposed, so standalone viewer availability remains a package gap. No technology tree is in this assignment.
+
+## Validation and remaining limits
+
+Task-specific validation confirmed four UTF-8 BOMs, zero duplicate keys, and no remaining “reserved payload/stores are lost,” “exact payload debit,” “native raid result,” or “are recorded” phrasing in the four assigned files. `git diff --check` found no patch whitespace errors. The changed tooltip keys were checked against raid call sites; no gameplay or key ID changed. No live game run was performed, as repository rules reserve it for the user. MCP render selected no nodes, so actual raid-panel wrapping and visual fit remain unverified. No additional wording decision is needed for the in-scope patch. Cancellation refund and final fate of collected equipment remain unknown and deliberately unstated.
+
+No simplification or fallback was used. No workbook, gameplay file, or unrelated localisation file was edited, and no commit was made.

@@ -460,6 +460,7 @@ black_plague_finish_shared_state_action = {
 		clr_state_flag = black_plague_shared_action_active
 		clear_variable = black_plague_shared_action
 		clear_variable = black_plague_shared_action_owner
+		clear_variable = black_plague_shared_action_scale
 		clear_variable = black_plague_shared_action_burden
 		black_plague_ensure_current_state_values = yes
 		ROOT = { black_plague_recompute_country_response_capacity = yes }
@@ -470,6 +471,9 @@ black_plague_finish_shared_state_action = {
 # ROOT is the action owner, so capacity and the decision's pending variable are
 # cleared atomically before the next board refresh.
 black_plague_cancel_shared_state_action = {
+	# A rejected start can leave only the country-side pending token. Clear it
+	# even when no state active receipt was created.
+	ROOT = { clear_variable = black_plague_shared_action_pending }
 	if = {
 		limit = {
 			has_state_flag = black_plague_shared_action_active
@@ -483,10 +487,7 @@ black_plague_cancel_shared_state_action = {
 		clear_variable = black_plague_shared_action_burden
 		set_temp_variable = { black_plague_shared_cancel_cooldown_days = constant:black_plague_shared_duration.close_threatened_corridor }
 		set_state_flag = { flag = black_plague_shared_action_cooldown days = black_plague_shared_cancel_cooldown_days }
-		ROOT = {
-			clear_variable = black_plague_shared_action_pending
-			black_plague_recompute_country_response_capacity = yes
-		}
+		ROOT = { black_plague_recompute_country_response_capacity = yes }
 	}
 }
 

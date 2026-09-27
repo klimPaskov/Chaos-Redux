@@ -10,6 +10,10 @@ The national use policies are exactly **Retaliation Only**, **Battlefield Author
 
 The raid interface has exactly two CBRN categories: **Chemical Raids** and **Biological Raids**. Native land delivery covers cylinder, projector, artillery, and armored roles. Each actual raid uses an exact selected state, a supply-node origin, an assigned division, army intelligence, a matching weapon and native preparation. Human and AI use the same executable path. Older per-agent raid-type definitions may remain only where required inside these two categories; they are not extra categories. Any earlier proposed strategic, agent-specific, or recovery category must be reconciled against this exact-two-category requirement before promotion.
 
+The [ordinary biological raid language correction](../corrections/2026-09-27_biological_native_raid_tooltips.md) keeps four agent outcome tooltips conditional on the final release gate and does not state an equipment refund or loss that the installed raid documentation cannot prove.
+
+The [neighboring native raid tooltip correction](../corrections/2026-09-27_native_raid_tooltip_family.md) applies the same conditional consequence and equipment-evidence boundary to chemical, Japan, doomsday, battlefield biological, sabotage, Event 016, and facility-recovery branches.
+
 Basic authorized chemical and ordinary biological battlefield raids must remain available to a country using a vanilla grand doctrine after normal research, production, protection, and project requirements. Theater CBRN Headquarters is a Chaos Warfare specialization, not an ordinary biological-raid prerequisite.
 
 ## Protection, units, and limits
@@ -55,5 +59,7 @@ The accepted visual repairs cover the plague gate, plague image, zero-capacity p
 Event 020's unsupported cost interpolation and exact displayed-payment boundary follow the [shared response cost correction](../../020_black_plague_specs/corrections/2026-09-26_shared_response_cost_quotes_and_boundaries.md). That source correction does not accept the still-dense decision rows or substitute source checks for native visual and transaction evidence.
 
 The [Event 020 public-language correction](../../020_black_plague_specs/corrections/2026-09-27_response_public_language.md) removes internal ledger and meter prose from ten active descriptions while leaving genuine Rat Council records in the story. It does not resolve the decision-list and cost-row presentation blockers.
+
+The [Event 020 active-project cancellation correction](../../020_black_plague_specs/corrections/2026-09-27_shared_state_action_cancel_lifecycle.md) keeps the 26 ordinary paid state projects and the Royal Node counterstrike running after their own active receipt is set and cancels only when the live project becomes invalid. It does not alter the unresolved six-lane presentation or native decision-render requirements.
 
 Ancillary repairs follow the owner implementation handoffs and must be recorded with exact files, identifiers, source evidence, and remaining validation. No unapproved fallback, proxy, or substitute is accepted by this amendment.

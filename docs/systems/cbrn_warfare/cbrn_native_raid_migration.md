@@ -4,6 +4,7 @@ Chemical and biological attacks use the native raid planner under `chemical_raid
 Chemical air attacks retain their existing native air raids; chemical ground attacks use state targets, an assigned land division, a supply-node origin, a native preparation timer, and one agent-specific payload reservation.
 Biological strategic air attacks, battlefield dissemination, supply-chain sabotage, and captured-facility recovery appear under `biological_raids`.
 The unrelated Brilliant Scientist portal raid keeps its own category.
+A source census of `common/raids/` on 2026-09-27 found 145 package raid-type definitions assigned to `chemical_raids` or `biological_raids`, with those two category IDs defined in `common/raids/categories/chaosx_raid_categories.txt`. The separate two-type Brilliant Scientist portal file uses `brilliant_scientist_raids`. All 144 chemical, biological-weapon, recovery, sabotage, Japan, doomsday, and weaponized-zombie definitions outside the anti-zombie cure strike declare native `essential_equipment`; the cure strike instead uses 10 Command Power and aircraft requirements, with no concrete cure-bomb archetype in the mod. This is a source-definition count, not proof that every type is reachable or that the native planner renders only two visible categories in game.
 Ordinary battlefield biological raids require Pathogen Handling Protocols, full equipment-derived protection readiness, battlefield-use authority, and the matching completed agent project. Theater CBRN Headquarters remains a Chaos Warfare specialization rather than a basic raid gate.
 Their fixed 21-day native preparation is the whole attack preparation; an active Combined CBRN Overmatch headquarters order is not required.
 
@@ -14,6 +15,8 @@ The raid engine collects `essential_equipment` at creation and allocates the lis
 Each completed native outcome saves the exact actor, victim, and selected state as chain-local regular event targets, with one marker for each fixed route, agent, and result.
 An immediate hidden country event restores actor-country `ROOT`, validates exactly one marker per required family, reconstructs the outcome inputs, and runs the corresponding adapter.
 The biological adapters record failed deliveries or dispatch one lifecycle seed; the chemical ground adapter dispatches only successful releases. None of these adapters debits or refunds the reserved payload again.
+The [ordinary biological outcome text correction](../../specs/chaos_warfare_system_specs/corrections/2026-09-27_biological_native_raid_tooltips.md) describes failed-delivery evidence, actor-side accidents, partial or strong releases, and incubation without asserting an unverified equipment refund or destruction outcome. All four agent definitions keep their original callback bindings and native payments.
+The [neighboring raid tooltip correction](../../specs/chaos_warfare_system_specs/corrections/2026-09-27_native_raid_tooltip_family.md) applies the same evidence boundary to chemical land and air raids, Japan campaign raids, doomsday releases, biological battlefield and sabotage, Event 016 biology, and captured-facility recovery. Each message remains conditional where the final actor-country bridge can reject its release.
 If the target changes controller, authority is lost, or the native context becomes invalid before completion, the adapter fails closed without selecting another state or applying a release.
 Chemical ground outcome text describes the attempted delivery and any viable release, because the native callback's success level can be determined before the actor-country bridge performs its final context check.
 No script-side cancellation hook issues a refund.
@@ -31,7 +34,7 @@ The 12 biological supply-chain raid IDs follow `bio_sabotage_<agent>_<base|theat
 Their three doctrine tiers retain distinct preparation and cooldown timings, while successful releases enter the ordinary food, water, and medical supply-chain lifecycle.
 Strategic and battlefield biological raids no longer gain AI weight or success bonuses from the retired Brilliant Scientist biological staging flag; their native preparation and assigned formations determine the operation.
 The former global `bio_sabotage_operation_in_progress` flag cannot be set by a documented native raid-creation effect, so separate native variants may prepare simultaneously.
-Each has its own native payload and Command Power reservation, and each completed result is still resolved only once.
+Each has its own native payload and Command Power reservation, and each completed callback uses one event bridge and one dispatch path. Callback uniqueness and cancellation settlement remain engine-validation gaps.
 Facility recovery also uses the immediate country-event bridge, retaining its selected site as an exact event target and checking that the site is still controlled by the actor before any ledger transfer, destruction, or accidental release.
 
 ## Chemical ground payment and balance
