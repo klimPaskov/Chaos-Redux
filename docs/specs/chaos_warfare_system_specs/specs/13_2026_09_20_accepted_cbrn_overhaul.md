@@ -30,6 +30,8 @@ The six headquarters roles consolidate to **Operations and Intelligence**, **Pro
 
 The fully combined legal CBRN bonuses are capped at army attack and organisation +5% each, planning +15%, coordination +8%, reinforce chance +2 percentage points, and conventional attack, defense, and breakthrough +15% per stat. Dedicated CBRN static bonuses cap at +35% and conditional hazard bonuses at +50%. Artillery doctrine conventional soft attack caps at +10%. Technology costs use the 50%, 75%, and 100% relative cost bands. These are combined caps, not a separate allowance for each source.
 
+The [same-mask hazard budget correction](../corrections/2026-09-27_same_mask_hazard_budget.md) applies the 50% additional-benefit ceiling to chemical casualties, medical saturation, and target treatment after real issued-mask coverage, including partial-stock cases. Disruption and contamination keep their separate bounded formulas.
+
 ## Condemnation and projects
 
 Condemnation is bounded from 0 to 1000. The equipment cost multiplier is `1 + Condemnation / 500`, with whole equipment requirements rounded up. Inspection imposes 5–15% consumer goods for 180 days. The Condemnation specification records the same accepted limits; the final owner must validate the full source and interface contract.

@@ -475,10 +475,10 @@ cbrn_calculate_chemical_action_outputs = {
 		multiply_temp_variable = { cbrn_action_dose_mult = constant:cbrn_munitions_designer_effect.stable_choking_dose_mult }
 	}
 	cbrn_apply_historical_actor_chemical_advisor_modifiers = yes
-	# Preserve the issued-mask result (and the attacker's dose) before the
-	# target's additional medical advisor, treatment, and response layers.
-	set_temp_variable = { cbrn_action_military_casualty_before_treatment = cbrn_action_military_casualty_mult }
-	set_temp_variable = { cbrn_action_civilian_casualty_before_treatment = cbrn_action_civilian_casualty_mult }
+	# Anchor the combined hazard budget to the same actual mask issue after
+	# attacker modifiers, before target support, treatment, and shelter effects.
+	set_temp_variable = { cbrn_action_military_mask_only_before_treatment = cbrn_action_military_mask_only_casualty_mult }
+	set_temp_variable = { cbrn_action_civilian_mask_only_before_treatment = cbrn_action_civilian_mask_only_casualty_mult }
 	cbrn_apply_historical_target_chemical_advisor_modifiers = yes
 	clamp_temp_variable = { var = cbrn_action_dose_mult min = constant:cbrn_action_input_bounds.dose_mult_min max = constant:cbrn_action_input_bounds.dose_mult_max }
 	clamp_temp_variable = { var = cbrn_action_doctrine_condemnation_mult_local min = constant:cbrn_doctrine_condemnation.minimum_mult max = constant:cbrn_doctrine_condemnation.maximum_mult }
@@ -509,7 +509,7 @@ cbrn_calculate_chemical_action_outputs = {
 
 	set_temp_variable = { cbrn_action_military_death_floor = cbrn_action_lethality }
 	multiply_temp_variable = { cbrn_action_military_death_floor = cbrn_action_dose_mult }
-	multiply_temp_variable = { cbrn_action_military_death_floor = cbrn_action_military_casualty_before_treatment }
+	multiply_temp_variable = { cbrn_action_military_death_floor = cbrn_action_military_mask_only_before_treatment }
 	multiply_temp_variable = { cbrn_action_military_death_floor = constant:cbrn_hazard_budget.residual_floor }
 	set_temp_variable = { cbrn_action_military_death_fraction = cbrn_action_lethality }
 	multiply_temp_variable = { cbrn_action_military_death_fraction = cbrn_action_dose_mult }
@@ -586,7 +586,7 @@ cbrn_calculate_chemical_action_outputs = {
 	# budget, while the issued-mask casualty multiplier remains the baseline.
 	set_temp_variable = { cbrn_action_civilian_death_floor = cbrn_action_civilian_exposed_before_response }
 	multiply_temp_variable = { cbrn_action_civilian_death_floor = cbrn_action_lethality }
-	multiply_temp_variable = { cbrn_action_civilian_death_floor = cbrn_action_civilian_casualty_before_treatment }
+	multiply_temp_variable = { cbrn_action_civilian_death_floor = cbrn_action_civilian_mask_only_before_treatment }
 	multiply_temp_variable = { cbrn_action_civilian_death_floor = constant:cbrn_hazard_budget.residual_floor }
 	set_temp_variable = { cbrn_action_civilian_death_fraction = cbrn_action_civilian_exposed_fraction }
 	multiply_temp_variable = { cbrn_action_civilian_death_fraction = cbrn_action_lethality }
@@ -707,7 +707,7 @@ cbrn_calculate_chemical_action_outputs = {
 	set_temp_variable = { cbrn_action_medical_saturation_floor = cbrn_route_medical_points }
 	multiply_temp_variable = { cbrn_action_medical_saturation_floor = cbrn_class_medical_mult }
 	multiply_temp_variable = { cbrn_action_medical_saturation_floor = cbrn_action_dose_mult }
-	multiply_temp_variable = { cbrn_action_medical_saturation_floor = cbrn_action_civilian_casualty_before_treatment }
+	multiply_temp_variable = { cbrn_action_medical_saturation_floor = cbrn_action_civilian_mask_only_before_treatment }
 	multiply_temp_variable = { cbrn_action_medical_saturation_floor = constant:cbrn_hazard_budget.residual_floor }
 	set_temp_variable = { cbrn_action_medical_saturation_points = cbrn_route_medical_points }
 	multiply_temp_variable = { cbrn_action_medical_saturation_points = cbrn_class_medical_mult }

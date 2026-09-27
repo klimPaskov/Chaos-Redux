@@ -39,6 +39,8 @@ The earlier doctrine handoff's 1.03² chemical-advisor and 1.02⁵ biological-ad
 
 These source-arithmetic bounds are separate scenario calculations, not a claim that all listed bonuses coexist or that the engine applies their product exactly. The parent retains final balance review and the user retains live-game validation.
 
+The [same-mask hazard correction](../../specs/chaos_warfare_system_specs/corrections/2026-09-27_same_mask_hazard_budget.md) addresses a separate conditional ceiling: with 89% sealed-mask issue, full field kits and medical capacity previously improved choking casualties from the same-mask 0.25 to 0.06. The full chemical path now floors added protection and treatment at half the current actual-mask casualty result, including military deaths, civilian deaths, and medical saturation. Issued masks remain foundational, and missing or worn equipment still weakens that baseline. The 1.495 cleanup source product in the table is unchanged. Native exposure and project-selection evidence remains open.
+
 ## Purpose
 
 Chaos Warfare is a conditional CBRN grand doctrine. Adoption establishes the national command immediately; subsequent mastery and technology gates grant formation, headquarters, logistics, and operation eligibility without a second establishment mission. Actual chemical delivery remains equipment-backed and must use the shared exposure pipeline.

@@ -221,6 +221,7 @@ cbrn_refresh_country_mask_snapshot = yes
 ## cbrn_calculate_action_protection
 
 Resolves six equipment- and institution-backed protection layers into chemical-agent-class multipliers. Equipment snapshots treat usable coverage as the active score and weighted model quality as its ceiling: partial basic issue follows its actual coverage band, while full basic issue caps at 55 effective protection. The weighted skin, antidote, decontamination, medical, and warning layers can raise the shared result.
+Before adding those layers, the helper evaluates the casualty band from the current issued-mask respiratory score with decontamination and medical support temporarily zeroed. That same-stock mask result is the foundation; the full six-layer casualty result cannot fall below half of it. Zero or worn stock therefore keeps its actual weaker baseline instead of receiving an idealized mask rating.
 
 Scope: the attacker country or the enclosing effect chain; the helper uses temporary variables only.
 
@@ -239,6 +240,7 @@ Defaults: missing inputs or a non-chemical class leave the proof missing and ret
 Outputs:
 
 - `cbrn_action_effective_protection`, 0 through 100
+- `cbrn_action_mask_only_casualty_mult`, the class-specific casualty multiplier from actual issued-mask coverage before additional layers
 - `cbrn_action_casualty_mult`
 - `cbrn_action_disruption_mult`
 - `cbrn_action_contamination_mult`
@@ -267,9 +269,9 @@ Scope: the enclosing effect chain; all working values are temporary.
 
 Inputs: `cbrn_action_agent_class` plus the six protection-layer inputs documented above. The weight helper maps choking, blister, nerve, or incapacitating classes to the centralized six-layer table. The casualty helper reads the resulting effective score and the decontamination/medical support bands.
 
-Defaults: reset returns zero effective protection, neutral casualty/disruption/contamination multipliers, and missing proof. An unrecognized class keeps those fail-closed defaults.
+Defaults: reset returns zero effective protection, neutral mask-only and final casualty/disruption/contamination multipliers, and missing proof. An unrecognized class keeps those fail-closed defaults.
 
-Outputs: temporary layer weights, `cbrn_action_effective_protection`, the agent-specific casualty multiplier, and the public protection outputs/proof written by the wrapper.
+Outputs: temporary layer weights, `cbrn_action_effective_protection`, the actual-mask casualty baseline, the agent-specific casualty multiplier bounded to at least half that baseline, and the public protection outputs/proof written by the wrapper.
 
 Side effects: none. These helpers do not inspect technology, create equipment, consume filters, or mutate a country or state.
 
@@ -278,6 +280,8 @@ Usage example: call only the public wrapper after supplying all six layers; it i
 ```txt
 cbrn_calculate_action_protection = yes
 ```
+
+`cbrn_resolve_action_target_protection` calls the wrapper separately for deployed military and threatened civilians, carrying `cbrn_action_military_mask_only_casualty_mult` and `cbrn_action_civilian_mask_only_casualty_mult` alongside the full protection outputs. The attacker's toxicological director multiplies each same-mask baseline by the same casualty factor as the full result. `cbrn_calculate_chemical_action_outputs` freezes those actor-adjusted baselines before target treatment and uses them for the military-death, civilian-death, and medical-saturation 50% residual floors. The final floors cover the protection table, shelter and response modifiers together; disruption and contamination retain their separate formulas.
 
 ## cbrn_prepare_chemical_action_record
 

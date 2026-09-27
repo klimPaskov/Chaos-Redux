@@ -272,6 +272,7 @@ cbrn_refresh_country_readiness_status = {
 cbrn_reset_protection_outputs = {
 	set_temp_variable = { cbrn_action_effective_protection = constant:cbrn_math.zero }
 	set_temp_variable = { cbrn_action_casualty_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_mask_only_casualty_mult = constant:cbrn_math.one }
 	set_temp_variable = { cbrn_action_disruption_mult = constant:cbrn_math.one }
 	set_temp_variable = { cbrn_action_contamination_mult = constant:cbrn_math.one }
 	set_temp_variable = { cbrn_action_protection_resolved_proof = constant:cbrn_proof.missing }
@@ -462,6 +463,20 @@ cbrn_calculate_action_protection = {
 		clamp_temp_variable = { var = cbrn_protection_medical_local min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
 		clamp_temp_variable = { var = cbrn_protection_warning_local min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
 
+		# Actual issued masks provide the baseline. Extra skin, antidote,
+		# decontamination, warning, and medical layers share one 50% benefit
+		# budget relative to this same-stock result.
+		set_temp_variable = { cbrn_protection_saved_decontamination = cbrn_protection_decontamination_local }
+		set_temp_variable = { cbrn_protection_saved_medical = cbrn_protection_medical_local }
+		set_temp_variable = { cbrn_protection_decontamination_local = constant:cbrn_math.zero }
+		set_temp_variable = { cbrn_protection_medical_local = constant:cbrn_math.zero }
+		set_temp_variable = { cbrn_action_effective_protection = cbrn_protection_respiratory_local }
+		cbrn_set_casualty_mult_from_protection = yes
+		set_temp_variable = { cbrn_action_mask_only_casualty_mult = cbrn_action_casualty_mult }
+		set_temp_variable = { cbrn_protection_decontamination_local = cbrn_protection_saved_decontamination }
+		set_temp_variable = { cbrn_protection_medical_local = cbrn_protection_saved_medical }
+		set_temp_variable = { cbrn_action_effective_protection = constant:cbrn_math.zero }
+
 		cbrn_set_protection_weights_from_agent_class = yes
 
 		set_temp_variable = { cbrn_protection_weighted_layer = cbrn_protection_respiratory_local }
@@ -502,6 +517,9 @@ cbrn_calculate_action_protection = {
 		clamp_temp_variable = { var = cbrn_action_effective_protection min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
 
 		cbrn_set_casualty_mult_from_protection = yes
+		set_temp_variable = { cbrn_action_casualty_budget_floor = cbrn_action_mask_only_casualty_mult }
+		multiply_temp_variable = { cbrn_action_casualty_budget_floor = constant:cbrn_hazard_budget.residual_floor }
+		clamp_temp_variable = { var = cbrn_action_casualty_mult min = cbrn_action_casualty_budget_floor max = constant:cbrn_math.one }
 
 		set_temp_variable = { cbrn_action_disruption_reduction = cbrn_action_effective_protection }
 		divide_temp_variable = { cbrn_action_disruption_reduction = constant:cbrn_math.percent_divisor }
@@ -1009,6 +1027,8 @@ cbrn_refresh_state_civilian_mask_snapshot = {
 
 cbrn_resolve_action_target_protection = {
 	set_temp_variable = { cbrn_action_protection_resolved_proof = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_action_military_mask_only_casualty_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_civilian_mask_only_casualty_mult = constant:cbrn_math.one }
 
 	event_target:cbrn_action_target_state = {
 		controller = { cbrn_refresh_country_civilian_decontamination_pool = yes }
@@ -1041,6 +1061,7 @@ cbrn_resolve_action_target_protection = {
 	cbrn_calculate_action_protection = yes
 	set_temp_variable = { cbrn_action_military_effective_protection = cbrn_action_effective_protection }
 	set_temp_variable = { cbrn_action_military_casualty_mult = cbrn_action_casualty_mult }
+	set_temp_variable = { cbrn_action_military_mask_only_casualty_mult = cbrn_action_mask_only_casualty_mult }
 	set_temp_variable = { cbrn_action_military_disruption_mult = cbrn_action_disruption_mult }
 	set_temp_variable = { cbrn_action_military_contamination_mult = cbrn_action_contamination_mult }
 	set_temp_variable = { cbrn_action_military_protection_proof = cbrn_action_protection_resolved_proof }
@@ -1054,6 +1075,7 @@ cbrn_resolve_action_target_protection = {
 	cbrn_calculate_action_protection = yes
 	set_temp_variable = { cbrn_action_civilian_effective_protection = cbrn_action_effective_protection }
 	set_temp_variable = { cbrn_action_civilian_casualty_mult = cbrn_action_casualty_mult }
+	set_temp_variable = { cbrn_action_civilian_mask_only_casualty_mult = cbrn_action_mask_only_casualty_mult }
 	set_temp_variable = { cbrn_action_civilian_disruption_mult = cbrn_action_disruption_mult }
 	set_temp_variable = { cbrn_action_civilian_contamination_mult = cbrn_action_contamination_mult }
 	set_temp_variable = { cbrn_action_civilian_protection_proof = cbrn_action_protection_resolved_proof }
