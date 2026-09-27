@@ -11,6 +11,8 @@ Examples (from the mod root):
   python .tools/3d_pipeline/review/review_cli.py actions --blend <job>/blender/checkpoints/x.blend --armature Armature.001 \
       --mesh char1.001 --action chaosx_zombies_attack --action chaosx_zombies_death --out <dir> --humanoid
   python .tools/3d_pipeline/review/review_cli.py compare --row <portrait> <legacy> <reference> --out <file.png>
+  python .tools/3d_pipeline/review/review_cli.py blender --script lab_finalize.py --config <cfg.json>
+      (runs a writing worker such as lab_finalize.py or lab_items.py headless with the locked Blender)
 
 --model accepts name=folder[:mesh[:diffuse]]; mesh defaults to the folder's single .mesh and
 diffuse to the first *diff*.dds in the folder. --humanoid supplies Meshy/Mixamo-style bone names
@@ -39,6 +41,11 @@ def blender_exe():
 
 
 def run_worker(request):
+    # Blender resolves a relative render filepath against the (unsaved) blend directory rather than
+    # the process directory, so renders written from relative paths silently land nowhere.
+    for key in ("out", "out_dir", "glb", "blend", "folder"):
+        if isinstance(request.get(key), str) and request[key]:
+            request[key] = os.path.abspath(request[key])
     with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False, encoding="utf-8") as fh:
         json.dump(request, fh)
         req_path = fh.name
@@ -118,6 +125,8 @@ def cmd_actions(a):
         req["frames"] = {spec.split("=")[0]: [int(f) for f in spec.split("=")[1].split(",")] for spec in a.frame}
     if a.res:
         req["res"] = [int(v) for v in a.res.split("x")]
+    if a.diffuse:
+        req["diffuse"] = os.path.abspath(a.diffuse)
     run_worker(req)
     print(contact_sheet(a.out, a.tag, os.path.join(a.out, f"sheet_{a.tag}.png"), cell=(120, 160)))
 
@@ -134,6 +143,44 @@ def cmd_compare(a):
     print(a.out)
 
 
+def cmd_blender(a):
+    script = Path(a.script) if Path(a.script).is_absolute() else Path(__file__).resolve().parent / a.script
+    cmd = [blender_exe(), "--background", "--factory-startup", "--python", str(script), "--", os.path.abspath(a.config)]
+    proc = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
+    keep = [l for l in (proc.stdout + proc.stderr).splitlines()
+            if l.startswith(("FINAL", "ITEMS")) or "Error" in l or "Traceback" in l or l.startswith("  File")]
+    print("\n".join(keep))
+    if proc.returncode != 0 or any("Traceback" in l for l in keep):
+        sys.exit(proc.returncode or 1)
+    out_dir = json.load(open(a.config, encoding="utf-8")).get("review", {}).get("out_dir")
+    if out_dir and os.path.isdir(out_dir):
+        print(review_sheet(out_dir))
+
+
+def review_sheet(out_dir, cell=(150, 200)):
+    """Grid of <tag>__<frame>__<target>__<view>.png renders: one row per (tag, target), frames x views across."""
+    from PIL import Image, ImageDraw
+    rx = re.compile(r"^(.+)__(\d{3})__([^_].*?)__([a-z_]+)\.png$")
+    rows = {}
+    for f in sorted(glob.glob(os.path.join(out_dir, "*__*__*__*.png"))):
+        m = rx.match(os.path.basename(f))
+        if m:
+            rows.setdefault((m.group(1), m.group(3)), []).append((int(m.group(2)), m.group(4), f))
+    if not rows:
+        return None
+    w, h = cell
+    ncol = max(len(v) for v in rows.values())
+    sheet = Image.new("RGB", (w * ncol, h * len(rows)), "white")
+    for i, key in enumerate(sorted(rows, key=lambda k: (k[0] != "rest", k))):
+        for j, (fr, view, f) in enumerate(sorted(rows[key])):
+            im = Image.open(f).convert("RGB").resize((w, h))
+            ImageDraw.Draw(im).text((3, 3), f"{key[0][-14:]} {key[1][:9]} {fr} {view[:5]}", fill="red")
+            sheet.paste(im, (j * w, i * h))
+    dest = os.path.join(out_dir, "sheet_items.png")
+    sheet.save(dest)
+    return dest
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -146,9 +193,11 @@ def main():
     c.add_argument("--view", action="append"); c.add_argument("--humanoid", action="store_true"); c.add_argument("--bones")
     c.add_argument("--frame", action="append", help="action=f1,f2,... renders exactly these frames for that action")
     c.add_argument("--res", help="WIDTHxHEIGHT per render, default 360x480")
+    c.add_argument("--diffuse", help="image to bind for review renders, e.g. the atlas base_color.png of an atlased model")
+    b = sub.add_parser("blender"); b.add_argument("--script", required=True); b.add_argument("--config", required=True)
     m = sub.add_parser("compare"); m.add_argument("--row", nargs="+", action="append", required=True); m.add_argument("--out", required=True)
     a = p.parse_args()
-    {"triage": cmd_triage, "legacy-ref": cmd_legacy_ref, "glb-ref": cmd_glb_ref, "actions": cmd_actions, "compare": cmd_compare}[a.cmd](a)
+    {"triage": cmd_triage, "legacy-ref": cmd_legacy_ref, "glb-ref": cmd_glb_ref, "actions": cmd_actions, "compare": cmd_compare, "blender": cmd_blender}[a.cmd](a)
 
 
 if __name__ == "__main__":

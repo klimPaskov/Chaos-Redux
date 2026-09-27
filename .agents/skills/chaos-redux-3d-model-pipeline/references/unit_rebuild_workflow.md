@@ -60,8 +60,24 @@ python .tools/3d_pipeline/review/review_cli.py glb-ref --glb <body.glb> --out <j
 
 Rig once with `meshy_rig` on the body task id.
 Choose presets per role from `meshy_animation_library` and vary them between sibling units so they do not move identically.
-Roles without a fitting preset (claw attacks, grabs, bites, casting) use `meshy_text_to_motion` in `prime` mode with a unit-specific prompt, applied to the rig through `meshy_animate(motion_task_id=…)`.
-Record every task in the job's credit ledger with its cost and status.
+Roles without a fitting preset (claw attacks, grabs, bites, casting, weapon strikes) use `meshy_text_to_motion` in `prime` mode with a unit-specific prompt that names the held item and which hand holds it.
+Write the intake manifest (step 5) with `preset` or `motion_task` per role and no `task`, then queue every animate call at once; the tool writes each task id back into the manifest so a rerun never pays twice:
+
+```bash
+python .tools/3d_pipeline/review/provider_intake.py <manifest.json> --submit
+```
+
+Preset choice rules learned from rebuilds:
+
+- A looping role (idle, move, retreat, defend, training) needs a preset that starts and ends standing. Seated presets ("Dozing Elderly"), falling presets ("Sliding Stumble"), and prone presets ("Crawl Backward") cannot loop.
+- A death preset must fit the body's weight: acrobatic knock-downs that flip the legs over the head read wrong on heavy creatures; use collapses ("Fall Dead from Abdominal Injury", "Shot and Fall Backward").
+- Weapon-holding presets ("Axe Breathe and Look Around", "Spear Walk", "Walk Backward with Sword & Shield", "Heavy Hammer Swing", "Two-handed Parry") give the empty-handed body arm poses that the separately generated item later fits.
+
+A rejected role is replaced with a second small manifest holding one new role name (for example `death2`, `base_blend` = the last intake checkpoint), queued with `--submit`, imported with a normal run, and swapped in by `lab_finalize`'s `replace` map.
+Record every task in the job's credit ledger with its cost and status, including rejected ones.
+
+Held items (weapons, staffs, shields, tools) are never in the body.
+Generate each from its own item-only reference (`refs/equipment/<item>/meshy_input.png`, a single object on a plain background with no hands) as its own Meshy 7 task at `target_polycount` about 4,000, and review it with `glb-ref` next to its reference before fitting.
 
 ## 5. Intake
 
@@ -85,33 +101,62 @@ python .tools/3d_pipeline/review/review_cli.py actions --blend <final intake che
 
 The report lists per-frame floor contact (`below_floor_frames`, `floating_frames`), hand reach peaks, foot plants, jaw opens, and fast spine drops.
 Provider actions typically float between a few centimetres and several units and must be grounded.
-In the live Lab session:
+Ground every role headless with `lab_finalize.py` (config format in its docstring; `replace` retires a rejected action for its replacement):
 
-```python
-import sys; sys.path.insert(0, r"<mod>/.tools/3d_pipeline/review"); import lab_actions as la
-la.ground_action(rig, [mesh], "<action>", "<action>_grounded")   # then swap names
-la.fix_slot_identifiers(rig, "<prefix>_")                        # every imported action needs it
-la.clear_nla_and_drivers()                                        # partition refuses NLA/driver scenes
+```bash
+python .tools/3d_pipeline/review/review_cli.py blender --script lab_finalize.py --config <finalize.json>
 ```
 
+It grounds each role (root keyed so the lowest vertex sits 4 mm up), repairs slot identifiers, clears NLA and drivers, and purges orphan materials and unused images, which the partition step requires.
+The same helpers are available in a live Lab session through `import lab_actions as la` for hand edits.
 Grounding flattens deliberate jumps; review the rendered sheet after grounding.
 Re-author any role that reads as the wrong character (for example a boxer's guard on a zombie) with `la.pose_bone_directions`, keeping the provider legs, and review every change from at least two views.
 
-## 7. Export
+## 6b. Held items
 
-Partition with the adapter (`partition_skeletal_mesh_export_batches`, a new checkpoint name per attempt, textures inside the job or packed), then:
+`lab_items.py` fits each item to its carrying bone, packs body and item textures into one atlas so the unit keeps one PDX material, joins the items into the body mesh weighted 1.0 to that bone, and renders and measures the result.
+Write `<ns>/items_config.json` (format in the docstring) and iterate with `"review_only": true` until the close-ups look right, then run once more without it:
 
 ```bash
-python .tools/3d_pipeline/review/pdx_textures.py --textures <body>_textures --out-dir <ns>/textures_pdx --stem <runtime stem>
-python .tools/3d_pipeline/review/export_package.py --job <job> --blend <partition checkpoint> --stem <runtime stem> --out export/<version> --role <role>=<action> ...
+python .tools/3d_pipeline/review/review_cli.py blender --script lab_items.py --config <ns>/items_config.json
 ```
+
+Fitting rules:
+
+- Orientation is semantic: `head` is the item-local direction from the grip to the head (read it from the `glb-ref` renders, and flip it if the head ends up in the fist), `head_to` and `side_to` are the bone-local axes it follows. On Meshy rigs the grip axis through a closed fist is the hand bone's Z and the fingers run along Y, so shafts use `head_to: "-Z"` and `side_to: "X"`; shields on the forearm use the face normal as `head` with `head_to: "X"`.
+- Meshy bone lengths are meaningless and the rig carries a 0.05 object scale, so `length` and `offset` are fractions of rig height. A palm grip sits at about `offset [0, 0.05, 0]`; a very large hand needs more.
+- `grip_along` is measured from the butt (0) to the head (1); the grip centres on the real shaft cross-section.
+- `contacts` reports the off-hand distance to the shaft per frame; a two-handed weapon whose off-hand drifts far from the shaft needs a live pose correction or an honest note in the handoff.
+- `floor_items` runs the measured floor correction on the listed actions: on frames where any sampled item vertex sinks below the floor it re-keys only the carrying bone about its head until the lowest point rests at the clearance height. List every role; frames above the floor are untouched. A wrist that is itself at the floor (fists pounding the ground) cannot lift the item fully; report the residual.
+- Review the final `sheet_items.png` for every role, then use `textures_atlas/` as the texture source in step 7 and `--diffuse <atlas>/base_color.png` for later action reviews.
+
+## 7. Export
+
+```bash
+python .tools/3d_pipeline/review/pdx_textures.py --textures <body>_textures|<ns>/textures_atlas --out-dir <ns>/textures_pdx --stem <runtime stem>
+python .tools/3d_pipeline/review/export_package.py --job <job> --partition-from <grounded or items checkpoint> --blend <new partition checkpoint> \
+    --stem <runtime stem> --out export/<new version> --role <role>=<action> ... --install gfx/models/units/<folder> --textures <ns>/textures_pdx
+```
+
+`--partition-from` runs the adapter partition first; every attempt needs a new `--blend` name and a new `--out` version.
 
 `export_package.py` flags any `.anim` under 10 KB: that is an action whose slot did not bind, which exports every bone frozen.
 Read the exported node name and stream count from `export_report.json`; the `.gfx` needs one `meshsettings` block per stream with that node name and `index` 0…n−1.
 
 ## 8. Runtime wiring
 
-Copy the proven files into `gfx/models/units/<folder>/`, record hash parity, and keep the `.gfx` animation ids, `animation_<stem>.asset` file names, and the entity states aligned.
+`--install` copies the proven files into `gfx/models/units/<folder>/` with hash parity; delete files there that the new package no longer uses (old `.anim` names, an old `_spec.dds`).
+Register the mesh and animations with:
+
+```bash
+python .tools/3d_pipeline/review/wire_unit.py --report <job>/export/<v>/export_report.json --stem <stem> --folder <folder> --title "<unit>" \
+    [--retire <shared .gfx> --retire <shared entity .asset> --retire <shared animation .asset>]
+```
+
+`--retire` removes the unit's previous pdxmesh block, entity block, and animation lines from shared files when the rebuilt unit moves to its own files, preserving the files' encoding and line endings.
+Author `gfx/entities/<stem>.asset` by hand, keeping the entity name the `sub_units` sprite resolves to (for example `riverborn_entity` for `sprite = riverborn`).
+A mesh built taller with `prepare.height_scale` keeps the vanilla entity `scale`; the height difference is the point.
+New sourced voices go through `sound_pack.py <spec.json>` (trim, fade, peak normalise, mono 44.1 kHz, `.asset` with the Effects category, and a receipts file; spec format in its docstring); a unit that already owns licensed sound effects reuses them.
 Time sound and particle events from the phase report: `time = (frame − first frame) / fps`, one event per measured contact, plant, or impact.
 Point `sub_units` `sprite` at the entity (`sprite = x` resolves `x_entity`), and check the counter set still shows a unique silhouette.
 
@@ -126,3 +171,10 @@ Point `sub_units` `sprite` at the entity (`sprite = x` resolves `x_entity`), and
 | Partition error "evidence already exists" | a failed attempt used the name | use a new checkpoint name |
 | MCP `execute_blender_code` returns no response | long scripts time out the bridge | run read-only work through `review_cli.py` (background Blender) |
 | Provider body looks generic | reference drifted from the portrait | regenerate the reference from the portrait before paying for geometry |
+| Partition error "image identities" | orphan materials still hold images | `lab_finalize` purges orphan materials first, then images no material uses; never bind preview textures into a checkpoint |
+| Partition error "every source material slot must be a nonempty PDX material" | a mesh join left empty slots | keep exactly one material slot (`lab_items` does this) |
+| Renders from a worker never appear | Blender resolves relative render paths against the unsaved blend | pass absolute paths (`review_cli` absolutises them) |
+| Parallel `glb-ref` runs crash with an access violation | several EEVEE renders at once | run renders one after another |
+| Winged, tailed, or caped anatomy follows the arms | Meshy's humanoid rig has no bones for it | add bones live, weight a welded duplicate with heat weighting, map weights back by position, author keys as absolute directions through the spine pose |
+| A giant or heavy creature looks infantry-sized | calibrated to the vanilla source height | `prepare.height_scale` (about 1.15–1.3) in the intake manifest |
+| Weapon sinks through the ground in slams and deaths | provider motion was authored empty-handed | `lab_items` `floor_items` on every role |

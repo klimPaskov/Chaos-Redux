@@ -150,10 +150,19 @@ def mode_triage():
                "bones": len(rig.data.bones), "diffuse": diffuse, "anims": {}}
         for anim in sorted(f for f in os.listdir(folder) if f.endswith(".anim")):
             role = anim[:-5]
+            # The importer writes into the rig's bound action when one exists, so every .anim after the
+            # first would inherit the previous action's keys and frame range. Unbind and reset first.
+            if rig.animation_data:
+                rig.animation_data.action = None
+            for pb in rig.pose.bones:
+                pb.location = (0, 0, 0)
+                pb.rotation_quaternion = (1, 0, 0, 0)
+                pb.scale = (1, 1, 1)
             before = set(bpy.data.actions)
             m.import_animfile(os.path.join(folder, anim), frame_start=1)
             new = list(set(bpy.data.actions) - before)
             act = new[0] if new else rig.animation_data.action
+            act.name = role
             use_action(rig, act)
             f0, f1 = map(int, act.frame_range)
             scan = contact_scan(objs, f0, f1, max(1, (f1 - f0) // 24))
@@ -211,6 +220,9 @@ def mode_actions():
     objs = [bpy.data.objects[n] for n in REQ["meshes"]]
     out = REQ["out_dir"]
     os.makedirs(out, exist_ok=True)
+    # An atlased model (held items packed by lab_items.py) keeps its provider images in the blend
+    # while its UVs point into the atlas, so its review binds the atlas diffuse in this disposable scene.
+    bind_diffuse(objs, REQ.get("diffuse", ""))
     cam = setup_render("BLENDER_WORKBENCH", REQ.get("res", [360, 480]))
     mw = rig.matrix_world
     names = REQ.get("bones", {})

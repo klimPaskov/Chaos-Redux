@@ -1,6 +1,10 @@
 """Finalize ingested provider actions for export inside the live Blender Lab session.
 
-Call from a Lab ``execute_blender_code`` request:
+Run headless (preferred; the Lab socket drops long responses):
+
+    blender --background --factory-startup --python lab_finalize.py -- <config.json>
+
+or call from a Lab ``execute_blender_code`` request:
 
     import sys; sys.path.insert(0, r"<mod>/.tools/3d_pipeline/review")
     import importlib, lab_finalize; importlib.reload(lab_finalize)
@@ -23,10 +27,13 @@ Do not bind preview textures here: extra images break the partition step's image
 """
 import importlib
 import json
+import os
+import sys
 
 import bpy
 
-import lab_actions as la
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import lab_actions as la  # noqa: E402
 
 
 def run(config_path):
@@ -43,3 +50,7 @@ def run(config_path):
     summary = {k: (v.get("offset_range") if isinstance(v, dict) else v) for k, v in result.items()}
     print("FINAL", json.dumps(summary))
     return summary
+
+
+if __name__ == "__main__" and "--" in sys.argv:
+    run(sys.argv[sys.argv.index("--") + 1])

@@ -21,7 +21,9 @@ Manifest (JSON):
 }
 fbx paths are namespace-relative. Roles are imported in manifest order.
 
-Usage: python .tools/3d_pipeline/review/provider_intake.py <manifest.json>
+Usage: python .tools/3d_pipeline/review/provider_intake.py <manifest.json> [--submit | --download-only]
+  --submit         queue animate tasks for roles without a "task" (preset or motion_task) and stop
+  --download-only  download the rig GLB and finished role FBX files and stop
 The final checkpoint path and every per-role result are written to <namespace>/intake_report.json.
 """
 import hashlib
@@ -81,6 +83,26 @@ def meshy(tool, args):
     return json.loads(text) if text.strip().startswith("{") else text
 
 
+def submit_missing(manifest, manifest_path):
+    """Queue one Meshy animate task (3 credits) for every role that has no "task" yet, using the
+    role's "preset" (library action id) or "motion_task" (successful text-to-motion id) on the
+    manifest's "rig_task", and write each new task id back into the manifest immediately so a
+    rerun never pays twice for the same role."""
+    for role, spec in manifest["roles"].items():
+        if spec.get("task"):
+            continue
+        args = {"rig_task_id": manifest["rig_task"], "response_format": "json"}
+        if spec.get("motion_task"):
+            args["motion_task_id"] = spec["motion_task"]
+        elif spec.get("preset") is not None:
+            args["action_id"] = int(spec["preset"])
+        else:
+            raise RuntimeError(f"{role}: needs a preset or a motion_task to submit")
+        spec["task"] = meshy("meshy_animate", args)["task_id"]
+        Path(manifest_path).write_text(json.dumps(manifest, indent=1), encoding="utf-8")
+        print("submitted", role, spec["task"], flush=True)
+
+
 def download_missing(manifest, job, ns):
     """Download the rig GLB (manifest["rig_task"] -> manifest["rig_glb"]) and every role FBX that is
     not on disk yet, through the locked Meshy MCP route. Waits for unfinished animation tasks."""
@@ -110,6 +132,9 @@ def main():
     ns = manifest["namespace"].rstrip("/")
     ns_dir = job / ns
     ns_dir.mkdir(parents=True, exist_ok=True)
+    if "--submit" in sys.argv:
+        submit_missing(manifest, sys.argv[1])
+        return
     download_missing(manifest, job, ns)
     if "--download-only" in sys.argv:
         return
@@ -128,7 +153,9 @@ def main():
         ref["exclude_name_patterns"] = ref.get("exclude_name_patterns", []) + ["pcube"]
         result = adapter("prepare_candidate", {
             "job_id": manifest["job_id"], "output_namespace_rel": ns, "source_rel": f"{ns}/{manifest['rig_glb']}",
-            "asset_kind": prep.get("asset_kind", "humanoid"), "target_height_m": ref["mesh_height"],
+            # height_scale > 1 makes giants and heavy creatures read larger than infantry while the
+            # entity keeps the vanilla scale; it multiplies the calibrated vanilla source height.
+            "asset_kind": prep.get("asset_kind", "humanoid"), "target_height_m": ref["mesh_height"] * float(prep.get("height_scale", 1.0)),
             "runtime_stem": manifest["action_prefix"], "runtime_entity_scale": ref["entity_scale"],
             "preserve_geometry_topology": True,
             # Meshy rig downloads include a stray "Icosphere" helper object that inflates the footprint.
