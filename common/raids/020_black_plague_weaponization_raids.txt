@@ -1,0 +1,204 @@
+# ============================================================================
+# CHAOS REDUX - BLACK PLAGUE WEAPONIZATION AIR RAID
+# ============================================================================
+# Overview:
+# - Reserves one plague-bomb payload and its support equipment through the
+#   native raid system, with Command Power allocated by the raid itself.
+# - Uses the existing Biological Raids category, plague map icon, air-base
+#   origin, and plague-strike bomber and delivery-chance precedents.
+# - Success and critical outcomes carry the exact actor, victim, and state into
+#   fixed hidden actor events. They own the final release gate and consequences.
+# - No scripted payload, support-equipment, Command Power, or fuel payment is
+#   made in these callbacks.
+# ============================================================================
+
+@BLACK_PLAGUE_RAID_PREPARATION_DAYS = 14
+@BLACK_PLAGUE_RAID_TARGET_COOLDOWN_DAYS = 45
+@BLACK_PLAGUE_RAID_COMMAND_POWER = 35
+@BLACK_PLAGUE_RAID_PAYLOAD = 1
+@BLACK_PLAGUE_RAID_SUPPORT_EQUIPMENT = 60
+@BLACK_PLAGUE_RAID_TAC_BOMBERS = 50
+@BLACK_PLAGUE_RAID_STRAT_BOMBERS = 20
+@BLACK_PLAGUE_RAID_AI_DISABLED = 0
+@BLACK_PLAGUE_RAID_AI_MIN_SUCCESS_CHANCE = 0.35
+
+# Match the ordinary plague-strike delivery roll. The Event 020 bridge owns
+# exposure strength and consequences after the native outcome is known.
+@BLACK_PLAGUE_RAID_SUCCESS_BASE = 0.50
+@BLACK_PLAGUE_RAID_CRITICAL_BASE = 0.12
+@BLACK_PLAGUE_RAID_DISASTER_BASE = 0.10
+@BLACK_PLAGUE_RAID_EXPERIENCE_REFERENCE = 1
+@BLACK_PLAGUE_RAID_AIR_STAT_REFERENCE = 100
+@BLACK_PLAGUE_RAID_RELIABILITY_REFERENCE = 1
+@BLACK_PLAGUE_RAID_AIR_SUPERIORITY_REFERENCE = 1
+@BLACK_PLAGUE_RAID_INTERCEPTION_REFERENCE = 10
+@BLACK_PLAGUE_RAID_INTEL_REFERENCE = 100
+@BLACK_PLAGUE_RAID_SUCCESS_EXPERIENCE_WEIGHT = 0.10
+@BLACK_PLAGUE_RAID_SUCCESS_EXPERIENCE_START = -0.10
+@BLACK_PLAGUE_RAID_SUCCESS_AIR_DEFENCE_WEIGHT = 0.05
+@BLACK_PLAGUE_RAID_SUCCESS_AIR_DEFENCE_START = -0.05
+@BLACK_PLAGUE_RAID_SUCCESS_AIR_AGILITY_WEIGHT = 0.10
+@BLACK_PLAGUE_RAID_SUCCESS_AIR_AGILITY_START = -0.10
+@BLACK_PLAGUE_RAID_SUCCESS_RELIABILITY_WEIGHT = 0.10
+@BLACK_PLAGUE_RAID_SUCCESS_RELIABILITY_START = -0.10
+@BLACK_PLAGUE_RAID_SUCCESS_AIR_SUPERIORITY_WEIGHT = 0.25
+@BLACK_PLAGUE_RAID_SUCCESS_AIR_SUPERIORITY_START = -0.25
+@BLACK_PLAGUE_RAID_SUCCESS_INTERCEPTION_WEIGHT = -0.25
+@BLACK_PLAGUE_RAID_SUCCESS_ANTI_AIR_WEIGHT = -0.05
+@BLACK_PLAGUE_RAID_SUCCESS_RADAR_WEIGHT = -0.05
+@BLACK_PLAGUE_RAID_SUCCESS_INTEL_WEIGHT = 0.20
+@BLACK_PLAGUE_RAID_CRITICAL_EXPERIENCE_WEIGHT = 0.08
+@BLACK_PLAGUE_RAID_CRITICAL_INTEL_WEIGHT = 0.05
+@BLACK_PLAGUE_RAID_DISASTER_RELIABILITY_WEIGHT = 0
+@BLACK_PLAGUE_RAID_DISASTER_RELIABILITY_START = 0.12
+@BLACK_PLAGUE_RAID_DISASTER_INTERCEPTION_WEIGHT = 0.10
+@BLACK_PLAGUE_RAID_DISASTER_ANTI_AIR_WEIGHT = 0.05
+@BLACK_PLAGUE_RAID_DISASTER_RADAR_WEIGHT = 0.05
+@BLACK_PLAGUE_RAID_FAILURE_PLANE_LOSS = 0.80
+@BLACK_PLAGUE_RAID_LIMITED_PLANE_LOSS = 0.60
+@BLACK_PLAGUE_RAID_SUCCESS_PLANE_LOSS = 0.15
+@BLACK_PLAGUE_RAID_XP_LIMITED = 0.10
+@BLACK_PLAGUE_RAID_XP_SUCCESS = 0.35
+@BLACK_PLAGUE_RAID_XP_CRITICAL = 0.50
+
+types = {
+	black_plague_weaponization_air_delivery = {
+		days_to_prepare = @BLACK_PLAGUE_RAID_PREPARATION_DAYS
+		days_re_enable = @BLACK_PLAGUE_RAID_TARGET_COOLDOWN_DAYS
+		fire_only_once = no
+		ai_min_success_chance = @BLACK_PLAGUE_RAID_AI_MIN_SUCCESS_CHANCE
+
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_plague_strike
+		equipment_icon = GFX_plague_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_biological_state
+		launch_sound = raid_launch_air
+		command_power = @BLACK_PLAGUE_RAID_COMMAND_POWER
+
+		ai_will_do = {
+			base = constant:black_plague_weaponization_ai.delivery
+			modifier = {
+				factor = constant:black_plague_weaponization_ai.war_factor
+				ROOT = { has_war = yes }
+			}
+			modifier = {
+				factor = constant:black_plague_weaponization_ai.active_outbreak_factor
+				var:target_state = { black_plague_state_is_infected_or_worse = yes }
+			}
+			modifier = {
+				factor = @BLACK_PLAGUE_RAID_AI_DISABLED
+				ROOT = { NOT = { black_plague_weaponization_native_raid_ai_may_launch = yes } }
+			}
+		}
+
+		visible = { black_plague_weaponization_native_raid_is_visible = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = black_plague_weaponization_native_raid_target_visible_tt
+				hidden_trigger = { black_plague_weaponization_native_raid_target_is_visible = yes }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = black_plague_weaponization_native_raid_prepare_tt
+				hidden_trigger = { black_plague_weaponization_native_raid_can_prepare = yes }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = black_plague_weaponization_native_raid_launch_tt
+				hidden_trigger = { black_plague_weaponization_native_raid_can_launch = yes }
+			}
+		}
+
+		target_type = { state = { black_plague_weaponization_native_raid_state_is_valid = yes } }
+		unit_requirements = { equipment = { type = { tactical_bomber } amount = { min = @BLACK_PLAGUE_RAID_TAC_BOMBERS } } }
+		unit_requirements = { equipment = { type = { strategic_bomber } amount = { min = @BLACK_PLAGUE_RAID_STRAT_BOMBERS } } }
+		essential_equipment = {
+			plague_bomb_equipment = @BLACK_PLAGUE_RAID_PAYLOAD
+			support_equipment = @BLACK_PLAGUE_RAID_SUPPORT_EQUIPMENT
+		}
+		starting_point = { types = { air_base } }
+		arrow = { type = air }
+
+		success_factors = {
+			success = {
+				base = @BLACK_PLAGUE_RAID_SUCCESS_BASE
+				experience = { weight = @BLACK_PLAGUE_RAID_SUCCESS_EXPERIENCE_WEIGHT start_weight = @BLACK_PLAGUE_RAID_SUCCESS_EXPERIENCE_START reference = @BLACK_PLAGUE_RAID_EXPERIENCE_REFERENCE }
+				air_defence = { weight = @BLACK_PLAGUE_RAID_SUCCESS_AIR_DEFENCE_WEIGHT start_weight = @BLACK_PLAGUE_RAID_SUCCESS_AIR_DEFENCE_START reference = @BLACK_PLAGUE_RAID_AIR_STAT_REFERENCE }
+				air_agility = { weight = @BLACK_PLAGUE_RAID_SUCCESS_AIR_AGILITY_WEIGHT start_weight = @BLACK_PLAGUE_RAID_SUCCESS_AIR_AGILITY_START reference = @BLACK_PLAGUE_RAID_AIR_STAT_REFERENCE }
+				reliability = { weight = @BLACK_PLAGUE_RAID_SUCCESS_RELIABILITY_WEIGHT start_weight = @BLACK_PLAGUE_RAID_SUCCESS_RELIABILITY_START reference = @BLACK_PLAGUE_RAID_RELIABILITY_REFERENCE }
+				air_superiority = { weight = @BLACK_PLAGUE_RAID_SUCCESS_AIR_SUPERIORITY_WEIGHT start_weight = @BLACK_PLAGUE_RAID_SUCCESS_AIR_SUPERIORITY_START reference = @BLACK_PLAGUE_RAID_AIR_SUPERIORITY_REFERENCE }
+				interception = { weight = @BLACK_PLAGUE_RAID_SUCCESS_INTERCEPTION_WEIGHT reference = @BLACK_PLAGUE_RAID_INTERCEPTION_REFERENCE }
+				anti_air = { weight = @BLACK_PLAGUE_RAID_SUCCESS_ANTI_AIR_WEIGHT }
+				radar = { weight = @BLACK_PLAGUE_RAID_SUCCESS_RADAR_WEIGHT }
+				intel = { weight = @BLACK_PLAGUE_RAID_SUCCESS_INTEL_WEIGHT reference = @BLACK_PLAGUE_RAID_INTEL_REFERENCE }
+			}
+			critical = {
+				base = @BLACK_PLAGUE_RAID_CRITICAL_BASE
+				experience = { weight = @BLACK_PLAGUE_RAID_CRITICAL_EXPERIENCE_WEIGHT reference = @BLACK_PLAGUE_RAID_EXPERIENCE_REFERENCE }
+				intel = { weight = @BLACK_PLAGUE_RAID_CRITICAL_INTEL_WEIGHT reference = @BLACK_PLAGUE_RAID_INTEL_REFERENCE }
+			}
+			disaster = {
+				base = @BLACK_PLAGUE_RAID_DISASTER_BASE
+				reliability = { weight = @BLACK_PLAGUE_RAID_DISASTER_RELIABILITY_WEIGHT start_weight = @BLACK_PLAGUE_RAID_DISASTER_RELIABILITY_START reference = @BLACK_PLAGUE_RAID_RELIABILITY_REFERENCE }
+				interception = { weight = @BLACK_PLAGUE_RAID_DISASTER_INTERCEPTION_WEIGHT reference = @BLACK_PLAGUE_RAID_INTERCEPTION_REFERENCE }
+				anti_air = { weight = @BLACK_PLAGUE_RAID_DISASTER_ANTI_AIR_WEIGHT }
+				radar = { weight = @BLACK_PLAGUE_RAID_DISASTER_RADAR_WEIGHT }
+			}
+		}
+
+		success_levels = {
+			failure = {
+				actor_effects = {
+					var:actor_country = { custom_effect_tooltip = black_plague_weaponization_native_raid_failure_actor_tt }
+					raid_damage_units = { plane_loss = @BLACK_PLAGUE_RAID_FAILURE_PLANE_LOSS ratio = yes }
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = black_plague_weaponization_native_raid_failure_target_tt } }
+			}
+			limited_success = {
+				custom_sound = generic_bioweapon_aerosol
+				actor_effects = {
+					var:actor_country = { custom_effect_tooltip = black_plague_weaponization_native_raid_limited_actor_tt }
+					raid_damage_units = { plane_loss = @BLACK_PLAGUE_RAID_LIMITED_PLANE_LOSS ratio = yes }
+					raid_add_unit_experience = @BLACK_PLAGUE_RAID_XP_LIMITED
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = black_plague_weaponization_native_raid_limited_target_tt } }
+			}
+			success = {
+				custom_sound = generic_bioweapon_aerosol
+				actor_effects = {
+					var:actor_country = { custom_effect_tooltip = black_plague_weaponization_native_raid_success_actor_tt }
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = black_plague_weaponization_raid_actor }
+						var:victim_country = { save_event_target_as = black_plague_weaponization_raid_victim }
+						var:target_state = { save_event_target_as = black_plague_weaponization_raid_target_state }
+						var:actor_country = { country_event = { id = chaosx_nr20_weaponization.9 } }
+					}
+					raid_damage_units = { plane_loss = @BLACK_PLAGUE_RAID_SUCCESS_PLANE_LOSS ratio = yes }
+					raid_add_unit_experience = @BLACK_PLAGUE_RAID_XP_SUCCESS
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = black_plague_weaponization_native_raid_success_target_tt } }
+			}
+			critical_success = {
+				custom_sound = generic_bioweapon_aerosol
+				actor_effects = {
+					var:actor_country = { custom_effect_tooltip = black_plague_weaponization_native_raid_critical_actor_tt }
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = black_plague_weaponization_raid_actor }
+						var:victim_country = { save_event_target_as = black_plague_weaponization_raid_victim }
+						var:target_state = { save_event_target_as = black_plague_weaponization_raid_target_state }
+						var:actor_country = { country_event = { id = chaosx_nr20_weaponization.10 } }
+					}
+					raid_add_unit_experience = @BLACK_PLAGUE_RAID_XP_CRITICAL
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = black_plague_weaponization_native_raid_critical_target_tt } }
+			}
+		}
+	}
+}

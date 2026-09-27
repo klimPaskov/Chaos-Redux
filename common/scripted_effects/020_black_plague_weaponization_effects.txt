@@ -293,16 +293,13 @@ black_plague_weaponization_process_stockpile = {
 	}
 }
 
-# COUNTRY scope with FROM = selected STATE. Uses the ordinary Event 020
-# exposure function so deaths, spread, phase transition, and mapmode state all
-# remain unified with natural and rat-origin outbreaks.
-black_plague_weaponization_deliver_to_state = {
+# COUNTRY scope after a successful native Biological Raid. The raid has already
+# reserved its payload, support crates, and Command Power. This effect only
+# releases exposure after the exact target and policy pass their final gate.
+black_plague_weaponization_complete_native_raid_release = {
 	if = {
-		limit = {
-			black_plague_weaponization_delivery_is_ready = yes
-			FROM = { black_plague_weaponization_delivery_state_is_valid = yes }
-		}
-		FROM = {
+		limit = { black_plague_weaponization_native_raid_bridge_context_is_valid = yes }
+		event_target:black_plague_weaponization_raid_target_state = {
 			save_event_target_as = black_plague_weaponization_delivery_state
 			set_temp_variable = { black_plague_exposure_amount = constant:black_plague_weaponization_program.delivery_exposure }
 			set_temp_variable = { black_plague_exposure_route = constant:black_plague_route.biological_strike }
@@ -328,27 +325,13 @@ black_plague_weaponization_deliver_to_state = {
 					compare = equals
 				}
 			}
-			# The public delivery pays and records attribution only after the shared
-			# state machine accepts the target. Its transaction remains independent
-			# from Event 016 and from native raid reservations.
+			# The shared state machine is the final authority for accepting an
+			# exposure. Native reservation remains the sole equipment payment.
 			black_plague_achievement_record_weaponization_started = yes
-			set_temp_variable = { equipment_stockpile_removal_amount = constant:black_plague_weaponization_program.weapon_stockpile_batch }
-			remove_plague_bombs_from_stockpile = yes
-			set_temp_variable = { equipment_stockpile_removal_amount = constant:black_plague_weaponization_program.delivery_support_equipment }
-			remove_support_equipment_from_stockpile = yes
-			set_temp_variable = { black_plague_weaponization_command_debit = constant:black_plague_weaponization_program.delivery_command_power }
-			multiply_temp_variable = { black_plague_weaponization_command_debit = -1 }
-			add_command_power = black_plague_weaponization_command_debit
-			set_temp_variable = { black_plague_weaponization_fuel_debit = constant:black_plague_weaponization_program.delivery_fuel }
-			set_temp_variable = { fuel_stockpile_removal_amount = black_plague_weaponization_fuel_debit }
-			remove_fuel_from_stockpile = yes
 			set_country_flag = black_plague_weaponization_delivery_history
 			set_country_flag = black_plague_achievement_weaponization_delivery_history
 			set_country_flag = used_bioweapon
 			set_country_flag = used_unconventional_weapon
-			set_variable = { black_plague_weaponization_delivery_count = constant:black_plague_weaponization_program.one }
-			set_temp_variable = { black_plague_weaponization_delivery_days = constant:black_plague_weaponization_program.delivery_cooldown_days }
-			set_country_flag = { flag = black_plague_weaponization_delivery_cooldown days = black_plague_weaponization_delivery_days }
 			set_temp_variable = { condemnation_source_type = constant:condemnation_source.biological }
 			set_temp_variable = { condemnation_base_gain = constant:black_plague_weaponization_program.condemnation_delivery }
 			set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
@@ -356,7 +339,7 @@ black_plague_weaponization_deliver_to_state = {
 			set_temp_variable = { condemnation_civilian_deaths = constant:black_plague_weaponization_program.delivery_exposure }
 			set_temp_variable = { condemnation_contamination_value = constant:black_plague_weaponization_program.delivery_exposure }
 			set_temp_variable = { condemnation_context_type = constant:condemnation_context.biological_strike }
-			set_temp_variable = { condemnation_victim_country = FROM.CONTROLLER }
+			set_temp_variable = { condemnation_victim_country = event_target:black_plague_weaponization_raid_victim }
 			condemnation_add_source = yes
 			country_event = { id = chaosx_nr20_weaponization.3 }
 		}

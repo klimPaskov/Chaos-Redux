@@ -1,14 +1,13 @@
 # Some fields in this file reject script-constant tokens.
 # These file-scoped values mirror the authoritative shared constants.
-@CR_SC_BLACK_PLAGUE_WEAPONIZATION_PROGRAM_DELIVERY_CIVILIAN_FACTORIES = 1
+@CR_SC_BLACK_PLAGUE_WEAPONIZATION_PROGRAM_APPROACH_CIVILIAN_FACTORIES = 1
 @CR_SC_BLACK_PLAGUE_WEAPONIZATION_PROGRAM_STOCKPILE_DESTROY_CIVILIAN_FACTORIES = 1
 @CR_SC_BLACK_PLAGUE_WEAPONIZATION_PROGRAM_STOCKPILE_EXPANSION_CIVILIAN_FACTORIES = 2
 # ============================================================================
 # CHAOS REDUX - EVENT 020 BLACK PLAGUE WEAPONIZATION DECISIONS
 # ============================================================================
-# The four project postures and the native plague-bomb delivery action live
-# inside the shared disease-containment category. No dedicated Black Plague
-# category is created; the existing disease board remains the single surface.
+# Project postures and payload-production controls live inside the shared
+# disease-containment category. Attacks use the native Biological Raids board.
 # ============================================================================
 
 chaosx_disease_containment_category = {
@@ -31,7 +30,7 @@ chaosx_disease_containment_category = {
 		custom_cost_trigger = { black_plague_weaponization_can_choose_approach = yes }
 		custom_cost_text = black_plague_weaponization_approach_cost
 		days_remove = constant:black_plague_weaponization_program.approach_duration_days
-		modifier = { civilian_factory_use = @CR_SC_BLACK_PLAGUE_WEAPONIZATION_PROGRAM_DELIVERY_CIVILIAN_FACTORIES }
+		modifier = { civilian_factory_use = @CR_SC_BLACK_PLAGUE_WEAPONIZATION_PROGRAM_APPROACH_CIVILIAN_FACTORIES }
 		complete_effect = {
 			custom_effect_tooltip = black_plague_weaponization_safety_first_effect
 			hidden_effect = { black_plague_weaponization_choose_safety_first = yes }
@@ -62,7 +61,7 @@ chaosx_disease_containment_category = {
 		custom_cost_trigger = { black_plague_weaponization_can_choose_approach = yes }
 		custom_cost_text = black_plague_weaponization_approach_cost
 		days_remove = constant:black_plague_weaponization_program.approach_duration_days
-		modifier = { civilian_factory_use = @CR_SC_BLACK_PLAGUE_WEAPONIZATION_PROGRAM_DELIVERY_CIVILIAN_FACTORIES }
+		modifier = { civilian_factory_use = @CR_SC_BLACK_PLAGUE_WEAPONIZATION_PROGRAM_APPROACH_CIVILIAN_FACTORIES }
 		complete_effect = {
 			custom_effect_tooltip = black_plague_weaponization_military_acceleration_effect
 			hidden_effect = { black_plague_weaponization_choose_military_acceleration = yes }
@@ -93,7 +92,7 @@ chaosx_disease_containment_category = {
 		custom_cost_trigger = { black_plague_weaponization_can_choose_approach = yes }
 		custom_cost_text = black_plague_weaponization_approach_cost
 		days_remove = constant:black_plague_weaponization_program.approach_duration_days
-		modifier = { civilian_factory_use = @CR_SC_BLACK_PLAGUE_WEAPONIZATION_PROGRAM_DELIVERY_CIVILIAN_FACTORIES }
+		modifier = { civilian_factory_use = @CR_SC_BLACK_PLAGUE_WEAPONIZATION_PROGRAM_APPROACH_CIVILIAN_FACTORIES }
 		complete_effect = {
 			custom_effect_tooltip = black_plague_weaponization_dual_use_effect
 			hidden_effect = { black_plague_weaponization_choose_dual_use = yes }
@@ -123,7 +122,7 @@ chaosx_disease_containment_category = {
 		custom_cost_trigger = { black_plague_weaponization_can_choose_approach = yes }
 		custom_cost_text = black_plague_weaponization_approach_cost
 		days_remove = constant:black_plague_weaponization_program.approach_duration_days
-		modifier = { civilian_factory_use = @CR_SC_BLACK_PLAGUE_WEAPONIZATION_PROGRAM_DELIVERY_CIVILIAN_FACTORIES }
+		modifier = { civilian_factory_use = @CR_SC_BLACK_PLAGUE_WEAPONIZATION_PROGRAM_APPROACH_CIVILIAN_FACTORIES }
 		complete_effect = {
 			custom_effect_tooltip = black_plague_weaponization_defensive_conversion_effect
 			hidden_effect = { black_plague_weaponization_choose_defensive_conversion = yes }
@@ -132,42 +131,6 @@ chaosx_disease_containment_category = {
 			base = constant:black_plague_weaponization_ai.approach
 			modifier = { factor = constant:black_plague_weaponization_ai.defensive_factor has_government = democratic }
 			modifier = { factor = constant:black_plague_weaponization_ai.defensive_factor NOT = { has_war = yes } }
-		}
-	}
-
-	black_plague_weaponization_deliver_payload = {
-		name = black_plague_weaponization_deliver_payload
-		desc = black_plague_weaponization_deliver_payload_desc
-		icon = GFX_decision_black_plague_weapon_delivery
-		state_target = any
-		on_map_mode = decision_view_only
-		visible = { black_plague_weaponization_delivery_is_ready = yes }
-		target_root_trigger = { black_plague_weaponization_delivery_is_ready = yes }
-		target_trigger = { FROM = { black_plague_weaponization_delivery_state_is_valid = yes } }
-		available = {
-			black_plague_weaponization_delivery_is_ready = yes
-			FROM = { black_plague_weaponization_delivery_state_is_valid = yes }
-			NOT = { has_decision = black_plague_weaponization_deliver_payload }
-		}
-		cancel_trigger = {
-			OR = {
-				NOT = { black_plague_weaponization_delivery_is_ready = yes }
-				FROM = { NOT = { black_plague_weaponization_delivery_state_is_valid = yes } }
-			}
-		}
-		custom_cost_trigger = { black_plague_weaponization_delivery_is_ready = yes }
-		custom_cost_text = black_plague_weaponization_delivery_cost
-		days_remove = constant:black_plague_weaponization_program.delivery_duration_days
-		modifier = { civilian_factory_use = @CR_SC_BLACK_PLAGUE_WEAPONIZATION_PROGRAM_DELIVERY_CIVILIAN_FACTORIES }
-		complete_effect = {
-			custom_effect_tooltip = black_plague_weaponization_deliver_payload_effect
-			hidden_effect = { black_plague_weaponization_deliver_to_state = yes }
-		}
-		ai_will_do = {
-			base = constant:black_plague_weaponization_ai.delivery
-			modifier = { factor = constant:black_plague_weaponization_ai.war_factor has_war = yes }
-			modifier = { factor = constant:black_plague_weaponization_ai.active_outbreak_factor FROM = { black_plague_state_is_infected_or_worse = yes } }
-			modifier = { factor = 0 FROM = { black_plague_state_is_rat_controlled = yes } }
 		}
 	}
 
