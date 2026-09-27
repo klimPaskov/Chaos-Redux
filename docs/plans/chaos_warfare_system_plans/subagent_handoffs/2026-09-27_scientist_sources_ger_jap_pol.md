@@ -1,6 +1,6 @@
 # GER/JAP/POL CBRN scientist source audit
 
-**Parent disposition after this read-only snapshot:** Koizumi's field and Hirt's, Bickenbach's, Rose's, and Mrugowsky's trait timing were promoted into the [accepted lifecycle correction](../../../specs/chaos_warfare_system_specs/corrections/2026-09-27_scientist_lifecycle_and_field.md). All other person-specific proposals in this handoff remain unresolved. The line references and "current" assignments below describe the pre-correction source reviewed by the auditor.
+**Parent disposition after this read-only snapshot:** Koizumi's field and Hirt's, Bickenbach's, Rose's, and Mrugowsky's trait timing were promoted into the [accepted lifecycle correction](../../../specs/chaos_warfare_system_specs/corrections/2026-09-27_scientist_lifecycle_and_field.md). Hirt's recruitment floor was then promoted into the [accepted German, Soviet, and American correction](../../../specs/chaos_warfare_system_specs/corrections/2026-09-27_german_american_scientist_calibration.md). All other person-specific proposals in this handoff remain unresolved. The line references and "current" assignments below describe the pre-correction source reviewed by the auditor.
 
 **Disposition: unresolved.** This report records the completed read-only individual source review for the 17 scientist-only GER, JAP, and POL characters. The findings and proposed corrections below are evidence for parent review; they do not establish design acceptance. No scientist was removed or replaced, and this subagent made no gameplay, portrait, or spec changes.
 
