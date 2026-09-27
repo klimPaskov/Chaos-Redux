@@ -55,3 +55,15 @@ Sound roles and timing are documented in `docs/systems/3d_model_pipeline/chaosx_
 - No listening tool was available; audio quality and loudness balance are unverified by ear.
 - The 2026-09-27 01:35 renderer crash happened while the base unit still used the vanilla infantry sprite, so the crash points at a variant zombie model or another entity, not at this rebuild; it remains open.
 - The seven variant zombie models remain at 30k triangles and are unreviewed under the rework plan.
+
+# Soldier rebuild (supersedes the civilian body above), 2026-09-27
+
+The user judged the civilian-shirt rebuild too generic; the ZZZ leader portraits show zombified Second World War infantry, so the base zombie was regenerated as an undead soldier.
+
+- Reference: `refs/original/meshy_input_v3_soldier.png`, made from `portrait_ZZZ_leader_3/4` with plain steel helmet, torn field-grey uniform, empty pouches, boots, glowing eyes, and no insignia.
+- Provider: Meshy 7 body `01a0e273-c1a8-7201-8b5c-b31eefaacce6` (30), rig `01a0e277-c619-7060-ac2e-cfb10e7d19a5` (5), presets Long Breathe and Look Around (idle), Mummy Stagger (move), Injured Walk Backward (retreat), Hit Reaction (defend), Shot and Fall Backward (death), Zombie Scream (training), and prime text-to-motion attack and support attack applied to the rig; the full ledger is `docs/plans/system_unit_model_rework_plans/credit_ledger.json`.
+- Intake: `.tools/3d_pipeline/review/provider_intake.py` with `blender/working/soldier_v3b/intake_manifest.json` (prepare against the vanilla infantry height, per-role provenance receipts, chained imports).
+- Review fixes: every provider action floated 4–250 cm; `lab_actions.ground_action` keyed the root so the lowest vertex sits at 4 mm on every frame; slot identifiers and one NLA track were repaired before partitioning.
+- Export: `blender/working/soldier_v3b/blender/checkpoints/21b_export_batches.blend` → `export/v3/`, 31,054 triangles in four `char1.001` streams; all eight reimport proofs hold 4 mm contact (`export/v3/export_report.json`).
+- Textures: `.tools/3d_pipeline/review/pdx_textures.py` from the body's PBR maps with the humanoid profile gamma 0.72.
+- Runtime: files in `gfx/models/units/chaosx_zombies/` are hash-identical to `export/v3` (`runtime_sync_v3.sha256`); `gfx/entities/chaosx_zombies.asset` events follow the soldier's measured phases.

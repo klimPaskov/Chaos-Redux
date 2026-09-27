@@ -27,17 +27,18 @@ The ZombiePackSFX 2 `brains`, `idle`, and `sniffing` clips and the anonymous 24-
 
 ## Base entity synchronisation
 
-The actions run at 30 FPS, and every event time is `(frame − 1) / 30` at a phase measured on the final exported actions.
+The base zombie is an undead infantryman in a rotting field uniform, rebuilt from the ZZZ leader portraits.
+The actions run at 30 FPS, and every event time is `(frame − first frame) / 30` at a phase measured on the final exported actions with `.tools/3d_pipeline/review/review_cli.py actions --humanoid`.
 
 | State | Events |
 |---|---|
-| `attack` (loops) | growl 1.00 s; grab contact 1.60 s and 2.47 s at the reach peaks of frames 49 and 75 |
-| `support_attack` (loops) | lunge 0.50 s; contact 0.77 s and 1.77 s at the jaw closes of frames 24 and 54 |
-| `defend` (looping) | shared idle moan once; contact 0.87 s at the frame 27 counter-deflect |
-| `move` (looping) | shared footstep at 0.53, 0.90, 1.23, and 1.50 s (plants at frames 17, 28, 39, 46) |
-| `retreat` (looping) | shared footstep at 0.33, 0.50, and 0.97 s (plants at frames 11, 16, 30) |
-| `training` (looping) | growl 1.00 s before the frame 38 swipe; lunge 3.40 s before the frame 111 lunge; eating 4.33 s as feeding begins at frame 131 |
-| `death` | vanilla `blood_particle` at the `Head` bone and the defeated cry at 0.23 s (frame 8 hit); body fall 1.73 s (frame 53 impact) |
+| `attack` (loops) | growl 0.33 s; grab contact 0.70, 1.43, and 2.37 s at the reach peaks of frames 24, 46, and 74 |
+| `support_attack` (loops) | lunge 0.60 s; contact 1.20 and 2.00 s at the grab (frame 39) and pull-in (frame 63); eating 2.23 s as the bite tears from frame 70 |
+| `defend` (looping) | shared idle moan once; contact 0.43 s at the frame 14 recoil |
+| `move` (looping) | shared footstep at 0.60, 1.40, 2.13, 3.07, 3.83, and 4.77 s (mummy-stagger plants) |
+| `retreat` (looping) | shared footstep at 0.17, 0.40, and 1.13 s (plants at frames 6, 13, 35) |
+| `training` (looping) | growl 0.40 s leading the frame 27 scream |
+| `death` | vanilla `blood_particle` at the `Head` bone and the defeated cry at 0.10 s; body fall 2.13 s (frame 65 impact) |
 | `idle` (looping) | shared idle moan once |
 
 ## Shared package
