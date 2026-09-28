@@ -24,10 +24,8 @@ black_plague_scenario_suppress_fire_once = {
 		limit = { NOT = { is_in_array = { global.fired_events = black_plague_scenario_event_id } } }
 		add_to_array = { global.fired_events = black_plague_scenario_event_id }
 	}
-	if = {
-		limit = { is_in_array = { global.fire_once_events = black_plague_scenario_event_id } }
-		remove_from_array = { global.fire_once_events = black_plague_scenario_event_id }
-	}
+	# The event stays in its fire-once type registry so the settings window and log keep showing its type;
+	# the disabled and fired entries above already keep it out of the random pool.
 	set_temp_variable = { new_weight = 0 }
 	set_event_weight = yes
 	update_unfired_events_counts = yes
