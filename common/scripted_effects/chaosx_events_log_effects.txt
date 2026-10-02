@@ -200,12 +200,12 @@ events_log_set_default_actor_for_current_event = {
 	set_temp_variable = { events_log_default_has_actor = 0 }
 
 	if = {
-		limit = { check_variable = { event_id = 2 } }
+		limit = { check_variable = { event_id = constant:zombie_outbreak_event.id } }
 		ZZZ = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
 		set_temp_variable = { events_log_default_has_actor = 1 }
 	}
 	else_if = {
-		limit = { check_variable = { event_id = 3 } }
+		limit = { check_variable = { event_id = constant:holy_realm_event_log.event_id } }
 		if = {
 			limit = {
 				has_event_target = holy_realm_country
@@ -229,7 +229,7 @@ events_log_set_default_actor_for_current_event = {
 		set_temp_variable = { events_log_default_has_actor = 1 }
 	}
 	else_if = {
-		limit = { check_variable = { event_id = 5 } }
+		limit = { check_variable = { event_id = constant:soviet_collapse_event_log.event_id } }
 		SOV = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
 		set_temp_variable = { events_log_default_has_actor = 1 }
 	}
@@ -254,7 +254,7 @@ events_log_set_default_actor_for_current_event = {
 	}
 	else_if = {
 		limit = {
-			check_variable = { event_id = 7 }
+			check_variable = { event_id = constant:fury_event_log.event_id }
 			has_event_target = fury_latest_actor
 		}
 		event_target:fury_latest_actor = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
@@ -377,7 +377,7 @@ events_log_set_default_actor_for_current_event = {
 		set_temp_variable = { events_log_default_has_actor = 1 }
 	}
 	else_if = {
-		limit = { check_variable = { event_id = 23 } }
+		limit = { check_variable = { event_id = constant:sov_nuclear_bombs_event.id } }
 		SOV = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
 		set_temp_variable = { events_log_default_has_actor = 1 }
 	}
@@ -441,7 +441,7 @@ events_log_set_default_actor_for_current_event = {
 		set_temp_variable = { events_log_default_has_actor = 1 }
 	}
 	else_if = {
-		limit = { check_variable = { event_id = 91 } }
+		limit = { check_variable = { event_id = constant:communism_spread_event_log.event_id } }
 		SOV = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
 		set_temp_variable = { events_log_default_has_actor = 1 }
 	}
@@ -775,6 +775,17 @@ record_events_log_history_entry = {
 			event_target:resources_found_prefire_state = { resources_found_is_active_field = yes }
 		}
 		event_target:resources_found_prefire_state = { resources_found_bind_history_sequence = yes }
+	}
+	if = {
+		limit = {
+			check_variable = { event_id = constant:riches_found_event.id }
+			has_event_target = riches_found_prefire_state
+		}
+		event_target:riches_found_prefire_state = { riches_found_bind_history_payload = yes }
+	}
+	if = {
+		limit = { check_variable = { event_id = constant:asteroid_incoming_event.id } }
+		asteroid_incoming_bind_opening_history_sequence = yes
 	}
 	if = {
 		limit = { check_variable = { event_id = constant:brilliant_scientist_event.id } }
@@ -2261,7 +2272,7 @@ events_log_rebuild_open_event_details_view = {
 			limit = {
 				check_variable = {
 					var = event_id
-					value = 2
+					value = constant:zombie_outbreak_event.id
 					compare = equals
 				}
 			}
@@ -2283,7 +2294,7 @@ events_log_rebuild_open_event_details_view = {
 			limit = {
 				check_variable = {
 					var = event_id
-					value = 3
+					value = constant:holy_realm_event_log.event_id
 					compare = equals
 				}
 			}
@@ -2778,6 +2789,7 @@ events_log_rebuild_open_event_details_view = {
 
 		events_log_rebuild_event_detail_world_end_scenarios = yes
 		resources_found_load_open_history_payload = yes
+		riches_found_load_open_history_payload = yes
 		fallout_nzl_load_open_history_payload = yes
 	}
 }
@@ -3382,6 +3394,79 @@ events_log_append_cluster_history_rows = {
 	}
 }
 
+# COUNTRY scope. Appends the filtered history rows grouped by event ID for the
+# ID sort mode. Each pass takes the highest (descending) or lowest (ascending)
+# remaining distinct event ID, so the pass count equals the number of distinct
+# IDs in the history and every ID range, including special history IDs, stays
+# within the engine loop limit. Rows sharing one event ID keep their source
+# order. Inputs: temporary events_log_source_count and the
+# events_log_sort_descending flag. Uses the country array
+# temp_events_log_history_unique_event_ids as scratch storage.
+events_log_history_append_rows_by_event_id_sort = {
+	clear_array = temp_events_log_history_unique_event_ids
+	set_temp_variable = { events_log_event_id_collect_index = 0 }
+	while_loop_effect = {
+		limit = { check_variable = { events_log_event_id_collect_index < events_log_source_count } }
+		set_temp_variable = { events_log_source_index = events_log_event_id_collect_index }
+		if = {
+			limit = {
+				NOT = {
+					is_in_array = {
+						temp_events_log_history_unique_event_ids = global.events_log_history_event_id_entries^events_log_source_index
+					}
+				}
+			}
+			add_to_array = {
+				array = temp_events_log_history_unique_event_ids
+				value = global.events_log_history_event_id_entries^events_log_source_index
+			}
+		}
+		add_to_temp_variable = { events_log_event_id_collect_index = 1 }
+	}
+
+	while_loop_effect = {
+		limit = { check_variable = { temp_events_log_history_unique_event_ids^num > 0 } }
+		if = {
+			limit = { has_country_flag = events_log_sort_descending }
+			find_highest_in_array = {
+				array = temp_events_log_history_unique_event_ids
+				value = events_log_sort_id
+			}
+		}
+		else = {
+			find_lowest_in_array = {
+				array = temp_events_log_history_unique_event_ids
+				value = events_log_sort_id
+			}
+		}
+		for_loop_effect = {
+			start = 0
+			end = events_log_source_count
+			value = i
+			set_temp_variable = { events_log_source_index = i }
+			if = {
+				limit = {
+					check_variable = {
+						var = global.events_log_history_event_id_entries^events_log_source_index
+						value = events_log_sort_id
+						compare = equals
+					}
+				}
+				events_log_row_matches_active_filter = yes
+				if = {
+					limit = { check_variable = { events_log_row_matches_filter > 0 } }
+					events_log_append_view_row_from_source = yes
+				}
+			}
+		}
+		remove_from_array = {
+			array = temp_events_log_history_unique_event_ids
+			value = events_log_sort_id
+		}
+	}
+	clear_array = temp_events_log_history_unique_event_ids
+}
+
 events_log_history_append_rows_by_actor_sort = {
 	clear_array = temp_events_log_history_unique_actors
 
@@ -3614,61 +3699,7 @@ rebuild_events_log_history_view = {
 		}
 		else_if = {
 			limit = { check_variable = { settings_events_log_sort_mode = 1 } }
-			if = {
-				limit = { has_country_flag = events_log_sort_descending }
-				set_temp_variable = { events_log_sort_id = 2000 }
-				while_loop_effect = {
-					limit = { check_variable = { events_log_sort_id > 0 } }
-					subtract_from_temp_variable = { events_log_sort_id = 1 }
-					for_loop_effect = {
-						start = 0
-						end = events_log_source_count
-						value = i
-						set_temp_variable = { events_log_source_index = i }
-						if = {
-							limit = {
-								check_variable = {
-									var = global.events_log_history_event_id_entries^events_log_source_index
-									value = events_log_sort_id
-									compare = equals
-								}
-							}
-							events_log_row_matches_active_filter = yes
-							if = {
-								limit = { check_variable = { events_log_row_matches_filter > 0 } }
-								events_log_append_view_row_from_source = yes
-							}
-						}
-					}
-				}
-			}
-			else = {
-				for_loop_effect = {
-					start = 1
-					end = 2001
-					value = events_log_sort_id
-					for_loop_effect = {
-						start = 0
-						end = events_log_source_count
-						value = i
-						set_temp_variable = { events_log_source_index = i }
-						if = {
-							limit = {
-								check_variable = {
-									var = global.events_log_history_event_id_entries^events_log_source_index
-									value = events_log_sort_id
-									compare = equals
-								}
-							}
-							events_log_row_matches_active_filter = yes
-							if = {
-								limit = { check_variable = { events_log_row_matches_filter > 0 } }
-								events_log_append_view_row_from_source = yes
-							}
-						}
-					}
-				}
-			}
+			events_log_history_append_rows_by_event_id_sort = yes
 		}
 		else = {
 			events_log_history_append_rows_by_actor_sort = yes

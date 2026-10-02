@@ -77,3 +77,18 @@ Input: temporary `event_id`.
 Output: temporary `event_type`. The four Fallout history-card identities
 resolve to `constant:event_system_event_type.fallout_country_memory`. Every
 other id delegates to the existing `get_event_type` effect.
+
+## `events_log_history_append_rows_by_event_id_sort`
+
+Scope: player country during the History view rebuild when the ID sort mode is active.
+
+Inputs: temporary `events_log_source_count` and the `events_log_sort_descending` country flag.
+
+Outputs and side effects:
+
+- Appends every filtered history row to the view, grouped by event ID from highest to lowest when descending and lowest to highest otherwise.
+- Rows that share one event ID keep their source order.
+- Collects the distinct event IDs first, so the number of sort passes equals the number of distinct IDs and special history IDs such as Fallout memory rows are included within the engine loop limit.
+- Uses the country array `temp_events_log_history_unique_event_ids` as scratch storage and clears it before returning.
+
+Call site: the ID sort branch of the History view rebuild in `common/scripted_effects/chaosx_events_log_effects.txt`.

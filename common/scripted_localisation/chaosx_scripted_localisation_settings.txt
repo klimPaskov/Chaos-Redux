@@ -382,13 +382,6 @@ defined_text = {
 	}
 }
 
-defined_text = {
-	name = GetSettingsButtonText
-	text = {
-		trigger = { always = yes }
-		localization_key = "Settings"
-	}
-}
 # Current Event ID display
 defined_text = {
 	name = GetCurrentEventID
@@ -1079,19 +1072,6 @@ defined_text = {
 	}
 }
 
-# Event firing checkbox sprite
-defined_text = {
-	name = GetEventFiringCheckboxSprite
-	text = {
-		trigger = { has_country_flag = events_activated }
-		localization_key = "GFX_chaosx_checkbox_checked"
-	}
-	text = {
-		trigger = { always = yes }
-		localization_key = "GFX_chaosx_checkbox_unchecked"
-	}
-}
-
 # Timer min value display
 defined_text = {
 	name = GetTimerMinValue
@@ -1223,22 +1203,6 @@ defined_text = {
 }
 
 defined_text = {
-	name = GetTagManagementSelectedCountrySyncTag
-	text = {
-		trigger = { always = yes }
-		localization_key = "[This.GetTag]"
-	}
-}
-
-defined_text = {
-	name = GetTagManagementSelectedCountrySyncName
-	text = {
-		trigger = { always = yes }
-		localization_key = "[This.GetName]"
-	}
-}
-
-defined_text = {
 	name = GetTagManagementSelectedCountryEnableButtonFrame
 	text = {
 		trigger = { has_country_flag = events_activated }
@@ -1265,27 +1229,6 @@ defined_text = {
 # ============================================================================
 # TAG MANAGEMENT SCRIPTED LOCALISATION
 # ============================================================================
-
-# Tag increment value display
-defined_text = {
-	name = GetTagIncrementValue
-	text = {
-		trigger = { check_variable = { settings_tag_increment_mode = 1 } }
-		localization_key = "1"
-	}
-	text = {
-		trigger = { check_variable = { settings_tag_increment_mode = 5 } }
-		localization_key = "5"
-	}
-	text = {
-		trigger = { check_variable = { settings_tag_increment_mode = 10 } }
-		localization_key = "10"
-	}
-	text = {
-		trigger = { always = yes }
-		localization_key = "1"
-	}
-}
 
 # Tag increment sprite name for dynamic sprite selection
 defined_text = {
@@ -1394,24 +1337,6 @@ defined_text = {
 	}
 }
 
-# Selected tag enable/disable button state
-defined_text = {
-	name = GetSelectedTagButtonState
-	text = {
-		trigger = {
-			AND = {
-				check_variable = { global.countries^num > 0 }
-				is_in_array = { global.enabled_countries_list = global.countries^settings_selected_tag_index }
-			}
-		}
-		localization_key = "ENABLED"
-	}
-	text = {
-		trigger = { always = yes }
-		localization_key = "DISABLED"
-	}
-}
-
 # Selected tag display
 defined_text = {
 	name = GetSelectedTag
@@ -1424,24 +1349,6 @@ defined_text = {
 	text = {
 		trigger = { always = yes }
 		localization_key = "chaosx.tag_management.none_selected"
-	}
-}
-
-# Selected tag text for editable textbox (no spaces)
-defined_text = {
-	name = GetSelectedTagText
-	text = {
-		trigger = {
-			AND = {
-				check_variable = { global.countries^num > 0 }
-				check_variable = { settings_selected_tag_index < global.countries^num }
-			}
-		}
-		localization_key = "[?global.countries^settings_selected_tag_index.GetTag]"
-	}
-	text = {
-		trigger = { always = yes }
-		localization_key = "N/A"
 	}
 }
 
@@ -1567,44 +1474,6 @@ defined_text = {
 	}
 	text = {
 		trigger = { check_variable = { settings_event_type = 3 } }
-		localization_key = settings.minor_fire_once.colored
-	}
-	text = {
-		trigger = { always = yes }
-		localization_key = "Unknown"
-	}
-}
-
-defined_text = {
-	name = GetEventsLogHistoryType
-	text = {
-		trigger = {
-			check_variable = {
-				var = global.events_log_view_event_type_entries^events_log_history_index
-				value = constant:event_system_event_type.major
-				compare = equals
-			}
-		}
-		localization_key = settings.major.colored
-	}
-	text = {
-		trigger = {
-			check_variable = {
-				var = global.events_log_view_event_type_entries^events_log_history_index
-				value = constant:event_system_event_type.repeatable
-				compare = equals
-			}
-		}
-		localization_key = settings.minor_repeatable.colored
-	}
-	text = {
-		trigger = {
-			check_variable = {
-				var = global.events_log_view_event_type_entries^events_log_history_index
-				value = constant:event_system_event_type.fire_once
-				compare = equals
-			}
-		}
 		localization_key = settings.minor_fire_once.colored
 	}
 	text = {
@@ -10471,23 +10340,6 @@ defined_text = {
 	}
 }
 
-# Cap Reduction Display
-defined_text = {
-	name = GetCapReductionValue
-	text = {
-		trigger = { has_variable = global.settings_cap_reduction }
-		localization_key = "[?global.settings_cap_reduction|.2]"
-	}
-	text = {
-		trigger = { has_variable = global.reduce_cap_factor }
-		localization_key = "[?global.reduce_cap_factor|.2]"
-	}
-	text = {
-		trigger = { always = yes }
-		localization_key = "0.50"
-	}
-}
-
 # Baseline Major Gain Display
 defined_text = {
 	name = GetMajorWeightPerMinorValue
@@ -10519,44 +10371,6 @@ defined_text = {
 	text = {
 		trigger = { always = yes }
 		localization_key = "[?global.minor_event_recovery_rate]"
-	}
-}
-
-defined_text = {
-	name = GetActiveCapReductionValue
-	text = {
-		trigger = { has_variable = global.reduce_cap_factor }
-		localization_key = "[?global.reduce_cap_factor|.2]"
-	}
-	text = {
-		trigger = { always = yes }
-		localization_key = "0.50"
-	}
-}
-
-defined_text = {
-	name = GetActiveMajorWeightValue
-	text = {
-		trigger = { always = yes }
-		localization_key = "[?global.current_dynamic_major_weight_gain|.0]"
-	}
-}
-
-# Event Weight Display
-defined_text = {
-	name = GetEventWeightValue
-	text = {
-		trigger = { always = yes }
-		localization_key = "[?global.settings_event_weight]"
-	}
-}
-
-# Timer Modifier Display
-defined_text = {
-	name = GetTimerModifierValue
-	text = {
-		trigger = { always = yes }
-		localization_key = "[?global.settings_timer_modifier]"
 	}
 }
 

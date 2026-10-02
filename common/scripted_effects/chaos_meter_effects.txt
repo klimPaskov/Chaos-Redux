@@ -624,50 +624,6 @@ toggle_chaos_meter_deaths_system_disabled = {
 	rebuild_chaos_meter_deaths_view = yes
 }
 
-sanitize_chaos_meter_deaths_country_entries = {
-	if = {
-		limit = {
-			check_variable = {
-				var = global.chaos_meter_deaths_sequence_entries^num
-				value = global.chaos_meter_deaths_country_entries^num
-				compare = greater_than
-			}
-		}
-		set_temp_variable = { chaos_deaths_missing_country_entries = global.chaos_meter_deaths_sequence_entries^num }
-		subtract_from_temp_variable = { chaos_deaths_missing_country_entries = global.chaos_meter_deaths_country_entries^num }
-
-		while_loop_effect = {
-			limit = { check_variable = { chaos_deaths_missing_country_entries > 0 } }
-			add_to_array = {
-				array = global.chaos_meter_deaths_country_entries
-				value = 0
-			}
-			subtract_from_temp_variable = { chaos_deaths_missing_country_entries = 1 }
-		}
-	}
-
-	if = {
-		limit = {
-			check_variable = {
-				var = global.chaos_meter_deaths_sequence_entries^num
-				value = global.chaos_meter_deaths_has_country_entries^num
-				compare = greater_than
-			}
-		}
-		set_temp_variable = { chaos_deaths_missing_has_country_entries = global.chaos_meter_deaths_sequence_entries^num }
-		subtract_from_temp_variable = { chaos_deaths_missing_has_country_entries = global.chaos_meter_deaths_has_country_entries^num }
-
-		while_loop_effect = {
-			limit = { check_variable = { chaos_deaths_missing_has_country_entries > 0 } }
-			add_to_array = {
-				array = global.chaos_meter_deaths_has_country_entries
-				value = 0
-			}
-			subtract_from_temp_variable = { chaos_deaths_missing_has_country_entries = 1 }
-		}
-	}
-}
-
 chaos_meter_resolve_country_sort_index = {
 	set_temp_variable = { chaos_deaths_country_sort_index = global.countries^num }
 	set_temp_variable = { chaos_deaths_country_sort_scan_index = 0 }
@@ -699,40 +655,6 @@ chaos_meter_resolve_country_sort_index = {
 	}
 }
 
-chaos_meter_deaths_entry_matches_active_filter = {
-	set_temp_variable = { chaos_deaths_entry_matches_filter = 1 }
-	set_temp_variable = { chaos_deaths_entry_filter_value = global.chaos_meter_deaths_change_entries^chaos_deaths_source_index }
-
-	if = {
-		limit = { check_variable = { settings_chaos_deaths_filter_type = 1 } }
-		set_temp_variable = { chaos_deaths_entry_filter_value = global.chaos_meter_deaths_military_entries^chaos_deaths_source_index }
-		if = {
-			limit = {
-				check_variable = {
-					var = global.chaos_meter_deaths_military_entries^chaos_deaths_source_index
-					value = 1
-					compare = less_than
-				}
-			}
-			set_temp_variable = { chaos_deaths_entry_matches_filter = 0 }
-		}
-	}
-	else_if = {
-		limit = { check_variable = { settings_chaos_deaths_filter_type = 2 } }
-		set_temp_variable = { chaos_deaths_entry_filter_value = global.chaos_meter_deaths_civilian_entries^chaos_deaths_source_index }
-		if = {
-			limit = {
-				check_variable = {
-					var = global.chaos_meter_deaths_civilian_entries^chaos_deaths_source_index
-					value = 1
-					compare = less_than
-				}
-			}
-			set_temp_variable = { chaos_deaths_entry_matches_filter = 0 }
-		}
-	}
-}
-
 chaos_meter_deaths_detail_entry_matches_active_filter = {
 	set_temp_variable = { chaos_deaths_detail_entry_matches_filter = 1 }
 
@@ -761,66 +683,6 @@ chaos_meter_deaths_detail_entry_matches_active_filter = {
 			}
 			set_temp_variable = { chaos_deaths_detail_entry_matches_filter = 0 }
 		}
-	}
-}
-
-chaos_meter_aggregate_country_deaths_view_row = {
-	set_temp_variable = { chaos_deaths_country_total = 0 }
-	set_temp_variable = { chaos_deaths_country_civilian_total = 0 }
-	set_temp_variable = { chaos_deaths_country_military_total = 0 }
-	set_temp_variable = { chaos_deaths_country_filter_total = 0 }
-	set_temp_variable = { chaos_deaths_country_latest_sequence = 0 }
-	set_temp_variable = { chaos_deaths_country_latest_date = 0 }
-	set_temp_variable = { chaos_deaths_country_latest_change = 0 }
-	set_temp_variable = { chaos_deaths_country_latest_reason = 0 }
-
-	set_temp_variable = { chaos_deaths_source_count = global.chaos_meter_deaths_sequence_entries^num }
-	set_temp_variable = { chaos_deaths_source_index = 0 }
-	while_loop_effect = {
-		limit = { check_variable = { chaos_deaths_source_index < chaos_deaths_source_count } }
-		chaos_meter_deaths_entry_matches_active_filter = yes
-		if = {
-			limit = {
-				check_variable = {
-					var = global.chaos_meter_deaths_has_country_entries^chaos_deaths_source_index
-					value = 0
-					compare = greater_than
-				}
-				check_variable = {
-					var = global.chaos_meter_deaths_country_entries^chaos_deaths_source_index
-					value = chaos_deaths_aggregate_country
-					compare = equals
-				}
-			}
-			add_to_temp_variable = { chaos_deaths_country_total = global.chaos_meter_deaths_change_entries^chaos_deaths_source_index }
-			add_to_temp_variable = { chaos_deaths_country_civilian_total = global.chaos_meter_deaths_civilian_entries^chaos_deaths_source_index }
-			add_to_temp_variable = { chaos_deaths_country_military_total = global.chaos_meter_deaths_military_entries^chaos_deaths_source_index }
-
-			if = {
-				limit = {
-					check_variable = {
-						var = chaos_deaths_entry_matches_filter
-						value = 0
-						compare = greater_than
-					}
-				}
-				add_to_temp_variable = { chaos_deaths_country_filter_total = chaos_deaths_entry_filter_value }
-				if = {
-					limit = {
-						check_variable = {
-							var = global.chaos_meter_deaths_sequence_entries^chaos_deaths_source_index
-							value = chaos_deaths_country_latest_sequence
-							compare = greater_than
-						}
-					}
-					set_temp_variable = { chaos_deaths_country_latest_sequence = global.chaos_meter_deaths_sequence_entries^chaos_deaths_source_index }
-					set_temp_variable = { chaos_deaths_country_latest_date = global.chaos_meter_deaths_date_entries^chaos_deaths_source_index }
-					set_temp_variable = { chaos_deaths_country_latest_change = global.chaos_meter_deaths_change_entries^chaos_deaths_source_index }
-					set_temp_variable = { chaos_deaths_country_latest_reason = global.chaos_meter_deaths_reason_entries^chaos_deaths_source_index }
-				}
-			}
-		}
-		add_to_temp_variable = { chaos_deaths_source_index = 1 }
 	}
 }
 
@@ -3067,33 +2929,6 @@ chaos_meter_apply_country_combat_civilian_deaths_from_casualties = {
 	}
 }
 
-chaos_meter_collect_enemy_combat_civilian_frontier_states = {
-	clear_array = temp_chaos_meter_combat_civ_candidate_states
-
-	every_controlled_state = {
-		every_neighbor_state = {
-			limit = {
-				CONTROLLER = {
-					has_war_with = ROOT
-					NOT = { is_zombie_outbreak_country = yes }
-				}
-				NOT = { is_controlled_by = ROOT }
-				check_variable = { state_population_k > 0 }
-				NOT = {
-					is_in_array = {
-						array = temp_chaos_meter_combat_civ_candidate_states
-						value = THIS
-					}
-				}
-			}
-			add_to_array = {
-				array = temp_chaos_meter_combat_civ_candidate_states
-				value = THIS
-			}
-		}
-	}
-}
-
 chaos_meter_prepare_combat_civilian_distribution_state = {
 	chaos_meter_apply_combat_civilian_distribution_multiplier = yes
 	set_variable = { chaos_combat_civ_distribution_weight = chaos_state_deaths_mult }
@@ -3345,30 +3180,6 @@ chaos_meter_apply_bombing_state_death_environment_multiplier = {
 	}
 }
 
-chaos_meter_apply_combat_state_death_environment_multiplier = {
-	chaos_meter_apply_state_death_density_multiplier = yes
-
-	if = {
-		limit = { infrastructure > 7 }
-		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.combat_infra_8 }
-	}
-	else_if = {
-		limit = { infrastructure > 5 }
-		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.combat_infra_6 }
-	}
-	else_if = {
-		limit = { infrastructure > 3 }
-		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.combat_infra_4 }
-	}
-	else_if = {
-		limit = { infrastructure > 1 }
-		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.combat_infra_2 }
-	}
-	else = {
-		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.combat_infra_0 }
-	}
-}
-
 chaos_meter_apply_nuclear_state_death_environment_multiplier = {
 	chaos_meter_apply_state_death_density_multiplier = yes
 
@@ -3585,17 +3396,6 @@ chaos_meter_register_nuclear_condemnation = {
 		}
 }
 
-chaos_meter_apply_combat_civilian_deaths_to_state = {
-	if = {
-		limit = {
-			check_variable = { state_population_k > 0 }
-			check_variable = { chaos_combat_civ_base_state_deaths > 0 }
-		}
-		set_temp_variable = { chaos_deaths_change = chaos_combat_civ_base_state_deaths }
-		chaos_meter_register_combat_civilian_deaths_to_state = yes
-	}
-}
-
 chaos_meter_register_combat_civilian_deaths_to_state = {
 	if = {
 		limit = {
@@ -3603,7 +3403,7 @@ chaos_meter_register_combat_civilian_deaths_to_state = {
 			check_variable = { chaos_deaths_change > 0 }
 		}
 		set_temp_variable = { chaos_combat_civ_state_pop_cap = state_population_k }
-		multiply_temp_variable = { chaos_combat_civ_state_pop_cap = 1000 }
+		multiply_temp_variable = { chaos_combat_civ_state_pop_cap = constant:chaos_meter_deaths.people_per_k }
 		round_temp_variable = chaos_combat_civ_state_pop_cap
 		clamp_temp_variable = {
 			var = chaos_deaths_change
@@ -3785,7 +3585,7 @@ chaos_meter_register_state_civilian_deaths_percent = {
 
 		set_temp_variable = { chaos_deaths_change = state_population_k }
 		multiply_temp_variable = { chaos_deaths_change = chaos_state_deaths_percent }
-		multiply_temp_variable = { chaos_deaths_change = 1000 }
+		multiply_temp_variable = { chaos_deaths_change = constant:chaos_meter_deaths.people_per_k }
 		multiply_temp_variable = { chaos_deaths_change = chaos_state_deaths_mult_local }
 		multiply_temp_variable = { chaos_deaths_change = chaos_state_deaths_random_mult }
 		round_temp_variable = chaos_deaths_change
@@ -4617,11 +4417,6 @@ add_chaos_meter_value = {
 	}
 }
 
-# Clear all tier flags (no longer needed with integer flag system)
-clear_all_tier_flags = {
-	clr_global_flag = chaos_tier
-}
-
 update_chaos_meter_tier = {
 
 	# Store current tier state for change detection
@@ -5440,7 +5235,7 @@ air_contamination_apply_irreversible_effects = {
 	every_state = {
 		add_dynamic_modifier = {
 			modifier = fallout_thermonuclear
-			days = 120
+			days = constant:air_contamination_irreversible.global_state_modifier_days
 		}
 	}
 
@@ -6211,46 +6006,6 @@ chaos_meter_on_nuke_drop = {
 	clr_country_flag = sov_nuclear_bombs_atomic_delivery_context
 }
 
-chaos_meter_on_mobilization_law_change = {
-	if = {
-		limit = { is_major = yes }
-		save_event_target_as = chaos_history_actor
-		set_temp_variable = { chaos_change = constant:chaos_meter_delta.mobilization.up_major }
-		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.mobilization.up_major }
-		set_temp_variable = { chaos_history_reason_custom = 1 }
-		log = "CHAOS METER: Major [THIS.GetName] increased mobilization law ([?chaos_change|=] chaos)"
-	}
-	else = {
-		save_event_target_as = chaos_history_actor
-		set_temp_variable = { chaos_change = constant:chaos_meter_delta.mobilization.up_major }
-		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.mobilization.up_minor }
-		set_temp_variable = { chaos_history_reason_custom = 1 }
-		log = "CHAOS METER: Minor [THIS.GetName] increased mobilization law ([?chaos_change|=] chaos)"
-	}
-
-	add_chaos_meter_value = yes
-}
-
-chaos_meter_on_coup = {
-	if = {
-		limit = { is_major = yes }
-		save_event_target_as = chaos_history_actor
-		set_temp_variable = { chaos_change = constant:chaos_meter_delta.coup.major }
-		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.coup.major }
-		set_temp_variable = { chaos_history_reason_custom = 1 }
-		log = "CHAOS METER: Coup in major power [THIS.GetName] ([?chaos_change|=] chaos)"
-	}
-	else = {
-		save_event_target_as = chaos_history_actor
-		set_temp_variable = { chaos_change = constant:chaos_meter_delta.coup.minor }
-		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.coup.minor }
-		set_temp_variable = { chaos_history_reason_custom = 1 }
-		log = "CHAOS METER: Coup in minor power [THIS.GetName] ([?chaos_change|=] chaos)"
-	}
-
-	add_chaos_meter_value = yes
-}
-
 # chaos_meter_on_civil_war = {
 #     if = {
 #         limit = { is_major = yes }
@@ -6346,16 +6101,6 @@ chaos_meter_on_faction_created = {
 	add_chaos_meter_value = yes
 }
 
-chaos_meter_on_faction_disbanded = {
-	save_event_target_as = chaos_history_actor
-	set_temp_variable = { chaos_change = constant:chaos_meter_delta.faction.disband }
-	set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.faction.disband }
-	set_temp_variable = { chaos_history_reason_custom = 1 }
-	log = "CHAOS METER: Faction disbanded ([?chaos_change|=] chaos)"
-
-	add_chaos_meter_value = yes
-}
-
 chaos_meter_on_faction_join = {
 	if = {
 		limit = { is_major = yes }
@@ -6447,16 +6192,6 @@ chaos_meter_on_join_allies = {
 		log = "CHAOS METER: [THIS.GetName] joined allies in war ([?chaos_change|=] chaos)"
 		add_chaos_meter_value = yes
 	}
-}
-
-chaos_meter_on_new_term_election = {
-	# Elections are intentionally excluded from chaos impact.
-	# save_event_target_as = chaos_history_actor
-	# set_temp_variable = { chaos_change = constant:chaos_meter_delta.subtle.new_term_election }
-	# set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.subtle.new_term_election }
-	# set_temp_variable = { chaos_history_reason_custom = 1 }
-	# log = "CHAOS METER: Major [THIS.GetName] held democratic elections ([?chaos_change|=] chaos)"
-	# add_chaos_meter_value = yes
 }
 
 chaos_meter_on_stage_coup = {

@@ -385,6 +385,20 @@ condemnation_start_targeted_pulse_apply = {
 	}
 }
 
+# COUNTRY scope with normal variable condemnation_pair_target. Sets temporary
+# condemnation_cost_score_override to the pair target's condemnation_total, or to
+# the minimum cost-multiplier score when the target has no condemnation record,
+# so pair payments scale from the condemned target's score.
+condemnation_load_pair_target_cost_score_override = {
+	set_temp_variable = { condemnation_cost_score_override = constant:condemnation_cost.cost_multiplier_score_minimum }
+	var:condemnation_pair_target = {
+		if = {
+			limit = { has_variable = condemnation_total }
+			set_temp_variable = { condemnation_cost_score_override = condemnation_total }
+		}
+	}
+}
+
 # Input: condemnation_fuel_fraction_cost (temporary fixed-point share of fuel capacity).
 condemnation_pay_fuel_fraction = {
 	set_temp_variable = { condemnation_fuel_ratio_after_cost = fuel_ratio }
@@ -985,13 +999,7 @@ condemnation_write_pair_record = {
 			}
 			add_to_variable = { condemnation_active_pair_count = 1 }
 			add_to_variable = { condemnation_enforcement_burden_total = condemnation_pair_enforcement_cost }
-			set_temp_variable = { condemnation_cost_score_override = 0 }
-			var:condemnation_pair_target = {
-				if = {
-					limit = { has_variable = condemnation_total }
-					set_temp_variable = { condemnation_cost_score_override = condemnation_total }
-				}
-			}
+			condemnation_load_pair_target_cost_score_override = yes
 			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.participant_convoys_base }
 			condemnation_scale_integer_cost = yes
 			set_temp_variable = { condemnation_enforcement_convoy_cost = condemnation_scaled_cost }
@@ -1421,13 +1429,7 @@ condemnation_apply_sanction_pair = {
 						check_variable = { condemnation_pair_old_tier > constant:condemnation_tier.normal }
 						check_variable = { var = condemnation_pair_tier value = condemnation_pair_old_tier compare = greater_than }
 					}
-					set_temp_variable = { condemnation_cost_score_override = 0 }
-					var:condemnation_pair_target = {
-						if = {
-							limit = { has_variable = condemnation_total }
-							set_temp_variable = { condemnation_cost_score_override = condemnation_total }
-						}
-					}
+					condemnation_load_pair_target_cost_score_override = yes
 					set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.participant_escalation_convoys }
 					condemnation_scale_integer_cost = yes
 					set_temp_variable = { condemnation_escalation_convoy_cost = condemnation_scaled_cost }
@@ -1593,13 +1595,7 @@ condemnation_record_faction_shield = {
 					text = { set_variable = { condemnation_pair_[TARGET_ID]_shield_expires = condemnation_status_expires } }
 					TARGET_ID = "[?condemnation_pair_target_id|.0]"
 				}
-				set_temp_variable = { condemnation_cost_score_override = 0 }
-				var:condemnation_pair_target = {
-					if = {
-						limit = { has_variable = condemnation_total }
-						set_temp_variable = { condemnation_cost_score_override = condemnation_total }
-					}
-				}
+				condemnation_load_pair_target_cost_score_override = yes
 				set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.shield_convoys }
 				condemnation_scale_integer_cost = yes
 				set_temp_variable = { condemnation_shield_convoy_cost = condemnation_scaled_cost }
@@ -1630,13 +1626,7 @@ condemnation_apply_humanitarian_carveout = {
 				text = { set_variable = { condemnation_pair_[TARGET_ID]_carveout_expires = condemnation_status_expires } }
 				TARGET_ID = "[?condemnation_pair_target_id|.0]"
 			}
-			set_temp_variable = { condemnation_cost_score_override = 0 }
-			var:condemnation_pair_target = {
-				if = {
-					limit = { has_variable = condemnation_total }
-					set_temp_variable = { condemnation_cost_score_override = condemnation_total }
-				}
-			}
+			condemnation_load_pair_target_cost_score_override = yes
 			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.carveout_convoys }
 			condemnation_scale_integer_cost = yes
 			set_temp_variable = { condemnation_carveout_convoy_cost = condemnation_scaled_cost }
@@ -1665,13 +1655,7 @@ condemnation_apply_quiet_breach = {
 				text = { set_variable = { condemnation_pair_[TARGET_ID]_quiet_breach_expires = condemnation_status_expires } }
 				TARGET_ID = "[?condemnation_pair_target_id|.0]"
 			}
-			set_temp_variable = { condemnation_cost_score_override = 0 }
-			var:condemnation_pair_target = {
-				if = {
-					limit = { has_variable = condemnation_total }
-					set_temp_variable = { condemnation_cost_score_override = condemnation_total }
-				}
-			}
+			condemnation_load_pair_target_cost_score_override = yes
 			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.quiet_breach_convoys }
 			condemnation_scale_integer_cost = yes
 			set_temp_variable = { condemnation_breach_convoy_cost = condemnation_scaled_cost }
@@ -1714,13 +1698,7 @@ condemnation_apply_tight_enforcement = {
 				}
 				TARGET_ID = "[?condemnation_pair_target_id|.0]"
 			}
-			set_temp_variable = { condemnation_cost_score_override = 0 }
-			var:condemnation_pair_target = {
-				if = {
-					limit = { has_variable = condemnation_total }
-					set_temp_variable = { condemnation_cost_score_override = condemnation_total }
-				}
-			}
+			condemnation_load_pair_target_cost_score_override = yes
 			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.tight_enforcement_convoys }
 			condemnation_scale_integer_cost = yes
 			set_temp_variable = { condemnation_enforcement_convoy_cost = condemnation_scaled_cost }

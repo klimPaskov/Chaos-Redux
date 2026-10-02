@@ -428,14 +428,6 @@ triggerable_scenarios_rebuild_view = {
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
-			value = constant:triggerable_scenario_id.random_civil_war
-		}
-		add_to_array = {
-			array = global.triggerable_scenario_view_name_sort_values
-			value = constant:triggerable_scenario_sort_value.random_civil_war_name
-		}
-		add_to_array = {
-			array = global.triggerable_scenario_view_ids
 			value = constant:triggerable_scenario_id.fallout
 		}
 		add_to_array = {
@@ -495,6 +487,14 @@ triggerable_scenarios_rebuild_view = {
 		limit = {
 			check_variable = { triggerable_scenarios_sort_mode = constant:triggerable_scenario_sort_mode.id }
 			has_country_flag = triggerable_scenarios_sort_descending
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.random_civil_war
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.random_civil_war_name
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
@@ -794,87 +794,6 @@ open_triggerable_scenario_confirmation = {
 
 close_triggerable_scenario_confirmation = {
 	clr_country_flag = chaosx_scenario_confirm_open
-}
-
-select_triggerable_scenario_zombie = {
-	initialize_triggerable_scenarios_settings = yes
-	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.zombie_apocalypse }
-}
-
-select_triggerable_scenario_clones = {
-	initialize_triggerable_scenarios_settings = yes
-	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.mengele_clones }
-}
-
-select_triggerable_scenario_soviet_collapse = {
-	initialize_triggerable_scenarios_settings = yes
-	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.soviet_collapse }
-}
-
-select_triggerable_scenario_fallout = {
-	initialize_triggerable_scenarios_settings = yes
-	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.fallout }
-}
-
-# Legacy button/script compatibility. Old saves that still call the retired
-# Final Silence selector are redirected to the Fallout consequence row.
-select_triggerable_scenario_final_silence = {
-	select_triggerable_scenario_fallout = yes
-}
-
-select_triggerable_scenario_fury = {
-	initialize_triggerable_scenarios_settings = yes
-	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.world_in_fury }
-}
-
-select_triggerable_scenario_death = {
-	initialize_triggerable_scenarios_settings = yes
-	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.death }
-}
-
-select_triggerable_scenario_disaster_barrage = {
-	initialize_triggerable_scenarios_settings = yes
-	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.disaster_barrage }
-}
-
-select_triggerable_scenario_independence_wave = {
-	initialize_triggerable_scenarios_settings = yes
-	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.independence_wave }
-}
-
-select_triggerable_scenario_coalition_unmasked = {
-	initialize_triggerable_scenarios_settings = yes
-	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.coalition_unmasked }
-}
-
-select_triggerable_scenario_cannibalism = {
-	initialize_triggerable_scenarios_settings = yes
-	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.cannibalism }
-}
-
-select_triggerable_scenario_black_plague = {
-	initialize_triggerable_scenarios_settings = yes
-	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.black_plague }
-}
-
-select_triggerable_scenario_africa = {
-	initialize_triggerable_scenarios_settings = yes
-	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.africa_is_one }
-}
-
-select_triggerable_scenario_missile_age = {
-	initialize_triggerable_scenarios_settings = yes
-	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.missile_age }
-}
-
-select_triggerable_scenario_global_jihad = {
-	initialize_triggerable_scenarios_settings = yes
-	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.global_jihad }
-}
-
-select_triggerable_scenario_random_civil_war = {
-	initialize_triggerable_scenarios_settings = yes
-	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.random_civil_war }
 }
 
 set_triggerable_scenario_intensity_low = {
@@ -2649,7 +2568,7 @@ triggerable_scenario_clone_army_declare_neighbor_wars = {
 
 suppress_soviet_collapse_fire_once_for_triggerable_scenario = {
 	set_global_flag = soviet_collapse_triggerable_scenario_suppressed_fire_once
-	set_temp_variable = { event_id = 5 }
+	set_temp_variable = { event_id = constant:soviet_collapse_event_log.event_id }
 	if = {
 		limit = { NOT = { is_in_array = { global.disabled_events = event_id } } }
 		add_to_array = { global.disabled_events = event_id }
@@ -2723,12 +2642,6 @@ trigger_fallout_scenario = {
 	# It never registers Fallout as a normal event or evolution.
 	set_temp_variable = { fallout_manual_selected_intensity_input = constant:triggerable_scenario_intensity.maximum }
 	fallout_manual_scenario_begin = yes
-}
-
-# Legacy scripted callers are redirected without invoking the retired Holy
-# Realm firing-wave implementation.
-trigger_final_silence_scenario = {
-	trigger_fallout_scenario = yes
 }
 
 death_triggerable_consume_extra_island = {
@@ -2817,12 +2730,6 @@ trigger_death_scenario = {
 
 trigger_mengele_clone_army_scenario = {
 	triggerable_scenario_prepare_clone_scale = yes
-	set_variable = { triggerable_clone_units = triggerable_clone_units }
-	set_variable = { triggerable_clone_experience = triggerable_clone_experience }
-	set_variable = { triggerable_clone_infantry_equipment = triggerable_clone_infantry_equipment }
-	set_variable = { triggerable_clone_support_equipment = triggerable_clone_support_equipment }
-	set_variable = { triggerable_clone_artillery = triggerable_clone_artillery }
-	set_variable = { triggerable_clone_manpower = triggerable_clone_manpower }
 	create_dynamic_country = {
 		original_tag = GER
 		copy_tag = GER

@@ -238,22 +238,6 @@ liberation_release_recovery_snapshots_are_complete = {
 	}
 }
 
-can_liberation_release_lock_plan = {
-	check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.allocating }
-	check_variable = {
-		var = global.liberation_plan_expected_country_count
-		value = constant:liberation_release_limit.minimum
-		compare = greater_than
-	}
-	liberation_release_all_plan_arrays_are_aligned = yes
-	liberation_release_recovery_snapshots_are_complete = yes
-	check_variable = {
-		var = global.liberation_plan_package_ids^num
-		value = global.liberation_plan_expected_country_count
-		compare = equals
-	}
-}
-
 liberation_release_locked_plan_is_valid = {
 	is_liberation_release_plan_locked = yes
 	check_variable = {

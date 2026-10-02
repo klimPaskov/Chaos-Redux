@@ -80,7 +80,7 @@ set_temp_variable = { dynamic_building_damage_type = token:arms_factory }
 damage_state_building_dynamic = yes
 ```
 
-Call sites: the building-damage loop in `common/scripted_effects/033_acid_rain_effects.txt`.
+Call sites: the building-damage loop in `common/scripted_effects/033_acid_rain_effects.txt` and the transport, depot, port, and arms-theft incident branches in `common/scripted_effects/031_random_terror_effects.txt`.
 Building selection, damage tuning, and eligibility remain caller-owned.
 
 References: vanilla `documentation/effects_documentation.md` sections `damage_building` and `meta_effect`, vanilla `common/scripted_effects/00_scripted_effects.txt` effect `SF_PARA_sabotage_effect`, and the building-token interpolation in `natural_disaster_damage_selected_building` in `common/scripted_effects/013_natural_disasters_effects.txt`.
@@ -89,17 +89,25 @@ The offline Data structures and Localisation pages document building tokens and 
 
 ## damage_buildings_in_random_states
 
-Purpose: damage a configurable number of eligible buildings in a configurable share of the current country's controlled states.
+Purpose: damage a configurable number of eligible buildings in a configurable share of the current country's owned and controlled states.
 
 Scope: country.
 
 Inputs: `buildings_to_damage_per_state`, `percent_of_states_to_target`, `damage_modifier`, and optional `state_population_percent` temporary variables.
 
-Outputs: direct state building damage and, when requested, a proportional state population reduction in selected states.
+Outputs: direct state building damage and, when `state_population_percent` is above zero, a proportional population reduction in each selected state.
+The reduction is the state population in thousands times that share, applied as a negative `add_manpower` amount.
 
-Defaults: a positive target percentage selects at least one state. Building types that are unavailable in a selected state receive no random weight.
+Defaults: the helper counts the country's controlled states from zero and targets that count times `percent_of_states_to_target`, rounded and never below one while at least one controlled state exists.
+A `percent_of_states_to_target` of zero becomes `0.1`, a `damage_modifier` of zero becomes `0.25`, and a `buildings_to_damage_per_state` below one becomes `3`.
+Each target is chosen from the country's owned and controlled states that hold at least one targetable building, and building types that are unavailable in a selected state receive no random weight.
+A missing or zero `state_population_percent` leaves population unchanged.
 
 Side effects: mutates buildings or population in randomly selected controlled states and uses temporary selection variables.
+
+This helper does not register deaths in the shared Deaths ledger, because the population branch changes manpower directly.
+Callers that need ledger registration use `apply_exact_state_civilian_population_loss`.
+The helper currently has no callers and is kept as a documented shared hook.
 
 Example:
 
@@ -162,7 +170,9 @@ Scope: any scope.
 
 Inputs: none. Each threat system sets or clears its own registered global source flag before calling the effect.
 
-Registered sources: `world_threat_source_zombies`, `world_threat_source_holy_realm`, `world_threat_source_mengele`, `world_threat_source_fury`, `world_threat_source_death`, `world_threat_source_cannibalism`, `world_threat_source_black_plague`, `world_threat_source_resources_found_caves`, and `world_threat_source_brilliant_scientist`.
+Registered sources: `world_threat_source_zombies`, `world_threat_source_holy_realm`, `world_threat_source_mengele`, `world_threat_source_fury`, `world_threat_source_death`, `world_threat_source_cannibalism`, `world_threat_source_black_plague`, `world_threat_source_resources_found_caves`, `world_threat_source_brilliant_scientist`, and `world_threat_source_sov_nuclear_bombs`.
+
+The `world_threat_source_sov_nuclear_bombs` source counts only while none of `fallout_transition_active`, `fallout_active`, `world_end_final_silence`, and `world_end_final_silence_completed` is set, so the nuclear-bomb source stops contributing once fallout or the Final Silence takes over.
 
 Outputs: `global.world_threat_source_count` and the `world_in_threat` global flag.
 
@@ -258,9 +268,15 @@ Inputs: `state_civilian_population_loss_requested`, `state_civilian_population_l
 
 Outputs: `state_civilian_population_loss_applied` and `state_civilian_population_loss_result`.
 
+`state_civilian_population_loss_result` is `0` when no population was removed and `1` when a positive amount was applied, whichever branch below handled the removal.
+`state_civilian_population_loss_applied` is the requested amount clamped between zero and the state population above the protected floor, rounded.
+
 Defaults: missing contract inputs produce a zero-value request with the unknown Deaths reason, no valid target, and a zero population floor.
 
 Side effects: applies the loss once, optionally registers the exact amount through `chaos_meter_register_deaths`, reconciles observed recruitable-manpower credit, and clears all public inputs before return.
+
+The applied amount is registered through `chaos_meter_register_deaths` only when `state_civilian_population_loss_log_deaths` is above zero and either the Deaths ledger is enabled (`settings_chaos_deaths_disabled` is not set) or one of the fallout states `fallout_air_cleanliness_disabled`, `fallout_transition_active`, `fallout_active`, `fallout_manual_scenario_active`, `fallout_manual_sweep_active`, or `fallout_manual_countdown_active` is set.
+In the deaths-disabled branch, which also handles any request with the log flag at zero, the loss is applied through `apply_state_population_loss_without_recruitable_manpower_gain` and nothing is written to the Deaths ledger, while the result value stays `1`.
 
 Example:
 

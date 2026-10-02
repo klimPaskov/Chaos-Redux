@@ -28,7 +28,7 @@ Scope: country.
 
 Purpose: identify system actors and special scenario countries that must not be treated like ordinary civilian societies.
 
-The complete classifier is hidden from generated tooltips. Its coverage is marker-based and includes outbreak identities, rebel and Holy Realm identities, Death and cave actors, cannibalism actors, registered derivative families, captured Kruger institutions, and rat actors.
+The complete classifier is hidden from generated tooltips. Its coverage is marker-based and includes the `ZZZ` placeholder identity, outbreak identities, the `REV` rebel identity and the communist rebel state markers, `ZIN`, the Thracian and Mandala cosmetic tags, Holy Realm identities, the Mengele civil-war and post-coup markers, the Fury actor marker, Death and cave actors, cannibalism actors, registered derivative families, captured Kruger institutions, and rat actors.
 
 Owner systems set their stable marker flags. The classifier only answers the shared routing question; it does not inspect an event's current stage, history, evolution, or cleanup state.
 

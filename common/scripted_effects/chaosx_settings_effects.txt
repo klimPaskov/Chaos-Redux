@@ -1246,13 +1246,7 @@ adjust_event_id_for_filter = {
 
 		if = {
 			limit = { check_variable = { temp_event_index = -1 } }
-			if = {
-				limit = { check_variable = { global.major_events^num > 0 } }
-				set_variable = { settings_selected_event_id = global.major_events^0 }
-			}
-			else = {
-				set_variable = { settings_selected_event_id = global.major_events^0 }
-			}
+			set_variable = { settings_selected_event_id = global.major_events^0 }
 		}
 	}
 	else_if = {
@@ -1264,13 +1258,7 @@ adjust_event_id_for_filter = {
 
 		if = {
 			limit = { check_variable = { temp_event_index = -1 } }
-			if = {
-				limit = { check_variable = { global.repeatable_events^num > 0 } }
-				set_variable = { settings_selected_event_id = global.repeatable_events^0 }
-			}
-			else = {
-				set_variable = { settings_selected_event_id = global.repeatable_events^0 }
-			}
+			set_variable = { settings_selected_event_id = global.repeatable_events^0 }
 		}
 	}
 	else_if = {
@@ -1282,254 +1270,7 @@ adjust_event_id_for_filter = {
 
 		if = {
 			limit = { check_variable = { temp_event_index = -1 } }
-			if = {
-				limit = { check_variable = { global.fire_once_events^num > 0 } }
-				set_variable = { settings_selected_event_id = global.fire_once_events^0 }
-			}
-			else = {
-				set_variable = { settings_selected_event_id = global.fire_once_events^0 }
-			}
-		}
-	}
-}
-
-# Get the next valid event ID for the current filter
-get_next_valid_event_id = {
-	# Simple implementation: set to next array element or wrap to first
-	if = {
-		limit = { check_variable = { settings_event_id_filter = constant:settings_event_filter.major } }
-		# Major events - cycle through major events array
-		if = {
-			limit = { check_variable = { global.major_events^num > 0 } }
-
-			set_temp_variable = { current_index = -1 }
-			# Find current index in major events array
-			for_loop_effect = {
-				start = 0
-				end = global.major_events^num
-				value = i
-				if = {
-					limit = { check_variable = { settings_selected_event_id = global.major_events^i } }
-					set_temp_variable = { current_index = i }
-				}
-			}
-
-			# Move to next or wrap to first
-			if = {
-				limit = { check_variable = { current_index = -1 } }
-				# Not found, go to first
-				set_variable = { settings_selected_event_id = global.major_events^0 }
-			}
-			else = {
-				add_to_temp_variable = { current_index = 1 }
-				if = {
-					limit = { check_variable = { current_index < global.major_events^num } }
-					set_variable = { settings_selected_event_id = global.major_events^current_index }
-				}
-				else = {
-					# Wrap to first
-					set_variable = { settings_selected_event_id = global.major_events^0 }
-				}
-			}
-		}
-	}
-	else_if = {
-		limit = { check_variable = { settings_event_id_filter = constant:settings_event_filter.repeatable } }
-		# Repeatable events - cycle through repeatable events array
-		if = {
-			limit = { check_variable = { global.repeatable_events^num > 0 } }
-
-			set_temp_variable = { current_index = -1 }
-			# Find current index in repeatable events array
-			for_loop_effect = {
-				start = 0
-				end = global.repeatable_events^num
-				value = i
-				if = {
-					limit = { check_variable = { settings_selected_event_id = global.repeatable_events^i } }
-					set_temp_variable = { current_index = i }
-				}
-			}
-
-			# Move to next or wrap to first
-			if = {
-				limit = { check_variable = { current_index = -1 } }
-				# Not found, go to first
-				set_variable = { settings_selected_event_id = global.repeatable_events^0 }
-			}
-			else = {
-				add_to_temp_variable = { current_index = 1 }
-				if = {
-					limit = { check_variable = { current_index < global.repeatable_events^num } }
-					set_variable = { settings_selected_event_id = global.repeatable_events^current_index }
-				}
-				else = {
-					# Wrap to first
-					set_variable = { settings_selected_event_id = global.repeatable_events^0 }
-				}
-			}
-		}
-	}
-	else_if = {
-		limit = { check_variable = { settings_event_id_filter = constant:settings_event_filter.fire_once } }
-		# Fire-once events - cycle through fire-once events array
-		if = {
-			limit = { check_variable = { global.fire_once_events^num > 0 } }
-
-			set_temp_variable = { current_index = -1 }
-			# Find current index in fire-once events array
-			for_loop_effect = {
-				start = 0
-				end = global.fire_once_events^num
-				value = i
-				if = {
-					limit = { check_variable = { settings_selected_event_id = global.fire_once_events^i } }
-					set_temp_variable = { current_index = i }
-				}
-			}
-
-			# Move to next or wrap to first
-			if = {
-				limit = { check_variable = { current_index = -1 } }
-				# Not found, go to first
-				set_variable = { settings_selected_event_id = global.fire_once_events^0 }
-			}
-			else = {
-				add_to_temp_variable = { current_index = 1 }
-				if = {
-					limit = { check_variable = { current_index < global.fire_once_events^num } }
-					set_variable = { settings_selected_event_id = global.fire_once_events^current_index }
-				}
-				else = {
-					# Wrap to first
-					set_variable = { settings_selected_event_id = global.fire_once_events^0 }
-				}
-			}
-		}
-	}
-}
-
-# Get the previous valid event ID for the current filter
-get_previous_valid_event_id = {
-	# Simple implementation: set to previous array element or wrap to last
-	if = {
-		limit = { check_variable = { settings_event_id_filter = constant:settings_event_filter.major } }
-		# Major events - cycle through major events array backwards
-		if = {
-			limit = { check_variable = { global.major_events^num > 0 } }
-
-			set_temp_variable = { current_index = -1 }
-			# Find current index in major events array
-			for_loop_effect = {
-				start = 0
-				end = global.major_events^num
-				value = i
-				if = {
-					limit = { check_variable = { settings_selected_event_id = global.major_events^i } }
-					set_temp_variable = { current_index = i }
-				}
-			}
-
-			# Move to previous or wrap to last
-			if = {
-				limit = { check_variable = { current_index = -1 } }
-				# Not found, go to last
-				set_temp_variable = { last_index = global.major_events^num }
-				subtract_from_temp_variable = { last_index = 1 }
-				set_variable = { settings_selected_event_id = global.major_events^last_index }
-			}
-			else_if = {
-				limit = { check_variable = { current_index = 0 } }
-				# At first, wrap to last
-				set_temp_variable = { last_index = global.major_events^num }
-				subtract_from_temp_variable = { last_index = 1 }
-				set_variable = { settings_selected_event_id = global.major_events^last_index }
-			}
-			else = {
-				# Move to previous
-				subtract_from_temp_variable = { current_index = 1 }
-				set_variable = { settings_selected_event_id = global.major_events^current_index }
-			}
-		}
-	}
-	else_if = {
-		limit = { check_variable = { settings_event_id_filter = constant:settings_event_filter.repeatable } }
-		# Repeatable events - cycle through repeatable events array backwards
-		if = {
-			limit = { check_variable = { global.repeatable_events^num > 0 } }
-
-			set_temp_variable = { current_index = -1 }
-			# Find current index in repeatable events array
-			for_loop_effect = {
-				start = 0
-				end = global.repeatable_events^num
-				value = i
-				if = {
-					limit = { check_variable = { settings_selected_event_id = global.repeatable_events^i } }
-					set_temp_variable = { current_index = i }
-				}
-			}
-
-			# Move to previous or wrap to last
-			if = {
-				limit = { check_variable = { current_index = -1 } }
-				# Not found, go to last
-				set_temp_variable = { last_index = global.repeatable_events^num }
-				subtract_from_temp_variable = { last_index = 1 }
-				set_variable = { settings_selected_event_id = global.repeatable_events^last_index }
-			}
-			else_if = {
-				limit = { check_variable = { current_index = 0 } }
-				# At first, wrap to last
-				set_temp_variable = { last_index = global.repeatable_events^num }
-				subtract_from_temp_variable = { last_index = 1 }
-				set_variable = { settings_selected_event_id = global.repeatable_events^last_index }
-			}
-			else = {
-				# Move to previous
-				subtract_from_temp_variable = { current_index = 1 }
-				set_variable = { settings_selected_event_id = global.repeatable_events^current_index }
-			}
-		}
-	}
-	else_if = {
-		limit = { check_variable = { settings_event_id_filter = constant:settings_event_filter.fire_once } }
-		# Fire-once events - cycle through fire-once events array backwards
-		if = {
-			limit = { check_variable = { global.fire_once_events^num > 0 } }
-
-			set_temp_variable = { current_index = -1 }
-			# Find current index in fire-once events array
-			for_loop_effect = {
-				start = 0
-				end = global.fire_once_events^num
-				value = i
-				if = {
-					limit = { check_variable = { settings_selected_event_id = global.fire_once_events^i } }
-					set_temp_variable = { current_index = i }
-				}
-			}
-
-			# Move to previous or wrap to last
-			if = {
-				limit = { check_variable = { current_index = -1 } }
-				# Not found, go to last
-				set_temp_variable = { last_index = global.fire_once_events^num }
-				subtract_from_temp_variable = { last_index = 1 }
-				set_variable = { settings_selected_event_id = global.fire_once_events^last_index }
-			}
-			else_if = {
-				limit = { check_variable = { current_index = 0 } }
-				# At first, wrap to last
-				set_temp_variable = { last_index = global.fire_once_events^num }
-				subtract_from_temp_variable = { last_index = 1 }
-				set_variable = { settings_selected_event_id = global.fire_once_events^last_index }
-			}
-			else = {
-				# Move to previous
-				subtract_from_temp_variable = { current_index = 1 }
-				set_variable = { settings_selected_event_id = global.fire_once_events^current_index }
-			}
+			set_variable = { settings_selected_event_id = global.fire_once_events^0 }
 		}
 	}
 }
@@ -1582,19 +1323,6 @@ increase_event_id = {
 	}
 
 	update_event_id_display = yes
-}
-
-# Set increment mode to specific values (for modifier clicks)
-set_increment_mode_to_1 = {
-	set_variable = { settings_events_increment_mode = 1 }
-}
-
-set_increment_mode_to_5 = {
-	set_variable = { settings_events_increment_mode = 5 }
-}
-
-set_increment_mode_to_10 = {
-	set_variable = { settings_events_increment_mode = 10 }
 }
 
 # Toggle increment mode (1 -> 5 -> 10 -> 1)
@@ -1767,18 +1495,6 @@ fire_event_by_id = {
 	}
 }
 
-
-# Fire selected event
-fire_selected_event = {
-	meta_effect = {
-		text = {
-			country_event = {
-				id = chaosx.nr[EVENT_ID].1
-			}
-		}
-		EVENT_ID = "[?settings_selected_event_id|.0]"
-	}
-}
 
 # Update last fired event display
 update_last_fired_event_display = {
@@ -2014,22 +1730,6 @@ toggle_chaosx_help_window = {
 
 
 
-
-# Toggle between events view and event clusters view
-toggle_events_view = {
-	if = {
-		limit = { has_country_flag = show_events_view }
-		# Switch to event clusters
-		clr_country_flag = show_events_view
-		set_country_flag = show_event_clusters_view
-		update_settings_cluster_display = yes
-	}
-	else = {
-		# Switch to events
-		set_country_flag = show_events_view
-		clr_country_flag = show_event_clusters_view
-	}
-}
 
 # ============================================================================
 # STEP-BASED EVENT ID CYCLING FOR FILTERED MODES
@@ -2566,7 +2266,7 @@ update_timer_window_dynamic_range = {
 
 	clamp_temp_variable = {
 		var = timer_window_range_min
-		min = 5
+		min = constant:settings_timer_limit.min_min_value
 		max = timer_window_range_max
 	}
 
@@ -2739,18 +2439,6 @@ initialize_tag_management_settings = {
 	set_variable = { settings_country_filter = constant:settings_country_filter.all }
 	set_variable = { settings_continent_sort = constant:settings_continent_sort.alphabetical }
 	clr_country_flag = tag_management_map_sync_active
-}
-
-# Switch to Timer Interval view
-switch_to_timer_interval = {
-	set_country_flag = show_timer_interval_view
-	clr_country_flag = show_tag_management_view
-}
-
-# Switch to Tag Management view
-switch_to_tag_management = {
-	clr_country_flag = show_timer_interval_view
-	set_country_flag = show_tag_management_view
 }
 
 # Toggle between Timer Interval and Tag Management views
@@ -3281,26 +2969,6 @@ disable_for_selected_tag = {
 	}
 }
 
-# Toggle event system for selected tag
-toggle_event_system_for_selected_tag = {
-	if = {
-		limit = { has_variable = settings_current_selected_country }
-		# Check if this country is currently enabled
-		var:settings_current_selected_country = {
-			if = {
-				limit = { has_country_flag = events_activated }
-				ROOT = { disable_for_selected_tag = yes }
-			}
-			else = {
-				ROOT = { enable_for_selected_tag = yes }
-			}
-		}
-	}
-	else = {
-		log = "CHAOS REDUX TAG MANAGEMENT: Cannot toggle - no country selected in current filter"
-	}
-}
-
 # Toggle auto enable on tag switch setting
 toggle_auto_enable_on_switch = {
 	if = {
@@ -3364,31 +3032,6 @@ reset_tag_management_to_defaults = {
 # ============================================================================
 # PLAYER TAG SWITCH HANDLING
 # ============================================================================
-
-# Check if the player has switched countries and handle auto-enable/disable settings
-check_for_player_tag_switch = {
-}
-
-# Handle player tag switch based on settings (called manually from GUI)
-handle_player_tag_switch = {
-	# Handle auto-enable on switch
-	if = {
-		limit = { has_global_flag = settings_auto_enable_on_switch }
-		set_country_flag = events_activated
-		# Add to enabled countries list if not already there
-		if = {
-			limit = { NOT = { is_in_array = { global.enabled_countries_list = THIS } } }
-			add_to_array = { global.enabled_countries_list = THIS }
-			add_to_variable = { global.enabled_countries_count = 1 }
-		}
-		log = "CHAOS REDUX TAG MANAGEMENT: Auto-enabled event system for [This.GetTag] ([This.GetName]) on tag switch"
-	}
-
-	# Update the enabled countries list
-	update_enabled_countries_list = yes
-	black_friday_on_event_system_resumed = yes
-	black_friday_refresh_active_cost_modifier = yes
-}
 
 
 
@@ -3790,13 +3433,6 @@ toggle_logic_log_lines = {
 	}
 }
 
-# Write a single debug snapshot regardless of the auto-log toggle
-write_event_log_snapshot = {
-	set_variable = { temp_force_logic_log = 1 }
-	log_event_system_debug = yes
-	clear_variable = temp_force_logic_log
-}
-
 # Reset chaos meter settings to defaults
 reset_chaos_meter_to_defaults = {
 	reset_settings_numeric_manual_entry = yes
@@ -3871,196 +3507,40 @@ initialize_advanced_settings = {
 # RECOVERY RATE MANAGEMENT
 # ============================================================================
 
-# Decrease recovery rate
-decrease_recovery_rate = {
-	set_temp_variable = { new_value = global.settings_recovery_rate }
-	subtract_from_temp_variable = { new_value = settings_advanced_increment_mode }
-
-	clamp_temp_variable = {
-		var = new_value
-		min = constant:settings_advanced_bounds.recovery_rate.min
-	}
-
-	set_variable = { global.settings_recovery_rate = new_value }
-}
-
-# Increase recovery rate
-increase_recovery_rate = {
-	set_temp_variable = { new_value = global.settings_recovery_rate }
-	add_to_temp_variable = { new_value = settings_advanced_increment_mode }
-
-	clamp_temp_variable = {
-		var = new_value
-		max = constant:settings_advanced_bounds.recovery_rate.max
-	}
-
-	set_variable = { global.settings_recovery_rate = new_value }
-}
-
 # ============================================================================
 # CAP REDUCTION MANAGEMENT
 # ============================================================================
-
-# Decrease cap reduction
-decrease_cap_reduction = {
-	set_temp_variable = { new_value = global.settings_cap_reduction }
-
-	# Calculate increment based on mode: 1% = 0.01, 5% = 0.05, 10% = 0.10
-	if = {
-		limit = { check_variable = { settings_advanced_increment_mode = 1 } }
-		subtract_from_temp_variable = { new_value = 0.01 }
-	}
-	else_if = {
-		limit = { check_variable = { settings_advanced_increment_mode = 5 } }
-		subtract_from_temp_variable = { new_value = 0.05 }
-	}
-	else = {
-		# Mode 10 or default
-		subtract_from_temp_variable = { new_value = 0.10 }
-	}
-
-	clamp_temp_variable = {
-		var = new_value
-		min = constant:settings_advanced_bounds.cap_reduction.min
-	}
-
-	set_variable = { global.settings_cap_reduction = new_value }
-}
-
-# Increase cap reduction
-increase_cap_reduction = {
-	set_temp_variable = { new_value = global.settings_cap_reduction }
-
-	# Calculate increment based on mode: 1% = 0.01, 5% = 0.05, 10% = 0.10
-	if = {
-		limit = { check_variable = { settings_advanced_increment_mode = 1 } }
-		add_to_temp_variable = { new_value = 0.01 }
-	}
-	else_if = {
-		limit = { check_variable = { settings_advanced_increment_mode = 5 } }
-		add_to_temp_variable = { new_value = 0.05 }
-	}
-	else = {
-		# Mode 10 or default
-		add_to_temp_variable = { new_value = 0.10 }
-	}
-
-	clamp_temp_variable = {
-		var = new_value
-		max = constant:settings_advanced_bounds.cap_reduction.max
-	}
-
-	set_variable = { global.settings_cap_reduction = new_value }
-}
 
 # ============================================================================
 # BASELINE MAJOR GAIN MANAGEMENT
 # ============================================================================
 
-# Decrease staged baseline major gain
-decrease_major_weight_per_minor = {
-	set_temp_variable = { new_value = global.settings_major_weight_per_minor }
-	subtract_from_temp_variable = { new_value = settings_advanced_increment_mode }
-
-	clamp_temp_variable = {
-		var = new_value
-		min = constant:settings_advanced_bounds.major_weight_per_minor.min
-	}
-
-	set_variable = { global.settings_major_weight_per_minor = new_value }
-}
-
-# Increase staged baseline major gain
-increase_major_weight_per_minor = {
-	set_temp_variable = { new_value = global.settings_major_weight_per_minor }
-	add_to_temp_variable = { new_value = settings_advanced_increment_mode }
-
-	clamp_temp_variable = {
-		var = new_value
-		max = constant:settings_advanced_bounds.major_weight_per_minor.max
-	}
-
-	set_variable = { global.settings_major_weight_per_minor = new_value }
-}
-
 # ============================================================================
 # EVENT WEIGHT MANAGEMENT
 # ============================================================================
 
-# Decrease event weight
-decrease_event_weight = {
-	set_temp_variable = { new_value = global.settings_event_weight }
-	subtract_from_temp_variable = { new_value = 100 }
-
-	clamp_temp_variable = {
-		var = new_value
-		min = constant:settings_advanced_bounds.event_weight.min
-	}
-
-	set_variable = { global.settings_event_weight = new_value }
-}
-
-# Increase event weight
-increase_event_weight = {
-	set_temp_variable = { new_value = global.settings_event_weight }
-	add_to_temp_variable = { new_value = 100 }
-
-	clamp_temp_variable = {
-		var = new_value
-		max = constant:settings_advanced_bounds.event_weight.max
-	}
-
-	set_variable = { global.settings_event_weight = new_value }
-}
-
 # ============================================================================
 # TIMER MODIFIER MANAGEMENT
 # ============================================================================
-
-# Decrease timer modifier
-decrease_timer_modifier = {
-	set_temp_variable = { new_value = global.settings_timer_modifier }
-	subtract_from_temp_variable = { new_value = 0.1 }
-
-	clamp_temp_variable = {
-		var = new_value
-		min = constant:settings_advanced_bounds.timer_modifier.min
-	}
-
-	set_variable = { global.settings_timer_modifier = new_value }
-}
-
-# Increase timer modifier
-increase_timer_modifier = {
-	set_temp_variable = { new_value = global.settings_timer_modifier }
-	add_to_temp_variable = { new_value = 0.1 }
-
-	clamp_temp_variable = {
-		var = new_value
-		max = constant:settings_advanced_bounds.timer_modifier.max
-	}
-
-	set_variable = { global.settings_timer_modifier = new_value }
-}
 
 # Update all timer modifiers based on settings value
 update_all_timer_modifiers = {
 	set_variable = { global.chaos_timer_modifier_calm = global.settings_timer_modifier }
 
 	set_temp_variable = { gathering_mod = global.settings_timer_modifier }
-	multiply_temp_variable = { gathering_mod = 0.8 }
+	multiply_temp_variable = { gathering_mod = constant:event_system_timer_modifier_default.gathering }
 	set_variable = { global.chaos_timer_modifier_gathering = gathering_mod }
 
 	set_temp_variable = { rising_mod = global.settings_timer_modifier }
-	multiply_temp_variable = { rising_mod = 0.7 }
+	multiply_temp_variable = { rising_mod = constant:event_system_timer_modifier_default.rising }
 	set_variable = { global.chaos_timer_modifier_rising = rising_mod }
 
 	set_temp_variable = { chaos_mod = global.settings_timer_modifier }
-	multiply_temp_variable = { chaos_mod = 0.6 }
+	multiply_temp_variable = { chaos_mod = constant:event_system_timer_modifier_default.chaos }
 	set_variable = { global.chaos_timer_modifier_chaos = chaos_mod }
 
 	set_temp_variable = { critical_mod = global.settings_timer_modifier }
-	multiply_temp_variable = { critical_mod = 0.5 }
+	multiply_temp_variable = { critical_mod = constant:event_system_timer_modifier_default.critical }
 	set_variable = { global.chaos_timer_modifier_critical = critical_mod }
 	set_variable = { global.chaos_timer_modifier_collapse = critical_mod }
 	update_timer_window_dynamic_range = yes
@@ -4069,21 +3549,6 @@ update_all_timer_modifiers = {
 # ============================================================================
 # ADVANCED SETTINGS INCREMENT MODE MANAGEMENT
 # ============================================================================
-
-# Toggle advanced settings increment mode
-toggle_advanced_settings_increment_mode = {
-	if = {
-		limit = { check_variable = { settings_advanced_increment_mode = 1 } }
-		set_variable = { settings_advanced_increment_mode = 5 }
-	}
-	else_if = {
-		limit = { check_variable = { settings_advanced_increment_mode = 5 } }
-		set_variable = { settings_advanced_increment_mode = 10 }
-	}
-	else = {
-		set_variable = { settings_advanced_increment_mode = 1 }
-	}
-}
 
 # ============================================================================
 # ADVANCED SETTINGS INDIVIDUAL CONTROLS
@@ -4560,7 +4025,7 @@ fire_event_by_temp_id_no_cluster = {
 	}
 	if = {
 		limit = {
-			check_variable = { event_id = 3 }
+			check_variable = { event_id = constant:holy_realm_event_log.event_id }
 			NOT = { holy_realm_has_valid_refuge_host = yes }
 		}
 		set_temp_variable = { event_single_fire_allowed = 0 }

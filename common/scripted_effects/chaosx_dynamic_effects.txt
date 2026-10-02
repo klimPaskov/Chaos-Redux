@@ -69,7 +69,7 @@ damage_buildings_in_random_states = {
 	# THIS refers to the country executing the script.
 
 	# First, count the total number of states.
-	set_temp_variable = { num_controlled_states = 1 }
+	set_temp_variable = { num_controlled_states = 0 }
 	every_controlled_state = {
 		add_to_temp_variable = { num_controlled_states = 1 }
 	}
@@ -103,12 +103,6 @@ damage_buildings_in_random_states = {
 	}
 
 
-	multiply_temp_variable = { state_population_percent = 1000 }
-	if = {
-		limit = { check_variable = { state_population_percent < 1 } }
-		set_temp_variable = { state_population_percent = -1 }
-	}
-
 	for_loop_effect = {
 		end = var:num_states_to_target
 
@@ -138,10 +132,17 @@ damage_buildings_in_random_states = {
 			}
 
 
-			set_temp_variable = { pop_loss = state_population_k }
-			round_temp_variable = pop_loss
-			multiply_temp_variable = { pop_loss = state_population_percent }
-			add_manpower = pop_loss
+			# Optional proportional population loss. A missing or zero
+			# state_population_percent leaves population unchanged.
+			if = {
+				limit = { check_variable = { state_population_percent > 0 } }
+				set_temp_variable = { pop_loss = state_population_k }
+				multiply_temp_variable = { pop_loss = state_population_percent }
+				multiply_temp_variable = { pop_loss = constant:chaos_meter_deaths.people_per_k }
+				multiply_temp_variable = { pop_loss = constant:chaos_meter_deaths.negative_one }
+				round_temp_variable = pop_loss
+				add_manpower = pop_loss
+			}
 
 
 			# 3. Loop and damage a random building each time.

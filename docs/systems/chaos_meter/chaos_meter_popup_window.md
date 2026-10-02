@@ -59,7 +59,9 @@ Actor sort behavior:
 
 War declaration entries are merged into one row per day/reason/actor bucket to reduce spam when one country declares multiple wars at once. Faction follow-up relations for a defender already at war with another member of the attacker's faction do not add chaos, and minor war declarations are capped by the same-day minor-war cap documented in `docs/systems/chaos_meter/chaos_meter_war_declaration_counting.md`.
 
-History rows now include per-cause reason mapping for the full chaos meter change surface (war/peace/annexation/puppets/liberation/faction and diplomacy shifts/subtle events/settings updates/global trend updates).
+History rows include per-cause reason mapping for the full chaos meter change surface (war/peace/annexation/puppets/liberation/faction and diplomacy shifts/subtle events/settings updates/global trend updates).
+
+Annexing a zombie outbreak country (`original_tag = ZZZ`) adds no Chaos; the `on_annex` hook in `common/on_actions/chaosx_on_actions_chaos_meter.txt` skips it alongside the disabled-meter and Event 019 recovery-annex bypass checks.
 
 ### Air Cleanliness Tab
 
@@ -213,8 +215,8 @@ Event 19 ghost decline has an isolated three-step projection:
 
 Vanilla `.dds` assets copied into this mod (with `chaosx` prefixed filenames):
 
-- `gfx/interface/chaosx_chaos_meter_bg.dds`
-- `gfx/interface/chaosx_chaos_meter_entry.dds`
+- `gfx/interface/chaosx_details_window_bg.dds`, registered as `GFX_chaosx_chaos_meter_bg`
+- `gfx/interface/chaosx_world_tension_entry.dds`, registered as `GFX_chaosx_chaos_meter_entry`
 - `gfx/interface/chaosx_sort_button_100x29_2.dds`
 - `gfx/interface/chaosx_button_123x34_vanilla.dds`
 
