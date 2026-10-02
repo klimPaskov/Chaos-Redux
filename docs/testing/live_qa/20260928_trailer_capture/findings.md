@@ -14,6 +14,13 @@ Scope: observations made while recording footage; each entry says whether it was
 - Event 020 has no event-level suppression flag (Event 005 does); it stays out of the pool through the disabled and fired arrays alone, which every automatic path checks.
 - Limit: saves that already ran the suppression keep the old array contents; a new game shows the correct type.
 
+### Map crash when a foreign camp is viewed up close
+
+- Seen: an access violation in `raid_target_status.cpp` during "Update Provinces" whenever the camera zoomed in on certain states (first on the Danube front in the June horde save, later over Brandenburg and Japan in a fresh November 1936 campaign). Every dump faults on the same building object, and the crash is deterministic: `goto_state 64` plus a close zoom in `trailer_150_nov` crashed every time.
+- Cause: `concentration_camp`, `extermination_camp`, and `gulag_labor_camp_network` (`common/buildings/chaosx_buildings.txt`) are state buildings with `need_detection = yes`. The engine keeps raid detection data only for provincial buildings (vanilla uses `need_detection` only on facilities, dams, and the naval facility), so the save's raid target registry never contains the camps. When the map draws a level-2 camp owned by a country that is neither the viewer nor an ally, it asks whether the building is hidden, gets no detection record, and dereferences it. Germany's history camps in states 53, 60, and 64 are enough; it starts once the raid system is active, which explains why the first months of a game looked stable.
+- Fix: the three camp buildings no longer declare `need_detection` or `detecting_intel_type`. No script reads camp detection; raids target states, not camp buildings.
+- Verified: the same save and camera path over states 64, 60, and 53 no longer crash. Existing saves are covered because building definitions load from the files.
+
 ### New unit models load cleanly
 
 The Event 039 assassin units, the rebuilt cave monster, and the plague carriers load with no entity, mesh, or animation errors in `error.log` (commit `8c3a4f847`).
