@@ -31,11 +31,11 @@ Every active chemical route still has to provide an exact target, real payload d
 - Track doctrines: `common/doctrines/subdoctrines/land/chaos_warfare_*_subdoctrines.txt`
 - Adoption and milestone effects: `common/scripted_effects/cbrn_doctrine_effects.txt`
 - Shared chemical dispatcher: `common/scripted_effects/cbrn_exposure_effects.txt`
-- Shared biological lifecycle: `common/scripted_effects/biological_warfare_lifecycle_effects.txt`
+- Shared biological lifecycle: `common/scripted_effects/biological_lifecycle_effects.txt`
 - Officer-corps postures: `common/ideas/cbw_spirits.txt`
 - Central doctrine tuning: `common/script_constants/cbrn_doctrine_constants.txt` and `common/script_constants/chemical_warfare_constants.txt`
 - Localisation: `localisation/english/chaosx_doctrines_l_english.yml` and `localisation/english/chaosx_ideas_l_english.yml`
 
 ## Icon
 
-The grand doctrine uses the original Chaos Warfare artwork at `gfx/interface/doctrines/icons/doctrine_chaos_warfare.dds`, registered as `GFX_doctrine_chaos_warfare_medium` in `interface/chaosx_doctrines.gfx`. Every track uses its own doctrine-style asset under `gfx/interface/doctrines/icons/chaos_warfare_doctrine_style/`; no generic doctrine icon or cross-type resize is retained.
+The grand doctrine uses the original Chaos Warfare artwork at `gfx/interface/doctrines/icons/doctrine_chaos_warfare.dds`, registered as `GFX_doctrine_chaos_warfare_medium` in `interface/cbrn_doctrine.gfx`. Every track uses its own doctrine-style asset under `gfx/interface/doctrines/icons/chaos_warfare_doctrine_style/`; no generic doctrine icon or cross-type resize is retained.

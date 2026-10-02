@@ -1,9 +1,8 @@
 # Fallout NZL lifeboat scripted effects
 
-This reference documents the runtime helpers owned by
-`common/scripted_effects/fallout_nzl_lifeboat_effects.txt`. The package remains
-dormant until its allocator receipts are current. These helpers do not add an
-activation caller.
+This reference documents the NZL Lifeboat runtime helpers in `common/scripted_effects/fallout_consolidated_effects.txt`.
+The package remains dormant until its allocator receipts are current.
+These helpers add no activation caller of their own.
 
 ## `fallout_nzl_add_chain_context_score`
 
@@ -75,14 +74,14 @@ and cleanup.
 
 `fallout_nzl_recruit_package_characters` is idempotent on each token and uses
 `generate_character` with stable `token_base`, inline portraits, and the full
-country-leader/advisor role definition. The former static definitions in
-`common/characters/fallout_nzl_lifeboat_characters.txt` are intentionally empty
-apart from this ownership note, so the engine cannot load duplicate token
+country-leader/advisor role definition. The former static definitions in the NZL section of
+`common/characters/fallout_consolidated_characters.txt` are intentionally empty
+apart from an ownership note, so the engine cannot load duplicate token
 definitions.
 
 ## Dormant activation and Year 10 clock
 
-`fallout_nzl_activate_lifeboat_package` remains dormant outside the B7 vertical slice. The B7 caller reaches it only after the guarded existing-tag assignment commits its current-generation receipts. After the receipt gate passes, it resets NZL-owned package state and writes a timed `fallout_nzl_before_year_ten` country flag for 3,650 days. The duration field uses the file-scoped literal `@FALLOUT_NZL_YEAR_TEN_DAYS`, mirrored by `constant:fallout_nzl_duration.year_ten` for shared tuning and documentation surfaces. `fallout_nzl_year_ten_values_are_ready` requires the timed flag to have expired. Reset clears the old flag before any later valid activation writes a fresh one.
+`fallout_nzl_activate_lifeboat_package` remains dormant outside the B7 vertical slice. It is called from `fallout_successor_b7_materialize_dynamic_nzl` and from `fallout_successor_b7_run_vertical_slice` in `common/scripted_effects/fallout_consolidated_effects.txt`, and neither path has a live caller outside the slice. The slice caller reaches it only after the guarded existing-tag assignment commits its current-generation receipts. After the receipt gate passes, it resets NZL-owned package state and writes a timed `fallout_nzl_before_year_ten` country flag for 3,650 days. The duration field uses the file-scoped literal `@FALLOUT_NZL_YEAR_TEN_DAYS`, mirrored by `constant:fallout_nzl_duration.year_ten` for shared tuning and documentation surfaces. `fallout_nzl_year_ten_values_are_ready` requires the timed flag to have expired. Reset clears the old flag before any later valid activation writes a fresh one.
 
 ## Bounded formation placement
 
@@ -95,7 +94,7 @@ one-shot Southern Escort Volunteers at Auckland province `4543`.
 
 ## Pirate terminal outcomes
 
-`common/on_actions/fallout_nzl_lifeboat_on_actions.txt` enters NZL scope for
+`common/on_actions/fallout_consolidated_on_actions.txt` enters NZL scope for
 capitulation, peace-conference completion, and annexation. Each path matches
 the exact stored aggressor before calling `fallout_nzl_record_pirate_settlement`.
 Annexation therefore closes when any actor annexes the recorded aggressor and

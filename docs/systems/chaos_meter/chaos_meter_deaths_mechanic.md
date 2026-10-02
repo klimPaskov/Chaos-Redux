@@ -78,24 +78,25 @@ Primary scripted effects:
 
 Country totals are maintained on country-scoped variables and the deaths view backfills legacy saves through bounded chunked rebuild passes instead of scanning the full raw history in one UI refresh.
 
-Biowarfare helper:
+Percentage-based state registration helper:
 
-- `bio_register_state_civilian_deaths`
+- `chaos_meter_register_state_civilian_deaths_percent`
 
-Chemical helper:
+Biowarfare registration path:
 
-- `chem_register_state_civilian_deaths`
+- `bio_lifecycle_register_current_agent_weekly_deaths` in `common/scripted_effects/biological_lifecycle_effects.txt` registers each active agent's weekly deaths in its state through `chaos_meter_register_state_civilian_deaths_percent` with the `biowarfare_outbreak` reason.
 
-Genocide crisis helpers:
+Chemical registration path:
 
-- `genocide_apply_monthly_concentration_state_effects`
-- `genocide_apply_monthly_extermination_state_effects`
-- `genocide_apply_monthly_gulag_state_effects`
-- `genocide_apply_monthly_experiment_site_effects`
-- `genocide_apply_monthly_biowarfare_experiment_site_effects`
-- `genocide_apply_monthly_restricted_chemical_site_effects`
+- `cbrn_dispatch_apply_state_consequences` in `common/scripted_effects/cbrn_consequence_effects.txt` registers the civilian death fraction of an accepted chemical action through `chaos_meter_register_state_civilian_deaths_percent` with the `chemical_attack` reason.
 
-These helpers route state population loss through the same Chaos Meter Deaths pipeline used by chemical and biological contamination systems.
+Camp administration path:
+
+- `camp_admin_monthly_state` in `common/scripted_effects/camp_administration_effects.txt` removes the exact monthly camp mortality through `apply_exact_state_civilian_population_loss` and then registers the actual amount through `chaos_meter_register_deaths` with the `camp_atrocity` reason.
+- The monthly runner `camp_admin_integration_monthly_country_recipient` in `common/scripted_effects/camp_administration_integration_effects.txt` reaches it through `camp_admin_monthly_country`, and the hidden country events in `events/camp_administration_country_events.txt` run it.
+- `camp_rework_apply_monthly_state_effects` in `common/scripted_effects/camp_repression_rework_effects.txt` and the `genocide_apply_monthly_*` helpers in `common/scripted_effects/genocide_crisis_effects.txt` are compatibility entries that fire `camp_admin_integration_monthly_country`, which starts the same country-administration monthly event chain, and they hold no second debit.
+
+These helpers route state population loss through the same Chaos Meter Deaths pipeline.
 
 Fallout uses Deaths reason `19`, `fallout_aftermath`. Its recorded losses use the normal `1` chaos per `1,000,000` deaths conversion. Stored before, after, and delta receipts cover the global Deaths total, Deaths log sequence, and state Deaths ledger. When the optional Deaths display is disabled, the exact state mutation still occurs and the receipt records a disabled accounting outcome with zero Deaths-ledger movement.
 

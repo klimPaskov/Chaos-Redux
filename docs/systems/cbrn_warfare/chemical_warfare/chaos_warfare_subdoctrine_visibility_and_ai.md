@@ -39,7 +39,7 @@ Existing doctrine icons remain:
 
 Existing sprite file remains:
 
-- `interface/chaosx_doctrines.gfx`
+- `interface/cbrn_doctrine.gfx`
 
 ## Future Extensions
 1. Add more detailed AI weighting inside the Chaos branch based on chemical stockpile depth, active doctrine spirits, and frontline template composition.

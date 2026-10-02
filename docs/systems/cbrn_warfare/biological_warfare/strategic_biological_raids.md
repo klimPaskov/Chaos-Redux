@@ -126,7 +126,7 @@ Gameplay:
 
 - `common/raids/biological_raids.txt`
 - `common/raids/biological_zombie_cure_raid.txt`
-- `common/decisions/biological_raid_staging_decisions.txt`
+- No decision definition for the staging complex exists in `common/decisions/` in the current checkout; the raid effects in `common/scripted_effects/biological_raid_effects.txt` read the `bio_raid_staging_state` event target
 - `common/on_actions/chaosx_on_actions.txt`
 - `common/script_constants/biological_raid_constants.txt`
 - `common/scripted_effects/biological_raid_effects.txt`

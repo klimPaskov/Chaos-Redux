@@ -1,5 +1,12 @@
 # Zombie Prevention and Disease Containment Integration
 
+## Current status
+
+This document describes the intended disease-containment integration of the zombie prevention measures.
+The helpers `calculate_zombie_prevention_contamination_reduction`, `refresh_contaminated_state_effects_from_active_measures`, and `refresh_country_contamination_effects_from_active_measures` are absent from the current checkout.
+The `bio_zombie_prevention_containment` constants in `common/script_constants/biowarfare_constants.txt` have no consumer in `common/`, so the sections below describe the intended design rather than active runtime behavior.
+The biological lifecycle owns ordinary outbreak contamination and response cleanup.
+
 ## Overview
 
 The zombie outbreak prevention category is now tied into the broader biowarfare disease containment system.

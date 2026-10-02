@@ -93,7 +93,7 @@ That means they:
 
 ## Tuning Files
 
-- `common/script_constants/zombie_constants.txt`
+- `common/script_constants/002_zombie_constants.txt`
 - `common/script_constants/chaos_meter_constants.txt`
 - `common/scripted_effects/002_zombie_outbreak_effects.txt`
 - `common/scripted_effects/chaos_meter_effects.txt`

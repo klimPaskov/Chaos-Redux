@@ -105,13 +105,15 @@ MIO-level weights follow the accepted country matrix and route profiles. France 
 
 | Surface | File |
 | --- | --- |
-| Chemical and air-delivery MIO definitions | `common/military_industrial_organization/organizations/cbrn_organizations.txt` |
-| Protection, decontamination, biological, and medical MIO definitions | `common/military_industrial_organization/organizations/cbrn_protection_biological_organizations.txt` |
+| Chemical shell and air-delivery MIO definitions | `common/military_industrial_organization/organizations/cbrn_delivery_organizations.txt` |
+| National and advanced project MIO definitions | `common/military_industrial_organization/organizations/cbrn_national_organizations.txt` |
+| Protection and decontamination MIO definitions | `common/military_industrial_organization/organizations/cbrn_chemical_protection_organizations.txt` |
+| Biological and medical MIO definitions | `common/military_industrial_organization/organizations/cbrn_biomedical_organizations.txt` |
 | Scripted trait effects | `common/script_constants/cbrn_designer_constants.txt` |
 | Completed-trait queries | `common/scripted_triggers/cbrn_designer_triggers.txt` |
 | Exact module-unlock effects | `common/scripted_effects/cbrn_designer_effects.txt` |
 | Protection and issue effects | `common/scripted_effects/cbrn_protection_effects.txt` |
-| Decontamination and vehicle recovery | `common/scripted_effects/cbrn_decontamination_effects.txt`, `common/scripted_effects/cbrn_designer_effects.txt` |
+| Decontamination and vehicle recovery | `common/scripted_effects/cbrn_designer_effects.txt` |
 | Biological lifecycle, safety, and facility capture | `common/scripted_effects/biological_lifecycle_effects.txt`, `common/scripted_effects/biological_stockpile_safety_effects.txt`, `common/scripted_effects/biological_facility_capture_effects.txt` |
 | Exact state-control refresh | `common/on_actions/cbrn_designer_on_actions.txt` |
 | Sanctions-compliance medical contribution | `common/scripted_effects/condemnation_sanctions_effects.txt` |

@@ -63,7 +63,7 @@ Subdoctrine:
 ## Script Integration
 Shared tuning constants:
 - `common/script_constants/chemical_warfare_constants.txt`
-- New constant group: `chem_integrated_operations`
+- Constant group: `chem_integrated_operations`
   - `condemnation_mult`
   - `contamination_mult`
   - `raid_effect_mult`
@@ -73,30 +73,27 @@ Shared tuning constants:
   - The retained outbreak multiplier and refund entries are neutral or zero so older biological helpers cannot apply a second hidden doctrine bonus.
 
 Shared helper effects:
-- `common/scripted_effects/chemical_warfare_effects.txt`
-  - `chem_set_integrated_operations_condemnation_mult_from_owner`
-  - `chem_set_integrated_operations_condemnation_mult_from_country`
-  - `chem_set_integrated_operations_contamination_mult_from_owner_target`
-  - `chem_set_integrated_operations_contamination_mult_from_actor_country`
-  - `chem_set_integrated_operations_raid_effect_mult_from_actor_country`
-  - `chem_set_integrated_operations_air_bomb_mult_from_owner`
+- `common/scripted_effects/cbrn_doctrine_effects.txt`
+  - `cbrn_set_doctrine_condemnation_mult_from_country` writes the Condemnation-impact multiplier from Integrated Command mastery and reads the `chem_integrated_operations.condemnation_mult` ladder.
+- `common/scripted_effects/cbrn_exposure_effects.txt`
+  - `cbrn_calculate_chemical_action_outputs` selects the Integrated Command contamination, raid-effect, air-bomb dose, and air-bomb duration multipliers for the actor's mastery level from the matching `chem_integrated_operations` groups.
 
-Hook points updated:
-- `common/scripted_effects/chemical_warfare_effects.txt`
-  - Condemnation registration (`chem_warfare_register_attack_use`, `chem_warfare_register_attack_use_no_livens`)
-  - Contamination multipliers (owner-target and actor-country paths)
-  - Raid damage multipliers
-- `common/scripted_effects/chemical_air_bomb_effects.txt`
-  - Air-bomb profile scaling
+Hook points:
+- `common/scripted_effects/cbrn_exposure_effects.txt`
+  - Contamination, raid-effect, and air-bomb scaling inside `cbrn_calculate_chemical_action_outputs`
+- `common/scripted_effects/cbrn_doctrine_effects.txt`
+  - Condemnation multiplier for shared chemical and biological callers
 - `common/scripted_effects/biowarfare_effects.txt`
   - Legacy biological adapter helpers remain for save compatibility, but their compatibility multipliers are neutral and do not duplicate the shared biological lifecycle pipeline.
+- `common/scripted_effects/chemical_air_bomb_effects.txt`
+  - Defines no release effect. Chemical aircraft are eligibility assets for explicit selected-state raids only.
 
 ## Localisation and UI
 Localisation keys added in:
 - `localisation/english/chaosx_doctrines_l_english.yml`
 
 Doctrine icon registration:
-- `interface/chaosx_doctrines.gfx`
+- `interface/cbrn_doctrine.gfx`
 - Sprite key: `GFX_doctrine_integrated_chemical_operations_medium`
 - Final texture: `gfx/interface/doctrines/icons/chaos_warfare_doctrine_style/doctrine_integrated_cbrn_command.dds`
 

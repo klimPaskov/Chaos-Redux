@@ -1,8 +1,8 @@
 # Event 006 country-registry effects
 
 This file contains only the two lifecycle wrappers needed by the canonical
-Independence Wave origin ledger. The static carrier data lives in
-`common/script_constants/006_independence_wave_country_registry_constants.txt`;
+Independence Wave origin ledger. The static carrier data lives in the section marked `[source: 006_independence_wave_country_registry_constants.txt]` of
+`common/script_constants/006_independence_wave_constants_registry.txt`;
 the exact country-scope predicates live in the country-registry section of
 `common/scripted_triggers/006_independence_wave_package_triggers.txt`.
 
@@ -40,9 +40,9 @@ cleanup chain remains responsible for clearing them and global targets.
 
 ## Static carrier status API
 
-The country-group constants in
-`common/script_constants/006_independence_wave_country_registry_constants.txt`
-now expose package-row status projections for later callers:
+The country-group constants in the `[source: 006_independence_wave_country_registry_constants.txt]` section of
+`common/script_constants/006_independence_wave_constants_registry.txt`
+expose package-row status projections for later callers:
 
 - `selectable_bound_tags` is the current-map-bound selectable pool (138 rows,
   137 unique carrier scopes).

@@ -113,7 +113,7 @@ Treaty event IDs in the same file:
 - `chaosx_contamination.10` Founder confirmation
 - `chaosx_contamination.11` Global Cleaning Day news
 
-Treaty project and succession reports live in `events/air_cleanliness_treaty_events.txt` under `chaosx_air_treaty`:
+Treaty project and succession reports live in the treaty section of `events/fallout_world_end_events.txt` (consolidated from `air_cleanliness_treaty_events.txt`) under `chaosx_air_treaty`:
 
 - `.1` Filter Convoy dispatch
 - `.2` Filter Convoy arrival
@@ -190,7 +190,7 @@ Static control flow requires complete callback and state-count verification, app
 - Blackout texture: `gfx/interface/fallout_world_end/fallout_blackout_tile.dds`
 - State-grade idea sprite: `GFX_idea_fallout_state_grade`
 - State-grade idea texture: `gfx/interface/ideas/fallout_world_end/idea_fallout_state_grade.dds`
-- Asset manifest: `docs/assets/fallout_world_end/manifest.md`
+- Asset manifest: none exists in the current checkout, because `docs/assets/fallout_world_end/` is absent
 
 ### Existing sprite reused
 

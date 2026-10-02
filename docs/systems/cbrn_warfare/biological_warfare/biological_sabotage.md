@@ -13,7 +13,7 @@ It is not battlefield dissemination. Battlefield delivery remains in `common/rai
 - Japan's bounded China-theater actions remain exact-state decisions.
 - Doomsday release is a native raid under `biological_raids`.
 
-The twelve legacy supply-chain decisions cannot list new targets. Their identifiers, exact-state ledger, resolver, and cleanup helpers remain only so an already committed record can end safely.
+The twelve supply-chain sabotage decisions have no definitions in `common/decisions/`, so nothing lists new targets. Their exact-state ledger, resolver, and cleanup helpers remain only so an already committed record can end safely.
 
 ## Agent hierarchy and raid odds
 
@@ -64,13 +64,13 @@ AI cannot select the retired generic decision family. Active raids, operative op
 
 ## Files and identifiers
 
-- Migration-only decision identifiers and resolvers: `common/decisions/biological_sabotage_decisions.txt`, `common/scripted_effects/biological_sabotage_effects.txt`, `common/script_constants/biological_sabotage_constants.txt`, and `common/scripted_triggers/biological_sabotage_triggers.txt`
+- Migration-only resolvers: `common/scripted_effects/biological_sabotage_effects.txt`, `common/script_constants/biological_sabotage_constants.txt`, and `common/scripted_triggers/biological_sabotage_triggers.txt`
 - Shared lifecycle effects: `common/scripted_effects/biological_lifecycle_effects.txt`
 - Historical campaign and doomsday raids: `common/raids/japan_cbrn_campaign_raids.txt` and `common/raids/cbrn_doomsday_raids.txt`
-- Retained migration localisation and Japan icon strings: `localisation/english/biological_sabotage_l_english.yml`
+- Sabotage raid localisation: `localisation/english/biological_sabotage_raids_l_english.yml`
 - Strategic and battlefield raid map icons remain the existing `GFX_raid_type_icon_anthrax_strike`, `GFX_raid_type_icon_plague_strike`, `GFX_raid_type_icon_tularemia_strike`, and `GFX_raid_type_icon_smallpox_strike` definitions
 - Existing decision icons retained for the Japan exceptions and stable migration references: `GFX_decision_bio_sabotage_anthrax`, `GFX_decision_bio_sabotage_plague`, `GFX_decision_bio_sabotage_tularemia`, and `GFX_decision_bio_sabotage_smallpox`
-- Asset manifests: `docs/assets/chaos_warfare_system/stage_7_biological_warfare/food_water_medical_sabotage/manifest.md` and the existing biological raid icon manifests
+- Asset manifests: none for these icons exists in the current checkout, because `docs/assets/chaos_warfare_system/stage_7_biological_warfare/` is absent
 
 The raid map icons are owned by the existing strategic and battlefield biological raid interface definitions. The retained decision icons remain in `gfx/interface/decisions/biowarfare/` for the Japan historical decisions and stable migration references and are not overwritten or deleted.
 

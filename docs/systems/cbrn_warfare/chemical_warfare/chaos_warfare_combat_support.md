@@ -28,7 +28,7 @@ The operational multipliers increase disruption and downstream exposure potency 
 
 ## Icon
 
-The dedicated doctrine-family asset is `gfx/interface/doctrines/icons/chaos_warfare_doctrine_style/doctrine_contaminant_fire_support.dds`, registered as `GFX_doctrine_contaminant_firebases_medium` in `interface/chaosx_doctrines.gfx`. It is not a generic or cross-type substitute.
+The dedicated doctrine-family asset is `gfx/interface/doctrines/icons/chaos_warfare_doctrine_style/doctrine_contaminant_fire_support.dds`, registered as `GFX_doctrine_contaminant_firebases_medium` in `interface/cbrn_doctrine.gfx`. It is not a generic or cross-type substitute.
 
 ## Engine boundary
 

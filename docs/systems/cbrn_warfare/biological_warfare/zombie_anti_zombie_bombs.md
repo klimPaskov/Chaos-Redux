@@ -59,7 +59,7 @@ The modifier has no scripted day timer. It removes itself automatically once no 
 - `common/on_actions/zombie_cure_payload_cxt_on_actions.txt`
 - `common/scripted_effects/zombie_cure_payload_cxt_effects.txt`
 - `common/script_constants/zombie_special_project_constants.txt`
-- `common/script_constants/zombie_constants.txt`
+- `common/script_constants/002_zombie_constants.txt`
 - `common/scripted_triggers/002_zombie_outbreak_triggers.txt`
 - `common/scripted_effects/002_zombie_outbreak_effects.txt`
 - `common/scripted_effects/zombie_special_project_effects.txt`

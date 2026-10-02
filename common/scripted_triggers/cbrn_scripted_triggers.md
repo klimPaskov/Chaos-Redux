@@ -470,7 +470,6 @@ These temporary-record triggers live in `cbrn_chemical_raid_triggers.txt` and ar
 - `cbrn_chemical_air_raid_result_has_no_release`: true only for the accepted aborted or failed result codes.
 - `cbrn_chemical_air_raid_result_has_release`: true only for partial, successful, or catastrophic releases.
 - `cbrn_chemical_air_raid_reservation_is_resolved`: requires the exact 120-lot ordinary reservation or 240-lot strategic-rocket reservation, positive net consumption no greater than that reservation, native reservation/debit proof, and a release-efficiency proof that agrees with the result class.
-- `cbrn_chemical_air_raid_native_condition_receipt_is_valid`: validates the named native-outcome condition receipt supplied by the selected-state raid adapter.
 
 Scope: enclosing raid outcome chain after the actor-country effect has called `cbrn_resolve_chemical_air_raid_reservation`. Inputs are temporary `cbrn_raid_*` and `cbrn_action_*` values. Defaults: false; missing or contradictory proof fails closed. Outputs: boolean only. Side effects: none. These triggers do not infer weather, terrain, release, or aircraft activity.
 

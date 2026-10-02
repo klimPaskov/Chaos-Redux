@@ -917,13 +917,13 @@ State-scope explicit alert cleanup. It clears only `cbrn_chemical_raid_alert_act
 
 ### cbrn_apply_starting_mask_profile
 
-Applies one accepted 1936 country profile from temporary inputs: basic/improved stock, military issue target, already-issued civilian share, registration proof, and program-profile enum.
+Applies one accepted 1936 country profile from temporary inputs: basic/improved stock, military issue target, registration proof, and program-profile enum.
 
-Scope: country. Required temporary inputs: `cbrn_starting_mask_basic`, `cbrn_starting_mask_improved`, `cbrn_starting_military_issue_target`, `cbrn_starting_civilian_distribution_target`, `cbrn_starting_registration_proof`, and `cbrn_starting_program_profile`. Defaults: the static caller supplies every value. Outputs: technology, exact tuned starting crates, reserve/registration flags, readiness, actual manpower-scaled military issue, actual population-scaled distribution across controlled core states, and maintenance scheduling. `cbrn_starting_civilian_distribution_target` is the share already issued at the 1936 bookmark, not the matrix's eventual civilian-coverage target; undistributed crates remain in the national reserve. Military targets above 100 percent represent replacement, training, and mobilization issue; protection remains capped while the extra issued ledger is retained. All issue and distribution are stock-limited, so unmet target demand creates no equipment. Side effects: a bounded one-time owned-state loop for that country; no periodic pulse.
+Scope: country. Required temporary inputs: `cbrn_starting_mask_basic`, `cbrn_starting_mask_improved`, `cbrn_starting_military_issue_target`, `cbrn_starting_registration_proof`, and `cbrn_starting_program_profile`. Defaults: the static caller supplies every value. Outputs: technology, exact tuned starting crates, reserve/registration flags, readiness, actual manpower-scaled military issue, and maintenance scheduling. Civilian issue belongs to separately evidenced dated receipts, not to the generic starting profile, and unissued crates remain in the national reserve. Military targets above 100 percent represent replacement, training, and mobilization issue; protection remains capped while the extra issued ledger is retained. All issue is stock-limited, so unmet target demand creates no equipment. Side effects: one start-up maintenance job for that country through `cbrn_start_protection_maintenance_job`; no periodic pulse.
 
 ### cbrn_apply_starting_imported_mask_profile
 
-Country-scope wrapper for an imported emergency reserve. It sets the temporary import-only flag, calls `cbrn_apply_starting_mask_profile`, and clears the flag in the same effect chain. The country receives its real tuned crates, issue and distribution ledgers, reserve flag, readiness contribution, maintenance job, and profile-aware AI classification, but it does not receive free `basic_gas_masks` technology or the `cbrn_program_established` flag. Improved-mask technology is still granted only when the accepted profile contains a positive improved-mask stock.
+Country-scope wrapper for an imported emergency reserve. It sets the temporary import-only flag, calls `cbrn_apply_starting_mask_profile`, and clears the flag in the same effect chain. The country receives its real tuned crates, issue ledger, reserve flag, readiness contribution, maintenance job, and profile-aware AI classification, but it does not receive free `basic_gas_masks` technology or the `cbrn_program_established` flag. Improved-mask technology is still granted only when the accepted profile contains a positive improved-mask stock.
 
 ### chaosx_apply_starting_cbrn_mask_profiles
 
@@ -968,16 +968,14 @@ These country-scope effects are defined in `cbrn_doctrine_effects.txt`. They own
 
 | Effect | Inputs, defaults, outputs, and side effects |
 | --- | --- |
-| `cbrn_doctrine_raise_readiness_to_minimum` | Country scope. Optional temporary input `cbrn_doctrine_requested_readiness_minimum`; absent input is a no-op. Initializes CBRN data, raises readiness only when below the request, and clamps to the current readiness cap. |
+| `cbrn_doctrine_raise_readiness_to_minimum` | Country scope. Takes no input. Refreshes the country mask snapshot through `cbrn_refresh_country_mask_snapshot`, which initializes CBRN data and rereads the equipment-backed mask reserves. |
 | `cbrn_doctrine_raise_decontamination_to_minimum` | Country scope. Optional temporary input `cbrn_doctrine_requested_decontamination_minimum`; absent input is a no-op. Initializes data, raises capacity only when below the request, and clamps to 0-100. |
-| `cbrn_doctrine_apply_institutional_band` | Country scope. Optional temporary inputs `cbrn_doctrine_requested_readiness_cap` and `cbrn_doctrine_requested_readiness_minimum`. Applies whichever values exist through the shared readiness helpers; missing values do nothing. |
+| `cbrn_doctrine_apply_institutional_band` | Country scope. Takes no input. Refreshes the country mask snapshot through `cbrn_refresh_country_mask_snapshot`, the same refresh `cbrn_doctrine_raise_readiness_to_minimum` performs. |
 | `cbrn_doctrine_pay_command_power` | Country scope. Optional temporary input `cbrn_doctrine_command_power_cost`. Negates and debits that amount; callers must pass an affordability trigger first. Missing input is a no-op. |
 
 Example:
 
 ```txt
-set_temp_variable = { cbrn_doctrine_requested_readiness_cap = constant:cbrn_doctrine_readiness.protective_foundation_cap }
-set_temp_variable = { cbrn_doctrine_requested_readiness_minimum = constant:cbrn_doctrine_readiness.protective_foundation_minimum }
 cbrn_doctrine_apply_institutional_band = yes
 ```
 
@@ -985,18 +983,11 @@ cbrn_doctrine_apply_institutional_band = yes
 
 | Effect | Purpose and side effects |
 | --- | --- |
-| `cbrn_chaos_warfare_adopt` | Initializes the country model, records adoption/program/command flags and cumulative mask-production baseline, closes offensive authority, removes the legacy Concentration unlock, applies the 39/10 adoption band, unlocks Operations HQ plus Gas Mask/Decon support, and activates the bounded establishment mission. The public doctrine gate must pass first. |
-| `cbrn_complete_chaos_warfare_establishment` | Records successful establishment, opens institutional authority, raises readiness to 20 and decontamination capacity to 20. The mission or remediation decision owns the exact stock/formation trigger. |
-| `cbrn_fail_chaos_warfare_establishment` | Records failure, retains closed offensive authority, restores Defensive Preparation policy, and lowers readiness to at most 9 without removing the doctrine. |
-| `cbrn_remediate_chaos_warfare_establishment` | Calls the successful-establishment effect after the delayed decision has re-proved every requirement and paid its costs. |
-| `cbrn_begin_hazard_assault_training` | Requires the public training trigger. Debits 100 masks oldest-first and 10 Army Experience, records actual mask consumption, grants 0.25 daily Hazard Assault mastery for 30 days, and activates the matching mission. Because installed `add_daily_mastery` documentation demonstrates literal numeric fields only, the centralized amount and duration variables are rendered into that block through `meta_effect`; no parser support for direct variable tokens is assumed. It creates no exposure. |
+| `cbrn_chaos_warfare_adopt` | Initializes the country model, records the program, command, adopted, and establishment-complete flags, clears the establishment-pending, establishment-failed, offensive-authority-closed, and legacy Concentration flags, stores the cumulative mask-production baseline and the peak use policy, unlocks the Operations HQ and Gas Mask/Decon Detachment subunits, and reconciles doctrine capabilities. The public doctrine gate must pass first. |
 
-Example:
-
-```txt
-available = { cbrn_can_begin_hazard_assault_training = yes }
-complete_effect = { hidden_effect = { cbrn_begin_hazard_assault_training = yes } }
-```
+Adoption completes establishment in one step, so no establishment mission, remediation decision, or Hazard Assault training decision follows it.
+For weighted selectors that still name it, the compatibility trigger `cbrn_chaos_warfare_establishment_requirements_met` in `cbrn_doctrine_triggers.txt` reduces to `cbrn_chaos_warfare_research_capable`.
+Hazard Assault adoption is recorded by `cbrn_record_hazard_assault_adoption`, described under the mastery-record effects below.
 
 ### Exact-state decontamination
 
@@ -1052,7 +1043,7 @@ These country-scope effects translate current native doctrine state into stable 
 
 `cbrn_set_doctrine_condemnation_mult_from_country` is country scoped and writes temporary `cbrn_action_doctrine_condemnation_mult` as 1.00, 0.90, 0.80, or 0.70 from Integrated Command mastery. The non-baseline values read the canonical `chem_integrated_operations.condemnation_mult` ladder also used by not-yet-migrated chemical and biological adapters, preventing parallel tuning tables during route migration. It clamps to the shared doctrine floor/ceiling and changes no persistent state. The helper is Condemnation-only and never touches evidence, attribution, deaths, contamination, medical saturation, domestic penalties, use counters, or history.
 
-`cbrn_migrate_legacy_chaos_warfare` is an idempotent country-scope compatibility effect. For countries with Chaos Warfare, it initializes the model, removes the legacy Concentration unlock, reconstructs adoption and mastery flags from native doctrine state, restores the appropriate readiness cap, and retries legitimate doctrine technology grants. New games call it from `on_startup`; because that on-action does not run when a save is loaded, an old doctrine holder lacking `cbrn_chaos_warfare_adopted` receives the one-time zero-cost `cbrn_convene_institutional_review` decision instead. It does not auto-claim cross-track institutions, fabricate stock/formation proof, or grant a delivery consequence.
+`cbrn_migrate_legacy_chaos_warfare` is an idempotent country-scope compatibility effect. For countries with Chaos Warfare, it initializes the model, removes the legacy Concentration unlock, reconstructs adoption and mastery flags from native doctrine state, and retries legitimate doctrine technology grants. When `cbrn_chaos_warfare_adopted` is missing it calls `cbrn_chaos_warfare_adopt`. `on_startup` in `common/on_actions/chaosx_on_actions_chemical_warfare.txt` calls it for every country, and the Chaos Redux test-country setup effect calls it for the test country. It does not auto-claim cross-track institutions, fabricate stock/formation proof, or grant a delivery consequence.
 
 Example:
 
@@ -1075,8 +1066,6 @@ These effects are defined in `cbrn_hq_effects.txt`. Character-scope effects expe
 | `cbrn_hq_clear_operation_state` | Character scope. Calls the benefit cleanup and clears operation code, committed force band, and remaining upkeep ticks. It is reserved for the planned final event. |
 | `cbrn_hq_calculate_preparation_days` | Character scope. Required temporary inputs: base, minimum, and maximum preparation days. Reads owner Chemical Readiness, applies the centralized readiness multiplier, rounds, and clamps into the accepted range. |
 | `cbrn_hq_enforce_preparation_efficiency_budget` | Character scope, called by all five HQ start helpers after their last discount and before commitment. Requires `cbrn_hq_preparation_base`, `cbrn_hq_preparation_days`, and their temporary minimum/maximum. Sets a temporary budget floor to the unadjusted base multiplied by `cbrn_hazard_budget.residual_floor`, then clamps and rounds preparation days. It changes only the current receipt, with no country variable or flag side effect. |
-| `cbrn_hq_apply_operations_section_preparation_discount` | Character scope. Inputs: calculated preparation plus the same minimum and maximum temporary bounds. Applies the Operations Section's ten-percent preparation reduction, then reclamps and rounds. Call only for abilities that require that company. |
-| `cbrn_hq_apply_high_protection_preparation_discount` | Character scope. Refreshes the owner's real military-mask snapshot and applies the accepted five-percent preparation reduction only at the high-protection threshold, then reclamps. It does not change exposure protection itself. |
 | `cbrn_hq_apply_operations_commander_preparation_discount` | Character scope. Inputs: calculated preparation plus minimum/maximum bounds. Applies the doctrine-independent commander's thirty-percent reduction only when the leader has `chemical_operations_commander`, then reclamps and rounds. It changes no cost, duration, cooldown, or exposure output. The earned trait requires completed qualifying headquarters service through `cbrn_commander_record_completed_hq_operation`; Chemical Operations Academy grants +3% army experience gain and does not grant the trait. |
 | `cbrn_hq_add_preparing_trait_for_current_duration` | Character scope. Reads the exact rounded `cbrn_hq_preparation_days` value and injects it into the otherwise static timed-trait field through a CBRN-local meta effect. |
 | `cbrn_hq_schedule_current_event` | Character scope. Requires `cbrn_hq_scheduled_event_id` from `cbrn_hq_event_id` and exact rounded `cbrn_hq_scheduled_event_days`. It binds the calling commander as `cbrn_hq_commander` and injects both values into the unit-leader event call because installed documentation does not verify bare dynamic durations for that field. Each event resumes inside that exact commander target before reading variables or changing traits. |
@@ -1122,7 +1111,7 @@ one_time_effect = {
 
 ## Native chemical land raid receipt effects
 
-The three retained helpers in `cbrn_battlefield_operation_effects.txt` are called by `cbrn_resolve_chemical_land_raid_outcome` after the native raid supplies a fixed agent, exact target, engine outcome, and reserved equipment. No selected-agent variable, timed-decision ledger, manual payload debit, or refund remains. The raid-instance to actor-country scope bridge and exact policy check are documented in `cbrn_chemical_land_raid_effects.md`.
+The three retained helpers in `cbrn_battlefield_operation_effects.txt` are called by `cbrn_resolve_chemical_land_raid_country_outcome` after the native raid supplies a fixed agent, exact target, engine outcome, and reserved equipment. No selected-agent variable, timed-decision ledger, manual payload debit, or refund remains. The raid-instance to actor-country scope bridge and exact policy check are documented in `cbrn_chemical_land_raid_effects.md`.
 
 | Effect | Scope and contract |
 | --- | --- |
@@ -1139,9 +1128,10 @@ The state-owned chemical ledger is defined in `cbrn_chemical_state_effects.txt`.
 | Effect | Scope and contract |
 | --- | --- |
 | `cbrn_chemical_set_air_contribution_from_class` | State scope. Converts the exact canonical contamination class into the configured Air Cleanliness contribution and applies only the delta to the state and global component totals. |
-| `cbrn_chemical_update_state_receipt` | State scope. Replaces the canonical contamination class, refreshes the exact expiry and continuing-death schedule, updates the presentation modifier, and adjusts Air Cleanliness by the actual class delta. |
-| `cbrn_chemical_cleanup_state_receipt` | State scope. Removes only the state-owned chemical receipt and its Air Cleanliness contribution, then clears the state-owned continuing-death schedule. An older cleanup event cannot erase a newer receipt. |
-| `cbrn_chemical_rebuild_air_cleanliness_contributions` | Country scope. Explicit settings-reenable repair for states with live canonical chemical receipts. It is called only from the bounded repair path and is not a recurring world scan. |
+| `cbrn_air_cleanliness_update_chemical_state_contribution` | State scope. Reads the temporary `cbrn_air_contribution_value`, stores it as the state's `cbrn_chemical_air_contribution_bp`, and applies only the delta to the global chemical Air Cleanliness total and affected-state count. While Air Cleanliness is disabled it stores the state value without changing the global totals. |
+| `cbrn_air_cleanliness_clear_chemical_state_contribution` | State scope. Removes the state's stored chemical Air Cleanliness contribution from the global chemical total and affected-state count, then clears the state value. |
+| `cbrn_chemical_refresh_state_modifier`, `cbrn_chemical_refresh_continuing_death_profile`, and `cbrn_chemical_schedule_continuing_deaths` | State scope. Derive the presentation modifier and the exact continuing-death profile and schedule from the canonical contamination receipt. |
+| `cbrn_chemical_rebuild_air_cleanliness_contributions` | Any scope. Explicit settings-reenable repair for states with live canonical chemical receipts. It is called only from the bounded repair path and is not a recurring world scan. |
 
 `chem_state_contamination` is the presentation modifier for the canonical receipt. No legacy contamination writer or parallel state ledger remains. The canonical state receipt is the only source for chemical Air Cleanliness, expiry, and continuing deaths.
 
@@ -1151,9 +1141,10 @@ The state-owned chemical ledger is defined in `cbrn_chemical_state_effects.txt`.
 
 | Effect | Scope and contract |
 | --- | --- |
-| `cbrn_biological_set_air_contribution_from_agent` | State scope. Maps the selected agent and active lifecycle status to the centralized receipt contribution. Inactive or unknown episodes contribute zero. |
-| `cbrn_biological_cleanup_air_receipt` | State scope. Removes only the biological receipt owned by the current lifecycle episode. It does not alter incubation, deaths, attribution, or treatment ledgers. |
-| `cbrn_biological_rebuild_air_cleanliness_contributions` | Country scope. Explicit settings-reenable repair for active biological episodes; it is not a periodic country or world pulse. |
+| `bio_lifecycle_set_current_agent_air_contribution` | State scope. Maps the current agent's intensity band to the centralized receipt contribution for the active agent slot and applies only the delta to the global biological total and affected-state count. An agent slot without an active state flag contributes zero. |
+| `bio_lifecycle_update_current_agent_air_contribution_from_slot` | State scope. Reads the active agent slot's stored intensity and calls `bio_lifecycle_set_current_agent_air_contribution`. |
+| `bio_lifecycle_clear_current_agent_air_contribution` | State scope. Removes only the current agent slot's stored receipt and its share of the global biological total. It does not alter incubation, deaths, attribution, or treatment ledgers. |
+| `bio_lifecycle_rebuild_air_cleanliness_contributions` | Any scope. Explicit settings-reenable repair for active biological episodes; it is not a periodic country or world pulse. |
 
 The biological effect does not reuse the chemical contamination ledger and does not turn weaponized zombies into ordinary pathogen receipts. Shared lifecycle helpers remain in the biological files.
 

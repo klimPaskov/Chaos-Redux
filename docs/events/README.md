@@ -31,6 +31,7 @@ These summaries describe their recorded source and validation evidence, which do
 | 024 Video Game in Sweden | [`024_video_game_in_sweden/overview.md`](024_video_game_in_sweden/overview.md) | Event package |
 | 026 Black Friday | [`026_black_friday/overview.md`](026_black_friday/overview.md) | [Expanded lifecycle and validation record](026_black_friday.md), universal cost registry, and achievement contract |
 | 027 Doctrine Research | [`027_doctrine_research/overview.md`](027_doctrine_research/overview.md) | Doctrine research and evidence limits |
+| 028 Asteroid Incoming | [`028_asteroid_incoming/overview.md`](028_asteroid_incoming/overview.md) | Impact transaction, dust stages, recovery decisions, and achievements |
 | 029 Riches Found | [`029_riches_found/overview.md`](029_riches_found/overview.md) | Persistent state mines, controller transfer, contracts, crises, and three evolutions |
 | 031 Random Terror | [`031_random_terror/overview.md`](031_random_terror/overview.md) | Routes, actors, assets, and validation records |
 | 032 Missiles | [`032_missiles/overview.md`](032_missiles/overview.md) | [Expanded API, custody, scenario, and validation record](032_missiles.md) |

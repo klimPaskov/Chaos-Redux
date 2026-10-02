@@ -214,7 +214,7 @@ Field tests now prefer the most remote practical target states:
 - `interface/chaosx_subuniticons.gfx`
 - `interface/chaosx_texticons.gfx`
 - `interface/chaosx_raids.gfx`
-- `localisation/english/chaosx_events_l_english.yml`
+- `localisation/english/_chaosx_events_l_english.yml`
 - `localisation/english/chaosx_units_l_english.yml`
 - `localisation/english/chaosx_characters_l_english.yml`
 

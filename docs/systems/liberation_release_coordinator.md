@@ -13,7 +13,7 @@ The coordinator does not decide which Independence Wave package is eligible and 
 - `common/scripted_effects/chaosx_liberation_release_effects.txt` owns lifecycle, reservation, validation, execution, finalization, compensation, commit, abort, and cleanup effects.
 - `common/scripted_effects/005_006_liberations_collision_effects.txt` owns the synchronous joint dispatcher and Event 005 contribution adapter.
 - `common/scripted_effects/006_independence_wave_execution_effects.txt` owns Event 006 fixed-tag instantiation, transfer, finalizer, and rollback acknowledgement.
-- `common/script_constants/006_independence_wave_constants.txt` owns Event 006 counts and wave tuning; `006_independence_wave_package_constants.txt` owns package-planner phases and allocation tuning.
+- `common/script_constants/006_independence_wave_constants_registry.txt` owns Event 006 counts and wave tuning in its `[source: 006_independence_wave_constants.txt]` section and package-planner phases and allocation tuning in its `[source: 006_independence_wave_package_constants.txt]` section.
 
 ## Plan lifecycle
 

@@ -63,11 +63,12 @@ not FORM-18 members.
 
 ## Constants and tuning
 
-`common/script_constants/006_independence_wave_iw043_iw058_constants.txt`
+The `[source: 006_independence_wave_iw043_iw058_constants.txt]` section of
+`common/script_constants/006_independence_wave_constants_registry.txt`
 holds the package starts, thresholds, costs/durations, force shares, political
 profiles, idea and leader modifiers, AI weights, transaction serials, and
 adapter states. The shared `independence_wave_formable_signature` category in
-`common/script_constants/006_independence_wave_formable_constants.txt` owns the
+the `[source: 006_independence_wave_formable_constants.txt]` section of the same registry file owns the
 FORM-12/13/18 member, consent, unique-anchor, and AI-score thresholds. The
 generic Event 006 decision-cost and force-package tables remain the source for
 shared resource costs and starting-force profiles.

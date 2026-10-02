@@ -65,8 +65,8 @@ character. The pre-cutover branch before 17 June 1938 remains unavailable
 until Hasan is sourced and authored; on/after that date Event 006 reuses the
 vanilla male Siddiq character without duplicating his portrait or character.
 The date predicate is kept as a single engine date token;
-the corresponding day value is documented in
-`common/script_constants/006_independence_wave_iw093_iw098_constants.txt`.
+the corresponding day value is documented in the `[source: 006_independence_wave_iw093_iw098_constants.txt]` section of
+`common/script_constants/006_independence_wave_constants_registry.txt`.
 
 ## Focus ownership and Event 012 safety
 

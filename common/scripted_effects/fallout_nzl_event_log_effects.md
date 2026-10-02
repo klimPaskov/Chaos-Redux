@@ -1,8 +1,8 @@
 # Fallout NZL Event Log scripted effects
 
-This file documents `common/scripted_effects/fallout_nzl_event_log_effects.txt`.
-The package remains dormant because its activation helper has no caller. These
-history helpers add no on action or scheduler.
+This file documents the NZL Event Log helpers in `common/scripted_effects/fallout_consolidated_effects.txt`.
+The package remains dormant because `fallout_nzl_activate_lifeboat_package` is reached only from the dormant B7 successor slice, `fallout_successor_b7_run_vertical_slice`, which has no live caller.
+These history helpers add no on action or scheduler.
 
 ## Helper map
 

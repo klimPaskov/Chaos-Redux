@@ -26,7 +26,7 @@ The broader accepted treaty package is not complete. Pooled decontamination, see
 
 `air_contamination_monthly_update` remains the only global monthly Air Cleanliness coordinator. It calls `air_cleanliness_treaty_pre_winter_pulse` before the existing state pass and `air_cleanliness_treaty_host_pulse` afterward. The pre-pass removes invalid routes before winter pressure is calculated. The post-pass records `global.date`, reconciles current membership, and uses only bounded arrays.
 
-The treaty does not add an `on_monthly`, `on_daily`, or other periodic on action. `common/on_actions/air_cleanliness_treaty_on_actions.txt` contains only `on_annex`, where ROOT is the annexer and FROM is the annexed country. Annex cleanup is disabled during Fallout transition and Fallout so the world rewrite cannot fire treaty reports or elect transient founders.
+The treaty does not add an `on_monthly`, `on_daily`, or other periodic on action. The treaty section of `common/on_actions/fallout_consolidated_on_actions.txt` contains only `on_annex`, where ROOT is the annexer and FROM is the annexed country. Annex cleanup is disabled during Fallout transition and Fallout so the world rewrite cannot fire treaty reports or elect transient founders.
 
 ## Persistent ledgers
 
@@ -120,21 +120,19 @@ Invitation AI weighs government, major status, unconventional stockpiles, prior 
 
 Cleaning Day AI weighs government, war strain, and very high Air Contamination. Filter Convoy AI has a zero-validity gate through the decision availability trigger. It then weighs donor capacity, war strain, target phase, and critical target survival value.
 
-Verification dispatch AI weighs secretariat government, war strain, the subject's inspection history, prior refusal, and fascist administration. The inspected government has separate AI weights for full access, records-only access, and refusal. Government, war strain, available equipment, and prior refusal shape the response. Every AI value is stored in `common/script_constants/air_cleanliness_treaty_constants.txt`.
+Verification dispatch AI weighs secretariat government, war strain, the subject's inspection history, prior refusal, and fascist administration. The inspected government has separate AI weights for full access, records-only access, and refusal. Government, war strain, available equipment, and prior refusal shape the response. Every AI value is stored in the treaty section of `common/script_constants/fallout_consolidated_constants.txt` (consolidated from `air_cleanliness_treaty_constants.txt`).
 
 ## Files
 
-- `common/script_constants/air_cleanliness_treaty_constants.txt`
-- `common/scripted_triggers/air_cleanliness_treaty_triggers.txt`
-- `common/scripted_effects/air_cleanliness_treaty_effects.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`, treaty section consolidated from `air_cleanliness_treaty_constants.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`, treaty section consolidated from `air_cleanliness_treaty_triggers.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`, treaty section consolidated from `air_cleanliness_treaty_effects.txt`, with the winter and Fallout world-end sections consolidated from `air_cleanliness_winter_effects.txt` and `fallout_world_end_effects.txt`
 - `common/scripted_effects/chaos_meter_effects.txt`
-- `common/scripted_effects/air_cleanliness_winter_effects.txt`
-- `common/scripted_effects/fallout_world_end_effects.txt`
 - `common/scripted_effects/chaosx_welcome_effects.txt`
-- `common/decisions/air_cleanliness_treaty_decisions.txt`
-- `common/decisions/categories/air_cleanliness_treaty_categories.txt`
-- `common/on_actions/air_cleanliness_treaty_on_actions.txt`
-- `events/air_cleanliness_treaty_events.txt`
+- `common/decisions/fallout_consolidated_decisions.txt`, treaty section consolidated from `air_cleanliness_treaty_decisions.txt`
+- `common/decisions/categories/fallout_consolidated_categories.txt`, treaty section consolidated from `air_cleanliness_treaty_categories.txt`
+- `common/on_actions/fallout_consolidated_on_actions.txt`, treaty section consolidated from `air_cleanliness_treaty_on_actions.txt`
+- `events/fallout_world_end_events.txt`, treaty section consolidated from `air_cleanliness_treaty_events.txt`
 - `events/chemical_warfare_events.txt`
 - `common/opinion_modifiers/air_contamination_opinion_modifiers.txt`
 - `common/scripted_localisation/chaosx_scripted_localisation_map_modes.txt`

@@ -84,7 +84,7 @@ Natural terminal paths retain their existing scenario-specific helpers and world
 - Registry, row rebuild, selection, active-state dispatch, and toggle effects: `common/scripted_effects/chaosx_events_log_effects.txt`
 - Stable registry tuning: `common/script_constants/world_end_scenario_registry_constants.txt`
 - Automatic-selection gates: `common/scripted_triggers/chaosx_world_end_scenario_triggers.txt`
-- Fallout request, toggle, transition, and blackout dispatch: `common/scripted_effects/fallout_world_end_effects.txt`
+- Fallout request, toggle, transition, and blackout dispatch: `common/scripted_effects/fallout_consolidated_effects.txt` (the section consolidated from `fallout_world_end_effects.txt`)
 - Fallout event namespace and transition events: `events/fallout_world_end_events.txt`
 - Scripted GUI row, toggle, click, and detail-window handlers: `common/scripted_guis/chaosx_scripted_gui_events_log.txt`
 - Event Details and scenario-details layouts: `interface/chaosx_events_log_popup.gui`
