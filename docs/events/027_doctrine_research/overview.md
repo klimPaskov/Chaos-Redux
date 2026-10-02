@@ -151,6 +151,8 @@ No recurring whole-world on-action was added for Event 027.
 
 Event 027 is registered in the event settings, the National Breakthroughs cluster membership, firing history, event log, event details, evolution registry, debug names, and catalog workbook.
 
+A successful adoption in `doctrine_research_apply_adoption` calls Event 016's `brilliant_scientist_record_doctrine_research`, which records the doctrine decision once in the active Kruger host's policy history behind its own country and character guards. The human confirmation option shows `brilliant_scientist_doctrine_research_effect_tt` when an adoption would make that record.
+
 The report image is `GFX_report_event_027_doctrine_research` from `gfx/event_pictures/027_doctrine_research/027_doctrine_research_report.dds`, registered by `interface/027_doctrine_research.gfx`.
 
 Doctrine pages reuse the verified native doctrine-owned icons from the active doctrine definitions, including `GFX_doctrine_chaos_warfare_medium`, `GFX_doctrine_extermination_columns_medium`, `GFX_doctrine_contaminant_firebases_medium`, `GFX_doctrine_chemical_suppression_medium`, and `GFX_doctrine_integrated_chemical_operations_medium` for Chaos Warfare.

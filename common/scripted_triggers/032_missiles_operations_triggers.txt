@@ -59,15 +59,6 @@ missiles_operation_before_commitment = {
 	}
 }
 
-missiles_operation_is_committed = {
-	missiles_operation_receipt_is_active = yes
-	has_country_flag = missiles_operation_committed
-	OR = {
-		check_variable = { var = missiles_operation_state value = constant:missiles_operation_state.committed compare = equals }
-		check_variable = { var = missiles_operation_state value = constant:missiles_operation_state.resolving compare = equals }
-	}
-}
-
 missiles_operation_can_be_prepared = {
 	missiles_country_can_prepare_operation = yes
 	missiles_selected_target_is_valid = yes
@@ -159,10 +150,6 @@ missiles_operation_target_has_profile_value = {
 			missiles_operation_target_has_strategic_value = yes
 		}
 	}
-}
-
-missiles_operation_target_has_any_value = {
-	missiles_operation_target_has_strategic_value = yes
 }
 
 missiles_operation_has_reliable_payload_custody = {
@@ -328,36 +315,6 @@ missiles_all_active_sites_hardened_secure = {
 	}
 }
 
-missiles_site_can_be_captured = {
-	exists = yes
-	OR = {
-		has_state_flag = missiles_site_active
-		has_state_flag = missiles_site_hardened
-		has_state_flag = missiles_site_compromised
-	}
-	NOT = { has_state_flag = missiles_site_scuttled }
-	NOT = { has_state_flag = missiles_site_captured }
-}
-
-missiles_incident_can_be_opened = {
-	missiles_country_can_manage_program = yes
-	NOT = { has_country_flag = missiles_incident_active }
-	NOT = { has_country_flag = missiles_rogue_command_active }
-	OR = {
-		has_country_flag = missiles_evolution_rogue_launch_commands
-		has_country_flag = missiles_evolution_automatic_retaliation
-	}
-}
-
-missiles_rogue_response_is_available = {
-	has_country_flag = missiles_rogue_command_active
-	has_country_flag = missiles_incident_active
-	OR = {
-		has_variable = missiles_incident_site
-		has_variable = missiles_operation_launch_site
-	}
-}
-
 missiles_warning_is_actionable = {
 	has_country_flag = missiles_warning_active
 	has_variable = missiles_warning_root_id
@@ -370,37 +327,6 @@ missiles_warning_is_actionable = {
 		NOT = { has_variable = missiles_warning_expiry_date }
 		check_variable = { var = global.date value = missiles_warning_expiry_date compare = less_than }
 	}
-}
-
-missiles_retaliation_can_queue = {
-	has_country_flag = missiles_evolution_automatic_retaliation
-	missiles_warning_is_actionable = yes
-	NOT = { has_country_flag = missiles_retaliation_network_severed }
-	NOT = { has_country_flag = missiles_rogue_command_active }
-	check_variable = {
-		var = missiles_retaliation_queue_size
-		value = constant:missiles_chain_limits.maximum_active_queue
-		compare = less_than
-	}
-	check_variable = {
-		var = missiles_retaliation_generation
-		value = constant:missiles_chain_limits.maximum_generation
-		compare = less_than
-	}
-	check_variable = {
-		var = missiles_operational_reserve
-		value = constant:missiles_reserve.retaliation_reserve_cap
-		compare = greater_than_or_equals
-	}
-	OR = {
-		NOT = { has_variable = missiles_retaliation_launch_root_id }
-		NOT = { check_variable = { var = missiles_retaliation_launch_root_id value = missiles_warning_root_id compare = equals } }
-		AND = {
-			has_variable = missiles_retaliation_launch_count
-			check_variable = { var = missiles_retaliation_launch_count value = constant:missiles_chain_limits.maximum_launches_per_country compare = less_than }
-		}
-	}
-	missiles_country_has_active_site = yes
 }
 
 missiles_retaliation_launch_slot_available = {
@@ -425,14 +351,6 @@ missiles_posture_can_be_delegated = {
 	check_variable = { var = missiles_command_control value = constant:missiles_program_value.secure_command_gate compare = greater_than_or_equals }
 }
 
-missiles_site_repair_receipt_is_valid = {
-	has_variable = missiles_incident_site
-	var:missiles_incident_site = {
-		missiles_site_can_repair = yes
-	}
-	has_country_flag = missiles_site_repair_active
-}
-
 missiles_country_has_payload_owner_capability = {
 	OR = {
 		has_country_flag = missiles_special_payload_supported
@@ -447,9 +365,3 @@ missiles_country_has_payload_owner_capability = {
 	}
 }
 
-missiles_achievement_snapshot_is_safe = {
-	has_variable = missiles_active_site_count
-	check_variable = { var = missiles_active_site_count value = constant:missiles_program_value.zero compare = greater_than }
-	has_variable = missiles_launch_readiness
-	has_variable = missiles_command_control
-}

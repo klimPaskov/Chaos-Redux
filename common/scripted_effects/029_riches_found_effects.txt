@@ -293,43 +293,6 @@ riches_found_clamp_mine_values = {
 	if = { limit = { check_variable = { riches_found_chaos_exposure > constant:riches_found_event.public_value_maximum } } set_variable = { riches_found_chaos_exposure = constant:riches_found_event.public_value_maximum } }
 }
 
-# STATE scope. Input: temporary `riches_found_pressure_delta`. Updates the
-# primary public value and refreshes all derived state/controller outputs.
-riches_found_adjust_extraction_pressure = {
-	add_to_variable = { riches_found_extraction_pressure = riches_found_pressure_delta }
-	riches_found_clamp_mine_values = yes
-	riches_found_refresh_mine_presentation = yes
-	riches_found_refresh_mine_contribution = yes
-	riches_found_refresh_evolution_gates = yes
-}
-
-# STATE scope. Input: temporary `riches_found_development_delta`.
-riches_found_adjust_mine_development = {
-	add_to_variable = { riches_found_mine_development = riches_found_development_delta }
-	riches_found_clamp_mine_values = yes
-	riches_found_refresh_mine_presentation = yes
-	riches_found_refresh_mine_contribution = yes
-	riches_found_refresh_evolution_gates = yes
-}
-
-# STATE scope. Input: temporary `riches_found_order_delta`.
-riches_found_adjust_local_order = {
-	add_to_variable = { riches_found_local_order = riches_found_order_delta }
-	riches_found_clamp_mine_values = yes
-	riches_found_refresh_mine_presentation = yes
-	riches_found_refresh_mine_contribution = yes
-	riches_found_refresh_evolution_gates = yes
-}
-
-# STATE scope. Input: temporary `riches_found_legitimacy_delta`.
-riches_found_adjust_revenue_legitimacy = {
-	add_to_variable = { riches_found_revenue_legitimacy = riches_found_legitimacy_delta }
-	riches_found_clamp_mine_values = yes
-	riches_found_refresh_mine_presentation = yes
-	riches_found_refresh_mine_contribution = yes
-	riches_found_refresh_evolution_gates = yes
-}
-
 # STATE scope. Input: temporary `riches_found_report_kind` from the shared
 # report-id constants. One pending report is allowed per mine, and the hidden
 # state callback below delivers it to the current controller after one day.
@@ -1914,13 +1877,6 @@ riches_found_complete_mission = {
 	}
 }
 
-# STATE scope. Cancels an active mission while retaining the cancellation
-# result for the owning mission consumer.
-riches_found_cancel_mission = {
-	if = { limit = { riches_found_mission_is_active = yes } set_variable = { riches_found_last_mission_result = constant:riches_found_mission_stage.cancelled } }
-	riches_found_clear_mission_state = yes
-}
-
 # STATE scope. Removes all live mission fields and stale foreign targets.
 riches_found_clear_mission_state = {
 	if = { limit = { riches_found_mission_is_active = yes } set_variable = { riches_found_last_mission_result = constant:riches_found_mission_stage.cancelled } }
@@ -2083,18 +2039,6 @@ riches_found_clear_mine_cleanup = {
 	riches_found_clear_recovery_state = yes
 	riches_found_clear_stale_targets = yes
 	set_variable = { riches_found_last_cleanup_date = global.date }
-}
-
-# STATE scope. Input: temporary riches_found_input_operating_state,
-# riches_found_input_policy, and riches_found_input_phase. This is the common
-# state setter used by decision and mission consumers before a refresh.
-riches_found_set_operating_policy = {
-	set_variable = { riches_found_operating_state = riches_found_input_operating_state }
-	set_variable = { riches_found_policy = riches_found_input_policy }
-	set_variable = { riches_found_phase = riches_found_input_phase }
-	riches_found_refresh_mine_presentation = yes
-	riches_found_refresh_mine_contribution = yes
-	riches_found_refresh_evolution_gates = yes
 }
 
 # STATE scope. Temporarily closes production while preserving the mine record,

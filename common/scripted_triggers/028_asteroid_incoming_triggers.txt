@@ -404,38 +404,6 @@ asteroid_incoming_country_has_crater_target = {
 	}
 }
 
-asteroid_incoming_has_recovery_reserves = {
-	hidden_trigger = {
-		has_manpower > constant:asteroid_incoming_runtime.recovery_reserve_manpower
-		has_equipment = { support_equipment > constant:asteroid_incoming_runtime.recovery_reserve_support_equipment }
-		has_equipment = { motorized_equipment_1 > constant:asteroid_incoming_runtime.recovery_reserve_motorized_equipment }
-		has_equipment = { train_equipment > constant:asteroid_incoming_runtime.recovery_reserve_train_equipment }
-		has_fuel > constant:asteroid_incoming_runtime.recovery_reserve_fuel
-	}
-}
-
-asteroid_incoming_has_emergency_reserves = {
-	hidden_trigger = {
-		has_manpower > constant:asteroid_incoming_recovery.minimum_manpower_reserve
-		has_equipment = { support_equipment > constant:asteroid_incoming_recovery.minimum_support_reserve }
-		has_equipment = { motorized_equipment_1 > constant:asteroid_incoming_recovery.minimum_motorized_reserve }
-	}
-}
-
-asteroid_incoming_has_transport_reserves = {
-	hidden_trigger = {
-		has_equipment = { train_equipment > constant:asteroid_incoming_recovery.minimum_train_reserve }
-		has_fuel > constant:asteroid_incoming_recovery.minimum_fuel_reserve
-	}
-}
-
-asteroid_incoming_has_dust_protection_reserves = {
-	hidden_trigger = {
-		has_equipment = { support_equipment > constant:asteroid_incoming_recovery.minimum_support_reserve }
-		has_manpower > constant:asteroid_incoming_recovery.minimum_manpower_reserve
-	}
-}
-
 # Availability helpers account for the manually debited custom cost. Keeping
 # these thresholds separate from the public reserve helpers prevents an action
 # from paying successfully while leaving the protected floor behind.
@@ -857,29 +825,6 @@ asteroid_incoming_fragmentation_is_enabled = {
 	}
 }
 
-asteroid_incoming_minerals_is_enabled = {
-	hidden_trigger = {
-		has_global_flag = asteroid_incoming_fragmentation_active
-		has_global_flag = asteroid_incoming_evolution_ii_eligible
-		check_variable = {
-			var = global.chaos_meter_value
-			value = constant:asteroid_incoming_runtime.minerals_chaos_threshold
-			compare = greater_than_or_equals
-		}
-	}
-}
-
-asteroid_incoming_recovery_state_is_valid = {
-	hidden_trigger = {
-		scope_exists = yes
-		impassable = no
-		is_controlled_by = ROOT
-		has_state_flag = asteroid_incoming_affected_state
-		NOT = { has_state_flag = asteroid_incoming_main_crater }
-		NOT = { has_state_flag = asteroid_incoming_recovery_complete }
-	}
-}
-
 asteroid_incoming_country_has_crater_interest = {
 	hidden_trigger = {
 		exists = yes
@@ -893,17 +838,6 @@ asteroid_incoming_country_has_crater_interest = {
 				}
 				CONTROLLER = { exists = yes has_war_with = ROOT }
 			}
-		}
-	}
-}
-
-asteroid_incoming_country_has_fragment_site_count = {
-	hidden_trigger = {
-		has_variable = asteroid_incoming_fragment_count_threshold
-		check_variable = {
-			var = asteroid_incoming_country_controlled_fragment_count
-			value = asteroid_incoming_fragment_count_threshold
-			compare = greater_than_or_equals
 		}
 	}
 }

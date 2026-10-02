@@ -1358,26 +1358,6 @@ asteroid_incoming_process_footprint = {
 	}
 }
 
-# STATE SCOPE, called after the physical receipt has been written.
-asteroid_incoming_record_country_receipt = {
-	if = {
-		limit = { NOT = { has_variable = asteroid_incoming_report_deaths } }
-		set_variable = { asteroid_incoming_report_deaths = 0 }
-		set_variable = { asteroid_incoming_report_states = 0 }
-		set_variable = { asteroid_incoming_report_industry = 0 }
-		set_variable = { asteroid_incoming_report_logistics = 0 }
-		set_variable = { asteroid_incoming_report_strategic = 0 }
-	}
-	add_to_variable = { asteroid_incoming_report_deaths = asteroid_incoming_state_actual_deaths }
-	add_to_variable = { asteroid_incoming_report_states = 1 }
-	add_to_variable = { asteroid_incoming_report_industry = asteroid_incoming_state_industry_levels_lost }
-	add_to_variable = { asteroid_incoming_report_logistics = asteroid_incoming_state_logistics_levels_lost }
-	add_to_variable = { asteroid_incoming_report_strategic = asteroid_incoming_state_strategic_levels_lost }
-	set_country_flag = asteroid_incoming_affected_country
-	set_country_flag = asteroid_incoming_report_pending
-	set_country_flag = asteroid_incoming_emergency_phase
-}
-
 # ============================================================================
 # DUST, AIR CLEANLINESS, AND NATIONAL STAGES
 # ============================================================================

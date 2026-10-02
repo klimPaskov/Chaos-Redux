@@ -60,32 +60,6 @@ missiles_scenario_country_has_site_plan = {
 	}
 }
 
-missiles_scenario_has_valid_recipient = {
-	any_of_scopes = {
-		array = global.missiles_scenario_candidate_recipients
-		missiles_is_valid_recipient = yes
-	}
-}
-
-missiles_scenario_has_valid_war = {
-	has_global_flag = missiles_scenario_war_pair_found
-}
-
-missiles_scenario_has_two_valid_recipients = {
-	check_variable = {
-		var = global.missiles_scenario_candidate_recipients^num
-		value = constant:missiles_scenario_scale.minimum_retaliation_participants
-		compare = greater_than_or_equals
-	}
-}
-
-missiles_scenario_has_payload_owner = {
-	any_of_scopes = {
-		array = global.missiles_scenario_priority_recipients
-		missiles_scenario_country_is_payload_owner = yes
-	}
-}
-
 missiles_scenario_profile_preflight_is_valid = {
 	OR = {
 		AND = {
@@ -109,10 +83,6 @@ missiles_scenario_profile_preflight_is_valid = {
 			NOT = { has_global_flag = event_evolution_disabled_32_5 }
 		}
 	}
-}
-
-missiles_scenario_setup_has_package_failure = {
-	has_global_flag = missiles_scenario_package_failure_found
 }
 
 missiles_scenario_can_launch_from_triggerable_scenarios = {

@@ -1311,37 +1311,6 @@ great_depression_set_center_status = {
 	}
 }
 
-great_depression_apply_center_treatment = {
-	# Input: great_depression_treatment, selected state event target.
-	if = {
-		limit = { has_variable = ROOT.great_depression_selected_center_state }
-		var:ROOT.great_depression_selected_center_state = {
-			great_depression_clear_center_treatment_flags = yes
-			set_state_flag = great_depression_center
-			if = {
-				limit = { check_variable = { var = ROOT.great_depression_treatment value = constant:great_depression_center_project.public_works compare = equals } }
-				set_state_flag = great_depression_center_public_works
-				add_dynamic_modifier = { modifier = great_depression_center_public_works }
-			}
-			else_if = {
-				limit = { check_variable = { var = ROOT.great_depression_treatment value = constant:great_depression_center_project.finance_restoration compare = equals } }
-				set_state_flag = great_depression_center_finance_restored
-				add_dynamic_modifier = { modifier = great_depression_center_protected }
-			}
-			else_if = {
-				limit = { check_variable = { var = ROOT.great_depression_treatment value = constant:great_depression_center_project.trusteeship compare = equals } }
-				set_state_flag = great_depression_center_trusteeship
-				add_dynamic_modifier = { modifier = great_depression_center_protected }
-			}
-			else_if = {
-				limit = { check_variable = { var = ROOT.great_depression_treatment value = constant:great_depression_center_project.asset_reorganization compare = equals } }
-				set_state_flag = great_depression_center_asset_reorganization
-				add_dynamic_modifier = { modifier = great_depression_center_hollowed }
-			}
-		}
-	}
-}
-
 great_depression_score_center_candidate = {
 	set_temp_variable = { great_depression_center_candidate_score = building_level@industrial_complex }
 	multiply_temp_variable = { great_depression_center_candidate_score = constant:great_depression_scaling.center_industry_weight }

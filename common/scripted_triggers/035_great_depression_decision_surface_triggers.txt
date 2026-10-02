@@ -742,14 +742,6 @@ great_depression_center_project_target_is_open = {
 	NOT = { has_state_flag = great_depression_center_project_completed_receipt }
 }
 
-great_depression_center_target_has_factory = {
-	OR = {
-		industrial_complex > constant:great_depression_api.zero
-		arms_factory > constant:great_depression_api.zero
-		dockyard > constant:great_depression_api.zero
-	}
-}
-
 great_depression_center_abandon_target_is_valid = {
 	great_depression_selected_center_target_is_valid = yes
 	great_depression_center_project_target_is_open = yes
@@ -1235,24 +1227,6 @@ great_depression_ai_movement_is_broad = {
 great_depression_ai_movement_is_narrow = {
 	great_depression_decision_surface_is_ready = yes
 	NOT = { great_depression_ai_movement_is_broad = yes }
-}
-
-great_depression_social_ladder_is_at_least_sector_conflict = {
-	has_variable = great_depression_social_ladder_stage
-	check_variable = {
-		var = great_depression_social_ladder_stage
-		value = constant:great_depression_social_ladder.sector_conflict
-		compare = greater_than_or_equals
-	}
-}
-
-great_depression_social_ladder_is_at_least_national_unrest = {
-	has_variable = great_depression_social_ladder_stage
-	check_variable = {
-		var = great_depression_social_ladder_stage
-		value = constant:great_depression_social_ladder.national_unrest
-		compare = greater_than_or_equals
-	}
 }
 
 great_depression_social_ladder_is_at_least_government_crisis = {
@@ -1847,22 +1821,6 @@ great_depression_support_mission_slot_is_open = {
 	}
 }
 
-great_depression_mission_capacity_is_open = {
-	great_depression_main_mission_slot_is_open = yes
-	OR = {
-		great_depression_support_mission_slot_is_open = yes
-		NOT = {
-			OR = {
-				has_active_mission = great_depression_keep_essential_freight_moving
-				has_active_mission = great_depression_national_employment_guarantee
-				has_active_mission = great_depression_complete_national_recovery_plan
-				has_active_mission = great_depression_certify_cleared_economy
-				has_active_mission = great_depression_restore_essential_production
-			}
-		}
-	}
-}
-
 great_depression_should_activate_halt_the_panic = {
 	great_depression_decision_surface_is_ready = yes
 	great_depression_main_mission_slot_is_open = yes
@@ -2250,12 +2208,6 @@ great_depression_incident_distressed_center_target_is_valid = {
 	}
 }
 
-great_depression_incident_operating_center_target_is_valid = {
-	great_depression_incident_center_target_is_valid = yes
-	NOT = { has_state_flag = great_depression_center_abandoned }
-	NOT = { has_state_flag = great_depression_center_shuttered }
-}
-
 great_depression_incident_project_target_is_valid = {
 	great_depression_incident_center_target_is_valid = yes
 	OR = {
@@ -2272,12 +2224,6 @@ great_depression_incident_project_target_is_valid = {
 great_depression_incident_has_valid_state = {
 	any_controlled_state = {
 		great_depression_incident_state_target_is_valid = yes
-	}
-}
-
-great_depression_incident_has_valid_center = {
-	any_controlled_state = {
-		great_depression_incident_center_target_is_valid = yes
 	}
 }
 
@@ -2299,13 +2245,6 @@ great_depression_incident_current_distressed_center_target_is_valid = {
 	has_variable = great_depression_incident_state
 	var:great_depression_incident_state = {
 		great_depression_incident_distressed_center_target_is_valid = yes
-	}
-}
-
-great_depression_incident_current_operating_center_target_is_valid = {
-	has_variable = great_depression_incident_state
-	var:great_depression_incident_state = {
-		great_depression_incident_operating_center_target_is_valid = yes
 	}
 }
 
