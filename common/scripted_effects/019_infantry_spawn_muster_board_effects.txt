@@ -611,22 +611,6 @@ infantry_spawn_execute_selected_lot_standardization_action = {
 	}
 }
 
-# Overview control. The exact closeout worker is the same idempotent generation
-# scanner used by country management and the ordinary survey decision. It closes
-# only generations whose recorded lots are already terminal, then refreshes the
-# visible history from stable generation UIDs.
-infantry_spawn_execute_generation_close_action = {
-	if = {
-		limit = {
-			infantry_spawn_scenario_transaction_is_idle = yes
-			infantry_spawn_management_is_available = yes
-			check_variable = { infantry_spawn_unresolved_generation_count > constant:infantry_spawn_muster_gui_value.zero }
-		}
-		infantry_spawn_close_resolved_generations = yes
-		infantry_spawn_muster_board_refresh_if_open = yes
-	}
-}
-
 infantry_spawn_execute_selected_lot_specialist_preservation_action = {
 	if = {
 		limit = { infantry_spawn_scenario_transaction_is_idle = yes }

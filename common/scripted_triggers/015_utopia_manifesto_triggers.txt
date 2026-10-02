@@ -183,16 +183,8 @@ utopia_manifesto_automatic_event_is_available = {
 	}
 }
 
-utopia_manifesto_manual_override_boundary_is_safe = {
-	utopia_manifesto_candidate_passes_absolute_automatic_gates = yes
-}
-
 utopia_manifesto_manual_event_is_available = {
 	utopia_manifesto_candidate_passes_absolute_automatic_gates = yes
-}
-
-utopia_manifesto_candidate_is_safe = {
-	utopia_manifesto_manual_event_is_available = yes
 }
 
 utopia_manifesto_candidate_is_weak_industrially = {
@@ -222,10 +214,6 @@ utopia_manifesto_candidate_is_coastal_or_island = {
 
 utopia_manifesto_country_has_coast = {
 	any_controlled_state = { is_coastal = yes }
-}
-
-utopia_manifesto_country_island_capital = {
-	capital_scope = { is_island_state = yes }
 }
 
 utopia_manifesto_country_landlocked = {
@@ -350,11 +338,6 @@ utopia_manifesto_need_is_resolved = {
 	check_variable = { var = utopia_need value = constant:utopia_manifesto_ledger_limits.band_two compare = less_than }
 }
 
-utopia_manifesto_need_is_manageable = {
-	check_variable = { var = utopia_need value = constant:utopia_manifesto_ledger_limits.band_two compare = greater_than_or_equals }
-	check_variable = { var = utopia_need value = constant:utopia_manifesto_ledger_limits.band_three compare = less_than }
-}
-
 utopia_manifesto_need_is_pressing = {
 	check_variable = { var = utopia_need value = constant:utopia_manifesto_ledger_limits.band_three compare = greater_than_or_equals }
 	check_variable = { var = utopia_need value = constant:utopia_manifesto_ledger_limits.band_four compare = less_than }
@@ -455,11 +438,6 @@ utopia_manifesto_decision_phase_has_reached_route = {
 utopia_manifesto_decision_phase_has_reached_formation = {
 	has_variable = utopia_manifesto_decision_phase
 	check_variable = { var = utopia_manifesto_decision_phase value = constant:utopia_manifesto_decision_phase.formation compare = greater_than_or_equals }
-}
-
-utopia_manifesto_decision_phase_has_reached_mature = {
-	has_variable = utopia_manifesto_decision_phase
-	check_variable = { var = utopia_manifesto_decision_phase value = constant:utopia_manifesto_decision_phase.mature compare = greater_than_or_equals }
 }
 
 utopia_manifesto_calling_decisions_are_unlocked = {
@@ -1721,19 +1699,6 @@ utopia_manifesto_case_state_is_relevant = {
 		AND = {
 			check_variable = { ROOT.utopia_manifesto_case_type = constant:utopia_manifesto_case_type.island_project_lease }
 			utopia_manifesto_state_supports_island_project_lease_case = yes
-		}
-	}
-}
-
-utopia_manifesto_state_is_relevant_to_case_context = {
-	OR = {
-		AND = {
-			ROOT = { has_variable = utopia_manifesto_case_type }
-			utopia_manifesto_case_state_is_relevant = yes
-		}
-		AND = {
-			ROOT = { NOT = { has_variable = utopia_manifesto_case_type } }
-			utopia_manifesto_state_supports_prepared_case = yes
 		}
 	}
 }

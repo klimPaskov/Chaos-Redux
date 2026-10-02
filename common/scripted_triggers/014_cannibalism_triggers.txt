@@ -911,14 +911,6 @@ cannibalism_state_can_feed_selected_prisoners = {
 	}
 }
 
-cannibalism_state_is_empty_or_contaminated_expansion_target = {
-	OR = {
-		cannibalism_state_is_unusable_larder = yes
-		cannibalism_state_has_severe_chemical_contamination = yes
-		has_global_flag = air_contamination_irreversible
-	}
-}
-
 # ============================================================================
 # Consolidated source section: 014_cannibalism_objective_triggers.txt
 # ============================================================================
@@ -2318,14 +2310,6 @@ cannibalism_target_has_cold_front = {
 	}
 }
 
-cannibalism_target_is_postlock_population_or_capital_priority = {
-	OR = {
-		cannibalism_target_has_high_population_center = yes
-		cannibalism_target_has_very_high_population_center = yes
-		cannibalism_target_is_coalition_leader = yes
-	}
-}
-
 cannibalism_target_has_partial_contamination = {
 	cannibalism_target_country_has_usable_population = yes
 	any_controlled_state = {
@@ -2391,92 +2375,6 @@ cannibalism_scoring_actor_is_overextended = {
 # ---------------------------------------------------------------------------
 # Candidate-scope reach and hard validity: candidate default, FROM actor
 # ---------------------------------------------------------------------------
-
-cannibalism_target_country_has_physical_route_from_actor = {
-	OR = {
-		has_war_with = FROM
-		is_neighbor_of = FROM
-		cannibalism_target_has_existing_cells = yes
-		AND = {
-			FROM = {
-				OR = {
-					has_country_flag = cannibalism_unified_global_naval_corridors_open
-					has_country_flag = cannibalism_unified_origin_island_knowledge
-					has_country_flag = cannibalism_wendigo_winter_network_active
-				}
-				any_controlled_state = {
-					impassable = no
-					NOT = { cannibalism_state_is_unusable_larder = yes }
-					naval_base > 0
-				}
-			}
-			cannibalism_target_has_port_route = yes
-		}
-		AND = {
-			FROM = {
-				OR = {
-					has_country_flag = cannibalism_unified_origin_march_knowledge
-					has_country_flag = cannibalism_unified_corridor_target_pool_open
-					has_country_flag = cannibalism_wendigo_frozen_corridor_open
-					has_country_flag = cannibalism_wendigo_winter_network_active
-				}
-				any_controlled_state = {
-					impassable = no
-					NOT = { cannibalism_state_is_unusable_larder = yes }
-					rail_way > 0
-				}
-			}
-			any_controlled_state = {
-				impassable = no
-				NOT = { cannibalism_state_is_unusable_larder = yes }
-				rail_way > 0
-			}
-		}
-		FROM = { has_country_flag = cannibalism_wendigo_transformation_locked }
-	}
-}
-
-cannibalism_scored_target_passes_shared_hard_gates = {
-	exists = yes
-	NOT = { tag = FROM }
-	cannibalism_target_country_is_ordinary_human_target = yes
-	NOT = { is_ally_with = FROM }
-	NOT = { is_in_faction_with = FROM }
-	NOT = { is_subject_of = FROM }
-	NOT = { has_country_flag = cannibalism_unified_cell_disruption_target }
-	NOT = { has_country_flag = cannibalism_unified_campaign_targeted }
-	NOT = { has_country_flag = cannibalism_unified_counterwar_disruption_target }
-	NOT = { has_country_flag = cannibalism_unified_enemy_front_collapsing }
-	OR = {
-		NOT = { has_country_flag = cannibalism_wendigo_terminal_hunt_target_lock }
-		AND = {
-			tag = event_target:cannibalism_wendigo_terminal_hunt_target
-			FROM = {
-				has_country_flag = cannibalism_wendigo_terminal_hunt_active
-				has_event_target = cannibalism_wendigo_terminal_hunt_target
-			}
-		}
-	}
-	NOT = { has_country_flag = cannibalism_wendigo_inherited_cell_target_lock }
-	cannibalism_target_country_has_physical_route_from_actor = yes
-	OR = {
-		FROM = { NOT = { has_country_flag = cannibalism_wendigo_terminal_hunt_active } }
-		AND = {
-			tag = event_target:cannibalism_wendigo_terminal_hunt_target
-			FROM = { has_event_target = cannibalism_wendigo_terminal_hunt_target }
-		}
-	}
-}
-
-cannibalism_unified_scored_target_is_valid = {
-	FROM = { is_cannibalism_unified_country = yes }
-	cannibalism_scored_target_passes_shared_hard_gates = yes
-}
-
-cannibalism_wendigo_scored_target_is_valid = {
-	FROM = { is_cannibalism_wendigo_hannibal_country = yes }
-	cannibalism_scored_target_passes_shared_hard_gates = yes
-}
 
 # ---------------------------------------------------------------------------
 # Actor-root hard-validity wrappers: actor ROOT, candidate FROM
@@ -2851,13 +2749,6 @@ cannibalism_country_has_remote_army = {
 	}
 }
 
-cannibalism_country_has_occupation_pressure = {
-	any_controlled_state = {
-		NOT = { is_core_of = event_target:cannibalism_scored_host }
-		cannibalism_state_is_valid_origin = yes
-	}
-}
-
 cannibalism_country_has_convoy_pressure = {
 	OR = {
 		check_variable = {
@@ -2904,20 +2795,6 @@ cannibalism_state_is_isolated = {
 	OR = {
 		is_island_state = yes
 		NOT = { is_in_home_area = yes }
-	}
-}
-
-cannibalism_state_has_logistics_pressure = {
-	OR = {
-		infrastructure < constant:cannibalism_state_threshold.low_infrastructure
-		AND = {
-			cannibalism_state_has_army_presence = yes
-			NOT = { supply_node > 0 }
-		}
-		AND = {
-			cannibalism_state_is_isolated = yes
-			naval_base > 0
-		}
 	}
 }
 
@@ -3175,13 +3052,6 @@ cannibalism_country_can_begin_stabilization = {
 	NOT = { cannibalism_country_has_active_state_cell = yes }
 	NOT = { cannibalism_country_has_warlord_on_territory = yes }
 	NOT = { any_controlled_state = { has_state_flag = cannibalism_spread_inbound_active } }
-}
-
-cannibalism_country_has_local_victory = {
-	has_country_flag = cannibalism_local_victory
-	NOT = { is_cannibalism_active_ordinary_country = yes }
-	NOT = { cannibalism_country_has_active_state_cell = yes }
-	NOT = { cannibalism_country_has_warlord_on_territory = yes }
 }
 
 cannibalism_worldwide_victory_conditions = {
@@ -3453,18 +3323,6 @@ cannibalism_can_complete_ordinary_world_end = {
 	}
 }
 
-cannibalism_can_complete_wendigo_world_end = {
-	is_cannibalism_wendigo_hannibal_country = yes
-	has_country_flag = cannibalism_wendigo_transformation_locked
-	NOT = { has_global_flag = world_end }
-	NOT = { has_global_flag = world_end_disabled }
-	check_variable = {
-		var = global.chaos_meter_value
-		value = constant:cannibalism_evolution_threshold.world_end_chaos
-		compare = greater_than
-	}
-}
-
 # ---------------------------------------------------------------------------
 # Warlord slots and host selection
 # ---------------------------------------------------------------------------
@@ -3631,35 +3489,6 @@ cannibalism_selected_unification_host_is_valid = {
 			compare = equals
 		}
 	}
-}
-
-cannibalism_current_warlord_can_challenge_unified_host = {
-	is_cannibalism_warlord_country = yes
-	has_country_flag = cannibalism_pending_absorption
-	has_country_flag = cannibalism_hierarchy_personal_tyranny
-	NOT = { has_capitulated = yes }
-	num_divisions > constant:cannibalism_unification.minimum_challenge_divisions
-	CBL = { is_cannibalism_unified_country = yes }
-}
-
-cannibalism_valid_wendigo_exists = {
-	any_country = {
-		exists = yes
-		original_tag = ZZZ
-		has_country_flag = weaponized_zombie_type_wendigo
-		has_country_flag = weaponized_zombie_archetype_wendigo
-		NOT = { has_capitulated = yes }
-		num_of_controlled_states > 0
-	}
-}
-
-cannibalism_is_valid_wendigo_host = {
-	exists = yes
-	original_tag = ZZZ
-	has_country_flag = weaponized_zombie_type_wendigo
-	has_country_flag = weaponized_zombie_archetype_wendigo
-	NOT = { has_capitulated = yes }
-	num_of_controlled_states > 0
 }
 
 # ---------------------------------------------------------------------------

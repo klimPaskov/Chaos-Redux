@@ -63,13 +63,6 @@ black_plague_shared_state_is_recovery = {
 	black_plague_state_is_recovering = yes
 }
 
-black_plague_shared_state_is_cured_or_recovery = {
-	OR = {
-		black_plague_state_is_cured = yes
-		black_plague_state_is_recovering = yes
-	}
-}
-
 black_plague_shared_state_is_coastal_hub = {
 	OR = {
 		AND = { is_coastal = yes naval_base > 0 }
@@ -90,19 +83,6 @@ black_plague_shared_state_has_military_route = {
 
 black_plague_shared_state_can_start_action = {
 	black_plague_shared_state_target_is_usable = yes
-	black_plague_response_state_has_access = yes
-	black_plague_shared_state_can_pay_scaled_materials = yes
-	ROOT = { black_plague_country_can_direct_response = yes }
-}
-
-# STATE scope; rat-controlled states are excluded from the ordinary disease
-# response gate, but remain valid targets for liberation and royal-node work.
-black_plague_shared_rat_state_can_start_action = {
-	black_plague_state_is_tracked = yes
-	black_plague_response_state_is_selected_or_ai_target = yes
-	black_plague_state_is_rat_controlled = yes
-	NOT = { has_state_flag = black_plague_shared_action_active }
-	NOT = { has_state_flag = black_plague_shared_action_cooldown }
 	black_plague_response_state_has_access = yes
 	black_plague_shared_state_can_pay_scaled_materials = yes
 	ROOT = { black_plague_country_can_direct_response = yes }

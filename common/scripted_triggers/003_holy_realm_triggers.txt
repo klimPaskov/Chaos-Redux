@@ -89,10 +89,6 @@ holy_realm_final_path_unlocked = {
 	holy_realm_has_final_silence_stage = yes
 }
 
-holy_realm_chaos_below_low_focus_ceiling = {
-	check_variable = { global.chaos_meter_value < constant:holy_realm_chaos.low_focus_ceiling }
-}
-
 holy_realm_chaos_below_peace_focus_ceiling = {
 	check_variable = { global.chaos_meter_value < constant:holy_realm_chaos.peace_focus_ceiling }
 }
@@ -191,17 +187,6 @@ holy_realm_can_become_buddha = {
 	check_variable = {
 		var = crisis_teaching_successes
 		value = constant:holy_realm_buddhahood.crisis_teaching_successes_required
-		compare = greater_than_or_equals
-	}
-}
-
-holy_realm_can_attempt_buddhahood = {
-	is_holy_realm_country = yes
-	has_country_flag = holy_realm_focus_unshaken_seat
-	NOT = { holy_realm_has_buddha_mandate = yes }
-	check_variable = {
-		var = bodhi_progress
-		value = constant:holy_realm_buddhahood.bodhi_max
 		compare = greater_than_or_equals
 	}
 }
@@ -799,11 +784,6 @@ holy_realm_has_final_silence_nuke_stockpile = {
 	num_of_nukes > constant:holy_realm_final_silence.normal_nuke_stockpile_gate
 }
 
-holy_realm_has_final_silence_thermonuclear_stockpile = {
-	num_of_nukes > constant:holy_realm_final_silence.thermonuclear_total_stockpile_gate
-	check_variable = { holy_realm_thermonuclear_payloads_prepared > constant:holy_realm_final_silence.thermonuclear_payload_gate }
-}
-
 holy_realm_has_scripted_strike_capability = {
 	holy_realm_has_final_silence_nuke_stockpile = yes
 	OR = {
@@ -875,20 +855,6 @@ holy_realm_has_most_factories_in_world = {
 
 holy_realm_can_start_final_silence = {
 	holy_realm_can_complete_terminal_final_silence = yes
-}
-
-holy_realm_uses_thermonuclear_final_silence = {
-	OR = {
-		has_country_flag = holy_realm_triggerable_final_silence_thermonuclear
-		AND = {
-			date > 1946.12.31
-			holy_realm_has_final_silence_thermonuclear_stockpile = yes
-			OR = {
-				has_tech = thermonuclear_bombs
-				has_country_flag = holy_realm_thermonuclear_doctrine
-			}
-		}
-	}
 }
 
 holy_realm_final_silence_valid_target_state = {

@@ -880,24 +880,6 @@ resources_found_activate_commission = {
 	}
 }
 
-# STATE scope. Requires event target resources_found_border_claimant_target.
-resources_found_begin_border_crisis = {
-	if = {
-		limit = {
-			has_event_target = resources_found_border_claimant_target
-			NOT = { has_state_flag = resources_found_field_closing }
-		}
-		set_variable = { resources_found_border_claimant = event_target:resources_found_border_claimant_target }
-		if = {
-			limit = { resources_found_can_enter_border_crisis = yes }
-			set_variable = { resources_found_border_stage = constant:resources_found_border_stage.competing_surveys }
-			set_variable = { resources_found_border_stage_date = global.date }
-			set_state_flag = resources_found_mapped_border_dispute
-		}
-		else = { clear_variable = resources_found_border_claimant }
-	}
-}
-
 # STATE scope. Performs the only permitted resource inverse. If another system
 # has reduced a resource below the Event 018 ledger, nothing is subtracted and a
 # reconciliation flag is raised for an explicit caller-owned resolution.
@@ -1355,23 +1337,6 @@ resources_found_calculate_cave_starting_strength = {
 			set_variable = { resources_found_cave_starting_divisions = event_target:resources_found_strength_origin_state.resources_found_cave_starting_divisions }
 		}
 	}
-}
-
-# COUNTRY scope. Clears externally maintained exact-scan inputs. The cave layer
-# must rebuild and mark them ready from explicit state-transfer/control hooks or
-# a caller-owned one-shot verification scan; this core file performs no pulse.
-resources_found_reset_world_end_verification_inputs = {
-	set_variable = { resources_found_continent_eligible_state_count = constant:resources_found_value.zero }
-	set_variable = { resources_found_continent_scanned_state_count = constant:resources_found_value.zero }
-	set_variable = { resources_found_continent_owned_state_count = constant:resources_found_value.zero }
-	set_variable = { resources_found_continent_controlled_state_count = constant:resources_found_value.zero }
-	set_variable = { resources_found_continent_owned_controlled_state_count = constant:resources_found_value.zero }
-	set_variable = { resources_found_continent_remaining_state_count = constant:resources_found_value.zero }
-	set_variable = { resources_found_valid_foothold_count = constant:resources_found_value.zero }
-	clr_country_flag = resources_found_continent_registry_ready
-	clr_country_flag = resources_found_foothold_registry_ready
-	clr_country_flag = resources_found_continent_scan_mismatch
-	clr_country_flag = resources_found_foothold_registry_mismatch
 }
 
 # COUNTRY scope. Sets/clears the near-control presentation/action flag from the

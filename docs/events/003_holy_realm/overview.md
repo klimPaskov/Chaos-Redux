@@ -198,6 +198,14 @@ The Holy Realm reserves clean flags and a global event target for later chains w
 
 No Germany, Mengele, Tibet expedition, Malta Crusader, Teutonic Order, Final Crusade, or Atlantis content is implemented here.
 
+Three text selectors in `common/scripted_localisation/003_holy_realm_scripted_localisation.txt` are reserved for the future visual interaction pass and have no current GUI or localisation consumer:
+
+- `GetHolyRealmBodhisattvaBhumi` names the current bhumi from `bodhisattva_bhumi` through the `holy_realm_bhumi_*` keys, for the planned ten-step bhumi ladder.
+- `GetHolyRealmPanelChaosLine` summarizes how doctrine and refuge memories affect Chaos through the `holy_realm_panel_chaos_*` keys.
+- `GetFinalSilenceLedgerSummary` summarizes the Final Silence Ledger state through the `holy_realm_ledger_summary_*` keys.
+
+Wiring any of them into `holy_realm_mandala_category_container` is a GUI change and follows the scripted GUI workflow.
+
 ## Achievements
 
 Holy Realm achievements are registered in `common/achievements/chaos_redux_achievements.txt` and localised in `localisation/english/chaosx_achievements_l_english.yml`:

@@ -70,10 +70,6 @@ can_launch_communist_emergency_intervention = {
 	}
 }
 
-has_communism_threat_contained = {
-	check_variable = { communism_revolutionary_threat < 20 }
-}
-
 has_communism_threat_growing_unrest = {
 	check_variable = { communism_revolutionary_threat > 19 }
 	check_variable = { communism_revolutionary_threat < 40 }
@@ -93,58 +89,14 @@ has_communism_threat_collapse_imminent = {
 	check_variable = { communism_revolutionary_threat > 84 }
 }
 
-has_communism_local_intervention_available = {
-	has_communism_spread_minimum_country_size = yes
-	has_regular_communist_intervention_target = yes
-	NOT = { has_country_flag = fighting_communist_rebels }
-}
-
 has_communism_rebel_war_warning_pressure = {
 	check_variable = { communism_revolutionary_threat > constant:communism_spread_dashboard.rebel_war_warning_threshold_check }
-}
-
-has_communism_local_intervention_resources_for_any_target = {
-	any_controlled_state = {
-		OR = {
-			AND = {
-				has_state_flag = communist_control_level_1
-				controller = {
-					command_power > constant:communism_spread_intervention.level_1_command_power
-					has_manpower > constant:communism_spread_intervention.level_1_manpower
-					has_equipment = { infantry_equipment > constant:communism_spread_intervention.level_1_equipment }
-				}
-			}
-			AND = {
-				has_state_flag = communist_control_level_2
-				controller = {
-					command_power > constant:communism_spread_intervention.level_2_command_power
-					has_manpower > constant:communism_spread_intervention.level_2_manpower
-					has_equipment = { infantry_equipment > constant:communism_spread_intervention.level_2_equipment }
-				}
-			}
-			AND = {
-				has_state_flag = communist_control_level_3
-				controller = {
-					command_power > constant:communism_spread_intervention.level_3_command_power
-					has_manpower > constant:communism_spread_intervention.level_3_manpower
-					has_equipment = { infantry_equipment > constant:communism_spread_intervention.level_3_equipment }
-				}
-			}
-		}
-	}
 }
 
 has_communism_emergency_pressure = {
 	OR = {
 		can_launch_communist_emergency_intervention = yes
 		check_variable = { communism_revolutionary_threat > constant:communism_spread_dashboard.emergency_pressure_threshold }
-	}
-}
-
-has_communism_local_intervention_pressure = {
-	OR = {
-		has_communism_local_intervention_available = yes
-		check_variable = { communism_revolutionary_threat > constant:communism_spread_dashboard.local_intervention_pressure_threshold }
 	}
 }
 

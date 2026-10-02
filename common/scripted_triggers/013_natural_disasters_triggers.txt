@@ -64,11 +64,6 @@ natural_disaster_ocean_proxy_target_matches_mode = {
 	}
 }
 
-natural_disaster_is_valid_coastal_impact_state = {
-	natural_disaster_is_valid_impact_state = yes
-	is_coastal = yes
-}
-
 natural_disaster_chain_is_physical = {
 	OR = {
 		check_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.aftershock }
@@ -375,16 +370,6 @@ natural_disaster_warning_protection_matches_chain = {
 			}
 		}
 	}
-}
-
-natural_disaster_is_valid_heat_impact_state = {
-	natural_disaster_is_valid_impact_state = yes
-	natural_disaster_is_family_geographically_eligible = yes
-	OWNER = {
-		NOT = { has_idea = heat_wave }
-		NOT = { has_country_flag = natural_disaster_heat_exclusion }
-	}
-	NOT = { has_state_flag = natural_disaster_heat_aftermath }
 }
 
 natural_disaster_scheduled_state_is_still_valid = {
@@ -755,59 +740,6 @@ natural_disaster_abnormal_family_is_allowed = {
 		NOT = { has_global_flag = natural_disaster_abnormal_global_cooldown }
 		check_variable = { natural_disaster_call_manual_abnormal_bypass > 0 }
 		check_variable = { natural_disaster_call_internal_chain_override > 0 }
-	}
-}
-
-# State-scope primary-layer selectors for the Evolution III path map. Tsunami
-# takes precedence while a delayed wave is current or pending.
-natural_disaster_gui_uses_tsunami_layer = {
-	OR = {
-		check_variable = { natural_disaster_family = constant:natural_disaster_family.tsunami }
-		check_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.tsunami }
-	}
-}
-
-natural_disaster_gui_uses_rupture_layer = {
-	NOT = { natural_disaster_gui_uses_tsunami_layer = yes }
-	NOT = { natural_disaster_gui_uses_storm_layer = yes }
-	NOT = { natural_disaster_gui_uses_eruption_layer = yes }
-	NOT = { natural_disaster_gui_uses_meteor_layer = yes }
-	OR = {
-		check_variable = { natural_disaster_family = constant:natural_disaster_family.whole_earth_rupture }
-		check_variable = { natural_disaster_sequence_origin_family = constant:natural_disaster_family.whole_earth_rupture }
-	}
-}
-
-natural_disaster_gui_uses_meteor_layer = {
-	NOT = { natural_disaster_gui_uses_tsunami_layer = yes }
-	NOT = { natural_disaster_gui_uses_storm_layer = yes }
-	NOT = { natural_disaster_gui_uses_eruption_layer = yes }
-	OR = {
-		check_variable = { natural_disaster_family = constant:natural_disaster_family.meteor_impact }
-		check_variable = { natural_disaster_family = constant:natural_disaster_family.meteor_shower }
-		check_variable = { natural_disaster_sequence_origin_family = constant:natural_disaster_family.meteor_impact }
-		check_variable = { natural_disaster_sequence_origin_family = constant:natural_disaster_family.meteor_shower }
-	}
-}
-
-natural_disaster_gui_uses_eruption_layer = {
-	NOT = { natural_disaster_gui_uses_tsunami_layer = yes }
-	NOT = { natural_disaster_gui_uses_storm_layer = yes }
-	OR = {
-		check_variable = { natural_disaster_sequence_origin_family = constant:natural_disaster_family.massive_eruption }
-		check_variable = { natural_disaster_family = constant:natural_disaster_family.volcanic_eruption }
-		check_variable = { natural_disaster_family = constant:natural_disaster_family.ashfall }
-		check_variable = { natural_disaster_family = constant:natural_disaster_family.lahar }
-		check_variable = { natural_disaster_family = constant:natural_disaster_family.massive_eruption }
-	}
-}
-
-natural_disaster_gui_uses_storm_layer = {
-	NOT = { natural_disaster_gui_uses_tsunami_layer = yes }
-	OR = {
-		check_variable = { natural_disaster_sequence_origin_family = constant:natural_disaster_family.moving_storm_corridor }
-		check_variable = { natural_disaster_family = constant:natural_disaster_family.tornado_outbreak }
-		check_variable = { natural_disaster_family = constant:natural_disaster_family.moving_storm_corridor }
 	}
 }
 
@@ -1358,16 +1290,6 @@ natural_disaster_can_pay_reconstruction_routed = {
 			has_equipment = { train_equipment > constant:natural_disaster_cost_gate.reconstruct_trains }
 		}
 	}
-}
-
-natural_disaster_can_offer_foreign_relief = {
-	has_manpower > constant:natural_disaster_cost_gate.rescue_manpower
-	has_equipment = { support_equipment_1 > constant:natural_disaster_cost_gate.foreign_support_equipment }
-	has_equipment = { motorized_equipment_1 > constant:natural_disaster_cost_gate.foreign_trucks }
-	has_equipment = { convoy_1 > constant:natural_disaster_cost_gate.foreign_convoys }
-	has_stability > constant:natural_disaster_cost_gate_fixed.foreign_relief_stability
-	has_war_support > constant:natural_disaster_cost_gate_fixed.foreign_relief_war_support
-	NOT = { has_country_flag = natural_disaster_outbound_relief_active }
 }
 
 natural_disaster_can_begin_foreign_relief = {

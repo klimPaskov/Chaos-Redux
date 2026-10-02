@@ -47,11 +47,6 @@ fury_can_be_selected_two_state = {
 	num_of_controlled_states < constant:fury_target_score.two_state_max
 }
 
-fury_can_be_selected_three_state = {
-	fury_can_be_selected = yes
-	num_of_controlled_states < constant:fury_target_score.three_state_max
-}
-
 fury_actor_can_continue = {
 	has_country_flag = fury_actor
 	exists = yes
@@ -159,16 +154,6 @@ fury_is_valid_rival_actor_target = {
 	ROOT = { can_declare_war_on = PREV }
 }
 
-fury_has_current_valid_target = {
-	has_country_flag = fury_has_current_target
-	var:fury_current_target = {
-		exists = yes
-		NOT = { has_capitulated = yes }
-		NOT = { has_war_with = ROOT }
-		fury_is_valid_target = yes
-	}
-}
-
 can_pay_fury_reinforcement_cost = {
 	command_power > constant:fury_decision_cost.reinforcement_cp_gate
 	has_equipment = { infantry_equipment > constant:fury_decision_cost.reinforcement_equipment_gate }
@@ -184,12 +169,6 @@ can_pay_fury_settlement_cost = {
 	has_equipment = { support_equipment > constant:fury_decision_cost.settlement_support_gate }
 }
 
-can_pay_fury_core_cost = {
-	command_power > constant:fury_decision_cost.core_cp_gate
-	has_equipment = { infantry_equipment > constant:fury_decision_cost.core_equipment_gate }
-	has_equipment = { support_equipment > constant:fury_decision_cost.core_support_gate }
-}
-
 fury_occupation_pressure_high = {
 	check_variable = {
 		var = fury_occupation_pressure
@@ -203,15 +182,6 @@ fury_occupation_pressure_extreme = {
 		var = fury_occupation_pressure
 		value = constant:fury_occupation.overextension_extreme_gate
 		compare = greater_than
-	}
-}
-
-fury_has_registered_settlement_state = {
-	any_controlled_state = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-		has_state_flag = fury_settlement_registered
-		NOT = { is_core_of = ROOT }
 	}
 }
 

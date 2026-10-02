@@ -87,21 +87,6 @@ resources_found_resource_ledger_is_exactly_reversible = {
 	}
 }
 
-resources_found_field_values_are_in_bounds = {
-	check_variable = { var = resources_found_developed_yield value = constant:resources_found_field_value.minimum compare = greater_than_or_equals }
-	check_variable = { var = resources_found_developed_yield value = constant:resources_found_field_value.maximum compare = less_than_or_equals }
-	check_variable = { var = resources_found_excavation_depth value = constant:resources_found_field_value.minimum compare = greater_than_or_equals }
-	check_variable = { var = resources_found_excavation_depth value = constant:resources_found_field_value.maximum compare = less_than_or_equals }
-	check_variable = { var = resources_found_workforce_safety value = constant:resources_found_field_value.minimum compare = greater_than_or_equals }
-	check_variable = { var = resources_found_workforce_safety value = constant:resources_found_field_value.maximum compare = less_than_or_equals }
-	check_variable = { var = resources_found_foreign_pressure value = constant:resources_found_field_value.minimum compare = greater_than_or_equals }
-	check_variable = { var = resources_found_foreign_pressure value = constant:resources_found_field_value.maximum compare = less_than_or_equals }
-	check_variable = { var = resources_found_subsurface_disturbance value = constant:resources_found_field_value.minimum compare = greater_than_or_equals }
-	check_variable = { var = resources_found_subsurface_disturbance value = constant:resources_found_field_value.maximum compare = less_than_or_equals }
-	check_variable = { var = resources_found_breach_pressure value = constant:resources_found_field_value.minimum compare = greater_than_or_equals }
-	check_variable = { var = resources_found_breach_pressure value = constant:resources_found_field_value.maximum compare = less_than_or_equals }
-}
-
 resources_found_state_has_standard_resource_presence = {
 	OR = {
 		check_variable = { resource@oil > constant:resources_found_threshold.minimum_resource_presence }
@@ -211,15 +196,6 @@ resources_found_gui_has_closed_field_history = {
 	var:resources_found_last_closed_field = {
 		has_state_flag = resources_found_field_closed_permanently
 		has_state_flag = resources_found_exact_ledger_reversed
-	}
-}
-
-resources_found_selected_field_is_available_for_action = {
-	resources_found_country_has_valid_selected_field = yes
-	var:resources_found_selected_field = {
-		is_owned_and_controlled_by = PREV
-		NOT = { has_state_flag = resources_found_field_transaction_lock }
-		NOT = { has_state_flag = resources_found_field_closing }
 	}
 }
 
@@ -534,12 +510,6 @@ resources_found_state_can_contribute_cave_capacity = {
 	is_controlled_by = DHO
 	has_variable = resources_found_capacity_source_total
 	check_variable = { var = resources_found_capacity_source_total value = constant:resources_found_capacity.resources_per_division compare = greater_than_or_equals }
-}
-
-resources_found_cave_starting_strength_is_valid = {
-	has_variable = resources_found_cave_starting_divisions
-	check_variable = { var = resources_found_cave_starting_divisions value = constant:resources_found_strength.minimum_divisions compare = greater_than_or_equals }
-	check_variable = { var = resources_found_cave_starting_divisions value = constant:resources_found_strength.maximum_divisions compare = less_than_or_equals }
 }
 
 # ---------------------------------------------------------------------------
