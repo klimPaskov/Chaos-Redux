@@ -624,7 +624,8 @@ Current shared state:
 
 - aggregate flag: `world_in_threat`
 - source-count variable: `global.world_threat_source_count`
-- current source flag: `world_threat_source_zombies`
+- per-source flags named `world_threat_source_<source>`; the registered list lives in `refresh_world_threat_state` and `docs/systems/world_threat_mechanic.md`
+- per-source read triggers live in `common/scripted_triggers/chaosx_world_threat_triggers.txt`
 
 Implementation pattern:
 
@@ -674,6 +675,13 @@ Do not leave the doc describing:
 - removed branches
 - removed assets
 - outdated spreadsheet or deck expectations
+
+### Retiring unused helpers
+
+- Before deleting a scripted effect, trigger, or `defined_text`, search every placeholder constructor (`[ID]`-style `meta_effect`/`meta_trigger` text, `@` token pasting, `[EXTENSION_EFFECT]_apply`) and the GUI, `.gfx`, localisation, and docs for the name; a zero token count alone does not prove the code is dead.
+- Delete the comment header attached directly above the removed block, or it will describe the next definition.
+- After each removal pass, rescan for helpers, localisation keys, and script-constant keys whose only consumer was the removed code, and repeat until nothing new appears.
+- Repository files can mix CRLF and LF line endings; edit them line by line with their own endings instead of splitting on one newline style.
 
 ## Event catalog spreadsheet
 

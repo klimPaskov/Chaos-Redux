@@ -138,6 +138,8 @@ These agents do not patch gameplay files:
 
 They may write reports only when a report path is provided or obvious from the task.
 
+Some runtimes refuse report-file writes from subagents. Ask every read-only or audit subagent to return its complete findings inline as well, and allow scratch helper files only for intermediate data such as scan outputs or range lists that the parent can read afterwards.
+
 ### Plan-only agents
 
 `chaosx_improvement_loop_planner` writes event expansion specs, improvement addenda, deep research notes, historical connection notes, and implementation handoffs. It does not edit gameplay, localisation, GUI, scripted effects, focus trees, decisions, assets, spreadsheets, or country files.

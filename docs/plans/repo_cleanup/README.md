@@ -17,6 +17,8 @@ This directory contains the source prompts, bounded cleanup records, migration p
 
 ## Current maintenance records
 
+- [`repo_cleanup_2026-10-02.md`](repo_cleanup_2026-10-02.md) records the 2026-10-02 code cleanup pass for shared systems and the eligible Events 1 to 40, with its eligibility ledger, removals, behaviour fixes, retained items, and deferred bugs.
+
 - [`shared_system_migration_plan_2026-08-22.md`](shared_system_migration_plan_2026-08-22.md) records broad migrations that were reviewed and deferred instead of being partially implemented.
 - [`systems_documentation_reorganization_2026-08-22.md`](systems_documentation_reorganization_2026-08-22.md) records the shared-system documentation ownership pass.
 - [`git_storage_cleanup_2026-08-22.md`](git_storage_cleanup_2026-08-22.md) records the bounded stale Git-storage cleanup.
