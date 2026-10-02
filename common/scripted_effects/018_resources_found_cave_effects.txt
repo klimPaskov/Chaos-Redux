@@ -59,7 +59,7 @@ resources_found_cave_setup_country = {
 			communism = constant:resources_found_cave_runtime.zero
 			neutrality = constant:resources_found_cave_runtime.full_popularity
 		}
-		load_oob = "DHO_1936"
+		resources_found_cave_load_templates = yes
 		load_focus_tree = { tree = 018_resources_found_cave_focus_tree keep_completed = no }
 		add_ideas = {
 			cave_mineral_carapaces
@@ -77,6 +77,20 @@ resources_found_cave_setup_country = {
 	}
 	resources_found_refresh_decision_cost_previews = yes
 	save_global_event_target_as = resources_found_cave_country
+}
+
+# COUNTRY scope (DHO). Loads the locked brood templates once the Host exists.
+# load_oob does nothing for a country that owns no state yet, so the setup call
+# can run early and the post-transfer call in the first emergence loads them.
+resources_found_cave_load_templates = {
+	if = {
+		limit = {
+			exists = yes
+			NOT = { has_country_flag = resources_found_cave_templates_loaded }
+		}
+		load_oob = "DHO_1936"
+		set_country_flag = resources_found_cave_templates_loaded
+	}
 }
 
 # STATE scope.
@@ -324,6 +338,7 @@ resources_found_complete_first_cave_emergence = {
 			add_building_construction = { type = supply_node level = @CR_SC_RESOURCES_FOUND_VALUE_ONE instant_build = yes }
 		}
 		DHO = {
+			resources_found_cave_load_templates = yes
 			set_capital = {
 				state = event_target:resources_found_emergence_state
 				remember_old_capital = no

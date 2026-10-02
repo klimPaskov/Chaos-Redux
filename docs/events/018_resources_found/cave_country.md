@@ -31,7 +31,7 @@ The value is recorded on both the origin state and DHO for Event Details and def
 
 ## Body economy and templates
 
-Oth-Kesh units consume neither ordinary manpower nor equipment. Their five sub-units in `common/units/018_resources_found_cave_broods.txt` have zero manpower, no equipment definition, and deliberately extreme training time. The corresponding templates in `history/units/DHO_1936.txt` are locked and set `force_allow_recruiting = no`. The dormant history does not preload this OOB; Evolution IV loads the template package once immediately before the opening army is created. Event and anchor effects are the only normal source of divisions.
+Oth-Kesh units consume neither ordinary manpower nor equipment. Their five sub-units in `common/units/018_resources_found_cave_broods.txt` have zero manpower, no equipment definition, and deliberately extreme training time. The corresponding templates in `history/units/DHO_1936.txt` are locked and set `force_allow_recruiting = no`. The dormant history does not preload this OOB; Evolution IV loads the template package once through `resources_found_cave_load_templates`, after the origin state transfer and immediately before the opening army is created. `load_oob` does nothing for a country that owns no state, so the early setup call alone cannot load it. Event and anchor effects are the only normal source of divisions.
 
 The available templates are:
 

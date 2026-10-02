@@ -21,6 +21,14 @@ Scope: observations made while recording footage; each entry says whether it was
 - Fix: the three camp buildings no longer declare `need_detection` or `detecting_intel_type`. No script reads camp detection; raids target states, not camp buildings.
 - Verified: the same save and camera path over states 64, 60, and 53 no longer crash. Existing saves are covered because building definitions load from the files.
 
+### The Oth-Kesh Host emerges without its opening broods
+
+- Seen: when Event 018's first cave emergence ran, the opening brood spawns logged `create_unit -- division string was not parsed correctly` and `<division> ( DHO ) unit in <province> has no division template set` for every brood type, so the Host appeared with no army.
+- Cause: `resources_found_cave_setup_country` (`common/scripted_effects/018_resources_found_cave_effects.txt`) runs from `resources_found_begin_first_cave_emergence` while DHO owns no state yet, and its `load_oob = "DHO_1936"` does nothing for a country that does not exist. The state transfer in `resources_found_complete_first_cave_emergence` happens later, and nothing loaded the templates again. A direct test reproduced it: `load_oob` on a tag with no states, then a state transfer, then `create_unit` with an OOB template fails; the same `load_oob` after the transfer succeeds.
+- Fix: a new country-scope helper, `resources_found_cave_load_templates`, loads `DHO_1936` once DHO exists (flag `resources_found_cave_templates_loaded`). Setup calls it, and the first emergence calls it again right after the origin state transfer, before the opening allocation spawns.
+- Verified: on `trailer_150_nov`, running the first-emergence helpers on Tirol produced "The Oth-Kesh Host Rises" super-event and a column of War-Broods with no template errors. The focus tree and national spirits from the same early setup were already applied correctly; only the OOB was lost.
+- Checked and unaffected: Death (Event 010) loads `DTH_1936` through `set_oob` in its country history, so its templates exist from the start. Zombies, ZIN, REV, and the clone army transfer a state before `load_oob`.
+
 ### New unit models load cleanly
 
 The Event 039 assassin units, the rebuilt cave monster, and the plague carriers load with no entity, mesh, or animation errors in `error.log` (commit `8c3a4f847`).
@@ -46,6 +54,25 @@ Switching from USA to TIB with the `tag` console command raised the on-screen er
 - `common/scripted_effects/006_independence_wave_host_response_effects.txt` lines 150, 331–334: `independence_wave_host_response_*` triggers not defined.
 - `common/scripted_effects/026_black_friday_effects.txt` line 4135: `black_friday_quote_cbrn_external_aid_pp_fee` effect not defined.
 - `common/scripted_effects/chaosx_startup_history_effects.txt`: `recruit_character` called outside history files (about 30 lines, 503–777).
+
+### A World News event with an empty title, body, and button
+
+- Seen: on 16 November 1936 in the trailer campaign (USA, Chaos about 185), a World News window opened with a picture of a desk and a pen but no title, no text, and a blank button. It appeared while units were being spawned in northern Italy through the console, so the trigger may be related to that staging.
+- Not identified: the debug tooltip did not name the event. A screenshot is kept locally in `docs/content_dump/2026-10-03_blank_news_event.png`.
+- Next step: search news events that use the desk-and-pen picture and check their title and description keys for missing localisation or scope-dependent text that resolves empty.
+
+### The "Automatic event firing is disabled" banner's "Click to Enable" button does not respond
+
+- Seen: with the debug launch, clicking "Click to Enable" in the top bar had no effect at 1920×1080. `eval_effect set_country_flag = events_activated` turned automatic events on.
+- Not investigated: it may be a click-region problem in the banner's GUI at this resolution.
+
+### Death's setup reloads templates its history already loads
+
+`death_setup_country` calls `load_oob = "DTH_1936"`, and `DTH - Death.txt` already sets `set_oob = "DTH_1936"`. When setup runs on an existing Death country, `error.log` gets "Division template 'Death … Host' already exists and it is locked for Death" for each template. It is harmless but adds three errors per run.
+
+### `debug_zoom` crashes the game
+
+The vanilla console command `debug_zoom` crashed the game during capture. It is a debug-only command; recorded so it is avoided.
 
 ### Minor UI observations
 
