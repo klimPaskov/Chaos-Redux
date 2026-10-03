@@ -30,6 +30,9 @@ No AI weight, eligibility, payment, unit statistic or cleanup behavior was chang
 - The portrait worker verifies sixteen installed HATE source textures, their aliases, protected static Hannibal files and animated sheet hashes.
   Current contact sheets are reviewed by both worker and parent.
   H06 retains an opaque white field; no final-portrait or artistic-acceptance claim is made.
+- The fresh full-registry scan resolves 64 warlord aliases to 56 distinct existing regional texture paths.
+  The sixteen HATE packages are a recovered subset; the earlier parent overview's 16-texture total was a mistaken extrapolation from that subset and is corrected.
+  No wiring change is required to establish the existing 56-path coverage; subject/visual/source/final acceptance is audited separately.
 - All sixteen original images, lossless crop PNGs and 156x210 candidate PNGs are recovered with their exact historical hashes in co-located durable packages.
   The parent checks all 121 archive file hashes, all sixteen original-to-crop and candidate-to-DDS pixel identities, and 62 protected runtime/definition file hashes.
   The archived source/crop commands are reproducible and no runtime art is replaced.
@@ -54,9 +57,12 @@ Full completion remains open for these exact reasons:
    The successful event render covers four nodes with `complete=false` and no indexed helpers.
    No source-only result is presented as complete engine evidence.
 2. Attributable GUI state, resolution, hierarchy, click-region and comparison acceptance remains incomplete.
-3. Five model-manifest links and Feast Guard's selected export are absent.
-   Runtime meshes/actions are present; missing provenance is recorded separately and no production workflow is reopened to conceal it.
-4. HATE source placeholders retain rights and final/visual acceptance gates, including distinct final portrait coverage for all 56 intended regional slots.
+3. Five current model-manifest links and Feast Guard's exact selected export are recovered.
+   Raw approved inputs, provider lineage, source rights and selected asset copy/visual evidence remain unresolved where documented by the package handoffs.
+   Siege Eaters has an unresolved source-gate override conflict and an unlinked ineligible NoAI research candidate; that candidate is not promoted or used.
+   March Predation Column retains its unresolved death-audio hash and input-source relationships.
+4. Eight European original native fictional finals are parent-reviewed and installed at the existing paths, with exact PNG/DDS pixel matches.
+   The remaining 48 regional finals stay required and in production; existing source placeholders are not promoted by file count.
    Their sixteen active source packages now have exact recovered originals/crops and reproducible source receipts; that archive acceptance does not authorize runtime replacement or final promotion.
    The protected Hannibal file receipt establishes identity and bindings only, with missing external provenance and artistic acceptance left explicit.
 5. Orchestrator-owned live model/GUI/audio/counter/event evidence and a clean live `error.log` are not supplied by this source continuation.
@@ -64,6 +70,14 @@ Full completion remains open for these exact reasons:
 
 The unused convergence-participant marker has a source-only cleanup concern in the probability audit, with no proven reader or gameplay effect.
 It is retained as unresolved audit data; no speculative balance or behavior patch is made from it.
+
+## Fictional final portrait production authority
+
+The parent's resumed user-authorized implementation scope retains the accepted 56 distinct fictional final-portrait requirement.
+The event-assets portrait-production rule assigns fictional/impossible portraits to native ImageGen, while user-run RunPod applies to grounded finals.
+No inspected direct user-decision record establishes a universal portrait-wide RunPod or unaltered-source-only ban; the conflicting older worker assertions remain historical and do not override that instruction hierarchy.
+The parent accepts original native fictional production within this existing scope, beginning with eight European candidates and preserving all supplied Hannibal art and current runtime portraits until review.
+This neither reduces the 56-final requirement nor promotes existing placeholders, and the source-only amendment for the seven closed 3D model packages remains intact.
 
 Skills used: `chaos-redux-events`, `chaos-redux-subagents`, `chaos-redux-event-assets`, `chaos-redux-3d-model-pipeline`, and `chaos-redux-shared-git-commit`.
 The decision specialist also used `chaos-redux-decisions-missions`, and the skill maintainer used `skill-creator`.

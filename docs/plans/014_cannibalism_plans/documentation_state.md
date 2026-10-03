@@ -8,9 +8,10 @@ The current checkpoint and remaining queues are in `resume_packet.md`.
 The bounded material repair, provider-template repair, completion audit and portrait-worker receipts are the dated 2026-10-03 handoffs in `subagent_handoffs/`.
 The older tables below are historical checkpoints where they conflict with those current source observations.
 All four super-event image registrations are present, the CXT registration wrapper only marks pending work, and the Scavenger material binding has a current actual-byte correction.
-Feast Cohort mesh/action copy identity is proven; Feast Guard's export and five archival manifests are absent.
+Feast Cohort mesh/action copy identity is proven; Feast Guard's exact export and five current manifest links are restored by the dated recovery handoffs.
+Those current reconciliations preserve unresolved upstream provenance and acceptance fields without claiming recovered original JSON.
 The sixteen active HATE source packages have exact recovered originals/crops and reproducible durable receipts.
-Probability, GUI, final portrait/rights and live acceptance remain unresolved, so this reconciliation establishes no full completion.
+Eight original European fictional finals are parent-reviewed and installed; 48 regional finals, probability, GUI, upstream rights/provenance and live acceptance remain unresolved, so this reconciliation establishes no full completion.
 
 This ledger is the current documentation map for Event 014 and is limited to documentation evidence, read-only MCP evidence, manifests, and parent-owned handoffs.
 

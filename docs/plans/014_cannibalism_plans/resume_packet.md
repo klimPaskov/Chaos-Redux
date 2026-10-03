@@ -18,13 +18,21 @@ Their live presentation review remains outside this source check.
 The current CXT wrapper only marks content pending, so the daily Event 014 registration hook requires no change.
 
 Feast Cohort's selected `11014` mesh and all eight action files are byte-identical to their installed runtime copies, recorded in `evidence/2026-10-03_feast_cohort_runtime_source_receipt.json`.
-Feast Guard's selected export and five named archival manifests are absent, so their missing source receipts remain unresolved without reopening production.
+Feast Guard's exact selected export is recovered by inverse lossless texture-name rebasing from the installed derivative, matching historical SHA-256 `4f2f8e22b2e479521e48b627d3769383ff48ddd6c95b8ec197639c7068fe7fee`.
+All five missing root manifest links resolve to new current reconciliations, explicitly distinct from recovered original JSON.
+Their missing upstream input, task, rights, copy-lineage or visual evidence remains enumerated in the package manifests and `evidence/2026-10-03_model_manifests_parent_review.json`.
 
 The portrait worker's current receipt is `subagent_handoffs/2026-10-03_event014_portrait_receipt_repair.md`.
 It confirms surviving runtime identities, protected Hannibal bindings and the absent original/crop workspace; it does not promote the HATE source placeholders to finals or establish missing rights.
+The fresh full-registry scan resolves 64 warlord aliases to 56 distinct existing regional textures.
+The sixteen HATE packages are the recovered subset, not the complete consumed texture inventory; the earlier parent overview's 16-texture total was incorrect.
 All sixteen exact originals, lossless crops and 156x210 candidates are recovered in the durable portrait archive and match their historical file hashes.
 The parent verifies every candidate against the installed DDS pixels and all 121 archive file hashes in `evidence/2026-10-03_portrait_archive_parent_review.json`.
 See `subagent_handoffs/2026-10-03_portrait_source_archive_recovery.md` for the recovered packages and the final-art/rights boundaries.
+Parent acceptance within the fully authorized implementation scope selects native ImageGen for the outstanding fictional final-art requirement under the portrait-production skill.
+The first eight European originals are parent-reviewed, converted and installed at their existing paths, with exact PNG/DDS pixel matches and all other 52 portrait DDS files preserved in the install receipt.
+The next regional tranches remain part of the full 56-final requirement; no route or region is dropped.
+The portrait-wide user-only RunPod assertions in older worker handoffs are not supported by a direct user-decision record; the model source-only amendment and supplied Hannibal art remain protected.
 
 Fresh event rendering is partial, and event/helper comparison, probability scenarios and attributable GUI acceptance remain incomplete.
 The decision specialist's current candidate inventories, preserved source baseline and exact unresolved scenarios are in `subagent_handoffs/2026-10-03_event014_decision_probability_audit.md`; no current normalized AI conclusion is available.
@@ -56,10 +64,10 @@ Model inputs must start from actual Internet-sourced or user-supplied modern art
 ## Open queues and blockers
 
 1. The seven installed bespoke model/entity/action packages still need parent live consumer validation; source-side re-import and runtime file checks do not substitute for a live session. This is a verification gate after closed production, not a request to reopen the 3D workflow.
-2. Feast Cohort's source-to-runtime mesh/action identity is proven by the current receipt; Feast Guard's selected export is absent and its copy provenance remains unresolved.
-Five archival manifest paths also remain absent despite installed runtime packages.
+2. Feast Cohort's source-to-runtime mesh/action identity is proven, and Feast Guard's selected export is recovered exactly.
+The five current manifest links are repaired, while original provider/input/rights/authoring/copy evidence gaps remain explicit inside their reconciled records.
 3. The portrait-worker receipt and protected static Hannibal file/binding receipt exist.
-The sixteen active HATE source packages have a reproducible durable archive; rights, final HOI4-style coverage for all 56 regional slots and live acceptance remain open.
+The sixteen HATE source packages have a reproducible durable archive; eight European original native finals are installed, and 48 regional finals plus live acceptance remain open.
 The retained user-authorized HATE source branch takes precedence over the skill's default fictional source route for those existing placeholders.
 4. Fresh Event 014 MCP inspection and overview rendering are partial because the large workspace deferred full validation; zero blocking diagnostics in that partial result is not full runtime proof.
 5. Weighted-logic evidence remains scenario-specific and incomplete under `event014_probability_final_2026-08-25.md`; no aggregate probability completion claim is made.
