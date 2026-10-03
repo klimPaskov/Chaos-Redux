@@ -33,17 +33,31 @@ The owner passes the ordinary current payable cost after all ordinary consumer m
 
 Eligible sources are composed in ascending priority order by multiplying the remaining ratio and dividing by the 10000 basis after each source.
 
-For a positive cost, the final quote is the smallest whole quantum whose product is at least `ordinary * composed_ratio / 10000`. The helper computes the Euclidean remainder, subtracts it before division so Clausewitz produces a whole quotient, and adds one unit only when the remainder is positive; a positive fractional result is therefore never truncated or incremented as a fractional quotient.
+For a positive cost, the required final quote is the smallest whole quantum whose product is at least the exact ordinary cost multiplied by every eligible source ratio and divided by the corresponding bases.
+The current effect path multiplies the ordinary cost by the scalar composed ratio, divides by 10000, and quantizes the stored fixed-point amount using nearest-integer rounding and an upward correction.
+The custom-cost trigger bridge instead computes a numerator in quantum units and uses its Euclidean remainder for the ceiling.
+These paths can disagree when the effect path discards a positive remainder before quantization, and both paths have overflowing numerator cases.
 
-A positive result is always at least one positive quantum.
+A positive ordinary cost must produce at least one positive quantum.
+Within the positive-ordinary, eligible-source branch, the effect-side quote enforces this minimum after quantization using the actual effective `universal_cost_quantize_quantum`.
+The displayed quote and saved amount are calculated after this guard.
+Zero, negative, and no-source values retain their existing behavior.
+This accepted invariant repair does not repair exact ceiling, multiplication overflow, or the scalar composed-ratio representation.
 
 Zero remains zero and negative/reward values bypass source discounts and are preserved unchanged.
 
 Quantization happens after all eligible source ratios are composed, so a multi-source quote does not round each source separately.
 
+The [2026-10-03 quantization audit](../plans/026_black_friday_plans/subagent_handoffs/2026-10-03_quantization_audit.md) records the local reference hashes, 28 arithmetic scenarios, a separately verified bounded decomposition, and the unresolved exact-composition and trigger-consistency requirements.
+The updated offline Data structures reference specifies five decimal places and a roughly 2.147-billion script-variable range, while retaining a separate roughly 2.147-million limit for deprecated manpower readers.
+The installed arithmetic documentation confirms fixed-point operations but does not independently specify that numeric range or an overflow multiplication implementation.
+These reference-based findings are not native runtime evidence, and the required MCP reference-context call timed out after 600 seconds.
+The audit and accepted follow-up applied one effect-side minimum guard and documentation changes.
+No approximate-ceiling replacement, ratio epsilon, source-domain restriction, or arithmetic fallback was introduced.
+
 The quote exposes one `universal_cost_quote_displayed_cost` value equal to the final amount the owner must pass to payment and receipt recording.
 
-The effect-side quote composes every registered source. While Event 026 is active, every successful source registration or clear rebuilds twelve canonical scalar ratios (`political_power`, `command_power`, `manpower`, `equipment`, `trains`, `convoy`, `fuel`, `army_experience`, `navy_experience`, `air_experience`, `stability`, and `war_support`) by invoking the same effect-side quote and storing its pre-quantization composed ratio. Custom-cost trigger owners pass exactly one of those canonical family masks and apply the same Euclidean-remainder ceiling as confirmation payment. Other family masks fail closed rather than displaying a price that payment cannot reproduce.
+The effect-side quote composes every registered source. While Event 026 is active, every successful source registration or clear rebuilds twelve canonical scalar ratios (`political_power`, `command_power`, `manpower`, `equipment`, `trains`, `convoy`, `fuel`, `army_experience`, `navy_experience`, `air_experience`, `stability`, and `war_support`) by invoking the same effect-side quote and storing its pre-quantization composed ratio. Custom-cost trigger owners pass exactly one of those canonical family masks, but identical scalar cache inputs do not establish an exact display and payment match across the two arithmetic paths. Other family masks fail closed.
 
 The current bounded adapters declare source-level quote paths across 104 logical component rows in ten owner tranches, including all ten Random Faction paid actions and Africa Elephant logistics. Fury, Japan chemical, biological medical capacity, and Japan biological sale strings use dynamic values instead of fixed 50/75-percent literals, while Communist-spread, CBRN shelter, Germany Mengele, Random Faction, and Africa owner text consume quote-backed values. Source inspection alone is not live engine proof, so overlapping-source parity remains open in Part 8 until focused MCP/runtime evidence confirms cache rebuild, trigger evaluation, displayed value, and confirmation debit under both source orders.
 

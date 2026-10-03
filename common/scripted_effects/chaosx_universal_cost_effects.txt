@@ -562,6 +562,18 @@ universal_cost_quote_integer = {
 			set_temp_variable = { universal_cost_quantize_quantum = universal_cost_quote_rounding_quantum }
 			universal_cost_round_up_to_quantum = yes
 			set_temp_variable = { universal_cost_quote_final_cost = universal_cost_quantize_result }
+			# A positive ordinary price with an eligible source keeps one payable
+			# quantum even if the preceding arithmetic lost its tiny positive amount.
+			if = {
+				limit = {
+					check_variable = {
+						var = universal_cost_quote_final_cost
+						value = universal_cost_quantize_quantum
+						compare = less_than
+					}
+				}
+				set_temp_variable = { universal_cost_quote_final_cost = universal_cost_quantize_quantum }
+			}
 		}
 	}
 

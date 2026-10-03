@@ -119,6 +119,11 @@ Side effects: only temporary arithmetic variables are changed.
 
 Purpose: perform deterministic positive upward quantization.
 
+Validation limit: exact ceiling remains a required semantic, not an established guarantee for the current quotation pipeline.
+The pipeline can lose a positive amount before this helper runs, and division into quantum units can lose precision or exceed the variable range.
+The effect-side `universal_cost_quote_integer` applies the accepted one-quantum minimum after this helper returns, using its effective `universal_cost_quantize_quantum`.
+The [2026-10-03 quantization audit](../../docs/plans/026_black_friday_plans/subagent_handoffs/2026-10-03_quantization_audit.md) records the minimum repair, remaining exact-ceiling counterexamples, and the queued exact-arithmetic architecture.
+
 Scope: any effect scope.
 
 Inputs: temporary `universal_cost_quantize_amount` and optional positive `universal_cost_quantize_quantum`.
@@ -142,6 +147,16 @@ Outputs: `universal_cost_quote_final_cost`, `universal_cost_quote_displayed_cost
 Defaults: no eligible active source leaves a positive ordinary cost unchanged; zero and negative amounts are preserved and receive no discount; a positive quoted amount is rounded upward to the supplied quantum only after all eligible ratios are composed.
 
 Formula: for a positive ordinary cost, the composed ratio starts at 10000 and multiplies each eligible source ratio in priority order, dividing by 10000 after each source, then the final amount is `ceil(ordinary * composed_ratio / 10000 / quantum) * quantum`.
+
+This formula describes the intended result.
+The current implementation multiplies the ordinary cost by the composed basis ratio before division, then passes the stored fixed-point amount to the quantizer.
+An overflowing numerator or a discarded subprecision remainder prevents the implementation from establishing that result.
+The scalar composed-ratio cache can also discard source-product information before either quote path runs.
+For a positive ordinary price with at least one eligible source, the final amount is raised to the effective positive `universal_cost_quantize_quantum` when the quantizer returns less than that quantum.
+This guard runs after quantization and before displayed and saved cost fields are calculated, and preserves zero, negative, and no-source behavior.
+It implements the accepted positive minimum only.
+Exact ceiling, overflow, and all-source composition remain unresolved, including ordinary 2.00001 at ratio 5000 producing 1 instead of 2.
+The parent-owned trigger bridge was not changed.
 
 Side effects: temporary arrays are used for deterministic priority traversal, and no registry or payer state is changed.
 
