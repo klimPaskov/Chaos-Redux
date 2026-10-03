@@ -5,8 +5,9 @@
 # - This file owns the narrow, reusable country-scoped ledger bridge shared by
 #   the Antarctic Event 025 expedition and the legacy Event 036 spacecraft.
 # - Public effects are resolve_event025, resolve_event036, grant_loser_result,
-#   and assign_fragment. Internal helpers are documented beside their effect.
-# - Event 025 has one persistent global owner target. Fragment slots one
+#   assign_fragment, transfer_physical_custody, and destroy_physical_custody.
+#   Contracts and parent wiring are in the paired ledger markdown document.
+# - Event 025 has separate historical-owner and physical-core targets. Fragment slots one
 #   through six have one persistent global country target each, plus role data.
 # - Arrays global.chaosx_nr25_fragment_owners and
 #   global.chaosx_nr25_fragment_status are projections of those six slots and
@@ -314,6 +315,7 @@ chaosx_alien_recovery_ledger_resolve_event025 = {
 		set_global_flag = chaosx_alien_recovery_event025_claimed
 		set_country_flag = chaosx_alien_recovery_event025_recorded
 		set_country_flag = chaosx_alien_recovery_event025_reward_pending
+		chaosx_alien_recovery_ledger_initialize_core_custody = yes
 		set_variable = { chaosx_alien_recovery_event025_overlap = chaosx_alien_recovery_ledger_overlap }
 		# The current Event 016 API reads this scoped normal-variable bridge;
 		# the public temporary input remains untouched for the caller.
@@ -638,130 +640,39 @@ chaosx_alien_recovery_ledger_grant_loser_result = {
 	}
 }
 
-# Any scope. Clears only invalid persistent owner or fragment targets. A target
-# is invalid when its country no longer exists, is capitulated, or is a
-# subject. The helper is called by the bounded public effects and never scans
-# countries or reconstructs ownership from a world iteration.
+# Any scope. Retires invalid physical custody only. Historical winner claims,
+# result receipts, learned knowledge, and world incident counts are retained.
+# The six-slot cleanup is bounded and does not scan countries.
 chaosx_alien_recovery_ledger_cleanup_invalid_targets = {
+	# Historical winner and claimed state are permanent, even after annexation.
 	if = {
 		limit = {
-			has_event_target = chaosx_alien_recovery_event025_owner
-			NOT = {
-				event_target:chaosx_alien_recovery_event025_owner = {
-					exists = yes
-					NOT = { has_capitulated = yes }
-					NOT = { is_subject = yes }
+			has_event_target = chaosx_alien_recovery_core_custodian
+			NOT = { event_target:chaosx_alien_recovery_core_custodian = { chaosx_alien_recovery_ledger_custody_country_is_valid = yes } }
+		}
+		event_target:chaosx_alien_recovery_core_custodian = { clr_country_flag = chaosx_alien_recovery_core_holder }
+		clear_global_event_target = chaosx_alien_recovery_core_custodian
+		set_global_flag = chaosx_alien_recovery_core_abandoned
+	}
+	for_loop_effect = {
+		start = constant:chaosx_nr25_value.one
+		end = constant:chaosx_nr25_cost.fragments_total
+		compare = less_than_or_equals
+		value = chaosx_alien_recovery_cleanup_slot
+		meta_effect = {
+			text = {
+				if = {
+					limit = {
+						has_event_target = chaosx_alien_recovery_fragment_owner_[SLOT]
+						NOT = { event_target:chaosx_alien_recovery_fragment_owner_[SLOT] = { chaosx_alien_recovery_ledger_custody_country_is_valid = yes } }
+					}
+					set_temp_variable = { chaosx_alien_recovery_release_slot = [SLOT] }
+					chaosx_alien_recovery_ledger_release_fragment_slot = yes
 				}
 			}
+			SLOT = "[?chaosx_alien_recovery_cleanup_slot|.0]"
 		}
-		clear_global_event_target = chaosx_alien_recovery_event025_owner
-		clr_global_flag = chaosx_alien_recovery_event025_owner_recorded
-		clr_global_flag = chaosx_alien_recovery_event025_claimed
 	}
-	if = {
-		limit = {
-			has_event_target = chaosx_alien_recovery_event025_owner
-			event_target:chaosx_alien_recovery_event025_owner = {
-				exists = yes
-				NOT = { has_capitulated = yes }
-				NOT = { is_subject = yes }
-			}
-			NOT = { has_global_flag = chaosx_alien_recovery_event025_owner_recorded }
-		}
-		set_global_flag = chaosx_alien_recovery_event025_owner_recorded
-	}
-
-	if = {
-		limit = {
-			has_event_target = chaosx_alien_recovery_fragment_owner_1
-			NOT = {
-				event_target:chaosx_alien_recovery_fragment_owner_1 = {
-					exists = yes
-					NOT = { has_capitulated = yes }
-					NOT = { is_subject = yes }
-				}
-			}
-		}
-		clear_global_event_target = chaosx_alien_recovery_fragment_owner_1
-		clr_global_flag = chaosx_alien_recovery_fragment_1_assigned
-		set_variable = { global.chaosx_alien_recovery_fragment_1_role = constant:chaosx_nr25_value.zero }
-	}
-	if = {
-		limit = {
-			has_event_target = chaosx_alien_recovery_fragment_owner_2
-			NOT = {
-				event_target:chaosx_alien_recovery_fragment_owner_2 = {
-					exists = yes
-					NOT = { has_capitulated = yes }
-					NOT = { is_subject = yes }
-				}
-			}
-		}
-		clear_global_event_target = chaosx_alien_recovery_fragment_owner_2
-		clr_global_flag = chaosx_alien_recovery_fragment_2_assigned
-		set_variable = { global.chaosx_alien_recovery_fragment_2_role = constant:chaosx_nr25_value.zero }
-	}
-	if = {
-		limit = {
-			has_event_target = chaosx_alien_recovery_fragment_owner_3
-			NOT = {
-				event_target:chaosx_alien_recovery_fragment_owner_3 = {
-					exists = yes
-					NOT = { has_capitulated = yes }
-					NOT = { is_subject = yes }
-				}
-			}
-		}
-		clear_global_event_target = chaosx_alien_recovery_fragment_owner_3
-		clr_global_flag = chaosx_alien_recovery_fragment_3_assigned
-		set_variable = { global.chaosx_alien_recovery_fragment_3_role = constant:chaosx_nr25_value.zero }
-	}
-	if = {
-		limit = {
-			has_event_target = chaosx_alien_recovery_fragment_owner_4
-			NOT = {
-				event_target:chaosx_alien_recovery_fragment_owner_4 = {
-					exists = yes
-					NOT = { has_capitulated = yes }
-					NOT = { is_subject = yes }
-				}
-			}
-		}
-		clear_global_event_target = chaosx_alien_recovery_fragment_owner_4
-		clr_global_flag = chaosx_alien_recovery_fragment_4_assigned
-		set_variable = { global.chaosx_alien_recovery_fragment_4_role = constant:chaosx_nr25_value.zero }
-	}
-	if = {
-		limit = {
-			has_event_target = chaosx_alien_recovery_fragment_owner_5
-			NOT = {
-				event_target:chaosx_alien_recovery_fragment_owner_5 = {
-					exists = yes
-					NOT = { has_capitulated = yes }
-					NOT = { is_subject = yes }
-				}
-			}
-		}
-		clear_global_event_target = chaosx_alien_recovery_fragment_owner_5
-		clr_global_flag = chaosx_alien_recovery_fragment_5_assigned
-		set_variable = { global.chaosx_alien_recovery_fragment_5_role = constant:chaosx_nr25_value.zero }
-	}
-	if = {
-		limit = {
-			has_event_target = chaosx_alien_recovery_fragment_owner_6
-			NOT = {
-				event_target:chaosx_alien_recovery_fragment_owner_6 = {
-					exists = yes
-					NOT = { has_capitulated = yes }
-					NOT = { is_subject = yes }
-				}
-			}
-		}
-		clear_global_event_target = chaosx_alien_recovery_fragment_owner_6
-		clr_global_flag = chaosx_alien_recovery_fragment_6_assigned
-		set_variable = { global.chaosx_alien_recovery_fragment_6_role = constant:chaosx_nr25_value.zero }
-	}
-
 	chaosx_alien_recovery_ledger_project_fragment_arrays = yes
 }
 
@@ -869,14 +780,22 @@ chaosx_alien_recovery_ledger_project_fragment_arrays = {
 	}
 }
 
-# COUNTRY scope. Public fragment assignment. The six fixed slot effects below
-# make ownership replacement explicit so one fragment can never have two
-# persistent owners. Reassignment removes the old owner's slot marker first.
+# COUNTRY scope. Public acquisition can claim only an unowned fragment.
+# A living owner's slot is moved only by the consent-checked custody transaction.
+# The private slot effects clear old projections before a lawful transfer.
 chaosx_alien_recovery_ledger_assign_fragment = {
 	set_temp_variable = { chaosx_alien_recovery_fragment_assigned = constant:chaosx_nr25_value.zero }
 	chaosx_alien_recovery_ledger_cleanup_invalid_targets = yes
 	if = {
-		limit = { chaosx_alien_recovery_ledger_fragment_input_is_valid = yes }
+		limit = {
+			chaosx_alien_recovery_ledger_fragment_input_is_valid = yes
+			meta_trigger = {
+				text = {
+					NOT = { has_event_target = chaosx_alien_recovery_fragment_owner_[SLOT] }
+				}
+				SLOT = "[?chaosx_alien_recovery_fragment_id|.0]"
+			}
+		}
 		if = {
 			limit = {
 				check_variable = {
@@ -942,270 +861,247 @@ chaosx_alien_recovery_ledger_assign_fragment = {
 
 # COUNTRY scope. Assigns fragment slot one after clearing its previous owner.
 chaosx_alien_recovery_ledger_assign_fragment_slot_1 = {
-	if = {
-		limit = {
-			has_event_target = chaosx_alien_recovery_fragment_owner_1
-			event_target:chaosx_alien_recovery_fragment_owner_1 = {
-				exists = yes
-				NOT = { has_capitulated = yes }
-				NOT = { is_subject = yes }
-			}
-		}
-		event_target:chaosx_alien_recovery_fragment_owner_1 = {
-			clr_country_flag = chaosx_alien_recovery_fragment_1_owner
-			clear_variable = chaosx_alien_recovery_fragment_1_role
-			if = {
-				limit = {
-					has_variable = chaosx_alien_recovery_ledger_fragment_count
-					check_variable = {
-						var = chaosx_alien_recovery_ledger_fragment_count
-						value = constant:chaosx_nr25_value.zero
-						compare = greater_than
-					}
-				}
-				subtract_from_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.one }
-			}
-		}
-	}
-	if = {
-		limit = { has_event_target = chaosx_alien_recovery_fragment_owner_1 }
-		clear_global_event_target = chaosx_alien_recovery_fragment_owner_1
-	}
+	# The common release also repairs an invalid or capitulated previous owner.
+	set_temp_variable = { chaosx_alien_recovery_release_slot = constant:chaosx_nr25_value.one }
+	chaosx_alien_recovery_ledger_release_fragment_slot = yes
 	save_global_event_target_as = chaosx_alien_recovery_fragment_owner_1
-	set_country_flag = chaosx_alien_recovery_fragment_1_owner
-	set_variable = { chaosx_alien_recovery_fragment_1_role = chaosx_alien_recovery_fragment_role }
-	if = {
-		limit = { NOT = { has_variable = chaosx_alien_recovery_ledger_fragment_count } }
-		set_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.zero }
-	}
-	add_to_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.one }
 	set_variable = { global.chaosx_alien_recovery_fragment_1_role = chaosx_alien_recovery_fragment_role }
 	set_global_flag = chaosx_alien_recovery_fragment_1_assigned
+	chaosx_alien_recovery_ledger_refresh_country_fragments = yes
 	set_temp_variable = { chaosx_alien_recovery_fragment_assigned = constant:chaosx_nr25_value.one }
 	chaosx_alien_recovery_ledger_project_fragment_arrays = yes
 }
 
 # COUNTRY scope. Assigns fragment slot two after clearing its previous owner.
 chaosx_alien_recovery_ledger_assign_fragment_slot_2 = {
-	if = {
-		limit = {
-			has_event_target = chaosx_alien_recovery_fragment_owner_2
-			event_target:chaosx_alien_recovery_fragment_owner_2 = {
-				exists = yes
-				NOT = { has_capitulated = yes }
-				NOT = { is_subject = yes }
-			}
-		}
-		event_target:chaosx_alien_recovery_fragment_owner_2 = {
-			clr_country_flag = chaosx_alien_recovery_fragment_2_owner
-			clear_variable = chaosx_alien_recovery_fragment_2_role
-			if = {
-				limit = {
-					has_variable = chaosx_alien_recovery_ledger_fragment_count
-					check_variable = {
-						var = chaosx_alien_recovery_ledger_fragment_count
-						value = constant:chaosx_nr25_value.zero
-						compare = greater_than
-					}
-				}
-				subtract_from_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.one }
-			}
-		}
-	}
-	if = {
-		limit = { has_event_target = chaosx_alien_recovery_fragment_owner_2 }
-		clear_global_event_target = chaosx_alien_recovery_fragment_owner_2
-	}
+	# The common release also repairs an invalid or capitulated previous owner.
+	set_temp_variable = { chaosx_alien_recovery_release_slot = constant:chaosx_nr25_value.two }
+	chaosx_alien_recovery_ledger_release_fragment_slot = yes
 	save_global_event_target_as = chaosx_alien_recovery_fragment_owner_2
-	set_country_flag = chaosx_alien_recovery_fragment_2_owner
-	set_variable = { chaosx_alien_recovery_fragment_2_role = chaosx_alien_recovery_fragment_role }
-	if = {
-		limit = { NOT = { has_variable = chaosx_alien_recovery_ledger_fragment_count } }
-		set_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.zero }
-	}
-	add_to_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.one }
 	set_variable = { global.chaosx_alien_recovery_fragment_2_role = chaosx_alien_recovery_fragment_role }
 	set_global_flag = chaosx_alien_recovery_fragment_2_assigned
+	chaosx_alien_recovery_ledger_refresh_country_fragments = yes
 	set_temp_variable = { chaosx_alien_recovery_fragment_assigned = constant:chaosx_nr25_value.one }
 	chaosx_alien_recovery_ledger_project_fragment_arrays = yes
 }
 
 # COUNTRY scope. Assigns fragment slot three after clearing its previous owner.
 chaosx_alien_recovery_ledger_assign_fragment_slot_3 = {
-	if = {
-		limit = {
-			has_event_target = chaosx_alien_recovery_fragment_owner_3
-			event_target:chaosx_alien_recovery_fragment_owner_3 = {
-				exists = yes
-				NOT = { has_capitulated = yes }
-				NOT = { is_subject = yes }
-			}
-		}
-		event_target:chaosx_alien_recovery_fragment_owner_3 = {
-			clr_country_flag = chaosx_alien_recovery_fragment_3_owner
-			clear_variable = chaosx_alien_recovery_fragment_3_role
-			if = {
-				limit = {
-					has_variable = chaosx_alien_recovery_ledger_fragment_count
-					check_variable = {
-						var = chaosx_alien_recovery_ledger_fragment_count
-						value = constant:chaosx_nr25_value.zero
-						compare = greater_than
-					}
-				}
-				subtract_from_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.one }
-			}
-		}
-	}
-	if = {
-		limit = { has_event_target = chaosx_alien_recovery_fragment_owner_3 }
-		clear_global_event_target = chaosx_alien_recovery_fragment_owner_3
-	}
+	# The common release also repairs an invalid or capitulated previous owner.
+	set_temp_variable = { chaosx_alien_recovery_release_slot = constant:chaosx_nr25_value.three }
+	chaosx_alien_recovery_ledger_release_fragment_slot = yes
 	save_global_event_target_as = chaosx_alien_recovery_fragment_owner_3
-	set_country_flag = chaosx_alien_recovery_fragment_3_owner
-	set_variable = { chaosx_alien_recovery_fragment_3_role = chaosx_alien_recovery_fragment_role }
-	if = {
-		limit = { NOT = { has_variable = chaosx_alien_recovery_ledger_fragment_count } }
-		set_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.zero }
-	}
-	add_to_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.one }
 	set_variable = { global.chaosx_alien_recovery_fragment_3_role = chaosx_alien_recovery_fragment_role }
 	set_global_flag = chaosx_alien_recovery_fragment_3_assigned
+	chaosx_alien_recovery_ledger_refresh_country_fragments = yes
 	set_temp_variable = { chaosx_alien_recovery_fragment_assigned = constant:chaosx_nr25_value.one }
 	chaosx_alien_recovery_ledger_project_fragment_arrays = yes
 }
 
 # COUNTRY scope. Assigns fragment slot four after clearing its previous owner.
 chaosx_alien_recovery_ledger_assign_fragment_slot_4 = {
-	if = {
-		limit = {
-			has_event_target = chaosx_alien_recovery_fragment_owner_4
-			event_target:chaosx_alien_recovery_fragment_owner_4 = {
-				exists = yes
-				NOT = { has_capitulated = yes }
-				NOT = { is_subject = yes }
-			}
-		}
-		event_target:chaosx_alien_recovery_fragment_owner_4 = {
-			clr_country_flag = chaosx_alien_recovery_fragment_4_owner
-			clear_variable = chaosx_alien_recovery_fragment_4_role
-			if = {
-				limit = {
-					has_variable = chaosx_alien_recovery_ledger_fragment_count
-					check_variable = {
-						var = chaosx_alien_recovery_ledger_fragment_count
-						value = constant:chaosx_nr25_value.zero
-						compare = greater_than
-					}
-				}
-				subtract_from_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.one }
-			}
-		}
-	}
-	if = {
-		limit = { has_event_target = chaosx_alien_recovery_fragment_owner_4 }
-		clear_global_event_target = chaosx_alien_recovery_fragment_owner_4
-	}
+	# The common release also repairs an invalid or capitulated previous owner.
+	set_temp_variable = { chaosx_alien_recovery_release_slot = constant:chaosx_nr25_value.four }
+	chaosx_alien_recovery_ledger_release_fragment_slot = yes
 	save_global_event_target_as = chaosx_alien_recovery_fragment_owner_4
-	set_country_flag = chaosx_alien_recovery_fragment_4_owner
-	set_variable = { chaosx_alien_recovery_fragment_4_role = chaosx_alien_recovery_fragment_role }
-	if = {
-		limit = { NOT = { has_variable = chaosx_alien_recovery_ledger_fragment_count } }
-		set_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.zero }
-	}
-	add_to_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.one }
 	set_variable = { global.chaosx_alien_recovery_fragment_4_role = chaosx_alien_recovery_fragment_role }
 	set_global_flag = chaosx_alien_recovery_fragment_4_assigned
+	chaosx_alien_recovery_ledger_refresh_country_fragments = yes
 	set_temp_variable = { chaosx_alien_recovery_fragment_assigned = constant:chaosx_nr25_value.one }
 	chaosx_alien_recovery_ledger_project_fragment_arrays = yes
 }
 
 # COUNTRY scope. Assigns fragment slot five after clearing its previous owner.
 chaosx_alien_recovery_ledger_assign_fragment_slot_5 = {
-	if = {
-		limit = {
-			has_event_target = chaosx_alien_recovery_fragment_owner_5
-			event_target:chaosx_alien_recovery_fragment_owner_5 = {
-				exists = yes
-				NOT = { has_capitulated = yes }
-				NOT = { is_subject = yes }
-			}
-		}
-		event_target:chaosx_alien_recovery_fragment_owner_5 = {
-			clr_country_flag = chaosx_alien_recovery_fragment_5_owner
-			clear_variable = chaosx_alien_recovery_fragment_5_role
-			if = {
-				limit = {
-					has_variable = chaosx_alien_recovery_ledger_fragment_count
-					check_variable = {
-						var = chaosx_alien_recovery_ledger_fragment_count
-						value = constant:chaosx_nr25_value.zero
-						compare = greater_than
-					}
-				}
-				subtract_from_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.one }
-			}
-		}
-	}
-	if = {
-		limit = { has_event_target = chaosx_alien_recovery_fragment_owner_5 }
-		clear_global_event_target = chaosx_alien_recovery_fragment_owner_5
-	}
+	# The common release also repairs an invalid or capitulated previous owner.
+	set_temp_variable = { chaosx_alien_recovery_release_slot = constant:chaosx_nr25_value.five }
+	chaosx_alien_recovery_ledger_release_fragment_slot = yes
 	save_global_event_target_as = chaosx_alien_recovery_fragment_owner_5
-	set_country_flag = chaosx_alien_recovery_fragment_5_owner
-	set_variable = { chaosx_alien_recovery_fragment_5_role = chaosx_alien_recovery_fragment_role }
-	if = {
-		limit = { NOT = { has_variable = chaosx_alien_recovery_ledger_fragment_count } }
-		set_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.zero }
-	}
-	add_to_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.one }
 	set_variable = { global.chaosx_alien_recovery_fragment_5_role = chaosx_alien_recovery_fragment_role }
 	set_global_flag = chaosx_alien_recovery_fragment_5_assigned
+	chaosx_alien_recovery_ledger_refresh_country_fragments = yes
 	set_temp_variable = { chaosx_alien_recovery_fragment_assigned = constant:chaosx_nr25_value.one }
 	chaosx_alien_recovery_ledger_project_fragment_arrays = yes
 }
 
 # COUNTRY scope. Assigns fragment slot six after clearing its previous owner.
 chaosx_alien_recovery_ledger_assign_fragment_slot_6 = {
-	if = {
-		limit = {
-			has_event_target = chaosx_alien_recovery_fragment_owner_6
-			event_target:chaosx_alien_recovery_fragment_owner_6 = {
-				exists = yes
-				NOT = { has_capitulated = yes }
-				NOT = { is_subject = yes }
-			}
-		}
-		event_target:chaosx_alien_recovery_fragment_owner_6 = {
-			clr_country_flag = chaosx_alien_recovery_fragment_6_owner
-			clear_variable = chaosx_alien_recovery_fragment_6_role
-			if = {
-				limit = {
-					has_variable = chaosx_alien_recovery_ledger_fragment_count
-					check_variable = {
-						var = chaosx_alien_recovery_ledger_fragment_count
-						value = constant:chaosx_nr25_value.zero
-						compare = greater_than
-					}
-				}
-				subtract_from_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.one }
-			}
-		}
-	}
-	if = {
-		limit = { has_event_target = chaosx_alien_recovery_fragment_owner_6 }
-		clear_global_event_target = chaosx_alien_recovery_fragment_owner_6
-	}
+	# The common release also repairs an invalid or capitulated previous owner.
+	set_temp_variable = { chaosx_alien_recovery_release_slot = constant:chaosx_nr25_value.six }
+	chaosx_alien_recovery_ledger_release_fragment_slot = yes
 	save_global_event_target_as = chaosx_alien_recovery_fragment_owner_6
-	set_country_flag = chaosx_alien_recovery_fragment_6_owner
-	set_variable = { chaosx_alien_recovery_fragment_6_role = chaosx_alien_recovery_fragment_role }
-	if = {
-		limit = { NOT = { has_variable = chaosx_alien_recovery_ledger_fragment_count } }
-		set_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.zero }
-	}
-	add_to_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.one }
 	set_variable = { global.chaosx_alien_recovery_fragment_6_role = chaosx_alien_recovery_fragment_role }
 	set_global_flag = chaosx_alien_recovery_fragment_6_assigned
+	chaosx_alien_recovery_ledger_refresh_country_fragments = yes
 	set_temp_variable = { chaosx_alien_recovery_fragment_assigned = constant:chaosx_nr25_value.one }
 	chaosx_alien_recovery_ledger_project_fragment_arrays = yes
+}
+
+
+# COUNTRY scope. Rebuilds physical fragment markers/counts from six targets.
+# Uses a distinct loop name so release and transfer loops cannot be clobbered.
+chaosx_alien_recovery_ledger_refresh_country_fragments = {
+	set_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.zero }
+	for_loop_effect = {
+		start = constant:chaosx_nr25_value.one
+		end = constant:chaosx_nr25_cost.fragments_total
+		compare = less_than_or_equals
+		value = chaosx_alien_recovery_refresh_slot
+		meta_effect = {
+			text = {
+				clr_country_flag = chaosx_alien_recovery_fragment_[SLOT]_owner
+				clear_variable = chaosx_alien_recovery_fragment_[SLOT]_role
+				if = {
+					limit = {
+						has_event_target = chaosx_alien_recovery_fragment_owner_[SLOT]
+						has_global_flag = chaosx_alien_recovery_fragment_[SLOT]_assigned
+						event_target:chaosx_alien_recovery_fragment_owner_[SLOT] = { tag = PREV }
+					}
+					set_country_flag = chaosx_alien_recovery_fragment_[SLOT]_owner
+					set_variable = { chaosx_alien_recovery_fragment_[SLOT]_role = global.chaosx_alien_recovery_fragment_[SLOT]_role }
+					add_to_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.one }
+				}
+			}
+			SLOT = "[?chaosx_alien_recovery_refresh_slot|.0]"
+		}
+	}
+	set_variable = { chaosx_nr25_fragment_count = THIS.chaosx_alien_recovery_ledger_fragment_count }
+}
+
+# Any scope, private. Input release_slot comes only from validated slot dispatch
+# or a six-slot loop. Clears all old physical projections, including subjects.
+# Destruction retirement flags are deliberately owned by the destroy caller.
+chaosx_alien_recovery_ledger_release_fragment_slot = {
+	meta_effect = {
+		text = {
+			if = {
+				limit = { has_event_target = chaosx_alien_recovery_fragment_owner_[SLOT] }
+				event_target:chaosx_alien_recovery_fragment_owner_[SLOT] = {
+					clear_global_event_target = chaosx_alien_recovery_fragment_owner_[SLOT]
+					clr_country_flag = chaosx_alien_recovery_fragment_[SLOT]_owner
+					clear_variable = chaosx_alien_recovery_fragment_[SLOT]_role
+					chaosx_alien_recovery_ledger_refresh_country_fragments = yes
+				}
+			}
+			clr_global_flag = chaosx_alien_recovery_fragment_[SLOT]_assigned
+			set_variable = { global.chaosx_alien_recovery_fragment_[SLOT]_role = constant:chaosx_nr25_value.zero }
+		}
+		SLOT = "[?chaosx_alien_recovery_release_slot|.0]"
+	}
+}
+
+# COUNTRY scope. The initial winner binds physical core custody once.
+# The initialized marker survives retirement so this cannot resurrect the core.
+chaosx_alien_recovery_ledger_initialize_core_custody = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = chaosx_alien_recovery_core_custody_initialized }
+			has_country_flag = chaosx_alien_recovery_event025_recorded
+			has_event_target = chaosx_alien_recovery_event025_owner
+			event_target:chaosx_alien_recovery_event025_owner = { tag = PREV }
+			chaosx_alien_recovery_ledger_custody_country_is_valid = yes
+		}
+		save_global_event_target_as = chaosx_alien_recovery_core_custodian
+		set_global_flag = chaosx_alien_recovery_core_custody_initialized
+		set_country_flag = chaosx_alien_recovery_core_holder
+	}
+}
+
+# COUNTRY scope. Transfers every physical asset held by the sender, retaining
+# the recipient's existing fragments. Input: selected normal country ID,
+# matching regular custody_recipient target, and recipient consent flag.
+# Outputs: temporary custody_applied, core_moved, fragments_moved (zero default).
+# No cost, dependence, diplomacy, technology, or historical reward mutation.
+chaosx_alien_recovery_ledger_transfer_physical_custody = {
+	set_temp_variable = { chaosx_alien_recovery_custody_applied = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_alien_recovery_core_moved = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_alien_recovery_fragments_moved = constant:chaosx_nr25_value.zero }
+	if = {
+		limit = { chaosx_alien_recovery_ledger_custody_transfer_is_valid = yes }
+		save_event_target_as = chaosx_alien_recovery_custody_sender
+		if = {
+			limit = { chaosx_alien_recovery_ledger_is_core_custodian = yes }
+			clr_country_flag = chaosx_alien_recovery_core_holder
+			event_target:chaosx_alien_recovery_custody_recipient = {
+				save_global_event_target_as = chaosx_alien_recovery_core_custodian
+				set_country_flag = chaosx_alien_recovery_core_holder
+			}
+			set_temp_variable = { chaosx_alien_recovery_core_moved = constant:chaosx_nr25_value.one }
+		}
+		for_loop_effect = {
+			start = constant:chaosx_nr25_value.one
+			end = constant:chaosx_nr25_cost.fragments_total
+			compare = less_than_or_equals
+			value = chaosx_alien_recovery_transfer_slot
+			meta_effect = {
+				text = {
+					if = {
+						limit = {
+							has_event_target = chaosx_alien_recovery_fragment_owner_[SLOT]
+							has_global_flag = chaosx_alien_recovery_fragment_[SLOT]_assigned
+							event_target:chaosx_alien_recovery_fragment_owner_[SLOT] = { tag = event_target:chaosx_alien_recovery_custody_sender }
+						}
+						set_temp_variable = { chaosx_alien_recovery_fragment_role = global.chaosx_alien_recovery_fragment_[SLOT]_role }
+						event_target:chaosx_alien_recovery_custody_recipient = { chaosx_alien_recovery_ledger_assign_fragment_slot_[SLOT] = yes }
+						add_to_temp_variable = { chaosx_alien_recovery_fragments_moved = constant:chaosx_nr25_value.one }
+					}
+				}
+				SLOT = "[?chaosx_alien_recovery_transfer_slot|.0]"
+			}
+		}
+		chaosx_alien_recovery_ledger_refresh_country_fragments = yes
+		event_target:chaosx_alien_recovery_custody_recipient = {
+			chaosx_alien_recovery_ledger_refresh_country_fragments = yes
+			clr_country_flag = chaosx_alien_recovery_custody_consent_@PREV
+		}
+		chaosx_alien_recovery_ledger_project_fragment_arrays = yes
+		set_temp_variable = { chaosx_alien_recovery_custody_applied = constant:chaosx_nr25_value.one }
+	}
+	clear_variable = chaosx_alien_recovery_custody_recipient_id
+}
+
+# COUNTRY scope. Permanently retires only the sender's physical material.
+# Outputs match transfer. No input target, no knowledge/history revocation.
+chaosx_alien_recovery_ledger_destroy_physical_custody = {
+	set_temp_variable = { chaosx_alien_recovery_custody_applied = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_alien_recovery_core_moved = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_alien_recovery_fragments_moved = constant:chaosx_nr25_value.zero }
+	if = {
+		limit = {
+			chaosx_alien_recovery_ledger_custody_country_is_valid = yes
+			chaosx_alien_recovery_ledger_has_physical_custody = yes
+			chaosx_alien_recovery_ledger_physical_custody_is_consistent = yes
+		}
+		if = {
+			limit = { chaosx_alien_recovery_ledger_is_core_custodian = yes }
+			clear_global_event_target = chaosx_alien_recovery_core_custodian
+			clr_country_flag = chaosx_alien_recovery_core_holder
+			set_global_flag = chaosx_alien_recovery_core_destroyed
+			set_temp_variable = { chaosx_alien_recovery_core_moved = constant:chaosx_nr25_value.one }
+		}
+		for_loop_effect = {
+			start = constant:chaosx_nr25_value.one
+			end = constant:chaosx_nr25_cost.fragments_total
+			compare = less_than_or_equals
+			value = chaosx_alien_recovery_destroy_slot
+			meta_effect = {
+				text = {
+					if = {
+						limit = {
+							has_event_target = chaosx_alien_recovery_fragment_owner_[SLOT]
+							event_target:chaosx_alien_recovery_fragment_owner_[SLOT] = { tag = PREV }
+						}
+						set_temp_variable = { chaosx_alien_recovery_release_slot = [SLOT] }
+						chaosx_alien_recovery_ledger_release_fragment_slot = yes
+						set_global_flag = chaosx_alien_recovery_fragment_[SLOT]_destroyed
+						add_to_temp_variable = { chaosx_alien_recovery_fragments_moved = constant:chaosx_nr25_value.one }
+					}
+				}
+				SLOT = "[?chaosx_alien_recovery_destroy_slot|.0]"
+			}
+		}
+		chaosx_alien_recovery_ledger_refresh_country_fragments = yes
+		chaosx_alien_recovery_ledger_project_fragment_arrays = yes
+		set_temp_variable = { chaosx_alien_recovery_custody_applied = constant:chaosx_nr25_value.one }
+	}
 }

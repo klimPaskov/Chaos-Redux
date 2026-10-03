@@ -127,30 +127,30 @@ chaosx_alien_recovery_ledger_event036_can_resolve = {
 # and a positive bounded role code. The temporary names are part of the public
 # effect contract and are supplied before calling the assignment effect.
 chaosx_alien_recovery_ledger_fragment_input_is_valid = {
+	chaosx_alien_recovery_ledger_custody_country_is_valid = yes
 	has_variable = chaosx_alien_recovery_fragment_id
 	has_variable = chaosx_alien_recovery_fragment_role
-	check_variable = {
-		var = chaosx_alien_recovery_fragment_id
-		value = constant:chaosx_nr25_value.one
-		compare = greater_than_or_equals
+	OR = {
+		check_variable = { var = chaosx_alien_recovery_fragment_id value = constant:chaosx_nr25_value.one compare = equals }
+		check_variable = { var = chaosx_alien_recovery_fragment_id value = constant:chaosx_nr25_value.two compare = equals }
+		check_variable = { var = chaosx_alien_recovery_fragment_id value = constant:chaosx_nr25_value.three compare = equals }
+		check_variable = { var = chaosx_alien_recovery_fragment_id value = constant:chaosx_nr25_value.four compare = equals }
+		check_variable = { var = chaosx_alien_recovery_fragment_id value = constant:chaosx_nr25_value.five compare = equals }
+		check_variable = { var = chaosx_alien_recovery_fragment_id value = constant:chaosx_nr25_value.six compare = equals }
 	}
-	check_variable = {
-		var = chaosx_alien_recovery_fragment_id
-		value = constant:chaosx_nr25_cost.fragments_total
-		compare = less_than_or_equals
+	OR = {
+		check_variable = { var = chaosx_alien_recovery_fragment_role value = constant:chaosx_nr25_value.one compare = equals }
+		check_variable = { var = chaosx_alien_recovery_fragment_role value = constant:chaosx_nr25_value.two compare = equals }
+		check_variable = { var = chaosx_alien_recovery_fragment_role value = constant:chaosx_nr25_value.three compare = equals }
+		check_variable = { var = chaosx_alien_recovery_fragment_role value = constant:chaosx_nr25_value.four compare = equals }
+		check_variable = { var = chaosx_alien_recovery_fragment_role value = constant:chaosx_nr25_value.five compare = equals }
+		check_variable = { var = chaosx_alien_recovery_fragment_role value = constant:chaosx_nr25_value.six compare = equals }
 	}
-	check_variable = {
-		var = chaosx_alien_recovery_fragment_role
-		value = constant:chaosx_nr25_value.one
-		compare = greater_than_or_equals
-	}
-	check_variable = {
-		var = chaosx_alien_recovery_fragment_role
-		value = constant:chaosx_nr25_cost.fragments_total
-		compare = less_than_or_equals
+	meta_trigger = {
+		text = { NOT = { has_global_flag = chaosx_alien_recovery_fragment_[SLOT]_destroyed } }
+		SLOT = "[?chaosx_alien_recovery_fragment_id|.0]"
 	}
 }
-
 # Country scope. This is the bounded loser-result evidence gate. The effects
 # still choose fragment over survey when both are present.
 chaosx_alien_recovery_ledger_has_loser_evidence = {
@@ -187,6 +187,208 @@ chaosx_alien_recovery_ledger_event036_overlap_path = {
 	NOT = { has_country_flag = chaosx_alien_recovery_event036_recorded }
 	has_country_flag = chaosx_alien_recovery_event025_recorded
 	chaosx_alien_recovery_ledger_event025_has_exact_overlap = yes
+}
+
+
+# COUNTRY scope. Physical custody needs living independent institutions.
+# This policy never invalidates the historical reward owner.
+chaosx_alien_recovery_ledger_custody_country_is_valid = {
+	exists = yes
+	NOT = { has_capitulated = yes }
+	NOT = { is_subject = yes }
+}
+
+# COUNTRY scope. Core target and holder projection must agree.
+chaosx_alien_recovery_ledger_is_core_custodian = {
+	NOT = { has_global_flag = chaosx_alien_recovery_core_destroyed }
+	has_event_target = chaosx_alien_recovery_core_custodian
+	has_country_flag = chaosx_alien_recovery_core_holder
+	event_target:chaosx_alien_recovery_core_custodian = { tag = PREV }
+}
+
+# COUNTRY scope. Ownership proof is the persistent slot target, not a counter.
+chaosx_alien_recovery_ledger_has_physical_custody = {
+	OR = {
+		chaosx_alien_recovery_ledger_is_core_custodian = yes
+		AND = {
+			has_event_target = chaosx_alien_recovery_fragment_owner_1
+			has_global_flag = chaosx_alien_recovery_fragment_1_assigned
+			NOT = { has_global_flag = chaosx_alien_recovery_fragment_1_destroyed }
+			event_target:chaosx_alien_recovery_fragment_owner_1 = { tag = PREV }
+		}
+		AND = {
+			has_event_target = chaosx_alien_recovery_fragment_owner_2
+			has_global_flag = chaosx_alien_recovery_fragment_2_assigned
+			NOT = { has_global_flag = chaosx_alien_recovery_fragment_2_destroyed }
+			event_target:chaosx_alien_recovery_fragment_owner_2 = { tag = PREV }
+		}
+		AND = {
+			has_event_target = chaosx_alien_recovery_fragment_owner_3
+			has_global_flag = chaosx_alien_recovery_fragment_3_assigned
+			NOT = { has_global_flag = chaosx_alien_recovery_fragment_3_destroyed }
+			event_target:chaosx_alien_recovery_fragment_owner_3 = { tag = PREV }
+		}
+		AND = {
+			has_event_target = chaosx_alien_recovery_fragment_owner_4
+			has_global_flag = chaosx_alien_recovery_fragment_4_assigned
+			NOT = { has_global_flag = chaosx_alien_recovery_fragment_4_destroyed }
+			event_target:chaosx_alien_recovery_fragment_owner_4 = { tag = PREV }
+		}
+		AND = {
+			has_event_target = chaosx_alien_recovery_fragment_owner_5
+			has_global_flag = chaosx_alien_recovery_fragment_5_assigned
+			NOT = { has_global_flag = chaosx_alien_recovery_fragment_5_destroyed }
+			event_target:chaosx_alien_recovery_fragment_owner_5 = { tag = PREV }
+		}
+		AND = {
+			has_event_target = chaosx_alien_recovery_fragment_owner_6
+			has_global_flag = chaosx_alien_recovery_fragment_6_assigned
+			NOT = { has_global_flag = chaosx_alien_recovery_fragment_6_destroyed }
+			event_target:chaosx_alien_recovery_fragment_owner_6 = { tag = PREV }
+		}
+	}
+}
+
+# COUNTRY scope. Every sender-owned slot must have a live category receipt.
+# Projections are rebuilt by effects, so stale counts are never authority.
+chaosx_alien_recovery_ledger_physical_custody_is_consistent = {
+	OR = {
+		NOT = {
+			AND = {
+				has_event_target = chaosx_alien_recovery_fragment_owner_1
+				event_target:chaosx_alien_recovery_fragment_owner_1 = { tag = PREV }
+			}
+		}
+		AND = {
+			has_global_flag = chaosx_alien_recovery_fragment_1_assigned
+			NOT = { has_global_flag = chaosx_alien_recovery_fragment_1_destroyed }
+			OR = {
+				check_variable = { var = global.chaosx_alien_recovery_fragment_1_role value = constant:chaosx_nr25_value.one compare = equals }
+				check_variable = { var = global.chaosx_alien_recovery_fragment_1_role value = constant:chaosx_nr25_value.two compare = equals }
+				check_variable = { var = global.chaosx_alien_recovery_fragment_1_role value = constant:chaosx_nr25_value.three compare = equals }
+				check_variable = { var = global.chaosx_alien_recovery_fragment_1_role value = constant:chaosx_nr25_value.four compare = equals }
+				check_variable = { var = global.chaosx_alien_recovery_fragment_1_role value = constant:chaosx_nr25_value.five compare = equals }
+				check_variable = { var = global.chaosx_alien_recovery_fragment_1_role value = constant:chaosx_nr25_value.six compare = equals }
+			}
+		}
+	}
+	OR = {
+		NOT = {
+			AND = {
+				has_event_target = chaosx_alien_recovery_fragment_owner_2
+				event_target:chaosx_alien_recovery_fragment_owner_2 = { tag = PREV }
+			}
+		}
+		AND = {
+			has_global_flag = chaosx_alien_recovery_fragment_2_assigned
+			NOT = { has_global_flag = chaosx_alien_recovery_fragment_2_destroyed }
+			OR = {
+				check_variable = { var = global.chaosx_alien_recovery_fragment_2_role value = constant:chaosx_nr25_value.one compare = equals }
+				check_variable = { var = global.chaosx_alien_recovery_fragment_2_role value = constant:chaosx_nr25_value.two compare = equals }
+				check_variable = { var = global.chaosx_alien_recovery_fragment_2_role value = constant:chaosx_nr25_value.three compare = equals }
+				check_variable = { var = global.chaosx_alien_recovery_fragment_2_role value = constant:chaosx_nr25_value.four compare = equals }
+				check_variable = { var = global.chaosx_alien_recovery_fragment_2_role value = constant:chaosx_nr25_value.five compare = equals }
+				check_variable = { var = global.chaosx_alien_recovery_fragment_2_role value = constant:chaosx_nr25_value.six compare = equals }
+			}
+		}
+	}
+	OR = {
+		NOT = {
+			AND = {
+				has_event_target = chaosx_alien_recovery_fragment_owner_3
+				event_target:chaosx_alien_recovery_fragment_owner_3 = { tag = PREV }
+			}
+		}
+		AND = {
+			has_global_flag = chaosx_alien_recovery_fragment_3_assigned
+			NOT = { has_global_flag = chaosx_alien_recovery_fragment_3_destroyed }
+			OR = {
+				check_variable = { var = global.chaosx_alien_recovery_fragment_3_role value = constant:chaosx_nr25_value.one compare = equals }
+				check_variable = { var = global.chaosx_alien_recovery_fragment_3_role value = constant:chaosx_nr25_value.two compare = equals }
+				check_variable = { var = global.chaosx_alien_recovery_fragment_3_role value = constant:chaosx_nr25_value.three compare = equals }
+				check_variable = { var = global.chaosx_alien_recovery_fragment_3_role value = constant:chaosx_nr25_value.four compare = equals }
+				check_variable = { var = global.chaosx_alien_recovery_fragment_3_role value = constant:chaosx_nr25_value.five compare = equals }
+				check_variable = { var = global.chaosx_alien_recovery_fragment_3_role value = constant:chaosx_nr25_value.six compare = equals }
+			}
+		}
+	}
+	OR = {
+		NOT = {
+			AND = {
+				has_event_target = chaosx_alien_recovery_fragment_owner_4
+				event_target:chaosx_alien_recovery_fragment_owner_4 = { tag = PREV }
+			}
+		}
+		AND = {
+			has_global_flag = chaosx_alien_recovery_fragment_4_assigned
+			NOT = { has_global_flag = chaosx_alien_recovery_fragment_4_destroyed }
+			OR = {
+				check_variable = { var = global.chaosx_alien_recovery_fragment_4_role value = constant:chaosx_nr25_value.one compare = equals }
+				check_variable = { var = global.chaosx_alien_recovery_fragment_4_role value = constant:chaosx_nr25_value.two compare = equals }
+				check_variable = { var = global.chaosx_alien_recovery_fragment_4_role value = constant:chaosx_nr25_value.three compare = equals }
+				check_variable = { var = global.chaosx_alien_recovery_fragment_4_role value = constant:chaosx_nr25_value.four compare = equals }
+				check_variable = { var = global.chaosx_alien_recovery_fragment_4_role value = constant:chaosx_nr25_value.five compare = equals }
+				check_variable = { var = global.chaosx_alien_recovery_fragment_4_role value = constant:chaosx_nr25_value.six compare = equals }
+			}
+		}
+	}
+	OR = {
+		NOT = {
+			AND = {
+				has_event_target = chaosx_alien_recovery_fragment_owner_5
+				event_target:chaosx_alien_recovery_fragment_owner_5 = { tag = PREV }
+			}
+		}
+		AND = {
+			has_global_flag = chaosx_alien_recovery_fragment_5_assigned
+			NOT = { has_global_flag = chaosx_alien_recovery_fragment_5_destroyed }
+			OR = {
+				check_variable = { var = global.chaosx_alien_recovery_fragment_5_role value = constant:chaosx_nr25_value.one compare = equals }
+				check_variable = { var = global.chaosx_alien_recovery_fragment_5_role value = constant:chaosx_nr25_value.two compare = equals }
+				check_variable = { var = global.chaosx_alien_recovery_fragment_5_role value = constant:chaosx_nr25_value.three compare = equals }
+				check_variable = { var = global.chaosx_alien_recovery_fragment_5_role value = constant:chaosx_nr25_value.four compare = equals }
+				check_variable = { var = global.chaosx_alien_recovery_fragment_5_role value = constant:chaosx_nr25_value.five compare = equals }
+				check_variable = { var = global.chaosx_alien_recovery_fragment_5_role value = constant:chaosx_nr25_value.six compare = equals }
+			}
+		}
+	}
+	OR = {
+		NOT = {
+			AND = {
+				has_event_target = chaosx_alien_recovery_fragment_owner_6
+				event_target:chaosx_alien_recovery_fragment_owner_6 = { tag = PREV }
+			}
+		}
+		AND = {
+			has_global_flag = chaosx_alien_recovery_fragment_6_assigned
+			NOT = { has_global_flag = chaosx_alien_recovery_fragment_6_destroyed }
+			OR = {
+				check_variable = { var = global.chaosx_alien_recovery_fragment_6_role value = constant:chaosx_nr25_value.one compare = equals }
+				check_variable = { var = global.chaosx_alien_recovery_fragment_6_role value = constant:chaosx_nr25_value.two compare = equals }
+				check_variable = { var = global.chaosx_alien_recovery_fragment_6_role value = constant:chaosx_nr25_value.three compare = equals }
+				check_variable = { var = global.chaosx_alien_recovery_fragment_6_role value = constant:chaosx_nr25_value.four compare = equals }
+				check_variable = { var = global.chaosx_alien_recovery_fragment_6_role value = constant:chaosx_nr25_value.five compare = equals }
+				check_variable = { var = global.chaosx_alien_recovery_fragment_6_role value = constant:chaosx_nr25_value.six compare = equals }
+			}
+		}
+	}
+}
+
+# COUNTRY scope. Both selection proofs and giver-specific consent are required.
+# The regular recipient target is saved by the parent from the selected country.
+chaosx_alien_recovery_ledger_custody_transfer_is_valid = {
+	chaosx_alien_recovery_ledger_custody_country_is_valid = yes
+	chaosx_alien_recovery_ledger_has_physical_custody = yes
+	chaosx_alien_recovery_ledger_physical_custody_is_consistent = yes
+	has_variable = chaosx_alien_recovery_custody_recipient_id
+	has_event_target = chaosx_alien_recovery_custody_recipient
+	event_target:chaosx_alien_recovery_custody_recipient = {
+		chaosx_alien_recovery_ledger_custody_country_is_valid = yes
+		NOT = { tag = PREV }
+		NOT = { has_war_with = PREV }
+		check_variable = { var = PREV.chaosx_alien_recovery_custody_recipient_id value = THIS compare = equals }
+		has_country_flag = chaosx_alien_recovery_custody_consent_@PREV
+	}
 }
 
 # ============================================================================
@@ -529,6 +731,7 @@ chaosx_nr25_evolution_wreck_breaking_apart_action_available = {
 
 chaosx_nr25_v_material_holder_valid = {
 	OR = {
+		chaosx_alien_recovery_ledger_has_physical_custody = yes
 		has_country_flag = chaosx_nr25_winner_settlement_complete
 		has_country_flag = chaosx_nr25_fragment_reward
 		has_country_flag = chaosx_alien_recovery_event036_recorded
