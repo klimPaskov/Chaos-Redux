@@ -101,15 +101,20 @@ germany_mengele_produce_clone_equipment = {
 	}
 }
 
+# COUNTRY scope. Both native cloning routes share one durable completion latch.
+# Record it before grants so duplicate callbacks cannot repeat the initial payload.
 germany_mengele_complete_cloning_project = {
-	set_country_flag = germany_mengele_cloning_project_completed
-	clr_country_flag = germany_mengele_cloning_unlock_pending
-	set_country_flag = directorate_special_project_cloning_completed
-	clone_select_mengele_refinement = yes
-	germany_mengele_produce_clone_equipment = yes
 	if = {
-		limit = { germany_mengele_cloning_project_revolt_ready = yes }
-		country_event = { id = germany_mengele.24 days = 1 }
+		limit = { NOT = { has_country_flag = germany_mengele_cloning_project_completed } }
+		set_country_flag = germany_mengele_cloning_project_completed
+		clr_country_flag = germany_mengele_cloning_unlock_pending
+		set_country_flag = directorate_special_project_cloning_completed
+		clone_select_mengele_refinement = yes
+		germany_mengele_produce_clone_equipment = yes
+		if = {
+			limit = { germany_mengele_cloning_project_revolt_ready = yes }
+			country_event = { id = germany_mengele.24 days = 1 }
+		}
 	}
 }
 
