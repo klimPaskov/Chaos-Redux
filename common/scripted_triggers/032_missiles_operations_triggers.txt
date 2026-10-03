@@ -10,17 +10,89 @@ missiles_selected_target_is_valid = {
 	has_variable = missiles_selected_target
 	var:missiles_selected_target = {
 		missiles_target_is_valid = yes
+		OR = {
+			missiles_ordinary_target_is_valid = yes
+			ROOT = {
+				OR = {
+					has_country_flag = missiles_rogue_operation_bypass_active
+					has_country_flag = missiles_operation_rogue_origin
+					check_variable = { var = missiles_operation_type value = constant:missiles_operation.retaliation compare = equals }
+				}
+			}
+		}
 	}
 }
 
 missiles_selected_target_state_is_valid = {
 	has_variable = missiles_selected_target
 	has_variable = missiles_operation_target_state
-	var:missiles_selected_target = {
-		missiles_target_is_valid = yes
-	}
+	missiles_selected_target_is_valid = yes
 	var:missiles_operation_target_state = {
 		missiles_target_state_is_valid = yes
+	}
+}
+
+# COUNTRY scope. Human selection is explicit; AI uses the scored API directly.
+missiles_human_target_selection_is_open = {
+	NOT = { is_ai = yes }
+	has_country_flag = missiles_program_phase_operations
+	missiles_country_can_prepare_operation = yes
+}
+
+missiles_human_target_is_complete = {
+	missiles_selected_target_is_valid = yes
+	has_variable = missiles_requested_target_profile
+	has_variable = missiles_pending_target_state
+	var:missiles_pending_target_state = {
+		missiles_target_state_is_valid = yes
+		missiles_operation_target_has_profile_value = yes
+	}
+}
+
+missiles_target_selection_page_is_open = {
+	missiles_human_target_selection_is_open = yes
+	OR = { has_country_flag = missiles_target_country_page_open has_country_flag = missiles_target_state_page_open }
+}
+
+missiles_target_profile_menu_is_open = {
+	missiles_human_target_selection_is_open = yes
+	has_country_flag = missiles_target_selected
+	NOT = { has_variable = missiles_requested_target_profile }
+	NOT = { has_country_flag = missiles_target_country_page_open }
+}
+
+missiles_target_country_supports_operation = {
+	missiles_ordinary_target_is_valid = yes
+	OR = {
+		ROOT = { NOT = { check_variable = { var = missiles_operation_type value = constant:missiles_operation.counterforce compare = equals } } }
+		any_controlled_state = { missiles_counterforce_target_is_proven = yes }
+	}
+}
+
+missiles_ordinary_preparation_action_is_visible = {
+	has_country_flag = missiles_program_phase_operations
+	missiles_country_can_prepare_operation = yes
+	OR = {
+		is_ai = yes
+		missiles_human_target_is_complete = yes
+	}
+}
+
+# STATE scope, ROOT is the operating country. A facility must be real, with
+# adequate country intelligence; an arbitrary radar alone is not a launch site.
+missiles_counterforce_target_is_proven = {
+	OR = {
+		has_state_flag = missiles_site_active
+		has_state_flag = missiles_site_hardened
+		has_state_flag = missiles_site_special_payload_custody
+		rocket_site > constant:missiles_program_value.zero
+		nuclear_reactor > constant:missiles_program_value.zero
+		nuclear_facility > constant:missiles_program_value.zero
+		cw_facility > constant:missiles_program_value.zero
+		biowarfare_facility > constant:missiles_program_value.zero
+	}
+	CONTROLLER = {
+		ROOT = { intel_level_over = { target = PREV civilian_intel > constant:missiles_tuning.operation_counterforce_intel } }
 	}
 }
 
@@ -76,7 +148,88 @@ missiles_can_pay_reserve = {
 	check_variable = { var = missiles_operational_reserve value = missiles_reserve_payment_request compare = greater_than_or_equals }
 }
 
+# An existing receipt uses escrow, not the gate for starting another operation.
+# Every participating site must still hold this receipt and its physical share.
+missiles_operation_command_is_operational = {
+	check_variable = { var = missiles_launch_readiness value = constant:missiles_tuning.operation_minimum_readiness compare = greater_than_or_equals }
+	check_variable = { var = missiles_command_control value = constant:missiles_tuning.operation_minimum_control compare = greater_than_or_equals }
+	OR = {
+		NOT = { check_variable = { var = missiles_operation_type value = constant:missiles_operation.precision compare = equals } }
+		check_variable = { var = missiles_launch_readiness value = constant:missiles_program_value.precision_readiness_gate compare = greater_than_or_equals }
+	}
+}
+
+missiles_operation_reserve_receipt_is_sufficient = {
+	has_country_flag = missiles_operation_reserve_receipt_active
+	has_variable = missiles_reserved_reserve
+	check_variable = { var = missiles_reserved_reserve value = constant:missiles_program_value.zero compare = greater_than }
+	check_variable = { var = missiles_operation_missile_cost value = missiles_reserved_reserve compare = less_than_or_equals }
+}
+
+missiles_operation_sites_remain_valid = {
+	missiles_operation_has_valid_site = yes
+	any_of_scopes = { array = missiles_operation_sites exists = yes }
+	NOT = {
+		any_of_scopes = {
+			array = missiles_operation_sites
+			NOT = {
+				AND = {
+					exists = yes
+					is_controlled_by = ROOT
+					missiles_site_can_launch = yes
+					check_variable = { var = missiles_site_operation_id value = ROOT.missiles_active_operation_id compare = equals }
+					has_variable = missiles_site_operation_allocation
+					check_variable = { var = missiles_site_operation_allocation value = constant:missiles_program_value.zero compare = greater_than }
+					check_variable = { var = missiles_site_operation_allocation value = ROOT.missiles_operation_site_allocation compare = equals }
+					check_variable = { var = missiles_site_operation_allocation value = missiles_site_capacity compare = less_than_or_equals }
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY scope, before escrow/markers: reject an allocation that any selected
+# site cannot physically hold. The root quote is computed once by the owner.
+missiles_operation_projected_site_allocations_fit = {
+	check_variable = { var = missiles_operation_site_allocation value = constant:missiles_program_value.zero compare = greater_than }
+	any_of_scopes = { array = missiles_operation_sites exists = yes }
+	NOT = {
+		any_of_scopes = {
+			array = missiles_operation_sites
+			NOT = {
+				AND = {
+					exists = yes
+					is_controlled_by = ROOT
+					missiles_site_can_launch = yes
+					has_variable = missiles_site_capacity
+					check_variable = { var = missiles_site_capacity value = ROOT.missiles_operation_site_allocation compare = greater_than_or_equals }
+				}
+			}
+		}
+	}
+}
+
+missiles_operation_preparation_remains_valid = {
+	missiles_country_can_manage_program = yes
+	missiles_operation_before_commitment = yes
+	missiles_operation_tracks_are_enabled = yes
+	missiles_selected_target_state_is_valid = yes
+	var:missiles_operation_target_state = { missiles_operation_target_has_profile_value = yes }
+	missiles_operation_has_valid_site = yes
+	missiles_operation_sites_remain_valid = yes
+	missiles_operation_has_reliable_payload_custody = yes
+	missiles_operation_command_is_operational = yes
+	missiles_operation_reserve_receipt_is_sufficient = yes
+}
+
+missiles_operation_preparation_is_due = {
+	missiles_operation_preparation_remains_valid = yes
+	has_variable = missiles_operation_ready_date
+	check_variable = { var = global.date value = missiles_operation_ready_date compare = greater_than_or_equals }
+}
+
 missiles_operation_can_be_committed = {
+	missiles_operation_preparation_remains_valid = yes
 	missiles_operation_before_commitment = yes
 	missiles_operation_tracks_are_enabled = yes
 	missiles_selected_target_state_is_valid = yes
@@ -150,27 +303,79 @@ missiles_operation_target_has_strategic_value = {
 	}
 }
 
+missiles_state_has_logistics_target = {
+	OR = { supply_node > constant:missiles_program_value.zero rail_way > constant:missiles_program_value.zero infrastructure > constant:missiles_tuning.site_min_infrastructure naval_base > constant:missiles_program_value.zero }
+}
+
+missiles_state_has_industrial_target = {
+	OR = { arms_factory > constant:missiles_program_value.zero industrial_complex > constant:missiles_program_value.zero dockyard > constant:missiles_program_value.zero synthetic_refinery > constant:missiles_program_value.zero fuel_silo > constant:missiles_program_value.zero }
+}
+
+missiles_state_has_air_coastal_target = {
+	OR = { air_base > constant:missiles_program_value.zero radar_station > constant:missiles_program_value.zero anti_air_building > constant:missiles_program_value.zero naval_base > constant:missiles_program_value.zero coastal_bunker > constant:missiles_program_value.zero }
+}
+
+missiles_state_has_command_target = {
+	OR = { is_capital = yes rocket_site > constant:missiles_program_value.zero radar_station > constant:missiles_program_value.zero }
+}
+
+# COUNTRY scope. Literal helpers avoid unsupported named-argument contracts.
+missiles_selected_enemy_has_logistics_target = {
+	missiles_selected_target_is_valid = yes
+	var:missiles_selected_target = {
+		any_controlled_state = {
+			missiles_target_state_is_valid = yes
+			missiles_state_has_logistics_target = yes
+		}
+	}
+}
+
+missiles_selected_enemy_has_industrial_target = {
+	missiles_selected_target_is_valid = yes
+	var:missiles_selected_target = { any_controlled_state = { missiles_target_state_is_valid = yes missiles_state_has_industrial_target = yes } }
+}
+
+missiles_selected_enemy_has_air_coastal_target = {
+	missiles_selected_target_is_valid = yes
+	var:missiles_selected_target = { any_controlled_state = { missiles_target_state_is_valid = yes missiles_state_has_air_coastal_target = yes } }
+}
+
+missiles_selected_enemy_has_command_target = {
+	missiles_selected_target_is_valid = yes
+	var:missiles_selected_target = { any_controlled_state = { missiles_target_state_is_valid = yes missiles_state_has_command_target = yes } }
+}
+
+missiles_selected_enemy_has_counterforce_target = {
+	missiles_selected_target_is_valid = yes
+	var:missiles_selected_target = { any_controlled_state = { missiles_target_state_is_valid = yes missiles_counterforce_target_is_proven = yes } }
+}
+
+missiles_selected_enemy_has_broad_strategic_target = {
+	missiles_selected_target_is_valid = yes
+	var:missiles_selected_target = { any_controlled_state = { missiles_target_state_is_valid = yes missiles_operation_target_has_strategic_value = yes } }
+}
+
 missiles_operation_target_has_profile_value = {
 	OR = {
 		AND = {
 			check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.logistics compare = equals }
-			OR = { supply_node > constant:missiles_program_value.zero rail_way > constant:missiles_program_value.zero infrastructure > constant:missiles_tuning.site_min_infrastructure naval_base > constant:missiles_program_value.zero }
+			missiles_state_has_logistics_target = yes
 		}
 		AND = {
 			check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.industrial compare = equals }
-			OR = { arms_factory > constant:missiles_program_value.zero industrial_complex > constant:missiles_program_value.zero dockyard > constant:missiles_program_value.zero synthetic_refinery > constant:missiles_program_value.zero fuel_silo > constant:missiles_program_value.zero }
+			missiles_state_has_industrial_target = yes
 		}
 		AND = {
 			check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.air_coastal compare = equals }
-			OR = { air_base > constant:missiles_program_value.zero radar_station > constant:missiles_program_value.zero anti_air_building > constant:missiles_program_value.zero naval_base > constant:missiles_program_value.zero coastal_bunker > constant:missiles_program_value.zero }
+			missiles_state_has_air_coastal_target = yes
 		}
 		AND = {
 			check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.command compare = equals }
-			OR = { is_capital = yes rocket_site > constant:missiles_program_value.zero radar_station > constant:missiles_program_value.zero }
+			missiles_state_has_command_target = yes
 		}
 		AND = {
 			check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.counterforce compare = equals }
-			OR = { rocket_site > constant:missiles_program_value.zero radar_station > constant:missiles_program_value.zero nuclear_reactor > constant:missiles_program_value.zero nuclear_facility > constant:missiles_program_value.zero }
+			missiles_counterforce_target_is_proven = yes
 		}
 		AND = {
 			check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.broad_strategic compare = equals }

@@ -247,10 +247,8 @@ missiles_site_can_repair = {
 	NOT = { has_state_flag = missiles_site_scuttled }
 }
 
-# The target-country trigger is deliberately country-scoped. State targeting
-# is auto-selected by the operation helper after the country selector closes,
-# because the ordinary decision system cannot safely expose a foreign state
-# target and an enemy-country array in the same decision.
+# Country and state selectors use separate phases and bounded native arrays.
+# The AI selects through the same validated prepared-operation API.
 missiles_target_is_valid = {
 	exists = yes
 	NOT = { tag = ROOT }
@@ -270,9 +268,23 @@ missiles_ordinary_target_is_valid = {
 }
 
 missiles_target_state_is_valid = {
-	scope_exists = yes
+	exists = yes
 	impassable = no
-	NOT = { is_owned_by = ROOT }
+	NOT = { is_controlled_by = ROOT }
+	CONTROLLER = {
+		exists = yes
+		has_war_with = ROOT
+		OR = {
+			NOT = { is_in_faction_with = ROOT }
+			ROOT = {
+				OR = {
+					has_country_flag = missiles_rogue_operation_bypass_active
+					has_country_flag = missiles_operation_rogue_origin
+					check_variable = { var = missiles_operation_type value = constant:missiles_operation.retaliation compare = equals }
+				}
+			}
+		}
+	}
 	OR = {
 		is_controlled_by = var:ROOT.missiles_selected_target
 		is_owned_by = var:ROOT.missiles_selected_target

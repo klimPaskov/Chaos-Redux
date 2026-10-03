@@ -424,16 +424,25 @@ Starts a long construction mission and creates the second site on success.
 
 ## Strike target selection
 
-Human target management uses a separate target category.
+Human target management uses isolated selection phases inside the single ordinary `missiles_program_management_category`.
+Acceptance basis: the current user implementation contract explicitly requires one ordinary category with a static picture and no dedicated scripted GUI.
+The second category is superseded by that instruction, not the country, objective, exact-state, or clear-target functionality described here.
+Country and state selectors use three-candidate pages, with previous, next, and exit/back controls, so no selection phase exceeds six visible actions.
 
 ### Select target country
 
-One selector decision appears for each valid enemy only when the target-management category is open. Selecting one country:
+One selector decision appears for each valid enemy on the current country-selection page only when the selector phase is open.
+The session caches valid enemies when opened; closing and reopening refreshes that pool.
+Selecting one country:
 
 - stores the selected target ID
 - sets a temporary selected-target flag
 - rebuilds target-state actions for that country
 - hides other target-specific decisions from the human player
+
+The human chooses a tactical or strategic objective family, then one of the six target profiles, then an exact eligible state on the bounded state page.
+The four ordinary preparation actions appear after that selection is complete.
+An invalid explicit state fails preparation instead of being silently replaced by an automatic candidate.
 
 ### Clear target
 

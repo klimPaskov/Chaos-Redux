@@ -4,6 +4,10 @@ This is the implementation-level visual audit for every Event 32 runtime DDS con
 
 ## Audit scope and method
 
+The ordinary-preparation selector phases reuse the existing target-selection, precision, strategic, and counterforce decision sprites for same-family navigation and objective choices.
+Their consumers remain in `common/decisions/032_missiles_decisions.txt`, with the static category, preparation mission sprite, and Operational Reserve texticon unchanged in `interface/032_missiles.gfx`.
+No runtime DDS or master image changed during that source repair; the per-file pixel/hash review below remains the asset evidence, not proof of native decision text fit or gameplay.
+
 The audit covered all 82 Event 32 runtime DDS files: 58 non-achievement assets and 24 achievement-state assets. Each file was decoded with Pillow from the final DDS, checked for declared dimensions and pixel format, opened individually at the decoded resolution, and included in a labelled family contact sheet. The final images were reviewed for subject coverage, crop/overflow, transparent-edge bleed, alpha treatment, aspect-ratio fit, native-size readability, family consistency, and sprite-path wiring.
 
 Three full-canvas surfaces, one decision category picture, one category button, 27 ordinary decision icons, seven mission icons, five guidance icons, four retaliation-posture icons, three program-idea icons, five launch-site state-modifier icons, three status texticons, and eight achievement triplets are present. All 82 decoded successfully; no image had a blocking visual defect.

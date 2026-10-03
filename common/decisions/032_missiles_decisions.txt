@@ -373,22 +373,31 @@ missiles_program_management_category = {
 		}
 	}
 
+	missiles_open_target_selection = {
+		icon = GFX_decision_032_missiles_select_missile_target
+		visible = {
+			missiles_human_target_selection_is_open = yes
+			NOT = { has_country_flag = missiles_target_selected }
+			NOT = { has_country_flag = missiles_target_country_page_open }
+		}
+		available = { any_of_scopes = { array = global.enabled_countries_list missiles_ordinary_target_is_valid = yes } }
+		complete_effect = { hidden_effect = { missiles_open_target_selection = yes } }
+		ai_will_do = { base = 0 }
+	}
+
 	missiles_select_target_country = {
 		icon = GFX_decision_032_missiles_select_missile_target
-		target_array = global.enabled_countries_list
+		target_array = missiles_target_selection_page
 		target_root_trigger = {
-			has_country_flag = missiles_program_phase_operations
-			missiles_country_can_prepare_operation = yes
-			NOT = { has_country_flag = missiles_target_selected }
+			missiles_human_target_selection_is_open = yes
+			has_country_flag = missiles_target_country_page_open
 		}
-		target_trigger = { FROM = { missiles_target_is_valid = yes } }
+		target_trigger = { FROM = { missiles_ordinary_target_is_valid = yes } }
 		visible = {
-			NOT = { is_ai = yes }
-			has_country_flag = missiles_program_phase_operations
-			missiles_country_can_prepare_operation = yes
-			NOT = { has_country_flag = missiles_target_selected }
+			missiles_human_target_selection_is_open = yes
+			has_country_flag = missiles_target_country_page_open
 		}
-		available = { FROM = { missiles_target_is_valid = yes } }
+		available = { FROM = { missiles_ordinary_target_is_valid = yes } }
 		fire_only_once = no
 		complete_effect = {
 			custom_effect_tooltip = missiles_select_target_effect_tt
@@ -397,38 +406,167 @@ missiles_program_management_category = {
 		ai_will_do = { base = 0 }
 	}
 
+	missiles_target_selection_next_page = {
+		icon = GFX_decision_032_missiles_select_missile_target
+		visible = { missiles_target_selection_page_is_open = yes }
+		available = { check_variable = { var = missiles_target_selection_page_end value = missiles_target_selection_count compare = less_than } }
+		complete_effect = { hidden_effect = { missiles_target_selection_next_page = yes } }
+		ai_will_do = { base = 0 }
+	}
+
+	missiles_target_selection_previous_page = {
+		icon = GFX_decision_032_missiles_select_missile_target
+		visible = { missiles_target_selection_page_is_open = yes }
+		available = { check_variable = { var = missiles_target_selection_offset value = constant:missiles_program_value.zero compare = greater_than } }
+		complete_effect = { hidden_effect = { missiles_target_selection_previous_page = yes } }
+		ai_will_do = { base = 0 }
+	}
+
+	missiles_close_target_selection = {
+		icon = GFX_decision_032_missiles_select_missile_target
+		visible = { missiles_human_target_selection_is_open = yes has_country_flag = missiles_target_country_page_open }
+		available = { always = yes }
+		complete_effect = { hidden_effect = { missiles_clear_target = yes } }
+		ai_will_do = { base = 0 }
+	}
+
+	missiles_clear_target = {
+		icon = GFX_decision_032_missiles_select_missile_target
+		visible = {
+			missiles_human_target_selection_is_open = yes
+			has_country_flag = missiles_target_selected
+			NOT = { has_country_flag = missiles_target_state_page_open }
+		}
+		available = { custom_trigger_tooltip = { tooltip = missiles_target_selection_editable_tt NOT = { has_country_flag = missiles_operation_active } } }
+		complete_effect = { custom_effect_tooltip = missiles_clear_target_effect_tt hidden_effect = { missiles_clear_target = yes } }
+		ai_will_do = { base = 0 }
+	}
+
+	missiles_choose_tactical_profile_family = {
+		icon = GFX_decision_032_missiles_precision_strike
+		visible = { missiles_target_profile_menu_is_open = yes NOT = { has_country_flag = missiles_target_profile_tactical_menu } NOT = { has_country_flag = missiles_target_profile_strategic_menu } }
+		available = { missiles_selected_target_is_valid = yes }
+		complete_effect = { hidden_effect = { set_country_flag = missiles_target_profile_tactical_menu } }
+		ai_will_do = { base = 0 }
+	}
+
+	missiles_choose_strategic_profile_family = {
+		icon = GFX_decision_032_missiles_strategic_barrage
+		visible = { missiles_target_profile_menu_is_open = yes NOT = { has_country_flag = missiles_target_profile_tactical_menu } NOT = { has_country_flag = missiles_target_profile_strategic_menu } }
+		available = { missiles_selected_target_is_valid = yes }
+		complete_effect = { hidden_effect = { set_country_flag = missiles_target_profile_strategic_menu } }
+		ai_will_do = { base = 0 }
+	}
+
+	missiles_choose_logistics_profile = {
+		icon = GFX_decision_032_missiles_precision_strike
+		visible = { missiles_target_profile_menu_is_open = yes has_country_flag = missiles_target_profile_tactical_menu }
+		available = { missiles_selected_enemy_has_logistics_target = yes }
+		complete_effect = { hidden_effect = { missiles_choose_logistics_target_profile = yes } }
+		ai_will_do = { base = 0 }
+	}
+
+	missiles_choose_industrial_profile = {
+		icon = GFX_decision_032_missiles_precision_strike
+		visible = { missiles_target_profile_menu_is_open = yes has_country_flag = missiles_target_profile_tactical_menu }
+		available = { missiles_selected_enemy_has_industrial_target = yes }
+		complete_effect = { hidden_effect = { missiles_choose_industrial_target_profile = yes } }
+		ai_will_do = { base = 0 }
+	}
+
+	missiles_choose_air_coastal_profile = {
+		icon = GFX_decision_032_missiles_precision_strike
+		visible = { missiles_target_profile_menu_is_open = yes has_country_flag = missiles_target_profile_tactical_menu }
+		available = { missiles_selected_enemy_has_air_coastal_target = yes }
+		complete_effect = { hidden_effect = { missiles_choose_air_coastal_target_profile = yes } }
+		ai_will_do = { base = 0 }
+	}
+
+	missiles_choose_command_profile = {
+		icon = GFX_decision_032_missiles_strategic_barrage
+		visible = { missiles_target_profile_menu_is_open = yes has_country_flag = missiles_target_profile_strategic_menu }
+		available = { missiles_selected_enemy_has_command_target = yes }
+		complete_effect = { hidden_effect = { missiles_choose_command_target_profile = yes } }
+		ai_will_do = { base = 0 }
+	}
+
+	missiles_choose_counterforce_profile = {
+		icon = GFX_decision_032_missiles_counterforce_strike
+		visible = { missiles_target_profile_menu_is_open = yes has_country_flag = missiles_target_profile_strategic_menu }
+		available = { missiles_selected_enemy_has_counterforce_target = yes }
+		complete_effect = { hidden_effect = { missiles_choose_counterforce_target_profile = yes } }
+		ai_will_do = { base = 0 }
+	}
+
+	missiles_choose_broad_strategic_profile = {
+		icon = GFX_decision_032_missiles_strategic_barrage
+		visible = { missiles_target_profile_menu_is_open = yes has_country_flag = missiles_target_profile_strategic_menu }
+		available = { missiles_selected_enemy_has_broad_strategic_target = yes }
+		complete_effect = { hidden_effect = { missiles_choose_broad_strategic_target_profile = yes } }
+		ai_will_do = { base = 0 }
+	}
+
+	missiles_back_to_target_profiles = {
+		icon = GFX_decision_032_missiles_select_missile_target
+		visible = {
+			missiles_human_target_selection_is_open = yes
+			OR = { has_country_flag = missiles_target_state_page_open has_country_flag = missiles_target_profile_tactical_menu has_country_flag = missiles_target_profile_strategic_menu }
+		}
+		available = { custom_trigger_tooltip = { tooltip = missiles_target_selection_editable_tt NOT = { has_country_flag = missiles_operation_active } } }
+		complete_effect = { hidden_effect = { missiles_back_to_target_profiles = yes } }
+		ai_will_do = { base = 0 }
+	}
+
+	missiles_select_target_state = {
+		icon = GFX_decision_032_missiles_select_missile_target
+		state_target = yes
+		target_array = missiles_target_selection_page
+		on_map_mode = map_and_decisions_view
+		target_root_trigger = { missiles_human_target_selection_is_open = yes has_country_flag = missiles_target_state_page_open }
+		target_trigger = { FROM = { missiles_target_state_is_valid = yes missiles_operation_target_has_profile_value = yes } }
+		visible = { missiles_human_target_selection_is_open = yes has_country_flag = missiles_target_state_page_open }
+		available = { FROM = { missiles_target_state_is_valid = yes missiles_operation_target_has_profile_value = yes } }
+		complete_effect = { custom_effect_tooltip = missiles_select_target_state_effect_tt hidden_effect = { missiles_select_target_state = yes } }
+		ai_will_do = { base = 0 }
+	}
+
 	missiles_prepare_precision_strike = {
 		icon = GFX_decision_032_missiles_precision_strike
-		state_target = any_owned_state
-		on_map_mode = map_and_decisions_view
 		visible = {
-			has_country_flag = missiles_program_phase_operations
-			missiles_country_can_prepare_operation = yes
-			OR = { has_country_flag = missiles_target_selected is_ai = yes }
+			missiles_ordinary_preparation_action_is_visible = yes
 			NOT = { has_active_mission = missiles_precision_strike_preparation_mission }
-			FROM = { missiles_target_is_valid = yes }
 		}
-		target_root_trigger = {
-			has_country_flag = missiles_program_phase_operations
-			missiles_country_can_prepare_operation = yes
+		available = {
+			custom_trigger_tooltip = { tooltip = missiles_ordinary_preparation_requirements_tt missiles_country_can_prepare_operation = yes }
+			NOT = { has_country_flag = missiles_precision_preparation_cooldown }
+			custom_trigger_tooltip = {
+				tooltip = missiles_precision_readiness_requirements_tt
+				check_variable = { var = missiles_launch_readiness value = constant:missiles_program_value.precision_readiness_gate compare = greater_than_or_equals }
+			}
+			hidden_trigger = { missiles_can_afford_precision_preparation = yes }
 		}
-		target_trigger = { FROM = { missiles_target_is_valid = yes } }
-		available = { FROM = { missiles_target_is_valid = yes } }
-		custom_cost_trigger = {
-			command_power > @m32_command_low
-			has_fuel > @m32_fuel_low
-			has_equipment = { support_equipment > @m32_support_low }
-		}
+		custom_cost_trigger = { missiles_can_afford_precision_preparation = yes }
 		custom_cost_text = missiles_cost_precision_strike
-		days_re_enable = @m32_reenable_medium
 		complete_effect = {
 			custom_effect_tooltip = missiles_precision_strike_effect_tt
 			hidden_effect = {
-				add_command_power = @m32_command_low_negative
-				add_fuel = @m32_fuel_low_negative
-				add_equipment_to_stockpile = { type = support_equipment amount = @m32_support_low_negative }
-				missiles_prepare_precision_strike = yes
-				activate_mission = missiles_precision_strike_preparation_mission
+				if = {
+					limit = {
+						missiles_can_afford_precision_preparation = yes
+						NOT = { has_country_flag = missiles_precision_preparation_cooldown }
+						check_variable = { var = missiles_launch_readiness value = constant:missiles_program_value.precision_readiness_gate compare = greater_than_or_equals }
+					}
+					missiles_prepare_precision_strike = yes
+					if = {
+						limit = { check_variable = { var = missiles_operation_preflight_result value = constant:missiles_result.accepted compare = equals } }
+						add_command_power = constant:missiles_preparation_cost.command_low_negative
+						add_fuel = constant:missiles_preparation_cost.fuel_low_negative
+						add_equipment_to_stockpile = { type = support_equipment amount = constant:missiles_preparation_cost.support_low_negative }
+						set_temp_variable = { missiles_action_cooldown_days = constant:missiles_preparation_cost.precision_cooldown_days }
+						set_country_flag = { flag = missiles_precision_preparation_cooldown days = missiles_action_cooldown_days }
+						missiles_activate_preparation_mission = yes
+					}
+				}
 			}
 		}
 		ai_will_do = {
@@ -440,32 +578,30 @@ missiles_program_management_category = {
 
 	missiles_prepare_strategic_barrage = {
 		icon = GFX_decision_032_missiles_strategic_barrage
-		state_target = any_owned_state
-		on_map_mode = map_and_decisions_view
-		visible = {
-			has_country_flag = missiles_program_phase_operations
-			missiles_country_can_prepare_operation = yes
-			OR = { has_country_flag = missiles_target_selected is_ai = yes }
-			FROM = { missiles_target_is_valid = yes }
+		visible = { missiles_ordinary_preparation_action_is_visible = yes }
+		available = {
+			custom_trigger_tooltip = { tooltip = missiles_ordinary_preparation_requirements_tt missiles_country_can_prepare_operation = yes }
+			NOT = { has_country_flag = missiles_strategic_preparation_cooldown }
+			hidden_trigger = { missiles_can_afford_strategic_preparation = yes }
 		}
-		target_root_trigger = { has_country_flag = missiles_program_phase_operations missiles_country_can_prepare_operation = yes }
-		target_trigger = { FROM = { missiles_target_is_valid = yes } }
-		available = { FROM = { missiles_target_is_valid = yes } }
-		custom_cost_trigger = {
-			command_power > @m32_command_standard
-			has_fuel > @m32_fuel_standard
-			has_equipment = { support_equipment > @m32_support_standard }
-		}
+		custom_cost_trigger = { missiles_can_afford_strategic_preparation = yes }
 		custom_cost_text = missiles_cost_strategic_barrage
-		days_re_enable = @m32_reenable_long
 		complete_effect = {
 			custom_effect_tooltip = missiles_strategic_barrage_effect_tt
 			hidden_effect = {
-				add_command_power = @m32_command_standard_negative
-				add_fuel = @m32_fuel_standard_negative
-				add_equipment_to_stockpile = { type = support_equipment amount = @m32_support_standard_negative }
-				missiles_prepare_strategic_barrage = yes
-				activate_mission = missiles_strategic_barrage_preparation_mission
+				if = {
+					limit = { missiles_can_afford_strategic_preparation = yes NOT = { has_country_flag = missiles_strategic_preparation_cooldown } }
+					missiles_prepare_strategic_barrage = yes
+					if = {
+						limit = { check_variable = { var = missiles_operation_preflight_result value = constant:missiles_result.accepted compare = equals } }
+						add_command_power = constant:missiles_preparation_cost.command_standard_negative
+						add_fuel = constant:missiles_preparation_cost.fuel_standard_negative
+						add_equipment_to_stockpile = { type = support_equipment amount = constant:missiles_preparation_cost.support_standard_negative }
+						set_temp_variable = { missiles_action_cooldown_days = constant:missiles_preparation_cost.strategic_cooldown_days }
+						set_country_flag = { flag = missiles_strategic_preparation_cooldown days = missiles_action_cooldown_days }
+						missiles_activate_preparation_mission = yes
+					}
+				}
 			}
 		}
 		ai_will_do = {
@@ -476,33 +612,34 @@ missiles_program_management_category = {
 
 	missiles_prepare_saturation_barrage = {
 		icon = GFX_decision_032_missiles_saturation_barrage
-		state_target = any_owned_state
-		on_map_mode = map_and_decisions_view
 		visible = {
-			has_country_flag = missiles_program_phase_operations
+			missiles_ordinary_preparation_action_is_visible = yes
 			missiles_saturation_active = yes
-			missiles_country_can_prepare_operation = yes
-			OR = { has_country_flag = missiles_target_selected is_ai = yes }
-			FROM = { missiles_target_is_valid = yes }
 		}
-		target_root_trigger = { has_country_flag = missiles_program_phase_operations missiles_country_can_prepare_operation = yes }
-		target_trigger = { FROM = { missiles_target_is_valid = yes } }
-		available = { missiles_saturation_active = yes FROM = { missiles_target_is_valid = yes } }
-		custom_cost_trigger = {
-			command_power > @m32_command_high
-			has_fuel > @m32_fuel_high
-			has_equipment = { support_equipment > @m32_support_high }
+		available = {
+			missiles_saturation_active = yes
+			custom_trigger_tooltip = { tooltip = missiles_ordinary_preparation_requirements_tt missiles_country_can_prepare_operation = yes }
+			NOT = { has_country_flag = missiles_saturation_preparation_cooldown }
+			hidden_trigger = { missiles_can_afford_saturation_preparation = yes }
 		}
+		custom_cost_trigger = { missiles_can_afford_saturation_preparation = yes }
 		custom_cost_text = missiles_cost_saturation_barrage
-		days_re_enable = @m32_reenable_long
 		complete_effect = {
 			custom_effect_tooltip = missiles_saturation_barrage_effect_tt
 			hidden_effect = {
-				add_command_power = @m32_command_high_negative
-				add_fuel = @m32_fuel_high_negative
-				add_equipment_to_stockpile = { type = support_equipment amount = @m32_support_high_negative }
-				missiles_prepare_saturation_barrage = yes
-				activate_mission = missiles_saturation_barrage_preparation_mission
+				if = {
+					limit = { missiles_can_afford_saturation_preparation = yes NOT = { has_country_flag = missiles_saturation_preparation_cooldown } }
+					missiles_prepare_saturation_barrage = yes
+					if = {
+						limit = { check_variable = { var = missiles_operation_preflight_result value = constant:missiles_result.accepted compare = equals } }
+						add_command_power = constant:missiles_preparation_cost.command_high_negative
+						add_fuel = constant:missiles_preparation_cost.fuel_high_negative
+						add_equipment_to_stockpile = { type = support_equipment amount = constant:missiles_preparation_cost.support_high_negative }
+						set_temp_variable = { missiles_action_cooldown_days = constant:missiles_preparation_cost.saturation_cooldown_days }
+						set_country_flag = { flag = missiles_saturation_preparation_cooldown days = missiles_action_cooldown_days }
+						missiles_activate_preparation_mission = yes
+					}
+				}
 			}
 		}
 		ai_will_do = {
@@ -514,32 +651,45 @@ missiles_program_management_category = {
 
 	missiles_prepare_counterforce_strike = {
 		icon = GFX_decision_032_missiles_counterforce_strike
-		state_target = any_owned_state
-		on_map_mode = map_and_decisions_view
-		visible = {
-			has_country_flag = missiles_program_phase_operations
-			missiles_country_can_prepare_operation = yes
-			OR = { has_country_flag = missiles_target_selected is_ai = yes }
-			FROM = { missiles_target_is_valid = yes }
+		visible = { missiles_ordinary_preparation_action_is_visible = yes }
+		available = {
+			custom_trigger_tooltip = { tooltip = missiles_ordinary_preparation_requirements_tt missiles_country_can_prepare_operation = yes }
+			NOT = { has_country_flag = missiles_counterforce_preparation_cooldown }
+			hidden_trigger = { missiles_can_afford_counterforce_preparation = yes }
+			OR = {
+				AND = {
+					NOT = { is_ai = yes }
+					check_variable = { var = missiles_requested_target_profile value = constant:missiles_target_profile.counterforce compare = equals }
+					var:missiles_pending_target_state = { missiles_counterforce_target_is_proven = yes }
+				}
+				AND = {
+					is_ai = yes
+					any_of_scopes = {
+						array = global.enabled_countries_list
+						missiles_ordinary_target_is_valid = yes
+						any_controlled_state = { missiles_counterforce_target_is_proven = yes }
+					}
+				}
+			}
 		}
-		target_root_trigger = { has_country_flag = missiles_program_phase_operations missiles_country_can_prepare_operation = yes }
-		target_trigger = { FROM = { missiles_target_is_valid = yes } }
-		available = { FROM = { missiles_target_is_valid = yes } }
-		custom_cost_trigger = {
-			command_power > @m32_command_standard
-			has_fuel > @m32_fuel_standard
-			has_equipment = { support_equipment > @m32_support_low }
-		}
+		custom_cost_trigger = { missiles_can_afford_counterforce_preparation = yes }
 		custom_cost_text = missiles_cost_counterforce_strike
-		days_re_enable = @m32_reenable_long
 		complete_effect = {
 			custom_effect_tooltip = missiles_counterforce_strike_effect_tt
 			hidden_effect = {
-				add_command_power = @m32_command_standard_negative
-				add_fuel = @m32_fuel_standard_negative
-				add_equipment_to_stockpile = { type = support_equipment amount = @m32_support_low_negative }
-				missiles_prepare_counterforce_strike = yes
-				activate_mission = missiles_counterforce_strike_preparation_mission
+				if = {
+					limit = { missiles_can_afford_counterforce_preparation = yes NOT = { has_country_flag = missiles_counterforce_preparation_cooldown } }
+					missiles_prepare_counterforce_strike = yes
+					if = {
+						limit = { check_variable = { var = missiles_operation_preflight_result value = constant:missiles_result.accepted compare = equals } }
+						add_command_power = constant:missiles_preparation_cost.command_standard_negative
+						add_fuel = constant:missiles_preparation_cost.fuel_standard_negative
+						add_equipment_to_stockpile = { type = support_equipment amount = constant:missiles_preparation_cost.support_low_negative }
+						set_temp_variable = { missiles_action_cooldown_days = constant:missiles_preparation_cost.counterforce_cooldown_days }
+						set_country_flag = { flag = missiles_counterforce_preparation_cooldown days = missiles_action_cooldown_days }
+						missiles_activate_preparation_mission = yes
+					}
+				}
 			}
 		}
 		ai_will_do = {
@@ -552,6 +702,7 @@ missiles_program_management_category = {
 		icon = GFX_decision_032_missiles_integrate_special_payload
 		visible = {
 			has_country_flag = missiles_program_phase_operations
+			OR = { is_ai = yes missiles_human_target_is_complete = yes }
 			missiles_special_warheads_active = yes
 			missiles_country_can_prepare_operation = yes
 			NOT = { has_country_flag = missiles_special_payload_selected }
@@ -589,7 +740,7 @@ missiles_program_management_category = {
 		available = {
 			custom_trigger_tooltip = {
 				tooltip = missiles_launch_requirements_tt
-				any_controlled_state = { missiles_site_can_launch = yes }
+				missiles_operation_can_be_committed = yes
 			}
 		}
 		fire_only_once = no

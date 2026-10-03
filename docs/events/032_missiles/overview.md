@@ -1,5 +1,8 @@
 # Event 032 - Missiles
 
+Implementation status: To Be Reworked.
+Completed source tranches and their validation limits are recorded under `docs/plans/032_missiles_plans/`; a loading menu or source-contract test does not close the full accepted design.
+
 Event 032 is a Minor Repeatable event rooted at `chaosx.nr32.1`. It uses the Calm World minimum-chaos rule, has no cluster membership, and enters through one bounded global firing transaction. The transaction freezes the eligible country scopes once, processes each frozen recipient once, and leaves repeatable pacing, first-news, and history accounting to the shared event dispatcher.
 
 ## Program lifecycle
@@ -10,7 +13,10 @@ Launch sites are physical state records owned by the current controller. Registr
 
 ## Operations and consequences
 
-Precision strike, strategic barrage, saturation barrage, and counterforce strike use the same persisted operation receipt with different costs, capacity demands, preparation windows, drift weights, damage profiles, and target rules. Preparation freezes the actor, victim, exact target state, profile, payload, site, reserve, and incident root; commitment revalidates those scopes and cannot silently retarget.
+Precision strike, strategic barrage, saturation barrage, and counterforce strike use the same persisted operation receipt with different costs, capacity demands, preparation windows, drift weights, damage profiles, and target rules.
+The human selects a country, objective, and exact state through bounded phases in the one ordinary category.
+Preparation uses a receipt-validated native mission and success-only payment; the implementation and evidence limits are documented in [ordinary preparation](systems/ordinary_preparation.md).
+Commitment revalidates the current receipt and cannot silently retarget.
 
 The scripted operation adapter owns the Event 032 preparation, launch, guidance, drift, impact, interception, damage, deaths, evidence, attribution, incident, and cleanup contract.
 The documented native RaidInstance API cannot authenticate the exact launch state or participating site allocations.
@@ -60,4 +66,5 @@ The visual package contains three full-canvas images, one category button, three
 
 A future accepted brief could add a dedicated missile-delivery raid icon only if the installed raid adapter exposes a real Event 032 missile consumer with a stable subject-and-payload contract. The current package deliberately leaves that surface unregistered rather than reusing an unrelated CBRN or nuclear icon.
 
-A future balance pass can extend the named probability matrix with campaign telemetry while retaining bounded recipient processing, finite warning chains, exact reserve custody, and same-scenario comparison.
+The accepted named probability matrix still requires complete current-source evaluation and same-scenario comparisons.
+Later campaign telemetry can extend that matrix while retaining bounded recipient processing, finite warning chains, exact reserve custody, and same-scenario comparison.

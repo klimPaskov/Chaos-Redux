@@ -1570,6 +1570,7 @@ missiles_integrate_requested_special_payload = {
 			if = { limit = { NOT = { has_variable = missiles_special_payload_policy } } set_variable = { missiles_special_payload_policy = constant:missiles_special_payload_policy.prohibited } }
 			set_variable = { missiles_last_payload_integration_date = global.date }
 			set_variable = { missiles_payload_integration_result = constant:missiles_result.accepted }
+			missiles_refresh_operation_cost_preview = yes
 		}
 	}
 }
@@ -1592,15 +1593,200 @@ missiles_integrate_special_payload = {
 # Target selection and prepared-operation receipts
 # -----------------------------------------------------------------------------
 
+# COUNTRY scope. Selection is mutable only before an operation receipt exists.
+missiles_refresh_operation_cost_preview = {
+	set_variable = { missiles_precision_reserve_cost = constant:missiles_tuning.operation_precision_missiles }
+	set_variable = { missiles_strategic_reserve_cost = constant:missiles_tuning.operation_strategic_missiles }
+	set_variable = { missiles_saturation_reserve_cost = constant:missiles_tuning.operation_saturation_missiles }
+	set_variable = { missiles_counterforce_reserve_cost = constant:missiles_tuning.operation_counterforce_missiles }
+	if = {
+		limit = { missiles_preparation_has_special_payload = yes }
+		add_to_variable = { missiles_precision_reserve_cost = constant:missiles_tuning.operation_special_missiles }
+		add_to_variable = { missiles_strategic_reserve_cost = constant:missiles_tuning.operation_special_missiles }
+		add_to_variable = { missiles_saturation_reserve_cost = constant:missiles_tuning.operation_special_missiles }
+		add_to_variable = { missiles_counterforce_reserve_cost = constant:missiles_tuning.operation_special_missiles }
+	}
+}
+
+missiles_clear_target = {
+	if = {
+		limit = { NOT = { has_country_flag = missiles_operation_active } }
+		clear_variable = missiles_selected_target
+		clear_variable = missiles_selected_target_country_id
+		clear_variable = missiles_pending_target_state
+		clear_variable = missiles_requested_target_profile
+		clear_variable = missiles_operation_target_profile
+		clear_variable = missiles_operation_target_state
+		clr_country_flag = missiles_target_selected
+		clr_country_flag = missiles_target_country_page_open
+		clr_country_flag = missiles_target_state_page_open
+		clr_country_flag = missiles_target_profile_tactical_menu
+		clr_country_flag = missiles_target_profile_strategic_menu
+		clear_array = missiles_target_selection_candidates
+		clear_array = missiles_target_selection_page
+		clear_variable = missiles_target_selection_offset
+		clear_variable = missiles_target_selection_count
+		clear_variable = missiles_target_selection_page_end
+	}
+}
+
+# COUNTRY scope; native country/state target rows share a three-object page.
+# Only explicit selector actions rebuild this cache; no periodic scan owns it.
+missiles_refresh_target_selection_page = {
+	clear_array = missiles_target_selection_page
+	set_variable = { missiles_target_selection_page_end = missiles_target_selection_offset }
+	add_to_variable = { missiles_target_selection_page_end = constant:missiles_tuning.operation_target_page_size }
+	set_variable = { missiles_target_selection_cursor = constant:missiles_program_value.zero }
+	for_each_scope_loop = {
+		array = missiles_target_selection_candidates
+		if = {
+			limit = {
+				ROOT = {
+					check_variable = { var = missiles_target_selection_cursor value = missiles_target_selection_offset compare = greater_than_or_equals }
+					check_variable = { var = missiles_target_selection_cursor value = missiles_target_selection_page_end compare = less_than }
+				}
+			}
+			add_to_array = { array = ROOT.missiles_target_selection_page value = THIS }
+		}
+		ROOT = { add_to_variable = { missiles_target_selection_cursor = constant:missiles_program_value.one } }
+	}
+	set_variable = { missiles_target_selection_count = missiles_target_selection_cursor }
+	clear_variable = missiles_target_selection_cursor
+}
+
+missiles_open_target_selection = {
+	if = {
+		limit = { missiles_human_target_selection_is_open = yes }
+		missiles_clear_target = yes
+		for_each_scope_loop = {
+			array = global.enabled_countries_list
+			if = {
+				limit = { missiles_ordinary_target_is_valid = yes }
+				add_to_array = { array = ROOT.missiles_target_selection_candidates value = THIS }
+			}
+		}
+		set_variable = { missiles_target_selection_offset = constant:missiles_program_value.zero }
+		set_country_flag = missiles_target_country_page_open
+		missiles_refresh_target_selection_page = yes
+	}
+}
+
+missiles_target_selection_next_page = {
+	if = {
+		limit = { check_variable = { var = missiles_target_selection_page_end value = missiles_target_selection_count compare = less_than } }
+		add_to_variable = { missiles_target_selection_offset = constant:missiles_tuning.operation_target_page_size }
+		missiles_refresh_target_selection_page = yes
+	}
+}
+
+missiles_target_selection_previous_page = {
+	if = {
+		limit = { check_variable = { var = missiles_target_selection_offset value = constant:missiles_program_value.zero compare = greater_than } }
+		subtract_from_variable = { missiles_target_selection_offset = constant:missiles_tuning.operation_target_page_size }
+		missiles_refresh_target_selection_page = yes
+	}
+}
+
+missiles_back_to_target_profiles = {
+	if = {
+		limit = { NOT = { has_country_flag = missiles_operation_active } }
+		clear_variable = missiles_pending_target_state
+		clear_variable = missiles_requested_target_profile
+		clear_variable = missiles_operation_target_profile
+		clr_country_flag = missiles_target_state_page_open
+		clr_country_flag = missiles_target_profile_tactical_menu
+		clr_country_flag = missiles_target_profile_strategic_menu
+		clear_array = missiles_target_selection_candidates
+		clear_array = missiles_target_selection_page
+	}
+}
+
+missiles_choose_target_profile = {
+	if = {
+		limit = {
+			missiles_human_target_selection_is_open = yes
+			missiles_selected_target_is_valid = yes
+			has_variable = missiles_requested_target_profile
+			check_variable = { var = missiles_requested_target_profile value = constant:missiles_target_profile.logistics compare = greater_than_or_equals }
+			check_variable = { var = missiles_requested_target_profile value = constant:missiles_target_profile.broad_strategic compare = less_than_or_equals }
+		}
+		set_variable = { missiles_operation_target_profile = missiles_requested_target_profile }
+		clear_variable = missiles_pending_target_state
+		clear_array = missiles_target_selection_candidates
+		var:missiles_selected_target = {
+			every_owned_state = {
+				limit = { missiles_target_state_is_valid = yes missiles_operation_target_has_profile_value = yes }
+				add_to_array = { array = ROOT.missiles_target_selection_candidates value = THIS }
+			}
+			every_controlled_state = {
+				limit = {
+					missiles_target_state_is_valid = yes
+					missiles_operation_target_has_profile_value = yes
+					NOT = { is_in_array = { array = ROOT.missiles_target_selection_candidates value = THIS } }
+				}
+				add_to_array = { array = ROOT.missiles_target_selection_candidates value = THIS }
+			}
+		}
+		set_variable = { missiles_target_selection_offset = constant:missiles_program_value.zero }
+		clr_country_flag = missiles_target_profile_tactical_menu
+		clr_country_flag = missiles_target_profile_strategic_menu
+		set_country_flag = missiles_target_state_page_open
+		missiles_refresh_target_selection_page = yes
+	}
+}
+
+missiles_choose_logistics_target_profile = {
+	if = { limit = { missiles_selected_enemy_has_logistics_target = yes } set_variable = { missiles_requested_target_profile = constant:missiles_target_profile.logistics } missiles_choose_target_profile = yes }
+}
+
+missiles_choose_industrial_target_profile = {
+	if = { limit = { missiles_selected_enemy_has_industrial_target = yes } set_variable = { missiles_requested_target_profile = constant:missiles_target_profile.industrial } missiles_choose_target_profile = yes }
+}
+
+missiles_choose_air_coastal_target_profile = {
+	if = { limit = { missiles_selected_enemy_has_air_coastal_target = yes } set_variable = { missiles_requested_target_profile = constant:missiles_target_profile.air_coastal } missiles_choose_target_profile = yes }
+}
+
+missiles_choose_command_target_profile = {
+	if = { limit = { missiles_selected_enemy_has_command_target = yes } set_variable = { missiles_requested_target_profile = constant:missiles_target_profile.command } missiles_choose_target_profile = yes }
+}
+
+missiles_choose_counterforce_target_profile = {
+	if = { limit = { missiles_selected_enemy_has_counterforce_target = yes } set_variable = { missiles_requested_target_profile = constant:missiles_target_profile.counterforce } missiles_choose_target_profile = yes }
+}
+
+missiles_choose_broad_strategic_target_profile = {
+	if = { limit = { missiles_selected_enemy_has_broad_strategic_target = yes } set_variable = { missiles_requested_target_profile = constant:missiles_target_profile.broad_strategic } missiles_choose_target_profile = yes }
+}
+
+missiles_select_target_state = {
+	if = {
+		limit = {
+			missiles_human_target_selection_is_open = yes
+			missiles_selected_target_is_valid = yes
+			FROM = { missiles_target_state_is_valid = yes missiles_operation_target_has_profile_value = yes }
+		}
+		set_variable = { missiles_pending_target_state = FROM }
+		clr_country_flag = missiles_target_state_page_open
+		clear_array = missiles_target_selection_candidates
+		clear_array = missiles_target_selection_page
+	}
+}
+
 missiles_select_target = {
 	if = {
-		limit = { FROM = { missiles_ordinary_target_is_valid = yes } }
+		limit = { missiles_human_target_selection_is_open = yes FROM = { missiles_ordinary_target_is_valid = yes } }
 		set_variable = { missiles_selected_target = FROM }
 		set_country_flag = missiles_target_selected
 		add_to_variable = { missiles_target_sequence = constant:missiles_event.one }
 		set_variable = { missiles_selected_target_country_id = FROM.id }
 		set_variable = { missiles_last_target_selection_date = global.date }
 		clear_variable = missiles_operation_target_state
+		clear_variable = missiles_pending_target_state
+		clear_variable = missiles_requested_target_profile
+		clr_country_flag = missiles_target_country_page_open
+		clear_array = missiles_target_selection_candidates
+		clear_array = missiles_target_selection_page
 	}
 }
 
@@ -1664,10 +1850,10 @@ missiles_score_target_country_candidate = {
 missiles_select_best_target_country = {
 	set_variable = { missiles_best_target_country_score = constant:missiles_target_score.baseline }
 	if = {
-		limit = { any_of_scopes = { array = global.enabled_countries_list missiles_ordinary_target_is_valid = yes } }
+		limit = { any_of_scopes = { array = global.enabled_countries_list missiles_target_country_supports_operation = yes } }
 		for_each_scope_loop = {
 			array = global.enabled_countries_list
-			if = { limit = { missiles_ordinary_target_is_valid = yes } missiles_score_target_country_candidate = yes }
+			if = { limit = { missiles_target_country_supports_operation = yes } missiles_score_target_country_candidate = yes }
 		}
 	}
 	clear_variable = missiles_best_target_country_score
@@ -1676,21 +1862,30 @@ missiles_select_best_target_country = {
 missiles_ensure_selected_target = {
 	set_variable = { missiles_target_selection_result = constant:missiles_program_value.zero }
 	if = {
-		limit = { missiles_selected_target_is_valid = yes }
+		limit = {
+			missiles_selected_target_is_valid = yes
+			OR = {
+				NOT = { is_ai = yes }
+				check_variable = { var = missiles_operation_type value = constant:missiles_operation.retaliation compare = equals }
+				has_country_flag = missiles_rogue_operation_bypass_active
+			}
+		}
 		set_variable = { missiles_target_selection_result = constant:missiles_program_value.one }
 	}
 	if = {
 		limit = {
 			check_variable = { var = missiles_target_selection_result value = constant:missiles_program_value.zero compare = equals }
+			NOT = { has_variable = missiles_pending_target_state }
 		}
 		missiles_select_best_target_country = yes
 	}
 	if = {
 		limit = {
 			check_variable = { var = missiles_target_selection_result value = constant:missiles_program_value.zero compare = equals }
+			NOT = { has_variable = missiles_pending_target_state }
 		}
 		random_country = {
-			limit = { missiles_ordinary_target_is_valid = yes }
+			limit = { missiles_target_country_supports_operation = yes }
 			ROOT = {
 				set_variable = { missiles_selected_target = PREV }
 				set_country_flag = missiles_target_selected
@@ -1705,6 +1900,11 @@ missiles_ensure_selected_target = {
 
 missiles_select_operation_profile = {
 	if = {
+		limit = { check_variable = { var = missiles_operation_type value = constant:missiles_operation.counterforce compare = equals } }
+		set_variable = { missiles_operation_target_profile = constant:missiles_target_profile.counterforce }
+		set_country_flag = missiles_operation_target_profile_locked
+	}
+	else_if = {
 		limit = { has_variable = missiles_requested_target_profile }
 		set_variable = { missiles_operation_target_profile = missiles_requested_target_profile }
 		set_country_flag = missiles_operation_target_profile_locked
@@ -1736,13 +1936,13 @@ missiles_select_operation_profile = {
 missiles_prepare_operation_payload = {
 	if = {
 		limit = {
+			missiles_special_warheads_active = yes
 			has_variable = missiles_selected_payload
 			has_country_flag = missiles_special_payload_selected
 		}
 		set_variable = { missiles_operation_payload = missiles_selected_payload }
 	}
-	else_if = {
-		limit = { NOT = { has_variable = missiles_operation_payload } }
+	else = {
 		set_variable = { missiles_operation_payload = constant:missiles_payload.conventional }
 	}
 }
@@ -1753,13 +1953,24 @@ missiles_prepare_operation_payload = {
 missiles_score_operation_target_state_candidate = {
 	set_temp_variable = { missiles_target_state_candidate_score = constant:missiles_target_score.baseline }
 	if = { limit = { check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.logistics compare = equals } supply_node > constant:missiles_program_value.zero } add_to_temp_variable = { missiles_target_state_candidate_score = constant:missiles_target_score.profile_logistics } }
-	if = { limit = { check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.logistics compare = equals } rail_way > constant:missiles_program_value.zero } add_to_temp_variable = { missiles_target_state_candidate_score = constant:missiles_target_score.profile_logistics } }
+	if = {
+		limit = { check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.logistics compare = equals } rail_way > constant:missiles_program_value.zero }
+		set_temp_variable = { missiles_target_state_profile_component = building_level@rail_way }
+		clamp_temp_variable = { var = missiles_target_state_profile_component min = constant:missiles_program_value.zero max = constant:missiles_target_score.profile_railway_level_cap }
+		multiply_temp_variable = { var = missiles_target_state_profile_component value = constant:missiles_target_score.profile_railway_level }
+		add_to_temp_variable = { missiles_target_state_candidate_score = missiles_target_state_profile_component }
+	}
 	if = { limit = { infrastructure > constant:missiles_tuning.site_min_infrastructure } add_to_temp_variable = { missiles_target_state_candidate_score = constant:missiles_target_score.strategic_depth } }
-	if = { limit = { check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.industrial compare = equals } arms_factory > constant:missiles_program_value.zero } add_to_temp_variable = { missiles_target_state_candidate_score = constant:missiles_target_score.profile_industrial } }
-	if = { limit = { check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.industrial compare = equals } industrial_complex > constant:missiles_program_value.zero } add_to_temp_variable = { missiles_target_state_candidate_score = constant:missiles_target_score.profile_industrial } }
-	if = { limit = { check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.industrial compare = equals } dockyard > constant:missiles_program_value.zero } add_to_temp_variable = { missiles_target_state_candidate_score = constant:missiles_target_score.profile_industrial } }
-	if = { limit = { check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.industrial compare = equals } synthetic_refinery > constant:missiles_program_value.zero } add_to_temp_variable = { missiles_target_state_candidate_score = constant:missiles_target_score.profile_industrial } }
-	if = { limit = { check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.industrial compare = equals } fuel_silo > constant:missiles_program_value.zero } add_to_temp_variable = { missiles_target_state_candidate_score = constant:missiles_target_score.profile_industrial } }
+	if = {
+		limit = { check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.industrial compare = equals } }
+		set_temp_variable = { missiles_target_state_profile_component = arms_factory_level }
+		add_to_temp_variable = { missiles_target_state_profile_component = industrial_complex_level }
+		add_to_temp_variable = { missiles_target_state_profile_component = building_level@dockyard }
+		add_to_temp_variable = { missiles_target_state_profile_component = building_level@synthetic_refinery }
+		add_to_temp_variable = { missiles_target_state_profile_component = building_level@fuel_silo }
+		multiply_temp_variable = { var = missiles_target_state_profile_component value = constant:missiles_target_score.profile_industrial }
+		add_to_temp_variable = { missiles_target_state_candidate_score = missiles_target_state_profile_component }
+	}
 	if = { limit = { check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.air_coastal compare = equals } air_base > constant:missiles_program_value.zero } add_to_temp_variable = { missiles_target_state_candidate_score = constant:missiles_target_score.profile_air_coastal } }
 	if = { limit = { check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.air_coastal compare = equals } radar_station > constant:missiles_program_value.zero } add_to_temp_variable = { missiles_target_state_candidate_score = constant:missiles_target_score.profile_air_coastal } }
 	if = { limit = { check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.air_coastal compare = equals } anti_air_building > constant:missiles_program_value.zero } add_to_temp_variable = { missiles_target_state_candidate_score = constant:missiles_target_score.profile_air_coastal } }
@@ -1769,6 +1980,25 @@ missiles_score_operation_target_state_candidate = {
 	if = { limit = { check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.command compare = equals } rocket_site > constant:missiles_program_value.zero } add_to_temp_variable = { missiles_target_state_candidate_score = constant:missiles_target_score.profile_command } }
 	if = { limit = { check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.counterforce compare = equals } nuclear_reactor > constant:missiles_program_value.zero } add_to_temp_variable = { missiles_target_state_candidate_score = constant:missiles_target_score.profile_counterforce } }
 	if = { limit = { check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.counterforce compare = equals } nuclear_facility > constant:missiles_program_value.zero } add_to_temp_variable = { missiles_target_state_candidate_score = constant:missiles_target_score.profile_counterforce } }
+	if = {
+		limit = {
+			check_variable = { var = ROOT.missiles_operation_target_profile value = constant:missiles_target_profile.counterforce compare = equals }
+			OR = { has_state_flag = missiles_site_active has_state_flag = missiles_site_hardened has_state_flag = missiles_site_special_payload_custody rocket_site > constant:missiles_program_value.zero cw_facility > constant:missiles_program_value.zero biowarfare_facility > constant:missiles_program_value.zero }
+		}
+		add_to_temp_variable = { missiles_target_state_candidate_score = constant:missiles_target_score.profile_counterforce }
+		if = {
+			limit = { has_variable = missiles_site_capacity }
+			set_temp_variable = { missiles_target_state_profile_component = missiles_site_capacity }
+			multiply_temp_variable = { var = missiles_target_state_profile_component value = constant:missiles_target_score.profile_counterforce_capacity }
+			add_to_temp_variable = { missiles_target_state_candidate_score = missiles_target_state_profile_component }
+		}
+		if = {
+			limit = { has_variable = missiles_site_damage }
+			set_temp_variable = { missiles_target_state_profile_component = missiles_site_damage }
+			multiply_temp_variable = { var = missiles_target_state_profile_component value = constant:missiles_target_score.profile_counterforce_damage }
+			subtract_from_temp_variable = { missiles_target_state_candidate_score = missiles_target_state_profile_component }
+		}
+	}
 	if = {
 		limit = {
 			any_neighbor_state = {
@@ -1846,9 +2076,26 @@ missiles_select_best_operation_target_state = {
 
 missiles_select_operation_target_state = {
 	set_variable = { missiles_target_state_selection_result = constant:missiles_program_value.zero }
-	missiles_select_best_operation_target_state = yes
+	clear_variable = missiles_operation_target_state
 	if = {
-		limit = { missiles_selected_target_is_valid = yes }
+		limit = { has_variable = missiles_pending_target_state }
+		var:missiles_pending_target_state = {
+			if = {
+				limit = { missiles_target_state_is_valid = yes missiles_operation_target_has_profile_value = yes }
+				ROOT = {
+					set_variable = { missiles_operation_target_state = PREV }
+					set_variable = { missiles_target_state_selection_result = constant:missiles_program_value.one }
+				}
+			}
+		}
+	}
+	else = { missiles_select_best_operation_target_state = yes }
+	if = {
+		limit = {
+			missiles_selected_target_is_valid = yes
+			NOT = { has_variable = missiles_pending_target_state }
+			check_variable = { var = missiles_target_state_selection_result value = constant:missiles_program_value.zero compare = equals }
+		}
 		var:missiles_selected_target = {
 			random_owned_controlled_state = {
 				limit = {
@@ -1868,11 +2115,12 @@ missiles_select_operation_target_state = {
 		limit = {
 			check_variable = { var = missiles_target_state_selection_result value = constant:missiles_program_value.zero compare = equals }
 			NOT = { has_country_flag = missiles_operation_target_profile_locked }
+			NOT = { has_variable = missiles_pending_target_state }
 		}
 		set_variable = { missiles_operation_target_profile = constant:missiles_target_profile.logistics }
 		missiles_select_best_operation_target_state = yes
 		if = {
-			limit = { missiles_selected_target_is_valid = yes }
+			limit = { missiles_selected_target_is_valid = yes check_variable = { var = missiles_target_state_selection_result value = constant:missiles_program_value.zero compare = equals } }
 			var:missiles_selected_target = {
 				random_owned_controlled_state = {
 					limit = { missiles_target_state_is_valid = yes missiles_operation_target_has_profile_value = yes }
@@ -1885,11 +2133,12 @@ missiles_select_operation_target_state = {
 		limit = {
 			check_variable = { var = missiles_target_state_selection_result value = constant:missiles_program_value.zero compare = equals }
 			NOT = { has_country_flag = missiles_operation_target_profile_locked }
+			NOT = { has_variable = missiles_pending_target_state }
 		}
 		set_variable = { missiles_operation_target_profile = constant:missiles_target_profile.air_coastal }
 		missiles_select_best_operation_target_state = yes
 		if = {
-			limit = { missiles_selected_target_is_valid = yes }
+			limit = { missiles_selected_target_is_valid = yes check_variable = { var = missiles_target_state_selection_result value = constant:missiles_program_value.zero compare = equals } }
 			var:missiles_selected_target = {
 				random_owned_controlled_state = {
 					limit = { missiles_target_state_is_valid = yes missiles_operation_target_has_profile_value = yes }
@@ -1902,11 +2151,12 @@ missiles_select_operation_target_state = {
 		limit = {
 			check_variable = { var = missiles_target_state_selection_result value = constant:missiles_program_value.zero compare = equals }
 			NOT = { has_country_flag = missiles_operation_target_profile_locked }
+			NOT = { has_variable = missiles_pending_target_state }
 		}
 		set_variable = { missiles_operation_target_profile = constant:missiles_target_profile.command }
 		missiles_select_best_operation_target_state = yes
 		if = {
-			limit = { missiles_selected_target_is_valid = yes }
+			limit = { missiles_selected_target_is_valid = yes check_variable = { var = missiles_target_state_selection_result value = constant:missiles_program_value.zero compare = equals } }
 			var:missiles_selected_target = {
 				random_owned_controlled_state = {
 					limit = { missiles_target_state_is_valid = yes missiles_operation_target_has_profile_value = yes }
@@ -1919,11 +2169,12 @@ missiles_select_operation_target_state = {
 		limit = {
 			check_variable = { var = missiles_target_state_selection_result value = constant:missiles_program_value.zero compare = equals }
 			NOT = { has_country_flag = missiles_operation_target_profile_locked }
+			NOT = { has_variable = missiles_pending_target_state }
 		}
 		set_variable = { missiles_operation_target_profile = constant:missiles_target_profile.counterforce }
 		missiles_select_best_operation_target_state = yes
 		if = {
-			limit = { missiles_selected_target_is_valid = yes }
+			limit = { missiles_selected_target_is_valid = yes check_variable = { var = missiles_target_state_selection_result value = constant:missiles_program_value.zero compare = equals } }
 			var:missiles_selected_target = {
 				random_owned_controlled_state = {
 					limit = { missiles_target_state_is_valid = yes missiles_operation_target_has_profile_value = yes }
@@ -1936,11 +2187,12 @@ missiles_select_operation_target_state = {
 		limit = {
 			check_variable = { var = missiles_target_state_selection_result value = constant:missiles_program_value.zero compare = equals }
 			NOT = { has_country_flag = missiles_operation_target_profile_locked }
+			NOT = { has_variable = missiles_pending_target_state }
 		}
 		set_variable = { missiles_operation_target_profile = constant:missiles_target_profile.broad_strategic }
 		missiles_select_best_operation_target_state = yes
 		if = {
-			limit = { missiles_selected_target_is_valid = yes }
+			limit = { missiles_selected_target_is_valid = yes check_variable = { var = missiles_target_state_selection_result value = constant:missiles_program_value.zero compare = equals } }
 			var:missiles_selected_target = {
 				random_owned_controlled_state = {
 					limit = { missiles_target_state_is_valid = yes missiles_operation_target_has_profile_value = yes }
@@ -1959,11 +2211,12 @@ missiles_select_operation_target_state = {
 }
 
 missiles_select_operation_site = {
+	clear_variable = missiles_operation_launch_site
 	clear_array = missiles_operation_sites
 	set_variable = { missiles_operation_site_selection_result = constant:missiles_program_value.zero }
 	set_variable = { missiles_operation_site_count = constant:missiles_program_value.zero }
 	if = {
-		limit = { missiles_operation_has_special_payload = yes }
+		limit = { missiles_operation_has_special_payload = yes NOT = { has_variable = missiles_requested_launch_site } }
 		random_owned_controlled_state = {
 			limit = {
 				missiles_site_can_launch = yes
@@ -1980,7 +2233,8 @@ missiles_select_operation_site = {
 	if = {
 		limit = {
 			check_variable = { var = missiles_operation_site_selection_result value = constant:missiles_program_value.zero compare = equals }
-			FROM = {
+			has_variable = missiles_requested_launch_site
+			var:missiles_requested_launch_site = {
 				exists = yes
 				is_controlled_by = ROOT
 				missiles_site_can_launch = yes
@@ -1990,14 +2244,15 @@ missiles_select_operation_site = {
 				}
 			}
 		}
-		set_variable = { missiles_operation_launch_site = FROM }
-		add_to_array = { array = missiles_operation_sites value = FROM }
+		set_variable = { missiles_operation_launch_site = missiles_requested_launch_site }
+		add_to_array = { array = missiles_operation_sites value = var:missiles_requested_launch_site }
 		set_variable = { missiles_operation_site_selection_result = constant:missiles_program_value.one }
 		add_to_variable = { missiles_operation_site_count = constant:missiles_program_value.one }
 	}
 	if = {
 		limit = {
 			check_variable = { var = missiles_operation_site_selection_result value = constant:missiles_program_value.zero compare = equals }
+			NOT = { has_variable = missiles_requested_launch_site }
 		}
 		random_owned_controlled_state = {
 			limit = {
@@ -2192,6 +2447,11 @@ missiles_mark_operation_sites_reserved = {
 
 missiles_reserve_operation_resources = {
 	set_variable = { missiles_operation_resource_result = constant:missiles_result.rejected }
+	set_variable = { missiles_operation_site_allocation = missiles_operation_missile_cost }
+	if = {
+		limit = { check_variable = { var = missiles_operation_site_count value = constant:missiles_program_value.one compare = greater_than } }
+		divide_variable = { var = missiles_operation_site_allocation value = missiles_operation_site_count if_zero = constant:missiles_program_value.one }
+	}
 	set_temp_variable = { missiles_reserve_after_operation = missiles_operational_reserve }
 	subtract_from_temp_variable = { var = missiles_reserve_after_operation value = missiles_operation_missile_cost }
 	set_temp_variable = { missiles_ai_reserve_floor = constant:missiles_reserve.operation_reservation_floor }
@@ -2205,6 +2465,7 @@ missiles_reserve_operation_resources = {
 	if = {
 		limit = {
 			missiles_can_pay_reserve = yes
+			missiles_operation_projected_site_allocations_fit = yes
 			check_variable = { var = missiles_operation_missile_cost value = missiles_operation_site_capacity compare = less_than_or_equals }
 			OR = {
 				NOT = { is_ai = yes }
@@ -2215,11 +2476,6 @@ missiles_reserve_operation_resources = {
 	}
 	if = {
 		limit = { check_variable = { var = missiles_operation_resource_result value = constant:missiles_result.accepted compare = equals } }
-		set_variable = { missiles_operation_site_allocation = missiles_operation_missile_cost }
-		if = {
-			limit = { check_variable = { var = missiles_operation_site_count value = constant:missiles_program_value.one compare = greater_than } }
-			divide_variable = { var = missiles_operation_site_allocation value = missiles_operation_site_count if_zero = constant:missiles_program_value.one }
-		}
 		missiles_mark_operation_sites_reserved = yes
 		set_variable = { missiles_operation_state = constant:missiles_operation_state.resources_reserved }
 	}
@@ -2228,9 +2484,9 @@ missiles_reserve_operation_resources = {
 missiles_preflight_operation = {
 	set_variable = { missiles_operation_preflight_result = constant:missiles_result.rejected }
 	missiles_assign_ai_profile = yes
-	missiles_ensure_selected_target = yes
 	missiles_prepare_operation_payload = yes
 	missiles_select_operation_profile = yes
+	missiles_ensure_selected_target = yes
 	missiles_select_operation_target_state = yes
 	missiles_select_operation_site = yes
 	missiles_calculate_operation_site_capacity = yes
@@ -2240,12 +2496,20 @@ missiles_preflight_operation = {
 	if = {
 		limit = {
 			missiles_operation_can_be_prepared = yes
+			missiles_operation_command_is_operational = yes
 			check_variable = { var = missiles_target_state_selection_result value = constant:missiles_program_value.one compare = equals }
 			check_variable = { var = missiles_operation_site_selection_result value = constant:missiles_program_value.one compare = equals }
 			missiles_operation_has_reach = yes
 			var:missiles_operation_target_state = { missiles_operation_target_has_profile_value = yes }
 			missiles_operation_has_reliable_payload_custody = yes
 			check_variable = { var = missiles_operation_missile_cost value = missiles_operation_site_capacity compare = less_than_or_equals }
+			OR = {
+				NOT = { missiles_operation_uses_saturation = yes }
+				AND = {
+					check_variable = { var = missiles_operation_site_count value = constant:missiles_tuning.operation_saturation_min_sites compare = greater_than_or_equals }
+					check_variable = { var = missiles_operation_site_capacity value = constant:missiles_tuning.operation_saturation_min_capacity compare = greater_than_or_equals }
+				}
+			}
 		}
 		set_variable = { missiles_reserve_payment_request = missiles_operation_missile_cost }
 		missiles_create_operation_receipt = yes
@@ -2256,9 +2520,12 @@ missiles_preflight_operation = {
 			add_to_variable = { missiles_operation_ready_date = missiles_operation_preparation_days }
 			set_variable = { missiles_operation_preflight_result = constant:missiles_result.accepted }
 			set_variable = { missiles_operation_state = constant:missiles_operation_state.preparing }
+			clr_country_flag = missiles_preparation_failure_unread
+			missiles_set_program_phases = yes
 		}
 		else = {
 			set_variable = { missiles_operation_preflight_result = constant:missiles_result.rejected }
+			missiles_abort_operation = yes
 			missiles_cleanup_operation = yes
 		}
 	}
@@ -2296,13 +2563,7 @@ missiles_prepare_counterforce_strike = {
 
 missiles_complete_preparation = {
 	if = {
-		limit = {
-			missiles_operation_before_commitment = yes
-			missiles_operation_tracks_are_enabled = yes
-			check_variable = { var = global.date value = missiles_operation_ready_date compare = greater_than_or_equals }
-			missiles_selected_target_state_is_valid = yes
-			missiles_operation_has_valid_site = yes
-		}
+		limit = { missiles_operation_preparation_is_due = yes }
 		set_country_flag = missiles_operation_ready
 		set_variable = { missiles_operation_state = constant:missiles_operation_state.ready }
 		set_variable = { missiles_operation_preparation_complete_date = global.date }
@@ -2310,6 +2571,119 @@ missiles_complete_preparation = {
 	else = {
 		if = { limit = { missiles_operation_receipt_is_active = yes NOT = { has_country_flag = missiles_operation_ready } } set_variable = { missiles_operation_result = constant:missiles_result.invalidated } }
 	}
+}
+
+# COUNTRY scope; the receipt type selects one literal native mission ID.
+# Literal meta expansion follows the documented add_days_mission_timeout schema.
+# The grace day prevents native timeout ordering from racing the due-day goal.
+missiles_activate_preparation_mission = {
+	if = {
+		limit = {
+			missiles_operation_receipt_is_active = yes
+			check_variable = { var = missiles_operation_preflight_result value = constant:missiles_result.accepted compare = equals }
+		}
+		set_temp_variable = { missiles_mission_timeout_adjustment = missiles_operation_preparation_days }
+		subtract_from_temp_variable = { missiles_mission_timeout_adjustment = constant:missiles_tuning.operation_mission_anchor_days }
+		add_to_temp_variable = { missiles_mission_timeout_adjustment = constant:missiles_tuning.operation_mission_deadline_grace_days }
+		if = {
+			limit = { check_variable = { var = missiles_operation_type value = constant:missiles_operation.precision compare = equals } }
+			meta_effect = {
+				text = {
+					activate_mission = missiles_precision_strike_preparation_mission
+					add_days_mission_timeout = { mission = missiles_precision_strike_preparation_mission days = [DAYS] }
+				}
+				DAYS = "[?missiles_mission_timeout_adjustment|.0]"
+			}
+		}
+		else_if = {
+			limit = { check_variable = { var = missiles_operation_type value = constant:missiles_operation.strategic compare = equals } }
+			meta_effect = {
+				text = {
+					activate_mission = missiles_strategic_barrage_preparation_mission
+					add_days_mission_timeout = { mission = missiles_strategic_barrage_preparation_mission days = [DAYS] }
+				}
+				DAYS = "[?missiles_mission_timeout_adjustment|.0]"
+			}
+		}
+		else_if = {
+			limit = { check_variable = { var = missiles_operation_type value = constant:missiles_operation.saturation compare = equals } }
+			meta_effect = {
+				text = {
+					activate_mission = missiles_saturation_barrage_preparation_mission
+					add_days_mission_timeout = { mission = missiles_saturation_barrage_preparation_mission days = [DAYS] }
+				}
+				DAYS = "[?missiles_mission_timeout_adjustment|.0]"
+			}
+		}
+		else_if = {
+			limit = { check_variable = { var = missiles_operation_type value = constant:missiles_operation.counterforce compare = equals } }
+			meta_effect = {
+				text = {
+					activate_mission = missiles_counterforce_strike_preparation_mission
+					add_days_mission_timeout = { mission = missiles_counterforce_strike_preparation_mission days = [DAYS] }
+				}
+				DAYS = "[?missiles_mission_timeout_adjustment|.0]"
+			}
+		}
+	}
+}
+
+# COUNTRY scope. Preserve the failed receipt's reason before cleanup removes its
+# scopes and flags, so late UI rendering does not turn every failure into "no order".
+missiles_record_preparation_failure = {
+	set_variable = { missiles_last_preparation_failure = constant:missiles_preparation_failure.order }
+	if = { limit = { NOT = { missiles_country_can_manage_program = yes } } set_variable = { missiles_last_preparation_failure = constant:missiles_preparation_failure.program } }
+	else_if = { limit = { NOT = { missiles_selected_target_state_is_valid = yes } } set_variable = { missiles_last_preparation_failure = constant:missiles_preparation_failure.target } }
+	else_if = { limit = { var:missiles_operation_target_state = { NOT = { missiles_operation_target_has_profile_value = yes } } } set_variable = { missiles_last_preparation_failure = constant:missiles_preparation_failure.objective } }
+	else_if = { limit = { NOT = { missiles_operation_sites_remain_valid = yes } } set_variable = { missiles_last_preparation_failure = constant:missiles_preparation_failure.site } }
+	else_if = { limit = { NOT = { missiles_operation_has_reliable_payload_custody = yes } } set_variable = { missiles_last_preparation_failure = constant:missiles_preparation_failure.payload } }
+	else_if = { limit = { check_variable = { var = missiles_command_control value = constant:missiles_tuning.operation_minimum_control compare = less_than } } set_variable = { missiles_last_preparation_failure = constant:missiles_preparation_failure.command } }
+	else_if = { limit = { NOT = { missiles_operation_command_is_operational = yes } } set_variable = { missiles_last_preparation_failure = constant:missiles_preparation_failure.readiness } }
+	else_if = { limit = { NOT = { missiles_operation_reserve_receipt_is_sufficient = yes } } set_variable = { missiles_last_preparation_failure = constant:missiles_preparation_failure.reserve } }
+	else_if = { limit = { NOT = { missiles_operation_tracks_are_enabled = yes } } set_variable = { missiles_last_preparation_failure = constant:missiles_preparation_failure.order } }
+	else_if = { limit = { check_variable = { var = global.date value = missiles_operation_ready_date compare = greater_than_or_equals } } set_variable = { missiles_last_preparation_failure = constant:missiles_preparation_failure.deadline } }
+	set_variable = { missiles_last_failed_preparation_id = missiles_active_operation_id }
+	set_country_flag = missiles_preparation_failure_unread
+}
+
+missiles_cancel_preparation = {
+	if = {
+		limit = { missiles_operation_before_commitment = yes }
+		missiles_record_preparation_failure = yes
+		missiles_abort_operation = yes
+		missiles_cleanup_operation = yes
+	}
+}
+
+# COUNTRY scope. Non-operation native projects own only their pending fields.
+# Their late cancellation/timeout must never abort a different launch receipt.
+missiles_cancel_site_survey = {
+	clr_country_flag = missiles_survey_in_progress
+	clear_variable = missiles_survey_due_date
+	if = { limit = { NOT = { has_country_flag = missiles_secondary_site_in_progress } } clear_variable = missiles_pending_site_state }
+}
+
+missiles_cancel_secondary_site_project = {
+	clr_country_flag = missiles_secondary_site_in_progress
+	clear_variable = missiles_secondary_site_due_date
+	if = { limit = { NOT = { has_country_flag = missiles_survey_in_progress } } clear_variable = missiles_pending_site_state }
+}
+
+missiles_cancel_site_repair_project = {
+	clr_country_flag = missiles_site_repair_active
+	clr_country_flag = missiles_site_repair_requested
+	clr_country_flag = missiles_site_repair_started
+	clear_variable = missiles_site_repair_due_date
+}
+
+missiles_cancel_site_recovery_project = {
+	clr_country_flag = missiles_site_recovery_active
+	clear_variable = missiles_site_recovery_due_date
+}
+
+missiles_cancel_warning_verification = {
+	clr_country_flag = missiles_warning_verification_active
+	clear_variable = missiles_warning_verification_due_date
 }
 
 # -----------------------------------------------------------------------------
@@ -4522,6 +4896,12 @@ missiles_cleanup_operation = {
 	if = {
 		limit = { NOT = { has_country_flag = missiles_operation_cleanup_complete } }
 		set_country_flag = missiles_operation_cleanup_complete
+		# Removing a mission runs no cancellation/timeout effect. An aborted receipt
+		# cannot leave a stale native timer able to cancel its successor.
+		remove_mission = missiles_precision_strike_preparation_mission
+		remove_mission = missiles_strategic_barrage_preparation_mission
+		remove_mission = missiles_saturation_barrage_preparation_mission
+		remove_mission = missiles_counterforce_strike_preparation_mission
 		for_each_scope_loop = {
 			array = missiles_operation_sites
 			if = {
@@ -4536,6 +4916,7 @@ missiles_cleanup_operation = {
 		clear_array = missiles_operation_self_states
 		clear_variable = missiles_operation_target_state
 		clear_variable = missiles_operation_launch_site
+		clear_variable = missiles_requested_launch_site
 		clear_variable = missiles_operation_impact_state
 		clear_variable = missiles_operation_impact_country
 		clear_variable = missiles_operation_root_country
@@ -4575,6 +4956,9 @@ missiles_cleanup_operation = {
 		clear_variable = missiles_pending_root_country
 		clear_variable = missiles_pending_retaliation_generation
 		clr_country_flag = missiles_operation_active
+		# Return the human to objective selection for the retained enemy. Pending
+		# state/profile rows must not outlive the receipt that froze their order.
+		missiles_back_to_target_profiles = yes
 		clr_country_flag = missiles_operation_committed
 		clr_country_flag = missiles_operation_ready
 		clr_country_flag = missiles_operation_rogue_origin

@@ -1,0 +1,130 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 032 MISSILES SCRIPTED LOCALISATION
+# ============================================================================
+# The ordinary decision category calls this resolver in country scope. It keeps
+# the header compact while still exposing the live program values and the one
+# crisis or target that currently changes the player's decision surface.
+# ============================================================================
+
+defined_text = {
+	name = GetMissilesProgramStageName
+	text = {
+		trigger = { check_variable = { var = missiles_program_stage value = constant:missiles_stage.experimental compare = equals } }
+		localization_key = missiles_program_stage_experimental
+	}
+	text = {
+		trigger = { check_variable = { var = missiles_program_stage value = constant:missiles_stage.guided compare = equals } }
+		localization_key = missiles_program_stage_guided
+	}
+	text = {
+		trigger = { check_variable = { var = missiles_program_stage value = constant:missiles_stage.extended compare = equals } }
+		localization_key = missiles_program_stage_extended
+	}
+	text = {
+		trigger = { check_variable = { var = missiles_program_stage value = constant:missiles_stage.advanced compare = equals } }
+		localization_key = missiles_program_stage_advanced
+	}
+	text = {
+		trigger = { check_variable = { var = missiles_program_stage value = constant:missiles_stage.strategic compare = equals } }
+		localization_key = missiles_program_stage_strategic
+	}
+	text = {
+		trigger = { check_variable = { var = missiles_program_stage value = constant:missiles_stage.complete compare = equals } }
+		localization_key = missiles_program_stage_complete
+	}
+	text = { localization_key = missiles_program_stage_unresolved }
+}
+
+defined_text = {
+	name = GetMissilesGuidanceGradeName
+	text = {
+		trigger = { NOT = { has_variable = missiles_guidance_score } }
+		localization_key = missiles_guidance_grade_unknown
+	}
+	text = {
+		trigger = { check_variable = { var = missiles_guidance_score value = constant:missiles_program_value.guidance_poor compare = less_than_or_equals } }
+		localization_key = missiles_guidance_grade_poor
+	}
+	text = {
+		trigger = { check_variable = { var = missiles_guidance_score value = constant:missiles_program_value.guidance_uncertain compare = less_than_or_equals } }
+		localization_key = missiles_guidance_grade_uncertain
+	}
+	text = {
+		trigger = { check_variable = { var = missiles_guidance_score value = constant:missiles_program_value.guidance_serviceable compare = less_than_or_equals } }
+		localization_key = missiles_guidance_grade_serviceable
+	}
+	text = {
+		trigger = { check_variable = { var = missiles_guidance_score value = constant:missiles_program_value.guidance_accurate compare = less_than_or_equals } }
+		localization_key = missiles_guidance_grade_accurate
+	}
+	text = { localization_key = missiles_guidance_grade_precise }
+}
+
+defined_text = {
+	name = GetMissilesRetaliationPostureName
+	text = {
+		trigger = { check_variable = { var = missiles_retaliation_posture value = constant:missiles_retaliation_posture.supervised compare = equals } }
+		localization_key = missiles_retaliation_posture_supervised
+	}
+	text = {
+		trigger = { check_variable = { var = missiles_retaliation_posture value = constant:missiles_retaliation_posture.delegated compare = equals } }
+		localization_key = missiles_retaliation_posture_delegated
+	}
+	text = {
+		trigger = { check_variable = { var = missiles_retaliation_posture value = constant:missiles_retaliation_posture.automatic compare = equals } }
+		localization_key = missiles_retaliation_posture_automatic
+	}
+	text = { localization_key = missiles_retaliation_posture_off }
+}
+
+defined_text = {
+	name = GetMissilesCategoryCrisisName
+	text = {
+		trigger = { has_country_flag = missiles_warning_active }
+		localization_key = missiles_category_crisis_warning
+	}
+	text = {
+		trigger = { has_country_flag = missiles_rogue_command_active }
+		localization_key = missiles_category_crisis_rogue
+	}
+	text = {
+		trigger = { has_country_flag = missiles_incident_active }
+		localization_key = missiles_category_crisis_incident
+	}
+	text = {
+		trigger = { has_country_flag = missiles_operation_active }
+		localization_key = missiles_category_crisis_preparation
+	}
+	text = { localization_key = missiles_category_crisis_none }
+}
+
+defined_text = {
+	name = GetMissilesCategoryTargetName
+	text = {
+		trigger = { missiles_selected_target_is_valid = yes }
+		localization_key = missiles_category_target_selected
+	}
+	text = { localization_key = missiles_category_target_none }
+}
+
+defined_text = {
+	name = GetMissilesCategoryRetaliationLine
+	text = {
+		trigger = { check_variable = { var = missiles_retaliation_posture value = constant:missiles_retaliation_posture.supervised compare = equals } }
+		localization_key = missiles_retaliation_posture_supervised
+	}
+	text = {
+		trigger = { check_variable = { var = missiles_retaliation_posture value = constant:missiles_retaliation_posture.delegated compare = equals } }
+		localization_key = missiles_retaliation_posture_delegated
+	}
+	text = {
+		trigger = { check_variable = { var = missiles_retaliation_posture value = constant:missiles_retaliation_posture.automatic compare = equals } }
+		localization_key = missiles_retaliation_posture_automatic
+	}
+	text = { localization_key = missiles_retaliation_posture_off }
+}
+
+defined_text = {
+	name = GetMissilesCategoryDescription
+	text = { localization_key = missiles_program_management_category_desc_live }
+}

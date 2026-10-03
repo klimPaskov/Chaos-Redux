@@ -869,6 +869,12 @@ missiles_tuning = {
 	operation_retaliation_preparation_days = 5
 	operation_preparation_minimum_days = 10
 	operation_preparation_maximum_days = 45
+	# Native mission definitions mirror the one-day anchor with a file constant.
+	# Activation immediately adjusts it to the receipt's calculated duration.
+	operation_mission_anchor_days = 1
+	operation_mission_deadline_grace_days = 1
+	operation_target_page_size = 3
+	operation_counterforce_intel = 0.50
 	operation_guidance_base_adjustment = 45
 	operation_guidance_stage_step = 8
 	operation_guidance_readiness_step = 0.20
@@ -1012,6 +1018,54 @@ missiles_site_score = {
 	minimum_candidate = 1
 }
 
+missiles_preparation_failure = {
+	schema = { any_key = yes data = int }
+	none = 0
+	program = 1
+	target = 2
+	objective = 3
+	site = 4
+	payload = 5
+	readiness = 6
+	command = 7
+	reserve = 8
+	deadline = 9
+	order = 10
+}
+
+missiles_preparation_cost = {
+	schema = { any_key = yes data = fixed_point }
+	command_low = 8
+	command_standard = 15
+	command_high = 25
+	command_low_negative = -8
+	command_standard_negative = -15
+	command_high_negative = -25
+	fuel_low_k = 0.250
+	fuel_units_per_k = 1000
+	fuel_standard_k = 0.450
+	fuel_high_k = 0.700
+	fuel_low_negative = -250
+	fuel_standard_negative = -450
+	fuel_high_negative = -700
+	support_low = 40
+	support_standard = 80
+	support_high = 140
+	support_low_negative = -40
+	support_standard_negative = -80
+	support_high_negative = -140
+	# These quotes equal the base operation cost plus operation_special_missiles.
+	# A source regression checks that the shared tuning stays aligned.
+	precision_special_reserve = 2
+	strategic_special_reserve = 3
+	saturation_special_reserve = 5
+	counterforce_special_reserve = 3
+	precision_cooldown_days = 70
+	strategic_cooldown_days = 120
+	saturation_cooldown_days = 120
+	counterforce_cooldown_days = 120
+}
+
 missiles_target_score = {
 	schema = {
 		any_key = yes
@@ -1028,10 +1082,14 @@ missiles_target_score = {
 	strategic_depth = 25
 	profile_value = 100
 	profile_logistics = 120
+	profile_railway_level = 15
+	profile_railway_level_cap = 5
 	profile_industrial = 120
 	profile_air_coastal = 115
 	profile_command = 120
 	profile_counterforce = 130
+	profile_counterforce_capacity = 20
+	profile_counterforce_damage = 2
 	profile_broad = 100
 	capital = 70
 	frontline = -35
