@@ -19656,6 +19656,14 @@ chaos_unit_family_provider_523_event19_evaluate_eligibility = {
 }
 
 chaos_unit_family_provider_523_event19_build_template = {
+	set_temp_variable = { cannibalism_muster_primary_column = constant:cannibalism_muster_layout.primary_infantry_column }
+	set_temp_variable = { cannibalism_muster_secondary_column = constant:cannibalism_muster_layout.secondary_infantry_column }
+	set_temp_variable = { cannibalism_muster_mobile_column = constant:cannibalism_muster_layout.mobile_column }
+	set_temp_variable = { cannibalism_muster_first_row = constant:cannibalism_muster_layout.first_row }
+	set_temp_variable = { cannibalism_muster_second_row = constant:cannibalism_muster_layout.second_row }
+	set_temp_variable = { cannibalism_muster_third_row = constant:cannibalism_muster_layout.third_row }
+	set_temp_variable = { cannibalism_muster_fourth_row = constant:cannibalism_muster_layout.fourth_row }
+	set_temp_variable = { cannibalism_muster_last_row = constant:cannibalism_muster_layout.last_row }
 	meta_effect = {
 		text = {
 			division_template = {
@@ -19664,41 +19672,51 @@ chaos_unit_family_provider_523_event19_build_template = {
 				force_allow_recruiting = no
 				priority = 0
 				regiments = {
-					cannibal_scavenger_warband = { x = 0 y = 0 }
-					cannibal_feast_guard = { x = 0 y = 1 }
-					cannibal_feast_cohort = { x = 0 y = 2 }
-					cannibal_bone_guard = { x = 0 y = 3 }
-					cannibal_bone_riders = { x = 0 y = 4 }
-					cannibal_island_reavers = { x = 0 y = 5 }
-					cannibal_siege_eaters = { x = 1 y = 0 }
-					cannibal_march_predation_column = { x = 1 y = 1 }
-					cannibal_network_cadre = { x = 1 y = 2 }
+					cannibal_scavenger_warband = { x = [PRIMARY_COLUMN] y = [FIRST_ROW] }
+					cannibal_feast_guard = { x = [PRIMARY_COLUMN] y = [SECOND_ROW] }
+					cannibal_feast_cohort = { x = [PRIMARY_COLUMN] y = [THIRD_ROW] }
+					cannibal_bone_guard = { x = [PRIMARY_COLUMN] y = [FOURTH_ROW] }
+					cannibal_bone_riders = { x = [MOBILE_COLUMN] y = [FIRST_ROW] }
+					cannibal_island_reavers = { x = [PRIMARY_COLUMN] y = [LAST_ROW] }
+					cannibal_siege_eaters = { x = [SECONDARY_COLUMN] y = [FIRST_ROW] }
+					cannibal_march_predation_column = { x = [SECONDARY_COLUMN] y = [SECOND_ROW] }
+					cannibal_network_cadre = { x = [SECONDARY_COLUMN] y = [THIRD_ROW] }
 				}
 			}
 		}
 		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
+		PRIMARY_COLUMN = "[?cannibalism_muster_primary_column|.0]"
+		SECONDARY_COLUMN = "[?cannibalism_muster_secondary_column|.0]"
+		MOBILE_COLUMN = "[?cannibalism_muster_mobile_column|.0]"
+		FIRST_ROW = "[?cannibalism_muster_first_row|.0]"
+		SECOND_ROW = "[?cannibalism_muster_second_row|.0]"
+		THIRD_ROW = "[?cannibalism_muster_third_row|.0]"
+		FOURTH_ROW = "[?cannibalism_muster_fourth_row|.0]"
+		LAST_ROW = "[?cannibalism_muster_last_row|.0]"
 	}
 	set_temp_variable = { infantry_spawn_current_component_slot_kind = constant:infantry_spawn_component_kind.combat }
 	set_temp_variable = { infantry_spawn_current_component_unit_profile = constant:chaos_unit_family_event14_cannibal_irregulars.family_id }
-	set_temp_variable = { infantry_spawn_current_component_column = 0 }
-	set_temp_variable = { infantry_spawn_current_component_row = 0 }
+	set_temp_variable = { infantry_spawn_current_component_column = cannibalism_muster_primary_column }
+	set_temp_variable = { infantry_spawn_current_component_row = cannibalism_muster_first_row }
 	infantry_spawn_append_current_template_component = yes
-	set_temp_variable = { infantry_spawn_current_component_row = 1 }
+	set_temp_variable = { infantry_spawn_current_component_row = cannibalism_muster_second_row }
 	infantry_spawn_append_current_template_component = yes
-	set_temp_variable = { infantry_spawn_current_component_row = 2 }
+	set_temp_variable = { infantry_spawn_current_component_row = cannibalism_muster_third_row }
 	infantry_spawn_append_current_template_component = yes
-	set_temp_variable = { infantry_spawn_current_component_row = 3 }
+	set_temp_variable = { infantry_spawn_current_component_row = cannibalism_muster_fourth_row }
 	infantry_spawn_append_current_template_component = yes
-	set_temp_variable = { infantry_spawn_current_component_row = 4 }
+	set_temp_variable = { infantry_spawn_current_component_column = cannibalism_muster_mobile_column }
+	set_temp_variable = { infantry_spawn_current_component_row = cannibalism_muster_first_row }
 	infantry_spawn_append_current_template_component = yes
-	set_temp_variable = { infantry_spawn_current_component_row = 5 }
+	set_temp_variable = { infantry_spawn_current_component_column = cannibalism_muster_primary_column }
+	set_temp_variable = { infantry_spawn_current_component_row = cannibalism_muster_last_row }
 	infantry_spawn_append_current_template_component = yes
-	set_temp_variable = { infantry_spawn_current_component_column = 1 }
-	set_temp_variable = { infantry_spawn_current_component_row = 0 }
+	set_temp_variable = { infantry_spawn_current_component_column = cannibalism_muster_secondary_column }
+	set_temp_variable = { infantry_spawn_current_component_row = cannibalism_muster_first_row }
 	infantry_spawn_append_current_template_component = yes
-	set_temp_variable = { infantry_spawn_current_component_row = 1 }
+	set_temp_variable = { infantry_spawn_current_component_row = cannibalism_muster_second_row }
 	infantry_spawn_append_current_template_component = yes
-	set_temp_variable = { infantry_spawn_current_component_row = 2 }
+	set_temp_variable = { infantry_spawn_current_component_row = cannibalism_muster_third_row }
 	infantry_spawn_append_current_template_component = yes
 }
 
