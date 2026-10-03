@@ -160,6 +160,15 @@ An inline formatted variable string such as `localization_key = "[?temp_value|0]
 Temporary variables assigned in the same `text.trigger` remain visible to the selected localisation key, so calculate the display value there.
 Retain constant-backed temporary getters where the installed documentation supports the assignment, and do not introduce persistent globals solely for formatting.
 
+### Helper output lifetime
+
+Temporary variables first created inside a scripted effect or trigger may disappear after return, while caller-preinitialized storage retains the helper's modifications (`paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, Variable types, line 440).
+
+- Before each helper call, ensure every temporary scalar and temporary-array output consumed afterwards has caller-owned storage, including calls inside `if.limit` and scripted-localisation `text.trigger`. Initialize new output storage without resetting existing input or cursor values.
+- Apply this at every nested call boundary: each caller initializes the outputs it consumes, and outer callers also initialize forwarded outputs needed after return.
+- Public helper API docs must list caller-owned output storage and its required initial values.
+- Actual-source tests must model conservative call-frame cleanup by discarding temporary scalars and arrays first created in the returning helper, retaining modifications to caller-preinitialized storage, and keeping scoped regular saved state separate from temporary storage instead of using one flat global temporary dictionary.
+
 ## Event anatomy
 
 - entry event: the canonical `chaosx.nr<ID>.1` start
