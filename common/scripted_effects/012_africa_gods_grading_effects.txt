@@ -1,0 +1,710 @@
+# Event 012 Gods static full grading helpers and entitlement arithmetic.
+# COUNTRY only; caller-set unscoped inputs and '= yes' calls, no parameters.
+# Receipt/conduct/closure owners and native delivery belong to the parent.
+
+gods_of_africa_initialize_grading_ledger = {
+	if = {
+		limit = {
+			exists = yes
+			has_variable = gods_of_africa_grading_first_genuine_history
+			check_variable = { gods_of_africa_grading_first_genuine_history = constant:gods_of_africa_value.one }
+			NOT = { has_country_flag = gods_of_africa_grading_ledger_initialized }
+			NOT = { has_variable = gods_of_africa_demands_issued }
+		}
+		# The first-history owner supplies this one-use authorization before call.
+		set_temp_variable = { gods_of_africa_grading_first_genuine_history = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_demands_issued = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_demands_retired = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_demands_fulfilled = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_demands_full_original = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_demands_honored_substitute = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_demands_failed = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_demands_refused = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_demands_broken_by_war = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_compliance_streak = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_longest_compliance_streak = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_post_reconciliation_fulfilled = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_post_reconciliation_failures = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_post_reconciliation_refusals = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_war_count = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_treaty_break_count = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_reconciliation_count = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_observed_host_core_count = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_owned_host_core_count = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_emergency_paid_pp = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_paid_infantry_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_voluntary_paid_infantry_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_emergency_paid_infantry_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_campaign_paid_infantry_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_paid_support_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_voluntary_paid_support_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_emergency_paid_support_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_campaign_paid_support_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_paid_trucks_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_voluntary_paid_trucks_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_emergency_paid_trucks_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_campaign_paid_trucks_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_paid_artillery_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_voluntary_paid_artillery_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_emergency_paid_artillery_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_campaign_paid_artillery_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_paid_armor_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_voluntary_paid_armor_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_emergency_paid_armor_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_campaign_paid_armor_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_paid_aircraft_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_voluntary_paid_aircraft_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_emergency_paid_aircraft_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_campaign_paid_aircraft_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_paid_fuel_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_voluntary_paid_fuel_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_emergency_paid_fuel_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_campaign_paid_fuel_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_paid_convoys_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_voluntary_paid_convoys_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_emergency_paid_convoys_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_campaign_paid_convoys_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_paid_trains_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_voluntary_paid_trains_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_emergency_paid_trains_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_campaign_paid_trains_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_paid_manpower_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_voluntary_paid_manpower_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_emergency_paid_manpower_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_campaign_paid_manpower_k = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_contract_ledger_generation = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_contract_ledger_id = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_contract_ledger_origin_id = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_contract_original_family = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_last_closed_contract_origin_id = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_last_closed_contract_generation = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_last_closed_contract_id = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_material_transfer_sequence = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_last_consumed_material_transfer_id = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_material_transfer_receipt_id = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_material_transfer_receipt_kind = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_material_transfer_receipt_amount = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_material_transfer_receipt_source_id = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_material_transfer_receipt_receiver_id = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_material_transfer_receipt_host_generation = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_material_transfer_receipt_origin_id = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_material_transfer_receipt_contract_id = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_reconciliation_fulfilled_baseline = constant:gods_of_africa_value.zero }
+		clear_array = gods_of_africa_occupied_core_state_ids
+		clear_array = gods_of_africa_returned_core_state_ids
+		clr_country_flag = gods_of_africa_prior_defiance
+		clr_country_flag = gods_of_africa_prior_war
+		clr_country_flag = gods_of_africa_prior_occupation
+		clr_country_flag = gods_of_africa_prior_treaty_break
+		clr_country_flag = gods_of_africa_war_observation_active
+		clr_country_flag = gods_of_africa_unresolved_treaty_break
+		clr_country_flag = gods_of_africa_unresolved_major_offense
+		clr_country_flag = gods_of_africa_contract_ledger_open
+		clr_country_flag = gods_of_africa_contract_ledger_closed
+		clr_country_flag = gods_of_africa_material_transfer_receipt_pending
+		clr_country_flag = gods_of_africa_material_receipt_voluntary
+		clr_country_flag = gods_of_africa_material_receipt_emergency
+		clr_country_flag = gods_of_africa_material_receipt_campaign
+		set_country_flag = gods_of_africa_grading_ledger_initialized
+	}
+	# Re-entry or an unauthorized call consumes only the temp authorization.
+	set_temp_variable = { gods_of_africa_grading_first_genuine_history = constant:gods_of_africa_value.zero }
+}
+
+gods_of_africa_floor_temporary_value = {
+	# Caller owns input/output storage; round then correct an upward rounding.
+	set_temp_variable = { gods_of_africa_floor_output = constant:gods_of_africa_value.zero }
+	if = {
+		limit = { exists = yes has_variable = gods_of_africa_floor_input }
+		set_temp_variable = { gods_of_africa_floor_output = gods_of_africa_floor_input }
+		round_temp_variable = gods_of_africa_floor_output
+		if = {
+			limit = { check_variable = { gods_of_africa_floor_output > gods_of_africa_floor_input } }
+			subtract_from_temp_variable = { gods_of_africa_floor_output = constant:gods_of_africa_value.one }
+		}
+	}
+}
+
+gods_of_africa_normalize_paid_quantity_milli = {
+	set_temp_variable = { gods_of_africa_normalize_output_milli = constant:gods_of_africa_value.zero }
+	if = {
+		limit = {
+			exists = yes
+			has_variable = gods_of_africa_normalize_paid_k
+			has_variable = gods_of_africa_normalize_denominator
+			has_variable = gods_of_africa_normalize_bound_milli
+			check_variable = { gods_of_africa_normalize_denominator > constant:gods_of_africa_value.zero }
+			check_variable = { gods_of_africa_normalize_bound_milli > constant:gods_of_africa_value.zero }
+		}
+		# One safe scale avoids raw-unit intermediates above native fixed-point
+		# range and preserves one manpower as 0.1 milli-package.
+		set_temp_variable = { gods_of_africa_normalize_scale = constant:gods_of_africa_contribution_units.units_per_thousand }
+		multiply_temp_variable = { gods_of_africa_normalize_scale = constant:gods_of_africa_contribution_units.milli_packages_per_package }
+		divide_temp_variable = { gods_of_africa_normalize_scale = gods_of_africa_normalize_denominator }
+		set_temp_variable = { gods_of_africa_normalize_cap_k = gods_of_africa_normalize_bound_milli }
+		divide_temp_variable = { gods_of_africa_normalize_cap_k = gods_of_africa_normalize_scale }
+		set_temp_variable = { gods_of_africa_normalize_output_milli = gods_of_africa_normalize_paid_k }
+		clamp_temp_variable = { var = gods_of_africa_normalize_output_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_cap_k }
+		multiply_temp_variable = { gods_of_africa_normalize_output_milli = gods_of_africa_normalize_scale }
+	}
+}
+
+gods_of_africa_required_fulfilled_count = {
+	# Exact ceil(percent * N / 100), with no large cross-product.
+	set_temp_variable = { gods_of_africa_ratio_required_output = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_floor_output = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_floor_input = gods_of_africa_ratio_eligible }
+	divide_temp_variable = { gods_of_africa_floor_input = constant:gods_of_africa_grading.ratio_percent_scale }
+	gods_of_africa_floor_temporary_value = yes
+	set_temp_variable = { gods_of_africa_ratio_quotient = gods_of_africa_floor_output }
+	set_temp_variable = { gods_of_africa_ratio_remainder = gods_of_africa_ratio_quotient }
+	multiply_temp_variable = { gods_of_africa_ratio_remainder = constant:gods_of_africa_grading.ratio_percent_scale }
+	set_temp_variable = { gods_of_africa_ratio_tail = gods_of_africa_ratio_eligible }
+	subtract_from_temp_variable = { gods_of_africa_ratio_tail = gods_of_africa_ratio_remainder }
+	multiply_temp_variable = { gods_of_africa_ratio_tail = gods_of_africa_ratio_percent }
+	divide_temp_variable = { gods_of_africa_ratio_tail = constant:gods_of_africa_grading.ratio_percent_scale }
+	set_temp_variable = { gods_of_africa_floor_input = gods_of_africa_ratio_tail }
+	gods_of_africa_floor_temporary_value = yes
+	if = {
+		limit = { check_variable = { gods_of_africa_floor_output < gods_of_africa_ratio_tail } }
+		add_to_temp_variable = { gods_of_africa_floor_output = constant:gods_of_africa_value.one }
+	}
+	set_temp_variable = { gods_of_africa_ratio_required_output = gods_of_africa_ratio_quotient }
+	multiply_temp_variable = { gods_of_africa_ratio_required_output = gods_of_africa_ratio_percent }
+	add_to_temp_variable = { gods_of_africa_ratio_required_output = gods_of_africa_floor_output }
+}
+
+gods_of_africa_floor_scaled_entitlement = {
+	# Caller owns output; supported C/coeff/D domain is documented.
+	set_temp_variable = { gods_of_africa_scaled_entitlement_output = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_floor_output = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_floor_input = gods_of_africa_entitlement_contribution_milli }
+	divide_temp_variable = { gods_of_africa_floor_input = constant:gods_of_africa_reward_scale.arithmetic_split_base }
+	gods_of_africa_floor_temporary_value = yes
+	set_temp_variable = { gods_of_africa_entitlement_quotient = gods_of_africa_floor_output }
+	set_temp_variable = { gods_of_africa_entitlement_remainder = gods_of_africa_entitlement_quotient }
+	multiply_temp_variable = { gods_of_africa_entitlement_remainder = constant:gods_of_africa_reward_scale.arithmetic_split_base }
+	set_temp_variable = { gods_of_africa_entitlement_tail = gods_of_africa_entitlement_contribution_milli }
+	subtract_from_temp_variable = { gods_of_africa_entitlement_tail = gods_of_africa_entitlement_remainder }
+	set_temp_variable = { gods_of_africa_entitlement_denominator_a = gods_of_africa_entitlement_denominator }
+	divide_temp_variable = { gods_of_africa_entitlement_denominator_a = constant:gods_of_africa_reward_scale.arithmetic_split_base }
+	set_temp_variable = { gods_of_africa_entitlement_numerator_a = gods_of_africa_entitlement_quotient }
+	multiply_temp_variable = { gods_of_africa_entitlement_numerator_a = gods_of_africa_entitlement_coefficient }
+	set_temp_variable = { gods_of_africa_floor_input = gods_of_africa_entitlement_numerator_a }
+	divide_temp_variable = { gods_of_africa_floor_input = gods_of_africa_entitlement_denominator_a }
+	gods_of_africa_floor_temporary_value = yes
+	set_temp_variable = { gods_of_africa_scaled_entitlement_output = gods_of_africa_floor_output }
+	set_temp_variable = { gods_of_africa_entitlement_remainder_a = gods_of_africa_floor_output }
+	multiply_temp_variable = { gods_of_africa_entitlement_remainder_a = gods_of_africa_entitlement_denominator_a }
+	set_temp_variable = { gods_of_africa_entitlement_numerator_b = gods_of_africa_entitlement_numerator_a }
+	subtract_from_temp_variable = { gods_of_africa_entitlement_numerator_b = gods_of_africa_entitlement_remainder_a }
+	multiply_temp_variable = { gods_of_africa_entitlement_numerator_b = constant:gods_of_africa_reward_scale.arithmetic_split_base }
+	multiply_temp_variable = { gods_of_africa_entitlement_tail = gods_of_africa_entitlement_coefficient }
+	add_to_temp_variable = { gods_of_africa_entitlement_numerator_b = gods_of_africa_entitlement_tail }
+	set_temp_variable = { gods_of_africa_floor_input = gods_of_africa_entitlement_numerator_b }
+	divide_temp_variable = { gods_of_africa_floor_input = gods_of_africa_entitlement_denominator }
+	gods_of_africa_floor_temporary_value = yes
+	add_to_temp_variable = { gods_of_africa_scaled_entitlement_output = gods_of_africa_floor_output }
+}
+
+gods_of_africa_freeze_final_grade_inputs = {
+	if = {
+		limit = { gods_of_africa_full_grade_freeze_is_authorized = yes }
+		set_temp_variable = { gods_of_africa_grade_work_eligible = gods_of_africa_demands_issued }
+		subtract_from_temp_variable = { gods_of_africa_grade_work_eligible = gods_of_africa_demands_retired }
+		# Subtract only after proving headroom; never sum malformed counters.
+		set_temp_variable = { gods_of_africa_grade_work_residual = gods_of_africa_grade_work_eligible }
+		set_temp_variable = { gods_of_africa_grade_work_consistent = constant:gods_of_africa_value.one }
+		if = {
+			limit = {
+				check_variable = { gods_of_africa_grade_work_consistent = constant:gods_of_africa_value.one }
+				check_variable = { var = gods_of_africa_grade_work_residual value = gods_of_africa_demands_fulfilled compare = greater_than_or_equals }
+			}
+			subtract_from_temp_variable = { gods_of_africa_grade_work_residual = gods_of_africa_demands_fulfilled }
+		}
+		else = { set_temp_variable = { gods_of_africa_grade_work_consistent = constant:gods_of_africa_value.zero } }
+		if = {
+			limit = {
+				check_variable = { gods_of_africa_grade_work_consistent = constant:gods_of_africa_value.one }
+				check_variable = { var = gods_of_africa_grade_work_residual value = gods_of_africa_demands_failed compare = greater_than_or_equals }
+			}
+			subtract_from_temp_variable = { gods_of_africa_grade_work_residual = gods_of_africa_demands_failed }
+		}
+		else = { set_temp_variable = { gods_of_africa_grade_work_consistent = constant:gods_of_africa_value.zero } }
+		if = {
+			limit = {
+				check_variable = { gods_of_africa_grade_work_consistent = constant:gods_of_africa_value.one }
+				check_variable = { var = gods_of_africa_grade_work_residual value = gods_of_africa_demands_refused compare = greater_than_or_equals }
+			}
+			subtract_from_temp_variable = { gods_of_africa_grade_work_residual = gods_of_africa_demands_refused }
+		}
+		else = { set_temp_variable = { gods_of_africa_grade_work_consistent = constant:gods_of_africa_value.zero } }
+		if = {
+			limit = {
+				check_variable = { gods_of_africa_grade_work_consistent = constant:gods_of_africa_value.one }
+				check_variable = { var = gods_of_africa_grade_work_residual value = gods_of_africa_demands_broken_by_war compare = greater_than_or_equals }
+			}
+			subtract_from_temp_variable = { gods_of_africa_grade_work_residual = gods_of_africa_demands_broken_by_war }
+		}
+		else = { set_temp_variable = { gods_of_africa_grade_work_consistent = constant:gods_of_africa_value.zero } }
+		set_temp_variable = { gods_of_africa_grade_work_paid_closures = gods_of_africa_demands_fulfilled }
+		if = {
+			limit = {
+				check_variable = { gods_of_africa_grade_work_consistent = constant:gods_of_africa_value.one }
+				check_variable = { var = gods_of_africa_grade_work_paid_closures value = gods_of_africa_demands_full_original compare = greater_than_or_equals }
+			}
+			subtract_from_temp_variable = { gods_of_africa_grade_work_paid_closures = gods_of_africa_demands_full_original }
+		}
+		else = { set_temp_variable = { gods_of_africa_grade_work_consistent = constant:gods_of_africa_value.zero } }
+		if = {
+			limit = {
+				check_variable = { gods_of_africa_grade_work_consistent = constant:gods_of_africa_value.one }
+				check_variable = { gods_of_africa_grade_work_residual = constant:gods_of_africa_value.zero }
+				check_variable = { gods_of_africa_grade_work_paid_closures = gods_of_africa_demands_honored_substitute }
+			}
+			# Snapshot every lifetime input and actual kind before parent cleanup.
+			set_variable = { gods_of_africa_grade_demands_issued = gods_of_africa_demands_issued }
+			set_variable = { gods_of_africa_grade_demands_retired = gods_of_africa_demands_retired }
+			set_variable = { gods_of_africa_grade_demands_fulfilled = gods_of_africa_demands_fulfilled }
+			set_variable = { gods_of_africa_grade_demands_full_original = gods_of_africa_demands_full_original }
+			set_variable = { gods_of_africa_grade_demands_honored_substitute = gods_of_africa_demands_honored_substitute }
+			set_variable = { gods_of_africa_grade_demands_failed = gods_of_africa_demands_failed }
+			set_variable = { gods_of_africa_grade_demands_refused = gods_of_africa_demands_refused }
+			set_variable = { gods_of_africa_grade_demands_broken_by_war = gods_of_africa_demands_broken_by_war }
+			set_variable = { gods_of_africa_grade_compliance_streak = gods_of_africa_compliance_streak }
+			set_variable = { gods_of_africa_grade_longest_compliance_streak = gods_of_africa_longest_compliance_streak }
+			set_variable = { gods_of_africa_grade_post_reconciliation_fulfilled = gods_of_africa_post_reconciliation_fulfilled }
+			set_variable = { gods_of_africa_grade_post_reconciliation_failures = gods_of_africa_post_reconciliation_failures }
+			set_variable = { gods_of_africa_grade_post_reconciliation_refusals = gods_of_africa_post_reconciliation_refusals }
+			set_variable = { gods_of_africa_grade_war_count = gods_of_africa_war_count }
+			set_variable = { gods_of_africa_grade_treaty_break_count = gods_of_africa_treaty_break_count }
+			set_variable = { gods_of_africa_grade_reconciliation_count = gods_of_africa_reconciliation_count }
+			set_variable = { gods_of_africa_grade_observed_host_core_count = gods_of_africa_observed_host_core_count }
+			set_variable = { gods_of_africa_grade_owned_host_core_count = gods_of_africa_owned_host_core_count }
+			set_variable = { gods_of_africa_grade_emergency_paid_pp = gods_of_africa_emergency_paid_pp }
+			set_variable = { gods_of_africa_grade_paid_infantry_k = gods_of_africa_paid_infantry_k }
+			set_variable = { gods_of_africa_grade_voluntary_paid_infantry_k = gods_of_africa_voluntary_paid_infantry_k }
+			set_variable = { gods_of_africa_grade_emergency_paid_infantry_k = gods_of_africa_emergency_paid_infantry_k }
+			set_variable = { gods_of_africa_grade_campaign_paid_infantry_k = gods_of_africa_campaign_paid_infantry_k }
+			set_variable = { gods_of_africa_grade_paid_support_k = gods_of_africa_paid_support_k }
+			set_variable = { gods_of_africa_grade_voluntary_paid_support_k = gods_of_africa_voluntary_paid_support_k }
+			set_variable = { gods_of_africa_grade_emergency_paid_support_k = gods_of_africa_emergency_paid_support_k }
+			set_variable = { gods_of_africa_grade_campaign_paid_support_k = gods_of_africa_campaign_paid_support_k }
+			set_variable = { gods_of_africa_grade_paid_trucks_k = gods_of_africa_paid_trucks_k }
+			set_variable = { gods_of_africa_grade_voluntary_paid_trucks_k = gods_of_africa_voluntary_paid_trucks_k }
+			set_variable = { gods_of_africa_grade_emergency_paid_trucks_k = gods_of_africa_emergency_paid_trucks_k }
+			set_variable = { gods_of_africa_grade_campaign_paid_trucks_k = gods_of_africa_campaign_paid_trucks_k }
+			set_variable = { gods_of_africa_grade_paid_artillery_k = gods_of_africa_paid_artillery_k }
+			set_variable = { gods_of_africa_grade_voluntary_paid_artillery_k = gods_of_africa_voluntary_paid_artillery_k }
+			set_variable = { gods_of_africa_grade_emergency_paid_artillery_k = gods_of_africa_emergency_paid_artillery_k }
+			set_variable = { gods_of_africa_grade_campaign_paid_artillery_k = gods_of_africa_campaign_paid_artillery_k }
+			set_variable = { gods_of_africa_grade_paid_armor_k = gods_of_africa_paid_armor_k }
+			set_variable = { gods_of_africa_grade_voluntary_paid_armor_k = gods_of_africa_voluntary_paid_armor_k }
+			set_variable = { gods_of_africa_grade_emergency_paid_armor_k = gods_of_africa_emergency_paid_armor_k }
+			set_variable = { gods_of_africa_grade_campaign_paid_armor_k = gods_of_africa_campaign_paid_armor_k }
+			set_variable = { gods_of_africa_grade_paid_aircraft_k = gods_of_africa_paid_aircraft_k }
+			set_variable = { gods_of_africa_grade_voluntary_paid_aircraft_k = gods_of_africa_voluntary_paid_aircraft_k }
+			set_variable = { gods_of_africa_grade_emergency_paid_aircraft_k = gods_of_africa_emergency_paid_aircraft_k }
+			set_variable = { gods_of_africa_grade_campaign_paid_aircraft_k = gods_of_africa_campaign_paid_aircraft_k }
+			set_variable = { gods_of_africa_grade_paid_fuel_k = gods_of_africa_paid_fuel_k }
+			set_variable = { gods_of_africa_grade_voluntary_paid_fuel_k = gods_of_africa_voluntary_paid_fuel_k }
+			set_variable = { gods_of_africa_grade_emergency_paid_fuel_k = gods_of_africa_emergency_paid_fuel_k }
+			set_variable = { gods_of_africa_grade_campaign_paid_fuel_k = gods_of_africa_campaign_paid_fuel_k }
+			set_variable = { gods_of_africa_grade_paid_convoys_k = gods_of_africa_paid_convoys_k }
+			set_variable = { gods_of_africa_grade_voluntary_paid_convoys_k = gods_of_africa_voluntary_paid_convoys_k }
+			set_variable = { gods_of_africa_grade_emergency_paid_convoys_k = gods_of_africa_emergency_paid_convoys_k }
+			set_variable = { gods_of_africa_grade_campaign_paid_convoys_k = gods_of_africa_campaign_paid_convoys_k }
+			set_variable = { gods_of_africa_grade_paid_trains_k = gods_of_africa_paid_trains_k }
+			set_variable = { gods_of_africa_grade_voluntary_paid_trains_k = gods_of_africa_voluntary_paid_trains_k }
+			set_variable = { gods_of_africa_grade_emergency_paid_trains_k = gods_of_africa_emergency_paid_trains_k }
+			set_variable = { gods_of_africa_grade_campaign_paid_trains_k = gods_of_africa_campaign_paid_trains_k }
+			set_variable = { gods_of_africa_grade_paid_manpower_k = gods_of_africa_paid_manpower_k }
+			set_variable = { gods_of_africa_grade_voluntary_paid_manpower_k = gods_of_africa_voluntary_paid_manpower_k }
+			set_variable = { gods_of_africa_grade_emergency_paid_manpower_k = gods_of_africa_emergency_paid_manpower_k }
+			set_variable = { gods_of_africa_grade_campaign_paid_manpower_k = gods_of_africa_campaign_paid_manpower_k }
+			set_variable = { gods_of_africa_grade_eligible_demands = gods_of_africa_grade_work_eligible }
+			set_variable = { gods_of_africa_grade_returned_core_state_count = gods_of_africa_returned_core_state_ids^num }
+			set_variable = { gods_of_africa_grade_occupied_core_state_count = gods_of_africa_occupied_core_state_ids^num }
+			set_variable = { gods_of_africa_grade_wrath = gods_of_africa_wrath }
+			set_variable = { gods_of_africa_settlement_strength = event_target:africa_host.gods_of_africa_settlement_final_strength }
+			set_variable = { gods_of_africa_settlement_doctrine = event_target:africa_host.gods_of_africa_settlement_final_doctrine }
+			set_variable = { gods_of_africa_settlement_generation = event_target:africa_host.africa_host_generation }
+			set_variable = { gods_of_africa_settlement_origin_host_id = gods_of_africa_history_origin_host_id }
+			set_variable = { gods_of_africa_settlement_history_generation = gods_of_africa_participant_generation }
+			set_variable = { gods_of_africa_grade_history_owner_id = gods_of_africa_history_owner_id }
+			set_variable = { gods_of_africa_grade_history_origin_host_id = gods_of_africa_history_origin_host_id }
+			if = {
+				limit = { has_country_flag = gods_of_africa_prior_defiance }
+				set_country_flag = gods_of_africa_grade_prior_defiance
+			}
+			else = { clr_country_flag = gods_of_africa_grade_prior_defiance }
+			if = {
+				limit = { has_country_flag = gods_of_africa_prior_war }
+				set_country_flag = gods_of_africa_grade_prior_war
+			}
+			else = { clr_country_flag = gods_of_africa_grade_prior_war }
+			if = {
+				limit = { has_country_flag = gods_of_africa_prior_occupation }
+				set_country_flag = gods_of_africa_grade_prior_occupation
+			}
+			else = { clr_country_flag = gods_of_africa_grade_prior_occupation }
+			if = {
+				limit = { has_country_flag = gods_of_africa_prior_treaty_break }
+				set_country_flag = gods_of_africa_grade_prior_treaty_break
+			}
+			else = { clr_country_flag = gods_of_africa_grade_prior_treaty_break }
+			if = {
+				limit = { has_country_flag = gods_of_africa_unresolved_treaty_break }
+				set_country_flag = gods_of_africa_grade_unresolved_treaty_break
+			}
+			else = { clr_country_flag = gods_of_africa_grade_unresolved_treaty_break }
+			if = {
+				limit = { has_country_flag = gods_of_africa_unresolved_major_offense }
+				set_country_flag = gods_of_africa_grade_unresolved_major_offense
+			}
+			else = { clr_country_flag = gods_of_africa_grade_unresolved_major_offense }
+			if = {
+				limit = { has_country_flag = gods_of_africa_permanent_opt_out }
+				set_country_flag = gods_of_africa_grade_permanent_opt_out
+			}
+			else = { clr_country_flag = gods_of_africa_grade_permanent_opt_out }
+			if = {
+				limit = { has_country_flag = gods_of_africa_defiant }
+				set_country_flag = gods_of_africa_grade_defiant
+			}
+			else = { clr_country_flag = gods_of_africa_grade_defiant }
+			if = {
+				limit = { has_war_with = event_target:africa_host }
+				set_country_flag = gods_of_africa_grade_current_war
+			}
+			else = { clr_country_flag = gods_of_africa_grade_current_war }
+			if = {
+				limit = { check_variable = { gods_of_africa_grade_eligible_demands = constant:gods_of_africa_value.zero } }
+				set_country_flag = gods_of_africa_grade_no_contract_history
+			}
+			else = { clr_country_flag = gods_of_africa_grade_no_contract_history }
+			set_variable = { gods_of_africa_grade_effective_failures = gods_of_africa_grade_demands_failed }
+			set_variable = { gods_of_africa_grade_effective_refusals = gods_of_africa_grade_demands_refused }
+			if = {
+				limit = { check_variable = { gods_of_africa_grade_reconciliation_count > constant:gods_of_africa_value.zero } }
+				set_country_flag = gods_of_africa_grade_reconciliation_accepted
+				set_variable = { gods_of_africa_grade_effective_failures = gods_of_africa_grade_post_reconciliation_failures }
+				set_variable = { gods_of_africa_grade_effective_refusals = gods_of_africa_grade_post_reconciliation_refusals }
+			}
+			else = { clr_country_flag = gods_of_africa_grade_reconciliation_accepted }
+			set_temp_variable = { gods_of_africa_ratio_eligible = gods_of_africa_grade_eligible_demands }
+			set_temp_variable = { gods_of_africa_ratio_required_output = constant:gods_of_africa_value.zero }
+			set_temp_variable = { gods_of_africa_ratio_percent = constant:gods_of_africa_grading.ratio_percent_reciprocal }
+			gods_of_africa_required_fulfilled_count = yes
+			set_variable = { gods_of_africa_grade_ratio_reciprocal_required_fulfilled = gods_of_africa_ratio_required_output }
+			set_temp_variable = { gods_of_africa_ratio_percent = constant:gods_of_africa_grading.ratio_percent_exaction }
+			gods_of_africa_required_fulfilled_count = yes
+			set_variable = { gods_of_africa_grade_ratio_exaction_required_fulfilled = gods_of_africa_ratio_required_output }
+			set_temp_variable = { gods_of_africa_ratio_percent = constant:gods_of_africa_grading.ratio_percent_ambiguity }
+			gods_of_africa_required_fulfilled_count = yes
+			set_variable = { gods_of_africa_grade_ratio_ambiguity_required_fulfilled = gods_of_africa_ratio_required_output }
+			set_temp_variable = { gods_of_africa_ratio_percent = constant:gods_of_africa_grading.ratio_percent_respected }
+			gods_of_africa_required_fulfilled_count = yes
+			set_variable = { gods_of_africa_grade_ratio_respected_required_fulfilled = gods_of_africa_ratio_required_output }
+			set_temp_variable = { gods_of_africa_normalize_bound_milli = constant:gods_of_africa_reward_scale.contribution_packages_ceiling }
+			multiply_temp_variable = { gods_of_africa_normalize_bound_milli = constant:gods_of_africa_contribution_units.milli_packages_per_package }
+			# Preinitialize forwarded output at each nested helper boundary.
+			set_temp_variable = { gods_of_africa_normalize_output_milli = constant:gods_of_africa_value.zero }
+			set_temp_variable = { gods_of_africa_grade_work_material_milli = constant:gods_of_africa_value.zero }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_paid_infantry_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.infantry }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_material_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_material_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_paid_support_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.support }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_material_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_material_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_paid_trucks_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.trucks }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_material_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_material_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_paid_artillery_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.artillery }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_material_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_material_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_paid_armor_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.armor }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_material_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_material_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_paid_aircraft_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.aircraft }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_material_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_material_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_paid_fuel_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.fuel }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_material_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_material_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_paid_convoys_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.convoys }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_material_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_material_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_paid_trains_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.trains }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_material_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_material_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_paid_manpower_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.manpower }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_material_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_material_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_variable = { gods_of_africa_grade_material_milli = gods_of_africa_grade_work_material_milli }
+			set_temp_variable = { gods_of_africa_grade_work_voluntary_milli = constant:gods_of_africa_value.zero }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_voluntary_paid_infantry_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.infantry }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_voluntary_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_voluntary_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_voluntary_paid_support_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.support }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_voluntary_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_voluntary_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_voluntary_paid_trucks_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.trucks }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_voluntary_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_voluntary_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_voluntary_paid_artillery_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.artillery }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_voluntary_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_voluntary_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_voluntary_paid_armor_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.armor }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_voluntary_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_voluntary_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_voluntary_paid_aircraft_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.aircraft }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_voluntary_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_voluntary_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_voluntary_paid_fuel_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.fuel }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_voluntary_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_voluntary_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_voluntary_paid_convoys_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.convoys }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_voluntary_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_voluntary_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_voluntary_paid_trains_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.trains }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_voluntary_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_voluntary_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_voluntary_paid_manpower_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.manpower }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_voluntary_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_voluntary_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_variable = { gods_of_africa_grade_voluntary_milli = gods_of_africa_grade_work_voluntary_milli }
+			set_temp_variable = { gods_of_africa_grade_work_emergency_milli = constant:gods_of_africa_value.zero }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_emergency_paid_infantry_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.infantry }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_emergency_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_emergency_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_emergency_paid_support_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.support }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_emergency_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_emergency_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_emergency_paid_trucks_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.trucks }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_emergency_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_emergency_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_emergency_paid_artillery_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.artillery }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_emergency_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_emergency_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_emergency_paid_armor_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.armor }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_emergency_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_emergency_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_emergency_paid_aircraft_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.aircraft }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_emergency_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_emergency_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_emergency_paid_fuel_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.fuel }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_emergency_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_emergency_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_emergency_paid_convoys_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.convoys }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_emergency_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_emergency_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_emergency_paid_trains_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.trains }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_emergency_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_emergency_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_emergency_paid_manpower_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.manpower }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_emergency_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_emergency_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			# Exact scale 1000/500 = 2, cap 16000/2 = 8000, one multiply.
+			set_temp_variable = { gods_of_africa_grade_work_emergency_pp_scale = constant:gods_of_africa_contribution_units.milli_packages_per_package }
+			divide_temp_variable = { gods_of_africa_grade_work_emergency_pp_scale = constant:gods_of_africa_contribution_units.emergency_pp_per_package }
+			set_temp_variable = { gods_of_africa_grade_work_emergency_pp_cap = gods_of_africa_normalize_bound_milli }
+			divide_temp_variable = { gods_of_africa_grade_work_emergency_pp_cap = gods_of_africa_grade_work_emergency_pp_scale }
+			set_temp_variable = { gods_of_africa_grade_work_emergency_pp_milli = gods_of_africa_grade_emergency_paid_pp }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_emergency_pp_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_grade_work_emergency_pp_cap }
+			multiply_temp_variable = { gods_of_africa_grade_work_emergency_pp_milli = gods_of_africa_grade_work_emergency_pp_scale }
+			add_to_temp_variable = { gods_of_africa_grade_work_emergency_milli = gods_of_africa_grade_work_emergency_pp_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_emergency_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_variable = { gods_of_africa_grade_emergency_milli = gods_of_africa_grade_work_emergency_milli }
+			set_temp_variable = { gods_of_africa_grade_work_campaign_milli = constant:gods_of_africa_value.zero }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_campaign_paid_infantry_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.infantry }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_campaign_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_campaign_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_campaign_paid_support_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.support }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_campaign_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_campaign_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_campaign_paid_trucks_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.trucks }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_campaign_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_campaign_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_campaign_paid_artillery_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.artillery }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_campaign_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_campaign_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_campaign_paid_armor_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.armor }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_campaign_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_campaign_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_campaign_paid_aircraft_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.aircraft }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_campaign_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_campaign_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_campaign_paid_fuel_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.fuel }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_campaign_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_campaign_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_campaign_paid_convoys_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.convoys }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_campaign_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_campaign_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_campaign_paid_trains_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.trains }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_campaign_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_campaign_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_temp_variable = { gods_of_africa_normalize_paid_k = gods_of_africa_grade_campaign_paid_manpower_k }
+			set_temp_variable = { gods_of_africa_normalize_denominator = constant:gods_of_africa_contribution_units.manpower }
+			gods_of_africa_normalize_paid_quantity_milli = yes
+			add_to_temp_variable = { gods_of_africa_grade_work_campaign_milli = gods_of_africa_normalize_output_milli }
+			clamp_temp_variable = { var = gods_of_africa_grade_work_campaign_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_normalize_bound_milli }
+			set_variable = { gods_of_africa_grade_campaign_milli = gods_of_africa_grade_work_campaign_milli }
+			set_variable = { gods_of_africa_grade_exceptional_sum_milli = gods_of_africa_grade_voluntary_milli }
+			add_to_variable = { gods_of_africa_grade_exceptional_sum_milli = gods_of_africa_grade_emergency_milli }
+			add_to_variable = { gods_of_africa_grade_exceptional_sum_milli = gods_of_africa_grade_campaign_milli }
+			clr_country_flag = gods_of_africa_grading_unresolved
+			set_country_flag = gods_of_africa_grade_inputs_frozen
+		}
+		else = { set_country_flag = gods_of_africa_grading_unresolved }
+	}
+	else_if = {
+		limit = {
+			exists = yes
+			NOT = { has_country_flag = gods_of_africa_grade_inputs_frozen }
+			NOT = { has_country_flag = gods_of_africa_final_outcome_committed }
+		}
+		set_country_flag = gods_of_africa_grading_unresolved
+	}
+}
+
+gods_of_africa_calculate_settlement_entitlement = {
+	if = {
+		limit = {
+			gods_of_africa_full_grade_inputs_are_valid = yes
+			gods_of_africa_final_settlement_value_is_valid = yes
+			# Parent calls this once before committing its source/owed receipt.
+			OR = {
+				NOT = { has_variable = gods_of_africa_reward_equipment_entitlement }
+				NOT = { has_variable = gods_of_africa_reward_fuel_entitlement }
+			}
+		}
+		set_temp_variable = { gods_of_africa_entitlement_strength = gods_of_africa_settlement_strength }
+		clamp_temp_variable = { var = gods_of_africa_entitlement_strength min = constant:gods_of_africa_value.zero max = constant:gods_of_africa_value.maximum_strength }
+		set_temp_variable = { gods_of_africa_entitlement_contribution_milli = gods_of_africa_grade_material_milli }
+		set_temp_variable = { gods_of_africa_entitlement_premium_milli = gods_of_africa_grade_voluntary_milli }
+		multiply_temp_variable = { gods_of_africa_entitlement_premium_milli = constant:gods_of_africa_reward_scale.voluntary_premium }
+		add_to_temp_variable = { gods_of_africa_entitlement_contribution_milli = gods_of_africa_entitlement_premium_milli }
+		set_temp_variable = { gods_of_africa_entitlement_premium_milli = gods_of_africa_grade_campaign_milli }
+		multiply_temp_variable = { gods_of_africa_entitlement_premium_milli = constant:gods_of_africa_reward_scale.campaign_premium }
+		add_to_temp_variable = { gods_of_africa_entitlement_contribution_milli = gods_of_africa_entitlement_premium_milli }
+		set_temp_variable = { gods_of_africa_entitlement_contribution_cap_milli = constant:gods_of_africa_reward_scale.contribution_packages_ceiling }
+		multiply_temp_variable = { gods_of_africa_entitlement_contribution_cap_milli = constant:gods_of_africa_contribution_units.milli_packages_per_package }
+		clamp_temp_variable = { var = gods_of_africa_entitlement_contribution_milli min = constant:gods_of_africa_value.zero max = gods_of_africa_entitlement_contribution_cap_milli }
+		# Direct raw Strength coefficients retain fractional capability until final floor.
+		set_temp_variable = { gods_of_africa_entitlement_coefficient = constant:gods_of_africa_value.zero }
+		set_temp_variable = { gods_of_africa_entitlement_denominator = constant:gods_of_africa_reward_scale.favored_denominator }
+		set_temp_variable = { gods_of_africa_entitlement_equipment_ceiling = constant:gods_of_africa_value.zero }
+		set_temp_variable = { gods_of_africa_entitlement_fuel_ceiling = constant:gods_of_africa_value.zero }
+		if = {
+			limit = { check_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.favored } }
+			set_temp_variable = { gods_of_africa_entitlement_coefficient = gods_of_africa_entitlement_strength }
+			add_to_temp_variable = { gods_of_africa_entitlement_coefficient = constant:gods_of_africa_reward_scale.favored_coefficient_base }
+			if = {
+				limit = { check_variable = { gods_of_africa_settlement_doctrine = constant:gods_of_africa_doctrine.reciprocal_covenant } }
+				multiply_temp_variable = { gods_of_africa_entitlement_coefficient = constant:gods_of_africa_reward_scale.reciprocal_coefficient_multiplier }
+				set_temp_variable = { gods_of_africa_entitlement_denominator = constant:gods_of_africa_reward_scale.reciprocal_denominator }
+			}
+			set_temp_variable = { gods_of_africa_entitlement_equipment_ceiling = constant:gods_of_africa_reward_units.favored_equipment_ceiling }
+			set_temp_variable = { gods_of_africa_entitlement_fuel_ceiling = constant:gods_of_africa_reward_units.favored_fuel_ceiling }
+		}
+		else_if = {
+			limit = { check_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.respected } }
+			set_temp_variable = { gods_of_africa_entitlement_coefficient = gods_of_africa_entitlement_strength }
+			multiply_temp_variable = { gods_of_africa_entitlement_coefficient = constant:gods_of_africa_reward_scale.respected_coefficient_strength_multiplier }
+			add_to_temp_variable = { gods_of_africa_entitlement_coefficient = constant:gods_of_africa_reward_scale.respected_coefficient_base }
+			set_temp_variable = { gods_of_africa_entitlement_denominator = constant:gods_of_africa_reward_scale.respected_denominator }
+			set_temp_variable = { gods_of_africa_entitlement_equipment_ceiling = constant:gods_of_africa_reward_units.respected_equipment_ceiling }
+			set_temp_variable = { gods_of_africa_entitlement_fuel_ceiling = constant:gods_of_africa_reward_units.respected_fuel_ceiling }
+		}
+		set_temp_variable = { gods_of_africa_scaled_entitlement_output = constant:gods_of_africa_value.zero }
+		gods_of_africa_floor_scaled_entitlement = yes
+		set_temp_variable = { gods_of_africa_entitlement_equipment_completed = gods_of_africa_scaled_entitlement_output }
+		clamp_temp_variable = { var = gods_of_africa_entitlement_equipment_completed min = constant:gods_of_africa_value.zero max = gods_of_africa_entitlement_equipment_ceiling }
+		multiply_temp_variable = { gods_of_africa_entitlement_denominator = constant:gods_of_africa_reward_scale.fuel_denominator_multiplier }
+		gods_of_africa_floor_scaled_entitlement = yes
+		set_temp_variable = { gods_of_africa_entitlement_fuel_completed = gods_of_africa_scaled_entitlement_output }
+		clamp_temp_variable = { var = gods_of_africa_entitlement_fuel_completed min = constant:gods_of_africa_value.zero max = gods_of_africa_entitlement_fuel_ceiling }
+		# Publish only after both components are complete. A partial pair is repairable.
+		set_variable = { gods_of_africa_reward_equipment_entitlement = gods_of_africa_entitlement_equipment_completed }
+		set_variable = { gods_of_africa_reward_fuel_entitlement = gods_of_africa_entitlement_fuel_completed }
+	}
+}
