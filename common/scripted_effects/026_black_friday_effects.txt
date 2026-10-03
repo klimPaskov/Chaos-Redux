@@ -4133,11 +4133,9 @@ black_friday_pay_cbrn_external_aid_pp_fee = {
 	set_temp_variable = { black_friday_cbrn_external_aid_pp_payment_success = constant:universal_cost_framework.zero }
 	if = {
 		limit = { black_friday_is_active = yes }
-		black_friday_quote_cbrn_external_aid_pp_fee = yes
 		if = {
 			limit = {
-				check_variable = { var = black_friday_cbrn_external_aid_pp_quote_valid value = constant:universal_cost_framework.one compare = equals }
-				check_variable = { var = black_friday_cbrn_external_aid_pp_affordable value = constant:universal_cost_framework.one compare = equals }
+				black_friday_can_pay_cbrn_external_aid_pp_fee = yes
 				has_event_target = cbrn_external_aid_transaction_target_state
 				event_target:cbrn_external_aid_transaction_target_state = {
 					has_state_flag = cbrn_external_mask_escrow_active
