@@ -383,13 +383,15 @@ random_terror_apply_exact_state_loss = {
 	set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
 	set_temp_variable = { state_civilian_population_loss_has_target_country = 1 }
 	set_temp_variable = { state_civilian_population_loss_contract_supplied = 1 }
+	set_temp_variable = { state_civilian_population_loss_applied = constant:random_terror_value.zero }
+	set_temp_variable = { state_civilian_population_loss_result = constant:random_terror_value.zero }
 	apply_exact_state_civilian_population_loss = yes
 	if = {
-		limit = { check_variable = { random_terror_civilian_death_request > constant:random_terror_tuning.achievement_major_loss_deaths } }
+		limit = { check_variable = { state_civilian_population_loss_applied > constant:random_terror_tuning.achievement_major_loss_deaths } }
 		set_state_flag = random_terror_major_civilian_loss_recorded
 		OWNER = {
 			set_country_flag = random_terror_major_civilian_loss_recorded
-			add_to_variable = { random_terror_major_civilian_losses = random_terror_civilian_death_request }
+			add_to_variable = { random_terror_major_civilian_losses = state_civilian_population_loss_applied }
 		}
 	}
 }
