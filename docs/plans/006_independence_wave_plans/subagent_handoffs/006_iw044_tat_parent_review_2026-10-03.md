@@ -72,7 +72,11 @@ No new visual assets were created or substituted.
 Four project audit agents failed before initialization with `workspace routing discovery timed out` and produced no review or patch.
 Their failures are recorded rather than treated as completed audits.
 A subsequent country-package audit has been requested with an explicit absolute workspace and a narrower scope; its outcome remains separate from this parent source review.
-Current focus inspection and a render cropped to the assembly node have also been requested against the single source file; no final result is claimed before those requests return.
+Current focus inspection against the single source file and a render cropped to only the assembly node both timed out after 600 seconds and produced no artifact.
+The narrowed five-line variable-reference read likewise timed out after the broader read failed; the pertinent rules were read directly from the installed file.
+These are exact current service failures, not successful visual or engine validation.
 Imported shared-focus MCP layout and typed route AI evidence remain open under the accepted shared architecture.
 No numeric AI weights changed, and no live game was launched by the parent.
+The five shared focuses retain the engine's default score of one because they have no custom `ai_will_do` block.
+Deliberate founding-priority tuning and a complete-pool route/focus AI audit remain work items; the conditional timing witness does not establish AI completion before the deadline.
 The full Event 006 goal remains **HOLD / PARTIAL**.

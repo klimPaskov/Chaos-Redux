@@ -648,6 +648,9 @@ The host should remain playable and should not be punished with an unrecoverable
 
 ## Foreign reaction tiers
 
+The [accepted foreign-reaction and remnant-petition contract](006_foreign_reactions_and_remnant_petitions_contract.md) records the user-selected score and the recommended caps, timing, actor reach, and generation-safe delivery accepted under the 2026-10-03 continuation instruction.
+It is accepted design queued for implementation and does not establish runtime completion.
+
 Foreign countries react through interest scores.
 
 ### Local neighbor

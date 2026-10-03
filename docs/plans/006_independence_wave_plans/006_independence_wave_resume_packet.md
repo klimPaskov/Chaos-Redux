@@ -11,6 +11,11 @@ All four initial audit agents failed before workspace initialization; a narrower
 Do not mark those failed audits as complete or promote source arithmetic to live/AI proof.
 The wider Event 006 objective remains active and **HOLD / PARTIAL**.
 
+Next implementation authority is the [accepted foreign-reaction contract](../../specs/006_independence_wave_specs/specs/006_foreign_reactions_and_remnant_petitions_contract.md), promoted from the planner's recommended alternatives under the 2026-10-03 continuation instruction.
+Its score, actor pool, caps, petition, and timing choices are accepted; older unresolved-choice wording is historical.
+Begin with the existing paid diplomacy's frozen-counterpart and bilateral receipt foundation, then implement every tier, consent, petition, cleanup, and public history surface.
+The general foreign layer remains unimplemented, and this sequencing does not authorize a smaller substitute.
+
 ## Current full-objective continuation (2026-09-27)
 
 The approved Event 006 objective covers all seven [specification parts](../../specs/006_independence_wave_specs/), matrices, diagrams, research, country packages, formables, assets, AI, event flow, UI, catalog, and final audits. Read the [source-of-truth map](006_source_of_truth_map.md) and the [dated full-spec gap map](subagent_handoffs/006_full_spec_gap_map_2026-08-26.md) together; the former supplies current overrides and the latter preserves whole-event omissions. The current static boundary is 32 content-attested selectable packages, 29 compatible reservation groups, 41 runtime adapters, and 161 unattested selectable non-overlay rows; IW-039 is adapter-only and fail-closed. Event 006 remains **HOLD / PARTIAL**.

@@ -28,6 +28,9 @@ The current Join event inspect/render revision is `d0c3016e0598be2a37c11abe8b767
 
 ## AI design promise
 
+The [accepted foreign-reaction contract](006_foreign_reactions_and_remnant_petitions_contract.md) specifies deterministic target ranking and policy, the four capped interest families, one ordinary actor-wave popup, the separate remnant petition cap, and the original named foreign-response evidence cases.
+Score ranks are not action probabilities, and the required auditor comparisons and runtime checks remain completion gates.
+
 Every Event 6 country must behave like a new state trying to survive. AI behavior changes with package type, government route, former-host threat, patron access, league state, geography, force strength, and chaos.
 
 A single generic AI weight table is not enough.

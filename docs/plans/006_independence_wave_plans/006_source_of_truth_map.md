@@ -9,6 +9,11 @@ The current [IW-044 parent review](subagent_handoffs/006_iw044_tat_parent_review
 These refinements are accepted within the user's 2026-10-03 instruction to take recommended choices while continuing the full goal.
 The four initial project auditors failed before initialization, and current MCP/agent retries have not yet closed imported-focus or typed AI evidence.
 
+The [foreign-reaction contract](../../specs/006_independence_wave_specs/specs/006_foreign_reactions_and_remnant_petitions_contract.md) is accepted and queued under the same 2026-10-03 instruction to select recommended choices.
+It selects the bounded candidate pool, one ordinary popup plus the single separate remnant petition, one-day dispatch, 13-day responses, 30-day petition window, binary family caps, and frozen-row tie priority.
+Older mixed-status foreign-design paragraphs are superseded for these choices; no general foreign queue or petition implementation is claimed yet.
+Implementation begins by freezing paid diplomatic counterparts and sharing generation-matched recognition/guarantee receipts across existing decisions and foreign responses.
+
 The same supplied log also contains errors outside the Event 006 files changed in this repair: a localization parse error in `camp_administration_ui_l_english.yml`, duplicate special-project entries, three unlocated dynamic-token lexer failures, an Event 026 quote-trigger call parsed as an effect, and five invalid `index` effects in the doctrine research file. These are recorded as open whole-build QA findings and were not changed in this Event 006 slice. Event 006 remains **HOLD / PARTIAL**.
 
 ## Current whole-event authority and evidence boundary (2026-09-27)

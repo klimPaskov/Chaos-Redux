@@ -28,8 +28,8 @@ The narrowed `check_variable` search returned installed lines 2110–2135 at rev
 The focused source lookup for the host-response AI helper timed out after 600 seconds; its narrower one-line retry also timed out after 600 seconds.
 Basic event lint for `.60`, with helper expansion disabled and four-node bounds, also timed out after 600 seconds; its one-node/one-edge retry timed out after 600 seconds as well.
 The context bundle retry was narrowed to two sources with the explicit workspace ID and also timed out after 600 seconds.
-The revision-bound `check_variable` read timed out at 26 lines, and a five-line retry was submitted; direct local reading supplied the same rules.
-These failures and the pending minimal read do not supply final source or graph coverage, and no Event MCP render or engine execution result is claimed.
+The revision-bound `check_variable` read timed out at 26 lines, and its narrower five-line retry also timed out after 600 seconds; direct local reading supplied the same rules.
+These failures do not supply final source or graph coverage, and no Event MCP render or engine execution result is claimed.
 The live schema does not expose `hoi4.script_validate`, and its `source_lookup` schema does not include `view` or `keyPath`.
 
 ## Validation and remaining findings

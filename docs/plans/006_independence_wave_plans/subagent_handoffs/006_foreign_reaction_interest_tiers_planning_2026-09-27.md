@@ -1,10 +1,19 @@
 # Event 006 foreign reaction interest tiers — planning handoff (2026-09-27)
 
-**Role and disposition:** `chaosx_improvement_loop_planner`, plan-only. The accepted Part 2 foreign-reaction promise remains unimplemented in general form. The new addendum is an **unresolved proposal** pending explicit cutoff, score-weight, actor-reach, popup-cap, and remnant-petition choices. This handoff is not implementation or Event 006 completion evidence.
+## Current parent disposition (2026-10-03)
+
+Disposition: promoted into [the accepted foreign-reaction and remnant-petition contract](../../../specs/006_independence_wave_specs/specs/006_foreign_reactions_and_remnant_petitions_contract.md).
+Acceptance basis: the user directed continuation without waiting for input and selection of recommended choices; the parent selected the addendum's recommended caps, timing, timeout, petition window, and bounded contact reach, while retaining the earlier explicit score decision.
+Implementation is queued in the order bilateral receipt foundation, foreign queue and tier choices/consent, remnant petition/lifecycle, then public history and catalog parity.
+The historical mixed-status recommendation below is superseded by that accepted contract; its source and MCP evidence remain dated evidence with their original limits.
+
+## Historical planning handoff (2026-09-27)
+
+**Role and disposition:** `chaosx_improvement_loop_planner`, plan-only. The accepted Part 2 foreign-reaction promise remains unimplemented in general form. The addendum has mixed status: score weights and cutoff are **accepted and queued** by the user's 2026-09-27 decision; actor reach, popup cap, petition, and timing remain **unresolved**. This handoff is not implementation or Event 006 completion evidence.
 
 ## Files written
 
-- `docs/plans/006_independence_wave_plans/006_foreign_reaction_interest_tiers_addendum_2026-09-27.md` — proposed bounded actor registry, four interest profiles, score and dispatch model, remnant petition, outcome/collision contract, named AI scenarios, log/details behavior, cleanup, unresolved decision table, and implementation acceptance gates.
+- `docs/plans/006_independence_wave_plans/006_foreign_reaction_interest_tiers_addendum_2026-09-27.md` — bounded actor registry, four interest profiles, score and dispatch model, remnant petition, outcome/collision contract, named AI scenarios, log/details behavior, cleanup, mixed-status decision table, and implementation acceptance gates.
 - This handoff — bounded evidence and parent actions.
 
 No gameplay, event, decision, AI, localisation, workbook, CSV, accepted specification, asset, or shared GUI file was edited. The shared checkout contained extensive unrelated work at start; it was left in place.
@@ -17,11 +26,11 @@ The current report `.2` hands off to tailored openings `.41`/`.42` and then host
 
 The addendum proposes a one-pass, generation-checked foreign queue assembled from committed released-country rows and bounded actor provenance: live neighbors, admitted package contacts, existing bilateral/patron relationships, the aligned Event 006 Network/League registry, and exact former-host contacts. It excludes the former host from the foreign event about its own loss. Per actor and target, four scored interest families select a local, regional, great-power, or earlier-wave response, with one accepted outcome receipt shared with the existing recognition, guarantee, patron, and Network helpers. A remnant host can petition one viable foreign recipient and receive an actual guarantee only after an explicit recipient commitment. Public consequences enter Event 006 history/details; private bargaining does not create global log spam. Generation, expiry, invalidity, and repeat-wave cleanup are specified.
 
-The working ID reservation `.64`–`.70` and the proposed score `4/3/2/1` with `−3` conflict penalty and cutoff `6` are **review candidates only**. The addendum gives stricter cutoff `7`, one versus two ordinary popup alternatives, and a remnant petition cap alternative. No historical country-specific reaction, officeholder, bilateral claim, or unsourced minority relationship is asserted.
+The user accepted direct-stake/relationship/strategic-fit/political-fit weights `4/3/2/1`, conflict `−3`, and a detailed-event cutoff of `6` on 2026-09-27; this rule remains queued pending a complete candidate source and the other design choices. The working ID reservation `.64`–`.70`, one versus two ordinary popup alternatives, and the remnant petition cap are not accepted. No historical country-specific reaction, officeholder, bilateral claim, or unsourced minority relationship is asserted.
 
 ## Parent decision and ownership boundary
 
-The parent should obtain or record a user-authorized choice for the material numerical weights, high-interest threshold, ordinary popup cap, remnant exception/cap and petition window, and great-power contact reach. The accepted user decision currently covers the four categories, interest causes, and high-interest-only targeted event principle, not these numbers or candidate dispatch rules. The parent then owns source implementation, event/decision/MCP inspect-render-compare, actor collision review, balance and probability audit, localisation, art/GFX if needed, shared Event Log/Details review, workbook alignment, and final completion judgment. The addendum should remain in `docs/plans/` until those choices have an acceptance basis; accepted rules should be folded into Part 2, Part 3, and Part 7 under `docs/specs/006_independence_wave_specs/specs/` with the explicit acceptance citation, not promoted merely because this plan exists.
+The parent should obtain or record choices for ordinary popup cap, remnant exception/cap and petition window, and great-power contact reach. The score categories, accepted weights, conflict penalty, and cutoff now have a user decision; candidate provenance and dispatch constraints do not. The parent owns source implementation, event/decision/MCP inspect-render-compare, actor collision review, balance and probability audit, localisation, art/GFX if needed, shared Event Log/Details review, workbook alignment, and final completion judgment. Keep the mixed-status addendum in `docs/plans/` until remaining choices have acceptance bases; then promote only accepted rules into Part 2, Part 3, and Part 7 with the explicit decision citation.
 
 ## Research and source basis
 
@@ -44,10 +53,10 @@ The connected MCP exposed event, decision, map, GUI, probability, reference, sou
 
 ## Uncertainty, blockers, and next steps
 
-1. The high-interest score weights, cutoff, ordinary and remnant popup caps, petitioner targeting and expiry, exact event timing, and great-power candidate reach are proposals, not accepted rules. The parent needs a recorded acceptance choice before gameplay work on them. The probability auditor's completed discovery does not supply those choices or a quantitative baseline for the new model.
+1. The score weights and cutoff are accepted and queued. Ordinary and remnant popup caps, petitioner targeting and expiry, exact event timing, and great-power candidate reach remain unresolved. The probability auditor's completed discovery does not supply those choices or a quantitative baseline for the new model.
 2. The Event Details baseline lacks a foreign reaction fixture and has a shared header/close overlap warning. Parent review must include actual Event 006 text, selected history rows, long actor names, and a matching render after implementation; the planner does not own the shared GUI.
 3. Event and decision MCP results are partial. The parent should inspect/render/compare the implemented foreign events with named actor and repeated-wave scenarios, then review all helper and lifecycle edges rather than using this narrow baseline as completion proof.
 4. Interest facts such as a minority relationship, colonial precedent, access route, or old claim require package provenance or live relationship evidence. No generic historical assertion fills a missing contact registry.
 5. A prior **foreign-reaction** addendum was not found under `docs/plans/006_independence_wave_plans/`. Other Event 006 addenda and whole-event gaps remain open in the source-of-truth map; this plan does not replace or close them. The next improvement-loop pass for this same foreign-reaction gap should wait until this addendum is implemented, promoted, explicitly queued with a reason, or rejected with a reason.
 
-**Recommendation:** keep the addendum in `docs/plans/`; once the choices have explicit acceptance, promote the accepted portions into the relevant Part 2/3/7 specs and implement them as a bounded tranche. Event 006 remains **HOLD / PARTIAL**.
+**Recommendation:** keep the mixed-status addendum in `docs/plans/`; once the remaining choices have explicit acceptance, promote the accepted portions into the relevant Part 2/3/7 specs and implement them as a bounded tranche. Event 006 remains **HOLD / PARTIAL**.

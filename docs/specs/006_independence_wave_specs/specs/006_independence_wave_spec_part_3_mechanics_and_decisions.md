@@ -73,6 +73,9 @@ Founding Legitimacy measures whether residents, local institutions, political mo
 
 ## International Recognition
 
+The [accepted foreign-reaction contract](006_foreign_reactions_and_remnant_petitions_contract.md) adds shared generation-matched bilateral recognition and guarantee receipts, frozen paid-diplomacy counterparts, patron consent, and the paid host-remnant petition.
+Its existing light/standard diplomatic cost baseline is accepted; the source implementation and evidence remain queued.
+
 Recognition measures formal diplomatic acceptance and practical access to the international system.
 
 It includes bilateral recognition, diplomatic missions, trade access, legal status, treaty acceptance, and admission to wider institutions.
