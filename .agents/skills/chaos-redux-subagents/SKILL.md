@@ -284,6 +284,13 @@ When a routed task touches focus trees, event chains, technology or doctrine tre
 
 Before using `mode = helper_expansion`, `hoi4.job_inspect`, `hoi4.job_cancel`, or native MCP tasks, verify the connected server's reported version and health, inspect the live tool schemas for those routes, and check client task negotiation. Source code or exposed tool metadata alone does not establish support in the connected process. Use only routes confirmed for the installed server and client; otherwise follow the available domain routes and record the missing capability precisely.
 
+Resolve each client's actual configured transport and server process before attributing capabilities to a local checkout, global binary, or exposed tool list; their versions and supported routes can differ.
+Keep configuration identity, server version, live schemas, and task negotiation in task evidence.
+A failure to observe a native task result does not establish that the server task failed.
+Preserve configuration, task IDs, and source/scenario hashes, then query existing handles through confirmed routes before retrying; if observation remains unavailable, report the task outcome unresolved.
+Do not change external tool source or dependencies to mask startup or domain failures.
+Keep package paths, concrete versions, and current errors in task evidence rather than reusable skill rules.
+
 On a confirmed route, use `mode = helper_expansion` with `hoi4.event_inspect` or `hoi4.tech_inspect` for bounded helper pages, and use `hoi4.job_inspect` and `hoi4.job_cancel` for persistent jobs. Request native MCP tasks only when the client negotiates support. Keep opaque job IDs and helper continuation URIs intact. A completed job can still contain a tool-level error, and cancellation is a request whose final outcome must be inspected. For paged helper evidence, retain the source revision, selected roots, bounds, `finished`/`complete` status, and unresolved findings; resume only with the returned continuation under the same revision and authorized principal. Jobs and helper pages are delivery and coverage tools; they do not replace the owning event, technology, focus, probability, GUI, or map workflow's inspect, render, compare, and scenario evidence. Keep task-specific mechanics and fixtures in their profiles and handoffs, not this routing skill.
 
 For large binary resources returned by `read_mcp_resource`, treat the result as an untrusted transport envelope: inspect whether it is stringified JSON and record the declared encoding and type before using the payload. A full read can be silently truncated even when `_meta.complete = true`; do not trust compacted previews, literal truncation markers, or completion metadata alone, and never print base64 data.

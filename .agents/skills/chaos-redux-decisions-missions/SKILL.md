@@ -954,6 +954,14 @@ Review:
 
 Document test scenarios or observations. Do not only say “balanced.”
 
+### Production action contract tests
+
+When source contract tests cover a paid action, execute the real selector, action mapper, debit, refund, receipt, and cooldown helpers that belong to the tested path.
+Restrict mocks to native primitives or explicitly out-of-scope consumers, and record those boundaries in the evidence.
+Assert the actual native flag identifier, requested cooldown duration, and write count on success, rejection, refund, and repeated invocation where applicable; a mocked success counter does not prove that the production mapper has the required branch.
+Do not replace a required production helper with a no-op solely to pass a loader error; fix the test loader or report the uncovered path.
+These source tests do not establish native engine execution or timed expiry.
+
 ## Improvement addenda for decisions and mechanic windows
 
 When an improvement addendum proposes decision depth, scripted GUI, or mechanic windows, translate the design into active play. The decision category should show the mechanic clearly, but the gameplay should still live in decisions, missions, scripted effects, scripted triggers, AI rules, and cleanup logic.
