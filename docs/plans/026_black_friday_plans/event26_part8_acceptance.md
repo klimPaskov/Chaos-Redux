@@ -1,5 +1,22 @@
 # Event 26 Part 8 acceptance record
 
+## Current regression evidence, 2026-10-03
+
+Disposition: unresolved acceptance, with the original full Part 8 contract retained.
+The historical arithmetic mirror below does not establish unrestricted engine arithmetic or effect/display agreement.
+The [current quantization audit](subagent_handoffs/2026-10-03_quantization_audit.md) found precision loss at ordinary cost `2.00001`, quantum `1`, and ratio `5000`, plus ordinary cost `0.04001`, quantum `0.01`, and ratio `2500`.
+It also found out-of-range pre-division products at ordinary cost `1000000` and source-product precision lost by the scalar ratio cache.
+The minimum-positive effect-side guard preserves one effective quantum after a positive source quote loses a tiny amount, but it does not repair the remaining rounding boundaries, overflow, or exact multi-source composition.
+Those findings keep general `BF-C03`, cost-family display/payment equality, and unrestricted quantization unresolved.
+
+The native factor groups remain pending composition, rounding, and live proof in the registry.
+The current decision declaration inventory covers 2,342 mod custom triggers, 2,343 mod custom text declarations, 368 active Vanilla pairs, 1,316 mod native cost declarations, and 2,903 active Vanilla native declarations.
+It is exhaustive declaration discovery at recorded hashes, with semantic decomposition and final commit reconciliation still pending.
+The full canonical Event 26 `state_flow` request failed with `timed out awaiting tools/call after 600s` and returned no artifact.
+Focused trace/render requests cannot close the missing full helper/lifecycle proof.
+
+## Historical acceptance snapshot
+
 ## Evidence boundary
 
 This record is reconciled against the current implementation worktree on 2026-09-02 and is not a claim of completion. `Source` means the relevant script, localisation, registry, or asset path was inspected. `MCP-partial` means the installed HOI4 MCP returned a workspace-wide partial result without a selector-specific blocker. `Live-blocked` means the scenario requires the user-owned live game or multiplayer session. `Calendar-calibration-blocked` means the absolute `global.num_days % 7 == 2` source anchor resolves known Fridays on 3 January 1936, 17 June 1938 (project day 898), and 1 September 1939, but installed Vanilla exposes no weekday trigger or Friday-index precedent and the running engine has not supplied live date progression evidence. `Adapter-blocked` means the final cost registry has no complete owner callsite or engine-accessible route for the scenario; the bounded Communist-spread, Fury, Japan chemical, biological medical-capacity, CBRN shelter, Japan biological, Germany Mengele, and D'Rhondan alien-reserve source tranches have separate bounded adapter status.

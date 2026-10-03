@@ -1,5 +1,35 @@
 # Event 26 Black Friday current final completion audit
 
+## Current evidence boundary, 2026-10-03
+
+Disposition: unresolved for completion, with the original full Event 26 goal retained.
+The dated audit below is historical evidence and does not describe the current tracking state or current aggregate cost inventory.
+The legacy Event 70 decision owner is absent, the Japan attack decision owners have been replaced by native raid paths, and CBRN owners have additional source adapters whose individual handoffs retain their validation limits.
+The fresh declaration inventory is recorded in `2026-10-03_current_declaration_inventory.md`, with 2,342 mod custom triggers, 2,343 mod custom text declarations, 368 active Vanilla pairs, 1,316 mod native costs, and 2,903 active Vanilla native costs.
+No final implementation commit freeze exists.
+The fourteen native modifier groups in the central registry carry `source_native_modifier_pending_composition_rounding_live` because field existence does not prove multiplication after ordinary modifiers, final upward rounding, or a minimum positive payment.
+The reviewed native-composition audit records additive-source counterexamples, and the shared-quantization audit records precision loss, overflow, and scalar-cache composition failures.
+The effect-side minimum-positive-payment guard addresses tiny free quotes, with the remaining exact arithmetic and native acceptance unresolved.
+That invariant repair and its audit are committed as `439ed019d6d32d2d8b5a3a94922dc6e3d62d5c1b`.
+
+The Event 26 CXT registration hook and its documentation are committed as `4991fd7de71e40ca78b5ccfe31749dd42e9029d8`.
+Daily registration marks `chaosx_test_country_registered_sync_pending`, and initial setup or **Apply Registered Systems** remains the application owner.
+The shared real-index reconciliation for that commit subsequently completed through a scoped staged restore.
+An earlier stale-lock removal command was rejected by automatic approval review with only `blocked by policy` as its stated reason, and this agent did not remove a Git lock.
+
+The five South Africa paid actions remain unadapted, with an immutable pre-edit decision source at `docs/testing/2026-10-03_event26_rsa_before/012_africa_rsa_decisions.txt`, SHA-256 `40283784E0D0EA091BD96C96C46F0155EC01E911091B2B20A0389AC5E1D696CC`.
+Their source, localisation, receipt, and probability evidence must be reviewed before promotion into the cost registry.
+The RSA decision and probability jobs ended with `workspace routing discovery timed out` and did not return an implementation handoff, so no RSA adapter coverage is promoted.
+The fresh full `hoi4.event_inspect` request with `mode = state_flow`, canonical selector `chaosx.nr26.1`, depth 3, 40 nodes, and 64 edges failed with `timed out awaiting tools/call after 600s` and returned no artifact.
+Full helper and lifecycle coverage remains unresolved.
+Event 26 remains absent from the default allowlist, and live date, payment, save persistence, multiplayer, native UI, and universal cost-family acceptance remain unresolved.
+
+The user-provided live startup error for Protective Aid's quotation-trigger dispatch is repaired in commit `e63519e8cbb4246b92f56be5534a6723356446fd`.
+Payment invokes the shared affordability trigger inside its condition, with refreshed fee scratch and the existing target/escrow/receipt guards.
+The next live startup result remains pending, and no clean-log or entire-event completion claim is made from the source repair.
+
+## Historical audit snapshot
+
 Audit date: 2026-08-30  
 Documentation refresh: 2026-09-04 against the current worktree; this refresh changes documentation only.  
 Repository HEAD at refresh: `d8895d5d1570bddfbe269fa4b2a977a6e9b773e4` (`master`)  
