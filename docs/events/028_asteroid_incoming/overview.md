@@ -1,6 +1,9 @@
 # Event 028: Asteroid Incoming
 
-Status: implemented in source and held disabled in the default event-log queue until the required engine-backed event, probability, map, and final audit evidence is available.
+Status: implementation in progress and held disabled in the default event-log queue.
+Source coverage and required engine-backed acceptance are both incomplete; a working visible impact or a loaded main menu does not close the package.
+The gameplay sections below describe the intended contract and current source structure, not a completed acceptance claim.
+The [completion audit](../../plans/028_asteroid_incoming_plans/subagent_handoffs/completion_audit_20261003.md) records the open discrepancies, including province-level destruction, late capital safety, impact-time evolution eligibility, recovery missions/costs, frozen target display context, shared Details/evolution consumers, and nuclear-free map presentation.
 
 Event 028 is a global fire-once Major event with a Calm World baseline. The shared Major-event registry owns its pacing and history classification, while `events/028_asteroid_impact.txt` owns the visible chain and the Event 028 scripted effects own the transaction.
 
@@ -42,6 +45,8 @@ The shared Air Cleanliness source registry reserves source 4 for asteroid dust a
 
 The accepted runtime package includes four report images, two news images, one decision-category picture plus the vanilla generic-crisis category icon, seven distinct state-modifier icons, eight 64x64 idea icons, fourteen unique 32x32 decision icons with a documented three-action reconnaissance alias, one super-event image, and five complete achievement triplets. The live fragment-center recovery modifier is explicitly audited as a second consumer of the accepted fragment-crater state icon because the specification defines no separate recovery icon.
 The seven state textures live under `gfx/interface/state_modifiers/028_asteroid_incoming/`, with their stable sprite IDs registered in `interface/028_asteroid_incoming.gfx`.
+The [state-modifier art record](assets/state_modifiers.md) documents seven accepted original replacements installed on 2026-10-04, their native-size and DDS review, provenance, aliases, and remaining live-consumer limit.
+Missing historical state masters were not recovered; the replacements have independent original lineage.
 
 ## Dust helper contracts
 
@@ -55,4 +60,5 @@ The seven state textures live under `gfx/interface/state_modifiers/028_asteroid_
 
 The package should remain disabled in the default queue until the mandatory HOI4 MCP routes return current event, probability, and map evidence. After those routes are healthy, run the ten named AI scenarios plus the recovery decision scenarios against the same implementation and record before/after probability comparisons.
 
-Possible future extensions are a separately commissioned rival-action icon family and a recovered master for the inherited impact-news DDS. Neither changes the accepted seven-state-icon design.
+The missing inherited impact-news provenance and remaining icon/source packages are current acceptance work, not optional future extensions.
+A separately commissioned rival-action icon family is a possible future expansion beyond the existing accepted reconnaissance alias.
