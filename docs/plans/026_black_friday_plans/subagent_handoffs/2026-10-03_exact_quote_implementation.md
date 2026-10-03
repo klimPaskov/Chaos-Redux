@@ -1,5 +1,9 @@
 # Event 026 exact quotation implementation
 
+Receipt/achievement proof disposition: the scanner observations and source hashes below describe the historical exact-quote/lifetime tranche, not current ordinary achievement eligibility.
+The strict typed-role source/state/amount proof and current 34 public-boundary plus 45 shared-receipt/scanner results are recorded in [EC-A02 repair](2026-10-03_achievement_receipt_proof_repair.md) and its uniquely named result artifact.
+Arithmetic remains exact; EC-A02 does not change its algorithms or establish native engine acceptance.
+
 Disposition: implemented in source; required MCP/native execution and consumer-performance evidence remain blocked or unresolved.
 Acceptance basis: the current parent/user assignment explicitly authorizes the full reusable exact cost framework, the central `black_friday_quote_custom_cost` block, matching arithmetic/cache helpers, constants, and documentation.
 This handoff continues [the reviewed quantization audit](2026-10-03_quantization_audit.md) and supersedes its queued scalar-repair architecture for this implementation surface.

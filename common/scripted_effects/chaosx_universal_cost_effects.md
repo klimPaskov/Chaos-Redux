@@ -348,7 +348,46 @@ The following internal helpers maintain the same payer-country scope as `univers
 
 For example, an owner that has allocated ID `black_friday_owner_transaction_id` sets `universal_cost_transaction_id` to that ID and calls `universal_cost_record_transaction = yes` once per component; on a failed later component it calls `universal_cost_refund_transaction = yes` with the same ID and checks `universal_cost_refund_transaction_result` before claiming rollback.
 
+## Explicit achievement receipt roles
+
+The receipt owner forwards four temporary inputs before EVERY `universal_cost_record_transaction` call: `universal_cost_transaction_achievement_family_id`, `universal_cost_transaction_achievement_primary_component_id`, `universal_cost_transaction_achievement_cost_basis`, and `universal_cost_transaction_achievement_primary_member`.
+The record API snapshots and consumes those inputs; a following component must forward its own tuple explicitly.
+Omitted metadata never changes payment/record/refund success or amounts, including ordinary source-zero receipts, but it cannot supply achievement proof.
+No logical family is inferred from a resource kind or from the legacy positive primary flag.
+
+`constant:universal_cost_achievement_basis.primary_component` selects exactly the designated positive-cost component.
+The owner forwards the logical family, exact primary component ID, and member one for that component only.
+`constant:universal_cost_achievement_basis.primary_group` selects an explicitly tagged owner cost group, with primary component ID zero and member one on each included concrete-model row.
+This is the exact quoted subtotal, not automatically the whole transaction total.
+CBRN instruments, sponsor masks and theater decontamination use their respective declared concrete-model groups while secondary resources stay excluded from the claimed subtotal.
+
+The first recorded component binds an immutable transaction role tuple.
+Every continuation must agree with that tuple; missing, inconsistent or malformed continuations invalidate achievement family proof without preventing ordinary receipt/refund bookkeeping.
+Per-component family and membership fields retain evidence independently of later achievement claims.
+The validator checks complete linked-chain integrity, transaction/component source, recorded ordinary/paid values, refund state, full totals, and exact selected-subtotal equality.
+
+Normal payer arrays are `universal_cost_transaction_achievement_family_ids`, `universal_cost_transaction_achievement_primary_component_ids`, `universal_cost_transaction_achievement_cost_bases`, `universal_cost_component_achievement_family_ids`, and `universal_cost_component_achievement_primary_members`.
+`universal_cost_prepare_achievement_receipt_metadata` lazily resizes those columns to their canonical row counts, preserving existing prefixes and appending unknown zeros for legacy suffixes.
+It changes no existing amount, receipt state, allocator proof or refund cursor.
+Legacy source-26 rows without trustworthy role metadata remain usable/refundable but their new achievement proof is blocked; retrospective family derivation from PP is forbidden.
+Already credited achievement state is not recomputed or erased by this schema preparation.
+No daily hook, global scan, price, action, gate, AI or tuning change is involved.
+
+`universal_cost_bind_achievement_receipt_metadata` is called only by a successful record operation, uses caller-frame snapshots and row indices, and mutates normal metadata columns only.
+Its validation scratch is helper-local; it has no temporary return contract.
+Both helpers have direct callers and matching source overviews.
+
 ## Receipt API temporary return contract
+
+Black Friday's public ordinary proof requires source 26 on the transaction and every component, positive recorded ordinary/paid costs, matching explicit logical family, valid linked-chain totals, wholly unrefunded components, and exact selected-basis claim equality.
+`black_friday_validate_ordinary_receipt_proof` returns caller-owned proof/non-PP evidence; its scanner callers initialize those outputs before invoking it.
+Immediate transactions require settled state 4; a pending-refundable registration requires recorded state 1 and stores validated family/ordinary/paid claims without family credit.
+Confirmation revalidates those normal claim columns against a settled receipt before changing pending state or progress.
+The ordinary active-sale gate remains intact, so ordinary completion after expiry cannot earn credit.
+The explicit delayed PP-only owner gate permits qualifying settled completion after expiry, with PP primary ID, matching claims and no positive non-PP receipt component.
+The accepted native Japan raid callback is unchanged and does not invent a shared-cost receipt.
+New claim columns resize idempotently; unknown legacy claims remain pending/retained but cannot obtain new proof by inference.
+The source checker validates actual public record-to-credit calls; native country classification, resource reads/writes and final engine delivery remain modeled or unobserved.
 
 Every caller creates the temporary outputs it reads after a scripted helper returns BEFORE invoking that helper.
 Initializing those fields inside the helper protects its children, not its outer caller.

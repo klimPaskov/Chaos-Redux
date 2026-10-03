@@ -62,32 +62,15 @@ black_friday_prepare_achievement_progress = {
 	clr_country_flag = black_friday_achievement_native_non_political_payment
 }
 
-# The indexed receipt stores the count of still-unrefunded non-PP payments.
-black_friday_scan_receipt_non_political_payment = {
-	set_temp_variable = { black_friday_purchase_has_non_political_paid_component = constant:universal_cost_framework.zero }
+# Ordinary receipt proof: typed owner family and explicit primary-cost basis.
+# Scope: payer. Defaults: invalid proof for unknown/mismatched role metadata.
+# Inputs are caller claims plus black_friday_receipt_required_state (1 pending,
+# 4 committed). Outputs must be defined by caller before this helper invocation.
+# Side effects: lazy normal metadata-array preparation only; no payment or credit.
+black_friday_validate_ordinary_receipt_proof = {
 	set_temp_variable = { black_friday_purchase_receipt_proof_valid = constant:universal_cost_framework.zero }
-	set_temp_variable = { universal_cost_transaction_lookup_id = black_friday_purchase_transaction_id }
-	set_temp_variable = { universal_cost_transaction_found_index = constant:universal_cost_framework.invalid_index }
-	set_temp_variable = { universal_cost_transaction_lookup_result = constant:universal_cost_framework.result_no_op }
-	set_temp_variable = { universal_cost_transaction_is_indexed = constant:universal_cost_framework.zero }
-	set_temp_variable = { universal_cost_transaction_pointer = constant:universal_cost_framework.zero }
-	universal_cost_find_transaction_row = yes
-	if = {
-		limit = { check_variable = { var = universal_cost_transaction_is_indexed value = constant:universal_cost_framework.one compare = equals } }
-		set_temp_variable = { black_friday_purchase_receipt_proof_valid = constant:universal_cost_framework.one }
-		if = {
-			limit = { check_variable = { var = universal_cost_transaction_non_political_paid_component_count^universal_cost_transaction_found_index value = constant:universal_cost_framework.zero compare = greater_than } }
-			set_temp_variable = { black_friday_purchase_has_non_political_paid_component = constant:universal_cost_framework.one }
-		}
-	}
-}
-
-# A timed PP-only owner action may credit its PP family only after its
-# exact Black Friday component is settled. Ordinary achievement calls keep the
-# existing non-political payment scan above.
-black_friday_scan_receipt_political_power_only = {
 	set_temp_variable = { black_friday_purchase_has_non_political_paid_component = constant:universal_cost_framework.zero }
-	set_temp_variable = { black_friday_purchase_receipt_proof_valid = constant:universal_cost_framework.zero }
+	universal_cost_prepare_achievement_receipt_metadata = yes
 	set_temp_variable = { universal_cost_transaction_lookup_id = black_friday_purchase_transaction_id }
 	set_temp_variable = { universal_cost_transaction_found_index = constant:universal_cost_framework.invalid_index }
 	set_temp_variable = { universal_cost_transaction_lookup_result = constant:universal_cost_framework.result_no_op }
@@ -96,27 +79,185 @@ black_friday_scan_receipt_political_power_only = {
 	universal_cost_find_transaction_row = yes
 	if = {
 		limit = {
-			check_variable = { var = universal_cost_transaction_is_indexed value = constant:universal_cost_framework.one compare = equals }
-			check_variable = { var = universal_cost_transaction_states^universal_cost_transaction_found_index value = constant:universal_cost_framework.transaction_state_settled compare = equals }
-			check_variable = { var = universal_cost_transaction_source_ids^universal_cost_transaction_found_index value = constant:universal_cost_framework.black_friday_source_id compare = equals }
-			check_variable = { var = black_friday_purchase_family_id value = constant:universal_cost_family.political_power compare = equals }
+			check_variable = { universal_cost_transaction_is_indexed = constant:universal_cost_framework.one }
+			check_variable = { universal_cost_transaction_source_ids^universal_cost_transaction_found_index = constant:universal_cost_framework.black_friday_source_id }
+			check_variable = { universal_cost_transaction_states^universal_cost_transaction_found_index = black_friday_receipt_required_state }
+			check_variable = { universal_cost_transaction_total_ordinary_costs^universal_cost_transaction_found_index > constant:universal_cost_framework.zero }
+			check_variable = { universal_cost_transaction_total_paid_costs^universal_cost_transaction_found_index > constant:universal_cost_framework.zero }
+			check_variable = { universal_cost_transaction_total_refunded_costs^universal_cost_transaction_found_index = constant:universal_cost_framework.zero }
+			check_variable = { universal_cost_transaction_achievement_family_ids^universal_cost_transaction_found_index = black_friday_purchase_family_id }
+			OR = {
+				check_variable = { black_friday_purchase_family_id = constant:universal_cost_family.political_power }
+				check_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				check_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				check_variable = { black_friday_purchase_family_id = constant:universal_cost_family.diplomatic }
+				check_variable = { black_friday_purchase_family_id = constant:universal_cost_family.state_project }
+				check_variable = { black_friday_purchase_family_id = constant:universal_cost_family.trains }
+				check_variable = { black_friday_purchase_family_id = constant:universal_cost_family.convoy }
+				check_variable = { black_friday_purchase_family_id = constant:universal_cost_family.fuel }
+				check_variable = { black_friday_purchase_family_id = constant:universal_cost_family.manpower }
+				check_variable = { black_friday_purchase_family_id = constant:universal_cost_family.laws }
+				check_variable = { black_friday_purchase_family_id = constant:universal_cost_family.personnel }
+				check_variable = { black_friday_purchase_family_id = constant:universal_cost_family.officer_corps }
+				check_variable = { black_friday_purchase_family_id = constant:universal_cost_family.intelligence }
+				check_variable = { black_friday_purchase_family_id = constant:universal_cost_family.factory_commitment }
+				check_variable = { black_friday_purchase_family_id = constant:universal_cost_family.consumer_goods }
+				check_variable = { black_friday_purchase_family_id = constant:universal_cost_family.special_project }
+				check_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				check_variable = { black_friday_purchase_family_id = constant:universal_cost_family.navy_experience }
+				check_variable = { black_friday_purchase_family_id = constant:universal_cost_family.air_experience }
+				check_variable = { black_friday_purchase_family_id = constant:universal_cost_family.stability }
+				check_variable = { black_friday_purchase_family_id = constant:universal_cost_family.war_support }
+				check_variable = { black_friday_purchase_family_id = constant:universal_cost_family.advisor }
+				check_variable = { black_friday_purchase_family_id = constant:universal_cost_family.idea }
+				check_variable = { black_friday_purchase_family_id = constant:universal_cost_family.operation }
+				check_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment_design }
+			}
+			OR = {
+				check_variable = { black_friday_receipt_required_state = constant:universal_cost_framework.transaction_state_recorded }
+				check_variable = { black_friday_receipt_required_state = constant:universal_cost_framework.transaction_state_settled }
+			}
 		}
-		set_temp_variable = { universal_cost_component_lookup_transaction_id = black_friday_purchase_transaction_id }
-		set_temp_variable = { universal_cost_component_lookup_id = constant:black_friday_event.owner_component_political_power }
-		set_temp_variable = { universal_cost_component_found_index = constant:universal_cost_framework.invalid_index }
-		set_temp_variable = { universal_cost_component_lookup_result = constant:universal_cost_framework.result_no_op }
-		universal_cost_find_component_row = yes
+		set_temp_variable = { universal_cost_transaction_id = black_friday_purchase_transaction_id }
+		set_temp_variable = { universal_cost_chain_valid = constant:universal_cost_framework.zero }
+		universal_cost_validate_component_chain = yes
+		if = {
+			limit = { check_variable = { universal_cost_chain_valid = constant:universal_cost_framework.one } }
+			set_temp_variable = { black_friday_proof_basis = universal_cost_transaction_achievement_cost_bases^universal_cost_transaction_found_index }
+			set_temp_variable = { black_friday_proof_primary = universal_cost_transaction_achievement_primary_component_ids^universal_cost_transaction_found_index }
+			set_temp_variable = { black_friday_proof_bad = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_proof_pointer = universal_cost_transaction_component_head_plus_one^universal_cost_transaction_found_index }
+			set_temp_variable = { black_friday_proof_walked = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_proof_all_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_proof_all_paid = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_proof_selected_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_proof_selected_paid = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_proof_selected_count = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_proof_non_political = constant:universal_cost_framework.zero }
+			while_loop_effect = {
+				limit = {
+					check_variable = { black_friday_proof_pointer > constant:universal_cost_framework.zero }
+					check_variable = { var = black_friday_proof_walked value = universal_cost_transaction_component_counts^universal_cost_transaction_found_index compare = less_than }
+				}
+				set_temp_variable = { black_friday_proof_cursor = black_friday_proof_pointer }
+				subtract_from_temp_variable = { black_friday_proof_cursor = constant:universal_cost_framework.one }
+				if = {
+					limit = {
+						NOT = { AND = {
+							check_variable = { universal_cost_component_source_ids^black_friday_proof_cursor = constant:universal_cost_framework.black_friday_source_id }
+							check_variable = { universal_cost_component_refunded_states^black_friday_proof_cursor = constant:universal_cost_component_state.not_refunded }
+							check_variable = { universal_cost_component_actual_paid_costs^black_friday_proof_cursor = universal_cost_component_quoted_costs^black_friday_proof_cursor }
+							check_variable = { var = universal_cost_component_ordinary_costs^black_friday_proof_cursor value = constant:universal_cost_framework.zero compare = greater_than_or_equals }
+							check_variable = { var = universal_cost_component_actual_paid_costs^black_friday_proof_cursor value = constant:universal_cost_framework.zero compare = greater_than_or_equals }
+							check_variable = { universal_cost_component_achievement_family_ids^black_friday_proof_cursor = black_friday_purchase_family_id }
+							OR = {
+								check_variable = { universal_cost_component_achievement_primary_members^black_friday_proof_cursor = constant:universal_cost_framework.zero }
+								check_variable = { universal_cost_component_achievement_primary_members^black_friday_proof_cursor = constant:universal_cost_framework.one }
+							}
+						} }
+					}
+					set_temp_variable = { black_friday_proof_bad = constant:universal_cost_framework.one }
+				}
+				add_to_temp_variable = { black_friday_proof_all_ordinary = universal_cost_component_ordinary_costs^black_friday_proof_cursor }
+				add_to_temp_variable = { black_friday_proof_all_paid = universal_cost_component_actual_paid_costs^black_friday_proof_cursor }
+				if = {
+					limit = {
+						check_variable = { universal_cost_component_actual_paid_costs^black_friday_proof_cursor > constant:universal_cost_framework.zero }
+						check_variable = { var = universal_cost_component_resource_kinds^black_friday_proof_cursor value = constant:universal_cost_resource_kind.political_power compare = not_equals }
+					}
+					set_temp_variable = { black_friday_proof_non_political = constant:universal_cost_framework.one }
+				}
+				if = {
+					limit = { check_variable = { universal_cost_component_achievement_primary_members^black_friday_proof_cursor = constant:universal_cost_framework.one } }
+					if = {
+						limit = {
+							OR = {
+								AND = {
+									check_variable = { black_friday_proof_basis = constant:universal_cost_achievement_basis.primary_component }
+									check_variable = { universal_cost_component_ids^black_friday_proof_cursor = black_friday_proof_primary }
+								}
+								AND = {
+									check_variable = { black_friday_proof_basis = constant:universal_cost_achievement_basis.primary_group }
+									check_variable = { black_friday_proof_primary = constant:universal_cost_framework.zero }
+								}
+							}
+						}
+						add_to_temp_variable = { black_friday_proof_selected_ordinary = universal_cost_component_ordinary_costs^black_friday_proof_cursor }
+						add_to_temp_variable = { black_friday_proof_selected_paid = universal_cost_component_actual_paid_costs^black_friday_proof_cursor }
+						add_to_temp_variable = { black_friday_proof_selected_count = constant:universal_cost_framework.one }
+					}
+					else = { set_temp_variable = { black_friday_proof_bad = constant:universal_cost_framework.one } }
+				}
+				set_temp_variable = { black_friday_proof_pointer = universal_cost_component_next_plus_one^black_friday_proof_cursor }
+				add_to_temp_variable = { black_friday_proof_walked = constant:universal_cost_framework.one }
+			}
+			if = {
+				limit = {
+					check_variable = { black_friday_proof_bad = constant:universal_cost_framework.zero }
+					check_variable = { black_friday_proof_pointer = constant:universal_cost_framework.zero }
+					check_variable = { black_friday_proof_walked = universal_cost_transaction_component_counts^universal_cost_transaction_found_index }
+					check_variable = { black_friday_proof_all_ordinary = universal_cost_transaction_total_ordinary_costs^universal_cost_transaction_found_index }
+					check_variable = { black_friday_proof_all_paid = universal_cost_transaction_total_paid_costs^universal_cost_transaction_found_index }
+					check_variable = { black_friday_proof_selected_ordinary > constant:universal_cost_framework.zero }
+					check_variable = { black_friday_proof_selected_paid > constant:universal_cost_framework.zero }
+					check_variable = { black_friday_proof_selected_ordinary = black_friday_purchase_ordinary_cost }
+					check_variable = { black_friday_proof_selected_paid = black_friday_purchase_actual_paid_cost }
+					OR = {
+						AND = {
+							check_variable = { black_friday_proof_basis = constant:universal_cost_achievement_basis.primary_component }
+							check_variable = { black_friday_proof_selected_count = constant:universal_cost_framework.one }
+						}
+						AND = {
+							check_variable = { black_friday_proof_basis = constant:universal_cost_achievement_basis.primary_group }
+							check_variable = { black_friday_proof_selected_count > constant:universal_cost_framework.zero }
+						}
+					}
+				}
+				set_temp_variable = { black_friday_purchase_receipt_proof_valid = constant:universal_cost_framework.one }
+				set_temp_variable = { black_friday_purchase_has_non_political_paid_component = black_friday_proof_non_political }
+			}
+		}
+	}
+}
+
+# Scope: payer. Inputs: public family/ordinary/paid claim and pending marker.
+# Outputs: caller-owned proof-valid/nonPP temporaries. Defaults: invalid proof.
+# Side effects: metadata schema preparation only, never family credit.
+black_friday_scan_receipt_non_political_payment = {
+	set_temp_variable = { black_friday_purchase_receipt_proof_valid = constant:universal_cost_framework.zero }
+	set_temp_variable = { black_friday_purchase_has_non_political_paid_component = constant:universal_cost_framework.zero }
+	set_temp_variable = { black_friday_receipt_required_state = constant:universal_cost_framework.transaction_state_settled }
+	if = {
+		limit = { check_variable = { black_friday_purchase_is_refundable > constant:universal_cost_framework.zero } }
+		set_temp_variable = { black_friday_receipt_required_state = constant:universal_cost_framework.transaction_state_recorded }
+	}
+	black_friday_validate_ordinary_receipt_proof = yes
+}
+
+# A timed PP-only owner action may credit its PP family only after its
+# exact Black Friday component is settled. Ordinary achievement calls keep the
+# existing non-political payment scan above.
+# Scope: payer. Inputs: exact PP-primary claim. Outputs: caller-owned proof and
+# payment evidence. Defaults: invalid. Side effects: schema preparation only.
+# Requires settled/unrefunded PP-only payment, including accepted delayed owners.
+black_friday_scan_receipt_political_power_only = {
+	set_temp_variable = { black_friday_purchase_receipt_proof_valid = constant:universal_cost_framework.zero }
+	set_temp_variable = { black_friday_purchase_has_non_political_paid_component = constant:universal_cost_framework.zero }
+	set_temp_variable = { black_friday_receipt_required_state = constant:universal_cost_framework.transaction_state_settled }
+	if = {
+		limit = { check_variable = { black_friday_purchase_family_id = constant:universal_cost_family.political_power } }
+		set_temp_variable = { universal_cost_transaction_found_index = constant:universal_cost_framework.invalid_index }
+		black_friday_validate_ordinary_receipt_proof = yes
 		if = {
 			limit = {
-				check_variable = { var = universal_cost_component_lookup_result value = constant:universal_cost_framework.result_success compare = equals }
-				check_variable = { var = universal_cost_component_found_index value = constant:universal_cost_framework.invalid_index compare = greater_than }
-				check_variable = { var = universal_cost_component_resource_kinds^universal_cost_component_found_index value = constant:universal_cost_resource_kind.political_power compare = equals }
-				check_variable = { var = universal_cost_component_source_ids^universal_cost_component_found_index value = constant:universal_cost_framework.black_friday_source_id compare = equals }
-				check_variable = { var = universal_cost_component_refunded_states^universal_cost_component_found_index value = constant:universal_cost_component_state.not_refunded compare = equals }
-				check_variable = { var = universal_cost_component_actual_paid_costs^universal_cost_component_found_index value = black_friday_purchase_actual_paid_cost compare = equals }
-				check_variable = { var = universal_cost_component_actual_paid_costs^universal_cost_component_found_index value = constant:universal_cost_framework.zero compare = greater_than }
+				check_variable = { black_friday_purchase_receipt_proof_valid = constant:universal_cost_framework.one }
+				OR = {
+					check_variable = { black_friday_purchase_has_non_political_paid_component = constant:universal_cost_framework.one }
+					check_variable = { var = universal_cost_transaction_achievement_primary_component_ids^universal_cost_transaction_found_index value = constant:black_friday_event.owner_component_political_power compare = not_equals }
+					check_variable = { var = universal_cost_transaction_achievement_cost_bases^universal_cost_transaction_found_index value = constant:universal_cost_achievement_basis.primary_component compare = not_equals }
+				}
 			}
-			set_temp_variable = { black_friday_purchase_receipt_proof_valid = constant:universal_cost_framework.one }
+			set_temp_variable = { black_friday_purchase_receipt_proof_valid = constant:universal_cost_framework.zero }
 		}
 	}
 }
@@ -303,7 +444,18 @@ black_friday_remove_committed_achievement_family = {
 # black_friday_purchase_ordinary_cost, black_friday_purchase_actual_paid_cost,
 # and optional positive black_friday_purchase_is_refundable. Owners call this
 # after the shared receipt was recorded and after the real debit succeeded.
+# Lazy claim-column extension preserves old progress and pending row states.
+# Legacy rows retain unknown (zero) amounts until an exact owner proof exists.
+# Scope: payer. Inputs: achievement row count. Outputs: normal claim columns.
+# Defaults: unknown zero suffixes. Side effects: idempotent resize only; existing
+# credited families, counters, pending/refund states and pointers are untouched.
+black_friday_prepare_achievement_claim_metadata = {
+	resize_array = { array = black_friday_achievement_transaction_ordinary_costs size = black_friday_achievement_transaction_ids^num }
+	resize_array = { array = black_friday_achievement_transaction_paid_costs size = black_friday_achievement_transaction_ids^num }
+}
+
 black_friday_record_achievement_transaction = {
+	black_friday_prepare_achievement_claim_metadata = yes
 	set_temp_variable = { black_friday_purchase_achievement_pointer = black_friday_achievement_row_plus_one_@var:black_friday_purchase_transaction_id }
 	if = {
 		limit = {
@@ -332,16 +484,7 @@ black_friday_record_achievement_transaction = {
 			check_variable = { var = black_friday_purchase_achievement_pointer value = constant:universal_cost_framework.zero compare = equals }
 			check_variable = { var = universal_cost_transaction_row_plus_one_@var:black_friday_purchase_transaction_id value = constant:universal_cost_framework.zero compare = greater_than }
 		}
-		if = {
-			limit = {
-				check_variable = {
-					var = black_friday_achievement_active_sale_sequence
-					value = global.black_friday_sale_sequence
-					compare = not_equals
-				}
-			}
-			black_friday_prepare_achievement_progress = yes
-		}
+
 		set_temp_variable = { black_friday_purchase_receipt_proof_valid = constant:universal_cost_framework.zero }
 		set_temp_variable = { black_friday_purchase_has_non_political_paid_component = constant:universal_cost_framework.zero }
 		if = {
@@ -352,6 +495,13 @@ black_friday_record_achievement_transaction = {
 			black_friday_scan_receipt_political_power_only = yes
 		}
 		else = { black_friday_scan_receipt_non_political_payment = yes }
+		if = {
+			limit = {
+				check_variable = { black_friday_purchase_receipt_proof_valid = constant:universal_cost_framework.one }
+				check_variable = { var = black_friday_achievement_active_sale_sequence value = global.black_friday_sale_sequence compare = not_equals }
+			}
+			black_friday_prepare_achievement_progress = yes
+		}
 		if = {
 			limit = {
 				check_variable = { var = black_friday_purchase_receipt_proof_valid value = constant:universal_cost_framework.one compare = equals }
@@ -373,6 +523,8 @@ black_friday_record_achievement_transaction = {
 				array = black_friday_achievement_transaction_non_political_paid
 				value = black_friday_purchase_has_non_political_paid_component
 			}
+			add_to_array = { array = black_friday_achievement_transaction_ordinary_costs value = black_friday_purchase_ordinary_cost }
+			add_to_array = { array = black_friday_achievement_transaction_paid_costs value = black_friday_purchase_actual_paid_cost }
 			if = {
 				limit = {
 					has_variable = black_friday_purchase_is_refundable
@@ -438,65 +590,42 @@ black_friday_find_achievement_transaction = {
 }
 
 black_friday_confirm_achievement_transaction = {
+	black_friday_prepare_achievement_claim_metadata = yes
 	if = {
 		limit = {
 			black_friday_is_active = yes
 			black_friday_achievement_is_valid_sale = yes
-			check_variable = { black_friday_purchase_transaction_id > 0 }
+			check_variable = { black_friday_purchase_transaction_id > constant:universal_cost_framework.zero }
 		}
-		# Caller-owned cost API outputs.
 		set_temp_variable = { black_friday_achievement_transaction_index = constant:universal_cost_framework.invalid_index }
 		set_temp_variable = { black_friday_achievement_lookup_result = constant:universal_cost_framework.result_no_op }
 		set_temp_variable = { black_friday_achievement_row_pointer = constant:universal_cost_framework.zero }
 		black_friday_find_achievement_transaction = yes
-		set_temp_variable = { universal_cost_transaction_lookup_id = black_friday_purchase_transaction_id }
-		set_temp_variable = { universal_cost_transaction_found_index = constant:universal_cost_framework.invalid_index }
-		set_temp_variable = { universal_cost_transaction_lookup_result = constant:universal_cost_framework.result_no_op }
-		set_temp_variable = { universal_cost_transaction_is_indexed = constant:universal_cost_framework.zero }
-		set_temp_variable = { universal_cost_transaction_pointer = constant:universal_cost_framework.zero }
-		universal_cost_find_transaction_row = yes
-		set_temp_variable = { black_friday_purchase_current_non_political_paid = constant:universal_cost_framework.zero }
 		if = {
 			limit = {
-				check_variable = { var = universal_cost_transaction_is_indexed value = constant:universal_cost_framework.one compare = equals }
-				check_variable = { var = universal_cost_transaction_non_political_paid_component_count^universal_cost_transaction_found_index value = constant:universal_cost_framework.zero compare = greater_than }
+				check_variable = { black_friday_achievement_lookup_result = constant:universal_cost_framework.result_success }
+				check_variable = { black_friday_achievement_transaction_index > constant:universal_cost_framework.invalid_index }
+				check_variable = { black_friday_achievement_transaction_states^black_friday_achievement_transaction_index = constant:black_friday_event.achievement_transaction_pending }
+				check_variable = { black_friday_achievement_transaction_sale_sequences^black_friday_achievement_transaction_index = global.black_friday_sale_sequence }
+				check_variable = { black_friday_achievement_indexed_sale_sequence = global.black_friday_sale_sequence }
 			}
-			set_temp_variable = { black_friday_purchase_current_non_political_paid = constant:universal_cost_framework.one }
-		}
-		if = {
-			limit = {
-				check_variable = { var = black_friday_achievement_lookup_result value = constant:universal_cost_framework.result_success compare = equals }
-				check_variable = { var = black_friday_achievement_row_pointer value = constant:universal_cost_framework.zero compare = greater_than }
-				check_variable = { var = black_friday_achievement_indexed_sale_sequence value = global.black_friday_sale_sequence compare = equals }
-				check_variable = { var = universal_cost_transaction_is_indexed value = constant:universal_cost_framework.one compare = equals }
-				check_variable = { var = universal_cost_transaction_states^universal_cost_transaction_found_index value = constant:universal_cost_framework.transaction_state_settled compare = equals }
-				OR = {
-					check_variable = { var = black_friday_achievement_transaction_non_political_paid^black_friday_achievement_transaction_index value = constant:universal_cost_framework.zero compare = equals }
-					check_variable = { var = black_friday_purchase_current_non_political_paid value = constant:universal_cost_framework.one compare = equals }
-				}
-				check_variable = {
-					var = black_friday_achievement_transaction_index
-					value = constant:universal_cost_framework.invalid_index
-					compare = greater_than
-				}
-				check_variable = {
-					var = black_friday_achievement_transaction_states^black_friday_achievement_transaction_index
-					value = constant:black_friday_event.achievement_transaction_pending
-					compare = equals
-				}
-			}
-			set_variable = {
-				black_friday_achievement_transaction_states^black_friday_achievement_transaction_index = constant:black_friday_event.achievement_transaction_committed
-			}
-			set_variable = { black_friday_achievement_transaction_non_political_paid^black_friday_achievement_transaction_index = black_friday_purchase_current_non_political_paid }
+			set_temp_variable = { black_friday_purchase_family_id = black_friday_achievement_transaction_family_ids^black_friday_achievement_transaction_index }
+			set_temp_variable = { black_friday_purchase_ordinary_cost = black_friday_achievement_transaction_ordinary_costs^black_friday_achievement_transaction_index }
+			set_temp_variable = { black_friday_purchase_actual_paid_cost = black_friday_achievement_transaction_paid_costs^black_friday_achievement_transaction_index }
+			set_temp_variable = { black_friday_receipt_required_state = constant:universal_cost_framework.transaction_state_settled }
+			set_temp_variable = { black_friday_purchase_receipt_proof_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_purchase_has_non_political_paid_component = constant:universal_cost_framework.zero }
+			black_friday_validate_ordinary_receipt_proof = yes
 			if = {
-				limit = { check_variable = { var = black_friday_purchase_current_non_political_paid value = constant:universal_cost_framework.one compare = equals } }
-				add_to_variable = { black_friday_achievement_non_political_receipt_count = constant:black_friday_event.one }
+				limit = { check_variable = { black_friday_purchase_receipt_proof_valid = constant:universal_cost_framework.one } }
+				set_variable = { black_friday_achievement_transaction_states^black_friday_achievement_transaction_index = constant:black_friday_event.achievement_transaction_committed }
+				set_variable = { black_friday_achievement_transaction_non_political_paid^black_friday_achievement_transaction_index = black_friday_purchase_has_non_political_paid_component }
+				if = {
+					limit = { check_variable = { black_friday_purchase_has_non_political_paid_component = constant:universal_cost_framework.one } }
+					add_to_variable = { black_friday_achievement_non_political_receipt_count = constant:black_friday_event.one }
+				}
+				black_friday_add_committed_achievement_family = yes
 			}
-			set_temp_variable = {
-				black_friday_purchase_family_id = black_friday_achievement_transaction_family_ids^black_friday_achievement_transaction_index
-			}
-			black_friday_add_committed_achievement_family = yes
 		}
 	}
 }
@@ -833,6 +962,15 @@ black_friday_pay_fury_bundle = {
 			}
 			# Caller-owned cost API outputs.
 			set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
+			# Registry-owned logical achievement role, independent of paid resource kind.
+			set_temp_variable = { universal_cost_transaction_achievement_family_id = black_friday_fury_primary_family_id }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_component_id = black_friday_fury_primary_component_id }
+			set_temp_variable = { universal_cost_transaction_achievement_cost_basis = constant:universal_cost_achievement_basis.primary_component }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.zero }
+			if = {
+				limit = { check_variable = { universal_cost_transaction_component_id = black_friday_fury_primary_component_id } }
+				set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.one }
+			}
 			universal_cost_record_transaction = yes
 			if = {
 				limit = {
@@ -1573,6 +1711,15 @@ black_friday_pay_communism_national_counter_agitation = {
 			set_temp_variable = { universal_cost_transaction_primary_component = constant:black_friday_event.owner_component_political_power }
 			# Caller-owned cost API outputs.
 			set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
+			# Registry-owned logical achievement role, independent of paid resource kind.
+			set_temp_variable = { universal_cost_transaction_achievement_family_id = constant:universal_cost_family.political_power }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_component_id = constant:black_friday_event.owner_component_political_power }
+			set_temp_variable = { universal_cost_transaction_achievement_cost_basis = constant:universal_cost_achievement_basis.primary_component }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.zero }
+			if = {
+				limit = { check_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_political_power } }
+				set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.one }
+			}
 			universal_cost_record_transaction = yes
 			set_temp_variable = { black_friday_owner_command_power_record = universal_cost_record_transaction_result }
 			set_temp_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_political_power }
@@ -1581,6 +1728,15 @@ black_friday_pay_communism_national_counter_agitation = {
 			set_temp_variable = { universal_cost_transaction_quoted_cost = black_friday_owner_political_power_paid }
 			set_temp_variable = { universal_cost_transaction_actual_paid_cost = black_friday_owner_political_power_paid }
 			set_temp_variable = { universal_cost_transaction_primary_component = constant:universal_cost_framework.zero }
+			# Registry-owned logical achievement role, independent of paid resource kind.
+			set_temp_variable = { universal_cost_transaction_achievement_family_id = constant:universal_cost_family.political_power }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_component_id = constant:black_friday_event.owner_component_political_power }
+			set_temp_variable = { universal_cost_transaction_achievement_cost_basis = constant:universal_cost_achievement_basis.primary_component }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.zero }
+			if = {
+				limit = { check_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_political_power } }
+				set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.one }
+			}
 			universal_cost_record_transaction = yes
 			set_temp_variable = { black_friday_owner_political_power_record = universal_cost_record_transaction_result }
 			if = {
@@ -1713,6 +1869,15 @@ black_friday_pay_communism_local_intervention = {
 			set_temp_variable = { universal_cost_transaction_primary_component = constant:black_friday_event.owner_component_infantry_equipment }
 			# Caller-owned cost API outputs.
 			set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
+			# Registry-owned logical achievement role, independent of paid resource kind.
+			set_temp_variable = { universal_cost_transaction_achievement_family_id = constant:universal_cost_family.equipment }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_component_id = constant:black_friday_event.owner_component_infantry_equipment }
+			set_temp_variable = { universal_cost_transaction_achievement_cost_basis = constant:universal_cost_achievement_basis.primary_component }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.zero }
+			if = {
+				limit = { check_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_infantry_equipment } }
+				set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.one }
+			}
 			universal_cost_record_transaction = yes
 			set_temp_variable = { black_friday_owner_command_power_record = universal_cost_record_transaction_result }
 			set_temp_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_manpower }
@@ -1721,6 +1886,15 @@ black_friday_pay_communism_local_intervention = {
 			set_temp_variable = { universal_cost_transaction_quoted_cost = black_friday_owner_manpower_paid }
 			set_temp_variable = { universal_cost_transaction_actual_paid_cost = black_friday_owner_manpower_paid }
 			set_temp_variable = { universal_cost_transaction_primary_component = constant:universal_cost_framework.zero }
+			# Registry-owned logical achievement role, independent of paid resource kind.
+			set_temp_variable = { universal_cost_transaction_achievement_family_id = constant:universal_cost_family.equipment }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_component_id = constant:black_friday_event.owner_component_infantry_equipment }
+			set_temp_variable = { universal_cost_transaction_achievement_cost_basis = constant:universal_cost_achievement_basis.primary_component }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.zero }
+			if = {
+				limit = { check_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_infantry_equipment } }
+				set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.one }
+			}
 			universal_cost_record_transaction = yes
 			set_temp_variable = { black_friday_owner_manpower_record = universal_cost_record_transaction_result }
 			set_temp_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_infantry_equipment }
@@ -1729,6 +1903,15 @@ black_friday_pay_communism_local_intervention = {
 			set_temp_variable = { universal_cost_transaction_quoted_cost = black_friday_owner_infantry_equipment_paid }
 			set_temp_variable = { universal_cost_transaction_actual_paid_cost = black_friday_owner_infantry_equipment_paid }
 			set_temp_variable = { universal_cost_transaction_primary_component = constant:universal_cost_framework.zero }
+			# Registry-owned logical achievement role, independent of paid resource kind.
+			set_temp_variable = { universal_cost_transaction_achievement_family_id = constant:universal_cost_family.equipment }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_component_id = constant:black_friday_event.owner_component_infantry_equipment }
+			set_temp_variable = { universal_cost_transaction_achievement_cost_basis = constant:universal_cost_achievement_basis.primary_component }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.zero }
+			if = {
+				limit = { check_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_infantry_equipment } }
+				set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.one }
+			}
 			universal_cost_record_transaction = yes
 			set_temp_variable = { black_friday_owner_infantry_equipment_record = universal_cost_record_transaction_result }
 			if = {
@@ -1887,6 +2070,15 @@ black_friday_pay_communism_emergency_intervention = {
 			set_temp_variable = { universal_cost_transaction_primary_component = constant:black_friday_event.owner_component_infantry_equipment }
 			# Caller-owned cost API outputs.
 			set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
+			# Registry-owned logical achievement role, independent of paid resource kind.
+			set_temp_variable = { universal_cost_transaction_achievement_family_id = constant:universal_cost_family.equipment }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_component_id = constant:black_friday_event.owner_component_infantry_equipment }
+			set_temp_variable = { universal_cost_transaction_achievement_cost_basis = constant:universal_cost_achievement_basis.primary_component }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.zero }
+			if = {
+				limit = { check_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_infantry_equipment } }
+				set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.one }
+			}
 			universal_cost_record_transaction = yes
 			set_temp_variable = { black_friday_owner_command_power_record = universal_cost_record_transaction_result }
 			set_temp_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_manpower }
@@ -1895,6 +2087,15 @@ black_friday_pay_communism_emergency_intervention = {
 			set_temp_variable = { universal_cost_transaction_quoted_cost = black_friday_owner_manpower_paid }
 			set_temp_variable = { universal_cost_transaction_actual_paid_cost = black_friday_owner_manpower_paid }
 			set_temp_variable = { universal_cost_transaction_primary_component = constant:universal_cost_framework.zero }
+			# Registry-owned logical achievement role, independent of paid resource kind.
+			set_temp_variable = { universal_cost_transaction_achievement_family_id = constant:universal_cost_family.equipment }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_component_id = constant:black_friday_event.owner_component_infantry_equipment }
+			set_temp_variable = { universal_cost_transaction_achievement_cost_basis = constant:universal_cost_achievement_basis.primary_component }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.zero }
+			if = {
+				limit = { check_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_infantry_equipment } }
+				set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.one }
+			}
 			universal_cost_record_transaction = yes
 			set_temp_variable = { black_friday_owner_manpower_record = universal_cost_record_transaction_result }
 			set_temp_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_infantry_equipment }
@@ -1903,6 +2104,15 @@ black_friday_pay_communism_emergency_intervention = {
 			set_temp_variable = { universal_cost_transaction_quoted_cost = black_friday_owner_infantry_equipment_paid }
 			set_temp_variable = { universal_cost_transaction_actual_paid_cost = black_friday_owner_infantry_equipment_paid }
 			set_temp_variable = { universal_cost_transaction_primary_component = constant:universal_cost_framework.zero }
+			# Registry-owned logical achievement role, independent of paid resource kind.
+			set_temp_variable = { universal_cost_transaction_achievement_family_id = constant:universal_cost_family.equipment }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_component_id = constant:black_friday_event.owner_component_infantry_equipment }
+			set_temp_variable = { universal_cost_transaction_achievement_cost_basis = constant:universal_cost_achievement_basis.primary_component }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.zero }
+			if = {
+				limit = { check_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_infantry_equipment } }
+				set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.one }
+			}
 			universal_cost_record_transaction = yes
 			set_temp_variable = { black_friday_owner_infantry_equipment_record = universal_cost_record_transaction_result }
 			set_temp_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_political_power }
@@ -1911,6 +2121,15 @@ black_friday_pay_communism_emergency_intervention = {
 			set_temp_variable = { universal_cost_transaction_quoted_cost = black_friday_owner_political_power_paid }
 			set_temp_variable = { universal_cost_transaction_actual_paid_cost = black_friday_owner_political_power_paid }
 			set_temp_variable = { universal_cost_transaction_primary_component = constant:universal_cost_framework.zero }
+			# Registry-owned logical achievement role, independent of paid resource kind.
+			set_temp_variable = { universal_cost_transaction_achievement_family_id = constant:universal_cost_family.equipment }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_component_id = constant:black_friday_event.owner_component_infantry_equipment }
+			set_temp_variable = { universal_cost_transaction_achievement_cost_basis = constant:universal_cost_achievement_basis.primary_component }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.zero }
+			if = {
+				limit = { check_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_infantry_equipment } }
+				set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.one }
+			}
 			universal_cost_record_transaction = yes
 			set_temp_variable = { black_friday_owner_political_power_record = universal_cost_record_transaction_result }
 			if = {
@@ -2145,6 +2364,15 @@ black_friday_record_bio_medical_component = {
 	}
 	# Caller-owned cost API outputs.
 	set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
+	# Registry-owned logical achievement role, independent of paid resource kind.
+	set_temp_variable = { universal_cost_transaction_achievement_family_id = constant:universal_cost_family.equipment }
+	set_temp_variable = { universal_cost_transaction_achievement_primary_component_id = constant:black_friday_event.owner_component_support_equipment }
+	set_temp_variable = { universal_cost_transaction_achievement_cost_basis = constant:universal_cost_achievement_basis.primary_component }
+	set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.zero }
+	if = {
+		limit = { check_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_support_equipment } }
+		set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.one }
+	}
 	universal_cost_record_transaction = yes
 	if = {
 		limit = {
@@ -2350,6 +2578,15 @@ black_friday_cbrn_bundle_pay_record_component = {
 				}
 				# Caller-owned cost API outputs.
 				set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
+				# Registry-owned logical achievement role, independent of paid resource kind.
+				set_temp_variable = { universal_cost_transaction_achievement_family_id = black_friday_cbrn_bundle_family_id }
+				set_temp_variable = { universal_cost_transaction_achievement_primary_component_id = constant:universal_cost_framework.zero }
+				set_temp_variable = { universal_cost_transaction_achievement_cost_basis = constant:universal_cost_achievement_basis.primary_group }
+				set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.zero }
+				if = {
+					limit = { OR = { check_variable = { universal_cost_transaction_resource_kind = constant:universal_cost_resource_kind.cbrn_instrument_equipment_1 } check_variable = { universal_cost_transaction_resource_kind = constant:universal_cost_resource_kind.cbrn_instrument_equipment_2 } check_variable = { universal_cost_transaction_resource_kind = constant:universal_cost_resource_kind.cbrn_instrument_equipment_3 } } }
+					set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.one }
+				}
 				universal_cost_record_transaction = yes
 				if = {
 					limit = { check_variable = { var = universal_cost_record_transaction_result value = constant:universal_cost_framework.result_success compare = not_equals } }
@@ -2726,6 +2963,15 @@ black_friday_cbrn_decon_pay_record_component = {
 			set_temp_variable = { universal_cost_transaction_primary_component = constant:universal_cost_framework.zero }
 			# Caller-owned cost API outputs.
 			set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
+			# Registry-owned logical achievement role, independent of paid resource kind.
+			set_temp_variable = { universal_cost_transaction_achievement_family_id = constant:universal_cost_family.diplomatic }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_component_id = constant:universal_cost_framework.zero }
+			set_temp_variable = { universal_cost_transaction_achievement_cost_basis = constant:universal_cost_achievement_basis.primary_group }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.zero }
+			if = {
+				limit = { OR = { check_variable = { universal_cost_transaction_resource_kind = constant:universal_cost_resource_kind.gas_mask_equipment_reconditioned } check_variable = { universal_cost_transaction_resource_kind = constant:universal_cost_resource_kind.gas_mask_equipment_1 } check_variable = { universal_cost_transaction_resource_kind = constant:universal_cost_resource_kind.gas_mask_equipment_2 } check_variable = { universal_cost_transaction_resource_kind = constant:universal_cost_resource_kind.gas_mask_equipment_3 } check_variable = { universal_cost_transaction_resource_kind = constant:universal_cost_resource_kind.gas_mask_equipment_4 } } }
+				set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.one }
+			}
 			universal_cost_record_transaction = yes
 			if = {
 				limit = { check_variable = { var = universal_cost_record_transaction_result value = constant:universal_cost_framework.result_success compare = not_equals } }
@@ -3252,6 +3498,15 @@ black_friday_pay_cbrn_move_civilians_to_shelters = {
 				set_temp_variable = { universal_cost_transaction_primary_component = constant:universal_cost_framework.zero }
 				# Caller-owned cost API outputs.
 				set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
+				# Registry-owned logical achievement role, independent of paid resource kind.
+				set_temp_variable = { universal_cost_transaction_achievement_family_id = constant:universal_cost_family.state_project }
+				set_temp_variable = { universal_cost_transaction_achievement_primary_component_id = constant:black_friday_event.owner_component_support_equipment }
+				set_temp_variable = { universal_cost_transaction_achievement_cost_basis = constant:universal_cost_achievement_basis.primary_component }
+				set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.zero }
+				if = {
+					limit = { check_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_support_equipment } }
+					set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.one }
+				}
 				universal_cost_record_transaction = yes
 				if = {
 					limit = { check_variable = { var = universal_cost_record_transaction_result value = constant:universal_cost_framework.result_success compare = not_equals } }
@@ -3280,6 +3535,15 @@ black_friday_pay_cbrn_move_civilians_to_shelters = {
 					set_temp_variable = { universal_cost_transaction_primary_component = constant:black_friday_event.owner_component_support_equipment }
 					# Caller-owned cost API outputs.
 					set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
+					# Registry-owned logical achievement role, independent of paid resource kind.
+					set_temp_variable = { universal_cost_transaction_achievement_family_id = constant:universal_cost_family.state_project }
+					set_temp_variable = { universal_cost_transaction_achievement_primary_component_id = constant:black_friday_event.owner_component_support_equipment }
+					set_temp_variable = { universal_cost_transaction_achievement_cost_basis = constant:universal_cost_achievement_basis.primary_component }
+					set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.zero }
+					if = {
+						limit = { check_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_support_equipment } }
+						set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.one }
+					}
 					universal_cost_record_transaction = yes
 					if = {
 						limit = { check_variable = { var = universal_cost_record_transaction_result value = constant:universal_cost_framework.result_success compare = not_equals } }
@@ -3309,6 +3573,15 @@ black_friday_pay_cbrn_move_civilians_to_shelters = {
 					set_temp_variable = { universal_cost_transaction_primary_component = constant:universal_cost_framework.zero }
 					# Caller-owned cost API outputs.
 					set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
+					# Registry-owned logical achievement role, independent of paid resource kind.
+					set_temp_variable = { universal_cost_transaction_achievement_family_id = constant:universal_cost_family.state_project }
+					set_temp_variable = { universal_cost_transaction_achievement_primary_component_id = constant:black_friday_event.owner_component_support_equipment }
+					set_temp_variable = { universal_cost_transaction_achievement_cost_basis = constant:universal_cost_achievement_basis.primary_component }
+					set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.zero }
+					if = {
+						limit = { check_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_support_equipment } }
+						set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.one }
+					}
 					universal_cost_record_transaction = yes
 					if = {
 						limit = { check_variable = { var = universal_cost_record_transaction_result value = constant:universal_cost_framework.result_success compare = not_equals } }
@@ -3417,6 +3690,15 @@ black_friday_begin_alien_infantry_landing_reservation = {
 			}
 			# Caller-owned cost API outputs.
 			set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
+			# Registry-owned logical achievement role, independent of paid resource kind.
+			set_temp_variable = { universal_cost_transaction_achievement_family_id = constant:universal_cost_family.equipment }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_component_id = constant:black_friday_event.owner_component_alien_laser_reserve }
+			set_temp_variable = { universal_cost_transaction_achievement_cost_basis = constant:universal_cost_achievement_basis.primary_component }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.zero }
+			if = {
+				limit = { check_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_alien_laser_reserve } }
+				set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.one }
+			}
 			universal_cost_record_transaction = yes
 			if = {
 				limit = {
@@ -3526,6 +3808,15 @@ black_friday_record_africa_elephant_logistics_component = {
 	}
 	# Caller-owned cost API outputs.
 	set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
+	# Registry-owned logical achievement role, independent of paid resource kind.
+	set_temp_variable = { universal_cost_transaction_achievement_family_id = constant:universal_cost_family.equipment }
+	set_temp_variable = { universal_cost_transaction_achievement_primary_component_id = constant:black_friday_event.owner_component_elephant_equipment }
+	set_temp_variable = { universal_cost_transaction_achievement_cost_basis = constant:universal_cost_achievement_basis.primary_component }
+	set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.zero }
+	if = {
+		limit = { check_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_elephant_equipment } }
+		set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.one }
+	}
 	universal_cost_record_transaction = yes
 	if = {
 		limit = {
@@ -4083,6 +4374,15 @@ black_friday_pay_cbrn_protection_pair = {
 				set_temp_variable = { universal_cost_transaction_primary_component = constant:universal_cost_framework.zero }
 				# Caller-owned cost API outputs.
 				set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
+				# Registry-owned logical achievement role, independent of paid resource kind.
+				set_temp_variable = { universal_cost_transaction_achievement_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { universal_cost_transaction_achievement_primary_component_id = constant:black_friday_event.owner_component_support_equipment }
+				set_temp_variable = { universal_cost_transaction_achievement_cost_basis = constant:universal_cost_achievement_basis.primary_component }
+				set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.zero }
+				if = {
+					limit = { check_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_support_equipment } }
+					set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.one }
+				}
 				universal_cost_record_transaction = yes
 				if = {
 					limit = { check_variable = { var = universal_cost_record_transaction_result value = constant:universal_cost_framework.result_success compare = equals } }
@@ -4112,6 +4412,15 @@ black_friday_pay_cbrn_protection_pair = {
 					set_temp_variable = { universal_cost_transaction_primary_component = constant:black_friday_event.owner_component_support_equipment }
 					# Caller-owned cost API outputs.
 					set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
+					# Registry-owned logical achievement role, independent of paid resource kind.
+					set_temp_variable = { universal_cost_transaction_achievement_family_id = constant:universal_cost_family.equipment }
+					set_temp_variable = { universal_cost_transaction_achievement_primary_component_id = constant:black_friday_event.owner_component_support_equipment }
+					set_temp_variable = { universal_cost_transaction_achievement_cost_basis = constant:universal_cost_achievement_basis.primary_component }
+					set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.zero }
+					if = {
+						limit = { check_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_support_equipment } }
+						set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.one }
+					}
 					universal_cost_record_transaction = yes
 					if = {
 						limit = { check_variable = { var = universal_cost_record_transaction_result value = constant:universal_cost_framework.result_success compare = equals } }
@@ -4238,6 +4547,15 @@ black_friday_cbrn_theater_pay_record_component = {
 			set_temp_variable = { universal_cost_transaction_primary_component = black_friday_cbrn_theater_component_primary }
 			# Caller-owned cost API outputs.
 			set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
+			# Registry-owned logical achievement role, independent of paid resource kind.
+			set_temp_variable = { universal_cost_transaction_achievement_family_id = constant:universal_cost_family.equipment }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_component_id = constant:universal_cost_framework.zero }
+			set_temp_variable = { universal_cost_transaction_achievement_cost_basis = constant:universal_cost_achievement_basis.primary_group }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.zero }
+			if = {
+				limit = { OR = { check_variable = { universal_cost_transaction_resource_kind = constant:universal_cost_resource_kind.decontamination_equipment_1 } check_variable = { universal_cost_transaction_resource_kind = constant:universal_cost_resource_kind.decontamination_equipment_2 } check_variable = { universal_cost_transaction_resource_kind = constant:universal_cost_resource_kind.decontamination_equipment_3 } } }
+				set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.one }
+			}
 			universal_cost_record_transaction = yes
 			if = {
 				limit = { check_variable = { var = universal_cost_record_transaction_result value = constant:universal_cost_framework.result_success compare = not_equals } }
@@ -4477,6 +4795,15 @@ black_friday_pay_cbrn_external_aid_pp_fee = {
 				set_temp_variable = { universal_cost_transaction_primary_component = constant:black_friday_event.owner_component_political_power }
 				# Caller-owned cost API outputs.
 				set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
+				# Registry-owned logical achievement role, independent of paid resource kind.
+				set_temp_variable = { universal_cost_transaction_achievement_family_id = constant:universal_cost_family.political_power }
+				set_temp_variable = { universal_cost_transaction_achievement_primary_component_id = constant:black_friday_event.owner_component_political_power }
+				set_temp_variable = { universal_cost_transaction_achievement_cost_basis = constant:universal_cost_achievement_basis.primary_component }
+				set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.zero }
+				if = {
+					limit = { check_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_political_power } }
+					set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.one }
+				}
 				universal_cost_record_transaction = yes
 				if = {
 					limit = { check_variable = { var = universal_cost_record_transaction_result value = constant:universal_cost_framework.result_success compare = equals } }

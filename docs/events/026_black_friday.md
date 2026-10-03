@@ -56,6 +56,12 @@ Its 454 known-call inventory and 17 actual-fragment scenarios remain bounded sou
 The [Condemnation provider correction](../plans/026_black_friday_plans/2026-10-03_condemnation_provider_lifetime_fix.md) restores ordinary score-scaled prices before any future sale adapter, and does not discount ongoing inspection burden.
 The source purchase registry remains incomplete.
 
+Ordinary achievement calls prove source 26, recorded positive prices, an explicit logical family and primary-cost basis, matching caller amounts, and the required unrefunded receipt state.
+Immediate credit requires settlement, while refundable pending rows earn no family until their valid confirmation.
+The [receipt proof contract](../plans/026_black_friday_plans/subagent_handoffs/2026-10-03_achievement_receipt_proof_repair.md) preserves the accepted delayed PP and native Japan raid exceptions without inferring a family from the currency.
+Untyped existing receipt rows retain their payment, refundability, pending state, and earned progress, but cannot acquire missing family proof by inference.
+The full family and native purchase registry remains a separate completion gate.
+
 ## Validation record
 
 The required offline source, wiki, vanilla documentation, asset, localisation, spreadsheet, event-inspection, and probability-inspection reviews are recorded under `docs/plans/026_black_friday_plans/`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`; its Event 26 premise and evolution cells match the current game text, and it has no achievement field to update for this rule. Its existing CSV exports remain unchanged. The Event 26 row remains `Needs Testing` until live validation passes.

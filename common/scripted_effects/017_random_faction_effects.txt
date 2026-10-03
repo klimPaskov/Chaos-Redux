@@ -1589,6 +1589,14 @@ random_faction_black_friday_pay_component_list = {
 				}
 				# Existing-owner caller output storage.
 				set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
+				set_temp_variable = { universal_cost_transaction_achievement_family_id = random_faction_black_friday_primary_family_id }
+				set_temp_variable = { universal_cost_transaction_achievement_primary_component_id = random_faction_black_friday_primary_component_id }
+				set_temp_variable = { universal_cost_transaction_achievement_cost_basis = constant:universal_cost_achievement_basis.primary_component }
+				set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.zero }
+				if = {
+					limit = { check_variable = { var = universal_cost_transaction_component_id value = random_faction_black_friday_primary_component_id compare = equals } }
+					set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.one }
+				}
 				universal_cost_record_transaction = yes
 				if = {
 					limit = {
@@ -2212,6 +2220,15 @@ random_faction_black_friday_pay_request_liaison_component = {
 		}
 		# Existing-owner caller output storage.
 		set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
+		# One logical liaison purchase, with the requester CP row as its primary.
+		set_temp_variable = { universal_cost_transaction_achievement_family_id = constant:universal_cost_family.command_power }
+		set_temp_variable = { universal_cost_transaction_achievement_primary_component_id = @random_faction_request_liaison_root_component_id }
+		set_temp_variable = { universal_cost_transaction_achievement_cost_basis = constant:universal_cost_achievement_basis.primary_component }
+		set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.zero }
+		if = {
+			limit = { check_variable = { var = universal_cost_transaction_component_id value = @random_faction_request_liaison_root_component_id compare = equals } }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.one }
+		}
 		universal_cost_record_transaction = yes
 		if = {
 			limit = {

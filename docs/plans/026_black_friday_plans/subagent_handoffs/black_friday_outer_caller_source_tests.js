@@ -133,47 +133,154 @@ function originalTokens(source) {
   const stripped = source.replace(/^[\t ]*# Caller-owned cost API outputs\.\r?\n(?:[\t ]*(?:set_temp_variable|resize_temp_array) = \{[^\r\n]*\}\r?\n)+/gm, '');
   return stripped.replace(/#[^\r\n]*/g, '').match(/"[^"\r\n]*"|[{}=<>]|[^\s{}=<>]+/g) || [];
 }
-scenario('effects-preservation-beyond-the-parents-existing-20-declarations', () => {
-  const before = core.parse(cp.execFileSync('git', ['show', `${baselineRevision}:${files[0]}`], { cwd: root, encoding: 'utf8' }));
-  const current = core.parse(originalTokens(sources.get(files[0])).join(' '));
-  let removed = 0;
-  function clean(nodes) {
-    const out = [];
-    for (let i = 0; i < nodes.length; i++) {
-      const n = nodes[i];
-      // Existing parent patch: four lookup outputs at each transaction finder,
-      // two at each component finder, and two achievement-proof exports.
-      if (n.key === 'set_temp_variable') {
-        const name = n.value[0].key;
-        const look = nodes.slice(i+1, i+6).find(x => !['set_temp_variable'].includes(x.key));
-        const lookup = look && ['universal_cost_find_transaction_row', 'universal_cost_find_component_row'].includes(look.key);
-        const lookupOutput = ['universal_cost_transaction_found_index', 'universal_cost_transaction_lookup_result',
-          'universal_cost_transaction_is_indexed', 'universal_cost_transaction_pointer',
-          'universal_cost_component_found_index', 'universal_cost_component_lookup_result'].includes(name);
-        if (lookup && lookupOutput) { removed++; continue; }
-      }
-      out.push({ ...n, value: Array.isArray(n.value) ? clean(n.value) : n.value });
+// EC-A02 compares current production against the committed post-frame/pre-proof
+// source, not against an archived copy of current production.
+const proofBaselineRevision = 'e64e95aa3bcb9fcab5a38a248cad28aa78bd2294';
+const crypto = require('node:crypto');
+const proofChanged = new Map([
+  ['black_friday_record_achievement_transaction', 'strict receipt validation before append/credit and stored pending claim amounts'],
+  ['black_friday_scan_receipt_non_political_payment', 'source/state/unrefunded/typed-family/primary-basis/amount proof'],
+  ['black_friday_scan_receipt_political_power_only', 'strict proof plus settled PP-primary and PP-only payment'],
+  ['black_friday_confirm_achievement_transaction', 'revalidate persisted pending claims against settled unrefunded receipt']
+]);
+const proofAdded = new Set(['black_friday_validate_ordinary_receipt_proof']);
+const pureHelpers = new Set(['universal_cost_prepare_achievement_receipt_metadata',
+  'universal_cost_bind_achievement_receipt_metadata', 'black_friday_prepare_achievement_claim_metadata']);
+const roleInputs = ['family_id','primary_component_id','cost_basis','primary_member'].map(x =>
+  'universal_cost_transaction_achievement_' + x);
+const roleSnapshots = ['family','primary','basis','member'].map(x => 'universal_cost_record_metadata_' + x);
+const removableTemps = new Set([...roleInputs,...roleSnapshots]);
+const metadataColumns = new Set(['universal_cost_transaction_achievement_family_ids',
+  'universal_cost_transaction_achievement_primary_component_ids','universal_cost_transaction_achievement_cost_bases',
+  'universal_cost_component_achievement_family_ids','universal_cost_component_achievement_primary_members',
+  'black_friday_achievement_transaction_ordinary_costs','black_friday_achievement_transaction_paid_costs']);
+const coreFile = 'common/scripted_effects/chaosx_universal_cost_effects.txt';
+const preservedFiles = [files[0], coreFile, 'common/scripted_effects/012_africa_rsa_purchase_effects.txt'];
+const preservation = { baselineRevision: proofBaselineRevision, historicalFrameBaseline: baselineRevision,
+  proofSemanticChanges: Object.fromEntries(proofChanged), addedProofHelpers: [...proofAdded],
+  pureMetadataHelpers: [...pureHelpers], sourceHashes: {}, baselineSourceHashes: {},
+  comparedFunctions: {}, removedMetadata: {}, purityChecks: [], negativeControls: [] };
+const currentTrees = new Map(), baselineTrees = new Map();
+for (const file of preservedFiles) {
+  const text = sources.get(file) || fs.readFileSync(path.join(root,file),'utf8');
+  const before = cp.execFileSync('git',['show',proofBaselineRevision + ':' + file],{cwd:root,encoding:'utf8'});
+  preservation.sourceHashes[file] = crypto.createHash('sha256').update(text).digest('hex');
+  preservation.baselineSourceHashes[file] = crypto.createHash('sha256').update(before).digest('hex');
+  currentTrees.set(file,core.parse(text)); baselineTrees.set(file,core.parse(before));
+}
+function semantic(nodes) { return nodes.map(n => ({key:n.key,op:n.op,value:Array.isArray(n.value)?semantic(n.value):n.value})); }
+const helperTree = new Map([...currentTrees.values()].flat().map(n=>[n.key,n.value]));
+function readonlyCondition(nodes) {
+  return nodes.every(n => ['AND','OR','NOT'].includes(n.key) ? Array.isArray(n.value) && readonlyCondition(n.value) :
+    n.key==='has_variable' ? typeof n.value==='string' : n.key==='check_variable' && Array.isArray(n.value) &&
+      n.value.every(arg=>typeof arg.value==='string'));
+}
+function metadataWrite(n,names=removableTemps) {
+  return n.key === 'set_temp_variable' && Array.isArray(n.value) && n.value.length===1 &&
+    typeof n.value[0].value==='string' && names.has(n.value[0].key);
+}
+function metadataOnlyIf(n,names=removableTemps) {
+  if(n.key!=='if'||!Array.isArray(n.value))return false;
+  const limits=n.value.filter(x=>x.key==='limit'),body=n.value.filter(x=>x.key!=='limit');
+  return limits.length===1 && readonlyCondition(limits[0].value) && body.length>0 &&
+    body.every(x=>metadataWrite(x,names)||metadataOnlyIf(x,names));
+}
+function validatePurity(trees=helperTree) {
+  const shapes = {
+    universal_cost_prepare_achievement_receipt_metadata: [
+      ['universal_cost_transaction_achievement_family_ids','universal_cost_transaction_ids^num'],
+      ['universal_cost_transaction_achievement_primary_component_ids','universal_cost_transaction_ids^num'],
+      ['universal_cost_transaction_achievement_cost_bases','universal_cost_transaction_ids^num'],
+      ['universal_cost_component_achievement_family_ids','universal_cost_component_ids^num'],
+      ['universal_cost_component_achievement_primary_members','universal_cost_component_ids^num']],
+    black_friday_prepare_achievement_claim_metadata: [
+      ['black_friday_achievement_transaction_ordinary_costs','black_friday_achievement_transaction_ids^num'],
+      ['black_friday_achievement_transaction_paid_costs','black_friday_achievement_transaction_ids^num']]
+  };
+  for(const [name,rows] of Object.entries(shapes)) {
+    const expected=core.parse(rows.map(([array,size])=>'resize_array = { array = '+array+' size = '+size+' }').join('\n'));
+    assert.deepEqual(semantic(trees.get(name)),semantic(expected),name+' may only zero-extend/resize declared metadata columns');
+  }
+  const validTemps = new Set(['universal_cost_record_metadata_valid']);
+  function bind(nodes) {
+    for(const n of nodes) {
+      if(n.key==='universal_cost_prepare_achievement_receipt_metadata')assert.equal(n.value,'yes');
+      else if(metadataWrite(n,validTemps))continue;
+      else if(n.key==='set_variable'){
+        assert.equal(n.value.length,1);
+        assert.equal(typeof n.value[0].value,'string','metadata assignment must be scalar');
+        assert(metadataColumns.has(n.value[0].key.split('^')[0]),'binding writes nonmetadata '+n.value[0].key);
+      } else if(n.key==='if'){
+        const limit=n.value.filter(x=>x.key==='limit');assert.equal(limit.length,1);assert(readonlyCondition(limit[0].value));
+        bind(n.value.filter(x=>x.key!=='limit'));
+      } else if(n.key==='else')bind(n.value);
+      else assert.fail('impure metadata helper command '+n.key);
     }
-    return out;
   }
-  // Compare lookup-cleaned structures with the matching baseline structures.
-  // The two proof declarations are preserved explicitly and accounted below.
-  const actual = clean(current), currentLookupCount = removed;
-  const expected = clean(before), baselineLookupCount = removed - currentLookupCount;
-  assert.equal(currentLookupCount - baselineLookupCount, 18, 'parent lookup storage declarations changed');
-  function removeProofPair(nodes) {
-    return nodes.map(n => n.key === 'black_friday_record_achievement_transaction' ? { ...n,
-      value: n.value.map(child => child.key === 'if' ? { ...child, value: child.value.filter(x =>
-        !(x.key === 'set_temp_variable' && ['black_friday_purchase_receipt_proof_valid',
-          'black_friday_purchase_has_non_political_paid_component'].includes(x.value[0].key))) } : child) } : n);
+  bind(trees.get('universal_cost_bind_achievement_receipt_metadata'));
+}
+function normalized(nodes,counters={}) {
+  const result=[];
+  for(let i=0;i<nodes.length;i++){
+    const n=nodes[i];
+    let kind=null;
+    if(metadataWrite(n))kind='typedTemporaryWrites';
+    else if(pureHelpers.has(n.key)){assert.equal(n.value,'yes');kind='verifiedPureCalls';}
+    else if(metadataOnlyIf(n)){
+      // Do not detach an ELSE or alter an enclosing gameplay condition.
+      assert(!['else','else_if'].includes(nodes[i+1]?.key),'metadata branch has gameplay continuation');
+      kind='metadataOnlyIfs';
+    }
+    if(kind){counters[kind]=(counters[kind]||0)+1;continue;}
+    result.push({...n,value:Array.isArray(n.value)?normalized(n.value,counters):n.value});
   }
-  assert.deepEqual(removeProofPair(actual), removeProofPair(expected), 'noninitialization effect logic changed');
-  function proofCount(nodes) {
-    const target = nodes.find(n => n.key === 'black_friday_record_achievement_transaction');
-    return target.value.find(n => n.key === 'if').value.filter(n => n.key === 'set_temp_variable' &&
-      ['black_friday_purchase_receipt_proof_valid', 'black_friday_purchase_has_non_political_paid_component'].includes(n.value[0].key)).length;
+  return result;
+}
+scenario('effects-core-RSA-preservation-from-pinned-pre-proof-e64', () => {
+  validatePurity(); preservation.purityChecks=[...pureHelpers];
+  for(const file of preservedFiles){
+    const before=new Map(baselineTrees.get(file).map(n=>[n.key,n]));
+    const current=new Map(currentTrees.get(file).map(n=>[n.key,n]));
+    assert.equal(before.size,baselineTrees.get(file).length,'duplicate baseline helper');
+    assert.equal(current.size,currentTrees.get(file).length,'duplicate current helper');
+    const allowedNew=file===files[0]?new Set([...proofAdded,'black_friday_prepare_achievement_claim_metadata']):
+      file===coreFile?new Set(['universal_cost_prepare_achievement_receipt_metadata','universal_cost_bind_achievement_receipt_metadata']):new Set();
+    for(const name of current.keys())if(!before.has(name))assert(allowedNew.has(name),'unexpected added helper '+name);
+    for(const name of allowedNew)assert(current.has(name)&&!before.has(name),'required new helper '+name);
+    const names=[],counts={};
+    for(const [name,n] of before){
+      assert(current.has(name),'removed helper '+name);
+      if(file===files[0]&&proofChanged.has(name))continue;
+      assert.deepEqual(semantic(normalized(current.get(name).value,counts)),semantic(n.value),
+        file+' changed nonmetadata cost/control/native payment/outcome/flag/lifecycle semantics in '+name);
+      names.push(name);
+    }
+    preservation.comparedFunctions[file]=names;preservation.removedMetadata[file]=counts;
   }
-  assert.equal(proofCount(actual) - proofCount(expected), 2, 'parent receipt-proof declarations changed');
+  for(const name of proofChanged.keys())assert(baselineTrees.get(files[0]).some(n=>n.key===name),'allowlist absent from baseline '+name);
+});
+scenario('metadata-normalization-rejects-price-flag-control-and-impure-helper-mutations', () => {
+  const n=core.parse('add_political_power = 5 set_country_flag = forbidden if = { limit = { check_variable = { x = 1 } } set_temp_variable = { universal_cost_transaction_achievement_primary_member = 1 } add_command_power = 3 }');
+  const cleaned=normalized(n);
+  assert.equal(cleaned.length,3);assert.equal(cleaned[2].value.some(x=>x.key==='add_command_power'),true);
+  const priceMutation=structuredClone(n);priceMutation[0].value='6';
+  assert.notDeepEqual(semantic(normalized(priceMutation)),semantic(cleaned));
+  const flagMutation=structuredClone(n);flagMutation[1].value='different_flag';
+  assert.notDeepEqual(semantic(normalized(flagMutation)),semantic(cleaned));
+  preservation.negativeControls.push('native payment and flag changes retained','mixed metadata/gameplay IF retained');
+  const altered=new Map(helperTree),body=structuredClone(altered.get('universal_cost_bind_achievement_receipt_metadata'));
+  body.push(...core.parse('set_variable = { universal_cost_transaction_total_paid_costs^universal_cost_transaction_found_index = 0 }'));
+  altered.set('universal_cost_bind_achievement_receipt_metadata',body);
+  assert.throws(()=>validatePurity(altered),/binding writes nonmetadata/);
+  preservation.negativeControls.push('metadata helper amount mutation rejected');
+});
+scenario('allowlisted-proof-semantics-execute-current-public-suite', () => {
+  const result=JSON.parse(cp.execFileSync(process.execPath,
+    [path.join(__dirname,'2026-10-03_achievement_receipt_proof_source_tests.js'),'--details'],{cwd:root,encoding:'utf8',maxBuffer:8*1024*1024}));
+  assert.equal(result.scenarioCount,36);
+  for(const file of preservedFiles)assert.equal(result.sourceHashes[file],preservation.sourceHashes[file],'proof suite concurrent source change');
+  preservation.publicProof={scenarioCount:result.scenarioCount,sourceHashes:result.sourceHashes,
+    externalSourceFinalHashes:result.externalSourceFinalHashes,helperReturns:result.helperReturns,droppedTemps:result.droppedTemps};
 });
 scenario('trigger-preservation-outside-the-architect-owned-central-block', () => {
   const before = core.parse(cp.execFileSync('git', ['show', `${baselineRevision}:${files[1]}`], { cwd: root, encoding: 'utf8' }));
@@ -188,6 +295,6 @@ scenario('scoped-localisation-is-byte-identical-to-the-captured-baseline', () =>
   assert.equal(crypto.createHash('sha256').update(sources.get(files[2])).digest('hex'),
     '665dd28b4cb12380ace61fcbbab36a11e035da885ac5fa38b590a4fc2f17098e');
 });
-console.log(JSON.stringify({ scenarios, scenarioCount: scenarios.length, inspectedBoundaries: audit.inventory.length,
+console.log(JSON.stringify({ scenarios, scenarioCount: scenarios.length, inspectedBoundaries: audit.inventory.length, preservation,
   evidence: 'actual caller fragments with architect-owned conservative VM, native affordability queries modeled only',
   limitations: 'No engine, full owner payment, save/reload, GUI render, or repository-wide caller acceptance proof' }, null, 2));

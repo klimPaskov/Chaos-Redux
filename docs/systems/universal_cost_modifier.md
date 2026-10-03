@@ -103,6 +103,16 @@ Clearing a source does not rewrite historical receipts, so a delayed payment mus
 
 ## Transaction lifecycle
 
+Achievement proof is an additional typed receipt contract, not a resource-price derivation.
+Owners explicitly record logical primary family, designated component or primary-cost group, and per-component membership before each shared record call.
+Source-zero generic receipts remain backward compatible and cannot count as Black Friday achievement transactions.
+Source-26 receipts with unknown or conflicting role metadata fail new achievement proof while retaining their payment/refund state.
+Metadata schema extensions preserve existing regular-array prefixes and fill unknown legacy suffixes without inferring institutional families from PP.
+Immediate credit requires settled, wholly unrefunded receipt evidence and positive selected ordinary/paid amounts matching the caller's claim.
+Pending-refundable rows receive no early family credit and are revalidated at confirmation.
+The accepted native Japan raid bridge remains separate, and delayed CBRN PP-only completion retains its explicit post-expiry gate.
+See [explicit receipt roles](../../common/scripted_effects/chaosx_universal_cost_effects.md#explicit-achievement-receipt-roles) and [EC-A02 source repair](../plans/026_black_friday_plans/subagent_handoffs/2026-10-03_achievement_receipt_proof_repair.md).
+
 The owner must call the quote for display, repeat the quote immediately before the purchase or installment, check affordability, and only then debit the resource.
 
 A quote is not a lock and is not a payment receipt.

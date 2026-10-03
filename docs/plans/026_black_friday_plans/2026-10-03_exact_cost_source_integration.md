@@ -1,13 +1,14 @@
 # Event 026 exact-cost source integration
 
-Disposition: partial source integration, with EC-A01 alignment/model repair independently verified and EC-A02 public achievement receipt proof unresolved.
+Disposition: partial Event 26 integration, with EC-A01, the bounded EC-A02 public receipt proof, and its family-admission correction independently verified in source.
 Acceptance basis: the original complete Event 26 goal and its explicit universal quote/payment, actual-paid refund, preserved-action, and achievement contracts.
 Black Friday remains default-disabled, and no universal cost-coverage or clean live error-log claim is made for this source change.
 
 The subsequent [completion audit](subagent_handoffs/2026-10-03_exact_cost_source_completion_audit.md) found that the source-array rejection guard and its interpreter used inconsistent NOT semantics, and that the default achievement proof accepted ineligible indexed receipts.
 The [alignment repair](2026-10-03_registry_alignment_boolean_repair.md) adds the proper explicit conjunction, NOR model, and rejection matrix.
-The receipt-proof repair remains queued in the architect's active implementation and must pass a public record-to-credit recheck.
-The earlier passing suite counts below remain evidence for their stated scenarios, not closure of either finding.
+The [receipt-proof repair](subagent_handoffs/2026-10-03_achievement_receipt_proof_repair.md) uses recorded logical roles, exact primary or model-group amounts, and successful unrefunded state before public family credit.
+The independent recheck passes 36 public cases and 11 current-source preservation scenarios, including the accepted delayed PP/native-raid paths and the consumer-goods family admission.
+The earlier passing suite counts below remain evidence for their stated scenarios, and do not establish broader engine, registry, or whole-achievement acceptance.
 
 ## Implemented surfaces
 

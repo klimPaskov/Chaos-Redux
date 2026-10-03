@@ -20,6 +20,8 @@ const bfScannerNames = ['black_friday_scan_receipt_non_political_payment', 'blac
 const bfScannerNodes = parse(bfSource).filter(n => bfScannerNames.includes(n.key));
 assert.equal(bfScannerNodes.length, 2);
 for (const node of bfScannerNodes) definitions.set(node.key, node.value);
+const ordinaryProof = parse(bfSource).find(n => n.key === 'black_friday_validate_ordinary_receipt_proof');
+assert(ordinaryProof); definitions.set(ordinaryProof.key, ordinaryProof.value);
 for (const category of parse(bfConstantsSource)) if (Array.isArray(category.value)) for (const item of category.value)
   if (!Array.isArray(item.value) && /^-?\d+(\.\d+)?$/.test(item.value)) core.constants.set(`constant:${category.key}.${item.key}`, ticks(item.value));
 const outputs = {
@@ -105,8 +107,12 @@ function allocation(vm, tx) {
   vm.write('universal_cost_allocated_transaction_id_@var:universal_cost_transaction_id', ticks(tx), false);
   return vm;
 }
-function record(vm, tx, component, resource, paid, ordinary = paid) {
+function record(vm, tx, component, resource, paid, ordinary = paid, metadata = null) {
   setupComponent(vm, tx, component, resource, paid, ordinary);
+  if (metadata) vm.set('universal_cost_transaction_achievement_family_id', metadata.family)
+    .set('universal_cost_transaction_achievement_primary_component_id', metadata.primary)
+    .set('universal_cost_transaction_achievement_cost_basis', metadata.basis)
+    .set('universal_cost_transaction_achievement_primary_member', metadata.member);
   assert(vm.call('universal_cost_record_transaction'));
   assert.equal(vm.value('universal_cost_record_transaction_result'), S, 'real record API must succeed');
 }
@@ -260,7 +266,8 @@ scenario('real-quote-payment-record-expiry-refund', () => {
 const ppComponentId = core.constants.get('constant:black_friday_event.owner_component_political_power') / S;
 function scan(vm, label, tx, actualPaid, nonPoliticalExpected, ppOnlyExpected) {
   vm.set('black_friday_purchase_transaction_id', tx).set('black_friday_purchase_family_id', 1)
-    .set('black_friday_purchase_actual_paid_cost', actualPaid);
+    .set('black_friday_purchase_actual_paid_cost', actualPaid).set('black_friday_purchase_ordinary_cost', 5)
+    .set('black_friday_purchase_is_refundable', 0);
   for (const [api, expected] of [[bfScannerNames[0], nonPoliticalExpected], [bfScannerNames[1], ppOnlyExpected]]) {
     // EXPLICIT source-like caller declarations, not blanket VM scratch seeds.
     vm.set('black_friday_purchase_receipt_proof_valid', 0).set('black_friday_purchase_has_non_political_paid_component', 0);
@@ -273,27 +280,26 @@ function scan(vm, label, tx, actualPaid, nonPoliticalExpected, ppOnlyExpected) {
   }
 }
 scenario('actual-BF-scans-recorded-settled-refunded-absent-and-mixed', () => {
-  const pp = allocation(new ReceiptVM(), 8801); record(pp, 8801, ppComponentId, kind('political_power'), 5);
-  scan(pp, 'recorded-pp', 8801, 5, [1, 0], [0, 0]);
+  const typed = (vm,tx,id,resource,paid) => record(vm,tx,id,resource,paid,paid,{family:1,primary:ppComponentId,basis:1,member:BigInt(id)===ppComponentId?1:0});
+  const pp = allocation(new ReceiptVM(), 8801); typed(pp, 8801, ppComponentId, kind('political_power'), 5);
+  scan(pp, 'recorded-pp-immediate-rejected', 8801, 5, [0, 0], [0, 0]);
   pp.set('universal_cost_transaction_id', 8801); assert(pp.call('universal_cost_settle_transaction'));
   scan(pp, 'settled-pp', 8801, 5, [1, 0], [1, 0]);
   const mixed = allocation(new ReceiptVM(), 8802);
-  record(mixed, 8802, ppComponentId, kind('political_power'), 5); record(mixed, 8802, 99, kind('command_power'), 3);
-  scan(mixed, 'recorded-mixed-aggregate', 8802, 8, [1, 1], [0, 0]);
+  typed(mixed, 8802, ppComponentId, kind('political_power'), 5); typed(mixed, 8802, 99, kind('command_power'), 3);
+  scan(mixed, 'recorded-mixed-aggregate', 8802, 8, [0, 0], [0, 0]);
   mixed.set('universal_cost_transaction_id', 8802); assert(mixed.call('universal_cost_settle_transaction'));
-  scan(mixed, 'settled-mixed-aggregate', 8802, 8, [1, 1], [0, 0]);
-  // Source finding, not a design change: PP-only proves a designated PP
-  // component and does not independently prohibit other paid components.
-  scan(mixed, 'settled-mixed-matching-pp-component', 8802, 5, [1, 1], [1, 0]);
+  scan(mixed, 'settled-mixed-wrong-basis-aggregate', 8802, 8, [0, 0], [0, 0]);
+  scan(mixed, 'settled-mixed-matching-primary-component', 8802, 5, [1, 1], [0, 1]);
   const refunded = allocation(new ReceiptVM(), 8803);
-  record(refunded, 8803, ppComponentId, kind('political_power'), 5); record(refunded, 8803, 99, kind('command_power'), 3);
+  typed(refunded, 8803, ppComponentId, kind('political_power'), 5); typed(refunded, 8803, 99, kind('command_power'), 3);
   expectRefund(refunded, 8803, 1, 8);
-  scan(refunded, 'fully-refunded-mixed', 8803, 8, [1, 0], [0, 0]);
+  scan(refunded, 'fully-refunded-mixed', 8803, 8, [0, 0], [0, 0]);
   scan(refunded, 'absent-receipt-warm-caller', 9999, 5, [0, 0], [0, 0]);
-  const wrong = allocation(new ReceiptVM(), 8804); record(wrong, 8804, ppComponentId, kind('political_power'), 5);
+  const wrong = allocation(new ReceiptVM(), 8804); typed(wrong, 8804, ppComponentId, kind('political_power'), 5);
   wrong.set('universal_cost_transaction_id', 8804); assert(wrong.call('universal_cost_settle_transaction'));
   wrong.arrays.get('universal_cost_component_source_ids')[0] = ticks(77);
-  scan(wrong, 'settled-wrong-component-source', 8804, 5, [1, 0], [0, 0]);
+  scan(wrong, 'settled-wrong-component-source', 8804, 5, [0, 0], [0, 0]);
   pp.set('black_friday_purchase_transaction_id', 8801).set('black_friday_purchase_actual_paid_cost', 5).set('black_friday_purchase_family_id', 2);
   pp.set('black_friday_purchase_receipt_proof_valid', 0).set('black_friday_purchase_has_non_political_paid_component', 0);
   assert(pp.call(bfScannerNames[1])); assert.equal(pp.value('black_friday_purchase_receipt_proof_valid'), 0n);

@@ -5,7 +5,10 @@
 Disposition: unresolved acceptance, with the original full Part 8 contract retained.
 The [bounded completion audit](subagent_handoffs/2026-10-03_exact_cost_source_completion_audit.md) found EC-A01 malformed-array Boolean grouping and EC-A02 public achievement receipt-integrity defects after the source integration.
 The [EC-A01 repair](2026-10-03_registry_alignment_boolean_repair.md) passes the original quotation cases plus eight truth-table and 84 malformed-registry gates under the corrected NOR interpreter.
-EC-A02 remains open until the public achievement entry rejects refunded, partially refunded, wrong-source, zero-paid, mismatched, and unsettled immediate-credit inputs from stored receipt evidence.
+EC-A02 and its consumer-goods family-admission correction are independently closed for the bounded source criteria.
+The [public proof suite](subagent_handoffs/2026-10-03_achievement_receipt_proof_repair.md) has 36 cases, including refunded, partially refunded, wrong-source, zero-paid, mismatched, and unsettled immediate-credit rejection from stored receipt evidence.
+The 11-case preservation suite compares current BF/core/RSA definitions with the fixed pre-proof revision after removing only verified pure metadata additions, and detects price, flag, and control mutations.
+Native and full-registry acceptance remain unresolved.
 The historical arithmetic mirror below does not establish unrestricted engine arithmetic or effect/display agreement.
 The [quantization audit](subagent_handoffs/2026-10-03_quantization_audit.md) identified scalar precision loss, oversized intermediate products, and a truncated composed-ratio cache.
 The [exact shared producer](subagent_handoffs/2026-10-03_exact_quote_implementation.md) replaces that arithmetic with represented integer limbs and one final ceiling.

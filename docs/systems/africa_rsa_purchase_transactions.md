@@ -35,6 +35,8 @@ Rejected or unresolved refunds retain the payer's pending receipt pointer, and a
 Repeated refunds are idempotent, and refund amounts are not recomputed when the sale expires.
 The five pending fields are regular payer variables and the shared receipt arrays are persistent state.
 The pending-donor array and recipient flags are also persistent state.
+Every component record forwards its explicit Political Power logical family, component-basis contract, and PP-primary membership to the shared normal receipt metadata.
+The public achievement entry checks that typed role and stored ordinary/paid amounts, rather than accepting the caller's family or payment claim alone.
 The source model does not prove serialization or native engine execution.
 
 ## Exact cost-surface ledger

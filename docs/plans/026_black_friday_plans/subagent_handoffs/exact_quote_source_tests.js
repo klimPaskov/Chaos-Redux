@@ -169,11 +169,12 @@ class VM {
       } else if (k === 'clear_temp_array' || k === 'clear_array') {
         (k === 'clear_temp_array' ? this.tempArrays : this.arrays).set(v, []);
       }
-      else if (k === 'resize_temp_array') {
+      else if (k === 'resize_temp_array' || k === 'resize_array') {
+		const arrayStore = k === 'resize_temp_array' ? this.tempArrays : this.arrays;
         const name = this.field(v, 'array'), size = this.value(this.field(v, 'size'));
         assert.equal(size % S, 0n); const n = Number(size / S); assert(n >= 0);
-        const a = this.tempArrays.get(name) || [], value = this.value(this.field(v, 'value', '0'));
-        while (a.length < n) a.push(value); a.length = n; this.tempArrays.set(name, a);
+        const a = arrayStore.get(name) || [], value = this.value(this.field(v, 'value', '0'));
+        while (a.length < n) a.push(value); a.length = n; arrayStore.set(name, a);
       } else if (k === 'add_to_temp_array' || k === 'add_to_array') {
         const map = k === 'add_to_temp_array' ? this.tempArrays : this.arrays;
         const name = this.field(v, 'array'), a = map.get(name) || [];
