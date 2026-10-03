@@ -1,0 +1,25 @@
+# Event 021 sponsor receipt validation.
+# COUNTRY scope is the actual settlement recipient, which need not be ROOT.
+# Requires a live sponsor pointer and reciprocal country IDs. No state changes.
+
+event021_sponsor_repayment_receipt_valid = {
+	has_country_flag = random_civil_war_sponsor_commitment_received
+	has_country_flag = random_civil_war_sponsor_evidence_active
+	has_variable = random_civil_war_sponsor_scope
+	has_variable = random_civil_war_sponsor_id
+	var:random_civil_war_sponsor_scope = {
+		exists = yes
+		has_country_flag = random_civil_war_sponsor_commitment_active
+		has_variable = random_civil_war_sponsor_recipient_id
+		check_variable = {
+			var = PREV.random_civil_war_sponsor_id
+			value = THIS.id
+			compare = equals
+		}
+		check_variable = {
+			var = random_civil_war_sponsor_recipient_id
+			value = PREV.id
+			compare = equals
+		}
+	}
+}
