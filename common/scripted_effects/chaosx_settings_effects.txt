@@ -4050,6 +4050,21 @@ fire_event_by_temp_id_no_cluster = {
 		limit = { check_variable = { event_id = constant:fury_event_log.event_id } }
 		fury_prepare_random_event_fire = yes
 	}
+	if = {
+		limit = { check_variable = { event_id = constant:asteroid_incoming_event.id } }
+		asteroid_incoming_prepare_random_event_fire = yes
+		if = {
+			limit = { check_variable = { asteroid_incoming_prefire_ready < constant:asteroid_incoming_runtime.one } }
+			set_temp_variable = { event_single_fire_allowed = constant:asteroid_incoming_runtime.zero }
+			if = {
+				limit = {
+					has_variable = automatic_event_firing_context
+					check_variable = { automatic_event_firing_context > constant:asteroid_incoming_runtime.zero }
+				}
+				calculate_next_timer_value = yes
+			}
+		}
+	}
 
 	if = {
 		limit = { check_variable = { event_id = constant:tensions_rising_event_log.event_id } }

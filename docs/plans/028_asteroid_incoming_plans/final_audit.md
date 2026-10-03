@@ -10,6 +10,20 @@ The recovery-target isolation source patch and seven source-model scenarios are 
 Its native scenario evidence remains unresolved after route timeouts.
 The current completion and probability audit jobs ended with `workspace routing discovery timed out` and produced no current handoff.
 
+The 2026-10-03 availability repair adds a read-only three-country preflight to the shared pool and requires two usable owned and controlled states before a country can consume a random target slot.
+It also validates current control of the separate backup at confirmation and adds the shared target-pool and transaction `N/A` reasons.
+Nineteen explicit source-model cases passed, including one-state distractors, occupied, empty, wasteland, transferred, or contested backups, and partially contested centers with a distinct full-control backup.
+The initial repair client exposed no `hoi4_agent_tools` coding methods, although its artifact resource template remained available.
+After the parent resumed, coding methods became exposed and narrow reference, event, and map requests were submitted again.
+Native event, probability comparison, and script-validation coverage for this repair remain unresolved.
+The fire-once entry now returns from confirmation through internal event `.8`, with unchanged option formulas and no reroll or repeated opening effects.
+The shared dispatcher prepares the board before dispatch and fire accounting.
+The capital-continuity helpers are integrated, with twenty-three source-model cases and recipient-only relocation counting recorded in `subagent_handoffs/capital_continuity_20261003.md`.
+Those cases include a current planned fragment center as the only surviving backup, rejection of processed or stale fragment sites, and preservation of the original fragment plan.
+Losing every usable backup during the two-day lock remains an unresolved edge, and native movement and transfer evidence remains open.
+The crater action audit confirmed unused flag-only outcomes for reconnaissance, extraction disruption, and offensive preparation, plus a missing supplied-garrison requirement and emergency-expiry cleanup gap.
+Those mapped gameplay surfaces remain implementation work, with a bounded decision worker assigned, rather than being treated as completed source or as evidence-only gaps.
+
 ## Implemented source surfaces
 
 The global root is `chaosx.nr28.1` with `fire_only_once = yes`, and Event 028 is registered in `global.major_events` rather than the stale repeatable-event row. The opening chain, impact resolver, recovery, triggers, achievements, decisions, category, ideas, dynamic modifiers, CXT setup, on-actions, localisation, event history/details, super-event, audio registration, and workbook row are present in the Event 028 surfaces listed in `docs/events/028_asteroid_incoming/overview.md`.

@@ -1,0 +1,143 @@
+# ============================================================================
+# CHAOS REDUX - EVENT SYSTEM SCRIPT CONSTANTS
+# ============================================================================
+# Shared constants for the smart event firing / timer system and its settings.
+# ============================================================================
+
+event_system_timer_random_start = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	min = 7
+	max = 30
+}
+
+event_system_timer_defaults = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	min_days = 45
+	max_days = 60
+	min_decrement_cap = 15
+	max_decrement_cap = 5
+	minimum_days = 2
+	minor_event_timer_increment = 3
+	minor_event_decrement_step = 1
+	minor_event_compression_step = 1
+}
+
+event_system_defaults = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	event_weight = 1000
+	major_event_weight_per_minor = 150
+	reduce_cap_factor = 0.5
+	recovery_rate = 20
+}
+
+event_system_dynamic_major_gain = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	baseline_total_events = 100
+	baseline_major_events = 10
+	baseline_non_major_events = 90
+}
+
+event_system_timer_modifier_default = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	calm = 1.0
+	gathering = 0.8
+	rising = 0.7
+	chaos = 0.6
+	critical = 0.5
+	collapse = 0.5
+}
+
+event_system_event_type = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unknown = 0
+	major = 1
+	repeatable = 2
+	fire_once = 3
+	# Post-consequence survivor memories only. The Fallout consequence itself
+	# never writes an ordinary Event Log record.
+	fallout_country_memory = 4
+	# Unified chemical and ordinary biological action records.
+	cbrn_action = 5
+}
+
+# Ordered reason ids returned by the shared automatic event-pool availability
+# resolver. Zero means that the candidate has no dynamic N/A reason. Disabled
+# and already-fired unique events remain separate numeric-zero states in the
+# Events tab and never use this registry.
+event_system_event_unavailability_reason = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	chaos_level = 1
+	world_revolution = 2
+	holy_realm_refuge = 3
+	fury_target = 4
+	tensions_world_tension = 5
+	white_peace_pair = 6
+	utopia_host = 7
+	brilliant_scientist_resolved = 8
+	brilliant_scientist_world_end = 9
+	brilliant_scientist_kruger_holder = 10
+	brilliant_scientist_opening_pending = 11
+	brilliant_scientist_host = 12
+	secret_alliance_target = 13
+	secret_alliance_active = 14
+	secret_alliance_postwar = 15
+	secret_alliance_launch = 16
+	secret_alliance_callbacks = 17
+	secret_alliance_founders = 18
+	cannibalism_started = 19
+	cannibalism_victory = 20
+	cannibalism_cleanup = 21
+	cannibalism_world_end = 22
+	cannibalism_origin = 23
+	random_faction_context = 24
+	resources_found_field = 25
+	independence_wave_capacity = 26
+	africa_active = 27
+	africa_resolved = 28
+	africa_world_end = 29
+	africa_host = 30
+	black_plague_started = 31
+	black_plague_terminal = 32
+	black_plague_world_end = 33
+	black_plague_origin = 34
+	resources_found_world_end = 35
+	zombie_outbreak_started = 36
+	zombie_outbreak_disabled = 37
+	black_friday_reserved = 38
+	disabled = 39
+	already_fired = 40
+	zero_weight = 41
+	video_game_in_sweden_host = 42
+	doctrine_research_no_valid_participant = 43
+	equipment_from_heavens_recipient = 44
+	unknown = 99
+}

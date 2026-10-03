@@ -1,0 +1,235 @@
+# Event 028 capital continuity.
+# Selects surviving territory and moves only the country whose current capital
+# is the exact locked main state, before the physical destruction transaction.
+# Full contracts, tuning, migration, and validation limits are documented in
+# docs/plans/028_asteroid_incoming_plans/subagent_handoffs/capital_continuity_20261003.md.
+# No original-target identity, lock snapshot, or achievement result is changed.
+
+# Literal province-building threshold, matching the existing Event 028 VP test.
+# A bunker level above -1 includes a VP province with no fortification.
+@asteroid_capital_vp_any_bunker_level = -1
+
+# STATE SCOPE inside the calling country's every_owned_state.
+# Output: unscoped temporary asteroid_incoming_backup_capital_score.
+# Inputs: the regular asteroid_incoming_backup_capital_country event target.
+# Uses existing Event 028 score constants, with no random roll or state mutation.
+asteroid_incoming_score_backup_capital_candidate = {
+	set_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_base }
+	if = { limit = { is_core_of = PREV } add_to_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_capital } }
+	if = { limit = { state_population_k > constant:asteroid_incoming_target.large_population_k } add_to_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_population_large } }
+	else_if = { limit = { state_population_k > constant:asteroid_incoming_target.medium_population_k } add_to_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_population_medium } }
+	if = { limit = { any_province_building_level = { province = { all_provinces = yes limit_to_victory_point = yes } building = bunker level > @asteroid_capital_vp_any_bunker_level } } add_to_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_victory_point } }
+	if = { limit = { industrial_complex > constant:asteroid_incoming_target.minimum_building_level } add_to_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_industry } }
+	if = { limit = { infrastructure > constant:asteroid_incoming_target.minimum_building_level } add_to_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_infrastructure } }
+	if = { limit = { rail_way > constant:asteroid_incoming_target.minimum_building_level } add_to_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_rail } }
+	if = { limit = { supply_node > constant:asteroid_incoming_target.minimum_building_level } add_to_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_supply } }
+	if = {
+		limit = {
+			any_neighbor_state = {
+				asteroid_incoming_state_is_valid_target = yes
+				is_owned_and_controlled_by = event_target:asteroid_incoming_backup_capital_country
+				NOT = { state = event_target:asteroid_incoming_locked_state }
+			}
+		}
+		add_to_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_neighbor }
+	}
+	if = {
+		limit = {
+			any_neighbor_state = {
+				CONTROLLER = {
+					exists = yes
+					has_war_with = event_target:asteroid_incoming_backup_capital_country
+				}
+			}
+		}
+		add_to_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_frontline_penalty }
+	}
+}
+
+# COUNTRY SCOPE. Requires locked_state and the completed main-footprint plan.
+# Output: global backup_capital_state, absent when no usable backup exists.
+# Ordered preference: core, safety (outside footprint > ring 3 > 2 > 1), score,
+# then lowest internal state pointer ID. Core and safety cannot be outscored.
+# Occupied, contested, empty, impassable, processed crater, and wasteland states
+# are rejected. A current planned fragment center survives its 50% profile.
+asteroid_incoming_select_surviving_capital = {
+	clear_global_event_target = asteroid_incoming_backup_capital_state
+	save_event_target_as = asteroid_incoming_backup_capital_country
+	set_temp_variable = { asteroid_incoming_backup_capital_best_core = constant:asteroid_incoming_runtime.zero }
+	set_temp_variable = { asteroid_incoming_backup_capital_best_safety = constant:asteroid_incoming_runtime.zero }
+	set_temp_variable = { asteroid_incoming_backup_capital_best_score = constant:asteroid_incoming_runtime.zero }
+	set_temp_variable = { asteroid_incoming_backup_capital_best_id = constant:asteroid_incoming_runtime.zero }
+	# Initialize the score in this caller before the scoring helper modifies it.
+	set_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.zero }
+	if = {
+		limit = { exists = yes has_event_target = asteroid_incoming_locked_state }
+		every_owned_state = {
+			limit = {
+				# Capital continuity candidate predicate. The impact-target predicate
+				# excludes fragment_site even while the current strike is only planned.
+				scope_exists = yes
+				impassable = no
+				NOT = { has_state_category = wasteland }
+				NOT = { has_state_flag = asteroid_incoming_main_crater }
+				asteroid_incoming_state_has_meaningful_settlement = yes
+				OWNER = { exists = yes }
+				CONTROLLER = { exists = yes }
+				OR = {
+					NOT = { has_state_flag = asteroid_incoming_fragment_site }
+					AND = {
+						has_state_flag = asteroid_incoming_state_planned
+						NOT = { has_state_flag = asteroid_incoming_state_transaction_applied }
+						check_variable = { var = asteroid_incoming_state_transaction_id value = global.asteroid_incoming_transaction_id compare = equals }
+						check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.fragment_center compare = equals }
+						is_in_array = { array = global.asteroid_incoming_fragment_site_states value = THIS }
+					}
+				}
+				is_owned_and_controlled_by = PREV
+				is_fully_controlled_by = PREV
+				NOT = { state = event_target:asteroid_incoming_locked_state }
+				# A ring candidate must have this transaction's complete ring record.
+				OR = {
+					NOT = { is_in_array = { array = global.asteroid_incoming_main_footprint_states value = THIS } }
+					AND = {
+						check_variable = { var = asteroid_incoming_state_transaction_id value = global.asteroid_incoming_transaction_id compare = equals }
+						has_variable = asteroid_incoming_state_ring
+						check_variable = { var = asteroid_incoming_state_ring value = constant:asteroid_incoming_runtime.zero compare = greater_than }
+						check_variable = { var = asteroid_incoming_state_ring value = constant:asteroid_incoming_runtime.maximum_footprint_ring compare = less_than_or_equals }
+					}
+				}
+			}
+			set_temp_variable = { asteroid_incoming_backup_capital_core = constant:asteroid_incoming_runtime.zero }
+			if = { limit = { is_core_of = PREV } set_temp_variable = { asteroid_incoming_backup_capital_core = constant:asteroid_incoming_runtime.one } }
+			set_temp_variable = { asteroid_incoming_backup_capital_safety = constant:asteroid_incoming_runtime.maximum_footprint_ring }
+			add_to_temp_variable = { asteroid_incoming_backup_capital_safety = constant:asteroid_incoming_runtime.one }
+			if = {
+				limit = {
+					is_in_array = { array = global.asteroid_incoming_main_footprint_states value = THIS }
+					check_variable = { var = asteroid_incoming_state_transaction_id value = global.asteroid_incoming_transaction_id compare = equals }
+				}
+				set_temp_variable = { asteroid_incoming_backup_capital_safety = asteroid_incoming_state_ring }
+			}
+			set_temp_variable = { asteroid_incoming_backup_capital_id = id }
+			asteroid_incoming_score_backup_capital_candidate = yes
+			if = {
+				limit = {
+					OR = {
+						NOT = { has_event_target = asteroid_incoming_backup_capital_state }
+						check_variable = { var = asteroid_incoming_backup_capital_core value = asteroid_incoming_backup_capital_best_core compare = greater_than }
+						AND = {
+							check_variable = { var = asteroid_incoming_backup_capital_core value = asteroid_incoming_backup_capital_best_core compare = equals }
+							OR = {
+								check_variable = { var = asteroid_incoming_backup_capital_safety value = asteroid_incoming_backup_capital_best_safety compare = greater_than }
+								AND = {
+									check_variable = { var = asteroid_incoming_backup_capital_safety value = asteroid_incoming_backup_capital_best_safety compare = equals }
+									OR = {
+										check_variable = { var = asteroid_incoming_backup_capital_score value = asteroid_incoming_backup_capital_best_score compare = greater_than }
+										AND = {
+											check_variable = { var = asteroid_incoming_backup_capital_score value = asteroid_incoming_backup_capital_best_score compare = equals }
+											check_variable = { var = asteroid_incoming_backup_capital_id value = asteroid_incoming_backup_capital_best_id compare = less_than }
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				save_global_event_target_as = asteroid_incoming_backup_capital_state
+				set_temp_variable = { asteroid_incoming_backup_capital_best_core = asteroid_incoming_backup_capital_core }
+				set_temp_variable = { asteroid_incoming_backup_capital_best_safety = asteroid_incoming_backup_capital_safety }
+				set_temp_variable = { asteroid_incoming_backup_capital_best_score = asteroid_incoming_backup_capital_score }
+				set_temp_variable = { asteroid_incoming_backup_capital_best_id = asteroid_incoming_backup_capital_id }
+			}
+		}
+	}
+}
+
+# ANY SCOPE. Called once from the main-impact transaction after footprint
+# planning and before destruction. A same-transaction successful receipt makes
+# repeat calls inert. A failed attempt records the existing failure flag only.
+# The one country scan is transaction-local, with no periodic registration.
+asteroid_incoming_relocate_current_capital = {
+	if = {
+		limit = {
+			has_event_target = asteroid_incoming_locked_state
+			NOT = {
+				event_target:asteroid_incoming_locked_state = {
+					check_variable = { var = asteroid_incoming_state_capital_relocated value = constant:asteroid_incoming_runtime.zero compare = greater_than }
+					check_variable = { var = asteroid_incoming_state_capital_relocation_transaction_id value = global.asteroid_incoming_transaction_id compare = equals }
+				}
+			}
+		}
+		clear_global_event_target = asteroid_incoming_capital_country
+		clear_global_event_target = asteroid_incoming_backup_capital_state
+		clear_global_event_target = asteroid_incoming_replacement_capital_state
+		clr_global_flag = asteroid_incoming_capital_relocation_complete
+		clr_global_flag = asteroid_incoming_capital_relocation_failed
+		event_target:asteroid_incoming_locked_state = {
+			set_variable = { asteroid_incoming_state_capital_relocated = constant:asteroid_incoming_runtime.zero }
+			clear_variable = asteroid_incoming_state_capital_relocation_country
+			set_variable = { asteroid_incoming_state_capital_relocation_transaction_id = global.asteroid_incoming_transaction_id }
+		}
+		every_country = {
+			# Compare the documented capital pointer before entering capital_scope.
+			# This excludes countries with no capital without an invalid scope entry.
+			limit = {
+				exists = yes
+				check_variable = { var = capital value = event_target:asteroid_incoming_locked_state compare = equals }
+			}
+			if = {
+				limit = { capital_scope = { state = event_target:asteroid_incoming_locked_state } }
+				save_global_event_target_as = asteroid_incoming_capital_country
+				asteroid_incoming_select_surviving_capital = yes
+				if = {
+					limit = { has_event_target = asteroid_incoming_backup_capital_state }
+					set_capital = { state = event_target:asteroid_incoming_backup_capital_state remember_old_capital = no }
+					if = {
+						limit = { capital_scope = { state = event_target:asteroid_incoming_backup_capital_state } }
+						set_country_flag = asteroid_incoming_capital_relocated
+						set_global_flag = asteroid_incoming_capital_relocation_complete
+						event_target:asteroid_incoming_locked_state = {
+							set_variable = { asteroid_incoming_state_capital_relocated = constant:asteroid_incoming_runtime.one }
+							set_variable = { asteroid_incoming_state_capital_relocation_country = PREV }
+						}
+						# Achievement continuity belongs to the original target alone.
+						if = {
+							limit = {
+								has_event_target = asteroid_incoming_original_target_country
+								tag = event_target:asteroid_incoming_original_target_country
+								check_variable = { var = global.asteroid_incoming_target_was_capital value = constant:asteroid_incoming_runtime.zero compare = greater_than }
+								NOT = { has_global_flag = asteroid_incoming_original_target_annexed }
+							}
+							event_target:asteroid_incoming_backup_capital_state = { save_global_event_target_as = asteroid_incoming_replacement_capital_state }
+						}
+					}
+					else = { set_global_flag = asteroid_incoming_capital_relocation_failed }
+				}
+				else = { set_global_flag = asteroid_incoming_capital_relocation_failed }
+			}
+		}
+	}
+}
+
+# STATE SCOPE. Called only within the deduplicated country-aggregation pass.
+# Positive same-transaction receipt and an existing recorded recipient required.
+# Adds the observed move count to that country alone, independently of the
+# physical-loss owner/controller rows. No population/building receipt is added.
+asteroid_incoming_aggregate_capital_relocation = {
+	if = {
+		limit = {
+			has_variable = asteroid_incoming_state_capital_relocation_country
+			check_variable = { var = asteroid_incoming_state_capital_relocated value = constant:asteroid_incoming_runtime.zero compare = greater_than }
+			check_variable = { var = asteroid_incoming_state_capital_relocation_transaction_id value = global.asteroid_incoming_transaction_id compare = equals }
+		}
+		var:asteroid_incoming_state_capital_relocation_country = {
+			if = {
+				limit = { exists = yes }
+				if = {
+					limit = { NOT = { has_variable = asteroid_incoming_country_capital_relocated_count } }
+					set_variable = { asteroid_incoming_country_capital_relocated_count = constant:asteroid_incoming_runtime.zero }
+				}
+				add_to_variable = { asteroid_incoming_country_capital_relocated_count = PREV.asteroid_incoming_state_capital_relocated }
+			}
+		}
+	}
+}

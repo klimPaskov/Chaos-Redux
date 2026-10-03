@@ -831,6 +831,25 @@ evaluate_event_pool_candidate_unavailability = {
 		}
 		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.doctrine_research_no_valid_participant }
 	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:asteroid_incoming_event.id }
+			NOT = { asteroid_incoming_automatic_event_is_available = yes }
+		}
+		if = {
+			limit = {
+				OR = {
+					has_global_flag = asteroid_incoming_transaction_active
+					has_global_flag = asteroid_incoming_transaction_resolved
+					has_global_flag = asteroid_incoming_opening_presented
+				}
+			}
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.asteroid_transaction }
+		}
+		else = {
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.asteroid_target_pool }
+		}
+	}
 
 	if = {
 		limit = { check_variable = { event_pool_candidate_independence_capacity_registry_prepared > 0 } }

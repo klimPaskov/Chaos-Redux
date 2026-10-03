@@ -19,7 +19,11 @@ add_namespace = chaosx.nr28
 country_event = {
 	id = chaosx.nr28.1
 	title = chaosx.nr28.1.t
-	desc = chaosx.nr28.1.desc
+	desc = {
+		text = chaosx.nr28.1.desc
+		trigger = { asteroid_incoming_has_three_valid_target_pairs = yes }
+	}
+	desc = { text = chaosx.nr28.1.blocked_desc }
 	picture = GFX_report_event_028_asteroid_tracking
 	is_triggered_only = yes
 	fire_only_once = yes
@@ -182,6 +186,7 @@ country_event = {
 		trigger = { NOT = { asteroid_incoming_has_three_valid_target_pairs = yes } }
 		ai_chance = { base = 100 }
 		custom_effect_tooltip = chaosx.nr28.1.na.tt
+		hidden_effect = { asteroid_incoming_close_unavailable_board = yes }
 	}
 }
 
@@ -494,5 +499,127 @@ country_event = {
 		custom_effect_tooltip = chaosx.nr28.7.a.tt
 		clr_country_flag = asteroid_incoming_fragment_report_pending
 		set_country_flag = asteroid_incoming_report_seen
+	}
+}
+
+# The confirmation can reopen this internal board without re-firing the
+# globally fire-once entry. The saved three pairs, chooser, date, and evolution
+# snapshot remain untouched, and no shared history or opening news is added.
+country_event = {
+	id = chaosx.nr28.8
+	title = chaosx.nr28.1.t
+	desc = {
+		text = chaosx.nr28.1.desc
+		trigger = { asteroid_incoming_has_three_valid_target_pairs = yes }
+	}
+	desc = { text = chaosx.nr28.1.blocked_desc }
+	picture = GFX_report_event_028_asteroid_tracking
+	is_triggered_only = yes
+	trigger = {
+		has_global_flag = asteroid_incoming_transaction_active
+		NOT = { has_global_flag = asteroid_incoming_target_locked }
+		NOT = { has_global_flag = asteroid_incoming_transaction_resolved }
+		has_event_target = asteroid_incoming_chooser
+		tag = event_target:asteroid_incoming_chooser
+	}
+
+	option = {
+		name = chaosx.nr28.8.a
+		trigger = { asteroid_incoming_has_three_valid_target_pairs = yes }
+		ai_chance = {
+			base = constant:asteroid_incoming_ai.strike_base
+			modifier = { factor = constant:asteroid_incoming_ai.protected_target_factor event_target:asteroid_incoming_target_1_country = { asteroid_incoming_ai_target_is_protected = yes } }
+			modifier = { add = constant:asteroid_incoming_ai.strike_enemy_add event_target:asteroid_incoming_target_1_country = { has_war_with = ROOT } }
+			modifier = { add = constant:asteroid_incoming_ai.strike_major_add event_target:asteroid_incoming_target_1_country = { has_war_with = ROOT asteroid_incoming_ai_target_is_high_value = yes } }
+			modifier = { add = constant:asteroid_incoming_ai.strike_faction_leader_add event_target:asteroid_incoming_target_1_country = { is_faction_leader = yes has_war_with = ROOT } }
+			modifier = { add = constant:asteroid_incoming_ai.strike_capital_add event_target:asteroid_incoming_target_1_country = { has_war_with = ROOT } event_target:asteroid_incoming_target_1_state = { is_capital = yes } }
+			modifier = { add = constant:asteroid_incoming_ai.strike_logistics_add event_target:asteroid_incoming_target_1_country = { has_war_with = ROOT } event_target:asteroid_incoming_target_1_state = { OR = { supply_node > constant:asteroid_incoming_recovery.mission_supply_node_floor rail_way > constant:asteroid_incoming_recovery.mission_railway_floor } } }
+			modifier = { factor = constant:asteroid_incoming_ai.strike_fascist_factor has_government = fascism has_war = yes }
+			modifier = { factor = constant:asteroid_incoming_ai.strike_democratic_factor has_government = democratic }
+			modifier = { factor = constant:asteroid_incoming_ai.strike_desperate_factor asteroid_incoming_ai_chooser_is_desperate = yes }
+			modifier = { factor = constant:asteroid_incoming_ai.strike_fragment_risk_factor has_global_flag = asteroid_incoming_evolution_i_eligible }
+			modifier = { factor = constant:asteroid_incoming_ai.strike_mineral_holder_factor asteroid_incoming_ai_chooser_holds_mineral_advantage = yes }
+			modifier = { factor = constant:asteroid_incoming_ai.strike_near_capitulation_target_factor event_target:asteroid_incoming_target_1_country = { surrender_progress > constant:asteroid_incoming_ai.target_near_capitulation_threshold } }
+			modifier = { factor = constant:asteroid_incoming_ai.strike_high_chaos_factor check_variable = { var = global.chaos_meter_value value = constant:asteroid_incoming_runtime.minerals_chaos_threshold compare = greater_than_or_equals } }
+		}
+		hidden_effect = {
+			set_variable = { global.asteroid_incoming_selected_target = 1 }
+			asteroid_incoming_stage_selected_target = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr28.8.b
+		trigger = { asteroid_incoming_has_three_valid_target_pairs = yes }
+		ai_chance = {
+			base = constant:asteroid_incoming_ai.strike_base
+			modifier = { factor = constant:asteroid_incoming_ai.protected_target_factor event_target:asteroid_incoming_target_2_country = { asteroid_incoming_ai_target_is_protected = yes } }
+			modifier = { add = constant:asteroid_incoming_ai.strike_enemy_add event_target:asteroid_incoming_target_2_country = { has_war_with = ROOT } }
+			modifier = { add = constant:asteroid_incoming_ai.strike_major_add event_target:asteroid_incoming_target_2_country = { has_war_with = ROOT asteroid_incoming_ai_target_is_high_value = yes } }
+			modifier = { add = constant:asteroid_incoming_ai.strike_faction_leader_add event_target:asteroid_incoming_target_2_country = { is_faction_leader = yes has_war_with = ROOT } }
+			modifier = { add = constant:asteroid_incoming_ai.strike_capital_add event_target:asteroid_incoming_target_2_country = { has_war_with = ROOT } event_target:asteroid_incoming_target_2_state = { is_capital = yes } }
+			modifier = { add = constant:asteroid_incoming_ai.strike_logistics_add event_target:asteroid_incoming_target_2_country = { has_war_with = ROOT } event_target:asteroid_incoming_target_2_state = { OR = { supply_node > constant:asteroid_incoming_recovery.mission_supply_node_floor rail_way > constant:asteroid_incoming_recovery.mission_railway_floor } } }
+			modifier = { factor = constant:asteroid_incoming_ai.strike_fascist_factor has_government = fascism has_war = yes }
+			modifier = { factor = constant:asteroid_incoming_ai.strike_democratic_factor has_government = democratic }
+			modifier = { factor = constant:asteroid_incoming_ai.strike_desperate_factor asteroid_incoming_ai_chooser_is_desperate = yes }
+			modifier = { factor = constant:asteroid_incoming_ai.strike_fragment_risk_factor has_global_flag = asteroid_incoming_evolution_i_eligible }
+			modifier = { factor = constant:asteroid_incoming_ai.strike_mineral_holder_factor asteroid_incoming_ai_chooser_holds_mineral_advantage = yes }
+			modifier = { factor = constant:asteroid_incoming_ai.strike_near_capitulation_target_factor event_target:asteroid_incoming_target_2_country = { surrender_progress > constant:asteroid_incoming_ai.target_near_capitulation_threshold } }
+			modifier = { factor = constant:asteroid_incoming_ai.strike_high_chaos_factor check_variable = { var = global.chaos_meter_value value = constant:asteroid_incoming_runtime.minerals_chaos_threshold compare = greater_than_or_equals } }
+		}
+		hidden_effect = {
+			set_variable = { global.asteroid_incoming_selected_target = 2 }
+			asteroid_incoming_stage_selected_target = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr28.8.c
+		trigger = { asteroid_incoming_has_three_valid_target_pairs = yes }
+		ai_chance = {
+			base = constant:asteroid_incoming_ai.strike_base
+			modifier = { factor = constant:asteroid_incoming_ai.protected_target_factor event_target:asteroid_incoming_target_3_country = { asteroid_incoming_ai_target_is_protected = yes } }
+			modifier = { add = constant:asteroid_incoming_ai.strike_enemy_add event_target:asteroid_incoming_target_3_country = { has_war_with = ROOT } }
+			modifier = { add = constant:asteroid_incoming_ai.strike_major_add event_target:asteroid_incoming_target_3_country = { has_war_with = ROOT asteroid_incoming_ai_target_is_high_value = yes } }
+			modifier = { add = constant:asteroid_incoming_ai.strike_faction_leader_add event_target:asteroid_incoming_target_3_country = { is_faction_leader = yes has_war_with = ROOT } }
+			modifier = { add = constant:asteroid_incoming_ai.strike_capital_add event_target:asteroid_incoming_target_3_country = { has_war_with = ROOT } event_target:asteroid_incoming_target_3_state = { is_capital = yes } }
+			modifier = { add = constant:asteroid_incoming_ai.strike_logistics_add event_target:asteroid_incoming_target_3_country = { has_war_with = ROOT } event_target:asteroid_incoming_target_3_state = { OR = { supply_node > constant:asteroid_incoming_recovery.mission_supply_node_floor rail_way > constant:asteroid_incoming_recovery.mission_railway_floor } } }
+			modifier = { factor = constant:asteroid_incoming_ai.strike_fascist_factor has_government = fascism has_war = yes }
+			modifier = { factor = constant:asteroid_incoming_ai.strike_democratic_factor has_government = democratic }
+			modifier = { factor = constant:asteroid_incoming_ai.strike_desperate_factor asteroid_incoming_ai_chooser_is_desperate = yes }
+			modifier = { factor = constant:asteroid_incoming_ai.strike_fragment_risk_factor has_global_flag = asteroid_incoming_evolution_i_eligible }
+			modifier = { factor = constant:asteroid_incoming_ai.strike_mineral_holder_factor asteroid_incoming_ai_chooser_holds_mineral_advantage = yes }
+			modifier = { factor = constant:asteroid_incoming_ai.strike_near_capitulation_target_factor event_target:asteroid_incoming_target_3_country = { surrender_progress > constant:asteroid_incoming_ai.target_near_capitulation_threshold } }
+			modifier = { factor = constant:asteroid_incoming_ai.strike_high_chaos_factor check_variable = { var = global.chaos_meter_value value = constant:asteroid_incoming_runtime.minerals_chaos_threshold compare = greater_than_or_equals } }
+		}
+		hidden_effect = {
+			set_variable = { global.asteroid_incoming_selected_target = 3 }
+			asteroid_incoming_stage_selected_target = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr28.8.d
+		trigger = { asteroid_incoming_has_three_valid_target_pairs = yes }
+		ai_chance = {
+			base = constant:asteroid_incoming_ai.miss_base
+			modifier = { add = constant:asteroid_incoming_ai.miss_democratic_add has_government = democratic }
+			modifier = { add = constant:asteroid_incoming_ai.miss_peace_add NOT = { has_war = yes } }
+			modifier = { add = constant:asteroid_incoming_ai.miss_stable_add has_stability > constant:asteroid_incoming_ai.stable_stability_threshold }
+			modifier = { add = constant:asteroid_incoming_ai.miss_fragmentation_add has_global_flag = asteroid_incoming_evolution_i_eligible }
+			modifier = { add = constant:asteroid_incoming_ai.miss_mineral_holder_add asteroid_incoming_ai_chooser_holds_mineral_advantage = yes }
+			modifier = { factor = constant:asteroid_incoming_ai.miss_desperate_factor asteroid_incoming_ai_chooser_is_desperate = yes }
+			modifier = { factor = constant:asteroid_incoming_ai.miss_fascist_war_factor has_government = fascism has_war = yes }
+			modifier = { factor = constant:asteroid_incoming_ai.miss_high_chaos_factor check_variable = { var = global.chaos_meter_value value = constant:asteroid_incoming_runtime.minerals_chaos_threshold compare = greater_than_or_equals } }
+		}
+		hidden_effect = { asteroid_incoming_resolve_miss = yes }
+	}
+
+	option = {
+		name = chaosx.nr28.8.na
+		trigger = { NOT = { asteroid_incoming_has_three_valid_target_pairs = yes } }
+		ai_chance = { base = 100 }
+		custom_effect_tooltip = chaosx.nr28.1.na.tt
+		hidden_effect = { asteroid_incoming_close_unavailable_board = yes }
 	}
 }

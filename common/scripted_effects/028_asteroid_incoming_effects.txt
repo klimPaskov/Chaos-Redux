@@ -1306,9 +1306,6 @@ asteroid_incoming_add_state_receipt_to_country = {
 		asteroid_incoming_country_fragment_center_count = asteroid_incoming_aggregate_fragment_center_count
 	}
 	add_to_variable = {
-		asteroid_incoming_country_capital_relocated_count = asteroid_incoming_aggregate_capital_relocated
-	}
-	add_to_variable = {
 		asteroid_incoming_country_rescue_burden = asteroid_incoming_aggregate_rescue_burden
 	}
 	if = {
@@ -1342,8 +1339,8 @@ asteroid_incoming_add_state_receipt_to_country = {
 }
 
 # STATE SCOPE. Adds this state's observed receipt to its owner and, when
-# occupied, its controller. The optional capital and rescue values are
-# parent-owned inputs and default to zero when absent.
+# occupied, its controller. Capital relocation is attributed separately to the
+# exact recorded recipient. The optional rescue value defaults to zero.
 asteroid_incoming_aggregate_current_state = {
 	if = {
 		limit = {
@@ -1390,11 +1387,6 @@ asteroid_incoming_aggregate_current_state = {
 			}
 			set_temp_variable = { asteroid_incoming_aggregate_fragment_center_count = constant:asteroid_incoming_runtime.one }
 		}
-		set_temp_variable = { asteroid_incoming_aggregate_capital_relocated = constant:asteroid_incoming_dust.minimum }
-		if = {
-			limit = { has_variable = asteroid_incoming_state_capital_relocated }
-			set_temp_variable = { asteroid_incoming_aggregate_capital_relocated = asteroid_incoming_state_capital_relocated }
-		}
 		set_temp_variable = { asteroid_incoming_aggregate_rescue_burden = constant:asteroid_incoming_dust.minimum }
 		if = {
 			limit = { has_variable = asteroid_incoming_state_rescue_burden }
@@ -1416,6 +1408,7 @@ asteroid_incoming_aggregate_current_state = {
 				}
 			}
 		}
+		asteroid_incoming_aggregate_capital_relocation = yes
 		set_state_flag = asteroid_incoming_state_country_aggregated
 	}
 }

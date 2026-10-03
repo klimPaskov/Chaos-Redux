@@ -2,8 +2,8 @@
 # CHAOS REDUX - EVENT 028 ASTEROID INCOMING TRIGGERS
 # ============================================================================
 # Event-owned validation and ledger predicates for Event 028. These triggers
-# deliberately validate a bounded target, state, or registry entry. They do
-# not search the world and they do not choose a target. The parent event owns
+# validate exact targets and provide a read-only country-count preflight.
+# They never choose or change a target. The parent event owns
 # candidate weighting, evolution availability, decision definitions, and the
 # final report surface.
 #
@@ -11,6 +11,12 @@
 # is_actual_nonhuman_country classifier. Special Chaos countries remain valid
 # when they are still human-populated and use normal civilian systems.
 # ============================================================================
+
+# Native any-scope count fields use literal mirrors here. Keep these equal to
+# asteroid_incoming_runtime.minimum_target_pair_count and
+# asteroid_incoming_runtime.target_country_minimum_usable_states.
+@asteroid_target_pair_count = 3
+@asteroid_target_country_state_count = 2
 
 asteroid_incoming_state_has_meaningful_settlement = {
 	hidden_trigger = {
@@ -48,16 +54,71 @@ asteroid_incoming_state_is_valid_target = {
 	}
 }
 
-asteroid_incoming_country_is_valid_target = {
+# COUNTRY scope. One center and one distinct surviving capital candidate.
+# The same predicate is used before automatic selection and by the builder.
+asteroid_incoming_country_has_viable_target_pair = {
 	hidden_trigger = {
 		exists = yes
 		is_actual_nonhuman_country = no
-		has_event_target = asteroid_incoming_chooser
-		NOT = { tag = event_target:asteroid_incoming_chooser }
+		NOT = { tag = CXT }
 		any_owned_state = {
+			count = @asteroid_target_country_state_count
 			asteroid_incoming_state_is_valid_target = yes
 			is_owned_and_controlled_by = PREV
 		}
+		any_owned_state = {
+			asteroid_incoming_state_is_valid_target = yes
+			is_owned_and_controlled_by = PREV
+			is_fully_controlled_by = PREV
+		}
+	}
+}
+
+# STATE scope. The center itself can be contested, but a separate owned
+# fully controlled state must be available for the surviving government.
+asteroid_incoming_state_is_valid_main_center = {
+	hidden_trigger = {
+		asteroid_incoming_state_is_valid_target = yes
+		is_owned_and_controlled_by = OWNER
+		OWNER = {
+			any_owned_state = {
+				asteroid_incoming_state_is_valid_target = yes
+				is_owned_and_controlled_by = PREV
+				is_fully_controlled_by = PREV
+				NOT = { state = PREV.PREV }
+			}
+		}
+	}
+}
+
+asteroid_incoming_country_is_valid_target = {
+	hidden_trigger = {
+		asteroid_incoming_country_has_viable_target_pair = yes
+		has_event_target = asteroid_incoming_chooser
+		NOT = { tag = event_target:asteroid_incoming_chooser }
+	}
+}
+
+# ACTING COUNTRY scope. Counts countries, so the three possible centers and
+# their controlled owned backup states are necessarily distinct. No target,
+# random draw, persistent variable, flag, or array is written by this check.
+asteroid_incoming_target_pool_can_exist = {
+	hidden_trigger = {
+		exists = yes
+		any_country = {
+			count = @asteroid_target_pair_count
+			NOT = { tag = PREV }
+			asteroid_incoming_country_has_viable_target_pair = yes
+		}
+	}
+}
+
+asteroid_incoming_automatic_event_is_available = {
+	hidden_trigger = {
+		NOT = { has_global_flag = asteroid_incoming_transaction_active }
+		NOT = { has_global_flag = asteroid_incoming_transaction_resolved }
+		NOT = { has_global_flag = asteroid_incoming_opening_presented }
+		asteroid_incoming_target_pool_can_exist = yes
 	}
 }
 
@@ -67,6 +128,8 @@ asteroid_incoming_country_has_backup_state = {
 		has_event_target = asteroid_incoming_candidate_state
 		any_owned_state = {
 			asteroid_incoming_state_is_valid_target = yes
+			is_owned_and_controlled_by = PREV
+			is_fully_controlled_by = PREV
 			NOT = { state = event_target:asteroid_incoming_candidate_state }
 		}
 	}
@@ -84,7 +147,7 @@ asteroid_incoming_target_pair_is_valid = {
 			asteroid_incoming_country_has_backup_state = yes
 		}
 		event_target:asteroid_incoming_candidate_state = {
-			asteroid_incoming_state_is_valid_target = yes
+			asteroid_incoming_state_is_valid_main_center = yes
 			is_owned_and_controlled_by = event_target:asteroid_incoming_candidate_country
 		}
 	}
@@ -794,51 +857,51 @@ asteroid_incoming_has_three_valid_target_pairs = {
 		has_event_target = asteroid_incoming_target_3_country
 		has_event_target = asteroid_incoming_target_3_state
 		event_target:asteroid_incoming_target_1_country = {
-			exists = yes
-			is_actual_nonhuman_country = no
+			asteroid_incoming_country_has_viable_target_pair = yes
 			NOT = { tag = event_target:asteroid_incoming_chooser }
 			any_owned_state = {
 				asteroid_incoming_state_is_valid_target = yes
 				is_owned_and_controlled_by = PREV
+				is_fully_controlled_by = PREV
 				NOT = { state = event_target:asteroid_incoming_target_1_state }
 			}
 		}
 		event_target:asteroid_incoming_target_1_state = {
-			asteroid_incoming_state_is_valid_target = yes
+			asteroid_incoming_state_is_valid_main_center = yes
 			is_owned_and_controlled_by = event_target:asteroid_incoming_target_1_country
 		}
 		event_target:asteroid_incoming_target_2_country = {
-			exists = yes
-			is_actual_nonhuman_country = no
+			asteroid_incoming_country_has_viable_target_pair = yes
 			NOT = { tag = event_target:asteroid_incoming_chooser }
 			NOT = { tag = event_target:asteroid_incoming_target_1_country }
 			NOT = { tag = event_target:asteroid_incoming_target_3_country }
 			any_owned_state = {
 				asteroid_incoming_state_is_valid_target = yes
 				is_owned_and_controlled_by = PREV
+				is_fully_controlled_by = PREV
 				NOT = { state = event_target:asteroid_incoming_target_2_state }
 			}
 		}
 		event_target:asteroid_incoming_target_2_state = {
-			asteroid_incoming_state_is_valid_target = yes
+			asteroid_incoming_state_is_valid_main_center = yes
 			is_owned_and_controlled_by = event_target:asteroid_incoming_target_2_country
 			NOT = { state = event_target:asteroid_incoming_target_1_state }
 			NOT = { state = event_target:asteroid_incoming_target_3_state }
 		}
 		event_target:asteroid_incoming_target_3_country = {
-			exists = yes
-			is_actual_nonhuman_country = no
+			asteroid_incoming_country_has_viable_target_pair = yes
 			NOT = { tag = event_target:asteroid_incoming_chooser }
 			NOT = { tag = event_target:asteroid_incoming_target_1_country }
 			NOT = { tag = event_target:asteroid_incoming_target_2_country }
 			any_owned_state = {
 				asteroid_incoming_state_is_valid_target = yes
 				is_owned_and_controlled_by = PREV
+				is_fully_controlled_by = PREV
 				NOT = { state = event_target:asteroid_incoming_target_3_state }
 			}
 		}
 		event_target:asteroid_incoming_target_3_state = {
-			asteroid_incoming_state_is_valid_target = yes
+			asteroid_incoming_state_is_valid_main_center = yes
 			is_owned_and_controlled_by = event_target:asteroid_incoming_target_3_country
 			NOT = { state = event_target:asteroid_incoming_target_1_state }
 			NOT = { state = event_target:asteroid_incoming_target_2_state }

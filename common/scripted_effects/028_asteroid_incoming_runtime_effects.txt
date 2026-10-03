@@ -81,7 +81,7 @@ asteroid_incoming_select_best_target_state = {
 	set_temp_variable = { asteroid_incoming_best_target_score = constant:asteroid_incoming_runtime.zero }
 	every_owned_state = {
 		limit = {
-			asteroid_incoming_state_is_valid_target = yes
+			asteroid_incoming_state_is_valid_main_center = yes
 			is_owned_and_controlled_by = PREV
 			OR = {
 				NOT = { has_global_flag = asteroid_incoming_prefer_different_continent }
@@ -213,7 +213,7 @@ asteroid_incoming_build_target_pool = {
 				asteroid_incoming_country_is_valid_target = yes
 				NOT = { is_in_array = { array = global.asteroid_incoming_target_countries value = THIS } }
 				any_owned_state = {
-					asteroid_incoming_state_is_valid_target = yes
+					asteroid_incoming_state_is_valid_main_center = yes
 					is_owned_and_controlled_by = PREV
 					NOT = { is_on_same_continent_as = event_target:asteroid_incoming_target_1_state }
 				}
@@ -284,6 +284,7 @@ asteroid_incoming_prepare_random_event_fire = {
 		}
 		else = {
 			set_variable = { global.asteroid_incoming_target_pool_unavailable = 1 }
+			asteroid_incoming_clear_target_pool = yes
 			clr_global_flag = asteroid_incoming_transaction_active
 			clear_global_event_target = asteroid_incoming_chooser
 		}
@@ -466,7 +467,31 @@ asteroid_incoming_cancel_selected_target = {
 	clear_global_event_target = asteroid_incoming_candidate_country
 	clear_global_event_target = asteroid_incoming_candidate_state
 	set_variable = { global.asteroid_incoming_target_confirmation_pending = 0 }
-	country_event = { id = chaosx.nr28.1 }
+	country_event = { id = chaosx.nr28.8 }
+}
+
+# CHOOSER COUNTRY SCOPE. A board that lost its viable pairs closes without
+# selecting an unchosen coordinate, granting a miss achievement, or creating
+# physical aftermath. A previously resolved impact is never changed here.
+asteroid_incoming_close_unavailable_board = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = asteroid_incoming_impact_recorded }
+			NOT = { has_global_flag = asteroid_incoming_miss_recorded }
+			NOT = { has_global_flag = asteroid_incoming_transaction_resolved }
+		}
+		set_global_flag = asteroid_incoming_fail_closed_recorded
+		set_variable = { global.asteroid_incoming_outcome = constant:asteroid_incoming_event.history_payload_fail_closed }
+		set_temp_variable = { asteroid_incoming_history_payload = constant:asteroid_incoming_event.history_payload_fail_closed }
+		asteroid_incoming_record_followup_history = yes
+		clr_global_flag = asteroid_incoming_evolution_i_eligible
+		clr_global_flag = asteroid_incoming_evolution_ii_eligible
+		clr_global_flag = asteroid_incoming_evolution_snapshot_recorded
+		asteroid_incoming_fail_closed_transaction = yes
+		asteroid_incoming_clear_target_pool = yes
+		asteroid_incoming_cleanup_transaction = yes
+		asteroid_incoming_cleanup_finished_transaction = yes
+	}
 }
 
 asteroid_incoming_accept_selected_target = {
@@ -846,83 +871,15 @@ asteroid_incoming_choose_fragment_sites = {
 	}
 }
 
-# COUNTRY SCOPE. Selects the strongest surviving backup capital outside the
-# complete main footprint. Core status, population, established cities,
-# industry, infrastructure, rail, and supply all contribute to the score.
+# COUNTRY SCOPE. Legacy wrapper for the current-control capital selector.
+# Controlled cores and safer territory take precedence over development score.
+# Surviving ring states and current unprocessed fragment centers remain usable.
 asteroid_incoming_select_backup_capital = {
-	clear_global_event_target = asteroid_incoming_backup_capital_state
-	save_event_target_as = asteroid_incoming_backup_capital_country
-	set_temp_variable = { asteroid_incoming_backup_capital_best_score = constant:asteroid_incoming_runtime.zero }
-	every_owned_state = {
-		limit = {
-			asteroid_incoming_state_is_valid_target = yes
-			is_owned_and_controlled_by = PREV
-			NOT = { is_in_array = { array = global.asteroid_incoming_main_footprint_states value = THIS } }
-			NOT = { state = event_target:asteroid_incoming_locked_state }
-		}
-		set_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_base }
-		if = { limit = { is_core_of = PREV } add_to_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_capital } }
-		if = { limit = { state_population_k > constant:asteroid_incoming_target.large_population_k } add_to_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_population_large } }
-		else_if = { limit = { state_population_k > constant:asteroid_incoming_target.medium_population_k } add_to_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_population_medium } }
-		if = { limit = { any_province_building_level = { province = { all_provinces = yes limit_to_victory_point = yes } building = bunker level > @asteroid_vp_any_bunker_level } } add_to_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_victory_point } }
-		if = { limit = { industrial_complex > constant:asteroid_incoming_target.minimum_building_level } add_to_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_industry } }
-		if = { limit = { infrastructure > constant:asteroid_incoming_target.minimum_building_level } add_to_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_rail } }
-		if = { limit = { rail_way > constant:asteroid_incoming_target.minimum_building_level } add_to_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_rail } }
-		if = { limit = { supply_node > constant:asteroid_incoming_target.minimum_building_level } add_to_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_supply } }
-		if = {
-			limit = {
-				any_neighbor_state = {
-					CONTROLLER = {
-						exists = yes
-						has_war_with = event_target:asteroid_incoming_backup_capital_country
-					}
-				}
-			}
-			add_to_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_frontline_penalty }
-		}
-		if = {
-			limit = {
-				check_variable = {
-					var = asteroid_incoming_backup_capital_score
-					value = asteroid_incoming_backup_capital_best_score
-					compare = greater_than
-				}
-			}
-			save_global_event_target_as = asteroid_incoming_backup_capital_state
-			set_temp_variable = { asteroid_incoming_backup_capital_best_score = asteroid_incoming_backup_capital_score }
-		}
-	}
+	asteroid_incoming_select_surviving_capital = yes
 }
 
 asteroid_incoming_relocate_destroyed_capital = {
-	if = {
-		limit = {
-			check_variable = {
-				var = global.asteroid_incoming_target_was_capital
-				value = constant:asteroid_incoming_runtime.zero
-				compare = greater_than
-			}
-			has_event_target = asteroid_incoming_original_target_country
-			event_target:asteroid_incoming_original_target_country = { exists = yes }
-		}
-			event_target:asteroid_incoming_original_target_country = {
-			save_global_event_target_as = asteroid_incoming_capital_country
-			asteroid_incoming_select_backup_capital = yes
-			if = {
-				limit = { has_event_target = asteroid_incoming_backup_capital_state }
-				set_capital = { state = event_target:asteroid_incoming_backup_capital_state remember_old_capital = no }
-				set_country_flag = asteroid_incoming_capital_relocated
-				event_target:asteroid_incoming_backup_capital_state = {
-					save_global_event_target_as = asteroid_incoming_replacement_capital_state
-				}
-			}
-		}
-		if = {
-			limit = { has_event_target = asteroid_incoming_backup_capital_state }
-			set_global_flag = asteroid_incoming_capital_relocation_complete
-		}
-		else = { set_global_flag = asteroid_incoming_capital_relocation_failed }
-	}
+	asteroid_incoming_relocate_current_capital = yes
 }
 
 asteroid_incoming_maybe_call_secondary_disaster = {
