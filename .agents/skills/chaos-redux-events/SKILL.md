@@ -658,6 +658,12 @@ Before adding or extending `script_constants`, read the installed `common/script
 Every new group must begin with `schema` matching its key and data kinds (`int`, `fixed_point`, or a documented complex schema); new keys in an existing group inherit and must satisfy that schema.
 A basic brace parse does not validate schema correctness.
 
+**Variable arithmetic evidence:** Distinguish getter, modifier, normal variable and script constant representations, read installed `documentation\script_concept_documentation.md:184-215` and offline `paradox_wiki\Data structures - Hearts of Iron 4 Wiki.md:425-434`, and record precision conflicts rather than inferring a universal normal variable maximum from mathExpr fixed point, modifier-only three-decimal precision or deprecated raw-manpower getter overflow near 2.1 million.
+Audit actual source operations with a conservative bounded fixed-point model, explicit rounding/truncation assumptions and independent integer-floor boundary and count-type cases; a later division or clamp does not prove intermediate safety, and passing unbounded Python arithmetic does not prove engine behavior.
+Never turn an unsupported numeric maximum into an eligibility gate or no-payment policy, or silently cap actual history.
+For integer receipt validation, prefer modulo by one on scratch storage using documented `modulo_temp_variable` (installed `documentation\triggers_documentation.md:6442-6454` and `documentation\effects_documentation.md:4986-4998`) without rounding the receipt or adding maximum/count caps; use ratio quotient/remainder or rational scaled coefficients only when proven equivalent under the stated arithmetic assumptions.
+Keep script constant category IDs unique across files so helpers with different schemas cannot redeclare the same category.
+
 Known sensitive fields:
 
 - `set_country_flag = { days = ... }`
