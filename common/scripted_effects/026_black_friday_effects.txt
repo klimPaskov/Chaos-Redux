@@ -78,6 +78,39 @@ black_friday_scan_receipt_non_political_payment = {
 	}
 }
 
+# A timed PP-only owner action may credit its PP family only after its
+# exact Black Friday component is settled. Ordinary achievement calls keep the
+# existing non-political payment scan above.
+black_friday_scan_receipt_political_power_only = {
+	set_temp_variable = { black_friday_purchase_has_non_political_paid_component = constant:universal_cost_framework.zero }
+	set_temp_variable = { black_friday_purchase_receipt_proof_valid = constant:universal_cost_framework.zero }
+	set_temp_variable = { universal_cost_transaction_lookup_id = black_friday_purchase_transaction_id }
+	universal_cost_find_transaction_row = yes
+	if = {
+		limit = {
+			check_variable = { var = universal_cost_transaction_is_indexed value = constant:universal_cost_framework.one compare = equals }
+			check_variable = { var = universal_cost_transaction_states^universal_cost_transaction_found_index value = constant:universal_cost_framework.transaction_state_settled compare = equals }
+			check_variable = { var = universal_cost_transaction_source_ids^universal_cost_transaction_found_index value = constant:universal_cost_framework.black_friday_source_id compare = equals }
+			check_variable = { var = black_friday_purchase_family_id value = constant:universal_cost_family.political_power compare = equals }
+		}
+		set_temp_variable = { universal_cost_component_lookup_transaction_id = black_friday_purchase_transaction_id }
+		set_temp_variable = { universal_cost_component_lookup_id = constant:black_friday_event.owner_component_political_power }
+		universal_cost_find_component_row = yes
+		if = {
+			limit = {
+				check_variable = { var = universal_cost_component_lookup_result value = constant:universal_cost_framework.result_success compare = equals }
+				check_variable = { var = universal_cost_component_found_index value = constant:universal_cost_framework.invalid_index compare = greater_than }
+				check_variable = { var = universal_cost_component_resource_kinds^universal_cost_component_found_index value = constant:universal_cost_resource_kind.political_power compare = equals }
+				check_variable = { var = universal_cost_component_source_ids^universal_cost_component_found_index value = constant:universal_cost_framework.black_friday_source_id compare = equals }
+				check_variable = { var = universal_cost_component_refunded_states^universal_cost_component_found_index value = constant:universal_cost_component_state.not_refunded compare = equals }
+				check_variable = { var = universal_cost_component_actual_paid_costs^universal_cost_component_found_index value = black_friday_purchase_actual_paid_cost compare = equals }
+				check_variable = { var = universal_cost_component_actual_paid_costs^universal_cost_component_found_index value = constant:universal_cost_framework.zero compare = greater_than }
+			}
+			set_temp_variable = { black_friday_purchase_receipt_proof_valid = constant:universal_cost_framework.one }
+		}
+	}
+}
+
 # Shared primary-family credit accepts either a committed universal receipt or
 # a proven native equipment reservation. The caller supplies the family ID;
 # non-political payment is tracked from actual committed receipts and raids.
@@ -264,7 +297,24 @@ black_friday_record_achievement_transaction = {
 	set_temp_variable = { black_friday_purchase_achievement_pointer = black_friday_achievement_row_plus_one_@var:black_friday_purchase_transaction_id }
 	if = {
 		limit = {
-			black_friday_achievement_is_valid_sale = yes
+			OR = {
+				black_friday_achievement_is_valid_sale = yes
+				AND = {
+					has_variable = black_friday_purchase_allow_post_expiry_confirmation
+					check_variable = { black_friday_purchase_allow_post_expiry_confirmation > 0 }
+					has_variable = black_friday_purchase_allow_political_power_only
+					check_variable = { black_friday_purchase_allow_political_power_only > 0 }
+					black_friday_achievement_possible_campaign_is_valid = yes
+					has_global_flag = black_friday_natural_activation
+					NOT = { has_global_flag = black_friday_force_disqualified }
+					NOT = { has_global_flag = black_friday_manual_disqualified }
+					NOT = { has_country_flag = black_friday_achievement_awarded }
+					check_variable = { var = black_friday_purchase_family_id value = constant:universal_cost_family.political_power compare = equals }
+					check_variable = { var = black_friday_purchase_sale_sequence value = constant:black_friday_event.zero_date compare = greater_than }
+					check_variable = { var = black_friday_achievement_active_sale_sequence value = black_friday_purchase_sale_sequence compare = equals }
+					check_variable = { var = black_friday_achievement_indexed_sale_sequence value = black_friday_purchase_sale_sequence compare = equals }
+				}
+			}
 			check_variable = { black_friday_purchase_transaction_id > 0 }
 			check_variable = { black_friday_purchase_family_id > 0 }
 			check_variable = { black_friday_purchase_ordinary_cost > 0 }
@@ -282,7 +332,14 @@ black_friday_record_achievement_transaction = {
 			}
 			black_friday_prepare_achievement_progress = yes
 		}
-		black_friday_scan_receipt_non_political_payment = yes
+		if = {
+			limit = {
+				has_variable = black_friday_purchase_allow_political_power_only
+				check_variable = { black_friday_purchase_allow_political_power_only > 0 }
+			}
+			black_friday_scan_receipt_political_power_only = yes
+		}
+		else = { black_friday_scan_receipt_non_political_payment = yes }
 		if = {
 			limit = {
 				check_variable = { var = black_friday_purchase_receipt_proof_valid value = constant:universal_cost_framework.one compare = equals }
@@ -4065,6 +4122,117 @@ black_friday_pay_cbrn_theater_assignment = {
 					set_temp_variable = { universal_cost_transaction_id = black_friday_owner_transaction_id }
 					universal_cost_refund_transaction = yes
 				}
+			}
+		}
+	}
+}
+
+# Country scope. The mask shipment remains in the owner's idempotent state
+# escrow; only the PP service fee is a Black Friday purchase component.
+black_friday_pay_cbrn_external_aid_pp_fee = {
+	set_temp_variable = { black_friday_cbrn_external_aid_pp_payment_success = constant:universal_cost_framework.zero }
+	if = {
+		limit = { black_friday_is_active = yes }
+		black_friday_quote_cbrn_external_aid_pp_fee = yes
+		if = {
+			limit = {
+				check_variable = { var = black_friday_cbrn_external_aid_pp_quote_valid value = constant:universal_cost_framework.one compare = equals }
+				check_variable = { var = black_friday_cbrn_external_aid_pp_affordable value = constant:universal_cost_framework.one compare = equals }
+				has_event_target = cbrn_external_aid_transaction_target_state
+				event_target:cbrn_external_aid_transaction_target_state = {
+					has_state_flag = cbrn_external_mask_escrow_active
+					cbrn_occupation_state_has_donor_external_aid_reservation = yes
+				}
+			}
+			black_friday_allocate_owner_transaction = yes
+			set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.political_power }
+			set_temp_variable = { universal_cost_payment_amount = black_friday_cbrn_external_aid_pp_cost }
+			universal_cost_pay_component = yes
+			if = {
+				limit = { check_variable = { var = universal_cost_payment_result value = constant:universal_cost_framework.result_success compare = equals } }
+				set_temp_variable = { universal_cost_transaction_id = black_friday_owner_transaction_id }
+				set_temp_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_political_power }
+				set_temp_variable = { universal_cost_transaction_resource_kind = constant:universal_cost_resource_kind.political_power }
+				set_temp_variable = { universal_cost_transaction_resource_id = constant:universal_cost_framework.zero }
+				set_temp_variable = { universal_cost_transaction_ordinary_cost = constant:cbrn_occupation_decision_cost.protective_aid_pp }
+				set_temp_variable = { universal_cost_transaction_quoted_cost = black_friday_cbrn_external_aid_pp_cost }
+				set_temp_variable = { universal_cost_transaction_actual_paid_cost = black_friday_cbrn_external_aid_pp_cost }
+				set_temp_variable = { universal_cost_transaction_source_id = constant:universal_cost_framework.black_friday_source_id }
+				set_temp_variable = { universal_cost_transaction_primary_component = constant:black_friday_event.owner_component_political_power }
+				universal_cost_record_transaction = yes
+				if = {
+					limit = { check_variable = { var = universal_cost_record_transaction_result value = constant:universal_cost_framework.result_success compare = equals } }
+					event_target:cbrn_external_aid_transaction_target_state = {
+						set_variable = { cbrn_external_mask_escrow_transaction_id = black_friday_owner_transaction_id }
+						set_variable = { cbrn_external_mask_escrow_transaction_sale_sequence = global.black_friday_sale_sequence }
+					}
+					set_temp_variable = { black_friday_cbrn_external_aid_pp_payment_success = constant:universal_cost_framework.one }
+				}
+				else = {
+					set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.political_power }
+					set_temp_variable = { universal_cost_payment_amount = black_friday_cbrn_external_aid_pp_cost }
+					universal_cost_credit_component = yes
+					clear_variable = universal_cost_allocated_transaction_id_@var:black_friday_owner_transaction_id
+				}
+			}
+			else = { clear_variable = universal_cost_allocated_transaction_id_@var:black_friday_owner_transaction_id }
+		}
+	}
+	else = {
+		set_temp_variable = { cbrn_protection_pp_debit_requested = constant:cbrn_occupation_decision_cost.protective_aid_pp }
+		cbrn_debit_protection_political_power = yes
+		set_temp_variable = { black_friday_cbrn_external_aid_pp_payment_success = constant:universal_cost_framework.one }
+	}
+}
+
+# State scope. The payer-scoped receipt closes after the selected target's
+# native mask cleanup. Only a successful shipment completion can credit its PP
+# family; completion after expiry is tied back to the sale sequence at payment.
+black_friday_settle_cbrn_external_aid_pp_fee_receipt = {
+	if = {
+		limit = { has_variable = cbrn_external_mask_escrow_transaction_id }
+		set_temp_variable = { universal_cost_transaction_id = cbrn_external_mask_escrow_transaction_id }
+		set_temp_variable = { black_friday_cbrn_external_aid_receipt_settled = constant:universal_cost_framework.zero }
+		if = {
+			limit = { check_variable = { var = universal_cost_transaction_id value = constant:universal_cost_framework.zero compare = greater_than } }
+			set_temp_variable = { black_friday_purchase_transaction_id = universal_cost_transaction_id }
+			set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.political_power }
+			set_temp_variable = { black_friday_purchase_ordinary_cost = constant:cbrn_occupation_decision_cost.protective_aid_pp }
+			set_temp_variable = { black_friday_purchase_sale_sequence = cbrn_external_mask_escrow_transaction_sale_sequence }
+			ROOT = {
+				set_temp_variable = { universal_cost_transaction_id = black_friday_purchase_transaction_id }
+				universal_cost_settle_transaction = yes
+				if = {
+					limit = { check_variable = { var = universal_cost_settle_transaction_result value = constant:universal_cost_framework.result_success compare = equals } }
+					set_temp_variable = { black_friday_cbrn_external_aid_receipt_settled = constant:universal_cost_framework.one }
+					if = {
+						limit = { check_variable = { var = black_friday_cbrn_external_aid_successful_completion value = constant:universal_cost_framework.one compare = equals } }
+						set_temp_variable = { universal_cost_component_lookup_transaction_id = black_friday_purchase_transaction_id }
+						set_temp_variable = { universal_cost_component_lookup_id = constant:black_friday_event.owner_component_political_power }
+						universal_cost_find_component_row = yes
+						if = {
+							limit = {
+								check_variable = { var = universal_cost_component_lookup_result value = constant:universal_cost_framework.result_success compare = equals }
+								check_variable = { var = universal_cost_component_found_index value = constant:universal_cost_framework.invalid_index compare = greater_than }
+								check_variable = { var = universal_cost_component_resource_kinds^universal_cost_component_found_index value = constant:universal_cost_resource_kind.political_power compare = equals }
+								check_variable = { var = universal_cost_component_source_ids^universal_cost_component_found_index value = constant:universal_cost_framework.black_friday_source_id compare = equals }
+								check_variable = { var = universal_cost_component_actual_paid_costs^universal_cost_component_found_index value = constant:universal_cost_framework.zero compare = greater_than }
+							}
+							set_temp_variable = { black_friday_purchase_actual_paid_cost = universal_cost_component_actual_paid_costs^universal_cost_component_found_index }
+							set_temp_variable = { black_friday_purchase_allow_political_power_only = constant:universal_cost_framework.one }
+							set_temp_variable = { black_friday_purchase_allow_post_expiry_confirmation = constant:universal_cost_framework.one }
+							set_temp_variable = { black_friday_purchase_is_refundable = constant:universal_cost_framework.zero }
+							black_friday_record_achievement_transaction = yes
+							set_temp_variable = { black_friday_purchase_allow_political_power_only = constant:universal_cost_framework.zero }
+							set_temp_variable = { black_friday_purchase_allow_post_expiry_confirmation = constant:universal_cost_framework.zero }
+						}
+					}
+				}
+			}
+			if = {
+				limit = { check_variable = { var = black_friday_cbrn_external_aid_receipt_settled value = constant:universal_cost_framework.one compare = equals } }
+				clear_variable = cbrn_external_mask_escrow_transaction_id
+				clear_variable = cbrn_external_mask_escrow_transaction_sale_sequence
 			}
 		}
 	}

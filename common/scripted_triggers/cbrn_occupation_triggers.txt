@@ -225,8 +225,43 @@ cbrn_occupation_country_can_continue_external_protective_aid = {
 
 cbrn_occupation_external_aid_payment_ready = {
 	cbrn_occupation_country_can_supply_external_protective_aid = yes
-	NOT = { has_political_power < constant:cbrn_occupation_decision_cost.protective_aid_pp }
+	black_friday_can_pay_cbrn_external_aid_pp_fee = yes
 	FROM = { cbrn_occupation_state_can_receive_external_protective_aid = yes }
+}
+
+# Country scope. Exposes the exact full shipment model amounts in the cost
+# tooltip using the same oldest-first stock order as the state escrow effect.
+cbrn_occupation_quote_external_aid_mask_models = {
+	set_temp_variable = { cbrn_mask_reservation_quote = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_external_aid_mask_quote_total = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_external_aid_mask_quote_reconditioned = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_external_aid_mask_quote_basic = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_external_aid_mask_quote_improved = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_external_aid_mask_quote_advanced = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_external_aid_mask_quote_sealed = constant:cbrn_math.zero }
+	FROM = { cbrn_quote_external_state_mask_reservation = yes }
+	set_temp_variable = { cbrn_external_aid_mask_quote_total = cbrn_mask_reservation_quote }
+	set_temp_variable = { cbrn_external_aid_mask_quote_remaining = cbrn_mask_reservation_quote }
+	set_temp_variable = { cbrn_mask_reservation_model_available = num_equipment@gas_mask_equipment_reconditioned }
+	set_temp_variable = { cbrn_external_aid_mask_quote_reconditioned = cbrn_external_aid_mask_quote_remaining }
+	clamp_temp_variable = { var = cbrn_external_aid_mask_quote_reconditioned min = constant:cbrn_math.zero max = cbrn_mask_reservation_model_available }
+	subtract_from_temp_variable = { cbrn_external_aid_mask_quote_remaining = cbrn_external_aid_mask_quote_reconditioned }
+	set_temp_variable = { cbrn_mask_reservation_model_available = num_equipment@gas_mask_equipment_1 }
+	set_temp_variable = { cbrn_external_aid_mask_quote_basic = cbrn_external_aid_mask_quote_remaining }
+	clamp_temp_variable = { var = cbrn_external_aid_mask_quote_basic min = constant:cbrn_math.zero max = cbrn_mask_reservation_model_available }
+	subtract_from_temp_variable = { cbrn_external_aid_mask_quote_remaining = cbrn_external_aid_mask_quote_basic }
+	set_temp_variable = { cbrn_mask_reservation_model_available = num_equipment@gas_mask_equipment_2 }
+	set_temp_variable = { cbrn_external_aid_mask_quote_improved = cbrn_external_aid_mask_quote_remaining }
+	clamp_temp_variable = { var = cbrn_external_aid_mask_quote_improved min = constant:cbrn_math.zero max = cbrn_mask_reservation_model_available }
+	subtract_from_temp_variable = { cbrn_external_aid_mask_quote_remaining = cbrn_external_aid_mask_quote_improved }
+	set_temp_variable = { cbrn_mask_reservation_model_available = num_equipment@gas_mask_equipment_3 }
+	set_temp_variable = { cbrn_external_aid_mask_quote_advanced = cbrn_external_aid_mask_quote_remaining }
+	clamp_temp_variable = { var = cbrn_external_aid_mask_quote_advanced min = constant:cbrn_math.zero max = cbrn_mask_reservation_model_available }
+	subtract_from_temp_variable = { cbrn_external_aid_mask_quote_remaining = cbrn_external_aid_mask_quote_advanced }
+	set_temp_variable = { cbrn_mask_reservation_model_available = num_equipment@gas_mask_equipment_4 }
+	set_temp_variable = { cbrn_external_aid_mask_quote_sealed = cbrn_external_aid_mask_quote_remaining }
+	clamp_temp_variable = { var = cbrn_external_aid_mask_quote_sealed min = constant:cbrn_math.zero max = cbrn_mask_reservation_model_available }
+	always = yes
 }
 
 cbrn_occupation_state_has_external_protective_aid_emergency = {

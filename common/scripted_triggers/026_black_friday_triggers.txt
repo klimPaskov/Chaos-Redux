@@ -1602,3 +1602,39 @@ black_friday_can_pay_cbrn_theater_assignment = {
 	check_variable = { var = black_friday_cbrn_theater_decontamination_affordable value = constant:universal_cost_framework.one compare = equals }
 	check_variable = { var = black_friday_cbrn_theater_fuel_affordable value = constant:universal_cost_framework.one compare = equals }
 }
+
+# Country scope. The aid shipment is a conserved transfer, not a sale cost;
+# Event 26 quotes only its fixed Political Power service fee.
+black_friday_quote_cbrn_external_aid_pp_fee = {
+	set_temp_variable = { black_friday_cbrn_external_aid_pp_quote_valid = constant:universal_cost_framework.one }
+	set_temp_variable = { black_friday_cbrn_external_aid_pp_cost = constant:cbrn_occupation_decision_cost.protective_aid_pp }
+	if = {
+		limit = { black_friday_is_active = yes }
+		set_temp_variable = { black_friday_cbrn_external_aid_pp_quote_valid = constant:universal_cost_framework.zero }
+		set_temp_variable = { universal_cost_source_query_id = constant:universal_cost_framework.black_friday_source_id }
+		if = {
+			limit = { universal_cost_source_is_active = yes }
+			set_temp_variable = { black_friday_quote_ordinary_cost = constant:cbrn_occupation_decision_cost.protective_aid_pp }
+			set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.political_power }
+			if = {
+				limit = { black_friday_quote_custom_cost = yes }
+				set_temp_variable = { black_friday_cbrn_external_aid_pp_cost = black_friday_quote_final_cost }
+				set_temp_variable = { black_friday_cbrn_external_aid_pp_quote_valid = constant:universal_cost_framework.one }
+			}
+		}
+	}
+	set_temp_variable = { black_friday_quote_final_cost = black_friday_cbrn_external_aid_pp_cost }
+	set_temp_variable = { black_friday_current_resource_kind = constant:universal_cost_resource_kind.political_power }
+	set_temp_variable = { black_friday_cbrn_external_aid_pp_affordable = constant:universal_cost_framework.zero }
+	if = {
+		limit = { black_friday_active_component_is_affordable = yes }
+		set_temp_variable = { black_friday_cbrn_external_aid_pp_affordable = constant:universal_cost_framework.one }
+	}
+	always = yes
+}
+
+black_friday_can_pay_cbrn_external_aid_pp_fee = {
+	black_friday_quote_cbrn_external_aid_pp_fee = yes
+	check_variable = { var = black_friday_cbrn_external_aid_pp_quote_valid value = constant:universal_cost_framework.one compare = equals }
+	check_variable = { var = black_friday_cbrn_external_aid_pp_affordable value = constant:universal_cost_framework.one compare = equals }
+}

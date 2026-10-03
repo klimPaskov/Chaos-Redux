@@ -26,6 +26,8 @@ The table below preserves the accepted requirements and their original evidence 
 
 ## Current dispositions — 2026-09-27
 
+Bounded source update on 2026-10-03: the [Protective Aid PP contract](../026_black_friday_plans/2026-10-03_cbrn_protective_aid_pp_adapter.md) adds current-price 25/13/7 PP payment and delayed successful-delivery credit while preserving the full exact-model mask shipment and cancellation refunds. Parent review resolved the pooled-mask icon finding with the existing archetype sprite across aid, export, emergency distribution, occupied distribution, hospitals, and foreign cleanup. The nine PP boundary and four mixed-model conservation checks are source-contract models; native timer, cost-row, and factory-sale coverage remain open. This narrows CBRN-15 payment/presentation gaps without completing Event 026 or any engine-evidence requirement below.
+
 | ID | Disposition | Current evidence and limit |
 | --- | --- | --- |
 | CBRN-01 | Implemented in source; scenario validation unresolved | Three named decisions, one shared 5-Command-Power constant, and a 90-day reassessment are present. Scripted localisation quotes the same cost and duration constants as payment and the timed flag; the click effect rechecks inclusive affordability before changing policy. Current policy `decision_ai_will_do` MCP inspection found the decision source but no scenario-bound available candidates. Native cost-row rendering and the earlier three-scenario AI evaluation remain unresolved. |
