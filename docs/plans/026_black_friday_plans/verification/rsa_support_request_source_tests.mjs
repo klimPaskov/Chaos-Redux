@@ -39,7 +39,7 @@ class Requests {
 		for (const e of body) {
 			const a = e.value;
 			if (e.key === 'if') { if (this.run(get(a, 'limit') || [])) this.run(a.filter(x => x.key !== 'limit')); }
-			else if (e.key === 'NOT') result = !this.run(a) && result;
+			else if (e.key === 'NOT') result = !a.some(x => this.run([x])) && result;
 			else if (e.key === 'hidden_trigger') result = this.run(a) && result;
 			else if (e.key === 'has_country_flag') result = this.current.flags.has(a) && result;
 			else if (e.key === 'has_global_flag') { assert.equal(a, 'africa_rsa_civil_war_active'); result = this.active && result; }

@@ -139,7 +139,7 @@ class VM {
           }
         }
       } else if (k === 'always') { if (v !== 'yes') return false; }
-      else if (k === 'NOT') { if (this.eval(v)) return false; }
+      else if (k === 'NOT') { if (v.some(n => this.eval([n]))) return false; }
       else if (k === 'OR') { if (!v.some(n => this.eval([n]))) return false; }
       else if (k === 'AND' || k === 'hidden_trigger') { if (!this.eval(v)) return false; }
       else if (k === 'has_global_flag') { if (!this.flags.has(v)) return false; }
@@ -374,6 +374,46 @@ assert(optionalQuantum.call('universal_cost_round_up_to_quantum'));
 assert.equal(optionalQuantum.value('universal_cost_quantize_result'), ticks('3'));
 assert.equal(optionalQuantum.value('universal_cost_quote_rounding_quantum'), ticks('0.12345'));
 summary.optionalQuantumChecks = 3;
+// HOI4 NOT is NOR over sibling triggers. An explicit AND is required to
+// negate a conjunction, and this distinction is independent of price math.
+for (const a of [false, true]) for (const b of [false, true]) {
+  const vm = new VM();
+  definitions.set('vm_boolean_nor', parse(`NOT = { always = ${a ? 'yes' : 'no'} always = ${b ? 'yes' : 'no'} }`));
+  definitions.set('vm_boolean_nand', parse(`NOT = { AND = { always = ${a ? 'yes' : 'no'} always = ${b ? 'yes' : 'no'} } }`));
+  assert.equal(vm.run('vm_boolean_nor'), !(a || b));
+  assert.equal(vm.run('vm_boolean_nand'), !(a && b));
+}
+summary.booleanTruthTableChecks = 8;
+const alignedData = ['ratios', 'priorities', 'eligibility_masks'];
+let malformedChecks = 0;
+function rejectMisalignment(changes) {
+  for (const frontend of ['universal_cost_quote_exact', 'universal_cost_quote_integer', 'black_friday_quote_custom_cost']) {
+    const vm = fixture('3', '1', 1, rows('5000'));
+    for (const [suffix, length] of changes) {
+      const array = vm.arrays.get(`global.universal_cost_source_${suffix}`);
+      if (length === 0) array.pop(); else array.push(0n);
+    }
+    vm.set('black_friday_quote_ordinary_cost', '3').set('black_friday_quote_family_mask', 1).set('black_friday_quote_requested_quantum', 1);
+    assert.equal(vm.call(frontend), frontend === 'black_friday_quote_custom_cost' ? false : true);
+    assert.equal(vm.value(frontend === 'black_friday_quote_custom_cost' ? 'black_friday_quote_valid' : 'universal_cost_quote_valid'), 0n);
+    assert(vm.call('universal_cost_check_quote_affordable'));
+    assert.equal(vm.value('universal_cost_quote_affordable'), 0n);
+    recordLifetime(vm); malformedChecks++;
+  }
+}
+for (let pattern = 0; pattern < 27; pattern++) {
+  let encoded = pattern;
+  const changes = [];
+  for (const suffix of alignedData) {
+    const length = encoded % 3; encoded = Math.floor(encoded / 3);
+    if (length !== 1) changes.push([suffix, length]);
+  }
+  if (changes.length) rejectMisalignment(changes);
+}
+rejectMisalignment([['ids', 0]]);
+rejectMisalignment([['ids', 2]]);
+assert.equal(malformedChecks, 84);
+summary.malformedRegistryGateChecks = malformedChecks;
 // Malformed aligned storage and nonrepresentable price fail the quoted gate.
 const malformed = fixture('3', '1', 1, rows('5000'));
 malformed.arrays.set('global.universal_cost_source_ratios', []);

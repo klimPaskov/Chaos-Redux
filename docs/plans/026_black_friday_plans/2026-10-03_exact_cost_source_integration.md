@@ -1,8 +1,13 @@
 # Event 026 exact-cost source integration
 
-Disposition: implemented in source for the bounded arithmetic, receipt, caller-storage, and five-action RSA tranche, with full Event 26 completion unresolved.
+Disposition: partial source integration, with EC-A01 alignment/model repair independently verified and EC-A02 public achievement receipt proof unresolved.
 Acceptance basis: the original complete Event 26 goal and its explicit universal quote/payment, actual-paid refund, preserved-action, and achievement contracts.
 Black Friday remains default-disabled, and no universal cost-coverage or clean live error-log claim is made for this source change.
+
+The subsequent [completion audit](subagent_handoffs/2026-10-03_exact_cost_source_completion_audit.md) found that the source-array rejection guard and its interpreter used inconsistent NOT semantics, and that the default achievement proof accepted ineligible indexed receipts.
+The [alignment repair](2026-10-03_registry_alignment_boolean_repair.md) adds the proper explicit conjunction, NOR model, and rejection matrix.
+The receipt-proof repair remains queued in the architect's active implementation and must pass a public record-to-credit recheck.
+The earlier passing suite counts below remain evidence for their stated scenarios, not closure of either finding.
 
 ## Implemented surfaces
 
@@ -79,7 +84,8 @@ Native texture and popup acceptance remain unproven.
 Byte-exact comparison baseline repair is committed as `f9f057581c080784b92ed14fd0a736f6f9708958`.
 The physical and raw committed decision bytes both hash to `40283784e0d0ea091bd96c96c46f0155ec01e911091b2b20a0389ac5e1d696cc`.
 The generic helper-lifetime skill update is committed as `cbeb25d4ffe892875674fd4454894bf1168b9e73`, with unrelated staged and unstaged work preserved.
-The source integration is prepared through an isolated index and a guarded shared-tree ref update, not a whole-index commit.
+The 43-file source integration is committed as `e64e95aa3bcb9fcab5a38a248cad28aa78bd2294` through an isolated index and a guarded shared-tree ref update.
+Only the universal-cost index row was committed from the mixed shared effects documentation, and the unrelated changes remain unstaged.
 This is not the final full-registry implementation freeze.
 
 ## Simplifications, omissions, and blockers

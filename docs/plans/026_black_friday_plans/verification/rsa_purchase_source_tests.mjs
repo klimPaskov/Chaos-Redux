@@ -142,7 +142,7 @@ class Model {
 			else if (e.key === 'clear_variable') this.vars.delete(a);
 			else if (e.key === 'check_variable') result = this.check(a) && result;
 			else if (e.key === 'always') result = (a === 'yes') && result;
-			else if (e.key === 'NOT') result = !this.run(a) && result;
+			else if (e.key === 'NOT') result = !a.some(x => this.run([x])) && result;
 			else if (e.key === 'AND') result = this.run(a) && result;
 			else if (e.key === 'OR') result = a.some(x => this.run([x])) && result;
 			else if (e.key === 'has_variable') result = this.vars.has(a) && result;

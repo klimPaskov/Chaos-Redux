@@ -527,9 +527,11 @@ universal_cost_quote_exact = {
 	if = {
 		limit = {
 			NOT = {
-				check_variable = { var = global.universal_cost_source_ratios^num value = global.universal_cost_source_ids^num compare = equals }
-				check_variable = { var = global.universal_cost_source_priorities^num value = global.universal_cost_source_ids^num compare = equals }
-				check_variable = { var = global.universal_cost_source_eligibility_masks^num value = global.universal_cost_source_ids^num compare = equals }
+				AND = {
+					check_variable = { var = global.universal_cost_source_ratios^num value = global.universal_cost_source_ids^num compare = equals }
+					check_variable = { var = global.universal_cost_source_priorities^num value = global.universal_cost_source_ids^num compare = equals }
+					check_variable = { var = global.universal_cost_source_eligibility_masks^num value = global.universal_cost_source_ids^num compare = equals }
+				}
 			}
 		}
 		set_temp_variable = { universal_cost_quote_valid = constant:universal_cost_framework.zero }

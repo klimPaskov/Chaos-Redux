@@ -8,6 +8,8 @@ const core = require('./exact_quote_source_tests.js');
 const audit = require('./black_friday_outer_caller_contract_audit.js');
 const { VM, S, ticks, definitions, constants, helperOutputs } = core;
 const { root, sources, parsed, defs, field, files } = audit;
+// Preserve the actual before-source after the integration has been committed.
+const baselineRevision = 'f32aaa4b7acc3621fcb5375743b63bfc7a81f739';
 for (const [name, { node }] of defs) definitions.set(name, node.value);
 for (const file of ['common/script_constants/026_black_friday_constants.txt',
   'common/script_constants/cbrn_system_constants.txt', 'common/script_constants/007_fury_constants.txt']) {
@@ -132,7 +134,7 @@ function originalTokens(source) {
   return stripped.replace(/#[^\r\n]*/g, '').match(/"[^"\r\n]*"|[{}=<>]|[^\s{}=<>]+/g) || [];
 }
 scenario('effects-preservation-beyond-the-parents-existing-20-declarations', () => {
-  const before = core.parse(cp.execFileSync('git', ['show', `HEAD:${files[0]}`], { cwd: root, encoding: 'utf8' }));
+  const before = core.parse(cp.execFileSync('git', ['show', `${baselineRevision}:${files[0]}`], { cwd: root, encoding: 'utf8' }));
   const current = core.parse(originalTokens(sources.get(files[0])).join(' '));
   let removed = 0;
   function clean(nodes) {
@@ -174,7 +176,7 @@ scenario('effects-preservation-beyond-the-parents-existing-20-declarations', () 
   assert.equal(proofCount(actual) - proofCount(expected), 2, 'parent receipt-proof declarations changed');
 });
 scenario('trigger-preservation-outside-the-architect-owned-central-block', () => {
-  const before = core.parse(cp.execFileSync('git', ['show', `HEAD:${files[1]}`], { cwd: root, encoding: 'utf8' }));
+  const before = core.parse(cp.execFileSync('git', ['show', `${baselineRevision}:${files[1]}`], { cwd: root, encoding: 'utf8' }));
   const current = core.parse(originalTokens(sources.get(files[1])).join(' '));
   const outside = nodes => nodes.filter(n => n.key !== 'black_friday_quote_custom_cost');
   assert.deepEqual(outside(current), outside(before), 'noninitialization trigger logic changed');
