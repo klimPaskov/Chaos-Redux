@@ -61,6 +61,9 @@ All tuning values are read from `common/script_constants/021_random_civil_war_co
 `event021_apply_disabled_evolution_safety` withdraws active consumers for explicitly disabled stages while leaving history flags intact.
 
 `event021_prepare_evolution_log_context`, `event021_apply_evolution_i`, `event021_apply_evolution_ii`, and `event021_apply_evolution_iii` own the reusable evolution flags and threat-source state.
+Before calling `event021_prepare_evolution_log_context`, preinitialize the temporary event ID and type outputs in the caller so their assignments survive return.
+Preinitialize stage and tier as well if consuming those helper outputs rather than replacing them with the callback's explicit stage and tier.
+The three parent callbacks preserve the event ID and type outputs, then select a verified live actor through `event021_select_verified_evolution_log_actor` immediately before the shared recorder, as documented in `021_random_civil_war_evolution_log_effects.md`.
 
 `event021_schedule_country_review`, `event021_refresh_global_capacity`, `event021_register_global_country`, `event021_unregister_global_country`, `event021_refresh_target_pool_membership`, `event021_global_review_batch`, `event021_review_current_country`, `event021_finish_global_review_batch`, `event021_queue_critical_country`, `event021_dequeue_critical_country`, `event021_launch_critical_country`, and `event021_finish_critical_launch` implement the bounded review and Critical queue contract. Registered and Critical removals conservatively rewind their cursors by one row so a shifted successor is never skipped until wrap; a repeated bounded row is acceptable. Critical admission and launch use separate centralized batch budgets.
 
