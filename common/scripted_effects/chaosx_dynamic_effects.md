@@ -359,6 +359,8 @@ The following APIs are useful to other systems but are not declared in this regi
 | `famine_runtime` | [`famine_core_effects.txt`](famine_core_effects.txt) and [`famine_adapter_effects.txt`](famine_adapter_effects.txt) | [`famine_system`](../../docs/systems/famine_system.md) |
 | `migration_runtime` | [`migration_core_effects.txt`](migration_core_effects.txt) and [`migration_adapter_effects.txt`](migration_adapter_effects.txt) | [`migration_system`](../../docs/systems/migration_system.md) |
 | `humanitarian_validation` | [`humanitarian_validation_triggers.txt`](../scripted_triggers/humanitarian_validation_triggers.txt) | [`famine_system`](../../docs/systems/famine_system.md) and [`migration_system`](../../docs/systems/migration_system.md) |
+| `great_depression_start_or_deepen` | [`035_great_depression_effects.txt`](035_great_depression_effects.txt) and [`035_great_depression_triggers.txt`](../scripted_triggers/035_great_depression_triggers.txt) | [`gateway contract`](035_great_depression_effects.md) and [`great_depression`](../../docs/events/035_great_depression.md), exact receiver, frozen caller/source pointers, fail-closed receipts, evolution inheritance, synchronous outputs, examples, and cleanup |
+| `great_depression_register_inherited_region` | [`035_great_depression_region_effects.txt`](035_great_depression_region_effects.txt) | [`regional companion`](035_great_depression_region_effects.md), exact state/episode proof, frozen source metadata, bounded aligned receipts, disposition/index outputs, caps, idempotence, and cleanup |
 
 ## maintenance_notes
 

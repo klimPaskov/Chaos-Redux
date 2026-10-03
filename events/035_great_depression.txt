@@ -149,3 +149,56 @@ country_event = {
 		great_depression_resolve_national_breakdown_civil_conflict = yes
 	}
 }
+
+# The callback owns only delayed external capacity cleanup and has no popup,
+# history record, Chaos transaction, or normal-event pacing.
+country_event = {
+	id = chaosx.nr35.7
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		clr_country_flag = great_depression_civilian_release_queued
+		if = {
+			limit = {
+				NOT = { has_country_flag = great_depression_active }
+				has_country_flag = great_depression_action_lock
+			}
+			great_depression_schedule_civilian_commitment_review = yes
+		}
+		else = { great_depression_release_idle_civilian_commitment = yes }
+	}
+}
+
+# Registered maintenance runs with the affected country as ROOT, rather than
+# the global-host country that walked the registry. Cadence remains in the
+# existing pulse effect, and this receiver owns no normal-event pacing.
+country_event = {
+	id = chaosx.nr35.8
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		clr_country_flag = great_depression_country_pulse_queued
+		if = {
+			limit = { great_depression_active_country_is_valid = yes }
+			great_depression_update_achievement_continuity = yes
+			great_depression_refresh_mission_capacity_ledger = yes
+			great_depression_weekly_pulse = yes
+		}
+	}
+}
+
+# Normal selection preserves its one chosen country and revalidates it at
+# delivery. Cluster entry already has the correct ROOT and keeps its direct
+# transaction. This receiver never chooses a replacement target.
+country_event = {
+	id = chaosx.nr35.9
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		if = {
+			limit = { great_depression_is_valid_independent_target = yes }
+			great_depression_prepare_independent_call = yes
+			great_depression_start_or_deepen = yes
+		}
+	}
+}

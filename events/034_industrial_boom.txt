@@ -17,13 +17,17 @@ country_event = {
 				great_depression_has_viable_economy = yes
 				OR = { is_major = yes is_ai = no }
 				NOT = { has_country_flag = industrial_boom_active }
+				NOT = { has_country_flag = industrial_boom_snapshot_frozen }
+				NOT = { has_country_flag = industrial_boom_collapse_delivery_pending }
 				NOT = { has_country_flag = great_depression_active }
 				NOT = { has_country_flag = great_depression_incompatible_economic_state }
 			}
 			great_depression_allocate_receipt = yes
 			set_variable = { industrial_boom_episode_id = great_depression_last_receipt_id }
 			set_country_flag = industrial_boom_active
-			set_country_flag = industrial_boom_snapshot_frozen
+			clear_variable = industrial_boom_inherited_region_state
+			clear_variable = industrial_boom_collapse_receipt_id
+			clr_country_flag = industrial_boom_collapse_retry_exhausted
 			if = {
 				limit = { NOT = { has_variable = industrial_boom_evolution } }
 				set_variable = { industrial_boom_evolution = constant:industrial_boom_event.baseline_evolution }
@@ -104,7 +108,9 @@ country_event = {
 				state_population_k > constant:great_depression_api.minimum_viable_state_population_k
 				OR = { industrial_complex > 0 arms_factory > 0 dockyard > 0 }
 			}
-			save_global_event_target_as = industrial_boom_inherited_region
+			PREV = {
+				set_variable = { industrial_boom_inherited_region_state = PREV }
+			}
 		}
 		add_ideas = industrial_boom
 		country_event = { id = chaosx.nr34.2 days = 1 }
@@ -129,8 +135,8 @@ country_event = {
 	}
 }
 
-# The delayed landing is the only normal Event 34 expiry. It freezes the
-# snapshot first, removes boom-only bonuses, and submits one Event 35 call.
+# The delayed landing freezes live owner fields before removing boom bonuses.
+# Rejected requests retain the actor's frozen input for a bounded private retry.
 
 country_event = {
 	id = chaosx.nr34.3
@@ -143,100 +149,28 @@ country_event = {
 		if = {
 			limit = {
 				has_country_flag = industrial_boom_active
-				has_country_flag = industrial_boom_snapshot_frozen
+				NOT = { has_country_flag = industrial_boom_snapshot_frozen }
 			}
+			industrial_boom_freeze_collapse_snapshot = yes
 			remove_ideas = industrial_boom
 			clr_country_flag = industrial_boom_active
-			clr_country_flag = industrial_boom_snapshot_frozen
-			set_country_flag = great_depression_event34_inherited
-			great_depression_allocate_receipt = yes
-			set_variable = { industrial_boom_collapse_receipt_id = great_depression_last_receipt_id }
-			set_variable = { great_depression_call_contract_supplied = constant:great_depression_api.contract_version }
-			set_variable = { great_depression_call_caller_type = constant:great_depression_caller.industrial_boom_collapse }
-			set_variable = { great_depression_call_source_event_id = constant:great_depression_api.event_34_id }
-			set_variable = { great_depression_call_source_episode_id = industrial_boom_episode_id }
-			set_variable = { great_depression_call_receipt_id = industrial_boom_collapse_receipt_id }
-			set_variable = { great_depression_call_pacing_mode = constant:great_depression_pacing.consequence_no_pacing }
-			set_variable = { great_depression_call_history_mode = constant:great_depression_history_mode.inherited }
-			set_variable = { great_depression_call_report_policy = constant:great_depression_report_policy.queue }
-			set_variable = { great_depression_call_news_policy = constant:great_depression_news_policy.queue }
-			set_variable = { great_depression_call_evolution_floor = constant:great_depression_evolution.baseline }
-			set_variable = { great_depression_call_evolution_proof = constant:great_depression_api.one }
-			set_variable = { great_depression_call_severity_input_mode = constant:great_depression_severity_input.severity_profile }
-			set_variable = { great_depression_call_starting_severity = constant:great_depression_api.zero }
-			set_variable = { great_depression_call_starting_severity_proof = constant:great_depression_api.one }
-			set_variable = { great_depression_call_deepen_amount = constant:great_depression_api.zero }
-			set_variable = { great_depression_call_deepen_amount_proof = constant:great_depression_api.one }
-			set_variable = { great_depression_call_severity_profile = constant:great_depression_severity_profile.inherited_baseline }
-			set_variable = { great_depression_call_severity_profile_proof = constant:great_depression_api.one }
-			set_variable = { great_depression_call_opening_shock_profile = constant:great_depression_shock_profile.event_34_baseline_collapse }
-			set_variable = { great_depression_call_snapshot_supplied_proof = constant:great_depression_api.one }
-			set_variable = { great_depression_call_snapshot_target_proof = constant:great_depression_api.one }
-			set_variable = { great_depression_call_snapshot_collapse_receipt_id = industrial_boom_collapse_receipt_id }
-			set_variable = { great_depression_call_snapshot_final_overheating = industrial_boom_snapshot_final_overheating }
-			set_variable = { great_depression_call_snapshot_peak_overheating = industrial_boom_snapshot_peak_overheating }
-		set_variable = { great_depression_call_event34_landing_state = industrial_boom_snapshot_landing_state }
-		set_variable = { great_depression_call_event34_reserve_units = industrial_boom_snapshot_reserve_units }
-		set_variable = { great_depression_call_event34_project_units = industrial_boom_snapshot_project_units }
-		set_variable = { great_depression_call_event34_region_units = industrial_boom_snapshot_region_units }
-		set_variable = { great_depression_call_event34_shock_units = industrial_boom_snapshot_shock_units }
-		set_variable = { great_depression_call_event34_repeat_history_count = industrial_boom_snapshot_repeat_history_count }
-		set_variable = { great_depression_call_event34_dangerous_days = industrial_boom_snapshot_dangerous_days }
-		set_variable = { great_depression_call_event34_collapse_day = global.num_days }
-		set_variable = { great_depression_event34_supplier_episode_id = industrial_boom_episode_id }
-		set_variable = { great_depression_inherited_overheating_pressure_value = industrial_boom_snapshot_final_overheating }
-		multiply_variable = { great_depression_inherited_overheating_pressure_value = constant:industrial_boom_event.overheating_pressure_factor }
-		set_country_flag = great_depression_inherited_overheating_pressure
-		if = {
-			limit = { has_country_flag = industrial_boom_supplier_contract }
-			set_country_flag = great_depression_event34_supplier_contract
 		}
-		great_depression_event34_supplier_adapter = yes
-		if = {
-			limit = { check_variable = { var = industrial_boom_evolution value = constant:great_depression_evolution.financial_contagion compare = equals } }
-			set_variable = { great_depression_call_evolution_floor = constant:great_depression_evolution.financial_contagion }
-			set_variable = { great_depression_call_severity_profile = constant:great_depression_severity_profile.inherited_contagion }
-			set_variable = { great_depression_call_opening_shock_profile = constant:great_depression_shock_profile.event_34_speculative_collapse }
-		}
-		else_if = {
-			limit = { check_variable = { var = industrial_boom_evolution value = constant:great_depression_evolution.social_collapse compare = equals } }
-			set_variable = { great_depression_call_evolution_floor = constant:great_depression_evolution.social_collapse }
-			set_variable = { great_depression_call_severity_profile = constant:great_depression_severity_profile.inherited_social }
-			set_variable = { great_depression_call_opening_shock_profile = constant:great_depression_shock_profile.event_34_miracle_collapse }
-		}
-		else_if = {
-			limit = { check_variable = { var = industrial_boom_evolution value = constant:great_depression_evolution.second_great_depression compare = equals } }
-			set_variable = { great_depression_call_evolution_floor = constant:great_depression_evolution.second_great_depression }
-			set_variable = { great_depression_call_severity_profile = constant:great_depression_severity_profile.inherited_worldwide }
-			set_variable = { great_depression_call_opening_shock_profile = constant:great_depression_shock_profile.event_34_runaway_collapse }
-		}
-		great_depression_start_or_deepen = yes
-		if = {
-			limit = {
-				OR = {
-					check_variable = { var = great_depression_call_started value = constant:great_depression_api.one compare = equals }
-					check_variable = { var = great_depression_call_deepened value = constant:great_depression_api.one compare = equals }
-				}
-			}
-			if = {
-				limit = { has_variable = industrial_boom_completed_count }
-				add_to_variable = { industrial_boom_completed_count = constant:industrial_boom_event.repeat_history_units }
-			}
-			else = {
-				set_variable = { industrial_boom_completed_count = constant:industrial_boom_event.repeat_history_units }
-			}
-			set_temp_variable = { great_depression_recent_expansion_duration = constant:great_depression_target_signal.recent_expansion_memory_days }
-			set_country_flag = { flag = great_depression_recent_industrial_expansion days = great_depression_recent_expansion_duration }
-			if = {
-				limit = { has_event_target = industrial_boom_inherited_region }
-				event_target:industrial_boom_inherited_region = {
-					save_global_event_target_as = great_depression_inherited_region_state
-				}
-				great_depression_register_inherited_region = yes
-				clear_global_event_target = great_depression_inherited_region_state
-			}
-		}
-		clear_global_event_target = industrial_boom_inherited_region
+		industrial_boom_deliver_collapse_snapshot = yes
 	}
 }
+
+# Private delivery clears its scheduling flag before synchronous receiver work.
+country_event = {
+	id = chaosx.nr34.4
+
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { has_country_flag = industrial_boom_collapse_delivery_pending }
+			clr_country_flag = industrial_boom_collapse_delivery_pending
+			industrial_boom_deliver_collapse_snapshot = yes
+		}
+	}
 }

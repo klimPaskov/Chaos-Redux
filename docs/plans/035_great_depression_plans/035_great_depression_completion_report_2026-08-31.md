@@ -4,9 +4,22 @@
 
 The Event 35 gameplay, presentation, asset, achievement, documentation, and catalog implementation is present in the working tree.
 
+Source review found additional cross-country ROOT-context defects after the earlier completion audit.
+The normal weighted entry and active-country maintenance now use recipient-root receivers `.9` and `.8`, respectively.
+The reviewed transaction repair covers exact-country conversion and relapse inputs, recipient-owned frozen source pointers, and Event 34 regional precommit.
+Whole-feature source and engine acceptance remain incomplete.
+
+The architect review identified real centre-baseline, actor-ledger, nested exposure scratch, and Event 34 snapshot-retention defects.
+The first synchronous scope-repair tranche corrects centre/achievement actor writes, captures state baselines at state scope, limits centre requirements to the valid pool, honors source proof, and corrects the direct-child contagion source contract.
+Exposure-frame and Event 34 snapshot/retry implementations are integrated, and the inherited-region companion has its complete receipt, metadata, cap, output, and cleanup contract.
+The companion has 23 source-model scenario groups plus four prohibition-parity cases, with no engine success claim.
+Their scope and remaining work are tracked in `subagent_handoffs/api_root_stage1_repair_2026-10-03.md`.
+
 Earlier named AI and probability records provide declared or source-ledger evidence for the TGT, DOC, ACT, CTG, BDP, SOC, GLB, and EVO scenario families, but they are not a substitute for the current complete engine-backed comparison.
 
-The implementation goal is not certifiable as complete because the required supported map/state MCP route is unavailable.
+The implementation goal is not certifiable as complete because current event lifecycle, map/state, probability comparison, and live consumer evidence are missing.
+The upstream Event 34 source also lacks the full per-state project, protection, fragility, corridor, legacy, and exhaustion histories described by the package.
+The companion preserves supplied fields and marks absent optional metadata unavailable, without inventing source history or extra state identities.
 
 Two in-app map inspections returned `Transport closed`, and a direct read-only startup of the installed production server emitted no MCP response within its configured startup window.
 
@@ -14,11 +27,64 @@ The initial isolated decision/mission auditor timed out during GUI inspection an
 
 The final isolated event-completion auditor returned `Incomplete`, found no gameplay-source defect, and confirmed that the missing engine evidence prevents certification.
 
-No Event 35-only Git transaction was created because AGENTS.md forbids a misleading commit while required evidence remains blocked.
+The scoped availability repair and its immutable audit inputs were published as commit `37c6b472a9cb44c54fcea9214309fdf87facf00d` through an isolated index and guarded reference update.
+Its real-index reconciliation initially encountered `.git/index.lock` while other Git processes were live, then completed without changing the working-tree files or unrelated index paths.
+This transaction does not claim that the full Event 35 goal or probability comparison is complete.
 
 No source requirement was intentionally reduced to a popup, fixed timed idea, generic factory deletion, one modifier, or political-power shop.
 
-## Current certification delta: 2026-09-05
+The presentation tranche is committed as `75967b75fcabe80aaca1f0648ee022e8de4b93fd` with its five index paths reconciled.
+The two reusable scope-frame and first-valid-selector skill rules are committed as `c3c91450ca9d9c37bd386c3f560160991410ba1a`.
+That mixed-file commit retained the seven instruction lines owned by other work in their prior unstaged state.
+
+## Current source repair and evidence delta: 2026-10-03
+
+The October cost-contract repair shortens 22 inline rows to the three-value display limit, gives all seventeen cost tooltips their full dynamic quote, and corrects the unresolved War Support texticon to the installed vanilla sprite.
+Nine resource-specific scripted-localisation selectors give each amount its own affordability color across all 51 normal, blocked, and tooltip rows.
+Public Works now participates in the civilian-capacity payment branch, and both civilian-commitment variants read a frozen accepted quote instead of a fixed one/two-factory tier.
+Cleanup removes the frozen commitment snapshot.
+The evidence and exact limitations are in `subagent_handoffs/cost_contract_repair_2026-10-03.md`.
+
+External-only commitment cleanup now covers containment recipients, ring-fencing, domestic-priority closure, source-support closure, final source recovery, and worldwide-pressure termination.
+One coalesced hidden `chaosx.nr35.7` callback preserves the response-lock interval, avoids releasing another active crisis surface's capacity, and safely tolerates national conversion or earlier cleanup.
+Its source identities, reference citations, reviewed scenario expectations, and engine-validation limits are in `subagent_handoffs/external_commitment_cleanup_2026-10-03.md`.
+The earlier event artifacts predate this callback and cannot certify its delivery or lifecycle.
+
+The availability inventory found 74 ordinary paid decisions without the explicit custom affordability predicate in `available`, while the 15 missions already include it.
+An immutable pre-edit decisions source and six boundary fixtures are preserved under `audit_inputs/affordability_2026_10_03/` for the isolated probability baseline.
+The isolated baseline returned a source-reviewed recommendation with an incomplete MCP result.
+The owner inserted the identical affordability predicate in all 74 ordinary paid decisions, while the fifteen missions were already aligned.
+All 89 custom-cost entries now have the same predicate in both availability and custom-cost display, and all 75 AI score blocks remain byte-identical.
+The distinct post-patch comparison is delegated under the same named boundary cases, but the connected tool list currently exposes no HOI4 MCP routes, so no numeric comparison is claimed.
+The owner handoff is `subagent_handoffs/affordability_gate_repair_2026-10-03.md`.
+
+The October decision/mission auditor terminated with `workspace routing discovery timed out` before returning findings.
+The bounded map lookup and focused event trace lost their execution handles without final artifacts.
+Live reference-context and reference-search routes succeeded, but reference-read handles disappeared, so the relevant cited sections were read locally.
+The current shared `chaosx_test_country_sync_registered_content` only marks `chaosx_test_country_registered_sync_pending`, confirming that Event 35's daily CXT call does not grant content.
+
+The cause display now returns one to three distinct causes without duplicated opening shock or repeated fallback text.
+All 32 Boolean cause combinations passed the source-selector truth table, recorded in `subagent_handoffs/cause_display_repair_2026-10-03.md`.
+The user-supplied cycle-one live log has no Event 35 identifier or path matches, but contains other owner-file failures and does not establish a clean full-mod log or validate later edits.
+
+The transaction repair rejects a new crisis with an empty permitted core-industrial pool before setup.
+Initial seeding, pool counting, and selection share live-center and live/frozen conversion-prohibition checks.
+The existing coefficients and state-ID tie-break are unchanged, while explicit first-valid acceptance supports negative-score tiny capitals.
+Eleven declared permission cases and seven declared arithmetic cases are covered by `subagent_handoffs/center_owner_postpatch_accepted_rows_2026-10-03.md`.
+The ROOT-different and foreign-neighbor fixtures change their expected winners in opposite directions, and the tiny-capital fixture changes from no saved candidate to its sole valid state.
+These are source comparisons, not normalized probabilities or native rankings.
+
+Recipient-owned scope inputs are captured before nested work, then used at durable source commit and cleared on every return.
+Fresh episode floors replace the previous episode's floor, and network/idea/log projection waits for registered centers.
+Terminal state cleanup requires the exact closing episode, and sparse active-country processing retires invalid actors without recovery rewards or pacing.
+The Event 34 snapshot is refreshed at landing, retained across the bounded three-attempt delivery, and consumed only after both national and regional acceptance.
+Sixteen individual national snapshot mismatch cases, the regional model cases, and structural transaction-order checks are retained as source evidence.
+
+Both parent probability inspections, including the narrower helper-identifier retry, terminated after 600 seconds with no artifact.
+Child-context availability and approximately 120-second startup-handshake failures are separate recorded limitations.
+No current supported adapter/scenario schema was returned for a native center-selection compare.
+
+### September evidence retained for traceability
 
 The earlier bounded scenario sections below remain useful source-ledger evidence, but they are not a substitute for a fresh complete engine-backed probability comparison.
 
@@ -251,7 +317,7 @@ The detailed scenario records in this section retain earlier bounded projections
 - Decision icon references have matching GFX definitions and runtime textures.
 - Achievement registry coverage: six Event 35 contracts plus inherited Event 34 Long Fall, with 21 decoded state DDS files and no duplicate registry IDs.
 - Event 35 script files have balanced blocks and no unsupported comparison operators.
-- Event IDs `chaosx.nr35.1` through `chaosx.nr35.6` are unique.
+- Event IDs `chaosx.nr35.1` through `chaosx.nr35.9` are unique, with `.7` for private external-commitment cleanup, `.8` for recipient-root maintenance, and `.9` for exact-country independent entry.
 - Event 35 localisation has no duplicate keys and retains UTF-8 BOM.
 - No legacy 365-day depression expiry is present.
 - The super-event audio format and checksum match the documented runtime contract.
@@ -309,7 +375,7 @@ The detailed scenario records in this section retain earlier bounded projections
 - Skills used: `chaos-redux-events`, `chaos-redux-event-assets`, `chaos-redux-super-events`, `chaos-redux-decisions-missions`, `chaos-redux-mtth`, `chaos-redux-subagents`, `chaos-redux-improvement-loop`, and `xlsx`.
 - Isolated work covered architecture, decision and mission implementation and audit, probability audit, localisation audit, spreadsheet alignment, event art, icons, super-event text, and super-event audio.
 - The 2026-09-04 isolated localisation follow-up found and the parent repaired the achievement happened-trigger, unique-id, stale-sprite, and proof-wording defects; the handoff is `docs/plans/035_great_depression_plans/subagent_handoffs/localisation_audit.md`.
-- No reusable skill was created or changed because the final fixes were Event 35-specific and did not establish a new cross-event workflow.
+- The existing event skill gained generic frozen-input-frame and first-valid-candidate guidance through `chaosx_skill_maintainer`, with its isolated ownership handoff and scoped commit.
 
 ## Simplifications, omissions, fallbacks, and blockers
 
@@ -329,8 +395,12 @@ The detailed scenario records in this section retain earlier bounded projections
 - The installed probability service did not support the `mission_ai_will_do` adapter for this source, so the 15-mission AI result is structural source evidence rather than an engine probability receipt.
 - ACT, CTG, SOC, and GLB therefore use explicit bounded declared projections tied to the source ledgers and gates rather than normalized runtime click probabilities.
 - The two source-specific idea replacements `legacy_public_works` and `post_depression_recovery` completed the bounded icon-worker readability pass. Their 60x68 DDS round trips, native/enlarged/contrast reviews, and fallback transparency provenance are recorded in `docs/plans/035_great_depression_plans/subagent_handoffs/icon_artist_idea_readability_repair.md`; only the final live national-spirit consumer review remains outside the agent boundary.
-- Cause slots can still repeat the qualitative `no additional material cause` fallback when fewer than three distinct causes are available.
-- Generic `great_depression_can_*` permission wording and the 17 cost-tooltip keys remain source-preserved because runtime failure-specific consumption was not proven through the available MCP route.
+- The cause-display repair passes all 32 source flag combinations, but a current native report/category render is not claimed.
+- Generic `great_depression_can_*` permission wording remains source-preserved because runtime failure-specific consumption was not proven through the available MCP route.
+- All seventeen cost tooltips have complete quoted amounts and per-resource affordability colors after the October repair, but native row/hover rendering remains unverified.
+- The 74 ordinary paid decisions have explicit shared affordability gates after the owner repair, but the mandatory same-scenario numerical comparison remains unavailable through the currently absent MCP routes.
+- The external-commitment callback and lifecycle repair have source review but no final current MCP event inspect/render/compare or executed delivery evidence.
+- Recipient-root repairs address normal selection and active maintenance, but the remaining cross-country public-API callers have not been certified against the exact-target and synchronous-output contracts.
 - The ID-aligned Event 34 Long Fall aliases in `interface/035_great_depression_achievement_aliases.gfx` are now the only Event 34 achievement sprite names; the former unprefixed names were removed from `interface/035_great_depression.gfx`.
-- No mapped source-side gameplay requirement is knowingly omitted.
+- No mapped route or asset is intentionally omitted, but full upstream regional histories, corridor/recovery integration where that source data is absent, complete API success/rollback acceptance, and current engine validation remain unresolved.
 - Required supported map/state engine evidence remains missing, so this report does not claim the implementation goal complete.

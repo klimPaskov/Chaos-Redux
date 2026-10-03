@@ -11,6 +11,10 @@
 # - Missions use flags as compact objective receipts and never refund a cost.
 # ============================================================================
 
+# Timed flag fields require literal days. Mirrors the central action/event tuning.
+@great_depression_action_lock_days = 7
+@great_depression_foreign_support_cooldown_days = 30
+
 great_depression_apply_public_action_delta = {
 	if = {
 		limit = { NOT = { has_variable = great_depression_depression_severity } }
@@ -38,8 +42,7 @@ great_depression_record_action_receipt = {
 		set_variable = { great_depression_successful_action_count = constant:great_depression_api.one }
 	}
 	set_variable = { great_depression_last_action_day = global.num_days }
-	set_temp_variable = { great_depression_action_lock_duration = constant:great_depression_action.action_lock_days }
-	set_country_flag = { flag = great_depression_action_lock days = great_depression_action_lock_duration }
+	set_country_flag = { flag = great_depression_action_lock days = @great_depression_action_lock_days }
 }
 
 # Rebuild the public mission-capacity ledger from the engine's active mission
@@ -802,6 +805,7 @@ great_depression_contain_outgoing_exposures = {
 					clr_country_flag = great_depression_contagion_exposure_open
 					remove_dynamic_modifier = { modifier = great_depression_financial_contagion }
 					set_variable = { great_depression_contagion_response_stage = constant:great_depression_exposure_stage.resolved }
+					great_depression_release_idle_civilian_commitment = yes
 					if = {
 						limit = { has_variable = great_depression_contagion_source_countries^num }
 						for_loop_effect = {
@@ -850,6 +854,7 @@ great_depression_ring_fence_domestic_finance = {
 		set_country_flag = great_depression_contagion_contained
 		remove_dynamic_modifier = { modifier = great_depression_financial_contagion }
 	}
+	great_depression_release_idle_civilian_commitment = yes
 }
 
 great_depression_restrict_capital_outflows = {
@@ -881,6 +886,7 @@ great_depression_prioritize_domestic_recovery = {
 		remove_dynamic_modifier = { modifier = great_depression_financial_contagion }
 		set_variable = { great_depression_contagion_response_stage = constant:great_depression_exposure_stage.resolved }
 	}
+	great_depression_release_idle_civilian_commitment = yes
 }
 
 great_depression_negotiate_with_strike_committees = {
@@ -1080,10 +1086,11 @@ great_depression_register_partner_pair_cooldown = {
 		text = {
 			set_country_flag = {
 				flag = great_depression_partner_pair_cooldown_[GREAT_DEPRESSION_PARTNER_TAG]
-				days = great_depression_partner_pair_cooldown_duration
+				days = [GREAT_DEPRESSION_PARTNER_DAYS]
 			}
 		}
 		GREAT_DEPRESSION_PARTNER_TAG = "[ROOT.GetTag]"
+		GREAT_DEPRESSION_PARTNER_DAYS = "[?great_depression_partner_pair_cooldown_duration|.0]"
 	}
 }
 
@@ -1232,8 +1239,7 @@ great_depression_request_foreign_support = {
 		set_country_flag = great_depression_supplier_contract_active
 		set_country_flag = great_depression_freight_secured
 	}
-	set_temp_variable = { great_depression_foreign_support_cooldown_duration = constant:great_depression_event.foreign_support_cooldown_days }
-	set_country_flag = { flag = great_depression_foreign_support_cooldown days = great_depression_foreign_support_cooldown_duration }
+	set_country_flag = { flag = great_depression_foreign_support_cooldown days = @great_depression_foreign_support_cooldown_days }
 }
 
 great_depression_negotiate_clearing_and_import_agreements = {
@@ -1481,6 +1487,7 @@ great_depression_support_contagion_source = {
 		set_country_flag = great_depression_contagion_containment_action_receipt
 		remove_dynamic_modifier = { modifier = great_depression_financial_contagion }
 		set_variable = { great_depression_contagion_response_stage = constant:great_depression_exposure_stage.resolved }
+		great_depression_release_idle_civilian_commitment = yes
 	}
 	# great_depression_supported_source_country is overwritten before every use and expires with the chain.
 }

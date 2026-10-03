@@ -1,0 +1,365 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 034 COLLAPSE SNAPSHOT AND DELIVERY
+# ============================================================================
+# COUNTRY scope. Freeze live owner fields once at landing, then preserve that
+# snapshot and receipt across bounded Event 35 retries. Only accepted delivery
+# consumes the frozen snapshot. No helper owns normal-event pacing.
+# ============================================================================
+# Timed flag days require a literal. Mirrors great_depression_target_signal.
+@industrial_boom_recent_expansion_memory_days = 730
+
+industrial_boom_freeze_collapse_snapshot = {
+	if = {
+		limit = {
+			has_country_flag = industrial_boom_active
+			NOT = { has_country_flag = industrial_boom_snapshot_frozen }
+		}
+		set_variable = { industrial_boom_snapshot_country_id = THIS.id }
+		set_variable = { industrial_boom_snapshot_source_episode_id = industrial_boom_episode_id }
+		set_variable = { industrial_boom_snapshot_collapse_day = global.num_days }
+		set_variable = { industrial_boom_snapshot_evolution = industrial_boom_evolution }
+		set_variable = { industrial_boom_snapshot_final_overheating = industrial_boom_overheating }
+		set_variable = { industrial_boom_snapshot_peak_overheating = industrial_boom_peak_overheating }
+		clamp_variable = { var = industrial_boom_snapshot_final_overheating min = constant:great_depression_api.zero max = constant:great_depression_event.public_value_maximum }
+		if = {
+			limit = { check_variable = { var = industrial_boom_snapshot_peak_overheating value = industrial_boom_snapshot_final_overheating compare = less_than } }
+			set_variable = { industrial_boom_snapshot_peak_overheating = industrial_boom_snapshot_final_overheating }
+		}
+		clamp_variable = { var = industrial_boom_snapshot_peak_overheating min = constant:great_depression_api.zero max = constant:great_depression_event.public_value_maximum }
+		if = { limit = { has_variable = industrial_boom_landing_state } set_variable = { industrial_boom_snapshot_landing_state = industrial_boom_landing_state } }
+		if = { limit = { has_country_flag = industrial_boom_landing_failed } set_variable = { industrial_boom_snapshot_landing_state = constant:great_depression_event34_snapshot_state.failed } }
+		if = { limit = { has_variable = industrial_boom_reserve_units } set_variable = { industrial_boom_snapshot_reserve_units = industrial_boom_reserve_units } }
+		if = { limit = { has_country_flag = industrial_boom_reserves_depleted } set_variable = { industrial_boom_snapshot_reserve_units = constant:great_depression_api.zero } }
+		if = { limit = { has_variable = industrial_boom_project_units } set_variable = { industrial_boom_snapshot_project_units = industrial_boom_project_units } }
+		if = { limit = { has_variable = industrial_boom_inherited_region_count } set_variable = { industrial_boom_snapshot_region_units = industrial_boom_inherited_region_count } }
+		if = { limit = { has_variable = industrial_boom_recent_shock_count } set_variable = { industrial_boom_snapshot_shock_units = industrial_boom_recent_shock_count } }
+		if = { limit = { has_variable = industrial_boom_dangerous_days } set_variable = { industrial_boom_snapshot_dangerous_days = industrial_boom_dangerous_days } }
+		if = { limit = { has_variable = industrial_boom_completed_count } set_variable = { industrial_boom_snapshot_repeat_history_count = industrial_boom_completed_count } }
+		set_variable = { industrial_boom_snapshot_civilian_factories = num_of_civilian_factories }
+		set_variable = { industrial_boom_snapshot_military_factories = num_of_military_factories }
+		great_depression_allocate_receipt = yes
+		set_variable = { industrial_boom_collapse_receipt_id = great_depression_last_receipt_id }
+		set_variable = { industrial_boom_collapse_delivery_attempts = constant:great_depression_api.zero }
+		clr_country_flag = industrial_boom_collapse_retry_exhausted
+		industrial_boom_freeze_inherited_region = yes
+		set_country_flag = industrial_boom_snapshot_frozen
+	}
+}
+
+industrial_boom_prepare_collapse_request = {
+	set_variable = { great_depression_call_contract_supplied = constant:great_depression_api.contract_version }
+	set_variable = { great_depression_call_caller_type = constant:great_depression_caller.industrial_boom_collapse }
+	set_variable = { great_depression_call_source_event_id = constant:great_depression_api.event_34_id }
+	set_variable = { great_depression_call_source_episode_id = industrial_boom_snapshot_source_episode_id }
+	set_variable = { great_depression_call_receipt_id = industrial_boom_collapse_receipt_id }
+	set_variable = { great_depression_call_pacing_mode = constant:great_depression_pacing.consequence_no_pacing }
+	set_variable = { great_depression_call_history_mode = constant:great_depression_history_mode.inherited }
+	set_variable = { great_depression_call_report_policy = constant:great_depression_report_policy.queue }
+	set_variable = { great_depression_call_news_policy = constant:great_depression_news_policy.queue }
+	set_variable = { great_depression_call_evolution_floor = industrial_boom_snapshot_evolution }
+	set_variable = { great_depression_call_evolution_proof = constant:great_depression_api.one }
+	set_variable = { great_depression_call_severity_input_mode = constant:great_depression_severity_input.severity_profile }
+	set_variable = { great_depression_call_starting_severity = constant:great_depression_api.zero }
+	set_variable = { great_depression_call_starting_severity_proof = constant:great_depression_api.one }
+	set_variable = { great_depression_call_deepen_amount = constant:great_depression_api.zero }
+	set_variable = { great_depression_call_deepen_amount_proof = constant:great_depression_api.one }
+	set_variable = { great_depression_call_severity_profile = constant:great_depression_severity_profile.inherited_baseline }
+	set_variable = { great_depression_call_severity_profile_proof = constant:great_depression_api.one }
+	set_variable = { great_depression_call_opening_shock_profile = constant:great_depression_shock_profile.event_34_baseline_collapse }
+	if = {
+		limit = { check_variable = { var = industrial_boom_snapshot_evolution value = constant:great_depression_evolution.financial_contagion compare = equals } }
+		set_variable = { great_depression_call_severity_profile = constant:great_depression_severity_profile.inherited_contagion }
+		set_variable = { great_depression_call_opening_shock_profile = constant:great_depression_shock_profile.event_34_speculative_collapse }
+	}
+	else_if = {
+		limit = { check_variable = { var = industrial_boom_snapshot_evolution value = constant:great_depression_evolution.social_collapse compare = equals } }
+		set_variable = { great_depression_call_severity_profile = constant:great_depression_severity_profile.inherited_social }
+		set_variable = { great_depression_call_opening_shock_profile = constant:great_depression_shock_profile.event_34_miracle_collapse }
+	}
+	else_if = {
+		limit = { check_variable = { var = industrial_boom_snapshot_evolution value = constant:great_depression_evolution.second_great_depression compare = equals } }
+		set_variable = { great_depression_call_severity_profile = constant:great_depression_severity_profile.inherited_worldwide }
+		set_variable = { great_depression_call_opening_shock_profile = constant:great_depression_shock_profile.event_34_runaway_collapse }
+	}
+	set_variable = { great_depression_call_snapshot_supplied_proof = constant:great_depression_api.one }
+	set_variable = { great_depression_call_snapshot_target_proof = constant:great_depression_api.one }
+	set_variable = { great_depression_call_snapshot_country_id = industrial_boom_snapshot_country_id }
+	set_variable = { great_depression_call_snapshot_collapse_receipt_id = industrial_boom_collapse_receipt_id }
+	set_variable = { great_depression_call_snapshot_final_overheating = industrial_boom_snapshot_final_overheating }
+	set_variable = { great_depression_call_snapshot_peak_overheating = industrial_boom_snapshot_peak_overheating }
+	set_variable = { great_depression_call_event34_landing_state = industrial_boom_snapshot_landing_state }
+	set_variable = { great_depression_call_event34_reserve_units = industrial_boom_snapshot_reserve_units }
+	set_variable = { great_depression_call_event34_project_units = industrial_boom_snapshot_project_units }
+	set_variable = { great_depression_call_event34_region_units = industrial_boom_snapshot_region_units }
+	set_variable = { great_depression_call_event34_shock_units = industrial_boom_snapshot_shock_units }
+	set_variable = { great_depression_call_event34_repeat_history_count = industrial_boom_snapshot_repeat_history_count }
+	set_variable = { great_depression_call_event34_dangerous_days = industrial_boom_snapshot_dangerous_days }
+	set_variable = { great_depression_call_event34_collapse_day = industrial_boom_snapshot_collapse_day }
+	industrial_boom_prepare_inherited_region_request = yes
+}
+
+industrial_boom_deliver_collapse_snapshot = {
+	if = {
+		limit = {
+			has_country_flag = industrial_boom_snapshot_frozen
+			NOT = { has_country_flag = industrial_boom_collapse_delivery_pending }
+			has_variable = industrial_boom_snapshot_country_id
+			check_variable = { var = industrial_boom_snapshot_country_id value = THIS.id compare = equals }
+			check_variable = { var = industrial_boom_collapse_delivery_attempts value = constant:industrial_boom_handoff.maximum_attempts compare = less_than }
+		}
+		add_to_variable = { industrial_boom_collapse_delivery_attempts = constant:great_depression_api.one }
+		if = {
+			limit = { NOT = { has_country_flag = great_depression_event34_inherited } }
+			set_country_flag = industrial_boom_handoff_added_inheritance_flag
+		}
+		set_country_flag = great_depression_event34_inherited
+		industrial_boom_prepare_collapse_request = yes
+		great_depression_start_or_deepen = yes
+		if = {
+			limit = { check_variable = { var = great_depression_call_result value = constant:great_depression_result.duplicate_receipt compare = equals } }
+			industrial_boom_confirm_inherited_region_receipt = yes
+		}
+		if = {
+			limit = {
+				check_variable = { var = great_depression_region_call_accepted value = constant:great_depression_api.one compare = equals }
+				OR = {
+					check_variable = { var = great_depression_call_started value = constant:great_depression_api.one compare = equals }
+					check_variable = { var = great_depression_call_deepened value = constant:great_depression_api.one compare = equals }
+					AND = {
+						check_variable = { var = great_depression_call_result value = constant:great_depression_result.duplicate_receipt compare = equals }
+						is_in_array = { array = great_depression_committed_receipt_ids value = industrial_boom_collapse_receipt_id }
+					}
+				}
+			}
+			if = {
+				limit = {
+					OR = {
+						NOT = { has_variable = industrial_boom_completed_collapse_receipt_id }
+						NOT = { check_variable = { var = industrial_boom_completed_collapse_receipt_id value = industrial_boom_collapse_receipt_id compare = equals } }
+					}
+				}
+				if = { limit = { has_variable = industrial_boom_completed_count } add_to_variable = { industrial_boom_completed_count = constant:industrial_boom_event.repeat_history_units } }
+				else = { set_variable = { industrial_boom_completed_count = constant:industrial_boom_event.repeat_history_units } }
+				set_variable = { industrial_boom_completed_collapse_receipt_id = industrial_boom_collapse_receipt_id }
+			}
+			set_variable = { great_depression_event34_supplier_episode_id = industrial_boom_snapshot_source_episode_id }
+			set_variable = { great_depression_inherited_overheating_pressure_value = industrial_boom_snapshot_final_overheating }
+			multiply_variable = { great_depression_inherited_overheating_pressure_value = constant:industrial_boom_event.overheating_pressure_factor }
+			set_country_flag = great_depression_inherited_overheating_pressure
+			if = { limit = { has_country_flag = industrial_boom_supplier_contract } set_country_flag = great_depression_event34_supplier_contract }
+			great_depression_event34_supplier_adapter = yes
+			set_country_flag = { flag = great_depression_recent_industrial_expansion days = @industrial_boom_recent_expansion_memory_days }
+			clr_country_flag = industrial_boom_snapshot_frozen
+			clr_country_flag = industrial_boom_snapshot_region_frozen
+			clr_country_flag = industrial_boom_collapse_retry_exhausted
+			clr_country_flag = industrial_boom_handoff_added_inheritance_flag
+			clear_variable = industrial_boom_inherited_region_state
+		}
+		else = {
+			great_depression_clear_region_inputs = yes
+			if = {
+				limit = { has_country_flag = industrial_boom_handoff_added_inheritance_flag }
+				clr_country_flag = great_depression_event34_inherited
+				clr_country_flag = industrial_boom_handoff_added_inheritance_flag
+			}
+			if = {
+				limit = { check_variable = { var = industrial_boom_collapse_delivery_attempts value = constant:industrial_boom_handoff.maximum_attempts compare = less_than } }
+				set_country_flag = industrial_boom_collapse_delivery_pending
+				set_temp_variable = { industrial_boom_collapse_retry_delay = constant:industrial_boom_handoff.retry_days }
+				country_event = { id = chaosx.nr34.4 days = industrial_boom_collapse_retry_delay }
+			}
+			else = { set_country_flag = industrial_boom_collapse_retry_exhausted }
+		}
+	}
+}
+
+# COUNTRY scope. Freeze the one legacy primary state and any supplied regional
+# metadata without inventing per-state projects from aggregate project counts.
+industrial_boom_freeze_inherited_region = {
+	clr_country_flag = industrial_boom_snapshot_region_frozen
+	clr_country_flag = industrial_boom_snapshot_region_conversion_forbidden
+	clear_variable = industrial_boom_snapshot_region_state
+	clear_variable = industrial_boom_snapshot_region_state_id
+	set_variable = { industrial_boom_snapshot_region_receipt_id = industrial_boom_collapse_receipt_id }
+	set_variable = { industrial_boom_snapshot_region_role = constant:great_depression_region_role.primary }
+	set_variable = { industrial_boom_snapshot_region_project_profile = constant:great_depression_region_contract.unavailable }
+	if = { limit = { has_variable = industrial_boom_region_project_profile } set_variable = { industrial_boom_snapshot_region_project_profile = industrial_boom_region_project_profile } }
+	set_variable = { industrial_boom_snapshot_region_project_stage = constant:great_depression_region_contract.unavailable }
+	if = { limit = { has_variable = industrial_boom_region_project_stage } set_variable = { industrial_boom_snapshot_region_project_stage = industrial_boom_region_project_stage } }
+	set_variable = { industrial_boom_snapshot_region_protection = constant:great_depression_region_contract.unavailable }
+	if = { limit = { has_variable = industrial_boom_region_protection } set_variable = { industrial_boom_snapshot_region_protection = industrial_boom_region_protection } }
+	set_variable = { industrial_boom_snapshot_region_fragility = constant:great_depression_region_contract.unavailable }
+	if = { limit = { has_variable = industrial_boom_region_fragility } set_variable = { industrial_boom_snapshot_region_fragility = industrial_boom_region_fragility } }
+	set_variable = { industrial_boom_snapshot_region_legacy_receipt_id = constant:great_depression_region_contract.unavailable }
+	if = { limit = { has_variable = industrial_boom_region_legacy_receipt_id } set_variable = { industrial_boom_snapshot_region_legacy_receipt_id = industrial_boom_region_legacy_receipt_id } }
+	set_variable = { industrial_boom_snapshot_region_corridor_receipt_id = constant:great_depression_region_contract.unavailable }
+	if = { limit = { has_variable = industrial_boom_region_corridor_receipt_id } set_variable = { industrial_boom_snapshot_region_corridor_receipt_id = industrial_boom_region_corridor_receipt_id } }
+	set_variable = { industrial_boom_snapshot_region_exhaustion = constant:great_depression_region_contract.unavailable }
+	if = { limit = { has_variable = industrial_boom_region_exhaustion } set_variable = { industrial_boom_snapshot_region_exhaustion = industrial_boom_region_exhaustion } }
+	if = { limit = { has_variable = industrial_boom_region_role } set_variable = { industrial_boom_snapshot_region_role = industrial_boom_region_role } }
+	if = {
+		limit = { has_variable = industrial_boom_inherited_region_state }
+		var:industrial_boom_inherited_region_state = {
+			set_temp_variable = { industrial_boom_region_civilian_baseline = building_level@industrial_complex }
+			set_temp_variable = { industrial_boom_region_military_baseline = building_level@arms_factory }
+			set_temp_variable = { industrial_boom_region_factory_levels = building_level@industrial_complex }
+			add_to_temp_variable = { industrial_boom_region_factory_levels = building_level@arms_factory }
+			add_to_temp_variable = { industrial_boom_region_factory_levels = building_level@dockyard }
+			set_temp_variable = { industrial_boom_region_damaged_levels = damaged_building_level@industrial_complex }
+			add_to_temp_variable = { industrial_boom_region_damaged_levels = damaged_building_level@arms_factory }
+			add_to_temp_variable = { industrial_boom_region_damaged_levels = damaged_building_level@dockyard }
+			PREV = {
+				set_variable = { industrial_boom_snapshot_region_state = PREV }
+				set_variable = { industrial_boom_snapshot_region_state_id = PREV.id }
+				set_variable = { industrial_boom_snapshot_region_civilian_baseline = industrial_boom_region_civilian_baseline }
+				set_variable = { industrial_boom_snapshot_region_military_baseline = industrial_boom_region_military_baseline }
+				set_variable = { industrial_boom_snapshot_region_factory_levels = industrial_boom_region_factory_levels }
+				set_variable = { industrial_boom_snapshot_region_damaged_levels = industrial_boom_region_damaged_levels }
+				set_variable = { industrial_boom_snapshot_region_control = constant:great_depression_region_control.transferred }
+				set_variable = { industrial_boom_snapshot_region_damage = constant:great_depression_region_damage.intact }
+				if = {
+					limit = { check_variable = { var = industrial_boom_region_damaged_levels value = constant:great_depression_api.zero compare = greater_than } }
+					set_variable = { industrial_boom_snapshot_region_damage = constant:great_depression_region_damage.damaged }
+					set_temp_variable = { industrial_boom_region_heavy_damage_threshold = industrial_boom_region_factory_levels }
+					multiply_temp_variable = { industrial_boom_region_heavy_damage_threshold = constant:great_depression_region_contract.heavy_damage_ratio }
+					if = {
+						limit = { check_variable = { var = industrial_boom_region_damaged_levels value = industrial_boom_region_heavy_damage_threshold compare = greater_than_or_equals } }
+						set_variable = { industrial_boom_snapshot_region_damage = constant:great_depression_region_damage.heavy }
+					}
+				}
+				set_country_flag = industrial_boom_snapshot_region_frozen
+			}
+			if = {
+				limit = { is_owned_by = PREV }
+				PREV = { set_variable = { industrial_boom_snapshot_region_control = constant:great_depression_region_control.temporary_loss } }
+				if = {
+					limit = { is_controlled_by = PREV }
+					PREV = { set_variable = { industrial_boom_snapshot_region_control = constant:great_depression_region_control.connected } }
+				}
+			}
+			if = {
+				limit = { has_variable = industrial_boom_region_role }
+				PREV = { set_variable = { industrial_boom_snapshot_region_role = PREV.industrial_boom_region_role } }
+			}
+			if = {
+				limit = { has_variable = industrial_boom_region_project_profile }
+				PREV = { set_variable = { industrial_boom_snapshot_region_project_profile = PREV.industrial_boom_region_project_profile } }
+			}
+			if = {
+				limit = { has_variable = industrial_boom_region_project_stage }
+				PREV = { set_variable = { industrial_boom_snapshot_region_project_stage = PREV.industrial_boom_region_project_stage } }
+			}
+			if = {
+				limit = { has_variable = industrial_boom_region_protection }
+				PREV = { set_variable = { industrial_boom_snapshot_region_protection = PREV.industrial_boom_region_protection } }
+			}
+			if = {
+				limit = { has_variable = industrial_boom_region_fragility }
+				PREV = { set_variable = { industrial_boom_snapshot_region_fragility = PREV.industrial_boom_region_fragility } }
+			}
+			if = {
+				limit = { has_variable = industrial_boom_region_legacy_receipt_id }
+				PREV = { set_variable = { industrial_boom_snapshot_region_legacy_receipt_id = PREV.industrial_boom_region_legacy_receipt_id } }
+			}
+			if = {
+				limit = { has_variable = industrial_boom_region_corridor_receipt_id }
+				PREV = { set_variable = { industrial_boom_snapshot_region_corridor_receipt_id = PREV.industrial_boom_region_corridor_receipt_id } }
+			}
+			if = {
+				limit = { has_variable = industrial_boom_region_exhaustion }
+				PREV = { set_variable = { industrial_boom_snapshot_region_exhaustion = PREV.industrial_boom_region_exhaustion } }
+			}
+			if = {
+				limit = { has_variable = industrial_boom_region_damage }
+				PREV = { set_variable = { industrial_boom_snapshot_region_damage = PREV.industrial_boom_region_damage } }
+			}
+			if = { limit = { has_state_flag = industrial_boom_region_conversion_forbidden } PREV = { set_country_flag = industrial_boom_snapshot_region_conversion_forbidden } }
+		}
+	}
+}
+
+industrial_boom_prepare_inherited_region_request = {
+	great_depression_reset_region_outputs = yes
+	great_depression_clear_region_inputs = yes
+	if = {
+		limit = { has_country_flag = industrial_boom_snapshot_region_frozen }
+		set_variable = { great_depression_region_call_contract_supplied = constant:great_depression_region_contract.version }
+		set_variable = { great_depression_region_call_country_id = industrial_boom_snapshot_country_id }
+		set_variable = { great_depression_region_call_episode_id = global.great_depression_next_episode_id }
+		if = {
+			limit = { great_depression_active_crisis_is_coherent = yes }
+			set_variable = { great_depression_region_call_episode_id = great_depression_active_episode_id }
+		}
+		set_variable = { great_depression_region_call_event34_episode_id = industrial_boom_snapshot_source_episode_id }
+		set_variable = { great_depression_region_call_receipt_id = industrial_boom_snapshot_region_receipt_id }
+		set_variable = { great_depression_region_call_collapse_receipt_id = industrial_boom_collapse_receipt_id }
+		set_variable = { great_depression_region_call_state_id = industrial_boom_snapshot_region_state_id }
+		if = {
+			limit = { has_country_flag = industrial_boom_snapshot_region_conversion_forbidden }
+			set_country_flag = great_depression_region_call_conversion_forbidden
+		}
+		set_variable = { great_depression_region_call_role = industrial_boom_snapshot_region_role }
+		set_variable = { great_depression_region_call_project_profile = industrial_boom_snapshot_region_project_profile }
+		set_variable = { great_depression_region_call_project_stage = industrial_boom_snapshot_region_project_stage }
+		set_variable = { great_depression_region_call_protection = industrial_boom_snapshot_region_protection }
+		set_variable = { great_depression_region_call_fragility = industrial_boom_snapshot_region_fragility }
+		set_variable = { great_depression_region_call_control = industrial_boom_snapshot_region_control }
+		set_variable = { great_depression_region_call_damage = industrial_boom_snapshot_region_damage }
+		set_variable = { great_depression_region_call_legacy_receipt_id = industrial_boom_snapshot_region_legacy_receipt_id }
+		set_variable = { great_depression_region_call_corridor_receipt_id = industrial_boom_snapshot_region_corridor_receipt_id }
+		set_variable = { great_depression_region_call_exhaustion = industrial_boom_snapshot_region_exhaustion }
+		var:industrial_boom_snapshot_region_state = {
+			save_event_target_as = great_depression_inherited_region_state
+			PREV = { set_country_flag = great_depression_region_call_state_target_supplied }
+			# The old initial selector receives only a connected eligible state.
+			# The companion always retains the exact frozen state separately.
+			if = {
+				limit = {
+					is_owned_by = PREV
+					is_controlled_by = PREV
+					is_core_of = PREV
+					impassable = no
+					NOT = { has_state_flag = industrial_boom_region_conversion_forbidden }
+					PREV = {
+						check_variable = { var = industrial_boom_snapshot_region_role value = constant:great_depression_region_role.none compare = greater_than }
+						NOT = { has_country_flag = industrial_boom_snapshot_region_conversion_forbidden }
+					}
+					OR = {
+						NOT = { has_state_flag = great_depression_center }
+						check_variable = { var = great_depression_center_episode_id value = PREV.great_depression_active_episode_id compare = equals }
+					}
+				}
+				save_event_target_as = industrial_boom_inherited_region
+			}
+		}
+	}
+}
+
+# A national duplicate is consumable only with the exact committed regional
+# receipt. Use its original Event 35 episode, even after that episode closes.
+industrial_boom_confirm_inherited_region_receipt = {
+	set_variable = { industrial_boom_region_receipt_row = constant:great_depression_region_contract.unavailable }
+	for_loop_effect = {
+		start = 0
+		end = great_depression_inherited_region_receipt_id_entries^num
+		value = industrial_boom_region_receipt_scan_index
+		if = {
+			limit = {
+				check_variable = { var = great_depression_inherited_region_receipt_id_entries^industrial_boom_region_receipt_scan_index value = industrial_boom_snapshot_region_receipt_id compare = equals }
+				check_variable = { var = great_depression_inherited_region_event34_episode_id_entries^industrial_boom_region_receipt_scan_index value = industrial_boom_snapshot_source_episode_id compare = equals }
+			}
+			set_variable = { industrial_boom_region_receipt_row = industrial_boom_region_receipt_scan_index }
+		}
+	}
+	if = {
+		limit = { check_variable = { var = industrial_boom_region_receipt_row value = constant:great_depression_api.zero compare = greater_than_or_equals } }
+		set_variable = { great_depression_region_call_episode_id = great_depression_inherited_region_episode_id_entries^industrial_boom_region_receipt_row }
+		great_depression_register_inherited_region = yes
+	}
+	else = {
+		great_depression_reset_region_outputs = yes
+		set_variable = { great_depression_region_call_reject_reason = constant:great_depression_region_reject.invalid_source }
+		great_depression_clear_region_inputs = yes
+	}
+	clear_variable = industrial_boom_region_receipt_row
+}

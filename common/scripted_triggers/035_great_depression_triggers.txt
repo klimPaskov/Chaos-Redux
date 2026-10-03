@@ -35,6 +35,43 @@ great_depression_has_active_crisis = {
 	has_country_flag = great_depression_active
 }
 
+# Country preflight. A new crisis needs a real state that the center selector
+# can use, not only factories held through occupation or an impassable core.
+# This runs before any national setup, opening shock, or source-ledger reset.
+great_depression_has_viable_center_pool = {
+	any_controlled_state = {
+		great_depression_new_center_state_is_permitted = yes
+		is_owned_by = PREV
+		is_controlled_by = PREV
+		is_core_of = PREV
+		impassable = no
+		state_population_k > constant:great_depression_api.minimum_viable_state_population_k
+		OR = {
+			industrial_complex > constant:great_depression_api.zero
+			arms_factory > constant:great_depression_api.zero
+			dockyard > constant:great_depression_api.zero
+		}
+	}
+}
+
+# State directly below the receiving country. A fresh episode cannot overwrite
+# an existing physical center or a live/frozen source conversion prohibition.
+# Registry membership is checked separately during selection after its reset.
+great_depression_new_center_state_is_permitted = {
+	NOT = { has_state_flag = great_depression_center }
+	NOT = { has_state_flag = industrial_boom_region_conversion_forbidden }
+	NOT = {
+		AND = {
+			PREV = {
+				check_variable = { var = great_depression_call_caller_type value = constant:great_depression_caller.industrial_boom_collapse compare = equals }
+				has_country_flag = industrial_boom_snapshot_region_conversion_forbidden
+				has_variable = industrial_boom_snapshot_region_state_id
+			}
+			check_variable = { var = id value = PREV.industrial_boom_snapshot_region_state_id compare = equals }
+		}
+	}
+}
+
 great_depression_active_crisis_is_coherent = {
 	has_country_flag = great_depression_active
 	has_variable = great_depression_active_episode_id
@@ -65,6 +102,14 @@ great_depression_active_crisis_is_coherent = {
 		value = constant:great_depression_evolution.second_great_depression
 		compare = less_than_or_equals
 	}
+}
+
+great_depression_active_country_is_valid = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	NOT = { is_special_chaos_country = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	great_depression_active_crisis_is_coherent = yes
 }
 
 great_depression_has_stale_active_registry_entry = {
@@ -118,11 +163,12 @@ great_depression_is_valid_worldwide_target = {
 	}
 }
 
-# COUNTRY scope. Financial Contagion rows are admitted only through a proved
-# relationship helper and remain independent of ordinary random-event pacing.
+# COUNTRY candidate scope, entered directly from the source country. PREV is
+# the network source even when the API's sender or global host remains ROOT.
+# Rows require proved relationships and never own normal-event pacing.
 great_depression_is_valid_contagion_network_target = {
 	great_depression_has_viable_economy = yes
-	NOT = { tag = ROOT }
+	NOT = { tag = PREV }
 	NOT = { has_country_flag = great_depression_active }
 	NOT = { has_country_flag = great_depression_transition_pending }
 	NOT = { has_country_flag = great_depression_incompatible_economic_state }
@@ -299,6 +345,26 @@ great_depression_call_worldwide_origin_target_is_valid = {
 }
 
 great_depression_call_event34_snapshot_is_valid = {
+	has_country_flag = industrial_boom_snapshot_frozen
+	has_variable = great_depression_call_snapshot_country_id
+	has_variable = industrial_boom_snapshot_country_id
+	has_variable = industrial_boom_snapshot_source_episode_id
+	check_variable = { var = great_depression_call_snapshot_country_id value = THIS.id compare = equals }
+	check_variable = { var = industrial_boom_snapshot_country_id value = THIS.id compare = equals }
+	check_variable = { var = great_depression_call_source_episode_id value = industrial_boom_snapshot_source_episode_id compare = equals }
+	check_variable = { var = great_depression_call_snapshot_collapse_receipt_id value = industrial_boom_collapse_receipt_id compare = equals }
+	check_variable = { var = great_depression_call_receipt_id value = industrial_boom_collapse_receipt_id compare = equals }
+	check_variable = { var = great_depression_call_evolution_floor value = industrial_boom_snapshot_evolution compare = equals }
+	check_variable = { var = great_depression_call_snapshot_final_overheating value = industrial_boom_snapshot_final_overheating compare = equals }
+	check_variable = { var = great_depression_call_snapshot_peak_overheating value = industrial_boom_snapshot_peak_overheating compare = equals }
+	check_variable = { var = great_depression_call_event34_landing_state value = industrial_boom_snapshot_landing_state compare = equals }
+	check_variable = { var = great_depression_call_event34_reserve_units value = industrial_boom_snapshot_reserve_units compare = equals }
+	check_variable = { var = great_depression_call_event34_project_units value = industrial_boom_snapshot_project_units compare = equals }
+	check_variable = { var = great_depression_call_event34_region_units value = industrial_boom_snapshot_region_units compare = equals }
+	check_variable = { var = great_depression_call_event34_shock_units value = industrial_boom_snapshot_shock_units compare = equals }
+	check_variable = { var = great_depression_call_event34_repeat_history_count value = industrial_boom_snapshot_repeat_history_count compare = equals }
+	check_variable = { var = great_depression_call_event34_dangerous_days value = industrial_boom_snapshot_dangerous_days compare = equals }
+	check_variable = { var = great_depression_call_event34_collapse_day value = industrial_boom_snapshot_collapse_day compare = equals }
 	check_variable = { var = great_depression_call_snapshot_supplied_proof value = constant:great_depression_api.one compare = greater_than_or_equals }
 	check_variable = { var = great_depression_call_snapshot_target_proof value = constant:great_depression_api.one compare = greater_than_or_equals }
 	check_variable = { var = great_depression_call_snapshot_collapse_receipt_id value = constant:great_depression_api.minimum_receipt_id compare = greater_than_or_equals }
@@ -315,7 +381,55 @@ great_depression_call_event34_snapshot_is_valid = {
 	}
 }
 
+# Recipient country. Prove the aligned incoming and outgoing pair rows against
+# the supplied exact source, episode, receipt and qualitative exposure stage.
+# any_of does not change scope. The two var: entries do, so PREV.PREV is the
+# recipient in the outgoing-target scope even if ROOT is an unrelated sender.
+great_depression_call_contagion_rows_are_proven = {
+	has_country_flag = great_depression_contagion_exposure_open
+	NOT = { has_country_flag = great_depression_contagion_contained }
+	has_variable = great_depression_contagion_exposure_start_day
+	set_temp_variable = { great_depression_call_proven_exposure_days = global.num_days }
+	subtract_from_temp_variable = { great_depression_call_proven_exposure_days = great_depression_contagion_exposure_start_day }
+	check_variable = { var = great_depression_call_proven_exposure_days value = constant:great_depression_event.global_pressure_days compare = greater_than_or_equals }
+	has_variable = great_depression_contagion_source_countries^num
+	check_variable = { var = great_depression_contagion_source_countries^num value = constant:great_depression_event.contagion_source_cap compare = less_than_or_equals }
+	any_of = {
+		array = great_depression_contagion_source_countries
+		value = great_depression_call_validate_source_country
+		index = great_depression_call_validate_source_row
+		check_variable = { var = great_depression_call_validate_source_row value = great_depression_contagion_source_episode_entries^num compare = less_than }
+		check_variable = { var = great_depression_call_validate_source_row value = great_depression_contagion_source_receipt_entries^num compare = less_than }
+		check_variable = { var = great_depression_call_validate_source_row value = great_depression_contagion_source_stage_entries^num compare = less_than }
+		check_variable = { var = great_depression_contagion_source_episode_entries^great_depression_call_validate_source_row value = great_depression_call_source_episode_id compare = equals }
+		check_variable = { var = great_depression_contagion_source_receipt_entries^great_depression_call_validate_source_row value = great_depression_call_receipt_id compare = equals }
+		check_variable = { var = great_depression_contagion_source_stage_entries^great_depression_call_validate_source_row value = great_depression_call_contagion_exposure_stage compare = equals }
+		var:great_depression_call_validate_source_country = {
+			exists = yes
+			tag = event_target:great_depression_call_source_country
+			NOT = { tag = PREV }
+			great_depression_active_crisis_is_coherent = yes
+			has_country_flag = great_depression_evolution_financial_contagion
+			check_variable = { var = great_depression_active_episode_id value = PREV.great_depression_call_source_episode_id compare = equals }
+			check_variable = { var = great_depression_contagion_exposure_targets^num value = constant:great_depression_event.contagion_source_cap compare = less_than_or_equals }
+			any_of = {
+				array = great_depression_contagion_exposure_targets
+				value = great_depression_call_validate_target_country
+				index = great_depression_call_validate_target_row
+				check_variable = { var = great_depression_call_validate_target_row value = great_depression_contagion_target_receipt_entries^num compare = less_than }
+				check_variable = { var = great_depression_call_validate_target_row value = great_depression_contagion_target_stage_entries^num compare = less_than }
+				check_variable = { var = great_depression_contagion_target_receipt_entries^great_depression_call_validate_target_row value = PREV.great_depression_call_receipt_id compare = equals }
+				check_variable = { var = great_depression_contagion_target_stage_entries^great_depression_call_validate_target_row value = PREV.great_depression_call_contagion_exposure_stage compare = equals }
+				var:great_depression_call_validate_target_country = { tag = PREV.PREV }
+			}
+		}
+	}
+}
+
 great_depression_call_contagion_context_is_valid = {
+	check_variable = { var = great_depression_call_receipt_id value = great_depression_call_contagion_link_receipt_id compare = equals }
+	check_variable = { var = great_depression_call_contagion_exposure_stage value = constant:great_depression_exposure_stage.conversion_ready compare = greater_than_or_equals }
+	check_variable = { var = great_depression_call_contagion_exposure_stage value = constant:great_depression_exposure_stage.resolved compare = less_than }
 	check_variable = { var = great_depression_call_contagion_link_receipt_id value = constant:great_depression_api.minimum_receipt_id compare = greater_than_or_equals }
 	check_variable = { var = great_depression_call_contagion_exposure_stage value = constant:great_depression_api.minimum_exposure_stage compare = greater_than_or_equals }
 	check_variable = { var = great_depression_call_contagion_exposure_proof value = constant:great_depression_api.one compare = greater_than_or_equals }
@@ -323,9 +437,27 @@ great_depression_call_contagion_context_is_valid = {
 	check_variable = { var = great_depression_call_contagion_source_episode_proof value = constant:great_depression_api.one compare = greater_than_or_equals }
 	check_variable = { var = great_depression_call_source_country_proof value = constant:great_depression_api.one compare = greater_than_or_equals }
 	great_depression_call_source_country_target_is_valid = yes
+	great_depression_call_contagion_rows_are_proven = yes
 }
 
 great_depression_call_worldwide_context_is_valid = {
+	has_global_flag = great_depression_worldwide_episode_active
+	has_country_flag = great_depression_worldwide_pressure_active
+	has_event_target = great_depression_global_activation_source
+	check_variable = { var = great_depression_call_worldwide_origin_proof value = constant:great_depression_api.one compare = greater_than_or_equals }
+	has_variable = great_depression_call_worldwide_origin_scope
+	check_variable = { var = global.great_depression_global_stage value = constant:great_depression_global_stage.coordination compare = equals }
+	check_variable = { var = great_depression_call_worldwide_episode_id value = global.great_depression_global_episode_id compare = equals }
+	check_variable = { var = great_depression_call_source_episode_id value = global.great_depression_global_episode_id compare = equals }
+	check_variable = { var = great_depression_worldwide_pressure_episode_id value = global.great_depression_global_episode_id compare = equals }
+	check_variable = { var = great_depression_call_worldwide_pressure_stage value = great_depression_worldwide_pressure_stage compare = equals }
+	check_variable = { var = great_depression_call_worldwide_conversion_receipt_id value = great_depression_worldwide_conversion_receipt_id compare = equals }
+	check_variable = { var = great_depression_call_receipt_id value = great_depression_worldwide_conversion_receipt_id compare = equals }
+	is_in_array = { array = global.great_depression_global_pressure_countries value = THIS }
+	var:great_depression_call_worldwide_origin_scope = {
+		exists = yes
+		tag = event_target:great_depression_global_activation_source
+	}
 	check_variable = { var = great_depression_call_worldwide_episode_id value = constant:great_depression_api.minimum_episode_id compare = greater_than_or_equals }
 	check_variable = { var = great_depression_call_worldwide_episode_proof value = constant:great_depression_api.one compare = greater_than_or_equals }
 	check_variable = { var = great_depression_call_worldwide_pressure_stage value = constant:great_depression_api.minimum_worldwide_stage compare = greater_than_or_equals }
@@ -335,6 +467,21 @@ great_depression_call_worldwide_context_is_valid = {
 }
 
 great_depression_call_relapse_context_is_valid = {
+	NOT = { has_country_flag = great_depression_active }
+	NOT = { has_country_flag = great_depression_transition_pending }
+	has_country_flag = great_depression_recovery_watch_active
+	has_country_flag = great_depression_recovery_completed
+	has_country_flag = great_depression_recovery_scar_memory
+	has_variable = great_depression_prior_completed_episode_id
+	has_variable = great_depression_prior_completion_day
+	check_variable = { var = great_depression_prior_completion_proof value = constant:great_depression_api.one compare = equals }
+	check_variable = { var = great_depression_call_relapse_prior_episode_id value = great_depression_prior_completed_episode_id compare = equals }
+	check_variable = { var = great_depression_call_source_episode_id value = great_depression_prior_completed_episode_id compare = equals }
+	check_variable = { var = great_depression_call_relapse_profile value = constant:great_depression_severity_profile.relapse compare = equals }
+	set_temp_variable = { great_depression_call_relapse_elapsed = global.num_days }
+	subtract_from_temp_variable = { great_depression_call_relapse_elapsed = great_depression_prior_completion_day }
+	check_variable = { var = great_depression_call_relapse_elapsed value = constant:great_depression_api.zero compare = greater_than_or_equals }
+	check_variable = { var = great_depression_call_relapse_elapsed value = constant:great_depression_event.recovery_watch_days compare = less_than_or_equals }
 	check_variable = { var = great_depression_call_relapse_prior_episode_id value = constant:great_depression_api.minimum_episode_id compare = greater_than_or_equals }
 	check_variable = { var = great_depression_call_relapse_prior_completion_proof value = constant:great_depression_api.one compare = greater_than_or_equals }
 	check_variable = { var = great_depression_call_relapse_window_proof value = constant:great_depression_api.one compare = greater_than_or_equals }

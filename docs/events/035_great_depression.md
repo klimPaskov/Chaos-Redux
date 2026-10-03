@@ -32,6 +32,14 @@ Callers supply a contract version, caller type, source event and episode, receip
 
 The contract fails closed when required evidence, source scopes, snapshots, relationship proofs, worldwide context, or relapse history is missing.
 
+The current country is the synchronous transaction recipient even when the sender or global host remains `ROOT`.
+Event 34 fields must match the frozen owner snapshot, contagion must prove both rows of the exact source-target pair, worldwide conversion must match the current global episode and pressure receipt, and relapse must match the country's completed episode and recovery window.
+The caller can read the public result immediately after the helper returns.
+
+A new crisis must have an owned, controlled, passable core industrial state before national setup begins.
+Its requested evolution floor replaces the previous episode's floor, and evolution projection and logging wait until center registration succeeds.
+Deepening preserves the active episode and its existing evolution floor.
+
 The supported callers are independent Event 35 firing, Event 34 collapse, financial-contagion conversion, worldwide-depression conversion, and relapse.
 
 An active compatible crisis is deepened in place, while an inactive compatible country receives a new globally unique episode id and a fresh episode ledger.
@@ -66,7 +74,23 @@ No action charges more than four resource types.
 
 The custom cost contract contains matching normal, blocked, and tooltip localisation keys and debits the same political power, manpower, fuel, trains, convoys, support equipment, civilian-factory commitment, stability, or war support shown to the player.
 
+Inline costs show at most three quoted values, and their hover tooltips show every payment or capacity commitment with its resource icon.
+Each amount uses its own affordability color, with insufficient resources in red and available resources in yellow.
+Civilian capacity is frozen at the accepted payment quote, including Public Works, and later cost refreshes do not resize that commitment.
+The internal `great_depression_committed_civilian` snapshot is removed with the active dynamic modifiers during crisis cleanup.
+
+Countries responding to contagion exposure or worldwide pressure keep their commitment while any Event 35 crisis surface remains active.
+When their last external surface closes, `great_depression_release_idle_civilian_commitment` releases the capacity after the current response lock has ended.
+The hidden `chaosx.nr35.7` callback coalesces delayed reviews through `great_depression_civilian_release_queued`, and it never records a normal event firing, changes Chaos, or displays a popup.
+National crises continue to use `great_depression_clear_dynamic_state` for their terminal cleanup.
+
+The global host dispatches registered national maintenance through the hidden `chaosx.nr35.8` receiver, giving centre ownership, humanitarian attribution, and contagion-source helpers the affected country as `ROOT`.
+The weighted independent selector preserves its chosen country through `chaosx.nr35.9`, which revalidates that country and calls the same start/deepen transaction without choosing another target.
+Neither private receiver creates another normal pacing entry.
+
 The selected-center flow uses state targets, one occupied action slot, cooldowns, project receipts, state status validation, and cleanup on transfer or crisis closure.
+
+Every paid decision and mission uses the same affordability predicate in its ordinary availability and custom-cost display.
 
 Missions activate without an entry debit, require affordability at completion, and debit their displayed mapped action cost exactly once on successful completion. Cancellation and timeout do not create a second charge or refund an unspent cost.
 
@@ -87,6 +111,9 @@ Factory loss is delayed until sustained severe failure or a deliberate liquidati
 Factory-loss receipts compare against the frozen center baseline, remain capped, and prevent duplicate physical losses.
 
 State transfer revalidates ownership, removes invalid active projects, preserves applicable scars and legacies, and keeps the aligned registry coherent.
+
+Terminal cleanup touches only registered states whose current center episode still matches the closing country.
+A center recorded under another country's episode retains its own flags and projects.
 
 Repeat episodes retain bounded doctrine legacies and recovery scars while applying diminishing returns to repeated relief.
 
@@ -146,7 +173,7 @@ Activation itself grants zero Chaos.
 
 The first concrete bounded worldwide-pressure application emits one announcement, one super-event, and one guarded abnormal-outcome Chaos receipt.
 
-Worldwide pressure is lighter than a national crisis and is tracked in a bounded registry of valid major or player economies.
+Worldwide pressure is lighter than a national crisis and is tracked in a bounded registry of valid normal civilian economies.
 
 Worldwide conversion uses the preserved global activation source, one globally unique conversion receipt, a conversion interval, a cursor, and the Event 35 fail-closed API.
 
@@ -226,7 +253,7 @@ Event 35 is recorded as Minor Repeatable, Chaos level 1, Negative Economy cluste
 
 `common/on_actions/035_great_depression_cxt_on_actions.txt` registers its hidden-idea carrier during startup and through the narrow `on_daily_CXT` fallback.
 
-The setup exposes independent start, Event 34 handoff, contagion conversion, worldwide conversion, relapse, center, severity, social, global-recovery, and achievement proof scenarios without introducing a recurring world scan.
+The setup records the package's inert readiness and public-range contract without starting a depression, assigning an economy, or creating runtime acceptance fixtures.
 
 ## Future plans and suggestions
 
