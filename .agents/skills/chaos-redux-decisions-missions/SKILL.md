@@ -324,6 +324,11 @@ Emergency missions can be shorter only when the event story clearly justifies im
 
 Do not give every mission the same timer.
 
+For every decision-level `modifier = { ... }`, define `days_remove` even when `days_mission_timeout` is present; the modifier applies during the active post-selection removal timer, not the mission timeout.
+A `modifier` nested inside `ai_will_do` adjusts AI weight and is not a decision effect.
+Audit the entire owned decision and mission family by block scope, preserving completion, removal, timeout, cancellation, and cleanup behavior.
+Derive `days_remove` from the intended active duration and existing tuning; do not invent deadlines or change mission deadlines just to satisfy this requirement.
+
 ### Synchronizing native mission timers
 
 `activate_mission` initializes the native `days_mission_timeout` from the static mission definition; changing a separate stored deadline does not update it.
