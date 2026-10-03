@@ -135,7 +135,7 @@ cbrn_occupation_measures_category = {
 						limit = {
 							ROOT = {
 								cbrn_occupation_country_can_supply_external_protective_aid = yes
-								NOT = { has_political_power < constant:cbrn_occupation_decision_cost.protective_aid_pp }
+								black_friday_can_pay_cbrn_external_aid_pp_fee = yes
 							}
 							cbrn_occupation_state_can_receive_external_protective_aid = yes
 							cbrn_quote_external_state_mask_reservation = yes
@@ -147,13 +147,24 @@ cbrn_occupation_measures_category = {
 						cbrn_reserve_requested_masks_to_state = yes
 						if = {
 							limit = { check_variable = { cbrn_mask_escrow_completed > constant:cbrn_math.zero } }
+							save_event_target_as = cbrn_external_aid_transaction_target_state
+							ROOT = { black_friday_pay_cbrn_external_aid_pp_fee = yes }
+						}
+						if = {
+							limit = {
+								check_variable = { cbrn_mask_escrow_completed > constant:cbrn_math.zero }
+								check_variable = { var = black_friday_cbrn_external_aid_pp_payment_success value = constant:universal_cost_framework.one compare = equals }
+							}
 							cbrn_occupation_register_external_aid_reservation = yes
 							set_temp_variable = { cbrn_occupation_external_aid_days = constant:cbrn_occupation_timing.protective_aid_days }
 							set_state_flag = { flag = cbrn_occupation_external_aid_project_active days = var:cbrn_occupation_external_aid_days }
-							ROOT = {
-								set_temp_variable = { cbrn_protection_pp_debit_requested = constant:cbrn_occupation_decision_cost.protective_aid_pp }
-								cbrn_debit_protection_political_power = yes
+						}
+						if = {
+							limit = {
+								check_variable = { cbrn_mask_escrow_completed > constant:cbrn_math.zero }
+								check_variable = { var = black_friday_cbrn_external_aid_pp_payment_success value = constant:universal_cost_framework.zero compare = equals }
 							}
+							cbrn_refund_external_state_mask_reservation = yes
 						}
 					}
 				}
@@ -169,6 +180,18 @@ cbrn_occupation_measures_category = {
 					save_event_target_as = cbrn_occupation_target_state
 				}
 				cbrn_occupation_execute_external_protective_aid = yes
+				set_temp_variable = { black_friday_cbrn_external_aid_successful_completion = constant:universal_cost_framework.zero }
+				if = {
+					limit = {
+						check_variable = {
+							var = cbrn_occupation_protective_aid_proof
+							value = constant:cbrn_proof.supplied
+							compare = equals
+						}
+					}
+					set_temp_variable = { black_friday_cbrn_external_aid_successful_completion = constant:universal_cost_framework.one }
+				}
+				FROM = { black_friday_settle_cbrn_external_aid_pp_fee_receipt = yes }
 			}
 		}
 
@@ -190,6 +213,8 @@ cbrn_occupation_measures_category = {
 					cbrn_occupation_close_external_aid_reservation = yes
 					cbrn_refund_external_state_mask_reservation = yes
 					clr_state_flag = cbrn_occupation_external_aid_project_active
+					set_temp_variable = { black_friday_cbrn_external_aid_successful_completion = constant:universal_cost_framework.zero }
+					black_friday_settle_cbrn_external_aid_pp_fee_receipt = yes
 				}
 			}
 		}
