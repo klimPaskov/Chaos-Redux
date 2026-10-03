@@ -26,7 +26,7 @@ All eight required roles are distinct exported skeletal actions at 24 FPS: idle,
 
 ## Materials and audio
 
-The runtime uses the retained PDX DDS derivatives: diffuse, normal, and specular. The runtime copies are named for the unit and are bound to the `mesh_node.001` material stream in the mesh registry. Six sourced audio derivatives are installed for selection, movement, idle vocal, weapon attack, weapon impact, and death. `evidence/audio_sources/ffprobe_and_hash_receipt.json` records PCM S16LE mono at 44100 Hz for every source and the runtime copies are byte-identical to the derived files.
+The runtime uses the retained PDX DDS derivatives: diffuse, normal, and specular. The runtime copies are named for the unit and are bound to the exported `mesh.001` object, stream index 0, in the mesh registry. Six sourced audio derivatives are installed for selection, movement, idle vocal, weapon attack, weapon impact, and death. `evidence/audio_sources/ffprobe_and_hash_receipt.json` records PCM S16LE mono at 44100 Hz for every source and the runtime copies are byte-identical to the derived files.
 
 ## Archive cleanup boundary
 
