@@ -1237,7 +1237,9 @@ event021_cleanup_regional_exposure = {
 	clear_variable = random_civil_war_exposure_source_kind
 	set_country_flag = random_civil_war_exposure_cooldown
 	set_variable = { random_civil_war_exposure_cooldown_until = global.date }
-	add_to_variable = { random_civil_war_exposure_cooldown_until = constant:random_civil_war_timing.exposure_cooldown_days }
+	set_temp_variable = { event021_date_offset = constant:random_civil_war_timing.exposure_cooldown_days }
+	event021_days_to_date_offset = yes
+	add_to_variable = { random_civil_war_exposure_cooldown_until = event021_date_offset }
 	clear_variable = random_civil_war_exposure_stage
 }
 
@@ -1420,22 +1422,30 @@ event021_schedule_country_review = {
 	if = {
 		limit = { random_civil_war_pressure_is_critical = yes }
 		set_variable = { random_civil_war_next_review_date = global.date }
-		add_to_variable = { random_civil_war_next_review_date = constant:random_civil_war_timing.critical_review_days }
+		set_temp_variable = { event021_date_offset = constant:random_civil_war_timing.critical_review_days }
+		event021_days_to_date_offset = yes
+		add_to_variable = { random_civil_war_next_review_date = event021_date_offset }
 	}
 	if = {
 		limit = { random_civil_war_pressure_is_fractured = yes }
 		set_variable = { random_civil_war_next_review_date = global.date }
-		add_to_variable = { random_civil_war_next_review_date = constant:random_civil_war_timing.fractured_review_days }
+		set_temp_variable = { event021_date_offset = constant:random_civil_war_timing.fractured_review_days }
+		event021_days_to_date_offset = yes
+		add_to_variable = { random_civil_war_next_review_date = event021_date_offset }
 	}
 	if = {
 		limit = { random_civil_war_pressure_is_exposed = yes }
 		set_variable = { random_civil_war_next_review_date = global.date }
-		add_to_variable = { random_civil_war_next_review_date = constant:random_civil_war_timing.exposed_review_days }
+		set_temp_variable = { event021_date_offset = constant:random_civil_war_timing.exposed_review_days }
+		event021_days_to_date_offset = yes
+		add_to_variable = { random_civil_war_next_review_date = event021_date_offset }
 	}
 	if = {
 		limit = { random_civil_war_pressure_is_stable = yes }
 		set_variable = { random_civil_war_next_review_date = global.date }
-		add_to_variable = { random_civil_war_next_review_date = constant:random_civil_war_timing.stable_review_days }
+		set_temp_variable = { event021_date_offset = constant:random_civil_war_timing.stable_review_days }
+		event021_days_to_date_offset = yes
+		add_to_variable = { random_civil_war_next_review_date = event021_date_offset }
 	}
 }
 
@@ -1491,7 +1501,9 @@ event021_register_global_country = {
 		if = {
 			limit = { NOT = { has_variable = random_civil_war_next_review_date } }
 			set_variable = { random_civil_war_next_review_date = global.date }
-			add_to_variable = { random_civil_war_next_review_date = constant:random_civil_war_timing.initial_review_days }
+			set_temp_variable = { event021_date_offset = constant:random_civil_war_timing.initial_review_days }
+			event021_days_to_date_offset = yes
+			add_to_variable = { random_civil_war_next_review_date = event021_date_offset }
 		}
 	}
 }
@@ -1781,10 +1793,14 @@ event021_apply_settlement = {
 	set_country_flag = random_civil_war_settlement_relief_active
 	set_country_flag = random_civil_war_reconstruction_active
 	set_variable = { random_civil_war_reconstruction_until = global.date }
-	add_to_variable = { random_civil_war_reconstruction_until = constant:random_civil_war_timing.reconstruction_days }
+	set_temp_variable = { event021_date_offset = constant:random_civil_war_timing.reconstruction_days }
+	event021_days_to_date_offset = yes
+	add_to_variable = { random_civil_war_reconstruction_until = event021_date_offset }
 	set_country_flag = random_civil_war_successor_grace
 	set_variable = { random_civil_war_successor_grace_until = global.date }
-	add_to_variable = { random_civil_war_successor_grace_until = constant:random_civil_war_timing.successor_grace_days }
+	set_temp_variable = { event021_date_offset = constant:random_civil_war_timing.successor_grace_days }
+	event021_days_to_date_offset = yes
+	add_to_variable = { random_civil_war_successor_grace_until = event021_date_offset }
 	set_variable = { random_civil_war_pending_authority_delta = constant:random_civil_war_authority.settlement }
 	event021_add_authority = yes
 	set_variable = { random_civil_war_pending_pressure_delta = constant:random_civil_war_pressure.settlement_relief }
@@ -1866,9 +1882,13 @@ event021_prepare_recurrence = {
 			set_temp_variable = { event021_recurrence_window_base_date = random_civil_war_successor_grace_until }
 		}
 		set_variable = { random_civil_war_recurrence_earliest_date = event021_recurrence_window_base_date }
-		add_to_variable = { random_civil_war_recurrence_earliest_date = constant:random_civil_war_timing.recurrence_minimum_days }
+		set_temp_variable = { event021_date_offset = constant:random_civil_war_timing.recurrence_minimum_days }
+		event021_days_to_date_offset = yes
+		add_to_variable = { random_civil_war_recurrence_earliest_date = event021_date_offset }
 		set_variable = { random_civil_war_recurrence_latest_date = event021_recurrence_window_base_date }
-		add_to_variable = { random_civil_war_recurrence_latest_date = constant:random_civil_war_timing.recurrence_maximum_days }
+		set_temp_variable = { event021_date_offset = constant:random_civil_war_timing.recurrence_maximum_days }
+		event021_days_to_date_offset = yes
+		add_to_variable = { random_civil_war_recurrence_latest_date = event021_date_offset }
 		set_variable = { random_civil_war_recurrence_review_date = random_civil_war_recurrence_earliest_date }
 		set_variable = { random_civil_war_next_review_date = random_civil_war_recurrence_earliest_date }
 	}
@@ -1972,7 +1992,9 @@ event021_prepare_scenario_bypass = {
 		set_variable = { random_civil_war_origin_kind = constant:random_civil_war_origin.scenario }
 		set_variable = { random_civil_war_scenario_start_date = global.date }
 		set_variable = { random_civil_war_scenario_batch_deadline = global.date }
-		add_to_variable = { random_civil_war_scenario_batch_deadline = constant:random_civil_war_timing.scenario_batch_maximum_days }
+		set_temp_variable = { event021_date_offset = constant:random_civil_war_timing.scenario_batch_maximum_days }
+		event021_days_to_date_offset = yes
+		add_to_variable = { random_civil_war_scenario_batch_deadline = event021_date_offset }
 		set_global_flag = random_civil_war_scenario_bypass_active
 		save_global_event_target_as = random_civil_war_scenario_target
 	}
@@ -2050,10 +2072,14 @@ event021_cleanup_crisis = {
 		clr_country_flag = random_civil_war_event6_identity_candidate_ready
 		set_country_flag = random_civil_war_recent_target
 		set_variable = { random_civil_war_recent_target_until = global.date }
-		add_to_variable = { random_civil_war_recent_target_until = constant:random_civil_war_timing.target_cooldown_days }
+		set_temp_variable = { event021_date_offset = constant:random_civil_war_timing.target_cooldown_days }
+		event021_days_to_date_offset = yes
+		add_to_variable = { random_civil_war_recent_target_until = event021_date_offset }
 		set_country_flag = random_civil_war_recent_civil_war_memory
 		set_variable = { random_civil_war_memory_until = global.date }
-		add_to_variable = { random_civil_war_memory_until = constant:random_civil_war_timing.event_memory_days }
+		set_temp_variable = { event021_date_offset = constant:random_civil_war_timing.event_memory_days }
+		event021_days_to_date_offset = yes
+		add_to_variable = { random_civil_war_memory_until = event021_date_offset }
 		set_variable = { random_civil_war_last_cleanup_date = global.date }
 		clear_variable = random_civil_war_front_id
 		clear_variable = random_civil_war_front_registered_date

@@ -118,7 +118,9 @@ event021_decision_offer_settlement = {
 	set_country_flag = event021_settlement_action_used
 	set_country_flag = event021_settlement_obligation_active
 	set_variable = { event021_settlement_deadline = global.date }
-	add_to_variable = { event021_settlement_deadline = constant:event021_action_tuning.settlement_obligation_days }
+	set_temp_variable = { event021_date_offset = constant:event021_action_tuning.settlement_obligation_days }
+	event021_days_to_date_offset = yes
+	add_to_variable = { event021_settlement_deadline = event021_date_offset }
 	set_variable = { random_civil_war_pending_authority_delta = constant:event021_action_tuning.settlement_authority_cost }
 	event021_add_authority = yes
 	set_country_flag = event021_settlement_pending
@@ -278,7 +280,9 @@ event021_record_received_sponsor_commitment = {
 	set_variable = { ROOT.random_civil_war_sponsor_recipient_scope = THIS }
 	set_variable = { random_civil_war_sponsor_commitment_start_date = global.date }
 	set_variable = { random_civil_war_sponsor_commitment_until = global.date }
-	add_to_variable = { random_civil_war_sponsor_commitment_until = constant:event021_action_tuning.sponsor_commitment_days }
+	set_temp_variable = { event021_date_offset = constant:event021_action_tuning.sponsor_commitment_days }
+	event021_days_to_date_offset = yes
+	add_to_variable = { random_civil_war_sponsor_commitment_until = event021_date_offset }
 	if = {
 		limit = { has_variable = random_civil_war_front_id }
 		set_variable = { random_civil_war_sponsor_front_id = random_civil_war_front_id }
@@ -381,7 +385,9 @@ event021_decision_offer_mediation = {
 		days = event021_decision_flag_days
 	}
 	set_variable = { event021_mediation_until = global.date }
-	add_to_variable = { event021_mediation_until = constant:event021_action_tuning.mediation_days }
+	set_temp_variable = { event021_date_offset = constant:event021_action_tuning.mediation_days }
+	event021_days_to_date_offset = yes
+	add_to_variable = { event021_mediation_until = event021_date_offset }
 	clr_country_flag = random_civil_war_neighbor_armed_support
 	clr_country_flag = random_civil_war_civilian_relief_available
 	set_variable = { random_civil_war_pending_pressure_delta = constant:event021_action_tuning.mediation_pressure_relief }

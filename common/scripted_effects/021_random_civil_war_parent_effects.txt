@@ -303,7 +303,9 @@ event021_parent_classify_cluster_reservation_skip = {
 	if = {
 		limit = { has_variable = random_civil_war_cluster_reservation_date }
 		set_temp_variable = { event021_cluster_reservation_expiry = random_civil_war_cluster_reservation_date }
-		add_to_temp_variable = { event021_cluster_reservation_expiry = constant:event021_parent_tuning.cluster_reservation_valid_days }
+		set_temp_variable = { event021_date_offset = constant:event021_parent_tuning.cluster_reservation_valid_days }
+		event021_days_to_date_offset = yes
+		add_to_temp_variable = { event021_cluster_reservation_expiry = event021_date_offset }
 	}
 	if = {
 		limit = {
@@ -594,7 +596,9 @@ event021_parent_schedule_evolution_due_date = {
 		else = { set_temp_variable = { event021_evolution_delay_days = mtth:random_civil_war_evolution_i_days } }
 		clamp_temp_variable = { var = event021_evolution_delay_days min = constant:random_civil_war_timing.evolution_minimum_days max = constant:random_civil_war_timing.evolution_maximum_days }
 		set_variable = { global.random_civil_war_evolution_i_due_date = global.date }
-		add_to_variable = { global.random_civil_war_evolution_i_due_date = event021_evolution_delay_days }
+		set_temp_variable = { event021_date_offset = event021_evolution_delay_days }
+		event021_days_to_date_offset = yes
+		add_to_variable = { global.random_civil_war_evolution_i_due_date = event021_date_offset }
 	}
 	else_if = {
 		limit = { check_variable = { var = event021_evolution_schedule_stage value = constant:random_civil_war_event.evolution_ii_stage compare = equals } }
@@ -605,7 +609,9 @@ event021_parent_schedule_evolution_due_date = {
 		else = { set_temp_variable = { event021_evolution_delay_days = mtth:random_civil_war_evolution_ii_days } }
 		clamp_temp_variable = { var = event021_evolution_delay_days min = constant:random_civil_war_timing.evolution_minimum_days max = constant:random_civil_war_timing.evolution_maximum_days }
 		set_variable = { global.random_civil_war_evolution_ii_due_date = global.date }
-		add_to_variable = { global.random_civil_war_evolution_ii_due_date = event021_evolution_delay_days }
+		set_temp_variable = { event021_date_offset = event021_evolution_delay_days }
+		event021_days_to_date_offset = yes
+		add_to_variable = { global.random_civil_war_evolution_ii_due_date = event021_date_offset }
 	}
 	else_if = {
 		limit = { check_variable = { var = event021_evolution_schedule_stage value = constant:random_civil_war_event.evolution_iii_stage compare = equals } }
@@ -616,7 +622,9 @@ event021_parent_schedule_evolution_due_date = {
 		else = { set_temp_variable = { event021_evolution_delay_days = mtth:random_civil_war_evolution_iii_days } }
 		clamp_temp_variable = { var = event021_evolution_delay_days min = constant:random_civil_war_timing.evolution_minimum_days max = constant:random_civil_war_timing.evolution_maximum_days }
 		set_variable = { global.random_civil_war_evolution_iii_due_date = global.date }
-		add_to_variable = { global.random_civil_war_evolution_iii_due_date = event021_evolution_delay_days }
+		set_temp_variable = { event021_date_offset = event021_evolution_delay_days }
+		event021_days_to_date_offset = yes
+		add_to_variable = { global.random_civil_war_evolution_iii_due_date = event021_date_offset }
 	}
 }
 
@@ -822,7 +830,9 @@ event021_parent_review_recurrence_window = {
 			else = {
 				clr_country_flag = random_civil_war_recurrence_eligible
 				set_variable = { random_civil_war_next_review_date = global.date }
-				add_to_variable = { random_civil_war_next_review_date = constant:random_civil_war_timing.stable_review_days }
+				set_temp_variable = { event021_date_offset = constant:random_civil_war_timing.stable_review_days }
+				event021_days_to_date_offset = yes
+				add_to_variable = { random_civil_war_next_review_date = event021_date_offset }
 				if = {
 					limit = {
 						check_variable = {
@@ -832,7 +842,9 @@ event021_parent_review_recurrence_window = {
 						}
 					}
 					set_variable = { random_civil_war_next_review_date = random_civil_war_recurrence_latest_date }
-					add_to_variable = { random_civil_war_next_review_date = constant:random_civil_war_value.one }
+					set_temp_variable = { event021_date_offset = constant:random_civil_war_value.one }
+					event021_days_to_date_offset = yes
+					add_to_variable = { random_civil_war_next_review_date = event021_date_offset }
 				}
 			}
 		}
@@ -4561,7 +4573,9 @@ event021_parent_commit_same_tag_takeover = {
 			set_country_flag = random_civil_war_same_tag_contest_active
 			event021_parent_initialize_same_tag_contest = yes
 			set_variable = { random_civil_war_same_tag_deadline = global.date }
-			add_to_variable = { random_civil_war_same_tag_deadline = constant:event021_parent_tuning.same_tag_deadline_days }
+			set_temp_variable = { event021_date_offset = constant:event021_parent_tuning.same_tag_deadline_days }
+			event021_days_to_date_offset = yes
+			add_to_variable = { random_civil_war_same_tag_deadline = event021_date_offset }
 			event021_register_front = yes
 			event021_set_priority_front = yes
 			set_variable = { random_civil_war_total_belligerent_count = constant:random_civil_war_value.one }
@@ -4889,7 +4903,9 @@ event021_parent_preserve_partition_successors = {
 		set_country_flag = random_civil_war_successor_claimed
 		set_country_flag = random_civil_war_successor_grace
 		set_variable = { random_civil_war_successor_grace_until = global.date }
-		add_to_variable = { random_civil_war_successor_grace_until = constant:random_civil_war_timing.successor_grace_days }
+		set_temp_variable = { event021_date_offset = constant:random_civil_war_timing.successor_grace_days }
+		event021_days_to_date_offset = yes
+		add_to_variable = { random_civil_war_successor_grace_until = event021_date_offset }
 		event021_apply_settlement = yes
 		set_variable = { random_civil_war_parent_log_payload = constant:random_civil_war_log.settlement }
 		event021_parent_record_system_log = yes
@@ -5464,7 +5480,9 @@ event021_parent_select_settlement_obligation = {
 	set_variable = { random_civil_war_settlement_obligation_front_id = random_civil_war_front_id }
 	set_variable = { random_civil_war_settlement_obligation_start_date = global.date }
 	set_variable = { random_civil_war_settlement_terms_hold_until = global.date }
-	add_to_variable = { random_civil_war_settlement_terms_hold_until = constant:event021_parent_tuning.settlement_terms_hold_days }
+	set_temp_variable = { event021_date_offset = constant:event021_parent_tuning.settlement_terms_hold_days }
+	event021_days_to_date_offset = yes
+	add_to_variable = { random_civil_war_settlement_terms_hold_until = event021_date_offset }
 	if = {
 		limit = { has_variable = random_civil_war_anchor_state }
 		set_variable = { random_civil_war_settlement_obligation_anchor_state = random_civil_war_anchor_state }
@@ -5536,7 +5554,9 @@ event021_parent_apply_settlement = {
 			limit = { has_country_flag = event021_settlement_talks_open }
 			set_country_flag = random_civil_war_settlement_obligation_active
 			set_variable = { random_civil_war_settlement_terms_hold_until = global.date }
-			add_to_variable = { random_civil_war_settlement_terms_hold_until = constant:event021_parent_tuning.settlement_terms_hold_days }
+			set_temp_variable = { event021_date_offset = constant:event021_parent_tuning.settlement_terms_hold_days }
+			event021_days_to_date_offset = yes
+			add_to_variable = { random_civil_war_settlement_terms_hold_until = event021_date_offset }
 		}
 		if = {
 			limit = { has_country_flag = random_civil_war_parent_capital_safe }
@@ -7014,7 +7034,9 @@ event021_parent_roll_strange_incident = {
 				set_variable = { random_civil_war_pending_pressure_delta = constant:event021_parent_tuning.strange_incident_pressure_gain }
 				event021_reduce_pressure = yes
 				set_variable = { random_civil_war_strange_incident_until = global.date }
-				add_to_variable = { random_civil_war_strange_incident_until = constant:random_civil_war_timing.exposure_cooldown_days }
+				set_temp_variable = { event021_date_offset = constant:random_civil_war_timing.exposure_cooldown_days }
+				event021_days_to_date_offset = yes
+				add_to_variable = { random_civil_war_strange_incident_until = event021_date_offset }
 			}
 			var:event021_parent_no_strange_incident_weight = { }
 		}
@@ -7145,7 +7167,9 @@ event021_parent_reconstruction_tick = {
 	if = {
 		limit = { has_country_flag = random_civil_war_settlement_obligation_active }
 		set_variable = { random_civil_war_next_review_date = global.date }
-		add_to_variable = { random_civil_war_next_review_date = constant:random_civil_war_timing.stable_review_days }
+		set_temp_variable = { event021_date_offset = constant:random_civil_war_timing.stable_review_days }
+		event021_days_to_date_offset = yes
+		add_to_variable = { random_civil_war_next_review_date = event021_date_offset }
 	}
 }
 

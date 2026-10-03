@@ -2,6 +2,11 @@
 
 This document is the canonical implementation summary for Event 021 Random Civil War.
 
+Stored deadlines and expiry dates use the same encoded hour units as `global.date`.
+Day durations pass through the shared Event 021 calendar converter only when added to those dates, while native mission, event, flag, and idea duration fields remain in days.
+Whole-day intervals are exact and fractional-hour intervals resolve at the next game hour.
+The calendar contract and its caller-owned output are documented in [`021_random_civil_war_date_effects.md`](../../../common/scripted_effects/021_random_civil_war_date_effects.md).
+
 The catalog status is `Needs Testing`. The rework implementation phase is marked complete for test entry, while acceptance certification remains incomplete.
 The current-source findings and repairs in `docs/plans/021_random_civil_war_plans/active_repair_ledger_2026-09-02.md` supersede earlier certification and source-completeness statements below.
 Historical MCP and asset results apply only to their recorded source revisions and files, not to the complete current runtime.

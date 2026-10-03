@@ -465,9 +465,9 @@ event021_treaty_capture_settlement = {
 				set_temp_variable = { event021_treaty_capture_hold_until = random_civil_war_settlement_terms_hold_until }
 			}
 			else = {
-				add_to_temp_variable = {
-					event021_treaty_capture_hold_until = constant:event021_parent_tuning.settlement_terms_hold_days
-				}
+				set_temp_variable = { event021_date_offset = constant:event021_parent_tuning.settlement_terms_hold_days }
+				event021_days_to_date_offset = yes
+				add_to_temp_variable = { event021_treaty_capture_hold_until = event021_date_offset }
 			}
 			add_to_array = { array = global.event021_treaty_agreement_ids value = event021_treaty_capture_agreement_id }
 			add_to_array = { array = global.event021_treaty_agreement_settlement_types value = random_civil_war_settlement_type }
