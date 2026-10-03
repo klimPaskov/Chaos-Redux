@@ -1,0 +1,55 @@
+# Event 012 Gods durable participant history and live review cleanup.
+# Re-entry binds new live authority without erasing prior conduct or opt-out.
+
+gods_of_africa_initialize_participant_history = {
+	# An existing ledger is already initialized even when its count is zero.
+	if = {
+		limit = { has_variable = gods_of_africa_history_count }
+		set_country_flag = gods_of_africa_history_initialized
+	}
+	if = {
+		limit = { NOT = { has_country_flag = gods_of_africa_history_initialized } }
+		set_variable = { gods_of_africa_history_count = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_refusal_count = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_demand_failures = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_offense_count = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_compliance_count = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_partial_count = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_substitute_count = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_punishment_count = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_aid_count = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_voluntary_aid_count = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_repetition_count = constant:gods_of_africa_value.zero }
+		clear_array = gods_of_africa_history_kinds
+		clear_array = gods_of_africa_history_days
+		set_country_flag = gods_of_africa_history_initialized
+	}
+	if = {
+		limit = { NOT = { has_variable = gods_of_africa_wrath } }
+		set_variable = { gods_of_africa_wrath = constant:gods_of_africa_value.starting_wrath }
+	}
+	if = {
+		limit = { NOT = { has_variable = gods_of_africa_wrath_band } }
+		set_variable = { gods_of_africa_wrath_band = constant:gods_of_africa_band.limited }
+	}
+}
+
+gods_of_africa_remember_permanent_opt_out = {
+	if = {
+		limit = { has_country_flag = gods_of_africa_defiant }
+		set_country_flag = gods_of_africa_permanent_opt_out
+	}
+}
+
+# This clears permission from an interrupted review. It does not refund or
+# reverse reparations already transferred, erase paid-offer history, or pardon.
+gods_of_africa_clear_reconciliation_review = {
+	remove_mission = gods_of_africa_reconciliation_mission
+	clr_country_flag = gods_of_africa_reconciliation_pending
+	clr_country_flag = gods_of_africa_reparations_paid
+	clr_country_flag = gods_of_africa_reconciliation_offer_pending
+	clr_country_flag = gods_of_africa_reconciliation_failure_report_pending
+	clear_variable = gods_of_africa_reconciliation_start_day
+	clear_variable = gods_of_africa_reconciliation_due_day
+	clear_variable = gods_of_africa_reconciliation_next_attempt_day
+}
