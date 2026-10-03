@@ -36,6 +36,10 @@ A mission should feel like an order or objective. A decision should feel like a 
 
 Apply the [content and interaction budget](../chaos-redux-scripted-gui/SKILL.md#content-and-interaction-budget) to every decision mechanic surface, including ordinary categories, attached displays, and full windows. It owns the value/action limits, visual communication, concise explanations, and interaction presentation. Keep internal calculations hidden or summarized unless they change an immediate player decision or explain an important consequence. Merge or remove weak values and duplicate actions; moving clutter into another category, tab, tooltip, or popup does not resolve it.
 
+The six-primary-action budget guides usable action presentation; it is a design/readability limit, not a hard HOI4 engine row limit.
+Counts alone establish neither engine capacity nor clipping; engine or visual claims require relevant documentation or actual consumer/render evidence, and source/scenario decision inspection is not visual proof.
+Preserve accepted gameplay and navigation scope; do not require deletions or extra categories solely from a count.
+
 ## 3. Decision and mission types
 
 ### Clickable decisions
