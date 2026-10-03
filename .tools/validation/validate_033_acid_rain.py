@@ -585,6 +585,7 @@ def source_contract(repo_root: Path) -> dict[str, object]:
     events_path = repo_root / "events/033_acid_rain.txt"
     modifiers_path = repo_root / "common/dynamic_modifiers/033_acid_rain_dynamic_modifiers.txt"
     constants_path = repo_root / "common/script_constants/033_acid_rain_constants.txt"
+    decisions_path = repo_root / "common/decisions/033_acid_rain_decisions.txt"
     effects = effects_path.read_text(encoding="utf-8-sig")
     triggers = triggers_path.read_text(encoding="utf-8-sig")
     on_actions = on_actions_path.read_text(encoding="utf-8-sig")
@@ -593,6 +594,7 @@ def source_contract(repo_root: Path) -> dict[str, object]:
     events = events_path.read_text(encoding="utf-8-sig")
     modifiers = modifiers_path.read_text(encoding="utf-8-sig")
     constants = constants_path.read_text(encoding="utf-8-sig")
+    decisions = decisions_path.read_text(encoding="utf-8-sig")
 
     required_effect_fragments = (
         "acid_rain_apply_state_pulse = {",
@@ -653,10 +655,31 @@ def source_contract(repo_root: Path) -> dict[str, object]:
     for migration_fragment in (
         "NOT = { has_global_flag = acid_rain_migration_receipt }",
         "set_global_flag = acid_rain_migration_receipt",
-        "cancel_mission = chaosx_acid_rain_timeout",
-        "cancel_mission = chaosx_acid_clouds_timeout",
+        "CONTROLLER = { acid_rain_remove_legacy_missions = yes }",
+        "OWNER = { acid_rain_remove_legacy_missions = yes }",
     ):
-        assert migration_fragment in migration_effect
+        assert migration_fragment in migration_effect, f"missing migration cleanup: {migration_fragment}"
+    legacy_mission_cleanup = effects.split("acid_rain_remove_legacy_missions = {", 1)[1].split(
+        "\n}\n", 1
+    )[0]
+    legacy_mission_ids = ("chaosx_acid_rain_timeout", "chaosx_acid_clouds_timeout")
+    for mission_id in legacy_mission_ids:
+        assert f"has_active_mission = {mission_id}" in legacy_mission_cleanup
+        assert f"remove_mission = {mission_id}" in legacy_mission_cleanup
+        legacy_definition = decisions.split(f"\t{mission_id} = {{", 1)[1].split("\n\t}\n", 1)[0]
+        for disabled_gate in ("allowed = { always = no }", "activation = { always = no }", "available = { always = no }"):
+            assert disabled_gate in legacy_definition, f"legacy timer can reactivate: {mission_id}"
+        assert "cancel_trigger = { always = yes }" in legacy_definition
+        for callback in ("complete_effect", "timeout_effect", "cancel_effect", "remove_effect"):
+            assert callback not in legacy_definition, f"legacy timer retains a callback: {mission_id}"
+        for source in (effects, on_actions, events, preparedness):
+            assert not re.search(rf"activate_mission\s*=\s*{mission_id}\b", source), f"legacy timer still activated: {mission_id}"
+    assert "cancel_mission" not in effects, "unsupported legacy mission cancellation effect"
+    assert re.search(
+        r"limit\s*=\s*\{\s*has_dynamic_modifier\s*=\s*\{\s*modifier\s*=\s*acid_rain_state\s*\}\s*\}\s*"
+        r"set_state_flag\s*=\s*acid_rain_legacy_affected",
+        migration_effect,
+    ), "legacy coverage must require the acute modifier alone, not cloud presentation"
     start_scalars = effects.split("acid_rain_initialize_runtime_scalars = {", 1)[1].split(
         "\n}\n\n# One-time legacy read", 1
     )[0]
@@ -768,6 +791,7 @@ def source_contract(repo_root: Path) -> dict[str, object]:
         "events_sha256": hashlib.sha256(events_path.read_bytes()).hexdigest(),
         "modifiers_sha256": hashlib.sha256(modifiers_path.read_bytes()).hexdigest(),
         "constants_sha256": hashlib.sha256(constants_path.read_bytes()).hexdigest(),
+        "decisions_sha256": hashlib.sha256(decisions_path.read_bytes()).hexdigest(),
         "exact_population_gateway_calls": effects.count("apply_exact_state_civilian_population_loss = yes"),
         "air_gateway_calls": effects.count("air_contamination_apply_delta_bp = yes"),
         "pulse_deduplication": "monotonic_per_state_generation_key",
@@ -778,6 +802,8 @@ def source_contract(repo_root: Path) -> dict[str, object]:
         "generation_checked_callbacks": events.count("value = global.acid_rain_generation_id compare = equals"),
         "idempotent_cleanup_guard": True,
         "legacy_migration_one_time_receipt": True,
+        "legacy_mission_removal": "native_remove_mission_with_inert_save_lookup_identifiers",
+        "legacy_cloud_only_coverage": False,
         "host_annex_transfer": True,
         "global_transition_uses_exact_pulse_gateway": True,
         "cumulative_live_evolution_checks": True,

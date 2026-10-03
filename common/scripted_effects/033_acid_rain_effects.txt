@@ -345,6 +345,20 @@ acid_rain_initialize_runtime_scalars = {
 	set_variable = { global.acid_rain_severe_cell_supply_disruption_entries^0 = constant:acid_rain_runtime.zero }
 }
 
+# COUNTRY SCOPE. Removes serialized prototype timer records without executing
+# completion or timeout callbacks. The decision file retains inert identities
+# so the native mission lookup resolves during the compatibility interval.
+acid_rain_remove_legacy_missions = {
+	if = {
+		limit = { has_active_mission = chaosx_acid_rain_timeout }
+		remove_mission = chaosx_acid_rain_timeout
+	}
+	if = {
+		limit = { has_active_mission = chaosx_acid_clouds_timeout }
+		remove_mission = chaosx_acid_clouds_timeout
+	}
+}
+
 # One-time legacy read. It removes the prototype modifiers and missions but
 # only carries forward a state's observable legacy exposure as coverage; it
 # never converts a prototype modifier into deaths or an invented loss receipt.
@@ -372,9 +386,20 @@ acid_rain_migrate_legacy_runtime = {
 						has_dynamic_modifier = { modifier = acid_clouds_state }
 					}
 				}
+				CONTROLLER = { acid_rain_remove_legacy_missions = yes }
+				OWNER = { acid_rain_remove_legacy_missions = yes }
+			}
+			if = {
+				limit = {
+					has_dynamic_modifier = { modifier = acid_rain_state }
+				}
 				set_state_flag = acid_rain_legacy_affected
 				add_to_variable = { global.acid_rain_migration_legacy_state_count = constant:acid_rain_runtime.loop_increment }
 				remove_dynamic_modifier = { modifier = acid_rain_state }
+			}
+			# Regional cloud presentation is not evidence of acute state exposure.
+			if = {
+				limit = { has_dynamic_modifier = { modifier = acid_clouds_state } }
 				remove_dynamic_modifier = { modifier = acid_clouds_state }
 			}
 		}
@@ -893,6 +918,7 @@ acid_rain_form_country_registry = {
 			any_controlled_state = { acid_rain_state_is_frozen_valid = yes }
 			check_variable = { var = global.acid_rain_country_record_count value = constant:acid_rain_event.max_countries compare = less_than }
 		}
+		acid_rain_remove_legacy_missions = yes
 		acid_rain_initialize_country_record = yes
 		every_controlled_state = {
 			limit = { acid_rain_state_is_frozen_valid = yes }
