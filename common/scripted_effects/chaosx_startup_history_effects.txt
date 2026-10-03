@@ -385,11 +385,11 @@ chaosx_apply_historical_1936_force_scaled_profile = {
 	}
 }
 
-# Date-gated historical personnel are recruited here instead of being attached
-# by the static history file. The helper is called at startup and by bounded
-# tag-specific daily hooks, so a 1936 game receives a person on the documented
-# historical date while a 1939 game receives every person whose role already
-# existed at that bookmark. Character flags are written only after recruitment.
+# Date-gated identities are attached to stateless CSH during history loading.
+# These existing startup and bounded tag-specific callbacks transfer each held
+# identity to its fixed home country on the documented date. The same date,
+# retirement, trait, and identity-flag gates apply at either bookmark. A missing
+# holder identity fails closed; runtime recruitment is never attempted.
 chaosx_startup_recruit_dated_ast_cbrn_characters = {
 	if = {
 		limit = {
@@ -397,8 +397,14 @@ chaosx_startup_recruit_dated_ast_cbrn_characters = {
 			# pathology and scientific-liaison period; Jan 1 is a 1942 floor.
 			date > 1941.12.31
 			NOT = { has_character = AST_charles_kellaway }
+			CSH = { has_character = AST_charles_kellaway }
 		}
-		recruit_character = AST_charles_kellaway
+		CSH = {
+			set_nationality = {
+				target_country = AST
+				character = AST_charles_kellaway
+			}
+		}
 	}
 }
 
@@ -409,8 +415,14 @@ chaosx_startup_recruit_dated_can_cbrn_characters = {
 			# mobilization; Jan 1 is a conservative 1940 access floor.
 			date > 1939.12.31
 			NOT = { has_character = CAN_frederick_banting }
+			CSH = { has_character = CAN_frederick_banting }
 		}
-		recruit_character = CAN_frederick_banting
+		CSH = {
+			set_nationality = {
+				target_country = CAN
+				character = CAN_frederick_banting
+			}
+		}
 	}
 }
 
@@ -420,8 +432,14 @@ chaosx_startup_recruit_dated_eng_cbrn_characters = {
 			# Contemporary obituaries place Haldane's death in mid-March 1936.
 			date < 1936.03.14
 			NOT = { has_character = ENG_john_scott_haldane }
+			CSH = { has_character = ENG_john_scott_haldane }
 		}
-		recruit_character = ENG_john_scott_haldane
+		CSH = {
+			set_nationality = {
+				target_country = ENG
+				character = ENG_john_scott_haldane
+			}
+		}
 	}
 	if = {
 		limit = {
@@ -434,8 +452,14 @@ chaosx_startup_recruit_dated_eng_cbrn_characters = {
 		limit = {
 			date > 1938.12.31
 			NOT = { has_character = ENG_paul_fildes }
+			CSH = { has_character = ENG_paul_fildes }
 		}
-		recruit_character = ENG_paul_fildes
+		CSH = {
+			set_nationality = {
+				target_country = ENG
+				character = ENG_paul_fildes
+			}
+		}
 	}
 	if = {
 		limit = {
@@ -443,8 +467,14 @@ chaosx_startup_recruit_dated_eng_cbrn_characters = {
 			# early summer 1940; June 1 is a month-level gameplay floor.
 			date > 1940.05.31
 			NOT = { has_character = ENG_david_w_w_henderson }
+			CSH = { has_character = ENG_david_w_w_henderson }
 		}
-		recruit_character = ENG_david_w_w_henderson
+		CSH = {
+			set_nationality = {
+				target_country = ENG
+				character = ENG_david_w_w_henderson
+			}
+		}
 	}
 	if = {
 		limit = { has_character = ENG_paul_fildes }
@@ -467,15 +497,27 @@ chaosx_startup_recruit_dated_ger_cbrn_characters = {
 			# Jan 1 is a year-level scientist-access floor, not an exact appointment date.
 			date > 1939.12.31
 			NOT = { has_character = GER_richard_kuhn }
+			CSH = { has_character = GER_richard_kuhn }
 		}
-		recruit_character = GER_richard_kuhn
+		CSH = {
+			set_nationality = {
+				target_country = GER
+				character = GER_richard_kuhn
+			}
+		}
 	}
 	if = {
 		limit = {
 			date > 1936.12.31
 			NOT = { has_character = GER_gerhard_schrader }
+			CSH = { has_character = GER_gerhard_schrader }
 		}
-		recruit_character = GER_gerhard_schrader
+		CSH = {
+			set_nationality = {
+				target_country = GER
+				character = GER_gerhard_schrader
+			}
+		}
 	}
 	if = {
 		limit = {
@@ -483,8 +525,14 @@ chaosx_startup_recruit_dated_ger_cbrn_characters = {
 			# the June-July 1943 institute correspondence and conference.
 			date > 1943.06.30
 			NOT = { has_character = GER_kurt_blome }
+			CSH = { has_character = GER_kurt_blome }
 		}
-		recruit_character = GER_kurt_blome
+		CSH = {
+			set_nationality = {
+				target_country = GER
+				character = GER_kurt_blome
+			}
+		}
 	}
 	if = {
 		limit = {
@@ -492,22 +540,40 @@ chaosx_startup_recruit_dated_ger_cbrn_characters = {
 			# Jan 1 is a gameplay access floor, not an exact appointment date.
 			date > 1940.12.31
 			NOT = { has_character = GER_kurt_gutzeit }
+			CSH = { has_character = GER_kurt_gutzeit }
 		}
-		recruit_character = GER_kurt_gutzeit
+		CSH = {
+			set_nationality = {
+				target_country = GER
+				character = GER_kurt_gutzeit
+			}
+		}
 	}
 	if = {
 		limit = {
 			date > 1940.12.31
 			NOT = { has_character = GER_sigmund_rascher }
+			CSH = { has_character = GER_sigmund_rascher }
 		}
-		recruit_character = GER_sigmund_rascher
+		CSH = {
+			set_nationality = {
+				target_country = GER
+				character = GER_sigmund_rascher
+			}
+		}
 	}
 	if = {
 		limit = {
 			date > 1942.12.31
 			NOT = { has_character = GER_josef_mengele }
+			CSH = { has_character = GER_josef_mengele }
 		}
-		recruit_character = GER_josef_mengele
+		CSH = {
+			set_nationality = {
+				target_country = GER
+				character = GER_josef_mengele
+			}
+		}
 	}
 	if = {
 		limit = {
@@ -515,15 +581,27 @@ chaosx_startup_recruit_dated_ger_cbrn_characters = {
 			# 25 November 1942; his chemical scientist role opens then.
 			date > 1942.11.24
 			NOT = { has_character = GER_august_hirt }
+			CSH = { has_character = GER_august_hirt }
 		}
-		recruit_character = GER_august_hirt
+		CSH = {
+			set_nationality = {
+				target_country = GER
+				character = GER_august_hirt
+			}
+		}
 	}
 	if = {
 		limit = {
 			date > 1941.12.31
 			NOT = { has_character = GER_otto_bickenbach }
+			CSH = { has_character = GER_otto_bickenbach }
 		}
-		recruit_character = GER_otto_bickenbach
+		CSH = {
+			set_nationality = {
+				target_country = GER
+				character = GER_otto_bickenbach
+			}
+		}
 	}
 	if = {
 		limit = {
@@ -573,8 +651,14 @@ chaosx_startup_recruit_dated_ger_cbrn_characters = {
 		limit = {
 			date > 1939.08.31
 			NOT = { has_character = GER_joachim_mrugowsky }
+			CSH = { has_character = GER_joachim_mrugowsky }
 		}
-		recruit_character = GER_joachim_mrugowsky
+		CSH = {
+			set_nationality = {
+				target_country = GER
+				character = GER_joachim_mrugowsky
+			}
+		}
 	}
 	if = {
 		limit = {
@@ -582,8 +666,14 @@ chaosx_startup_recruit_dated_ger_cbrn_characters = {
 			# 1942; Jan 1 is a gameplay floor, not an exact appointment date.
 			date > 1941.12.31
 			NOT = { has_character = GER_erwin_ding_schuler }
+			CSH = { has_character = GER_erwin_ding_schuler }
 		}
-		recruit_character = GER_erwin_ding_schuler
+		CSH = {
+			set_nationality = {
+				target_country = GER
+				character = GER_erwin_ding_schuler
+			}
+		}
 	}
 	if = {
 		limit = { has_character = GER_gerhard_schrader }
@@ -620,8 +710,14 @@ chaosx_startup_recruit_dated_jap_cbrn_characters = {
 		limit = {
 			date > 1942.01.01
 			NOT = { has_character = JAP_masaji_kitano }
+			CSH = { has_character = JAP_masaji_kitano }
 		}
-		recruit_character = JAP_masaji_kitano
+		CSH = {
+			set_nationality = {
+				target_country = JAP
+				character = JAP_masaji_kitano
+			}
+		}
 	}
 	if = {
 		limit = { has_character = JAP_shiro_ishii }
@@ -642,8 +738,14 @@ chaosx_startup_recruit_dated_pol_cbrn_characters = {
 		limit = {
 			date > 1939.09.01
 			NOT = { has_character = POL_franciszek_witaszek }
+			CSH = { has_character = POL_franciszek_witaszek }
 		}
-		recruit_character = POL_franciszek_witaszek
+		CSH = {
+			set_nationality = {
+				target_country = POL
+				character = POL_franciszek_witaszek
+			}
+		}
 	}
 	if = {
 		limit = { has_character = POL_franciszek_witaszek }
@@ -658,8 +760,14 @@ chaosx_startup_recruit_dated_sov_cbrn_characters = {
 			# his documented 8 April 1938 execution; a 1936 campaign may diverge.
 			date < 1938.04.08
 			NOT = { has_character = SOV_ivan_mikhailovich_velikanov }
+			CSH = { has_character = SOV_ivan_mikhailovich_velikanov }
 		}
-		recruit_character = SOV_ivan_mikhailovich_velikanov
+		CSH = {
+			set_nationality = {
+				target_country = SOV
+				character = SOV_ivan_mikhailovich_velikanov
+			}
+		}
 	}
 	if = {
 		limit = {
@@ -667,23 +775,41 @@ chaosx_startup_recruit_dated_sov_cbrn_characters = {
 			# documented 5 June 1937 arrest; a 1936 campaign may diverge.
 			date < 1937.06.05
 			NOT = { has_character = SOV_yakov_fishman }
+			CSH = { has_character = SOV_yakov_fishman }
 		}
-		recruit_character = SOV_yakov_fishman
+		CSH = {
+			set_nationality = {
+				target_country = SOV
+				character = SOV_yakov_fishman
+			}
+		}
 	}
 	if = {
 		limit = {
 			# Beria became Soviet NKVD People's Commissar on 25 November 1938.
 			date > 1938.11.24
 			NOT = { has_character = SOV_lavrentiy_pavlovich_beria }
+			CSH = { has_character = SOV_lavrentiy_pavlovich_beria }
 		}
-		recruit_character = SOV_lavrentiy_pavlovich_beria
+		CSH = {
+			set_nationality = {
+				target_country = SOV
+				character = SOV_lavrentiy_pavlovich_beria
+			}
+		}
 	}
 	if = {
 		limit = {
 			date > 1937.01.01
 			NOT = { has_character = SOV_grigory_mairanovsky }
+			CSH = { has_character = SOV_grigory_mairanovsky }
 		}
-		recruit_character = SOV_grigory_mairanovsky
+		CSH = {
+			set_nationality = {
+				target_country = SOV
+				character = SOV_grigory_mairanovsky
+			}
+		}
 	}
 	if = {
 		limit = {
@@ -716,8 +842,14 @@ chaosx_startup_recruit_dated_usa_cbrn_characters = {
 			# Olson's 1943 Detrick arrival is year-level evidence.
 			date > 1942.12.31
 			NOT = { has_character = USA_frank_olson }
+			CSH = { has_character = USA_frank_olson }
 		}
-		recruit_character = USA_frank_olson
+		CSH = {
+			set_nationality = {
+				target_country = USA
+				character = USA_frank_olson
+			}
+		}
 	}
 	if = {
 		limit = {
@@ -725,30 +857,54 @@ chaosx_startup_recruit_dated_usa_cbrn_characters = {
 			# 21 December 1942, after his November CWS recruitment.
 			date > 1942.12.20
 			NOT = { has_character = USA_ira_baldwin }
+			CSH = { has_character = USA_ira_baldwin }
 		}
-		recruit_character = USA_ira_baldwin
+		CSH = {
+			set_nationality = {
+				target_country = USA
+				character = USA_ira_baldwin
+			}
+		}
 	}
 	if = {
 		limit = {
 			date > 1942.12.31
 			NOT = { has_character = USA_murray_sanders }
+			CSH = { has_character = USA_murray_sanders }
 		}
-		recruit_character = USA_murray_sanders
+		CSH = {
+			set_nationality = {
+				target_country = USA
+				character = USA_murray_sanders
+			}
+		}
 	}
 	if = {
 		limit = {
 			date > 1941.12.31
 			NOT = { has_character = USA_william_a_hagan }
+			CSH = { has_character = USA_william_a_hagan }
 		}
-		recruit_character = USA_william_a_hagan
+		CSH = {
+			set_nationality = {
+				target_country = USA
+				character = USA_william_a_hagan
+			}
+		}
 	}
 	if = {
 		limit = {
 			# The National Academies history dates Merck's WRS agency to 15 May 1942.
 			date > 1942.05.14
 			NOT = { has_character = USA_george_w_merck }
+			CSH = { has_character = USA_george_w_merck }
 		}
-		recruit_character = USA_george_w_merck
+		CSH = {
+			set_nationality = {
+				target_country = USA
+				character = USA_george_w_merck
+			}
+		}
 	}
 	if = {
 		limit = {
@@ -756,8 +912,14 @@ chaosx_startup_recruit_dated_usa_cbrn_characters = {
 			# 30 March 1943 responsibilities agreement.
 			date > 1943.03.29
 			NOT = { has_character = USA_cornelius_p_rhoads }
+			CSH = { has_character = USA_cornelius_p_rhoads }
 		}
-		recruit_character = USA_cornelius_p_rhoads
+		CSH = {
+			set_nationality = {
+				target_country = USA
+				character = USA_cornelius_p_rhoads
+			}
+		}
 	}
 	if = {
 		limit = {
@@ -765,16 +927,28 @@ chaosx_startup_recruit_dated_usa_cbrn_characters = {
 			# into the war; Jan 1 is a year-level 1942 access floor.
 			date > 1941.12.31
 			NOT = { has_character = USA_dean_s_tarbell }
+			CSH = { has_character = USA_dean_s_tarbell }
 		}
-		recruit_character = USA_dean_s_tarbell
+		CSH = {
+			set_nationality = {
+				target_country = USA
+				character = USA_dean_s_tarbell
+			}
+		}
 	}
 	if = {
 		limit = {
 			# The NDRC was established on 27 June 1940, with Conant as a member.
 			date > 1940.06.26
 			NOT = { has_character = USA_james_b_conant }
+			CSH = { has_character = USA_james_b_conant }
 		}
-		recruit_character = USA_james_b_conant
+		CSH = {
+			set_nationality = {
+				target_country = USA
+				character = USA_james_b_conant
+			}
+		}
 	}
 	if = {
 		limit = { has_character = USA_frank_olson }

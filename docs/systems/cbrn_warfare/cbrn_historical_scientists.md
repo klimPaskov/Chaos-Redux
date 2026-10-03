@@ -6,7 +6,7 @@ Chaos Redux provides a static roster of 67 historical scientists for the chemica
 
 Fifteen dual-role characters live in `common/characters/cbrn_historical_specialists.txt`, while 52 scientist-only characters live in `common/characters/cbrn_historical_scientists.txt`.
 
-The startup compatibility effects recruit prewar and established 1939 identities at the appropriate bookmark and date-gate later wartime identities through bounded country callbacks. After the [Kuhn availability correction](../../specs/chaos_warfare_system_specs/corrections/2026-09-27_richard_kuhn_availability.md), the current source roster has 38 direct and 29 dated recruitment paths, with no second path for any of the 67 scientists. These are source counts; engine recruitment at either bookmark remains unverified. The effects preserve the established `chaosx_scientist_*` identity flags used by events and scripted triggers after the corresponding character is recruited.
+History initialization assigns 38 identities to their home countries and 29 date-gated identities to stateless `CSH`. The existing bounded country callbacks transfer held identities to their fixed home tags on the same dates through country-scoped `set_nationality`; they never attempt runtime recruitment. The [dated-holder contract](cbrn_dated_scientist_transfers.md) preserves all date, retirement, trait, and `chaosx_scientist_*` flag logic. The user-run November 1936 baseline confirmed Fishman on SOV before this correction; the holder route still awaits fresh live-QA evidence at both bookmarks. All 67 identities have exactly one history-time recruitment declaration.
 
 ## Historical calibration
 
