@@ -626,6 +626,8 @@ scripted_map_modes = {
 					else_if = {
 						limit = {
 							has_variable = humanitarian_corridor_last_terminal_status
+							has_variable = humanitarian_corridor_last_terminal_operation
+							check_variable = { humanitarian_corridor_last_terminal_operation = constant:humanitarian_corridor_operation.evacuation }
 							OR = {
 								check_variable = { humanitarian_corridor_last_terminal_status = constant:humanitarian_corridor_status.disqualified }
 								check_variable = { humanitarian_corridor_last_terminal_status = constant:humanitarian_corridor_status.rejected }
@@ -643,6 +645,8 @@ scripted_map_modes = {
 						limit = {
 							has_state_flag = humanitarian_corridor_offer_pending
 							has_variable = humanitarian_corridor_status
+							has_variable = humanitarian_corridor_operation
+							check_variable = { humanitarian_corridor_operation = constant:humanitarian_corridor_operation.evacuation }
 							check_variable = { humanitarian_corridor_status = constant:humanitarian_corridor_status.offer_pending }
 						}
 						set_temp_variable = { red = constant:state_map_modes_migration.corridor_offer_red }
@@ -654,6 +658,8 @@ scripted_map_modes = {
 					else_if = {
 						limit = {
 							has_variable = humanitarian_corridor_status
+							has_variable = humanitarian_corridor_operation
+							check_variable = { humanitarian_corridor_operation = constant:humanitarian_corridor_operation.evacuation }
 							OR = {
 								AND = {
 									has_state_flag = humanitarian_corridor_response_accepted
@@ -833,7 +839,11 @@ scripted_map_modes = {
 						limit = {
 							OR = {
 								has_state_flag = migration_evacuation_prepared
-								has_state_flag = humanitarian_corridor_preparation_pending
+								AND = {
+									has_state_flag = humanitarian_corridor_preparation_pending
+									has_variable = humanitarian_corridor_operation
+									check_variable = { humanitarian_corridor_operation = constant:humanitarian_corridor_operation.evacuation }
+								}
 							}
 						}
 						set_temp_variable = { red = constant:state_map_modes_migration.preparing_red }

@@ -20,6 +20,22 @@ On valid acceptance, the receiving country emits one achievement gate request co
 
 The corridor mission is armed only when the requester has a free existing mission slot. `humanitarian_corridor_finalize` requires the exact mission flag, route, operation, and transaction proof and leaves outcome/achievement effects to the mission owner. `humanitarian_corridor_expire` and `humanitarian_corridor_mark_attack_disqualified` are terminal, non-rollback paths. A valid attack receipt also writes the player-side achievement disqualifier only when the exact attacking country is the persisted requester. `humanitarian_corridor_cleanup` is idempotent, clears both country mirrors and corridor mission subject fields, releases/recounts the requester mission slot through existing flags, and never reverses a committed transfer or clears an aligned cohort row.
 
+## Mapmode operation provenance
+
+The corridor origin state owns the presentation pair `humanitarian_corridor_last_terminal_status` and `humanitarian_corridor_last_terminal_operation`.
+Preparation clears both fields when starting a new contract so an earlier terminal operation cannot override the new live offer or operation.
+Cleanup records the current status and copies the current operation only when it is the recognized evacuation or relief constant, then clears the live contract fields.
+A missing or invalid operation leaves the terminal operation absent, and mapmode consumers must not infer it from a status, cohort, owner, or route alone.
+Repeated cleanup after the live status has been cleared preserves the existing terminal pair.
+
+Migration mapmode borders and corridor, route, generation, and preparation selectors require explicit evacuation operation provenance.
+Terminal migration corridor selectors require the recorded terminal evacuation operation because cleanup removes the live operation.
+Famine mapmode presentation continues to consume famine-owned route and delivered-relief receipts.
+These fields change presentation only and never authorize movement, relief, rewards, mission completion, or any population change.
+
+For example, a relief offer records `humanitarian_corridor_operation = constant:humanitarian_corridor_operation.relief` while active and records that same token in `humanitarian_corridor_last_terminal_operation` when cleaned up.
+Neither stage qualifies a migration corridor display.
+
 ## Route-proof and replay contract
 
 `humanitarian_corridor_front_destination_is_safe` is a state-scope affirmative gate for the exact adjacent front. It requires a valid current reception-capacity revision with spare host capacity, non-positive native rail damage, a strategic-bombing recency outside the recent window, and clear live mirrors for route damage, bombing, persecution, active camps, chemical contamination, nuclear fallout, Black Plague, zombie control, and natural-disaster warning, impact, aftermath, unresolved-recovery, or unresolved-chain channels. A missing or orphaned generic unsafe marker is never treated as safety evidence.

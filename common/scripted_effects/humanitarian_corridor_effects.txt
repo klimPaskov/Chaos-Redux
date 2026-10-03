@@ -58,6 +58,9 @@ humanitarian_corridor_prepare_contract = {
 		set_variable = { humanitarian_corridor_origin_controller_country_id = CONTROLLER.id }
 		set_variable = { humanitarian_corridor_origin_owner_country_id = OWNER.id }
 		set_variable = { humanitarian_corridor_status = constant:humanitarian_corridor_status.prepared }
+		# A new contract cannot inherit another operation's terminal display.
+		clear_variable = humanitarian_corridor_last_terminal_status
+		clear_variable = humanitarian_corridor_last_terminal_operation
 		if = {
 			limit = { has_variable = humanitarian_corridor_operation_request }
 			set_variable = { humanitarian_corridor_operation = humanitarian_corridor_operation_request }
@@ -922,6 +925,19 @@ humanitarian_corridor_cleanup = {
 	if = {
 		limit = { has_variable = humanitarian_corridor_status }
 		set_variable = { humanitarian_corridor_last_terminal_status = humanitarian_corridor_status }
+		# Preserve only explicitly known operation provenance before live cleanup.
+		# Repeated cleanup without a new status leaves the previous pair intact.
+		clear_variable = humanitarian_corridor_last_terminal_operation
+		if = {
+			limit = {
+				has_variable = humanitarian_corridor_operation
+				OR = {
+					check_variable = { humanitarian_corridor_operation = constant:humanitarian_corridor_operation.evacuation }
+					check_variable = { humanitarian_corridor_operation = constant:humanitarian_corridor_operation.relief }
+				}
+			}
+			set_variable = { humanitarian_corridor_last_terminal_operation = humanitarian_corridor_operation }
+		}
 	}
 	set_state_flag = humanitarian_corridor_cleanup_pending
 	if = {
