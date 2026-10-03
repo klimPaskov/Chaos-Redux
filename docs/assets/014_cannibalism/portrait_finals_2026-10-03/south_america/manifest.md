@@ -83,3 +83,9 @@ The current exact registrations were read from `interface/014_cannibalism.gfx` a
 All 56 regional final DDS slots are now present and individually parent-approved across the seven region packages: Europe, Asia, Africa, Middle East, North America, South America, and Oceania, eight each. South America's eight reviewed DDS finals are installed at the existing paths. Africa and Middle East manifests still identify the global cross-region uniqueness review as open, so this does not close the full Event 014 portrait matrix or the event.
 
 No GFX or character reference mutation or live-game check was performed. No simplification, dropped South America slot, source substitution, or alternate generation route was used.
+
+## Current parent matrix checkpoint
+
+The parent selected-art inventory is `docs/plans/014_cannibalism_plans/evidence/2026-10-03_global_portrait_review/candidate_inventory.json`.
+It records 56 installed candidate matches and four protected Hannibal files, independently of this package's timestamped installation snapshots.
+The global visual audit accepts all 56 distinct faces/compositions, and the parent-reviewed Asia CBD paper-only correction is installed. Live acceptance remains open.

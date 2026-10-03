@@ -74,3 +74,9 @@ The parent reviewed and approved the decoded native-size DDS contact sheet and e
 Global portrait count is parent-owned. The parent reports that all seven regions have eight portraits installed, for 56 of 56 total, as of 2026-10-03. This North America package independently receipts only CBA-CBH and the all-60 before/after installation snapshot; it makes no independent audit claim about the other six regions or global cross-region uniqueness.
 
 No simplification, substitute identity, image-edit fallback, source raster reuse or unapproved route was used in this tranche.
+
+## Current parent matrix checkpoint
+
+The parent selected-art inventory is `docs/plans/014_cannibalism_plans/evidence/2026-10-03_global_portrait_review/candidate_inventory.json`.
+It records 56 installed candidate matches and four protected Hannibal files, independently of this package's timestamped installation snapshots.
+The global visual audit accepts all 56 distinct faces/compositions, and the parent-reviewed Asia CBD paper-only correction is installed. Live acceptance remains open.

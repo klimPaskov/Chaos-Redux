@@ -11,6 +11,17 @@ The other active event owners retain their own work surfaces.
 | `b9ea7b6be` | Bind Scavenger Warband material overrides to the actual `mesh.001` node. | `subagent_handoffs/2026-10-03_material_binding_repair.md`, seven-model before/after receipts and selected-source/runtime comparison. |
 | `4c5824114` | Repair provider 523's native formation and matching component ledger through shared layout constants. | `subagent_handoffs/2026-10-03_provider523_template_repair.md`, its nine-family receipt and independent postpatch review. |
 | `679d5db95` | Require actual-byte material-node/stream binding review for every custom model consumer. | `.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md` and `subagent_handoffs/2026-10-03_material_binding_skill_handoff.md`. |
+| `f440c5329` | Recover exact historical HATE originals/crops and acceptance receipts. | Historical archive handoff and 121-file parent hash review. |
+| `911149f37` | Restore five current model manifests and exact Feast Guard selected export; correct current portrait coverage. | Five reconciled package manifests and current model/portrait parent reviews. |
+| `97e51769f` | Install eight original European warlord portraits. | Europe selected CBA-v02 and regional source/DDS/install receipts. |
+| `a5da08150` | Install eight original Asian warlord portraits. | Asia source/DDS/install receipts. |
+| `e5ff42fed` | Install eight original Middle Eastern warlord portraits. | Middle East source/DDS/install receipts and concurrent Africa attribution. |
+| `8f3279492` | Install eight original African warlord portraits. | Africa source/DDS/install receipts. |
+| `0f351f989` | Install eight original North American warlord portraits. | North America source/DDS/install receipts. |
+| `3485c371e` | Install eight original Oceanian warlord portraits. | Oceania source/DDS/install receipts and exact native prompt bytes. |
+| `42be14e65` | Install eight original South American warlord portraits. | South America selected CBD-v02 broken-utensil action and source/DDS/install receipts. |
+| `a0a6825e7` | Preserve caller-owned inheritance, ledger, migration, validation and population outputs. | API contract and 67 bounded actual-source checks; native transactions remain unresolved. |
+| `c87ea7386`, `91dc29cff` | Require complete consumer inventories, current parallel receipts and explicit portrait selections. | Event-assets skill and portrait-production reference handoffs. |
 
 The material audit decodes seven installed meshes, 56 actions and 21 DDS maps, verifies animation bone order and sample structure, and resolves 86 state audio cues within their action durations.
 Its after receipt has no material-name mismatch.
@@ -35,9 +46,9 @@ No AI weight, eligibility, payment, unit statistic or cleanup behavior was chang
   No wiring change is required to establish the existing 56-path coverage; subject/visual/source/final acceptance is audited separately.
 - All sixteen original images, lossless crop PNGs and 156x210 candidate PNGs are recovered with their exact historical hashes in co-located durable packages.
   The parent checks all 121 archive file hashes, all sixteen original-to-crop and candidate-to-DDS pixel identities, and 62 protected runtime/definition file hashes.
-  The archived source/crop commands are reproducible and no runtime art is replaced.
+  The archived source/crop commands are reproducible; that historical archive step replaced no runtime art.
   Package-owned `.gitattributes` preserve exact source-page, receipt and decision-baseline bytes while retaining inherited image LFS filters.
-- The decision specialist preserves a source baseline and inventories 95 decision AI blocks and 13 timed missions, with explicit candidate/scenario and coverage limits.
+- The decision specialist preserves a source baseline and inventories 95 decision AI blocks and 14 timed missions, with explicit candidate/scenario and coverage limits.
   Its source review finds no justified weighted patch.
 - `resume_packet.md` and `documentation_state.md` distinguish those current findings from older queues and retain the invalid 65-character historical revision as unusable evidence, rather than guessing a correction.
 
@@ -61,10 +72,10 @@ Full completion remains open for these exact reasons:
    Raw approved inputs, provider lineage, source rights and selected asset copy/visual evidence remain unresolved where documented by the package handoffs.
    Siege Eaters has an unresolved source-gate override conflict and an unlinked ineligible NoAI research candidate; that candidate is not promoted or used.
    March Predation Column retains its unresolved death-audio hash and input-source relationships.
-4. Eight European original native fictional finals are parent-reviewed and installed at the existing paths, with exact PNG/DDS pixel matches.
-   The remaining 48 regional finals stay required and in production; existing source placeholders are not promoted by file count.
-   Their sixteen active source packages now have exact recovered originals/crops and reproducible source receipts; that archive acceptance does not authorize runtime replacement or final promotion.
-   The protected Hannibal file receipt establishes identity and bindings only, with missing external provenance and artistic acceptance left explicit.
+4. All 56 original native fictional finals are regionally parent-reviewed and installed through the 64 stable aliases.
+   The global selected PNG/candidate/runtime matrix verifies all 56 exact pixel and byte matches, 56 distinct file/pixel identities and four unchanged supplied Hannibal assets.
+   Global face/composition review is accepted, including the paper-only Asia CBD correction; live acceptance remains open. Historical source-placeholder rights are not claimed as native-final provenance.
+   Europe CBA-v02 and South America CBD-v02 are the explicit selected versions; unselected alternates remain archived.
 5. Orchestrator-owned live model/GUI/audio/counter/event evidence and a clean live `error.log` are not supplied by this source continuation.
 6. The catalog remains `Needs Testing`; no player-facing text or gameplay detail wording changed, and no workbook promotion was made.
 
@@ -76,10 +87,33 @@ It is retained as unresolved audit data; no speculative balance or behavior patc
 The parent's resumed user-authorized implementation scope retains the accepted 56 distinct fictional final-portrait requirement.
 The event-assets portrait-production rule assigns fictional/impossible portraits to native ImageGen, while user-run RunPod applies to grounded finals.
 No inspected direct user-decision record establishes a universal portrait-wide RunPod or unaltered-source-only ban; the conflicting older worker assertions remain historical and do not override that instruction hierarchy.
-The parent accepts original native fictional production within this existing scope, beginning with eight European candidates and preserving all supplied Hannibal art and current runtime portraits until review.
+The parent accepts original native fictional production within this existing scope, through seven reviewed regional tranches and preserving all supplied Hannibal art; runtime replacements follow explicit parent selection and final DDS review.
 This neither reduces the 56-final requirement nor promotes existing placeholders, and the source-only amendment for the seven closed 3D model packages remains intact.
 
 Skills used: `chaos-redux-events`, `chaos-redux-subagents`, `chaos-redux-event-assets`, `chaos-redux-3d-model-pipeline`, and `chaos-redux-shared-git-commit`.
-The decision specialist also used `chaos-redux-decisions-missions`, and the skill maintainer used `skill-creator`.
-Skill updated: `chaos-redux-3d-model-pipeline`.
+The decision specialist also used `chaos-redux-decisions-missions` and `chaos-redux-mtth`; portrait workers used the official `imagegen` skill, the GUI worker used `chaos-redux-scripted-gui`, and skill maintainers used `skill-creator`.
+Skills updated: `chaos-redux-3d-model-pipeline` and `chaos-redux-event-assets` (including its portrait-production reference).
 No new skill was created.
+
+## Complete regional portrait installation checkpoint
+
+The current complete selected-art receipt is `evidence/2026-10-03_global_portrait_review/candidate_inventory.json` and its native 56-image review sheet.
+The independent native-size face/composition review is accepted and the only page-writing concern is corrected by a parent-reviewed native edit.
+Each of the 56 installed files is a 156x210, single-level, opaque BGRA32 DDS with exact selected-PNG pixels; every installed file equals its approved regional candidate bytes.
+The four supplied Hannibal statics and animated sheets match the snapshot taken before the first regional install.
+The GFX comment describes the fictional portrait set; all 64 alias-to-texture bindings remain identical.
+Package-owned attributes preserve native prompts, receipts and raw source hashes across checkouts, while inherited image LFS handling remains intact.
+The native workspaces remain retained because Event 014 is incomplete; no production cleanup removes acceptance or lineage evidence prematurely.
+
+## Current completion-audit implementation queue
+
+The final current audit is `subagent_handoffs/2026-10-03_event014_final_current_completion_audit.md` and its same-named evidence directory.
+E014-FINAL-01 caller-owned inheritance/migration storage is repaired in `a0a6825e7`, with 67 bounded source checks including the failing pre-repair control. Broader destination-generation and engine transaction acceptance remain open.
+E014-FINAL-02/03 identify the four accepted Network node information fields and the controlled-state/raid-target/loyalty/continental-target displays absent from the current windows; the dedicated Event 014 UI owner is preparing references and a data API proposal.
+E014-FINAL-04 identifies the retained route/distance transfer and territory/network capacity requirement; the parent accepts implementation within the existing scope and has started its baseline probability audit before applying scaling.
+These are concrete implementation gaps, distinct from missing MCP and live evidence, and remain incomplete until their repairs and required review are finished.
+The current source inventory contains 14 timed missions; the workbook's Event 014 status is `Events!M15 = Needs Testing`, with `Events!N15` empty and `Scenarios!F10 = Needs Testing`.
+The raw model-input search across 2,936 eligible local images found none of the five exact expected hashes; its read-only handoff preserves those blockers without substitution or reopening model production.
+
+The live-QA parchment description correction is committed as `87503caca39004e0cadd83c118cf353685294d8f`; only `chaosx.nr14.60.d` and `chaosx.nr14.62.d` lose colour tokens, with all dynamic values preserved.
+The Asia CBD paper-only native correction is committed as `086e7da6c14325345fb3bed1beec96016a164866`; global source/art acceptance is complete for all 56 regional finals.

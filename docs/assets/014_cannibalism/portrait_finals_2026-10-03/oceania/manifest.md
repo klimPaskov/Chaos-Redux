@@ -60,3 +60,9 @@ The preinstall receipt compares against the earlier snapshot evidence/runtime_af
 ## Current full-matrix count
 
 At the latest snapshot, all 56 runtime portrait paths match the current candidate DDS bytes for their regions: eight each for Europe, Asia, Africa, Middle East, North America, South America, and Oceania. This is a byte-matching inventory, not global parent visual acceptance; the parent retains that review and full Event 014 completion. The bounded Oceania install's immediate postinstall snapshot historically showed 48 matches before the eight concurrent South America replacements, and both snapshots are retained.
+
+## Current parent matrix checkpoint
+
+The parent selected-art inventory is `docs/plans/014_cannibalism_plans/evidence/2026-10-03_global_portrait_review/candidate_inventory.json`.
+It records 56 installed candidate matches and four protected Hannibal files, independently of this package's timestamped installation snapshots.
+The global visual audit accepts all 56 distinct faces/compositions, and the parent-reviewed Asia CBD paper-only correction is installed. Live acceptance remains open.

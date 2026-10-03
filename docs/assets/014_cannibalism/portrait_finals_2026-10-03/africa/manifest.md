@@ -117,7 +117,7 @@ The Middle East owner subsequently installed its eight parent-approved disjoint 
 
 That final audit snapshots the current 60 DDS files after both regional installs and verifies the remaining 44 DDS files, portrait GFX, Event 014 character definition, and Africa eight against their respective saved state or approvals.
 
-The four protected canonical Hannibal DDS files (two static portraits and two animated sheets) remain byte-identical to the current pre-install snapshot, as recorded in `route_log/runtime_install_receipt.json`.
+The four protected canonical Hannibal DDS files (two static portraits and two animated sheets) remain byte-identical to the current pre-install snapshot, as recorded in `evidence/runtime_install_receipt.json`.
 
 ## Review state and event-wide remainder
 
@@ -129,8 +129,14 @@ Each listed candidate is the parent-approved final for its Africa slot and is in
 
 Each Africa asset status is `wired` through its existing GFX sprite and runtime path.
 
-The total accepted requirement remains 56 regional portraits: Europe, Asia, Africa, and the Middle East each have eight installed regional DDS files, while the remaining 24 North America, South America, and Oceania slots stay with their active region owners.
+The earlier Africa/Middle East checkpoint recorded 32 installed regional portraits. The current parent inventory verifies all 56 regional installations; global art and live acceptance remain parent-owned.
 
 Their current final-art and acceptance states were not audited in this bounded Africa install.
 
 No full 56-portrait completion, cross-region uniqueness, legal license, or in-game acceptance claim is made by this bounded Africa package.
+
+## Current parent matrix checkpoint
+
+The parent selected-art inventory is `docs/plans/014_cannibalism_plans/evidence/2026-10-03_global_portrait_review/candidate_inventory.json`.
+It records 56 installed candidate matches and four protected Hannibal files, independently of this package's timestamped installation snapshots.
+The global visual audit accepts all 56 distinct faces/compositions, and the parent-reviewed Asia CBD paper-only correction is installed. Live acceptance remains open.

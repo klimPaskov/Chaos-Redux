@@ -58,3 +58,9 @@ The repository's `.gitignore` line 80 ignores `docs/assets/`, so these candidate
 The previously installed Europe and Asia variants were captured in both 60-DDS snapshots and remained unchanged. This tranche installed eight parent-approved Middle East variants. During the same window, all eight Africa DDS paths changed from the immediate pre-install snapshot; they are identified by region and hashes in the receipt and were preserved without overwrite or reset. North America, South America, and Oceania status remains with their active owners. Cross-region review and global 56-final completion remain pending.
 
 Skills used: `chaos-redux-event-assets` and its portrait-production reference, plus the official built-in `imagegen` skill. No skill was created or updated, and no commit was made.
+
+## Current parent matrix checkpoint
+
+The parent selected-art inventory is `docs/plans/014_cannibalism_plans/evidence/2026-10-03_global_portrait_review/candidate_inventory.json`.
+It records 56 installed candidate matches and four protected Hannibal files, independently of this package's timestamped installation snapshots.
+The global visual audit accepts all 56 distinct faces/compositions, and the parent-reviewed Asia CBD paper-only correction is installed. Live acceptance remains open.

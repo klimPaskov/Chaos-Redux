@@ -1,14 +1,14 @@
 # Event 014 European Warlord Portrait Candidates
 
-Package status: the eight parent-approved Europe portraits are installed at their existing runtime DDS paths; native PNG, DDS, hash, backup, and installation evidence are recorded. The other 48 region-slot portraits remain queued, so the full Event 014 portrait goal is not complete.
+Package status: the eight parent-approved Europe portraits are installed at their existing runtime DDS paths; native PNG, DDS, hash, backup, and installation evidence are recorded. The current parent inventory verifies all 56 regional runtime matches; global art closure and live acceptance are recorded separately.
 
 ## Scope and acceptance basis
 
-The user authorized full implementation of accepted Event 014 with no simplifications. The accepted Event 014 specification and parent brief classify CBA-CBH as invented Cannibal Warlord identities rather than grounded real offices or people; the latest user instruction authorizes only these eight Europe DDS installations.
+The user authorized full implementation of accepted Event 014 with no simplifications. The accepted Event 014 specification and parent brief classify CBA-CBH as invented Cannibal Warlord identities rather than grounded real offices or people; the parent authorized this bounded eight-path installation within that full scope.
 
 The accepted requirement is the 56-portrait matrix in `docs/specs/014_cannibalism_specs/specs/014_cannibalism_spec_part_10_assets_animation_and_localisation.md` lines 116-155 and `docs/specs/014_cannibalism_specs/specs/014_cannibalism_spec_part_12_acceptance_criteria.md` lines 73 and 193.
 
-This package covers the eight Europe entries and keeps the other 48 slot-region entries queued for full production.
+This package independently receipts only the eight Europe entries; the parent owns the complete 56-slot matrix.
 
 No required behavior or motif was dropped. The initial CBA ImageGen call was rejected; a narrowed generation succeeded, and the parent selected CBA-v02 for the required tongue-to-bloodstained-human-skull action. A later CBA edit is retained as unselected lineage only.
 
@@ -42,7 +42,7 @@ No third-party raster source was used. No separate license claim is made for the
 
 The parent-approved style and framing gate passes for this bounded set: all selected outputs are visibly painted, full-canvas opaque human leader busts with bald adult male subjects, feral asymmetric expressions, muted period color, subdued distinct backgrounds, and readable faces at native size.
 
-The native contact sheet and 4x nearest-neighbour sheet are `review/europe_native_4x2_contact_sheet_v03.png` and `review/europe_nearest4_4x2_contact_sheet_v03.png`; the slot order is recorded in `review/contact_sheet_order_v03.txt`.
+The native contact sheet and 4x nearest-neighbour sheet are `review/europe_native_4x2_contact_sheet_v02.png` and `review/europe_nearest4_4x2_contact_sheet_v02.png`; the slot order is recorded in `review/contact_sheet_order_v02.txt`.
 
 The producer inspected every selected source at full resolution and every selected processed portrait at 156x210; parent source and framing approval is recorded above.
 
@@ -112,6 +112,12 @@ The install receipt, pre-install snapshot, and final path/hash inventory are `ev
 
 ## Remaining scope
 
-The Event 014 portrait matrix is not complete: the eight Europe portraits are installed, and the other 48 regional portraits remain explicitly queued across Asia, Africa, Middle East, North America, South America, and Oceania.
+The current complete inventory records 56 installed native regional finals; this regional package is not a full Event 014 completion certificate.
 
 No simplification or substitute portrait was used. No RunPod, CLI/API image generation, Meshy, Blender, or HOI4 process was used.
+
+## Current parent matrix checkpoint
+
+The parent selected-art inventory is `docs/plans/014_cannibalism_plans/evidence/2026-10-03_global_portrait_review/candidate_inventory.json`.
+It records 56 installed candidate matches and four protected Hannibal files, independently of this package's timestamped installation snapshots.
+The global visual audit accepts all 56 distinct faces/compositions, and the parent-reviewed Asia CBD paper-only correction is installed. Live acceptance remains open.

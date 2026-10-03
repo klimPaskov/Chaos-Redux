@@ -1,0 +1,72 @@
+﻿# Event 014 weighted-surface coverage reconciliation
+
+Audit date: 2026-10-03. Read-only result: current lexical coverage is reconciled; current MCP probability results and balance sign-off remain unresolved. No gameplay change or commit was made. No additional current MCP evidence exists beyond the retained handoffs and evidence files named below.
+
+The current lexical snapshot is evidence/current_inventory.json (2026-10-03T14:39:41Z); it disclaims engine, balance, and live claims. It records 95 operational decision ai_will_do blocks, 14 timed missions, 204 focuses, and 19 event definitions. Its 127 decision-file children are 109 operational decision/mission entries plus 18 achievement trackers. This supersedes the older 13-mission count; the additional mission is cannibalism_maintain_international_inspection_compact.
+
+## Current MCP exposure and blockers
+
+evidence/mcp_route_inventory.json records exposure from ALL_TOOLS, not service health. Relevant exposed routes are probability_inspect/evaluate/sweep/compare/simulate/sequence/render; event_inspect/render/compare; focus_inspect/render/raster; decision_inspect; tech_inspect/render/compare; gui_inspect/render; reference_context/search/read; and source_lookup. Server health, version, and client task negotiation were not confirmed. The parent reports earlier narrow inspect/evaluate/helper/GUI waits reaching 600 seconds under load and explicitly forbids retries. Retained local records show source-qualified probability inspections pending about 61 seconds to 5 minutes, and a single-candidate retry pending about 2.5 minutes; no raw result, status, artifact, source revision, candidate list, or scenario hash returned. The parent also reports corrected event/reference calls observed for 45 seconds without artifacts. No call was made in this reconciliation.
+
+Exact retained blockers:
+- The first decision probability_inspect without source returned MCP error -32602: “An adapter requires a source; provide a source alone to discover compatible adapters.”
+- A probability_evaluate probe using scenarios[].inputs was rejected because scenarioSet.scenarios[0].state was expected and inputs was unrecognized. The corrected empty-state request stalled without an analysis id or scenario hash.
+- The decision probability_sweep stalled without a threshold, sensitivity, rank, or scenario result.
+- Current event inspect/render retries first hit selector schema errors (selector.kind required; id unrecognized where eventId was expected); corrected narrow requests returned no artifact during the parent’s 45-second observation.
+- Current reference calls returned no artifacts. Direct local references were read instead.
+
+Historical August inspect/evaluate artifacts and their full URIs remain in docs/plans/014_cannibalism_plans/subagent_handoffs/event014_probability_final_2026-08-25.md. The current decision inspect attempts and exact requests are in 2026-10-03_event014_decision_probability_audit.md and 2026-10-03_probability_narrow_retry.md. The current parent attempt inventory is evidence/mcp_attempts.json. No current probability source revision, scenario hash, comparison id, or analysis id is available.
+
+## Current weighted-surface inventory
+
+Current SHA-256 values match the relevant files entries in current_inventory.json.
+
+| Surface | Current source SHA-256 | Lexical inventory |
+| --- | --- | --- |
+| events/014_cannibalism.txt | 9d547737d176a96bc359ba9c3b1cb2422fd6e399448f4453c551c9c6059e14f9 | 32 explicit ai_chance entries in 9 option pools; one nested random_list |
+| common/mtth/014_cannibalism_mtth.txt | 5763afc66df7fc93ca80dd3557bef8098e0eab30f2fa668c53371c0a5f7889c4 | 4 entries: evolution_i_days, evolution_ii_days, unified_target_decision_weight, wendigo_target_decision_weight |
+| common/decisions/014_cannibalism_decisions.txt | ad356db7875965262a049bcdc858499193ee5c2163dc1c736aa066c063d279d3 | 95 ai_will_do blocks; 14 timed missions; no mission_ai_will_do token |
+| common/national_focus/014_cannibalism_focus.txt | 8c8fccfa861a3d72d99c602f9604afc2c5e702cbd8f8b8362acea69dd54640f7 | 204 ai_will_do: unified 108, Warlord 68, Wendigo 28 |
+| common/ai_strategy/014_cannibalism_warlords.txt | ed7424bb1fd74d017f86a90d2bdf9c1ed7365feeb5fc5d36d1e5636362637072 | Actual AI path: 4 profiles, 15 strategy directives |
+| common/scorers/country/014_cannibalism_target_scorers.txt | 2e096744b9b99898e679ba0a514b1b6490cccac1946b4f2f7e5f08c3ef22d345 | 2 dynamic country target scorers |
+| common/scripted_effects/014_cannibalism_effects.txt | 1751eee6c2a9de6770b6aadae2d6f18010ef84ea85bf17e6003fc4773a2fe302 | 11 random_list blocks, 42 entries, plus deterministic score selectors |
+| common/scripted_triggers/014_cannibalism_triggers.txt | 3bc0b2d47f38ee44469bd8cd0c7d0eaf477efd3655dd7486758efe4d02b1b2bf | Shared route, validity, target, affordability, and lifecycle gates |
+| common/script_constants/014_cannibalism_constants.txt | 7125925b89b7a2f29ba41b9cba65fca5541a5261c234e7ba2342ddc4ec5bc713 | Central event, decision, MTTH, target, focus, and strategy values |
+| common/on_actions/014_cannibalism_on_actions.txt | 7c6009b52f8e85735c65a13842201ff30d0d50ba89b6f39fd12e2c48822561a1 | Lifecycle callbacks; no separate choice-weight pool |
+| common/technologies/014_cannibalism_irregular_activation_technologies.txt | a1879634c072324a9c8a2aa96be06bf31618c109f96736f69131fc0757aaebe9 | 9 hidden bridge technologies, each allow=no and ai_will_do factor=0 |
+
+No Event 014 doctrine AI-weight source was found in the bounded current filename inventory.
+
+The event pools are .2 (3), .20 (3), .21 (3), .30 (2), .60 (3), .61 (3), .71 (5), .80 (6 source options), and .81 (4). These are 32 explicit ai_chance blocks; current eligible pools remain gate-dependent. In .80, option .f and options .a-.e are mutually gated by the anti-decapitation state. The nested .80.d random_list has two source entries weighted 85 and 15 (events file lines 772-781).
+
+The effects file has seven region-selected name pools, each four equal weight-1 entries; one six-entry equal personality pool; and three dynamic outcome pools: ration audit (success/failure), forensic recovery (full/partial/failure), and missing-burial-party search (full/partial/failure). Functions: cannibalism_assign_current_warlord_name_index, cannibalism_assign_current_warlord_personality, cannibalism_resolve_ration_audit, cannibalism_resolve_forensic_recovery, cannibalism_resolve_missing_burial_party_search. The dynamic outcome weights depend on policy, integrity, and decision-result constants; current scenario traces are unresolved.
+
+The 95 decision weights span 12 categories: containment 15; international response 7; reconstruction 4; Warlord command 17; network alerts 2; unified command 4; unified Larder 8; unified war machine 13; unified global campaign 7; unified world end 2; Wendigo command 11; Wendigo counterwar 5. current_inventory.json contains exact keys, lines, categories, mission/tracker classification, and AI markers. The 14 mission IDs are cannibalism_maintain_international_inspection_compact, cannibalism_restore_supply_corridor_mission, cannibalism_rotate_compromised_formations_mission, cannibalism_investigation_mission, cannibalism_hold_prison_mission, cannibalism_reach_island_mission, cannibalism_break_network_mission, cannibalism_stop_unification_mission, cannibalism_stop_transformation_mission, cannibalism_unified_command_mission, cannibalism_unified_larder_mission, cannibalism_unified_war_machine_mission, cannibalism_unified_counterwar_mission, and cannibalism_wendigo_terminal_hunt_mission. Mission activation is not itself a decision score race.
+
+The 4 warlord AI profiles steer strategy intensity and production; they do not define a probability-proportional pool. The two country scorers use dynamic country candidates and validity triggers, with deterministic score/tie behavior. The accepted design is fixed first-band assignment before lock and one-time profile assignment after lock; it is not a dynamic re-ranking defect.
+
+The MTTH file has two evolution-delay entries and two country-target decision-weight entries. Evolution I/II use base_days=90, clamp to 21-240 days, and factors for policy, hunger/cells, spread, integrity, containment, Warlord, and Chaos. The target entries use ROOT/FROM-scoped candidate factors. Event III uses deterministic readiness/cooldown logic, not an MTTH entry. Evolution timing and target ranks lack current typed bindings and scheduled-state scenarios.
+
+The nine zero-weight technologies are cannibalism_scavenger_warband_tech, cannibalism_feast_guard_tech, cannibalism_feast_cohort_tech, cannibalism_bone_guard_tech, cannibalism_bone_riders_tech, cannibalism_island_reavers_tech, cannibalism_siege_eaters_tech, cannibalism_march_predation_column_tech, and cannibalism_network_cadre_tech. The source comment says they are hidden bridge unlocks, never researchable, granted through Event 014 packages; the CXT test-country registry is the test exception. Their zero AI weights match that source contract.
+
+Relevant source bases include decision AI low/medium/high/critical=10/30/60/100 and preferred/urgent/cautious factors 1.75/2.50/0.40; evolution MTTH base/min/max=90/21/240; and target score base=100, invalid=0. These are source values, not evaluated combined scores.
+
+## Pending scenario and comparison coverage
+
+Retained event/focus scenario IDs: E014_WEAK_ISOLATED_WAR_LOSER; E014_WELL_SUPPLIED_STABLE_WAR_PARTICIPANT; E014_PLAYER_CONTROLLED_HOST; E014_AI_ISLAND_WARLORD; E014_AI_SIEGE_WARLORD; E014_AI_MARCH_WARLORD; E014_HIGH_ALIGNMENT; E014_LOW_ALIGNMENT; E014_REVEALED_UNIFIED_CBL; E014_WENDIGO_ZZZ_PRELOCK; E014_WENDIGO_ZZZ_LOCKED; E014_CHAOS_LE_1000; E014_CHAOS_GT_1000; E014_WORLD_OPPOSITION_WEAK; E014_WORLD_OPPOSITION_STRONG.
+
+Retained decision scenario IDs: E014_DECISION_CANNIBAL_STATE_BASELINE_2026_10_03; E014_DECISION_ACTOR_INSUFFICIENT_RESOURCES_2026_10_03; E014_DECISION_NON_CANNIBAL_CONTAINMENT_ACTOR_2026_10_03; E014_DECISION_ORIGIN_EXCLUSIVE_ISLAND_2026_10_03; E014_DECISION_ORIGIN_EXCLUSIVE_SIEGE_2026_10_03; E014_DECISION_ORIGIN_EXCLUSIVE_MARCH_2026_10_03; E014_DECISION_PRE_REVEAL_CONVERGENCE_2026_10_03; E014_DECISION_POST_REVEAL_CLEANUP_2026_10_03.
+
+These are named scenario intents, not completed analyzer fixtures. Current hashes are local raw-file identities, not current MCP-normalized source revisions. Event, decision, and focus candidate pools remain incomplete for availability, route, prerequisite, bypass, target, cost, cooldown, external strategy, captured-target, reveal, world-end, terminal-lock, and hidden-state inputs. MTTH needs ROOT/FROM binding and scheduled changes. Deterministic country/state arrays and tie breaks are not covered by the prior custom-pool adapter.
+
+Historical exact conditional results are not current sign-off: .80.d 85/15 (analysis probability-66c8d75f2f1936727a2f0895; scenario hash 631fa3859f4a9725b74e84d3c322205a11093cc5858560365209c9a6caebe3ae); personality 1/6 (probability-139bd3d79b8c3148b17916c2; hash b460ea46f698da1fed0023358123dab9e652c691b2576004ebf79823141f619b); .30 AI options 100/0 (probability-2df314e43b00d261998c992a); and .81 old-source fractions [12/29,6/29,5/29,6/29] / [15/22,3/22,1/22,3/22] (probability-0c4c89f992a9709b4b69d2ab / probability-e018952d4ea96793487da5eb). Full artifact URIs and retained renders are in event014_probability_final_2026-08-25.md. That report’s August raw event hash (7efdc94bf09fa50070a1753350cfa2b54cfd624ea132c127e2aaeeade14ea694) differs from current. It also predates current focus, MTTH, and AI-strategy hashes. Current decision/event/category/trigger hashes match the October decision-audit snapshot; current effects/constants whole-file hashes differ from that snapshot although the focused weighted blocks were text-equal.
+
+## Classification and remaining gates
+
+Current inventory/counts and source expressions are exact lexical evidence. Event ai_chance and random_list normalized results are unresolved for the current source. Decision/focus willingness and target weights are score-only source evidence; rankings are unresolved. MTTH inputs are source-exact, timing distributions unresolved. AI-strategy intensities are not probabilities. Historical exact conditional results remain historical only.
+
+No current dominance, starvation, rank reversal, excessive repetition, unsafe snowball, or positive-weight impossible/dead/hidden candidate defect is proven. These remain unresolved because current pools, gates, external factors, and schedules were not resolved through MCP. The .30 human-switch zero is intentional player safety. The fixed-assignment AI contract and CXT pending/manual-grant behavior are not defects. helper_output_lifetime_review.json records separate inheritance/migration helper-output storage concerns; it is not evidence of a weight defect.
+
+No balance completion or weight patch is recommended from available evidence. Current before/after probability_compare is unavailable because no current MCP baseline exists and no weighted source patch was made. For later closure, use probability_inspect first for each current source, evaluate the retained named scenarios with complete pools/external factors, sweep thresholds and rank reversals, and render returned ranking/matrix/timing/sensitivity/unresolved views. Use compare only after an owner patch with the same scenarios and immutable before source. Simulation requires declared uncertain inputs and seeds. Sequence requires a complete pool manifest with cadence, cooldown, recovery, caps, removals, resets, timers, and terminal transitions. No such simulation/sequence declaration or current renderable analysis exists.
+
+Offline and installed references were read locally because current reference calls produced no artifact: AI modding wiki lines 26-45 and 66-115; Event modding 130-161; Decision modding 85-103 and 357-374; National focus modding 604-630; Effects 4518-4565; installed decisions documentation 1-46; AI strategy documentation 167-195; effects documentation random_list section 5413-5428; script constants documentation 1-70. Local wiki/vanilla revisions and hashes are retained in event014_probability_final_2026-08-25.md and 2026-10-03_event014_decision_probability_audit.md. Skills applied: chaos-redux-subagents, chaos-redux-events, chaos-redux-mtth, chaos-redux-focus-trees, chaos-redux-decisions-missions, and event-planning scenario-contract guidance.

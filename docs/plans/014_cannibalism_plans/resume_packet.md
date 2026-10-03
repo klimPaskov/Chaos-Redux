@@ -27,11 +27,12 @@ It confirms surviving runtime identities, protected Hannibal bindings and the ab
 The fresh full-registry scan resolves 64 warlord aliases to 56 distinct existing regional textures.
 The sixteen HATE packages are the recovered subset, not the complete consumed texture inventory; the earlier parent overview's 16-texture total was incorrect.
 All sixteen exact originals, lossless crops and 156x210 candidates are recovered in the durable portrait archive and match their historical file hashes.
-The parent verifies every candidate against the installed DDS pixels and all 121 archive file hashes in `evidence/2026-10-03_portrait_archive_parent_review.json`.
+At the archive-recovery checkpoint, the parent verified every candidate against the then-installed DDS pixels and all 121 archive file hashes in `evidence/2026-10-03_portrait_archive_parent_review.json`.
 See `subagent_handoffs/2026-10-03_portrait_source_archive_recovery.md` for the recovered packages and the final-art/rights boundaries.
 Parent acceptance within the fully authorized implementation scope selects native ImageGen for the outstanding fictional final-art requirement under the portrait-production skill.
-The first eight European originals are parent-reviewed, converted and installed at their existing paths, with exact PNG/DDS pixel matches and all other 52 portrait DDS files preserved in the install receipt.
-The next regional tranches remain part of the full 56-final requirement; no route or region is dropped.
+All 56 original native fictional finals are regionally parent-reviewed, converted and installed at their existing paths.
+The selected PNG/candidate/runtime matrix verifies all 56 exact pixel and installed-byte matches, 56 distinct file/pixel hashes and all four protected Hannibal files in `evidence/2026-10-03_global_portrait_review/candidate_inventory.json`.
+Global visual review is accepted and live acceptance remains open; no route or region is dropped.
 The portrait-wide user-only RunPod assertions in older worker handoffs are not supported by a direct user-decision record; the model source-only amendment and supplied Hannibal art remain protected.
 
 Fresh event rendering is partial, and event/helper comparison, probability scenarios and attributable GUI acceptance remain incomplete.
@@ -67,13 +68,14 @@ Model inputs must start from actual Internet-sourced or user-supplied modern art
 2. Feast Cohort's source-to-runtime mesh/action identity is proven, and Feast Guard's selected export is recovered exactly.
 The five current manifest links are repaired, while original provider/input/rights/authoring/copy evidence gaps remain explicit inside their reconciled records.
 3. The portrait-worker receipt and protected static Hannibal file/binding receipt exist.
-The sixteen HATE source packages have a reproducible durable archive; eight European original native finals are installed, and 48 regional finals plus live acceptance remain open.
-The retained user-authorized HATE source branch takes precedence over the skill's default fictional source route for those existing placeholders.
+The sixteen HATE source packages remain a reproducible historical archive; all 56 native regional finals are installed after seven regional parent reviews.
+Global face/composition acceptance is complete; live acceptance remains open.
+The retained historical source branch remains preserved without serving as the provenance of current native finals.
 4. Fresh Event 014 MCP inspection and overview rendering are partial because the large workspace deferred full validation; zero blocking diagnostics in that partial result is not full runtime proof.
 5. Weighted-logic evidence remains scenario-specific and incomplete under `event014_probability_final_2026-08-25.md`; no aggregate probability completion claim is made.
 6. Four super-event image/audio registrations are present in source, with audio wiring recorded in `event014_super_event_audio_wiring_audit_2026-08-25.md` and current image verification in `2026-10-03_event014_completion_resume_audit.md`; live presentation review remains open.
 7. Counter registry and DDS presence is documented, but live consumer review remains open.
-8. `Events!N15` and `Scenarios!F10` remain `Needs Testing`; the workbook is source-owned by the spreadsheet worker and was not edited in this documentation pass.
+8. `Events!M15` and `Scenarios!F10` remain `Needs Testing`; the workbook is source-owned by the spreadsheet worker and was not edited in this documentation pass.
 9. Bone Riders and Network Cadre are not open model queues: the former uses vanilla `sprite = cavalry`, the latter uses vanilla `sprite = infantry`, and their removed model workspaces are preserved only through lineage handoffs.
 10. The shared `chaos-redux-3d-model-pipeline` skill remains authoritative for the seven bespoke packages; no model workflow was run for the two approved vanilla-reuse consumers.
 

@@ -68,7 +68,7 @@ The existing sprite and runtime texture names in the table above were read from 
 
 The eight candidate DDS files remain archived under docs/assets/014_cannibalism/portrait_finals_2026-10-03/asia/candidate_dds/, and their exact bytes were copied to the eight existing Asia runtime paths after parent approval. Old runtime bytes are backed up under evidence/runtime_before_install/ and match each pre-install baseline hash. The 52 other runtime portrait DDS files, including Europe’s already-installed eight and all four protected Hannibal assets, still match the current pre-install baseline. GFX and all 17 character definitions also match that baseline.
 
-After this installation, Event014 has 16 installed regional warlord portraits: Europe 8 and Asia 8. The remaining 40 entries—Africa, Middle East, North America, South America, and Oceania—remain queued. The 56-portrait requirement is not complete.
+The historical Asia installation checkpoint recorded sixteen installed portraits. The current parent inventory verifies all 56 regional installations; global art acceptance is complete and live acceptance remains open.
 
 ## Evidence files
 

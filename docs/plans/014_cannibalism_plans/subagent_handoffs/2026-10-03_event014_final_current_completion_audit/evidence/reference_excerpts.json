@@ -1,0 +1,251 @@
+[
+  {
+    "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Event modding - Hearts of Iron 4 Wiki.md",
+    "pattern": "fire_only_once",
+    "startLine": 145,
+    "endLine": 157,
+    "sha256": "96327b896298420d84058394a44ed08be7eb518726b8f207b392fea71f05d43d",
+    "text": "145: The automatic firing can be disabled by adding `is_triggered_only = yes` into the event. This doesn't prevent any other way to fire the event, whether by the [effect used to do so](#Effect), an [on action](<On actions - Hearts of Iron 4 Wiki.md>)'s `random_events`, [a border war](<Effects - Hearts of Iron 4 Wiki.md#Border_wars>), or anything else. This is entirely unrelated to `trigger = { ... }`: the conditions within must still be fulfilled for either of these to be possible to fire an event. If the [effect used to fire an event](#Effect) (e.g. country_event or state_event) is set with a delay, then the trigger must be true when the event is intended to be fired.\n146: \n147: `fire_only_once = yes` makes the event impossible to fire more than once. This is checked within the event itself: a country getting the event will also prevent any other country from receiving it. This is bypassed by using [the console command](<Console commands - Hearts of Iron 4 Wiki.md>).\n148: \n149: `major = yes` is used to make the event fire for every country once any country receives it. **This is done in every news event**, since news events are purely a graphical reskin of country events. In case of overlap with `fire_only_once = yes`, the latter will take priority and remove any effect of the event being major, making it only appear for the country receiving it for the first time. Countries other than the first country receiving it will ignore `trigger = { ... }`. To make only some countries get the event shown while it's still major, `show_major = { ... }` is used as a [trigger](<Triggers - Hearts of Iron 4 Wiki.md>) block that makes the event show up only if it's true. If `fire_for_sender = no` is also added, the event will fire for every country that meets `show_major` aside from the country that was intended to receive it.\n150: \n151: ### Options <a id=\"Options\"></a>\n152: \n153: An event option is added with an `option = { ... }` block. An event option is an [effect](<Effects - Hearts of Iron 4 Wiki.md>) block, with a few extra options:\n154: \n155: `name` decides the localisation key used for the option, such as `name = my_option_name`. It is not possible to make the option name depend on the triggers in the same way it's possible for event titles, instead, completely different event options can be used, disabling each one with a name that shouldn't be used.\n156: \n157: `trigger = { ... }` is a [trigger](<Triggers - Hearts of Iron 4 Wiki.md>) block, deciding when the option is visible to be picked. If the trigger is false at the time of being fired, it will not appear until the event is fired again. Additionally, for major events, `original_recipient_only = yes` can be used to ensure that only the country that fired the event has this option available, with others not having it."
+  },
+  {
+    "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Decision modding - Hearts of Iron 4 Wiki.md",
+    "pattern": "days_mission_timeout",
+    "startLine": 467,
+    "endLine": 479,
+    "sha256": "7713b9bcee5f3818d63aafbd45d18e812a9173a7c59ab238384b57db60db6162",
+    "text": "467: Missions are another type of decisions, activated when the triggers are true and requiring the player to do an action in order for the mission to have a positive outcome. These mostly use the same attributes as regular decisions, but there are some crucial differences. In particular:\n468: \n469: - `days_mission_timeout = 123` is the amount of days that the mission will last for and is the attribute that turns a decision into a mission.\n470: - `timeout_effect = { ... }` are the effects that will be executed for the country if the timer runs out or is uninterrupted.\n471: - `available = { ... }` decides on triggers that make the mission possible to select, executing `complete_effect`. **Defaults to always being true, making it disappear instantly**.\n472: - `selectable_mission = yes`, if set, turns the mission into one that where the player must select the button. If unset or set to false, then the complete effect will fire as soon as `available` is true.\n473: - `activation = { ... }` decides on triggers that must be met for the decision to appear, assuming `allowed` was true on the game's start. This is checked daily. **`visible = { ... }` does nothing and shouldn't be used in missions.**\n474:   The `activate_mission = mission_name` [effect](<Effects - Hearts of Iron 4 Wiki.md>) can bypass both `allowed` and `activation`, and it's usually better-optimised to use it to make the decision appear instead of relying on it being done automatically.\n475: - `is_good = yes` changes the tooltips shown to the player on a non-selectable mission. By default or if set to false, the tooltip states that the `available` will complete the mission, calling `timeout_effect` the effects if it's not completed. If set to true, `complete_effect` will instead change to \"Effects when failed\". This is purely graphical and may be used to better communicate to the player whether they should seek to complete the prerequisites or to avoid them being true.\n476: - `war_with_on_timeout = TAG` will make the game assume that the mission, within its `timeout_effect = { ... }` will declare war on the specified country. This is used to make the AI prepare for a declaration of war and amass its troops on the border. This will also grant a notification to the target and all of its allies that a wargoal is being justified.\n477: \n478: Other attributes, such as `cancel_trigger` or `cancel_effect` generally may be used inside of missions and should work how they do outside of them.\n479: "
+  },
+  {
+    "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Data structures - Hearts of Iron 4 Wiki.md",
+    "pattern": "temporary variables.*scripted|not initialized|created inside",
+    "startLine": 438,
+    "endLine": 450,
+    "sha256": "62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4",
+    "text": "438: \n439: - Different effects are used to set and modify regular and temporary variables. Typically, the difference is just in changing `variable` to `temp_variable`.\n440: - Temporary variables only exist within the effect or trigger block where they're defined, similarly to regular event targets (although without carrying over to events). This does not mean they don't survive outside of the scope where they're defined, but the '*entire* effect block, such as a focus reward or an event option. Meanwhile, regular variables exist forever. Note that this, however, does not always function properly in regards to scripted effects or triggers: temporary variables defined within of them may not still exist outside of them within the same effect/trigger block. However, a temporary variable defined before the scripted effect or trigger's usage will always carry on into it and get modified properly within.\n441: - Due to the previous point, **temporary variables can be defined and modified in trigger blocks** as well as in effect blocks. This enables them to be computed as-needed in scripted triggers called from the `trigger` block of scripted localizations. Meanwhile, regular variables are restricted to only being defined in effect blocks.\n442: - Temporary variables are unscoped: they will remain the same regardless of in which scope they're defined and where they're checked. Meanwhile, regular variables are restricted to scopes, so that the variable has different values depending on which scope it's checked in, such as how different countries may have different stability values.\n443: \n444: ### Scoping <a id=\"Scoping\"></a>\n445: \n446: **Scoping only exists for regular variables.** They can and must be assigned to countries, states, characters, and to the global scope.\n447: If nothing else is specified, the current scope, or [THIS](<Scopes - Hearts of Iron 4 Wiki.md>), is used as the scope of the variable. For example, `ABC = { set_variable = { my_var = 1 } }` will set the variable with the name of my_var within the scope of ABC. `CBA = { check_variable = { my_var = 1 } }` would then come up as false, since it checks for the variable only within CBA, while the variable is set in ABC.\n448: \n449: The scope where the variable is read can be changed by prepending any [dual scope](<Scopes - Hearts of Iron 4 Wiki.md#Dual_scopes>) that can be used as a target and can be used in any scope (For example, character scopes can not be prepended before variable because character scopes are not any-scoping scopes, which means they can not be used in other character scopes.) before the variable's name, separated with a dot, such as `PREV.PREV.var_name` being the value of `var_name` as checked for `PREV.PREV` or `event_target:my_event_target.var_name`. This also includes `global` in order to assign it globally, **which is necessary to scope into global**. Other variables, if pointing to a scope, can also be used, but the `var:` is unneeded. Variables must be chained using the `:` separator (rather than the usual dot), such as `ABC.capital:var_name` being the variable `var_name` as it's assigned to the capital state of the country ABC, where `capital` is a built-in variable pointing to the capital state of the country. Note that the scope specifier preceding `capital` is separated from it by a `.` since it is a static (that is, non-variable) scope. The way to intuit this syntax is that the whole `ABC.capital` clause forms a variable scope specifier, in which `var_name` is accessed.\n450: "
+  },
+  {
+    "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Scripted GUI modding - Hearts of Iron 4 Wiki.md",
+    "pattern": "change_scope",
+    "startLine": 277,
+    "endLine": 289,
+    "sha256": "b07d850ea78c4e1e3fc113574059ad2f3ea37df320b9259128d66814023c1f30",
+    "text": "277: \n278: \t\t\t\t\t#This will change the scope to the value if yes\n279: \t\t\t\t\tchange_scope = no\n280: \n281: \t\t\t\t\t#The GUI drawn for each index\n282: \t\t\t\t\tentry_container = \"Example_GUI_Array\"\n283: \t\t\t}\n284: \t\t}\n285: \t\teffects = {\n286: \t\t\t#Example Buttons to show it working\n287: \t\t\tButton_1_click = {\n288: \t\t\t\tadd_to_array = {Example_Array = 1}\n289: \t\t\t}"
+  },
+  {
+    "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Interface modding - Hearts of Iron 4 Wiki.md",
+    "pattern": "clipping",
+    "startLine": 88,
+    "endLine": 100,
+    "sha256": "b74afc86be4e5dbb3b0fc600820d73a8340f7dc1821fc5ef02c9ee1f028c0b1c",
+    "text": "88:   - `name = \"Background\"` Ã¢â‚¬â€œ The name for handling the background in other functions. Commonly just set to \"Background\".\n89:   - `spriteType = \"GFX_tiled_window\"` or `quadTextureSprite = \"GFX_tiled_window_transparent\"` Ã¢â‚¬â€œ Refers to a [corneredTileSpriteType](<Graphical asset modding - Hearts of Iron 4 Wiki.md#corneredTileSpriteType>) definition that would automatically get resized to fit the container's set size.\n90: - `clipping = yes` Ã¢â‚¬â€œ If true (and if a background exists), the elements inside of the container will not be able to go outside of the boundary box, and what doesn't fit will get cropped. Defaults to true. This being true is mandatory for a scrollbar to work.\n91: - `position = { x = 100 y = 100 }` Ã¢â‚¬â€œ The position of the container in pixels relative to the set orientation and set origo.\n92: - `orientation = center` Ã¢â‚¬â€œ Sets the origin that the position is measured relative to, such as `upper_left`, `center_down`, or `lower_right` for the screen.\n93: - `origo = center` Ã¢â‚¬â€œ Sets the origin that the position is measured relative to, such as `upper_left`, `center_down`, or `lower_right` for the element.\n94: - `moveable = yes` Ã¢â‚¬â€œ If set, the container can be moved by the player with their cursor.\n95: - `fullScreen = yes` Ã¢â‚¬â€œ If set, the container will be considered to cover the entire screen.\n96: \n97: Animation can be assigned to containers with these attributes:\n98: \n99: - `show_position = { x = 300 y = 100 }` Ã¢â‚¬â€œ The screen position where the container will show up to the player after the 'show' animation finishes.\n100: - `hide_position = { x = 100 y = 100 }` Ã¢â‚¬â€œ The screen position the container aims for during the 'hide' animation."
+  },
+  {
+    "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\National focus modding - Hearts of Iron 4 Wiki.md",
+    "pattern": "mutually_exclusive",
+    "startLine": 284,
+    "endLine": 296,
+    "sha256": "bd989a13237c464f140a0aa671cc42c30a48e84a27dae791b8914654fb9c6203",
+    "text": "284: This system cannot represent every boolean logical arrangement, such as `A\\lor (B\\land C)` (Where `A`, `B`, and `C` represent whether a focus is complete) or with anything using negation. In this case, it can be possible to, instead, put an OR statement for either of the focuses necessary to complete this one and use the [has_completed_focus](<Triggers - Hearts of Iron 4 Wiki.md>) trigger within the `available = { ... }` block with necessary flow control tools. [A custom trigger tooltip can be used to make it easier for the player to understand.](<Triggers - Hearts of Iron 4 Wiki.md>)\n285: \n286: `mutually_exclusive = { focus = TAG_other_focus }` makes this focus impossible to select if the specified focus has been completed. If both focuses are mutually exclusive toward each other, then the mutually exclusive arrows will be shown in the focus tree view. Mutual exclusivity to multiple focuses is usually done by putting several of `focus = TAG_focusname` in the same mutually_exclusive, but defining several of mutually_exclusive is also possible.\n287: \n288: Neither prerequisites nor mutual exclusivity require the other focus to be in the same focus tree. This means that it can be used with [shared focuses](#Shared_focuses) to declare a regular, non-shared focus as mutually exclusive or a prerequisite without any errors, even when used in a focus tree not containing that focus.\n289: \n290: The difference between prerequisites and using [has_completed_focus](<Triggers - Hearts of Iron 4 Wiki.md>) within the `available = { ... }` block is that the prerequisites show up as lines within the national focus tree view and show up separately from other triggers in the tooltip of a focus.\n291: \n292: There is an issue that leads to prerequisite lines not working properly: duplicate focus IDs within different focus trees. In this case, the game can take the position of the focuses as the ones within the different focus tree that contains the same focuses, leading to them appearing to link towards empty spaces or start inside of them. This can also break the path-generating algorithm and make it use the wrong turn sprites, which will show up broken even in trees that don't have any duplicates.\n293: In order to avoid this, duplicate focus IDs must be avoided. A simple way to decrease the chance drastically is to preface the focus IDs with the country tag (such as `TAG_focus_name`) or something else that's unique for the focus tree (Such as `REGION_focus_name` for a shared regional tree). If the same focus tree should be used for several countries, this can be done by only having one focus tree where the `country = { ... }` of the tree is set up so that the desire to use it is the highest for several countries instead of just one; if the same focus tree branch should be used within several different focus trees, then [shared focuses](#Shared_focuses) can achieve exactly that.\n294: \n295: Additionally, the game intends for a focus' prerequisite to be placed above the focus that requires it and it is unable to correctly generate the path to the focus otherwise, which will show up as having a path that uses the wrong sprites in the 90Ã‚Â° turns.\n296: "
+  },
+  {
+    "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\AI modding - Hearts of Iron 4 Wiki.md",
+    "pattern": "ai_will_do",
+    "startLine": 28,
+    "endLine": 40,
+    "sha256": "917cd261f7da51fe4d8687c5d7663e768a09c5c101ac130ce646bc64637aa818",
+    "text": "28: MTTH blocks, named in the game within `/Hearts of Iron IV/common/mtth/`, are a way to assign a dynamic value to some block, whether it's a [country = { ... } in a focus tree to assign which countries can get it](<National focus modding - Hearts of Iron 4 Wiki.md#Focus_tree>), a dynamically-changing variable value (as in `/Hearts of Iron IV/common/mtth/`), a [mean-time-to-happen value for an event](<Event modding - Hearts of Iron 4 Wiki.md#Triggering>), et cetera. As MTTH blocks are spread throughout the entire game, it's incredibly important to know how one works. Its most common application, however, is assigning a base AI weight to a database entry such as a national focus or a technology.\n29: \n30: In most cases, marked with ai_will_do, the approach taken by the game is generating a decimal number between 0 and the value of the ai_will_do block, and picking the entry with the highest value. There can be other modifiers applied after the ai_will_do value, such as the ones applied within [AI strategy plans](#AI_strategy_plans) towards focuses and research or the ones that get defined within [Defines](<Defines - Hearts of Iron 4 Wiki.md>), which'll multiply the value you get. This can include different ai_will_do values such as what's done with country leader traits and with ideas or characters that use them.\n31: Event options, instead, use ai_chance, which uses probability-proportional-to-size sampling with a virtual roll of d00 being the final deciding factor. Due to that, in the end, an event option cannot have a probability which isn't a multiple of 1/100 to be picked, although the total sum of each option's weights can be vastly different from 100. In other words, if one option has a value of 1, while the other has a value of 999, the probability for the first option to be picked will be 1% rather than 0.1%.\n32: \n33: A MTTH block begins with an assumed value of 1. Further manipulations are done from that value as a starting point. There are 3 value-modifying arguments that can be done, `add`, `base`, and `factor`, done like `factor = 0.3`, `base = 10`, or `add = 5`. `add` adds the specified argument to the value, `factor` *multiplies* it, and `base`, typically done in the start before any changes, sets it to a different number entirely, akin to multiplying by 0 and adding the number.\n34: In order for an operation to apply conditionally, a `modifier = { ... }` block is used. This also functions as a [trigger block](<Triggers - Hearts of Iron 4 Wiki.md>), with the default scope (thus also ROOT) being the country for which the MTTH block is evaluated. Depending on the MTTH block, [there may be additional scopes marked with FROM](<Decision modding - Hearts of Iron 4 Wiki.md#Targeted_decisions>) [or FROM.FROM other than the default.](#AI_peace) The value-modifying arguments function as regular arguments, they can be put in anywhere directly within the `modifier = { ... }` block with almost no difference, whether it's in the end, the beginning, or between triggers.\n35: \n36: [Variables](<Data structures - Hearts of Iron 4 Wiki.md>) can be used within the value-modifying arguments as well. If using a temporary variable that is defined within the `modifier = { ... }` trigger block, then the value-modifying argument of the modifier has to be after the definition of the variable in order for the variable to apply as defined. Variables can also be used outside of the `modifier = { ... }` block and directly inside of the MTTH block itself.\n37: \n38: ### Example <a id=\"Example\"></a>\n39: \n40: ```text"
+  },
+  {
+    "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\On actions - Hearts of Iron 4 Wiki.md",
+    "pattern": "on_capitulation",
+    "startLine": 252,
+    "endLine": 264,
+    "sha256": "6822adc85a374a1c1364f2def6f32c6d66da9fb0280319ddd6af4b84b33d882a",
+    "text": "252: | on_war | Trigger the following commands whenever a country has just entered a state of war from initially being at peace. | *(example below)* | THIS is country that has just gotten into a war. | 1.7 |\n253: | on_peace | Trigger the following commands whenever a country is no longer at war. | *(example below)* | THIS is country that is no longer at war. | 1.7 |\n254: | on_capitulation | Trigger the following commands whenever a country capitulates, in the middle of the process. | *(example below)* | ROOT is capitulated country, FROM is winner. Several processes such as the deletion of units and transfer of equipment have already been executed by this point. | 1.0 |\n255: | on_capitulation_immediate | Trigger the following commands whenever a country capitulates, at the beginning of the process. | *(example below)* | ROOT is capitulated country, FROM is winner. | 1.11.5 |\n256: | on_uncapitulation | Trigger the following commands whenever a country that was previously capitulated changes its status to no longer having capitulated. | *(example below)* | ROOT is the country affected. | 1.4 |\n257: | on_annex | Trigger the following commands whenever a country is annexed. | *(example below)* | ROOT is winner, FROM gets annexed. For civil wars **on_civil_war_end** is also fired. | 1.3.3 |\n258: | on_civil_war_end_before_annexation | Trigger the following commands just before FROM gets annexed, meaning the country and everything it owns still exists. | *(example below)* | ROOT is winner, FROM gets annexed. It will also fire **on_annex** and **on_civil_war_end**. | 1.6 |\n259: | on_civil_war_end | Trigger the following commands whenever a civil war ends. | *(example below)* | ROOT is civil war winner, FROM gets annexed. This will also fire **on_annex**. | 1.0 |\n260: | on_puppet | Trigger the following commands whenever a country is puppeted in a **peace conference only**. | *(example below)* | ROOT is the nation being puppeted, FROM is the overlord. | 1.0 |\n261: | on_liberate | Trigger the following commands whenever a country is liberated in a **peace conference only**. | *(example below)* | ROOT is the nation being liberated, FROM is the leader of the liberators. | 1.0 |\n262: | on_release_as_free | Trigger the following commands whenever a country is released. | *(example below)* | #ROOT is free nation FROM is releaser. | 1.3 |\n263: | on_release_as_puppet | Trigger the following commands whenever puppeting through the occupied territories menu during peace time (or when releasing from non-core but owned territory). | *(example below)* | ROOT is the nation being released, FROM is the overlord. | 1.3 |\n264: | on_guarantee | Trigger the following commands whenever a country guarantees independence of another country. |  | ROOT is the country which guarantees, FROM is the country that is guaranteed. |  |"
+  },
+  {
+    "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Character modding - Hearts of Iron 4 Wiki.md",
+    "pattern": "portraits\\s*=",
+    "startLine": 54,
+    "endLine": 66,
+    "sha256": "8ef3d5f9923026dd81f239944710b7331a8d06ad42e4345b32fce4e86dd95d98",
+    "text": "54: - The character is created in any `/Hearts of Iron IV/common/characters/*.txt` file with no regard to the filename:\n55:   - `name = TAG_loc_key` uses a localisation key that's defined for the English language in any `/Hearts of Iron IV/localisation/english/*_l_english.yml` file.\n56:   - `portraits = { ... }` use spriteTypes that are defined in any `/Hearts of Iron IV/interface/*.gfx` file.\n57:     While it's common practice to store images in subfolders of `/Hearts of Iron IV/gfx/` (usually `/Hearts of Iron IV/gfx/leaders/` for country or unit leaders and `/Hearts of Iron IV/gfx/interface/ideas/` for advisors), a sprite's `texturefile` can theoretically lead to any folder within the mod rather than being limited to `/Hearts of Iron IV/gfx/`.\n58: - The character is assigned to a country using [recruit_character](<Effects - Hearts of Iron 4 Wiki.md>) in any history file, usually done in the country's corresponding `/Hearts of Iron IV/history/countries/` file. This cannot be placed on the last line of the file.\n59: - If the character isn't intended to have one of their roles at the start, then the character is created without that role, having it added with any [effect](<Effects - Hearts of Iron 4 Wiki.md>) block using [add_country_leader_role](<Effects - Hearts of Iron 4 Wiki.md>), [add_corps_commander_role](<Effects - Hearts of Iron 4 Wiki.md>), [add_field_marshal_role](<Effects - Hearts of Iron 4 Wiki.md>), [add_naval_commander_role](<Effects - Hearts of Iron 4 Wiki.md>), or [add_advisor_role](<Effects - Hearts of Iron 4 Wiki.md>). Since `add_advisor_role` is limited in what is possible to add and what isn't, instead using `visible = { ... }` with a [flag](<Data structures - Hearts of Iron 4 Wiki.md>) is an alternative for creating advisors.\n60: \n61: ## Arguments <a id=\"Arguments\"></a>\n62: \n63: These arguments are within the character itself.\n64: \n65: ### Name <a id=\"Name\"></a>\n66: "
+  },
+  {
+    "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Division modding - Hearts of Iron 4 Wiki.md",
+    "pattern": "column|regiments",
+    "startLine": 14,
+    "endLine": 26,
+    "sha256": "19b8349a2e1a7da45d138c0807119d1ab5e24c391a8182099ff59ff18d8be147",
+    "text": "14:   - [Non-Man The Guns](#Non-Man_The_Guns)\n15: - [List of Units](#List_of_Units)\n16:   - [Regiments](#Regiments)\n17:   - [Support Companies](#Support_Companies)\n18:   - [Aircraft](#Aircraft)\n19:   - [Ship Categories](#Ship_Categories)\n20:   - [MTG Ship Equipment](#MTG_Ship_Equipment)\n21:   - [Non-MTG Ship Equipment](#Non-MTG_Ship_Equipment)\n22: - [References](#References)\n23: \n24: ---\n25: \n26: *This article is for creating divisions as part of a country's military. For sub-units making up the construction of division templates, see [Unit modding](<Unit modding - Hearts of Iron 4 Wiki.md>).*"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+    "pattern": "^### division_template",
+    "noMatch": true,
+    "sha256": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+    "pattern": "^### add_state_population",
+    "noMatch": true,
+    "sha256": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+    "pattern": "^### set_technology",
+    "noMatch": true,
+    "sha256": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+    "pattern": "^### remove_decision",
+    "noMatch": true,
+    "sha256": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\triggers_documentation.md",
+    "pattern": "^### check_variable",
+    "noMatch": true,
+    "sha256": "7d27ed77dadaf3a213a4b3e2c624bf9c02dae495317abe8eee833b27c2d1de29"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\script_concept_documentation.md",
+    "pattern": "Script Constants",
+    "startLine": 8,
+    "endLine": 20,
+    "sha256": "884bfe9f9207ea4b25b36b5129d0f77d11d4b2f7eb0592587767ec58d24930c7",
+    "text": "8: * [Formatted Localization](#formatted-localization)\n9: * [Math Expressions](#math-expressions)\n10: * [Script Constants](#script-constants)\n11: \n12: ## Bindable Localization\n13: Bindable localization is a modular way of binding localization parameters in script for the specified localization key.\n14: Any variable that accepts a bindable localization accepts the following:\n15: * A [formatted localization](#formatted-localization).\n16: * A bound localization object.\n17: \n18: The bound localization object has the following members:\n19: * `localization_key = KEY`: The localization key that is used for the object.\n20: * `PARAMETER = BINDABLE_LOC`: A parameter to the localization key that is replaced with the localized version `BINDABLE_LOC`,"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\loc_formatter_documentation.md",
+    "pattern": "variable|Variable",
+    "noMatch": true,
+    "sha256": "1fbd9a031fd09100d79bac08dec3c16e19468f23516c5e67c67578156282af08"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\common\\on_actions\\00_on_actions.txt",
+    "pattern": "on_war_relation_added",
+    "startLine": 4912,
+    "endLine": 4924,
+    "sha256": "52a751456f1774ad5001c86d41d4e46494f751d79b6c224b6cd4c0eebb615eb9",
+    "text": "4912: \t#FROM = defending side\n4913: \t#fired when two countries end up at war with each other (on_war is fired when a country goes to war against anyone and is not fired again when it enters war against another country unless it went to peace first)\n4914: \ton_war_relation_added = {\n4915: \t\t#Remove MEFO bills if Germany is gets into a war\n4916: \t\teffect = { \n4917: \t\t\tif = {\n4918: \t\t\t\tlimit = {\n4919: \t\t\t\t\tROOT = { \n4920: \t\t\t\t\t\toriginal_tag = GER\n4921: \t\t\t\t\t\thas_dynamic_modifier = { modifier = GER_mefo_bills_modifier }\n4922: \t\t\t\t\t}\n4923: \t\t\t\t\tNOT = { \n4924: \t\t\t\t\t\tFROM = {"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\history\\units\\GER_1936.txt",
+    "pattern": "division_template",
+    "startLine": 1,
+    "endLine": 11,
+    "sha256": "bdf33f60d8e1d972f8fd56c92e550c53d2af9140776e708d28f4952f2e806b17",
+    "text": "1: division_template = {\n2: \tname = \"Infanterie-Division\"\n3: \n4: \tdivision_names_group = GER_Inf_01\n5: \n6: \tregiments = {\n7: \t\tinfantry = { x = 0 y = 0 }\n8: \t\tinfantry = { x = 0 y = 1 }\n9: \t\tinfantry = { x = 0 y = 2 }\n10:         infantry = { x = 1 y = 0 }\n11: \t\tinfantry = { x = 1 y = 1 }"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\common\\units\\infantry.txt",
+    "pattern": "elephantry",
+    "noMatch": true,
+    "sha256": "a59f843848664f84ec4e2c71b32ead8ec0a3d769a3dd55a2c50dfe5eab6476ba"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+    "pattern": "^## division_template",
+    "startLine": 3625,
+    "endLine": 3638,
+    "sha256": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+    "text": "3625: ## division_template\n3626: \n3627: * Supported Scopes: COUNTRY\n3628: * Supported Targets: none\n3629: \n3630: ```\n3631: add a division template to country\n3632: ```\n3633: \n3634: ## drop_cosmetic_tag\n3635: \n3636: * Supported Scopes: COUNTRY\n3637: * Supported Targets: none\n3638: "
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+    "pattern": "^## add_state_population",
+    "startLine": 1,
+    "endLine": 22,
+    "sha256": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+    "text": "1: # Effects\n2: \n3: ## Table of Content\n4: \n5: * [CHARACTER](#effects-for-scope-character)\n6: * [COUNTRY](#effects-for-scope-country)\n7: * [INDUSTRIAL_ORG](#effects-for-scope-industrial_org)\n8: * [OPERATION](#effects-for-scope-operation)\n9: * [PURCHASE_CONTRACT](#effects-for-scope-purchase_contract)\n10: * [RAID_INSTANCE](#effects-for-scope-raid_instance)\n11: * [SPECIAL_PROJECT](#effects-for-scope-special_project)\n12: * [STATE](#effects-for-scope-state)\n13: * [STRATEGIC_REGION](#effects-for-scope-strategic_region)\n14: * [any](#effects-for-scope-any)\n15: \n16: ## Effects for scope CHARACTER\n17: \n18: * [add_advisor_role](#add_advisor_role)\n19: * [add_attack](#add_attack)\n20: * [add_coordination](#add_coordination)\n21: * [add_corps_commander_role](#add_corps_commander_role)\n22: * [add_country_leader_role](#add_country_leader_role)",
+    "noMatch": true,
+    "discoveryOnly": true,
+    "coverageNote": "Search token was not found; table of contents is discovery only, not population-effect coverage."
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+    "pattern": "^## set_technology",
+    "startLine": 7805,
+    "endLine": 7818,
+    "sha256": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+    "text": "7805: ## set_technology\n7806: \n7807: * Supported Scopes: COUNTRY\n7808: * Supported Targets: none\n7809: \n7810: ```\n7811: sets technology level(s) on country. example : set_technology = { \n7812: \tinfantry_weapons = 1 \n7813: \tinfantry_weapons1 = 1 \n7814: \tinfantry_weapons2 = 1 \n7815: \timproved_infantry_weapons = 1 \n7816: \tpopup = no # default is yes. if set to no, no pop up will display for player \n7817: }\n7818: ```"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+    "pattern": "^## remove_decision",
+    "startLine": 5959,
+    "endLine": 5970,
+    "sha256": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+    "text": "5959: ## remove_decision\n5960: \n5961: * Supported Scopes: COUNTRY\n5962: * Supported Targets: none\n5963: \n5964: ```\n5965: Remove specified active decision for scope country - Does not run the remove_effect or put the decision on cooldown. Ignores fire_only_once\n5966: ```\n5967: \n5968: ## remove_decision_on_cooldown\n5969: \n5970: * Supported Scopes: COUNTRY"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\triggers_documentation.md",
+    "pattern": "^## check_variable",
+    "startLine": 2110,
+    "endLine": 2137,
+    "sha256": "7d27ed77dadaf3a213a4b3e2c624bf9c02dae495317abe8eee833b27c2d1de29",
+    "text": "2110: ## check_variable\n2111: \n2112: * Supported Scopes: any\n2113: * Supported Targets: any\n2114: \n2115: ```\n2116: Compares a variable to a number or another variable\n2117: ex:\n2118: check_variable = {\n2119: \tvar = varname\n2120: \tvalue = 12\t# accepts variables\n2121: \tcompare = equals\n2122: \t# possible values for compare :\n2123: \t# less_than, less_than_or_equals\n2124: \t# greater_than, greater_than_or_equals\n2125: \t# equals, not_equals\n2126: \ttooltip = loc_str_id_with_LEFT_and_RIGHT  #localized text with LEFT and/or RIGHT tokens in it\n2127: }\n2128: # some shorter versions :\n2129: check_variable = { varname = 0 }\n2130: check_variable = { varname > 12 }\n2131: check_variable = { varname < 42 }\n2132: check_variable = { varname > another_varname }\n2133: \n2134: ```\n2135: \n2136: ## civilwar_target\n2137: "
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\script_concept_documentation.md",
+    "pattern": "^## Script Constants",
+    "startLine": 216,
+    "endLine": 231,
+    "sha256": "884bfe9f9207ea4b25b36b5129d0f77d11d4b2f7eb0592587767ec58d24930c7",
+    "text": "216: ## Script Constants\n217: Script constants are a way to define constants in scripts that can be reused in any script file (except for other script constants files).\n218: In general, script constants can be used instead of the script macro operator `@` that is file local.\n219: Note that the script constants has a negligible load time impact and no runtime performance cost.\n220: Like many other concepts, the script constant is only supported where explicitly stated that it is supported. However, all scoped variables\n221: accepts script constants that are pointing to a single fixed point value, by using the prefix `constant:`.\n222: \n223: #### Reloading\n224: A script constant is a bit specific when it comes to reloading the database.\n225: It's not enough to reload the script constant database itself since script constants are injected into the script on load.\n226: Instead one have to first reload the script constant database, and then reload the database that uses the script constant.\n227: \n228: #### Example\n229: In the script constant file, the following constant file definition is made:\n230: ```\n231: numeric_constants = {"
+  },
+  {
+    "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Division modding - Hearts of Iron 4 Wiki.md",
+    "pattern": "^### Division template",
+    "startLine": 47,
+    "endLine": 72,
+    "sha256": "19b8349a2e1a7da45d138c0807119d1ab5e24c391a8182099ff59ff18d8be147",
+    "text": "47: ### Division template <a id=\"Division_template\"></a>\n48: \n49: *See also: [Effect Ã‚Â§ division_template](<Effects - Hearts of Iron 4 Wiki.md>)*\n50: \n51: Land units require a template of some sort, which assigns the necessary information. The template definition is equivalent to the `division_template` effect internally. A simple template can be defined as such:\n52: \n53: ```text\n54: division_template = {\n55:     name = \"Blueskirt Division\"\n56:     regiments = {\n57:         infantry = { x = 0 y = 0 }\n58:         infantry = { x = 0 y = 1 }\n59:         artillery_brigade = { x = 1 y = 0 }\n60:         artillery_brigade = { x = 1 y = 1 }\n61:     }\n62:     support = {\n63:         artillery = { x = 0 y = 0 }\n64:     }\n65: }\n66: ```\n67: \n68: - `name = \"\"` is the name of the division template as it shows up in the template selection. This will also get used for creating or modifying units.\n69: - `regiments = { ... }` and `support = { ... }` decide the sub-units of the template, meaning combat battalions and support companies respectively. In particular:\n70:   - `subunit = { x = 0 y = 0 }` decides the placement of the specified sub-unit. The coordinates represent the Cartesian coordinate system, where (0,0) is the top-left corner, x goes left-to-right, and y goes up-to-down. For a unit to be placed as a support company, it must have `group = support` in its definition, and to be placed in combat battalions, it must have a different group. The group cannot change in a single y column.\n71: \n72: By default, the combat battalions have 5 columns and 5 rows, while the support companies have 1 column and 5 rows.[1] The max index is one less than the total amount."
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\common\\units\\cavalry.txt",
+    "pattern": "^\\s*elephantry\\s*=",
+    "startLine": 158,
+    "endLine": 179,
+    "sha256": "fad7d8b12ebb33bc2ba4cb42151cfd0d7dc6bae87fd95213a27a383e8a762df7",
+    "text": "158: \telephantry = {\n159: \t\tabbreviation = \"ELE\"\n160: \t\tsprite = elephantry\n161: \t\tmap_icon_category = other\n162: \t\tpriority = 599\n163: \t\tai_priority = 200\n164: \t\tactive = no\n165: \t\tcavalry = yes\n166: \n167: \t\ttype = { infantry }\n168: \t\t\n169: \t\tgroup = mobile\n170: \t\t\n171: \t\tcategories = {\n172: \t\t\tcategory_front_line\n173: \t\t\tcategory_cavalry\n174: \t\t\tcategory_army\n175: \t\t}\n176: \t\t\n177: \t\tcombat_width = 2\n178: \t\t\n179: \t\t#Size Definitions"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\common\\script_constants\\documentation.md",
+    "pattern": ".",
+    "startLine": 1,
+    "endLine": 16,
+    "sha256": "e2812efbddc7961038e1f1f2b6dd6b059bdc70704ec87d1fe530835d9141be1c",
+    "text": "1: # Constants\n2: Constants are a way to define simple and complex script values\n3: that are reusable in different files in the scripts.\n4: Only entries that are documented to support these script constant\n5: can utilize it.\n6: \n7: All scoped variables can access script constants by using the `constant:` prefix.\n8: \n9: Note that reloading the script database is not enough to propagate the constants.\n10: The script that uses the constants has to be reloaded after the script constant database has been reloaded.\n11: \n12: A script constant have the following format:\n13: \n14: ```python\n15: category_name = {\n16:     # Mandatory to be the first entry"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\common\\scripted_guis\\_documentation.md",
+    "startLine": 14,
+    "endLine": 28,
+    "sha256": "43ce647fc5fde27488855b060b5463c790e5e356149fceb010d36b960b40f838",
+    "text": "14: \t\t# diplomacy_target_context # the gui will be attached to diplomacy window & will target current selected country\n15: \t\t# decision_category # gui will be attached to a specific decision category (add scripted_gui = scripted_gui_name to category). scope is player\n16: \t\t# diplomatic_action # gui will be attached to a diplo action. check scripted diplomatic actions\n17: \t\t# national_focus_context # gui will be attached to a national focus view for the targeted country, the country which owns the national focus view\n18: \t\t# country_mapicon # a map icon will be for each country. the scope will be the country\n19: \t\t# state_mapicon # a map icon will be for each state. the scope will be the state\n20: \t\tcontext_type = player_context\n21: \n22: \t\t# name of the container that is defined under a gui file\n23: \t\twindow_name = \"container_name\"\n24: \n25: \t\t# by default gui is attached to main window (unless context overrides it)\n26: \t\t# you can specify a token or a window to override it\n27: \n28: \t\t# token must be one of the following:"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\common\\scripted_guis\\_documentation.md",
+    "startLine": 80,
+    "endLine": 105,
+    "sha256": "43ce647fc5fde27488855b060b5463c790e5e356149fceb010d36b960b40f838",
+    "text": "80: \t\tdynamic_lists = {\n81: \t\t\tlist_name = {\n82: \t\t\t\tarray = array_name # it will create a gui element for each element in array\n83: \t\t\t\tvalue = val_name # while building the element gui, it will store the current value of array in this value (default v)\n84: \t\t\t\tindex = index_name # while building the element gui, it will store the current index in array in this value (default i)\n85: \t\t\t\tchange_scope = yes # if yes the game will change scope to the element in the array while building the child element\n86: \n87: \t\t\t\t# use following to pick container for entry (all scripted loc)\n88: \t\t\t\tentry_container = \"container_name\"\n89: \t\t\t\tcountry_scope_entry_container = \"container_name\"\n90: \t\t\t\tcountry_scope_entry_container = \"container_name\"\n91: \n92: \t\t\t\t# add in case you want to script an ai\n93: \t\t\t\tai_weights = {\n94: \t\t\t\t}\n95: \t\t\t}\n96: \t\t\tgui_element_name = {\n97: \t\t\t\tx = 100 # variable\n98: \t\t\t\ty = 200 # variable\n99: \t\t\t}\n100: \t\t}\n101: \n102: \t\t# by default guis are updated every tick\n103: \t\t# you can use a variable name and force game to update a gui only if that variable changes\n104: \t\t# in effects for example just call add_to_variable = { var_name = 1 } to force update a gui\n105: \t\tdirty = var_name"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+    "startLine": 6061,
+    "endLine": 6072,
+    "sha256": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+    "text": "6061: }\n6062: #shorter usage: remove_from_temp_array = { array_name = 42 }\n6063: ```\n6064: \n6065: ## remove_ideas\n6066: \n6067: * Supported Scopes: COUNTRY\n6068: * Supported Targets: none\n6069: \n6070: ```\n6071: remove idea(s) from country\n6072: ```"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+    "startLine": 6083,
+    "endLine": 6091,
+    "sha256": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+    "text": "6083: ## remove_mission\n6084: \n6085: * Supported Scopes: COUNTRY\n6086: * Supported Targets: none\n6087: \n6088: ```\n6089: Removes mission without running complete or timeout effects. \n6090: Example: remove_mission = some_mission_here\n6091: ```"
+  }
+]
