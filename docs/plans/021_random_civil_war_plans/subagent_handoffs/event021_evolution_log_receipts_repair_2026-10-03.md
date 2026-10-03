@@ -12,6 +12,7 @@ This event-owned selector supplies context only.
 Shared recording, history projection, sanitization, and Event Details remain in the existing shared logger.
 
 The selector validates aligned front arrays, active row status, positive front and crisis IDs, live human canonical host with the same crisis, and live registered actor with matching immutable front and crisis IDs.
+Both host and actor require front and theater registration receipts and theater-array membership, and the actor's durable crisis-host pointer must match the exact registry host country.
 It selects the first verified row in the existing array order.
 Human Event 006 actors remain eligible, while actual nonhuman actors are excluded.
 No valid row produces the existing no-actor record.
@@ -26,8 +27,12 @@ No evolution admission, MTTH, weighted target score, cap, generation, force allo
 - `021_random_civil_war_effects.md` documents the existing context helper's caller-storage contract.
 - `.tools/test_event021_evolution_log.py` interprets the actual selector, context helper, shared logger actor gate, and committed sponsor receipt definition against declared fixtures.
 
-`python .tools/test_event021_evolution_log.py` passes ten test methods.
-It tests live participant selection instead of the scheduler, fourteen invalid actor/host/registry cases, human Event 006 admission, no-actor prefire, stale actor target handling through the shared logger's actual gate, caller ordering in all three callbacks, the final valid row after 1,001 rejected rows, and callback ID/type survival under conservative helper-frame cleanup.
+The original ten-method source suite passed against the proposed Git tree and was committed in `f04b111d6ac3dfbf30a3d08122ce2a73c3949969`.
+The architect identified M1, a missing canonical-host pointer and registration proof, after that commit.
+The owner repaired those checks and expanded the suite.
+`python .tools/test_event021_evolution_log.py` passes twelve test methods against current source.
+It tests live participant selection instead of the scheduler, nineteen invalid actor/host/registry cases, human Event 006 admission, no-actor prefire, stale actor target handling through the shared logger's actual gate, caller ordering in all three callbacks, the final valid row after 1,001 rejected rows, and callback ID/type survival under conservative helper-frame cleanup.
+It separately rejects a different same-crisis participant substituted into the host column and accepts a matching registry and durable-host-pointer rebind.
 It also tests a valid sponsor receipt with a third-country ROOT and nine missing, dead, inactive, or mismatched sponsor cases for commit `1f90ca368a06d2e12a6db4dd897a605908f6458b`.
 The test interprets only the explicitly listed commands and uses declared fixture results for the shared actual-nonhuman classifier.
 It does not emulate campaign scheduling, AI, missions, country creation, engine temporary-variable behavior, or live UI rendering.
@@ -37,9 +42,11 @@ Temporary output lifetime was read in offline Data structures, line 440, revisio
 The shared logger's existing explicit actor-indicator branch is the repository precedent.
 
 The first narrow event trace on `chaosx.nr21.2` timed out after 600 seconds.
-The required narrower retry on `chaosx.nr21.11`, depth one and two nodes, was requested before declaring a route gap.
-MCP evidence remains pending until that retry returns, and focused trace coverage cannot prove helper or lifecycle completeness.
-The separate architect review also remains pending at report creation.
+The required narrower retry on `chaosx.nr21.11`, depth one and two nodes, also timed out after 600 seconds with no artifact.
+Current MCP event coverage is unresolved under that route gap, and focused trace coverage cannot prove helper or lifecycle completeness.
+The architect's first source review accepted temporary storage and stale-target safety but raised M1.
+The follow-up review of its canonical-host correction has been requested and remains pending.
+The architect also found two unrelated temporary-output issues in the unfinished ledger tranche, which are not published with this metadata repair.
 
 ## Remaining goal work
 

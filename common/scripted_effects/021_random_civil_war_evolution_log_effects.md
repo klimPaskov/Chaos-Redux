@@ -7,6 +7,8 @@ The helper resets that scalar and leaves it zero when no verified live participa
 
 It requires aligned front ID, actor, canonical host, crisis ID, and status arrays before any indexed read.
 It scans the registered front IDs in their existing order and chooses the first active row whose live human canonical host matches its positive crisis ID and whose actor has the matching positive immutable front ID and crisis ID, active receipt, theater registration flag, and theater-array membership.
+Both host and actor require their front and theater registration receipts and theater-array membership.
+The actor's durable `random_civil_war_crisis_host_scope` must identify the exact host country in that registry row, so a different same-crisis participant cannot replace the canonical host.
 Human Event 006 participants remain admissible through the shared actual-nonhuman exclusion.
 No country is selected merely because it is the caller or owns the global scheduler.
 The selector changes no registry entries or actor state.

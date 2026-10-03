@@ -23,6 +23,7 @@ event021_select_verified_evolution_log_actor = {
 				}
 				set_temp_variable = { event021_evolution_log_crisis_id = global.random_civil_war_front_crisis_ids^event021_evolution_log_row }
 				set_temp_variable = { event021_evolution_log_host_valid = constant:random_civil_war_value.zero }
+				set_temp_variable = { event021_evolution_log_host_id = constant:random_civil_war_value.zero }
 				if = {
 					limit = { check_variable = { var = event021_evolution_log_crisis_id value = constant:random_civil_war_value.zero compare = greater_than } }
 					var:global.random_civil_war_front_hosts^event021_evolution_log_row = {
@@ -30,10 +31,14 @@ event021_select_verified_evolution_log_actor = {
 							limit = {
 								random_civil_war_is_normal_human_country = yes
 								has_country_flag = random_civil_war_active
+								has_country_flag = random_civil_war_front_registered
+								has_country_flag = random_civil_war_theater_registered
+								is_in_array = { array = global.random_civil_war_active_theaters value = THIS }
 								has_variable = random_civil_war_crisis_id
 								check_variable = { var = random_civil_war_crisis_id value = event021_evolution_log_crisis_id compare = equals }
 							}
 							set_temp_variable = { event021_evolution_log_host_valid = constant:random_civil_war_value.one }
+							set_temp_variable = { event021_evolution_log_host_id = THIS.id }
 						}
 					}
 				}
@@ -44,10 +49,16 @@ event021_select_verified_evolution_log_actor = {
 							limit = {
 								random_civil_war_is_normal_human_country = yes
 								has_country_flag = random_civil_war_active
+								has_country_flag = random_civil_war_front_registered
 								has_country_flag = random_civil_war_theater_registered
 								is_in_array = { array = global.random_civil_war_active_theaters value = THIS }
 								has_variable = random_civil_war_front_id
 								has_variable = random_civil_war_crisis_id
+								has_variable = random_civil_war_crisis_host_scope
+								var:random_civil_war_crisis_host_scope = {
+									exists = yes
+									check_variable = { var = THIS.id value = event021_evolution_log_host_id compare = equals }
+								}
 								check_variable = { var = random_civil_war_front_id value = event021_evolution_log_front_id compare = equals }
 								check_variable = { var = random_civil_war_crisis_id value = event021_evolution_log_crisis_id compare = equals }
 							}

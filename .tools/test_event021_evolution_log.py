@@ -82,13 +82,15 @@ class Country:
 class Runtime:
     def __init__(self):
         self.actor = Country(2, values={'random_civil_war_front_id': 11, 'random_civil_war_crisis_id': 7},
-                             flags={'random_civil_war_active', 'random_civil_war_theater_registered'})
-        self.host = Country(1, values={'random_civil_war_crisis_id': 7}, flags={'random_civil_war_active'})
+                             flags={'random_civil_war_active', 'random_civil_war_front_registered', 'random_civil_war_theater_registered'})
+        self.host = Country(1, values={'random_civil_war_crisis_id': 7},
+                            flags={'random_civil_war_active', 'random_civil_war_front_registered', 'random_civil_war_theater_registered'})
+        self.actor.values['random_civil_war_crisis_host_scope'] = self.host
         self.sender = Country(99)
         self.globals = {
             'random_civil_war_front_ids': [11], 'random_civil_war_front_actors': [self.actor],
             'random_civil_war_front_hosts': [self.host], 'random_civil_war_front_crisis_ids': [7],
-            'random_civil_war_front_statuses': [1], 'random_civil_war_active_theaters': [self.actor],
+            'random_civil_war_front_statuses': [1], 'random_civil_war_active_theaters': [self.actor, self.host],
             'random_civil_war_current_stage': 0, 'random_civil_war_current_chaos_tier': 1,
         }
         self.temporary = {'events_log_evolution_has_actor': 0}
@@ -216,6 +218,11 @@ class EvolutionLogTests(unittest.TestCase):
             'inactive row': lambda r: r.globals['random_civil_war_front_statuses'].__setitem__(0, 2),
             'inactive actor': lambda r: r.actor.flags.remove('random_civil_war_active'),
             'missing registration': lambda r: r.actor.flags.remove('random_civil_war_theater_registered'),
+            'missing actor front registration': lambda r: r.actor.flags.remove('random_civil_war_front_registered'),
+            'missing host front registration': lambda r: r.host.flags.remove('random_civil_war_front_registered'),
+            'missing host theater registration': lambda r: r.host.flags.remove('random_civil_war_theater_registered'),
+            'missing host membership': lambda r: r.globals['random_civil_war_active_theaters'].remove(r.host),
+            'missing canonical pointer': lambda r: r.actor.values.pop('random_civil_war_crisis_host_scope'),
             'missing membership': lambda r: r.globals['random_civil_war_active_theaters'].clear(),
             'misaligned arrays': lambda r: r.globals['random_civil_war_front_hosts'].clear(),
             'zero crisis': lambda r: r.globals['random_civil_war_front_crisis_ids'].__setitem__(0, 0),
@@ -226,6 +233,21 @@ class EvolutionLogTests(unittest.TestCase):
                 change(rt)
                 self.assertEqual(rt.select(), 0)
                 self.assertIs(rt.targets['events_log_evolution_actor'], rt.sender)
+
+    def test_same_crisis_participant_cannot_replace_canonical_host(self):
+        rt = Runtime()
+        substitute = Country(3, values={'random_civil_war_crisis_id': 7}, flags=set(rt.host.flags))
+        rt.globals['random_civil_war_front_hosts'][0] = substitute
+        rt.globals['random_civil_war_active_theaters'].append(substitute)
+        self.assertEqual(rt.select(), 0)
+
+    def test_proved_host_pointer_rebinding_agrees_with_registry(self):
+        rt = Runtime()
+        successor = Country(3, values={'random_civil_war_crisis_id': 7}, flags=set(rt.host.flags))
+        rt.globals['random_civil_war_front_hosts'][0] = successor
+        rt.globals['random_civil_war_active_theaters'].append(successor)
+        rt.actor.values['random_civil_war_crisis_host_scope'] = successor
+        self.assertEqual(rt.select(), 1)
 
     def test_human_event006_package_is_not_immune(self):
         rt = Runtime()
