@@ -16,6 +16,11 @@ Its score, actor pool, caps, petition, and timing choices are accepted; older un
 Begin with the existing paid diplomacy's frozen-counterpart and bilateral receipt foundation, then implement every tier, consent, petition, cleanup, and public history surface.
 The general foreign layer remains unimplemented, and this sequencing does not authorize a smaller substitute.
 
+The returned TAT country audit's paid-depot alternate and capital-drift findings are source-integrated, with one active paid-project slot and five matching focus/project locks.
+The [parent review](subagent_handoffs/006_iw044_tat_parent_review_2026-10-03.md) records the exact contract and retained affordability assumptions.
+The probability auditor has frozen before sources and a source-only baseline handoff, but its analyzer and comparison evidence remain unresolved after MCP timeouts.
+Deliberate TAT focus priority and AI strategy/lifecycle review remain required implementation/balance work.
+
 ## Current full-objective continuation (2026-09-27)
 
 The approved Event 006 objective covers all seven [specification parts](../../specs/006_independence_wave_specs/), matrices, diagrams, research, country packages, formables, assets, AI, event flow, UI, catalog, and final audits. Read the [source-of-truth map](006_source_of_truth_map.md) and the [dated full-spec gap map](subagent_handoffs/006_full_spec_gap_map_2026-08-26.md) together; the former supplies current overrides and the latter preserves whole-event omissions. The current static boundary is 32 content-attested selectable packages, 29 compatible reservation groups, 41 runtime adapters, and 161 unattested selectable non-overlay rows; IW-039 is adapter-only and fail-closed. Event 006 remains **HOLD / PARTIAL**.

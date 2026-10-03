@@ -80,3 +80,20 @@ No numeric AI weights changed, and no live game was launched by the parent.
 The five shared focuses retain the engine's default score of one because they have no custom `ai_will_do` block.
 Deliberate founding-priority tuning and a complete-pool route/focus AI audit remain work items; the conditional timing witness does not establish AI completion before the deadline.
 The full Event 006 goal remains **HOLD / PARTIAL**.
+
+## Integrated country-audit findings
+
+The [bounded country audit](006_iw044_tat_bounded_audit_2026-10-03.md) returned source confirmation of the factory, pressure, phase, and activation contracts, plus an unreachable paid-depot alternate, a conditional capital-drift mismatch, and unresolved AI strategy/priority concerns.
+The parent accepted the recommended narrow route repair under the user's 2026-10-03 continuation instruction.
+The depot project now opens during founding when its original costs are affordable; it shares the same single paid-project slot as the government choices and ordinary projects.
+The existing factory requirement is retained, so this paid alternative requires prior civilian capacity; the assembly-focus path supplies that capacity for a zero-civilian-factory start.
+Five matching focus/project pairs reject concurrent counterpart work, using `focus_progress` for the paid entry check and `has_decision` for focus entry.
+The capital predicate is centralized and used consistently for mission success/cancellation, project entry/cancellation, and the focus group, including anchor ownership/control and state 249 capital status.
+No cost, project duration, reward magnitude, focus duration, or numeric AI score changed in this repair.
+
+Installed `documentation/triggers_documentation.md`, lines 2882–2892, documents country-scoped `focus_progress`; the offline Triggers snapshot covers it at lines 702–713, and vanilla `common/decisions/BUL.txt`, lines 207–212, uses the same NOT-progress-above-zero entry pattern.
+The source file's local zero-progress constant matches the vanilla literal entry pattern and marks started work rather than a new balance parameter.
+The existing frozen before sources and the [probability baseline handoff](006_event6_foreign_reactions_probability_baseline_2026-10-03.md) preserve the exact pre-change files and undeclared-scenario limits for the required auditor comparison.
+Broader army, supply, technology, portrait/advisor, AI priority, strategy overlap/lifecycle, and runtime evidence remain open; this gate repair is not full package completion.
+The parent source crosswalk checked all eleven TAT candidates and preserved their cost, modifier, duration, payment, reward, and numeric AI fields against the frozen before file.
+All ten new counterpart-lock tooltip keys resolve, and the exact TAT category has no remaining `capital_scope` entry; every capital check uses the fixed Kazan predicate.

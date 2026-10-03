@@ -12,13 +12,30 @@ is_independence_wave_tat_package = {
 	check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_044 }
 }
 
+has_independence_wave_tat_capital_contract = {
+	249 = { is_owned_and_controlled_by = PREV is_capital = yes }
+}
+
 is_independence_wave_tat_project_ready = {
 	is_independence_wave_tat_package = yes
 	has_country_flag = independence_wave_iw_044_setup_complete
 	# The ordinary project layer opens only after the founding compact mission
-	# resolves; founding government projects use their separate opening gate.
+	# resolves; government and depot projects use separate founding gates.
 	has_country_flag = independence_wave_tat_compact_crisis_resolved
 	NOT = { has_country_flag = independence_wave_tat_compact_crisis_failed }
+	has_independence_wave_tat_capital_contract = yes
+}
+
+is_independence_wave_tat_depot_project_open = {
+	is_independence_wave_tat_package = yes
+	has_country_flag = independence_wave_iw_044_setup_complete
+	NOT = { has_country_flag = independence_wave_tat_compact_crisis_failed }
+	NOT = { has_country_flag = independence_wave_tat_depots_secured }
+	has_independence_wave_tat_capital_contract = yes
+	OR = {
+		has_active_mission = independence_wave_tat_hold_river_compact_together
+		has_country_flag = independence_wave_tat_compact_crisis_resolved
+	}
 }
 
 is_independence_wave_tat_government_choice_open = {
@@ -28,6 +45,7 @@ is_independence_wave_tat_government_choice_open = {
 	NOT = { has_country_flag = independence_wave_tat_compact_crisis_resolved }
 	NOT = { has_country_flag = independence_wave_tat_compact_crisis_failed }
 	NOT = { has_independence_wave_tat_route_government = yes }
+	has_independence_wave_tat_capital_contract = yes
 }
 
 has_independence_wave_tat_active_government_project = {
@@ -41,6 +59,20 @@ has_independence_wave_tat_active_government_project = {
 
 is_independence_wave_tat_government_project_clear = {
 	NOT = { has_independence_wave_tat_active_government_project = yes }
+}
+
+is_independence_wave_tat_founding_project_clear = {
+	is_independence_wave_tat_government_project_clear = yes
+	NOT = {
+		OR = {
+			has_decision = independence_wave_tat_secure_river_depots
+			has_decision = independence_wave_tat_integrate_border_guards
+			has_decision = independence_wave_tat_register_community_compacts
+			has_decision = independence_wave_tat_settle_former_host_ledgers
+			has_decision = independence_wave_tat_codify_durable_sovereignty
+			has_decision = independence_wave_tat_open_volga_river_network_corridor
+		}
+	}
 }
 
 has_independence_wave_tat_unsettled_host = {
@@ -139,16 +171,7 @@ has_stable_independence_wave_tat_compact = {
 has_independence_wave_tat_active_package_project = {
 	OR = {
 		has_active_mission = independence_wave_tat_hold_river_compact_together
-		has_decision = independence_wave_tat_secure_river_depots
-		has_decision = independence_wave_tat_integrate_border_guards
-		has_decision = independence_wave_tat_register_community_compacts
-		has_decision = independence_wave_tat_settle_former_host_ledgers
-		has_decision = independence_wave_tat_ratify_constitutional_autonomy
-		has_decision = independence_wave_tat_adopt_agrarian_compact
-		has_decision = independence_wave_tat_convene_socialist_councils
-		has_decision = independence_wave_tat_establish_river_emergency_command
-		has_decision = independence_wave_tat_codify_durable_sovereignty
-		has_decision = independence_wave_tat_open_volga_river_network_corridor
+		NOT = { is_independence_wave_tat_founding_project_clear = yes }
 	}
 }
 
@@ -244,7 +267,7 @@ can_use_independence_wave_tat_focus_group = {
 	has_independence_wave_generic_focus_contract = yes
 	NOT = { has_country_flag = independence_wave_tat_compact_crisis_failed }
 	NOT = { has_country_flag = independence_wave_origin_ended }
-	249 = { is_owned_and_controlled_by = ROOT is_capital = yes }
+	has_independence_wave_tat_capital_contract = yes
 }
 
 

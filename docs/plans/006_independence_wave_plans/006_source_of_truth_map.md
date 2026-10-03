@@ -14,6 +14,11 @@ It selects the bounded candidate pool, one ordinary popup plus the single separa
 Older mixed-status foreign-design paragraphs are superseded for these choices; no general foreign queue or petition implementation is claimed yet.
 Implementation begins by freezing paid diplomatic counterparts and sharing generation-matched recognition/guarantee receipts across existing decisions and foreign responses.
 
+The [current TAT country audit](subagent_handoffs/006_iw044_tat_bounded_audit_2026-10-03.md) has been parent-reviewed.
+Its paid-depot and capital-drift findings are integrated at source through a founding depot exception, one paid-project slot, five focus/project counterpart locks, and a shared Kazan capital predicate; see the [parent integration](subagent_handoffs/006_iw044_tat_parent_review_2026-10-03.md).
+The read-only probability baseline has no analyzer-backed outcome after narrow timeouts, and comparison remains requested against the preserved before sources.
+TAT's deliberate focus priority and AI strategy/lifecycle review are still open, along with the broader country-package and Event 006 gaps.
+
 The same supplied log also contains errors outside the Event 006 files changed in this repair: a localization parse error in `camp_administration_ui_l_english.yml`, duplicate special-project entries, three unlocated dynamic-token lexer failures, an Event 026 quote-trigger call parsed as an effect, and five invalid `index` effects in the doctrine research file. These are recorded as open whole-build QA findings and were not changed in this Event 006 slice. Event 006 remains **HOLD / PARTIAL**.
 
 ## Current whole-event authority and evidence boundary (2026-09-27)

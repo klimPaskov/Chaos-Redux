@@ -17,7 +17,11 @@ The four government decisions must be visible and available while the Tatarstan 
 
 Each decision remains tied to its matching constitutional, traditional, popular-council, or emergency route. State 249 and the capital must remain under Tatarstan control, the original cost and duration remain in force, and only one government project may be active at a time.
 
-The ordinary Tatarstan project layer opens only after the founding mission resolves. The government-choice opening is separate from that layer so the mission does not exclude the very action it requires.
+The ordinary Tatarstan project layer opens only after the founding mission resolves, with the founding depot project as a specific exception.
+The depot project may run during the mission when its existing industry/resource costs are affordable, so it can genuinely substitute for the assembly focus.
+The government-choice opening is also separate from the ordinary layer so the mission does not exclude the very action it requires.
+All paid TAT projects share one active-project slot; the founding mission itself does not occupy that slot.
+The mission, project entry/cancellation, and focus group share the exact owned-and-controlled Kazan capital contract.
 
 The founding window is 720 days.
 Acceptance basis for this balance refinement: on 2026-10-03 the user directed continuation without waiting for input and instructed the parent to take the recommended option whenever a choice arises.
@@ -44,6 +48,8 @@ It uses the existing host-ledger hook and distinguishes a peaceful host, a host 
 It additionally requires the generic founding settlement, a resolved Tatarstan crisis, stable Civic Concord and River Security, Independence Network membership, and an available League route.
 
 The package decisions remain paid alternate routes. Their existing idempotence flags bypass the matching focus, preserving a single reward for each hook.
+Each matching focus/project pair prevents the paid decision from starting while that focus has progress and prevents the focus from starting while the paid project is active.
+This preserves the player's chosen cost/time path without a later free focus consuming the already-paid project reward.
 
 The five existing hook effects remain the source of ledger changes, stability effects, host settlement, and network rewards. The generic full-tree focuses keep their shared rewards but no longer invoke Tatarstan's five package hooks.
 

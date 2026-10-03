@@ -19,7 +19,10 @@ This gives the installed vanilla anchor, which begins with a military factory an
 
 The four route-matched government decisions use a separate government-choice gate during this founding mission and serialize so only one government project can run at a time.
 This breaks the route cycle in which mission resolution requires an installed government but ordinary projects require prior mission resolution.
-Their existing costs, durations, route-specific outcomes, and AI weights remain in force, while ordinary package projects stay closed until the mission resolves.
+Their existing costs, durations, route-specific outcomes, and AI weights remain in force.
+The paid river-depot project is a founding-phase alternative when its factory and administrative costs are affordable; the other ordinary package projects stay closed until the mission resolves.
+All paid TAT projects share one active-project slot, and each paired focus/project blocks concurrent work by its counterpart.
+The mission and all projects use the same owned-and-controlled Kazan capital contract, so moving the capital cannot leave the mission active behind an unavailable focus group.
 
 The package cleanup removes its mission, decisions, ideas, route flags, ledger variables, network receipts, and generation flags, then restores TAT's vanilla democratic political baseline and party names.
 
