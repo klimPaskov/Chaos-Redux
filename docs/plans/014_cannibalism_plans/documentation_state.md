@@ -1,6 +1,16 @@
 # Event 014 documentation state
 
-Status date: 2026-08-26 approved vanilla-visual reuse amendment and parent runtime-wiring continuation.
+Status date: 2026-10-03 parent continuation; see the current resume checkpoint before older evidence below.
+
+## Current evidence disposition
+
+The current checkpoint and remaining queues are in `resume_packet.md`.
+The bounded material repair, provider-template repair, completion audit and portrait-worker receipts are the dated 2026-10-03 handoffs in `subagent_handoffs/`.
+The older tables below are historical checkpoints where they conflict with those current source observations.
+All four super-event image registrations are present, the CXT registration wrapper only marks pending work, and the Scavenger material binding has a current actual-byte correction.
+Feast Cohort mesh/action copy identity is proven; Feast Guard's export and five archival manifests are absent.
+The sixteen active HATE source packages have exact recovered originals/crops and reproducible durable receipts.
+Probability, GUI, final portrait/rights and live acceptance remain unresolved, so this reconciliation establishes no full completion.
 
 This ledger is the current documentation map for Event 014 and is limited to documentation evidence, read-only MCP evidence, manifests, and parent-owned handoffs.
 
@@ -72,7 +82,9 @@ This ledger is the current documentation map for Event 014 and is limited to doc
 ## 2026-08-26 continuation MCP evidence
 
 - Read-only `hoi4_event_inspect` lint selector: `chaosx.nr14.1` in workspace `mod_chaos_redux_ea3b2d67c2c0`.
-- Fresh revision: `43388d6b2737a1c8e2409f324449210941414fee69c903a1c69d441ca9d33b97c`.
+- Historical reported revision: `43388d6b2737a1c8e2409f324449210941414fee69c903a1c69d441ca9d33b97c`.
+  This retained string is 65 characters and is rejected by the current revision schema; its original provenance manifest could not be retrieved during the 2026-10-03 audit.
+  Do not reuse it as a valid baseline or truncate it to guess a replacement.
 - Fresh graph hash: `dd30c3585ea090f05881b49253cfb4212d58091d19729649a292f8ed561ed67c`.
 - Lint result: `EVENT_INSPECTED_PARTIAL` with zero blocking diagnostics and no skipped sources, while large-workspace projections remain deferred.
 - Partial counts: 9,513 events, 14,705 options, 1,075 entries, 8,314 unresolved nodes, 7,651 terminals, 37,146 edges, 28,243 state accesses, and 2,130 issues.

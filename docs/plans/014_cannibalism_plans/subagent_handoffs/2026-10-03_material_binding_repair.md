@@ -37,8 +37,8 @@ The files are consequently documented as a source and adapted runtime derivative
 - No `meshsettings` or `pdxmesh` section was found in installed markdown documentation under `documentation/` or `gfx/models/`.
   The installed source precedent and actual binary decoding supply the material-node evidence; no missing documentation section is invented.
 - The connected `hoi4.reference_search` and `hoi4.source_lookup` requests timed out after 600 seconds.
-  Narrower retries use a wiki-only single-section search and a single-definition 12-line lookup.
-  Their outcomes remain pending at this handoff's creation; the local source and binary audit is not represented as a successful MCP result.
+  The wiki-only single-section search and single-definition 12-line lookup retries also timed out after 600 seconds.
+  The local source and binary audit is not represented as a successful MCP result.
 
 The separate CXT check confirms that `chaosx_test_country_sync_registered_content` only marks registered content pending in the current shared helper at `common/scripted_effects/chaosx_test_country_effects.txt:442`.
 Event 014's tag-scoped daily hook therefore does not grant content and requires no change.
