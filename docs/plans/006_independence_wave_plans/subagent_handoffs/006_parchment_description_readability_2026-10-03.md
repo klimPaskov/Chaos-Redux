@@ -38,6 +38,10 @@ The follow-up reads offline Localisation lines 656-689, revision `1a8f72362a34b4
 The localization context with limit ten reports no omitted or missing sources.
 Installed contextual localization and scope documentation at the revision above remains pertinent to the preserved object expressions.
 Vanilla `common/scripted_localisation/WTT_infiltration_localisation.txt:10-36` supplies the inspected ordered selector precedent.
+The completed plain-selector source tranche is committed as `1857b35ab7dcba1707b2dee6fe1276b00ad4a64b`.
+Generic `hoi4.source_lookup` for `GetIndependenceWavePresentationArmedTextPlain` returned zero definitions at catalog revision `57150c7cc227e5f41be0aafe23f6ad30965aa88ddeb13e6e3eca6a2cf9acc648`, although the definition is present in the inspected source.
+That catalog result does not confirm namespace coverage or native rendering.
+The parent and independent auditor reviewed the actual paired definitions, and the lookup result is retained in [the plain report reference evidence](../mcp/006_plain_report_reference_20261003.json).
 
 | Source | Lines | SHA-256 revision |
 | --- | --- | --- |

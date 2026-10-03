@@ -2,7 +2,9 @@
 
 ## Current continuation checkpoint (2026-10-03)
 
-The user-provided [cycle 1 live startup log](../../testing/live_qa/20261003_full_playtest/logs/cycle1/error.log) was captured before the latest source corrections. The Event 006 repairs cover the five host-response variable predicates, the report-callback counter comparison, and both invalid global-flag clear effects; see the [repair handoff](subagent_handoffs/006_live_startup_error_repair_2026-10-03.md). Do not claim a clean startup from that older log. The user owns live execution and has offered to send further evidence. Other parser and lexer findings in cycle 1 are outside these Event 006 edits and remain recorded in the handoff.
+The orchestrator confirmed on 2026-10-03 that the Event 006 startup findings repaired by `f23bf79542e371c67b2035785abffa85d3803c18` no longer appear at HEAD `d51bba41f`.
+The [startup repair handoff](subagent_handoffs/006_live_startup_error_repair_2026-10-03.md) records their source changes and references.
+Those specific findings are resolved by supplied live evidence, while the wider clean-log goal remains unconfirmed.
 
 The startup repair is committed as `f23bf79542e371c67b2035785abffa85d3803c18` through an isolated index and guarded branch update.
 The accepted IW-044/TAT source tranche includes the separate government-choice gate, five shared focuses, post-activation layout refresh, a deficit-only four-factory Kazan works reserve, and a 720-day founding deadline.
@@ -22,6 +24,22 @@ The probability auditor has frozen before sources and a source-only baseline han
 Its same-scenario owner-patch follow-up is complete as an audit attempt: decision, mission, and focus comparisons each timed out at 600 seconds and returned no artifact.
 The TAT gate repair is committed as `69386f43868f13406cded8ef7c74b4e02c49d159`, with the exact incomplete scenario set retained for retry when the service can deliver results.
 Deliberate TAT focus priority and AI strategy/lifecycle review remain required implementation/balance work.
+
+## 2026-10-03 decision-duration and parchment QA checkpoint
+
+The [modifier duration repair](subagent_handoffs/006_modifier_duration_repair_2026-10-03.md) is committed as `84da8bbcad87ad1662cabde0c858a7e25e00466c`.
+All 307 modifier-bearing Event 006 decisions were inventoried, and exactly four missing removal durations were repaired.
+The charter and leadership success receipts preserve their paid factory reservations through later political changes, while origin shutdown still cancels them.
+The source audit retains the original mission deadlines, costs, outcomes, and AI score expressions.
+MCP decision scenario inspection timed out after 600 seconds for all four exact IDs, and each narrower single-ID inventory retry also timed out after 600 seconds.
+No quantitative cadence or live removal-timer claim is supported yet.
+
+The [six parchment description corrections](subagent_handoffs/006_parchment_description_readability_2026-10-03.md) are committed as `f3f67275754d79e65cea5dad3a14bb1386d3ed9e`.
+The literal correction is supplemented by four plain dynamic selectors and 24 plain return strings in `1857b35ab7dcba1707b2dee6fe1276b00ad4a64b`.
+The audit covers the six descriptions and their authored nested returns while preserving the dark UI variants.
+The first literal-string audit preserved all 13 dynamic expressions and all prose, and the subsequent plain-selector audit preserved their values and conditions while changing three report consumers.
+Reusable decision-duration and parchment rules are committed to the two owning skills as `10838348850d59ecf85907aa48a7e4745ab987af`.
+These bounded repairs use no simplification and do not close the broader Event 006 objective.
 
 ## Current full-objective continuation (2026-09-27)
 

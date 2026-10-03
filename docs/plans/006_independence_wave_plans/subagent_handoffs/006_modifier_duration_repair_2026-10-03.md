@@ -74,3 +74,19 @@ Live reference and source results, including their paths, spans, and revisions, 
 Source lookup was refreshed after a revision-bound continuation reported `SOURCE_REVISION_STALE` during the parent edit.
 The fresh charter read identifies the removal duration and success receipts in indexed revision `e605315c074d05b0040e7c6cf57b2dfe332026b9b175e04373576fc8965bde1c`.
 Exact-ID decision scenario inspection was requested for all four decisions and remains pending at this source commit.
+
+## Post-commit audit follow-up
+
+All four exact-ID decision scenario requests subsequently timed out after 600 seconds.
+The parent retried each ID with the narrower `inventory` mode, and all four retries also timed out after 600 seconds.
+The returned `chaosx_ai_probability_auditor` confirms that the four willingness-score functions are unchanged, with bases of five for client future and leadership and 25 for charter and Montenegro.
+Its decision-score inspection timed out after 600 seconds, so it supplies no executed scenario, selection ranking, probability, or cadence evidence.
+The added removal durations can affect active cost duration and action cadence even though the AI score expressions are unchanged.
+No weight patch was made, and no probability comparison is claimed.
+
+A separate source resolution pass found that every one of the 307 modifier-bearing removal durations resolves to a positive integer through 52 existing centralized duration keys, ranging from 30 to 365 days.
+The inventory and duration-key checks remain source evidence and do not establish native timer behavior.
+
+The parent also retried probability inspection with only the flat-score charter mission ID and a one-ID candidate pool.
+That narrower request likewise timed out after 600 seconds.
+The exact failed requests and results are retained in [the inspection-limit evidence](../mcp/006_modifier_inspection_limits_20261003.json).

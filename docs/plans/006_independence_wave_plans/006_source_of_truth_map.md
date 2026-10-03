@@ -2,7 +2,9 @@
 
 ## 2026-10-03 live-startup error repair
 
-The user supplied the current-tree live startup log at [cycle 1](../../testing/live_qa/20261003_full_playtest/logs/cycle1/error.log) and directed the parent to repair Event 006 parser errors first. The [parent repair handoff](subagent_handoffs/006_live_startup_error_repair_2026-10-03.md) records the source changes and reference evidence. Five host-response variable predicates now use `check_variable`, the report-callback counter is compared through `check_variable`, and both queue flags are cleared with `clr_global_flag`. The copied cycle 1 log predates those edits; clean startup is not confirmed until the user's next live evidence arrives.
+The orchestrator confirmed on 2026-10-03 that the five host-response variable predicates, report-callback counter, and invalid global-flag clear findings no longer appear at HEAD `d51bba41f`.
+The [parent startup repair handoff](subagent_handoffs/006_live_startup_error_repair_2026-10-03.md) and commit `f23bf79542e371c67b2035785abffa85d3803c18` remain the source evidence for those resolved findings.
+This closes those specific errors and does not establish a project-wide clean startup.
 The repair is committed as `f23bf79542e371c67b2035785abffa85d3803c18` with the shared-tree isolated-index workflow.
 
 The current [IW-044 parent review](subagent_handoffs/006_iw044_tat_parent_review_2026-10-03.md) supersedes older TAT balance claims for the 720-day deadline, deficit-only Kazan civilian-works reserve, and post-activation focus-layout refresh.
@@ -22,6 +24,22 @@ The gate repair is committed as `69386f43868f13406cded8ef7c74b4e02c49d159`; the 
 TAT's deliberate focus priority and AI strategy/lifecycle review are still open, along with the broader country-package and Event 006 gaps.
 
 The same supplied log also contains errors outside the Event 006 files changed in this repair: a localization parse error in `camp_administration_ui_l_english.yml`, duplicate special-project entries, three unlocated dynamic-token lexer failures, an Event 026 quote-trigger call parsed as an effect, and five invalid `index` effects in the doctrine research file. These are recorded as open whole-build QA findings and were not changed in this Event 006 slice. Event 006 remains **HOLD / PARTIAL**.
+
+## 2026-10-03 decision-duration and parchment QA checkpoint
+
+The [modifier duration repair](subagent_handoffs/006_modifier_duration_repair_2026-10-03.md) is committed as `84da8bbcad87ad1662cabde0c858a7e25e00466c`.
+All 307 modifier-bearing Event 006 decisions were inventoried, and exactly four missing removal durations were repaired.
+The charter and leadership success receipts preserve their paid factory reservations through later political changes, while origin shutdown still cancels them.
+The source audit retains the original mission deadlines, costs, outcomes, and AI score expressions.
+MCP decision scenario inspection timed out after 600 seconds for all four exact IDs, and each narrower single-ID inventory retry also timed out after 600 seconds.
+No quantitative cadence or live removal-timer claim is supported yet.
+
+The [six parchment description corrections](subagent_handoffs/006_parchment_description_readability_2026-10-03.md) are committed as `f3f67275754d79e65cea5dad3a14bb1386d3ed9e`.
+The literal correction is supplemented by four plain dynamic selectors and 24 plain return strings in `1857b35ab7dcba1707b2dee6fe1276b00ad4a64b`.
+The audit covers the six descriptions and their authored nested returns while preserving the dark UI variants.
+The first literal-string audit preserved all 13 dynamic expressions and all prose, and the subsequent plain-selector audit preserved their values and conditions while changing three report consumers.
+Reusable decision-duration and parchment rules are committed to the two owning skills as `10838348850d59ecf85907aa48a7e4745ab987af`.
+These bounded repairs use no simplification and do not close the broader Event 006 objective.
 
 ## Current whole-event authority and evidence boundary (2026-09-27)
 
