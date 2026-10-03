@@ -47,6 +47,7 @@ The accepted runtime package includes four report images, two news images, one d
 The seven state textures live under `gfx/interface/state_modifiers/028_asteroid_incoming/`, with their stable sprite IDs registered in `interface/028_asteroid_incoming.gfx`.
 The [state-modifier art record](assets/state_modifiers.md) documents seven accepted original replacements installed on 2026-10-04, their native-size and DDS review, provenance, aliases, and remaining live-consumer limit.
 Missing historical state masters were not recovered; the replacements have independent original lineage.
+The [achievement artwork record](assets/achievements.md) documents five accepted subjects and fifteen installed deterministic variants, including the narrowly disclosed piercing alpha-edge repair and remaining native/gameplay gates.
 
 ## Dust helper contracts
 
