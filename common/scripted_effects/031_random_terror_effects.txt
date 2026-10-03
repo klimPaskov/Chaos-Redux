@@ -1498,16 +1498,7 @@ random_terror_launch_global_jihad = {
 			random_terror_scenario_seed_targets = yes
 			random_terror_scenario_seed_extra_states = yes
 			random_terror_scenario_seed_actors = yes
-			if = {
-				limit = { check_variable = { global.random_terror_global_jihad_scenario_intensity = constant:random_terror_intensity.maximum } }
-				JMX = {
-					if = {
-						limit = { random_terror_is_actor = yes }
-						random_terror_mark_final_actor = yes
-						save_global_event_target_as = random_terror_final_actor
-					}
-				}
-			}
+			# Maximum enables Final Jihad, not the entity or its terminal package.
 			random_terror_scenario_declare_parent_wars = yes
 			random_terror_refresh_global_values = yes
 			set_variable = { global.random_terror_network_reach = global.random_terror_scenario_network_reach }
@@ -1677,10 +1668,11 @@ random_terror_initialize_actor = {
 		}
 		if = {
 			limit = { check_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.final } }
-			set_country_flag = random_terror_route_false_revelation
+			# A profile alone does not authorize the terminal identity or bonuses.
+			set_country_flag = random_terror_route_jihadist_international
 			set_country_flag = random_terror_final_jihad_active
 			set_country_flag = random_terror_later_religious_opposition_registry
-			create_unit = { division = "name = \"Revelation Field Column\" division_template = \"Infantry Division\" start_experience_factor = 0.45 start_manpower_factor = 1.00 start_equipment_factor = 0.95" owner = THIS count = random_terror_actor_division_count allow_spawning_on_enemy_provs = no }
+			create_unit = { division = "name = \"International Field Column\" division_template = \"Infantry Division\" start_experience_factor = 0.40 start_manpower_factor = 1.00 start_equipment_factor = 0.90" owner = THIS count = random_terror_actor_division_count allow_spawning_on_enemy_provs = no }
 		}
 		set_country_flag = random_terror_actor_setup_complete
 	}
@@ -1689,11 +1681,16 @@ random_terror_initialize_actor = {
 random_terror_assign_actor_cosmetic_tag = {
 	random_terror_initialize_global_state = yes
 	if = {
-		limit = { check_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.final } }
+		limit = { random_terror_is_final_actor = yes }
 		set_cosmetic_tag = event31_false_revelation_final
 	}
 	else_if = {
-		limit = { check_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.jihadist } }
+		limit = {
+			OR = {
+				check_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.jihadist }
+				check_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.final }
+			}
+		}
 		set_temp_variable = { random_terror_cosmetic_cycle_index = global.random_terror_jihadist_cosmetic_sequence }
 		modulo_temp_variable = { var = random_terror_cosmetic_cycle_index value = constant:random_terror_cosmetic_cycle.jihadist_count }
 		add_to_variable = { global.random_terror_jihadist_cosmetic_sequence = constant:random_terror_value.one }
@@ -1890,7 +1887,10 @@ random_terror_try_spawn_actor = {
 		}
 		set_global_flag = random_terror_slot_jmx_used
 		event_target:random_terror_current_state = { save_event_target_as = random_terror_spawn_state }
-		JMX = { set_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.final } }
+		JMX = {
+			set_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.jihadist }
+			set_country_flag = random_terror_final_jihad_active
+		}
 		event_target:random_terror_spawn_state = { CONTROLLER = { save_global_event_target_as = random_terror_parent_jmx } }
 		event_target:random_terror_spawn_state = { transfer_state_to = JMX add_state_core = JMX }
 		JMX = {
@@ -3515,7 +3515,7 @@ random_terror_validate_revelation_transaction = {
 	clr_country_flag = random_terror_revelation_transaction_valid
 	if = {
 		limit = {
-			random_terror_is_final_actor = yes
+			random_terror_is_revelation_candidate = yes
 			random_terror_can_begin_false_revelation = yes
 		}
 		set_country_flag = random_terror_revelation_transaction_valid
@@ -3963,10 +3963,22 @@ random_terror_select_dominant_actor = {
 }
 
 random_terror_mark_final_actor = {
+	# Private commit helper: both callers are inside the full revelation gate.
+	set_variable = { random_terror_pre_revelation_research_slots = amount_research_slots }
 	set_country_flag = random_terror_final_actor
 	set_country_flag = random_terror_terminal_command
 	set_country_flag = random_terror_final_jihad_active
+	set_country_flag = random_terror_route_false_revelation
 	set_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.final }
+	set_research_slots = constant:random_terror_tuning.actor_research_slots_final
+	set_politics = { ruling_party = neutrality elections_allowed = no }
+	JMX_random_terror_unanswered_presence = {
+		set_nationality = PREV
+		add_country_leader_role = {
+			promote_leader = yes
+			country_leader = { ideology = despotism traits = { } }
+		}
+	}
 	set_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_cap }
 	remove_ideas = {
 		random_terror_improvised_command
@@ -4048,11 +4060,17 @@ random_terror_begin_false_revelation = {
 	random_terror_initialize_global_state = yes
 	if = {
 		limit = { random_terror_can_begin_false_revelation = yes }
+		clear_global_event_target = random_terror_final_actor
+		clear_global_event_target = random_terror_final_capital
 		random_terror_select_dominant_actor = yes
 		if = {
 			limit = {
 				has_event_target = random_terror_dominant_actor
-				event_target:random_terror_dominant_actor = { is_ai = yes }
+				event_target:random_terror_dominant_actor = {
+					is_ai = yes
+					random_terror_is_viable_actor = yes
+					num_of_owned_states > constant:random_terror_value.zero
+				}
 				NOT = { has_global_flag = random_terror_slot_jmx_used }
 			}
 			set_global_flag = random_terror_slot_jmx_used
@@ -4065,12 +4083,17 @@ random_terror_begin_false_revelation = {
 				set_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.final }
 				random_terror_initialize_actor = yes
 				random_terror_mark_final_actor = yes
-				random_terror_assign_actor_cosmetic_tag = yes
 				save_global_event_target_as = random_terror_final_actor
 			}
 		}
 		else_if = {
-			limit = { has_event_target = random_terror_dominant_actor }
+			limit = {
+				has_event_target = random_terror_dominant_actor
+				event_target:random_terror_dominant_actor = {
+					random_terror_is_viable_actor = yes
+					num_of_owned_states > constant:random_terror_value.zero
+				}
+			}
 			event_target:random_terror_dominant_actor = {
 				capital_scope = { save_global_event_target_as = random_terror_final_capital }
 				random_terror_mark_final_actor = yes
@@ -4085,6 +4108,7 @@ random_terror_begin_false_revelation = {
 				event_target:random_terror_final_capital = { set_state_flag = random_terror_terminal_command_capital }
 			}
 			set_global_flag = random_terror_terminal_active
+			event_target:random_terror_final_actor = { random_terror_assign_actor_cosmetic_tag = yes }
 			set_global_flag = random_terror_false_revelation_pending
 			set_global_flag = random_terror_false_revelation_enabled
 			set_variable = { global.random_terror_terminal_start_date = global.date }
@@ -4587,6 +4611,21 @@ random_terror_clear_actor_runtime = {
 }
 
 random_terror_cleanup_actor = {
+	if = {
+		limit = { has_country_flag = random_terror_final_actor }
+		if = {
+			limit = { has_variable = random_terror_pre_revelation_research_slots }
+			meta_effect = {
+				text = { set_research_slots = [RESEARCH_SLOTS] }
+				RESEARCH_SLOTS = "[?random_terror_pre_revelation_research_slots|.0]"
+			}
+			clear_variable = random_terror_pre_revelation_research_slots
+		}
+		JMX_random_terror_unanswered_presence = {
+			remove_country_leader_role = { ideology = despotism }
+			set_nationality = JMX
+		}
+	}
 	save_event_target_as = random_terror_achievement_defeated_actor
 	every_enemy_country = { random_terror_achievement_record_event31_actor_defeat_contribution = yes }
 	every_owned_state = { random_terror_clear_state_commitments = yes }
@@ -4757,7 +4796,10 @@ random_terror_terminal_counteroffensive = {
 		if = {
 			limit = {
 				check_variable = { var = global.random_terror_terminal_counteroffensive_contributions value = constant:random_terror_cost.terminal_counteroffensive_required_contributions compare = greater_than_or_equals }
-				event_target:random_terror_final_actor = { random_terror_can_defeat_actor = yes }
+				event_target:random_terror_final_actor = {
+					random_terror_is_final_actor = yes
+					random_terror_has_terminal_losses = yes
+				}
 			}
 			set_global_flag = random_terror_false_revelation_denied
 			clr_global_flag = random_terror_false_revelation_pending

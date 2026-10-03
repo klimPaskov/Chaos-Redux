@@ -25,6 +25,19 @@ random_terror_is_jihadist_actor = {
 random_terror_is_final_actor = {
 	random_terror_is_actor = yes
 	check_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.final }
+	# The profile is not a transaction receipt: Final Jihad can precede revelation.
+	hidden_trigger = {
+		has_country_flag = random_terror_final_actor
+		has_global_flag = random_terror_terminal_active
+	}
+}
+
+random_terror_is_revelation_candidate = {
+	random_terror_is_viable_actor = yes
+	random_terror_is_jihadist_actor = yes
+	has_global_flag = random_terror_evolution_5_unlocked
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = random_terror_terminal_active }
 }
 
 random_terror_is_viable_actor = {
@@ -392,6 +405,15 @@ random_terror_can_begin_false_revelation = {
 	}
 }
 
+# Country-scope losses used both before and after the denial objective commits.
+random_terror_has_terminal_losses = {
+	OR = {
+		NOT = { num_of_controlled_states > constant:random_terror_value.zero }
+		check_variable = { random_terror_territorial_control < constant:random_terror_value.territorial_gate }
+		check_variable = { random_terror_network_authority < constant:random_terror_value.unity_gate }
+	}
+}
+
 random_terror_can_defeat_actor = {
 	random_terror_is_actor = yes
 	OR = {
@@ -408,11 +430,7 @@ random_terror_can_defeat_actor = {
 		AND = {
 			random_terror_is_final_actor = yes
 			has_global_flag = random_terror_false_revelation_denied
-			OR = {
-				NOT = { num_of_controlled_states > constant:random_terror_value.zero }
-				check_variable = { random_terror_territorial_control < constant:random_terror_value.territorial_gate }
-				check_variable = { random_terror_network_authority < constant:random_terror_value.unity_gate }
-			}
+			random_terror_has_terminal_losses = yes
 		}
 		AND = {
 			has_capitulated = yes
