@@ -15,11 +15,40 @@ class LifecycleRuntime(Runtime):
         **{name: block("chaosx_nr25_" + name, SOURCE) for name in (
             "schedule_participant_pulse", "close_country_analysis",
             "update_dependence_streaks",
+            "track_final_readiness",
         )},
     }
 
 
 class LifecycleTests(unittest.TestCase):
+    def prepared_expedition(self):
+        actor = Country(1)
+        actor.flags.update({"chaosx_nr25_primary_site_confirmed", "chaosx_nr25_outpost_established"})
+        actor.values.update({"chaosx_nr25_progress": 100, "chaosx_nr25_logistics_readiness": 60,
+                             "chaosx_nr25_outpost_security": 40, "chaosx_nr25_access": 1,
+                             "chaosx_nr25_final_ready_date": 0})
+        rt = LifecycleRuntime([actor])
+        rt.global_values["chaosx_nr25_phase"] = 5
+        return actor, rt
+
+    def test_later_expedition_gets_its_own_first_readiness_date(self):
+        actor, rt = self.prepared_expedition()
+        rt.run("track_final_readiness", actor)
+        self.assertEqual(actor.values["chaosx_nr25_final_ready_date"], 101)
+        rt.global_values["date"] = 110
+        rt.run("track_final_readiness", actor)
+        self.assertEqual(actor.values["chaosx_nr25_final_ready_date"], 101)
+
+    def test_unprepared_expedition_cannot_claim_an_earlier_readiness_date(self):
+        actor, rt = self.prepared_expedition()
+        actor.values["chaosx_nr25_logistics_readiness"] = 59
+        rt.run("track_final_readiness", actor)
+        self.assertEqual(actor.values["chaosx_nr25_final_ready_date"], 0)
+        rt.global_values["date"] = 110
+        actor.values["chaosx_nr25_logistics_readiness"] = 60
+        rt.run("track_final_readiness", actor)
+        self.assertEqual(actor.values["chaosx_nr25_final_ready_date"], 110)
+
     def test_containment_interval_resets_when_dependence_leaves_safe_band(self):
         actor = Country(1)
         actor.flags.add("chaosx_nr25_dependence_contained")

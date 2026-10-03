@@ -95,3 +95,30 @@ chaosx_nr25_close_country_analysis = {
 		set_variable = { global.chaosx_nr25_phase = constant:chaosx_nr25_phase.closed }
 	}
 }
+
+# COUNTRY scope. Every expedition records its first eligible recovery day,
+# including those that become ready after another country advances the race.
+# This date survives later deterioration and remains a deterministic tie key.
+chaosx_nr25_track_final_readiness = {
+	if = {
+		limit = {
+			has_global_flag = chaosx_nr25_active
+			has_country_flag = chaosx_nr25_participant
+			exists = yes
+			NOT = { has_capitulated = yes }
+			NOT = { is_subject = yes }
+			NOT = { has_country_flag = chaosx_nr25_terminal }
+			has_country_flag = chaosx_nr25_primary_site_confirmed
+			has_country_flag = chaosx_nr25_outpost_established
+			NOT = { has_country_flag = chaosx_nr25_emergency_weather }
+			NOT = { has_country_flag = chaosx_nr25_crew_exhausted }
+			check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals }
+			check_variable = { var = chaosx_nr25_progress value = constant:chaosx_nr25_cost.progress_min compare = greater_than_or_equals }
+			check_variable = { var = chaosx_nr25_logistics_readiness value = constant:chaosx_nr25_cost.readiness_min compare = greater_than_or_equals }
+			check_variable = { var = chaosx_nr25_outpost_security value = constant:chaosx_nr25_cost.outpost_min compare = greater_than_or_equals }
+			check_variable = { var = chaosx_nr25_access value = constant:chaosx_nr25_value.one compare = greater_than_or_equals }
+			check_variable = { var = chaosx_nr25_final_ready_date value = constant:chaosx_nr25_value.zero compare = equals }
+		}
+		set_variable = { chaosx_nr25_final_ready_date = global.date }
+	}
+}

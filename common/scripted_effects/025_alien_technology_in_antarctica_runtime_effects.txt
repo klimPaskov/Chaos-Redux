@@ -1044,6 +1044,7 @@ chaosx_nr25_run_bounded_pulse = {
 			limit = { has_global_flag = chaosx_nr25_active }
 			chaosx_nr25_check_evolution_gates = yes
 		}
+		chaosx_nr25_track_final_readiness = yes
 		chaosx_nr25_update_achievement_tracking = yes
 		chaosx_nr25_prepare_board_slots = yes
 		# Any surviving registered expedition can deliver the date-window
@@ -1230,6 +1231,7 @@ chaosx_nr25_check_evolution_gates = {
 # cost triggers are kept in the decision file, while this shared executor keeps
 # AI and human outcomes identical and caps the action cooldown in one place.
 chaosx_nr25_start_final_mission = {
+	chaosx_nr25_track_final_readiness = yes
 	set_country_flag = chaosx_nr25_final_mission_active
 	clr_country_flag = chaosx_nr25_final_mission_ready
 	clr_country_flag = chaosx_nr25_final_mission_failed
@@ -1939,23 +1941,15 @@ chaosx_nr25_advance_phase_if_ready = {
 			check_variable = { var = chaosx_nr25_logistics_readiness value = constant:chaosx_nr25_phase_gate.survey_readiness compare = greater_than_or_equals }
 		}
 		set_variable = { global.chaosx_nr25_phase = constant:chaosx_nr25_phase.final_recovery }
-		if = {
-			limit = {
-				check_variable = {
-					var = chaosx_nr25_final_ready_date
-					value = constant:chaosx_nr25_value.zero
-					compare = equals
-				}
-			}
-			set_variable = { chaosx_nr25_final_ready_date = global.date }
-		}
 	}
+	chaosx_nr25_track_final_readiness = yes
 }
 
 # COUNTRY scope. Captures the successful mission at submission time. The
 # resolver compares these durable receipts, rather than values changed by a
 # subsequent pulse, sabotage, or report acknowledgement.
 chaosx_nr25_capture_recovery_proof = {
+	chaosx_nr25_track_final_readiness = yes
 	set_country_flag = chaosx_nr25_recovery_proof_submitted
 	set_variable = { chaosx_nr25_recovery_proof_day = global.date }
 	set_variable = { chaosx_nr25_recovery_proof_survey = chaosx_nr25_survey_evidence }
