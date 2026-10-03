@@ -78,7 +78,9 @@ The shared event list and Event Details framework map ID 26 to the Black Friday 
 
 `common/scripted_effects/026_black_friday_cxt_test_effects.txt` registers the modifier-free hidden carrier `chaosx_cxt_extension_event026_black_friday` through the dynamic extension contract.
 
-The bounded startup and `on_daily_CXT` hooks initialize and synchronize the carrier for the existing test country without adding a world-wide scan.
+The bounded startup hook registers the carrier, and `on_daily_CXT` registers missing content and sets `chaosx_test_country_registered_sync_pending`.
+Initial CXT setup or the player's **Apply Registered Systems** decision consumes the carrier and invokes the idempotent initializer.
+The daily hook performs no package application or resource grant.
 
 ## Required acceptance coverage
 
