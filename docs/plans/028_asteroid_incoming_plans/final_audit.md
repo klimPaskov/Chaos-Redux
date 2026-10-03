@@ -4,13 +4,21 @@ Status: incomplete pending required engine-backed evidence and explicit asset-pr
 
 This packet is the current audit record for Event 028. Older exploratory handoffs in this directory are historical baselines only; current source files, the asset audit, and this packet take precedence where they differ.
 
+The 2026-10-03 dust and achievement repair is recorded in `dust_and_achievement_repair_20261003.md`.
+It supersedes the earlier source-only assertions about national protection amounts, opening Air Cleanliness refunds, Event 013 call validity, and monthly achievement hold accounting.
+The recovery-target isolation source patch and seven source-model scenarios are recorded in `subagent_handoffs/architect_recovery_target_isolation_20261003.md`.
+Its native scenario evidence remains unresolved after route timeouts.
+The current completion and probability audit jobs ended with `workspace routing discovery timed out` and produced no current handoff.
+
 ## Implemented source surfaces
 
 The global root is `chaosx.nr28.1` with `fire_only_once = yes`, and Event 028 is registered in `global.major_events` rather than the stale repeatable-event row. The opening chain, impact resolver, recovery, triggers, achievements, decisions, category, ideas, dynamic modifiers, CXT setup, on-actions, localisation, event history/details, super-event, audio registration, and workbook row are present in the Event 028 surfaces listed in `docs/events/028_asteroid_incoming/overview.md`.
 
 The target board persists three distinct country/state pairs and a miss/N/A branch. Confirmation locks the selected pair for two days. The resolver plans strongest-profile footprints, records actual deaths, removes main-crater civilians/buildings, relocates a destroyed capital, aggregates reports, applies dust/fragments/minerals, refreshes current-control armour, and cleans the transaction. Fragment centers prefer valid land neighbors when the remaining global pool provides them and fall back only when no such candidate remains. The miss path clears preview/evolution and transaction state without impact, crater, fragment, dust, Deaths, nuclear, or hidden punishment records.
 
-The recovery package contains the shared category, fourteen exact-target decisions, five missions, reserve-floor triggers, action-specific costs and blocked reasons, current-state checks, national closeout, cleanup, and AI weights. The package does not create a dedicated Event 028 window.
+The recovery package contains the shared category, sixteen decisions, five missions, reserve-floor triggers, action-specific costs and blocked reasons, current-state checks, national closeout, cleanup, and AI weights.
+Thirteen decisions target states and three manage national dust protection.
+The package does not create a dedicated Event 028 window.
 
 ## Visual and audio evidence
 

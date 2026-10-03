@@ -341,6 +341,7 @@ asteroid_incoming_country_can_recover = {
 asteroid_incoming_country_has_active_recovery_mission = {
 	hidden_trigger = {
 		OR = {
+			has_country_flag = asteroid_incoming_recovery_project_pending
 			has_active_mission = asteroid_incoming_rescue_route_mission
 			has_active_mission = asteroid_incoming_stabilize_damaged_zone_mission
 			has_active_mission = asteroid_incoming_reconnect_national_network_mission
@@ -534,6 +535,7 @@ asteroid_incoming_crater_action_state_is_valid = {
 
 asteroid_incoming_no_active_recovery_mission = {
 	hidden_trigger = {
+		NOT = { has_country_flag = asteroid_incoming_recovery_project_pending }
 		NOT = { has_active_mission = asteroid_incoming_rescue_route_mission }
 		NOT = { has_active_mission = asteroid_incoming_stabilize_damaged_zone_mission }
 		NOT = { has_active_mission = asteroid_incoming_reconnect_national_network_mission }
@@ -582,10 +584,33 @@ asteroid_incoming_country_has_unresolved_local_burden = {
 asteroid_incoming_decision_target_pointer_is_valid = {
 	hidden_trigger = {
 		exists = yes
-		has_event_target = asteroid_incoming_decision_target_state
-		event_target:asteroid_incoming_decision_target_state = {
-			asteroid_incoming_decision_target_state_is_valid = yes
+		has_variable = asteroid_incoming_recovery_target_state
+		var:asteroid_incoming_recovery_target_state = {
+			impassable = no
+			is_controlled_by = PREV
+			has_state_flag = asteroid_incoming_affected_state
+			NOT = { has_state_flag = asteroid_incoming_main_crater }
 		}
+	}
+}
+
+# COUNTRY scope. Terminal callbacks release only their original FROM target.
+asteroid_incoming_recovery_callback_matches_target = {
+	hidden_trigger = {
+		OR = {
+			NOT = { has_variable = asteroid_incoming_recovery_target_state }
+			FROM = { state = var:ROOT.asteroid_incoming_recovery_target_state }
+		}
+	}
+}
+
+# COUNTRY scope. A paid project owns FROM only while its country reservation
+# is pending and the exact saved state remains controlled and usable.
+asteroid_incoming_recovery_project_target_is_valid = {
+	hidden_trigger = {
+		has_country_flag = asteroid_incoming_recovery_project_pending
+		asteroid_incoming_decision_target_pointer_is_valid = yes
+		FROM = { state = var:ROOT.asteroid_incoming_recovery_target_state }
 	}
 }
 
@@ -608,8 +633,8 @@ asteroid_incoming_state_has_capital_rail_route = {
 
 asteroid_incoming_decision_target_state_has_capital_rail_route = {
 	hidden_trigger = {
-		has_event_target = asteroid_incoming_decision_target_state
-		event_target:asteroid_incoming_decision_target_state = {
+		has_variable = asteroid_incoming_recovery_target_state
+		var:asteroid_incoming_recovery_target_state = {
 			asteroid_incoming_state_has_capital_rail_route = yes
 		}
 	}
@@ -620,14 +645,15 @@ asteroid_incoming_decision_target_state_has_capital_rail_route = {
 # state again, so a button click cannot complete an objective by itself.
 asteroid_incoming_rescue_route_mission_conditions_met = {
 	hidden_trigger = {
+		has_variable = asteroid_incoming_rescue_mission_complete_day
 		check_variable = {
 			var = global.num_days
 			value = asteroid_incoming_rescue_mission_complete_day
 			compare = greater_than_or_equals
 		}
-		has_event_target = asteroid_incoming_decision_target_state
+		has_variable = asteroid_incoming_recovery_target_state
 		asteroid_incoming_decision_target_state_has_capital_rail_route = yes
-		event_target:asteroid_incoming_decision_target_state = {
+		var:asteroid_incoming_recovery_target_state = {
 			asteroid_incoming_decision_target_state_is_valid = yes
 			infrastructure > constant:asteroid_incoming_recovery.mission_infrastructure_floor
 			rail_way > constant:asteroid_incoming_recovery.mission_railway_floor
@@ -639,13 +665,14 @@ asteroid_incoming_rescue_route_mission_conditions_met = {
 
 asteroid_incoming_stabilize_zone_mission_conditions_met = {
 	hidden_trigger = {
+		has_variable = asteroid_incoming_stabilize_mission_complete_day
 		check_variable = {
 			var = global.num_days
 			value = asteroid_incoming_stabilize_mission_complete_day
 			compare = greater_than_or_equals
 		}
-		has_event_target = asteroid_incoming_decision_target_state
-		event_target:asteroid_incoming_decision_target_state = {
+		has_variable = asteroid_incoming_recovery_target_state
+		var:asteroid_incoming_recovery_target_state = {
 			asteroid_incoming_decision_target_state_is_valid = yes
 			infrastructure > constant:asteroid_incoming_recovery.mission_infrastructure_floor
 			rail_way > constant:asteroid_incoming_recovery.mission_railway_floor
@@ -658,14 +685,15 @@ asteroid_incoming_stabilize_zone_mission_conditions_met = {
 
 asteroid_incoming_network_mission_conditions_met = {
 	hidden_trigger = {
+		has_variable = asteroid_incoming_network_mission_complete_day
 		check_variable = {
 			var = global.num_days
 			value = asteroid_incoming_network_mission_complete_day
 			compare = greater_than_or_equals
 		}
-		has_event_target = asteroid_incoming_decision_target_state
+		has_variable = asteroid_incoming_recovery_target_state
 		asteroid_incoming_decision_target_state_has_capital_rail_route = yes
-		event_target:asteroid_incoming_decision_target_state = {
+		var:asteroid_incoming_recovery_target_state = {
 			asteroid_incoming_decision_target_state_is_valid = yes
 			infrastructure > constant:asteroid_incoming_recovery.mission_infrastructure_floor
 			rail_way > constant:asteroid_incoming_recovery.mission_railway_floor
@@ -676,13 +704,14 @@ asteroid_incoming_network_mission_conditions_met = {
 
 asteroid_incoming_outer_ring_mission_conditions_met = {
 	hidden_trigger = {
+		has_variable = asteroid_incoming_outer_mission_complete_day
 		check_variable = {
 			var = global.num_days
 			value = asteroid_incoming_outer_mission_complete_day
 			compare = greater_than_or_equals
 		}
-		has_event_target = asteroid_incoming_decision_target_state
-		event_target:asteroid_incoming_decision_target_state = {
+		has_variable = asteroid_incoming_recovery_target_state
+		var:asteroid_incoming_recovery_target_state = {
 			asteroid_incoming_decision_target_state_is_valid = yes
 			NOT = { has_dynamic_modifier = { modifier = asteroid_incoming_outer_shock_zone } }
 			NOT = { has_dynamic_modifier = { modifier = asteroid_incoming_light_fragment_damage } }
@@ -697,13 +726,15 @@ asteroid_incoming_outer_ring_mission_conditions_met = {
 
 asteroid_incoming_regional_economy_mission_conditions_met = {
 	hidden_trigger = {
+		has_country_flag = asteroid_incoming_original_target_country
+		has_variable = asteroid_incoming_regional_economy_mission_complete_day
 		check_variable = {
 			var = global.num_days
 			value = asteroid_incoming_regional_economy_mission_complete_day
 			compare = greater_than_or_equals
 		}
-		has_event_target = asteroid_incoming_decision_target_state
-		event_target:asteroid_incoming_decision_target_state = {
+		has_variable = asteroid_incoming_recovery_target_state
+		var:asteroid_incoming_recovery_target_state = {
 			asteroid_incoming_decision_target_state_is_valid = yes
 			infrastructure > constant:asteroid_incoming_recovery.mission_infrastructure_floor
 			rail_way > constant:asteroid_incoming_recovery.mission_railway_floor

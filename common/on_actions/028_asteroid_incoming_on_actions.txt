@@ -15,6 +15,26 @@ on_actions = {
 				limit = { FROM = { has_country_flag = asteroid_incoming_original_target_country } }
 				set_global_flag = asteroid_incoming_original_target_annexed
 			}
+			FROM = {
+				if = {
+					limit = {
+						OR = {
+							has_variable = asteroid_incoming_recovery_target_state
+							has_country_flag = asteroid_incoming_recovery_project_pending
+							asteroid_incoming_country_has_active_recovery_mission = yes
+						}
+					}
+					asteroid_incoming_cancel_recovery_runtime = yes
+				}
+				if = {
+					limit = { has_global_flag = asteroid_incoming_minerals_active }
+					clear_variable = asteroid_incoming_collector_hold_start_day
+					clear_variable = asteroid_incoming_main_capture_hold_start_day
+					set_variable = { asteroid_incoming_collector_hold_days = constant:asteroid_incoming_runtime.zero }
+					set_variable = { asteroid_incoming_main_capture_hold_days = constant:asteroid_incoming_runtime.zero }
+					clr_country_flag = asteroid_incoming_main_captured_in_war
+				}
+			}
 		}
 	}
 

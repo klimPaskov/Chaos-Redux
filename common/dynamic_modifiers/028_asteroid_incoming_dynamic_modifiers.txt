@@ -1,4 +1,21 @@
 # ============================================================================
+
+# CHAOS REDUX - EVENT 028 ASTEROID INCOMING DYNAMIC MODIFIERS
+# Country dust protection and permanent or timed state impact profiles.
+
+# COUNTRY SCOPE. The visible protection idea owns the icon. Omitting an icon
+# here keeps one visible protection identity while the compensation follows
+# the active dust stage and disappears when the atmospheric burden ends.
+asteroid_incoming_national_dust_protection = {
+	enable = { check_variable = { global.asteroid_incoming_dust_score > constant:asteroid_incoming_dust.minimum } }
+	remove_trigger = { NOT = { check_variable = { global.asteroid_incoming_dust_score > constant:asteroid_incoming_dust.minimum } } }
+	industrial_capacity_factory = asteroid_incoming_protection_factory
+	production_speed_buildings_factor = asteroid_incoming_protection_construction
+	production_factory_efficiency_gain_factor = asteroid_incoming_protection_efficiency
+	supply_consumption_factor = asteroid_incoming_protection_supply
+	air_mission_efficiency = asteroid_incoming_protection_air
+	air_weather_penalty = asteroid_incoming_protection_weather
+}
 # CHAOS REDUX - EVENT 028 ASTEROID INCOMING DYNAMIC MODIFIERS
 # ============================================================================
 # Visible state profiles for the nonradioactive asteroid footprint. The main

@@ -188,13 +188,112 @@ asteroid_incoming_add_mitigation = {
 	}
 }
 
-# STATE SCOPE. Records the exact selected state for a mission and prevents a
-# stale target from being used after ownership or controller changes.
+# STATE SCOPE, decision actor in ROOT. Called at payment time after the
+# exact action and affordability gates pass. No defaults or global targets.
+# Output: ROOT's persistent state pointer and pending-project reservation.
 asteroid_incoming_save_recovery_target = {
 	if = {
-		limit = { asteroid_incoming_decision_target_state_is_valid = yes }
-		save_global_event_target_as = asteroid_incoming_decision_target_state
+		limit = {
+			asteroid_incoming_decision_target_state_is_valid = yes
+			ROOT = { exists = yes asteroid_incoming_no_active_recovery_mission = yes }
+		}
+		ROOT = {
+			set_variable = { asteroid_incoming_recovery_target_state = PREV }
+			set_country_flag = asteroid_incoming_recovery_project_pending
+		}
 	}
+}
+
+# COUNTRY SCOPE. Idempotent terminal cleanup. Releases only this country's
+# pointer, project receipts, preparedness commitments, ready flags and dates.
+# No refund, building grant, mitigation, success flag or global target write.
+# Lifecycle callers may clear an annexed actor without changing other actors.
+asteroid_incoming_clear_recovery_target = {
+	clear_variable = asteroid_incoming_recovery_target_state
+	clr_country_flag = asteroid_incoming_recovery_project_pending
+	clr_country_flag = asteroid_incoming_mobile_hospitals_project_active
+	clr_country_flag = asteroid_incoming_rail_corridor_project_active
+	clr_country_flag = asteroid_incoming_debris_project_active
+	clr_country_flag = asteroid_incoming_filters_project_active
+	clr_country_flag = asteroid_incoming_supply_spine_project_active
+	clr_country_flag = asteroid_incoming_outer_industry_project_active
+	clr_country_flag = asteroid_incoming_rehousing_project_active
+	clr_country_flag = asteroid_incoming_rescue_route_mission_ready
+	clr_country_flag = asteroid_incoming_stabilize_zone_mission_ready
+	clr_country_flag = asteroid_incoming_network_mission_ready
+	clr_country_flag = asteroid_incoming_outer_ring_mission_ready
+	clr_country_flag = asteroid_incoming_regional_economy_mission_ready
+	clear_variable = asteroid_incoming_rescue_mission_complete_day
+	clear_variable = asteroid_incoming_stabilize_mission_complete_day
+	clear_variable = asteroid_incoming_network_mission_complete_day
+	clear_variable = asteroid_incoming_outer_mission_complete_day
+	clear_variable = asteroid_incoming_regional_economy_mission_complete_day
+	clr_country_flag = asteroid_incoming_prepared_medical_response_committed
+	clr_country_flag = asteroid_incoming_prepared_rail_response_committed
+	clr_country_flag = asteroid_incoming_prepared_debris_response_committed
+}
+
+# COUNTRY SCOPE. Lifecycle entry for annexation or an invalid reserved state.
+# Removes the five native missions without outcome callbacks, then releases
+# this country's reservation. Pending decision rows cancel from lost receipts.
+asteroid_incoming_cancel_recovery_runtime = {
+	remove_mission = asteroid_incoming_rescue_route_mission
+	remove_mission = asteroid_incoming_stabilize_damaged_zone_mission
+	remove_mission = asteroid_incoming_reconnect_national_network_mission
+	remove_mission = asteroid_incoming_restore_outer_ring_mission
+	remove_mission = asteroid_incoming_rebuild_regional_economy_mission
+	asteroid_incoming_clear_recovery_target = yes
+}
+
+# COUNTRY SCOPE, original decision state in FROM. Revalidate the reservation
+# before dispatching one paid project. Clears the pending lock before mission
+# activation, keeps the exact pointer only when that project starts a mission.
+# Repeated terminal callbacks cannot grant work without a pending receipt.
+asteroid_incoming_finish_recovery_project = {
+	if = {
+		limit = { asteroid_incoming_recovery_project_target_is_valid = yes }
+		clr_country_flag = asteroid_incoming_recovery_project_pending
+		if = {
+			limit = { has_country_flag = asteroid_incoming_mobile_hospitals_project_active }
+			FROM = { asteroid_incoming_deploy_mobile_hospitals = yes }
+		}
+		else_if = {
+			limit = { has_country_flag = asteroid_incoming_rail_corridor_project_active }
+			FROM = { asteroid_incoming_open_emergency_rail_corridor = yes }
+		}
+		else_if = {
+			limit = { has_country_flag = asteroid_incoming_debris_project_active }
+			FROM = { asteroid_incoming_clear_unstable_debris = yes }
+		}
+		else_if = {
+			limit = { has_country_flag = asteroid_incoming_filters_project_active }
+			FROM = { asteroid_incoming_distribute_emergency_filters = yes }
+		}
+		else_if = {
+			limit = { has_country_flag = asteroid_incoming_supply_spine_project_active }
+			FROM = { asteroid_incoming_rebuild_supply_spine = yes }
+		}
+		else_if = {
+			limit = { has_country_flag = asteroid_incoming_outer_industry_project_active }
+			FROM = { asteroid_incoming_restore_outer_ring_industry = yes }
+		}
+		else_if = {
+			limit = { has_country_flag = asteroid_incoming_rehousing_project_active }
+			FROM = { asteroid_incoming_rehouse_displaced_workers = yes }
+		}
+		clr_country_flag = asteroid_incoming_mobile_hospitals_project_active
+		clr_country_flag = asteroid_incoming_rail_corridor_project_active
+		clr_country_flag = asteroid_incoming_debris_project_active
+		clr_country_flag = asteroid_incoming_filters_project_active
+		clr_country_flag = asteroid_incoming_supply_spine_project_active
+		clr_country_flag = asteroid_incoming_outer_industry_project_active
+		clr_country_flag = asteroid_incoming_rehousing_project_active
+		if = {
+			limit = { asteroid_incoming_no_active_recovery_mission = yes }
+			asteroid_incoming_clear_recovery_target = yes
+		}
+	}
+	else = { asteroid_incoming_clear_recovery_target = yes }
 }
 
 asteroid_incoming_deploy_mobile_hospitals = {
@@ -203,7 +302,6 @@ asteroid_incoming_deploy_mobile_hospitals = {
 			asteroid_incoming_action_state_is_valid = yes
 			NOT = { has_state_flag = asteroid_incoming_mobile_hospitals_deployed }
 		}
-		asteroid_incoming_save_recovery_target = yes
 		set_temp_variable = { asteroid_incoming_restore_fraction = constant:asteroid_incoming_recovery_fraction.emergency }
 		if = {
 			limit = { ROOT = { has_country_flag = asteroid_incoming_prepared_medical_response_committed } }
@@ -218,7 +316,7 @@ asteroid_incoming_deploy_mobile_hospitals = {
 			set_country_flag = asteroid_incoming_medical_relief
 			set_country_flag = asteroid_incoming_rescue_route_mission_ready
 			if = {
-				limit = { asteroid_incoming_no_active_recovery_mission = yes }
+				limit = { asteroid_incoming_no_active_recovery_mission = yes asteroid_incoming_decision_target_pointer_is_valid = yes }
 				set_variable = { asteroid_incoming_rescue_mission_complete_day = global.num_days }
 				add_to_variable = { asteroid_incoming_rescue_mission_complete_day = constant:asteroid_incoming_recovery.mission_rescue_route_days }
 				activate_mission = asteroid_incoming_rescue_route_mission
@@ -233,7 +331,6 @@ asteroid_incoming_open_emergency_rail_corridor = {
 			asteroid_incoming_action_state_is_valid = yes
 			NOT = { has_state_flag = asteroid_incoming_emergency_rail_corridor_open }
 		}
-		asteroid_incoming_save_recovery_target = yes
 		set_temp_variable = { asteroid_incoming_restore_fraction = constant:asteroid_incoming_recovery_fraction.emergency }
 		if = {
 			limit = { ROOT = { has_country_flag = asteroid_incoming_prepared_rail_response_committed } }
@@ -247,9 +344,10 @@ asteroid_incoming_open_emergency_rail_corridor = {
 		set_state_flag = asteroid_incoming_emergency_rail_corridor_open
 		ROOT = {
 			set_country_flag = asteroid_incoming_transport_protected
+			asteroid_incoming_refresh_national_dust_protection = yes
 			set_country_flag = asteroid_incoming_rescue_route_mission_ready
 			if = {
-				limit = { asteroid_incoming_no_active_recovery_mission = yes }
+				limit = { asteroid_incoming_no_active_recovery_mission = yes asteroid_incoming_decision_target_pointer_is_valid = yes }
 				set_variable = { asteroid_incoming_rescue_mission_complete_day = global.num_days }
 				add_to_variable = { asteroid_incoming_rescue_mission_complete_day = constant:asteroid_incoming_recovery.mission_rescue_route_days }
 				activate_mission = asteroid_incoming_rescue_route_mission
@@ -264,7 +362,6 @@ asteroid_incoming_clear_unstable_debris = {
 			asteroid_incoming_action_state_is_valid = yes
 			NOT = { has_state_flag = asteroid_incoming_unstable_debris_cleared }
 		}
-		asteroid_incoming_save_recovery_target = yes
 		set_temp_variable = { asteroid_incoming_restore_fraction = constant:asteroid_incoming_recovery_fraction.emergency }
 		if = {
 			limit = { ROOT = { has_country_flag = asteroid_incoming_prepared_debris_response_committed } }
@@ -279,7 +376,7 @@ asteroid_incoming_clear_unstable_debris = {
 			set_country_flag = asteroid_incoming_debris_cleared
 			set_country_flag = asteroid_incoming_stabilize_zone_mission_ready
 			if = {
-				limit = { asteroid_incoming_no_active_recovery_mission = yes }
+				limit = { asteroid_incoming_no_active_recovery_mission = yes asteroid_incoming_decision_target_pointer_is_valid = yes }
 				set_variable = { asteroid_incoming_stabilize_mission_complete_day = global.num_days }
 				add_to_variable = { asteroid_incoming_stabilize_mission_complete_day = constant:asteroid_incoming_recovery.mission_stabilize_zone_days }
 				activate_mission = asteroid_incoming_stabilize_damaged_zone_mission
@@ -294,17 +391,21 @@ asteroid_incoming_distribute_emergency_filters = {
 			asteroid_incoming_action_state_is_valid = yes
 			NOT = { has_state_flag = asteroid_incoming_filters_distributed }
 		}
-		asteroid_incoming_save_recovery_target = yes
 		set_state_flag = asteroid_incoming_filters_distributed
 		ROOT = {
 			set_country_flag = asteroid_incoming_water_protected
-			set_variable = { asteroid_incoming_dust_protection_level = constant:asteroid_incoming_recovery.protection_basic }
-			remove_ideas = asteroid_incoming_dust_protection_organized
-			remove_ideas = asteroid_incoming_dust_protection_hardened
-			add_ideas = asteroid_incoming_dust_protection_basic
+			if = {
+				limit = {
+					NOT = { check_variable = { var = asteroid_incoming_dust_protection_level value = constant:asteroid_incoming_recovery.protection_basic compare = greater_than_or_equals } }
+				}
+				set_variable = { asteroid_incoming_dust_protection_level = constant:asteroid_incoming_recovery.protection_basic }
+				remove_ideas = asteroid_incoming_dust_protection_organized
+				remove_ideas = asteroid_incoming_dust_protection_hardened
+				add_ideas = asteroid_incoming_dust_protection_basic
+			}
+			asteroid_incoming_refresh_national_dust_protection = yes
 			asteroid_incoming_add_mitigation = yes
 		}
-		clear_global_event_target = asteroid_incoming_decision_target_state
 	}
 }
 
@@ -314,7 +415,6 @@ asteroid_incoming_rebuild_supply_spine = {
 			asteroid_incoming_action_state_is_valid = yes
 			NOT = { has_state_flag = asteroid_incoming_supply_spine_rebuilt }
 		}
-		asteroid_incoming_save_recovery_target = yes
 		set_temp_variable = { asteroid_incoming_restore_fraction = constant:asteroid_incoming_recovery_fraction.network }
 		asteroid_incoming_restore_infrastructure = yes
 		asteroid_incoming_restore_railway = yes
@@ -327,7 +427,7 @@ asteroid_incoming_rebuild_supply_spine = {
 		ROOT = {
 			set_country_flag = asteroid_incoming_network_mission_ready
 			if = {
-				limit = { asteroid_incoming_no_active_recovery_mission = yes }
+				limit = { asteroid_incoming_no_active_recovery_mission = yes asteroid_incoming_decision_target_pointer_is_valid = yes }
 				set_variable = { asteroid_incoming_network_mission_complete_day = global.num_days }
 				add_to_variable = { asteroid_incoming_network_mission_complete_day = constant:asteroid_incoming_recovery.mission_network_days }
 				activate_mission = asteroid_incoming_reconnect_national_network_mission
@@ -343,7 +443,6 @@ asteroid_incoming_restore_outer_ring_industry = {
 			asteroid_incoming_action_state_is_valid = yes
 			NOT = { has_state_flag = asteroid_incoming_outer_industry_restored }
 		}
-		asteroid_incoming_save_recovery_target = yes
 		set_temp_variable = { asteroid_incoming_restore_fraction = constant:asteroid_incoming_recovery_fraction.industry }
 		asteroid_incoming_restore_industry = yes
 		asteroid_incoming_restore_dockyard = yes
@@ -356,7 +455,7 @@ asteroid_incoming_restore_outer_ring_industry = {
 		ROOT = {
 			set_country_flag = asteroid_incoming_outer_ring_mission_ready
 			if = {
-				limit = { asteroid_incoming_no_active_recovery_mission = yes }
+				limit = { asteroid_incoming_no_active_recovery_mission = yes asteroid_incoming_decision_target_pointer_is_valid = yes }
 				set_variable = { asteroid_incoming_outer_mission_complete_day = global.num_days }
 				add_to_variable = { asteroid_incoming_outer_mission_complete_day = constant:asteroid_incoming_recovery.mission_outer_ring_days }
 				activate_mission = asteroid_incoming_restore_outer_ring_mission
@@ -372,7 +471,6 @@ asteroid_incoming_rehouse_displaced_workers = {
 			asteroid_incoming_action_state_is_valid = yes
 			NOT = { has_state_flag = asteroid_incoming_workers_rehoused }
 		}
-		asteroid_incoming_save_recovery_target = yes
 		set_temp_variable = { asteroid_incoming_restore_fraction = constant:asteroid_incoming_recovery_fraction.rehousing }
 		asteroid_incoming_restore_infrastructure = yes
 		asteroid_incoming_restore_industry = yes
@@ -384,6 +482,7 @@ asteroid_incoming_rehouse_displaced_workers = {
 				limit = {
 					has_country_flag = asteroid_incoming_original_target_country
 					asteroid_incoming_no_active_recovery_mission = yes
+					asteroid_incoming_decision_target_pointer_is_valid = yes
 				}
 				set_country_flag = asteroid_incoming_regional_economy_mission_ready
 				set_variable = { asteroid_incoming_regional_economy_mission_complete_day = global.num_days }
@@ -396,21 +495,31 @@ asteroid_incoming_rehouse_displaced_workers = {
 }
 
 asteroid_incoming_harden_factories_against_dust = {
-	remove_ideas = asteroid_incoming_dust_protection_basic
-	remove_ideas = asteroid_incoming_dust_protection_organized
-	remove_ideas = asteroid_incoming_dust_protection_hardened
-	add_ideas = asteroid_incoming_dust_protection_hardened
-	set_variable = { asteroid_incoming_dust_protection_level = constant:asteroid_incoming_recovery.protection_hardened }
+	if = {
+		limit = {
+			NOT = { check_variable = { var = asteroid_incoming_dust_protection_level value = constant:asteroid_incoming_recovery.protection_hardened compare = greater_than_or_equals } }
+		}
+		set_variable = { asteroid_incoming_dust_protection_level = constant:asteroid_incoming_recovery.protection_hardened }
+		remove_ideas = asteroid_incoming_dust_protection_basic
+		remove_ideas = asteroid_incoming_dust_protection_organized
+		add_ideas = asteroid_incoming_dust_protection_hardened
+	}
+	asteroid_incoming_refresh_national_dust_protection = yes
 	set_country_flag = asteroid_incoming_factories_hardened
 	asteroid_incoming_add_mitigation = yes
 }
 
 asteroid_incoming_protect_transport_reserves = {
-	remove_ideas = asteroid_incoming_dust_protection_basic
-	remove_ideas = asteroid_incoming_dust_protection_organized
-	remove_ideas = asteroid_incoming_dust_protection_hardened
-	add_ideas = asteroid_incoming_dust_protection_organized
-	set_variable = { asteroid_incoming_dust_protection_level = constant:asteroid_incoming_recovery.protection_organized }
+	if = {
+		limit = {
+			NOT = { check_variable = { var = asteroid_incoming_dust_protection_level value = constant:asteroid_incoming_recovery.protection_organized compare = greater_than_or_equals } }
+		}
+		set_variable = { asteroid_incoming_dust_protection_level = constant:asteroid_incoming_recovery.protection_organized }
+		remove_ideas = asteroid_incoming_dust_protection_basic
+		remove_ideas = asteroid_incoming_dust_protection_hardened
+		add_ideas = asteroid_incoming_dust_protection_organized
+	}
+	asteroid_incoming_refresh_national_dust_protection = yes
 	set_country_flag = asteroid_incoming_transport_protected
 	asteroid_incoming_add_mitigation = yes
 }
@@ -436,11 +545,9 @@ asteroid_incoming_secure_crater_perimeter = {
 			asteroid_incoming_crater_action_state_is_valid = yes
 			NOT = { has_state_flag = asteroid_incoming_crater_perimeter_secured }
 		}
-		asteroid_incoming_save_recovery_target = yes
 		set_state_flag = asteroid_incoming_crater_perimeter_secured
 		ROOT = { set_country_flag = asteroid_incoming_crater_secured }
 		add_to_variable = { asteroid_incoming_recovery_actions_completed = 1 }
-		clear_global_event_target = asteroid_incoming_decision_target_state
 	}
 }
 
@@ -451,11 +558,9 @@ asteroid_incoming_survey_extraordinary_material = {
 			has_state_flag = asteroid_incoming_crater_perimeter_secured
 			NOT = { has_state_flag = asteroid_incoming_material_surveyed }
 		}
-		asteroid_incoming_save_recovery_target = yes
 		set_state_flag = asteroid_incoming_material_surveyed
 		ROOT = { set_country_flag = asteroid_incoming_material_survey_complete }
 		add_to_variable = { asteroid_incoming_recovery_actions_completed = 1 }
-		clear_global_event_target = asteroid_incoming_decision_target_state
 	}
 }
 
@@ -465,7 +570,6 @@ asteroid_incoming_fortify_crater_access = {
 			asteroid_incoming_crater_action_state_is_valid = yes
 			NOT = { has_state_flag = asteroid_incoming_crater_access_fortified }
 		}
-		asteroid_incoming_save_recovery_target = yes
 		every_neighbor_state = {
 			limit = {
 				impassable = no
@@ -482,7 +586,6 @@ asteroid_incoming_fortify_crater_access = {
 		set_state_flag = asteroid_incoming_crater_access_fortified
 		ROOT = { set_country_flag = asteroid_incoming_crater_access_ready }
 		add_to_variable = { asteroid_incoming_recovery_actions_completed = 1 }
-		clear_global_event_target = asteroid_incoming_decision_target_state
 	}
 }
 
@@ -529,12 +632,12 @@ asteroid_incoming_prepare_crater_offensive = {
 asteroid_incoming_recovery_mission_success = {
 	if = {
 		limit = {
-			has_event_target = asteroid_incoming_decision_target_state
-			event_target:asteroid_incoming_decision_target_state = {
+			asteroid_incoming_decision_target_pointer_is_valid = yes
+			var:asteroid_incoming_recovery_target_state = {
 				asteroid_incoming_decision_target_state_is_valid = yes
 			}
 		}
-		event_target:asteroid_incoming_decision_target_state = {
+		var:asteroid_incoming_recovery_target_state = {
 			set_temp_variable = { asteroid_incoming_restore_fraction = constant:asteroid_incoming_recovery_fraction.network }
 			asteroid_incoming_restore_infrastructure = yes
 			asteroid_incoming_restore_railway = yes
@@ -546,18 +649,18 @@ asteroid_incoming_recovery_mission_success = {
 		remove_ideas = asteroid_incoming_recovery_burden
 		add_ideas = asteroid_incoming_recovery_legacy
 	}
-	clear_global_event_target = asteroid_incoming_decision_target_state
+	asteroid_incoming_clear_recovery_target = yes
 }
 
 asteroid_incoming_recovery_mission_failure = {
 	if = {
 		limit = {
-			has_event_target = asteroid_incoming_decision_target_state
-			event_target:asteroid_incoming_decision_target_state = {
+			asteroid_incoming_decision_target_pointer_is_valid = yes
+			var:asteroid_incoming_recovery_target_state = {
 				asteroid_incoming_decision_target_state_is_valid = yes
 			}
 		}
-		event_target:asteroid_incoming_decision_target_state = {
+		var:asteroid_incoming_recovery_target_state = {
 			add_dynamic_modifier = {
 				modifier = asteroid_incoming_mission_failure_pressure
 				days = constant:asteroid_incoming_recovery.mission_failure_pressure_days
@@ -568,18 +671,18 @@ asteroid_incoming_recovery_mission_failure = {
 			days = constant:asteroid_incoming_recovery.mission_failure_pressure_days
 		}
 	}
-	clear_global_event_target = asteroid_incoming_decision_target_state
+	asteroid_incoming_clear_recovery_target = yes
 }
 
 asteroid_incoming_outer_mission_success = {
 	if = {
 		limit = {
-			has_event_target = asteroid_incoming_decision_target_state
-			event_target:asteroid_incoming_decision_target_state = {
+			asteroid_incoming_decision_target_pointer_is_valid = yes
+			var:asteroid_incoming_recovery_target_state = {
 				asteroid_incoming_decision_target_state_is_valid = yes
 			}
 		}
-		event_target:asteroid_incoming_decision_target_state = {
+		var:asteroid_incoming_recovery_target_state = {
 			set_temp_variable = { asteroid_incoming_restore_fraction = constant:asteroid_incoming_recovery_fraction.industry }
 			asteroid_incoming_restore_industry = yes
 			asteroid_incoming_restore_dockyard = yes
@@ -591,18 +694,18 @@ asteroid_incoming_outer_mission_success = {
 		remove_ideas = asteroid_incoming_recovery_burden
 		add_ideas = asteroid_incoming_recovery_legacy
 	}
-	clear_global_event_target = asteroid_incoming_decision_target_state
+	asteroid_incoming_clear_recovery_target = yes
 }
 
 asteroid_incoming_regional_mission_success = {
 	if = {
 		limit = {
-			has_event_target = asteroid_incoming_decision_target_state
-			event_target:asteroid_incoming_decision_target_state = {
+			asteroid_incoming_decision_target_pointer_is_valid = yes
+			var:asteroid_incoming_recovery_target_state = {
 				asteroid_incoming_decision_target_state_is_valid = yes
 			}
 		}
-		event_target:asteroid_incoming_decision_target_state = {
+		var:asteroid_incoming_recovery_target_state = {
 			set_temp_variable = { asteroid_incoming_restore_fraction = constant:asteroid_incoming_recovery_fraction.industry }
 			asteroid_incoming_restore_industry = yes
 			asteroid_incoming_restore_dockyard = yes
@@ -614,13 +717,20 @@ asteroid_incoming_regional_mission_success = {
 		remove_ideas = asteroid_incoming_recovery_burden
 		add_ideas = asteroid_incoming_recovery_legacy
 	}
-	clear_global_event_target = asteroid_incoming_decision_target_state
+	asteroid_incoming_clear_recovery_target = yes
 }
 
 # COUNTRY SCOPE. National recovery follows the country's real exact-state
 # burdens rather than the unrelated global dust clock. The closeout report is
 # queued once after every timed local burden and active mission has resolved.
 asteroid_incoming_refresh_national_recovery = {
+	if = {
+		limit = {
+			has_variable = asteroid_incoming_recovery_target_state
+			NOT = { asteroid_incoming_decision_target_pointer_is_valid = yes }
+		}
+		asteroid_incoming_cancel_recovery_runtime = yes
+	}
 	remove_ideas = asteroid_incoming_recovery_burden
 	remove_ideas = asteroid_incoming_recovery_legacy
 	if = {
