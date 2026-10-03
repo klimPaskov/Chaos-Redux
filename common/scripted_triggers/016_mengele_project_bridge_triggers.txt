@@ -56,11 +56,28 @@ brilliant_scientist_can_research_mengele_teleportation_prototype = {
 	}
 }
 
+# COUNTRY scope. The Event 016 registry owns the named custom cloning route.
+# Keep an existing legacy research job visible, including during provider incidents.
+brilliant_scientist_mengele_legacy_cloning_project_is_available = {
+	camp_rework_germany_cloning_project_currently_available = yes
+	hidden_trigger = {
+		OR = {
+			NOT = {
+				AND = {
+					is_mengele_clone_directorate_country = yes
+					has_country_flag = mengele_clone_focus_directorate_project_registry
+					NOT = { has_country_flag = brilliant_scientist_current_host }
+				}
+			}
+			is_special_project_being_researched = sp:sp_mengele_cloning
+		}
+	}
+}
+
 brilliant_scientist_can_research_mengele_cloning_prototype = {
 	brilliant_scientist_mengele_project_provider_is_valid = yes
 	has_country_flag = mengele_event016_cloning_theory_completed
 	NOT = { has_country_flag = mengele_event016_cloning_prototype_completed }
-	NOT = { has_country_flag = directorate_special_project_cloning_completed }
 	NOT = { is_special_project_completed = sp:sp_brilliant_scientist_cloning }
 	OR = {
 		has_country_flag = directorate_special_projects_all_available

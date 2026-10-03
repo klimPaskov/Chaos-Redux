@@ -46,3 +46,25 @@ No runtime outcome is claimed for this guard.
 This guard closes the duplicate-payload defect in the shared helper.
 Exact provider Prototype ownership, historical completion isolation, cloning project availability overlap, and the full lifecycle matrix remain separate Event 016 completion work.
 Future review should keep initial completion distinct from periodic clone equipment replenishment and authenticate the Event 016 project receipt independently of the shared legacy completion flag.
+
+## Private and legacy native availability
+
+The private provider gate for sp_brilliant_scientist_cloning uses the private Theory and Prototype receipts and the exact accepted project's completed state.
+The shared directorate_special_project_cloning_completed latch is not proof of that private project and does not veto its availability.
+The legacy sp_mengele_cloning retains its original camp eligibility and uses brilliant_scientist_mengele_legacy_cloning_project_is_available for its two country-scoped presentation gates.
+A registered Event016 Mengele portfolio owner cannot open a further legacy research job through that gate, including during an incident when the strict live-provider predicate is suspended.
+An exact legacy job already being researched remains reachable while the original camp eligibility holds.
+Outside the registered portfolio owner context, the wrapper adds no restriction to the original camp gate.
+The existing legacy costs, AI weights, output, equipment, refinement, and ordinary CBRN consumers are unchanged.
+The internal owner checks are hidden from requirement tooltips.
+
+The installed triggers_documentation.md:6228-6241 documents is_special_project_being_researched in COUNTRY scope and gives a literal sp: project example.
+The projects/documentation.md:36-46 documents available and visible in PROJECT scope with FROM as country, so the wrapper is invoked inside the existing FROM blocks.
+Offline Scopes:25-40 and63-79 documents trigger conjunction and matching scope types, revision18ef5249e4991f5427eca9ec4a2f66dd47f51e26a491c730adc622f1f5db1b49.
+Offline Triggers:344-347 and406-416 documents hidden_trigger, revisionabc51ad18a2c46e46d47baa795c5a840ebaf7c4ae3e777426c64a9f4c0c0ce06.
+The original camp gate and the existing legacy project's FROM structure are the working repository precedents.
+
+The bounded source review is 016_cloning_native_availability_review_2026-10-03.md.
+The desktop HOI4 routes remain unexposed after the app reset, and the narrower installed-service domain requests timed out as recorded in native_stage_completion_hooks.md.
+No live availability or native research continuation result is claimed from the source gate alone.
+The separate pending commitment and exact ownership migration remain queued under the architecture handoff.
