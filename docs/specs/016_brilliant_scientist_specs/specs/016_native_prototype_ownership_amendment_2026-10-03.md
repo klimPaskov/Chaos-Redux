@@ -1,9 +1,11 @@
 # Event016 native Prototype commitment amendment
 
-Disposition: exact selection actions and separate completion/adoption modes are accepted and queued. Native start/cancel synchronization and persistence/reselection semantics remain unresolved.
+Disposition: exact selection actions and separate completion/adoption modes are implemented in source for Cloning, Rocketry and Electronics, with the remaining family migration accepted and queued. Native start/cancel synchronization and persistence/reselection semantics remain unresolved.
 Acceptance basis: the user directed on 2026-10-03 to continue without waiting for input and take the recommended option when a choice arises.
 The parent accepts the bounded recommendation in 016_native_prototype_ownership_architecture_2026-10-03.md within the existing fifteen-family provider closure scope.
 The accepted Cloning source remains sp_brilliant_scientist_cloning, and Rocketry retains sp_rockets_flying_bomb and sp_air_jet_engine.
+The parent accepts the same fixed-source selection and separate provenance pattern for Electronics' existing sp_air_radar under the accepted fifteen-family closure plan and the user's instruction to take the recommended option.
+Electronics retains its existing native Radar output and radio_detection Deployment pair, with its retry ordered after durable Prototype provenance.
 No model, project ID, technology ID, public meter, focus, country, scripted GUI, achievement, or random pool is added by this amendment.
 
 ## Receipt meaning and native authority
@@ -50,7 +52,7 @@ Keep cleanup in the existing provider and terminal boundaries, with no daily/wor
 ## Queue reason and remaining proof
 
 The recommendation is accepted design and is not implementation evidence.
-Implementation remains queued for exact selection writers, source wrappers, historical adoption, matching consumption, release and cleanup, CXT cases, and source and weighted-action review.
+Implementation remains queued for the remaining families' exact selection writers, source wrappers, historical adoption, matching consumption, release and cleanup, CXT cases, and source and weighted-action review.
 The broader fifteen-family ownership migration remains required by the accepted closure plan and must receive its own reviewed source coverage.
 Native cancellation cleanup, same-project release/reselection, and delayed-output isolation remain unresolved runtime points.
 The complete existing lifecycle contract must be satisfied before completion, and the source recommendation alone cannot waive it.
@@ -71,3 +73,7 @@ The core, integration, text and AI handoffs record their distinct evidence.
 The copied AI expressions match their intended Prototype references in source, while mandatory probability evaluation/comparison remains unresolved after the narrower timeout retries.
 Native start/cancel synchronization, automatic matching-cancellation cleanup and immutable release/reselection generations remain unresolved and are not waived by this implementation.
 The broader fifteen-family migration and full completion contract remain open.
+
+The Electronics continuation adds its fixed exact source, selection and withdrawal controls, output/adoption provenance, provider cleanup and CXT observations in the same existing Conventional Programs category.
+It preserves the no-DLC paid Prototype path and permits historical adoption only from the exact completed Radar project.
+Its source contracts and preservation comparison are recorded in the Electronics handoffs; live native cancellation, same-project reselection and AI/domain coverage remain separate acceptance requirements.

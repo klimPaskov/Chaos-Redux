@@ -4,6 +4,7 @@
 
 brilliant_scientist_mengele_native_selection_decision_complete = {
 	set_temp_variable = { mengele_event016_native_selection_action_source = mengele_event016_native_prototype_source }
+	set_temp_variable = { mengele_event016_native_prototype_result = constant:mengele_event016_native_prototype_result.none }
 	brilliant_scientist_mengele_select_native_prototype = yes
 	if = {
 		limit = { check_variable = { var = mengele_event016_native_prototype_result value = constant:mengele_event016_native_prototype_result.selected compare = equals } }
@@ -19,6 +20,10 @@ brilliant_scientist_mengele_native_selection_decision_complete = {
 				brilliant_scientist_mengele_grant_native_custom_operational_package = yes
 			}
 		}
+		else_if = {
+			limit = { check_variable = { var = mengele_event016_native_selection_action_source value = constant:mengele_event016_native_prototype_source.electronics_radar compare = equals } }
+			hidden_effect = { brilliant_scientist_mengele_settle_native_electronics_deployment_from_radar = yes }
+		}
 	}
 	else = { custom_effect_tooltip = mengele_event016_native_selection_blocked_tt }
 	set_temp_variable = { mengele_event016_native_selection_action_source = constant:mengele_event016_native_prototype_source.none }
@@ -26,6 +31,7 @@ brilliant_scientist_mengele_native_selection_decision_complete = {
 }
 
 brilliant_scientist_mengele_native_release_decision_complete = {
+	set_temp_variable = { mengele_event016_native_prototype_result = constant:mengele_event016_native_prototype_result.none }
 	brilliant_scientist_mengele_release_native_prototype_selection = yes
 	if = {
 		limit = { check_variable = { var = mengele_event016_native_prototype_result value = constant:mengele_event016_native_prototype_result.released compare = equals } }
@@ -41,6 +47,18 @@ brilliant_scientist_mengele_try_adopt_exact_native_prototype = {
 	set_temp_variable = { mengele_event016_native_prototype_result = constant:mengele_event016_native_prototype_result.none }
 	set_temp_variable = { mengele_event016_native_prototype_source = constant:mengele_event016_native_prototype_source.none }
 	if = {
+		limit = { check_variable = { var = mengele_event016_adoption_outer_family value = constant:brilliant_scientist_project_family.electronics compare = equals } }
+		set_temp_variable = { mengele_event016_native_prototype_source = constant:mengele_event016_native_prototype_source.electronics_radar }
+		if = {
+			limit = { OR = { has_country_flag = mengele_event016_native_selected_electronics_radar brilliant_scientist_mengele_can_auto_adopt_exact_completed_native_prototype = yes } }
+			brilliant_scientist_mengele_adopt_exact_completed_native_prototype = yes
+			if = {
+				limit = { check_variable = { var = mengele_event016_native_prototype_result value = constant:mengele_event016_native_prototype_result.adopted_settled compare = equals } }
+				brilliant_scientist_mengele_settle_native_electronics_deployment_from_radar = yes
+			}
+		}
+	}
+	else_if = {
 		limit = {
 			check_variable = { var = mengele_event016_adoption_outer_family value = constant:brilliant_scientist_project_family.cloning compare = equals }
 			OR = {

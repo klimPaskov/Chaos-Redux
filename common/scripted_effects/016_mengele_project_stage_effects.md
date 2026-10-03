@@ -183,9 +183,14 @@ The full-file source comparison and effective-ID inventory are recorded in 016_n
 
 ## Electronics completion ordering
 
-After brilliant_scientist_mengele_sync_native_project_prototypes applies a new private Electronics Prototype, it calls the existing exact radar-pair settlement helper once.
+After the literal brilliant_scientist_mengele_native_output_electronics_radar wrapper or exact adoption adapter applies a private Electronics Prototype and stores its durable provenance, it calls the existing exact radar-pair settlement helper once.
 The sp_air_radar output marker and radio_detection completion may both arrive before the native Prototype callback, so this handoff supplies the remaining attempt after the predecessor exists.
 The helper still requires the exact output-seen flag and radio_detection, then authenticates the live provider, private predecessor, and empty matching paid receipt.
-It retains the native Prototype result marker, introduces no payment or timer, and clears its temporary family/stage selectors through the existing cleanup.
+It retains the dedicated native Prototype result marker, introduces no payment or timer, and clears its temporary family/stage selectors through the existing cleanup.
 Other families do not enter the radar-pair helper from this handoff.
-The bounded source review is 016_radar_prototype_ordering_review_2026-10-03.md, and live callback ordering remains part of Event 016 acceptance.
+The initial ordering review is 016_radar_prototype_ordering_review_2026-10-03.md; the current ownership boundary is reviewed in 016_native_electronics_core_2026-10-03.md and 016_native_electronics_integration_2026-10-03.md.
+Electronics is excluded from the generic completion synchronizer and unrelated-completion scan.
+The exact later-stage settlement core initializes its own index, output-applied and stage-package output storage before nested mapping/output calls, without resetting the caller's family, requested stage or literal source.
+This permits the radar marker and named technology completion callback to record the correct Electronics provenance slot even when they enter with no inherited temporary fields.
+The caller must initialize mengele_event016_native_later_stage_settled before calling if it consumes that temporary result after return.
+Live callback ordering remains part of Event 016 acceptance.

@@ -5,6 +5,9 @@
 chaosx_cxt_event016_probe_native_ownership = {
 	if = {
 		limit = { tag = CXT has_country_flag = chaosx_test_country_initialized }
+		clr_country_flag = chaosx_cxt_event016_observed_selected_electronics_radar
+		clr_country_flag = chaosx_cxt_event016_observed_output_electronics_radar
+		clr_country_flag = chaosx_cxt_event016_observed_retired_electronics_radar
 		clr_country_flag = chaosx_cxt_event016_observed_selected_cloning
 		clr_country_flag = chaosx_cxt_event016_observed_selected_flying_bomb
 		clr_country_flag = chaosx_cxt_event016_observed_selected_jet_engine
@@ -23,6 +26,11 @@ chaosx_cxt_event016_probe_native_ownership = {
 		if = { limit = { has_country_flag = mengele_event016_native_retired_cloning } set_country_flag = chaosx_cxt_event016_observed_retired_cloning }
 		if = { limit = { has_country_flag = mengele_event016_native_retired_flying_bomb } set_country_flag = chaosx_cxt_event016_observed_retired_flying_bomb }
 		if = { limit = { has_country_flag = mengele_event016_native_retired_jet_engine } set_country_flag = chaosx_cxt_event016_observed_retired_jet_engine }
+		if = { limit = { has_country_flag = mengele_event016_native_selected_electronics_radar } set_country_flag = chaosx_cxt_event016_observed_selected_electronics_radar }
+		if = { limit = { has_country_flag = mengele_event016_native_observed_electronics_radar } set_country_flag = chaosx_cxt_event016_observed_output_electronics_radar }
+		if = { limit = { has_country_flag = mengele_event016_native_retired_electronics_radar } set_country_flag = chaosx_cxt_event016_observed_retired_electronics_radar }
+		set_variable = { chaosx_cxt_event016_electronics_native_source = constant:mengele_event016_native_prototype_source.none }
+		set_variable = { chaosx_cxt_event016_electronics_native_mode = constant:mengele_event016_native_prototype_mode.none }
 		set_variable = { chaosx_cxt_event016_cloning_native_source = constant:mengele_event016_native_prototype_source.none }
 		set_variable = { chaosx_cxt_event016_cloning_native_mode = constant:mengele_event016_native_prototype_mode.none }
 		set_variable = { chaosx_cxt_event016_rocketry_native_source = constant:mengele_event016_native_prototype_source.none }
@@ -46,6 +54,16 @@ chaosx_cxt_event016_probe_native_ownership = {
 			subtract_from_temp_variable = { chaosx_cxt_event016_native_probe_index = constant:brilliant_scientist_value.one }
 			set_variable = { chaosx_cxt_event016_rocketry_native_source = mengele_event016_native_prototype_source_entries^chaosx_cxt_event016_native_probe_index }
 			set_variable = { chaosx_cxt_event016_rocketry_native_mode = mengele_event016_native_prototype_mode_entries^chaosx_cxt_event016_native_probe_index }
+		}
+		if = {
+			limit = {
+				NOT = { check_variable = { mengele_event016_native_prototype_source_entries^num < constant:brilliant_scientist_project_family.electronics } }
+				NOT = { check_variable = { mengele_event016_native_prototype_mode_entries^num < constant:brilliant_scientist_project_family.electronics } }
+			}
+			set_temp_variable = { chaosx_cxt_event016_native_probe_index = constant:brilliant_scientist_project_family.electronics }
+			subtract_from_temp_variable = { chaosx_cxt_event016_native_probe_index = constant:brilliant_scientist_value.one }
+			set_variable = { chaosx_cxt_event016_electronics_native_source = mengele_event016_native_prototype_source_entries^chaosx_cxt_event016_native_probe_index }
+			set_variable = { chaosx_cxt_event016_electronics_native_mode = mengele_event016_native_prototype_mode_entries^chaosx_cxt_event016_native_probe_index }
 		}
 		set_temp_variable = { chaosx_cxt_event016_native_probe_index = constant:brilliant_scientist_value.zero }
 	}

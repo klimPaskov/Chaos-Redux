@@ -245,9 +245,9 @@ A future naval and air roster extension could add similarly scoped registration 
 ### Event016 exact native ownership observation
 
 The existing player-triggered chaosx_cxt_event016_probe_native_inventory also invokes chaosx_cxt_event016_probe_native_ownership.
-The ownership probe copies the three current selections, exact output-observed and retired flags into chaosx_cxt_event016_observed_selected_*, observed_output_* and observed_retired_* debug flags.
-It copies Cloning and Rocketry exact source and settlement mode into chaosx_cxt_event016_cloning_native_source/mode and chaosx_cxt_event016_rocketry_native_source/mode.
-Source codes are none0, Cloning1, FlyingBomb2, JetEngine3, and mode codes are none0, freshOutput1, adoptedCompleted2.
+The ownership probe copies the four current selections, exact output-observed and retired flags into chaosx_cxt_event016_observed_selected_*, observed_output_* and observed_retired_* debug flags.
+It copies Cloning, Rocketry and Electronics exact source and settlement mode into chaosx_cxt_event016_cloning_native_source/mode, chaosx_cxt_event016_rocketry_native_source/mode and chaosx_cxt_event016_electronics_native_source/mode.
+Source codes are none0, Cloning1, FlyingBomb2, JetEngine3, Radar4, and mode codes are none0, freshOutput1, adoptedCompleted2.
 These are debug observations and never authorize a stage, complete a project, select a source, refund a payment, or alter provider history.
 Missing or short arrays report none rather than creating receipts.
 The existing carrier/setup contract is unchanged and the probe adds no periodic registration or grant hook.

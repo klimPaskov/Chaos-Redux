@@ -270,3 +270,14 @@ The complete native lifecycle and fifteen-family ownership matrix remain require
 MCP probability analysis returned no scoring/comparison evidence even after narrower requests, so this checkpoint does not certify balance or full completion.
 Current system and asset wiring are documented in docs/events/016_brilliant_scientist/systems/native_prototype_ownership.md.
 No model work or implementation simplification belongs to this tranche.
+
+## Electronics exact-source continuation, 2026-10-03
+
+The existing sp_air_radar Prototype uses a fixed exact source selection, separate fresh/adopted provenance, matching consumption, withdrawal, cleanup and read-only CXT observations.
+Two existing-category controls and six English strings implement its selection and withdrawal without a provider payment or timer.
+The generic completion scan and generic Prototype recorder exclude Electronics.
+The exact output wrapper precedes the existing Radar marker and original radio_detection output; a Radar Deployment retry runs only after Prototype provenance is durable.
+Explicit and after-Theory adoption use the exact completed project and preserve the enclosing Theory transaction.
+The installed Radar file is preserved in full after removing only the owned header and two country hooks, as recorded in 016_native_electronics_project_preservation_2026-10-03.json.
+The core, integration, text and AI Electronics handoffs retain their source findings and domain evidence limits.
+Automatic native cancellation and same-project release/reselection remain unresolved; this continuation does not waive them or finish the remaining family migration.

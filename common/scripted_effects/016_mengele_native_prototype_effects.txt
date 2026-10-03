@@ -2,7 +2,7 @@
 # CHAOS REDUX - EVENT 016 EXACT NATIVE PROTOTYPE SELECTION AND RECEIPTS
 # ============================================================================
 # COUNTRY scope. The caller supplies temporary exact-source metadata. Fresh
-# settlement belongs only to the three synchronous literal output wrappers.
+# settlement belongs only to the four synchronous literal output wrappers.
 # Selection is provider authorization, not a native start/payment receipt.
 # Native start/cancel synchronization and callback-generation isolation remain
 # unresolved. No native writes, debits, replacement timers, or periodic hooks.
@@ -41,6 +41,10 @@ brilliant_scientist_mengele_prepare_native_prototype_request = {
 			limit = { check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.cloning compare = equals } }
 			set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.cloning }
 		}
+		else_if = {
+			limit = { check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.electronics_radar compare = equals } }
+			set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.electronics }
+		}
 		else = { set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.rocketry } }
 		set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.prototype }
 		brilliant_scientist_mengele_prepare_project_index = yes
@@ -62,6 +66,10 @@ brilliant_scientist_mengele_consume_native_prototype_selection = {
 		limit = { check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.jet_engine compare = equals } }
 		clr_country_flag = mengele_event016_native_selected_jet_engine
 	}
+	else_if = {
+		limit = { check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.electronics_radar compare = equals } }
+		clr_country_flag = mengele_event016_native_selected_electronics_radar
+	}
 }
 
 brilliant_scientist_mengele_retire_native_prototype_source = {
@@ -77,6 +85,10 @@ brilliant_scientist_mengele_retire_native_prototype_source = {
 		limit = { check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.jet_engine compare = equals } }
 		set_country_flag = mengele_event016_native_retired_jet_engine
 	}
+	else_if = {
+		limit = { check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.electronics_radar compare = equals } }
+		set_country_flag = mengele_event016_native_retired_electronics_radar
+	}
 }
 
 # Internal success-only helper. Call immediately after the private output core
@@ -89,6 +101,16 @@ brilliant_scientist_mengele_record_native_prototype_provenance = {
 
 brilliant_scientist_mengele_select_native_prototype = {
 	set_temp_variable = { mengele_event016_native_prototype_result = constant:mengele_event016_native_prototype_result.blocked }
+	if = {
+		limit = { brilliant_scientist_mengele_native_prototype_source_is_supported = yes }
+		# Own every mapping/output slot consumed after nested helpers return.
+		# Keep these initializers in the consuming transaction's call frame.
+		set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.none }
+		set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.none }
+		set_temp_variable = { mengele_event016_project_index = constant:brilliant_scientist_value.zero }
+		set_temp_variable = { mengele_event016_project_output_applied = constant:brilliant_scientist_value.zero }
+		set_temp_variable = { mengele_event016_stage_package_applied = constant:brilliant_scientist_value.zero }
+	}
 	if = {
 		limit = {
 			brilliant_scientist_mengele_native_prototype_source_is_supported = yes
@@ -117,6 +139,11 @@ brilliant_scientist_mengele_select_native_prototype = {
 					set_country_flag = mengele_event016_native_selected_flying_bomb
 					clr_country_flag = mengele_event016_native_retired_flying_bomb
 				}
+				else_if = {
+					limit = { check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.electronics_radar compare = equals } }
+					set_country_flag = mengele_event016_native_selected_electronics_radar
+					clr_country_flag = mengele_event016_native_retired_electronics_radar
+				}
 				else = {
 					set_country_flag = mengele_event016_native_selected_jet_engine
 					clr_country_flag = mengele_event016_native_retired_jet_engine
@@ -130,6 +157,16 @@ brilliant_scientist_mengele_select_native_prototype = {
 
 brilliant_scientist_mengele_settle_fresh_native_prototype = {
 	set_temp_variable = { mengele_event016_native_prototype_result = constant:mengele_event016_native_prototype_result.blocked }
+	if = {
+		limit = { brilliant_scientist_mengele_native_prototype_source_is_supported = yes }
+		# Own every mapping/output slot consumed after nested helpers return.
+		# Keep these initializers in the consuming transaction's call frame.
+		set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.none }
+		set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.none }
+		set_temp_variable = { mengele_event016_project_index = constant:brilliant_scientist_value.zero }
+		set_temp_variable = { mengele_event016_project_output_applied = constant:brilliant_scientist_value.zero }
+		set_temp_variable = { mengele_event016_stage_package_applied = constant:brilliant_scientist_value.zero }
+	}
 	if = {
 		limit = {
 			brilliant_scientist_mengele_native_prototype_source_is_supported = yes
@@ -166,6 +203,16 @@ brilliant_scientist_mengele_settle_fresh_native_prototype = {
 
 brilliant_scientist_mengele_adopt_exact_completed_native_prototype = {
 	set_temp_variable = { mengele_event016_native_prototype_result = constant:mengele_event016_native_prototype_result.blocked }
+	if = {
+		limit = { brilliant_scientist_mengele_native_prototype_source_is_supported = yes }
+		# Own every mapping/output slot consumed after nested helpers return.
+		# Keep these initializers in the consuming transaction's call frame.
+		set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.none }
+		set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.none }
+		set_temp_variable = { mengele_event016_project_index = constant:brilliant_scientist_value.zero }
+		set_temp_variable = { mengele_event016_project_output_applied = constant:brilliant_scientist_value.zero }
+		set_temp_variable = { mengele_event016_stage_package_applied = constant:brilliant_scientist_value.zero }
+	}
 	if = {
 		limit = {
 			brilliant_scientist_mengele_native_prototype_source_is_supported = yes
@@ -227,6 +274,12 @@ brilliant_scientist_mengele_cleanup_native_prototype_selections = {
 		clr_country_flag = mengele_event016_native_selected_jet_engine
 		set_temp_variable = { mengele_event016_native_prototype_result = constant:mengele_event016_native_prototype_result.released }
 	}
+	if = {
+		limit = { has_country_flag = mengele_event016_native_selected_electronics_radar }
+		set_country_flag = mengele_event016_native_retired_electronics_radar
+		clr_country_flag = mengele_event016_native_selected_electronics_radar
+		set_temp_variable = { mengele_event016_native_prototype_result = constant:mengele_event016_native_prototype_result.released }
+	}
 	brilliant_scientist_mengele_clear_native_prototype_selector = yes
 }
 
@@ -251,5 +304,32 @@ brilliant_scientist_mengele_native_output_rocketry_air_jet_engine = {
 	set_temp_variable = { mengele_event016_native_prototype_output_source = constant:mengele_event016_native_prototype_source.jet_engine }
 	set_country_flag = mengele_event016_native_observed_jet_engine
 	brilliant_scientist_mengele_settle_fresh_native_prototype = yes
+	brilliant_scientist_mengele_clear_native_prototype_selector = yes
+}
+
+brilliant_scientist_mengele_native_output_electronics_radar = {
+	set_temp_variable = { mengele_event016_native_prototype_source = constant:mengele_event016_native_prototype_source.electronics_radar }
+	set_temp_variable = { mengele_event016_native_prototype_output_source = constant:mengele_event016_native_prototype_source.electronics_radar }
+	# Own storage for outputs consumed after nested helper returns. The outer
+	# project hook must likewise preinitialize the dedicated native result if
+	# it consumes that result after this literal wrapper returns.
+	set_temp_variable = { mengele_event016_native_prototype_result = constant:mengele_event016_native_prototype_result.none }
+	set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.none }
+	set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.none }
+	set_temp_variable = { mengele_event016_project_index = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_project_output_applied = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_stage_package_applied = constant:brilliant_scientist_value.zero }
+	set_country_flag = mengele_event016_native_observed_electronics_radar
+	brilliant_scientist_mengele_settle_fresh_native_prototype = yes
+	if = {
+		limit = { check_variable = { var = mengele_event016_native_prototype_result value = constant:mengele_event016_native_prototype_result.fresh_settled compare = equals } }
+		# Durable source/mode and matching consumption are already recorded.
+		# This retry clears family/stage selectors, so it cannot run inside the
+		# generic settlement before provenance is written at the Prototype index.
+		brilliant_scientist_mengele_settle_native_electronics_deployment_from_radar = yes
+		# The nested later-stage request has its own result. Retain this API's
+		# successful Prototype result regardless of that retry's outcome.
+		set_temp_variable = { mengele_event016_native_prototype_result = constant:mengele_event016_native_prototype_result.fresh_settled }
+	}
 	brilliant_scientist_mengele_clear_native_prototype_selector = yes
 }

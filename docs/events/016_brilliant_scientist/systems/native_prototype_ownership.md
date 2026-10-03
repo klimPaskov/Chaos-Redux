@@ -1,6 +1,6 @@
 # Exact native Prototype ownership
 
-Cloning and Rocketry use exact native source commitments in the existing Mengele provider categories.
+Cloning, Rocketry and Electronics use exact native source commitments in the existing Mengele provider categories.
 The selection layer records a project choice and keeps native research, payment, progress, rewards, and completion under the existing special-project object.
 It does not treat a country completed bit as a fresh output or infer a selected Rocketry alternative from an aggregate OR.
 
@@ -11,8 +11,9 @@ It does not treat a country completed bit as a fresh output or infer a selected 
 | sp_brilliant_scientist_cloning | 1 | Cloning | Biological Programs |
 | sp_rockets_flying_bomb | 2 | Rocketry | Conventional Programs |
 | sp_air_jet_engine | 3 | Rocketry | Conventional Programs |
+| sp_air_radar | 4 | Electronics | Conventional Programs |
 
-Three instant selection controls and three withdrawal controls are in common/decisions/016_mengele_native_prototype_selection_decisions.txt.
+Four instant selection controls and four withdrawal controls are in common/decisions/016_mengele_native_prototype_selection_decisions.txt.
 Selection and withdrawal spend no provider resources and start no provider timer.
 A completed exact source enters adoption rather than opening a fresh commitment.
 Rocketry permits one selected alternative, and a pending opposite selection blocks the other choice.
@@ -20,10 +21,12 @@ The current source remains selectable for adoption if it completes while an earl
 A withdrawal requires inactive research and an empty paid family receipt.
 The family receipt checks preserve existing timed provider projects.
 The no-DLC paid Prototype decisions retain their existing path.
+The Electronics selection control also permits an already-completed exact Radar project to be adopted without the DLC, while it exposes fresh native commitments only with the DLC.
+An existing Electronics commitment can be withdrawn in either DLC state when its research is inactive and the paid family receipt is empty.
 
 ## Completion and history
 
-Each of the three existing project country outputs calls its literal source wrapper.
+Each of the four existing project country outputs calls its literal source wrapper.
 The wrapper records observation and may settle a fresh private Prototype only with the matching selected source, valid provider, private Theory, incomplete Prototype, and empty matching paid receipt.
 Fresh settlement does not require completion-bit visibility inside the output boundary.
 It records source and mode in fifteen-slot aligned provenance arrays and consumes only the matching selection.
@@ -33,30 +36,41 @@ The after-Theory driver can adopt one unambiguous eligible completed source, or 
 It rejects automatic adoption of retired sources and does not choose between two historical Rocketry completions.
 The explicit selection controls resolve that two-source case.
 Adoption checks the exact completed object, labels the receipt adopted, and does not replay native output or payment.
-The generic unrelated-completion scan no longer settles these two families.
+The generic unrelated-completion scan no longer settles these three families.
+
+The Radar output invokes its literal Prototype wrapper before the existing radar-output marker and original radio_detection grant.
+Successful fresh settlement stores its source and mode and consumes the selection before retrying the existing Radar Deployment pair.
+Successful explicit or after-Theory adoption makes the same retry after provenance is durable.
+That retry still requires the exact radar-output marker, radio_detection, the private Prototype predecessor and an empty paid receipt.
+It preserves the dedicated Prototype result even when the nested Deployment helper clears family and stage selectors.
 
 Cloning preserves its existing operational technology and dedicated programme payload through the guarded bridge.
 A successful literal Cloning output supplies durable fresh provenance when the country completion bit is not yet visible.
 The original CBRN completion adapter runs once, and the dedicated legacy completion effect retains its duplicate-payload guard.
 Provider and terminal cleanup retire current selections and preserve observed facts and accepted source/mode history.
 The enclosing Theory transaction restores its original selectors and output results.
+Each result-consuming caller initializes its temporary result storage before the helper call.
+The shared native selection, fresh settlement and exact adoption cores own the family, stage, index and output storage they consume after nested helper returns for every supported source.
+The Cloning project country output also initializes the result before using the literal wrapper's success to grant its existing operational package.
+This removes a dependency on helper-created temporary values surviving return, as described in the offline Data structures page's Variable types section.
 
 ## Implementation surfaces
 
 The new native_prototype constants, triggers, effects and matching API document define selection, exact output, adoption, release, and cleanup.
-The native_selection_decision triggers/effects define presentation and feedback, and the English localisation file supplies all six controls and requirements.
+The native_selection_decision triggers/effects define presentation and feedback, and the English localisation file supplies all eight controls and requirements.
 The existing stage effects own output application, after-Theory entry, and provider cleanup.
 The existing native custom bridge owns operational grants.
 Original project payload preservation is recorded in 016_native_prototype_project_preservation_2026-10-03.json.
 
 The controls reuse GFX_decision_brilliant_scientist_project_cloning_prototype and GFX_decision_brilliant_scientist_project_rocketry_propulsion_prototype from interface/016_brilliant_scientist_project_icons.gfx.
+Electronics reuses GFX_decision_brilliant_scientist_project_electronics_guidance_prototype in the same file.
 Their existing textures remain under gfx/interface/decisions/016_brilliant_scientist/projects/.
 No artwork, model, entity, animation, project ID, or technology ID is created or changed for this interface.
 
 ## CXT observation
 
 The existing player-triggered native inventory console probe also calls chaosx_cxt_event016_probe_native_ownership.
-It snapshots the three selection, observed-output and retired flags, and the Cloning and Rocketry source/mode slots into CXT-only debug observations.
+It snapshots all four sources' selection, observed-output and retired flags, and the Cloning, Rocketry and Electronics source/mode slots into CXT-only debug observations.
 Absent or short provenance arrays yield unrecorded observations without extending or changing provider receipts.
 The probe creates no stage, native completion, selection, resource grant, or timer.
 CXT's ordinary setup already completes native projects, so its completed-source path tests adoption and ambiguity, not native payment or a fresh research clock.
@@ -71,6 +85,11 @@ Offline Decision modding:44-78 describes category and decision structure, revisi
 Installed common/decisions/_documentation.md:1-46 describes decision evaluation and COUNTRY scope, revision5e7e686b5582f32c38d898d805e17171e88f3bfeee4a030deb1884f9726de019.
 The existing family Prototype controls and the exact installed Rocketry project definitions supply the source and AI-policy precedents.
 The core, integrated decision and probability handoffs record their separate evidence and unresolved inputs.
+The Electronics continuation is recorded in 016_native_electronics_core_2026-10-03.md, 016_native_electronics_integration_2026-10-03.md and 016_native_electronics_ai_2026-10-03.md.
+The parent independently reran the actual-source driver, including conservative temporary lifetime, paid-receipt preservation, exact-source provenance, integrated feedback and Cloning bridge-gate cases.
+Engine queries, provider lifecycle, dynamic modifier refresh and full operational package payloads remain declared fixture inputs or stubs in those cases.
+Its installed Radar precedent retains every native field, equipment module, facility effect, technology grant and reward after removing only the two owned country hooks.
+That preservation comparison is source evidence, not native research or live-log acceptance.
 
 ## Remaining lifecycle proof
 

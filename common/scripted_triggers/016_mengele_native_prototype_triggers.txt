@@ -13,6 +13,7 @@ brilliant_scientist_mengele_native_prototype_source_is_supported = {
 		check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.cloning compare = equals }
 		check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.flying_bomb compare = equals }
 		check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.jet_engine compare = equals }
+		check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.electronics_radar compare = equals }
 	}
 }
 
@@ -31,6 +32,13 @@ brilliant_scientist_mengele_native_rocketry_private_gate = {
 	has_country_flag = mengele_event016_rocketry_theory_completed
 	NOT = { has_country_flag = mengele_event016_rocketry_prototype_completed }
 	brilliant_scientist_mengele_rocketry_decision_receipt_is_empty = yes
+}
+
+brilliant_scientist_mengele_native_electronics_private_gate = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	has_country_flag = mengele_event016_electronics_theory_completed
+	NOT = { has_country_flag = mengele_event016_electronics_prototype_completed }
+	brilliant_scientist_mengele_electronics_decision_receipt_is_empty = yes
 }
 
 # Read-only bridge proof. Both slots must exist before either value is read.
@@ -104,6 +112,23 @@ brilliant_scientist_mengele_can_select_native_jet_engine = {
 	}
 }
 
+# Installed country technology prerequisite plus the provider UI's fresh-DLC
+# gate. Exact completed history can still enter adoption without the DLC.
+brilliant_scientist_mengele_can_select_native_electronics_radar = {
+	brilliant_scientist_mengele_native_electronics_private_gate = yes
+	OR = {
+		NOT = { has_country_flag = mengele_event016_native_selected_electronics_radar }
+		is_special_project_completed = sp:sp_air_radar
+	}
+	OR = {
+		is_special_project_completed = sp:sp_air_radar
+		AND = {
+			has_dlc = "Gotterdammerung"
+			has_tech = electronic_mechanical_engineering
+		}
+	}
+}
+
 # Release is an ownership operation. Provider validity is not required to give
 # up an existing selection. Native research must be inactive and the matching
 # paid family receipt empty, checked atomically by the release effect's gate.
@@ -125,6 +150,12 @@ brilliant_scientist_mengele_can_release_native_jet_engine = {
 	NOT = { is_special_project_being_researched = sp:sp_air_jet_engine }
 }
 
+brilliant_scientist_mengele_can_release_native_electronics_radar = {
+	has_country_flag = mengele_event016_native_selected_electronics_radar
+	brilliant_scientist_mengele_electronics_decision_receipt_is_empty = yes
+	NOT = { is_special_project_being_researched = sp:sp_air_radar }
+}
+
 brilliant_scientist_mengele_native_prototype_can_be_selected = {
 	OR = {
 		AND = {
@@ -138,6 +169,10 @@ brilliant_scientist_mengele_native_prototype_can_be_selected = {
 		AND = {
 			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.jet_engine compare = equals }
 			brilliant_scientist_mengele_can_select_native_jet_engine = yes
+		}
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.electronics_radar compare = equals }
+			brilliant_scientist_mengele_can_select_native_electronics_radar = yes
 		}
 	}
 }
@@ -155,6 +190,10 @@ brilliant_scientist_mengele_native_prototype_exact_source_is_completed = {
 		AND = {
 			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.jet_engine compare = equals }
 			is_special_project_completed = sp:sp_air_jet_engine
+		}
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.electronics_radar compare = equals }
+			is_special_project_completed = sp:sp_air_radar
 		}
 	}
 }
@@ -187,10 +226,14 @@ brilliant_scientist_mengele_native_prototype_selection_matches = {
 			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.jet_engine compare = equals }
 			has_country_flag = mengele_event016_native_selected_jet_engine
 		}
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.electronics_radar compare = equals }
+			has_country_flag = mengele_event016_native_selected_electronics_radar
+		}
 	}
 }
 
-# The witness is temporary and assigned only by the three synchronous literal
+# The witness is temporary and assigned only by the four synchronous literal
 # output wrappers. It is a caller contract, not callback-generation isolation.
 brilliant_scientist_mengele_native_prototype_output_witness_matches = {
 	brilliant_scientist_mengele_native_prototype_source_is_supported = yes
@@ -218,6 +261,10 @@ brilliant_scientist_mengele_native_prototype_can_be_released = {
 			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.jet_engine compare = equals }
 			brilliant_scientist_mengele_can_release_native_jet_engine = yes
 		}
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.electronics_radar compare = equals }
+			brilliant_scientist_mengele_can_release_native_electronics_radar = yes
+		}
 	}
 }
 
@@ -225,6 +272,12 @@ brilliant_scientist_mengele_native_prototype_can_be_released = {
 # adoption effect. Any Rocketry two-source completion is ambiguous for scanning.
 brilliant_scientist_mengele_can_auto_adopt_exact_completed_native_prototype = {
 	OR = {
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.electronics_radar compare = equals }
+			brilliant_scientist_mengele_native_electronics_private_gate = yes
+			is_special_project_completed = sp:sp_air_radar
+			NOT = { has_country_flag = mengele_event016_native_retired_electronics_radar }
+		}
 		AND = {
 			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.cloning compare = equals }
 			brilliant_scientist_mengele_native_cloning_private_gate = yes

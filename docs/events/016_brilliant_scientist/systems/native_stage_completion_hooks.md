@@ -43,7 +43,11 @@ The file ownership correction is grounded in the supplied live duplicate-entry e
 ## Electronics completion ordering
 
 The exact radar project marker, radio_detection output, and private Prototype callback may reach their country effects in different orders.
-When the Prototype receipt is recorded after both other outputs, brilliant_scientist_mengele_sync_native_project_prototypes makes one further attempt through the existing exact radar-pair helper.
+When the Prototype receipt is recorded after both other outputs, the literal brilliant_scientist_mengele_native_output_electronics_radar wrapper or exact historical adoption adapter makes one further attempt through the existing exact radar-pair helper.
+The exact-source continuation stores Prototype provenance and consumes matching ownership before the retry, since the nested Deployment helper clears family and stage selectors.
+The generic Prototype synchronizer rejects Electronics and unrelated project completions no longer scan it for settlement.
+The shared exact later-stage core also owns its index and two output slots across nested helper returns, retaining the literal family, stage and source supplied by each native adapter.
+Cold-entry source cases clear all root temporaries before the radar country output and named technology callback, and check the correct family slot and untouched paid receipts.
 That attempt requires the stored exact radar output marker and radio_detection, and the shared settlement gate still requires the private Prototype predecessor and an empty paid receipt.
 It preserves the successful native Prototype result marker and uses the existing selector cleanup.
 
@@ -58,6 +62,7 @@ It preserves the successful native Prototype result marker and uses the existing
 
 These are source contract cases rather than observed engine scenarios.
 The independent bounded review is 016_radar_prototype_ordering_review_2026-10-03.md.
+That review records the earlier retry boundary; the current exact-source continuation is reviewed in 016_native_electronics_integration_2026-10-03.md.
 
 ## Remaining completion work and future maintenance
 
