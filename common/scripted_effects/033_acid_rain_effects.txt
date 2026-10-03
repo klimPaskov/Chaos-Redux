@@ -2900,6 +2900,8 @@ acid_rain_apply_state_damage = {
 # ledger is the only value counted in Event 33 totals.
 acid_rain_apply_air_request = {
 	set_temp_variable = { acid_rain_air_applied_delta_bp = constant:acid_rain_runtime.zero }
+	# The shared source lifetime is authoritative across reloads and generations.
+	set_variable = { global.acid_rain_air_lifetime_added_bp = global.air_contamination_source_lifetime_added_bp_entries^constant:acid_rain_air.source_id }
 	if = {
 		limit = {
 			acid_rain_air_can_receive_request = yes
@@ -2917,7 +2919,7 @@ acid_rain_apply_air_request = {
 			}
 			clamp_temp_variable = {
 				var = acid_rain_air_requested_bp
-				min = constant:acid_rain_air.weekly_min_bp
+				min = constant:acid_rain_runtime.zero
 				max = constant:acid_rain_air.weekly_max_bp
 			}
 		}
@@ -2955,11 +2957,13 @@ acid_rain_apply_air_request = {
 			set_temp_variable = { air_contamination_source_current_bp = global.acid_rain_air_current_bp }
 			add_to_temp_variable = { air_contamination_source_current_bp = air_contamination_delta_bp }
 			air_contamination_apply_delta_bp = yes
-			set_temp_variable = { acid_rain_air_applied_delta_bp = air_contamination_source_applied_delta_bp }
+			# The central effect replaces this caller-owned input with actual change.
+			# Source-refresh scratch is overwritten while rebuilding other source rows.
+			set_temp_variable = { acid_rain_air_applied_delta_bp = air_contamination_delta_bp }
 			clamp_temp_variable = { var = acid_rain_air_applied_delta_bp min = constant:acid_rain_runtime.zero }
 			if = {
 				limit = { check_variable = { var = acid_rain_air_applied_delta_bp value = constant:acid_rain_runtime.zero compare = greater_than } }
-				add_to_variable = { global.acid_rain_air_lifetime_added_bp = acid_rain_air_applied_delta_bp }
+				set_variable = { global.acid_rain_air_lifetime_added_bp = global.air_contamination_source_lifetime_added_bp_entries^constant:acid_rain_air.source_id }
 				add_to_variable = { global.acid_rain_total_air_applied_bp = acid_rain_air_applied_delta_bp }
 				set_temp_variable = { acid_rain_air_current_after_bp = global.acid_rain_air_current_bp }
 				add_to_temp_variable = { acid_rain_air_current_after_bp = acid_rain_air_applied_delta_bp }

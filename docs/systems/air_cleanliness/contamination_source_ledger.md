@@ -43,7 +43,13 @@ The exact global ledger separately records total Air Contamination rises and fal
 
 Chemical and biological state transitions pass a stable source id and their updated global footprint into `air_contamination_apply_delta_bp`. The central delta effect replaces the requested change with the actual clamped change before registering the source activity.
 
-Event 33 routes formation and weekly pressure through `acid_rain_apply_air_request`. That gateway clamps each request to the request itself, the unused portion of its `1500 bp` lifetime allowance, and the distance below `5000 bp` global contamination before calling the shared Air mutation once. It adds nothing when either allowance is exhausted, and it increments Event 33 lifetime/current totals only by `air_contamination_source_applied_delta_bp`, the actual positive delta returned by the shared ledger. No pulse or evolution calls the Air mutation directly.
+Event 33 routes formation and weekly pressure through `acid_rain_apply_air_request`.
+Before each request it synchronizes its lifetime mirror from the authoritative Acid Rain source row, including across reloads and generations.
+It clamps each request to the request itself, the unused portion of its `1500 bp` lifetime allowance, and the distance below `5000 bp` global contamination before calling the shared Air mutation once.
+It adds nothing when either allowance is exhausted.
+The central effect replaces the caller-owned `air_contamination_delta_bp` with the actual applied change; Event 33 uses that returned positive value for its current contribution and generation total, and reads its lifetime mirror back from the source ledger that already recorded the same addition once.
+The source-refresh scratch `air_contamination_source_applied_delta_bp` is not a stable return value because refresh uses it for other source rows.
+No pulse or evolution calls the Air mutation directly.
 
 The monthly host update registers fallout and aerosol gross inputs before applying their combined net change. After the combined change is clamped, the update derives the exact atmospheric recovery that reached the global total.
 

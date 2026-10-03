@@ -363,6 +363,9 @@ def air_trials() -> dict[str, object]:
         (0, 5000, 75),
         (0, 5500, 75),
         (1499, 4999, 75),
+        (0, 0, 0),
+        (1499, 4999, 0),
+        (0, 0, -5),
     ):
         applied, after_lifetime, after_global = apply_air_request(request, lifetime, global_total)
         edge_cases.append(
@@ -375,6 +378,25 @@ def air_trials() -> dict[str, object]:
                 "after_global_bp": after_global,
             }
         )
+    # Explicit mirror-reconciliation model, not execution of the scripted helper.
+    mirror_cases = []
+    for central_lifetime, stale_mirror, global_total, request in (
+        (1499, 0, 100, 75),
+        (1500, 0, 100, 75),
+        (1499, 700, 4999, 75),
+        (25, 0, 100, 0),
+    ):
+        applied, after_lifetime, after_global = apply_air_request(request, central_lifetime, global_total)
+        assert applied <= max(0, request)
+        assert after_lifetime == central_lifetime + applied
+        mirror_cases.append({
+            "central_lifetime_before_bp": central_lifetime,
+            "stale_event_mirror_before_bp": stale_mirror,
+            "request_bp": request,
+            "expected_applied_bp": applied,
+            "expected_event_mirror_after_bp": after_lifetime,
+            "expected_global_after_bp": after_global,
+        })
     return {
         "sequences": AIR_SEQUENCES,
         "requests": total_requests,
@@ -384,6 +406,7 @@ def air_trials() -> dict[str, object]:
         "zero_applications_at_or_above_global_cap": zero_at_or_above_global_cap,
         "zero_applications_at_or_above_lifetime_cap": zero_at_or_above_lifetime_cap,
         "edge_cases": edge_cases,
+        "authoritative_mirror_model_cases": mirror_cases,
     }
 
 
@@ -611,6 +634,14 @@ def source_contract(repo_root: Path) -> dict[str, object]:
     assert not missing, f"missing Event 33 source contract fragments: {missing}"
     assert effects.count("apply_exact_state_civilian_population_loss = yes") == 1
     assert effects.count("air_contamination_apply_delta_bp = yes") == 1
+    air_gateway = effects.split("acid_rain_apply_air_request = {", 1)[1].split("\n}\n", 1)[0]
+    lifetime_sync = "set_variable = { global.acid_rain_air_lifetime_added_bp = global.air_contamination_source_lifetime_added_bp_entries^constant:acid_rain_air.source_id }"
+    assert air_gateway.count(lifetime_sync) == 2
+    assert air_gateway.index(lifetime_sync) < air_gateway.index("acid_rain_air_remaining_lifetime_bp")
+    assert "set_temp_variable = { acid_rain_air_applied_delta_bp = air_contamination_delta_bp }" in air_gateway
+    assert "acid_rain_air_applied_delta_bp = air_contamination_source_applied_delta_bp" not in air_gateway
+    assert "min = constant:acid_rain_air.weekly_min_bp" not in air_gateway
+    assert air_gateway.index("set_temp_variable = { air_contamination_delta_bp = acid_rain_air_applied_delta_bp }") < air_gateway.index("air_contamination_apply_delta_bp = yes")
     mortality_gateway = effects.split("acid_rain_apply_state_pulse = {", 1)[1].split(
         "\n}\n\n# STATE SCOPE. Building damage", 1
     )[0]
