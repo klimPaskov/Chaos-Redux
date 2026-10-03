@@ -114,6 +114,7 @@ gods_of_africa_owner_tick_due = {
 # COUNTRY scope on a known country object. Candidates may be minors,
 # capitulated, or currently landless; enrollment checks existence separately.
 gods_of_africa_candidate_is_valid = {
+	is_in_array = { array = global.countries value = THIS }
 	NOT = { is_actual_nonhuman_country = yes }
 	NOT = { is_special_chaos_country = yes }
 	NOT = { has_country_flag = africa_unifier_host }
@@ -127,7 +128,9 @@ gods_of_africa_candidate_can_be_remembered = {
 		exists = yes
 		has_variable = gods_of_africa_candidate_count
 		NOT = { is_in_array = { array = gods_of_africa_candidate_registry value = PREV } }
-		check_variable = { gods_of_africa_candidate_count < constant:gods_of_africa_timing.max_participants }
+		# One unique country object per row; native country cardinality is the
+		# physical bound, including newly allocated dynamic countries.
+		check_variable = { var = gods_of_africa_candidate_registry^num value = global.countries^num compare = less_than }
 	}
 }
 
@@ -178,12 +181,10 @@ gods_of_africa_participant_can_register = {
 	event_target:africa_host = {
 		has_country_flag = gods_of_africa_active
 		NOT = { has_country_flag = gods_of_africa_final_settlement_committed }
+		is_in_array = { array = gods_of_africa_candidate_registry value = PREV }
 		# The host scope is nested here, so PREV remains the country being tested.
 		NOT = { is_in_array = { array = gods_of_africa_participants value = PREV } }
-		OR = {
-			NOT = { has_variable = gods_of_africa_participant_count }
-			check_variable = { gods_of_africa_participant_count < constant:gods_of_africa_timing.max_participants }
-		}
+		check_variable = { var = gods_of_africa_participants^num value = global.countries^num compare = less_than }
 	}
 }
 
@@ -908,8 +909,9 @@ gods_of_africa_final_refusal_count_is_acceptable = {
 }
 
 gods_of_africa_final_favored_is_valid = {
-	gods_of_africa_participant_generation_is_current = yes
+	gods_of_africa_participant_has_settlement_history = yes
 	NOT = { has_country_flag = gods_of_africa_defiant }
+	NOT = { has_country_flag = gods_of_africa_permanent_opt_out }
 	NOT = { has_country_flag = gods_of_africa_offender }
 	NOT = { has_country_flag = gods_of_africa_enemy_marked }
 	NOT = { has_country_flag = gods_of_africa_broken_treaty }
@@ -925,8 +927,9 @@ gods_of_africa_final_favored_is_valid = {
 }
 
 gods_of_africa_final_respected_is_valid = {
-	gods_of_africa_participant_generation_is_current = yes
+	gods_of_africa_participant_has_settlement_history = yes
 	NOT = { has_country_flag = gods_of_africa_defiant }
+	NOT = { has_country_flag = gods_of_africa_permanent_opt_out }
 	NOT = { has_country_flag = gods_of_africa_enemy_marked }
 	NOT = { has_country_flag = gods_of_africa_offender }
 	NOT = { has_country_flag = gods_of_africa_broken_treaty }
@@ -939,9 +942,10 @@ gods_of_africa_final_respected_is_valid = {
 }
 
 gods_of_africa_final_enemy_is_valid = {
-	gods_of_africa_participant_generation_is_current = yes
+	gods_of_africa_participant_has_settlement_history = yes
 	OR = {
 		has_country_flag = gods_of_africa_defiant
+		has_country_flag = gods_of_africa_permanent_opt_out
 		has_country_flag = gods_of_africa_enemy_marked
 		has_country_flag = gods_of_africa_offender
 		has_country_flag = gods_of_africa_broken_treaty

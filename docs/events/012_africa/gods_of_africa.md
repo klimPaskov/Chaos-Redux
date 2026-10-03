@@ -14,7 +14,7 @@ The committed host owns one bounded participant registry, the global Gods of Afr
 
 ## Bounded census and host-transfer persistence
 
-The one-time Event 012 census retains known ordinary country scopes from vanilla's `global.countries` array in `gods_of_africa_candidate_registry`, up to `gods_of_africa_timing.max_participants`.
+The one-time Event 012 census retains known ordinary country scopes from vanilla's `global.countries` array in `gods_of_africa_candidate_registry`, with one unique row per native country object.
 The candidate pool includes minors, capitulated countries, and landless tags so later eligibility does not require a recurring world scan.
 The unifier and special or actual nonhuman actors are excluded.
 Actual enrollment separately requires an existing, non-capitulated major or player country.
@@ -44,8 +44,9 @@ Capacity, African needs, conduct history, demand repetition, punishment intent, 
 ## Tribute loop
 
 After activation, every eligible major or player in the maintained candidate pool is enrolled once, excluding the unifier and invalid or special actors.
-The candidate and participant cap is 640, above the 609 distinct installed vanilla and Chaos Redux country tags counted on 2026-10-03.
-Revisit this capacity when country definitions grow, and retain the cap for dynamic countries remembered through bounded callbacks.
+Candidate and participant capacity use the native `global.countries^num` cardinality and their actual array sizes rather than a fixed tag-count ceiling or scalar bookkeeping count.
+Only native country objects can enter either deduplicated registry, and registration requires successful durable candidate membership before creating live authority or history.
+Every genuinely enrolled actor therefore remains in the final census after archival; newly allocated countries use the same bounded callback contract.
 The 90-day registry clock handles later major or player changes, while transaction callbacks can enroll a newly eligible country immediately.
 Each participant receives an introduction and a deterministic first-demand delay.
 A participant can have only one active ordinary demand, and the owner dispatch budget staggers notices across the registry.
@@ -85,6 +86,14 @@ The accepted doctrine matrix changes only the hidden relationship rules and effe
 The Favored-settlement support threshold reads the existing hidden `gods_of_africa_aid_count`, incremented by participant voluntary aid and host leniency or protection. The separate visible values remain Strength and Wrath.
 
 When Event 012 secures the continent, ordinary demands stop before settlement. The owner computes one hidden relationship result per surviving participant: Favored, Respected, Distrusted, or Enemy. Loyal support earns substantial reciprocal rewards. A defeated, capitulated, or disappearing unifier cancels active demands, punishment jobs, participant presentation, and current authority. Delayed work is generation-checked and cannot revive the old system.
+
+Final evaluation uses the maintained candidate census and retained enrollment history, so archived, capitulated, or later converted surviving participants can be evaluated without reopening their live contracts.
+Exact current-generation proof or the one explicitly inherited generation/origin is required, and previously unenrolled or vanished country objects receive nothing.
+Genuine enrollment stamps country owner and Event 012 origin; host succession transfers the exact prior generation alongside the census.
+The final owner pass freezes each outcome's generation, origin, Strength, and doctrine before public Strength is cleared.
+Reciprocal infantry support uses native transfers with the existing fuel and common-defence reserve debits.
+Each `.608` receipt carries the settling host as a regular event target and requires a separate durable outcome proof; acknowledgement consumes presentation only, preserving standing, rewards, and history without touching a later host's roster.
+The contract and acceptance limits are in `common/scripted_effects/012_africa_gods_settlement_effects.md` and `012_africa_gods_survivor_settlement_2026-10-03.md`.
 
 ## Focus, decisions, and logs
 
@@ -128,7 +137,8 @@ Native inventory execution and DLC execution remain unobserved.
 Response and punishment reports use their latest outcome receipts, including the payment family, partial balance, native stat changes, and concrete local consequences.
 Owner-driven population loss captures the participant explicitly for exact-loss country attribution and receipts, and uses caller-initialized helper outputs.
 The report contract and its review limits are recorded in `common/scripted_effects/012_africa_gods_report_effects.md` and `012_africa_gods_response_reports_2026-10-03.md`.
-The lifecycle retention and interrupted-review fixes are recorded in `012_africa_gods_lifecycle_fix_2026-10-03.md`; archived-survivor settlement coverage, the victor/restoration milestone, weighted scenario evidence, and full native owner-loop acceptance remain unresolved.
+The lifecycle retention and interrupted-review fixes are recorded in `012_africa_gods_lifecycle_fix_2026-10-03.md`; the survivor-settlement source repair is separately recorded with its audit and lineage/capacity limits.
+The victor/restoration milestone, full hidden-history grading and reward scaling, weighted scenario evidence, and full native owner-loop acceptance remain outstanding.
 The core Gods decision/trigger flag requirements and overlay entry flags have player-facing English text in `localisation/english/012_africa_requirement_flags_l_english.yml`, including named focus prerequisites and concrete tribute-offer conditions.
 The bounded key and semantic review is recorded in `012_africa_gods_requirement_text_2026-10-03.md`; native tooltip layout remains unobserved.
 The timer/text correction and its narrow MCP trace are recorded in `docs/plans/012_africa_plans/subagent_handoffs/012_africa_gods_timer_and_text_2026-10-03.md`.

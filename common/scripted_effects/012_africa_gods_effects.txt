@@ -308,6 +308,8 @@ gods_of_africa_initialize_world_order_history = {
 # registry loop; the participant is stored in the host array as a scope, not as
 # a tag or numeric id.
 gods_of_africa_register_participant = {
+	# Direct callers establish the same durable census coverage as callbacks.
+	gods_of_africa_remember_candidate = yes
 	if = {
 		limit = { gods_of_africa_participant_can_register = yes }
 		gods_of_africa_withdraw_protection_package = yes
@@ -331,6 +333,14 @@ gods_of_africa_register_participant = {
 		clr_country_flag = gods_of_africa_resource_rights_granted
 		set_variable = { gods_of_africa_participant_generation = event_target:africa_host.africa_host_generation }
 		gods_of_africa_initialize_participant_history = yes
+		if = {
+			limit = { NOT = { has_variable = gods_of_africa_history_owner_id } }
+			set_variable = { gods_of_africa_history_owner_id = THIS.id }
+		}
+		if = {
+			limit = { NOT = { has_variable = gods_of_africa_history_origin_host_id } }
+			set_variable = { gods_of_africa_history_origin_host_id = event_target:africa_host.africa_origin_host_id }
+		}
 		if = {
 			limit = { has_country_flag = gods_of_africa_permanent_opt_out }
 			set_country_flag = gods_of_africa_defiant
@@ -377,10 +387,7 @@ gods_of_africa_try_register_participant = {
 			}
 		}
 		gods_of_africa_remember_candidate = yes
-		if = {
-			limit = { gods_of_africa_participant_can_register = yes }
-			gods_of_africa_register_participant = yes
-		}
+		gods_of_africa_register_participant = yes
 	}
 }
 
@@ -2999,19 +3006,27 @@ gods_of_africa_fail_reconciliation = {
 
 gods_of_africa_resolve_participant_final_outcome = {
 	if = {
-		limit = { gods_of_africa_final_enemy_is_valid = yes }
-		set_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.enemy }
+		limit = { gods_of_africa_settlement_can_commit = yes }
+		set_variable = { gods_of_africa_settlement_generation = event_target:africa_host.africa_host_generation }
+		set_variable = { gods_of_africa_settlement_origin_host_id = event_target:africa_host.africa_origin_host_id }
+		set_variable = { gods_of_africa_settlement_history_generation = gods_of_africa_participant_generation }
+		set_variable = { gods_of_africa_settlement_strength = event_target:africa_host.gods_of_africa_strength }
+		set_variable = { gods_of_africa_settlement_doctrine = event_target:africa_host.gods_of_africa_doctrine }
+		if = {
+			limit = { gods_of_africa_final_enemy_is_valid = yes }
+			set_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.enemy }
+		}
+		else_if = {
+			limit = { gods_of_africa_final_favored_is_valid = yes }
+			set_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.favored }
+		}
+		else_if = {
+			limit = { gods_of_africa_final_respected_is_valid = yes }
+			set_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.respected }
+		}
+		else = { set_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.distrusted } }
+		set_country_flag = gods_of_africa_final_outcome_committed
 	}
-	else_if = {
-		limit = { gods_of_africa_final_favored_is_valid = yes }
-		set_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.favored }
-	}
-	else_if = {
-		limit = { gods_of_africa_final_respected_is_valid = yes }
-		set_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.respected }
-	}
-	else = { set_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.distrusted } }
-	set_country_flag = gods_of_africa_final_outcome_committed
 }
 
 # COUNTRY scope on a participant. Final settlement is a real, one-time
@@ -3021,10 +3036,13 @@ gods_of_africa_resolve_participant_final_outcome = {
 gods_of_africa_grant_settlement_reward = {
 	if = {
 		limit = {
-			has_variable = gods_of_africa_final_settlement
+			gods_of_africa_participant_has_settlement_history = yes
+			has_country_flag = gods_of_africa_final_outcome_committed
+			event_target:africa_host = { has_country_flag = gods_of_africa_final_settlement_committed }
+			gods_of_africa_final_settlement_value_is_valid = yes
 			NOT = { has_country_flag = gods_of_africa_settlement_reward_granted }
 			has_event_target = africa_host
-	}
+		}
 		set_country_flag = gods_of_africa_settlement_reward_granted
 		save_event_target_as = gods_of_africa_settlement_participant
 		if = {
@@ -3038,13 +3056,11 @@ gods_of_africa_grant_settlement_reward = {
 				}
 			}
 			event_target:africa_host = {
-				set_temp_variable = { equipment_stockpile_removal_amount = constant:gods_of_africa_transaction.settlement_favored_infantry_equipment }
-				remove_infantry_equipment_from_stockpile = yes
+				send_equipment = { equipment = infantry_equipment amount = constant:gods_of_africa_transaction.settlement_favored_infantry_equipment target = event_target:gods_of_africa_settlement_participant }
 				set_temp_variable = { fuel_stockpile_removal_amount = constant:gods_of_africa_transaction.settlement_favored_fuel }
 				remove_fuel_from_stockpile = yes
 				subtract_from_variable = { africa_common_defence_stockpile = constant:gods_of_africa_transaction.settlement_favored_infantry_equipment }
 			}
-			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:gods_of_africa_transaction.settlement_favored_infantry_equipment }
 			add_fuel = constant:gods_of_africa_transaction.settlement_favored_fuel
 			add_opinion_modifier = { target = event_target:africa_host modifier = gods_of_africa_settlement_favor }
 		}
@@ -3064,13 +3080,11 @@ gods_of_africa_grant_settlement_reward = {
 				}
 			}
 			event_target:africa_host = {
-				set_temp_variable = { equipment_stockpile_removal_amount = constant:gods_of_africa_transaction.settlement_respected_infantry_equipment }
-				remove_infantry_equipment_from_stockpile = yes
+				send_equipment = { equipment = infantry_equipment amount = constant:gods_of_africa_transaction.settlement_respected_infantry_equipment target = event_target:gods_of_africa_settlement_participant }
 				set_temp_variable = { fuel_stockpile_removal_amount = constant:gods_of_africa_transaction.settlement_respected_fuel }
 				remove_fuel_from_stockpile = yes
 				subtract_from_variable = { africa_common_defence_stockpile = constant:gods_of_africa_transaction.settlement_respected_infantry_equipment }
 			}
-			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:gods_of_africa_transaction.settlement_respected_infantry_equipment }
 			add_fuel = constant:gods_of_africa_transaction.settlement_respected_fuel
 			add_opinion_modifier = { target = event_target:africa_host modifier = gods_of_africa_settlement_favor }
 		}
@@ -3191,110 +3205,111 @@ gods_of_africa_clean_participant = {
 # shown after the host ledger has stopped ordinary demands. The acknowledgement
 # helper below clears the presentation flag without erasing hidden history.
 gods_of_africa_finalize_participant = {
-	gods_of_africa_clear_mobile_quote = yes
-	gods_of_africa_withdraw_protection_package = yes
-	if = {
-		limit = { has_country_flag = gods_of_africa_demand_active }
-		remove_mission = gods_of_africa_demand_mission
-	}
-	remove_mission = gods_of_africa_reconciliation_mission
 	if = {
 		limit = {
-			has_country_flag = gods_of_africa_enemy_marked
-			has_event_target = africa_host
+			gods_of_africa_participant_has_settlement_history = yes
+			has_country_flag = gods_of_africa_final_outcome_committed
+			gods_of_africa_final_settlement_value_is_valid = yes
+			event_target:africa_host = { has_country_flag = gods_of_africa_final_settlement_committed }
 		}
-		event_target:africa_host = {
-			if = {
-				limit = {
-					has_variable = gods_of_africa_priority_offender_count
-					check_variable = { gods_of_africa_priority_offender_count > constant:gods_of_africa_value.zero }
+		gods_of_africa_remember_permanent_opt_out = yes
+		gods_of_africa_clear_mobile_quote = yes
+		gods_of_africa_withdraw_protection_package = yes
+		if = {
+			limit = { has_country_flag = gods_of_africa_demand_active }
+			remove_mission = gods_of_africa_demand_mission
+		}
+		remove_mission = gods_of_africa_reconciliation_mission
+		if = {
+			limit = {
+				has_country_flag = gods_of_africa_enemy_marked
+				has_event_target = africa_host
+			}
+			event_target:africa_host = {
+				if = {
+					limit = {
+						has_variable = gods_of_africa_priority_offender_count
+						check_variable = { gods_of_africa_priority_offender_count > constant:gods_of_africa_value.zero }
+					}
+					subtract_from_variable = { gods_of_africa_priority_offender_count = constant:gods_of_africa_value.one }
 				}
-				subtract_from_variable = { gods_of_africa_priority_offender_count = constant:gods_of_africa_value.one }
 			}
 		}
+		clr_country_flag = gods_of_africa_demand_active
+		clr_country_flag = gods_of_africa_substitute_offered
+		clr_country_flag = gods_of_africa_substitute_set_ready
+		clr_country_flag = gods_of_africa_extension_used
+		clr_country_flag = gods_of_africa_punishment_applied
+		clr_country_flag = gods_of_africa_escalation_used
+		clr_country_flag = gods_of_africa_enemy_marked
+		clr_country_flag = gods_of_africa_punishment_memory_applied
+		clr_country_flag = gods_of_africa_defiant_memory_applied
+		clr_country_flag = gods_of_africa_reliable_memory_applied
+		clr_country_flag = gods_of_africa_territory_returned
+		clr_country_flag = gods_of_africa_recognition_granted
+		clr_country_flag = gods_of_africa_enemy_support_ended
+		clr_country_flag = gods_of_africa_protected
+		clr_country_flag = gods_of_africa_offender
+		clr_country_flag = gods_of_africa_defiant
+		clr_country_flag = gods_of_africa_reconciliation_pending
+		clr_country_flag = gods_of_africa_reparations_paid
+		clr_country_flag = gods_of_africa_reconciliation_offer_pending
+		clr_country_flag = gods_of_africa_reconciliation_failure_report_pending
+		clr_country_flag = gods_of_africa_intro_pending
+		clr_country_flag = gods_of_africa_outcome_report_pending
+		clr_country_flag = gods_of_africa_punishment_report_pending
+		clr_country_flag = gods_of_africa_defiance_report_pending
+		clr_country_flag = gods_of_africa_wartime_demand_report_pending
+		clr_country_flag = gods_of_africa_aid_report_pending
+		clr_country_flag = gods_of_africa_negotiation_open
+		clr_country_flag = gods_of_africa_substitute_rejection_report_pending
+		clr_country_flag = gods_of_africa_defensive_preparation_committed
+		clr_country_flag = gods_of_africa_stockpiles_hardened
+		clr_country_flag = gods_of_africa_transport_secured
+		clr_country_flag = gods_of_africa_countermeasures_prepared
+		clr_country_flag = gods_of_africa_protection_report_pending
+		clear_variable = gods_of_africa_demand_id
+		clear_variable = gods_of_africa_demand_generation
+		clear_variable = gods_of_africa_demand_family
+		clear_variable = gods_of_africa_demand_mobile_type
+		clear_variable = gods_of_africa_demand_amount
+		clear_variable = gods_of_africa_demand_remaining
+		clear_variable = gods_of_africa_demand_deadline
+		clear_variable = gods_of_africa_demand_band
+		clear_variable = gods_of_africa_demand_status
+		clear_variable = gods_of_africa_payment_amount
+		clear_variable = gods_of_africa_payment_family
+		clear_variable = gods_of_africa_payment_mobile_type
+		clear_variable = gods_of_africa_payment_success
+		clear_variable = gods_of_africa_capacity_requirement
+		clear_variable = gods_of_africa_substitute_capacity_requirement
+		clear_variable = gods_of_africa_partial_capacity_requirement
+		clear_variable = gods_of_africa_pending_punishment_tier
+		clear_variable = gods_of_africa_punishment_intent_tier
+		clear_variable = gods_of_africa_substitute_family
+		clear_variable = gods_of_africa_substitute_mobile_type
+		clear_variable = gods_of_africa_substitute_amount
+		clear_variable = gods_of_africa_partial_payment_amount
+		clear_variable = gods_of_africa_next_partial_payment_day
+		clear_variable = gods_of_africa_reconciliation_start_day
+		clear_variable = gods_of_africa_reconciliation_due_day
+		clear_variable = gods_of_africa_reconciliation_next_attempt_day
+		clear_variable = gods_of_africa_protection_due_day
+		clear_variable = gods_of_africa_defensive_preparation_day
+		clear_variable = gods_of_africa_defensive_stockpile_day
+		clear_variable = gods_of_africa_defensive_transport_day
+		clear_variable = gods_of_africa_defensive_countermeasure_day
+		gods_of_africa_clear_substitute_slots = yes
+		set_country_flag = gods_of_africa_final_outcome_committed
+		clr_country_flag = gods_of_africa_participant
 	}
-	clr_country_flag = gods_of_africa_demand_active
-	clr_country_flag = gods_of_africa_substitute_offered
-	clr_country_flag = gods_of_africa_substitute_set_ready
-	clr_country_flag = gods_of_africa_extension_used
-	clr_country_flag = gods_of_africa_punishment_applied
-	clr_country_flag = gods_of_africa_escalation_used
-	clr_country_flag = gods_of_africa_enemy_marked
-	clr_country_flag = gods_of_africa_punishment_memory_applied
-	clr_country_flag = gods_of_africa_defiant_memory_applied
-	clr_country_flag = gods_of_africa_reliable_memory_applied
-	clr_country_flag = gods_of_africa_territory_returned
-	clr_country_flag = gods_of_africa_recognition_granted
-	clr_country_flag = gods_of_africa_enemy_support_ended
-	clr_country_flag = gods_of_africa_protected
-	clr_country_flag = gods_of_africa_offender
-	clr_country_flag = gods_of_africa_defiant
-	clr_country_flag = gods_of_africa_reconciliation_pending
-	clr_country_flag = gods_of_africa_reparations_paid
-	clr_country_flag = gods_of_africa_reconciliation_offer_pending
-	clr_country_flag = gods_of_africa_reconciliation_failure_report_pending
-	clr_country_flag = gods_of_africa_intro_pending
-	clr_country_flag = gods_of_africa_outcome_report_pending
-	clr_country_flag = gods_of_africa_punishment_report_pending
-	clr_country_flag = gods_of_africa_defiance_report_pending
-	clr_country_flag = gods_of_africa_wartime_demand_report_pending
-	clr_country_flag = gods_of_africa_aid_report_pending
-	clr_country_flag = gods_of_africa_negotiation_open
-	clr_country_flag = gods_of_africa_substitute_rejection_report_pending
-	clr_country_flag = gods_of_africa_defensive_preparation_committed
-	clr_country_flag = gods_of_africa_stockpiles_hardened
-	clr_country_flag = gods_of_africa_transport_secured
-	clr_country_flag = gods_of_africa_countermeasures_prepared
-	clr_country_flag = gods_of_africa_protection_report_pending
-	clear_variable = gods_of_africa_demand_id
-	clear_variable = gods_of_africa_demand_generation
-	clear_variable = gods_of_africa_demand_family
-	clear_variable = gods_of_africa_demand_mobile_type
-	clear_variable = gods_of_africa_demand_amount
-	clear_variable = gods_of_africa_demand_remaining
-	clear_variable = gods_of_africa_demand_deadline
-	clear_variable = gods_of_africa_demand_band
-	clear_variable = gods_of_africa_demand_status
-	clear_variable = gods_of_africa_payment_amount
-	clear_variable = gods_of_africa_payment_family
-	clear_variable = gods_of_africa_payment_mobile_type
-	clear_variable = gods_of_africa_payment_success
-	clear_variable = gods_of_africa_capacity_requirement
-	clear_variable = gods_of_africa_substitute_capacity_requirement
-	clear_variable = gods_of_africa_partial_capacity_requirement
-	clear_variable = gods_of_africa_pending_punishment_tier
-	clear_variable = gods_of_africa_punishment_intent_tier
-	clear_variable = gods_of_africa_substitute_family
-	clear_variable = gods_of_africa_substitute_mobile_type
-	clear_variable = gods_of_africa_substitute_amount
-	clear_variable = gods_of_africa_partial_payment_amount
-	clear_variable = gods_of_africa_next_partial_payment_day
-	clear_variable = gods_of_africa_reconciliation_start_day
-	clear_variable = gods_of_africa_reconciliation_due_day
-	clear_variable = gods_of_africa_reconciliation_next_attempt_day
-	clear_variable = gods_of_africa_protection_due_day
-	clear_variable = gods_of_africa_defensive_preparation_day
-	clear_variable = gods_of_africa_defensive_stockpile_day
-	clear_variable = gods_of_africa_defensive_transport_day
-	clear_variable = gods_of_africa_defensive_countermeasure_day
-	gods_of_africa_clear_substitute_slots = yes
-	set_country_flag = gods_of_africa_final_outcome_committed
 }
 
 gods_of_africa_acknowledge_settlement = {
 	if = {
-		limit = { has_event_target = africa_host }
-		event_target:africa_host = {
-			remove_from_array = { array = gods_of_africa_participants value = PREV }
-			if = {
-				limit = { has_variable = gods_of_africa_participant_count check_variable = { gods_of_africa_participant_count > constant:gods_of_africa_value.zero } }
-				subtract_from_variable = { gods_of_africa_participant_count = constant:gods_of_africa_value.one }
-			}
-		}
+		limit = { gods_of_africa_settlement_receipt_is_current = yes }
+		clr_country_flag = gods_of_africa_settlement_report_pending
 	}
-	clr_country_flag = gods_of_africa_settlement_report_pending
-	clr_country_flag = gods_of_africa_final_outcome_committed
-	clr_country_flag = gods_of_africa_participant
 }
 
 # Called by the Event 012 capitulation hook. It is intentionally independent
@@ -3433,16 +3448,18 @@ gods_of_africa_cancel_participant = {
 
 gods_of_africa_commit_final_settlement = {
 	if = {
-		limit = { gods_of_africa_active_host_is_valid = yes }
+		limit = {
+			gods_of_africa_active_host_is_valid = yes
+			OR = {
+				africa_scramble_phase_is_settled = yes
+				has_country_flag = africa_continental_settlement_complete
+			}
+		}
 		set_country_flag = gods_of_africa_final_settlement_committed
 		set_variable = { gods_of_africa_final_settlement_day = global.num_days }
 		for_each_scope_loop = {
-			array = gods_of_africa_participants
-			gods_of_africa_resolve_participant_final_outcome = yes
-			gods_of_africa_grant_settlement_reward = yes
-			set_country_flag = gods_of_africa_settlement_report_pending
-			gods_of_africa_finalize_participant = yes
-			country_event = { id = chaosx.nr12.608 }
+			array = gods_of_africa_candidate_registry
+			gods_of_africa_commit_participant_settlement = yes
 		}
 		if = {
 			limit = { NOT = { has_country_flag = gods_of_africa_continental_settlement_logged } }
@@ -4254,20 +4271,12 @@ gods_of_africa_offer_voluntary_aid = {
 }
 
 gods_of_africa_commit_settlement = {
-	# This explicit host action is only a per-participant settlement fallback
-	# after the authoritative Event 012 settlement flag is set. Invalid or
-	# pre-settlement calls fail closed instead of granting an early reward.
 	if = {
 		limit = {
-			gods_of_africa_participant_generation_is_current = yes
-			NOT = { has_country_flag = gods_of_africa_final_outcome_committed }
+			gods_of_africa_participant_has_settlement_history = yes
 			has_event_target = africa_host
 			event_target:africa_host = { has_country_flag = africa_continental_settlement_complete }
 		}
-		gods_of_africa_resolve_participant_final_outcome = yes
-		gods_of_africa_grant_settlement_reward = yes
-		set_country_flag = gods_of_africa_settlement_report_pending
-		gods_of_africa_finalize_participant = yes
-		country_event = { id = chaosx.nr12.608 }
+		event_target:africa_host = { gods_of_africa_commit_final_settlement = yes }
 	}
 }

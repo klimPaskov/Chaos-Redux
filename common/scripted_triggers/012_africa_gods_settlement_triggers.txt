@@ -1,0 +1,72 @@
+# Event 012 Gods settlement history and receipt proof.
+# Final evaluation is independent of live participation and country capitulation.
+# Current and the one explicitly inherited host generation are checked exactly.
+
+gods_of_africa_participant_has_settlement_history = {
+	exists = yes
+	gods_of_africa_has_current_host = yes
+	event_target:africa_host = { has_variable = africa_origin_host_id }
+	NOT = { tag = event_target:africa_host }
+	OR = {
+		has_country_flag = gods_of_africa_history_initialized
+		has_variable = gods_of_africa_history_count
+	}
+	has_variable = gods_of_africa_participant_generation
+	OR = {
+		NOT = { has_variable = gods_of_africa_history_owner_id }
+		check_variable = { gods_of_africa_history_owner_id = THIS.id }
+	}
+	OR = {
+		AND = {
+			check_variable = { gods_of_africa_participant_generation = event_target:africa_host.africa_host_generation }
+			OR = {
+				NOT = { has_variable = gods_of_africa_history_origin_host_id }
+				check_variable = { gods_of_africa_history_origin_host_id = event_target:africa_host.africa_origin_host_id }
+			}
+		}
+		AND = {
+			has_variable = gods_of_africa_history_origin_host_id
+			event_target:africa_host = {
+				has_variable = gods_of_africa_inherited_history_generation
+				has_variable = gods_of_africa_inherited_history_origin_host_id
+			}
+			check_variable = { gods_of_africa_participant_generation = event_target:africa_host.gods_of_africa_inherited_history_generation }
+			check_variable = { gods_of_africa_history_origin_host_id = event_target:africa_host.gods_of_africa_inherited_history_origin_host_id }
+			check_variable = { gods_of_africa_history_origin_host_id = event_target:africa_host.africa_origin_host_id }
+		}
+	}
+}
+
+gods_of_africa_settlement_can_commit = {
+	gods_of_africa_participant_has_settlement_history = yes
+	event_target:africa_host = { has_country_flag = gods_of_africa_final_settlement_committed }
+	NOT = { has_country_flag = gods_of_africa_final_outcome_committed }
+}
+
+gods_of_africa_final_settlement_value_is_valid = {
+	has_variable = gods_of_africa_final_settlement
+	OR = {
+		check_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.favored }
+		check_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.respected }
+		check_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.distrusted }
+		check_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.enemy }
+	}
+}
+
+# A regular target travels with the report chain and never follows a successor's
+# replacement of the global host pointer. Acknowledgement changes no live roster.
+gods_of_africa_settlement_receipt_is_current = {
+	exists = yes
+	has_country_flag = gods_of_africa_final_outcome_committed
+	has_country_flag = gods_of_africa_settlement_report_pending
+	gods_of_africa_final_settlement_value_is_valid = yes
+	has_variable = gods_of_africa_settlement_generation
+	has_variable = gods_of_africa_settlement_origin_host_id
+	has_event_target = gods_of_africa_settlement_host
+	event_target:gods_of_africa_settlement_host = {
+		exists = yes
+		has_country_flag = gods_of_africa_final_settlement_committed
+		check_variable = { africa_host_generation = PREV.gods_of_africa_settlement_generation }
+		check_variable = { africa_origin_host_id = PREV.gods_of_africa_settlement_origin_host_id }
+	}
+}

@@ -373,3 +373,5 @@ When a shared helper changes, update its contract here and audit every call site
 The Event 012 owner API [`012_africa_gods_equipment_effects`](012_africa_gods_equipment_effects.md) documents its COUNTRY-scoped armoured and typed truck/artillery quotes, protected native capacity, integer amounts, native transfers, and payment-type binding in `012_africa_gods_mobile_contract_effects.txt`, including caller-set inputs, temporary outputs, cleanup, defaults, side effects, and boolean-helper usage.
 
 The private Event 012 [`Gods report receipts`](012_africa_gods_report_effects.md) document response capture, frozen equipment subtype, cleanup, and whole-equipment classification, including explicit caller-set inputs, outputs, lifecycle owners, side effects, and boolean-helper usage.
+
+The Event 012 [`Gods survivor settlement`](012_africa_gods_settlement_effects.md) contract documents exact history lineage, one-time grading and native reciprocal transfers, independent frozen-host receipt proof, cleanup, defaults, and boolean-helper usage.

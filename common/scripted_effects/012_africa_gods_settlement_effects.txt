@@ -1,0 +1,18 @@
+# Event 012 Gods one-time settlement for existing historical participants.
+# The owner traverses its bounded candidate census, rather than just live members.
+# Reward and presentation are separate from ordinary demand authority.
+
+gods_of_africa_commit_participant_settlement = {
+	if = {
+		limit = { gods_of_africa_settlement_can_commit = yes }
+		event_target:africa_host = { save_event_target_as = gods_of_africa_settlement_host }
+		gods_of_africa_resolve_participant_final_outcome = yes
+		if = {
+			limit = { has_country_flag = gods_of_africa_final_outcome_committed }
+			gods_of_africa_grant_settlement_reward = yes
+			gods_of_africa_finalize_participant = yes
+			set_country_flag = gods_of_africa_settlement_report_pending
+			country_event = { id = chaosx.nr12.608 }
+		}
+	}
+}
