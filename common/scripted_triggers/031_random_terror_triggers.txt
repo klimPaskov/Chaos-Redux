@@ -62,7 +62,7 @@ random_terror_country_is_normal_target = {
 	NOT = { has_global_flag = world_end }
 	num_of_controlled_states > constant:random_terror_value.zero
 	any_owned_state = {
-		is_controlled_by = ROOT
+		is_controlled_by = PREV
 		state_population_k > constant:random_terror_value.zero
 		OR = {
 			NOT = { has_variable = random_terror_state_cooldown_until }
@@ -71,13 +71,19 @@ random_terror_country_is_normal_target = {
 	}
 }
 
-random_terror_state_is_valid_target = {
+# STATE scope, intrinsic site checks with no country-owner relationship.
+random_terror_state_is_eligible_incident_site = {
 	state_population_k > constant:random_terror_value.zero
 	OR = {
 		NOT = { has_variable = random_terror_state_cooldown_until }
 		check_variable = { var = random_terror_state_cooldown_until value = global.date compare = less_than_or_equals }
 	}
 	NOT = { has_state_flag = random_terror_state_lost_local_control }
+}
+
+# STATE scope for an owner-rooted action, retaining its explicit ROOT contract.
+random_terror_state_is_valid_target = {
+	random_terror_state_is_eligible_incident_site = yes
 	OR = {
 		is_controlled_by = ROOT
 		is_owned_by = ROOT
@@ -95,8 +101,8 @@ random_terror_state_is_active_crisis = {
 
 random_terror_country_has_valid_state = {
 	any_owned_state = {
-		is_controlled_by = ROOT
-		random_terror_state_is_valid_target = yes
+		is_controlled_by = PREV
+		random_terror_state_is_eligible_incident_site = yes
 	}
 }
 

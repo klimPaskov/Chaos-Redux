@@ -2,9 +2,11 @@
 
 `adjust_individual_crisis_candidate_ticket_weight` is a country-scope helper for weighted bounded-country pools.
 
-Input: the caller sets the temporary `individual_crisis_candidate_base_weight` immediately before the call.
+Input: the caller sets the temporary `individual_crisis_candidate_base_weight` immediately before the call and initializes `individual_crisis_candidate_adjusted_weight` to zero in its own effect frame.
 
-Output: `individual_crisis_candidate_adjusted_weight` is always initialized and receives the caller base multiplied by the shared load curve.
+Output: caller-owned `individual_crisis_candidate_adjusted_weight` receives the caller base multiplied by the shared load curve.
+Both public wrappers also initialize their forwarded output before the private worker, which owns the active-load output before invoking the load trigger.
+Storage first created inside a returning helper is not a guaranteed caller output.
 
 The curve is base multiplied by four at derived load zero, base multiplied by two at load one, base multiplied by one at load two, and zero at load three or above.
 
@@ -20,6 +22,7 @@ Example:
 
 ```text
 set_temp_variable = { individual_crisis_candidate_base_weight = 1 }
+set_temp_variable = { individual_crisis_candidate_adjusted_weight = 0 }
 adjust_individual_crisis_candidate_ticket_weight = yes
 # Read individual_crisis_candidate_adjusted_weight here.
 ```

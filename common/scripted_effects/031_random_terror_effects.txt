@@ -927,6 +927,7 @@ random_terror_resolve_evolution = {
 			check_variable = { global.random_terror_total_incidents < constant:random_terror_value.one }
 			check_variable = { global.random_terror_evolution_stage < constant:random_terror_evolution.organized_cells }
 		}
+		set_temp_variable = { random_terror_resolved_evolution = constant:random_terror_value.zero }
 		random_terror_identify_highest_enabled_evolution = yes
 		if = {
 			limit = { check_variable = { random_terror_resolved_evolution > constant:random_terror_value.zero } }
@@ -995,6 +996,7 @@ random_terror_resolve_wave_target_count = {
 
 random_terror_add_current_country_to_wave_target_pool = {
 	set_temp_variable = { individual_crisis_candidate_base_weight = constant:random_terror_value.one }
+	set_temp_variable = { individual_crisis_candidate_adjusted_weight = constant:random_terror_value.zero }
 	if = {
 		limit = { random_terror_country_has_active_package = yes }
 		adjust_individual_crisis_existing_provider_candidate_ticket_weight = yes
@@ -1011,7 +1013,10 @@ random_terror_add_current_country_to_wave_target_pool = {
 }
 
 random_terror_select_and_apply_wave_target = {
+	# Allocate caller-owned storage before nested candidate helpers return.
+	add_to_temp_array = { random_terror_wave_country_pool = THIS }
 	clear_temp_array = random_terror_wave_country_pool
+	set_temp_variable = { random_terror_wave_site_applied = constant:random_terror_value.zero }
 	every_country = {
 		limit = { random_terror_country_is_eligible_wave_target = yes }
 		random_terror_add_current_country_to_wave_target_pool = yes
@@ -1020,11 +1025,19 @@ random_terror_select_and_apply_wave_target = {
 		limit = { check_variable = { random_terror_wave_country_pool^num > constant:random_terror_value.zero } }
 		random_scope_in_array = {
 			array = random_terror_wave_country_pool
-			set_temp_variable = { random_terror_target_reservation_duration = constant:random_terror_tuning.wave_cooldown_days }
-			set_country_flag = { flag = random_terror_target_reserved days = random_terror_target_reservation_duration }
+			limit = { random_terror_country_is_eligible_wave_target = yes }
 			random_owned_controlled_state = {
-				limit = { random_terror_state_is_valid_target = yes }
+				limit = { random_terror_state_is_eligible_incident_site = yes }
 				random_terror_apply_incident = yes
+				set_temp_variable = { random_terror_wave_site_applied = constant:random_terror_value.one }
+			}
+			if = {
+				limit = { check_variable = { random_terror_wave_site_applied > constant:random_terror_value.zero } }
+				set_temp_variable = { random_terror_target_reservation_duration = constant:random_terror_tuning.wave_cooldown_days }
+				meta_effect = {
+					text = { set_country_flag = { flag = random_terror_target_reserved days = [RESERVATION_DAYS] } }
+					RESERVATION_DAYS = "[?random_terror_target_reservation_duration|.0]"
+				}
 			}
 		}
 	}
@@ -1325,7 +1338,7 @@ random_terror_scenario_seed_country = {
 	}
 	else = {
 		random_owned_controlled_state = {
-			limit = { random_terror_state_is_valid_target = yes }
+			limit = { random_terror_state_is_eligible_incident_site = yes }
 			random_terror_scenario_seed_state = yes
 		}
 	}
@@ -1357,6 +1370,7 @@ random_terror_scenario_seed_country = {
 }
 
 random_terror_select_and_seed_scenario_country = {
+	add_to_temp_array = { random_terror_wave_country_pool = THIS }
 	clear_temp_array = random_terror_wave_country_pool
 	every_country = {
 		limit = { random_terror_scenario_candidate_country = yes }
