@@ -1,0 +1,154 @@
+# Event 012 Gods actual capitulation-victor records and explicit renewal.
+# Native callbacks authorize capture before any host-loss owner clears its roster.
+# Renewal requests belong to one victor episode and one accepting host generation.
+
+gods_of_africa_clear_victor_renewal_request = {
+	clr_country_flag = gods_of_africa_victor_renewal_requested
+	clear_variable = gods_of_africa_victor_request_host_id
+	clear_variable = gods_of_africa_victor_request_generation
+	clear_variable = gods_of_africa_victor_request_origin_host_id
+	clear_variable = gods_of_africa_victor_request_sequence
+}
+
+# COUNTRY scope on native ROOT in on_capitulation only. FROM is the winner.
+gods_of_africa_capture_capitulation_victor = {
+	if = {
+		limit = {
+			has_country_flag = gods_of_africa_capitulation_callback
+			has_event_target = africa_host
+			tag = ROOT
+			tag = event_target:africa_host
+			has_capitulated = yes
+			OR = {
+				has_country_flag = gods_of_africa_active
+				has_country_flag = gods_of_africa_consolidation_pending
+				has_country_flag = gods_of_africa_activation_clock_scheduled
+			}
+		}
+		save_event_target_as = gods_of_africa_victory_defeated_host
+		FROM = { gods_of_africa_record_participant_victory = yes }
+	}
+}
+
+# COUNTRY scope on the proven participant winner before host loss cancels it.
+gods_of_africa_record_participant_victory = {
+	if = {
+		limit = { gods_of_africa_participant_victory_can_record = yes }
+		if = {
+			limit = { NOT = { has_variable = gods_of_africa_victory_count } }
+			set_variable = { gods_of_africa_victory_count = constant:gods_of_africa_value.zero }
+		}
+		add_to_variable = { gods_of_africa_victory_count = constant:gods_of_africa_value.one }
+		set_variable = { gods_of_africa_victor_defeated_host_id = event_target:gods_of_africa_victory_defeated_host.id }
+		set_variable = { gods_of_africa_victor_defeated_generation = event_target:gods_of_africa_victory_defeated_host.africa_host_generation }
+		set_variable = { gods_of_africa_victor_origin_host_id = event_target:gods_of_africa_victory_defeated_host.africa_origin_host_id }
+		set_variable = { gods_of_africa_victor_day = global.num_days }
+		add_to_array = { array = gods_of_africa_victory_hosts value = gods_of_africa_victor_defeated_host_id }
+		add_to_array = { array = gods_of_africa_victory_generations value = gods_of_africa_victor_defeated_generation }
+		add_to_array = { array = gods_of_africa_victory_days value = gods_of_africa_victor_day }
+		# Append conduct while this actor still has proven live authority.
+		set_variable = { gods_of_africa_history_kind_request = constant:gods_of_africa_history_kind.victory }
+		gods_of_africa_record_history = yes
+		gods_of_africa_clear_victor_renewal_request = yes
+		clr_country_flag = gods_of_africa_victor_renewal_rejected_report_pending
+		clear_variable = gods_of_africa_victor_renewal_rejected_sequence
+		set_country_flag = gods_of_africa_victor_recorded
+		set_country_flag = gods_of_africa_victor_exempt
+		set_country_flag = gods_of_africa_victor_report_pending
+		set_variable = { gods_of_africa_victor_report_sequence = gods_of_africa_victory_count }
+		event_target:gods_of_africa_victory_defeated_host = {
+			set_variable = { gods_of_africa_milestone_secondary_actor = PREV.id }
+		}
+		country_event = { id = chaosx.nr12.615 }
+	}
+}
+
+gods_of_africa_acknowledge_victor_report = {
+	if = {
+		limit = { gods_of_africa_victor_report_is_current = yes }
+		clr_country_flag = gods_of_africa_victor_report_pending
+		clear_variable = gods_of_africa_victor_report_sequence
+	}
+}
+
+gods_of_africa_request_victor_relegitimation = {
+	if = {
+		limit = { gods_of_africa_victor_can_request_relegitimation = yes }
+		gods_of_africa_clear_victor_renewal_request = yes
+		clr_country_flag = gods_of_africa_victor_renewal_rejected_report_pending
+		clear_variable = gods_of_africa_victor_renewal_rejected_sequence
+		set_variable = { gods_of_africa_victor_request_host_id = event_target:africa_host.id }
+		set_variable = { gods_of_africa_victor_request_generation = event_target:africa_host.africa_host_generation }
+		set_variable = { gods_of_africa_victor_request_origin_host_id = event_target:africa_host.africa_origin_host_id }
+		set_variable = { gods_of_africa_victor_request_sequence = gods_of_africa_victory_count }
+		set_country_flag = gods_of_africa_victor_renewal_requested
+	}
+}
+
+gods_of_africa_commit_victor_relegitimation = {
+	if = {
+		limit = {
+			gods_of_africa_victor_renewal_is_current = yes
+			ROOT = {
+				tag = event_target:africa_host
+				gods_of_africa_active_host_is_valid = yes
+			}
+		}
+		set_variable = { gods_of_africa_victor_relegitimated_sequence = gods_of_africa_victory_count }
+		set_variable = { gods_of_africa_victor_relegitimated_host_id = gods_of_africa_victor_request_host_id }
+		set_variable = { gods_of_africa_victor_relegitimated_generation = gods_of_africa_victor_request_generation }
+		set_variable = { gods_of_africa_victor_relegitimated_day = global.num_days }
+		# This proof commits historical consent before normal enrollment can run.
+		# An eligible victor may have a former generation or lost major status.
+		add_to_array = { array = gods_of_africa_history_kinds value = constant:gods_of_africa_history_kind.victor_relegitimation }
+		add_to_array = { array = gods_of_africa_history_days value = global.num_days }
+		add_to_variable = { gods_of_africa_history_count = constant:gods_of_africa_value.one }
+		# This named Event 012 milestone restores authority over this victor only.
+		# Permanent defiance and its reparations/review path remain independent.
+		clr_country_flag = gods_of_africa_victor_exempt
+		set_country_flag = gods_of_africa_victor_relegitimation_committed
+		clr_country_flag = gods_of_africa_victor_renewal_rejected_report_pending
+		clear_variable = gods_of_africa_victor_renewal_rejected_sequence
+		gods_of_africa_clear_victor_renewal_request = yes
+		gods_of_africa_register_participant = yes
+		set_variable = { gods_of_africa_milestone_payload = constant:africa_event_log.gods_victor_relegitimation }
+		set_variable = { gods_of_africa_milestone_actor = event_target:africa_host.id }
+		set_variable = { gods_of_africa_milestone_secondary_actor = THIS.id }
+		gods_of_africa_record_milestone = yes
+	}
+}
+
+gods_of_africa_withdraw_victor_relegitimation = {
+	if = {
+		limit = { gods_of_africa_victor_renewal_can_withdraw = yes }
+		gods_of_africa_clear_victor_renewal_request = yes
+	}
+}
+
+gods_of_africa_reject_victor_relegitimation = {
+	if = {
+		limit = {
+			gods_of_africa_victor_renewal_is_current = yes
+			ROOT = { tag = event_target:africa_host gods_of_africa_active_host_is_valid = yes }
+		}
+		set_variable = { gods_of_africa_victor_renewal_rejected_sequence = gods_of_africa_victory_count }
+		set_variable = { gods_of_africa_victor_renewal_rejected_host_id = gods_of_africa_victor_request_host_id }
+		set_variable = { gods_of_africa_victor_renewal_rejected_generation = gods_of_africa_victor_request_generation }
+		set_variable = { gods_of_africa_victor_renewal_rejected_day = global.num_days }
+		add_to_array = { array = gods_of_africa_history_kinds value = constant:gods_of_africa_history_kind.victor_renewal_rejected }
+		add_to_array = { array = gods_of_africa_history_days value = global.num_days }
+		add_to_variable = { gods_of_africa_history_count = constant:gods_of_africa_value.one }
+		gods_of_africa_clear_victor_renewal_request = yes
+		set_country_flag = gods_of_africa_victor_renewal_rejected_report_pending
+		country_event = { id = chaosx.nr12.612 }
+	}
+}
+
+gods_of_africa_acknowledge_negotiation_rejection = {
+	if = {
+		limit = { gods_of_africa_victor_rejection_report_is_current = yes }
+		clr_country_flag = gods_of_africa_victor_renewal_rejected_report_pending
+		clear_variable = gods_of_africa_victor_renewal_rejected_sequence
+	}
+	else = { clr_country_flag = gods_of_africa_substitute_rejection_report_pending }
+}

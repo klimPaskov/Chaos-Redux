@@ -1,0 +1,95 @@
+# Event 012 Gods capitulation-victor authority and explicit bilateral renewal.
+# Victory history and presentation remain separate from live tribute authority.
+
+# COUNTRY scope on the actual FROM winner, while the native ROOT is the host.
+gods_of_africa_participant_victory_can_record = {
+	has_event_target = gods_of_africa_victory_defeated_host
+	ROOT = { has_country_flag = gods_of_africa_capitulation_callback }
+	event_target:gods_of_africa_victory_defeated_host = {
+		exists = yes
+		has_capitulated = yes
+		tag = ROOT
+		tag = event_target:africa_host
+		has_variable = africa_host_generation
+		has_variable = africa_origin_host_id
+	}
+	gods_of_africa_participant_is_registered = yes
+	check_variable = { gods_of_africa_participant_generation = event_target:gods_of_africa_victory_defeated_host.africa_host_generation }
+}
+
+gods_of_africa_victor_report_is_current = {
+	exists = yes
+	has_country_flag = gods_of_africa_victor_recorded
+	has_country_flag = gods_of_africa_victor_report_pending
+	has_variable = gods_of_africa_victory_count
+	has_variable = gods_of_africa_victor_report_sequence
+	check_variable = { gods_of_africa_victory_count = gods_of_africa_victor_report_sequence }
+	has_variable = gods_of_africa_victor_defeated_host_id
+	has_variable = gods_of_africa_victor_defeated_generation
+	has_variable = gods_of_africa_victor_origin_host_id
+}
+
+# No generation change, ordinary pardon, or successor mandate clears exemption.
+# This predicate exposes the relationship while its current offer awaits consent.
+gods_of_africa_victor_relationship_is_available = {
+	gods_of_africa_participant_is_live = yes
+	gods_of_africa_participant_host_is_active = yes
+	event_target:africa_host = { has_variable = africa_origin_host_id }
+	has_country_flag = gods_of_africa_victor_recorded
+	has_country_flag = gods_of_africa_victor_exempt
+	has_variable = gods_of_africa_history_count
+	OR = {
+		NOT = { has_variable = gods_of_africa_history_owner_id }
+		check_variable = { gods_of_africa_history_owner_id = THIS.id }
+	}
+	has_variable = gods_of_africa_victory_count
+	check_variable = { gods_of_africa_victory_count > constant:gods_of_africa_value.zero }
+	has_variable = gods_of_africa_victor_origin_host_id
+	check_variable = { gods_of_africa_victor_origin_host_id = event_target:africa_host.africa_origin_host_id }
+}
+
+gods_of_africa_victor_renewal_is_current = {
+	custom_trigger_tooltip = {
+		tooltip = gods_of_africa_victor_accept_requirements_tt
+		gods_of_africa_victor_relationship_is_available = yes
+		has_country_flag = gods_of_africa_victor_renewal_requested
+		has_variable = gods_of_africa_victor_request_host_id
+		has_variable = gods_of_africa_victor_request_generation
+		has_variable = gods_of_africa_victor_request_origin_host_id
+		has_variable = gods_of_africa_victor_request_sequence
+		check_variable = { gods_of_africa_victor_request_host_id = event_target:africa_host.id }
+		check_variable = { gods_of_africa_victor_request_generation = event_target:africa_host.africa_host_generation }
+		check_variable = { gods_of_africa_victor_request_origin_host_id = event_target:africa_host.africa_origin_host_id }
+		check_variable = { gods_of_africa_victor_request_sequence = gods_of_africa_victory_count }
+		NOT = { has_war_with = event_target:africa_host }
+		NOT = { gods_of_africa_participant_holds_host_core_state = yes }
+	}
+}
+
+gods_of_africa_victor_can_request_relegitimation = {
+	custom_trigger_tooltip = {
+		tooltip = gods_of_africa_victor_renewal_requirements_tt
+		gods_of_africa_victor_relationship_is_available = yes
+		NOT = { gods_of_africa_victor_renewal_is_current = yes }
+		NOT = { has_war_with = event_target:africa_host }
+		NOT = { gods_of_africa_participant_holds_host_core_state = yes }
+	}
+}
+
+gods_of_africa_victor_renewal_can_withdraw = {
+	custom_trigger_tooltip = {
+		tooltip = gods_of_africa_victor_withdraw_requirements_tt
+		exists = yes
+		has_country_flag = gods_of_africa_victor_recorded
+		has_country_flag = gods_of_africa_victor_exempt
+		has_country_flag = gods_of_africa_victor_renewal_requested
+	}
+}
+
+gods_of_africa_victor_rejection_report_is_current = {
+	exists = yes
+	has_country_flag = gods_of_africa_victor_renewal_rejected_report_pending
+	has_country_flag = gods_of_africa_victor_exempt
+	has_variable = gods_of_africa_victor_renewal_rejected_sequence
+	check_variable = { gods_of_africa_victor_renewal_rejected_sequence = gods_of_africa_victory_count }
+}

@@ -375,3 +375,5 @@ The Event 012 owner API [`012_africa_gods_equipment_effects`](012_africa_gods_eq
 The private Event 012 [`Gods report receipts`](012_africa_gods_report_effects.md) document response capture, frozen equipment subtype, cleanup, and whole-equipment classification, including explicit caller-set inputs, outputs, lifecycle owners, side effects, and boolean-helper usage.
 
 The Event 012 [`Gods survivor settlement`](012_africa_gods_settlement_effects.md) contract documents exact history lineage, one-time grading and native reciprocal transfers, independent frozen-host receipt proof, cleanup, defaults, and boolean-helper usage.
+
+The Event 012 [`Gods victor authority`](012_africa_gods_victor_effects.md) contract documents native capitulation-winner capture, permanent exemption, frozen episode/host renewal consent, withdrawal/decline, separate paid defiance, report receipts, cleanup, and boolean-helper usage.

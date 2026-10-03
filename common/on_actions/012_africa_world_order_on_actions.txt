@@ -503,6 +503,13 @@ on_actions = {
 
 	on_capitulation = {
 		effect = {
+			# Capture the Gods winner before any owner cleanup, independently of
+			# merged on-action file ordering.
+			ROOT = {
+				set_country_flag = gods_of_africa_capitulation_callback
+				gods_of_africa_capture_capitulation_victor = yes
+				clr_country_flag = gods_of_africa_capitulation_callback
+			}
 			if = {
 				limit = { ROOT = { has_country_flag = africa_common_reserve_deployment_active } }
 				ROOT = { africa_common_reserve_resolve_deployment = yes }

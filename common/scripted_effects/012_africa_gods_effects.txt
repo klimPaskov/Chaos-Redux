@@ -2164,6 +2164,10 @@ gods_of_africa_accept_substitute = {
 # answer the original demand before its extended deadline.
 gods_of_africa_reject_substitute = {
 	if = {
+		limit = { gods_of_africa_victor_renewal_is_current = yes }
+		gods_of_africa_reject_victor_relegitimation = yes
+	}
+	else_if = {
 		limit = {
 			gods_of_africa_demand_contract_is_current = yes
 			has_country_flag = gods_of_africa_substitute_offered
@@ -2296,7 +2300,10 @@ gods_of_africa_clear_demand = {
 # provides a second ceiling against disproportionate punishment.
 gods_of_africa_evaluate_punishment = {
 	if = {
-		limit = { gods_of_africa_participant_generation_is_current = yes }
+		limit = {
+			gods_of_africa_participant_host_is_active = yes
+			gods_of_africa_participant_generation_is_current = yes
+		}
 		# Intent is computed from conduct and escalation evidence first. The
 		# pending tier below is a separate capability result and is the only
 		# value consumed by the punishment transaction.
@@ -2423,6 +2430,7 @@ gods_of_africa_evaluate_punishment = {
 gods_of_africa_apply_punishment = {
 	if = {
 		limit = {
+			gods_of_africa_participant_host_is_active = yes
 			gods_of_africa_participant_generation_is_current = yes
 			has_variable = gods_of_africa_pending_punishment_tier
 			gods_of_africa_punishment_tier_is_valid = yes
@@ -2954,6 +2962,7 @@ gods_of_africa_start_reconciliation = {
 gods_of_africa_complete_reconciliation = {
 	if = {
 		limit = {
+			ROOT = { tag = event_target:africa_host gods_of_africa_active_host_is_valid = yes }
 			gods_of_africa_participant_can_reconcile = yes
 			has_country_flag = gods_of_africa_reparations_paid
 			has_country_flag = gods_of_africa_reconciliation_offer_pending
@@ -3716,6 +3725,10 @@ gods_of_africa_substitute_demand_slot_3 = {
 # return to the ordinary response choices without changing the contract.
 gods_of_africa_return_from_negotiation = {
 	if = {
+		limit = { gods_of_africa_victor_renewal_can_withdraw = yes }
+		gods_of_africa_withdraw_victor_relegitimation = yes
+	}
+	else_if = {
 		limit = {
 			gods_of_africa_demand_contract_is_current = yes
 			has_country_flag = gods_of_africa_negotiation_open
@@ -3793,7 +3806,14 @@ gods_of_africa_prepare_countermeasures = {
 
 gods_of_africa_seek_reconciliation = {
 	if = {
-		limit = { gods_of_africa_reconciliation_can_be_paid = yes }
+		limit = { gods_of_africa_victor_can_request_relegitimation = yes }
+		gods_of_africa_request_victor_relegitimation = yes
+	}
+	else_if = {
+		limit = {
+			gods_of_africa_participant_can_reconcile = yes
+			gods_of_africa_reconciliation_can_be_paid = yes
+		}
 		set_temp_variable = { gods_of_africa_reconciliation_negative = constant:gods_of_africa_transaction.reconciliation_pp_amount }
 		multiply_temp_variable = { gods_of_africa_reconciliation_negative = -1 }
 		add_political_power = var:gods_of_africa_reconciliation_negative
@@ -3810,8 +3830,15 @@ gods_of_africa_seek_reconciliation = {
 # than an automatic self-approval.
 gods_of_africa_accept_reconciliation = {
 	if = {
-		limit = { has_country_flag = gods_of_africa_reconciliation_offer_pending }
-		gods_of_africa_complete_reconciliation = yes
+		limit = { ROOT = { tag = event_target:africa_host gods_of_africa_active_host_is_valid = yes } }
+		if = {
+			limit = { gods_of_africa_victor_renewal_is_current = yes }
+			gods_of_africa_commit_victor_relegitimation = yes
+		}
+		else_if = {
+			limit = { has_country_flag = gods_of_africa_reconciliation_offer_pending }
+			gods_of_africa_complete_reconciliation = yes
+		}
 	}
 }
 

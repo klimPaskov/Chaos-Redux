@@ -339,13 +339,18 @@ country_event = {
 	picture = GFX_report_event_012_africa_gods_response
 	is_triggered_only = yes
 	trigger = {
-		africa_gods_of_africa_participant_is_current = yes
-		has_country_flag = gods_of_africa_substitute_rejection_report_pending
+		OR = {
+			gods_of_africa_victor_rejection_report_is_current = yes
+			AND = {
+				africa_gods_of_africa_participant_is_current = yes
+				has_country_flag = gods_of_africa_substitute_rejection_report_pending
+			}
+		}
 	}
 	option = {
 		name = chaosx.nr12.612.a
 		custom_effect_tooltip = gods_of_africa_reject_substitute_effect_tt
-		clr_country_flag = gods_of_africa_substitute_rejection_report_pending
+		hidden_effect = { gods_of_africa_acknowledge_negotiation_rejection = yes }
 	}
 }
 
@@ -386,5 +391,21 @@ country_event = {
 		name = chaosx.nr12.614.a
 		custom_effect_tooltip = gods_of_africa_voluntary_aid_effect_tt
 		clr_country_flag = gods_of_africa_aid_report_pending
+	}
+}
+
+# Actual capitulation-winner receipt. This survives the cancelled host's live
+# authority and never grants, pardons, or restores a relationship on acknowledgement.
+country_event = {
+	id = chaosx.nr12.615
+	title = chaosx.nr12.615.t
+	desc = chaosx.nr12.615.d
+	picture = GFX_report_event_012_africa_gods_defiance
+	is_triggered_only = yes
+	trigger = { gods_of_africa_victor_report_is_current = yes }
+	option = {
+		name = chaosx.nr12.615.a
+		custom_effect_tooltip = gods_of_africa_victor_result_effect_tt
+		hidden_effect = { gods_of_africa_acknowledge_victor_report = yes }
 	}
 }

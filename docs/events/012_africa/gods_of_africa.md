@@ -95,6 +95,16 @@ Reciprocal infantry support uses native transfers with the existing fuel and com
 Each `.608` receipt carries the settling host as a regular event target and requires a separate durable outcome proof; acknowledgement consumes presentation only, preserving standing, rewards, and history without touching a later host's roster.
 The contract and acceptance limits are in `common/scripted_effects/012_africa_gods_settlement_effects.md` and `012_africa_gods_survivor_settlement_2026-10-03.md`.
 
+An enrolled participant named as Africa's actual capitulation winner receives a permanent victory record and exemption from ordinary tribute and punishment.
+Both native capitulation owners capture the winner before cleanup, so callback ordering cannot remove the relationship proof first.
+Victory acknowledgement leaves that exemption and historical result intact, and a successor's generation or mandate does not clear them.
+Renewal requires the victor's voluntary recognition offer and the explicit acceptance of an active committed African host from the same Event 012 origin.
+The offer binds to that host, generation, and victory episode; stale offers and self-acceptance cannot restore authority.
+Withdrawal and decline leave exemption intact, while accepted renewal preserves any independent permanent defiance and its separate ten-political-power reconciliation.
+The four phases reuse existing seek/return/accept/reject controls, with distinct cost and report wording and no additional meter or timer.
+The explicit renewal appears in Event 012 history as `africa_event_log.gods_victor_relegitimation`, with the current African host and victor as its two actors.
+The contract and review are in `common/scripted_effects/012_africa_gods_victor_effects.md` and `012_africa_gods_victor_authority_2026-10-03.md`.
+
 ## Focus, decisions, and logs
 
 The protection target list keeps eligible registered partners visible when Africa lacks the base funds, while `available` still rechecks the complete transaction. The blocked custom cost uses the same host funding gate as the participant affordability trigger, so the player can see the infantry-equipment, fuel, political-power, and common-defence reserve requirement before selecting a target.
@@ -138,7 +148,8 @@ Response and punishment reports use their latest outcome receipts, including the
 Owner-driven population loss captures the participant explicitly for exact-loss country attribution and receipts, and uses caller-initialized helper outputs.
 The report contract and its review limits are recorded in `common/scripted_effects/012_africa_gods_report_effects.md` and `012_africa_gods_response_reports_2026-10-03.md`.
 The lifecycle retention and interrupted-review fixes are recorded in `012_africa_gods_lifecycle_fix_2026-10-03.md`; the survivor-settlement source repair is separately recorded with its audit and lineage/capacity limits.
-The victor/restoration milestone, full hidden-history grading and reward scaling, weighted scenario evidence, and full native owner-loop acceptance remain outstanding.
+The victor recognition milestone is implemented over an already active committed host.
+Recovered-original-host or government-in-exile reopening of a cancelled global Gods lifecycle, full hidden-history grading and reward scaling, weighted scenario evidence, and full native owner-loop acceptance remain outstanding.
 The core Gods decision/trigger flag requirements and overlay entry flags have player-facing English text in `localisation/english/012_africa_requirement_flags_l_english.yml`, including named focus prerequisites and concrete tribute-offer conditions.
 The bounded key and semantic review is recorded in `012_africa_gods_requirement_text_2026-10-03.md`; native tooltip layout remains unobserved.
 The timer/text correction and its narrow MCP trace are recorded in `docs/plans/012_africa_plans/subagent_handoffs/012_africa_gods_timer_and_text_2026-10-03.md`.

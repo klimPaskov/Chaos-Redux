@@ -17,7 +17,8 @@ That supplied acceptance basis applies to the requirements below, rather than be
 - Lines 1083–1105 require the authoritative continental endpoint to stop tribute and evaluate every surviving participant from the full conduct record, doctrine, and final Strength.
 - Lines 1107–1163 describe the settlement outcomes and meaningful material/diplomatic results.
 
-Disposition: survivor lifecycle/coverage is **implemented in source**, with independent audit in `012_africa_gods_survivor_settlement_audit_2026-10-03.md`; victor renewal is **accepted and queued** as the next authority tranche.
+Disposition: survivor lifecycle/coverage and victor-specific exemption/recognition are **implemented in source**, with separate audits in `012_africa_gods_survivor_settlement_audit_2026-10-03.md` and `012_africa_gods_victor_authority_audit_2026-10-03.md`.
+The implemented victor milestone applies to an already active same-origin Gods host; global original-host recovery and the broader grading/reward requirements remain accepted and queued separately.
 Parent acceptance on 2026-10-03 within the user's complete-Gods and recommended-choice authorization adopts the census/history/independent-receipt method and the explicit bilateral re-legitimation recommendation.
 The survivor implementation and limits belong in `012_africa_gods_survivor_settlement_2026-10-03.md`.
 The wider grading/reward requirements remain a separate accepted tranche; this disposition does not equate lifecycle coverage with those completed mechanics.

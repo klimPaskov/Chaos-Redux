@@ -336,13 +336,23 @@ gods_of_africa_participant_category = {
 		desc = gods_of_africa_return_to_demand_desc
 		icon = GFX_decision_012_africa_gods_request_extension
 		visible = {
-			gods_of_africa_participant_host_is_active = yes
-			gods_of_africa_participant_generation_is_current = yes
-			has_country_flag = gods_of_africa_demand_active
-			has_country_flag = gods_of_africa_negotiation_open
-			NOT = { has_country_flag = gods_of_africa_defiant }
+			OR = {
+				gods_of_africa_victor_renewal_can_withdraw = yes
+				AND = {
+					gods_of_africa_participant_host_is_active = yes
+					gods_of_africa_participant_generation_is_current = yes
+					has_country_flag = gods_of_africa_demand_active
+					has_country_flag = gods_of_africa_negotiation_open
+					NOT = { has_country_flag = gods_of_africa_defiant }
+				}
+			}
 		}
-		available = { gods_of_africa_demand_contract_is_current = yes }
+		available = {
+			OR = {
+				gods_of_africa_victor_renewal_can_withdraw = yes
+				gods_of_africa_demand_contract_is_current = yes
+			}
+		}
 		cost = 0
 		fire_only_once = no
 		complete_effect = {
@@ -515,19 +525,23 @@ gods_of_africa_participant_category = {
 		desc = gods_of_africa_seek_reconciliation_desc
 		icon = GFX_decision_012_africa_gods_public_pardon
 		visible = {
-			gods_of_africa_participant_host_is_active = yes
-			gods_of_africa_participant_generation_is_current = yes
-			has_country_flag = gods_of_africa_defiant
-			has_country_flag = gods_of_africa_reconciliation_pending
+			OR = {
+				gods_of_africa_victor_can_request_relegitimation = yes
+				AND = {
+					gods_of_africa_participant_host_is_active = yes
+					gods_of_africa_participant_generation_is_current = yes
+					has_country_flag = gods_of_africa_defiant
+					has_country_flag = gods_of_africa_reconciliation_pending
+				}
+			}
 		}
 		available = {
-			gods_of_africa_participant_can_reconcile = yes
 			gods_of_africa_reconciliation_can_be_paid = yes
 		}
 		custom_cost_trigger = {
 			gods_of_africa_reconciliation_can_be_paid = yes
 		}
-		custom_cost_text = gods_of_africa_reconciliation_cost
+		custom_cost_text = gods_of_africa_reconciliation_offer_cost
 		cost = 0
 		fire_only_once = no
 		complete_effect = {
@@ -957,22 +971,32 @@ gods_of_africa_host_category = {
 		name = gods_of_africa_reject_substitute
 		desc = gods_of_africa_reject_substitute_desc
 		icon = GFX_decision_012_africa_gods_refuse_demand
-		target_array = gods_of_africa_participants
+		target_array = gods_of_africa_candidate_registry
 		activation = { gods_of_africa_active_host_is_valid = yes }
 		target_root_trigger = { gods_of_africa_active_host_is_valid = yes }
 		target_trigger = {
 			FROM = {
 				exists = yes
-				has_country_flag = gods_of_africa_participant
-				gods_of_africa_substitute_offer_is_pending = yes
+				OR = {
+					gods_of_africa_victor_renewal_is_current = yes
+					AND = {
+						has_country_flag = gods_of_africa_participant
+						gods_of_africa_substitute_offer_is_pending = yes
+					}
+				}
 			}
 		}
 		visible = { gods_of_africa_active_host_is_valid = yes }
 		available = {
 			FROM = {
 				exists = yes
-				has_country_flag = gods_of_africa_participant
-				gods_of_africa_substitute_offer_is_pending = yes
+				OR = {
+					gods_of_africa_victor_renewal_is_current = yes
+					AND = {
+						has_country_flag = gods_of_africa_participant
+						gods_of_africa_substitute_offer_is_pending = yes
+					}
+				}
 			}
 		}
 		cost = 0
@@ -1043,24 +1067,34 @@ gods_of_africa_host_category = {
 		name = gods_of_africa_accept_reconciliation
 		desc = gods_of_africa_accept_reconciliation_desc
 		icon = GFX_decision_012_africa_gods_public_pardon
-		target_array = gods_of_africa_participants
+		target_array = gods_of_africa_candidate_registry
 		activation = { gods_of_africa_active_host_is_valid = yes }
 		target_root_trigger = { gods_of_africa_active_host_is_valid = yes }
 		target_trigger = {
 			FROM = {
 				exists = yes
-				gods_of_africa_participant_can_reconcile = yes
-				has_country_flag = gods_of_africa_reparations_paid
-				has_country_flag = gods_of_africa_reconciliation_offer_pending
+				OR = {
+					gods_of_africa_victor_renewal_is_current = yes
+					AND = {
+						gods_of_africa_participant_can_reconcile = yes
+						has_country_flag = gods_of_africa_reparations_paid
+						has_country_flag = gods_of_africa_reconciliation_offer_pending
+					}
+				}
 			}
 		}
 		visible = { gods_of_africa_active_host_is_valid = yes }
 		available = {
 			FROM = {
 				exists = yes
-				gods_of_africa_participant_can_reconcile = yes
-				has_country_flag = gods_of_africa_reparations_paid
-				has_country_flag = gods_of_africa_reconciliation_offer_pending
+				OR = {
+					gods_of_africa_victor_renewal_is_current = yes
+					AND = {
+						gods_of_africa_participant_can_reconcile = yes
+						has_country_flag = gods_of_africa_reparations_paid
+						has_country_flag = gods_of_africa_reconciliation_offer_pending
+					}
+				}
 			}
 		}
 		cost = 0
