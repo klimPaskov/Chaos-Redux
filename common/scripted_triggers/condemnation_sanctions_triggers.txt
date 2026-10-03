@@ -194,6 +194,7 @@ condemnation_prepare_cost_multiplier = {
 # equipment and experience costs are rounded up, while exact whole multiples
 # remain unchanged.
 condemnation_prepare_scaled_integer_cost = {
+	set_temp_variable = { condemnation_cost_factor = constant:condemnation_cost.cost_multiplier_score_minimum }
 	condemnation_prepare_cost_multiplier = yes
 	set_temp_variable = { condemnation_scaled_cost_numerator = condemnation_unscaled_cost }
 	multiply_temp_variable = { condemnation_scaled_cost_numerator = condemnation_cost_factor }
@@ -212,6 +213,7 @@ condemnation_prepare_scaled_integer_cost = {
 # Input: condemnation_unscaled_cost. Output: condemnation_scaled_cost. Fuel
 # and Political Power keep fixed-point precision; no integer rounding applies.
 condemnation_prepare_scaled_fraction_cost = {
+	set_temp_variable = { condemnation_cost_factor = constant:condemnation_cost.cost_multiplier_score_minimum }
 	condemnation_prepare_cost_multiplier = yes
 	set_temp_variable = { condemnation_scaled_cost = condemnation_unscaled_cost }
 	multiply_temp_variable = { condemnation_scaled_cost = condemnation_cost_factor }
@@ -223,6 +225,7 @@ condemnation_prepare_scaled_fraction_cost = {
 # inspection idea supplies the fixed 5% base; this variable supplies the
 # score-driven increment through the inspection pulse.
 condemnation_prepare_inspection_consumer_goods = {
+	set_temp_variable = { condemnation_cost_score = constant:condemnation_cost.cost_multiplier_score_minimum }
 	condemnation_prepare_cost_multiplier = yes
 	set_temp_variable = { condemnation_inspection_consumer_goods_increment_temp = condemnation_cost_score }
 	multiply_temp_variable = { condemnation_inspection_consumer_goods_increment_temp = constant:condemnation_cost.inspection_consumer_goods_per_score }

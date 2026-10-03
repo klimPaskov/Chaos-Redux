@@ -51,6 +51,11 @@ Their [owner contract and component ledger](../systems/africa_rsa_purchase_trans
 All five use Political Power as the primary achievement family, and their flags do not establish an institutional-law purchase.
 Native execution, UI expansion, probability comparison, and save/reload evidence remain pending.
 
+The [existing-owner caller migration](../plans/026_black_friday_plans/subagent_handoffs/2026-10-03_existing_owner_caller_integration.md) establishes consumed temporary output storage in 16 further source files.
+Its 454 known-call inventory and 17 actual-fragment scenarios remain bounded source evidence.
+The [Condemnation provider correction](../plans/026_black_friday_plans/2026-10-03_condemnation_provider_lifetime_fix.md) restores ordinary score-scaled prices before any future sale adapter, and does not discount ongoing inspection burden.
+The source purchase registry remains incomplete.
+
 ## Validation record
 
 The required offline source, wiki, vanilla documentation, asset, localisation, spreadsheet, event-inspection, and probability-inspection reviews are recorded under `docs/plans/026_black_friday_plans/`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`; its Event 26 premise and evolution cells match the current game text, and it has no achievement field to update for this rule. Its existing CSV exports remain unchanged. The Event 26 row remains `Needs Testing` until live validation passes.
