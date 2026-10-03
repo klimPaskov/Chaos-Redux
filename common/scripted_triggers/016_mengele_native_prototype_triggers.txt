@@ -1,0 +1,253 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 EXACT NATIVE PROTOTYPE TRIGGERS
+# ============================================================================
+# COUNTRY scope, read-only. Literal UI wrappers need no temporary selector state.
+# Generic predicates read only mengele_event016_native_prototype_source, except
+# the mapped private settlement gate which uses the existing family/stage API.
+# No native payment, clock, start/cancel hook, or persistent trigger writes.
+# See 016_mengele_native_prototype_effects.md for contracts and parent wiring.
+# ============================================================================
+
+brilliant_scientist_mengele_native_prototype_source_is_supported = {
+	OR = {
+		check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.cloning compare = equals }
+		check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.flying_bomb compare = equals }
+		check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.jet_engine compare = equals }
+	}
+}
+
+# Literal versions of the current strict provider, Prototype predecessor, and
+# empty paid-family receipt gates. Existing literal family decision predicates
+# own receipt indexing and the uninitialized-receipt alternative.
+brilliant_scientist_mengele_native_cloning_private_gate = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	has_country_flag = mengele_event016_cloning_theory_completed
+	NOT = { has_country_flag = mengele_event016_cloning_prototype_completed }
+	brilliant_scientist_mengele_cloning_decision_receipt_is_empty = yes
+}
+
+brilliant_scientist_mengele_native_rocketry_private_gate = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	has_country_flag = mengele_event016_rocketry_theory_completed
+	NOT = { has_country_flag = mengele_event016_rocketry_prototype_completed }
+	brilliant_scientist_mengele_rocketry_decision_receipt_is_empty = yes
+}
+
+# Read-only bridge proof. Both slots must exist before either value is read.
+# The bridge retains its own strict provider, Theory, and private Prototype gates.
+# Slot 7 is schema metadata: existing Cloning family ID 8 minus one, matching
+# its family receipt predicate. A literal preserves this trigger's no-write
+# contract without introducing unscoped scratch state or an unverified index token.
+brilliant_scientist_mengele_native_cloning_fresh_receipt_is_present = {
+	check_variable = { var = mengele_event016_native_prototype_source_entries^num value = constant:brilliant_scientist_project_family.cloning compare = greater_than_or_equals }
+	check_variable = { var = mengele_event016_native_prototype_mode_entries^num value = constant:brilliant_scientist_project_family.cloning compare = greater_than_or_equals }
+	check_variable = { var = mengele_event016_native_prototype_source_entries^7 value = constant:mengele_event016_native_prototype_source.cloning compare = equals }
+	check_variable = { var = mengele_event016_native_prototype_mode_entries^7 value = constant:mengele_event016_native_prototype_mode.fresh_output compare = equals }
+}
+
+# Country equivalent of the installed sp_air_jet_engine.available.FROM gate.
+brilliant_scientist_mengele_native_jet_engine_technology_gate = {
+	OR = {
+		AND = {
+			has_dlc = "By Blood Alone"
+			has_tech = engines_2
+			OR = {
+				has_tech = improved_small_airframe
+				has_tech = improved_medium_airframe
+			}
+		}
+		AND = {
+			NOT = { has_dlc = "By Blood Alone" }
+			OR = {
+				has_tech = fighter2
+				has_tech = tactical_bomber2
+			}
+		}
+	}
+}
+
+brilliant_scientist_mengele_can_select_native_cloning = {
+	brilliant_scientist_mengele_native_cloning_private_gate = yes
+	OR = {
+		NOT = { has_country_flag = mengele_event016_native_selected_cloning }
+		is_special_project_completed = sp:sp_brilliant_scientist_cloning
+	}
+	OR = {
+		is_special_project_completed = sp:sp_brilliant_scientist_cloning
+		brilliant_scientist_can_research_mengele_cloning_prototype = yes
+	}
+}
+
+brilliant_scientist_mengele_can_select_native_flying_bomb = {
+	brilliant_scientist_mengele_native_rocketry_private_gate = yes
+	OR = {
+		NOT = { has_country_flag = mengele_event016_native_selected_flying_bomb }
+		is_special_project_completed = sp:sp_rockets_flying_bomb
+	}
+	NOT = { has_country_flag = mengele_event016_native_selected_jet_engine }
+	OR = {
+		is_special_project_completed = sp:sp_rockets_flying_bomb
+		has_tech = experimental_rockets
+	}
+}
+
+brilliant_scientist_mengele_can_select_native_jet_engine = {
+	brilliant_scientist_mengele_native_rocketry_private_gate = yes
+	NOT = { has_country_flag = mengele_event016_native_selected_flying_bomb }
+	OR = {
+		NOT = { has_country_flag = mengele_event016_native_selected_jet_engine }
+		is_special_project_completed = sp:sp_air_jet_engine
+	}
+	OR = {
+		is_special_project_completed = sp:sp_air_jet_engine
+		brilliant_scientist_mengele_native_jet_engine_technology_gate = yes
+	}
+}
+
+# Release is an ownership operation. Provider validity is not required to give
+# up an existing selection. Native research must be inactive and the matching
+# paid family receipt empty, checked atomically by the release effect's gate.
+brilliant_scientist_mengele_can_release_native_cloning = {
+	has_country_flag = mengele_event016_native_selected_cloning
+	brilliant_scientist_mengele_cloning_decision_receipt_is_empty = yes
+	NOT = { is_special_project_being_researched = sp:sp_brilliant_scientist_cloning }
+}
+
+brilliant_scientist_mengele_can_release_native_flying_bomb = {
+	has_country_flag = mengele_event016_native_selected_flying_bomb
+	brilliant_scientist_mengele_rocketry_decision_receipt_is_empty = yes
+	NOT = { is_special_project_being_researched = sp:sp_rockets_flying_bomb }
+}
+
+brilliant_scientist_mengele_can_release_native_jet_engine = {
+	has_country_flag = mengele_event016_native_selected_jet_engine
+	brilliant_scientist_mengele_rocketry_decision_receipt_is_empty = yes
+	NOT = { is_special_project_being_researched = sp:sp_air_jet_engine }
+}
+
+brilliant_scientist_mengele_native_prototype_can_be_selected = {
+	OR = {
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.cloning compare = equals }
+			brilliant_scientist_mengele_can_select_native_cloning = yes
+		}
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.flying_bomb compare = equals }
+			brilliant_scientist_mengele_can_select_native_flying_bomb = yes
+		}
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.jet_engine compare = equals }
+			brilliant_scientist_mengele_can_select_native_jet_engine = yes
+		}
+	}
+}
+
+brilliant_scientist_mengele_native_prototype_exact_source_is_completed = {
+	OR = {
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.cloning compare = equals }
+			is_special_project_completed = sp:sp_brilliant_scientist_cloning
+		}
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.flying_bomb compare = equals }
+			is_special_project_completed = sp:sp_rockets_flying_bomb
+		}
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.jet_engine compare = equals }
+			is_special_project_completed = sp:sp_air_jet_engine
+		}
+	}
+}
+
+brilliant_scientist_mengele_native_prototype_selection_conflicts = {
+	OR = {
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.flying_bomb compare = equals }
+			has_country_flag = mengele_event016_native_selected_jet_engine
+		}
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.jet_engine compare = equals }
+			has_country_flag = mengele_event016_native_selected_flying_bomb
+		}
+	}
+}
+
+brilliant_scientist_mengele_native_prototype_selection_matches = {
+	NOT = { brilliant_scientist_mengele_native_prototype_selection_conflicts = yes }
+	OR = {
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.cloning compare = equals }
+			has_country_flag = mengele_event016_native_selected_cloning
+		}
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.flying_bomb compare = equals }
+			has_country_flag = mengele_event016_native_selected_flying_bomb
+		}
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.jet_engine compare = equals }
+			has_country_flag = mengele_event016_native_selected_jet_engine
+		}
+	}
+}
+
+# The witness is temporary and assigned only by the three synchronous literal
+# output wrappers. It is a caller contract, not callback-generation isolation.
+brilliant_scientist_mengele_native_prototype_output_witness_matches = {
+	brilliant_scientist_mengele_native_prototype_source_is_supported = yes
+	check_variable = { var = mengele_event016_native_prototype_output_source value = mengele_event016_native_prototype_source compare = equals }
+}
+
+brilliant_scientist_mengele_native_prototype_private_gate = {
+	brilliant_scientist_mengele_native_prototype_source_is_supported = yes
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_project_stage_predecessor_is_valid = yes
+	brilliant_scientist_mengele_project_stage_receipt_is_empty = yes
+}
+
+brilliant_scientist_mengele_native_prototype_can_be_released = {
+	OR = {
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.cloning compare = equals }
+			brilliant_scientist_mengele_can_release_native_cloning = yes
+		}
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.flying_bomb compare = equals }
+			brilliant_scientist_mengele_can_release_native_flying_bomb = yes
+		}
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.jet_engine compare = equals }
+			brilliant_scientist_mengele_can_release_native_jet_engine = yes
+		}
+	}
+}
+
+# Parent-owned historical scanning must use this gate before the explicit
+# adoption effect. Any Rocketry two-source completion is ambiguous for scanning.
+brilliant_scientist_mengele_can_auto_adopt_exact_completed_native_prototype = {
+	OR = {
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.cloning compare = equals }
+			brilliant_scientist_mengele_native_cloning_private_gate = yes
+			is_special_project_completed = sp:sp_brilliant_scientist_cloning
+			NOT = { has_country_flag = mengele_event016_native_retired_cloning }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.flying_bomb compare = equals }
+			brilliant_scientist_mengele_native_rocketry_private_gate = yes
+			is_special_project_completed = sp:sp_rockets_flying_bomb
+			NOT = { is_special_project_completed = sp:sp_air_jet_engine }
+			NOT = { has_country_flag = mengele_event016_native_selected_jet_engine }
+			NOT = { has_country_flag = mengele_event016_native_retired_flying_bomb }
+			NOT = { has_country_flag = mengele_event016_native_retired_jet_engine }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.jet_engine compare = equals }
+			brilliant_scientist_mengele_native_rocketry_private_gate = yes
+			is_special_project_completed = sp:sp_air_jet_engine
+			NOT = { is_special_project_completed = sp:sp_rockets_flying_bomb }
+			NOT = { has_country_flag = mengele_event016_native_selected_flying_bomb }
+			NOT = { has_country_flag = mengele_event016_native_retired_flying_bomb }
+			NOT = { has_country_flag = mengele_event016_native_retired_jet_engine }
+		}
+	}
+}

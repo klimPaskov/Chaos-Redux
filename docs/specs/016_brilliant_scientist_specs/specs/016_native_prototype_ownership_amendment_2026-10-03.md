@@ -62,3 +62,12 @@ The Cloning shared-flag veto and legacy availability overlap are implemented sep
 The exact radar Prototype ordering handoff is implemented separately in a528464ae.
 The native duplicate-definition correction is implemented separately in d73814a15.
 The full Event016 goal remains incomplete.
+
+## Source implementation checkpoint
+
+Cloning and the two Rocketry source selections, exact output/adoption modes, explicit withdrawal, provider cleanup, and CXT observation are implemented in the reviewed source tranche documented in native_prototype_ownership.md.
+The six ordinary controls and three literal native output hooks reuse existing categories, icons, project IDs, costs, clocks, and original payloads.
+The core, integration, text and AI handoffs record their distinct evidence.
+The copied AI expressions match their intended Prototype references in source, while mandatory probability evaluation/comparison remains unresolved after the narrower timeout retries.
+Native start/cancel synchronization, automatic matching-cancellation cleanup and immutable release/reselection generations remain unresolved and are not waived by this implementation.
+The broader fifteen-family migration and full completion contract remain open.

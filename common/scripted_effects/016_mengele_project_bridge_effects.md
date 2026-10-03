@@ -14,12 +14,13 @@ The caller must set it immediately before invocation.
 
 Result: temporary `mengele_event016_native_operational_grant_applied`.
 It starts at zero on every invocation and copies `chaosx_custom_technology_grant_applied` only after the neutral API is actually called.
-An invalid provider, non-custom family, missing private Theory, missing private Prototype, or absent matching native completion produces zero and no grant.
+An invalid provider, non-custom family, missing private Theory, missing private Prototype, or absent matching native completion/provenance produces zero and no grant.
 If neutral grant eligibility rejects an otherwise authenticated call, the result remains zero.
 The helper never removes existing learned technology or entitlement to report failure.
 
 The helper requires `brilliant_scientist_mengele_project_stage_provider_is_valid = yes`.
 Each selected family also requires both `mengele_event016_<family>_theory_completed` and `mengele_event016_<family>_prototype_completed`, plus the exact native completion below.
+For Cloning only, a guarded durable source=cloning and mode=fresh_output receipt also supplies exact completion provenance at the synchronous output boundary, before the country completed bit may be visible.
 These checks read authentic history and do not create history.
 
 ## Exact mapping
@@ -27,7 +28,7 @@ These checks read authentic history and do not create history.
 | Private Event 016 family | Required native completion | Neutral operational family |
 | --- | --- | --- |
 | `teleportation` | `sp:sp_brilliant_scientist_quantum_transit` | `chaosx_custom_technology_family.portal` |
-| `cloning` | `sp:sp_brilliant_scientist_cloning` | `chaosx_custom_technology_family.clone` |
+| `cloning` | `sp:sp_brilliant_scientist_cloning` or the guarded exact fresh Cloning receipt | `chaosx_custom_technology_family.clone` |
 | `robotics` | `sp:sp_brilliant_scientist_autonomous_cognition` | `chaosx_custom_technology_family.robot` |
 | `paleogenetics` | `sp:sp_brilliant_scientist_paleogenetics` | `chaosx_custom_technology_family.paleogenetic` |
 | `xenobiological_synthesis` | `sp:sp_brilliant_scientist_xenobiological_synthesis` | `chaosx_custom_technology_family.xenobiological` |
@@ -103,3 +104,7 @@ It cannot certify this helper's lifecycle and is not a substitute for the parent
 Its artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/cca75ebcdfaaffd7758f44e69620b7fbcecb694ae7325ab40f62e80321c45397/7fce52da95ac9a499fe73494bc4f591e2e8f85fc5752c43bfed6a4e11e505ba8/event-scan-4bccb6ec7fe1.json`.
 No in-game execution or complete portfolio claim is made.
 
+
+The literal Cloning native output and explicit historical-adoption decision call this bridge after recording their private Prototype exactly once.
+The generic unrelated-completion recorder excludes Cloning and Rocketry, and the direct original CBRN consumer remains in its project output.
+Native start/cancel synchronization and release/reselection timing proof remain outside this completion-provenance check.

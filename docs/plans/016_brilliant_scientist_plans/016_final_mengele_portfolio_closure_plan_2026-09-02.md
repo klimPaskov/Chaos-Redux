@@ -261,3 +261,12 @@ The plan intentionally does not widen the 13-candidate random project pool, rede
 The current bridge’s biomedical result-applied marker is present in the reviewed source and is not a defect. The absence of provider branches for electronics, rocketry, high energy, biological weapons, cloning, and Singularity is the remaining source-confirmed closure gap. The exact six-agent biological dispatch, provider Fallout adapter, same-family timed-decision re-entry ordering, and any persistent native-project selection representation are the principal unresolved implementation-validation points.
 
 No HOI4 engine launch, live save, log review, or engine validation was performed. The evidence in this plan is repository source review plus the two bounded MCP artifacts cited above; user-owned live acceptance remains required for the implemented provider callbacks, especially the shared Fallout lock/presentation path.
+
+## Exact-source implementation checkpoint, 2026-10-03
+
+The bounded Cloning and Rocketry selection/provenance tranche is implemented in source and reviewed through the native core, integrated decision, localisation and AI handoffs.
+It includes three selections, three withdrawals, three literal project-output hooks, exact fresh/adopted history, source-specific historical reconciliation, original native payload preservation, provider cleanup and read-only CXT observations.
+The complete native lifecycle and fifteen-family ownership matrix remain required.
+MCP probability analysis returned no scoring/comparison evidence even after narrower requests, so this checkpoint does not certify balance or full completion.
+Current system and asset wiring are documented in docs/events/016_brilliant_scientist/systems/native_prototype_ownership.md.
+No model work or implementation simplification belongs to this tranche.

@@ -241,3 +241,15 @@ A future audit utility could compare the explicit non-enumerable baselines and r
 A future optional cleanup command could remove the test facility-campus state transfers before returning to a normal country, but it should remain separate from the destructive one-line setup command.
 
 A future naval and air roster extension could add similarly scoped registration helpers if the mod introduces dedicated custom ship or airframe equipment rather than only land sub-units. No native runtime enumeration for those surfaces was found in the installed documentation.
+
+### Event016 exact native ownership observation
+
+The existing player-triggered chaosx_cxt_event016_probe_native_inventory also invokes chaosx_cxt_event016_probe_native_ownership.
+The ownership probe copies the three current selections, exact output-observed and retired flags into chaosx_cxt_event016_observed_selected_*, observed_output_* and observed_retired_* debug flags.
+It copies Cloning and Rocketry exact source and settlement mode into chaosx_cxt_event016_cloning_native_source/mode and chaosx_cxt_event016_rocketry_native_source/mode.
+Source codes are none0, Cloning1, FlyingBomb2, JetEngine3, and mode codes are none0, freshOutput1, adoptedCompleted2.
+These are debug observations and never authorize a stage, complete a project, select a source, refund a payment, or alter provider history.
+Missing or short arrays report none rather than creating receipts.
+The existing carrier/setup contract is unchanged and the probe adds no periodic registration or grant hook.
+CXT's ordinary completed-project fixture covers exact adoption and historical ambiguity, and does not prove a fresh native research clock or payment.
+The full native/provider lifecycle matrix and native cancellation/reselection proof remain part of the Event016 completion contract.

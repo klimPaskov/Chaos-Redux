@@ -14,8 +14,8 @@ The source fix removes the two standalone native marker override files.
 | Same-path replacement | Exact existing hook consumers |
 | --- | --- |
 | common/special_projects/projects/radar_projects.txt | sp_air_radar |
-| common/special_projects/projects/air_projects.txt | sp_air_axial_jet_engine, sp_air_supersonic_jet |
-| common/special_projects/projects/rocket_projects.txt | sp_rockets_ballistic_missile, sp_rockets_long_range_ballistic_missile |
+| common/special_projects/projects/air_projects.txt | sp_air_jet_engine Prototype, sp_air_axial_jet_engine, sp_air_supersonic_jet |
+| common/special_projects/projects/rocket_projects.txt | sp_rockets_flying_bomb Prototype, sp_rockets_ballistic_missile, sp_rockets_long_range_ballistic_missile |
 | common/special_projects/projects/nuclear_projects.txt | sp_commercial_nuclear_reactor, sp_nuclear_bomb, sp_thermo_nuclear_bomb, sp_nuclear_warheads |
 | common/technologies/electronic_mechanical_engineering.txt | radio_detection, centimetric_radar, phased_array |
 
@@ -26,8 +26,10 @@ The original native sprites and assets remain the consumers named in the preserv
 
 ## Source and engine evidence
 
-The complete source comparison in 016_native_marker_file_replacement_review_2026-10-03.json records the installed and modified file hashes, all twelve hook consumers, and hook counts.
-Removing only the owned file headers and the nine project and three technology hook blocks yields each complete installed vanilla file exactly.
+The file-replacement snapshot in 016_native_marker_file_replacement_review_2026-10-03.json records the original nine project and three technology hook consumers and file hashes from d73814a15.
+The subsequent exact Cloning and Rocketry Prototype integration is documented in native_prototype_ownership.md, and its three added hook blocks preserve their full preceding project files according to 016_native_prototype_project_preservation_2026-10-03.json.
+At the file-replacement snapshot, removing only the owned headers and original nine project and three technology hook blocks yielded each installed vanilla file exactly.
+The current air and rocket replacements retain their two further Prototype hooks, which must also be removed for a current vanilla comparison.
 The effective same-relative-path project inventory resolves every one of the nine mapped project IDs once.
 This proves source preservation and unique effective definitions, and does not establish live execution.
 

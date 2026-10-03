@@ -1,0 +1,83 @@
+# Exact native Prototype ownership
+
+Cloning and Rocketry use exact native source commitments in the existing Mengele provider categories.
+The selection layer records a project choice and keeps native research, payment, progress, rewards, and completion under the existing special-project object.
+It does not treat a country completed bit as a fresh output or infer a selected Rocketry alternative from an aggregate OR.
+
+## Sources and controls
+
+| Exact project | Source code | Family | Existing category |
+| --- | --- | --- | --- |
+| sp_brilliant_scientist_cloning | 1 | Cloning | Biological Programs |
+| sp_rockets_flying_bomb | 2 | Rocketry | Conventional Programs |
+| sp_air_jet_engine | 3 | Rocketry | Conventional Programs |
+
+Three instant selection controls and three withdrawal controls are in common/decisions/016_mengele_native_prototype_selection_decisions.txt.
+Selection and withdrawal spend no provider resources and start no provider timer.
+A completed exact source enters adoption rather than opening a fresh commitment.
+Rocketry permits one selected alternative, and a pending opposite selection blocks the other choice.
+The current source remains selectable for adoption if it completes while an earlier output could not privately settle.
+A withdrawal requires inactive research and an empty paid family receipt.
+The family receipt checks preserve existing timed provider projects.
+The no-DLC paid Prototype decisions retain their existing path.
+
+## Completion and history
+
+Each of the three existing project country outputs calls its literal source wrapper.
+The wrapper records observation and may settle a fresh private Prototype only with the matching selected source, valid provider, private Theory, incomplete Prototype, and empty matching paid receipt.
+Fresh settlement does not require completion-bit visibility inside the output boundary.
+It records source and mode in fifteen-slot aligned provenance arrays and consumes only the matching selection.
+The observed output fact remains distinct from accepted private history.
+
+The after-Theory driver can adopt one unambiguous eligible completed source, or the matching selected source.
+It rejects automatic adoption of retired sources and does not choose between two historical Rocketry completions.
+The explicit selection controls resolve that two-source case.
+Adoption checks the exact completed object, labels the receipt adopted, and does not replay native output or payment.
+The generic unrelated-completion scan no longer settles these two families.
+
+Cloning preserves its existing operational technology and dedicated programme payload through the guarded bridge.
+A successful literal Cloning output supplies durable fresh provenance when the country completion bit is not yet visible.
+The original CBRN completion adapter runs once, and the dedicated legacy completion effect retains its duplicate-payload guard.
+Provider and terminal cleanup retire current selections and preserve observed facts and accepted source/mode history.
+The enclosing Theory transaction restores its original selectors and output results.
+
+## Implementation surfaces
+
+The new native_prototype constants, triggers, effects and matching API document define selection, exact output, adoption, release, and cleanup.
+The native_selection_decision triggers/effects define presentation and feedback, and the English localisation file supplies all six controls and requirements.
+The existing stage effects own output application, after-Theory entry, and provider cleanup.
+The existing native custom bridge owns operational grants.
+Original project payload preservation is recorded in 016_native_prototype_project_preservation_2026-10-03.json.
+
+The controls reuse GFX_decision_brilliant_scientist_project_cloning_prototype and GFX_decision_brilliant_scientist_project_rocketry_propulsion_prototype from interface/016_brilliant_scientist_project_icons.gfx.
+Their existing textures remain under gfx/interface/decisions/016_brilliant_scientist/projects/.
+No artwork, model, entity, animation, project ID, or technology ID is created or changed for this interface.
+
+## CXT observation
+
+The existing player-triggered native inventory console probe also calls chaosx_cxt_event016_probe_native_ownership.
+It snapshots the three selection, observed-output and retired flags, and the Cloning and Rocketry source/mode slots into CXT-only debug observations.
+Absent or short provenance arrays yield unrecorded observations without extending or changing provider receipts.
+The probe creates no stage, native completion, selection, resource grant, or timer.
+CXT's ordinary setup already completes native projects, so its completed-source path tests adoption and ambiguity, not native payment or a fresh research clock.
+
+## Reference and review evidence
+
+Installed projects/documentation.md:36-46 and198-213 defines project display gates in PROJECT scope with FROM country, and country outputs in COUNTRY scope with FROM project.
+Its SHA-256 is 16879504bc72aa357f1d3c0f1093e94a3946f8c35e7942f65ac9a5d3bcd6c643.
+Installed triggers_documentation.md:6228-6256 defines exact research/completion queries, and7482-7501 defines temporary-variable trigger operations.
+Its SHA-256 is 7d27ed77dadaf3a213a4b3e2c624bf9c02dae495317abe8eee833b27c2d1de29.
+Offline Decision modding:44-78 describes category and decision structure, revision7713b9bcee5f3818d63aafbd45d18e812a9173a7c59ab238384b57db60db6162.
+Installed common/decisions/_documentation.md:1-46 describes decision evaluation and COUNTRY scope, revision5e7e686b5582f32c38d898d805e17171e88f3bfeee4a030deb1884f9726de019.
+The existing family Prototype controls and the exact installed Rocketry project definitions supply the source and AI-policy precedents.
+The core, integrated decision and probability handoffs record their separate evidence and unresolved inputs.
+
+## Remaining lifecycle proof
+
+Native start/cancel synchronization, automatic matching-cancellation cleanup, and immutable release/reselection callback generations remain unresolved under the full completion contract.
+The selection layer does not waive them or represent explicit withdrawal as a substitute.
+A synchronous native output can also be emitted by scripted completion, so fresh output is an exact witnessed transaction and does not independently prove native payment.
+The overloaded MCP route retries and current domain evidence limits remain explicit in the handoffs.
+Source scenario reasoning does not establish live callback timing, research continuation, or engine refresh.
+The full Event016 goal remains incomplete until all fifteen families, lifecycle cases, AI/domain evidence, assets, UI, documentation, and catalog requirements are closed.
+Future work should retain exact source identity while completing those lifecycle seams, without adding another public board or replacing native research with a provider clock.

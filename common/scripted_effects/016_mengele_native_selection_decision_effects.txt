@@ -1,0 +1,95 @@
+# Event 016 native selection decision feedback, COUNTRY scope.
+# The literal decision source enters the private core. This adapter presents
+# its result and preserves existing Cloning operational grants on adoption.
+
+brilliant_scientist_mengele_native_selection_decision_complete = {
+	set_temp_variable = { mengele_event016_native_selection_action_source = mengele_event016_native_prototype_source }
+	brilliant_scientist_mengele_select_native_prototype = yes
+	if = {
+		limit = { check_variable = { var = mengele_event016_native_prototype_result value = constant:mengele_event016_native_prototype_result.selected compare = equals } }
+		custom_effect_tooltip = mengele_event016_native_selection_committed_tt
+	}
+	else_if = {
+		limit = { check_variable = { var = mengele_event016_native_prototype_result value = constant:mengele_event016_native_prototype_result.adopted_settled compare = equals } }
+		custom_effect_tooltip = mengele_event016_native_selection_adopted_tt
+		if = {
+			limit = { check_variable = { var = mengele_event016_native_selection_action_source value = constant:mengele_event016_native_prototype_source.cloning compare = equals } }
+			hidden_effect = {
+				set_temp_variable = { mengele_event016_native_grant_family = constant:brilliant_scientist_project_family.cloning }
+				brilliant_scientist_mengele_grant_native_custom_operational_package = yes
+			}
+		}
+	}
+	else = { custom_effect_tooltip = mengele_event016_native_selection_blocked_tt }
+	set_temp_variable = { mengele_event016_native_selection_action_source = constant:mengele_event016_native_prototype_source.none }
+	brilliant_scientist_mengele_clear_native_prototype_selector = yes
+}
+
+brilliant_scientist_mengele_native_release_decision_complete = {
+	brilliant_scientist_mengele_release_native_prototype_selection = yes
+	if = {
+		limit = { check_variable = { var = mengele_event016_native_prototype_result value = constant:mengele_event016_native_prototype_result.released compare = equals } }
+		custom_effect_tooltip = mengele_event016_native_selection_released_tt
+	}
+	else = { custom_effect_tooltip = mengele_event016_native_selection_blocked_tt }
+	brilliant_scientist_mengele_clear_native_prototype_selector = yes
+}
+
+# COUNTRY scope. Called inside the saved outer Theory transaction only.
+# Choose an existing matching selection or one unambiguous eligible history.
+brilliant_scientist_mengele_try_adopt_exact_native_prototype = {
+	set_temp_variable = { mengele_event016_native_prototype_result = constant:mengele_event016_native_prototype_result.none }
+	set_temp_variable = { mengele_event016_native_prototype_source = constant:mengele_event016_native_prototype_source.none }
+	if = {
+		limit = {
+			check_variable = { var = mengele_event016_adoption_outer_family value = constant:brilliant_scientist_project_family.cloning compare = equals }
+			OR = {
+				has_country_flag = mengele_event016_native_selected_cloning
+				NOT = { has_country_flag = mengele_event016_native_retired_cloning }
+			}
+		}
+		set_temp_variable = { mengele_event016_native_prototype_source = constant:mengele_event016_native_prototype_source.cloning }
+		if = {
+			limit = { OR = { has_country_flag = mengele_event016_native_selected_cloning brilliant_scientist_mengele_can_auto_adopt_exact_completed_native_prototype = yes } }
+			brilliant_scientist_mengele_adopt_exact_completed_native_prototype = yes
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = mengele_event016_adoption_outer_family value = constant:brilliant_scientist_project_family.rocketry compare = equals } }
+		if = {
+			limit = { has_country_flag = mengele_event016_native_selected_flying_bomb }
+			set_temp_variable = { mengele_event016_native_prototype_source = constant:mengele_event016_native_prototype_source.flying_bomb }
+			brilliant_scientist_mengele_adopt_exact_completed_native_prototype = yes
+		}
+		else_if = {
+			limit = { has_country_flag = mengele_event016_native_selected_jet_engine }
+			set_temp_variable = { mengele_event016_native_prototype_source = constant:mengele_event016_native_prototype_source.jet_engine }
+			brilliant_scientist_mengele_adopt_exact_completed_native_prototype = yes
+		}
+		else_if = {
+			limit = {
+				is_special_project_completed = sp:sp_rockets_flying_bomb
+				NOT = { is_special_project_completed = sp:sp_air_jet_engine }
+				NOT = { has_country_flag = mengele_event016_native_retired_flying_bomb }
+			}
+			set_temp_variable = { mengele_event016_native_prototype_source = constant:mengele_event016_native_prototype_source.flying_bomb }
+			if = {
+				limit = { brilliant_scientist_mengele_can_auto_adopt_exact_completed_native_prototype = yes }
+				brilliant_scientist_mengele_adopt_exact_completed_native_prototype = yes
+			}
+		}
+		else_if = {
+			limit = {
+				is_special_project_completed = sp:sp_air_jet_engine
+				NOT = { is_special_project_completed = sp:sp_rockets_flying_bomb }
+				NOT = { has_country_flag = mengele_event016_native_retired_jet_engine }
+			}
+			set_temp_variable = { mengele_event016_native_prototype_source = constant:mengele_event016_native_prototype_source.jet_engine }
+			if = {
+				limit = { brilliant_scientist_mengele_can_auto_adopt_exact_completed_native_prototype = yes }
+				brilliant_scientist_mengele_adopt_exact_completed_native_prototype = yes
+			}
+		}
+	}
+	brilliant_scientist_mengele_clear_native_prototype_selector = yes
+}
