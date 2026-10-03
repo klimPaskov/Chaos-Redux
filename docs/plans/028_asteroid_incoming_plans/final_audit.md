@@ -27,6 +27,11 @@ Those mapped gameplay surfaces remain implementation work, with a bounded decisi
 The near-miss achievement rechecks both shared evolution enable states at selection time, with sixteen actual-source cases and an unchanged non-award miss body recorded in `near_miss_selection_20261003.md`.
 Native settings-toggle, achievement persistence, and no-aftermath acceptance remain unresolved.
 
+The history follow-up uses a guarded sequence-difference lookup instead of a capped search.
+Twenty-two actual before/after AST cases passed, including 1,000 and 1,500 subsequent rows, malformed field bounds, and impact, miss, and fail-closed payloads without extra rows or changes to valid chooser/date fields.
+The actual matched-row body and success tail remain unchanged, with native acceptance and the history-reset epoch ambiguity retained in `subagent_handoffs/history_lookup_20261003.md`.
+The availability validator also checks the recursively nested shared dispatch branch and its authorization gate, preserving all nineteen availability cases and the before-dispatch requirement.
+
 ## Implemented source surfaces
 
 The global root is `chaosx.nr28.1` with `fire_only_once = yes`, and Event 028 is registered in `global.major_events` rather than the stale repeatable-event row. The opening chain, impact resolver, recovery, triggers, achievements, decisions, category, ideas, dynamic modifiers, CXT setup, on-actions, localisation, event history/details, super-event, audio registration, and workbook row are present in the Event 028 surfaces listed in `docs/events/028_asteroid_incoming/overview.md`.

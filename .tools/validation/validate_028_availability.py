@@ -184,8 +184,25 @@ def main():
     settings = parse_source(root / "common/scripted_effects/chaosx_settings_effects.txt")
     dispatcher = settings["fire_event_by_temp_id_no_cluster"]
     preflight_position = next(i for i, (k, _, b) in enumerate(dispatcher) if k == "if" and any(x == "asteroid_incoming_prepare_random_event_fire" for x, _, _ in b))
-    dispatch_position = next(i for i, (k, _, b) in enumerate(dispatcher) if k == "if" and any(x == "set_temp_variable" and ("event_fire_dispatched", "=", "1") in v for x, _, v in b))
+
+    def contains(rows, key, predicate=lambda value: True):
+        return any((name == key and predicate(value)) or
+                   (isinstance(value, list) and contains(value, key, predicate))
+                   for name, _, value in rows)
+
+    # The shared dispatcher may nest package-specific paths inside the single
+    # authorized-fire branch. Inspect its actual recursive body, not one shape.
+    dispatch_position = next(i for i, (k, _, b) in enumerate(dispatcher)
+                             if k == "if" and contains(b, "set_temp_variable", lambda value: ("event_fire_dispatched", "=", "1") in value)
+                             and contains(b, "on_major_event_fired")
+                             and contains(b, "country_event", lambda value: ("id", "=", "chaosx.nr[EVENT_ID].1") in value))
     assert preflight_position < dispatch_position
+    dispatch_limit = next(b for k, _, b in dispatcher[dispatch_position][2] if k == "limit")
+    assert contains(dispatch_limit, "check_variable", lambda value:
+                    ("event_single_fire_allowed", ">", "0") in value or
+                    all(term in value for term in (("var", "=", "event_single_fire_allowed"),
+                                                   ("value", "=", "0"),
+                                                   ("compare", "=", "greater_than"))))
     preflight = dispatcher[preflight_position][2]
     assert "event_single_fire_allowed" in str(preflight) and "asteroid_incoming_prefire_ready" in str(preflight)
     print("AST_RETURN_BOARD: five matching option bodies, unchanged weights, correct chooser/lock guards, no reroll or repeated opening effects.")

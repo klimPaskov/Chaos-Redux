@@ -385,21 +385,21 @@ asteroid_incoming_record_followup_history = {
 		limit = {
 			has_global_flag = asteroid_incoming_history_outcome_pending
 			has_variable = global.asteroid_incoming_history_sequence
+			has_variable = global.events_log_history_sequence
+			check_variable = { var = global.asteroid_incoming_history_sequence value = constant:asteroid_incoming_runtime.zero compare = greater_than }
+			check_variable = { var = global.events_log_history_sequence value = global.asteroid_incoming_history_sequence compare = greater_than_or_equals }
 		}
 		sanitize_events_log_history_actor_entries = yes
-		set_temp_variable = { asteroid_incoming_history_row_index = constant:asteroid_incoming_runtime.zero }
-		while_loop_effect = {
+		# Both shared recorders prepend once per sequence increment. This exact
+		# index remains usable even when more than a loop's ceiling of rows follow.
+		set_temp_variable = { asteroid_incoming_history_row_index = global.events_log_history_sequence }
+		subtract_from_temp_variable = { asteroid_incoming_history_row_index = global.asteroid_incoming_history_sequence }
+		if = {
 			limit = {
-				check_variable = {
-					var = asteroid_incoming_history_row_index
-					value = global.events_log_history_sequence_entries^num
-					compare = less_than
-				}
-				check_variable = {
-					var = asteroid_incoming_history_row_updated
-					value = constant:asteroid_incoming_runtime.one
-					compare = less_than
-				}
+				check_variable = { var = asteroid_incoming_history_row_index value = constant:asteroid_incoming_runtime.zero compare = greater_than_or_equals }
+				check_variable = { var = asteroid_incoming_history_row_index value = global.events_log_history_sequence_entries^num compare = less_than }
+				check_variable = { var = asteroid_incoming_history_row_index value = global.events_log_history_event_id_entries^num compare = less_than }
+				check_variable = { var = asteroid_incoming_history_row_index value = global.events_log_history_payload_entries^num compare = less_than }
 			}
 			if = {
 				limit = {
@@ -412,6 +412,19 @@ asteroid_incoming_record_followup_history = {
 						var = global.events_log_history_event_id_entries^asteroid_incoming_history_row_index
 						value = constant:asteroid_incoming_event.id
 						compare = equals
+					}
+					OR = {
+						NOT = {
+							AND = {
+								check_variable = { var = asteroid_incoming_history_payload value = constant:asteroid_incoming_event.history_payload_impact compare = equals }
+								has_event_target = asteroid_incoming_locked_country
+								event_target:asteroid_incoming_locked_country = { exists = yes }
+							}
+						}
+						AND = {
+							check_variable = { var = asteroid_incoming_history_row_index value = global.events_log_history_secondary_actor_entries^num compare = less_than }
+							check_variable = { var = asteroid_incoming_history_row_index value = global.events_log_history_has_secondary_actor_entries^num compare = less_than }
+						}
 					}
 				}
 				set_variable = { global.events_log_history_payload_entries^asteroid_incoming_history_row_index = asteroid_incoming_history_payload }
@@ -433,7 +446,6 @@ asteroid_incoming_record_followup_history = {
 				}
 				set_temp_variable = { asteroid_incoming_history_row_updated = constant:asteroid_incoming_runtime.one }
 			}
-			add_to_temp_variable = { asteroid_incoming_history_row_index = constant:asteroid_incoming_runtime.loop_increment }
 		}
 	}
 	if = {
