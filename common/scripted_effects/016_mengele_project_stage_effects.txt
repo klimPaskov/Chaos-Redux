@@ -1519,7 +1519,17 @@ brilliant_scientist_mengele_sync_native_project_prototypes = {
 		set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.prototype }
 		set_temp_variable = { mengele_event016_project_output_authorized = constant:brilliant_scientist_value.one }
 		brilliant_scientist_mengele_apply_family_stage_output = yes
-		if = { limit = { check_variable = { var = mengele_event016_project_output_applied value = constant:brilliant_scientist_value.one compare = equals } } set_temp_variable = { mengele_event016_native_prototype_synced = constant:brilliant_scientist_value.one } }
+		if = {
+			limit = { check_variable = { var = mengele_event016_project_output_applied value = constant:brilliant_scientist_value.one compare = equals } }
+			set_temp_variable = { mengele_event016_native_prototype_synced = constant:brilliant_scientist_value.one }
+			# The exact radar output and its technology may arrive before the
+			# native Prototype callback. Retry that pair only after this new
+			# private Prototype receipt, retaining the existing paid-timer gate.
+			if = {
+				limit = { check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.electronics compare = equals } }
+				brilliant_scientist_mengele_settle_native_electronics_deployment_from_radar = yes
+			}
+		}
 	}
 	brilliant_scientist_mengele_clear_project_stage_selectors = yes
 	set_temp_variable = { mengele_event016_project_output_authorized = constant:brilliant_scientist_value.zero }

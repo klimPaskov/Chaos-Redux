@@ -180,3 +180,12 @@ The migration cannot reconstruct missing historical payment values and does not 
 The approved exact output hooks live in same-relative-path vanilla file replacements for air_projects.txt, radar_projects.txt, rocket_projects.txt, nuclear_projects.txt, and electronic_mechanical_engineering.txt.
 These replace the standalone duplicate-ID files after the 2026-10-03 live QA found duplicated project output entries.
 The full-file source comparison and effective-ID inventory are recorded in 016_native_marker_file_replacement_review_2026-10-03.json.
+
+## Electronics completion ordering
+
+After brilliant_scientist_mengele_sync_native_project_prototypes applies a new private Electronics Prototype, it calls the existing exact radar-pair settlement helper once.
+The sp_air_radar output marker and radio_detection completion may both arrive before the native Prototype callback, so this handoff supplies the remaining attempt after the predecessor exists.
+The helper still requires the exact output-seen flag and radio_detection, then authenticates the live provider, private predecessor, and empty matching paid receipt.
+It retains the native Prototype result marker, introduces no payment or timer, and clears its temporary family/stage selectors through the existing cleanup.
+Other families do not enter the radar-pair helper from this handoff.
+The bounded source review is 016_radar_prototype_ordering_review_2026-10-03.md, and live callback ordering remains part of Event 016 acceptance.

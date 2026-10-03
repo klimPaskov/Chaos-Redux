@@ -38,9 +38,35 @@ Its SHA-256 is c5428838db20c4c812c66aff82cbafc58db3b73453c30436bce0d97436170bee.
 The original installed files are the exact vanilla precedents and tuning source for all five replacements.
 The file ownership correction is grounded in the supplied live duplicate-entry evidence rather than an assumed duplicate-ID merge rule.
 
+## Electronics completion ordering
+
+The exact radar project marker, radio_detection output, and private Prototype callback may reach their country effects in different orders.
+When the Prototype receipt is recorded after both other outputs, brilliant_scientist_mengele_sync_native_project_prototypes makes one further attempt through the existing exact radar-pair helper.
+That attempt requires the stored exact radar output marker and radio_detection, and the shared settlement gate still requires the private Prototype predecessor and an empty paid receipt.
+It preserves the successful native Prototype result marker and uses the existing selector cleanup.
+
+| Source scenario | Expected guard behavior |
+| --- | --- |
+| Radar output and technology precede private Prototype | The new Prototype handoff can settle Deployment once after the predecessor is recorded. |
+| Private Prototype precedes radar output or technology | The handoff remains gated, and the existing exact output callbacks settle when both inputs arrive. |
+| No exact radar output marker | The handoff cannot settle Deployment from a broad completed-project scan alone. |
+| Matching paid receipt remains active | Native settlement skips that transition and leaves the paid timer and payment untouched. |
+| Another family records a native Prototype | The new Electronics handoff is not called. |
+| Repeated callback | Existing completed-stage and receipt checks prevent another Deployment output. |
+
+These are source contract cases rather than observed engine scenarios.
+The independent bounded review is 016_radar_prototype_ordering_review_2026-10-03.md.
+
 ## Remaining completion work and future maintenance
 
 Current technology MCP coverage and a later live QA cycle remain outstanding for the correction.
-Exact provider Prototype ownership, Radar Prototype-to-Deployment ordering, and the full provider lifecycle matrix remain in the accepted Event 016 completion contract.
+After the app reset, the connected desktop tool inventory omitted the HOI4 routes.
+A direct installed-service check with a single-workspace configuration completed initialize, ping, and tools/list for version3.6.0.
+Its live source_lookup schema has no view or keyPath fields, and script_validate is not exposed.
+The narrower helper query used maxDefinitions1, includeReferences false, maxReferences0, and maxLines36.
+That query and the event reference context request each timed out after120 seconds, so they delivered no domain evidence.
+The previous in-flight desktop technology request lost its execution handle during the app reset.
+No inspection or render success is inferred from service initialization or source comparison.
+Exact provider Prototype ownership, runtime acceptance of the Radar handoff, and the full provider lifecycle matrix remain in the accepted Event 016 completion contract.
 After an installed game update, compare the five replacements against their source files and reapply only the approved hooks to any changed native definitions.
 Do not treat a previous source hash as proof that the current native file is still preserved.
