@@ -442,6 +442,19 @@ Keep the complete bodies of `is_special_chaos_country`, `is_actual_nonhuman_coun
 
 If you add a new reusable dynamic scripted effect (an effect that could be generalized for all events), document it in `common/scripted_effects/chaosx_dynamic_effects.md` in the same change.
 
+#### Native special-project output overrides
+
+Do not assume duplicate native project IDs safely replace or partially merge definitions across filenames.
+For approved vanilla project output changes, use a complete replacement at the same relative vanilla file path unless the relevant engine merge behavior is proven.
+Repeating full definitions in a distinct mod filename can duplicate enable-equipment or module list entries.
+
+- Check installed native documentation, current vanilla source, and every existing mod owner of the file and project IDs before editing.
+- Retain original tuning, availability, rewards, and file-scoped constants, including other projects in the replaced file, while adding only approved owned output hooks.
+- Record vanilla source paths and SHA-256 hashes, then remove only the owned hooks from a comparison copy and verify exact remaining content against those sources.
+- Check effective source-ID uniqueness after same-path masking, including other mod files that still declare the IDs.
+
+Source equality establishes preservation only, and must not be described as engine validation.
+
 #### Event-created country setup and audit
 
 If the event creates or manages non-standard countries, account for that in shared classification triggers. Any event-created or event-managed chaos country must be registered in `is_special_chaos_country` in `common/scripted_triggers/chaosx_dynamic_triggers.txt` and documented in `common/scripted_triggers/chaosx_dynamic_triggers.md`. If that chaos country is actually nonhuman rather than merely unusual, supernatural, extremist, or scenario-specific, also register it in `is_actual_nonhuman_country` and update the same documentation. Do not create event-specific duplicate classifiers such as `is_<event>_chaos_enemy`, `is_<event>_special_country`, or per-event nonhuman triggers when the shared triggers can express the category. Events interact with each other, so systems that usually affect normal countries, such as black plague, mass panic, civilian migration, or ideology spread, should exclude zombie, alien, and other nonhuman countries through the shared triggers instead of one-off checks.

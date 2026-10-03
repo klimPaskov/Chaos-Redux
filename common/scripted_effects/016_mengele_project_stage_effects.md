@@ -176,3 +176,7 @@ Singularity's paid component presentation must establish authentic private compo
 Singularity's paid late-stage flags and modifiers are implemented; playable decisions, physical build proof, and the terminal/Fallout route remain open.
 Longer-than-current receipt arrays are preserved without truncation, but the current cleanup contract visits only the fifteen defined families.
 The migration cannot reconstruct missing historical payment values and does not fabricate them from current quotes.
+
+The approved exact output hooks live in same-relative-path vanilla file replacements for air_projects.txt, radar_projects.txt, rocket_projects.txt, nuclear_projects.txt, and electronic_mechanical_engineering.txt.
+These replace the standalone duplicate-ID files after the 2026-10-03 live QA found duplicated project output entries.
+The full-file source comparison and effective-ID inventory are recorded in 016_native_marker_file_replacement_review_2026-10-03.json.
