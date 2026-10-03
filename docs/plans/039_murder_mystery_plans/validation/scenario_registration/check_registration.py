@@ -84,6 +84,14 @@ assert getters.index("localization_key = chaosx.scenarios.launch_status.assassin
 
 shared_gate = read("common/scripted_triggers/chaosx_triggerable_scenarios_triggers.txt")
 assert "murder_mystery_triggerable_scenario_can_launch = yes" in block(shared_gate, "triggerable_scenario_can_launch_selected")
+manual_gate = block(read("common/scripted_triggers/039_murder_mystery_integration_triggers.txt"), "murder_mystery_triggerable_scenario_can_launch")
+assert "world_end_disabled" not in manual_gate and "murder_mystery_event_is_available" not in manual_gate
+for flag in ["world_end", "murder_mystery_runtime_active", "murder_mystery_runtime_resolved", "murder_mystery_scenario_launch_in_progress", "murder_mystery_scenario_launched"]:
+    assert "NOT = { has_global_flag = " + flag + " }" in manual_gate
+assert "murder_mystery_has_any_eligible_host = yes" in manual_gate
+terminal_gate = block(read("common/scripted_triggers/039_murder_mystery_integration_triggers.txt"), "murder_mystery_world_branch_is_enabled")
+assert "NOT = { has_global_flag = world_end_disabled }" in terminal_gate
+assert "NOT = { has_global_flag = murder_mystery_world_branch_disabled }" in terminal_gate
 dispatch = block(effects, "trigger_selected_chaosx_scenario")
 assert "triggerable_scenario_id.assassin_network" in dispatch
 assert "murder_mystery_triggerable_scenario_launch = yes" in dispatch

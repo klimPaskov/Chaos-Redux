@@ -140,3 +140,26 @@ No new fallback or simplified design is accepted by this registration repair.
 
 Skills applied: `chaos-redux-events`, `chaos-redux-subagents`, `chaos-redux-improvement-loop`, `chaos-redux-event-planning`, and `chaos-redux-scripted-gui`.
 No skills were created or changed.
+
+## Post-registration follow-on: manual setting gate
+
+Read-only follow-on review on 2026-10-03 after registration commit `2f8a05eff`.
+The parent owns this separate source change.
+Comparison of the working-tree integration-trigger file against that commit shows exactly one changed block, `murder_mystery_triggerable_scenario_can_launch`.
+Reviewed file SHA-256: `16f2972dd0085000611bbfc5530458f6c7ae80bae6bd80b4409860765861c2b7`.
+
+At `common\scripted_triggers\039_murder_mystery_integration_triggers.txt:203-205`, the former `murder_mystery_event_is_available = yes` alias is replaced by exactly three explicit guards: `NOT murder_mystery_runtime_active`, `NOT murder_mystery_runtime_resolved`, and `NOT world_end`, each expressed through `has_global_flag`.
+The existing `NOT murder_mystery_scenario_launch_in_progress`, `NOT murder_mystery_scenario_launched`, and `murder_mystery_has_any_eligible_host = yes` remain unchanged at lines 206-208.
+The manual gate no longer inherits `world_end_disabled` from the automatic-availability alias.
+
+The terminal setting predicate is unchanged: `murder_mystery_world_branch_is_enabled` at lines 148-151 still rejects both `murder_mystery_world_branch_disabled` and `world_end_disabled`.
+`murder_mystery_terminal_option_is_available` at lines 196-199 still requires that predicate together with `murder_mystery_world_end_activation_is_valid`.
+Automatic availability at lines 49-54 and the host predicate at lines 12-34, including `individual_crisis_load_is_below_cap`, are unchanged against the registration commit.
+This patch does not touch the separate host-weight implementation.
+
+Disposition: the world-end-setting portion of finding 1 is resolved in source by this separate bounded change.
+The inherited host-load restriction, probability coverage, delayed-root cleanup, intensity preflight, payload outcomes, and full Part 11/Part 18 acceptance remain open.
+The parent's manual-exclusion and terminal-setting checks are reported as passing parent evidence, with no observed launch result inferred.
+No new MCP query was submitted for this follow-on review.
+The parent's gate source lookup and narrow root render/compare retries remain pending as supplied context.
+Only this handoff appendix was edited by the auditor, with no gameplay edit, staging, commit, or launch.
