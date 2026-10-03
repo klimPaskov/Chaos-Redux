@@ -1054,6 +1054,16 @@ chaosx_nr25_run_bounded_pulse = {
 		}
 		chaosx_nr25_update_achievement_tracking = yes
 		chaosx_nr25_prepare_board_slots = yes
+		# Any surviving registered expedition can deliver the date-window
+		# callback if the first submitter's queued event lost its country.
+		if = {
+			limit = {
+				has_global_flag = chaosx_nr25_active
+				check_variable = { var = global.chaosx_nr25_final_resolution_pending value = constant:chaosx_nr25_value.one compare = equals }
+				check_variable = { var = global.date value = global.chaosx_nr25_final_candidate_date compare = greater_than }
+			}
+			chaosx_nr25_resolve_final_candidate = yes
+		}
 		if = {
 			limit = {
 				OR = {
@@ -1965,6 +1975,31 @@ chaosx_nr25_advance_phase_if_ready = {
 	}
 }
 
+# COUNTRY scope. Captures the successful mission at submission time. The
+# resolver compares these durable receipts, rather than values changed by a
+# subsequent pulse, sabotage, or report acknowledgement.
+chaosx_nr25_capture_recovery_proof = {
+	set_country_flag = chaosx_nr25_recovery_proof_submitted
+	set_variable = { chaosx_nr25_recovery_proof_day = global.date }
+	set_variable = { chaosx_nr25_recovery_proof_survey = chaosx_nr25_survey_evidence }
+	set_variable = { chaosx_nr25_recovery_proof_readiness = chaosx_nr25_logistics_readiness }
+	set_variable = { chaosx_nr25_recovery_proof_outpost = chaosx_nr25_outpost_security }
+	set_variable = { chaosx_nr25_recovery_proof_exposure = chaosx_nr25_exposure_risk }
+	set_variable = { chaosx_nr25_recovery_proof_ready_date = chaosx_nr25_final_ready_date }
+}
+
+# COUNTRY scope. Projects one submitted receipt into the shared candidate
+# fields. Entry order is durable and unique within the participant registry.
+chaosx_nr25_store_final_candidate = {
+	set_variable = { global.chaosx_nr25_final_candidate_survey = chaosx_nr25_recovery_proof_survey }
+	set_variable = { global.chaosx_nr25_final_candidate_readiness = chaosx_nr25_recovery_proof_readiness }
+	set_variable = { global.chaosx_nr25_final_candidate_outpost = chaosx_nr25_recovery_proof_outpost }
+	set_variable = { global.chaosx_nr25_final_candidate_exposure = chaosx_nr25_recovery_proof_exposure }
+	set_variable = { global.chaosx_nr25_final_candidate_ready_date = chaosx_nr25_recovery_proof_ready_date }
+	set_variable = { global.chaosx_nr25_final_candidate_entry = chaosx_nr25_entry_order }
+	save_global_event_target_as = chaosx_nr25_final_candidate_country
+}
+
 # COUNTRY scope. Lexical comparator for candidates that become valid on the
 # same day. The date window is handled by the caller; this helper only applies
 # the accepted evidence ordering and ends with stable participant identifiers.
@@ -1973,7 +2008,7 @@ chaosx_nr25_candidate_is_better_same_day = {
 	if = {
 		limit = {
 			check_variable = {
-				var = chaosx_nr25_survey_evidence
+				var = chaosx_nr25_recovery_proof_survey
 				value = global.chaosx_nr25_final_candidate_survey
 				compare = greater_than
 			}
@@ -1983,35 +2018,35 @@ chaosx_nr25_candidate_is_better_same_day = {
 	else_if = {
 		limit = {
 			check_variable = {
-				var = chaosx_nr25_survey_evidence
+				var = chaosx_nr25_recovery_proof_survey
 				value = global.chaosx_nr25_final_candidate_survey
 				compare = equals
 			}
 		}
 		if = {
-			limit = { check_variable = { var = chaosx_nr25_logistics_readiness value = global.chaosx_nr25_final_candidate_readiness compare = greater_than } }
+			limit = { check_variable = { var = chaosx_nr25_recovery_proof_readiness value = global.chaosx_nr25_final_candidate_readiness compare = greater_than } }
 			set_temp_variable = { chaosx_nr25_candidate_is_better = constant:chaosx_nr25_value.one }
 		}
 		else_if = {
-			limit = { check_variable = { var = chaosx_nr25_logistics_readiness value = global.chaosx_nr25_final_candidate_readiness compare = equals } }
+			limit = { check_variable = { var = chaosx_nr25_recovery_proof_readiness value = global.chaosx_nr25_final_candidate_readiness compare = equals } }
 			if = {
-				limit = { check_variable = { var = chaosx_nr25_outpost_security value = global.chaosx_nr25_final_candidate_outpost compare = greater_than } }
+				limit = { check_variable = { var = chaosx_nr25_recovery_proof_outpost value = global.chaosx_nr25_final_candidate_outpost compare = greater_than } }
 				set_temp_variable = { chaosx_nr25_candidate_is_better = constant:chaosx_nr25_value.one }
 			}
 			else_if = {
-				limit = { check_variable = { var = chaosx_nr25_outpost_security value = global.chaosx_nr25_final_candidate_outpost compare = equals } }
+				limit = { check_variable = { var = chaosx_nr25_recovery_proof_outpost value = global.chaosx_nr25_final_candidate_outpost compare = equals } }
 				if = {
-					limit = { check_variable = { var = chaosx_nr25_exposure_risk value = global.chaosx_nr25_final_candidate_exposure compare = less_than } }
+					limit = { check_variable = { var = chaosx_nr25_recovery_proof_exposure value = global.chaosx_nr25_final_candidate_exposure compare = less_than } }
 					set_temp_variable = { chaosx_nr25_candidate_is_better = constant:chaosx_nr25_value.one }
 				}
 				else_if = {
-					limit = { check_variable = { var = chaosx_nr25_exposure_risk value = global.chaosx_nr25_final_candidate_exposure compare = equals } }
+					limit = { check_variable = { var = chaosx_nr25_recovery_proof_exposure value = global.chaosx_nr25_final_candidate_exposure compare = equals } }
 					if = {
-						limit = { check_variable = { var = chaosx_nr25_final_ready_date value = global.chaosx_nr25_final_candidate_ready_date compare = less_than } }
+						limit = { check_variable = { var = chaosx_nr25_recovery_proof_ready_date value = global.chaosx_nr25_final_candidate_ready_date compare = less_than } }
 						set_temp_variable = { chaosx_nr25_candidate_is_better = constant:chaosx_nr25_value.one }
 					}
 					else_if = {
-						limit = { check_variable = { var = chaosx_nr25_final_ready_date value = global.chaosx_nr25_final_candidate_ready_date compare = equals } }
+						limit = { check_variable = { var = chaosx_nr25_recovery_proof_ready_date value = global.chaosx_nr25_final_candidate_ready_date compare = equals } }
 						if = {
 							limit = { check_variable = { var = chaosx_nr25_entry_order value = global.chaosx_nr25_final_candidate_entry compare = less_than } }
 							set_temp_variable = { chaosx_nr25_candidate_is_better = constant:chaosx_nr25_value.one }
@@ -2025,12 +2060,21 @@ chaosx_nr25_candidate_is_better_same_day = {
 	}
 }
 
-# COUNTRY scope. A valid final recovery is submitted to the single same-day
-# candidate window. The comparator is deterministic and does not use a global
-# random scan. A later day cannot displace an earlier candidate.
+# COUNTRY scope. Only a successful, still-valid final mission may submit.
+# The first day owns the recovery window; later-day receipts cannot displace
+# it. A valid same-day receipt survives loss of the event's original actor.
 chaosx_nr25_submit_final_candidate = {
 	if = {
 		limit = {
+			has_global_flag = chaosx_nr25_active
+			has_country_flag = chaosx_nr25_participant
+			exists = yes
+			NOT = { has_capitulated = yes }
+			NOT = { is_subject = yes }
+			NOT = { has_country_flag = chaosx_nr25_terminal }
+			has_country_flag = chaosx_nr25_final_mission_success
+			has_country_flag = chaosx_nr25_primary_site_confirmed
+			has_country_flag = chaosx_nr25_outpost_established
 			check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals }
 			check_variable = { var = chaosx_nr25_progress value = constant:chaosx_nr25_cost.progress_min compare = greater_than_or_equals }
 			check_variable = { var = chaosx_nr25_logistics_readiness value = constant:chaosx_nr25_cost.readiness_min compare = greater_than_or_equals }
@@ -2042,80 +2086,139 @@ chaosx_nr25_submit_final_candidate = {
 			check_variable = { var = chaosx_nr25_final_cooldown value = constant:chaosx_nr25_value.zero compare = less_than_or_equals }
 		}
 		set_variable = { chaosx_nr25_final_cooldown = constant:chaosx_nr25_timing.final_cooldown_days }
-		set_temp_variable = { chaosx_nr25_candidate_score = chaosx_nr25_survey_evidence }
 		add_to_variable = { global.chaosx_nr25_recovery_order = constant:chaosx_nr25_value.one }
 		if = {
 			limit = { check_variable = { var = global.chaosx_nr25_final_resolution_pending value = constant:chaosx_nr25_value.zero compare = equals } }
+			chaosx_nr25_capture_recovery_proof = yes
 			set_variable = { global.chaosx_nr25_final_resolution_pending = constant:chaosx_nr25_value.one }
 			set_variable = { global.chaosx_nr25_final_candidate_date = global.date }
-			set_variable = { global.chaosx_nr25_final_candidate_score = chaosx_nr25_candidate_score }
-			set_variable = { global.chaosx_nr25_final_candidate_survey = chaosx_nr25_survey_evidence }
-			set_variable = { global.chaosx_nr25_final_candidate_readiness = chaosx_nr25_logistics_readiness }
-			set_variable = { global.chaosx_nr25_final_candidate_exposure = chaosx_nr25_exposure_risk }
-			set_variable = { global.chaosx_nr25_final_candidate_outpost = chaosx_nr25_outpost_security }
-			set_variable = { global.chaosx_nr25_final_candidate_ready_date = chaosx_nr25_final_ready_date }
-			set_variable = { global.chaosx_nr25_final_candidate_entry = chaosx_nr25_entry_order }
-			save_global_event_target_as = chaosx_nr25_final_candidate_country
+			chaosx_nr25_store_final_candidate = yes
 			country_event = { id = chaosx.nr25.84 days = 1 }
 		}
 		else_if = {
 			limit = { check_variable = { var = global.chaosx_nr25_final_candidate_date value = global.date compare = equals } }
+			chaosx_nr25_capture_recovery_proof = yes
+			set_temp_variable = { chaosx_nr25_candidate_is_better = constant:chaosx_nr25_value.zero }
 			chaosx_nr25_candidate_is_better_same_day = yes
 			if = {
-				limit = {
-					check_variable = { var = chaosx_nr25_candidate_is_better value = constant:chaosx_nr25_value.one compare = equals }
+				limit = { check_variable = { var = chaosx_nr25_candidate_is_better value = constant:chaosx_nr25_value.one compare = equals } }
+				chaosx_nr25_store_final_candidate = yes
+			}
+			# This country supplies an independent resolver callback if the
+			# first submitter ceases to exist before its scheduled event fires.
+			country_event = { id = chaosx.nr25.84 days = 1 }
+		}
+	}
+}
+
+# COUNTRY scope. Revalidates only submitted receipts in the stored registry.
+# This also recovers the next deterministic same-day finalist if the leading
+# candidate is annexed, capitulates, becomes a subject, or withdraws.
+chaosx_nr25_reselect_final_candidate = {
+	clear_global_event_target = chaosx_nr25_final_candidate_country
+	set_temp_variable = { chaosx_nr25_final_candidate_found = constant:chaosx_nr25_value.zero }
+	for_each_scope_loop = {
+		array = global.chaosx_nr25_participants
+		if = {
+			limit = {
+				exists = yes
+				NOT = { has_capitulated = yes }
+				NOT = { is_subject = yes }
+				has_country_flag = chaosx_nr25_participant
+				NOT = { has_country_flag = chaosx_nr25_terminal }
+				has_country_flag = chaosx_nr25_recovery_proof_submitted
+				check_variable = { var = chaosx_nr25_recovery_proof_day value = global.chaosx_nr25_final_candidate_date compare = equals }
+			}
+			if = {
+				limit = { check_variable = { var = chaosx_nr25_final_candidate_found value = constant:chaosx_nr25_value.zero compare = equals } }
+				chaosx_nr25_store_final_candidate = yes
+				set_temp_variable = { chaosx_nr25_final_candidate_found = constant:chaosx_nr25_value.one }
+			}
+			else = {
+				set_temp_variable = { chaosx_nr25_candidate_is_better = constant:chaosx_nr25_value.zero }
+				chaosx_nr25_candidate_is_better_same_day = yes
+				if = {
+					limit = { check_variable = { var = chaosx_nr25_candidate_is_better value = constant:chaosx_nr25_value.one compare = equals } }
+					chaosx_nr25_store_final_candidate = yes
 				}
-				set_variable = { global.chaosx_nr25_final_candidate_score = chaosx_nr25_candidate_score }
-				set_variable = { global.chaosx_nr25_final_candidate_survey = chaosx_nr25_survey_evidence }
-				set_variable = { global.chaosx_nr25_final_candidate_readiness = chaosx_nr25_logistics_readiness }
-				set_variable = { global.chaosx_nr25_final_candidate_exposure = chaosx_nr25_exposure_risk }
-				set_variable = { global.chaosx_nr25_final_candidate_outpost = chaosx_nr25_outpost_security }
-				set_variable = { global.chaosx_nr25_final_candidate_ready_date = chaosx_nr25_final_ready_date }
-				set_variable = { global.chaosx_nr25_final_candidate_entry = chaosx_nr25_entry_order }
-				save_global_event_target_as = chaosx_nr25_final_candidate_country
 			}
 		}
 	}
 }
 
-# COUNTRY scope. The current event target is the already selected same-day
-# candidate. All participant outcomes are queued once, and the shared target is
-# then cleared so no saved pointer leaks into later events.
+# COUNTRY scope. Settlement is applied while the registry-selected country is
+# valid. Report acknowledgement never grants rewards or repeats settlement.
 chaosx_nr25_resolve_final_candidate = {
 	if = {
 		limit = {
 			has_global_flag = chaosx_nr25_active
-			has_event_target = chaosx_nr25_final_candidate_country
+			check_variable = { var = global.chaosx_nr25_final_resolution_pending value = constant:chaosx_nr25_value.one compare = equals }
+			check_variable = { var = global.date value = global.chaosx_nr25_final_candidate_date compare = greater_than }
 		}
-		set_global_flag = chaosx_nr25_final_recovery_resolved
-		clr_global_flag = chaosx_nr25_active
-		chaosx_nr25_clear_pending_evolutions = yes
-		set_variable = { global.chaosx_nr25_phase = constant:chaosx_nr25_phase.analysis }
+		chaosx_nr25_reselect_final_candidate = yes
+		if = {
+			limit = { has_event_target = chaosx_nr25_final_candidate_country }
+			set_global_flag = chaosx_nr25_final_recovery_resolved
+			clr_global_flag = chaosx_nr25_active
+			chaosx_nr25_clear_pending_evolutions = yes
+			set_variable = { global.chaosx_nr25_phase = constant:chaosx_nr25_phase.analysis }
 			event_target:chaosx_nr25_final_candidate_country = {
-			chaosx_nr25_remove_phase_missions = yes
-			chaosx_nr25_remove_final_missions = yes
-			chaosx_nr25_clear_selection_state = yes
-			clr_country_flag = chaosx_nr25_final_mission_active
-			clr_country_flag = chaosx_nr25_final_mission_ready
-			set_country_flag = chaosx_nr25_recovery_winner
-			set_country_flag = chaosx_nr25_terminal
-			country_event = { id = chaosx.nr25.81 days = 1 }
-		}
-			every_country = {
-			limit = {
-			has_country_flag = chaosx_nr25_participant
-			NOT = { has_country_flag = chaosx_nr25_recovery_winner }
+				chaosx_nr25_remove_phase_missions = yes
+				chaosx_nr25_remove_final_missions = yes
+				chaosx_nr25_clear_selection_state = yes
+				set_variable = { global.chaosx_nr25_winner = THIS.id }
+				set_country_flag = chaosx_nr25_recovery_winner
+				set_country_flag = chaosx_nr25_terminal
+				chaosx_nr25_record_winner_history = yes
+				chaosx_nr25_apply_winner_settlement = yes
+				country_event = { id = chaosx.nr25.81 days = 1 }
+				news_event = { id = chaosx.news.26 days = 1 }
 			}
-			chaosx_nr25_remove_phase_missions = yes
-			chaosx_nr25_remove_final_missions = yes
-			chaosx_nr25_clear_selection_state = yes
-			clr_country_flag = chaosx_nr25_final_mission_active
-			clr_country_flag = chaosx_nr25_final_mission_ready
-			set_country_flag = chaosx_nr25_terminal
-			country_event = { id = chaosx.nr25.82 days = 1 }
+			for_each_scope_loop = {
+				array = global.chaosx_nr25_participants
+				if = {
+					limit = {
+						exists = yes
+						has_country_flag = chaosx_nr25_participant
+						NOT = { has_country_flag = chaosx_nr25_recovery_winner }
+						NOT = { has_country_flag = chaosx_nr25_loser_settlement_complete }
+					}
+					chaosx_nr25_remove_phase_missions = yes
+					chaosx_nr25_remove_final_missions = yes
+					chaosx_nr25_clear_selection_state = yes
+					set_country_flag = chaosx_nr25_terminal
+					chaosx_nr25_apply_loser_settlement = yes
+					country_event = { id = chaosx.nr25.82 days = 1 }
+				}
+			}
+			clear_global_event_target = chaosx_nr25_final_candidate_country
+			clear_global_event_target = chaosx_nr25_history_actor
 		}
-		clear_global_event_target = chaosx_nr25_final_candidate_country
-		clear_global_event_target = chaosx_nr25_history_actor
+		else = {
+			# The primary recovery proof is no longer valid. Preserve verified
+			# losing evidence and close without inventing a replacement reward.
+			clr_global_flag = chaosx_nr25_active
+			set_global_flag = chaosx_nr25_closed_after_expeditions
+			set_variable = { global.chaosx_nr25_phase = constant:chaosx_nr25_phase.closed }
+			chaosx_nr25_clear_pending_evolutions = yes
+			for_each_scope_loop = {
+				array = global.chaosx_nr25_participants
+				if = {
+					limit = { exists = yes has_country_flag = chaosx_nr25_participant }
+					chaosx_nr25_remove_phase_missions = yes
+					chaosx_nr25_remove_final_missions = yes
+					chaosx_nr25_clear_selection_state = yes
+					set_country_flag = chaosx_nr25_terminal
+					if = {
+						limit = { NOT = { has_country_flag = chaosx_nr25_loser_settlement_complete } }
+						chaosx_nr25_apply_loser_settlement = yes
+					}
+					country_event = { id = chaosx.nr25.298 days = 1 }
+				}
+			}
+			clear_global_event_target = chaosx_nr25_history_actor
+		}
+		set_variable = { global.chaosx_nr25_final_resolution_pending = constant:chaosx_nr25_value.zero }
 	}
 }
 
