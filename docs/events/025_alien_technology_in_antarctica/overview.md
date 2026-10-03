@@ -50,7 +50,9 @@ The board uses participant-country scope and opt-in rival visibility flags so mu
 
 The resource model includes convoys, fuel, support equipment, political power, civilian industry commitments, crew, scientific capacity, access, and time.
 The accepted maximum is four spendable cost types per action, including committed industry.
-The authorization action's combined payments and industry commitment still need reconciliation against that maximum.
+Authorization commits convoys, fuel, support equipment, and civilian industry, with three upfront resource entries and the industrial duration in its cost tooltip.
+Authorization uses inclusive resource predicates shared by its three cost-display components.
+The landlocked charter route, action-time payment revalidation, and other action families still need complete review.
 
 Entry, mobilisation, crossing, outpost, survey, and final-recovery trays normally expose three to five primary actions and never exceed six. Evolution responses and the countermeasure are secondary routes.
 
@@ -117,7 +119,7 @@ Event 025 uses the following dedicated GFX files and consumers.
 
 The source acceptance matrix is docs/specs/025_alien_technology_in_antarctica_specs/matrices/025_requirement_coverage.md and the pass/fail contract is docs/specs/025_alien_technology_in_antarctica_specs/specs/014_acceptance_criteria.md.
 
-The 54 source tests cover recovery arbitration, lifecycle, delayed callbacks, physical custody, report bindings, active pulse guards, and physical destruction policy.
+The 58 source tests cover recovery arbitration, lifecycle, delayed callbacks, physical custody, report bindings, active pulse guards, physical destruction policy, and authorization's source cost budget.
 The tests use explicit callback spies for shared Chaos, Board refresh, and achievement internals, and do not emulate native scheduling or live economic state.
 Source-boundary evidence, independent audits, the authoritative catalog update, all accepted assets and routes, and supplied live-game evidence remain acceptance gates.
 
