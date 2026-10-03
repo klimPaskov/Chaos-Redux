@@ -17,6 +17,49 @@ Civilian-factory/CIC quotes are stored in the receipt but never reserved or refu
 
 `brilliant_scientist_mengele_cancel_project_stage` and `brilliant_scientist_mengele_finish_project_stage` authenticate the exact family/stage receipt, snapshot direct costs, clear the slot, and refund once when no output is accepted. Repeated callbacks see an empty slot and are no-ops.
 
+### Temporary output storage
+
+Every consuming helper frame owns its nested temporary outputs before making the nested call.
+The initializers remain in the consuming frame because creating a new temporary first inside another initializer helper would lose the storage under conservative helper-return lifetime.
+The input selectors `mengele_event016_project_family` and `mengele_event016_requested_stage` retain their incoming values until the existing end-of-transaction selector cleanup.
+No caller should infer a paid result from a temporary that it did not initialize before invoking this API.
+
+| Helper | Scope and inputs | Owned nested storage and defaults | Outputs and side effects |
+| --- | --- | --- | --- |
+| `brilliant_scientist_mengele_begin_project_stage` | COUNTRY, required literal family and requested stage | Index and all eight quote outputs start at zero in this frame | Existing `mengele_event016_stage_started` result, current-table direct debit, exact family receipt, existing selector cleanup |
+| `brilliant_scientist_mengele_cancel_project_stage` | COUNTRY, required exact family and active stage | Index starts at zero, stored PP/support/fuel snapshots are assigned directly in this frame | Existing `mengele_event016_stage_cancelled` result, clear matching receipt before one stored-price refund, existing selector cleanup |
+| `brilliant_scientist_mengele_finish_project_stage` | COUNTRY, required exact family and active stage | Index, output-applied fields, output gap, availability result, and both dispatchers' exported incident results start at zero | Existing finished/output results, clear receipt before output or stored-price refund, incident calls only after accepted output, after-Theory adoption with outer frame restored |
+| `brilliant_scientist_mengele_apply_family_stage_output` | COUNTRY, existing family/stage and authorized-output input | Stage-package-applied starts at zero before either package helper | Existing private flags and package results, existing modifier refresh and availability reconciliation |
+| `brilliant_scientist_mengele_grant_conventional_stage_package` | COUNTRY, existing family/stage | Conventional grant-applied starts at zero | Existing stage-package result, established neutral package grants and selector cleanup |
+| `brilliant_scientist_mengele_grant_custom_stage_package` | COUNTRY, existing family/stage | Custom grant-applied and upgrade-applied start at zero | Existing stage-package result, established neutral grants/refinements and selector cleanup |
+| `brilliant_scientist_mengele_adopt_completed_native_after_theory` | COUNTRY, accepted Theory output and enclosing output context | Aggregate native-prototype-synced starts at zero | Existing adoption and exact outer family/stage/index/output/gap/authorization/availability/component restoration |
+| `brilliant_scientist_mengele_sync_native_project_prototypes` | COUNTRY, existing aggregate native request | Project-output-applied starts at zero | Existing synced result and authenticated Prototype output |
+| `brilliant_scientist_mengele_record_native_project_prototype` | COUNTRY, existing private selector or existing host selector adapter | Synced and component-recorded start at zero | Existing native-prototype-recorded result, existing exact-family exclusions |
+| `brilliant_scientist_mengele_cleanup_provider_receipts` | COUNTRY, original provider owner, no selector input | Index starts at zero before the bounded fifteen-family loop | Existing cleanup result, cancel/refund each surviving active receipt once, preserve durable flags and neutral entitlements |
+
+The quote outputs are `mengele_event016_stage_quote_loaded`, `mengele_event016_stage_quote_duration_days`, `mengele_event016_stage_duration_loaded`, `mengele_event016_stage_quote_source_gap`, and the quote costs `mengele_event016_stage_quote_civilian_factories`, `mengele_event016_stage_quote_political_power`, `mengele_event016_stage_quote_support_equipment`, and `mengele_event016_stage_quote_fuel`.
+An outer caller that consumes any of them after a quote or begin call initializes each consumed output to `constant:brilliant_scientist_value.zero` first.
+An outer caller consuming `mengele_event016_stage_finished` or `mengele_event016_project_output_applied` after finish initializes those fields to zero in its own frame.
+The seven existing custom Prototype decision callbacks own both result fields before finish and assign their literal operational-grant family after the finish helper clears the stage selectors.
+`mengele_event016_stage_started` and `mengele_event016_stage_cancelled` have no external consumers in the current parent inventory, but callers added later must initialize them to zero when consuming them.
+The same outer-storage rule applies to forwarded `mengele_event016_computation_incident_dispatched`, `mengele_event016_computation_incident_recorded`, `mengele_event016_conventional_incident_recorded`, aggregate sync/component results, and provider-cleanup results.
+
+```txt
+# COUNTRY completion callback, with result storage in the consuming frame.
+set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.cloning }
+set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.prototype }
+set_temp_variable = { mengele_event016_stage_finished = constant:brilliant_scientist_value.zero }
+set_temp_variable = { mengele_event016_project_output_applied = constant:brilliant_scientist_value.zero }
+brilliant_scientist_mengele_finish_project_stage = yes
+# The existing callback consumes both results and the durable private flag.
+```
+
+Cancel and finish extend each surviving partial array independently only after the exact active family/stage receipt matches.
+Missing cost entries append zero, so absent historical costs produce no fabricated refund.
+Surviving stored prices and rows beyond the family count remain intact.
+No factory creation effect, timer change, new tuning constant, event target, or periodic hook is introduced.
+The executable cold-frame/economy driver, immutable pre-paid-fix baseline, source hashes, native regression results, MCP references, and outside-file incident lifetime follow-ups are retained in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_funded_provider_cold_lifetime_2026-10-03.md`.
+
 ## Quote provenance
 
 The loader reads every duration from `brilliant_scientist_project_duration`, Theory/Deployment/Weaponization cost rows from `brilliant_scientist_project_stage_cost`, and all fifteen Prototype cost rows from `brilliant_scientist_project_fallback_prototype` in `016_brilliant_scientist_project_constants.txt`.

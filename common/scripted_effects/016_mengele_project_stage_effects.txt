@@ -695,6 +695,16 @@ brilliant_scientist_mengele_load_project_stage_quote = {
 
 brilliant_scientist_mengele_begin_project_stage = {
 	set_temp_variable = { mengele_event016_stage_started = constant:brilliant_scientist_value.zero }
+	# Own quote and mapping outputs in this consuming frame before nested calls.
+	set_temp_variable = { mengele_event016_project_index = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_stage_quote_loaded = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_stage_quote_duration_days = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_stage_duration_loaded = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_stage_quote_source_gap = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_stage_quote_civilian_factories = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_stage_quote_political_power = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_stage_quote_support_equipment = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_stage_quote_fuel = constant:brilliant_scientist_value.zero }
 	brilliant_scientist_mengele_load_project_stage_quote = yes
 	if = {
 		limit = {
@@ -730,8 +740,11 @@ brilliant_scientist_mengele_begin_project_stage = {
 
 brilliant_scientist_mengele_cancel_project_stage = {
 	set_temp_variable = { mengele_event016_stage_cancelled = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_project_index = constant:brilliant_scientist_value.zero }
 	if = {
 		limit = { brilliant_scientist_mengele_project_stage_receipt_matches = yes }
+		# Extend surviving partial schemas before snapshotting and clearing rows.
+		brilliant_scientist_mengele_initialize_project_stage_receipts = yes
 		brilliant_scientist_mengele_prepare_project_index = yes
 		set_temp_variable = { mengele_event016_settlement_cost_political_power = mengele_event016_active_cost_political_power_entries^mengele_event016_project_index }
 		set_temp_variable = { mengele_event016_settlement_cost_support_equipment = mengele_event016_active_cost_support_equipment_entries^mengele_event016_project_index }
@@ -745,10 +758,18 @@ brilliant_scientist_mengele_cancel_project_stage = {
 
 brilliant_scientist_mengele_finish_project_stage = {
 	set_temp_variable = { mengele_event016_stage_finished = constant:brilliant_scientist_value.zero }
+	# Scratch belongs to the paid transaction, including nested output restoration.
+	set_temp_variable = { mengele_event016_project_index = constant:brilliant_scientist_value.zero }
 	set_temp_variable = { mengele_event016_project_output_applied = constant:brilliant_scientist_value.zero }
 	set_temp_variable = { mengele_event016_computation_output_applied = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_stage_output_gap = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_project_availability_reconciled = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_computation_incident_dispatched = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_computation_incident_recorded = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_conventional_incident_recorded = constant:brilliant_scientist_value.zero }
 	if = {
 		limit = { brilliant_scientist_mengele_project_stage_receipt_matches = yes }
+		brilliant_scientist_mengele_initialize_project_stage_receipts = yes
 		brilliant_scientist_mengele_prepare_project_index = yes
 		set_temp_variable = { mengele_event016_settlement_cost_political_power = mengele_event016_active_cost_political_power_entries^mengele_event016_project_index }
 		set_temp_variable = { mengele_event016_settlement_cost_support_equipment = mengele_event016_active_cost_support_equipment_entries^mengele_event016_project_index }
@@ -768,6 +789,7 @@ brilliant_scientist_mengele_finish_project_stage = {
 
 brilliant_scientist_mengele_grant_conventional_stage_package = {
 	set_temp_variable = { mengele_event016_stage_package_applied = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { chaosx_conventional_technology_grant_applied = constant:brilliant_scientist_value.zero }
 	if = { limit = { check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.computation compare = equals } }
 		set_temp_variable = { chaosx_conventional_technology_family = constant:brilliant_scientist_project_family.computation }
 		set_temp_variable = { chaosx_custom_technology_source = constant:mengele_event016_project_stage.provenance_mengele }
@@ -832,6 +854,8 @@ brilliant_scientist_mengele_grant_conventional_stage_package = {
 
 brilliant_scientist_mengele_grant_custom_stage_package = {
 	set_temp_variable = { mengele_event016_stage_package_applied = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { chaosx_custom_technology_grant_applied = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { chaosx_custom_technology_upgrade_applied = constant:brilliant_scientist_value.zero }
 	set_temp_variable = { chaosx_custom_technology_source = constant:mengele_event016_project_stage.provenance_mengele }
 	if = { limit = { check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.teleportation compare = equals } }
 		set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.portal }
@@ -896,6 +920,7 @@ brilliant_scientist_mengele_apply_family_stage_output = {
 	set_temp_variable = { mengele_event016_project_output_applied = constant:brilliant_scientist_value.zero }
 	set_temp_variable = { mengele_event016_computation_output_applied = constant:brilliant_scientist_value.zero }
 	set_temp_variable = { mengele_event016_stage_output_gap = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_stage_package_applied = constant:brilliant_scientist_value.zero }
 	if = {
 		limit = {
 			check_variable = { var = mengele_event016_project_output_authorized value = constant:brilliant_scientist_value.one compare = equals }
@@ -1467,6 +1492,8 @@ brilliant_scientist_mengele_native_completion_sp_nuclear_warheads = {
 # Preserve the outer callback's selectors/results across the Prototype adapter.
 # Do not call this from availability reconciliation or stage-output dispatch.
 brilliant_scientist_mengele_adopt_completed_native_after_theory = {
+	# The aggregate adoption branch consumes this nested result after return.
+	set_temp_variable = { mengele_event016_native_prototype_synced = constant:brilliant_scientist_value.zero }
 	if = {
 		limit = {
 			check_variable = { var = mengele_event016_project_output_applied value = constant:brilliant_scientist_value.one compare = equals }
@@ -1538,6 +1565,7 @@ brilliant_scientist_mengele_adopt_completed_native_after_theory = {
 
 brilliant_scientist_mengele_sync_native_project_prototypes = {
 	set_temp_variable = { mengele_event016_native_prototype_synced = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_project_output_applied = constant:brilliant_scientist_value.zero }
 	if = {
 		limit = {
 			brilliant_scientist_mengele_project_native_output_is_authentic = yes
@@ -1564,6 +1592,8 @@ brilliant_scientist_mengele_sync_native_project_prototypes = {
 
 brilliant_scientist_mengele_record_native_project_prototype = {
 	set_temp_variable = { mengele_event016_native_prototype_recorded = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_native_prototype_synced = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_native_component_recorded = constant:brilliant_scientist_value.zero }
 	if = { limit = { check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.none compare = equals } } set_temp_variable = { mengele_event016_project_family = brilliant_scientist_project_family } }
 	if = {
 		limit = {
@@ -1745,6 +1775,8 @@ brilliant_scientist_mengele_reconcile_project_availability = {
 
 brilliant_scientist_mengele_cleanup_provider_receipts = {
 	set_temp_variable = { mengele_event016_provider_cleanup_applied = constant:brilliant_scientist_value.zero }
+	# The loop consumes the mapping result, while cancel owns its snapshot.
+	set_temp_variable = { mengele_event016_project_index = constant:brilliant_scientist_value.zero }
 	if = {
 		limit = {
 			OR = {
