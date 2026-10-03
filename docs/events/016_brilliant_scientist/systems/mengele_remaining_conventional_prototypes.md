@@ -1,6 +1,6 @@
 # Directorate Electronics, Rocketry, and High Energy Prototypes
 
-The Directorate pursues Electronics, Rocketry, and High Energy through Theory, Prototype, Deployment, and Weaponization in its existing clone-army decision category.
+The Directorate pursues Electronics, Rocketry, and High Energy through Theory, Prototype, Deployment, and Weaponization in its Conventional Programs decision category.
 The established conventional decision file owns Theory, Deployment, and Weaponization for all three families.
 With Götterdämmerung, each family's mapped native special project provides the Prototype; without it, a paid timed decision provides the same private Prototype receipt.
 

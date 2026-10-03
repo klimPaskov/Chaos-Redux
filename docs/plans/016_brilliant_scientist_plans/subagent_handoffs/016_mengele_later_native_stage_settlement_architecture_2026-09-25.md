@@ -1,6 +1,6 @@
 # Event 016 Mengele later native-stage settlement architecture
 
-Disposition: **implemented** for exact native later-stage completion delivery through existing project and technology outputs; **unresolved** for a matching native completion that arrives while that family's paid provider receipt is active. The accepted mapping basis is the Event 016 closure plan and private per-family receipt contract. The user explicitly approved exact marker hooks on 2026-09-26, with no new project or technology IDs and no model edits; the hook implementation preserves complete installed vanilla definitions because partial same-ID merging is unproven.
+Disposition: **implemented** for exact native later-stage completion delivery through existing project and technology outputs, with the matching-active-receipt behavior accepted. The accepted mapping basis is the Event 016 closure plan and private per-family receipt contract. The user explicitly approved exact marker hooks on 2026-09-26, with no new project or technology IDs and no model edits; the hook implementation preserves complete installed vanilla definitions because partial same-ID merging is unproven.
 
 ## Existing seams and exact mapping
 
@@ -38,7 +38,7 @@ Provider cleanup clears both source arrays and the temporary Electronics project
 
 **Electronics technology identity is implemented through the documented per-technology output.** Full same-ID mirrors in `common/technologies/016_mengele_native_stage_technology_overrides.txt` preserve `radio_detection`, `centimetric_radar`, and `phased_array` while adding hidden `on_research_complete` calls. Electronics Deployment requires both the exact `sp_air_radar` output marker and `radio_detection`; the two radar Weaponization technologies each carry their own exact source code. The `sp_air_radar` marker and technology callback can execute in either order without settling twice.
 
-**Already active paid timer:** `mengele_event016_active_project_stage_entries^index` and its cost arrays identify a live paid decision. The settlement gate fails while that matching active receipt exists and leaves its arrays, payment, and existing decision lifecycle untouched. The hook adds no cancellation, refund, conversion, or retry policy; the active-timer outcome remains **unresolved for user decision**.
+**Already active paid timer:** On 2026-09-26 the user explicitly chose: “Leave the paid timer unchanged.” `mengele_event016_active_project_stage_entries^index` and its cost arrays identify the matching live paid decision. The settlement gate fails while it exists and leaves its arrays, payment, and existing decision lifecycle untouched; no native provider settlement is recorded. The hook adds no cancellation, refund, conversion, or retry policy.
 
 ## Migration and validation scenarios
 
@@ -50,7 +50,7 @@ Pre-implementation read-only evidence: `hoi4.event_inspect` focused file scan re
 
 ## Parent implementation update, 2026-09-26
 
-The explicit user approval resolved the earlier callback-identity design hold for the mapped outputs. The implementation adds exact idempotent wrappers and source constants to `common/scripted_effects/016_mengele_project_stage_effects.txt`, validates the allowed family/stage/source tuples in `common/scripted_triggers/016_mengele_project_stage_triggers.txt`, extends and cleans the two aligned source arrays, and mirrors the nine project and three technology definitions in the dedicated files listed above.
+The explicit user approvals resolved the earlier callback-identity design hold and the matching-active-receipt behavior. The implementation adds exact idempotent wrappers and source constants to `common/scripted_effects/016_mengele_project_stage_effects.txt`, validates the allowed family/stage/source tuples in `common/scripted_triggers/016_mengele_project_stage_triggers.txt`, extends and cleans the two aligned source arrays, and mirrors the nine project and three technology definitions in the dedicated files listed above.
 The `sp_air_radar` and `radio_detection` pair uses a provider-only project-output marker so the Deployment receipt requires both exact inputs even if the technology callback and project output run in different orders.
 A direct source comparison verified that all nine project mirrors and all three technology mirrors equal their installed vanilla definitions after removing their single hidden marker blocks. Technology MCP inspection/render/comparison and user live acceptance remain required evidence. The special-project-specific MCP route is not exposed.
 Post-change MCP inspection attempts for `radio_detection`, `centimetric_radar`, and `phased_array` each timed out after 180 seconds; a narrower refreshed explain query for `centimetric_radar` also timed out after 180 seconds. The focused `centimetric_radar` technology render then returned `Transport closed`, so no post-change technology comparison was run. The current live tool schemas were available, but no separate connected-server version/health route surfaced in the installed tool inventory. Treat this as an exact MCP evidence blocker; source comparison is not engine evidence.

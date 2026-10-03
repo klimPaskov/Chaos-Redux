@@ -1,6 +1,6 @@
 # Directorate Temporal stages
 
-Mengele's Temporal Mechanics programme advances through Theory, Prototype, Deployment, and Weaponization under the existing clone-army decision category.
+Mengele's Temporal Mechanics programme advances through Theory, Prototype, Deployment, and Weaponization under the Advanced Programs decision category.
 Theory, Deployment, and Weaponization use paid timed decisions in either DLC state; `sp_brilliant_scientist_temporal_mechanics` owns the Prototype clock and payment with Götterdämmerung, while a paid decision supplies that stage without the DLC.
 Both routes record private Temporal history and leave Kruger's project board intact.
 

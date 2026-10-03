@@ -1,6 +1,6 @@
 # Mengele Strategic Singularity stages
 
-The registered Mengele Directorate progresses through private Theory, Prototype, Deployment, and Weaponization receipts under `mengele_clone_army_category`.
+The registered Mengele Directorate progresses through private Theory, Prototype, Deployment, and Weaponization receipts under `mengele_advanced_programs_category`.
 The four paid decision wrappers use the existing private Event 016 family ledger, exact direct payment receipts, timed civilian factory reservations, and provider cleanup.
 The Strategic Singularity scenario setting must remain enabled while each stage is active.
 

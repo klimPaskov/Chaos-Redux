@@ -1,6 +1,6 @@
 # Directorate Robotics stages
 
-The Directorate advances Autonomous Cognition through four ordered paid stages in its existing clone-army decision category: Theory, Prototype, Deployment, and Weaponization.
+The Directorate advances Autonomous Cognition through four ordered paid stages in its Advanced Programs decision category: Theory, Prototype, Deployment, and Weaponization.
 The native Autonomous Cognition special project provides the Prototype with Götterdämmerung; without that presentation, a paid timed decision provides the Prototype once.
 The four decisions use the private Robotics family receipt and never write Kruger's project board.
 

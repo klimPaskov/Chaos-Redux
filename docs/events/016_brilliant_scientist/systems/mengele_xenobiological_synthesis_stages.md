@@ -1,6 +1,6 @@
 # Directorate Xenobiological Synthesis stages
 
-The Directorate develops Xenobiological Synthesis through Theory, Prototype, Deployment, and Weaponization in the existing clone-army decision category.
+The Directorate develops Xenobiological Synthesis through Theory, Prototype, Deployment, and Weaponization in the Biological Programs decision category.
 Theory, Deployment, and Weaponization are paid timed decisions in both DLC states.
 With Götterdämmerung, the native Xenobiological Synthesis special project owns the Prototype clock and payment; without it, a paid timed decision provides the Prototype.
 The four stages use the private Xenobiological Synthesis family receipt and do not consume Kruger's project board.

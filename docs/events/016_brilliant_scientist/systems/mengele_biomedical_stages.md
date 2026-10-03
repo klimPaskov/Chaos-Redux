@@ -1,6 +1,6 @@
 # Directorate Biomedical stages
 
-The Directorate advances Biomedical research through Theory, Prototype, Deployment, and Weaponization in its existing clone-army decision category.
+The Directorate advances Biomedical research through Theory, Prototype, Deployment, and Weaponization in its Biological Programs decision category.
 Theory, Deployment, and Weaponization use the established conventional provider decisions.
 The native Biomedical Acceleration special project provides the Prototype with Götterdämmerung; without that presentation, a paid timed decision provides the Prototype once.
 All four stages settle through the private Biomedical family receipt rather than Kruger's project board.

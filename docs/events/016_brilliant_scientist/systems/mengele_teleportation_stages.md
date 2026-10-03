@@ -1,6 +1,6 @@
 # Directorate Teleportation stages
 
-The Directorate advances Quantum Transit through four ordered paid stages in its existing clone-army decision category: Theory, Prototype, Deployment, and Weaponization.
+The Directorate advances Quantum Transit through four ordered paid stages in its Advanced Programs decision category: Theory, Prototype, Deployment, and Weaponization.
 The native Quantum Transit special project provides the Prototype when Götterdämmerung is active; without that presentation, a paid timed decision provides the Prototype once.
 The four decisions use the private Teleportation family receipt, so their payment and completion history cannot write Kruger's project board.
 

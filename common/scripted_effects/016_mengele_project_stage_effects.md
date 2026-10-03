@@ -24,6 +24,11 @@ The direct affordability trigger uses the same shared Prototype keys and accepts
 Each valid quote sets `mengele_event016_stage_quote_loaded` and leaves `mengele_event016_stage_quote_source_gap` at zero.
 Invalid family or stage selectors retain zero quote values and cannot begin.
 
+The Cloning, Paleogenetics, Xenobiological Synthesis, Alien Arms, and Temporal cost rows define the native base, blocked, and hover variants for all four stages.
+Blocked rows retain the same dynamic amounts and icons while colouring the displayed amounts red when the combined affordability gate fails.
+The cost-row hover lists every dynamic direct payment and factory assignment, while the ordinary cost detail explains reservation and payment timing without duplicating the inline amounts.
+These presentation strings do not change the shared quotes, payment, refund, or receipt logic.
+
 Computation remains 2 civilian factories, 68 Political Power, 200 Support Equipment, and 100 fuel.
 Its decision AI planning hint, four affordability comparisons, and four cost-localisation tokens read the shared keys directly, so the four private quote mirrors are removed.
 The existing native decision modifier retains its file-scoped factory value because that field rejects shared tokens.
@@ -87,7 +92,8 @@ Electronics Deployment requires both the `sp_air_radar` output marker and `radio
 `brilliant_scientist_mengele_settle_exact_native_later_stage` requires the strict provider gate, a valid family/stage/source tuple, the exact private predecessor, and an empty matching active receipt.
 It calls `brilliant_scientist_mengele_apply_family_stage_output` once, records the exact native source in the aligned `mengele_event016_native_later_stage_deployment_source_entries` or `mengele_event016_native_later_stage_weaponization_source_entries` array, and never starts, cancels, refunds, or converts a paid receipt.
 The source arrays are append-only initialized to the fifteen-family count and are cleared with provider receipts.
-If the matching paid receipt is active, native settlement fails closed and leaves that existing receipt to its current decision lifecycle; this hook adds no retry scheduler or timer policy.
+If the matching paid receipt is active, native settlement fails closed and leaves that existing receipt to its current decision lifecycle, as the user explicitly directed on 2026-09-26.
+This hook adds no retry scheduler or timer policy.
 
 The native source table rejects cross-family and cross-stage tuples.
 Rocketry records which of its two exact alternatives settled each stage, while repeated or opposite-alternative completions cannot replace a completed provider receipt.

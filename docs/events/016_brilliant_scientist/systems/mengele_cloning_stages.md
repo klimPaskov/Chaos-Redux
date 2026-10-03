@@ -1,6 +1,6 @@
 # Directorate Cloning stages
 
-Mengele's Cloning programme advances through Theory, Prototype, Deployment, and Weaponization in the existing clone-army decision category.
+Mengele's Cloning programme advances through Theory, Prototype, Deployment, and Weaponization in the Biological Programs decision category.
 Each paid decision reserves its quoted civilian factories, debits Political Power, Support Equipment, and Fuel through the private Event 016 stage receipt, and settles or refunds that receipt on completion or cancellation.
 The stage core records family history and updates the private modifier without writing Kruger's capacity or stage ledger.
 

@@ -1,6 +1,6 @@
 # Directorate Advanced Materials stages
 
-The Directorate advances Advanced Materials through four ordered paid stages in its existing clone-army decision category: Theory, Prototype, Deployment, and Weaponization.
+The Directorate advances Advanced Materials through four ordered paid stages in its Conventional Programs decision category: Theory, Prototype, Deployment, and Weaponization.
 The native Advanced Materials special project provides the Prototype with Götterdämmerung; without that presentation, a paid timed decision provides the Prototype once.
 The four decisions use the private Materials family receipt and never write Kruger's project board.
 

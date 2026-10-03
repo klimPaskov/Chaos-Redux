@@ -1,6 +1,6 @@
 # Directorate Alien Arms stages
 
-Mengele's Alien Arms programme advances through Theory, Prototype, Deployment, and Weaponization under the existing clone-army decision category.
+Mengele's Alien Arms programme advances through Theory, Prototype, Deployment, and Weaponization under the Advanced Programs decision category.
 Theory, Deployment, and Weaponization use paid timed decisions in either DLC state; `sp_brilliant_scientist_alien_arms` owns the Prototype clock and payment with Götterdämmerung, while a paid decision supplies that stage without the DLC.
 The native and paid paths record the same private family history without writing Kruger's project receipts.
 
