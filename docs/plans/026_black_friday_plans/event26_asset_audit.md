@@ -28,6 +28,21 @@ The review evidence is retained in `docs/assets/026_black_friday/contact_sheets/
 
 ## Scope exclusions and blockers
 
+### 2026-10-03 parent visual recheck
+
+The parent reopened the three accepted source images, both rejected generated achievement-state sources, all five processed previews, and all five final DDS-decoded images individually.
+The report retains its purchasing crowd, period clothing and crates, tilted card, transparent corners, and complete shadow within the 210x176 canvas.
+The 64x64 idea retains a readable crate, gear, and downward tag silhouette without a matte or clipped subject.
+The achievement's book, supply case, fuel can, and price tag remain a separate source family, and its grey and not-eligible states preserve the completed silhouette and canonical overlay.
+The two opaque generated state sources remain rejected provenance and are not the runtime state layers.
+No crop, spill, alpha fringe, state mismatch, or cross-family substitution requiring another asset edit was found in this recheck.
+
+The parent decoded each actual runtime DDS with Pillow and compared its RGBA pixels with the individually viewed final preview.
+All five pairs are pixel-identical, their hashes still match the crosswalk above, and each has the expected uncompressed byte length for its dimensions.
+The source consumers and all five `interface/026_black_friday.gfx` paths remain matched to those runtime files.
+No artwork, sprite, processor output, or asset directory was changed.
+This confirms current local visual and byte identity, not in-game texture or popup acceptance.
+
 The accepted Event 26 asset rows do not include a news image, decision category icon or picture, focus icon, flag, portrait, animated sprite, scripted-GUI panel, super-event image, 3D model, counter, or audio cue. No such asset was inferred or substituted. No runtime reference points into `docs/assets/`.
 
 The local source, processing, DDS, path, family, and visual checks are complete. The installed HOI4 MCP event render remains a structural partial route and no live HOI4 session was launched, so exact in-game texture loading and final popup presentation remain open live-validation evidence rather than an asset-production defect. The event stays disabled until the broader Event 26 cost registry, audits, and acceptance gates are complete.
