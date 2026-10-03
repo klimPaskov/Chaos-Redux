@@ -110,6 +110,10 @@ Event Logs owns the single global firing row, shared repeatable pacing, and the 
 
 The eight achievements are Exact Distance, Still on the Line, Break the Chain, Keys Returned, No Second Sun, Empty the Silos, Sky Full of Steel, and Long Reach. Persistent trackers record distinct target states/countries, operation profiles, site manifests, war identity, warning roots, chain depth, payload use, damage thresholds, repair windows, survival clocks, evolution gates, and disqualifiers. Scenario-origin, force, debug, ceased-country, special-payload, neutral/self-strike, ally-credit, rebuild, and unauthorized-launch disqualifiers are recorded at the relevant boundary.
 
+Shared Event Details toggles suspend each evolution through its canonical event/type/stage flag.
+Adoption, unlock history, reserve, and physical payload custody persist, while decisions, AI behavior, preparation, commitment, rogue activity, and retaliation responses consult the live enable state.
+Ordinary conventional operations remain available when every evolution is disabled.
+
 Each achievement has completed, grey, and not-eligible DDS assets and matching aliases in `interface/032_missiles.gfx`. No achievement is unlocked by a single Event 032 firing.
 
 ## Visual asset package

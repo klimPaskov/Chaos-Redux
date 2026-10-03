@@ -82,7 +82,7 @@ RECEIVERS = {value(body, 'id'): body for kind, body in EVENTS if kind == 'countr
 CONSTANTS = dict(parse((ROOT_DIR / 'common/script_constants/032_missiles_constants.txt').read_text(encoding='utf-8-sig')))
 
 
-def reserve_package(factories, states, mature=False, war=False, saturation=False):
+def reserve_package(factories, states, mature=False, war=False, saturation=False, saturation_disabled=False):
     """Evaluate only the source package arithmetic, not game stockpile effects."""
     variables = {'num_of_factories': Decimal(factories), 'num_of_controlled_states': Decimal(states)}
     flags = {'missiles_program_mature': mature, 'missiles_evolution_saturation_arsenals': saturation}
@@ -99,6 +99,8 @@ def reserve_package(factories, states, mature=False, war=False, saturation=False
             if name == 'if':
                 condition = dict(value(body, 'limit'))
                 taken = flags.get(condition.get('has_country_flag'), False) or ('has_war' in condition and war)
+                if 'missiles_saturation_active' in condition:
+                    taken = saturation and not saturation_disabled
                 if taken:
                     execute([(key, val) for key, val in body if key != 'limit'])
             elif name == 'else':

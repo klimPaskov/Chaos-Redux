@@ -1,6 +1,7 @@
 # Event 32 spreadsheet catalog handoff — 2026-09-01
 
-Disposition: implemented and current. The authoritative workbook was updated and the repository exporter regenerated all three CSV exports; the recorded hashes remain the source-aligned evidence for the current Event 32 catalog state.
+Disposition: superseded by `032_event_catalog_status_review_2026-10-03.md` for current catalog status and export identities.
+The historical Event 32 wording and no-cluster alignment remain represented in the authoritative workbook, while the October review records the current status and shared-tree evidence boundary.
 
 ## Scope
 

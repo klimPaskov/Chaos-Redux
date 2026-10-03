@@ -480,14 +480,14 @@ missiles_program_management_category = {
 		on_map_mode = map_and_decisions_view
 		visible = {
 			has_country_flag = missiles_program_phase_operations
-			has_country_flag = missiles_evolution_saturation_arsenals
+			missiles_saturation_active = yes
 			missiles_country_can_prepare_operation = yes
 			OR = { has_country_flag = missiles_target_selected is_ai = yes }
 			FROM = { missiles_target_is_valid = yes }
 		}
 		target_root_trigger = { has_country_flag = missiles_program_phase_operations missiles_country_can_prepare_operation = yes }
 		target_trigger = { FROM = { missiles_target_is_valid = yes } }
-		available = { FROM = { missiles_target_is_valid = yes } }
+		available = { missiles_saturation_active = yes FROM = { missiles_target_is_valid = yes } }
 		custom_cost_trigger = {
 			command_power > @m32_command_high
 			has_fuel > @m32_fuel_high
@@ -508,7 +508,7 @@ missiles_program_management_category = {
 		ai_will_do = {
 			base = @m32_ai_low
 			modifier = { factor = 5 has_war = yes }
-			modifier = { factor = 0 NOT = { has_country_flag = missiles_evolution_saturation_arsenals } }
+			modifier = { factor = 0 NOT = { missiles_saturation_active = yes } }
 		}
 	}
 
@@ -552,11 +552,11 @@ missiles_program_management_category = {
 		icon = GFX_decision_032_missiles_integrate_special_payload
 		visible = {
 			has_country_flag = missiles_program_phase_operations
-			has_country_flag = missiles_evolution_special_warheads
+			missiles_special_warheads_active = yes
 			missiles_country_can_prepare_operation = yes
 			NOT = { has_country_flag = missiles_special_payload_selected }
 		}
-		available = { missiles_country_can_prepare_operation = yes }
+		available = { missiles_country_can_prepare_operation = yes missiles_special_warheads_active = yes }
 		custom_cost_trigger = {
 			command_power > @m32_command_standard
 			has_fuel > @m32_fuel_low
@@ -576,7 +576,7 @@ missiles_program_management_category = {
 		ai_will_do = {
 			base = @m32_ai_low
 			modifier = { factor = 4 has_war = yes }
-			modifier = { factor = 0 NOT = { has_country_flag = missiles_evolution_special_warheads } }
+			modifier = { factor = 0 NOT = { missiles_special_warheads_active = yes } }
 		}
 	}
 

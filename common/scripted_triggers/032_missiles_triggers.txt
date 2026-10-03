@@ -13,6 +13,38 @@
 # Recipient and program validity
 # -----------------------------------------------------------------------------
 
+# Shared toggles suspend behavior while retaining adoption and physical custody.
+missiles_saturation_enabled = {
+	hidden_trigger = { NOT = { has_global_flag = events_log_disabled_evolution_32_1_1 } }
+}
+missiles_guidance_evolution_enabled = {
+	hidden_trigger = { NOT = { has_global_flag = events_log_disabled_evolution_32_2_1 } }
+}
+missiles_special_warheads_enabled = {
+	hidden_trigger = { NOT = { has_global_flag = events_log_disabled_evolution_32_3_1 } }
+}
+missiles_rogue_commands_enabled = {
+	hidden_trigger = { NOT = { has_global_flag = events_log_disabled_evolution_32_4_1 } }
+}
+missiles_automatic_retaliation_enabled = {
+	hidden_trigger = { NOT = { has_global_flag = events_log_disabled_evolution_32_5_1 } }
+}
+missiles_saturation_active = {
+	hidden_trigger = { missiles_saturation_enabled = yes has_country_flag = missiles_evolution_saturation_arsenals }
+}
+missiles_guidance_evolution_active = {
+	hidden_trigger = { missiles_guidance_evolution_enabled = yes has_country_flag = missiles_evolution_unreliable_guidance }
+}
+missiles_special_warheads_active = {
+	hidden_trigger = { missiles_special_warheads_enabled = yes has_country_flag = missiles_evolution_special_warheads }
+}
+missiles_rogue_commands_active = {
+	hidden_trigger = { missiles_rogue_commands_enabled = yes has_country_flag = missiles_evolution_rogue_launch_commands }
+}
+missiles_automatic_retaliation_active = {
+	hidden_trigger = { missiles_automatic_retaliation_enabled = yes has_country_flag = missiles_evolution_automatic_retaliation }
+}
+
 missiles_country_has_controlled_land = {
 	exists = yes
 	any_owned_state = {
@@ -286,7 +318,7 @@ missiles_country_can_prepare_operation = {
 }
 
 missiles_special_payload_available = {
-	has_country_flag = missiles_evolution_special_warheads
+	missiles_special_warheads_active = yes
 	OR = {
 		has_country_flag = missiles_chemical_integration_operational
 		has_country_flag = missiles_biological_integration_operational
@@ -357,7 +389,7 @@ missiles_country_has_thermonuclear_payload_candidate = {
 # -----------------------------------------------------------------------------
 
 missiles_retaliation_network_available = {
-	has_country_flag = missiles_evolution_automatic_retaliation
+	missiles_automatic_retaliation_active = yes
 	missiles_country_can_manage_program = yes
 	check_variable = {
 		var = missiles_command_control
@@ -378,8 +410,8 @@ missiles_automatic_posture_allowed = {
 
 missiles_can_open_rogue_incident = {
 	missiles_country_can_manage_program = yes
-	has_country_flag = missiles_evolution_rogue_launch_commands
-	NOT = { has_global_flag = event_evolution_disabled_32_4 }
+	missiles_rogue_commands_active = yes
+	NOT = { has_global_flag = events_log_disabled_evolution_32_4_1 }
 	OR = {
 		check_variable = { var = missiles_command_control value = constant:missiles_tuning.retaliation_low_control_block compare = less_than }
 		has_country_flag = missiles_site_compromise_active
@@ -484,4 +516,3 @@ missiles_rogue_incident_site_has_payload = {
 # -----------------------------------------------------------------------------
 # CXT registration and cleanup helpers
 # -----------------------------------------------------------------------------
-

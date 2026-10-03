@@ -61,6 +61,7 @@ missiles_operation_before_commitment = {
 
 missiles_operation_can_be_prepared = {
 	missiles_country_can_prepare_operation = yes
+	missiles_operation_tracks_are_enabled = yes
 	missiles_selected_target_is_valid = yes
 	has_variable = missiles_operation_target_state
 	var:missiles_operation_target_state = {
@@ -77,8 +78,10 @@ missiles_can_pay_reserve = {
 
 missiles_operation_can_be_committed = {
 	missiles_operation_before_commitment = yes
+	missiles_operation_tracks_are_enabled = yes
 	missiles_selected_target_state_is_valid = yes
 	missiles_operation_has_valid_site = yes
+	missiles_operation_has_reliable_payload_custody = yes
 	has_country_flag = missiles_operation_ready
 	NOT = { has_country_flag = missiles_incident_active }
 	has_country_flag = missiles_operation_reserve_receipt_active
@@ -88,6 +91,30 @@ missiles_operation_can_be_committed = {
 	OR = {
 		NOT = { has_variable = missiles_next_launch_date }
 		check_variable = { var = global.date value = missiles_next_launch_date compare = greater_than_or_equals }
+	}
+}
+
+missiles_operation_tracks_are_enabled = {
+	hidden_trigger = {
+		OR = {
+			NOT = { check_variable = { var = missiles_operation_strike_profile value = constant:missiles_strike_profile.saturation compare = equals } }
+			missiles_saturation_active = yes
+		}
+		OR = {
+			NOT = { check_variable = { var = missiles_operation_type value = constant:missiles_operation.retaliation compare = equals } }
+			missiles_automatic_retaliation_active = yes
+		}
+		OR = {
+			AND = {
+				NOT = { has_country_flag = missiles_rogue_operation_bypass_active }
+				NOT = { has_country_flag = missiles_operation_rogue_origin }
+			}
+			missiles_rogue_commands_active = yes
+		}
+		OR = {
+			NOT = { missiles_operation_has_special_payload = yes }
+			missiles_special_warheads_active = yes
+		}
 	}
 }
 
@@ -153,6 +180,10 @@ missiles_operation_target_has_profile_value = {
 }
 
 missiles_operation_has_reliable_payload_custody = {
+	OR = {
+		NOT = { missiles_operation_has_special_payload = yes }
+		missiles_special_warheads_active = yes
+	}
 	OR = {
 		check_variable = { var = missiles_operation_payload value = constant:missiles_payload.conventional compare = equals }
 		AND = {
@@ -316,6 +347,7 @@ missiles_all_active_sites_hardened_secure = {
 }
 
 missiles_warning_is_actionable = {
+	missiles_automatic_retaliation_active = yes
 	has_country_flag = missiles_warning_active
 	has_variable = missiles_warning_root_id
 	check_variable = {
@@ -364,4 +396,3 @@ missiles_country_has_payload_owner_capability = {
 		has_tech = thermonuclear_bombs
 	}
 }
-

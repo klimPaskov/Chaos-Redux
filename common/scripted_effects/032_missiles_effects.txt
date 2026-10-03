@@ -486,7 +486,7 @@ missiles_calculate_reserve_package = {
 	clamp_temp_variable = { var = missiles_package_states min = constant:missiles_program_value.zero max = constant:missiles_reserve.state_bonus_cap }
 	add_to_temp_variable = { missiles_package_base = missiles_package_states }
 	if = { limit = { has_war = yes } add_to_temp_variable = { missiles_package_base = constant:missiles_reserve.wartime_bonus } }
-	if = { limit = { has_country_flag = missiles_evolution_saturation_arsenals } multiply_temp_variable = { var = missiles_package_base value = constant:missiles_damage.saturation_multiplier } }
+	if = { limit = { missiles_saturation_active = yes } multiply_temp_variable = { var = missiles_package_base value = constant:missiles_damage.saturation_multiplier } }
 	# Fractional industry/territory bonuses are evaluated first. Publish one
 	# whole-missile creation receipt before any stockpile or custody mutation.
 	round_temp_variable = missiles_package_base

@@ -29,8 +29,17 @@ The user-supplied October live QA cycle-1 log contains no reference to an Event 
 Its main-menu load and absence of named Event 32 diagnostics do not prove programme, operation, achievement, or evolution execution.
 The supplied log still contains project-wide diagnostics, which remain owned by their recorded surfaces in the shared QA pass.
 
-The source audit found that Event 32's legacy disabled-evolution flag names do not match the shared Event Details toggle writer.
-The exact before sources are preserved under `baselines/2026-10-03_evolution_gates/`, and the gate correction remains queued for the required probability baseline and same-scenario comparison.
+The read-only probability baseline confirmed the disabled-evolution binding and retained-adoption gaps.
+The owner repaired the canonical flag bindings and consumer guards after reviewing that baseline.
+The exact before sources are preserved under `baselines/2026-10-03_evolution_gates/`, and the saved same-scenario comparison remains unresolved under the documented MCP timeouts.
+Six focused evolution-gate source tests and eleven existing source/package tests pass, with no numeric-probability or runtime claim.
+The completed auditor handoff records a preserved 22-scenario request projection hash `af7b807ccd7aaff2df3abfd1fe8e75da20d8b211384365c606b7a982b376fd0d`.
+Eleven same-fixture before/after comparison calls returned 600-second client timeouts, while the twelfth operation-timing handle was polled and returned `exec cell 119 not found`.
+No result, artifact, numeric delta, or MCP scenario hash is claimed for the missing handle.
+
+The same audit identifies a separate pacing-fidelity gap: the current evolution scheduler stores deterministic due dates and reevaluates them only at accepted firings, without the specified MTTH model.
+The ordinary preparation path also has pending decision/mission lifecycle findings under a separate read-only audit.
+Neither gap is treated as satisfied by the enable-binding repair.
 
 Reserve creation packages now publish one rounded whole-missile receipt after their complete scaling formula.
 The offline regression passes eleven tests, including sixty package input combinations, with forty-eight fractional baseline results eliminated at creation.
