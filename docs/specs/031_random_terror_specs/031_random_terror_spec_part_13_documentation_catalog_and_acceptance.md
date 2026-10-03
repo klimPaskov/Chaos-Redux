@@ -217,6 +217,12 @@ Required UI behavior:
 
 The scenario does not need dedicated art unless the current scenario UI cannot present its details.
 
+Scenario-list entry labels use the compact `#0NN` form, including `#016` for Global Jihad.
+
+The stable workbook identifier remains SCN-016 after the live collision check, independently from the compact UI label.
+
+The acceptance basis for this formatting rule is recorded in `docs/plans/031_random_terror_plans/subagent_handoffs/031_control_and_cxt_registration_repairs_20261003.md`.
+
 A required technical sprite can use the established UI pattern, but a placeholder must be reported until replaced.
 
 ## Event documentation
