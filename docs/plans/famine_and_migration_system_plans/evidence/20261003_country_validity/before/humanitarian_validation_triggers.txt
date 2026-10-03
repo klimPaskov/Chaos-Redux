@@ -1,0 +1,25 @@
+# Chaos Redux neutral humanitarian validation triggers.
+# Shared scope validity only; famine and migration lifecycle predicates remain separate.
+
+humanitarian_country_is_valid = {
+	hidden_trigger = {
+		scope_exists = yes
+		is_special_chaos_country = no
+		uses_normal_civilian_systems = yes
+	}
+}
+
+
+humanitarian_state_is_valid = {
+	hidden_trigger = {
+		scope_exists = yes
+		check_variable = { var = state_population_k value = constant:humanitarian_population.zero compare = greater_than }
+		OWNER = {
+			humanitarian_country_is_valid = yes
+		}
+		CONTROLLER = {
+			humanitarian_country_is_valid = yes
+		}
+	}
+}
+

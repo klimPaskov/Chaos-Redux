@@ -10,6 +10,10 @@ Status: neutral low-level contract shared by migration and other explicitly auth
 
 A caller supplies an exact origin state, destination state, people amount, route, border, transport, safety, actor, destination food, destination reception, cohort, generation, and route-role proof bundle as required by the selected contract. Missing proof fails closed.
 
+Shared object validation also requires that a country actually exists, including a country reached through a stored variable or event target.
+Scope existence alone cannot authorize a dormant or annexed country as an actor, owner, controller, donor, or destination host.
+`common/scripted_triggers/humanitarian_validation_triggers.md` documents this read-only country/state validation contract; the transfer owner still requires the complete independent transaction receipt.
+
 ## Conservation
 
 The primitive reads live origin population through the exact state-population API and applies one measured origin debit through the population-loss helper that does not create recruitable manpower.
