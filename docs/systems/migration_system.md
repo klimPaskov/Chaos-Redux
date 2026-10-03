@@ -111,6 +111,9 @@ Migration assets use `migration_*` filenames and sprite identifiers. `interface/
 
 The migration mapmode colors lifecycle state and independently marks trapped populations, overcrowding, border status, corridor safety, reception pressure, and flight pressure. It does not read famine relief state.
 
+Its authorized reception-capacity status uses the migration owner's complete read-only validity contract, including the current schema, clean revision, positive real capacity and candidates, and no invalid candidates.
+A cached positive capacity token alone cannot label a dirty or invalid reception ledger as valid; the tooltip never recalculates or grants capacity.
+
 The current documentation inventory contains 61 declared final DDS outputs across the package: 50 root-manifest assets, seven report images, and four mapmode buttons. Category-asset closure reconciles the famine and migration category consumers, and the parent contact-sheet review accepted every visual family. Live in-game consumer validation remains user-owned.
 
 ## CXT fixture
