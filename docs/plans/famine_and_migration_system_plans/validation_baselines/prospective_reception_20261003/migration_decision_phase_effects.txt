@@ -1,0 +1,188 @@
+# Chaos Redux migration decision-phase effects.
+#
+# COUNTRY scope. Migration phase projection retains the aligned live-row and
+# reception/origin proofs from the shared scheduler, but no longer reads food
+# stages or writes famine lifecycle flags.
+migration_refresh_decision_phase_from_country = {
+	humanitarian_initialize_runtime = yes
+	set_temp_variable = { migration_decision_phase_live_cohort = constant:humanitarian_runtime.zero }
+	set_temp_variable = { migration_decision_phase_reception_positive = constant:humanitarian_runtime.zero }
+	set_temp_variable = { migration_decision_phase_origin_crisis = constant:humanitarian_runtime.zero }
+	set_temp_variable = { migration_decision_phase_break = constant:humanitarian_runtime.zero }
+	set_temp_variable = { migration_decision_phase_resolution_seen = constant:humanitarian_runtime.zero }
+	if = { limit = { has_country_flag = migration_decision_resolution } set_temp_variable = { migration_decision_phase_resolution_seen = constant:humanitarian_runtime.one } }
+	if = {
+		limit = {
+			humanitarian_country_is_valid = yes
+			migration_forced_transfer_live_ledger_arrays_are_aligned = yes
+		}
+		save_event_target_as = migration_decision_phase_country
+		set_temp_variable = { migration_decision_phase_index = global.migration_cohort_ids^num }
+		while_loop_effect = {
+			break = migration_decision_phase_break
+			limit = {
+				check_variable = { var = migration_decision_phase_index value = constant:humanitarian_runtime.zero compare = greater_than }
+				check_variable = { var = migration_decision_phase_break value = constant:humanitarian_runtime.zero compare = equals }
+			}
+			subtract_from_temp_variable = { migration_decision_phase_index = constant:humanitarian_runtime.array_index_increment }
+			set_temp_variable = { migration_decision_phase_row_live = constant:humanitarian_runtime.zero }
+			set_temp_variable = { migration_decision_phase_row_country_match = constant:humanitarian_runtime.zero }
+			set_temp_variable = { migration_decision_phase_owner_match = constant:humanitarian_runtime.zero }
+			set_temp_variable = { migration_decision_phase_host_match = constant:humanitarian_runtime.zero }
+			set_temp_variable = { migration_decision_phase_origin_valid = constant:humanitarian_runtime.zero }
+			set_temp_variable = { migration_decision_phase_host_valid = constant:humanitarian_runtime.zero }
+			set_temp_variable = { migration_decision_phase_destination_valid = constant:humanitarian_runtime.zero }
+			set_temp_variable = { migration_decision_phase_row_status = constant:humanitarian_runtime.zero }
+			set_temp_variable = { migration_decision_phase_row_status = global.migration_cohort_statuses^migration_decision_phase_index }
+			if = {
+				limit = {
+					OR = {
+						check_variable = { var = migration_decision_phase_row_status value = constant:migration_cohort_status.active compare = equals }
+						check_variable = { var = migration_decision_phase_row_status value = constant:migration_cohort_status.destination_bound compare = equals }
+						check_variable = { var = migration_decision_phase_row_status value = constant:migration_cohort_status.destination_bound_unsafe compare = equals }
+					}
+					check_variable = { var = global.migration_cohort_amounts^migration_decision_phase_index value = constant:humanitarian_population.zero compare = greater_than }
+				}
+				set_temp_variable = { migration_decision_phase_row_live = constant:humanitarian_runtime.one }
+				var:global.migration_cohort_owners^migration_decision_phase_index = {
+					if = {
+						limit = { tag = event_target:migration_decision_phase_country }
+						set_temp_variable = { migration_decision_phase_owner_match = constant:humanitarian_runtime.one }
+					}
+				}
+				var:global.migration_cohort_hosts^migration_decision_phase_index = {
+					if = {
+						limit = { humanitarian_state_is_valid = yes }
+						set_temp_variable = { migration_decision_phase_host_valid = constant:humanitarian_runtime.one }
+						OWNER = {
+							if = {
+								limit = { tag = event_target:migration_decision_phase_country }
+								set_temp_variable = { migration_decision_phase_host_match = constant:humanitarian_runtime.one }
+							}
+						}
+					}
+				}
+				var:global.migration_cohort_origins^migration_decision_phase_index = {
+					if = {
+						limit = { humanitarian_state_is_valid = yes }
+						set_temp_variable = { migration_decision_phase_origin_valid = constant:humanitarian_runtime.one }
+					}
+				}
+				if = {
+					limit = {
+						OR = {
+							check_variable = { var = migration_decision_phase_row_status value = constant:migration_cohort_status.destination_bound compare = equals }
+							check_variable = { var = migration_decision_phase_row_status value = constant:migration_cohort_status.destination_bound_unsafe compare = equals }
+						}
+					}
+					var:global.migration_cohort_destinations^migration_decision_phase_index = {
+						if = {
+							limit = { humanitarian_state_is_valid = yes }
+							set_temp_variable = { migration_decision_phase_destination_valid = constant:humanitarian_runtime.one }
+						}
+					}
+				}
+				if = {
+					limit = {
+						OR = {
+							check_variable = { var = migration_decision_phase_owner_match value = constant:humanitarian_runtime.one compare = equals }
+							check_variable = { var = migration_decision_phase_host_match value = constant:humanitarian_runtime.one compare = equals }
+						}
+					}
+					set_temp_variable = { migration_decision_phase_row_country_match = constant:humanitarian_runtime.one }
+				}
+				if = {
+					limit = {
+						check_variable = { var = migration_decision_phase_row_live value = constant:humanitarian_runtime.one compare = equals }
+						check_variable = { var = migration_decision_phase_row_country_match value = constant:humanitarian_runtime.one compare = equals }
+						check_variable = { var = migration_decision_phase_origin_valid value = constant:humanitarian_runtime.one compare = equals }
+						check_variable = { var = migration_decision_phase_host_valid value = constant:humanitarian_runtime.one compare = equals }
+						OR = {
+							check_variable = { var = migration_decision_phase_row_status value = constant:migration_cohort_status.active compare = equals }
+							check_variable = { var = migration_decision_phase_destination_valid value = constant:humanitarian_runtime.one compare = equals }
+						}
+					}
+					set_temp_variable = { migration_decision_phase_live_cohort = constant:humanitarian_runtime.one }
+					set_temp_variable = { migration_decision_phase_break = constant:humanitarian_runtime.one }
+				}
+			}
+		}
+	}
+	if = {
+		limit = {
+			has_variable = migration_reception_load
+			check_variable = { var = migration_reception_load value = constant:humanitarian_population.zero compare = greater_than }
+		}
+		set_temp_variable = { migration_decision_phase_reception_positive = constant:humanitarian_runtime.one }
+	}
+	if = {
+		limit = {
+			any_owned_state = {
+				AND = {
+					NOT = {
+						OR = {
+							has_state_flag = migration_reception_context_active
+							check_variable = { var = migration_state_reception_load value = constant:humanitarian_population.zero compare = greater_than }
+						}
+					}
+					OR = {
+						check_variable = { var = migration_flight_pressure value = constant:humanitarian_population.zero compare = greater_than }
+						check_variable = { var = migration_trapped_population value = constant:humanitarian_population.zero compare = greater_than }
+						check_variable = { var = migration_state_flight_population value = constant:humanitarian_population.zero compare = greater_than }
+						check_variable = { var = migration_state_trapped_population value = constant:humanitarian_population.zero compare = greater_than }
+						has_state_flag = migration_population_trapped
+						has_state_flag = migration_displacement_active
+					}
+				}
+			}
+		}
+		set_temp_variable = { migration_decision_phase_origin_crisis = constant:humanitarian_runtime.one }
+	}
+	if = {
+		limit = {
+			NOT = { has_country_flag = migration_decision_active }
+			NOT = { has_country_flag = migration_decision_resolution }
+			migration_decision_reveal_threshold_is_met = yes
+		}
+		set_country_flag = migration_decision_emerging
+		clr_country_flag = migration_decision_dormant
+	}
+	if = {
+		limit = {
+			has_country_flag = migration_decision_resolution
+			OR = {
+				check_variable = { var = migration_decision_phase_origin_crisis value = constant:humanitarian_runtime.one compare = equals }
+			}
+		}
+		set_country_flag = migration_decision_active
+		clr_country_flag = migration_decision_resolution
+		clr_country_flag = migration_decision_emerging
+		clr_country_flag = migration_decision_dormant
+	}
+	if = {
+		limit = {
+			has_country_flag = migration_decision_active
+			check_variable = { var = migration_decision_phase_live_cohort value = constant:humanitarian_runtime.one compare = equals }
+			check_variable = { var = migration_decision_phase_reception_positive value = constant:humanitarian_runtime.one compare = equals }
+			check_variable = { var = migration_decision_phase_origin_crisis value = constant:humanitarian_runtime.zero compare = equals }
+		}
+		set_country_flag = migration_decision_resolution
+		clr_country_flag = migration_decision_active
+		clr_country_flag = migration_decision_emerging
+		clr_country_flag = migration_decision_dormant
+	}
+	if = {
+		limit = {
+			check_variable = { var = migration_decision_phase_resolution_seen value = constant:humanitarian_runtime.one compare = equals }
+			has_country_flag = migration_decision_resolution
+			check_variable = { var = migration_decision_phase_live_cohort value = constant:humanitarian_runtime.zero compare = equals }
+			check_variable = { var = migration_decision_phase_reception_positive value = constant:humanitarian_runtime.zero compare = equals }
+			check_variable = { var = migration_decision_phase_origin_crisis value = constant:humanitarian_runtime.zero compare = equals }
+			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
+		}
+		set_country_flag = migration_decision_dormant
+		clr_country_flag = migration_decision_resolution
+		clr_country_flag = migration_decision_active
+		clr_country_flag = migration_decision_emerging
+	}
+}

@@ -1,0 +1,40 @@
+# CHAOS REDUX - SPONTANEOUS MIGRATION MOVEMENT TRIGGERS
+# ============================================================================
+# Read-only gates for the sparse active-displacement-state owner. These
+# triggers never scan states or countries; the scheduler supplies one
+# registered state as THIS.
+# ============================================================================
+
+migration_spontaneous_movement_state_is_ready = {
+	hidden_trigger = {
+		humanitarian_state_is_valid = yes
+		OWNER = {
+			NOT = { is_special_chaos_country = yes }
+			NOT = { is_actual_nonhuman_country = yes }
+		}
+		CONTROLLER = {
+			NOT = { is_special_chaos_country = yes }
+			NOT = { is_actual_nonhuman_country = yes }
+		}
+		has_state_flag = migration_displacement_active
+		has_variable = migration_flight_pressure
+		check_variable = {
+			var = migration_flight_pressure
+			value = constant:migration_spontaneous_movement.minimum_flight_pressure
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = state_population_k
+			value = constant:migration_spontaneous_movement.minimum_origin_population_k
+			compare = greater_than_or_equals
+		}
+		OR = {
+			NOT = { has_variable = migration_spontaneous_movement_cooldown_until_date }
+			check_variable = {
+				var = migration_spontaneous_movement_cooldown_until_date
+				value = global.date
+				compare = less_than_or_equals
+			}
+		}
+	}
+}

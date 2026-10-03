@@ -1,0 +1,405 @@
+# ============================================================================
+# CHAOS REDUX - HUMANITARIAN CORRIDOR CONTRACT TRIGGERS
+# ============================================================================
+# Package-owned, fail-closed predicates for the exact humanitarian-corridor
+# contract. State and country database IDs are persisted in normal variables;
+# regular event targets are used only inside the caller's transaction chain.
+# These predicates never discover a destination, mutate a ledger, create an
+# event, or perform a whole-world scan.
+# ============================================================================
+
+# STATE scope. The requester must submit a trapped population/cohort state
+# before a corridor can be prepared. The active-contract flag prevents a
+# second request from overwriting an exact counterpart binding.
+humanitarian_corridor_origin_is_valid = {
+	hidden_trigger = {
+		humanitarian_state_is_valid = yes
+		has_state_flag = migration_population_trapped
+		has_variable = migration_trapped_population
+		check_variable = { var = migration_trapped_population value = constant:humanitarian_population.zero compare = greater_than }
+		has_variable = migration_current_cohort_id
+		NOT = { has_state_flag = migration_cohort_selection_ambiguous }
+		OWNER = { humanitarian_country_is_valid = yes }
+		CONTROLLER = { humanitarian_country_is_valid = yes }
+		NOT = { has_state_flag = humanitarian_corridor_contract_active }
+		NOT = { has_state_flag = humanitarian_corridor_cleanup_pending }
+	}
+}
+
+# STATE scope while every_neighbor_state is selecting one front. The origin
+# event target is mandatory, so this helper cannot silently select a state for
+# another request. Relation is supplied by the requester and is deliberately
+# explicit rather than inferred from a generic any_enemy_state query.
+humanitarian_corridor_front_candidate_is_valid = {
+	hidden_trigger = {
+		humanitarian_state_is_valid = yes
+		has_event_target = humanitarian_corridor_origin
+		NOT = { state = event_target:humanitarian_corridor_origin }
+		is_neighbor_of = event_target:humanitarian_corridor_origin
+		CONTROLLER = { humanitarian_country_is_valid = yes }
+		NOT = { CONTROLLER = { tag = ROOT } }
+		event_target:humanitarian_corridor_origin = { has_variable = humanitarian_corridor_relation }
+		OR = {
+			AND = {
+				event_target:humanitarian_corridor_origin = { check_variable = { var = humanitarian_corridor_relation value = constant:humanitarian_corridor_relation.enemy_front compare = equals } }
+				CONTROLLER = { has_war_with = ROOT }
+			}
+			AND = {
+				event_target:humanitarian_corridor_origin = { check_variable = { var = humanitarian_corridor_relation value = constant:humanitarian_corridor_relation.neutral_border compare = equals } }
+				CONTROLLER = {
+					NOT = { has_war_with = ROOT }
+					NOT = { is_in_faction_with = ROOT }
+				}
+			}
+			AND = {
+				event_target:humanitarian_corridor_origin = { check_variable = { var = humanitarian_corridor_relation value = constant:humanitarian_corridor_relation.faction_partner compare = equals } }
+				CONTROLLER = {
+					NOT = { has_war_with = ROOT }
+					is_in_faction_with = ROOT
+				}
+			}
+			AND = {
+				event_target:humanitarian_corridor_origin = { check_variable = { var = humanitarian_corridor_relation value = constant:humanitarian_corridor_relation.neighbor compare = equals } }
+				CONTROLLER = { NOT = { has_war_with = ROOT } }
+			}
+		}
+	}
+}
+
+# STATE scope. A counterpart is a country ID captured from the selected
+# adjacent state's controller, never from an unrelated any_country query.
+humanitarian_corridor_counterpart_is_valid = {
+	hidden_trigger = {
+		humanitarian_state_is_valid = yes
+		has_variable = humanitarian_corridor_requester_country_id
+		has_variable = humanitarian_corridor_counterpart_country_id
+		check_variable = { var = humanitarian_corridor_requester_country_id value = constant:humanitarian_corridor_runtime.zero compare = greater_than }
+		check_variable = { var = humanitarian_corridor_counterpart_country_id value = constant:humanitarian_corridor_runtime.zero compare = greater_than }
+		NOT = { check_variable = { var = humanitarian_corridor_requester_country_id value = humanitarian_corridor_counterpart_country_id compare = equals } }
+		var:humanitarian_corridor_requester_country_id = { humanitarian_country_is_valid = yes }
+		var:humanitarian_corridor_counterpart_country_id = { humanitarian_country_is_valid = yes }
+	}
+}
+
+# STATE scope. This is the positive destination safety contract used by the
+# stored front and by preparation's food proof. It requires a current capacity
+# revision, spare host capacity, native rail/bombing values, and every supported
+# active hazard channel to be clear. No absence of a generic unsafe flag is used
+# as affirmative evidence.
+humanitarian_corridor_front_destination_is_safe = {
+	hidden_trigger = {
+		humanitarian_state_is_valid = yes
+		OWNER = {
+			migration_reception_capacity_is_valid = yes
+			has_variable = migration_reception_capacity
+			OR = {
+				NOT = { has_variable = migration_reception_load }
+				check_variable = { var = migration_reception_load value = migration_reception_capacity compare = less_than }
+			}
+		}
+		# The native projections are current-value checks; the state flags are
+		# only their sparse live mirrors and are never replaced by an unsafe flag.
+		check_variable = { var = damaged_building_level@rail_way value = constant:civilian_transfer_route_projection.damage_threshold compare = less_than_or_equals }
+		check_variable = { var = days_since_last_strategic_bombing value = constant:chaos_meter_deaths.strategic_bombing_days_recent compare = greater_than_or_equals }
+		NOT = { has_state_flag = civilian_transfer_route_damaged }
+		NOT = { has_state_flag = migration_bombing_active }
+		NOT = { has_state_flag = migration_persecution_active }
+		NOT = { genocide_state_has_active_camps = yes }
+		NOT = { is_valid_camp_active_site_state = yes }
+		NOT = { cbrn_state_has_chemical_contamination = yes }
+		NOT = { has_dynamic_modifier = { modifier = nuclear_fallout_state } }
+		NOT = { black_plague_state_is_infected_or_worse = yes }
+		NOT = { is_zombie_controlled_state = yes }
+		NOT = { has_state_flag = natural_disaster_warning_scheduled }
+		NOT = { has_state_flag = natural_disaster_warning_active }
+		NOT = { has_state_flag = natural_disaster_impact_scheduled }
+		NOT = { has_state_flag = natural_disaster_aftermath_active }
+		NOT = { has_state_flag = natural_disaster_recovery_unresolved_territory }
+		NOT = { natural_disaster_state_has_unresolved_chain = yes }
+	}
+}
+
+# STATE scope. This is the authoritative state/country counterpart test after
+# preparation. The stored front must remain adjacent and controlled by the
+# stored counterpart; a changed controller therefore invalidates the contract.
+humanitarian_corridor_front_state_is_valid = {
+	hidden_trigger = {
+		humanitarian_corridor_counterpart_is_valid = yes
+		has_variable = humanitarian_corridor_front_state_id
+		has_variable = humanitarian_corridor_origin_controller_id
+		has_variable = humanitarian_corridor_origin_owner_country_id
+		has_variable = humanitarian_corridor_front_controller_id
+		has_variable = humanitarian_corridor_relation
+		check_variable = { var = humanitarian_corridor_front_state_id value = constant:humanitarian_corridor_runtime.zero compare = greater_than }
+		NOT = { check_variable = { var = humanitarian_corridor_origin_controller_id value = constant:humanitarian_corridor_runtime.zero compare = equals } }
+		NOT = { check_variable = { var = humanitarian_corridor_origin_owner_country_id value = constant:humanitarian_corridor_runtime.zero compare = equals } }
+		check_variable = { var = humanitarian_corridor_front_controller_id value = humanitarian_corridor_counterpart_country_id compare = equals }
+		is_controlled_by = var:humanitarian_corridor_origin_controller_id
+		is_owned_by = var:humanitarian_corridor_origin_owner_country_id
+		OR = {
+			AND = {
+				check_variable = { var = humanitarian_corridor_relation value = constant:humanitarian_corridor_relation.enemy_front compare = equals }
+				var:humanitarian_corridor_counterpart_country_id = { has_war_with = var:PREV.humanitarian_corridor_origin_controller_id }
+			}
+			AND = {
+				check_variable = { var = humanitarian_corridor_relation value = constant:humanitarian_corridor_relation.neutral_border compare = equals }
+				var:humanitarian_corridor_counterpart_country_id = {
+					NOT = { has_war_with = var:PREV.humanitarian_corridor_origin_controller_id }
+					NOT = { is_in_faction_with = var:PREV.humanitarian_corridor_origin_controller_id }
+				}
+			}
+			AND = {
+				check_variable = { var = humanitarian_corridor_relation value = constant:humanitarian_corridor_relation.faction_partner compare = equals }
+				var:humanitarian_corridor_counterpart_country_id = {
+					NOT = { has_war_with = var:PREV.humanitarian_corridor_origin_controller_id }
+					is_in_faction_with = var:PREV.humanitarian_corridor_origin_controller_id
+				}
+			}
+			AND = {
+				check_variable = { var = humanitarian_corridor_relation value = constant:humanitarian_corridor_relation.neighbor compare = equals }
+				var:humanitarian_corridor_counterpart_country_id = { NOT = { has_war_with = var:PREV.humanitarian_corridor_origin_controller_id } }
+			}
+		}
+		var:humanitarian_corridor_front_state_id = {
+			humanitarian_state_is_valid = yes
+			is_neighbor_of = PREV
+			is_controlled_by = var:PREV.humanitarian_corridor_counterpart_country_id
+			is_owned_by = var:PREV.humanitarian_corridor_counterpart_country_id
+			humanitarian_corridor_front_destination_is_safe = yes
+		}
+	}
+}
+
+# STATE scope. Route geometry is caller-owned evidence. Every dimension must
+# be present and positive; missing proof is not replaced by an inferred border
+# or by the existing generic destination selector.
+humanitarian_corridor_route_geometry_is_valid = {
+	hidden_trigger = {
+	humanitarian_corridor_front_state_is_valid = yes
+		NOT = { has_state_flag = humanitarian_corridor_route_invalid }
+		NOT = { has_state_flag = humanitarian_corridor_attack_received }
+		has_variable = humanitarian_corridor_cohort_id
+		has_variable = humanitarian_corridor_route_generation
+		has_variable = humanitarian_corridor_route_proof_generation
+		check_variable = { var = humanitarian_corridor_cohort_id value = constant:humanitarian_corridor_runtime.zero compare = greater_than }
+		check_variable = { var = humanitarian_corridor_route_generation value = constant:humanitarian_corridor_runtime.zero compare = greater_than }
+		check_variable = { var = humanitarian_corridor_route_proof_generation value = humanitarian_corridor_route_generation compare = equals }
+		has_variable = humanitarian_corridor_route_geometry_proof
+		has_variable = humanitarian_corridor_route_border_proof
+		has_variable = humanitarian_corridor_route_transport_proof
+		has_variable = humanitarian_corridor_route_safety_proof
+		has_variable = humanitarian_corridor_route_actor_proof
+		has_variable = humanitarian_corridor_route_ceasefire_proof
+		check_variable = { var = humanitarian_corridor_route_geometry_proof value = constant:humanitarian_corridor_runtime.zero compare = greater_than }
+		check_variable = { var = humanitarian_corridor_route_border_proof value = constant:humanitarian_corridor_runtime.zero compare = greater_than }
+		check_variable = { var = humanitarian_corridor_route_transport_proof value = constant:humanitarian_corridor_runtime.zero compare = greater_than }
+		check_variable = { var = humanitarian_corridor_route_safety_proof value = constant:humanitarian_corridor_runtime.zero compare = greater_than }
+		check_variable = { var = humanitarian_corridor_route_actor_proof value = constant:humanitarian_corridor_runtime.zero compare = greater_than }
+		check_variable = { var = humanitarian_corridor_route_ceasefire_proof value = constant:humanitarian_corridor_runtime.zero compare = greater_than }
+	}
+}
+
+# STATE scope. A pending offer proves an exact adjacent endpoint, usable
+# physical connection, current destination safety/capacity, and identified
+# actors. Corridor authorization and ceasefire become authoritative only when
+# the counterpart accepts, so those two proof dimensions remain excluded here.
+humanitarian_corridor_offer_route_is_valid = {
+	hidden_trigger = {
+	humanitarian_corridor_front_state_is_valid = yes
+		NOT = { has_state_flag = humanitarian_corridor_route_invalid }
+		NOT = { has_state_flag = humanitarian_corridor_attack_received }
+		has_variable = humanitarian_corridor_cohort_id
+		has_variable = humanitarian_corridor_route_generation
+		has_variable = humanitarian_corridor_route_proof_generation
+		check_variable = { var = humanitarian_corridor_cohort_id value = constant:humanitarian_corridor_runtime.zero compare = greater_than }
+		check_variable = { var = humanitarian_corridor_route_generation value = constant:humanitarian_corridor_runtime.zero compare = greater_than }
+		check_variable = { var = humanitarian_corridor_route_proof_generation value = humanitarian_corridor_route_generation compare = equals }
+		check_variable = { var = humanitarian_corridor_route_geometry_proof value = constant:humanitarian_corridor_runtime.zero compare = greater_than }
+		check_variable = { var = humanitarian_corridor_route_border_proof value = constant:humanitarian_corridor_runtime.zero compare = greater_than }
+		check_variable = { var = humanitarian_corridor_route_transport_proof value = constant:humanitarian_corridor_runtime.zero compare = greater_than }
+		check_variable = { var = humanitarian_corridor_route_actor_proof value = constant:humanitarian_corridor_runtime.zero compare = greater_than }
+	}
+}
+
+# STATE scope. The requester may call this on a prepared contract to make a
+# pending offer. No acceptance is implied by preparation.
+humanitarian_corridor_offer_request_is_valid = {
+	hidden_trigger = {
+		humanitarian_state_is_valid = yes
+		has_state_flag = humanitarian_corridor_contract_active
+		humanitarian_corridor_counterpart_is_valid = yes
+		OR = {
+			check_variable = { var = humanitarian_corridor_status value = constant:humanitarian_corridor_status.prepared compare = equals }
+			check_variable = { var = humanitarian_corridor_status value = constant:humanitarian_corridor_status.offer_pending compare = equals }
+		}
+		humanitarian_corridor_offer_route_is_valid = yes
+		NOT = { has_state_flag = humanitarian_corridor_offer_pending }
+	}
+}
+
+# STATE scope. This is called after entering the exact origin from the
+# counterpart country. It cross-checks the stored counterpart and the response
+# deadline before any operation state is changed.
+humanitarian_corridor_acceptance_is_valid = {
+	hidden_trigger = {
+		humanitarian_state_is_valid = yes
+		humanitarian_corridor_counterpart_is_valid = yes
+		humanitarian_corridor_offer_route_is_valid = yes
+		has_state_flag = humanitarian_corridor_offer_pending
+		check_variable = { var = humanitarian_corridor_status value = constant:humanitarian_corridor_status.offer_pending compare = equals }
+		has_variable = humanitarian_corridor_offer_deadline
+		check_variable = { var = global.date value = humanitarian_corridor_offer_deadline compare = less_than }
+	}
+}
+
+# COUNTRY scope. The counterpart response surface is exact and sparse: the
+# country carries only one pending offer mirror and no state scan is needed.
+humanitarian_corridor_offer_is_valid = {
+	hidden_trigger = {
+		humanitarian_country_is_valid = yes
+		has_country_flag = humanitarian_corridor_offer_pending
+		has_variable = humanitarian_corridor_offer_origin_state_id
+		has_variable = humanitarian_corridor_offer_requester_country_id
+		has_variable = humanitarian_corridor_offer_front_state_id
+		has_variable = humanitarian_corridor_offer_deadline
+		has_variable = humanitarian_corridor_offer_operation
+		has_variable = humanitarian_corridor_offer_cohort_id
+		has_variable = humanitarian_corridor_offer_route_generation
+		check_variable = { var = humanitarian_corridor_offer_origin_state_id value = constant:humanitarian_corridor_runtime.zero compare = greater_than }
+		check_variable = { var = humanitarian_corridor_offer_requester_country_id value = constant:humanitarian_corridor_runtime.zero compare = greater_than }
+		check_variable = { var = humanitarian_corridor_offer_front_state_id value = constant:humanitarian_corridor_runtime.zero compare = greater_than }
+		OR = {
+			check_variable = { var = humanitarian_corridor_offer_operation value = constant:humanitarian_corridor_operation.evacuation compare = equals }
+			check_variable = { var = humanitarian_corridor_offer_operation value = constant:humanitarian_corridor_operation.relief compare = equals }
+		}
+		check_variable = { var = humanitarian_corridor_offer_cohort_id value = constant:humanitarian_corridor_runtime.zero compare = greater_than }
+		check_variable = { var = humanitarian_corridor_offer_route_generation value = constant:humanitarian_corridor_runtime.zero compare = greater_than }
+		check_variable = { var = global.date value = humanitarian_corridor_offer_deadline compare = less_than }
+		var:humanitarian_corridor_offer_origin_state_id = {
+			humanitarian_corridor_acceptance_is_valid = yes
+			check_variable = { var = humanitarian_corridor_counterpart_country_id value = PREV.id compare = equals }
+			check_variable = { var = humanitarian_corridor_front_state_id value = PREV.humanitarian_corridor_offer_front_state_id compare = equals }
+			check_variable = { var = humanitarian_corridor_requester_country_id value = PREV.humanitarian_corridor_offer_requester_country_id compare = equals }
+			check_variable = { var = humanitarian_corridor_operation value = PREV.humanitarian_corridor_offer_operation compare = equals }
+			check_variable = { var = humanitarian_corridor_cohort_id value = PREV.humanitarian_corridor_offer_cohort_id compare = equals }
+			check_variable = { var = humanitarian_corridor_route_generation value = PREV.humanitarian_corridor_offer_route_generation compare = equals }
+		}
+	}
+}
+
+# STATE scope. Accepted state is still only a contract; population or reserve
+# mutation is performed by the exact transaction owner after route binding.
+humanitarian_corridor_operation_is_valid = {
+	hidden_trigger = {
+		humanitarian_corridor_route_geometry_is_valid = yes
+		OR = {
+			check_variable = { var = humanitarian_corridor_status value = constant:humanitarian_corridor_status.accepted compare = equals }
+			check_variable = { var = humanitarian_corridor_status value = constant:humanitarian_corridor_status.operation_pending compare = equals }
+			check_variable = { var = humanitarian_corridor_status value = constant:humanitarian_corridor_status.mission_active compare = equals }
+		}
+		has_variable = humanitarian_corridor_operation
+		OR = {
+			check_variable = { var = humanitarian_corridor_operation value = constant:humanitarian_corridor_operation.evacuation compare = equals }
+			check_variable = { var = humanitarian_corridor_operation value = constant:humanitarian_corridor_operation.relief compare = equals }
+		}
+	}
+}
+
+# STATE scope. This mission predicate requires a recorded exact transaction,
+# not merely accepted diplomatic intent. The mission deadline is separate from
+# the response deadline and is retained until terminal cleanup.
+humanitarian_corridor_mission_is_valid = {
+	hidden_trigger = {
+		humanitarian_corridor_operation_is_valid = yes
+		has_state_flag = humanitarian_corridor_mission_active
+		has_variable = humanitarian_corridor_mission_deadline
+		check_variable = { var = global.date value = humanitarian_corridor_mission_deadline compare = greater_than_or_equals }
+		OR = {
+			AND = {
+				check_variable = { var = humanitarian_corridor_operation value = constant:humanitarian_corridor_operation.evacuation compare = equals }
+				has_variable = humanitarian_corridor_evacuation_proven
+				check_variable = { var = humanitarian_corridor_evacuation_proven value = constant:humanitarian_corridor_runtime.zero compare = greater_than }
+			}
+			AND = {
+				check_variable = { var = humanitarian_corridor_operation value = constant:humanitarian_corridor_operation.relief compare = equals }
+				has_variable = humanitarian_corridor_relief_proven
+				check_variable = { var = humanitarian_corridor_relief_proven value = constant:humanitarian_corridor_runtime.zero compare = greater_than }
+			}
+		}
+	}
+}
+
+# STATE scope. The route binder uses this predicate before exposing the
+# existing generic destination/route contracts to an exact transfer call.
+humanitarian_corridor_route_binding_is_valid = {
+	hidden_trigger = {
+		humanitarian_corridor_operation_is_valid = yes
+		OR = {
+			AND = {
+				check_variable = { var = humanitarian_corridor_operation value = constant:humanitarian_corridor_operation.evacuation compare = equals }
+				has_variable = humanitarian_corridor_route_food_proof
+				has_variable = humanitarian_corridor_route_reception_proof
+				check_variable = { var = humanitarian_corridor_route_food_proof value = constant:humanitarian_corridor_runtime.zero compare = greater_than }
+				check_variable = { var = humanitarian_corridor_route_reception_proof value = constant:humanitarian_corridor_runtime.zero compare = greater_than }
+			}
+			AND = {
+				check_variable = { var = humanitarian_corridor_operation value = constant:humanitarian_corridor_operation.relief compare = equals }
+				has_variable = humanitarian_corridor_route_food_proof
+				check_variable = { var = humanitarian_corridor_route_food_proof value = constant:humanitarian_corridor_runtime.zero compare = greater_than }
+			}
+		}
+	}
+}
+
+# STATE scope. Attack disqualification is receipt-driven. An engine callback or
+# parent-owned war/control hook must submit attacker and proof; this helper does
+# not guess an attacker from the current war graph.
+humanitarian_corridor_attack_receipt_is_valid = {
+	hidden_trigger = {
+		humanitarian_corridor_counterpart_is_valid = yes
+		humanitarian_corridor_front_state_is_valid = yes
+		has_state_flag = humanitarian_corridor_contract_active
+		has_variable = humanitarian_corridor_attack_receipt_proven
+		has_variable = humanitarian_corridor_attack_attacker_country_id
+		check_variable = { var = humanitarian_corridor_attack_receipt_proven value = constant:humanitarian_corridor_runtime.zero compare = greater_than }
+		check_variable = { var = humanitarian_corridor_attack_attacker_country_id value = constant:humanitarian_corridor_runtime.zero compare = greater_than }
+		var:humanitarian_corridor_attack_attacker_country_id = { humanitarian_country_is_valid = yes }
+	}
+}
+
+# COUNTRY scope. Sparse maintenance is opt-in. The caller sets a pulse marker
+# when an exact offer mirror needs revalidation; this trigger never iterates
+# any_owned_state or any_country.
+humanitarian_corridor_country_pulse_is_valid = {
+	hidden_trigger = {
+		humanitarian_country_is_valid = yes
+		OR = {
+			has_country_flag = humanitarian_corridor_country_pulse_pending
+			AND = {
+				has_variable = humanitarian_corridor_country_pulse_due
+				check_variable = { var = global.date value = humanitarian_corridor_country_pulse_due compare = greater_than_or_equals }
+			}
+		}
+	}
+}
+
+# STATE scope. Cleanup may be called repeatedly from a terminal branch or an
+# invalidation hook; it is needed only while active identity/response/mission
+# state remains on the origin.
+humanitarian_corridor_cleanup_needed = {
+	hidden_trigger = {
+		OR = {
+			has_state_flag = humanitarian_corridor_contract_active
+			has_state_flag = humanitarian_corridor_offer_pending
+			has_state_flag = humanitarian_corridor_mission_armed
+			has_variable = humanitarian_corridor_origin_state_id
+		}
+		OR = {
+			check_variable = { var = humanitarian_corridor_status value = constant:humanitarian_corridor_status.completed compare = equals }
+			check_variable = { var = humanitarian_corridor_status value = constant:humanitarian_corridor_status.rejected compare = equals }
+			check_variable = { var = humanitarian_corridor_status value = constant:humanitarian_corridor_status.expired compare = equals }
+			check_variable = { var = humanitarian_corridor_status value = constant:humanitarian_corridor_status.invalidated compare = equals }
+			check_variable = { var = humanitarian_corridor_status value = constant:humanitarian_corridor_status.disqualified compare = equals }
+		}
+	}
+}

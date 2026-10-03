@@ -1,0 +1,98 @@
+# ============================================================================
+# CHAOS REDUX - MIGRATION DESTINATION SELECTION CONSTANTS
+# ============================================================================
+# This file contains the fixed-point tuning and pool identifiers for the
+# adjacent-state destination selectors in
+# migration_destination_selection_effects.txt. The selectors never
+# scan the world: each pass evaluates only every_neighbor_state from the
+# caller's state scope. A selector has no fallback candidate; a zero total
+# leaves its destination event target unbound for the caller to handle.
+# ============================================================================
+
+migration_destination_selection_pool = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	internal_safe_route = 1
+	foreign_safe_evacuation = 2
+	foreign_transit = 3
+	third_country_resettlement = 4
+}
+
+migration_destination_selection_runtime = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	zero = 0
+	one = 1
+	roll_minimum = 0
+	roll_maximum = 1
+	positive_weight_floor = 0
+}
+
+# Every term is an additive score. Safety and eligibility are enforced by the
+# scripted trigger; ideology is intentionally bounded and can never rescue a
+# candidate that fails the direct danger, persecution, contamination, route,
+# war, capacity, or border-policy checks.
+migration_destination_selection_weight = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_internal = 20
+	base_foreign = 12
+	base_transit = 10
+	base_third_country = 12
+	base_donor = 10
+	route_safe = 16
+	route_damaged_penalty = 12
+	border_open = 12
+	border_controlled = 10
+	border_transit = 8
+	border_quarantine = 4
+	capacity_available = 8
+	capacity_headroom_step = 1000
+	capacity_headroom_max = 40
+	reserve_stock_step = 1
+	reserve_stock_max = 40
+	relation_opinion_positive = 6
+	relation_opinion_friendly = 10
+	relation_opinion_negative_penalty = 8
+	relation_ally = 12
+	relation_faction = 10
+	relation_subject = 8
+	relation_military_access = 4
+	relation_guarantee = 4
+	ideology_same = 6
+	danger_food_pressure_penalty = 0.10
+	danger_flight_pressure_penalty = 0.05
+	danger_fallout_pressure_penalty = 0.10
+	danger_air_exposure_penalty = 0.10
+	danger_reserve_production_penalty = 0.05
+	danger_reserve_transport_penalty = 0.05
+	state_reception_load_step = 1000
+	state_reception_load_max_penalty = 40
+	forced_return_risk_penalty = 0.20
+	minimum_candidate_weight = 0
+	maximum_candidate_weight = 1000
+}
+
+migration_destination_selection_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	opinion_positive = 25
+	opinion_friendly = 75
+	opinion_negative = -25
+	minimum_reception_capacity = 1
+	minimum_reserve_amount = 1
+	minimum_route_infrastructure = 0
+	reserve_requisition_protection_days = 90
+}
