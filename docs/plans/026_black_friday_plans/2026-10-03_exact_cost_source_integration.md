@@ -89,6 +89,19 @@ The 43-file source integration is committed as `e64e95aa3bcb9fcab5a38a248cad28aa
 Only the universal-cost index row was committed from the mixed shared effects documentation, and the unrelated changes remain unstaged.
 This is not the final full-registry implementation freeze.
 
+Subsequent owned commits are `6ce9a5a81abd0966417fad68645c01ecbf83f6b3` for alignment/NOR rejection, `090983ebfc0ab7952d370f1c55539ea0544b43ca` for current visual identity and native-proof wording, `cbc83bcb18d48a535e940a1a5a9d7b41fce4e175` for existing-owner caller storage and ordinary Condemnation prices, and `3af464814b8220d104ff20e31603e85138a00842` for typed public achievement receipt integrity and external forwarding.
+Every bounded source repair above uses shared-tree isolated-index publication and retains unrelated work.
+
+## Next implementation surfaces
+
+The full logical-transaction registry and every remaining unadapted owner still need source implementation and semantic review.
+The restored CBRN seal-state and destroy-records ordinary PP providers have no Black Friday quote/payment/display/receipt adapter yet.
+The inspected Event 15 prefire domestic-shore purchase remains a three-component uncovered action: native PP 40, support equipment 50, and train equipment 5, with its original timed mission and non-refundable launch supplies.
+Its equipment-family payment must preserve the original family/model rules, not restrict the player to model 1 as a shortcut.
+No Event 15 source was patched by this inspection.
+These examples identify concrete next work and do not substitute for the exhaustive final registry.
+The fourteen native groups, exact inaccessible-surface route evidence, untyped receipt proof binding, abnormal post-outcome settlement recovery, and all missing native/MCP/live acceptance gates remain unresolved.
+
 ## Simplifications, omissions, and blockers
 
 No price approximation, narrowed arithmetic domain, unapproved fallback, action suppression, weight retuning, repeated refund, or new daily country-wide scan is introduced.
