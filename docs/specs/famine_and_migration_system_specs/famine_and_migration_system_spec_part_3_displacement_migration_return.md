@@ -8,6 +8,24 @@
 
 ## Population movement principle
 
+### Accepted prospective reception boundary (2026-10-03)
+
+Acceptance basis: the original user goal requires the complete migration, reception, exact-transfer, AI, and problem-gated presentation design, and the parent accepted this bounded repair after reviewing the source-proven first-host deadlock and the [prospective reception plan](../../plans/famine_and_migration_system_plans/prospective_reception_lifecycle_plan_20261003.md).
+This is an implementation clarification within that accepted scope, not authorization for a new mechanic family or an assertion of completion.
+
+When the existing internal-first operational destination search cannot resolve a real spontaneous request, the existing sparse state owner may select an exact adjacent foreign preparation host through a complete bounded weighted pass.
+The pass retains current food, route, actor, ownership, control, relation, and hazard evidence, while allowing missing paid shelter and medical services at the request stage only.
+Missing services receive no invented capacity score, route authorization, arrival, or population credit.
+The living cohort remains at its origin with no bound destination; retries reuse its exact row, while each new corridor contract receives a fresh monotonic generation.
+
+The receiver may use its existing paid reception preparation action or reject the exact request.
+Acceptance and movement each require a freshly resolved live cohort, the exact offered amount, current safe route and policy evidence, and enough current capacity for existing load plus that actual transaction amount.
+An accepted spontaneous request proceeds through the existing sparse owner rather than requiring a second player-only organized evacuation payment.
+Only the existing civilian-transfer transaction debits population, credits survivors, settles origin obligations, and adds reception load.
+Refusal, expiry, stale identity, and invalidation preserve the real origin population and its outstanding obligations; generation-matched cleanup cannot erase a newer request.
+
+Implementation, native execution, and the required same-scenario probability comparison remain separate acceptance obligations.
+
 Migration is a population transfer between real states. It is not a death effect and it is not a free population creation effect.
 
 Every completed flow must have:

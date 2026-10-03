@@ -8,6 +8,22 @@
 
 ## Presentation choice
 
+### Accepted first-reception presentation boundary (2026-10-03)
+
+Acceptance basis: the original user goal requires complete valid player and AI reception responses with delayed problem visibility, and the parent reviewed and accepted the [prospective reception plan](../../plans/famine_and_migration_system_plans/prospective_reception_lifecycle_plan_20261003.md) as a repair of the existing first-host loop.
+Famine and migration remain independent mechanics, categories, namespaces, and start-available mapmodes.
+
+A current evacuation request can reveal the migration category only through the existing large, repeated, or sustained issue thresholds; a quiet food observation, a relief-only offer, or one tiny positive pending row cannot do so.
+Distinct valid incoming evacuation generations may increment the existing migration incident count once per generation, without adding a public metric or an event-pacing entry.
+The preparation phase uses the existing Open Emergency Reception and rejection controls; acceptance becomes available only after the exact operational contract passes.
+The category retains Displacement Load, Reception Capacity, and Border Policy, at most six primary actions, and the existing three-mission limit.
+
+Paid preparation retains its three spendable resources and existing population-scaled service shares.
+One central cost table governs inclusive affordability and payment, with display-only quoted values projected by the existing bounded phase provider; cached display amounts never govern a debit.
+Preparation must make a real service or policy improvement, and a rejected paid setup refunds every charged resource and restores only its own changed receipts.
+No new event, GUI, category, mapmode, asset family, mission family, free native service, or numeric AI weight change is authorized by this clarification.
+The owner must still obtain the frozen baseline, source patch, and same-scenario probability comparison and report missing native evidence explicitly.
+
 The two mechanics should use their own ordinary state modifiers, accounting/presentation seams, report context, decision categories, concise scripted localisation, and map highlighting.
 
 A full dedicated scripted GUI is not justified. Famine presents Food Security as its primary value with Food Reserves and Relief Access as its two supporting values. Migration presents Displacement Load as its primary value with Reception Capacity and Border Policy as its two supporting values. Each normal decision category uses its own static category picture, compact dynamic header, state-targeted decisions, and clear tooltips.
