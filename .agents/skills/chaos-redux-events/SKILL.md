@@ -542,6 +542,15 @@ Track scheduled delivery separately from pending work when an immediate refresh 
 Set the scheduling flag before enqueueing, clear scheduling and pending-work flags before dispatch, and retain an immediate apply path for explicit setup or refresh.
 Verify registration convergence, repeated requests, and refresh while a request is pending; preserve every registry consumer and package repair hook.
 
+When bounded controller-country callbacks service a STATE-owned mechanic, keep each independent review or growth date persistently on that state and gate advancement on elapsed time.
+Controller changes must preserve those dates so cycling controllers or receiving duplicate callbacks cannot accelerate the same mechanic's cadence.
+Callback count is not elapsed time.
+
+When a terminal record stops maintenance but an achievement or outcome still needs elapsed-time verification, schedule a one-time callback in the record owner's scope guarded by a persistent due date and a pending receipt consumed before verification.
+Preserve the original due date across narrow controller changes, rescheduling only the remaining delay when delivery needs repair.
+Revalidate the exact record and eligible actor tag under the existing identity contract, preserving any actor-specific invalidation.
+Check early, duplicate, transferred, and stale-actor deliveries without adding a periodic world scan.
+
 ### 5. Event log integration
 
 Events must appear in Chaos Redux’s event log, so wire the full log contract in the same change.
