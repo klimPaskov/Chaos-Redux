@@ -61,6 +61,14 @@ has_live_main_zombie_outbreak = {
 	}
 }
 
+# State scope. A new horde receives exactly one state and create_unit places its
+# divisions inside that state, so an impassable state (Deep Amazonas, Sahara,
+# Australian interior) leaves the horde with no valid province and it capitulates.
+# Every outbreak origin and field-test target must pass this check.
+can_host_zombie_outbreak_state = {
+	impassable = no
+}
+
 is_zombie_controlled_state = {
 	OR = {
 		is_controlled_by = ZZZ
@@ -396,6 +404,7 @@ zombie_threat_ready_for_anti_zombie_league_disband = {
 }
 
 is_rear_zombie_outbreak_state = {
+	can_host_zombie_outbreak_state = yes
 	NOT = {
 		any_neighbor_state = {
 			OR = {

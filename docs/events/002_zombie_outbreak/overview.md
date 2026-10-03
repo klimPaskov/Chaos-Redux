@@ -200,6 +200,8 @@ Base eligibility:
 
 All of those checks use controlled territory, not merely owned territory. Lost occupied land does not count toward outbreak exposure or state selection.
 
+A rear outbreak state (`is_rear_zombie_outbreak_state`) must also be passable (`can_host_zombie_outbreak_state`). The new horde receives only that state and `create_unit` places its divisions inside it, so an impassable wasteland state would leave the horde without divisions. Weaponized-zombie field-test targets, the Wendigo completion-failure origin, and the Zombie Apocalypse triggerable scenario use the same check.
+
 #### Country-level risk and selection logic
 
 The per-country MTTH drives both the risk display and the actual weekly zombie-side roll. `ZZZ` refreshes every country once per week, stores the best eligible outbreak time, and then uses that live value for the one allowed weekly outbreak roll. The system can create only one dynamic outbreak at a time, and the 7 day global cooldown blocks follow-up outbreaks instead of merely slowing later rolls.

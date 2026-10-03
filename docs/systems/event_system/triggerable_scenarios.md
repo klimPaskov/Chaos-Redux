@@ -75,6 +75,7 @@ The trigger button opens a separate confirmation window. Confirming reads the st
 ### SCN-001: Zombie Apocalypse
 
 The Zombie Apocalypse scenario launches hostile outbreaks according to the selected type. Diverse outbreaks always include at least one standard zombie outbreak so the normal cure path remains available, then guarantee coverage of the special zombie profiles, including Wendigo at maximum intensity. Random outbreaks roll profiles independently. Single-profile types use the selected profile everywhere. Connected outbreak creates one concentrated front.
+Every randomly placed outbreak starts in a passable state that no zombie country controls (`triggerable_scenario_can_spawn_zombie_state`, which includes `can_host_zombie_outbreak_state`). Impassable wasteland states such as Deep Amazonas, the Sahara, and the Australian interior are excluded because `create_unit` places a horde's divisions inside its single starting state, so an impassable origin would leave the horde without divisions and it would capitulate at once.
 
 Scenario-created weaponized outbreaks are live special zombie types. They do not create reviewable weaponization profiles. Profile review decisions are reserved for outbreaks designed by a country through the weaponized-zombie project chain.
 
