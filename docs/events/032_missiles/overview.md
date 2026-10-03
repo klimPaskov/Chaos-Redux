@@ -12,7 +12,9 @@ Launch sites are physical state records owned by the current controller. Registr
 
 Precision strike, strategic barrage, saturation barrage, and counterforce strike use the same persisted operation receipt with different costs, capacity demands, preparation windows, drift weights, damage profiles, and target rules. Preparation freezes the actor, victim, exact target state, profile, payload, site, reserve, and incident root; commitment revalidates those scopes and cannot silently retarget.
 
-The scripted operation adapter owns the Event 032-specific preparation, launch, guidance, drift, impact, interception, damage, deaths, evidence, attribution, incident, and cleanup contract. Native raid behavior was inspected as a precedent, but no native raid is registered because the installed raid surface does not expose the required site custody, payload, guidance, attribution, and bounded cleanup contract.
+The scripted operation adapter owns the Event 032 preparation, launch, guidance, drift, impact, interception, damage, deaths, evidence, attribution, incident, and cleanup contract.
+The documented native RaidInstance API cannot authenticate the exact launch state or participating site allocations.
+The reviewed parity handoff supports the full scripted route under the accepted conditional adapter contract, while runtime and numerical proof remain separately bounded.
 
 Natural-disaster damage enters through a controller-validated, fail-closed bridge. The percentage reserve component is settled through the accepted/rejected reserve receipt before site mutation; destruction then settles the remaining ordinary allocation and captured-held receipt through the current-controller scuttle adapter, while strategic capacity loss recovers in bounded step-sized receipts without creating reserve.
 

@@ -1,0 +1,404 @@
+add_namespace = chaosx.nr32
+
+# ============================================================================
+# CHAOS REDUX - EVENT 032 MISSILES
+# ============================================================================
+# Event 032 enters through one hidden global firing transaction. Recipient
+# reports, first-use news, payload integration, posture selection, incident
+# warnings, delayed retaliation preparation, and root closure all remain
+# separate from the shared dispatcher and from payload-system consequences.
+# ============================================================================
+
+country_event = {
+	id = chaosx.nr32.1
+	title = chaosx.nr32.1.t
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = { missiles_global_firing_transaction = yes }
+}
+
+country_event = {
+	id = chaosx.nr32.2
+	title = chaosx.nr32.2.t
+	desc = chaosx.nr32.2.d
+	picture = GFX_chaosx_report_032_missiles_country
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr32.2.a
+		ai_chance = { base = constant:missiles_ai_weight.certain }
+		if = {
+			limit = {
+				brilliant_scientist_is_current_host = yes
+				NOT = { has_country_flag = brilliant_scientist_missile_crisis_recorded }
+				KRG_warren_kruger = { NOT = { has_character_flag = brilliant_scientist_personal_missile_crisis_recorded } }
+			}
+			custom_effect_tooltip = brilliant_scientist_missile_crisis_effect_tt
+		}
+		hidden_effect = { brilliant_scientist_record_missile_crisis = yes }
+	}
+}
+
+news_event = {
+	id = chaosx.nr32.3
+	title = chaosx.nr32.3.t
+	desc = chaosx.nr32.3.d
+	picture = GFX_chaosx_news_032_missiles_proliferation
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr32.3.a
+		ai_chance = { base = constant:missiles_ai_weight.certain }
+	}
+}
+
+country_event = {
+	id = chaosx.nr32.4
+	title = chaosx.nr32.4.t
+	desc = chaosx.nr32.4.desc
+	picture = GFX_chaosx_report_032_missiles_country
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr32.4.a
+		ai_chance = { base = constant:missiles_ai_weight.certain }
+	}
+}
+
+# Select one already-owned payload family for missile integration. No option
+# grants technology, equipment, nuclear stockpile, or payload inventory.
+country_event = {
+	id = chaosx.nr32.30
+	title = chaosx.nr32.30.t
+	desc = chaosx.nr32.30.desc
+	picture = GFX_chaosx_report_032_missiles_country
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr32.30.a
+		trigger = { missiles_country_has_chemical_payload_candidate = yes NOT = { has_country_flag = missiles_chemical_integration_operational } }
+		ai_chance = {
+			base = constant:missiles_ai_weight.medium
+			modifier = { factor = constant:missiles_ai_factor.prefer_special has_country_flag = cbrn_chemical_first_use_committed }
+		}
+		hidden_effect = {
+			set_variable = { missiles_requested_payload_integration = constant:missiles_payload.chemical }
+			missiles_integrate_special_payload = yes
+		}
+	}
+	option = {
+		name = chaosx.nr32.30.b
+		trigger = { missiles_country_has_biological_payload_candidate = yes NOT = { has_country_flag = missiles_biological_integration_operational } }
+		ai_chance = { base = constant:missiles_ai_weight.low }
+		hidden_effect = {
+			set_variable = { missiles_requested_payload_integration = constant:missiles_payload.biological }
+			missiles_integrate_special_payload = yes
+		}
+	}
+	option = {
+		name = chaosx.nr32.30.c
+		trigger = { missiles_country_has_nuclear_payload_candidate = yes NOT = { has_country_flag = missiles_nuclear_integration_operational } }
+		ai_chance = {
+			base = constant:missiles_ai_weight.high
+			modifier = { factor = constant:missiles_ai_factor.prefer_special has_war = yes }
+		}
+		hidden_effect = {
+			set_variable = { missiles_requested_payload_integration = constant:missiles_payload.nuclear }
+			missiles_integrate_special_payload = yes
+		}
+	}
+	option = {
+		name = chaosx.nr32.30.d
+		trigger = { missiles_country_has_thermonuclear_payload_candidate = yes NOT = { has_country_flag = missiles_thermonuclear_integration_operational } }
+		ai_chance = {
+			base = constant:missiles_ai_weight.low
+			modifier = { factor = constant:missiles_ai_factor.prefer_special has_war = yes }
+		}
+		hidden_effect = {
+			set_variable = { missiles_requested_payload_integration = constant:missiles_payload.thermonuclear }
+			missiles_integrate_special_payload = yes
+		}
+	}
+	option = {
+		name = chaosx.nr32.30.e
+		ai_chance = { base = constant:missiles_ai_weight.minimal }
+	}
+}
+
+country_event = {
+	id = chaosx.nr32.31
+	title = chaosx.nr32.31.t
+	desc = chaosx.nr32.31.desc
+	picture = GFX_chaosx_report_032_missiles_country
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr32.31.a
+		ai_chance = { base = constant:missiles_ai_weight.high }
+		hidden_effect = {
+			set_variable = { missiles_selected_payload = constant:missiles_payload.conventional }
+			clr_country_flag = missiles_special_payload_selected
+		}
+	}
+	option = {
+		name = chaosx.nr32.31.b
+		trigger = { has_country_flag = missiles_chemical_integration_operational }
+		ai_chance = { base = constant:missiles_ai_weight.medium }
+		hidden_effect = { set_variable = { missiles_selected_payload = constant:missiles_payload.chemical } set_country_flag = missiles_special_payload_selected }
+	}
+	option = {
+		name = chaosx.nr32.31.c
+		trigger = { has_country_flag = missiles_biological_integration_operational }
+		ai_chance = { base = constant:missiles_ai_weight.low }
+		hidden_effect = { set_variable = { missiles_selected_payload = constant:missiles_payload.biological } set_country_flag = missiles_special_payload_selected }
+	}
+	option = {
+		name = chaosx.nr32.31.d
+		trigger = { has_country_flag = missiles_nuclear_integration_operational }
+		ai_chance = { base = constant:missiles_ai_weight.medium }
+		hidden_effect = { set_variable = { missiles_selected_payload = constant:missiles_payload.nuclear } set_country_flag = missiles_special_payload_selected }
+	}
+	option = {
+		name = chaosx.nr32.31.e
+		trigger = { has_country_flag = missiles_thermonuclear_integration_operational }
+		ai_chance = { base = constant:missiles_ai_weight.low }
+		hidden_effect = { set_variable = { missiles_selected_payload = constant:missiles_payload.thermonuclear } set_country_flag = missiles_special_payload_selected }
+	}
+}
+
+country_event = {
+	id = chaosx.nr32.32
+	title = chaosx.nr32.32.t
+	desc = chaosx.nr32.32.desc
+	picture = GFX_chaosx_report_032_missiles_country
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr32.32.a
+		ai_chance = { base = constant:missiles_ai_weight.medium }
+		hidden_effect = { set_variable = { missiles_special_payload_policy = constant:missiles_special_payload_policy.prohibited } }
+	}
+	option = {
+		name = chaosx.nr32.32.b
+		ai_chance = { base = constant:missiles_ai_weight.high }
+		hidden_effect = { set_variable = { missiles_special_payload_policy = constant:missiles_special_payload_policy.retaliatory_only } }
+	}
+	option = {
+		name = chaosx.nr32.32.c
+		ai_chance = { base = constant:missiles_ai_weight.high }
+		hidden_effect = { set_variable = { missiles_special_payload_policy = constant:missiles_special_payload_policy.military_targets_only } }
+	}
+	option = {
+		name = chaosx.nr32.32.d
+		trigger = { has_war = yes }
+		ai_chance = { base = constant:missiles_ai_weight.low }
+		hidden_effect = { set_variable = { missiles_special_payload_policy = constant:missiles_special_payload_policy.unrestricted_war } }
+	}
+	option = {
+		name = chaosx.nr32.32.e
+		trigger = { has_country_flag = missiles_evolution_automatic_retaliation }
+		ai_chance = { base = constant:missiles_ai_weight.minimal }
+		hidden_effect = { set_variable = { missiles_special_payload_policy = constant:missiles_special_payload_policy.emergency_delegation } }
+	}
+}
+
+# Retaliation posture is country state, not a direct launch instruction.
+country_event = {
+	id = chaosx.nr32.40
+	title = chaosx.nr32.40.t
+	desc = chaosx.nr32.40.desc
+	picture = GFX_chaosx_report_032_missiles_country
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr32.40.a
+		ai_chance = {
+			base = constant:missiles_ai_weight.low
+			modifier = { factor = constant:missiles_ai_factor.prefer_restraint has_country_flag = missiles_false_warning_history }
+		}
+		hidden_effect = { missiles_set_retaliation_posture_off = yes }
+	}
+	option = {
+		name = chaosx.nr32.40.b
+		trigger = { missiles_retaliation_network_available = yes }
+		ai_chance = { base = constant:missiles_ai_weight.high }
+		hidden_effect = { missiles_set_retaliation_posture_supervised = yes }
+	}
+	option = {
+		name = chaosx.nr32.40.c
+		trigger = { missiles_posture_can_be_delegated = yes }
+		ai_chance = {
+			base = constant:missiles_ai_weight.medium
+			modifier = { factor = constant:missiles_ai_factor.prefer_escalation has_war = yes }
+		}
+		hidden_effect = { missiles_set_retaliation_posture_delegated = yes }
+	}
+	option = {
+		name = chaosx.nr32.40.d
+		trigger = { missiles_posture_can_be_automatic = yes }
+		ai_chance = {
+			base = constant:missiles_ai_weight.low
+			modifier = { factor = constant:missiles_ai_factor.prefer_escalation has_country_flag = missiles_verified_special_attack_history }
+			modifier = { factor = constant:missiles_ai_factor.reject has_country_flag = missiles_false_warning_history }
+		}
+		hidden_effect = { missiles_set_retaliation_posture_automatic = yes }
+	}
+}
+
+# A rogue-command crisis opens ordinary decisions for the player. AI options
+# pay the same command, fuel, equipment, and manpower costs as those actions.
+country_event = {
+	id = chaosx.nr32.60
+	title = chaosx.nr32.60.t
+	desc = chaosx.nr32.60.desc
+	picture = GFX_chaosx_report_032_missiles_country
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr32.60.a
+		trigger = { is_ai = no }
+		ai_chance = { base = constant:missiles_ai_weight.certain }
+	}
+	option = {
+		name = chaosx.nr32.60.b
+		trigger = { is_ai = yes command_power > constant:missiles_rogue_action_cost.command_standard has_fuel > constant:missiles_rogue_action_cost.fuel_low }
+		ai_chance = { base = constant:missiles_ai_weight.high modifier = { factor = constant:missiles_ai_factor.prefer_verification has_country_flag = missiles_code_compromise_active } }
+		hidden_effect = { missiles_ai_rotate_emergency_codes = yes }
+	}
+	option = {
+		name = chaosx.nr32.60.c
+		trigger = { is_ai = yes has_variable = missiles_incident_site command_power > constant:missiles_rogue_action_cost.command_low has_equipment = { support_equipment > constant:missiles_rogue_action_cost.support_low } }
+		ai_chance = { base = constant:missiles_ai_weight.high modifier = { factor = constant:missiles_ai_factor.prefer_restraint missiles_rogue_incident_site_has_payload = yes } }
+		hidden_effect = { missiles_ai_isolate_rogue_site = yes }
+	}
+	option = {
+		name = chaosx.nr32.60.d
+		trigger = { is_ai = yes command_power > constant:missiles_rogue_action_cost.command_standard has_manpower > constant:missiles_rogue_action_cost.manpower_low }
+		ai_chance = { base = constant:missiles_ai_weight.medium modifier = { factor = constant:missiles_ai_factor.prefer_restraint NOT = { has_war = yes } } }
+		hidden_effect = { missiles_ai_negotiate_with_command = yes }
+	}
+	option = {
+		name = chaosx.nr32.60.e
+		trigger = { is_ai = yes has_variable = missiles_incident_site command_power > constant:missiles_rogue_action_cost.command_high has_manpower > constant:missiles_rogue_action_cost.manpower_low }
+		ai_chance = { base = constant:missiles_ai_weight.low modifier = { factor = constant:missiles_ai_factor.prefer_escalation missiles_rogue_incident_site_has_payload = yes } }
+		hidden_effect = { missiles_ai_scuttle_rogue_site = yes }
+	}
+	option = {
+		name = chaosx.nr32.60.f
+		trigger = { is_ai = yes has_variable = missiles_rogue_launch_target missiles_rogue_incident_site_has_reserve = yes }
+		ai_chance = { base = constant:missiles_ai_weight.low modifier = { factor = constant:missiles_ai_factor.prefer_escalation has_war = yes } }
+		hidden_effect = { missiles_allow_rogue_launch = yes }
+	}
+	option = {
+		name = chaosx.nr32.60.g
+		trigger = { is_ai = yes }
+		ai_chance = { base = constant:missiles_ai_weight.minimal }
+	}
+}
+
+country_event = {
+	id = chaosx.nr32.69
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = { missiles_resolve_rogue_incident_timeout = yes }
+}
+
+# An actionable warning never launches inside the originating damage chain.
+country_event = {
+	id = chaosx.nr32.80
+	title = chaosx.nr32.80.t
+	desc = chaosx.nr32.80.desc
+	picture = GFX_chaosx_report_032_missiles_country
+	is_triggered_only = yes
+
+	immediate = { missiles_schedule_warning_response = yes }
+
+	option = {
+		name = chaosx.nr32.80.a
+		trigger = { missiles_warning_is_actionable = yes }
+		ai_chance = {
+			base = constant:missiles_ai_weight.high
+			modifier = { factor = constant:missiles_ai_factor.prefer_verification NOT = { has_country_flag = missiles_warning_verified } }
+		}
+		hidden_effect = {
+			missiles_verify_warning = yes
+			activate_mission = missiles_warning_verification_mission
+		}
+	}
+	option = {
+		name = chaosx.nr32.80.b
+		trigger = { missiles_warning_is_actionable = yes NOT = { has_country_flag = missiles_warning_delayed } }
+		ai_chance = { base = constant:missiles_ai_weight.medium }
+		hidden_effect = { missiles_delay_retaliation = yes }
+	}
+	option = {
+		name = chaosx.nr32.80.c
+		trigger = { missiles_warning_is_actionable = yes }
+		ai_chance = {
+			base = constant:missiles_ai_weight.low
+			modifier = { factor = constant:missiles_ai_factor.prefer_restraint has_country_flag = missiles_false_warning_history }
+		}
+		hidden_effect = { missiles_sever_network = yes }
+	}
+	option = {
+		name = chaosx.nr32.80.d
+		trigger = { missiles_warning_is_actionable = yes any_controlled_state = { missiles_site_can_launch = yes } }
+		ai_chance = {
+			base = constant:missiles_ai_weight.low
+			modifier = { factor = constant:missiles_ai_factor.prefer_escalation has_country_flag = missiles_warning_verified }
+			modifier = { factor = constant:missiles_ai_factor.reject NOT = { has_country_flag = missiles_warning_verified } }
+		}
+		hidden_effect = { missiles_accept_retaliation_response = yes }
+	}
+	option = {
+		name = chaosx.nr32.80.e
+		ai_chance = { base = constant:missiles_ai_weight.minimal }
+	}
+}
+
+# The response check reschedules itself when the player delayed the warning
+# after this event was queued. It resolves only the current receipt.
+country_event = {
+	id = chaosx.nr32.82
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = { missiles_process_scheduled_warning_response = yes }
+}
+
+# Accepted retaliation completes preparation in a later event. This prevents
+# direct recursive launch calls from the warning or damage chain.
+country_event = {
+	id = chaosx.nr32.83
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { has_country_flag = missiles_operation_active NOT = { has_country_flag = missiles_operation_committed } }
+			missiles_complete_preparation = yes
+			if = { limit = { missiles_operation_can_be_committed = yes } missiles_commit_operation = yes }
+			else = { missiles_abort_operation = yes missiles_cleanup_operation = yes }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr32.89
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = { missiles_close_root_incident = yes }
+}
+
+# Bounded, receipt-owned achievement timer. It is queued only when the
+# incident or readiness clock starts and never scans other countries.
+country_event = {
+	id = chaosx.nr32.90
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = { chaosx_032_achievement_refresh_timers = yes }
+}

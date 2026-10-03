@@ -2,6 +2,36 @@
 
 Status: partial/blocked. The source implementation and evidence reconciliation are substantial, but the independent completion audit records unresolved MCP, probability, asset-consumer, and planner evidence gaps. This record is the evidence ledger for the Event 032 acceptance and test matrices; it is not a substitute for live Hearts of Iron IV consumer validation.
 
+## Current repair evidence, 2026-10-03
+
+The frozen-recipient and SCN-015 commit loops deliver immediate hidden `.5` and `.6` country events so programme and site helpers execute with recipient ROOT.
+The recipient receipt gate covers setup, adoption, rogue evaluation, and firing-pressure accounting together.
+Scenario site-plan preflight uses recipient-relative PREV control and shares ordinary geographical eligibility.
+The Event 16 bridge relies on the existing owner helper's host and personal receipts, and site registration reads the state capacity through PREV when updating its country total.
+The default-enable completion gate is restored while the accepted validation gaps remain open.
+
+The offline source-path regression `.tools/test_event32_recipient_scope.py` passes ten tests on current source and reproduces the previous ROOT, Event 16 ordering, capacity-read, and technology-step failures against preserved sources.
+It models documented scope delivery only and does not prove engine outcomes or numeric probabilities.
+The exact source identities, references, and evidence limits are in `subagent_handoffs/032_recipient_scope_repair_2026-10-03.md`.
+
+All 82 asset-audit rows match their current DDS checksums after correcting two metadata errors.
+The reviewed native parity handoff establishes a documented exact-source limitation independently of the absent raid definition.
+The accepted conditional scripted route is retained under part 8 lines 411–433, and native raid icons are not applicable to the current route under the conditional asset requirement in part 7 lines 222–235.
+Native runtime behavior and numerical parity have not been claimed from this source-contract audit.
+
+The fresh explicit-workspace Event trace returned revision `9632ca4524ded062f0beebccbb91f0593efa38cb58d00af4b079afca066fc2ad` with focused analysis, zero helpers, and 8,945 unresolved nodes.
+The following full impact request returned `timed out awaiting tools/call after 600s` without a domain result or job handle.
+This client observation timeout does not establish server-side termination.
+The technology inspector also returned `timed out awaiting tools/call after 600s` without a domain result.
+The September evidence below is historical and cannot prove the October source revision.
+
+The user-supplied October live QA cycle-1 log contains no reference to an Event 32 source file.
+Its main-menu load and absence of named Event 32 diagnostics do not prove programme, operation, achievement, or evolution execution.
+The supplied log still contains project-wide diagnostics, which remain owned by their recorded surfaces in the shared QA pass.
+
+The source audit found that Event 32's legacy disabled-evolution flag names do not match the shared Event Details toggle writer.
+The exact before sources are preserved under `baselines/2026-10-03_evolution_gates/`, and the gate correction remains queued for the required probability baseline and same-scenario comparison.
+
 ## Source and static coverage
 
 - All files under `docs/specs/032_missiles_specs/` were read before implementation, including the acceptance criteria, coding and decision prompts, asset and achievement prompts, requirement traceability, source review, probability scenario matrix, test matrix, and improvement-loop closure.

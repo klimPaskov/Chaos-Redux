@@ -134,18 +134,22 @@ missiles_neutral_incident_active = {
 # Site and state gates
 # -----------------------------------------------------------------------------
 
-missiles_state_is_valid_site_target = {
-	scope_exists = yes
+missiles_state_has_valid_site_geography = {
+	CONTROLLER = { exists = yes }
 	impassable = no
-	is_owned_by = ROOT
-	is_controlled_by = ROOT
 	OR = {
 		infrastructure > constant:missiles_tuning.site_min_infrastructure
 		is_capital = yes
-		ROOT = { num_of_controlled_states < constant:missiles_program_value.two }
+		CONTROLLER = { num_of_controlled_states < constant:missiles_program_value.two }
 	}
 	NOT = { has_state_flag = missiles_site_scuttled }
 	NOT = { has_state_flag = missiles_site_isolated }
+}
+
+missiles_state_is_valid_site_target = {
+	is_owned_by = ROOT
+	is_controlled_by = ROOT
+	missiles_state_has_valid_site_geography = yes
 }
 
 missiles_state_is_valid_secondary_site = {

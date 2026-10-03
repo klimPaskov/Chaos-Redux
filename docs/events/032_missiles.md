@@ -8,9 +8,13 @@ The shared event dispatcher calls `missiles_prepare_random_event_fire` during Ev
 
 `missiles_global_firing_transaction` increments one firing receipt, clears and freezes `global.missiles_frozen_recipients`, classifies every country once as accepted, deferred, or skipped, and processes only the frozen accepted array. Recipient receipt IDs make a country idempotent within the firing. The transaction stores the accepted count in the shared history-payload override so the shared repeatable handler records one Event 32 history row after the entry event returns.
 
+Each frozen recipient receives the immediate hidden event `chaosx.nr32.5`, which binds `ROOT` to that recipient for its country and launch-state helpers. The receipt gate covers programme setup, evolution adoption, rogue-incident evaluation, and pressure accounting together. These receivers finish within the global transaction and do not create history rows or player popups.
+
+First-package recipients call the existing Event 16 reaction helper in their own country scope. Event 16 owns the host and personal receipts, so an earlier non-host recipient cannot suppress the current host's reaction.
+
 The same transaction owns the first-news guard and emits `chaosx.nr32.3` only once. Human recipients receive one delayed country report through `chaosx.nr32.2`; AI recipients are initialized silently. No Event 32 daily, weekly, monthly, or other recurring whole-world scan exists.
 
-The default event pool is enabled by the shared reworked-event allowlist only after the implementation is installed. The repeatable event array, shared event-type resolver, cap reduction, weight recovery, pacing update, unfired counts, and history row remain owned by the shared event system.
+Event 32 remains outside the shared default-enable allowlist until its accepted completion gates are satisfied. The repeatable event array, shared event-type resolver, cap reduction, weight recovery, pacing update, unfired counts, and history row remain owned by the shared event system.
 
 ## Country-program API
 
@@ -19,6 +23,7 @@ The following country-scoped effects form the public Event 032 program contract.
 | API | Inputs | Outputs and side effects |
 | --- | --- | --- |
 | `missiles_initialize_program_record` | Current country | Initializes missing persistent records and achievement state without granting a package. |
+| `missiles_process_frozen_recipient` | Immediate `.5` receiver with recipient `ROOT` and a live frozen-firing receipt | Applies one complete recipient transaction, including adoption and pressure accounting, once per firing. |
 | `missiles_initialize_or_advance_program` | Current country and optional `missiles_scenario_country_bypass_active` | Applies exactly one normalized technology step, the appropriate reserve package, readiness/control changes, site package, AI profile, status idea, and receipt. It does not record the global history row. |
 | `missiles_normalize_technology_stage` | Current country | Derives the highest supported logical stage from installed rocket technologies and stores the normalized stage. |
 | `missiles_apply_next_technology_step` | Current country with normalized stage | Grants one next valid installed technology step and records an unresolved mapping instead of granting unrelated technology when no branch is available. |
@@ -29,6 +34,10 @@ The following country-scoped effects form the public Event 032 program contract.
 | `missiles_assign_ai_profile` | Current country | Assigns a persistent doctrine profile from war status, guidance, custody, control, payload availability, and evolution state. |
 
 Operational Reserve and reserved missiles are separate variables. Reserve changes are bounded by the country cap and physical site custody, while prepared operations debit a site-held allocation exactly once.
+
+First-package recipients advance from their normalized existing research just as repeat recipients do.
+A completed supported line produces the mature package and remains a valid mapping on later firings.
+Technology grants suppress their separate notification because the human recipient already receives the country report.
 
 ## Launch-state contract
 
@@ -106,7 +115,9 @@ The final package contains the report image, first-news image, static category p
 
 Runtime files are installed in `gfx/event_pictures/032_missiles/`, `gfx/interface/decisions/032_missiles/`, `gfx/interface/ideas/032_missiles/`, `gfx/interface/state_modifiers/032_missiles/`, `gfx/texticons/032_missiles/`, and `gfx/achievements/`. Source provenance, consumer mapping, hashes, individual DDS round-trips, contact sheets, and visual findings are in `docs/events/032_missiles/asset_audit.md` and `docs/assets/032_missiles/manifest.md`.
 
-The exact native-raid missile-delivery icon consumer is unavailable in the installed raid namespace, so no unrelated CBRN or nuclear icon was substituted. Launch/abort/accept-response decisions reuse the authorized Event 032 launch, incident, and warning icons because the asset contract did not authorize separate art for those actions; this reuse is documented in the asset audit.
+Native raid icons are conditional on using a native raid adapter.
+The documented RaidInstance contract cannot authenticate the exact launch state or multi-site custody required by Event 32, so the accepted scripted route owns the current operation presentation.
+Launch, abort, and accept-response decisions reuse the authorized Event 032 launch, incident, and warning icons as documented in the asset audit.
 
 No portrait, flag, focus art, super-event art, scenario-specific picture, custom 3D model, skeletal animation, frame-animation package, or dedicated scripted-GUI asset is part of Event 032.
 
@@ -122,6 +133,7 @@ The no-DLC technology adapter preserves the logical stage contract by mapping th
 
 ## Future extension
 
-A future accepted asset brief may add a dedicated missile-delivery raid icon after the installed raid adapter exposes a stable Event 032 consumer. Any such change must retain the current scripted custody and consequence contract and pass the same visual consumer audit.
+A future native adapter requires an authenticated launch-state and instance-receipt contract before it can receive an Event 32 consumer or icon.
+Any accepted replacement must retain custody and consequence parity and pass the same visual consumer audit.
 
 A future balance pass may add campaign telemetry to the named probability scenarios, but it must keep the bounded recipient transaction, finite retaliation chain, exact reserve custody, and same-scenario probability comparison requirements.

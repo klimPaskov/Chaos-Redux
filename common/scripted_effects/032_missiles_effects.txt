@@ -266,23 +266,9 @@ missiles_global_firing_transaction = {
 			set_variable = { global.missiles_firing_first_news_pending = constant:missiles_event.one }
 			for_each_scope_loop = {
 				array = global.missiles_frozen_recipients
-				if = {
-					limit = {
-						exists = yes
-						NOT = { has_variable = missiles_last_processed_receipt_id }
-					}
-					missiles_initialize_or_advance_program = yes
-				}
-				else_if = {
-					limit = {
-						exists = yes
-						check_variable = { var = missiles_last_processed_receipt_id value = global.missiles_firing_receipt_id compare = less_than }
-					}
-					missiles_initialize_or_advance_program = yes
-				}
-				missiles_evaluate_country_evolution_adoption = yes
-				missiles_evaluate_rogue_incident_from_firing = yes
-				missiles_update_firing_pressure_snapshot = yes
+				# Scope iteration preserves the initiating ROOT. This immediate
+				# receiver binds ROOT to the recipient before site/AI helpers run.
+				country_event = { id = chaosx.nr32.5 }
 			}
 			missiles_evaluate_evolution_unlocks = yes
 			if = {
@@ -304,6 +290,27 @@ missiles_global_firing_transaction = {
 		set_temp_variable = { events_log_history_payload_override_active = constant:missiles_event.one }
 		clear_array = global.missiles_frozen_recipients
 		clr_global_flag = missiles_firing_transaction_active
+	}
+}
+
+# COUNTRY scope with recipient ROOT, invoked only by the immediate .5 receiver.
+# Receipt and frozen membership cover the entire recipient transaction, so a
+# repeated delivery cannot repeat adoption rolls or firing-pressure accounting.
+missiles_process_frozen_recipient = {
+	if = {
+		limit = {
+			has_global_flag = missiles_firing_transaction_active
+			exists = yes
+			is_in_array = { array = global.missiles_frozen_recipients value = THIS }
+			OR = {
+				NOT = { has_variable = missiles_last_processed_receipt_id }
+				check_variable = { var = missiles_last_processed_receipt_id value = global.missiles_firing_receipt_id compare = less_than }
+			}
+		}
+		missiles_initialize_or_advance_program = yes
+		missiles_evaluate_country_evolution_adoption = yes
+		missiles_evaluate_rogue_incident_from_firing = yes
+		missiles_update_firing_pressure_snapshot = yes
 	}
 }
 
@@ -330,21 +337,16 @@ missiles_initialize_or_advance_program = {
 			add_to_variable = { global.missiles_program_count = constant:missiles_event.one }
 			set_country_flag = missiles_program_first_package
 			missiles_normalize_technology_stage = yes
-			if = {
-				limit = { check_variable = { var = missiles_program_stage value = constant:missiles_stage.none compare = equals } }
-				missiles_apply_next_technology_step = yes
-			}
+			missiles_apply_next_technology_step = yes
 			missiles_add_first_reserve_package = yes
 			missiles_create_primary_site = yes
 			set_variable = { missiles_launch_readiness = constant:missiles_program_value.initial_readiness }
 			set_variable = { missiles_command_control = constant:missiles_program_value.initial_command_control }
 			set_variable = { missiles_last_program_firing_date = global.date }
 			set_global_flag = missiles_program_ever_initialized
-			if = {
-				limit = { NOT = { has_global_flag = missiles_event16_bridge_fired } }
-				set_global_flag = missiles_event16_bridge_fired
-				brilliant_scientist_record_missile_crisis = yes
-			}
+			# Event 16 owns the host and personal receipt checks. A non-host
+			# recipient must not consume a global gate before the host's turn.
+			brilliant_scientist_record_missile_crisis = yes
 		}
 		else_if = {
 			limit = { has_country_flag = missiles_program_capture_shell }
@@ -407,15 +409,16 @@ missiles_normalize_technology_stage = {
 missiles_apply_next_technology_step = {
 	missiles_normalize_technology_stage = yes
 	set_country_flag = missiles_technology_step_attempted
+	clr_country_flag = missiles_technology_mapping_blocked
 	if = {
 		limit = { check_variable = { var = missiles_program_stage value = constant:missiles_stage.none compare = equals } }
-		set_technology = { experimental_rockets = 1 }
+		set_technology = { experimental_rockets = 1 popup = no }
 		set_variable = { missiles_program_stage = constant:missiles_stage.experimental }
 		set_variable = { missiles_last_technology_step = constant:missiles_stage.experimental }
 	}
 	else_if = {
 		limit = { check_variable = { var = missiles_program_stage value = constant:missiles_stage.experimental compare = equals } }
-		set_technology = { rocket_engines = 1 }
+		set_technology = { rocket_engines = 1 popup = no }
 		set_variable = { missiles_program_stage = constant:missiles_stage.guided }
 		set_variable = { missiles_last_technology_step = constant:missiles_stage.guided }
 	}
@@ -430,20 +433,20 @@ missiles_apply_next_technology_step = {
 			set_variable = { missiles_last_technology_step = constant:missiles_stage.extended }
 		}
 		else = {
-			set_technology = { improved_rocket_engines = 1 }
+			set_technology = { improved_rocket_engines = 1 popup = no }
 			set_variable = { missiles_program_stage = constant:missiles_stage.advanced }
 			set_variable = { missiles_last_technology_step = constant:missiles_stage.advanced }
 		}
 	}
 	else_if = {
 		limit = { check_variable = { var = missiles_program_stage value = constant:missiles_stage.extended compare = equals } }
-		set_technology = { improved_rocket_engines = 1 }
+		set_technology = { improved_rocket_engines = 1 popup = no }
 		set_variable = { missiles_program_stage = constant:missiles_stage.advanced }
 		set_variable = { missiles_last_technology_step = constant:missiles_stage.advanced }
 	}
 	else_if = {
 		limit = { check_variable = { var = missiles_program_stage value = constant:missiles_stage.advanced compare = equals } }
-		set_technology = { advanced_rocket_engines = 1 }
+		set_technology = { advanced_rocket_engines = 1 popup = no }
 		set_variable = { missiles_program_stage = constant:missiles_stage.strategic }
 		set_variable = { missiles_last_technology_step = constant:missiles_stage.strategic }
 	}
@@ -452,6 +455,13 @@ missiles_apply_next_technology_step = {
 		set_variable = { missiles_program_stage = constant:missiles_stage.complete }
 		set_variable = { missiles_last_technology_step = constant:missiles_stage.complete }
 		set_country_flag = missiles_supported_line_complete
+	}
+	else_if = {
+		limit = { check_variable = { var = missiles_program_stage value = constant:missiles_stage.complete compare = equals } }
+		# An exhausted supported line is a valid mature package, not a
+		# missing technology mapping. No technology is granted in this branch.
+		set_country_flag = missiles_supported_line_complete
+		set_variable = { missiles_last_technology_step = constant:missiles_stage.complete }
 	}
 	else = {
 		set_country_flag = missiles_technology_mapping_blocked
@@ -765,7 +775,7 @@ missiles_register_site = {
 		add_to_array = { array = ROOT.missiles_launch_site_states value = THIS }
 		ROOT = {
 			add_to_variable = { missiles_active_site_count = constant:missiles_event.one }
-			add_to_variable = { missiles_total_site_capacity = missiles_site_capacity }
+			add_to_variable = { missiles_total_site_capacity = PREV.missiles_site_capacity }
 			set_country_flag = missiles_primary_site_established
 			if = {
 				limit = { has_country_flag = chaosx_032_empty_silos_tracked_enemy }

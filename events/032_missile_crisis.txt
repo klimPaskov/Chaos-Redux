@@ -18,6 +18,36 @@ country_event = {
 	immediate = { missiles_global_firing_transaction = yes }
 }
 
+# Immediate receivers bind ROOT to each frozen country without adding a
+# random-event firing, history row, popup, or delayed transaction.
+country_event = {
+	id = chaosx.nr32.5
+	hidden = yes
+	is_triggered_only = yes
+	immediate = { missiles_process_frozen_recipient = yes }
+}
+
+country_event = {
+	id = chaosx.nr32.6
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		if = {
+			limit = {
+				has_global_flag = missiles_scenario_setup_in_progress
+				has_global_flag = missiles_scenario_preflight_passed
+				exists = yes
+				is_in_array = { array = global.missiles_scenario_selected_recipients value = THIS }
+				OR = {
+					NOT = { has_variable = missiles_scenario_setup_receipt }
+					check_variable = { var = missiles_scenario_setup_receipt value = global.missiles_scenario_setup_receipt compare = less_than }
+				}
+			}
+			missiles_scenario_apply_country_package = yes
+		}
+	}
+}
+
 country_event = {
 	id = chaosx.nr32.2
 	title = chaosx.nr32.2.t

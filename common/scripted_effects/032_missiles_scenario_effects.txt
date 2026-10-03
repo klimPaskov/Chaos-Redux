@@ -736,7 +736,9 @@ missiles_scenario_launch_unregistered = {
 			missiles_scenario_prepare_profile_globals = yes
 			for_each_scope_loop = {
 				array = global.missiles_scenario_selected_recipients
-				missiles_scenario_apply_country_package = yes
+				# Immediate country delivery gives package/site helpers recipient
+				# ROOT and returns before the global transaction clears its inputs.
+				country_event = { id = chaosx.nr32.6 }
 			}
 			if = {
 				limit = { has_global_flag = missiles_scenario_package_failure_found }

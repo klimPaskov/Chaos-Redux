@@ -18,6 +18,8 @@ Low, Medium, High, and Maximum select the normalized stage, reserve, site capaci
 
 `missiles_scenario_launch_unregistered` first revalidates the exact profile, intensity, terminal conflict, duplicate, recipient, and profile conditions. It then freezes global runtime inputs, increments one setup receipt, clears the previous failure marker, sets the bounded global setup and bypass flags, processes each valid country once, and clears the country and global bypass state before returning. `missiles_scenario_country_setup_complete` makes country package application idempotent. A package failure marks `missiles_scenario_setup_failed` and prevents a false successful launch receipt while leaving a clean retry path.
 
+The frozen country loop sends immediate hidden event `chaosx.nr32.6` to each recipient. The receiver checks frozen membership and the setup receipt, then applies the package with recipient `ROOT` before the scenario clears global inputs. Site-plan preflight checks the recipient through `PREV` inside its owned-state iterator and shares the same geographical constraints as ordinary site selection.
+
 The adapter passes these temporary country inputs to the Event 032 core program and technology APIs: `missiles_scenario_package_profile`, `missiles_scenario_package_intensity`, `missiles_scenario_package_share`, `missiles_scenario_package_stage`, `missiles_scenario_package_reserve`, `missiles_scenario_package_site_capacity`, `missiles_scenario_package_readiness`, `missiles_scenario_package_control`, and `missiles_scenario_package_incident_cap`. The core must keep its country mutation atomic and publish `missiles_scenario_package_failed` before the adapter can commit that country.
 
 ## Collision and validation boundary

@@ -99,6 +99,17 @@ Verify:
 
 ## Site selection
 
+### `BASE-05`: Recipient ROOT and host ordering
+
+Use an initiating country distinct from a major recipient, subject recipient, and one-state minor.
+Each recipient must create and register only its own valid launch state, retain its own programme values, and receive at most one report per firing receipt.
+The same invariant applies to SCN-015 site-plan preflight and package application.
+Put a non-host recipient before the current Event 16 host and verify that the host still reaches the existing reaction helper.
+Repeat a receiver delivery within the same receipt and verify that programme setup, adoption evaluation, rogue evaluation, and pressure accounting do not repeat.
+
+The offline scope-path regression is `python -B .tools/test_event32_recipient_scope.py`.
+It traces the documented iterator and immediate receiver ROOT boundaries against the real source, but does not claim live-game outcome or probability proof.
+
 ### `SITE-LIVE-01`: Interior site beats capital
 
 Create:

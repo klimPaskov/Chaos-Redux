@@ -412,6 +412,11 @@ The native adapter is accepted only when it can prove:
 
 If native raids cannot satisfy parity, implement the scripted adapter as a full supported route.
 
+The parent review of `docs/plans/032_missiles_plans/subagent_handoffs/032_native_raid_parity_audit_2026-10-03.md` accepts that condition under the user's full Event 32 implementation authorization.
+The installed documented RaidInstance surface exposes actor, victim, target state, and target province, while its starting-point gate identifies only the source controller country.
+It cannot authenticate the frozen exact launch state or multi-site allocation used by this design.
+This documents the existing conditional route choice and does not establish observed native behavior, numeric balance, or completion of the scripted adapter.
+
 It may use decisions and delayed events, but it must not become a weaker decorative substitute.
 
 Required parity:
