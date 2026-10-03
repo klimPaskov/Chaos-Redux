@@ -20,6 +20,25 @@ Installed documentation covers contextual object/property expressions and relati
 The installed Mexico event descriptions retain dynamic country and leader expressions in plain prose.
 These precedents support preserving the dynamic values while removing their surrounding colour controls.
 
+## Dynamic return-value follow-up
+
+The first literal-string correction is committed as `f3f67275754d79e65cea5dad3a14bb1386d3ed9e`.
+A subsequent consumer audit found four shared helpers returning coloured values into those descriptions.
+That first patch alone did not fully remove colour from the resulting report text.
+The source correction adds four plain selectors with the same branch order, triggers, scopes, and numeric expressions, plus 24 plain return strings.
+Only `.2.d`, `.300.d`, and `.306.d` need the plain selector names, and the other three named descriptions already have plain dynamic returns or no getter.
+The original selectors, their coloured return strings, and dark option, tooltip, decision, and GUI consumers remain unchanged.
+The independent localisation auditor confirmed exact parity across selector branch counts of two, two, 11, and 11, plus colour-free authored returns and five nested band substitutions.
+The parent's recursive check covers 58 description, return, and nested substitution keys.
+An incidental registry line-ending change found by the auditor was removed before commit, preserving the original registry as a byte-identical prefix.
+Country-name output from `.305.d` and actual rendered appearance remain runtime evidence limits.
+No simplification or substitute was used.
+
+The follow-up reads offline Localisation lines 656-689, revision `1a8f72362a34b4bb653186746b9fae0b98e463205cb02f12ccf2c3d9ccd3a064`, through the connected reference-search/read routes.
+The localization context with limit ten reports no omitted or missing sources.
+Installed contextual localization and scope documentation at the revision above remains pertinent to the preserved object expressions.
+Vanilla `common/scripted_localisation/WTT_infiltration_localisation.txt:10-36` supplies the inspected ordered selector precedent.
+
 | Source | Lines | SHA-256 revision |
 | --- | --- | --- |
 | `paradox_wiki/Localisation - Hearts of Iron 4 Wiki.md` | 122-144 | `1a8f72362a34b4bb653186746b9fae0b98e463205cb02f12ccf2c3d9ccd3a064` |
