@@ -147,7 +147,7 @@ independence_wave_host_response_build_queue_after_openings = {
 						add_to_temp_variable = { independence_wave_host_response_transfer_index = constant:independence_wave_plan.loop_increment }
 					}
 					if = {
-						limit = { independence_wave_host_response_loss > constant:independence_wave_host_response_value.zero }
+						limit = { check_variable = { independence_wave_host_response_loss > constant:independence_wave_host_response_value.zero } }
 						add_to_temp_variable = { independence_wave_host_response_candidate_hosts = constant:independence_wave_host_response_value.one }
 						set_temp_variable = { independence_wave_host_response_denominator = global.liberation_plan_host_owned_state_snapshots^independence_wave_host_response_host_index }
 						set_temp_variable = { independence_wave_host_response_current_states = num_owned_states }
@@ -328,10 +328,10 @@ independence_wave_host_response_resolve_ai_action = {
 			# A secondary state-losing host has no current-wave primary-host
 			# bilateral row. First contact stays non-escalatory even in another war.
 			if = {
-				limit = { independence_wave_host_response_primary_count = constant:independence_wave_host_response_value.zero }
-				if = { limit = { independence_wave_host_response_tier = constant:independence_wave_host_response_tier.remnant } set_variable = { independence_wave_host_response_ai_action = constant:independence_wave_host_response_action.remnant_continuity } }
-				else_if = { limit = { independence_wave_host_response_tier = constant:independence_wave_host_response_tier.severe } set_variable = { independence_wave_host_response_ai_action = constant:independence_wave_host_response_action.severe_relief } }
-				else_if = { limit = { independence_wave_host_response_tier = constant:independence_wave_host_response_tier.limited } set_variable = { independence_wave_host_response_ai_action = constant:independence_wave_host_response_action.limited_negotiate } }
+				limit = { check_variable = { independence_wave_host_response_primary_count = constant:independence_wave_host_response_value.zero } }
+				if = { limit = { check_variable = { independence_wave_host_response_tier = constant:independence_wave_host_response_tier.remnant } } set_variable = { independence_wave_host_response_ai_action = constant:independence_wave_host_response_action.remnant_continuity } }
+				else_if = { limit = { check_variable = { independence_wave_host_response_tier = constant:independence_wave_host_response_tier.severe } } set_variable = { independence_wave_host_response_ai_action = constant:independence_wave_host_response_action.severe_relief } }
+				else_if = { limit = { check_variable = { independence_wave_host_response_tier = constant:independence_wave_host_response_tier.limited } } set_variable = { independence_wave_host_response_ai_action = constant:independence_wave_host_response_action.limited_negotiate } }
 			}
 			else_if = {
 				limit = { check_variable = { var = independence_wave_host_response_ledger_count value = independence_wave_host_response_primary_count compare = equals } }
