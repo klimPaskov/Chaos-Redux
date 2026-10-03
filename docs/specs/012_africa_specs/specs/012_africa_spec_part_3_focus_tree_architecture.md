@@ -1002,9 +1002,15 @@ These effects reuse the current protection transaction and its four-spendable-co
 
 The support-history threshold reads the existing hidden `gods_of_africa_aid_count`, which records participant voluntary aid and the host's leniency or protection actions. It adds no visible relationship meter and does not change the four settlement names.
 
-## 2026-09-26 parent implementation decision: participant roster capacity
+## 2026-10-03 parent implementation correction: bounded enrollment and review cadence
 
-Acceptance basis: the active user goal requires independent enrollment of every valid major and player country while retaining a bounded registry. The current installed vanilla and Chaos Redux `country_tags` files contain 609 distinct country-tag definitions, so the parent set `gods_of_africa_timing.max_participants` to 640. The one-time census and later owner-local onboarding remain bounded; the larger ceiling fits every currently defined tag without introducing a recurring world scan. This does not prove maximum-roster decision-list readability or live enrollment behavior, which remain validation items.
+Acceptance basis: the active user goal requires every valid major and player to enroll independently through a bounded owner registry, without a recurring unrestricted world scan.
+The one-time census retains ordinary known country scopes from vanilla's `global.countries`, including minors and landless tags, with eligibility deferred to the participant predicate.
+Bounded engine callbacks remember new country scopes through an idempotent helper, including government changes on both civil-war sides.
+The private `.607` event is the sole 90-day registry clock and checks its due date before review or rescheduling.
+The 30-day owner tick no longer runs another registry review, and archival iterates a separate snapshot so it can safely remove live participant entries.
+The existing 640 cap remains above the 609 static tag definitions counted on 2026-10-03.
+Source paths, reference citations, scenario boundaries, and validation limits are recorded in `docs/plans/012_africa_plans/subagent_handoffs/012_africa_gods_registry_review_2026-10-03.md`.
 
 ## 2026-09-26 parent implementation decision: participant roster capacity
 

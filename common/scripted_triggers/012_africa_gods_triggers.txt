@@ -111,17 +111,35 @@ gods_of_africa_owner_tick_due = {
 	}
 }
 
-# COUNTRY scope on a possible participant. Only majors and the player can
-# enter the registry; the host and special/non-human actors remain excluded.
+# COUNTRY scope on a known country object. Candidates may be minors,
+# capitulated, or currently landless; enrollment checks existence separately.
+gods_of_africa_candidate_is_valid = {
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { has_country_flag = africa_unifier_host }
+}
+
+gods_of_africa_candidate_can_be_remembered = {
+	gods_of_africa_candidate_is_valid = yes
+	has_event_target = africa_host
+	NOT = { tag = event_target:africa_host }
+	event_target:africa_host = {
+		exists = yes
+		has_variable = gods_of_africa_candidate_count
+		NOT = { is_in_array = { array = gods_of_africa_candidate_registry value = PREV } }
+		check_variable = { gods_of_africa_candidate_count < constant:gods_of_africa_timing.max_participants }
+	}
+}
+
+# COUNTRY scope on a possible participant. Only majors and players can
+# enter the live registry; the host and special/non-human actors are excluded.
 # Geography is deliberately not part of enrollment: Event 012's participant
 # pool is global, so a valid major/player outside Africa can still receive a
 # tribute contract and carry the relationship into final settlement.
 gods_of_africa_participant_is_valid = {
+	gods_of_africa_candidate_is_valid = yes
 	exists = yes
 	NOT = { has_capitulated = yes }
-	NOT = { is_actual_nonhuman_country = yes }
-	NOT = { is_special_chaos_country = yes }
-	NOT = { has_country_flag = africa_unifier_host }
 	OR = {
 		is_major = yes
 		is_ai = no

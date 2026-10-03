@@ -136,12 +136,6 @@ gods_of_africa_run_owner_tick = {
 			}
 		}
 		if = {
-			limit = { gods_of_africa_registry_review_due = yes }
-			gods_of_africa_review_registry = yes
-			set_variable = { gods_of_africa_next_registry_review_day = global.num_days }
-			add_to_variable = { gods_of_africa_next_registry_review_day = constant:gods_of_africa_timing.registry_review_days }
-		}
-		if = {
 			limit = { gods_of_africa_owner_tick_due = yes }
 			gods_of_africa_refresh_strength = yes
 			for_each_scope_loop = {
@@ -197,16 +191,29 @@ gods_of_africa_run_owner_tick = {
 gods_of_africa_review_registry = {
 	if = {
 		limit = { gods_of_africa_active_host_is_valid = yes }
+		# Archive from a separate snapshot because archival removes entries
+		# from the live participant array.
+		clear_array = gods_of_africa_registry_review_participants
 		for_each_scope_loop = {
 			array = gods_of_africa_participants
+			event_target:africa_host = {
+				add_to_array = { array = gods_of_africa_registry_review_participants value = PREV }
+			}
+		}
+		for_each_scope_loop = {
+			array = gods_of_africa_registry_review_participants
 			if = {
 				limit = { NOT = { gods_of_africa_participant_is_live = yes } }
 				gods_of_africa_archive_invalid_participant = yes
 			}
 		}
-		every_country = {
-			limit = { gods_of_africa_participant_can_register = yes }
-			gods_of_africa_register_participant = yes
+		clear_array = gods_of_africa_registry_review_participants
+		for_each_scope_loop = {
+			array = gods_of_africa_candidate_registry
+			if = {
+				limit = { gods_of_africa_participant_can_register = yes }
+				gods_of_africa_register_participant = yes
+			}
 		}
 	}
 }
@@ -351,13 +358,35 @@ gods_of_africa_register_participant = {
 	}
 }
 
-# COUNTRY scope on a country touched by a transaction-boundary callback. The
-# predicate owns the major/player rule and the host-generation/capacity checks;
-# the callback itself never scans the world.
+# COUNTRY scope on a known country object. The one-time census and bounded
+# transaction callbacks share this idempotent candidate insertion.
+gods_of_africa_remember_candidate = {
+	if = {
+		limit = { gods_of_africa_candidate_can_be_remembered = yes }
+		event_target:africa_host = {
+			add_to_array = { array = gods_of_africa_candidate_registry value = PREV }
+			add_to_variable = { gods_of_africa_candidate_count = constant:gods_of_africa_value.one }
+		}
+	}
+}
+
+# COUNTRY scope on a country named by an engine transaction. Remember minors
+# before activation so a later major/player change can use the bounded review.
 gods_of_africa_try_register_participant = {
 	if = {
-		limit = { gods_of_africa_participant_can_register = yes }
-		gods_of_africa_register_participant = yes
+		limit = {
+			exists = yes
+			gods_of_africa_has_current_host = yes
+			event_target:africa_host = {
+				has_country_flag = gods_of_africa_candidate_census_complete
+				NOT = { has_country_flag = gods_of_africa_final_settlement_committed }
+			}
+		}
+		gods_of_africa_remember_candidate = yes
+		if = {
+			limit = { gods_of_africa_participant_can_register = yes }
+			gods_of_africa_register_participant = yes
+		}
 	}
 }
 
@@ -479,9 +508,9 @@ gods_of_africa_activate_system = {
 		set_variable = { gods_of_africa_active_demand_count = constant:gods_of_africa_value.zero }
 		set_variable = { gods_of_africa_next_dispatch_day = global.num_days }
 		set_variable = { gods_of_africa_next_registry_review_day = global.num_days }
+		add_to_variable = { gods_of_africa_next_registry_review_day = constant:gods_of_africa_timing.registry_review_days }
 		set_variable = { gods_of_africa_next_owner_tick_day = global.num_days }
 		gods_of_africa_initialize_registry = yes
-		gods_of_africa_review_registry = yes
 		gods_of_africa_refresh_strength = yes
 		africa_refresh_continental_focus_tree_layout = yes
 	}
@@ -3209,11 +3238,19 @@ africa_gods_of_africa_owner_tick = {
 }
 
 africa_gods_of_africa_registry_review = {
-	gods_of_africa_review_registry = yes
 	if = {
-		limit = { has_country_flag = gods_of_africa_active }
+		limit = { gods_of_africa_registry_review_due = yes }
+		clr_country_flag = gods_of_africa_registry_clock_scheduled
+		gods_of_africa_review_registry = yes
+		set_variable = { gods_of_africa_next_registry_review_day = global.num_days }
+		add_to_variable = { gods_of_africa_next_registry_review_day = constant:gods_of_africa_timing.registry_review_days }
+		set_country_flag = gods_of_africa_registry_clock_scheduled
 		set_temp_variable = { gods_of_africa_clock_days = constant:gods_of_africa_timing.registry_review_days }
 		country_event = { id = chaosx.nr12.607 days = var:gods_of_africa_clock_days }
+	}
+	else_if = {
+		limit = { NOT = { gods_of_africa_active_host_is_valid = yes } }
+		clr_country_flag = gods_of_africa_registry_clock_scheduled
 	}
 }
 

@@ -899,31 +899,16 @@ africa_initialize_scramble_and_world_packages = {
 			}
 			africa_scramble_register_participant = yes
 		}
-		# Preserve every valid major or player country for the later Gods owner
-		# registry. The cap is explicit and shared with the participant contract;
-		# this is a one-time census, not a recurring on_action scan.
-		every_country = {
-			limit = {
-				exists = yes
-				has_capitulated = no
-				NOT = { tag = ROOT }
-				NOT = { is_actual_nonhuman_country = yes }
-				NOT = { is_special_chaos_country = yes }
-				OR = {
-					is_major = yes
-					is_ai = no
+		# Retain known ordinary country objects, including minors and landless
+		# tags, so later major/player eligibility needs no recurring world scan.
+		# Vanilla global.countries is the same country-scope array used by COG.
+		for_each_scope_loop = {
+			array = global.countries
+			if = {
+				limit = {
+					gods_of_africa_candidate_can_be_remembered = yes
 				}
-				event_target:africa_host = {
-					check_variable = {
-						var = gods_of_africa_candidate_count
-						value = constant:gods_of_africa_timing.max_participants
-						compare = less_than
-					}
-				}
-			}
-			event_target:africa_host = {
-				add_to_array = { array = gods_of_africa_candidate_registry value = PREV }
-				add_to_variable = { gods_of_africa_candidate_count = constant:gods_of_africa_value.one }
+				gods_of_africa_remember_candidate = yes
 			}
 		}
 		set_country_flag = gods_of_africa_candidate_census_complete
