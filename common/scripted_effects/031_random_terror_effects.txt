@@ -1584,7 +1584,13 @@ random_terror_initialize_actor = {
 			fascism = 0
 			communism = 0
 		}
-		set_research_slots = constant:random_terror_tuning.actor_research_slots
+		if = {
+			limit = { check_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.local } }
+			set_research_slots = constant:random_terror_tuning.actor_research_slots_local
+		}
+		else = {
+			set_research_slots = constant:random_terror_tuning.actor_research_slots
+		}
 		set_temp_variable = { random_terror_actor_division_count = num_of_controlled_states }
 		multiply_temp_variable = { random_terror_actor_division_count = constant:random_terror_tuning.actor_divisions_per_state }
 		if = {
