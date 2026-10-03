@@ -753,6 +753,12 @@ gods_of_africa_compute_capacity_requirement = {
 		}
 		set_variable = { gods_of_africa_capacity_requirement = gods_of_africa_capacity_work_amount }
 		if = {
+			limit = { check_variable = { gods_of_africa_capacity_work_family = constant:gods_of_africa_demand_family.armor } }
+			# Armour capacity counts live spare chassis after their individual
+			# operating and reinforcement reserves, rather than a truck floor.
+			set_variable = { gods_of_africa_capacity_requirement = gods_of_africa_capacity_work_amount }
+		}
+		else_if = {
 			limit = {
 				OR = {
 					check_variable = { gods_of_africa_capacity_work_family = constant:gods_of_africa_demand_family.land_equipment }
@@ -836,6 +842,22 @@ gods_of_africa_build_need_profile = {
 		set_variable = { gods_of_africa_need_aircraft = constant:gods_of_africa_value.zero }
 		set_variable = { gods_of_africa_need_support_equipment = constant:gods_of_africa_value.zero }
 		set_variable = { gods_of_africa_need_resources = constant:gods_of_africa_value.zero }
+		clr_country_flag = gods_of_africa_armor_needed
+		set_temp_variable = { gods_of_africa_armor_stock = constant:gods_of_africa_value.zero }
+		set_temp_variable = { gods_of_africa_armor_deficit = constant:gods_of_africa_value.zero }
+		set_temp_variable = { gods_of_africa_armor_spare = constant:gods_of_africa_value.zero }
+		if = {
+			limit = { gods_of_africa_armor_capacity_is_sufficient = { AMOUNT = constant:gods_of_africa_value.zero } }
+			set_temp_variable = { gods_of_africa_armor_host_requirement = gods_of_africa_armor_deficit }
+			if = {
+				limit = { has_global_flag = africa_evolution_ii_logged }
+				add_to_temp_variable = { gods_of_africa_armor_host_requirement = constant:gods_of_africa_armor.host_stockpile_floor }
+			}
+			if = {
+				limit = { check_variable = { gods_of_africa_armor_stock < gods_of_africa_armor_host_requirement } }
+				set_country_flag = gods_of_africa_armor_needed
+			}
+		}
 		if = {
 			limit = {
 				OR = {
@@ -964,6 +986,10 @@ gods_of_africa_select_demand_family = {
 					check_variable = { gods_of_africa_need_land_equipment > constant:gods_of_africa_value.zero }
 				}
 				AND = {
+					check_variable = { gods_of_africa_priority_family = constant:gods_of_africa_demand_family.armor }
+					has_country_flag = gods_of_africa_armor_needed
+				}
+				AND = {
 					check_variable = { gods_of_africa_priority_family = constant:gods_of_africa_demand_family.fuel }
 					check_variable = { gods_of_africa_need_fuel > constant:gods_of_africa_value.zero }
 				}
@@ -1008,6 +1034,14 @@ gods_of_africa_select_demand_family = {
 	else_if = {
 		limit = { check_variable = { gods_of_africa_need_fuel > constant:gods_of_africa_value.zero } }
 		set_variable = { gods_of_africa_family_candidate = constant:gods_of_africa_demand_family.fuel }
+	}
+	else_if = {
+		limit = {
+			has_country_flag = gods_of_africa_armor_needed
+			has_event_target = gods_of_africa_demand_participant
+			event_target:gods_of_africa_demand_participant = { gods_of_africa_armor_capacity_is_sufficient = { AMOUNT = constant:gods_of_africa_armor.minimum_shipment } }
+		}
+		set_variable = { gods_of_africa_family_candidate = constant:gods_of_africa_demand_family.armor }
 	}
 	else_if = {
 		limit = { check_variable = { gods_of_africa_need_manpower > constant:gods_of_africa_value.zero } }
@@ -1082,6 +1116,11 @@ gods_of_africa_select_demand_family = {
 		event_target:gods_of_africa_demand_participant = {
 			set_variable = { gods_of_africa_payment_family = event_target:africa_host.gods_of_africa_family_candidate }
 			set_variable = { gods_of_africa_payment_amount = event_target:africa_host.gods_of_africa_candidate_amount }
+			if = {
+				limit = { check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.armor } }
+				gods_of_africa_quote_armored_tribute = yes
+				set_variable = { gods_of_africa_payment_amount = gods_of_africa_armor_quote_amount }
+			}
 			gods_of_africa_build_capacity_profile = yes
 		}
 		if = {
@@ -1094,6 +1133,7 @@ gods_of_africa_select_demand_family = {
 	if = {
 		limit = {
 			check_variable = { gods_of_africa_family_selected = constant:gods_of_africa_value.zero }
+			has_variable = gods_of_africa_family_candidate
 			has_event_target = gods_of_africa_demand_participant
 		}
 		event_target:gods_of_africa_demand_participant = {
@@ -1121,7 +1161,7 @@ gods_of_africa_calculate_demand_amount = {
 	}
 	else_if = { limit = { check_variable = { gods_of_africa_selected_family = constant:gods_of_africa_demand_family.support_equipment } } set_variable = { gods_of_africa_contract_amount_base = constant:gods_of_africa_transaction.support_equipment_amount } }
 	else_if = { limit = { check_variable = { gods_of_africa_selected_family = constant:gods_of_africa_demand_family.mobile_artillery } } set_variable = { gods_of_africa_contract_amount_base = constant:gods_of_africa_transaction.mobile_amount } }
-	else_if = { limit = { check_variable = { gods_of_africa_selected_family = constant:gods_of_africa_demand_family.armor } } set_variable = { gods_of_africa_contract_amount_base = constant:gods_of_africa_transaction.mobile_amount } }
+	else_if = { limit = { check_variable = { gods_of_africa_selected_family = constant:gods_of_africa_demand_family.armor } } set_variable = { gods_of_africa_contract_amount_base = gods_of_africa_selected_amount } }
 	else_if = { limit = { check_variable = { gods_of_africa_selected_family = constant:gods_of_africa_demand_family.aircraft } } set_variable = { gods_of_africa_contract_amount_base = constant:gods_of_africa_transaction.aircraft_amount } }
 	else_if = { limit = { check_variable = { gods_of_africa_selected_family = constant:gods_of_africa_demand_family.fuel } } set_variable = { gods_of_africa_contract_amount_base = constant:gods_of_africa_transaction.fuel_amount } }
 	else_if = { limit = { check_variable = { gods_of_africa_selected_family = constant:gods_of_africa_demand_family.transport } } set_variable = { gods_of_africa_contract_amount_base = constant:gods_of_africa_transaction.transport_amount } }
@@ -1175,6 +1215,7 @@ gods_of_africa_calculate_demand_amount = {
 			OR = {
 					check_variable = { gods_of_africa_need_land_equipment > constant:gods_of_africa_value.zero }
 					check_variable = { gods_of_africa_need_fuel > constant:gods_of_africa_value.zero }
+					has_country_flag = gods_of_africa_armor_needed
 					check_variable = { gods_of_africa_need_manpower > constant:gods_of_africa_value.zero }
 					check_variable = { gods_of_africa_need_industry > constant:gods_of_africa_value.zero }
 					check_variable = { gods_of_africa_need_emergency > constant:gods_of_africa_value.zero }
@@ -1232,6 +1273,14 @@ gods_of_africa_calculate_demand_amount = {
 	multiply_variable = { gods_of_africa_contract_amount = gods_of_africa_demand_scale }
 	divide_variable = { gods_of_africa_contract_amount = constant:gods_of_africa_demand_scale.percent_divisor }
 	clamp_variable = { var = gods_of_africa_contract_amount min = constant:gods_of_africa_value.minimum_demand_amount max = constant:gods_of_africa_value.maximum_demand_amount }
+	if = {
+		limit = {
+			check_variable = { gods_of_africa_selected_family = constant:gods_of_africa_demand_family.armor }
+			has_event_target = gods_of_africa_demand_participant
+		}
+		clamp_variable = { var = gods_of_africa_contract_amount min = constant:gods_of_africa_armor.minimum_shipment max = event_target:gods_of_africa_demand_participant.gods_of_africa_armor_quote_ceiling }
+		gods_of_africa_floor_equipment_amount = { AMOUNT = gods_of_africa_contract_amount }
+	}
 	set_variable = { gods_of_africa_contract_band = constant:gods_of_africa_demand.standard_band }
 	# A first contact is a small ceremonial test. Later contracts move up the
 	# severity ladder only when the participant's conduct or the host's strength
@@ -1517,6 +1566,7 @@ gods_of_africa_prepare_demand_for_participant = {
 				OR = {
 					check_variable = { gods_of_africa_need_land_equipment > constant:gods_of_africa_value.zero }
 					check_variable = { gods_of_africa_need_fuel > constant:gods_of_africa_value.zero }
+					has_country_flag = gods_of_africa_armor_needed
 					check_variable = { gods_of_africa_need_manpower > constant:gods_of_africa_value.zero }
 					check_variable = { gods_of_africa_need_industry > constant:gods_of_africa_value.zero }
 					check_variable = { gods_of_africa_need_emergency > constant:gods_of_africa_value.zero }
@@ -1565,6 +1615,10 @@ gods_of_africa_prepare_demand_for_participant = {
 				clear_variable = gods_of_africa_selected_amount
 			}
 		}
+		event_target:gods_of_africa_demand_participant = {
+			clear_variable = gods_of_africa_armor_quote_amount
+			clear_variable = gods_of_africa_armor_quote_ceiling
+		}
 	}
 }
 
@@ -1589,6 +1643,10 @@ gods_of_africa_create_demand_contract = {
 			set_variable = { gods_of_africa_partial_payment_amount = event_target:africa_host.gods_of_africa_contract_amount }
 			multiply_variable = { gods_of_africa_partial_payment_amount = constant:gods_of_africa_transaction.partial_payment_ratio_numerator }
 			divide_variable = { gods_of_africa_partial_payment_amount = constant:gods_of_africa_transaction.partial_payment_ratio_denominator }
+			if = {
+				limit = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.armor } }
+				gods_of_africa_floor_equipment_amount = { AMOUNT = gods_of_africa_partial_payment_amount }
+			}
 			if = {
 				limit = { check_variable = { gods_of_africa_partial_payment_amount < constant:gods_of_africa_value.one } }
 				set_variable = { gods_of_africa_partial_payment_amount = constant:gods_of_africa_value.one }
@@ -1681,15 +1739,14 @@ gods_of_africa_transfer_payment = {
 			}
 		}
 		else_if = {
-			limit = {
-				OR = {
-					check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.mobile_artillery }
-					check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.armor }
-				}
-			}
+			limit = { check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.mobile_artillery } }
 			set_temp_variable = { equipment_stockpile_removal_amount = gods_of_africa_payment_amount }
 			remove_motorized_equipment_from_stockpile = yes
 			event_target:africa_host = { add_equipment_to_stockpile = { type = motorized_equipment amount = event_target:gods_of_africa_payment_participant.gods_of_africa_payment_credit } }
+		}
+		else_if = {
+			limit = { check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.armor } }
+			gods_of_africa_send_armored_tribute = yes
 		}
 		else_if = {
 			limit = { check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.aircraft } }
@@ -2024,6 +2081,8 @@ gods_of_africa_clear_demand = {
 	clr_country_flag = gods_of_africa_demand_active
 	clr_country_flag = gods_of_africa_negotiation_open
 	clr_country_flag = gods_of_africa_extension_used
+	clear_variable = gods_of_africa_armor_quote_amount
+	clear_variable = gods_of_africa_armor_quote_ceiling
 	clr_country_flag = gods_of_africa_substitute_offered
 	clear_variable = gods_of_africa_demand_id
 	clear_variable = gods_of_africa_demand_generation
@@ -3026,6 +3085,7 @@ gods_of_africa_cancel_on_unifier_loss = {
 		clr_country_flag = gods_of_africa_activation_clock_scheduled
 		clr_country_flag = gods_of_africa_owner_clock_scheduled
 		clr_country_flag = gods_of_africa_registry_clock_scheduled
+		clr_country_flag = gods_of_africa_armor_needed
 		clear_variable = gods_of_africa_consolidation_start_day
 		clear_variable = gods_of_africa_consolidation_due_day
 		clear_variable = gods_of_africa_next_dispatch_day

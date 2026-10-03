@@ -1,0 +1,46 @@
+# Event 012 Gods equipment capacity.
+# Measures actual chassis stock and reinforcement need without changing countries.
+# Temporary outputs are shared with the caller only when initialized there first.
+
+gods_of_africa_measure_armor_archetype = {
+	set_temp_variable = { gods_of_africa_armor_type_stock = num_equipment@$EQUIPMENT$ }
+	set_temp_variable = { gods_of_africa_armor_type_target = num_target_equipment_in_armies_k@$EQUIPMENT$ }
+	multiply_temp_variable = { gods_of_africa_armor_type_target = constant:gods_of_africa_armor.units_per_thousand }
+	set_temp_variable = { gods_of_africa_armor_type_fielded = num_equipment_in_armies_k@$EQUIPMENT$ }
+	multiply_temp_variable = { gods_of_africa_armor_type_fielded = constant:gods_of_africa_armor.units_per_thousand }
+	set_temp_variable = { gods_of_africa_armor_type_deficit = gods_of_africa_armor_type_target }
+	subtract_from_temp_variable = { gods_of_africa_armor_type_deficit = gods_of_africa_armor_type_fielded }
+	clamp_temp_variable = { var = gods_of_africa_armor_type_deficit min = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_armor_type_reserve = gods_of_africa_armor_type_target }
+	multiply_temp_variable = { gods_of_africa_armor_type_reserve = constant:gods_of_africa_armor.operating_reserve_fraction }
+	add_to_temp_variable = { gods_of_africa_armor_type_reserve = gods_of_africa_armor_type_deficit }
+	clamp_temp_variable = { var = gods_of_africa_armor_type_reserve min = constant:gods_of_africa_armor.minimum_chassis_reserve }
+	set_temp_variable = { gods_of_africa_armor_type_spare = gods_of_africa_armor_type_stock }
+	subtract_from_temp_variable = { gods_of_africa_armor_type_spare = gods_of_africa_armor_type_reserve }
+	clamp_temp_variable = { var = gods_of_africa_armor_type_spare min = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_armor_fractional_spare = gods_of_africa_armor_type_spare }
+	modulo_temp_variable = { gods_of_africa_armor_fractional_spare = constant:gods_of_africa_value.one }
+	subtract_from_temp_variable = { gods_of_africa_armor_type_spare = gods_of_africa_armor_fractional_spare }
+	add_to_temp_variable = { gods_of_africa_armor_stock = gods_of_africa_armor_type_stock }
+	add_to_temp_variable = { gods_of_africa_armor_deficit = gods_of_africa_armor_type_deficit }
+	add_to_temp_variable = { gods_of_africa_armor_spare = gods_of_africa_armor_type_spare }
+	check_variable = { var = gods_of_africa_armor_type_spare value = constant:gods_of_africa_value.zero compare = greater_than_or_equals }
+}
+
+# COUNTRY scope. AMOUNT is the required shipment, with per-chassis reserves
+# already removed from the spare count. This recalculates at every use.
+gods_of_africa_armor_capacity_is_sufficient = {
+	set_temp_variable = { gods_of_africa_armor_stock = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_armor_deficit = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_armor_spare = constant:gods_of_africa_value.zero }
+	gods_of_africa_measure_armor_archetype = { EQUIPMENT = light_tank_chassis }
+	gods_of_africa_measure_armor_archetype = { EQUIPMENT = medium_tank_chassis }
+	gods_of_africa_measure_armor_archetype = { EQUIPMENT = heavy_tank_chassis }
+	gods_of_africa_measure_armor_archetype = { EQUIPMENT = modern_tank_chassis }
+	gods_of_africa_measure_armor_archetype = { EQUIPMENT = super_heavy_tank_chassis }
+	gods_of_africa_measure_armor_archetype = { EQUIPMENT = amphibious_tank_chassis }
+	custom_trigger_tooltip = {
+		tooltip = gods_of_africa_armor_capacity_tt
+		check_variable = { var = gods_of_africa_armor_spare value = $AMOUNT$ compare = greater_than_or_equals }
+	}
+}

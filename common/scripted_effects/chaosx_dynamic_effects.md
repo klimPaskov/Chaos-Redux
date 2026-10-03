@@ -367,3 +367,5 @@ Add a helper here only when its contract is neutral and its callers cross subsys
 Keep one-event orchestration, event-specific selectors, lifecycle state, and private adapters in the owning source file. A cross-event public gateway may remain in this registry while delegating its owner-specific runtime to the owning source file.
 
 When a shared helper changes, update its contract here and audit every call site. When an owner API changes, update the owner documentation and change only the corresponding index row here.
+
+The Event 012 owner API [`012_africa_gods_equipment_effects`](012_africa_gods_equipment_effects.md) documents its COUNTRY-scoped armoured quote, per-chassis capacity, integer amount, and native transfer helpers, including required inputs, temporary outputs, cleanup, defaults, side effects, and usage.

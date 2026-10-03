@@ -1,0 +1,71 @@
+# Event 012 Gods armoured tribute.
+# Quotes use measured spare chassis and actual recorded armour production.
+# Shipments use native send_equipment and retain each chassis reinforcement reserve.
+# The helper contract is documented in 012_africa_gods_equipment_effects.md.
+
+gods_of_africa_floor_equipment_amount = {
+	set_temp_variable = { gods_of_africa_integer_remainder = $AMOUNT$ }
+	modulo_temp_variable = { gods_of_africa_integer_remainder = constant:gods_of_africa_value.one }
+	subtract_from_variable = { $AMOUNT$ = gods_of_africa_integer_remainder }
+}
+
+gods_of_africa_quote_armored_tribute = {
+	set_variable = { gods_of_africa_armor_quote_amount = constant:gods_of_africa_value.zero }
+	set_variable = { gods_of_africa_armor_quote_ceiling = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_armor_stock = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_armor_deficit = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_armor_spare = constant:gods_of_africa_value.zero }
+	if = {
+		limit = { gods_of_africa_armor_capacity_is_sufficient = { AMOUNT = constant:gods_of_africa_armor.minimum_shipment } }
+		set_variable = { gods_of_africa_armor_quote_ceiling = gods_of_africa_armor_spare }
+		multiply_variable = { gods_of_africa_armor_quote_ceiling = constant:gods_of_africa_armor.maximum_spare_fraction }
+		clamp_variable = { var = gods_of_africa_armor_quote_ceiling min = constant:gods_of_africa_armor.minimum_shipment max = constant:gods_of_africa_armor.maximum_shipment }
+		gods_of_africa_floor_equipment_amount = { AMOUNT = gods_of_africa_armor_quote_ceiling }
+		set_variable = { gods_of_africa_armor_quote_amount = gods_of_africa_armor_spare }
+		multiply_variable = { gods_of_africa_armor_quote_amount = constant:gods_of_africa_armor.spare_quote_fraction }
+		set_temp_variable = { gods_of_africa_armor_production_quote = total_equipment_produced_armor }
+		multiply_temp_variable = { gods_of_africa_armor_production_quote = constant:gods_of_africa_armor.production_quote_fraction }
+		add_to_variable = { gods_of_africa_armor_quote_amount = gods_of_africa_armor_production_quote }
+		clamp_variable = { var = gods_of_africa_armor_quote_amount min = constant:gods_of_africa_armor.minimum_shipment max = gods_of_africa_armor_quote_ceiling }
+		gods_of_africa_floor_equipment_amount = { AMOUNT = gods_of_africa_armor_quote_amount }
+	}
+}
+
+# COUNTRY scope on sender. The caller initializes the temporary remaining
+# shipment and type outputs; EQUIPMENT is one installed tank chassis archetype.
+gods_of_africa_send_armored_archetype = {
+	if = {
+		limit = {
+			check_variable = { gods_of_africa_armor_shipment_remaining > constant:gods_of_africa_value.zero }
+			gods_of_africa_measure_armor_archetype = { EQUIPMENT = $EQUIPMENT$ }
+		}
+		set_temp_variable = { gods_of_africa_armor_shipment_slice = gods_of_africa_armor_type_spare }
+		clamp_temp_variable = { var = gods_of_africa_armor_shipment_slice max = gods_of_africa_armor_shipment_remaining }
+		if = {
+			limit = { check_variable = { gods_of_africa_armor_shipment_slice > constant:gods_of_africa_value.zero } }
+			send_equipment = {
+				equipment = $EQUIPMENT$
+				amount = gods_of_africa_armor_shipment_slice
+				target = event_target:africa_host
+			}
+			subtract_from_temp_variable = { gods_of_africa_armor_shipment_remaining = gods_of_africa_armor_shipment_slice }
+		}
+	}
+}
+
+gods_of_africa_send_armored_tribute = {
+	set_temp_variable = { gods_of_africa_armor_shipment_remaining = gods_of_africa_payment_amount }
+	set_temp_variable = { gods_of_africa_armor_type_stock = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_armor_type_target = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_armor_type_fielded = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_armor_type_deficit = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_armor_type_reserve = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_armor_type_spare = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_armor_shipment_slice = constant:gods_of_africa_value.zero }
+	gods_of_africa_send_armored_archetype = { EQUIPMENT = light_tank_chassis }
+	gods_of_africa_send_armored_archetype = { EQUIPMENT = medium_tank_chassis }
+	gods_of_africa_send_armored_archetype = { EQUIPMENT = heavy_tank_chassis }
+	gods_of_africa_send_armored_archetype = { EQUIPMENT = modern_tank_chassis }
+	gods_of_africa_send_armored_archetype = { EQUIPMENT = super_heavy_tank_chassis }
+	gods_of_africa_send_armored_archetype = { EQUIPMENT = amphibious_tank_chassis }
+}

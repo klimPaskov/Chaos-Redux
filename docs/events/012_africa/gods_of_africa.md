@@ -100,12 +100,22 @@ The participant and host decision-category descriptions show the existing Streng
 
 The source-present provision, reserve, relief, expedition, priority, recognition, territory, sponsorship, judgment, judgment-reach, sanctions, sanctuary, and settlement witnesses feed runtime gates or effects. Judgment reach gates offender escalation, sanctions add a bounded diplomacy memory during punishment, and sanctuary or security adds the corresponding guarantee or access compact to protection. The logistics, reconstruction, separately selected Event 013 relief, Migration reception, market-access, and intelligence outcomes are also implemented through their existing owner systems and remain subject to the individual gates described above.
 
+## Armoured tribute
+
+Africa can request tanks when its army has an unfilled armoured requirement, or after Evolution II when its armoured reserve is below the configured reserve need.
+The selector requires the participant to have live spare tank chassis before selecting this family.
+The quote combines spare stock and recorded armoured production, then applies the existing demand factors within a stock-based ceiling.
+Each chassis retains its own reinforcement shortfall and operating reserve.
+Native `send_equipment` moves the actual tanks to Africa through at most six chassis slices, and odd partial shipments use whole tanks with the exact residual still due.
+Full, partial, and substitute capacity checks all recompute live spare armour, and the cost icons use the vanilla medium-tank text icon.
+The complete helper contract is in `common/scripted_effects/012_africa_gods_equipment_effects.md`, and the implementation and scenario evidence is in `docs/plans/012_africa_plans/subagent_handoffs/012_africa_gods_armored_tribute_2026-10-03.md`.
+Native stock movement, save/reload, and DLC execution remain unobserved in the supplied menu-load QA.
+
 ## Remaining accepted-scope gaps
 
-The accepted full Gods specification requires real tank tribute after Evolution II or a proven armored-equipment need.
-The current `armor` payment branch uses motorized equipment and is not reached by automatic family selection, so tank need, capacity, selection, and real transfers remain required implementation work.
-The accepted armor and mobile/artillery names are retained rather than treating motorized text as a substitute for those mechanics.
-Source evidence and the timer/text correction are recorded in `docs/plans/012_africa_plans/subagent_handoffs/012_africa_gods_timer_and_text_2026-10-03.md`.
+The accepted mobile/artillery family still needs its own automatic selection and actual artillery coverage.
+Other unresolved work includes meaningful visible flag requirements, receipt-driven response and punishment reports, weighted scenario evidence, and full owner lifecycle acceptance.
+The timer/text correction and its narrow MCP trace are recorded in `docs/plans/012_africa_plans/subagent_handoffs/012_africa_gods_timer_and_text_2026-10-03.md`.
 
 `gods_of_africa_focus_no_sanctuary` uses the existing `GFX_goal_012_africa_gods_protection` icon, matching its current guarantee and AAT market-access reward. The active goal accepts the current Event 012 overlay and requires doctrine consequences across demands, protection, retaliation, and settlement; that scoped matrix is implemented and recorded in Part 3. The historical focus ID and older Part 8 route promises remain unresolved outside this overlay scope.
 
