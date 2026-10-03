@@ -1,0 +1,194 @@
+# Static database fields in this file do not accept script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_AI_DISABLED = 0
+@CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_CLONE_BASE_COMBAT = 0.15
+@CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_COMBAT_MINOR = 0.25
+@CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_COMBAT_STANDARD = 0.50
+@CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_ORGANISATION_MINOR = 8
+@CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_ORGANISATION_STANDARD = 20
+@CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_RESEARCH_COST = 1
+@CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_ROBOT_BREAKTHROUGH = 0.50
+@CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_ROBOT_DEFENSE = 0.50
+@CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_ROBOT_HARD_ATTACK = 0.50
+@CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_ROBOT_ORGANISATION = 20
+@CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_START_YEAR = 1936
+@CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_SUPPLY_REDUCTION = -0.25
+@CR_SC_BRILLIANT_SCIENTIST_XENO_CHEMICAL_CASUALTY_TRICKLEBACK = 0.50
+@CR_SC_BRILLIANT_SCIENTIST_XENO_CHEMICAL_SUPPLY_REDUCTION = -0.50
+@CR_SC_BRILLIANT_SCIENTIST_XENO_MACHINE_HARD_ATTACK = 0.75
+@CR_SC_BRILLIANT_SCIENTIST_XENO_MACHINE_RELIABILITY = 0.50
+@CR_SC_BRILLIANT_SCIENTIST_XENO_NEURAL_MORALE = 0.50
+@CR_SC_BRILLIANT_SCIENTIST_XENO_NEURAL_ORGANISATION = 30
+@CR_SC_BRILLIANT_SCIENTIST_XENO_RESEARCHED_ATTACK = 0.35
+@CR_SC_BRILLIANT_SCIENTIST_XENO_RESEARCHED_EXPERIENCE_LOSS = -0.50
+
+# ============================================================================
+# CHAOS REDUX - EVENT 016 PROJECT-GRANTED OPERATIONAL TECHNOLOGIES
+# ============================================================================
+# These hidden bridges are granted at each family's first operational stage:
+# Prototype for clone, robot, paleogenetic, and xenobiological formations;
+# Deployment for portal, alien-arms, and temporal formations. Separate
+# Weaponization bridges strengthen them later. Operational technologies enable
+# their equipment and selected legacy battalions. Alien infantry remains an
+# inactive database entry and is fielded only by its locked public-API template.
+# ============================================================================
+
+technologies = {
+	brilliant_scientist_portal_warfare_tech = {
+		allow = { always = no }
+		research_cost = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_RESEARCH_COST
+		start_year = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_START_YEAR
+		enable_equipments = { teleportation_equipment_1 }
+		enable_subunits = { portal_raider }
+		portal_raider = {
+			max_organisation = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_ORGANISATION_STANDARD
+			breakthrough = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_COMBAT_STANDARD
+			supply_consumption = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_SUPPLY_REDUCTION
+		}
+		ai_will_do = { factor = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_AI_DISABLED }
+		special_project_specialization = { specialization_nuclear specialization_air }
+	}
+
+	brilliant_scientist_clone_formations_tech = {
+		allow = { always = no }
+		research_cost = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_RESEARCH_COST
+		start_year = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_START_YEAR
+		enable_equipments = { clone_equipment_1 }
+		enable_subunits = { clone_infantry }
+		clone_infantry = {
+			max_organisation = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_ORGANISATION_MINOR
+			defense = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_CLONE_BASE_COMBAT
+			soft_attack = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_CLONE_BASE_COMBAT
+		}
+		ai_will_do = { factor = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_AI_DISABLED }
+		special_project_specialization = { specialization_biowarfare }
+	}
+
+	brilliant_scientist_robot_formations_tech = {
+		allow = { always = no }
+		research_cost = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_RESEARCH_COST
+		start_year = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_START_YEAR
+		enable_equipments = { autonomous_robot_equipment_1 }
+		enable_subunits = { autonomous_robot }
+		autonomous_robot = {
+			hard_attack = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_ROBOT_HARD_ATTACK
+			breakthrough = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_ROBOT_BREAKTHROUGH
+			defense = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_ROBOT_DEFENSE
+			max_organisation = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_ROBOT_ORGANISATION
+		}
+		ai_will_do = { factor = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_AI_DISABLED }
+		special_project_specialization = { specialization_land }
+	}
+
+	brilliant_scientist_paleogenetic_formations_tech = {
+		allow = { always = no }
+		research_cost = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_RESEARCH_COST
+		start_year = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_START_YEAR
+		enable_equipments = { paleogenetic_creature_equipment_1 }
+		enable_subunits = { paleogenetic_creature }
+		paleogenetic_creature = {
+			soft_attack = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_COMBAT_STANDARD
+			breakthrough = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_COMBAT_STANDARD
+			supply_consumption = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_COMBAT_MINOR
+		}
+		ai_will_do = { factor = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_AI_DISABLED }
+		special_project_specialization = { specialization_biowarfare specialization_land }
+	}
+
+	brilliant_scientist_xenobiological_formations_tech = {
+		allow = { always = no }
+		research_cost = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_RESEARCH_COST
+		start_year = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_START_YEAR
+		enable_equipments = { xenobiological_assault_organism_equipment_1 }
+		enable_subunits = { xenobiological_assault_organism }
+		xenobiological_assault_organism = {
+			soft_attack = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_COMBAT_STANDARD
+			hard_attack = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_COMBAT_MINOR
+			max_organisation = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_ORGANISATION_MINOR
+			breakthrough = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_COMBAT_STANDARD
+		}
+		ai_will_do = { factor = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_AI_DISABLED }
+		special_project_specialization = { specialization_biowarfare }
+	}
+
+	brilliant_scientist_xeno_chemical_control_tech = {
+		allow = { always = no }
+		research_cost = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_RESEARCH_COST
+		start_year = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_START_YEAR
+		dependencies = { brilliant_scientist_xenobiological_formations_tech = 1 }
+		xenobiological_assault_organism = {
+			defense = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_COMBAT_STANDARD
+			supply_consumption = @CR_SC_BRILLIANT_SCIENTIST_XENO_CHEMICAL_SUPPLY_REDUCTION
+			casualty_trickleback = @CR_SC_BRILLIANT_SCIENTIST_XENO_CHEMICAL_CASUALTY_TRICKLEBACK
+		}
+		ai_will_do = { factor = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_AI_DISABLED }
+		special_project_specialization = { specialization_biowarfare }
+	}
+
+	brilliant_scientist_xeno_neural_control_tech = {
+		allow = { always = no }
+		research_cost = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_RESEARCH_COST
+		start_year = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_START_YEAR
+		dependencies = { brilliant_scientist_xenobiological_formations_tech = 1 }
+		xenobiological_assault_organism = {
+			max_organisation = @CR_SC_BRILLIANT_SCIENTIST_XENO_NEURAL_ORGANISATION
+			default_morale = @CR_SC_BRILLIANT_SCIENTIST_XENO_NEURAL_MORALE
+			soft_attack = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_COMBAT_STANDARD
+		}
+		ai_will_do = { factor = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_AI_DISABLED }
+		special_project_specialization = { specialization_biowarfare }
+	}
+
+	brilliant_scientist_xeno_machine_control_tech = {
+		allow = { always = no }
+		research_cost = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_RESEARCH_COST
+		start_year = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_START_YEAR
+		dependencies = { brilliant_scientist_xenobiological_formations_tech = 1 }
+		xenobiological_assault_organism = {
+			hard_attack = @CR_SC_BRILLIANT_SCIENTIST_XENO_MACHINE_HARD_ATTACK
+			breakthrough = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_COMBAT_STANDARD
+			reliability_factor = @CR_SC_BRILLIANT_SCIENTIST_XENO_MACHINE_RELIABILITY
+		}
+		ai_will_do = { factor = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_AI_DISABLED }
+		special_project_specialization = { specialization_biowarfare specialization_land }
+	}
+
+	brilliant_scientist_xeno_researched_control_tech = {
+		allow = { always = no }
+		research_cost = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_RESEARCH_COST
+		start_year = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_START_YEAR
+		dependencies = { brilliant_scientist_xenobiological_formations_tech = 1 }
+		xenobiological_assault_organism = {
+			soft_attack = @CR_SC_BRILLIANT_SCIENTIST_XENO_RESEARCHED_ATTACK
+			hard_attack = @CR_SC_BRILLIANT_SCIENTIST_XENO_RESEARCHED_ATTACK
+			max_organisation = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_ORGANISATION_MINOR
+			supply_consumption = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_SUPPLY_REDUCTION
+			experience_loss_factor = @CR_SC_BRILLIANT_SCIENTIST_XENO_RESEARCHED_EXPERIENCE_LOSS
+		}
+		ai_will_do = { factor = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_AI_DISABLED }
+		special_project_specialization = { specialization_biowarfare specialization_land }
+	}
+
+	brilliant_scientist_temporal_guard_tech = {
+		allow = { always = no }
+		research_cost = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_RESEARCH_COST
+		start_year = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_START_YEAR
+		enable_equipments = { temporal_guard_equipment_1 }
+		enable_subunits = { temporal_guard }
+		temporal_guard = {
+			max_organisation = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_ORGANISATION_STANDARD
+			defense = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_COMBAT_STANDARD
+		}
+		ai_will_do = { factor = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_AI_DISABLED }
+		special_project_specialization = { specialization_nuclear }
+	}
+
+	brilliant_scientist_alien_infantry_tech = {
+		allow = { always = no }
+		research_cost = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_RESEARCH_COST
+		start_year = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_START_YEAR
+		enable_equipments = { alien_laser_weapon_equipment_1 }
+		ai_will_do = { factor = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_TECHNOLOGY_AI_DISABLED }
+		special_project_specialization = { specialization_nuclear specialization_land }
+	}
+}

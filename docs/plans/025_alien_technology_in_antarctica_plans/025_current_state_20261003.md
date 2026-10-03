@@ -13,11 +13,14 @@ Do not launch HOI4.
 - aba406f93a5d81c99b5a1a81afc1aaef180182e1: exclusive physical core/fragments, consent-checked custody transaction API, permanent destruction, invalid-owner cleanup preserving history, authoritative counts, eight source tests.
 - 0df226b14c5ef273dad6809cfb332d36b6090661: report `.86`'s missing sprite alias, exact existing native DDS binding, three source tests, corrected asset-audit overclaims and named Markdown metadata promotion.
 - 33a6c622afa1ee09fad8aec463b5880f241025d4: nine active pulse hazard branches obey their own independent evolution settings, four source tests; historical activation and MTTH remain unchanged.
+- aa9b16b58ec9b74549fcec7a34b5eb7a8932f804: paid physical destruction, strict nested output storage, containment-only mission cleanup, retired-material incident/integration gates, native blocked costs and audit follow-ups.
+- c211f605b1ad76b5ce6a9da933a5f552562b3dd6: four authorization commitments, inclusive cost components, civilian-only industry burden and budget tests.
 
-All seven implementation tranches used the isolated shared-tree index workflow.
+All nine implementation tranches used the isolated shared-tree index workflow.
 Concurrent HEAD advances were handled by rebuilding from the fresh HEAD; no ref was forced and no lock was deleted.
 Other agents' settings, GUI layout, and remaining reward-bridge work remain preserved.
-The source suites pass 40 tests: 9 recovery, 12 lifecycle, 4 delayed callback, 8 custody, 3 report binding, and 4 active hazard tests.
+The source suites pass 58 tests: 9 recovery, 12 lifecycle, 4 delayed callback, 9 custody, 3 report binding, 4 active hazard, 13 destruction and 4 authorization-budget tests.
+Custody, hazard and destruction tests now use conservative scripted-helper temporary cleanup, while shared callback internals and native economic allocation remain explicitly unmodeled.
 These suites are not HOI4 engine or live-campaign evidence.
 
 ## Current live and MCP evidence
@@ -38,10 +41,17 @@ A successful source lookup does not replace these domain evidence gates.
 The UI, probability, completion, localisation, decisions and systems worker attempts failed with workspace routing discovery timed out or disappeared without handoffs.
 Do not report them as successful audits.
 Those statements describe earlier worker batches, not the latest continuation workers.
-The latest isolated reward auditor is `01a10176-cd01-79c3-beb6-2ee846a483a9`; it has created frozen source evidence under `subagent_handoffs/025_reward_probability_baseline_20261003_evidence/`, but no completed probability pass is established yet.
+The isolated reward auditor `01a10176-cd01-79c3-beb6-2ee846a483a9` returned `025_reward_probability_baseline_20261003.md` and frozen source evidence under its evidence folder.
+It confirms whole-base-pool starvation and false broad-field overlap labels at source level, but no completed probability pass is established.
 The latest isolated UI worker is `01a10178-c1ba-76f3-9fa2-33b2771acc71`; its `025_board_visual_20261003.md` baseline handoff records that GUI/reference functions were not callable in its tool context and that visual acceptance is blocked.
 Its bounded layout-only source patch and post-edit handoff are still pending parent review; do not commit the entire mixed GUI files blindly.
 The parent's exact meta-effect reference_read and narrower four-line retry each timed out after 600 seconds; the relevant installed and offline sections were read directly with hashes in `025_physical_custody_20261003.md`.
+The destruction decision review returned `025_destruction_policy_audit_20261003.md`, with its cost/tooltip/test findings addressed in the owner patch and its unchanged AI score still unevaluated by MCP.
+The corrected parent decision scenario inspect returned an `UNKNOWN` local job-state lstat error, followed by a 600-second timeout on the narrower exact-ID inventory retry.
+The parent obtained a successful revision-bound `num_equipment` reference search, but three-line and one-line reads each timed out after 600 seconds, as did decision-context requests at limits two and one.
+No source-only result is promoted to domain or live-engine evidence.
+Architect `01a101b5-b041-7510-b71a-968f6517f4c6` returned `025_exact_aircraft_overlap_contract_20261003.md`.
+Its recommended real aviation owner extension is still a proposal, not an implemented or accepted technology package.
 
 ## Working-tree items needing integration
 
@@ -51,19 +61,21 @@ The following files contain unfinished or other-owned work excluded from the sco
 - common/scripted_guis/025_alien_technology_in_antarctica_scripted_gui.txt
 - common/scripted_effects/025_alien_technology_in_antarctica_ledger_effects.txt
 - remaining reward-bridge changes in common/scripted_triggers/025_alien_technology_in_antarctica_triggers.txt
+- unrelated GUI/text changes in localisation/english/025_alien_technology_in_antarctica_l_english.yml
 
 Custody transaction helpers, core initialization, and country count reconciliation are committed and source-tested.
 Public acquisition cannot steal another living owner's slot, and the two acquisition callbacks no longer double-increment fragment counts.
-Physical transfer/destruction policy callers still require recipient permission UI, validated route/preparedness, actual dispatch, costs/cooldowns, Dependence and diplomatic consequences, and final source/engine review.
+The physical destruction caller and its resource/cooldown consequences are committed and source-tested.
+Transfer still requires recipient permission UI, validated route/preparedness, actual dispatch, costs/cooldowns, Dependence and diplomatic consequences, and final source/engine review.
 The historical reward owner is preserved separately from physical custody.
 
 ## Concrete next checks
 
-1. Complete Evolution V transfer/destruction and all valid holder entry paths, including compatible Event 036 holders outside the race registry.
+1. Complete Evolution V transfer and all valid holder entry paths, including compatible Event 036 holders outside the race registry, and obtain native/MCP acceptance for the committed destruction route.
 2. Audit the Event 016 owner API's missing-base-first order: the current external helper skips the entire missing-base pool when exclude_overlap is set.
 3. Prove exact aircraft/propulsion mapping against the affected technology graph, rather than inferring overlap from broad family names.
 4. Finish the board reference, native geometry, click regions and matched MCP renders; the current layout repair has no final visual proof.
-5. Reconcile phase mission timing and material cost counts, including civilian industry commitments, with the acceptance contract.
+5. Reconcile phase mission timing and every action cost family with the acceptance contract. Authorization's four-type budget is repaired, but the charter and other action families, revalidation and reserve behavior remain open.
 6. Verify expensive entry for human landlocked countries: authorization and charter currently both require owned convoys.
 7. Finish disabled policy/action/GUI behavior, aftermath activation, timed achievements and evolved first openings; recurring pulse hazards and delayed callbacks are repaired, not the whole disabled-track contract.
 8. Complete all fourteen achievement route, disqualifier and persistence tests.

@@ -61,7 +61,7 @@ The decision context request and its narrower limit-one retry each timed out aft
 The local sections were read directly and no successful MCP read or domain validation is claimed by that fallback access.
 The parent decision inspection initially omitted the required scenarios and was rejected by schema validation.
 The corrected exact-decision request supplied the declared `destroy_exact_resources` fixture, but returned `UNKNOWN: unknown error, lstat` for the local inspection job `1344caa8debe4019693a26000dba815dd66783879db3a84aed1cf4ef96fdf9c5`.
-A narrower inventory-mode request for the same decision is pending, with no returned scenario artifact or validation pass.
+A narrower inventory-mode request for the same decision timed out after 600 seconds, with no returned scenario artifact or validation pass.
 
 Installed effects documentation lines 1252-1265, 2173-2180, and 6083-6090 document equipment removal, stability changes, and mission removal without outcome effects.
 Its SHA-256 is `2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af`.
