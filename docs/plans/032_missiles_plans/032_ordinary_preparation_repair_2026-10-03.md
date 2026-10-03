@@ -77,8 +77,8 @@ These are coverage/service gaps, not numeric or engine passes.
 The parent subsequently read the installed v3.6 probability schema and corrected the specialist's nested-state placement: actor, flags, scopes, and scopePools are top-level scenario fields; state is a flat scalar/array map.
 Frozen comparison sources use logical path plus snapshotPath and expectedSourceHash, not the documentation snapshot as an ordinary runtime path.
 The correctly bound five-scenario decision compare timed out after 600 seconds without an artifact.
-Its narrower STRIKE-05/counterforce retry retains the full scenario context and same frozen/current source pair and is pending in specialist cell 427.
-Matching mission inspection/comparison remains separately tracked by that specialist.
+Its narrower STRIKE-05/counterforce retry retained full scenario context and the same frozen/current source pair, then timed out after 600 seconds in specialist cell 427 with no artifact or score trace.
+Mission inspection/comparison also returned no successful artifact; the specialist records the timeout and later `exec cell 416 not found` protocol gap without treating it as cancellation or restarting it.
 Malformed or empty-state attempts do not close the named scenarios.
 The available custom-pool modes are categorical or independent chances, not deterministic argmax; no weighted surrogate is substituted for the target selector's maximum-score behavior.
 Event/technology/probability evidence and native gameplay observations remain separate mandatory routes.
@@ -92,3 +92,23 @@ Retain the pending comparison's final result or exact failure in a reviewed foll
 Catalog status remains To Be Reworked; the reviewed workbook/export commit is authoritative and no CSV is directly edited.
 Continue physical integer allocation/custody, special payload reservation/selection, maintenance-phase access/refresh, other project-mission success/timing, dynamic evolution pacing, retaliation bounds, every probability case, improvement-planner closure, completion audit, and user-owned live acceptance.
 These are outstanding requirements, not rejected design or claimed completion.
+
+## Committed checkpoint and next implementation boundary
+
+Source repair commit: `72c748aceffa87bdfa6bf12737593abac668db22`.
+The isolated-index publication and reconciliation touched only the 30 reviewed owned paths, preserved unrelated staged work, and verified all nine raw baseline blobs against their filesystem bytes.
+Both source re-audit findings were resolved, the final model fixture fixes empty-state infrastructure to zero, and all 34 source-contract methods passed.
+No probability score, native mission execution, current event/technology render/compare completion, project-wide clean error.log, or full Event 32 completion is claimed.
+
+The parent reviewed `subagent_handoffs/032_evolution_pacing_architecture_2026-10-03.md` completely.
+Its source findings confirm missing MTTH entries/independent wakeups, stale firing-only pressure, premature automatic adoption, inadequate physical-stock and hostile-pair gates, and disabled pending-state cleanup gaps.
+Those accepted requirements are queued for the next implementation tranche under the original user contract, not deferred optional content.
+The recommended hazard-clock/coalesced transport layout remains an implementation recommendation requiring endpoint, cadence, numeric, and native-mutation observation validation; it is not promoted as implemented or engine-equivalent timing.
+The proposed `.190/.191/.192` IDs must be collision-audited again before use.
+Keep scheduler/pair ownership within Event 32, no recurring whole-world scan, no automatic posture/doctrine commitment, no recursive launches, and no Event 32 world-end branch.
+The architect's extra probability worker `01a10266-4bff-7a91-934b-a78a10d070bf` observed no result for its mismatched existing-MTTH-file inspector target; that is not an Event 32 timing baseline or a completed check.
+Main skill reading completed for chaos-redux-mtth and the full existing `common/mtth/chaosx_mtth_variables.txt` precedent; the installed fractional-pow and offline native/computed MTTH sections were also read.
+
+Additional concrete custody follow-up: `missiles_reserve_for_operation` changes aggregate free/held pools without moving launch-site physical stock, `missiles_rebalance_site_custody` rewrites site custody from aggregate free reserve, and the current equal-share formula can be fractional.
+Complete exact whole-missile escrow, per-site allocation, unallocated custody, capture/succession settlement, and conservation tests before claiming physical accounting acceptance.
+Current phase gates also need explicit recovery/maintenance access and refresh while wartime operation prerequisites are unmet.

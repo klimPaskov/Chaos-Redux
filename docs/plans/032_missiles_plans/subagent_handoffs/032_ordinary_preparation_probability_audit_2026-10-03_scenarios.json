@@ -413,6 +413,7 @@
     "schemaVersion": "1.0",
     "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
     "scenarioIds": ["STRIKE-05", "TGT-S-01", "TGT-S-02", "TGT-S-04", "TGT-C-04"],
+    "currentStatus": "Authoritative latest status: narrow cell427 STRIKE-05 compare timed out after 600 seconds without artifact; cell397 mission compare timed out; poll of cell416 returned exec cell not found. No restart was attempted. See finalAuditStatus.",
     "actor": "GER",
     "flatStateKeys": ["has_war", "is_ai", "variable.missiles_launch_readiness", "variable.missiles_command_control", "variable.missiles_operational_reserve", "variable.command_power", "variable.fuel_k", "variable.num_equipment@support_equipment", "variable.missiles_requested_launch_site", "variable.missiles_selected_target", "variable.missiles_requested_target_profile", "variable.missiles_operation_type", "variable.missiles_operation_strike_profile", "variable.missiles_ai_profile", "infrastructure", "supply_node", "rail_way", "naval_base", "arms_factory", "industrial_complex", "dockyard", "synthetic_refinery", "fuel_silo", "air_base", "radar_station", "rocket_site", "nuclear_reactor", "nuclear_facility", "anti_air_building", "coastal_bunker", "variable.missiles_site_capacity", "variable.missiles_site_damage"],
     "flags": ["missiles_program_ever_initialized", "missiles_program_phase_operations"],
@@ -437,7 +438,32 @@
       "Nested any_controlled_state loops and effect-based greatest-score target selection may exceed the probability adapter's source semantics; inspect returned unresolved findings and do not substitute a random/categorical distribution.",
       "Subject/faction relation triggers may remain unresolved unless the connected evaluator provides supported condition controls."
     ],
-    "status": "TGT-S-01/TGT-S-02 state87 now explicitly has infrastructure=0 and all relevant strategic/logistics/industry buildings=0; TGT-S-02 state87 is expected ineligible/zero and not a positive ranked candidate. STRIKE-05 now uses the corrected TGT-S-04 target-state pool and leaves operation type unselected. Narrow full-context STRIKE-05 comparison cell 427 is pending. Existing full mission compare cell 416 remains pending; do not restart it without parent direction. Earlier cells 387/397 used a superseded fixture and timed out."
+    "status": "Corrected TGT-S-01/TGT-S-02 state87 values and STRIKE-05 target pool are recorded above. The narrow cell427 decision compare timed out after 600 seconds; mission cell397 timed out and poll of cell416 returned exec cell not found. See finalAuditStatus for authoritative final state."
+  },
+  "finalAuditStatus": {
+    "latestDecisionSourceSha256": "e19dc7ead9ab38d34daa95bffe1d38def30440b10d7a368c75931b80281bd0a2",
+    "latestMissionSourceSha256": "240050dab3e837d97e96add39bb998aea2969a0e4fe68a06c90648b2748656af",
+    "correctedNarrowDecisionCompare": {
+      "toolHandle": "functions.exec cell 427",
+      "adapter": "decision_ai_will_do",
+      "scenarioId": "STRIKE-05",
+      "candidatePool": ["missiles_prepare_counterforce_strike"],
+      "scenarioSetProjectionSha256": "69fdc908b70b92c22ce868923d1cbec150514191e0570895347251040796c6a2",
+      "sourcePair": {
+        "beforePath": "common/decisions/032_missiles_decisions.txt",
+        "beforeSnapshotPath": "docs/plans/032_missiles_plans/baselines/2026-10-03_ordinary_preparation/032_missiles_decisions.txt",
+        "beforeExpectedSourceHash": "2dac7ec6050754848b64f0737f1cb4e51d557bbe59f60f0253fd199aa3224db2",
+        "afterPath": "common/decisions/032_missiles_decisions.txt",
+        "afterExpectedSourceHash": "e19dc7ead9ab38d34daa95bffe1d38def30440b10d7a368c75931b80281bd0a2"
+      },
+      "result": "Timed out awaiting tools/call after 600 seconds. No analysis, score trace, source inventory, or MCP scenario hash returned."
+    },
+    "missionCompare": {
+      "cell397": "Terminal MCP timeout after 600 seconds; no artifact.",
+      "cell416": "functions.wait returned exec cell 416 not found; no observable terminal MCP result; no restart attempted."
+    },
+    "targetArgmax": "No installed adapter provides semantic parity for deterministic max-score target selection; do not reinterpret direct_random or a categorical custom pool as its probability distribution.",
+    "disposition": "Source implementation reviewed; quantitative comparison unresolved. No balance approval or full Event 032 completion claim."
   },
   "baselineFindings": {
     "stateTargetScope": "Each preparation decision is state_target = any_owned_state but tests FROM with the country-only missiles_target_is_valid predicate. The effect ignores the selected FROM state and later selects a state from the selected enemy country. Exact visible-row behavior is unresolved without engine scenario evidence.",
