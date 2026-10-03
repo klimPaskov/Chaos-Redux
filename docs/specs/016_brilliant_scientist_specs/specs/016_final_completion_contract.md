@@ -4,6 +4,8 @@
 
 > **2026-09-26 provider decision-category amendment.** After the provider-family decision audit found at least eight simultaneous Theory actions, exceeding the repository's six-primary-action readability budget, the user approved splitting the provider stage rows into three native decision categories. The parent implementation groups the fifteen families into Conventional Programs (Computation, Electronics, Materials, Rocketry, High Energy), Biological Programs (Biomedical, Cloning, Paleogenetics, Xenobiological Synthesis, Biological Weapons), and Advanced Programs (Teleportation, Robotics, Alien Arms, Temporal, Singularity). This supersedes the single-category provider-stage presentation in the accepted closure plan; it adds no scripted GUI, new project or technology IDs, or visual assets.
 
+> **2026-10-03 exact native selection disposition.** Under the user instruction to take the recommended option, the parent accepts and queues exact, free native source selection and separate fresh-output versus completed-adoption provenance, recorded in [016_native_prototype_ownership_amendment_2026-10-03.md](016_native_prototype_ownership_amendment_2026-10-03.md). This is design acceptance rather than implementation proof. Native cancellation cleanup, selection persistence/reselection, and delayed-output isolation remain unresolved, and the no-simplifications requirement preserves every stronger lifecycle requirement. The accepted Cloning route remains sp_brilliant_scientist_cloning.
+
 ## Authority and purpose
 
 This contract records the accepted Event 016 closure plan and supersedes earlier statements that treated major Event 016 content as optional, deferred, or complete without current evidence.
