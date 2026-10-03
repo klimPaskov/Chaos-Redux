@@ -216,6 +216,11 @@ Active small patches include:
 
 Any patch to an AI weight, probability-bearing modifier, MTTH-backed score, random-selection weight, strategy factor, or weighted target check requires an audit-patch-compare cycle. Run `chaosx_ai_probability_auditor` first to establish named baseline scenarios. Before editing, the parent or patch owner must preserve an immutable copy of each affected pre-edit source at a real filesystem path, plus the exact scenario fixture and a SHA-256 hash of the copied bytes; give these identities to the auditor. The owner applies the bounded change, then the auditor runs `hoi4.probability_compare` against the same scenarios. The probability auditor remains read-only, does not choose the intended balance target, and does not patch source.
 
+If immutable probability snapshots are committed as durable before-source evidence, preserve the copied bytes through narrowly scoped Git attributes and any clean filters.
+When attributes change after staging, plain `git add` may reuse cached normalization; force path-specific `git add --renormalize` under byte-preserving attributes and filters, or explicitly promote a blob using `git hash-object -w --no-filters` and a path-specific index update.
+Verify that the raw committed blob's SHA-256 matches the recorded copied-byte hash, reading it without text decoding, newline conversion, or checkout filters.
+Preserve the physical original and keep any mismatch and dependent comparison proof unresolved until repaired and reverified.
+
 Active small patches do not include:
 
 - creating or expanding a whole mechanic
