@@ -1,0 +1,163 @@
+{
+  "op": "call",
+  "name": "hoi4.probability_sweep",
+  "arguments": {
+    "workspaceId": "chaos_redux_probe",
+    "adapter": "mission_ai_will_do",
+    "source": {
+      "path": "common/decisions/cbrn_protection_decisions.txt",
+      "expectedSourceHash": "5d633efca79e0c6169db0f80a8923eeffbb6b39baed19cd059e690b38e4ab816"
+    },
+    "candidatePool": [
+      "cbrn_supply_occupied_population",
+      "cbrn_supply_occupied_population_sale"
+    ],
+    "scenarioSet": {
+      "schemaVersion": "1.0",
+      "id": "CBRN_OCCUPIED_POPULATION_HIGHPOP_THRESHOLD_SWEEP_2026_10_03",
+      "workspaceId": "chaos_redux_probe",
+      "surfaceHint": "mission_ai_will_do",
+      "description": "Three-point synthetic sensitivity around source high_population_k=2500. The range changes only persistent State 16 population input; State 16 is one sampled controlled candidate and the national target pool is incomplete. The analyzer must resolve the source condition before any score result is treated as exact.",
+      "scenarios": [
+        {
+          "id": "OC_POPULATION2500",
+          "label": "Synthetic one-state AI population boundary exactly at constant high_population_k 2500; source operator is greater-than.",
+          "actor": "ENG",
+          "state": {
+            "is_ai": true,
+            "is_actual_nonhuman_country": false,
+            "has_capitulated": false,
+            "has_enemy_used_chemical_weapons": false,
+            "scope.any_controlled_state": true,
+            "political_power": 26,
+            "num_of_civilian_factories_available_for_projects": 2,
+            "has_equipment": true,
+            "num_equipment@gas_mask_equipment_reconditioned": 500,
+            "num_equipment@gas_mask_equipment_1": 500,
+            "num_equipment@gas_mask_equipment_2": 500,
+            "num_equipment@gas_mask_equipment_3": 500,
+            "num_equipment@gas_mask_equipment_4": 500,
+            "num_equipment@gas_mask_equipment": 2500
+          },
+          "flags": [
+            "cbrn_protection_decision_surface_unlocked",
+            "cbrn_national_respirator_reserve",
+            "cbrn_program_established",
+            "cbrn_population_registered_and_fitted"
+          ],
+          "controls": {
+            "16": "ENG"
+          },
+          "scopes": {
+            "ROOT": {
+              "id": "ENG",
+              "type": "country",
+              "actor": "ENG",
+              "state": {
+                "is_ai": true,
+                "is_actual_nonhuman_country": false,
+                "has_capitulated": false,
+                "has_enemy_used_chemical_weapons": false,
+                "scope.any_controlled_state": true,
+                "political_power": 26,
+                "num_of_civilian_factories_available_for_projects": 2,
+                "has_equipment": true,
+                "num_equipment@gas_mask_equipment_reconditioned": 500,
+                "num_equipment@gas_mask_equipment_1": 500,
+                "num_equipment@gas_mask_equipment_2": 500,
+                "num_equipment@gas_mask_equipment_3": 500,
+                "num_equipment@gas_mask_equipment_4": 500,
+                "num_equipment@gas_mask_equipment": 2500
+              },
+              "flags": [
+                "cbrn_protection_decision_surface_unlocked",
+                "cbrn_national_respirator_reserve",
+                "cbrn_program_established",
+                "cbrn_population_registered_and_fitted"
+              ]
+            },
+            "GLOBAL": {
+              "id": "global",
+              "type": "unknown",
+              "flags": [],
+              "state": {
+                "black_friday_state": 4,
+                "black_friday_sale_sequence": 1,
+                "black_friday_discount_ratio": 5000,
+                "black_friday_discount_percent": 50,
+                "universal_cost_source_ids": [],
+                "universal_cost_source_ratios": [],
+                "universal_cost_source_priorities": [],
+                "universal_cost_source_eligibility_masks": []
+              }
+            }
+          },
+          "scopePools": [
+            {
+              "id": "eng_occupied_distribution_state_pool",
+              "bindAs": "FROM",
+              "selection": "enumeration",
+              "complete": false,
+              "filter": {
+                "scriptedTrigger": "cbrn_state_can_receive_occupied_masks"
+              },
+              "candidates": [
+                {
+                  "id": "16",
+                  "type": "state",
+                  "actor": "FRA",
+                  "flags": [
+                    "cbrn_chemical_raid_alert_active"
+                  ],
+                  "state": {
+                    "owner": "FRA",
+                    "controller": "ENG",
+                    "cores": [
+                      "FRA"
+                    ],
+                    "is_core_of": [
+                      "FRA"
+                    ],
+                    "state_population_k": 2500,
+                    "cbrn_civilian_mask_effective_coverage": 0,
+                    "cbrn_civilian_mask_crates": 0,
+                    "cbrn_civilian_mask_basic_crates": 0,
+                    "cbrn_civilian_mask_reconditioned_crates": 0,
+                    "cbrn_civilian_mask_improved_crates": 0,
+                    "cbrn_civilian_mask_advanced_crates": 0,
+                    "cbrn_civilian_mask_sealed_crates": 0,
+                    "cbrn_chemical_contamination": 0,
+                    "cbrn_response_hospital_mask_cost": 0,
+                    "cbrn_response_hospital_support_cost": 0
+                  }
+                }
+              ]
+            }
+          ],
+          "uncertainInputs": [
+            {
+              "path": "scopePools.eng_occupied_distribution_state_pool.16.state.state_population_k",
+              "range": {
+                "min": 2499,
+                "max": 2501
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "metrics": [
+      "raw_value"
+    ],
+    "sweep": {
+      "paths": [
+        "scopePools.eng_occupied_distribution_state_pool.16.state.state_population_k"
+      ],
+      "steps": 3,
+      "pairwise": false,
+      "findRankReversals": true
+    },
+    "refresh": true
+  },
+  "output": "occupied_export_highpop_sweep.json"
+}

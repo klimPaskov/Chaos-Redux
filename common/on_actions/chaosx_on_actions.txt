@@ -31,14 +31,24 @@ on_actions = {
 			FROM.FROM = {
 				if = {
 					limit = { has_state_flag = cbrn_occupied_mask_escrow_active }
+					set_temp_variable = { cbrn_mask_escrow_refunded = constant:cbrn_math.zero }
+					set_temp_variable = { cbrn_mask_escrow_refund_blocked = constant:cbrn_math.zero }
 					cbrn_refund_occupied_state_mask_reservation = yes
-					clr_state_flag = cbrn_occupied_distribution_program_target
+					if = {
+						limit = { check_variable = { cbrn_mask_escrow_refund_blocked = constant:cbrn_math.zero } }
+						clr_state_flag = cbrn_occupied_distribution_program_target
+					}
 				}
 				if = {
 					limit = { has_state_flag = cbrn_external_mask_escrow_active }
 					cbrn_occupation_close_external_aid_reservation = yes
+					set_temp_variable = { cbrn_mask_escrow_refunded = constant:cbrn_math.zero }
+					set_temp_variable = { cbrn_mask_escrow_refund_blocked = constant:cbrn_math.zero }
 					cbrn_refund_external_state_mask_reservation = yes
-					clr_state_flag = cbrn_occupation_external_aid_project_active
+					if = {
+						limit = { check_variable = { cbrn_mask_escrow_refund_blocked = constant:cbrn_math.zero } }
+						clr_state_flag = cbrn_occupation_external_aid_project_active
+					}
 				}
 			}
 			if = {

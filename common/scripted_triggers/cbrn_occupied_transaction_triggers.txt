@@ -1,0 +1,170 @@
+# Country-scoped occupied-population transactions. ROOT is the donor; FROM is
+# never a target. Queries only mutate temporary quotation/output storage.
+# The matching handoff documents the native ordinary/sale callback contract.
+
+# Canonical quote primitives are read-only dependencies of immediate response.
+# Copy PP outputs before reusing their generic scratch for native factories.
+cbrn_occupied_quote_transaction_costs = {
+	set_temp_variable = { cbrn_response_component_ordinary = constant:cbrn_protection_decision_cost.occupied_distribution_pp }
+	set_temp_variable = { cbrn_response_component_family = constant:universal_cost_family.political_power }
+	set_temp_variable = { cbrn_response_component_kind = constant:universal_cost_resource_kind.political_power }
+	set_temp_variable = { cbrn_response_component_quoted = cbrn_response_component_ordinary }
+	set_temp_variable = { cbrn_response_component_valid = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_response_component_source = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_response_component_affordable = constant:universal_cost_framework.zero }
+	cbrn_quote_immediate_response_component = yes
+	set_temp_variable = { cbrn_occupied_fee = cbrn_response_component_quoted }
+	set_temp_variable = { cbrn_occupied_fee_valid = cbrn_response_component_valid }
+	set_temp_variable = { cbrn_occupied_fee_source = cbrn_response_component_source }
+	set_temp_variable = { cbrn_occupied_fee_affordable = cbrn_response_component_affordable }
+	set_temp_variable = { cbrn_response_component_ordinary = constant:cbrn_protection_decision_cost.occupied_distribution_factories }
+	set_temp_variable = { cbrn_response_component_family = constant:universal_cost_family.factory_commitment }
+	set_temp_variable = { cbrn_response_component_kind = constant:universal_cost_resource_kind.custom_adapter }
+	cbrn_quote_immediate_response_component = yes
+	set_temp_variable = { cbrn_occupied_factory_quote = cbrn_response_component_quoted }
+	set_temp_variable = { cbrn_occupied_factory_quote_valid = constant:universal_cost_framework.zero }
+	if = {
+		limit = {
+			check_variable = { cbrn_response_component_valid = constant:universal_cost_framework.one }
+			OR = {
+				check_variable = { cbrn_occupied_factory_quote = constant:cbrn_protection_decision_cost.occupied_distribution_factories }
+				check_variable = { cbrn_occupied_factory_quote = constant:cbrn_protection_decision_cost.occupied_distribution_sale_factories }
+			}
+		}
+		set_temp_variable = { cbrn_occupied_factory_quote_valid = constant:universal_cost_framework.one }
+	}
+	always = yes
+}
+
+cbrn_occupied_current_purchase_is_ordinary = {
+	set_temp_variable = { cbrn_occupied_factory_quote = constant:cbrn_protection_decision_cost.occupied_distribution_factories }
+	set_temp_variable = { cbrn_occupied_factory_quote_valid = constant:universal_cost_framework.zero }
+	cbrn_occupied_quote_transaction_costs = yes
+	check_variable = { cbrn_occupied_factory_quote_valid = constant:universal_cost_framework.one }
+	check_variable = { cbrn_occupied_factory_quote = constant:cbrn_protection_decision_cost.occupied_distribution_factories }
+}
+
+cbrn_occupied_current_purchase_is_sale = {
+	set_temp_variable = { cbrn_occupied_factory_quote = constant:cbrn_protection_decision_cost.occupied_distribution_factories }
+	set_temp_variable = { cbrn_occupied_factory_quote_valid = constant:universal_cost_framework.zero }
+	cbrn_occupied_quote_transaction_costs = yes
+	check_variable = { cbrn_occupied_factory_quote_valid = constant:universal_cost_framework.one }
+	check_variable = { cbrn_occupied_factory_quote = constant:cbrn_protection_decision_cost.occupied_distribution_sale_factories }
+}
+
+# After native selection, test neither free factories nor the stamped cooldown.
+cbrn_occupied_country_selection_ready = {
+	exists = yes
+	NOT = { has_capitulated = yes }
+	cbrn_country_has_public_chemical_emergency = yes
+	cbrn_country_has_occupied_distribution_work = yes
+	NOT = { has_country_flag = cbrn_civilian_distribution_program_active }
+	NOT = { has_country_flag = cbrn_occupied_transaction_active }
+	NOT = { has_country_flag = cbrn_occupied_transaction_recovery_pending }
+	set_temp_variable = { cbrn_occupied_fee = constant:cbrn_protection_decision_cost.occupied_distribution_pp }
+	set_temp_variable = { cbrn_occupied_fee_valid = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_occupied_fee_affordable = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_occupied_factory_quote_valid = constant:universal_cost_framework.zero }
+	cbrn_occupied_quote_transaction_costs = yes
+	check_variable = { cbrn_occupied_fee_valid = constant:universal_cost_framework.one }
+	check_variable = { cbrn_occupied_fee_affordable = constant:universal_cost_framework.one }
+	check_variable = { cbrn_occupied_factory_quote_valid = constant:universal_cost_framework.one }
+	set_temp_variable = { cbrn_mask_reservation_quote = constant:cbrn_math.zero }
+	cbrn_quote_occupied_program_mask_reservation = yes
+	check_variable = { cbrn_mask_reservation_quote > constant:cbrn_math.zero }
+}
+
+cbrn_occupied_country_preflight = {
+	NOT = { has_country_flag = cbrn_occupied_program_purchase_cooldown }
+	set_temp_variable = { cbrn_occupied_factory_quote = constant:cbrn_protection_decision_cost.occupied_distribution_factories }
+	cbrn_occupied_country_selection_ready = yes
+	OR = {
+		AND = {
+			check_variable = { cbrn_occupied_factory_quote = constant:cbrn_protection_decision_cost.occupied_distribution_factories }
+			NOT = { num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.occupied_distribution_factories }
+		}
+		AND = {
+			check_variable = { cbrn_occupied_factory_quote = constant:cbrn_protection_decision_cost.occupied_distribution_sale_factories }
+			NOT = { num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.occupied_distribution_sale_factories }
+		}
+	}
+}
+
+cbrn_occupied_ordinary_payment_ready = {
+	cbrn_occupied_current_purchase_is_ordinary = yes
+	cbrn_occupied_country_preflight = yes
+}
+
+cbrn_occupied_sale_payment_ready = {
+	cbrn_occupied_current_purchase_is_sale = yes
+	cbrn_occupied_country_preflight = yes
+}
+
+cbrn_occupied_requested_variant_matches_quote = {
+	set_temp_variable = { cbrn_occupied_factory_quote = constant:cbrn_protection_decision_cost.occupied_distribution_factories }
+	set_temp_variable = { cbrn_occupied_factory_quote_valid = constant:universal_cost_framework.zero }
+	cbrn_occupied_quote_transaction_costs = yes
+	check_variable = { cbrn_occupied_factory_quote_valid = constant:universal_cost_framework.one }
+	OR = {
+		AND = {
+			check_variable = { cbrn_occupied_requested_variant = constant:cbrn_occupied_program_variant.ordinary }
+			check_variable = { cbrn_occupied_factory_quote = constant:cbrn_protection_decision_cost.occupied_distribution_factories }
+		}
+		AND = {
+			check_variable = { cbrn_occupied_requested_variant = constant:cbrn_occupied_program_variant.sale }
+			check_variable = { cbrn_occupied_factory_quote = constant:cbrn_protection_decision_cost.occupied_distribution_sale_factories }
+		}
+	}
+}
+
+# STATE ownership, independent of current unreserved stock or live source.
+cbrn_occupied_state_has_owned_receipt = {
+	has_state_flag = cbrn_occupied_distribution_program_target
+	has_state_flag = cbrn_occupied_mask_escrow_active
+	has_variable = cbrn_occupied_mask_escrow_donor
+	var:cbrn_occupied_mask_escrow_donor = { tag = ROOT }
+}
+
+# STATE continuation is based on this program's owned receipt and current
+# issue need. An unrelated timed state project keeps its own busy flag.
+cbrn_occupied_state_can_complete_reserved_distribution = {
+	cbrn_occupied_state_has_owned_receipt = yes
+	is_controlled_by = ROOT
+	NOT = { is_core_of = ROOT }
+	state_population_k > constant:cbrn_math.zero
+	ROOT = { has_country_flag = cbrn_national_respirator_reserve }
+	cbrn_state_has_emergency_context = yes
+	set_temp_variable = { cbrn_reservation_quote_state_need = constant:cbrn_math.zero }
+	cbrn_quote_occupied_state_mask_reservation = yes
+	check_variable = { cbrn_reservation_quote_state_need > constant:cbrn_math.zero }
+}
+
+cbrn_occupied_country_has_active_program = {
+	has_country_flag = cbrn_occupied_transaction_active
+	has_country_flag = cbrn_civilian_distribution_program_active
+	has_variable = cbrn_occupied_committed_transaction
+	check_variable = { cbrn_occupied_committed_transaction > constant:universal_cost_framework.zero }
+}
+
+cbrn_occupied_country_can_continue = {
+	exists = yes
+	NOT = { has_capitulated = yes }
+	cbrn_occupied_country_has_active_program = yes
+	any_controlled_state = {
+		cbrn_occupied_state_can_complete_reserved_distribution = yes
+	}
+}
+
+cbrn_occupied_country_holds_ordinary_program = {
+	cbrn_occupied_country_has_active_program = yes
+	check_variable = { cbrn_occupied_committed_variant = constant:cbrn_occupied_program_variant.ordinary }
+}
+
+cbrn_occupied_country_holds_sale_program = {
+	cbrn_occupied_country_has_active_program = yes
+	check_variable = { cbrn_occupied_committed_variant = constant:cbrn_occupied_program_variant.sale }
+}
+
+cbrn_occupied_should_cancel = {
+	NOT = { cbrn_occupied_country_can_continue = yes }
+}

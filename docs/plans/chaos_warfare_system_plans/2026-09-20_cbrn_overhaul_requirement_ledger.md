@@ -214,8 +214,8 @@ The [implementation evidence](2026-10-03_protective_aid_native_factory_selection
 The declared decision scenario and narrower inventory retry returned no artifact; native execution remains pending.
 This repair does not implement the separate Event 026 sale factory discount.
 
-The same family correction separates the occupied-population pre-click two-factory gate from the material/target check used inside its native selection helper.
-Every prior non-factory condition is preserved in the shared predicate, and the 30-day timer, stock reservation, positive-reservation PP payment, and completion/refund bodies are unchanged by source reconstruction.
+The same historical family correction separated the occupied-population pre-click two-factory gate from the material/target check used inside its native selection helper.
+Its source reconstruction preserved the then-current 30-day timer, stock reservation, positive-reservation PP payment, and completion/refund bodies; the later occupied/export owner integration below supersedes those callback identities and adds canonical sale pricing/native variants without changing the accepted physical contract.
 The post-change Protective Aid inspect repeated the baseline request but returned no artifact, so matching engine/MCP acceptance remains open.
 
 ## 2026-10-03 CSH flag load correction
@@ -242,4 +242,29 @@ The full comparison and original traces are persisted under the linked implement
 The [accepted owner correction](../../specs/chaos_warfare_system_specs/corrections/2026-10-03_immediate_protection_sale_transactions.md) and [implementation evidence](2026-10-03_immediate_protection_sale_transactions.md) integrate Emergency Distribution and Hospitals/Utilities with canonical current-price rows and once-only native receipts/outcomes.
 Full emergency issue is conserved; hospital preparation pays and refunds exact real mask models and support.
 Twenty-one actual-source callback/refund cases pass; matched seventeen-scenario MCP comparison retains unchanged score-only priorities and partial eligibility.
-Export and Occupied Distribution remain source work; native execution/receipt/render acceptance remains pending and the whole overhaul is incomplete.
+Export and Occupied Distribution have owner callback wiring, a parent-reviewed shared STATE measured-stock repair, and 46 bounded parsed-source scenarios with zero failures; full owner order/native execution/receipt/render acceptance remain unresolved as detailed below, and the whole overhaul is incomplete.
+
+## 2026-10-03 occupied/export owner integration evidence
+
+Acceptance is recorded in the [occupied/export correction](../../specs/chaos_warfare_system_specs/corrections/2026-10-03_occupied_export_sale_transactions.md): the user's CBRN payment/presentation overhaul, exact selection-time reservation/refund, and continued Event 026 owner integration authorize this bounded tranche.
+Current decisions call the new export start/finish/cancel and occupied begin/finish/cancel families in `common/scripted_effects/cbrn_export_transaction_effects.txt` and `common/scripted_effects/cbrn_occupied_transaction_effects.txt`; the former alternative callbacks have been removed from `cbrn_protection_decision_effects.txt`.
+Export preserves its exact 500-model per-recipient reservation, 14-day one-factory timer, 60-day reenabling, and 1,500-mask new-start floor; its nominal service fee is 15/8/4 PP.
+Occupied preserves full five-model STATE receipts and fitting/filter/wastage outcomes with 30 days, shared 90-day reenabling, two/one native factories, and nominal 25/13/7 PP.
+Selected fee/source/transaction identity and variant survive sale expiry and depleted unreserved stock; accepted cancellation retains the service fee and returns only unused original models.
+The parent corrected occupied continuity/finish to use owned receipts plus current issue need, and removed cleanup of a generic state-project flag this programme never owned.
+No worldwide pulse or approved simplification is introduced.
+
+Disposition: owner wiring and shared STATE measured-stock correction implemented in source and reviewed by parent; 46 bounded parsed-source cases passed, while final integration review, complete owner order, and native acceptance remain unresolved.
+`common/scripted_effects/cbrn_state_escrow_native_effects.txt` measures concrete before/after deltas; valid partial reservation holds actual debits, while valid partial refund decrements held rows only by observed donor gain and retains donor/active/recovery ownership until fully returned.
+Invalid native deltas persist exact model/before/after/requested/observed evidence and quarantine later retry/consumption; occupied country recovery blocks new reservation and fee publication after a later state failure, even if earlier valid states produced a positive aggregate.
+The parent-reviewed begin callback refunds earlier owned receipts while preserving a quarantined state's marker; `common/on_actions/chaosx_on_actions.txt` initializes refund outputs and clears control-transfer markers only at blocked zero.
+The measured STATE API is documented in [the helper reference](../../../common/scripted_effects/cbrn_scripted_effects.md); these source repairs do not establish engine acknowledgements.
+The [source-test record](../../testing/2026-10-03_cbrn_occupied_export_source_results.json) now records `passed`, 46 scenarios and zero failures, exercising parsed receipt/payment/refund bodies with modeled native stocks, token expansion, country/state binding, and conservative helper-local temporary cleanup.
+It covers full/mixed/partial model returns, invalid-delta quarantine, earlier-positive/later-quarantined national publication rejection, and control-change remainder cleanup; full owner preflight/order, physical fitting/coverage/outcome execution, native dispatch, and automatic quarantine recovery remain unproved.
+The [specialist probability handoff](subagent_handoffs/2026-10-03_cbrn_occupied_export_probability/finalhandoff.md) owns the named 17 export and 27 occupied scenarios; its [compact rows](../../testing/2026-10-03_cbrn_occupied_export_mcp/compact_candidate_rows.json) and [artifact manifest](../../testing/2026-10-03_cbrn_occupied_export_mcp/artifact_manifest.json) preserve actual matched before/after/compare evidence.
+Export raw values are often absent; occupied 3.6 values are score-only with unresolved scope iteration and eligibility, and comparison flags `UNRESOLVED_ANALYSIS_INTRODUCED` retain an evaluation-coverage regression.
+The 2499/2500/2501 sweep remains partial and flat under unresolved iteration; focused render returned `PROBABILITY_ANALYSIS_STALE`, while compare operations did emit SVG/PNG artifacts.
+The final-source matching 27-scenario occupied comparison after the STATE correction actually returned at revision `d8354fd0dd5ce76637dccecce6bda771eb8a46d5f6a2562d3aff142f9774b383`, under the same `af473bdc6488994199c2df90865a7c252423903554d02e5764843d5d79b47b45` scenario hash, and emitted SVG/PNG.
+Its partial 54 rows retain ten false/44 unresolved eligibility rows, 66 unresolved items, and 54 `UNRESOLVED_ANALYSIS_INTRODUCED` evaluation-coverage flags; returned comparison evidence does not resolve those inputs.
+Native exact payment/refund/shipment, decision-row presentation, full owner order, automatic quarantine recovery, and full-goal acceptance remain unresolved; no fresh clean error log or live completion is claimed.
+The [documentation reconciliation handoff](subagent_handoffs/2026-10-03_cbrn_occupied_export_documentation_reconciliation.md) records affected paragraphs, acceptance/evidence dispositions, and remaining contradictions for parent review.

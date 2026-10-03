@@ -1,0 +1,439 @@
+# Existing protective equipment export transaction. COUNTRY THIS/ROOT donor,
+# COUNTRY FROM recipient. No events, periodic hooks, factory debit or cooldown.
+# Parent decision retains native one factory, 14 days, 60 day targeted re-enable.
+# All persistent ownership is donor-scoped and keyed by recipient. Native
+# stockpile deltas are checked, never a nominal send amount or archetype guess.
+# API documentation and integration contract are in the matching handoff under
+# docs/plans/chaos_warfare_system_plans/subagent_handoffs/.
+
+# Internal model primitive. Input _model is an existing equipment token.
+# _remaining is caller-owned temporary storage. Measured debit creates escrow.
+cbrn_export_transaction_reserve_model = {
+	meta_effect = {
+		text = {
+			set_variable = { cbrn_export_reserved_debit_[MODEL]_@FROM = constant:cbrn_math.zero }
+			set_variable = { cbrn_export_refund_gain_[MODEL]_@FROM = constant:cbrn_math.zero }
+			set_variable = { cbrn_export_refunded_[MODEL]_@FROM = constant:cbrn_math.zero }
+			set_variable = { cbrn_export_release_gain_[MODEL]_@FROM = constant:cbrn_math.zero }
+			set_variable = { cbrn_export_sent_debit_[MODEL]_@FROM = constant:cbrn_math.zero }
+			set_variable = { cbrn_export_received_gain_[MODEL]_@FROM = constant:cbrn_math.zero }
+			set_variable = { cbrn_export_delivered_[MODEL]_@FROM = constant:cbrn_math.zero }
+			set_variable = { cbrn_export_unsent_released_[MODEL]_@FROM = constant:cbrn_math.zero }
+			if = {
+				limit = {
+					check_variable = { cbrn_export_remaining > constant:cbrn_math.zero }
+					check_variable = { num_equipment@[MODEL] > constant:cbrn_math.zero }
+					NOT = { has_country_flag = cbrn_export_native_mismatch_@FROM }
+				}
+				set_temp_variable = { cbrn_export_before = num_equipment@[MODEL] }
+				set_temp_variable = { cbrn_export_requested = cbrn_export_remaining }
+				clamp_temp_variable = { var = cbrn_export_requested min = constant:cbrn_math.zero max = cbrn_export_before }
+				set_temp_variable = { cbrn_export_debit = cbrn_export_requested }
+				multiply_temp_variable = { cbrn_export_debit = constant:cbrn_math.negation_multiplier }
+				add_equipment_to_stockpile = { type = [MODEL] amount = cbrn_export_debit }
+				set_temp_variable = { cbrn_export_observed = cbrn_export_before }
+				subtract_from_temp_variable = { cbrn_export_observed = num_equipment@[MODEL] }
+				set_variable = { cbrn_export_reserved_debit_[MODEL]_@FROM = cbrn_export_observed }
+				if = {
+					limit = {
+						NOT = { check_variable = { cbrn_export_observed < constant:cbrn_math.zero } }
+						NOT = { check_variable = { cbrn_export_observed > cbrn_export_requested } }
+					}
+					set_variable = { cbrn_export_held_[MODEL]_@FROM = cbrn_export_observed }
+					subtract_from_temp_variable = { cbrn_export_remaining = cbrn_export_observed }
+				}
+				else = {
+					set_country_flag = cbrn_export_native_mismatch_@FROM
+					set_country_flag = cbrn_export_recovery_@FROM
+				}
+			}
+		}
+		MODEL = "[?cbrn_export_model.GetTokenKey]"
+	}
+}
+
+# Return only still-held models. Partial credit retains exact remaining escrow.
+# An unbounded/negative native delta is preserved for recovery, never retried.
+cbrn_export_transaction_refund_model = {
+	meta_effect = {
+		text = {
+			if = {
+				limit = {
+					check_variable = { cbrn_export_held_[MODEL]_@FROM > constant:cbrn_math.zero }
+					NOT = { has_country_flag = cbrn_export_native_mismatch_@FROM }
+				}
+				set_temp_variable = { cbrn_export_requested = cbrn_export_held_[MODEL]_@FROM }
+				set_temp_variable = { cbrn_export_before = num_equipment@[MODEL] }
+				add_equipment_to_stockpile = { type = [MODEL] amount = cbrn_export_requested }
+				set_temp_variable = { cbrn_export_observed = num_equipment@[MODEL] }
+				subtract_from_temp_variable = { cbrn_export_observed = cbrn_export_before }
+				set_variable = { cbrn_export_refund_gain_[MODEL]_@FROM = cbrn_export_observed }
+				if = {
+					limit = {
+						NOT = { check_variable = { cbrn_export_observed < constant:cbrn_math.zero } }
+						NOT = { check_variable = { cbrn_export_observed > cbrn_export_requested } }
+					}
+					subtract_from_variable = { cbrn_export_held_[MODEL]_@FROM = cbrn_export_observed }
+					add_to_variable = { cbrn_export_refunded_[MODEL]_@FROM = cbrn_export_observed }
+				}
+				else = { set_country_flag = cbrn_export_native_mismatch_@FROM }
+			}
+		}
+		MODEL = "[?cbrn_export_model.GetTokenKey]"
+	}
+}
+
+cbrn_export_transaction_refund_held = {
+	set_temp_variable = { cbrn_export_model = token:gas_mask_equipment_reconditioned }
+	cbrn_export_transaction_refund_model = yes
+	set_temp_variable = { cbrn_export_model = token:gas_mask_equipment_1 }
+	cbrn_export_transaction_refund_model = yes
+	set_temp_variable = { cbrn_export_model = token:gas_mask_equipment_2 }
+	cbrn_export_transaction_refund_model = yes
+	set_temp_variable = { cbrn_export_model = token:gas_mask_equipment_3 }
+	cbrn_export_transaction_refund_model = yes
+	set_temp_variable = { cbrn_export_model = token:gas_mask_equipment_4 }
+	cbrn_export_transaction_refund_model = yes
+	set_temp_variable = { cbrn_export_held_total = constant:cbrn_math.zero }
+	if = { limit = { cbrn_export_transaction_quote_held = yes } }
+	if = {
+		limit = {
+			OR = {
+				check_variable = { cbrn_export_held_total > constant:cbrn_math.zero }
+				has_country_flag = cbrn_export_native_mismatch_@FROM
+			}
+		}
+		set_country_flag = cbrn_export_recovery_@FROM
+	}
+}
+
+# One synchronous model transfer. Release only its held count, measure native
+# credit, then send exactly that released model. Unsent released units already
+# remain in donor stock and MUST NOT receive a second refund.
+cbrn_export_transaction_send_model = {
+	meta_effect = {
+		text = {
+			if = {
+				limit = {
+					check_variable = { cbrn_export_held_[MODEL]_@FROM > constant:cbrn_math.zero }
+					NOT = { has_country_flag = cbrn_export_native_mismatch_@FROM }
+					NOT = { has_country_flag = cbrn_export_transfer_failed_@FROM }
+				}
+				set_temp_variable = { cbrn_export_requested = cbrn_export_held_[MODEL]_@FROM }
+				set_temp_variable = { cbrn_export_before = num_equipment@[MODEL] }
+				add_equipment_to_stockpile = { type = [MODEL] amount = cbrn_export_requested }
+				set_temp_variable = { cbrn_export_released = num_equipment@[MODEL] }
+				subtract_from_temp_variable = { cbrn_export_released = cbrn_export_before }
+				set_variable = { cbrn_export_release_gain_[MODEL]_@FROM = cbrn_export_released }
+				if = {
+					limit = {
+						NOT = { check_variable = { cbrn_export_released < constant:cbrn_math.zero } }
+						NOT = { check_variable = { cbrn_export_released > cbrn_export_requested } }
+					}
+					subtract_from_variable = { cbrn_export_held_[MODEL]_@FROM = cbrn_export_released }
+					if = {
+						limit = { check_variable = { cbrn_export_released = cbrn_export_requested } }
+						set_temp_variable = { cbrn_export_donor_before = num_equipment@[MODEL] }
+						set_temp_variable = { cbrn_export_recipient_before = FROM.num_equipment@[MODEL] }
+						send_equipment = { target = FROM type = [MODEL] amount = cbrn_export_released old_prioritised = yes }
+						set_temp_variable = { cbrn_export_sent_debit = cbrn_export_donor_before }
+						subtract_from_temp_variable = { cbrn_export_sent_debit = num_equipment@[MODEL] }
+						set_temp_variable = { cbrn_export_received_gain = FROM.num_equipment@[MODEL] }
+						subtract_from_temp_variable = { cbrn_export_received_gain = cbrn_export_recipient_before }
+						set_variable = { cbrn_export_sent_debit_[MODEL]_@FROM = cbrn_export_sent_debit }
+						set_variable = { cbrn_export_received_gain_[MODEL]_@FROM = cbrn_export_received_gain }
+						if = {
+							limit = {
+								NOT = { check_variable = { cbrn_export_sent_debit < constant:cbrn_math.zero } }
+								NOT = { check_variable = { cbrn_export_sent_debit > cbrn_export_released } }
+								check_variable = { cbrn_export_sent_debit = cbrn_export_received_gain }
+							}
+							set_variable = { cbrn_export_delivered_[MODEL]_@FROM = cbrn_export_received_gain }
+							add_to_variable = { cbrn_export_delivered_total_@FROM = cbrn_export_received_gain }
+							set_temp_variable = { cbrn_export_unsent = cbrn_export_released }
+							subtract_from_temp_variable = { cbrn_export_unsent = cbrn_export_sent_debit }
+							set_variable = { cbrn_export_unsent_released_[MODEL]_@FROM = cbrn_export_unsent }
+							if = {
+								limit = { check_variable = { cbrn_export_unsent > constant:cbrn_math.zero } }
+								set_country_flag = cbrn_export_transfer_failed_@FROM
+							}
+							}
+						else = {
+							set_country_flag = cbrn_export_native_mismatch_@FROM
+							set_country_flag = cbrn_export_recovery_@FROM
+						}
+					}
+					else = {
+						# The bounded release stayed on the donor. No send occurred.
+						add_to_variable = { cbrn_export_refunded_[MODEL]_@FROM = cbrn_export_released }
+						set_country_flag = cbrn_export_transfer_failed_@FROM
+					}
+				}
+				else = {
+					set_country_flag = cbrn_export_native_mismatch_@FROM
+					set_country_flag = cbrn_export_recovery_@FROM
+				}
+			}
+		}
+		MODEL = "[?cbrn_export_model.GetTokenKey]"
+	}
+}
+
+# Service fee cancellation policy: close an accepted fee, never refund it just
+# because a timer cancels. Pre-acceptance failures use the exact refund API.
+cbrn_export_transaction_close_fee = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = cbrn_export_fee_closed_@FROM }
+			check_variable = { cbrn_export_receipt_@FROM > constant:universal_cost_framework.zero }
+		}
+		set_temp_variable = { universal_cost_transaction_id = cbrn_export_receipt_@FROM }
+		set_temp_variable = { universal_cost_settle_transaction_result = constant:universal_cost_framework.result_no_op }
+		universal_cost_settle_transaction = yes
+		set_variable = { cbrn_export_fee_settle_result_@FROM = universal_cost_settle_transaction_result }
+		if = {
+			limit = { check_variable = { universal_cost_settle_transaction_result = constant:universal_cost_framework.result_success } }
+			set_country_flag = cbrn_export_fee_closed_@FROM
+		}
+		else = { set_country_flag = cbrn_export_recovery_@FROM }
+	}
+}
+
+cbrn_export_transaction_confirm_fee = {
+	if = {
+		limit = {
+			has_country_flag = cbrn_export_delivery_proven_@FROM
+			has_country_flag = cbrn_export_fee_closed_@FROM
+			check_variable = { cbrn_export_source_@FROM = constant:universal_cost_framework.black_friday_source_id }
+		}
+		set_temp_variable = { black_friday_purchase_transaction_id = cbrn_export_receipt_@FROM }
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.political_power }
+		set_temp_variable = { black_friday_purchase_ordinary_cost = constant:cbrn_protection_decision_cost.export_masks_pp }
+		set_temp_variable = { black_friday_purchase_actual_paid_cost = cbrn_export_fee_@FROM }
+		set_temp_variable = { black_friday_purchase_sale_sequence = cbrn_export_sale_sequence_@FROM }
+		set_temp_variable = { black_friday_purchase_allow_political_power_only = constant:universal_cost_framework.one }
+		set_temp_variable = { black_friday_purchase_allow_post_expiry_confirmation = constant:universal_cost_framework.one }
+		set_temp_variable = { black_friday_purchase_is_refundable = constant:universal_cost_framework.zero }
+		black_friday_record_achievement_transaction = yes
+		set_temp_variable = { black_friday_purchase_allow_political_power_only = constant:universal_cost_framework.zero }
+		set_temp_variable = { black_friday_purchase_allow_post_expiry_confirmation = constant:universal_cost_framework.zero }
+	}
+}
+
+# Preserve the existing aid/statistics/opinion/Condemnation outcome package.
+cbrn_export_transaction_apply_success = {
+	if = {
+		limit = {
+			has_country_flag = cbrn_export_delivery_proven_@FROM
+			NOT = { has_country_flag = cbrn_export_outcomes_applied_@FROM }
+		}
+		set_country_flag = cbrn_export_outcomes_applied_@FROM
+		cbrn_initialize_country_data = yes
+		add_to_variable = { cbrn_protective_aid_exported_crates = cbrn_export_delivered_total_@FROM }
+		set_temp_variable = { cbrn_export_success_crates = cbrn_export_delivered_total_@FROM }
+		FROM = {
+			cbrn_initialize_country_data = yes
+			add_to_variable = { cbrn_protective_aid_received_crates = cbrn_export_success_crates }
+			set_country_flag = cbrn_received_protective_aid
+			cbrn_start_protection_maintenance_job = yes
+			add_opinion_modifier = { target = ROOT modifier = cbrn_protective_aid_received }
+		}
+		condemnation_initialize_country = yes
+		if = {
+			limit = { condemnation_has_compliance_path = yes }
+			add_to_variable = { condemnation_decay_credit = constant:cbrn_protection_program_effect.protective_aid_compliance_credit }
+			clamp_variable = { var = condemnation_decay_credit min = constant:cbrn_math.zero max = constant:condemnation_compliance_credit.maximum }
+			condemnation_start_targeted_pulse = yes
+			condemnation_refresh_target_modifiers = yes
+		}
+		cbrn_refresh_country_mask_snapshot = yes
+	}
+}
+
+# Mirror the external-aid active reservation counter. Only a new targeted
+# ownership flag increments the donor actor count, including held start failures.
+cbrn_export_transaction_publish_ownership = {
+	if = {
+		limit = { NOT = { has_country_flag = cbrn_export_owned_@FROM } }
+		if = {
+			limit = { NOT = { has_variable = cbrn_export_owned_receipts_count } }
+			set_variable = { cbrn_export_owned_receipts_count = constant:cbrn_math.zero }
+		}
+		add_to_variable = { cbrn_export_owned_receipts_count = constant:cbrn_math.one }
+		set_country_flag = cbrn_export_owned_@FROM
+	}
+}
+
+# Releasing ownership does not erase frozen receipt/delivery/recovery evidence.
+# Count decrements only together with an owned flag's successful release.
+cbrn_export_transaction_release_ownership = {
+	set_temp_variable = { cbrn_export_held_total = constant:cbrn_math.zero }
+	if = { limit = { cbrn_export_transaction_quote_held = yes } }
+	if = {
+		limit = {
+			has_country_flag = cbrn_export_owned_@FROM
+			check_variable = { cbrn_export_held_total = constant:cbrn_math.zero }
+			NOT = { has_country_flag = cbrn_export_native_mismatch_@FROM }
+			has_country_flag = cbrn_export_fee_closed_@FROM
+		}
+		clr_country_flag = cbrn_export_active_@FROM
+		clr_country_flag = cbrn_export_owned_@FROM
+		subtract_from_variable = { cbrn_export_owned_receipts_count = constant:cbrn_math.one }
+		clamp_variable = { var = cbrn_export_owned_receipts_count min = constant:cbrn_math.zero }
+		clr_country_flag = cbrn_export_recovery_@FROM
+	}
+}
+
+cbrn_export_transaction_cancel = {
+	set_temp_variable = { cbrn_export_cancelled = constant:universal_cost_framework.zero }
+	if = {
+		limit = { cbrn_export_transaction_has_owned_receipt = yes }
+		clr_country_flag = cbrn_export_active_@FROM
+		cbrn_export_transaction_refund_held = yes
+		if = {
+			limit = { has_country_flag = cbrn_export_start_failed_@FROM }
+			if = {
+				limit = { check_variable = { cbrn_export_receipt_@FROM > constant:universal_cost_framework.zero } }
+				set_temp_variable = { cbrn_response_transaction = cbrn_export_receipt_@FROM }
+				cbrn_refund_unfinished_response_transaction = yes
+				if = {
+					limit = {
+						NOT = { has_variable = cbrn_response_refund_status_@var:cbrn_response_transaction }
+						NOT = { has_variable = cbrn_response_unrecorded_credit_amount_@var:cbrn_response_transaction }
+					}
+					set_country_flag = cbrn_export_fee_closed_@FROM
+				}
+				else = { set_country_flag = cbrn_export_recovery_@FROM }
+			}
+			else = { set_country_flag = cbrn_export_fee_closed_@FROM }
+		}
+		else = {
+			cbrn_export_transaction_close_fee = yes
+			cbrn_export_transaction_confirm_fee = yes
+		}
+		cbrn_export_transaction_release_ownership = yes
+		if = {
+			limit = { NOT = { has_country_flag = cbrn_export_owned_@FROM } }
+			set_temp_variable = { cbrn_export_cancelled = constant:universal_cost_framework.one }
+		}
+		cbrn_refresh_country_mask_snapshot = yes
+	}
+}
+
+cbrn_export_transaction_start = {
+	set_temp_variable = { cbrn_export_started = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_export_fee = constant:cbrn_protection_decision_cost.export_masks_pp }
+	set_temp_variable = { cbrn_export_fee_valid = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_export_fee_source = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_export_fee_affordable = constant:universal_cost_framework.zero }
+	if = {
+		limit = { cbrn_export_transaction_preflight = yes }
+		cbrn_export_transaction_publish_ownership = yes
+		set_country_flag = cbrn_export_start_failed_@FROM
+		clr_country_flag = cbrn_export_fee_closed_@FROM
+		clr_country_flag = cbrn_export_delivery_proven_@FROM
+		clr_country_flag = cbrn_export_outcomes_applied_@FROM
+		clr_country_flag = cbrn_export_transfer_failed_@FROM
+		set_variable = { cbrn_export_recipient_@FROM = FROM }
+		set_variable = { cbrn_export_receipt_@FROM = constant:universal_cost_framework.zero }
+		set_variable = { cbrn_export_delivered_total_@FROM = constant:cbrn_math.zero }
+		set_variable = { cbrn_export_fee_@FROM = cbrn_export_fee }
+		set_variable = { cbrn_export_source_@FROM = cbrn_export_fee_source }
+		set_variable = { cbrn_export_sale_sequence_@FROM = global.black_friday_sale_sequence }
+		set_variable = { cbrn_export_held_gas_mask_equipment_reconditioned_@FROM = constant:cbrn_math.zero }
+		set_variable = { cbrn_export_held_gas_mask_equipment_1_@FROM = constant:cbrn_math.zero }
+		set_variable = { cbrn_export_held_gas_mask_equipment_2_@FROM = constant:cbrn_math.zero }
+		set_variable = { cbrn_export_held_gas_mask_equipment_3_@FROM = constant:cbrn_math.zero }
+		set_variable = { cbrn_export_held_gas_mask_equipment_4_@FROM = constant:cbrn_math.zero }
+		set_temp_variable = { cbrn_export_remaining = constant:cbrn_protection_decision_cost.export_masks_crates }
+		set_temp_variable = { cbrn_export_model = token:gas_mask_equipment_reconditioned }
+		cbrn_export_transaction_reserve_model = yes
+		set_temp_variable = { cbrn_export_model = token:gas_mask_equipment_1 }
+		cbrn_export_transaction_reserve_model = yes
+		set_temp_variable = { cbrn_export_model = token:gas_mask_equipment_2 }
+		cbrn_export_transaction_reserve_model = yes
+		set_temp_variable = { cbrn_export_model = token:gas_mask_equipment_3 }
+		cbrn_export_transaction_reserve_model = yes
+		set_temp_variable = { cbrn_export_model = token:gas_mask_equipment_4 }
+		cbrn_export_transaction_reserve_model = yes
+		if = {
+			limit = {
+				check_variable = { cbrn_export_remaining = constant:cbrn_math.zero }
+				NOT = { has_country_flag = cbrn_export_native_mismatch_@FROM }
+			}
+			set_temp_variable = { black_friday_owner_transaction_id = constant:universal_cost_framework.zero }
+			black_friday_allocate_owner_transaction = yes
+			set_variable = { cbrn_export_receipt_@FROM = black_friday_owner_transaction_id }
+			if = {
+				limit = { check_variable = { black_friday_owner_transaction_id > constant:universal_cost_framework.zero } }
+				set_temp_variable = { cbrn_response_transaction = black_friday_owner_transaction_id }
+				set_temp_variable = { cbrn_response_source = cbrn_export_source_@FROM }
+				set_temp_variable = { cbrn_response_family = constant:universal_cost_family.political_power }
+				set_temp_variable = { cbrn_response_basis = constant:universal_cost_achievement_basis.primary_component }
+				set_temp_variable = { cbrn_response_primary = constant:universal_cost_resource_kind.political_power }
+				set_temp_variable = { cbrn_response_all_paid = constant:universal_cost_framework.one }
+				set_temp_variable = { cbrn_response_component_kind = constant:universal_cost_resource_kind.political_power }
+				set_temp_variable = { cbrn_response_component_ordinary = constant:cbrn_protection_decision_cost.export_masks_pp }
+				set_temp_variable = { cbrn_response_component_quoted = cbrn_export_fee_@FROM }
+				set_temp_variable = { cbrn_response_component_primary_member = constant:universal_cost_framework.one }
+				cbrn_pay_and_record_response_component = yes
+				if = {
+					limit = { check_variable = { cbrn_response_all_paid = constant:universal_cost_framework.one } }
+					clr_country_flag = cbrn_export_start_failed_@FROM
+					set_country_flag = cbrn_export_active_@FROM
+					set_temp_variable = { cbrn_export_started = constant:universal_cost_framework.one }
+				}
+			}
+		}
+		if = {
+			limit = { has_country_flag = cbrn_export_start_failed_@FROM }
+			set_temp_variable = { cbrn_export_cancelled = constant:universal_cost_framework.zero }
+			cbrn_export_transaction_cancel = yes
+		}
+		cbrn_refresh_country_mask_snapshot = yes
+	}
+}
+
+cbrn_export_transaction_finish = {
+	set_temp_variable = { cbrn_export_completed = constant:universal_cost_framework.zero }
+	if = {
+		limit = { cbrn_export_transaction_has_owned_receipt = yes }
+		if = {
+			limit = { cbrn_export_transaction_can_continue = yes }
+			clr_country_flag = cbrn_export_active_@FROM
+			set_temp_variable = { cbrn_export_model = token:gas_mask_equipment_reconditioned }
+			cbrn_export_transaction_send_model = yes
+			set_temp_variable = { cbrn_export_model = token:gas_mask_equipment_1 }
+			cbrn_export_transaction_send_model = yes
+			set_temp_variable = { cbrn_export_model = token:gas_mask_equipment_2 }
+			cbrn_export_transaction_send_model = yes
+			set_temp_variable = { cbrn_export_model = token:gas_mask_equipment_3 }
+			cbrn_export_transaction_send_model = yes
+			set_temp_variable = { cbrn_export_model = token:gas_mask_equipment_4 }
+			cbrn_export_transaction_send_model = yes
+			set_temp_variable = { cbrn_export_held_total = constant:cbrn_math.zero }
+			if = { limit = { cbrn_export_transaction_quote_held = yes } }
+			if = {
+				limit = {
+					NOT = { has_country_flag = cbrn_export_native_mismatch_@FROM }
+					NOT = { has_country_flag = cbrn_export_transfer_failed_@FROM }
+					check_variable = { cbrn_export_held_total = constant:cbrn_math.zero }
+					check_variable = { cbrn_export_delivered_total_@FROM = constant:cbrn_protection_decision_cost.export_masks_crates }
+				}
+				set_country_flag = cbrn_export_delivery_proven_@FROM
+				cbrn_export_transaction_apply_success = yes
+			}
+		}
+		if = {
+			limit = { has_country_flag = cbrn_export_delivery_proven_@FROM }
+			cbrn_export_transaction_close_fee = yes
+			cbrn_export_transaction_confirm_fee = yes
+			cbrn_export_transaction_release_ownership = yes
+			set_temp_variable = { cbrn_export_completed = constant:universal_cost_framework.one }
+		}
+		else = {
+			set_temp_variable = { cbrn_export_cancelled = constant:universal_cost_framework.zero }
+			cbrn_export_transaction_cancel = yes
+		}
+	}
+}

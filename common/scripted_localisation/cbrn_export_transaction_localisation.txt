@@ -1,0 +1,39 @@
+# Existing export service fee. THIS/ROOT donor, FROM recipient. Native timer
+# rows use the frozen paid fee. Fresh rows use the canonical quote producer.
+# Parent owns the three localisation keys and existing decision cost wiring.
+
+defined_text = {
+	name = GetCbrnExportPoliticalCost
+	text = {
+		trigger = {
+			cbrn_export_transaction_has_owned_receipt = yes
+			has_variable = cbrn_export_fee_@FROM
+			set_temp_variable = { cbrn_export_fee = cbrn_export_fee_@FROM }
+		}
+		localization_key = cbrn_export_fee_cost_frozen
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_export_fee = constant:cbrn_protection_decision_cost.export_masks_pp }
+			set_temp_variable = { cbrn_export_fee_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { cbrn_export_fee_source = constant:universal_cost_framework.zero }
+			set_temp_variable = { cbrn_export_fee_affordable = constant:universal_cost_framework.zero }
+			cbrn_export_transaction_quote_fee = yes
+			OR = {
+				check_variable = { cbrn_export_fee_valid = constant:universal_cost_framework.zero }
+				check_variable = { cbrn_export_fee_affordable = constant:universal_cost_framework.zero }
+			}
+		}
+		localization_key = cbrn_export_fee_cost_short
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_export_fee = constant:cbrn_protection_decision_cost.export_masks_pp }
+			set_temp_variable = { cbrn_export_fee_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { cbrn_export_fee_source = constant:universal_cost_framework.zero }
+			set_temp_variable = { cbrn_export_fee_affordable = constant:universal_cost_framework.zero }
+			cbrn_export_transaction_quote_fee = yes
+		}
+		localization_key = cbrn_export_fee_cost_ready
+	}
+}

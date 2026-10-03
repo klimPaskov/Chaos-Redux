@@ -1,0 +1,105 @@
+# COUNTRY cost getters for occupied-population distribution; FROM is unused.
+# Parent localisation keys render these exact temporary values with texticons.
+# Frozen fees/factories remain readable after source expiry or stock exhaustion.
+
+defined_text = {
+	name = GetCbrnOccupiedDistributionPoliticalCost
+	text = {
+		trigger = {
+			cbrn_occupied_country_has_active_program = yes
+			set_temp_variable = { cbrn_occupied_fee = cbrn_occupied_committed_fee }
+		}
+		localization_key = cbrn_occupied_fee_cost_ready
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_occupied_fee = constant:cbrn_protection_decision_cost.occupied_distribution_pp }
+			set_temp_variable = { cbrn_occupied_fee_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { cbrn_occupied_fee_affordable = constant:universal_cost_framework.zero }
+			cbrn_occupied_quote_transaction_costs = yes
+			OR = {
+				check_variable = { cbrn_occupied_fee_valid = constant:universal_cost_framework.zero }
+				check_variable = { cbrn_occupied_fee_affordable = constant:universal_cost_framework.zero }
+			}
+		}
+		localization_key = cbrn_occupied_fee_cost_short
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_occupied_fee = constant:cbrn_protection_decision_cost.occupied_distribution_pp }
+			cbrn_occupied_quote_transaction_costs = yes
+		}
+		localization_key = cbrn_occupied_fee_cost_ready
+	}
+}
+
+defined_text = {
+	name = GetCbrnOccupiedDistributionFactoryCost
+	text = {
+		trigger = {
+			cbrn_occupied_country_holds_sale_program = yes
+			set_temp_variable = { cbrn_occupied_factory_quote = constant:cbrn_protection_decision_cost.occupied_distribution_sale_factories }
+		}
+		localization_key = cbrn_occupied_factory_cost_ready
+	}
+	text = {
+		trigger = {
+			cbrn_occupied_country_holds_ordinary_program = yes
+			set_temp_variable = { cbrn_occupied_factory_quote = constant:cbrn_protection_decision_cost.occupied_distribution_factories }
+		}
+		localization_key = cbrn_occupied_factory_cost_ready
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_occupied_factory_quote = constant:cbrn_protection_decision_cost.occupied_distribution_factories }
+			set_temp_variable = { cbrn_occupied_factory_quote_valid = constant:universal_cost_framework.zero }
+			cbrn_occupied_quote_transaction_costs = yes
+			OR = {
+				check_variable = { cbrn_occupied_factory_quote_valid = constant:universal_cost_framework.zero }
+				AND = {
+					check_variable = { cbrn_occupied_factory_quote = constant:cbrn_protection_decision_cost.occupied_distribution_factories }
+					num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.occupied_distribution_factories
+				}
+				AND = {
+					check_variable = { cbrn_occupied_factory_quote = constant:cbrn_protection_decision_cost.occupied_distribution_sale_factories }
+					num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.occupied_distribution_sale_factories
+				}
+			}
+		}
+		localization_key = cbrn_occupied_factory_cost_short
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_occupied_factory_quote = constant:cbrn_protection_decision_cost.occupied_distribution_factories }
+			set_temp_variable = { cbrn_occupied_factory_quote_valid = constant:universal_cost_framework.zero }
+			cbrn_occupied_quote_transaction_costs = yes
+		}
+		localization_key = cbrn_occupied_factory_cost_ready
+	}
+}
+
+defined_text = {
+	name = GetCbrnOccupiedDistributionCrateCost
+	text = {
+		trigger = {
+			cbrn_occupied_country_has_active_program = yes
+			set_temp_variable = { cbrn_mask_reservation_quote = cbrn_occupied_committed_reserved }
+		}
+		localization_key = cbrn_occupied_crates_cost_ready
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_mask_reservation_quote = constant:cbrn_math.zero }
+			cbrn_quote_occupied_program_mask_reservation = yes
+			NOT = { check_variable = { cbrn_mask_reservation_quote > constant:cbrn_math.zero } }
+		}
+		localization_key = cbrn_occupied_crates_cost_short
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_mask_reservation_quote = constant:cbrn_math.zero }
+			cbrn_quote_occupied_program_mask_reservation = yes
+		}
+		localization_key = cbrn_occupied_crates_cost_ready
+	}
+}

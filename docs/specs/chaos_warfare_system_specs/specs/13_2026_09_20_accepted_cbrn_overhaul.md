@@ -27,11 +27,26 @@ The user's 2026-09-25 follow-up selects click-time reservation for the timed Occ
 The [Protective Aid selection-guard correction](../corrections/2026-10-03_protective_aid_native_factory_selection.md) keeps the inclusive pre-click factory requirement and validates the continuing country, stock, and target after selection without requiring committed factories to remain free.
 The native commitment, material reservation, and payment contract remain intact; native execution evidence is still required.
 
-That family correction also retains the occupied-population pre-click factory gate while its native selection helper checks the shared non-factory requirements, existence, and non-capitulation.
-The 30-day commitment, Political Power price, model reservations, and refund policy remain intact.
+That selection-guard correction preserves the occupied-population pre-click factory gate while its native selection helper checks continuing non-factory requirements, existence, and non-capitulation.
+Its historical source reconstruction did not authorize a different shipment or cancellation policy; the accepted occupied/export owner contract below governs the canonical sale price and receipt lifecycle.
 
 The [Protective Aid factory-sale correction](../corrections/2026-10-03_protective_aid_native_factory_sale.md) supplies two native commitments for one visible aid choice, quoting two factories ordinarily and one at either Black Friday sale rate.
 It preserves the full physical model shipment, 21-day timer, 90-day donor/state reenabling interval, shared payment/refund path, and the selected commitment through sale expiry.
+
+The [occupied/export transaction correction](../corrections/2026-10-03_occupied_export_sale_transactions.md) records the user's existing CBRN payment/presentation, exact selection-time reservation/refund, and Event 026 owner-integration authorization.
+Occupied Population retains one national 30-day programme over eligible controlled noncore states, full five-model STATE receipts, and a shared 90-day reassessment guard; ordinary/sale native commitments are two/one factories and the canonical service fee is nominally 25/13/7 PP.
+Export retains 14 days, one factory, 60-day per-recipient reenabling, and the 1,500-mask new-start floor; it reserves exactly 500 real model masks per recipient at selection and quotes the service fee nominally 15/8/4 PP.
+Physical issue and shipment quantities are conserved through both sale tiers.
+Active continuity uses owned receipts and current target validity/issue need, without requiring the sale to remain active or committed factories and stock to remain free.
+Occupied continuation does not reuse an unrelated state project's start-only busy exclusion or clear that project's flag.
+Positive actual protection or exact matched donor/recipient delivery must precede service achievement credit; accepted cancellation retains the fee and refunds only unused original models.
+Unresolved recovery retains paid/held evidence and blocks duplicate execution; no worldwide pulse or simplified substitute is authorized.
+The shared STATE implementation uses concrete before/after stock deltas rather than nominal requests: valid partial reservation holds only actual removed models, and a valid partial refund reduces held models only by observed donor gain while retaining original donor/active/recovery ownership.
+Invalid deltas preserve exact observation evidence and quarantine later native retry/consumption; occupied country recovery blocks a new programme and prevents fee publication from an earlier positive aggregate after a later state fails.
+Control-transfer cleanup removes target markers only after blocked-zero refund.
+These implement the accepted conservation/recovery contract without authorizing a simplified substitute; parent-reviewed owner/STATE source is present and the bounded parsed-source suite records 46 scenarios with zero failures under modeled native stock/scope behavior.
+The final matching 27-scenario occupied comparison returned partial evidence at revision `d8354fd0dd5ce76637dccecce6bda771eb8a46d5f6a2562d3aff142f9774b383`: 54 rows, ten false and 44 unresolved eligibility rows, 66 unresolved items, and 54 `UNRESOLVED_ANALYSIS_INTRODUCED` coverage flags.
+Full owner preflight/order, physical issue/outcome execution, native behavior, automatic quarantine recovery, and resolved weighted eligibility/iterator coverage remain unproved; passing source cases do not close the accepted requirements.
 
 The exact-state theater decontamination assignment has three upfront payments and separate non-consumed support-stock requirements, as specified in [`../corrections/2026-09-25_theater_decontamination_cost.md`](../corrections/2026-09-25_theater_decontamination_cost.md). This follows the accepted shorter-loop and readable-cost requirements without changing its contamination output.
 

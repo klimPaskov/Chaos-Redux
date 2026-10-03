@@ -160,7 +160,7 @@ cbrn_complete_occupied_state_distribution = {
 		add_compliance = constant:cbrn_protection_program_effect.occupied_compliance_change
 	}
 	controller = { cbrn_start_protection_maintenance_job = yes }
-	cbrn_end_state_protection_project = yes
+	# This national program owns only its occupied target marker and escrow.
 }
 
 cbrn_complete_state_filter_replacement = {
@@ -225,73 +225,6 @@ cbrn_complete_civilian_filter_replacement_program = {
 			ROOT = { cbrn_country_has_any_mask_stock = yes }
 		}
 		cbrn_complete_state_filter_replacement = yes
-	}
-}
-
-cbrn_begin_occupied_distribution_program = {
-	set_temp_variable = { cbrn_mask_reservation_quote = constant:cbrn_math.zero }
-	set_temp_variable = { cbrn_occupied_program_reserved = constant:cbrn_math.zero }
-	if = {
-		limit = {
-			exists = yes
-			NOT = { has_capitulated = yes }
-			cbrn_country_can_pay_occupied_mask_reservation = yes
-		}
-		every_controlled_state = {
-			limit = { cbrn_state_can_reserve_occupied_masks = yes }
-			set_temp_variable = { cbrn_reservation_quote_state_need = constant:cbrn_math.zero }
-			if = {
-				limit = { cbrn_quote_occupied_state_mask_reservation = yes }
-				set_temp_variable = { cbrn_mask_escrow_requested = cbrn_reservation_quote_state_need }
-				set_temp_variable = { cbrn_mask_escrow_external = constant:cbrn_math.zero }
-				set_temp_variable = { cbrn_mask_escrow_completed = constant:cbrn_math.zero }
-				cbrn_reserve_requested_masks_to_state = yes
-				if = {
-					limit = { check_variable = { cbrn_mask_escrow_completed > constant:cbrn_math.zero } }
-					set_state_flag = cbrn_occupied_distribution_program_target
-					add_to_temp_variable = { cbrn_occupied_program_reserved = cbrn_mask_escrow_completed }
-				}
-			}
-		}
-		if = {
-			limit = { check_variable = { cbrn_occupied_program_reserved > constant:cbrn_math.zero } }
-			set_country_flag = cbrn_civilian_distribution_program_active
-			set_temp_variable = { cbrn_protection_pp_debit_requested = constant:cbrn_protection_decision_cost.occupied_distribution_pp }
-			cbrn_debit_protection_political_power = yes
-		}
-	}
-}
-
-cbrn_clear_occupied_distribution_targets = {
-	every_controlled_state = {
-		limit = {
-			OR = {
-				has_state_flag = cbrn_occupied_distribution_program_target
-				has_state_flag = cbrn_occupied_mask_escrow_active
-			}
-		}
-		cbrn_refund_occupied_state_mask_reservation = yes
-		clr_state_flag = cbrn_occupied_distribution_program_target
-	}
-}
-
-cbrn_complete_occupied_distribution_program = {
-	every_controlled_state = {
-		limit = {
-			OR = {
-				has_state_flag = cbrn_occupied_distribution_program_target
-				has_state_flag = cbrn_occupied_mask_escrow_active
-			}
-		}
-		if = {
-			limit = {
-				has_state_flag = cbrn_occupied_mask_escrow_active
-				cbrn_state_can_reserve_occupied_masks = yes
-			}
-			cbrn_complete_occupied_state_distribution = yes
-		}
-		else = { cbrn_refund_occupied_state_mask_reservation = yes }
-		clr_state_flag = cbrn_occupied_distribution_program_target
 	}
 }
 
@@ -367,11 +300,6 @@ cbrn_begin_simplified_filter_program = {
 	cbrn_debit_requested_support_equipment = yes
 }
 
-cbrn_begin_protective_equipment_export = {
-	set_temp_variable = { cbrn_protection_pp_debit_requested = constant:cbrn_protection_decision_cost.export_masks_pp }
-	cbrn_debit_protection_political_power = yes
-}
-
 cbrn_complete_simplified_filter_program = {
 	add_equipment_to_stockpile = {
 		type = gas_mask_equipment_1
@@ -382,39 +310,6 @@ cbrn_complete_simplified_filter_program = {
 	set_country_flag = cbrn_program_established
 	cbrn_refresh_country_mask_snapshot = yes
 	cbrn_start_protection_maintenance_job = yes
-}
-
-cbrn_export_masks_to_protection_partner = {
-	cbrn_initialize_country_data = yes
-	if = {
-		limit = {
-			has_event_target = cbrn_protection_trade_partner
-			event_target:cbrn_protection_trade_partner = { cbrn_target_can_receive_exported_masks = yes }
-		}
-		send_equipment = {
-			target = event_target:cbrn_protection_trade_partner
-			type = gas_mask_equipment
-			amount = constant:cbrn_protection_decision_cost.export_masks_crates
-			old_prioritised = yes
-		}
-		add_to_variable = { cbrn_protective_aid_exported_crates = constant:cbrn_protection_decision_cost.export_masks_crates }
-		event_target:cbrn_protection_trade_partner = {
-			cbrn_initialize_country_data = yes
-			add_to_variable = { cbrn_protective_aid_received_crates = constant:cbrn_protection_decision_cost.export_masks_crates }
-			set_country_flag = cbrn_received_protective_aid
-			cbrn_start_protection_maintenance_job = yes
-			add_opinion_modifier = { target = ROOT modifier = cbrn_protective_aid_received }
-		}
-		condemnation_initialize_country = yes
-		if = {
-			limit = { condemnation_has_compliance_path = yes }
-			add_to_variable = { condemnation_decay_credit = constant:cbrn_protection_program_effect.protective_aid_compliance_credit }
-			clamp_variable = { var = condemnation_decay_credit min = constant:cbrn_math.zero max = constant:condemnation_compliance_credit.maximum }
-			condemnation_start_targeted_pulse = yes
-			condemnation_refresh_target_modifiers = yes
-		}
-		cbrn_refresh_country_mask_snapshot = yes
-	}
 }
 
 cbrn_import_masks_from_protection_partner = {

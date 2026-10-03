@@ -1,0 +1,280 @@
+# Country-scoped occupied distribution callback family. ROOT is the donor.
+# Existing STATE escrow owns five concrete models and its stored original donor.
+# Native factories/cooldown are committed by selection, never scripted payment.
+# All contracts, recovery evidence, and parent wiring are in the dated handoff.
+
+# Internal PP-only payment. Inputs: frozen temporary fee/source; outer callback
+# creates payment_success and transaction outputs before entering this helper.
+cbrn_occupied_pay_and_record_fee = {
+	set_temp_variable = { cbrn_occupied_payment_success = constant:universal_cost_framework.zero }
+	set_temp_variable = { black_friday_owner_transaction_id = constant:universal_cost_framework.zero }
+	black_friday_allocate_owner_transaction = yes
+	set_temp_variable = { cbrn_occupied_transaction = black_friday_owner_transaction_id }
+	if = {
+		limit = { check_variable = { cbrn_occupied_transaction > constant:universal_cost_framework.zero } }
+		set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.political_power }
+		set_temp_variable = { universal_cost_payment_amount = cbrn_occupied_fee }
+		set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_no_op }
+		universal_cost_pay_component = yes
+		if = {
+			limit = { check_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_success } }
+			set_temp_variable = { universal_cost_transaction_id = cbrn_occupied_transaction }
+			set_temp_variable = { universal_cost_transaction_component_id = constant:universal_cost_resource_kind.political_power }
+			set_temp_variable = { universal_cost_transaction_resource_kind = constant:universal_cost_resource_kind.political_power }
+			set_temp_variable = { universal_cost_transaction_resource_id = constant:universal_cost_framework.zero }
+			set_temp_variable = { universal_cost_transaction_ordinary_cost = constant:cbrn_protection_decision_cost.occupied_distribution_pp }
+			set_temp_variable = { universal_cost_transaction_quoted_cost = cbrn_occupied_fee }
+			set_temp_variable = { universal_cost_transaction_actual_paid_cost = cbrn_occupied_fee }
+			set_temp_variable = { universal_cost_transaction_source_id = cbrn_occupied_fee_source }
+			set_temp_variable = { universal_cost_transaction_primary_component = constant:universal_cost_resource_kind.political_power }
+			set_temp_variable = { universal_cost_transaction_achievement_family_id = constant:universal_cost_family.political_power }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_component_id = constant:universal_cost_resource_kind.political_power }
+			set_temp_variable = { universal_cost_transaction_achievement_cost_basis = constant:universal_cost_achievement_basis.primary_component }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:universal_cost_framework.one }
+			set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
+			set_temp_variable = { universal_cost_recorded_component_index = constant:universal_cost_framework.invalid_index }
+			universal_cost_record_transaction = yes
+			if = {
+				limit = { check_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_success } }
+				set_temp_variable = { cbrn_occupied_payment_success = constant:universal_cost_framework.one }
+			}
+			else = {
+				# Only an actual unrecorded debit is credited. No program exists yet.
+				set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.political_power }
+				set_temp_variable = { universal_cost_payment_amount = cbrn_occupied_fee }
+				set_temp_variable = { universal_cost_credit_result = constant:universal_cost_framework.result_no_op }
+				universal_cost_credit_component = yes
+				if = {
+					limit = { NOT = { check_variable = { universal_cost_credit_result = constant:universal_cost_framework.result_success } } }
+					set_variable = { cbrn_occupied_unrecorded_paid_fee_@var:cbrn_occupied_transaction = cbrn_occupied_fee }
+					set_variable = { cbrn_occupied_unrecorded_paid_source_@var:cbrn_occupied_transaction = cbrn_occupied_fee_source }
+					set_variable = { cbrn_occupied_unrecorded_credit_status_@var:cbrn_occupied_transaction = universal_cost_credit_result }
+					set_country_flag = cbrn_occupied_transaction_recovery_pending
+				}
+			}
+		}
+		if = {
+			limit = {
+				check_variable = { cbrn_occupied_payment_success = constant:universal_cost_framework.zero }
+				NOT = { has_variable = universal_cost_transaction_row_plus_one_@var:cbrn_occupied_transaction }
+			}
+			clear_variable = universal_cost_allocated_transaction_id_@var:cbrn_occupied_transaction
+		}
+	}
+}
+
+# Internal refund only touches this donor's marked controlled STATE receipts.
+# Lost-state receipts are returned by the existing on_state_control_changed hook.
+cbrn_occupied_refund_owned_targets = {
+	set_temp_variable = { cbrn_occupied_program_refunded = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_occupied_program_refund_blocked = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_escrow_refunded = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_escrow_refund_blocked = constant:cbrn_math.zero }
+	every_controlled_state = {
+		limit = { cbrn_occupied_state_has_owned_receipt = yes }
+		set_temp_variable = { cbrn_mask_escrow_refunded = constant:cbrn_math.zero }
+		set_temp_variable = { cbrn_mask_escrow_refund_blocked = constant:cbrn_math.zero }
+		cbrn_refund_occupied_state_mask_reservation = yes
+		add_to_temp_variable = { cbrn_occupied_program_refunded = cbrn_mask_escrow_refunded }
+		if = {
+			limit = { check_variable = { cbrn_mask_escrow_refund_blocked > constant:cbrn_math.zero } }
+			set_temp_variable = { cbrn_occupied_program_refund_blocked = constant:cbrn_math.one }
+		}
+		else = { clr_state_flag = cbrn_occupied_distribution_program_target }
+	}
+	if = {
+		limit = { check_variable = { cbrn_occupied_program_refund_blocked > constant:cbrn_math.zero } }
+		set_country_flag = cbrn_occupied_transaction_recovery_pending
+	}
+}
+
+cbrn_occupied_begin_selected_program = {
+	# Stamp even a rejected activation, matching native re-enable semantics.
+	set_temp_variable = { cbrn_occupied_cooldown_days = constant:cbrn_protection_decision_timing.occupied_distribution_reenable_days }
+	set_country_flag = { flag = cbrn_occupied_program_purchase_cooldown days = var:cbrn_occupied_cooldown_days }
+	set_temp_variable = { cbrn_occupied_fee = constant:cbrn_protection_decision_cost.occupied_distribution_pp }
+	set_temp_variable = { cbrn_occupied_fee_valid = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_occupied_fee_source = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_occupied_fee_affordable = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_occupied_factory_quote = constant:cbrn_protection_decision_cost.occupied_distribution_factories }
+	set_temp_variable = { cbrn_occupied_factory_quote_valid = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_mask_reservation_quote = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_occupied_program_reserved = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_occupied_program_refunded = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_occupied_program_refund_blocked = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_escrow_completed = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_occupied_payment_success = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_occupied_transaction = constant:universal_cost_framework.zero }
+	if = {
+		limit = {
+			cbrn_occupied_requested_variant_matches_quote = yes
+			cbrn_occupied_country_selection_ready = yes
+		}
+		# Freeze the fresh fee/source in outer storage before reserving any model.
+		set_temp_variable = { cbrn_occupied_selected_fee = cbrn_occupied_fee }
+		set_temp_variable = { cbrn_occupied_selected_source = cbrn_occupied_fee_source }
+		every_controlled_state = {
+			limit = {
+				cbrn_state_can_reserve_occupied_masks = yes
+				NOT = { has_state_flag = cbrn_occupied_mask_escrow_active }
+			}
+			set_temp_variable = { cbrn_reservation_quote_state_need = constant:cbrn_math.zero }
+			cbrn_quote_occupied_state_mask_reservation = yes
+			set_temp_variable = { cbrn_mask_escrow_requested = cbrn_reservation_quote_state_need }
+			set_temp_variable = { cbrn_mask_escrow_external = constant:cbrn_math.zero }
+			set_temp_variable = { cbrn_mask_escrow_completed = constant:cbrn_math.zero }
+			cbrn_reserve_requested_masks_to_state = yes
+			if = {
+				limit = {
+					has_state_flag = cbrn_occupied_mask_escrow_active
+					has_state_flag = cbrn_occupied_mask_escrow_native_mismatch
+					var:cbrn_occupied_mask_escrow_donor = { tag = ROOT }
+				}
+				set_state_flag = cbrn_occupied_distribution_program_target
+			}
+			if = {
+				limit = { check_variable = { cbrn_mask_escrow_completed > constant:cbrn_math.zero } }
+				set_state_flag = cbrn_occupied_distribution_program_target
+				add_to_temp_variable = { cbrn_occupied_program_reserved = cbrn_mask_escrow_completed }
+			}
+		}
+		if = {
+			limit = {
+				check_variable = { cbrn_occupied_program_reserved > constant:cbrn_math.zero }
+				NOT = { has_country_flag = cbrn_occupied_transaction_recovery_pending }
+			}
+			set_temp_variable = { cbrn_occupied_fee = cbrn_occupied_selected_fee }
+			set_temp_variable = { cbrn_occupied_fee_source = cbrn_occupied_selected_source }
+			cbrn_occupied_pay_and_record_fee = yes
+			if = {
+				limit = { check_variable = { cbrn_occupied_payment_success = constant:universal_cost_framework.one } }
+				set_variable = { cbrn_occupied_committed_fee = cbrn_occupied_selected_fee }
+				set_variable = { cbrn_occupied_committed_source = cbrn_occupied_selected_source }
+				set_variable = { cbrn_occupied_committed_transaction = cbrn_occupied_transaction }
+				set_variable = { cbrn_occupied_committed_variant = cbrn_occupied_requested_variant }
+				set_variable = { cbrn_occupied_committed_sale_sequence = constant:universal_cost_framework.zero }
+				if = {
+					limit = { check_variable = { cbrn_occupied_selected_source = constant:universal_cost_framework.black_friday_source_id } }
+					set_variable = { cbrn_occupied_committed_sale_sequence = global.black_friday_sale_sequence }
+				}
+				set_variable = { cbrn_occupied_committed_reserved = cbrn_occupied_program_reserved }
+				set_country_flag = cbrn_occupied_transaction_active
+				set_country_flag = cbrn_civilian_distribution_program_active
+			}
+			else = { cbrn_occupied_refund_owned_targets = yes }
+		}
+		else_if = {
+			limit = { check_variable = { cbrn_occupied_program_reserved > constant:cbrn_math.zero } }
+			cbrn_occupied_refund_owned_targets = yes
+		}
+	}
+	set_temp_variable = { cbrn_occupied_requested_variant = constant:cbrn_occupied_program_variant.none }
+}
+
+# COUNTRY close: the service fee remains spent on cancellation. Settle once;
+# failed settlement retains exact keyed identity/claims for parent recovery.
+cbrn_occupied_settle_committed_fee = {
+	set_temp_variable = { universal_cost_transaction_id = cbrn_occupied_committed_transaction }
+	set_temp_variable = { universal_cost_settle_transaction_result = constant:universal_cost_framework.result_no_op }
+	universal_cost_settle_transaction = yes
+	if = {
+		limit = { check_variable = { universal_cost_settle_transaction_result = constant:universal_cost_framework.result_success } }
+		if = {
+			limit = {
+				check_variable = { cbrn_occupied_program_usable > constant:cbrn_math.zero }
+				check_variable = { cbrn_occupied_program_consumed > constant:cbrn_math.zero }
+				check_variable = { cbrn_occupied_committed_source = constant:universal_cost_framework.black_friday_source_id }
+			}
+			set_temp_variable = { black_friday_purchase_transaction_id = cbrn_occupied_committed_transaction }
+			set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.political_power }
+			set_temp_variable = { black_friday_purchase_primary_component_id = constant:universal_cost_resource_kind.political_power }
+			set_temp_variable = { black_friday_purchase_cost_basis = constant:universal_cost_achievement_basis.primary_component }
+			set_temp_variable = { black_friday_purchase_ordinary_cost = constant:cbrn_protection_decision_cost.occupied_distribution_pp }
+			set_temp_variable = { black_friday_purchase_actual_paid_cost = cbrn_occupied_committed_fee }
+			set_temp_variable = { black_friday_purchase_sale_sequence = cbrn_occupied_committed_sale_sequence }
+			set_temp_variable = { black_friday_purchase_allow_political_power_only = constant:universal_cost_framework.one }
+			set_temp_variable = { black_friday_purchase_allow_post_expiry_confirmation = constant:universal_cost_framework.one }
+			set_temp_variable = { black_friday_purchase_is_refundable = constant:universal_cost_framework.zero }
+			black_friday_record_achievement_transaction = yes
+			set_temp_variable = { black_friday_purchase_allow_political_power_only = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_purchase_allow_post_expiry_confirmation = constant:universal_cost_framework.zero }
+		}
+	}
+	else = {
+		set_temp_variable = { cbrn_occupied_transaction = cbrn_occupied_committed_transaction }
+		set_variable = { cbrn_occupied_unsettled_status_@var:cbrn_occupied_transaction = universal_cost_settle_transaction_result }
+		set_variable = { cbrn_occupied_unsettled_fee_@var:cbrn_occupied_transaction = cbrn_occupied_committed_fee }
+		set_variable = { cbrn_occupied_unsettled_source_@var:cbrn_occupied_transaction = cbrn_occupied_committed_source }
+		set_variable = { cbrn_occupied_unsettled_sale_sequence_@var:cbrn_occupied_transaction = cbrn_occupied_committed_sale_sequence }
+		set_variable = { cbrn_occupied_unsettled_usable_@var:cbrn_occupied_transaction = cbrn_occupied_program_usable }
+		set_variable = { cbrn_occupied_unsettled_consumed_@var:cbrn_occupied_transaction = cbrn_occupied_program_consumed }
+		set_country_flag = cbrn_occupied_transaction_recovery_pending
+	}
+}
+
+# Own native program fields only; never clear shared receipt arrays/proof or
+# the selection cooldown, and never reverse successful STATE coverage.
+cbrn_occupied_clear_committed_program = {
+	clr_country_flag = cbrn_occupied_transaction_active
+	clr_country_flag = cbrn_civilian_distribution_program_active
+	clear_variable = cbrn_occupied_committed_fee
+	clear_variable = cbrn_occupied_committed_source
+	clear_variable = cbrn_occupied_committed_transaction
+	clear_variable = cbrn_occupied_committed_variant
+	clear_variable = cbrn_occupied_committed_sale_sequence
+	clear_variable = cbrn_occupied_committed_reserved
+}
+
+cbrn_occupied_finish_selected_program = {
+	set_temp_variable = { cbrn_occupied_program_usable = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_occupied_program_consumed = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_distribution_usable_crates = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_distribution_consumed_crates = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_escrow_refunded = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_escrow_refund_blocked = constant:cbrn_math.zero }
+	if = {
+		limit = { cbrn_occupied_country_has_active_program = yes }
+		every_controlled_state = {
+			limit = { cbrn_occupied_state_has_owned_receipt = yes }
+			if = {
+				limit = {
+					ROOT = { exists = yes NOT = { has_capitulated = yes } }
+					cbrn_occupied_state_can_complete_reserved_distribution = yes
+				}
+				set_temp_variable = { cbrn_distribution_usable_crates = constant:cbrn_math.zero }
+				set_temp_variable = { cbrn_distribution_consumed_crates = constant:cbrn_math.zero }
+				set_temp_variable = { cbrn_reserved_distribution_proof = constant:cbrn_proof.missing }
+				set_temp_variable = { cbrn_mask_escrow_refunded = constant:cbrn_math.zero }
+				set_temp_variable = { cbrn_mask_escrow_refund_blocked = constant:cbrn_math.zero }
+				cbrn_complete_occupied_state_distribution = yes
+				add_to_temp_variable = { cbrn_occupied_program_usable = cbrn_distribution_usable_crates }
+				add_to_temp_variable = { cbrn_occupied_program_consumed = cbrn_distribution_consumed_crates }
+			}
+			else = {
+				set_temp_variable = { cbrn_mask_escrow_refunded = constant:cbrn_math.zero }
+				set_temp_variable = { cbrn_mask_escrow_refund_blocked = constant:cbrn_math.zero }
+				cbrn_refund_occupied_state_mask_reservation = yes
+			}
+			if = {
+				limit = { check_variable = { cbrn_mask_escrow_refund_blocked > constant:cbrn_math.zero } }
+				ROOT = { set_country_flag = cbrn_occupied_transaction_recovery_pending }
+			}
+			else = { clr_state_flag = cbrn_occupied_distribution_program_target }
+		}
+		set_variable = { cbrn_occupied_last_delivered_usable = cbrn_occupied_program_usable }
+		set_variable = { cbrn_occupied_last_delivered_consumed = cbrn_occupied_program_consumed }
+		cbrn_occupied_settle_committed_fee = yes
+		cbrn_occupied_clear_committed_program = yes
+	}
+}
+
+cbrn_occupied_cancel_selected_program = {
+	set_temp_variable = { cbrn_occupied_program_usable = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_occupied_program_consumed = constant:cbrn_math.zero }
+	if = {
+		limit = { cbrn_occupied_country_has_active_program = yes }
+		cbrn_occupied_refund_owned_targets = yes
+		cbrn_occupied_settle_committed_fee = yes
+		cbrn_occupied_clear_committed_program = yes
+	}
+}

@@ -1,0 +1,100 @@
+# Protective equipment export owner transaction. COUNTRY THIS/ROOT is donor,
+# COUNTRY FROM is recipient. These predicates never move stock or pay a fee.
+# Persistent receipts and flags live on donor, targeted by FROM.
+
+# Caller declares _fee, _fee_valid, _fee_source, _fee_affordable before use.
+cbrn_export_transaction_quote_fee = {
+	set_temp_variable = { cbrn_response_component_ordinary = constant:cbrn_protection_decision_cost.export_masks_pp }
+	set_temp_variable = { cbrn_response_component_family = constant:universal_cost_family.political_power }
+	set_temp_variable = { cbrn_response_component_kind = constant:universal_cost_resource_kind.political_power }
+	set_temp_variable = { cbrn_response_component_quoted = cbrn_response_component_ordinary }
+	set_temp_variable = { cbrn_response_component_valid = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_response_component_source = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_response_component_affordable = constant:universal_cost_framework.zero }
+	cbrn_quote_immediate_response_component = yes
+	set_temp_variable = { cbrn_export_fee = cbrn_response_component_quoted }
+	set_temp_variable = { cbrn_export_fee_valid = cbrn_response_component_valid }
+	set_temp_variable = { cbrn_export_fee_source = cbrn_response_component_source }
+	set_temp_variable = { cbrn_export_fee_affordable = cbrn_response_component_affordable }
+	always = yes
+}
+
+# Sum actual concrete stock. Never discount the physical shipment.
+cbrn_export_transaction_quote_stock = {
+	set_temp_variable = { cbrn_export_available = num_equipment@gas_mask_equipment_reconditioned }
+	add_to_temp_variable = { cbrn_export_available = num_equipment@gas_mask_equipment_1 }
+	add_to_temp_variable = { cbrn_export_available = num_equipment@gas_mask_equipment_2 }
+	add_to_temp_variable = { cbrn_export_available = num_equipment@gas_mask_equipment_3 }
+	add_to_temp_variable = { cbrn_export_available = num_equipment@gas_mask_equipment_4 }
+	always = yes
+}
+
+cbrn_export_transaction_quote_held = {
+	set_temp_variable = { cbrn_export_held_total = cbrn_export_held_gas_mask_equipment_reconditioned_@FROM }
+	add_to_temp_variable = { cbrn_export_held_total = cbrn_export_held_gas_mask_equipment_1_@FROM }
+	add_to_temp_variable = { cbrn_export_held_total = cbrn_export_held_gas_mask_equipment_2_@FROM }
+	add_to_temp_variable = { cbrn_export_held_total = cbrn_export_held_gas_mask_equipment_3_@FROM }
+	add_to_temp_variable = { cbrn_export_held_total = cbrn_export_held_gas_mask_equipment_4_@FROM }
+	always = yes
+}
+
+# Selection callback predicate omits the already committed native factory.
+# It still runs before reservation, so the original 1500 start floor applies.
+cbrn_export_transaction_preflight = {
+	exists = yes
+	cbrn_protection_program_category_visible = yes
+	cbrn_country_has_exportable_mask_stock = yes
+	FROM = { cbrn_target_can_receive_exported_masks = yes }
+	NOT = { has_country_flag = cbrn_export_owned_@FROM }
+	NOT = { has_country_flag = cbrn_export_recovery_@FROM }
+	NOT = { has_country_flag = cbrn_export_native_mismatch_@FROM }
+	set_temp_variable = { cbrn_export_available = constant:cbrn_math.zero }
+	cbrn_export_transaction_quote_stock = yes
+	check_variable = { var = cbrn_export_available value = constant:cbrn_protection_decision_cost.export_masks_crates compare = greater_than_or_equals }
+	set_temp_variable = { cbrn_export_fee = constant:cbrn_protection_decision_cost.export_masks_pp }
+	set_temp_variable = { cbrn_export_fee_valid = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_export_fee_source = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_export_fee_affordable = constant:universal_cost_framework.zero }
+	cbrn_export_transaction_quote_fee = yes
+	check_variable = { cbrn_export_fee_valid = constant:universal_cost_framework.one }
+	check_variable = { cbrn_export_fee_affordable = constant:universal_cost_framework.one }
+}
+
+# Pre-click only. Never use this as an active timer continuity predicate.
+cbrn_export_transaction_can_start = {
+	cbrn_export_transaction_preflight = yes
+	NOT = { num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.export_masks_factories }
+}
+
+# Actor-only native target_root_trigger predicate. FROM is not established
+# until native target iteration, so this predicate reads no targeted field.
+cbrn_export_transaction_has_any_owned_receipt = {
+	check_variable = { cbrn_export_owned_receipts_count > constant:cbrn_math.zero }
+}
+
+cbrn_export_transaction_has_owned_receipt = {
+	has_country_flag = cbrn_export_owned_@FROM
+	has_variable = cbrn_export_recipient_@FROM
+	check_variable = { cbrn_export_recipient_@FROM = FROM }
+}
+
+# The live sale, unreserved stock and free factory count are irrelevant here.
+cbrn_export_transaction_can_continue = {
+	cbrn_export_transaction_has_owned_receipt = yes
+	has_country_flag = cbrn_export_active_@FROM
+	NOT = { has_country_flag = cbrn_export_native_mismatch_@FROM }
+	exists = yes
+	cbrn_protection_program_category_visible = yes
+	FROM = { cbrn_target_can_receive_exported_masks = yes }
+	NOT = { check_variable = { cbrn_export_held_gas_mask_equipment_reconditioned_@FROM < constant:cbrn_math.zero } }
+	NOT = { check_variable = { cbrn_export_held_gas_mask_equipment_1_@FROM < constant:cbrn_math.zero } }
+	NOT = { check_variable = { cbrn_export_held_gas_mask_equipment_2_@FROM < constant:cbrn_math.zero } }
+	NOT = { check_variable = { cbrn_export_held_gas_mask_equipment_3_@FROM < constant:cbrn_math.zero } }
+	NOT = { check_variable = { cbrn_export_held_gas_mask_equipment_4_@FROM < constant:cbrn_math.zero } }
+	set_temp_variable = { cbrn_export_held_total = constant:cbrn_math.zero }
+	cbrn_export_transaction_quote_held = yes
+	check_variable = { cbrn_export_held_total = constant:cbrn_protection_decision_cost.export_masks_crates }
+	has_variable = cbrn_export_fee_@FROM
+	has_variable = cbrn_export_receipt_@FROM
+	check_variable = { cbrn_export_receipt_@FROM > constant:universal_cost_framework.zero }
+}

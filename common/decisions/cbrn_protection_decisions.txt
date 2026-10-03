@@ -8,6 +8,7 @@
 @CR_SC_CBRN_PROTECTION_DECISION_COST_ISSUE_FIELD_ARMY_FACTORIES = 1
 @CR_SC_CBRN_PROTECTION_DECISION_COST_LICENSE_DESIGN_FACTORIES = 1
 @CR_SC_CBRN_PROTECTION_DECISION_COST_OCCUPIED_DISTRIBUTION_FACTORIES = 2
+@CR_SC_CBRN_PROTECTION_DECISION_COST_OCCUPIED_DISTRIBUTION_SALE_FACTORIES = 1
 @CR_SC_CBRN_PROTECTION_DECISION_COST_PRIORITY_DISTRIBUTION_FACTORIES = 1
 @CR_SC_CBRN_PROTECTION_DECISION_COST_RECONDITION_MASKS_FACTORIES = 1
 @CR_SC_CBRN_PROTECTION_DECISION_COST_REGISTER_POPULATION_FACTORIES = 2
@@ -17,11 +18,11 @@
 # constant:universal_cost_framework.one; current affordability owns the fee.
 @CR_SC_CBRN_PROTECTION_DECISION_COST_PROTECT_HOSPITALS_PP_AI_HINT = 1
 @CR_SC_CBRN_PROTECTION_DECISION_COST_EMERGENCY_DISTRIBUTION_PP_AI_HINT = 1
-@CR_SC_CBRN_PROTECTION_DECISION_COST_OCCUPIED_DISTRIBUTION_PP_AI_HINT = 25
+@CR_SC_CBRN_PROTECTION_DECISION_COST_OCCUPIED_DISTRIBUTION_PP_AI_HINT = 1
 @CR_SC_CBRN_PROTECTION_DECISION_COST_RECONDITION_MASKS_PP_AI_HINT = 10
 @CR_SC_CBRN_PROTECTION_DECISION_COST_CONVERT_INDUSTRY_PP_AI_HINT = 30
 @CR_SC_CBRN_PROTECTION_DECISION_COST_SIMPLIFY_FILTERS_PP_AI_HINT = 20
-@CR_SC_CBRN_PROTECTION_DECISION_COST_EXPORT_MASKS_PP_AI_HINT = 15
+@CR_SC_CBRN_PROTECTION_DECISION_COST_EXPORT_MASKS_PP_AI_HINT = 1
 # ============================================================================
 # CHAOS REDUX - CBRN PROTECTIVE-EQUIPMENT AND CIVIL-DEFENCE DECISIONS
 # ============================================================================
@@ -220,37 +221,58 @@ cbrn_program_management_category = {
 		days_remove = constant:cbrn_protection_decision_timing.export_masks_days
 		days_re_enable = constant:cbrn_protection_decision_timing.export_reenable_days
 		modifier = { civilian_factory_use = @CR_SC_CBRN_PROTECTION_DECISION_COST_EXPORT_MASKS_FACTORIES }
-		visible = { FROM = { cbrn_target_can_receive_exported_masks = yes } }
+		visible = {
+			OR = {
+				FROM = { cbrn_target_can_receive_exported_masks = yes }
+				cbrn_export_transaction_has_owned_receipt = yes
+			}
+		}
 		target_root_trigger = {
-			cbrn_protection_program_category_visible = yes
-			cbrn_country_has_exportable_mask_stock = yes
-			NOT = { num_of_civilian_factories_available_for_projects < @CR_SC_CBRN_PROTECTION_DECISION_COST_EXPORT_MASKS_FACTORIES }
+			OR = {
+				AND = {
+					cbrn_protection_program_category_visible = yes
+					cbrn_country_has_exportable_mask_stock = yes
+				}
+				cbrn_export_transaction_has_any_owned_receipt = yes
+			}
 		}
-		target_trigger = { FROM = { cbrn_target_can_receive_exported_masks = yes } }
+		target_trigger = {
+			OR = {
+				FROM = { cbrn_target_can_receive_exported_masks = yes }
+				cbrn_export_transaction_has_owned_receipt = yes
+			}
+		}
 		available = {
-			hidden_trigger = { cbrn_can_pay_protective_equipment_export = yes }
-			FROM = { cbrn_target_can_receive_exported_masks = yes }
+			hidden_trigger = { cbrn_export_transaction_can_start = yes }
 		}
-		custom_cost_trigger = { hidden_trigger = { cbrn_can_pay_protective_equipment_export = yes } }
+		custom_cost_trigger = {
+			hidden_trigger = { cbrn_export_transaction_can_start = yes }
+		}
 		custom_cost_text = cbrn_export_protective_equipment_extra_cost
 		complete_effect = {
 			custom_effect_tooltip = cbrn_export_protective_equipment_begin_tt
-			hidden_effect = { cbrn_begin_protective_equipment_export = yes }
+			hidden_effect = {
+				set_temp_variable = { cbrn_export_started = constant:universal_cost_framework.zero }
+				cbrn_export_transaction_start = yes
+			}
 		}
 		remove_effect = {
 			custom_effect_tooltip = cbrn_export_protective_equipment_complete_tt
 			hidden_effect = {
-				FROM = { save_event_target_as = cbrn_protection_trade_partner }
-				cbrn_export_masks_to_protection_partner = yes
+				set_temp_variable = { cbrn_export_completed = constant:universal_cost_framework.zero }
+				cbrn_export_transaction_finish = yes
 			}
 		}
 		cancel_trigger = {
-			OR = {
-				NOT = { exists = yes }
-				NOT = { cbrn_country_has_exportable_mask_stock = yes }
-				FROM = { NOT = { cbrn_target_can_receive_exported_masks = yes } }
+			NOT = { cbrn_export_transaction_can_continue = yes }
+		}
+		cancel_effect = {
+			hidden_effect = {
+				set_temp_variable = { cbrn_export_cancelled = constant:universal_cost_framework.zero }
+				cbrn_export_transaction_cancel = yes
 			}
 		}
+
 		ai_will_do = {
 			base = constant:cbrn_protection_ai.base_procurement
 			modifier = { factor = constant:cbrn_protection_ai.export_surplus_factor cbrn_country_has_exportable_mask_stock = yes }
@@ -381,44 +403,75 @@ cbrn_civil_defence_category = {
 		days_re_enable = constant:cbrn_protection_decision_timing.occupied_distribution_reenable_days
 		modifier = { civilian_factory_use = @CR_SC_CBRN_PROTECTION_DECISION_COST_OCCUPIED_DISTRIBUTION_FACTORIES }
 		visible = {
-			cbrn_country_has_public_chemical_emergency = yes
-			cbrn_country_has_occupied_distribution_work = yes
+			OR = {
+				AND = {
+					cbrn_country_has_public_chemical_emergency = yes
+					cbrn_country_has_occupied_distribution_work = yes
+					cbrn_occupied_current_purchase_is_ordinary = yes
+					NOT = { cbrn_occupied_country_has_active_program = yes }
+				}
+				cbrn_occupied_country_holds_ordinary_program = yes
+			}
 		}
-		available = {
-			hidden_trigger = { cbrn_country_can_start_occupied_mask_reservation = yes }
-		}
-		custom_cost_trigger = { hidden_trigger = { cbrn_country_can_start_occupied_mask_reservation = yes } }
+		available = { hidden_trigger = { cbrn_occupied_ordinary_payment_ready = yes } }
+		custom_cost_trigger = { hidden_trigger = { cbrn_occupied_ordinary_payment_ready = yes } }
 		custom_cost_text = cbrn_supply_occupied_population_cost
 		complete_effect = {
 			custom_effect_tooltip = cbrn_supply_occupied_population_begin_tt
-			hidden_effect = { cbrn_begin_occupied_distribution_program = yes }
+			hidden_effect = {
+				set_temp_variable = { cbrn_occupied_requested_variant = constant:cbrn_occupied_program_variant.ordinary }
+				cbrn_occupied_begin_selected_program = yes
+			}
 		}
 		remove_effect = {
 			custom_effect_tooltip = cbrn_supply_occupied_population_complete_tt
-			hidden_effect = {
-				clr_country_flag = cbrn_civilian_distribution_program_active
-				cbrn_complete_occupied_distribution_program = yes
-			}
+			hidden_effect = { cbrn_occupied_finish_selected_program = yes }
 		}
-		cancel_trigger = {
+		cancel_trigger = { cbrn_occupied_should_cancel = yes }
+		cancel_effect = { hidden_effect = { cbrn_occupied_cancel_selected_program = yes } }
+		ai_will_do = {
+			base = constant:cbrn_protection_ai.base_civilian
+			modifier = { factor = constant:cbrn_protection_ai.occupied_state_factor always = yes }
+			modifier = { factor = constant:cbrn_protection_ai.contaminated_state_factor any_controlled_state = { cbrn_state_can_receive_occupied_masks = yes cbrn_state_has_chemical_contamination = yes } }
+			modifier = { factor = constant:cbrn_protection_ai.high_population_factor any_controlled_state = { cbrn_state_can_receive_occupied_masks = yes state_population_k > constant:cbrn_protection_ai.high_population_k } }
+		}
+	}
+
+	cbrn_supply_occupied_population_sale = {
+		name = cbrn_supply_occupied_population
+		desc = cbrn_supply_occupied_population_desc
+		icon = GFX_decision_cbrn_supply_occupied_population
+		ai_hint_pp_cost = @CR_SC_CBRN_PROTECTION_DECISION_COST_OCCUPIED_DISTRIBUTION_PP_AI_HINT
+		days_remove = constant:cbrn_protection_decision_timing.occupied_distribution_days
+		days_re_enable = constant:cbrn_protection_decision_timing.occupied_distribution_reenable_days
+		modifier = { civilian_factory_use = @CR_SC_CBRN_PROTECTION_DECISION_COST_OCCUPIED_DISTRIBUTION_SALE_FACTORIES }
+		visible = {
 			OR = {
-				NOT = { exists = yes }
-				has_capitulated = yes
-				NOT = { has_country_flag = cbrn_civilian_distribution_program_active }
-				NOT = {
-					any_controlled_state = {
-						has_state_flag = cbrn_occupied_distribution_program_target
-						cbrn_state_can_reserve_occupied_masks = yes
-					}
+				AND = {
+					cbrn_country_has_public_chemical_emergency = yes
+					cbrn_country_has_occupied_distribution_work = yes
+					cbrn_occupied_current_purchase_is_sale = yes
+					NOT = { cbrn_occupied_country_has_active_program = yes }
 				}
+				cbrn_occupied_country_holds_sale_program = yes
 			}
 		}
-		cancel_effect = {
+		available = { hidden_trigger = { cbrn_occupied_sale_payment_ready = yes } }
+		custom_cost_trigger = { hidden_trigger = { cbrn_occupied_sale_payment_ready = yes } }
+		custom_cost_text = cbrn_supply_occupied_population_cost
+		complete_effect = {
+			custom_effect_tooltip = cbrn_supply_occupied_population_begin_tt
 			hidden_effect = {
-				clr_country_flag = cbrn_civilian_distribution_program_active
-				cbrn_clear_occupied_distribution_targets = yes
+				set_temp_variable = { cbrn_occupied_requested_variant = constant:cbrn_occupied_program_variant.sale }
+				cbrn_occupied_begin_selected_program = yes
 			}
 		}
+		remove_effect = {
+			custom_effect_tooltip = cbrn_supply_occupied_population_complete_tt
+			hidden_effect = { cbrn_occupied_finish_selected_program = yes }
+		}
+		cancel_trigger = { cbrn_occupied_should_cancel = yes }
+		cancel_effect = { hidden_effect = { cbrn_occupied_cancel_selected_program = yes } }
 		ai_will_do = {
 			base = constant:cbrn_protection_ai.base_civilian
 			modifier = { factor = constant:cbrn_protection_ai.occupied_state_factor always = yes }

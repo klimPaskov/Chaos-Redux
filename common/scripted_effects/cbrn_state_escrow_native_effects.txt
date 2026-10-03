@@ -1,0 +1,256 @@
+# Measured native mask escrow primitives. COUNTRY helpers observe one concrete
+# stockpile; STATE helpers preserve the original occupied/external donor receipt.
+# No nominal debit/credit is treated as a native acknowledgement.
+# API documentation: 2026-10-03_cbrn_state_escrow_measured_native_patch.md.
+
+# COUNTRY. Inputs: cbrn_mask_native_model equipment token, _requested remainder.
+# Outputs: _before, _after, _requested (bounded), _observed debit, _valid.
+# The STATE caller creates every output before entering ROOT's scope.
+cbrn_state_escrow_measure_model_debit = {
+	set_temp_variable = { cbrn_mask_native_valid = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_native_observed = constant:cbrn_math.zero }
+	meta_effect = {
+		text = {
+			set_temp_variable = { cbrn_mask_native_before = num_equipment@[MODEL] }
+			set_temp_variable = { cbrn_mask_native_after = cbrn_mask_native_before }
+			if = {
+				limit = {
+					NOT = { check_variable = { cbrn_mask_native_before < constant:cbrn_math.zero } }
+					NOT = { check_variable = { cbrn_mask_native_requested < constant:cbrn_math.zero } }
+				}
+				clamp_temp_variable = { var = cbrn_mask_native_requested min = constant:cbrn_math.zero max = cbrn_mask_native_before }
+				if = {
+					limit = { check_variable = { cbrn_mask_native_requested > constant:cbrn_math.zero } }
+					set_temp_variable = { cbrn_mask_native_debit = cbrn_mask_native_requested }
+					multiply_temp_variable = { cbrn_mask_native_debit = constant:cbrn_math.negation_multiplier }
+					add_equipment_to_stockpile = { type = [MODEL] amount = cbrn_mask_native_debit }
+					set_temp_variable = { cbrn_mask_native_after = num_equipment@[MODEL] }
+				}
+				set_temp_variable = { cbrn_mask_native_observed = cbrn_mask_native_before }
+				subtract_from_temp_variable = { cbrn_mask_native_observed = cbrn_mask_native_after }
+				if = {
+					limit = {
+						NOT = { check_variable = { cbrn_mask_native_after < constant:cbrn_math.zero } }
+						NOT = { check_variable = { cbrn_mask_native_observed < constant:cbrn_math.zero } }
+						NOT = { check_variable = { cbrn_mask_native_observed > cbrn_mask_native_requested } }
+					}
+					set_temp_variable = { cbrn_mask_native_valid = constant:cbrn_math.one }
+				}
+			}
+		}
+		MODEL = "[?cbrn_mask_native_model.GetTokenKey]"
+	}
+}
+
+# STATE common refund pipeline; wrappers validate the stored donor's existence.
+# Inputs: cbrn_mask_escrow_external zero/one; existing exact held model rows.
+# Outputs: caller-created refunded/refund_blocked. Valid partial gains retain
+# original donor and active receipt. Quarantine forbids all later native credits.
+cbrn_state_escrow_refund_models = {
+	set_temp_variable = { cbrn_mask_escrow_refunded = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_escrow_refund_blocked = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_escrow_quarantined = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_escrow_has_held = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_native_before = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_native_after = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_native_requested = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_native_observed = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_native_valid = constant:cbrn_math.zero }
+	if = {
+		limit = {
+			OR = {
+				AND = { check_variable = { cbrn_mask_escrow_external = constant:cbrn_math.zero } has_state_flag = cbrn_occupied_mask_escrow_native_mismatch }
+				AND = { check_variable = { cbrn_mask_escrow_external = constant:cbrn_math.one } has_state_flag = cbrn_external_mask_escrow_native_mismatch }
+			}
+		}
+		set_temp_variable = { cbrn_mask_escrow_quarantined = constant:cbrn_math.one }
+	}
+	if = {
+		limit = { check_variable = { cbrn_mask_escrow_quarantined = constant:cbrn_math.zero } }
+		set_temp_variable = { cbrn_mask_native_model = token:gas_mask_equipment_reconditioned }
+		if = { limit = { check_variable = { cbrn_mask_escrow_external = constant:cbrn_math.zero } } set_temp_variable = { cbrn_mask_native_requested = cbrn_occupied_mask_escrow_reconditioned } }
+		else = { set_temp_variable = { cbrn_mask_native_requested = cbrn_external_mask_escrow_reconditioned } }
+		if = {
+			limit = { NOT = { check_variable = { cbrn_mask_native_requested = constant:cbrn_math.zero } } }
+			if = { limit = { check_variable = { cbrn_mask_escrow_external = constant:cbrn_math.zero } } var:cbrn_occupied_mask_escrow_donor = { cbrn_state_escrow_measure_model_credit = yes } }
+			else = { var:cbrn_external_mask_escrow_donor = { cbrn_state_escrow_measure_model_credit = yes } }
+			if = {
+				limit = { check_variable = { cbrn_mask_native_valid = constant:cbrn_math.one } }
+				if = { limit = { check_variable = { cbrn_mask_escrow_external = constant:cbrn_math.zero } } subtract_from_variable = { cbrn_occupied_mask_escrow_reconditioned = cbrn_mask_native_observed } }
+				else = { subtract_from_variable = { cbrn_external_mask_escrow_reconditioned = cbrn_mask_native_observed } }
+				add_to_temp_variable = { cbrn_mask_escrow_refunded = cbrn_mask_native_observed }
+			}
+			else = { cbrn_state_escrow_record_native_mismatch = yes }
+		}
+	}
+	if = {
+		limit = { check_variable = { cbrn_mask_escrow_quarantined = constant:cbrn_math.zero } }
+		set_temp_variable = { cbrn_mask_native_model = token:gas_mask_equipment_1 }
+		if = { limit = { check_variable = { cbrn_mask_escrow_external = constant:cbrn_math.zero } } set_temp_variable = { cbrn_mask_native_requested = cbrn_occupied_mask_escrow_basic } }
+		else = { set_temp_variable = { cbrn_mask_native_requested = cbrn_external_mask_escrow_basic } }
+		if = {
+			limit = { NOT = { check_variable = { cbrn_mask_native_requested = constant:cbrn_math.zero } } }
+			if = { limit = { check_variable = { cbrn_mask_escrow_external = constant:cbrn_math.zero } } var:cbrn_occupied_mask_escrow_donor = { cbrn_state_escrow_measure_model_credit = yes } }
+			else = { var:cbrn_external_mask_escrow_donor = { cbrn_state_escrow_measure_model_credit = yes } }
+			if = {
+				limit = { check_variable = { cbrn_mask_native_valid = constant:cbrn_math.one } }
+				if = { limit = { check_variable = { cbrn_mask_escrow_external = constant:cbrn_math.zero } } subtract_from_variable = { cbrn_occupied_mask_escrow_basic = cbrn_mask_native_observed } }
+				else = { subtract_from_variable = { cbrn_external_mask_escrow_basic = cbrn_mask_native_observed } }
+				add_to_temp_variable = { cbrn_mask_escrow_refunded = cbrn_mask_native_observed }
+			}
+			else = { cbrn_state_escrow_record_native_mismatch = yes }
+		}
+	}
+	if = {
+		limit = { check_variable = { cbrn_mask_escrow_quarantined = constant:cbrn_math.zero } }
+		set_temp_variable = { cbrn_mask_native_model = token:gas_mask_equipment_2 }
+		if = { limit = { check_variable = { cbrn_mask_escrow_external = constant:cbrn_math.zero } } set_temp_variable = { cbrn_mask_native_requested = cbrn_occupied_mask_escrow_improved } }
+		else = { set_temp_variable = { cbrn_mask_native_requested = cbrn_external_mask_escrow_improved } }
+		if = {
+			limit = { NOT = { check_variable = { cbrn_mask_native_requested = constant:cbrn_math.zero } } }
+			if = { limit = { check_variable = { cbrn_mask_escrow_external = constant:cbrn_math.zero } } var:cbrn_occupied_mask_escrow_donor = { cbrn_state_escrow_measure_model_credit = yes } }
+			else = { var:cbrn_external_mask_escrow_donor = { cbrn_state_escrow_measure_model_credit = yes } }
+			if = {
+				limit = { check_variable = { cbrn_mask_native_valid = constant:cbrn_math.one } }
+				if = { limit = { check_variable = { cbrn_mask_escrow_external = constant:cbrn_math.zero } } subtract_from_variable = { cbrn_occupied_mask_escrow_improved = cbrn_mask_native_observed } }
+				else = { subtract_from_variable = { cbrn_external_mask_escrow_improved = cbrn_mask_native_observed } }
+				add_to_temp_variable = { cbrn_mask_escrow_refunded = cbrn_mask_native_observed }
+			}
+			else = { cbrn_state_escrow_record_native_mismatch = yes }
+		}
+	}
+	if = {
+		limit = { check_variable = { cbrn_mask_escrow_quarantined = constant:cbrn_math.zero } }
+		set_temp_variable = { cbrn_mask_native_model = token:gas_mask_equipment_3 }
+		if = { limit = { check_variable = { cbrn_mask_escrow_external = constant:cbrn_math.zero } } set_temp_variable = { cbrn_mask_native_requested = cbrn_occupied_mask_escrow_advanced } }
+		else = { set_temp_variable = { cbrn_mask_native_requested = cbrn_external_mask_escrow_advanced } }
+		if = {
+			limit = { NOT = { check_variable = { cbrn_mask_native_requested = constant:cbrn_math.zero } } }
+			if = { limit = { check_variable = { cbrn_mask_escrow_external = constant:cbrn_math.zero } } var:cbrn_occupied_mask_escrow_donor = { cbrn_state_escrow_measure_model_credit = yes } }
+			else = { var:cbrn_external_mask_escrow_donor = { cbrn_state_escrow_measure_model_credit = yes } }
+			if = {
+				limit = { check_variable = { cbrn_mask_native_valid = constant:cbrn_math.one } }
+				if = { limit = { check_variable = { cbrn_mask_escrow_external = constant:cbrn_math.zero } } subtract_from_variable = { cbrn_occupied_mask_escrow_advanced = cbrn_mask_native_observed } }
+				else = { subtract_from_variable = { cbrn_external_mask_escrow_advanced = cbrn_mask_native_observed } }
+				add_to_temp_variable = { cbrn_mask_escrow_refunded = cbrn_mask_native_observed }
+			}
+			else = { cbrn_state_escrow_record_native_mismatch = yes }
+		}
+	}
+	if = {
+		limit = { check_variable = { cbrn_mask_escrow_quarantined = constant:cbrn_math.zero } }
+		set_temp_variable = { cbrn_mask_native_model = token:gas_mask_equipment_4 }
+		if = { limit = { check_variable = { cbrn_mask_escrow_external = constant:cbrn_math.zero } } set_temp_variable = { cbrn_mask_native_requested = cbrn_occupied_mask_escrow_sealed } }
+		else = { set_temp_variable = { cbrn_mask_native_requested = cbrn_external_mask_escrow_sealed } }
+		if = {
+			limit = { NOT = { check_variable = { cbrn_mask_native_requested = constant:cbrn_math.zero } } }
+			if = { limit = { check_variable = { cbrn_mask_escrow_external = constant:cbrn_math.zero } } var:cbrn_occupied_mask_escrow_donor = { cbrn_state_escrow_measure_model_credit = yes } }
+			else = { var:cbrn_external_mask_escrow_donor = { cbrn_state_escrow_measure_model_credit = yes } }
+			if = {
+				limit = { check_variable = { cbrn_mask_native_valid = constant:cbrn_math.one } }
+				if = { limit = { check_variable = { cbrn_mask_escrow_external = constant:cbrn_math.zero } } subtract_from_variable = { cbrn_occupied_mask_escrow_sealed = cbrn_mask_native_observed } }
+				else = { subtract_from_variable = { cbrn_external_mask_escrow_sealed = cbrn_mask_native_observed } }
+				add_to_temp_variable = { cbrn_mask_escrow_refunded = cbrn_mask_native_observed }
+			}
+			else = { cbrn_state_escrow_record_native_mismatch = yes }
+		}
+	}
+	if = {
+		limit = {
+			check_variable = { cbrn_mask_escrow_external = constant:cbrn_math.zero }
+			OR = {
+				NOT = { check_variable = { cbrn_occupied_mask_escrow_reconditioned = constant:cbrn_math.zero } }
+				NOT = { check_variable = { cbrn_occupied_mask_escrow_basic = constant:cbrn_math.zero } }
+				NOT = { check_variable = { cbrn_occupied_mask_escrow_improved = constant:cbrn_math.zero } }
+				NOT = { check_variable = { cbrn_occupied_mask_escrow_advanced = constant:cbrn_math.zero } }
+				NOT = { check_variable = { cbrn_occupied_mask_escrow_sealed = constant:cbrn_math.zero } }
+			}
+		}
+		set_temp_variable = { cbrn_mask_escrow_has_held = constant:cbrn_math.one }
+	}
+	if = {
+		limit = {
+			check_variable = { cbrn_mask_escrow_external = constant:cbrn_math.one }
+			OR = {
+				NOT = { check_variable = { cbrn_external_mask_escrow_reconditioned = constant:cbrn_math.zero } }
+				NOT = { check_variable = { cbrn_external_mask_escrow_basic = constant:cbrn_math.zero } }
+				NOT = { check_variable = { cbrn_external_mask_escrow_improved = constant:cbrn_math.zero } }
+				NOT = { check_variable = { cbrn_external_mask_escrow_advanced = constant:cbrn_math.zero } }
+				NOT = { check_variable = { cbrn_external_mask_escrow_sealed = constant:cbrn_math.zero } }
+			}
+		}
+		set_temp_variable = { cbrn_mask_escrow_has_held = constant:cbrn_math.one }
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = { cbrn_mask_escrow_has_held = constant:cbrn_math.one }
+				check_variable = { cbrn_mask_escrow_quarantined = constant:cbrn_math.one }
+			}
+		}
+		set_temp_variable = { cbrn_mask_escrow_refund_blocked = constant:cbrn_math.one }
+	}
+}
+
+# COUNTRY original donor. Inputs: model token and exact held amount.
+# Outputs: before/after/requested/observed gain/valid, all caller-created.
+# Unbounded or negative observations are preserved without a success clamp.
+cbrn_state_escrow_measure_model_credit = {
+	set_temp_variable = { cbrn_mask_native_valid = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_native_observed = constant:cbrn_math.zero }
+	meta_effect = {
+		text = {
+			set_temp_variable = { cbrn_mask_native_before = num_equipment@[MODEL] }
+			set_temp_variable = { cbrn_mask_native_after = cbrn_mask_native_before }
+			if = {
+				limit = {
+					NOT = { check_variable = { cbrn_mask_native_before < constant:cbrn_math.zero } }
+					NOT = { check_variable = { cbrn_mask_native_requested < constant:cbrn_math.zero } }
+				}
+				if = {
+					limit = { check_variable = { cbrn_mask_native_requested > constant:cbrn_math.zero } }
+					add_equipment_to_stockpile = { type = [MODEL] amount = cbrn_mask_native_requested }
+					set_temp_variable = { cbrn_mask_native_after = num_equipment@[MODEL] }
+				}
+				set_temp_variable = { cbrn_mask_native_observed = cbrn_mask_native_after }
+				subtract_from_temp_variable = { cbrn_mask_native_observed = cbrn_mask_native_before }
+				if = {
+					limit = {
+						NOT = { check_variable = { cbrn_mask_native_after < constant:cbrn_math.zero } }
+						NOT = { check_variable = { cbrn_mask_native_observed < constant:cbrn_math.zero } }
+						NOT = { check_variable = { cbrn_mask_native_observed > cbrn_mask_native_requested } }
+					}
+					set_temp_variable = { cbrn_mask_native_valid = constant:cbrn_math.one }
+				}
+			}
+		}
+		MODEL = "[?cbrn_mask_native_model.GetTokenKey]"
+	}
+}
+
+# STATE. Inputs: existing external selector and complete native observation.
+# Output: caller-created cbrn_mask_escrow_quarantined. First mismatch stops later
+# model operations, retaining its exact evidence and every earlier held row.
+cbrn_state_escrow_record_native_mismatch = {
+	set_temp_variable = { cbrn_mask_escrow_quarantined = constant:cbrn_math.one }
+	if = {
+		limit = { check_variable = { cbrn_mask_escrow_external = constant:cbrn_math.zero } }
+		set_state_flag = cbrn_occupied_mask_escrow_native_mismatch
+		set_state_flag = cbrn_occupied_mask_escrow_recovery
+		set_variable = { cbrn_occupied_mask_escrow_native_before = cbrn_mask_native_before }
+		set_variable = { cbrn_occupied_mask_escrow_native_after = cbrn_mask_native_after }
+		set_variable = { cbrn_occupied_mask_escrow_native_requested = cbrn_mask_native_requested }
+		set_variable = { cbrn_occupied_mask_escrow_native_observed = cbrn_mask_native_observed }
+		set_variable = { cbrn_occupied_mask_escrow_native_model = cbrn_mask_native_model }
+		var:cbrn_occupied_mask_escrow_donor = { set_country_flag = cbrn_occupied_transaction_recovery_pending }
+	}
+	else = {
+		set_state_flag = cbrn_external_mask_escrow_native_mismatch
+		set_state_flag = cbrn_external_mask_escrow_recovery
+		set_variable = { cbrn_external_mask_escrow_native_before = cbrn_mask_native_before }
+		set_variable = { cbrn_external_mask_escrow_native_after = cbrn_mask_native_after }
+		set_variable = { cbrn_external_mask_escrow_native_requested = cbrn_mask_native_requested }
+		set_variable = { cbrn_external_mask_escrow_native_observed = cbrn_mask_native_observed }
+		set_variable = { cbrn_external_mask_escrow_native_model = cbrn_mask_native_model }
+	}
+}

@@ -1,0 +1,634 @@
+{
+  "sourceArchive": "tools_list.json.gz",
+  "sourceSha256": "dc473a7ecc2cc5a4488717129f7bd009a468f5a0eaf0c4561ffeee8aa55cb1c4",
+  "tools": [
+    "hoi4.focus_inspect",
+    "hoi4.focus_render",
+    "hoi4.focus_raster",
+    "hoi4.focus_rewrite",
+    "hoi4.gui_inspect",
+    "hoi4.gui_render",
+    "hoi4.gui_rewrite",
+    "hoi4.map_inspect",
+    "hoi4.map_render",
+    "hoi4.map_rewrite",
+    "hoi4.reference_search",
+    "hoi4.reference_read",
+    "hoi4.reference_context",
+    "hoi4.source_lookup",
+    "hoi4.event_inspect",
+    "hoi4.event_render",
+    "hoi4.event_compare",
+    "hoi4.impact_inspect",
+    "hoi4.decision_inspect",
+    "hoi4.mechanic_test",
+    "hoi4.package_check",
+    "hoi4.scenario_test",
+    "hoi4.tech_inspect",
+    "hoi4.tech_render",
+    "hoi4.tech_compare",
+    "hoi4.probability_inspect",
+    "hoi4.probability_evaluate",
+    "hoi4.probability_sweep",
+    "hoi4.probability_simulate",
+    "hoi4.probability_sequence",
+    "hoi4.probability_compare",
+    "hoi4.probability_render",
+    "hoi4.job_inspect",
+    "hoi4.job_cancel"
+  ],
+  "readOnlySubsetSchemas": [
+    {
+      "name": "hoi4.gui_inspect",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "workspaceId": {
+            "default": "current",
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "windowName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "scenario": {
+            "description": "GUI preview scenario; optional date and controls {stateId: controllerTag}."
+          },
+          "relatedScenarios": {
+            "maxItems": 32,
+            "type": "array",
+            "items": {
+              "description": "GUI preview scenario; optional date and controls {stateId: controllerTag}."
+            }
+          },
+          "generatedScenarios": {
+            "description": "GUI generated-scenario options."
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "hoi4.gui_render",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "workspaceId": {
+            "default": "current",
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "windowName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "scenario": {
+            "description": "GUI preview scenario; optional date and controls {stateId: controllerTag}."
+          },
+          "states": {
+            "maxItems": 14,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "normal",
+                "hover",
+                "selected",
+                "locked",
+                "disabled",
+                "warning",
+                "active",
+                "completed",
+                "empty-list",
+                "full-list",
+                "minimum-value",
+                "maximum-value",
+                "long-text",
+                "missing-localisation"
+              ]
+            }
+          },
+          "resolutions": {
+            "minItems": 1,
+            "maxItems": 16,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "width": {
+                  "type": "integer",
+                  "minimum": 320,
+                  "maximum": 16384
+                },
+                "height": {
+                  "type": "integer",
+                  "minimum": 200,
+                  "maximum": 16384
+                },
+                "uiScale": {
+                  "description": "In-game UI scale for this resolution. Use 1 at 1920x1080; do not use it to enlarge an artifact.",
+                  "type": "number",
+                  "minimum": 0.25,
+                  "maximum": 4
+                }
+              },
+              "required": [
+                "width",
+                "height"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "relatedScenarios": {
+            "maxItems": 32,
+            "type": "array",
+            "items": {
+              "description": "GUI preview scenario; optional date and controls {stateId: controllerTag}."
+            }
+          },
+          "generatedScenarios": {
+            "description": "GUI generated-scenario options."
+          },
+          "comparisonScenario": {
+            "description": "GUI preview scenario; optional date and controls {stateId: controllerTag}."
+          },
+          "sourceBaseline": {
+            "description": "Previous mod-owned .gui source for a matched source comparison using the requested scenario.",
+            "type": "object",
+            "properties": {
+              "relativePath": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              },
+              "source": {
+                "type": "string",
+                "maxLength": 33554432
+              }
+            },
+            "required": [
+              "relativePath",
+              "source"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "windowName",
+          "scenario"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "hoi4.reference_read",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "workspaceId": {
+            "default": "current",
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "revision": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "startLine": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "startColumn": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "maxLines": {
+            "default": 40,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 80
+          }
+        },
+        "required": [
+          "id",
+          "revision"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "hoi4.decision_inspect",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "workspaceId": {
+            "default": "current",
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "mode": {
+            "default": "inventory",
+            "type": "string",
+            "enum": [
+              "inventory",
+              "inspect",
+              "compare"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "scenarios": {
+            "default": [],
+            "maxItems": 64,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                "actor": {
+                  "type": "string",
+                  "maxLength": 256
+                },
+                "date": {
+                  "type": "string",
+                  "maxLength": 64
+                },
+                "controls": {
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string",
+                    "pattern": "^[1-9][0-9]{0,8}$"
+                  },
+                  "additionalProperties": {
+                    "type": "string",
+                    "pattern": "^[A-Z0-9]{3}$"
+                  }
+                },
+                "state": {
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1024
+                  },
+                  "additionalProperties": {
+                    "anyOf": [
+                      {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "maxLength": 4096
+                          },
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "boolean"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      {
+                        "maxItems": 10000,
+                        "type": "array",
+                        "items": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "maxLength": 4096
+                            },
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                "flags": {
+                  "maxItems": 10000,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 512
+                  }
+                },
+                "eventTargets": {
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string",
+                    "maxLength": 512
+                  },
+                  "additionalProperties": {
+                    "type": "string",
+                    "maxLength": 512
+                  }
+                },
+                "scopes": {
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "additionalProperties": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 512
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "country",
+                          "state",
+                          "character",
+                          "unit_leader",
+                          "operative",
+                          "strategic_region",
+                          "province",
+                          "unknown"
+                        ]
+                      },
+                      "actor": {
+                        "type": "string",
+                        "maxLength": 256
+                      },
+                      "state": {
+                        "type": "object",
+                        "propertyNames": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 1024
+                        },
+                        "additionalProperties": {
+                          "anyOf": [
+                            {
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "maxLength": 4096
+                                },
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            {
+                              "maxItems": 10000,
+                              "type": "array",
+                              "items": {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "maxLength": 4096
+                                  },
+                                  {
+                                    "type": "number"
+                                  },
+                                  {
+                                    "type": "boolean"
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      "flags": {
+                        "maxItems": 10000,
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 512
+                        }
+                      },
+                      "eventTargets": {
+                        "type": "object",
+                        "propertyNames": {
+                          "type": "string",
+                          "maxLength": 512
+                        },
+                        "additionalProperties": {
+                          "type": "string",
+                          "maxLength": 512
+                        }
+                      },
+                      "weight": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "string",
+                            "maxLength": 1024
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "state"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "candidateOverrides": {
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string",
+                    "maxLength": 512
+                  },
+                  "additionalProperties": {
+                    "type": "boolean"
+                  }
+                },
+                "closedFlags": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "id",
+                "state"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "proposedSources": {
+            "minItems": 1,
+            "maxItems": 64,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "relativePath": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1024
+                },
+                "content": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "maxLength": 8388608
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "relativePath",
+                "content"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "expectedRevision": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "refresh": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "hoi4.probability_compare",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "workspaceId": {
+            "default": "current",
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "adapter": {
+            "type": "string",
+            "enum": [
+              "event_mean_time_to_happen",
+              "event_option_ai_chance",
+              "decision_ai_will_do",
+              "mission_ai_will_do",
+              "national_focus_ai_will_do",
+              "technology_ai_will_do",
+              "doctrine_ai_will_do",
+              "direct_random",
+              "random_list",
+              "ai_strategy_factor",
+              "custom_weighted_pool"
+            ]
+          },
+          "before": {
+            "description": "Source selector; snapshotPath binds frozen bytes to path with expectedSourceHash."
+          },
+          "after": {
+            "description": "Source selector; snapshotPath binds frozen bytes to path with expectedSourceHash."
+          },
+          "beforeManifest": {
+            "description": "Declared custom weighted pool and state transitions."
+          },
+          "afterManifest": {
+            "description": "Declared custom weighted pool and state transitions."
+          },
+          "scenarioSet": {
+            "description": "Explicit world-state scenarios."
+          },
+          "candidatePool": {
+            "maxItems": 100000,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            }
+          },
+          "horizonDays": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 1000000
+          },
+          "acceptanceBands": {
+            "description": "Optional named metric acceptance bands."
+          },
+          "diagnosticThresholds": {
+            "description": "Optional diagnostic thresholds."
+          },
+          "outputs": {
+            "maxItems": 10,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "json",
+                "ranking",
+                "matrix",
+                "waterfall",
+                "timing",
+                "sensitivity",
+                "threshold",
+                "sequence",
+                "comparison",
+                "unresolved"
+              ]
+            }
+          },
+          "refresh": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "scenarioSet"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      }
+    }
+  ]
+}
