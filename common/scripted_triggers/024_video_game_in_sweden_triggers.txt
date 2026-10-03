@@ -48,8 +48,10 @@ video_game_in_sweden_is_current_host = {
 	has_country_flag = video_game_in_sweden_program_active
 	has_event_target = video_game_in_sweden_host
 	event_target:video_game_in_sweden_host = {
-		tag = ROOT
+		# PREV is the country asking, including calls entered from a foreign event.
+		tag = PREV
 	}
+	NOT = { has_global_flag = world_end }
 	video_game_in_sweden_is_valid_host = yes
 }
 
@@ -118,6 +120,7 @@ video_game_in_sweden_can_pay_foreign_licenses = {
 
 video_game_in_sweden_can_pay_separate_policy = {
 	NOT = { has_political_power < constant:video_game_in_sweden_cost.separate_policy_political_power }
+	NOT = { has_stability < constant:video_game_in_sweden_effect.separate_policy_stability_cost }
 }
 
 video_game_in_sweden_can_pay_reality_audit = {
@@ -140,15 +143,48 @@ video_game_in_sweden_can_pay_dual_track = {
 	NOT = { command_power < constant:video_game_in_sweden_cost.dual_track_command_power }
 }
 
+# Country-scope emergency quote, shared by payment and numeric localisation.
+# Outputs: video_game_in_sweden_restriction_political_power_quote,
+# video_game_in_sweden_restriction_stability_quote and
+# video_game_in_sweden_restriction_war_support_quote. Callers initialize each
+# consumed output before entry so its storage survives the helper's return.
+# Available-reserve scratch values are local. No persistent state changes.
+video_game_in_sweden_quote_restriction = {
+	set_temp_variable = { video_game_in_sweden_restriction_political_power_quote = has_political_power }
+	clamp_temp_variable = {
+		var = video_game_in_sweden_restriction_political_power_quote
+		min = constant:video_game_in_sweden_value.zero
+		max = constant:video_game_in_sweden_cost.restriction_political_power
+	}
+	set_temp_variable = { video_game_in_sweden_restriction_available_stability = has_stability }
+	clamp_temp_variable = { var = video_game_in_sweden_restriction_available_stability min = constant:video_game_in_sweden_value.zero max = constant:video_game_in_sweden_value.one }
+	set_temp_variable = { video_game_in_sweden_restriction_stability_quote = constant:video_game_in_sweden_effect.restriction_stability_loss }
+	multiply_temp_variable = { video_game_in_sweden_restriction_stability_quote = -1 }
+	clamp_temp_variable = {
+		var = video_game_in_sweden_restriction_stability_quote
+		min = constant:video_game_in_sweden_value.zero
+		max = video_game_in_sweden_restriction_available_stability
+	}
+	set_temp_variable = { video_game_in_sweden_restriction_available_war_support = has_war_support }
+	clamp_temp_variable = { var = video_game_in_sweden_restriction_available_war_support min = constant:video_game_in_sweden_value.zero max = constant:video_game_in_sweden_value.one }
+	set_temp_variable = { video_game_in_sweden_restriction_war_support_quote = constant:video_game_in_sweden_effect.restriction_war_support_loss }
+	multiply_temp_variable = { video_game_in_sweden_restriction_war_support_quote = -1 }
+	clamp_temp_variable = {
+		var = video_game_in_sweden_restriction_war_support_quote
+		min = constant:video_game_in_sweden_value.zero
+		max = video_game_in_sweden_restriction_available_war_support
+	}
+	always = yes
+}
+
 video_game_in_sweden_can_pay_restriction = {
-	NOT = { has_political_power < constant:video_game_in_sweden_cost.restriction_political_power }
-	NOT = { has_stability < constant:video_game_in_sweden_effect.restriction_stability_gate }
-	NOT = { has_war_support < constant:video_game_in_sweden_effect.restriction_war_support_gate }
+	video_game_in_sweden_quote_restriction = yes
 }
 
 video_game_in_sweden_can_pay_trust_model = {
 	NOT = { command_power < constant:video_game_in_sweden_cost.trust_model_command_power }
 	NOT = { has_political_power < constant:video_game_in_sweden_cost.trust_model_political_power }
+	NOT = { has_war_support < constant:video_game_in_sweden_effect.trust_model_war_support_cost }
 }
 
 video_game_in_sweden_is_stable_host = {
@@ -208,6 +244,7 @@ video_game_in_sweden_evolution_iii_initial_choices_open = {
 	video_game_in_sweden_is_current_host = yes
 	video_game_in_sweden_no_active_mission = yes
 	has_country_flag = video_game_in_sweden_evolution_iii_active
+	NOT = { has_global_flag = events_log_disabled_evolution_24_24_3 }
 	NOT = { has_country_flag = video_game_in_sweden_trust_model_active }
 	NOT = { has_country_flag = video_game_in_sweden_mandatory_reassessment_pending }
 	NOT = { has_country_flag = video_game_in_sweden_reality_audit_started }
@@ -304,10 +341,12 @@ video_game_in_sweden_incident_template_is_valid = {
 		check_variable = {
 			var = video_game_in_sweden_phase
 			value = constant:video_game_in_sweden_value.phase_evolution_ii
+			compare = equals
 		}
 		check_variable = {
 			var = video_game_in_sweden_phase
 			value = constant:video_game_in_sweden_value.phase_evolution_iii
+			compare = equals
 		}
 	}
 	NOT = { has_country_flag = video_game_in_sweden_incident_template_seen }
@@ -323,6 +362,7 @@ video_game_in_sweden_incident_workplace_is_valid = {
 	check_variable = {
 		var = video_game_in_sweden_phase
 		value = constant:video_game_in_sweden_value.phase_evolution_ii
+		compare = equals
 	}
 	NOT = { has_country_flag = video_game_in_sweden_incident_workplace_seen }
 }
@@ -333,6 +373,7 @@ video_game_in_sweden_incident_party_is_valid = {
 	check_variable = {
 		var = video_game_in_sweden_phase
 		value = constant:video_game_in_sweden_value.phase_evolution_ii
+		compare = equals
 	}
 	NOT = { has_country_flag = video_game_in_sweden_incident_party_seen }
 }
@@ -353,37 +394,38 @@ video_game_in_sweden_has_alternative_incident_family = {
 	OR = {
 		AND = {
 			video_game_in_sweden_incident_terrain_is_valid = yes
-			NOT = { check_variable = { var = video_game_in_sweden_last_incident value = constant:video_game_in_sweden_value.incident_terrain } }
+			NOT = { check_variable = { var = video_game_in_sweden_last_incident value = constant:video_game_in_sweden_value.incident_terrain compare = equals } }
 		}
 		AND = {
 			video_game_in_sweden_incident_supply_is_valid = yes
-			NOT = { check_variable = { var = video_game_in_sweden_last_incident value = constant:video_game_in_sweden_value.incident_supply } }
+			NOT = { check_variable = { var = video_game_in_sweden_last_incident value = constant:video_game_in_sweden_value.incident_supply compare = equals } }
 		}
 		AND = {
 			video_game_in_sweden_incident_enemy_is_valid = yes
-			NOT = { check_variable = { var = video_game_in_sweden_last_incident value = constant:video_game_in_sweden_value.incident_enemy } }
+			NOT = { check_variable = { var = video_game_in_sweden_last_incident value = constant:video_game_in_sweden_value.incident_enemy compare = equals } }
 		}
 		AND = {
 			video_game_in_sweden_incident_template_is_valid = yes
-			NOT = { check_variable = { var = video_game_in_sweden_last_incident value = constant:video_game_in_sweden_value.incident_template } }
+			NOT = { check_variable = { var = video_game_in_sweden_last_incident value = constant:video_game_in_sweden_value.incident_template compare = equals } }
 		}
 		AND = {
 			video_game_in_sweden_incident_diplomatic_is_valid = yes
-			NOT = { check_variable = { var = video_game_in_sweden_last_incident value = constant:video_game_in_sweden_value.incident_diplomatic } }
+			NOT = { check_variable = { var = video_game_in_sweden_last_incident value = constant:video_game_in_sweden_value.incident_diplomatic compare = equals } }
 		}
 		AND = {
 			video_game_in_sweden_incident_workplace_is_valid = yes
-			NOT = { check_variable = { var = video_game_in_sweden_last_incident value = constant:video_game_in_sweden_value.incident_workplace } }
+			NOT = { check_variable = { var = video_game_in_sweden_last_incident value = constant:video_game_in_sweden_value.incident_workplace compare = equals } }
 		}
 		AND = {
 			video_game_in_sweden_incident_party_is_valid = yes
-			NOT = { check_variable = { var = video_game_in_sweden_last_incident value = constant:video_game_in_sweden_value.incident_party } }
+			NOT = { check_variable = { var = video_game_in_sweden_last_incident value = constant:video_game_in_sweden_value.incident_party compare = equals } }
 		}
 	}
 }
 
 video_game_in_sweden_can_use_maximum_risk_route = {
 	video_game_in_sweden_is_current_host = yes
+	NOT = { has_global_flag = events_log_disabled_evolution_24_24_3 }
 	video_game_in_sweden_can_pay_trust_model = yes
 	NOT = { video_game_in_sweden_is_severe_campaign_crisis = yes }
 	NOT = { video_game_in_sweden_has_campaign_supply_gap = yes }
@@ -404,8 +446,16 @@ video_game_in_sweden_can_use_maximum_risk_route = {
 video_game_in_sweden_can_begin_reality_audit = {
 	video_game_in_sweden_no_active_mission = yes
 	has_country_flag = video_game_in_sweden_evolution_iii_active
+	NOT = { has_global_flag = events_log_disabled_evolution_24_24_3 }
 	video_game_in_sweden_can_pay_reality_audit = yes
 	video_game_in_sweden_has_field_start_package = yes
+	has_equipment = {
+		support_equipment > constant:video_game_in_sweden_cost.reality_audit_support_equipment
+	}
+	has_equipment = {
+		train_equipment > constant:video_game_in_sweden_cost.reality_audit_trains
+	}
+	has_fuel > constant:video_game_in_sweden_cost.reality_audit_fuel
 	has_country_flag = video_game_in_sweden_logistics_review_complete
 	has_country_flag = video_game_in_sweden_red_team_complete
 	has_stability > constant:video_game_in_sweden_effect.minimum_audit_stability
@@ -415,6 +465,7 @@ video_game_in_sweden_can_begin_narrow_reality_audit = {
 	video_game_in_sweden_is_current_host = yes
 	video_game_in_sweden_no_active_mission = yes
 	has_country_flag = video_game_in_sweden_evolution_iii_active
+	NOT = { has_global_flag = events_log_disabled_evolution_24_24_3 }
 	video_game_in_sweden_can_pay_narrow_reality_audit = yes
 	OR = {
 		has_country_flag = video_game_in_sweden_reality_audit_partial
@@ -429,6 +480,7 @@ video_game_in_sweden_can_use_dual_track = {
 	video_game_in_sweden_is_current_host = yes
 	video_game_in_sweden_no_active_mission = yes
 	has_country_flag = video_game_in_sweden_evolution_iii_active
+	NOT = { has_global_flag = events_log_disabled_evolution_24_24_3 }
 	video_game_in_sweden_can_pay_dual_track = yes
 	NOT = { has_army_experience < constant:video_game_in_sweden_cost.dual_track_army_experience }
 	num_of_civilian_factories_available_for_projects > constant:video_game_in_sweden_value.zero
@@ -438,6 +490,7 @@ video_game_in_sweden_can_restrict_use = {
 	video_game_in_sweden_is_current_host = yes
 	video_game_in_sweden_no_active_mission = yes
 	has_country_flag = video_game_in_sweden_evolution_iii_active
+	NOT = { has_global_flag = events_log_disabled_evolution_24_24_3 }
 }
 
 video_game_in_sweden_is_baseline = {
@@ -446,6 +499,7 @@ video_game_in_sweden_is_baseline = {
 	check_variable = {
 		var = video_game_in_sweden_phase
 		value = constant:video_game_in_sweden_value.phase_baseline
+		compare = equals
 	}
 }
 
@@ -456,10 +510,12 @@ video_game_in_sweden_is_baseline_or_evolution_i = {
 		check_variable = {
 			var = video_game_in_sweden_phase
 			value = constant:video_game_in_sweden_value.phase_baseline
+			compare = equals
 		}
 		check_variable = {
 			var = video_game_in_sweden_phase
 			value = constant:video_game_in_sweden_value.phase_evolution_i
+			compare = equals
 		}
 	}
 }
@@ -471,14 +527,17 @@ video_game_in_sweden_is_baseline_or_early_evolution = {
 		check_variable = {
 			var = video_game_in_sweden_phase
 			value = constant:video_game_in_sweden_value.phase_baseline
+			compare = equals
 		}
 		check_variable = {
 			var = video_game_in_sweden_phase
 			value = constant:video_game_in_sweden_value.phase_evolution_i
+			compare = equals
 		}
 		check_variable = {
 			var = video_game_in_sweden_phase
 			value = constant:video_game_in_sweden_value.phase_evolution_ii
+			compare = equals
 		}
 	}
 }
@@ -489,6 +548,7 @@ video_game_in_sweden_next_evolution_disabled = {
 			check_variable = {
 				var = video_game_in_sweden_phase
 				value = constant:video_game_in_sweden_value.phase_baseline
+				compare = equals
 			}
 			has_global_flag = events_log_disabled_evolution_24_24_1
 		}
@@ -496,6 +556,7 @@ video_game_in_sweden_next_evolution_disabled = {
 			check_variable = {
 				var = video_game_in_sweden_phase
 				value = constant:video_game_in_sweden_value.phase_evolution_i
+				compare = equals
 			}
 			has_global_flag = events_log_disabled_evolution_24_24_2
 		}
@@ -503,6 +564,7 @@ video_game_in_sweden_next_evolution_disabled = {
 			check_variable = {
 				var = video_game_in_sweden_phase
 				value = constant:video_game_in_sweden_value.phase_evolution_ii
+				compare = equals
 			}
 			has_global_flag = events_log_disabled_evolution_24_24_3
 		}
@@ -522,16 +584,17 @@ video_game_in_sweden_can_conclude_low_value = {
 		value = constant:video_game_in_sweden_reliance.doctrine_min
 		compare = less_than
 	}
-	has_country_flag = video_game_in_sweden_logistics_review_complete
 	OR = {
 		check_variable = {
 			var = video_game_in_sweden_phase
 			value = constant:video_game_in_sweden_value.phase_baseline
+			compare = equals
 		}
 		AND = {
 			check_variable = {
 				var = video_game_in_sweden_phase
 				value = constant:video_game_in_sweden_value.phase_evolution_i
+				compare = equals
 			}
 			OR = {
 				has_country_flag = video_game_in_sweden_field_validation_success
@@ -543,6 +606,7 @@ video_game_in_sweden_can_conclude_low_value = {
 			check_variable = {
 				var = video_game_in_sweden_phase
 				value = constant:video_game_in_sweden_value.phase_evolution_ii
+				compare = equals
 			}
 			OR = {
 				has_country_flag = video_game_in_sweden_protected_shifts
@@ -556,6 +620,7 @@ video_game_in_sweden_can_conclude_low_value = {
 video_game_in_sweden_field_validation_objectives = {
 	video_game_in_sweden_is_current_host = yes
 	has_country_flag = video_game_in_sweden_field_validation_active
+	check_variable = { var = video_game_in_sweden_active_mission value = constant:video_game_in_sweden_value.mission_field_validation compare = equals }
 	NOT = { video_game_in_sweden_has_campaign_supply_gap = yes }
 	check_variable = {
 		var = video_game_in_sweden_mission_elapsed_days
@@ -576,6 +641,7 @@ video_game_in_sweden_field_validation_objectives = {
 video_game_in_sweden_reality_audit_objectives = {
 	video_game_in_sweden_is_current_host = yes
 	has_country_flag = video_game_in_sweden_reality_audit_active
+	check_variable = { var = video_game_in_sweden_active_mission value = constant:video_game_in_sweden_value.mission_reality_audit compare = equals }
 	NOT = { video_game_in_sweden_has_campaign_supply_gap = yes }
 	has_army_size = { size > constant:video_game_in_sweden_value.zero }
 	video_game_in_sweden_has_front_presence = yes
@@ -607,6 +673,7 @@ video_game_in_sweden_reality_audit_objectives = {
 video_game_in_sweden_dual_track_objectives = {
 	video_game_in_sweden_is_current_host = yes
 	has_country_flag = video_game_in_sweden_dual_track_active
+	check_variable = { var = video_game_in_sweden_active_mission value = constant:video_game_in_sweden_value.mission_dual_track compare = equals }
 	check_variable = {
 		var = video_game_in_sweden_mission_elapsed_days
 		value = constant:video_game_in_sweden_timing.dual_track_proof_days
@@ -619,6 +686,11 @@ video_game_in_sweden_dual_track_objectives = {
 video_game_in_sweden_restriction_objectives = {
 	video_game_in_sweden_is_current_host = yes
 	has_country_flag = video_game_in_sweden_restriction_active
+	check_variable = { var = video_game_in_sweden_active_mission value = constant:video_game_in_sweden_value.mission_restriction compare = equals }
+	has_country_flag = video_game_in_sweden_restriction_orders_issued
+	has_country_flag = video_game_in_sweden_official_leagues_closed
+	has_country_flag = video_game_in_sweden_policy_exclusions_enforced
+	has_country_flag = video_game_in_sweden_public_facilities_withdrawn
 	check_variable = {
 		var = video_game_in_sweden_mission_elapsed_days
 		value = constant:video_game_in_sweden_timing.restriction_proof_days
@@ -730,9 +802,11 @@ video_game_in_sweden_reality_check_is_complete = {
 		value = constant:video_game_in_sweden_reliance.doctrine_min
 		compare = less_than
 	}
-	has_country_flag = {
-		flag = video_game_in_sweden_reality_check_reliance_timer
-		days > constant:video_game_in_sweden_event.achievement_reliance_days
+	NOT = {
+		has_country_flag = {
+			flag = video_game_in_sweden_reality_check_reliance_timer
+			days < constant:video_game_in_sweden_event.achievement_reliance_days
+		}
 	}
 }
 
@@ -750,4 +824,28 @@ video_game_in_sweden_according_to_plan_is_complete = {
 	NOT = { has_country_flag = video_game_in_sweden_according_to_plan_disqualified }
 	owns_state = constant:video_game_in_sweden_event.stockholm_state
 	controls_state = constant:video_game_in_sweden_event.stockholm_state
+}
+
+video_game_in_sweden_field_callback_is_current = {
+	has_country_flag = video_game_in_sweden_program_active
+	has_country_flag = video_game_in_sweden_field_validation_active
+	check_variable = { var = video_game_in_sweden_active_mission value = constant:video_game_in_sweden_value.mission_field_validation compare = equals }
+}
+
+video_game_in_sweden_audit_callback_is_current = {
+	has_country_flag = video_game_in_sweden_program_active
+	has_country_flag = video_game_in_sweden_reality_audit_active
+	check_variable = { var = video_game_in_sweden_active_mission value = constant:video_game_in_sweden_value.mission_reality_audit compare = equals }
+}
+
+video_game_in_sweden_dual_callback_is_current = {
+	has_country_flag = video_game_in_sweden_program_active
+	has_country_flag = video_game_in_sweden_dual_track_active
+	check_variable = { var = video_game_in_sweden_active_mission value = constant:video_game_in_sweden_value.mission_dual_track compare = equals }
+}
+
+video_game_in_sweden_restriction_callback_is_current = {
+	has_country_flag = video_game_in_sweden_program_active
+	has_country_flag = video_game_in_sweden_restriction_active
+	check_variable = { var = video_game_in_sweden_active_mission value = constant:video_game_in_sweden_value.mission_restriction compare = equals }
 }

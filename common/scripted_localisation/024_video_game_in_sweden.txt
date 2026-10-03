@@ -57,27 +57,27 @@ defined_text = {
 defined_text = {
 	name = GetVideoGamePhase
 	text = {
-		trigger = { check_variable = { var = video_game_in_sweden_phase value = constant:video_game_in_sweden_value.phase_baseline } }
+		trigger = { check_variable = { var = video_game_in_sweden_phase value = constant:video_game_in_sweden_value.phase_baseline compare = equals } }
 		localization_key = video_game_phase_baseline
 	}
 	text = {
-		trigger = { check_variable = { var = video_game_in_sweden_phase value = constant:video_game_in_sweden_value.phase_evolution_i } }
+		trigger = { check_variable = { var = video_game_in_sweden_phase value = constant:video_game_in_sweden_value.phase_evolution_i compare = equals } }
 		localization_key = video_game_phase_evolution_i
 	}
 	text = {
-		trigger = { check_variable = { var = video_game_in_sweden_phase value = constant:video_game_in_sweden_value.phase_evolution_ii } }
+		trigger = { check_variable = { var = video_game_in_sweden_phase value = constant:video_game_in_sweden_value.phase_evolution_ii compare = equals } }
 		localization_key = video_game_phase_evolution_ii
 	}
 	text = {
-		trigger = { check_variable = { var = video_game_in_sweden_phase value = constant:video_game_in_sweden_value.phase_evolution_iii } }
+		trigger = { check_variable = { var = video_game_in_sweden_phase value = constant:video_game_in_sweden_value.phase_evolution_iii compare = equals } }
 		localization_key = video_game_phase_evolution_iii
 	}
 	text = {
-		trigger = { check_variable = { var = video_game_in_sweden_phase value = constant:video_game_in_sweden_value.phase_recovery } }
+		trigger = { check_variable = { var = video_game_in_sweden_phase value = constant:video_game_in_sweden_value.phase_recovery compare = equals } }
 		localization_key = video_game_phase_recovery
 	}
 	text = {
-		trigger = { check_variable = { var = video_game_in_sweden_phase value = constant:video_game_in_sweden_value.phase_closed } }
+		trigger = { check_variable = { var = video_game_in_sweden_phase value = constant:video_game_in_sweden_value.phase_closed compare = equals } }
 		localization_key = video_game_phase_closed
 	}
 	text = {
@@ -89,19 +89,19 @@ defined_text = {
 defined_text = {
 	name = GetVideoGameProgramStatus
 	text = {
-		trigger = { check_variable = { var = video_game_in_sweden_status value = constant:video_game_in_sweden_value.status_active } }
+		trigger = { check_variable = { var = video_game_in_sweden_status value = constant:video_game_in_sweden_value.status_active compare = equals } }
 		localization_key = video_game_status_active
 	}
 	text = {
-		trigger = { check_variable = { var = video_game_in_sweden_status value = constant:video_game_in_sweden_value.status_review } }
+		trigger = { check_variable = { var = video_game_in_sweden_status value = constant:video_game_in_sweden_value.status_review compare = equals } }
 		localization_key = video_game_status_review
 	}
 	text = {
-		trigger = { check_variable = { var = video_game_in_sweden_status value = constant:video_game_in_sweden_value.status_restricted } }
+		trigger = { check_variable = { var = video_game_in_sweden_status value = constant:video_game_in_sweden_value.status_restricted compare = equals } }
 		localization_key = video_game_status_restricted
 	}
 	text = {
-		trigger = { check_variable = { var = video_game_in_sweden_status value = constant:video_game_in_sweden_value.status_closed } }
+		trigger = { check_variable = { var = video_game_in_sweden_status value = constant:video_game_in_sweden_value.status_closed compare = equals } }
 		localization_key = video_game_status_closed
 	}
 	text = {
@@ -133,19 +133,19 @@ defined_text = {
 defined_text = {
 	name = GetVideoGameActiveMission
 	text = {
-		trigger = { check_variable = { var = video_game_in_sweden_active_mission value = constant:video_game_in_sweden_value.mission_field_validation } }
+		trigger = { check_variable = { var = video_game_in_sweden_active_mission value = constant:video_game_in_sweden_value.mission_field_validation compare = equals } }
 		localization_key = video_game_mission_field_validation
 	}
 	text = {
-		trigger = { check_variable = { var = video_game_in_sweden_active_mission value = constant:video_game_in_sweden_value.mission_reality_audit } }
+		trigger = { check_variable = { var = video_game_in_sweden_active_mission value = constant:video_game_in_sweden_value.mission_reality_audit compare = equals } }
 		localization_key = video_game_mission_reality_audit
 	}
 	text = {
-		trigger = { check_variable = { var = video_game_in_sweden_active_mission value = constant:video_game_in_sweden_value.mission_dual_track } }
+		trigger = { check_variable = { var = video_game_in_sweden_active_mission value = constant:video_game_in_sweden_value.mission_dual_track compare = equals } }
 		localization_key = video_game_mission_dual_track
 	}
 	text = {
-		trigger = { check_variable = { var = video_game_in_sweden_active_mission value = constant:video_game_in_sweden_value.mission_restriction } }
+		trigger = { check_variable = { var = video_game_in_sweden_active_mission value = constant:video_game_in_sweden_value.mission_restriction compare = equals } }
 		localization_key = video_game_mission_restriction
 	}
 	text = {
@@ -305,5 +305,82 @@ defined_text = {
 	text = {
 		trigger = { always = yes }
 		localization_key = video_game_opening_stockholm_threatened
+	}
+}
+
+defined_text = {
+	name = GetVideoGameExerciseDebriefLoss
+	text = {
+		trigger = {
+			has_variable = video_game_in_sweden_controlled_exercise_gain
+			set_temp_variable = { video_game_exercise_debrief_loss = constant:video_game_in_sweden_reliance.controlled_debrief_loss }
+			subtract_from_temp_variable = { video_game_exercise_debrief_loss = video_game_in_sweden_controlled_exercise_gain }
+			clamp_temp_variable = { var = video_game_exercise_debrief_loss min = constant:video_game_in_sweden_value.zero max = simulation_reliance }
+		}
+		localization_key = video_game_exercise_debrief_loss_value
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { video_game_exercise_debrief_loss = constant:video_game_in_sweden_reliance.controlled_debrief_loss }
+			subtract_from_temp_variable = { video_game_exercise_debrief_loss = constant:video_game_in_sweden_reliance.controlled_exercise_gain }
+			clamp_temp_variable = { var = video_game_exercise_debrief_loss min = constant:video_game_in_sweden_value.zero max = simulation_reliance }
+		}
+		localization_key = video_game_exercise_debrief_loss_value
+	}
+}
+
+defined_text = {
+	name = GetVideoGameRestrictionPoliticalPowerCost
+	text = {
+		trigger = {
+			set_temp_variable = { video_game_in_sweden_restriction_political_power_quote = constant:video_game_in_sweden_value.zero }
+			video_game_in_sweden_quote_restriction = yes
+			OR = {
+				check_variable = { var = video_game_in_sweden_restriction_political_power_quote value = constant:video_game_in_sweden_value.zero compare = equals }
+				check_variable = { var = video_game_in_sweden_restriction_political_power_quote value = constant:video_game_in_sweden_cost.restriction_political_power compare = equals }
+			}
+		}
+		localization_key = video_game_restriction_political_power_quote_whole
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { video_game_in_sweden_restriction_political_power_quote = constant:video_game_in_sweden_value.zero }
+			video_game_in_sweden_quote_restriction = yes
+		}
+		localization_key = video_game_restriction_political_power_quote_value
+	}
+}
+
+defined_text = {
+	name = GetVideoGameRestrictionStabilityCost
+	text = {
+		trigger = {
+			set_temp_variable = { video_game_in_sweden_restriction_stability_quote = constant:video_game_in_sweden_value.zero }
+			video_game_in_sweden_quote_restriction = yes
+		}
+		localization_key = video_game_restriction_stability_quote_value
+	}
+}
+
+defined_text = {
+	name = GetVideoGameRestrictionWarSupportCost
+	text = {
+		trigger = {
+			set_temp_variable = { video_game_in_sweden_restriction_war_support_quote = constant:video_game_in_sweden_value.zero }
+			video_game_in_sweden_quote_restriction = yes
+		}
+		localization_key = video_game_restriction_war_support_quote_value
+	}
+}
+
+defined_text = {
+	name = GetVideoGameAuditProofRequirements
+	text = {
+		trigger = { has_country_flag = video_game_in_sweden_narrow_reality_audit_started }
+		localization_key = video_game_narrow_audit_proof_requirements
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = video_game_full_audit_proof_requirements
 	}
 }

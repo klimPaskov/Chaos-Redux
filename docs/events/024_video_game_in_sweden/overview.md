@@ -1,6 +1,10 @@
 # Event 24: Video Game in Sweden
 
-The user's explicit 2026-09-20 instruction retires the Field-Validated Planner trait and reward. Field validation remains a mission with its other outcomes; source and asset cleanup are tracked by the Event 24 owner until the final handoff is reviewed.
+Implementation status is incomplete.
+The current acceptance ledger is [report 16](../../plans/024_video_game_in_sweden_plans/16_source_repairs_and_remaining_acceptance_2026-10-03.md), with the implemented continuity and restriction repair tranche recorded in [report 22](../../plans/024_video_game_in_sweden_plans/22_runtime_continuity_and_restriction_receipts_2026-10-03.md).
+Historical analysis below is not clearance for the current source revision or every accepted route.
+
+The user's explicit 2026-09-20 instruction retires the Field-Validated Planner trait and reward. Field validation remains a mission with its other outcomes. Full field validation, Reality Audit, and event cleanup remove Rulebook Commander without awarding a replacement trait.
 
 ## Identity and purpose
 
@@ -68,6 +72,8 @@ The staged idea lifecycle has exactly one active idea at a time.
 
 The lifecycle is refreshed by removing the other four ideas before the selected stage is applied.
 
+Civil-war retention is restricted to the selected active Swedish host, rather than copying the staged spirit to both sides.
+
 The controlled opening at high Chaos may begin the staff evolution when the gate is met.
 
 The officer opening at high Chaos may begin the staff evolution when the gate is met.
@@ -90,6 +96,10 @@ The baseline category presents four primary actions.
 The baseline has a finite review window, a repeat cooldown, and an automatic close after the configured baseline lifetime.
 
 The ordinary conclusion is available without entering any evolution.
+
+Controlled exercises include a debrief using the shared confidence and debrief constants.
+The first session reduces Reliance by one point and subsequent sessions by three points, while the staged program supplies the finite training benefit.
+A competitive opening can move from 62 to 57 after the rail review and to 56, 53, 50, and 47 through four exercises, meeting the ordinary conclusion's below-Doctrine requirement without evolution.
 
 The ordinary conclusion branches by opening and by the last useful institutional result, with separate political, military, cultural, and restrained outcomes.
 
@@ -293,9 +303,11 @@ The four scenarios cover a peaceful stable staff opening, a peaceful public open
 
 The live HOI4 probability inspection resolved the three-option opening pool with no unresolved inputs.
 
-The named four-scenario evaluation produced bounded matrix evidence and reported nine unresolved external or adapter inputs, so it is not presented as an exact normalized probability claim.
+The named four-scenario evaluation produced bounded matrix evidence and reported 12 unresolved external or adapter inputs, so it is not presented as an exact normalized probability claim.
 
 The emergency source state makes controlled handling dominant and sets the commercial opening factor to zero, which is an intentional safety result rather than a hidden forced crisis.
+
+A bounded sweep across Chaos, stability, surrender progress, and army experience covers six additional safety points and preserves the same explicit uncertainty. The current-source control comparison reports zero comparison changes under the identical named matrix.
 
 ## Achievements and persistence
 
@@ -305,56 +317,58 @@ The emergency source state makes controlled handling dominant and sets the comme
 
 Loss of host validity, supply failure, failed war conditions, severe instability, or the relevant route failure sets the persistent disqualifier flags.
 
-Achievement tracking is updated by the bounded maintenance and outcome effects and survives normal save loading through country flags and variables.
+Achievement tracking is updated by bounded maintenance, daily observation, and outcome effects, with proof stored in country flags and variables.
+Native save-persistence acceptance remains outstanding.
+
+Hidden event `chaosx.nr24.91` observes the selected host daily without a world-wide periodic on-action.
+State-control callbacks record Stockholm and core losses at the transaction, while capitulation and annexation callbacks verify that their country owns the saved host context before cleanup.
+Mission elapsed time advances daily, and resource or regional interruption receipts remain sticky.
+Source regressions cover this contract, while native callback delivery and save persistence remain unverified.
 
 Both achievements have complete, grey, and not-eligible DDS states registered in `interface/chaosx_achievements.gfx`.
 
+Reality Check accepts its low-Reliance proof on day 365 and rejects either loss of Stockholm ownership or control.
+Closed receipts and finite ordinary aftermath survive late queued maintenance and repeated cleanup calls.
+Commander cleanup follows the stored commander target as well as the host's current officers, including a commander transferred away from the host.
+
+Restriction remains financially available during collapse.
+Its political power, Stability and War Support charges are each the lesser of the nominal fee and the current nonnegative reserve, using the installed dynamic readers.
+Localisation shows that quote, and payment recomputes all three amounts together before debiting them.
+The fixed political-power AI budget hint is absent from this variable-fee action, while its route and crisis willingness factors remain unchanged.
+
+The Trust the Model surge increases supply consumption by eight percent, alongside its planning benefit and recovery risks.
+
+Restriction closes official leagues, removes score-based policy authority, and withdraws state-supported public facilities through distinct departmental receipts.
+The existing sixty-day proof period yields receipts at days twenty, forty, and sixty within the existing ninety-day mission.
+Its completion closes the category without granting Validated Wargaming Methods.
+Only a ninety-day Stability backlash remains, carried by an iconless finite modifier.
+The closed host can still receive its final restriction report, and late callbacks cannot renew the result.
+
+Native civilian-office reservations use their actual action terms.
+Foreign licensing and establishment of the second ledger reserve an office for thirty days, separately from reply delivery and mission verification.
+National seasons begin with forty-five days and increase later reservations to sixty, seventy-five, then ninety days.
+Full and narrow audit rows select their respective regional and proof-period descriptions through one flag-based localisation getter.
+
 ## Asset inventory and wiring
 
-The current source wiring selects 30 Event24-owned runtime DDS files. Source and processed PNG provenance is tracked separately in the asset manifest; its review and runtime DDS comparison remain pending.
+The active custom inventory contains 31 DDS files: four staged-idea textures, one idea-family texture for the finite foreign Copy and Study modifiers, 17 decision/action textures, one Rulebook Commander texture, six achievement states, one report picture, and one static category picture.
+The experimental spirit uses installed vanilla `SWE_wargames`, and the normal category uses the installed vanilla generic crisis icon.
+The custom experimental icon remains wired to the two foreign modifiers, so the earlier 30-file reconciliation is superseded for counts.
 
-The report picture is full-canvas period documentary art and the category picture is a full-canvas static decision picture.
+The parent replaced 25 stale DDS files from the reviewed source package and reopened all 31 final custom DDS files individually at native size, alongside the two shared vanilla textures.
+Every custom decoded output equals its processed PNG exactly.
+The selected source lineage, exhaustive consumer-to-sprite-to-file table, final paths, sizes, alpha treatment, repairs, and current review evidence are in [the current asset audit](assets_visual_audit_2026-10-03.md).
+The current contact sheets include source art, native previews, smooth enlargements, and decoded DDS output.
+The complete source workspace remains retained while the event's gameplay and probability work is incomplete.
 
-The icon families use native transparent source output and preserve alpha through processing and DDS conversion.
+The unreachable legacy `chaosx.news.24` definition, its modern-logo sprite and unused localisation were retired, and the original DDS was archived as historical evidence with its checksum preserved.
+No replacement news-art family was introduced.
+Field-Validated Planner and its texture remain retired under the accepted 2026-09-20 decision.
 
-The current Event24-owned runtime inventory contains 30 DDS files: 4 bespoke ideas, 17 decisions, 1 Rulebook Commander trait, 6 achievement states, and 2 full-canvas pictures. The experimental-war-game spirit instead selects installed vanilla `SWE_wargames` through `common/ideas/024_hearts_of_iron_ideas.txt`; its `GFX_idea_SWE_wargames` sprite and DDS are supplied by the installed game. The related pre-existing news event `chaosx.news.24` also consumes `GFX_news_hoi` from `gfx/event_pictures/024_hearts_of_iron/news_hoi.dds`. That legacy news surface remains outside the Event24-owned count. The category also consumes the installed vanilla `GFX_decision_category_generic_crisis` icon, which remains outside the count.
-
-| Consumer | Final DDS | Sprite | Owning definition |
-| --- | --- | --- | --- |
-| Report picture | `gfx/event_pictures/024_video_game_in_sweden/024_video_game_in_sweden_report_release.dds` | `GFX_report_event_024_video_game_in_sweden_release` | `interface/chaosx_pictures.gfx` |
-| Related legacy news picture | `gfx/event_pictures/024_hearts_of_iron/news_hoi.dds` | `GFX_news_hoi` | `interface/chaosx_pictures.gfx` |
-| Decision category picture | `gfx/interface/decisions/024_video_game_in_sweden/024_video_game_in_sweden_category.dds` | `GFX_decision_category_picture_024_video_game_in_sweden` | `interface/chaosx_decision_category_pictures.gfx` |
-| Experimental-war-game idea, installed vanilla | `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/interface/ideas/idea_SWE_wargames.dds` | `GFX_idea_SWE_wargames` | Installed `interface/ideas.gfx`; selected by `common/ideas/024_hearts_of_iron_ideas.txt` |
-| Idea | `gfx/interface/ideas/024_video_game_in_sweden/024_video_game_in_sweden_gamified_staff_culture.dds` | `GFX_idea_024_video_game_in_sweden_staff_culture` | `interface/chaosx_ideas.gfx` |
-| Idea | `gfx/interface/ideas/024_video_game_in_sweden/024_video_game_in_sweden_national_strategy_craze.dds` | `GFX_idea_024_video_game_in_sweden_national_craze` | `interface/chaosx_ideas.gfx` |
-| Idea | `gfx/interface/ideas/024_video_game_in_sweden/024_video_game_in_sweden_simulation_orthodoxy.dds` | `GFX_idea_024_video_game_in_sweden_orthodoxy` | `interface/chaosx_ideas.gfx` |
-| Idea | `gfx/interface/ideas/024_video_game_in_sweden/024_video_game_in_sweden_validated_wargaming_methods.dds` | `GFX_idea_024_video_game_in_sweden_validated` | `interface/chaosx_ideas.gfx` |
-| Decision | `gfx/interface/decisions/024_video_game_in_sweden/024_video_game_in_sweden_controlled_exercise.dds` | `GFX_decision_024_video_game_in_sweden_controlled_exercise` | `interface/chaosx_decisions.gfx` |
-| Decision | `gfx/interface/decisions/024_video_game_in_sweden/024_video_game_in_sweden_logistics_module.dds` | `GFX_decision_024_video_game_in_sweden_logistics_module` | `interface/chaosx_decisions.gfx` |
-| Decision | `gfx/interface/decisions/024_video_game_in_sweden/024_video_game_in_sweden_field_validation.dds` | `GFX_decision_024_video_game_in_sweden_field_validation` | `interface/chaosx_decisions.gfx` |
-| Decision | `gfx/interface/decisions/024_video_game_in_sweden/024_video_game_in_sweden_red_team.dds` | `GFX_decision_024_video_game_in_sweden_red_team` | `interface/chaosx_decisions.gfx` |
-| Decision | `gfx/interface/decisions/024_video_game_in_sweden/024_video_game_in_sweden_rules_revision.dds` | `GFX_decision_024_video_game_in_sweden_rules_revision` | `interface/chaosx_decisions.gfx` |
-| Decision | `gfx/interface/decisions/024_video_game_in_sweden/024_video_game_in_sweden_national_league.dds` | `GFX_decision_024_video_game_in_sweden_national_league` | `interface/chaosx_decisions.gfx` |
-| Decision | `gfx/interface/decisions/024_video_game_in_sweden/024_video_game_in_sweden_reality_audit.dds` | `GFX_decision_024_video_game_in_sweden_reality_audit` | `interface/chaosx_decisions.gfx` |
-| Decision | `gfx/interface/decisions/024_video_game_in_sweden/024_video_game_in_sweden_trust_model.dds` | `GFX_decision_024_video_game_in_sweden_trust_model` | `interface/chaosx_decisions.gfx` |
-| Decision | `gfx/interface/decisions/024_video_game_in_sweden/024_video_game_in_sweden_foreign_licenses.dds` | `GFX_decision_024_video_game_in_sweden_foreign_licenses` | `interface/chaosx_decisions.gfx` |
-| Decision | `gfx/interface/decisions/024_video_game_in_sweden/024_video_game_in_sweden_dual_track.dds` | `GFX_decision_024_video_game_in_sweden_dual_track` | `interface/chaosx_decisions.gfx` |
-| Decision | `gfx/interface/decisions/024_video_game_in_sweden/024_video_game_in_sweden_restrict_use.dds` | `GFX_decision_024_video_game_in_sweden_restrict_use` | `interface/chaosx_decisions.gfx` |
-| Decision | `gfx/interface/decisions/024_video_game_in_sweden/024_video_game_in_sweden_protect_shifts.dds` | `GFX_decision_024_video_game_in_sweden_protect_shifts` | `interface/chaosx_decisions.gfx` |
-| Decision | `gfx/interface/decisions/024_video_game_in_sweden/024_video_game_in_sweden_preparedness_clubs.dds` | `GFX_decision_024_video_game_in_sweden_preparedness_clubs` | `interface/chaosx_decisions.gfx` |
-| Commander trait | `gfx/interface/traits/024_video_game_in_sweden/024_video_game_in_sweden_rulebook_commander.dds` | `GFX_trait_video_game_in_sweden_rulebook_commander` | `interface/chaosx_traits.gfx` |
-| Achievement | `gfx/achievements/024_video_game_in_sweden_reality_check.dds` | `GFX_achievement_024_video_game_in_sweden_reality_check` | `interface/chaosx_achievements.gfx` |
-| Achievement grey | `gfx/achievements/024_video_game_in_sweden_reality_check_grey.dds` | `GFX_achievement_024_video_game_in_sweden_reality_check_grey` | `interface/chaosx_achievements.gfx` |
-| Achievement not eligible | `gfx/achievements/024_video_game_in_sweden_reality_check_not_eligible.dds` | `GFX_achievement_024_video_game_in_sweden_reality_check_not_eligible` | `interface/chaosx_achievements.gfx` |
-| Achievement | `gfx/achievements/024_video_game_in_sweden_according_to_plan.dds` | `GFX_achievement_024_video_game_in_sweden_according_to_plan` | `interface/chaosx_achievements.gfx` |
-| Achievement grey | `gfx/achievements/024_video_game_in_sweden_according_to_plan_grey.dds` | `GFX_achievement_024_video_game_in_sweden_according_to_plan_grey` | `interface/chaosx_achievements.gfx` |
-| Achievement not eligible | `gfx/achievements/024_video_game_in_sweden_according_to_plan_not_eligible.dds` | `GFX_achievement_024_video_game_in_sweden_according_to_plan_not_eligible` | `interface/chaosx_achievements.gfx` |
-
-The 18 clickable Event24 decisions use 17 unique bespoke Event24 decision DDS files registered in `interface/chaosx_decisions.gfx`. The full and narrow reality-audit decisions share the single `GFX_decision_024_video_game_in_sweden_reality_audit` sprite. The four primary icons `video_game_expand_access`, `video_game_conclude_trial`, `video_game_officer_league`, and `video_game_separate_policy` were added to the same manifest and GFX registration as the other Event24 decisions.
-
-The earlier runtime review found no placeholder or cross-family resized substitute. The restored source and processed PNG package is recorded in `docs/assets/024_video_game_in_sweden/manifest.md`; current source-to-DDS review remains pending. The shared vanilla category icon is separately traced in `docs/assets/024_video_game_in_sweden/notes/visual_asset_audit.md`.
-
-The 2026-09-04 visual review covered the former 32-file inventory, before the accepted 2026-09-20 retirement of Field-Validated Planner and the later explicit instruction to use vanilla `SWE_wargames` for the experimental spirit. The custom experimental-war-game DDS and its `interface/chaosx_ideas.gfx` sprite remain as unused archival assets, outside the 30-file active inventory. The earlier review is historical evidence for those pixels; current source-to-DDS comparison of the restored PNGs and live visual confirmation remain pending.
+The full and narrow Reality Audit actions share their exact action symbol, and each of the four timed objectives consumes the corresponding start action's unchanged sprite.
+The asset prompt authorizes no separate custom mission-art family.
+The event introduces no dedicated scripted GUI; the static category picture is presentation in the ordinary decision category.
+The standard-category MCP route returned a missing-window render, which remains an explicit evidence limit rather than visual clearance for the decision row layout.
 
 ## Implemented surfaces and future depth
 
@@ -362,9 +376,10 @@ Gameplay is implemented in the Event 24 event, decision, scripted effect, script
 
 Shared registration is implemented in the Chaos settings, event log, event details, achievement, localisation, and interface registration files.
 
-The package-owned CXT extension registers an inert hidden carrier through the bounded startup and tag-scoped daily repair hooks. It exposes only the fixture readiness receipt and public Reliance bounds after CXT initialization, so the test country does not fire Event24 or receive Sweden-specific gameplay state.
+The package-owned CXT extension registers an inert hidden carrier through one bounded startup scope and a tag-scoped daily registration fallback. When the daily fallback finds new content, it sets the shared pending-sync flag and does not apply the fixture. The fixture exposes only readiness and public Reliance bounds when setup or the player-triggered apply control consumes it, so CXT does not fire Event24 or receive Sweden-specific gameplay state.
 
-The authoritative Event Catalog workbook contains the final Event Details and all three evolution title and body pairs, is marked Needs Testing, and retains the unclustered Minor Fire-Once metadata.
+The authoritative Event Catalog workbook contains the last aligned Event Details and three evolution title and body pairs, is marked Needs Testing, and retains the unclustered Minor Fire-Once metadata.
+Final catalogue alignment remains queued until the full in-game wording and implementation are finished.
 
 The exporter regenerates the three CSV snapshots after the workbook update.
 
