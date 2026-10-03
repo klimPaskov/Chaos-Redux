@@ -1975,30 +1975,37 @@ weaponized_zombie_expand_against_neighbors = {
 						can_declare_war_on = event_target:weaponized_zombie_neighbor_country
 					}
 				}
-	            event_target:triggerable_zombie_relation_actor = {
-	                declare_war_on = {
-	                    target = event_target:weaponized_zombie_neighbor_country
-	                    type = annex_everything
-	                }
-	            }
-	        }
-	        else_if = {
-	            limit = { NOT = { is_subject_of = event_target:triggerable_zombie_relation_actor } }
-	            event_target:triggerable_zombie_relation_actor = {
-	                declare_war_on = {
-	                    target = event_target:weaponized_zombie_neighbor_country
-	                    type = annex_everything
-	                }
-	            }
-	        }
-	        else = {
-	            event_target:triggerable_zombie_relation_actor = {
-	                annex_country = {
-	                    target = event_target:weaponized_zombie_neighbor_country
-	                    transfer_troops = no
+				event_target:triggerable_zombie_relation_actor = {
+					declare_war_on = {
+						target = event_target:weaponized_zombie_neighbor_country
+						type = annex_everything
+					}
 				}
 			}
-		}
+			else_if = {
+				limit = {
+					NOT = { is_subject_of = event_target:triggerable_zombie_relation_actor }
+					event_target:triggerable_zombie_relation_actor = {
+						NOT = { has_war_with = event_target:weaponized_zombie_neighbor_country }
+						can_declare_war_on = event_target:weaponized_zombie_neighbor_country
+					}
+				}
+				event_target:triggerable_zombie_relation_actor = {
+					declare_war_on = {
+						target = event_target:weaponized_zombie_neighbor_country
+						type = annex_everything
+					}
+				}
+			}
+			else_if = {
+				limit = { is_subject_of = event_target:triggerable_zombie_relation_actor }
+				event_target:triggerable_zombie_relation_actor = {
+					annex_country = {
+						target = event_target:weaponized_zombie_neighbor_country
+						transfer_troops = no
+					}
+				}
+			}
 	}
 }
 

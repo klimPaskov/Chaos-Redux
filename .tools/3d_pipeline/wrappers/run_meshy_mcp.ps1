@@ -248,8 +248,22 @@ try {
 	$inputRead = $clientInput.ReadLineAsync()
 	$outputRead = $nodeProcess.StandardOutput.ReadLineAsync()
 	$errorRead = $nodeProcess.StandardError.ReadLineAsync()
+	# Block on the open streams instead of spinning: many concurrent wrappers each
+	# polling every few milliseconds, with a process lookup per pass, saturate the CPU.
+	$parentCheck = [System.Diagnostics.Stopwatch]::StartNew()
 
 	while ($true) {
+		$waitTasks = [System.Collections.Generic.List[System.Threading.Tasks.Task]]::new()
+		if (-not $inputClosed) { $waitTasks.Add($inputRead) }
+		if (-not $outputClosed) { $waitTasks.Add($outputRead) }
+		if (-not $errorClosed) { $waitTasks.Add($errorRead) }
+		if ($waitTasks.Count -gt 0) {
+			$null = [System.Threading.Tasks.Task]::WaitAny($waitTasks.ToArray(), 500)
+		}
+		else {
+			Start-Sleep -Milliseconds 200
+		}
+
 		if (-not $inputClosed -and $inputRead.IsCompleted) {
 			$inputLine = $inputRead.GetAwaiter().GetResult()
 			if ($null -eq $inputLine) {
@@ -305,8 +319,11 @@ try {
 			}
 		}
 
-		if ($wrapperParentPid -gt 0 -and -not (Get-Process -Id $wrapperParentPid -ErrorAction SilentlyContinue)) {
-			break
+		if ($parentCheck.Elapsed.TotalSeconds -ge 2) {
+			$parentCheck.Restart()
+			if ($wrapperParentPid -gt 0 -and -not (Get-Process -Id $wrapperParentPid -ErrorAction SilentlyContinue)) {
+				break
+			}
 		}
 
 		# The pinned SDK does not exit on stdin EOF. Once every request accepted
@@ -325,7 +342,6 @@ try {
 		if ($nodeProcess.HasExited -and $outputClosed -and $errorClosed) {
 			break
 		}
-		Start-Sleep -Milliseconds 10
 	}
 
 	if ($nodeProcess.HasExited) {
