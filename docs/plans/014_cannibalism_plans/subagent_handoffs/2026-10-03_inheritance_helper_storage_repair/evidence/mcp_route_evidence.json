@@ -1,0 +1,80 @@
+{
+  "attempts": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "name": "mcp__hoi4_agent_tools__hoi4_event_inspect",
+        "args": {
+          "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+          "mode": "trace",
+          "selector": {
+            "kind": "event",
+            "eventId": "chaosx.nr14.50"
+          },
+          "maxDepth": 1,
+          "maxNodes": 1,
+          "maxEdges": 1,
+          "expandHelpers": false
+        },
+        "response": {
+          "clientObservationDeadlineMs": 45000,
+          "noReturnedStatusOrArtifact": true
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "name": "mcp__hoi4_agent_tools__hoi4_reference_search",
+        "args": {
+          "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+          "query": "set_temp_variable",
+          "sources": [
+            "game_doc",
+            "wiki"
+          ],
+          "limit": 2
+        },
+        "response": {
+          "clientObservationDeadlineMs": 45000,
+          "noReturnedStatusOrArtifact": true
+        }
+      }
+    }
+  ],
+  "liveSchemas": [
+    {
+      "name": "mcp__hoi4_agent_tools__hoi4_event_compare",
+      "description": "Start with the matching inspect tool; use hoi4.probability_inspect for weights and timing. Find local documentation with hoi4.reference_context, hoi4.reference_search and hoi4.reference_read, and source definitions with hoi4.source_lookup. Inspection and rendering are read-only; rewrite tools edit mod source. Results describe offline source and scenario models, not observed game behavior. Unresolved states are not confirmed coverage. Read linked artifacts when summaries omit detail. Long operations support negotiated MCP tasks and hoi4.job_inspect/hoi4.job_cancel; background rewrites need a stable requestKey.\n\nCompare cached, artifact-backed, current, or in-memory proposed event graphs, optionally selecting one downstream chain. Full changes and explicit selection coverage are resources.\n\nexec tool declaration:\n```ts\ndeclare const tools: { mcp__hoi4_agent_tools__hoi4_event_compare(args: { after?: unknown; before?: unknown; maxChainNodes?: number; maxRenderNodes?: number; proposedSources?: Array<unknown>; refresh?: boolean; render?: boolean; selector?: unknown; workspaceId?: string; }): Promise<CallToolResult<{ artifacts: Array<unknown>; blockers: Array<unknown>; changedFiles: Array<unknown>; code: string; data: { [key: string]: unknown; }; diagnostics: Array<unknown>; filesScanned: Array<unknown>; proposedFiles: Array<unknown>; status: \"ok\" | \"blocked\" | \"error\"; validation: unknown; workspaceId: string; }>>; };\n```"
+    },
+    {
+      "name": "mcp__hoi4_agent_tools__hoi4_event_inspect",
+      "description": "Start with the matching inspect tool; use hoi4.probability_inspect for weights and timing. Find local documentation with hoi4.reference_context, hoi4.reference_search and hoi4.reference_read, and source definitions with hoi4.source_lookup. Inspection and rendering are read-only; rewrite tools edit mod source. Results describe offline source and scenario models, not observed game behavior. Unresolved states are not confirmed coverage. Read linked artifacts when summaries omit detail. Long operations support negotiated MCP tasks and hoi4.job_inspect/hoi4.job_cancel; background rewrites need a stable requestKey.\n\nScan, find roots, trace, explain paths, inspect state flow, lint, or assess impact. Full source-linked reports are resources.\n\nexec tool declaration:\n```ts\ndeclare const tools: { mcp__hoi4_agent_tools__hoi4_event_inspect(args: { direction?: \"upstream\" | \"downstream\" | \"both\"; expandHelpers?: boolean; from?: unknown; helperExpansion?: unknown; impactSubject?: unknown; maxDepth?: number; maxEdges?: number; maxNodes?: number; mode: \"scan\" | \"roots\" | \"trace\" | \"explain_path\" | \"state_flow\" | \"lint\" | \"impact\" | \"helper_expansion\"; refresh?: boolean; selector?: unknown; stateSubject?: unknown; to?: unknown; workspaceId?: string; }): Promise<CallToolResult<{ artifacts: Array<unknown>; blockers: Array<unknown>; changedFiles: Array<unknown>; code: string; data: { [key: string]: unknown; }; diagnostics: Array<unknown>; filesScanned: Array<unknown>; proposedFiles: Array<unknown>; status: \"ok\" | \"blocked\" | \"error\"; validation: unknown; workspaceId: string; }>>; };\n```"
+    },
+    {
+      "name": "mcp__hoi4_agent_tools__hoi4_event_render",
+      "description": "Start with the matching inspect tool; use hoi4.probability_inspect for weights and timing. Find local documentation with hoi4.reference_context, hoi4.reference_search and hoi4.reference_read, and source definitions with hoi4.source_lookup. Inspection and rendering are read-only; rewrite tools edit mod source. Results describe offline source and scenario models, not observed game behavior. Unresolved states are not confirmed coverage. Read linked artifacts when summaries omit detail. Long operations support negotiated MCP tasks and hoi4.job_inspect/hoi4.job_cancel; background rewrites need a stable requestKey.\n\nRender deterministic JSON, SVG, PNG, and optional HTML for an event-chain view. Complete artifacts retain source links.\n\nexec tool declaration:\n```ts\ndeclare const tools: { mcp__hoi4_agent_tools__hoi4_event_render(args: { direction?: \"upstream\" | \"downstream\" | \"both\"; expandHelpers?: boolean; includeHtml?: boolean; maxDepth?: number; maxNodes?: number; refresh?: boolean; selector?: unknown; view: \"overview\" | \"neighborhood\" | \"options\" | \"entries\" | \"reachability\" | \"timing\" | \"state\" | \"targets\" | \"scope\" | \"terminals\" | \"unresolved\"; workspaceId?: string; }): Promise<CallToolResult<{ artifacts: Array<unknown>; blockers: Array<unknown>; changedFiles: Array<unknown>; code: string; data: { [key: string]: unknown; }; diagnostics: Array<unknown>; filesScanned: Array<unknown>; proposedFiles: Array<unknown>; status: \"ok\" | \"blocked\" | \"error\"; validation: unknown; workspaceId: string; }>>; };\n```"
+    },
+    {
+      "name": "mcp__hoi4_agent_tools__hoi4_reference_context",
+      "description": "Start with the matching inspect tool; use hoi4.probability_inspect for weights and timing. Find local documentation with hoi4.reference_context, hoi4.reference_search and hoi4.reference_read, and source definitions with hoi4.source_lookup. Inspection and rendering are read-only; rewrite tools edit mod source. Results describe offline source and scenario models, not observed game behavior. Unresolved states are not confirmed coverage. Read linked artifacts when summaries omit detail. Long operations support negotiated MCP tasks and hoi4.job_inspect/hoi4.job_cancel; background rewrites need a stable requestKey.\n\nReturn a compact bundle of offline wiki and installed game documentation citations for a modding surface.\n\nexec tool declaration:\n```ts\ndeclare const tools: { mcp__hoi4_agent_tools__hoi4_reference_context(args: { limit?: number; question?: string; surface: \"general\" | \"event\" | \"decision\" | \"idea\" | \"focus\" | \"technology\" | \"gui\" | \"map\" | \"localisation\" | \"ai\"; workspaceId?: string; }): Promise<CallToolResult<{ artifacts: Array<unknown>; blockers: Array<unknown>; changedFiles: Array<unknown>; code: string; data: { [key: string]: unknown; }; diagnostics: Array<unknown>; filesScanned: Array<unknown>; proposedFiles: Array<unknown>; status: \"ok\" | \"blocked\" | \"error\"; validation: unknown; workspaceId: string; }>>; };\n```"
+    },
+    {
+      "name": "mcp__hoi4_agent_tools__hoi4_reference_read",
+      "description": "Start with the matching inspect tool; use hoi4.probability_inspect for weights and timing. Find local documentation with hoi4.reference_context, hoi4.reference_search and hoi4.reference_read, and source definitions with hoi4.source_lookup. Inspection and rendering are read-only; rewrite tools edit mod source. Results describe offline source and scenario models, not observed game behavior. Unresolved states are not confirmed coverage. Read linked artifacts when summaries omit detail. Long operations support negotiated MCP tasks and hoi4.job_inspect/hoi4.job_cancel; background rewrites need a stable requestKey.\n\nRead at most 80 lines from one revision-bound local documentation section.\n\nexec tool declaration:\n```ts\ndeclare const tools: { mcp__hoi4_agent_tools__hoi4_reference_read(args: { id: string; maxLines?: number; revision: string; startColumn?: number; startLine?: number; workspaceId?: string; }): Promise<CallToolResult<{ artifacts: Array<unknown>; blockers: Array<unknown>; changedFiles: Array<unknown>; code: string; data: { [key: string]: unknown; }; diagnostics: Array<unknown>; filesScanned: Array<unknown>; proposedFiles: Array<unknown>; status: \"ok\" | \"blocked\" | \"error\"; validation: unknown; workspaceId: string; }>>; };\n```"
+    },
+    {
+      "name": "mcp__hoi4_agent_tools__hoi4_reference_search",
+      "description": "Start with the matching inspect tool; use hoi4.probability_inspect for weights and timing. Find local documentation with hoi4.reference_context, hoi4.reference_search and hoi4.reference_read, and source definitions with hoi4.source_lookup. Inspection and rendering are read-only; rewrite tools edit mod source. Results describe offline source and scenario models, not observed game behavior. Unresolved states are not confirmed coverage. Read linked artifacts when summaries omit detail. Long operations support negotiated MCP tasks and hoi4.job_inspect/hoi4.job_cancel; background rewrites need a stable requestKey.\n\nSearch bounded, cited sections of the configured offline wiki and installed game documentation.\n\nexec tool declaration:\n```ts\ndeclare const tools: { mcp__hoi4_agent_tools__hoi4_reference_search(args: { limit?: number; query: string; sources?: Array<\"game_doc\" | \"wiki\" | \"script_doc\">; workspaceId?: string; }): Promise<CallToolResult<{ artifacts: Array<unknown>; blockers: Array<unknown>; changedFiles: Array<unknown>; code: string; data: { [key: string]: unknown; }; diagnostics: Array<unknown>; filesScanned: Array<unknown>; proposedFiles: Array<unknown>; status: \"ok\" | \"blocked\" | \"error\"; validation: unknown; workspaceId: string; }>>; };\n```"
+    },
+    {
+      "name": "mcp__hoi4_agent_tools__hoi4_source_lookup",
+      "description": "Start with the matching inspect tool; use hoi4.probability_inspect for weights and timing. Find local documentation with hoi4.reference_context, hoi4.reference_search and hoi4.reference_read, and source definitions with hoi4.source_lookup. Inspection and rendering are read-only; rewrite tools edit mod source. Results describe offline source and scenario models, not observed game behavior. Unresolved states are not confirmed coverage. Read linked artifacts when summaries omit detail. Long operations support negotiated MCP tasks and hoi4.job_inspect/hoi4.job_cancel; background rewrites need a stable requestKey.\n\nFind exact Clausewitz definitions, override status, a bounded source block, and indexed usages in the configured game and mod.\n\nexec tool declaration:\n```ts\ndeclare const tools: { mcp__hoi4_agent_tools__hoi4_source_lookup(args: { expectedRevision?: string; fromColumn?: number; fromLine?: number; includeReferences?: boolean; kind?: string; maxDefinitions?: number; maxLines?: number; maxReferences?: number; symbol: string; workspaceId?: string; }): Promise<CallToolResult<{ artifacts: Array<unknown>; blockers: Array<unknown>; changedFiles: Array<unknown>; code: string; data: { [key: string]: unknown; }; diagnostics: Array<unknown>; filesScanned: Array<unknown>; proposedFiles: Array<unknown>; status: \"ok\" | \"blocked\" | \"error\"; validation: unknown; workspaceId: string; }>>; };\n```"
+    }
+  ],
+  "scriptValidateExposed": false,
+  "healthVersionAndTaskNegotiationConfirmed": false,
+  "helperExpansionAndJobsUsed": false,
+  "priorEvidenceDirectory": "docs/plans/014_cannibalism_plans/subagent_handoffs/2026-10-03_event014_final_current_completion_audit/evidence",
+  "limits": "45s is a client observation deadline, not a returned server timeout or cancellation. Prior 600s timeouts and corrected narrow retries are inherited evidence. No broad loads repeated."
+}

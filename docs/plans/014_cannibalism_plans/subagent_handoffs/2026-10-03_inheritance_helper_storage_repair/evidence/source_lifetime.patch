@@ -1,0 +1,239 @@
+--- common/scripted_effects/014_cannibalism_effects.txt (before)
++++ common/scripted_effects/014_cannibalism_effects.txt (after)
+@@ -374,6 +374,9 @@
+ # Player ledger preservation across CBL and Wendigo tag transfers
+ # ---------------------------------------------------------------------------
+ 
++# Country donor ledger snapshot. Caller owns the ten transfer outputs at zero
++# before capture when applying the ledger in another country after return.
++# Output API: docs/events/014_cannibalism/inheritance_storage_contract.md
+ cannibalism_achievement_capture_current_player_ledger = {
+ 	set_temp_variable = { cannibalism_achievement_transfer_player = 0 }
+ 	if = { limit = { is_ai = no } set_temp_variable = { cannibalism_achievement_transfer_player = 1 } }
+@@ -3982,6 +3985,12 @@
+ 	set_temp_variable = { cannibalism_consumption_result = constant:cannibalism_consumption_result.invalid_scope }
+ 	set_temp_variable = { cannibalism_population_loss_applied = 0 }
+ 	set_temp_variable = { cannibalism_larder_gained = 0 }
++	# Own parameter outputs forwarded into the state consumption helper.
++	set_temp_variable = { cannibalism_consumption_parameters_valid = 0 }
++	set_temp_variable = { cannibalism_consumption_base_percent = 0 }
++	set_temp_variable = { cannibalism_consumption_hard_cap = 0 }
++	set_temp_variable = { cannibalism_consumption_larder_factor = 0 }
++	set_temp_variable = { cannibalism_consumption_larder_cap = 0 }
+ 	cannibalism_set_consumption_parameters_from_context = yes
+ 
+ 	if = {
+@@ -5589,6 +5598,8 @@
+ 
+ # Country scope. Called from the annexed reusable tag after pulse rehoming.
+ cannibalism_begin_current_warlord_slot_release = {
++	# Own the validation result used by the annex-release transaction.
++	set_temp_variable = { cannibalism_spread_queue_validation_result = 0 }
+ 	cannibalism_validate_spread_queue = yes
+ 	if = {
+ 		limit = {
+@@ -9742,6 +9753,13 @@
+ # A malformed ledger is left untouched and exposes a durable failure flag.
+ cannibalism_validate_spread_queue = {
+ 	set_temp_variable = { cannibalism_spread_queue_validation_result = 0 }
++	# Own loaded context across row-helper returns. Route is assigned per row below.
++	set_temp_variable = { cannibalism_expected_spread_id = 0 }
++	set_temp_variable = { cannibalism_spread_source_generation = 0 }
++	set_temp_variable = { cannibalism_spread_source_country_context_loaded = 0 }
++	set_temp_variable = { cannibalism_spread_source_state_context_loaded = 0 }
++	set_temp_variable = { cannibalism_spread_target_country_context_loaded = 0 }
++	set_temp_variable = { cannibalism_spread_target_state_context_loaded = 0 }
+ 	if = {
+ 		limit = {
+ 			NOT = { has_global_flag = cannibalism_spread_queue_invariant_failure }
+@@ -9965,6 +9983,14 @@
+ # Rebuilds every spread cache reachable from the canonical queue. It never runs
+ # against an invalid array shape or invalid live-row identity.
+ cannibalism_rebuild_spread_pending_ledgers = {
++	# Own only validation and loaded fields consumed by this rebuild.
++	set_temp_variable = { cannibalism_spread_queue_validation_result = 0 }
++	set_temp_variable = { cannibalism_expected_spread_id = 0 }
++	set_temp_variable = { cannibalism_spread_route = 0 }
++	set_temp_variable = { cannibalism_spread_source_generation = 0 }
++	set_temp_variable = { cannibalism_spread_source_country_context_loaded = 0 }
++	set_temp_variable = { cannibalism_spread_target_country_context_loaded = 0 }
++	set_temp_variable = { cannibalism_spread_target_state_context_loaded = 0 }
+ 	cannibalism_validate_spread_queue = yes
+ 	if = {
+ 		limit = { check_variable = { cannibalism_spread_queue_validation_result > 0 } }
+@@ -11275,8 +11301,13 @@
+ # - destination has a positive current cannibalism_actor_generation.
+ # The helper updates every live source country/generation and target country
+ # reference, plus exact target-state source metadata, then rebuilds all caches.
++# Caller owns cannibalism_spread_migration_result at zero when read after return.
++# Scope targets and output API: docs/events/014_cannibalism/inheritance_storage_contract.md
+ cannibalism_migrate_spread_entries_between_countries = {
+ 	set_temp_variable = { cannibalism_spread_migration_result = 0 }
++	# Own validation and the loaded row ID without resetting the input cursor.
++	set_temp_variable = { cannibalism_spread_queue_validation_result = 0 }
++	set_temp_variable = { cannibalism_expected_spread_id = 0 }
+ 	cannibalism_validate_spread_queue = yes
+ 	if = {
+ 		limit = {
+@@ -11541,6 +11572,8 @@
+ }
+ 
+ cannibalism_integrate_terminal_ai_warlords = {
++	# Own the result checked after each absorption call.
++	set_temp_variable = { cannibalism_absorption_result = 0 }
+ 	clear_temp_array = cannibalism_terminal_ai_warlords
+ 	for_each_scope_loop = {
+ 		array = global.cannibalism_actor_countries
+@@ -12039,6 +12072,10 @@
+ # Host inheritance and reusable-slot release
+ # ---------------------------------------------------------------------------
+ 
++# Country donor snapshot. Inputs: current donor variables and three origin flags.
++# Caller owns all 16 cannibalism_inherited_* outputs at zero before this call.
++# Missing donor variables read as zero. Only temporary storage is modified.
++# API and complete usage: docs/events/014_cannibalism/inheritance_storage_contract.md
+ cannibalism_capture_current_warlord_inheritance = {
+ 	set_temp_variable = { cannibalism_inherited_hierarchy = cannibalism_hierarchy }
+ 	set_temp_variable = { cannibalism_inherited_larder_route = cannibalism_larder_route }
+@@ -12241,6 +12278,8 @@
+ 	# regular event targets. Never infer the destination from ROOT: absorption
+ 	# runs from the responding warlord's event scope.
+ 	set_temp_variable = { cannibalism_runtime_migration_result = 0 }
++	# Caller must allocate runtime result if it consumes it after return.
++	set_temp_variable = { cannibalism_spread_migration_result = 0 }
+ 	# The spread owner validates all nine aligned arrays, updates both country
+ 	# directions and exact state metadata, then rebuilds every derived cache.
+ 	cannibalism_migrate_spread_entries_between_countries = yes
+@@ -12392,6 +12431,33 @@
+ 
+ cannibalism_create_unified_country_from_selected_host = {
+ 	set_temp_variable = { cannibalism_unified_creation_result = 0 }
++	# Own snapshot outputs before entering donor scopes or capture helpers.
++	set_temp_variable = { cannibalism_inherited_hierarchy = 0 }
++	set_temp_variable = { cannibalism_inherited_larder_route = 0 }
++	set_temp_variable = { cannibalism_inherited_network_route = 0 }
++	set_temp_variable = { cannibalism_inherited_larder = 0 }
++	set_temp_variable = { cannibalism_inherited_frenzy = 0 }
++	set_temp_variable = { cannibalism_inherited_alignment = 0 }
++	set_temp_variable = { cannibalism_inherited_consumed_population = 0 }
++	set_temp_variable = { cannibalism_inherited_consumed_population_k = 0 }
++	set_temp_variable = { cannibalism_inherited_warlord_origin = 0 }
++	set_temp_variable = { cannibalism_inherited_warlord_region = 0 }
++	set_temp_variable = { cannibalism_inherited_warlord_name_index = 0 }
++	set_temp_variable = { cannibalism_inherited_warlord_slot_index = 0 }
++	set_temp_variable = { cannibalism_inherited_warlord_personality = 0 }
++	set_temp_variable = { cannibalism_inherited_origin_island = 0 }
++	set_temp_variable = { cannibalism_inherited_origin_siege = 0 }
++	set_temp_variable = { cannibalism_inherited_origin_march = 0 }
++	set_temp_variable = { cannibalism_achievement_transfer_player = 0 }
++	set_temp_variable = { cannibalism_achievement_transfer_first_host = 0 }
++	set_temp_variable = { cannibalism_achievement_transfer_countries_suppressed = 0 }
++	set_temp_variable = { cannibalism_achievement_transfer_isolated_recovered = 0 }
++	set_temp_variable = { cannibalism_achievement_transfer_reconstruction = 0 }
++	set_temp_variable = { cannibalism_achievement_transfer_exploitation_ever = 0 }
++	set_temp_variable = { cannibalism_achievement_transfer_exploitation_renounced = 0 }
++	set_temp_variable = { cannibalism_achievement_transfer_exploitation_repeated = 0 }
++	set_temp_variable = { cannibalism_achievement_transfer_joint = 0 }
++	set_temp_variable = { cannibalism_achievement_transfer_decisive = 0 }
+ 	if = {
+ 		limit = { cannibalism_selected_unification_host_is_valid = yes }
+ 		event_target:cannibalism_unification_host = {
+@@ -12536,6 +12602,9 @@
+ }
+ 
+ cannibalism_execute_evolution_iii_reveal = {
++	# Own preflight validation and the result forwarded by the Wendigo wrapper.
++	set_temp_variable = { cannibalism_spread_queue_validation_result = 0 }
++	set_temp_variable = { cannibalism_wendigo_unification_result = 0 }
+ 	if = {
+ 		limit = {
+ 			has_global_flag = cannibalism_evolution_iii_transition_due
+@@ -12582,6 +12651,35 @@
+ 
+ cannibalism_absorb_current_warlord_into_unified_host = {
+ 	set_temp_variable = { cannibalism_absorption_result = 0 }
++	# Retain migration success after the destination scope returns.
++	set_temp_variable = { cannibalism_runtime_migration_result = 0 }
++	# Own snapshot outputs before entering donor scopes or capture helpers.
++	set_temp_variable = { cannibalism_inherited_hierarchy = 0 }
++	set_temp_variable = { cannibalism_inherited_larder_route = 0 }
++	set_temp_variable = { cannibalism_inherited_network_route = 0 }
++	set_temp_variable = { cannibalism_inherited_larder = 0 }
++	set_temp_variable = { cannibalism_inherited_frenzy = 0 }
++	set_temp_variable = { cannibalism_inherited_alignment = 0 }
++	set_temp_variable = { cannibalism_inherited_consumed_population = 0 }
++	set_temp_variable = { cannibalism_inherited_consumed_population_k = 0 }
++	set_temp_variable = { cannibalism_inherited_warlord_origin = 0 }
++	set_temp_variable = { cannibalism_inherited_warlord_region = 0 }
++	set_temp_variable = { cannibalism_inherited_warlord_name_index = 0 }
++	set_temp_variable = { cannibalism_inherited_warlord_slot_index = 0 }
++	set_temp_variable = { cannibalism_inherited_warlord_personality = 0 }
++	set_temp_variable = { cannibalism_inherited_origin_island = 0 }
++	set_temp_variable = { cannibalism_inherited_origin_siege = 0 }
++	set_temp_variable = { cannibalism_inherited_origin_march = 0 }
++	set_temp_variable = { cannibalism_achievement_transfer_player = 0 }
++	set_temp_variable = { cannibalism_achievement_transfer_first_host = 0 }
++	set_temp_variable = { cannibalism_achievement_transfer_countries_suppressed = 0 }
++	set_temp_variable = { cannibalism_achievement_transfer_isolated_recovered = 0 }
++	set_temp_variable = { cannibalism_achievement_transfer_reconstruction = 0 }
++	set_temp_variable = { cannibalism_achievement_transfer_exploitation_ever = 0 }
++	set_temp_variable = { cannibalism_achievement_transfer_exploitation_renounced = 0 }
++	set_temp_variable = { cannibalism_achievement_transfer_exploitation_repeated = 0 }
++	set_temp_variable = { cannibalism_achievement_transfer_joint = 0 }
++	set_temp_variable = { cannibalism_achievement_transfer_decisive = 0 }
+ 	if = {
+ 		limit = {
+ 			is_cannibalism_warlord_country = yes
+@@ -18488,6 +18586,9 @@
+ 
+ cannibalism_register_current_wendigo_anchor = {
+ 	set_temp_variable = { cannibalism_wendigo_anchor_registration_result = 0 }
++	# Own exact-population results before entering the host country scope.
++	set_temp_variable = { cannibalism_consumption_result = constant:cannibalism_consumption_result.invalid_scope }
++	set_temp_variable = { cannibalism_population_loss_applied = 0 }
+ 	if = {
+ 		limit = {
+ 			check_variable = {
+@@ -18736,6 +18837,8 @@
+ }
+ 
+ cannibalism_absorb_primary_warlord_donor_into_wendigo = {
++	# Own the nested migration result before entering either donor scope.
++	set_temp_variable = { cannibalism_runtime_migration_result = 0 }
+ 	if = {
+ 		limit = {
+ 			has_event_target = cannibalism_primary_warlord_donor
+@@ -18812,6 +18915,33 @@
+ 
+ cannibalism_create_wendigo_unification_from_selected_hosts = {
+ 	set_temp_variable = { cannibalism_wendigo_unification_result = 0 }
++	# Own snapshot outputs before entering donor scopes or capture helpers.
++	set_temp_variable = { cannibalism_inherited_hierarchy = 0 }
++	set_temp_variable = { cannibalism_inherited_larder_route = 0 }
++	set_temp_variable = { cannibalism_inherited_network_route = 0 }
++	set_temp_variable = { cannibalism_inherited_larder = 0 }
++	set_temp_variable = { cannibalism_inherited_frenzy = 0 }
++	set_temp_variable = { cannibalism_inherited_alignment = 0 }
++	set_temp_variable = { cannibalism_inherited_consumed_population = 0 }
++	set_temp_variable = { cannibalism_inherited_consumed_population_k = 0 }
++	set_temp_variable = { cannibalism_inherited_warlord_origin = 0 }
++	set_temp_variable = { cannibalism_inherited_warlord_region = 0 }
++	set_temp_variable = { cannibalism_inherited_warlord_name_index = 0 }
++	set_temp_variable = { cannibalism_inherited_warlord_slot_index = 0 }
++	set_temp_variable = { cannibalism_inherited_warlord_personality = 0 }
++	set_temp_variable = { cannibalism_inherited_origin_island = 0 }
++	set_temp_variable = { cannibalism_inherited_origin_siege = 0 }
++	set_temp_variable = { cannibalism_inherited_origin_march = 0 }
++	set_temp_variable = { cannibalism_achievement_transfer_player = 0 }
++	set_temp_variable = { cannibalism_achievement_transfer_first_host = 0 }
++	set_temp_variable = { cannibalism_achievement_transfer_countries_suppressed = 0 }
++	set_temp_variable = { cannibalism_achievement_transfer_isolated_recovered = 0 }
++	set_temp_variable = { cannibalism_achievement_transfer_reconstruction = 0 }
++	set_temp_variable = { cannibalism_achievement_transfer_exploitation_ever = 0 }
++	set_temp_variable = { cannibalism_achievement_transfer_exploitation_renounced = 0 }
++	set_temp_variable = { cannibalism_achievement_transfer_exploitation_repeated = 0 }
++	set_temp_variable = { cannibalism_achievement_transfer_joint = 0 }
++	set_temp_variable = { cannibalism_achievement_transfer_decisive = 0 }
+ 	if = {
+ 		limit = {
+ 			cannibalism_selected_wendigo_merge_host_is_valid = yes
