@@ -1,6 +1,86 @@
 # Famine and Migration Current Probability Evidence
 
-Status: post-separation mandatory HOI4 MCP evidence. This is not a numeric balance certification because the available scenario fixtures do not resolve live HOI4 trigger state.
+Status: 2026-10-03 reconciliation; current probability evidence remains unresolved.
+
+The prospective runtime source is parent-reviewed and committed in `59ee4eb62277982172b408e2b61ace4eb1237a47`, with final reviewed source-family hashes unchanged.
+The committed parent-review document's earlier commit-pending wording is its timestamped provenance, not a current source blocker.
+Publication does not supply the missing prospective, food-observer or country-validity comparisons, complete bindings, native execution or dynamic evidence.
+
+## Current boundary: 2026-10-03
+
+The current specialist authority is [probability_capability_reaudit_20261003.md](subagent_handoffs/probability_capability_reaudit_20261003.md).
+Its current-source census finds ten famine and eighteen migration willingness candidates, but no October MCP inspection artifact or scenario result was returned.
+These counts are source evidence only.
+The narrow `hoi4.probability_inspect` retry for `migration_select_general_safe_evacuation_destination` returned `timed out awaiting tools/call after 600s`; earlier caller-terminated attempts are abandoned requests rather than returned service failures.
+This timeout does not establish that every MCP route is unavailable.
+
+Decision-file SHA-256 values are famine `52E84B51B6C9FAF5827F3152613870E4EBBD65215EDD35D70E913D18BA01DFAA` and published prospective migration `66D5DACCB52B11787A53A899B748B2E8F5427E0A8B46A4B303E8BB6A37A01D2F`, unchanged from the 2026-10-03 16:29:09 UTC capture and final audit.
+The committed caller-output identity `5000DD59578763690E391A22C8F09E7BCC0FC16E8AA063CE068B2D6104BAA0D7` is the distinct prospective pre-edit source, not the current working file.
+The earlier October `279487DC7F2FCEF921F7294FD207BA8C1C33F871C652280EBB31D2D1FD2A3E8B` identity remains a frozen baseline; its caller-default delta changes no numerical AI expression, but the current file is not identical to that earlier inspection snapshot.
+They differ from the August identities below and are not MCP hashes or revisions.
+August's 15/60 unresolved evaluation rows and 46/134 unresolved comparison items remain valid historical limits for their own source identities; they are not certification of October source or of the country-validity correction.
+The August path-based comparisons resolve only their own provenance ambiguity.
+
+The parent accepted and applied `exists = yes` in `humanitarian_country_is_valid` within the user's exact-object and transfer requirements, retaining scope validity and special/nonhuman exclusions, in commit `3bfe73111f848886b7cbe0dacf8f98beef25e672`.
+The immutable preimage is `evidence/20261003_country_validity/before/humanitarian_validation_triggers.txt`, SHA-256 `2E2D5AC68749F621EDC1D61BE7F38B3D93D1027A7DB2EFF13C8832C50C9D64A1`; current source SHA-256 is `7F2B422D959FD5D2742F3B9DD41BE2CF3471B37804AF9A03882E3A3282D1E74D`.
+Because destination/donor eligibility consumes this helper, the mandatory same-case probability comparison remains outstanding even though no numerical weight changed.
+Keep `prob_country_live_target_valid_20261003` and `prob_country_dormant_or_annexed_target_invalid_20261003` fixed across baseline and after evaluation.
+Neither case has a verified fixture encoding, scenario hash, evaluated result, or comparison artifact.
+Do not invent country tags, scope facts, dynamic candidates, or schema fields, substitute an August artifact as the baseline, or compare current source to itself.
+
+Destination, opposition, and foreign-relief donor pool completeness remains unverified for October.
+Historical incomplete registries are retained as limitations, not current pool inventories.
+No current numerical eligibility, willingness ordering, normalized probability, timing, ranking, dominance, repetition, or exploit-safety conclusion is supported.
+Exposed mechanic/scenario/package test tools do not substitute for the probability workflow, verified service health, or standalone viewer availability.
+
+## Food-observation integration and outstanding same-scenario comparison
+
+[normal_food_observation_probability_20261003.md](subagent_handoffs/normal_food_observation_probability_20261003.md) is the source-backed pre-integration baseline, with immutable sources under `validation_baselines/normal_food_observation_20261003/`.
+Its two narrowed destination inspections returned actual 600-second timeouts, with no metadata, current candidate declarations, scenario hash, analysis or artifact.
+Its earlier unwired-consumer, query-category-reveal and premature-retirement findings were resolved in source by accepted integration commit `52b2e7cfeadbcd694d24b3a9a99906427079f60c` and final [normal_food_observation_completion_audit_20261003.md](subagent_handoffs/normal_food_observation_completion_audit_20261003.md).
+Current-crisis marker validation and caller-result declarations are also corrected in the final independently reviewed identity.
+Do not retain those pre-integration defects as current source blockers or represent their resolution as numeric evaluation.
+
+Eligibility can change through the food consumer despite byte-identical destination selector bodies and unchanged numeric weights.
+The mandatory before/current compare remains outstanding for `prob_destination_selection_internal` and `prob_destination_selection_persecution` and the agreed quiet-untracked, first-material, retired-quiet, known-crisis and repeated-query no-stock/death cases where real supported fixtures exist.
+Use the actual frozen before-source family and integrated after sources so helper dependencies differ; comparing unchanged selector files alone cannot prove the eligibility delta.
+Current dynamic candidate completeness, country/state binding, base/modifier scores, rankings, sensitivity and normalized probabilities remain unmeasured.
+The baseline's hard internal-before-foreign selection order is source structure only; no accepted numerical balance target or current starvation/ranking certification follows from it.
+
+The earlier independent observer audit identities were famine core `095974659833AC0C8A6D6BC0B40BCE34A545754976C83B78CFE1007D97A1025D`, famine triggers `3BE7168A1E1E2CB54E76A1AE6969870113AF5E53FF7DEDC0F2CE0F011EDB44A9`, famine adapter `09BF27C2F784BBDCBD1883DFA7192B796EF8E18CAD3D622820C131B18145FEA0`, and migration adapter `37AAD37C1B3AA4A31CC24DD6CC0C789B9C0648FF7070ACB473C62E890C4D7C7A`.
+Later parent revisions are retained in the distinct prospective baseline and timestamped checkpoint, not silently attributed to that earlier audit.
+The schema-valid `food_observation_shared_score_zero_20261003` mechanic request returned an actual 600-second timeout with no execution artifact and does not replace probability comparison.
+The current mechanic schema accepted flat numeric `scenario.state` and `equals` assertions with `id`, `path = { key = ... }`, and `expected`; nested `state.variables` was rejected.
+This corrects an earlier overbroad typed-record claim, without establishing country/actor binding or dynamic pool support.
+Dormant foreign-host first services/request has parent-accepted, independently audited and published runtime source in `59ee4eb62`; food observation itself still grants no capacity or services.
+
+## Prospective before/post comparison: still missing required evidence
+
+[prospective_reception_probability_20261003.md](subagent_handoffs/prospective_reception_probability_20261003.md) records the before and post-repair source phases; the plan's accepted Part 3/6 promotion is commit `621df57aa`.
+The stable before-source archive is commit `cdd43abe3b996c1bc3e5538da8d13384c9bb5b33`, containing 29 immutable blobs and their `SOURCE_MANIFEST.md` with `*.txt -text -filter` protection.
+Parent and curator raw `git cat-file` stream verification matched every committed blob's SHA-256 to the manifest, closing durable byte provenance rather than score/eligibility certification.
+New helper/constant files have no invented pre-edit counterparts.
+
+The BEFORE narrow decision inspect returned an actual 600-second timeout; an earlier wider handle became indeterminate without a final result, and the inappropriate mission-adapter caller-terminated request is not a baseline.
+POST `decision_ai_will_do` inspections for Open Reception/accept/reject together and Open Reception alone each returned actual 600-second timeouts, with no source revision, candidate metadata, scenario hash, analysis or artifact.
+No prospective `probability_compare` was submitted: the complete dynamic adjacent pool and supported origin/host/cohort/cost/transition scenario bindings remain absent.
+This is an actual missing required same-case comparison, not a waived requirement or a claim that a compare call itself timed out.
+The separate normal-food observer and country-validity before/current comparisons remain outstanding as well.
+
+Required existing prospective IDs are `prob_destination_selection_internal`, `prob_destination_selection_persecution`, `prob_corridor_acceptance`, `prob_humanitarian_border`, and `prob_capacity_exhausted_border`, plus supported parent-named missing-service/real-capacity/hazard/row/headroom/repeated-stale-offer/expiry/exact-cost cases.
+No machine bindings, neighbor candidates or unsupported fixture fields were invented.
+Numeric AI constants were not retuned; changed preparable eligibility and conditional capacity terms can nevertheless change scores and selection odds.
+Source models and preserved internal-first ordering do not certify current rankings, normalized probabilities, starvation/dominance safety, native actions or transfer/refund behavior.
+
+The prospective probability owner corrected its opening baseline paragraph to distinguish the post-observer freeze from the earlier missing-first-food snapshot.
+Use the frozen first-host service/request deadlock as the prospective baseline, preserving the earlier food gap only in its original observer baseline report.
+The prospective report's structural lookup revision `f95bf71d112d31480b64c3ec0f0af3323c4360ce869d1ae17860d838c2d2f43c` covers eighteen old-gate source lines, not POST engine execution.
+`source_of_truth_map.md` retains intermediate captures separately from corrected final review identities published in `59ee4eb62`; no MCP revision or numerical result is inferred from those local hashes.
+
+## Retained August 2026 evidence
+
+Every use of “current,” “final,” or “latest” in the retained sections below refers to its August source snapshot unless an explicit later date is supplied.
+Artifact URIs, scenario hashes, source identities, and unresolved findings are preserved for provenance.
 
 > **Historical density-patch trace (2026-08-26):** The migration visibility correction was inspected against the then-current 18-action pool at source hash `ef14ce12e61338d733440d0fdc85bc1ede5a883b767cc7fe7ef48edf7327d779`. Analysis `probability-320ed8c0ab9e18a15234344a` returned `PROBABILITY_ANALYZED_PARTIAL`, `comparisonChanges=0`, and 94 unresolved items, but both comparison sides resolved the same intermediate source. It is retained only as a partial score trace and is not valid before/current evidence.
 
@@ -8,7 +88,7 @@ Status: post-separation mandatory HOI4 MCP evidence. This is not a numeric balan
 
 > **Current-evidence boundary (2026-08-26):** The authoritative latest score evidence is the flat-fact recovery in `subagent_handoffs/final_flat_fact_probability_0826.md`, read together with the distinct-source comparison in `subagent_handoffs/distinct_probability_recovery_0826.md`. Final source inspection found complete declared lists of 10 famine and 18 migration candidates. Genuine temporary-before versus frozen-current comparisons completed under fixed named scenario hashes, then the temporary runtime files were deleted. Current flat-fact matrices reduce unresolved rows from 23 to 15 for famine and from 77 to 60 for migration, but exact named-scenario certification remains blocked by special `FROM`, scoped and compound triggers, and incomplete destination, opposition, and relief-donor registries. Older evidence below is retained for provenance and is superseded wherever it conflicts with this boundary.
 
-## Current flat-fact recovery
+## Historical flat-fact recovery: 2026-08-26
 
 The current-source famine matrix is analysis `probability-ee3074ce9bf0db80f330bf06` at scenario hash `638129d61ba378c2ecf61a438d17216d7a2dc976dcbd2e3e92b5e552e99fca6e`. It covers the four named famine scenarios and 40 candidate rows, with 15 unresolved rows and two information diagnostics at MCP source hash `729c115b88697b86b2e70988fc1b093361a9220c673a94f2451b68f7613a5e74`. Artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/e860826d78756ed13c6c7e608cb2778834fae16206807e319e4892bca3e23f2d/339223bb1fe22ee11a649ed0e6ae3417667561d1ec0eaa172215868d8d1c2cc8/probability-ee3074ce9bf0db80f330bf06.json`.
 
@@ -49,7 +129,7 @@ The deleted `events/famine_incidents.txt` and `events/migration_incidents.txt` f
 
 No current famine or migration event-option pool exists, so the deleted layer is not a probability blocker and no earlier incident-option result is a current balance claim.
 
-## Current direct source inspection
+## Historical direct source inspection: 2026-08-26
 
 The final isolated `hoi4.probability_inspect` call for `common/decisions/famine_decisions.txt` used the `mission_ai_will_do` adapter and returned `PROBABILITY_SOURCE_INSPECTED` with source revision `7caa56bc69922e4ac74e494d19a279b8816aa78eee4be8be7a7052187e98f579` and MCP source hash `729c115b88697b86b2e70988fc1b093361a9220c673a94f2451b68f7613a5e74`. It exposed the complete declared pool of 10 candidates and six required inputs; artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/acd719d701e14b9e6b0c1c7b09f887386c7c4e65674f6052b698e5328fdd8aa0/7b911a370582d4a26ad301091bd644afda08efb62b1b52ef2161bbdf9656fb0e/probability-inspect-729c115b8869.json`. The frozen local file SHA-256 is `966b31a3e49d5a0ad11e3483997e5f0567d0d83837b3c074fa293766ea4cc491`.
 

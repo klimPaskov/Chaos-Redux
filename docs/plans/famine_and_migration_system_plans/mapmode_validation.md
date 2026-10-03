@@ -1,6 +1,43 @@
 # Famine and Migration Mapmode Validation
 
-Status: current two-mapmode source and tool evidence after mechanic separation.
+Status: 2026-10-03 source reconciliation; dynamic scripted-mapmode execution remains unresolved.
+
+## Current boundary: 2026-10-03
+
+The parent accepted the bounded source corrections in commit `32358abec0431a0e0e33253dbafd6ffe61eb0318` under the user's separate-mechanic and exact-receipt requirements.
+[current_mapmode_projection_audit_20261003.md](subagent_handoffs/current_mapmode_projection_audit_20261003.md) and [mapmode_wording_privacy_audit_20261003.md](subagent_handoffs/mapmode_wording_privacy_audit_20261003.md) retain the source trace, acceptance basis, final hashes, and validation limits.
+Active origins recognize positive registered flight population or pressure, and reception destinations recognize positive active local load.
+Live migration corridor display requires evacuation operation; terminal display requires the saved terminal evacuation operation.
+Corridor cleanup snapshots recognized operation beside terminal status, and a new preparation clears both terminal fields.
+Zero-only reception initialization no longer selects private detail.
+Owner/controller authorization remains unchanged, and unrelated viewers receive qualitative text only.
+The displayed counters are `Flight pressure` and `Awaiting departure`; the generation receipt is displayed as `Current evacuation corridor` with its actual phase shown separately.
+
+The architect's 41 final-source selector cases pass as a Boolean source interpretation, including positive/zero endpoint states, evacuation versus relief, terminal provenance, role overlap, and owner/controller/public disclosure.
+This does not execute HOI4, compute dynamic map colors, render tooltip layout, or certify live button behavior.
+The narrow map retry returned `timed out awaiting tools/call after 600s` without an artifact.
+Earlier manually terminated requests remain abandoned pending calls.
+One source lookup returned `OK` with zero indexed definitions; direct source establishes the getter, so that lookup miss is not evidence of an absent getter.
+The exposed `hoi4.map_render` schema has geography layers but no scripted-mapmode or tooltip execution option.
+These are specific request and capability limitations, not a blanket service-health claim.
+
+The August map/GUI artifacts below retain their original source revisions and prove only the stated substrate or static layout coverage.
+They were not regenerated for the October selectors and must not be presented as October dynamic execution evidence.
+No map geometry, GUI layout, asset, category, population formula, or AI weight was changed by the accepted presentation patch.
+
+Later source commits `6a03f3edd`, `4751110e8`, and `52b2e7cfe` implement custody cleanup, caller-owned results and food observation; none supplies new map color/tooltip execution evidence.
+The final observation completion audit resolves its current-crisis and pending-material source findings, while native observer execution and same-scenario probability comparison remain absent.
+Its valid zero-score mechanic request returned an actual 600-second timeout without an artifact.
+Current mechanic schema validation accepts flat numeric `scenario.state` and equality assertions with `id`, `path = { key = ... }`, and `expected`, while nested `state.variables` is rejected.
+That bounded correction supersedes the earlier overbroad typed-record description; it does not add custom-mapmode, viewer, or tooltip execution support.
+Dormant foreign-host first-service/request has an accepted Part 3/6 plan and independently audited, parent-reviewed runtime source committed in `59ee4eb62277982172b408e2b61ace4eb1237a47`; publication supplies no new dynamic map execution artifact.
+Prospective before/post inspections timed out without metadata, and its required comparison was not submitted because supported complete bindings remain missing.
+The durable 29-source archive's raw committed-byte integrity is verified separately; it is neither native map/tooltip nor probability evidence.
+`source_of_truth_map.md` preserves the intermediate captures and corrected final identities now published in `59ee4eb62`; native/dynamic map proof remains unresolved.
+
+## Retained August 2026 evidence
+
+References to “current” in the retained evidence below describe the August snapshot, not a fresh October artifact.
 
 ## Accepted boundary
 

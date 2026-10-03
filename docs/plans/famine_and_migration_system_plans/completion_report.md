@@ -1,8 +1,146 @@
 # Famine and Migration Systems Completion Report
 
-Date: 2026-08-26.
+Date: 2026-10-03; August 26 evidence retained with its original provenance.
 
-Verdict: incomplete. The accepted famine and migration designs are implemented as separate source-owned mechanics connected by explicit causal adapters and neutral conservation primitives. The current isolated exploration, architecture, decision/mapmode, probability, and completion audits have finished. Completion cannot be claimed until the unresolved exact-owner integrations, probability certification, and dynamic mapmode execution evidence listed below are closed.
+Verdict: incomplete.
+The user-authorized design remains separate famine and migration mechanics with independent problem-gated categories, two mapmodes available from campaign start, three canonical values each, and narrow neutral conservation/corridor infrastructure.
+The original user instruction explicitly made all eight specification parts, supporting matrices, and binding implementation prompts required implementation scope; later user separation corrections govern their interpretation.
+Standalone addenda/proposals still require recorded acceptance, but the original required design is not optional or awaiting reapproval.
+The parent accepted six committed October source corrections; source review, partial MCP evidence, and completed historical audits do not certify the full goal.
+
+## Published bounded runtime checkpoint
+
+The prospective runtime repair is implemented, parent-reviewed and committed as `59ee4eb62277982172b408e2b61ace4eb1237a47` in a bounded 39-file source/source-documentation tranche through the isolated shared-index workflow.
+Only owned migration API-index rows entered that commit; unrelated source/index/API-documentation work was preserved.
+The parent read the complete saved independent audit before publication; its later final-turn capacity error does not erase that reviewed report.
+The committed `prospective_reception_parent_review_20261003.md` records commit-pending status at its pre-publication timestamp; this new checkpoint records publication without rewriting that provenance.
+Final reviewed nine-family source hashes are unchanged, including decision `66D5DACC...`, corrected corridor trigger `A580C3D9...` and preparation runtime `A0D5B870...`.
+Native execution, prospective/observer/country same-case comparisons, dynamic map and external-owner/full-goal obligations remain incomplete; the source commit is not their substitute.
+Catalogue/export hashes in the retained August record are dated historical evidence only; concurrent Event 001-040 authors may have changed the workbook, and no new whole-workbook verification or exporter run is claimed here.
+The newly started legacy-cost affordability review is read-only and has no accepted patch or source closure yet; existing strict-affordability/inline concerns remain unresolved pending its owner handoff and parent decision.
+
+## Latest prospective-reception checkpoint: 2026-10-03 16:29:09 UTC
+
+Disposition: accepted design promoted into Parts 3/6, runtime independently source-audited, parent-reviewed and committed in `59ee4eb62`, with required native/probability evidence pending.
+Commit `621df57aa7f1000778c540c220d47911b034aa65` records the original user-goal acceptance and reviewed first-host lifecycle clarification.
+`prospective_reception_implementation_20261003.md` records the bounded preparable pool, explicit requester under global-host ROOT, exact ordinary cohort reuse/new generations, full amount capacity before selection/acceptance/movement, meaningful inclusive paid services/policy and full refund/owned rollback.
+The existing sparse owner performs actual automatic movement and immediate ordinary completion; manual held-term and relief ownership remain separate, with saved-receiver achievement reads and generation-safe opposite-lane rearm/absent-pointer pruning under source review.
+Real repeated small incoming generations use the existing 30+10-day receipt window and incident count; the host reveal reads the actual offered 1000-person amount rather than unrelated origin pressure.
+No numeric AI constant, GUI/layout, art, mapmode, workbook, event or public-value family was changed.
+
+Parent integration uses the existing registration/phase boundaries for three display-only cost quotes, three resource selectors and six ready/blocked strings, native Open Reception blocked/hover aliases, hidden completion mechanics and an explicit meaningful outcome tooltip.
+The localisation handoff's three prose/alias/first-display-quote findings are parent-patched source closure, without native colour/wrapping/action proof.
+Commit `2e06576ad0e0eb938533ed26e7136a2edbbc7d89` adds 50 suffix aliases for the remaining 25 families; all 26 custom-cost bases have blocked and hover coverage.
+Separate unresolved concerns remain in the legacy non-Open families: strict nominal affordability/colour comparisons and three four-entry inline cost strings.
+The inline concerns affect escorted relief convoy, emergency airlift and third-country resettlement, without a native clipping result or changed payment contract.
+Aliases do not change those gates, approve a weaker payment/display contract, or prove native clipping.
+The native custom-cost skill paragraph/original handoff is parent-reviewed and committed in `f22c7cc30aaed8b4dde6f40f9733d4e3a8bb56b3`, alongside the already committed caller-output contract `72783cb91`.
+
+The before-source archive is committed as `cdd43abe3b996c1bc3e5538da8d13384c9bb5b33`, with 29 entries in `validation_baselines/prospective_reception_20261003/SOURCE_MANIFEST.md` and `*.txt -text -filter` attributes.
+Parent and curator post-commit raw `git cat-file` `StandardOutput.BaseStream` checks matched all 29 SHA-256 values to that manifest; no line decoding or filesystem-only check substituted for raw blob proof.
+This closes archive byte provenance only.
+Prospective BEFORE narrow and POST three-ID/single-ID inspections returned actual 600-second timeouts without artifacts or candidate/scenario metadata.
+No prospective compare was submitted because supported complete dynamic candidate/scenario bindings are missing; this is missing required comparison evidence, not waiver or a claimed compare timeout.
+Normal-food observer and country-validity comparisons remain separate outstanding gates.
+Corrected long-question/context, narrow custom-cost context and exact search attempts timed out after 600 seconds; a successful eighteen-line source lookup at revision `f95bf71d112d31480b64c3ec0f0af3323c4360ce869d1ae17860d838c2d2f43c` returned the old Open Reception gate, not POST execution.
+`script_validate` was unexposed; native refunds/transfers/targets/scheduling, dynamic map consumers and live validation remain unresolved.
+
+Checkpoint migration decision SHA-256 is `66D5DACCB52B11787A53A899B748B2E8F5427E0A8B46A4B303E8BB6A37A01D2F`.
+`source_of_truth_map.md` preserves the intermediate capture hashes separately from corrected final review/publication identities.
+The later 16:48:20 UTC source checkpoint restores relief's original absent-load-or-spare-capacity predicate and refuses zero/negative present private IDs before implicit resolver fallback.
+The owner handoff records seven additional parsed-source cases; corrected trigger/runtime hashes are now published in `59ee4eb62`, with native evidence still pending.
+The delivered `prospective_reception_completion_audit_20261003.md` independently verifies those corrections and the combined parent/runtime source, finding no remaining actionable source defect in this bounded repair.
+Its bounded reviewed source is closed by parent review/publication in `59ee4eb62`, while missing probability/native/dynamic evidence and other full-system obligations remain blockers.
+The parent-owned `docs/systems/migration_system.md` CXT paragraph correctly describes recomputation from real registered food/shelter/medical receipts, with no free aggregate capacity grant.
+Original external-owner receipt gaps and historically missing Events 118/120/131 remain broader goal blockers.
+
+## Current reconciliation: 2026-10-03
+
+| Surface | Completed source work and acceptance | Meaningful evidence and remaining limit |
+| --- | --- | --- |
+| Reception services | Parent accepted canonical positive proof 1 for shelter and medical services. Commit `9a79f16f22593781af1228755090cfa6eb91755d` changes both guards from greater than one to greater than zero and updates the helper contract. | Caller/guard/reset trace supports the correction. Initial shelter and narrower missing-proof mechanic tests each returned an actual 600-second timeout with no artifact; service execution, capacity refresh, and mission entry are unproven. |
+| Migration mapmode and tooltip | Parent accepted positive origin/reception endpoint roles, evacuation-only live and terminal corridor context, terminal operation snapshot/reset, zero-only detail rejection, and `Flight pressure` / `Awaiting departure` / `Current evacuation corridor` wording. Commit `32358abec0431a0e0e33253dbafd6ffe61eb0318` records source and paired documentation. | Architect's 41-case Boolean selector matrix passes as source evidence only; independent wording/privacy source audit confirms the changed paths. Narrow map lookup returned an actual 600-second timeout; exposed render schema cannot execute these scripted colors/tooltips. |
+| Live country targets | Parent accepted native `exists = yes` in `humanitarian_country_is_valid`, preserving scope validity and special/nonhuman filters. Commit `3bfe73111f848886b7cbe0dacf8f98beef25e672` includes paired helper/public documentation and an immutable preimage. | Current guard SHA-256 `7F2B422D959FD5D2742F3B9DD41BE2CF3471B37804AF9A03882E3A3282D1E74D`; preimage SHA-256 `2E2D5AC68749F621EDC1D61BE7F38B3D93D1027A7DB2EFF13C8832C50C9D64A1`. Same-case probability comparison remains mandatory and outstanding. |
+| Custody request/result cleanup | Original user exact ownership/proof/cleanup requirements; commit `6a03f3edd427243bbc683ec41de9d3d2666313b2` consumes all twelve temporary custody inputs at both exits, resets stale outputs before rejection, binds current site and live actor target, and consistently accepts positive whole-row proof. | Custody handoff and the bounded audit's appended source review support the correction; actor-approval action token is separate from country identity. Native same-chain execution remains unproven. |
+| Caller-owned result lifetime | Original complete valid response/custody requirements; commit `4751110e8f5bf5588758143524c56e0ffb4f937b` predeclares shelter/medical results in reception and result/duplicate/amount in the Camp caller. | Caller handoff and independent final observation audit verify the bounded declarations. Source references warn of unsafe lifetime assumptions; no universal engine output-loss or executed mission result is claimed. |
+| Food observation without simulation ticks | Parent accepted model baseline, shared calculation, crisis validation and non-reveal material pending jobs; commit `52b2e7cfeadbcd694d24b3a9a99906427079f60c` wires assessment through the existing bounded consumer and protects pending stage timing. | Independent observer audit finds no remaining actionable source defect in that scope. Its compare/native execution remain absent; separate first-host source is audited/reviewed/committed in `59ee4eb62`, not full-system completion. |
+
+The probability specialist's current handoff is `subagent_handoffs/probability_capability_reaudit_20261003.md`.
+Current decision-file hashes are `52E84B51B6C9FAF5827F3152613870E4EBBD65215EDD35D70E913D18BA01DFAA` for famine and `66D5DACCB52B11787A53A899B748B2E8F5427E0A8B46A4B303E8BB6A37A01D2F` for prospective migration source published in `59ee4eb62`.
+The committed `5000DD59578763690E391A22C8F09E7BCC0FC16E8AA063CE068B2D6104BAA0D7` migration identity is the prospective before snapshot.
+The earlier October migration identity `279487DC7F2FCEF921F7294FD207BA8C1C33F871C652280EBB31D2D1FD2A3E8B` is the frozen pre-caller source, not the present file.
+The source census still finds ten and eighteen willingness candidates, but no October probability artifact establishes candidate eligibility, score ordering, current dynamic-pool completeness, or numeric balance.
+The final narrow inspect returned `timed out awaiting tools/call after 600s`; caller-terminated earlier requests prove neither success nor route absence.
+Use the fixed cases `prob_country_live_target_valid_20261003` and `prob_country_dormant_or_annexed_target_invalid_20261003` for the required baseline/after comparison only after supported encoding and real facts are established.
+No invented scope fields, synthetic pool, August baseline substitution, or current-versus-current comparison is accepted.
+August's 15/60 unresolved evaluation rows and 46/134 comparison limits apply only to the historical hashes retained below.
+
+Reference retrieval partially succeeds and is not globally unavailable.
+The parent map context identified installed/offline references; narrow installed `scope_exists` search returned citation `887c6da2918d431c71214405453b72d4515b039bea1df57ec9497d0ec5cf102d`, path `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md`, lines 7450-7472, revision `7d27ed77dadaf3a213a4b3e2c624bf9c02dae495317abe8eee833b27c2d1de29`.
+The detailed `hoi4.reference_read` request returned `timed out awaiting tools/call after 600s` without a section payload or artifact; the pertinent section was read locally with the matching installed-documentation hash recorded above.
+The successful context/search citation remains reference evidence; earlier scope/check-variable searches also returned actual 600-second timeouts.
+Exposed tools, verified returned results, source-only checks, and standalone viewer availability remain distinct evidence categories.
+
+The suspected CXT daily-grant defect was rejected after reading the current synchronization helper: it marks pending packages and does not grant content.
+No CXT patch is required from that rejected finding.
+The bounded current owner census is `subagent_handoffs/event_owner_connections_reaudit_20261003.md`.
+It confirms Camp's explicit current living cohort callback supplies custody evidence only, while Event 013/020, Camp mortality, CBRN, and Air Winter calls supply their existing source-specific famine-pressure/context channels rather than migration movement.
+The inspected Event 005/006/014/015/021/028/033 callbacks provide no new safe exact movement receipt.
+This is source evidence limited to the named owners, not a revalidation of every generic occupation/bombing/war/peace/cluster/scenario or Event 043/050/051/095 seam.
+Corrected Event 005 inspect and source-lookup/reference-context retries returned actual 600-second timeouts; overview render/reference-search requests remained pending at the owner report boundary.
+The report returned no fresh event artifact for the nine named roots, so required event MCP evidence remains unresolved.
+Concurrent source changes still require final parent review.
+No Event 118/120/131 source is fabricated, and no relief-obstruction or generic occupation/bombing/war/peace/cluster/scenario proxy is accepted.
+The handoff directory census and one-row-per-file ledger are authoritative; October specialist and curator reports are recorded in `handoff_dispositions.md`.
+Current handoff-directory census and exactly-once reconciliation are recorded in `handoff_dispositions.md`, including the latest prospective/cost/skill reports.
+`subagent_handoffs/bounded_system_patch_completion_audit_20261003.md` finds no new actionable source defect or weakened accepted mechanic in the three assigned corrections and confirms their current source/caller identities.
+Its conclusion is explicitly bounded to those patches; it does not certify full-system integration, numeric AI balance, engine execution, dynamic map presentation, or live consumers.
+
+Commit `6a03f3edd` closes the strict custody/no-owner documentation contradiction and documents the temporary cleanup contract.
+`common/scripted_effects/migration_adapter_effects.md` still contains other-owner Gods reception paragraphs describing the corrected greater-than-one service guard; the curator leaves those Event 012 additions untouched.
+The current service contract is strictly positive proof, including canonical one; a larger positive token remains valid without scaling capacity.
+The curator leaves that mixed-owner file unchanged for the parent's narrow patch, preserving the Event 012 addition.
+The parent separately authorized corridor helper-document cleanup: current separate decision consumers are recorded, while old required-wiring, combined decision-path, and no-auditor prose is explicitly historical with artifact URIs preserved.
+
+No mechanical fallback, simplification, combined category/mapmode, extra canonical value, population substitute, world scan, or compatibility alias was introduced by these six corrections or this documentation reconciliation.
+Outstanding integrations and required evidence remain omissions/blockers rather than approved simplifications.
+No game was launched, no logs were read or supplied, and no clean error-log or live consumer result is claimed.
+
+### Food-observation and first-host source corrections with remaining evidence gates
+
+`subagent_handoffs/normal_destination_bootstrap_audit_20261003.md` established the earlier first-food and first-host circular reachability defects outside the original three-patch audit scope.
+The food portion is implemented in commit `52b2e7cfe` with paired source docs, immutable baselines, implementation handoff and final independent completion audit.
+The existing consumer now observes explicit origin/adjacent and registered capacity candidates before publishing only a current accepted assessment.
+Current-crisis severity flags/modifiers require matching numeric stage and complete durable fields before defaults, so malformed active crises cannot become stable assessments.
+A newly material stage-zero query keeps destination proof invalid and queues one exact non-reveal job; the ordinary processor owns activation and stage timing, and stable retirement refuses current material score until recognition or recovery.
+The prior missing-callsite, direct-category-reveal and premature-retirement findings are resolved source findings, not current implementation blockers.
+
+The parent-accepted food-only observer disposition is `implemented` with source evidence and independent review, while native execution and quantitative eligibility remain unresolved.
+Neutral zero loss-pressure is the existing model baseline and does not invent physical stocks, positive service capacity, population, or route proof.
+The final observer preserves existing crisis/input/profile/stock/exposure/timer state and avoids reserve updates, mortality, flight generation, stage commits, and presentation side effects during destination queries.
+The architecture report retains its original pre-acceptance proposal label; the later parent decision is recorded here and in the disposition ledger.
+The original bounded audit statement covers the three earlier corrections, with an appended custody-envelope review; `normal_food_observation_completion_audit_20261003.md` owns the final observer/caller source review and its execution limits.
+Its source arithmetic/refactor comparison and owner matrices are not native execution or probability results.
+The observation probability baseline preserves two actual 600-second inspect timeouts without artifacts, and the schema-valid zero-score `mechanic_test` also returned an actual 600-second timeout without an execution artifact.
+The required before/current compare remains outstanding for `prob_destination_selection_internal` and `prob_destination_selection_persecution` with supported quiet/material/retired/known-crisis/repeated-query cases over the exact frozen source family.
+No unchanged-selector-only comparison or August artifact substitution is a valid eligibility delta.
+
+The earlier independently reviewed observer hashes were famine core `095974659833AC0C8A6D6BC0B40BCE34A545754976C83B78CFE1007D97A1025D`, famine triggers `3BE7168A1E1E2CB54E76A1AE6969870113AF5E53FF7DEDC0F2CE0F011EDB44A9`, famine adapter `09BF27C2F784BBDCBD1883DFA7192B796EF8E18CAD3D622820C131B18145FEA0`, and migration adapter `37AAD37C1B3AA4A31CC24DD6CC0C789B9C0648FF7070ACB473C62E890C4D7C7A`.
+They retain that independent review's provenance; later parent working-tree/manifest identities are recorded at the latest checkpoint above and are not fresh MCP revisions or whole mixed-file ownership claims.
+
+A dormant foreign host's earlier first-service deadlock has an accepted promoted plan and audited, parent-reviewed prospective request/service source committed in `59ee4eb62`; native/weighted evidence remains unresolved.
+The implemented-source checkpoint carries a real origin cohort/selected host and paid preparation before strict capacity-based route acceptance; it is not a free or native housing/medical grant.
+Do not retain the prior unaccepted/unimplemented label as current status, or replace it with full lifecycle completion before the remaining gates are closed.
+No ordinary internal/foreign migration completion follows from the food observer alone.
+The custody cleanup and caller defaults are now committed and source reviewed, with executed results still unproven.
+The temporary-output skill paragraph and original handoff are parent-reviewed and committed as `72783cb91893e901bb7003ddd08ce4efe885dd38`, with unrelated mixed skill changes preserved.
+Its original pending-parent statement is historical; the recorded validator/source contract is not runtime execution evidence.
+
+## Retained August 26 implementation and evidence record
+
+The sections below preserve the previous implementation ledger and artifact provenance.
+Their “current,” “fresh,” “final,” source hashes, asset/catalog counts, and 98-handoff census describe the August snapshot unless a later date explicitly says otherwise.
+They do not override the October boundary or certify concurrent owner changes.
 
 ## Ownership and changed surfaces
 
