@@ -155,6 +155,11 @@ Player-facing event, decision, focus, and Event Details text must describe in-wo
 
 Visible dynamic values often display decimal places unless their localisation formatter says otherwise. If a value is conceptually an integer, show it as an integer with `|0` formatting or an equivalent scripted-localisation helper. Only show decimal places when the value genuinely needs fractional precision, such as ratios, percentages, fractional costs, or progress values where the fraction changes player decisions.
 
+For numeric `defined_text` output, put the formatted variable in a real `.yml` localisation value, such as `numeric_value_display: "[?temp_value|0]"`, and use the key's literal name in the corresponding `text` block: `localization_key = numeric_value_display`.
+An inline formatted variable string such as `localization_key = "[?temp_value|0]"` is tokenized as a dynamic key and may fail with dynamic-token errors.
+Temporary variables assigned in the same `text.trigger` remain visible to the selected localisation key, so calculate the display value there.
+Retain constant-backed temporary getters where the installed documentation supports the assignment, and do not introduce persistent globals solely for formatting.
+
 ## Event anatomy
 
 - entry event: the canonical `chaosx.nr<ID>.1` start
