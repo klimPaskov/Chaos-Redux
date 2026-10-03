@@ -84,3 +84,37 @@ After this installation, Event014 has 16 installed regional warlord portraits: E
 - evidence/runtime_install_preflight.json confirms current pre-install hashes and the exact eight-path scope.
 - evidence/runtime_install_receipt.json records parent approval, old-byte backups, installed hashes, and all protected-file checks.
 - evidence/runtime_before_install/ contains byte-exact backups of the eight replaced Asia DDS files.
+
+## Current parent matrix checkpoint
+
+The parent selected-art inventory is `docs/plans/014_cannibalism_plans/evidence/2026-10-03_global_portrait_review/candidate_inventory.json`.
+It records 56 installed candidate matches and four protected Hannibal files, independently of this package's timestamped installation snapshots.
+The global visual audit accepts all 56 distinct faces/compositions; the parent-reviewed Asia CBD paper-only correction is installed. Live acceptance remains open.
+
+## Current Asia CBD selected version and installation
+
+Parent visual approval evidence is docs/plans/014_cannibalism_plans/evidence/2026-10-03_asia_cbd_blank_pages_parent_review.json. It approves the native paper-only edit, before/after contact, and PNG-to-DDS pixel evidence. This addendum supersedes the earlier CBD open-gate note above.
+
+The immutable original ImageGen edit input remains source_png/leader_CBD_warlord_asia_source.png (1081x1455 RGB; SHA-256 64ac194c992dddc7da11cb316037f18a675f8be9346b697572fd1a42d3c4db11). The selected edited native master is cbd_blank_pages_revision/nativeeditmaster/leader_CBD_warlord_asia_blank_pages_native_edit.png (1081x1455 RGB; SHA-256 0f29aa83a01aaf4e0ded66418ba8e74ece95edc73a4147a22079cce4c448191e).
+
+Current selected source-to-runtime mapping:
+
+| Stage | Selected path | Dimensions / SHA-256 |
+|---|---|---|
+| Original edit input | source_png/leader_CBD_warlord_asia_source.png | 1081x1455 RGB; 64ac194c992dddc7da11cb316037f18a675f8be9346b697572fd1a42d3c4db11 |
+| Edited native master | cbd_blank_pages_revision/nativeeditmaster/leader_CBD_warlord_asia_blank_pages_native_edit.png | 1081x1455 RGB; 0f29aa83a01aaf4e0ded66418ba8e74ece95edc73a4147a22079cce4c448191e |
+| Selected processed PNG | cbd_blank_pages_revision/processed_png/leader_CBD_warlord_asia_blank_pages_v01_156x210.png | 156x210 RGB; abaa8530ae07bbbf5d95cb2c378ad896be3f452f0e16a49535971e92d83c50c4 |
+| Selected revision DDS | cbd_blank_pages_revision/candidate_dds/leader_CBD_warlord_asia_blank_pages_v01.dds | 156x210 opaque BGRA32, one level, 131168 bytes; f1bf93d986fc84fda26d6d326e4c88e97065899917293c6fcad7bbc862023ca9 |
+| Stable base-candidate path | candidate_dds/leader_CBD_warlord_asia.dds | f1bf93d986fc84fda26d6d326e4c88e97065899917293c6fcad7bbc862023ca9 |
+| Stable runtime path | gfx/leaders/014_cannibalism/leader_CBD_warlord_asia.dds | f1bf93d986fc84fda26d6d326e4c88e97065899917293c6fcad7bbc862023ca9 |
+| Existing sprite binding | GFX_portrait_CBD_warlord_asia in interface/014_cannibalism.gfx | Binding retained; GFX was byte-identical across the immediate before/after snapshots. |
+
+The earlier CBD route in the candidate inventory table above is historical and is superseded for current selection by this mapping. Its previous selected PNG and prior CBD DDS bytes remain unchanged in their historical locations and records.
+
+Old runtime bytes are preserved at cbd_blank_pages_revision/backups/leader_CBD_warlord_asia_runtime_before_parent_promotion.dds (SHA-256 831630a122a0052da5066788f775eb2916f8f7a8b9b4e85f464007a4be522350). Old base-candidate bytes are preserved at cbd_blank_pages_revision/backups/leader_CBD_warlord_asia_base_candidate_before_parent_promotion.dds with the same SHA-256.
+
+The immediate installation receipt is cbd_blank_pages_revision/receipts/installation_receipt.json. Its before and after snapshots cover all 60 runtime portrait DDS files, interface/014_cannibalism.gfx, and all 17 character-definition files. Only gfx/leaders/014_cannibalism/leader_CBD_warlord_asia.dds changed among the 60 runtime portraits; the other 59, all four protected Hannibal files, the GFX file, and all 17 character-definition files are unchanged. Snapshot paths are cbd_blank_pages_revision/receipts/installation_before_snapshot.json and cbd_blank_pages_revision/receipts/installation_after_snapshot.json.
+
+The source PNG, previous processed PNG, and historical production/runtime receipts remain unchanged. Parent owns the global candidate inventory and specification refresh; no regional counts are changed in this manifest.
+
+The 56-match parent-inventory checkpoint above describes the pre-promotion snapshot and is retained as historical evidence; parent owns refreshing that global inventory after this CBD-only correction.
