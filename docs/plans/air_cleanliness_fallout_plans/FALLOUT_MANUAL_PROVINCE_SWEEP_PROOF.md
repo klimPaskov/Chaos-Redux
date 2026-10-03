@@ -69,7 +69,7 @@ The countdown cannot begin until the ledger proves all of the following:
 - struck-state array size equals 1,081
 - no manual sweep error owns the transaction
 
-A failed or partially observed batch is never replayed because some native calls may already have executed. The transaction fails closed instead of duplicating strikes.
+A failed or partially observed batch is never replayed because some native calls may already have executed. The transaction fails closed instead of duplicating strikes. On entering the error state, `fallout_manual_fail_sweep` sends every human country the visible notice `chaosx.fallout.904`, which states that the sweep has ended, that landed strikes keep their damage, and that no blackout follows. The error state still blocks a second sweep in the same world.
 
 ## Population and Deaths reconciliation
 

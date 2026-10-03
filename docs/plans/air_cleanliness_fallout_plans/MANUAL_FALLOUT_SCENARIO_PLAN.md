@@ -25,7 +25,9 @@ The manual sandbox row and dispatch use raw id 14. The live triggerable-scenario
 
 Runtime acceptance and bounded performance remain unobserved because Hearts of Iron IV was not run and must not be run for this documentation task. The static sweep and seven-day barrier are a source claim; the public launch and runtime release are not.
 
-Vanilla `on_nuke_drop` schedules twelve one-day nuclear news events per callback. If every scripted call emits the callback, the sweep may schedule about 121,848 vanilla news event attempts. The mod callback cannot suppress that separate vanilla branch. Callback occurrence, callback synchrony, and the news-event load are release blockers.
+Vanilla `on_nuke_drop` schedules twelve one-day nuclear news events per callback. If every scripted call emits the callback, the sweep may schedule about 121,848 vanilla news event attempts. The mod callback cannot suppress that separate vanilla branch. The news-event load remains a release blocker.
+
+The 1936 live run (save `qa_scn014b`, 1 January 1936) settled callback occurrence and synchrony. Every one of the 10,154 calls produced one `on_nuke_drop` callback (`global.chaos_meter_nuclear_uses = 10154`), and all of them arrived together at 15:00, two hours after the whole batch chain had run at 13:00. `launch_nuke` only queues the strike, so a callback never runs inside the batch event that issued it. Chained one-hour event delays also resolved inside the same hour, so all 41 batches and all seven verifier attempts ran before the first strike landed.
 
 Static proof and map hashes are recorded in `FALLOUT_MANUAL_PROVINCE_SWEEP_PROOF.md`.
 
@@ -83,7 +85,7 @@ The exact province strike requirement is non-negotiable.
 Static source proof establishes a supported province-valued `launch_nuke` call, an exact installed-map expansion, all 41 batch receipts, and the seven-day callback barrier. The active source path is not gated on a HOI4 run. The following remain user-owned runtime observations:
 
 - each `launch_nuke` call is accepted, including the 126 land targets in impassable states
-- `use_nuke = no` emits exactly one `on_nuke_drop` callback inside the guarded batch window
+- `use_nuke = no` emits exactly one `on_nuke_drop` callback, on a later engine tick than the call (observed live)
 - each target produces the required native province result
 - the exact thermonuclear classification and state damage remain intact
 - 250-call batches remain bounded for performance, save integrity, and multiplayer synchronization
@@ -112,11 +114,11 @@ The static substrate sequences launch work as follows:
 
 1. `.900` initializes the manual transaction and schedules batch token `.910`.
 2. Batch tokens `.910` through `.950` execute exactly one expected batch each.
-3. Verifier tokens `.960` through `.966` allow a bounded callback-settling window.
+3. The observer counts every coordinator strike while the sweep or verifier is open and an issued launch is still unobserved. Verifier tokens `.960` through `.966` wait whole days between attempts, and the callback that completes the expected count fires the waiting verifier token at once.
 4. Complete issued, observed, unique-state, state-sum, and array-size agreement applies aggregate consequences once.
 5. The verified transaction stores a seven-day countdown and schedules `.903`.
 
-Manual runtime schema 4 binds each scheduled callback and the completed prestrike population baseline ledger to the active transaction generation. Capture records the exact installed state count once, then the host validator and scheduled callbacks use the generation-bound O(1) receipt before more native work. The callback also validates the last completed batch and observed-count bounds before opening the launch window. The countdown event and request wrapper both validate the active token before handoff. Schema 1 through schema 3 active transactions fail closed. Successful request handoff clears the due flag and countdown schedule provenance.
+Manual runtime schema 4 binds each scheduled callback and the completed prestrike population baseline ledger to the active transaction generation. Capture records the exact installed state count once, then the host validator and scheduled callbacks use the generation-bound O(1) receipt before more native work. The batch callback also validates the last completed batch and observed-count bounds before opening the launch window. The launch window only marks the synchronous dispatch. It does not gate observation, because the native callbacks arrive after the window closes. The countdown event and request wrapper both validate the active token before handoff. Schema 1 through schema 3 active transactions fail closed. Successful request handoff clears the due flag and countdown schedule provenance.
 
 During the synthetic batch, normal nuclear hooks should still apply required physical state effects. Mod-owned callback consequences should suppress or aggregate:
 

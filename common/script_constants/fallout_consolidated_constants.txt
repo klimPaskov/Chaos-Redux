@@ -2698,14 +2698,18 @@ air_winter_response_ai = {
 # CHAOS REDUX - AIR WINTER ORDINARY-MAP VISUAL CONSTANTS
 # ============================================================================
 # Stable entity-ID ranges and centralized rendering values for the five-slot
-# regional visual lifecycle. Every calculated ID stays below the Clausewitz
-# fixed-point ceiling and is emitted as a literal through meta_effect.
+# regional visual lifecycle. Every calculated ID is emitted as a literal
+# through meta_effect, so it must stay inside the five-digit range that the
+# variable text formatter has been observed to emit verbatim (province ids up
+# to 13413 in the live manual sweep). Seven-digit IDs did not survive the
+# substitution in the 1936 Fallout live run.
 # ============================================================================
 
 air_winter_visual_schema = {
 	schema = { any_key = yes data = int }
 
-	version = 1
+	# Version 2 moves every slot to five-digit IDs and province anchors.
+	version = 2
 }
 
 air_winter_visual_entity_id = {
@@ -2713,12 +2717,22 @@ air_winter_visual_entity_id = {
 
 	# The 2,000-id spacing is valid only while live state ids stay below 2001.
 	# Reallocate every band and bump the visual schema before a larger map ships.
-	ground_base = 1860000
-	primary_particle_base = 1862000
-	secondary_particle_base = 1864000
-	dead_vegetation_base = 1866000
-	hydrology_base = 1868000
+	ground_base = 3000
+	primary_particle_base = 5000
+	secondary_particle_base = 7000
+	dead_vegetation_base = 9000
+	hydrology_base = 11000
 	maximum_live_state_id = 1081
+}
+
+# Change keys let the monthly refresh skip a slot whose entity already shows
+# the desired visual. Ground and hydrology keys are class * stride + variant.
+air_winter_visual_slot_key = {
+	schema = { any_key = yes data = int }
+
+	class_stride = 10
+	hydrology_frozen_water = 1
+	hydrology_thaw_flood = 2
 }
 
 air_winter_visual_render = {
@@ -2792,7 +2806,10 @@ fallout_manual_sweep = {
 	final_batch_index = 40
 	last_batch_size = 154
 	batch_delay_hours = 1
-	verifier_delay_hours = 1
+	# Native on_nuke_drop callbacks land on a later engine tick than the
+	# launch_nuke call, and chained one-hour event delays can resolve inside
+	# the same tick. Verifier retries therefore wait whole days.
+	verifier_delay_days = 1
 	verifier_retry_limit = 6
 	countdown_days = 7
 	minimum_intensity = 1

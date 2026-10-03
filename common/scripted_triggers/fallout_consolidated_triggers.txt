@@ -3833,17 +3833,28 @@ fallout_manual_batch_cursor_is_valid = {
 	}
 }
 
-# Supported scope: COUNTRY
+# Supported scope: COUNTRY. ROOT is the on_nuke_drop launcher.
+# launch_nuke queues the strike and the engine runs on_nuke_drop on a later
+# tick, after the issuing batch event has closed. A sweep strike is therefore
+# any coordinator drop while the sweep or its verifier is open and some issued
+# launch has not been observed yet.
 fallout_manual_native_nuke_belongs_to_sweep = {
 	has_global_flag = fallout_manual_scenario_active
 	has_global_flag = fallout_manual_sweep_active
 	has_global_flag = fallout_synthetic_strike_batch
-	has_global_flag = fallout_manual_batch_launch_window
 	NOT = { has_global_flag = fallout_manual_sweep_error }
 	fallout_manual_runtime_schema_is_current = yes
-	check_variable = { global.fallout_manual_status = constant:fallout_manual_status.sweeping }
+	OR = {
+		check_variable = { global.fallout_manual_status = constant:fallout_manual_status.sweeping }
+		check_variable = { global.fallout_manual_status = constant:fallout_manual_status.verifying }
+	}
 	has_country_flag = fallout_manual_synthetic_launcher
 	fallout_manual_current_country_is_coordinator = yes
+	check_variable = {
+		var = global.fallout_manual_observed_strike_count
+		value = global.fallout_manual_issued_strike_count
+		compare = less_than
+	}
 }
 
 # Supported scope: COUNTRY

@@ -38,13 +38,13 @@ Each state id from 1 through 1081 receives five non-overlapping calculated ids:
 
 | Slot | Formula | Maximum |
 | --- | --- | ---: |
-| Ground | 1,860,000 + state id | 1,861,081 |
-| Primary particle | 1,862,000 + state id | 1,863,081 |
-| Secondary particle | 1,864,000 + state id | 1,865,081 |
-| Dead vegetation | 1,866,000 + state id | 1,867,081 |
-| Hydrology | 1,868,000 + state id | 1,869,081 |
+| Ground | 3,000 + state id | 4,081 |
+| Primary particle | 5,000 + state id | 6,081 |
+| Secondary particle | 7,000 + state id | 8,081 |
+| Dead vegetation | 9,000 + state id | 10,081 |
+| Hydrology | 11,000 + state id | 12,081 |
 
-All calculated values remain below the fixed-point ceiling of 2,147,483.647. A repository scan found no other literal inside these ranges. The engine does not expose a reserved entity-id namespace, so collision with another externally combined mod remains unprovable. The bands are 2,000 ids apart and are valid for the installed 1 through 1081 state domain. A future or combined map with a state id of 2001 or higher would overlap the bands and requires a new reviewed allocation.
+Every calculated id stays inside the five-digit range that the variable text formatter emitted verbatim during the 1936 Fallout live run, where meta-substituted province ids up to 13,413 reached their exact targets. The earlier seven-digit bands (1,860,000 and up) did not survive the substitution: that run logged 12,351 `invalid params: memfile:N: create_entity` errors and the save held only four entities, one per band, all at map origin. Visual schema 2 moves every slot to the five-digit bands. The engine does not expose a reserved entity-id namespace, so collision with another externally combined mod remains unprovable. The bands are 2,000 ids apart and are valid for the installed 1 through 1081 state domain. A future or combined map with a state id of 2001 or higher would overlap the bands and requires a new reviewed allocation.
 
 The hydrology slot holds frozen water or thaw. It never holds both. This reduces no visible state because the two conditions are mutually exclusive.
 
@@ -87,9 +87,13 @@ Frozen water follows class-specific thresholds:
 
 Thaw eligibility reads recovery trend and a persistent peak-phase memory. It replaces frozen water and can appear in warm wet classes as runoff or flood without implying prior blanket ice.
 
+## Placement
+
+`create_entity` places each slot with `province =` on the state's anchor province. `air_winter_visual_seed_anchor_provinces` writes `air_winter_visual_anchor_province` on every state once per visual schema version. Its rows are a mechanical ledger generated from the installed `history/states` files and `map/definition.csv`: the highest victory-point land province, or the first listed land province for a state without victory points. The documented `state =` placement left every entity of the live run at x, y, and z zero while the entity name, scale, and minimum zoom were applied, so the placement field was the rejected parameter. `province =` is the other documented placement form, and the approved Kaiserreich precedent never uses `state =`. A state without an anchor shows no regional visual.
+
 ## Save recovery and cleanup proof
 
-Every desired slot is recreated with the same id on each monthly pulse. The documented replacement behavior makes repeated refresh idempotent and provides reconstruction on the first resumed monthly pulse if an entity was not retained by the save.
+Each slot stores a change key (`air_winter_visual_<slot>_key`). Ground and hydrology keys are presentation class times `air_winter_visual_slot_key.class_stride` plus the phase or hydrology variant, particle keys are the weather kind, and the dead-vegetation key is the class. The monthly refresh issues `create_entity` only when the slot is absent or its key differs, so a state whose visual is unchanged issues no call. The live save shows that scripted entities are written to the save's `entity` block with their position, scale, and zoom, so a loaded game is expected to keep its slots without a monthly rebuild. A reload that loses entities or their placement would show up as missing or misplaced regional visuals until a state's visual changes, and the live retest checks this.
 
 A state visual schema mismatch destroys all five deterministic ids before rebuilding. State reset destroys all five ids immediately. Global reset sets the existing deferred state-reset flag, and the next existing monthly pass clears every state without adding a new iterator. Finalize clears the reset request only after that pass.
 

@@ -3847,7 +3847,10 @@ country_event = {
 					}
 				}
 				event_target:air_winter_event_state = {
-					damage_building = { type = rail_way damage = @CR_SC_AIR_WINTER_EVENT_OUTCOME_RAIL_DAMAGE }
+					if = {
+						limit = { check_variable = { var = non_damaged_building_level@rail_way value = constant:air_winter_runtime.zero compare = greater_than } }
+						damage_building = { type = rail_way damage = @CR_SC_AIR_WINTER_EVENT_OUTCOME_RAIL_DAMAGE }
+					}
 					add_to_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_moderate }
 					clr_state_flag = air_winter_route_chain_rail
 					set_state_flag = air_winter_memory_rail_clearance_failed
@@ -7270,7 +7273,10 @@ country_event = {
 					}
 				}
 				event_target:air_winter_event_state = {
-					damage_building = { type = infrastructure damage = @CR_SC_AIR_WINTER_EVENT_OUTCOME_INFRASTRUCTURE_DAMAGE }
+					if = {
+						limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:air_winter_runtime.zero compare = greater_than } }
+						damage_building = { type = infrastructure damage = @CR_SC_AIR_WINTER_EVENT_OUTCOME_INFRASTRUCTURE_DAMAGE }
+					}
 					add_to_variable = { air_winter_exposure = constant:air_winter_event_ledger.exposure_major }
 					add_to_variable = { air_winter_disease_pressure = constant:air_winter_event_ledger.disease_moderate }
 					clr_state_flag = air_winter_thaw_chain_fields
@@ -11529,6 +11535,28 @@ country_event = {
 	trigger = { fallout_manual_countdown_callback_is_valid = yes }
 	immediate = {
 		fallout_manual_submit_standard_request = yes
+	}
+}
+
+# Player notice for a manual sweep that ended in its terminal error state.
+# fallout_manual_fail_sweep fires it once per human country.
+country_event = {
+	id = chaosx.fallout.904
+	title = chaosx.fallout.904.t
+	desc = {
+		trigger = { check_variable = { global.fallout_manual_issued_strike_count > constant:fallout_runtime.zero } }
+		text = chaosx.fallout.904.d_struck
+	}
+	desc = {
+		trigger = { NOT = { check_variable = { global.fallout_manual_issued_strike_count > constant:fallout_runtime.zero } } }
+		text = chaosx.fallout.904.d_unlaunched
+	}
+	picture = GFX_report_event_fallout_names_missing
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.fallout.904.a
+		custom_effect_tooltip = chaosx.fallout.904.a.tt
 	}
 }
 

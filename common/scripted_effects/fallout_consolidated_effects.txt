@@ -3713,7 +3713,7 @@ air_winter_try_damage_current_building_family = {
 	if = {
 		limit = {
 			check_variable = { air_winter_building_family_cursor = constant:air_winter_building_family.infrastructure }
-			infrastructure > constant:air_winter_runtime.zero
+			check_variable = { var = non_damaged_building_level@infrastructure value = constant:air_winter_runtime.zero compare = greater_than }
 		}
 		meta_effect = {
 			text = { damage_building = { type = infrastructure damage = [AIR_WINTER_DAMAGE] } }
@@ -3724,7 +3724,7 @@ air_winter_try_damage_current_building_family = {
 	else_if = {
 		limit = {
 			check_variable = { air_winter_building_family_cursor = constant:air_winter_building_family.civilian_factory }
-			industrial_complex > constant:air_winter_runtime.zero
+			check_variable = { var = non_damaged_building_level@industrial_complex value = constant:air_winter_runtime.zero compare = greater_than }
 		}
 		meta_effect = {
 			text = { damage_building = { type = industrial_complex damage = [AIR_WINTER_DAMAGE] } }
@@ -3735,7 +3735,7 @@ air_winter_try_damage_current_building_family = {
 	else_if = {
 		limit = {
 			check_variable = { air_winter_building_family_cursor = constant:air_winter_building_family.military_factory }
-			arms_factory > constant:air_winter_runtime.zero
+			check_variable = { var = non_damaged_building_level@arms_factory value = constant:air_winter_runtime.zero compare = greater_than }
 		}
 		meta_effect = {
 			text = { damage_building = { type = arms_factory damage = [AIR_WINTER_DAMAGE] } }
@@ -3746,7 +3746,7 @@ air_winter_try_damage_current_building_family = {
 	else_if = {
 		limit = {
 			check_variable = { air_winter_building_family_cursor = constant:air_winter_building_family.air_base }
-			air_base > constant:air_winter_runtime.zero
+			check_variable = { var = non_damaged_building_level@air_base value = constant:air_winter_runtime.zero compare = greater_than }
 			NOT = { check_variable = { air_winter_airbase_closure_months > constant:air_winter_runtime.zero } }
 		}
 		meta_effect = {
@@ -3758,7 +3758,7 @@ air_winter_try_damage_current_building_family = {
 	else_if = {
 		limit = {
 			check_variable = { air_winter_building_family_cursor = constant:air_winter_building_family.dockyard }
-			dockyard > constant:air_winter_runtime.zero
+			check_variable = { var = non_damaged_building_level@dockyard value = constant:air_winter_runtime.zero compare = greater_than }
 		}
 		meta_effect = {
 			text = { damage_building = { type = dockyard damage = [AIR_WINTER_DAMAGE] } }
@@ -3780,7 +3780,7 @@ air_winter_try_damage_current_building_family = {
 				value = constant:air_winter_building_damage.critical_supply_phase_months
 				compare = greater_than_or_equals
 			}
-			supply_node > constant:air_winter_runtime.zero
+			check_variable = { var = non_damaged_building_level@supply_node value = constant:air_winter_runtime.zero compare = greater_than }
 		}
 		meta_effect = {
 			text = { damage_building = { type = supply_node damage = [AIR_WINTER_DAMAGE] } }
@@ -3802,7 +3802,7 @@ air_winter_try_damage_current_building_family = {
 				value = constant:air_winter_building_damage.critical_supply_phase_months
 				compare = greater_than_or_equals
 			}
-			rail_way > constant:air_winter_runtime.zero
+			check_variable = { var = non_damaged_building_level@rail_way value = constant:air_winter_runtime.zero compare = greater_than }
 		}
 		meta_effect = {
 			text = { damage_building = { type = rail_way damage = [AIR_WINTER_DAMAGE] } }
@@ -4629,9 +4629,9 @@ air_winter_phase_1_clear_pending_branch = {
 
 # Supported scope: STATE
 air_winter_phase_1_clear_result_modifiers = {
-	remove_dynamic_modifier = { modifier = air_winter_phase_1_factory_access_disruption_state }
-	remove_dynamic_modifier = { modifier = air_winter_phase_1_supply_disruption_state }
-	remove_dynamic_modifier = { modifier = air_winter_phase_1_supply_relief_state }
+	if = { limit = { has_dynamic_modifier = { modifier = air_winter_phase_1_factory_access_disruption_state } } remove_dynamic_modifier = { modifier = air_winter_phase_1_factory_access_disruption_state } }
+	if = { limit = { has_dynamic_modifier = { modifier = air_winter_phase_1_supply_disruption_state } } remove_dynamic_modifier = { modifier = air_winter_phase_1_supply_disruption_state } }
+	if = { limit = { has_dynamic_modifier = { modifier = air_winter_phase_1_supply_relief_state } } remove_dynamic_modifier = { modifier = air_winter_phase_1_supply_relief_state } }
 }
 
 # Supported scope: STATE
@@ -4757,12 +4757,12 @@ air_winter_event_cancel_pending_chain = {
 	air_winter_desert_city_clear_pending_branch = yes
 	air_winter_dead_city_clear_pending_branch = yes
 	air_winter_event_clear_furnace_pending_branch = yes
-	remove_dynamic_modifier = { modifier = air_winter_desert_city_waterworks_state }
-	remove_dynamic_modifier = { modifier = air_winter_refinery_output_disruption_state }
-	remove_dynamic_modifier = { modifier = air_winter_reactor_emergency_power_demand_state }
-	remove_dynamic_modifier = { modifier = air_winter_seed_vault_preservation_industry_state }
-	remove_dynamic_modifier = { modifier = air_winter_tunnel_school_civic_industry_state }
-	remove_dynamic_modifier = { modifier = air_winter_tunnel_school_shift_industry_state }
+	if = { limit = { has_dynamic_modifier = { modifier = air_winter_desert_city_waterworks_state } } remove_dynamic_modifier = { modifier = air_winter_desert_city_waterworks_state } }
+	if = { limit = { has_dynamic_modifier = { modifier = air_winter_refinery_output_disruption_state } } remove_dynamic_modifier = { modifier = air_winter_refinery_output_disruption_state } }
+	if = { limit = { has_dynamic_modifier = { modifier = air_winter_reactor_emergency_power_demand_state } } remove_dynamic_modifier = { modifier = air_winter_reactor_emergency_power_demand_state } }
+	if = { limit = { has_dynamic_modifier = { modifier = air_winter_seed_vault_preservation_industry_state } } remove_dynamic_modifier = { modifier = air_winter_seed_vault_preservation_industry_state } }
+	if = { limit = { has_dynamic_modifier = { modifier = air_winter_tunnel_school_civic_industry_state } } remove_dynamic_modifier = { modifier = air_winter_tunnel_school_civic_industry_state } }
+	if = { limit = { has_dynamic_modifier = { modifier = air_winter_tunnel_school_shift_industry_state } } remove_dynamic_modifier = { modifier = air_winter_tunnel_school_shift_industry_state } }
 	clr_state_flag = air_winter_deep_water_patrol
 	clr_state_flag = air_winter_seed_chain_vaults
 	clr_state_flag = air_winter_seed_chain_herds
@@ -4865,7 +4865,7 @@ air_winter_event_reconcile_pending_chain = {
 			NOT = { air_winter_event_desert_city_opening_receipt_is_valid = yes }
 		}
 		air_winter_desert_city_clear_opening_receipt = yes
-		remove_dynamic_modifier = { modifier = air_winter_desert_city_waterworks_state }
+		if = { limit = { has_dynamic_modifier = { modifier = air_winter_desert_city_waterworks_state } } remove_dynamic_modifier = { modifier = air_winter_desert_city_waterworks_state } }
 	}
 }
 
@@ -5168,13 +5168,13 @@ air_winter_desert_city_clear_pending_branch = {
 
 # Supported scope: STATE
 air_winter_desert_city_clear_supply_result = {
-	remove_dynamic_modifier = { modifier = air_winter_desert_city_supply_relief_state }
-	remove_dynamic_modifier = { modifier = air_winter_desert_city_supply_disruption_state }
+	if = { limit = { has_dynamic_modifier = { modifier = air_winter_desert_city_supply_relief_state } } remove_dynamic_modifier = { modifier = air_winter_desert_city_supply_relief_state } }
+	if = { limit = { has_dynamic_modifier = { modifier = air_winter_desert_city_supply_disruption_state } } remove_dynamic_modifier = { modifier = air_winter_desert_city_supply_disruption_state } }
 }
 
 # Supported scope: STATE
 air_winter_desert_city_clear_state_policy_and_outcome_memory = {
-	remove_dynamic_modifier = { modifier = air_winter_desert_city_waterworks_state }
+	if = { limit = { has_dynamic_modifier = { modifier = air_winter_desert_city_waterworks_state } } remove_dynamic_modifier = { modifier = air_winter_desert_city_waterworks_state } }
 	air_winter_desert_city_clear_supply_result = yes
 	clr_state_flag = air_winter_memory_desert_city_municipal
 	clr_state_flag = air_winter_memory_desert_city_rail
@@ -5233,7 +5233,7 @@ air_winter_desert_city_pay_motor = {
 
 # Supported scope: STATE
 air_winter_desert_city_apply_waterworks = {
-	remove_dynamic_modifier = { modifier = air_winter_desert_city_waterworks_state }
+	if = { limit = { has_dynamic_modifier = { modifier = air_winter_desert_city_waterworks_state } } remove_dynamic_modifier = { modifier = air_winter_desert_city_waterworks_state } }
 	set_temp_variable = { air_winter_desert_city_waterworks_days = constant:air_winter_event_desert_city.municipal_factory_days }
 	add_dynamic_modifier = {
 		modifier = air_winter_desert_city_waterworks_state
@@ -5300,7 +5300,7 @@ air_winter_desert_city_damage_motor_failure = {
 # Supported scope: STATE
 air_winter_desert_city_finalize_result = {
 	air_winter_desert_city_clear_opening_receipt = yes
-	remove_dynamic_modifier = { modifier = air_winter_desert_city_waterworks_state }
+	if = { limit = { has_dynamic_modifier = { modifier = air_winter_desert_city_waterworks_state } } remove_dynamic_modifier = { modifier = air_winter_desert_city_waterworks_state } }
 	air_winter_desert_city_clear_pending_branch = yes
 	air_winter_event_refresh_state = yes
 }
@@ -5783,19 +5783,19 @@ air_winter_event_calculate_candidate_score = {
 # Supported scope: STATE
 air_winter_event_damage_hydroelectric_building = {
 	if = {
-		limit = { dam > constant:air_winter_runtime.zero }
+		limit = { check_variable = { var = non_damaged_building_level@dam value = constant:air_winter_runtime.zero compare = greater_than } }
 		damage_building = { type = dam damage = @CR_SC_AIR_WINTER_EVENT_OUTCOME_DAM_DAMAGE }
 	}
 	else_if = {
-		limit = { dam_mountain > constant:air_winter_runtime.zero }
+		limit = { check_variable = { var = non_damaged_building_level@dam_mountain value = constant:air_winter_runtime.zero compare = greater_than } }
 		damage_building = { type = dam_mountain damage = @CR_SC_AIR_WINTER_EVENT_OUTCOME_DAM_DAMAGE }
 	}
 	else_if = {
-		limit = { cataract_dam_mountain > constant:air_winter_runtime.zero }
+		limit = { check_variable = { var = non_damaged_building_level@cataract_dam_mountain value = constant:air_winter_runtime.zero compare = greater_than } }
 		damage_building = { type = cataract_dam_mountain damage = @CR_SC_AIR_WINTER_EVENT_OUTCOME_DAM_DAMAGE }
 	}
 	if = {
-		limit = { infrastructure > constant:air_winter_runtime.zero }
+		limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:air_winter_runtime.zero compare = greater_than } }
 		damage_building = { type = infrastructure damage = @CR_SC_AIR_WINTER_EVENT_OUTCOME_INFRASTRUCTURE_DAMAGE }
 	}
 }
@@ -5803,15 +5803,15 @@ air_winter_event_damage_hydroelectric_building = {
 # Supported scope: STATE
 air_winter_event_damage_refinery_network = {
 	if = {
-		limit = { synthetic_refinery > constant:air_winter_runtime.zero }
+		limit = { check_variable = { var = non_damaged_building_level@synthetic_refinery value = constant:air_winter_runtime.zero compare = greater_than } }
 		damage_building = { type = synthetic_refinery damage = @CR_SC_AIR_WINTER_EVENT_OUTCOME_REFINERY_DAMAGE }
 	}
 	if = {
-		limit = { fuel_silo > constant:air_winter_runtime.zero }
+		limit = { check_variable = { var = non_damaged_building_level@fuel_silo value = constant:air_winter_runtime.zero compare = greater_than } }
 		damage_building = { type = fuel_silo damage = @CR_SC_AIR_WINTER_EVENT_OUTCOME_REFINERY_DAMAGE }
 	}
 	if = {
-		limit = { infrastructure > constant:air_winter_runtime.zero }
+		limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:air_winter_runtime.zero compare = greater_than } }
 		damage_building = { type = infrastructure damage = @CR_SC_AIR_WINTER_EVENT_OUTCOME_INFRASTRUCTURE_DAMAGE }
 	}
 }
@@ -5820,7 +5820,7 @@ air_winter_event_damage_refinery_network = {
 # penalty. A synthetic plant receives repairable operational damage.
 air_winter_event_apply_refinery_output_disruption = {
 	if = {
-		limit = { synthetic_refinery > constant:air_winter_runtime.zero }
+		limit = { check_variable = { var = non_damaged_building_level@synthetic_refinery value = constant:air_winter_runtime.zero compare = greater_than } }
 		damage_building = { type = synthetic_refinery damage = @CR_SC_AIR_WINTER_EVENT_OUTCOME_REFINERY_OUTPUT_DAMAGE }
 	}
 	set_temp_variable = { air_winter_refinery_disruption_days = constant:air_winter_event_runtime.delayed_short_days }
@@ -5832,13 +5832,13 @@ air_winter_event_apply_refinery_output_disruption = {
 
 # Supported scope: STATE
 air_winter_event_clear_refinery_output_disruption = {
-	remove_dynamic_modifier = { modifier = air_winter_refinery_output_disruption_state }
+	if = { limit = { has_dynamic_modifier = { modifier = air_winter_refinery_output_disruption_state } } remove_dynamic_modifier = { modifier = air_winter_refinery_output_disruption_state } }
 }
 
 # Supported scope: STATE
 air_winter_event_clear_furnace_shutdown = {
-	remove_dynamic_modifier = { modifier = air_winter_furnace_shutdown_industry_state }
-	remove_dynamic_modifier = { modifier = air_winter_furnace_shutdown_coal_state }
+	if = { limit = { has_dynamic_modifier = { modifier = air_winter_furnace_shutdown_industry_state } } remove_dynamic_modifier = { modifier = air_winter_furnace_shutdown_industry_state } }
+	if = { limit = { has_dynamic_modifier = { modifier = air_winter_furnace_shutdown_coal_state } } remove_dynamic_modifier = { modifier = air_winter_furnace_shutdown_coal_state } }
 }
 
 # Supported scope: STATE
@@ -5907,25 +5907,25 @@ air_winter_event_apply_reactor_power_demand = {
 
 # Supported scope: STATE
 air_winter_event_clear_reactor_power_demand = {
-	remove_dynamic_modifier = { modifier = air_winter_reactor_emergency_power_demand_state }
+	if = { limit = { has_dynamic_modifier = { modifier = air_winter_reactor_emergency_power_demand_state } } remove_dynamic_modifier = { modifier = air_winter_reactor_emergency_power_demand_state } }
 }
 
 # Supported scope: STATE
 air_winter_event_damage_reactor_network = {
 	if = {
-		limit = { nuclear_reactor > constant:air_winter_runtime.zero }
+		limit = { check_variable = { var = non_damaged_building_level@nuclear_reactor value = constant:air_winter_runtime.zero compare = greater_than } }
 		damage_building = { type = nuclear_reactor damage = @CR_SC_AIR_WINTER_EVENT_OUTCOME_REACTOR_DAMAGE }
 	}
 	else_if = {
-		limit = { nuclear_reactor_heavy_water > constant:air_winter_runtime.zero }
+		limit = { check_variable = { var = non_damaged_building_level@nuclear_reactor_heavy_water value = constant:air_winter_runtime.zero compare = greater_than } }
 		damage_building = { type = nuclear_reactor_heavy_water damage = @CR_SC_AIR_WINTER_EVENT_OUTCOME_REACTOR_DAMAGE }
 	}
 	else_if = {
-		limit = { commercial_nuclear_reactor > constant:air_winter_runtime.zero }
+		limit = { check_variable = { var = non_damaged_building_level@commercial_nuclear_reactor value = constant:air_winter_runtime.zero compare = greater_than } }
 		damage_building = { type = commercial_nuclear_reactor damage = @CR_SC_AIR_WINTER_EVENT_OUTCOME_REACTOR_DAMAGE }
 	}
 	if = {
-		limit = { infrastructure > constant:air_winter_runtime.zero }
+		limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:air_winter_runtime.zero compare = greater_than } }
 		damage_building = { type = infrastructure damage = @CR_SC_AIR_WINTER_EVENT_OUTCOME_INFRASTRUCTURE_DAMAGE }
 	}
 }
@@ -5943,7 +5943,7 @@ air_winter_event_apply_reactor_failure_fallout = {
 # Supported scope: STATE. A later owner can reopen the Phase 2 route, so the
 # newest seed-ledger choice replaces the older branch and outcome memory.
 air_winter_event_clear_seed_ledger_memory = {
-	remove_dynamic_modifier = { modifier = air_winter_seed_vault_preservation_industry_state }
+	if = { limit = { has_dynamic_modifier = { modifier = air_winter_seed_vault_preservation_industry_state } } remove_dynamic_modifier = { modifier = air_winter_seed_vault_preservation_industry_state } }
 	clr_state_flag = air_winter_seed_chain_vaults
 	clr_state_flag = air_winter_seed_chain_herds
 	clr_state_flag = air_winter_seed_chain_breeding
@@ -5959,7 +5959,7 @@ air_winter_event_clear_seed_ledger_memory = {
 
 # Supported scope: STATE
 air_winter_event_apply_seed_vault_industry = {
-	remove_dynamic_modifier = { modifier = air_winter_seed_vault_preservation_industry_state }
+	if = { limit = { has_dynamic_modifier = { modifier = air_winter_seed_vault_preservation_industry_state } } remove_dynamic_modifier = { modifier = air_winter_seed_vault_preservation_industry_state } }
 	set_temp_variable = { air_winter_seed_vault_industry_days = constant:air_winter_event_outcome.seed_vault_industry_days }
 	add_dynamic_modifier = {
 		modifier = air_winter_seed_vault_preservation_industry_state
@@ -5969,7 +5969,7 @@ air_winter_event_apply_seed_vault_industry = {
 
 # Supported scope: STATE
 air_winter_event_clear_seed_vault_industry = {
-	remove_dynamic_modifier = { modifier = air_winter_seed_vault_preservation_industry_state }
+	if = { limit = { has_dynamic_modifier = { modifier = air_winter_seed_vault_preservation_industry_state } } remove_dynamic_modifier = { modifier = air_winter_seed_vault_preservation_industry_state } }
 }
 
 # Supported scope: STATE. A later owner can reopen the Phase 2 route, so the
@@ -5985,7 +5985,7 @@ air_winter_event_clear_tunnel_school_outcome_memory = {
 
 # Supported scope: STATE
 air_winter_event_apply_tunnel_civic_industry = {
-	remove_dynamic_modifier = { modifier = air_winter_tunnel_school_shift_industry_state }
+	if = { limit = { has_dynamic_modifier = { modifier = air_winter_tunnel_school_shift_industry_state } } remove_dynamic_modifier = { modifier = air_winter_tunnel_school_shift_industry_state } }
 	set_temp_variable = { air_winter_tunnel_industry_days = constant:air_winter_event_outcome.tunnel_industry_days }
 	add_dynamic_modifier = {
 		modifier = air_winter_tunnel_school_civic_industry_state
@@ -5995,7 +5995,7 @@ air_winter_event_apply_tunnel_civic_industry = {
 
 # Supported scope: STATE
 air_winter_event_apply_tunnel_shift_industry = {
-	remove_dynamic_modifier = { modifier = air_winter_tunnel_school_civic_industry_state }
+	if = { limit = { has_dynamic_modifier = { modifier = air_winter_tunnel_school_civic_industry_state } } remove_dynamic_modifier = { modifier = air_winter_tunnel_school_civic_industry_state } }
 	set_temp_variable = { air_winter_tunnel_industry_days = constant:air_winter_event_outcome.tunnel_industry_days }
 	add_dynamic_modifier = {
 		modifier = air_winter_tunnel_school_shift_industry_state
@@ -6005,8 +6005,8 @@ air_winter_event_apply_tunnel_shift_industry = {
 
 # Supported scope: STATE
 air_winter_event_clear_tunnel_industry = {
-	remove_dynamic_modifier = { modifier = air_winter_tunnel_school_civic_industry_state }
-	remove_dynamic_modifier = { modifier = air_winter_tunnel_school_shift_industry_state }
+	if = { limit = { has_dynamic_modifier = { modifier = air_winter_tunnel_school_civic_industry_state } } remove_dynamic_modifier = { modifier = air_winter_tunnel_school_civic_industry_state } }
+	if = { limit = { has_dynamic_modifier = { modifier = air_winter_tunnel_school_shift_industry_state } } remove_dynamic_modifier = { modifier = air_winter_tunnel_school_shift_industry_state } }
 }
 
 # Supported scope: STATE. Output is temporary air_winter_selected_event_id.
@@ -7890,9 +7890,12 @@ air_winter_response_complete_rail_protection = {
 air_winter_response_complete_airbase_closure = {
 	air_winter_normalize_state_ledger = yes
 	set_temp_variable = { air_winter_response_airbase_damage = building_level@air_base }
-	meta_effect = {
-		text = { damage_building = { type = air_base damage = [AIR_WINTER_AIRBASE_DAMAGE] } }
-		AIR_WINTER_AIRBASE_DAMAGE = "[?air_winter_response_airbase_damage|.2]"
+	if = {
+		limit = { check_variable = { var = non_damaged_building_level@air_base value = constant:air_winter_runtime.zero compare = greater_than } }
+		meta_effect = {
+			text = { damage_building = { type = air_base damage = [AIR_WINTER_AIRBASE_DAMAGE] } }
+			AIR_WINTER_AIRBASE_DAMAGE = "[?air_winter_response_airbase_damage|.2]"
+		}
 	}
 	set_variable = { air_winter_airbase_closure_months = constant:air_winter_response_timing.airbase_closure_months }
 	if = {
@@ -8073,8 +8076,9 @@ air_winter_response_complete_decontamination = {
 # CHAOS REDUX - AIR WINTER NORMAL-MAP VISUAL LIFECYCLE
 # ============================================================================
 # The original one-state proof remains as a legacy migration target. The live
-# regional route uses five deterministic IDs per state, replaces active slots
-# on every existing monthly pulse, and performs no additional world iterator.
+# regional route uses five deterministic five-digit IDs per state, places each
+# slot on the state's anchor province, re-issues a slot only when its desired
+# visual changes, and performs no additional world iterator.
 #
 # Public effect:
 # - air_winter_refresh_normal_map_proof_entity
@@ -8089,6 +8093,9 @@ air_winter_response_complete_decontamination = {
 # phase memory, fallout memory, food resilience, and visual schema version.
 # Side effects: replaces or destroys five deterministic regional entity slots
 # per state. Legacy migration may destroy proof entity id 8600064.
+# Placement: create_entity uses `province =` with the state's anchor province.
+# The `state =` placement and seven-digit IDs produced "invalid params" and
+# entities parked at map origin in the 1936 Fallout live run.
 # ============================================================================
 
 @AIR_WINTER_NORMAL_MAP_PROOF_ENTITY_ID = 8600064
@@ -8141,6 +8148,7 @@ air_winter_prepare_regional_visual_cycle = {
 			}
 		}
 		air_winter_destroy_normal_map_proof_entity = yes
+		air_winter_visual_seed_anchor_provinces = yes
 		set_variable = { global.air_winter_visual_schema_version = constant:air_winter_visual_schema.version }
 	}
 }
@@ -8149,6 +8157,7 @@ air_winter_prepare_regional_visual_cycle = {
 # placement values. No generated entity ID is stored in persistent state.
 air_winter_visual_prepare_state_ids = {
 	set_temp_variable = { air_winter_visual_state_id = THIS.id }
+	set_temp_variable = { air_winter_visual_anchor_province_id = air_winter_visual_anchor_province }
 
 	set_temp_variable = { air_winter_visual_ground_id = constant:air_winter_visual_entity_id.ground_base }
 	add_to_temp_variable = { air_winter_visual_ground_id = air_winter_visual_state_id }
@@ -8184,30 +8193,35 @@ air_winter_visual_destroy_ground_slot = {
 	set_temp_variable = { air_winter_visual_selected_entity_id = air_winter_visual_ground_id }
 	air_winter_visual_destroy_selected_entity = yes
 	clr_state_flag = air_winter_visual_ground_present
+	clear_variable = air_winter_visual_ground_key
 }
 
 air_winter_visual_destroy_primary_particle_slot = {
 	set_temp_variable = { air_winter_visual_selected_entity_id = air_winter_visual_primary_particle_id }
 	air_winter_visual_destroy_selected_entity = yes
 	clr_state_flag = air_winter_visual_primary_particle_present
+	clear_variable = air_winter_visual_primary_particle_key
 }
 
 air_winter_visual_destroy_secondary_particle_slot = {
 	set_temp_variable = { air_winter_visual_selected_entity_id = air_winter_visual_secondary_particle_id }
 	air_winter_visual_destroy_selected_entity = yes
 	clr_state_flag = air_winter_visual_secondary_particle_present
+	clear_variable = air_winter_visual_secondary_particle_key
 }
 
 air_winter_visual_destroy_dead_vegetation_slot = {
 	set_temp_variable = { air_winter_visual_selected_entity_id = air_winter_visual_dead_vegetation_id }
 	air_winter_visual_destroy_selected_entity = yes
 	clr_state_flag = air_winter_visual_dead_vegetation_present
+	clear_variable = air_winter_visual_dead_vegetation_key
 }
 
 air_winter_visual_destroy_hydrology_slot = {
 	set_temp_variable = { air_winter_visual_selected_entity_id = air_winter_visual_hydrology_id }
 	air_winter_visual_destroy_selected_entity = yes
 	clr_state_flag = air_winter_visual_hydrology_present
+	clear_variable = air_winter_visual_hydrology_key
 }
 
 # Supported scope: STATE. Administrative and schema cleanup is unconditional
@@ -8230,7 +8244,7 @@ air_winter_visual_create_ground = {
 			create_entity = {
 				entity = air_winter_class_[CLASS]_phase_[PHASE]_entity
 				id = [ENTITY_ID]
-				state = [STATE_ID]
+				province = [PROVINCE_ID]
 				z = [Z]
 				scale = [SCALE]
 				min_zoom = [MIN_ZOOM]
@@ -8239,7 +8253,7 @@ air_winter_visual_create_ground = {
 		CLASS = "[?air_winter_presentation_class|.0]"
 		PHASE = "[?air_winter_phase|.0]"
 		ENTITY_ID = "[?air_winter_visual_ground_id|.0]"
-		STATE_ID = "[?air_winter_visual_state_id|.0]"
+		PROVINCE_ID = "[?air_winter_visual_anchor_province_id|.0]"
 		Z = "[?air_winter_visual_ground_z|.0]"
 		SCALE = "[?air_winter_visual_ground_scale|.0]"
 		MIN_ZOOM = "[?air_winter_visual_minimum_zoom|.0]"
@@ -8253,9 +8267,9 @@ air_winter_visual_create_selected_particle = {
 	if = {
 		limit = { check_variable = { air_winter_visual_selected_weather_kind = constant:air_winter_visual_weather_kind.snow_frost_mild } }
 		meta_effect = {
-			text = { create_entity = { entity = air_winter_snow_frost_mild_entity id = [ENTITY_ID] state = [STATE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
+			text = { create_entity = { entity = air_winter_snow_frost_mild_entity id = [ENTITY_ID] province = [PROVINCE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
 			ENTITY_ID = "[?air_winter_visual_selected_entity_id|.0]"
-			STATE_ID = "[?air_winter_visual_state_id|.0]"
+			PROVINCE_ID = "[?air_winter_visual_anchor_province_id|.0]"
 			Z = "[?air_winter_visual_particle_z|.0]"
 			SCALE = "[?air_winter_visual_particle_scale|.0]"
 			MIN_ZOOM = "[?air_winter_visual_minimum_zoom|.0]"
@@ -8264,9 +8278,9 @@ air_winter_visual_create_selected_particle = {
 	else_if = {
 		limit = { check_variable = { air_winter_visual_selected_weather_kind = constant:air_winter_visual_weather_kind.snow_frost_severe } }
 		meta_effect = {
-			text = { create_entity = { entity = air_winter_snow_frost_severe_entity id = [ENTITY_ID] state = [STATE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
+			text = { create_entity = { entity = air_winter_snow_frost_severe_entity id = [ENTITY_ID] province = [PROVINCE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
 			ENTITY_ID = "[?air_winter_visual_selected_entity_id|.0]"
-			STATE_ID = "[?air_winter_visual_state_id|.0]"
+			PROVINCE_ID = "[?air_winter_visual_anchor_province_id|.0]"
 			Z = "[?air_winter_visual_particle_z|.0]"
 			SCALE = "[?air_winter_visual_particle_scale|.0]"
 			MIN_ZOOM = "[?air_winter_visual_minimum_zoom|.0]"
@@ -8275,9 +8289,9 @@ air_winter_visual_create_selected_particle = {
 	else_if = {
 		limit = { check_variable = { air_winter_visual_selected_weather_kind = constant:air_winter_visual_weather_kind.cold_rain_mist_mild } }
 		meta_effect = {
-			text = { create_entity = { entity = air_winter_cold_rain_mist_mild_entity id = [ENTITY_ID] state = [STATE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
+			text = { create_entity = { entity = air_winter_cold_rain_mist_mild_entity id = [ENTITY_ID] province = [PROVINCE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
 			ENTITY_ID = "[?air_winter_visual_selected_entity_id|.0]"
-			STATE_ID = "[?air_winter_visual_state_id|.0]"
+			PROVINCE_ID = "[?air_winter_visual_anchor_province_id|.0]"
 			Z = "[?air_winter_visual_particle_z|.0]"
 			SCALE = "[?air_winter_visual_particle_scale|.0]"
 			MIN_ZOOM = "[?air_winter_visual_minimum_zoom|.0]"
@@ -8286,9 +8300,9 @@ air_winter_visual_create_selected_particle = {
 	else_if = {
 		limit = { check_variable = { air_winter_visual_selected_weather_kind = constant:air_winter_visual_weather_kind.cold_rain_mist_severe } }
 		meta_effect = {
-			text = { create_entity = { entity = air_winter_cold_rain_mist_severe_entity id = [ENTITY_ID] state = [STATE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
+			text = { create_entity = { entity = air_winter_cold_rain_mist_severe_entity id = [ENTITY_ID] province = [PROVINCE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
 			ENTITY_ID = "[?air_winter_visual_selected_entity_id|.0]"
-			STATE_ID = "[?air_winter_visual_state_id|.0]"
+			PROVINCE_ID = "[?air_winter_visual_anchor_province_id|.0]"
 			Z = "[?air_winter_visual_particle_z|.0]"
 			SCALE = "[?air_winter_visual_particle_scale|.0]"
 			MIN_ZOOM = "[?air_winter_visual_minimum_zoom|.0]"
@@ -8297,9 +8311,9 @@ air_winter_visual_create_selected_particle = {
 	else_if = {
 		limit = { check_variable = { air_winter_visual_selected_weather_kind = constant:air_winter_visual_weather_kind.ash_dirty_snow_mild } }
 		meta_effect = {
-			text = { create_entity = { entity = air_winter_ash_dirty_snow_mild_entity id = [ENTITY_ID] state = [STATE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
+			text = { create_entity = { entity = air_winter_ash_dirty_snow_mild_entity id = [ENTITY_ID] province = [PROVINCE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
 			ENTITY_ID = "[?air_winter_visual_selected_entity_id|.0]"
-			STATE_ID = "[?air_winter_visual_state_id|.0]"
+			PROVINCE_ID = "[?air_winter_visual_anchor_province_id|.0]"
 			Z = "[?air_winter_visual_particle_z|.0]"
 			SCALE = "[?air_winter_visual_particle_scale|.0]"
 			MIN_ZOOM = "[?air_winter_visual_minimum_zoom|.0]"
@@ -8308,9 +8322,9 @@ air_winter_visual_create_selected_particle = {
 	else_if = {
 		limit = { check_variable = { air_winter_visual_selected_weather_kind = constant:air_winter_visual_weather_kind.ash_dirty_snow_severe } }
 		meta_effect = {
-			text = { create_entity = { entity = air_winter_ash_dirty_snow_severe_entity id = [ENTITY_ID] state = [STATE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
+			text = { create_entity = { entity = air_winter_ash_dirty_snow_severe_entity id = [ENTITY_ID] province = [PROVINCE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
 			ENTITY_ID = "[?air_winter_visual_selected_entity_id|.0]"
-			STATE_ID = "[?air_winter_visual_state_id|.0]"
+			PROVINCE_ID = "[?air_winter_visual_anchor_province_id|.0]"
 			Z = "[?air_winter_visual_particle_z|.0]"
 			SCALE = "[?air_winter_visual_particle_scale|.0]"
 			MIN_ZOOM = "[?air_winter_visual_minimum_zoom|.0]"
@@ -8319,9 +8333,9 @@ air_winter_visual_create_selected_particle = {
 	else_if = {
 		limit = { check_variable = { air_winter_visual_selected_weather_kind = constant:air_winter_visual_weather_kind.ash_dirty_snow_terminal } }
 		meta_effect = {
-			text = { create_entity = { entity = air_winter_ash_dirty_snow_terminal_entity id = [ENTITY_ID] state = [STATE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
+			text = { create_entity = { entity = air_winter_ash_dirty_snow_terminal_entity id = [ENTITY_ID] province = [PROVINCE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
 			ENTITY_ID = "[?air_winter_visual_selected_entity_id|.0]"
-			STATE_ID = "[?air_winter_visual_state_id|.0]"
+			PROVINCE_ID = "[?air_winter_visual_anchor_province_id|.0]"
 			Z = "[?air_winter_visual_particle_z|.0]"
 			SCALE = "[?air_winter_visual_particle_scale|.0]"
 			MIN_ZOOM = "[?air_winter_visual_minimum_zoom|.0]"
@@ -8330,9 +8344,9 @@ air_winter_visual_create_selected_particle = {
 	else_if = {
 		limit = { check_variable = { air_winter_visual_selected_weather_kind = constant:air_winter_visual_weather_kind.thaw_flood_mild } }
 		meta_effect = {
-			text = { create_entity = { entity = air_winter_thaw_flood_mild_entity id = [ENTITY_ID] state = [STATE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
+			text = { create_entity = { entity = air_winter_thaw_flood_mild_entity id = [ENTITY_ID] province = [PROVINCE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
 			ENTITY_ID = "[?air_winter_visual_selected_entity_id|.0]"
-			STATE_ID = "[?air_winter_visual_state_id|.0]"
+			PROVINCE_ID = "[?air_winter_visual_anchor_province_id|.0]"
 			Z = "[?air_winter_visual_particle_z|.0]"
 			SCALE = "[?air_winter_visual_particle_scale|.0]"
 			MIN_ZOOM = "[?air_winter_visual_minimum_zoom|.0]"
@@ -8341,9 +8355,9 @@ air_winter_visual_create_selected_particle = {
 	else_if = {
 		limit = { check_variable = { air_winter_visual_selected_weather_kind = constant:air_winter_visual_weather_kind.thaw_flood_severe } }
 		meta_effect = {
-			text = { create_entity = { entity = air_winter_thaw_flood_severe_entity id = [ENTITY_ID] state = [STATE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
+			text = { create_entity = { entity = air_winter_thaw_flood_severe_entity id = [ENTITY_ID] province = [PROVINCE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
 			ENTITY_ID = "[?air_winter_visual_selected_entity_id|.0]"
-			STATE_ID = "[?air_winter_visual_state_id|.0]"
+			PROVINCE_ID = "[?air_winter_visual_anchor_province_id|.0]"
 			Z = "[?air_winter_visual_particle_z|.0]"
 			SCALE = "[?air_winter_visual_particle_scale|.0]"
 			MIN_ZOOM = "[?air_winter_visual_minimum_zoom|.0]"
@@ -8448,10 +8462,10 @@ air_winter_visual_select_weather = {
 
 air_winter_visual_create_dead_vegetation = {
 	meta_effect = {
-		text = { create_entity = { entity = air_winter_class_[CLASS]_dead_vegetation_entity id = [ENTITY_ID] state = [STATE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
+		text = { create_entity = { entity = air_winter_class_[CLASS]_dead_vegetation_entity id = [ENTITY_ID] province = [PROVINCE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
 		CLASS = "[?air_winter_presentation_class|.0]"
 		ENTITY_ID = "[?air_winter_visual_dead_vegetation_id|.0]"
-		STATE_ID = "[?air_winter_visual_state_id|.0]"
+		PROVINCE_ID = "[?air_winter_visual_anchor_province_id|.0]"
 		Z = "[?air_winter_visual_prop_z|.0]"
 		SCALE = "[?air_winter_visual_prop_scale|.0]"
 		MIN_ZOOM = "[?air_winter_visual_minimum_zoom|.0]"
@@ -8461,10 +8475,10 @@ air_winter_visual_create_dead_vegetation = {
 
 air_winter_visual_create_frozen_water = {
 	meta_effect = {
-		text = { create_entity = { entity = air_winter_class_[CLASS]_frozen_water_entity id = [ENTITY_ID] state = [STATE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
+		text = { create_entity = { entity = air_winter_class_[CLASS]_frozen_water_entity id = [ENTITY_ID] province = [PROVINCE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
 		CLASS = "[?air_winter_presentation_class|.0]"
 		ENTITY_ID = "[?air_winter_visual_hydrology_id|.0]"
-		STATE_ID = "[?air_winter_visual_state_id|.0]"
+		PROVINCE_ID = "[?air_winter_visual_anchor_province_id|.0]"
 		Z = "[?air_winter_visual_prop_z|.0]"
 		SCALE = "[?air_winter_visual_prop_scale|.0]"
 		MIN_ZOOM = "[?air_winter_visual_minimum_zoom|.0]"
@@ -8474,10 +8488,10 @@ air_winter_visual_create_frozen_water = {
 
 air_winter_visual_create_thaw_flood = {
 	meta_effect = {
-		text = { create_entity = { entity = air_winter_class_[CLASS]_thaw_flood_entity id = [ENTITY_ID] state = [STATE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
+		text = { create_entity = { entity = air_winter_class_[CLASS]_thaw_flood_entity id = [ENTITY_ID] province = [PROVINCE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
 		CLASS = "[?air_winter_presentation_class|.0]"
 		ENTITY_ID = "[?air_winter_visual_hydrology_id|.0]"
-		STATE_ID = "[?air_winter_visual_state_id|.0]"
+		PROVINCE_ID = "[?air_winter_visual_anchor_province_id|.0]"
 		Z = "[?air_winter_visual_prop_z|.0]"
 		SCALE = "[?air_winter_visual_prop_scale|.0]"
 		MIN_ZOOM = "[?air_winter_visual_minimum_zoom|.0]"
@@ -8486,8 +8500,9 @@ air_winter_visual_create_thaw_flood = {
 }
 
 # Supported scope: STATE. Called exactly once at the end of the existing
-# monthly state update. Desired slots are replaced using stable IDs, and stale
-# slots are destroyed without creating a second state scan.
+# monthly state update. A slot is re-issued only when its change key differs
+# from the visual it already shows, so a stable phase issues no create_entity
+# call. Stale slots are destroyed without creating a second state scan.
 air_winter_refresh_regional_visuals = {
 	air_winter_visual_prepare_state_ids = yes
 	if = {
@@ -8503,16 +8518,44 @@ air_winter_refresh_regional_visuals = {
 	}
 
 	if = {
-		limit = { air_winter_visual_has_active_class_phase = yes }
-		air_winter_visual_create_ground = yes
+		limit = {
+			air_winter_visual_has_active_class_phase = yes
+			has_variable = air_winter_visual_anchor_province
+		}
+		set_temp_variable = { air_winter_visual_class_key = air_winter_presentation_class }
+		multiply_temp_variable = { air_winter_visual_class_key = constant:air_winter_visual_slot_key.class_stride }
+
+		set_temp_variable = { air_winter_visual_desired_key = air_winter_visual_class_key }
+		add_to_temp_variable = { air_winter_visual_desired_key = air_winter_phase }
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_state_flag = air_winter_visual_ground_present }
+					NOT = { has_variable = air_winter_visual_ground_key }
+					NOT = { check_variable = { air_winter_visual_ground_key = air_winter_visual_desired_key } }
+				}
+			}
+			air_winter_visual_create_ground = yes
+			set_variable = { air_winter_visual_ground_key = air_winter_visual_desired_key }
+		}
 		air_winter_visual_select_weather = yes
 
 		if = {
 			limit = { check_variable = { air_winter_visual_primary_weather_kind > constant:air_winter_visual_weather_kind.none } }
-			set_temp_variable = { air_winter_visual_selected_entity_id = air_winter_visual_primary_particle_id }
-			set_temp_variable = { air_winter_visual_selected_weather_kind = air_winter_visual_primary_weather_kind }
-			air_winter_visual_create_selected_particle = yes
-			set_state_flag = air_winter_visual_primary_particle_present
+			if = {
+				limit = {
+					OR = {
+						NOT = { has_state_flag = air_winter_visual_primary_particle_present }
+						NOT = { has_variable = air_winter_visual_primary_particle_key }
+						NOT = { check_variable = { air_winter_visual_primary_particle_key = air_winter_visual_primary_weather_kind } }
+					}
+				}
+				set_temp_variable = { air_winter_visual_selected_entity_id = air_winter_visual_primary_particle_id }
+				set_temp_variable = { air_winter_visual_selected_weather_kind = air_winter_visual_primary_weather_kind }
+				air_winter_visual_create_selected_particle = yes
+				set_state_flag = air_winter_visual_primary_particle_present
+				set_variable = { air_winter_visual_primary_particle_key = air_winter_visual_primary_weather_kind }
+			}
 		}
 		else_if = {
 			limit = { has_state_flag = air_winter_visual_primary_particle_present }
@@ -8521,10 +8564,20 @@ air_winter_refresh_regional_visuals = {
 
 		if = {
 			limit = { check_variable = { air_winter_visual_secondary_weather_kind > constant:air_winter_visual_weather_kind.none } }
-			set_temp_variable = { air_winter_visual_selected_entity_id = air_winter_visual_secondary_particle_id }
-			set_temp_variable = { air_winter_visual_selected_weather_kind = air_winter_visual_secondary_weather_kind }
-			air_winter_visual_create_selected_particle = yes
-			set_state_flag = air_winter_visual_secondary_particle_present
+			if = {
+				limit = {
+					OR = {
+						NOT = { has_state_flag = air_winter_visual_secondary_particle_present }
+						NOT = { has_variable = air_winter_visual_secondary_particle_key }
+						NOT = { check_variable = { air_winter_visual_secondary_particle_key = air_winter_visual_secondary_weather_kind } }
+					}
+				}
+				set_temp_variable = { air_winter_visual_selected_entity_id = air_winter_visual_secondary_particle_id }
+				set_temp_variable = { air_winter_visual_selected_weather_kind = air_winter_visual_secondary_weather_kind }
+				air_winter_visual_create_selected_particle = yes
+				set_state_flag = air_winter_visual_secondary_particle_present
+				set_variable = { air_winter_visual_secondary_particle_key = air_winter_visual_secondary_weather_kind }
+			}
 		}
 		else_if = {
 			limit = { has_state_flag = air_winter_visual_secondary_particle_present }
@@ -8533,20 +8586,53 @@ air_winter_refresh_regional_visuals = {
 
 		if = {
 			limit = { air_winter_visual_dead_vegetation_is_eligible = yes }
-			air_winter_visual_create_dead_vegetation = yes
+			if = {
+				limit = {
+					OR = {
+						NOT = { has_state_flag = air_winter_visual_dead_vegetation_present }
+						NOT = { has_variable = air_winter_visual_dead_vegetation_key }
+						NOT = { check_variable = { air_winter_visual_dead_vegetation_key = air_winter_presentation_class } }
+					}
+				}
+				air_winter_visual_create_dead_vegetation = yes
+				set_variable = { air_winter_visual_dead_vegetation_key = air_winter_presentation_class }
+			}
 		}
 		else_if = {
 			limit = { has_state_flag = air_winter_visual_dead_vegetation_present }
 			air_winter_visual_destroy_dead_vegetation_slot = yes
 		}
 
+		set_temp_variable = { air_winter_visual_desired_key = air_winter_visual_class_key }
 		if = {
 			limit = { air_winter_visual_thaw_is_eligible = yes }
-			air_winter_visual_create_thaw_flood = yes
+			add_to_temp_variable = { air_winter_visual_desired_key = constant:air_winter_visual_slot_key.hydrology_thaw_flood }
+			if = {
+				limit = {
+					OR = {
+						NOT = { has_state_flag = air_winter_visual_hydrology_present }
+						NOT = { has_variable = air_winter_visual_hydrology_key }
+						NOT = { check_variable = { air_winter_visual_hydrology_key = air_winter_visual_desired_key } }
+					}
+				}
+				air_winter_visual_create_thaw_flood = yes
+				set_variable = { air_winter_visual_hydrology_key = air_winter_visual_desired_key }
+			}
 		}
 		else_if = {
 			limit = { air_winter_visual_frozen_water_is_eligible = yes }
-			air_winter_visual_create_frozen_water = yes
+			add_to_temp_variable = { air_winter_visual_desired_key = constant:air_winter_visual_slot_key.hydrology_frozen_water }
+			if = {
+				limit = {
+					OR = {
+						NOT = { has_state_flag = air_winter_visual_hydrology_present }
+						NOT = { has_variable = air_winter_visual_hydrology_key }
+						NOT = { check_variable = { air_winter_visual_hydrology_key = air_winter_visual_desired_key } }
+					}
+				}
+				air_winter_visual_create_frozen_water = yes
+				set_variable = { air_winter_visual_hydrology_key = air_winter_visual_desired_key }
+			}
 		}
 		else_if = {
 			limit = { has_state_flag = air_winter_visual_hydrology_present }
@@ -8562,6 +8648,1097 @@ air_winter_refresh_regional_visuals = {
 	}
 
 	set_variable = { air_winter_visual_schema_version = constant:air_winter_visual_schema.version }
+}
+
+# Supported scope: any synchronized gameplay scope. Mechanical state-to-anchor
+# ledger generated from the installed vanilla map for create_entity placement.
+# Each state anchors on its highest victory-point land province, or on its
+# first listed land province when it has no victory point.
+# definition.csv SHA-256: 86846BE71198D6772C651638AA22E3656133198DE9B7C49C6234ED48CF33D87B
+# state;province ledger SHA-256: 3FE59AE6E5B4C713359890E2B2F8D10B6CC877742C47749F71E8AAA9557EE447
+# Do not hand-edit rows. Regenerate and re-audit after any map change.
+air_winter_visual_seed_anchor_provinces = {
+	1 = { set_variable = { air_winter_visual_anchor_province = 3838 } }
+	2 = { set_variable = { air_winter_visual_anchor_province = 9904 } }
+	3 = { set_variable = { air_winter_visual_anchor_province = 9620 } }
+	4 = { set_variable = { air_winter_visual_anchor_province = 11666 } }
+	5 = { set_variable = { air_winter_visual_anchor_province = 6375 } }
+	6 = { set_variable = { air_winter_visual_anchor_province = 516 } }
+	7 = { set_variable = { air_winter_visual_anchor_province = 391 } }
+	8 = { set_variable = { air_winter_visual_anchor_province = 6583 } }
+	9 = { set_variable = { air_winter_visual_anchor_province = 11542 } }
+	10 = { set_variable = { air_winter_visual_anchor_province = 3544 } }
+	11 = { set_variable = { air_winter_visual_anchor_province = 6296 } }
+	12 = { set_variable = { air_winter_visual_anchor_province = 10493 } }
+	13 = { set_variable = { air_winter_visual_anchor_province = 3174 } }
+	14 = { set_variable = { air_winter_visual_anchor_province = 3552 } }
+	15 = { set_variable = { air_winter_visual_anchor_province = 9434 } }
+	16 = { set_variable = { air_winter_visual_anchor_province = 11506 } }
+	17 = { set_variable = { air_winter_visual_anchor_province = 9642 } }
+	18 = { set_variable = { air_winter_visual_anchor_province = 9490 } }
+	19 = { set_variable = { air_winter_visual_anchor_province = 9737 } }
+	20 = { set_variable = { air_winter_visual_anchor_province = 6613 } }
+	21 = { set_variable = { air_winter_visual_anchor_province = 11834 } }
+	22 = { set_variable = { air_winter_visual_anchor_province = 9898 } }
+	23 = { set_variable = { air_winter_visual_anchor_province = 6657 } }
+	24 = { set_variable = { air_winter_visual_anchor_province = 512 } }
+	25 = { set_variable = { air_winter_visual_anchor_province = 620 } }
+	26 = { set_variable = { air_winter_visual_anchor_province = 3594 } }
+	27 = { set_variable = { air_winter_visual_anchor_province = 3652 } }
+	28 = { set_variable = { air_winter_visual_anchor_province = 9559 } }
+	29 = { set_variable = { air_winter_visual_anchor_province = 11548 } }
+	30 = { set_variable = { air_winter_visual_anchor_province = 11465 } }
+	31 = { set_variable = { air_winter_visual_anchor_province = 6766 } }
+	32 = { set_variable = { air_winter_visual_anchor_province = 3768 } }
+	33 = { set_variable = { air_winter_visual_anchor_province = 651 } }
+	34 = { set_variable = { air_winter_visual_anchor_province = 11519 } }
+	35 = { set_variable = { air_winter_visual_anchor_province = 3262 } }
+	36 = { set_variable = { air_winter_visual_anchor_province = 6241 } }
+	37 = { set_variable = { air_winter_visual_anchor_province = 6287 } }
+	38 = { set_variable = { air_winter_visual_anchor_province = 11091 } }
+	39 = { set_variable = { air_winter_visual_anchor_province = 11598 } }
+	40 = { set_variable = { air_winter_visual_anchor_province = 1794 } }
+	41 = { set_variable = { air_winter_visual_anchor_province = 3938 } }
+	42 = { set_variable = { air_winter_visual_anchor_province = 11531 } }
+	43 = { set_variable = { air_winter_visual_anchor_province = 9660 } }
+	44 = { set_variable = { air_winter_visual_anchor_province = 9914 } }
+	45 = { set_variable = { air_winter_visual_anchor_province = 619 } }
+	46 = { set_variable = { air_winter_visual_anchor_province = 9617 } }
+	47 = { set_variable = { air_winter_visual_anchor_province = 4109 } }
+	48 = { set_variable = { air_winter_visual_anchor_province = 949 } }
+	49 = { set_variable = { air_winter_visual_anchor_province = 11747 } }
+	50 = { set_variable = { air_winter_visual_anchor_province = 9517 } }
+	51 = { set_variable = { air_winter_visual_anchor_province = 6469 } }
+	52 = { set_variable = { air_winter_visual_anchor_province = 692 } }
+	53 = { set_variable = { air_winter_visual_anchor_province = 9515 } }
+	54 = { set_variable = { air_winter_visual_anchor_province = 11544 } }
+	55 = { set_variable = { air_winter_visual_anchor_province = 6488 } }
+	56 = { set_variable = { air_winter_visual_anchor_province = 241 } }
+	57 = { set_variable = { air_winter_visual_anchor_province = 495 } }
+	58 = { set_variable = { air_winter_visual_anchor_province = 9347 } }
+	59 = { set_variable = { air_winter_visual_anchor_province = 6377 } }
+	60 = { set_variable = { air_winter_visual_anchor_province = 3561 } }
+	61 = { set_variable = { air_winter_visual_anchor_province = 321 } }
+	62 = { set_variable = { air_winter_visual_anchor_province = 3258 } }
+	63 = { set_variable = { air_winter_visual_anchor_province = 6282 } }
+	64 = { set_variable = { air_winter_visual_anchor_province = 6521 } }
+	65 = { set_variable = { air_winter_visual_anchor_province = 514 } }
+	66 = { set_variable = { air_winter_visual_anchor_province = 9570 } }
+	67 = { set_variable = { air_winter_visual_anchor_province = 11467 } }
+	68 = { set_variable = { air_winter_visual_anchor_province = 3473 } }
+	69 = { set_variable = { air_winter_visual_anchor_province = 3585 } }
+	70 = { set_variable = { air_winter_visual_anchor_province = 9692 } }
+	71 = { set_variable = { air_winter_visual_anchor_province = 3581 } }
+	72 = { set_variable = { air_winter_visual_anchor_province = 9551 } }
+	73 = { set_variable = { air_winter_visual_anchor_province = 11691 } }
+	74 = { set_variable = { air_winter_visual_anchor_province = 3583 } }
+	75 = { set_variable = { air_winter_visual_anchor_province = 3569 } }
+	76 = { set_variable = { air_winter_visual_anchor_province = 6711 } }
+	77 = { set_variable = { air_winter_visual_anchor_province = 11597 } }
+	78 = { set_variable = { air_winter_visual_anchor_province = 3707 } }
+	79 = { set_variable = { air_winter_visual_anchor_province = 6706 } }
+	80 = { set_variable = { air_winter_visual_anchor_province = 577 } }
+	81 = { set_variable = { air_winter_visual_anchor_province = 6652 } }
+	82 = { set_variable = { air_winter_visual_anchor_province = 9606 } }
+	83 = { set_variable = { air_winter_visual_anchor_province = 6682 } }
+	84 = { set_variable = { air_winter_visual_anchor_province = 690 } }
+	85 = { set_variable = { air_winter_visual_anchor_province = 362 } }
+	86 = { set_variable = { air_winter_visual_anchor_province = 6558 } }
+	87 = { set_variable = { air_winter_visual_anchor_province = 9508 } }
+	88 = { set_variable = { air_winter_visual_anchor_province = 9427 } }
+	89 = { set_variable = { air_winter_visual_anchor_province = 11411 } }
+	90 = { set_variable = { air_winter_visual_anchor_province = 3458 } }
+	91 = { set_variable = { air_winter_visual_anchor_province = 11479 } }
+	92 = { set_variable = { air_winter_visual_anchor_province = 11399 } }
+	93 = { set_variable = { air_winter_visual_anchor_province = 422 } }
+	94 = { set_variable = { air_winter_visual_anchor_province = 560 } }
+	95 = { set_variable = { air_winter_visual_anchor_province = 3393 } }
+	96 = { set_variable = { air_winter_visual_anchor_province = 406 } }
+	97 = { set_variable = { air_winter_visual_anchor_province = 11301 } }
+	98 = { set_variable = { air_winter_visual_anchor_province = 3230 } }
+	99 = { set_variable = { air_winter_visual_anchor_province = 6364 } }
+	100 = { set_variable = { air_winter_visual_anchor_province = 12674 } }
+	101 = { set_variable = { air_winter_visual_anchor_province = 12512 } }
+	102 = { set_variable = { air_winter_visual_anchor_province = 665 } }
+	103 = { set_variable = { air_winter_visual_anchor_province = 3924 } }
+	104 = { set_variable = { air_winter_visual_anchor_province = 11899 } }
+	105 = { set_variable = { air_winter_visual_anchor_province = 9809 } }
+	106 = { set_variable = { air_winter_visual_anchor_province = 3882 } }
+	107 = { set_variable = { air_winter_visual_anchor_province = 11586 } }
+	108 = { set_variable = { air_winter_visual_anchor_province = 9602 } }
+	109 = { set_variable = { air_winter_visual_anchor_province = 11581 } }
+	110 = { set_variable = { air_winter_visual_anchor_province = 6115 } }
+	111 = { set_variable = { air_winter_visual_anchor_province = 11105 } }
+	112 = { set_variable = { air_winter_visual_anchor_province = 11805 } }
+	113 = { set_variable = { air_winter_visual_anchor_province = 11293 } }
+	114 = { set_variable = { air_winter_visual_anchor_province = 11773 } }
+	115 = { set_variable = { air_winter_visual_anchor_province = 10074 } }
+	116 = { set_variable = { air_winter_visual_anchor_province = 12003 } }
+	117 = { set_variable = { air_winter_visual_anchor_province = 819 } }
+	118 = { set_variable = { air_winter_visual_anchor_province = 4135 } }
+	119 = { set_variable = { air_winter_visual_anchor_province = 3379 } }
+	120 = { set_variable = { air_winter_visual_anchor_province = 284 } }
+	121 = { set_variable = { air_winter_visual_anchor_province = 9392 } }
+	122 = { set_variable = { air_winter_visual_anchor_province = 377 } }
+	123 = { set_variable = { air_winter_visual_anchor_province = 540 } }
+	124 = { set_variable = { air_winter_visual_anchor_province = 408 } }
+	125 = { set_variable = { air_winter_visual_anchor_province = 322 } }
+	126 = { set_variable = { air_winter_visual_anchor_province = 6103 } }
+	127 = { set_variable = { air_winter_visual_anchor_province = 3501 } }
+	128 = { set_variable = { air_winter_visual_anchor_province = 9297 } }
+	129 = { set_variable = { air_winter_visual_anchor_province = 6237 } }
+	130 = { set_variable = { air_winter_visual_anchor_province = 9315 } }
+	131 = { set_variable = { air_winter_visual_anchor_province = 351 } }
+	132 = { set_variable = { air_winter_visual_anchor_province = 6384 } }
+	133 = { set_variable = { air_winter_visual_anchor_province = 3273 } }
+	134 = { set_variable = { air_winter_visual_anchor_province = 9303 } }
+	135 = { set_variable = { air_winter_visual_anchor_province = 7394 } }
+	136 = { set_variable = { air_winter_visual_anchor_province = 200 } }
+	137 = { set_variable = { air_winter_visual_anchor_province = 3686 } }
+	138 = { set_variable = { air_winter_visual_anchor_province = 9279 } }
+	139 = { set_variable = { air_winter_visual_anchor_province = 299 } }
+	140 = { set_variable = { air_winter_visual_anchor_province = 383 } }
+	141 = { set_variable = { air_winter_visual_anchor_province = 6050 } }
+	142 = { set_variable = { air_winter_visual_anchor_province = 122 } }
+	143 = { set_variable = { air_winter_visual_anchor_province = 3022 } }
+	144 = { set_variable = { air_winter_visual_anchor_province = 192 } }
+	145 = { set_variable = { air_winter_visual_anchor_province = 9228 } }
+	146 = { set_variable = { air_winter_visual_anchor_province = 9206 } }
+	147 = { set_variable = { air_winter_visual_anchor_province = 197 } }
+	148 = { set_variable = { air_winter_visual_anchor_province = 11164 } }
+	149 = { set_variable = { air_winter_visual_anchor_province = 3122 } }
+	150 = { set_variable = { air_winter_visual_anchor_province = 11141 } }
+	151 = { set_variable = { air_winter_visual_anchor_province = 658 } }
+	152 = { set_variable = { air_winter_visual_anchor_province = 688 } }
+	153 = { set_variable = { air_winter_visual_anchor_province = 673 } }
+	154 = { set_variable = { air_winter_visual_anchor_province = 11659 } }
+	155 = { set_variable = { air_winter_visual_anchor_province = 6720 } }
+	156 = { set_variable = { air_winter_visual_anchor_province = 9990 } }
+	157 = { set_variable = { air_winter_visual_anchor_province = 925 } }
+	158 = { set_variable = { air_winter_visual_anchor_province = 6788 } }
+	159 = { set_variable = { air_winter_visual_anchor_province = 3780 } }
+	160 = { set_variable = { air_winter_visual_anchor_province = 11584 } }
+	161 = { set_variable = { air_winter_visual_anchor_province = 6606 } }
+	162 = { set_variable = { air_winter_visual_anchor_province = 9907 } }
+	163 = { set_variable = { air_winter_visual_anchor_province = 3943 } }
+	164 = { set_variable = { air_winter_visual_anchor_province = 10007 } }
+	165 = { set_variable = { air_winter_visual_anchor_province = 9764 } }
+	166 = { set_variable = { air_winter_visual_anchor_province = 3816 } }
+	167 = { set_variable = { air_winter_visual_anchor_province = 6906 } }
+	168 = { set_variable = { air_winter_visual_anchor_province = 10024 } }
+	169 = { set_variable = { air_winter_visual_anchor_province = 7183 } }
+	170 = { set_variable = { air_winter_visual_anchor_province = 6902 } }
+	171 = { set_variable = { air_winter_visual_anchor_province = 758 } }
+	172 = { set_variable = { air_winter_visual_anchor_province = 3933 } }
+	173 = { set_variable = { air_winter_visual_anchor_province = 9979 } }
+	174 = { set_variable = { air_winter_visual_anchor_province = 726 } }
+	175 = { set_variable = { air_winter_visual_anchor_province = 6832 } }
+	176 = { set_variable = { air_winter_visual_anchor_province = 885 } }
+	177 = { set_variable = { air_winter_visual_anchor_province = 9793 } }
+	178 = { set_variable = { air_winter_visual_anchor_province = 13071 } }
+	179 = { set_variable = { air_winter_visual_anchor_province = 970 } }
+	180 = { set_variable = { air_winter_visual_anchor_province = 9817 } }
+	181 = { set_variable = { air_winter_visual_anchor_province = 6996 } }
+	182 = { set_variable = { air_winter_visual_anchor_province = 9940 } }
+	183 = { set_variable = { air_winter_visual_anchor_province = 11984 } }
+	184 = { set_variable = { air_winter_visual_anchor_province = 11905 } }
+	185 = { set_variable = { air_winter_visual_anchor_province = 3914 } }
+	186 = { set_variable = { air_winter_visual_anchor_province = 7211 } }
+	187 = { set_variable = { air_winter_visual_anchor_province = 6550 } }
+	188 = { set_variable = { air_winter_visual_anchor_province = 3288 } }
+	189 = { set_variable = { air_winter_visual_anchor_province = 9483 } }
+	190 = { set_variable = { air_winter_visual_anchor_province = 9262 } }
+	191 = { set_variable = { air_winter_visual_anchor_province = 592 } }
+	192 = { set_variable = { air_winter_visual_anchor_province = 11670 } }
+	193 = { set_variable = { air_winter_visual_anchor_province = 3568 } }
+	194 = { set_variable = { air_winter_visual_anchor_province = 6232 } }
+	195 = { set_variable = { air_winter_visual_anchor_province = 3151 } }
+	196 = { set_variable = { air_winter_visual_anchor_province = 721 } }
+	197 = { set_variable = { air_winter_visual_anchor_province = 11683 } }
+	198 = { set_variable = { air_winter_visual_anchor_province = 476 } }
+	199 = { set_variable = { air_winter_visual_anchor_province = 3457 } }
+	200 = { set_variable = { air_winter_visual_anchor_province = 11405 } }
+	201 = { set_variable = { air_winter_visual_anchor_province = 6593 } }
+	202 = { set_variable = { air_winter_visual_anchor_province = 525 } }
+	203 = { set_variable = { air_winter_visual_anchor_province = 488 } }
+	204 = { set_variable = { air_winter_visual_anchor_province = 3350 } }
+	205 = { set_variable = { air_winter_visual_anchor_province = 382 } }
+	206 = { set_variable = { air_winter_visual_anchor_province = 11370 } }
+	207 = { set_variable = { air_winter_visual_anchor_province = 11241 } }
+	208 = { set_variable = { air_winter_visual_anchor_province = 9098 } }
+	209 = { set_variable = { air_winter_visual_anchor_province = 11202 } }
+	210 = { set_variable = { air_winter_visual_anchor_province = 11234 } }
+	211 = { set_variable = { air_winter_visual_anchor_province = 9783 } }
+	212 = { set_variable = { air_winter_visual_anchor_province = 6923 } }
+	213 = { set_variable = { air_winter_visual_anchor_province = 3134 } }
+	214 = { set_variable = { air_winter_visual_anchor_province = 3338 } }
+	215 = { set_variable = { air_winter_visual_anchor_province = 36 } }
+	216 = { set_variable = { air_winter_visual_anchor_province = 11159 } }
+	217 = { set_variable = { air_winter_visual_anchor_province = 3529 } }
+	218 = { set_variable = { air_winter_visual_anchor_province = 9417 } }
+	219 = { set_variable = { air_winter_visual_anchor_province = 6380 } }
+	220 = { set_variable = { air_winter_visual_anchor_province = 3580 } }
+	221 = { set_variable = { air_winter_visual_anchor_province = 418 } }
+	222 = { set_variable = { air_winter_visual_anchor_province = 9355 } }
+	223 = { set_variable = { air_winter_visual_anchor_province = 6262 } }
+	224 = { set_variable = { air_winter_visual_anchor_province = 3335 } }
+	225 = { set_variable = { air_winter_visual_anchor_province = 3520 } }
+	226 = { set_variable = { air_winter_visual_anchor_province = 11437 } }
+	227 = { set_variable = { air_winter_visual_anchor_province = 6474 } }
+	228 = { set_variable = { air_winter_visual_anchor_province = 9461 } }
+	229 = { set_variable = { air_winter_visual_anchor_province = 7661 } }
+	230 = { set_variable = { air_winter_visual_anchor_province = 12320 } }
+	231 = { set_variable = { air_winter_visual_anchor_province = 1599 } }
+	232 = { set_variable = { air_winter_visual_anchor_province = 6701 } }
+	233 = { set_variable = { air_winter_visual_anchor_province = 9663 } }
+	234 = { set_variable = { air_winter_visual_anchor_province = 3734 } }
+	235 = { set_variable = { air_winter_visual_anchor_province = 11696 } }
+	236 = { set_variable = { air_winter_visual_anchor_province = 9753 } }
+	237 = { set_variable = { air_winter_visual_anchor_province = 11724 } }
+	238 = { set_variable = { air_winter_visual_anchor_province = 775 } }
+	239 = { set_variable = { air_winter_visual_anchor_province = 3578 } }
+	240 = { set_variable = { air_winter_visual_anchor_province = 9449 } }
+	241 = { set_variable = { air_winter_visual_anchor_province = 9288 } }
+	242 = { set_variable = { air_winter_visual_anchor_province = 306 } }
+	243 = { set_variable = { air_winter_visual_anchor_province = 11336 } }
+	244 = { set_variable = { air_winter_visual_anchor_province = 9197 } }
+	245 = { set_variable = { air_winter_visual_anchor_province = 11476 } }
+	246 = { set_variable = { air_winter_visual_anchor_province = 11349 } }
+	247 = { set_variable = { air_winter_visual_anchor_province = 6245 } }
+	248 = { set_variable = { air_winter_visual_anchor_province = 121 } }
+	249 = { set_variable = { air_winter_visual_anchor_province = 6338 } }
+	250 = { set_variable = { air_winter_visual_anchor_province = 392 } }
+	251 = { set_variable = { air_winter_visual_anchor_province = 11225 } }
+	252 = { set_variable = { air_winter_visual_anchor_province = 11375 } }
+	253 = { set_variable = { air_winter_visual_anchor_province = 6269 } }
+	254 = { set_variable = { air_winter_visual_anchor_province = 11248 } }
+	255 = { set_variable = { air_winter_visual_anchor_province = 9258 } }
+	256 = { set_variable = { air_winter_visual_anchor_province = 9259 } }
+	257 = { set_variable = { air_winter_visual_anchor_province = 11351 } }
+	258 = { set_variable = { air_winter_visual_anchor_province = 6398 } }
+	259 = { set_variable = { air_winter_visual_anchor_province = 11504 } }
+	260 = { set_variable = { air_winter_visual_anchor_province = 413 } }
+	261 = { set_variable = { air_winter_visual_anchor_province = 6890 } }
+	262 = { set_variable = { air_winter_visual_anchor_province = 154 } }
+	263 = { set_variable = { air_winter_visual_anchor_province = 117 } }
+	264 = { set_variable = { air_winter_visual_anchor_province = 3140 } }
+	265 = { set_variable = { air_winter_visual_anchor_province = 487 } }
+	266 = { set_variable = { air_winter_visual_anchor_province = 10837 } }
+	267 = { set_variable = { air_winter_visual_anchor_province = 10737 } }
+	268 = { set_variable = { air_winter_visual_anchor_province = 8124 } }
+	269 = { set_variable = { air_winter_visual_anchor_province = 5068 } }
+	270 = { set_variable = { air_winter_visual_anchor_province = 1280 } }
+	271 = { set_variable = { air_winter_visual_anchor_province = 5010 } }
+	272 = { set_variable = { air_winter_visual_anchor_province = 4948 } }
+	273 = { set_variable = { air_winter_visual_anchor_province = 1057 } }
+	274 = { set_variable = { air_winter_visual_anchor_province = 10862 } }
+	275 = { set_variable = { air_winter_visual_anchor_province = 10400 } }
+	276 = { set_variable = { air_winter_visual_anchor_province = 3778 } }
+	277 = { set_variable = { air_winter_visual_anchor_province = 1965 } }
+	278 = { set_variable = { air_winter_visual_anchor_province = 12364 } }
+	279 = { set_variable = { air_winter_visual_anchor_province = 650 } }
+	280 = { set_variable = { air_winter_visual_anchor_province = 2111 } }
+	281 = { set_variable = { air_winter_visual_anchor_province = 4967 } }
+	282 = { set_variable = { air_winter_visual_anchor_province = 1182 } }
+	283 = { set_variable = { air_winter_visual_anchor_province = 2022 } }
+	284 = { set_variable = { air_winter_visual_anchor_province = 1814 } }
+	285 = { set_variable = { air_winter_visual_anchor_province = 7859 } }
+	286 = { set_variable = { air_winter_visual_anchor_province = 10309 } }
+	287 = { set_variable = { air_winter_visual_anchor_province = 5016 } }
+	288 = { set_variable = { air_winter_visual_anchor_province = 4202 } }
+	289 = { set_variable = { air_winter_visual_anchor_province = 7312 } }
+	290 = { set_variable = { air_winter_visual_anchor_province = 9945 } }
+	291 = { set_variable = { air_winter_visual_anchor_province = 2097 } }
+	292 = { set_variable = { air_winter_visual_anchor_province = 12727 } }
+	293 = { set_variable = { air_winter_visual_anchor_province = 10840 } }
+	294 = { set_variable = { air_winter_visual_anchor_province = 10760 } }
+	295 = { set_variable = { air_winter_visual_anchor_province = 5117 } }
+	296 = { set_variable = { air_winter_visual_anchor_province = 12891 } }
+	297 = { set_variable = { air_winter_visual_anchor_province = 1903 } }
+	298 = { set_variable = { air_winter_visual_anchor_province = 7959 } }
+	299 = { set_variable = { air_winter_visual_anchor_province = 12960 } }
+	300 = { set_variable = { air_winter_visual_anchor_province = 10362 } }
+	301 = { set_variable = { air_winter_visual_anchor_province = 2152 } }
+	302 = { set_variable = { air_winter_visual_anchor_province = 5230 } }
+	303 = { set_variable = { air_winter_visual_anchor_province = 12997 } }
+	304 = { set_variable = { air_winter_visual_anchor_province = 7630 } }
+	305 = { set_variable = { air_winter_visual_anchor_province = 12798 } }
+	306 = { set_variable = { air_winter_visual_anchor_province = 10747 } }
+	307 = { set_variable = { air_winter_visual_anchor_province = 8113 } }
+	308 = { set_variable = { air_winter_visual_anchor_province = 4450 } }
+	309 = { set_variable = { air_winter_visual_anchor_province = 10906 } }
+	310 = { set_variable = { air_winter_visual_anchor_province = 12885 } }
+	311 = { set_variable = { air_winter_visual_anchor_province = 2077 } }
+	312 = { set_variable = { air_winter_visual_anchor_province = 12865 } }
+	313 = { set_variable = { air_winter_visual_anchor_province = 10886 } }
+	314 = { set_variable = { air_winter_visual_anchor_province = 12823 } }
+	315 = { set_variable = { air_winter_visual_anchor_province = 7622 } }
+	316 = { set_variable = { air_winter_visual_anchor_province = 13087 } }
+	317 = { set_variable = { air_winter_visual_anchor_province = 12738 } }
+	318 = { set_variable = { air_winter_visual_anchor_province = 4641 } }
+	319 = { set_variable = { air_winter_visual_anchor_province = 7660 } }
+	320 = { set_variable = { air_winter_visual_anchor_province = 10149 } }
+	321 = { set_variable = { air_winter_visual_anchor_province = 1273 } }
+	322 = { set_variable = { air_winter_visual_anchor_province = 2010 } }
+	323 = { set_variable = { air_winter_visual_anchor_province = 4987 } }
+	324 = { set_variable = { air_winter_visual_anchor_province = 8010 } }
+	325 = { set_variable = { air_winter_visual_anchor_province = 1319 } }
+	326 = { set_variable = { air_winter_visual_anchor_province = 10062 } }
+	327 = { set_variable = { air_winter_visual_anchor_province = 10265 } }
+	328 = { set_variable = { air_winter_visual_anchor_province = 4572 } }
+	329 = { set_variable = { air_winter_visual_anchor_province = 10627 } }
+	330 = { set_variable = { air_winter_visual_anchor_province = 4801 } }
+	331 = { set_variable = { air_winter_visual_anchor_province = 12505 } }
+	332 = { set_variable = { air_winter_visual_anchor_province = 1426 } }
+	333 = { set_variable = { air_winter_visual_anchor_province = 1208 } }
+	334 = { set_variable = { air_winter_visual_anchor_province = 4279 } }
+	335 = { set_variable = { air_winter_visual_anchor_province = 7421 } }
+	336 = { set_variable = { air_winter_visual_anchor_province = 10297 } }
+	337 = { set_variable = { air_winter_visual_anchor_province = 13003 } }
+	338 = { set_variable = { air_winter_visual_anchor_province = 3369 } }
+	339 = { set_variable = { air_winter_visual_anchor_province = 4112 } }
+	340 = { set_variable = { air_winter_visual_anchor_province = 947 } }
+	341 = { set_variable = { air_winter_visual_anchor_province = 11842 } }
+	342 = { set_variable = { air_winter_visual_anchor_province = 1005 } }
+	343 = { set_variable = { air_winter_visual_anchor_province = 9878 } }
+	344 = { set_variable = { air_winter_visual_anchor_province = 9893 } }
+	345 = { set_variable = { air_winter_visual_anchor_province = 11810 } }
+	346 = { set_variable = { air_winter_visual_anchor_province = 9861 } }
+	347 = { set_variable = { air_winter_visual_anchor_province = 904 } }
+	348 = { set_variable = { air_winter_visual_anchor_province = 3870 } }
+	349 = { set_variable = { air_winter_visual_anchor_province = 9777 } }
+	350 = { set_variable = { air_winter_visual_anchor_province = 4512 } }
+	351 = { set_variable = { air_winter_visual_anchor_province = 9131 } }
+	352 = { set_variable = { air_winter_visual_anchor_province = 7530 } }
+	353 = { set_variable = { air_winter_visual_anchor_province = 876 } }
+	354 = { set_variable = { air_winter_visual_anchor_province = 9932 } }
+	355 = { set_variable = { air_winter_visual_anchor_province = 11881 } }
+	356 = { set_variable = { air_winter_visual_anchor_province = 6938 } }
+	357 = { set_variable = { air_winter_visual_anchor_province = 6732 } }
+	358 = { set_variable = { air_winter_visual_anchor_province = 3878 } }
+	359 = { set_variable = { air_winter_visual_anchor_province = 6882 } }
+	360 = { set_variable = { air_winter_visual_anchor_province = 6845 } }
+	361 = { set_variable = { air_winter_visual_anchor_province = 3957 } }
+	362 = { set_variable = { air_winter_visual_anchor_province = 10412 } }
+	363 = { set_variable = { air_winter_visual_anchor_province = 7138 } }
+	364 = { set_variable = { air_winter_visual_anchor_province = 7202 } }
+	365 = { set_variable = { air_winter_visual_anchor_province = 12384 } }
+	366 = { set_variable = { air_winter_visual_anchor_province = 1843 } }
+	367 = { set_variable = { air_winter_visual_anchor_province = 7480 } }
+	368 = { set_variable = { air_winter_visual_anchor_province = 12501 } }
+	369 = { set_variable = { air_winter_visual_anchor_province = 6696 } }
+	370 = { set_variable = { air_winter_visual_anchor_province = 4464 } }
+	371 = { set_variable = { air_winter_visual_anchor_province = 7552 } }
+	372 = { set_variable = { air_winter_visual_anchor_province = 12489 } }
+	373 = { set_variable = { air_winter_visual_anchor_province = 4569 } }
+	374 = { set_variable = { air_winter_visual_anchor_province = 1806 } }
+	375 = { set_variable = { air_winter_visual_anchor_province = 3960 } }
+	376 = { set_variable = { air_winter_visual_anchor_province = 4975 } }
+	377 = { set_variable = { air_winter_visual_anchor_province = 853 } }
+	378 = { set_variable = { air_winter_visual_anchor_province = 9814 } }
+	379 = { set_variable = { air_winter_visual_anchor_province = 4799 } }
+	380 = { set_variable = { air_winter_visual_anchor_province = 4865 } }
+	381 = { set_variable = { air_winter_visual_anchor_province = 1815 } }
+	382 = { set_variable = { air_winter_visual_anchor_province = 1827 } }
+	383 = { set_variable = { air_winter_visual_anchor_province = 4740 } }
+	384 = { set_variable = { air_winter_visual_anchor_province = 12586 } }
+	385 = { set_variable = { air_winter_visual_anchor_province = 3513 } }
+	386 = { set_variable = { air_winter_visual_anchor_province = 7315 } }
+	387 = { set_variable = { air_winter_visual_anchor_province = 9616 } }
+	388 = { set_variable = { air_winter_visual_anchor_province = 4860 } }
+	389 = { set_variable = { air_winter_visual_anchor_province = 1836 } }
+	390 = { set_variable = { air_winter_visual_anchor_province = 1747 } }
+	391 = { set_variable = { air_winter_visual_anchor_province = 1866 } }
+	392 = { set_variable = { air_winter_visual_anchor_province = 1770 } }
+	393 = { set_variable = { air_winter_visual_anchor_province = 6710 } }
+	394 = { set_variable = { air_winter_visual_anchor_province = 12357 } }
+	395 = { set_variable = { air_winter_visual_anchor_province = 9450 } }
+	396 = { set_variable = { air_winter_visual_anchor_province = 1595 } }
+	397 = { set_variable = { air_winter_visual_anchor_province = 108 } }
+	398 = { set_variable = { air_winter_visual_anchor_province = 7375 } }
+	399 = { set_variable = { air_winter_visual_anchor_province = 6278 } }
+	400 = { set_variable = { air_winter_visual_anchor_province = 6124 } }
+	401 = { set_variable = { air_winter_visual_anchor_province = 6502 } }
+	402 = { set_variable = { air_winter_visual_anchor_province = 7341 } }
+	403 = { set_variable = { air_winter_visual_anchor_province = 4824 } }
+	404 = { set_variable = { air_winter_visual_anchor_province = 7597 } }
+	405 = { set_variable = { air_winter_visual_anchor_province = 1459 } }
+	406 = { set_variable = { air_winter_visual_anchor_province = 3618 } }
+	407 = { set_variable = { air_winter_visual_anchor_province = 11537 } }
+	408 = { set_variable = { air_winter_visual_anchor_province = 957 } }
+	409 = { set_variable = { air_winter_visual_anchor_province = 12189 } }
+	410 = { set_variable = { air_winter_visual_anchor_province = 10782 } }
+	411 = { set_variable = { air_winter_visual_anchor_province = 2026 } }
+	412 = { set_variable = { air_winter_visual_anchor_province = 7982 } }
+	413 = { set_variable = { air_winter_visual_anchor_province = 7953 } }
+	414 = { set_variable = { air_winter_visual_anchor_province = 10913 } }
+	415 = { set_variable = { air_winter_visual_anchor_province = 4893 } }
+	416 = { set_variable = { air_winter_visual_anchor_province = 5029 } }
+	417 = { set_variable = { air_winter_visual_anchor_province = 8040 } }
+	418 = { set_variable = { air_winter_visual_anchor_province = 8093 } }
+	419 = { set_variable = { air_winter_visual_anchor_province = 1822 } }
+	420 = { set_variable = { air_winter_visual_anchor_province = 7969 } }
+	421 = { set_variable = { air_winter_visual_anchor_province = 829 } }
+	422 = { set_variable = { air_winter_visual_anchor_province = 10201 } }
+	423 = { set_variable = { air_winter_visual_anchor_province = 10278 } }
+	424 = { set_variable = { air_winter_visual_anchor_province = 1228 } }
+	425 = { set_variable = { air_winter_visual_anchor_province = 4315 } }
+	426 = { set_variable = { air_winter_visual_anchor_province = 1059 } }
+	427 = { set_variable = { air_winter_visual_anchor_province = 8087 } }
+	428 = { set_variable = { air_winter_visual_anchor_province = 9975 } }
+	429 = { set_variable = { air_winter_visual_anchor_province = 1349 } }
+	430 = { set_variable = { air_winter_visual_anchor_province = 11929 } }
+	431 = { set_variable = { air_winter_visual_anchor_province = 4245 } }
+	432 = { set_variable = { air_winter_visual_anchor_province = 12366 } }
+	433 = { set_variable = { air_winter_visual_anchor_province = 1908 } }
+	434 = { set_variable = { air_winter_visual_anchor_province = 1116 } }
+	435 = { set_variable = { air_winter_visual_anchor_province = 4516 } }
+	436 = { set_variable = { air_winter_visual_anchor_province = 4950 } }
+	437 = { set_variable = { air_winter_visual_anchor_province = 4106 } }
+	438 = { set_variable = { air_winter_visual_anchor_province = 1377 } }
+	439 = { set_variable = { air_winter_visual_anchor_province = 2086 } }
+	440 = { set_variable = { air_winter_visual_anchor_province = 10772 } }
+	441 = { set_variable = { air_winter_visual_anchor_province = 12754 } }
+	442 = { set_variable = { air_winter_visual_anchor_province = 12763 } }
+	443 = { set_variable = { air_winter_visual_anchor_province = 3456 } }
+	444 = { set_variable = { air_winter_visual_anchor_province = 12774 } }
+	445 = { set_variable = { air_winter_visual_anchor_province = 4990 } }
+	446 = { set_variable = { air_winter_visual_anchor_province = 12049 } }
+	447 = { set_variable = { air_winter_visual_anchor_province = 4076 } }
+	448 = { set_variable = { air_winter_visual_anchor_province = 1149 } }
+	449 = { set_variable = { air_winter_visual_anchor_province = 1041 } }
+	450 = { set_variable = { air_winter_visual_anchor_province = 11954 } }
+	451 = { set_variable = { air_winter_visual_anchor_province = 1130 } }
+	452 = { set_variable = { air_winter_visual_anchor_province = 10061 } }
+	453 = { set_variable = { air_winter_visual_anchor_province = 4161 } }
+	454 = { set_variable = { air_winter_visual_anchor_province = 1086 } }
+	455 = { set_variable = { air_winter_visual_anchor_province = 7151 } }
+	456 = { set_variable = { air_winter_visual_anchor_province = 12071 } }
+	457 = { set_variable = { air_winter_visual_anchor_province = 12002 } }
+	458 = { set_variable = { air_winter_visual_anchor_province = 11969 } }
+	459 = { set_variable = { air_winter_visual_anchor_province = 1145 } }
+	460 = { set_variable = { air_winter_visual_anchor_province = 12051 } }
+	461 = { set_variable = { air_winter_visual_anchor_province = 7069 } }
+	462 = { set_variable = { air_winter_visual_anchor_province = 4108 } }
+	463 = { set_variable = { air_winter_visual_anchor_province = 13091 } }
+	464 = { set_variable = { air_winter_visual_anchor_province = 7361 } }
+	465 = { set_variable = { air_winter_visual_anchor_province = 1424 } }
+	466 = { set_variable = { air_winter_visual_anchor_province = 490 } }
+	467 = { set_variable = { air_winter_visual_anchor_province = 4872 } }
+	468 = { set_variable = { air_winter_visual_anchor_province = 4345 } }
+	469 = { set_variable = { air_winter_visual_anchor_province = 4739 } }
+	470 = { set_variable = { air_winter_visual_anchor_province = 3010 } }
+	471 = { set_variable = { air_winter_visual_anchor_province = 917 } }
+	472 = { set_variable = { air_winter_visual_anchor_province = 2407 } }
+	473 = { set_variable = { air_winter_visual_anchor_province = 1408 } }
+	474 = { set_variable = { air_winter_visual_anchor_province = 4965 } }
+	475 = { set_variable = { air_winter_visual_anchor_province = 1900 } }
+	476 = { set_variable = { air_winter_visual_anchor_province = 2021 } }
+	477 = { set_variable = { air_winter_visual_anchor_province = 8089 } }
+	478 = { set_variable = { air_winter_visual_anchor_province = 13089 } }
+	479 = { set_variable = { air_winter_visual_anchor_province = 4956 } }
+	480 = { set_variable = { air_winter_visual_anchor_province = 12835 } }
+	481 = { set_variable = { air_winter_visual_anchor_province = 7921 } }
+	482 = { set_variable = { air_winter_visual_anchor_province = 8097 } }
+	483 = { set_variable = { air_winter_visual_anchor_province = 10765 } }
+	484 = { set_variable = { air_winter_visual_anchor_province = 12461 } }
+	485 = { set_variable = { air_winter_visual_anchor_province = 10730 } }
+	486 = { set_variable = { air_winter_visual_anchor_province = 1887 } }
+	487 = { set_variable = { air_winter_visual_anchor_province = 2160 } }
+	488 = { set_variable = { air_winter_visual_anchor_province = 10879 } }
+	489 = { set_variable = { air_winter_visual_anchor_province = 1944 } }
+	490 = { set_variable = { air_winter_visual_anchor_province = 13289 } }
+	491 = { set_variable = { air_winter_visual_anchor_province = 10970 } }
+	492 = { set_variable = { air_winter_visual_anchor_province = 2210 } }
+	493 = { set_variable = { air_winter_visual_anchor_province = 12790 } }
+	494 = { set_variable = { air_winter_visual_anchor_province = 5166 } }
+	495 = { set_variable = { air_winter_visual_anchor_province = 10934 } }
+	496 = { set_variable = { air_winter_visual_anchor_province = 7476 } }
+	497 = { set_variable = { air_winter_visual_anchor_province = 12933 } }
+	498 = { set_variable = { air_winter_visual_anchor_province = 10933 } }
+	499 = { set_variable = { air_winter_visual_anchor_province = 10946 } }
+	500 = { set_variable = { air_winter_visual_anchor_province = 10980 } }
+	501 = { set_variable = { air_winter_visual_anchor_province = 10513 } }
+	502 = { set_variable = { air_winter_visual_anchor_province = 10447 } }
+	503 = { set_variable = { air_winter_visual_anchor_province = 4548 } }
+	504 = { set_variable = { air_winter_visual_anchor_province = 12951 } }
+	505 = { set_variable = { air_winter_visual_anchor_province = 12987 } }
+	506 = { set_variable = { air_winter_visual_anchor_province = 12994 } }
+	507 = { set_variable = { air_winter_visual_anchor_province = 5215 } }
+	508 = { set_variable = { air_winter_visual_anchor_province = 8216 } }
+	509 = { set_variable = { air_winter_visual_anchor_province = 2106 } }
+	510 = { set_variable = { air_winter_visual_anchor_province = 1449 } }
+	511 = { set_variable = { air_winter_visual_anchor_province = 10964 } }
+	512 = { set_variable = { air_winter_visual_anchor_province = 12321 } }
+	513 = { set_variable = { air_winter_visual_anchor_province = 12034 } }
+	514 = { set_variable = { air_winter_visual_anchor_province = 1043 } }
+	515 = { set_variable = { air_winter_visual_anchor_province = 1956 } }
+	516 = { set_variable = { air_winter_visual_anchor_province = 4859 } }
+	517 = { set_variable = { air_winter_visual_anchor_province = 7798 } }
+	518 = { set_variable = { air_winter_visual_anchor_province = 5187 } }
+	519 = { set_variable = { air_winter_visual_anchor_province = 12910 } }
+	520 = { set_variable = { air_winter_visual_anchor_province = 7669 } }
+	521 = { set_variable = { air_winter_visual_anchor_province = 7564 } }
+	522 = { set_variable = { air_winter_visual_anchor_province = 1652 } }
+	523 = { set_variable = { air_winter_visual_anchor_province = 4329 } }
+	524 = { set_variable = { air_winter_visual_anchor_province = 7186 } }
+	525 = { set_variable = { air_winter_visual_anchor_province = 7125 } }
+	526 = { set_variable = { air_winter_visual_anchor_province = 11932 } }
+	527 = { set_variable = { air_winter_visual_anchor_province = 4052 } }
+	528 = { set_variable = { air_winter_visual_anchor_province = 9950 } }
+	529 = { set_variable = { air_winter_visual_anchor_province = 1092 } }
+	530 = { set_variable = { air_winter_visual_anchor_province = 4179 } }
+	531 = { set_variable = { air_winter_visual_anchor_province = 7072 } }
+	532 = { set_variable = { air_winter_visual_anchor_province = 10125 } }
+	533 = { set_variable = { air_winter_visual_anchor_province = 6994 } }
+	534 = { set_variable = { air_winter_visual_anchor_province = 1117 } }
+	535 = { set_variable = { air_winter_visual_anchor_province = 10032 } }
+	536 = { set_variable = { air_winter_visual_anchor_province = 10444 } }
+	537 = { set_variable = { air_winter_visual_anchor_province = 12446 } }
+	538 = { set_variable = { air_winter_visual_anchor_province = 988 } }
+	539 = { set_variable = { air_winter_visual_anchor_province = 5139 } }
+	540 = { set_variable = { air_winter_visual_anchor_province = 8248 } }
+	541 = { set_variable = { air_winter_visual_anchor_province = 4879 } }
+	542 = { set_variable = { air_winter_visual_anchor_province = 8214 } }
+	543 = { set_variable = { air_winter_visual_anchor_province = 5128 } }
+	544 = { set_variable = { air_winter_visual_anchor_province = 8245 } }
+	545 = { set_variable = { air_winter_visual_anchor_province = 10929 } }
+	546 = { set_variable = { air_winter_visual_anchor_province = 2196 } }
+	547 = { set_variable = { air_winter_visual_anchor_province = 1939 } }
+	548 = { set_variable = { air_winter_visual_anchor_province = 12989 } }
+	549 = { set_variable = { air_winter_visual_anchor_province = 2016 } }
+	550 = { set_variable = { air_winter_visual_anchor_province = 13250 } }
+	551 = { set_variable = { air_winter_visual_anchor_province = 12806 } }
+	552 = { set_variable = { air_winter_visual_anchor_province = 1143 } }
+	553 = { set_variable = { air_winter_visual_anchor_province = 792 } }
+	554 = { set_variable = { air_winter_visual_anchor_province = 4111 } }
+	555 = { set_variable = { air_winter_visual_anchor_province = 1399 } }
+	556 = { set_variable = { air_winter_visual_anchor_province = 4927 } }
+	557 = { set_variable = { air_winter_visual_anchor_province = 5034 } }
+	558 = { set_variable = { air_winter_visual_anchor_province = 2050 } }
+	559 = { set_variable = { air_winter_visual_anchor_province = 12991 } }
+	560 = { set_variable = { air_winter_visual_anchor_province = 1724 } }
+	561 = { set_variable = { air_winter_visual_anchor_province = 7851 } }
+	562 = { set_variable = { air_winter_visual_anchor_province = 1714 } }
+	563 = { set_variable = { air_winter_visual_anchor_province = 4705 } }
+	564 = { set_variable = { air_winter_visual_anchor_province = 7835 } }
+	565 = { set_variable = { air_winter_visual_anchor_province = 1666 } }
+	566 = { set_variable = { air_winter_visual_anchor_province = 4797 } }
+	567 = { set_variable = { air_winter_visual_anchor_province = 1735 } }
+	568 = { set_variable = { air_winter_visual_anchor_province = 4724 } }
+	569 = { set_variable = { air_winter_visual_anchor_province = 10580 } }
+	570 = { set_variable = { air_winter_visual_anchor_province = 7274 } }
+	571 = { set_variable = { air_winter_visual_anchor_province = 10696 } }
+	572 = { set_variable = { air_winter_visual_anchor_province = 9292 } }
+	573 = { set_variable = { air_winter_visual_anchor_province = 10329 } }
+	574 = { set_variable = { air_winter_visual_anchor_province = 10641 } }
+	575 = { set_variable = { air_winter_visual_anchor_province = 1792 } }
+	576 = { set_variable = { air_winter_visual_anchor_province = 7805 } }
+	577 = { set_variable = { air_winter_visual_anchor_province = 1726 } }
+	578 = { set_variable = { air_winter_visual_anchor_province = 7789 } }
+	579 = { set_variable = { air_winter_visual_anchor_province = 1684 } }
+	580 = { set_variable = { air_winter_visual_anchor_province = 1659 } }
+	581 = { set_variable = { air_winter_visual_anchor_province = 10551 } }
+	582 = { set_variable = { air_winter_visual_anchor_province = 10256 } }
+	583 = { set_variable = { air_winter_visual_anchor_province = 10312 } }
+	584 = { set_variable = { air_winter_visual_anchor_province = 12333 } }
+	585 = { set_variable = { air_winter_visual_anchor_province = 1554 } }
+	586 = { set_variable = { air_winter_visual_anchor_province = 1591 } }
+	587 = { set_variable = { air_winter_visual_anchor_province = 1517 } }
+	588 = { set_variable = { air_winter_visual_anchor_province = 12594 } }
+	589 = { set_variable = { air_winter_visual_anchor_province = 1668 } }
+	590 = { set_variable = { air_winter_visual_anchor_province = 4333 } }
+	591 = { set_variable = { air_winter_visual_anchor_province = 1070 } }
+	592 = { set_variable = { air_winter_visual_anchor_province = 1047 } }
+	593 = { set_variable = { air_winter_visual_anchor_province = 9970 } }
+	594 = { set_variable = { air_winter_visual_anchor_province = 7137 } }
+	595 = { set_variable = { air_winter_visual_anchor_province = 4196 } }
+	596 = { set_variable = { air_winter_visual_anchor_province = 1055 } }
+	597 = { set_variable = { air_winter_visual_anchor_province = 1104 } }
+	598 = { set_variable = { air_winter_visual_anchor_province = 1029 } }
+	599 = { set_variable = { air_winter_visual_anchor_province = 10404 } }
+	600 = { set_variable = { air_winter_visual_anchor_province = 3992 } }
+	601 = { set_variable = { air_winter_visual_anchor_province = 10856 } }
+	602 = { set_variable = { air_winter_visual_anchor_province = 7097 } }
+	603 = { set_variable = { air_winter_visual_anchor_province = 4504 } }
+	604 = { set_variable = { air_winter_visual_anchor_province = 8018 } }
+	605 = { set_variable = { air_winter_visual_anchor_province = 11865 } }
+	606 = { set_variable = { air_winter_visual_anchor_province = 1083 } }
+	607 = { set_variable = { air_winter_visual_anchor_province = 9958 } }
+	608 = { set_variable = { air_winter_visual_anchor_province = 9843 } }
+	609 = { set_variable = { air_winter_visual_anchor_province = 11822 } }
+	610 = { set_variable = { air_winter_visual_anchor_province = 11801 } }
+	611 = { set_variable = { air_winter_visual_anchor_province = 10397 } }
+	612 = { set_variable = { air_winter_visual_anchor_province = 10372 } }
+	613 = { set_variable = { air_winter_visual_anchor_province = 7014 } }
+	614 = { set_variable = { air_winter_visual_anchor_province = 4190 } }
+	615 = { set_variable = { air_winter_visual_anchor_province = 4174 } }
+	616 = { set_variable = { air_winter_visual_anchor_province = 8127 } }
+	617 = { set_variable = { air_winter_visual_anchor_province = 4709 } }
+	618 = { set_variable = { air_winter_visual_anchor_province = 4823 } }
+	619 = { set_variable = { air_winter_visual_anchor_province = 2015 } }
+	620 = { set_variable = { air_winter_visual_anchor_province = 1612 } }
+	621 = { set_variable = { air_winter_visual_anchor_province = 7158 } }
+	622 = { set_variable = { air_winter_visual_anchor_province = 12356 } }
+	623 = { set_variable = { air_winter_visual_anchor_province = 12213 } }
+	624 = { set_variable = { air_winter_visual_anchor_province = 1372 } }
+	625 = { set_variable = { air_winter_visual_anchor_province = 1224 } }
+	626 = { set_variable = { air_winter_visual_anchor_province = 4429 } }
+	627 = { set_variable = { air_winter_visual_anchor_province = 4241 } }
+	628 = { set_variable = { air_winter_visual_anchor_province = 12118 } }
+	629 = { set_variable = { air_winter_visual_anchor_province = 4180 } }
+	630 = { set_variable = { air_winter_visual_anchor_province = 13051 } }
+	631 = { set_variable = { air_winter_visual_anchor_province = 13052 } }
+	632 = { set_variable = { air_winter_visual_anchor_province = 13047 } }
+	633 = { set_variable = { air_winter_visual_anchor_province = 13041 } }
+	634 = { set_variable = { air_winter_visual_anchor_province = 1269 } }
+	635 = { set_variable = { air_winter_visual_anchor_province = 4268 } }
+	636 = { set_variable = { air_winter_visual_anchor_province = 4286 } }
+	637 = { set_variable = { air_winter_visual_anchor_province = 1823 } }
+	638 = { set_variable = { air_winter_visual_anchor_province = 12140 } }
+	639 = { set_variable = { air_winter_visual_anchor_province = 13021 } }
+	640 = { set_variable = { air_winter_visual_anchor_province = 1492 } }
+	641 = { set_variable = { air_winter_visual_anchor_province = 12148 } }
+	642 = { set_variable = { air_winter_visual_anchor_province = 13050 } }
+	643 = { set_variable = { air_winter_visual_anchor_province = 13054 } }
+	644 = { set_variable = { air_winter_visual_anchor_province = 1819 } }
+	645 = { set_variable = { air_winter_visual_anchor_province = 13025 } }
+	646 = { set_variable = { air_winter_visual_anchor_province = 3995 } }
+	647 = { set_variable = { air_winter_visual_anchor_province = 12103 } }
+	648 = { set_variable = { air_winter_visual_anchor_province = 13026 } }
+	649 = { set_variable = { air_winter_visual_anchor_province = 5023 } }
+	650 = { set_variable = { air_winter_visual_anchor_province = 13067 } }
+	651 = { set_variable = { air_winter_visual_anchor_province = 1278 } }
+	652 = { set_variable = { air_winter_visual_anchor_province = 227 } }
+	653 = { set_variable = { air_winter_visual_anchor_province = 1821 } }
+	654 = { set_variable = { air_winter_visual_anchor_province = 4800 } }
+	655 = { set_variable = { air_winter_visual_anchor_province = 855 } }
+	656 = { set_variable = { air_winter_visual_anchor_province = 8085 } }
+	657 = { set_variable = { air_winter_visual_anchor_province = 675 } }
+	658 = { set_variable = { air_winter_visual_anchor_province = 7960 } }
+	659 = { set_variable = { air_winter_visual_anchor_province = 2029 } }
+	660 = { set_variable = { air_winter_visual_anchor_province = 12830 } }
+	661 = { set_variable = { air_winter_visual_anchor_province = 1174 } }
+	662 = { set_variable = { air_winter_visual_anchor_province = 4200 } }
+	663 = { set_variable = { air_winter_visual_anchor_province = 1062 } }
+	664 = { set_variable = { air_winter_visual_anchor_province = 6573 } }
+	665 = { set_variable = { air_winter_visual_anchor_province = 7005 } }
+	666 = { set_variable = { air_winter_visual_anchor_province = 9108 } }
+	667 = { set_variable = { air_winter_visual_anchor_province = 12234 } }
+	668 = { set_variable = { air_winter_visual_anchor_province = 7413 } }
+	669 = { set_variable = { air_winter_visual_anchor_province = 12371 } }
+	670 = { set_variable = { air_winter_visual_anchor_province = 1464 } }
+	671 = { set_variable = { air_winter_visual_anchor_province = 4075 } }
+	672 = { set_variable = { air_winter_visual_anchor_province = 10322 } }
+	673 = { set_variable = { air_winter_visual_anchor_province = 10263 } }
+	674 = { set_variable = { air_winter_visual_anchor_province = 2223 } }
+	675 = { set_variable = { air_winter_visual_anchor_province = 12879 } }
+	676 = { set_variable = { air_winter_visual_anchor_province = 10106 } }
+	677 = { set_variable = { air_winter_visual_anchor_province = 12473 } }
+	678 = { set_variable = { air_winter_visual_anchor_province = 4932 } }
+	679 = { set_variable = { air_winter_visual_anchor_province = 12758 } }
+	680 = { set_variable = { air_winter_visual_anchor_province = 1549 } }
+	681 = { set_variable = { air_winter_visual_anchor_province = 12589 } }
+	682 = { set_variable = { air_winter_visual_anchor_province = 7899 } }
+	683 = { set_variable = { air_winter_visual_anchor_province = 2947 } }
+	684 = { set_variable = { air_winter_visual_anchor_province = 2489 } }
+	685 = { set_variable = { air_winter_visual_anchor_province = 7617 } }
+	686 = { set_variable = { air_winter_visual_anchor_province = 1440 } }
+	687 = { set_variable = { air_winter_visual_anchor_province = 4982 } }
+	688 = { set_variable = { air_winter_visual_anchor_province = 2195 } }
+	689 = { set_variable = { air_winter_visual_anchor_province = 12304 } }
+	690 = { set_variable = { air_winter_visual_anchor_province = 10254 } }
+	691 = { set_variable = { air_winter_visual_anchor_province = 3284 } }
+	692 = { set_variable = { air_winter_visual_anchor_province = 11350 } }
+	693 = { set_variable = { air_winter_visual_anchor_province = 1513 } }
+	694 = { set_variable = { air_winter_visual_anchor_province = 9377 } }
+	695 = { set_variable = { air_winter_visual_anchor_province = 153 } }
+	696 = { set_variable = { air_winter_visual_anchor_province = 13010 } }
+	697 = { set_variable = { air_winter_visual_anchor_province = 3118 } }
+	698 = { set_variable = { air_winter_visual_anchor_province = 1751 } }
+	699 = { set_variable = { air_winter_visual_anchor_province = 8038 } }
+	700 = { set_variable = { air_winter_visual_anchor_province = 2038 } }
+	701 = { set_variable = { air_winter_visual_anchor_province = 4989 } }
+	702 = { set_variable = { air_winter_visual_anchor_province = 13014 } }
+	703 = { set_variable = { air_winter_visual_anchor_province = 13013 } }
+	704 = { set_variable = { air_winter_visual_anchor_province = 13016 } }
+	705 = { set_variable = { air_winter_visual_anchor_province = 13015 } }
+	706 = { set_variable = { air_winter_visual_anchor_province = 13017 } }
+	707 = { set_variable = { air_winter_visual_anchor_province = 13018 } }
+	708 = { set_variable = { air_winter_visual_anchor_province = 13072 } }
+	709 = { set_variable = { air_winter_visual_anchor_province = 2188 } }
+	710 = { set_variable = { air_winter_visual_anchor_province = 13019 } }
+	711 = { set_variable = { air_winter_visual_anchor_province = 13005 } }
+	712 = { set_variable = { air_winter_visual_anchor_province = 13002 } }
+	713 = { set_variable = { air_winter_visual_anchor_province = 2165 } }
+	714 = { set_variable = { air_winter_visual_anchor_province = 1693 } }
+	715 = { set_variable = { air_winter_visual_anchor_province = 11836 } }
+	716 = { set_variable = { air_winter_visual_anchor_province = 11771 } }
+	717 = { set_variable = { air_winter_visual_anchor_province = 10463 } }
+	718 = { set_variable = { air_winter_visual_anchor_province = 1950 } }
+	719 = { set_variable = { air_winter_visual_anchor_province = 1468 } }
+	720 = { set_variable = { air_winter_visual_anchor_province = 10995 } }
+	721 = { set_variable = { air_winter_visual_anchor_province = 12190 } }
+	722 = { set_variable = { air_winter_visual_anchor_province = 9140 } }
+	723 = { set_variable = { air_winter_visual_anchor_province = 2197 } }
+	724 = { set_variable = { air_winter_visual_anchor_province = 4371 } }
+	725 = { set_variable = { air_winter_visual_anchor_province = 13038 } }
+	726 = { set_variable = { air_winter_visual_anchor_province = 7290 } }
+	727 = { set_variable = { air_winter_visual_anchor_province = 13048 } }
+	728 = { set_variable = { air_winter_visual_anchor_province = 11981 } }
+	729 = { set_variable = { air_winter_visual_anchor_province = 4189 } }
+	730 = { set_variable = { air_winter_visual_anchor_province = 373 } }
+	731 = { set_variable = { air_winter_visual_anchor_province = 11818 } }
+	732 = { set_variable = { air_winter_visual_anchor_province = 12583 } }
+	733 = { set_variable = { air_winter_visual_anchor_province = 12251 } }
+	734 = { set_variable = { air_winter_visual_anchor_province = 7390 } }
+	735 = { set_variable = { air_winter_visual_anchor_province = 9909 } }
+	736 = { set_variable = { air_winter_visual_anchor_province = 6626 } }
+	737 = { set_variable = { air_winter_visual_anchor_province = 7251 } }
+	738 = { set_variable = { air_winter_visual_anchor_province = 4579 } }
+	739 = { set_variable = { air_winter_visual_anchor_province = 1869 } }
+	740 = { set_variable = { air_winter_visual_anchor_province = 7259 } }
+	741 = { set_variable = { air_winter_visual_anchor_province = 7376 } }
+	742 = { set_variable = { air_winter_visual_anchor_province = 1384 } }
+	743 = { set_variable = { air_winter_visual_anchor_province = 10000 } }
+	744 = { set_variable = { air_winter_visual_anchor_province = 7301 } }
+	745 = { set_variable = { air_winter_visual_anchor_province = 1150 } }
+	746 = { set_variable = { air_winter_visual_anchor_province = 3427 } }
+	747 = { set_variable = { air_winter_visual_anchor_province = 7965 } }
+	748 = { set_variable = { air_winter_visual_anchor_province = 1010 } }
+	749 = { set_variable = { air_winter_visual_anchor_province = 12019 } }
+	750 = { set_variable = { air_winter_visual_anchor_province = 7101 } }
+	751 = { set_variable = { air_winter_visual_anchor_province = 10841 } }
+	752 = { set_variable = { air_winter_visual_anchor_province = 12724 } }
+	753 = { set_variable = { air_winter_visual_anchor_province = 5193 } }
+	754 = { set_variable = { air_winter_visual_anchor_province = 12732 } }
+	755 = { set_variable = { air_winter_visual_anchor_province = 10750 } }
+	756 = { set_variable = { air_winter_visual_anchor_province = 7971 } }
+	757 = { set_variable = { air_winter_visual_anchor_province = 5033 } }
+	758 = { set_variable = { air_winter_visual_anchor_province = 1961 } }
+	759 = { set_variable = { air_winter_visual_anchor_province = 2074 } }
+	760 = { set_variable = { air_winter_visual_anchor_province = 4704 } }
+	761 = { set_variable = { air_winter_visual_anchor_province = 1776 } }
+	762 = { set_variable = { air_winter_visual_anchor_province = 6464 } }
+	763 = { set_variable = { air_winter_visual_anchor_province = 6332 } }
+	764 = { set_variable = { air_winter_visual_anchor_province = 3614 } }
+	765 = { set_variable = { air_winter_visual_anchor_province = 8051 } }
+	766 = { set_variable = { air_winter_visual_anchor_province = 6727 } }
+	767 = { set_variable = { air_winter_visual_anchor_province = 7987 } }
+	768 = { set_variable = { air_winter_visual_anchor_province = 9962 } }
+	769 = { set_variable = { air_winter_visual_anchor_province = 2220 } }
+	770 = { set_variable = { air_winter_visual_anchor_province = 12986 } }
+	771 = { set_variable = { air_winter_visual_anchor_province = 5199 } }
+	772 = { set_variable = { air_winter_visual_anchor_province = 8193 } }
+	773 = { set_variable = { air_winter_visual_anchor_province = 2080 } }
+	774 = { set_variable = { air_winter_visual_anchor_province = 2081 } }
+	775 = { set_variable = { air_winter_visual_anchor_province = 4902 } }
+	776 = { set_variable = { air_winter_visual_anchor_province = 10919 } }
+	777 = { set_variable = { air_winter_visual_anchor_province = 1951 } }
+	778 = { set_variable = { air_winter_visual_anchor_province = 10836 } }
+	779 = { set_variable = { air_winter_visual_anchor_province = 10803 } }
+	780 = { set_variable = { air_winter_visual_anchor_province = 1909 } }
+	781 = { set_variable = { air_winter_visual_anchor_province = 2056 } }
+	782 = { set_variable = { air_winter_visual_anchor_province = 1115 } }
+	783 = { set_variable = { air_winter_visual_anchor_province = 12857 } }
+	784 = { set_variable = { air_winter_visual_anchor_province = 3320 } }
+	785 = { set_variable = { air_winter_visual_anchor_province = 11420 } }
+	786 = { set_variable = { air_winter_visual_anchor_province = 1897 } }
+	787 = { set_variable = { air_winter_visual_anchor_province = 1910 } }
+	788 = { set_variable = { air_winter_visual_anchor_province = 3874 } }
+	789 = { set_variable = { air_winter_visual_anchor_province = 875 } }
+	790 = { set_variable = { air_winter_visual_anchor_province = 11707 } }
+	791 = { set_variable = { air_winter_visual_anchor_province = 11825 } }
+	792 = { set_variable = { air_winter_visual_anchor_province = 740 } }
+	793 = { set_variable = { air_winter_visual_anchor_province = 3945 } }
+	794 = { set_variable = { air_winter_visual_anchor_province = 3954 } }
+	795 = { set_variable = { air_winter_visual_anchor_province = 924 } }
+	796 = { set_variable = { air_winter_visual_anchor_province = 2115 } }
+	797 = { set_variable = { air_winter_visual_anchor_province = 9833 } }
+	798 = { set_variable = { air_winter_visual_anchor_province = 919 } }
+	799 = { set_variable = { air_winter_visual_anchor_province = 12029 } }
+	800 = { set_variable = { air_winter_visual_anchor_province = 6935 } }
+	801 = { set_variable = { air_winter_visual_anchor_province = 3796 } }
+	802 = { set_variable = { air_winter_visual_anchor_province = 6940 } }
+	803 = { set_variable = { air_winter_visual_anchor_province = 11857 } }
+	804 = { set_variable = { air_winter_visual_anchor_province = 9894 } }
+	805 = { set_variable = { air_winter_visual_anchor_province = 914 } }
+	806 = { set_variable = { air_winter_visual_anchor_province = 9710 } }
+	807 = { set_variable = { air_winter_visual_anchor_province = 3295 } }
+	808 = { set_variable = { air_winter_visual_anchor_province = 9340 } }
+	809 = { set_variable = { air_winter_visual_anchor_province = 6222 } }
+	810 = { set_variable = { air_winter_visual_anchor_province = 310 } }
+	811 = { set_variable = { air_winter_visual_anchor_province = 185 } }
+	812 = { set_variable = { air_winter_visual_anchor_province = 3152 } }
+	813 = { set_variable = { air_winter_visual_anchor_province = 4640 } }
+	814 = { set_variable = { air_winter_visual_anchor_province = 11312 } }
+	815 = { set_variable = { air_winter_visual_anchor_province = 6229 } }
+	816 = { set_variable = { air_winter_visual_anchor_province = 7588 } }
+	817 = { set_variable = { air_winter_visual_anchor_province = 12612 } }
+	818 = { set_variable = { air_winter_visual_anchor_province = 7843 } }
+	819 = { set_variable = { air_winter_visual_anchor_province = 12557 } }
+	820 = { set_variable = { air_winter_visual_anchor_province = 7717 } }
+	821 = { set_variable = { air_winter_visual_anchor_province = 3672 } }
+	822 = { set_variable = { air_winter_visual_anchor_province = 13063 } }
+	823 = { set_variable = { air_winter_visual_anchor_province = 1614 } }
+	824 = { set_variable = { air_winter_visual_anchor_province = 96 } }
+	825 = { set_variable = { air_winter_visual_anchor_province = 105 } }
+	826 = { set_variable = { air_winter_visual_anchor_province = 11617 } }
+	827 = { set_variable = { air_winter_visual_anchor_province = 11614 } }
+	828 = { set_variable = { air_winter_visual_anchor_province = 9628 } }
+	829 = { set_variable = { air_winter_visual_anchor_province = 11523 } }
+	830 = { set_variable = { air_winter_visual_anchor_province = 1573 } }
+	831 = { set_variable = { air_winter_visual_anchor_province = 12465 } }
+	832 = { set_variable = { air_winter_visual_anchor_province = 1493 } }
+	833 = { set_variable = { air_winter_visual_anchor_province = 9402 } }
+	834 = { set_variable = { air_winter_visual_anchor_province = 3757 } }
+	835 = { set_variable = { air_winter_visual_anchor_province = 13249 } }
+	836 = { set_variable = { air_winter_visual_anchor_province = 10775 } }
+	837 = { set_variable = { air_winter_visual_anchor_province = 13246 } }
+	838 = { set_variable = { air_winter_visual_anchor_province = 13244 } }
+	839 = { set_variable = { air_winter_visual_anchor_province = 2009 } }
+	840 = { set_variable = { air_winter_visual_anchor_province = 13242 } }
+	841 = { set_variable = { air_winter_visual_anchor_province = 1984 } }
+	842 = { set_variable = { air_winter_visual_anchor_province = 2072 } }
+	843 = { set_variable = { air_winter_visual_anchor_province = 5097 } }
+	844 = { set_variable = { air_winter_visual_anchor_province = 12941 } }
+	845 = { set_variable = { air_winter_visual_anchor_province = 6666 } }
+	846 = { set_variable = { air_winter_visual_anchor_province = 9600 } }
+	847 = { set_variable = { air_winter_visual_anchor_province = 636 } }
+	848 = { set_variable = { air_winter_visual_anchor_province = 6678 } }
+	849 = { set_variable = { air_winter_visual_anchor_province = 11837 } }
+	850 = { set_variable = { air_winter_visual_anchor_province = 9598 } }
+	851 = { set_variable = { air_winter_visual_anchor_province = 911 } }
+	852 = { set_variable = { air_winter_visual_anchor_province = 11564 } }
+	853 = { set_variable = { air_winter_visual_anchor_province = 9627 } }
+	854 = { set_variable = { air_winter_visual_anchor_province = 2057 } }
+	855 = { set_variable = { air_winter_visual_anchor_province = 1033 } }
+	856 = { set_variable = { air_winter_visual_anchor_province = 5037 } }
+	857 = { set_variable = { air_winter_visual_anchor_province = 4968 } }
+	858 = { set_variable = { air_winter_visual_anchor_province = 5006 } }
+	859 = { set_variable = { air_winter_visual_anchor_province = 12702 } }
+	860 = { set_variable = { air_winter_visual_anchor_province = 7683 } }
+	861 = { set_variable = { air_winter_visual_anchor_province = 1657 } }
+	862 = { set_variable = { air_winter_visual_anchor_province = 983 } }
+	863 = { set_variable = { air_winter_visual_anchor_province = 12223 } }
+	864 = { set_variable = { air_winter_visual_anchor_province = 3606 } }
+	865 = { set_variable = { air_winter_visual_anchor_province = 1671 } }
+	866 = { set_variable = { air_winter_visual_anchor_province = 761 } }
+	867 = { set_variable = { air_winter_visual_anchor_province = 5239 } }
+	868 = { set_variable = { air_winter_visual_anchor_province = 10425 } }
+	869 = { set_variable = { air_winter_visual_anchor_province = 1488 } }
+	870 = { set_variable = { air_winter_visual_anchor_province = 2201 } }
+	871 = { set_variable = { air_winter_visual_anchor_province = 1526 } }
+	872 = { set_variable = { air_winter_visual_anchor_province = 1501 } }
+	873 = { set_variable = { air_winter_visual_anchor_province = 2116 } }
+	874 = { set_variable = { air_winter_visual_anchor_province = 12683 } }
+	875 = { set_variable = { air_winter_visual_anchor_province = 13204 } }
+	876 = { set_variable = { air_winter_visual_anchor_province = 1722 } }
+	877 = { set_variable = { air_winter_visual_anchor_province = 12549 } }
+	878 = { set_variable = { air_winter_visual_anchor_province = 2900 } }
+	879 = { set_variable = { air_winter_visual_anchor_province = 138 } }
+	880 = { set_variable = { air_winter_visual_anchor_province = 11061 } }
+	881 = { set_variable = { air_winter_visual_anchor_province = 1243 } }
+	882 = { set_variable = { air_winter_visual_anchor_province = 7708 } }
+	883 = { set_variable = { air_winter_visual_anchor_province = 12725 } }
+	884 = { set_variable = { air_winter_visual_anchor_province = 2096 } }
+	885 = { set_variable = { air_winter_visual_anchor_province = 1953 } }
+	886 = { set_variable = { air_winter_visual_anchor_province = 1914 } }
+	887 = { set_variable = { air_winter_visual_anchor_province = 1960 } }
+	888 = { set_variable = { air_winter_visual_anchor_province = 2024 } }
+	889 = { set_variable = { air_winter_visual_anchor_province = 191 } }
+	890 = { set_variable = { air_winter_visual_anchor_province = 4941 } }
+	891 = { set_variable = { air_winter_visual_anchor_province = 1552 } }
+	892 = { set_variable = { air_winter_visual_anchor_province = 10966 } }
+	893 = { set_variable = { air_winter_visual_anchor_province = 2229 } }
+	894 = { set_variable = { air_winter_visual_anchor_province = 10957 } }
+	895 = { set_variable = { air_winter_visual_anchor_province = 8136 } }
+	896 = { set_variable = { air_winter_visual_anchor_province = 2120 } }
+	897 = { set_variable = { air_winter_visual_anchor_province = 2123 } }
+	898 = { set_variable = { air_winter_visual_anchor_province = 2044 } }
+	899 = { set_variable = { air_winter_visual_anchor_province = 2012 } }
+	900 = { set_variable = { air_winter_visual_anchor_province = 8034 } }
+	901 = { set_variable = { air_winter_visual_anchor_province = 4997 } }
+	902 = { set_variable = { air_winter_visual_anchor_province = 1891 } }
+	903 = { set_variable = { air_winter_visual_anchor_province = 8133 } }
+	904 = { set_variable = { air_winter_visual_anchor_province = 5160 } }
+	905 = { set_variable = { air_winter_visual_anchor_province = 5210 } }
+	906 = { set_variable = { air_winter_visual_anchor_province = 8000 } }
+	907 = { set_variable = { air_winter_visual_anchor_province = 7011 } }
+	908 = { set_variable = { air_winter_visual_anchor_province = 13240 } }
+	909 = { set_variable = { air_winter_visual_anchor_province = 317 } }
+	910 = { set_variable = { air_winter_visual_anchor_province = 6361 } }
+	911 = { set_variable = { air_winter_visual_anchor_province = 3325 } }
+	912 = { set_variable = { air_winter_visual_anchor_province = 13258 } }
+	913 = { set_variable = { air_winter_visual_anchor_province = 9393 } }
+	914 = { set_variable = { air_winter_visual_anchor_province = 13272 } }
+	915 = { set_variable = { air_winter_visual_anchor_province = 6310 } }
+	916 = { set_variable = { air_winter_visual_anchor_province = 156 } }
+	917 = { set_variable = { air_winter_visual_anchor_province = 11148 } }
+	918 = { set_variable = { air_winter_visual_anchor_province = 6132 } }
+	919 = { set_variable = { air_winter_visual_anchor_province = 11114 } }
+	920 = { set_variable = { air_winter_visual_anchor_province = 3136 } }
+	921 = { set_variable = { air_winter_visual_anchor_province = 6151 } }
+	922 = { set_variable = { air_winter_visual_anchor_province = 9296 } }
+	923 = { set_variable = { air_winter_visual_anchor_province = 3048 } }
+	924 = { set_variable = { air_winter_visual_anchor_province = 11050 } }
+	925 = { set_variable = { air_winter_visual_anchor_province = 9116 } }
+	926 = { set_variable = { air_winter_visual_anchor_province = 3083 } }
+	927 = { set_variable = { air_winter_visual_anchor_province = 3137 } }
+	928 = { set_variable = { air_winter_visual_anchor_province = 3061 } }
+	929 = { set_variable = { air_winter_visual_anchor_province = 158 } }
+	930 = { set_variable = { air_winter_visual_anchor_province = 37 } }
+	931 = { set_variable = { air_winter_visual_anchor_province = 11332 } }
+	932 = { set_variable = { air_winter_visual_anchor_province = 3311 } }
+	933 = { set_variable = { air_winter_visual_anchor_province = 6196 } }
+	934 = { set_variable = { air_winter_visual_anchor_province = 9780 } }
+	935 = { set_variable = { air_winter_visual_anchor_province = 5107 } }
+	936 = { set_variable = { air_winter_visual_anchor_province = 5168 } }
+	937 = { set_variable = { air_winter_visual_anchor_province = 5153 } }
+	938 = { set_variable = { air_winter_visual_anchor_province = 12853 } }
+	939 = { set_variable = { air_winter_visual_anchor_province = 4980 } }
+	940 = { set_variable = { air_winter_visual_anchor_province = 13278 } }
+	941 = { set_variable = { air_winter_visual_anchor_province = 5151 } }
+	942 = { set_variable = { air_winter_visual_anchor_province = 12939 } }
+	943 = { set_variable = { air_winter_visual_anchor_province = 10999 } }
+	944 = { set_variable = { air_winter_visual_anchor_province = 8181 } }
+	945 = { set_variable = { air_winter_visual_anchor_province = 1641 } }
+	946 = { set_variable = { air_winter_visual_anchor_province = 12468 } }
+	947 = { set_variable = { air_winter_visual_anchor_province = 13086 } }
+	948 = { set_variable = { air_winter_visual_anchor_province = 13294 } }
+	949 = { set_variable = { air_winter_visual_anchor_province = 2161 } }
+	950 = { set_variable = { air_winter_visual_anchor_province = 5121 } }
+	951 = { set_variable = { air_winter_visual_anchor_province = 5131 } }
+	952 = { set_variable = { air_winter_visual_anchor_province = 5228 } }
+	953 = { set_variable = { air_winter_visual_anchor_province = 13300 } }
+	954 = { set_variable = { air_winter_visual_anchor_province = 5173 } }
+	955 = { set_variable = { air_winter_visual_anchor_province = 10953 } }
+	956 = { set_variable = { air_winter_visual_anchor_province = 7500 } }
+	957 = { set_variable = { air_winter_visual_anchor_province = 12922 } }
+	958 = { set_variable = { air_winter_visual_anchor_province = 12942 } }
+	959 = { set_variable = { air_winter_visual_anchor_province = 2224 } }
+	960 = { set_variable = { air_winter_visual_anchor_province = 2136 } }
+	961 = { set_variable = { air_winter_visual_anchor_province = 12919 } }
+	962 = { set_variable = { air_winter_visual_anchor_province = 13330 } }
+	963 = { set_variable = { air_winter_visual_anchor_province = 10960 } }
+	964 = { set_variable = { air_winter_visual_anchor_province = 2198 } }
+	965 = { set_variable = { air_winter_visual_anchor_province = 2147 } }
+	966 = { set_variable = { air_winter_visual_anchor_province = 8172 } }
+	967 = { set_variable = { air_winter_visual_anchor_province = 13285 } }
+	968 = { set_variable = { air_winter_visual_anchor_province = 5008 } }
+	969 = { set_variable = { air_winter_visual_anchor_province = 5214 } }
+	970 = { set_variable = { air_winter_visual_anchor_province = 833 } }
+	971 = { set_variable = { air_winter_visual_anchor_province = 657 } }
+	972 = { set_variable = { air_winter_visual_anchor_province = 557 } }
+	973 = { set_variable = { air_winter_visual_anchor_province = 6700 } }
+	974 = { set_variable = { air_winter_visual_anchor_province = 11610 } }
+	975 = { set_variable = { air_winter_visual_anchor_province = 3700 } }
+	976 = { set_variable = { air_winter_visual_anchor_province = 9648 } }
+	977 = { set_variable = { air_winter_visual_anchor_province = 6598 } }
+	978 = { set_variable = { air_winter_visual_anchor_province = 3530 } }
+	979 = { set_variable = { air_winter_visual_anchor_province = 12237 } }
+	980 = { set_variable = { air_winter_visual_anchor_province = 9418 } }
+	981 = { set_variable = { air_winter_visual_anchor_province = 697 } }
+	982 = { set_variable = { air_winter_visual_anchor_province = 1321 } }
+	983 = { set_variable = { air_winter_visual_anchor_province = 12295 } }
+	984 = { set_variable = { air_winter_visual_anchor_province = 7465 } }
+	985 = { set_variable = { air_winter_visual_anchor_province = 4435 } }
+	986 = { set_variable = { air_winter_visual_anchor_province = 10729 } }
+	987 = { set_variable = { air_winter_visual_anchor_province = 1107 } }
+	988 = { set_variable = { air_winter_visual_anchor_province = 5105 } }
+	989 = { set_variable = { air_winter_visual_anchor_province = 10843 } }
+	990 = { set_variable = { air_winter_visual_anchor_province = 1553 } }
+	991 = { set_variable = { air_winter_visual_anchor_province = 1949 } }
+	992 = { set_variable = { air_winter_visual_anchor_province = 5074 } }
+	993 = { set_variable = { air_winter_visual_anchor_province = 7909 } }
+	994 = { set_variable = { air_winter_visual_anchor_province = 1403 } }
+	995 = { set_variable = { air_winter_visual_anchor_province = 1330 } }
+	996 = { set_variable = { air_winter_visual_anchor_province = 7254 } }
+	997 = { set_variable = { air_winter_visual_anchor_province = 12090 } }
+	998 = { set_variable = { air_winter_visual_anchor_province = 4425 } }
+	999 = { set_variable = { air_winter_visual_anchor_province = 4210 } }
+	1000 = { set_variable = { air_winter_visual_anchor_province = 1896 } }
+	1001 = { set_variable = { air_winter_visual_anchor_province = 4943 } }
+	1002 = { set_variable = { air_winter_visual_anchor_province = 8031 } }
+	1003 = { set_variable = { air_winter_visual_anchor_province = 7990 } }
+	1004 = { set_variable = { air_winter_visual_anchor_province = 7573 } }
+	1005 = { set_variable = { air_winter_visual_anchor_province = 10781 } }
+	1006 = { set_variable = { air_winter_visual_anchor_province = 5082 } }
+	1007 = { set_variable = { air_winter_visual_anchor_province = 12248 } }
+	1008 = { set_variable = { air_winter_visual_anchor_province = 5064 } }
+	1009 = { set_variable = { air_winter_visual_anchor_province = 2017 } }
+	1010 = { set_variable = { air_winter_visual_anchor_province = 12413 } }
+	1011 = { set_variable = { air_winter_visual_anchor_province = 2089 } }
+	1012 = { set_variable = { air_winter_visual_anchor_province = 8098 } }
+	1013 = { set_variable = { air_winter_visual_anchor_province = 13369 } }
+	1014 = { set_variable = { air_winter_visual_anchor_province = 13313 } }
+	1015 = { set_variable = { air_winter_visual_anchor_province = 5049 } }
+	1016 = { set_variable = { air_winter_visual_anchor_province = 2103 } }
+	1017 = { set_variable = { air_winter_visual_anchor_province = 4379 } }
+	1018 = { set_variable = { air_winter_visual_anchor_province = 4102 } }
+	1019 = { set_variable = { air_winter_visual_anchor_province = 7169 } }
+	1020 = { set_variable = { air_winter_visual_anchor_province = 10055 } }
+	1021 = { set_variable = { air_winter_visual_anchor_province = 12299 } }
+	1022 = { set_variable = { air_winter_visual_anchor_province = 1230 } }
+	1023 = { set_variable = { air_winter_visual_anchor_province = 7387 } }
+	1024 = { set_variable = { air_winter_visual_anchor_province = 10212 } }
+	1025 = { set_variable = { air_winter_visual_anchor_province = 1421 } }
+	1026 = { set_variable = { air_winter_visual_anchor_province = 10243 } }
+	1027 = { set_variable = { air_winter_visual_anchor_province = 7351 } }
+	1028 = { set_variable = { air_winter_visual_anchor_province = 898 } }
+	1029 = { set_variable = { air_winter_visual_anchor_province = 1148 } }
+	1030 = { set_variable = { air_winter_visual_anchor_province = 4056 } }
+	1031 = { set_variable = { air_winter_visual_anchor_province = 4126 } }
+	1032 = { set_variable = { air_winter_visual_anchor_province = 8049 } }
+	1033 = { set_variable = { air_winter_visual_anchor_province = 10004 } }
+	1034 = { set_variable = { air_winter_visual_anchor_province = 10076 } }
+	1035 = { set_variable = { air_winter_visual_anchor_province = 11913 } }
+	1036 = { set_variable = { air_winter_visual_anchor_province = 4619 } }
+	1037 = { set_variable = { air_winter_visual_anchor_province = 6999 } }
+	1038 = { set_variable = { air_winter_visual_anchor_province = 1069 } }
+	1039 = { set_variable = { air_winter_visual_anchor_province = 6904 } }
+	1040 = { set_variable = { air_winter_visual_anchor_province = 4783 } }
+	1041 = { set_variable = { air_winter_visual_anchor_province = 4925 } }
+	1042 = { set_variable = { air_winter_visual_anchor_province = 4973 } }
+	1043 = { set_variable = { air_winter_visual_anchor_province = 12331 } }
+	1044 = { set_variable = { air_winter_visual_anchor_province = 5100 } }
+	1045 = { set_variable = { air_winter_visual_anchor_province = 5025 } }
+	1046 = { set_variable = { air_winter_visual_anchor_province = 7314 } }
+	1047 = { set_variable = { air_winter_visual_anchor_province = 7384 } }
+	1048 = { set_variable = { air_winter_visual_anchor_province = 10382 } }
+	1049 = { set_variable = { air_winter_visual_anchor_province = 4652 } }
+	1050 = { set_variable = { air_winter_visual_anchor_province = 13398 } }
+	1051 = { set_variable = { air_winter_visual_anchor_province = 13405 } }
+	1052 = { set_variable = { air_winter_visual_anchor_province = 13386 } }
+	1053 = { set_variable = { air_winter_visual_anchor_province = 4301 } }
+	1054 = { set_variable = { air_winter_visual_anchor_province = 1355 } }
+	1055 = { set_variable = { air_winter_visual_anchor_province = 12225 } }
+	1056 = { set_variable = { air_winter_visual_anchor_province = 10153 } }
+	1057 = { set_variable = { air_winter_visual_anchor_province = 10505 } }
+	1058 = { set_variable = { air_winter_visual_anchor_province = 7381 } }
+	1059 = { set_variable = { air_winter_visual_anchor_province = 13378 } }
+	1060 = { set_variable = { air_winter_visual_anchor_province = 13376 } }
+	1061 = { set_variable = { air_winter_visual_anchor_province = 1291 } }
+	1062 = { set_variable = { air_winter_visual_anchor_province = 7329 } }
+	1063 = { set_variable = { air_winter_visual_anchor_province = 7399 } }
+	1064 = { set_variable = { air_winter_visual_anchor_province = 1376 } }
+	1065 = { set_variable = { air_winter_visual_anchor_province = 13408 } }
+	1066 = { set_variable = { air_winter_visual_anchor_province = 4401 } }
+	1067 = { set_variable = { air_winter_visual_anchor_province = 4251 } }
+	1068 = { set_variable = { air_winter_visual_anchor_province = 1563 } }
+	1069 = { set_variable = { air_winter_visual_anchor_province = 10330 } }
+	1070 = { set_variable = { air_winter_visual_anchor_province = 10234 } }
+	1071 = { set_variable = { air_winter_visual_anchor_province = 12120 } }
+	1072 = { set_variable = { air_winter_visual_anchor_province = 13080 } }
+	1073 = { set_variable = { air_winter_visual_anchor_province = 2129 } }
+	1074 = { set_variable = { air_winter_visual_anchor_province = 2133 } }
+	1075 = { set_variable = { air_winter_visual_anchor_province = 2205 } }
+	1076 = { set_variable = { air_winter_visual_anchor_province = 7408 } }
+	1077 = { set_variable = { air_winter_visual_anchor_province = 10221 } }
+	1078 = { set_variable = { air_winter_visual_anchor_province = 12224 } }
+	1079 = { set_variable = { air_winter_visual_anchor_province = 4543 } }
+	1080 = { set_variable = { air_winter_visual_anchor_province = 12632 } }
+	1081 = { set_variable = { air_winter_visual_anchor_province = 2211 } }
 }
 
 # ============================================================================
@@ -14716,17 +15893,22 @@ fallout_manual_execute_batch_40 = {
 # Dynamic event delay fields use file-scoped literals. Keep these aligned with
 # the matching fallout_manual_sweep script constants.
 @FALLOUT_MANUAL_BATCH_DELAY_HOURS = 1
-@FALLOUT_MANUAL_VERIFIER_DELAY_HOURS = 1
 @FALLOUT_MANUAL_COUNTDOWN_DAYS = 7
 
 # Supported scope: COUNTRY
 # Input: fallout_manual_failure_code
 # A failure after a valid sweep has been admitted keeps the durable Air
 # shutdown. Only the pre-admission invalid-intensity branch can fail without
-# owning Air Cleanliness.
+# owning Air Cleanliness. Native strikes that already landed cannot be
+# recalled, so the error state is terminal for this transaction. Human players
+# receive one notice that the strike campaign has ended without a blackout.
 fallout_manual_fail_sweep = {
 	if = {
 		limit = { NOT = { has_global_flag = fallout_manual_sweep_error } }
+		every_country = {
+			limit = { is_ai = no }
+			country_event = { id = chaosx.fallout.904 }
+		}
 		set_global_flag = fallout_manual_scenario_active
 		set_global_flag = fallout_manual_sweep_error
 		set_variable = { global.fallout_manual_error_code = fallout_manual_failure_code }
@@ -14965,11 +16147,13 @@ fallout_manual_schedule_verifier = {
 		set_temp_variable = { fallout_manual_verifier_event_id = global.fallout_manual_verifier_retry_count }
 		add_to_temp_variable = { fallout_manual_verifier_event_id = constant:fallout_manual_sweep.verifier_event_id_offset }
 		set_global_flag = fallout_manual_verifier_event_scheduled
-		set_temp_variable = { fallout_manual_verifier_delay_hours = @FALLOUT_MANUAL_VERIFIER_DELAY_HOURS }
+		# Native strike callbacks arrive on a later engine tick, so each
+		# verifier attempt waits whole days for them to settle.
+		set_temp_variable = { fallout_manual_verifier_delay_days = constant:fallout_manual_sweep.verifier_delay_days }
 		meta_effect = {
-			text = { country_event = { id = chaosx.fallout.[EVENT_ID] hours = [VERIFIER_DELAY_HOURS] } }
+			text = { country_event = { id = chaosx.fallout.[EVENT_ID] days = [VERIFIER_DELAY_DAYS] } }
 			EVENT_ID = "[?fallout_manual_verifier_event_id|.0]"
-			VERIFIER_DELAY_HOURS = "[?fallout_manual_verifier_delay_hours|.0]"
+			VERIFIER_DELAY_DAYS = "[?fallout_manual_verifier_delay_days|.0]"
 		}
 	}
 }
@@ -15134,6 +16318,11 @@ fallout_manual_execute_next_batch = {
 }
 
 # Supported scope: COUNTRY. FROM is the state supplied by on_nuke_drop.
+# launch_nuke only queues the strike. The engine drops it and runs
+# on_nuke_drop on a later tick, after the batch event that issued it has
+# finished, so this observer accepts callbacks for every launch the sweep has
+# issued and not yet observed. When the last expected callback lands after the
+# verifier is already waiting, the current verifier token fires at once.
 fallout_manual_on_native_nuke_observed = {
 	add_to_variable = { global.fallout_manual_observed_strike_count = constant:fallout_runtime.one }
 	FROM = {
@@ -15156,6 +16345,27 @@ fallout_manual_on_native_nuke_observed = {
 		}
 		set_temp_variable = { fallout_manual_failure_code = constant:fallout_manual_error_code.observed_count_mismatch }
 		fallout_manual_fail_sweep = yes
+	}
+	else_if = {
+		limit = {
+			NOT = { has_global_flag = fallout_manual_sweep_error }
+			has_global_flag = fallout_manual_verifier_event_scheduled
+			has_variable = global.fallout_manual_scheduled_verifier_attempt
+			check_variable = { global.fallout_manual_status = constant:fallout_manual_status.verifying }
+			check_variable = {
+				var = global.fallout_manual_observed_strike_count
+				value = constant:fallout_manual_sweep.expected_province_strikes
+				compare = equals
+			}
+		}
+		# The verifier token keeps its full validation. The delayed copy of the
+		# same token no longer passes its trigger once this one has run.
+		set_temp_variable = { fallout_manual_verifier_event_id = global.fallout_manual_scheduled_verifier_attempt }
+		add_to_temp_variable = { fallout_manual_verifier_event_id = constant:fallout_manual_sweep.verifier_event_id_offset }
+		meta_effect = {
+			text = { country_event = { id = chaosx.fallout.[EVENT_ID] } }
+			EVENT_ID = "[?fallout_manual_verifier_event_id|.0]"
+		}
 	}
 }
 
