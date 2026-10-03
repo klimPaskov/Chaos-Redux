@@ -1,6 +1,6 @@
 # Event 021 date-unit repair
 
-Disposition: implemented source repair, publication and live confirmation pending.
+Disposition: implemented and committed source repair, live confirmation pending.
 Acceptance basis: the orchestrator acting for the user reported on 2026-10-03 at 20:00 that one game hour is 0.00001 in date variables and explicitly requested every Event 021 day-addition site to be repaired and committed.
 
 ## Implementation
@@ -19,6 +19,9 @@ See [`event021_date_units_audit_2026-10-03.md`](subagent_handoffs/event021_date_
 
 ## Verification and publication boundary
 
+The implementation is published in commit `015a7820a22727a72cc567ea54abd2abed35f303`, tree `118e66db36f76dcaa818cc24955ba37d85ed2945`.
+The six calendar regressions also pass against that exact committed object.
+
 Six source-backed calendar tests pass against isolated proposed tree `c9b68609121636dc2cb678a2b40f04cda18edf75`, based on `b60528470e00464641edf2e99f591e1599d33a8a`.
 They cover two days as 48 hours instead of 200,000 hours, exact whole-day durations, fractional MTTH durations resolving no earlier than intended, one-hour deadline boundaries and copied anchors, all 41 caller-owned converter sites, and preserved native day fields and MTTH source.
 The independent reviewer reproduced all six calendar and twelve metadata methods from that tree's test blobs and verified inverse-AST equality for all five complete effects files after reversing only the 41 unit conversions.
@@ -36,7 +39,14 @@ These are before evidence, not staged gameplay.
 
 ## Evidence limits and remaining goal work
 
-The probability auditor preserves the original three-stage MTTH assignments and clamps but does not certify the absolute clock application through an unchanged-MTTH comparison alone.
+The received [`probability audit`](subagent_handoffs/event021_date_units_probability_audit_2026-10-03.md) verifies the published commit and records valid MTTH and parent-effect comparison attempts returning `PROBABILITY_SURFACE_EMPTY`.
+It does not certify numerical timing or a full clock trace.
+Its shared-worktree MTTH difference belongs to the separate uncommitted actor-eligibility migration.
+The date-fix base and commit both retain MTTH Git blob `123c4f6f4964715be173c1dd580aae53ff1f0d62`, and the original tuning file is unchanged across that commit.
+The independent inverse-AST review likewise isolates the complete parent-effects delta to the date substitutions.
+The audit's disabled-stage resampling and predecessor-gating findings are separate scheduler issues, not resolved by the unit correction.
+The broader scheduler work must suppress disabled-stage sampling without recording disabled evolution history and resolve later-stage dependency behavior against the accepted evolution design before changing that policy.
+No independent progression or disabled-stage fallback has been implemented by this report reconciliation.
 The current MCP adapter did not classify scripted MTTH, an inspected random-list pool was incomplete, and lifecycle inspection/render coverage remains incomplete.
 No clean live error.log or full Event 021 completion is claimed.
 The broader active-war evolution, native tag capacity, inherited package/assets, full probability, performance, and final acceptance work retains its existing unfinished status.
