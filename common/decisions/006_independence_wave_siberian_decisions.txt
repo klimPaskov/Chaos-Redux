@@ -3054,7 +3054,18 @@ independence_wave_tat_river_compact_category = {
 			independence_wave_decision_pay_diplomatic_standard = yes
 		}
 		remove_effect = {
-			custom_effect_tooltip = independence_wave_tat_host_ledgers_effect_tt
+			if = {
+				limit = {
+					has_independence_wave_living_former_host = yes
+					var:independence_wave_former_host = { NOT = { has_war_with = ROOT } }
+				}
+				custom_effect_tooltip = independence_wave_tat_host_ledgers_effect_tt
+			}
+			else_if = {
+				limit = { has_independence_wave_living_former_host = yes }
+				custom_effect_tooltip = independence_wave_tat_host_ledgers_at_war_effect_tt
+			}
+			else = { custom_effect_tooltip = independence_wave_tat_host_loss_effect_tt }
 			independence_wave_tat_focus_settle_former_host_ledgers = yes
 		}
 		cancel_trigger = {
@@ -3083,6 +3094,18 @@ independence_wave_tat_river_compact_category = {
 					is_independence_wave_tat_project_ready = yes
 					capital_scope = { is_controlled_by = ROOT }
 					has_country_flag = independence_wave_tat_depots_secured
+					has_independence_wave_living_former_host = yes
+					var:independence_wave_former_host = { has_war_with = ROOT }
+				}
+				custom_effect_tooltip = independence_wave_tat_host_ledgers_at_war_effect_tt
+				independence_wave_tat_focus_settle_former_host_ledgers = yes
+			}
+			else_if = {
+				limit = {
+					is_independence_wave_tat_project_ready = yes
+					capital_scope = { is_controlled_by = ROOT }
+					has_country_flag = independence_wave_tat_depots_secured
+					NOT = { has_independence_wave_living_former_host = yes }
 					has_independence_wave_tat_unsettled_host = yes
 				}
 				custom_effect_tooltip = independence_wave_tat_host_loss_effect_tt
@@ -3107,15 +3130,15 @@ independence_wave_tat_river_compact_category = {
 		desc = independence_wave_tat_ratify_constitutional_autonomy_desc
 		icon = GFX_decision_independence_wave_government_actions
 		visible = {
-			is_independence_wave_tat_project_ready = yes
+			is_independence_wave_tat_government_choice_open = yes
 			has_independence_wave_constitutional_route = yes
 			NOT = { has_independence_wave_tat_route_government = yes }
 		}
 		available = {
-			is_independence_wave_tat_project_ready = yes
+			is_independence_wave_tat_government_choice_open = yes
 			can_pay_independence_wave_tat_administration_light_cost = yes
 			capital_scope = { is_controlled_by = ROOT }
-			NOT = { has_independence_wave_tat_active_package_project = yes }
+			is_independence_wave_tat_government_project_clear = yes
 		}
 		custom_cost_trigger = { can_pay_independence_wave_tat_administration_light_cost = yes }
 		custom_cost_text = independence_wave_tat_cost_administration_light
@@ -3152,15 +3175,15 @@ independence_wave_tat_river_compact_category = {
 		desc = independence_wave_tat_adopt_agrarian_compact_desc
 		icon = GFX_decision_independence_wave_government_actions
 		visible = {
-			is_independence_wave_tat_project_ready = yes
+			is_independence_wave_tat_government_choice_open = yes
 			has_independence_wave_traditional_route = yes
 			NOT = { has_independence_wave_tat_route_government = yes }
 		}
 		available = {
-			is_independence_wave_tat_project_ready = yes
+			is_independence_wave_tat_government_choice_open = yes
 			can_pay_independence_wave_diplomatic_standard_cost = yes
 			capital_scope = { is_controlled_by = ROOT }
-			NOT = { has_independence_wave_tat_active_package_project = yes }
+			is_independence_wave_tat_government_project_clear = yes
 		}
 		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
 		custom_cost_text = independence_wave_cost_diplomatic_standard
@@ -3196,15 +3219,15 @@ independence_wave_tat_river_compact_category = {
 		desc = independence_wave_tat_convene_socialist_councils_desc
 		icon = GFX_decision_independence_wave_government_actions
 		visible = {
-			is_independence_wave_tat_project_ready = yes
+			is_independence_wave_tat_government_choice_open = yes
 			has_independence_wave_popular_council_route = yes
 			NOT = { has_independence_wave_tat_route_government = yes }
 		}
 		available = {
-			is_independence_wave_tat_project_ready = yes
+			is_independence_wave_tat_government_choice_open = yes
 			can_pay_independence_wave_tat_administration_light_cost = yes
 			capital_scope = { is_controlled_by = ROOT }
-			NOT = { has_independence_wave_tat_active_package_project = yes }
+			is_independence_wave_tat_government_project_clear = yes
 		}
 		custom_cost_trigger = { can_pay_independence_wave_tat_administration_light_cost = yes }
 		custom_cost_text = independence_wave_tat_cost_administration_light
@@ -3241,15 +3264,15 @@ independence_wave_tat_river_compact_category = {
 		desc = independence_wave_tat_establish_river_emergency_command_desc
 		icon = GFX_decision_independence_wave_army_integration_actions
 		visible = {
-			is_independence_wave_tat_project_ready = yes
+			is_independence_wave_tat_government_choice_open = yes
 			has_independence_wave_emergency_military_route = yes
 			NOT = { has_independence_wave_tat_route_government = yes }
 		}
 		available = {
-			is_independence_wave_tat_project_ready = yes
+			is_independence_wave_tat_government_choice_open = yes
 			can_pay_independence_wave_security_major_cost = yes
 			capital_scope = { is_controlled_by = ROOT }
-			NOT = { has_independence_wave_tat_active_package_project = yes }
+			is_independence_wave_tat_government_project_clear = yes
 		}
 		custom_cost_trigger = { can_pay_independence_wave_security_major_cost = yes }
 		custom_cost_text = independence_wave_cost_security_major

@@ -897,8 +897,16 @@ independence_wave_activate_prepared_country_origin = {
 			set_country_flag = independence_wave_origin_activation_ready
 			if = {
 				limit = {
-					check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_039 }
-					has_country_flag = independence_wave_iw_039_don_setup_complete
+					OR = {
+						AND = {
+							check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_039 }
+							has_country_flag = independence_wave_iw_039_don_setup_complete
+						}
+						AND = {
+							check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_044 }
+							has_country_flag = independence_wave_iw_044_setup_complete
+						}
+					}
 				}
 				mark_focus_tree_layout_dirty = yes
 			}

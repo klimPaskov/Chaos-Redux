@@ -25,9 +25,11 @@ Installed game reference: `C:/Program Files (x86)/Steam/steamapps/common/Hearts 
 The `hoi4.reference_context`, `hoi4.reference_search`, and `hoi4.reference_read` tools are exposed.
 After the initial context/search calls did not return, a narrower `clr_global_flag` search and revision-bound read with the explicit workspace ID succeeded and confirmed installed lines 2801–2809 at revision `2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af`.
 The narrowed `check_variable` search returned installed lines 2110–2135 at revision `7d27ed77dadaf3a213a4b3e2c624bf9c02dae495317abe8eee833b27c2d1de29`; the same section was also read directly from disk.
-The focused source lookup for the host-response AI helper timed out after 600 seconds; a one-line retry was submitted.
-Basic event lint for `.60`, with helper expansion disabled and four-node bounds, also timed out after 600 seconds; a one-node retry was submitted.
-These pending retries do not supply final source or graph coverage, and no Event MCP render or engine execution result is claimed.
+The focused source lookup for the host-response AI helper timed out after 600 seconds; its narrower one-line retry also timed out after 600 seconds.
+Basic event lint for `.60`, with helper expansion disabled and four-node bounds, also timed out after 600 seconds; its one-node/one-edge retry timed out after 600 seconds as well.
+The context bundle retry was narrowed to two sources with the explicit workspace ID and also timed out after 600 seconds.
+The revision-bound `check_variable` read timed out at 26 lines, and a five-line retry was submitted; direct local reading supplied the same rules.
+These failures and the pending minimal read do not supply final source or graph coverage, and no Event MCP render or engine execution result is claimed.
 The live schema does not expose `hoi4.script_validate`, and its `source_lookup` schema does not include `view` or `keyPath`.
 
 ## Validation and remaining findings

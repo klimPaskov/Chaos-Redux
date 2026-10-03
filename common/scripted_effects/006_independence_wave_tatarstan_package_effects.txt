@@ -266,6 +266,21 @@ independence_wave_install_tat_emergency_government = {
 independence_wave_tat_focus_convene_provisional_assembly = {
 	if = {
 		limit = { NOT = { has_country_flag = independence_wave_tat_depots_secured } }
+		# Kazan's founding administration needs a civilian works reserve before
+		# the route projects can reserve factories. Preserve existing industry
+		# and add only the deficit once through this package reward.
+		if = {
+			limit = { 249 = { is_owned_and_controlled_by = ROOT } }
+			249 = {
+				set_temp_variable = { independence_wave_tat_civilian_workshop_delta = constant:independence_wave_tatarstan_cost.founding_civilian_factory_target }
+				subtract_from_temp_variable = { independence_wave_tat_civilian_workshop_delta = building_level@industrial_complex }
+				if = {
+					limit = { check_variable = { independence_wave_tat_civilian_workshop_delta > constant:independence_wave_tatarstan_pressure.minimum } }
+					add_extra_state_shared_building_slots = independence_wave_tat_civilian_workshop_delta
+					add_building_construction = { type = industrial_complex level = independence_wave_tat_civilian_workshop_delta instant_build = yes }
+				}
+			}
+		}
 		set_temp_variable = { independence_wave_tat_rada_delta = constant:independence_wave_tatarstan_pressure.major_gain }
 		set_temp_variable = { independence_wave_tat_river_delta = constant:independence_wave_tatarstan_pressure.minor_gain }
 		independence_wave_change_tat_compact_values = yes

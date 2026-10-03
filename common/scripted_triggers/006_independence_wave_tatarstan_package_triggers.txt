@@ -1,9 +1,9 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 006 IW-044 TATARSTAN PACKAGE TRIGGERS
 # ============================================================================
-# Exact IW-044 identity, state-249 origin, roster, route, force, and completion
-# proofs. Central content attestation and normal/scenario preflight are admitted;
-# current MCP engine receipts remain unavailable while the workspace manifest is invalid.
+# Exact IW-044 identity, state-249 origin, roster, route, force, focus-group,
+# and completion proofs. Central content attestation and normal/scenario
+# preflight enforce the package's identity, origin, roster, and force contracts.
 # ============================================================================
 
 is_independence_wave_tat_package = {
@@ -16,9 +16,31 @@ is_independence_wave_tat_project_ready = {
 	is_independence_wave_tat_package = yes
 	has_country_flag = independence_wave_iw_044_setup_complete
 	# The ordinary project layer opens only after the founding compact mission
-	# resolves; while it is active, the mission remains the sole opening action.
+	# resolves; founding government projects use their separate opening gate.
 	has_country_flag = independence_wave_tat_compact_crisis_resolved
 	NOT = { has_country_flag = independence_wave_tat_compact_crisis_failed }
+}
+
+is_independence_wave_tat_government_choice_open = {
+	is_independence_wave_tat_package = yes
+	has_country_flag = independence_wave_iw_044_setup_complete
+	has_active_mission = independence_wave_tat_hold_river_compact_together
+	NOT = { has_country_flag = independence_wave_tat_compact_crisis_resolved }
+	NOT = { has_country_flag = independence_wave_tat_compact_crisis_failed }
+	NOT = { has_independence_wave_tat_route_government = yes }
+}
+
+has_independence_wave_tat_active_government_project = {
+	OR = {
+		has_decision = independence_wave_tat_ratify_constitutional_autonomy
+		has_decision = independence_wave_tat_adopt_agrarian_compact
+		has_decision = independence_wave_tat_convene_socialist_councils
+		has_decision = independence_wave_tat_establish_river_emergency_command
+	}
+}
+
+is_independence_wave_tat_government_project_clear = {
+	NOT = { has_independence_wave_tat_active_government_project = yes }
 }
 
 has_independence_wave_tat_unsettled_host = {
@@ -212,6 +234,17 @@ has_complete_independence_wave_iw_044_package_setup = {
 	is_in_array = { array = global.independence_wave_active_countries value = THIS }
 	is_in_array = { array = global.independence_wave_network_member_country_entries value = THIS }
 	has_country_flag = independence_wave_network_member
+}
+
+can_use_independence_wave_tat_focus_group = {
+	is_independence_wave_active_country = yes
+	is_independence_wave_tat_package = yes
+	has_complete_independence_wave_iw_044_package_setup = yes
+	can_use_independence_wave_full_focus_framework = yes
+	has_independence_wave_generic_focus_contract = yes
+	NOT = { has_country_flag = independence_wave_tat_compact_crisis_failed }
+	NOT = { has_country_flag = independence_wave_origin_ended }
+	249 = { is_owned_and_controlled_by = ROOT is_capital = yes }
 }
 
 
