@@ -224,6 +224,7 @@ gods_of_africa_demand_contract_is_current = {
 	# contract, but this gate closes the response surface immediately.
 	NOT = { has_war_with = event_target:africa_host }
 	has_variable = gods_of_africa_demand_family
+	gods_of_africa_demand_family_is_valid = yes
 	has_variable = gods_of_africa_demand_amount
 	has_variable = gods_of_africa_demand_deadline
 	check_variable = {
@@ -279,7 +280,12 @@ gods_of_africa_family_is_equipment = {
 gods_of_africa_demand_family_is_valid = {
 	OR = {
 		check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.land_equipment }
-		check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.mobile_artillery }
+		AND = {
+			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.mobile_artillery }
+			has_variable = gods_of_africa_demand_mobile_type
+			set_temp_variable = { gods_of_africa_mobile_type = gods_of_africa_demand_mobile_type }
+			gods_of_africa_mobile_type_is_valid = yes
+		}
 		check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.armor }
 		check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.aircraft }
 		check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.fuel }
@@ -316,7 +322,10 @@ gods_of_africa_participant_has_capacity_for_family = {
 		}
 		AND = {
 			check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.mobile_artillery }
-			NOT = { has_equipment = { motorized_equipment < gods_of_africa_capacity_requirement } }
+			has_variable = gods_of_africa_payment_mobile_type
+			set_temp_variable = { gods_of_africa_mobile_type = gods_of_africa_payment_mobile_type }
+			set_temp_variable = { gods_of_africa_mobile_required_amount = gods_of_africa_capacity_requirement }
+			gods_of_africa_mobile_capacity_is_sufficient = yes
 		}
 		AND = {
 			check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.aircraft }
@@ -435,7 +444,14 @@ gods_of_africa_substitute_offer_is_affordable = {
 		}
 		AND = {
 			check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.mobile_artillery }
-			NOT = { has_equipment = { motorized_equipment < gods_of_africa_substitute_capacity_requirement } }
+			has_variable = gods_of_africa_substitute_mobile_type
+			set_temp_variable = { gods_of_africa_mobile_type = gods_of_africa_substitute_mobile_type }
+			set_temp_variable = { gods_of_africa_mobile_required_amount = gods_of_africa_substitute_capacity_requirement }
+			gods_of_africa_mobile_capacity_is_sufficient = yes
+			OR = {
+				NOT = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.mobile_artillery } }
+				check_variable = { gods_of_africa_substitute_mobile_type = gods_of_africa_demand_mobile_type }
+			}
 		}
 		AND = {
 			check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.armor }
@@ -550,7 +566,12 @@ gods_of_africa_participant_can_reconcile = {
 gods_of_africa_payment_family_is_valid = {
 	OR = {
 		check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.land_equipment }
-		check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.mobile_artillery }
+		AND = {
+			check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.mobile_artillery }
+			has_variable = gods_of_africa_payment_mobile_type
+			set_temp_variable = { gods_of_africa_mobile_type = gods_of_africa_payment_mobile_type }
+			gods_of_africa_mobile_type_is_valid = yes
+		}
 		check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.armor }
 		check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.aircraft }
 		check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.fuel }
@@ -563,6 +584,24 @@ gods_of_africa_payment_family_is_valid = {
 		check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.alliance_access }
 		check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.emergency_relief }
 		check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.support_equipment }
+	}
+}
+
+# COUNTRY scope. A physical family-2 debit must retain the frozen type and
+# cannot exceed the current residual or send a fractional unit.
+gods_of_africa_mobile_payment_matches_contract = {
+	OR = {
+		NOT = { check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.mobile_artillery } }
+		AND = {
+			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.mobile_artillery }
+			has_variable = gods_of_africa_payment_mobile_type
+			has_variable = gods_of_africa_demand_mobile_type
+			check_variable = { gods_of_africa_payment_mobile_type = gods_of_africa_demand_mobile_type }
+			check_variable = { var = gods_of_africa_payment_amount value = gods_of_africa_demand_remaining compare = less_than_or_equals }
+			set_temp_variable = { gods_of_africa_mobile_payment_fraction = gods_of_africa_payment_amount }
+			modulo_temp_variable = { gods_of_africa_mobile_payment_fraction = constant:gods_of_africa_value.one }
+			check_variable = { gods_of_africa_mobile_payment_fraction = constant:gods_of_africa_value.zero }
+		}
 	}
 }
 
@@ -961,7 +1000,10 @@ gods_of_africa_partial_payment_is_affordable = {
 		}
 		AND = {
 			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.mobile_artillery }
-			NOT = { has_equipment = { motorized_equipment < gods_of_africa_partial_capacity_requirement } }
+			has_variable = gods_of_africa_demand_mobile_type
+			set_temp_variable = { gods_of_africa_mobile_type = gods_of_africa_demand_mobile_type }
+			set_temp_variable = { gods_of_africa_mobile_required_amount = gods_of_africa_partial_capacity_requirement }
+			gods_of_africa_mobile_capacity_is_sufficient = yes
 		}
 		AND = {
 			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.armor }

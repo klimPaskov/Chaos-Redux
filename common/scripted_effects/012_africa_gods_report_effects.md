@@ -8,7 +8,10 @@ Strength and Wrath remain the two Gods values displayed by the decision categori
 Its caller sets temporary `gods_of_africa_report_kind`, `gods_of_africa_report_amount`, and `gods_of_africa_report_balance`, then invokes `gods_of_africa_capture_response_report = yes`.
 These inputs contain the applicable history-kind constant, paid amount, and balance after the action.
 All inputs are explicit and have no default.
-It stores four normal variables: `gods_of_africa_last_response_kind`, `gods_of_africa_last_response_family`, `gods_of_africa_last_response_amount`, and `gods_of_africa_last_response_balance`.
+It stores four required normal variables: `gods_of_africa_last_response_kind`, `gods_of_africa_last_response_family`, `gods_of_africa_last_response_amount`, and `gods_of_africa_last_response_balance`.
+For a truck/artillery-family response it also snapshots the frozen `gods_of_africa_demand_mobile_type` into `gods_of_africa_last_response_mobile_type` before demand cleanup.
+Each capture clears the previous optional subtype first, so a later non-mobile response cannot inherit it.
+The concrete response-family resolver reads this receipt subtype only; absent or malformed subtype resolves as unknown rather than trucks.
 It pays nothing, changes no contract, sets no timer, and increments no history counter.
 If there is no active family to snapshot, it writes no receipt.
 Ordinary demand cleanup preserves these fields so the triggered report can read them.
@@ -46,7 +49,7 @@ Missing state selections and zero resistance increases publish no corresponding 
 The affected state's ID is held by the participant and rendered through its variable namespace, following the existing Charter and Migration localisation patterns.
 The report body requires all three native-stat delta fields before appending numeric results, so lifecycle reset does not revive an old tier with fabricated zero changes.
 
-`gods_of_africa_clear_report_receipts = yes` clears the ten private response/punishment fields and four local-consequence flags in COUNTRY scope.
+`gods_of_africa_clear_report_receipts = yes` clears the eleven private response/punishment fields and four local-consequence flags in COUNTRY scope.
 It runs during enrollment reset, invalid-participant archival, and unifier-loss cancellation.
 It has no input, output receipt, default, payment, or world iteration.
 It does not clear pending flags or historical punishment-tier fields owned by the existing lifecycle helpers.

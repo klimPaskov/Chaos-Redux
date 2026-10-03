@@ -115,7 +115,16 @@ Native stock movement, save/reload, and DLC execution remain unobserved in the s
 
 ## Remaining accepted-scope gaps
 
-The accepted mobile/artillery family still needs its own automatic selection and actual artillery coverage.
+The mobile/artillery family chooses one fixed subtype from matching African need and sender spare stock: trucks or towed artillery.
+Native stock, army targets, and fielded equipment establish reinforcement shortfall and operating reserves separately for each subtype.
+Unlocked logistics or arsenal support can also establish the corresponding host stock objective; a healthy lane produces no arbitrary request.
+Artillery is tried first when both subtypes qualify, and the automatic candidate sits after armour and before manpower; the existing priority helper can prioritize this family without adding another player action.
+Quotes use ten percent of spare stock, with a whole-unit ceiling bounded by host need, protected spare stock, one quarter of spare stock, and the subtype's maximum shipment.
+Scaling preserves that ceiling, and every response recomputes compatible capacity.
+The frozen type follows full payments, partial payments, substitute slots, submission, host acceptance, rollback, and reports; truck stock cannot satisfy an artillery contract.
+Native `send_equipment` performs exactly one matching transfer, and completed shipments preserve their concrete type in the latest report after live cleanup.
+The helper contract and integration evidence are in `012_africa_gods_equipment_effects.md` and `012_africa_gods_mobile_tribute_2026-10-03.md`.
+Native inventory execution and DLC execution remain unobserved.
 Response and punishment reports use their latest outcome receipts, including the payment family, partial balance, native stat changes, and concrete local consequences.
 Owner-driven population loss captures the participant explicitly for exact-loss country attribution and receipts, and uses caller-initialized helper outputs.
 The report contract and its review limits are recorded in `common/scripted_effects/012_africa_gods_report_effects.md` and `012_africa_gods_response_reports_2026-10-03.md`.

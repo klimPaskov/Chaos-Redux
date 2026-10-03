@@ -2,6 +2,7 @@
 # Quotes use measured spare chassis and actual recorded armour production.
 # Shipments use native send_equipment and retain each chassis reinforcement reserve.
 # The helper contract is documented in 012_africa_gods_equipment_effects.md.
+# Mobile helpers quote and send trucks or towed artillery against matching host need.
 
 # Caller initializes gods_of_africa_equipment_amount; this temp is also output.
 gods_of_africa_floor_equipment_amount = {
@@ -85,4 +86,131 @@ gods_of_africa_send_armored_tribute = {
 	gods_of_africa_send_armored_archetype = yes
 	set_temp_variable = { gods_of_africa_armor_archetype = constant:gods_of_africa_armor_chassis.amphibious }
 	gods_of_africa_send_armored_archetype = yes
+}
+
+# COUNTRY scope on the authoritative host. Native army shortfall and unlocked
+# route stock objectives produce separate whole-unit normal need outputs.
+gods_of_africa_build_mobile_need_profile = {
+	set_variable = { gods_of_africa_truck_need_amount = constant:gods_of_africa_value.zero }
+	set_variable = { gods_of_africa_artillery_need_amount = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_equipment_amount = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_mobile_stock = num_equipment@motorized_equipment }
+	set_temp_variable = { gods_of_africa_mobile_target = num_target_equipment_in_armies_k@motorized_equipment }
+	set_temp_variable = { gods_of_africa_mobile_fielded = num_equipment_in_armies_k@motorized_equipment }
+	multiply_temp_variable = { gods_of_africa_mobile_target = constant:gods_of_africa_mobile.units_per_thousand }
+	multiply_temp_variable = { gods_of_africa_mobile_fielded = constant:gods_of_africa_mobile.units_per_thousand }
+	set_temp_variable = { gods_of_africa_mobile_desired_stock = gods_of_africa_mobile_target }
+	subtract_from_temp_variable = { gods_of_africa_mobile_desired_stock = gods_of_africa_mobile_fielded }
+	clamp_temp_variable = { var = gods_of_africa_mobile_desired_stock min = constant:gods_of_africa_value.zero }
+	if = {
+		limit = { has_country_flag = gods_of_africa_focus_logistics_support_unlocked }
+		clamp_temp_variable = { var = gods_of_africa_mobile_desired_stock min = constant:gods_of_africa_mobile.truck_route_stock_floor }
+	}
+	set_temp_variable = { gods_of_africa_equipment_amount = gods_of_africa_mobile_desired_stock }
+	subtract_from_temp_variable = { gods_of_africa_equipment_amount = gods_of_africa_mobile_stock }
+	clamp_temp_variable = { var = gods_of_africa_equipment_amount min = constant:gods_of_africa_value.zero }
+	gods_of_africa_floor_equipment_amount = yes
+	set_variable = { gods_of_africa_truck_need_amount = gods_of_africa_equipment_amount }
+
+	set_temp_variable = { gods_of_africa_mobile_stock = num_equipment@artillery_equipment }
+	set_temp_variable = { gods_of_africa_mobile_target = num_target_equipment_in_armies_k@artillery_equipment }
+	set_temp_variable = { gods_of_africa_mobile_fielded = num_equipment_in_armies_k@artillery_equipment }
+	multiply_temp_variable = { gods_of_africa_mobile_target = constant:gods_of_africa_mobile.units_per_thousand }
+	multiply_temp_variable = { gods_of_africa_mobile_fielded = constant:gods_of_africa_mobile.units_per_thousand }
+	set_temp_variable = { gods_of_africa_mobile_desired_stock = gods_of_africa_mobile_target }
+	subtract_from_temp_variable = { gods_of_africa_mobile_desired_stock = gods_of_africa_mobile_fielded }
+	clamp_temp_variable = { var = gods_of_africa_mobile_desired_stock min = constant:gods_of_africa_value.zero }
+	if = {
+		limit = { has_country_flag = gods_of_africa_focus_arsenal_support_unlocked }
+		clamp_temp_variable = { var = gods_of_africa_mobile_desired_stock min = constant:gods_of_africa_mobile.artillery_route_stock_floor }
+	}
+	set_temp_variable = { gods_of_africa_equipment_amount = gods_of_africa_mobile_desired_stock }
+	subtract_from_temp_variable = { gods_of_africa_equipment_amount = gods_of_africa_mobile_stock }
+	clamp_temp_variable = { var = gods_of_africa_equipment_amount min = constant:gods_of_africa_value.zero }
+	gods_of_africa_floor_equipment_amount = yes
+	set_variable = { gods_of_africa_artillery_need_amount = gods_of_africa_equipment_amount }
+}
+
+# COUNTRY scope on participant. Refresh host need before calling. This owns
+# scratch temps before nested capacity/floor calls and overwrites normal quotes.
+gods_of_africa_quote_mobile_tribute = {
+	clear_variable = gods_of_africa_mobile_quote_type
+	set_variable = { gods_of_africa_mobile_quote_amount = constant:gods_of_africa_value.zero }
+	set_variable = { gods_of_africa_mobile_quote_ceiling = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_mobile_type = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_mobile_required_amount = constant:gods_of_africa_mobile.minimum_shipment }
+	set_temp_variable = { gods_of_africa_mobile_stock = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_mobile_target = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_mobile_fielded = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_mobile_deficit = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_mobile_reserve = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_mobile_spare = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_mobile_host_need = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_mobile_maximum_shipment = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_equipment_amount = constant:gods_of_africa_value.zero }
+	if = {
+		limit = {
+			has_event_target = africa_host
+			event_target:africa_host = { exists = yes }
+		}
+		if = {
+			limit = {
+				event_target:africa_host = { check_variable = { gods_of_africa_artillery_need_amount > constant:gods_of_africa_value.zero } }
+				set_temp_variable = { gods_of_africa_mobile_type = constant:gods_of_africa_mobile_type.artillery }
+				gods_of_africa_mobile_capacity_is_sufficient = yes
+			}
+			set_variable = { gods_of_africa_mobile_quote_type = constant:gods_of_africa_mobile_type.artillery }
+			set_temp_variable = { gods_of_africa_mobile_host_need = event_target:africa_host.gods_of_africa_artillery_need_amount }
+			set_temp_variable = { gods_of_africa_mobile_maximum_shipment = constant:gods_of_africa_mobile.maximum_artillery_shipment }
+		}
+		else_if = {
+			limit = {
+				event_target:africa_host = { check_variable = { gods_of_africa_truck_need_amount > constant:gods_of_africa_value.zero } }
+				set_temp_variable = { gods_of_africa_mobile_type = constant:gods_of_africa_mobile_type.trucks }
+				gods_of_africa_mobile_capacity_is_sufficient = yes
+			}
+			set_variable = { gods_of_africa_mobile_quote_type = constant:gods_of_africa_mobile_type.trucks }
+			set_temp_variable = { gods_of_africa_mobile_host_need = event_target:africa_host.gods_of_africa_truck_need_amount }
+			set_temp_variable = { gods_of_africa_mobile_maximum_shipment = constant:gods_of_africa_mobile.maximum_truck_shipment }
+		}
+		if = {
+			limit = { check_variable = { gods_of_africa_mobile_quote_type > constant:gods_of_africa_value.zero } }
+			set_variable = { gods_of_africa_mobile_quote_ceiling = gods_of_africa_mobile_spare }
+			multiply_variable = { gods_of_africa_mobile_quote_ceiling = constant:gods_of_africa_mobile.maximum_spare_fraction }
+			clamp_variable = { var = gods_of_africa_mobile_quote_ceiling min = constant:gods_of_africa_mobile.minimum_shipment }
+			clamp_variable = { var = gods_of_africa_mobile_quote_ceiling max = gods_of_africa_mobile_spare }
+			clamp_variable = { var = gods_of_africa_mobile_quote_ceiling max = gods_of_africa_mobile_host_need }
+			clamp_variable = { var = gods_of_africa_mobile_quote_ceiling max = gods_of_africa_mobile_maximum_shipment }
+			set_temp_variable = { gods_of_africa_equipment_amount = gods_of_africa_mobile_quote_ceiling }
+			gods_of_africa_floor_equipment_amount = yes
+			set_variable = { gods_of_africa_mobile_quote_ceiling = gods_of_africa_equipment_amount }
+			set_variable = { gods_of_africa_mobile_quote_amount = gods_of_africa_mobile_spare }
+			multiply_variable = { gods_of_africa_mobile_quote_amount = constant:gods_of_africa_mobile.spare_quote_fraction }
+			clamp_variable = { var = gods_of_africa_mobile_quote_amount min = constant:gods_of_africa_mobile.minimum_shipment max = gods_of_africa_mobile_quote_ceiling }
+			set_temp_variable = { gods_of_africa_equipment_amount = gods_of_africa_mobile_quote_amount }
+			gods_of_africa_floor_equipment_amount = yes
+			set_variable = { gods_of_africa_mobile_quote_amount = gods_of_africa_equipment_amount }
+		}
+	}
+}
+
+# COUNTRY scope on participant. Parent owns positive integral amount, frozen
+# identity, live capacity, host/generation guards, success, history and receipts.
+gods_of_africa_send_mobile_tribute = {
+	if = {
+		limit = { check_variable = { gods_of_africa_payment_mobile_type = constant:gods_of_africa_mobile_type.trucks } }
+		send_equipment = {
+			equipment = motorized_equipment
+			amount = gods_of_africa_payment_amount
+			target = event_target:africa_host
+		}
+	}
+	else_if = {
+		limit = { check_variable = { gods_of_africa_payment_mobile_type = constant:gods_of_africa_mobile_type.artillery } }
+		send_equipment = {
+			equipment = artillery_equipment
+			amount = gods_of_africa_payment_amount
+			target = event_target:africa_host
+		}
+	}
 }

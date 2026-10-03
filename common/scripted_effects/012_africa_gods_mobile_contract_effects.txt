@@ -1,0 +1,23 @@
+# Event 012 Gods typed mobile/artillery contracts.
+# Optional type fields follow their owning family and never infer a replacement.
+# Scope, inputs, output lifetime, and callers are documented with equipment helpers.
+
+# COUNTRY scope. Quotations are preparation-only and confer no live authority.
+gods_of_africa_clear_mobile_quote = {
+	clear_variable = gods_of_africa_mobile_quote_type
+	clear_variable = gods_of_africa_mobile_quote_amount
+	clear_variable = gods_of_africa_mobile_quote_ceiling
+}
+
+# COUNTRY scope on participant. Call after binding payment_family from demand.
+gods_of_africa_bind_payment_mobile_type = {
+	clear_variable = gods_of_africa_payment_mobile_type
+	if = {
+		limit = {
+			check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.mobile_artillery }
+			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.mobile_artillery }
+			has_variable = gods_of_africa_demand_mobile_type
+		}
+		set_variable = { gods_of_africa_payment_mobile_type = gods_of_africa_demand_mobile_type }
+	}
+}
