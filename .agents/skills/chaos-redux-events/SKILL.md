@@ -505,6 +505,11 @@ When a country helper enters its exact source-state pointer, PREV there is the c
 Within a state's stored-owner or holder country scope, return explicitly to the state through PREV for state flags.
 PREV depends on the actual nesting, and ROOT remains valid wherever the contract explicitly requires it.
 
+In a participant-country iterator reached from a country event, `ROOT` remains that event's original recipient across participant-country and state scope changes.
+For targeted decisions, verify the actual callback's `ROOT`/`FROM` contract against installed documentation and a native precedent rather than assuming the owner's country-event contract: in the standard targeted-decision context, `ROOT` is the country taking the decision and `FROM` is its target country or state.
+Capture the intended current participant with regular `save_event_target_as = participant` in that participant's country scope before entering state scope, then use `event_target:participant` for helper payer, victim, and target-country inputs and participant receipt or idempotence flags.
+Using an unrelated `ROOT` can misattribute deaths and receipts even when the correct state was selected; retain `ROOT` wherever the documented callback or helper contract requires it.
+
 For synchronous country transactions that can launch nested helper work, `ROOT` remains the original sender, temporary loop indexes are unscoped, and regular event-target names are shared throughout the effect chain.
 Nested transaction setup can overwrite both indexes and named targets, so a regular event target alone is not a frozen transaction input.
 Before any helper that can launch nested work, capture the proven source and origin pointers, actor/episode/receipt identity, and outer row indexes into recipient-owned normal private input fields.
