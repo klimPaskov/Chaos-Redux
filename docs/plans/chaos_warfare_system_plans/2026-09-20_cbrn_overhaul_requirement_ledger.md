@@ -217,3 +217,10 @@ This repair does not implement the separate Event 026 sale factory discount.
 The same family correction separates the occupied-population pre-click two-factory gate from the material/target check used inside its native selection helper.
 Every prior non-factory condition is preserved in the shared predicate, and the 30-day timer, stock reservation, positive-reservation PP payment, and completion/refund bodies are unchanged by source reconstruction.
 The post-change Protective Aid inspect repeated the baseline request but returned no artifact, so matching engine/MCP acceptance remains open.
+
+## 2026-10-03 CSH flag load correction
+
+The user's 13:20 live-QA report confirms democratic and neutrality flag lookup failures under the three native flag folders after `cab3acb5b`.
+The [accepted native correction](../../specs/chaos_warfare_system_specs/corrections/2026-10-03_csh_native_flag_lookup.md) covers the CSH base filename and all four standard ideologies at normal, medium, and small sizes.
+The [source check](../../testing/2026-10-03_csh_flag_load_repair/scientist_source_check.json) verifies history-only recruitment and guarded transfers for Haldane, Fishman, and Velikanov, with zero runtime recruitment commands in the startup owner.
+The archived cycle1 log remains the pre-holder warning baseline; fresh native warning absence and a clean full error log are not claimed from that archive.

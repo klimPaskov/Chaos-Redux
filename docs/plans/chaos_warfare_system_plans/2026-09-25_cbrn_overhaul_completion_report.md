@@ -241,7 +241,8 @@ The [dated-scientist ownership contract](../../systems/cbrn_warfare/cbrn_dated_s
 The 58 baseline warnings are present in the supplied cycle1 log under the recorded SHA-256; the separate day-one report names Haldane, Fishman, and Velikanov at the former runtime recruitment lines.
 All three have ungated static definitions and explicit CSH history recruitment.
 The [source-contract result](../../testing/2026-10-03_cbrn_dated_holder_before/source_contract_result.json) verifies 67 unique history declarations, matching 29 guarded transfers, and unchanged date, trait, retirement, identity-flag, and equipment code by executable reconstruction.
-The existing 67 portraits and 15 advisor cards are retained, with no new asset consumer or player-facing operation.
+The existing 67 portraits and 15 advisor cards are retained, with no new player-facing operation.
+The holder's native country flag consumer is covered by the [CSH flag correction](../../specs/chaos_warfare_system_specs/corrections/2026-10-03_csh_native_flag_lookup.md), after the user's later live-QA report confirmed missing-file lookups despite statelessness.
 The [accepted correction](../../specs/chaos_warfare_system_specs/corrections/2026-10-03_dated_scientist_holder_transfer.md) records authorization and exact surfaces.
 This is a source implementation, without a simplification of dated arrivals; dedicated-holder engine loading, transfers, native personnel display, and a fresh clean full error log remain pending.
 
@@ -255,3 +256,14 @@ The neighboring occupied-population selection helper now uses its shared non-fac
 Source reconstruction preserves every original non-factory condition, material-reservation loop, PP debit, completion, refund, and willingness body; existence and non-capitulation checks protect the selection callback.
 The two-factory, 30-day native commitment remains.
 The matching post-change Protective Aid MCP request returned no artifact, so the family repair is source implementation with native execution still pending.
+
+## 2026-10-03 CSH native flags
+
+The user's 13:20 live-QA report confirmed that the stateless holder still produces native flag lookups and that its absent flags were load errors, rather than an optional visibility concern.
+The [accepted correction](../../specs/chaos_warfare_system_specs/corrections/2026-10-03_csh_native_flag_lookup.md) supplies all fifteen CSH base/ideology files across normal 82×52, medium 41×26, and small 10×7 sizes.
+The [asset manifest](../../assets/cbrn_scientist_holder_flags/manifest.md) records the ImageGen institutional design and its intentionally shared ideology aliases.
+All files passed uncompressed 32-bit bottom-left TGA header, exact payload, opaque-alpha, decoded-preview equality, and stored-pixel orientation checks in the [format record](../../testing/2026-10-03_csh_flag_load_repair/flag_format_validation.json).
+Parent visual review approved the normal/medium emblem and small field treatment.
+The [scientist source record](../../testing/2026-10-03_csh_flag_load_repair/scientist_source_check.json) confirms history-only recruitment for the three reported identities and no runtime recruitment commands in the dated startup owner.
+Fresh native flag/warning absence remains unverified; the supplied archived cycle1 file is still the pre-holder warning baseline.
+No roster, transfer, balance, or AI change and no simplification is introduced by this asset repair.

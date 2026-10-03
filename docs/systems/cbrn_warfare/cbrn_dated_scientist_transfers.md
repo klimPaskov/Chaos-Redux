@@ -12,7 +12,9 @@ Each transfer requires the recipient not to have the identity and CSH to still h
 
 `common/country_tags/cbrn_scientist_holder.txt` registers CSH and `common/countries/CBRN Scientist Holder.txt` supplies its ordinary graphical metadata. `history/countries/CSH - Scientist Registry.txt` uses capital 1 only as the engine bootstrap, zero research slots, and the empty `history/units/cbrn_scientist_holder.txt` OOB. CSH receives no territory, cores, claims, factories, equipment, templates, divisions, focus route, or formation transaction. It is separate from the playable Event 016 KRG route, Event 015 DJX roster, and CXT test harness.
 
-The holder introduces no player operation or additional CXT grant. Existing CBRN CXT packages still own their research, unit, project, and equipment fixtures. All 67 scientist portraits and 15 advisor cards retain their existing consumers; no new portrait, flag artwork, or icon family is requested by this internal ownership correction. The three CSH localisation keys identify the latent tag if inspected, without displaying a technical ledger label.
+The holder introduces no player operation or additional CXT grant. Existing CBRN CXT packages still own their research, unit, project, and equipment fixtures. All 67 scientist portraits and 15 advisor cards retain their existing consumers. The three CSH localisation keys identify the latent tag if inspected, without displaying a technical ledger label.
+The [native flag correction](../../specs/chaos_warfare_system_specs/corrections/2026-10-03_csh_native_flag_lookup.md) supplies normal, medium, and small flags for the base tag and all four standard ideologies, following the user's confirmed load errors.
+The [asset manifest](../../assets/cbrn_scientist_holder_flags/manifest.md) documents one institutional design shared across those native lookup aliases.
 
 ## Source and live evidence
 
@@ -36,7 +38,8 @@ The live schema exposes neither structured `view`/`keyPath` lookup nor `hoi4.scr
 Fresh live-QA evidence must distinguish main-menu warning removal, history-time CSH attachment, date-time transfer, repeated callback idempotence, 1939 absences, and unchanged trait/portrait behavior. No clean full error log or successful dedicated-CSH transfer is claimed from source inspection alone.
 
 The [independent country-package audit](../../plans/chaos_warfare_system_plans/subagent_handoffs/2026-10-03_cbrn_scientist_holder_country_audit.md) confirms no blocking source defect in tag registration, roster ownership, or transfer gates.
-It retains runtime uncertainty around the stateless bootstrap capital and latent flag visibility, and records its unavailable map MCP evidence.
+It retains runtime uncertainty around the stateless bootstrap capital and records its unavailable map MCP evidence.
+Its original latent flag gap became a confirmed missing-file load defect in the user's 13:20 live-QA update and is addressed by the native flag package above.
 The [source/reference review](../../plans/chaos_warfare_system_plans/subagent_handoffs/2026-10-03_cbrn_dated_holder_reference_review.md) confirms the holder separation and supported transfer form without claiming native execution.
 
 ## Future work

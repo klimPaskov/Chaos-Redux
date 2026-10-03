@@ -68,6 +68,9 @@ The [dated-scientist ownership correction](../corrections/2026-10-03_dated_scien
 It covers the reported Haldane, Fishman, and Velikanov day-one errors and removes runtime recruitment while preserving all dates, traits, retirements, and identity flags.
 Dedicated-holder engine acceptance remains pending.
 
+The [native CSH flag correction](../corrections/2026-10-03_csh_native_flag_lookup.md) follows the user's confirmed load errors by supplying the base and four ideology lookup filenames in all three native sizes.
+It changes neither roster ownership nor dated transfer behavior.
+
 The user's 2026-09-25 follow-up explicitly selects the force-scaled military mask bands for both historical bookmarks: 75% active issue for established majors, 100% for Italy, 50% for Japan, 25% for smaller defensive profiles, and a separate 25% reserve against each bookmark's deployed-force requirement. The percentages are gameplay calibration, not exact historical inventory claims. Britain alone receives a separately sourced 1939 civilian mask issue; other countries begin with zero civilian coverage until country-specific evidence supports a grant. Dated research, personnel, industry, and offensive-stock distinctions remain separate.
 
 The four accepted commander traits are **Biological Operations Veteran**, **Hazard Warfare Veteran**, **Protected Assault Expert**, and **Theatre Containment Organizer**. **Chemical Operations Commander** is awarded from service evidence. Native CBRN High Command must be represented. The **Field-Validated Planner** trait and its Event 24 reward route are removed by the same 2026-09-20 user instruction; Event 24 field validation may still resolve its non-trait effects.
