@@ -1823,70 +1823,7 @@ asteroid_incoming_apply_monthly_air_pressure = {
 # ============================================================================
 
 asteroid_incoming_refresh_mineral_control = {
-	clear_global_event_target = asteroid_incoming_main_crater_controller
-	clear_global_event_target = asteroid_incoming_fragment_1_controller
-	clear_global_event_target = asteroid_incoming_fragment_2_controller
-	clear_global_event_target = asteroid_incoming_fragment_3_controller
-	clear_global_event_target = asteroid_incoming_fragment_4_controller
-	clear_global_event_target = asteroid_incoming_fragment_5_controller
-	clear_global_event_target = asteroid_incoming_fragment_6_controller
-	every_country = {
-		remove_ideas = asteroid_incoming_main_crater_material
-		remove_ideas = asteroid_incoming_fragment_material_1
-		remove_ideas = asteroid_incoming_fragment_material_2
-		remove_ideas = asteroid_incoming_fragment_material_3
-		remove_ideas = asteroid_incoming_fragment_material_4
-		remove_ideas = asteroid_incoming_fragment_material_5
-		remove_ideas = asteroid_incoming_fragment_material_6
-		set_variable = { asteroid_incoming_country_controlled_fragment_count = constant:asteroid_incoming_runtime.zero }
-	}
-	if = {
-		limit = { has_event_target = asteroid_incoming_main_crater_state }
-		event_target:asteroid_incoming_main_crater_state = {
-			if = {
-				limit = { has_state_flag = asteroid_incoming_main_crater CONTROLLER = { exists = yes } }
-				CONTROLLER = { save_global_event_target_as = asteroid_incoming_main_crater_controller }
-			}
-		}
-	}
-	set_temp_variable = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.zero }
-	for_each_scope_loop = {
-		array = global.asteroid_incoming_fragment_site_states
-		add_to_temp_variable = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.loop_increment }
-		if = {
-			limit = { CONTROLLER = { exists = yes } }
-			CONTROLLER = { add_to_variable = { asteroid_incoming_country_controlled_fragment_count = constant:asteroid_incoming_runtime.loop_increment } }
-		}
-		if = { limit = { check_variable = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.fragment_slot_one } CONTROLLER = { exists = yes } } CONTROLLER = { save_global_event_target_as = asteroid_incoming_fragment_1_controller } }
-		if = { limit = { check_variable = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.fragment_slot_two } CONTROLLER = { exists = yes } } CONTROLLER = { save_global_event_target_as = asteroid_incoming_fragment_2_controller } }
-		if = { limit = { check_variable = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.fragment_slot_three } CONTROLLER = { exists = yes } } CONTROLLER = { save_global_event_target_as = asteroid_incoming_fragment_3_controller } }
-		if = { limit = { check_variable = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.fragment_slot_four } CONTROLLER = { exists = yes } } CONTROLLER = { save_global_event_target_as = asteroid_incoming_fragment_4_controller } }
-		if = { limit = { check_variable = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.fragment_slot_five } CONTROLLER = { exists = yes } } CONTROLLER = { save_global_event_target_as = asteroid_incoming_fragment_5_controller } }
-		if = { limit = { check_variable = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.fragment_slot_six } CONTROLLER = { exists = yes } } CONTROLLER = { save_global_event_target_as = asteroid_incoming_fragment_6_controller } }
-	}
-	if = {
-		limit = { has_global_flag = asteroid_incoming_minerals_active }
-		if = {
-			limit = { has_event_target = asteroid_incoming_main_crater_state }
-			event_target:asteroid_incoming_main_crater_state = {
-				if = {
-					limit = { has_state_flag = asteroid_incoming_main_crater CONTROLLER = { exists = yes } }
-					CONTROLLER = { add_ideas = asteroid_incoming_main_crater_material }
-				}
-			}
-		}
-		set_temp_variable = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.zero }
-		for_each_scope_loop = {
-			array = global.asteroid_incoming_fragment_site_states
-			add_to_temp_variable = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.loop_increment }
-			if = { limit = { check_variable = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.fragment_slot_one } CONTROLLER = { exists = yes } } CONTROLLER = { add_ideas = asteroid_incoming_fragment_material_1 } }
-			if = { limit = { check_variable = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.fragment_slot_two } CONTROLLER = { exists = yes } } CONTROLLER = { add_ideas = asteroid_incoming_fragment_material_2 } }
-			if = { limit = { check_variable = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.fragment_slot_three } CONTROLLER = { exists = yes } } CONTROLLER = { add_ideas = asteroid_incoming_fragment_material_3 } }
-			if = { limit = { check_variable = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.fragment_slot_four } CONTROLLER = { exists = yes } } CONTROLLER = { add_ideas = asteroid_incoming_fragment_material_4 } }
-			if = { limit = { check_variable = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.fragment_slot_five } CONTROLLER = { exists = yes } } CONTROLLER = { add_ideas = asteroid_incoming_fragment_material_5 } }
-			if = { limit = { check_variable = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.fragment_slot_six } CONTROLLER = { exists = yes } } CONTROLLER = { add_ideas = asteroid_incoming_fragment_material_6 } }
-		}
-	}
+	asteroid_incoming_refresh_uncapped_mineral_control = yes
 }
 
 # COUNTRY SCOPE. Award before zero-dust cleanup consumes the protection idea.
@@ -1938,11 +1875,7 @@ asteroid_incoming_update_achievements = {
 			limit = { NOT = { has_variable = asteroid_incoming_main_capture_hold_days } }
 			set_variable = { asteroid_incoming_main_capture_hold_days = constant:asteroid_incoming_runtime.zero }
 		}
-		set_variable = { asteroid_incoming_country_controlled_fragment_count = constant:asteroid_incoming_runtime.zero }
-		every_controlled_state = {
-			limit = { has_state_flag = asteroid_incoming_fragment_site }
-			PREV = { add_to_variable = { asteroid_incoming_country_controlled_fragment_count = constant:asteroid_incoming_runtime.loop_increment } }
-		}
+		asteroid_incoming_count_controlled_mineral_fragments = yes
 		if = {
 			limit = {
 				asteroid_incoming_achievement_player_valid = yes

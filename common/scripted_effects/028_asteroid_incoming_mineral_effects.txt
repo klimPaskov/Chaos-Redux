@@ -1,0 +1,172 @@
+# Event 028 mineral control and uncapped country armour.
+# Registered, processed fragment centers are counted once through each current
+# controller's state iterator. The existing main-crater idea remains the sole
+# main bonus. Contracts and source evidence are in mineral_uncapped_20261003.md.
+# No target selection, AI weight, periodic hook, or country identity is changed.
+
+# COUNTRY SCOPE. Unconditional cleanup of an explicitly annexed FROM recipient
+# or a recorded former recipient selected by an exists=no cleanup caller.
+# on_annex may call this while exists still reads yes. The helper makes no
+# native timing guarantee. Scoped variables remain zero for later release.
+asteroid_incoming_clear_dead_mineral_recipient = {
+	set_variable = { asteroid_incoming_country_controlled_fragment_count = constant:asteroid_incoming_runtime.zero }
+	set_variable = { asteroid_incoming_fragment_armour_bonus = constant:asteroid_incoming_runtime.zero }
+	remove_ideas = asteroid_incoming_main_crater_material
+	remove_ideas = asteroid_incoming_fragment_material_1
+	remove_ideas = asteroid_incoming_fragment_material_2
+	remove_ideas = asteroid_incoming_fragment_material_3
+	remove_ideas = asteroid_incoming_fragment_material_4
+	remove_ideas = asteroid_incoming_fragment_material_5
+	remove_ideas = asteroid_incoming_fragment_material_6
+	if = {
+		limit = { has_dynamic_modifier = asteroid_incoming_fragment_crater_armour }
+		remove_dynamic_modifier = { modifier = asteroid_incoming_fragment_crater_armour }
+	}
+}
+
+# ANY SCOPE. Also clean dead recipients retained by the previous implementation
+# on the first refresh after migration, before its old pointers are replaced.
+asteroid_incoming_cleanup_legacy_dead_mineral_controllers = {
+	if = { limit = { has_event_target = asteroid_incoming_main_crater_controller } event_target:asteroid_incoming_main_crater_controller = { if = { limit = { exists = no } asteroid_incoming_clear_dead_mineral_recipient = yes } } }
+	if = { limit = { has_event_target = asteroid_incoming_fragment_1_controller } event_target:asteroid_incoming_fragment_1_controller = { if = { limit = { exists = no } asteroid_incoming_clear_dead_mineral_recipient = yes } } }
+	if = { limit = { has_event_target = asteroid_incoming_fragment_2_controller } event_target:asteroid_incoming_fragment_2_controller = { if = { limit = { exists = no } asteroid_incoming_clear_dead_mineral_recipient = yes } } }
+	if = { limit = { has_event_target = asteroid_incoming_fragment_3_controller } event_target:asteroid_incoming_fragment_3_controller = { if = { limit = { exists = no } asteroid_incoming_clear_dead_mineral_recipient = yes } } }
+	if = { limit = { has_event_target = asteroid_incoming_fragment_4_controller } event_target:asteroid_incoming_fragment_4_controller = { if = { limit = { exists = no } asteroid_incoming_clear_dead_mineral_recipient = yes } } }
+	if = { limit = { has_event_target = asteroid_incoming_fragment_5_controller } event_target:asteroid_incoming_fragment_5_controller = { if = { limit = { exists = no } asteroid_incoming_clear_dead_mineral_recipient = yes } } }
+	if = { limit = { has_event_target = asteroid_incoming_fragment_6_controller } event_target:asteroid_incoming_fragment_6_controller = { if = { limit = { exists = no } asteroid_incoming_clear_dead_mineral_recipient = yes } } }
+}
+
+# COUNTRY SCOPE. Shared by armour recomputation and the parent achievement
+# updater. Output is a normal country variable. No scratch array or world scan.
+asteroid_incoming_count_controlled_mineral_fragments = {
+	set_variable = { asteroid_incoming_country_controlled_fragment_count = constant:asteroid_incoming_runtime.zero }
+	if = {
+		limit = { has_global_flag = asteroid_incoming_minerals_active }
+		every_controlled_state = {
+			limit = { asteroid_incoming_is_processed_mineral_fragment = yes }
+			add_to_variable = { PREV.asteroid_incoming_country_controlled_fragment_count = constant:asteroid_incoming_runtime.one }
+		}
+	}
+}
+
+# COUNTRY SCOPE. Called for existing countries by the ANY-scope refresher.
+# Outputs are normal country variables, not temporary helper-return values.
+# The scratch state array belongs to the refresher and is cleared there.
+asteroid_incoming_recompute_mineral_country = {
+	asteroid_incoming_count_controlled_mineral_fragments = yes
+	every_controlled_state = {
+		limit = { asteroid_incoming_is_processed_mineral_fragment = yes }
+		add_to_array = { array = global.asteroid_incoming_mineral_refresh_fragment_states value = THIS }
+	}
+	set_variable = { asteroid_incoming_fragment_armour_bonus = asteroid_incoming_country_controlled_fragment_count }
+	multiply_variable = { asteroid_incoming_fragment_armour_bonus = constant:asteroid_incoming_mineral.fragment_site_armour_factor }
+	# These retired identities never carry stats or coexist as extra bonuses.
+	remove_ideas = asteroid_incoming_fragment_material_2
+	remove_ideas = asteroid_incoming_fragment_material_3
+	remove_ideas = asteroid_incoming_fragment_material_4
+	remove_ideas = asteroid_incoming_fragment_material_5
+	remove_ideas = asteroid_incoming_fragment_material_6
+	if = {
+		limit = {
+			has_global_flag = asteroid_incoming_minerals_active
+			has_event_target = asteroid_incoming_main_crater_controller
+			tag = event_target:asteroid_incoming_main_crater_controller
+		}
+		if = { limit = { NOT = { has_idea = asteroid_incoming_main_crater_material } } add_ideas = asteroid_incoming_main_crater_material }
+	}
+	else = { remove_ideas = asteroid_incoming_main_crater_material }
+	if = {
+		limit = { check_variable = { var = asteroid_incoming_fragment_armour_bonus value = constant:asteroid_incoming_runtime.zero compare = greater_than } }
+		if = { limit = { NOT = { has_idea = asteroid_incoming_fragment_material_1 } } add_ideas = asteroid_incoming_fragment_material_1 }
+		if = {
+			limit = { NOT = { has_dynamic_modifier = asteroid_incoming_fragment_crater_armour } }
+			add_dynamic_modifier = { modifier = asteroid_incoming_fragment_crater_armour }
+		}
+		force_update_dynamic_modifier = yes
+	}
+	else = {
+		remove_ideas = asteroid_incoming_fragment_material_1
+		if = {
+			limit = { has_dynamic_modifier = asteroid_incoming_fragment_crater_armour }
+			remove_dynamic_modifier = { modifier = asteroid_incoming_fragment_crater_armour }
+		}
+	}
+	if = {
+		limit = { OR = { has_idea = asteroid_incoming_main_crater_material has_idea = asteroid_incoming_fragment_material_1 } }
+		add_to_array = { array = global.asteroid_incoming_mineral_recipient_countries value = THIS }
+	}
+}
+
+# ANY SCOPE. Preserves the existing six state-alias controller labels without
+# using registry ordinal or slot count to calculate any gameplay bonus.
+# The caller has built a typed, unique, processed-state scratch registry.
+asteroid_incoming_publish_mineral_fragment_controllers = {
+	if = {
+		limit = { has_event_target = asteroid_incoming_fragment_1_state }
+		event_target:asteroid_incoming_fragment_1_state = {
+			if = { limit = { is_in_array = { array = global.asteroid_incoming_mineral_refresh_fragment_states value = THIS } CONTROLLER = { exists = yes } } CONTROLLER = { save_global_event_target_as = asteroid_incoming_fragment_1_controller } }
+		}
+	}
+	if = {
+		limit = { has_event_target = asteroid_incoming_fragment_2_state }
+		event_target:asteroid_incoming_fragment_2_state = {
+			if = { limit = { is_in_array = { array = global.asteroid_incoming_mineral_refresh_fragment_states value = THIS } CONTROLLER = { exists = yes } } CONTROLLER = { save_global_event_target_as = asteroid_incoming_fragment_2_controller } }
+		}
+	}
+	if = {
+		limit = { has_event_target = asteroid_incoming_fragment_3_state }
+		event_target:asteroid_incoming_fragment_3_state = {
+			if = { limit = { is_in_array = { array = global.asteroid_incoming_mineral_refresh_fragment_states value = THIS } CONTROLLER = { exists = yes } } CONTROLLER = { save_global_event_target_as = asteroid_incoming_fragment_3_controller } }
+		}
+	}
+	if = {
+		limit = { has_event_target = asteroid_incoming_fragment_4_state }
+		event_target:asteroid_incoming_fragment_4_state = {
+			if = { limit = { is_in_array = { array = global.asteroid_incoming_mineral_refresh_fragment_states value = THIS } CONTROLLER = { exists = yes } } CONTROLLER = { save_global_event_target_as = asteroid_incoming_fragment_4_controller } }
+		}
+	}
+	if = {
+		limit = { has_event_target = asteroid_incoming_fragment_5_state }
+		event_target:asteroid_incoming_fragment_5_state = {
+			if = { limit = { is_in_array = { array = global.asteroid_incoming_mineral_refresh_fragment_states value = THIS } CONTROLLER = { exists = yes } } CONTROLLER = { save_global_event_target_as = asteroid_incoming_fragment_5_controller } }
+		}
+	}
+	if = {
+		limit = { has_event_target = asteroid_incoming_fragment_6_state }
+		event_target:asteroid_incoming_fragment_6_state = {
+			if = { limit = { is_in_array = { array = global.asteroid_incoming_mineral_refresh_fragment_states value = THIS } CONTROLLER = { exists = yes } } CONTROLLER = { save_global_event_target_as = asteroid_incoming_fragment_6_controller } }
+		}
+	}
+}
+
+# ANY SCOPE. Parent-owned legacy wrapper must call this after physical receipts.
+# One existing-country pass replaces the old wrapper's country pass. The
+# preceding recipient-only cleanup also covers annexed prior beneficiaries.
+asteroid_incoming_refresh_uncapped_mineral_control = {
+	asteroid_incoming_cleanup_legacy_dead_mineral_controllers = yes
+	for_each_scope_loop = {
+		array = global.asteroid_incoming_mineral_recipient_countries
+		if = { limit = { exists = no } asteroid_incoming_clear_dead_mineral_recipient = yes }
+	}
+	clear_array = global.asteroid_incoming_mineral_recipient_countries
+	clear_array = global.asteroid_incoming_mineral_refresh_fragment_states
+	clear_global_event_target = asteroid_incoming_main_crater_controller
+	clear_global_event_target = asteroid_incoming_fragment_1_controller
+	clear_global_event_target = asteroid_incoming_fragment_2_controller
+	clear_global_event_target = asteroid_incoming_fragment_3_controller
+	clear_global_event_target = asteroid_incoming_fragment_4_controller
+	clear_global_event_target = asteroid_incoming_fragment_5_controller
+	clear_global_event_target = asteroid_incoming_fragment_6_controller
+	if = {
+		limit = { has_event_target = asteroid_incoming_main_crater_state }
+		event_target:asteroid_incoming_main_crater_state = {
+			if = {
+				limit = { has_state_flag = asteroid_incoming_main_crater CONTROLLER = { exists = yes } }
+				CONTROLLER = { save_global_event_target_as = asteroid_incoming_main_crater_controller }
+			}
+		}
+	}
+	every_country = { asteroid_incoming_recompute_mineral_country = yes }
+	asteroid_incoming_publish_mineral_fragment_controllers = yes
+	clear_array = global.asteroid_incoming_mineral_refresh_fragment_states
+}

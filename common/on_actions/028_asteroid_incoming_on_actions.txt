@@ -35,6 +35,39 @@ on_actions = {
 					clr_country_flag = asteroid_incoming_main_captured_in_war
 				}
 			}
+			if = {
+				limit = { has_global_flag = asteroid_incoming_minerals_active }
+				asteroid_incoming_refresh_mineral_control = yes
+				# FROM is the annexed country. Clear it even if exists still reads
+				# yes during the callback; a later release must not revive bonuses.
+				FROM = { asteroid_incoming_clear_dead_mineral_recipient = yes }
+			}
+		}
+	}
+
+	# Country transitions can transfer registered sites without changing the
+	# stored geographic targets. Bonuses are derived only from current control.
+	on_release_as_free = {
+		effect = {
+			if = { limit = { has_global_flag = asteroid_incoming_minerals_active } asteroid_incoming_refresh_mineral_control = yes }
+		}
+	}
+
+	on_release_as_puppet = {
+		effect = {
+			if = { limit = { has_global_flag = asteroid_incoming_minerals_active } asteroid_incoming_refresh_mineral_control = yes }
+		}
+	}
+
+	on_liberate = {
+		effect = {
+			if = { limit = { has_global_flag = asteroid_incoming_minerals_active } asteroid_incoming_refresh_mineral_control = yes }
+		}
+	}
+
+	on_civil_war_end = {
+		effect = {
+			if = { limit = { has_global_flag = asteroid_incoming_minerals_active } asteroid_incoming_refresh_mineral_control = yes }
 		}
 	}
 

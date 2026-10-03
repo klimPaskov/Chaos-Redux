@@ -1,0 +1,13 @@
+# Event 028 processed fragment identity shared by armour and achievement counts.
+# STATE scope only. This read-only predicate identifies a registered physical
+# fragment center without requiring ownership, population, or target eligibility.
+asteroid_incoming_is_processed_mineral_fragment = {
+	hidden_trigger = {
+		is_in_array = { array = global.asteroid_incoming_fragment_site_states value = THIS }
+		has_state_flag = asteroid_incoming_fragment_site
+		has_state_flag = asteroid_incoming_mineral_site
+		has_state_flag = asteroid_incoming_state_transaction_applied
+		NOT = { has_state_flag = asteroid_incoming_main_crater }
+		check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.fragment_center compare = equals }
+	}
+}

@@ -1,0 +1,17 @@
+# Event 028 country fragment-crater armour. The owning refresher overwrites the
+# normal country variable from unique current-controlled registered centers.
+# Main-crater armour remains in the separate existing static idea.
+asteroid_incoming_fragment_crater_armour = {
+	icon = GFX_idea_asteroid_incoming_minerals
+	enable = {
+		has_global_flag = asteroid_incoming_minerals_active
+		check_variable = { var = asteroid_incoming_fragment_armour_bonus value = constant:asteroid_incoming_runtime.zero compare = greater_than }
+	}
+	remove_trigger = {
+		OR = {
+			NOT = { has_global_flag = asteroid_incoming_minerals_active }
+			NOT = { check_variable = { var = asteroid_incoming_fragment_armour_bonus value = constant:asteroid_incoming_runtime.zero compare = greater_than } }
+		}
+	}
+	armor_factor = asteroid_incoming_fragment_armour_bonus
+}
