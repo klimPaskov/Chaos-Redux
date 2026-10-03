@@ -10,15 +10,45 @@ This package owns an exact, non-event humanitarian-corridor contract. The origin
 
 ## Lifecycle
 
-`humanitarian_corridor_prepare_contract` saves the selected `FROM` state as `humanitarian_corridor_origin`, persists `origin_state_id` and `requester_country_id`, and counts only valid adjacent states. An explicit `humanitarian_corridor_front_state_request` is still validated by the same candidate predicate. Zero candidates, multiple candidates, invalid counterpart IDs, or missing route proof set a terminal reason and clean up without changing population or reserves. A candidate also needs current destination capacity, native rail/bombing clearance, and every supported persecution, contamination, fallout, outbreak, and natural-disaster channel clear; no orphan route-unsafe marker is consulted.
+`humanitarian_corridor_prepare_contract` runs on the exact origin STATE, persists origin/requester identity and counts valid adjacent fronts.
+Ordinary decision callers default to ROOT as requester; sparse spontaneous callers explicitly bind their actual origin OWNER through `humanitarian_corridor_requester` and a validated temporary override.
+An explicit front ID still passes the same adjacency/actor/food/native-hazard predicate; default manual discovery retains its zero/multiple-candidate rejection.
+Preparable fronts need current food and native route/hazard proof but not yet-paid reception services/capacity.
+Every new contract allocates a fresh monotonic generation, including retries of the same retained cohort.
 
-`humanitarian_corridor_submit_offer` writes the response deadline and mirrors one pending offer on the exact counterpart country. The requester receives only a sparse mirror/pulse marker. `humanitarian_corridor_accept_offer` and `humanitarian_corridor_reject_offer` change contract state and clear mirrors; neither mutates population, reserves, or cohorts.
+`humanitarian_corridor_submit_offer` writes the response deadline and mirrors one pending offer on the exact counterpart country, registers that real issue and schedules the existing sparse country pulse.
+Each distinct valid evacuation generation increments the existing incident count exactly once.
+Private last-generation/fresh-until receipts retain a real prior incoming episode across dormant incident cleanup for `cooldown_days + offer_response_days`; a second fresh generation can reconstruct exactly one prior episode before incrementing the new one, while an expired receipt cannot reveal ancient history.
+No incoming metadata is an arrival or reception-load receipt.
+Acceptance reobserves current food/capacity, resolves the actual live row and requires full offered amount equality and exact current headroom before acknowledging success and clearing the matching host mirror.
+Rejection and expiry preserve the unmoved origin cohort/flight/trapped obligation.
+Country mirrors clear only on matching origin/generation, so stale cleanup cannot erase a later request or the counterpart's independent outgoing contract.
+Sparse pulses also bind positive mirror generation and actual counterpart/requester before expiring an origin.
+`humanitarian_corridor_clear_stale_incoming_mirror` runs only on a valid COUNTRY whose incoming mirror no longer matches a live origin contract; it clears only that local incoming identity and rearms the existing outgoing pulse when necessary.
+It returns no output, moves no people and leaves every origin/newer contract and permanent transfer receipt unchanged.
 
-`humanitarian_corridor_bind_route_destination` saves the persisted front as the regular `civilian_transfer_route_destination` and `famine_food_reserve_destination` for the current chain. `humanitarian_corridor_execute_evacuation` supplies the canonical cohort id and destination food/reception proofs, calls `civilian_transfer_execute_transaction` once, then reuses the shared cohort-binding and reception-delta logic. `humanitarian_corridor_execute_relief` delegates to the existing `famine_relief_deliver_contract`, whose reserve transfer remains the only stock mutation. Their record helpers persist exact debit, deaths, survivor credit, source debit, and destination credit only after the existing endpoint reports a valid result. Route binding rechecks the current destination capacity revision and spare host capacity before either exact endpoint can run.
+`humanitarian_corridor_rearm_surviving_country_identity` runs in COUNTRY scope after matching terminal or stale-local mirror cleanup.
+It checks an active incoming mirror's exact origin/counterpart/generation, or the outgoing mirror's exact active origin/requester/generation, without treating identity as operational admission proof.
+Either surviving identity rearms only the existing `humanitarian_corridor_country_pulse_pending` and `humanitarian_corridor_country_pulse_due` at `global.date + humanitarian_corridor_timing.pulse_cooldown_days`.
+No surviving identity clears those two scheduling fields.
+Matching receiver terminal cleanup invokes it after removing the incoming mirror, and matching requester terminal cleanup invokes it after removing the outgoing mirror, so independent opposing contexts retain scheduled revalidation after expiry, rejection or completion.
+Nonmatching stale-generation terminal callbacks do not enter either cleanup branch or mutate another context's scheduling.
+This helper has no input/output envelope, resource/ledger mutation, new timer, new scheduler or world scan.
+
+`humanitarian_corridor_bind_route_destination` saves the persisted front as regular exact route targets.
+Evacuation reobserves food/capacity and resolves the entire current origin row; stored offer, live row and actual requested transaction must agree, and live protected population/flight reservations plus full receiver headroom must cover that amount.
+The shared exact transaction remains the only population/reception/cohort mutation owner.
+Post-finalizer evacuation recording validates measured full debit, zero deaths, equal survivor/destination credit, zero conservation residual, exact cohort/current transfer projection and unchanged contract generation, not pre-move row/headroom.
+The durable current transfer-generation receipt is `humanitarian_corridor_evacuation_transfer_generation`.
+Relief retains its existing destination safety/capacity branch and reserve-transfer owner; evacuation preparation does not grant relief services or route authorization.
 
 On valid acceptance, the receiving country emits one achievement gate request containing the prepared route generation, exact origin state ID, exact front state ID, counterpart country ID, and offered cohort ID. `humanitarian_achievement_record_gate_crisis` then derives the qualifying cohort set from the authoritative global cohort IDs, host states, live statuses, amounts, and approved camp/genocide/exterminatory source ledger (or catastrophic origin proof); it never uses aggregate trapped population as a cohort identity. Before terminal route IDs are cleared, `humanitarian_corridor_cleanup` calls `humanitarian_achievement_record_gate_terminal_cleanup` on that exact counterpart country, preserving the terminal cohort/protection/resolution arrays and clearing the active arrays for idempotent replay failure.
 
-The corridor mission is armed only when the requester has a free existing mission slot. `humanitarian_corridor_finalize` requires the exact mission flag, route, operation, and transaction proof and leaves outcome/achievement effects to the mission owner. `humanitarian_corridor_expire` and `humanitarian_corridor_mark_attack_disqualified` are terminal, non-rollback paths. A valid attack receipt also writes the player-side achievement disqualifier only when the exact attacking country is the persisted requester. `humanitarian_corridor_cleanup` is idempotent, clears both country mirrors and corridor mission subject fields, releases/recounts the requester mission slot through existing flags, and never reverses a committed transfer or clears an aligned cohort row.
+Manual corridor missions arm only when the requester has a free existing mission slot and retain their prior finalize/expiry behavior.
+The private ordinary spontaneous lane does not arm a manual mission or start a manual full-term famine achievement attempt; its existing sparse origin owner consumes accepted requests and immediately completes a measured successful passage.
+Actual receiving-country protection evidence is recorded before cleanup archives terminal achievement arrays.
+Consent alone grants no protection or completion.
+Cleanup is idempotent, clears only matching country mirrors/mission fields, recounts existing mission slots, and never reverses a committed transfer or erases the authoritative moved cohort/reception/projection ledgers.
 
 ## Mapmode operation provenance
 
@@ -38,7 +68,11 @@ Neither stage qualifies a migration corridor display.
 
 ## Route-proof and replay contract
 
-`humanitarian_corridor_front_destination_is_safe` is a state-scope affirmative gate for the exact adjacent front. It requires a valid current reception-capacity revision with spare host capacity, non-positive native rail damage, a strategic-bombing recency outside the recent window, and clear live mirrors for route damage, bombing, persecution, active camps, chemical contamination, nuclear fallout, Black Plague, zombie control, and natural-disaster warning, impact, aftermath, unresolved-recovery, or unresolved-chain channels. A missing or orphaned generic unsafe marker is never treated as safety evidence.
+`humanitarian_corridor_front_is_preparable` requires current food, native rail/bombing/infrastructure and all supported live hazard channels clear, including trapped population.
+`humanitarian_corridor_front_destination_is_safe` adds valid current capacity, while exact evacuation admission/transfer separately checks `load + whole amount <= capacity`.
+It also retains the existing relief spare-capacity condition, load absent or load strictly below capacity; full relief capacity is not admission-ready.
+A completed exact-fit passage remains recordable because post-finalizer recording does not demand spare capacity after the people arrived.
+A missing or orphaned generic unsafe marker is never treated as safety evidence.
 
 Preparation's transport proof mirrors the established destination selector: both exact adjacent endpoints must exceed `constant:migration_destination_selection_threshold.minimum_route_infrastructure` and expose the live `famine_component_transport` field. The field is availability evidence, not a fabricated throughput value; a missing field fails closed.
 
@@ -56,7 +90,30 @@ The offline on-actions reference defines `on_peace` with `THIS` as the country t
 
 `humanitarian_corridor_handle_exact_state_attack` accepts only a saved exact attacker and the current exact state. An origin match submits the attacker ID directly. A second pass through `global.migration_active_countries` resolves an exact persisted `front_state_id` and current contract generation before submitting the same receipt on the origin. `on_naval_invasion` supplies the invaded `THIS` state and invading `ROOT` country, while the once-per-operation `on_units_paradropped_in_state` callback supplies the exact `ROOT` state and dropping `FROM` country. `humanitarian_corridor_handle_nuke_drop` adapts the documented launcher and nuked-state scopes into this shared path. Missing or stale identity fails closed.
 
-## Required call-site wiring owned by the parent
+## Current canonical decision consumers: 2026-10-03
+
+The parent authorized this bounded documentation reconciliation after accepting the separate famine/migration implementation and the current corridor presentation correction.
+Current source callsites are in `common/decisions/famine_decisions.txt` and `common/decisions/migration_decisions.txt`, rather than the historical `common/decisions/humanitarian_decisions.txt` path quoted below.
+
+| Current consumer | Source evidence | Boundary |
+| --- | --- | --- |
+| `migration_negotiate_corridor` | Migration decision source calls `humanitarian_corridor_prepare_contract`, then `humanitarian_corridor_submit_offer` only when preparation reports valid. | Existing route/capacity/cohort requirements remain authoritative; no new negotiation wiring is requested by the historical instructions. |
+| `migration_accept_corridor_offer`, `migration_reject_corridor_offer` | Migration decision source invokes the respective corridor response effect. | Acceptance/rejection changes the exact contract; it does not itself move population. |
+| `famine_evacuation`, `migration_evacuate_vulnerable`, `migration_evacuate_workers` | One famine and two migration decision lanes call `humanitarian_corridor_execute_evacuation` in their accepted corridor branch. | Exact transaction and generation-bound receipt remain the sole movement authority. |
+| `migration_mission_hold_humanitarian_corridor` | Migration mission calls `humanitarian_corridor_finalize` on successful completion and `humanitarian_corridor_expire` on cancellation/timeout. | Existing exact subject/operation guards and mission-owner outcomes remain unchanged. |
+
+This table is current source evidence, not live execution, numeric AI validation, or final completion.
+The current probability specialist handoff is `docs/plans/famine_and_migration_system_plans/subagent_handoffs/probability_capability_reaudit_20261003.md`; its country-target same-case comparison remains outstanding.
+Food assessment is integrated separately in commit `52b2e7cfe`, with `normal_food_observation_probability_20261003.md` retaining the pre-integration destination baseline and `normal_food_observation_completion_audit_20261003.md` recording final source corrections.
+The internal/persecution same-scenario eligibility compare and native helper execution remain unresolved.
+Food assessment supplies no shelter/medical service or host-activation receipt.
+The accepted prospective runtime now supplies the first-host exact request and paid preparation lifecycle described above, without inferring free service from food observation.
+Current source cases, parent-owned integration and still-unresolved probability/native execution evidence are recorded in `docs/plans/famine_and_migration_system_plans/subagent_handoffs/prospective_reception_implementation_20261003.md`.
+
+## Historical required-wiring instructions
+
+The instructions below describe the original owner handoff before the separate decision consumers above were integrated.
+They are retained as implementation history, not a current instruction to rewire those consumers or recreate the old decision file.
 
 The parent must wire the corridor negotiation decision in the parent-owned decision file to submit route-proof request variables, call `humanitarian_corridor_prepare_contract`, then `humanitarian_corridor_submit_offer`, and remove immediate humanitarian-policy/quarter-relief mutation. It must add ordinary counterpart response decisions with the same offer trigger and AI surface, and route accepted branches of the three evacuation decisions through `humanitarian_corridor_execute_evacuation` rather than weighted destination selection. Any relief branch must supply a proven donor and `humanitarian_corridor_relief_amount_request` before `humanitarian_corridor_execute_relief`.
 
@@ -68,6 +125,9 @@ The engine still needs runtime validation for counterpart ordinary-decision visi
 
 ## Replay-safe evacuation receipt
 
+The receipt contract below remains source-level documentation; references to the former `humanitarian_decisions.txt` file describe the historical repair snapshot.
+Current evacuation consumers are the three separate decision IDs in the table above.
+
 The canonical one-shot receipt is the origin-state normal variable `humanitarian_corridor_evacuation_proven = 1`, scoped to the active `humanitarian_corridor_route_generation`. The three exact evacuation lanes in `common/decisions/humanitarian_decisions.txt` and `humanitarian_corridor_execute_evacuation` require that generation and all fail closed when this variable exists, so an already-consumed generation cannot debit the origin again.
 
 Before this repair, all three lanes tested `NOT = { has_state_flag = humanitarian_corridor_evacuation_proven }`, although the producer persisted only the normal variable and no state-flag producer existed. The execution helper also had no receipt guard, and terminal cleanup cleared the dead flag name separately from the durable variable.
@@ -78,7 +138,11 @@ The first valid caller therefore owns one origin debit, one route-death amount, 
 
 `humanitarian_corridor_prepare_contract` clears the receipt only while fully resetting the state for a new route generation. `humanitarian_corridor_cleanup` clears the normal-variable receipt only on terminal, expiry, or full reset paths; it no longer clears the dead state-flag name. The normal variable survives save/reload, and repeated terminal cleanup remains idempotent without reversing a committed transfer or clearing cohort metadata.
 
-## Probability and MCP evidence
+## Historical probability and MCP evidence
+
+The no-auditor and required-future-wiring statements below belong to the original helper tranche and its tool inventory.
+They do not describe current specialist availability or certify October source.
+All artifact URIs and original per-request limits remain unchanged for provenance; current scenario limitations are recorded in the dated probability handoff and `docs/plans/famine_and_migration_system_plans/ai_probability_current.md`.
 
 No weighted helper or AI factor was added in this tranche, so no probability compare was applicable. The required initial `hoi4.probability_inspect` returned `discoveryReason=no_weighted_surfaces`, with zero candidates and zero unresolved inputs, for the owned effect source. The named `chaosx_ai_probability_auditor` route was not available in the enabled tool set, so no auditor evidence pass was possible; no weights were changed. If the parent adds accept/reject AI weights, it must run `hoi4.probability_inspect` first and the `chaosx_ai_probability_auditor` baseline/compare workflow for `prob_corridor_acceptance` and the named scenarios in the architecture handoff.
 

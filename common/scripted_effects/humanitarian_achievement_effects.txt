@@ -766,11 +766,11 @@ humanitarian_achievement_record_gate_protection = {
 			has_event_target = civilian_transfer_origin
 			has_event_target = civilian_transfer_route_destination
 			event_target:civilian_transfer_origin = {
-				check_variable = { var = id value = ROOT.humanitarian_achievement_gate_origin_state_id compare = equals }
-				check_variable = { var = humanitarian_corridor_route_generation value = ROOT.humanitarian_achievement_gate_generation compare = equals }
+				check_variable = { var = id value = event_target:humanitarian_achievement_gate_receiver.humanitarian_achievement_gate_origin_state_id compare = equals }
+				check_variable = { var = humanitarian_corridor_route_generation value = event_target:humanitarian_achievement_gate_receiver.humanitarian_achievement_gate_generation compare = equals }
 			}
 			event_target:civilian_transfer_route_destination = {
-				check_variable = { var = id value = ROOT.humanitarian_achievement_gate_front_state_id compare = equals }
+				check_variable = { var = id value = event_target:humanitarian_achievement_gate_receiver.humanitarian_achievement_gate_front_state_id compare = equals }
 			}
 			check_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.valid }
 			check_variable = { civilian_transfer_actual_origin_debit > constant:humanitarian_achievement_value.zero }
@@ -811,13 +811,14 @@ humanitarian_achievement_record_gate_protection = {
 # transfer cannot reuse the old cohort set.
 humanitarian_achievement_record_gate_terminal_cleanup = {
 	humanitarian_achievement_initialize_country = yes
+	save_event_target_as = humanitarian_achievement_gate_receiver
 	set_temp_variable = { humanitarian_achievement_gate_cleanup_identity_valid = constant:humanitarian_achievement_value.zero }
 	if = {
 		limit = {
 			has_country_flag = humanitarian_achievement_gate_major_crisis
 			PREV = {
-				check_variable = { var = id value = ROOT.humanitarian_achievement_gate_origin_state_id compare = equals }
-				check_variable = { var = humanitarian_corridor_route_generation value = ROOT.humanitarian_achievement_gate_generation compare = equals }
+				check_variable = { var = id value = event_target:humanitarian_achievement_gate_receiver.humanitarian_achievement_gate_origin_state_id compare = equals }
+				check_variable = { var = humanitarian_corridor_route_generation value = event_target:humanitarian_achievement_gate_receiver.humanitarian_achievement_gate_generation compare = equals }
 			}
 		}
 		set_temp_variable = { humanitarian_achievement_gate_cleanup_identity_valid = constant:humanitarian_achievement_value.one }

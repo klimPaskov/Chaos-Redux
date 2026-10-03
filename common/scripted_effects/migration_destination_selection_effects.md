@@ -1,6 +1,7 @@
 # Migration Destination Selection Helpers
 
-This helper set owns adjacent-state destination selection and the bounded closed-border rejection prepass. It does not mutate population, create deaths, scan distant geometry, or add a mapmode. The normal selector remains the only weighted destination consumer.
+This helper set owns adjacent-state destination selection, the bounded closed-border rejection prepass and a preparable foreign endpoint draw after both normal pools are zero.
+It does not mutate population, create deaths, scan distant geometry, or add a mapmode.
 
 ## Helper map
 
@@ -20,6 +21,16 @@ Foreign admission consumes `migration_reception_policy` through the decision-own
 The prepass recognizes only valid reception values `closed`, `violent`, and `forced_return` as exact policy blockers. It does not infer a cause from an unset policy, a malformed value, the presentation policy, a forced-return pending flag, or any candidate that fails a separate safety, capacity, controller, owner, war, or route gate.
 
 ## Weighted selector preservation
+
+`migration_select_preparable_foreign_reception_state` uses the same complete two-pass neighbor domain, saved actor and existing foreign score constants.
+It binds only regular `migration_reception_preparable_front`, not a normal movement route or admission proof.
+Its mode guard permits capacity-available/headroom score terms only from a real valid owner capacity receipt; absent capacity contributes neither term.
+State reception-load penalties remain outside that guard, and all other numeric score terms are unchanged.
+Normal weighted-pool entry resets preparation mode to zero, preserving normal scoring and internal-first behavior.
+Optional temporary `migration_destination_selection_required_people` is zero by default.
+The fresh spontaneous and retained-row owners supply their exact whole request; `migration_destination_selection_reception_available` excludes all candidates with insufficient full headroom before both weighted passes.
+The general internal-first/foreign wrapper clears the one-shot amount only after both passes, so it cannot leak into another caller or disappear before the foreign fallback.
+The new pool requires independent same-named probability comparison because eligibility changed even though numeric constants did not.
 
 `migration_destination_selection_calculate_candidate_weight` retains its existing numeric terms and tuning constants. Its foreign policy preference reads the authoritative reception variable for valid candidates. The added prepass performs no random draw and contributes no weight. The weighted surfaces affected by the policy-consumer patch are `prob_destination_selection_internal`, `prob_destination_selection_persecution`, `prob_destination_selection_donor`, and `prob_cleanup` through the existing candidate gates. Independent baseline/post-change probability auditing remains required.
 

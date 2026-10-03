@@ -1,12 +1,29 @@
 # Migration reveal evidence must be sustained or large. Merely initializing a
 # cohort, registry, or country does not expose the category.
+migration_pending_reception_issue_is_valid = {
+	hidden_trigger = {
+		humanitarian_corridor_offer_is_valid = yes
+		check_variable = { var = humanitarian_corridor_offer_operation value = constant:humanitarian_corridor_operation.evacuation compare = equals }
+		OR = {
+			has_country_flag = migration_decision_emerging
+			has_country_flag = migration_decision_active
+			has_country_flag = migration_decision_resolution
+			check_variable = { var = migration_incident_count value = constant:migration_decision_threshold.category_incidents compare = greater_than_or_equals }
+			var:humanitarian_corridor_offer_origin_state_id = {
+				# Offer validity binds this amount to the exact live origin row.
+				# Unrelated national pressure is not the receiver's intake amount.
+				check_variable = { var = humanitarian_corridor_transfer_people value = constant:migration_decision_threshold.category_trapped_people compare = greater_than_or_equals }
+			}
+		}
+	}
+}
+
 migration_decision_reveal_threshold_is_met = {
 		hidden_trigger = {
 		OR = {
 			check_variable = { var = migration_incident_count value = constant:migration_decision_threshold.category_incidents compare = greater_than_or_equals }
 			AND = {
-				has_country_flag = humanitarian_corridor_offer_pending
-				humanitarian_corridor_offer_is_valid = yes
+				migration_pending_reception_issue_is_valid = yes
 			}
 			AND = {
 				has_variable = migration_reception_load

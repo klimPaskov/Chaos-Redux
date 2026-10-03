@@ -1,6 +1,13 @@
-# Famine/migration decision-owner triggers
+# Migration decision-owner triggers
 
-These guards are decision-surface consumers of the shared famine/migration registry and reception-capacity service.
+These guards consume migration-owned issue, cohort, policy, and reception-capacity contracts.
+
+`migration_pending_reception_issue_is_valid` is country-scoped and requires an exact valid evacuation offer, not a relief-only offer.
+An offer can expose migration response controls only when the receiver already has a migration problem phase or repeated incidents, or the exact live amount offered meets the existing material trapped-population threshold.
+A large but unrelated origin pressure total is not the amount that this receiver is asked to admit.
+A tiny positive pending row, a quiet food observation, and an initialized registry do not reveal a dormant category.
+`migration_decision_reveal_threshold_is_met` and the category visibility consume that same bounded predicate without recursive phase or problem-trigger calls.
+The predicate changes presentation and response eligibility only; it does not create a cohort, grant services or capacity, accept a route, move people, or record deaths.
 
 `migration_decision_exact_hosted_cohort_is_valid` is state-scoped and requires one aligned positive live row whose persisted host is the acting state as reflected by the core reconciler's state counters. It fails closed on stale, ambiguous, or missing selectors.
 

@@ -224,7 +224,26 @@ migration_spontaneous_movement_submit_request = {
 migration_process_spontaneous_movement_owner = {
 	set_temp_variable = { migration_spontaneous_movement_owner_result = constant:civilian_transfer_route_result.invalid }
 	if = {
-		limit = { migration_spontaneous_movement_state_is_ready = yes }
+		limit = { has_variable = migration_spontaneous_reception_cohort_id }
+		migration_spontaneous_reception_process_owned_row = yes
+	}
+	if = {
+		limit = { migration_spontaneous_movement_state_is_ready = yes NOT = { has_variable = migration_spontaneous_reception_cohort_id } NOT = { check_variable = { migration_spontaneous_movement_owner_result = constant:civilian_transfer_route_result.valid } } }
+		set_temp_variable = { migration_spontaneous_movement_request_result = constant:civilian_transfer_route_result.invalid }
+		set_temp_variable = { migration_spontaneous_movement_request = constant:humanitarian_population.zero }
+		set_temp_variable = { migration_spontaneous_movement_protected_floor = constant:humanitarian_population.zero }
+		set_temp_variable = { migration_spontaneous_movement_movable_population = constant:humanitarian_population.zero }
+		set_temp_variable = { migration_destination_selection_result = constant:migration_destination_selection_runtime.zero }
+		set_temp_variable = { migration_cohort_record_result = constant:civilian_transfer_route_result.invalid }
+		set_temp_variable = { migration_cohort_id_result = constant:humanitarian_runtime.zero }
+		set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
+		set_temp_variable = { civilian_transfer_finalize_result = constant:migration_core_reconciliation.transfer_finalize_invalid }
+		set_temp_variable = { civilian_transfer_survivor_credit = constant:humanitarian_population.zero }
+		set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
+		set_temp_variable = { civilian_transfer_route_deaths = constant:humanitarian_population.zero }
+		set_temp_variable = { civilian_transfer_destination_actual_credit = constant:humanitarian_population.zero }
+		set_temp_variable = { civilian_transfer_conservation_ledger = constant:humanitarian_population.zero }
+		set_temp_variable = { migration_closed_border_preflight_result = constant:migration_destination_selection_runtime.zero }
 		migration_spontaneous_movement_calculate_request = yes
 		if = {
 			limit = { check_variable = { var = migration_spontaneous_movement_request_result value = constant:civilian_transfer_route_result.valid compare = equals } }
@@ -235,6 +254,7 @@ migration_process_spontaneous_movement_owner = {
 				save_event_target_as = migration_destination_selection_actor
 			}
 			set_temp_variable = { migration_destination_selection_actor_override_proven = constant:migration_destination_selection_runtime.one }
+			set_temp_variable = { migration_destination_selection_required_people = migration_spontaneous_movement_request }
 			migration_destination_selection_preflight_closed_border_rejection = yes
 			migration_select_general_safe_evacuation_destination = yes
 			set_temp_variable = { migration_destination_selection_actor_override_proven = constant:migration_destination_selection_runtime.zero }
@@ -313,9 +333,16 @@ migration_process_spontaneous_movement_owner = {
 			}
 			}
 			}
-			else = {
+			if = {
+				limit = { NOT = { check_variable = { migration_spontaneous_movement_owner_result = constant:civilian_transfer_route_result.valid } } }
+				set_temp_variable = { migration_destination_selection_result = constant:migration_destination_selection_runtime.zero }
+			}
+			if = {
+				limit = { check_variable = { migration_destination_selection_result = constant:migration_destination_selection_runtime.zero } }
 				migration_spontaneous_movement_trap_request = yes
 				migration_spontaneous_movement_record_closed_border_rejection = yes
+				set_temp_variable = { migration_spontaneous_reception_result = constant:humanitarian_runtime.zero }
+				migration_spontaneous_reception_submit = yes
 				set_temp_variable = { migration_spontaneous_movement_owner_result = constant:civilian_transfer_route_result.trapped }
 			}
 		}

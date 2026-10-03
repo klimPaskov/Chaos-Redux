@@ -136,32 +136,40 @@ migration_destination_selection_calculate_candidate_weight = {
 		subtract_from_temp_variable = { migration_destination_candidate_weight = constant:migration_destination_selection_weight.route_damaged_penalty }
 	}
 
-	OWNER = {
-			set_temp_variable = { migration_destination_capacity_headroom = migration_reception_capacity }
-			if = {
-				limit = { has_variable = migration_reception_load }
-				subtract_from_temp_variable = { migration_destination_capacity_headroom = migration_reception_load }
+	if = {
+		limit = {
+			OR = {
+				NOT = { check_variable = { migration_destination_preparable_pool = constant:migration_destination_selection_runtime.one } }
+				OWNER = { migration_reception_capacity_is_valid = yes }
 			}
-	}
-	divide_temp_variable = { migration_destination_capacity_headroom = constant:migration_destination_selection_weight.capacity_headroom_step }
-		clamp_temp_variable = {
-			var = migration_destination_capacity_headroom
-			min = constant:migration_destination_selection_runtime.zero
-			max = constant:migration_destination_selection_weight.capacity_headroom_max
 		}
-		add_to_temp_variable = { migration_destination_candidate_weight = constant:migration_destination_selection_weight.capacity_available }
-		add_to_temp_variable = { migration_destination_candidate_weight = migration_destination_capacity_headroom }
-		if = {
-			limit = { has_variable = migration_state_reception_load }
-			set_temp_variable = { migration_destination_state_load_penalty = migration_state_reception_load }
-			divide_temp_variable = { migration_destination_state_load_penalty = constant:migration_destination_selection_weight.state_reception_load_step }
+		OWNER = {
+				set_temp_variable = { migration_destination_capacity_headroom = migration_reception_capacity }
+				if = {
+					limit = { has_variable = migration_reception_load }
+					subtract_from_temp_variable = { migration_destination_capacity_headroom = migration_reception_load }
+				}
+		}
+		divide_temp_variable = { migration_destination_capacity_headroom = constant:migration_destination_selection_weight.capacity_headroom_step }
 			clamp_temp_variable = {
-				var = migration_destination_state_load_penalty
+				var = migration_destination_capacity_headroom
 				min = constant:migration_destination_selection_runtime.zero
-				max = constant:migration_destination_selection_weight.state_reception_load_max_penalty
+				max = constant:migration_destination_selection_weight.capacity_headroom_max
 			}
-			subtract_from_temp_variable = { migration_destination_candidate_weight = migration_destination_state_load_penalty }
+			add_to_temp_variable = { migration_destination_candidate_weight = constant:migration_destination_selection_weight.capacity_available }
+			add_to_temp_variable = { migration_destination_candidate_weight = migration_destination_capacity_headroom }
+	}
+	if = {
+		limit = { has_variable = migration_state_reception_load }
+		set_temp_variable = { migration_destination_state_load_penalty = migration_state_reception_load }
+		divide_temp_variable = { migration_destination_state_load_penalty = constant:migration_destination_selection_weight.state_reception_load_step }
+		clamp_temp_variable = {
+			var = migration_destination_state_load_penalty
+			min = constant:migration_destination_selection_runtime.zero
+			max = constant:migration_destination_selection_weight.state_reception_load_max_penalty
 		}
+		subtract_from_temp_variable = { migration_destination_candidate_weight = migration_destination_state_load_penalty }
+	}
 	if = {
 		limit = { OWNER = { NOT = { tag = event_target:migration_destination_selection_actor } } }
 		OWNER = {
@@ -314,6 +322,9 @@ migration_destination_selection_preflight_closed_border_rejection = {
 # migration_route_destination and write its food/reception proofs;
 # the donor pool binds migration_requisition_donor_state.
 migration_destination_selection_run_weighted_pool = {
+	set_temp_variable = { migration_destination_preparable_pool = constant:migration_destination_selection_runtime.zero }
+	set_temp_variable = { migration_destination_candidate_weight = constant:migration_destination_selection_runtime.zero }
+	if = { limit = { NOT = { has_variable = migration_destination_selection_required_people } } set_temp_variable = { migration_destination_selection_required_people = constant:humanitarian_population.zero } }
 	# Normal route proofs are chain-local. A registered selector pass with no
 	# bound destination must not leave a prior state-local proof reusable by a
 	# later transaction; forced-return proof has its own explicit adapter.
@@ -429,6 +440,52 @@ migration_select_general_safe_evacuation_destination = {
 		set_temp_variable = { migration_destination_selection_pool = constant:migration_destination_selection_pool.foreign_safe_evacuation }
 		migration_destination_selection_run_weighted_pool = yes
 	}
+	set_temp_variable = { migration_destination_selection_required_people = constant:humanitarian_population.zero }
+}
+
+# STATE scope after both normal internal/foreign pools returned zero.
+# A complete two-pass draw binds only the proposed endpoint, never admission.
+migration_select_preparable_foreign_reception_state = {
+	set_temp_variable = { migration_reception_preparable_selection_result = constant:humanitarian_runtime.zero }
+	set_temp_variable = { migration_destination_preparable_pool = constant:migration_destination_selection_runtime.one }
+	set_temp_variable = { migration_destination_selection_pool = constant:migration_destination_selection_pool.foreign_safe_evacuation }
+	set_temp_variable = { migration_destination_candidate_weight = constant:migration_destination_selection_runtime.zero }
+	set_temp_variable = { migration_reception_preparable_total = constant:migration_destination_selection_runtime.zero }
+	set_temp_variable = { migration_reception_preparable_bound = constant:migration_destination_selection_runtime.zero }
+	migration_destination_selection_bind_actor = yes
+	migration_consume_famine_food_safety = yes
+	every_neighbor_state = { migration_consume_famine_food_safety = yes }
+	every_neighbor_state = {
+		limit = { migration_destination_preparable_candidate_is_valid = yes }
+		migration_destination_selection_calculate_candidate_weight = yes
+		if = {
+			limit = { check_variable = { migration_destination_candidate_weight > constant:migration_destination_selection_runtime.positive_weight_floor } }
+			add_to_temp_variable = { migration_reception_preparable_total = migration_destination_candidate_weight }
+		}
+	}
+	if = {
+		limit = { check_variable = { migration_reception_preparable_total > constant:migration_destination_selection_runtime.zero } }
+		randomize_temp_variable = { var = migration_reception_preparable_draw distribution = uniform min = constant:migration_destination_selection_runtime.roll_minimum max = constant:migration_destination_selection_runtime.roll_maximum }
+		multiply_temp_variable = { migration_reception_preparable_draw = migration_reception_preparable_total }
+		every_neighbor_state = {
+			limit = { migration_destination_preparable_candidate_is_valid = yes }
+			migration_destination_selection_calculate_candidate_weight = yes
+			if = {
+				limit = {
+					check_variable = { migration_reception_preparable_bound = constant:migration_destination_selection_runtime.zero }
+					check_variable = { migration_destination_candidate_weight > constant:migration_destination_selection_runtime.positive_weight_floor }
+				}
+				if = {
+					limit = { check_variable = { var = migration_reception_preparable_draw value = migration_destination_candidate_weight compare = less_than_or_equals } }
+					save_event_target_as = migration_reception_preparable_front
+					set_temp_variable = { migration_reception_preparable_bound = constant:migration_destination_selection_runtime.one }
+					set_temp_variable = { migration_reception_preparable_selection_result = constant:humanitarian_runtime.one }
+				}
+				else = { subtract_from_temp_variable = { migration_reception_preparable_draw = migration_destination_candidate_weight } }
+			}
+		}
+	}
+	set_temp_variable = { migration_destination_preparable_pool = constant:migration_destination_selection_runtime.zero }
 }
 
 migration_select_internal_safe_route_destination = {

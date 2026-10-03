@@ -57,5 +57,7 @@ The special-country and actual-nonhuman classifiers are intentionally centralize
 When a new system actor is added, its owner sets a stable marker and updates these classifiers only if the actor's shared civilian or nonhuman treatment changes. Do not add event-specific validation, stage checks, provider callbacks, lifecycle state, or player-facing text here.
 
 Owner-specific validation remains in the owning files, including `common/scripted_triggers/humanitarian_validation_triggers.txt`, `common/scripted_triggers/famine_core_triggers.txt`, `common/scripted_triggers/migration_core_triggers.txt`, `common/scripted_triggers/migration_destination_selection_triggers.txt`, and `common/scripted_triggers/migration_forced_movement_triggers.txt`.
+The [reception preparation predicates](migration_reception_preparation_triggers.md) own the exact pending-front target, service-improvement, visibility, and inclusive affordability contracts; `migration_pending_reception_issue_is_valid` remains in the [decision-owner trigger contract](migration_decision_owner_triggers.md).
+Pending intent never supplies reception-load, population, or operational-route proof, and the [corridor predicates](humanitarian_corridor_triggers.md) keep preparable requests separate from exact-capacity acceptance and transfer.
 
 All predicates in those owner files are read-only and should fail closed when their request proof, state target, or persisted ledger data is incomplete.

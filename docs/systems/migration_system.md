@@ -52,6 +52,35 @@ Movement is never a death. Every physical route delegates to the neutral exact t
 
 Migration owns cohort identity, current host, historical origin, route role, generation, status, reception load, integration, resettlement, and return state. Exact aligned registries and generation checks prevent stale-host resolution, duplicated cohorts, and transfer cycling.
 
+## Prospective reception contract
+
+The accepted first-reception repair is defined in [Part 3](../specs/famine_and_migration_system_specs/famine_and_migration_system_spec_part_3_displacement_migration_return.md), [Part 6](../specs/famine_and_migration_system_specs/famine_and_migration_system_spec_part_6_decisions_ai_presentation.md), and the [bounded implementation plan](../plans/famine_and_migration_system_plans/prospective_reception_lifecycle_plan_20261003.md).
+The bounded source path is implemented and independently source-audited in [the completion handoff](../plans/famine_and_migration_system_plans/subagent_handoffs/prospective_reception_completion_audit_20261003.md).
+Native execution and the required same-scenario probability comparison remain unresolved, so this is not a full-system completion claim.
+
+A real spontaneous request first uses the existing operational internal-first destination search.
+Only when that search cannot resolve the request may the sparse origin-state owner rank adjacent preparable foreign hosts, retaining actual food, native transport, ownership, control, relation, actor, and hazard checks.
+No missing reception service is represented as capacity or given a capacity weight bonus.
+The exact selected front, live origin cohort, and fresh contract generation are persisted in the existing humanitarian corridor and country mirrors.
+The source row remains at the origin without a bound destination; a request creates no arrival, population debit, reception load, or death.
+
+The host's existing Open Emergency Reception action prepares only the exact requested state while an offer is pending.
+It uses the existing shelter and medical service setters and population-scaled shares, a single centralized three-resource payment, an inclusive affordability predicate, and exact rollback/refund on rejected paid setup.
+An unchanged service receipt cannot be charged again as successful preparation.
+Once fresh live-cohort and full headroom checks pass, the host may accept the request; the existing sparse spontaneous owner then delegates movement to the exact civilian-transfer transaction.
+Acceptance and transfer each revalidate the actual amount, route, capacity, policy, actor, cohort, and generation.
+Rejection or expiry preserves the origin obligations and can clear only matching mirrors.
+
+One tiny incoming request does not reveal the migration category.
+Large or sustained issue facts, or distinct valid incoming evacuation generations counted once in the existing incident count, use the existing reveal thresholds.
+Preparation and rejection precede acceptance; these are phased uses of existing controls, not an additional category, mission, GUI, or headline value.
+The pending-request priority text explains the current choice without calling the people arrivals.
+
+Reception preparation costs live in `common/script_constants/migration_reception_preparation_constants.txt`.
+The existing active-country registration and country phase provider share a display-only cost projector for `common/scripted_localisation/migration_reception_preparation_cost_scripted_localisation.txt`; fresh constants, not cached text values, govern affordability and payment.
+`localisation/english/migration_l_english.yml` owns the six ready/blocked cost labels and request wording, reusing the existing `£pol_power`, `£support_equipment_text_icon`, and `£GFX_fuel_texticon` consumers.
+The action retains `GFX_migration_decision_open_border`; no new art or sprite consumer is required.
+
 ## Borders and trapped populations
 
 Closed borders do not erase a cohort. A valid closure creates or maintains trapped population and produces real humanitarian, diplomatic, security, political, reception, and mortality consequences through their respective owners.
@@ -86,7 +115,10 @@ The current documentation inventory contains 61 declared final DDS outputs acros
 
 ## CXT fixture
 
-`migration_register_cxt_test_content` registers `chaosx_cxt_extension_migration`. Its idempotent apply effect gives the test country bounded reception capacity without creating a cohort, route, population transfer, famine problem, or mortality transaction.
+`migration_register_cxt_test_content` registers `chaosx_cxt_extension_migration`.
+Its idempotent apply effect requests a capacity refresh; the current owner recalculates from real registered food, shelter, and medical receipts rather than granting the legacy requested aggregate amount.
+This registration does not supply missing services, create a cohort or route, move population, start a famine problem, or apply mortality.
+Starting and exercising a real reception case still needs its exact owner inputs; registration alone is not a capacity or execution proof.
 
 ## Event 149 retirement
 

@@ -1,0 +1,110 @@
+# Paid, exact-state reception preparation contracts. These triggers are
+# read-only and never install services, admit a cohort or modify population.
+
+migration_reception_preparation_is_affordable = {
+	hidden_trigger = {
+		humanitarian_country_is_valid = yes
+		NOT = { has_political_power < constant:migration_reception_preparation_cost.political_power }
+		NOT = { has_equipment = { support_equipment < constant:migration_reception_preparation_cost.support_equipment } }
+		NOT = { has_fuel < constant:migration_reception_preparation_cost.fuel }
+	}
+}
+
+migration_reception_preparation_is_visible = {
+	hidden_trigger = {
+		humanitarian_country_is_valid = yes
+		OR = {
+			migration_pending_reception_issue_is_valid = yes
+			AND = {
+				NOT = { has_country_flag = humanitarian_corridor_offer_pending }
+				OR = {
+					has_country_flag = migration_decision_active
+					AND = {
+						has_country_flag = migration_decision_emerging
+						migration_decision_reveal_threshold_is_met = yes
+						any_owned_state = {
+							has_state_flag = migration_displacement_active
+							OR = {
+								check_variable = { migration_flight_pressure > constant:humanitarian_population.zero }
+								check_variable = { migration_trapped_population > constant:humanitarian_population.zero }
+							}
+						}
+					}
+				}
+				NOT = { has_country_flag = migration_decision_resolution }
+				has_country_flag = migration_displacement_country_active
+				OR = {
+					NOT = { migration_reception_capacity_is_valid = yes }
+					AND = {
+						has_variable = migration_reception_load
+						has_variable = migration_reception_capacity
+						check_variable = { migration_reception_load > migration_reception_capacity }
+					}
+				}
+			}
+		}
+	}
+}
+
+migration_reception_preparation_state_is_safe = {
+	hidden_trigger = {
+		humanitarian_state_is_valid = yes
+		state_population_k > constant:humanitarian_population.zero
+		NOT = { has_state_flag = migration_population_trapped }
+		infrastructure > constant:migration_destination_selection_threshold.minimum_route_infrastructure
+		famine_to_migration_food_safety_is_valid = yes
+		OR = {
+			AND = { has_state_flag = migration_reception_candidate_active is_in_array = { array = global.migration_reception_candidate_states value = THIS } }
+			AND = { NOT = { has_state_flag = migration_reception_candidate_active } NOT = { is_in_array = { array = global.migration_reception_candidate_states value = THIS } } }
+		}
+		check_variable = { famine_to_migration_food_stage = constant:famine_food_stage.stable }
+		humanitarian_corridor_front_is_preparable = yes
+	}
+}
+
+# Temporary quantities are used only inside this read-only predicate.
+migration_reception_preparation_can_change_state = {
+	hidden_trigger = {
+		set_temp_variable = { migration_reception_preparation_population = state_population_k }
+		multiply_temp_variable = { migration_reception_preparation_population = constant:migration_capacity.people_per_k }
+		set_temp_variable = { migration_reception_preparation_shelter = migration_reception_preparation_population }
+		multiply_temp_variable = { migration_reception_preparation_shelter = constant:migration_reception_bootstrap.shelter_population_share }
+		round_temp_variable = migration_reception_preparation_shelter
+		set_temp_variable = { migration_reception_preparation_medical = migration_reception_preparation_population }
+		multiply_temp_variable = { migration_reception_preparation_medical = constant:migration_reception_bootstrap.medical_population_share }
+		round_temp_variable = migration_reception_preparation_medical
+		check_variable = { migration_reception_preparation_shelter > constant:humanitarian_population.zero }
+		check_variable = { migration_reception_preparation_medical > constant:humanitarian_population.zero }
+		OR = {
+			NOT = { has_variable = migration_reception_shelter_capacity }
+			NOT = { check_variable = { migration_reception_shelter_service_proven = constant:migration_capacity.one } }
+			check_variable = { migration_reception_shelter_capacity < migration_reception_preparation_shelter }
+			NOT = { has_variable = migration_reception_medical_capacity }
+			NOT = { check_variable = { migration_reception_medical_service_proven = constant:migration_capacity.one } }
+			check_variable = { migration_reception_medical_capacity < migration_reception_preparation_medical }
+			OWNER = {
+				NOT = { check_variable = { migration_reception_policy = constant:migration_border_policy.humanitarian_open } }
+			}
+		}
+	}
+}
+
+# STATE scope. ROOT is the ordinary decision's receiving country.
+migration_reception_preparation_target_is_valid = {
+	hidden_trigger = {
+		is_owned_and_controlled_by = ROOT
+		migration_reception_preparation_state_is_safe = yes
+		migration_reception_preparation_can_change_state = yes
+		ROOT = {
+			migration_reception_preparation_is_visible = yes
+			num_of_civilian_factories > constant:humanitarian_population.zero
+			OR = {
+				NOT = { has_country_flag = humanitarian_corridor_offer_pending }
+				AND = {
+					migration_pending_reception_issue_is_valid = yes
+					check_variable = { humanitarian_corridor_offer_front_state_id = PREV.id }
+				}
+			}
+		}
+	}
+}
