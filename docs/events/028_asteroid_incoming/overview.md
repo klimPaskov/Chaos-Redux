@@ -39,6 +39,7 @@ The shared Air Cleanliness source registry reserves source 4 for asteroid dust a
 ## Icon inventory
 
 The accepted runtime package includes four report images, two news images, one decision-category picture plus the vanilla generic-crisis category icon, seven distinct state-modifier icons, eight 64x64 idea icons, fourteen unique 32x32 decision icons with a documented three-action reconnaissance alias, one super-event image, and five complete achievement triplets. The live fragment-center recovery modifier is explicitly audited as a second consumer of the accepted fragment-crater state icon because the specification defines no separate recovery icon.
+The seven state textures live under `gfx/interface/state_modifiers/028_asteroid_incoming/`, with their stable sprite IDs registered in `interface/028_asteroid_incoming.gfx`.
 
 ## Dust helper contracts
 
