@@ -58,7 +58,7 @@ random_terror_achievement_initialize_country = {
 		set_variable = { random_terror_achievement_corridors_broken = constant:random_terror_value.zero }
 		set_variable = { random_terror_achievement_actor_defeats = constant:random_terror_value.zero }
 		set_variable = { random_terror_achievement_split_members = constant:random_terror_value.zero }
-		capital_scope = { set_state_flag = random_terror_achievement_original_capital }
+		set_variable = { random_terror_achievement_original_capital_state = capital }
 		random_terror_achievement_register_reaction_country = yes
 	}
 }
@@ -231,12 +231,18 @@ random_terror_achievement_record_state_loss = {
 	if = {
 		limit = {
 			has_event_target = random_terror_achievement_lost_state
-			event_target:random_terror_achievement_lost_state = { has_state_flag = random_terror_achievement_original_capital }
+			has_variable = random_terror_achievement_original_capital_state
+			check_variable = { var = random_terror_achievement_original_capital_state value = event_target:random_terror_achievement_lost_state compare = equals }
+		}
+		if = {
+			limit = { NOT = { has_country_flag = random_terror_achievement_original_capital_lost } }
+			set_variable = { random_terror_achievement_capital_restore_deadline = global.date }
+			add_to_variable = { random_terror_achievement_capital_restore_deadline = constant:random_terror_tuning.achievement_restore_deadline_days }
 		}
 		set_country_flag = random_terror_achievement_original_capital_lost
 		set_country_flag = random_terror_achievement_war_without_capital_revealed
-		set_variable = { random_terror_achievement_capital_restore_deadline = global.date }
-		add_to_variable = { random_terror_achievement_capital_restore_deadline = constant:random_terror_tuning.achievement_restore_deadline_days }
+		clr_country_flag = random_terror_achievement_original_capital_retaken
+		clr_country_flag = random_terror_achievement_original_capital_restored
 	}
 }
 
@@ -358,10 +364,12 @@ random_terror_achievement_record_community_protection = {
 }
 
 random_terror_achievement_record_original_capital_retake = {
-	if = {
-		limit = { has_state_flag = random_terror_achievement_original_capital }
-		set_state_flag = random_terror_achievement_original_capital_retaken
-		OWNER = {
+	OWNER = {
+		if = {
+			limit = {
+				has_variable = random_terror_achievement_original_capital_state
+				check_variable = { var = random_terror_achievement_original_capital_state value = PREV compare = equals }
+			}
 			set_country_flag = random_terror_achievement_original_capital_retaken
 			set_country_flag = random_terror_achievement_continued_capital_war
 		}
@@ -369,10 +377,14 @@ random_terror_achievement_record_original_capital_retake = {
 }
 
 random_terror_achievement_record_civil_authority_restore = {
-	if = {
-		limit = { has_state_flag = random_terror_achievement_original_capital }
-		set_state_flag = random_terror_achievement_original_capital_restored
-		OWNER = { set_country_flag = random_terror_achievement_original_capital_restored }
+	OWNER = {
+		if = {
+			limit = {
+				has_variable = random_terror_achievement_original_capital_state
+				check_variable = { var = random_terror_achievement_original_capital_state value = PREV compare = equals }
+			}
+			set_country_flag = random_terror_achievement_original_capital_restored
+		}
 	}
 }
 
@@ -415,7 +427,7 @@ random_terror_achievement_record_scenario_launch = {
 		set_country_flag = random_terror_achievement_maximum_ui_launch
 		set_variable = { random_terror_achievement_maximum_launch_type = global.random_terror_global_jihad_scenario_type }
 		set_variable = { random_terror_achievement_maximum_launch_intensity = global.random_terror_global_jihad_scenario_intensity }
-		capital_scope = { set_state_flag = random_terror_achievement_original_capital }
+		set_variable = { random_terror_achievement_maximum_original_capital_state = capital }
 	}
 }
 
@@ -575,7 +587,9 @@ random_terror_achievement_finalize_country = {
 			has_country_flag = random_terror_achievement_city_mission_succeeded
 			check_variable = { var = global.date value = random_terror_achievement_city_recovery_deadline compare = less_than_or_equals }
 			check_variable = { random_terror_pressure < constant:random_terror_tuning.achievement_city_pressure_recovery }
-			capital_scope = { has_state_flag = random_terror_achievement_original_capital }
+			has_variable = random_terror_achievement_original_capital_state
+			check_variable = { var = random_terror_achievement_original_capital_state value = capital compare = equals }
+			var:random_terror_achievement_original_capital_state = { is_owned_and_controlled_by = PREV }
 			NOT = { has_country_flag = random_terror_achievement_city_disqualified }
 		}
 		set_country_flag = random_terror_achievement_the_city_still_stands
@@ -681,10 +695,8 @@ random_terror_achievement_finalize_country = {
 			NOT = { has_country_flag = random_terror_achievement_maximum_disqualified }
 			NOT = { random_terror_has_unresolved_actor = yes }
 			has_global_flag = random_terror_defeat_resolved
-			OR = {
-				NOT = { has_country_flag = random_terror_achievement_original_capital_lost }
-				has_country_flag = random_terror_achievement_original_capital_restored
-			}
+			has_variable = random_terror_achievement_maximum_original_capital_state
+			var:random_terror_achievement_maximum_original_capital_state = { is_owned_and_controlled_by = PREV }
 		}
 		set_country_flag = random_terror_achievement_maximum_survivor
 	}
@@ -730,6 +742,8 @@ random_terror_achievement_finalize_country = {
 			has_country_flag = random_terror_achievement_continued_capital_war
 			has_country_flag = random_terror_achievement_original_capital_retaken
 			has_country_flag = random_terror_achievement_original_capital_restored
+			has_variable = random_terror_achievement_original_capital_state
+			var:random_terror_achievement_original_capital_state = { is_owned_and_controlled_by = PREV }
 			check_variable = { var = global.date value = random_terror_achievement_capital_restore_deadline compare = less_than_or_equals }
 			check_variable = { random_terror_pressure < constant:random_terror_tuning.achievement_capital_pressure_recovery }
 			NOT = { has_country_flag = random_terror_achievement_war_without_capital_disqualified }
@@ -778,9 +792,10 @@ random_terror_achievement_daily_tick = {
 				has_country_flag = random_terror_achievement_original_capital_lost
 				NOT = { has_country_flag = random_terror_achievement_backup_capital_established }
 				NOT = { has_capitulated = yes }
+				has_variable = random_terror_achievement_original_capital_state
+				NOT = { check_variable = { var = random_terror_achievement_original_capital_state value = capital compare = equals } }
 				capital_scope = {
-					is_controlled_by = ROOT
-					NOT = { has_state_flag = random_terror_achievement_original_capital }
+					is_controlled_by = PREV
 				}
 			}
 			set_country_flag = random_terror_achievement_backup_capital_established
@@ -804,7 +819,10 @@ random_terror_achievement_daily_tick = {
 		if = {
 			limit = {
 				has_country_flag = random_terror_achievement_city_tracking
-				NOT = { capital_scope = { has_state_flag = random_terror_achievement_original_capital } }
+				OR = {
+					NOT = { has_variable = random_terror_achievement_original_capital_state }
+					NOT = { check_variable = { var = random_terror_achievement_original_capital_state value = capital compare = equals } }
+				}
 			}
 			set_country_flag = random_terror_achievement_city_disqualified
 		}
