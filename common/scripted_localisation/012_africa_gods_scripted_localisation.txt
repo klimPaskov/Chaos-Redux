@@ -1,8 +1,8 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 012 GODS OF AFRICA SCRIPTED LOCALISATION
 # ============================================================================
-# Only qualitative labels are exposed. The numerical Strength and Wrath values
-# remain the two public values; all relationship history stays hidden.
+# Strength and Wrath remain the two public Gods counters. Demand quantities,
+# costs, and outcome receipts explain actions; relationship history stays hidden.
 # ============================================================================
 
 defined_text = {
@@ -89,6 +89,114 @@ defined_text = {
 		localization_key = gods_of_africa_voluntary_aid_fuel_cost
 	}
 	text = { localization_key = gods_of_africa_voluntary_aid_unavailable_cost }
+}
+
+# Response fields survive ordinary demand cleanup and describe only the
+# latest completed response, never the private relationship-history arrays.
+defined_text = {
+	name = GetGodsOfAfricaResponseFamilyName
+	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.land_equipment } } localization_key = gods_of_africa_family_land_equipment }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.mobile_artillery } } localization_key = gods_of_africa_family_mobile_artillery }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.armor } } localization_key = gods_of_africa_family_armor }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.aircraft } } localization_key = gods_of_africa_family_aircraft }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.fuel } } localization_key = gods_of_africa_family_fuel }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.transport } } localization_key = gods_of_africa_family_transport }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.industry_repair } } localization_key = gods_of_africa_family_industry_repair }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.resources } } localization_key = gods_of_africa_family_resources }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.manpower } } localization_key = gods_of_africa_family_manpower }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.recognition } } localization_key = gods_of_africa_family_recognition }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.territory } } localization_key = gods_of_africa_family_territory }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.alliance_access } } localization_key = gods_of_africa_family_alliance_access }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.emergency_relief } } localization_key = gods_of_africa_family_emergency_relief }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.support_equipment } } localization_key = gods_of_africa_family_support_equipment }
+	text = { localization_key = gods_of_africa_family_unknown }
+}
+
+defined_text = {
+	name = GetGodsOfAfricaResponseReport
+	text = { trigger = { check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.compliance } } localization_key = gods_of_africa_response_compliance_report }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.substitute } } localization_key = gods_of_africa_response_substitute_report }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.partial } } localization_key = gods_of_africa_response_partial_report }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.refusal } } localization_key = gods_of_africa_response_refusal_report }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.failure } } localization_key = gods_of_africa_response_expired_report }
+	text = { localization_key = gods_of_africa_response_unknown_report }
+}
+
+defined_text = {
+	name = GetGodsOfAfricaPunishmentReport
+	text = { trigger = { check_variable = { gods_of_africa_last_punishment_tier = constant:gods_of_africa_punishment.pressure } } localization_key = gods_of_africa_punishment_pressure_report }
+	text = { trigger = { check_variable = { gods_of_africa_last_punishment_tier = constant:gods_of_africa_punishment.disruption } } localization_key = gods_of_africa_punishment_disruption_report }
+	text = { trigger = { check_variable = { gods_of_africa_last_punishment_tier = constant:gods_of_africa_punishment.crisis } } localization_key = gods_of_africa_punishment_crisis_report }
+	text = { trigger = { check_variable = { gods_of_africa_last_punishment_tier = constant:gods_of_africa_punishment.ultimatum } } localization_key = gods_of_africa_punishment_ultimatum_report }
+	text = {
+		trigger = {
+			check_variable = { gods_of_africa_last_punishment_tier = constant:gods_of_africa_punishment.catastrophe }
+			OR = {
+				NOT = { has_variable = gods_of_africa_last_disaster_result }
+				NOT = { check_variable = { gods_of_africa_last_disaster_result = constant:natural_disaster_call_result.accepted } }
+			}
+		}
+		localization_key = gods_of_africa_punishment_failed_manifestation_report
+	}
+	text = {
+		trigger = {
+			check_variable = { gods_of_africa_last_punishment_tier = constant:gods_of_africa_punishment.catastrophe }
+			check_variable = { gods_of_africa_punishment_report_population_loss > constant:gods_of_africa_value.zero }
+		}
+		localization_key = gods_of_africa_punishment_catastrophe_report
+	}
+	text = { trigger = { check_variable = { gods_of_africa_last_punishment_tier = constant:gods_of_africa_punishment.catastrophe } } localization_key = gods_of_africa_punishment_catastrophe_no_wave_report }
+	text = { localization_key = gods_of_africa_punishment_unknown_report }
+}
+
+defined_text = {
+	name = GetGodsOfAfricaResponsePaidAmount
+	text = { trigger = { gods_of_africa_family_is_equipment = { FAMILY = gods_of_africa_last_response_family } } localization_key = gods_of_africa_response_equipment_paid }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.fuel } } localization_key = gods_of_africa_response_fuel_paid }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.manpower } } localization_key = gods_of_africa_response_manpower_paid }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.resources } } localization_key = gods_of_africa_response_rights_paid }
+	text = { localization_key = gods_of_africa_response_political_power_paid }
+}
+
+defined_text = {
+	name = GetGodsOfAfricaResponseBalance
+	text = { trigger = { gods_of_africa_family_is_equipment = { FAMILY = gods_of_africa_last_response_family } } localization_key = gods_of_africa_response_equipment_balance }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.fuel } } localization_key = gods_of_africa_response_fuel_balance }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.manpower } } localization_key = gods_of_africa_response_manpower_balance }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.resources } } localization_key = gods_of_africa_response_rights_balance }
+	text = { localization_key = gods_of_africa_response_political_power_balance }
+}
+
+defined_text = {
+	name = GetGodsOfAfricaPunishmentLocalConsequence
+	text = { trigger = { has_country_flag = gods_of_africa_punishment_report_resistance_increased has_variable = gods_of_africa_punishment_report_state } localization_key = gods_of_africa_punishment_resistance_consequence }
+	text = { trigger = { has_country_flag = gods_of_africa_punishment_report_factories_targeted has_variable = gods_of_africa_punishment_report_state } localization_key = gods_of_africa_punishment_factory_consequence }
+	text = { trigger = { has_country_flag = gods_of_africa_punishment_report_infrastructure_targeted has_variable = gods_of_africa_punishment_report_state } localization_key = gods_of_africa_punishment_infrastructure_consequence }
+	text = {
+		trigger = {
+			has_country_flag = gods_of_africa_punishment_report_transport_protected
+			OR = {
+				check_variable = { gods_of_africa_last_punishment_tier = constant:gods_of_africa_punishment.disruption }
+				check_variable = { gods_of_africa_last_punishment_tier = constant:gods_of_africa_punishment.crisis }
+				check_variable = { gods_of_africa_last_punishment_tier = constant:gods_of_africa_punishment.ultimatum }
+			}
+		}
+		localization_key = gods_of_africa_punishment_transport_protected_consequence
+	}
+	text = { localization_key = gods_of_africa_punishment_no_local_consequence }
+}
+
+defined_text = {
+	name = GetGodsOfAfricaPunishmentReportBody
+	text = {
+		trigger = {
+			has_variable = gods_of_africa_last_punishment_pp_change
+			has_variable = gods_of_africa_last_punishment_stability_change
+			has_variable = gods_of_africa_last_punishment_war_support_change
+		}
+		localization_key = gods_of_africa_punishment_report_with_receipt
+	}
+	text = { localization_key = gods_of_africa_punishment_unknown_report }
 }
 
 defined_text = {

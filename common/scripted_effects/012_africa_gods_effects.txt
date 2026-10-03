@@ -311,6 +311,7 @@ gods_of_africa_register_participant = {
 	if = {
 		limit = { gods_of_africa_participant_can_register = yes }
 		gods_of_africa_withdraw_protection_package = yes
+		gods_of_africa_clear_report_receipts = yes
 		set_country_flag = gods_of_africa_participant
 		clr_country_flag = gods_of_africa_leniency_used
 		clr_country_flag = gods_of_africa_escalation_used
@@ -393,6 +394,7 @@ gods_of_africa_try_register_participant = {
 # audit, while live contract state is removed from the active registry.
 gods_of_africa_archive_invalid_participant = {
 	gods_of_africa_withdraw_protection_package = yes
+	gods_of_africa_clear_report_receipts = yes
 	remove_mission = gods_of_africa_demand_mission
 	remove_mission = gods_of_africa_reconciliation_mission
 	if = {
@@ -1274,6 +1276,10 @@ gods_of_africa_calculate_demand_amount = {
 	divide_variable = { gods_of_africa_contract_amount = constant:gods_of_africa_demand_scale.percent_divisor }
 	clamp_variable = { var = gods_of_africa_contract_amount min = constant:gods_of_africa_value.minimum_demand_amount max = constant:gods_of_africa_value.maximum_demand_amount }
 	if = {
+		limit = { gods_of_africa_family_is_equipment = { FAMILY = gods_of_africa_selected_family } }
+		gods_of_africa_floor_equipment_amount = { AMOUNT = gods_of_africa_contract_amount }
+	}
+	if = {
 		limit = {
 			check_variable = { gods_of_africa_selected_family = constant:gods_of_africa_demand_family.armor }
 			has_event_target = gods_of_africa_demand_participant
@@ -1644,7 +1650,7 @@ gods_of_africa_create_demand_contract = {
 			multiply_variable = { gods_of_africa_partial_payment_amount = constant:gods_of_africa_transaction.partial_payment_ratio_numerator }
 			divide_variable = { gods_of_africa_partial_payment_amount = constant:gods_of_africa_transaction.partial_payment_ratio_denominator }
 			if = {
-				limit = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.armor } }
+				limit = { gods_of_africa_family_is_equipment = { FAMILY = gods_of_africa_demand_family } }
 				gods_of_africa_floor_equipment_amount = { AMOUNT = gods_of_africa_partial_payment_amount }
 			}
 			if = {
@@ -1716,10 +1722,8 @@ gods_of_africa_transfer_payment = {
 		set_variable = { gods_of_africa_payment_credit = gods_of_africa_payment_amount }
 		if = {
 			limit = { check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.land_equipment } }
-			set_temp_variable = { equipment_stockpile_removal_amount = gods_of_africa_payment_amount }
-			remove_infantry_equipment_from_stockpile = yes
+			send_equipment = { equipment = infantry_equipment amount = gods_of_africa_payment_amount target = event_target:africa_host }
 			event_target:africa_host = {
-				add_equipment_to_stockpile = { type = infantry_equipment amount = event_target:gods_of_africa_payment_participant.gods_of_africa_payment_credit }
 				# The maintained reserve is the same Event 012 ledger used by the
 				# need profile and settlement checks. Keep it in step with the real
 				# infantry shipment so a successful payment clears the shortage.
@@ -1728,10 +1732,8 @@ gods_of_africa_transfer_payment = {
 		}
 		else_if = {
 			limit = { check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.support_equipment } }
-			set_temp_variable = { equipment_stockpile_removal_amount = gods_of_africa_payment_amount }
-			remove_support_equipment_from_stockpile = yes
+			send_equipment = { equipment = support_equipment amount = gods_of_africa_payment_amount target = event_target:africa_host }
 			event_target:africa_host = {
-				add_equipment_to_stockpile = { type = support_equipment amount = event_target:gods_of_africa_payment_participant.gods_of_africa_payment_credit }
 				if = {
 					limit = { has_country_flag = gods_of_africa_focus_arsenal_support_unlocked }
 					add_stability = constant:gods_of_africa_defensive_effect.defensive_stability_gain
@@ -1750,11 +1752,7 @@ gods_of_africa_transfer_payment = {
 		}
 		else_if = {
 			limit = { check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.aircraft } }
-			set_temp_variable = { equipment_stockpile_removal_amount = gods_of_africa_payment_amount }
-			set_temp_variable = { gods_of_africa_payment_negative = gods_of_africa_payment_amount }
-			multiply_temp_variable = { gods_of_africa_payment_negative = -1 }
-			add_equipment_to_stockpile = { type = fighter_equipment_1 amount = var:gods_of_africa_payment_negative }
-			event_target:africa_host = { add_equipment_to_stockpile = { type = fighter_equipment_1 amount = event_target:gods_of_africa_payment_participant.gods_of_africa_payment_credit } }
+			send_equipment = { equipment = fighter_equipment_1 amount = gods_of_africa_payment_amount target = event_target:africa_host }
 		}
 		else_if = {
 			limit = { check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.fuel } }
@@ -1766,14 +1764,10 @@ gods_of_africa_transfer_payment = {
 			limit = { check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.transport } }
 			if = {
 				limit = { NOT = { has_equipment = { convoy_1 < gods_of_africa_capacity_requirement } } }
-				set_temp_variable = { equipment_stockpile_removal_amount = gods_of_africa_payment_amount }
-				remove_convoys_from_stockpile = yes
-				event_target:africa_host = { add_equipment_to_stockpile = { type = convoy_1 amount = event_target:gods_of_africa_payment_participant.gods_of_africa_payment_credit } }
+				send_equipment = { equipment = convoy_1 amount = gods_of_africa_payment_amount target = event_target:africa_host }
 			}
 			else = {
-				set_temp_variable = { equipment_stockpile_removal_amount = gods_of_africa_payment_amount }
-				remove_trains_from_stockpile = yes
-				event_target:africa_host = { add_equipment_to_stockpile = { type = train_equipment amount = event_target:gods_of_africa_payment_participant.gods_of_africa_payment_credit } }
+				send_equipment = { equipment = train_equipment amount = gods_of_africa_payment_amount target = event_target:africa_host }
 			}
 		}
 		else_if = {
@@ -1854,6 +1848,7 @@ gods_of_africa_resolve_full_compliance = {
 		limit = { gods_of_africa_demand_contract_is_current = yes }
 		set_variable = { gods_of_africa_payment_family = gods_of_africa_demand_family }
 		set_variable = { gods_of_africa_payment_amount = gods_of_africa_demand_remaining }
+		set_temp_variable = { gods_of_africa_response_paid_amount = gods_of_africa_demand_remaining }
 		gods_of_africa_transfer_payment = yes
 		if = {
 			limit = { check_variable = { gods_of_africa_payment_success > constant:gods_of_africa_value.zero } }
@@ -1861,10 +1856,20 @@ gods_of_africa_resolve_full_compliance = {
 				limit = { has_country_flag = gods_of_africa_substitute_accepted }
 				set_variable = { gods_of_africa_wrath_request = constant:gods_of_africa_wrath.substitute_magnitude }
 				set_variable = { gods_of_africa_history_kind_request = constant:gods_of_africa_history_kind.substitute }
+				gods_of_africa_capture_response_report = {
+					KIND = constant:gods_of_africa_history_kind.substitute
+					AMOUNT = gods_of_africa_response_paid_amount
+					BALANCE = constant:gods_of_africa_value.zero
+				}
 			}
 			else = {
 				set_variable = { gods_of_africa_wrath_request = constant:gods_of_africa_wrath.compliance_magnitude }
 				set_variable = { gods_of_africa_history_kind_request = constant:gods_of_africa_history_kind.compliance }
+				gods_of_africa_capture_response_report = {
+					KIND = constant:gods_of_africa_history_kind.compliance
+					AMOUNT = gods_of_africa_response_paid_amount
+					BALANCE = constant:gods_of_africa_value.zero
+				}
 			}
 			set_variable = { gods_of_africa_wrath_direction = constant:gods_of_africa_wrath.direction_decrease }
 			gods_of_africa_apply_wrath = yes
@@ -1895,6 +1900,11 @@ gods_of_africa_resolve_partial_compliance = {
 		if = {
 			limit = { check_variable = { gods_of_africa_payment_success > constant:gods_of_africa_value.zero } }
 			subtract_from_variable = { gods_of_africa_demand_remaining = gods_of_africa_paid_amount }
+			gods_of_africa_capture_response_report = {
+				KIND = constant:gods_of_africa_history_kind.partial
+				AMOUNT = gods_of_africa_paid_amount
+				BALANCE = gods_of_africa_demand_remaining
+			}
 			set_variable = { gods_of_africa_demand_status = constant:gods_of_africa_demand_status.partial }
 			set_variable = { gods_of_africa_next_partial_payment_day = global.num_days }
 			add_to_variable = { gods_of_africa_next_partial_payment_day = constant:gods_of_africa_timing.partial_payment_cooldown_days }
@@ -2257,6 +2267,21 @@ gods_of_africa_apply_punishment = {
 		}
 		set_country_flag = gods_of_africa_punishment_applied
 		set_variable = { gods_of_africa_last_punishment_day = global.num_days }
+		set_temp_variable = { gods_of_africa_punishment_pp_before = political_power }
+		set_temp_variable = { gods_of_africa_punishment_stability_before = stability }
+		set_temp_variable = { gods_of_africa_punishment_war_support_before = has_war_support }
+		set_variable = { gods_of_africa_punishment_report_population_loss = constant:gods_of_africa_value.zero }
+		save_event_target_as = gods_of_africa_punishment_participant
+		clear_variable = gods_of_africa_punishment_report_state
+		clear_variable = gods_of_africa_punishment_report_resistance_change
+		clr_country_flag = gods_of_africa_punishment_report_resistance_increased
+		clr_country_flag = gods_of_africa_punishment_report_infrastructure_targeted
+		clr_country_flag = gods_of_africa_punishment_report_factories_targeted
+		clr_country_flag = gods_of_africa_punishment_report_transport_protected
+		if = {
+			limit = { has_country_flag = gods_of_africa_transport_secured }
+			set_country_flag = gods_of_africa_punishment_report_transport_protected
+		}
 		# A catastrophe is only a full-gate outcome. Downgrade before the
 		# transaction is priced so a denied extreme route never charges the
 		# catastrophe amount and then quietly applies a lower tier.
@@ -2316,7 +2341,18 @@ gods_of_africa_apply_punishment = {
 			if = {
 				limit = { NOT = { has_country_flag = gods_of_africa_transport_secured } }
 				random_controlled_state = {
+					set_temp_variable = { gods_of_africa_resistance_before = resistance }
 					add_resistance = constant:gods_of_africa_punishment_effect.disruption_resistance_gain
+					set_temp_variable = { gods_of_africa_resistance_change = resistance }
+					subtract_from_temp_variable = { gods_of_africa_resistance_change = gods_of_africa_resistance_before }
+					if = {
+						limit = { check_variable = { gods_of_africa_resistance_change > constant:gods_of_africa_value.zero } }
+						event_target:gods_of_africa_punishment_participant = {
+							set_variable = { gods_of_africa_punishment_report_state = PREV.id }
+							set_variable = { gods_of_africa_punishment_report_resistance_change = gods_of_africa_resistance_change }
+							set_country_flag = gods_of_africa_punishment_report_resistance_increased
+						}
+					}
 				}
 			}
 		}
@@ -2338,6 +2374,10 @@ gods_of_africa_apply_punishment = {
 					meta_effect = {
 						text = { damage_building = { type = infrastructure damage = [DAMAGE] } }
 						DAMAGE = "[?gods_of_africa_building_damage|.3]"
+					}
+					event_target:gods_of_africa_punishment_participant = {
+						set_variable = { gods_of_africa_punishment_report_state = PREV.id }
+						set_country_flag = gods_of_africa_punishment_report_infrastructure_targeted
 					}
 				}
 			}
@@ -2365,6 +2405,11 @@ gods_of_africa_apply_punishment = {
 					meta_effect = {
 						text = { damage_building = { type = industrial_complex damage = [DAMAGE] } }
 						DAMAGE = "[?gods_of_africa_building_damage|.3]"
+					}
+					event_target:gods_of_africa_punishment_participant = {
+						set_variable = { gods_of_africa_punishment_report_state = PREV.id }
+						set_country_flag = gods_of_africa_punishment_report_infrastructure_targeted
+						set_country_flag = gods_of_africa_punishment_report_factories_targeted
 					}
 				}
 			}
@@ -2411,6 +2456,12 @@ gods_of_africa_apply_punishment = {
 			event_target:africa_host = { add_opinion_modifier = { target = event_target:gods_of_africa_memory_participant modifier = gods_of_africa_sanctions } }
 		}
 		set_country_flag = gods_of_africa_punishment_report_pending
+		set_variable = { gods_of_africa_last_punishment_pp_change = political_power }
+		subtract_from_variable = { gods_of_africa_last_punishment_pp_change = gods_of_africa_punishment_pp_before }
+		set_variable = { gods_of_africa_last_punishment_stability_change = stability }
+		subtract_from_variable = { gods_of_africa_last_punishment_stability_change = gods_of_africa_punishment_stability_before }
+		set_variable = { gods_of_africa_last_punishment_war_support_change = has_war_support }
+		subtract_from_variable = { gods_of_africa_last_punishment_war_support_change = gods_of_africa_punishment_war_support_before }
 		if = {
 			limit = { event_target:africa_host = { NOT = { has_country_flag = gods_of_africa_first_punishment_logged } } }
 			event_target:africa_host = { set_country_flag = gods_of_africa_first_punishment_logged }
@@ -2469,16 +2520,25 @@ gods_of_africa_apply_population_wave = {
 			gods_of_africa_extreme_gate_is_open = yes
 			NOT = { has_country_flag = gods_of_africa_population_wave_applied }
 		}
+		save_event_target_as = gods_of_africa_population_wave_participant
 		random_owned_controlled_state = {
 			set_temp_variable = { state_civilian_population_loss_requested = constant:gods_of_africa_transaction.catastrophe_population_loss }
 			set_temp_variable = { state_civilian_population_loss_minimum_remaining = constant:gods_of_africa_transaction.catastrophe_minimum_population_remaining }
 			set_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.natural_disaster }
 			set_temp_variable = { state_civilian_population_loss_log_deaths = constant:africa_value.one }
-			set_temp_variable = { state_civilian_population_loss_target_country = ROOT }
+			set_temp_variable = { state_civilian_population_loss_target_country = event_target:gods_of_africa_population_wave_participant }
 			set_temp_variable = { state_civilian_population_loss_has_target_country = constant:africa_value.one }
 			set_temp_variable = { state_civilian_population_loss_contract_supplied = constant:africa_value.one }
+			# The helper modifies caller-owned temporary outputs so its receipt
+			# survives the scripted-effect return and the following country scope.
+			set_temp_variable = { state_civilian_population_loss_applied = constant:chaos_meter_deaths.zero }
+			set_temp_variable = { state_civilian_population_loss_result = constant:chaos_meter_deaths.zero }
 			apply_exact_state_civilian_population_loss = yes
-			ROOT = { set_country_flag = gods_of_africa_population_wave_applied set_variable = { gods_of_africa_last_population_wave = state_civilian_population_loss_applied } }
+			event_target:gods_of_africa_population_wave_participant = {
+				set_country_flag = gods_of_africa_population_wave_applied
+				set_variable = { gods_of_africa_last_population_wave = state_civilian_population_loss_applied }
+				set_variable = { gods_of_africa_punishment_report_population_loss = state_civilian_population_loss_applied }
+			}
 		}
 	}
 }
@@ -2601,6 +2661,11 @@ gods_of_africa_refuse_demand = {
 		gods_of_africa_evaluate_punishment = yes
 		set_variable = { gods_of_africa_history_kind_request = constant:gods_of_africa_history_kind.refusal }
 		gods_of_africa_record_history = yes
+		gods_of_africa_capture_response_report = {
+			KIND = constant:gods_of_africa_history_kind.refusal
+			AMOUNT = constant:gods_of_africa_value.zero
+			BALANCE = gods_of_africa_demand_remaining
+		}
 		if = {
 			limit = { NOT = { has_country_flag = gods_of_africa_punishment_memory_applied } }
 			set_country_flag = gods_of_africa_punishment_memory_applied
@@ -2647,6 +2712,11 @@ gods_of_africa_fail_demand = {
 		gods_of_africa_evaluate_punishment = yes
 		set_variable = { gods_of_africa_history_kind_request = constant:gods_of_africa_history_kind.failure }
 		gods_of_africa_record_history = yes
+		gods_of_africa_capture_response_report = {
+			KIND = constant:gods_of_africa_history_kind.failure
+			AMOUNT = constant:gods_of_africa_value.zero
+			BALANCE = gods_of_africa_demand_remaining
+		}
 		if = {
 			limit = { NOT = { has_country_flag = gods_of_africa_punishment_memory_applied } }
 			set_country_flag = gods_of_africa_punishment_memory_applied
@@ -3103,6 +3173,7 @@ gods_of_africa_cancel_on_unifier_loss = {
 
 gods_of_africa_cancel_participant = {
 	gods_of_africa_withdraw_protection_package = yes
+	gods_of_africa_clear_report_receipts = yes
 	if = { limit = { has_country_flag = gods_of_africa_demand_active } remove_mission = gods_of_africa_demand_mission }
 	remove_mission = gods_of_africa_reconciliation_mission
 	if = {

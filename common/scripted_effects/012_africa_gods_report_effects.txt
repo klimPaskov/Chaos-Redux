@@ -1,0 +1,30 @@
+# Event 012 Gods response receipts.
+# Capture a response before demand cleanup, then render only that outcome.
+# These private fields never add counters to the decision categories.
+
+gods_of_africa_capture_response_report = {
+	if = {
+		limit = { has_variable = gods_of_africa_demand_family }
+		set_variable = { gods_of_africa_last_response_kind = $KIND$ }
+		set_variable = { gods_of_africa_last_response_family = gods_of_africa_demand_family }
+		set_variable = { gods_of_africa_last_response_amount = $AMOUNT$ }
+		set_variable = { gods_of_africa_last_response_balance = $BALANCE$ }
+	}
+}
+
+gods_of_africa_clear_report_receipts = {
+	clear_variable = gods_of_africa_last_response_kind
+	clear_variable = gods_of_africa_last_response_family
+	clear_variable = gods_of_africa_last_response_amount
+	clear_variable = gods_of_africa_last_response_balance
+	clear_variable = gods_of_africa_last_punishment_pp_change
+	clear_variable = gods_of_africa_last_punishment_stability_change
+	clear_variable = gods_of_africa_last_punishment_war_support_change
+	clear_variable = gods_of_africa_punishment_report_population_loss
+	clear_variable = gods_of_africa_punishment_report_state
+	clear_variable = gods_of_africa_punishment_report_resistance_change
+	clr_country_flag = gods_of_africa_punishment_report_resistance_increased
+	clr_country_flag = gods_of_africa_punishment_report_infrastructure_targeted
+	clr_country_flag = gods_of_africa_punishment_report_factories_targeted
+	clr_country_flag = gods_of_africa_punishment_report_transport_protected
+}

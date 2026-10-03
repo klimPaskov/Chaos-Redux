@@ -114,7 +114,10 @@ Native stock movement, save/reload, and DLC execution remain unobserved in the s
 ## Remaining accepted-scope gaps
 
 The accepted mobile/artillery family still needs its own automatic selection and actual artillery coverage.
-Other unresolved work includes receipt-driven response and punishment reports, weighted scenario evidence, and full owner lifecycle acceptance.
+Response and punishment reports use their latest outcome receipts, including the payment family, partial balance, native stat changes, and concrete local consequences.
+Owner-driven population loss captures the participant explicitly for exact-loss country attribution and receipts, and uses caller-initialized helper outputs.
+The report contract and its review limits are recorded in `common/scripted_effects/012_africa_gods_report_effects.md` and `012_africa_gods_response_reports_2026-10-03.md`.
+Other unresolved work includes the lifecycle audit's retention/restoration findings, weighted scenario evidence, and full native owner-loop acceptance.
 The core Gods decision/trigger flag requirements and overlay entry flags have player-facing English text in `localisation/english/012_africa_requirement_flags_l_english.yml`, including named focus prerequisites and concrete tribute-offer conditions.
 The bounded key and semantic review is recorded in `012_africa_gods_requirement_text_2026-10-03.md`; native tooltip layout remains unobserved.
 The timer/text correction and its narrow MCP trace are recorded in `docs/plans/012_africa_plans/subagent_handoffs/012_africa_gods_timer_and_text_2026-10-03.md`.
