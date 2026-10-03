@@ -97,3 +97,8 @@ The existing frozen before sources and the [probability baseline handoff](006_ev
 Broader army, supply, technology, portrait/advisor, AI priority, strategy overlap/lifecycle, and runtime evidence remain open; this gate repair is not full package completion.
 The parent source crosswalk checked all eleven TAT candidates and preserved their cost, modifier, duration, payment, reward, and numeric AI fields against the frozen before file.
 All ten new counterpart-lock tooltip keys resolve, and the exact TAT category has no remaining `capital_scope` entry; every capital check uses the fixed Kazan predicate.
+
+The weighted auditor completed its owner-patch follow-up in the linked baseline handoff and saved the exact four-case scenario set beside the immutable sources.
+Decision, mission, and focus comparisons were each attempted with real distinct before/after paths and the identical saved scenarios; all timed out after 600 seconds with no comparison artifact, scenario hash, or quantitative delta.
+The empty-state fixtures remain explicitly incomplete, and frozen helper binding was not established by the analyzer.
+The source gate repair is committed as `69386f43868f13406cded8ef7c74b4e02c49d159`; mandatory quantitative/engine evidence remains blocked by those exact service failures.

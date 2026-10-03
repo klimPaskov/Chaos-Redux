@@ -19,6 +19,8 @@ The general foreign layer remains unimplemented, and this sequencing does not au
 The returned TAT country audit's paid-depot alternate and capital-drift findings are source-integrated, with one active paid-project slot and five matching focus/project locks.
 The [parent review](subagent_handoffs/006_iw044_tat_parent_review_2026-10-03.md) records the exact contract and retained affordability assumptions.
 The probability auditor has frozen before sources and a source-only baseline handoff, but its analyzer and comparison evidence remain unresolved after MCP timeouts.
+Its same-scenario owner-patch follow-up is complete as an audit attempt: decision, mission, and focus comparisons each timed out at 600 seconds and returned no artifact.
+The TAT gate repair is committed as `69386f43868f13406cded8ef7c74b4e02c49d159`, with the exact incomplete scenario set retained for retry when the service can deliver results.
 Deliberate TAT focus priority and AI strategy/lifecycle review remain required implementation/balance work.
 
 ## Current full-objective continuation (2026-09-27)
