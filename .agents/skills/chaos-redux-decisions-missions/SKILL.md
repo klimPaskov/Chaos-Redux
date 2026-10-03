@@ -322,6 +322,14 @@ Emergency missions can be shorter only when the event story clearly justifies im
 
 Do not give every mission the same timer.
 
+### Synchronizing native mission timers
+
+`activate_mission` initializes the native `days_mission_timeout` from the static mission definition; changing a separate stored deadline does not update it.
+Immediately after activation and every accepted deadline extension, synchronize in the mission owner's country scope, guarded by the active contract, an existing deadline, and `has_active_mission`.
+Compute remaining days as `deadline - global.num_days`, then pass the signed difference `remaining_days - days_mission_timeout@mission_id` to `add_days_mission_timeout = { mission = mission_id days = var:timeout_delta }`; this can shorten or extend the native timer and is idempotent.
+Partial payments must leave the running mission and deadline intact rather than remove and reactivate the mission.
+If the deadline is already expired, use the guarded timeout resolver; the native timeout callback and any owner recovery pass must share an active-contract guard and clear it on resolution so failure cannot resolve twice.
+
 ## 10. Success, failure, and partial success
 
 Success and failure must use distinct effect logic.

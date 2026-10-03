@@ -79,12 +79,16 @@ The supplied menu-load log contains no `012_africa`, `gods_of_africa`, or `chaos
 That evidence does not exercise this demand timer or establish a globally clean build.
 The selected `.603` MCP trace returned `timed out awaiting tools/call after 600s`, with no artifact or lifecycle result.
 On the user's requested continuation, a narrower downstream retry selected only `.603` with depth 1, at most 10 nodes and 20 edges, and no refresh.
-That retry is pending at the time this tranche is prepared for commit; no result or coverage is claimed for it.
-Source-only review is not a replacement for that missing coverage.
+The retry returned `EVENT_INSPECTED_PARTIAL`, revision `e9e470262f1ea057b06851d06c768e7e69517688395c2427a2d534af5005edff`, with focused validation true and no focused blockers.
+Its complete artifact was read in 32,768-byte ranges, including the continuation to the final byte, after the large single-range response did not deliver a usable complete payload.
+The trace contains `.603`, its one option, and its terminal, with two confirmed direct edges, no focused unresolved entries, no truncation, and no expanded helpers.
+The artifact's `complete = false` and deferred helper/lifecycle analysis mean that it does not verify the native timer or the owner's recovery logic.
+Artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/016ec5284fef02f5577d2919c3689cd2da31a2fe3cbae9d60a533c561f6efd6e/b49c7ab8a66338ca3f9fdcea37ca497ffbafa1e58c3cf85a2799a3f4c3d18a18/event-trace-e9e470262f1e.json`.
 
 The full goal remains incomplete.
 The accepted tank-family requirement at `012_gods_of_africa_full_spec.md:442-446` is not met by the current motorized alias and unreachable selection branch.
 Tank capacity, need, selection, and actual tank transfers remain required, along with the unresolved visible requirements, weighted scenarios, owner lifecycle, and presentation evidence.
 
 Skills used in this tranche: `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-subagents`, and `chaos-redux-shared-git-commit`.
-No skill file was changed, and reusable native-clock guidance remains queued because the decisions skill contains concurrent edits.
+Reusable native-clock guidance was added separately to the decisions skill after the source tranche, preserving its concurrent edits.
+The exact owned hunk and reference evidence are in `012_native_mission_skill_rule_2026-10-03.md`.
