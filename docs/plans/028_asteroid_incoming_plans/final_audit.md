@@ -24,6 +24,9 @@ Losing every usable backup during the two-day lock remains an unresolved edge, a
 The crater action audit confirmed unused flag-only outcomes for reconnaissance, extraction disruption, and offensive preparation, plus a missing supplied-garrison requirement and emergency-expiry cleanup gap.
 Those mapped gameplay surfaces remain implementation work, with a bounded decision worker assigned, rather than being treated as completed source or as evidence-only gaps.
 
+The near-miss achievement rechecks both shared evolution enable states at selection time, with sixteen actual-source cases and an unchanged non-award miss body recorded in `near_miss_selection_20261003.md`.
+Native settings-toggle, achievement persistence, and no-aftermath acceptance remain unresolved.
+
 ## Implemented source surfaces
 
 The global root is `chaosx.nr28.1` with `fire_only_once = yes`, and Event 028 is registered in `global.major_events` rather than the stale repeatable-event row. The opening chain, impact resolver, recovery, triggers, achievements, decisions, category, ideas, dynamic modifiers, CXT setup, on-actions, localisation, event history/details, super-event, audio registration, and workbook row are present in the Event 028 surfaces listed in `docs/events/028_asteroid_incoming/overview.md`.

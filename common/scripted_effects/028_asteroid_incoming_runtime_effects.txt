@@ -303,6 +303,12 @@ asteroid_incoming_resolve_miss = {
 		news_event = { id = chaosx.news.96 days = 1 }
 		set_global_flag = asteroid_incoming_miss_news_sent
 	}
+	# Opening eligibility alone cannot override a later disabled evolution.
+	# Query the shared settings contract for each evolution at selection time.
+	set_temp_variable = { events_log_evolution_event_id = constant:asteroid_incoming_event.id }
+	set_temp_variable = { events_log_evolution_type = constant:asteroid_incoming_event.evolution_i_type }
+	set_temp_variable = { events_log_evolution_stage = constant:asteroid_incoming_event.evolution_i_stage }
+	set_temp_variable = { events_log_evolution_tier = constant:asteroid_incoming_event.evolution_i_tier }
 	if = {
 		limit = {
 			check_variable = {
@@ -312,6 +318,7 @@ asteroid_incoming_resolve_miss = {
 			}
 			has_global_flag = asteroid_incoming_evolution_i_eligible
 			has_global_flag = asteroid_incoming_evolution_ii_eligible
+			is_current_evolution_enabled = yes
 			NOT = { has_global_flag = asteroid_incoming_impact_recorded }
 			NOT = { has_global_flag = asteroid_incoming_fragmentation_active }
 			NOT = { has_global_flag = asteroid_incoming_dust_stage_residual }
@@ -321,7 +328,13 @@ asteroid_incoming_resolve_miss = {
 			NOT = { has_global_flag = asteroid_incoming_main_crater_registered }
 			asteroid_incoming_achievement_player_valid = yes
 		}
-		set_country_flag = asteroid_incoming_achievement_near_miss
+		set_temp_variable = { events_log_evolution_type = constant:asteroid_incoming_event.evolution_ii_type }
+		set_temp_variable = { events_log_evolution_stage = constant:asteroid_incoming_event.evolution_ii_stage }
+		set_temp_variable = { events_log_evolution_tier = constant:asteroid_incoming_event.evolution_ii_tier }
+		if = {
+			limit = { is_current_evolution_enabled = yes }
+			set_country_flag = asteroid_incoming_achievement_near_miss
+		}
 	}
 	# A miss consumes the snapshot without applying either evolution. The
 	# persistent outcome remains available to Event History, but no future
