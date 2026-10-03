@@ -1,5 +1,22 @@
 # Event026 constant-backed localisation handoff
 
+## Live startup correction, 2026-10-03
+
+Disposition: implemented source repair, with renewed live expansion pending.
+Acceptance basis: the user attributed three `Creation of dynamic token "0]" failed` startup errors to formatted variable expressions used as `localization_key` values and requested real localisation keys.
+The three getters select `black_friday_evolution_chaos_value`, `black_friday_evolution_discount_value`, and `black_friday_achievement_family_count_value`.
+Those keys contain the corresponding `[?temporary_variable|0]` expressions in the English localisation file, so formatting is performed by the localisation renderer rather than the key-token parser.
+Each getter still assigns its own temporary value from the same owning constant, with expected values 600, 75, and 5.
+The current offline Localisation reference explicitly preserves trigger temporary variables while the selected key renders, at lines 680 and 729–791, SHA-256 `1a8f72362a34b4bb653186746b9fae0b98e463205cb02f12ccf2c3d9ccd3a064`.
+The installed trigger reference permits `set_temp_variable` in any scope, at `documentation/triggers_documentation.md:7482–7501`, SHA-256 `7d27ed77dadaf3a213a4b3e2c624bf9c02dae495317abe8eee833b27c2d1de29`.
+Vanilla's `common/scripted_localisation/WUW_GER_scripted_loc.txt:689–697` assigns temporary array state before selecting the real key `oppositional_monroe_list`, SHA-256 `82233d7bb8362d933182c7da345606089a67b92adedb764c37a942e1e2f67683`.
+The HOI4 reference, source-lookup, event-render, and script-validation tools are absent from the connected tool list for this repair, so the cited sections were read directly and no MCP or live render result is claimed.
+The source checks confirm the three unique key/variable/constant bindings and their existing evolution and achievement consumers.
+No startup globals, duplicated tuning values, gameplay changes, art, or catalog wording changes are required.
+The earlier formatted-key implementation below is superseded by this literal-key repair, and the earlier render artifact remains historical structural evidence only.
+
+## Original binding evidence
+
 Disposition: implemented in source, with live display still unverified.
 
 ## Scope and result
