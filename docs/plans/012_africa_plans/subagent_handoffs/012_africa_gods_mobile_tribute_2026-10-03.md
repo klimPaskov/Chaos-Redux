@@ -73,3 +73,8 @@ Reference context and mission-removal search succeeded, but omitted source heade
 Native stock movement, live tooltips, error.log cleanliness, and full owner-loop behavior remain unconfirmed.
 The broader accepted goal still has outstanding lifecycle settlement/restoration and weighted validation work.
 This source tranche uses no simplification, but it is not full Event 012 completion.
+
+Shared-tree review subsequently found that the two added mobile constant groups lacked their required schemas.
+Commit `16664b3a4` adds integer and fixed-point schemas respectively and is a required dependency of `42bb46d6e00f28055e0caa7a7c83f8be154bddb5`.
+The source traversal did not validate that engine-facing schema, so its earlier success is not evidence that the original constant definitions were valid.
+The current definitions were reread against installed `common/script_constants/documentation.md:1–32`; native clean-log acceptance remains unconfirmed.

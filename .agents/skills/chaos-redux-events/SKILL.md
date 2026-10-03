@@ -650,6 +650,10 @@ For temporary diagnostics inside a state-scoped effect, check country flags thro
 
 Use `script_constants` for shared tuning, but remember that some duration fields reject both `constant:` and variable tokens.
 
+Before adding or extending `script_constants`, read the installed `common/script_constants/documentation.md` and `documentation/script_concept_documentation.md` (Script Constants), then inspect the existing group.
+Every new group must begin with `schema` matching its key and data kinds (`int`, `fixed_point`, or a documented complex schema); new keys in an existing group inherit and must satisfy that schema.
+A basic brace parse does not validate schema correctness.
+
 Known sensitive fields:
 
 - `set_country_flag = { days = ... }`
