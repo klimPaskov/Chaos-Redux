@@ -380,3 +380,5 @@ The Event 012 [`Gods survivor settlement`](012_africa_gods_settlement_effects.md
 The Event 012 [`Gods victor authority`](012_africa_gods_victor_effects.md) contract documents native capitulation-winner capture, permanent exemption, frozen episode/host renewal consent, withdrawal/decline, separate paid defiance, report receipts, cleanup, and boolean-helper usage.
 
 The Event 012 [`Gods demand repetition`](012_africa_gods_repetition_effects.md) contract documents caller-set type/family inputs, recent actual-contract receipts, identity replay protection, percentage scaling, cleanup, and boolean-helper usage.
+
+The private Event 012 [unique tribute contract ledger](012_africa_gods_contract_effects.md) documents caller-set closure input, immutable identity, replay consumption, issuance and outcome counts, neutral retirement, streaks, accepted reconciliation, lifecycle owners, and boolean-helper usage.

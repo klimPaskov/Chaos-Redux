@@ -968,6 +968,7 @@ africa_gods_of_africa_participant_is_current = {
 }
 
 gods_of_africa_current_demand_can_be_paid = {
+	hidden_trigger = { gods_of_africa_contract_ledger_can_close = yes }
 	gods_of_africa_demand_contract_is_current = yes
 	gods_of_africa_participant_has_capacity_for_family = yes
 }
@@ -977,6 +978,7 @@ gods_of_africa_current_demand_can_be_paid = {
 # The amount is precomputed when the contract is created, so the decision
 # surface never mutates state merely to evaluate affordability.
 gods_of_africa_partial_payment_is_affordable = {
+	hidden_trigger = { gods_of_africa_contract_ledger_can_close = yes }
 	gods_of_africa_demand_contract_is_current = yes
 	has_variable = gods_of_africa_partial_payment_amount
 	has_variable = gods_of_africa_partial_capacity_requirement
@@ -984,7 +986,7 @@ gods_of_africa_partial_payment_is_affordable = {
 	check_variable = {
 		var = gods_of_africa_partial_payment_amount
 		value = gods_of_africa_demand_remaining
-		compare = less_than
+		compare = less_than_or_equals
 	}
 	OR = {
 		NOT = { has_variable = gods_of_africa_next_partial_payment_day }

@@ -1,0 +1,61 @@
+# Event 012 immutable tribute identity and unique terminal outcome checks.
+# Closure is internal proof, so loss/archival can retire an old contract safely.
+
+gods_of_africa_contract_ledger_can_close = {
+	has_country_flag = gods_of_africa_contract_history_initialized
+	has_country_flag = gods_of_africa_contract_ledger_open
+	NOT = { has_country_flag = gods_of_africa_contract_ledger_closed }
+	has_country_flag = gods_of_africa_demand_active
+	has_variable = gods_of_africa_contract_ledger_id
+	has_variable = gods_of_africa_contract_ledger_generation
+	has_variable = gods_of_africa_contract_ledger_origin_id
+	has_variable = gods_of_africa_contract_original_family
+	has_variable = gods_of_africa_history_origin_host_id
+	has_variable = gods_of_africa_history_owner_id
+	check_variable = { gods_of_africa_history_owner_id = THIS.id }
+	check_variable = { gods_of_africa_contract_ledger_origin_id = gods_of_africa_history_origin_host_id }
+	has_variable = gods_of_africa_demand_id
+	has_variable = gods_of_africa_demand_generation
+	check_variable = { gods_of_africa_contract_ledger_id = gods_of_africa_demand_id }
+	check_variable = { gods_of_africa_contract_ledger_generation = gods_of_africa_demand_generation }
+}
+
+gods_of_africa_contract_close_kind_is_valid = {
+	OR = {
+		check_variable = { gods_of_africa_contract_close_kind = constant:gods_of_africa_contract_close.full_original }
+		check_variable = { gods_of_africa_contract_close_kind = constant:gods_of_africa_contract_close.honored_substitute }
+		check_variable = { gods_of_africa_contract_close_kind = constant:gods_of_africa_contract_close.failure }
+		check_variable = { gods_of_africa_contract_close_kind = constant:gods_of_africa_contract_close.refusal }
+		check_variable = { gods_of_africa_contract_close_kind = constant:gods_of_africa_contract_close.war_breach }
+		check_variable = { gods_of_africa_contract_close_kind = constant:gods_of_africa_contract_close.retired }
+	}
+}
+
+# Current participant COUNTRY, before economic or relationship mutations.
+gods_of_africa_contract_history_identity_is_current = {
+	has_country_flag = gods_of_africa_contract_history_initialized
+	has_variable = gods_of_africa_history_owner_id
+	has_variable = gods_of_africa_history_origin_host_id
+	check_variable = { gods_of_africa_history_owner_id = THIS.id }
+	has_event_target = africa_host
+	event_target:africa_host = { exists = yes has_variable = africa_origin_host_id }
+	check_variable = { gods_of_africa_history_origin_host_id = event_target:africa_host.africa_origin_host_id }
+}
+
+# Participant COUNTRY. Frozen native demand owner, independent of global owner.
+gods_of_africa_demand_owner_object_is_proven = {
+	has_variable = gods_of_africa_demand_host
+	has_variable = gods_of_africa_demand_host_id
+	has_variable = gods_of_africa_demand_origin_host_id
+	has_variable = gods_of_africa_demand_generation
+	has_variable = gods_of_africa_demand_id
+	check_variable = { gods_of_africa_demand_id > constant:gods_of_africa_value.zero }
+	var:gods_of_africa_demand_host = {
+		exists = yes
+		has_variable = africa_host_generation
+		has_variable = africa_origin_host_id
+		check_variable = { var = THIS.id value = PREV.gods_of_africa_demand_host_id compare = equals }
+		check_variable = { var = africa_host_generation value = PREV.gods_of_africa_demand_generation compare = equals }
+		check_variable = { var = africa_origin_host_id value = PREV.gods_of_africa_demand_origin_host_id compare = equals }
+	}
+}

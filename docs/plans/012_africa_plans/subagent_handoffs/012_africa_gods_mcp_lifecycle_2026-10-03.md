@@ -71,3 +71,26 @@ The separate victor AI handoff records its broad source discovery, unsupported F
 The source-reviewed lifecycle repair and mobile/artillery tranche are commits `61cca7dea3356bbac1304c5ca38816c502ddd068` and `42bb46d6e00f28055e0caa7a7c83f8be154bddb5`.
 Source and arithmetic review are not equivalent to native engine or full MCP acceptance.
 The user/orchestrator owns all live-game evidence.
+
+## Unique contract tranche continuation
+
+The exposed `hoi4.event_inspect` route was called with `mode = lint`, selector `chaosx.nr12.603`, `expandHelpers = false`, and depth/node/edge limits of one.
+It returned `EVENT_INSPECTED_PARTIAL`, revision `828ca59a9a1fa1a44d0bf5a12bce75e5cb65e717d2d055388d5ac1994d71fe92`, graph hash `db36826f88e04b62673db3f3908a3ef1dbcc2e27abf44c1047338abd9c5ad351`, zero blocking compact diagnostics, 2,193 aggregate issues, and 8,977 unresolved nodes.
+Whole-workspace helper projections and lifecycle passes were explicitly deferred; this result does not validate the new contract helper or native timeout behavior.
+Its 2,040,588-byte report is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/1653286b66b0781ae73d8bdf6c211242e1584c5b33f5a544ae5e0e445bfcf7cf/b2ac5c1dbc3be1ce87aa0eda4e5d1e0510ecf7affa931fe67aed6acad228b661/event-lint-828ca59a9a1f.json`.
+A manifest read through the exposed artifact template failed with `-32603: Artifact provenance manifest is unavailable`; no complete report read is claimed.
+Earlier bounded render/compare calls timed out, but the current `.603` options render returned `EVENT_RENDERED_PARTIAL` with one selected node and 42,986 omitted nodes, helpers deferred, revision `828ca59a9a1fa1a44d0bf5a12bce75e5cb65e717d2d055388d5ac1994d71fe92`, and layout hash `654edf6eb16811fd8cfe4aa57968d0a6ee4c976cf581acf2be94b238af311270`.
+Its render manifest is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/4d44514112c6b7ea0d496239c18f378e6a0c05e08de722f3a98b5d4967ff9cc5/bed0cf768576d9997c0077c466eb52ef5aae5db788d17ed1cb6d571affabd378/event-options-828ca59a9a1f-manifest.json`, and PNG checksum is `86090f918cad31f9b384e390bb36c61f720fbe46f4e41b2f3ffbc9fbe9432ce3`.
+Both the bounded manifest and PNG resource reads failed with the same unavailable provenance manifest, so no image review is claimed.
+A compare without an explicit before object returned `EVENT_COMPARISON_BASELINE_REQUIRED`; a plain revision string was rejected as an object-schema mismatch and corrected to a revision object in the follow-up.
+The audit independently received `EVENT_REVISION_NOT_CACHED` for its returned revision.
+Source audit remains separate evidence and none of these results establishes helper/native lifecycle acceptance.
+A prior `source_lookup` continuation also returned `SOURCE_REVISION_STALE` after the working source changed from `a7a4ca537fd7db7aafe71cafa01a185f64e98df93645d2c48f6a3d768dd661ac` to `fcf0d80d399a200956586d89d3c837dfbfc79db0dc5574cd21c07a2a6b5d8cb1`, so that continuation is not current-helper coverage.
+
+Native references read through the connected routes: `documentation/effects_documentation.md:2695?2712` (`clamp_variable`) and `6083?6092` (`remove_mission`), revision `2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af`.
+The latter explicitly removes a mission without invoking completion or timeout effects.
+Offline parallel reference: `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md:465?479`, revision `7713b9bcee5f3818d63aafbd45d18e812a9173a7c59ab238384b57db60db6162`, covers mission completion, timeout, and explicit activation semantics.
+
+The parse review of the Gods effect and trigger owners finds no remaining dollar-macro tokens in those files.
+The global prohibition still has five occurrences in another owner's untracked `common/scripted_effects/camp_administration_origin_effects.txt:70?74`.
+This tranche leaves that unfinished owner file out of its commit and retains the global no-parameter acceptance gap.
