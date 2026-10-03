@@ -111,9 +111,8 @@ gods_of_africa_run_owner_tick = {
 		# participant-side voluntary-aid action. This remains host-local and does
 		# not introduce a second world scan.
 		gods_of_africa_build_need_profile = yes
-		# Enforce each frozen contract deadline from the owner clock. The visible
-		# mission uses a safe maximum timeout, while this bounded participant pass
-		# resolves shorter ceremonial/emergency deadlines exactly.
+		# The native mission owns exact contract expiry. This bounded pass is a
+		# recovery check for an interrupted or missing mission timer.
 		for_each_scope_loop = {
 			array = gods_of_africa_participants
 			if = {
@@ -1603,6 +1602,7 @@ gods_of_africa_create_demand_contract = {
 				gods_of_africa_set_payment_capacity_requirement = yes
 				gods_of_africa_build_substitute_set = yes
 				activate_mission = gods_of_africa_demand_mission
+				gods_of_africa_sync_demand_mission_timeout = yes
 			country_event = { id = chaosx.nr12.603 }
 		}
 		if = {
@@ -1966,12 +1966,39 @@ gods_of_africa_reject_substitute = {
 	}
 }
 
+# COUNTRY scope on a participant. Match the native timer to the frozen
+# contract deadline without resetting the mission or its outcome receipts.
+gods_of_africa_sync_demand_mission_timeout = {
+	if = {
+		limit = {
+			gods_of_africa_participant_has_active_demand = yes
+			has_active_mission = gods_of_africa_demand_mission
+			has_variable = gods_of_africa_demand_deadline
+		}
+		set_temp_variable = { gods_of_africa_mission_days_remaining = gods_of_africa_demand_deadline }
+		subtract_from_temp_variable = { gods_of_africa_mission_days_remaining = global.num_days }
+		if = {
+			limit = { check_variable = { gods_of_africa_mission_days_remaining < constant:gods_of_africa_value.one } }
+			gods_of_africa_fail_demand = yes
+		}
+		else = {
+			set_temp_variable = { gods_of_africa_mission_timeout_adjustment = gods_of_africa_mission_days_remaining }
+			subtract_from_temp_variable = { gods_of_africa_mission_timeout_adjustment = days_mission_timeout@gods_of_africa_demand_mission }
+			add_days_mission_timeout = {
+				mission = gods_of_africa_demand_mission
+				days = var:gods_of_africa_mission_timeout_adjustment
+			}
+		}
+	}
+}
+
 gods_of_africa_request_extension = {
 	if = {
 		limit = { gods_of_africa_participant_can_request_extension = yes }
 		set_country_flag = gods_of_africa_extension_used
 		set_variable = { gods_of_africa_demand_status = constant:gods_of_africa_demand_status.extended }
 		add_to_variable = { gods_of_africa_demand_deadline = constant:gods_of_africa_timing.negotiation_extension_days }
+		gods_of_africa_sync_demand_mission_timeout = yes
 		set_variable = { gods_of_africa_history_kind_request = constant:gods_of_africa_history_kind.partial }
 		gods_of_africa_record_history = yes
 		set_variable = { gods_of_africa_wrath_request = constant:gods_of_africa_wrath.negotiation_magnitude }

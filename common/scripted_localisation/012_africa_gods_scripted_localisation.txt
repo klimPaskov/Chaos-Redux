@@ -66,6 +66,54 @@ defined_text = {
 	text = { trigger = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.territory } } localization_key = gods_of_africa_family_territory }
 	text = { trigger = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.alliance_access } } localization_key = gods_of_africa_family_alliance_access }
 	text = { trigger = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.emergency_relief } } localization_key = gods_of_africa_family_emergency_relief }
+	text = { trigger = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.support_equipment } } localization_key = gods_of_africa_family_support_equipment }
+	text = { localization_key = gods_of_africa_family_unknown }
+}
+
+# Match the voluntary-aid cost to the effect's equipment-first selection.
+# This is evaluated in participant scope before the payment is made.
+defined_text = {
+	name = GetGodsOfAfricaVoluntaryAidCost
+	text = {
+		trigger = {
+			event_target:africa_host = { check_variable = { gods_of_africa_need_land_equipment > constant:gods_of_africa_value.zero } }
+			NOT = { has_equipment = { infantry_equipment < constant:gods_of_africa_transaction.voluntary_aid_equipment_capacity } }
+		}
+		localization_key = gods_of_africa_voluntary_aid_equipment_cost
+	}
+	text = {
+		trigger = {
+			event_target:africa_host = { check_variable = { gods_of_africa_need_fuel > constant:gods_of_africa_value.zero } }
+			NOT = { has_fuel < constant:gods_of_africa_transaction.voluntary_aid_fuel_capacity }
+		}
+		localization_key = gods_of_africa_voluntary_aid_fuel_cost
+	}
+	text = { localization_key = gods_of_africa_voluntary_aid_unavailable_cost }
+}
+
+defined_text = {
+	name = GetGodsOfAfricaVoluntaryAidCostBlocked
+	text = {
+		trigger = {
+			event_target:africa_host = { check_variable = { gods_of_africa_need_land_equipment > constant:gods_of_africa_value.zero } }
+			NOT = { has_equipment = { infantry_equipment < constant:gods_of_africa_transaction.voluntary_aid_equipment_capacity } }
+		}
+		localization_key = gods_of_africa_voluntary_aid_equipment_cost_blocked
+	}
+	text = {
+		trigger = {
+			event_target:africa_host = { check_variable = { gods_of_africa_need_fuel > constant:gods_of_africa_value.zero } }
+			NOT = { has_fuel < constant:gods_of_africa_transaction.voluntary_aid_fuel_capacity }
+		}
+		localization_key = gods_of_africa_voluntary_aid_fuel_cost_blocked
+	}
+	text = { localization_key = gods_of_africa_voluntary_aid_unavailable_cost }
+}
+
+defined_text = {
+	name = GetGodsOfAfricaLastAidFamilyName
+	text = { trigger = { check_variable = { gods_of_africa_last_aid_family = constant:gods_of_africa_demand_family.land_equipment } } localization_key = gods_of_africa_family_land_equipment }
+	text = { trigger = { check_variable = { gods_of_africa_last_aid_family = constant:gods_of_africa_demand_family.fuel } } localization_key = gods_of_africa_family_fuel }
 	text = { localization_key = gods_of_africa_family_unknown }
 }
 
@@ -119,9 +167,13 @@ defined_text = {
 		localization_key = gods_of_africa_icon_fuel
 	}
 	text = {
-		trigger = { check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.transport } }
-		localization_key = gods_of_africa_icon_transport
+		trigger = {
+			check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.transport }
+			NOT = { has_equipment = { convoy_1 < gods_of_africa_capacity_requirement } }
+		}
+		localization_key = gods_of_africa_icon_convoy
 	}
+	text = { trigger = { check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.transport } } localization_key = gods_of_africa_icon_transport }
 	text = {
 		trigger = { check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.support_equipment } }
 		localization_key = gods_of_africa_icon_support
@@ -161,9 +213,13 @@ defined_text = {
 		localization_key = gods_of_africa_icon_fuel
 	}
 	text = {
-		trigger = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.transport } }
-		localization_key = gods_of_africa_icon_transport
+		trigger = {
+			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.transport }
+			NOT = { has_equipment = { convoy_1 < gods_of_africa_partial_capacity_requirement } }
+		}
+		localization_key = gods_of_africa_icon_convoy
 	}
+	text = { trigger = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.transport } } localization_key = gods_of_africa_icon_transport }
 	text = {
 		trigger = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.support_equipment } }
 		localization_key = gods_of_africa_icon_support
@@ -203,9 +259,13 @@ defined_text = {
 		localization_key = gods_of_africa_icon_fuel
 	}
 	text = {
-		trigger = { check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.transport } }
-		localization_key = gods_of_africa_icon_transport
+		trigger = {
+			check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.transport }
+			NOT = { has_equipment = { convoy_1 < gods_of_africa_substitute_capacity_requirement } }
+		}
+		localization_key = gods_of_africa_icon_convoy
 	}
+	text = { trigger = { check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.transport } } localization_key = gods_of_africa_icon_transport }
 	text = {
 		trigger = { check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.support_equipment } }
 		localization_key = gods_of_africa_icon_support
@@ -287,6 +347,7 @@ defined_text = {
 	text = { trigger = { OR = { check_variable = { gods_of_africa_substitute_slot_1_family = constant:gods_of_africa_demand_family.mobile_artillery } check_variable = { gods_of_africa_substitute_slot_1_family = constant:gods_of_africa_demand_family.armor } } } localization_key = gods_of_africa_icon_motorized }
 	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_1_family = constant:gods_of_africa_demand_family.aircraft } } localization_key = gods_of_africa_icon_aircraft }
 	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_1_family = constant:gods_of_africa_demand_family.fuel } } localization_key = gods_of_africa_icon_fuel }
+	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_1_family = constant:gods_of_africa_demand_family.transport } NOT = { has_equipment = { convoy_1 < gods_of_africa_substitute_slot_1_capacity_requirement } } } localization_key = gods_of_africa_icon_convoy }
 	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_1_family = constant:gods_of_africa_demand_family.transport } } localization_key = gods_of_africa_icon_transport }
 	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_1_family = constant:gods_of_africa_demand_family.support_equipment } } localization_key = gods_of_africa_icon_support }
 	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_1_family = constant:gods_of_africa_demand_family.manpower } } localization_key = gods_of_africa_icon_manpower }
@@ -300,6 +361,7 @@ defined_text = {
 	text = { trigger = { OR = { check_variable = { gods_of_africa_substitute_slot_2_family = constant:gods_of_africa_demand_family.mobile_artillery } check_variable = { gods_of_africa_substitute_slot_2_family = constant:gods_of_africa_demand_family.armor } } } localization_key = gods_of_africa_icon_motorized }
 	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_2_family = constant:gods_of_africa_demand_family.aircraft } } localization_key = gods_of_africa_icon_aircraft }
 	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_2_family = constant:gods_of_africa_demand_family.fuel } } localization_key = gods_of_africa_icon_fuel }
+	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_2_family = constant:gods_of_africa_demand_family.transport } NOT = { has_equipment = { convoy_1 < gods_of_africa_substitute_slot_2_capacity_requirement } } } localization_key = gods_of_africa_icon_convoy }
 	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_2_family = constant:gods_of_africa_demand_family.transport } } localization_key = gods_of_africa_icon_transport }
 	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_2_family = constant:gods_of_africa_demand_family.support_equipment } } localization_key = gods_of_africa_icon_support }
 	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_2_family = constant:gods_of_africa_demand_family.manpower } } localization_key = gods_of_africa_icon_manpower }
@@ -313,6 +375,7 @@ defined_text = {
 	text = { trigger = { OR = { check_variable = { gods_of_africa_substitute_slot_3_family = constant:gods_of_africa_demand_family.mobile_artillery } check_variable = { gods_of_africa_substitute_slot_3_family = constant:gods_of_africa_demand_family.armor } } } localization_key = gods_of_africa_icon_motorized }
 	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_3_family = constant:gods_of_africa_demand_family.aircraft } } localization_key = gods_of_africa_icon_aircraft }
 	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_3_family = constant:gods_of_africa_demand_family.fuel } } localization_key = gods_of_africa_icon_fuel }
+	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_3_family = constant:gods_of_africa_demand_family.transport } NOT = { has_equipment = { convoy_1 < gods_of_africa_substitute_slot_3_capacity_requirement } } } localization_key = gods_of_africa_icon_convoy }
 	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_3_family = constant:gods_of_africa_demand_family.transport } } localization_key = gods_of_africa_icon_transport }
 	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_3_family = constant:gods_of_africa_demand_family.support_equipment } } localization_key = gods_of_africa_icon_support }
 	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_3_family = constant:gods_of_africa_demand_family.manpower } } localization_key = gods_of_africa_icon_manpower }
