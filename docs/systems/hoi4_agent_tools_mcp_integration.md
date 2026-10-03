@@ -47,6 +47,15 @@ Call `hoi4.reference_context` for the work surface, then `hoi4.reference_search`
 
 Check the connected tool list and live schemas before using any route. Domain-specific inspect, render, compare, and declared scenarios remain necessary for implementation evidence; reference retrieval does not replace them.
 
+When supported by the live schema, use `source_lookup` with `view = structure` and a bounded `keyPath` to inspect one nested source block.
+Repeated keys require their zero-based `occurrence`; structural continuation uses `nextChildOffset` as `childOffset` with the same query settings and `expectedRevision`.
+Use definition-only event and scripted-helper reads when consumers are not needed.
+
+When exposed, `hoi4.script_validate` checks an effect or trigger body under a declared scope using installed native-command documentation.
+Supply external scope bindings only when their types are known.
+A true result covers only `checksPerformed`; `valid = null`, unresolved helpers, unchecked argument blocks, and omitted findings require further source inspection.
+These checks do not establish parameter semantics or game execution.
+
 ## Writes and recovery
 
 Domain rewrites validate the complete proposal, generate review evidence, apply through the internal transaction journal, re-index and post-validate the result, and retain exact-byte recovery data. A blocked proposal does not mutate source. Recovery is automatic when a write or post-validation fails; intentional reversal of a successful edit is a new authorized source change (normally through Git), because the public MCP surface does not expose caller-managed transaction, apply, or rollback tools.
