@@ -291,13 +291,21 @@ A manual force bypasses only cluster-only gates, checks the equivalent event-sys
 
 ## Pacing, cooldown, and history
 
-Each successful cluster activation applies one aggregate event-count and repeatable-recovery update, plus one cluster cooldown update for the complete batch. A later Major member can reset major state and the timer at its actual dispatch.
+Each successful cluster activation applies one aggregate event-count and repeatable-recovery update, plus one cluster cooldown update for the complete batch.
+A Natural Disasters queue containing prevalidated Acid Rain uses effective Major pacing at launch.
+Its delayed Acid Rain member reads a country-owned batch receipt and does not reset Major pacing again.
+Other delayed Major members retain their ordinary dispatch behavior.
 
 Member count does not multiply either update.
 
-Repeatable and one-time clusters count once for global event totals and repeatable-event recovery. A batch whose first dispatched member is Major takes Major pacing immediately. Other batches start with Minor pacing.
+Repeatable and one-time clusters count once for global event totals and repeatable-event recovery.
+A batch whose first dispatched member is Major takes Major pacing immediately.
+A Natural Disasters batch containing selected Acid Rain also takes Major pacing at launch.
+Other batches start with Minor pacing.
 
-If a later member actually dispatches as Major, that firing resets the major-event weights, the minor-since-major count, and the event timer. It does not add another global event count or another repeatable-event recovery update. A member that fails its delayed event-system check does not cause the reset.
+If a later member dispatches as Major without the matching Acid Rain launch receipt, that firing resets the major-event weights, the minor-since-major count, and the event timer.
+It does not add another global event count or another repeatable-event recovery update.
+A skipped Acid Rain member releases its reservation, and batch cleanup removes its receipt without rewinding committed launch history.
 
 Random Stuff has already received the opening minor event's pacing update. Its bulk members add no event count or repeatable recovery, while any Major draw that actually dispatches resets major-event weights and the timer.
 
@@ -333,7 +341,7 @@ The v2 fixed catalogue is reproduced exactly below so that cluster IDs, names, p
 | 2 | Liberations | Liberation shocks create independent countries, break subjects and unions apart, and connect newly freed states through wider liberation crises. | 5, 6, 6, 6, 63 | Severe, Low, Medium, High, Medium | Minor Repeatable | 1 | In progress |
 | 3 | Diplomacy | International relations destabilize through diplomatic crises, faction pressure, treaties, strategic alignment, aggressive posturing, and intervention. | 8, 17, 36, 59 | Medium, Medium, High, High | Minor Repeatable | 1 | In progress |
 | 4 | Peace | Peace shocks reduce or reverse conflict through settlements, ceasefires, demobilization, exhaustion, negotiations, and forced returns toward peacetime. | 9, 9, 9, 9, 61 | Low, Low, Medium, High, High | Minor Repeatable | 1 | In progress |
-| 5 | Natural Disasters | Natural and environmental catastrophes strike states or regions through five distinct Natural Disasters slots, followed by optional Acid Rain and Heat Wave crises. Acid Rain resets major-event weights if its queued event actually fires. | 13, 13, 13, 13, 13, 33, 51 | Low, Low, Low, Low, Medium, Severe, High | Minor Repeatable | 1 | In progress |
+| 5 | Natural Disasters | Natural and environmental catastrophes strike states or regions through five distinct Natural Disasters slots, followed by optional Acid Rain and Heat Wave crises. A validated queue containing Acid Rain commits Major pacing at launch. | 13, 13, 13, 13, 13, 33, 51 | Low, Low, Low, Low, Medium, Severe, High | Minor Repeatable | 1 | In progress |
 | 6 | Formables | Countries revive, construct, or transform into major historical, religious, imperial, or alternative political formations. | 3, 12, 38, 48 | High, Severe, High, Medium | Minor Repeatable | 3 | In progress |
 | 7 | Positive Economy | Beneficial economic shocks create sudden growth, wealth, industry, infrastructure, construction, cheaper activity, or profitable underground markets. | 18, 26, 29, 34, 55, 57, 58 | Medium, Medium, Medium, Low, Medium, High, Medium | Minor Repeatable | 1 | In progress |
 | 8 | Intelligence | Espionage, leaks, investigations, covert information, and intelligence failures expose or manipulate states through hidden information. | 39, 52 | Medium, Low | Minor Fire-Once | 1 | New |
@@ -384,7 +392,7 @@ It retains the supplied v2 matrix outside the explicitly revised Wars and Natura
 | 5 | Natural Disasters | 3 | 13 | Natural Disasters | Low | Logical Natural Disasters slot 3 of 5. |
 | 5 | Natural Disasters | 4 | 13 | Natural Disasters | Low | Logical Natural Disasters slot 4 of 5. |
 | 5 | Natural Disasters | 5 | 13 | Natural Disasters | Medium | Logical Natural Disasters slot 5 of 5. |
-| 5 | Natural Disasters | 6 | 33 | Acid Rain | Severe | Optional Severe member. An actual dispatch resets major-event weights. |
+| 5 | Natural Disasters | 6 | 33 | Acid Rain | Severe | Optional Severe member. A selected queue commits Major pacing once at launch. |
 | 5 | Natural Disasters | 7 | 51 | Heat Wave | High | Optional High member after Acid Rain. |
 | 6 | Formables | 1 | 3 | The Holy Realm | High |  |
 | 6 | Formables | 2 | 12 | Africa Is One | Severe |  |
@@ -440,7 +448,11 @@ If several cluster rolls succeed, winner selection is uniform across the success
 
 The repeated slots remain separate within their cluster and increase that event's trigger-specific chance through the cluster multiplicity rule.
 
-Acid Rain is an optional Severe member from Gathering Storm onward. Its tier-aware participation stays subject to the cluster cap. A prepared queue reserves Event 33 against competing dispatches, while the major reset waits for its actual firing. If the queued event becomes invalid, the reservation is released without a major reset.
+Acid Rain is an optional Severe member from Gathering Storm onward.
+Its tier-aware participation stays subject to the cluster cap.
+A prepared queue reserves Event 33 against competing dispatches and commits effective Major pacing once at successful launch.
+The delayed member records its firing and history without a second reset.
+If it becomes invalid, the reservation and batch receipt are cleaned up without rewinding launch history.
 
 ### Retained memberless runtime cluster
 

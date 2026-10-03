@@ -894,8 +894,26 @@ def catalog_cluster_contract(repo_root: Path) -> dict[str, object]:
     ]
     assert registered_rows == expected_registered_rows
     assert "natural_disasters_cascade_" not in natural_registry
-    assert cluster_effects.count("event_cluster_prepare_acid_rain_major_contract = yes") == 1
-    assert "set_global_flag = acid_rain_cluster_major_pacing_pending" in cluster_effects
+    assert logic_effects.count("event_cluster_get_effective_pacing_type = yes") == 1
+    effective_pacing = cluster_effects.split("event_cluster_get_effective_pacing_type = {", 1)[1].split("\n}\n", 1)[0]
+    assert "temp_event_cluster_firing_order_event_id_entries^event_cluster_pacing_row_index = constant:acid_rain_event.id" in effective_pacing
+    assert "event_cluster_effective_pacing_type = constant:event_cluster_type.major" in effective_pacing
+    assert "constant:event_cluster_id.natural_disasters" in effective_pacing
+    cluster_pacing = logic_effects.split("on_event_cluster_global_pacing_update = {", 1)[1].split("\n}\n", 1)[0]
+    pacing_call_position = cluster_pacing.index("event_cluster_get_effective_pacing_type = yes")
+    assert cluster_pacing.index("set_temp_variable = { event_cluster_effective_pacing_type = constant:event_cluster_type.repeatable }") < pacing_call_position
+    assert cluster_pacing.index("set_temp_variable = { event_cluster_acid_rain_pacing_row_index = constant:acid_rain_runtime.negative_one }") < pacing_call_position
+    assert cluster_pacing.count("on_major_event_global_pacing_update = yes") == 1
+    assert cluster_pacing.count("on_minor_event_global_pacing_update = yes") == 1
+    pacing_receipt = "acid_rain_cluster_pacing_type_@var:event_cluster_pending_batch_id"
+    assert f"has_variable = {pacing_receipt}" in cluster_pacing
+    assert f"set_variable = {{ {pacing_receipt} = constant:event_cluster_type.major }}" in cluster_pacing
+    major_handler = logic_effects.split("on_major_event_fired = {", 1)[1].split("\n}\n", 1)[0]
+    assert "check_variable = { event_id = constant:acid_rain_event.id }" in major_handler
+    assert f"has_variable = {pacing_receipt}" in major_handler
+    batch_finalize = cluster_effects.split("event_cluster_finalize_automatic_batch = {", 1)[1].split("\n}\n", 1)[0]
+    assert f"clear_variable = {pacing_receipt}" in batch_finalize
+    assert "clear_variable = acid_rain_cluster_pacing_type_@var:event_cluster_pacing_cleanup_batch_id" in cluster_effects
     assert "set_global_flag = acid_rain_cluster_reserved" in cluster_effects
     assert logic_effects.count(
         "add_to_array = { global.major_events = constant:acid_rain_event.id }"

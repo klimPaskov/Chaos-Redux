@@ -1126,28 +1126,38 @@ reset_major_event_pacing_state = {
 }
 
 on_event_cluster_global_pacing_update = {
+	set_temp_variable = { event_cluster_effective_pacing_type = constant:event_cluster_type.repeatable }
+	set_temp_variable = { event_cluster_acid_rain_pacing_row_index = constant:acid_rain_runtime.negative_one }
+	event_cluster_get_effective_pacing_type = yes
+	# A delayed Acid Rain row retains a country/batch receipt across reloads.
+	# An already committed batch never redraws the shared timer a second time.
 	if = {
-		limit = { has_country_flag = event_cluster_initial_major_dispatched }
-		clr_country_flag = event_cluster_initial_major_dispatched
-		on_major_event_global_pacing_update = yes
-	}
-	else = {
-		set_temp_variable = { event_cluster_type_value = constant:event_cluster_type.repeatable }
-		get_event_cluster_type = yes
+		limit = {
+			NOT = {
+				AND = {
+					has_variable = acid_rain_cluster_pacing_type_@var:event_cluster_pending_batch_id
+					check_variable = { var = acid_rain_cluster_pacing_type_@var:event_cluster_pending_batch_id value = constant:event_cluster_type.major compare = equals }
+				}
+			}
+		}
 		if = {
 			limit = {
-				check_variable = {
-					var = event_cluster_type_value
-					value = constant:event_cluster_type.major
-					compare = equals
+				OR = {
+					has_country_flag = event_cluster_initial_major_dispatched
+					check_variable = { var = event_cluster_effective_pacing_type value = constant:event_cluster_type.major compare = equals }
 				}
 			}
 			on_major_event_global_pacing_update = yes
+			if = {
+				limit = { check_variable = { var = event_cluster_acid_rain_pacing_row_index value = constant:acid_rain_runtime.first_array_index compare = greater_than } }
+				set_variable = { acid_rain_cluster_pacing_type_@var:event_cluster_pending_batch_id = constant:event_cluster_type.major }
+			}
 		}
 		else = {
 			on_minor_event_global_pacing_update = yes
 		}
 	}
+	clr_country_flag = event_cluster_initial_major_dispatched
 }
 
 # Handler for fire-once events
@@ -1254,7 +1264,18 @@ on_major_event_fired = {
 			set_country_flag = event_cluster_initial_major_dispatched
 		}
 		else = {
-			reset_major_event_pacing_state = yes
+			if = {
+				limit = {
+					NOT = {
+						AND = {
+							check_variable = { event_id = constant:acid_rain_event.id }
+							has_variable = acid_rain_cluster_pacing_type_@var:event_cluster_pending_batch_id
+							check_variable = { var = acid_rain_cluster_pacing_type_@var:event_cluster_pending_batch_id value = constant:event_cluster_type.major compare = equals }
+						}
+					}
+				}
+				reset_major_event_pacing_state = yes
+			}
 		}
 	}
 	else = {

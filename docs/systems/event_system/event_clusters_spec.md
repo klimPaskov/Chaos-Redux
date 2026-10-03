@@ -372,11 +372,18 @@ A manual cluster force transitions from selected cluster to cluster-only gate by
 
 ## 6. Pacing, cooldown, and history
 
-A successful cluster activation applies one aggregate event-count and repeatable-recovery update, plus one cluster cooldown update for the complete batch. A later Major member can reset major state and the timer at its actual dispatch.
+A successful cluster activation applies one aggregate event-count and repeatable-recovery update, plus one cluster cooldown update for the complete batch.
+Under the user's Event 033 implementation goal and its Part 7 contract, a validated Natural Disasters queue containing Acid Rain commits effective Major pacing once at launch.
+A country-owned receipt keyed to the batch suppresses a second reset at that delayed Acid Rain dispatch and is removed at batch finalization or queue cleanup.
+This accepted Event 033 exception does not promote the unrelated unresolved contract claims listed above.
 
 The number of member rows that dispatch does not multiply the aggregate event count, repeatable recovery update, or cluster cooldown.
 
-The cluster pacing path counts a repeatable or one-time cluster once for global event totals and repeatable-event recovery. A Major trigger selects Major pacing after synchronous dispatch. A later Major member resets major-event weights, the minor-since-major count, and the event timer when it actually dispatches, without adding another global event count or repeatable recovery update. A delayed member that is skipped does not reset major weighting.
+The cluster pacing path counts a repeatable or one-time cluster once for global event totals and repeatable-event recovery.
+A Major trigger selects Major pacing after synchronous dispatch.
+A selected Acid Rain row makes its validated Natural Disasters queue Major-paced even when Event 13 is the trigger.
+Other later Major members reset major-event weights, the minor-since-major count, and the timer at dispatch without another global event count or repeatable recovery update.
+A skipped Acid Rain member does not rewind its queue's committed launch pacing.
 
 Random Stuff retains the opening minor event's single global pacing update. A Major event actually dispatched in its bulk batch resets major weighting and the timer without adding another global count.
 
