@@ -389,7 +389,7 @@ For map buildings, the profile's footprint budget is a hard runtime gate. The de
 
 The reusable pilot runner treats `building` and `static_building` as static routes, prepares their `Image_0`/`Image_1`/`Image_2` texture sources, and never sends them through humanoid rig or action work. A building job without a named installed vanilla reference is rejected before Blender preparation.
 
-For static map-building materials, use the shader from the installed vanilla building consumer. With the current vanilla surface this is `PdxMeshAdvancedSnow`. The GFX `meshsettings.name` must equal the actual exported mesh object name, such as `Mesh_0.001`. Provider labels, job slugs, and guessed names are not accepted. Verify packed PDX normal and specular channel statistics before synchronizing runtime DDS files.
+For static map-building materials, use the shader from the installed vanilla building consumer. With the current vanilla surface this is `PdxMeshAdvancedSnow`. Verify packed PDX normal and specular channel statistics before synchronizing runtime DDS files.
 
 Take the skeleton from the route fixed in `Route selection and component completion`, and hold the rig-map, mechanical-pivot, deformation-review, and humanoid-armature rejection requirements to `Live Blender authoring session`.
 
@@ -506,6 +506,8 @@ When an accepted static-building silhouette would exceed the PDX per-stream vert
 A skeletal export that would exceed the same per-stream envelope uses `partition_skeletal_mesh_export_batches` on the hashed skeletal checkpoint after the export coordinate checkpoint, keeping the exact rig, meshes, materials, image consumers, and retention while emitting bounded material-backed PDX mesh streams under the same 65,535 vertex and triangle-index limits.
 
 For every output, retain the export log and reimport or parse the actual `.mesh` or `.anim` bytes through the locked stack, saving the proof scene or parser report, measured geometry/action facts, and any warnings. If the verified stack cannot re-import or parse that format, record an explicit `required installation/verification` or `blocked` result. A Blender viewport, provider preview, file existence, or plausible filename is not reimport evidence. Do not silently ignore exporter warnings, missing actions, unsupported material channels, or an absent parser.
+
+Before final runtime wiring for every custom model consumer, including articulated units, decode or reimport the selected actual `.mesh` bytes and compare each `pdxmesh` `meshsettings.name` and `index` against the decoded object-node names and material-stream names and indices, then verify the shader and texture references. Provider labels, job slugs, prior-candidate names, file existence, and successful `.mesh`/`.anim`/DDS decoding alone do not prove material binding. Retain the byte identity and binding comparison in the runtime handoff, and repeat the check when the selected runtime mesh changes. The parent may perform this read-only decoding and binding review without reopening model production.
 
 `promote_accepted_reimport` promotes one hash-bound accepted reimport proof with metadata-only working approval: it requires the complete receipt, the immutable source `.blend`/`.mesh`/`.anim` hashes, one exact rig and 1-512 exact meshes, and a new sibling checkpoint, and it preserves geometry, materials, weights, bones, actions, and scale through save and reopen.
 
