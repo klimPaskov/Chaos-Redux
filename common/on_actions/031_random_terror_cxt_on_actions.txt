@@ -2,7 +2,8 @@
 # CHAOS REDUX - EVENT 031 CXT REGISTRATION HOOKS
 # ============================================================================
 # Startup registers through one bounded existing-country scope. The daily
-# fallback repairs initialized test saves without adding a world iteration.
+# fallback registers pending content for manual application without adding
+# a world iteration or applying package grants.
 # ============================================================================
 
 on_actions = {
@@ -21,8 +22,8 @@ on_actions = {
 				limit = { has_country_flag = chaosx_test_country_initialized }
 				random_terror_register_cxt_test_content = yes
 				if = {
-					limit = { check_variable = { var = chaosx_test_country_extension_registration_added value = 1 compare = greater_than } }
-					chaosx_test_country_sync_registered_content = yes
+					limit = { check_variable = { chaosx_test_country_extension_registration_added > constant:random_terror_value.zero } }
+					set_country_flag = chaosx_test_country_registered_sync_pending
 				}
 			}
 		}
