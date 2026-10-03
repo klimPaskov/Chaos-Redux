@@ -473,6 +473,18 @@ When auditing event-created country packages, verify the whole playable-country 
 #### Country activation and ROOT
 
 Entering another country scope does not rebind ROOT.
+Capture and annex callbacks retain their native ROOT: `on_annex` has the winner as ROOT and the annexed country as FROM, while `on_state_control_changed` has the new controller as ROOT, the old controller as FROM, and the changed state as FROM.FROM.
+Trace each callback-to-helper scope chain before changing a receipt read.
+When a country helper enters its exact source-state pointer, PREV there is the calling project owner, so read that owner's receipt through PREV rather than the callback's ROOT.
+Within a state's stored-owner or holder country scope, return explicitly to the state through PREV for state flags.
+PREV depends on the actual nesting, and ROOT remains valid wherever the contract explicitly requires it.
+
+Require matching actor/state nonce mirrors and exact source-state identity before closing a receipt or applying its accounting.
+Use actor-owned persistent state pointers for asynchronous local projects and revalidate site identity and current holder at resolution.
+Cleanup for a nonexistent or dead actor must not clear another living actor's global selection.
+Partition recorded-owner and physical-holder accounting by the state disposition so each amount is debited and credited once even when both pointers identify the same country.
+Review matching and stale nonces, distinct and identical owner/holder identities, repeated closure, and dead-actor cleanup along the exact source call chains.
+
 When setup helpers require the recipient country as ROOT, invoke them from a hidden triggered-only country event received by that country; regular event targets carry through events fired by the originating effect chain.
 Give a dormant tag owned land and a valid capital before entering capital-based setup or spawning units; use runtime meta construction when its TAG scope must be deferred until activation.
 For a player-transfer bootstrap, queue the delayed recipient event before `change_tag_from` and make player transfer the final effect in that country block, so receiver scheduling does not reuse an invalidated country scope.
