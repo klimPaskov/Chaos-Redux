@@ -45,7 +45,7 @@ The first narrow event trace on `chaosx.nr21.2` timed out after 600 seconds.
 The required narrower retry on `chaosx.nr21.11`, depth one and two nodes, also timed out after 600 seconds with no artifact.
 Current MCP event coverage is unresolved under that route gap, and focused trace coverage cannot prove helper or lifecycle completeness.
 The architect's first source review accepted temporary storage and stale-target safety but raised M1.
-The follow-up review of its canonical-host correction has been requested and remains pending.
+The independent follow-up read the corrected selector from commit `8fc6276c7fe4a7ea772a959069b3482d00902d45` and passed its bounded canonical-host, registration, caller-storage, and stale-target source contract.
 The architect also found two unrelated temporary-output issues in the unfinished ledger tranche, which are not published with this metadata repair.
 
 ## Remaining goal work
