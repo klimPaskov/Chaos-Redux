@@ -3695,8 +3695,12 @@ natural_disaster_configure_scheduled_state = {
 		clr_state_flag = natural_disaster_event012_weaponisation_pending
 		clear_variable = natural_disaster_event012_weaponisation_sequence_id
 	}
+	# Display date only; the delayed job queue keeps its own day counts.
+	set_temp_variable = { natural_disaster_date_offset = natural_disaster_schedule_delay }
+	multiply_temp_variable = { natural_disaster_date_offset = constant:natural_disaster_date.hours_per_day }
+	divide_temp_variable = { natural_disaster_date_offset = constant:natural_disaster_date.hours_per_date_unit }
 	set_variable = { natural_disaster_schedule_date = global.date }
-	add_to_variable = { natural_disaster_schedule_date = natural_disaster_schedule_delay }
+	add_to_variable = { natural_disaster_schedule_date = natural_disaster_date_offset }
 	set_variable = { natural_disaster_card_state = constant:natural_disaster_card_state.warning }
 	set_variable = { natural_disaster_phase = constant:natural_disaster_phase.warning }
 	set_variable = { natural_disaster_preparation_score = 0 }
@@ -3800,8 +3804,11 @@ natural_disaster_configure_repeated_impact = {
 	set_variable = { natural_disaster_repeat_recovery_scale = natural_disaster_call_recovery_scale }
 	set_variable = { natural_disaster_repeat_supply_scale = natural_disaster_call_supply_scale }
 	set_variable = { natural_disaster_repeat_caller_country = ROOT }
+	set_temp_variable = { natural_disaster_date_offset = natural_disaster_schedule_delay }
+	multiply_temp_variable = { natural_disaster_date_offset = constant:natural_disaster_date.hours_per_day }
+	divide_temp_variable = { natural_disaster_date_offset = constant:natural_disaster_date.hours_per_date_unit }
 	set_variable = { natural_disaster_repeat_schedule_date = global.date }
-	add_to_variable = { natural_disaster_repeat_schedule_date = natural_disaster_schedule_delay }
+	add_to_variable = { natural_disaster_repeat_schedule_date = natural_disaster_date_offset }
 	set_state_flag = natural_disaster_repeat_impact_scheduled
 	set_state_flag = natural_disaster_impact_scheduled
 	set_state_flag = { flag = natural_disaster_impact_guard days = @ND_IMPACT_GUARD_DAYS }
@@ -7296,8 +7303,11 @@ natural_disaster_release_special_state_missions = {
 }
 
 natural_disaster_schedule_reassessment_for_state = {
+	set_temp_variable = { natural_disaster_date_offset = natural_disaster_reassessment_delay }
+	multiply_temp_variable = { natural_disaster_date_offset = constant:natural_disaster_date.hours_per_day }
+	divide_temp_variable = { natural_disaster_date_offset = constant:natural_disaster_date.hours_per_date_unit }
 	set_variable = { natural_disaster_next_reassessment = global.date }
-	add_to_variable = { natural_disaster_next_reassessment = natural_disaster_reassessment_delay }
+	add_to_variable = { natural_disaster_next_reassessment = natural_disaster_date_offset }
 	set_temp_variable = { natural_disaster_job_type = constant:natural_disaster_job_type.reassessment }
 	set_temp_variable = { natural_disaster_job_delay_days = natural_disaster_reassessment_delay }
 	natural_disaster_enqueue_state_job = yes
@@ -11429,6 +11439,8 @@ natural_disaster_prepare_gui_urgency_score = {
 	if = {
 		limit = { check_variable = { natural_disaster_gui_has_live_date > 0 } }
 		subtract_from_temp_variable = { natural_disaster_gui_due_date = global.date }
+		multiply_temp_variable = { natural_disaster_gui_due_date = constant:natural_disaster_date.hours_per_date_unit }
+		divide_temp_variable = { natural_disaster_gui_due_date = constant:natural_disaster_date.hours_per_day }
 		clamp_temp_variable = {
 			var = natural_disaster_gui_due_date
 			min = 0
@@ -11445,6 +11457,7 @@ natural_disaster_prepare_gui_urgency_score = {
 natural_disaster_append_gui_record_from_index = {
 	add_to_array = { array = natural_disaster_gui_record_index_entries value = natural_disaster_gui_best_record_index }
 	add_to_array = { array = natural_disaster_gui_state_entries value = global.natural_disaster_abnormal_history_state_entries^natural_disaster_gui_best_record_index }
+	add_to_array = { array = natural_disaster_gui_position_entries value = natural_disaster_gui_state_entries^num }
 	add_to_array = { array = natural_disaster_gui_family_entries value = global.natural_disaster_abnormal_history_family_entries^natural_disaster_gui_best_record_index }
 	add_to_array = { array = natural_disaster_gui_family_group_entries value = global.natural_disaster_abnormal_history_family_group_entries^natural_disaster_gui_best_record_index }
 	add_to_array = { array = natural_disaster_gui_death_driver_entries value = global.natural_disaster_abnormal_history_death_driver_entries^natural_disaster_gui_best_record_index }
@@ -11491,6 +11504,7 @@ natural_disaster_append_gui_record_from_index = {
 natural_disaster_rebuild_abnormal_gui_view = {
 	set_variable = { natural_disaster_gui_selected_milestone = 0 }
 	clear_array = natural_disaster_gui_state_entries
+	clear_array = natural_disaster_gui_position_entries
 	clear_array = natural_disaster_gui_record_index_entries
 	clear_array = natural_disaster_gui_family_entries
 	clear_array = natural_disaster_gui_family_group_entries

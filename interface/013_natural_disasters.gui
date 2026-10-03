@@ -1,14 +1,25 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 013 ABNORMAL DISASTER PATH MAP
 # ============================================================================
+# Layout follows the regions painted into GFX_013_abnormal_disaster_panel
+# (760x520 drawn at scale 1.43, 1087x744 window):
+#   header plate     x 148-938, y 18-62   title, family icon, sequence status
+#   segment column   x 40-182,  y 102-582 five painted slots, one per card
+#   path canvas      x 230-765, y 94-612  path art, markers, notes, view controls
+#   detail panel     x 798-1062, y 94-613 selected segment
+#   legend tray      x 56-583,  y 640-725 legend title and cell bar
+#   severity strip   x 638-1044, y 640-725 nine painted swatches, five stops
+# Buttons that carry text are never scaled: the engine centres button text on
+# the unscaled sprite frame. Text-free click regions use transparent hitboxes
+# drawn after the art and labels they cover.
+# ============================================================================
 
 guiTypes = {
 	containerWindowType = {
 		name = "natural_disaster_abnormal_path_window"
-		position = { x = 0 y = 0 }
-		size = { width = 1080 height = 744 }
+		position = { x = -543 y = -372 }
+		size = { width = 1087 height = 744 }
 		orientation = center
-		origo = center
 		moveable = no
 		clipping = no
 
@@ -25,132 +36,113 @@ guiTypes = {
 			scale = 1.43
 		}
 
+		# --- Header plate ---------------------------------------------------
 		instantTextBoxType = {
 			name = "natural_disaster_gui_title"
-			position = { x = 38 y = 20 }
+			position = { x = 166 y = 22 }
 			font = "hoi_24header"
 			text = "natural_disaster.gui.title"
 			format = left
-			maxWidth = 720
-			maxHeight = 34
+			vertical_alignment = center
+			maxWidth = 262
+			maxHeight = 36
+			fixedsize = yes
 		}
+		iconType = { name = "natural_disaster_gui_header_family_massive_eruption" spriteType = "GFX_decision_cat_picture_nd_massive_eruption" position = { x = 434 y = 26 } scale = 0.28 alwaysTransparent = yes }
+		iconType = { name = "natural_disaster_gui_header_family_rupture" spriteType = "GFX_decision_cat_picture_nd_rupture" position = { x = 434 y = 26 } scale = 0.28 alwaysTransparent = yes }
+		iconType = { name = "natural_disaster_gui_header_family_meteor_storm" spriteType = "GFX_decision_cat_picture_nd_meteor_storm" position = { x = 434 y = 26 } scale = 0.28 alwaysTransparent = yes }
+		iconType = { name = "natural_disaster_gui_header_family_skyfall" spriteType = "GFX_decision_cat_picture_nd_skyfall" position = { x = 434 y = 26 } scale = 0.28 alwaysTransparent = yes }
+		iconType = { name = "natural_disaster_gui_header_family_corridor" spriteType = "GFX_decision_cat_picture_nd_corridor" position = { x = 434 y = 26 } scale = 0.28 alwaysTransparent = yes }
+		iconType = { name = "natural_disaster_gui_header_family_tsunami" spriteType = "GFX_decision_cat_picture_nd_tsunami" position = { x = 434 y = 26 } scale = 0.28 alwaysTransparent = yes }
+		iconType = { name = "natural_disaster_gui_header_family_volcano" spriteType = "GFX_decision_cat_picture_nd_volcano" position = { x = 434 y = 26 } scale = 0.28 alwaysTransparent = yes }
+		iconType = { name = "natural_disaster_gui_header_family_earthquake" spriteType = "GFX_decision_cat_picture_nd_earthquake" position = { x = 434 y = 26 } scale = 0.28 alwaysTransparent = yes }
+		iconType = { name = "natural_disaster_gui_header_family_flood" spriteType = "GFX_decision_cat_picture_nd_flood" position = { x = 434 y = 26 } scale = 0.28 alwaysTransparent = yes }
+		iconType = { name = "natural_disaster_gui_header_family_cyclone" spriteType = "GFX_decision_cat_picture_nd_cyclone" position = { x = 434 y = 26 } scale = 0.28 alwaysTransparent = yes }
+		iconType = { name = "natural_disaster_gui_header_family_wind" spriteType = "GFX_decision_cat_picture_nd_wind" position = { x = 434 y = 26 } scale = 0.28 alwaysTransparent = yes }
+		iconType = { name = "natural_disaster_gui_header_family_severe_storm" spriteType = "GFX_decision_cat_picture_nd_severe_storm" position = { x = 434 y = 26 } scale = 0.28 alwaysTransparent = yes }
+		iconType = { name = "natural_disaster_gui_header_family_hail" spriteType = "GFX_decision_cat_picture_nd_hail" position = { x = 434 y = 26 } scale = 0.28 alwaysTransparent = yes }
+		iconType = { name = "natural_disaster_gui_header_family_winter" spriteType = "GFX_decision_cat_picture_nd_winter" position = { x = 434 y = 26 } scale = 0.28 alwaysTransparent = yes }
+		iconType = { name = "natural_disaster_gui_header_family_heat" spriteType = "GFX_decision_cat_picture_nd_heat" position = { x = 434 y = 26 } scale = 0.28 alwaysTransparent = yes }
+		iconType = { name = "natural_disaster_gui_header_family_drought" spriteType = "GFX_decision_cat_picture_nd_drought" position = { x = 434 y = 26 } scale = 0.28 alwaysTransparent = yes }
+		iconType = { name = "natural_disaster_gui_header_family_dust" spriteType = "GFX_decision_cat_picture_nd_dust" position = { x = 434 y = 26 } scale = 0.28 alwaysTransparent = yes }
+		iconType = { name = "natural_disaster_gui_header_family_firefront" spriteType = "GFX_decision_cat_picture_nd_firefront" position = { x = 434 y = 26 } scale = 0.28 alwaysTransparent = yes }
+		iconType = { name = "natural_disaster_gui_header_family_slope" spriteType = "GFX_decision_cat_picture_nd_slope" position = { x = 434 y = 26 } scale = 0.28 alwaysTransparent = yes }
+		iconType = { name = "natural_disaster_gui_header_family_landslide" spriteType = "GFX_decision_cat_picture_nd_landslide" position = { x = 434 y = 26 } scale = 0.28 alwaysTransparent = yes }
 		instantTextBoxType = {
 			name = "natural_disaster_gui_header_status"
-			position = { x = 38 y = 53 }
+			position = { x = 478 y = 22 }
 			font = "hoi_16mbs"
 			text = "natural_disaster.gui.header_status"
 			format = left
-			maxWidth = 760
-			maxHeight = 40
+			vertical_alignment = center
+			maxWidth = 448
+			maxHeight = 36
+			fixedsize = yes
+			pdx_tooltip = "natural_disaster.gui.header_status.tt"
 		}
-		iconType = { name = "natural_disaster_gui_header_family_massive_eruption" spriteType = "GFX_decision_cat_picture_nd_massive_eruption" position = { x = 805 y = 18 } scale = 0.28 alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_header_family_rupture" spriteType = "GFX_decision_cat_picture_nd_rupture" position = { x = 805 y = 18 } scale = 0.28 alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_header_family_meteor_storm" spriteType = "GFX_decision_cat_picture_nd_meteor_storm" position = { x = 805 y = 18 } scale = 0.28 alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_header_family_skyfall" spriteType = "GFX_decision_cat_picture_nd_skyfall" position = { x = 805 y = 18 } scale = 0.28 alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_header_family_corridor" spriteType = "GFX_decision_cat_picture_nd_corridor" position = { x = 805 y = 18 } scale = 0.28 alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_header_family_tsunami" spriteType = "GFX_decision_cat_picture_nd_tsunami" position = { x = 805 y = 18 } scale = 0.28 alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_header_family_volcano" spriteType = "GFX_decision_cat_picture_nd_volcano" position = { x = 805 y = 18 } scale = 0.28 alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_header_family_earthquake" spriteType = "GFX_decision_cat_picture_nd_earthquake" position = { x = 805 y = 18 } scale = 0.28 alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_header_family_flood" spriteType = "GFX_decision_cat_picture_nd_flood" position = { x = 805 y = 18 } scale = 0.28 alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_header_family_cyclone" spriteType = "GFX_decision_cat_picture_nd_cyclone" position = { x = 805 y = 18 } scale = 0.28 alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_header_family_wind" spriteType = "GFX_decision_cat_picture_nd_wind" position = { x = 805 y = 18 } scale = 0.28 alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_header_family_severe_storm" spriteType = "GFX_decision_cat_picture_nd_severe_storm" position = { x = 805 y = 18 } scale = 0.28 alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_header_family_hail" spriteType = "GFX_decision_cat_picture_nd_hail" position = { x = 805 y = 18 } scale = 0.28 alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_header_family_winter" spriteType = "GFX_decision_cat_picture_nd_winter" position = { x = 805 y = 18 } scale = 0.28 alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_header_family_heat" spriteType = "GFX_decision_cat_picture_nd_heat" position = { x = 805 y = 18 } scale = 0.28 alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_header_family_drought" spriteType = "GFX_decision_cat_picture_nd_drought" position = { x = 805 y = 18 } scale = 0.28 alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_header_family_dust" spriteType = "GFX_decision_cat_picture_nd_dust" position = { x = 805 y = 18 } scale = 0.28 alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_header_family_firefront" spriteType = "GFX_decision_cat_picture_nd_firefront" position = { x = 805 y = 18 } scale = 0.28 alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_header_family_slope" spriteType = "GFX_decision_cat_picture_nd_slope" position = { x = 805 y = 18 } scale = 0.28 alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_header_family_landslide" spriteType = "GFX_decision_cat_picture_nd_landslide" position = { x = 805 y = 18 } scale = 0.28 alwaysTransparent = yes }
 		buttonType = {
 			name = "natural_disaster_gui_close"
-			position = { x = 1035 y = 17 }
+			position = { x = 1044 y = 20 }
 			size = { x = 32 y = 33 }
 			spriteType = "GFX_chaosx_closebutton_vanilla"
 			clicksound = click_close
 			shortcut = "ESCAPE"
 			pdx_tooltip = "natural_disaster.gui.close.tt"
 		}
-		buttonType = {
-			name = "natural_disaster_gui_previous_sequence"
-			position = { x = 810 y = 48 }
-			size = { x = 86 y = 28 }
-			spriteType = "GFX_chaosx_button_123x34"
-			scale = 0.42
-			buttonFont = "hoi_16mbs"
-			buttonText = "natural_disaster.gui.previous_sequence"
-			clicksound = decisions_ui_button
-			pdx_tooltip = "natural_disaster.gui.previous_sequence.tt"
+
+		# --- Segment column: five painted slots -----------------------------
+		containerWindowType = {
+			name = "natural_disaster_gui_card_1_slot"
+			position = { x = 40 y = 102 }
+			size = { width = 142 height = 90 }
+			clipping = no
+
+			iconType = { name = "natural_disaster_gui_card_1_selected" spriteType = "GFX_013_recovery_progress_fill" position = { x = 9 y = 80 } scale = 0.45 alwaysTransparent = yes }
+			instantTextBoxType = { name = "natural_disaster_gui_card_1_text" position = { x = 5 y = 2 } font = "hoi_16mbs" text = "natural_disaster.gui.card.1" format = center vertical_alignment = center maxWidth = 132 maxHeight = 86 fixedsize = yes }
+			buttonType = { name = "natural_disaster_gui_card_1" position = { x = 0 y = 0 } size = { x = 142 y = 90 } quadTextureSprite = "GFX_tiled_window_transparent" clicksound = decisions_ui_button pdx_tooltip = "natural_disaster.gui.card.1.tt" }
 		}
-		buttonType = {
-			name = "natural_disaster_gui_next_sequence"
-			position = { x = 910 y = 48 }
-			size = { x = 86 y = 28 }
-			spriteType = "GFX_chaosx_button_123x34"
-			scale = 0.42
-			buttonFont = "hoi_16mbs"
-			buttonText = "natural_disaster.gui.next_sequence"
-			clicksound = decisions_ui_button
-			pdx_tooltip = "natural_disaster.gui.next_sequence.tt"
+		containerWindowType = {
+			name = "natural_disaster_gui_card_2_slot"
+			position = { x = 40 y = 199 }
+			size = { width = 142 height = 90 }
+			clipping = no
+
+			iconType = { name = "natural_disaster_gui_card_2_selected" spriteType = "GFX_013_recovery_progress_fill" position = { x = 9 y = 80 } scale = 0.45 alwaysTransparent = yes }
+			instantTextBoxType = { name = "natural_disaster_gui_card_2_text" position = { x = 5 y = 2 } font = "hoi_16mbs" text = "natural_disaster.gui.card.2" format = center vertical_alignment = center maxWidth = 132 maxHeight = 86 fixedsize = yes }
+			buttonType = { name = "natural_disaster_gui_card_2" position = { x = 0 y = 0 } size = { x = 142 y = 90 } quadTextureSprite = "GFX_tiled_window_transparent" clicksound = decisions_ui_button pdx_tooltip = "natural_disaster.gui.card.2.tt" }
+		}
+		containerWindowType = {
+			name = "natural_disaster_gui_card_3_slot"
+			position = { x = 40 y = 296 }
+			size = { width = 142 height = 90 }
+			clipping = no
+
+			iconType = { name = "natural_disaster_gui_card_3_selected" spriteType = "GFX_013_recovery_progress_fill" position = { x = 9 y = 80 } scale = 0.45 alwaysTransparent = yes }
+			instantTextBoxType = { name = "natural_disaster_gui_card_3_text" position = { x = 5 y = 2 } font = "hoi_16mbs" text = "natural_disaster.gui.card.3" format = center vertical_alignment = center maxWidth = 132 maxHeight = 86 fixedsize = yes }
+			buttonType = { name = "natural_disaster_gui_card_3" position = { x = 0 y = 0 } size = { x = 142 y = 90 } quadTextureSprite = "GFX_tiled_window_transparent" clicksound = decisions_ui_button pdx_tooltip = "natural_disaster.gui.card.3.tt" }
+		}
+		containerWindowType = {
+			name = "natural_disaster_gui_card_4_slot"
+			position = { x = 40 y = 394 }
+			size = { width = 142 height = 90 }
+			clipping = no
+
+			iconType = { name = "natural_disaster_gui_card_4_selected" spriteType = "GFX_013_recovery_progress_fill" position = { x = 9 y = 80 } scale = 0.45 alwaysTransparent = yes }
+			instantTextBoxType = { name = "natural_disaster_gui_card_4_text" position = { x = 5 y = 2 } font = "hoi_16mbs" text = "natural_disaster.gui.card.4" format = center vertical_alignment = center maxWidth = 132 maxHeight = 86 fixedsize = yes }
+			buttonType = { name = "natural_disaster_gui_card_4" position = { x = 0 y = 0 } size = { x = 142 y = 90 } quadTextureSprite = "GFX_tiled_window_transparent" clicksound = decisions_ui_button pdx_tooltip = "natural_disaster.gui.card.4.tt" }
+		}
+		containerWindowType = {
+			name = "natural_disaster_gui_card_5_slot"
+			position = { x = 40 y = 491 }
+			size = { width = 142 height = 90 }
+			clipping = no
+
+			iconType = { name = "natural_disaster_gui_card_5_selected" spriteType = "GFX_013_recovery_progress_fill" position = { x = 9 y = 80 } scale = 0.45 alwaysTransparent = yes }
+			instantTextBoxType = { name = "natural_disaster_gui_card_5_text" position = { x = 5 y = 2 } font = "hoi_16mbs" text = "natural_disaster.gui.card.5" format = center vertical_alignment = center maxWidth = 132 maxHeight = 86 fixedsize = yes }
+			buttonType = { name = "natural_disaster_gui_card_5" position = { x = 0 y = 0 } size = { x = 142 y = 90 } quadTextureSprite = "GFX_tiled_window_transparent" clicksound = decisions_ui_button pdx_tooltip = "natural_disaster.gui.card.5.tt" }
 		}
 
-		buttonType = {
-			name = "natural_disaster_gui_card_1"
-			position = { x = 28 y = 92 }
-			size = { x = 232 y = 102 }
-			spriteType = "GFX_013_disaster_card_frame"
-			scale = 0.83
-			buttonFont = "hoi_16mbs"
-			buttonText = "natural_disaster.gui.card.1"
-			clicksound = decisions_ui_button
-			pdx_tooltip = "natural_disaster.gui.card.1.tt"
-		}
-		buttonType = {
-			name = "natural_disaster_gui_card_2"
-			position = { x = 28 y = 196 }
-			size = { x = 232 y = 102 }
-			spriteType = "GFX_013_disaster_card_frame"
-			scale = 0.83
-			buttonFont = "hoi_16mbs"
-			buttonText = "natural_disaster.gui.card.2"
-			clicksound = decisions_ui_button
-			pdx_tooltip = "natural_disaster.gui.card.2.tt"
-		}
-		buttonType = {
-			name = "natural_disaster_gui_card_3"
-			position = { x = 28 y = 300 }
-			size = { x = 232 y = 102 }
-			spriteType = "GFX_013_disaster_card_frame"
-			scale = 0.83
-			buttonFont = "hoi_16mbs"
-			buttonText = "natural_disaster.gui.card.3"
-			clicksound = decisions_ui_button
-			pdx_tooltip = "natural_disaster.gui.card.3.tt"
-		}
-		buttonType = {
-			name = "natural_disaster_gui_card_4"
-			position = { x = 28 y = 404 }
-			size = { x = 232 y = 102 }
-			spriteType = "GFX_013_disaster_card_frame"
-			scale = 0.83
-			buttonFont = "hoi_16mbs"
-			buttonText = "natural_disaster.gui.card.4"
-			clicksound = decisions_ui_button
-			pdx_tooltip = "natural_disaster.gui.card.4.tt"
-		}
-		buttonType = {
-			name = "natural_disaster_gui_card_5"
-			position = { x = 28 y = 508 }
-			size = { x = 232 y = 102 }
-			spriteType = "GFX_013_disaster_card_frame"
-			scale = 0.83
-			buttonFont = "hoi_16mbs"
-			buttonText = "natural_disaster.gui.card.5"
-			clicksound = decisions_ui_button
-			pdx_tooltip = "natural_disaster.gui.card.5.tt"
-		}
-
+		# --- Path canvas ----------------------------------------------------
 		containerWindowType = {
 			name = "natural_disaster_gui_animated_layers"
 			position = { x = 270 y = 102 }
@@ -175,257 +167,164 @@ guiTypes = {
 			iconType = { name = "natural_disaster_gui_tsunami_layer_static" spriteType = "GFX_013_tsunami_train_static" position = { x = 0 y = 0 } alwaysTransparent = yes }
 			iconType = { name = "natural_disaster_gui_storm_layer_static" spriteType = "GFX_013_storm_corridor_static" position = { x = 0 y = 0 } alwaysTransparent = yes }
 		}
-		buttonType = {
-			name = "natural_disaster_gui_marker_1"
+
+		# Markers: one status overlay per segment, a number label under the pin,
+		# and a transparent 64x64 hitbox on top. Each slot is 64x82.
+		containerWindowType = {
+			name = "natural_disaster_gui_marker_1_slot"
 			position = { x = 310 y = 360 }
-			size = { x = 64 y = 64 }
-			spriteType = "GFX_013_map_marker_next_hit_static"
-			buttonFont = "hoi_16mbs"
-			buttonText = "natural_disaster.gui.marker.1"
-			clicksound = decisions_ui_button
-			pdx_tooltip = "natural_disaster.gui.marker.1.tt"
+			size = { width = 64 height = 82 }
+			clipping = no
+
+			iconType = { name = "natural_disaster_gui_marker_1_warning_animated" spriteType = "GFX_013_map_marker_next_hit_animated" position = { x = 0 y = 0 } alwaysTransparent = yes }
+			iconType = { name = "natural_disaster_gui_marker_1_warning_static" spriteType = "GFX_013_map_marker_next_hit_static" position = { x = 0 y = 0 } alwaysTransparent = yes }
+			iconType = { name = "natural_disaster_gui_marker_1_next" spriteType = "GFX_013_map_marker_next_hit_static" position = { x = 0 y = 0 } alwaysTransparent = yes }
+			iconType = { name = "natural_disaster_gui_marker_1_impact" spriteType = "GFX_013_map_marker_impact" position = { x = 8 y = 8 } alwaysTransparent = yes }
+			instantTextBoxType = { name = "natural_disaster_gui_marker_1_label" position = { x = 0 y = 62 } font = "hoi_16mbs" text = "natural_disaster.gui.marker.1" format = center maxWidth = 64 maxHeight = 18 fixedsize = yes alwaystransparent = yes }
+			buttonType = { name = "natural_disaster_gui_marker_1" position = { x = 0 y = 0 } size = { x = 64 y = 64 } quadTextureSprite = "GFX_tiled_window_transparent" clicksound = decisions_ui_button pdx_tooltip = "natural_disaster.gui.marker.1.tt" }
 		}
-		iconType = { name = "natural_disaster_gui_marker_1_warning_animated" spriteType = "GFX_013_map_marker_next_hit_animated" position = { x = 310 y = 360 } alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_marker_1_warning_static" spriteType = "GFX_013_map_marker_next_hit_static" position = { x = 310 y = 360 } alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_marker_1_next" spriteType = "GFX_013_map_marker_next_hit_static" position = { x = 310 y = 360 } alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_marker_1_impact" spriteType = "GFX_013_map_marker_impact" position = { x = 310 y = 360 } alwaysTransparent = yes }
-		buttonType = {
-			name = "natural_disaster_gui_marker_2"
+		containerWindowType = {
+			name = "natural_disaster_gui_marker_2_slot"
 			position = { x = 390 y = 300 }
-			size = { x = 64 y = 64 }
-			spriteType = "GFX_013_map_marker_next_hit_static"
-			buttonFont = "hoi_16mbs"
-			buttonText = "natural_disaster.gui.marker.2"
-			clicksound = decisions_ui_button
-			pdx_tooltip = "natural_disaster.gui.marker.2.tt"
+			size = { width = 64 height = 82 }
+			clipping = no
+
+			iconType = { name = "natural_disaster_gui_marker_2_warning_animated" spriteType = "GFX_013_map_marker_next_hit_animated" position = { x = 0 y = 0 } alwaysTransparent = yes }
+			iconType = { name = "natural_disaster_gui_marker_2_warning_static" spriteType = "GFX_013_map_marker_next_hit_static" position = { x = 0 y = 0 } alwaysTransparent = yes }
+			iconType = { name = "natural_disaster_gui_marker_2_next" spriteType = "GFX_013_map_marker_next_hit_static" position = { x = 0 y = 0 } alwaysTransparent = yes }
+			iconType = { name = "natural_disaster_gui_marker_2_impact" spriteType = "GFX_013_map_marker_impact" position = { x = 8 y = 8 } alwaysTransparent = yes }
+			instantTextBoxType = { name = "natural_disaster_gui_marker_2_label" position = { x = 0 y = 62 } font = "hoi_16mbs" text = "natural_disaster.gui.marker.2" format = center maxWidth = 64 maxHeight = 18 fixedsize = yes alwaystransparent = yes }
+			buttonType = { name = "natural_disaster_gui_marker_2" position = { x = 0 y = 0 } size = { x = 64 y = 64 } quadTextureSprite = "GFX_tiled_window_transparent" clicksound = decisions_ui_button pdx_tooltip = "natural_disaster.gui.marker.2.tt" }
 		}
-		iconType = { name = "natural_disaster_gui_marker_2_warning_animated" spriteType = "GFX_013_map_marker_next_hit_animated" position = { x = 390 y = 300 } alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_marker_2_warning_static" spriteType = "GFX_013_map_marker_next_hit_static" position = { x = 390 y = 300 } alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_marker_2_next" spriteType = "GFX_013_map_marker_next_hit_static" position = { x = 390 y = 300 } alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_marker_2_impact" spriteType = "GFX_013_map_marker_impact" position = { x = 390 y = 300 } alwaysTransparent = yes }
-		buttonType = {
-			name = "natural_disaster_gui_marker_3"
+		containerWindowType = {
+			name = "natural_disaster_gui_marker_3_slot"
 			position = { x = 475 y = 245 }
-			size = { x = 64 y = 64 }
-			spriteType = "GFX_013_map_marker_next_hit_static"
-			buttonFont = "hoi_16mbs"
-			buttonText = "natural_disaster.gui.marker.3"
-			clicksound = decisions_ui_button
-			pdx_tooltip = "natural_disaster.gui.marker.3.tt"
+			size = { width = 64 height = 82 }
+			clipping = no
+
+			iconType = { name = "natural_disaster_gui_marker_3_warning_animated" spriteType = "GFX_013_map_marker_next_hit_animated" position = { x = 0 y = 0 } alwaysTransparent = yes }
+			iconType = { name = "natural_disaster_gui_marker_3_warning_static" spriteType = "GFX_013_map_marker_next_hit_static" position = { x = 0 y = 0 } alwaysTransparent = yes }
+			iconType = { name = "natural_disaster_gui_marker_3_next" spriteType = "GFX_013_map_marker_next_hit_static" position = { x = 0 y = 0 } alwaysTransparent = yes }
+			iconType = { name = "natural_disaster_gui_marker_3_impact" spriteType = "GFX_013_map_marker_impact" position = { x = 8 y = 8 } alwaysTransparent = yes }
+			instantTextBoxType = { name = "natural_disaster_gui_marker_3_label" position = { x = 0 y = 62 } font = "hoi_16mbs" text = "natural_disaster.gui.marker.3" format = center maxWidth = 64 maxHeight = 18 fixedsize = yes alwaystransparent = yes }
+			buttonType = { name = "natural_disaster_gui_marker_3" position = { x = 0 y = 0 } size = { x = 64 y = 64 } quadTextureSprite = "GFX_tiled_window_transparent" clicksound = decisions_ui_button pdx_tooltip = "natural_disaster.gui.marker.3.tt" }
 		}
-		iconType = { name = "natural_disaster_gui_marker_3_warning_animated" spriteType = "GFX_013_map_marker_next_hit_animated" position = { x = 475 y = 245 } alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_marker_3_warning_static" spriteType = "GFX_013_map_marker_next_hit_static" position = { x = 475 y = 245 } alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_marker_3_next" spriteType = "GFX_013_map_marker_next_hit_static" position = { x = 475 y = 245 } alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_marker_3_impact" spriteType = "GFX_013_map_marker_impact" position = { x = 475 y = 245 } alwaysTransparent = yes }
-		buttonType = {
-			name = "natural_disaster_gui_marker_4"
+		containerWindowType = {
+			name = "natural_disaster_gui_marker_4_slot"
 			position = { x = 570 y = 290 }
-			size = { x = 64 y = 64 }
-			spriteType = "GFX_013_map_marker_next_hit_static"
-			buttonFont = "hoi_16mbs"
-			buttonText = "natural_disaster.gui.marker.4"
-			clicksound = decisions_ui_button
-			pdx_tooltip = "natural_disaster.gui.marker.4.tt"
+			size = { width = 64 height = 82 }
+			clipping = no
+
+			iconType = { name = "natural_disaster_gui_marker_4_warning_animated" spriteType = "GFX_013_map_marker_next_hit_animated" position = { x = 0 y = 0 } alwaysTransparent = yes }
+			iconType = { name = "natural_disaster_gui_marker_4_warning_static" spriteType = "GFX_013_map_marker_next_hit_static" position = { x = 0 y = 0 } alwaysTransparent = yes }
+			iconType = { name = "natural_disaster_gui_marker_4_next" spriteType = "GFX_013_map_marker_next_hit_static" position = { x = 0 y = 0 } alwaysTransparent = yes }
+			iconType = { name = "natural_disaster_gui_marker_4_impact" spriteType = "GFX_013_map_marker_impact" position = { x = 8 y = 8 } alwaysTransparent = yes }
+			instantTextBoxType = { name = "natural_disaster_gui_marker_4_label" position = { x = 0 y = 62 } font = "hoi_16mbs" text = "natural_disaster.gui.marker.4" format = center maxWidth = 64 maxHeight = 18 fixedsize = yes alwaystransparent = yes }
+			buttonType = { name = "natural_disaster_gui_marker_4" position = { x = 0 y = 0 } size = { x = 64 y = 64 } quadTextureSprite = "GFX_tiled_window_transparent" clicksound = decisions_ui_button pdx_tooltip = "natural_disaster.gui.marker.4.tt" }
 		}
-		iconType = { name = "natural_disaster_gui_marker_4_warning_animated" spriteType = "GFX_013_map_marker_next_hit_animated" position = { x = 570 y = 290 } alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_marker_4_warning_static" spriteType = "GFX_013_map_marker_next_hit_static" position = { x = 570 y = 290 } alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_marker_4_next" spriteType = "GFX_013_map_marker_next_hit_static" position = { x = 570 y = 290 } alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_marker_4_impact" spriteType = "GFX_013_map_marker_impact" position = { x = 570 y = 290 } alwaysTransparent = yes }
-		buttonType = {
-			name = "natural_disaster_gui_marker_5"
+		containerWindowType = {
+			name = "natural_disaster_gui_marker_5_slot"
 			position = { x = 665 y = 215 }
-			size = { x = 64 y = 64 }
-			spriteType = "GFX_013_map_marker_next_hit_static"
-			buttonFont = "hoi_16mbs"
-			buttonText = "natural_disaster.gui.marker.5"
-			clicksound = decisions_ui_button
-			pdx_tooltip = "natural_disaster.gui.marker.5.tt"
-		}
-		iconType = { name = "natural_disaster_gui_marker_5_warning_animated" spriteType = "GFX_013_map_marker_next_hit_animated" position = { x = 665 y = 215 } alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_marker_5_warning_static" spriteType = "GFX_013_map_marker_next_hit_static" position = { x = 665 y = 215 } alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_marker_5_next" spriteType = "GFX_013_map_marker_next_hit_static" position = { x = 665 y = 215 } alwaysTransparent = yes }
-		iconType = { name = "natural_disaster_gui_marker_5_impact" spriteType = "GFX_013_map_marker_impact" position = { x = 665 y = 215 } alwaysTransparent = yes }
-		# Discrete milestones belong to the selected physical segment. Only facts
-		# that exist in its immutable history snapshot are shown.
-		buttonType = {
-			name = "natural_disaster_gui_milestone_warning"
-			position = { x = 300 y = 603 }
-			size = { x = 48 y = 48 }
-			spriteType = "GFX_013_map_marker_chain_risk"
-			scale = 0.42
-			buttonFont = "hoi_16mbs"
-			buttonText = "natural_disaster.gui.milestone.warning.short"
-			clicksound = decisions_ui_button
-			pdx_tooltip = "natural_disaster.gui.milestone.warning.tt"
-		}
-		buttonType = {
-			name = "natural_disaster_gui_milestone_schedule"
-			position = { x = 370 y = 603 }
-			size = { x = 48 y = 48 }
-			spriteType = "GFX_013_map_marker_next_hit_static"
-			scale = 0.42
-			buttonFont = "hoi_16mbs"
-			buttonText = "natural_disaster.gui.milestone.schedule.short"
-			clicksound = decisions_ui_button
-			pdx_tooltip = "natural_disaster.gui.milestone.schedule.tt"
-		}
-		buttonType = {
-			name = "natural_disaster_gui_milestone_impact"
-			position = { x = 440 y = 603 }
-			size = { x = 48 y = 48 }
-			spriteType = "GFX_013_map_marker_impact"
-			scale = 0.42
-			buttonFont = "hoi_16mbs"
-			buttonText = "natural_disaster.gui.milestone.impact.short"
-			clicksound = decisions_ui_button
-			pdx_tooltip = "natural_disaster.gui.milestone.impact.tt"
-		}
-		buttonType = {
-			name = "natural_disaster_gui_milestone_report"
-			position = { x = 510 y = 603 }
-			size = { x = 48 y = 48 }
-			spriteType = "GFX_013_map_marker_impact"
-			scale = 0.42
-			buttonFont = "hoi_16mbs"
-			buttonText = "natural_disaster.gui.milestone.report.short"
-			clicksound = decisions_ui_button
-			pdx_tooltip = "natural_disaster.gui.milestone.report.tt"
-		}
-		buttonType = {
-			name = "natural_disaster_gui_milestone_followup"
-			position = { x = 580 y = 603 }
-			size = { x = 48 y = 48 }
-			spriteType = "GFX_013_map_marker_chain_risk"
-			scale = 0.42
-			buttonFont = "hoi_16mbs"
-			buttonText = "natural_disaster.gui.milestone.followup.short"
-			clicksound = decisions_ui_button
-			pdx_tooltip = "natural_disaster.gui.milestone.followup.tt"
-		}
-		buttonType = {
-			name = "natural_disaster_gui_milestone_reassessment"
-			position = { x = 650 y = 603 }
-			size = { x = 48 y = 48 }
-			spriteType = "GFX_013_map_marker_impact"
-			scale = 0.42
-			buttonFont = "hoi_16mbs"
-			buttonText = "natural_disaster.gui.milestone.reassessment.short"
-			clicksound = decisions_ui_button
-			pdx_tooltip = "natural_disaster.gui.milestone.reassessment.tt"
+			size = { width = 64 height = 82 }
+			clipping = no
+
+			iconType = { name = "natural_disaster_gui_marker_5_warning_animated" spriteType = "GFX_013_map_marker_next_hit_animated" position = { x = 0 y = 0 } alwaysTransparent = yes }
+			iconType = { name = "natural_disaster_gui_marker_5_warning_static" spriteType = "GFX_013_map_marker_next_hit_static" position = { x = 0 y = 0 } alwaysTransparent = yes }
+			iconType = { name = "natural_disaster_gui_marker_5_next" spriteType = "GFX_013_map_marker_next_hit_static" position = { x = 0 y = 0 } alwaysTransparent = yes }
+			iconType = { name = "natural_disaster_gui_marker_5_impact" spriteType = "GFX_013_map_marker_impact" position = { x = 8 y = 8 } alwaysTransparent = yes }
+			instantTextBoxType = { name = "natural_disaster_gui_marker_5_label" position = { x = 0 y = 62 } font = "hoi_16mbs" text = "natural_disaster.gui.marker.5" format = center maxWidth = 64 maxHeight = 18 fixedsize = yes alwaystransparent = yes }
+			buttonType = { name = "natural_disaster_gui_marker_5" position = { x = 0 y = 0 } size = { x = 64 y = 64 } quadTextureSprite = "GFX_tiled_window_transparent" clicksound = decisions_ui_button pdx_tooltip = "natural_disaster.gui.marker.5.tt" }
 		}
 
+		# Lower canvas band: path note and milestone row on the left, timeline
+		# and view controls on the right.
 		instantTextBoxType = {
 			name = "natural_disaster_gui_path_queue"
-			position = { x = 285 y = 450 }
+			position = { x = 240 y = 452 }
 			font = "hoi_16mbs"
 			text = "natural_disaster.gui.path_queue"
 			format = left
-			maxWidth = 440
-			maxHeight = 94
+			maxWidth = 258
+			maxHeight = 70
+			fixedsize = yes
 		}
 
-		iconType = { name = "natural_disaster_gui_detail_frame" spriteType = "GFX_013_disaster_card_frame" position = { x = 770 y = 98 } }
-		iconType = { name = "natural_disaster_gui_warning_frame_animated" spriteType = "GFX_013_disaster_card_frame_warning_animated" position = { x = 766 y = 94 } scale = 0.5 }
-		iconType = { name = "natural_disaster_gui_warning_frame_static" spriteType = "GFX_013_disaster_card_frame_warning_static" position = { x = 766 y = 94 } scale = 0.5 }
-		iconType = { name = "natural_disaster_gui_impact_frame_animated" spriteType = "GFX_013_disaster_card_frame_impact_animated" position = { x = 766 y = 94 } scale = 0.5 }
-		iconType = { name = "natural_disaster_gui_impact_frame_static" spriteType = "GFX_013_disaster_card_frame_impact_static" position = { x = 766 y = 94 } scale = 0.5 }
+		# Milestones belong to the selected physical segment. Only facts that
+		# exist in its history snapshot are shown.
+		containerWindowType = {
+			name = "natural_disaster_gui_milestone_warning_slot"
+			position = { x = 240 y = 526 }
+			size = { width = 44 height = 48 }
+			clipping = no
 
-		instantTextBoxType = {
-			name = "natural_disaster_gui_selected_title"
-			position = { x = 786 y = 116 }
-			font = "hoi_20b"
-			text = "natural_disaster.gui.selected_title"
-			format = center
-			maxWidth = 220
-			maxHeight = 52
+			iconType = { name = "natural_disaster_gui_milestone_warning_icon" spriteType = "GFX_013_map_marker_next_hit_static" position = { x = 10 y = 2 } scale = 0.375 alwaysTransparent = yes }
+			instantTextBoxType = { name = "natural_disaster_gui_milestone_warning_label" position = { x = 0 y = 28 } font = "hoi_16mbs" text = "natural_disaster.gui.milestone.warning.short" format = center maxWidth = 44 maxHeight = 18 fixedsize = yes alwaystransparent = yes }
+			buttonType = { name = "natural_disaster_gui_milestone_warning" position = { x = 2 y = 0 } size = { x = 40 y = 48 } quadTextureSprite = "GFX_tiled_window_transparent" clicksound = decisions_ui_button pdx_tooltip = "natural_disaster.gui.milestone.warning.tt" }
 		}
-		instantTextBoxType = {
-			name = "natural_disaster_gui_selected_details"
-			position = { x = 786 y = 176 }
-			font = "hoi_16mbs"
-			text = "natural_disaster.gui.selected_details"
-			format = left
-			maxWidth = 220
-			maxHeight = 286
+		containerWindowType = {
+			name = "natural_disaster_gui_milestone_schedule_slot"
+			position = { x = 284 y = 526 }
+			size = { width = 44 height = 48 }
+			clipping = no
+
+			iconType = { name = "natural_disaster_gui_milestone_schedule_icon" spriteType = "GFX_013_map_marker_impact" position = { x = 10 y = 2 } scale = 0.5 alwaysTransparent = yes }
+			instantTextBoxType = { name = "natural_disaster_gui_milestone_schedule_label" position = { x = 0 y = 28 } font = "hoi_16mbs" text = "natural_disaster.gui.milestone.schedule.short" format = center maxWidth = 44 maxHeight = 18 fixedsize = yes alwaystransparent = yes }
+			buttonType = { name = "natural_disaster_gui_milestone_schedule" position = { x = 2 y = 0 } size = { x = 40 y = 48 } quadTextureSprite = "GFX_tiled_window_transparent" clicksound = decisions_ui_button pdx_tooltip = "natural_disaster.gui.milestone.schedule.tt" }
 		}
-		iconType = { name = "natural_disaster_gui_recovery_progress_frame" spriteType = "GFX_013_recovery_progress_frame" position = { x = 788 y = 470 } }
-		iconType = { name = "natural_disaster_gui_recovery_progress_fill_1" spriteType = "GFX_013_recovery_progress_fill" position = { x = 792 y = 474 } scale = 0.333 }
-		iconType = { name = "natural_disaster_gui_recovery_progress_fill_2" spriteType = "GFX_013_recovery_progress_fill" position = { x = 884 y = 474 } scale = 0.333 }
-		iconType = { name = "natural_disaster_gui_recovery_progress_fill_3" spriteType = "GFX_013_recovery_progress_fill" position = { x = 976 y = 474 } scale = 0.333 }
-		instantTextBoxType = {
-			name = "natural_disaster_gui_recovery_progress_text"
-			position = { x = 790 y = 500 }
-			font = "hoi_16mbs"
-			text = "natural_disaster.gui.recovery_progress"
-			format = left
-			maxWidth = 215
-			maxHeight = 45
+		containerWindowType = {
+			name = "natural_disaster_gui_milestone_impact_slot"
+			position = { x = 328 y = 526 }
+			size = { width = 44 height = 48 }
+			clipping = no
+
+			iconType = { name = "natural_disaster_gui_milestone_impact_icon" spriteType = "GFX_013_map_marker_impact" position = { x = 10 y = 2 } scale = 0.5 alwaysTransparent = yes }
+			instantTextBoxType = { name = "natural_disaster_gui_milestone_impact_label" position = { x = 0 y = 28 } font = "hoi_16mbs" text = "natural_disaster.gui.milestone.impact.short" format = center maxWidth = 44 maxHeight = 18 fixedsize = yes alwaystransparent = yes }
+			buttonType = { name = "natural_disaster_gui_milestone_impact" position = { x = 2 y = 0 } size = { x = 40 y = 48 } quadTextureSprite = "GFX_tiled_window_transparent" clicksound = decisions_ui_button pdx_tooltip = "natural_disaster.gui.milestone.impact.tt" }
 		}
-		buttonType = {
-			name = "natural_disaster_gui_previous_path"
-			position = { x = 770 y = 555 }
-			size = { x = 80 y = 28 }
-			spriteType = "GFX_chaosx_button_123x34"
-			scale = 0.65
-			buttonFont = "hoi_16mbs"
-			buttonText = "natural_disaster.gui.previous_path"
-			clicksound = decisions_ui_button
-			pdx_tooltip = "natural_disaster.gui.previous_path.tt"
+		containerWindowType = {
+			name = "natural_disaster_gui_milestone_report_slot"
+			position = { x = 372 y = 526 }
+			size = { width = 44 height = 48 }
+			clipping = no
+
+			iconType = { name = "natural_disaster_gui_milestone_report_icon" spriteType = "GFX_013_legend_report" position = { x = 10 y = 2 } scale = 0.75 alwaysTransparent = yes }
+			instantTextBoxType = { name = "natural_disaster_gui_milestone_report_label" position = { x = 0 y = 28 } font = "hoi_16mbs" text = "natural_disaster.gui.milestone.report.short" format = center maxWidth = 44 maxHeight = 18 fixedsize = yes alwaystransparent = yes }
+			buttonType = { name = "natural_disaster_gui_milestone_report" position = { x = 2 y = 0 } size = { x = 40 y = 48 } quadTextureSprite = "GFX_tiled_window_transparent" clicksound = decisions_ui_button pdx_tooltip = "natural_disaster.gui.milestone.report.tt" }
 		}
-		buttonType = {
-			name = "natural_disaster_gui_locate_state"
-			position = { x = 855 y = 555 }
-			size = { x = 80 y = 28 }
-			spriteType = "GFX_chaosx_button_123x34"
-			scale = 0.65
-			buttonFont = "hoi_16mbs"
-			buttonText = "natural_disaster.gui.locate_state"
-			clicksound = decisions_ui_button
-			pdx_tooltip = "natural_disaster.gui.locate_state.tt"
+		containerWindowType = {
+			name = "natural_disaster_gui_milestone_followup_slot"
+			position = { x = 416 y = 526 }
+			size = { width = 44 height = 48 }
+			clipping = no
+
+			iconType = { name = "natural_disaster_gui_milestone_followup_icon" spriteType = "GFX_013_map_marker_chain_risk" position = { x = 10 y = 2 } scale = 0.5 alwaysTransparent = yes }
+			instantTextBoxType = { name = "natural_disaster_gui_milestone_followup_label" position = { x = 0 y = 28 } font = "hoi_16mbs" text = "natural_disaster.gui.milestone.followup.short" format = center maxWidth = 44 maxHeight = 18 fixedsize = yes alwaystransparent = yes }
+			buttonType = { name = "natural_disaster_gui_milestone_followup" position = { x = 2 y = 0 } size = { x = 40 y = 48 } quadTextureSprite = "GFX_tiled_window_transparent" clicksound = decisions_ui_button pdx_tooltip = "natural_disaster.gui.milestone.followup.tt" }
 		}
-		buttonType = {
-			name = "natural_disaster_gui_next_path"
-			position = { x = 940 y = 555 }
-			size = { x = 80 y = 28 }
-			spriteType = "GFX_chaosx_button_123x34"
-			scale = 0.65
-			buttonFont = "hoi_16mbs"
-			buttonText = "natural_disaster.gui.next_path"
-			clicksound = decisions_ui_button
-			pdx_tooltip = "natural_disaster.gui.next_path.tt"
+		containerWindowType = {
+			name = "natural_disaster_gui_milestone_reassessment_slot"
+			position = { x = 460 y = 526 }
+			size = { width = 44 height = 48 }
+			clipping = no
+
+			iconType = { name = "natural_disaster_gui_milestone_reassessment_icon" spriteType = "GFX_013_legend_aftermath" position = { x = 10 y = 2 } scale = 0.375 alwaysTransparent = yes }
+			instantTextBoxType = { name = "natural_disaster_gui_milestone_reassessment_label" position = { x = 0 y = 28 } font = "hoi_16mbs" text = "natural_disaster.gui.milestone.reassessment.short" format = center maxWidth = 44 maxHeight = 18 fixedsize = yes alwaystransparent = yes }
+			buttonType = { name = "natural_disaster_gui_milestone_reassessment" position = { x = 2 y = 0 } size = { x = 40 y = 48 } quadTextureSprite = "GFX_tiled_window_transparent" clicksound = decisions_ui_button pdx_tooltip = "natural_disaster.gui.milestone.reassessment.tt" }
 		}
 
 		instantTextBoxType = {
 			name = "natural_disaster_gui_timeline"
-			position = { x = 270 y = 635 }
+			position = { x = 506 y = 452 }
 			font = "hoi_16mbs"
 			text = "natural_disaster.gui.timeline"
-			format = center
-			maxWidth = 475
-			maxHeight = 42
+			format = left
+			maxWidth = 252
+			maxHeight = 70
+			fixedsize = yes
 		}
-		instantTextBoxType = { name = "natural_disaster_gui_legend" position = { x = 28 y = 635 } font = "hoi_16mbs" text = "natural_disaster.gui.legend" format = left maxWidth = 230 maxHeight = 16 }
-		iconType = { name = "natural_disaster_gui_legend_impact" spriteType = "GFX_013_map_marker_impact" position = { x = 28 y = 653 } scale = 0.28 alwaysTransparent = yes }
-		instantTextBoxType = { name = "natural_disaster_gui_legend_impact_label" position = { x = 43 y = 653 } font = "hoi_16mbs" text = "natural_disaster.gui.legend.impact" format = left maxWidth = 42 maxHeight = 16 }
-		iconType = { name = "natural_disaster_gui_legend_warning" spriteType = "GFX_013_map_marker_next_hit_static" position = { x = 84 y = 653 } scale = 0.28 alwaysTransparent = yes }
-		instantTextBoxType = { name = "natural_disaster_gui_legend_warning_label" position = { x = 99 y = 653 } font = "hoi_16mbs" text = "natural_disaster.gui.legend.warning" format = left maxWidth = 42 maxHeight = 16 }
-		iconType = { name = "natural_disaster_gui_legend_report" spriteType = "GFX_013_legend_report" position = { x = 140 y = 653 } scale = 0.22 alwaysTransparent = yes }
-		instantTextBoxType = { name = "natural_disaster_gui_legend_report_label" position = { x = 155 y = 653 } font = "hoi_16mbs" text = "natural_disaster.gui.legend.report" format = left maxWidth = 42 maxHeight = 16 }
-		iconType = { name = "natural_disaster_gui_legend_aftermath" spriteType = "GFX_013_legend_aftermath" position = { x = 196 y = 653 } scale = 0.22 alwaysTransparent = yes }
-		instantTextBoxType = { name = "natural_disaster_gui_legend_aftermath_label" position = { x = 211 y = 653 } font = "hoi_16mbs" text = "natural_disaster.gui.legend.aftermath" format = left maxWidth = 54 maxHeight = 16 }
-		iconType = { name = "natural_disaster_gui_legend_chain" spriteType = "GFX_013_map_marker_chain_risk" position = { x = 28 y = 673 } scale = 0.28 alwaysTransparent = yes }
-		instantTextBoxType = { name = "natural_disaster_gui_legend_chain_label" position = { x = 43 y = 673 } font = "hoi_16mbs" text = "natural_disaster.gui.legend.chain" format = left maxWidth = 42 maxHeight = 16 }
-		iconType = { name = "natural_disaster_gui_legend_closed" spriteType = "GFX_013_legend_closed" position = { x = 84 y = 673 } scale = 0.22 alwaysTransparent = yes }
-		instantTextBoxType = { name = "natural_disaster_gui_legend_closed_label" position = { x = 99 y = 673 } font = "hoi_16mbs" text = "natural_disaster.gui.legend.closed" format = left maxWidth = 42 maxHeight = 16 }
-		iconType = { name = "natural_disaster_gui_legend_relief" spriteType = "GFX_013_foreign_relief_badge" position = { x = 140 y = 673 } scale = 0.28 alwaysTransparent = yes }
-		instantTextBoxType = { name = "natural_disaster_gui_legend_relief_label" position = { x = 155 y = 673 } font = "hoi_16mbs" text = "natural_disaster.gui.legend.relief" format = left maxWidth = 42 maxHeight = 16 }
-		iconType = { name = "natural_disaster_gui_legend_blocked" spriteType = "GFX_013_legend_blocked" position = { x = 196 y = 673 } scale = 0.22 alwaysTransparent = yes }
-		instantTextBoxType = { name = "natural_disaster_gui_legend_blocked_label" position = { x = 211 y = 673 } font = "hoi_16mbs" text = "natural_disaster.gui.legend.blocked" format = left maxWidth = 54 maxHeight = 16 }
-
 		buttonType = {
 			name = "natural_disaster_gui_refresh"
-			position = { x = 580 y = 690 }
-			size = { x = 123 y = 36 }
+			position = { x = 506 y = 528 }
 			spriteType = "GFX_chaosx_button_123x34"
 			buttonFont = "hoi_16mbs"
 			buttonText = "natural_disaster.gui.refresh"
@@ -434,8 +333,7 @@ guiTypes = {
 		}
 		buttonType = {
 			name = "natural_disaster_gui_toggle_animation"
-			position = { x = 718 y = 690 }
-			size = { x = 123 y = 36 }
+			position = { x = 635 y = 528 }
 			spriteType = "GFX_chaosx_button_123x34"
 			buttonFont = "hoi_16mbs"
 			buttonText = "natural_disaster.gui.toggle_animation"
@@ -443,14 +341,157 @@ guiTypes = {
 			pdx_tooltip = "natural_disaster.gui.toggle_animation.tt"
 		}
 		buttonType = {
+			name = "natural_disaster_gui_previous_sequence"
+			position = { x = 506 y = 568 }
+			spriteType = "GFX_chaosx_button_123x34"
+			buttonFont = "hoi_16mbs"
+			buttonText = "natural_disaster.gui.previous_sequence"
+			clicksound = decisions_ui_button
+			pdx_tooltip = "natural_disaster.gui.previous_sequence.tt"
+		}
+		buttonType = {
+			name = "natural_disaster_gui_next_sequence"
+			position = { x = 635 y = 568 }
+			spriteType = "GFX_chaosx_button_123x34"
+			buttonFont = "hoi_16mbs"
+			buttonText = "natural_disaster.gui.next_sequence"
+			clicksound = decisions_ui_button
+			pdx_tooltip = "natural_disaster.gui.next_sequence.tt"
+		}
+
+		# --- Detail panel: selected segment ---------------------------------
+		iconType = { name = "natural_disaster_gui_warning_frame_animated" spriteType = "GFX_013_disaster_card_frame_warning_animated" position = { x = 795 y = 98 } scale = 0.5 }
+		iconType = { name = "natural_disaster_gui_warning_frame_static" spriteType = "GFX_013_disaster_card_frame_warning_static" position = { x = 795 y = 98 } scale = 0.5 }
+		iconType = { name = "natural_disaster_gui_impact_frame_animated" spriteType = "GFX_013_disaster_card_frame_impact_animated" position = { x = 795 y = 98 } scale = 0.5 }
+		iconType = { name = "natural_disaster_gui_impact_frame_static" spriteType = "GFX_013_disaster_card_frame_impact_static" position = { x = 795 y = 98 } scale = 0.5 }
+		instantTextBoxType = {
+			name = "natural_disaster_gui_selected_title"
+			position = { x = 808 y = 103 }
+			font = "hoi_20b"
+			text = "natural_disaster.gui.selected_title"
+			format = center
+			vertical_alignment = center
+			maxWidth = 244
+			maxHeight = 30
+			fixedsize = yes
+		}
+		instantTextBoxType = {
+			name = "natural_disaster_gui_selected_subtitle"
+			position = { x = 806 y = 140 }
+			font = "hoi_16mbs"
+			text = "natural_disaster.gui.selected_subtitle"
+			format = center
+			vertical_alignment = center
+			maxWidth = 248
+			maxHeight = 20
+			fixedsize = yes
+		}
+		iconType = { name = "natural_disaster_gui_detail_frame" spriteType = "GFX_013_disaster_card_frame" position = { x = 798 y = 164 } scale = 0.94 }
+		instantTextBoxType = {
+			name = "natural_disaster_gui_selected_facts"
+			position = { x = 812 y = 180 }
+			font = "hoi_16mbs"
+			text = "natural_disaster.gui.selected_facts"
+			format = left
+			vertical_alignment = center
+			maxWidth = 236
+			maxHeight = 92
+			fixedsize = yes
+			pdx_tooltip = "natural_disaster.gui.selected_facts.tt"
+		}
+		instantTextBoxType = {
+			name = "natural_disaster_gui_selected_details"
+			position = { x = 806 y = 290 }
+			font = "hoi_16mbs"
+			text = "natural_disaster.gui.selected_details"
+			format = left
+			maxWidth = 248
+			maxHeight = 156
+			fixedsize = yes
+			pdx_tooltip = "natural_disaster.gui.selected_details.tt"
+		}
+		instantTextBoxType = {
+			name = "natural_disaster_gui_recovery_progress_text"
+			position = { x = 806 y = 452 }
+			font = "hoi_16mbs"
+			text = "natural_disaster.gui.recovery_progress"
+			format = left
+			maxWidth = 248
+			maxHeight = 18
+			fixedsize = yes
+			pdx_tooltip = "natural_disaster.gui.recovery_progress.tt"
+		}
+		iconType = { name = "natural_disaster_gui_recovery_progress_frame" spriteType = "GFX_013_recovery_progress_frame" position = { x = 798 y = 474 } scale = 0.94 }
+		iconType = { name = "natural_disaster_gui_recovery_progress_fill_1" spriteType = "GFX_013_recovery_progress_fill" position = { x = 806 y = 483 } scale = 0.299 }
+		iconType = { name = "natural_disaster_gui_recovery_progress_fill_2" spriteType = "GFX_013_recovery_progress_fill" position = { x = 889 y = 483 } scale = 0.299 }
+		iconType = { name = "natural_disaster_gui_recovery_progress_fill_3" spriteType = "GFX_013_recovery_progress_fill" position = { x = 971 y = 483 } scale = 0.299 }
+		buttonType = {
+			name = "natural_disaster_gui_previous_path"
+			position = { x = 802 y = 528 }
+			spriteType = "GFX_chaosx_button_123x34"
+			buttonFont = "hoi_16mbs"
+			buttonText = "natural_disaster.gui.previous_path"
+			clicksound = decisions_ui_button
+			pdx_tooltip = "natural_disaster.gui.previous_path.tt"
+		}
+		buttonType = {
+			name = "natural_disaster_gui_next_path"
+			position = { x = 935 y = 528 }
+			spriteType = "GFX_chaosx_button_123x34"
+			buttonFont = "hoi_16mbs"
+			buttonText = "natural_disaster.gui.next_path"
+			clicksound = decisions_ui_button
+			pdx_tooltip = "natural_disaster.gui.next_path.tt"
+		}
+		buttonType = {
+			name = "natural_disaster_gui_locate_state"
+			position = { x = 802 y = 568 }
+			spriteType = "GFX_chaosx_button_123x34"
+			buttonFont = "hoi_16mbs"
+			buttonText = "natural_disaster.gui.locate_state"
+			clicksound = decisions_ui_button
+			pdx_tooltip = "natural_disaster.gui.locate_state.tt"
+		}
+		buttonType = {
 			name = "natural_disaster_gui_return"
-			position = { x = 856 y = 690 }
-			size = { x = 123 y = 36 }
+			position = { x = 935 y = 568 }
 			spriteType = "GFX_chaosx_button_123x34"
 			buttonFont = "hoi_16mbs"
 			buttonText = "natural_disaster.gui.return"
 			clicksound = click_close
 			pdx_tooltip = "natural_disaster.gui.return.tt"
 		}
+
+		# --- Legend tray: title in the upper band, one row in the cell bar ---
+		instantTextBoxType = { name = "natural_disaster_gui_legend" position = { x = 58 y = 644 } font = "hoi_16mbs" text = "natural_disaster.gui.legend" format = left maxWidth = 200 maxHeight = 18 fixedsize = yes }
+		iconType = { name = "natural_disaster_gui_legend_impact" spriteType = "GFX_013_map_marker_impact" position = { x = 60 y = 673 } scale = 0.375 alwaysTransparent = yes }
+		instantTextBoxType = { name = "natural_disaster_gui_legend_impact_label" position = { x = 81 y = 674 } font = "hoi_16mbs" text = "natural_disaster.gui.legend.impact" format = left maxWidth = 42 maxHeight = 18 fixedsize = yes }
+		iconType = { name = "natural_disaster_gui_legend_warning" spriteType = "GFX_013_map_marker_next_hit_static" position = { x = 125 y = 673 } scale = 0.28 alwaysTransparent = yes }
+		instantTextBoxType = { name = "natural_disaster_gui_legend_warning_label" position = { x = 146 y = 674 } font = "hoi_16mbs" text = "natural_disaster.gui.legend.warning" format = left maxWidth = 42 maxHeight = 18 fixedsize = yes }
+		iconType = { name = "natural_disaster_gui_legend_report" spriteType = "GFX_013_legend_report" position = { x = 190 y = 673 } scale = 0.56 alwaysTransparent = yes }
+		instantTextBoxType = { name = "natural_disaster_gui_legend_report_label" position = { x = 211 y = 674 } font = "hoi_16mbs" text = "natural_disaster.gui.legend.report" format = left maxWidth = 42 maxHeight = 18 fixedsize = yes }
+		iconType = { name = "natural_disaster_gui_legend_aftermath" spriteType = "GFX_013_legend_aftermath" position = { x = 255 y = 673 } scale = 0.28 alwaysTransparent = yes }
+		instantTextBoxType = { name = "natural_disaster_gui_legend_aftermath_label" position = { x = 276 y = 674 } font = "hoi_16mbs" text = "natural_disaster.gui.legend.aftermath" format = left maxWidth = 42 maxHeight = 18 fixedsize = yes }
+		iconType = { name = "natural_disaster_gui_legend_chain" spriteType = "GFX_013_map_marker_chain_risk" position = { x = 320 y = 673 } scale = 0.375 alwaysTransparent = yes }
+		instantTextBoxType = { name = "natural_disaster_gui_legend_chain_label" position = { x = 341 y = 674 } font = "hoi_16mbs" text = "natural_disaster.gui.legend.chain" format = left maxWidth = 42 maxHeight = 18 fixedsize = yes }
+		iconType = { name = "natural_disaster_gui_legend_closed" spriteType = "GFX_013_legend_closed" position = { x = 385 y = 673 } scale = 0.28 alwaysTransparent = yes }
+		instantTextBoxType = { name = "natural_disaster_gui_legend_closed_label" position = { x = 406 y = 674 } font = "hoi_16mbs" text = "natural_disaster.gui.legend.closed" format = left maxWidth = 42 maxHeight = 18 fixedsize = yes }
+		iconType = { name = "natural_disaster_gui_legend_relief" spriteType = "GFX_013_foreign_relief_badge" position = { x = 450 y = 673 } scale = 0.375 alwaysTransparent = yes }
+		instantTextBoxType = { name = "natural_disaster_gui_legend_relief_label" position = { x = 471 y = 674 } font = "hoi_16mbs" text = "natural_disaster.gui.legend.relief" format = left maxWidth = 42 maxHeight = 18 fixedsize = yes }
+		iconType = { name = "natural_disaster_gui_legend_blocked" spriteType = "GFX_013_legend_blocked" position = { x = 515 y = 673 } scale = 0.56 alwaysTransparent = yes }
+		instantTextBoxType = { name = "natural_disaster_gui_legend_blocked_label" position = { x = 536 y = 674 } font = "hoi_16mbs" text = "natural_disaster.gui.legend.blocked" format = left maxWidth = 42 maxHeight = 18 fixedsize = yes }
+
+		# --- Severity strip: five stops over the nine painted swatches ------
+		instantTextBoxType = { name = "natural_disaster_gui_severity_caption" position = { x = 642 y = 642 } font = "hoi_16mbs" text = "natural_disaster.gui.severity_scale" format = left maxWidth = 200 maxHeight = 18 fixedsize = yes pdx_tooltip = "natural_disaster.gui.severity_scale.tt" }
+		instantTextBoxType = { name = "natural_disaster_gui_severity_label_local" position = { x = 618 y = 663 } font = "hoi_16mbs" text = "natural_disaster.severity.local" format = center vertical_alignment = center maxWidth = 84 maxHeight = 34 fixedsize = yes }
+		instantTextBoxType = { name = "natural_disaster_gui_severity_label_severe" position = { x = 706 y = 663 } font = "hoi_16mbs" text = "natural_disaster.severity.severe" format = center vertical_alignment = center maxWidth = 84 maxHeight = 34 fixedsize = yes }
+		instantTextBoxType = { name = "natural_disaster_gui_severity_label_regional" position = { x = 796 y = 663 } font = "hoi_16mbs" text = "natural_disaster.severity.regional" format = center vertical_alignment = center maxWidth = 84 maxHeight = 34 fixedsize = yes }
+		instantTextBoxType = { name = "natural_disaster_gui_severity_label_catastrophic" position = { x = 886 y = 663 } font = "hoi_16mbs" text = "natural_disaster.severity.catastrophic" format = center vertical_alignment = center maxWidth = 84 maxHeight = 34 fixedsize = yes }
+		instantTextBoxType = { name = "natural_disaster_gui_severity_label_abnormal" position = { x = 978 y = 663 } font = "hoi_16mbs" text = "natural_disaster.severity.abnormal" format = center vertical_alignment = center maxWidth = 84 maxHeight = 34 fixedsize = yes }
+		iconType = { name = "natural_disaster_gui_severity_marker_local" spriteType = "GFX_013_map_marker_impact" position = { x = 649 y = 699 } scale = 0.45 alwaysTransparent = yes }
+		iconType = { name = "natural_disaster_gui_severity_marker_severe" spriteType = "GFX_013_map_marker_impact" position = { x = 737 y = 699 } scale = 0.45 alwaysTransparent = yes }
+		iconType = { name = "natural_disaster_gui_severity_marker_regional" spriteType = "GFX_013_map_marker_impact" position = { x = 827 y = 699 } scale = 0.45 alwaysTransparent = yes }
+		iconType = { name = "natural_disaster_gui_severity_marker_catastrophic" spriteType = "GFX_013_map_marker_impact" position = { x = 917 y = 699 } scale = 0.45 alwaysTransparent = yes }
+		iconType = { name = "natural_disaster_gui_severity_marker_abnormal" spriteType = "GFX_013_map_marker_impact" position = { x = 1010 y = 699 } scale = 0.45 alwaysTransparent = yes }
 	}
 }

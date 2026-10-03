@@ -1137,24 +1137,12 @@ defined_text = {
 		localization_key = natural_disaster.gui.path_queue.dormant
 	}
 	text = {
-		trigger = { check_variable = { natural_disaster_gui_state_entries^num > 4 } }
-		localization_key = natural_disaster.gui.path_queue.5
-	}
-	text = {
-		trigger = { check_variable = { natural_disaster_gui_state_entries^num > 3 } }
-		localization_key = natural_disaster.gui.path_queue.4
-	}
-	text = {
-		trigger = { check_variable = { natural_disaster_gui_state_entries^num > 2 } }
-		localization_key = natural_disaster.gui.path_queue.3
-	}
-	text = {
-		trigger = { check_variable = { natural_disaster_gui_state_entries^num > 1 } }
-		localization_key = natural_disaster.gui.path_queue.2
+		trigger = { check_variable = { natural_disaster_gui_state_entries^num > constant:natural_disaster_gui.card_limit } }
+		localization_key = natural_disaster.gui.path_queue.more
 	}
 	text = {
 		trigger = { check_variable = { natural_disaster_gui_state_entries^num > 0 } }
-		localization_key = natural_disaster.gui.path_queue.1
+		localization_key = natural_disaster.gui.path_queue.all
 	}
 	text = {
 		trigger = { always = yes }
@@ -1189,6 +1177,15 @@ defined_text = {
 	text = { trigger = { natural_disaster_gui_selected_uses_meteor_layer = yes } localization_key = natural_disaster.gui.domain.skyfall }
 	text = { trigger = { natural_disaster_gui_selected_uses_storm_layer = yes } localization_key = natural_disaster.gui.domain.storm }
 	text = { localization_key = natural_disaster.gui.domain.unresolved }
+}
+
+defined_text = {
+	name = GetNaturalDisasterGuiMotionButton
+	text = {
+		trigger = { has_country_flag = natural_disaster_animations_disabled }
+		localization_key = natural_disaster.gui.toggle_animation.off
+	}
+	text = { localization_key = natural_disaster.gui.toggle_animation.on }
 }
 
 defined_text = {
@@ -1380,18 +1377,134 @@ defined_text = {
 	text = { localization_key = natural_disaster.family.unknown }
 }
 
+# Physical hazard class of the selected record, resolved from its family so a
+# forecast record reads correctly before its warning profile stores a group.
+# Abnormal families report the physical hazard they carry.
 defined_text = {
-	name = GetNaturalDisasterGuiSelectedFamilyGroup
-	text = { trigger = { check_variable = { natural_disaster_gui_family_group_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family_group.seismic } } localization_key = natural_disaster.family_group.seismic }
-	text = { trigger = { check_variable = { natural_disaster_gui_family_group_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family_group.water_coastal } } localization_key = natural_disaster.family_group.water_coastal }
-	text = { trigger = { check_variable = { natural_disaster_gui_family_group_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family_group.fire_drought } } localization_key = natural_disaster.family_group.fire_drought }
-	text = { trigger = { check_variable = { natural_disaster_gui_family_group_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family_group.winter_temperature } } localization_key = natural_disaster.family_group.winter_temperature }
-	text = { trigger = { check_variable = { natural_disaster_gui_family_group_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family_group.storm_weather } } localization_key = natural_disaster.family_group.storm_weather }
-	text = { trigger = { check_variable = { natural_disaster_gui_family_group_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family_group.mass_movement } } localization_key = natural_disaster.family_group.mass_movement }
-	text = { trigger = { check_variable = { natural_disaster_gui_family_group_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family_group.volcanic_ash } } localization_key = natural_disaster.family_group.volcanic_ash }
-	text = { trigger = { check_variable = { natural_disaster_gui_family_group_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family_group.dust_sand } } localization_key = natural_disaster.family_group.dust_sand }
-	text = { trigger = { check_variable = { natural_disaster_gui_family_group_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family_group.abnormal } } localization_key = natural_disaster.family_group.abnormal }
-	text = { localization_key = natural_disaster.family_group.unclassified }
+	name = GetNaturalDisasterGuiSelectedHazardClass
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { natural_disaster_gui_family_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family.earthquake }
+				check_variable = { natural_disaster_gui_family_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family.whole_earth_rupture }
+			}
+		}
+		localization_key = natural_disaster.gui.hazard.seismic
+	}
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { natural_disaster_gui_family_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family.flood }
+				check_variable = { natural_disaster_gui_family_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family.tsunami }
+				check_variable = { natural_disaster_gui_family_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family.storm_surge }
+			}
+		}
+		localization_key = natural_disaster.gui.hazard.water_coastal
+	}
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { natural_disaster_gui_family_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family.tropical_cyclone }
+				check_variable = { natural_disaster_gui_family_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family.extreme_wind }
+				check_variable = { natural_disaster_gui_family_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family.tornado_outbreak }
+				check_variable = { natural_disaster_gui_family_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family.thunderstorm }
+				check_variable = { natural_disaster_gui_family_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family.hailstorm }
+				check_variable = { natural_disaster_gui_family_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family.moving_storm_corridor }
+			}
+		}
+		localization_key = natural_disaster.gui.hazard.storm_weather
+	}
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { natural_disaster_gui_family_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family.blizzard }
+				check_variable = { natural_disaster_gui_family_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family.cold_wave }
+				check_variable = { natural_disaster_gui_family_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family.heat_wave }
+			}
+		}
+		localization_key = natural_disaster.gui.hazard.winter_temperature
+	}
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { natural_disaster_gui_family_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family.drought }
+				check_variable = { natural_disaster_gui_family_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family.wildfire }
+			}
+		}
+		localization_key = natural_disaster.gui.hazard.fire_drought
+	}
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { natural_disaster_gui_family_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family.dust_and_sandstorm }
+			}
+		}
+		localization_key = natural_disaster.gui.hazard.dust_sand
+	}
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { natural_disaster_gui_family_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family.dry_mass_movement }
+				check_variable = { natural_disaster_gui_family_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family.wet_mass_movement }
+			}
+		}
+		localization_key = natural_disaster.gui.hazard.mass_movement
+	}
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { natural_disaster_gui_family_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family.volcanic_eruption }
+				check_variable = { natural_disaster_gui_family_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family.ashfall }
+				check_variable = { natural_disaster_gui_family_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family.lahar }
+				check_variable = { natural_disaster_gui_family_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family.massive_eruption }
+			}
+		}
+		localization_key = natural_disaster.gui.hazard.volcanic_ash
+	}
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { natural_disaster_gui_family_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family.meteor_impact }
+				check_variable = { natural_disaster_gui_family_entries^natural_disaster_gui_selected_index = constant:natural_disaster_family.meteor_shower }
+			}
+		}
+		localization_key = natural_disaster.gui.hazard.skyfall
+	}
+	text = { localization_key = natural_disaster.gui.hazard.unclassified }
+}
+
+defined_text = {
+	name = GetNaturalDisasterGuiSelectedImpactLine
+	text = {
+		trigger = { check_variable = { natural_disaster_gui_impact_date_entries^natural_disaster_gui_selected_index > 0 } }
+		localization_key = natural_disaster.gui.impact_line.struck
+	}
+	text = {
+		trigger = { check_variable = { natural_disaster_gui_schedule_date_entries^natural_disaster_gui_selected_index > 0 } }
+		localization_key = natural_disaster.gui.impact_line.due
+	}
+	text = { localization_key = natural_disaster.gui.impact_line.none }
+}
+
+defined_text = {
+	name = GetNaturalDisasterGuiSelectedPhase
+	text = {
+		trigger = { check_variable = { natural_disaster_gui_phase_entries^natural_disaster_gui_selected_index = constant:natural_disaster_phase.early_rescue } }
+		localization_key = natural_disaster.phase.early_rescue
+	}
+	text = {
+		trigger = { check_variable = { natural_disaster_gui_phase_entries^natural_disaster_gui_selected_index = constant:natural_disaster_phase.middle_stabilization } }
+		localization_key = natural_disaster.phase.middle_stabilization
+	}
+	text = {
+		trigger = { check_variable = { natural_disaster_gui_phase_entries^natural_disaster_gui_selected_index = constant:natural_disaster_phase.late_reconstruction } }
+		localization_key = natural_disaster.phase.late_reconstruction
+	}
+	text = {
+		trigger = { check_variable = { natural_disaster_gui_phase_entries^natural_disaster_gui_selected_index = constant:natural_disaster_phase.closed } }
+		localization_key = natural_disaster.phase.closed
+	}
+	text = { localization_key = natural_disaster.gui.phase.not_started }
 }
 
 defined_text = {
@@ -2797,7 +2910,7 @@ defined_text = {
 		trigger = { check_variable = { natural_disaster_gui_has_linked_state_entries^natural_disaster_gui_selected_index > 0 } }
 		localization_key = natural_disaster.gui.linked_state.known
 	}
-	text = { localization_key = natural_disaster.linked_state.none }
+	text = { localization_key = natural_disaster.gui.linked_state.none }
 }
 
 defined_text = {
