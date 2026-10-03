@@ -1,0 +1,390 @@
+# ============================================================================
+# CHAOS REDUX - FAMINE OWNER ADAPTERS
+# ============================================================================
+# State-local food and environmental aftermath adapters. Each public helper
+# accepts only an owner-proven food receipt and forwards it to a famine-only
+# pressure operation. These helpers never set a flight channel, create a
+# cohort, debit population, or record route deaths.
+#
+# The owner must provide all proof fields named by
+# famine_validate_state_local_food_receipt_exact. Existing hazard callers that
+# expose only an applied death amount remain intentionally blocked until their
+# owner supplies the missing state, food, environment, transport, policy,
+# actor, generation, revision, and request identity facts.
+# ============================================================================
+
+# STATE scope. Publish a versioned, read-only food-safety projection for a
+# bounded migration destination or reception-capacity consumer. An untracked
+# state fails closed; this effect never initializes famine state or registers
+# it in the famine scheduler.
+famine_publish_migration_food_safety = {
+	set_temp_variable = { famine_to_migration_food_safety_publish_result = constant:humanitarian_runtime.zero }
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			has_variable = famine_food_stage
+			has_variable = famine_food_pressure
+			has_variable = famine_component_transport
+			has_variable = famine_component_governance
+			has_variable = famine_component_production
+		}
+		set_variable = { famine_to_migration_food_safety_schema_version = constant:famine_to_migration_food_safety.schema_version }
+		set_variable = { famine_to_migration_food_safety_proven = constant:humanitarian_runtime.one }
+		if = { limit = { NOT = { has_variable = famine_to_migration_food_safety_generation } } set_variable = { famine_to_migration_food_safety_generation = constant:humanitarian_runtime.zero } }
+		if = { limit = { NOT = { has_variable = famine_to_migration_food_safety_revision } } set_variable = { famine_to_migration_food_safety_revision = constant:humanitarian_runtime.zero } }
+		add_to_variable = { famine_to_migration_food_safety_generation = constant:humanitarian_runtime.one }
+		add_to_variable = { famine_to_migration_food_safety_revision = constant:humanitarian_runtime.one }
+		set_variable = { famine_to_migration_food_stage = famine_food_stage }
+		set_variable = { famine_to_migration_food_pressure = famine_food_pressure }
+		set_variable = { famine_to_migration_food_exposure_days = constant:humanitarian_runtime.zero }
+		set_variable = { famine_to_migration_food_incident_count = constant:humanitarian_runtime.zero }
+		if = { limit = { has_variable = famine_food_exposure_days } set_variable = { famine_to_migration_food_exposure_days = famine_food_exposure_days } }
+		if = { limit = { has_variable = famine_food_incident_count } set_variable = { famine_to_migration_food_incident_count = famine_food_incident_count } }
+		set_variable = { famine_to_migration_transport_component = famine_component_transport }
+		set_variable = { famine_to_migration_governance_component = famine_component_governance }
+		set_variable = { famine_to_migration_production_component = famine_component_production }
+		set_temp_variable = { famine_to_migration_food_safety_publish_result = constant:humanitarian_runtime.one }
+	}
+	else = { famine_invalidate_migration_food_safety = yes }
+}
+
+famine_invalidate_migration_food_safety = {
+	set_variable = { famine_to_migration_food_safety_proven = constant:humanitarian_runtime.zero }
+	clear_variable = famine_to_migration_food_stage
+	clear_variable = famine_to_migration_food_pressure
+	clear_variable = famine_to_migration_food_exposure_days
+	clear_variable = famine_to_migration_food_incident_count
+	clear_variable = famine_to_migration_transport_component
+	clear_variable = famine_to_migration_governance_component
+	clear_variable = famine_to_migration_production_component
+	migration_mark_reception_capacity_dirty_if_candidate = yes
+}
+
+# STATE scope. Validate one exact state-local food receipt before a source
+# adapter is allowed to submit famine pressure. Proof values are caller-owned
+# and are never inferred from a death amount, modifier, country flag, or event
+# id. The actor target is required so a numeric proof token cannot stand in for
+# an unidentified country.
+famine_validate_state_local_food_receipt_exact = {
+	set_temp_variable = { famine_adapter_contract_valid = constant:humanitarian_runtime.zero }
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			check_variable = { famine_adapter_state_proven > constant:humanitarian_runtime.zero }
+			check_variable = { var = famine_adapter_state_proven value = THIS.id compare = equals }
+			check_variable = { famine_adapter_food_proven > constant:humanitarian_runtime.zero }
+			check_variable = { famine_adapter_environment_proven > constant:humanitarian_runtime.zero }
+			check_variable = { famine_adapter_transport_proven > constant:humanitarian_runtime.zero }
+			check_variable = { famine_adapter_policy_proven > constant:humanitarian_runtime.zero }
+			check_variable = { famine_adapter_actor_proven > constant:humanitarian_runtime.zero }
+			check_variable = { famine_adapter_cause_proven > constant:humanitarian_runtime.zero }
+			check_variable = { famine_adapter_source_proven > constant:humanitarian_runtime.zero }
+			check_variable = { famine_adapter_amount > constant:humanitarian_population.zero }
+			check_variable = { famine_adapter_generation > constant:humanitarian_runtime.zero }
+			check_variable = { famine_adapter_revision > constant:humanitarian_runtime.zero }
+			check_variable = { famine_adapter_request_id > constant:humanitarian_runtime.zero }
+			has_event_target = famine_adapter_actor
+			event_target:famine_adapter_actor = { exists = yes }
+			check_variable = { var = famine_adapter_actor_proven value = event_target:famine_adapter_actor.id compare = equals }
+		}
+		set_temp_variable = { famine_adapter_contract_valid = constant:humanitarian_runtime.one }
+	}
+}
+
+# STATE scope. Consume the one-shot local food receipt envelope after every
+# source-specific attempt. Temporary proof values are cleared explicitly so a
+# later adapter call in the same parent effect block cannot inherit a stale
+# state, actor, amount, generation, revision, or request identity. The regular
+# actor event target remains chain-local and is cleared by the engine.
+famine_clear_state_local_food_receipt = {
+	set_temp_variable = { famine_adapter_state_proven = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_adapter_food_proven = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_adapter_environment_proven = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_adapter_transport_proven = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_adapter_policy_proven = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_adapter_actor_proven = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_adapter_cause_proven = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_adapter_source_proven = constant:humanitarian_pressure_source.unknown }
+	set_temp_variable = { famine_adapter_amount = constant:humanitarian_population.zero }
+	set_temp_variable = { famine_adapter_generation = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_adapter_revision = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_adapter_request_id = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_adapter_contract_valid = constant:humanitarian_runtime.zero }
+}
+
+# STATE scope. These direct-death helpers are famine-owned only for an
+# unapplied occupation-repression or forced-labor cause that also carries the
+# complete famine proof bundle. They never reinterpret an existing Deaths
+# debit and never accept a migration route-death amount.
+famine_apply_related_state_deaths_exact = {
+	set_temp_variable = { famine_related_deaths_applied = constant:humanitarian_population.zero }
+	set_temp_variable = { famine_adapter_amount = humanitarian_related_deaths_requested }
+	famine_validate_state_local_food_receipt_exact = yes
+	if = {
+		limit = {
+			check_variable = { humanitarian_related_deaths_request_proven > constant:humanitarian_runtime.zero }
+			check_variable = { humanitarian_related_deaths_requested > constant:humanitarian_population.zero }
+			check_variable = { famine_adapter_contract_valid = constant:humanitarian_runtime.one }
+			OR = {
+				check_variable = { humanitarian_related_deaths_reason = constant:chaos_meter_deaths_reason.occupation_repression }
+				check_variable = { humanitarian_related_deaths_reason = constant:chaos_meter_deaths_reason.forced_labor }
+			}
+		}
+		set_temp_variable = { state_civilian_population_loss_requested = humanitarian_related_deaths_requested }
+		set_temp_variable = { state_civilian_population_loss_reason = humanitarian_related_deaths_reason }
+		set_temp_variable = { state_civilian_population_loss_log_deaths = constant:chaos_meter_deaths.one }
+		set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
+		set_temp_variable = { state_civilian_population_loss_has_target_country = constant:chaos_meter_deaths.one }
+		set_temp_variable = { state_civilian_population_loss_contract_supplied = constant:chaos_meter_deaths.one }
+		if = {
+			limit = { check_variable = { humanitarian_related_deaths_minimum_remaining > constant:humanitarian_population.zero } }
+			set_temp_variable = { state_civilian_population_loss_minimum_remaining = humanitarian_related_deaths_minimum_remaining }
+		}
+		apply_exact_state_civilian_population_loss = yes
+		set_temp_variable = { famine_related_deaths_applied = state_civilian_population_loss_applied }
+	}
+	set_temp_variable = { humanitarian_related_deaths_request_proven = constant:humanitarian_runtime.zero }
+	set_temp_variable = { humanitarian_related_deaths_requested = constant:humanitarian_population.zero }
+	set_temp_variable = { humanitarian_related_deaths_minimum_remaining = constant:humanitarian_population.zero }
+	set_temp_variable = { humanitarian_related_deaths_reason = constant:chaos_meter_deaths_reason.unknown }
+	famine_clear_state_local_food_receipt = yes
+}
+
+famine_apply_occupation_repression_deaths_exact = {
+	set_temp_variable = { humanitarian_related_deaths_reason = constant:chaos_meter_deaths_reason.occupation_repression }
+	famine_apply_related_state_deaths_exact = yes
+}
+
+famine_apply_forced_labor_deaths_exact = {
+	set_temp_variable = { humanitarian_related_deaths_reason = constant:chaos_meter_deaths_reason.forced_labor }
+	famine_apply_related_state_deaths_exact = yes
+}
+
+# STATE scope. Air Cleanliness owns the direct civilian loss. This adapter
+# registers only the separately proven food consequence. Fallout and Air
+# Cleanliness use separate famine source APIs; neither can create movement.
+famine_adapt_air_winter_state = {
+	set_temp_variable = { famine_adapter_result = constant:humanitarian_runtime.zero }
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			check_variable = { state_civilian_population_loss_applied > constant:humanitarian_population.zero }
+		}
+		set_temp_variable = { famine_adapter_amount = state_civilian_population_loss_applied }
+		famine_validate_state_local_food_receipt_exact = yes
+		if = {
+			limit = { check_variable = { famine_adapter_contract_valid = constant:humanitarian_runtime.one } }
+			set_temp_variable = { famine_pressure_request_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { famine_pressure_request_amount = famine_adapter_amount }
+			set_temp_variable = { famine_pressure_request_actor_proven = famine_adapter_actor_proven }
+			if = {
+				limit = { has_dynamic_modifier = { modifier = nuclear_fallout_state } }
+				famine_request_fallout_pressure = yes
+			}
+			else = {
+				famine_request_air_cleanliness_pressure = yes
+			}
+			set_temp_variable = { famine_adapter_result = famine_pressure_request_result }
+		}
+	}
+	famine_clear_state_local_food_receipt = yes
+}
+
+# STATE scope. Camp and genocide owners have already applied the exact Deaths
+# amount. Site type selects the famine source only after the owner supplies
+# the complete state-local proof bundle; site flags and death totals alone are
+# not accepted.
+famine_adapt_camp_state = {
+	set_temp_variable = { famine_adapter_result = constant:humanitarian_runtime.zero }
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			has_variable = camp_site_last_month_deaths
+			check_variable = { camp_site_last_month_deaths > constant:humanitarian_population.zero }
+			has_variable = genocide_responsible_country
+			var:genocide_responsible_country = { exists = yes }
+		}
+		set_temp_variable = { famine_adapter_amount = camp_site_last_month_deaths }
+		famine_validate_state_local_food_receipt_exact = yes
+		if = {
+			limit = { check_variable = { famine_adapter_contract_valid = constant:humanitarian_runtime.one } }
+			set_temp_variable = { famine_pressure_request_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { famine_pressure_request_amount = famine_adapter_amount }
+			set_temp_variable = { famine_pressure_request_actor_proven = famine_adapter_actor_proven }
+			if = {
+				limit = { has_variable = camp_state_site_type }
+				if = {
+					limit = { check_variable = { camp_state_site_type = constant:camp_rework_site_type.gulag } }
+					famine_request_gulag_pressure = yes
+				}
+				else_if = {
+					limit = { check_variable = { camp_state_site_type = constant:camp_rework_site_type.expanded_labor } }
+					famine_request_forced_labor_pressure = yes
+				}
+				else = {
+					famine_request_camp_pressure = yes
+				}
+			}
+			else = {
+				famine_request_camp_pressure = yes
+			}
+			set_temp_variable = { famine_adapter_result = famine_pressure_request_result }
+		}
+	}
+	famine_clear_state_local_food_receipt = yes
+}
+
+# STATE scope. A resolved CBRN operation exposes an exact state and actor, but
+# the owner must still submit the food/environment/transport/policy proof
+# bundle for the delayed famine consequence. The adapter never repeats CBRN
+# deaths and never opens a migration lane.
+famine_adapt_chemical_state = {
+	set_temp_variable = { famine_adapter_result = constant:humanitarian_runtime.zero }
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			has_variable = cbrn_occupation_last_civilian_deaths
+			check_variable = { cbrn_occupation_last_civilian_deaths > constant:humanitarian_population.zero }
+			has_variable = cbrn_occupation_responsible_country
+			var:cbrn_occupation_responsible_country = { exists = yes }
+		}
+		set_temp_variable = { famine_adapter_amount = cbrn_occupation_last_civilian_deaths }
+		famine_validate_state_local_food_receipt_exact = yes
+		if = {
+			limit = { check_variable = { famine_adapter_contract_valid = constant:humanitarian_runtime.one } }
+			set_temp_variable = { famine_pressure_request_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { famine_pressure_request_amount = famine_adapter_amount }
+			set_temp_variable = { famine_pressure_request_actor_proven = famine_adapter_actor_proven }
+			famine_request_chemical_aftermath_pressure = yes
+			set_temp_variable = { famine_adapter_result = famine_pressure_request_result }
+		}
+	}
+	famine_clear_state_local_food_receipt = yes
+}
+
+# STATE scope. Black Plague owns the established outbreak and exact loss.
+# Nonhuman/rat provenance is excluded before the famine receipt; outbreak
+# deaths are never treated as live movement.
+famine_adapt_black_plague_state = {
+	set_temp_variable = { famine_adapter_result = constant:humanitarian_runtime.zero }
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			black_plague_state_is_established = yes
+			check_variable = { state_civilian_population_loss_applied > constant:humanitarian_population.zero }
+			OR = {
+				NOT = { has_variable = black_plague_provenance }
+				NOT = { check_variable = { black_plague_provenance = constant:black_plague_provenance.rat_occupation } }
+			}
+		}
+		set_temp_variable = { famine_adapter_amount = state_civilian_population_loss_applied }
+		famine_validate_state_local_food_receipt_exact = yes
+		if = {
+			limit = { check_variable = { famine_adapter_contract_valid = constant:humanitarian_runtime.one } }
+			set_temp_variable = { famine_pressure_request_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { famine_pressure_request_amount = famine_adapter_amount }
+			set_temp_variable = { famine_pressure_request_actor_proven = famine_adapter_actor_proven }
+			famine_request_outbreak_pressure = yes
+			set_temp_variable = { famine_adapter_result = famine_pressure_request_result }
+		}
+	}
+	famine_clear_state_local_food_receipt = yes
+}
+
+# STATE scope. Event 013 owns the resolved disaster and exact civilian loss.
+# This adapter registers a separately proven food consequence only; it does
+# not create evacuation, displacement, or route deaths.
+famine_adapt_natural_disaster_state = {
+	set_temp_variable = { famine_adapter_result = constant:humanitarian_runtime.zero }
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			has_variable = natural_disaster_last_deaths
+			check_variable = { natural_disaster_last_deaths > constant:humanitarian_population.zero }
+		}
+		set_temp_variable = { famine_adapter_amount = natural_disaster_last_deaths }
+		famine_validate_state_local_food_receipt_exact = yes
+		if = {
+			limit = { check_variable = { famine_adapter_contract_valid = constant:humanitarian_runtime.one } }
+			set_temp_variable = { famine_pressure_request_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { famine_pressure_request_amount = famine_adapter_amount }
+			set_temp_variable = { famine_pressure_request_actor_proven = famine_adapter_actor_proven }
+			famine_request_disaster_pressure = yes
+			set_temp_variable = { famine_adapter_result = famine_pressure_request_result }
+		}
+	}
+	famine_clear_state_local_food_receipt = yes
+}
+
+# COUNTRY scope. Condemnation remains a downstream evidence owner, but famine
+# actions must still provide the exact state-local food/environment/transport/
+# policy/actor receipt before this wrapper can emit a famine cause.
+famine_validate_condemnation_receipt_exact = {
+	set_temp_variable = { famine_condemnation_valid = constant:humanitarian_runtime.zero }
+	if = {
+		limit = {
+			has_event_target = famine_condemnation_state
+			event_target:famine_condemnation_state = { humanitarian_state_is_valid = yes }
+			has_event_target = famine_condemnation_actor
+			event_target:famine_condemnation_actor = { exists = yes }
+			check_variable = { famine_condemnation_state_proven > constant:humanitarian_runtime.zero }
+			check_variable = { famine_condemnation_food_proven > constant:humanitarian_runtime.zero }
+			check_variable = { famine_condemnation_environment_proven > constant:humanitarian_runtime.zero }
+			check_variable = { famine_condemnation_transport_proven > constant:humanitarian_runtime.zero }
+			check_variable = { famine_condemnation_policy_proven > constant:humanitarian_runtime.zero }
+			check_variable = { famine_condemnation_actor_proven > constant:humanitarian_runtime.zero }
+			check_variable = { famine_condemnation_cause_proven > constant:humanitarian_runtime.zero }
+			check_variable = { famine_condemnation_people_amount > constant:humanitarian_population.zero }
+			check_variable = { famine_condemnation_generation > constant:humanitarian_runtime.zero }
+			check_variable = { famine_condemnation_revision > constant:humanitarian_runtime.zero }
+			check_variable = { famine_condemnation_request_id > constant:humanitarian_runtime.zero }
+		}
+		set_temp_variable = { famine_condemnation_valid = constant:humanitarian_runtime.one }
+	}
+}
+
+famine_condemn_deliberate_starvation = {
+	set_temp_variable = { famine_condemnation_result = constant:humanitarian_runtime.zero }
+	famine_validate_condemnation_receipt_exact = yes
+	if = {
+		limit = { check_variable = { famine_condemnation_valid = constant:humanitarian_runtime.one } }
+		set_temp_variable = { condemnation_source_type = constant:condemnation_source.atrocity }
+		set_temp_variable = { condemnation_base_gain = constant:famine_condemnation_gain.deliberate_starvation }
+		set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+		set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.mass_death }
+		set_temp_variable = { condemnation_context_type = constant:condemnation_context.deliberate_starvation }
+		condemnation_add_source = yes
+		set_temp_variable = { famine_condemnation_result = constant:humanitarian_runtime.one }
+	}
+}
+
+famine_condemn_relief_obstruction = {
+	set_temp_variable = { famine_condemnation_result = constant:humanitarian_runtime.zero }
+	famine_validate_condemnation_receipt_exact = yes
+	if = {
+		limit = { check_variable = { famine_condemnation_valid = constant:humanitarian_runtime.one } }
+		set_temp_variable = { condemnation_source_type = constant:condemnation_source.atrocity }
+		set_temp_variable = { condemnation_base_gain = constant:famine_condemnation_gain.relief_obstruction }
+		set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+		set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.major }
+		set_temp_variable = { condemnation_context_type = constant:condemnation_context.relief_obstruction }
+		condemnation_add_source = yes
+		set_temp_variable = { famine_condemnation_result = constant:humanitarian_runtime.one }
+	}
+}
+
+famine_condemn_concealment = {
+	set_temp_variable = { famine_condemnation_result = constant:humanitarian_runtime.zero }
+	famine_validate_condemnation_receipt_exact = yes
+	if = {
+		limit = { check_variable = { famine_condemnation_valid = constant:humanitarian_runtime.one } }
+		set_temp_variable = { condemnation_source_type = constant:condemnation_source.coverup }
+		set_temp_variable = { condemnation_base_gain = constant:famine_condemnation_gain.concealment }
+		set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.hidden }
+		set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.major }
+		set_temp_variable = { condemnation_context_type = constant:condemnation_context.concealment_operation }
+		condemnation_add_source = yes
+		set_country_flag = famine_achievement_blockade_concealed_mortality
+		set_temp_variable = { famine_condemnation_result = constant:humanitarian_runtime.one }
+	}
+}

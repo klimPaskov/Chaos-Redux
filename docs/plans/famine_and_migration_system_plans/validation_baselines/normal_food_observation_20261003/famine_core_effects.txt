@@ -1,0 +1,2924 @@
+# ============================================================================
+# CHAOS REDUX - FAMINE CORE EFFECTS
+# ============================================================================
+# Food-security state, historical profiles, reserves, blockade proof, and famine mortality.
+# This file never creates a migration cohort or performs a civilian transfer.
+# ============================================================================
+
+@FAMINE_NON_DAMAGED_MINIMUM = 0
+@FAMINE_STATE_SOVIET_KIEV = 193
+@FAMINE_STATE_SOVIET_WESTERN_KIEV = 202
+@FAMINE_STATE_SOVIET_KHARKOV = 221
+@FAMINE_STATE_SOVIET_ODESSA = 192
+@FAMINE_STATE_SOVIET_STALINO = 227
+@FAMINE_STATE_SOVIET_CAUCASUS_MOUNTAINS = 233
+@FAMINE_STATE_SOVIET_KAZAKHSTAN_NORTH = 583
+@FAMINE_STATE_SOVIET_KAZAKHSTAN_CENTRAL = 589
+@FAMINE_STATE_SOVIET_KAZAKHSTAN_SOUTH = 590
+@FAMINE_STATE_SOVIET_ROSTOV = 218
+@FAMINE_STATE_SOVIET_SARATOV = 239
+@FAMINE_STATE_HENAN = 607
+@FAMINE_STATE_EAST_BENGAL = 430
+@FAMINE_STATE_WEST_BENGAL = 431
+@FAMINE_STATE_VIETNAM_TONKIN = 671
+@FAMINE_STATE_VIETNAM_COCHINCHINA = 1066
+@FAMINE_STATE_JAVA_WEST = 335
+@FAMINE_STATE_JAVA_EAST = 1051
+@FAMINE_STATE_GREECE = 47
+@FAMINE_STATE_GREECE_PELOPONNESE = 186
+@FAMINE_STATE_GREECE_AEGEAN = 187
+@FAMINE_STATE_LENINGRAD = 195
+@FAMINE_STATE_HOLLAND = 7
+@FAMINE_STATE_FRIESLAND = 36
+@FAMINE_STATE_IRELAND = 113
+@FAMINE_STATE_CEARA = 935
+@FAMINE_STATE_CONGO = 295
+@FAMINE_STATE_MIDDLE_CONGO = 772
+@FAMINE_STATE_ETHIOPIA = 271
+@FAMINE_STATE_TIGRAY = 842
+@FAMINE_STATE_SPAIN_MADRID = 41
+@FAMINE_STATE_SPAIN_CATALONIA = 165
+@FAMINE_STATE_SPAIN_WESTERN_ARAGON = 166
+@FAMINE_STATE_SPAIN_VALENCIA = 167
+@FAMINE_STATE_SPAIN_MURCIA = 168
+@FAMINE_STATE_SPAIN_SEVILLA = 169
+@FAMINE_STATE_SPAIN_EXTREMADURA = 170
+@FAMINE_STATE_SPAIN_GALICIA = 171
+@FAMINE_STATE_SPAIN_NAVARRE = 172
+@FAMINE_STATE_SPAIN_GRANADA = 173
+@FAMINE_STATE_SPAIN_LEON = 174
+@FAMINE_STATE_SPAIN_CIUDAD_REAL = 175
+@FAMINE_STATE_SPAIN_BURGOS = 176
+@FAMINE_STATE_SPAIN_BALEARIC_ISLANDS = 177
+@FAMINE_STATE_SPAIN_CANARY_ISLANDS = 178
+@FAMINE_STATE_SPAIN_SALAMANCA = 788
+@FAMINE_STATE_SPAIN_CORDOBA = 789
+@FAMINE_STATE_SPAIN_ASTURIAS = 790
+@FAMINE_STATE_SPAIN_VALLADOLID = 791
+@FAMINE_STATE_SPAIN_BASQUE_COUNTRY = 792
+@FAMINE_STATE_SPAIN_GUADALAJARA = 793
+@FAMINE_STATE_SPAIN_EASTERN_ARAGON = 794
+
+
+# Historical profile candidates are registered only after the profile resolver
+# proves the audited map/date/control/causal contract. The scheduler below
+# iterates this sparse state array; it never discovers profiles by scanning map
+# states.
+famine_register_historical_profile_candidate_state = {
+	humanitarian_initialize_runtime = yes
+	set_temp_variable = { famine_profile_candidate_registry_result = constant:humanitarian_runtime.zero }
+	if = {
+		limit = { famine_historical_profile_context_is_resolved = yes }
+		if = {
+			limit = {
+				NOT = {
+					is_in_array = {
+						array = global.famine_historical_profile_candidate_states
+						value = THIS
+					}
+				}
+			}
+			add_to_array = { array = global.famine_historical_profile_candidate_states value = THIS }
+			set_variable = { global.famine_historical_profile_candidate_states_count = global.famine_historical_profile_candidate_states^num }
+		}
+		set_state_flag = famine_historical_profile_candidate_active
+		set_temp_variable = { famine_profile_candidate_registry_result = constant:humanitarian_runtime.one }
+	}
+}
+
+
+famine_unregister_historical_profile_candidate_state = {
+	humanitarian_initialize_runtime = yes
+	if = {
+		limit = {
+			is_in_array = {
+				array = global.famine_historical_profile_candidate_states
+				value = THIS
+			}
+		}
+		remove_from_array = { array = global.famine_historical_profile_candidate_states value = THIS }
+		set_variable = { global.famine_historical_profile_candidate_states_count = global.famine_historical_profile_candidate_states^num }
+	}
+	clr_state_flag = famine_historical_profile_candidate_active
+}
+
+
+# A sparse, explicit map-anchor registry drives future date/control windows.
+# It is seeded only by the bounded bootstrap below or the documented nuclear
+# callback; it never discovers states with every_state or a world scan.
+famine_register_historical_memory_anchor_proof = {
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			OR = {
+				state = @FAMINE_STATE_SOVIET_KIEV
+				state = @FAMINE_STATE_SOVIET_WESTERN_KIEV
+				state = @FAMINE_STATE_SOVIET_KHARKOV
+				state = @FAMINE_STATE_SOVIET_ODESSA
+				state = @FAMINE_STATE_SOVIET_STALINO
+				state = @FAMINE_STATE_SOVIET_CAUCASUS_MOUNTAINS
+				state = @FAMINE_STATE_SOVIET_KAZAKHSTAN_NORTH
+				state = @FAMINE_STATE_SOVIET_KAZAKHSTAN_CENTRAL
+				state = @FAMINE_STATE_SOVIET_KAZAKHSTAN_SOUTH
+				state = @FAMINE_STATE_SOVIET_ROSTOV
+				state = @FAMINE_STATE_SOVIET_SARATOV
+			}
+		}
+		set_state_flag = famine_historical_memory_soviet_1932_proven
+	}
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			state = @FAMINE_STATE_IRELAND
+		}
+		set_state_flag = famine_historical_memory_ireland_proven
+	}
+}
+
+
+famine_register_historical_profile_anchor_state = {
+	humanitarian_initialize_runtime = yes
+	set_temp_variable = { famine_profile_anchor_registry_result = constant:humanitarian_runtime.zero }
+	if = {
+		limit = { humanitarian_state_is_valid = yes }
+		if = {
+			limit = {
+				NOT = {
+					is_in_array = {
+						array = global.famine_historical_profile_anchor_states
+						value = THIS
+					}
+				}
+			}
+			add_to_array = { array = global.famine_historical_profile_anchor_states value = THIS }
+			set_variable = { global.famine_historical_profile_anchor_states_count = global.famine_historical_profile_anchor_states^num }
+		}
+		set_state_flag = famine_historical_profile_anchor_active
+		# These proof flags are durable historical anchors, not live famine state.
+		# The helper is reached only through this sparse anchor lifecycle.
+		famine_register_historical_memory_anchor_proof = yes
+		set_temp_variable = { famine_profile_anchor_registry_result = constant:humanitarian_runtime.one }
+	}
+}
+
+
+famine_unregister_historical_profile_anchor_state = {
+	humanitarian_initialize_runtime = yes
+	if = {
+		limit = {
+			is_in_array = {
+				array = global.famine_historical_profile_anchor_states
+				value = THIS
+			}
+		}
+		remove_from_array = { array = global.famine_historical_profile_anchor_states value = THIS }
+		set_variable = { global.famine_historical_profile_anchor_states_count = global.famine_historical_profile_anchor_states^num }
+	}
+	# Do not clear historical memory proof here; the proof is a persistent,
+	# state-scoped anchor and is independent of live registry membership.
+	clr_state_flag = famine_historical_profile_anchor_active
+}
+
+
+famine_clear_historical_profile_context = {
+	clear_variable = famine_profile_context_id
+	clear_variable = famine_profile_production
+	clear_variable = famine_profile_transport
+	clear_variable = famine_profile_extraction
+	clear_variable = famine_profile_need
+	clear_variable = famine_profile_environment
+	clear_variable = famine_profile_vulnerability
+	clear_variable = famine_profile_governance
+	clear_variable = famine_profile_relief
+	clear_variable = famine_profile_mode
+	clear_variable = famine_historical_profile_id
+	clr_state_flag = famine_profile_context_active
+	famine_unregister_historical_profile_candidate_state = yes
+}
+
+
+# Selects a profile only from the audited map anchor and live causal gates.
+# The bootstrap supplies only the exact durable historical-memory anchor flags;
+# policy, war, food, and Air proof must already be present on live surfaces.
+famine_select_historical_profile_id = {
+	clear_variable = famine_historical_profile_id
+	famine_resolve_occupation_profile = yes
+	if = {
+		limit = {
+			OR = {
+				state = @FAMINE_STATE_SOVIET_KIEV
+				state = @FAMINE_STATE_SOVIET_WESTERN_KIEV
+				state = @FAMINE_STATE_SOVIET_KHARKOV
+				state = @FAMINE_STATE_SOVIET_ODESSA
+				state = @FAMINE_STATE_SOVIET_STALINO
+				state = @FAMINE_STATE_SOVIET_CAUCASUS_MOUNTAINS
+				state = @FAMINE_STATE_SOVIET_KAZAKHSTAN_NORTH
+				state = @FAMINE_STATE_SOVIET_KAZAKHSTAN_CENTRAL
+				state = @FAMINE_STATE_SOVIET_KAZAKHSTAN_SOUTH
+				state = @FAMINE_STATE_SOVIET_ROSTOV
+				state = @FAMINE_STATE_SOVIET_SARATOV
+			}
+			OR = { OWNER = { tag = SOV } CONTROLLER = { tag = SOV } }
+			famine_soviet_1932_memory_anchor_proven = yes
+			check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than }
+		}
+		set_variable = { famine_historical_profile_id = constant:famine_profile_id.hist_soviet_1932_memory }
+	}
+	else_if = {
+		limit = {
+			state = @FAMINE_STATE_HENAN
+			OR = { OWNER = { tag = CHI } CONTROLLER = { tag = CHI } OWNER = { tag = MAN } CONTROLLER = { tag = MAN } }
+			date > 1942.01.01
+			date < 1943.12.31
+			OR = { OWNER = { has_war = yes } CONTROLLER = { has_war = yes } has_state_flag = famine_surface_context_active }
+		}
+		set_variable = { famine_historical_profile_id = constant:famine_profile_id.hist_china_henan_1942 }
+	}
+	else_if = {
+		limit = {
+			state = @FAMINE_STATE_HENAN
+			OR = { OWNER = { tag = CHI } CONTROLLER = { tag = CHI } }
+			date > 1936.01.01
+			check_variable = { var = famine_occupation_profile value = constant:famine_occupation_profile.standard compare = greater_than_or_equals }
+			check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than }
+		}
+		set_variable = { famine_historical_profile_id = constant:famine_profile_id.hist_china_policy_famine }
+	}
+	else_if = {
+		limit = {
+			OR = { state = @FAMINE_STATE_EAST_BENGAL state = @FAMINE_STATE_WEST_BENGAL }
+			OR = { OWNER = { tag = RAJ } CONTROLLER = { tag = RAJ } OWNER = { tag = ENG } CONTROLLER = { tag = ENG } }
+			date > 1943.01.01
+			date < 1944.12.31
+			OR = { OWNER = { has_war = yes } CONTROLLER = { has_war = yes } check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } }
+		}
+		set_variable = { famine_historical_profile_id = constant:famine_profile_id.hist_bengal_1943 }
+	}
+	else_if = {
+		limit = {
+			OR = { state = @FAMINE_STATE_VIETNAM_TONKIN state = @FAMINE_STATE_VIETNAM_COCHINCHINA }
+			OR = { OWNER = { tag = FRA } CONTROLLER = { tag = FRA } OWNER = { tag = JAP } CONTROLLER = { tag = JAP } }
+			date > 1944.01.01
+			date < 1945.12.31
+			OR = { OWNER = { has_war = yes } CONTROLLER = { has_war = yes } check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } }
+		}
+		set_variable = { famine_historical_profile_id = constant:famine_profile_id.hist_vietnam_1944 }
+	}
+	else_if = {
+		limit = {
+			OR = { state = @FAMINE_STATE_JAVA_WEST state = @FAMINE_STATE_JAVA_EAST }
+			OR = { OWNER = { tag = HOL } CONTROLLER = { tag = HOL } OWNER = { tag = JAP } CONTROLLER = { tag = JAP } }
+			date > 1944.01.01
+			date < 1945.12.31
+			OR = { OWNER = { has_war = yes } CONTROLLER = { has_war = yes } check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } }
+		}
+		set_variable = { famine_historical_profile_id = constant:famine_profile_id.hist_java_1944 }
+	}
+	else_if = {
+		limit = {
+			OR = { state = @FAMINE_STATE_GREECE state = @FAMINE_STATE_GREECE_PELOPONNESE state = @FAMINE_STATE_GREECE_AEGEAN }
+			OR = { OWNER = { tag = GRE } CONTROLLER = { tag = GRE } OWNER = { tag = GER } CONTROLLER = { tag = GER } OWNER = { tag = ITA } CONTROLLER = { tag = ITA } }
+			date > 1941.01.01
+			date < 1942.12.31
+			OR = { OWNER = { has_war = yes } CONTROLLER = { has_war = yes } check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } }
+		}
+		set_variable = { famine_historical_profile_id = constant:famine_profile_id.hist_greece_1941 }
+	}
+	else_if = {
+		limit = {
+			state = @FAMINE_STATE_LENINGRAD
+			OR = { OWNER = { tag = SOV } CONTROLLER = { tag = SOV } OWNER = { tag = GER } CONTROLLER = { tag = GER } }
+			date > 1941.01.01
+			date < 1944.12.31
+			OR = { OWNER = { has_war = yes } CONTROLLER = { has_war = yes } check_variable = { var = famine_blockade_local_food_insufficient_proven value = constant:humanitarian_runtime.zero compare = greater_than } }
+		}
+		set_variable = { famine_historical_profile_id = constant:famine_profile_id.hist_leningrad_siege }
+	}
+	else_if = {
+		limit = {
+			OR = { state = @FAMINE_STATE_HOLLAND state = @FAMINE_STATE_FRIESLAND }
+			OR = { OWNER = { tag = HOL } CONTROLLER = { tag = HOL } OWNER = { tag = GER } CONTROLLER = { tag = GER } }
+			date > 1944.01.01
+			date < 1946.01.01
+			OR = { OWNER = { has_war = yes } CONTROLLER = { has_war = yes } check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } }
+		}
+		set_variable = { famine_historical_profile_id = constant:famine_profile_id.hist_dutch_hunger_winter }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				state = @FAMINE_STATE_SPAIN_MADRID
+				state = @FAMINE_STATE_SPAIN_CATALONIA
+				state = @FAMINE_STATE_SPAIN_WESTERN_ARAGON
+				state = @FAMINE_STATE_SPAIN_VALENCIA
+				state = @FAMINE_STATE_SPAIN_MURCIA
+				state = @FAMINE_STATE_SPAIN_SEVILLA
+				state = @FAMINE_STATE_SPAIN_EXTREMADURA
+				state = @FAMINE_STATE_SPAIN_GALICIA
+				state = @FAMINE_STATE_SPAIN_NAVARRE
+				state = @FAMINE_STATE_SPAIN_GRANADA
+				state = @FAMINE_STATE_SPAIN_LEON
+				state = @FAMINE_STATE_SPAIN_CIUDAD_REAL
+				state = @FAMINE_STATE_SPAIN_BURGOS
+				state = @FAMINE_STATE_SPAIN_BALEARIC_ISLANDS
+				state = @FAMINE_STATE_SPAIN_CANARY_ISLANDS
+				state = @FAMINE_STATE_SPAIN_SALAMANCA
+				state = @FAMINE_STATE_SPAIN_CORDOBA
+				state = @FAMINE_STATE_SPAIN_ASTURIAS
+				state = @FAMINE_STATE_SPAIN_VALLADOLID
+				state = @FAMINE_STATE_SPAIN_BASQUE_COUNTRY
+				state = @FAMINE_STATE_SPAIN_GUADALAJARA
+				state = @FAMINE_STATE_SPAIN_EASTERN_ARAGON
+			}
+			OR = { OWNER = { tag = SPR } CONTROLLER = { tag = SPR } }
+			date > 1939.01.01
+			date < 1943.01.01
+			OR = { OWNER = { has_war = yes } CONTROLLER = { has_war = yes } check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } }
+		}
+		set_variable = { famine_historical_profile_id = constant:famine_profile_id.hist_spain_early_1940s }
+	}
+	else_if = {
+		limit = {
+			state = @FAMINE_STATE_IRELAND
+			OR = { OWNER = { tag = IRE } CONTROLLER = { tag = IRE } OWNER = { tag = ENG } CONTROLLER = { tag = ENG } }
+			famine_ireland_memory_anchor_proven = yes
+			check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than }
+		}
+		set_variable = { famine_historical_profile_id = constant:famine_profile_id.hist_ireland_memory }
+	}
+	else_if = {
+		limit = {
+			state = @FAMINE_STATE_CEARA
+			OR = { OWNER = { tag = BRA } CONTROLLER = { tag = BRA } }
+			check_variable = { var = famine_occupation_profile value = constant:famine_occupation_profile.standard compare = greater_than }
+			check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than }
+		}
+		set_variable = { famine_historical_profile_id = constant:famine_profile_id.hist_brazil_ceara }
+	}
+	else_if = {
+		limit = {
+			OR = { state = @FAMINE_STATE_CONGO state = @FAMINE_STATE_MIDDLE_CONGO }
+			OR = { OWNER = { tag = BEL } CONTROLLER = { tag = BEL } OWNER = { tag = FRA } CONTROLLER = { tag = FRA } }
+			check_variable = { var = famine_occupation_profile value = constant:famine_occupation_profile.standard compare = greater_than }
+			check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than }
+		}
+		set_variable = { famine_historical_profile_id = constant:famine_profile_id.hist_congo_interaction }
+	}
+	else_if = {
+		limit = {
+			OR = { state = @FAMINE_STATE_ETHIOPIA state = @FAMINE_STATE_TIGRAY }
+			OR = { OWNER = { tag = ETH } CONTROLLER = { tag = ETH } OWNER = { tag = ITA } CONTROLLER = { tag = ITA } }
+			date > 1936.01.01
+			date < 1942.01.01
+			OR = { OWNER = { has_war = yes } CONTROLLER = { has_war = yes } check_variable = { var = famine_occupation_profile value = constant:famine_occupation_profile.standard compare = greater_than } }
+		}
+		set_variable = { famine_historical_profile_id = constant:famine_profile_id.hist_ethiopia_policy }
+	}
+	else_if = {
+		limit = {
+			has_state_flag = famine_food_security_active
+			OR = { has_global_flag = air_contamination_threshold_25 has_global_flag = air_contamination_threshold_50 has_global_flag = air_contamination_threshold_75 has_global_flag = air_contamination_threshold_100 has_global_flag = fallout_air_contamination_permanent_99 has_variable = air_winter_pressure has_variable = air_winter_exposure }
+			check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than }
+		}
+		set_variable = { famine_historical_profile_id = constant:famine_profile_id.hist_nuclear_winter_global }
+	}
+}
+
+
+# Bounded initialization owner. Each random_state call has one audited state
+# in both its priority and limit, so the effect never scans an open map set.
+# Spain uses the mandatory 22-state map-inspection set below; every anchor
+# still requires the live SPR owner/controller, date, and war-or-food gate.
+famine_bootstrap_historical_profile_anchors = {
+	if = {
+		limit = { NOT = { has_global_flag = famine_historical_profile_anchors_bootstrapped } }
+		random_state = { prioritize = { @FAMINE_STATE_SOVIET_KIEV } limit = { state = @FAMINE_STATE_SOVIET_KIEV } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SOVIET_WESTERN_KIEV } limit = { state = @FAMINE_STATE_SOVIET_WESTERN_KIEV } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SOVIET_KHARKOV } limit = { state = @FAMINE_STATE_SOVIET_KHARKOV } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SOVIET_ODESSA } limit = { state = @FAMINE_STATE_SOVIET_ODESSA } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SOVIET_STALINO } limit = { state = @FAMINE_STATE_SOVIET_STALINO } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SOVIET_CAUCASUS_MOUNTAINS } limit = { state = @FAMINE_STATE_SOVIET_CAUCASUS_MOUNTAINS } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SOVIET_KAZAKHSTAN_NORTH } limit = { state = @FAMINE_STATE_SOVIET_KAZAKHSTAN_NORTH } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SOVIET_KAZAKHSTAN_CENTRAL } limit = { state = @FAMINE_STATE_SOVIET_KAZAKHSTAN_CENTRAL } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SOVIET_KAZAKHSTAN_SOUTH } limit = { state = @FAMINE_STATE_SOVIET_KAZAKHSTAN_SOUTH } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SOVIET_ROSTOV } limit = { state = @FAMINE_STATE_SOVIET_ROSTOV } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SOVIET_SARATOV } limit = { state = @FAMINE_STATE_SOVIET_SARATOV } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_HENAN } limit = { state = @FAMINE_STATE_HENAN } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_EAST_BENGAL } limit = { state = @FAMINE_STATE_EAST_BENGAL } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_WEST_BENGAL } limit = { state = @FAMINE_STATE_WEST_BENGAL } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_VIETNAM_TONKIN } limit = { state = @FAMINE_STATE_VIETNAM_TONKIN } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_VIETNAM_COCHINCHINA } limit = { state = @FAMINE_STATE_VIETNAM_COCHINCHINA } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_JAVA_WEST } limit = { state = @FAMINE_STATE_JAVA_WEST } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_JAVA_EAST } limit = { state = @FAMINE_STATE_JAVA_EAST } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_GREECE } limit = { state = @FAMINE_STATE_GREECE } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_GREECE_PELOPONNESE } limit = { state = @FAMINE_STATE_GREECE_PELOPONNESE } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_GREECE_AEGEAN } limit = { state = @FAMINE_STATE_GREECE_AEGEAN } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_LENINGRAD } limit = { state = @FAMINE_STATE_LENINGRAD } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_HOLLAND } limit = { state = @FAMINE_STATE_HOLLAND } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_FRIESLAND } limit = { state = @FAMINE_STATE_FRIESLAND } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SPAIN_MADRID } limit = { state = @FAMINE_STATE_SPAIN_MADRID } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SPAIN_CATALONIA } limit = { state = @FAMINE_STATE_SPAIN_CATALONIA } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SPAIN_WESTERN_ARAGON } limit = { state = @FAMINE_STATE_SPAIN_WESTERN_ARAGON } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SPAIN_VALENCIA } limit = { state = @FAMINE_STATE_SPAIN_VALENCIA } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SPAIN_MURCIA } limit = { state = @FAMINE_STATE_SPAIN_MURCIA } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SPAIN_SEVILLA } limit = { state = @FAMINE_STATE_SPAIN_SEVILLA } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SPAIN_EXTREMADURA } limit = { state = @FAMINE_STATE_SPAIN_EXTREMADURA } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SPAIN_GALICIA } limit = { state = @FAMINE_STATE_SPAIN_GALICIA } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SPAIN_NAVARRE } limit = { state = @FAMINE_STATE_SPAIN_NAVARRE } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SPAIN_GRANADA } limit = { state = @FAMINE_STATE_SPAIN_GRANADA } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SPAIN_LEON } limit = { state = @FAMINE_STATE_SPAIN_LEON } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SPAIN_CIUDAD_REAL } limit = { state = @FAMINE_STATE_SPAIN_CIUDAD_REAL } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SPAIN_BURGOS } limit = { state = @FAMINE_STATE_SPAIN_BURGOS } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SPAIN_BALEARIC_ISLANDS } limit = { state = @FAMINE_STATE_SPAIN_BALEARIC_ISLANDS } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SPAIN_CANARY_ISLANDS } limit = { state = @FAMINE_STATE_SPAIN_CANARY_ISLANDS } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SPAIN_SALAMANCA } limit = { state = @FAMINE_STATE_SPAIN_SALAMANCA } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SPAIN_CORDOBA } limit = { state = @FAMINE_STATE_SPAIN_CORDOBA } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SPAIN_ASTURIAS } limit = { state = @FAMINE_STATE_SPAIN_ASTURIAS } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SPAIN_VALLADOLID } limit = { state = @FAMINE_STATE_SPAIN_VALLADOLID } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SPAIN_BASQUE_COUNTRY } limit = { state = @FAMINE_STATE_SPAIN_BASQUE_COUNTRY } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SPAIN_GUADALAJARA } limit = { state = @FAMINE_STATE_SPAIN_GUADALAJARA } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_SPAIN_EASTERN_ARAGON } limit = { state = @FAMINE_STATE_SPAIN_EASTERN_ARAGON } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_IRELAND } limit = { state = @FAMINE_STATE_IRELAND } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_CEARA } limit = { state = @FAMINE_STATE_CEARA } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_CONGO } limit = { state = @FAMINE_STATE_CONGO } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_MIDDLE_CONGO } limit = { state = @FAMINE_STATE_MIDDLE_CONGO } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_ETHIOPIA } limit = { state = @FAMINE_STATE_ETHIOPIA } famine_register_historical_profile_anchor_state = yes }
+		random_state = { prioritize = { @FAMINE_STATE_TIGRAY } limit = { state = @FAMINE_STATE_TIGRAY } famine_register_historical_profile_anchor_state = yes }
+		set_global_flag = famine_historical_profile_anchors_bootstrapped
+	}
+}
+
+
+# State registry entry points are called only by explicit pressure or trap
+# requests. They therefore remain bounded by the active request set.
+famine_register_active_state = {
+	humanitarian_initialize_runtime = yes
+	set_temp_variable = { humanitarian_registry_result = constant:humanitarian_runtime.zero }
+	if = {
+		limit = { humanitarian_state_is_valid = yes }
+		if = {
+			limit = {
+				NOT = {
+					is_in_array = {
+						array = global.famine_active_states
+						value = THIS
+					}
+				}
+			}
+			add_to_array = { array = global.famine_active_states value = THIS }
+			set_variable = { global.famine_active_states_count = global.famine_active_states^num }
+		}
+		set_state_flag = famine_food_security_active
+		migration_mark_reception_capacity_dirty_if_candidate = yes
+		set_temp_variable = { humanitarian_registry_result = constant:humanitarian_runtime.one }
+	}
+}
+
+
+famine_unregister_active_state = {
+	humanitarian_initialize_runtime = yes
+	if = {
+		limit = {
+			is_in_array = {
+				array = global.famine_active_states
+				value = THIS
+			}
+		}
+		remove_from_array = { array = global.famine_active_states value = THIS }
+		set_variable = { global.famine_active_states_count = global.famine_active_states^num }
+	}
+	clr_state_flag = famine_food_security_active
+	migration_mark_reception_capacity_dirty_if_candidate = yes
+	clear_variable = famine_food_pressure
+	clear_variable = famine_food_stage
+}
+
+
+# Famine and migration accept separate request bundles. A caller that proves
+# both consequences invokes both public endpoints explicitly; neither endpoint
+# can initialize, reveal, mutate, or retire the other mechanic.
+famine_apply_pressure_request = {
+	set_temp_variable = { famine_pressure_request_result = constant:humanitarian_runtime.zero }
+	if = {
+		limit = { famine_pressure_request_is_valid = yes }
+		famine_initialize_state = yes
+		set_temp_variable = { famine_food_pressure_population = state_population_k }
+		multiply_temp_variable = { famine_food_pressure_population = constant:humanitarian_population.people_per_k }
+		set_temp_variable = { famine_food_pressure_delta = famine_pressure_request_amount }
+		if = {
+			limit = { check_variable = { var = famine_food_pressure_population value = constant:humanitarian_population.zero compare = greater_than } }
+			divide_temp_variable = { famine_food_pressure_delta = famine_food_pressure_population }
+			divide_temp_variable = { famine_food_pressure_delta = constant:famine_food_shock.population_share_for_maximum }
+			multiply_temp_variable = { famine_food_pressure_delta = constant:famine_food_component.maximum }
+			clamp_temp_variable = { var = famine_food_pressure_delta min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+			add_to_variable = { famine_food_pressure = famine_food_pressure_delta }
+			clamp_variable = { var = famine_food_pressure min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+		}
+		set_variable = { famine_last_pressure_source = famine_pressure_request_source }
+		famine_register_active_state = yes
+		set_temp_variable = { famine_pressure_request_result = constant:humanitarian_runtime.one }
+	}
+	set_temp_variable = { famine_pressure_request_proven = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_pressure_request_amount = constant:humanitarian_population.zero }
+	set_temp_variable = { famine_pressure_request_source = constant:humanitarian_pressure_source.unknown }
+	set_temp_variable = { famine_pressure_request_actor_proven = constant:humanitarian_runtime.zero }
+}
+
+
+# STATE scope. Decays the normalized external shock at most once per game date.
+# Relief access accelerates recovery, while stable states clear residual memory
+# more quickly. This never erases a live component owned by another system.
+famine_decay_pressure = {
+	if = {
+		limit = {
+			check_variable = { var = famine_food_pressure value = constant:famine_food_component.zero compare = greater_than }
+			OR = {
+				NOT = { has_variable = famine_food_pressure_last_decay_date }
+				check_variable = { var = famine_food_pressure_last_decay_date value = global.date compare = less_than }
+			}
+		}
+		set_variable = { famine_food_pressure_last_decay_date = global.date }
+		set_temp_variable = { famine_food_pressure_decay = constant:famine_food_shock.base_daily_decay }
+		if = {
+			limit = { has_state_flag = famine_relief_access_active }
+			add_to_temp_variable = { famine_food_pressure_decay = constant:famine_food_shock.relief_access_daily_decay }
+		}
+		if = {
+			limit = { check_variable = { var = famine_food_stage value = constant:famine_food_stage.stable compare = equals } }
+			add_to_temp_variable = { famine_food_pressure_decay = constant:famine_food_shock.stable_daily_decay }
+		}
+		subtract_from_variable = { famine_food_pressure = famine_food_pressure_decay }
+		clamp_variable = { var = famine_food_pressure min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+	}
+}
+
+
+famine_request_famine_pressure = { set_temp_variable = { famine_pressure_request_source = constant:humanitarian_pressure_source.resource_shortage } famine_apply_pressure_request = yes }
+
+famine_request_food_security_pressure = { set_temp_variable = { famine_pressure_request_source = constant:humanitarian_pressure_source.resource_shortage } famine_apply_pressure_request = yes }
+
+famine_request_occupation_pressure = { set_temp_variable = { famine_pressure_request_source = constant:humanitarian_pressure_source.occupation_policy } famine_apply_pressure_request = yes }
+
+famine_request_camp_pressure = { set_temp_variable = { famine_pressure_request_source = constant:humanitarian_pressure_source.camp_repression } famine_apply_pressure_request = yes }
+
+famine_request_gulag_pressure = { set_temp_variable = { famine_pressure_request_source = constant:humanitarian_pressure_source.gulag_repression } famine_apply_pressure_request = yes }
+
+famine_request_forced_labor_pressure = { set_temp_variable = { famine_pressure_request_source = constant:humanitarian_pressure_source.forced_labor } famine_apply_pressure_request = yes }
+
+famine_request_bombing_pressure = { set_temp_variable = { famine_pressure_request_source = constant:humanitarian_pressure_source.strategic_bombing } famine_apply_pressure_request = yes }
+
+famine_request_nuclear_pressure = { set_temp_variable = { famine_pressure_request_source = constant:humanitarian_pressure_source.nuclear_strike } famine_apply_pressure_request = yes }
+
+famine_request_fallout_pressure = { set_temp_variable = { famine_pressure_request_source = constant:humanitarian_pressure_source.fallout } famine_apply_pressure_request = yes }
+
+famine_request_outbreak_pressure = { set_temp_variable = { famine_pressure_request_source = constant:humanitarian_pressure_source.outbreak } famine_apply_pressure_request = yes }
+
+famine_request_disaster_pressure = { set_temp_variable = { famine_pressure_request_source = constant:humanitarian_pressure_source.natural_disaster } famine_apply_pressure_request = yes }
+
+famine_request_war_pressure = { set_temp_variable = { famine_pressure_request_source = constant:humanitarian_pressure_source.war } famine_apply_pressure_request = yes }
+
+famine_request_peace_pressure = { set_temp_variable = { famine_pressure_request_source = constant:humanitarian_pressure_source.peace } famine_apply_pressure_request = yes }
+
+famine_request_event_pressure = { set_temp_variable = { famine_pressure_request_source = constant:humanitarian_pressure_source.event } famine_apply_pressure_request = yes }
+
+famine_request_air_cleanliness_pressure = { set_temp_variable = { famine_pressure_request_source = constant:humanitarian_pressure_source.air_cleanliness } famine_apply_pressure_request = yes }
+
+famine_request_chemical_aftermath_pressure = { set_temp_variable = { famine_pressure_request_source = constant:humanitarian_pressure_source.chemical_aftermath } famine_apply_pressure_request = yes }
+
+famine_request_biological_warfare_pressure = { set_temp_variable = { famine_pressure_request_source = constant:humanitarian_pressure_source.biological_warfare } famine_apply_pressure_request = yes }
+
+famine_request_cluster_pressure = { set_temp_variable = { famine_pressure_request_source = constant:humanitarian_pressure_source.cluster } famine_apply_pressure_request = yes }
+
+famine_request_scenario_pressure = { set_temp_variable = { famine_pressure_request_source = constant:humanitarian_pressure_source.scenario } famine_apply_pressure_request = yes }
+
+famine_request_blockade_pressure = {
+	set_temp_variable = { famine_pressure_request_source = constant:humanitarian_pressure_source.blockade }
+	if = { limit = { famine_blockade_proof = yes } famine_apply_pressure_request = yes }
+	else = {
+		set_temp_variable = { famine_pressure_request_result = constant:humanitarian_runtime.zero }
+		set_temp_variable = { famine_pressure_request_proven = constant:humanitarian_runtime.zero }
+		set_temp_variable = { famine_pressure_request_amount = constant:humanitarian_population.zero }
+		set_temp_variable = { famine_pressure_request_source = constant:humanitarian_pressure_source.unknown }
+		set_temp_variable = { famine_pressure_request_actor_proven = constant:humanitarian_runtime.zero }
+	}
+}
+
+
+# State scope. Refresh every clause of the island-blockade contract from live
+# engine facts. The caller is the bounded active-food-state registry job.
+famine_refresh_blockade_proof = {
+	clear_variable = famine_blockade_island_proven
+	clear_variable = famine_blockade_isolation_proven
+	clear_variable = famine_blockade_maritime_dependence_proven
+	clear_variable = famine_blockade_route_disrupted_proven
+	clear_variable = famine_blockade_port_disrupted_proven
+	clear_variable = famine_blockade_convoy_shortage_proven
+	clear_variable = famine_blockade_escort_shortage_proven
+	clear_variable = famine_blockade_no_humanitarian_corridor_proven
+	clear_variable = famine_blockade_local_food_insufficient_proven
+
+	if = {
+		limit = {
+			OR = {
+				is_island_state = yes
+				is_one_state_island = yes
+			}
+		}
+		set_variable = { famine_blockade_island_proven = constant:humanitarian_runtime.one }
+		set_variable = { famine_blockade_isolation_proven = constant:humanitarian_runtime.one }
+	}
+	if = {
+		limit = {
+			OR = {
+				is_island_state = yes
+				is_one_state_island = yes
+			}
+			is_coastal = yes
+		}
+		set_variable = { famine_blockade_maritime_dependence_proven = constant:humanitarian_runtime.one }
+	}
+	if = {
+		limit = {
+			OR = {
+				has_state_flag = civilian_transfer_route_damaged
+				AND = {
+					naval_base > 0
+					OWNER = { convoy_threat > constant:famine_blockade_runtime.convoy_route_threat_threshold }
+				}
+			}
+		}
+		set_variable = { famine_blockade_route_disrupted_proven = constant:humanitarian_runtime.one }
+	}
+	if = {
+		limit = {
+			naval_base > 0
+			NOT = {
+				any_province_building_level = { province = { all_provinces = yes limit_to_naval_base = yes } building = naval_base level > @FAMINE_NON_DAMAGED_MINIMUM }
+			}
+		}
+		set_variable = { famine_blockade_port_disrupted_proven = constant:humanitarian_runtime.one }
+	}
+	if = {
+		limit = { OWNER = { NOT = { has_equipment = { convoy > constant:famine_blockade_runtime.minimum_available_convoys } } } }
+		set_variable = { famine_blockade_convoy_shortage_proven = constant:humanitarian_runtime.one }
+	}
+	if = {
+		limit = {
+			OWNER = {
+				has_navy_size = {
+					archetype = ship_hull_light
+					size < constant:famine_blockade_runtime.minimum_light_escorts
+				}
+			}
+		}
+		set_variable = { famine_blockade_escort_shortage_proven = constant:humanitarian_runtime.one }
+	}
+	if = {
+		limit = { NOT = { has_state_flag = famine_relief_access_active } }
+		set_variable = { famine_blockade_no_humanitarian_corridor_proven = constant:humanitarian_runtime.one }
+	}
+
+	set_temp_variable = { famine_blockade_reserve_days = constant:famine_food_reserve.zero }
+	if = {
+		limit = { check_variable = { var = famine_food_reserve_daily_need value = constant:famine_food_reserve.zero compare = greater_than } }
+		set_temp_variable = { famine_blockade_reserve_days = famine_food_reserve_amount }
+		divide_temp_variable = { famine_blockade_reserve_days = famine_food_reserve_daily_need }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = famine_component_production
+				value = constant:famine_blockade_runtime.local_production_pressure_threshold
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = famine_blockade_reserve_days
+				value = constant:famine_blockade_runtime.maximum_local_reserve_days
+				compare = less_than
+			}
+		}
+		set_variable = { famine_blockade_local_food_insufficient_proven = constant:humanitarian_runtime.one }
+	}
+}
+
+
+# State scope after famine_refresh_blockade_proof. A full proof adds
+# pressure through named transport and need components and accumulates one
+# bounded day of isolation per registered daily evaluation. Any broken clause
+# resets the consecutive-duration term instead of leaving a stale blockade.
+famine_apply_blockade_components = {
+	if = {
+		limit = { famine_blockade_proof = yes }
+		add_to_variable = { famine_blockade_exposure_days = constant:humanitarian_runtime.one }
+		set_temp_variable = { famine_blockade_duration_pressure = famine_blockade_exposure_days }
+		multiply_temp_variable = { famine_blockade_duration_pressure = constant:famine_blockade_runtime.pressure_per_isolation_day }
+		clamp_temp_variable = {
+			var = famine_blockade_duration_pressure
+			min = constant:famine_food_component.zero
+			max = constant:famine_blockade_runtime.maximum_duration_pressure
+		}
+		add_to_variable = { famine_component_transport = constant:famine_blockade_runtime.transport_pressure_base }
+		add_to_variable = { famine_component_transport = famine_blockade_duration_pressure }
+		clamp_variable = {
+			var = famine_component_transport
+			min = constant:famine_food_component.zero
+			max = constant:famine_food_component.maximum
+		}
+		add_to_variable = { famine_component_need = constant:famine_blockade_runtime.need_pressure_base }
+		add_to_variable = { famine_component_need = famine_blockade_duration_pressure }
+		clamp_variable = {
+			var = famine_component_need
+			min = constant:famine_food_component.zero
+			max = constant:famine_food_component.maximum
+		}
+		set_variable = { famine_last_pressure_source = constant:humanitarian_pressure_source.blockade }
+	}
+	else = {
+		set_variable = { famine_blockade_exposure_days = constant:humanitarian_runtime.zero }
+	}
+}
+
+
+# State scope after proof refresh. Recent exact deliveries and repaired routes
+# affect the same named components as the underlying shortage, so relief is not
+# represented by a report-only flag or an unrelated flat country modifier.
+famine_apply_relief_access_components = {
+	if = {
+		limit = { has_state_flag = famine_relief_access_active }
+		subtract_from_variable = { famine_component_transport = constant:famine_blockade_runtime.relief_transport_reduction }
+		clamp_variable = {
+			var = famine_component_transport
+			min = constant:famine_food_component.zero
+			max = constant:famine_food_component.maximum
+		}
+		add_to_variable = { famine_component_relief = constant:famine_blockade_runtime.relief_component_bonus }
+		clamp_variable = {
+			var = famine_component_relief
+			min = constant:famine_food_component.zero
+			max = constant:famine_food_component.maximum
+		}
+	}
+}
+
+
+# State scope. An exact successful delivery or repaired route suppresses the
+# no-corridor clause for a bounded period; it does not erase war or damage.
+famine_mark_relief_access = {
+	set_temp_variable = { famine_relief_access_duration_days = constant:famine_blockade_runtime.relief_access_days }
+	set_state_flag = {
+		flag = famine_relief_access_active
+		value = 1
+		days = famine_relief_access_duration_days
+	}
+	clear_variable = famine_blockade_no_humanitarian_corridor_proven
+}
+
+
+# Food retirement must not erase active migration role modifiers. This narrow
+# clear is used before guarded state retirement; the complete clear remains
+# reserved for a state with no migration obligations.
+famine_clear_dynamic_modifiers = {
+	if = { limit = { has_dynamic_modifier = { modifier = famine_state_supply_strain } } remove_dynamic_modifier = { modifier = famine_state_supply_strain } }
+	if = { limit = { has_dynamic_modifier = { modifier = famine_state_acute_shortage } } remove_dynamic_modifier = { modifier = famine_state_acute_shortage } }
+	if = { limit = { has_dynamic_modifier = { modifier = famine_state_famine } } remove_dynamic_modifier = { modifier = famine_state_famine } }
+	if = { limit = { has_dynamic_modifier = { modifier = famine_state_catastrophic_famine } } remove_dynamic_modifier = { modifier = famine_state_catastrophic_famine } }
+	force_update_dynamic_modifier = yes
+}
+
+
+# ---------------------------------------------------------------------------
+# Food-security runtime: state inputs, owner adapters, profiles, and context.
+# All component values are normalized pressure points. The evaluator below is
+# the only shared code that turns those points into a famine stage or deaths.
+# ---------------------------------------------------------------------------
+
+famine_initialize_state = {
+	if = { limit = { NOT = { has_variable = famine_input_production } } set_variable = { famine_input_production = constant:famine_food_component.zero } }
+	if = { limit = { NOT = { has_variable = famine_input_transport } } set_variable = { famine_input_transport = constant:famine_food_component.zero } }
+	if = { limit = { NOT = { has_variable = famine_input_extraction } } set_variable = { famine_input_extraction = constant:famine_food_component.zero } }
+	if = { limit = { NOT = { has_variable = famine_input_need } } set_variable = { famine_input_need = constant:famine_food_component.zero } }
+	if = { limit = { NOT = { has_variable = famine_input_environment } } set_variable = { famine_input_environment = constant:famine_food_component.zero } }
+	if = { limit = { NOT = { has_variable = famine_input_vulnerability } } set_variable = { famine_input_vulnerability = constant:famine_food_component.zero } }
+	if = { limit = { NOT = { has_variable = famine_input_governance } } set_variable = { famine_input_governance = constant:famine_food_component.zero } }
+	if = { limit = { NOT = { has_variable = famine_input_relief } } set_variable = { famine_input_relief = constant:famine_food_component.zero } }
+	if = { limit = { NOT = { has_variable = famine_profile_production } } set_variable = { famine_profile_production = constant:famine_food_component.zero } }
+	if = { limit = { NOT = { has_variable = famine_profile_transport } } set_variable = { famine_profile_transport = constant:famine_food_component.zero } }
+	if = { limit = { NOT = { has_variable = famine_profile_extraction } } set_variable = { famine_profile_extraction = constant:famine_food_component.zero } }
+	if = { limit = { NOT = { has_variable = famine_profile_need } } set_variable = { famine_profile_need = constant:famine_food_component.zero } }
+	if = { limit = { NOT = { has_variable = famine_profile_environment } } set_variable = { famine_profile_environment = constant:famine_food_component.zero } }
+	if = { limit = { NOT = { has_variable = famine_profile_vulnerability } } set_variable = { famine_profile_vulnerability = constant:famine_food_component.zero } }
+	if = { limit = { NOT = { has_variable = famine_profile_governance } } set_variable = { famine_profile_governance = constant:famine_food_component.zero } }
+	if = { limit = { NOT = { has_variable = famine_profile_relief } } set_variable = { famine_profile_relief = constant:famine_food_component.zero } }
+	if = { limit = { NOT = { has_variable = famine_profile_context_id } } set_variable = { famine_profile_context_id = constant:famine_profile_id.none } }
+	if = { limit = { NOT = { has_variable = famine_profile_mode } } set_variable = { famine_profile_mode = constant:famine_profile_mode.memory } }
+	if = { limit = { NOT = { has_variable = famine_food_pressure } } set_variable = { famine_food_pressure = constant:famine_food_component.zero } }
+	if = { limit = { NOT = { has_variable = famine_food_score_raw } } set_variable = { famine_food_score_raw = constant:famine_food_score.zero } }
+	if = { limit = { NOT = { has_variable = famine_food_score } } set_variable = { famine_food_score = constant:famine_food_score.zero } }
+	if = { limit = { NOT = { has_variable = famine_food_security_score } } set_variable = { famine_food_security_score = constant:famine_food_score.zero } }
+	if = { limit = { NOT = { has_variable = famine_component_production } } set_variable = { famine_component_production = constant:famine_food_component.zero } }
+	if = { limit = { NOT = { has_variable = famine_component_transport } } set_variable = { famine_component_transport = constant:famine_food_component.zero } }
+	if = { limit = { NOT = { has_variable = famine_component_extraction } } set_variable = { famine_component_extraction = constant:famine_food_component.zero } }
+	if = { limit = { NOT = { has_variable = famine_component_need } } set_variable = { famine_component_need = constant:famine_food_component.zero } }
+	if = { limit = { NOT = { has_variable = famine_component_environment } } set_variable = { famine_component_environment = constant:famine_food_component.zero } }
+	if = { limit = { NOT = { has_variable = famine_component_vulnerability } } set_variable = { famine_component_vulnerability = constant:famine_food_component.zero } }
+	if = { limit = { NOT = { has_variable = famine_component_governance } } set_variable = { famine_component_governance = constant:famine_food_component.zero } }
+	if = { limit = { NOT = { has_variable = famine_component_relief } } set_variable = { famine_component_relief = constant:famine_food_component.zero } }
+	if = { limit = { NOT = { has_variable = famine_food_reserve_amount } } set_variable = { famine_food_reserve_amount = constant:famine_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_food_reserve_initial_amount } } set_variable = { famine_food_reserve_initial_amount = constant:famine_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_food_reserve_initialization_proven } } set_variable = { famine_food_reserve_initialization_proven = constant:humanitarian_runtime.zero } }
+	if = { limit = { NOT = { has_variable = famine_food_reserve_capacity } } set_variable = { famine_food_reserve_capacity = constant:famine_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_food_reserve_target } } set_variable = { famine_food_reserve_target = constant:famine_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_food_reserve_daily_need } } set_variable = { famine_food_reserve_daily_need = constant:famine_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_food_reserve_logistics_factor } } set_variable = { famine_food_reserve_logistics_factor = constant:famine_food_reserve.logistics_factor_minimum } }
+	if = { limit = { NOT = { has_variable = famine_food_reserve_relief } } set_variable = { famine_food_reserve_relief = constant:famine_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_food_reserve_last_update_date } } set_variable = { famine_food_reserve_last_update_date = constant:humanitarian_runtime.zero } }
+	if = { limit = { NOT = { has_variable = famine_food_reserve_last_replenished } } set_variable = { famine_food_reserve_last_replenished = constant:famine_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_food_reserve_last_depleted } } set_variable = { famine_food_reserve_last_depleted = constant:famine_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_food_reserve_last_imported } } set_variable = { famine_food_reserve_last_imported = constant:famine_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_food_reserve_last_consumed } } set_variable = { famine_food_reserve_last_consumed = constant:famine_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_food_reserve_last_transfer_in } } set_variable = { famine_food_reserve_last_transfer_in = constant:famine_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_food_reserve_last_transfer_out } } set_variable = { famine_food_reserve_last_transfer_out = constant:famine_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_food_reserve_total_replenished } } set_variable = { famine_food_reserve_total_replenished = constant:famine_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_food_reserve_total_depleted } } set_variable = { famine_food_reserve_total_depleted = constant:famine_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_food_reserve_total_imported } } set_variable = { famine_food_reserve_total_imported = constant:famine_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_food_reserve_total_consumed } } set_variable = { famine_food_reserve_total_consumed = constant:famine_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_food_reserve_total_transfer_in } } set_variable = { famine_food_reserve_total_transfer_in = constant:famine_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_food_reserve_total_transfer_out } } set_variable = { famine_food_reserve_total_transfer_out = constant:famine_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_food_stage } } set_variable = { famine_food_stage = constant:famine_food_stage.stable } }
+	if = { limit = { NOT = { has_variable = famine_food_stage_candidate } } set_variable = { famine_food_stage_candidate = constant:famine_food_stage.stable } }
+	if = { limit = { NOT = { has_variable = famine_food_stage_started_date } } set_variable = { famine_food_stage_started_date = global.date } }
+	if = { limit = { NOT = { has_variable = famine_food_incident_count } } set_variable = { famine_food_incident_count = constant:humanitarian_runtime.zero } }
+	if = { limit = { NOT = { has_variable = famine_total_deaths } } set_variable = { famine_total_deaths = constant:humanitarian_population.zero } }
+	if = { limit = { NOT = { has_variable = famine_food_exposure_days } } set_variable = { famine_food_exposure_days = constant:humanitarian_runtime.zero } }
+	if = { limit = { NOT = { has_variable = famine_blockade_exposure_days } } set_variable = { famine_blockade_exposure_days = constant:humanitarian_runtime.zero } }
+	if = { limit = { NOT = { has_variable = famine_food_next_mortality_date } } set_variable = { famine_food_next_mortality_date = global.date } }
+}
+
+
+# Public owner adapter. Callers set the eight *_input_* values and prove that
+# their state-local surface is applicable; omitted values safely default to 0.
+famine_submit_surface_context = {
+	set_temp_variable = { famine_surface_context_result = constant:humanitarian_runtime.zero }
+	if = {
+		limit = { famine_surface_context_request_is_valid = yes }
+		famine_initialize_state = yes
+		clamp_variable = { var = famine_input_production min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+		clamp_variable = { var = famine_input_transport min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+		clamp_variable = { var = famine_input_extraction min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+		clamp_variable = { var = famine_input_need min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+		clamp_variable = { var = famine_input_environment min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+		clamp_variable = { var = famine_input_vulnerability min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+		clamp_variable = { var = famine_input_governance min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+		clamp_variable = { var = famine_input_relief min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+		set_state_flag = famine_surface_context_active
+		set_state_flag = famine_food_security_active
+		famine_register_active_state = yes
+		set_temp_variable = { famine_surface_context_result = constant:humanitarian_runtime.one }
+	}
+	set_temp_variable = { famine_surface_context_proven = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_surface_context_actor_proven = constant:humanitarian_runtime.zero }
+}
+
+
+# Read-only integration of already-owned public surfaces. Owner-local effects
+# still own their damage; they only need to submit explicit proof when a value
+# is not an engine/state fact. Air bands are read from existing global flags.
+famine_resolve_occupation_profile = {
+	set_temp_variable = { famine_occupation_profile = constant:famine_occupation_profile.none }
+	set_temp_variable = { famine_occupation_extra_extraction = constant:famine_food_component.zero }
+	set_temp_variable = { famine_occupation_extra_vulnerability = constant:famine_food_component.zero }
+	set_temp_variable = { famine_occupation_extra_governance = constant:famine_food_component.zero }
+	set_temp_variable = { famine_occupation_context_proven = constant:humanitarian_runtime.zero }
+	if = {
+		# occupation_law is only queried after the state has occupation data.
+		limit = { has_resistance = yes }
+		if = {
+			limit = { has_resistance = yes occupation_law = missing_garrison_scaled_effect }
+		set_temp_variable = { famine_occupation_profile = constant:famine_occupation_profile.standard }
+		set_temp_variable = { famine_occupation_context_proven = constant:humanitarian_runtime.one }
+		set_temp_variable = { famine_occupation_extra_governance = constant:famine_surface_context.occupation_governance_pressure }
+	}
+	else_if = {
+		limit = { has_resistance = yes occupation_law = no_garrison }
+		set_temp_variable = { famine_occupation_profile = constant:famine_occupation_profile.standard }
+		set_temp_variable = { famine_occupation_context_proven = constant:humanitarian_runtime.one }
+		set_temp_variable = { famine_occupation_extra_governance = constant:famine_surface_context.occupation_governance_pressure }
+	}
+	else_if = {
+		limit = { has_resistance = yes occupation_law = autonomous_occupation }
+		set_temp_variable = { famine_occupation_profile = constant:famine_occupation_profile.protective }
+		set_temp_variable = { famine_occupation_context_proven = constant:humanitarian_runtime.one }
+	}
+	else_if = {
+		limit = { has_resistance = yes occupation_law = foreign_civilian_oversight }
+		set_temp_variable = { famine_occupation_profile = constant:famine_occupation_profile.protective }
+		set_temp_variable = { famine_occupation_context_proven = constant:humanitarian_runtime.one }
+	}
+	else_if = {
+		limit = { has_resistance = yes occupation_law = local_police_force_garrison }
+		set_temp_variable = { famine_occupation_profile = constant:famine_occupation_profile.protective }
+		set_temp_variable = { famine_occupation_context_proven = constant:humanitarian_runtime.one }
+	}
+	else_if = {
+		limit = { has_resistance = yes occupation_law = secret_police_oversight }
+		set_temp_variable = { famine_occupation_profile = constant:famine_occupation_profile.standard }
+		set_temp_variable = { famine_occupation_context_proven = constant:humanitarian_runtime.one }
+		set_temp_variable = { famine_occupation_extra_governance = constant:famine_surface_context.occupation_governance_pressure }
+	}
+	else_if = {
+		limit = { has_resistance = yes occupation_law = liberate_workers_occupation }
+		set_temp_variable = { famine_occupation_profile = constant:famine_occupation_profile.extraction }
+		set_temp_variable = { famine_occupation_context_proven = constant:humanitarian_runtime.one }
+		set_temp_variable = { famine_occupation_extra_extraction = constant:famine_surface_context.occupation_extraction_pressure }
+		set_temp_variable = { famine_occupation_extra_vulnerability = constant:famine_surface_context.occupation_vulnerability_pressure }
+	}
+	else_if = {
+		limit = { has_resistance = yes occupation_law = military_governor_occupation }
+		set_temp_variable = { famine_occupation_profile = constant:famine_occupation_profile.standard }
+		set_temp_variable = { famine_occupation_context_proven = constant:humanitarian_runtime.one }
+		set_temp_variable = { famine_occupation_extra_governance = constant:famine_surface_context.occupation_governance_pressure }
+	}
+	else_if = {
+		limit = { has_resistance = yes occupation_law = martial_law_occupation }
+		set_temp_variable = { famine_occupation_profile = constant:famine_occupation_profile.extraction }
+		set_temp_variable = { famine_occupation_context_proven = constant:humanitarian_runtime.one }
+		set_temp_variable = { famine_occupation_extra_extraction = constant:famine_surface_context.occupation_extraction_pressure }
+		set_temp_variable = { famine_occupation_extra_vulnerability = constant:famine_surface_context.occupation_vulnerability_pressure }
+	}
+	else_if = {
+		limit = { has_resistance = yes occupation_law = forced_labor_occupation }
+		set_temp_variable = { famine_occupation_profile = constant:famine_occupation_profile.forced_labor }
+		set_temp_variable = { famine_occupation_context_proven = constant:humanitarian_runtime.one }
+		set_temp_variable = { famine_occupation_extra_extraction = constant:famine_surface_context.occupation_forced_extraction_pressure }
+		set_temp_variable = { famine_occupation_extra_vulnerability = constant:famine_surface_context.occupation_forced_vulnerability_pressure }
+		set_temp_variable = { famine_occupation_extra_governance = constant:famine_surface_context.occupation_forced_governance_pressure }
+	}
+	else_if = {
+		limit = { has_resistance = yes occupation_law = harsh_quotas_occupation }
+		set_temp_variable = { famine_occupation_profile = constant:famine_occupation_profile.collective_punishment }
+		set_temp_variable = { famine_occupation_context_proven = constant:humanitarian_runtime.one }
+		set_temp_variable = { famine_occupation_extra_extraction = constant:famine_surface_context.occupation_collective_punishment_pressure }
+		set_temp_variable = { famine_occupation_extra_vulnerability = constant:famine_surface_context.occupation_vulnerability_pressure }
+	}
+	else_if = {
+		limit = { has_resistance = yes occupation_law = brutally_oppressive_occupation }
+		set_temp_variable = { famine_occupation_profile = constant:famine_occupation_profile.exterminatory }
+		set_temp_variable = { famine_occupation_context_proven = constant:humanitarian_runtime.one }
+		set_temp_variable = { famine_occupation_extra_extraction = constant:famine_surface_context.occupation_forced_extraction_pressure }
+		set_temp_variable = { famine_occupation_extra_vulnerability = constant:famine_surface_context.occupation_transfer_vulnerability_pressure }
+		set_temp_variable = { famine_occupation_extra_governance = constant:famine_surface_context.occupation_forced_governance_pressure }
+	}
+	else_if = {
+		limit = { has_resistance = yes occupation_law = concentration }
+		# Legacy compatibility token: empty, hidden, and unavailable in the
+		# current law file, with military_governor_occupation as its fallback.
+		set_temp_variable = { famine_occupation_profile = constant:famine_occupation_profile.none }
+		set_temp_variable = { famine_occupation_context_proven = constant:humanitarian_runtime.zero }
+	}
+	else_if = {
+		limit = { has_resistance = yes occupation_law = reconciliation }
+		set_temp_variable = { famine_occupation_profile = constant:famine_occupation_profile.protective }
+		set_temp_variable = { famine_occupation_context_proven = constant:humanitarian_runtime.one }
+	}
+	else_if = {
+		limit = { has_resistance = yes occupation_law = colonial_police }
+		set_temp_variable = { famine_occupation_profile = constant:famine_occupation_profile.protective }
+		set_temp_variable = { famine_occupation_context_proven = constant:humanitarian_runtime.one }
+	}
+	else_if = {
+		limit = { has_resistance = yes occupation_law = colonial_police_improved }
+		set_temp_variable = { famine_occupation_profile = constant:famine_occupation_profile.extraction }
+		set_temp_variable = { famine_occupation_context_proven = constant:humanitarian_runtime.one }
+		set_temp_variable = { famine_occupation_extra_extraction = constant:famine_surface_context.occupation_extraction_pressure }
+		set_temp_variable = { famine_occupation_extra_vulnerability = constant:famine_surface_context.occupation_vulnerability_pressure }
+	}
+	else_if = {
+		limit = { has_resistance = yes occupation_law = colonial_police_final }
+		set_temp_variable = { famine_occupation_profile = constant:famine_occupation_profile.extraction }
+		set_temp_variable = { famine_occupation_context_proven = constant:humanitarian_runtime.one }
+		set_temp_variable = { famine_occupation_extra_extraction = constant:famine_surface_context.occupation_extraction_pressure }
+		set_temp_variable = { famine_occupation_extra_vulnerability = constant:famine_surface_context.occupation_vulnerability_pressure }
+	}
+	else_if = {
+		limit = { has_resistance = yes occupation_law = secretaries_general }
+		set_temp_variable = { famine_occupation_profile = constant:famine_occupation_profile.protective }
+		set_temp_variable = { famine_occupation_context_proven = constant:humanitarian_runtime.one }
+	}
+	else_if = {
+		limit = { has_resistance = yes occupation_law = independent_rule }
+		set_temp_variable = { famine_occupation_profile = constant:famine_occupation_profile.protective }
+		set_temp_variable = { famine_occupation_context_proven = constant:humanitarian_runtime.one }
+	}
+	else_if = {
+		limit = { has_resistance = yes occupation_law = princely_subjugation }
+		set_temp_variable = { famine_occupation_profile = constant:famine_occupation_profile.collective_punishment }
+		set_temp_variable = { famine_occupation_context_proven = constant:humanitarian_runtime.one }
+		set_temp_variable = { famine_occupation_extra_extraction = constant:famine_surface_context.occupation_collective_punishment_pressure }
+		set_temp_variable = { famine_occupation_extra_vulnerability = constant:famine_surface_context.occupation_vulnerability_pressure }
+	}
+	else_if = {
+		limit = { has_resistance = yes occupation_law = senbu_occupation_law }
+		set_temp_variable = { famine_occupation_profile = constant:famine_occupation_profile.protective }
+		set_temp_variable = { famine_occupation_context_proven = constant:humanitarian_runtime.one }
+	}
+	else_if = {
+		limit = { has_resistance = yes occupation_law = GEACPS_exploitation_occupation_law }
+		set_temp_variable = { famine_occupation_profile = constant:famine_occupation_profile.collective_punishment }
+		set_temp_variable = { famine_occupation_context_proven = constant:humanitarian_runtime.one }
+		set_temp_variable = { famine_occupation_extra_extraction = constant:famine_surface_context.occupation_collective_punishment_pressure }
+		set_temp_variable = { famine_occupation_extra_vulnerability = constant:famine_surface_context.occupation_vulnerability_pressure }
+	}
+	else_if = {
+		limit = { has_resistance = yes occupation_law = GEACPS_prosperity_occupation_law }
+		set_temp_variable = { famine_occupation_profile = constant:famine_occupation_profile.standard }
+		set_temp_variable = { famine_occupation_context_proven = constant:humanitarian_runtime.one }
+		set_temp_variable = { famine_occupation_extra_governance = constant:famine_surface_context.occupation_governance_pressure }
+	}
+	else_if = {
+		limit = { has_resistance = yes occupation_law = cbrn_coercive_security_occupation }
+		set_temp_variable = { famine_occupation_profile = constant:famine_occupation_profile.exterminatory }
+		set_temp_variable = { famine_occupation_context_proven = constant:humanitarian_runtime.one }
+		set_temp_variable = { famine_occupation_extra_extraction = constant:famine_surface_context.occupation_forced_extraction_pressure }
+		set_temp_variable = { famine_occupation_extra_vulnerability = constant:famine_surface_context.occupation_transfer_vulnerability_pressure }
+		set_temp_variable = { famine_occupation_extra_governance = constant:famine_surface_context.occupation_forced_governance_pressure }
+	}
+	else_if = {
+		limit = { has_resistance = yes occupation_law = cbrn_protected_occupation_administration }
+		set_temp_variable = { famine_occupation_profile = constant:famine_occupation_profile.protective }
+		set_temp_variable = { famine_occupation_context_proven = constant:humanitarian_runtime.one }
+	}
+	}
+}
+
+
+famine_collect_surface_context = {
+	set_temp_variable = { famine_external_production = constant:famine_food_component.zero }
+	set_temp_variable = { famine_external_transport = constant:famine_food_component.zero }
+	set_temp_variable = { famine_external_extraction = constant:famine_food_component.zero }
+	set_temp_variable = { famine_external_need = constant:famine_food_component.zero }
+	set_temp_variable = { famine_external_environment = constant:famine_food_component.zero }
+	set_temp_variable = { famine_external_vulnerability = constant:famine_food_component.zero }
+	set_temp_variable = { famine_external_governance = constant:famine_food_component.zero }
+	set_temp_variable = { famine_external_relief = constant:famine_food_component.zero }
+	famine_resolve_occupation_profile = yes
+	add_to_temp_variable = { famine_external_extraction = famine_occupation_extra_extraction }
+	add_to_temp_variable = { famine_external_vulnerability = famine_occupation_extra_vulnerability }
+	add_to_temp_variable = { famine_external_governance = famine_occupation_extra_governance }
+
+	if = {
+		limit = { has_global_flag = air_contamination_threshold_25 }
+		add_to_temp_variable = { famine_external_environment = constant:famine_surface_context.air_band_spread_pressure }
+	}
+	if = {
+		limit = { has_global_flag = air_contamination_threshold_50 }
+		add_to_temp_variable = { famine_external_environment = constant:famine_surface_context.air_band_winter_pressure }
+	}
+	if = {
+		limit = { has_global_flag = air_contamination_threshold_75 }
+		add_to_temp_variable = { famine_external_environment = constant:famine_surface_context.air_band_severe_pressure }
+	}
+	if = {
+		limit = {
+			OR = {
+				has_global_flag = air_contamination_threshold_100
+				has_global_flag = fallout_air_contamination_permanent_99
+			}
+		}
+		add_to_temp_variable = { famine_external_environment = constant:famine_surface_context.air_band_irreversible_pressure }
+	}
+	if = {
+		limit = { has_variable = air_winter_pressure }
+		add_to_temp_variable = { famine_external_environment = air_winter_pressure }
+	}
+	if = {
+		limit = { has_variable = air_winter_exposure }
+		set_temp_variable = { famine_air_exposure_pressure = air_winter_exposure }
+		multiply_temp_variable = { famine_air_exposure_pressure = constant:famine_surface_context.air_exposure_vulnerability }
+		add_to_temp_variable = { famine_external_vulnerability = famine_air_exposure_pressure }
+	}
+	if = {
+		limit = { has_variable = air_winter_strategic_bombing_pressure }
+		add_to_temp_variable = { famine_external_transport = air_winter_strategic_bombing_pressure }
+	}
+	if = {
+		limit = { has_variable = nuclear_fallout_intensity }
+		set_temp_variable = { humanitarian_fallout_pressure = nuclear_fallout_intensity }
+		multiply_temp_variable = { humanitarian_fallout_pressure = constant:famine_surface_context.fallout_environment_pressure }
+		add_to_temp_variable = { famine_external_environment = humanitarian_fallout_pressure }
+	}
+	if = {
+		limit = { has_dynamic_modifier = nuclear_fallout_state }
+		add_to_temp_variable = { famine_external_environment = constant:famine_surface_context.fallout_environment_pressure }
+	}
+	if = {
+		limit = { has_dynamic_modifier = chem_state_contamination }
+		add_to_temp_variable = { famine_external_environment = constant:famine_surface_context.chemical_environment_pressure }
+	}
+
+	if = {
+		limit = { genocide_state_has_active_camps = yes }
+		add_to_temp_variable = { famine_external_extraction = constant:famine_surface_context.camp_extraction_pressure }
+		add_to_temp_variable = { famine_external_vulnerability = constant:famine_surface_context.camp_vulnerability_pressure }
+	}
+	if = {
+		limit = { has_variable = camp_state_population_loss_pressure }
+		add_to_temp_variable = { famine_external_vulnerability = camp_state_population_loss_pressure }
+	}
+	if = {
+		limit = { has_variable = camp_state_overstretch }
+		add_to_temp_variable = { famine_external_need = camp_state_overstretch }
+	}
+	if = {
+		limit = { has_variable = camp_state_coercive_control }
+		add_to_temp_variable = { famine_external_governance = camp_state_coercive_control }
+	}
+	if = {
+		limit = { genocide_state_has_atrocity_evidence = yes }
+		add_to_temp_variable = { famine_external_governance = constant:famine_surface_context.camp_governance_pressure }
+	}
+	if = {
+		limit = {
+			OR = {
+				gulag_labor_camp_network > constant:famine_food_component.zero
+				has_state_flag = genocide_gulag_site
+				has_variable = camp_state_site_type
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					gulag_labor_camp_network > constant:famine_food_component.zero
+					has_state_flag = genocide_gulag_site
+					AND = {
+						has_variable = camp_state_site_type
+						check_variable = { var = camp_state_site_type value = constant:camp_rework_site_type.gulag compare = equals }
+					}
+				}
+			}
+			add_to_temp_variable = { famine_external_extraction = constant:famine_surface_context.camp_extraction_pressure }
+			add_to_temp_variable = { famine_external_vulnerability = constant:famine_surface_context.camp_vulnerability_pressure }
+		}
+	}
+	if = {
+		limit = {
+			OWNER = {
+				has_variable = forced_labor_quota
+				check_variable = { var = forced_labor_quota value = constant:famine_food_component.zero compare = greater_than }
+			}
+		}
+		add_to_temp_variable = { famine_external_vulnerability = constant:famine_surface_context.forced_labor_vulnerability }
+	}
+
+	if = {
+		limit = {
+			check_variable = { var = famine_local_war_context_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+			OWNER = { has_war = yes }
+			CONTROLLER = { has_war = yes }
+		}
+		add_to_temp_variable = { famine_external_transport = constant:famine_surface_context.war_transport_pressure }
+		add_to_temp_variable = { famine_external_need = constant:famine_surface_context.war_need_pressure }
+	}
+	if = {
+		limit = { check_variable = { var = famine_outbreak_context_proven value = constant:humanitarian_runtime.zero compare = greater_than } }
+		add_to_temp_variable = { famine_external_vulnerability = constant:famine_surface_context.outbreak_vulnerability }
+		add_to_temp_variable = { famine_external_environment = constant:famine_surface_context.outbreak_environment_pressure }
+	}
+	if = {
+		limit = { check_variable = { var = famine_disaster_context_proven value = constant:humanitarian_runtime.zero compare = greater_than } }
+		add_to_temp_variable = { famine_external_production = constant:famine_surface_context.disaster_production_pressure }
+		add_to_temp_variable = { famine_external_need = constant:famine_surface_context.disaster_need_pressure }
+	}
+	if = {
+		limit = {
+			NOT = { is_owned_and_controlled_by = OWNER }
+			check_variable = { var = famine_occupation_context_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+		}
+		add_to_temp_variable = { famine_external_transport = constant:famine_surface_context.occupation_transport_pressure }
+		add_to_temp_variable = { famine_external_governance = constant:famine_surface_context.occupation_governance_pressure }
+		add_to_temp_variable = { famine_external_vulnerability = constant:famine_surface_context.occupation_vulnerability_pressure }
+	}
+
+	clamp_temp_variable = { var = famine_external_production min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+	clamp_temp_variable = { var = famine_external_transport min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+	clamp_temp_variable = { var = famine_external_extraction min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+	clamp_temp_variable = { var = famine_external_need min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+	clamp_temp_variable = { var = famine_external_environment min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+	clamp_temp_variable = { var = famine_external_vulnerability min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+	clamp_temp_variable = { var = famine_external_governance min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+	clamp_temp_variable = { var = famine_external_relief min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+}
+
+
+# Profile context is activated only by a mapped owner. These fifteen branches
+# are starting conditions; none is a fixed outcome, pulse, or death target.
+famine_resolve_historical_profile_context = {
+	famine_initialize_state = yes
+	famine_resolve_occupation_profile = yes
+	set_temp_variable = { famine_profile_mapping_result = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_profile_resolver_state_id = THIS.id }
+	set_temp_variable = { famine_historical_profile_state_proven = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_historical_profile_context_proven = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_profile_air_cleanliness_proven = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_historical_profile_policy_proven = constant:humanitarian_runtime.zero }
+	if = {
+		limit = { OR = { has_global_flag = air_contamination_threshold_25 has_global_flag = air_contamination_threshold_50 has_global_flag = air_contamination_threshold_75 has_global_flag = air_contamination_threshold_100 has_global_flag = fallout_air_contamination_permanent_99 has_variable = air_winter_pressure has_variable = air_winter_exposure } }
+		set_temp_variable = { famine_profile_air_cleanliness_proven = constant:humanitarian_runtime.one }
+	}
+	if = {
+		limit = { check_variable = { var = famine_occupation_profile value = constant:famine_occupation_profile.standard compare = greater_than_or_equals } }
+		set_temp_variable = { famine_historical_profile_policy_proven = constant:humanitarian_runtime.one }
+	}
+	if = {
+		limit = {
+			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_soviet_1932_memory compare = equals }
+			OR = {
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SOVIET_KIEV compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SOVIET_WESTERN_KIEV compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SOVIET_KHARKOV compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SOVIET_ODESSA compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SOVIET_STALINO compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SOVIET_CAUCASUS_MOUNTAINS compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SOVIET_KAZAKHSTAN_NORTH compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SOVIET_KAZAKHSTAN_CENTRAL compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SOVIET_KAZAKHSTAN_SOUTH compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SOVIET_ROSTOV compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SOVIET_SARATOV compare = equals }
+			}
+			OR = { OWNER = { tag = SOV } CONTROLLER = { tag = SOV } }
+			famine_soviet_1932_memory_anchor_proven = yes
+			check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than }
+		}
+		set_temp_variable = { famine_profile_mapping_result = constant:humanitarian_runtime.one }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_china_henan_1942 compare = equals }
+			check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_HENAN compare = equals }
+			OR = { OWNER = { tag = CHI } CONTROLLER = { tag = CHI } OWNER = { tag = MAN } CONTROLLER = { tag = MAN } }
+			date > 1942.01.01
+			date < 1943.12.31
+			OR = { OWNER = { has_war = yes } CONTROLLER = { has_war = yes } has_state_flag = famine_surface_context_active }
+		}
+		set_temp_variable = { famine_profile_mapping_result = constant:humanitarian_runtime.one }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_china_policy_famine compare = equals }
+			check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_HENAN compare = equals }
+			OR = { OWNER = { tag = CHI } CONTROLLER = { tag = CHI } }
+			date > 1936.01.01
+			check_variable = { var = famine_historical_profile_policy_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+			check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than }
+		}
+		set_temp_variable = { famine_profile_mapping_result = constant:humanitarian_runtime.one }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_bengal_1943 compare = equals }
+			OR = {
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_EAST_BENGAL compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_WEST_BENGAL compare = equals }
+			}
+			OR = { OWNER = { tag = RAJ } CONTROLLER = { tag = RAJ } OWNER = { tag = ENG } CONTROLLER = { tag = ENG } }
+			date > 1943.01.01
+			date < 1944.12.31
+			OR = { OWNER = { has_war = yes } CONTROLLER = { has_war = yes } check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } }
+		}
+		set_temp_variable = { famine_profile_mapping_result = constant:humanitarian_runtime.one }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_vietnam_1944 compare = equals }
+			OR = { check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_VIETNAM_TONKIN compare = equals } check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_VIETNAM_COCHINCHINA compare = equals } }
+			OR = { OWNER = { tag = FRA } CONTROLLER = { tag = FRA } OWNER = { tag = JAP } CONTROLLER = { tag = JAP } }
+			date > 1944.01.01
+			date < 1945.12.31
+			OR = { OWNER = { has_war = yes } CONTROLLER = { has_war = yes } check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } }
+		}
+		set_temp_variable = { famine_profile_mapping_result = constant:humanitarian_runtime.one }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_java_1944 compare = equals }
+			OR = { check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_JAVA_WEST compare = equals } check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_JAVA_EAST compare = equals } }
+			OR = { OWNER = { tag = HOL } CONTROLLER = { tag = HOL } OWNER = { tag = JAP } CONTROLLER = { tag = JAP } }
+			date > 1944.01.01
+			date < 1945.12.31
+			OR = { OWNER = { has_war = yes } CONTROLLER = { has_war = yes } check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } }
+		}
+		set_temp_variable = { famine_profile_mapping_result = constant:humanitarian_runtime.one }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_greece_1941 compare = equals }
+			OR = { check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_GREECE compare = equals } check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_GREECE_PELOPONNESE compare = equals } check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_GREECE_AEGEAN compare = equals } }
+			OR = { OWNER = { tag = GRE } CONTROLLER = { tag = GRE } OWNER = { tag = GER } CONTROLLER = { tag = GER } OWNER = { tag = ITA } CONTROLLER = { tag = ITA } }
+			date > 1941.01.01
+			date < 1942.12.31
+			OR = { OWNER = { has_war = yes } CONTROLLER = { has_war = yes } check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } }
+		}
+		set_temp_variable = { famine_profile_mapping_result = constant:humanitarian_runtime.one }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_leningrad_siege compare = equals }
+			check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_LENINGRAD compare = equals }
+			OR = { OWNER = { tag = SOV } CONTROLLER = { tag = SOV } OWNER = { tag = GER } CONTROLLER = { tag = GER } }
+			date > 1941.01.01
+			date < 1944.12.31
+			OR = { OWNER = { has_war = yes } CONTROLLER = { has_war = yes } check_variable = { var = famine_blockade_local_food_insufficient_proven value = constant:humanitarian_runtime.zero compare = greater_than } }
+		}
+		set_temp_variable = { famine_profile_mapping_result = constant:humanitarian_runtime.one }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_dutch_hunger_winter compare = equals }
+			OR = { check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_HOLLAND compare = equals } check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_FRIESLAND compare = equals } }
+			OR = { OWNER = { tag = HOL } CONTROLLER = { tag = HOL } OWNER = { tag = GER } CONTROLLER = { tag = GER } }
+			date > 1944.01.01
+			date < 1946.01.01
+			OR = { OWNER = { has_war = yes } CONTROLLER = { has_war = yes } check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } }
+		}
+		set_temp_variable = { famine_profile_mapping_result = constant:humanitarian_runtime.one }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_spain_early_1940s compare = equals }
+			OR = {
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SPAIN_MADRID compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SPAIN_CATALONIA compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SPAIN_WESTERN_ARAGON compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SPAIN_VALENCIA compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SPAIN_MURCIA compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SPAIN_SEVILLA compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SPAIN_EXTREMADURA compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SPAIN_GALICIA compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SPAIN_NAVARRE compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SPAIN_GRANADA compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SPAIN_LEON compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SPAIN_CIUDAD_REAL compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SPAIN_BURGOS compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SPAIN_BALEARIC_ISLANDS compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SPAIN_CANARY_ISLANDS compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SPAIN_SALAMANCA compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SPAIN_CORDOBA compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SPAIN_ASTURIAS compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SPAIN_VALLADOLID compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SPAIN_BASQUE_COUNTRY compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SPAIN_GUADALAJARA compare = equals }
+				check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_SPAIN_EASTERN_ARAGON compare = equals }
+			}
+			OR = { OWNER = { tag = SPR } CONTROLLER = { tag = SPR } }
+			date > 1939.01.01
+			date < 1943.01.01
+			OR = { OWNER = { has_war = yes } CONTROLLER = { has_war = yes } check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } }
+		}
+		set_temp_variable = { famine_profile_mapping_result = constant:humanitarian_runtime.one }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_ireland_memory compare = equals }
+			check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_IRELAND compare = equals }
+			OR = { OWNER = { tag = IRE } CONTROLLER = { tag = IRE } OWNER = { tag = ENG } CONTROLLER = { tag = ENG } }
+			famine_ireland_memory_anchor_proven = yes
+			check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than }
+		}
+		set_temp_variable = { famine_profile_mapping_result = constant:humanitarian_runtime.one }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_brazil_ceara compare = equals }
+			check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_CEARA compare = equals }
+			OR = { OWNER = { tag = BRA } CONTROLLER = { tag = BRA } }
+			check_variable = { var = famine_historical_profile_policy_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+			check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than }
+		}
+		set_temp_variable = { famine_profile_mapping_result = constant:humanitarian_runtime.one }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_congo_interaction compare = equals }
+			OR = { check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_CONGO compare = equals } check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_MIDDLE_CONGO compare = equals } }
+			OR = { OWNER = { tag = BEL } CONTROLLER = { tag = BEL } OWNER = { tag = FRA } CONTROLLER = { tag = FRA } }
+			check_variable = { var = famine_historical_profile_policy_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+			check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than }
+		}
+		set_temp_variable = { famine_profile_mapping_result = constant:humanitarian_runtime.one }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_ethiopia_policy compare = equals }
+			OR = { check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_ETHIOPIA compare = equals } check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_TIGRAY compare = equals } }
+			OR = { OWNER = { tag = ETH } CONTROLLER = { tag = ETH } OWNER = { tag = ITA } CONTROLLER = { tag = ITA } }
+			date > 1936.01.01
+			date < 1942.01.01
+			OR = { OWNER = { has_war = yes } CONTROLLER = { has_war = yes } check_variable = { var = famine_historical_profile_policy_proven value = constant:humanitarian_runtime.zero compare = greater_than } }
+		}
+		set_temp_variable = { famine_profile_mapping_result = constant:humanitarian_runtime.one }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_nuclear_winter_global compare = equals }
+			has_state_flag = famine_food_security_active
+			OR = { has_global_flag = air_contamination_threshold_25 has_global_flag = air_contamination_threshold_50 has_global_flag = air_contamination_threshold_75 has_global_flag = air_contamination_threshold_100 has_global_flag = fallout_air_contamination_permanent_99 has_variable = air_winter_pressure has_variable = air_winter_exposure }
+			check_variable = { var = famine_profile_air_cleanliness_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+			check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than }
+		}
+		set_temp_variable = { famine_profile_mapping_result = constant:humanitarian_runtime.one }
+	}
+	if = {
+		limit = { check_variable = { var = famine_profile_mapping_result value = constant:humanitarian_runtime.one compare = equals } }
+		set_temp_variable = { famine_historical_profile_state_proven = constant:humanitarian_runtime.one }
+		set_temp_variable = { famine_historical_profile_context_proven = constant:humanitarian_runtime.one }
+	}
+}
+
+
+famine_apply_historical_profile_context = {
+	set_temp_variable = { famine_profile_result = constant:humanitarian_runtime.zero }
+	famine_resolve_historical_profile_context = yes
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			check_variable = { var = famine_historical_profile_state_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+			check_variable = { var = famine_historical_profile_context_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+		}
+		famine_initialize_state = yes
+		if = {
+			limit = { check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_soviet_1932_memory   compare = equals } }
+			set_variable = { famine_profile_production = constant:famine_profile_context.soviet_production }
+			set_variable = { famine_profile_transport = constant:famine_profile_context.soviet_transport }
+			set_variable = { famine_profile_extraction = constant:famine_profile_context.soviet_extraction }
+			set_variable = { famine_profile_need = constant:famine_profile_context.soviet_need }
+			set_variable = { famine_profile_environment = constant:famine_profile_context.soviet_environment }
+			set_variable = { famine_profile_vulnerability = constant:famine_profile_context.soviet_vulnerability }
+			set_variable = { famine_profile_governance = constant:famine_profile_context.soviet_governance }
+			set_variable = { famine_profile_relief = constant:famine_profile_context.soviet_relief }
+			set_variable = { famine_profile_mode = constant:famine_profile_mode.memory }
+		}
+		else_if = {
+			limit = { check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_china_henan_1942   compare = equals } }
+			set_variable = { famine_profile_production = constant:famine_profile_context.henan_production }
+			set_variable = { famine_profile_transport = constant:famine_profile_context.henan_transport }
+			set_variable = { famine_profile_extraction = constant:famine_profile_context.henan_extraction }
+			set_variable = { famine_profile_need = constant:famine_profile_context.henan_need }
+			set_variable = { famine_profile_environment = constant:famine_profile_context.henan_environment }
+			set_variable = { famine_profile_vulnerability = constant:famine_profile_context.henan_vulnerability }
+			set_variable = { famine_profile_governance = constant:famine_profile_context.henan_governance }
+			set_variable = { famine_profile_relief = constant:famine_profile_context.henan_relief }
+			set_variable = { famine_profile_mode = constant:famine_profile_mode.historical_window }
+		}
+		else_if = {
+			limit = { check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_china_policy_famine   compare = equals } }
+			set_variable = { famine_profile_production = constant:famine_profile_context.china_policy_production }
+			set_variable = { famine_profile_transport = constant:famine_profile_context.china_policy_transport }
+			set_variable = { famine_profile_extraction = constant:famine_profile_context.china_policy_extraction }
+			set_variable = { famine_profile_need = constant:famine_profile_context.china_policy_need }
+			set_variable = { famine_profile_environment = constant:famine_profile_context.china_policy_environment }
+			set_variable = { famine_profile_vulnerability = constant:famine_profile_context.china_policy_vulnerability }
+			set_variable = { famine_profile_governance = constant:famine_profile_context.china_policy_governance }
+			set_variable = { famine_profile_relief = constant:famine_profile_context.china_policy_relief }
+			set_variable = { famine_profile_mode = constant:famine_profile_mode.policy_analogue }
+		}
+		else_if = {
+			limit = { check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_bengal_1943   compare = equals } }
+			set_variable = { famine_profile_production = constant:famine_profile_context.bengal_production }
+			set_variable = { famine_profile_transport = constant:famine_profile_context.bengal_transport }
+			set_variable = { famine_profile_extraction = constant:famine_profile_context.bengal_extraction }
+			set_variable = { famine_profile_need = constant:famine_profile_context.bengal_need }
+			set_variable = { famine_profile_environment = constant:famine_profile_context.bengal_environment }
+			set_variable = { famine_profile_vulnerability = constant:famine_profile_context.bengal_vulnerability }
+			set_variable = { famine_profile_governance = constant:famine_profile_context.bengal_governance }
+			set_variable = { famine_profile_relief = constant:famine_profile_context.bengal_relief }
+			set_variable = { famine_profile_mode = constant:famine_profile_mode.historical_window }
+		}
+		else_if = {
+			limit = { check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_vietnam_1944   compare = equals } }
+			set_variable = { famine_profile_production = constant:famine_profile_context.vietnam_production }
+			set_variable = { famine_profile_transport = constant:famine_profile_context.vietnam_transport }
+			set_variable = { famine_profile_extraction = constant:famine_profile_context.vietnam_extraction }
+			set_variable = { famine_profile_need = constant:famine_profile_context.vietnam_need }
+			set_variable = { famine_profile_environment = constant:famine_profile_context.vietnam_environment }
+			set_variable = { famine_profile_vulnerability = constant:famine_profile_context.vietnam_vulnerability }
+			set_variable = { famine_profile_governance = constant:famine_profile_context.vietnam_governance }
+			set_variable = { famine_profile_relief = constant:famine_profile_context.vietnam_relief }
+			set_variable = { famine_profile_mode = constant:famine_profile_mode.historical_window }
+		}
+		else_if = {
+			limit = { check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_java_1944   compare = equals } }
+			set_variable = { famine_profile_production = constant:famine_profile_context.java_production }
+			set_variable = { famine_profile_transport = constant:famine_profile_context.java_transport }
+			set_variable = { famine_profile_extraction = constant:famine_profile_context.java_extraction }
+			set_variable = { famine_profile_need = constant:famine_profile_context.java_need }
+			set_variable = { famine_profile_environment = constant:famine_profile_context.java_environment }
+			set_variable = { famine_profile_vulnerability = constant:famine_profile_context.java_vulnerability }
+			set_variable = { famine_profile_governance = constant:famine_profile_context.java_governance }
+			set_variable = { famine_profile_relief = constant:famine_profile_context.java_relief }
+			set_variable = { famine_profile_mode = constant:famine_profile_mode.historical_window }
+		}
+		else_if = {
+			limit = { check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_greece_1941   compare = equals } }
+			set_variable = { famine_profile_production = constant:famine_profile_context.greece_production }
+			set_variable = { famine_profile_transport = constant:famine_profile_context.greece_transport }
+			set_variable = { famine_profile_extraction = constant:famine_profile_context.greece_extraction }
+			set_variable = { famine_profile_need = constant:famine_profile_context.greece_need }
+			set_variable = { famine_profile_environment = constant:famine_profile_context.greece_environment }
+			set_variable = { famine_profile_vulnerability = constant:famine_profile_context.greece_vulnerability }
+			set_variable = { famine_profile_governance = constant:famine_profile_context.greece_governance }
+			set_variable = { famine_profile_relief = constant:famine_profile_context.greece_relief }
+			set_variable = { famine_profile_mode = constant:famine_profile_mode.historical_window }
+		}
+		else_if = {
+			limit = { check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_leningrad_siege   compare = equals } }
+			set_variable = { famine_profile_production = constant:famine_profile_context.leningrad_production }
+			set_variable = { famine_profile_transport = constant:famine_profile_context.leningrad_transport }
+			set_variable = { famine_profile_extraction = constant:famine_profile_context.leningrad_extraction }
+			set_variable = { famine_profile_need = constant:famine_profile_context.leningrad_need }
+			set_variable = { famine_profile_environment = constant:famine_profile_context.leningrad_environment }
+			set_variable = { famine_profile_vulnerability = constant:famine_profile_context.leningrad_vulnerability }
+			set_variable = { famine_profile_governance = constant:famine_profile_context.leningrad_governance }
+			set_variable = { famine_profile_relief = constant:famine_profile_context.leningrad_relief }
+			set_variable = { famine_profile_mode = constant:famine_profile_mode.historical_window }
+		}
+		else_if = {
+			limit = { check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_dutch_hunger_winter   compare = equals } }
+			set_variable = { famine_profile_production = constant:famine_profile_context.dutch_production }
+			set_variable = { famine_profile_transport = constant:famine_profile_context.dutch_transport }
+			set_variable = { famine_profile_extraction = constant:famine_profile_context.dutch_extraction }
+			set_variable = { famine_profile_need = constant:famine_profile_context.dutch_need }
+			set_variable = { famine_profile_environment = constant:famine_profile_context.dutch_environment }
+			set_variable = { famine_profile_vulnerability = constant:famine_profile_context.dutch_vulnerability }
+			set_variable = { famine_profile_governance = constant:famine_profile_context.dutch_governance }
+			set_variable = { famine_profile_relief = constant:famine_profile_context.dutch_relief }
+			set_variable = { famine_profile_mode = constant:famine_profile_mode.historical_window }
+		}
+		else_if = {
+			limit = { check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_spain_early_1940s   compare = equals } }
+			set_variable = { famine_profile_production = constant:famine_profile_context.spain_production }
+			set_variable = { famine_profile_transport = constant:famine_profile_context.spain_transport }
+			set_variable = { famine_profile_extraction = constant:famine_profile_context.spain_extraction }
+			set_variable = { famine_profile_need = constant:famine_profile_context.spain_need }
+			set_variable = { famine_profile_environment = constant:famine_profile_context.spain_environment }
+			set_variable = { famine_profile_vulnerability = constant:famine_profile_context.spain_vulnerability }
+			set_variable = { famine_profile_governance = constant:famine_profile_context.spain_governance }
+			set_variable = { famine_profile_relief = constant:famine_profile_context.spain_relief }
+			set_variable = { famine_profile_mode = constant:famine_profile_mode.historical_window }
+		}
+		else_if = {
+			limit = { check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_ireland_memory   compare = equals } }
+			set_variable = { famine_profile_production = constant:famine_profile_context.ireland_production }
+			set_variable = { famine_profile_transport = constant:famine_profile_context.ireland_transport }
+			set_variable = { famine_profile_extraction = constant:famine_profile_context.ireland_extraction }
+			set_variable = { famine_profile_need = constant:famine_profile_context.ireland_need }
+			set_variable = { famine_profile_environment = constant:famine_profile_context.ireland_environment }
+			set_variable = { famine_profile_vulnerability = constant:famine_profile_context.ireland_vulnerability }
+			set_variable = { famine_profile_governance = constant:famine_profile_context.ireland_governance }
+			set_variable = { famine_profile_relief = constant:famine_profile_context.ireland_relief }
+			set_variable = { famine_profile_mode = constant:famine_profile_mode.memory }
+		}
+		else_if = {
+			limit = { check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_brazil_ceara   compare = equals } }
+			set_variable = { famine_profile_production = constant:famine_profile_context.brazil_production }
+			set_variable = { famine_profile_transport = constant:famine_profile_context.brazil_transport }
+			set_variable = { famine_profile_extraction = constant:famine_profile_context.brazil_extraction }
+			set_variable = { famine_profile_need = constant:famine_profile_context.brazil_need }
+			set_variable = { famine_profile_environment = constant:famine_profile_context.brazil_environment }
+			set_variable = { famine_profile_vulnerability = constant:famine_profile_context.brazil_vulnerability }
+			set_variable = { famine_profile_governance = constant:famine_profile_context.brazil_governance }
+			set_variable = { famine_profile_relief = constant:famine_profile_context.brazil_relief }
+			set_variable = { famine_profile_mode = constant:famine_profile_mode.dynamic_regional }
+		}
+		else_if = {
+			limit = { check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_congo_interaction   compare = equals } }
+			set_variable = { famine_profile_production = constant:famine_profile_context.congo_production }
+			set_variable = { famine_profile_transport = constant:famine_profile_context.congo_transport }
+			set_variable = { famine_profile_extraction = constant:famine_profile_context.congo_extraction }
+			set_variable = { famine_profile_need = constant:famine_profile_context.congo_need }
+			set_variable = { famine_profile_environment = constant:famine_profile_context.congo_environment }
+			set_variable = { famine_profile_vulnerability = constant:famine_profile_context.congo_vulnerability }
+			set_variable = { famine_profile_governance = constant:famine_profile_context.congo_governance }
+			set_variable = { famine_profile_relief = constant:famine_profile_context.congo_relief }
+			set_variable = { famine_profile_mode = constant:famine_profile_mode.dynamic_regional }
+		}
+		else_if = {
+			limit = { check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_ethiopia_policy   compare = equals } }
+			set_variable = { famine_profile_production = constant:famine_profile_context.ethiopia_production }
+			set_variable = { famine_profile_transport = constant:famine_profile_context.ethiopia_transport }
+			set_variable = { famine_profile_extraction = constant:famine_profile_context.ethiopia_extraction }
+			set_variable = { famine_profile_need = constant:famine_profile_context.ethiopia_need }
+			set_variable = { famine_profile_environment = constant:famine_profile_context.ethiopia_environment }
+			set_variable = { famine_profile_vulnerability = constant:famine_profile_context.ethiopia_vulnerability }
+			set_variable = { famine_profile_governance = constant:famine_profile_context.ethiopia_governance }
+			set_variable = { famine_profile_relief = constant:famine_profile_context.ethiopia_relief }
+			set_variable = { famine_profile_mode = constant:famine_profile_mode.policy_analogue }
+		}
+		else_if = {
+			limit = { check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_nuclear_winter_global   compare = equals } }
+			set_variable = { famine_profile_production = constant:famine_profile_context.nuclear_winter_production }
+			set_variable = { famine_profile_transport = constant:famine_profile_context.nuclear_winter_transport }
+			set_variable = { famine_profile_extraction = constant:famine_profile_context.nuclear_winter_extraction }
+			set_variable = { famine_profile_need = constant:famine_profile_context.nuclear_winter_need }
+			set_variable = { famine_profile_environment = constant:famine_profile_context.nuclear_winter_environment }
+			set_variable = { famine_profile_vulnerability = constant:famine_profile_context.nuclear_winter_vulnerability }
+			set_variable = { famine_profile_governance = constant:famine_profile_context.nuclear_winter_governance }
+			set_variable = { famine_profile_relief = constant:famine_profile_context.nuclear_winter_relief }
+			set_variable = { famine_profile_mode = constant:famine_profile_mode.dynamic_regional }
+		}
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_soviet_1932_memory   compare = equals }
+					check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_china_henan_1942   compare = equals }
+					check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_china_policy_famine   compare = equals }
+					check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_bengal_1943   compare = equals }
+					check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_vietnam_1944   compare = equals }
+					check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_java_1944   compare = equals }
+					check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_greece_1941   compare = equals }
+					check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_leningrad_siege   compare = equals }
+					check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_dutch_hunger_winter   compare = equals }
+					check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_spain_early_1940s   compare = equals }
+					check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_ireland_memory   compare = equals }
+					check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_brazil_ceara   compare = equals }
+					check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_congo_interaction   compare = equals }
+					check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_ethiopia_policy   compare = equals }
+					check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_nuclear_winter_global   compare = equals }
+				}
+			}
+			set_variable = { famine_profile_context_id = famine_historical_profile_id }
+			set_state_flag = famine_profile_context_active
+			set_state_flag = famine_food_security_active
+			famine_register_active_state = yes
+			famine_register_historical_profile_candidate_state = yes
+			set_temp_variable = { famine_profile_result = constant:humanitarian_runtime.one }
+		}
+	}
+	else = { famine_clear_historical_profile_context = yes }
+	set_temp_variable = { famine_historical_profile_state_proven = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_historical_profile_context_proven = constant:humanitarian_runtime.zero }
+}
+
+
+# A food-stage commit may submit one separate survivor-flight request. The
+# request is people-denominated, stage-generation-bound, and never mutates
+# state population, deaths, or the aligned cohort ledger. Existing flight,
+# trapped, and live-cohort reservations use the conservative maximum because
+# those ledgers can describe the same threatened people. Migration owns the
+# pressure, incident, registration, and accepted-request ledgers through its
+# explicit request contract below.
+famine_submit_survivor_flight_request = {
+	set_temp_variable = { famine_flight_request_amount = constant:humanitarian_population.zero }
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			check_variable = { var = famine_food_stage value = constant:famine_food_stage.supply_strain compare = greater_than_or_equals }
+		}
+		if = { limit = { NOT = { has_variable = famine_flight_stage_generation } } set_variable = { famine_flight_stage_generation = constant:humanitarian_runtime.zero } }
+		add_to_variable = { famine_flight_stage_generation = constant:migration_core_reconciliation.projection_generation_start }
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = famine_flight_request_generation }
+					NOT = { check_variable = { var = famine_flight_request_generation value = famine_flight_stage_generation compare = equals } }
+				}
+			}
+			set_temp_variable = { famine_flight_stage_share = constant:migration_core_reconciliation.flight_share_supply_strain }
+			if = { limit = { check_variable = { var = famine_food_stage value = constant:famine_food_stage.acute_shortage compare = greater_than_or_equals } } set_temp_variable = { famine_flight_stage_share = constant:migration_core_reconciliation.flight_share_acute_shortage } }
+			if = { limit = { check_variable = { var = famine_food_stage value = constant:famine_food_stage.famine compare = greater_than_or_equals } } set_temp_variable = { famine_flight_stage_share = constant:migration_core_reconciliation.flight_share_famine } }
+			if = { limit = { check_variable = { var = famine_food_stage value = constant:famine_food_stage.catastrophic_famine compare = greater_than_or_equals } } set_temp_variable = { famine_flight_stage_share = constant:migration_core_reconciliation.flight_share_catastrophic } }
+		}
+		set_temp_variable = { famine_flight_live_population = state_population_k }
+		multiply_temp_variable = { famine_flight_live_population = constant:humanitarian_population.people_per_k }
+		round_temp_variable = famine_flight_live_population
+		set_temp_variable = { famine_flight_desired_total = famine_flight_live_population }
+		multiply_temp_variable = { famine_flight_desired_total = famine_flight_stage_share }
+		if = { limit = { has_variable = famine_flight_request_accepted_total } subtract_from_temp_variable = { famine_flight_desired_total = famine_flight_request_accepted_total } }
+		clamp_temp_variable = { var = famine_flight_desired_total min = constant:humanitarian_population.zero }
+		set_temp_variable = { famine_flight_request_amount = famine_flight_desired_total }
+		clamp_temp_variable = { var = famine_flight_request_amount min = constant:humanitarian_population.zero max = famine_flight_live_population }
+		round_temp_variable = famine_flight_request_amount
+		if = {
+			limit = { check_variable = { var = famine_flight_request_amount value = constant:migration_core_reconciliation.flight_request_minimum compare = greater_than_or_equals } }
+			# The migration owner applies the exact pressure and incident receipt.
+			# Famine supplies only the people amount, source, actor proof, and its
+			# own stage generation; it does not write migration ledgers directly.
+			set_temp_variable = { migration_pressure_request_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { migration_pressure_request_amount = famine_flight_request_amount }
+			set_temp_variable = { migration_pressure_request_source = constant:humanitarian_pressure_source.resource_shortage }
+			set_temp_variable = { migration_pressure_request_actor_proven = OWNER.id }
+			set_temp_variable = { migration_pressure_request_generation = famine_flight_stage_generation }
+			migration_accept_famine_survivor_request = yes
+			if = {
+				limit = { check_variable = { var = migration_famine_survivor_request_result value = constant:humanitarian_runtime.one compare = equals } }
+				if = { limit = { NOT = { has_variable = famine_flight_request_accepted_total } } set_variable = { famine_flight_request_accepted_total = constant:humanitarian_population.zero } }
+				add_to_variable = { famine_flight_request_accepted_total = migration_famine_survivor_accepted_amount }
+				# Stage pressure has not selected a lane or destination yet. Keep the
+				# famine source at the food/resource shortage channel; movement owners
+				# assign internal or cross-border outcome roles after exact transfer.
+				set_variable = { famine_last_pressure_source = constant:humanitarian_pressure_source.resource_shortage }
+			}
+		}
+		set_variable = { famine_flight_request_generation = famine_flight_stage_generation }
+	}
+}
+
+
+famine_transition_food_stage = {
+	set_temp_variable = { famine_previous_food_stage = famine_food_stage }
+	if = {
+		limit = {
+			check_variable = { var = famine_requested_food_stage value = constant:famine_food_stage.stable compare = greater_than }
+			check_variable = { var = famine_requested_food_stage value = constant:famine_food_stage.catastrophic_famine compare = less_than_or_equals }
+		}
+		set_variable = { famine_food_stage = famine_requested_food_stage }
+		if = {
+			limit = { check_variable = { var = famine_requested_food_stage value = famine_previous_food_stage compare = greater_than } }
+			famine_submit_survivor_flight_request = yes
+		}
+		set_variable = { famine_food_stage_started_date = global.date }
+		set_variable = { famine_food_stage_candidate = famine_requested_food_stage }
+		set_variable = { famine_food_exposure_days = constant:humanitarian_runtime.zero }
+		set_variable = { famine_food_next_mortality_date = global.date }
+		clr_state_flag = famine_food_stage_stable
+		clr_state_flag = famine_food_stage_supply_strain
+		clr_state_flag = famine_food_stage_acute_shortage
+		clr_state_flag = famine_food_stage_famine
+		clr_state_flag = famine_food_stage_catastrophic
+		if = { limit = { check_variable = { var = famine_requested_food_stage value = constant:famine_food_stage.supply_strain   compare = equals } } set_state_flag = famine_food_stage_supply_strain }
+		if = { limit = { check_variable = { var = famine_requested_food_stage value = constant:famine_food_stage.acute_shortage   compare = equals } } set_state_flag = famine_food_stage_acute_shortage }
+		if = { limit = { check_variable = { var = famine_requested_food_stage value = constant:famine_food_stage.famine   compare = equals } } set_state_flag = famine_food_stage_famine }
+		if = { limit = { check_variable = { var = famine_requested_food_stage value = constant:famine_food_stage.catastrophic_famine   compare = equals } } set_state_flag = famine_food_stage_catastrophic }
+		famine_register_initial_incident = yes
+		if = {
+			limit = { check_variable = { var = famine_requested_food_stage value = constant:famine_food_stage.acute_shortage compare = greater_than_or_equals } }
+			add_to_variable = { famine_food_incident_count = constant:humanitarian_runtime.one }
+			set_state_flag = famine_food_security_active
+			famine_register_active_state = yes
+		}
+		if = {
+			limit = {
+				check_variable = { var = famine_requested_food_stage value = constant:famine_food_stage.catastrophic_famine compare = equals }
+				has_state_flag = famine_extraction_active
+				check_variable = { var = famine_component_extraction value = constant:famine_food_component.zero compare = greater_than }
+			}
+			famine_resolve_opposition_channel = yes
+		}
+		if = {
+			limit = { check_variable = { var = famine_requested_food_stage value = constant:famine_food_stage.acute_shortage   compare = equals } }
+			add_to_variable = { famine_food_next_mortality_date = constant:famine_mortality.acute_shortage_interval_days }
+		}
+		else_if = {
+			limit = { check_variable = { var = famine_requested_food_stage value = constant:famine_food_stage.famine   compare = equals } }
+			add_to_variable = { famine_food_next_mortality_date = constant:famine_mortality.famine_interval_days }
+		}
+		else_if = {
+			limit = { check_variable = { var = famine_requested_food_stage value = constant:famine_food_stage.catastrophic_famine   compare = equals } }
+			add_to_variable = { famine_food_next_mortality_date = constant:famine_mortality.catastrophic_interval_days }
+		}
+		if = {
+			limit = {
+				check_variable = { var = famine_requested_food_stage value = constant:famine_food_stage.famine compare = greater_than_or_equals }
+				check_variable = { var = famine_previous_food_stage value = constant:famine_food_stage.famine compare = less_than }
+			}
+			if = {
+				limit = { famine_blockade_proof = yes }
+				OWNER = { famine_show_report_island_blockade = yes }
+				if = {
+					limit = { NOT = { is_owned_and_controlled_by = OWNER } }
+					CONTROLLER = { famine_show_report_island_blockade = yes }
+				}
+			}
+			else = {
+				OWNER = { famine_show_report_generic = yes }
+				if = {
+					limit = { NOT = { is_owned_and_controlled_by = OWNER } }
+					CONTROLLER = { famine_show_report_generic = yes }
+				}
+			}
+		}
+	}
+	if = {
+		limit = { check_variable = { var = famine_requested_food_stage value = constant:famine_food_stage.stable   compare = equals } }
+		set_variable = { famine_food_stage = constant:famine_food_stage.stable }
+		set_variable = { famine_food_stage_started_date = global.date }
+		set_variable = { famine_food_stage_candidate = constant:famine_food_stage.stable }
+		set_variable = { famine_food_exposure_days = constant:humanitarian_runtime.zero }
+		set_variable = { famine_food_next_mortality_date = global.date }
+		clr_state_flag = famine_food_stage_stable
+		clr_state_flag = famine_food_stage_supply_strain
+		clr_state_flag = famine_food_stage_acute_shortage
+		clr_state_flag = famine_food_stage_famine
+		clr_state_flag = famine_food_stage_catastrophic
+		set_state_flag = famine_food_stage_stable
+		clr_state_flag = famine_surface_context_active
+		clr_state_flag = famine_profile_context_active
+		if = {
+			limit = { famine_state_can_retire = yes }
+			famine_cleanup_state_registration = yes
+		}
+	}
+	famine_refresh_dynamic_modifiers = yes
+	set_temp_variable = { famine_requested_food_stage = constant:famine_food_stage.stable }
+}
+
+
+famine_retire_recovered_state = {
+	if = {
+		limit = { famine_state_can_retire = yes }
+		# A recovered state becomes a sparse land-relief donor only after the
+		# reserve updater has produced real positive stock. Adjacency remains an
+		# engine-checked candidate gate, so this does not fabricate a route.
+		if = {
+			limit = {
+				has_state_flag = famine_food_reserve_initialized
+				check_variable = { var = famine_food_reserve_amount value = constant:famine_relief_threshold.donor_reserve_floor compare = greater_than }
+			}
+			set_variable = { famine_relief_registration_proven = constant:famine_relief_runtime.one }
+			set_variable = { famine_relief_land_route_proven_input = constant:famine_relief_runtime.one }
+			if = {
+				limit = {
+					naval_base > 0
+					any_province_building_level = { province = { all_provinces = yes limit_to_naval_base = yes } building = naval_base level > @FAMINE_NON_DAMAGED_MINIMUM }
+				}
+				set_variable = { famine_relief_sea_endpoint_proven_input = constant:famine_relief_runtime.one }
+			}
+			if = {
+				limit = {
+					air_base > 0
+					non_damaged_building_level = { building = air_base level > @FAMINE_NON_DAMAGED_MINIMUM }
+				}
+				set_variable = { famine_relief_air_endpoint_proven_input = constant:famine_relief_runtime.one }
+			}
+			famine_relief_register_donor_state = yes
+		}
+		clr_state_flag = famine_surface_context_active
+		clr_state_flag = famine_profile_context_active
+		famine_cleanup_state_registration = yes
+	}
+}
+
+
+famine_evaluate_food_security = {
+	set_temp_variable = { famine_food_evaluation_result = constant:humanitarian_runtime.zero }
+	if = {
+		limit = { humanitarian_state_is_valid = yes }
+		famine_initialize_state = yes
+		famine_apply_historical_profile_context = yes
+		famine_collect_surface_context = yes
+		famine_decay_pressure = yes
+
+	set_variable = { famine_component_production = famine_input_production }
+	add_to_variable = { famine_component_production = famine_profile_production }
+	add_to_variable = { famine_component_production = famine_external_production }
+	clamp_variable = { var = famine_component_production min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+
+	set_variable = { famine_component_transport = famine_input_transport }
+	add_to_variable = { famine_component_transport = famine_profile_transport }
+	add_to_variable = { famine_component_transport = famine_external_transport }
+	clamp_variable = { var = famine_component_transport min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+
+	set_variable = { famine_component_extraction = famine_input_extraction }
+	add_to_variable = { famine_component_extraction = famine_profile_extraction }
+	add_to_variable = { famine_component_extraction = famine_external_extraction }
+	clamp_variable = { var = famine_component_extraction min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+
+	set_temp_variable = { famine_reception_demand_need_pressure = constant:famine_food_component.zero }
+	if = {
+		limit = { check_variable = { var = famine_reception_demand_population value = constant:humanitarian_population.zero compare = greater_than } }
+		set_temp_variable = { famine_reception_demand_population_base = state_population_k }
+		multiply_temp_variable = { famine_reception_demand_population_base = constant:chaos_meter_deaths.people_per_k }
+		round_temp_variable = famine_reception_demand_population_base
+		if = {
+			limit = { check_variable = { var = famine_reception_demand_population_base value = constant:humanitarian_population.zero compare = greater_than } }
+			set_temp_variable = { famine_reception_demand_need_pressure = famine_reception_demand_population }
+			divide_temp_variable = { famine_reception_demand_need_pressure = famine_reception_demand_population_base }
+			multiply_temp_variable = { famine_reception_demand_need_pressure = constant:famine_food_component.maximum }
+			clamp_temp_variable = { var = famine_reception_demand_need_pressure min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+		}
+	}
+
+	set_variable = { famine_component_need = famine_input_need }
+	add_to_variable = { famine_component_need = famine_profile_need }
+	add_to_variable = { famine_component_need = famine_external_need }
+	add_to_variable = { famine_component_need = famine_food_pressure }
+	add_to_variable = { famine_component_need = famine_reception_demand_need_pressure }
+	clamp_variable = { var = famine_component_need min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+
+	set_variable = { famine_component_environment = famine_input_environment }
+	add_to_variable = { famine_component_environment = famine_profile_environment }
+	add_to_variable = { famine_component_environment = famine_external_environment }
+	clamp_variable = { var = famine_component_environment min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+
+	set_variable = { famine_component_vulnerability = famine_input_vulnerability }
+	add_to_variable = { famine_component_vulnerability = famine_profile_vulnerability }
+	add_to_variable = { famine_component_vulnerability = famine_external_vulnerability }
+	add_to_variable = { famine_component_vulnerability = famine_reception_demand_need_pressure }
+	clamp_variable = { var = famine_component_vulnerability min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+
+	set_variable = { famine_component_governance = famine_input_governance }
+	add_to_variable = { famine_component_governance = famine_profile_governance }
+	add_to_variable = { famine_component_governance = famine_external_governance }
+	clamp_variable = { var = famine_component_governance min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+
+	set_variable = { famine_component_relief = famine_input_relief }
+	add_to_variable = { famine_component_relief = famine_profile_relief }
+	add_to_variable = { famine_component_relief = famine_external_relief }
+	clamp_variable = { var = famine_component_relief min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+
+	# Reserve stock is a state-owned relief source. The update is registry-only
+	# through the caller and is idempotent for the current game date.
+	famine_update_reserve = yes
+	set_temp_variable = { famine_food_reserve_stock_relief = constant:famine_food_reserve.zero }
+	if = {
+		limit = { check_variable = { var = famine_food_reserve_daily_need value = constant:famine_food_reserve.zero compare = greater_than } }
+		set_temp_variable = { famine_food_reserve_stock_relief = famine_food_reserve_amount }
+		divide_temp_variable = { famine_food_reserve_stock_relief = famine_food_reserve_daily_need }
+		multiply_temp_variable = { famine_food_reserve_stock_relief = constant:famine_food_reserve.relief_per_day_covered }
+		clamp_temp_variable = {
+			var = famine_food_reserve_stock_relief
+			min = constant:famine_food_reserve.zero
+			max = constant:famine_food_reserve.relief_maximum
+		}
+	}
+	add_to_temp_variable = { famine_food_reserve_stock_relief = famine_food_reserve_relief }
+	clamp_temp_variable = {
+		var = famine_food_reserve_stock_relief
+		min = constant:famine_food_reserve.zero
+		max = constant:famine_food_reserve.relief_maximum
+	}
+	set_temp_variable = { famine_food_reserve_score_relief_output = famine_food_reserve_stock_relief }
+	add_to_variable = { famine_component_relief = famine_food_reserve_stock_relief }
+	clamp_variable = { var = famine_component_relief min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+	famine_refresh_blockade_proof = yes
+	famine_apply_relief_access_components = yes
+	famine_apply_blockade_components = yes
+
+	set_temp_variable = { famine_food_score_raw = famine_component_production }
+	multiply_temp_variable = { famine_food_score_raw = constant:famine_food_weight.production }
+	set_temp_variable = { famine_food_component_weighted = famine_component_transport }
+	multiply_temp_variable = { famine_food_component_weighted = constant:famine_food_weight.transport }
+	add_to_temp_variable = { famine_food_score_raw = famine_food_component_weighted }
+	set_temp_variable = { famine_food_component_weighted = famine_component_extraction }
+	multiply_temp_variable = { famine_food_component_weighted = constant:famine_food_weight.extraction }
+	add_to_temp_variable = { famine_food_score_raw = famine_food_component_weighted }
+	set_temp_variable = { famine_food_component_weighted = famine_component_need }
+	multiply_temp_variable = { famine_food_component_weighted = constant:famine_food_weight.need }
+	add_to_temp_variable = { famine_food_score_raw = famine_food_component_weighted }
+	set_temp_variable = { famine_food_component_weighted = famine_component_environment }
+	multiply_temp_variable = { famine_food_component_weighted = constant:famine_food_weight.environment }
+	add_to_temp_variable = { famine_food_score_raw = famine_food_component_weighted }
+	set_temp_variable = { famine_food_component_weighted = famine_component_vulnerability }
+	multiply_temp_variable = { famine_food_component_weighted = constant:famine_food_weight.vulnerability }
+	add_to_temp_variable = { famine_food_score_raw = famine_food_component_weighted }
+	set_temp_variable = { famine_food_component_weighted = famine_component_governance }
+	multiply_temp_variable = { famine_food_component_weighted = constant:famine_food_weight.governance }
+	add_to_temp_variable = { famine_food_score_raw = famine_food_component_weighted }
+	set_temp_variable = { famine_food_relief_weighted = famine_component_relief }
+	multiply_temp_variable = { famine_food_relief_weighted = constant:famine_food_weight.relief }
+	subtract_from_temp_variable = { famine_food_score_raw = famine_food_relief_weighted }
+	clamp_temp_variable = { var = famine_food_score_raw min = constant:famine_food_score.zero }
+	divide_temp_variable = { famine_food_score_raw = constant:famine_food_weight.pressure_normalizer }
+	clamp_temp_variable = { var = famine_food_score_raw min = constant:famine_food_score.zero max = constant:famine_food_score.maximum }
+	set_variable = { famine_food_security_score = famine_food_score_raw }
+
+	set_temp_variable = { famine_requested_food_stage = constant:famine_food_stage.stable }
+	if = { limit = { check_variable = { var = famine_food_score_raw value = constant:famine_food_score.supply_strain_threshold compare = greater_than_or_equals } } set_temp_variable = { famine_requested_food_stage = constant:famine_food_stage.supply_strain } }
+	if = { limit = { check_variable = { var = famine_food_score_raw value = constant:famine_food_score.acute_shortage_threshold compare = greater_than_or_equals } } set_temp_variable = { famine_requested_food_stage = constant:famine_food_stage.acute_shortage } }
+	if = { limit = { check_variable = { var = famine_food_score_raw value = constant:famine_food_score.famine_threshold compare = greater_than_or_equals } } set_temp_variable = { famine_requested_food_stage = constant:famine_food_stage.famine } }
+	if = { limit = { check_variable = { var = famine_food_score_raw value = constant:famine_food_score.catastrophic_threshold compare = greater_than_or_equals } } set_temp_variable = { famine_requested_food_stage = constant:famine_food_stage.catastrophic_famine } }
+
+	if = {
+		limit = { check_variable = { var = famine_requested_food_stage value = famine_food_stage compare = greater_than } }
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = famine_food_stage_candidate_since_date }
+					NOT = { check_variable = { var = famine_food_stage_candidate value = famine_requested_food_stage   compare = equals } }
+				}
+			}
+			set_variable = { famine_food_stage_candidate = famine_requested_food_stage }
+			set_variable = { famine_food_stage_candidate_since_date = global.date }
+		}
+		set_temp_variable = { famine_food_stage_candidate_elapsed = global.date }
+		subtract_from_temp_variable = { famine_food_stage_candidate_elapsed = famine_food_stage_candidate_since_date }
+		set_temp_variable = { famine_food_candidate_days = constant:famine_food_timing.stable_candidate_days }
+		if = { limit = { check_variable = { var = famine_requested_food_stage value = constant:famine_food_stage.supply_strain   compare = equals } } set_temp_variable = { famine_food_candidate_days = constant:famine_food_timing.supply_strain_candidate_days } }
+		if = { limit = { check_variable = { var = famine_requested_food_stage value = constant:famine_food_stage.acute_shortage   compare = equals } } set_temp_variable = { famine_food_candidate_days = constant:famine_food_timing.acute_shortage_candidate_days } }
+		if = { limit = { check_variable = { var = famine_requested_food_stage value = constant:famine_food_stage.famine   compare = equals } } set_temp_variable = { famine_food_candidate_days = constant:famine_food_timing.famine_candidate_days } }
+		if = { limit = { check_variable = { var = famine_requested_food_stage value = constant:famine_food_stage.catastrophic_famine   compare = equals } } set_temp_variable = { famine_food_candidate_days = constant:famine_food_timing.catastrophic_candidate_days } }
+		if = {
+			limit = { check_variable = { var = famine_food_stage_candidate_elapsed value = famine_food_candidate_days compare = greater_than_or_equals } }
+			famine_transition_food_stage = yes
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = famine_requested_food_stage value = famine_food_stage compare = less_than } }
+		set_temp_variable = { famine_food_recovery_threshold = constant:famine_food_score.zero }
+		set_temp_variable = { famine_food_recovery_days = constant:famine_food_timing.stable_recovery_days }
+		if = { limit = { check_variable = { var = famine_food_stage value = constant:famine_food_stage.supply_strain   compare = equals } } set_temp_variable = { famine_food_recovery_threshold = constant:famine_food_score.supply_strain_recovery_threshold } set_temp_variable = { famine_food_recovery_days = constant:famine_food_timing.supply_strain_recovery_days } }
+		if = { limit = { check_variable = { var = famine_food_stage value = constant:famine_food_stage.acute_shortage   compare = equals } } set_temp_variable = { famine_food_recovery_threshold = constant:famine_food_score.acute_shortage_recovery_threshold } set_temp_variable = { famine_food_recovery_days = constant:famine_food_timing.acute_shortage_recovery_days } }
+		if = { limit = { check_variable = { var = famine_food_stage value = constant:famine_food_stage.famine   compare = equals } } set_temp_variable = { famine_food_recovery_threshold = constant:famine_food_score.famine_recovery_threshold } set_temp_variable = { famine_food_recovery_days = constant:famine_food_timing.famine_recovery_days } }
+		if = { limit = { check_variable = { var = famine_food_stage value = constant:famine_food_stage.catastrophic_famine   compare = equals } } set_temp_variable = { famine_food_recovery_threshold = constant:famine_food_score.catastrophic_recovery_threshold } set_temp_variable = { famine_food_recovery_days = constant:famine_food_timing.catastrophic_recovery_days } }
+		if = {
+			limit = { check_variable = { var = famine_food_score_raw value = famine_food_recovery_threshold compare = less_than } }
+			if = { limit = { NOT = { has_variable = famine_food_recovery_since_date } } set_variable = { famine_food_recovery_since_date = global.date } }
+			set_temp_variable = { famine_food_recovery_elapsed = global.date }
+			subtract_from_temp_variable = { famine_food_recovery_elapsed = famine_food_recovery_since_date }
+			if = { limit = { check_variable = { var = famine_food_recovery_elapsed value = famine_food_recovery_days compare = greater_than_or_equals } } famine_transition_food_stage = yes }
+		}
+		else = { clear_variable = famine_food_recovery_since_date }
+	}
+	else = {
+		clear_variable = famine_food_stage_candidate_since_date
+		clear_variable = famine_food_recovery_since_date
+	}
+
+	if = {
+		limit = { famine_food_stage_requires_mortality = yes }
+		set_temp_variable = { famine_food_exposure_elapsed = global.date }
+		subtract_from_temp_variable = { famine_food_exposure_elapsed = famine_food_stage_started_date }
+		clamp_temp_variable = { var = famine_food_exposure_elapsed min = constant:humanitarian_runtime.zero max = constant:famine_food_timing.maximum_exposure_days }
+		set_variable = { famine_food_exposure_days = famine_food_exposure_elapsed }
+		famine_apply_mortality = yes
+	}
+	else = { set_variable = { famine_food_exposure_days = constant:humanitarian_runtime.zero } }
+	famine_publish_migration_food_safety = yes
+	famine_refresh_dynamic_modifiers = yes
+	migration_mark_reception_capacity_dirty_if_candidate = yes
+	set_temp_variable = { famine_food_evaluation_result = constant:humanitarian_runtime.one }
+	humanitarian_achievement_process_state = yes
+	famine_retire_recovered_state = yes
+	}
+}
+
+
+# Refreshes the state-owned reserve ledger from live population and logistics.
+# Reserve units are thousand-person-days; this effect never changes population
+# and preserves the amount and cumulative totals across state retirement.
+famine_refresh_reserve_capacity = {
+	set_temp_variable = { famine_food_reserve_refresh_result = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_food_reserve_capacity_output = constant:famine_food_reserve.zero }
+	set_temp_variable = { famine_food_reserve_target_output = constant:famine_food_reserve.zero }
+	set_temp_variable = { famine_food_reserve_amount_output = constant:famine_food_reserve.zero }
+	set_temp_variable = { famine_food_reserve_daily_need_output = constant:famine_food_reserve.zero }
+	set_temp_variable = { famine_food_reserve_logistics_factor_output = constant:famine_food_reserve.zero }
+	if = {
+		limit = { humanitarian_state_is_valid = yes }
+		famine_initialize_state = yes
+		set_temp_variable = { famine_food_reserve_logistics_factor_calculated = constant:famine_food_reserve.logistics_factor_base }
+		set_temp_variable = { famine_food_reserve_infrastructure = infrastructure_level }
+		multiply_temp_variable = { famine_food_reserve_infrastructure = constant:famine_food_reserve.logistics_factor_per_infrastructure }
+		add_to_temp_variable = { famine_food_reserve_logistics_factor_calculated = famine_food_reserve_infrastructure }
+		set_temp_variable = { famine_food_reserve_transport_penalty = famine_component_transport }
+		multiply_temp_variable = { famine_food_reserve_transport_penalty = constant:famine_food_reserve.transport_capacity_penalty }
+		subtract_from_temp_variable = { famine_food_reserve_logistics_factor_calculated = famine_food_reserve_transport_penalty }
+		set_temp_variable = { famine_food_reserve_production_penalty = famine_component_production }
+		multiply_temp_variable = { famine_food_reserve_production_penalty = constant:famine_food_reserve.production_capacity_penalty }
+		subtract_from_temp_variable = { famine_food_reserve_logistics_factor_calculated = famine_food_reserve_production_penalty }
+		clamp_temp_variable = {
+			var = famine_food_reserve_logistics_factor_calculated
+			min = constant:famine_food_reserve.logistics_factor_minimum
+			max = constant:famine_food_reserve.logistics_factor_maximum
+		}
+		set_variable = { famine_food_reserve_logistics_factor = famine_food_reserve_logistics_factor_calculated }
+		set_variable = { famine_food_reserve_daily_need = state_population_k }
+		multiply_variable = { famine_food_reserve_daily_need = constant:famine_food_reserve.daily_need_per_k }
+		round_variable = famine_food_reserve_daily_need
+		clamp_variable = { var = famine_food_reserve_daily_need min = constant:famine_food_reserve.minimum_units }
+		set_temp_variable = { famine_food_reserve_capacity_calculated = famine_food_reserve_daily_need }
+		multiply_temp_variable = { famine_food_reserve_capacity_calculated = constant:famine_food_reserve.capacity_days }
+		multiply_temp_variable = { famine_food_reserve_capacity_calculated = famine_food_reserve_logistics_factor }
+		round_temp_variable = famine_food_reserve_capacity_calculated
+		clamp_temp_variable = { var = famine_food_reserve_capacity_calculated min = constant:famine_food_reserve.minimum_units }
+		set_variable = { famine_food_reserve_capacity = famine_food_reserve_capacity_calculated }
+		set_temp_variable = { famine_food_reserve_target_calculated = famine_food_reserve_daily_need }
+		multiply_temp_variable = { famine_food_reserve_target_calculated = constant:famine_food_reserve.target_days }
+		multiply_temp_variable = { famine_food_reserve_target_calculated = famine_food_reserve_logistics_factor }
+		round_temp_variable = famine_food_reserve_target_calculated
+		clamp_temp_variable = {
+			var = famine_food_reserve_target_calculated
+			min = constant:famine_food_reserve.minimum_units
+			max = famine_food_reserve_capacity
+		}
+		set_variable = { famine_food_reserve_target = famine_food_reserve_target_calculated }
+		clamp_variable = { var = famine_food_reserve_amount min = constant:famine_food_reserve.zero }
+		if = {
+			limit = { NOT = { has_state_flag = famine_food_reserve_initialized } }
+			if = {
+				limit = {
+					check_variable = { var = famine_food_reserve_initialization_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+					check_variable = { var = famine_food_reserve_initial_amount value = constant:famine_food_reserve.zero compare = greater_than }
+				}
+				set_variable = { famine_food_reserve_amount = famine_food_reserve_initial_amount }
+				round_variable = famine_food_reserve_amount
+				clamp_variable = {
+					var = famine_food_reserve_amount
+					min = constant:famine_food_reserve.zero
+					max = famine_food_reserve_capacity
+				}
+				set_state_flag = famine_food_reserve_initialized
+			}
+			if = {
+				limit = {
+					NOT = { has_state_flag = famine_food_reserve_initialized }
+					check_variable = { var = famine_food_reserve_amount value = constant:famine_food_reserve.zero compare = greater_than }
+				}
+				# A positive amount already present in a save is durable evidence;
+				# zero is not promoted to an invented starting stockpile.
+				set_state_flag = famine_food_reserve_initialized
+			}
+		}
+		set_temp_variable = { famine_food_reserve_capacity_output = famine_food_reserve_capacity }
+		set_temp_variable = { famine_food_reserve_target_output = famine_food_reserve_target }
+		set_temp_variable = { famine_food_reserve_amount_output = famine_food_reserve_amount }
+		set_temp_variable = { famine_food_reserve_daily_need_output = famine_food_reserve_daily_need }
+		set_temp_variable = { famine_food_reserve_logistics_factor_output = famine_food_reserve_logistics_factor }
+		set_temp_variable = { famine_food_reserve_refresh_result = constant:humanitarian_runtime.one }
+	}
+}
+
+
+# Applies at most one reserve update per game date. A stable state replenishes
+# toward target, while an active shortage depletes stock by stage and need.
+famine_update_reserve = {
+	set_temp_variable = { famine_food_reserve_update_result = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_food_reserve_replenished_output = constant:famine_food_reserve.zero }
+	set_temp_variable = { famine_food_reserve_depleted_output = constant:famine_food_reserve.zero }
+	set_temp_variable = { famine_food_reserve_amount_output = constant:famine_food_reserve.zero }
+	set_temp_variable = { famine_food_reserve_daily_need_output = constant:famine_food_reserve.zero }
+	set_temp_variable = { famine_food_reserve_relief_output = constant:famine_food_reserve.zero }
+	if = {
+		limit = { humanitarian_state_is_valid = yes }
+		famine_refresh_reserve_capacity = yes
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = famine_food_reserve_last_update_date }
+					check_variable = { var = famine_food_reserve_last_update_date value = global.date compare = less_than }
+				}
+			}
+			set_variable = { famine_food_reserve_last_update_date = global.date }
+			set_variable = { famine_food_reserve_last_replenished = constant:famine_food_reserve.zero }
+			set_variable = { famine_food_reserve_last_depleted = constant:famine_food_reserve.zero }
+			if = {
+				limit = { check_variable = { var = famine_food_reserve_relief value = constant:famine_food_reserve.zero compare = greater_than } }
+				subtract_from_variable = { famine_food_reserve_relief = constant:famine_food_reserve.relief_decay_per_day }
+				clamp_variable = { var = famine_food_reserve_relief min = constant:famine_food_reserve.zero max = constant:famine_food_reserve.relief_maximum }
+			}
+			if = {
+				limit = { famine_food_stage_is_active = yes }
+				set_temp_variable = { famine_food_reserve_depletion_share = constant:famine_food_reserve.zero }
+				if = { limit = { check_variable = { var = famine_food_stage value = constant:famine_food_stage.supply_strain compare = equals } } set_temp_variable = { famine_food_reserve_depletion_share = constant:famine_food_reserve.supply_strain_depletion_share } }
+				if = { limit = { check_variable = { var = famine_food_stage value = constant:famine_food_stage.acute_shortage compare = equals } } set_temp_variable = { famine_food_reserve_depletion_share = constant:famine_food_reserve.acute_shortage_depletion_share } }
+				if = { limit = { check_variable = { var = famine_food_stage value = constant:famine_food_stage.famine compare = equals } } set_temp_variable = { famine_food_reserve_depletion_share = constant:famine_food_reserve.famine_depletion_share } }
+				if = { limit = { check_variable = { var = famine_food_stage value = constant:famine_food_stage.catastrophic_famine compare = equals } } set_temp_variable = { famine_food_reserve_depletion_share = constant:famine_food_reserve.catastrophic_depletion_share } }
+				set_temp_variable = { famine_food_reserve_depletion_factor = famine_component_need }
+				divide_temp_variable = { famine_food_reserve_depletion_factor = constant:famine_food_component.component_scale }
+				clamp_temp_variable = {
+					var = famine_food_reserve_depletion_factor
+					min = constant:famine_food_reserve.depletion_factor_minimum
+					max = constant:famine_food_weight.component_factor_base
+				}
+				set_temp_variable = { famine_food_reserve_depletion_amount = famine_food_reserve_daily_need }
+				multiply_temp_variable = { famine_food_reserve_depletion_amount = famine_food_reserve_depletion_share }
+				multiply_temp_variable = { famine_food_reserve_depletion_amount = famine_food_reserve_depletion_factor }
+				round_temp_variable = famine_food_reserve_depletion_amount
+				clamp_temp_variable = {
+					var = famine_food_reserve_depletion_amount
+					min = constant:famine_food_reserve.zero
+					max = famine_food_reserve_amount
+				}
+				if = {
+					limit = { check_variable = { var = famine_food_reserve_depletion_amount value = constant:famine_food_reserve.zero compare = greater_than } }
+					subtract_from_variable = { famine_food_reserve_amount = famine_food_reserve_depletion_amount }
+					set_variable = { famine_food_reserve_last_depleted = famine_food_reserve_depletion_amount }
+					add_to_variable = { famine_food_reserve_total_depleted = famine_food_reserve_depletion_amount }
+				}
+			}
+			else = {
+				if = {
+					limit = {
+						check_variable = { var = famine_food_reserve_amount value = famine_food_reserve_target compare = less_than }
+					}
+					set_temp_variable = { famine_food_reserve_production_factor = constant:famine_food_weight.component_factor_base }
+					set_temp_variable = { famine_food_reserve_production_pressure = famine_component_production }
+					divide_temp_variable = { famine_food_reserve_production_pressure = constant:famine_food_component.component_scale }
+					subtract_from_temp_variable = { famine_food_reserve_production_factor = famine_food_reserve_production_pressure }
+					clamp_temp_variable = {
+						var = famine_food_reserve_production_factor
+						min = constant:famine_food_reserve.replenishment_factor_minimum
+						max = constant:famine_food_weight.component_factor_base
+					}
+					set_temp_variable = { famine_food_reserve_transport_factor = constant:famine_food_weight.component_factor_base }
+					set_temp_variable = { famine_food_reserve_transport_pressure = famine_component_transport }
+					divide_temp_variable = { famine_food_reserve_transport_pressure = constant:famine_food_component.component_scale }
+					subtract_from_temp_variable = { famine_food_reserve_transport_factor = famine_food_reserve_transport_pressure }
+					clamp_temp_variable = {
+						var = famine_food_reserve_transport_factor
+						min = constant:famine_food_reserve.replenishment_factor_minimum
+						max = constant:famine_food_weight.component_factor_base
+					}
+					set_temp_variable = { famine_food_reserve_replenishment_amount = famine_food_reserve_daily_need }
+					multiply_temp_variable = { famine_food_reserve_replenishment_amount = constant:famine_food_reserve.replenishment_per_k_per_day }
+					multiply_temp_variable = { famine_food_reserve_replenishment_amount = famine_food_reserve_production_factor }
+					multiply_temp_variable = { famine_food_reserve_replenishment_amount = famine_food_reserve_transport_factor }
+					multiply_temp_variable = { famine_food_reserve_replenishment_amount = famine_food_reserve_logistics_factor }
+					round_temp_variable = famine_food_reserve_replenishment_amount
+					set_temp_variable = { famine_food_reserve_available_capacity = famine_food_reserve_target }
+					subtract_from_temp_variable = { famine_food_reserve_available_capacity = famine_food_reserve_amount }
+					clamp_temp_variable = { var = famine_food_reserve_available_capacity min = constant:famine_food_reserve.zero }
+					clamp_temp_variable = {
+						var = famine_food_reserve_replenishment_amount
+						min = constant:famine_food_reserve.zero
+						max = famine_food_reserve_available_capacity
+					}
+					if = {
+						limit = { check_variable = { var = famine_food_reserve_replenishment_amount value = constant:famine_food_reserve.zero compare = greater_than } }
+						add_to_variable = { famine_food_reserve_amount = famine_food_reserve_replenishment_amount }
+						set_state_flag = famine_food_reserve_initialized
+						set_variable = { famine_food_reserve_last_replenished = famine_food_reserve_replenishment_amount }
+						add_to_variable = { famine_food_reserve_total_replenished = famine_food_reserve_replenishment_amount }
+					}
+				}
+			}
+		}
+		set_temp_variable = { famine_food_reserve_replenished_output = famine_food_reserve_last_replenished }
+		set_temp_variable = { famine_food_reserve_depleted_output = famine_food_reserve_last_depleted }
+		set_temp_variable = { famine_food_reserve_amount_output = famine_food_reserve_amount }
+		set_temp_variable = { famine_food_reserve_daily_need_output = famine_food_reserve_daily_need }
+		set_temp_variable = { famine_food_reserve_relief_output = famine_food_reserve_relief }
+		set_temp_variable = { famine_food_reserve_update_result = constant:humanitarian_runtime.one }
+	}
+}
+
+
+# Consumes actual stock and grants a bounded transient relief projection. The
+# amount output is the exact debit; an over-sized request is safely partial.
+famine_consume_reserve_for_relief = {
+	set_temp_variable = { famine_food_reserve_consume_result = constant:civilian_transfer_route_result.invalid }
+	set_temp_variable = { famine_food_reserve_consumed_output = constant:famine_food_reserve.zero }
+	set_temp_variable = { famine_food_reserve_relief_granted_output = constant:famine_food_reserve.zero }
+	set_temp_variable = { famine_food_reserve_remaining_output = constant:famine_food_reserve.zero }
+	if = {
+		limit = { famine_food_reserve_release_request_is_valid = yes }
+		famine_refresh_reserve_capacity = yes
+		set_temp_variable = { famine_food_reserve_consume_amount = famine_food_reserve_release_amount }
+		clamp_temp_variable = {
+			var = famine_food_reserve_consume_amount
+			min = constant:famine_food_reserve.zero
+			max = famine_food_reserve_amount
+		}
+		round_temp_variable = famine_food_reserve_consume_amount
+		if = {
+			limit = { check_variable = { var = famine_food_reserve_consume_amount value = constant:famine_food_reserve.zero compare = greater_than } }
+			subtract_from_variable = { famine_food_reserve_amount = famine_food_reserve_consume_amount }
+			add_to_variable = { famine_food_reserve_total_consumed = famine_food_reserve_consume_amount }
+			set_variable = { famine_food_reserve_last_consumed = famine_food_reserve_consume_amount }
+			set_temp_variable = { famine_food_reserve_relief_available = constant:famine_food_reserve.relief_maximum }
+			subtract_from_temp_variable = { famine_food_reserve_relief_available = famine_food_reserve_relief }
+			clamp_temp_variable = { var = famine_food_reserve_relief_available min = constant:famine_food_reserve.zero }
+			set_temp_variable = { famine_food_reserve_relief_granted = famine_food_reserve_consume_amount }
+			divide_temp_variable = { famine_food_reserve_relief_granted = famine_food_reserve_daily_need }
+			multiply_temp_variable = { famine_food_reserve_relief_granted = constant:famine_food_reserve.relief_per_day_covered }
+			clamp_temp_variable = {
+				var = famine_food_reserve_relief_granted
+				min = constant:famine_food_reserve.zero
+				max = famine_food_reserve_relief_available
+			}
+			add_to_variable = { famine_food_reserve_relief = famine_food_reserve_relief_granted }
+			clamp_variable = { var = famine_food_reserve_relief min = constant:famine_food_reserve.zero max = constant:famine_food_reserve.relief_maximum }
+			set_temp_variable = { famine_food_reserve_consumed_output = famine_food_reserve_consume_amount }
+			set_temp_variable = { famine_food_reserve_relief_granted_output = famine_food_reserve_relief_granted }
+			set_temp_variable = { famine_food_reserve_consume_result = constant:civilian_transfer_route_result.valid }
+		}
+		set_temp_variable = { famine_food_reserve_remaining_output = famine_food_reserve_amount }
+	}
+	clear_variable = famine_food_reserve_release_amount
+	clear_variable = famine_food_reserve_release_request_proven
+	clear_variable = famine_food_reserve_release_actor_proven
+}
+
+
+# Adds external/imported stock only up to the current state capacity. The
+# accepted amount is returned so a caller cannot silently duplicate excess.
+famine_add_reserves = {
+	set_temp_variable = { famine_food_reserve_add_result = constant:civilian_transfer_route_result.invalid }
+	set_temp_variable = { famine_food_reserve_added_output = constant:famine_food_reserve.zero }
+	set_temp_variable = { famine_food_reserve_remaining_output = constant:famine_food_reserve.zero }
+	set_temp_variable = { famine_food_reserve_capacity_output = constant:famine_food_reserve.zero }
+	if = {
+		limit = { famine_food_reserve_import_request_is_valid = yes }
+		famine_refresh_reserve_capacity = yes
+		set_temp_variable = { famine_food_reserve_import_available = famine_food_reserve_capacity }
+		subtract_from_temp_variable = { famine_food_reserve_import_available = famine_food_reserve_amount }
+		clamp_temp_variable = { var = famine_food_reserve_import_available min = constant:famine_food_reserve.zero }
+		set_temp_variable = { famine_food_reserve_import_amount_applied = famine_food_reserve_import_amount }
+		clamp_temp_variable = {
+			var = famine_food_reserve_import_amount_applied
+			min = constant:famine_food_reserve.zero
+			max = famine_food_reserve_import_available
+		}
+		round_temp_variable = famine_food_reserve_import_amount_applied
+		if = {
+			limit = { check_variable = { var = famine_food_reserve_import_amount_applied value = constant:famine_food_reserve.zero compare = greater_than } }
+			add_to_variable = { famine_food_reserve_amount = famine_food_reserve_import_amount_applied }
+			add_to_variable = { famine_food_reserve_total_imported = famine_food_reserve_import_amount_applied }
+			set_variable = { famine_food_reserve_last_imported = famine_food_reserve_import_amount_applied }
+			set_temp_variable = { famine_food_reserve_added_output = famine_food_reserve_import_amount_applied }
+			set_temp_variable = { famine_food_reserve_add_result = constant:civilian_transfer_route_result.valid }
+		}
+		set_temp_variable = { famine_food_reserve_remaining_output = famine_food_reserve_amount }
+		set_temp_variable = { famine_food_reserve_capacity_output = famine_food_reserve_capacity }
+	}
+	clear_variable = famine_food_reserve_import_amount
+	clear_variable = famine_food_reserve_import_request_proven
+	clear_variable = famine_food_reserve_import_source_proven
+	clear_variable = famine_food_reserve_import_actor_proven
+}
+
+
+# Exact state-to-state reserve transfer. The accepted amount is debited once
+# from the source and credited once to the destination; a non-zero residual
+# triggers rollback before either cumulative transfer ledger is advanced.
+famine_transfer_reserves = {
+	set_temp_variable = { famine_food_reserve_transfer_result = constant:civilian_transfer_route_result.invalid }
+	set_temp_variable = { famine_food_reserve_transfer_source_debit_output = constant:famine_food_reserve.zero }
+	set_temp_variable = { famine_food_reserve_transfer_destination_credit_output = constant:famine_food_reserve.zero }
+	set_temp_variable = { famine_food_reserve_transfer_remaining_output = constant:famine_food_reserve.zero }
+	set_temp_variable = { famine_food_reserve_destination_available = constant:famine_food_reserve.zero }
+	set_temp_variable = { famine_food_reserve_destination_credit = constant:famine_food_reserve.zero }
+	set_temp_variable = { famine_food_reserve_transfer_same_state = constant:humanitarian_runtime.zero }
+	if = {
+		limit = { famine_food_reserve_transfer_request_is_valid = yes }
+		famine_refresh_reserve_capacity = yes
+		save_event_target_as = famine_food_reserve_source
+		event_target:famine_food_reserve_destination = {
+			famine_refresh_reserve_capacity = yes
+			set_temp_variable = { famine_food_reserve_destination_available = famine_food_reserve_capacity }
+			subtract_from_temp_variable = { famine_food_reserve_destination_available = famine_food_reserve_amount }
+			clamp_temp_variable = { var = famine_food_reserve_destination_available min = constant:famine_food_reserve.zero }
+			if = {
+				limit = { state = event_target:famine_food_reserve_source }
+				set_temp_variable = { famine_food_reserve_transfer_same_state = constant:humanitarian_runtime.one }
+			}
+		}
+		if = {
+			limit = { check_variable = { var = famine_food_reserve_transfer_same_state value = constant:humanitarian_runtime.zero compare = equals } }
+			set_temp_variable = { famine_food_reserve_transfer_applied = famine_food_reserve_transfer_amount }
+			clamp_temp_variable = {
+				var = famine_food_reserve_transfer_applied
+				min = constant:famine_food_reserve.zero
+				max = famine_food_reserve_amount
+			}
+			clamp_temp_variable = {
+				var = famine_food_reserve_transfer_applied
+				min = constant:famine_food_reserve.zero
+				max = famine_food_reserve_destination_available
+			}
+			round_temp_variable = famine_food_reserve_transfer_applied
+			if = {
+				limit = { check_variable = { var = famine_food_reserve_transfer_applied value = constant:famine_food_reserve.zero compare = greater_than } }
+				set_temp_variable = { famine_food_reserve_transfer_source_before = famine_food_reserve_amount }
+				subtract_from_variable = { famine_food_reserve_amount = famine_food_reserve_transfer_applied }
+				set_temp_variable = { famine_food_reserve_transfer_source_debit = famine_food_reserve_transfer_source_before }
+				subtract_from_temp_variable = { famine_food_reserve_transfer_source_debit = famine_food_reserve_amount }
+				event_target:famine_food_reserve_destination = {
+					set_temp_variable = { famine_food_reserve_destination_before = famine_food_reserve_amount }
+					add_to_variable = { famine_food_reserve_amount = famine_food_reserve_transfer_applied }
+					set_temp_variable = { famine_food_reserve_destination_credit = famine_food_reserve_amount }
+					subtract_from_temp_variable = { famine_food_reserve_destination_credit = famine_food_reserve_destination_before }
+				}
+				set_temp_variable = { famine_food_reserve_transfer_residual = famine_food_reserve_transfer_source_debit }
+				subtract_from_temp_variable = { famine_food_reserve_transfer_residual = famine_food_reserve_destination_credit }
+				if = {
+					limit = { check_variable = { var = famine_food_reserve_transfer_residual value = constant:famine_food_reserve.zero compare = greater_than } }
+					add_to_variable = { famine_food_reserve_amount = famine_food_reserve_transfer_residual }
+				}
+				if = {
+					limit = { check_variable = { var = famine_food_reserve_transfer_residual value = constant:famine_food_reserve.zero compare = less_than } }
+					set_temp_variable = { famine_food_reserve_transfer_excess = famine_food_reserve_transfer_residual }
+					multiply_temp_variable = { famine_food_reserve_transfer_excess = constant:chaos_meter_deaths.negative_one }
+					event_target:famine_food_reserve_destination = {
+						subtract_from_variable = { famine_food_reserve_amount = famine_food_reserve_transfer_excess }
+					}
+					subtract_from_temp_variable = { famine_food_reserve_destination_credit = famine_food_reserve_transfer_excess }
+				}
+				set_temp_variable = { famine_food_reserve_transfer_source_debit = famine_food_reserve_transfer_source_before }
+				subtract_from_temp_variable = { famine_food_reserve_transfer_source_debit = famine_food_reserve_amount }
+				set_temp_variable = { famine_food_reserve_transfer_residual = famine_food_reserve_transfer_source_debit }
+				subtract_from_temp_variable = { famine_food_reserve_transfer_residual = famine_food_reserve_destination_credit }
+				if = {
+					limit = { check_variable = { var = famine_food_reserve_transfer_residual value = constant:famine_food_reserve.zero compare = equals } }
+					add_to_variable = { famine_food_reserve_total_transfer_out = famine_food_reserve_transfer_source_debit }
+					set_variable = { famine_food_reserve_last_transfer_out = famine_food_reserve_transfer_source_debit }
+					event_target:famine_food_reserve_destination = {
+						add_to_variable = { famine_food_reserve_total_transfer_in = famine_food_reserve_destination_credit }
+						set_variable = { famine_food_reserve_last_transfer_in = famine_food_reserve_destination_credit }
+					}
+					set_temp_variable = { famine_food_reserve_transfer_source_debit_output = famine_food_reserve_transfer_source_debit }
+					set_temp_variable = { famine_food_reserve_transfer_destination_credit_output = famine_food_reserve_destination_credit }
+					set_temp_variable = { famine_food_reserve_transfer_result = constant:civilian_transfer_route_result.valid }
+				}
+			}
+		}
+		set_temp_variable = { famine_food_reserve_transfer_remaining_output = famine_food_reserve_amount }
+	}
+	clear_variable = famine_food_reserve_transfer_amount
+	clear_variable = famine_food_reserve_transfer_request_proven
+	clear_variable = famine_food_reserve_transfer_route_proven
+	clear_variable = famine_food_reserve_transfer_actor_proven
+}
+
+
+# Stable public names used by owner decisions and future scripted GUI surfaces.
+famine_release_reserves = {
+	famine_consume_reserve_for_relief = yes
+}
+
+
+famine_consume_reserves_as_relief = {
+	famine_consume_reserve_for_relief = yes
+}
+
+
+famine_import_reserves = {
+	famine_add_reserves = yes
+}
+
+
+famine_requisition_reserves = {
+	famine_transfer_reserves = yes
+}
+
+
+# One mortality pulse is one call to the shared exact state-loss helper. The
+# helper applies the protected floor, records one famine reason, and returns
+# the actual applied result; this effect never performs a second debit.
+famine_apply_mortality = {
+	set_temp_variable = { famine_mortality_result = constant:humanitarian_population.zero }
+	if = {
+		limit = {
+			famine_food_stage_requires_mortality = yes
+			check_variable = { var = famine_food_next_mortality_date value = global.date compare = less_than_or_equals }
+		}
+		famine_initialize_state = yes
+		set_temp_variable = { famine_mortality_minimum_exposure = constant:famine_mortality.acute_shortage_minimum_exposure_days }
+		set_temp_variable = { famine_mortality_interval = constant:famine_mortality.acute_shortage_interval_days }
+		set_temp_variable = { famine_mortality_rate = constant:famine_mortality.acute_shortage_rate }
+		if = {
+			limit = { check_variable = { var = famine_food_stage value = constant:famine_food_stage.famine   compare = equals } }
+			set_temp_variable = { famine_mortality_minimum_exposure = constant:famine_mortality.famine_minimum_exposure_days }
+			set_temp_variable = { famine_mortality_interval = constant:famine_mortality.famine_interval_days }
+			set_temp_variable = { famine_mortality_rate = constant:famine_mortality.famine_rate }
+		}
+		if = {
+			limit = { check_variable = { var = famine_food_stage value = constant:famine_food_stage.catastrophic_famine   compare = equals } }
+			set_temp_variable = { famine_mortality_minimum_exposure = constant:famine_mortality.catastrophic_minimum_exposure_days }
+			set_temp_variable = { famine_mortality_interval = constant:famine_mortality.catastrophic_interval_days }
+			set_temp_variable = { famine_mortality_rate = constant:famine_mortality.catastrophic_rate }
+		}
+		if = {
+			limit = { check_variable = { var = famine_food_exposure_days value = famine_mortality_minimum_exposure compare = greater_than_or_equals } }
+			set_temp_variable = { famine_mortality_population = state_population_k }
+			multiply_temp_variable = { famine_mortality_population = constant:chaos_meter_deaths.people_per_k }
+			round_temp_variable = famine_mortality_population
+			set_temp_variable = { famine_mortality_floor = famine_mortality_population }
+			multiply_temp_variable = { famine_mortality_floor = constant:famine_mortality.protected_floor_share }
+			round_temp_variable = famine_mortality_floor
+			if = {
+				limit = { check_variable = { var = famine_mortality_floor value = constant:famine_mortality.protected_floor_people compare = less_than } }
+				set_temp_variable = { famine_mortality_floor = constant:famine_mortality.protected_floor_people }
+			}
+			clamp_temp_variable = {
+				var = famine_mortality_floor
+				min = constant:humanitarian_population.zero
+				max = famine_mortality_population
+			}
+			set_temp_variable = { famine_mortality_available = famine_mortality_population }
+			subtract_from_temp_variable = { famine_mortality_available = famine_mortality_floor }
+			clamp_temp_variable = { var = famine_mortality_available min = constant:humanitarian_population.zero }
+
+			set_temp_variable = { famine_mortality_exposure_factor = famine_food_exposure_days }
+			multiply_temp_variable = { famine_mortality_exposure_factor = constant:famine_mortality.exposure_multiplier_per_day }
+			add_to_temp_variable = { famine_mortality_exposure_factor = constant:famine_mortality.minimum_exposure_multiplier }
+			clamp_temp_variable = {
+				var = famine_mortality_exposure_factor
+				min = constant:famine_mortality.minimum_exposure_multiplier
+				max = constant:famine_mortality.maximum_exposure_multiplier
+			}
+
+			set_temp_variable = { famine_mortality_vulnerability_factor = constant:famine_food_weight.component_factor_base }
+		set_temp_variable = { famine_mortality_component_factor = famine_component_vulnerability }
+		divide_temp_variable = { famine_mortality_component_factor = constant:famine_food_component.component_scale }
+		add_to_temp_variable = { famine_mortality_vulnerability_factor = famine_mortality_component_factor }
+			set_temp_variable = { famine_mortality_access_factor = constant:famine_food_weight.component_factor_base }
+			set_temp_variable = { famine_mortality_component_factor = famine_component_transport }
+			multiply_temp_variable = { famine_mortality_component_factor = constant:famine_mortality.access_transport_share }
+			set_temp_variable = { famine_mortality_need_factor = famine_component_need }
+			multiply_temp_variable = { famine_mortality_need_factor = constant:famine_mortality.access_need_share }
+			add_to_temp_variable = { famine_mortality_component_factor = famine_mortality_need_factor }
+			divide_temp_variable = { famine_mortality_component_factor = constant:famine_food_component.component_scale }
+			add_to_temp_variable = { famine_mortality_access_factor = famine_mortality_component_factor }
+			set_temp_variable = { famine_mortality_policy_factor = constant:famine_food_weight.component_factor_base }
+			set_temp_variable = { famine_mortality_component_factor = famine_component_extraction }
+			divide_temp_variable = { famine_mortality_component_factor = constant:famine_food_component.component_scale }
+			add_to_temp_variable = { famine_mortality_policy_factor = famine_mortality_component_factor }
+			set_temp_variable = { famine_mortality_environment_factor = constant:famine_food_weight.component_factor_base }
+			set_temp_variable = { famine_mortality_component_factor = famine_component_environment }
+			divide_temp_variable = { famine_mortality_component_factor = constant:famine_food_component.component_scale }
+			add_to_temp_variable = { famine_mortality_environment_factor = famine_mortality_component_factor }
+			set_temp_variable = { famine_mortality_governance_factor = constant:famine_food_weight.component_factor_base }
+			set_temp_variable = { famine_mortality_component_factor = famine_component_governance }
+			divide_temp_variable = { famine_mortality_component_factor = constant:famine_food_component.component_scale }
+			add_to_temp_variable = { famine_mortality_governance_factor = famine_mortality_component_factor }
+			set_temp_variable = { famine_mortality_relief_factor = constant:famine_food_weight.component_factor_base }
+			set_temp_variable = { famine_mortality_component_factor = famine_component_relief }
+			divide_temp_variable = { famine_mortality_component_factor = constant:famine_food_component.component_scale }
+			subtract_from_temp_variable = { famine_mortality_relief_factor = famine_mortality_component_factor }
+			clamp_temp_variable = {
+				var = famine_mortality_relief_factor
+				min = constant:famine_mortality.minimum_relief_factor
+				max = constant:famine_mortality.maximum_relief_factor
+			}
+
+			set_temp_variable = { famine_mortality_request = famine_mortality_population }
+			multiply_temp_variable = { famine_mortality_request = famine_mortality_rate }
+			multiply_temp_variable = { famine_mortality_request = famine_mortality_exposure_factor }
+			multiply_temp_variable = { famine_mortality_request = famine_mortality_vulnerability_factor }
+			multiply_temp_variable = { famine_mortality_request = famine_mortality_access_factor }
+			multiply_temp_variable = { famine_mortality_request = famine_mortality_policy_factor }
+			multiply_temp_variable = { famine_mortality_request = famine_mortality_environment_factor }
+			multiply_temp_variable = { famine_mortality_request = famine_mortality_governance_factor }
+			multiply_temp_variable = { famine_mortality_request = famine_mortality_relief_factor }
+			clamp_temp_variable = {
+				var = famine_mortality_request
+				min = constant:humanitarian_population.zero
+				max = famine_mortality_available
+			}
+			round_temp_variable = famine_mortality_request
+			if = {
+				limit = { check_variable = { var = famine_mortality_request value = constant:famine_mortality.minimum_pulse_people compare = greater_than_or_equals } }
+				set_temp_variable = { state_civilian_population_loss_requested = famine_mortality_request }
+				set_temp_variable = { state_civilian_population_loss_minimum_remaining = famine_mortality_floor }
+				set_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.famine }
+				set_temp_variable = { state_civilian_population_loss_log_deaths = constant:chaos_meter_deaths.one }
+				set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
+				set_temp_variable = { state_civilian_population_loss_has_target_country = constant:chaos_meter_deaths.one }
+				set_temp_variable = { state_civilian_population_loss_contract_supplied = constant:chaos_meter_deaths.one }
+				apply_exact_state_civilian_population_loss = yes
+				set_variable = { famine_last_deaths_applied = state_civilian_population_loss_applied }
+				add_to_variable = { famine_total_deaths = state_civilian_population_loss_applied }
+				set_temp_variable = { famine_mortality_result = state_civilian_population_loss_applied }
+				famine_record_exact_mortality_condemnation = yes
+			}
+			set_variable = { famine_food_next_mortality_date = global.date }
+			add_to_variable = { famine_food_next_mortality_date = famine_mortality_interval }
+		}
+	}
+}
+
+
+# Called only from the host country's registry loop in the dedicated on_action
+# file. The loop scope is the registered state only.
+famine_process_registered_state = {
+	famine_consume_registered_state_reassessment = yes
+	civilian_transfer_refresh_route_damage_projection = yes
+	if = {
+		limit = {
+			has_state_flag = famine_blockade_candidate_active
+			NOT = {
+				OR = {
+					OWNER = { has_war = yes }
+					CONTROLLER = { has_war = yes }
+				}
+			}
+		}
+		clr_state_flag = famine_blockade_candidate_active
+	}
+	if = {
+		limit = {
+			has_state_flag = famine_food_security_active
+			humanitarian_state_is_valid = yes
+		}
+		famine_evaluate_food_security = yes
+	}
+	else = {
+		famine_relief_unregister_donor_state = yes
+		famine_cleanup_state_registration = yes
+	}
+}
+
+
+famine_process_registered_historical_profile_candidate = {
+	if = {
+		limit = { famine_historical_profile_candidate_is_valid = yes }
+		famine_apply_historical_profile_context = yes
+	}
+	else = { famine_unregister_historical_profile_candidate_state = yes }
+}
+
+
+famine_process_registered_historical_profile_anchor = {
+	if = {
+		limit = {
+			has_state_flag = famine_historical_profile_anchor_active
+			humanitarian_state_is_valid = yes
+		}
+		# Idempotent sparse backfill also upgrades saves whose anchors were
+		# registered before profile-specific memory proof existed.
+		famine_register_historical_memory_anchor_proof = yes
+		famine_select_historical_profile_id = yes
+		famine_apply_historical_profile_context = yes
+	}
+	else = { famine_unregister_historical_profile_anchor_state = yes }
+}
+
+
+# COUNTRY scope. Called only for the two countries in the exact war-relation
+# callback. This one-time owned-state pass seeds true islands and archipelagos
+# into the sparse food registry; it is not a recurring world scan.
+famine_register_wartime_island_candidates = {
+	if = {
+		limit = {
+			humanitarian_country_is_valid = yes
+			has_war = yes
+		}
+		every_owned_state = {
+			limit = {
+				humanitarian_state_is_valid = yes
+				is_coastal = yes
+				OR = {
+					is_island_state = yes
+					is_one_state_island = yes
+				}
+			}
+			famine_initialize_state = yes
+			set_state_flag = famine_blockade_candidate_active
+			famine_register_active_state = yes
+		}
+	}
+}
+
+# ============================================================================
+# FAMINE RUNTIME LIFECYCLE OWNERS
+# ============================================================================
+
+# STATE scope. Consume only the versioned migration-owned reception-demand
+# projection. Famine stores a famine-owned input and never reads the migration
+# trapped ledger directly.
+famine_consume_migration_reception_demand = {
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			check_variable = { var = migration_to_famine_reception_demand_proven value = constant:humanitarian_runtime.one compare = equals }
+			check_variable = { var = migration_to_famine_reception_demand_schema_version value = constant:migration_to_famine_reception_demand.schema_version compare = equals }
+			check_variable = { var = migration_to_famine_reception_demand_generation value = constant:migration_to_famine_reception_demand.minimum_revision compare = greater_than_or_equals }
+			check_variable = { var = migration_to_famine_reception_demand_revision value = constant:migration_to_famine_reception_demand.minimum_revision compare = greater_than_or_equals }
+			check_variable = { var = migration_to_famine_reception_demand_cause value = constant:migration_to_famine_reception_demand.cause_trapped_population compare = equals }
+			check_variable = { var = migration_to_famine_reception_demand_amount value = constant:humanitarian_population.zero compare = greater_than }
+		}
+		set_variable = { famine_reception_demand_population = migration_to_famine_reception_demand_amount }
+		set_variable = { famine_reception_demand_generation = migration_to_famine_reception_demand_generation }
+		set_variable = { famine_reception_demand_revision = migration_to_famine_reception_demand_revision }
+		set_state_flag = famine_food_security_active
+		famine_register_active_state = yes
+	}
+	else = {
+		clear_variable = famine_reception_demand_population
+		clear_variable = famine_reception_demand_generation
+		clear_variable = famine_reception_demand_revision
+	}
+}
+
+
+# STATE scope. Emits bounded Condemnation sources only after the exact famine
+# mortality owner has applied a positive population loss. The state, actor,
+# causal components, exact people amount, generation, revision, and request
+# identity are all taken from this completed pulse; no decision click is used
+# as a substitute for civilian harm.
+famine_record_exact_mortality_condemnation = {
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			check_variable = { var = famine_mortality_result value = constant:humanitarian_population.zero compare = greater_than }
+			has_variable = famine_food_stage
+			has_variable = famine_component_environment
+			has_variable = famine_component_transport
+			OWNER = { humanitarian_country_is_valid = yes }
+		}
+		if = { limit = { NOT = { has_variable = famine_mortality_condemnation_generation } } set_variable = { famine_mortality_condemnation_generation = constant:humanitarian_runtime.zero } }
+		add_to_variable = { famine_mortality_condemnation_generation = constant:humanitarian_runtime.one }
+		save_event_target_as = famine_condemnation_state
+		OWNER = { save_event_target_as = famine_condemnation_actor }
+		set_temp_variable = { famine_condemnation_state_proven = id }
+		set_temp_variable = { famine_condemnation_food_proven = famine_food_stage }
+		set_temp_variable = { famine_condemnation_environment_proven = constant:humanitarian_runtime.one }
+		set_temp_variable = { famine_condemnation_transport_proven = constant:humanitarian_runtime.one }
+		set_temp_variable = { famine_condemnation_actor_proven = OWNER.id }
+		set_temp_variable = { famine_condemnation_people_amount = famine_mortality_result }
+		set_temp_variable = { famine_condemnation_generation = famine_mortality_condemnation_generation }
+		set_temp_variable = { famine_condemnation_revision = famine_food_stage }
+		set_temp_variable = { famine_condemnation_request_id = global.date }
+		set_temp_variable = { condemnation_civilian_deaths = famine_mortality_result }
+		set_temp_variable = { condemnation_contamination_value = constant:humanitarian_population.zero }
+		if = {
+			limit = {
+				has_state_flag = famine_extraction_active
+				NOT = { has_state_flag = famine_condemnation_deliberate_starvation_recorded }
+			}
+			set_temp_variable = { famine_condemnation_policy_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { famine_condemnation_cause_proven = constant:condemnation_context.deliberate_starvation }
+			OWNER = { famine_condemn_deliberate_starvation = yes }
+			if = {
+				limit = { check_variable = { var = famine_condemnation_result value = constant:humanitarian_runtime.one compare = equals } }
+				set_state_flag = famine_condemnation_deliberate_starvation_recorded
+			}
+		}
+		if = {
+			limit = {
+				has_state_flag = famine_crisis_concealed
+				NOT = { has_state_flag = famine_condemnation_concealment_recorded }
+			}
+			set_temp_variable = { famine_condemnation_policy_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { famine_condemnation_cause_proven = constant:condemnation_context.concealment_operation }
+			OWNER = { famine_condemn_concealment = yes }
+			if = {
+				limit = { check_variable = { var = famine_condemnation_result value = constant:humanitarian_runtime.one compare = equals } }
+				set_state_flag = famine_condemnation_concealment_recorded
+			}
+		}
+	}
+}
+
+famine_initialize_runtime = {
+	if = {
+		limit = { NOT = { has_global_flag = famine_runtime_initialized } }
+		if = { limit = { NOT = { has_variable = global.famine_active_states_count } } set_variable = { global.famine_active_states_count = global.famine_active_states^num } }
+		if = { limit = { NOT = { has_variable = global.famine_historical_profile_candidate_states_count } } set_variable = { global.famine_historical_profile_candidate_states_count = global.famine_historical_profile_candidate_states^num } }
+		if = { limit = { NOT = { has_variable = global.famine_historical_profile_anchor_states_count } } set_variable = { global.famine_historical_profile_anchor_states_count = global.famine_historical_profile_anchor_states^num } }
+		set_global_flag = famine_runtime_initialized
+	}
+}
+
+famine_claim_mission_slot = {
+	if = {
+		limit = { famine_country_has_free_mission_slot = yes }
+		if = {
+			limit = { NOT = { has_variable = famine_active_mission_count } }
+			set_variable = { famine_active_mission_count = constant:humanitarian_runtime.zero }
+		}
+		add_to_variable = { famine_active_mission_count = constant:humanitarian_runtime.one }
+	}
+}
+
+famine_release_mission_slot = {
+	if = {
+		limit = { check_variable = { var = famine_active_mission_count value = constant:humanitarian_runtime.zero compare = greater_than } }
+		subtract_from_variable = { famine_active_mission_count = constant:humanitarian_runtime.one }
+	}
+	else = { set_variable = { famine_active_mission_count = constant:humanitarian_runtime.zero } }
+}
+
+famine_recount_active_mission_slots = {
+	set_variable = { famine_active_mission_count = constant:humanitarian_runtime.zero }
+	if = { limit = { has_country_flag = famine_mission_route_active } add_to_variable = { famine_active_mission_count = constant:humanitarian_runtime.one } }
+	if = { limit = { has_country_flag = famine_mission_relief_active } add_to_variable = { famine_active_mission_count = constant:humanitarian_runtime.one } }
+}
+
+famine_refresh_dynamic_modifiers = {
+	if = {
+		limit = { humanitarian_state_is_valid = yes }
+		famine_clear_dynamic_modifiers = yes
+		if = {
+			limit = { has_state_flag = famine_food_stage_supply_strain }
+			add_dynamic_modifier = { modifier = famine_state_supply_strain }
+		}
+		if = {
+			limit = { has_state_flag = famine_food_stage_acute_shortage }
+			add_dynamic_modifier = { modifier = famine_state_acute_shortage }
+		}
+		if = {
+			limit = { has_state_flag = famine_food_stage_famine }
+			add_dynamic_modifier = { modifier = famine_state_famine }
+		}
+		if = {
+			limit = { has_state_flag = famine_food_stage_catastrophic }
+			add_dynamic_modifier = { modifier = famine_state_catastrophic_famine }
+		}
+		force_update_dynamic_modifier = yes
+	}
+}
+
+famine_cleanup_state_registration = {
+	if = {
+		limit = {
+			has_state_flag = humanitarian_achievement_blockade_state
+			has_state_category = wasteland
+			OWNER = { exists = yes }
+		}
+		OWNER = { humanitarian_achievement_record_blockade_wasteland = yes }
+	}
+	famine_clear_dynamic_modifiers = yes
+	famine_clear_historical_profile_context = yes
+	famine_unregister_active_state = yes
+	clr_state_flag = famine_control_change_pending
+	clr_state_flag = famine_nuclear_reassessment_pending
+	clr_state_flag = famine_relief_access_active
+	clr_state_flag = famine_blockade_candidate_active
+	clear_variable = famine_food_score_raw
+	clear_variable = famine_food_score
+	clear_variable = famine_food_security_score
+	clear_variable = famine_component_production
+	clear_variable = famine_component_transport
+	clear_variable = famine_component_extraction
+	clear_variable = famine_component_need
+	clear_variable = famine_component_environment
+	clear_variable = famine_component_vulnerability
+	clear_variable = famine_component_governance
+	clear_variable = famine_component_relief
+	clear_variable = famine_blockade_island_proven
+	clear_variable = famine_blockade_isolation_proven
+	clear_variable = famine_blockade_maritime_dependence_proven
+	clear_variable = famine_blockade_route_disrupted_proven
+	clear_variable = famine_blockade_port_disrupted_proven
+	clear_variable = famine_blockade_convoy_shortage_proven
+	clear_variable = famine_blockade_escort_shortage_proven
+	clear_variable = famine_blockade_no_humanitarian_corridor_proven
+	clear_variable = famine_blockade_local_food_insufficient_proven
+	clear_variable = famine_blockade_exposure_days
+	famine_invalidate_migration_food_safety = yes
+}
+
+famine_cleanup_country_registration = {
+	famine_recount_active_mission_slots = yes
+	if = {
+		limit = { NOT = { humanitarian_country_is_valid = yes } }
+		clr_country_flag = famine_mission_route_active
+		clr_country_flag = famine_mission_relief_active
+		set_variable = { famine_active_mission_count = constant:humanitarian_runtime.zero }
+		clear_variable = famine_war_reassessment_pending
+		clear_variable = famine_peace_reassessment_pending
+	}
+}
+
+famine_consume_registered_state_reassessment = {
+	if = {
+		limit = { humanitarian_state_is_valid = yes }
+		if = { limit = { has_state_flag = famine_control_change_pending } clr_state_flag = famine_control_change_pending }
+		if = { limit = { has_state_flag = famine_nuclear_reassessment_pending } clr_state_flag = famine_nuclear_reassessment_pending }
+	}
+}
+
+famine_handle_state_control_change = {
+	famine_relief_unregister_donor_state = yes
+	famine_relief_cleanup_state = yes
+	famine_cleanup_mission_subjects_after_control_change = yes
+	if = {
+		limit = { humanitarian_state_is_valid = yes }
+		set_state_flag = famine_control_change_pending
+		if = { limit = { has_state_flag = famine_food_security_active } famine_register_active_state = yes }
+		famine_refresh_dynamic_modifiers = yes
+	}
+	else = { famine_cleanup_state_registration = yes }
+}
+
+famine_cleanup_mission_subjects_after_control_change = {
+	if = {
+		limit = { has_state_flag = famine_mission_route_subject }
+		clr_state_flag = famine_mission_route_subject
+		clr_state_flag = famine_mission_route_success_proven
+		clear_variable = famine_mission_route_hold_deadline
+	}
+	if = {
+		limit = { has_state_flag = famine_mission_relief_subject }
+		clr_state_flag = famine_mission_relief_subject
+		clr_state_flag = famine_mission_relief_success_proven
+		clear_variable = famine_mission_relief_deadline
+	}
+}
+
+famine_mark_country_war_reassessment = {
+	if = {
+		limit = { humanitarian_country_is_valid = yes }
+		set_variable = { famine_war_reassessment_pending = global.date }
+		famine_register_wartime_island_candidates = yes
+	}
+}
+
+famine_mark_country_peace_reassessment = {
+	if = {
+		limit = { humanitarian_country_is_valid = yes }
+		set_variable = { famine_peace_reassessment_pending = global.date }
+	}
+}
+
+famine_handle_nuclear_state_change = {
+	if = {
+		limit = { humanitarian_state_is_valid = yes }
+		set_state_flag = famine_nuclear_reassessment_pending
+		set_state_flag = famine_food_security_active
+		famine_register_active_state = yes
+		famine_register_historical_profile_anchor_state = yes
+		famine_refresh_dynamic_modifiers = yes
+	}
+	else = { famine_cleanup_state_registration = yes }
+}

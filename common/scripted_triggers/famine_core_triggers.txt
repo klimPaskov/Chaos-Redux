@@ -135,6 +135,18 @@ famine_state_can_retire = {
 		NOT = { check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } }
 		NOT = { check_variable = { var = famine_reception_demand_population value = constant:humanitarian_population.zero compare = greater_than } }
 		NOT = { has_state_flag = famine_blockade_candidate_active }
+		# A stable committed stage can still be awaiting a material candidate
+		# timer. Preserve only that current assessment until simulation settles.
+		NOT = {
+			AND = {
+				has_variable = famine_food_security_score
+				check_variable = {
+					var = famine_food_security_score
+					value = constant:famine_food_score.supply_strain_threshold
+					compare = greater_than_or_equals
+				}
+			}
+		}
 	}
 }
 

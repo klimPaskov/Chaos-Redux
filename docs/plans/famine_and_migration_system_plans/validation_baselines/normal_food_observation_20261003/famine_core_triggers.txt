@@ -1,0 +1,223 @@
+# Chaos Redux famine scripted triggers.
+# Food-state, blockade, profile, mortality, reserve, and famine retirement contracts.
+
+
+# Each mechanic owns its own bounded mission budget. A famine mission never
+# consumes or releases a migration slot, and vice versa.
+famine_country_has_free_mission_slot = {
+	OR = {
+		NOT = { has_variable = famine_active_mission_count }
+		check_variable = {
+			var = famine_active_mission_count
+			value = constant:famine_mission_contract.maximum_active_missions
+			compare = less_than
+		}
+	}
+}
+
+
+# Historical memory proof is a durable state flag seeded only by the bounded
+# profile-anchor registry. The exact state clauses prevent a copied flag on an
+# unrelated state from satisfying either memory profile.
+famine_soviet_1932_memory_anchor_proven = {
+	hidden_trigger = {
+		OR = {
+			state = constant:famine_profile_state_id.soviet_kiev
+			state = constant:famine_profile_state_id.soviet_western_kiev
+			state = constant:famine_profile_state_id.soviet_kharkov
+			state = constant:famine_profile_state_id.soviet_odessa
+			state = constant:famine_profile_state_id.soviet_stalino
+			state = constant:famine_profile_state_id.soviet_caucasus_mountains
+			state = constant:famine_profile_state_id.soviet_kazakhstan_north
+			state = constant:famine_profile_state_id.soviet_kazakhstan_central
+			state = constant:famine_profile_state_id.soviet_kazakhstan_south
+			state = constant:famine_profile_state_id.soviet_rostov
+			state = constant:famine_profile_state_id.soviet_saratov
+		}
+		has_state_flag = famine_historical_memory_soviet_1932_proven
+	}
+}
+
+
+famine_ireland_memory_anchor_proven = {
+	hidden_trigger = {
+		state = constant:famine_profile_state_id.ireland
+		has_state_flag = famine_historical_memory_ireland_proven
+	}
+}
+
+
+famine_pressure_request_is_valid = {
+	hidden_trigger = {
+		humanitarian_state_is_valid = yes
+		check_variable = { var = famine_pressure_request_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+		check_variable = { var = famine_pressure_request_amount value = constant:humanitarian_population.zero compare = greater_than }
+		check_variable = { var = famine_pressure_request_source value = constant:humanitarian_pressure_source.unknown compare = greater_than }
+		check_variable = { var = famine_pressure_request_actor_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+	}
+}
+
+
+# Every condition is binding. A caller must provide the explicit physical and
+# political proof in addition to the engine's owner/controller war state.
+famine_blockade_proof = {
+	hidden_trigger = {
+		humanitarian_state_is_valid = yes
+		OR = {
+			OWNER = { has_war = yes }
+			CONTROLLER = { has_war = yes }
+		}
+		check_variable = { var = famine_blockade_island_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+		check_variable = { var = famine_blockade_isolation_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+		check_variable = { var = famine_blockade_maritime_dependence_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+		OR = {
+			check_variable = { var = famine_blockade_route_disrupted_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+			check_variable = { var = famine_blockade_port_disrupted_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+		}
+		OR = {
+			check_variable = { var = famine_blockade_convoy_shortage_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+			check_variable = { var = famine_blockade_escort_shortage_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+		}
+		check_variable = { var = famine_blockade_no_humanitarian_corridor_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+		check_variable = { var = famine_blockade_local_food_insufficient_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+	}
+}
+
+
+# A state is eligible for the scheduled evaluator only while an owner has
+# deliberately submitted a context or a pressure request. This keeps the
+# registry sparse and avoids a world scan hidden inside a trigger.
+famine_state_has_active_context = {
+	hidden_trigger = {
+		humanitarian_state_is_valid = yes
+		OR = {
+			has_state_flag = famine_food_security_active
+			has_state_flag = famine_surface_context_active
+			has_state_flag = famine_profile_context_active
+			check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than }
+		}
+	}
+}
+
+
+famine_food_stage_is_active = {
+	hidden_trigger = {
+		humanitarian_state_is_valid = yes
+		check_variable = {
+			var = famine_food_stage
+			value = constant:famine_food_stage.stable
+
+			compare = greater_than
+		}
+	}
+}
+
+
+famine_food_stage_requires_mortality = {
+	hidden_trigger = {
+		famine_food_stage_is_active = yes
+		OR = {
+			check_variable = { var = famine_food_stage value = constant:famine_food_stage.acute_shortage compare = greater_than_or_equals }
+			check_variable = { var = famine_food_stage value = constant:famine_food_stage.famine compare = greater_than_or_equals }
+			check_variable = { var = famine_food_stage value = constant:famine_food_stage.catastrophic_famine compare = greater_than_or_equals }
+		}
+	}
+}
+
+
+famine_state_can_retire = {
+	hidden_trigger = {
+		humanitarian_state_is_valid = yes
+		OR = {
+			NOT = { has_variable = famine_food_stage }
+			check_variable = { var = famine_food_stage value = constant:famine_food_stage.stable compare = equals }
+		}
+		NOT = { check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } }
+		NOT = { check_variable = { var = famine_reception_demand_population value = constant:humanitarian_population.zero compare = greater_than } }
+		NOT = { has_state_flag = famine_blockade_candidate_active }
+	}
+}
+
+
+famine_surface_context_request_is_valid = {
+	hidden_trigger = {
+		humanitarian_state_is_valid = yes
+		check_variable = { var = famine_surface_context_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+		check_variable = { var = famine_surface_context_actor_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+	}
+}
+
+
+famine_historical_profile_context_is_resolved = {
+	hidden_trigger = {
+		humanitarian_state_is_valid = yes
+		check_variable = { var = famine_profile_mapping_result value = constant:humanitarian_runtime.one compare = equals }
+		check_variable = { var = famine_historical_profile_state_proven value = constant:humanitarian_runtime.one compare = equals }
+		check_variable = { var = famine_historical_profile_context_proven value = constant:humanitarian_runtime.one compare = equals }
+	}
+}
+
+
+famine_historical_profile_candidate_is_valid = {
+	hidden_trigger = {
+		humanitarian_state_is_valid = yes
+		has_state_flag = famine_historical_profile_candidate_active
+		OR = {
+			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_soviet_1932_memory compare = equals }
+			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_china_henan_1942 compare = equals }
+			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_china_policy_famine compare = equals }
+			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_bengal_1943 compare = equals }
+			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_vietnam_1944 compare = equals }
+			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_java_1944 compare = equals }
+			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_greece_1941 compare = equals }
+			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_leningrad_siege compare = equals }
+			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_dutch_hunger_winter compare = equals }
+			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_spain_early_1940s compare = equals }
+			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_ireland_memory compare = equals }
+			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_brazil_ceara compare = equals }
+			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_congo_interaction compare = equals }
+			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_ethiopia_policy compare = equals }
+			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_nuclear_winter_global compare = equals }
+		}
+	}
+}
+
+
+# Public reserve mutation contracts. Each helper requires explicit owner proof;
+# a missing request, actor, source, or route marker fails closed.
+famine_food_reserve_release_request_is_valid = {
+	hidden_trigger = {
+		humanitarian_state_is_valid = yes
+		check_variable = { var = famine_food_reserve_release_request_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+		check_variable = { var = famine_food_reserve_release_amount value = constant:famine_food_reserve.zero compare = greater_than }
+		check_variable = { var = famine_food_reserve_release_actor_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+	}
+}
+
+
+famine_food_reserve_import_request_is_valid = {
+	hidden_trigger = {
+		humanitarian_state_is_valid = yes
+		check_variable = { var = famine_food_reserve_import_request_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+		check_variable = { var = famine_food_reserve_import_amount value = constant:famine_food_reserve.zero compare = greater_than }
+		check_variable = { var = famine_food_reserve_import_source_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+		check_variable = { var = famine_food_reserve_import_actor_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+	}
+}
+
+
+famine_food_reserve_transfer_request_is_valid = {
+	hidden_trigger = {
+		humanitarian_state_is_valid = yes
+		check_variable = { var = famine_food_reserve_transfer_request_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+		check_variable = { var = famine_food_reserve_transfer_amount value = constant:famine_food_reserve.zero compare = greater_than }
+		check_variable = { var = famine_food_reserve_transfer_route_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+		check_variable = { var = famine_food_reserve_transfer_actor_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+		has_event_target = famine_food_reserve_destination
+		event_target:famine_food_reserve_destination = {
+			humanitarian_state_is_valid = yes
+		}
+		NOT = { state = event_target:famine_food_reserve_destination }
+	}
+}
+

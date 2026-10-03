@@ -12,17 +12,23 @@
 # ============================================================================
 
 # STATE scope. Request and validate the famine-owned, versioned food-safety
-# projection. This migration consumer never initializes or reads famine-owned
-# runtime variables directly.
+# projection after famine observes this exact candidate. Migration never
+# initializes, simulates or reads raw famine-owned model variables itself.
 migration_consume_famine_food_safety = {
 	set_temp_variable = { migration_famine_food_safety_result = constant:humanitarian_runtime.zero }
-	famine_publish_migration_food_safety = yes
+	set_temp_variable = { famine_food_observation_result = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_to_migration_food_safety_publish_result = constant:humanitarian_runtime.zero }
+	famine_observe_migration_food_context = yes
 	if = {
-		limit = {
-			check_variable = { var = famine_to_migration_food_safety_publish_result value = constant:humanitarian_runtime.one compare = equals }
-			famine_to_migration_food_safety_is_valid = yes
+		limit = { check_variable = { famine_food_observation_result = constant:humanitarian_runtime.one } }
+		famine_publish_migration_food_safety = yes
+		if = {
+			limit = {
+				check_variable = { var = famine_to_migration_food_safety_publish_result value = constant:humanitarian_runtime.one compare = equals }
+				famine_to_migration_food_safety_is_valid = yes
+			}
+			set_temp_variable = { migration_famine_food_safety_result = constant:humanitarian_runtime.one }
 		}
-		set_temp_variable = { migration_famine_food_safety_result = constant:humanitarian_runtime.one }
 	}
 }
 

@@ -449,9 +449,9 @@ famine_bootstrap_historical_profile_anchors = {
 }
 
 
-# State registry entry points are called only by explicit pressure or trap
-# requests. They therefore remain bounded by the active request set.
-famine_register_active_state = {
+# STATE scope. Insert only an exact requested state in the existing sparse
+# runtime. Membership alone does not establish a visible food problem.
+famine_register_state_in_runtime = {
 	humanitarian_initialize_runtime = yes
 	set_temp_variable = { humanitarian_registry_result = constant:humanitarian_runtime.zero }
 	if = {
@@ -468,12 +468,35 @@ famine_register_active_state = {
 			add_to_array = { array = global.famine_active_states value = THIS }
 			set_variable = { global.famine_active_states_count = global.famine_active_states^num }
 		}
+		set_temp_variable = { humanitarian_registry_result = constant:humanitarian_runtime.one }
+	}
+}
+
+
+famine_register_active_state = {
+	set_temp_variable = { humanitarian_registry_result = constant:humanitarian_runtime.zero }
+	famine_register_state_in_runtime = yes
+	if = {
+		limit = { check_variable = { humanitarian_registry_result = constant:humanitarian_runtime.one } }
 		set_state_flag = famine_food_security_active
 		migration_mark_reception_capacity_dirty_if_candidate = yes
 		set_temp_variable = { humanitarian_registry_result = constant:humanitarian_runtime.one }
 	}
 }
 
+# STATE scope. Queue one genuine material assessment for ordinary simulation.
+# Observation never sets simulation-active or category/phase flags.
+famine_enqueue_food_observation_assessment = {
+	set_temp_variable = { humanitarian_registry_result = constant:humanitarian_runtime.zero }
+	famine_register_state_in_runtime = yes
+	if = {
+		limit = {
+			check_variable = { humanitarian_registry_result = constant:humanitarian_runtime.one }
+			NOT = { has_state_flag = famine_food_security_active }
+		}
+		set_state_flag = famine_food_observation_pending_job
+	}
+}
 
 famine_unregister_active_state = {
 	humanitarian_initialize_runtime = yes
@@ -702,14 +725,11 @@ famine_refresh_blockade_proof = {
 }
 
 
-# State scope after famine_refresh_blockade_proof. A full proof adds
-# pressure through named transport and need components and accumulates one
-# bounded day of isolation per registered daily evaluation. Any broken clause
-# resets the consecutive-duration term instead of leaving a stale blockade.
-famine_apply_blockade_components = {
+# State scope after famine_refresh_blockade_proof. Apply current verified
+# blockade pressure through the named components without advancing exposure.
+famine_apply_current_blockade_components = {
 	if = {
 		limit = { famine_blockade_proof = yes }
-		add_to_variable = { famine_blockade_exposure_days = constant:humanitarian_runtime.one }
 		set_temp_variable = { famine_blockade_duration_pressure = famine_blockade_exposure_days }
 		multiply_temp_variable = { famine_blockade_duration_pressure = constant:famine_blockade_runtime.pressure_per_isolation_day }
 		clamp_temp_variable = {
@@ -731,6 +751,16 @@ famine_apply_blockade_components = {
 			min = constant:famine_food_component.zero
 			max = constant:famine_food_component.maximum
 		}
+	}
+}
+
+# STATE scope. Only the registered simulation advances blockade exposure.
+# Observation shares the component calculation without advancing its clock.
+famine_apply_blockade_components = {
+	if = {
+		limit = { famine_blockade_proof = yes }
+		add_to_variable = { famine_blockade_exposure_days = constant:humanitarian_runtime.one }
+		famine_apply_current_blockade_components = yes
 		set_variable = { famine_last_pressure_source = constant:humanitarian_pressure_source.blockade }
 	}
 	else = {
@@ -1060,6 +1090,11 @@ famine_collect_surface_context = {
 	set_temp_variable = { famine_external_vulnerability = constant:famine_food_component.zero }
 	set_temp_variable = { famine_external_governance = constant:famine_food_component.zero }
 	set_temp_variable = { famine_external_relief = constant:famine_food_component.zero }
+	set_temp_variable = { famine_occupation_profile = constant:famine_occupation_profile.none }
+	set_temp_variable = { famine_occupation_extra_extraction = constant:famine_food_component.zero }
+	set_temp_variable = { famine_occupation_extra_vulnerability = constant:famine_food_component.zero }
+	set_temp_variable = { famine_occupation_extra_governance = constant:famine_food_component.zero }
+	set_temp_variable = { famine_occupation_context_proven = constant:humanitarian_runtime.zero }
 	famine_resolve_occupation_profile = yes
 	add_to_temp_variable = { famine_external_extraction = famine_occupation_extra_extraction }
 	add_to_temp_variable = { famine_external_vulnerability = famine_occupation_extra_vulnerability }
@@ -1857,15 +1892,10 @@ famine_retire_recovered_state = {
 }
 
 
-famine_evaluate_food_security = {
-	set_temp_variable = { famine_food_evaluation_result = constant:humanitarian_runtime.zero }
-	if = {
-		limit = { humanitarian_state_is_valid = yes }
-		famine_initialize_state = yes
-		famine_apply_historical_profile_context = yes
-		famine_collect_surface_context = yes
-		famine_decay_pressure = yes
-
+# STATE scope. Rebuild the current model components from initialized owner
+# inputs/profile fields and the current collector outputs. No simulation clock,
+# reserve stock, stage or population is advanced here.
+famine_rebuild_food_components = {
 	set_variable = { famine_component_production = famine_input_production }
 	add_to_variable = { famine_component_production = famine_profile_production }
 	add_to_variable = { famine_component_production = famine_external_production }
@@ -1923,10 +1953,11 @@ famine_evaluate_food_security = {
 	add_to_variable = { famine_component_relief = famine_profile_relief }
 	add_to_variable = { famine_component_relief = famine_external_relief }
 	clamp_variable = { var = famine_component_relief min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
+}
 
-	# Reserve stock is a state-owned relief source. The update is registry-only
-	# through the caller and is idempotent for the current game date.
-	famine_update_reserve = yes
+# STATE scope. Apply only relief supported by existing reserve/relief fields.
+# The ordinary evaluator owns stock updates before this read-only calculation.
+famine_apply_existing_reserve_relief = {
 	set_temp_variable = { famine_food_reserve_stock_relief = constant:famine_food_reserve.zero }
 	if = {
 		limit = { check_variable = { var = famine_food_reserve_daily_need value = constant:famine_food_reserve.zero compare = greater_than } }
@@ -1948,10 +1979,11 @@ famine_evaluate_food_security = {
 	set_temp_variable = { famine_food_reserve_score_relief_output = famine_food_reserve_stock_relief }
 	add_to_variable = { famine_component_relief = famine_food_reserve_stock_relief }
 	clamp_variable = { var = famine_component_relief min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
-	famine_refresh_blockade_proof = yes
-	famine_apply_relief_access_components = yes
-	famine_apply_blockade_components = yes
+}
 
+# STATE scope. The shared current score and requested stage calculation.
+# This does not commit a stage or advance candidate/recovery/mortality timers.
+famine_calculate_food_score = {
 	set_temp_variable = { famine_food_score_raw = famine_component_production }
 	multiply_temp_variable = { famine_food_score_raw = constant:famine_food_weight.production }
 	set_temp_variable = { famine_food_component_weighted = famine_component_transport }
@@ -1985,6 +2017,39 @@ famine_evaluate_food_security = {
 	if = { limit = { check_variable = { var = famine_food_score_raw value = constant:famine_food_score.acute_shortage_threshold compare = greater_than_or_equals } } set_temp_variable = { famine_requested_food_stage = constant:famine_food_stage.acute_shortage } }
 	if = { limit = { check_variable = { var = famine_food_score_raw value = constant:famine_food_score.famine_threshold compare = greater_than_or_equals } } set_temp_variable = { famine_requested_food_stage = constant:famine_food_stage.famine } }
 	if = { limit = { check_variable = { var = famine_food_score_raw value = constant:famine_food_score.catastrophic_threshold compare = greater_than_or_equals } } set_temp_variable = { famine_requested_food_stage = constant:famine_food_stage.catastrophic_famine } }
+}
+
+famine_evaluate_food_security = {
+	set_temp_variable = { famine_food_evaluation_result = constant:humanitarian_runtime.zero }
+	if = {
+		limit = { humanitarian_state_is_valid = yes }
+		famine_initialize_state = yes
+		famine_apply_historical_profile_context = yes
+		set_temp_variable = { famine_external_production = constant:famine_food_component.zero }
+		set_temp_variable = { famine_external_transport = constant:famine_food_component.zero }
+		set_temp_variable = { famine_external_extraction = constant:famine_food_component.zero }
+		set_temp_variable = { famine_external_need = constant:famine_food_component.zero }
+		set_temp_variable = { famine_external_environment = constant:famine_food_component.zero }
+		set_temp_variable = { famine_external_vulnerability = constant:famine_food_component.zero }
+		set_temp_variable = { famine_external_governance = constant:famine_food_component.zero }
+		set_temp_variable = { famine_external_relief = constant:famine_food_component.zero }
+		famine_collect_surface_context = yes
+		famine_decay_pressure = yes
+
+	famine_rebuild_food_components = yes
+
+	# Reserve stock is a state-owned relief source. The update is registry-only
+	# through the caller and is idempotent for the current game date.
+	famine_update_reserve = yes
+	set_temp_variable = { famine_food_reserve_score_relief_output = constant:famine_food_reserve.zero }
+	famine_apply_existing_reserve_relief = yes
+	famine_refresh_blockade_proof = yes
+	famine_apply_relief_access_components = yes
+	famine_apply_blockade_components = yes
+
+	set_temp_variable = { famine_food_score_raw = constant:famine_food_score.zero }
+	set_temp_variable = { famine_requested_food_stage = constant:famine_food_stage.stable }
+	famine_calculate_food_score = yes
 
 	if = {
 		limit = { check_variable = { var = famine_requested_food_stage value = famine_food_stage compare = greater_than } }
@@ -2041,6 +2106,7 @@ famine_evaluate_food_security = {
 		famine_apply_mortality = yes
 	}
 	else = { set_variable = { famine_food_exposure_days = constant:humanitarian_runtime.zero } }
+	famine_record_food_assessment = yes
 	famine_publish_migration_food_safety = yes
 	famine_refresh_dynamic_modifiers = yes
 	migration_mark_reception_capacity_dirty_if_candidate = yes
@@ -2596,8 +2662,16 @@ famine_process_registered_state = {
 	}
 	if = {
 		limit = {
-			has_state_flag = famine_food_security_active
+			OR = {
+				has_state_flag = famine_food_security_active
+				has_state_flag = famine_food_observation_pending_job
+			}
 			humanitarian_state_is_valid = yes
+		}
+		if = {
+			limit = { has_state_flag = famine_food_observation_pending_job }
+			clr_state_flag = famine_food_observation_pending_job
+			famine_register_active_state = yes
 		}
 		famine_evaluate_food_security = yes
 	}
@@ -2809,6 +2883,9 @@ famine_refresh_dynamic_modifiers = {
 }
 
 famine_cleanup_state_registration = {
+	clr_state_flag = famine_food_observation_pending_job
+	clr_state_flag = famine_food_assessment_current
+	clr_state_flag = famine_food_observation_pending_material
 	if = {
 		limit = {
 			has_state_flag = humanitarian_achievement_blockade_state
@@ -2869,6 +2946,7 @@ famine_consume_registered_state_reassessment = {
 }
 
 famine_handle_state_control_change = {
+	famine_invalidate_migration_food_safety = yes
 	famine_relief_unregister_donor_state = yes
 	famine_relief_cleanup_state = yes
 	famine_cleanup_mission_subjects_after_control_change = yes

@@ -13,15 +13,441 @@
 # actor, generation, revision, and request identity facts.
 # ============================================================================
 
-# STATE scope. Publish a versioned, read-only food-safety projection for a
-# bounded migration destination or reception-capacity consumer. An untracked
-# state fails closed; this effect never initializes famine state or registers
-# it in the famine scheduler.
+# STATE scope. Observe one explicit civilian destination/reception candidate.
+# Missing normal model inputs use the established neutral loss-pressure baseline.
+# Current observations never advance simulation clocks or grant reserve stocks.
+famine_observe_migration_food_context = {
+	set_temp_variable = { famine_food_observation_result = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_food_observation_inputs_invalid = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_food_observation_known_crisis = constant:humanitarian_runtime.zero }
+	clr_state_flag = famine_food_assessment_current
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			state_population_k > constant:humanitarian_population.zero
+		}
+		if = {
+			limit = {
+				has_variable = famine_food_pressure
+				OR = {
+					check_variable = { famine_food_pressure < constant:famine_food_component.zero }
+					check_variable = { famine_food_pressure > constant:famine_food_component.maximum }
+				}
+			}
+			set_temp_variable = { famine_food_observation_inputs_invalid = constant:humanitarian_runtime.one }
+		}
+		if = {
+			limit = {
+				has_variable = famine_input_production
+				OR = {
+					check_variable = { famine_input_production < constant:famine_food_component.zero }
+					check_variable = { famine_input_production > constant:famine_food_component.maximum }
+				}
+			}
+			set_temp_variable = { famine_food_observation_inputs_invalid = constant:humanitarian_runtime.one }
+		}
+		if = {
+			limit = {
+				has_variable = famine_input_transport
+				OR = {
+					check_variable = { famine_input_transport < constant:famine_food_component.zero }
+					check_variable = { famine_input_transport > constant:famine_food_component.maximum }
+				}
+			}
+			set_temp_variable = { famine_food_observation_inputs_invalid = constant:humanitarian_runtime.one }
+		}
+		if = {
+			limit = {
+				has_variable = famine_input_extraction
+				OR = {
+					check_variable = { famine_input_extraction < constant:famine_food_component.zero }
+					check_variable = { famine_input_extraction > constant:famine_food_component.maximum }
+				}
+			}
+			set_temp_variable = { famine_food_observation_inputs_invalid = constant:humanitarian_runtime.one }
+		}
+		if = {
+			limit = {
+				has_variable = famine_input_need
+				OR = {
+					check_variable = { famine_input_need < constant:famine_food_component.zero }
+					check_variable = { famine_input_need > constant:famine_food_component.maximum }
+				}
+			}
+			set_temp_variable = { famine_food_observation_inputs_invalid = constant:humanitarian_runtime.one }
+		}
+		if = {
+			limit = {
+				has_variable = famine_input_environment
+				OR = {
+					check_variable = { famine_input_environment < constant:famine_food_component.zero }
+					check_variable = { famine_input_environment > constant:famine_food_component.maximum }
+				}
+			}
+			set_temp_variable = { famine_food_observation_inputs_invalid = constant:humanitarian_runtime.one }
+		}
+		if = {
+			limit = {
+				has_variable = famine_input_vulnerability
+				OR = {
+					check_variable = { famine_input_vulnerability < constant:famine_food_component.zero }
+					check_variable = { famine_input_vulnerability > constant:famine_food_component.maximum }
+				}
+			}
+			set_temp_variable = { famine_food_observation_inputs_invalid = constant:humanitarian_runtime.one }
+		}
+		if = {
+			limit = {
+				has_variable = famine_input_governance
+				OR = {
+					check_variable = { famine_input_governance < constant:famine_food_component.zero }
+					check_variable = { famine_input_governance > constant:famine_food_component.maximum }
+				}
+			}
+			set_temp_variable = { famine_food_observation_inputs_invalid = constant:humanitarian_runtime.one }
+		}
+		if = {
+			limit = {
+				has_variable = famine_input_relief
+				OR = {
+					check_variable = { famine_input_relief < constant:famine_food_component.zero }
+					check_variable = { famine_input_relief > constant:famine_food_component.maximum }
+				}
+			}
+			set_temp_variable = { famine_food_observation_inputs_invalid = constant:humanitarian_runtime.one }
+		}
+		if = {
+			limit = {
+				has_variable = famine_profile_production
+				OR = {
+					check_variable = { famine_profile_production < constant:famine_food_component.zero }
+					check_variable = { famine_profile_production > constant:famine_food_component.maximum }
+				}
+			}
+			set_temp_variable = { famine_food_observation_inputs_invalid = constant:humanitarian_runtime.one }
+		}
+		if = {
+			limit = {
+				has_variable = famine_profile_transport
+				OR = {
+					check_variable = { famine_profile_transport < constant:famine_food_component.zero }
+					check_variable = { famine_profile_transport > constant:famine_food_component.maximum }
+				}
+			}
+			set_temp_variable = { famine_food_observation_inputs_invalid = constant:humanitarian_runtime.one }
+		}
+		if = {
+			limit = {
+				has_variable = famine_profile_extraction
+				OR = {
+					check_variable = { famine_profile_extraction < constant:famine_food_component.zero }
+					check_variable = { famine_profile_extraction > constant:famine_food_component.maximum }
+				}
+			}
+			set_temp_variable = { famine_food_observation_inputs_invalid = constant:humanitarian_runtime.one }
+		}
+		if = {
+			limit = {
+				has_variable = famine_profile_need
+				OR = {
+					check_variable = { famine_profile_need < constant:famine_food_component.zero }
+					check_variable = { famine_profile_need > constant:famine_food_component.maximum }
+				}
+			}
+			set_temp_variable = { famine_food_observation_inputs_invalid = constant:humanitarian_runtime.one }
+		}
+		if = {
+			limit = {
+				has_variable = famine_profile_environment
+				OR = {
+					check_variable = { famine_profile_environment < constant:famine_food_component.zero }
+					check_variable = { famine_profile_environment > constant:famine_food_component.maximum }
+				}
+			}
+			set_temp_variable = { famine_food_observation_inputs_invalid = constant:humanitarian_runtime.one }
+		}
+		if = {
+			limit = {
+				has_variable = famine_profile_vulnerability
+				OR = {
+					check_variable = { famine_profile_vulnerability < constant:famine_food_component.zero }
+					check_variable = { famine_profile_vulnerability > constant:famine_food_component.maximum }
+				}
+			}
+			set_temp_variable = { famine_food_observation_inputs_invalid = constant:humanitarian_runtime.one }
+		}
+		if = {
+			limit = {
+				has_variable = famine_profile_governance
+				OR = {
+					check_variable = { famine_profile_governance < constant:famine_food_component.zero }
+					check_variable = { famine_profile_governance > constant:famine_food_component.maximum }
+				}
+			}
+			set_temp_variable = { famine_food_observation_inputs_invalid = constant:humanitarian_runtime.one }
+		}
+		if = {
+			limit = {
+				has_variable = famine_profile_relief
+				OR = {
+					check_variable = { famine_profile_relief < constant:famine_food_component.zero }
+					check_variable = { famine_profile_relief > constant:famine_food_component.maximum }
+				}
+			}
+			set_temp_variable = { famine_food_observation_inputs_invalid = constant:humanitarian_runtime.one }
+		}
+		if = {
+			limit = {
+				has_variable = famine_food_stage
+				NOT = {
+					OR = {
+						check_variable = { famine_food_stage = constant:famine_food_stage.stable }
+						check_variable = { famine_food_stage = constant:famine_food_stage.supply_strain }
+						check_variable = { famine_food_stage = constant:famine_food_stage.acute_shortage }
+						check_variable = { famine_food_stage = constant:famine_food_stage.famine }
+						check_variable = { famine_food_stage = constant:famine_food_stage.catastrophic_famine }
+					}
+				}
+			}
+			set_temp_variable = { famine_food_observation_inputs_invalid = constant:humanitarian_runtime.one }
+		}
+		# A known crisis cannot be repaired into a healthy default by observation.
+		if = {
+			limit = {
+				OR = {
+					AND = { has_variable = famine_food_reserve_amount check_variable = { famine_food_reserve_amount < constant:famine_food_reserve.zero } }
+					AND = { has_variable = famine_food_reserve_daily_need check_variable = { famine_food_reserve_daily_need < constant:famine_food_reserve.zero } }
+					AND = { has_variable = famine_food_reserve_relief check_variable = { famine_food_reserve_relief < constant:famine_food_reserve.zero } }
+					AND = { has_variable = famine_food_exposure_days check_variable = { famine_food_exposure_days < constant:humanitarian_runtime.zero } }
+					AND = { has_variable = famine_reception_demand_population check_variable = { famine_reception_demand_population < constant:humanitarian_population.zero } }
+				}
+			}
+			set_temp_variable = { famine_food_observation_inputs_invalid = constant:humanitarian_runtime.one }
+		}
+		# A declared owner context must carry its complete component inputs.
+		if = {
+			limit = {
+				has_state_flag = famine_surface_context_active
+				OR = {
+					NOT = { has_variable = famine_input_production }
+					NOT = { has_variable = famine_input_transport }
+					NOT = { has_variable = famine_input_extraction }
+					NOT = { has_variable = famine_input_need }
+					NOT = { has_variable = famine_input_environment }
+					NOT = { has_variable = famine_input_vulnerability }
+					NOT = { has_variable = famine_input_governance }
+					NOT = { has_variable = famine_input_relief }
+				}
+			}
+			set_temp_variable = { famine_food_observation_inputs_invalid = constant:humanitarian_runtime.one }
+		}
+		if = {
+			limit = {
+				has_state_flag = famine_profile_context_active
+				OR = {
+					NOT = { has_variable = famine_profile_production }
+					NOT = { has_variable = famine_profile_transport }
+					NOT = { has_variable = famine_profile_extraction }
+					NOT = { has_variable = famine_profile_need }
+					NOT = { has_variable = famine_profile_environment }
+					NOT = { has_variable = famine_profile_vulnerability }
+					NOT = { has_variable = famine_profile_governance }
+					NOT = { has_variable = famine_profile_relief }
+				}
+			}
+			set_temp_variable = { famine_food_observation_inputs_invalid = constant:humanitarian_runtime.one }
+		}
+		# Current activation or modifiers cannot be repaired into stable defaults.
+		# Quiet retired stage flags alone are historical and do not assert a crisis.
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						has_state_flag = famine_food_security_active
+						OR = {
+							has_state_flag = famine_food_stage_supply_strain
+							has_state_flag = famine_food_stage_acute_shortage
+							has_state_flag = famine_food_stage_famine
+							has_state_flag = famine_food_stage_catastrophic
+						}
+					}
+					has_dynamic_modifier = { modifier = famine_state_supply_strain }
+					has_dynamic_modifier = { modifier = famine_state_acute_shortage }
+					has_dynamic_modifier = { modifier = famine_state_famine }
+					has_dynamic_modifier = { modifier = famine_state_catastrophic_famine }
+				}
+			}
+			set_temp_variable = { famine_food_observation_known_crisis = constant:humanitarian_runtime.one }
+		}
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						has_state_flag = famine_food_security_active
+						has_state_flag = famine_food_stage_supply_strain
+						NOT = { check_variable = { famine_food_stage = constant:famine_food_stage.supply_strain } }
+					}
+					AND = {
+						has_dynamic_modifier = { modifier = famine_state_supply_strain }
+						NOT = { check_variable = { famine_food_stage = constant:famine_food_stage.supply_strain } }
+					}
+				}
+			}
+			set_temp_variable = { famine_food_observation_inputs_invalid = constant:humanitarian_runtime.one }
+		}
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						has_state_flag = famine_food_security_active
+						has_state_flag = famine_food_stage_acute_shortage
+						NOT = { check_variable = { famine_food_stage = constant:famine_food_stage.acute_shortage } }
+					}
+					AND = {
+						has_dynamic_modifier = { modifier = famine_state_acute_shortage }
+						NOT = { check_variable = { famine_food_stage = constant:famine_food_stage.acute_shortage } }
+					}
+				}
+			}
+			set_temp_variable = { famine_food_observation_inputs_invalid = constant:humanitarian_runtime.one }
+		}
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						has_state_flag = famine_food_security_active
+						has_state_flag = famine_food_stage_famine
+						NOT = { check_variable = { famine_food_stage = constant:famine_food_stage.famine } }
+					}
+					AND = {
+						has_dynamic_modifier = { modifier = famine_state_famine }
+						NOT = { check_variable = { famine_food_stage = constant:famine_food_stage.famine } }
+					}
+				}
+			}
+			set_temp_variable = { famine_food_observation_inputs_invalid = constant:humanitarian_runtime.one }
+		}
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						has_state_flag = famine_food_security_active
+						has_state_flag = famine_food_stage_catastrophic
+						NOT = { check_variable = { famine_food_stage = constant:famine_food_stage.catastrophic_famine } }
+					}
+					AND = {
+						has_dynamic_modifier = { modifier = famine_state_catastrophic_famine }
+						NOT = { check_variable = { famine_food_stage = constant:famine_food_stage.catastrophic_famine } }
+					}
+				}
+			}
+			set_temp_variable = { famine_food_observation_inputs_invalid = constant:humanitarian_runtime.one }
+		}
+		# Every durable input of an established crisis must already exist.
+		if = {
+			limit = {
+				OR = {
+					check_variable = { famine_food_observation_known_crisis = constant:humanitarian_runtime.one }
+					AND = {
+						has_variable = famine_food_stage
+						check_variable = { famine_food_stage > constant:famine_food_stage.stable }
+					}
+				}
+				OR = {
+					NOT = { has_variable = famine_food_stage }
+					NOT = { has_variable = famine_food_pressure }
+					NOT = { has_variable = famine_input_production }
+					NOT = { has_variable = famine_input_transport }
+					NOT = { has_variable = famine_input_extraction }
+					NOT = { has_variable = famine_input_need }
+					NOT = { has_variable = famine_input_environment }
+					NOT = { has_variable = famine_input_vulnerability }
+					NOT = { has_variable = famine_input_governance }
+					NOT = { has_variable = famine_input_relief }
+					NOT = { has_variable = famine_profile_production }
+					NOT = { has_variable = famine_profile_transport }
+					NOT = { has_variable = famine_profile_extraction }
+					NOT = { has_variable = famine_profile_need }
+					NOT = { has_variable = famine_profile_environment }
+					NOT = { has_variable = famine_profile_vulnerability }
+					NOT = { has_variable = famine_profile_governance }
+					NOT = { has_variable = famine_profile_relief }
+					NOT = { has_variable = famine_food_stage_started_date }
+					NOT = { has_variable = famine_food_stage_candidate }
+					NOT = { has_variable = famine_food_exposure_days }
+					NOT = { has_variable = famine_food_reserve_amount }
+					NOT = { has_variable = famine_food_next_mortality_date }
+				}
+			}
+			set_temp_variable = { famine_food_observation_inputs_invalid = constant:humanitarian_runtime.one }
+		}
+		if = {
+			limit = { check_variable = { famine_food_observation_inputs_invalid = constant:humanitarian_runtime.zero } }
+			famine_initialize_state = yes
+			set_temp_variable = { famine_external_production = constant:famine_food_component.zero }
+			set_temp_variable = { famine_external_transport = constant:famine_food_component.zero }
+			set_temp_variable = { famine_external_extraction = constant:famine_food_component.zero }
+			set_temp_variable = { famine_external_need = constant:famine_food_component.zero }
+			set_temp_variable = { famine_external_environment = constant:famine_food_component.zero }
+			set_temp_variable = { famine_external_vulnerability = constant:famine_food_component.zero }
+			set_temp_variable = { famine_external_governance = constant:famine_food_component.zero }
+			set_temp_variable = { famine_external_relief = constant:famine_food_component.zero }
+			famine_collect_surface_context = yes
+			famine_rebuild_food_components = yes
+			set_temp_variable = { famine_food_reserve_score_relief_output = constant:famine_food_reserve.zero }
+			famine_apply_existing_reserve_relief = yes
+			civilian_transfer_refresh_route_damage_projection = yes
+			famine_refresh_blockade_proof = yes
+			famine_apply_relief_access_components = yes
+			famine_apply_current_blockade_components = yes
+			set_temp_variable = { famine_food_score_raw = constant:famine_food_score.zero }
+			set_temp_variable = { famine_requested_food_stage = constant:famine_food_stage.stable }
+			famine_calculate_food_score = yes
+			famine_record_food_assessment = yes
+			if = {
+				limit = { has_state_flag = famine_food_observation_pending_material }
+				# Only this exact material assessment enters ordinary simulation.
+				famine_enqueue_food_observation_assessment = yes
+			}
+			else = { set_temp_variable = { famine_food_observation_result = constant:humanitarian_runtime.one } }
+		}
+	}
+	if = {
+		limit = { check_variable = { famine_food_observation_result = constant:humanitarian_runtime.zero } }
+		famine_invalidate_migration_food_safety = yes
+	}
+	set_temp_variable = { famine_food_observation_inputs_invalid = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_food_observation_known_crisis = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_requested_food_stage = constant:famine_food_stage.stable }
+}
+
+# STATE scope after the shared current score has been calculated. This receipt
+# records assessment provenance without committing a simulation stage.
+famine_record_food_assessment = {
+	set_state_flag = famine_food_assessment_current
+	if = {
+		limit = {
+			check_variable = { famine_food_stage = constant:famine_food_stage.stable }
+			check_variable = {
+				var = famine_food_security_score
+				value = constant:famine_food_score.supply_strain_threshold
+				compare = greater_than_or_equals
+			}
+		}
+		set_state_flag = famine_food_observation_pending_material
+	}
+	else = { clr_state_flag = famine_food_observation_pending_material }
+}
+
+# STATE scope. Publish only famine-owned current assessment facts. Publication
+# never initializes the state or grants simulation, route or service proof.
 famine_publish_migration_food_safety = {
 	set_temp_variable = { famine_to_migration_food_safety_publish_result = constant:humanitarian_runtime.zero }
 	if = {
 		limit = {
 			humanitarian_state_is_valid = yes
+			has_state_flag = famine_food_assessment_current
+			NOT = { has_state_flag = famine_food_observation_pending_material }
 			has_variable = famine_food_stage
 			has_variable = famine_food_pressure
 			has_variable = famine_component_transport
@@ -49,6 +475,7 @@ famine_publish_migration_food_safety = {
 }
 
 famine_invalidate_migration_food_safety = {
+	clr_state_flag = famine_food_assessment_current
 	set_variable = { famine_to_migration_food_safety_proven = constant:humanitarian_runtime.zero }
 	clear_variable = famine_to_migration_food_stage
 	clear_variable = famine_to_migration_food_pressure

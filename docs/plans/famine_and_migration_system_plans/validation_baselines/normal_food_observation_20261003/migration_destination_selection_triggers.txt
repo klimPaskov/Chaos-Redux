@@ -1,0 +1,294 @@
+# ============================================================================
+# CHAOS REDUX - MIGRATION DESTINATION SELECTION TRIGGERS
+# ============================================================================
+# These read-only predicates are the candidate contracts for the adjacent
+# destination selectors. They are intentionally strict: a candidate with
+# direct famine, persecution, bombing, contamination, trapped-population,
+# severe-stage, war, closed-border, or exhausted-capacity evidence is
+# not part of a pool and therefore contributes zero weight. The caller sets
+# the temporary pool identifier and chain-local acting-country target before
+# every_neighbor_state evaluates this trigger.
+# ============================================================================
+
+# Narrow migration-owned hazard seams for other mechanics that need a proven
+# destination fact without reading migration registry flags directly.
+migration_state_has_active_persecution = {
+	hidden_trigger = { has_state_flag = migration_persecution_active }
+}
+
+migration_destination_native_hazards_are_safe = {
+	hidden_trigger = {
+		NOT = { has_state_flag = migration_persecution_active }
+		NOT = { has_state_flag = migration_bombing_active }
+	}
+}
+
+# State scope. Receiving capacity is owned by the candidate state's owner and
+# load is optional for migrated saves; an absent load is treated as zero by the
+# effect-side weight calculation after this trigger has proven capacity.
+migration_destination_selection_reception_available = {
+	hidden_trigger = {
+		OWNER = {
+			migration_reception_capacity_is_valid = yes
+			has_variable = migration_reception_capacity
+			check_variable = {
+				var = migration_reception_capacity
+				value = constant:migration_destination_selection_threshold.minimum_reception_capacity
+				compare = greater_than_or_equals
+			}
+			OR = {
+				NOT = { has_variable = migration_reception_load }
+				check_variable = {
+					var = migration_reception_load
+					value = migration_reception_capacity
+					compare = less_than
+				}
+			}
+		}
+	}
+}
+
+# State scope. A receiver may be open, controlled, transit-only, or under
+# quarantine. Admission is read from the authoritative reception policy. The
+# presentation border policy is deliberately not consumed here, and an unset
+# reception policy fails closed through the decision-owner helper.
+migration_destination_selection_border_admissible = {
+	hidden_trigger = {
+		OWNER = { migration_decision_reception_policy_allows_admission = yes }
+		NOT = { OWNER = { has_country_flag = migration_forced_return_pending } }
+	}
+}
+
+# State scope. This is the exact authoritative policy blocker used by the
+# spontaneous-movement rejection prepass. Only a valid closed, violent, or
+# forced-return reception policy qualifies. Missing or malformed policy data
+# remains unattributed rather than being inferred from presentation state.
+migration_destination_selection_reception_policy_blocks_admission = {
+	hidden_trigger = {
+		OWNER = {
+			migration_decision_reception_policy_is_valid = yes
+			OR = {
+				check_variable = {
+					var = migration_reception_policy
+					value = constant:migration_border_policy.closed
+					compare = equals
+				}
+				check_variable = {
+					var = migration_reception_policy
+					value = constant:migration_border_policy.violent
+					compare = equals
+				}
+				check_variable = {
+					var = migration_reception_policy
+					value = constant:migration_border_policy.forced_return
+					compare = equals
+				}
+			}
+		}
+	}
+}
+
+# State scope. The selector prepares the exact visited-state scopes for an
+# ordinary hosted cohort before either weighted pass. A missing or malformed
+# paired history contract contributes no candidate; non-hosted lanes leave the
+# requirement at zero and retain their explicit return/resettlement
+# exceptions.
+migration_destination_selection_history_candidate_is_allowed = {
+	hidden_trigger = {
+		OR = {
+			check_variable = {
+				var = migration_destination_selection_history_required
+				value = constant:migration_destination_selection_runtime.zero
+				compare = equals
+			}
+			AND = {
+				check_variable = {
+					var = migration_destination_selection_history_required
+					value = constant:migration_destination_selection_runtime.one
+					compare = equals
+				}
+				check_variable = {
+					var = migration_destination_selection_history_contract
+					value = constant:migration_destination_selection_runtime.one
+					compare = equals
+				}
+				NOT = { is_in_array = { array = migration_destination_selection_history_states value = THIS } }
+			}
+		}
+	}
+}
+
+# State scope. This bounded prepass candidate intentionally duplicates the
+# normal foreign safety contract without its admission predicate. It is used
+# only to prove that the destination policy is the sole rejection cause. No
+# weight, distant geometry, every_state, or every_country operation belongs in
+# this proof.
+migration_destination_selection_foreign_policy_rejection_candidate_is_valid = {
+	hidden_trigger = {
+		scope_exists = yes
+		humanitarian_state_is_valid = yes
+		famine_to_migration_food_safety_is_valid = yes
+		check_variable = {
+			var = famine_to_migration_food_stage
+			value = constant:migration_capacity.food_safe_stage
+			compare = less_than_or_equals
+		}
+		check_variable = {
+			var = damaged_building_level@rail_way
+			value = constant:civilian_transfer_route_projection.damage_threshold
+			compare = less_than_or_equals
+		}
+		check_variable = {
+			var = days_since_last_strategic_bombing
+			value = constant:chaos_meter_deaths.strategic_bombing_days_recent
+			compare = greater_than_or_equals
+		}
+		has_event_target = migration_destination_selection_actor
+		event_target:migration_destination_selection_actor = {
+			humanitarian_country_is_valid = yes
+		}
+		NOT = { has_state_flag = migration_persecution_active }
+		NOT = { has_state_flag = migration_bombing_active }
+		NOT = { has_state_flag = migration_population_trapped }
+		NOT = { genocide_state_has_active_camps = yes }
+		NOT = { is_valid_camp_active_site_state = yes }
+		NOT = { cbrn_state_has_chemical_contamination = yes }
+		NOT = { has_dynamic_modifier = { modifier = nuclear_fallout_state } }
+		NOT = { black_plague_state_is_infected_or_worse = yes }
+		infrastructure > constant:migration_destination_selection_threshold.minimum_route_infrastructure
+		CONTROLLER = { NOT = { has_war_with = event_target:migration_destination_selection_actor } }
+		OWNER = {
+			NOT = { tag = event_target:migration_destination_selection_actor }
+			humanitarian_country_is_valid = yes
+		}
+		is_controlled_by = OWNER
+		has_event_target = civilian_transfer_origin
+		event_target:civilian_transfer_origin = {
+			infrastructure > constant:migration_destination_selection_threshold.minimum_route_infrastructure
+			famine_to_migration_food_safety_is_valid = yes
+			check_variable = {
+				var = damaged_building_level@rail_way
+				value = constant:civilian_transfer_route_projection.damage_threshold
+				compare = less_than_or_equals
+			}
+			check_variable = {
+				var = days_since_last_strategic_bombing
+				value = constant:chaos_meter_deaths.strategic_bombing_days_recent
+				compare = greater_than_or_equals
+			}
+		}
+		migration_destination_selection_reception_available = yes
+		NOT = { OWNER = { has_country_flag = migration_forced_return_pending } }
+		migration_destination_selection_reception_policy_blocks_admission = yes
+	}
+}
+
+# State scope. This is the only candidate gate used by the two passes. The
+# five branches are separate contracts even when they share the safety gate:
+# the general evacuation wrapper first uses the same-owner branch and then the
+# foreign-evacuation branch. Transit and third-country routes require a valid
+# foreign owner, and a donor is an owned-and-controlled reserve state.
+migration_destination_selection_candidate_is_valid = {
+	hidden_trigger = {
+		scope_exists = yes
+		humanitarian_state_is_valid = yes
+		migration_destination_selection_history_candidate_is_allowed = yes
+		famine_to_migration_food_safety_is_valid = yes
+		check_variable = { var = famine_to_migration_food_stage value = constant:migration_capacity.food_safe_stage compare = less_than_or_equals }
+		check_variable = { var = damaged_building_level@rail_way value = constant:civilian_transfer_route_projection.damage_threshold compare = less_than_or_equals }
+		check_variable = { var = days_since_last_strategic_bombing value = constant:chaos_meter_deaths.strategic_bombing_days_recent compare = greater_than_or_equals }
+		has_event_target = migration_destination_selection_actor
+		event_target:migration_destination_selection_actor = { humanitarian_country_is_valid = yes }
+		NOT = { has_state_flag = migration_persecution_active }
+		NOT = { has_state_flag = migration_bombing_active }
+		NOT = { has_state_flag = migration_population_trapped }
+		NOT = { genocide_state_has_active_camps = yes }
+		NOT = { is_valid_camp_active_site_state = yes }
+		NOT = { cbrn_state_has_chemical_contamination = yes }
+		NOT = { has_dynamic_modifier = { modifier = nuclear_fallout_state } }
+		NOT = { black_plague_state_is_infected_or_worse = yes }
+		infrastructure > constant:migration_destination_selection_threshold.minimum_route_infrastructure
+		CONTROLLER = { NOT = { has_war_with = event_target:migration_destination_selection_actor } }
+		OR = {
+			AND = {
+				check_variable = {
+					var = migration_destination_selection_pool
+					value = constant:migration_destination_selection_pool.foreign_safe_evacuation
+					compare = equals
+				}
+					OWNER = {
+						NOT = { tag = event_target:migration_destination_selection_actor }
+						humanitarian_country_is_valid = yes
+					}
+				is_controlled_by = OWNER
+				has_event_target = civilian_transfer_origin
+				event_target:civilian_transfer_origin = {
+					infrastructure > constant:migration_destination_selection_threshold.minimum_route_infrastructure
+					famine_to_migration_food_safety_is_valid = yes
+					check_variable = { var = damaged_building_level@rail_way value = constant:civilian_transfer_route_projection.damage_threshold compare = less_than_or_equals }
+					check_variable = { var = days_since_last_strategic_bombing value = constant:chaos_meter_deaths.strategic_bombing_days_recent compare = greater_than_or_equals }
+				}
+				migration_destination_selection_reception_available = yes
+				migration_destination_selection_border_admissible = yes
+			}
+			AND = {
+				check_variable = {
+					var = migration_destination_selection_pool
+					value = constant:migration_destination_selection_pool.internal_safe_route
+					compare = equals
+				}
+				is_owned_and_controlled_by = event_target:migration_destination_selection_actor
+				has_event_target = civilian_transfer_origin
+				event_target:civilian_transfer_origin = {
+					infrastructure > constant:migration_destination_selection_threshold.minimum_route_infrastructure
+					famine_to_migration_food_safety_is_valid = yes
+					check_variable = { var = damaged_building_level@rail_way value = constant:civilian_transfer_route_projection.damage_threshold compare = less_than_or_equals }
+					check_variable = { var = days_since_last_strategic_bombing value = constant:chaos_meter_deaths.strategic_bombing_days_recent compare = greater_than_or_equals }
+				}
+				migration_destination_selection_reception_available = yes
+			}
+			AND = {
+				check_variable = {
+					var = migration_destination_selection_pool
+					value = constant:migration_destination_selection_pool.foreign_transit
+					compare = equals
+				}
+				OWNER = {
+					NOT = { tag = event_target:migration_destination_selection_actor }
+					humanitarian_country_is_valid = yes
+				}
+				is_controlled_by = OWNER
+				has_event_target = civilian_transfer_origin
+				event_target:civilian_transfer_origin = {
+					infrastructure > constant:migration_destination_selection_threshold.minimum_route_infrastructure
+					famine_to_migration_food_safety_is_valid = yes
+					check_variable = { var = damaged_building_level@rail_way value = constant:civilian_transfer_route_projection.damage_threshold compare = less_than_or_equals }
+					check_variable = { var = days_since_last_strategic_bombing value = constant:chaos_meter_deaths.strategic_bombing_days_recent compare = greater_than_or_equals }
+				}
+				migration_destination_selection_reception_available = yes
+				migration_destination_selection_border_admissible = yes
+			}
+			AND = {
+				check_variable = {
+					var = migration_destination_selection_pool
+					value = constant:migration_destination_selection_pool.third_country_resettlement
+					compare = equals
+				}
+				OWNER = {
+					NOT = { tag = event_target:migration_destination_selection_actor }
+					humanitarian_country_is_valid = yes
+				}
+				is_controlled_by = OWNER
+				has_event_target = civilian_transfer_origin
+				event_target:civilian_transfer_origin = {
+					infrastructure > constant:migration_destination_selection_threshold.minimum_route_infrastructure
+					famine_to_migration_food_safety_is_valid = yes
+					check_variable = { var = damaged_building_level@rail_way value = constant:civilian_transfer_route_projection.damage_threshold compare = less_than_or_equals }
+					check_variable = { var = days_since_last_strategic_bombing value = constant:chaos_meter_deaths.strategic_bombing_days_recent compare = greater_than_or_equals }
+				}
+				migration_destination_selection_reception_available = yes
+				migration_destination_selection_border_admissible = yes
+			}
+		}
+	}
+}
