@@ -143,22 +143,7 @@ cbrn_complete_full_state_distribution = {
 }
 
 cbrn_complete_emergency_state_distribution = {
-	set_temp_variable = { cbrn_distribution_consumed_crates = constant:cbrn_math.zero }
-	cbrn_distribute_emergency_masks_to_state = yes
-	if = {
-		limit = { check_variable = { cbrn_distribution_consumed_crates > constant:cbrn_math.zero } }
-		set_state_flag = cbrn_emergency_distribution_surge_used
-		set_temp_variable = { cbrn_emergency_distribution_disruption_duration = constant:cbrn_protection_decision_timing.emergency_distribution_disruption_days }
-		add_dynamic_modifier = {
-			modifier = cbrn_emergency_distribution_disruption
-			days = cbrn_emergency_distribution_disruption_duration
-		}
-		controller = {
-			set_temp_variable = { cbrn_protection_pp_debit_requested = constant:cbrn_protection_decision_cost.emergency_distribution_pp }
-			cbrn_debit_protection_political_power = yes
-			cbrn_start_protection_maintenance_job = yes
-		}
-	}
+	ROOT = { cbrn_execute_emergency_distribution_order = yes }
 }
 
 cbrn_complete_occupied_state_distribution = {
@@ -550,27 +535,7 @@ cbrn_clear_exact_state_chemical_raid_alert = {
 }
 
 cbrn_apply_hospital_utility_protection = {
-	if = {
-		limit = { cbrn_state_hospital_payment_ready = yes }
-		set_temp_variable = { cbrn_mask_stock_debit_requested = cbrn_response_hospital_mask_cost }
-		controller = { cbrn_debit_mask_stockpile_oldest_first = yes }
-		set_temp_variable = { cbrn_support_equipment_debit_requested = cbrn_response_hospital_support_cost }
-		controller = { cbrn_debit_requested_support_equipment = yes }
-		if = {
-			limit = {
-				check_variable = { var = cbrn_mask_stock_debit_completed value = cbrn_response_hospital_mask_cost compare = greater_than_or_equals }
-				check_variable = { var = cbrn_support_equipment_debit_completed value = cbrn_response_hospital_support_cost compare = greater_than_or_equals }
-			}
-			ROOT = {
-				set_temp_variable = { cbrn_hospital_pp_payment = constant:cbrn_protection_decision_cost.protect_hospitals_pp }
-				multiply_temp_variable = { cbrn_hospital_pp_payment = constant:cbrn_math.negation_multiplier }
-				add_political_power = cbrn_hospital_pp_payment
-			}
-			set_temp_variable = { cbrn_response_duration_local = constant:cbrn_protection_decision_timing.response_effect_days }
-			set_state_flag = { flag = cbrn_hospitals_utilities_secured days = var:cbrn_response_duration_local }
-			add_dynamic_modifier = { modifier = cbrn_hospitals_utilities_protected days = cbrn_response_duration_local }
-		}
-	}
+	ROOT = { cbrn_execute_hospital_response_order = yes }
 }
 
 cbrn_apply_civilian_shelter_movement = {

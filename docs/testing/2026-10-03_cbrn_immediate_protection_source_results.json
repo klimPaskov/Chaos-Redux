@@ -1,0 +1,1410 @@
+{
+  "status": "passed",
+  "sourceHashes": {
+    "common/script_constants/chaosx_universal_cost_constants.txt": "97e0fd75044b15ab1735d935abc8648060ff20e7e977abc1d942cece43d10fb9",
+    "common/scripted_effects/chaosx_universal_cost_effects.txt": "d2d04617d66ccb6dbd240e82cca8b1fabde24a2fec7fadc9bfa54c6de768d7f8",
+    "common/scripted_triggers/chaosx_universal_cost_exact_triggers.txt": "9f5831663708c2b25d2a25ec27b2c047cbeb4fbb52ecb15c772d6fcc62110101",
+    "common/scripted_triggers/026_black_friday_triggers.txt": "53783b7a3d8b125eb1c24bef6f59cdfd6b5265b89a0f6cfc67e45948afb43d5b",
+    "common/scripted_triggers/chaosx_universal_cost_triggers.txt": "3a10f0dfb8a4d99fa4f05d73f6e691ae333441a6674dff69c14cb966fce5a48c",
+    "common/scripted_effects/cbrn_immediate_response_cost_effects.txt": "fe7b34d970279f89e2e7413f7ef547670cb322ba189831f61cd70975ca2d48ed"
+  },
+  "reusedVM": "docs/plans/026_black_friday_plans/subagent_handoffs/exact_quote_source_tests.js",
+  "reusedVMSha256": "50dacff487c6487d8a32991bf9a9435c6351ef0a699c8a8a20d66ec051421bc0",
+  "nativeAdapterPrecedent": "docs/plans/026_black_friday_plans/subagent_handoffs/universal_cost_receipt_lifetime_source_tests.js",
+  "lifetimeModel": "Conservative lexical helper cleanup. Outer component inputs/all_paid alone are initialized in cold cases.",
+  "inputContract": "Explicit component fixtures, including persisted allocator proofs. No quote, allocator, ROOT/FROM order, issue, outcome, AI, renderer, engine, or performance claim.",
+  "scenarios": [
+    {
+      "id": "hospital-normal-cold-exact-model-payment-refund-repeat",
+      "status": "passed",
+      "evidence": {
+        "components": 7,
+        "masks": [
+          3,
+          4,
+          5,
+          6,
+          12
+        ],
+        "quotedInputs": {
+          "pp": 10,
+          "support": 20,
+          "masks": 30
+        },
+        "before": {
+          "pp": "100",
+          "eq:support_equipment_1": "100",
+          "eq:gas_mask_equipment_reconditioned": "3",
+          "eq:gas_mask_equipment_1": "4",
+          "eq:gas_mask_equipment_2": "5",
+          "eq:gas_mask_equipment_3": "6",
+          "eq:gas_mask_equipment_4": "12"
+        },
+        "afterPayment": {
+          "pp": "90",
+          "eq:support_equipment_1": "80",
+          "eq:gas_mask_equipment_reconditioned": "0",
+          "eq:gas_mask_equipment_1": "0",
+          "eq:gas_mask_equipment_2": "0",
+          "eq:gas_mask_equipment_3": "0",
+          "eq:gas_mask_equipment_4": "0"
+        },
+        "nativeWrites": [
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "-10"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:support_equipment_1",
+            "delta": "-20"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_reconditioned",
+            "delta": "-3"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_1",
+            "delta": "-4"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_2",
+            "delta": "-5"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_3",
+            "delta": "-6"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_4",
+            "delta": "-12"
+          },
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "10"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:support_equipment_1",
+            "delta": "20"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_reconditioned",
+            "delta": "3"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_1",
+            "delta": "4"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_2",
+            "delta": "5"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_3",
+            "delta": "6"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_4",
+            "delta": "12"
+          }
+        ],
+        "lexicalTempsDropped": 390
+      }
+    },
+    {
+      "id": "hospital-half-cold-exact-model-payment-refund-repeat",
+      "status": "passed",
+      "evidence": {
+        "components": 7,
+        "masks": [
+          3,
+          4,
+          5,
+          3,
+          0
+        ],
+        "quotedInputs": {
+          "pp": 5,
+          "support": 10,
+          "masks": 15
+        },
+        "before": {
+          "pp": "100",
+          "eq:support_equipment_1": "100",
+          "eq:gas_mask_equipment_reconditioned": "3",
+          "eq:gas_mask_equipment_1": "4",
+          "eq:gas_mask_equipment_2": "5",
+          "eq:gas_mask_equipment_3": "6",
+          "eq:gas_mask_equipment_4": "12"
+        },
+        "afterPayment": {
+          "pp": "95",
+          "eq:support_equipment_1": "90",
+          "eq:gas_mask_equipment_reconditioned": "0",
+          "eq:gas_mask_equipment_1": "0",
+          "eq:gas_mask_equipment_2": "0",
+          "eq:gas_mask_equipment_3": "3",
+          "eq:gas_mask_equipment_4": "12"
+        },
+        "nativeWrites": [
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "-5"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:support_equipment_1",
+            "delta": "-10"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_reconditioned",
+            "delta": "-3"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_1",
+            "delta": "-4"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_2",
+            "delta": "-5"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_3",
+            "delta": "-3"
+          },
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "5"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:support_equipment_1",
+            "delta": "10"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_reconditioned",
+            "delta": "3"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_1",
+            "delta": "4"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_2",
+            "delta": "5"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_3",
+            "delta": "3"
+          }
+        ],
+        "lexicalTempsDropped": 382
+      }
+    },
+    {
+      "id": "hospital-quarter-cold-exact-model-payment-refund-repeat",
+      "status": "passed",
+      "evidence": {
+        "components": 7,
+        "masks": [
+          3,
+          4,
+          1,
+          0,
+          0
+        ],
+        "quotedInputs": {
+          "pp": 3,
+          "support": 5,
+          "masks": 8
+        },
+        "before": {
+          "pp": "100",
+          "eq:support_equipment_1": "100",
+          "eq:gas_mask_equipment_reconditioned": "3",
+          "eq:gas_mask_equipment_1": "4",
+          "eq:gas_mask_equipment_2": "5",
+          "eq:gas_mask_equipment_3": "6",
+          "eq:gas_mask_equipment_4": "12"
+        },
+        "afterPayment": {
+          "pp": "97",
+          "eq:support_equipment_1": "95",
+          "eq:gas_mask_equipment_reconditioned": "0",
+          "eq:gas_mask_equipment_1": "0",
+          "eq:gas_mask_equipment_2": "4",
+          "eq:gas_mask_equipment_3": "6",
+          "eq:gas_mask_equipment_4": "12"
+        },
+        "nativeWrites": [
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "-3"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:support_equipment_1",
+            "delta": "-5"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_reconditioned",
+            "delta": "-3"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_1",
+            "delta": "-4"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_2",
+            "delta": "-1"
+          },
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "3"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:support_equipment_1",
+            "delta": "5"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_reconditioned",
+            "delta": "3"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_1",
+            "delta": "4"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_2",
+            "delta": "1"
+          }
+        ],
+        "lexicalTempsDropped": 374
+      }
+    },
+    {
+      "id": "hospital-normal-warm-exact-model-payment-refund-repeat",
+      "status": "passed",
+      "evidence": {
+        "components": 7,
+        "masks": [
+          3,
+          4,
+          5,
+          6,
+          12
+        ],
+        "quotedInputs": {
+          "pp": 10,
+          "support": 20,
+          "masks": 30
+        },
+        "before": {
+          "pp": "100",
+          "eq:support_equipment_1": "100",
+          "eq:gas_mask_equipment_reconditioned": "3",
+          "eq:gas_mask_equipment_1": "4",
+          "eq:gas_mask_equipment_2": "5",
+          "eq:gas_mask_equipment_3": "6",
+          "eq:gas_mask_equipment_4": "12"
+        },
+        "afterPayment": {
+          "pp": "90",
+          "eq:support_equipment_1": "80",
+          "eq:gas_mask_equipment_reconditioned": "0",
+          "eq:gas_mask_equipment_1": "0",
+          "eq:gas_mask_equipment_2": "0",
+          "eq:gas_mask_equipment_3": "0",
+          "eq:gas_mask_equipment_4": "0"
+        },
+        "nativeWrites": [
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "-10"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:support_equipment_1",
+            "delta": "-20"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_reconditioned",
+            "delta": "-3"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_1",
+            "delta": "-4"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_2",
+            "delta": "-5"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_3",
+            "delta": "-6"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_4",
+            "delta": "-12"
+          },
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "10"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:support_equipment_1",
+            "delta": "20"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_reconditioned",
+            "delta": "3"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_1",
+            "delta": "4"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_2",
+            "delta": "5"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_3",
+            "delta": "6"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_4",
+            "delta": "12"
+          }
+        ],
+        "lexicalTempsDropped": 303
+      }
+    },
+    {
+      "id": "hospital-half-warm-exact-model-payment-refund-repeat",
+      "status": "passed",
+      "evidence": {
+        "components": 7,
+        "masks": [
+          3,
+          4,
+          5,
+          3,
+          0
+        ],
+        "quotedInputs": {
+          "pp": 5,
+          "support": 10,
+          "masks": 15
+        },
+        "before": {
+          "pp": "100",
+          "eq:support_equipment_1": "100",
+          "eq:gas_mask_equipment_reconditioned": "3",
+          "eq:gas_mask_equipment_1": "4",
+          "eq:gas_mask_equipment_2": "5",
+          "eq:gas_mask_equipment_3": "6",
+          "eq:gas_mask_equipment_4": "12"
+        },
+        "afterPayment": {
+          "pp": "95",
+          "eq:support_equipment_1": "90",
+          "eq:gas_mask_equipment_reconditioned": "0",
+          "eq:gas_mask_equipment_1": "0",
+          "eq:gas_mask_equipment_2": "0",
+          "eq:gas_mask_equipment_3": "3",
+          "eq:gas_mask_equipment_4": "12"
+        },
+        "nativeWrites": [
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "-5"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:support_equipment_1",
+            "delta": "-10"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_reconditioned",
+            "delta": "-3"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_1",
+            "delta": "-4"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_2",
+            "delta": "-5"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_3",
+            "delta": "-3"
+          },
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "5"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:support_equipment_1",
+            "delta": "10"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_reconditioned",
+            "delta": "3"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_1",
+            "delta": "4"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_2",
+            "delta": "5"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_3",
+            "delta": "3"
+          }
+        ],
+        "lexicalTempsDropped": 297
+      }
+    },
+    {
+      "id": "hospital-quarter-warm-exact-model-payment-refund-repeat",
+      "status": "passed",
+      "evidence": {
+        "components": 7,
+        "masks": [
+          3,
+          4,
+          1,
+          0,
+          0
+        ],
+        "quotedInputs": {
+          "pp": 3,
+          "support": 5,
+          "masks": 8
+        },
+        "before": {
+          "pp": "100",
+          "eq:support_equipment_1": "100",
+          "eq:gas_mask_equipment_reconditioned": "3",
+          "eq:gas_mask_equipment_1": "4",
+          "eq:gas_mask_equipment_2": "5",
+          "eq:gas_mask_equipment_3": "6",
+          "eq:gas_mask_equipment_4": "12"
+        },
+        "afterPayment": {
+          "pp": "97",
+          "eq:support_equipment_1": "95",
+          "eq:gas_mask_equipment_reconditioned": "0",
+          "eq:gas_mask_equipment_1": "0",
+          "eq:gas_mask_equipment_2": "4",
+          "eq:gas_mask_equipment_3": "6",
+          "eq:gas_mask_equipment_4": "12"
+        },
+        "nativeWrites": [
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "-3"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:support_equipment_1",
+            "delta": "-5"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_reconditioned",
+            "delta": "-3"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_1",
+            "delta": "-4"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_2",
+            "delta": "-1"
+          },
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "3"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:support_equipment_1",
+            "delta": "5"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_reconditioned",
+            "delta": "3"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_1",
+            "delta": "4"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_2",
+            "delta": "1"
+          }
+        ],
+        "lexicalTempsDropped": 291
+      }
+    },
+    {
+      "id": "zero-paid-counterfactual-model-does-not-invent-stock",
+      "status": "passed",
+      "evidence": {
+        "counterfactualOrdinary": 22,
+        "actualPaid": 0,
+        "nativeWrites": [
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "-3"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:support_equipment_1",
+            "delta": "-5"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_1",
+            "delta": "-8"
+          },
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "3"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:support_equipment_1",
+            "delta": "5"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:gas_mask_equipment_1",
+            "delta": "8"
+          }
+        ]
+      }
+    },
+    {
+      "id": "first-payment-cold-rollback-and-proof-cleanup",
+      "status": "passed",
+      "evidence": {
+        "failureFixture": "first-payment",
+        "restored": {
+          "pp": "2",
+          "eq:support_equipment_1": "100"
+        },
+        "allocatorProofCleared": true,
+        "nativeWrites": []
+      }
+    },
+    {
+      "id": "first-record-cold-rollback-and-proof-cleanup",
+      "status": "passed",
+      "evidence": {
+        "failureFixture": "first-record",
+        "restored": {
+          "pp": "100",
+          "eq:support_equipment_1": "100"
+        },
+        "allocatorProofCleared": true,
+        "nativeWrites": [
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "-5"
+          },
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "5"
+          }
+        ]
+      }
+    },
+    {
+      "id": "missing-proof-cold-rollback-and-proof-cleanup",
+      "status": "passed",
+      "evidence": {
+        "failureFixture": "missing-proof",
+        "restored": {
+          "pp": "100",
+          "eq:support_equipment_1": "100"
+        },
+        "allocatorProofCleared": true,
+        "nativeWrites": [
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "-5"
+          },
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "5"
+          }
+        ]
+      }
+    },
+    {
+      "id": "later-payment-cold-rollback-and-proof-cleanup",
+      "status": "passed",
+      "evidence": {
+        "failureFixture": "later-payment",
+        "restored": {
+          "pp": "100",
+          "eq:support_equipment_1": "2"
+        },
+        "allocatorProofCleared": true,
+        "nativeWrites": [
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "-5"
+          },
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "5"
+          }
+        ]
+      }
+    },
+    {
+      "id": "later-record-cold-rollback-and-proof-cleanup",
+      "status": "passed",
+      "evidence": {
+        "failureFixture": "later-record",
+        "restored": {
+          "pp": "100",
+          "eq:support_equipment_1": "100"
+        },
+        "allocatorProofCleared": true,
+        "nativeWrites": [
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "-5"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:support_equipment_1",
+            "delta": "-10"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:support_equipment_1",
+            "delta": "10"
+          },
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "5"
+          }
+        ]
+      }
+    },
+    {
+      "id": "first-payment-warm-rollback-and-proof-cleanup",
+      "status": "passed",
+      "evidence": {
+        "failureFixture": "first-payment",
+        "restored": {
+          "pp": "2",
+          "eq:support_equipment_1": "100"
+        },
+        "allocatorProofCleared": true,
+        "nativeWrites": []
+      }
+    },
+    {
+      "id": "first-record-warm-rollback-and-proof-cleanup",
+      "status": "passed",
+      "evidence": {
+        "failureFixture": "first-record",
+        "restored": {
+          "pp": "100",
+          "eq:support_equipment_1": "100"
+        },
+        "allocatorProofCleared": true,
+        "nativeWrites": [
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "-5"
+          },
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "5"
+          }
+        ]
+      }
+    },
+    {
+      "id": "missing-proof-warm-rollback-and-proof-cleanup",
+      "status": "passed",
+      "evidence": {
+        "failureFixture": "missing-proof",
+        "restored": {
+          "pp": "100",
+          "eq:support_equipment_1": "100"
+        },
+        "allocatorProofCleared": true,
+        "nativeWrites": [
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "-5"
+          },
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "5"
+          }
+        ]
+      }
+    },
+    {
+      "id": "later-payment-warm-rollback-and-proof-cleanup",
+      "status": "passed",
+      "evidence": {
+        "failureFixture": "later-payment",
+        "restored": {
+          "pp": "100",
+          "eq:support_equipment_1": "2"
+        },
+        "allocatorProofCleared": true,
+        "nativeWrites": [
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "-5"
+          },
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "5"
+          }
+        ]
+      }
+    },
+    {
+      "id": "later-record-warm-rollback-and-proof-cleanup",
+      "status": "passed",
+      "evidence": {
+        "failureFixture": "later-record",
+        "restored": {
+          "pp": "100",
+          "eq:support_equipment_1": "100"
+        },
+        "allocatorProofCleared": true,
+        "nativeWrites": [
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "-5"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:support_equipment_1",
+            "delta": "-10"
+          },
+          {
+            "effect": "add_equipment_to_stockpile",
+            "key": "eq:support_equipment_1",
+            "delta": "10"
+          },
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "5"
+          }
+        ]
+      }
+    },
+    {
+      "id": "emergency-pp-only-unissued-refund",
+      "status": "passed",
+      "evidence": {
+        "metadata": "political_power / primary_component / PPmember1",
+        "markerFixture": false,
+        "nativeWrites": [
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "-5"
+          },
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "5"
+          }
+        ]
+      }
+    },
+    {
+      "id": "emergency-pp-only-positive-issued-commit-refuses-refund",
+      "status": "passed",
+      "evidence": {
+        "metadata": "political_power / primary_component / PPmember1",
+        "markerFixture": true,
+        "nativeWrites": [
+          {
+            "effect": "add_political_power",
+            "key": "pp",
+            "delta": "-5"
+          }
+        ]
+      }
+    },
+    {
+      "id": "corrupt-recorded-chain-retains-status-without-credit-and-clears-after-repair",
+      "status": "passed",
+      "evidence": {
+        "cases": [
+          {
+            "mode": "cold",
+            "corruption": "first next pointer = 999",
+            "rejectedAttempts": 2,
+            "retainedStatus": "result_rejected",
+            "afterRepair": {
+              "pp": "20",
+              "eq:support_equipment_1": "20"
+            },
+            "nativeWrites": [
+              {
+                "effect": "add_political_power",
+                "key": "pp",
+                "delta": "-5"
+              },
+              {
+                "effect": "add_equipment_to_stockpile",
+                "key": "eq:support_equipment_1",
+                "delta": "-10"
+              },
+              {
+                "effect": "add_political_power",
+                "key": "pp",
+                "delta": "5"
+              },
+              {
+                "effect": "add_equipment_to_stockpile",
+                "key": "eq:support_equipment_1",
+                "delta": "10"
+              }
+            ]
+          },
+          {
+            "mode": "warm",
+            "corruption": "first next pointer = 999",
+            "rejectedAttempts": 2,
+            "retainedStatus": "result_rejected",
+            "afterRepair": {
+              "pp": "20",
+              "eq:support_equipment_1": "20"
+            },
+            "nativeWrites": [
+              {
+                "effect": "add_political_power",
+                "key": "pp",
+                "delta": "-5"
+              },
+              {
+                "effect": "add_equipment_to_stockpile",
+                "key": "eq:support_equipment_1",
+                "delta": "-10"
+              },
+              {
+                "effect": "add_political_power",
+                "key": "pp",
+                "delta": "5"
+              },
+              {
+                "effect": "add_equipment_to_stockpile",
+                "key": "eq:support_equipment_1",
+                "delta": "10"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "stored-unrecorded-native-credit-retry-clears-exact-fields-and-refuses-repeat",
+      "status": "passed",
+      "evidence": {
+        "cases": [
+          {
+            "mode": "cold",
+            "resource": "political_power",
+            "kind": "1",
+            "pendingAmountFixture": 7,
+            "retryRestoredBalance": 20,
+            "repeatAttempts": 2,
+            "nativeWrites": [
+              {
+                "effect": "add_political_power",
+                "key": "pp",
+                "delta": "-7"
+              },
+              {
+                "effect": "add_political_power",
+                "key": "pp",
+                "delta": "7"
+              }
+            ]
+          },
+          {
+            "mode": "cold",
+            "resource": "support_equipment_1",
+            "kind": "11",
+            "pendingAmountFixture": 7,
+            "retryRestoredBalance": 20,
+            "repeatAttempts": 2,
+            "nativeWrites": [
+              {
+                "effect": "add_equipment_to_stockpile",
+                "key": "eq:support_equipment_1",
+                "delta": "-7"
+              },
+              {
+                "effect": "add_equipment_to_stockpile",
+                "key": "eq:support_equipment_1",
+                "delta": "7"
+              }
+            ]
+          },
+          {
+            "mode": "cold",
+            "resource": "gas_mask_equipment_reconditioned",
+            "kind": "20",
+            "pendingAmountFixture": 7,
+            "retryRestoredBalance": 20,
+            "repeatAttempts": 2,
+            "nativeWrites": [
+              {
+                "effect": "add_equipment_to_stockpile",
+                "key": "eq:gas_mask_equipment_reconditioned",
+                "delta": "-7"
+              },
+              {
+                "effect": "add_equipment_to_stockpile",
+                "key": "eq:gas_mask_equipment_reconditioned",
+                "delta": "7"
+              }
+            ]
+          },
+          {
+            "mode": "cold",
+            "resource": "gas_mask_equipment_1",
+            "kind": "21",
+            "pendingAmountFixture": 7,
+            "retryRestoredBalance": 20,
+            "repeatAttempts": 2,
+            "nativeWrites": [
+              {
+                "effect": "add_equipment_to_stockpile",
+                "key": "eq:gas_mask_equipment_1",
+                "delta": "-7"
+              },
+              {
+                "effect": "add_equipment_to_stockpile",
+                "key": "eq:gas_mask_equipment_1",
+                "delta": "7"
+              }
+            ]
+          },
+          {
+            "mode": "cold",
+            "resource": "gas_mask_equipment_2",
+            "kind": "22",
+            "pendingAmountFixture": 7,
+            "retryRestoredBalance": 20,
+            "repeatAttempts": 2,
+            "nativeWrites": [
+              {
+                "effect": "add_equipment_to_stockpile",
+                "key": "eq:gas_mask_equipment_2",
+                "delta": "-7"
+              },
+              {
+                "effect": "add_equipment_to_stockpile",
+                "key": "eq:gas_mask_equipment_2",
+                "delta": "7"
+              }
+            ]
+          },
+          {
+            "mode": "cold",
+            "resource": "gas_mask_equipment_3",
+            "kind": "23",
+            "pendingAmountFixture": 7,
+            "retryRestoredBalance": 20,
+            "repeatAttempts": 2,
+            "nativeWrites": [
+              {
+                "effect": "add_equipment_to_stockpile",
+                "key": "eq:gas_mask_equipment_3",
+                "delta": "-7"
+              },
+              {
+                "effect": "add_equipment_to_stockpile",
+                "key": "eq:gas_mask_equipment_3",
+                "delta": "7"
+              }
+            ]
+          },
+          {
+            "mode": "cold",
+            "resource": "gas_mask_equipment_4",
+            "kind": "24",
+            "pendingAmountFixture": 7,
+            "retryRestoredBalance": 20,
+            "repeatAttempts": 2,
+            "nativeWrites": [
+              {
+                "effect": "add_equipment_to_stockpile",
+                "key": "eq:gas_mask_equipment_4",
+                "delta": "-7"
+              },
+              {
+                "effect": "add_equipment_to_stockpile",
+                "key": "eq:gas_mask_equipment_4",
+                "delta": "7"
+              }
+            ]
+          },
+          {
+            "mode": "warm",
+            "resource": "political_power",
+            "kind": "1",
+            "pendingAmountFixture": 7,
+            "retryRestoredBalance": 20,
+            "repeatAttempts": 2,
+            "nativeWrites": [
+              {
+                "effect": "add_political_power",
+                "key": "pp",
+                "delta": "-7"
+              },
+              {
+                "effect": "add_political_power",
+                "key": "pp",
+                "delta": "7"
+              }
+            ]
+          },
+          {
+            "mode": "warm",
+            "resource": "support_equipment_1",
+            "kind": "11",
+            "pendingAmountFixture": 7,
+            "retryRestoredBalance": 20,
+            "repeatAttempts": 2,
+            "nativeWrites": [
+              {
+                "effect": "add_equipment_to_stockpile",
+                "key": "eq:support_equipment_1",
+                "delta": "-7"
+              },
+              {
+                "effect": "add_equipment_to_stockpile",
+                "key": "eq:support_equipment_1",
+                "delta": "7"
+              }
+            ]
+          },
+          {
+            "mode": "warm",
+            "resource": "gas_mask_equipment_reconditioned",
+            "kind": "20",
+            "pendingAmountFixture": 7,
+            "retryRestoredBalance": 20,
+            "repeatAttempts": 2,
+            "nativeWrites": [
+              {
+                "effect": "add_equipment_to_stockpile",
+                "key": "eq:gas_mask_equipment_reconditioned",
+                "delta": "-7"
+              },
+              {
+                "effect": "add_equipment_to_stockpile",
+                "key": "eq:gas_mask_equipment_reconditioned",
+                "delta": "7"
+              }
+            ]
+          },
+          {
+            "mode": "warm",
+            "resource": "gas_mask_equipment_1",
+            "kind": "21",
+            "pendingAmountFixture": 7,
+            "retryRestoredBalance": 20,
+            "repeatAttempts": 2,
+            "nativeWrites": [
+              {
+                "effect": "add_equipment_to_stockpile",
+                "key": "eq:gas_mask_equipment_1",
+                "delta": "-7"
+              },
+              {
+                "effect": "add_equipment_to_stockpile",
+                "key": "eq:gas_mask_equipment_1",
+                "delta": "7"
+              }
+            ]
+          },
+          {
+            "mode": "warm",
+            "resource": "gas_mask_equipment_2",
+            "kind": "22",
+            "pendingAmountFixture": 7,
+            "retryRestoredBalance": 20,
+            "repeatAttempts": 2,
+            "nativeWrites": [
+              {
+                "effect": "add_equipment_to_stockpile",
+                "key": "eq:gas_mask_equipment_2",
+                "delta": "-7"
+              },
+              {
+                "effect": "add_equipment_to_stockpile",
+                "key": "eq:gas_mask_equipment_2",
+                "delta": "7"
+              }
+            ]
+          },
+          {
+            "mode": "warm",
+            "resource": "gas_mask_equipment_3",
+            "kind": "23",
+            "pendingAmountFixture": 7,
+            "retryRestoredBalance": 20,
+            "repeatAttempts": 2,
+            "nativeWrites": [
+              {
+                "effect": "add_equipment_to_stockpile",
+                "key": "eq:gas_mask_equipment_3",
+                "delta": "-7"
+              },
+              {
+                "effect": "add_equipment_to_stockpile",
+                "key": "eq:gas_mask_equipment_3",
+                "delta": "7"
+              }
+            ]
+          },
+          {
+            "mode": "warm",
+            "resource": "gas_mask_equipment_4",
+            "kind": "24",
+            "pendingAmountFixture": 7,
+            "retryRestoredBalance": 20,
+            "repeatAttempts": 2,
+            "nativeWrites": [
+              {
+                "effect": "add_equipment_to_stockpile",
+                "key": "eq:gas_mask_equipment_4",
+                "delta": "-7"
+              },
+              {
+                "effect": "add_equipment_to_stockpile",
+                "key": "eq:gas_mask_equipment_4",
+                "delta": "7"
+              }
+            ]
+          }
+        ],
+        "boundary": "The pending amount/kind creation branch after native credit failure is not exercised. Native kind credits succeed in the parsed API."
+      }
+    }
+  ],
+  "helperOutputChecks": {
+    "cbrn_pay_and_record_response_component": 79,
+    "universal_cost_pay_component": 73,
+    "universal_cost_record_transaction": 65,
+    "universal_cost_find_transaction_row": 191,
+    "cbrn_refund_unfinished_response_transaction": 88,
+    "universal_cost_refund_transaction": 86,
+    "universal_cost_validate_component_chain": 18,
+    "universal_cost_refund_component_at_cursor": 58,
+    "universal_cost_credit_component": 68
+  },
+  "concurrentSources": {
+    "common/script_constants/chaosx_universal_cost_constants.txt": {
+      "capturedSha256": "97e0fd75044b15ab1735d935abc8648060ff20e7e977abc1d942cece43d10fb9",
+      "finalSha256": "97e0fd75044b15ab1735d935abc8648060ff20e7e977abc1d942cece43d10fb9",
+      "wholeFileChanged": false,
+      "selectedBodiesUnchanged": true
+    },
+    "common/scripted_effects/chaosx_universal_cost_effects.txt": {
+      "capturedSha256": "d2d04617d66ccb6dbd240e82cca8b1fabde24a2fec7fadc9bfa54c6de768d7f8",
+      "finalSha256": "d2d04617d66ccb6dbd240e82cca8b1fabde24a2fec7fadc9bfa54c6de768d7f8",
+      "wholeFileChanged": false,
+      "selectedBodiesUnchanged": true
+    },
+    "common/scripted_triggers/chaosx_universal_cost_exact_triggers.txt": {
+      "capturedSha256": "9f5831663708c2b25d2a25ec27b2c047cbeb4fbb52ecb15c772d6fcc62110101",
+      "finalSha256": "9f5831663708c2b25d2a25ec27b2c047cbeb4fbb52ecb15c772d6fcc62110101",
+      "wholeFileChanged": false,
+      "selectedBodiesUnchanged": true
+    },
+    "common/scripted_triggers/026_black_friday_triggers.txt": {
+      "capturedSha256": "53783b7a3d8b125eb1c24bef6f59cdfd6b5265b89a0f6cfc67e45948afb43d5b",
+      "finalSha256": "53783b7a3d8b125eb1c24bef6f59cdfd6b5265b89a0f6cfc67e45948afb43d5b",
+      "wholeFileChanged": false,
+      "selectedBodiesUnchanged": true
+    },
+    "common/scripted_triggers/chaosx_universal_cost_triggers.txt": {
+      "capturedSha256": "3a10f0dfb8a4d99fa4f05d73f6e691ae333441a6674dff69c14cb966fce5a48c",
+      "finalSha256": "3a10f0dfb8a4d99fa4f05d73f6e691ae333441a6674dff69c14cb966fce5a48c",
+      "wholeFileChanged": false,
+      "selectedBodiesUnchanged": true
+    },
+    "common/scripted_effects/cbrn_immediate_response_cost_effects.txt": {
+      "capturedSha256": "fe7b34d970279f89e2e7413f7ef547670cb322ba189831f61cd70975ca2d48ed",
+      "finalSha256": "fe7b34d970279f89e2e7413f7ef547670cb322ba189831f61cd70975ca2d48ed",
+      "wholeFileChanged": false,
+      "selectedBodiesUnchanged": true
+    }
+  },
+  "selectedBodyHashes": {
+    "universal_cost_pay_component": {
+      "file": "common/scripted_effects/chaosx_universal_cost_effects.txt",
+      "astSha256": "a293ff7e404d705a1efa588e7e1501be537160d2abb640358b6c1c3159d07592"
+    },
+    "universal_cost_credit_component": {
+      "file": "common/scripted_effects/chaosx_universal_cost_effects.txt",
+      "astSha256": "00daa8119a1358577d86d6fd7ac9435106412a3b023a16f41b032c16eadcc62e"
+    },
+    "universal_cost_find_transaction_row": {
+      "file": "common/scripted_effects/chaosx_universal_cost_effects.txt",
+      "astSha256": "89fa76a11bd23c04ab5d73be7b281628e2b7a482903cdb09a23fc0858cbf6650"
+    },
+    "universal_cost_find_component_row": {
+      "file": "common/scripted_effects/chaosx_universal_cost_effects.txt",
+      "astSha256": "57314795a6f2489ff38c27cf9e9ecab4c02ef02fd43233281269a0dbc87a2ef6"
+    },
+    "universal_cost_prepare_achievement_receipt_metadata": {
+      "file": "common/scripted_effects/chaosx_universal_cost_effects.txt",
+      "astSha256": "900d29212e4d25d827f1386087ce21cae778c3cb6ada50a80a45bae13d832da9"
+    },
+    "universal_cost_bind_achievement_receipt_metadata": {
+      "file": "common/scripted_effects/chaosx_universal_cost_effects.txt",
+      "astSha256": "6f6ab1b36a7cb9fdc95eb3d0f18a491544557260bc0feb2aad4847443f4496df"
+    },
+    "universal_cost_record_transaction": {
+      "file": "common/scripted_effects/chaosx_universal_cost_effects.txt",
+      "astSha256": "3b3f3144c6d6de0214b6f667b6483a353527617f1ecb2a77bfa384c566c49e14"
+    },
+    "universal_cost_decrement_non_political_paid_count": {
+      "file": "common/scripted_effects/chaosx_universal_cost_effects.txt",
+      "astSha256": "30e5c05e807a7ca8a935d06e68d56cf185191612fe0c18be523bbca8f21e7660"
+    },
+    "universal_cost_validate_component_chain": {
+      "file": "common/scripted_effects/chaosx_universal_cost_effects.txt",
+      "astSha256": "0c7dc0bedaeb486a9fded8261fc3d1b1f22a281178e749f6c53f9154c2dfeb96"
+    },
+    "universal_cost_refund_component_at_cursor": {
+      "file": "common/scripted_effects/chaosx_universal_cost_effects.txt",
+      "astSha256": "26df6778b09190f21ab3e4159ee57da0afc28ced8a45405800826b92c29d49a5"
+    },
+    "universal_cost_refund_transaction": {
+      "file": "common/scripted_effects/chaosx_universal_cost_effects.txt",
+      "astSha256": "4121d2d53fcd53b6827517f47b122fb53ee6e172712ff25d9b4b6bbf9f2f076b"
+    },
+    "universal_cost_component_is_affordable": {
+      "file": "common/scripted_triggers/chaosx_universal_cost_triggers.txt",
+      "astSha256": "ae6eaafa6add535ee38e62d2cf5601339a01eff777d3e3905236976dac96e0fd"
+    },
+    "cbrn_pay_and_record_response_component": {
+      "file": "common/scripted_effects/cbrn_immediate_response_cost_effects.txt",
+      "astSha256": "dfafdf2c77a40daded9cde6361a09473312f5be96d482d78f5086512d99e6819"
+    },
+    "cbrn_refund_unfinished_response_transaction": {
+      "file": "common/scripted_effects/cbrn_immediate_response_cost_effects.txt",
+      "astSha256": "98f0765ac665567eaea5d280c82a7e6cfa085e1fa6840db9360170f2f53cc4e1"
+    }
+  },
+  "limitations": [
+    "Native PP and concrete equipment stock are modeled without producer provenance or engine caps.",
+    "Hospital oldest-first model amounts are fixtures. The quote helper and allocation algorithm are not executed.",
+    "Positive-issued emergency commitment is a persisted marker fixture. Physical issue and marker creation are outside this helper test.",
+    "No engine-facing source was edited. MCP reference routes are not exposed to this subagent, and source tests do not replace parent MCP evidence."
+  ],
+  "reusedVMUnchanged": true,
+  "scenarioCount": 21,
+  "failedCount": 0,
+  "helperReturns": 1074,
+  "droppedTemps": 3576
+}

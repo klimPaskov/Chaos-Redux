@@ -1,0 +1,117 @@
+# Country cost rows. FROM is the selected state; each payment colors its own
+# shortage and reads the same canonical quotation used by the order callback.
+
+defined_text = {
+	name = GetCbrnEmergencyDistributionPoliticalCost
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_emergency_fee = constant:cbrn_protection_decision_cost.emergency_distribution_pp }
+			set_temp_variable = { cbrn_emergency_fee_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { cbrn_emergency_fee_affordable = constant:universal_cost_framework.zero }
+			cbrn_quote_emergency_distribution_fee = yes
+			OR = {
+				check_variable = { cbrn_emergency_fee_valid = constant:universal_cost_framework.zero }
+				check_variable = { cbrn_emergency_fee_affordable = constant:universal_cost_framework.zero }
+			}
+		}
+		localization_key = cbrn_emergency_fee_cost_short
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_emergency_fee = constant:cbrn_protection_decision_cost.emergency_distribution_pp }
+			cbrn_quote_emergency_distribution_fee = yes
+		}
+		localization_key = cbrn_emergency_fee_cost_ready
+	}
+}
+
+defined_text = {
+	name = GetCbrnEmergencyDistributionCrateCost
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_mask_reservation_quote = constant:cbrn_math.zero }
+			FROM = { cbrn_quote_emergency_state_mask_reservation = yes }
+			NOT = { check_variable = { cbrn_mask_reservation_quote > constant:cbrn_math.zero } }
+		}
+		localization_key = cbrn_emergency_crates_cost_short
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_mask_reservation_quote = constant:cbrn_math.zero }
+			FROM = { cbrn_quote_emergency_state_mask_reservation = yes }
+		}
+		localization_key = cbrn_emergency_crates_cost_ready
+	}
+}
+
+defined_text = {
+	name = GetCbrnHospitalPoliticalCost
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_hospital_pp = constant:cbrn_protection_decision_cost.protect_hospitals_pp }
+			set_temp_variable = { cbrn_hospital_quote_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { cbrn_hospital_pp_affordable = constant:universal_cost_framework.zero }
+			cbrn_quote_hospital_response_bundle = yes
+			OR = {
+				check_variable = { cbrn_hospital_quote_valid = constant:universal_cost_framework.zero }
+				check_variable = { cbrn_hospital_pp_affordable = constant:universal_cost_framework.zero }
+			}
+		}
+		localization_key = cbrn_hospital_pp_cost_short
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_hospital_pp = constant:cbrn_protection_decision_cost.protect_hospitals_pp }
+			cbrn_quote_hospital_response_bundle = yes
+		}
+		localization_key = cbrn_hospital_pp_cost_ready
+	}
+}
+
+defined_text = {
+	name = GetCbrnHospitalMaskCost
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_hospital_masks = constant:cbrn_math.zero }
+			set_temp_variable = { cbrn_hospital_quote_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { cbrn_hospital_masks_affordable = constant:universal_cost_framework.zero }
+			cbrn_quote_hospital_response_bundle = yes
+			OR = {
+				check_variable = { cbrn_hospital_quote_valid = constant:universal_cost_framework.zero }
+				check_variable = { cbrn_hospital_masks_affordable = constant:universal_cost_framework.zero }
+			}
+		}
+		localization_key = cbrn_hospital_masks_cost_short
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_hospital_masks = constant:cbrn_math.zero }
+			cbrn_quote_hospital_response_bundle = yes
+		}
+		localization_key = cbrn_hospital_masks_cost_ready
+	}
+}
+
+defined_text = {
+	name = GetCbrnHospitalSupportCost
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_hospital_support = constant:cbrn_math.zero }
+			set_temp_variable = { cbrn_hospital_quote_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { cbrn_hospital_support_affordable = constant:universal_cost_framework.zero }
+			cbrn_quote_hospital_response_bundle = yes
+			OR = {
+				check_variable = { cbrn_hospital_quote_valid = constant:universal_cost_framework.zero }
+				check_variable = { cbrn_hospital_support_affordable = constant:universal_cost_framework.zero }
+			}
+		}
+		localization_key = cbrn_hospital_support_cost_short
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_hospital_support = constant:cbrn_math.zero }
+			cbrn_quote_hospital_response_bundle = yes
+		}
+		localization_key = cbrn_hospital_support_cost_ready
+	}
+}

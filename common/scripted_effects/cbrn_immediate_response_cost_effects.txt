@@ -1,0 +1,254 @@
+# Country-scoped immediate Civil Defence transactions. ROOT is the payer and
+# FROM is its controlled state. Only the owner outcomes may change protection.
+# Emergency masks remain physical issue; hospital masks are consumed material.
+
+# Inputs: transaction, component kind/ordinary/quoted/primary-member and receipt
+# family/basis/primary id. The outer order declares cbrn_response_all_paid.
+# A failed record credits its unrecorded debit; the order refunds recorded rows.
+cbrn_pay_and_record_response_component = {
+	if = {
+		limit = { check_variable = { cbrn_response_all_paid = constant:universal_cost_framework.one } }
+		set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_success }
+		if = {
+			limit = { check_variable = { cbrn_response_component_quoted > constant:universal_cost_framework.zero } }
+			set_temp_variable = { universal_cost_payment_resource_kind = cbrn_response_component_kind }
+			set_temp_variable = { universal_cost_payment_amount = cbrn_response_component_quoted }
+			set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_no_op }
+			universal_cost_pay_component = yes
+		}
+		if = {
+			limit = { check_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_success } }
+			set_temp_variable = { universal_cost_transaction_id = cbrn_response_transaction }
+			# Resource kinds are distinct positive component IDs within this receipt.
+			set_temp_variable = { universal_cost_transaction_component_id = cbrn_response_component_kind }
+			set_temp_variable = { universal_cost_transaction_resource_kind = cbrn_response_component_kind }
+			set_temp_variable = { universal_cost_transaction_resource_id = constant:universal_cost_framework.zero }
+			set_temp_variable = { universal_cost_transaction_ordinary_cost = cbrn_response_component_ordinary }
+			set_temp_variable = { universal_cost_transaction_quoted_cost = cbrn_response_component_quoted }
+			set_temp_variable = { universal_cost_transaction_actual_paid_cost = cbrn_response_component_quoted }
+			set_temp_variable = { universal_cost_transaction_source_id = cbrn_response_source }
+			set_temp_variable = { universal_cost_transaction_primary_component = cbrn_response_primary }
+			set_temp_variable = { universal_cost_transaction_achievement_family_id = cbrn_response_family }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_component_id = cbrn_response_primary }
+			set_temp_variable = { universal_cost_transaction_achievement_cost_basis = cbrn_response_basis }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_member = cbrn_response_component_primary_member }
+			set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
+			set_temp_variable = { universal_cost_recorded_component_index = constant:universal_cost_framework.invalid_index }
+			universal_cost_record_transaction = yes
+			if = {
+				limit = { NOT = { check_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_success } } }
+				set_temp_variable = { cbrn_response_all_paid = constant:universal_cost_framework.zero }
+				if = {
+					limit = { check_variable = { cbrn_response_component_quoted > constant:universal_cost_framework.zero } }
+					set_temp_variable = { universal_cost_payment_resource_kind = cbrn_response_component_kind }
+					set_temp_variable = { universal_cost_payment_amount = cbrn_response_component_quoted }
+					set_temp_variable = { universal_cost_credit_result = constant:universal_cost_framework.result_no_op }
+					universal_cost_credit_component = yes
+					if = {
+						limit = { NOT = { check_variable = { universal_cost_credit_result = constant:universal_cost_framework.result_success } } }
+						# Preserve an unrecorded debit for an exact, idempotent retry.
+						set_variable = { cbrn_response_unrecorded_credit_amount_@var:cbrn_response_transaction = cbrn_response_component_quoted }
+						set_variable = { cbrn_response_unrecorded_credit_kind_@var:cbrn_response_transaction = cbrn_response_component_kind }
+					}
+				}
+			}
+		}
+		else = { set_temp_variable = { cbrn_response_all_paid = constant:universal_cost_framework.zero } }
+	}
+}
+
+cbrn_refund_unfinished_response_transaction = {
+	# An issued emergency shipment has already consumed its fee, even if a
+	# later receipt confirmation is unavailable. Preserve the real paid issue.
+	if = {
+		limit = { NOT = { has_variable = cbrn_emergency_committed_receipt_@var:cbrn_response_transaction } }
+		set_temp_variable = { universal_cost_transaction_id = cbrn_response_transaction }
+		set_temp_variable = { universal_cost_refund_transaction_result = constant:universal_cost_framework.result_no_op }
+		set_temp_variable = { universal_cost_refund_total = constant:universal_cost_framework.zero }
+		set_temp_variable = { universal_cost_refund_unhandled_total = constant:universal_cost_framework.zero }
+		universal_cost_refund_transaction = yes
+		if = {
+			limit = {
+				OR = {
+					check_variable = { universal_cost_refund_transaction_result = constant:universal_cost_framework.result_rejected }
+					check_variable = { universal_cost_refund_transaction_result = constant:universal_cost_framework.result_partial }
+					check_variable = { universal_cost_refund_unhandled_total > constant:universal_cost_framework.zero }
+				}
+			}
+			set_variable = { cbrn_response_refund_status_@var:cbrn_response_transaction = universal_cost_refund_transaction_result }
+		}
+		else = { clear_variable = cbrn_response_refund_status_@var:cbrn_response_transaction }
+		if = {
+			limit = { has_variable = cbrn_response_unrecorded_credit_amount_@var:cbrn_response_transaction }
+			set_temp_variable = { universal_cost_payment_resource_kind = cbrn_response_unrecorded_credit_kind_@var:cbrn_response_transaction }
+			set_temp_variable = { universal_cost_payment_amount = cbrn_response_unrecorded_credit_amount_@var:cbrn_response_transaction }
+			set_temp_variable = { universal_cost_credit_result = constant:universal_cost_framework.result_no_op }
+			universal_cost_credit_component = yes
+			if = {
+				limit = { check_variable = { universal_cost_credit_result = constant:universal_cost_framework.result_success } }
+				clear_variable = cbrn_response_unrecorded_credit_amount_@var:cbrn_response_transaction
+				clear_variable = cbrn_response_unrecorded_credit_kind_@var:cbrn_response_transaction
+			}
+		}
+	}
+	# No first receipt row means the failed order cannot retain an allocator
+	# proof that could later authorize an unrelated reuse of its old identity.
+	if = {
+		limit = { NOT = { has_variable = universal_cost_transaction_row_plus_one_@var:cbrn_response_transaction } }
+		clear_variable = universal_cost_allocated_transaction_id_@var:cbrn_response_transaction
+	}
+}
+
+cbrn_execute_emergency_distribution_order = {
+	set_temp_variable = { cbrn_emergency_fee = constant:cbrn_protection_decision_cost.emergency_distribution_pp }
+	set_temp_variable = { cbrn_emergency_fee_valid = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_emergency_fee_source = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_emergency_fee_affordable = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_distribution_consumed_crates = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_distribution_usable_crates = constant:cbrn_math.zero }
+	if = {
+		limit = { cbrn_country_can_pay_emergency_state_mask_distribution = yes }
+		cbrn_quote_emergency_distribution_fee = yes
+		set_temp_variable = { black_friday_owner_transaction_id = constant:universal_cost_framework.zero }
+		black_friday_allocate_owner_transaction = yes
+		set_temp_variable = { cbrn_response_transaction = black_friday_owner_transaction_id }
+		set_temp_variable = { cbrn_response_source = cbrn_emergency_fee_source }
+		set_temp_variable = { cbrn_response_family = constant:universal_cost_family.political_power }
+		set_temp_variable = { cbrn_response_basis = constant:universal_cost_achievement_basis.primary_component }
+		set_temp_variable = { cbrn_response_primary = constant:universal_cost_resource_kind.political_power }
+		set_temp_variable = { cbrn_response_all_paid = constant:universal_cost_framework.one }
+		set_temp_variable = { cbrn_response_component_kind = constant:universal_cost_resource_kind.political_power }
+		set_temp_variable = { cbrn_response_component_ordinary = constant:cbrn_protection_decision_cost.emergency_distribution_pp }
+		set_temp_variable = { cbrn_response_component_quoted = cbrn_emergency_fee }
+		set_temp_variable = { cbrn_response_component_primary_member = constant:universal_cost_framework.one }
+		cbrn_pay_and_record_response_component = yes
+		if = {
+			limit = { check_variable = { cbrn_response_all_paid = constant:universal_cost_framework.one } }
+			FROM = { cbrn_distribute_emergency_masks_to_state = yes }
+			if = {
+				limit = { check_variable = { cbrn_distribution_consumed_crates > constant:cbrn_math.zero } }
+				# Positive real issue commits this fee. Never refund it while its
+				# issued protection remains in state/country model accounts.
+				set_variable = { cbrn_emergency_committed_receipt_@var:cbrn_response_transaction = cbrn_response_transaction }
+				FROM = { cbrn_complete_paid_emergency_distribution = yes }
+				set_temp_variable = { universal_cost_transaction_id = cbrn_response_transaction }
+				set_temp_variable = { universal_cost_settle_transaction_result = constant:universal_cost_framework.result_no_op }
+				universal_cost_settle_transaction = yes
+				if = {
+					limit = { check_variable = { universal_cost_settle_transaction_result = constant:universal_cost_framework.result_success } }
+					set_temp_variable = { black_friday_purchase_transaction_id = cbrn_response_transaction }
+					set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.political_power }
+					set_temp_variable = { black_friday_purchase_ordinary_cost = constant:cbrn_protection_decision_cost.emergency_distribution_pp }
+					set_temp_variable = { black_friday_purchase_actual_paid_cost = cbrn_emergency_fee }
+					set_temp_variable = { black_friday_purchase_allow_political_power_only = constant:universal_cost_framework.one }
+					set_temp_variable = { black_friday_purchase_allow_post_expiry_confirmation = constant:universal_cost_framework.zero }
+					set_temp_variable = { black_friday_purchase_is_refundable = constant:universal_cost_framework.zero }
+					black_friday_record_achievement_transaction = yes
+					set_temp_variable = { black_friday_purchase_allow_political_power_only = constant:universal_cost_framework.zero }
+				}
+			}
+			else = { cbrn_refund_unfinished_response_transaction = yes }
+		}
+		else = { cbrn_refund_unfinished_response_transaction = yes }
+	}
+}
+
+cbrn_execute_hospital_response_order = {
+	set_temp_variable = { cbrn_hospital_quote_valid = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_hospital_pp = constant:cbrn_protection_decision_cost.protect_hospitals_pp }
+	set_temp_variable = { cbrn_hospital_masks = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_hospital_support = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_hospital_source = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_hospital_mask_reconditioned = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_hospital_mask_basic = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_hospital_mask_improved = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_hospital_mask_advanced = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_hospital_mask_sealed = constant:cbrn_math.zero }
+	if = {
+		limit = { cbrn_country_hospital_response_payment_ready = yes }
+		cbrn_quote_hospital_response_bundle = yes
+		set_temp_variable = { black_friday_owner_transaction_id = constant:universal_cost_framework.zero }
+		black_friday_allocate_owner_transaction = yes
+		set_temp_variable = { cbrn_response_transaction = black_friday_owner_transaction_id }
+		set_temp_variable = { cbrn_response_source = cbrn_hospital_source }
+		set_temp_variable = { cbrn_response_family = constant:universal_cost_family.state_project }
+		set_temp_variable = { cbrn_response_basis = constant:universal_cost_achievement_basis.primary_group }
+		set_temp_variable = { cbrn_response_primary = constant:universal_cost_framework.zero }
+		set_temp_variable = { cbrn_response_all_paid = constant:universal_cost_framework.one }
+		set_temp_variable = { cbrn_response_component_kind = constant:universal_cost_resource_kind.political_power }
+		set_temp_variable = { cbrn_response_component_ordinary = constant:cbrn_protection_decision_cost.protect_hospitals_pp }
+		set_temp_variable = { cbrn_response_component_quoted = cbrn_hospital_pp }
+		set_temp_variable = { cbrn_response_component_primary_member = constant:universal_cost_framework.zero }
+		cbrn_pay_and_record_response_component = yes
+		set_temp_variable = { cbrn_response_component_kind = constant:universal_cost_resource_kind.support_equipment_1 }
+		set_temp_variable = { cbrn_response_component_ordinary = FROM.cbrn_response_hospital_support_cost }
+		set_temp_variable = { cbrn_response_component_quoted = cbrn_hospital_support }
+		set_temp_variable = { cbrn_response_component_primary_member = constant:universal_cost_framework.one }
+		cbrn_pay_and_record_response_component = yes
+		# Unfilled ordinary counterfactual masks belong to the first model's
+		# accounting field. They are never paid, returned, or issued as equipment.
+		set_temp_variable = { cbrn_hospital_unfilled_ordinary_masks = FROM.cbrn_response_hospital_mask_cost }
+		subtract_from_temp_variable = { cbrn_hospital_unfilled_ordinary_masks = cbrn_hospital_masks }
+		set_temp_variable = { cbrn_response_component_kind = constant:universal_cost_resource_kind.gas_mask_equipment_reconditioned }
+		set_temp_variable = { cbrn_response_component_ordinary = cbrn_hospital_mask_reconditioned }
+		add_to_temp_variable = { cbrn_response_component_ordinary = cbrn_hospital_unfilled_ordinary_masks }
+		set_temp_variable = { cbrn_response_component_quoted = cbrn_hospital_mask_reconditioned }
+		cbrn_pay_and_record_response_component = yes
+		set_temp_variable = { cbrn_response_component_kind = constant:universal_cost_resource_kind.gas_mask_equipment_1 }
+		set_temp_variable = { cbrn_response_component_ordinary = cbrn_hospital_mask_basic }
+		set_temp_variable = { cbrn_response_component_quoted = cbrn_hospital_mask_basic }
+		cbrn_pay_and_record_response_component = yes
+		set_temp_variable = { cbrn_response_component_kind = constant:universal_cost_resource_kind.gas_mask_equipment_2 }
+		set_temp_variable = { cbrn_response_component_ordinary = cbrn_hospital_mask_improved }
+		set_temp_variable = { cbrn_response_component_quoted = cbrn_hospital_mask_improved }
+		cbrn_pay_and_record_response_component = yes
+		set_temp_variable = { cbrn_response_component_kind = constant:universal_cost_resource_kind.gas_mask_equipment_3 }
+		set_temp_variable = { cbrn_response_component_ordinary = cbrn_hospital_mask_advanced }
+		set_temp_variable = { cbrn_response_component_quoted = cbrn_hospital_mask_advanced }
+		cbrn_pay_and_record_response_component = yes
+		set_temp_variable = { cbrn_response_component_kind = constant:universal_cost_resource_kind.gas_mask_equipment_4 }
+		set_temp_variable = { cbrn_response_component_ordinary = cbrn_hospital_mask_sealed }
+		set_temp_variable = { cbrn_response_component_quoted = cbrn_hospital_mask_sealed }
+		cbrn_pay_and_record_response_component = yes
+		if = {
+			limit = { check_variable = { cbrn_response_all_paid = constant:universal_cost_framework.one } }
+			set_temp_variable = { universal_cost_transaction_id = cbrn_response_transaction }
+			set_temp_variable = { universal_cost_settle_transaction_result = constant:universal_cost_framework.result_no_op }
+			universal_cost_settle_transaction = yes
+			if = {
+				limit = { check_variable = { universal_cost_settle_transaction_result = constant:universal_cost_framework.result_success } }
+				FROM = { cbrn_complete_paid_hospital_response = yes }
+				set_temp_variable = { black_friday_purchase_transaction_id = cbrn_response_transaction }
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.state_project }
+				set_temp_variable = { black_friday_purchase_ordinary_cost = FROM.cbrn_response_hospital_mask_cost }
+				add_to_temp_variable = { black_friday_purchase_ordinary_cost = FROM.cbrn_response_hospital_support_cost }
+				set_temp_variable = { black_friday_purchase_actual_paid_cost = cbrn_hospital_masks }
+				add_to_temp_variable = { black_friday_purchase_actual_paid_cost = cbrn_hospital_support }
+				set_temp_variable = { black_friday_purchase_allow_political_power_only = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_purchase_allow_post_expiry_confirmation = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_purchase_is_refundable = constant:universal_cost_framework.zero }
+				black_friday_record_achievement_transaction = yes
+			}
+			else = { cbrn_refund_unfinished_response_transaction = yes }
+		}
+		else = { cbrn_refund_unfinished_response_transaction = yes }
+		cbrn_refresh_country_mask_snapshot = yes
+	}
+}
+
+# STATE outcomes contain no payment or affordability code.
+cbrn_complete_paid_emergency_distribution = {
+	set_state_flag = cbrn_emergency_distribution_surge_used
+	set_temp_variable = { cbrn_emergency_distribution_disruption_duration = constant:cbrn_protection_decision_timing.emergency_distribution_disruption_days }
+	add_dynamic_modifier = {
+		modifier = cbrn_emergency_distribution_disruption
+		days = cbrn_emergency_distribution_disruption_duration
+	}
+	controller = { cbrn_start_protection_maintenance_job = yes }
+}
+
+cbrn_complete_paid_hospital_response = {
+	set_temp_variable = { cbrn_response_duration_local = constant:cbrn_protection_decision_timing.response_effect_days }
+	set_state_flag = { flag = cbrn_hospitals_utilities_secured days = var:cbrn_response_duration_local }
+	add_dynamic_modifier = { modifier = cbrn_hospitals_utilities_protected days = cbrn_response_duration_local }
+}

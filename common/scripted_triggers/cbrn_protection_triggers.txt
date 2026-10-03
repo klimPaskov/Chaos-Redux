@@ -559,11 +559,15 @@ cbrn_quote_emergency_state_mask_reservation = {
 	always = yes
 }
 
-# Country scope, selected decision state in FROM. An exact 10 PP balance and
-# any positive stock-capped crate quote suffice; the cost row uses this gate.
+# Country scope, selected decision state in FROM. The exact quoted PP fee and
+# any positive stock-capped physical crate issue suffice; the cost row uses this gate.
 cbrn_country_can_pay_emergency_state_mask_distribution = {
 	cbrn_country_has_public_chemical_emergency = yes
-	NOT = { has_political_power < constant:cbrn_protection_decision_cost.emergency_distribution_pp }
+	set_temp_variable = { cbrn_emergency_fee_valid = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_emergency_fee_affordable = constant:universal_cost_framework.zero }
+	cbrn_quote_emergency_distribution_fee = yes
+	check_variable = { cbrn_emergency_fee_valid = constant:universal_cost_framework.one }
+	check_variable = { cbrn_emergency_fee_affordable = constant:universal_cost_framework.one }
 	FROM = {
 		cbrn_state_can_receive_emergency_masks = yes
 		set_temp_variable = { cbrn_mask_reservation_quote = constant:cbrn_math.zero }
@@ -771,9 +775,7 @@ cbrn_state_can_protect_hospitals_and_utilities = {
 }
 
 cbrn_state_hospital_payment_ready = {
-	cbrn_state_can_protect_hospitals_and_utilities = yes
-	cbrn_state_has_hospital_response_resources = yes
-	ROOT = { NOT = { has_political_power < constant:cbrn_protection_decision_cost.protect_hospitals_pp } }
+	ROOT = { cbrn_country_hospital_response_payment_ready = yes }
 }
 
 cbrn_state_can_move_civilians_to_shelters = {

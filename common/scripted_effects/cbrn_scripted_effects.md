@@ -793,6 +793,49 @@ Selection markers keep the chosen native timer visible after sale expiry and nat
 Example native call: `hidden_effect = { set_temp_variable = { cbrn_protective_aid_requested_variant = constant:cbrn_external_aid_variant.sale } cbrn_protective_aid_begin_selected_delivery = yes }` after the sale variant's full availability/custom-cost gate.
 No periodic hook, extra CXT content grant, equipment type, gameplay stat, or separate administrative choice is introduced.
 
+## Immediate Civil Defence payment orders
+
+The two STATE entry points `cbrn_complete_emergency_state_distribution` and `cbrn_apply_hospital_utility_protection` delegate to COUNTRY `cbrn_execute_emergency_distribution_order` and `cbrn_execute_hospital_response_order` in `cbrn_immediate_response_cost_effects.txt`.
+ROOT is the payer; FROM is its controlled target state throughout both native decisions and their nested state gates.
+They share no competing ordinary debit after delegation.
+
+`cbrn_quote_immediate_response_component` in `cbrn_immediate_response_cost_triggers.txt` takes temporary `cbrn_response_component_ordinary`, `_family`, and `_kind` and returns `_quoted`, `_valid`, `_source`, and `_affordable`.
+The outer caller declares the returned fields before use.
+Outside Black Friday it preserves the ordinary price; an active sale requires the registered canonical source and whole-unit quote, with invalid pricing blocked.
+The aggregate hospital mask quote uses `custom_adapter` only for price calculation; its concrete oldest-first allocation separately establishes exact stock affordability and never pays that aggregate kind.
+`universal_cost_quote_valid` is explicitly supplied before native affordability checking.
+
+`cbrn_quote_emergency_distribution_fee` returns the current PP fee and its source/validity/affordability; the existing physical mask quote and issue remain unchanged.
+A recorded PP fee precedes physical issue.
+Zero consumption refunds it and grants no surge or congestion.
+Positive consumption commits the fee, stores the receipt identity in `cbrn_emergency_committed_receipt_@var:transaction_id`, and applies the original STATE outcome through `cbrn_complete_paid_emergency_distribution`.
+The owner refund helper refuses a committed issue; it cannot credit PP or crates while their issued protection remains.
+The inspected distributor and outcome do not alter receipt arrays, and maintenance only schedules its existing delayed job.
+A failed late confirmation therefore retains the paid issue and gives no achievement credit rather than manufacturing a reversible issue.
+
+`cbrn_quote_hospital_response_bundle` reads FROM's normal alert-time material costs, quotes PP/support/masks, and allocates the one mask price among five real models, oldest first.
+The COUNTRY payment gate requires the original exact alert/ownership/secured-state rule and inclusive current-price affordability.
+All seven receipt components use existing native resource-kind IDs as distinct component IDs.
+Zero-paid model components preserve any unfilled ordinary counterfactual cost solely as accounting; they create no stock.
+Only a fully paid, settled receipt invokes `cbrn_complete_paid_hospital_response`, which sets the original secured flag and timed protection without a debit or affordability check.
+
+`cbrn_pay_and_record_response_component` takes the transaction, component ordinary/quoted/kind/member, source, and family/basis/primary fields.
+It changes the caller-owned `cbrn_response_all_paid` on failure, credits an unrecorded debit, and leaves previously recorded amounts to the shared refund API.
+A failed unrecorded credit retains exact native kind and actual amount under the transaction ID; `cbrn_refund_unfinished_response_transaction` retries that credit and clears its proof only after success.
+Rejected/partial/unhandled recorded refund results remain keyed in `cbrn_response_refund_status_@var:transaction_id`; the receipt preserves its actual unrefunded amounts.
+An unused allocator proof is cleared when no first receipt row exists.
+No failure branch grants protection or purchase credit.
+Malformed shared receipt state is a detected recovery boundary, not proof that an engine refund succeeded.
+
+Emergency uses typed political-power-family/primary-component metadata and its existing PP-only achievement bridge after real issue and settlement.
+Hospital uses state-project-family/primary-group metadata for the aggregate consumed materials, excluding PP from the group's cost basis.
+Normal prices produce source ID zero and grant no Black Friday credit.
+All quote, payment, credit, record, settlement, and refund outputs read after a helper return have caller storage.
+
+Example: the native hospital decision calls `FROM = { cbrn_apply_hospital_utility_protection = yes }` after its hidden `cbrn_state_hospital_payment_ready` gate.
+No equipment, unit, project, periodic iteration, independent readiness currency, or additional CXT content is introduced.
+The [accepted contract](../../docs/specs/chaos_warfare_system_specs/corrections/2026-10-03_immediate_protection_sale_transactions.md) and [source tests](../../docs/testing/2026-10-03_cbrn_immediate_protection_source_tests.js) record the integration and limits.
+
 ## CBRN filters, losses, reconditioning, and transfer
 
 ### cbrn_replace_military_mask_filters and cbrn_replace_state_civilian_mask_filters

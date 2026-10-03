@@ -1,0 +1,927 @@
+# ============================================================================
+# CHAOS REDUX - CBRN PROTECTIVE-EQUIPMENT AND CIVIL-DEFENCE TRIGGERS
+# ============================================================================
+# Overview:
+# - Gates national respirator programs, field issue, state distribution,
+#   procurement, allied transfers, filter service, and reconditioning.
+# - Keeps exact-state chemical-raid responses unavailable unless a verified
+#   raid/operation adapter has set cbrn_chemical_raid_alert_active.
+# - Reads real equipment and factory capacity. It never infers air activity or
+#   creates contamination from aircraft presence.
+# ============================================================================
+
+cbrn_protection_program_category_visible = {
+	NOT = { is_actual_nonhuman_country = yes }
+	OR = {
+		cbrn_protection_decision_surface_is_unlocked = yes
+		cbrn_country_has_public_chemical_emergency = yes
+		has_country_flag = cbrn_allied_protection_request_received
+		cbrn_country_has_mask_replacement_backlog = yes
+	}
+}
+
+cbrn_civil_defence_category_visible = {
+	NOT = { is_actual_nonhuman_country = yes }
+	OR = {
+		cbrn_country_has_public_chemical_emergency = yes
+		cbrn_country_faces_enemy_chemical_capability = yes
+		has_active_biowarfare_outbreak = yes
+		has_country_flag = cbrn_civilian_distribution_program_active
+	}
+}
+
+cbrn_country_has_any_mask_stock = {
+	has_equipment = { gas_mask_equipment > constant:cbrn_math.zero }
+}
+
+cbrn_country_has_exportable_mask_stock = {
+	NOT = {
+		has_equipment = {
+			gas_mask_equipment < constant:cbrn_protection_ai.export_minimum_reserve
+		}
+	}
+}
+
+cbrn_can_pay_protective_equipment_export = {
+	cbrn_country_has_exportable_mask_stock = yes
+	NOT = { num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.export_masks_factories }
+	NOT = { has_political_power < constant:cbrn_protection_decision_cost.export_masks_pp }
+}
+
+cbrn_country_needs_imported_masks = {
+	NOT = {
+		has_equipment = {
+			gas_mask_equipment > constant:cbrn_protection_ai.export_minimum_reserve
+		}
+	}
+}
+
+cbrn_country_has_public_chemical_emergency = {
+	OR = {
+		has_enemy_used_chemical_weapons = yes
+		any_controlled_state = {
+			OR = {
+				has_state_flag = cbrn_chemical_raid_alert_active
+				cbrn_state_has_chemical_contamination = yes
+			}
+		}
+	}
+}
+
+cbrn_country_has_military_mask_shortage = {
+	has_variable = cbrn_military_mask_coverage
+	check_variable = { cbrn_military_mask_coverage < constant:cbrn_protection_ai.military_shortage_threshold }
+}
+
+cbrn_country_has_military_choking_protection_low = {
+	has_variable = cbrn_military_respiratory_protection
+	check_variable = {
+		var = cbrn_military_respiratory_protection
+		value = constant:cbrn_protection_band.low
+		compare = greater_than_or_equals
+	}
+}
+
+cbrn_country_has_military_choking_protection_medium = {
+	has_variable = cbrn_military_respiratory_protection
+	check_variable = {
+		var = cbrn_military_respiratory_protection
+		value = constant:cbrn_protection_band.medium
+		compare = greater_than_or_equals
+	}
+}
+
+cbrn_country_has_military_choking_protection_high = {
+	has_variable = cbrn_military_respiratory_protection
+	check_variable = {
+		var = cbrn_military_respiratory_protection
+		value = constant:cbrn_protection_band.high
+		compare = greater_than_or_equals
+	}
+}
+
+cbrn_country_has_military_blister_protection_low = {
+	has_variable = cbrn_military_blister_mask_protection
+	check_variable = {
+		var = cbrn_military_blister_mask_protection
+		value = constant:cbrn_protection_band.low
+		compare = greater_than_or_equals
+	}
+}
+
+cbrn_country_has_military_blister_protection_medium = {
+	has_variable = cbrn_military_blister_mask_protection
+	check_variable = {
+		var = cbrn_military_blister_mask_protection
+		value = constant:cbrn_protection_band.medium
+		compare = greater_than_or_equals
+	}
+}
+
+cbrn_country_has_military_blister_protection_high = {
+	has_variable = cbrn_military_blister_mask_protection
+	check_variable = {
+		var = cbrn_military_blister_mask_protection
+		value = constant:cbrn_protection_band.high
+		compare = greater_than_or_equals
+	}
+}
+
+cbrn_country_has_mask_replacement_backlog = {
+	has_variable = cbrn_mask_replacement_demand
+	check_variable = { cbrn_mask_replacement_demand > constant:cbrn_protection_ai.replacement_backlog_threshold }
+}
+
+cbrn_country_controls_chemical_contamination = {
+	any_controlled_state = {
+		cbrn_state_has_chemical_contamination = yes
+	}
+}
+
+cbrn_country_faces_enemy_chemical_capability = {
+	any_enemy_country = {
+		OR = {
+			has_tech = chlorine_gas
+			has_tech = phosgene
+			has_tech = mustard_gas
+			has_tech = lewisite
+			has_tech = sarin
+			has_tech = soman
+		}
+	}
+}
+
+# Routine civilian issue is tied to an actual threat or the pending 1939
+# British historical receipt. The receipt clears its flag after real issue.
+cbrn_country_needs_civilian_mask_issue = {
+	OR = {
+		has_enemy_used_chemical_weapons = yes
+		cbrn_country_faces_enemy_chemical_capability = yes
+		any_controlled_state = { has_state_flag = cbrn_chemical_raid_alert_active }
+		any_controlled_state = { cbrn_state_has_chemical_contamination = yes }
+		has_country_flag = cbrn_historical_civilian_mask_issue
+	}
+}
+
+cbrn_world_has_confirmed_chemical_use = {
+	has_global_flag = cbrn_world_confirmed_chemical_use
+}
+
+cbrn_country_has_priority_civilian_protection_gap = {
+	any_controlled_state = {
+		is_core_of = ROOT
+		state_population_k > constant:cbrn_math.zero
+		cbrn_state_has_priority_distribution_gap = yes
+	}
+}
+
+cbrn_country_has_full_civilian_protection_gap = {
+	any_controlled_state = {
+		is_core_of = ROOT
+		state_population_k > constant:cbrn_math.zero
+		cbrn_state_has_full_distribution_gap = yes
+	}
+}
+
+cbrn_country_has_mask_production_signal = {
+	OR = {
+		has_country_flag = cbrn_national_respirator_reserve
+		has_country_flag = cbrn_allied_protection_request_received
+		has_doctrine = chaos_warfare
+		has_enemy_used_chemical_weapons = yes
+		cbrn_country_faces_enemy_chemical_capability = yes
+		cbrn_world_has_confirmed_chemical_use = yes
+		any_controlled_state = { has_state_flag = cbrn_chemical_raid_alert_active }
+	}
+}
+
+cbrn_country_below_mask_ai_target = {
+	OR = {
+		NOT = { has_variable = cbrn_military_mask_coverage }
+		AND = {
+			has_variable = cbrn_ai_military_mask_coverage_target
+			check_variable = {
+				var = cbrn_military_mask_coverage
+				value = cbrn_ai_military_mask_coverage_target
+				compare = less_than
+			}
+		}
+		AND = {
+			has_variable = cbrn_ai_mask_reserve_target_crates
+			check_variable = {
+				var = cbrn_mask_reserve_crates
+				value = cbrn_ai_mask_reserve_target_crates
+				compare = less_than
+			}
+		}
+		cbrn_country_has_mask_replacement_backlog = yes
+		AND = {
+			has_country_flag = cbrn_population_registered_and_fitted
+			OR = {
+				cbrn_profile_is_mass_civil_defence = yes
+				cbrn_profile_is_prepared_power = yes
+				cbrn_profile_is_civil_defence_network = yes
+			}
+			cbrn_country_has_full_civilian_protection_gap = yes
+		}
+		AND = {
+			cbrn_country_has_public_chemical_emergency = yes
+			cbrn_country_has_priority_civilian_protection_gap = yes
+		}
+	}
+}
+
+cbrn_country_should_produce_masks = {
+	has_tech = basic_gas_masks
+	cbrn_country_below_mask_ai_target = yes
+	OR = {
+		cbrn_country_has_mask_production_signal = yes
+		cbrn_country_has_military_mask_shortage = yes
+		cbrn_country_has_mask_replacement_backlog = yes
+	}
+}
+
+cbrn_country_has_urgent_mask_production_need = {
+	OR = {
+		has_enemy_used_chemical_weapons = yes
+		cbrn_country_has_military_mask_shortage = yes
+		any_controlled_state = { has_state_flag = cbrn_chemical_raid_alert_active }
+	}
+}
+
+cbrn_can_establish_national_respirator_reserve = {
+	has_tech = basic_gas_masks
+	NOT = { has_country_flag = cbrn_national_respirator_reserve }
+	NOT = {
+		num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.establish_reserve_factories
+	}
+	NOT = {
+		has_equipment = {
+			support_equipment < constant:cbrn_protection_decision_cost.establish_reserve_support
+		}
+	}
+}
+
+cbrn_can_register_and_fit_population = {
+	has_country_flag = cbrn_national_respirator_reserve
+	NOT = { has_country_flag = cbrn_population_registered_and_fitted }
+	cbrn_country_has_any_mask_stock = yes
+	NOT = { has_manpower < constant:cbrn_protection_decision_cost.register_population_manpower_gate }
+	NOT = {
+		num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.register_population_factories
+	}
+	NOT = {
+		has_equipment = {
+			support_equipment < constant:cbrn_protection_decision_cost.register_population_support
+		}
+	}
+}
+
+cbrn_can_issue_masks_to_field_army = {
+	cbrn_country_has_any_mask_stock = yes
+	NOT = {
+		num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.issue_field_army_factories
+	}
+	NOT = {
+		has_equipment = {
+			support_equipment < constant:cbrn_protection_decision_cost.issue_field_army_support
+		}
+	}
+}
+
+cbrn_can_replace_military_mask_filters = {
+	has_variable = cbrn_military_mask_crates
+	check_variable = { cbrn_military_mask_crates > constant:cbrn_math.zero }
+	has_variable = cbrn_military_mask_filter_condition
+	check_variable = { cbrn_military_mask_filter_condition < constant:cbrn_mask_filters.condition_full }
+	cbrn_country_has_any_mask_stock = yes
+	NOT = {
+		num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.replace_filters_factories
+	}
+}
+
+cbrn_recondition_masks_has_nonpayment_requirements = {
+	OR = {
+		check_variable = { cbrn_reconditionable_mask_cache > constant:cbrn_math.zero }
+		check_variable = { cbrn_mask_replacement_demand > constant:cbrn_math.zero }
+	}
+	NOT = {
+		num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.recondition_masks_factories
+	}
+}
+
+cbrn_can_recondition_damaged_masks = {
+	cbrn_recondition_masks_has_nonpayment_requirements = yes
+	NOT = { has_political_power < constant:cbrn_protection_decision_cost.recondition_masks_pp }
+	NOT = {
+		has_equipment = {
+			support_equipment_1 < constant:cbrn_protection_decision_cost.recondition_masks_support
+		}
+	}
+}
+
+cbrn_recondition_masks_can_start = {
+	cbrn_recondition_masks_has_nonpayment_requirements = yes
+	OR = {
+		AND = { black_friday_is_active = yes black_friday_can_pay_cbrn_recondition_masks = yes }
+		AND = { NOT = { black_friday_is_active = yes } cbrn_can_recondition_damaged_masks = yes }
+	}
+}
+
+cbrn_convert_mask_industry_has_nonpayment_requirements = {
+	has_tech = basic_gas_masks
+	NOT = {
+		num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.convert_industry_factories
+	}
+}
+
+cbrn_can_convert_civilian_mask_industry = {
+	cbrn_convert_mask_industry_has_nonpayment_requirements = yes
+	NOT = { has_political_power < constant:cbrn_protection_decision_cost.convert_industry_pp }
+	NOT = {
+		has_equipment = {
+			support_equipment_1 < constant:cbrn_protection_decision_cost.convert_industry_support
+		}
+	}
+}
+
+cbrn_convert_mask_industry_can_start = {
+	cbrn_convert_mask_industry_has_nonpayment_requirements = yes
+	OR = {
+		AND = { black_friday_is_active = yes black_friday_can_pay_cbrn_convert_mask_industry = yes }
+		AND = { NOT = { black_friday_is_active = yes } cbrn_can_convert_civilian_mask_industry = yes }
+	}
+}
+
+cbrn_simplify_filters_has_nonpayment_requirements = {
+	has_tech = basic_gas_masks
+	NOT = { has_country_flag = cbrn_simplified_filter_program_active }
+	NOT = {
+		num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.simplify_filters_factories
+	}
+}
+
+cbrn_can_simplify_filters_for_mass_issue = {
+	cbrn_simplify_filters_has_nonpayment_requirements = yes
+	NOT = { has_political_power < constant:cbrn_protection_decision_cost.simplify_filters_pp }
+	NOT = {
+		has_equipment = {
+			support_equipment_1 < constant:cbrn_protection_decision_cost.simplify_filters_support
+		}
+	}
+}
+
+cbrn_simplify_filters_can_start = {
+	cbrn_simplify_filters_has_nonpayment_requirements = yes
+	OR = {
+		AND = { black_friday_is_active = yes black_friday_can_pay_cbrn_simplify_filters = yes }
+		AND = { NOT = { black_friday_is_active = yes } cbrn_can_simplify_filters_for_mass_issue = yes }
+	}
+}
+
+cbrn_state_has_priority_protection_value = {
+	OR = {
+		is_capital = yes
+		check_variable = { var = victory_points value = constant:cbrn_math.zero compare = greater_than }
+		industrial_complex > constant:cbrn_math.zero
+		arms_factory > constant:cbrn_math.zero
+		dockyard > constant:cbrn_math.zero
+		air_base > constant:cbrn_math.zero
+		naval_base > constant:cbrn_math.zero
+		supply_node > constant:cbrn_math.zero
+	}
+}
+
+cbrn_state_is_valid_distribution_target = {
+	is_controlled_by = ROOT
+	ROOT = { has_country_flag = cbrn_national_respirator_reserve }
+	state_population_k > constant:cbrn_math.zero
+	NOT = { has_state_flag = cbrn_protection_project_active }
+}
+
+cbrn_state_has_priority_distribution_gap = {
+	OR = {
+		NOT = { has_variable = cbrn_civilian_mask_effective_coverage }
+		check_variable = {
+			var = cbrn_civilian_mask_effective_coverage
+			value = constant:cbrn_mask_distribution.priority_target_percent
+			compare = less_than
+		}
+	}
+}
+
+cbrn_state_has_full_distribution_gap = {
+	OR = {
+		NOT = { has_variable = cbrn_civilian_mask_effective_coverage }
+		check_variable = {
+			var = cbrn_civilian_mask_effective_coverage
+			value = constant:cbrn_mask_distribution.full_target_percent
+			compare = less_than
+		}
+	}
+}
+
+cbrn_state_has_emergency_distribution_gap = {
+	set_temp_variable = { cbrn_reservation_quote_state_need = constant:cbrn_math.zero }
+	# Existing-owner caller output storage.
+	set_temp_variable = { cbrn_mask_reservation_quote = constant:universal_cost_framework.zero }
+	cbrn_quote_emergency_state_mask_reservation = yes
+	check_variable = { cbrn_reservation_quote_state_need > constant:cbrn_math.zero }
+}
+
+cbrn_state_has_occupied_distribution_gap = {
+	OR = {
+		NOT = { has_variable = cbrn_civilian_mask_effective_coverage }
+		check_variable = {
+			var = cbrn_civilian_mask_effective_coverage
+			value = constant:cbrn_protection_program_effect.occupied_distribution_target_percent
+			compare = less_than
+		}
+	}
+}
+
+cbrn_state_can_receive_priority_masks = {
+	cbrn_state_is_valid_distribution_target = yes
+	is_core_of = ROOT
+	cbrn_state_has_priority_protection_value = yes
+	cbrn_state_has_priority_distribution_gap = yes
+}
+
+cbrn_state_can_receive_full_distribution = {
+	cbrn_state_is_valid_distribution_target = yes
+	ROOT = { has_country_flag = cbrn_population_registered_and_fitted }
+	is_core_of = ROOT
+	infrastructure > constant:cbrn_mask_distribution.full_distribution_minimum_infrastructure
+	cbrn_state_has_full_distribution_gap = yes
+}
+
+cbrn_state_has_emergency_context = {
+	OR = {
+		has_state_flag = cbrn_chemical_raid_alert_active
+		cbrn_state_has_chemical_contamination = yes
+	}
+}
+
+cbrn_state_needs_civilian_decontamination = {
+	state_population_k > constant:cbrn_math.zero
+	OR = {
+		cbrn_state_has_emergency_context = yes
+		AND = {
+			has_variable = cbrn_civilian_mask_crates
+			check_variable = { cbrn_civilian_mask_crates > constant:cbrn_math.zero }
+			controller = { cbrn_country_faces_enemy_chemical_capability = yes }
+		}
+	}
+}
+
+cbrn_state_can_receive_emergency_masks = {
+	is_controlled_by = ROOT
+	state_population_k > constant:cbrn_math.zero
+	cbrn_state_has_emergency_context = yes
+	NOT = { has_state_flag = cbrn_emergency_distribution_surge_used }
+	cbrn_state_has_emergency_distribution_gap = yes
+}
+
+cbrn_state_can_receive_occupied_masks = {
+	cbrn_state_is_valid_distribution_target = yes
+	NOT = { is_core_of = ROOT }
+	cbrn_state_has_emergency_context = yes
+	cbrn_state_has_occupied_distribution_gap = yes
+}
+
+cbrn_state_can_replace_civilian_filters = {
+	cbrn_state_is_valid_distribution_target = yes
+	has_variable = cbrn_civilian_mask_crates
+	check_variable = { cbrn_civilian_mask_crates > constant:cbrn_math.zero }
+	has_variable = cbrn_civilian_mask_filter_condition
+	check_variable = { cbrn_civilian_mask_filter_condition < constant:cbrn_mask_filters.condition_full }
+}
+
+cbrn_country_has_priority_distribution_work = {
+	has_country_flag = cbrn_national_respirator_reserve
+	any_controlled_state = { cbrn_state_can_receive_priority_masks = yes }
+}
+
+cbrn_country_has_full_distribution_work = {
+	has_country_flag = cbrn_national_respirator_reserve
+	has_country_flag = cbrn_population_registered_and_fitted
+	any_controlled_state = { cbrn_state_can_receive_full_distribution = yes }
+}
+
+cbrn_country_has_filter_replacement_work = {
+	any_controlled_state = { cbrn_state_can_replace_civilian_filters = yes }
+}
+
+cbrn_country_has_occupied_distribution_work = {
+	has_country_flag = cbrn_national_respirator_reserve
+	any_controlled_state = { cbrn_state_can_reserve_occupied_masks = yes }
+}
+
+# Pure state-scope quote for the two timed occupied-population distributors.
+# ROOT is the paying country. Temporary output is the rounded state need;
+# callers sum state needs and cap the total against real model stock.
+cbrn_quote_occupied_state_mask_reservation = {
+	set_temp_variable = { cbrn_reservation_quote_state_need = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_reservation_quote_target = constant:cbrn_protection_program_effect.occupied_distribution_target }
+	set_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_protection_program_effect.occupied_distribution_cost_mult }
+	set_temp_variable = { cbrn_reservation_quote_effectiveness = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_reservation_quote_new_filter = constant:cbrn_mask_filters.condition_full }
+	cbrn_quote_state_mask_reservation_internal = yes
+}
+
+cbrn_quote_external_state_mask_reservation = {
+	set_temp_variable = { cbrn_reservation_quote_state_need = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_reservation_available_stock = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_reservation_quote = constant:cbrn_math.zero }
+	cbrn_quote_occupied_state_mask_reservation = yes
+	ROOT = { cbrn_quote_available_mask_stock_for_reservation = yes }
+	set_temp_variable = { cbrn_mask_reservation_quote = cbrn_reservation_quote_state_need }
+	clamp_temp_variable = { var = cbrn_mask_reservation_quote min = constant:cbrn_math.zero max = cbrn_mask_reservation_available_stock }
+}
+
+# State scope; the same live coverage and delivery calculation as occupied
+# distribution, with the emergency order's target, wastage, and filter quality.
+# The uncapped state need drives target visibility; the stock-capped quote is
+# the actual one-click respirator payment shown in the cost row.
+cbrn_quote_emergency_state_mask_reservation = {
+	set_temp_variable = { cbrn_reservation_quote_state_need = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_reservation_available_stock = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_reservation_quote = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_reservation_quote_target = constant:cbrn_mask_distribution.emergency_target }
+	set_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_mask_distribution.emergency_cost_mult }
+	multiply_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_mask_distribution.emergency_wastage_mult }
+	set_temp_variable = { cbrn_reservation_quote_effectiveness = constant:cbrn_mask_distribution.emergency_effectiveness_mult }
+	set_temp_variable = { cbrn_reservation_quote_new_filter = constant:cbrn_mask_filters.emergency_condition }
+	cbrn_quote_state_mask_reservation_internal = yes
+	ROOT = { cbrn_quote_available_mask_stock_for_reservation = yes }
+	set_temp_variable = { cbrn_mask_reservation_quote = cbrn_reservation_quote_state_need }
+	clamp_temp_variable = { var = cbrn_mask_reservation_quote min = constant:cbrn_math.zero max = cbrn_mask_reservation_available_stock }
+	always = yes
+}
+
+# Country scope, selected decision state in FROM. An exact 10 PP balance and
+# any positive stock-capped crate quote suffice; the cost row uses this gate.
+cbrn_country_can_pay_emergency_state_mask_distribution = {
+	cbrn_country_has_public_chemical_emergency = yes
+	NOT = { has_political_power < constant:cbrn_protection_decision_cost.emergency_distribution_pp }
+	FROM = {
+		cbrn_state_can_receive_emergency_masks = yes
+		set_temp_variable = { cbrn_mask_reservation_quote = constant:cbrn_math.zero }
+		cbrn_quote_emergency_state_mask_reservation = yes
+		check_variable = { cbrn_mask_reservation_quote > constant:cbrn_math.zero }
+	}
+}
+
+# Country-scope stock count. The five concrete models match the distributor;
+# num_equipment@gas_mask_equipment as an archetype is not used as the receipt.
+cbrn_quote_available_mask_stock_for_reservation = {
+	set_temp_variable = { cbrn_mask_reservation_available_stock = num_equipment@gas_mask_equipment_reconditioned }
+	add_to_temp_variable = { cbrn_mask_reservation_available_stock = num_equipment@gas_mask_equipment_1 }
+	add_to_temp_variable = { cbrn_mask_reservation_available_stock = num_equipment@gas_mask_equipment_2 }
+	add_to_temp_variable = { cbrn_mask_reservation_available_stock = num_equipment@gas_mask_equipment_3 }
+	add_to_temp_variable = { cbrn_mask_reservation_available_stock = num_equipment@gas_mask_equipment_4 }
+	clamp_temp_variable = { var = cbrn_mask_reservation_available_stock min = constant:cbrn_math.zero }
+	always = yes
+}
+
+# Country scope; caller initializes cbrn_mask_reservation_quote before invoking
+# this scripted trigger so its temporary output survives the helper boundary.
+cbrn_quote_occupied_program_mask_reservation = {
+	set_temp_variable = { cbrn_mask_reservation_quote = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_reservation_available_stock = constant:cbrn_math.zero }
+	all_controlled_state = {
+		if = {
+			limit = {
+				cbrn_state_is_valid_distribution_target = yes
+				NOT = { is_core_of = ROOT }
+				cbrn_state_has_emergency_context = yes
+			}
+			set_temp_variable = { cbrn_reservation_quote_state_need = constant:cbrn_math.zero }
+			cbrn_quote_occupied_state_mask_reservation = yes
+			add_to_temp_variable = { cbrn_mask_reservation_quote = cbrn_reservation_quote_state_need }
+		}
+	}
+	cbrn_quote_available_mask_stock_for_reservation = yes
+	clamp_temp_variable = { var = cbrn_mask_reservation_quote min = constant:cbrn_math.zero max = cbrn_mask_reservation_available_stock }
+	always = yes
+}
+
+cbrn_country_can_start_occupied_mask_reservation = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.occupied_distribution_factories }
+	cbrn_country_can_pay_occupied_mask_reservation = yes
+}
+
+# Shared country, material, and target check. Native selection may already hold
+# the factory commitment checked by the pre-click start predicate above.
+cbrn_country_can_pay_occupied_mask_reservation = {
+	cbrn_country_has_public_chemical_emergency = yes
+	cbrn_country_has_occupied_distribution_work = yes
+	NOT = { has_country_flag = cbrn_civilian_distribution_program_active }
+	NOT = { has_political_power < constant:cbrn_protection_decision_cost.occupied_distribution_pp }
+	set_temp_variable = { cbrn_mask_reservation_quote = constant:cbrn_math.zero }
+	cbrn_quote_occupied_program_mask_reservation = yes
+	check_variable = { cbrn_mask_reservation_quote > constant:cbrn_math.zero }
+}
+
+# Start-only occupied target predicate based on current state ledgers rather
+# than a potentially stale effective-coverage snapshot. It must not be used
+# after the target marker is set if that marker's own lifecycle is being tested.
+cbrn_state_can_reserve_occupied_masks = {
+	cbrn_state_is_valid_distribution_target = yes
+	NOT = { is_core_of = ROOT }
+	cbrn_state_has_emergency_context = yes
+	set_temp_variable = { cbrn_reservation_quote_state_need = constant:cbrn_math.zero }
+	cbrn_quote_occupied_state_mask_reservation = yes
+	check_variable = { cbrn_reservation_quote_state_need > constant:cbrn_math.zero }
+}
+
+cbrn_quote_state_mask_reservation_internal = {
+	set_temp_variable = { cbrn_reservation_quote_state_need = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_reservation_quote_requirement = state_population_k }
+	multiply_temp_variable = { cbrn_reservation_quote_requirement = constant:cbrn_mask_scale.civilian_crates_per_population_k }
+	set_temp_variable = { cbrn_reservation_quote_existing_crates = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_reservation_quote_model = constant:cbrn_math.zero }
+	if = { limit = { has_variable = cbrn_civilian_mask_basic_crates } set_temp_variable = { cbrn_reservation_quote_model = cbrn_civilian_mask_basic_crates } }
+	clamp_temp_variable = { var = cbrn_reservation_quote_model min = constant:cbrn_math.zero }
+	add_to_temp_variable = { cbrn_reservation_quote_existing_crates = cbrn_reservation_quote_model }
+	set_temp_variable = { cbrn_reservation_quote_model = constant:cbrn_math.zero }
+	if = { limit = { has_variable = cbrn_civilian_mask_reconditioned_crates } set_temp_variable = { cbrn_reservation_quote_model = cbrn_civilian_mask_reconditioned_crates } }
+	clamp_temp_variable = { var = cbrn_reservation_quote_model min = constant:cbrn_math.zero }
+	add_to_temp_variable = { cbrn_reservation_quote_existing_crates = cbrn_reservation_quote_model }
+	set_temp_variable = { cbrn_reservation_quote_model = constant:cbrn_math.zero }
+	if = { limit = { has_variable = cbrn_civilian_mask_improved_crates } set_temp_variable = { cbrn_reservation_quote_model = cbrn_civilian_mask_improved_crates } }
+	clamp_temp_variable = { var = cbrn_reservation_quote_model min = constant:cbrn_math.zero }
+	add_to_temp_variable = { cbrn_reservation_quote_existing_crates = cbrn_reservation_quote_model }
+	set_temp_variable = { cbrn_reservation_quote_model = constant:cbrn_math.zero }
+	if = { limit = { has_variable = cbrn_civilian_mask_advanced_crates } set_temp_variable = { cbrn_reservation_quote_model = cbrn_civilian_mask_advanced_crates } }
+	clamp_temp_variable = { var = cbrn_reservation_quote_model min = constant:cbrn_math.zero }
+	add_to_temp_variable = { cbrn_reservation_quote_existing_crates = cbrn_reservation_quote_model }
+	set_temp_variable = { cbrn_reservation_quote_model = constant:cbrn_math.zero }
+	if = { limit = { has_variable = cbrn_civilian_mask_sealed_crates } set_temp_variable = { cbrn_reservation_quote_model = cbrn_civilian_mask_sealed_crates } }
+	clamp_temp_variable = { var = cbrn_reservation_quote_model min = constant:cbrn_math.zero }
+	add_to_temp_variable = { cbrn_reservation_quote_existing_crates = cbrn_reservation_quote_model }
+	set_temp_variable = { cbrn_reservation_quote_existing_coverage = constant:cbrn_math.zero }
+	if = {
+		limit = {
+			check_variable = { cbrn_reservation_quote_requirement > constant:cbrn_math.zero }
+			check_variable = { cbrn_reservation_quote_existing_crates > constant:cbrn_math.zero }
+		}
+		set_temp_variable = { cbrn_reservation_quote_fit = constant:cbrn_math.zero }
+		if = { limit = { has_variable = cbrn_civilian_mask_fit_points } set_temp_variable = { cbrn_reservation_quote_fit = cbrn_civilian_mask_fit_points } }
+		divide_temp_variable = { cbrn_reservation_quote_fit = cbrn_reservation_quote_existing_crates }
+		clamp_temp_variable = { var = cbrn_reservation_quote_fit min = constant:cbrn_math.zero max = constant:cbrn_math.one }
+		set_temp_variable = { cbrn_reservation_quote_filter = constant:cbrn_mask_filters.condition_full }
+		if = { limit = { has_variable = cbrn_civilian_mask_filter_condition } set_temp_variable = { cbrn_reservation_quote_filter = cbrn_civilian_mask_filter_condition } }
+		clamp_temp_variable = { var = cbrn_reservation_quote_filter min = constant:cbrn_mask_filters.condition_minimum max = constant:cbrn_mask_filters.condition_maximum }
+		divide_temp_variable = { cbrn_reservation_quote_filter = constant:cbrn_math.percent_divisor }
+		set_temp_variable = { cbrn_reservation_quote_existing_coverage = cbrn_reservation_quote_existing_crates }
+		multiply_temp_variable = { cbrn_reservation_quote_existing_coverage = constant:cbrn_mask_scale.percent_multiplier }
+		divide_temp_variable = { cbrn_reservation_quote_existing_coverage = cbrn_reservation_quote_requirement }
+		multiply_temp_variable = { cbrn_reservation_quote_existing_coverage = cbrn_reservation_quote_fit }
+		multiply_temp_variable = { cbrn_reservation_quote_existing_coverage = cbrn_reservation_quote_filter }
+		clamp_temp_variable = { var = cbrn_reservation_quote_existing_coverage min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+	}
+
+	clamp_temp_variable = { var = cbrn_reservation_quote_cost min = constant:cbrn_action_input_bounds.condition_mult_min max = constant:cbrn_action_input_bounds.condition_mult_max }
+	clamp_temp_variable = { var = cbrn_reservation_quote_effectiveness min = constant:cbrn_math.zero max = constant:cbrn_math.one }
+	clamp_temp_variable = { var = cbrn_reservation_quote_new_filter min = constant:cbrn_mask_filters.condition_minimum max = constant:cbrn_mask_filters.condition_maximum }
+	if = { limit = { OR = { is_capital = yes has_state_category = city has_state_category = large_city has_state_category = metropolis has_state_category = megalopolis } } multiply_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_mask_distribution.urban_or_capital_cost_mult } }
+	if = { limit = { infrastructure < 4 } multiply_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_mask_distribution.low_infrastructure_cost_mult } }
+	if = { limit = { has_state_flag = cbrn_active_distribution_disruption } multiply_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_mask_distribution.active_combat_cost_mult } }
+	if = { limit = { NOT = { is_core_of = ROOT } } multiply_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_mask_distribution.occupied_non_core_cost_mult } }
+	ROOT = {
+		if = { limit = { has_country_flag = cbrn_civil_defence_established } multiply_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_mask_distribution.civil_defence_cost_mult } }
+		if = { limit = { has_country_flag = cbrn_population_registered_and_fitted } multiply_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_mask_distribution.registration_cost_mult } }
+		if = { limit = { has_tech = civil_defence_fitting_and_registration } multiply_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_protection_technology_effect.civil_registration_distribution_cost_mult } }
+		if = { limit = { has_country_flag = cbrn_national_respirator_reserve } multiply_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_protection_program_effect.reserve_distribution_cost_mult } }
+		if = {
+			limit = { has_country_flag = cbrn_simplified_filter_program_active }
+			multiply_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_protection_program_effect.simplified_distribution_cost_mult }
+			multiply_temp_variable = { cbrn_reservation_quote_effectiveness = constant:cbrn_protection_program_effect.simplified_distribution_effectiveness_mult }
+			clamp_temp_variable = { var = cbrn_reservation_quote_new_filter max = constant:cbrn_protection_program_effect.simplified_filter_condition }
+		}
+		if = {
+			limit = { cbrn_designer_has_mass_civilian_pattern = yes }
+			multiply_temp_variable = { cbrn_reservation_quote_effectiveness = constant:cbrn_protection_designer_effect.mass_civilian_distribution_efficiency_mult }
+			clamp_temp_variable = { var = cbrn_reservation_quote_effectiveness min = constant:cbrn_math.zero max = constant:cbrn_math.one }
+		}
+	}
+	clamp_temp_variable = { var = cbrn_reservation_quote_cost min = constant:cbrn_action_input_bounds.condition_mult_min max = constant:cbrn_action_input_bounds.condition_mult_max }
+	clamp_temp_variable = { var = cbrn_reservation_quote_target min = constant:cbrn_math.zero max = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_reservation_quote_effective_needed = cbrn_reservation_quote_requirement }
+	multiply_temp_variable = { cbrn_reservation_quote_effective_needed = cbrn_reservation_quote_target }
+	set_temp_variable = { cbrn_reservation_quote_existing_effective = cbrn_reservation_quote_requirement }
+	multiply_temp_variable = { cbrn_reservation_quote_existing_effective = cbrn_reservation_quote_existing_coverage }
+	divide_temp_variable = { cbrn_reservation_quote_existing_effective = constant:cbrn_math.percent_divisor }
+	subtract_from_temp_variable = { cbrn_reservation_quote_effective_needed = cbrn_reservation_quote_existing_effective }
+	clamp_temp_variable = { var = cbrn_reservation_quote_effective_needed min = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_reservation_quote_new_effective_fraction = cbrn_reservation_quote_new_filter }
+	divide_temp_variable = { cbrn_reservation_quote_new_effective_fraction = constant:cbrn_math.percent_divisor }
+	multiply_temp_variable = { cbrn_reservation_quote_new_effective_fraction = cbrn_reservation_quote_effectiveness }
+	if = {
+		limit = { check_variable = { cbrn_reservation_quote_new_effective_fraction > constant:cbrn_math.zero } }
+		set_temp_variable = { cbrn_reservation_quote_state_need = cbrn_reservation_quote_effective_needed }
+		divide_temp_variable = { cbrn_reservation_quote_state_need = cbrn_reservation_quote_new_effective_fraction }
+		multiply_temp_variable = { cbrn_reservation_quote_state_need = cbrn_reservation_quote_cost }
+		round_temp_variable = cbrn_reservation_quote_state_need
+		clamp_temp_variable = { var = cbrn_reservation_quote_state_need min = constant:cbrn_math.zero }
+	}
+	always = yes
+}
+
+cbrn_state_has_exact_chemical_raid_alert = {
+	has_state_flag = cbrn_chemical_raid_alert_active
+}
+
+cbrn_state_has_hospital_response_resources = {
+	has_variable = cbrn_response_hospital_mask_cost
+	has_variable = cbrn_response_hospital_support_cost
+	meta_trigger = {
+		text = {
+			ROOT = {
+				NOT = { has_equipment = { gas_mask_equipment < [MASK_COST] } }
+				NOT = { has_equipment = { support_equipment < [SUPPORT_COST] } }
+			}
+		}
+		MASK_COST = "[?cbrn_response_hospital_mask_cost|.0]"
+		SUPPORT_COST = "[?cbrn_response_hospital_support_cost|.0]"
+	}
+}
+
+cbrn_state_has_shelter_response_resources = {
+	has_variable = cbrn_response_shelter_support_cost
+	has_variable = cbrn_response_shelter_train_cost
+	meta_trigger = {
+		text = {
+			ROOT = {
+				NOT = { has_equipment = { support_equipment < [SUPPORT_COST] } }
+				NOT = { has_equipment = { train_equipment < [TRAIN_COST] } }
+			}
+		}
+		SUPPORT_COST = "[?cbrn_response_shelter_support_cost|.0]"
+		TRAIN_COST = "[?cbrn_response_shelter_train_cost|.0]"
+	}
+}
+
+cbrn_state_can_protect_hospitals_and_utilities = {
+	is_controlled_by = ROOT
+	cbrn_state_has_exact_chemical_raid_alert = yes
+	NOT = { has_state_flag = cbrn_hospitals_utilities_secured }
+	# Resource affordability is in the cost row so a shortfall does not hide the target.
+}
+
+cbrn_state_hospital_payment_ready = {
+	cbrn_state_can_protect_hospitals_and_utilities = yes
+	cbrn_state_has_hospital_response_resources = yes
+	ROOT = { NOT = { has_political_power < constant:cbrn_protection_decision_cost.protect_hospitals_pp } }
+}
+
+cbrn_state_can_move_civilians_to_shelters = {
+	is_controlled_by = ROOT
+	cbrn_state_has_exact_chemical_raid_alert = yes
+	NOT = { has_state_flag = cbrn_civilians_moved_to_shelters }
+	NOT = { has_state_flag = cbrn_industry_ordered_to_continue }
+	cbrn_state_has_shelter_response_resources = yes
+}
+
+cbrn_state_can_sound_chemical_alarm = {
+	is_controlled_by = ROOT
+	cbrn_state_has_exact_chemical_raid_alert = yes
+	NOT = { has_state_flag = cbrn_chemical_alarm_sounded }
+}
+
+cbrn_state_can_keep_industry_operating = {
+	is_controlled_by = ROOT
+	cbrn_state_has_exact_chemical_raid_alert = yes
+	NOT = { has_state_flag = cbrn_industry_ordered_to_continue }
+	NOT = { has_state_flag = cbrn_civilians_moved_to_shelters }
+	OR = {
+		industrial_complex > constant:cbrn_math.zero
+		arms_factory > constant:cbrn_math.zero
+		dockyard > constant:cbrn_math.zero
+	}
+}
+
+cbrn_target_is_valid_allied_protection_partner = {
+	exists = yes
+	NOT = { tag = ROOT }
+	is_in_faction_with = ROOT
+	NOT = { has_capitulated = yes }
+}
+
+cbrn_target_can_supply_imported_masks = {
+	cbrn_target_is_valid_allied_protection_partner = yes
+	NOT = {
+		has_equipment = {
+			gas_mask_equipment < constant:cbrn_protection_decision_cost.import_masks_crates
+		}
+	}
+}
+
+cbrn_target_can_receive_exported_masks = {
+	exists = yes
+	NOT = { tag = ROOT }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { has_capitulated = yes }
+	NOT = { has_war_with = ROOT }
+	OR = {
+		cbrn_target_is_valid_allied_protection_partner = yes
+		is_in_array = {
+			array = condemnation_humanitarian_carveout_participants
+			value = ROOT
+		}
+	}
+	NOT = {
+		has_equipment = {
+			gas_mask_equipment > constant:cbrn_protection_ai.export_minimum_reserve
+		}
+	}
+}
+
+cbrn_target_can_license_respirator_design = {
+	cbrn_target_is_valid_allied_protection_partner = yes
+	OR = {
+		AND = {
+			has_tech = sealed_assault_protection
+			ROOT = { NOT = { has_tech = sealed_assault_protection } }
+		}
+		AND = {
+			has_tech = advanced_gas_masks
+			ROOT = { NOT = { has_tech = advanced_gas_masks } }
+		}
+		AND = {
+			has_tech = improved_gas_masks
+			ROOT = { NOT = { has_tech = improved_gas_masks } }
+		}
+	}
+}
+
+cbrn_profile_is_mass_civil_defence = {
+	check_variable = {
+		var = cbrn_protection_program_profile
+		value = constant:cbrn_protection_program_profile.mass_civil_defence
+		compare = equals
+	}
+}
+
+cbrn_profile_is_prepared_power = {
+	OR = {
+		check_variable = { var = cbrn_protection_program_profile value = constant:cbrn_protection_program_profile.large_prepared_power compare = equals }
+		check_variable = { var = cbrn_protection_program_profile value = constant:cbrn_protection_program_profile.prepared_industrial compare = equals }
+		check_variable = { var = cbrn_protection_program_profile value = constant:cbrn_protection_program_profile.prepared_frontier compare = equals }
+	}
+}
+
+cbrn_profile_is_military_first = {
+	OR = {
+		check_variable = { var = cbrn_protection_program_profile value = constant:cbrn_protection_program_profile.military_first compare = equals }
+		check_variable = { var = cbrn_protection_program_profile value = constant:cbrn_protection_program_profile.military_first_large compare = equals }
+	}
+}
+
+cbrn_profile_is_industrial_reserve = {
+	check_variable = {
+		var = cbrn_protection_program_profile
+		value = constant:cbrn_protection_program_profile.industrial_reserve
+		compare = equals
+	}
+}
+
+cbrn_profile_is_civil_defence_network = {
+	OR = {
+		check_variable = { var = cbrn_protection_program_profile value = constant:cbrn_protection_program_profile.first_world_war_legacy compare = equals }
+		check_variable = { var = cbrn_protection_program_profile value = constant:cbrn_protection_program_profile.civil_defence_reserve compare = equals }
+		check_variable = { var = cbrn_protection_program_profile value = constant:cbrn_protection_program_profile.commonwealth_program compare = equals }
+		check_variable = { var = cbrn_protection_program_profile value = constant:cbrn_protection_program_profile.scandinavian_program compare = equals }
+	}
+}
+
+cbrn_profile_is_exposed_or_fragmented = {
+	OR = {
+		check_variable = { var = cbrn_protection_program_profile value = constant:cbrn_protection_program_profile.exposed_secondary compare = equals }
+		check_variable = { var = cbrn_protection_program_profile value = constant:cbrn_protection_program_profile.fragmented_chinese_program compare = equals }
+	}
+}
+
+cbrn_profile_is_limited_program = {
+	check_variable = {
+		var = cbrn_protection_program_profile
+		value = constant:cbrn_protection_program_profile.limited_program
+		compare = equals
+	}
+}
+
+cbrn_profile_is_minimal_or_unassigned = {
+	OR = {
+		NOT = { has_variable = cbrn_protection_program_profile }
+		check_variable = { var = cbrn_protection_program_profile value = constant:cbrn_protection_program_profile.none compare = equals }
+		check_variable = { var = cbrn_protection_program_profile value = constant:cbrn_protection_program_profile.minimal_program compare = equals }
+	}
+}
+
+cbrn_profile_is_limited_or_minimal = {
+	OR = {
+		check_variable = { var = cbrn_protection_program_profile value = constant:cbrn_protection_program_profile.limited_program compare = equals }
+		check_variable = { var = cbrn_protection_program_profile value = constant:cbrn_protection_program_profile.minimal_program compare = equals }
+	}
+}

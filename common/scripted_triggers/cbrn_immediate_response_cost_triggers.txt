@@ -1,0 +1,165 @@
+# Country-scoped Civil Defence quotations. ROOT pays and FROM is its state.
+# Emergency issue preserves physical crates; hospital preparation quotes its
+# consumed materials. These predicates never debit resources or issue masks.
+
+# Inputs: cbrn_response_component_ordinary, _family, _kind. Callers declare
+# _quoted, _valid, _source, and _affordable before reading returned outputs.
+cbrn_quote_immediate_response_component = {
+	set_temp_variable = { cbrn_response_component_quoted = cbrn_response_component_ordinary }
+	set_temp_variable = { cbrn_response_component_valid = constant:universal_cost_framework.one }
+	set_temp_variable = { cbrn_response_component_source = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_response_component_affordable = constant:universal_cost_framework.zero }
+	if = {
+		limit = { check_variable = { cbrn_response_component_ordinary < constant:universal_cost_framework.zero } }
+		set_temp_variable = { cbrn_response_component_valid = constant:universal_cost_framework.zero }
+	}
+	if = {
+		limit = { black_friday_is_active = yes }
+		set_temp_variable = { cbrn_response_component_valid = constant:universal_cost_framework.zero }
+		set_temp_variable = { universal_cost_source_query_id = constant:universal_cost_framework.black_friday_source_id }
+		if = {
+			limit = { universal_cost_source_is_active = yes }
+			set_temp_variable = { black_friday_quote_ordinary_cost = cbrn_response_component_ordinary }
+			set_temp_variable = { black_friday_quote_family_mask = cbrn_response_component_family }
+			set_temp_variable = { black_friday_quote_requested_quantum = constant:universal_cost_framework.one }
+			set_temp_variable = { black_friday_quote_final_cost = cbrn_response_component_ordinary }
+			set_temp_variable = { black_friday_quote_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_quote_composed_ratio = constant:universal_cost_framework.zero }
+			if = {
+				limit = { black_friday_quote_custom_cost = yes }
+				set_temp_variable = { cbrn_response_component_quoted = black_friday_quote_final_cost }
+				set_temp_variable = { cbrn_response_component_valid = constant:universal_cost_framework.one }
+				set_temp_variable = { cbrn_response_component_source = constant:universal_cost_framework.black_friday_source_id }
+			}
+		}
+	}
+	if = {
+		limit = {
+			check_variable = { cbrn_response_component_valid = constant:universal_cost_framework.one }
+			NOT = { check_variable = { cbrn_response_component_kind = constant:universal_cost_resource_kind.custom_adapter } }
+		}
+		set_temp_variable = { universal_cost_quote_final_cost = cbrn_response_component_quoted }
+		set_temp_variable = { universal_cost_quote_valid = cbrn_response_component_valid }
+		set_temp_variable = { universal_cost_quote_resource_kind = cbrn_response_component_kind }
+		set_temp_variable = { universal_cost_quote_affordable = constant:universal_cost_framework.zero }
+		universal_cost_check_quote_affordable = yes
+		set_temp_variable = { cbrn_response_component_affordable = universal_cost_quote_affordable }
+	}
+	always = yes
+}
+
+cbrn_quote_emergency_distribution_fee = {
+	set_temp_variable = { cbrn_response_component_ordinary = constant:cbrn_protection_decision_cost.emergency_distribution_pp }
+	set_temp_variable = { cbrn_response_component_family = constant:universal_cost_family.political_power }
+	set_temp_variable = { cbrn_response_component_kind = constant:universal_cost_resource_kind.political_power }
+	set_temp_variable = { cbrn_response_component_quoted = cbrn_response_component_ordinary }
+	set_temp_variable = { cbrn_response_component_valid = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_response_component_source = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_response_component_affordable = constant:universal_cost_framework.zero }
+	cbrn_quote_immediate_response_component = yes
+	set_temp_variable = { cbrn_emergency_fee = cbrn_response_component_quoted }
+	set_temp_variable = { cbrn_emergency_fee_valid = cbrn_response_component_valid }
+	set_temp_variable = { cbrn_emergency_fee_source = cbrn_response_component_source }
+	set_temp_variable = { cbrn_emergency_fee_affordable = cbrn_response_component_affordable }
+	always = yes
+}
+
+# The price remains the full quoted quantity even when stock cannot supply it.
+# The five allocations are payment models, not five additional quoted fees.
+cbrn_quote_hospital_response_bundle = {
+	set_temp_variable = { cbrn_hospital_quote_valid = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_hospital_pp_affordable = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_hospital_support_affordable = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_hospital_masks_affordable = constant:universal_cost_framework.zero }
+	if = {
+		limit = {
+			FROM = {
+				has_variable = cbrn_response_hospital_mask_cost
+				has_variable = cbrn_response_hospital_support_cost
+			}
+		}
+		set_temp_variable = { cbrn_response_component_ordinary = constant:cbrn_protection_decision_cost.protect_hospitals_pp }
+		set_temp_variable = { cbrn_response_component_family = constant:universal_cost_family.political_power }
+		set_temp_variable = { cbrn_response_component_kind = constant:universal_cost_resource_kind.political_power }
+		set_temp_variable = { cbrn_response_component_quoted = cbrn_response_component_ordinary }
+		set_temp_variable = { cbrn_response_component_valid = constant:universal_cost_framework.zero }
+		set_temp_variable = { cbrn_response_component_source = constant:universal_cost_framework.zero }
+		set_temp_variable = { cbrn_response_component_affordable = constant:universal_cost_framework.zero }
+		cbrn_quote_immediate_response_component = yes
+		set_temp_variable = { cbrn_hospital_pp = cbrn_response_component_quoted }
+		set_temp_variable = { cbrn_hospital_pp_affordable = cbrn_response_component_affordable }
+		set_temp_variable = { cbrn_hospital_source = cbrn_response_component_source }
+		set_temp_variable = { cbrn_hospital_quote_valid = cbrn_response_component_valid }
+
+		set_temp_variable = { cbrn_response_component_ordinary = FROM.cbrn_response_hospital_mask_cost }
+		set_temp_variable = { cbrn_response_component_family = constant:universal_cost_family.equipment }
+		# Aggregate price; the exact concrete-model allocation preflights stock.
+		set_temp_variable = { cbrn_response_component_kind = constant:universal_cost_resource_kind.custom_adapter }
+		cbrn_quote_immediate_response_component = yes
+		set_temp_variable = { cbrn_hospital_masks = cbrn_response_component_quoted }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { cbrn_response_component_valid = constant:universal_cost_framework.zero }
+					NOT = { check_variable = { cbrn_response_component_source = cbrn_hospital_source } }
+				}
+			}
+			set_temp_variable = { cbrn_hospital_quote_valid = constant:universal_cost_framework.zero }
+		}
+		set_temp_variable = { cbrn_hospital_mask_remaining = cbrn_hospital_masks }
+		set_temp_variable = { cbrn_hospital_model_available = num_equipment@gas_mask_equipment_reconditioned }
+		set_temp_variable = { cbrn_hospital_mask_reconditioned = cbrn_hospital_mask_remaining }
+		clamp_temp_variable = { var = cbrn_hospital_mask_reconditioned min = constant:cbrn_math.zero max = cbrn_hospital_model_available }
+		subtract_from_temp_variable = { cbrn_hospital_mask_remaining = cbrn_hospital_mask_reconditioned }
+		set_temp_variable = { cbrn_hospital_model_available = num_equipment@gas_mask_equipment_1 }
+		set_temp_variable = { cbrn_hospital_mask_basic = cbrn_hospital_mask_remaining }
+		clamp_temp_variable = { var = cbrn_hospital_mask_basic min = constant:cbrn_math.zero max = cbrn_hospital_model_available }
+		subtract_from_temp_variable = { cbrn_hospital_mask_remaining = cbrn_hospital_mask_basic }
+		set_temp_variable = { cbrn_hospital_model_available = num_equipment@gas_mask_equipment_2 }
+		set_temp_variable = { cbrn_hospital_mask_improved = cbrn_hospital_mask_remaining }
+		clamp_temp_variable = { var = cbrn_hospital_mask_improved min = constant:cbrn_math.zero max = cbrn_hospital_model_available }
+		subtract_from_temp_variable = { cbrn_hospital_mask_remaining = cbrn_hospital_mask_improved }
+		set_temp_variable = { cbrn_hospital_model_available = num_equipment@gas_mask_equipment_3 }
+		set_temp_variable = { cbrn_hospital_mask_advanced = cbrn_hospital_mask_remaining }
+		clamp_temp_variable = { var = cbrn_hospital_mask_advanced min = constant:cbrn_math.zero max = cbrn_hospital_model_available }
+		subtract_from_temp_variable = { cbrn_hospital_mask_remaining = cbrn_hospital_mask_advanced }
+		set_temp_variable = { cbrn_hospital_model_available = num_equipment@gas_mask_equipment_4 }
+		set_temp_variable = { cbrn_hospital_mask_sealed = cbrn_hospital_mask_remaining }
+		clamp_temp_variable = { var = cbrn_hospital_mask_sealed min = constant:cbrn_math.zero max = cbrn_hospital_model_available }
+		subtract_from_temp_variable = { cbrn_hospital_mask_remaining = cbrn_hospital_mask_sealed }
+		if = {
+			limit = { NOT = { check_variable = { cbrn_hospital_mask_remaining > constant:cbrn_math.zero } } }
+			set_temp_variable = { cbrn_hospital_masks_affordable = constant:universal_cost_framework.one }
+		}
+
+		set_temp_variable = { cbrn_response_component_ordinary = FROM.cbrn_response_hospital_support_cost }
+		set_temp_variable = { cbrn_response_component_family = constant:universal_cost_family.equipment }
+		set_temp_variable = { cbrn_response_component_kind = constant:universal_cost_resource_kind.support_equipment_1 }
+		cbrn_quote_immediate_response_component = yes
+		set_temp_variable = { cbrn_hospital_support = cbrn_response_component_quoted }
+		set_temp_variable = { cbrn_hospital_support_affordable = cbrn_response_component_affordable }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { cbrn_response_component_valid = constant:universal_cost_framework.zero }
+					NOT = { check_variable = { cbrn_response_component_source = cbrn_hospital_source } }
+				}
+			}
+			set_temp_variable = { cbrn_hospital_quote_valid = constant:universal_cost_framework.zero }
+		}
+	}
+	always = yes
+}
+
+cbrn_country_hospital_response_payment_ready = {
+	FROM = { cbrn_state_can_protect_hospitals_and_utilities = yes }
+	set_temp_variable = { cbrn_hospital_quote_valid = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_hospital_pp_affordable = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_hospital_support_affordable = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_hospital_masks_affordable = constant:universal_cost_framework.zero }
+	cbrn_quote_hospital_response_bundle = yes
+	check_variable = { cbrn_hospital_quote_valid = constant:universal_cost_framework.one }
+	check_variable = { cbrn_hospital_pp_affordable = constant:universal_cost_framework.one }
+	check_variable = { cbrn_hospital_support_affordable = constant:universal_cost_framework.one }
+	check_variable = { cbrn_hospital_masks_affordable = constant:universal_cost_framework.one }
+}

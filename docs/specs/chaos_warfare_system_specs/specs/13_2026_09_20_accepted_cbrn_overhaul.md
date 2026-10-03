@@ -89,3 +89,5 @@ The [Event 020 public-language correction](../../020_black_plague_specs/correcti
 The [Event 020 active-project cancellation correction](../../020_black_plague_specs/corrections/2026-09-27_shared_state_action_cancel_lifecycle.md) keeps the 26 ordinary paid state projects and the Royal Node counterstrike running after their own active receipt is set and cancels only when the live project becomes invalid. It does not alter the unresolved six-lane presentation or native decision-render requirements.
 
 Ancillary repairs follow the owner implementation handoffs and must be recorded with exact files, identifiers, source evidence, and remaining validation. No unapproved fallback, proxy, or substitute is accepted by this amendment.
+
+The [immediate Civil Defence sale correction](../corrections/2026-10-03_immediate_protection_sale_transactions.md) preserves full emergency issue while quoting its service fee and consumed hospital preparation through the existing source, with exact native receipt/refund and debit-free outcome handling.

@@ -236,3 +236,10 @@ Resolved weighted comparison, native execution/release, and native row evidence 
 
 The final three-price-anchor Protective Aid `hoi4.probability_compare` retry returned a partial artifact at scenario hash `6875751c294a3da4ffac4ab7f9ef68fe84744a576b0c8b03aa8ac864fb823d98`, with all six candidate rows unresolved and no numeric probability delta.
 The full comparison and original traces are persisted under the linked implementation handoff; this restores the comparison evidence route without closing native execution or weighted eligibility.
+
+## 2026-10-03 immediate Civil Defence integration
+
+The [accepted owner correction](../../specs/chaos_warfare_system_specs/corrections/2026-10-03_immediate_protection_sale_transactions.md) and [implementation evidence](2026-10-03_immediate_protection_sale_transactions.md) integrate Emergency Distribution and Hospitals/Utilities with canonical current-price rows and once-only native receipts/outcomes.
+Full emergency issue is conserved; hospital preparation pays and refunds exact real mask models and support.
+Twenty-one actual-source callback/refund cases pass; matched seventeen-scenario MCP comparison retains unchanged score-only priorities and partial eligibility.
+Export and Occupied Distribution remain source work; native execution/receipt/render acceptance remains pending and the whole overhaul is incomplete.

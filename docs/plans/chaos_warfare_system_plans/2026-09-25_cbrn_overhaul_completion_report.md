@@ -282,3 +282,12 @@ Native payment/cancellation/UI evidence and a resolved weighted comparison remai
 
 The final three-price-anchor Protective Aid `hoi4.probability_compare` retry returned a partial artifact at scenario hash `6875751c294a3da4ffac4ab7f9ef68fe84744a576b0c8b03aa8ac864fb823d98`, with all six candidate rows unresolved and no numeric probability delta.
 The full comparison and original traces are persisted under the linked implementation handoff; this restores the comparison evidence route without closing native execution or weighted eligibility.
+
+## 2026-10-03 immediate Civil Defence sale transactions
+
+The [owner integration](2026-10-03_immediate_protection_sale_transactions.md) implements current-price Emergency Distribution and Hospitals/Utilities with shared human/AI callbacks, exact native component receipts, and debit-free outcomes.
+Emergency issue retains its full physical coverage accounts while the nominal fee is 10/5/3 PP; hospital consumed materials use canonical quotes and exact oldest-first model refunds.
+Twenty-one actual-source component/refund scenarios passed, including malformed-chain diagnostics and idempotent stored-credit recovery; full quote/order, native issue, and rendering remain outside that suite.
+Matching 17-scenario MCP before/after/compare calls returned partial results; all 34 raw score and rank deltas are zero, but thirty eligibility rows remain unresolved.
+The source callback suite covers 21 top-level cases; native execution, complete quote/order coverage, and cost-row rendering remain unverified.
+Export and Occupied Distribution remain source omissions; the whole overhaul remains incomplete.
