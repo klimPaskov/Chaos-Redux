@@ -10,7 +10,10 @@ chaosx_nr25_execute_analysis_action = {
 	if = {
 		limit = { check_variable = { var = chaosx_nr25_analysis_action value = constant:chaosx_nr25_analysis_action.archive compare = equals } }
 		add_political_power = constant:chaosx_nr25_cost.pp_analysis
-		add_ideas = chaosx_nr25_winner_analysis
+		if = {
+			limit = { has_country_flag = chaosx_nr25_recovery_winner }
+			add_ideas = chaosx_nr25_winner_analysis
+		}
 		set_country_flag = chaosx_nr25_analysis_archived
 	}
 	if = {
@@ -61,12 +64,7 @@ chaosx_nr25_execute_analysis_action = {
 		add_political_power = constant:chaosx_nr25_cost.pp_analysis
 		set_country_flag = chaosx_nr25_analysis_sealed
 		set_country_flag = chaosx_nr25_analysis_evidence_preserved
-		set_country_flag = chaosx_nr25_aftermath_closed
-		clr_country_flag = chaosx_nr25_aftermath_open
-		clr_global_flag = chaosx_nr25_aftermath_active
-		set_global_flag = chaosx_nr25_closed
-		set_variable = { global.chaosx_nr25_phase = constant:chaosx_nr25_phase.closed }
-		set_country_flag = chaosx_nr25_terminal
+		chaosx_nr25_close_country_analysis = yes
 	}
 	chaosx_nr25_clamp_values = yes
 	chaosx_nr25_update_achievement_tracking = yes

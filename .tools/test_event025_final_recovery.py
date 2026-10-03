@@ -18,11 +18,11 @@ TOKEN = re.compile(r'"[^"]*"|[{}=]|[^\s{}=]+')
 SOURCE = re.sub(r"#[^\n]*", "", RUNTIME.read_text(encoding="utf-8-sig"))
 
 
-def block(name):
-    start = re.search(r"\b" + re.escape(name) + r"\s*=\s*\{", SOURCE)
+def block(name, source=SOURCE):
+    start = re.search(r"\b" + re.escape(name) + r"\s*=\s*\{", source)
     if not start:
         raise AssertionError(f"Missing recovery effect {name}")
-    tokens = TOKEN.findall(SOURCE[start.end():])
+    tokens = TOKEN.findall(source[start.end():])
     at = 0
 
     def parse():
@@ -105,6 +105,10 @@ class Runtime:
                 result = any(self.condition([item], actor) for item in data)
             elif key == "AND":
                 result = self.condition(data, actor)
+            elif key == "any_of_scopes":
+                array = dict(data)["array"]
+                predicates = [(k, v) for k, v in data if k != "array"]
+                result = any(self.condition(predicates, c) for c in self.value(array, actor))
             elif key == "check_variable":
                 args = dict(data)
                 comparisons = {

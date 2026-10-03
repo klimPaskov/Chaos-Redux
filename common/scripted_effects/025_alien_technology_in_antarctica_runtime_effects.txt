@@ -91,7 +91,7 @@ chaosx_nr25_register_participant = {
 		}
 		set_country_flag = chaosx_nr25_entry_accepted
 		chaosx_nr25_prepare_board_slots = yes
-		country_event = { id = chaosx.nr25.280 days = constant:chaosx_nr25_timing.pulse_days }
+		chaosx_nr25_schedule_participant_pulse = yes
 	}
 }
 
@@ -942,73 +942,79 @@ chaosx_nr25_run_bounded_pulse = {
 			limit = { check_variable = { var = chaosx_nr25_dependence_accident_cooldown value = constant:chaosx_nr25_value.zero compare = greater_than } }
 			subtract_from_variable = { chaosx_nr25_dependence_accident_cooldown = constant:chaosx_nr25_timing.pulse_days }
 		}
-		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_pulse }
 		if = {
-			limit = { has_global_flag = chaosx_nr25_evolution_active_signal }
-			add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_signal_pulse }
-			add_to_variable = { chaosx_nr25_signal_intensity = constant:chaosx_nr25_cost.signal_pulse_intensity }
-		}
-		if = {
-			limit = { has_global_flag = chaosx_nr25_evolution_something_survived }
-			subtract_from_variable = { chaosx_nr25_crew = constant:chaosx_nr25_cost.crew_survivor_burden }
-		}
-		if = {
-			limit = { has_global_flag = chaosx_nr25_evolution_militarised_antarctica }
-			add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_militarisation_pulse }
-		}
-		if = {
-			limit = { has_global_flag = chaosx_nr25_evolution_wreck_breaking_apart }
-			add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_wreck_pulse }
-			if = { limit = { NOT = { has_country_flag = chaosx_nr25_wreck_stabilized } } subtract_from_variable = { chaosx_nr25_wreck_integrity = constant:chaosx_nr25_cost.wreck_integrity_pulse } }
-			if = { limit = { check_variable = { var = chaosx_nr25_wreck_integrity value = constant:chaosx_nr25_value.fifty compare = less_than_or_equals } } set_country_flag = chaosx_nr25_fragment_field_active }
-			if = { limit = { check_variable = { var = chaosx_nr25_wreck_integrity value = constant:chaosx_nr25_value.twenty compare = less_than_or_equals } } set_country_flag = chaosx_nr25_wreck_critical }
+			limit = { has_global_flag = chaosx_nr25_active NOT = { has_country_flag = chaosx_nr25_terminal } }
+			add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_pulse }
+			if = {
+				limit = { has_global_flag = chaosx_nr25_evolution_active_signal }
+				add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_signal_pulse }
+				add_to_variable = { chaosx_nr25_signal_intensity = constant:chaosx_nr25_cost.signal_pulse_intensity }
+			}
+			if = {
+				limit = { has_global_flag = chaosx_nr25_evolution_something_survived }
+				subtract_from_variable = { chaosx_nr25_crew = constant:chaosx_nr25_cost.crew_survivor_burden }
+			}
+			if = {
+				limit = { has_global_flag = chaosx_nr25_evolution_militarised_antarctica }
+				add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_militarisation_pulse }
+			}
+			if = {
+				limit = { has_global_flag = chaosx_nr25_evolution_wreck_breaking_apart }
+				add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_wreck_pulse }
+				if = { limit = { NOT = { has_country_flag = chaosx_nr25_wreck_stabilized } } subtract_from_variable = { chaosx_nr25_wreck_integrity = constant:chaosx_nr25_cost.wreck_integrity_pulse } }
+				if = { limit = { check_variable = { var = chaosx_nr25_wreck_integrity value = constant:chaosx_nr25_value.fifty compare = less_than_or_equals } } set_country_flag = chaosx_nr25_fragment_field_active }
+				if = { limit = { check_variable = { var = chaosx_nr25_wreck_integrity value = constant:chaosx_nr25_value.twenty compare = less_than_or_equals } } set_country_flag = chaosx_nr25_wreck_critical }
+			}
 		}
 		if = {
 			limit = {
 				has_global_flag = chaosx_nr25_evolution_technology_changes_users
 				OR = {
-					has_country_flag = chaosx_nr25_recovery_winner
+					has_country_flag = chaosx_nr25_aftermath_open
 					has_country_flag = chaosx_nr25_dependence_started
 				}
 			}
 			add_to_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_cost.dependence_pulse }
 		}
 		if = {
-			limit = {
-				has_global_flag = chaosx_nr25_evolution_active_signal
-				NOT = { has_country_flag = chaosx_nr25_signal_profile_initialized }
-			}
-			set_variable = { chaosx_nr25_signal_intensity = constant:chaosx_nr25_cost.signal_opening_intensity }
-			set_country_flag = chaosx_nr25_signal_profile_initialized
-		}
-		if = {
-			limit = {
-				has_global_flag = chaosx_nr25_evolution_something_survived
-				NOT = { has_country_flag = chaosx_nr25_survivor_profile_initialized }
+			limit = { has_global_flag = chaosx_nr25_active NOT = { has_country_flag = chaosx_nr25_terminal } }
+			if = {
+				limit = {
+					has_global_flag = chaosx_nr25_evolution_active_signal
+					NOT = { has_country_flag = chaosx_nr25_signal_profile_initialized }
+				}
+				set_variable = { chaosx_nr25_signal_intensity = constant:chaosx_nr25_cost.signal_opening_intensity }
+				set_country_flag = chaosx_nr25_signal_profile_initialized
 			}
 			if = {
-				limit = { check_variable = { var = chaosx_nr25_entry_order value = constant:chaosx_nr25_value.two compare = less_than_or_equals } }
-				set_variable = { chaosx_nr25_survivor_profile = constant:chaosx_nr25_cost.survivor_profile_default }
+				limit = {
+					has_global_flag = chaosx_nr25_evolution_something_survived
+					NOT = { has_country_flag = chaosx_nr25_survivor_profile_initialized }
+				}
+				if = {
+					limit = { check_variable = { var = chaosx_nr25_entry_order value = constant:chaosx_nr25_value.two compare = less_than_or_equals } }
+					set_variable = { chaosx_nr25_survivor_profile = constant:chaosx_nr25_cost.survivor_profile_default }
+				}
+				else_if = {
+					limit = { check_variable = { var = chaosx_nr25_entry_order value = constant:chaosx_nr25_value.four compare = less_than_or_equals } }
+					set_variable = { chaosx_nr25_survivor_profile = constant:chaosx_nr25_cost.survivor_profile_alt }
+				}
+				else = { set_variable = { chaosx_nr25_survivor_profile = constant:chaosx_nr25_cost.survivor_profile_autonomous } }
+				set_country_flag = chaosx_nr25_survivor_profile_initialized
 			}
-			else_if = {
-				limit = { check_variable = { var = chaosx_nr25_entry_order value = constant:chaosx_nr25_value.four compare = less_than_or_equals } }
-				set_variable = { chaosx_nr25_survivor_profile = constant:chaosx_nr25_cost.survivor_profile_alt }
+			if = {
+				limit = {
+					has_global_flag = chaosx_nr25_evolution_militarised_antarctica
+					has_country_flag = chaosx_nr25_outpost_established
+					NOT = { has_country_flag = chaosx_nr25_outpost_lost }
+					check_variable = { var = chaosx_nr25_exposure_risk value = constant:chaosx_nr25_value.eighty_five compare = greater_than }
+				}
+				set_variable = { chaosx_nr25_outpost_security = constant:chaosx_nr25_value.zero }
+				clr_country_flag = chaosx_nr25_outpost_established
+				set_country_flag = chaosx_nr25_outpost_compromised
+				set_country_flag = chaosx_nr25_outpost_lost
+				subtract_from_variable = { chaosx_nr25_progress = constant:chaosx_nr25_value.four }
 			}
-			else = { set_variable = { chaosx_nr25_survivor_profile = constant:chaosx_nr25_cost.survivor_profile_autonomous } }
-			set_country_flag = chaosx_nr25_survivor_profile_initialized
-		}
-		if = {
-			limit = {
-				has_global_flag = chaosx_nr25_evolution_militarised_antarctica
-				has_country_flag = chaosx_nr25_outpost_established
-				NOT = { has_country_flag = chaosx_nr25_outpost_lost }
-				check_variable = { var = chaosx_nr25_exposure_risk value = constant:chaosx_nr25_value.eighty_five compare = greater_than }
-			}
-			set_variable = { chaosx_nr25_outpost_security = constant:chaosx_nr25_value.zero }
-			clr_country_flag = chaosx_nr25_outpost_established
-			set_country_flag = chaosx_nr25_outpost_compromised
-			set_country_flag = chaosx_nr25_outpost_lost
-			subtract_from_variable = { chaosx_nr25_progress = constant:chaosx_nr25_value.four }
 		}
 		if = {
 			limit = {
@@ -1024,21 +1030,7 @@ chaosx_nr25_run_bounded_pulse = {
 			set_country_flag = chaosx_nr25_dependence_accident
 			set_country_flag = chaosx_nr25_dependence_accident_history
 		}
-		if = {
-			limit = {
-				has_country_flag = chaosx_nr25_dependence_contained
-				NOT = { has_country_flag = chaosx_nr25_dependence_accident }
-			}
-			add_to_variable = { chaosx_nr25_dependence_safe_days = constant:chaosx_nr25_timing.pulse_days }
-		}
-		if = {
-			limit = {
-				has_country_flag = chaosx_nr25_dependence_started
-				NOT = { has_country_flag = chaosx_nr25_dependence_accident }
-				check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_cost.dependence_stable_threshold compare = greater_than_or_equals }
-			}
-			add_to_variable = { chaosx_nr25_dependence_stable_days = constant:chaosx_nr25_timing.pulse_days }
-		}
+		chaosx_nr25_update_dependence_streaks = yes
 		if = {
 			limit = { check_variable = { var = chaosx_nr25_exposure_risk value = constant:chaosx_nr25_cost.exposure_max compare = greater_than_or_equals } }
 			set_country_flag = chaosx_nr25_emergency_weather
@@ -1064,22 +1056,7 @@ chaosx_nr25_run_bounded_pulse = {
 			}
 			chaosx_nr25_resolve_final_candidate = yes
 		}
-		if = {
-			limit = {
-				OR = {
-					AND = {
-						has_global_flag = chaosx_nr25_active
-						NOT = { has_country_flag = chaosx_nr25_terminal }
-					}
-					AND = {
-						has_global_flag = chaosx_nr25_aftermath_active
-						has_country_flag = chaosx_nr25_recovery_winner
-						NOT = { has_country_flag = chaosx_nr25_aftermath_closed }
-					}
-				}
-			}
-			country_event = { id = chaosx.nr25.280 days = constant:chaosx_nr25_timing.pulse_days }
-		}
+		chaosx_nr25_schedule_participant_pulse = yes
 	}
 }
 
@@ -2882,9 +2859,10 @@ chaosx_nr25_apply_winner_settlement = {
 		set_country_flag = chaosx_nr25_aftermath_open
 		clr_country_flag = chaosx_nr25_terminal
 		set_variable = { chaosx_nr25_action_cooldown = constant:chaosx_nr25_value.zero }
-		country_event = { id = chaosx.nr25.280 days = constant:chaosx_nr25_timing.pulse_days }
 	}
 	set_country_flag = chaosx_nr25_winner_settlement_complete
+	set_variable = { chaosx_nr25_action_cooldown = constant:chaosx_nr25_value.zero }
+	chaosx_nr25_open_holder_aftermath = yes
 	set_global_flag = chaosx_nr25_winner_report_ready
 	chaosx_nr25_update_achievement_tracking = yes
 }
@@ -2918,6 +2896,8 @@ chaosx_nr25_apply_loser_settlement = {
 		}
 	}
 	set_country_flag = chaosx_nr25_loser_settlement_complete
+	set_variable = { chaosx_nr25_action_cooldown = constant:chaosx_nr25_value.zero }
+	chaosx_nr25_open_holder_aftermath = yes
 	chaosx_nr25_update_achievement_tracking = yes
 }
 

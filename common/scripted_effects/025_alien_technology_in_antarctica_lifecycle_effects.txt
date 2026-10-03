@@ -1,0 +1,97 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 PARTICIPANT PULSE AND ANALYSIS LIFECYCLE
+# ============================================================================
+# One outstanding country event per registered expedition. Material holders
+# retain their own aftermath clock; sealing one archive never closes another
+# participant's analysis. These helpers iterate only the stored roster, and
+# only when a country closes its analysis.
+
+chaosx_nr25_schedule_participant_pulse = {
+	if = {
+		limit = {
+			has_country_flag = chaosx_nr25_participant
+			NOT = { has_country_flag = chaosx_nr25_pulse_pending }
+			OR = {
+				AND = {
+					has_global_flag = chaosx_nr25_active
+					NOT = { has_country_flag = chaosx_nr25_terminal }
+				}
+				AND = {
+					has_country_flag = chaosx_nr25_aftermath_open
+					NOT = { has_country_flag = chaosx_nr25_aftermath_closed }
+				}
+			}
+		}
+		set_country_flag = chaosx_nr25_pulse_pending
+		country_event = { id = chaosx.nr25.280 days = constant:chaosx_nr25_timing.pulse_days }
+	}
+}
+
+chaosx_nr25_open_holder_aftermath = {
+	if = {
+		limit = {
+			has_country_flag = chaosx_nr25_participant
+			has_global_flag = chaosx_nr25_evolution_technology_changes_users
+			chaosx_nr25_v_material_holder_valid = yes
+			NOT = { has_country_flag = chaosx_nr25_aftermath_closed }
+		}
+		if = {
+			limit = { NOT = { has_country_flag = chaosx_nr25_dependence_started } }
+			set_country_flag = chaosx_nr25_dependence_started
+			set_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_cost.dependence_opening }
+		}
+		set_global_flag = chaosx_nr25_aftermath_active
+		set_country_flag = chaosx_nr25_aftermath_open
+		set_country_flag = chaosx_nr25_evolution_technology_changes_users_holder
+		clr_country_flag = chaosx_nr25_terminal
+		chaosx_nr25_schedule_participant_pulse = yes
+	}
+}
+
+# COUNTRY scope. Both timed achievements require a continuous interval in
+# their stated band. Leaving the band resets the interval; it cannot be
+# banked across an accident or a period of unstable integration.
+chaosx_nr25_update_dependence_streaks = {
+	if = {
+		limit = {
+			has_country_flag = chaosx_nr25_dependence_contained
+			NOT = { has_country_flag = chaosx_nr25_dependence_accident }
+			check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_cost.dependence_contained_threshold compare = less_than }
+		}
+		add_to_variable = { chaosx_nr25_dependence_safe_days = constant:chaosx_nr25_timing.pulse_days }
+	}
+	else = { set_variable = { chaosx_nr25_dependence_safe_days = constant:chaosx_nr25_value.zero } }
+	if = {
+		limit = {
+			has_country_flag = chaosx_nr25_dependence_started
+			has_country_flag = chaosx_nr25_dependence_integrate_route
+			NOT = { has_country_flag = chaosx_nr25_dependence_accident }
+			check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_cost.dependence_stable_threshold compare = greater_than_or_equals }
+		}
+		add_to_variable = { chaosx_nr25_dependence_stable_days = constant:chaosx_nr25_timing.pulse_days }
+	}
+	else = { set_variable = { chaosx_nr25_dependence_stable_days = constant:chaosx_nr25_value.zero } }
+}
+
+chaosx_nr25_close_country_analysis = {
+	set_country_flag = chaosx_nr25_aftermath_closed
+	clr_country_flag = chaosx_nr25_aftermath_open
+	set_country_flag = chaosx_nr25_terminal
+	set_country_flag = chaosx_nr25_board_closed
+	set_variable = { chaosx_nr25_phase = constant:chaosx_nr25_phase.closed }
+	if = {
+		limit = {
+			NOT = {
+				any_of_scopes = {
+					array = global.chaosx_nr25_participants
+					exists = yes
+					has_country_flag = chaosx_nr25_participant
+					NOT = { has_country_flag = chaosx_nr25_analysis_sealed }
+				}
+			}
+		}
+		clr_global_flag = chaosx_nr25_aftermath_active
+		set_global_flag = chaosx_nr25_closed
+		set_variable = { global.chaosx_nr25_phase = constant:chaosx_nr25_phase.closed }
+	}
+}
