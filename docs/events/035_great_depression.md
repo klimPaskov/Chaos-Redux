@@ -93,6 +93,10 @@ Neither private receiver creates another normal pacing entry.
 
 The selected-center flow uses state targets, one occupied action slot, cooldowns, project receipts, state status validation, and cleanup on transfer or crisis closure.
 
+Historical completed work does not occupy the current project slot.
+A distinct paid authorization allows mapped follow-on work or reopening after a fresh collapse while preserving earlier completion and one-shot reward history.
+Selection and project proof require the state's exact registered episode; physical stage changes retain that proof.
+
 Every paid decision and mission uses the same affordability predicate in its ordinary availability and custom-cost display.
 
 Missions activate without an entry debit, require affordability at completion, and debit their displayed mapped action cost exactly once on successful completion. Cancellation and timeout do not create a second charge or refund an unspent cost.
@@ -108,6 +112,10 @@ The center ledger keeps aligned state, stage, project, loss receipt, factory bas
 Mapped center statuses include distressed, idled, shuttered, abandoned works, protected, public works active, reopened, and hollowed industrial district.
 
 Mapped projects include emergency public works, strategic-industry rescue, credit clearing, austerity administration, state coordination, controlled liquidation, freight restoration, reopening, and center protection where their doctrine and state gates permit them.
+
+This is the mapped design, not certification of every producer and inherited consumer.
+The current inherited-region audit identifies missing ongoing hidden-liability, secured-work salvage, and corridor-resolution consumers, plus missing authorizing producers for finance restoration, transport integration, and international reconstruction.
+Those accepted requirements remain queued, separately from unavailable upstream Event 34 history.
 
 Factory loss is delayed until sustained severe failure or a deliberate liquidation action.
 

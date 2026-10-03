@@ -495,15 +495,18 @@ great_depression_begin_cleared_economy_certification = {
 
 great_depression_select_center = {
 	if = {
-		limit = { exists = yes }
-		set_variable = { ROOT.great_depression_selected_center_state = THIS }
-		ROOT = {
-			set_country_flag = great_depression_center_selected
-			set_variable = { great_depression_center_selected_day = global.num_days }
-		}
+		limit = { great_depression_center_is_valid_selector_target = yes }
 		if = {
 			limit = { has_state_flag = great_depression_center_transfer_receipt }
 			great_depression_adopt_transferred_center = yes
+		}
+		if = {
+			limit = { great_depression_center_has_current_registration = yes }
+			set_variable = { ROOT.great_depression_selected_center_state = THIS }
+			ROOT = {
+				set_country_flag = great_depression_center_selected
+				set_variable = { great_depression_center_selected_day = global.num_days }
+			}
 		}
 	}
 }

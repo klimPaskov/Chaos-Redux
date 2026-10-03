@@ -74,6 +74,27 @@ No owner definitions or request amounts are duplicated.
 
 ## Companion, cleanup, and evidence limits
 
+### Center project identity
+
+A state has one current paid project authorization and keeps its last spent completion/failure IDs separately from historical completion flags.
+`great_depression_authorize_center_project` increments the state serial only for a current registered target with an open country project slot and a valid pending project.
+It binds the new authorization to the current episode and resets work timing, not prior completed rewards.
+Completion requires current ownership/control, matching registration and authorization episode, unspent authorization, and the configured work duration.
+Failure spends the same authorization once.
+An idle center may receive a distinct mapped follow-on or reopening project after a new collapse.
+
+`great_depression_write_center_project_ledger` runs in STATE scope with the acting country as ROOT.
+It reads the state's current registry index, project type, stage, start, stage, due, and pause dates and updates the corresponding existing aligned country columns.
+It returns no temporary output, creates no registry, and grants no reward.
+For example, the project-stage helper calls it after changing `great_depression_center_project_stage`.
+State authorization and spent IDs survive transfer; accepted adoption binds continuing work to the receiving episode without replaying prior completion.
+
+Reopening counts once per state and episode.
+Lasting Capacity and reconstruction construction use distinct one-shot receipts that treatment changes cannot clear.
+Physical transitions retain the center episode, while matching registered terminal cleanup clears the live episode and project fields.
+The immutable authorization serial and last spent IDs remain compact state history.
+The separate inherited liability, secured-value salvage, and corridor consumers are still missing and are not supplied by this project repair.
+
 The exact regional companion is documented in [035_great_depression_region_effects.md](035_great_depression_region_effects.md).
 State cleanup checks the registered state's current episode against the closing receiver before removing physical/project flags.
 Invalid sparse-registry actors retire without recovery rewards or pacing.

@@ -2,7 +2,7 @@
 
 ## Disposition
 
-The Event 35 gameplay, presentation, asset, achievement, documentation, and catalog implementation is present in the working tree.
+Event 35 source, presentation, assets, achievements, documentation, and catalog surfaces exist, but their presence is not full requirement coverage.
 
 Source review found additional cross-country ROOT-context defects after the earlier completion audit.
 The normal weighted entry and active-country maintenance now use recipient-root receivers `.9` and `.8`, respectively.
@@ -25,7 +25,10 @@ Two in-app map inspections returned `Transport closed`, and a direct read-only s
 
 The initial isolated decision/mission auditor timed out during GUI inspection and has no final handoff. A replacement was dispatched with an isolated source-only fallback, but the task-wait service did not return a retrievable final handoff.
 
-The final isolated event-completion auditor returned `Incomplete`, found no gameplay-source defect, and confirmed that the missing engine evidence prevents certification.
+The earlier isolated event-completion audit returned `Incomplete` with missing engine evidence.
+The subsequent [inherited-consumer audit](subagent_handoffs/inherited_consumer_completion_audit_2026-10-03.md) also found gameplay gaps: supplied regional metadata has no ongoing liability, salvage, or corridor-resolution consumer; historical completed work locks follow-on projects and newly reclosed centers; and three declared project types have no authorizing producer.
+Those findings supersede the earlier no-source-defect assessment within that scope.
+They are accepted implementation work under the user's full package requirement, not optional future extensions.
 
 The scoped availability repair and its immutable audit inputs were published as commit `37c6b472a9cb44c54fcea9214309fdf87facf00d` through an isolated index and guarded reference update.
 Its real-index reconciliation initially encountered `.git/index.lock` while other Git processes were live, then completed without changing the working-tree files or unrelated index paths.
@@ -38,6 +41,14 @@ The two reusable scope-frame and first-valid-selector skill rules are committed 
 That mixed-file commit retained the seven instruction lines owned by other work in their prior unstaged state.
 
 ## Current source repair and evidence delta: 2026-10-03
+
+Caller-owned temporary results and owner acknowledgements are committed as `e191580e4792f73d5925d80ad2d8c01a99b9baba`.
+Their immutable before/after sources and fixture were verified byte-exact in committed blobs.
+The project reclosure repair separates current authorization from historical work, preserves episode proof through physical transitions, blocks reward/adoption replay, pauses transferred work, and limits cleanup to the matching registered episode.
+Ten actual-source project/payment/transfer scenarios pass in `.tools/test_event035_center_projects.py`.
+The [source execution handoff](subagent_handoffs/center_project_source_execution_2026-10-03.md), [repair disposition](subagent_handoffs/center_project_reclosure_repair_2026-10-03.md), and [same-scenario comparison](subagent_handoffs/reclosure_probability_compare_2026-10-03.md) distinguish those checks from the unproved native and campaign behavior.
+The documented MCP comparison returned `PROBABILITY_SURFACE_EMPTY`, while focused event inspect/render returned partial evidence with zero helper coverage.
+These repairs do not close the inherited consumers, missing project producers, upstream data, full API acceptance, assets/live-consumer, or complete probability requirements listed below.
 
 The October cost-contract repair shortens 22 inline rows to the three-value display limit, gives all seventeen cost tooltips their full dynamic quote, and corrects the unresolved War Support texticon to the installed vanilla sprite.
 Nine resource-specific scripted-localisation selectors give each amount its own affordability color across all 51 normal, blocked, and tooltip rows.
@@ -368,7 +379,8 @@ The detailed scenario records in this section retain earlier bounded projections
 - The recovery-depth addendum is implemented and promoted into the source and mechanic documentation.
 - Architect and decision/mission implementation handoffs are superseded by parent-integrated source.
 - Asset handoffs and manifests are implemented and retained as provenance and wiring evidence.
-- No accepted Event 35 addendum remains queued.
+- Inherited hidden-liability, secured-work salvage, corridor outcomes, and missing mapped project producers remain accepted and queued under the user's full package requirement.
+- Exact Event 34 multi-state producer history and secured-value payload remain blocked on that owner's missing source data; Event 35 must not manufacture them from aggregate counts.
 
 ## Skills and subagents
 

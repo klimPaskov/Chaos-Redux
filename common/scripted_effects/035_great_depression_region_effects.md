@@ -233,5 +233,7 @@ The parent reports its new-crisis floor reset and activation/network/log deferra
 That parent change remains outside this companion's independent engine-validation claim.
 There is no new UI, icon, texture, localisation key, or workbook change in this contract.
 
-Future work is limited to supplying real Event 34 regional registries, wiring their existing receipts into approved corridor/recovery consumers, and obtaining engine evidence for current membership, pointer, and native modifier behavior.
-Those extensions are not implemented or claimed by this repair.
+The mapped ongoing liability, salvage, and corridor/recovery consumers remain accepted implementation requirements, not optional future extensions.
+The [inherited-consumer audit](../../docs/plans/035_great_depression_plans/subagent_handoffs/inherited_consumer_completion_audit_2026-10-03.md) distinguishes those missing Event 35 consumers from the missing upstream Event 34 regional registries and secured-value payload.
+Neither the missing consumers nor the missing upstream facts are implemented or claimed by this contract repair.
+Engine evidence for current membership, pointer, and native modifier behavior also remains unresolved.
