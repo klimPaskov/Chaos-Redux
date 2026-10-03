@@ -361,6 +361,10 @@ When the connected server and live schema confirm `mode = helper_expansion` unde
 
 For event-option `ai_chance`, event MTTH, direct random chance, and `random_list` logic, route the audit through `chaosx_ai_probability_auditor`. It must use `hoi4.probability_inspect` before choosing scenarios, then use `hoi4.probability_evaluate`, `hoi4.probability_sweep`, `hoi4.probability_simulate`, or `hoi4.probability_compare` only for the surface being reviewed. Use `hoi4.probability_sequence` only when a complete custom-pool manifest explicitly declares cadence, recovery, caps, cooldowns, removals, resets, timer changes, and terminal states. Use `hoi4.probability_render` for timing, matrix, sensitivity, sequence, comparison, or unresolved views when they make the result easier to audit. Provide complete option or list pools when normalization applies, and provide scheduled state changes for timing questions. Treat exact, bounded, sampled, score-only, and unresolved results as different evidence. The analyzer does not choose balance targets or edit event source. If the probability route is unavailable, record the exact blocker and do not substitute source-only analysis. For `hoi4.probability_compare`, pass both `before` and `after` as `probabilitySourceSchema` objects with a source `identifier`/`path`, `inlineClausewitz`, or `virtualPatch`, or pass both `beforeManifest` and `afterManifest` under an identical `scenarioSet`. Do not put a cached `analysisId` in `identifier`, because `analysisId` belongs only to `hoi4.probability_render` and is not a compare source.
 
+For deterministic max-score selectors, track explicit first-valid-candidate presence and accept that first candidate regardless of its score.
+A numeric best-score sentinel must not reject an otherwise valid negative score.
+After the first candidate, retain the exact score comparison and existing ID tie-break without changing weights or eligibility.
+
 ### 1. Classify the event first
 
 - Entry events keep the format `chaosx.nr<ID>.1`.
@@ -496,6 +500,12 @@ Trace each callback-to-helper scope chain before changing a receipt read.
 When a country helper enters its exact source-state pointer, PREV there is the calling project owner, so read that owner's receipt through PREV rather than the callback's ROOT.
 Within a state's stored-owner or holder country scope, return explicitly to the state through PREV for state flags.
 PREV depends on the actual nesting, and ROOT remains valid wherever the contract explicitly requires it.
+
+For synchronous country transactions that can launch nested helper work, `ROOT` remains the original sender, temporary loop indexes are unscoped, and regular event-target names are shared throughout the effect chain.
+Nested transaction setup can overwrite both indexes and named targets, so a regular event target alone is not a frozen transaction input.
+Before any helper that can launch nested work, capture the proven source and origin pointers, actor/episode/receipt identity, and outer row indexes into recipient-owned normal private input fields.
+At durable context commit, read those frozen fields and validate real object existence plus exact actor, episode, and receipt identity, rather than trusting overwritten aliases or `scope_exists` on a variable scope.
+Restore outer row indexes only from that frozen frame, and clear the private fields on every success or rejection return while preserving the public immediate outputs.
 
 Require matching actor/state nonce mirrors and exact source-state identity before closing a receipt or applying its accounting.
 Use actor-owned persistent state pointers for asynchronous local projects and revalidate site identity and current holder at resolution.
