@@ -173,6 +173,10 @@ Temporary variables first created inside a scripted effect or trigger may disapp
 - Public helper API docs must list caller-owned output storage and its required initial values.
 - Actual-source tests must model conservative call-frame cleanup by discarding temporary scalars and arrays first created in the returning helper, retaining modifications to caller-preinitialized storage, and keeping scoped regular saved state separate from temporary storage instead of using one flat global temporary dictionary.
 
+When a source audit or fixture cannot model this call-frame lifetime, report it as unmodelled and separately check caller preinitialization before consuming helper outputs.
+For shared dispatchers, locate the matching authorization gate and recursively inspect its body and invoked helpers for actual dispatch and accounting, including package-specific nested branches.
+A flat block-shape assertion or literal marker match does not establish that execution coverage.
+
 ## Event anatomy
 
 - entry event: the canonical `chaosx.nr<ID>.1` start
