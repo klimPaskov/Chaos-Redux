@@ -2,11 +2,29 @@
 # Measures actual chassis stock and reinforcement need without changing countries.
 # Temporary outputs are shared with the caller only when initialized there first.
 
+gods_of_africa_armor_archetype_is_valid = {
+	OR = {
+		check_variable = { gods_of_africa_armor_archetype = constant:gods_of_africa_armor_chassis.light }
+		check_variable = { gods_of_africa_armor_archetype = constant:gods_of_africa_armor_chassis.medium }
+		check_variable = { gods_of_africa_armor_archetype = constant:gods_of_africa_armor_chassis.heavy }
+		check_variable = { gods_of_africa_armor_archetype = constant:gods_of_africa_armor_chassis.modern }
+		check_variable = { gods_of_africa_armor_archetype = constant:gods_of_africa_armor_chassis.super_heavy }
+		check_variable = { gods_of_africa_armor_archetype = constant:gods_of_africa_armor_chassis.amphibious }
+	}
+}
+
+# Input: caller-set gods_of_africa_armor_archetype. No scripted parameters.
 gods_of_africa_measure_armor_archetype = {
-	set_temp_variable = { gods_of_africa_armor_type_stock = num_equipment@$EQUIPMENT$ }
-	set_temp_variable = { gods_of_africa_armor_type_target = num_target_equipment_in_armies_k@$EQUIPMENT$ }
+	gods_of_africa_armor_archetype_is_valid = yes
+	meta_trigger = {
+		text = {
+			set_temp_variable = { gods_of_africa_armor_type_stock = num_equipment@[EQUIPMENT] }
+			set_temp_variable = { gods_of_africa_armor_type_target = num_target_equipment_in_armies_k@[EQUIPMENT] }
+			set_temp_variable = { gods_of_africa_armor_type_fielded = num_equipment_in_armies_k@[EQUIPMENT] }
+		}
+		EQUIPMENT = "[This.GetGodsOfAfricaArmorEquipmentToken]"
+	}
 	multiply_temp_variable = { gods_of_africa_armor_type_target = constant:gods_of_africa_armor.units_per_thousand }
-	set_temp_variable = { gods_of_africa_armor_type_fielded = num_equipment_in_armies_k@$EQUIPMENT$ }
 	multiply_temp_variable = { gods_of_africa_armor_type_fielded = constant:gods_of_africa_armor.units_per_thousand }
 	set_temp_variable = { gods_of_africa_armor_type_deficit = gods_of_africa_armor_type_target }
 	subtract_from_temp_variable = { gods_of_africa_armor_type_deficit = gods_of_africa_armor_type_fielded }
@@ -27,20 +45,30 @@ gods_of_africa_measure_armor_archetype = {
 	check_variable = { var = gods_of_africa_armor_type_spare value = constant:gods_of_africa_value.zero compare = greater_than_or_equals }
 }
 
-# COUNTRY scope. AMOUNT is the required shipment, with per-chassis reserves
+# COUNTRY scope. gods_of_africa_armor_required_amount is the caller-set input.
+# The required shipment has per-chassis reserves
 # already removed from the spare count. This recalculates at every use.
 gods_of_africa_armor_capacity_is_sufficient = {
 	set_temp_variable = { gods_of_africa_armor_stock = constant:gods_of_africa_value.zero }
 	set_temp_variable = { gods_of_africa_armor_deficit = constant:gods_of_africa_value.zero }
 	set_temp_variable = { gods_of_africa_armor_spare = constant:gods_of_africa_value.zero }
-	gods_of_africa_measure_armor_archetype = { EQUIPMENT = light_tank_chassis }
-	gods_of_africa_measure_armor_archetype = { EQUIPMENT = medium_tank_chassis }
-	gods_of_africa_measure_armor_archetype = { EQUIPMENT = heavy_tank_chassis }
-	gods_of_africa_measure_armor_archetype = { EQUIPMENT = modern_tank_chassis }
-	gods_of_africa_measure_armor_archetype = { EQUIPMENT = super_heavy_tank_chassis }
-	gods_of_africa_measure_armor_archetype = { EQUIPMENT = amphibious_tank_chassis }
+	set_temp_variable = { gods_of_africa_armor_type_stock = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_armor_type_target = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_armor_type_fielded = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_armor_archetype = constant:gods_of_africa_armor_chassis.light }
+	gods_of_africa_measure_armor_archetype = yes
+	set_temp_variable = { gods_of_africa_armor_archetype = constant:gods_of_africa_armor_chassis.medium }
+	gods_of_africa_measure_armor_archetype = yes
+	set_temp_variable = { gods_of_africa_armor_archetype = constant:gods_of_africa_armor_chassis.heavy }
+	gods_of_africa_measure_armor_archetype = yes
+	set_temp_variable = { gods_of_africa_armor_archetype = constant:gods_of_africa_armor_chassis.modern }
+	gods_of_africa_measure_armor_archetype = yes
+	set_temp_variable = { gods_of_africa_armor_archetype = constant:gods_of_africa_armor_chassis.super_heavy }
+	gods_of_africa_measure_armor_archetype = yes
+	set_temp_variable = { gods_of_africa_armor_archetype = constant:gods_of_africa_armor_chassis.amphibious }
+	gods_of_africa_measure_armor_archetype = yes
 	custom_trigger_tooltip = {
 		tooltip = gods_of_africa_armor_capacity_tt
-		check_variable = { var = gods_of_africa_armor_spare value = $AMOUNT$ compare = greater_than_or_equals }
+		check_variable = { var = gods_of_africa_armor_spare value = gods_of_africa_armor_required_amount compare = greater_than_or_equals }
 	}
 }

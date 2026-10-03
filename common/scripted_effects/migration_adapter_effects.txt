@@ -389,3 +389,166 @@ migration_record_exact_decision_condemnation = {
 	}
 	set_temp_variable = { migration_condemnation_decision_context = constant:humanitarian_runtime.zero }
 }
+
+# COUNTRY scope, called on the selected Gods of Africa participant. Install a
+# bounded service only in its currently owned and controlled, food-safe capital.
+# The Migration service setters own capacity, registration, and dirty marking.
+migration_install_gods_of_africa_reception_service = {
+	set_temp_variable = { migration_gods_reception_install_result = constant:migration_capacity.zero }
+	set_temp_variable = { migration_gods_reception_owner_result = constant:migration_capacity.zero }
+	if = {
+		limit = {
+			humanitarian_country_is_valid = yes
+			any_owned_state = { is_capital = yes }
+			NOT = { has_country_flag = migration_gods_reception_service_active }
+			NOT = { has_variable = migration_gods_reception_state }
+			NOT = { has_variable = migration_gods_reception_shelter_amount }
+			NOT = { has_variable = migration_gods_reception_medical_amount }
+			NOT = { has_variable = migration_gods_reception_shelter_proof }
+			NOT = { has_variable = migration_gods_reception_medical_proof }
+		}
+		save_event_target_as = migration_gods_reception_participant
+		capital_scope = {
+			migration_consume_famine_food_safety = yes
+			if = {
+				limit = {
+					humanitarian_state_is_valid = yes
+					OWNER = { tag = event_target:migration_gods_reception_participant }
+					CONTROLLER = { tag = event_target:migration_gods_reception_participant }
+					check_variable = { var = migration_famine_food_safety_result value = constant:humanitarian_runtime.one compare = equals }
+					famine_to_migration_food_safety_is_valid = yes
+					check_variable = { var = famine_to_migration_food_stage value = constant:migration_capacity.food_safe_stage compare = less_than_or_equals }
+					OR = {
+						NOT = { has_variable = migration_reception_shelter_capacity }
+						check_variable = { var = migration_reception_shelter_capacity value = constant:humanitarian_population.zero compare = equals }
+					}
+					OR = {
+						NOT = { has_variable = migration_reception_medical_capacity }
+						check_variable = { var = migration_reception_medical_capacity value = constant:humanitarian_population.zero compare = equals }
+					}
+					OR = {
+						NOT = { has_variable = migration_reception_shelter_service_proven }
+						check_variable = { var = migration_reception_shelter_service_proven value = constant:migration_capacity.zero compare = equals }
+					}
+					OR = {
+						NOT = { has_variable = migration_reception_medical_service_proven }
+						check_variable = { var = migration_reception_medical_service_proven value = constant:migration_capacity.zero compare = equals }
+					}
+				}
+				set_temp_variable = { migration_gods_reception_shelter_request = state_population_k }
+				multiply_temp_variable = { migration_gods_reception_shelter_request = constant:migration_capacity.people_per_k }
+				multiply_temp_variable = { migration_gods_reception_shelter_request = constant:migration_reception_bootstrap.shelter_population_share }
+				round_temp_variable = migration_gods_reception_shelter_request
+				set_temp_variable = { migration_gods_reception_medical_request = state_population_k }
+				multiply_temp_variable = { migration_gods_reception_medical_request = constant:migration_capacity.people_per_k }
+				multiply_temp_variable = { migration_gods_reception_medical_request = constant:migration_reception_bootstrap.medical_population_share }
+				round_temp_variable = migration_gods_reception_medical_request
+				if = {
+					limit = {
+						check_variable = { var = migration_gods_reception_shelter_request value = constant:humanitarian_population.zero compare = greater_than }
+						check_variable = { var = migration_gods_reception_medical_request value = constant:humanitarian_population.zero compare = greater_than }
+					}
+					set_temp_variable = { migration_reception_shelter_service_request = migration_gods_reception_shelter_request }
+					set_temp_variable = { migration_reception_shelter_service_request_proven = constant:migration_capacity.one }
+					add_to_temp_variable = { migration_reception_shelter_service_request_proven = constant:migration_capacity.one }
+					migration_set_reception_shelter_service = yes
+					if = {
+						limit = { check_variable = { var = migration_reception_shelter_service_result value = constant:migration_capacity.one compare = equals } }
+						set_temp_variable = { migration_reception_medical_service_request = migration_gods_reception_medical_request }
+						set_temp_variable = { migration_reception_medical_service_request_proven = constant:migration_capacity.one }
+						add_to_temp_variable = { migration_reception_medical_service_request_proven = constant:migration_capacity.one }
+						migration_set_reception_medical_service = yes
+						if = {
+							limit = {
+								check_variable = { var = migration_reception_medical_service_result value = constant:migration_capacity.one compare = equals }
+								check_variable = { var = migration_reception_candidate_result value = constant:migration_capacity.one compare = equals }
+								has_state_flag = migration_reception_candidate_active
+								check_variable = { var = migration_reception_shelter_capacity value = migration_gods_reception_shelter_request compare = equals }
+								check_variable = { var = migration_reception_medical_capacity value = migration_gods_reception_medical_request compare = equals }
+								check_variable = { var = migration_reception_shelter_service_proven value = constant:migration_capacity.one compare = equals }
+								check_variable = { var = migration_reception_medical_service_proven value = constant:migration_capacity.one compare = equals }
+							}
+							save_event_target_as = migration_gods_reception_installed_state
+							set_temp_variable = { migration_gods_reception_shelter_installed_proof = migration_reception_shelter_service_proven }
+							set_temp_variable = { migration_gods_reception_medical_installed_proof = migration_reception_medical_service_proven }
+							set_temp_variable = { migration_gods_reception_owner_result = constant:migration_capacity.one }
+						}
+						else = {
+							if = {
+								limit = {
+									check_variable = { var = migration_reception_medical_capacity value = migration_gods_reception_medical_request compare = equals }
+									check_variable = { var = migration_reception_medical_service_proven value = constant:migration_capacity.one compare = equals }
+								}
+								migration_clear_reception_medical_service = yes
+							}
+							if = {
+								limit = {
+									check_variable = { var = migration_reception_shelter_capacity value = migration_gods_reception_shelter_request compare = equals }
+									check_variable = { var = migration_reception_shelter_service_proven value = constant:migration_capacity.one compare = equals }
+								}
+								migration_clear_reception_shelter_service = yes
+							}
+						}
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				check_variable = { var = migration_gods_reception_owner_result value = constant:migration_capacity.one compare = equals }
+				has_event_target = migration_gods_reception_installed_state
+			}
+			set_variable = { migration_gods_reception_state = event_target:migration_gods_reception_installed_state }
+			set_variable = { migration_gods_reception_shelter_amount = migration_gods_reception_shelter_request }
+			set_variable = { migration_gods_reception_medical_amount = migration_gods_reception_medical_request }
+			set_variable = { migration_gods_reception_shelter_proof = migration_gods_reception_shelter_installed_proof }
+			set_variable = { migration_gods_reception_medical_proof = migration_gods_reception_medical_installed_proof }
+			set_country_flag = migration_gods_reception_service_active
+			set_temp_variable = { migration_gods_reception_install_result = constant:migration_capacity.one }
+		}
+	}
+}
+
+# COUNTRY scope. The stored state pointer is the only cleanup target. A changed
+# owner, controller, service proof, or either service amount preserves both
+# services; all Gods receipts are retired even if the state has gone stale.
+migration_clear_gods_of_africa_reception_service = {
+	set_temp_variable = { migration_gods_reception_cleanup_result = constant:migration_capacity.zero }
+	save_event_target_as = migration_gods_reception_participant
+	if = {
+		limit = {
+			has_country_flag = migration_gods_reception_service_active
+			has_variable = migration_gods_reception_state
+			has_variable = migration_gods_reception_shelter_amount
+			has_variable = migration_gods_reception_medical_amount
+			has_variable = migration_gods_reception_shelter_proof
+			has_variable = migration_gods_reception_medical_proof
+			check_variable = { var = migration_gods_reception_shelter_amount value = constant:humanitarian_population.zero compare = greater_than }
+			check_variable = { var = migration_gods_reception_medical_amount value = constant:humanitarian_population.zero compare = greater_than }
+			check_variable = { var = migration_gods_reception_shelter_proof value = constant:migration_capacity.one compare = equals }
+			check_variable = { var = migration_gods_reception_medical_proof value = constant:migration_capacity.one compare = equals }
+		}
+		var:migration_gods_reception_state = {
+			if = {
+				limit = {
+					scope_exists = yes
+					OWNER = { tag = event_target:migration_gods_reception_participant }
+					CONTROLLER = { tag = event_target:migration_gods_reception_participant }
+					check_variable = { var = migration_reception_shelter_capacity value = event_target:migration_gods_reception_participant.migration_gods_reception_shelter_amount compare = equals }
+					check_variable = { var = migration_reception_medical_capacity value = event_target:migration_gods_reception_participant.migration_gods_reception_medical_amount compare = equals }
+					check_variable = { var = migration_reception_shelter_service_proven value = event_target:migration_gods_reception_participant.migration_gods_reception_shelter_proof compare = equals }
+					check_variable = { var = migration_reception_medical_service_proven value = event_target:migration_gods_reception_participant.migration_gods_reception_medical_proof compare = equals }
+				}
+				migration_clear_reception_shelter_service = yes
+				migration_clear_reception_medical_service = yes
+				set_temp_variable = { migration_gods_reception_cleanup_result = constant:migration_capacity.one }
+			}
+		}
+	}
+	clr_country_flag = migration_gods_reception_service_active
+	clear_variable = migration_gods_reception_state
+	clear_variable = migration_gods_reception_shelter_amount
+	clear_variable = migration_gods_reception_medical_amount
+	clear_variable = migration_gods_reception_shelter_proof
+	clear_variable = migration_gods_reception_medical_proof
+}

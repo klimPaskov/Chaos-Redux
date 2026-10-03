@@ -5,7 +5,8 @@ They do not add equipment definitions, grant technology, manufacture variants, o
 
 ## Capacity
 
-`gods_of_africa_measure_armor_archetype` is a COUNTRY-scope scripted trigger taking the literal `EQUIPMENT` chassis token.
+`gods_of_africa_measure_armor_archetype = yes` is a COUNTRY-scope scripted trigger reading the caller-set temporary `gods_of_africa_armor_archetype` enum.
+Native `meta_trigger` injects its validated `GetGodsOfAfricaArmorEquipmentToken` localisation token into the three installed equipment reads.
 It reads stockpile, army equipment target, and fielded equipment through the installed dynamic variables.
 The target and fielded values use their thousand-unit forms and are converted back to equipment units.
 The protected reserve is the larger of the chassis floor and reinforcement shortfall plus a fraction of the army target.
@@ -14,7 +15,8 @@ It always returns true after measurement and adds to temporary `gods_of_africa_a
 Initialize all outputs needed outside a helper in the caller before calling it, because temporary variables created only in nested helpers may not survive the return.
 It modifies no normal variables, flags, stockpiles, or countries.
 
-`gods_of_africa_armor_capacity_is_sufficient = { AMOUNT = amount }` initializes the three totals, measures light, medium, heavy, modern, super-heavy, and amphibious tank chassis, and compares spare units inclusively with `AMOUNT`.
+Set temporary `gods_of_africa_armor_required_amount` before calling `gods_of_africa_armor_capacity_is_sufficient = yes`.
+The trigger initializes the three totals, measures light, medium, heavy, modern, super-heavy, and amphibious tank chassis, and compares spare units inclusively with that caller input.
 There is no default amount.
 Callers must supply an amount; transaction callers separately require it to be positive.
 The final comparison supplies a meaningful capacity tooltip.
@@ -23,8 +25,9 @@ The bound is six chassis, independent of world country count.
 
 ## Quote
 
-`gods_of_africa_floor_equipment_amount = { AMOUNT = variable_name }` rounds a normal equipment amount down by subtracting its remainder modulo one.
-It runs in the variable owner's scope, requires the literal variable name, has no default, and modifies only that normal variable and its temporary remainder.
+Set temporary `gods_of_africa_equipment_amount` before calling `gods_of_africa_floor_equipment_amount = yes`.
+The helper rounds that temporary amount down by subtracting its remainder modulo one, and the caller copies the output to its normal amount field.
+It has no default, pays nothing, and modifies only the temporary input/output and its remainder.
 This uses the documented `modulo_temp_variable` operation instead of an unsupported floor effect token.
 
 `gods_of_africa_quote_armored_tribute = yes` runs in participant COUNTRY scope.
@@ -43,7 +46,8 @@ Demand preparation clears both quote outputs after creation or rejection, and de
 Required normal input is `gods_of_africa_payment_amount`; required receiver is `event_target:africa_host`.
 No default receiver or payment is selected.
 It initializes its temporary shipment balance and type outputs before invoking its six bounded slices.
-Each `gods_of_africa_send_armored_archetype = { EQUIPMENT = chassis }` recomputes that chassis's protected spare amount and sends only the smaller of the spare amount and the remaining payment.
+Each `gods_of_africa_send_armored_archetype = yes` reads the caller-set temporary chassis enum, recomputes its protected spare amount, and sends only the smaller of that amount and the remaining payment.
+Native `meta_effect` injects the validated bare equipment token into `send_equipment`.
 `send_equipment = { equipment = chassis amount = shipment_slice target = event_target:africa_host }` performs the native debit and delivery.
 The helper adds no replacement stockpile or technology grant.
 Shipment order is light, medium, heavy, modern, super-heavy, then amphibious chassis.

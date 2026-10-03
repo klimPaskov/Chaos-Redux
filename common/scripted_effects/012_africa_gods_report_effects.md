@@ -5,7 +5,8 @@ They do not expose the hidden relationship history or add category counters.
 Strength and Wrath remain the two Gods values displayed by the decision categories.
 
 `gods_of_africa_capture_response_report` runs in participant COUNTRY scope while its active contract still has a family.
-Its required `KIND` input is the applicable existing history-kind constant, `AMOUNT` is the paid amount, and `BALANCE` is the balance after the action.
+Its caller sets temporary `gods_of_africa_report_kind`, `gods_of_africa_report_amount`, and `gods_of_africa_report_balance`, then invokes `gods_of_africa_capture_response_report = yes`.
+These inputs contain the applicable history-kind constant, paid amount, and balance after the action.
 All inputs are explicit and have no default.
 It stores four normal variables: `gods_of_africa_last_response_kind`, `gods_of_africa_last_response_family`, `gods_of_africa_last_response_amount`, and `gods_of_africa_last_response_balance`.
 It pays nothing, changes no contract, sets no timer, and increments no history counter.
@@ -15,11 +16,10 @@ Ordinary demand cleanup preserves these fields so the triggered report can read 
 Example after a successful partial transaction and balance reduction:
 
 ```text
-gods_of_africa_capture_response_report = {
-	KIND = constant:gods_of_africa_history_kind.partial
-	AMOUNT = gods_of_africa_paid_amount
-	BALANCE = gods_of_africa_demand_remaining
-}
+set_temp_variable = { gods_of_africa_report_kind = constant:gods_of_africa_history_kind.partial }
+set_temp_variable = { gods_of_africa_report_amount = gods_of_africa_paid_amount }
+set_temp_variable = { gods_of_africa_report_balance = gods_of_africa_demand_remaining }
+gods_of_africa_capture_response_report = yes
 ```
 
 Full compliance and accepted substitutes capture the family actually paid with a zero remaining balance.
@@ -52,8 +52,8 @@ It has no input, output receipt, default, payment, or world iteration.
 It does not clear pending flags or historical punishment-tier fields owned by the existing lifecycle helpers.
 Equipment amount text uses whole counts, manpower names its native pool, fuel and political capital retain fractional precision, and state resource rights are described as a concession rather than invented fractional equipment units.
 
-`gods_of_africa_family_is_equipment = { FAMILY = family_variable }` is the COUNTRY-scope classification trigger for infantry, mobile/artillery, armour, aircraft, transport, and support equipment.
-The argument is the literal variable name holding a family id, with no default.
+Set temporary `gods_of_africa_family_to_check` from the relevant family field, then invoke `gods_of_africa_family_is_equipment = yes`.
+It classifies infantry, mobile/artillery, armour, aircraft, transport, and support equipment, with no default input.
 The source uses it to normalize full and partial equipment quotes with the existing documented modulo helper.
 Fuel, manpower, political capital, and resource rights are outside this classifier.
 For example, a 55-aircraft contract has a 27-aircraft partial payment and an exact 28-aircraft residual, instead of a fractional aircraft payment.

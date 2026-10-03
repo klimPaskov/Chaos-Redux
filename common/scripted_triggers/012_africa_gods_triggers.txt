@@ -263,16 +263,16 @@ gods_of_africa_participant_can_receive_demand = {
 	}
 }
 
-# FAMILY names the variable holding a family id. Equipment shipments are
+# Caller sets temporary gods_of_africa_family_to_check. Equipment shipments are
 # indivisible even when a scaled quote or partial-payment ratio is fractional.
 gods_of_africa_family_is_equipment = {
 	OR = {
-		check_variable = { $FAMILY$ = constant:gods_of_africa_demand_family.land_equipment }
-		check_variable = { $FAMILY$ = constant:gods_of_africa_demand_family.mobile_artillery }
-		check_variable = { $FAMILY$ = constant:gods_of_africa_demand_family.armor }
-		check_variable = { $FAMILY$ = constant:gods_of_africa_demand_family.aircraft }
-		check_variable = { $FAMILY$ = constant:gods_of_africa_demand_family.transport }
-		check_variable = { $FAMILY$ = constant:gods_of_africa_demand_family.support_equipment }
+		check_variable = { gods_of_africa_family_to_check = constant:gods_of_africa_demand_family.land_equipment }
+		check_variable = { gods_of_africa_family_to_check = constant:gods_of_africa_demand_family.mobile_artillery }
+		check_variable = { gods_of_africa_family_to_check = constant:gods_of_africa_demand_family.armor }
+		check_variable = { gods_of_africa_family_to_check = constant:gods_of_africa_demand_family.aircraft }
+		check_variable = { gods_of_africa_family_to_check = constant:gods_of_africa_demand_family.transport }
+		check_variable = { gods_of_africa_family_to_check = constant:gods_of_africa_demand_family.support_equipment }
 	}
 }
 
@@ -335,7 +335,7 @@ gods_of_africa_participant_has_capacity_for_family = {
 		}
 		AND = {
 			check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.armor }
-			gods_of_africa_armor_capacity_is_sufficient = { AMOUNT = gods_of_africa_capacity_requirement }
+			set_temp_variable = { gods_of_africa_armor_required_amount = gods_of_africa_capacity_requirement } gods_of_africa_armor_capacity_is_sufficient = yes
 		}
 		AND = {
 			check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.support_equipment }
@@ -439,7 +439,7 @@ gods_of_africa_substitute_offer_is_affordable = {
 		}
 		AND = {
 			check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.armor }
-			gods_of_africa_armor_capacity_is_sufficient = { AMOUNT = gods_of_africa_substitute_capacity_requirement }
+			set_temp_variable = { gods_of_africa_armor_required_amount = gods_of_africa_substitute_capacity_requirement } gods_of_africa_armor_capacity_is_sufficient = yes
 		}
 		AND = {
 			check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.aircraft }
@@ -967,7 +967,7 @@ gods_of_africa_partial_payment_is_affordable = {
 		}
 		AND = {
 			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.armor }
-			gods_of_africa_armor_capacity_is_sufficient = { AMOUNT = gods_of_africa_partial_capacity_requirement }
+			set_temp_variable = { gods_of_africa_armor_required_amount = gods_of_africa_partial_capacity_requirement } gods_of_africa_armor_capacity_is_sufficient = yes
 		}
 		AND = {
 			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.aircraft }
