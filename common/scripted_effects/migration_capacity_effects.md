@@ -12,6 +12,8 @@ The `migration_*` identifiers in this file are migration-owned state, registry, 
 
 `migration_clear_reception_shelter_service` and `migration_clear_reception_medical_service` remove one service adapter and dirty only the owning country. Missing or non-positive service proof leaves the candidate unusable and does not invent capacity.
 
+A caller that reads `migration_reception_shelter_service_result` or `migration_reception_medical_service_result` must initialize that temporary output to `constant:migration_capacity.zero` before calling the corresponding setter. This establishes the output in the caller's effect chain so the child helper modifies the inherited value. A temporary first created inside a scripted helper is not a reliable return channel.
+
 `migration_mark_reception_capacity_dirty` is the public country callback for food, hazard, control, war, peace, policy, and reception changes. `migration_recalculate_reception_capacity` consumes the dirty marker during the existing sparse host pulse and increments `migration_reception_capacity_revision` on every completed recomputation.
 
 ## Candidate validity and sparse scheduling
