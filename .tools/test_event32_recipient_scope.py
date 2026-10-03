@@ -1,6 +1,7 @@
 """Offline ROOT-boundary regression for Event 032 country transactions.
 
-Models only documented scope iteration and immediate country-event delivery.
+Models documented scope iteration, immediate country-event delivery, and the
+positive reserve-package arithmetic. It does not establish runtime tie behavior.
 It is source-path evidence, not a game simulation or probability evaluator.
 Pass --baseline to prove the preserved pre-repair source violates the invariant.
 """
@@ -9,6 +10,7 @@ from pathlib import Path
 import argparse
 import re
 import unittest
+from decimal import Decimal, ROUND_HALF_UP
 
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
@@ -70,9 +72,59 @@ def load_sources(baseline):
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--baseline', action='store_true')
+parser.add_argument('--reserve-baseline', action='store_true')
 args, unittest_args = parser.parse_known_args()
 EVENTS, CORE, SCENARIO, TRIGGERS = load_sources(args.baseline)
+if args.reserve_baseline:
+    reserve_source = ROOT_DIR / 'docs/plans/032_missiles_plans/baselines/2026-10-03_reserve_integer/032_missiles_effects.txt'
+    CORE = parse(reserve_source.read_text(encoding='utf-8-sig'))
 RECEIVERS = {value(body, 'id'): body for kind, body in EVENTS if kind == 'country_event'}
+CONSTANTS = dict(parse((ROOT_DIR / 'common/script_constants/032_missiles_constants.txt').read_text(encoding='utf-8-sig')))
+
+
+def reserve_package(factories, states, mature=False, war=False, saturation=False):
+    """Evaluate only the source package arithmetic, not game stockpile effects."""
+    variables = {'num_of_factories': Decimal(factories), 'num_of_controlled_states': Decimal(states)}
+    flags = {'missiles_program_mature': mature, 'missiles_evolution_saturation_arsenals': saturation}
+
+    def number(token):
+        if token.startswith('constant:'):
+            group, key = token[9:].split('.', 1)
+            return Decimal(value(CONSTANTS[group], key))
+        return variables[token] if token in variables else Decimal(token)
+
+    def execute(nodes):
+        taken = False
+        for name, body in nodes:
+            if name == 'if':
+                condition = dict(value(body, 'limit'))
+                taken = flags.get(condition.get('has_country_flag'), False) or ('has_war' in condition and war)
+                if taken:
+                    execute([(key, val) for key, val in body if key != 'limit'])
+            elif name == 'else':
+                if not taken:
+                    execute(body)
+            elif name == 'round_temp_variable':
+                variables[body] = variables[body].quantize(Decimal(1), rounding=ROUND_HALF_UP)
+            elif name == 'set_temp_variable':
+                key, token = body[0]
+                variables[key] = number(token)
+            elif name in ('add_to_temp_variable', 'multiply_temp_variable', 'divide_temp_variable', 'clamp_temp_variable'):
+                fields = dict(body)
+                key = fields.get('var', body[0][0])
+                if name == 'add_to_temp_variable':
+                    variables[key] += number(fields[key])
+                elif name == 'multiply_temp_variable':
+                    variables[key] *= number(fields['value'])
+                elif name == 'divide_temp_variable':
+                    variables[key] /= number(fields['value'])
+                else:
+                    variables[key] = min(number(fields['max']), max(number(fields['min']), variables[key]))
+            else:
+                raise AssertionError(f'Package arithmetic requires explicit support for {name}')
+
+    execute(value(CORE, 'missiles_calculate_reserve_package'))
+    return variables['missiles_package_base']
 
 
 def country_root_at_call(nodes, current, root, sought):
@@ -172,6 +224,15 @@ class RecipientRootRegression(unittest.TestCase):
                   if name == 'set_technology']
         self.assertTrue(grants)
         self.assertTrue(all(dict(grant).get('popup') == 'no' for grant in grants))
+
+    def test_reserve_package_creates_whole_missiles(self):
+        for factories in (0, 5, 17, 63, 64):
+            for states in (1, 7, 40, 50):
+                for mature, war, saturation in ((False, False, False), (True, True, False), (True, True, True)):
+                    with self.subTest(factories=factories, states=states, mature=mature, war=war, saturation=saturation):
+                        package = reserve_package(factories, states, mature, war, saturation)
+                        self.assertGreaterEqual(package, 0)
+                        self.assertEqual(package, package.to_integral_value())
 
 
 if __name__ == '__main__':

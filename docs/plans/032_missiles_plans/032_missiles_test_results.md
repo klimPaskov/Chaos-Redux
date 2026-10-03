@@ -32,6 +32,10 @@ The supplied log still contains project-wide diagnostics, which remain owned by 
 The source audit found that Event 32's legacy disabled-evolution flag names do not match the shared Event Details toggle writer.
 The exact before sources are preserved under `baselines/2026-10-03_evolution_gates/`, and the gate correction remains queued for the required probability baseline and same-scenario comparison.
 
+Reserve creation packages now publish one rounded whole-missile receipt after their complete scaling formula.
+The offline regression passes eleven tests, including sixty package input combinations, with forty-eight fractional baseline results eliminated at creation.
+The immutable before source and engine-reference bounds are in `subagent_handoffs/032_integer_reserve_receipts_2026-10-03.md`.
+
 ## Source and static coverage
 
 - All files under `docs/specs/032_missiles_specs/` were read before implementation, including the acceptance criteria, coding and decision prompts, asset and achievement prompts, requirement traceability, source review, probability scenario matrix, test matrix, and improvement-loop closure.
