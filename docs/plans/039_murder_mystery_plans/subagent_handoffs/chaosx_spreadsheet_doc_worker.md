@@ -2,6 +2,10 @@
 
 Status: blocked before workbook authoring.
 
+Disposition: superseded for the scenario-ID reservation by `scenario_catalog_019.md` and the 2026-10-03 registration evidence.
+The earlier SCN-014 suggestion below is historical and must not be used as an allocation.
+This handoff does not establish the current Event or Cluster workbook state.
+
 ## Blocker
 
 The required spreadsheet artifact editing runtime is not available in this environment. The expected `artifact_tool` runtime/module is absent, and no Excel or LibreOffice runtime is available for workbook editing or rendering. Only `openpyxl` and `pandas` are installed; the parent task explicitly disallows them for authoring when the spreadsheet runtime is unavailable and requires reporting the blocker without modifying the workbook.

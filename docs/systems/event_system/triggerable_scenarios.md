@@ -7,7 +7,7 @@ Resolve the retirement and visibility decision before treating either descriptio
 
 The SCN-008 source report gives 149 publishers, 138 selectable packages, and 13 non-selectable overlays.
 It does not explain whether those populations overlap or refer to different revisions, so those counts cannot be treated as a reconciled inventory.
-The SCN-014, SCN-015, and SCN-016 sections also preserve distinct raw-runtime and workbook identity claims.
+The SCN-014, SCN-015, and SCN-016 sections preserve their historical identity claims; the Assassin Network collision is resolved by the user-authorized SCN-019 allocation recorded below.
 The [catalog review](../../plans/repo_cleanup/subagent_handoffs/2026-09-05_catalog_review.md) records its exact workbook revision and does not approve identity remapping.
 All original IDs, counts, and package limits below remain unchanged.
 
@@ -217,7 +217,8 @@ The public name, five profile labels and descriptions, four intensity impact str
 
 ### SCN-016: Global Jihad
 
-Global Jihad owns raw triggerable-scenario ID `16`. The accepted Event 31 proposal could not use `SCN-014` because that raw slot belongs to Fallout and the authoritative workbook assigns the public row to Assassin Network.
+Global Jihad owns raw triggerable-scenario ID `16`.
+Raw slot `14` belongs to Fallout; the authoritative workbook assigns Assassin Network to `SCN-019` following the user's 2026-10-03 live-QA direction.
 `SCN-015` belongs to Missile Age. Event 31 therefore uses the next verified free shared slot without changing its independently registered False Revelation world-end identity.
 
 The shared window stores one of five wholly fictional deployment types in `triggerable_scenarios_global_jihad_type`: Dispersed Networks, Border Corridors, Capital Uprisings, Territorial Fronts, or Random Pattern. It reuses the four common intensity stops: Low, Medium, High, and Maximum. Each type has its own description, and each intensity has a distinct impact warning.
@@ -266,3 +267,23 @@ The source implementation is in `common/script_constants/chaosx_triggerable_scen
 
 The implementation is source- and MCP-inspection-backed.
 No live HOI4 launch or save-state acceptance is claimed by the agent.
+
+### SCN-019: Assassin Network
+
+The authoritative workbook reserves `SCN-019` for Assassin Network at `Scenarios!A14`.
+The user authorized the next verified free shared ID on 2026-10-03 after live QA found the scenario missing and its provisional label colliding with Fallout.
+Raw ID 14 remains Fallout, 17 remains reserved, and 18 remains The Fracture Cascade.
+
+Assassin Network registers in the shared global ID and name-sort arrays and in all four sortable views.
+The shared entry click selects ID 19; existing type, intensity, confirmation, cancel, and launch controls remain the entry path.
+Its single type is Clandestine network.
+The four intensity warnings, detail text, row label, and launch statuses resolve through the shared scripted-localisation getters.
+
+Confirmation dispatches to `murder_mystery_triggerable_scenario_launch`, which rechecks the Event 039 host, duplicate, setup, and terminal gates before queuing the canonical `chaosx.nr39.1` root on a selected host.
+The root applies the existing intensity package only after the opening transaction commits and clears the launch flag and cached intensity before returning.
+No recurring scan, extra country package, or new GUI layout is introduced by registration.
+
+The existing payload activates Murder Cult behavior at Low, the international network at Medium, the territorial movement and split transaction at High, and Evolution IV plus derivative operations at Maximum.
+World of Anarchy retains the normal terminal gate.
+Registration source checks do not certify these transactions or the complete Part 11 and Part 18 acceptance contracts.
+The evidence and remaining validation gaps are in `docs/plans/039_murder_mystery_plans/validation/scenario_registration/registration_2026_10_03.md`.
