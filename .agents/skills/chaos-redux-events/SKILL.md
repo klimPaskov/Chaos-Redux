@@ -485,6 +485,11 @@ Validate actual 32-bit uncompressed bottom-left TGA headers and decoded orientat
 
 #### Country activation and ROOT
 
+Stored state pointers refer to persistent map objects, so do not use COUNTRY-only `exists = yes` inside a STATE scope.
+Validate the intended state with an appropriate documented native STATE predicate or registered state marker such as `has_state_flag`, together with its expected state ID using the documented identity semantics.
+`scope_exists` is always true for variable scopes and does not validate the stored pointer.
+Retain `exists = yes` checks in actual COUNTRY scopes, including a state's owner, controller, or stored country pointer.
+
 Entering another country scope does not rebind ROOT.
 Capture and annex callbacks retain their native ROOT: `on_annex` has the winner as ROOT and the annexed country as FROM, while `on_state_control_changed` has the new controller as ROOT, the old controller as FROM, and the changed state as FROM.FROM.
 Trace each callback-to-helper scope chain before changing a receipt read.
