@@ -1,0 +1,103 @@
+# Country-scoped native Protective Aid callbacks. Both factory variants use
+# these exact reservation, PP-payment, delivery, refund, and settlement paths.
+# ROOT is the donor and FROM is the chosen foreign state throughout selection.
+
+cbrn_protective_aid_begin_selected_delivery = {
+	# Native reenabling starts when selected, including an activation that fails.
+	# Stamp the same donor/state interval across the two native definition IDs.
+	FROM = {
+		set_temp_variable = { cbrn_protective_aid_cooldown_days = constant:cbrn_occupation_timing.protective_aid_reenable_days }
+		set_state_flag = { flag = cbrn_external_aid_purchase_cooldown_@ROOT days = var:cbrn_protective_aid_cooldown_days }
+	}
+	# This callback owns every result later consumed after nested quotation.
+	set_temp_variable = { black_friday_cbrn_external_aid_pp_payment_success = constant:universal_cost_framework.zero }
+	set_temp_variable = { black_friday_cbrn_external_aid_pp_cost = constant:cbrn_occupation_decision_cost.protective_aid_pp }
+	set_temp_variable = { black_friday_cbrn_external_aid_pp_quote_valid = constant:universal_cost_framework.zero }
+	set_temp_variable = { black_friday_cbrn_external_aid_pp_affordable = constant:universal_cost_framework.zero }
+	set_temp_variable = { black_friday_quote_final_cost = constant:cbrn_occupation_decision_cost.protective_aid_pp }
+	set_temp_variable = { black_friday_quote_valid = constant:universal_cost_framework.zero }
+	set_temp_variable = { black_friday_quote_composed_ratio = constant:universal_cost_framework.zero }
+	set_temp_variable = { black_friday_quote_requested_quantum = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_mask_reservation_quote = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_escrow_completed = constant:cbrn_math.zero }
+	if = {
+		limit = { cbrn_protective_aid_requested_variant_matches_quote = yes }
+		FROM = {
+			if = {
+				limit = {
+					ROOT = {
+						# Native factories and cooldown are already committed.
+						cbrn_occupation_country_can_continue_external_protective_aid = yes
+						cbrn_country_has_any_mask_stock = yes
+						set_temp_variable = { black_friday_quote_final_cost = constant:cbrn_occupation_decision_cost.protective_aid_pp }
+						set_temp_variable = { black_friday_quote_valid = constant:universal_cost_framework.zero }
+						set_temp_variable = { black_friday_quote_composed_ratio = constant:universal_cost_framework.zero }
+						set_temp_variable = { black_friday_quote_requested_quantum = constant:universal_cost_framework.zero }
+						black_friday_can_pay_cbrn_external_aid_pp_fee = yes
+					}
+					cbrn_occupation_state_can_receive_external_protective_aid = yes
+					cbrn_quote_external_state_mask_reservation = yes
+					check_variable = { cbrn_mask_reservation_quote > constant:cbrn_math.zero }
+				}
+				set_temp_variable = { cbrn_mask_escrow_requested = cbrn_mask_reservation_quote }
+				set_temp_variable = { cbrn_mask_escrow_external = constant:cbrn_math.one }
+				set_temp_variable = { cbrn_mask_escrow_completed = constant:cbrn_math.zero }
+				cbrn_reserve_requested_masks_to_state = yes
+				if = {
+					limit = { check_variable = { cbrn_mask_escrow_completed > constant:cbrn_math.zero } }
+					save_event_target_as = cbrn_external_aid_transaction_target_state
+					ROOT = { black_friday_pay_cbrn_external_aid_pp_fee = yes }
+				}
+				if = {
+					limit = {
+						check_variable = { cbrn_mask_escrow_completed > constant:cbrn_math.zero }
+						check_variable = { black_friday_cbrn_external_aid_pp_payment_success = constant:universal_cost_framework.one }
+					}
+					cbrn_occupation_register_external_aid_reservation = yes
+					set_variable = { cbrn_external_aid_committed_pp_fee = black_friday_cbrn_external_aid_pp_cost }
+					set_temp_variable = { cbrn_occupation_external_aid_days = constant:cbrn_occupation_timing.protective_aid_days }
+					set_state_flag = { flag = cbrn_occupation_external_aid_project_active days = var:cbrn_occupation_external_aid_days }
+					if = {
+						limit = { check_variable = { cbrn_protective_aid_requested_variant = constant:cbrn_external_aid_variant.sale } }
+						set_state_flag = cbrn_external_aid_sale_factory_commitment
+					}
+					else = { clr_state_flag = cbrn_external_aid_sale_factory_commitment }
+				}
+				if = {
+					limit = {
+						check_variable = { cbrn_mask_escrow_completed > constant:cbrn_math.zero }
+						check_variable = { black_friday_cbrn_external_aid_pp_payment_success = constant:universal_cost_framework.zero }
+					}
+					cbrn_refund_external_state_mask_reservation = yes
+				}
+			}
+		}
+	}
+	set_temp_variable = { cbrn_protective_aid_requested_variant = constant:cbrn_external_aid_variant.none }
+}
+
+cbrn_protective_aid_finish_selected_delivery = {
+	set_temp_variable = { cbrn_occupation_protective_aid_proof = constant:cbrn_proof.missing }
+	set_temp_variable = { black_friday_cbrn_external_aid_successful_completion = constant:universal_cost_framework.zero }
+	FROM = {
+		cbrn_occupation_close_external_aid_reservation = yes
+		clr_state_flag = cbrn_occupation_external_aid_project_active
+		save_event_target_as = cbrn_occupation_target_state
+	}
+	cbrn_occupation_execute_external_protective_aid = yes
+	if = {
+		limit = { check_variable = { cbrn_occupation_protective_aid_proof = constant:cbrn_proof.supplied } }
+		set_temp_variable = { black_friday_cbrn_external_aid_successful_completion = constant:universal_cost_framework.one }
+	}
+	FROM = { black_friday_settle_cbrn_external_aid_pp_fee_receipt = yes }
+}
+
+cbrn_protective_aid_cancel_selected_delivery = {
+	FROM = {
+		cbrn_occupation_close_external_aid_reservation = yes
+		cbrn_refund_external_state_mask_reservation = yes
+		clr_state_flag = cbrn_occupation_external_aid_project_active
+		set_temp_variable = { black_friday_cbrn_external_aid_successful_completion = constant:universal_cost_framework.zero }
+		black_friday_settle_cbrn_external_aid_pp_fee_receipt = yes
+	}
+}

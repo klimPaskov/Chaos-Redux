@@ -1,0 +1,41 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"artifactCount\":0,\"code\":\"OK\",\"status\":\"ok\",\"workspaceId\":\"chaos_redux_probe\"}"
+    }
+  ],
+  "structuredContent": {
+    "status": "ok",
+    "code": "OK",
+    "workspaceId": "chaos_redux_probe",
+    "filesScanned": [],
+    "proposedFiles": [],
+    "changedFiles": [],
+    "diagnostics": [],
+    "artifacts": [],
+    "validation": {
+      "passed": true,
+      "checks": []
+    },
+    "blockers": [],
+    "data": {
+      "id": "91b27451ff9a5b5e5b74f6b0b8a12b3012a222b3d82681284186751ca59753eb",
+      "revision": "7713b9bcee5f3818d63aafbd45d18e812a9173a7c59ab238384b57db60db6162",
+      "source": "wiki",
+      "title": "Decision modding",
+      "heading": "Timer upon selection",
+      "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Decision modding - Hearts of Iron 4 Wiki.md",
+      "startLine": 337,
+      "endLine": 356,
+      "excerpt": "### Timer upon selection <a id=\"Timer_upon_selection\"></a> In order to add a timer between the decision being selected and some of its effects applying, `days_remove = 123` is used to define the amount of days. If set to `-1`, the decision will never be removed by the timer running out, although add",
+      "authority": "Offline Paradox Wiki snapshot",
+      "sectionStartLine": 337,
+      "sectionEndLine": 356,
+      "startColumn": 1,
+      "text": "### Timer upon selection <a id=\"Timer_upon_selection\"></a>\n\nIn order to add a timer between the decision being selected and some of its effects applying, `days_remove = 123` is used to define the amount of days. If set to `-1`, the decision will never be removed by the timer running out, although additional trigger blocks can remove it.\n\nAs for defining the effects that would be executed when the timer ends, `remove_effect = { ... }` is used as an effect block. Note that `complete_effect = { ... }` is when the decision is selected starting the timer, rather than when the timer ends. In other words, this timer appears after the decision was completed and stays there until the decision is removed. Additionally, `remove_trigger = { ... }` is used to instantly remove the decision once the triggers within are met for the country, also firing the `remove_effect = { ... }` block.\n\nAdditionally, it is possible to make the decision apply [modifiers](<Modifiers - Hearts of Iron 4 Wiki.md>) during the timer's duration, with the `modifier = { ... }` providing a modifier block. [Similarly to ideas](<Idea modding - Hearts of Iron 4 Wiki.md#Modifiers>), `targeted_modifier = { ... }` also exists as a way to apply [targeted modifiers](<Modifiers - Hearts of Iron 4 Wiki.md#Targeted_modifiers>), in the same formatting with `tag = BHR` setting the target, such as the following example:\n\n```text\ntargeted_modifier = {\n    tag = ENG\n    attack_bonus_against = 0.1\n    defense_bonus_against = -0.15\n}\n```\n\nIn order to make the timer cancel early without providing the effects, `visible = { ... }` does not work by default.\nInstead, `cancel_trigger = { ... }` is used as a trigger block. Upon it being evaluated as true, the decision timer ends without `remove_effect = { ... }` being executed. `cancel_if_not_visible = yes`, false by default, serves as an easy way to add visible's triggers into the `cancel_trigger = { ... }` block.\nUpon the decision being cancelled, `cancel_effect = { ... }` is an effect block that gets executed. This can be useful as a way to reverse the effects applied within the complete effect.\n",
+      "nextLine": null,
+      "nextColumn": null
+    }
+  }
+}

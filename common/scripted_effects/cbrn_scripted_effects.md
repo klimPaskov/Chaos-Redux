@@ -767,8 +767,31 @@ The native selection callback checks existence and non-capitulation before using
 It is not a substitute for the full start predicate on a new player or AI action.
 
 External aid follows the same phase contract: the full pre-click predicate retains the free-factory requirement, while `complete_effect` checks the continuation predicate, current mask stock, current fee, and exact target quote before reserving.
-Both native factory modifiers retain their normal two-factory commitment, and material debits, model receipts, completion, and refund helpers are unchanged.
+Occupied distribution retains its normal two-factory commitment; Protective Aid quotes two normally and one during the registered sale through its native variants.
+Material debits, model receipts, completion, and refund helpers retain the same underlying transaction owners.
 An ordinary occupied decision therefore uses `cbrn_country_can_start_occupied_mask_reservation = yes` in its availability/custom-cost blocks and calls `cbrn_begin_occupied_distribution_program = yes` only through its native selection effect.
+
+### Protective Aid native factory variants
+
+`cbrn_deploy_protective_aid` and `cbrn_deploy_protective_aid_sale` are two native definitions for one target-facing choice, with two/one static factory commitments and the same 21-day timer.
+The shared country-scoped predicates in `common/scripted_triggers/cbrn_protective_aid_decision_triggers.txt` quote the ordinary factory cost through the canonical Event 026 factory-commitment family and reject an inactive/invalid source or a quote outside the native one/two quantities.
+Inputs are current actor, registered source, exact target, real model stock, and selected request enum; outputs are temporary quote/validity values and Boolean affordability.
+The predicates spend nothing, default to ordinary two outside the sale, and fail closed when an active sale has no valid quotation.
+Callers initialize quote outputs before nested producers, and copy factory results before PP quotation reuses the generic output variables.
+
+Both native definitions pass `cbrn_protective_aid_requested_variant` to `cbrn_protective_aid_begin_selected_delivery` in `common/scripted_effects/cbrn_protective_aid_decision_effects.txt`.
+This country callback expects a legitimate native selection with ROOT as donor and FROM as state; it is not an alternate action-start API.
+It stamps the same `cbrn_external_aid_purchase_cooldown_@ROOT` timed state flag for 90 days across both IDs, then rechecks source/price, country, PP, and the exact material target without testing the factories or cooldown already committed by selection.
+A positive real model escrow and one proven PP payment register the existing receipt and active count, store `cbrn_external_aid_committed_pp_fee`, and mark the sale-selected factory variant when appropriate.
+Failed payment returns the original model quantities through the existing escrow refund helper.
+The request enum and payment-success scratch are reset to prevent a stale prior operation from being accepted.
+
+`cbrn_protective_aid_finish_selected_delivery` and `cbrn_protective_aid_cancel_selected_delivery` are the shared native expiry/cancellation callbacks.
+They preserve the existing donor/target delivery, same-model refunds, exactly-once active-count close, and delayed PP-receipt settlement.
+The common close helper clears the selected factory marker and stored displayed fee, while the donor/state cooldown expires independently.
+Selection markers keep the chosen native timer visible after sale expiry and national-stock depletion; active cost getters read its committed factory count, fee, and five-model escrow rather than presenting a new purchase quote.
+Example native call: `hidden_effect = { set_temp_variable = { cbrn_protective_aid_requested_variant = constant:cbrn_external_aid_variant.sale } cbrn_protective_aid_begin_selected_delivery = yes }` after the sale variant's full availability/custom-cost gate.
+No periodic hook, extra CXT content grant, equipment type, gameplay stat, or separate administrative choice is introduced.
 
 ## CBRN filters, losses, reconditioning, and transfer
 

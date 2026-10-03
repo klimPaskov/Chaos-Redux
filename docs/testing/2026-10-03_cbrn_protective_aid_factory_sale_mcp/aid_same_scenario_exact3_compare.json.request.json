@@ -1,0 +1,474 @@
+{
+  "op": "call",
+  "name": "hoi4.probability_compare",
+  "arguments": {
+    "workspaceId": "chaos_redux_probe",
+    "adapter": "mission_ai_will_do",
+    "before": {
+      "identifier": "cbrn_deploy_protective_aid",
+      "inlineClausewitz": "# Some fields in this file reject script-constant tokens.\n# These file-scoped values mirror the authoritative shared constants.\n@CR_SC_CBRN_OCCUPATION_DECISION_COST_PROTECTIVE_AID_FACTORIES = 2\n@CR_SC_CBRN_OCCUPATION_DECISION_COST_PROTECTIVE_AID_PP_AI_HINT = 25\n# Fixed AI saving hints mirror the two ordinary cover-up prices; the actual\n# charge and eligibility still use the live Condemnation-scaled quote.\n@CR_SC_CBRN_OCCUPATION_SEAL_STATE_PP_AI_HINT = 40\n@CR_SC_CBRN_OCCUPATION_DESTROY_RECORDS_PP_AI_HINT = 60\n# ============================================================================\n# CHAOS REDUX - CBRN OCCUPATION DECISIONS\n# ============================================================================\n# Overview:\n# - Authorizes protective occupation administration, delivers real\n#   population-scaled respirator aid from a foreign stockpile, and resolves\n#   exact-record concealment or disclosure choices.\n# - The hidden coercive-authorization token is retained for occupation-law\n#   compatibility. Sarin and Soman attacks are not decision actions.\n# - Aid debits real stock; record choices use exact historical chemical\n#   records and Condemnation-scaled Political Power for concealment.\n# ============================================================================\n\ncbrn_occupation_measures_category = {\n\tcbrn_authorize_coercive_security = {\n\t\ticon = GFX_decision_cbrn_authorize_coercive_security\n\t\tcost = constant:cbrn_occupation_decision_cost.authorize_coercive_security_pp\n\t\tfire_only_once = yes\n\n\t\tvisible = {\n\t\t\t# The coercive selected-state route is retained only for migration.\n\t\t\talways = no\n\t\t}\n\n\t\tavailable = {\n\t\t\tcustom_trigger_tooltip = {\n\t\t\t\ttooltip = cbrn_authorize_coercive_security_requirements_tt\n\t\t\t\thidden_trigger = {\n\t\t\t\t\tcbrn_occupation_coercive_security_authorization_requirements = yes\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\tcomplete_effect = {\n\t\t\tcustom_effect_tooltip = cbrn_authorize_coercive_security_effect_tt\n\t\t\thidden_effect = { cbrn_occupation_authorize_coercive_security = yes }\n\t\t}\n\n\t\tai_will_do = {\n\t\t\tbase = constant:cbrn_occupation_decision_ai.authorize_coercive_security\n\t\t\tmodifier = {\n\t\t\t\tfactor = constant:cbrn_occupation_decision_ai.disabled\n\t\t\t\tNOT = { cbrn_occupation_ai_coercive_route_requirements = yes }\n\t\t\t}\n\t\t}\n\t}\n\n\tcbrn_adopt_protected_occupation = {\n\t\ticon = GFX_decision_cbrn_adopt_protected_occupation\n\t\tcost = constant:cbrn_occupation_decision_cost.authorize_protected_administration_pp\n\t\tfire_only_once = yes\n\n\t\tvisible = {\n\t\t\tNOT = { has_country_flag = cbrn_occupation_protected_administration_authorized }\n\t\t\tcbrn_occupation_protected_administration_authorization_requirements = yes\n\t\t}\n\n\t\tavailable = {\n\t\t\tcustom_trigger_tooltip = {\n\t\t\t\ttooltip = cbrn_adopt_protected_occupation_requirements_tt\n\t\t\t\thidden_trigger = {\n\t\t\t\t\tcbrn_occupation_protected_administration_authorization_requirements = yes\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\tcomplete_effect = {\n\t\t\tcustom_effect_tooltip = cbrn_adopt_protected_occupation_effect_tt\n\t\t\thidden_effect = { cbrn_occupation_authorize_protected_administration = yes }\n\t\t}\n\n\t\tai_will_do = {\n\t\t\tbase = constant:cbrn_occupation_decision_ai.authorize_protected_administration\n\t\t\tmodifier = {\n\t\t\t\tfactor = constant:cbrn_occupation_decision_ai.defensive_inspection_factor\n\t\t\t\tcbrn_ai_has_defensive_cbrn_profile = yes\n\t\t\t}\n\t\t}\n\t}\n\n\tcbrn_deploy_protective_aid = {\n\t\ticon = GFX_decision_cbrn_deploy_protective_aid\n\t\tstate_target = any\n\t\ton_map_mode = map_and_decisions_view\n\t\tai_hint_pp_cost = @CR_SC_CBRN_OCCUPATION_DECISION_COST_PROTECTIVE_AID_PP_AI_HINT\n\t\tdays_remove = constant:cbrn_occupation_timing.protective_aid_days\n\t\tdays_re_enable = constant:cbrn_occupation_timing.protective_aid_reenable_days\n\t\tmodifier = {\n\t\t\tcivilian_factory_use = @CR_SC_CBRN_OCCUPATION_DECISION_COST_PROTECTIVE_AID_FACTORIES\n\t\t}\n\n\t\ttarget_root_trigger = {\n\t\t\tOR = {\n\t\t\t\tAND = {\n\tNOT = { is_actual_nonhuman_country = yes }\n\thas_country_flag = cbrn_program_established\n\tcbrn_country_has_any_mask_stock = yes\n\tNOT = {\n\t\tnum_of_civilian_factories_available_for_projects < constant:cbrn_occupation_decision_cost.protective_aid_factories\n\t}\n}\n\t\t\t\tcheck_variable = { cbrn_external_aid_active_reservations_count > constant:cbrn_math.zero }\n\t\t\t}\n\t\t}\n\n\t\ttarget_trigger = {\n\t\t\tFROM = {\n\t\t\t\tOR = {\n\t\t\t\t\tcbrn_occupation_state_can_receive_external_protective_aid = yes\n\t\t\t\t\tcbrn_occupation_state_has_donor_external_aid_reservation = yes\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\tvisible = {\n\t\t\tOR = {\n\t\t\t\tAND = {\n\tNOT = { is_actual_nonhuman_country = yes }\n\thas_country_flag = cbrn_program_established\n\tcbrn_country_has_any_mask_stock = yes\n\tNOT = {\n\t\tnum_of_civilian_factories_available_for_projects < constant:cbrn_occupation_decision_cost.protective_aid_factories\n\t}\n}\n\t\t\t\tFROM = { cbrn_occupation_state_has_donor_external_aid_reservation = yes }\n\t\t\t}\n\t\t}\n\n\t\tavailable = {\n\t\t\thidden_trigger = { AND = {\n\tAND = {\n\tNOT = { is_actual_nonhuman_country = yes }\n\thas_country_flag = cbrn_program_established\n\tcbrn_country_has_any_mask_stock = yes\n\tNOT = {\n\t\tnum_of_civilian_factories_available_for_projects < constant:cbrn_occupation_decision_cost.protective_aid_factories\n\t}\n}\n\tblack_friday_can_pay_cbrn_external_aid_pp_fee = yes\n\tFROM = { cbrn_occupation_state_can_receive_external_protective_aid = yes }\n} }\n\t\t}\n\t\tcustom_cost_trigger = { hidden_trigger = { AND = {\n\tAND = {\n\tNOT = { is_actual_nonhuman_country = yes }\n\thas_country_flag = cbrn_program_established\n\tcbrn_country_has_any_mask_stock = yes\n\tNOT = {\n\t\tnum_of_civilian_factories_available_for_projects < constant:cbrn_occupation_decision_cost.protective_aid_factories\n\t}\n}\n\tblack_friday_can_pay_cbrn_external_aid_pp_fee = yes\n\tFROM = { cbrn_occupation_state_can_receive_external_protective_aid = yes }\n} } }\n\t\tcustom_cost_text = cbrn_deploy_protective_aid_cost\n\n\t\tcomplete_effect = {\n\t\t\tcustom_effect_tooltip = cbrn_deploy_protective_aid_begin_tt\n\t\t\thidden_effect = {\n\t\t\t\tFROM = {\n\t\t\t\t\tset_temp_variable = { cbrn_mask_reservation_quote = constant:cbrn_math.zero }\n\t\t\t\t\tif = {\n\t\t\t\t\t\tlimit = {\n\t\t\t\t\t\t\tROOT = {\n\t\t\t\t\t\t\t\t# Native selection may already commit the factories checked before the click.\n\t\t\t\t\t\t\t\tcbrn_occupation_country_can_continue_external_protective_aid = yes\n\t\t\t\t\t\t\t\tcbrn_country_has_any_mask_stock = yes\n\t\t\t\t\t\t\t\tblack_friday_can_pay_cbrn_external_aid_pp_fee = yes\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\tcbrn_occupation_state_can_receive_external_protective_aid = yes\n\t\t\t\t\t\t\tcbrn_quote_external_state_mask_reservation = yes\n\t\t\t\t\t\t\tcheck_variable = { cbrn_mask_reservation_quote > constant:cbrn_math.zero }\n\t\t\t\t\t\t}\n\t\t\t\t\t\tset_temp_variable = { cbrn_mask_escrow_requested = cbrn_mask_reservation_quote }\n\t\t\t\t\t\tset_temp_variable = { cbrn_mask_escrow_external = constant:cbrn_math.one }\n\t\t\t\t\t\tset_temp_variable = { cbrn_mask_escrow_completed = constant:cbrn_math.zero }\n\t\t\t\t\t\tcbrn_reserve_requested_masks_to_state = yes\n\t\t\t\t\t\tif = {\n\t\t\t\t\t\t\tlimit = { check_variable = { cbrn_mask_escrow_completed > constant:cbrn_math.zero } }\n\t\t\t\t\t\t\tsave_event_target_as = cbrn_external_aid_transaction_target_state\n\t\t\t\t\t\t\tROOT = { black_friday_pay_cbrn_external_aid_pp_fee = yes }\n\t\t\t\t\t\t}\n\t\t\t\t\t\tif = {\n\t\t\t\t\t\t\tlimit = {\n\t\t\t\t\t\t\t\tcheck_variable = { cbrn_mask_escrow_completed > constant:cbrn_math.zero }\n\t\t\t\t\t\t\t\tcheck_variable = { var = black_friday_cbrn_external_aid_pp_payment_success value = constant:universal_cost_framework.one compare = equals }\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\tcbrn_occupation_register_external_aid_reservation = yes\n\t\t\t\t\t\t\tset_temp_variable = { cbrn_occupation_external_aid_days = constant:cbrn_occupation_timing.protective_aid_days }\n\t\t\t\t\t\t\tset_state_flag = { flag = cbrn_occupation_external_aid_project_active days = var:cbrn_occupation_external_aid_days }\n\t\t\t\t\t\t}\n\t\t\t\t\t\tif = {\n\t\t\t\t\t\t\tlimit = {\n\t\t\t\t\t\t\t\tcheck_variable = { cbrn_mask_escrow_completed > constant:cbrn_math.zero }\n\t\t\t\t\t\t\t\tcheck_variable = { var = black_friday_cbrn_external_aid_pp_payment_success value = constant:universal_cost_framework.zero compare = equals }\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\tcbrn_refund_external_state_mask_reservation = yes\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\tremove_effect = {\n\t\t\tcustom_effect_tooltip = cbrn_deploy_protective_aid_complete_tt\n\t\t\thidden_effect = {\n\t\t\t\tFROM = {\n\t\t\t\t\tcbrn_occupation_close_external_aid_reservation = yes\n\t\t\t\t\tclr_state_flag = cbrn_occupation_external_aid_project_active\n\t\t\t\t\tsave_event_target_as = cbrn_occupation_target_state\n\t\t\t\t}\n\t\t\t\tcbrn_occupation_execute_external_protective_aid = yes\n\t\t\t\tset_temp_variable = { black_friday_cbrn_external_aid_successful_completion = constant:universal_cost_framework.zero }\n\t\t\t\tif = {\n\t\t\t\t\tlimit = {\n\t\t\t\t\t\tcheck_variable = {\n\t\t\t\t\t\t\tvar = cbrn_occupation_protective_aid_proof\n\t\t\t\t\t\t\tvalue = constant:cbrn_proof.supplied\n\t\t\t\t\t\t\tcompare = equals\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t\tset_temp_variable = { black_friday_cbrn_external_aid_successful_completion = constant:universal_cost_framework.one }\n\t\t\t\t}\n\t\t\t\tFROM = { black_friday_settle_cbrn_external_aid_pp_fee_receipt = yes }\n\t\t\t}\n\t\t}\n\n\t\tcancel_trigger = {\n\t\t\tOR = {\n\t\t\t\tNOT = { cbrn_occupation_country_can_continue_external_protective_aid = yes }\n\t\t\t\tFROM = {\n\t\t\t\t\tOR = {\n\t\t\t\t\t\tNOT = { cbrn_occupation_state_has_donor_external_aid_reservation = yes }\n\t\t\t\t\t\tNOT = { cbrn_occupation_state_remains_external_protective_aid_target = yes }\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\tcancel_effect = {\n\t\t\thidden_effect = {\n\t\t\t\tFROM = {\n\t\t\t\t\tcbrn_occupation_close_external_aid_reservation = yes\n\t\t\t\t\tcbrn_refund_external_state_mask_reservation = yes\n\t\t\t\t\tclr_state_flag = cbrn_occupation_external_aid_project_active\n\t\t\t\t\tset_temp_variable = { black_friday_cbrn_external_aid_successful_completion = constant:universal_cost_framework.zero }\n\t\t\t\t\tblack_friday_settle_cbrn_external_aid_pp_fee_receipt = yes\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\tai_will_do = {\n\t\t\tbase = constant:cbrn_occupation_decision_ai.protective_aid\n\t\t\tmodifier = {\n\t\t\t\tfactor = constant:cbrn_occupation_decision_ai.protective_aid_own_core_factor\n\t\t\t\tFROM = { is_core_of = ROOT }\n\t\t\t}\n\t\t\tmodifier = {\n\t\t\t\tfactor = constant:cbrn_occupation_decision_ai.protective_aid_allied_core_factor\n\t\t\t\tFROM = { owner = { is_in_faction_with = ROOT } }\n\t\t\t}\n\t\t\tmodifier = {\n\t\t\t\tfactor = constant:cbrn_occupation_decision_ai.protective_aid_trauma_factor\n\t\t\t\tFROM = {\n\t\t\t\t\thas_variable = cbrn_occupation_nerve_suppression_trauma\n\t\t\t\t\tcheck_variable = {\n\t\t\t\t\t\tcbrn_occupation_nerve_suppression_trauma > constant:cbrn_math.zero\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n\n\tcbrn_seal_state = {\n\t\ticon = GFX_decision_cbrn_seal_state\n\t\tstate_target = any_controlled_state\n\t\ton_map_mode = map_and_decisions_view\n\t\tai_hint_pp_cost = @CR_SC_CBRN_OCCUPATION_SEAL_STATE_PP_AI_HINT\n\t\tcustom_cost_trigger = { hidden_trigger = { cbrn_occupation_can_pay_seal_state_pp = yes } }\n\t\tcustom_cost_text = cbrn_seal_state_cost\n\t\tdays_re_enable = constant:cbrn_occupation_timing.coverup_reenable_days\n\n\t\ttarget_root_trigger = {\n\t\t\thas_country_flag = cbrn_occupation_nerve_suppression_history\n\t\t}\n\n\t\ttarget_trigger = {\n\t\t\tFROM = { cbrn_occupation_state_can_start_coverup = yes }\n\t\t}\n\n\t\tavailable = {\n\t\t\tcustom_trigger_tooltip = {\n\t\t\t\ttooltip = cbrn_seal_state_requirements_tt\n\t\t\t\thidden_trigger = { FROM = { cbrn_occupation_state_can_start_coverup = yes } }\n\t\t\t}\n\t\t\thidden_trigger = { cbrn_occupation_can_pay_seal_state_pp = yes }\n\t\t}\n\n\t\tcomplete_effect = {\n\t\t\tcustom_effect_tooltip = cbrn_seal_state_effect_tt\n\t\t\thidden_effect = {\n\t\t\t\tset_temp_variable = { cbrn_occupation_coverup_payment_action = constant:cbrn_occupation_coverup_action.seal_state }\n\t\t\t\tcbrn_occupation_execute_paid_coverup = yes\n\t\t\t}\n\t\t}\n\n\t\tai_will_do = {\n\t\t\tbase = constant:cbrn_occupation_decision_ai.seal_state\n\t\t\tmodifier = {\n\t\t\t\tfactor = constant:cbrn_occupation_decision_ai.disabled\n\t\t\t\tOR = {\n\t\t\t\t\thas_government = democratic\n\t\t\t\t\tNOT = { cbrn_ai_route_allows_first_use = yes }\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n\n\tcbrn_destroy_contaminated_records = {\n\t\ticon = GFX_decision_cbrn_destroy_contaminated_records\n\t\tstate_target = any_controlled_state\n\t\ton_map_mode = map_and_decisions_view\n\t\tai_hint_pp_cost = @CR_SC_CBRN_OCCUPATION_DESTROY_RECORDS_PP_AI_HINT\n\t\tcustom_cost_trigger = { hidden_trigger = { cbrn_occupation_can_pay_destroy_records_pp = yes } }\n\t\tcustom_cost_text = cbrn_destroy_contaminated_records_cost\n\t\tdays_re_enable = constant:cbrn_occupation_timing.coverup_reenable_days\n\n\t\ttarget_root_trigger = {\n\t\t\thas_country_flag = cbrn_occupation_nerve_suppression_history\n\t\t}\n\n\t\ttarget_trigger = {\n\t\t\tFROM = { cbrn_occupation_state_can_start_coverup = yes }\n\t\t}\n\n\t\tavailable = {\n\t\t\tcustom_trigger_tooltip = {\n\t\t\t\ttooltip = cbrn_destroy_contaminated_records_requirements_tt\n\t\t\t\thidden_trigger = { FROM = { cbrn_occupation_state_can_start_coverup = yes } }\n\t\t\t}\n\t\t\thidden_trigger = { cbrn_occupation_can_pay_destroy_records_pp = yes }\n\t\t}\n\n\t\tcomplete_effect = {\n\t\t\tcustom_effect_tooltip = cbrn_destroy_contaminated_records_effect_tt\n\t\t\thidden_effect = {\n\t\t\t\tset_temp_variable = { cbrn_occupation_coverup_payment_action = constant:cbrn_occupation_coverup_action.destroy_records }\n\t\t\t\tcbrn_occupation_execute_paid_coverup = yes\n\t\t\t}\n\t\t}\n\n\t\tai_will_do = {\n\t\t\tbase = constant:cbrn_occupation_decision_ai.destroy_records\n\t\t\tmodifier = {\n\t\t\t\tfactor = constant:cbrn_occupation_decision_ai.disabled\n\t\t\t\tNOT = { cbrn_ai_route_allows_unrestricted_use = yes }\n\t\t\t}\n\t\t}\n\t}\n\n\tcbrn_admit_accidental_release = {\n\t\ticon = GFX_decision_cbrn_admit_accidental_release\n\t\tstate_target = any\n\t\ton_map_mode = map_and_decisions_view\n\t\tcost = constant:cbrn_occupation_decision_cost.admit_release_pp\n\t\tdays_re_enable = constant:cbrn_occupation_timing.coverup_reenable_days\n\n\t\ttarget_root_trigger = {\n\t\t\thas_country_flag = cbrn_occupation_nerve_suppression_history\n\t\t}\n\n\t\ttarget_trigger = {\n\t\t\tFROM = { cbrn_occupation_state_can_admit_release = yes }\n\t\t}\n\n\t\tavailable = {\n\t\t\tcustom_trigger_tooltip = {\n\t\t\t\ttooltip = cbrn_admit_accidental_release_requirements_tt\n\t\t\t\thidden_trigger = { FROM = { cbrn_occupation_state_can_admit_release = yes } }\n\t\t\t}\n\t\t}\n\n\t\tcomplete_effect = {\n\t\t\tcustom_effect_tooltip = cbrn_admit_accidental_release_effect_tt\n\t\t\thidden_effect = {\n\t\t\t\tFROM = {\n\t\t\t\t\tset_variable = {\n\t\t\t\t\t\tcbrn_occupation_requested_coverup_action = constant:cbrn_occupation_coverup_action.admit_accident\n\t\t\t\t\t}\n\t\t\t\t\tcbrn_occupation_apply_requested_coverup_action = yes\n\t\t\t\t\tclear_variable = cbrn_occupation_requested_coverup_action\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\tai_will_do = {\n\t\t\tbase = constant:cbrn_occupation_decision_ai.admit_release\n\t\t\tmodifier = {\n\t\t\t\tfactor = constant:cbrn_occupation_decision_ai.defensive_inspection_factor\n\t\t\t\tOR = {\n\t\t\t\t\thas_government = democratic\n\t\t\t\t\tcbrn_ai_has_defensive_cbrn_profile = yes\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n\n\tcbrn_permit_inspection = {\n\t\ticon = GFX_decision_cbrn_permit_inspection\n\t\tstate_target = any_controlled_state\n\t\ton_map_mode = map_and_decisions_view\n\t\tcost = constant:cbrn_occupation_decision_cost.permit_inspection_pp\n\t\tdays_re_enable = constant:cbrn_occupation_timing.coverup_reenable_days\n\n\t\ttarget_root_trigger = {\n\t\t\thas_country_flag = cbrn_occupation_nerve_suppression_history\n\t\t}\n\n\t\ttarget_trigger = {\n\t\t\tFROM = { cbrn_occupation_state_can_permit_inspection = yes }\n\t\t}\n\n\t\tavailable = {\n\t\t\tcustom_trigger_tooltip = {\n\t\t\t\ttooltip = cbrn_permit_inspection_requirements_tt\n\t\t\t\thidden_trigger = { FROM = { cbrn_occupation_state_can_permit_inspection = yes } }\n\t\t\t}\n\t\t}\n\n\t\tcomplete_effect = {\n\t\t\tcustom_effect_tooltip = cbrn_permit_inspection_effect_tt\n\t\t\thidden_effect = {\n\t\t\t\tFROM = {\n\t\t\t\t\tset_variable = {\n\t\t\t\t\t\tcbrn_occupation_requested_coverup_action = constant:cbrn_occupation_coverup_action.permit_inspection\n\t\t\t\t\t}\n\t\t\t\t\tcbrn_occupation_apply_requested_coverup_action = yes\n\t\t\t\t\tclear_variable = cbrn_occupation_requested_coverup_action\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\tai_will_do = {\n\t\t\tbase = constant:cbrn_occupation_decision_ai.permit_inspection\n\t\t\tmodifier = {\n\t\t\t\tfactor = constant:cbrn_occupation_decision_ai.defensive_inspection_factor\n\t\t\t\tcbrn_ai_has_defensive_cbrn_profile = yes\n\t\t\t}\n\t\t\tmodifier = {\n\t\t\t\tfactor = constant:cbrn_occupation_decision_ai.high_condemnation_inspection_factor\n\t\t\t\tcondemnation_is_formally_censured = yes\n\t\t\t}\n\t\t}\n\t}\n}\n"
+    },
+    "after": {
+      "path": "common/decisions/cbrn_occupation_decisions.txt"
+    },
+    "candidatePool": [
+      "cbrn_deploy_protective_aid",
+      "cbrn_deploy_protective_aid_sale"
+    ],
+    "scenarioSet": {
+      "schemaVersion": "1.0",
+      "id": "PAID_FACTORY_VARIANT_EXACT3_2026_10_03",
+      "scenarios": [
+        {
+          "id": "PAID_NORMAL_F2_PP25",
+          "label": "Ordinary source; factories 2; PP 25.",
+          "actor": "ENG",
+          "state": {
+            "is_ai": true,
+            "is_actual_nonhuman_country": false,
+            "has_capitulated": false,
+            "political_power": 25,
+            "num_of_civilian_factories_available_for_projects": 2,
+            "cbrn_external_aid_active_reservations_count": 0,
+            "has_equipment": true,
+            "num_equipment@gas_mask_equipment_reconditioned": 1000,
+            "num_equipment@gas_mask_equipment_1": 1000,
+            "num_equipment@gas_mask_equipment_2": 1000,
+            "num_equipment@gas_mask_equipment_3": 1000,
+            "num_equipment@gas_mask_equipment_4": 1000,
+            "num_equipment@gas_mask_equipment": 5000
+          },
+          "flags": [
+            "cbrn_program_established",
+            "cbrn_civil_defence_established",
+            "cbrn_population_registered_and_fitted",
+            "cbrn_national_respirator_reserve"
+          ],
+          "controls": {
+            "16": "GER"
+          },
+          "scopes": {
+            "ROOT": {
+              "id": "ENG",
+              "type": "country",
+              "actor": "ENG",
+              "state": {
+                "is_ai": true,
+                "is_actual_nonhuman_country": false,
+                "has_capitulated": false,
+                "political_power": 25,
+                "num_of_civilian_factories_available_for_projects": 2,
+                "cbrn_external_aid_active_reservations_count": 0,
+                "has_equipment": true,
+                "num_equipment@gas_mask_equipment_reconditioned": 1000,
+                "num_equipment@gas_mask_equipment_1": 1000,
+                "num_equipment@gas_mask_equipment_2": 1000,
+                "num_equipment@gas_mask_equipment_3": 1000,
+                "num_equipment@gas_mask_equipment_4": 1000,
+                "num_equipment@gas_mask_equipment": 5000
+              },
+              "flags": [
+                "cbrn_program_established",
+                "cbrn_civil_defence_established",
+                "cbrn_population_registered_and_fitted",
+                "cbrn_national_respirator_reserve"
+              ]
+            },
+            "FROM": {
+              "id": "16",
+              "type": "state",
+              "actor": "FRA",
+              "state": {
+                "state_population_k": 1000,
+                "infrastructure": 4,
+                "state_category": "metropolis",
+                "is_capital": true,
+                "cbrn_occupation_nerve_suppression_trauma": 0,
+                "cbrn_civilian_mask_basic_crates": 0,
+                "cbrn_civilian_mask_reconditioned_crates": 0,
+                "cbrn_civilian_mask_improved_crates": 0,
+                "cbrn_civilian_mask_advanced_crates": 0,
+                "cbrn_civilian_mask_sealed_crates": 0
+              },
+              "flags": [
+                "cbrn_chemical_raid_alert_active"
+              ]
+            },
+            "GLOBAL": {
+              "id": "global",
+              "type": "unknown",
+              "state": {
+                "universal_cost_source_ids": [],
+                "universal_cost_source_ratios": [],
+                "universal_cost_source_priorities": [],
+                "universal_cost_source_eligibility_masks": [],
+                "universal_cost_custom_quote_cache_valid": 0
+              },
+              "flags": []
+            },
+            "FROM.owner": {
+              "id": "FRA",
+              "type": "country",
+              "actor": "FRA",
+              "state": {
+                "is_in_faction_with": false
+              },
+              "flags": []
+            }
+          },
+          "scopePools": [
+            {
+              "id": "cbrn_protective_aid_target_states",
+              "bindAs": "FROM",
+              "selection": "enumeration",
+              "complete": false,
+              "filter": {
+                "inlineClausewitz": "cbrn_occupation_state_can_receive_external_protective_aid = yes"
+              },
+              "candidates": [
+                {
+                  "id": "16",
+                  "type": "state",
+                  "actor": "FRA",
+                  "state": {
+                    "state_population_k": 1000,
+                    "infrastructure": 4,
+                    "state_category": "metropolis",
+                    "is_capital": true,
+                    "cbrn_occupation_nerve_suppression_trauma": 0,
+                    "cbrn_civilian_mask_basic_crates": 0,
+                    "cbrn_civilian_mask_reconditioned_crates": 0,
+                    "cbrn_civilian_mask_improved_crates": 0,
+                    "cbrn_civilian_mask_advanced_crates": 0,
+                    "cbrn_civilian_mask_sealed_crates": 0,
+                    "cbrn_external_mask_escrow_donor": "ENG",
+                    "cbrn_external_mask_escrow_reconditioned": 1,
+                    "cbrn_external_mask_escrow_basic": 1,
+                    "cbrn_external_mask_escrow_improved": 1,
+                    "cbrn_external_mask_escrow_advanced": 1,
+                    "cbrn_external_mask_escrow_sealed": 1
+                  },
+                  "flags": [
+                    "cbrn_chemical_raid_alert_active",
+                    "cbrn_external_mask_escrow_active",
+                    "cbrn_external_aid_reservation_counted",
+                    "cbrn_occupation_external_aid_project_active",
+                    "cbrn_external_aid_purchase_cooldown_ENG"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "PAID_SALE50_F1_PP13",
+          "label": "Black Friday source ratio 5000; factories 1; PP 13.",
+          "actor": "ENG",
+          "state": {
+            "is_ai": true,
+            "is_actual_nonhuman_country": false,
+            "has_capitulated": false,
+            "political_power": 13,
+            "num_of_civilian_factories_available_for_projects": 1,
+            "cbrn_external_aid_active_reservations_count": 0,
+            "has_equipment": true,
+            "num_equipment@gas_mask_equipment_reconditioned": 1000,
+            "num_equipment@gas_mask_equipment_1": 1000,
+            "num_equipment@gas_mask_equipment_2": 1000,
+            "num_equipment@gas_mask_equipment_3": 1000,
+            "num_equipment@gas_mask_equipment_4": 1000,
+            "num_equipment@gas_mask_equipment": 5000
+          },
+          "flags": [
+            "cbrn_program_established",
+            "cbrn_civil_defence_established",
+            "cbrn_population_registered_and_fitted",
+            "cbrn_national_respirator_reserve"
+          ],
+          "controls": {
+            "16": "GER"
+          },
+          "scopes": {
+            "ROOT": {
+              "id": "ENG",
+              "type": "country",
+              "actor": "ENG",
+              "state": {
+                "is_ai": true,
+                "is_actual_nonhuman_country": false,
+                "has_capitulated": false,
+                "political_power": 13,
+                "num_of_civilian_factories_available_for_projects": 1,
+                "cbrn_external_aid_active_reservations_count": 0,
+                "has_equipment": true,
+                "num_equipment@gas_mask_equipment_reconditioned": 1000,
+                "num_equipment@gas_mask_equipment_1": 1000,
+                "num_equipment@gas_mask_equipment_2": 1000,
+                "num_equipment@gas_mask_equipment_3": 1000,
+                "num_equipment@gas_mask_equipment_4": 1000,
+                "num_equipment@gas_mask_equipment": 5000
+              },
+              "flags": [
+                "cbrn_program_established",
+                "cbrn_civil_defence_established",
+                "cbrn_population_registered_and_fitted",
+                "cbrn_national_respirator_reserve"
+              ]
+            },
+            "FROM": {
+              "id": "16",
+              "type": "state",
+              "actor": "FRA",
+              "state": {
+                "state_population_k": 1000,
+                "infrastructure": 4,
+                "state_category": "metropolis",
+                "is_capital": true,
+                "cbrn_occupation_nerve_suppression_trauma": 0,
+                "cbrn_civilian_mask_basic_crates": 0,
+                "cbrn_civilian_mask_reconditioned_crates": 0,
+                "cbrn_civilian_mask_improved_crates": 0,
+                "cbrn_civilian_mask_advanced_crates": 0,
+                "cbrn_civilian_mask_sealed_crates": 0
+              },
+              "flags": [
+                "cbrn_chemical_raid_alert_active"
+              ]
+            },
+            "GLOBAL": {
+              "id": "global",
+              "type": "unknown",
+              "state": {
+                "universal_cost_source_ids": [
+                  26
+                ],
+                "universal_cost_source_ratios": [
+                  5000
+                ],
+                "universal_cost_source_priorities": [
+                  500
+                ],
+                "universal_cost_source_eligibility_masks": [
+                  0
+                ],
+                "universal_cost_custom_quote_cache_valid": 1
+              },
+              "flags": [
+                "black_friday_active"
+              ]
+            },
+            "FROM.owner": {
+              "id": "FRA",
+              "type": "country",
+              "actor": "FRA",
+              "state": {
+                "is_in_faction_with": false
+              },
+              "flags": []
+            }
+          },
+          "scopePools": [
+            {
+              "id": "cbrn_protective_aid_target_states",
+              "bindAs": "FROM",
+              "selection": "enumeration",
+              "complete": false,
+              "filter": {
+                "inlineClausewitz": "cbrn_occupation_state_can_receive_external_protective_aid = yes"
+              },
+              "candidates": [
+                {
+                  "id": "16",
+                  "type": "state",
+                  "actor": "FRA",
+                  "state": {
+                    "state_population_k": 1000,
+                    "infrastructure": 4,
+                    "state_category": "metropolis",
+                    "is_capital": true,
+                    "cbrn_occupation_nerve_suppression_trauma": 0,
+                    "cbrn_civilian_mask_basic_crates": 0,
+                    "cbrn_civilian_mask_reconditioned_crates": 0,
+                    "cbrn_civilian_mask_improved_crates": 0,
+                    "cbrn_civilian_mask_advanced_crates": 0,
+                    "cbrn_civilian_mask_sealed_crates": 0,
+                    "cbrn_external_mask_escrow_donor": "ENG",
+                    "cbrn_external_mask_escrow_reconditioned": 1,
+                    "cbrn_external_mask_escrow_basic": 1,
+                    "cbrn_external_mask_escrow_improved": 1,
+                    "cbrn_external_mask_escrow_advanced": 1,
+                    "cbrn_external_mask_escrow_sealed": 1
+                  },
+                  "flags": [
+                    "cbrn_chemical_raid_alert_active",
+                    "cbrn_external_mask_escrow_active",
+                    "cbrn_external_aid_reservation_counted",
+                    "cbrn_occupation_external_aid_project_active",
+                    "cbrn_external_aid_purchase_cooldown_ENG"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "PAID_EVOLUTIONI_F1_PP7",
+          "label": "Evolution I source ratio 2500; factories 1; PP 7.",
+          "actor": "ENG",
+          "state": {
+            "is_ai": true,
+            "is_actual_nonhuman_country": false,
+            "has_capitulated": false,
+            "political_power": 7,
+            "num_of_civilian_factories_available_for_projects": 1,
+            "cbrn_external_aid_active_reservations_count": 0,
+            "has_equipment": true,
+            "num_equipment@gas_mask_equipment_reconditioned": 1000,
+            "num_equipment@gas_mask_equipment_1": 1000,
+            "num_equipment@gas_mask_equipment_2": 1000,
+            "num_equipment@gas_mask_equipment_3": 1000,
+            "num_equipment@gas_mask_equipment_4": 1000,
+            "num_equipment@gas_mask_equipment": 5000
+          },
+          "flags": [
+            "cbrn_program_established",
+            "cbrn_civil_defence_established",
+            "cbrn_population_registered_and_fitted",
+            "cbrn_national_respirator_reserve"
+          ],
+          "controls": {
+            "16": "GER"
+          },
+          "scopes": {
+            "ROOT": {
+              "id": "ENG",
+              "type": "country",
+              "actor": "ENG",
+              "state": {
+                "is_ai": true,
+                "is_actual_nonhuman_country": false,
+                "has_capitulated": false,
+                "political_power": 7,
+                "num_of_civilian_factories_available_for_projects": 1,
+                "cbrn_external_aid_active_reservations_count": 0,
+                "has_equipment": true,
+                "num_equipment@gas_mask_equipment_reconditioned": 1000,
+                "num_equipment@gas_mask_equipment_1": 1000,
+                "num_equipment@gas_mask_equipment_2": 1000,
+                "num_equipment@gas_mask_equipment_3": 1000,
+                "num_equipment@gas_mask_equipment_4": 1000,
+                "num_equipment@gas_mask_equipment": 5000
+              },
+              "flags": [
+                "cbrn_program_established",
+                "cbrn_civil_defence_established",
+                "cbrn_population_registered_and_fitted",
+                "cbrn_national_respirator_reserve"
+              ]
+            },
+            "FROM": {
+              "id": "16",
+              "type": "state",
+              "actor": "FRA",
+              "state": {
+                "state_population_k": 1000,
+                "infrastructure": 4,
+                "state_category": "metropolis",
+                "is_capital": true,
+                "cbrn_occupation_nerve_suppression_trauma": 0,
+                "cbrn_civilian_mask_basic_crates": 0,
+                "cbrn_civilian_mask_reconditioned_crates": 0,
+                "cbrn_civilian_mask_improved_crates": 0,
+                "cbrn_civilian_mask_advanced_crates": 0,
+                "cbrn_civilian_mask_sealed_crates": 0
+              },
+              "flags": [
+                "cbrn_chemical_raid_alert_active"
+              ]
+            },
+            "GLOBAL": {
+              "id": "global",
+              "type": "unknown",
+              "state": {
+                "universal_cost_source_ids": [
+                  26
+                ],
+                "universal_cost_source_ratios": [
+                  2500
+                ],
+                "universal_cost_source_priorities": [
+                  500
+                ],
+                "universal_cost_source_eligibility_masks": [
+                  0
+                ],
+                "universal_cost_custom_quote_cache_valid": 1
+              },
+              "flags": [
+                "black_friday_active"
+              ]
+            },
+            "FROM.owner": {
+              "id": "FRA",
+              "type": "country",
+              "actor": "FRA",
+              "state": {
+                "is_in_faction_with": false
+              },
+              "flags": []
+            }
+          },
+          "scopePools": [
+            {
+              "id": "cbrn_protective_aid_target_states",
+              "bindAs": "FROM",
+              "selection": "enumeration",
+              "complete": false,
+              "filter": {
+                "inlineClausewitz": "cbrn_occupation_state_can_receive_external_protective_aid = yes"
+              },
+              "candidates": [
+                {
+                  "id": "16",
+                  "type": "state",
+                  "actor": "FRA",
+                  "state": {
+                    "state_population_k": 1000,
+                    "infrastructure": 4,
+                    "state_category": "metropolis",
+                    "is_capital": true,
+                    "cbrn_occupation_nerve_suppression_trauma": 0,
+                    "cbrn_civilian_mask_basic_crates": 0,
+                    "cbrn_civilian_mask_reconditioned_crates": 0,
+                    "cbrn_civilian_mask_improved_crates": 0,
+                    "cbrn_civilian_mask_advanced_crates": 0,
+                    "cbrn_civilian_mask_sealed_crates": 0,
+                    "cbrn_external_mask_escrow_donor": "ENG",
+                    "cbrn_external_mask_escrow_reconditioned": 1,
+                    "cbrn_external_mask_escrow_basic": 1,
+                    "cbrn_external_mask_escrow_improved": 1,
+                    "cbrn_external_mask_escrow_advanced": 1,
+                    "cbrn_external_mask_escrow_sealed": 1
+                  },
+                  "flags": [
+                    "cbrn_chemical_raid_alert_active",
+                    "cbrn_external_mask_escrow_active",
+                    "cbrn_external_aid_reservation_counted",
+                    "cbrn_occupation_external_aid_project_active",
+                    "cbrn_external_aid_purchase_cooldown_ENG"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "outputs": [
+      "json",
+      "comparison",
+      "unresolved"
+    ]
+  },
+  "output": "aid_same_scenario_exact3_compare.json"
+}

@@ -59,7 +59,20 @@ defined_text = {
 defined_text = {
 	name = GetCbrnOccupationValueOccupationDecisionCostProtectiveAidFactories
 	text = {
-		trigger = { set_temp_variable = { cbrn_occupation_loc_occupation_decision_cost_protective_aid_factories = constant:cbrn_occupation_decision_cost.protective_aid_factories } }
+		trigger = {
+			set_temp_variable = { cbrn_occupation_loc_occupation_decision_cost_protective_aid_factories = constant:cbrn_occupation_decision_cost.protective_aid_factories }
+			if = {
+				limit = { FROM = { cbrn_protective_aid_state_holds_sale_delivery = yes } }
+				set_temp_variable = { cbrn_occupation_loc_occupation_decision_cost_protective_aid_factories = constant:cbrn_occupation_decision_cost.protective_aid_sale_factories }
+			}
+			else_if = {
+				limit = { FROM = { NOT = { cbrn_occupation_state_has_donor_external_aid_reservation = yes } } }
+				set_temp_variable = { cbrn_protective_aid_factory_quote = constant:cbrn_occupation_decision_cost.protective_aid_factories }
+				set_temp_variable = { cbrn_protective_aid_factory_quote_valid = constant:universal_cost_framework.zero }
+				cbrn_protective_aid_quote_factory_cost = yes
+				set_temp_variable = { cbrn_occupation_loc_occupation_decision_cost_protective_aid_factories = cbrn_protective_aid_factory_quote }
+			}
+		}
 		localization_key = cbrn_occupation_value_occupation_decision_cost_protective_aid_factories
 	}
 }

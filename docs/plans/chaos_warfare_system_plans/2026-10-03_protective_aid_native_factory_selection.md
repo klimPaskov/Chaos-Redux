@@ -47,5 +47,5 @@ There is therefore no matching before/after artifact or supported native scenari
 
 Native evidence must confirm a valid exact-two-factory click, its paid model reservation, normal completion, cancellation, target loss, stock loss, and unchanged refund/receipt behavior.
 The [independent family source audit](subagent_handoffs/2026-10-03_protective_aid_native_factory_selection_audit.md) traces both corrected paths, exact-model escrow/refunds, current PP receipts, and existing timed-factory precedents without confirming native ordering.
-The one-factory Event 026 sale commitment is a separate unresolved tranche and is not claimed by this guard repair.
+The [factory-sale follow-up](2026-10-03_protective_aid_native_factory_sale.md) implements that separate owner price surface in source; it does not turn this earlier guard repair into native timing or payment evidence.
 The overall CBRN overhaul remains incomplete.

@@ -1,6 +1,8 @@
 # Some fields in this file reject script-constant tokens.
 # These file-scoped values mirror the authoritative shared constants.
 @CR_SC_CBRN_OCCUPATION_DECISION_COST_PROTECTIVE_AID_FACTORIES = 2
+@CR_SC_CBRN_OCCUPATION_DECISION_COST_PROTECTIVE_AID_SALE_FACTORIES = 1
+@CR_SC_CBRN_OCCUPATION_DECISION_COST_PROTECTIVE_AID_SALE_PP_AI_HINT = 1
 @CR_SC_CBRN_OCCUPATION_DECISION_COST_PROTECTIVE_AID_PP_AI_HINT = 25
 # Fixed AI saving hints mirror the two ordinary cover-up prices; the actual
 # charge and eligibility still use the live Condemnation-scaled quote.
@@ -93,134 +95,120 @@ cbrn_occupation_measures_category = {
 		ai_hint_pp_cost = @CR_SC_CBRN_OCCUPATION_DECISION_COST_PROTECTIVE_AID_PP_AI_HINT
 		days_remove = constant:cbrn_occupation_timing.protective_aid_days
 		days_re_enable = constant:cbrn_occupation_timing.protective_aid_reenable_days
-		modifier = {
-			civilian_factory_use = @CR_SC_CBRN_OCCUPATION_DECISION_COST_PROTECTIVE_AID_FACTORIES
-		}
-
+		modifier = { civilian_factory_use = @CR_SC_CBRN_OCCUPATION_DECISION_COST_PROTECTIVE_AID_FACTORIES }
 		target_root_trigger = {
 			OR = {
 				cbrn_occupation_country_can_supply_external_protective_aid = yes
 				check_variable = { cbrn_external_aid_active_reservations_count > constant:cbrn_math.zero }
 			}
 		}
-
 		target_trigger = {
 			FROM = {
 				OR = {
-					cbrn_occupation_state_can_receive_external_protective_aid = yes
-					cbrn_occupation_state_has_donor_external_aid_reservation = yes
+					cbrn_protective_aid_state_can_start = yes
+					cbrn_protective_aid_state_holds_ordinary_delivery = yes
 				}
 			}
 		}
-
 		visible = {
 			OR = {
-				cbrn_occupation_country_can_supply_external_protective_aid = yes
-				FROM = { cbrn_occupation_state_has_donor_external_aid_reservation = yes }
+				AND = {
+					cbrn_occupation_country_can_supply_external_protective_aid = yes
+					cbrn_protective_aid_current_purchase_is_ordinary = yes
+					FROM = { NOT = { cbrn_occupation_state_has_donor_external_aid_reservation = yes } }
+				}
+				FROM = { cbrn_protective_aid_state_holds_ordinary_delivery = yes }
 			}
 		}
-
-		available = {
-			hidden_trigger = { cbrn_occupation_external_aid_payment_ready = yes }
-		}
-		custom_cost_trigger = { hidden_trigger = { cbrn_occupation_external_aid_payment_ready = yes } }
+		available = { hidden_trigger = { cbrn_protective_aid_ordinary_payment_ready = yes } }
+		custom_cost_trigger = { hidden_trigger = { cbrn_protective_aid_ordinary_payment_ready = yes } }
 		custom_cost_text = cbrn_deploy_protective_aid_cost
-
 		complete_effect = {
 			custom_effect_tooltip = cbrn_deploy_protective_aid_begin_tt
 			hidden_effect = {
-				FROM = {
-					set_temp_variable = { cbrn_mask_reservation_quote = constant:cbrn_math.zero }
-					if = {
-						limit = {
-							ROOT = {
-								# Native selection may already commit the factories checked before the click.
-								cbrn_occupation_country_can_continue_external_protective_aid = yes
-								cbrn_country_has_any_mask_stock = yes
-								black_friday_can_pay_cbrn_external_aid_pp_fee = yes
-							}
-							cbrn_occupation_state_can_receive_external_protective_aid = yes
-							cbrn_quote_external_state_mask_reservation = yes
-							check_variable = { cbrn_mask_reservation_quote > constant:cbrn_math.zero }
-						}
-						set_temp_variable = { cbrn_mask_escrow_requested = cbrn_mask_reservation_quote }
-						set_temp_variable = { cbrn_mask_escrow_external = constant:cbrn_math.one }
-						set_temp_variable = { cbrn_mask_escrow_completed = constant:cbrn_math.zero }
-						cbrn_reserve_requested_masks_to_state = yes
-						if = {
-							limit = { check_variable = { cbrn_mask_escrow_completed > constant:cbrn_math.zero } }
-							save_event_target_as = cbrn_external_aid_transaction_target_state
-							ROOT = { black_friday_pay_cbrn_external_aid_pp_fee = yes }
-						}
-						if = {
-							limit = {
-								check_variable = { cbrn_mask_escrow_completed > constant:cbrn_math.zero }
-								check_variable = { var = black_friday_cbrn_external_aid_pp_payment_success value = constant:universal_cost_framework.one compare = equals }
-							}
-							cbrn_occupation_register_external_aid_reservation = yes
-							set_temp_variable = { cbrn_occupation_external_aid_days = constant:cbrn_occupation_timing.protective_aid_days }
-							set_state_flag = { flag = cbrn_occupation_external_aid_project_active days = var:cbrn_occupation_external_aid_days }
-						}
-						if = {
-							limit = {
-								check_variable = { cbrn_mask_escrow_completed > constant:cbrn_math.zero }
-								check_variable = { var = black_friday_cbrn_external_aid_pp_payment_success value = constant:universal_cost_framework.zero compare = equals }
-							}
-							cbrn_refund_external_state_mask_reservation = yes
-						}
-					}
-				}
+				set_temp_variable = { cbrn_protective_aid_requested_variant = constant:cbrn_external_aid_variant.ordinary }
+				cbrn_protective_aid_begin_selected_delivery = yes
 			}
 		}
-
 		remove_effect = {
 			custom_effect_tooltip = cbrn_deploy_protective_aid_complete_tt
-			hidden_effect = {
+			hidden_effect = { cbrn_protective_aid_finish_selected_delivery = yes }
+		}
+		cancel_trigger = { cbrn_protective_aid_should_cancel = yes }
+		cancel_effect = { hidden_effect = { cbrn_protective_aid_cancel_selected_delivery = yes } }
+		ai_will_do = {
+			base = constant:cbrn_occupation_decision_ai.protective_aid
+			modifier = {
+				factor = constant:cbrn_occupation_decision_ai.protective_aid_own_core_factor
+				FROM = { is_core_of = ROOT }
+			}
+			modifier = {
+				factor = constant:cbrn_occupation_decision_ai.protective_aid_allied_core_factor
+				FROM = { owner = { is_in_faction_with = ROOT } }
+			}
+			modifier = {
+				factor = constant:cbrn_occupation_decision_ai.protective_aid_trauma_factor
 				FROM = {
-					cbrn_occupation_close_external_aid_reservation = yes
-					clr_state_flag = cbrn_occupation_external_aid_project_active
-					save_event_target_as = cbrn_occupation_target_state
-				}
-				cbrn_occupation_execute_external_protective_aid = yes
-				set_temp_variable = { black_friday_cbrn_external_aid_successful_completion = constant:universal_cost_framework.zero }
-				if = {
-					limit = {
-						check_variable = {
-							var = cbrn_occupation_protective_aid_proof
-							value = constant:cbrn_proof.supplied
-							compare = equals
-						}
+					has_variable = cbrn_occupation_nerve_suppression_trauma
+					check_variable = {
+						cbrn_occupation_nerve_suppression_trauma > constant:cbrn_math.zero
 					}
-					set_temp_variable = { black_friday_cbrn_external_aid_successful_completion = constant:universal_cost_framework.one }
 				}
-				FROM = { black_friday_settle_cbrn_external_aid_pp_fee_receipt = yes }
 			}
 		}
+	}
 
-		cancel_trigger = {
+	# Two native commitments implement one player-facing aid choice.
+	cbrn_deploy_protective_aid_sale = {
+		name = cbrn_deploy_protective_aid
+		desc = cbrn_deploy_protective_aid_desc
+		icon = GFX_decision_cbrn_deploy_protective_aid
+		state_target = any
+		on_map_mode = map_and_decisions_view
+		ai_hint_pp_cost = @CR_SC_CBRN_OCCUPATION_DECISION_COST_PROTECTIVE_AID_SALE_PP_AI_HINT
+		days_remove = constant:cbrn_occupation_timing.protective_aid_days
+		days_re_enable = constant:cbrn_occupation_timing.protective_aid_reenable_days
+		modifier = { civilian_factory_use = @CR_SC_CBRN_OCCUPATION_DECISION_COST_PROTECTIVE_AID_SALE_FACTORIES }
+		target_root_trigger = {
 			OR = {
-				NOT = { cbrn_occupation_country_can_continue_external_protective_aid = yes }
-				FROM = {
-					OR = {
-						NOT = { cbrn_occupation_state_has_donor_external_aid_reservation = yes }
-						NOT = { cbrn_occupation_state_remains_external_protective_aid_target = yes }
-					}
+				cbrn_occupation_country_can_supply_external_protective_aid = yes
+				check_variable = { cbrn_external_aid_active_reservations_count > constant:cbrn_math.zero }
+			}
+		}
+		target_trigger = {
+			FROM = {
+				OR = {
+					cbrn_protective_aid_state_can_start = yes
+					cbrn_protective_aid_state_holds_sale_delivery = yes
 				}
 			}
 		}
-
-		cancel_effect = {
+		visible = {
+			OR = {
+				AND = {
+					cbrn_occupation_country_can_supply_external_protective_aid = yes
+					cbrn_protective_aid_current_purchase_is_sale = yes
+					FROM = { NOT = { cbrn_occupation_state_has_donor_external_aid_reservation = yes } }
+				}
+				FROM = { cbrn_protective_aid_state_holds_sale_delivery = yes }
+			}
+		}
+		available = { hidden_trigger = { cbrn_protective_aid_sale_payment_ready = yes } }
+		custom_cost_trigger = { hidden_trigger = { cbrn_protective_aid_sale_payment_ready = yes } }
+		custom_cost_text = cbrn_deploy_protective_aid_cost
+		complete_effect = {
+			custom_effect_tooltip = cbrn_deploy_protective_aid_begin_tt
 			hidden_effect = {
-				FROM = {
-					cbrn_occupation_close_external_aid_reservation = yes
-					cbrn_refund_external_state_mask_reservation = yes
-					clr_state_flag = cbrn_occupation_external_aid_project_active
-					set_temp_variable = { black_friday_cbrn_external_aid_successful_completion = constant:universal_cost_framework.zero }
-					black_friday_settle_cbrn_external_aid_pp_fee_receipt = yes
-				}
+				set_temp_variable = { cbrn_protective_aid_requested_variant = constant:cbrn_external_aid_variant.sale }
+				cbrn_protective_aid_begin_selected_delivery = yes
 			}
 		}
-
+		remove_effect = {
+			custom_effect_tooltip = cbrn_deploy_protective_aid_complete_tt
+			hidden_effect = { cbrn_protective_aid_finish_selected_delivery = yes }
+		}
+		cancel_trigger = { cbrn_protective_aid_should_cancel = yes }
+		cancel_effect = { hidden_effect = { cbrn_protective_aid_cancel_selected_delivery = yes } }
 		ai_will_do = {
 			base = constant:cbrn_occupation_decision_ai.protective_aid
 			modifier = {

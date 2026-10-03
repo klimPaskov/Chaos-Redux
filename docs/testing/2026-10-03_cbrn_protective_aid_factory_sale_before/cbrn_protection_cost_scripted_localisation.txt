@@ -1,0 +1,191 @@
+# Procurement cost text colors each spendable payment independently.
+# Sale-adapted PP/support rows use Event 026 quotes; factory use stays in tooltips.
+
+defined_text = {
+	name = GetCbrnOccupiedMaskReservationQuote
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_mask_reservation_quote = constant:cbrn_math.zero }
+			cbrn_quote_occupied_program_mask_reservation = yes
+		}
+		localization_key = cbrn_occupied_mask_reservation_quote
+	}
+}
+
+defined_text = {
+	name = GetCbrnExternalAidMaskReservationQuote
+	text = {
+		trigger = {
+			cbrn_occupation_quote_external_aid_mask_models = yes
+		}
+		localization_key = cbrn_external_aid_mask_reservation_quote
+	}
+}
+
+defined_text = {
+	name = GetCbrnExternalAidPoliticalPowerQuote
+	text = {
+		trigger = { black_friday_quote_cbrn_external_aid_pp_fee = yes }
+		localization_key = cbrn_external_aid_pp_quote
+	}
+}
+
+defined_text = {
+	name = GetCbrnExternalAidMaskModelBreakdown
+	text = {
+		trigger = { cbrn_occupation_quote_external_aid_mask_models = yes }
+		localization_key = cbrn_external_aid_mask_model_quote_tooltip
+	}
+}
+
+defined_text = {
+	name = GetCbrnEmergencyMaskDistributionQuote
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_mask_reservation_quote = constant:cbrn_math.zero }
+			FROM = { cbrn_quote_emergency_state_mask_reservation = yes }
+		}
+		localization_key = cbrn_emergency_mask_distribution_quote
+	}
+}
+
+defined_text = {
+	name = GetCbrnReconditionPoliticalCost
+	text = {
+		trigger = {
+			black_friday_quote_cbrn_recondition_masks = yes
+			OR = {
+				check_variable = { var = black_friday_cbrn_recondition_masks_quote_valid value = constant:universal_cost_framework.zero compare = equals }
+				check_variable = { var = black_friday_cbrn_recondition_masks_pp_affordable value = constant:universal_cost_framework.zero compare = equals }
+			}
+		}
+		localization_key = cbrn_recondition_political_cost_short
+	}
+	text = {
+		trigger = { black_friday_quote_cbrn_recondition_masks = yes }
+		localization_key = cbrn_recondition_political_cost_ready
+	}
+}
+
+defined_text = {
+	name = GetCbrnReconditionSupportCost
+	text = {
+		trigger = {
+			black_friday_quote_cbrn_recondition_masks = yes
+			OR = {
+				check_variable = { var = black_friday_cbrn_recondition_masks_quote_valid value = constant:universal_cost_framework.zero compare = equals }
+				check_variable = { var = black_friday_cbrn_recondition_masks_support_affordable value = constant:universal_cost_framework.zero compare = equals }
+			}
+		}
+		localization_key = cbrn_recondition_support_cost_short
+	}
+	text = {
+		trigger = { black_friday_quote_cbrn_recondition_masks = yes }
+		localization_key = cbrn_recondition_support_cost_ready
+	}
+}
+
+defined_text = {
+	name = GetCbrnConvertPoliticalCost
+	text = {
+		trigger = {
+			black_friday_quote_cbrn_convert_mask_industry = yes
+			OR = {
+				check_variable = { var = black_friday_cbrn_convert_mask_industry_quote_valid value = constant:universal_cost_framework.zero compare = equals }
+				check_variable = { var = black_friday_cbrn_convert_mask_industry_pp_affordable value = constant:universal_cost_framework.zero compare = equals }
+			}
+		}
+		localization_key = cbrn_convert_political_cost_short
+	}
+	text = {
+		trigger = { black_friday_quote_cbrn_convert_mask_industry = yes }
+		localization_key = cbrn_convert_political_cost_ready
+	}
+}
+
+defined_text = {
+	name = GetCbrnConvertSupportCost
+	text = {
+		trigger = {
+			black_friday_quote_cbrn_convert_mask_industry = yes
+			OR = {
+				check_variable = { var = black_friday_cbrn_convert_mask_industry_quote_valid value = constant:universal_cost_framework.zero compare = equals }
+				check_variable = { var = black_friday_cbrn_convert_mask_industry_support_affordable value = constant:universal_cost_framework.zero compare = equals }
+			}
+		}
+		localization_key = cbrn_convert_support_cost_short
+	}
+	text = {
+		trigger = { black_friday_quote_cbrn_convert_mask_industry = yes }
+		localization_key = cbrn_convert_support_cost_ready
+	}
+}
+
+defined_text = {
+	name = GetCbrnSimplifyPoliticalCost
+	text = {
+		trigger = {
+			black_friday_quote_cbrn_simplify_filters = yes
+			OR = {
+				check_variable = { var = black_friday_cbrn_simplify_filters_quote_valid value = constant:universal_cost_framework.zero compare = equals }
+				check_variable = { var = black_friday_cbrn_simplify_filters_pp_affordable value = constant:universal_cost_framework.zero compare = equals }
+			}
+		}
+		localization_key = cbrn_simplify_political_cost_short
+	}
+	text = {
+		trigger = { black_friday_quote_cbrn_simplify_filters = yes }
+		localization_key = cbrn_simplify_political_cost_ready
+	}
+}
+
+defined_text = {
+	name = GetCbrnSimplifySupportCost
+	text = {
+		trigger = {
+			black_friday_quote_cbrn_simplify_filters = yes
+			OR = {
+				check_variable = { var = black_friday_cbrn_simplify_filters_quote_valid value = constant:universal_cost_framework.zero compare = equals }
+				check_variable = { var = black_friday_cbrn_simplify_filters_support_affordable value = constant:universal_cost_framework.zero compare = equals }
+			}
+		}
+		localization_key = cbrn_simplify_support_cost_short
+	}
+	text = {
+		trigger = { black_friday_quote_cbrn_simplify_filters = yes }
+		localization_key = cbrn_simplify_support_cost_ready
+	}
+}
+
+defined_text = {
+	name = GetCbrnExportPoliticalCost
+	text = {
+		trigger = { has_political_power < constant:cbrn_protection_decision_cost.export_masks_pp }
+		localization_key = cbrn_export_political_cost_short
+	}
+	text = { localization_key = cbrn_export_political_cost_ready }
+}
+
+defined_text = {
+	name = GetCbrnExportMaskCost
+	text = {
+		trigger = {
+			has_equipment = {
+				gas_mask_equipment < constant:cbrn_protection_ai.export_minimum_reserve
+			}
+		}
+		localization_key = cbrn_export_mask_cost_short
+	}
+	text = { localization_key = cbrn_export_mask_cost_ready }
+}
+
+defined_text = {
+	name = GetCbrnExportFactoryCost
+	text = {
+		trigger = {
+			num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.export_masks_factories
+		}
+		localization_key = cbrn_export_factory_cost_short
+	}
+	text = { localization_key = cbrn_export_factory_cost_ready }
+}

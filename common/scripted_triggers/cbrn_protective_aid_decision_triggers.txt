@@ -1,0 +1,132 @@
+# CBRN Protective Aid native variants. Country predicates quote the canonical
+# factory family; state predicates keep one donor's timer and cooldown distinct.
+# No predicate spends equipment, PP, or factory capacity.
+
+cbrn_protective_aid_sale_source_is_active = {
+	black_friday_is_active = yes
+	set_temp_variable = { universal_cost_source_query_id = constant:universal_cost_framework.black_friday_source_id }
+	universal_cost_source_is_active = yes
+}
+
+# Callers reading these outputs after a nested call initialize their storage.
+# Static native modifiers can represent one or two factories; other quotes fail.
+cbrn_protective_aid_quote_factory_cost = {
+	set_temp_variable = { cbrn_protective_aid_factory_quote = constant:cbrn_occupation_decision_cost.protective_aid_factories }
+	set_temp_variable = { cbrn_protective_aid_factory_quote_valid = constant:universal_cost_framework.one }
+	if = {
+		limit = { black_friday_is_active = yes }
+		set_temp_variable = { cbrn_protective_aid_factory_quote_valid = constant:universal_cost_framework.zero }
+		if = {
+			limit = { cbrn_protective_aid_sale_source_is_active = yes }
+			set_temp_variable = { black_friday_quote_ordinary_cost = constant:cbrn_occupation_decision_cost.protective_aid_factories }
+			set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.factory_commitment }
+			set_temp_variable = { black_friday_quote_requested_quantum = constant:universal_cost_framework.one }
+			set_temp_variable = { black_friday_quote_final_cost = constant:cbrn_occupation_decision_cost.protective_aid_factories }
+			set_temp_variable = { black_friday_quote_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_quote_composed_ratio = constant:universal_cost_framework.zero }
+			if = {
+				limit = { black_friday_quote_custom_cost = yes }
+				set_temp_variable = { cbrn_protective_aid_factory_quote = black_friday_quote_final_cost }
+				if = {
+					limit = {
+						OR = {
+							check_variable = { cbrn_protective_aid_factory_quote = constant:cbrn_occupation_decision_cost.protective_aid_factories }
+							check_variable = { cbrn_protective_aid_factory_quote = constant:cbrn_occupation_decision_cost.protective_aid_sale_factories }
+						}
+					}
+					set_temp_variable = { cbrn_protective_aid_factory_quote_valid = constant:universal_cost_framework.one }
+				}
+			}
+		}
+	}
+	always = yes
+}
+
+cbrn_protective_aid_factories_are_available = {
+	set_temp_variable = { cbrn_protective_aid_factory_quote = constant:cbrn_occupation_decision_cost.protective_aid_factories }
+	set_temp_variable = { cbrn_protective_aid_factory_quote_valid = constant:universal_cost_framework.zero }
+	cbrn_protective_aid_quote_factory_cost = yes
+	check_variable = { cbrn_protective_aid_factory_quote_valid = constant:universal_cost_framework.one }
+	OR = {
+		AND = {
+			check_variable = { cbrn_protective_aid_factory_quote = constant:cbrn_occupation_decision_cost.protective_aid_factories }
+			NOT = { num_of_civilian_factories_available_for_projects < constant:cbrn_occupation_decision_cost.protective_aid_factories }
+		}
+		AND = {
+			check_variable = { cbrn_protective_aid_factory_quote = constant:cbrn_occupation_decision_cost.protective_aid_sale_factories }
+			NOT = { num_of_civilian_factories_available_for_projects < constant:cbrn_occupation_decision_cost.protective_aid_sale_factories }
+		}
+	}
+}
+
+cbrn_protective_aid_current_purchase_is_ordinary = {
+	set_temp_variable = { cbrn_protective_aid_factory_quote = constant:cbrn_occupation_decision_cost.protective_aid_factories }
+	set_temp_variable = { cbrn_protective_aid_factory_quote_valid = constant:universal_cost_framework.zero }
+	cbrn_protective_aid_quote_factory_cost = yes
+	check_variable = { cbrn_protective_aid_factory_quote_valid = constant:universal_cost_framework.one }
+	check_variable = { cbrn_protective_aid_factory_quote = constant:cbrn_occupation_decision_cost.protective_aid_factories }
+}
+
+cbrn_protective_aid_current_purchase_is_sale = {
+	set_temp_variable = { cbrn_protective_aid_factory_quote = constant:cbrn_occupation_decision_cost.protective_aid_factories }
+	set_temp_variable = { cbrn_protective_aid_factory_quote_valid = constant:universal_cost_framework.zero }
+	cbrn_protective_aid_quote_factory_cost = yes
+	check_variable = { cbrn_protective_aid_factory_quote_valid = constant:universal_cost_framework.one }
+	check_variable = { cbrn_protective_aid_factory_quote = constant:cbrn_occupation_decision_cost.protective_aid_sale_factories }
+}
+
+cbrn_protective_aid_state_can_start = {
+	NOT = { has_state_flag = cbrn_external_aid_purchase_cooldown_@ROOT }
+	cbrn_occupation_state_can_receive_external_protective_aid = yes
+}
+
+cbrn_protective_aid_ordinary_payment_ready = {
+	cbrn_protective_aid_current_purchase_is_ordinary = yes
+	cbrn_occupation_external_aid_payment_ready = yes
+}
+
+cbrn_protective_aid_sale_payment_ready = {
+	cbrn_protective_aid_current_purchase_is_sale = yes
+	cbrn_occupation_external_aid_payment_ready = yes
+}
+
+# Selection has already committed the native factories and stamped cooldown.
+# This source/price check deliberately tests neither of those resources again.
+cbrn_protective_aid_requested_variant_matches_quote = {
+	set_temp_variable = { cbrn_protective_aid_factory_quote = constant:cbrn_occupation_decision_cost.protective_aid_factories }
+	set_temp_variable = { cbrn_protective_aid_factory_quote_valid = constant:universal_cost_framework.zero }
+	cbrn_protective_aid_quote_factory_cost = yes
+	check_variable = { cbrn_protective_aid_factory_quote_valid = constant:universal_cost_framework.one }
+	OR = {
+		AND = {
+			check_variable = { cbrn_protective_aid_requested_variant = constant:cbrn_external_aid_variant.ordinary }
+			check_variable = { cbrn_protective_aid_factory_quote = constant:cbrn_occupation_decision_cost.protective_aid_factories }
+		}
+		AND = {
+			check_variable = { cbrn_protective_aid_requested_variant = constant:cbrn_external_aid_variant.sale }
+			check_variable = { cbrn_protective_aid_factory_quote = constant:cbrn_occupation_decision_cost.protective_aid_sale_factories }
+		}
+	}
+}
+
+cbrn_protective_aid_state_holds_ordinary_delivery = {
+	cbrn_occupation_state_has_donor_external_aid_reservation = yes
+	NOT = { has_state_flag = cbrn_external_aid_sale_factory_commitment }
+}
+
+cbrn_protective_aid_state_holds_sale_delivery = {
+	cbrn_occupation_state_has_donor_external_aid_reservation = yes
+	has_state_flag = cbrn_external_aid_sale_factory_commitment
+}
+
+cbrn_protective_aid_should_cancel = {
+	OR = {
+		NOT = { cbrn_occupation_country_can_continue_external_protective_aid = yes }
+		FROM = {
+			OR = {
+				NOT = { cbrn_occupation_state_has_donor_external_aid_reservation = yes }
+				NOT = { cbrn_occupation_state_remains_external_protective_aid_target = yes }
+			}
+		}
+	}
+}

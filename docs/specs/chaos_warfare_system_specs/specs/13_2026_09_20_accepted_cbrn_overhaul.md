@@ -30,6 +30,9 @@ The native commitment, material reservation, and payment contract remain intact;
 That family correction also retains the occupied-population pre-click factory gate while its native selection helper checks the shared non-factory requirements, existence, and non-capitulation.
 The 30-day commitment, Political Power price, model reservations, and refund policy remain intact.
 
+The [Protective Aid factory-sale correction](../corrections/2026-10-03_protective_aid_native_factory_sale.md) supplies two native commitments for one visible aid choice, quoting two factories ordinarily and one at either Black Friday sale rate.
+It preserves the full physical model shipment, 21-day timer, 90-day donor/state reenabling interval, shared payment/refund path, and the selected commitment through sale expiry.
+
 The exact-state theater decontamination assignment has three upfront payments and separate non-consumed support-stock requirements, as specified in [`../corrections/2026-09-25_theater_decontamination_cost.md`](../corrections/2026-09-25_theater_decontamination_cost.md). This follows the accepted shorter-loop and readable-cost requirements without changing its contamination output.
 
 The six headquarters roles consolidate to **Operations and Intelligence**, **Protection and Decontamination**, and **Medical and Biosecurity**. Division support uses one **Protection Company** and one **Field Medical Company**; nerve suppression is an upgrade within the accepted structure. Remove eighteen agent-specific chemical-tank companies and retain three armored chassis roles.

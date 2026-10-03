@@ -224,3 +224,15 @@ The user's 13:20 live-QA report confirms democratic and neutrality flag lookup f
 The [accepted native correction](../../specs/chaos_warfare_system_specs/corrections/2026-10-03_csh_native_flag_lookup.md) covers the CSH base filename and all four standard ideologies at normal, medium, and small sizes.
 The [source check](../../testing/2026-10-03_csh_flag_load_repair/scientist_source_check.json) verifies history-only recruitment and guarded transfers for Haldane, Fishman, and Velikanov, with zero runtime recruitment commands in the startup owner.
 The archived cycle1 log remains the pre-holder warning baseline; fresh native warning absence and a clean full error log are not claimed from that archive.
+
+## 2026-10-03 Protective Aid factory-sale source tranche
+
+The [accepted factory correction](../../specs/chaos_warfare_system_specs/corrections/2026-10-03_protective_aid_native_factory_sale.md) implements one visible ordinary/sale aid choice through two native definitions with two/one factory commitments.
+The [implementation handoff](2026-10-03_protective_aid_native_factory_sale.md) records canonical factory-family quotation, shared payment and lifecycle callbacks, 21-day delivery, 90-day donor/state reenabling, committed fee/factory/model display, and untouched physical shipment.
+Source cases preserve the original willingness blocks and nominal 25/13/7 PP prices and reduce factory-days from 42 to 21 during either sale tier.
+The immutable seven-file before set matches its recorded commit, and a private-state v3.6.0 MCP client has restored source-discovery and reference routes without accessing shared recovery journals.
+Same-scenario weighted evaluation reached both versions but remained partial with 133/208 unresolved items; full and narrower comparison attempts returned errors without a comparison artifact.
+Resolved weighted comparison, native execution/release, and native row evidence remain required; the whole overhaul remains incomplete.
+
+The final three-price-anchor Protective Aid `hoi4.probability_compare` retry returned a partial artifact at scenario hash `6875751c294a3da4ffac4ab7f9ef68fe84744a576b0c8b03aa8ac864fb823d98`, with all six candidate rows unresolved and no numeric probability delta.
+The full comparison and original traces are persisted under the linked implementation handoff; this restores the comparison evidence route without closing native execution or weighted eligibility.

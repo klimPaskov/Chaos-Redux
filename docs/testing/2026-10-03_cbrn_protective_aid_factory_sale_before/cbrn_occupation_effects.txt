@@ -1,0 +1,1214 @@
+# ============================================================================
+# CHAOS REDUX - CBRN OCCUPATION SCRIPTED EFFECTS
+# ============================================================================
+# Overview:
+# - Owns occupation-law state, external protective-aid delivery, exact
+#   chemical-record disclosure, and historical nerve-suppression aftermath.
+# - Stored action readers preserve deaths, contamination, evidence,
+#   attribution, Condemnation, trauma, and discovery without a new attack.
+# - State-scope delayed helpers process only the exact recorded state.
+# - Aid uses model-specific reserved respirator crates and returns unused
+#   stock to the original supplier when delivery cannot finish.
+# - No nerve-agent attack preparation, payment, or dispatcher lives here.
+#   Historical cover-up decisions pay Political Power through the shared
+#   Condemnation-scaled quote and exact-record proof; attacks use native raids.
+# ============================================================================
+
+cbrn_occupation_authorize_coercive_security = {
+	set_temp_variable = { cbrn_occupation_authorization_proof = constant:cbrn_proof.missing }
+	if = {
+		limit = { cbrn_occupation_coercive_security_authorization_requirements = yes }
+		set_country_flag = cbrn_occupation_coercive_security_authorized
+		set_country_flag = cbrn_nerve_suppression_policy_authorized
+		cbrn_grant_available_doctrine_technologies = yes
+		set_temp_variable = { cbrn_occupation_authorization_proof = constant:cbrn_proof.supplied }
+	}
+}
+
+cbrn_occupation_authorize_protected_administration = {
+	set_temp_variable = { cbrn_occupation_authorization_proof = constant:cbrn_proof.missing }
+	if = {
+		limit = { cbrn_occupation_protected_administration_authorization_requirements = yes }
+		set_country_flag = cbrn_occupation_protected_administration_authorized
+		set_temp_variable = { cbrn_occupation_authorization_proof = constant:cbrn_proof.supplied }
+	}
+}
+
+cbrn_occupation_set_coercive_security_state = {
+	set_temp_variable = { cbrn_occupation_policy_state_proof = constant:cbrn_proof.missing }
+	if = {
+		limit = {
+			cbrn_occupation_state_is_occupied_non_core = yes
+			ROOT = { has_country_flag = cbrn_occupation_coercive_security_authorized }
+		}
+		set_occupation_law = cbrn_coercive_security_occupation
+		set_variable = { cbrn_occupation_policy_state = constant:cbrn_occupation_policy.coercive_security }
+		set_temp_variable = { cbrn_occupation_policy_state_proof = constant:cbrn_proof.supplied }
+	}
+}
+
+cbrn_occupation_set_protected_administration_state = {
+	set_temp_variable = { cbrn_occupation_policy_state_proof = constant:cbrn_proof.missing }
+	if = {
+		limit = {
+			cbrn_occupation_state_is_occupied_non_core = yes
+			ROOT = { has_country_flag = cbrn_occupation_protected_administration_authorized }
+		}
+		set_occupation_law = cbrn_protected_occupation_administration
+		set_variable = { cbrn_occupation_policy_state = constant:cbrn_occupation_policy.protected_administration }
+		set_temp_variable = { cbrn_occupation_policy_state_proof = constant:cbrn_proof.supplied }
+	}
+}
+
+cbrn_occupation_clear_state_policy = {
+	set_occupation_law = default_law
+	clear_variable = cbrn_occupation_policy_state
+}
+
+# State-scoped UI lifetime count for independently targeted aid projects.
+# The receipt flag prevents a second close from decrementing the donor twice.
+cbrn_occupation_register_external_aid_reservation = {
+	if = {
+		limit = {
+			has_state_flag = cbrn_external_mask_escrow_active
+			NOT = { has_state_flag = cbrn_external_aid_reservation_counted }
+		}
+		set_state_flag = cbrn_external_aid_reservation_counted
+		ROOT = {
+			if = { limit = { NOT = { has_variable = cbrn_external_aid_active_reservations_count } } set_variable = { cbrn_external_aid_active_reservations_count = constant:cbrn_math.zero } }
+			add_to_variable = { cbrn_external_aid_active_reservations_count = constant:cbrn_math.one }
+		}
+	}
+}
+
+cbrn_occupation_close_external_aid_reservation = {
+	if = {
+		limit = { has_state_flag = cbrn_external_aid_reservation_counted }
+		if = {
+			limit = { has_variable = cbrn_external_mask_escrow_donor var:cbrn_external_mask_escrow_donor = { exists = yes } }
+			var:cbrn_external_mask_escrow_donor = {
+				subtract_from_variable = { cbrn_external_aid_active_reservations_count = constant:cbrn_math.one }
+				clamp_variable = { var = cbrn_external_aid_active_reservations_count min = constant:cbrn_math.zero }
+			}
+		}
+		clr_state_flag = cbrn_external_aid_reservation_counted
+	}
+}
+
+cbrn_occupation_deliver_external_protective_aid_to_state = {
+	set_temp_variable = { cbrn_occupation_protective_aid_proof = constant:cbrn_proof.missing }
+	if = {
+		limit = {
+			has_event_target = cbrn_distribution_external_supplier
+			event_target:cbrn_distribution_external_supplier = {
+				exists = yes
+				cbrn_occupation_country_can_continue_external_protective_aid = yes
+			}
+			cbrn_occupation_state_has_donor_external_aid_reservation = yes
+			cbrn_occupation_state_remains_external_protective_aid_target = yes
+		}
+		set_temp_variable = {
+			cbrn_distribution_target_fraction = constant:cbrn_protection_program_effect.occupied_distribution_target
+		}
+		set_temp_variable = {
+			cbrn_distribution_base_cost_mult = constant:cbrn_protection_program_effect.occupied_distribution_cost_mult
+		}
+		set_temp_variable = { cbrn_distribution_effectiveness_mult = constant:cbrn_math.one }
+		set_temp_variable = { cbrn_distribution_new_filter_condition = constant:cbrn_mask_filters.condition_full }
+		set_temp_variable = { cbrn_external_distribution_proof = constant:cbrn_proof.missing }
+		set_temp_variable = { cbrn_distribution_consumed_crates = constant:cbrn_math.zero }
+		set_temp_variable = { cbrn_distribution_usable_crates = constant:cbrn_math.zero }
+		cbrn_distribute_reserved_external_masks_to_state = yes
+		if = {
+			limit = {
+				check_variable = {
+					var = cbrn_external_distribution_proof
+					value = constant:cbrn_proof.supplied
+					compare = equals
+				}
+			}
+			set_variable = {
+				cbrn_occupation_last_protective_aid_supplier = event_target:cbrn_distribution_external_supplier
+			}
+			set_variable = { cbrn_occupation_last_protective_aid_date = global.num_days }
+			set_variable = { cbrn_occupation_last_protective_aid_consumed = cbrn_distribution_consumed_crates }
+			set_variable = { cbrn_occupation_last_protective_aid_delivered = cbrn_distribution_usable_crates }
+			if = {
+				limit = { NOT = { has_variable = cbrn_occupation_protective_aid_total } }
+				set_variable = { cbrn_occupation_protective_aid_total = constant:cbrn_math.zero }
+			}
+			add_to_variable = { cbrn_occupation_protective_aid_total = cbrn_distribution_usable_crates }
+			set_state_flag = cbrn_occupation_external_protective_aid_history
+			event_target:cbrn_distribution_external_supplier = {
+				cbrn_initialize_country_data = yes
+				add_to_variable = { cbrn_protective_aid_exported_crates = cbrn_distribution_consumed_crates }
+				cbrn_refresh_country_mask_snapshot = yes
+				cbrn_start_protection_maintenance_job = yes
+			}
+			owner = {
+				if = {
+					limit = { exists = yes }
+					cbrn_initialize_country_data = yes
+					add_to_variable = { cbrn_protective_aid_received_crates = cbrn_distribution_usable_crates }
+					set_country_flag = cbrn_received_protective_aid
+					add_opinion_modifier = {
+						target = event_target:cbrn_distribution_external_supplier
+						modifier = cbrn_protective_aid_received
+					}
+				}
+			}
+			set_temp_variable = { cbrn_occupation_protective_aid_proof = constant:cbrn_proof.supplied }
+		}
+	}
+}
+
+cbrn_occupation_execute_external_protective_aid = {
+	set_temp_variable = { cbrn_occupation_protective_aid_proof = constant:cbrn_proof.missing }
+	if = {
+		limit = {
+			has_event_target = cbrn_occupation_target_state
+			cbrn_occupation_country_can_continue_external_protective_aid = yes
+			event_target:cbrn_occupation_target_state = {
+				cbrn_occupation_state_has_donor_external_aid_reservation = yes
+				cbrn_occupation_state_remains_external_protective_aid_target = yes
+			}
+		}
+		save_event_target_as = cbrn_distribution_external_supplier
+		event_target:cbrn_occupation_target_state = {
+			cbrn_occupation_deliver_external_protective_aid_to_state = yes
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = cbrn_occupation_protective_aid_proof
+					value = constant:cbrn_proof.supplied
+					compare = equals
+				}
+			}
+			if = {
+				limit = { NOT = { has_variable = cbrn_occupation_external_aid_action_count } }
+				set_variable = { cbrn_occupation_external_aid_action_count = constant:cbrn_math.zero }
+			}
+			add_to_variable = { cbrn_occupation_external_aid_action_count = constant:cbrn_math.one }
+			set_variable = { cbrn_occupation_last_external_aid_date = global.num_days }
+		}
+	}
+	else_if = {
+		limit = { has_event_target = cbrn_occupation_target_state }
+		event_target:cbrn_occupation_target_state = { cbrn_refund_external_state_mask_reservation = yes }
+	}
+}
+
+cbrn_occupation_refresh_trauma_modifier = {
+	set_variable = { cbrn_occupation_trauma_resistance_target = constant:cbrn_math.zero }
+	set_variable = { cbrn_occupation_trauma_resistance_growth = constant:cbrn_math.zero }
+	set_variable = { cbrn_occupation_trauma_compliance_gain = constant:cbrn_math.zero }
+	if = {
+		limit = {
+			has_variable = cbrn_occupation_nerve_suppression_trauma
+			check_variable = { cbrn_occupation_nerve_suppression_trauma > constant:cbrn_math.zero }
+		}
+		set_variable = { cbrn_occupation_trauma_resistance_target = cbrn_occupation_nerve_suppression_trauma }
+		multiply_variable = {
+			cbrn_occupation_trauma_resistance_target = constant:cbrn_occupation_state_modifier.trauma_resistance_target_per_point
+		}
+		set_variable = { cbrn_occupation_trauma_resistance_growth = cbrn_occupation_nerve_suppression_trauma }
+		multiply_variable = {
+			cbrn_occupation_trauma_resistance_growth = constant:cbrn_occupation_state_modifier.trauma_resistance_growth_per_point
+		}
+		set_variable = { cbrn_occupation_trauma_compliance_gain = cbrn_occupation_nerve_suppression_trauma }
+		multiply_variable = {
+			cbrn_occupation_trauma_compliance_gain = constant:cbrn_occupation_state_modifier.trauma_compliance_gain_per_point
+		}
+		if = {
+			limit = { NOT = { has_dynamic_modifier = { modifier = cbrn_nerve_suppression_trauma_state } } }
+			add_dynamic_modifier = { modifier = cbrn_nerve_suppression_trauma_state }
+		}
+	}
+	else = {
+		if = {
+			limit = { has_dynamic_modifier = { modifier = cbrn_nerve_suppression_trauma_state } }
+			remove_dynamic_modifier = { modifier = cbrn_nerve_suppression_trauma_state }
+		}
+	}
+	force_update_dynamic_modifier = yes
+}
+
+cbrn_occupation_end_responsible_country_operational_modifiers = {
+	if = {
+		limit = {
+			has_variable = cbrn_occupation_responsible_country
+			var:cbrn_occupation_responsible_country = { exists = yes }
+		}
+		if = {
+			limit = {
+				has_dynamic_modifier = {
+					modifier = cbrn_nerve_suppression_active_state
+					scope = var:cbrn_occupation_responsible_country
+				}
+			}
+			remove_dynamic_modifier = {
+				modifier = cbrn_nerve_suppression_active_state
+				scope = var:cbrn_occupation_responsible_country
+			}
+		}
+		if = {
+			limit = {
+				has_dynamic_modifier = {
+					modifier = cbrn_occupation_backlash_state
+					scope = var:cbrn_occupation_responsible_country
+				}
+			}
+			remove_dynamic_modifier = {
+				modifier = cbrn_occupation_backlash_state
+				scope = var:cbrn_occupation_responsible_country
+			}
+		}
+	}
+	clr_state_flag = cbrn_occupation_nerve_suppression_active
+	clr_state_flag = cbrn_occupation_backlash_active
+	clr_state_flag = cbrn_occupation_state_seal_active
+	if = {
+		limit = { has_variable = migration_persecution_cbrn_generation }
+		set_variable = {
+			migration_persecution_pending_owner = constant:migration_persecution_owner_class.cbrn_coercive_operation
+		}
+		set_variable = {
+			migration_persecution_pending_clear_generation = migration_persecution_cbrn_generation
+		}
+	}
+	migration_persecution_clear_owner_state = yes
+	if = {
+		limit = { has_dynamic_modifier = { modifier = cbrn_occupation_state_sealed_modifier } }
+		remove_dynamic_modifier = { modifier = cbrn_occupation_state_sealed_modifier }
+	}
+	force_update_dynamic_modifier = yes
+}
+
+cbrn_occupation_apply_accepted_operation_state = {
+	if = {
+		limit = {
+			check_variable = {
+				var = cbrn_action_dispatch_proof
+				value = constant:cbrn_proof.supplied
+				compare = equals
+			}
+			check_variable = {
+				var = cbrn_action_delivery_route
+				value = constant:cbrn_delivery_route.nerve_suppression
+				compare = equals
+			}
+		}
+		owner = { save_event_target_as = cbrn_occupation_target_owner }
+		set_variable = { cbrn_occupation_responsible_country = event_target:cbrn_action_actor }
+		set_variable = { cbrn_occupation_target_owner = event_target:cbrn_occupation_target_owner }
+		set_variable = { cbrn_occupation_last_action_date = global.num_days }
+		set_variable = { cbrn_occupation_last_action_agent = cbrn_action_agent }
+		set_variable = { cbrn_occupation_last_action_agent_class = cbrn_action_agent_class }
+		set_variable = { cbrn_occupation_last_action_route = cbrn_action_delivery_route }
+		set_variable = { cbrn_occupation_last_action_severity = cbrn_action_severity }
+		set_variable = { cbrn_occupation_last_payload_consumed = cbrn_action_payload_consumed }
+		set_variable = { cbrn_occupation_last_disruption = cbrn_action_disruption }
+		set_variable = { cbrn_occupation_last_military_death_fraction = cbrn_action_military_death_fraction }
+		set_variable = { cbrn_occupation_last_civilian_deaths = cbrn_action_civilian_deaths }
+		set_variable = { cbrn_occupation_last_contamination_points = cbrn_action_contamination_points }
+		set_variable = { cbrn_occupation_last_medical_saturation_points = cbrn_action_medical_saturation_points }
+		set_variable = { cbrn_occupation_last_evidence_points = cbrn_action_evidence_points }
+		set_variable = { cbrn_occupation_last_evidence_applied = cbrn_action_evidence_applied }
+		set_variable = { cbrn_occupation_last_attribution_state = cbrn_action_attribution_state }
+		set_variable = { cbrn_occupation_last_condemnation_total = cbrn_last_chemical_condemnation_total }
+		set_variable = { cbrn_occupation_last_retaliation_status = cbrn_action_retaliation_status }
+		set_temp_variable = { cbrn_occupation_exact_record_uid = constant:cbrn_diplomacy_index.invalid }
+		event_target:cbrn_action_actor = {
+			if = {
+				limit = { has_variable = cbrn_last_chemical_record_uid }
+				set_temp_variable = { cbrn_occupation_exact_record_uid = cbrn_last_chemical_record_uid }
+			}
+		}
+		if = {
+			limit = { check_variable = { cbrn_occupation_exact_record_uid > constant:cbrn_diplomacy_index.invalid } }
+			set_variable = { cbrn_occupation_last_record_uid = cbrn_occupation_exact_record_uid }
+		}
+		set_state_flag = cbrn_occupation_nerve_suppression_history
+		cbrn_achievement_record_nerve_response = yes
+		if = {
+			limit = {
+				check_variable = {
+					var = cbrn_action_attribution_state
+					value = constant:cbrn_attribution_state.confirmed
+					compare = equals
+				}
+			}
+			set_state_flag = cbrn_occupation_confirmed_use_history
+		}
+		cbrn_occupation_register_atrocity_context_if_eligible = yes
+		# CBRN owns the delayed food receipt. Keep the actor target and pass only
+		# source ledgers that describe this accepted nerve-suppression operation.
+		event_target:cbrn_action_actor = { save_event_target_as = famine_adapter_actor }
+		set_temp_variable = { famine_adapter_state_proven = THIS.id }
+		set_temp_variable = { famine_adapter_food_proven = cbrn_occupation_last_disruption }
+		if = {
+			limit = { NOT = { check_variable = { cbrn_occupation_last_disruption > constant:humanitarian_runtime.zero } } }
+			set_temp_variable = { famine_adapter_food_proven = cbrn_occupation_last_action_severity }
+		}
+		set_temp_variable = { famine_adapter_environment_proven = cbrn_occupation_last_contamination_points }
+		if = {
+			limit = { NOT = { check_variable = { cbrn_occupation_last_contamination_points > constant:humanitarian_runtime.zero } } }
+			set_temp_variable = { famine_adapter_environment_proven = cbrn_occupation_last_action_severity }
+		}
+		set_temp_variable = { famine_adapter_transport_proven = cbrn_occupation_last_action_route }
+		set_temp_variable = { famine_adapter_policy_proven = cbrn_occupation_last_attribution_state }
+		set_temp_variable = { famine_adapter_actor_proven = event_target:famine_adapter_actor.id }
+		set_temp_variable = { famine_adapter_cause_proven = cbrn_occupation_last_attribution_state }
+		set_temp_variable = { famine_adapter_source_proven = cbrn_occupation_last_action_route }
+		set_temp_variable = { famine_adapter_generation = cbrn_occupation_last_action_date }
+		set_temp_variable = { famine_adapter_revision = cbrn_occupation_last_civilian_deaths }
+		set_temp_variable = { famine_adapter_request_id = global.date }
+		famine_adapt_chemical_state = yes
+		set_variable = {
+			migration_persecution_pending_owner = constant:migration_persecution_owner_class.cbrn_coercive_operation
+		}
+		set_variable = { migration_persecution_pending_actor = event_target:cbrn_action_actor }
+		migration_persecution_record_state = yes
+
+		if = {
+			limit = { NOT = { has_variable = cbrn_occupation_nerve_suppression_trauma } }
+			set_variable = { cbrn_occupation_nerve_suppression_trauma = constant:cbrn_math.zero }
+		}
+		set_temp_variable = { cbrn_occupation_trauma_gain = constant:cbrn_occupation_suppression.trauma_base_gain }
+		if = {
+			limit = { check_variable = { cbrn_occupation_repeat_use > constant:cbrn_math.zero } }
+			add_to_temp_variable = { cbrn_occupation_trauma_gain = constant:cbrn_occupation_suppression.trauma_repeat_gain }
+			set_variable = { cbrn_occupation_last_action_was_repeat = constant:cbrn_math.one }
+		}
+		else = {
+			set_variable = { cbrn_occupation_last_action_was_repeat = constant:cbrn_math.zero }
+		}
+		add_to_variable = { cbrn_occupation_nerve_suppression_trauma = cbrn_occupation_trauma_gain }
+		clamp_variable = {
+			var = cbrn_occupation_nerve_suppression_trauma
+			min = constant:cbrn_math.zero
+			max = constant:cbrn_occupation_suppression.trauma_maximum
+		}
+		cbrn_occupation_refresh_trauma_modifier = yes
+
+		set_temp_variable = { cbrn_occupation_resistance_debit = constant:cbrn_occupation_suppression.resistance_reduction }
+		multiply_temp_variable = { cbrn_occupation_resistance_debit = constant:cbrn_payload_math.negation_multiplier }
+		add_resistance = cbrn_occupation_resistance_debit
+
+		set_temp_variable = { cbrn_occupation_active_days = constant:cbrn_occupation_timing.active_days }
+		set_state_flag = {
+			flag = cbrn_occupation_nerve_suppression_active
+			days = var:cbrn_occupation_active_days
+		}
+		add_dynamic_modifier = {
+			modifier = cbrn_nerve_suppression_active_state
+			days = cbrn_occupation_active_days
+			scope = var:cbrn_occupation_responsible_country
+		}
+		force_update_dynamic_modifier = yes
+		set_variable = { cbrn_occupation_active_until_day = global.num_days }
+		add_to_variable = { cbrn_occupation_active_until_day = constant:cbrn_occupation_timing.active_days }
+
+		set_temp_variable = { cbrn_occupation_cooldown_days = constant:cbrn_occupation_timing.state_cooldown_days }
+		set_state_flag = {
+			flag = cbrn_occupation_nerve_suppression_cooldown
+			days = var:cbrn_occupation_cooldown_days
+		}
+		set_variable = { cbrn_occupation_cooldown_until_day = global.num_days }
+		add_to_variable = { cbrn_occupation_cooldown_until_day = constant:cbrn_occupation_timing.state_cooldown_days }
+
+		set_state_flag = cbrn_occupation_delayed_backlash_pending
+		set_variable = { cbrn_occupation_backlash_due_day = global.num_days }
+		add_to_variable = { cbrn_occupation_backlash_due_day = constant:cbrn_occupation_timing.backlash_delay_days }
+		set_temp_variable = { cbrn_occupation_backlash_delay_days = constant:cbrn_occupation_timing.backlash_delay_days }
+		meta_effect = {
+			text = {
+				state_event = { id = cbrn_occupation.1 days = [CBRN_OCCUPATION_BACKLASH_DELAY_DAYS] }
+			}
+			CBRN_OCCUPATION_BACKLASH_DELAY_DAYS = "[?cbrn_occupation_backlash_delay_days|.0]"
+		}
+		set_variable = { cbrn_occupation_trauma_decay_due_day = global.num_days }
+		add_to_variable = { cbrn_occupation_trauma_decay_due_day = constant:cbrn_occupation_timing.trauma_decay_interval_days }
+		set_temp_variable = { cbrn_occupation_trauma_decay_days = constant:cbrn_occupation_timing.trauma_decay_interval_days }
+		meta_effect = {
+			text = {
+				state_event = { id = cbrn_occupation.2 days = [CBRN_OCCUPATION_TRAUMA_DECAY_DAYS] }
+			}
+			CBRN_OCCUPATION_TRAUMA_DECAY_DAYS = "[?cbrn_occupation_trauma_decay_days|.0]"
+		}
+	}
+}
+
+cbrn_occupation_record_country_history = {
+	if = {
+		limit = {
+			check_variable = {
+				var = cbrn_occupation_operation_result
+				value = constant:cbrn_action_result.accepted
+				compare = equals
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = cbrn_occupation_action_count } }
+			set_variable = { cbrn_occupation_action_count = constant:cbrn_math.zero }
+		}
+		add_to_variable = { cbrn_occupation_action_count = constant:cbrn_math.one }
+		set_variable = { cbrn_occupation_last_operation_date = global.num_days }
+		set_variable = { cbrn_occupation_last_operation_agent = cbrn_action_agent }
+		set_variable = { cbrn_occupation_last_operation_route = cbrn_action_delivery_route }
+		set_variable = { cbrn_occupation_last_operation_target = event_target:cbrn_occupation_target_state }
+		set_variable = { cbrn_occupation_last_operation_payload = cbrn_action_payload_consumed }
+		set_variable = { cbrn_occupation_last_operation_evidence = cbrn_action_evidence_points }
+		set_variable = { cbrn_occupation_last_operation_attribution = cbrn_action_attribution_state }
+		event_target:cbrn_occupation_target_state = {
+			set_temp_variable = { cbrn_occupation_operation_condemnation = cbrn_occupation_last_condemnation_total }
+		}
+		set_variable = { cbrn_occupation_last_operation_condemnation = cbrn_occupation_operation_condemnation }
+		set_variable = { cbrn_occupation_last_operation_gas_masks = cbrn_occupation_paid_gas_masks }
+		set_variable = { cbrn_occupation_last_operation_decontamination_equipment = cbrn_occupation_paid_decontamination_equipment }
+		set_variable = { cbrn_occupation_last_operation_cbrn_instruments = cbrn_occupation_paid_cbrn_instruments }
+		set_variable = { cbrn_occupation_last_operation_support_equipment = cbrn_occupation_paid_support_equipment }
+		set_variable = { cbrn_occupation_last_operation_motorized_equipment = cbrn_occupation_paid_motorized_equipment }
+		set_variable = { cbrn_occupation_last_operation_command_power = cbrn_occupation_paid_command_power }
+		set_variable = { cbrn_occupation_last_operation_repeat = cbrn_occupation_repeat_use }
+		set_country_flag = cbrn_occupation_nerve_suppression_history
+		if = {
+			limit = { check_variable = { cbrn_occupation_repeat_use > constant:cbrn_math.zero } }
+			if = {
+				limit = { NOT = { has_variable = cbrn_occupation_repeat_use_pressure } }
+				set_variable = { cbrn_occupation_repeat_use_pressure = constant:cbrn_math.zero }
+			}
+			add_to_variable = { cbrn_occupation_repeat_use_pressure = constant:cbrn_occupation_suppression.country_repeat_pressure_gain }
+			clamp_variable = {
+				var = cbrn_occupation_repeat_use_pressure
+				min = constant:cbrn_math.zero
+				max = constant:cbrn_occupation_suppression.country_repeat_pressure_maximum
+			}
+		}
+	}
+}
+
+cbrn_occupation_select_exact_chemical_record = {
+	set_temp_variable = { cbrn_diplomacy_selected_chemical_row = constant:cbrn_diplomacy_index.invalid }
+	set_temp_variable = { cbrn_occupation_exact_record_scan_row = constant:cbrn_math.zero }
+	if = {
+		limit = { has_variable = cbrn_occupation_last_record_uid }
+		while_loop_effect = {
+			limit = {
+				check_variable = {
+					var = cbrn_occupation_exact_record_scan_row
+					value = cbrn_chemical_record_uid_entries^num
+					compare = less_than
+				}
+				check_variable = {
+					var = cbrn_diplomacy_selected_chemical_row
+					value = constant:cbrn_diplomacy_index.invalid
+					compare = equals
+				}
+			}
+			if = {
+				limit = {
+					check_variable = {
+						var = cbrn_chemical_record_uid_entries^cbrn_occupation_exact_record_scan_row
+						value = cbrn_occupation_last_record_uid
+						compare = equals
+					}
+				}
+				set_temp_variable = { cbrn_diplomacy_selected_chemical_row = cbrn_occupation_exact_record_scan_row }
+			}
+			add_to_temp_variable = { cbrn_occupation_exact_record_scan_row = constant:cbrn_math.one }
+		}
+	}
+}
+
+cbrn_occupation_open_exact_chemical_record_for_disclosure = {
+	if = {
+		limit = {
+			check_variable = { cbrn_diplomacy_selected_chemical_row > constant:cbrn_diplomacy_index.invalid }
+			check_variable = {
+				var = cbrn_chemical_record_status_entries^cbrn_diplomacy_selected_chemical_row
+				value = constant:cbrn_chemical_record_status.unavailable
+				compare = equals
+			}
+			check_variable = {
+				var = cbrn_chemical_record_condemnation_unpaid_entries^cbrn_diplomacy_selected_chemical_row
+				value = constant:cbrn_math.zero
+				compare = greater_than
+			}
+		}
+		set_variable = {
+			cbrn_chemical_record_status_entries^cbrn_diplomacy_selected_chemical_row = constant:cbrn_chemical_record_status.open
+		}
+		if = {
+			limit = { NOT = { has_variable = cbrn_chemical_open_forensic_record_count } }
+			set_variable = { cbrn_chemical_open_forensic_record_count = constant:cbrn_math.zero }
+		}
+		add_to_variable = { cbrn_chemical_open_forensic_record_count = constant:cbrn_math.one }
+	}
+}
+
+# State scope. Input: cbrn_occupation_exact_record_evidence_add.
+# The exact occupation UID is the only eligible row. No other chemical action
+# is selected when that row is absent.
+cbrn_occupation_advance_exact_chemical_record = {
+	set_temp_variable = { cbrn_occupation_exact_record_advance_proof = constant:cbrn_proof.missing }
+	cbrn_occupation_select_exact_chemical_record = yes
+	cbrn_occupation_open_exact_chemical_record_for_disclosure = yes
+	if = {
+		limit = {
+			check_variable = { cbrn_diplomacy_selected_chemical_row > constant:cbrn_diplomacy_index.invalid }
+			check_variable = { cbrn_occupation_exact_record_evidence_add > constant:cbrn_math.zero }
+		}
+		cbrn_diplomacy_load_selected_chemical_record = yes
+		if = {
+			limit = { check_variable = { cbrn_diplomacy_record_loaded > constant:cbrn_math.zero } }
+			add_to_variable = {
+				cbrn_chemical_record_evidence_entries^cbrn_diplomacy_selected_chemical_row = cbrn_occupation_exact_record_evidence_add
+			}
+			clamp_variable = {
+				var = cbrn_chemical_record_evidence_entries^cbrn_diplomacy_selected_chemical_row
+				min = constant:cbrn_math.zero
+				max = constant:cbrn_evidence_threshold.maximum
+			}
+			set_temp_variable = {
+				cbrn_diplomacy_record_evidence = cbrn_chemical_record_evidence_entries^cbrn_diplomacy_selected_chemical_row
+			}
+			set_temp_variable = { cbrn_state_evidence_delta = cbrn_occupation_exact_record_evidence_add }
+			cbrn_apply_state_evidence_delta_internal = yes
+			cbrn_diplomacy_classify_loaded_chemical_record = yes
+			cbrn_diplomacy_register_newly_confirmed_chemical_record = yes
+			if = {
+				limit = {
+					check_variable = {
+						var = cbrn_chemical_record_status_entries^cbrn_diplomacy_selected_chemical_row
+						value = constant:cbrn_chemical_record_status.open
+						compare = equals
+					}
+				}
+				cbrn_diplomacy_expose_recorded_chemical_responsibility = yes
+			}
+			set_temp_variable = { cbrn_occupation_exact_record_advance_proof = constant:cbrn_proof.supplied }
+		}
+	}
+}
+
+cbrn_occupation_advance_exact_chemical_record_to_confirmed = {
+	set_temp_variable = { cbrn_occupation_exact_record_advance_proof = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_occupation_exact_record_evidence_add = constant:cbrn_math.zero }
+	cbrn_occupation_select_exact_chemical_record = yes
+	if = {
+		limit = { check_variable = { cbrn_diplomacy_selected_chemical_row > constant:cbrn_diplomacy_index.invalid } }
+		set_temp_variable = { cbrn_occupation_exact_record_evidence_add = constant:cbrn_evidence_threshold.confirmed }
+		subtract_from_temp_variable = {
+			cbrn_occupation_exact_record_evidence_add = cbrn_chemical_record_evidence_entries^cbrn_diplomacy_selected_chemical_row
+		}
+		clamp_temp_variable = {
+			var = cbrn_occupation_exact_record_evidence_add
+			min = constant:cbrn_math.zero
+			max = constant:cbrn_evidence_threshold.maximum
+		}
+		if = {
+			limit = { check_variable = { cbrn_occupation_exact_record_evidence_add > constant:cbrn_math.zero } }
+			cbrn_occupation_advance_exact_chemical_record = yes
+		}
+		else = {
+			set_temp_variable = { cbrn_occupation_exact_record_advance_proof = constant:cbrn_proof.supplied }
+		}
+	}
+}
+
+# State scope. Input: cbrn_occupation_exact_record_evidence_suppression.
+# Evidence can be reduced but the row, responsible actor, deaths, payload,
+# contamination, and action history are never removed.
+cbrn_occupation_suppress_exact_chemical_record_evidence = {
+	set_temp_variable = { cbrn_occupation_exact_record_suppression_proof = constant:cbrn_proof.missing }
+	cbrn_occupation_select_exact_chemical_record = yes
+	if = {
+		limit = {
+			check_variable = { cbrn_diplomacy_selected_chemical_row > constant:cbrn_diplomacy_index.invalid }
+			check_variable = { cbrn_occupation_exact_record_evidence_suppression > constant:cbrn_math.zero }
+		}
+		subtract_from_variable = {
+			cbrn_chemical_record_evidence_entries^cbrn_diplomacy_selected_chemical_row = cbrn_occupation_exact_record_evidence_suppression
+		}
+		clamp_variable = {
+			var = cbrn_chemical_record_evidence_entries^cbrn_diplomacy_selected_chemical_row
+			min = constant:cbrn_math.zero
+			max = constant:cbrn_evidence_threshold.maximum
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = cbrn_chemical_record_status_entries^cbrn_diplomacy_selected_chemical_row
+					value = constant:cbrn_chemical_record_status.open
+					compare = equals
+				}
+				check_variable = {
+					var = cbrn_chemical_record_evidence_entries^cbrn_diplomacy_selected_chemical_row
+					value = constant:cbrn_diplomacy_evidence.chemical_sample_minimum
+					compare = less_than
+				}
+			}
+			set_variable = {
+				cbrn_chemical_record_status_entries^cbrn_diplomacy_selected_chemical_row = constant:cbrn_chemical_record_status.unavailable
+			}
+			subtract_from_variable = { cbrn_chemical_open_forensic_record_count = constant:cbrn_math.one }
+			clamp_variable = {
+				var = cbrn_chemical_open_forensic_record_count
+				min = constant:cbrn_math.zero
+				max = cbrn_chemical_record_status_entries^num
+			}
+		}
+		set_temp_variable = { cbrn_state_evidence_delta = cbrn_occupation_exact_record_evidence_suppression }
+		multiply_temp_variable = { cbrn_state_evidence_delta = constant:cbrn_payload_math.negation_multiplier }
+		cbrn_apply_state_evidence_delta_internal = yes
+		set_temp_variable = { cbrn_occupation_exact_record_suppression_proof = constant:cbrn_proof.supplied }
+	}
+}
+
+cbrn_occupation_record_context_condemnation = {
+	if = {
+		limit = { has_variable = cbrn_occupation_responsible_country }
+		var:cbrn_occupation_responsible_country = {
+			cbrn_set_doctrine_condemnation_mult_from_country = yes
+			multiply_temp_variable = { condemnation_base_gain = cbrn_action_doctrine_condemnation_mult }
+			condemnation_add_source = yes
+		}
+	}
+}
+
+cbrn_occupation_register_atrocity_context_if_eligible = {
+	if = {
+		limit = {
+			NOT = { has_state_flag = cbrn_occupation_atrocity_context_recorded }
+			has_variable = cbrn_occupation_responsible_country
+			var:cbrn_occupation_responsible_country = { exists = yes }
+			has_variable = cbrn_occupation_last_action_route
+			check_variable = {
+				var = cbrn_occupation_last_action_route
+				value = constant:cbrn_delivery_route.nerve_suppression
+				compare = equals
+			}
+			OR = {
+				check_variable = {
+					var = cbrn_occupation_last_attribution_state
+					value = constant:cbrn_attribution_state.confirmed
+					compare = equals
+				}
+				has_state_flag = cbrn_occupation_public_admission
+			}
+		}
+		set_temp_variable = { condemnation_source_type = constant:condemnation_source.atrocity }
+		set_temp_variable = { condemnation_base_gain = constant:cbrn_occupation_condemnation.atrocity_context_gain }
+		set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+		set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.major }
+		set_temp_variable = { condemnation_context_type = constant:condemnation_context.nerve_suppression }
+		cbrn_occupation_record_context_condemnation = yes
+		set_state_flag = cbrn_occupation_atrocity_context_recorded
+	}
+}
+
+cbrn_occupation_publish_coverup_discovery = {
+	set_temp_variable = { cbrn_occupation_coverup_exposed_gain = constant:cbrn_math.zero }
+	if = {
+		limit = {
+			cbrn_occupation_state_has_concealment_record = yes
+			has_variable = cbrn_occupation_responsible_country
+			var:cbrn_occupation_responsible_country = { exists = yes }
+		}
+		var:cbrn_occupation_responsible_country = {
+			set_temp_variable = { condemnation_source_type = constant:condemnation_source.coverup }
+			set_temp_variable = {
+				condemnation_hidden_exposure_fraction = constant:cbrn_occupation_coverup.discovery_hidden_coverup_exposure
+			}
+			set_temp_variable = { condemnation_context_type = constant:condemnation_context.forensic_disclosure }
+			condemnation_expose_hidden_bucket = yes
+			set_temp_variable = { cbrn_occupation_coverup_exposed_gain = condemnation_hidden_exposed_gain }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = cbrn_occupation_coverup_exposed_gain
+					value = constant:condemnation_gain.minimum_visible_gain
+					compare = less_than
+				}
+			}
+			set_temp_variable = { condemnation_source_type = constant:condemnation_source.coverup }
+			set_temp_variable = {
+				condemnation_base_gain = constant:cbrn_occupation_condemnation.coverup_discovery_context_gain
+			}
+			set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+			set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.major }
+			set_temp_variable = { condemnation_context_type = constant:condemnation_context.forensic_disclosure }
+			cbrn_occupation_record_context_condemnation = yes
+		}
+	}
+}
+
+cbrn_occupation_apply_coverup_seal = {
+	set_temp_variable = { cbrn_occupation_coverup_proof = constant:cbrn_proof.missing }
+	if = {
+		limit = { cbrn_occupation_state_can_start_coverup = yes }
+		set_temp_variable = {
+			cbrn_occupation_exact_record_evidence_suppression = constant:cbrn_occupation_coverup.seal_evidence_suppression
+		}
+		cbrn_occupation_suppress_exact_chemical_record_evidence = yes
+		if = {
+			limit = {
+				check_variable = {
+					var = cbrn_occupation_exact_record_suppression_proof
+					value = constant:cbrn_proof.supplied
+					compare = equals
+				}
+			}
+			set_state_flag = cbrn_occupation_state_sealed
+			set_temp_variable = { cbrn_occupation_state_seal_days = constant:cbrn_occupation_timing.sealed_state_days }
+			set_state_flag = {
+				flag = cbrn_occupation_state_seal_active
+				days = var:cbrn_occupation_state_seal_days
+			}
+			add_dynamic_modifier = {
+				modifier = cbrn_occupation_state_sealed_modifier
+				days = cbrn_occupation_state_seal_days
+			}
+			force_update_dynamic_modifier = yes
+			set_variable = { cbrn_occupation_last_coverup_action = constant:cbrn_occupation_coverup_action.seal_state }
+			set_variable = { cbrn_occupation_last_coverup_date = global.num_days }
+			if = {
+				limit = { NOT = { has_variable = cbrn_occupation_coverup_pressure } }
+				set_variable = { cbrn_occupation_coverup_pressure = constant:cbrn_math.zero }
+			}
+			add_to_variable = { cbrn_occupation_coverup_pressure = constant:cbrn_occupation_coverup.coverup_pressure_seal }
+			set_temp_variable = { cbrn_occupation_coverup_resistance = constant:cbrn_occupation_coverup.coverup_pressure_seal }
+			add_resistance = cbrn_occupation_coverup_resistance
+			set_temp_variable = { cbrn_occupation_coverup_evidence_delta = cbrn_occupation_exact_record_evidence_suppression }
+			multiply_temp_variable = {
+				cbrn_occupation_coverup_evidence_delta = constant:cbrn_payload_math.negation_multiplier
+			}
+			set_variable = { cbrn_occupation_last_coverup_evidence_delta = cbrn_occupation_coverup_evidence_delta }
+			set_temp_variable = { condemnation_source_type = constant:condemnation_source.coverup }
+			set_temp_variable = { condemnation_base_gain = constant:condemnation_gain.blocked_inspection_coverup }
+			set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.hidden }
+			set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.minor }
+			set_temp_variable = { condemnation_context_type = constant:condemnation_context.blocked_inspection }
+			cbrn_occupation_record_context_condemnation = yes
+			set_temp_variable = { cbrn_occupation_coverup_proof = constant:cbrn_proof.supplied }
+		}
+	}
+}
+
+cbrn_occupation_apply_coverup_destroy_records = {
+	set_temp_variable = { cbrn_occupation_coverup_proof = constant:cbrn_proof.missing }
+	if = {
+		limit = { cbrn_occupation_state_can_start_coverup = yes }
+		set_temp_variable = {
+			cbrn_occupation_exact_record_evidence_suppression = constant:cbrn_occupation_coverup.destroy_records_evidence_suppression
+		}
+		cbrn_occupation_suppress_exact_chemical_record_evidence = yes
+		if = {
+			limit = {
+				check_variable = {
+					var = cbrn_occupation_exact_record_suppression_proof
+					value = constant:cbrn_proof.supplied
+					compare = equals
+				}
+			}
+			set_state_flag = cbrn_occupation_records_destroyed
+			set_variable = { cbrn_occupation_last_coverup_action = constant:cbrn_occupation_coverup_action.destroy_records }
+			set_variable = { cbrn_occupation_last_coverup_date = global.num_days }
+			if = {
+				limit = { NOT = { has_variable = cbrn_occupation_coverup_pressure } }
+				set_variable = { cbrn_occupation_coverup_pressure = constant:cbrn_math.zero }
+			}
+			add_to_variable = {
+				cbrn_occupation_coverup_pressure = constant:cbrn_occupation_coverup.coverup_pressure_destroy_records
+			}
+			set_temp_variable = {
+				cbrn_occupation_coverup_resistance = constant:cbrn_occupation_coverup.coverup_pressure_destroy_records
+			}
+			add_resistance = cbrn_occupation_coverup_resistance
+			set_temp_variable = { cbrn_occupation_coverup_evidence_delta = cbrn_occupation_exact_record_evidence_suppression }
+			multiply_temp_variable = {
+				cbrn_occupation_coverup_evidence_delta = constant:cbrn_payload_math.negation_multiplier
+			}
+			set_variable = { cbrn_occupation_last_coverup_evidence_delta = cbrn_occupation_coverup_evidence_delta }
+			set_temp_variable = { condemnation_source_type = constant:condemnation_source.coverup }
+			set_temp_variable = { condemnation_base_gain = constant:condemnation_gain.blocked_inspection_coverup }
+			set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.hidden }
+			set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.major }
+			set_temp_variable = { condemnation_context_type = constant:condemnation_context.destroyed_records }
+			cbrn_occupation_record_context_condemnation = yes
+			set_temp_variable = { cbrn_occupation_coverup_proof = constant:cbrn_proof.supplied }
+		}
+	}
+}
+
+cbrn_occupation_apply_coverup_admit_accident = {
+	set_temp_variable = { cbrn_occupation_coverup_proof = constant:cbrn_proof.missing }
+	if = {
+		limit = { cbrn_occupation_state_can_admit_release = yes }
+		cbrn_occupation_advance_exact_chemical_record_to_confirmed = yes
+		if = {
+			limit = {
+				check_variable = {
+					var = cbrn_occupation_exact_record_advance_proof
+					value = constant:cbrn_proof.supplied
+					compare = equals
+				}
+			}
+			if = {
+				limit = { cbrn_occupation_state_has_concealment_record = yes }
+				cbrn_occupation_publish_coverup_discovery = yes
+				set_state_flag = cbrn_occupation_coverup_self_disclosed
+			}
+			clr_state_flag = cbrn_occupation_state_seal_active
+			if = {
+				limit = { has_dynamic_modifier = { modifier = cbrn_occupation_state_sealed_modifier } }
+				remove_dynamic_modifier = { modifier = cbrn_occupation_state_sealed_modifier }
+				force_update_dynamic_modifier = yes
+			}
+			set_state_flag = cbrn_occupation_admission_recorded
+			set_state_flag = cbrn_occupation_public_admission
+			set_variable = { cbrn_occupation_last_coverup_action = constant:cbrn_occupation_coverup_action.admit_accident }
+			set_variable = { cbrn_occupation_last_coverup_date = global.num_days }
+			set_variable = { cbrn_occupation_admission_attribution_floor = constant:cbrn_attribution_state.confirmed }
+			if = {
+				limit = { has_variable = cbrn_occupation_coverup_pressure }
+				set_variable = { cbrn_occupation_coverup_pressure = constant:cbrn_math.zero }
+			}
+			set_variable = { cbrn_occupation_last_discovery_evidence_delta = cbrn_occupation_exact_record_evidence_add }
+			set_temp_variable = { condemnation_source_type = constant:condemnation_source.chemical }
+			set_temp_variable = {
+				condemnation_base_gain = constant:cbrn_occupation_condemnation.admission_chemical_context_gain
+			}
+			set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+			set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.major }
+			set_temp_variable = { condemnation_context_type = constant:condemnation_context.nerve_suppression }
+			cbrn_occupation_record_context_condemnation = yes
+			cbrn_occupation_register_atrocity_context_if_eligible = yes
+			set_temp_variable = { cbrn_occupation_coverup_proof = constant:cbrn_proof.supplied }
+		}
+	}
+}
+
+cbrn_occupation_apply_coverup_permit_inspection = {
+	set_temp_variable = { cbrn_occupation_coverup_proof = constant:cbrn_proof.missing }
+	if = {
+		limit = { cbrn_occupation_state_can_permit_inspection = yes }
+		set_temp_variable = {
+			cbrn_occupation_exact_record_evidence_add = constant:cbrn_occupation_coverup.inspection_evidence_gain
+		}
+		cbrn_occupation_advance_exact_chemical_record = yes
+		if = {
+			limit = {
+				check_variable = {
+					var = cbrn_occupation_exact_record_advance_proof
+					value = constant:cbrn_proof.supplied
+					compare = equals
+				}
+			}
+			cbrn_occupation_publish_coverup_discovery = yes
+			clr_state_flag = cbrn_occupation_state_seal_active
+			if = {
+				limit = { has_dynamic_modifier = { modifier = cbrn_occupation_state_sealed_modifier } }
+				remove_dynamic_modifier = { modifier = cbrn_occupation_state_sealed_modifier }
+				force_update_dynamic_modifier = yes
+			}
+			set_state_flag = cbrn_occupation_inspection_permitted
+			set_state_flag = cbrn_occupation_discovery_recorded
+			set_variable = {
+				cbrn_occupation_last_coverup_action = constant:cbrn_occupation_coverup_action.permit_inspection
+			}
+			set_variable = { cbrn_occupation_last_coverup_date = global.num_days }
+			set_variable = { cbrn_occupation_discovery_date = global.num_days }
+			set_variable = { cbrn_occupation_discovery_source = constant:condemnation_context.inspection_disclosure }
+			set_variable = { cbrn_occupation_last_discovery_evidence_delta = cbrn_occupation_exact_record_evidence_add }
+			if = {
+				limit = { has_variable = cbrn_occupation_coverup_pressure }
+				set_variable = { cbrn_occupation_coverup_pressure = constant:cbrn_math.zero }
+			}
+			var:cbrn_occupation_responsible_country = {
+				if = {
+					limit = { NOT = { has_country_flag = condemnation_inspections_active } }
+					condemnation_accept_inspections = yes
+				}
+			}
+			cbrn_occupation_register_atrocity_context_if_eligible = yes
+			set_temp_variable = { cbrn_occupation_coverup_proof = constant:cbrn_proof.supplied }
+		}
+	}
+}
+
+# COUNTRY scope with FROM as the selected STATE. Input is a temporary
+# cbrn_occupation_coverup_payment_action selector. A failed record dispatch
+# refunds the exact Political Power paid; no second decision payment exists.
+cbrn_occupation_execute_paid_coverup = {
+	if = {
+		limit = {
+			FROM = { cbrn_occupation_state_can_start_coverup = yes }
+			check_variable = { var = cbrn_occupation_coverup_payment_action value = constant:cbrn_occupation_coverup_action.seal_state compare = equals }
+			cbrn_occupation_can_pay_seal_state_pp = yes
+		}
+		cbrn_occupation_settle_paid_coverup = yes
+	}
+	else_if = {
+		limit = {
+			FROM = { cbrn_occupation_state_can_start_coverup = yes }
+			check_variable = { var = cbrn_occupation_coverup_payment_action value = constant:cbrn_occupation_coverup_action.destroy_records compare = equals }
+			cbrn_occupation_can_pay_destroy_records_pp = yes
+		}
+		cbrn_occupation_settle_paid_coverup = yes
+	}
+}
+
+# COUNTRY scope with FROM as the selected STATE and an affordable, freshly
+# calculated cbrn_occupation_coverup_pp_quote from the gate above.
+cbrn_occupation_settle_paid_coverup = {
+	set_temp_variable = { cbrn_occupation_coverup_pp_debit = cbrn_occupation_coverup_pp_quote }
+	multiply_temp_variable = { cbrn_occupation_coverup_pp_debit = constant:cbrn_payload_math.negation_multiplier }
+	add_political_power = cbrn_occupation_coverup_pp_debit
+	FROM = {
+		set_variable = { cbrn_occupation_requested_coverup_action = cbrn_occupation_coverup_payment_action }
+		cbrn_occupation_apply_requested_coverup_action = yes
+		clear_variable = cbrn_occupation_requested_coverup_action
+	}
+	if = {
+		limit = {
+			NOT = { check_variable = { var = cbrn_occupation_coverup_proof value = constant:cbrn_proof.supplied compare = equals } }
+		}
+		add_political_power = cbrn_occupation_coverup_pp_quote
+	}
+}
+
+cbrn_occupation_apply_requested_coverup_action = {
+	set_temp_variable = { cbrn_occupation_coverup_proof = constant:cbrn_proof.missing }
+	if = {
+		limit = {
+			cbrn_occupation_requested_coverup_action_is_valid = yes
+			check_variable = {
+				var = cbrn_occupation_requested_coverup_action
+				value = constant:cbrn_occupation_coverup_action.seal_state
+				compare = equals
+			}
+		}
+		cbrn_occupation_apply_coverup_seal = yes
+	}
+	else_if = {
+		limit = {
+			cbrn_occupation_requested_coverup_action_is_valid = yes
+			check_variable = {
+				var = cbrn_occupation_requested_coverup_action
+				value = constant:cbrn_occupation_coverup_action.destroy_records
+				compare = equals
+			}
+		}
+		cbrn_occupation_apply_coverup_destroy_records = yes
+	}
+	else_if = {
+		limit = {
+			cbrn_occupation_requested_coverup_action_is_valid = yes
+			check_variable = {
+				var = cbrn_occupation_requested_coverup_action
+				value = constant:cbrn_occupation_coverup_action.admit_accident
+				compare = equals
+			}
+		}
+		cbrn_occupation_apply_coverup_admit_accident = yes
+	}
+	else_if = {
+		limit = {
+			cbrn_occupation_requested_coverup_action_is_valid = yes
+			check_variable = {
+				var = cbrn_occupation_requested_coverup_action
+				value = constant:cbrn_occupation_coverup_action.permit_inspection
+				compare = equals
+			}
+		}
+		cbrn_occupation_apply_coverup_permit_inspection = yes
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = cbrn_occupation_coverup_proof value = constant:cbrn_proof.supplied compare = equals }
+				check_variable = { var = cbrn_occupation_coverup_proof value = constant:cbrn_proof.missing compare = equals }
+			}
+		}
+		set_variable = { cbrn_occupation_last_coverup_result = cbrn_occupation_coverup_proof }
+	}
+}
+
+cbrn_occupation_register_discovery_internal = {
+	set_temp_variable = { cbrn_occupation_discovery_proof = constant:cbrn_proof.missing }
+	if = {
+		limit = { cbrn_occupation_state_can_record_discovery = yes }
+		set_temp_variable = { cbrn_occupation_exact_record_evidence_add = cbrn_occupation_discovery_evidence_add }
+		cbrn_occupation_advance_exact_chemical_record = yes
+		if = {
+			limit = {
+				check_variable = {
+					var = cbrn_occupation_exact_record_advance_proof
+					value = constant:cbrn_proof.supplied
+					compare = equals
+				}
+			}
+			cbrn_occupation_publish_coverup_discovery = yes
+			set_state_flag = cbrn_occupation_discovery_recorded
+			set_variable = { cbrn_occupation_discovery_date = global.num_days }
+			set_variable = { cbrn_occupation_discovery_source = constant:condemnation_context.forensic_disclosure }
+			set_variable = { cbrn_occupation_last_discovery_evidence_delta = cbrn_occupation_exact_record_evidence_add }
+			cbrn_occupation_register_atrocity_context_if_eligible = yes
+			set_temp_variable = { cbrn_occupation_discovery_proof = constant:cbrn_proof.supplied }
+		}
+	}
+}
+
+cbrn_occupation_register_discovery = {
+	set_temp_variable = { cbrn_occupation_discovery_evidence_add = constant:cbrn_occupation_coverup.discovery_evidence_gain }
+	cbrn_occupation_register_discovery_internal = yes
+}
+
+cbrn_occupation_register_liberation_discovery = {
+	set_temp_variable = {
+		cbrn_occupation_discovery_evidence_add = constant:cbrn_occupation_coverup.liberation_discovery_evidence_gain
+	}
+	cbrn_occupation_register_discovery_internal = yes
+}
+
+cbrn_occupation_apply_delayed_backlash = {
+	if = {
+		limit = { cbrn_occupation_state_delayed_backlash_is_due = yes }
+		set_temp_variable = { cbrn_occupation_backlash_resistance = constant:cbrn_occupation_suppression.backlash_resistance_base }
+		if = {
+			limit = { has_variable = cbrn_occupation_nerve_suppression_trauma }
+			set_temp_variable = { cbrn_occupation_trauma_backlash = cbrn_occupation_nerve_suppression_trauma }
+			multiply_temp_variable = { cbrn_occupation_trauma_backlash = constant:cbrn_occupation_suppression.trauma_to_backlash }
+			add_to_temp_variable = { cbrn_occupation_backlash_resistance = cbrn_occupation_trauma_backlash }
+		}
+		clamp_temp_variable = {
+			var = cbrn_occupation_backlash_resistance
+			min = constant:cbrn_math.zero
+			max = constant:cbrn_occupation_suppression.backlash_resistance_maximum
+		}
+		add_resistance = cbrn_occupation_backlash_resistance
+		set_variable = { cbrn_occupation_last_backlash_resistance = cbrn_occupation_backlash_resistance }
+		set_temp_variable = { cbrn_occupation_backlash_target_days = constant:cbrn_occupation_timing.backlash_target_days }
+		set_state_flag = {
+			flag = cbrn_occupation_backlash_active
+			days = var:cbrn_occupation_backlash_target_days
+		}
+		add_dynamic_modifier = {
+			modifier = cbrn_occupation_backlash_state
+			days = cbrn_occupation_backlash_target_days
+			scope = var:cbrn_occupation_responsible_country
+		}
+		force_update_dynamic_modifier = yes
+		set_temp_variable = { cbrn_occupation_compliance_debit = constant:cbrn_occupation_suppression.backlash_compliance_loss }
+		multiply_temp_variable = { cbrn_occupation_compliance_debit = constant:cbrn_payload_math.negation_multiplier }
+		add_compliance = cbrn_occupation_compliance_debit
+		if = {
+			limit = {
+				OR = {
+					check_variable = {
+						var = cbrn_occupation_nerve_suppression_trauma
+						value = constant:cbrn_occupation_target.neighbor_spillover_trauma
+						compare = greater_than_or_equals
+					}
+					check_variable = {
+						var = cbrn_occupation_last_civilian_deaths
+						value = constant:cbrn_occupation_target.neighbor_spillover_civilian_deaths
+						compare = greater_than_or_equals
+					}
+				}
+			}
+			random_neighbor_state = {
+				limit = {
+					is_controlled_by = var:cbrn_occupation_responsible_country
+					NOT = { is_owned_by = var:cbrn_occupation_responsible_country }
+					NOT = { is_core_of = var:cbrn_occupation_responsible_country }
+				}
+				add_resistance = constant:cbrn_occupation_state_modifier.neighbor_resistance_gain
+				set_temp_variable = {
+					cbrn_occupation_neighbor_spillover_days = constant:cbrn_occupation_timing.neighbor_spillover_days
+				}
+				set_state_flag = {
+					flag = cbrn_occupation_neighbor_spillover_active
+					days = var:cbrn_occupation_neighbor_spillover_days
+				}
+				set_state_flag = cbrn_occupation_neighbor_spillover_history
+			}
+		}
+		set_state_flag = cbrn_occupation_backlash_applied
+		set_variable = { cbrn_occupation_backlash_resolved_date = global.num_days }
+		clr_state_flag = cbrn_occupation_delayed_backlash_pending
+		clear_variable = cbrn_occupation_backlash_due_day
+		# This state event is scheduled at the current operation's active-window
+		# boundary. The cleanup helper remains guarded by the expired active flag,
+		# so a mismatched delay or a replay cannot clear a live operation.
+		cbrn_occupation_cleanup_expired_state_records = yes
+	}
+}
+
+cbrn_occupation_decay_state_trauma = {
+	if = {
+		limit = { cbrn_occupation_state_can_decay_trauma = yes }
+		set_temp_variable = { cbrn_occupation_trauma_decay = constant:cbrn_occupation_suppression.trauma_decay_step }
+		multiply_temp_variable = { cbrn_occupation_trauma_decay = constant:cbrn_payload_math.negation_multiplier }
+		add_to_variable = { cbrn_occupation_nerve_suppression_trauma = cbrn_occupation_trauma_decay }
+		clamp_variable = {
+			var = cbrn_occupation_nerve_suppression_trauma
+			min = constant:cbrn_math.zero
+			max = constant:cbrn_occupation_suppression.trauma_maximum
+		}
+		cbrn_occupation_refresh_trauma_modifier = yes
+		set_variable = { cbrn_occupation_last_trauma_decay_date = global.num_days }
+		if = {
+			limit = { check_variable = { cbrn_occupation_nerve_suppression_trauma > constant:cbrn_math.zero } }
+			set_variable = { cbrn_occupation_trauma_decay_due_day = global.num_days }
+			add_to_variable = { cbrn_occupation_trauma_decay_due_day = constant:cbrn_occupation_timing.trauma_decay_interval_days }
+			set_temp_variable = {
+				cbrn_occupation_trauma_decay_days = constant:cbrn_occupation_timing.trauma_decay_interval_days
+			}
+			meta_effect = {
+				text = {
+					state_event = { id = cbrn_occupation.2 days = [CBRN_OCCUPATION_TRAUMA_DECAY_DAYS] }
+				}
+				CBRN_OCCUPATION_TRAUMA_DECAY_DAYS = "[?cbrn_occupation_trauma_decay_days|.0]"
+			}
+		}
+		else = {
+			clear_variable = cbrn_occupation_trauma_decay_due_day
+		}
+	}
+}
+
+cbrn_occupation_cleanup_expired_state_records = {
+	if = {
+		limit = { NOT = { has_state_flag = cbrn_occupation_nerve_suppression_active } }
+		if = {
+			limit = { has_variable = migration_persecution_cbrn_generation }
+			set_variable = {
+				migration_persecution_pending_owner = constant:migration_persecution_owner_class.cbrn_coercive_operation
+			}
+			set_variable = {
+				migration_persecution_pending_clear_generation = migration_persecution_cbrn_generation
+			}
+		}
+		if = {
+			limit = {
+				has_variable = cbrn_occupation_responsible_country
+				has_dynamic_modifier = {
+					modifier = cbrn_nerve_suppression_active_state
+					scope = var:cbrn_occupation_responsible_country
+				}
+			}
+			remove_dynamic_modifier = {
+				modifier = cbrn_nerve_suppression_active_state
+				scope = var:cbrn_occupation_responsible_country
+			}
+			force_update_dynamic_modifier = yes
+		}
+		clear_variable = cbrn_occupation_active_until_day
+		migration_persecution_clear_owner_state = yes
+	}
+}

@@ -2,6 +2,14 @@
 # Sale-adapted PP/support rows use Event 026 quotes; factory use stays in tooltips.
 
 defined_text = {
+	name = GetCbrnProtectiveAidReenableDays
+	text = {
+		trigger = { set_temp_variable = { cbrn_protective_aid_reenable_days_quote = constant:cbrn_occupation_timing.protective_aid_reenable_days } }
+		localization_key = cbrn_protective_aid_reenable_days_quote
+	}
+}
+
+defined_text = {
 	name = GetCbrnOccupiedMaskReservationQuote
 	text = {
 		trigger = {
@@ -25,7 +33,26 @@ defined_text = {
 defined_text = {
 	name = GetCbrnExternalAidPoliticalPowerQuote
 	text = {
-		trigger = { black_friday_quote_cbrn_external_aid_pp_fee = yes }
+		trigger = {
+			FROM = {
+				cbrn_occupation_state_has_donor_external_aid_reservation = yes
+				has_variable = cbrn_external_aid_committed_pp_fee
+			}
+			set_temp_variable = { black_friday_cbrn_external_aid_pp_cost = FROM.cbrn_external_aid_committed_pp_fee }
+		}
+		localization_key = cbrn_external_aid_pp_quote
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { black_friday_cbrn_external_aid_pp_cost = constant:cbrn_occupation_decision_cost.protective_aid_pp }
+			set_temp_variable = { black_friday_cbrn_external_aid_pp_quote_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_cbrn_external_aid_pp_affordable = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_quote_final_cost = constant:cbrn_occupation_decision_cost.protective_aid_pp }
+			set_temp_variable = { black_friday_quote_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_quote_composed_ratio = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_quote_requested_quantum = constant:universal_cost_framework.zero }
+			black_friday_quote_cbrn_external_aid_pp_fee = yes
+		}
 		localization_key = cbrn_external_aid_pp_quote
 	}
 }

@@ -1,0 +1,41 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"artifactCount\":0,\"code\":\"OK\",\"status\":\"ok\",\"workspaceId\":\"chaos_redux_probe\"}"
+    }
+  ],
+  "structuredContent": {
+    "status": "ok",
+    "code": "OK",
+    "workspaceId": "chaos_redux_probe",
+    "filesScanned": [],
+    "proposedFiles": [],
+    "changedFiles": [],
+    "diagnostics": [],
+    "artifacts": [],
+    "validation": {
+      "passed": true,
+      "checks": []
+    },
+    "blockers": [],
+    "data": {
+      "id": "c8ba2a44d708fd3048c019dfb9e36f3ecf59ff754f7cb4ea3bb7c4704deb5c58",
+      "revision": "5e7e686b5582f32c38d898d805e17171e88f3bfeee4a030deb1884f9726de019",
+      "source": "game_doc",
+      "title": " documentation",
+      "heading": "Country Decisions",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\common\\decisions\\_documentation.md",
+      "startLine": 1,
+      "endLine": 46,
+      "excerpt": "# Country Decisions Decisions are made available to countries that fulfill the right conditions.",
+      "authority": "Installed game documentation",
+      "sectionStartLine": 1,
+      "sectionEndLine": 46,
+      "startColumn": 1,
+      "text": "# Country Decisions\n\nDecisions are made available to countries that fulfill the right conditions.\nSome triggers are only checked once per day, once per frame or once per game.\n\n`allowed`:\n- Scope: THIS = Country\n- Checked once per game at start (or when save is loaded)\n- Used to filter out decisions that will never be available to a given country (usually checks `original_tag = XXX`)\n- Important to use on performance-heavy decisions (especially targeted decisions) to avoid unnecessary computations\n\n`visible`:\n- Scope: THIS = Country, FROM = Country/State (if targeted)\n- Checked each frame when the interface is refreshed if allowed was true\n- Used to filter out decisions that should appear in decision interface (they may still be greyed out, see `available` next)\n- Caveat: this trigger can become performance heavy for targeted decisions, see `target_root_trigger` and `target_trigger`.\n\n`available`:\n- Scope: THIS = Country, FROM = Country/State (if targeted)\n- Checked each frame when the interface is refreshed if both allowed and visible were true\n- Used to indicate if a visible decision can be taken right now and it not, what the player should do to be able to.\n  No condition should be impossible to match at this point (for example, do not require completion of locked out focus)\n\n`target_root_trigger`:\n- Scope: THIS = Country\n- Checked once per day (updated in one of the 24 hourly ticks depending on country), if allowed was true\n- Used to lessen the impact of targeted decisions that cannot be restricted by `targets` and `allowed`.\n  Since targeted decisions are checked against each state/country in the game each frame in the `visible` trigger, this offers a way to do a pre-check once a day.\n  This trigger should be a subset of the `visible` trigger that only uses the acting country scope.\n\n`target_trigger`:\n- Scope: THIS = Country, FROM = Target Country/State\n- Checked once per day for each state/country in the world if both allowed and `target_root_trigger` were true.\n- Used to select which country/states this targeted decision should apply to. Each match will create a dedicated decision entry.\n- Similarly to `target_root_trigger`, this should contain a subset of the `visible` trigger that pertains to a given target state/country.\n  The lower frequency of this check will help avoiding checking the visible trigger against each country/state each frame when possible.\n\n`state_trigger`:\n - Possible values: `yes`, `no`, `any`, `any_owned_state`, `any_controlled_state`, `continent_key` (`europe`, `africa`, `north_america`...)\n - This will only have an effect if no `targets` are specified, else this should be set to `any` (or `yes`) if targets are used.\n - Unless omitted or set to `no`, makes the decision a state targeted decision. Which states will be checked depends on value:\n    - `any` (or `yes`): will check every state in the game against the `target_trigger`. To be avoided whenever possible as this is expensive performance wise.\n    - `any_owned_state`: will check every state owned by the country. This is equivalent (but quite faster) to adding `owner = ROOT` in the target_trigger.\n    - `any_controlled_state`: will check every state controlled by the country. This is equivalent (but quite faster) to adding `is_controlled_by = ROOT` in the `target_trigger`.\n    - `continent_key` (`europe`, `africa`, `north_america`...): will check every state in the continent. This is equivalent (but quite faster) to adding `is_on_continent = xxx` in the `target_trigger`.\n",
+      "nextLine": null,
+      "nextColumn": null
+    }
+  }
+}

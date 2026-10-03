@@ -4,7 +4,7 @@
 
 ## Implemented source surfaces
 
-The 2026-10-03 [Protective Aid PP tranche](../026_black_friday_plans/2026-10-03_cbrn_protective_aid_pp_adapter.md) quotes and pays 25/13/7 Political Power through the current ordinary/sale/Evolution I cost, reserves the full physical respirator shipment, refunds unused exact models, and credits its PP family only after a proven timed delivery. Its pooled cost row and five neighboring pooled respirator consumers use the existing archetype icon instead of a basic-model image. A read-only source audit and nine PP-boundary/four model-conservation probes support the source contract; native decision execution, timer behavior, UI fit, and the two-factory sale commitment remain unresolved. Event 026 stays disabled, and the overall CBRN goal remains incomplete.
+The 2026-10-03 [Protective Aid PP tranche](../026_black_friday_plans/2026-10-03_cbrn_protective_aid_pp_adapter.md) quotes and pays 25/13/7 Political Power through the current ordinary/sale/Evolution I cost, reserves the full physical respirator shipment, refunds unused exact models, and credits its PP family only after a proven timed delivery. Its pooled cost row and five neighboring pooled respirator consumers use the existing archetype icon instead of a basic-model image. A read-only source audit and nine PP-boundary/four model-conservation probes support the source contract; native decision execution, timer behavior, and UI fit remain unresolved. The later [factory-sale tranche](2026-10-03_protective_aid_native_factory_sale.md) implements the capacity price in source. Event 026 stays disabled, and the overall CBRN goal remains incomplete.
 
 The aid source is merged as `bcaede689` from scoped commit `48ed1d8e2`. Its required probability inspection ended without a result and then with a workspace-routing timeout, so no numerical AI comparison is claimed. The [Event 020 GUI handoff](../020_black_plague_plans/subagent_handoffs/2026-09-27_event020_black_plague_gui_visibility_capacity_handoff.md) preserves the intended established-outbreak gate and neutral unorganized-capacity source candidate; its current-source GUI inspector retry on 2026-10-03 also returned no result through bounded polls. Those five GUI source files remain uncommitted pending their mandatory matching post-change render, and the handoff/reference are validation evidence rather than GUI completion.
 
@@ -267,3 +267,18 @@ Parent visual review approved the normal/medium emblem and small field treatment
 The [scientist source record](../../testing/2026-10-03_csh_flag_load_repair/scientist_source_check.json) confirms history-only recruitment for the three reported identities and no runtime recruitment commands in the dated startup owner.
 Fresh native flag/warning absence remains unverified; the supplied archived cycle1 file is still the pre-holder warning baseline.
 No roster, transfer, balance, or AI change and no simplification is introduced by this asset repair.
+
+## 2026-10-03 Protective Aid factory sale
+
+The [native factory-sale source tranche](2026-10-03_protective_aid_native_factory_sale.md) closes the previously unadapted two-factory commitment through one visible aid choice backed by ordinary two-factory and sale one-factory definitions.
+The same canonical factory quotation drives inclusive affordability and native-variant selection; both sale tiers round the ordinary two to one whole factory.
+The 21-day timer and full real respirator shipment remain, and the shared 90-day donor/state cooldown prevents native-ID switching from bypassing reenabling.
+Selection, delivery, cancellation, refund, and delayed PP settlement use shared callbacks, while active rows read the committed fee, factory mode, and exact model escrow through sale expiry or empty national stock.
+The original willingness bodies are unchanged, and the sale's minimum positive PP saving hint avoids imposing the ordinary 25 PP floor on lower-priced eligibility.
+The source budget is 42 factory-days normally and 21 at either sale tier; there is no combat modifier or material output increase.
+The recovered isolated v3.6.0 MCP process answered initialization, ping, tool enumeration, weighted-source discovery, and relevant reference context/read calls.
+The same forty-scenario before/after evaluations returned partial analyses with 133/208 unresolved items; the full comparison failed internally and the narrowed 27-boundary retry exited without an outcome.
+Native payment/cancellation/UI evidence and a resolved weighted comparison remain required, so neither Event 026 nor the broader CBRN overhaul is complete.
+
+The final three-price-anchor Protective Aid `hoi4.probability_compare` retry returned a partial artifact at scenario hash `6875751c294a3da4ffac4ab7f9ef68fe84744a576b0c8b03aa8ac864fb823d98`, with all six candidate rows unresolved and no numeric probability delta.
+The full comparison and original traces are persisted under the linked implementation handoff; this restores the comparison evidence route without closing native execution or weighted eligibility.
