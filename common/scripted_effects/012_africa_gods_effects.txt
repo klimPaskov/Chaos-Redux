@@ -1312,8 +1312,13 @@ gods_of_africa_calculate_demand_amount = {
 		limit = {
 			has_event_target = gods_of_africa_demand_participant
 			event_target:gods_of_africa_demand_participant = {
-				has_variable = gods_of_africa_history_count
-				check_variable = { gods_of_africa_history_count > constant:gods_of_africa_demand_scale.repetition_threshold }
+				set_temp_variable = { gods_of_africa_repetition_family = event_target:africa_host.gods_of_africa_selected_family }
+				set_temp_variable = { gods_of_africa_repetition_mobile_type = constant:gods_of_africa_value.zero }
+				if = {
+					limit = { check_variable = { gods_of_africa_repetition_family = constant:gods_of_africa_demand_family.mobile_artillery } }
+					set_temp_variable = { gods_of_africa_repetition_mobile_type = event_target:africa_host.gods_of_africa_selected_mobile_type }
+				}
+				gods_of_africa_repetition_scale_applies = yes
 			}
 		}
 		add_to_temp_variable = { gods_of_africa_demand_scale = constant:gods_of_africa_demand_scale.repetition_delta }
@@ -1793,6 +1798,7 @@ gods_of_africa_create_demand_contract = {
 			set_variable = { gods_of_africa_demand_band = event_target:africa_host.gods_of_africa_contract_band }
 			set_variable = { gods_of_africa_demand_deadline = event_target:africa_host.gods_of_africa_contract_deadline }
 			set_variable = { gods_of_africa_demand_status = constant:gods_of_africa_demand_status.open }
+			gods_of_africa_remember_demand_repetition = yes
 				set_variable = { gods_of_africa_payment_family = event_target:africa_host.gods_of_africa_selected_family }
 				set_variable = { gods_of_africa_payment_amount = event_target:africa_host.gods_of_africa_contract_amount }
 				gods_of_africa_set_payment_capacity_requirement = yes

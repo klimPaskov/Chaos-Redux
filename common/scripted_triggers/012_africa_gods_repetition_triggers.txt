@@ -1,0 +1,26 @@
+# Event 012 Gods recent consecutive demand repetition.
+# Caller-set temporary family/type identifies the proposed or actual contract.
+# Historical aid, negotiation, and report entries never substitute for demands.
+
+gods_of_africa_is_repeating_demand = {
+	has_variable = gods_of_africa_last_demand_family
+	has_variable = gods_of_africa_last_demand_day
+	check_variable = { gods_of_africa_last_demand_family = gods_of_africa_repetition_family }
+	OR = {
+		NOT = { check_variable = { gods_of_africa_repetition_family = constant:gods_of_africa_demand_family.mobile_artillery } }
+		AND = {
+			has_variable = gods_of_africa_last_demand_mobile_type
+			check_variable = { gods_of_africa_last_demand_mobile_type = gods_of_africa_repetition_mobile_type }
+		}
+	}
+	set_temp_variable = { gods_of_africa_repetition_age = global.num_days }
+	subtract_from_temp_variable = { gods_of_africa_repetition_age = gods_of_africa_last_demand_day }
+	check_variable = { var = gods_of_africa_repetition_age value = constant:gods_of_africa_value.zero compare = greater_than_or_equals }
+	check_variable = { var = gods_of_africa_repetition_age value = constant:gods_of_africa_timing.repetition_window_days compare = less_than_or_equals }
+}
+
+gods_of_africa_repetition_scale_applies = {
+	gods_of_africa_is_repeating_demand = yes
+	has_variable = gods_of_africa_repetition_count
+	check_variable = { gods_of_africa_repetition_count > constant:gods_of_africa_demand_scale.repetition_threshold }
+}

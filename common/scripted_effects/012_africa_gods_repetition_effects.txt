@@ -1,0 +1,39 @@
+# Event 012 Gods demand repetition receipts.
+# Only genuine newly committed contracts advance this durable streak.
+# Quantity, payment, history, and clocks remain owned by the original transaction.
+
+gods_of_africa_remember_demand_repetition = {
+	if = {
+		limit = {
+			gods_of_africa_demand_contract_is_current = yes
+			gods_of_africa_demand_family_is_valid = yes
+			OR = {
+				NOT = { has_variable = gods_of_africa_repetition_last_contract_id }
+				NOT = { has_variable = gods_of_africa_repetition_last_generation }
+				NOT = {
+					AND = {
+						check_variable = { gods_of_africa_repetition_last_contract_id = gods_of_africa_demand_id }
+						check_variable = { gods_of_africa_repetition_last_generation = gods_of_africa_demand_generation }
+					}
+				}
+			}
+		}
+		set_temp_variable = { gods_of_africa_repetition_family = gods_of_africa_demand_family }
+		set_temp_variable = { gods_of_africa_repetition_mobile_type = constant:gods_of_africa_value.zero }
+		if = {
+			limit = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.mobile_artillery } }
+			set_temp_variable = { gods_of_africa_repetition_mobile_type = gods_of_africa_demand_mobile_type }
+		}
+		if = { limit = { gods_of_africa_is_repeating_demand = yes } add_to_variable = { gods_of_africa_repetition_count = constant:gods_of_africa_value.one } }
+		else = { set_variable = { gods_of_africa_repetition_count = constant:gods_of_africa_value.one } }
+		set_variable = { gods_of_africa_last_demand_family = gods_of_africa_demand_family }
+		clear_variable = gods_of_africa_last_demand_mobile_type
+		if = {
+			limit = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.mobile_artillery } }
+			set_variable = { gods_of_africa_last_demand_mobile_type = gods_of_africa_demand_mobile_type }
+		}
+		set_variable = { gods_of_africa_last_demand_day = global.num_days }
+		set_variable = { gods_of_africa_repetition_last_contract_id = gods_of_africa_demand_id }
+		set_variable = { gods_of_africa_repetition_last_generation = gods_of_africa_demand_generation }
+	}
+}
