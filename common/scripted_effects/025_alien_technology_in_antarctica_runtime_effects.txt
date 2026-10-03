@@ -946,20 +946,20 @@ chaosx_nr25_run_bounded_pulse = {
 			limit = { has_global_flag = chaosx_nr25_active NOT = { has_country_flag = chaosx_nr25_terminal } }
 			add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_pulse }
 			if = {
-				limit = { has_global_flag = chaosx_nr25_evolution_active_signal }
+				limit = { chaosx_nr25_active_signal_evolution_in_force = yes }
 				add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_signal_pulse }
 				add_to_variable = { chaosx_nr25_signal_intensity = constant:chaosx_nr25_cost.signal_pulse_intensity }
 			}
 			if = {
-				limit = { has_global_flag = chaosx_nr25_evolution_something_survived }
+				limit = { chaosx_nr25_something_survived_evolution_in_force = yes }
 				subtract_from_variable = { chaosx_nr25_crew = constant:chaosx_nr25_cost.crew_survivor_burden }
 			}
 			if = {
-				limit = { has_global_flag = chaosx_nr25_evolution_militarised_antarctica }
+				limit = { chaosx_nr25_militarised_antarctica_evolution_in_force = yes }
 				add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_militarisation_pulse }
 			}
 			if = {
-				limit = { has_global_flag = chaosx_nr25_evolution_wreck_breaking_apart }
+				limit = { chaosx_nr25_wreck_breaking_apart_evolution_in_force = yes }
 				add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_wreck_pulse }
 				if = { limit = { NOT = { has_country_flag = chaosx_nr25_wreck_stabilized } } subtract_from_variable = { chaosx_nr25_wreck_integrity = constant:chaosx_nr25_cost.wreck_integrity_pulse } }
 				if = { limit = { check_variable = { var = chaosx_nr25_wreck_integrity value = constant:chaosx_nr25_value.fifty compare = less_than_or_equals } } set_country_flag = chaosx_nr25_fragment_field_active }
@@ -968,7 +968,7 @@ chaosx_nr25_run_bounded_pulse = {
 		}
 		if = {
 			limit = {
-				has_global_flag = chaosx_nr25_evolution_technology_changes_users
+				chaosx_nr25_technology_changes_users_evolution_in_force = yes
 				OR = {
 					has_country_flag = chaosx_nr25_aftermath_open
 					has_country_flag = chaosx_nr25_dependence_started
@@ -980,7 +980,7 @@ chaosx_nr25_run_bounded_pulse = {
 			limit = { has_global_flag = chaosx_nr25_active NOT = { has_country_flag = chaosx_nr25_terminal } }
 			if = {
 				limit = {
-					has_global_flag = chaosx_nr25_evolution_active_signal
+					chaosx_nr25_active_signal_evolution_in_force = yes
 					NOT = { has_country_flag = chaosx_nr25_signal_profile_initialized }
 				}
 				set_variable = { chaosx_nr25_signal_intensity = constant:chaosx_nr25_cost.signal_opening_intensity }
@@ -988,7 +988,7 @@ chaosx_nr25_run_bounded_pulse = {
 			}
 			if = {
 				limit = {
-					has_global_flag = chaosx_nr25_evolution_something_survived
+					chaosx_nr25_something_survived_evolution_in_force = yes
 					NOT = { has_country_flag = chaosx_nr25_survivor_profile_initialized }
 				}
 				if = {
@@ -1004,7 +1004,7 @@ chaosx_nr25_run_bounded_pulse = {
 			}
 			if = {
 				limit = {
-					has_global_flag = chaosx_nr25_evolution_militarised_antarctica
+					chaosx_nr25_militarised_antarctica_evolution_in_force = yes
 					has_country_flag = chaosx_nr25_outpost_established
 					NOT = { has_country_flag = chaosx_nr25_outpost_lost }
 					check_variable = { var = chaosx_nr25_exposure_risk value = constant:chaosx_nr25_value.eighty_five compare = greater_than }
@@ -1018,7 +1018,7 @@ chaosx_nr25_run_bounded_pulse = {
 		}
 		if = {
 			limit = {
-				has_global_flag = chaosx_nr25_evolution_technology_changes_users
+				chaosx_nr25_technology_changes_users_evolution_in_force = yes
 				has_country_flag = chaosx_nr25_dependence_started
 				check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_cost.dependence_accident_threshold compare = greater_than_or_equals }
 				check_variable = { var = chaosx_nr25_dependence_accident_cooldown value = constant:chaosx_nr25_value.zero compare = less_than_or_equals }

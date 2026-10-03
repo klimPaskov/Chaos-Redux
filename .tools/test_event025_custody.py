@@ -144,13 +144,16 @@ class CustodyRuntime(Runtime):
                 target = self.global_flags if "global" in key else actor.flags
                 name = self.flag(data, actor)
                 (target.add if key.startswith("set_") else target.discard)(name)
-            elif key in ("set_variable", "set_temp_variable", "add_to_variable", "add_to_temp_variable"):
+            elif key in ("set_variable", "set_temp_variable", "add_to_variable", "add_to_temp_variable", "subtract_from_variable"):
                 name, value = data[0]
                 target = self.temporary if "temp" in key else actor.values
                 if name.startswith("global."):
                     target, name = self.global_values, name[7:]
                 amount = self.value(value, actor)
-                target[name] = amount + (target.get(name, 0) if key.startswith("add_") else 0)
+                if key == "subtract_from_variable":
+                    target[name] = target.get(name, 0) - amount
+                else:
+                    target[name] = amount + (target.get(name, 0) if key.startswith("add_") else 0)
             elif key == "clear_variable":
                 actor.values.pop(data, None)
             elif key == "clear_array":
