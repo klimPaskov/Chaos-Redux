@@ -52,7 +52,7 @@ Only lead-battalion units render as 3D map models; support-company sprites (CBRN
 | 15 | Oth-Kesh cave brood | 5 brood types | 4 actions; creature | D | 35 |
 | 16 | Paleogenetic creature | `paleogenetic_creature` | 11 actions; creature | D | 35 |
 | 17 | Xenobiological assault organism | `xenobiological_assault_organism` | 10 actions; creature | D | 35 |
-| 18 | Elephants (shared base) | `chaosx_elephant` | No shipped mesh, 6 actions; quadruped | D | 35 |
+| 18 | Elephants (shared base) | `chaosx_elephant` | **Blocked without vanilla Elephantry DLC:** `sprite = elephantry`, no shipped `chaosx_elephant_entity` fallback. Live CXT QA 2026-10-03 19:15: every elephant division renders a placeholder box; 24 missing-entity errors. Parent commissions a real shared model (`accepted and queued`, orchestrator instruction 2026-10-03); 6 actions, quadruped. [Exact runtime evidence](../../events/012_africa/strange_forces.md#elephant-map-model-blocker). | D | 35 |
 | 19–25 | Africa: forest giants, gorilla heavy infantry, oracle recon, pan sappers, riverborn, stone cohorts, plague carriers | 7 units | Meshes with 5 actions each | A, B, or D per anatomy (plague carriers and gorilla likely D) | 245–630 |
 | 26 | Africa disaster wardens | `disaster_wardens` | No shipped mesh; axe-bearing | B | 93–99 |
 | 27–33 | Cannibal bone guard, feast cohort, feast guard, island reavers, march predation column, scavenger warband, siege eaters | 7 units | Meshes present; melee items likely | B | 650–700 |

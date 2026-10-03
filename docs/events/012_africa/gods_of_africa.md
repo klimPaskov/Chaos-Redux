@@ -179,7 +179,12 @@ The installed probability adapter remains score-only and incomplete for the Gods
 
 Gods-of-Africa event reports, category art, icons, and focus/idea art use the registered Event 012 sprite names and period-appropriate, non-anime artwork. The 2026-09-05 generated-art handoffs record eight report cards, one category picture, and 27 mechanic, decision, idea, and focus icons with source, processed, and final DDS evidence. Current working-tree interface, event, category, decision, idea, and focus consumers contain the corresponding Event 012 aliases. Parent review on 2026-09-25 found no material issue in both contact sheets or the 27 processed icons at native size; game-scale appearance, playback, user approval, and promotion remain open.
 
-The elephant formation is intentionally not a Gods-specific model deliverable. `common/units/012_africa_elephant_forces.txt` binds `chaosx_elephant` to `sprite = elephantry`, so the normal vanilla Elephantry model and animation family are reused. The approximately 340 MB `docs/assets/012_africa/models_3d/elephant_shared_base/` package is classified as archival and non-promoted; retention or deletion is an owner decision outside this documentation-only pass, and any retained contents are provenance-only rather than runtime consumers.
+`common/units/012_africa_elephant_forces.txt` binds `chaosx_elephant` to `sprite = elephantry`, whose vanilla entity depends on the DLC supplying Elephantry.
+The mod has no shipped `chaosx_elephant_entity` fallback.
+The orchestrator's live CXT QA on 2026-10-03 at 19:15 recorded 24 missing-entity errors and placeholder boxes for every Africa elephant division in a no-DLC configuration.
+This is an open rendering blocker, documented with the exact error in [the strange-force unit runtime notes](strange_forces.md).
+The parent is commissioning a real shared `chaosx_elephant` model under row 18 of the system unit model rework plan; its production and runtime consumer acceptance remain pending.
+The approximately 340 MB `docs/assets/012_africa/models_3d/elephant_shared_base/` package is archival and non-promoted, so it does not satisfy that runtime dependency. Retention or deletion remains an owner decision.
 
 The CXT fixture follows the same boundary: `common/scripted_effects/012_africa_gods_cxt_test_effects.txt` registers the existing elephant token and equipment through the shared idempotent extension bus, publishes only an inert readiness receipt after CXT initialization, and never starts Africa Is One or the Gods tribute loop.
 
