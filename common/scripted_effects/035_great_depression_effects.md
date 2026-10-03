@@ -58,6 +58,20 @@ The worldwide lifecycle calls `great_depression_run_worldwide_conversion = yes` 
 That wrapper selects from the bounded pressure registry, supplies its episode/origin/receipt contract, and updates the original row only after acceptance.
 These wrappers do not own additional normal pacing.
 
+## Caller-owned temporary outputs
+
+Internal callers initialize temporary result storage before each returning helper.
+The independent target selector owns `great_depression_independent_target_weight`, initially zero.
+The center selector owns `great_depression_center_candidate_score`, initially the configured invalid-score sentinel.
+New-crisis setup owns `great_depression_center_registration_failed`, initially one so a missing result rejects setup.
+Deepening owns `great_depression_deepening_value`, initially zero.
+Their callees overwrite these values through the existing formulas and gates.
+Private intermediate values remain helper-local.
+
+The Event 35 humanitarian adapter similarly initializes famine and migration request acknowledgements and occupation proof to zero before the owner call.
+It marks its one-shot source receipt only after the returned owner acknowledgement succeeds.
+No owner definitions or request amounts are duplicated.
+
 ## Companion, cleanup, and evidence limits
 
 The exact regional companion is documented in [035_great_depression_region_effects.md](035_great_depression_region_effects.md).

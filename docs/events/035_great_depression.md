@@ -36,6 +36,9 @@ The current country is the synchronous transaction recipient even when the sende
 Event 34 fields must match the frozen owner snapshot, contagion must prove both rows of the exact source-target pair, worldwide conversion must match the current global episode and pressure receipt, and relapse must match the country's completed episode and recovery window.
 The caller can read the public result immediately after the helper returns.
 
+Selection scores, center-registration status, deepening amounts, and humanitarian acknowledgements use caller-owned temporary result storage across helper returns.
+Their existing formulas and owner authority remain unchanged.
+
 A new crisis must have an owned, controlled, passable core industrial state before national setup begins.
 Its requested evolution floor replaces the previous episode's floor, and evolution projection and logging wait until center registration succeeds.
 Deepening preserves the active episode and its existing evolution floor.

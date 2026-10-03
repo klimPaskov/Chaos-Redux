@@ -1,0 +1,92 @@
+{
+  "fixtureKind": "chaos_redux_helper_output_lifetime_audit",
+  "fixtureVersion": 1,
+  "use": "Report-only domain fixture. This is not a HOI4 MCP scenarioSet schema and was not submitted as one.",
+  "baselineSource": {
+    "path": "docs/plans/035_great_depression_plans/audit_inputs/helper_lifetime_2026_10_03/035_great_depression_effects_before.txt",
+    "sha256": "3B065E7FC529FA4E8A98B7CAF60656ECC2FD22970944B966329986B85D1B1403"
+  },
+  "supportingSources": [
+    {
+      "path": "common/script_constants/035_great_depression_constants.txt",
+      "sha256": "B14E552EE2176907C3BF05EC2324E7F58A06C72D4F4865DCF3C9A9160AAEB1E7"
+    },
+    {
+      "path": "common/scripted_triggers/035_great_depression_triggers.txt",
+      "sha256": "FE2DC15DC22EA0D8F9336C7120412B1DA66CF7F7348D43E7EE1D7A72BC1566CA"
+    }
+  ],
+  "storageModel": {
+    "temporaryStorage": "Model each caller and callee effect frame separately.",
+    "returnCleanup": "Discard temporary scalars and arrays first created in the returning callee.",
+    "callerOwnedStorage": "Retain the callee's assignment when the temporary output was initialized in the caller before the call.",
+    "regularScopedState": "Track separately by owning scope; do not place it in a flat temporary-variable map.",
+    "evidenceLimit": "Conservative model derived from the cited offline wiki rule, not an observation of a live game call frame."
+  },
+  "scenarioSets": [
+    {
+      "surface": "great_depression_score_independent_target",
+      "resultKind": "Per-country weights are expanded into repeated array entries before random scope selection; the exact conditional probability is not proved here.",
+      "namedScenarios": ["TGT-01", "TGT-02", "TGT-03", "TGT-04", "TGT-05", "TGT-06", "TGT-07", "TGT-08", "TGT-09", "TGT-10"],
+      "scenarioSource": "docs/specs/035_great_depression_specs/035_great_depression_ai_probability_matrix.md and docs/specs/035_great_depression_specs/035_great_depression_spec_part_9_ai_probability_balance.md",
+      "candidatePoolCompleteness": "Unresolved. The named target scenarios require full eligible-country pools, but no complete TGT candidate-pool fixture was supplied with this baseline task.",
+      "externalFactors": "Country eligibility, economy, player/major status, country flags, event history, safeguards, and weight modifiers require complete scenario inputs.",
+      "callFrames": [
+        {
+          "caller": "great_depression_select_independent_target",
+          "callee": "great_depression_score_independent_target",
+          "calleeCreatesTemporaryOutput": "great_depression_independent_target_weight",
+          "callerPreinitializesOutput": false,
+          "postReturnModel": "Discard the callee-created output before the caller's for_loop_effect reads it.",
+          "callerConsumer": "for_loop_effect.end, then weighted-array construction and random_scope_in_array"
+        }
+      ]
+    },
+    {
+      "surface": "great_depression_score_center_candidate",
+      "resultKind": "deterministic highest-score eligible-state race with state-id tie break",
+      "scenarioSources": [
+        {
+          "path": "docs/plans/035_great_depression_plans/audit_inputs/center_owner_2026_10_03/scenarios_v2.json",
+          "sha256": "F348094B23CD57F16C067DB32C5C7F4BD2E6CE780145E3C6B4808346743C63C3"
+        },
+        {
+          "path": "docs/plans/035_great_depression_plans/audit_inputs/center_owner_2026_10_03/scenarios_v3.json",
+          "sha256": "2C92489F1C2764C729096B2FF88505A3E8F653D204E6F92F76B1627B4134BF66"
+        }
+      ],
+      "namedScenarios": ["CTR35-ROOT-ACTOR", "CTR35-ROOT-DIFFERENT", "CTR35-FOREIGN-ROOT-NEIGHBOR", "CTR35-NO-CENTER-NEIGHBOR", "CTR35-CAPITAL", "CTR35-TINY-CAPITAL", "CTR35-NEGATIVE-TIE", "CTR35-FORBIDDEN-PRIMARY+validother", "CTR35-RESERVED-OTHER-EPISODE+validother", "CTR35-ALL-RESERVED-OR-FORBIDDEN", "CTR35-FROZEN-FORBIDDEN-CLEARED-LIVE"],
+      "candidatePoolCompleteness": "Complete within the declared v2/v3 fixture contracts: v2 has seven scenarios and v3 has eleven; the complete candidate sets contain one or two states per scenario, with declared adjacency and actor-registry state data.",
+      "externalFactors": "The fixtures declare the score inputs and the state-permission, episode, center-registry, and adjacency inputs described in their bindingContract fields. MCP representability remains unverified until the connected route returns a usable schema/result.",
+      "callFrames": [
+        {
+          "caller": "great_depression_register_initial_centers, inside every_controlled_state candidate iteration",
+          "callee": "great_depression_score_center_candidate",
+          "calleeCreatesTemporaryOutput": "great_depression_center_candidate_score",
+          "callerPreinitializesOutput": false,
+          "postReturnModel": "Discard the callee-created score before the caller's best-score comparison reads it.",
+          "callerConsumer": "great_depression_center_candidate_score comparison against caller-owned great_depression_center_best_score; tie-break by candidate state ID"
+        }
+      ]
+    }
+  ],
+  "nonweightedOutputCallFrames": [
+    {
+      "caller": "great_depression_initialize_new_crisis",
+      "callee": "great_depression_register_initial_centers",
+      "calleeCreatesTemporaryOutput": "great_depression_center_registration_failed",
+      "callerPreinitializesOutput": false,
+      "postReturnModel": "Discard the callee-created status before the caller's failure gate reads it.",
+      "callerConsumer": "Abort or continue new-crisis initialization based on great_depression_center_registration_failed"
+    },
+    {
+      "caller": "great_depression_deepen_active_crisis",
+      "callee": "great_depression_resolve_deepening_amount",
+      "calleeCreatesTemporaryOutput": "great_depression_deepening_value",
+      "callerPreinitializesOutput": false,
+      "postReturnModel": "Discard the callee-created amount before the caller updates persistent severity and trend state.",
+      "callerConsumer": "add_to_variable great_depression_depression_severity, then set_variable great_depression_severity_trend"
+    }
+  ],
+  "expectedAfterOwnerPatch": "For identical declared inputs, caller-owned output slots retain the helpers' existing assignments. The two score formulas, constants, eligibility gates, candidate identities, and tie-break remain unchanged, so the intended scores and ranking should match the intended helper results. No numeric before/after result is asserted by this report-only fixture."
+}
