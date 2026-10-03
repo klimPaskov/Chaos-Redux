@@ -244,3 +244,14 @@ The [source-contract result](../../testing/2026-10-03_cbrn_dated_holder_before/s
 The existing 67 portraits and 15 advisor cards are retained, with no new asset consumer or player-facing operation.
 The [accepted correction](../../specs/chaos_warfare_system_specs/corrections/2026-10-03_dated_scientist_holder_transfer.md) records authorization and exact surfaces.
 This is a source implementation, without a simplification of dated arrivals; dedicated-holder engine loading, transfers, native personnel display, and a fresh clean full error log remain pending.
+
+The [Protective Aid selection repair](2026-10-03_protective_aid_native_factory_selection.md) keeps the native two-factory commitment and its inclusive pre-click gate, then checks the continuing country and stock after selection without repeating the free-factory requirement.
+The source cases show why a lawful two- or three-free-factory click could otherwise fail if the timer had already committed two factories.
+Price, duration, model reservation, refund, receipt, and willingness code are unchanged by executable reconstruction.
+No native execution or MCP acceptance is claimed: the declared scenario and narrower inventory retry returned no result.
+The one-factory Event 026 sale variant remains outstanding.
+
+The neighboring occupied-population selection helper now uses its shared non-factory country/PP/work/quote predicate while the full pre-click start predicate retains the factory gate.
+Source reconstruction preserves every original non-factory condition, material-reservation loop, PP debit, completion, refund, and willingness body; existence and non-capitulation checks protect the selection callback.
+The two-factory, 30-day native commitment remains.
+The matching post-change Protective Aid MCP request returned no artifact, so the family repair is source implementation with native execution still pending.

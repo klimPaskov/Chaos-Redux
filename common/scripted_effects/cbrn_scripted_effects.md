@@ -757,6 +757,19 @@ Pure trigger-side quotes live in `common/scripted_triggers/cbrn_protection_trigg
 
 The occupied decision calls `cbrn_country_can_start_occupied_mask_reservation` from its hidden availability and custom-cost gates. Its cost row calls the same national quote through `GetCbrnOccupiedMaskReservationQuote`, then its selection effect reserves each eligible state's model receipts and debits Political Power only if the aggregate real debit is positive. Completion delivers at most those receipts and refunds the balance; cancellation or lost control refunds first and clears target markers. External aid follows the corresponding `cbrn_occupation_external_aid_payment_ready` and `GetCbrnExternalAidMaskReservationQuote` pair, storing a separate receipt for its selected state. The paid external-aid project uses `cbrn_occupation_country_can_continue_external_protective_aid` and `cbrn_occupation_state_remains_external_protective_aid_target` while in flight, so committing all stock or factories cannot cancel the action. The target's counted flag and donor's `cbrn_external_aid_active_reservations_count` keep concurrent paid projects visible; `cbrn_occupation_close_external_aid_reservation` clears that count once before completion, cancellation, or control-transfer refund. Neither decision uses a worldwide periodic hook.
 
+### Selection-time factory and material checks
+
+The occupied action's pre-click `cbrn_country_can_start_occupied_mask_reservation` predicate combines its inclusive free-factory gate with `cbrn_country_can_pay_occupied_mask_reservation`.
+The latter is a country-scoped scripted trigger in `common/scripted_triggers/cbrn_protection_triggers.txt` that checks the public emergency, eligible work, inactive programme, Political Power, and positive stock-capped quote.
+Its inputs are the current country/state protection data and real mask stock; its scratch output is `cbrn_mask_reservation_quote`, initialized to zero.
+It spends no resource and defaults to rejection when the non-factory requirements or positive shipment are missing.
+The native selection callback checks existence and non-capitulation before using this material predicate, because the timer may already have committed the factories validated before the click.
+It is not a substitute for the full start predicate on a new player or AI action.
+
+External aid follows the same phase contract: the full pre-click predicate retains the free-factory requirement, while `complete_effect` checks the continuation predicate, current mask stock, current fee, and exact target quote before reserving.
+Both native factory modifiers retain their normal two-factory commitment, and material debits, model receipts, completion, and refund helpers are unchanged.
+An ordinary occupied decision therefore uses `cbrn_country_can_start_occupied_mask_reservation = yes` in its availability/custom-cost blocks and calls `cbrn_begin_occupied_distribution_program = yes` only through its native selection effect.
+
 ## CBRN filters, losses, reconditioning, and transfer
 
 ### cbrn_replace_military_mask_filters and cbrn_replace_state_civilian_mask_filters

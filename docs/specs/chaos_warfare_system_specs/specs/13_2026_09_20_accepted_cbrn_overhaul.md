@@ -24,6 +24,12 @@ The accepted real-equipment and military-priority requirements also govern civil
 
 The user's 2026-09-25 follow-up selects click-time reservation for the timed Occupied Population and Protective Aid decisions. Each action must quote and remove its exact calculated respirator-crate commitment when selected, use no more than that reservation at completion, and refund unused crates on cancellation or target invalidation. A higher later coverage requirement cannot silently charge additional stock. The visible cost row must match the reserved amount; an estimate is not accepted as an exact payment.
 
+The [Protective Aid selection-guard correction](../corrections/2026-10-03_protective_aid_native_factory_selection.md) keeps the inclusive pre-click factory requirement and validates the continuing country, stock, and target after selection without requiring committed factories to remain free.
+The native commitment, material reservation, and payment contract remain intact; native execution evidence is still required.
+
+That family correction also retains the occupied-population pre-click factory gate while its native selection helper checks the shared non-factory requirements, existence, and non-capitulation.
+The 30-day commitment, Political Power price, model reservations, and refund policy remain intact.
+
 The exact-state theater decontamination assignment has three upfront payments and separate non-consumed support-stock requirements, as specified in [`../corrections/2026-09-25_theater_decontamination_cost.md`](../corrections/2026-09-25_theater_decontamination_cost.md). This follows the accepted shorter-loop and readable-cost requirements without changing its contamination output.
 
 The six headquarters roles consolidate to **Operations and Intelligence**, **Protection and Decontamination**, and **Medical and Biosecurity**. Division support uses one **Protection Company** and one **Field Medical Company**; nerve suppression is an upgrade within the accepted structure. Remove eighteen agent-specific chemical-tank companies and retain three armored chassis roles.

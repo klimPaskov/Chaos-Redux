@@ -247,7 +247,11 @@ cbrn_begin_occupied_distribution_program = {
 	set_temp_variable = { cbrn_mask_reservation_quote = constant:cbrn_math.zero }
 	set_temp_variable = { cbrn_occupied_program_reserved = constant:cbrn_math.zero }
 	if = {
-		limit = { cbrn_country_can_start_occupied_mask_reservation = yes }
+		limit = {
+			exists = yes
+			NOT = { has_capitulated = yes }
+			cbrn_country_can_pay_occupied_mask_reservation = yes
+		}
 		every_controlled_state = {
 			limit = { cbrn_state_can_reserve_occupied_masks = yes }
 			set_temp_variable = { cbrn_reservation_quote_state_need = constant:cbrn_math.zero }

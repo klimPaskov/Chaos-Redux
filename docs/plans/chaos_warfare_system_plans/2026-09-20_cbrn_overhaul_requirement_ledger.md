@@ -205,3 +205,15 @@ The [mechanic contract](../../systems/cbrn_warfare/cbrn_dated_scientist_transfer
 The source reconstruction result preserves the complete prior executable startup logic apart from the ownership operation and its holder guard; all 67 identities have one history declaration, with 38 direct home-country recruits and 29 holder recruits.
 No date, trait, retirement, policy, research, stockpile, or periodic-world-iteration change is introduced.
 Disposition: implemented in source; fresh native transfer and clean-error-log evidence remain pending, and the overhaul remains incomplete.
+
+## 2026-10-03 Protective Aid selection-time factory check
+
+The [accepted guard correction](../../specs/chaos_warfare_system_specs/corrections/2026-10-03_protective_aid_native_factory_selection.md) preserves the two-factory pre-click affordability gate and removes only its repetition inside the selection effect.
+The country, program, stock, Political Power, target, reservation, receipt, refund, and native timer checks retain their existing owners.
+The [implementation evidence](2026-10-03_protective_aid_native_factory_selection.md) compares one, two, and three free factories and reconstructs the original full decision source after substituting the former guard.
+The declared decision scenario and narrower inventory retry returned no artifact; native execution remains pending.
+This repair does not implement the separate Event 026 sale factory discount.
+
+The same family correction separates the occupied-population pre-click two-factory gate from the material/target check used inside its native selection helper.
+Every prior non-factory condition is preserved in the shared predicate, and the 30-day timer, stock reservation, positive-reservation PP payment, and completion/refund bodies are unchanged by source reconstruction.
+The post-change Protective Aid inspect repeated the baseline request but returned no artifact, so matching engine/MCP acceptance remains open.
