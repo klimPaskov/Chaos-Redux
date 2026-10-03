@@ -25,6 +25,9 @@ Normal recipient IDs are mandatory because chain-local targets do not persist as
 The caller must resolve its stored choice into the chain-local target immediately before the transaction.
 The caller owns route access, recipient preparedness, payments, cooldowns, Dependence movement, opinion changes, confirmation text, and player/AI policy selection.
 It must not publish a paid-success outcome without a positive transaction receipt.
+Before calling either custody transaction, the caller must initialize all temporary custody outputs it reads afterward to zero.
+Before public fragment acquisition, initialize `chaosx_alien_recovery_fragment_assigned` to zero in the calling effect frame.
+The helper's own default assignments do not establish caller-owned storage.
 
 Example of the internal call after caller preflight and explicit recipient permission:
 
@@ -33,6 +36,9 @@ Example of the internal call after caller preflight and explicit recipient permi
 save_event_target_as = chaosx_alien_recovery_custody_recipient
 # In the giver scope, store the selected recipient's numeric country ID:
 set_variable = { chaosx_alien_recovery_custody_recipient_id = my_selected_recipient_id }
+set_temp_variable = { chaosx_alien_recovery_custody_applied = constant:chaosx_nr25_value.zero }
+set_temp_variable = { chaosx_alien_recovery_core_moved = constant:chaosx_nr25_value.zero }
+set_temp_variable = { chaosx_alien_recovery_fragments_moved = constant:chaosx_nr25_value.zero }
 chaosx_alien_recovery_ledger_transfer_physical_custody = yes
 if = {
 	limit = { check_variable = { var = chaosx_alien_recovery_custody_applied value = constant:chaosx_nr25_value.one compare = equals } }
@@ -56,7 +62,8 @@ Do not expose exact foreign fragment holdings without the Board's intelligence/p
 
 `.tools/test_event025_custody.py` executes the selected source helpers for all six slots, rejected transfers, consent consumption, retained recipient fragments, destruction, abandonment, projections, and historical separation.
 It is a limited source interpreter, not engine scheduling, rendering, multiplayer, or save/reload evidence.
-The current policy caller still needs recipient permission UI, actual transfer/destruction dispatch, validated resource commitments, Dependence consequences, and independent decision/probability review.
+Destruction dispatch uses the physical ledger with support-equipment and stability costs, receipt-gated consequences, and a retired-material incident guard.
+Transfer still needs recipient permission UI, actual dispatch, validated route commitments, Dependence consequences, and independent decision/probability review.
 The reward bridge and owner API pool/filter contract are separately pending review; physical-custody tests do not validate them.
 
 ## Future work

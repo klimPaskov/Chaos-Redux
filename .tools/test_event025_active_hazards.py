@@ -33,6 +33,9 @@ class HazardRuntime(CustodyRuntime):
         # Deliberate receipt spy: shared Deaths internals are out of scope.
         self.effects["chaosx_nr25_record_casualties"] = [
             ("add_to_temp_variable", [("casualty_calls", "1")])]
+        self.temporary["casualty_calls"] = 0
+        policy = (ROOT / "common/scripted_triggers/025_alien_technology_in_antarctica_custody_policy_triggers.txt").read_text(encoding="utf-8-sig")
+        self.triggers["chaosx_nr25_active_material_incidents_allowed"] = block("chaosx_nr25_active_material_incidents_allowed", policy)
 
     @property
     def casualty_calls(self):

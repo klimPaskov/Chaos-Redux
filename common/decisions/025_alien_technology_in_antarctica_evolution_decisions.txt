@@ -215,8 +215,11 @@ chaosx_nr25_evolution_category = {
 	}
 	chaosx_nr25_dependence_destroy = {
 		icon = GFX_decision_generic_military
-		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_technology_changes_users chaosx_nr25_evolution_v_holder_valid = yes }
-		available = { chaosx_nr25_evolution_technology_changes_users_action_available = yes chaosx_nr25_dependence_destroy_cost_available = yes }
+		visible = { has_country_flag = chaosx_nr25_participant chaosx_nr25_technology_changes_users_evolution_in_force = yes chaosx_alien_recovery_ledger_has_physical_custody = yes }
+		available = {
+			custom_trigger_tooltip = { tooltip = chaosx_nr25_destroy_material_requirements chaosx_nr25_destroy_material_context_valid = yes }
+			hidden_trigger = { chaosx_nr25_dependence_destroy_cost_available = yes }
+		}
 		custom_cost_trigger = { chaosx_nr25_dependence_destroy_cost_available = yes }
 		custom_cost_text = chaosx_nr25_dependence_destroy_cost
 		complete_effect = { custom_effect_tooltip = chaosx_nr25_dependence_destroy_effect hidden_effect = { set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.destroy } chaosx_nr25_execute_evolution_action = yes } }
@@ -243,7 +246,11 @@ chaosx_nr25_evolution_category = {
 	chaosx_nr25_dependence_integrate = {
 		icon = GFX_decision_generic_research
 		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_technology_changes_users chaosx_nr25_evolution_v_holder_valid = yes }
-		available = { chaosx_nr25_evolution_technology_changes_users_action_available = yes chaosx_nr25_dependence_integrate_cost_available = yes }
+		available = {
+			chaosx_nr25_evolution_technology_changes_users_action_available = yes
+			custom_trigger_tooltip = { tooltip = chaosx_nr25_integration_material_required chaosx_nr25_active_material_incidents_allowed = yes }
+			chaosx_nr25_dependence_integrate_cost_available = yes
+		}
 		custom_cost_trigger = { chaosx_nr25_dependence_integrate_cost_available = yes }
 		custom_cost_text = chaosx_nr25_dependence_integrate_cost
 		complete_effect = { custom_effect_tooltip = chaosx_nr25_dependence_integrate_effect hidden_effect = { set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.integrate } chaosx_nr25_execute_evolution_action = yes } }

@@ -1,0 +1,57 @@
+# Event 025 physical-material policy preflights. All predicates are read-only.
+# Shared cost gates use inclusive resource readers and govern both native
+# decision affordability and the country-scoped transaction executor.
+chaosx_nr25_destroy_material_support_available = {
+	check_variable = { var = num_equipment@support_equipment value = constant:chaosx_nr25_custody_policy.destroy_support compare = greater_than_or_equals }
+}
+
+chaosx_nr25_destroy_material_stability_available = {
+	check_variable = { var = has_stability value = constant:chaosx_nr25_custody_policy.destroy_stability compare = greater_than_or_equals }
+}
+
+chaosx_nr25_destroy_material_cost_available = {
+	chaosx_nr25_destroy_material_support_available = yes
+	chaosx_nr25_destroy_material_stability_available = yes
+}
+
+chaosx_nr25_destroy_material_context_valid = {
+	chaosx_nr25_technology_changes_users_evolution_in_force = yes
+	OR = {
+		chaosx_nr25_evolution_technology_changes_users_action_available = yes
+		AND = {
+			has_country_flag = chaosx_nr25_participant
+			has_global_flag = chaosx_nr25_active
+			NOT = { has_global_flag = chaosx_nr25_final_recovery_resolved }
+			NOT = { has_country_flag = chaosx_nr25_terminal }
+			has_country_flag = chaosx_nr25_phase_mission_active
+			check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.contain_alien_systems compare = equals }
+			check_variable = { var = chaosx_nr25_action_cooldown value = constant:chaosx_nr25_value.zero compare = less_than_or_equals }
+		}
+	}
+	chaosx_alien_recovery_ledger_custody_country_is_valid = yes
+	chaosx_alien_recovery_ledger_has_physical_custody = yes
+	chaosx_alien_recovery_ledger_physical_custody_is_consistent = yes
+	NOT = {
+		AND = {
+			has_country_flag = chaosx_nr25_phase_mission_active
+			NOT = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.contain_alien_systems compare = equals } }
+		}
+	}
+	check_variable = { var = chaosx_nr25_scientific_capacity value = constant:chaosx_nr25_value.one compare = greater_than_or_equals }
+}
+
+chaosx_nr25_destroy_material_available = {
+	chaosx_nr25_destroy_material_context_valid = yes
+	chaosx_nr25_destroy_material_cost_available = yes
+}
+
+# A retirement receipt suppresses incidents from that package. Newly acquired
+# physical material is an independent hazard even after an earlier retirement.
+chaosx_nr25_active_material_incidents_allowed = {
+	hidden_trigger = {
+		OR = {
+			NOT = { has_country_flag = chaosx_nr25_material_destroyed }
+			chaosx_alien_recovery_ledger_has_physical_custody = yes
+		}
+	}
+}

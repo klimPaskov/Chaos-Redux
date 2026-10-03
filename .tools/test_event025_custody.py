@@ -48,6 +48,8 @@ class CustodyRuntime(Runtime):
         return self.targets.get(token.removeprefix("event_target:"))
 
     def value(self, token, actor):
+        if token.startswith("var:"):
+            token = token[4:]
         if token in ("THIS", "PREV", "ROOT") or token.startswith("event_target:"):
             country = self.scope(token, actor)
             return country.id if country else 0
@@ -85,7 +87,7 @@ class CustodyRuntime(Runtime):
                 result = not self.condition(data, actor)
             elif key == "OR":
                 result = any(self.condition([item], actor) for item in data)
-            elif key == "AND":
+            elif key in ("AND", "hidden_trigger"):
                 result = self.condition(data, actor)
             elif key in self.triggers:
                 result = self.condition(self.triggers[key], actor) == (data == "yes")
@@ -111,7 +113,17 @@ class CustodyRuntime(Runtime):
 
     def run(self, name, actor):
         self.root = actor
-        self.execute(self.effects[name], actor)
+        self.call_helper(name, actor)
+
+    def call_helper(self, name, actor):
+        caller_storage = set(self.temporary)
+        try:
+            self.execute(self.effects[name], actor)
+        finally:
+            # Conservative scripted-helper lifetime: storage first created in
+            # the returning helper is not a caller-owned output channel.
+            for variable in set(self.temporary) - caller_storage:
+                del self.temporary[variable]
 
     def execute(self, nodes, actor):
         branch_taken = False
@@ -124,7 +136,7 @@ class CustodyRuntime(Runtime):
                     self.execute([(k, v) for k, v in data if k != "limit"], actor)
                     branch_taken = True
             elif key in self.effects:
-                self.execute(self.effects[key], actor)
+                self.call_helper(key, actor)
             elif key.startswith("event_target:"):
                 target = self.scope(key, actor)
                 if target:
@@ -144,7 +156,7 @@ class CustodyRuntime(Runtime):
                 target = self.global_flags if "global" in key else actor.flags
                 name = self.flag(data, actor)
                 (target.add if key.startswith("set_") else target.discard)(name)
-            elif key in ("set_variable", "set_temp_variable", "add_to_variable", "add_to_temp_variable", "subtract_from_variable"):
+            elif key in ("set_variable", "set_temp_variable", "add_to_variable", "add_to_temp_variable", "subtract_from_variable", "multiply_temp_variable"):
                 name, value = data[0]
                 target = self.temporary if "temp" in key else actor.values
                 if name.startswith("global."):
@@ -152,6 +164,8 @@ class CustodyRuntime(Runtime):
                 amount = self.value(value, actor)
                 if key == "subtract_from_variable":
                     target[name] = target.get(name, 0) - amount
+                elif key == "multiply_temp_variable":
+                    target[name] = target.get(name, 0) * amount
                 else:
                     target[name] = amount + (target.get(name, 0) if key.startswith("add_") else 0)
             elif key == "clear_variable":
@@ -181,6 +195,9 @@ class CustodyTests(unittest.TestCase):
     def setUp(self):
         self.sender, self.recipient, self.other = (Country(n, flags=set()) for n in (1, 2, 3))
         self.runtime = CustodyRuntime([self.sender, self.recipient, self.other])
+        self.runtime.temporary.update({PREFIX + "custody_applied": 0,
+                                       PREFIX + "core_moved": 0,
+                                       PREFIX + "fragments_moved": 0})
         self.runtime.targets[PREFIX + "event025_owner"] = self.sender
         self.runtime.global_flags.add(PREFIX + "event025_claimed")
         self.sender.flags.update((PREFIX + "event025_recorded", "learned_technology"))
@@ -189,6 +206,7 @@ class CustodyTests(unittest.TestCase):
 
     def acquire(self, country, slot, role=None):
         self.runtime.temporary.update({PREFIX + "fragment_id": slot, PREFIX + "fragment_role": slot if role is None else role})
+        self.runtime.temporary[PREFIX + "fragment_assigned"] = 0
         self.runtime.run(PREFIX + "ledger_assign_fragment", country)
 
     def consent(self, recipient=None):
@@ -293,6 +311,14 @@ class CustodyTests(unittest.TestCase):
     def test_acquisition_callers_do_not_double_count(self):
         source = (ROOT / "common/scripted_effects/025_alien_technology_in_antarctica_runtime_effects.txt").read_text(encoding="utf-8-sig")
         self.assertNotRegex(source, r"add_to_variable\s*=\s*\{\s*chaosx_nr25_fragment_count\s*=")
+        self.assertEqual(len(re.findall(r"set_temp_variable\s*=\s*\{\s*chaosx_alien_recovery_fragment_assigned\s*=\s*constant:chaosx_nr25_value.zero\s*\}\s*chaosx_alien_recovery_ledger_assign_fragment\s*=\s*yes", source)), 2)
+
+    def test_acquisition_output_requires_caller_owned_storage(self):
+        self.runtime.temporary.update({PREFIX + "fragment_id": 1, PREFIX + "fragment_role": 1})
+        self.runtime.temporary.pop(PREFIX + "fragment_assigned", None)
+        self.runtime.run(PREFIX + "ledger_assign_fragment", self.sender)
+        self.assertNotIn(PREFIX + "fragment_assigned", self.runtime.temporary)
+        self.assertEqual(self.count(self.sender), 1)
 
 
 if __name__ == "__main__":

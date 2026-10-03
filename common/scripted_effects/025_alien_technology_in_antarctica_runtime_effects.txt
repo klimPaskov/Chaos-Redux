@@ -969,6 +969,7 @@ chaosx_nr25_run_bounded_pulse = {
 		if = {
 			limit = {
 				chaosx_nr25_technology_changes_users_evolution_in_force = yes
+				chaosx_nr25_active_material_incidents_allowed = yes
 				OR = {
 					has_country_flag = chaosx_nr25_aftermath_open
 					has_country_flag = chaosx_nr25_dependence_started
@@ -1019,6 +1020,7 @@ chaosx_nr25_run_bounded_pulse = {
 		if = {
 			limit = {
 				chaosx_nr25_technology_changes_users_evolution_in_force = yes
+				chaosx_nr25_active_material_incidents_allowed = yes
 				has_country_flag = chaosx_nr25_dependence_started
 				check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_cost.dependence_accident_threshold compare = greater_than_or_equals }
 				check_variable = { var = chaosx_nr25_dependence_accident_cooldown value = constant:chaosx_nr25_value.zero compare = less_than_or_equals }
@@ -1827,6 +1829,7 @@ chaosx_nr25_execute_action = {
 			limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.recover_fragment compare = equals } }
 			set_temp_variable = { chaosx_alien_recovery_fragment_id = chaosx_nr25_current_sector }
 			set_temp_variable = { chaosx_alien_recovery_fragment_role = chaosx_nr25_fragment_role }
+			set_temp_variable = { chaosx_alien_recovery_fragment_assigned = constant:chaosx_nr25_value.zero }
 			chaosx_alien_recovery_ledger_assign_fragment = yes
 			if = {
 				limit = { check_variable = { var = chaosx_alien_recovery_fragment_assigned value = constant:chaosx_nr25_value.one compare = greater_than_or_equals } }
@@ -2263,8 +2266,28 @@ chaosx_nr25_apply_militarisation_target = {
 }
 
 chaosx_nr25_execute_evolution_action = {
-	set_variable = { chaosx_nr25_last_action = chaosx_nr25_evolution_action }
-	set_variable = { chaosx_nr25_action_cooldown = constant:chaosx_nr25_timing.action_cooldown_days }
+	if = {
+		limit = {
+			NOT = {
+				AND = {
+					check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.integrate compare = equals }
+					NOT = { chaosx_nr25_active_material_incidents_allowed = yes }
+				}
+			}
+		}
+		chaosx_nr25_execute_evolution_action_unchecked = yes
+	}
+}
+
+# Private dispatch body. The public entry rejects integration of retired
+# material before this body can debit resources or publish action state.
+chaosx_nr25_execute_evolution_action_unchecked = {
+	set_temp_variable = { chaosx_nr25_destruction_applied = constant:chaosx_nr25_value.zero }
+	if = {
+		limit = { NOT = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.destroy compare = equals } } }
+		set_variable = { chaosx_nr25_last_action = chaosx_nr25_evolution_action }
+		set_variable = { chaosx_nr25_action_cooldown = constant:chaosx_nr25_timing.action_cooldown_days }
+	}
 	if = {
 		limit = {
 			NOT = { has_country_flag = chaosx_nr25_phase_mission_active }
@@ -2426,6 +2449,7 @@ chaosx_nr25_execute_evolution_action = {
 		chaosx_nr25_mark_next_sector = yes
 		set_temp_variable = { chaosx_alien_recovery_fragment_id = chaosx_nr25_current_sector }
 		set_temp_variable = { chaosx_alien_recovery_fragment_role = chaosx_nr25_fragment_role }
+		set_temp_variable = { chaosx_alien_recovery_fragment_assigned = constant:chaosx_nr25_value.zero }
 		chaosx_alien_recovery_ledger_assign_fragment = yes
 		if = {
 			limit = { check_variable = { var = chaosx_alien_recovery_fragment_assigned value = constant:chaosx_nr25_value.one compare = greater_than_or_equals } }
@@ -2463,13 +2487,7 @@ chaosx_nr25_execute_evolution_action = {
 	}
 	if = {
 		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.destroy compare = equals } }
-		add_fuel = constant:chaosx_nr25_cost.fuel_evolution
-		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_destroy }
-		subtract_from_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_cost.dependence_destroy_reduction }
-		set_country_flag = chaosx_nr25_dependence_started
-		clr_country_flag = chaosx_nr25_dependence_contained
-		clr_country_flag = chaosx_nr25_dependence_accident
-		set_country_flag = chaosx_nr25_dependence_destroy_route
+		chaosx_nr25_execute_destroy_material = yes
 	}
 	if = {
 		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.transfer compare = equals } }
@@ -2500,14 +2518,22 @@ chaosx_nr25_execute_evolution_action = {
 		set_country_flag = chaosx_nr25_dependence_integrate_route
 	}
 
-	chaosx_nr25_clamp_values = yes
-	chaosx_nr25_raise_chaos = yes
 	if = {
-		limit = { has_global_flag = chaosx_nr25_active }
-		chaosx_nr25_check_evolution_gates = yes
+		limit = {
+			OR = {
+				NOT = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.destroy compare = equals } }
+				check_variable = { var = chaosx_nr25_destruction_applied value = constant:chaosx_nr25_value.one compare = equals }
+			}
+		}
+		chaosx_nr25_clamp_values = yes
+		chaosx_nr25_raise_chaos = yes
+		if = {
+			limit = { has_global_flag = chaosx_nr25_active }
+			chaosx_nr25_check_evolution_gates = yes
+		}
+		chaosx_nr25_prepare_board_slots = yes
+		chaosx_nr25_update_achievement_tracking = yes
 	}
-	chaosx_nr25_prepare_board_slots = yes
-	chaosx_nr25_update_achievement_tracking = yes
 }
 
 # COUNTRY scope. Exchanges a verified weather or route note with one selected

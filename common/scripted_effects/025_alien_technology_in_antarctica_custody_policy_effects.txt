@@ -1,0 +1,44 @@
+# Event 025 physical-material policy executor. COUNTRY scope, no target input.
+# Caller initializes chaosx_nr25_destruction_applied before invoking this helper.
+# The executor initializes all nested custody receipt outputs before dispatch.
+# Costs, policy flags, cooldown and Dependence relief require actual retirement.
+chaosx_nr25_execute_destroy_material = {
+	set_temp_variable = { chaosx_nr25_destruction_applied = constant:chaosx_nr25_value.zero }
+	if = {
+		limit = { chaosx_nr25_destroy_material_available = yes }
+		set_temp_variable = { chaosx_alien_recovery_custody_applied = constant:chaosx_nr25_value.zero }
+		set_temp_variable = { chaosx_alien_recovery_core_moved = constant:chaosx_nr25_value.zero }
+		set_temp_variable = { chaosx_alien_recovery_fragments_moved = constant:chaosx_nr25_value.zero }
+		chaosx_alien_recovery_ledger_destroy_physical_custody = yes
+		if = {
+			limit = { check_variable = { var = chaosx_alien_recovery_custody_applied value = constant:chaosx_nr25_value.one compare = equals } }
+			set_temp_variable = { equipment_stockpile_removal_amount = constant:chaosx_nr25_custody_policy.destroy_support }
+			remove_support_equipment_from_stockpile = yes
+			set_temp_variable = { chaosx_nr25_stability_payment = constant:chaosx_nr25_custody_policy.destroy_stability_payment }
+			add_stability = var:chaosx_nr25_stability_payment
+			subtract_from_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_custody_policy.destroy_dependence_reduction }
+			clamp_variable = { var = chaosx_nr25_dependence min = constant:chaosx_nr25_value.zero }
+			add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_destroy }
+			set_country_flag = chaosx_nr25_material_destroyed
+			set_country_flag = chaosx_nr25_dependence_started
+			set_country_flag = chaosx_nr25_dependence_destroy_route
+			clr_country_flag = chaosx_nr25_dependence_contained
+			clr_country_flag = chaosx_nr25_dependence_accident
+			set_variable = { chaosx_nr25_dependence_safe_days = constant:chaosx_nr25_value.zero }
+			set_variable = { chaosx_nr25_dependence_stable_days = constant:chaosx_nr25_value.zero }
+			if = {
+				limit = {
+					has_country_flag = chaosx_nr25_phase_mission_active
+					check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.contain_alien_systems compare = equals }
+				}
+				clr_country_flag = chaosx_nr25_phase_mission_active
+				clr_country_flag = chaosx_nr25_contain_systems_attempted
+				set_variable = { chaosx_nr25_phase_mission_kind = constant:chaosx_nr25_value.zero }
+				remove_mission = chaosx_nr25_contain_alien_systems_mission
+			}
+			set_variable = { chaosx_nr25_last_action = constant:chaosx_nr25_evolution_action.destroy }
+			set_variable = { chaosx_nr25_action_cooldown = constant:chaosx_nr25_timing.action_cooldown_days }
+			set_temp_variable = { chaosx_nr25_destruction_applied = constant:chaosx_nr25_value.one }
+		}
+	}
+}

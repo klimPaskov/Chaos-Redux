@@ -1,0 +1,37 @@
+# Event 025 destruction cost display. Formatting belongs in BOM localisation,
+# and each resource's blocked state reads the same predicate as payment.
+defined_text = {
+	name = GetChaosxNr25DestroyMaterialCost
+	text = {
+		trigger = { chaosx_nr25_destroy_material_cost_available = yes }
+		localization_key = chaosx_nr25_destroy_material_cost_ready
+	}
+	text = {
+		trigger = { chaosx_nr25_destroy_material_stability_available = yes }
+		localization_key = chaosx_nr25_destroy_material_cost_support_blocked
+	}
+	text = {
+		trigger = { chaosx_nr25_destroy_material_support_available = yes }
+		localization_key = chaosx_nr25_destroy_material_cost_stability_blocked
+	}
+	text = { localization_key = chaosx_nr25_destroy_material_cost_both_blocked }
+}
+
+defined_text = {
+	name = GetChaosxNr25DestroyMaterialRequirements
+	text = {
+		trigger = {
+			has_country_flag = chaosx_nr25_phase_mission_active
+			NOT = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.contain_alien_systems compare = equals } }
+		}
+		localization_key = chaosx_nr25_destroy_material_project_requirements
+	}
+	text = {
+		trigger = {
+			has_country_flag = chaosx_nr25_phase_mission_active
+			check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.contain_alien_systems compare = equals }
+		}
+		localization_key = chaosx_nr25_destroy_material_contain_requirements
+	}
+	text = { localization_key = chaosx_nr25_destroy_material_normal_requirements }
+}
