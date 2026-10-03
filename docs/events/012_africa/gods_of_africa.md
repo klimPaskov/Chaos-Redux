@@ -12,6 +12,10 @@ The `SCN-011` Africa Is One manual scenario seeds the Evolution I chronology rec
 
 The committed host owns one bounded participant registry, the global Gods of Africa Strength value, the dispatch cursor, demand budget, doctrine, priority family, and ending lock. Participant countries own their personal Wrath, frozen demand contract, payment progress, defiance state, and hidden relationship history. A restoration generation prevents delayed work from resolving against a previous host.
 
+Ordinary current-generation authority additionally requires the country to be in that host's live participant array and the shared host pointer to identify an existing committed unifier.
+Matching flags or generation numbers on a nonmember cannot permit an ordinary transaction.
+Final-settlement and victor reports use their separate frozen historical receipts, so this live-membership condition does not suppress completed presentation after the roster is cleared.
+
 ## Bounded census and host-transfer persistence
 
 The one-time Event 012 census retains known ordinary country scopes from vanilla's `global.countries` array in `gods_of_africa_candidate_registry`, with one unique row per native country object.
