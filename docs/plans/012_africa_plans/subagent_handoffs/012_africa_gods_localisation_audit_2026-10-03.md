@@ -5,7 +5,10 @@ Disposition: unresolved. This is a read-only, source-level localisation audit. N
 Parent follow-up: the timer and text source corrections are recorded in `012_africa_gods_timer_and_text_2026-10-03.md`.
 Support-family naming, deterministic voluntary-aid costs, convoy-first transport icons, stored aid receipts, constant-backed doctrine wording, and native mission countdowns are corrected in the parent change set.
 The parent retained host-marked-offender gates and restored the accepted armor/mobile-artillery names instead of accepting motorized wording as completion of those families.
-The tank-family mechanics, raw flag requirements, and several outcome-specific descriptions remain unresolved.
+Parent reconciliation: the tank-family mechanics are implemented and source-reviewed in `012_africa_gods_armored_tribute_2026-10-03.md`.
+The flag-key audit was broadened to the dedicated `012_africa_requirement_flags_l_english.yml`, which already held most Gods flag text through commit `d0a58e779`.
+The parent filled the remaining 15 keys and corrected ten misleading or generic existing descriptions; the exact scoped review is in `012_africa_gods_requirement_text_2026-10-03.md`.
+Several outcome-specific descriptions and native presentation evidence remain unresolved.
 The unrelated Technology Tree Viewer scan does not establish or block a Gods technology surface, since this bounded subsystem introduces no technology tree.
 The original audit below remains historical evidence for its inspected source revision.
 

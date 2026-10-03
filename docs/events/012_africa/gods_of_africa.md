@@ -114,7 +114,9 @@ Native stock movement, save/reload, and DLC execution remain unobserved in the s
 ## Remaining accepted-scope gaps
 
 The accepted mobile/artillery family still needs its own automatic selection and actual artillery coverage.
-Other unresolved work includes meaningful visible flag requirements, receipt-driven response and punishment reports, weighted scenario evidence, and full owner lifecycle acceptance.
+Other unresolved work includes receipt-driven response and punishment reports, weighted scenario evidence, and full owner lifecycle acceptance.
+The core Gods decision/trigger flag requirements and overlay entry flags have player-facing English text in `localisation/english/012_africa_requirement_flags_l_english.yml`, including named focus prerequisites and concrete tribute-offer conditions.
+The bounded key and semantic review is recorded in `012_africa_gods_requirement_text_2026-10-03.md`; native tooltip layout remains unobserved.
 The timer/text correction and its narrow MCP trace are recorded in `docs/plans/012_africa_plans/subagent_handoffs/012_africa_gods_timer_and_text_2026-10-03.md`.
 
 `gods_of_africa_focus_no_sanctuary` uses the existing `GFX_goal_012_africa_gods_protection` icon, matching its current guarantee and AAT market-access reward. The active goal accepts the current Event 012 overlay and requires doctrine consequences across demands, protection, retaliation, and settlement; that scoped matrix is implemented and recorded in Part 3. The historical focus ID and older Part 8 route promises remain unresolved outside this overlay scope.
