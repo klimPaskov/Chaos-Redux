@@ -39,7 +39,7 @@ Purpose: create or update one active source row.
 
 Scope: any effect scope that can write global variables, normally a country or event owner scope.
 
-Inputs: temporary `universal_cost_source_id` greater than zero, `universal_cost_source_ratio` from one through `constant:universal_cost_framework.basis`, `universal_cost_source_priority` from zero through `constant:universal_cost_framework.max_source_priority - 1`, and `universal_cost_source_eligibility_mask` from zero through `constant:universal_cost_framework.max_eligibility_mask_exclusive - 1`.
+Inputs: temporary `universal_cost_source_id` greater than zero, a represented `universal_cost_source_ratio` greater than zero through `constant:universal_cost_framework.basis`, `universal_cost_source_priority` from zero through `constant:universal_cost_framework.max_source_priority - 1`, and `universal_cost_source_eligibility_mask` from zero through `constant:universal_cost_framework.max_eligibility_mask_exclusive - 1`.
 
 Outputs: temporary `universal_cost_source_register_result`, using `constant:universal_cost_framework.result_success` or `result_no_op`.
 
@@ -47,7 +47,8 @@ Defaults: priority zero is valid and has no implicit replacement; a zero eligibi
 
 Side effects: updates the row with the same source id or appends one row to all four aligned global arrays.
 
-Composition order: quote traversal sorts registered rows by ascending priority, preserving registry order for equal priorities.
+Source proof order: the primary source has minimum priority, preserving registry order for equal priorities.
+Exact price multiplication is commutative and traverses the registry directly.
 
 Example:
 
@@ -117,64 +118,114 @@ Side effects: only temporary arithmetic variables are changed.
 
 ## universal_cost_round_up_to_quantum
 
-Purpose: perform deterministic positive upward quantization.
+Purpose: quantize a represented positive amount upward to an arbitrary represented positive quantum without constructing a scalar amount/quantum quotient.
 
-Validation limit: exact ceiling remains a required semantic, not an established guarantee for the current quotation pipeline.
-The pipeline can lose a positive amount before this helper runs, and division into quantum units can lose precision or exceed the variable range.
-The effect-side `universal_cost_quote_integer` applies the accepted one-quantum minimum after this helper returns, using its effective `universal_cost_quantize_quantum`.
-The [2026-10-03 quantization audit](../../docs/plans/026_black_friday_plans/subagent_handoffs/2026-10-03_quantization_audit.md) records the minimum repair, remaining exact-ceiling counterexamples, and the queued exact-arithmetic architecture.
+Scope: an existing payer or owner-selected object scope.
 
-Scope: any effect scope.
+Inputs: temporary `universal_cost_quantize_amount` and optional `universal_cost_quantize_quantum`.
 
-Inputs: temporary `universal_cost_quantize_amount` and optional positive `universal_cost_quantize_quantum`.
+Outputs: temporary `universal_cost_quantize_result`, `universal_cost_quantize_valid`, `universal_cost_quantize_units`, and `universal_cost_quantize_units_valid`, plus exact unit limbs in `uc_exact_units`.
 
-Outputs: `universal_cost_quantize_result` and `universal_cost_quantize_units` temporary variables.
+Defaults: an absent or non-positive quantum uses the existing one-unit default; zero and negative values are preserved.
+A positive value produces at least one quantum.
+A nonrepresentable mathematical price is invalid and must not be paid.
+If the price fits but its integer quantum count cannot fit in one scalar, units-validity is zero and scalar units zero means unavailable; the exact unit limbs retain the count.
+The inspected production consumers do not read scalar units.
 
-Defaults: a non-positive quantum uses `constant:universal_cost_framework.default_rounding_quantum`; zero remains zero; negative values remain negative; a positive amount produces at least one positive quantum.
+Side effects: temporary arithmetic only, through `universal_cost_exact_quantize_scalar`.
 
-Side effects: temporary arithmetic only.
+Example:
+
+```txt
+set_temp_variable = { universal_cost_quantize_amount = owner_amount }
+set_temp_variable = { universal_cost_quantize_quantum = owner_quantum }
+set_temp_variable = { universal_cost_quantize_result = constant:universal_cost_framework.zero }
+set_temp_variable = { universal_cost_quantize_valid = constant:universal_cost_framework.zero }
+set_temp_variable = { universal_cost_quantize_units = constant:universal_cost_framework.zero }
+set_temp_variable = { universal_cost_quantize_units_valid = constant:universal_cost_framework.zero }
+resize_temp_array = { array = uc_exact_units size = constant:universal_cost_framework.one }
+universal_cost_round_up_to_quantum = yes
+```
 
 ## universal_cost_quote_integer
 
-Purpose: compose active source ratios, calculate the final payable cost, and expose one display value for the same transaction input.
+Purpose: calculate one exact payable quote from the represented ordinary current price and every eligible source ratio.
 
-Scope: payer or other country scope selected by the owner adapter.
+Scope: payer or other existing object scope selected by the owner adapter.
 
 Inputs: temporary `universal_cost_quote_ordinary_cost`, `universal_cost_quote_family_mask`, and optional `universal_cost_quote_rounding_quantum`.
+The ordinary cost includes all ordinary consumer modifiers.
 
-Outputs: `universal_cost_quote_final_cost`, `universal_cost_quote_displayed_cost`, `universal_cost_quote_saved_cost`, `universal_cost_quote_composed_ratio`, `universal_cost_quote_source_count`, `universal_cost_quote_primary_source_id`, and `universal_cost_quote_valid`.
+Outputs: temporary final/displayed/saved cost, source count, primary source ID, and `universal_cost_quote_valid`.
+The retired `universal_cost_quote_composed_ratio` scalar is basis without participating sources and zero meaning unavailable with participating sources; it never controls price or validity.
+The exact live source registry replaces scalar composition.
 
-Defaults: no eligible active source leaves a positive ordinary cost unchanged; zero and negative amounts are preserved and receive no discount; a positive quoted amount is rounded upward to the supplied quantum only after all eligible ratios are composed.
+Defaults: an absent or non-positive quantum uses the existing one-unit default.
+No eligible source preserves the ordinary amount without rounding.
+Zero and negative amounts are preserved.
+With an eligible source, the final amount is `ceil(Cticks * product(Rticks) / (Qticks * 1000000000^N)) * Qticks` converted back to scalar units.
+No source is rounded separately and no epsilon is added.
+Identity sources contribute proof while cancelling their numerator and denominator exactly.
+Priority selects the primary source with stable registry-order ties; exact multiplication is commutative.
 
-Formula: for a positive ordinary cost, the composed ratio starts at 10000 and multiplies each eligible source ratio in priority order, dividing by 10000 after each source, then the final amount is `ceil(ordinary * composed_ratio / 10000 / quantum) * quantum`.
+Side effects: temporary variables and limb arrays only.
+The effect calls the same `universal_cost_quote_exact` producer used by the central Black Friday trigger.
+A malformed aligned registry or nonrepresentable mathematical scalar output sets quote-validity zero.
+The initialized final amount is then diagnostic only; shared quoted affordability rejects it, and owner-specific payment providers must honor the validity result.
 
-This formula describes the intended result.
-The current implementation multiplies the ordinary cost by the composed basis ratio before division, then passes the stored fixed-point amount to the quantizer.
-An overflowing numerator or a discarded subprecision remainder prevents the implementation from establishing that result.
-The scalar composed-ratio cache can also discard source-product information before either quote path runs.
-For a positive ordinary price with at least one eligible source, the final amount is raised to the effective positive `universal_cost_quantize_quantum` when the quantizer returns less than that quantum.
-This guard runs after quantization and before displayed and saved cost fields are calculated, and preserves zero, negative, and no-source behavior.
-It implements the accepted positive minimum only.
-Exact ceiling, overflow, and all-source composition remain unresolved, including ordinary 2.00001 at ratio 5000 producing 1 instead of 2.
-The parent-owned trigger bridge was not changed.
+Example:
 
-Side effects: temporary arrays are used for deterministic priority traversal, and no registry or payer state is changed.
+```txt
+set_temp_variable = { universal_cost_quote_ordinary_cost = owner_current_cost }
+set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.equipment }
+set_temp_variable = { universal_cost_quote_rounding_quantum = owner_quantum }
+set_temp_variable = { universal_cost_quote_final_cost = constant:universal_cost_framework.zero }
+set_temp_variable = { universal_cost_quote_displayed_cost = constant:universal_cost_framework.zero }
+set_temp_variable = { universal_cost_quote_saved_cost = constant:universal_cost_framework.zero }
+set_temp_variable = { universal_cost_quote_valid = constant:universal_cost_framework.zero }
+set_temp_variable = { universal_cost_quote_source_count = constant:universal_cost_framework.zero }
+set_temp_variable = { universal_cost_quote_primary_source_id = constant:universal_cost_framework.zero }
+set_temp_variable = { universal_cost_quote_composed_ratio = constant:universal_cost_framework.zero }
+universal_cost_quote_integer = yes
+# Check universal_cost_quote_valid before affordability or owner payment.
+```
 
-The ordinary cost must already include all ordinary consumer modifiers because the engine exposes no generic scripted value that returns every purchase surface's current payable price.
+The [exact predicate documentation](../scripted_triggers/chaosx_universal_cost_exact_triggers.md) gives every internal helper's inputs/outputs, bounds, iteration mechanism, and direct call sites.
+Every owner caller must predefine the temporary outputs it reads after a public helper returns, before that call.
+Initializing outputs inside the public helper protects nested producers but does not export new names into its outer caller.
+The same caller-storage contract covers Black Friday register/clear results, quoted-affordability results, and standalone unit-limb arrays.
+The [caller lifetime contract](../scripted_triggers/chaosx_universal_cost_exact_triggers.md#caller-owned-temporary-lifetime) records all internal boundaries and the conservative actual-source VM.
+The [implementation handoff](../../docs/plans/026_black_friday_plans/subagent_handoffs/2026-10-03_exact_quote_implementation.md) separates actual source-semantic checks from missing MCP and native evidence.
 
 ## universal_cost_rebuild_custom_quote_ratio_cache
 
-Purpose: materialize the effect-side source composition for HOI4 custom-cost trigger callers that cannot traverse the source arrays or invoke an effect.
+Purpose: publish the existing Event 026 source-readiness marker and retire lossy scalar cache rows.
+The aligned live source registry is the exact quotation cache for all caller family masks, including combinations and noncanonical bits.
 
-Scope: any effect scope that can write global variables.
+Scope: existing owner effect scope.
 
-Inputs: the active source registry.
+Inputs: the current source registry, already mutated by registration or source-identified clear.
 
-Outputs: `global.universal_cost_custom_quote_ratio_political_power`, `global.universal_cost_custom_quote_ratio_command_power`, `global.universal_cost_custom_quote_ratio_manpower`, `global.universal_cost_custom_quote_ratio_equipment`, `global.universal_cost_custom_quote_ratio_trains`, `global.universal_cost_custom_quote_ratio_convoy`, `global.universal_cost_custom_quote_ratio_fuel`, `global.universal_cost_custom_quote_ratio_army_experience`, `global.universal_cost_custom_quote_ratio_navy_experience`, `global.universal_cost_custom_quote_ratio_air_experience`, `global.universal_cost_custom_quote_ratio_stability`, `global.universal_cost_custom_quote_ratio_war_support`, and `global.universal_cost_custom_quote_cache_valid`.
+Output: `global.universal_cost_custom_quote_cache_valid = 1`.
 
-Side effects: invokes `universal_cost_quote_integer` once for each canonical family mask using an ordinary basis-sized probe cost, so each stored ratio is produced by the same source-composition code used for payment. The cache is scalar and deliberately finite; custom triggers using another family mask fail closed.
+Side effects: calls `universal_cost_clear_custom_quote_ratio_cache` to remove twelve obsolete `global.universal_cost_custom_quote_ratio_*` variables before publishing readiness.
+It never rounds a probe price, visits twelve families, or replaces another source row.
+It does not touch payer receipts.
 
-The cache is cleared by `universal_cost_clear_custom_quote_ratio_cache` when Event 026 is no longer registered. A source expiry does not change any existing transaction receipt.
+## universal_cost_clear_custom_quote_ratio_cache
+
+Purpose: invalidate the existing Event 026 readiness marker and remove the twelve obsolete scalar cache variables.
+
+Scope: existing owner effect scope.
+
+Inputs: none.
+
+Output: `global.universal_cost_custom_quote_cache_valid = 0`.
+
+Side effects: removes only retired scalar cache variables.
+The exact live source registry and all historical receipts remain intact.
+Source expiry is performed by `universal_cost_source_clear`, which removes only the matching aligned source row.
+Remaining sources continue to participate in generic exact quotes.
 
 ## universal_cost_check_quote_affordable
 
@@ -182,11 +233,12 @@ Purpose: check the quoted final amount against a native resource without debitin
 
 Scope: payer country.
 
-Inputs: temporary `universal_cost_quote_resource_kind` and `universal_cost_quote_final_cost`.
+Inputs: temporary `universal_cost_quote_resource_kind`, `universal_cost_quote_final_cost`, and `universal_cost_quote_valid` from a fresh quote.
 
 Output: temporary `universal_cost_quote_affordable`.
 
-Defaults: zero and negative amounts are affordable; unsupported owner-adapter resource kinds are not affordable through this helper.
+Defaults: a quote must have `universal_cost_quote_valid = 1` before resource affordability is evaluated.
+Within a valid quote, zero and negative amounts are affordable; unsupported owner-adapter resource kinds are not affordable through this helper.
 
 Side effects: none.
 
@@ -288,13 +340,62 @@ The shared record helper requires quoted and actual-paid amounts to match per co
 ## Internal ledger helpers
 
 The following internal helpers maintain the same payer-country scope as `universal_cost_record_transaction`.
-`universal_cost_find_transaction_row` accepts temporary `universal_cost_transaction_lookup_id` and returns `universal_cost_transaction_found_index`, `universal_cost_transaction_is_indexed`, and `universal_cost_transaction_lookup_result`; it validates a targeted row pointer or performs a bounded legacy scan, and has no side effects.
+`universal_cost_find_transaction_row` accepts temporary `universal_cost_transaction_lookup_id` and returns `universal_cost_transaction_found_index`, `universal_cost_transaction_is_indexed`, `universal_cost_transaction_lookup_result`, and `universal_cost_transaction_pointer`; it validates a targeted row pointer or performs a bounded legacy scan, and has no persistent side effects.
 `universal_cost_find_component_row` accepts temporary transaction and component lookup IDs and returns `universal_cost_component_found_index` and `universal_cost_component_lookup_result`; it traverses and validates every link for an indexed receipt, or performs a bounded legacy scan, and has no side effects.
 `universal_cost_validate_component_chain` accepts the current transaction ID and row index and returns temporary `universal_cost_chain_valid`; it checks count, every pointer and transaction ID, and the tail before crediting, and has no side effects.
 `universal_cost_refund_component_at_cursor` accepts the current component cursor and credits its stored actual-paid amount only when still unrefunded; it changes the component state, refund totals, and current non-political count after a successful credit.
 `universal_cost_decrement_non_political_paid_count` accepts the current transaction and component row indices and decrements the current non-political component count only for a positive non-Political-Power component's first refund acknowledgment.
 
 For example, an owner that has allocated ID `black_friday_owner_transaction_id` sets `universal_cost_transaction_id` to that ID and calls `universal_cost_record_transaction = yes` once per component; on a failed later component it calls `universal_cost_refund_transaction = yes` with the same ID and checks `universal_cost_refund_transaction_result` before claiming rollback.
+
+## Receipt API temporary return contract
+
+Every caller creates the temporary outputs it reads after a scripted helper returns BEFORE invoking that helper.
+Initializing those fields inside the helper protects its children, not its outer caller.
+Regular payer receipt arrays, targeted row pointers and native resources persist independently of temporary helper frames.
+Private lookup scratch created inside `record`, `settle`, `mark`, or `refund` is not an exported public result unless its outer caller also declared that exact temporary name.
+Owners needing a row after a public receipt operation should initialize and invoke the public lookup explicitly.
+
+| Helper | Caller-defined temporary outputs / in-out fields | Persistent side effects |
+| --- | --- | --- |
+| `universal_cost_pay_component` | `universal_cost_payment_result` | native debit only after inclusive resource affordability |
+| `universal_cost_credit_component` | `universal_cost_credit_result` | native credit of the supplied stored-paid amount |
+| `universal_cost_find_transaction_row` | found index, indexed flag, lookup result, pointer | none |
+| `universal_cost_find_component_row` | component found index and lookup result | none |
+| `universal_cost_record_transaction` | record result and recorded component index | regular receipt rows, links, totals and allocator-proof consumption |
+| `universal_cost_settle_transaction` | settle result | existing receipt state |
+| `universal_cost_decrement_non_political_paid_count` | no temporary return; transaction/component indices and indexed flag are inputs | existing non-political-paid count |
+| `universal_cost_mark_component_refunded` | acknowledgement result | component state, refund total and non-political-paid count |
+| `universal_cost_validate_component_chain` | `universal_cost_chain_valid` | none |
+| `universal_cost_refund_component_at_cursor` | inherited refund total, unhandled total, all-complete flag | stored-paid native credit, component state and count |
+| `universal_cost_refund_transaction` | refund result, newly credited total and unhandled total | validated receipt/component states and refund accounting |
+
+Transaction lookup output storage is initialized at all five nested lookup call sites, including inside the component finder.
+Component lookup outputs are initialized before record/acknowledgement checks.
+Refund initializes chain validity before its validation call, and the component-credit callback initializes `universal_cost_credit_result` before native credit dispatch.
+These are local caller declarations of specific callee outputs; they do not reset outer refund cursors, running totals, accumulated incomplete flags, or unrelated scratch.
+Refund totals and all-complete status are inherited in-out state across component callbacks and are not cleared between components.
+
+Example lookup in an existing owner effect:
+
+```txt
+set_temp_variable = { universal_cost_transaction_lookup_id = owner_transaction_id }
+set_temp_variable = { universal_cost_transaction_found_index = constant:universal_cost_framework.invalid_index }
+set_temp_variable = { universal_cost_transaction_is_indexed = constant:universal_cost_framework.zero }
+set_temp_variable = { universal_cost_transaction_lookup_result = constant:universal_cost_framework.result_no_op }
+set_temp_variable = { universal_cost_transaction_pointer = constant:universal_cost_framework.zero }
+universal_cost_find_transaction_row = yes
+```
+
+Before calling record, define `universal_cost_record_transaction_result` and `universal_cost_recorded_component_index` in that owner frame.
+Before refund, define `universal_cost_refund_transaction_result`, `universal_cost_refund_total`, and `universal_cost_refund_unhandled_total` in the owner frame.
+Apply the same rule to payment, credit, settlement and acknowledgement results whenever the owner reads them after return.
+
+[Real receipt source tests](../../docs/plans/026_black_friday_plans/subagent_handoffs/universal_cost_receipt_lifetime_source_tests.js) reuse the quotation VM with conservative cleanup on ALL scripted returns and execute the actual receipt, debit, credit and native-affordability helper definitions.
+Shared receipt APIs are not mocked.
+Only native resource effects/queries use modeled balances; allocator proofs are explicit persisted fixture inputs that the actual record helper validates and consumes.
+The suite covers cold/warm returns, interleaved links, owner-credited partial refunds and retries, zero-paid components, corrupt pointers/counts/tails/cycles, payer isolation, legacy mapless behavior, indexed receipts beyond row 1,000, all 29 native dispatch pairs, and quote/payment/record/expiry/refund integration.
+These are authoritative source-semantic checks under the documented lifetime model, not native resource, save/reload, or performance proof.
 
 ## universal_cost_settle_transaction
 

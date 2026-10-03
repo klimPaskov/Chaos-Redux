@@ -300,6 +300,12 @@ africa_rsa_is_recorded_coalition_supporter = {
 
 # COUNTRY scope on a targeted-decision candidate.
 africa_rsa_is_valid_regional_support_target = {
+	africa_rsa_is_eligible_regional_support_target = yes
+	hidden_trigger = { NOT = { has_country_flag = africa_rsa_regional_support_request_pending } }
+}
+
+# The original target requirements also apply when a pending donor responds.
+africa_rsa_is_eligible_regional_support_target = {
 	africa_is_valid_relationship_target = yes
 	has_event_target = africa_rsa_allied_union_government
 	has_event_target = africa_rsa_continental_coalition
@@ -311,6 +317,17 @@ africa_rsa_is_valid_regional_support_target = {
 	}
 	event_target:africa_rsa_continental_coalition = {
 		NOT = { has_war_with = PREV }
+	}
+}
+
+# COUNTRY scope on the donor. A stale reply never sends a second shipment.
+africa_rsa_pending_support_response_is_valid = {
+	has_country_flag = africa_rsa_regional_support_request_pending
+	africa_rsa_is_eligible_regional_support_target = yes
+	has_global_flag = africa_rsa_civil_war_active
+	event_target:africa_rsa_continental_coalition = {
+		exists = yes
+		check_variable = { var = africa_rsa_external_support_count value = constant:africa_rsa_count.required_external_supporters compare = less_than }
 	}
 }
 

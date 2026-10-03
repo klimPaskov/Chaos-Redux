@@ -7,6 +7,13 @@
 # player cost and an AI route using the same executable conditions.
 # ============================================================================
 
+# Native AI saving hints require literals. Mirror the ordinary owner PP costs.
+@rsa_relief_pp_hint = 35
+@rsa_request_pp_hint = 15
+@rsa_citizenship_pp_hint = 75
+@rsa_sovereignty_pp_hint = 40
+@rsa_exile_pp_hint = 60
+
 africa_rsa_crisis_category = {
 	africa_rsa_protect_civilian_corridor = {
 		icon = GFX_decision_generic_industry
@@ -17,18 +24,17 @@ africa_rsa_crisis_category = {
 		}
 		available = {
 			275 = { is_controlled_by = ROOT }
+			hidden_trigger = { africa_rsa_can_pay_relief_purchase = yes }
 		}
 		custom_cost_trigger = {
-			NOT = { has_political_power < constant:africa_rsa_cost.relief_pp_gate }
-			NOT = { command_power < constant:africa_rsa_cost.relief_cp_gate }
-			NOT = { has_equipment = { train_equipment < constant:africa_rsa_cost.relief_trains_gate } }
-			NOT = { has_equipment = { support_equipment < constant:africa_rsa_cost.relief_support_equipment_gate } }
+			hidden_trigger = { africa_rsa_can_pay_relief_purchase = yes }
 		}
 		custom_cost_text = africa_rsa_relief_cost
+		ai_hint_pp_cost = @rsa_relief_pp_hint
 		fire_only_once = yes
 		complete_effect = {
 			custom_effect_tooltip = africa_rsa_protect_civilian_corridor_tt
-			hidden_effect = { africa_rsa_protect_civilian_corridor_effect = yes }
+			hidden_effect = { africa_rsa_purchase_relief = yes }
 		}
 		ai_will_do = {
 			base = constant:africa_rsa_ai.high
@@ -54,17 +60,17 @@ africa_rsa_crisis_category = {
 		target_root_trigger = { africa_rsa_is_continental_coalition = yes }
 		target_trigger = { FROM = { africa_rsa_is_valid_regional_support_target = yes } }
 		available = {
-			NOT = { has_political_power < constant:africa_rsa_cost.regional_request_pp_gate }
+			hidden_trigger = { africa_rsa_can_pay_regional_request_purchase = yes }
 		}
 		custom_cost_trigger = {
-			NOT = { has_political_power < constant:africa_rsa_cost.regional_request_pp_gate }
+			hidden_trigger = { africa_rsa_can_pay_regional_request_purchase = yes }
 		}
 		custom_cost_text = africa_rsa_regional_request_cost
+		ai_hint_pp_cost = @rsa_request_pp_hint
 		complete_effect = {
 			custom_effect_tooltip = africa_rsa_seek_regional_support_tt
 			hidden_effect = {
-				africa_rsa_spend_regional_request_cost = yes
-				FROM = { country_event = { id = chaosx.nr12.1202 } }
+				africa_rsa_purchase_regional_request = yes
 			}
 		}
 		ai_will_do = {
@@ -109,19 +115,21 @@ africa_rsa_crisis_category = {
 			NOT = { has_country_flag = africa_rsa_citizenship_land_milestone }
 		}
 		available = {
-			africa_is_current_host = yes
-			NOT = { has_political_power < constant:africa_rsa_cost.citizenship_pp_gate }
-			NOT = { has_stability < constant:africa_rsa_cost.citizenship_stability_gate }
+			custom_trigger_tooltip = {
+				tooltip = africa_rsa_current_host_required_tt
+				africa_is_current_host = yes
+			}
+			hidden_trigger = { africa_rsa_can_pay_citizenship_purchase = yes }
 		}
 		custom_cost_trigger = {
-			NOT = { has_political_power < constant:africa_rsa_cost.citizenship_pp_gate }
-			NOT = { has_stability < constant:africa_rsa_cost.citizenship_stability_gate }
+			hidden_trigger = { africa_rsa_can_pay_citizenship_purchase = yes }
 		}
 		custom_cost_text = africa_rsa_citizenship_cost
+		ai_hint_pp_cost = @rsa_citizenship_pp_hint
 		fire_only_once = yes
 		complete_effect = {
 			custom_effect_tooltip = africa_rsa_citizenship_land_milestone_tt
-			hidden_effect = { africa_rsa_enact_citizenship_land_milestone_effect = yes }
+			hidden_effect = { africa_rsa_purchase_citizenship = yes }
 		}
 		ai_will_do = { base = constant:africa_rsa_ai.preferred }
 	}
@@ -151,17 +159,16 @@ africa_rsa_crisis_category = {
 			}
 		}
 		available = {
-			NOT = { has_political_power < constant:africa_rsa_cost.sovereignty_guarantee_pp_gate }
-			NOT = { command_power < constant:africa_rsa_cost.sovereignty_guarantee_cp_gate }
+			hidden_trigger = { africa_rsa_can_pay_sovereignty_purchase = yes }
 		}
 		custom_cost_trigger = {
-			NOT = { has_political_power < constant:africa_rsa_cost.sovereignty_guarantee_pp_gate }
-			NOT = { command_power < constant:africa_rsa_cost.sovereignty_guarantee_cp_gate }
+			hidden_trigger = { africa_rsa_can_pay_sovereignty_purchase = yes }
 		}
 		custom_cost_text = africa_rsa_sovereignty_guarantee_cost
+		ai_hint_pp_cost = @rsa_sovereignty_pp_hint
 		complete_effect = {
 			custom_effect_tooltip = africa_rsa_guarantee_neighbor_sovereignty_tt
-			hidden_effect = { africa_rsa_guarantee_neighbor_sovereignty_effect = yes }
+			hidden_effect = { africa_rsa_purchase_sovereignty = yes }
 		}
 		ai_will_do = {
 			base = constant:africa_rsa_ai.preferred
@@ -198,19 +205,21 @@ africa_rsa_crisis_category = {
 			NOT = { has_country_flag = africa_rsa_exile_recovery_completed }
 		}
 		available = {
-			africa_rsa_exile_recovery_can_be_completed = yes
-			NOT = { has_political_power < constant:africa_rsa_cost.exile_recovery_pp_gate }
-			NOT = { command_power < constant:africa_rsa_cost.exile_recovery_cp_gate }
+			custom_trigger_tooltip = {
+				tooltip = africa_rsa_exile_custodian_required_tt
+				africa_rsa_exile_recovery_can_be_completed = yes
+			}
+			hidden_trigger = { africa_rsa_can_pay_exile_recovery_purchase = yes }
 		}
 		custom_cost_trigger = {
-			NOT = { has_political_power < constant:africa_rsa_cost.exile_recovery_pp_gate }
-			NOT = { command_power < constant:africa_rsa_cost.exile_recovery_cp_gate }
+			hidden_trigger = { africa_rsa_can_pay_exile_recovery_purchase = yes }
 		}
 		custom_cost_text = africa_rsa_exile_recovery_cost
+		ai_hint_pp_cost = @rsa_exile_pp_hint
 		fire_only_once = yes
 		complete_effect = {
 			custom_effect_tooltip = africa_rsa_reconstitute_exile_council_tt
-			hidden_effect = { africa_rsa_complete_exile_recovery = yes }
+			hidden_effect = { africa_rsa_purchase_exile_recovery = yes }
 		}
 		ai_will_do = { base = constant:africa_rsa_ai.preferred }
 	}

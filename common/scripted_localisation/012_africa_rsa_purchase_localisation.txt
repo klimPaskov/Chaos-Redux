@@ -1,0 +1,517 @@
+# CHAOS REDUX - SOUTH AFRICA PURCHASE PRICE TEXT
+# Quote scratch is initialized in each text trigger and consumed by its named
+# localisation value. Cost displays never depend on a previous UI evaluation.
+
+defined_text = {
+	name = GetAfricaRsaPurchasePpValue
+	text = {
+		trigger = {
+			set_temp_variable = { universal_cost_affordability_resource_kind = constant:universal_cost_resource_kind.political_power }
+			set_temp_variable = { universal_cost_affordability_amount = africa_rsa_purchase_pp_cost }
+			universal_cost_component_is_affordable = yes
+		}
+		localization_key = africa_rsa_purchase_pp_value
+	}
+	text = { localization_key = africa_rsa_purchase_pp_blocked_value }
+}
+
+defined_text = {
+	name = GetAfricaRsaPurchaseCpValue
+	text = {
+		trigger = {
+			set_temp_variable = { universal_cost_affordability_resource_kind = constant:universal_cost_resource_kind.command_power }
+			set_temp_variable = { universal_cost_affordability_amount = africa_rsa_purchase_cp_cost }
+			universal_cost_component_is_affordable = yes
+		}
+		localization_key = africa_rsa_purchase_cp_value
+	}
+	text = { localization_key = africa_rsa_purchase_cp_blocked_value }
+}
+
+defined_text = {
+	name = GetAfricaRsaPurchaseTrainsValue
+	text = {
+		trigger = {
+			set_temp_variable = { universal_cost_affordability_resource_kind = constant:universal_cost_resource_kind.train_equipment_1 }
+			set_temp_variable = { universal_cost_affordability_amount = africa_rsa_purchase_trains_cost }
+			universal_cost_component_is_affordable = yes
+		}
+		localization_key = africa_rsa_purchase_trains_value
+	}
+	text = { localization_key = africa_rsa_purchase_trains_blocked_value }
+}
+
+defined_text = {
+	name = GetAfricaRsaPurchaseSupportValue
+	text = {
+		trigger = {
+			set_temp_variable = { universal_cost_affordability_resource_kind = constant:universal_cost_resource_kind.support_equipment_1 }
+			set_temp_variable = { universal_cost_affordability_amount = africa_rsa_purchase_support_cost }
+			universal_cost_component_is_affordable = yes
+		}
+		localization_key = africa_rsa_purchase_support_value
+	}
+	text = { localization_key = africa_rsa_purchase_support_blocked_value }
+}
+
+defined_text = {
+	name = GetAfricaRsaPurchaseStabilityValue
+	text = {
+		trigger = {
+			set_temp_variable = { universal_cost_affordability_resource_kind = constant:universal_cost_resource_kind.stability }
+			set_temp_variable = { universal_cost_affordability_amount = africa_rsa_purchase_stability_cost }
+			universal_cost_component_is_affordable = yes
+		}
+		localization_key = africa_rsa_purchase_stability_value
+	}
+	text = { localization_key = africa_rsa_purchase_stability_blocked_value }
+}
+
+
+defined_text = {
+	name = GetAfricaRsaPurchaseSource
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			set_temp_variable = { universal_cost_source_query_id = constant:universal_cost_framework.black_friday_source_id }
+			universal_cost_source_is_active = yes
+		}
+		localization_key = black_friday.cost_source.line
+	}
+	text = { localization_key = africa_rsa_purchase_source_none }
+}
+
+defined_text = {
+	name = GetAfricaRsaReliefCost
+	text = {
+		trigger = {
+			set_temp_variable = { africa_rsa_purchase_quote_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_pp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_cp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_trains_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_support_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_stability_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_pp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_cp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_trains_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_support_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_stability_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_component_quote = constant:universal_cost_framework.zero }
+			africa_rsa_quote_relief_purchase = yes
+			check_variable = { var = africa_rsa_purchase_quote_valid value = constant:universal_cost_framework.one compare = equals }
+			NOT = { has_variable = africa_rsa_purchase_pending_receipt }
+		}
+		localization_key = africa_rsa_relief_cost_value
+	}
+	text = {
+		trigger = { has_variable = africa_rsa_purchase_pending_receipt }
+		localization_key = africa_rsa_purchase_order_pending
+	}
+	text = { localization_key = africa_rsa_purchase_quote_unavailable }
+}
+
+defined_text = {
+	name = GetAfricaRsaReliefCostBlocked
+	text = {
+		trigger = {
+			set_temp_variable = { africa_rsa_purchase_quote_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_pp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_cp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_trains_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_support_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_stability_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_pp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_cp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_trains_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_support_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_stability_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_component_quote = constant:universal_cost_framework.zero }
+			africa_rsa_quote_relief_purchase = yes
+			check_variable = { var = africa_rsa_purchase_quote_valid value = constant:universal_cost_framework.one compare = equals }
+			NOT = { has_variable = africa_rsa_purchase_pending_receipt }
+		}
+		localization_key = africa_rsa_relief_cost_blocked_value
+	}
+	text = {
+		trigger = { has_variable = africa_rsa_purchase_pending_receipt }
+		localization_key = africa_rsa_purchase_order_pending
+	}
+	text = { localization_key = africa_rsa_purchase_quote_unavailable }
+}
+
+defined_text = {
+	name = GetAfricaRsaReliefCostDetails
+	text = {
+		trigger = {
+			set_temp_variable = { africa_rsa_purchase_quote_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_pp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_cp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_trains_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_support_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_stability_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_pp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_cp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_trains_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_support_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_stability_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_component_quote = constant:universal_cost_framework.zero }
+			africa_rsa_quote_relief_purchase = yes
+			check_variable = { var = africa_rsa_purchase_quote_valid value = constant:universal_cost_framework.one compare = equals }
+			NOT = { has_variable = africa_rsa_purchase_pending_receipt }
+		}
+		localization_key = africa_rsa_relief_cost_tooltip_value
+	}
+	text = {
+		trigger = { has_variable = africa_rsa_purchase_pending_receipt }
+		localization_key = africa_rsa_purchase_order_pending_details
+	}
+	text = { localization_key = africa_rsa_purchase_quote_unavailable_details }
+}
+
+defined_text = {
+	name = GetAfricaRsaRegionalRequestCost
+	text = {
+		trigger = {
+			set_temp_variable = { africa_rsa_purchase_quote_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_pp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_cp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_trains_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_support_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_stability_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_pp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_cp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_trains_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_support_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_stability_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_component_quote = constant:universal_cost_framework.zero }
+			africa_rsa_quote_regional_request_purchase = yes
+			check_variable = { var = africa_rsa_purchase_quote_valid value = constant:universal_cost_framework.one compare = equals }
+			NOT = { has_variable = africa_rsa_purchase_pending_receipt }
+		}
+		localization_key = africa_rsa_regional_request_cost_value
+	}
+	text = {
+		trigger = { has_variable = africa_rsa_purchase_pending_receipt }
+		localization_key = africa_rsa_purchase_order_pending
+	}
+	text = { localization_key = africa_rsa_purchase_quote_unavailable }
+}
+
+defined_text = {
+	name = GetAfricaRsaRegionalRequestCostBlocked
+	text = {
+		trigger = {
+			set_temp_variable = { africa_rsa_purchase_quote_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_pp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_cp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_trains_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_support_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_stability_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_pp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_cp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_trains_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_support_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_stability_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_component_quote = constant:universal_cost_framework.zero }
+			africa_rsa_quote_regional_request_purchase = yes
+			check_variable = { var = africa_rsa_purchase_quote_valid value = constant:universal_cost_framework.one compare = equals }
+			NOT = { has_variable = africa_rsa_purchase_pending_receipt }
+		}
+		localization_key = africa_rsa_regional_request_cost_blocked_value
+	}
+	text = {
+		trigger = { has_variable = africa_rsa_purchase_pending_receipt }
+		localization_key = africa_rsa_purchase_order_pending
+	}
+	text = { localization_key = africa_rsa_purchase_quote_unavailable }
+}
+
+defined_text = {
+	name = GetAfricaRsaRegionalRequestCostDetails
+	text = {
+		trigger = {
+			set_temp_variable = { africa_rsa_purchase_quote_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_pp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_cp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_trains_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_support_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_stability_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_pp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_cp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_trains_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_support_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_stability_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_component_quote = constant:universal_cost_framework.zero }
+			africa_rsa_quote_regional_request_purchase = yes
+			check_variable = { var = africa_rsa_purchase_quote_valid value = constant:universal_cost_framework.one compare = equals }
+			NOT = { has_variable = africa_rsa_purchase_pending_receipt }
+		}
+		localization_key = africa_rsa_regional_request_cost_tooltip_value
+	}
+	text = {
+		trigger = { has_variable = africa_rsa_purchase_pending_receipt }
+		localization_key = africa_rsa_purchase_order_pending_details
+	}
+	text = { localization_key = africa_rsa_purchase_quote_unavailable_details }
+}
+
+defined_text = {
+	name = GetAfricaRsaCitizenshipCost
+	text = {
+		trigger = {
+			set_temp_variable = { africa_rsa_purchase_quote_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_pp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_cp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_trains_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_support_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_stability_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_pp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_cp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_trains_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_support_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_stability_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_component_quote = constant:universal_cost_framework.zero }
+			africa_rsa_quote_citizenship_purchase = yes
+			check_variable = { var = africa_rsa_purchase_quote_valid value = constant:universal_cost_framework.one compare = equals }
+			NOT = { has_variable = africa_rsa_purchase_pending_receipt }
+		}
+		localization_key = africa_rsa_citizenship_cost_value
+	}
+	text = {
+		trigger = { has_variable = africa_rsa_purchase_pending_receipt }
+		localization_key = africa_rsa_purchase_order_pending
+	}
+	text = { localization_key = africa_rsa_purchase_quote_unavailable }
+}
+
+defined_text = {
+	name = GetAfricaRsaCitizenshipCostBlocked
+	text = {
+		trigger = {
+			set_temp_variable = { africa_rsa_purchase_quote_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_pp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_cp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_trains_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_support_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_stability_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_pp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_cp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_trains_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_support_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_stability_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_component_quote = constant:universal_cost_framework.zero }
+			africa_rsa_quote_citizenship_purchase = yes
+			check_variable = { var = africa_rsa_purchase_quote_valid value = constant:universal_cost_framework.one compare = equals }
+			NOT = { has_variable = africa_rsa_purchase_pending_receipt }
+		}
+		localization_key = africa_rsa_citizenship_cost_blocked_value
+	}
+	text = {
+		trigger = { has_variable = africa_rsa_purchase_pending_receipt }
+		localization_key = africa_rsa_purchase_order_pending
+	}
+	text = { localization_key = africa_rsa_purchase_quote_unavailable }
+}
+
+defined_text = {
+	name = GetAfricaRsaCitizenshipCostDetails
+	text = {
+		trigger = {
+			set_temp_variable = { africa_rsa_purchase_quote_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_pp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_cp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_trains_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_support_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_stability_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_pp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_cp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_trains_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_support_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_stability_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_component_quote = constant:universal_cost_framework.zero }
+			africa_rsa_quote_citizenship_purchase = yes
+			check_variable = { var = africa_rsa_purchase_quote_valid value = constant:universal_cost_framework.one compare = equals }
+			NOT = { has_variable = africa_rsa_purchase_pending_receipt }
+		}
+		localization_key = africa_rsa_citizenship_cost_tooltip_value
+	}
+	text = {
+		trigger = { has_variable = africa_rsa_purchase_pending_receipt }
+		localization_key = africa_rsa_purchase_order_pending_details
+	}
+	text = { localization_key = africa_rsa_purchase_quote_unavailable_details }
+}
+
+defined_text = {
+	name = GetAfricaRsaSovereigntyCost
+	text = {
+		trigger = {
+			set_temp_variable = { africa_rsa_purchase_quote_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_pp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_cp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_trains_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_support_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_stability_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_pp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_cp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_trains_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_support_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_stability_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_component_quote = constant:universal_cost_framework.zero }
+			africa_rsa_quote_sovereignty_purchase = yes
+			check_variable = { var = africa_rsa_purchase_quote_valid value = constant:universal_cost_framework.one compare = equals }
+			NOT = { has_variable = africa_rsa_purchase_pending_receipt }
+		}
+		localization_key = africa_rsa_sovereignty_guarantee_cost_value
+	}
+	text = {
+		trigger = { has_variable = africa_rsa_purchase_pending_receipt }
+		localization_key = africa_rsa_purchase_order_pending
+	}
+	text = { localization_key = africa_rsa_purchase_quote_unavailable }
+}
+
+defined_text = {
+	name = GetAfricaRsaSovereigntyCostBlocked
+	text = {
+		trigger = {
+			set_temp_variable = { africa_rsa_purchase_quote_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_pp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_cp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_trains_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_support_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_stability_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_pp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_cp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_trains_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_support_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_stability_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_component_quote = constant:universal_cost_framework.zero }
+			africa_rsa_quote_sovereignty_purchase = yes
+			check_variable = { var = africa_rsa_purchase_quote_valid value = constant:universal_cost_framework.one compare = equals }
+			NOT = { has_variable = africa_rsa_purchase_pending_receipt }
+		}
+		localization_key = africa_rsa_sovereignty_guarantee_cost_blocked_value
+	}
+	text = {
+		trigger = { has_variable = africa_rsa_purchase_pending_receipt }
+		localization_key = africa_rsa_purchase_order_pending
+	}
+	text = { localization_key = africa_rsa_purchase_quote_unavailable }
+}
+
+defined_text = {
+	name = GetAfricaRsaSovereigntyCostDetails
+	text = {
+		trigger = {
+			set_temp_variable = { africa_rsa_purchase_quote_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_pp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_cp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_trains_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_support_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_stability_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_pp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_cp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_trains_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_support_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_stability_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_component_quote = constant:universal_cost_framework.zero }
+			africa_rsa_quote_sovereignty_purchase = yes
+			check_variable = { var = africa_rsa_purchase_quote_valid value = constant:universal_cost_framework.one compare = equals }
+			NOT = { has_variable = africa_rsa_purchase_pending_receipt }
+		}
+		localization_key = africa_rsa_sovereignty_guarantee_cost_tooltip_value
+	}
+	text = {
+		trigger = { has_variable = africa_rsa_purchase_pending_receipt }
+		localization_key = africa_rsa_purchase_order_pending_details
+	}
+	text = { localization_key = africa_rsa_purchase_quote_unavailable_details }
+}
+
+defined_text = {
+	name = GetAfricaRsaExileRecoveryCost
+	text = {
+		trigger = {
+			set_temp_variable = { africa_rsa_purchase_quote_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_pp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_cp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_trains_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_support_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_stability_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_pp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_cp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_trains_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_support_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_stability_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_component_quote = constant:universal_cost_framework.zero }
+			africa_rsa_quote_exile_recovery_purchase = yes
+			check_variable = { var = africa_rsa_purchase_quote_valid value = constant:universal_cost_framework.one compare = equals }
+			NOT = { has_variable = africa_rsa_purchase_pending_receipt }
+		}
+		localization_key = africa_rsa_exile_recovery_cost_value
+	}
+	text = {
+		trigger = { has_variable = africa_rsa_purchase_pending_receipt }
+		localization_key = africa_rsa_purchase_order_pending
+	}
+	text = { localization_key = africa_rsa_purchase_quote_unavailable }
+}
+
+defined_text = {
+	name = GetAfricaRsaExileRecoveryCostBlocked
+	text = {
+		trigger = {
+			set_temp_variable = { africa_rsa_purchase_quote_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_pp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_cp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_trains_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_support_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_stability_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_pp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_cp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_trains_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_support_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_stability_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_component_quote = constant:universal_cost_framework.zero }
+			africa_rsa_quote_exile_recovery_purchase = yes
+			check_variable = { var = africa_rsa_purchase_quote_valid value = constant:universal_cost_framework.one compare = equals }
+			NOT = { has_variable = africa_rsa_purchase_pending_receipt }
+		}
+		localization_key = africa_rsa_exile_recovery_cost_blocked_value
+	}
+	text = {
+		trigger = { has_variable = africa_rsa_purchase_pending_receipt }
+		localization_key = africa_rsa_purchase_order_pending
+	}
+	text = { localization_key = africa_rsa_purchase_quote_unavailable }
+}
+
+defined_text = {
+	name = GetAfricaRsaExileRecoveryCostDetails
+	text = {
+		trigger = {
+			set_temp_variable = { africa_rsa_purchase_quote_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_pp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_cp_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_trains_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_support_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_stability_ordinary = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_pp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_cp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_trains_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_support_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_purchase_stability_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { africa_rsa_component_quote = constant:universal_cost_framework.zero }
+			africa_rsa_quote_exile_recovery_purchase = yes
+			check_variable = { var = africa_rsa_purchase_quote_valid value = constant:universal_cost_framework.one compare = equals }
+			NOT = { has_variable = africa_rsa_purchase_pending_receipt }
+		}
+		localization_key = africa_rsa_exile_recovery_cost_tooltip_value
+	}
+	text = {
+		trigger = { has_variable = africa_rsa_purchase_pending_receipt }
+		localization_key = africa_rsa_purchase_order_pending_details
+	}
+	text = { localization_key = africa_rsa_purchase_quote_unavailable_details }
+}

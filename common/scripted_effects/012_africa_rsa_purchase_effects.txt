@@ -1,0 +1,357 @@
+# CHAOS REDUX - SOUTH AFRICA PURCHASE TRANSACTIONS
+# Country scope. Existing actions supply africa_rsa_purchase_action. The shared
+# native payment and receipt APIs charge one atomic resource bundle. An owner
+# confirms the receipt only after its outcome, or refunds actual paid rows.
+
+# Appends the four africa_rsa_component_* inputs and their current quotation.
+africa_rsa_append_purchase_component = {
+	if = {
+		limit = { check_variable = { africa_rsa_component_ordinary > constant:universal_cost_framework.zero } }
+		add_to_temp_array = { array = africa_rsa_purchase_ids value = africa_rsa_component_id }
+		add_to_temp_array = { array = africa_rsa_purchase_kinds value = africa_rsa_component_kind }
+		add_to_temp_array = { array = africa_rsa_purchase_families value = africa_rsa_component_family }
+		add_to_temp_array = { array = africa_rsa_purchase_ordinary value = africa_rsa_component_ordinary }
+		add_to_temp_array = { array = africa_rsa_purchase_quoted value = africa_rsa_component_quote }
+	}
+}
+
+africa_rsa_prepare_purchase_bundle = {
+	clear_temp_array = africa_rsa_purchase_ids
+	clear_temp_array = africa_rsa_purchase_kinds
+	clear_temp_array = africa_rsa_purchase_families
+	clear_temp_array = africa_rsa_purchase_ordinary
+	clear_temp_array = africa_rsa_purchase_quoted
+	set_temp_variable = { africa_rsa_component_id = constant:black_friday_event.owner_component_political_power }
+	set_temp_variable = { africa_rsa_component_kind = constant:universal_cost_resource_kind.political_power }
+	set_temp_variable = { africa_rsa_component_family = constant:universal_cost_family.political_power }
+	set_temp_variable = { africa_rsa_component_ordinary = africa_rsa_purchase_pp_ordinary }
+	set_temp_variable = { africa_rsa_component_quote = africa_rsa_purchase_pp_cost }
+	africa_rsa_append_purchase_component = yes
+	set_temp_variable = { africa_rsa_component_id = constant:black_friday_event.owner_component_command_power }
+	set_temp_variable = { africa_rsa_component_kind = constant:universal_cost_resource_kind.command_power }
+	set_temp_variable = { africa_rsa_component_family = constant:universal_cost_family.command_power }
+	set_temp_variable = { africa_rsa_component_ordinary = africa_rsa_purchase_cp_ordinary }
+	set_temp_variable = { africa_rsa_component_quote = africa_rsa_purchase_cp_cost }
+	africa_rsa_append_purchase_component = yes
+	set_temp_variable = { africa_rsa_component_id = constant:black_friday_event.owner_component_train_equipment }
+	set_temp_variable = { africa_rsa_component_kind = constant:universal_cost_resource_kind.train_equipment_1 }
+	set_temp_variable = { africa_rsa_component_family = constant:universal_cost_family.trains }
+	set_temp_variable = { africa_rsa_component_ordinary = africa_rsa_purchase_trains_ordinary }
+	set_temp_variable = { africa_rsa_component_quote = africa_rsa_purchase_trains_cost }
+	africa_rsa_append_purchase_component = yes
+	set_temp_variable = { africa_rsa_component_id = constant:black_friday_event.owner_component_support_equipment }
+	set_temp_variable = { africa_rsa_component_kind = constant:universal_cost_resource_kind.support_equipment_1 }
+	set_temp_variable = { africa_rsa_component_family = constant:universal_cost_family.equipment }
+	set_temp_variable = { africa_rsa_component_ordinary = africa_rsa_purchase_support_ordinary }
+	set_temp_variable = { africa_rsa_component_quote = africa_rsa_purchase_support_cost }
+	africa_rsa_append_purchase_component = yes
+	set_temp_variable = { africa_rsa_component_id = constant:universal_cost_resource_kind.stability }
+	set_temp_variable = { africa_rsa_component_kind = constant:universal_cost_resource_kind.stability }
+	set_temp_variable = { africa_rsa_component_family = constant:universal_cost_family.stability }
+	set_temp_variable = { africa_rsa_component_ordinary = africa_rsa_purchase_stability_ordinary }
+	set_temp_variable = { africa_rsa_component_quote = africa_rsa_purchase_stability_cost }
+	africa_rsa_append_purchase_component = yes
+}
+
+# Input: action selector. Output: africa_rsa_purchase_payment_result.
+# The recorded receipt is deliberately unsettled until owner confirmation.
+africa_rsa_pay_selected_purchase = {
+	set_temp_variable = { africa_rsa_purchase_payment_result = constant:universal_cost_framework.zero }
+	set_temp_variable = { africa_rsa_purchase_quote_valid = constant:universal_cost_framework.zero }
+	set_temp_variable = { africa_rsa_purchase_pp_ordinary = constant:universal_cost_framework.zero }
+	set_temp_variable = { africa_rsa_purchase_cp_ordinary = constant:universal_cost_framework.zero }
+	set_temp_variable = { africa_rsa_purchase_trains_ordinary = constant:universal_cost_framework.zero }
+	set_temp_variable = { africa_rsa_purchase_support_ordinary = constant:universal_cost_framework.zero }
+	set_temp_variable = { africa_rsa_purchase_stability_ordinary = constant:universal_cost_framework.zero }
+	set_temp_variable = { africa_rsa_purchase_pp_cost = constant:universal_cost_framework.zero }
+	set_temp_variable = { africa_rsa_purchase_cp_cost = constant:universal_cost_framework.zero }
+	set_temp_variable = { africa_rsa_purchase_trains_cost = constant:universal_cost_framework.zero }
+	set_temp_variable = { africa_rsa_purchase_support_cost = constant:universal_cost_framework.zero }
+	set_temp_variable = { africa_rsa_purchase_stability_cost = constant:universal_cost_framework.zero }
+	set_temp_variable = { africa_rsa_component_quote = constant:universal_cost_framework.zero }
+	# Define caller-owned array storage before the nested builder clears it.
+	resize_temp_array = { array = africa_rsa_purchase_ids size = constant:universal_cost_framework.one }
+	resize_temp_array = { array = africa_rsa_purchase_kinds size = constant:universal_cost_framework.one }
+	resize_temp_array = { array = africa_rsa_purchase_families size = constant:universal_cost_framework.one }
+	resize_temp_array = { array = africa_rsa_purchase_ordinary size = constant:universal_cost_framework.one }
+	resize_temp_array = { array = africa_rsa_purchase_quoted size = constant:universal_cost_framework.one }
+	if = {
+		limit = { africa_rsa_can_pay_selected_purchase = yes }
+		set_temp_variable = { africa_rsa_purchase_sale = constant:universal_cost_framework.zero }
+		set_temp_variable = { africa_rsa_purchase_source_id = constant:universal_cost_framework.zero }
+		if = {
+			limit = { black_friday_is_active = yes }
+			set_temp_variable = { africa_rsa_purchase_sale = constant:universal_cost_framework.one }
+			set_temp_variable = { africa_rsa_purchase_source_id = constant:universal_cost_framework.black_friday_source_id }
+		}
+		africa_rsa_prepare_purchase_bundle = yes
+		set_temp_variable = { africa_rsa_purchase_all_ready = constant:universal_cost_framework.one }
+		for_each_loop = {
+			array = africa_rsa_purchase_ordinary
+			value = africa_rsa_purchase_component_ordinary
+			index = africa_rsa_purchase_index
+			set_temp_variable = { universal_cost_quote_final_cost = africa_rsa_purchase_component_ordinary }
+			set_temp_variable = { universal_cost_quote_valid = constant:universal_cost_framework.one }
+			if = {
+				limit = { check_variable = { var = africa_rsa_purchase_sale value = constant:universal_cost_framework.one compare = equals } }
+				set_temp_variable = { universal_cost_quote_ordinary_cost = africa_rsa_purchase_component_ordinary }
+				set_temp_variable = { universal_cost_quote_family_mask = africa_rsa_purchase_families^africa_rsa_purchase_index }
+				set_temp_variable = { universal_cost_quote_rounding_quantum = constant:universal_cost_framework.default_rounding_quantum }
+				if = {
+					limit = { check_variable = { var = africa_rsa_purchase_kinds^africa_rsa_purchase_index value = constant:universal_cost_resource_kind.stability compare = equals } }
+					set_temp_variable = { universal_cost_quote_rounding_quantum = constant:universal_cost_fixed_point_quantum.stability }
+				}
+				universal_cost_quote_integer = yes
+			}
+			set_temp_variable = { universal_cost_quote_resource_kind = africa_rsa_purchase_kinds^africa_rsa_purchase_index }
+			set_temp_variable = { universal_cost_quote_affordable = constant:universal_cost_framework.result_no_op }
+			universal_cost_check_quote_affordable = yes
+			if = {
+				limit = {
+					OR = {
+						NOT = { check_variable = { var = universal_cost_quote_final_cost value = africa_rsa_purchase_quoted^africa_rsa_purchase_index compare = equals } }
+						NOT = { check_variable = { var = universal_cost_quote_valid value = constant:universal_cost_framework.one compare = equals } }
+						NOT = { check_variable = { var = universal_cost_quote_affordable value = constant:universal_cost_framework.result_success compare = equals } }
+					}
+				}
+				set_temp_variable = { africa_rsa_purchase_all_ready = constant:universal_cost_framework.zero }
+			}
+		}
+		if = {
+			limit = { check_variable = { var = africa_rsa_purchase_all_ready value = constant:universal_cost_framework.one compare = equals } }
+			set_temp_variable = { black_friday_owner_transaction_id = constant:universal_cost_framework.zero }
+			black_friday_allocate_owner_transaction = yes
+			set_variable = { africa_rsa_purchase_pending_receipt = black_friday_owner_transaction_id }
+			set_variable = { africa_rsa_purchase_pending_source = africa_rsa_purchase_source_id }
+			set_variable = { africa_rsa_purchase_pending_pp_ordinary = africa_rsa_purchase_pp_ordinary }
+			set_variable = { africa_rsa_purchase_pending_pp_paid = africa_rsa_purchase_pp_cost }
+			set_variable = { africa_rsa_purchase_pending_action = africa_rsa_purchase_action }
+			for_each_loop = {
+				array = africa_rsa_purchase_ordinary
+				value = africa_rsa_purchase_component_ordinary
+				index = africa_rsa_purchase_index
+				if = {
+					limit = { check_variable = { var = africa_rsa_purchase_all_ready value = constant:universal_cost_framework.one compare = equals } }
+					set_temp_variable = { universal_cost_payment_resource_kind = africa_rsa_purchase_kinds^africa_rsa_purchase_index }
+					set_temp_variable = { universal_cost_payment_amount = africa_rsa_purchase_quoted^africa_rsa_purchase_index }
+					set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_no_op }
+					universal_cost_pay_component = yes
+					if = {
+						limit = { check_variable = { var = universal_cost_payment_result value = constant:universal_cost_framework.result_success compare = equals } }
+						set_temp_variable = { universal_cost_transaction_id = africa_rsa_purchase_pending_receipt }
+						set_temp_variable = { universal_cost_transaction_component_id = africa_rsa_purchase_ids^africa_rsa_purchase_index }
+						set_temp_variable = { universal_cost_transaction_resource_kind = africa_rsa_purchase_kinds^africa_rsa_purchase_index }
+						set_temp_variable = { universal_cost_transaction_resource_id = constant:universal_cost_framework.zero }
+						set_temp_variable = { universal_cost_transaction_ordinary_cost = africa_rsa_purchase_component_ordinary }
+						set_temp_variable = { universal_cost_transaction_quoted_cost = africa_rsa_purchase_quoted^africa_rsa_purchase_index }
+						set_temp_variable = { universal_cost_transaction_actual_paid_cost = universal_cost_transaction_quoted_cost }
+						set_temp_variable = { universal_cost_transaction_source_id = africa_rsa_purchase_pending_source }
+						set_temp_variable = { universal_cost_transaction_primary_component = constant:universal_cost_framework.zero }
+						if = {
+							limit = { check_variable = { var = universal_cost_transaction_component_id value = constant:black_friday_event.owner_component_political_power compare = equals } }
+							set_temp_variable = { universal_cost_transaction_primary_component = constant:black_friday_event.owner_component_political_power }
+						}
+						set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
+						universal_cost_record_transaction = yes
+						if = {
+							limit = { NOT = { check_variable = { var = universal_cost_record_transaction_result value = constant:universal_cost_framework.result_success compare = equals } } }
+							# A debit without a receipt is returned before refunding stored rows.
+							set_temp_variable = { universal_cost_payment_resource_kind = africa_rsa_purchase_kinds^africa_rsa_purchase_index }
+							set_temp_variable = { universal_cost_payment_amount = africa_rsa_purchase_quoted^africa_rsa_purchase_index }
+							universal_cost_credit_component = yes
+							set_temp_variable = { africa_rsa_purchase_all_ready = constant:universal_cost_framework.zero }
+						}
+					}
+					else = { set_temp_variable = { africa_rsa_purchase_all_ready = constant:universal_cost_framework.zero } }
+				}
+			}
+			if = {
+				limit = { check_variable = { var = africa_rsa_purchase_all_ready value = constant:universal_cost_framework.one compare = equals } }
+				set_temp_variable = { africa_rsa_purchase_payment_result = constant:universal_cost_framework.one }
+			}
+			else = { africa_rsa_refund_pending_purchase = yes }
+		}
+	}
+}
+
+africa_rsa_clear_pending_purchase = {
+	clear_variable = africa_rsa_purchase_pending_receipt
+	clear_variable = africa_rsa_purchase_pending_source
+	clear_variable = africa_rsa_purchase_pending_pp_ordinary
+	clear_variable = africa_rsa_purchase_pending_pp_paid
+	clear_variable = africa_rsa_purchase_pending_action
+}
+
+africa_rsa_refund_pending_purchase = {
+	if = {
+		limit = { has_variable = africa_rsa_purchase_pending_receipt }
+		set_temp_variable = { universal_cost_transaction_id = africa_rsa_purchase_pending_receipt }
+		set_temp_variable = { universal_cost_refund_transaction_result = constant:universal_cost_framework.result_no_op }
+		set_temp_variable = { universal_cost_transaction_lookup_result = constant:universal_cost_framework.result_no_op }
+		set_temp_variable = { universal_cost_transaction_found_index = constant:universal_cost_framework.invalid_index }
+		universal_cost_refund_transaction = yes
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = universal_cost_refund_transaction_result value = constant:universal_cost_framework.result_success compare = equals }
+					AND = {
+						check_variable = { var = universal_cost_refund_transaction_result value = constant:universal_cost_framework.result_no_op compare = equals }
+						NOT = { check_variable = { var = universal_cost_transaction_lookup_result value = constant:universal_cost_framework.result_rejected compare = equals } }
+						OR = {
+							check_variable = { var = universal_cost_transaction_found_index value = constant:universal_cost_framework.invalid_index compare = equals }
+							AND = {
+								check_variable = { var = universal_cost_transaction_found_index value = constant:universal_cost_framework.invalid_index compare = greater_than }
+								check_variable = { var = universal_cost_transaction_states^universal_cost_transaction_found_index value = constant:universal_cost_framework.transaction_state_refunded compare = equals }
+							}
+						}
+					}
+				}
+			}
+			africa_rsa_clear_pending_purchase = yes
+		}
+	}
+}
+
+# Political Power is the primary family for each of these political actions.
+# Secondary resource payments retain their actual type and refund amount.
+africa_rsa_confirm_pending_purchase = {
+	set_temp_variable = { africa_rsa_purchase_confirmation_result = constant:universal_cost_framework.zero }
+	if = {
+		limit = { has_variable = africa_rsa_purchase_pending_receipt }
+		set_temp_variable = { universal_cost_transaction_id = africa_rsa_purchase_pending_receipt }
+		set_temp_variable = { universal_cost_settle_transaction_result = constant:universal_cost_framework.result_no_op }
+		universal_cost_settle_transaction = yes
+		if = {
+			limit = { check_variable = { var = universal_cost_settle_transaction_result value = constant:universal_cost_framework.result_success compare = equals } }
+			if = {
+				limit = { check_variable = { var = africa_rsa_purchase_pending_source value = constant:universal_cost_framework.black_friday_source_id compare = equals } }
+				set_temp_variable = { black_friday_purchase_transaction_id = africa_rsa_purchase_pending_receipt }
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.political_power }
+				set_temp_variable = { black_friday_purchase_ordinary_cost = africa_rsa_purchase_pending_pp_ordinary }
+				set_temp_variable = { black_friday_purchase_actual_paid_cost = africa_rsa_purchase_pending_pp_paid }
+				set_temp_variable = { black_friday_purchase_is_refundable = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_purchase_allow_political_power_only = constant:universal_cost_framework.zero }
+				if = {
+					limit = { check_variable = { var = africa_rsa_purchase_pending_action value = constant:africa_rsa_purchase.regional_request compare = equals } }
+					set_temp_variable = { black_friday_purchase_allow_political_power_only = constant:universal_cost_framework.one }
+				}
+				set_temp_variable = { black_friday_purchase_receipt_proof_valid = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_purchase_has_non_political_paid_component = constant:universal_cost_framework.zero }
+				black_friday_record_achievement_transaction = yes
+				set_temp_variable = { black_friday_purchase_allow_political_power_only = constant:universal_cost_framework.zero }
+			}
+			africa_rsa_clear_pending_purchase = yes
+			set_temp_variable = { africa_rsa_purchase_confirmation_result = constant:universal_cost_framework.one }
+		}
+	}
+}
+
+africa_rsa_purchase_relief = {
+	set_temp_variable = { africa_rsa_purchase_payment_result = constant:universal_cost_framework.zero }
+	if = {
+		limit = {
+			has_global_flag = africa_rsa_civil_war_active
+			africa_rsa_is_continental_coalition = yes
+			NOT = { has_country_flag = africa_rsa_civilians_protected }
+			275 = { is_controlled_by = ROOT }
+		}
+		set_temp_variable = { africa_rsa_purchase_action = constant:africa_rsa_purchase.relief }
+		africa_rsa_pay_selected_purchase = yes
+		if = {
+			limit = { check_variable = { var = africa_rsa_purchase_payment_result value = constant:universal_cost_framework.one compare = equals } }
+			africa_rsa_apply_civilian_corridor_protection = yes
+			africa_rsa_confirm_pending_purchase = yes
+		}
+	}
+}
+
+africa_rsa_purchase_regional_request = {
+	set_temp_variable = { africa_rsa_purchase_payment_result = constant:universal_cost_framework.zero }
+	set_temp_variable = { africa_rsa_purchase_confirmation_result = constant:universal_cost_framework.zero }
+	if = {
+		limit = {
+			has_global_flag = africa_rsa_civil_war_active
+			africa_rsa_is_continental_coalition = yes
+			check_variable = { var = africa_rsa_external_support_count value = constant:africa_rsa_count.required_external_supporters compare = less_than }
+			FROM = { africa_rsa_is_valid_regional_support_target = yes }
+		}
+		set_temp_variable = { africa_rsa_purchase_action = constant:africa_rsa_purchase.regional_request }
+		africa_rsa_pay_selected_purchase = yes
+		if = {
+			limit = { check_variable = { var = africa_rsa_purchase_payment_result value = constant:universal_cost_framework.one compare = equals } }
+			# The request purchase completes when its valid recipient is selected.
+			africa_rsa_confirm_pending_purchase = yes
+			if = {
+				limit = { check_variable = { var = africa_rsa_purchase_confirmation_result value = constant:universal_cost_framework.one compare = equals } }
+				africa_rsa_queue_paid_regional_support_request = yes
+			}
+			else = { africa_rsa_refund_pending_purchase = yes }
+		}
+	}
+}
+
+africa_rsa_purchase_citizenship = {
+	set_temp_variable = { africa_rsa_purchase_payment_result = constant:universal_cost_framework.zero }
+	if = {
+		limit = {
+			africa_is_current_host = yes
+			has_country_flag = africa_rsa_continental_victory
+			NOT = { has_country_flag = africa_rsa_citizenship_land_milestone }
+		}
+		set_temp_variable = { africa_rsa_purchase_action = constant:africa_rsa_purchase.citizenship }
+		africa_rsa_pay_selected_purchase = yes
+		if = {
+			limit = { check_variable = { var = africa_rsa_purchase_payment_result value = constant:universal_cost_framework.one compare = equals } }
+			africa_rsa_apply_citizenship_land_milestone = yes
+			africa_rsa_confirm_pending_purchase = yes
+		}
+	}
+}
+
+africa_rsa_purchase_sovereignty = {
+	set_temp_variable = { africa_rsa_purchase_payment_result = constant:universal_cost_framework.zero }
+	if = {
+		limit = {
+			africa_is_current_host = yes
+			has_country_flag = africa_rsa_continental_victory
+			NOT = { has_country_flag = africa_rsa_neighbor_sovereignty_guaranteed }
+			FROM = {
+				exists = yes
+				is_subject = no
+				NOT = { original_tag = SAF }
+				NOT = { has_capitulated = yes }
+				any_core_state = { is_on_continent = africa }
+				capital_scope = { is_on_continent = africa }
+				is_neighbor_of = ROOT
+				NOT = { is_guaranteed_by = ROOT }
+				NOT = { has_war_with = ROOT }
+			}
+		}
+		set_temp_variable = { africa_rsa_purchase_action = constant:africa_rsa_purchase.sovereignty }
+		africa_rsa_pay_selected_purchase = yes
+		if = {
+			limit = { check_variable = { var = africa_rsa_purchase_payment_result value = constant:universal_cost_framework.one compare = equals } }
+			give_guarantee = FROM
+			if = {
+				limit = { FROM = { is_guaranteed_by = ROOT } }
+				africa_rsa_apply_neighbor_sovereignty_guarantee = yes
+				africa_rsa_confirm_pending_purchase = yes
+			}
+			else = { africa_rsa_refund_pending_purchase = yes }
+		}
+	}
+}
+
+africa_rsa_purchase_exile_recovery = {
+	set_temp_variable = { africa_rsa_purchase_payment_result = constant:universal_cost_framework.zero }
+	if = {
+		limit = { africa_rsa_exile_recovery_can_be_completed = yes }
+		set_temp_variable = { africa_rsa_purchase_action = constant:africa_rsa_purchase.exile_recovery }
+		africa_rsa_pay_selected_purchase = yes
+		if = {
+			limit = { check_variable = { var = africa_rsa_purchase_payment_result value = constant:universal_cost_framework.one compare = equals } }
+			africa_rsa_apply_exile_recovery = yes
+			africa_rsa_confirm_pending_purchase = yes
+		}
+	}
+}

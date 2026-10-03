@@ -67,6 +67,10 @@ black_friday_scan_receipt_non_political_payment = {
 	set_temp_variable = { black_friday_purchase_has_non_political_paid_component = constant:universal_cost_framework.zero }
 	set_temp_variable = { black_friday_purchase_receipt_proof_valid = constant:universal_cost_framework.zero }
 	set_temp_variable = { universal_cost_transaction_lookup_id = black_friday_purchase_transaction_id }
+	set_temp_variable = { universal_cost_transaction_found_index = constant:universal_cost_framework.invalid_index }
+	set_temp_variable = { universal_cost_transaction_lookup_result = constant:universal_cost_framework.result_no_op }
+	set_temp_variable = { universal_cost_transaction_is_indexed = constant:universal_cost_framework.zero }
+	set_temp_variable = { universal_cost_transaction_pointer = constant:universal_cost_framework.zero }
 	universal_cost_find_transaction_row = yes
 	if = {
 		limit = { check_variable = { var = universal_cost_transaction_is_indexed value = constant:universal_cost_framework.one compare = equals } }
@@ -85,6 +89,10 @@ black_friday_scan_receipt_political_power_only = {
 	set_temp_variable = { black_friday_purchase_has_non_political_paid_component = constant:universal_cost_framework.zero }
 	set_temp_variable = { black_friday_purchase_receipt_proof_valid = constant:universal_cost_framework.zero }
 	set_temp_variable = { universal_cost_transaction_lookup_id = black_friday_purchase_transaction_id }
+	set_temp_variable = { universal_cost_transaction_found_index = constant:universal_cost_framework.invalid_index }
+	set_temp_variable = { universal_cost_transaction_lookup_result = constant:universal_cost_framework.result_no_op }
+	set_temp_variable = { universal_cost_transaction_is_indexed = constant:universal_cost_framework.zero }
+	set_temp_variable = { universal_cost_transaction_pointer = constant:universal_cost_framework.zero }
 	universal_cost_find_transaction_row = yes
 	if = {
 		limit = {
@@ -95,6 +103,8 @@ black_friday_scan_receipt_political_power_only = {
 		}
 		set_temp_variable = { universal_cost_component_lookup_transaction_id = black_friday_purchase_transaction_id }
 		set_temp_variable = { universal_cost_component_lookup_id = constant:black_friday_event.owner_component_political_power }
+		set_temp_variable = { universal_cost_component_found_index = constant:universal_cost_framework.invalid_index }
+		set_temp_variable = { universal_cost_component_lookup_result = constant:universal_cost_framework.result_no_op }
 		universal_cost_find_component_row = yes
 		if = {
 			limit = {
@@ -332,6 +342,8 @@ black_friday_record_achievement_transaction = {
 			}
 			black_friday_prepare_achievement_progress = yes
 		}
+		set_temp_variable = { black_friday_purchase_receipt_proof_valid = constant:universal_cost_framework.zero }
+		set_temp_variable = { black_friday_purchase_has_non_political_paid_component = constant:universal_cost_framework.zero }
 		if = {
 			limit = {
 				has_variable = black_friday_purchase_allow_political_power_only
@@ -432,8 +444,16 @@ black_friday_confirm_achievement_transaction = {
 			black_friday_achievement_is_valid_sale = yes
 			check_variable = { black_friday_purchase_transaction_id > 0 }
 		}
+		# Caller-owned cost API outputs.
+		set_temp_variable = { black_friday_achievement_transaction_index = constant:universal_cost_framework.invalid_index }
+		set_temp_variable = { black_friday_achievement_lookup_result = constant:universal_cost_framework.result_no_op }
+		set_temp_variable = { black_friday_achievement_row_pointer = constant:universal_cost_framework.zero }
 		black_friday_find_achievement_transaction = yes
 		set_temp_variable = { universal_cost_transaction_lookup_id = black_friday_purchase_transaction_id }
+		set_temp_variable = { universal_cost_transaction_found_index = constant:universal_cost_framework.invalid_index }
+		set_temp_variable = { universal_cost_transaction_lookup_result = constant:universal_cost_framework.result_no_op }
+		set_temp_variable = { universal_cost_transaction_is_indexed = constant:universal_cost_framework.zero }
+		set_temp_variable = { universal_cost_transaction_pointer = constant:universal_cost_framework.zero }
 		universal_cost_find_transaction_row = yes
 		set_temp_variable = { black_friday_purchase_current_non_political_paid = constant:universal_cost_framework.zero }
 		if = {
@@ -484,6 +504,10 @@ black_friday_confirm_achievement_transaction = {
 black_friday_retract_achievement_transaction = {
 	if = {
 		limit = { check_variable = { black_friday_purchase_transaction_id > 0 } }
+		# Caller-owned cost API outputs.
+		set_temp_variable = { black_friday_achievement_transaction_index = constant:universal_cost_framework.invalid_index }
+		set_temp_variable = { black_friday_achievement_lookup_result = constant:universal_cost_framework.result_no_op }
+		set_temp_variable = { black_friday_achievement_row_pointer = constant:universal_cost_framework.zero }
 		black_friday_find_achievement_transaction = yes
 		if = {
 			limit = {
@@ -658,6 +682,8 @@ black_friday_fury_append_spend_component = {
 # component or receipt operation fails.
 black_friday_pay_fury_bundle = {
 	set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.zero }
+	# Caller-owned cost API outputs.
+	set_temp_variable = { black_friday_owner_transaction_id = constant:universal_cost_framework.zero }
 	black_friday_allocate_owner_transaction = yes
 	set_temp_variable = { black_friday_fury_all_affordable = constant:universal_cost_framework.one }
 	set_temp_variable = {
@@ -699,6 +725,9 @@ black_friday_pay_fury_bundle = {
 			}
 			set_temp_variable = { universal_cost_quote_rounding_quantum = constant:universal_cost_fixed_point_quantum.war_support }
 		}
+		# Caller-owned cost API outputs.
+		set_temp_variable = { universal_cost_quote_final_cost = universal_cost_quote_ordinary_cost }
+		set_temp_variable = { universal_cost_quote_valid = constant:universal_cost_framework.zero }
 		universal_cost_quote_integer = yes
 		add_to_temp_array = {
 			array = black_friday_fury_component_final_costs
@@ -719,6 +748,8 @@ black_friday_pay_fury_bundle = {
 			universal_cost_quote_resource_kind = black_friday_fury_component_resource_kinds^black_friday_fury_component_index
 		}
 		set_temp_variable = { universal_cost_quote_final_cost = universal_cost_quote_final_cost }
+		# Caller-owned cost API outputs.
+		set_temp_variable = { universal_cost_quote_affordable = constant:universal_cost_framework.zero }
 		universal_cost_check_quote_affordable = yes
 		if = {
 			limit = {
@@ -760,6 +791,8 @@ black_friday_pay_fury_bundle = {
 			set_temp_variable = {
 				universal_cost_payment_amount = black_friday_fury_component_final_costs^black_friday_fury_payment_cursor
 			}
+			# Caller-owned cost API outputs.
+			set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_no_op }
 			universal_cost_pay_component = yes
 			if = {
 				limit = {
@@ -798,6 +831,8 @@ black_friday_pay_fury_bundle = {
 				}
 				set_temp_variable = { universal_cost_transaction_primary_component = black_friday_fury_primary_component_id }
 			}
+			# Caller-owned cost API outputs.
+			set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
 			universal_cost_record_transaction = yes
 			if = {
 				limit = {
@@ -847,6 +882,11 @@ black_friday_pay_fury_bundle = {
 # `black_friday_fury_single_*` fields and the selected primary achievement
 # family. The ordinary path remains in each owner's original payment helper.
 black_friday_fury_pay_single_active = {
+	# Caller-owned cost API outputs.
+	resize_temp_array = { array = black_friday_fury_component_ids size = constant:universal_cost_framework.one }
+	resize_temp_array = { array = black_friday_fury_component_resource_kinds size = constant:universal_cost_framework.one }
+	resize_temp_array = { array = black_friday_fury_component_family_masks size = constant:universal_cost_framework.one }
+	resize_temp_array = { array = black_friday_fury_component_ordinary_costs size = constant:universal_cost_framework.one }
 	black_friday_fury_begin_component_list = yes
 	set_temp_variable = { black_friday_fury_next_component_id = black_friday_fury_single_component_id }
 	set_temp_variable = { black_friday_fury_next_resource_kind = black_friday_fury_single_resource_kind }
@@ -855,6 +895,8 @@ black_friday_fury_pay_single_active = {
 	black_friday_fury_append_component = yes
 	set_temp_variable = { black_friday_fury_primary_component_id = black_friday_fury_single_component_id }
 	set_temp_variable = { black_friday_fury_primary_family_id = black_friday_fury_single_primary_family_id }
+	# Caller-owned cost API outputs.
+	set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.zero }
 	black_friday_pay_fury_bundle = yes
 }
 
@@ -862,6 +904,8 @@ black_friday_fury_pay_single_active = {
 # aligned component arrays and provide black_friday_fury_primary_component_id
 # and black_friday_fury_primary_family_id before calling it.
 black_friday_fury_pay_prepared_bundle_active = {
+	# Caller-owned cost API outputs.
+	set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.zero }
 	black_friday_pay_fury_bundle = yes
 }
 
@@ -891,6 +935,11 @@ black_friday_fury_pay_reinforcement_cost = {
 	set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.zero }
 	if = {
 		limit = { black_friday_is_active = yes }
+		# Caller-owned cost API outputs.
+		resize_temp_array = { array = black_friday_fury_component_ids size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_resource_kinds size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_family_masks size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_ordinary_costs size = constant:universal_cost_framework.one }
 		black_friday_fury_begin_component_list = yes
 		set_temp_variable = { black_friday_fury_next_component_id = constant:universal_cost_resource_kind.command_power }
 		set_temp_variable = { black_friday_fury_next_resource_kind = constant:universal_cost_resource_kind.command_power }
@@ -917,6 +966,11 @@ black_friday_fury_pay_settlement_cost = {
 	set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.zero }
 	if = {
 		limit = { black_friday_is_active = yes }
+		# Caller-owned cost API outputs.
+		resize_temp_array = { array = black_friday_fury_component_ids size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_resource_kinds size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_family_masks size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_ordinary_costs size = constant:universal_cost_framework.one }
 		black_friday_fury_begin_component_list = yes
 		set_temp_variable = { black_friday_fury_next_component_id = constant:universal_cost_resource_kind.command_power }
 		set_temp_variable = { black_friday_fury_next_resource_kind = constant:universal_cost_resource_kind.command_power }
@@ -949,6 +1003,11 @@ black_friday_fury_pay_core_cost = {
 	set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.zero }
 	if = {
 		limit = { black_friday_is_active = yes }
+		# Caller-owned cost API outputs.
+		resize_temp_array = { array = black_friday_fury_component_ids size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_resource_kinds size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_family_masks size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_ordinary_costs size = constant:universal_cost_framework.one }
 		black_friday_fury_begin_component_list = yes
 		set_temp_variable = { black_friday_fury_next_component_id = constant:universal_cost_resource_kind.command_power }
 		set_temp_variable = { black_friday_fury_next_resource_kind = constant:universal_cost_resource_kind.command_power }
@@ -981,6 +1040,11 @@ black_friday_fury_pay_registers_cost = {
 	set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.zero }
 	if = {
 		limit = { black_friday_is_active = yes }
+		# Caller-owned cost API outputs.
+		resize_temp_array = { array = black_friday_fury_component_ids size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_resource_kinds size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_family_masks size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_ordinary_costs size = constant:universal_cost_framework.one }
 		black_friday_fury_begin_component_list = yes
 		set_temp_variable = { black_friday_fury_next_component_id = constant:universal_cost_resource_kind.command_power }
 		set_temp_variable = { black_friday_fury_next_resource_kind = constant:universal_cost_resource_kind.command_power }
@@ -1013,6 +1077,11 @@ black_friday_fury_pay_rail_registry_cost = {
 	set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.zero }
 	if = {
 		limit = { black_friday_is_active = yes }
+		# Caller-owned cost API outputs.
+		resize_temp_array = { array = black_friday_fury_component_ids size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_resource_kinds size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_family_masks size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_ordinary_costs size = constant:universal_cost_framework.one }
 		black_friday_fury_begin_component_list = yes
 		set_temp_variable = { black_friday_fury_next_component_id = constant:universal_cost_resource_kind.command_power }
 		set_temp_variable = { black_friday_fury_next_resource_kind = constant:universal_cost_resource_kind.command_power }
@@ -1045,6 +1114,11 @@ black_friday_fury_pay_admin_core_cost = {
 	set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.zero }
 	if = {
 		limit = { black_friday_is_active = yes }
+		# Caller-owned cost API outputs.
+		resize_temp_array = { array = black_friday_fury_component_ids size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_resource_kinds size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_family_masks size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_ordinary_costs size = constant:universal_cost_framework.one }
 		black_friday_fury_begin_component_list = yes
 		set_temp_variable = { black_friday_fury_next_component_id = constant:universal_cost_resource_kind.command_power }
 		set_temp_variable = { black_friday_fury_next_resource_kind = constant:universal_cost_resource_kind.command_power }
@@ -1083,6 +1157,11 @@ black_friday_fury_pay_march_core_cost = {
 	set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.zero }
 	if = {
 		limit = { black_friday_is_active = yes }
+		# Caller-owned cost API outputs.
+		resize_temp_array = { array = black_friday_fury_component_ids size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_resource_kinds size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_family_masks size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_ordinary_costs size = constant:universal_cost_framework.one }
 		black_friday_fury_begin_component_list = yes
 		set_temp_variable = { black_friday_fury_next_component_id = constant:universal_cost_resource_kind.command_power }
 		set_temp_variable = { black_friday_fury_next_resource_kind = constant:universal_cost_resource_kind.command_power }
@@ -1127,6 +1206,11 @@ black_friday_fury_pay_cooperation_cost = {
 	set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.zero }
 	if = {
 		limit = { black_friday_is_active = yes }
+		# Caller-owned cost API outputs.
+		resize_temp_array = { array = black_friday_fury_component_ids size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_resource_kinds size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_family_masks size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_ordinary_costs size = constant:universal_cost_framework.one }
 		black_friday_fury_begin_component_list = yes
 		set_temp_variable = { black_friday_fury_next_component_id = constant:universal_cost_resource_kind.command_power }
 		set_temp_variable = { black_friday_fury_next_resource_kind = constant:universal_cost_resource_kind.command_power }
@@ -1187,6 +1271,11 @@ black_friday_fury_pay_terminal_reserves_cost = {
 	set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.zero }
 	if = {
 		limit = { black_friday_is_active = yes }
+		# Caller-owned cost API outputs.
+		resize_temp_array = { array = black_friday_fury_component_ids size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_resource_kinds size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_family_masks size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_ordinary_costs size = constant:universal_cost_framework.one }
 		black_friday_fury_begin_component_list = yes
 		set_temp_variable = { black_friday_fury_next_component_id = constant:universal_cost_resource_kind.command_power }
 		set_temp_variable = { black_friday_fury_next_resource_kind = constant:universal_cost_resource_kind.command_power }
@@ -1225,6 +1314,11 @@ black_friday_fury_pay_terminal_fronts_cost = {
 	set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.zero }
 	if = {
 		limit = { black_friday_is_active = yes }
+		# Caller-owned cost API outputs.
+		resize_temp_array = { array = black_friday_fury_component_ids size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_resource_kinds size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_family_masks size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_ordinary_costs size = constant:universal_cost_framework.one }
 		black_friday_fury_begin_component_list = yes
 		set_temp_variable = { black_friday_fury_next_component_id = constant:universal_cost_resource_kind.command_power }
 		set_temp_variable = { black_friday_fury_next_resource_kind = constant:universal_cost_resource_kind.command_power }
@@ -1251,6 +1345,11 @@ black_friday_fury_pay_anti_border_watch_cost = {
 	set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.zero }
 	if = {
 		limit = { black_friday_is_active = yes }
+		# Caller-owned cost API outputs.
+		resize_temp_array = { array = black_friday_fury_component_ids size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_resource_kinds size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_family_masks size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_ordinary_costs size = constant:universal_cost_framework.one }
 		black_friday_fury_begin_component_list = yes
 		set_temp_variable = { black_friday_fury_next_component_id = constant:universal_cost_resource_kind.command_power }
 		set_temp_variable = { black_friday_fury_next_resource_kind = constant:universal_cost_resource_kind.command_power }
@@ -1277,6 +1376,11 @@ black_friday_fury_pay_anti_emergency_aid_cost = {
 	set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.zero }
 	if = {
 		limit = { black_friday_is_active = yes }
+		# Caller-owned cost API outputs.
+		resize_temp_array = { array = black_friday_fury_component_ids size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_resource_kinds size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_family_masks size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_ordinary_costs size = constant:universal_cost_framework.one }
 		black_friday_fury_begin_component_list = yes
 		set_temp_variable = { black_friday_fury_next_component_id = constant:universal_cost_resource_kind.command_power }
 		set_temp_variable = { black_friday_fury_next_resource_kind = constant:universal_cost_resource_kind.command_power }
@@ -1315,6 +1419,11 @@ black_friday_fury_pay_anti_staff_talks_cost = {
 	set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.zero }
 	if = {
 		limit = { black_friday_is_active = yes }
+		# Caller-owned cost API outputs.
+		resize_temp_array = { array = black_friday_fury_component_ids size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_resource_kinds size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_family_masks size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_ordinary_costs size = constant:universal_cost_framework.one }
 		black_friday_fury_begin_component_list = yes
 		set_temp_variable = { black_friday_fury_next_component_id = constant:universal_cost_resource_kind.command_power }
 		set_temp_variable = { black_friday_fury_next_resource_kind = constant:universal_cost_resource_kind.command_power }
@@ -1341,6 +1450,11 @@ black_friday_fury_pay_anti_supply_denial_cost = {
 	set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.zero }
 	if = {
 		limit = { black_friday_is_active = yes }
+		# Caller-owned cost API outputs.
+		resize_temp_array = { array = black_friday_fury_component_ids size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_resource_kinds size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_family_masks size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = black_friday_fury_component_ordinary_costs size = constant:universal_cost_framework.one }
 		black_friday_fury_begin_component_list = yes
 		set_temp_variable = { black_friday_fury_next_component_id = constant:universal_cost_resource_kind.command_power }
 		set_temp_variable = { black_friday_fury_next_resource_kind = constant:universal_cost_resource_kind.command_power }
@@ -1386,10 +1500,15 @@ black_friday_fury_pay_anti_recognition_denial_cost = {
 black_friday_pay_communism_national_counter_agitation = {
 	set_temp_variable = { black_friday_owner_payment_success = constant:universal_cost_framework.zero }
 	prepare_communism_national_action_costs = yes
+	# Caller-owned cost API outputs.
+	set_temp_variable = { black_friday_owner_transaction_id = constant:universal_cost_framework.zero }
 	black_friday_allocate_owner_transaction = yes
 	set_temp_variable = { universal_cost_quote_rounding_quantum = constant:universal_cost_framework.default_rounding_quantum }
 	set_temp_variable = { universal_cost_quote_ordinary_cost = communism_counter_agitation_command_power_cost }
 	set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.command_power }
+	# Caller-owned cost API outputs.
+	set_temp_variable = { universal_cost_quote_final_cost = universal_cost_quote_ordinary_cost }
+	set_temp_variable = { universal_cost_quote_valid = constant:universal_cost_framework.zero }
 	universal_cost_quote_integer = yes
 	set_temp_variable = { black_friday_owner_command_power_paid = universal_cost_quote_final_cost }
 	set_temp_variable = { universal_cost_quote_ordinary_cost = communism_counter_agitation_political_power_cost }
@@ -1399,6 +1518,8 @@ black_friday_pay_communism_national_counter_agitation = {
 
 	set_temp_variable = { universal_cost_quote_resource_kind = constant:universal_cost_resource_kind.command_power }
 	set_temp_variable = { universal_cost_quote_final_cost = black_friday_owner_command_power_paid }
+	# Caller-owned cost API outputs.
+	set_temp_variable = { universal_cost_quote_affordable = constant:universal_cost_framework.zero }
 	universal_cost_check_quote_affordable = yes
 	set_temp_variable = { black_friday_owner_command_power_affordable = universal_cost_quote_affordable }
 	set_temp_variable = { universal_cost_quote_resource_kind = constant:universal_cost_resource_kind.political_power }
@@ -1420,6 +1541,8 @@ black_friday_pay_communism_national_counter_agitation = {
 		}
 		set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.command_power }
 		set_temp_variable = { universal_cost_payment_amount = black_friday_owner_command_power_paid }
+		# Caller-owned cost API outputs.
+		set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_no_op }
 		universal_cost_pay_component = yes
 		set_temp_variable = { black_friday_owner_command_power_payment = universal_cost_payment_result }
 		set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.political_power }
@@ -1448,6 +1571,8 @@ black_friday_pay_communism_national_counter_agitation = {
 			set_temp_variable = { universal_cost_transaction_actual_paid_cost = black_friday_owner_command_power_paid }
 			set_temp_variable = { universal_cost_transaction_source_id = constant:universal_cost_framework.black_friday_source_id }
 			set_temp_variable = { universal_cost_transaction_primary_component = constant:black_friday_event.owner_component_political_power }
+			# Caller-owned cost API outputs.
+			set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
 			universal_cost_record_transaction = yes
 			set_temp_variable = { black_friday_owner_command_power_record = universal_cost_record_transaction_result }
 			set_temp_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_political_power }
@@ -1493,10 +1618,15 @@ black_friday_pay_communism_national_counter_agitation = {
 black_friday_pay_communism_local_intervention = {
 	set_temp_variable = { black_friday_owner_payment_success = constant:universal_cost_framework.zero }
 	FROM = { prepare_communism_local_intervention_costs = yes }
+	# Caller-owned cost API outputs.
+	set_temp_variable = { black_friday_owner_transaction_id = constant:universal_cost_framework.zero }
 	black_friday_allocate_owner_transaction = yes
 	set_temp_variable = { universal_cost_quote_rounding_quantum = constant:universal_cost_framework.default_rounding_quantum }
 	set_temp_variable = { universal_cost_quote_ordinary_cost = FROM.communist_intervention_command_power_cost }
 	set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.command_power }
+	# Caller-owned cost API outputs.
+	set_temp_variable = { universal_cost_quote_final_cost = universal_cost_quote_ordinary_cost }
+	set_temp_variable = { universal_cost_quote_valid = constant:universal_cost_framework.zero }
 	universal_cost_quote_integer = yes
 	set_temp_variable = { black_friday_owner_command_power_paid = universal_cost_quote_final_cost }
 	set_temp_variable = { universal_cost_quote_ordinary_cost = FROM.communist_intervention_manpower_cost }
@@ -1510,6 +1640,8 @@ black_friday_pay_communism_local_intervention = {
 
 	set_temp_variable = { universal_cost_quote_resource_kind = constant:universal_cost_resource_kind.command_power }
 	set_temp_variable = { universal_cost_quote_final_cost = black_friday_owner_command_power_paid }
+	# Caller-owned cost API outputs.
+	set_temp_variable = { universal_cost_quote_affordable = constant:universal_cost_framework.zero }
 	universal_cost_check_quote_affordable = yes
 	set_temp_variable = { black_friday_owner_command_power_affordable = universal_cost_quote_affordable }
 	set_temp_variable = { universal_cost_quote_resource_kind = constant:universal_cost_resource_kind.manpower }
@@ -1540,6 +1672,8 @@ black_friday_pay_communism_local_intervention = {
 		}
 		set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.command_power }
 		set_temp_variable = { universal_cost_payment_amount = black_friday_owner_command_power_paid }
+		# Caller-owned cost API outputs.
+		set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_no_op }
 		universal_cost_pay_component = yes
 		set_temp_variable = { black_friday_owner_command_power_payment = universal_cost_payment_result }
 		set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.manpower }
@@ -1577,6 +1711,8 @@ black_friday_pay_communism_local_intervention = {
 			set_temp_variable = { universal_cost_transaction_actual_paid_cost = black_friday_owner_command_power_paid }
 			set_temp_variable = { universal_cost_transaction_source_id = constant:universal_cost_framework.black_friday_source_id }
 			set_temp_variable = { universal_cost_transaction_primary_component = constant:black_friday_event.owner_component_infantry_equipment }
+			# Caller-owned cost API outputs.
+			set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
 			universal_cost_record_transaction = yes
 			set_temp_variable = { black_friday_owner_command_power_record = universal_cost_record_transaction_result }
 			set_temp_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_manpower }
@@ -1634,10 +1770,15 @@ black_friday_pay_communism_local_intervention = {
 black_friday_pay_communism_emergency_intervention = {
 	set_temp_variable = { black_friday_owner_payment_success = constant:universal_cost_framework.zero }
 	prepare_communism_national_action_costs = yes
+	# Caller-owned cost API outputs.
+	set_temp_variable = { black_friday_owner_transaction_id = constant:universal_cost_framework.zero }
 	black_friday_allocate_owner_transaction = yes
 	set_temp_variable = { universal_cost_quote_rounding_quantum = constant:universal_cost_framework.default_rounding_quantum }
 	set_temp_variable = { universal_cost_quote_ordinary_cost = communism_emergency_command_power_cost }
 	set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.command_power }
+	# Caller-owned cost API outputs.
+	set_temp_variable = { universal_cost_quote_final_cost = universal_cost_quote_ordinary_cost }
+	set_temp_variable = { universal_cost_quote_valid = constant:universal_cost_framework.zero }
 	universal_cost_quote_integer = yes
 	set_temp_variable = { black_friday_owner_command_power_paid = universal_cost_quote_final_cost }
 	set_temp_variable = { universal_cost_quote_ordinary_cost = communism_emergency_manpower_cost }
@@ -1655,6 +1796,8 @@ black_friday_pay_communism_emergency_intervention = {
 
 	set_temp_variable = { universal_cost_quote_resource_kind = constant:universal_cost_resource_kind.command_power }
 	set_temp_variable = { universal_cost_quote_final_cost = black_friday_owner_command_power_paid }
+	# Caller-owned cost API outputs.
+	set_temp_variable = { universal_cost_quote_affordable = constant:universal_cost_framework.zero }
 	universal_cost_check_quote_affordable = yes
 	set_temp_variable = { black_friday_owner_command_power_affordable = universal_cost_quote_affordable }
 	set_temp_variable = { universal_cost_quote_resource_kind = constant:universal_cost_resource_kind.manpower }
@@ -1694,6 +1837,8 @@ black_friday_pay_communism_emergency_intervention = {
 		}
 		set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.command_power }
 		set_temp_variable = { universal_cost_payment_amount = black_friday_owner_command_power_paid }
+		# Caller-owned cost API outputs.
+		set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_no_op }
 		universal_cost_pay_component = yes
 		set_temp_variable = { black_friday_owner_command_power_payment = universal_cost_payment_result }
 		set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.manpower }
@@ -1740,6 +1885,8 @@ black_friday_pay_communism_emergency_intervention = {
 			set_temp_variable = { universal_cost_transaction_actual_paid_cost = black_friday_owner_command_power_paid }
 			set_temp_variable = { universal_cost_transaction_source_id = constant:universal_cost_framework.black_friday_source_id }
 			set_temp_variable = { universal_cost_transaction_primary_component = constant:black_friday_event.owner_component_infantry_equipment }
+			# Caller-owned cost API outputs.
+			set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
 			universal_cost_record_transaction = yes
 			set_temp_variable = { black_friday_owner_command_power_record = universal_cost_record_transaction_result }
 			set_temp_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_manpower }
@@ -1996,6 +2143,8 @@ black_friday_record_bio_medical_component = {
 		}
 		set_temp_variable = { universal_cost_transaction_primary_component = constant:black_friday_event.owner_component_support_equipment }
 	}
+	# Caller-owned cost API outputs.
+	set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
 	universal_cost_record_transaction = yes
 	if = {
 		limit = {
@@ -2025,9 +2174,14 @@ black_friday_pay_bio_expand_medical_capacity = {
 			set_temp_variable = { universal_cost_quote_ordinary_cost = constant:bio_countermeasure_cost.expand_medical_pp }
 			set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.political_power }
 			set_temp_variable = { universal_cost_quote_rounding_quantum = constant:universal_cost_framework.default_rounding_quantum }
+			# Caller-owned cost API outputs.
+			set_temp_variable = { universal_cost_quote_final_cost = universal_cost_quote_ordinary_cost }
+			set_temp_variable = { universal_cost_quote_valid = constant:universal_cost_framework.zero }
 			universal_cost_quote_integer = yes
 			set_temp_variable = { black_friday_bio_medical_pp_paid = universal_cost_quote_final_cost }
 			set_temp_variable = { universal_cost_quote_resource_kind = constant:universal_cost_resource_kind.political_power }
+			# Caller-owned cost API outputs.
+			set_temp_variable = { universal_cost_quote_affordable = constant:universal_cost_framework.zero }
 			universal_cost_check_quote_affordable = yes
 			set_temp_variable = { black_friday_bio_medical_pp_affordable = universal_cost_quote_affordable }
 
@@ -2055,11 +2209,15 @@ black_friday_pay_bio_expand_medical_capacity = {
 					check_variable = { var = black_friday_bio_medical_support_affordable value = constant:universal_cost_framework.result_success compare = equals }
 					check_variable = { var = black_friday_bio_medical_truck_affordable value = constant:universal_cost_framework.result_success compare = equals }
 				}
+				# Caller-owned cost API outputs.
+				set_temp_variable = { black_friday_owner_transaction_id = constant:universal_cost_framework.zero }
 				black_friday_allocate_owner_transaction = yes
 				set_temp_variable = { black_friday_bio_medical_all_paid = constant:universal_cost_framework.one }
 
 				set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.political_power }
 				set_temp_variable = { universal_cost_payment_amount = black_friday_bio_medical_pp_paid }
+				# Caller-owned cost API outputs.
+				set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_no_op }
 				universal_cost_pay_component = yes
 				if = {
 					limit = { check_variable = { var = universal_cost_payment_result value = constant:universal_cost_framework.result_success compare = equals } }
@@ -2151,6 +2309,8 @@ black_friday_cbrn_bundle_pay_record_component = {
 		}
 		set_temp_variable = { universal_cost_payment_resource_kind = black_friday_cbrn_bundle_component_kind }
 		set_temp_variable = { universal_cost_payment_amount = black_friday_cbrn_bundle_component_paid }
+		# Caller-owned cost API outputs.
+		set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_no_op }
 		universal_cost_pay_component = yes
 		if = {
 			limit = { check_variable = { var = universal_cost_payment_result value = constant:universal_cost_framework.result_success compare = equals } }
@@ -2188,6 +2348,8 @@ black_friday_cbrn_bundle_pay_record_component = {
 					limit = { check_variable = { var = black_friday_cbrn_bundle_component_kind value = constant:universal_cost_resource_kind.support_equipment_1 compare = equals } }
 					set_temp_variable = { universal_cost_transaction_primary_component = black_friday_cbrn_bundle_component_id }
 				}
+				# Caller-owned cost API outputs.
+				set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
 				universal_cost_record_transaction = yes
 				if = {
 					limit = { check_variable = { var = universal_cost_record_transaction_result value = constant:universal_cost_framework.result_success compare = not_equals } }
@@ -2225,6 +2387,10 @@ black_friday_pay_cbrn_equipment_bundle = {
 		set_temp_variable = { universal_cost_quote_ordinary_cost = black_friday_cbrn_bundle_ordinary_instruments }
 		set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.equipment }
 		set_temp_variable = { universal_cost_quote_rounding_quantum = constant:universal_cost_framework.default_rounding_quantum }
+		# Caller-owned cost API outputs.
+		set_temp_variable = { universal_cost_quote_final_cost = universal_cost_quote_ordinary_cost }
+		set_temp_variable = { universal_cost_quote_valid = constant:universal_cost_framework.zero }
+		set_temp_variable = { universal_cost_quote_source_count = constant:universal_cost_framework.zero }
 		universal_cost_quote_integer = yes
 		set_temp_variable = { black_friday_cbrn_bundle_instrument_paid = universal_cost_quote_final_cost }
 		set_temp_variable = { black_friday_cbrn_bundle_instrument_source_count = universal_cost_quote_source_count }
@@ -2235,6 +2401,8 @@ black_friday_pay_cbrn_equipment_bundle = {
 		set_temp_variable = { black_friday_cbrn_bundle_support_paid = universal_cost_quote_final_cost }
 		set_temp_variable = { black_friday_cbrn_bundle_support_source_count = universal_cost_quote_source_count }
 		set_temp_variable = { universal_cost_quote_resource_kind = constant:universal_cost_resource_kind.support_equipment_1 }
+		# Caller-owned cost API outputs.
+		set_temp_variable = { universal_cost_quote_affordable = constant:universal_cost_framework.zero }
 		universal_cost_check_quote_affordable = yes
 		set_temp_variable = { black_friday_cbrn_bundle_support_affordability = universal_cost_quote_affordable }
 		if = {
@@ -2306,6 +2474,8 @@ black_friday_pay_cbrn_equipment_bundle = {
 					NOT = { has_equipment = { cbrn_instrument_equipment_3 < black_friday_cbrn_bundle_paid_3 } }
 					NOT = { has_equipment = { support_equipment_1 < black_friday_cbrn_bundle_support_paid } }
 				}
+				# Caller-owned cost API outputs.
+				set_temp_variable = { black_friday_owner_transaction_id = constant:universal_cost_framework.zero }
 				black_friday_allocate_owner_transaction = yes
 				set_temp_variable = { black_friday_cbrn_bundle_all_paid = constant:universal_cost_framework.one }
 				set_temp_variable = { black_friday_cbrn_bundle_component_kind = constant:universal_cost_resource_kind.cbrn_instrument_equipment_1 }
@@ -2335,6 +2505,8 @@ black_friday_pay_cbrn_equipment_bundle = {
 				if = {
 					limit = { check_variable = { var = black_friday_cbrn_bundle_all_paid value = constant:universal_cost_framework.one compare = equals } }
 					set_temp_variable = { universal_cost_transaction_id = black_friday_owner_transaction_id }
+					# Caller-owned cost API outputs.
+					set_temp_variable = { universal_cost_settle_transaction_result = constant:universal_cost_framework.result_no_op }
 					universal_cost_settle_transaction = yes
 					if = {
 						limit = { check_variable = { var = universal_cost_settle_transaction_result value = constant:universal_cost_framework.result_success compare = equals } }
@@ -2370,6 +2542,9 @@ black_friday_pay_cbrn_demand_inspections = {
 				exists = yes
 				cbrn_target_can_receive_inspection_demand_from_root = yes
 			}
+			# Caller-owned cost API outputs.
+			set_temp_variable = { black_friday_cbrn_inspection_instrument_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_cbrn_inspection_support_cost = constant:universal_cost_framework.zero }
 			black_friday_can_pay_cbrn_demand_inspections = yes
 		}
 		set_temp_variable = { black_friday_cbrn_bundle_ordinary_instruments = constant:cbrn_diplomacy_cost.inspection_instruments }
@@ -2377,6 +2552,8 @@ black_friday_pay_cbrn_demand_inspections = {
 		set_temp_variable = { black_friday_cbrn_bundle_instrument_cost = black_friday_cbrn_inspection_instrument_cost }
 		set_temp_variable = { black_friday_cbrn_bundle_support_cost = black_friday_cbrn_inspection_support_cost }
 		set_temp_variable = { black_friday_cbrn_bundle_family_id = constant:universal_cost_family.diplomatic }
+		# Caller-owned cost API outputs.
+		set_temp_variable = { black_friday_cbrn_bundle_payment_success = constant:universal_cost_framework.zero }
 		black_friday_pay_cbrn_equipment_bundle = yes
 		set_temp_variable = { black_friday_cbrn_inspection_payment_success = black_friday_cbrn_bundle_payment_success }
 	}
@@ -2390,6 +2567,8 @@ black_friday_apply_cbrn_inspection_demand = {
 			black_friday_is_active = yes
 			universal_cost_source_is_active = yes
 		}
+		# Caller-owned cost API outputs.
+		set_temp_variable = { black_friday_cbrn_inspection_payment_success = constant:universal_cost_framework.zero }
 		black_friday_pay_cbrn_demand_inspections = yes
 		if = {
 			limit = { check_variable = { var = black_friday_cbrn_inspection_payment_success value = constant:universal_cost_framework.one compare = equals } }
@@ -2420,6 +2599,8 @@ black_friday_pay_cbrn_forensic_publication = {
 		set_temp_variable = { black_friday_cbrn_bundle_instrument_cost = black_friday_cbrn_forensic_instrument_cost }
 		set_temp_variable = { black_friday_cbrn_bundle_support_cost = black_friday_cbrn_forensic_support_cost }
 		set_temp_variable = { black_friday_cbrn_bundle_family_id = constant:universal_cost_family.diplomatic }
+		# Caller-owned cost API outputs.
+		set_temp_variable = { black_friday_cbrn_bundle_payment_success = constant:universal_cost_framework.zero }
 		black_friday_pay_cbrn_equipment_bundle = yes
 		set_temp_variable = { black_friday_cbrn_forensic_payment_success = black_friday_cbrn_bundle_payment_success }
 	}
@@ -2442,11 +2623,16 @@ black_friday_apply_cbrn_forensic_publication = {
 					is_controlled_by = ROOT
 					cbrn_state_has_shareable_forensic_evidence = yes
 				}
+				# Caller-owned cost API outputs.
+				set_temp_variable = { black_friday_cbrn_forensic_instrument_cost = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_cbrn_forensic_support_cost = constant:universal_cost_framework.zero }
 				black_friday_cbrn_forensic_materials_are_affordable = yes
 			}
 			FROM = { cbrn_diplomacy_begin_forensic_publication = yes }
 			if = {
 				limit = { FROM = { has_state_flag = cbrn_forensic_publication_active } }
+				# Caller-owned cost API outputs.
+				set_temp_variable = { black_friday_cbrn_forensic_payment_success = constant:universal_cost_framework.zero }
 				black_friday_pay_cbrn_forensic_publication = yes
 				if = {
 					limit = { check_variable = { var = black_friday_cbrn_forensic_payment_success value = constant:universal_cost_framework.zero compare = equals } }
@@ -2478,6 +2664,8 @@ black_friday_cbrn_decon_pay_record_component = {
 		}
 		set_temp_variable = { universal_cost_payment_resource_kind = black_friday_cbrn_decon_component_kind }
 		set_temp_variable = { universal_cost_payment_amount = black_friday_cbrn_decon_component_paid }
+		# Caller-owned cost API outputs.
+		set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_no_op }
 		universal_cost_pay_component = yes
 		set_temp_variable = { black_friday_cbrn_decon_component_after = constant:universal_cost_framework.invalid_index }
 		if = {
@@ -2536,6 +2724,8 @@ black_friday_cbrn_decon_pay_record_component = {
 			set_temp_variable = { universal_cost_transaction_actual_paid_cost = black_friday_cbrn_decon_component_actual }
 			set_temp_variable = { universal_cost_transaction_source_id = black_friday_cbrn_decon_receipt_source_id }
 			set_temp_variable = { universal_cost_transaction_primary_component = constant:universal_cost_framework.zero }
+			# Caller-owned cost API outputs.
+			set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
 			universal_cost_record_transaction = yes
 			if = {
 				limit = { check_variable = { var = universal_cost_record_transaction_result value = constant:universal_cost_framework.result_success compare = not_equals } }
@@ -2567,11 +2757,19 @@ black_friday_pay_cbrn_decon_sponsorship = {
 			check_variable = { var = black_friday_cbrn_decon_requested_sale_variant value = constant:universal_cost_framework.two compare = equals }
 			black_friday_cbrn_decon_sale_source_is_active = yes
 			FROM = { cbrn_state_can_receive_international_decontamination_from_root = yes }
+			# Caller-owned cost API outputs.
+			set_temp_variable = { black_friday_cbrn_decon_masks_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_cbrn_decon_equipment_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_cbrn_decon_trucks_cost = constant:universal_cost_framework.zero }
 			black_friday_cbrn_decon_sale_materials_are_affordable = yes
 		}
 		set_temp_variable = { universal_cost_quote_ordinary_cost = constant:cbrn_diplomacy_cost.decon_masks }
 		set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.equipment }
 		set_temp_variable = { universal_cost_quote_rounding_quantum = constant:universal_cost_framework.default_rounding_quantum }
+		# Caller-owned cost API outputs.
+		set_temp_variable = { universal_cost_quote_final_cost = universal_cost_quote_ordinary_cost }
+		set_temp_variable = { universal_cost_quote_valid = constant:universal_cost_framework.zero }
+		set_temp_variable = { universal_cost_quote_source_count = constant:universal_cost_framework.zero }
 		universal_cost_quote_integer = yes
 		set_temp_variable = { black_friday_cbrn_decon_masks_requote = universal_cost_quote_final_cost }
 		set_temp_variable = { black_friday_cbrn_decon_masks_source_count = universal_cost_quote_source_count }
@@ -2602,6 +2800,10 @@ black_friday_pay_cbrn_decon_sponsorship = {
 			check_variable = { var = black_friday_cbrn_decon_requested_sale_variant value = constant:universal_cost_framework.one compare = equals }
 			NOT = { black_friday_cbrn_decon_sale_source_is_active = yes }
 			FROM = { cbrn_state_can_receive_international_decontamination_from_root = yes }
+			# Caller-owned cost API outputs.
+			set_temp_variable = { black_friday_cbrn_decon_masks_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_cbrn_decon_equipment_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_cbrn_decon_trucks_cost = constant:universal_cost_framework.zero }
 			black_friday_cbrn_decon_ordinary_materials_are_affordable = yes
 		}
 		set_temp_variable = { black_friday_cbrn_decon_masks_requote = constant:cbrn_diplomacy_cost.decon_masks }
@@ -2860,6 +3062,8 @@ black_friday_pay_cbrn_decon_sponsorship = {
 					check_variable = { var = black_friday_cbrn_decon_equipment_remaining value = constant:universal_cost_framework.zero compare = equals }
 					check_variable = { var = black_friday_cbrn_decon_trucks_remaining value = constant:universal_cost_framework.zero compare = equals }
 				}
+				# Caller-owned cost API outputs.
+				set_temp_variable = { black_friday_owner_transaction_id = constant:universal_cost_framework.zero }
 				black_friday_allocate_owner_transaction = yes
 				set_temp_variable = { black_friday_cbrn_decon_all_paid = constant:universal_cost_framework.one }
 				set_temp_variable = { black_friday_cbrn_decon_component_kind = constant:universal_cost_resource_kind.gas_mask_equipment_reconditioned }
@@ -2915,6 +3119,8 @@ black_friday_pay_cbrn_decon_sponsorship = {
 				if = {
 					limit = { check_variable = { var = black_friday_cbrn_decon_all_paid value = constant:universal_cost_framework.one compare = equals } }
 					set_temp_variable = { universal_cost_transaction_id = black_friday_owner_transaction_id }
+					# Caller-owned cost API outputs.
+					set_temp_variable = { universal_cost_settle_transaction_result = constant:universal_cost_framework.result_no_op }
 					universal_cost_settle_transaction = yes
 					if = {
 						limit = { check_variable = { var = universal_cost_settle_transaction_result value = constant:universal_cost_framework.result_success compare = equals } }
@@ -2988,9 +3194,14 @@ black_friday_pay_cbrn_move_civilians_to_shelters = {
 		set_temp_variable = { universal_cost_quote_ordinary_cost = constant:cbrn_protection_decision_cost.move_to_shelters_pp }
 		set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.political_power }
 		set_temp_variable = { universal_cost_quote_rounding_quantum = constant:universal_cost_framework.default_rounding_quantum }
+		# Caller-owned cost API outputs.
+		set_temp_variable = { universal_cost_quote_final_cost = universal_cost_quote_ordinary_cost }
+		set_temp_variable = { universal_cost_quote_valid = constant:universal_cost_framework.zero }
 		universal_cost_quote_integer = yes
 		set_temp_variable = { black_friday_cbrn_shelter_pp_paid = universal_cost_quote_final_cost }
 		set_temp_variable = { universal_cost_quote_resource_kind = constant:universal_cost_resource_kind.political_power }
+		# Caller-owned cost API outputs.
+		set_temp_variable = { universal_cost_quote_affordable = constant:universal_cost_framework.zero }
 		universal_cost_check_quote_affordable = yes
 		set_temp_variable = { black_friday_cbrn_shelter_pp_affordable = universal_cost_quote_affordable }
 
@@ -3018,11 +3229,15 @@ black_friday_pay_cbrn_move_civilians_to_shelters = {
 				check_variable = { var = black_friday_cbrn_shelter_support_affordable value = constant:universal_cost_framework.result_success compare = equals }
 				check_variable = { var = black_friday_cbrn_shelter_train_affordable value = constant:universal_cost_framework.result_success compare = equals }
 			}
+			# Caller-owned cost API outputs.
+			set_temp_variable = { black_friday_owner_transaction_id = constant:universal_cost_framework.zero }
 			black_friday_allocate_owner_transaction = yes
 			set_temp_variable = { black_friday_cbrn_shelter_all_paid = constant:universal_cost_framework.one }
 
 			set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.political_power }
 			set_temp_variable = { universal_cost_payment_amount = black_friday_cbrn_shelter_pp_paid }
+			# Caller-owned cost API outputs.
+			set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_no_op }
 			universal_cost_pay_component = yes
 			if = {
 				limit = { check_variable = { var = universal_cost_payment_result value = constant:universal_cost_framework.result_success compare = equals } }
@@ -3035,6 +3250,8 @@ black_friday_pay_cbrn_move_civilians_to_shelters = {
 				set_temp_variable = { universal_cost_transaction_actual_paid_cost = black_friday_cbrn_shelter_pp_paid }
 				set_temp_variable = { universal_cost_transaction_source_id = constant:universal_cost_framework.black_friday_source_id }
 				set_temp_variable = { universal_cost_transaction_primary_component = constant:universal_cost_framework.zero }
+				# Caller-owned cost API outputs.
+				set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
 				universal_cost_record_transaction = yes
 				if = {
 					limit = { check_variable = { var = universal_cost_record_transaction_result value = constant:universal_cost_framework.result_success compare = not_equals } }
@@ -3061,6 +3278,8 @@ black_friday_pay_cbrn_move_civilians_to_shelters = {
 					set_temp_variable = { universal_cost_transaction_actual_paid_cost = black_friday_cbrn_shelter_support_paid }
 					set_temp_variable = { universal_cost_transaction_source_id = constant:universal_cost_framework.black_friday_source_id }
 					set_temp_variable = { universal_cost_transaction_primary_component = constant:black_friday_event.owner_component_support_equipment }
+					# Caller-owned cost API outputs.
+					set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
 					universal_cost_record_transaction = yes
 					if = {
 						limit = { check_variable = { var = universal_cost_record_transaction_result value = constant:universal_cost_framework.result_success compare = not_equals } }
@@ -3088,6 +3307,8 @@ black_friday_pay_cbrn_move_civilians_to_shelters = {
 					set_temp_variable = { universal_cost_transaction_actual_paid_cost = black_friday_cbrn_shelter_train_paid }
 					set_temp_variable = { universal_cost_transaction_source_id = constant:universal_cost_framework.black_friday_source_id }
 					set_temp_variable = { universal_cost_transaction_primary_component = constant:universal_cost_framework.zero }
+					# Caller-owned cost API outputs.
+					set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
 					universal_cost_record_transaction = yes
 					if = {
 						limit = { check_variable = { var = universal_cost_record_transaction_result value = constant:universal_cost_framework.result_success compare = not_equals } }
@@ -3121,6 +3342,8 @@ black_friday_pay_cbrn_move_civilians_to_shelters = {
 black_friday_apply_cbrn_civilian_shelter_movement = {
 	if = {
 		limit = { black_friday_is_active = yes }
+		# Caller-owned cost API outputs.
+		set_temp_variable = { black_friday_cbrn_shelter_payment_success = constant:universal_cost_framework.zero }
 		black_friday_pay_cbrn_move_civilians_to_shelters = yes
 		if = {
 			limit = { check_variable = { var = black_friday_cbrn_shelter_payment_success value = constant:universal_cost_framework.one compare = equals } }
@@ -3153,8 +3376,13 @@ black_friday_begin_alien_infantry_landing_reservation = {
 		set_temp_variable = {
 			universal_cost_quote_rounding_quantum = constant:universal_cost_framework.default_rounding_quantum
 		}
+		# Caller-owned cost API outputs.
+		set_temp_variable = { universal_cost_quote_final_cost = universal_cost_quote_ordinary_cost }
+		set_temp_variable = { universal_cost_quote_valid = constant:universal_cost_framework.zero }
 		universal_cost_quote_integer = yes
 		set_temp_variable = { alien_infantry_landing_reserve_amount = universal_cost_quote_final_cost }
+		# Caller-owned cost API outputs.
+		set_temp_variable = { black_friday_owner_transaction_id = constant:universal_cost_framework.zero }
 		black_friday_allocate_owner_transaction = yes
 		alien_infantry_begin_landing_reservation_with_amount = yes
 		if = {
@@ -3187,6 +3415,8 @@ black_friday_begin_alien_infantry_landing_reservation = {
 			set_temp_variable = {
 				universal_cost_transaction_primary_component = constant:black_friday_event.owner_component_alien_laser_reserve
 			}
+			# Caller-owned cost API outputs.
+			set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
 			universal_cost_record_transaction = yes
 			if = {
 				limit = {
@@ -3228,12 +3458,16 @@ black_friday_refund_alien_infantry_landing_transaction = {
 		set_temp_variable = {
 			universal_cost_transaction_component_id = constant:black_friday_event.owner_component_alien_laser_reserve
 		}
+		# Caller-owned cost API outputs.
+		set_temp_variable = { universal_cost_mark_component_refunded_result = constant:universal_cost_framework.result_no_op }
 		universal_cost_mark_component_refunded = yes
 		if = {
 			limit = { check_variable = { var = universal_cost_mark_component_refunded_result value = constant:universal_cost_framework.result_success compare = equals } }
 			set_temp_variable = { black_friday_purchase_transaction_id = alien_infantry_landing_universal_transaction_id }
 			black_friday_retract_achievement_transaction = yes
 			set_temp_variable = { universal_cost_transaction_id = alien_infantry_landing_universal_transaction_id }
+			# Caller-owned cost API outputs.
+			set_temp_variable = { universal_cost_refund_transaction_result = constant:universal_cost_framework.result_no_op }
 			universal_cost_refund_transaction = yes
 			if = {
 				limit = { check_variable = { var = universal_cost_refund_transaction_result value = constant:universal_cost_framework.result_success compare = equals } }
@@ -3251,6 +3485,8 @@ black_friday_settle_alien_infantry_landing_transaction = {
 		set_temp_variable = {
 			universal_cost_transaction_id = alien_infantry_landing_universal_transaction_id
 		}
+		# Caller-owned cost API outputs.
+		set_temp_variable = { universal_cost_settle_transaction_result = constant:universal_cost_framework.result_no_op }
 		universal_cost_settle_transaction = yes
 		if = {
 			limit = { check_variable = { var = universal_cost_settle_transaction_result value = constant:universal_cost_framework.result_success compare = equals } }
@@ -3288,6 +3524,8 @@ black_friday_record_africa_elephant_logistics_component = {
 		}
 		set_temp_variable = { universal_cost_transaction_primary_component = constant:black_friday_event.owner_component_elephant_equipment }
 	}
+	# Caller-owned cost API outputs.
+	set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
 	universal_cost_record_transaction = yes
 	if = {
 		limit = {
@@ -3324,6 +3562,8 @@ black_friday_refund_africa_elephant_logistics_transaction = {
 	set_temp_variable = { universal_cost_transaction_lookup_id = black_friday_owner_transaction_id }
 	set_temp_variable = { universal_cost_component_lookup_transaction_id = black_friday_owner_transaction_id }
 	set_temp_variable = { universal_cost_component_lookup_id = constant:black_friday_event.owner_component_elephant_equipment }
+	set_temp_variable = { universal_cost_component_found_index = constant:universal_cost_framework.invalid_index }
+	set_temp_variable = { universal_cost_component_lookup_result = constant:universal_cost_framework.result_no_op }
 	universal_cost_find_component_row = yes
 	if = {
 		limit = {
@@ -3341,6 +3581,8 @@ black_friday_refund_africa_elephant_logistics_transaction = {
 			amount = black_friday_africa_logistics_refund_amount
 		}
 		set_temp_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_elephant_equipment }
+		# Caller-owned cost API outputs.
+		set_temp_variable = { universal_cost_mark_component_refunded_result = constant:universal_cost_framework.result_no_op }
 		universal_cost_mark_component_refunded = yes
 		if = {
 			limit = { check_variable = { var = universal_cost_mark_component_refunded_result value = constant:universal_cost_framework.result_success compare = not_equals } }
@@ -3369,10 +3611,15 @@ black_friday_pay_africa_elephant_logistics_contract = {
 		set_temp_variable = { universal_cost_quote_rounding_quantum = constant:universal_cost_framework.default_rounding_quantum }
 		set_temp_variable = { universal_cost_quote_ordinary_cost = constant:africa_elephant_operation.logistics_command_power_cost }
 		set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.political_power }
+		# Caller-owned cost API outputs.
+		set_temp_variable = { universal_cost_quote_final_cost = universal_cost_quote_ordinary_cost }
+		set_temp_variable = { universal_cost_quote_valid = constant:universal_cost_framework.zero }
 		universal_cost_quote_integer = yes
 		set_temp_variable = { black_friday_africa_elephant_logistics_political_power_paid = universal_cost_quote_final_cost }
 		set_temp_variable = { universal_cost_quote_resource_kind = constant:universal_cost_resource_kind.political_power }
 		set_temp_variable = { universal_cost_quote_final_cost = black_friday_africa_elephant_logistics_political_power_paid }
+		# Caller-owned cost API outputs.
+		set_temp_variable = { universal_cost_quote_affordable = constant:universal_cost_framework.zero }
 		universal_cost_check_quote_affordable = yes
 		if = { limit = { check_variable = { var = universal_cost_quote_affordable value = constant:universal_cost_framework.result_success compare = not_equals } } set_temp_variable = { black_friday_africa_logistics_all_affordable = constant:universal_cost_framework.zero } }
 
@@ -3414,11 +3661,15 @@ black_friday_pay_africa_elephant_logistics_contract = {
 
 		if = {
 			limit = { check_variable = { var = black_friday_africa_logistics_all_affordable value = constant:universal_cost_framework.one compare = equals } }
+			# Caller-owned cost API outputs.
+			set_temp_variable = { black_friday_owner_transaction_id = constant:universal_cost_framework.zero }
 			black_friday_allocate_owner_transaction = yes
 			set_temp_variable = { black_friday_africa_logistics_all_paid = constant:universal_cost_framework.one }
 
 			set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.political_power }
 			set_temp_variable = { universal_cost_payment_amount = black_friday_africa_elephant_logistics_political_power_paid }
+			# Caller-owned cost API outputs.
+			set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_no_op }
 			universal_cost_pay_component = yes
 			if = {
 				limit = { check_variable = { var = universal_cost_payment_result value = constant:universal_cost_framework.result_success compare = equals } }
@@ -3757,6 +4008,10 @@ black_friday_pay_cbrn_protection_pair = {
 			set_temp_variable = { universal_cost_quote_ordinary_cost = black_friday_cbrn_protection_pair_ordinary_pp }
 			set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.political_power }
 			set_temp_variable = { universal_cost_quote_rounding_quantum = constant:universal_cost_framework.default_rounding_quantum }
+			# Caller-owned cost API outputs.
+			set_temp_variable = { universal_cost_quote_final_cost = universal_cost_quote_ordinary_cost }
+			set_temp_variable = { universal_cost_quote_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { universal_cost_quote_source_count = constant:universal_cost_framework.zero }
 			universal_cost_quote_integer = yes
 			set_temp_variable = { black_friday_cbrn_protection_pair_pp_requote = universal_cost_quote_final_cost }
 			set_temp_variable = { black_friday_cbrn_protection_pair_pp_source_count = universal_cost_quote_source_count }
@@ -3792,6 +4047,8 @@ black_friday_pay_cbrn_protection_pair = {
 		limit = { check_variable = { var = black_friday_cbrn_protection_pair_quote_matches value = constant:universal_cost_framework.one compare = equals } }
 		set_temp_variable = { universal_cost_quote_resource_kind = constant:universal_cost_resource_kind.political_power }
 		set_temp_variable = { universal_cost_quote_final_cost = black_friday_cbrn_protection_pair_pp_requote }
+		# Caller-owned cost API outputs.
+		set_temp_variable = { universal_cost_quote_affordable = constant:universal_cost_framework.zero }
 		universal_cost_check_quote_affordable = yes
 		set_temp_variable = { black_friday_cbrn_protection_pair_pp_affordability = universal_cost_quote_affordable }
 		set_temp_variable = { universal_cost_quote_resource_kind = constant:universal_cost_resource_kind.support_equipment_1 }
@@ -3803,11 +4060,15 @@ black_friday_pay_cbrn_protection_pair = {
 				check_variable = { var = black_friday_cbrn_protection_pair_pp_affordability value = constant:universal_cost_framework.result_success compare = equals }
 				check_variable = { var = black_friday_cbrn_protection_pair_support_affordability value = constant:universal_cost_framework.result_success compare = equals }
 			}
+			# Caller-owned cost API outputs.
+			set_temp_variable = { black_friday_owner_transaction_id = constant:universal_cost_framework.zero }
 			black_friday_allocate_owner_transaction = yes
 			set_temp_variable = { black_friday_cbrn_protection_pair_pp_recorded = constant:universal_cost_framework.zero }
 			set_temp_variable = { black_friday_cbrn_protection_pair_support_recorded = constant:universal_cost_framework.zero }
 			set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.political_power }
 			set_temp_variable = { universal_cost_payment_amount = black_friday_cbrn_protection_pair_pp_requote }
+			# Caller-owned cost API outputs.
+			set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_no_op }
 			universal_cost_pay_component = yes
 			if = {
 				limit = { check_variable = { var = universal_cost_payment_result value = constant:universal_cost_framework.result_success compare = equals } }
@@ -3820,6 +4081,8 @@ black_friday_pay_cbrn_protection_pair = {
 				set_temp_variable = { universal_cost_transaction_actual_paid_cost = black_friday_cbrn_protection_pair_pp_requote }
 				set_temp_variable = { universal_cost_transaction_source_id = black_friday_cbrn_protection_pair_source_id }
 				set_temp_variable = { universal_cost_transaction_primary_component = constant:universal_cost_framework.zero }
+				# Caller-owned cost API outputs.
+				set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
 				universal_cost_record_transaction = yes
 				if = {
 					limit = { check_variable = { var = universal_cost_record_transaction_result value = constant:universal_cost_framework.result_success compare = equals } }
@@ -3847,6 +4110,8 @@ black_friday_pay_cbrn_protection_pair = {
 					set_temp_variable = { universal_cost_transaction_actual_paid_cost = black_friday_cbrn_protection_pair_support_requote }
 					set_temp_variable = { universal_cost_transaction_source_id = black_friday_cbrn_protection_pair_source_id }
 					set_temp_variable = { universal_cost_transaction_primary_component = constant:black_friday_event.owner_component_support_equipment }
+					# Caller-owned cost API outputs.
+					set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
 					universal_cost_record_transaction = yes
 					if = {
 						limit = { check_variable = { var = universal_cost_record_transaction_result value = constant:universal_cost_framework.result_success compare = equals } }
@@ -3862,6 +4127,8 @@ black_friday_pay_cbrn_protection_pair = {
 			if = {
 				limit = { check_variable = { var = black_friday_cbrn_protection_pair_support_recorded value = constant:universal_cost_framework.one compare = equals } }
 				set_temp_variable = { universal_cost_transaction_id = black_friday_owner_transaction_id }
+				# Caller-owned cost API outputs.
+				set_temp_variable = { universal_cost_settle_transaction_result = constant:universal_cost_framework.result_no_op }
 				universal_cost_settle_transaction = yes
 				if = {
 					limit = { check_variable = { var = universal_cost_settle_transaction_result value = constant:universal_cost_framework.result_success compare = equals } }
@@ -3892,7 +4159,16 @@ black_friday_pay_cbrn_protection_pair = {
 black_friday_pay_cbrn_recondition_masks = {
 	set_temp_variable = { black_friday_cbrn_recondition_masks_payment_success = constant:universal_cost_framework.zero }
 	if = {
-		limit = { black_friday_can_pay_cbrn_recondition_masks = yes }
+		limit = {
+			# Caller-owned cost API outputs.
+			set_temp_variable = { black_friday_cbrn_protection_pair_ordinary_pp = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_cbrn_protection_pair_ordinary_support = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_cbrn_protection_pair_pp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_cbrn_protection_pair_support_cost = constant:universal_cost_framework.zero }
+			black_friday_can_pay_cbrn_recondition_masks = yes
+		}
+		# Caller-owned cost API outputs.
+		set_temp_variable = { black_friday_cbrn_protection_pair_payment_success = constant:universal_cost_framework.zero }
 		black_friday_pay_cbrn_protection_pair = yes
 		set_temp_variable = { black_friday_cbrn_recondition_masks_payment_success = black_friday_cbrn_protection_pair_payment_success }
 	}
@@ -3901,7 +4177,16 @@ black_friday_pay_cbrn_recondition_masks = {
 black_friday_pay_cbrn_convert_mask_industry = {
 	set_temp_variable = { black_friday_cbrn_convert_mask_industry_payment_success = constant:universal_cost_framework.zero }
 	if = {
-		limit = { black_friday_can_pay_cbrn_convert_mask_industry = yes }
+		limit = {
+			# Caller-owned cost API outputs.
+			set_temp_variable = { black_friday_cbrn_protection_pair_ordinary_pp = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_cbrn_protection_pair_ordinary_support = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_cbrn_protection_pair_pp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_cbrn_protection_pair_support_cost = constant:universal_cost_framework.zero }
+			black_friday_can_pay_cbrn_convert_mask_industry = yes
+		}
+		# Caller-owned cost API outputs.
+		set_temp_variable = { black_friday_cbrn_protection_pair_payment_success = constant:universal_cost_framework.zero }
 		black_friday_pay_cbrn_protection_pair = yes
 		set_temp_variable = { black_friday_cbrn_convert_mask_industry_payment_success = black_friday_cbrn_protection_pair_payment_success }
 	}
@@ -3910,7 +4195,16 @@ black_friday_pay_cbrn_convert_mask_industry = {
 black_friday_pay_cbrn_simplify_filters = {
 	set_temp_variable = { black_friday_cbrn_simplify_filters_payment_success = constant:universal_cost_framework.zero }
 	if = {
-		limit = { black_friday_can_pay_cbrn_simplify_filters = yes }
+		limit = {
+			# Caller-owned cost API outputs.
+			set_temp_variable = { black_friday_cbrn_protection_pair_ordinary_pp = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_cbrn_protection_pair_ordinary_support = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_cbrn_protection_pair_pp_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_cbrn_protection_pair_support_cost = constant:universal_cost_framework.zero }
+			black_friday_can_pay_cbrn_simplify_filters = yes
+		}
+		# Caller-owned cost API outputs.
+		set_temp_variable = { black_friday_cbrn_protection_pair_payment_success = constant:universal_cost_framework.zero }
 		black_friday_pay_cbrn_protection_pair = yes
 		set_temp_variable = { black_friday_cbrn_simplify_filters_payment_success = black_friday_cbrn_protection_pair_payment_success }
 	}
@@ -3928,6 +4222,8 @@ black_friday_cbrn_theater_pay_record_component = {
 		}
 		set_temp_variable = { universal_cost_payment_resource_kind = black_friday_cbrn_theater_component_kind }
 		set_temp_variable = { universal_cost_payment_amount = black_friday_cbrn_theater_component_paid }
+		# Caller-owned cost API outputs.
+		set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_no_op }
 		universal_cost_pay_component = yes
 		if = {
 			limit = { check_variable = { var = universal_cost_payment_result value = constant:universal_cost_framework.result_success compare = equals } }
@@ -3940,6 +4236,8 @@ black_friday_cbrn_theater_pay_record_component = {
 			set_temp_variable = { universal_cost_transaction_actual_paid_cost = black_friday_cbrn_theater_component_paid }
 			set_temp_variable = { universal_cost_transaction_source_id = black_friday_cbrn_theater_source_id }
 			set_temp_variable = { universal_cost_transaction_primary_component = black_friday_cbrn_theater_component_primary }
+			# Caller-owned cost API outputs.
+			set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
 			universal_cost_record_transaction = yes
 			if = {
 				limit = { check_variable = { var = universal_cost_record_transaction_result value = constant:universal_cost_framework.result_success compare = not_equals } }
@@ -3984,6 +4282,10 @@ black_friday_pay_cbrn_theater_assignment = {
 	set_temp_variable = { black_friday_cbrn_theater_assignment_payment_success = constant:universal_cost_framework.zero }
 	if = {
 		limit = {
+			# Caller-owned cost API outputs.
+			set_temp_variable = { black_friday_cbrn_theater_command_power_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_cbrn_theater_decontamination_cost = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_cbrn_theater_fuel_cost = constant:universal_cost_framework.zero }
 			black_friday_can_pay_cbrn_theater_assignment = yes
 			cbrn_country_has_theater_decontamination_support_stores = yes
 		}
@@ -4003,6 +4305,10 @@ black_friday_pay_cbrn_theater_assignment = {
 				set_temp_variable = { universal_cost_quote_ordinary_cost = constant:cbrn_doctrine_cleanup_assignment_cost.command_power }
 				set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.command_power }
 				set_temp_variable = { universal_cost_quote_rounding_quantum = constant:universal_cost_framework.default_rounding_quantum }
+				# Caller-owned cost API outputs.
+				set_temp_variable = { universal_cost_quote_final_cost = universal_cost_quote_ordinary_cost }
+				set_temp_variable = { universal_cost_quote_valid = constant:universal_cost_framework.zero }
+				set_temp_variable = { universal_cost_quote_source_count = constant:universal_cost_framework.zero }
 				universal_cost_quote_integer = yes
 				set_temp_variable = { black_friday_cbrn_theater_command_power_requote = universal_cost_quote_final_cost }
 				set_temp_variable = { black_friday_cbrn_theater_command_power_source_count = universal_cost_quote_source_count }
@@ -4054,6 +4360,8 @@ black_friday_pay_cbrn_theater_assignment = {
 			subtract_from_temp_variable = { black_friday_cbrn_theater_decon_remaining = black_friday_cbrn_theater_decon_paid_3 }
 			set_temp_variable = { universal_cost_quote_resource_kind = constant:universal_cost_resource_kind.command_power }
 			set_temp_variable = { universal_cost_quote_final_cost = black_friday_cbrn_theater_command_power_requote }
+			# Caller-owned cost API outputs.
+			set_temp_variable = { universal_cost_quote_affordable = constant:universal_cost_framework.zero }
 			universal_cost_check_quote_affordable = yes
 			set_temp_variable = { black_friday_cbrn_theater_command_power_preflight = universal_cost_quote_affordable }
 			set_temp_variable = { universal_cost_quote_resource_kind = constant:universal_cost_resource_kind.fuel }
@@ -4069,6 +4377,8 @@ black_friday_pay_cbrn_theater_assignment = {
 					NOT = { has_equipment = { decontamination_equipment_2 < black_friday_cbrn_theater_decon_paid_2 } }
 					NOT = { has_equipment = { decontamination_equipment_3 < black_friday_cbrn_theater_decon_paid_3 } }
 				}
+				# Caller-owned cost API outputs.
+				set_temp_variable = { black_friday_owner_transaction_id = constant:universal_cost_framework.zero }
 				black_friday_allocate_owner_transaction = yes
 				set_temp_variable = { black_friday_cbrn_theater_all_paid = constant:universal_cost_framework.one }
 				set_temp_variable = { black_friday_cbrn_theater_primary_model_assigned = constant:universal_cost_framework.zero }
@@ -4102,6 +4412,8 @@ black_friday_pay_cbrn_theater_assignment = {
 						check_variable = { var = black_friday_cbrn_theater_primary_model_assigned value = constant:universal_cost_framework.one compare = equals }
 					}
 					set_temp_variable = { universal_cost_transaction_id = black_friday_owner_transaction_id }
+					# Caller-owned cost API outputs.
+					set_temp_variable = { universal_cost_settle_transaction_result = constant:universal_cost_framework.result_no_op }
 					universal_cost_settle_transaction = yes
 					if = {
 						limit = { check_variable = { var = universal_cost_settle_transaction_result value = constant:universal_cost_framework.result_success compare = equals } }
@@ -4135,6 +4447,8 @@ black_friday_pay_cbrn_external_aid_pp_fee = {
 		limit = { black_friday_is_active = yes }
 		if = {
 			limit = {
+				# Caller-owned cost API outputs.
+				set_temp_variable = { black_friday_cbrn_external_aid_pp_cost = constant:universal_cost_framework.zero }
 				black_friday_can_pay_cbrn_external_aid_pp_fee = yes
 				has_event_target = cbrn_external_aid_transaction_target_state
 				event_target:cbrn_external_aid_transaction_target_state = {
@@ -4142,9 +4456,13 @@ black_friday_pay_cbrn_external_aid_pp_fee = {
 					cbrn_occupation_state_has_donor_external_aid_reservation = yes
 				}
 			}
+			# Caller-owned cost API outputs.
+			set_temp_variable = { black_friday_owner_transaction_id = constant:universal_cost_framework.zero }
 			black_friday_allocate_owner_transaction = yes
 			set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.political_power }
 			set_temp_variable = { universal_cost_payment_amount = black_friday_cbrn_external_aid_pp_cost }
+			# Caller-owned cost API outputs.
+			set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_no_op }
 			universal_cost_pay_component = yes
 			if = {
 				limit = { check_variable = { var = universal_cost_payment_result value = constant:universal_cost_framework.result_success compare = equals } }
@@ -4157,6 +4475,8 @@ black_friday_pay_cbrn_external_aid_pp_fee = {
 				set_temp_variable = { universal_cost_transaction_actual_paid_cost = black_friday_cbrn_external_aid_pp_cost }
 				set_temp_variable = { universal_cost_transaction_source_id = constant:universal_cost_framework.black_friday_source_id }
 				set_temp_variable = { universal_cost_transaction_primary_component = constant:black_friday_event.owner_component_political_power }
+				# Caller-owned cost API outputs.
+				set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
 				universal_cost_record_transaction = yes
 				if = {
 					limit = { check_variable = { var = universal_cost_record_transaction_result value = constant:universal_cost_framework.result_success compare = equals } }
@@ -4199,6 +4519,8 @@ black_friday_settle_cbrn_external_aid_pp_fee_receipt = {
 			set_temp_variable = { black_friday_purchase_sale_sequence = cbrn_external_mask_escrow_transaction_sale_sequence }
 			ROOT = {
 				set_temp_variable = { universal_cost_transaction_id = black_friday_purchase_transaction_id }
+				# Caller-owned cost API outputs.
+				set_temp_variable = { universal_cost_settle_transaction_result = constant:universal_cost_framework.result_no_op }
 				universal_cost_settle_transaction = yes
 				if = {
 					limit = { check_variable = { var = universal_cost_settle_transaction_result value = constant:universal_cost_framework.result_success compare = equals } }
@@ -4207,6 +4529,8 @@ black_friday_settle_cbrn_external_aid_pp_fee_receipt = {
 						limit = { check_variable = { var = black_friday_cbrn_external_aid_successful_completion value = constant:universal_cost_framework.one compare = equals } }
 						set_temp_variable = { universal_cost_component_lookup_transaction_id = black_friday_purchase_transaction_id }
 						set_temp_variable = { universal_cost_component_lookup_id = constant:black_friday_event.owner_component_political_power }
+						set_temp_variable = { universal_cost_component_found_index = constant:universal_cost_framework.invalid_index }
+						set_temp_variable = { universal_cost_component_lookup_result = constant:universal_cost_framework.result_no_op }
 						universal_cost_find_component_row = yes
 						if = {
 							limit = {

@@ -1,0 +1,70 @@
+# CHAOS REDUX - SOUTH AFRICA PAID SUPPORT REQUEST LIFECYCLE
+# The Coalition queues one settled request per donor. Donor replies consume
+# their pending state once and revalidate the two-supporter cap before shipment.
+# Pending country pointers use a payer-owned array and existing cleanup hooks.
+
+# COUNTRY scope on the payer, FROM is its eligible selected donor.
+africa_rsa_queue_paid_regional_support_request = {
+	if = {
+		limit = { FROM = { africa_rsa_is_valid_regional_support_target = yes } }
+		add_to_array = { array = africa_rsa_pending_support_requests value = FROM }
+		FROM = {
+			set_country_flag = africa_rsa_regional_support_request_pending
+			country_event = { id = chaosx.nr12.1202 }
+		}
+	}
+}
+
+# COUNTRY scope on a donor, including stale or no-longer-eligible replies.
+africa_rsa_release_pending_support_request = {
+	clr_country_flag = africa_rsa_regional_support_request_pending
+	if = {
+		limit = { has_event_target = africa_rsa_continental_coalition }
+		event_target:africa_rsa_continental_coalition = {
+			remove_from_array = { array = africa_rsa_pending_support_requests value = PREV }
+		}
+	}
+}
+
+# COUNTRY scope on a donor. Ledger registration precedes its unchanged reward.
+africa_rsa_accept_pending_support_request = {
+	if = {
+		limit = { has_country_flag = africa_rsa_regional_support_request_pending }
+		if = {
+			limit = { africa_rsa_pending_support_response_is_valid = yes }
+			save_event_target_as = africa_rsa_support_actor
+			event_target:africa_rsa_continental_coalition = { africa_rsa_register_regional_support = yes }
+			if = {
+				limit = { has_country_flag = africa_rsa_regional_supporter }
+				send_equipment_fraction = {
+					target = event_target:africa_rsa_continental_coalition
+					value = constant:africa_rsa_ratio.regional_support_transfer
+				}
+			}
+		}
+		africa_rsa_release_pending_support_request = yes
+	}
+}
+
+# COUNTRY scope on a donor. A duplicate refusal cannot change the ledger.
+africa_rsa_refuse_pending_support_request = {
+	if = {
+		limit = { has_country_flag = africa_rsa_regional_support_request_pending }
+		set_country_flag = africa_rsa_regional_support_refused
+		save_event_target_as = africa_rsa_support_actor
+		if = {
+			limit = { has_event_target = africa_rsa_continental_coalition }
+			event_target:africa_rsa_continental_coalition = { africa_rsa_register_regional_response = yes }
+		}
+		africa_rsa_release_pending_support_request = yes
+	}
+}
+
+# COUNTRY scope on the owner. Only recorded pending donors are traversed.
+africa_rsa_clear_pending_support_requests = {
+	for_each_scope_loop = {
+		array = africa_rsa_pending_support_requests
+		clr_country_flag = africa_rsa_regional_support_request_pending
+	}
+	clear_array = africa_rsa_pending_support_requests
+}

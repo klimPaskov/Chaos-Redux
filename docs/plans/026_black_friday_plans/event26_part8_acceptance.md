@@ -4,10 +4,16 @@
 
 Disposition: unresolved acceptance, with the original full Part 8 contract retained.
 The historical arithmetic mirror below does not establish unrestricted engine arithmetic or effect/display agreement.
-The [current quantization audit](subagent_handoffs/2026-10-03_quantization_audit.md) found precision loss at ordinary cost `2.00001`, quantum `1`, and ratio `5000`, plus ordinary cost `0.04001`, quantum `0.01`, and ratio `2500`.
-It also found out-of-range pre-division products at ordinary cost `1000000` and source-product precision lost by the scalar ratio cache.
-The minimum-positive effect-side guard preserves one effective quantum after a positive source quote loses a tiny amount, but it does not repair the remaining rounding boundaries, overflow, or exact multi-source composition.
-Those findings keep general `BF-C03`, cost-family display/payment equality, and unrestricted quantization unresolved.
+The [quantization audit](subagent_handoffs/2026-10-03_quantization_audit.md) identified scalar precision loss, oversized intermediate products, and a truncated composed-ratio cache.
+The [exact shared producer](subagent_handoffs/2026-10-03_exact_quote_implementation.md) replaces that arithmetic with represented integer limbs and one final ceiling.
+Its source interpreter and independent rational oracle cover both reported fractional boundaries, million-unit costs, arbitrary represented quanta, thirty-bit family masks, source permutations, and more than 1,000 sources.
+These source results supersede the historical scalar formula as implementation evidence.
+Native arithmetic, duplicate-preserving iteration, helper lifetime, consumer performance, and cost-family display/payment agreement still require engine evidence, so general `BF-C03` acceptance remains unresolved.
+
+The [South Africa component ledger](../../systems/africa_rsa_purchase_transactions.md) records eleven components for five existing actions, 295 bundle source-model checks, and 30 request-scope checks.
+It exercises all three prices, component boundaries, payment and receipt failure positions, expired-sale actual-paid refunds, pending-state protection, 45 fresh normal/blocked/detail text contexts, and 75 unavailable/pending fallbacks under conservative helper temporary lifetime.
+Request guards cover duplicate shipments, the original two-supporter cap, rejected settlement, unchanged rewards, and bounded existing-hook cleanup.
+Native/shared APIs are mocked contracts, and the result does not close the full-family, live, probability, or save/reload acceptance rows.
 
 The native factor groups remain pending composition, rounding, and live proof in the registry.
 The current decision declaration inventory covers 2,342 mod custom triggers, 2,343 mod custom text declarations, 368 active Vanilla pairs, 1,316 mod native cost declarations, and 2,903 active Vanilla native declarations.

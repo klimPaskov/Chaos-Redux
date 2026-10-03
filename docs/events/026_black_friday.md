@@ -24,6 +24,10 @@ The implementation uses the existing bounded global event-system daily pulse and
 
 The reusable framework is implemented in `common/scripted_effects/chaosx_universal_cost_effects.txt`, `common/scripted_triggers/chaosx_universal_cost_triggers.txt`, `common/script_constants/chaosx_universal_cost_constants.txt`, and the corresponding Markdown references.
 
+The effect quotation and custom-cost trigger share `common/scripted_triggers/chaosx_universal_cost_exact_triggers.txt` as their exact producer.
+It multiplies represented source ratios in integer limbs and quantizes once, without an overflowing scalar numerator or a truncated composed-ratio cache.
+Native execution, duplicate-preserving token iteration, and consumer performance remain acceptance gates in the [exact implementation handoff](../plans/026_black_friday_plans/subagent_handoffs/2026-10-03_exact_quote_implementation.md).
+
 Black Friday multiplies the ordinary current payable cost after ordinary modifiers and before final quantization. One quote is shared by display, affordability, payment, receipt, and refund. Positive values round upward to at least one registered quantum, zero remains zero, and rewards, penalties, casualties, upkeep, time, cooldowns, and non-cost requirements remain outside the source.
 
 The 39 Vanilla `cat_*_cost_factor` technology fields, factory-conversion cost factors, and `refit_ic_cost` are audited exclusions rather than sale modifiers: they alter research, construction, or production time instead of charging an atomic voluntary payment. Doctrine XP costs and designer XP payments remain in scope through their distinct payable-cost modifiers.
@@ -41,6 +45,11 @@ The Evolution I threshold and discount, and the achievement's five-family target
 For that achievement, an ordinary paid purchase must commit during a naturally selected sale. A discounted native Japan chemical or biological raid prepared during the sale contributes the equipment family only when a successful accepted release resolves, even after expiry. The outcome marker, native reservation, human-country eligibility, and sale sequence are checked without a synthetic purchase receipt. Failed or canceled raids do not credit a family. Existing family progress remains until the delayed outcome; ordinary post-expiry purchases remain ineligible.
 
 Timed CBRN Protective Aid reserves its full physical respirator shipment and discounts only the voluntary Political Power service fee. Its payer-scoped receipt and saved sale sequence permit PP-family credit after a proven delivery, including completion after expiry; cancellation retains the spent fee but earns no family. The PP-only proof validates the settled Black Friday component and actual payment, and does not satisfy the achievement's separate non-political-payment requirement. The native two-factory commitment still lacks sale coverage, as recorded in the [aid contract](../plans/026_black_friday_plans/2026-10-03_cbrn_protective_aid_pp_adapter.md).
+
+The five existing South Africa purchases use one owner bundle with eleven resource components, fresh cost text, preflight checks, actual-paid receipts, and outcome-gated settlement.
+Their [owner contract and component ledger](../systems/africa_rsa_purchase_transactions.md) retain the original routes, targets, limits, cooldowns, and AI weights.
+All five use Political Power as the primary achievement family, and their flags do not establish an institutional-law purchase.
+Native execution, UI expansion, probability comparison, and save/reload evidence remain pending.
 
 ## Validation record
 

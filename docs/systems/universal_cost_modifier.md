@@ -12,8 +12,9 @@ The framework is neutral and does not own Event 026 lifecycle, purchase eligibil
 | `universal_cost_source_clear` | any effect scope | source id | clear result | removes one source row and expires that source |
 | `universal_cost_source_register_black_friday` | owner effect scope | optional ratio and mask | generic register result | registers source id 26 |
 | `universal_cost_source_clear_black_friday` | owner effect scope | none | generic clear result | clears only source id 26 |
-| `universal_cost_rebuild_custom_quote_ratio_cache` | any effect scope | active source registry | twelve canonical-family composed ratios plus valid flag | replaces the trigger-readable cache |
-| `universal_cost_quote_integer` | payer country or owner-selected payer scope | ordinary cost, family mask, quantum | final/displayed/saved cost, composed ratio, source proof | temporary arithmetic only |
+| `universal_cost_rebuild_custom_quote_ratio_cache` | owner effect scope | active source registry | existing readiness marker | removes retired scalar cache rows, preserves exact source registry |
+| `universal_cost_quote_integer` | payer country or owner-selected object scope | ordinary cost, family mask, quantum | exact final/displayed/saved cost, validity, source proof | temporary limb arithmetic only |
+| `universal_cost_quote_exact` | read-only trigger in the same selected scope | identical quote inputs and live source registry | identical quote outputs | temporary limb arithmetic only; shared by both frontends |
 | `universal_cost_check_quote_affordable` | payer country | resource kind, final quote | affordability result | no debit |
 | `universal_cost_pay_component` | payer country | native resource kind, positive amount | payment result | debits one native component |
 | `universal_cost_record_transaction` | payer country | transaction/component ids, ordinary/quoted/actual paid amounts, resource kind, source id | record result | appends one component and totals |
@@ -23,49 +24,72 @@ The framework is neutral and does not own Event 026 lifecycle, purchase eligibil
 
 The complete input, output, default, and side-effect contract is in [`chaosx_universal_cost_effects.md`](../../common/scripted_effects/chaosx_universal_cost_effects.md).
 
+Every caller must initialize each temporary scalar and array output that it will consume before invoking the scripted helper.
+This obligation applies at each nested return boundary, including producers called from `if.limit` and `text.trigger`.
+Temporary storage created only inside a helper may disappear on return, while caller-created storage retains its modifications.
+The actual-source tests use conservative helper-frame cleanup and separate temporary storage from persistent payer variables and receipt arrays.
+Public output contracts and negative bare-API controls are recorded in the exact implementation handoff.
+Those source tests do not establish that every production owner has fulfilled the output contract, which remains part of the final call-site registry audit.
+
 ## Arithmetic contract
 
-The shared basis is 10000.
+The shared basis is 10000, with baseline ratio 5000 and Evolution I ratio 2500.
+The owner passes the ordinary current payable cost after its ordinary modifiers.
 
-The baseline sale ratio is 5000 and the Evolution I sale ratio is 2500.
+Both effect and read-only trigger quotes use `universal_cost_quote_exact` in [chaosx_universal_cost_exact_triggers.txt](../../common/scripted_triggers/chaosx_universal_cost_exact_triggers.txt).
+Represented cost, quantum, and source ratios have five fractional digits.
+The helper extracts their integer ticks into radix-1000 limbs without constructing an oversized scalar tick value.
 
-The owner passes the ordinary current payable cost after all ordinary consumer modifiers have been evaluated.
+For positive ordinary cost C, positive quantum Q, and N eligible source ratios, the payable amount is exactly `ceil(Cticks * product(Rticks) / (Qticks * 1000000000^N)) * Qticks / 100000`.
+Identity source factors cancel exactly while retaining their source proof.
+All other source products retain every digit until the final ceiling.
+The price is independent of source registration order.
+The primary source is resolved separately by minimum priority and stable registry-order ties.
 
-Eligible sources are composed in ascending priority order by multiplying the remaining ratio and dividing by the 10000 basis after each source.
+Positive quotes with eligible sources produce at least one quantum.
+No eligible source preserves the ordinary amount without rounding.
+Zero and negative/reward amounts are preserved.
+A caller receives the same final and displayed amount and a non-negative saved amount.
 
-For a positive cost, the required final quote is the smallest whole quantum whose product is at least the exact ordinary cost multiplied by every eligible source ratio and divided by the corresponding bases.
-The current effect path multiplies the ordinary cost by the scalar composed ratio, divides by 10000, and quantizes the stored fixed-point amount using nearest-integer rounding and an upward correction.
-The custom-cost trigger bridge instead computes a numerator in quantum units and uses its Euclidean remainder for the ceiling.
-These paths can disagree when the effect path discards a positive remainder before quantization, and both paths have overflowing numerator cases.
+The divisor may be any represented positive quantum, including multi-limb ticks.
+No integer-ratio restriction, one/.01-only quantum fallback, ordinary-cost threshold, fixed source-count cap, per-source rounding, nearest-integer ceiling approximation, or forced epsilon is introduced.
+Arithmetic representation constants are separate from balance tuning.
+The live aligned source registry is the exact source cache for every accepted family mask, including combinations and noncanonical families; no twelve-family table governs quotation.
 
-A positive ordinary cost must produce at least one positive quantum.
-Within the positive-ordinary, eligible-source branch, the effect-side quote enforces this minimum after quantization using the actual effective `universal_cost_quantize_quantum`.
-The displayed quote and saved amount are calculated after this guard.
-Zero, negative, and no-source values retain their existing behavior.
-This accepted invariant repair does not repair exact ceiling, multiplication overflow, or the scalar composed-ratio representation.
+A malformed aligned registry or a mathematical price beyond the represented positive scalar envelope yields `universal_cost_quote_valid = 0`.
+Such a quote is not payable.
+The shared quoted-affordability helper rejects it, and owner-specific payment providers must likewise check validity.
+No output amount is saturated, approximated, or substituted as an accepted quote.
+The mathematical integer quantum count may exceed one scalar even when the price fits; the standalone quantizer retains exact unit limbs and explicitly marks its scalar unit count unavailable.
 
-Zero remains zero and negative/reward values bypass source discounts and are preserved unchanged.
+The retired scalar `universal_cost_quote_composed_ratio` output is basis without participating sources and zero meaning unavailable with participating sources.
+It is never used for pricing or validity.
+The effect/cache/central-trigger consumers that previously used it are migrated together.
 
-Quantization happens after all eligible source ratios are composed, so a multi-source quote does not round each source separately.
+[Exact helper documentation](../../common/scripted_triggers/chaosx_universal_cost_exact_triggers.md) records scalar extraction, bounded multiplication, long division, sticky-fraction ceiling, supported trigger iteration, and helper contracts.
+[Implementation evidence](../plans/026_black_friday_plans/subagent_handoffs/2026-10-03_exact_quote_implementation.md) records tests of the actual parsed helper source against a direct BigInt rational oracle.
+[The preceding audit](../plans/026_black_friday_plans/subagent_handoffs/2026-10-03_quantization_audit.md) remains historical evidence for the scalar failures and the accepted minimum guard.
 
-The [2026-10-03 quantization audit](../plans/026_black_friday_plans/subagent_handoffs/2026-10-03_quantization_audit.md) records the local reference hashes, 28 arithmetic scenarios, a separately verified bounded decomposition, and the unresolved exact-composition and trigger-consistency requirements.
-The updated offline Data structures reference specifies five decimal places and a roughly 2.147-billion script-variable range, while retaining a separate roughly 2.147-million limit for deprecated manpower readers.
-The installed arithmetic documentation confirms fixed-point operations but does not independently specify that numeric range or an overflow multiplication implementation.
-These reference-based findings are not native runtime evidence, and the required MCP reference-context call timed out after 600 seconds.
-The audit and accepted follow-up applied one effect-side minimum guard and documentation changes.
-No approximate-ceiling replacement, ratio epsilon, source-domain restriction, or arithmetic fallback was introduced.
+The offline Data structures reference documents five fractional digits and roughly signed-32-bit whole values, independently of deprecated manpower reader limits.
+Installed documentation confirms fixed-point operations, temporary arrays, array iteration in triggers, and effect limits containing temporary arithmetic.
+These references and source-semantic tests do not establish native engine execution, consumer performance, or native payment universality.
+Required MCP queries returned no usable inspection artifacts in this tranche; detailed request and retry evidence is in the handoff.
 
-The quote exposes one `universal_cost_quote_displayed_cost` value equal to the final amount the owner must pass to payment and receipt recording.
-
-The effect-side quote composes every registered source. While Event 026 is active, every successful source registration or clear rebuilds twelve canonical scalar ratios (`political_power`, `command_power`, `manpower`, `equipment`, `trains`, `convoy`, `fuel`, `army_experience`, `navy_experience`, `air_experience`, `stability`, and `war_support`) by invoking the same effect-side quote and storing its pre-quantization composed ratio. Custom-cost trigger owners pass exactly one of those canonical family masks, but identical scalar cache inputs do not establish an exact display and payment match across the two arithmetic paths. Other family masks fail closed.
-
-The current bounded adapters declare source-level quote paths across 104 logical component rows in ten owner tranches, including all ten Random Faction paid actions and Africa Elephant logistics. Fury, Japan chemical, biological medical capacity, and Japan biological sale strings use dynamic values instead of fixed 50/75-percent literals, while Communist-spread, CBRN shelter, Germany Mengele, Random Faction, and Africa owner text consume quote-backed values. Source inspection alone is not live engine proof, so overlapping-source parity remains open in Part 8 until focused MCP/runtime evidence confirms cache rebuild, trigger evaluation, displayed value, and confirmation debit under both source orders.
+The bounded Event 026 owner adapters retain their own current price providers, eligibility, payment, receipts, and UI consumers.
+No owner inventory, lifecycle, achievement, catalog, asset, or AI implementation is changed by this arithmetic repair.
+Owner coverage and native display/debit acceptance remain the parent's separate responsibility.
 
 ## Source registry and expiry
 
-The registry stores source id, active ratio, priority, and eligibility mask in four aligned global arrays. The separate nine-scalar trigger-readable quote cache persists with global state and is deterministically replaced after every successful registry mutation while Event 026 remains registered.
+The registry stores source id, exact represented ratio, priority, and eligibility mask in four aligned global arrays.
+Those rows are the authoritative exact source cache for both quote frontends.
+The existing Event 026 readiness marker persists, while register/clear publication removes the twelve retired scalar cache variables.
+Source lookup and quotation iterate caller-scope tokens rather than effect loops with a fixed iteration ceiling.
 
-A zero eligibility mask means every family, while non-zero masks use the low thirty bits defined by `universal_cost_family` and are rejected above the shared thirty-bit bound. Family membership is evaluated with a modulo-span test (`mask mod (bit * 2) >= bit`) rather than fixed-point division, so a lower family bit cannot leak into a higher-family match.
+A zero source eligibility mask means every positive quote family mask.
+Non-zero source masks retain the existing low-thirty-bit registration contract.
+The exact matcher extracts each low bit with modulo, subtracts it, and divides the remaining even integer by two.
+No fractional division residue can masquerade as a higher set bit.
 
 Source id 26 is reserved for `black_friday` by the stable wrapper, but the generic register/clear effects do not depend on Event 026 files.
 
@@ -128,6 +152,7 @@ The bounded Fury owner adapter uses one transaction for each logical decision, q
 | `universal_cost_framework` | basis 10000, baseline 5000, Evolution I 2500 | fixed-point sale arithmetic |
 | `universal_cost_framework` | default quantum 1, invalid index -1 | positive minimum and array lookup safety |
 | `universal_cost_framework` | source id 26, source priority 500 | stable Black Friday wrapper defaults |
+| `universal_cost_exact` | radix 1000, tick scale 100000, denominator shift 3, trial search 10 | exact representation and long division, without new balance tuning |
 | `universal_cost_family` | one bit per purchase family | source eligibility masks |
 | `universal_cost_resource_kind` | sixteen native kinds plus owner-adapter ids | payment dispatch and receipt identity |
 | `universal_cost_component_state` | not_refunded 0, refunded 1 | one-time component refund proof |

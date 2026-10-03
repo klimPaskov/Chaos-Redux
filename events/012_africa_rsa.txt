@@ -50,10 +50,9 @@ country_event = {
 	option = {
 		name = chaosx.nr12.1202.a
 		trigger = {
-			has_event_target = africa_rsa_continental_coalition
-			event_target:africa_rsa_continental_coalition = {
-				exists = yes
-				has_global_flag = africa_rsa_civil_war_active
+			custom_trigger_tooltip = {
+				tooltip = africa_rsa_support_response_available_tt
+				africa_rsa_pending_support_response_is_valid = yes
 			}
 		}
 		ai_chance = {
@@ -65,12 +64,7 @@ country_event = {
 		}
 		custom_effect_tooltip = africa_rsa_regional_support_accept_tt
 		hidden_effect = {
-			send_equipment_fraction = {
-				target = event_target:africa_rsa_continental_coalition
-				value = constant:africa_rsa_ratio.regional_support_transfer
-			}
-			save_event_target_as = africa_rsa_support_actor
-			event_target:africa_rsa_continental_coalition = { africa_rsa_register_regional_support = yes }
+			africa_rsa_accept_pending_support_request = yes
 		}
 	}
 
@@ -79,9 +73,7 @@ country_event = {
 		ai_chance = { base = constant:africa_rsa_ai.option_minor }
 		custom_effect_tooltip = africa_rsa_regional_support_refuse_tt
 		hidden_effect = {
-			set_country_flag = africa_rsa_regional_support_refused
-			save_event_target_as = africa_rsa_support_actor
-			event_target:africa_rsa_continental_coalition = { africa_rsa_register_regional_response = yes }
+			africa_rsa_refuse_pending_support_request = yes
 		}
 	}
 }

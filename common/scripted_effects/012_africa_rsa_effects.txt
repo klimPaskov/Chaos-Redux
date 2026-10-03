@@ -597,6 +597,10 @@ africa_rsa_spend_relief_cost = {
 # COUNTRY scope on the Continental Coalition.
 africa_rsa_protect_civilian_corridor_effect = {
 	africa_rsa_spend_relief_cost = yes
+	africa_rsa_apply_civilian_corridor_protection = yes
+}
+
+africa_rsa_apply_civilian_corridor_protection = {
 	set_country_flag = africa_rsa_civilians_protected
 	275 = { set_state_flag = africa_rsa_relief_corridor_state }
 	681 = { set_state_flag = africa_rsa_relief_corridor_state }
@@ -630,7 +634,8 @@ africa_rsa_register_regional_support = {
 	if = {
 		limit = {
 			has_event_target = africa_rsa_support_actor
-			event_target:africa_rsa_support_actor = { africa_rsa_is_valid_regional_support_target = yes }
+			event_target:africa_rsa_support_actor = { africa_rsa_is_eligible_regional_support_target = yes }
+			check_variable = { var = africa_rsa_external_support_count value = constant:africa_rsa_count.required_external_supporters compare = less_than }
 			NOT = { is_in_array = { array = africa_rsa_external_supporters value = event_target:africa_rsa_support_actor } }
 		}
 		add_to_array = { array = africa_rsa_external_supporters value = event_target:africa_rsa_support_actor }
@@ -717,6 +722,10 @@ africa_rsa_enact_citizenship_land_milestone_effect = {
 	multiply_temp_variable = { africa_rsa_negative_citizenship_stability = constant:africa_rsa_factor.negative_one }
 	add_political_power = africa_rsa_negative_citizenship_pp
 	add_stability = africa_rsa_negative_citizenship_stability
+	africa_rsa_apply_citizenship_land_milestone = yes
+}
+
+africa_rsa_apply_citizenship_land_milestone = {
 	set_country_flag = africa_rsa_citizenship_land_milestone
 	africa_rsa_check_postwar_first_proof = yes
 }
@@ -731,6 +740,10 @@ africa_rsa_guarantee_neighbor_sovereignty_effect = {
 	add_political_power = africa_rsa_negative_guarantee_pp
 	add_command_power = africa_rsa_negative_guarantee_cp
 	give_guarantee = FROM
+	africa_rsa_apply_neighbor_sovereignty_guarantee = yes
+}
+
+africa_rsa_apply_neighbor_sovereignty_guarantee = {
 	set_country_flag = africa_rsa_neighbor_sovereignty_guaranteed
 	FROM = { set_country_flag = africa_rsa_sovereignty_guarantee_recipient }
 	africa_rsa_check_postwar_first_proof = yes
@@ -847,6 +860,7 @@ africa_rsa_copy_coalition_intervention_ledger_to_loyalist = {
 
 # COUNTRY scope on the old coalition host before the global host target moves.
 africa_rsa_cleanup_old_host_runtime = {
+	africa_rsa_clear_pending_support_requests = yes
 	africa_clear_selected_country_target = yes
 	clear_array = africa_rsa_actions_to_cleanup
 	clear_array = africa_rsa_prewar_exile_patron_candidates
@@ -886,6 +900,7 @@ africa_rsa_cleanup_old_host_runtime = {
 # constitutional subjects are released, temporary peace missions are removed,
 # and all durable Event 12 indexes are emptied before the global target clears.
 africa_rsa_cleanup_terminal_host_runtime = {
+	africa_rsa_clear_pending_support_requests = yes
 	for_each_scope_loop = {
 		array = africa_relationship_countries
 		if = {
@@ -1410,6 +1425,7 @@ africa_rsa_resolve_loyalist_victory = {
 # COUNTRY scope on the coalition winner. Historical settlement flags remain;
 # transient war, cost, state-proof, target, and participant data are removed.
 africa_rsa_cleanup_continental_crisis = {
+	africa_rsa_clear_pending_support_requests = yes
 	africa_rsa_clear_republican_ai_strategies = yes
 	if = {
 		limit = { has_active_mission = africa_rsa_first_proof_mission }
@@ -1611,10 +1627,14 @@ africa_rsa_complete_exile_recovery = {
 		multiply_temp_variable = { africa_rsa_negative_exile_cp = constant:africa_rsa_factor.negative_one }
 		add_political_power = africa_rsa_negative_exile_pp
 		add_command_power = africa_rsa_negative_exile_cp
-		set_country_flag = africa_first_proof_recovery_partial_ready
-		set_country_flag = africa_rsa_exile_recovery_completed
-		clr_country_flag = africa_rsa_exile_recovery_available
-		clear_variable = africa_rsa_exile_recovery_delay_days
-		africa_consume_first_proof_recovery_ready = yes
+		africa_rsa_apply_exile_recovery = yes
 	}
+}
+
+africa_rsa_apply_exile_recovery = {
+	set_country_flag = africa_first_proof_recovery_partial_ready
+	set_country_flag = africa_rsa_exile_recovery_completed
+	clr_country_flag = africa_rsa_exile_recovery_available
+	clear_variable = africa_rsa_exile_recovery_delay_days
+	africa_consume_first_proof_recovery_ready = yes
 }

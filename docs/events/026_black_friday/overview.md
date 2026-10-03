@@ -42,15 +42,26 @@ The reusable framework lives in `common/scripted_effects/chaosx_universal_cost_e
 
 Owners provide the ordinary current payable value after their ordinary modifiers, select a registered source by family mask and priority, quote the discounted value with fixed-point ratios, round positive values upward to the registered quantum, and use the same quote for affordability, payment, display, and refund.
 
+The exact producer in `common/scripted_triggers/chaosx_universal_cost_exact_triggers.txt` is shared by the effect frontend and custom-cost trigger.
+It composes represented source ratios without a scalar ratio cache and quantizes once after all eligible sources.
+Its source arithmetic evidence does not establish native token iteration or consumer performance.
+
 Zero remains zero, negative values remain unchanged, and every positive value retains at least one registered quantum.
 
 The framework contains native resource payment and refund adapters for political power, command power, manpower, fuel, infantry equipment, support equipment, motorized equipment, trains, convoys, Army Experience, Navy Experience, Air Experience, Stability, and War Support, plus an owner-adapter contract for commitments and custom currencies.
 
-The Event 26 country ideas provide native country-level factor modifiers for the verified national, law, personnel, officer, doctrine, conversion, embargo, license-equipment, refit, and trade-cost fields. Flat one-time fields for equipment upgrades, guarantees, license purchases, and other absolute engine costs are explicitly absent because the installed schema does not interpret them as relative discounts.
+The Event 26 country ideas contain documented native cost-factor fields for law, personnel, officer, doctrine, embargo, license-equipment, and trade consumers.
+Those source definitions still require multiplicative composition, rounding, minimum-payment, display, and actual-debit proof.
+Conversion, refit, and technology-category fields are audited time/production exclusions and are not installed as sale modifiers.
+Flat one-time equipment-upgrade, guarantee, and license-purchase fields have no verified relative-discount route.
 
 The installed schema exposes intelligence-operation fields as flat absolute values rather than relative factors, so operation payment remains an explicit engine-inaccessible registry row until an exact confirmation adapter or complete static variants exist.
 
 The earlier 104-component adapter inventory is a historical source checkpoint covering Communist-spread, Fury, medical capacity, civilian shelter, Mengele, D'Rhondan, Random Faction, Africa Elephant, and retired Japan chemical and biological decision payments. The Japan attack decisions were replaced by native chemical and biological raids with engine-reserved equipment and native Command Power prices; the old Japan registry rows do not prove current shared-quote payment, receipt, refund, or achievement coverage. Other bounded adapters retain their individual source claims, subject to current owner review. The final registry must still close every other custom cost owner and every engine-inaccessible field listed in `docs/plans/026_black_friday_plans/event26_cost_surface_registry.md` before the event can be enabled.
+
+The five South Africa purchases have a shared owner adapter and eleven component rows in [the owner ledger](../../systems/africa_rsa_purchase_transactions.md).
+Their ordinary, baseline, and Evolution I quotations share display, affordability, payment, and actual-paid rollback paths.
+Native UI/payment, probability, and save/reload evidence remain pending.
 
 ## Achievement
 

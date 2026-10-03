@@ -142,7 +142,10 @@ Bounded statuses refer only to the direct call-site evidence below and existing 
 
 The following are source pointers, not renewed semantic audits or accepted balance decisions.
 Historical 104/111-component and ten/eleven-tranche totals are not retained as current totals because removed Japan decision owners and newer CBRN call sites invalidate their meaning.
-RSA is excluded from adapter audit and promotion even if its specialist installs a candidate after this scan.
+The original declaration snapshot excludes RSA from adapter certification.
+The later parent integration has a separate [five-action, eleven-component ledger](../../systems/africa_rsa_purchase_transactions.md), with current source-model evidence and native/probability/save-state limits.
+Its declaration lines are 29, 65, 124, 164, and 214 for triggers, and 32, 68, 127, 167, and 217 for text at SHA-256 `0f5cfc6369be6a42c5c0705c318352b9c70951dfdc7c6244be9172dd1d15f884`.
+This targeted refresh does not update or certify the other owner snapshots or the final full-registry commit freeze.
 
 | Owner | Current source evidence | Existing handoff or review boundary |
 | --- | --- | --- |
@@ -155,8 +158,8 @@ RSA is excluded from adapter audit and promotion even if its specialist installs
 | `germany_mengele_decisions.txt` | Command-power gates at 453, 484, 515, 569; payment calls at 465, 496, 527, 582. | [germany_mengele_adapter.md](subagent_handoffs/germany_mengele_adapter.md); required specialized probability and native evidence remain outside this discovery pass. |
 | `cbrn_diplomacy_decisions.txt` | Custom gates at 36, 110, 219, 327; owner action calls at 44, 116, 227, 335. | [2026-09-27_current_cbrn_custom_cost_crosswalk.md](subagent_handoffs/2026-09-27_current_cbrn_custom_cost_crosswalk.md), read through its final follow-up; four source definitions for three logical diplomacy purchases. |
 | `cbrn_protection_decisions.txt` | Material payment calls at 62, 115, 171; shelter gate/text at 455–456 and `black_friday_apply_cbrn_civilian_shelter_movement` at 459. | Existing shelter handoff is bounded evidence; the three material-payment candidates are unresolved pending parent review, not silently promoted from call-site presence. |
-| `cbrn_occupation_decisions.txt` | PP fee gate at 138, payment at 151, receipt settlement at 194 and 217. | [2026-10-03_cbrn_protective_aid_pp_adapter.md](2026-10-03_cbrn_protective_aid_pp_adapter.md), unresolved candidate; mask shipment and factory commitment coverage remain unresolved. |
-| `012_africa_rsa_decisions.txt` | Five declaration pairs and one symbolic native cost at the recorded hash. | Specialist adapter work is pending parent review; no adapter audit, promotion, or discount claim. |
+| `cbrn_occupation_decisions.txt` | Two native definitions call the same `cbrn_protective_aid_begin_selected_delivery`, expiry, and cancellation callbacks; the callback owns the PP fee and exact-model escrow. | [Factory-sale implementation](../chaos_warfare_system_plans/2026-10-03_protective_aid_native_factory_sale.md), source-reviewed owner work; two/one native commitments quote canonically while the conserved shipment is unchanged. Native execution and AI comparison remain pending. |
+| `012_africa_rsa_decisions.txt` | Five declaration pairs use shared fresh quote/affordability wrappers, outcome-gated payment entry effects, and quote-backed text. | [Owner component ledger](../../systems/africa_rsa_purchase_transactions.md), source implementation with decision/localisation/probability review and native/save-state evidence pending. |
 
 The linked Random Faction handoffs retain their scenario-specific probability evidence and unresolved typed-target limits.
 This curator pass does not evaluate weighted logic or replace `chaosx_ai_probability_auditor`; final scenario evidence belongs to that owner and the parent.
