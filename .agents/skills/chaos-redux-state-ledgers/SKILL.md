@@ -17,6 +17,10 @@ Use `common\script_constants\` for shared tuning, `common\scripted_effects\` and
 
 Normal variables belong to their current country, state, or other scope. Temporary variables do not acquire scope prefixes, so `ROOT.some_temp` and `PREV.some_temp` do not persist or point to another scope. Use normal scoped variables for durable state or country ledgers, event targets for a short-lived scope pointer, and explicit outputs for cross-scope handoff.
 
+Before each scripted-helper call, preinitialize every temporary output consumed after return to zero or its documented invalid sentinel in the caller's effect or trigger chain, including outputs forwarded through nested helpers; the child modifies that inherited storage.
+Use unprefixed temporary names, and do not assume an output first created inside the helper survives return (`paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, Variable types, line 440); see [Helper output lifetime](../chaos-redux-events/SKILL.md#helper-output-lifetime) for the shared contract.
+Helpers reset public outputs at entry and clear one-shot input envelopes separately on success and rejection, without erasing published results before the caller consumes them.
+
 Regular event targets are appropriate for a destination or current transaction chain because the engine clears them when the originating effect chain ends. Use global event targets only for intentionally long-lived pointers and provide explicit clear and stale-target handling. Never treat a target name alone as a cohort id.
 
 Keep state effects in state scope and country effects in country scope. When a helper needs both, measure and update each ledger in its owning scope rather than relying on `OWNER`, `CONTROLLER`, `ROOT`, or `FROM` to remain unchanged through nested scopes. Prefer `state_population_k` over `state_population` for arithmetic to avoid variable overflow.
