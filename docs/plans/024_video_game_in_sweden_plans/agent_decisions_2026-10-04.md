@@ -187,3 +187,24 @@ Decision: player-facing Event 24 text uses departmental reports, staff manuals, 
 Trust the Model now shows its stated requirement tooltip instead of the raw trigger lines, and that tooltip names the earlier-review condition.
 No Event Details or evolution title or body changed, so no catalog change is pending.
 Basis: lead item on implementation jargon, repository player-text rules.
+
+## D23. AI covers ideology, autonomy, Totalen Chaos, threshold caution and plausible audits
+
+Decision: opening, evolution-choice, foreign-response, incident and Evolution III weights gain constant factors from `video_game_in_sweden_ai_factor` for government (democratic, neutrality, fascism, communism), low-autonomy subjects, Totalen Chaos and high tension.
+Reliance-raising decisions (widening, rules revision, officer league, national league, preparedness, licences) fall to 0.1 when `video_game_in_sweden_ai_avoids_reliance_gain` holds: a severe crisis with Reliance within 10 of Doctrine or Worldview while the stage it would feed is enabled.
+The full audit AI falls to 0.2 without the full field package and the narrow audit without a supplied region or active front; restriction is halved outside a crisis and doubled past 50% surrender progress; dual-track falls in a crisis; Trust the Model rises under Totalen Chaos and fascism and falls for democracies and low-autonomy subjects; admitting an incident weighs 1.5 at war.
+
+Source-reasoning orderings (raw scores, not normalized probabilities):
+- P24-O1 calm democratic peace: controlled 10.8, commercial 4.5, officer 1.2.
+- P24-O2 democratic rearmament with low experience and high tension: controlled 7.6, commercial 6.8, officer 1.7.
+- P24-O3 fascist Sweden at war with low experience: officer 14, controlled 1.1, commercial 0.5 to 0.7.
+- P24-O4 emergency: controlled 16 to 32, officer 0.25, commercial 0.
+- P24-C1 stable democracy (controlled route): red team 4.8, auxiliary 3.9, competitive 1.1; P24-C2 fascist wartime officer route: competitive well above auxiliary, red team about 1.3.
+- P24-C3 strong industry and high tension: exhibitions 4.8 and civic 3.2 to 4.8 above protected shifts 2; P24-C4 crisis: protected shifts 12, civic 4.8, exhibitions about 0.04.
+- P24-C6 stable Totalen militarised Sweden at war (officer route): Trust the Model about 9.5, dual-track about 5, audit 3.5, restriction 2; P24-C7 near capitulation: restriction about 16, audit 0.7 or less without a package, dual-track low, Trust the Model invalid.
+- P24-C5 supply failure with a lost core: restriction 8 leads the audit, because acceptance principle 8 (no audit without the plausible package) overrides the matrix row where a supply gap breaks the package; the audit leads once the package and supply hold.
+- P24-F1 to F4 keep their orderings, with faction copy (2.5), democratic peaceful study (1.5) and communist ban (1.8) added.
+
+MCP blocker: `hoi4.probability_inspect` (adapter `event_option_ai_chance`, source `{path: events/024_hearts_of_iron.txt}`, pool `chaosx.nr24.2.a/.b/.c`) returned `INTERNAL_ERROR` with no artifact; other source shapes and a `hoi4.probability_compare` attempt for P24-O1 and P24-O3 (before snapshot hash `27098a747576f3498063148c73caf755a1b0537fae0c0726d2852afaa89cac41`) were rejected as invalid arguments because the scenario schema is not published in the tool description.
+No numeric probability acceptance is claimed; the scenario ids above remain for the auditor pass.
+Basis: spec part 3 AI route matrix and principles 1, 2, 8 and 10, foreign response table, probability scenario file.
