@@ -14,7 +14,7 @@ First-package recipients call the existing Event 16 reaction helper in their own
 
 The same transaction owns the first-news guard and emits `chaosx.nr32.3` only once. Human recipients receive one delayed country report through `chaosx.nr32.2`; AI recipients are initialized silently. No Event 32 daily, weekly, monthly, or other recurring whole-world scan exists.
 
-Event 32 remains outside the shared default-enable allowlist until its accepted completion gates are satisfied. The repeatable event array, shared event-type resolver, cap reduction, weight recovery, pacing update, unfired counts, and history row remain owned by the shared event system.
+Event 32 is in the shared default-enable allowlist (`event_log_event_is_reworked_default_enabled`). The repeatable event array, shared event-type resolver, cap reduction, weight recovery, pacing update, unfired counts, and history row remain owned by the shared event system.
 
 ## Country-program API
 

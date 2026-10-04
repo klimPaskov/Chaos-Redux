@@ -2,6 +2,13 @@
 
 Status: partial/blocked. The source implementation and evidence reconciliation are substantial, but the independent completion audit records unresolved MCP, probability, asset-consumer, and planner evidence gaps. This record is the evidence ledger for the Event 032 acceptance and test matrices; it is not a substitute for live Hearts of Iron IV consumer validation.
 
+## Gameplay round evidence, 2026-10-04
+
+Source-contract tests on the committed round: `test_event32_date_units` (6), `test_event32_project_missions` (11), `test_event32_captured_sites` (8), `test_event32_phases` (4), `test_event32_incident_aftermath` (5), `test_event32_evolution_choices` (5), `test_event32_special_payload` (5), `test_event32_evolution_gates` (13), `test_event32_ordinary_preparation` (21), `test_event32_recipient_scope` (11), and `test_event32_state_scope` (6) all pass.
+They are source evidence only; the live cases `MISSION-01` to `EVO-PACE-03` in the test matrix remain `needs_live_game`.
+HOI4 MCP `hoi4.decision_inspect` returned `DECISION_ANALYZED_PARTIAL` for the survey mission and the saturation doctrine decision with unbound date and state-variable inputs; every `hoi4.probability_inspect` call this round returned `INTERNAL_ERROR`, so no probability compare exists for the changed weights or the evolution timing.
+Decisions and blockers are recorded in `agent_decisions_2026-10-04.md`.
+
 ## Current repair evidence, 2026-10-03
 
 The frozen-recipient and SCN-015 commit loops deliver immediate hidden `.5` and `.6` country events so programme and site helpers execute with recipient ROOT.

@@ -111,3 +111,11 @@ Disposition: `implemented` (source evidence and a Python model of the allocation
 - A site that receives no missiles leaves the operation, so every listed site holds a positive allocation.
 - Settlement decision: a capture, owner scuttle, destruction by strike, or wrecking natural disaster of a reserving site ends the order, refunds the reservation, and then debits exactly that site's allocation once (the readied missiles are lost); a non-wrecking disaster refunds everything. Captured readied missiles are not credited to the captor, keeping the settlement exact and single.
 - The natural-disaster settlement previously compared against the disaster chain's ROOT instead of the site controller; the new helper matches the operation id inside the controller's own scope.
+
+## Item 10: default enable and catalog staging
+
+Disposition: `implemented` for source; catalog `accepted and queued`.
+
+- Event 32 (`constant:missiles_event.id`) is added to `event_log_event_is_reworked_default_enabled` in the shared `chaosx_settings_triggers.txt` with a single-line edit; another owner's uncommitted line in the same list is left unstaged and untouched.
+- `catalog_changes_pending.md` stages `Events!M33` to `Needs Testing` and the Evo I and Evo V wording, which now matches the updated `missiles.evolution.saturation.body` and `missiles.evolution.automatic_retaliation.body` localisation (Saturation is a chosen doctrine; posture is a chosen delegation).
+- The test matrix gains live cases for this round; the test-results record lists the passing source modules and the MCP limits.

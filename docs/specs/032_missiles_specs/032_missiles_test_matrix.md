@@ -570,6 +570,36 @@ Verify:
 - no repeated evolution row
 - no stale site pointer
 
+## Project missions, captured sites, phases, payload orders, and pacing
+
+These live cases cover the 2026-10-04 gameplay round. Their source contracts are pinned by the `.tools/test_event32_*.py` modules listed in `docs/plans/032_missiles_plans/032_missiles_test_results.md`.
+
+| ID | Setup | Expected |
+| --- | --- | --- |
+| `MISSION-01` | Programme without a working site; survey an owned interior state | Mission completes after 60 days and the state becomes an active launch site |
+| `MISSION-02` | One working site; start a secondary site | Mission completes after 90 days, a second site is registered, and the decision hides at four sites |
+| `MISSION-03` | Damaged site in the incident or maintenance phase; suspend it | The site cannot launch while suspended; after 45 days its damage is cleared and it returns to service |
+| `MISSION-04` | Rogue crisis; send loyal forces and station two divisions in the rogue state | Recovery completes after 14 days, the incident closes, and the program leaves the rogue phase |
+| `MISSION-05` | Active warning; verify it | Verification resolves after 3 days to verified or false warning |
+| `MISSION-06` | Sever the network, then restore command control and readiness | Restoration completes after 60 days in peace or war and posture returns to Supervised |
+| `CAP-01` | Capture an enemy launch site | Four resolution actions show for that state only; each one ends the incident phase once no capture remains |
+| `CAP-02` | Integrate a captured site with held missiles | Held missiles join Operational Reserve exactly once |
+| `CAP-03` | Lose a captured site back before resolving it | The former captor leaves the incident phase |
+| `PHASE-01` | Programme at war with readiness below 50 | Replenish, readiness, guidance, and code actions are visible in the operations view |
+| `PHASE-02` | War starts or peace is made | Both participants switch between maintenance and operations views immediately |
+| `AFTER-01` | Own neutral accident, unconfirmed | Compensate, deny, accelerate, and recalibrate appear; deny closes the incident with a disputed record |
+| `AFTER-02` | Own breakup over own territory | Debris investigation confirms attribution once per incident |
+| `PAY-01` | Special Warheads adopted with a nuclear stockpile; integrate, select, and set policy | Each order opens its choice event; a newly fitted warhead asks for standing orders |
+| `PAY-02` | Prepare and then abort a nuclear strike | One nuclear weapon leaves the stockpile at preparation and returns on abort |
+| `PAY-03` | Prepare and launch a nuclear strike | The held warhead is consumed once with no second debit |
+| `DOC-01` | Saturation unlocked | No country adopts it until the doctrine decision is taken |
+| `DOC-02` | Automatic Retaliation unlocked | Posture starts Off; the posture decision is blocked during a warning |
+| `ALLOC-01` | Saturation barrage over sites with capacities 10 and 2 for 10 missiles | The order is accepted with allocations 8 and 2 |
+| `ALLOC-02` | Capture a reserving site before launch | The order ends and exactly that site's allocation is lost |
+| `EVO-PACE-01` | First firing above several thresholds | Unlocks arrive about 21 days later, staggered about 14 days apart |
+| `EVO-PACE-02` | Track becomes eligible between firings | The track unlocks near its base delay without another Event 32 firing |
+| `EVO-PACE-03` | Disable a pending track | Its pending job clears and it never records an unlock |
+
 ## Long progression test
 
 Run a bounded campaign with AI active.
