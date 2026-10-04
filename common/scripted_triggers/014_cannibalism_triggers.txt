@@ -1,6 +1,10 @@
 # Event 014 Cannibalism scripted triggers
 # Consolidated by loader surface. Identifiers, ordering, and gameplay content are preserved.
 
+# Native province-filter thresholds used by cannibalism_state_has_siege_victory_point_city.
+@CANNIBALISM_SIEGE_VICTORY_POINTS = 2
+@CANNIBALISM_SIEGE_ANY_BUNKER_LEVEL = -1
+
 # ============================================================================
 # Consolidated source section: 014_cannibalism_achievement_triggers.txt
 # ============================================================================
@@ -1353,9 +1357,27 @@ cannibalism_scenario_valid_target_state = {
 	CONTROLLER = { cannibalism_scenario_valid_destructive_host_country = yes }
 }
 
+# STATE scope. True when one province of the state holds more victory points
+# than @CANNIBALISM_SIEGE_VICTORY_POINTS. States expose no victory-point
+# variable, so the native province filter reads the value:
+# limit_to_victory_point accepts a comparison (offline wiki Effects,
+# add_building_construction province block; vanilla spain.txt uses
+# limit_to_victory_point > 2). Bunker levels are never negative, so the
+# building bound adds no requirement of its own.
+cannibalism_state_has_siege_victory_point_city = {
+	any_province_building_level = {
+		province = {
+			all_provinces = yes
+			limit_to_victory_point > @CANNIBALISM_SIEGE_VICTORY_POINTS
+		}
+		building = bunker
+		level > @CANNIBALISM_SIEGE_ANY_BUNKER_LEVEL
+	}
+}
+
 cannibalism_scenario_state_has_siege_package = {
 	OR = {
-		check_variable = { var = victory_points value = constant:cannibalism_state_threshold.siege_victory_points compare = greater_than }
+		cannibalism_state_has_siege_victory_point_city = yes
 		bunker > 0
 		industrial_complex > 0
 		arms_factory > 0
@@ -2933,7 +2955,7 @@ cannibalism_state_can_form_siege_commune = {
 	NOT = { is_island_state = yes }
 	NOT = { has_state_flag = cannibalism_scenario_march_column }
 	OR = {
-		check_variable = { var = victory_points value = constant:cannibalism_state_threshold.siege_victory_points compare = greater_than }
+		cannibalism_state_has_siege_victory_point_city = yes
 		bunker > 0
 		industrial_complex > 0
 		arms_factory > 0

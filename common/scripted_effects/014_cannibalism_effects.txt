@@ -251,8 +251,11 @@ cannibalism_achievement_process_current_actor = {
 			}
 			if = {
 				limit = { NOT = { has_variable = achievement_cannibalism_defiant_survival_due_date } }
+				set_temp_variable = { chaosx_date_days = constant:cannibalism_achievement.defiant_survival_days }
+				set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+				chaosx_convert_days_to_date_offset = yes
 				set_variable = { achievement_cannibalism_defiant_survival_due_date = global.date }
-				add_to_variable = { achievement_cannibalism_defiant_survival_due_date = constant:cannibalism_achievement.defiant_survival_days }
+				add_to_variable = { achievement_cannibalism_defiant_survival_due_date = chaosx_date_offset }
 			}
 			else_if = {
 				limit = {
@@ -1723,8 +1726,11 @@ cannibalism_schedule_current_pulse_after_delay = {
 		set_variable = { global.cannibalism_scheduled_pulse_interval_days = cannibalism_next_pulse_days }
 		add_to_variable = { global.cannibalism_next_pulse_ticket = 1 }
 		set_variable = { global.cannibalism_active_pulse_ticket = global.cannibalism_next_pulse_ticket }
+		set_temp_variable = { chaosx_date_days = cannibalism_next_pulse_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
 		set_variable = { global.cannibalism_pulse_due_date = global.date }
-		add_to_variable = { global.cannibalism_pulse_due_date = cannibalism_next_pulse_days }
+		add_to_variable = { global.cannibalism_pulse_due_date = chaosx_date_offset }
 		set_variable = { cannibalism_scheduled_pulse_ticket = global.cannibalism_active_pulse_ticket }
 		set_temp_variable = { cannibalism_pulse_flag_days = cannibalism_next_pulse_days }
 		add_to_temp_variable = { cannibalism_pulse_flag_days = constant:cannibalism_timing.pulse_flag_buffer_days }
@@ -1789,8 +1795,11 @@ cannibalism_retire_current_pulse_callback = {
 	set_temp_variable = { cannibalism_rehome_pulse_immediate = 0 }
 	if = {
 		limit = { cannibalism_current_country_owns_active_pulse_callback = yes }
-		set_temp_variable = { cannibalism_rehome_pulse_days = global.cannibalism_pulse_due_date }
-		subtract_from_temp_variable = { cannibalism_rehome_pulse_days = global.date }
+		set_temp_variable = { chaosx_date_offset = global.cannibalism_pulse_due_date }
+		subtract_from_temp_variable = { chaosx_date_offset = global.date }
+		set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+		chaosx_convert_date_offset_to_days = yes
+		set_temp_variable = { cannibalism_rehome_pulse_days = chaosx_date_days }
 		if = {
 			limit = { check_variable = { cannibalism_rehome_pulse_days < 1 } }
 			set_temp_variable = { cannibalism_rehome_pulse_immediate = 1 }
@@ -2282,8 +2291,11 @@ cannibalism_process_current_actor_pulse = {
 			limit = { cannibalism_country_can_begin_stabilization = yes }
 			if = {
 				limit = { NOT = { has_variable = cannibalism_local_victory_due_date } }
+				set_temp_variable = { chaosx_date_days = constant:cannibalism_timing.stabilization_days }
+				set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+				chaosx_convert_days_to_date_offset = yes
 				set_variable = { cannibalism_local_victory_due_date = global.date }
-				add_to_variable = { cannibalism_local_victory_due_date = constant:cannibalism_timing.stabilization_days }
+				add_to_variable = { cannibalism_local_victory_due_date = chaosx_date_offset }
 			}
 			else_if = {
 				limit = {
@@ -2300,6 +2312,18 @@ cannibalism_process_current_actor_pulse = {
 			clear_variable = cannibalism_local_victory_due_date
 		}
 	}
+}
+
+# STATE scope. Set cannibalism_recovery_next_date to temp
+# cannibalism_recovery_stage_days after today. Date variables count one game
+# hour as 0.00001, so the day count passes through the shared
+# chaosx_convert_days_to_date_offset helper before it is added to the date.
+cannibalism_schedule_current_state_recovery_date = {
+	set_temp_variable = { chaosx_date_days = cannibalism_recovery_stage_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { cannibalism_recovery_next_date = global.date }
+	add_to_variable = { cannibalism_recovery_next_date = chaosx_date_offset }
 }
 
 cannibalism_mark_current_state_for_recovery = {
@@ -2325,8 +2349,8 @@ cannibalism_mark_current_state_for_recovery = {
 		}
 		set_temp_variable = { cannibalism_new_state_stage = constant:cannibalism_state_stage.liberated_emergency }
 		cannibalism_set_current_state_stage = yes
-		set_variable = { cannibalism_recovery_next_date = global.date }
-		add_to_variable = { cannibalism_recovery_next_date = constant:cannibalism_timing.liberated_emergency_days }
+		set_temp_variable = { cannibalism_recovery_stage_days = constant:cannibalism_timing.liberated_emergency_days }
+		cannibalism_schedule_current_state_recovery_date = yes
 	}
 }
 
@@ -2586,8 +2610,11 @@ cannibalism_check_global_victory = {
 		}
 		if = {
 			limit = { NOT = { has_variable = global.cannibalism_global_victory_due_date } }
+			set_temp_variable = { chaosx_date_days = constant:cannibalism_evolution_threshold.global_defeat_stabilization_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
 			set_variable = { global.cannibalism_global_victory_due_date = global.date }
-			add_to_variable = { global.cannibalism_global_victory_due_date = constant:cannibalism_evolution_threshold.global_defeat_stabilization_days }
+			add_to_variable = { global.cannibalism_global_victory_due_date = chaosx_date_offset }
 			set_global_flag = cannibalism_global_stabilization_active
 		}
 		else_if = {
@@ -2673,8 +2700,11 @@ cannibalism_schedule_evolution_i_report_for_current_country = {
 		}
 		set_country_flag = cannibalism_evolution_i_report_scheduled
 		set_variable = { cannibalism_evolution_i_report_generation = cannibalism_actor_generation }
+		set_temp_variable = { chaosx_date_days = constant:cannibalism_timing.presentation_delay_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
 		set_variable = { cannibalism_evolution_i_report_due_date = global.date }
-		add_to_variable = { cannibalism_evolution_i_report_due_date = constant:cannibalism_timing.presentation_delay_days }
+		add_to_variable = { cannibalism_evolution_i_report_due_date = chaosx_date_offset }
 	}
 }
 
@@ -2693,8 +2723,11 @@ cannibalism_schedule_evolution_ii_report_for_current_country = {
 		}
 		set_country_flag = cannibalism_evolution_ii_report_scheduled
 		set_variable = { cannibalism_evolution_ii_report_generation = cannibalism_actor_generation }
+		set_temp_variable = { chaosx_date_days = constant:cannibalism_timing.presentation_delay_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
 		set_variable = { cannibalism_evolution_ii_report_due_date = global.date }
-		add_to_variable = { cannibalism_evolution_ii_report_due_date = constant:cannibalism_timing.presentation_delay_days }
+		add_to_variable = { cannibalism_evolution_ii_report_due_date = chaosx_date_offset }
 	}
 }
 
@@ -2897,8 +2930,11 @@ cannibalism_begin_convergence_window = {
 		set_global_flag = cannibalism_unification_pending
 		clr_global_flag = cannibalism_evolution_iii_transition_due
 		set_variable = { global.cannibalism_global_stage = constant:cannibalism_global_stage.convergence }
+		set_temp_variable = { chaosx_date_days = constant:cannibalism_timing.convergence_warning_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
 		set_variable = { global.cannibalism_convergence_due_date = global.date }
-		add_to_variable = { global.cannibalism_convergence_due_date = constant:cannibalism_timing.convergence_warning_days }
+		add_to_variable = { global.cannibalism_convergence_due_date = chaosx_date_offset }
 		clear_variable = global.cannibalism_evolution_iii_due_date
 		clear_array = global.cannibalism_convergence_actor_countries
 		for_each_scope_loop = {
@@ -2929,8 +2965,11 @@ cannibalism_break_convergence = {
 		set_global_flag = cannibalism_convergence_broken_once
 		clr_global_flag = cannibalism_scenario_convergence_contract
 		set_variable = { global.cannibalism_global_stage = constant:cannibalism_global_stage.network }
+		set_temp_variable = { chaosx_date_days = constant:cannibalism_convergence.rebuild_cooldown_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
 		set_variable = { global.cannibalism_convergence_rebuild_date = global.date }
-		add_to_variable = { global.cannibalism_convergence_rebuild_date = constant:cannibalism_convergence.rebuild_cooldown_days }
+		add_to_variable = { global.cannibalism_convergence_rebuild_date = chaosx_date_offset }
 		clear_variable = global.cannibalism_convergence_due_date
 		clear_variable = global.cannibalism_evolution_iii_due_date
 		for_each_scope_loop = {
@@ -3021,8 +3060,11 @@ cannibalism_try_schedule_evolution_i = {
 				set_temp_variable = { cannibalism_evolution_delay_days = mtth:cannibalism_evolution_i_days }
 				clamp_temp_variable = { var = cannibalism_evolution_delay_days min = constant:cannibalism_evolution_mtth.minimum_days max = constant:cannibalism_evolution_mtth.maximum_days }
 			}
+			set_temp_variable = { chaosx_date_days = cannibalism_evolution_delay_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
 			set_variable = { global.cannibalism_evolution_i_due_date = global.date }
-			add_to_variable = { global.cannibalism_evolution_i_due_date = cannibalism_evolution_delay_days }
+			add_to_variable = { global.cannibalism_evolution_i_due_date = chaosx_date_offset }
 		}
 		else_if = {
 			limit = {
@@ -3069,8 +3111,11 @@ cannibalism_try_schedule_evolution_ii = {
 				set_temp_variable = { cannibalism_evolution_delay_days = mtth:cannibalism_evolution_ii_days }
 				clamp_temp_variable = { var = cannibalism_evolution_delay_days min = constant:cannibalism_evolution_mtth.minimum_days max = constant:cannibalism_evolution_mtth.maximum_days }
 			}
+			set_temp_variable = { chaosx_date_days = cannibalism_evolution_delay_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
 			set_variable = { global.cannibalism_evolution_ii_due_date = global.date }
-			add_to_variable = { global.cannibalism_evolution_ii_due_date = cannibalism_evolution_delay_days }
+			add_to_variable = { global.cannibalism_evolution_ii_due_date = chaosx_date_offset }
 		}
 		else_if = {
 			limit = {
@@ -4444,8 +4489,8 @@ cannibalism_begin_current_state_recovery = {
 		set_state_flag = cannibalism_recovery_active
 		set_temp_variable = { cannibalism_new_state_stage = constant:cannibalism_state_stage.liberated_emergency }
 		cannibalism_set_current_state_stage = yes
-		set_variable = { cannibalism_recovery_next_date = global.date }
-		add_to_variable = { cannibalism_recovery_next_date = constant:cannibalism_timing.liberated_emergency_days }
+		set_temp_variable = { cannibalism_recovery_stage_days = constant:cannibalism_timing.liberated_emergency_days }
+		cannibalism_schedule_current_state_recovery_date = yes
 	}
 }
 
@@ -4464,22 +4509,22 @@ cannibalism_advance_current_state_recovery = {
 			limit = { check_variable = { cannibalism_state_stage = constant:cannibalism_state_stage.liberated_emergency } }
 			set_temp_variable = { cannibalism_new_state_stage = constant:cannibalism_state_stage.identification_recovery }
 			cannibalism_set_current_state_stage = yes
-			set_variable = { cannibalism_recovery_next_date = global.date }
-			add_to_variable = { cannibalism_recovery_next_date = constant:cannibalism_timing.identification_days }
+			set_temp_variable = { cannibalism_recovery_stage_days = constant:cannibalism_timing.identification_days }
+			cannibalism_schedule_current_state_recovery_date = yes
 		}
 		else_if = {
 			limit = { check_variable = { cannibalism_state_stage = constant:cannibalism_state_stage.identification_recovery } }
 			set_temp_variable = { cannibalism_new_state_stage = constant:cannibalism_state_stage.institutional_recovery }
 			cannibalism_set_current_state_stage = yes
-			set_variable = { cannibalism_recovery_next_date = global.date }
-			add_to_variable = { cannibalism_recovery_next_date = constant:cannibalism_timing.institutional_recovery_days }
+			set_temp_variable = { cannibalism_recovery_stage_days = constant:cannibalism_timing.institutional_recovery_days }
+			cannibalism_schedule_current_state_recovery_date = yes
 		}
 		else_if = {
 			limit = { check_variable = { cannibalism_state_stage = constant:cannibalism_state_stage.institutional_recovery } }
 			set_temp_variable = { cannibalism_new_state_stage = constant:cannibalism_state_stage.long_trauma }
 			cannibalism_set_current_state_stage = yes
-			set_variable = { cannibalism_recovery_next_date = global.date }
-			add_to_variable = { cannibalism_recovery_next_date = constant:cannibalism_timing.long_trauma_days }
+			set_temp_variable = { cannibalism_recovery_stage_days = constant:cannibalism_timing.long_trauma_days }
+			cannibalism_schedule_current_state_recovery_date = yes
 		}
 		else_if = {
 			limit = { check_variable = { cannibalism_state_stage = constant:cannibalism_state_stage.long_trauma } }
@@ -5578,14 +5623,14 @@ cannibalism_retire_current_state_from_warlord_slot = {
 				set_state_flag = cannibalism_recovery_active
 				set_temp_variable = { cannibalism_new_state_stage = constant:cannibalism_state_stage.liberated_emergency }
 				cannibalism_set_current_state_stage = yes
-				set_variable = { cannibalism_recovery_next_date = global.date }
-				add_to_variable = { cannibalism_recovery_next_date = constant:cannibalism_timing.liberated_emergency_days }
+				set_temp_variable = { cannibalism_recovery_stage_days = constant:cannibalism_timing.liberated_emergency_days }
+				cannibalism_schedule_current_state_recovery_date = yes
 			}
 		}
 	}
 	if = {
 		limit = { is_core_of = event_target:cannibalism_warlord_release_country }
-		remove_state_core = event_target:cannibalism_warlord_release_country
+		remove_core_of = event_target:cannibalism_warlord_release_country
 	}
 	clr_state_flag = cannibalism_warlord_state
 	clr_state_flag = cannibalism_warlord_transfer_selected
@@ -5704,8 +5749,11 @@ cannibalism_finalize_current_warlord_slot_release = {
 			has_country_flag = cannibalism_warlord_slot_release_pending
 			cannibalism_current_warlord_slot_references_are_clear = yes
 		}
+		set_temp_variable = { chaosx_date_days = constant:cannibalism_warlord_creation.reuse_quarantine_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
 		set_variable = { cannibalism_warlord_slot_reuse_date = global.date }
-		add_to_variable = { cannibalism_warlord_slot_reuse_date = constant:cannibalism_warlord_creation.reuse_quarantine_days }
+		add_to_variable = { cannibalism_warlord_slot_reuse_date = chaosx_date_offset }
 		set_variable = { global.cannibalism_warlord_slot_reuse_date_entries^cannibalism_warlord_slot_index = cannibalism_warlord_slot_reuse_date }
 		if = { limit = { check_variable = { cannibalism_warlord_slot_index = constant:cannibalism_slot.cba } } clr_global_flag = cannibalism_slot_cba_in_use }
 		else_if = { limit = { check_variable = { cannibalism_warlord_slot_index = constant:cannibalism_slot.cbb } } clr_global_flag = cannibalism_slot_cbb_in_use }
@@ -6444,8 +6492,11 @@ cannibalism_wendigo_start_terminal_hunt = {
 		set_variable = { cannibalism_wendigo_terminal_hunt_pressure = constant:cannibalism_wendigo_terminal_hunt.starting_pressure }
 		set_variable = { cannibalism_wendigo_terminal_hunt_counterpressure = 0 }
 		set_variable = { cannibalism_wendigo_terminal_hunt_start_date = global.date }
+		set_temp_variable = { chaosx_date_days = constant:cannibalism_wendigo_terminal_hunt.mission_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
 		set_variable = { cannibalism_wendigo_terminal_hunt_due_date = global.date }
-		add_to_variable = { cannibalism_wendigo_terminal_hunt_due_date = constant:cannibalism_wendigo_terminal_hunt.mission_days }
+		add_to_variable = { cannibalism_wendigo_terminal_hunt_due_date = chaosx_date_offset }
 		activate_mission = cannibalism_wendigo_terminal_hunt_mission
 		add_ai_strategy = { type = conquer id = event_target:cannibalism_wendigo_terminal_hunt_target value = @CR_SC_CANNIBALISM_WENDIGO_AI_PRELOCK_TARGET_HIGH }
 		add_ai_strategy = { type = antagonize id = event_target:cannibalism_wendigo_terminal_hunt_target value = @CR_SC_CANNIBALISM_WENDIGO_AI_PRELOCK_TARGET_HIGH }
@@ -7872,8 +7923,11 @@ cannibalism_start_stop_unification_mission = {
 		set_variable = { cannibalism_stop_unification_target_generation = event_target:cannibalism_objective_country_target.cannibalism_actor_generation }
 		set_variable = { cannibalism_stop_unification_hold_days = constant:cannibalism_objective_value.zero }
 		set_variable = { cannibalism_stop_unification_goal_days = constant:cannibalism_objective_progress.unification_goal_days }
-		set_variable = { cannibalism_stop_unification_duration = global.cannibalism_convergence_due_date }
-		subtract_from_variable = { cannibalism_stop_unification_duration = global.date }
+		set_temp_variable = { chaosx_date_offset = global.cannibalism_convergence_due_date }
+		subtract_from_temp_variable = { chaosx_date_offset = global.date }
+		set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+		chaosx_convert_date_offset_to_days = yes
+		set_variable = { cannibalism_stop_unification_duration = chaosx_date_days }
 		add_to_variable = { cannibalism_stop_unification_duration = constant:cannibalism_objective_timing.unification_timeout_buffer_days }
 		clamp_variable = { var = cannibalism_stop_unification_duration min = constant:cannibalism_objective_timing.unification_minimum_days max = constant:cannibalism_objective_timing.unification_maximum_days }
 		cannibalism_register_current_country_objective_observer = yes
@@ -8364,8 +8418,11 @@ cannibalism_resolve_stop_transformation_cancellation = {
 cannibalism_refresh_compact_vigilance_progress = {
 	if = {
 		limit = { has_variable = cannibalism_compact_vigilance_start_date }
-		set_variable = { cannibalism_compact_vigilance_progress_days = global.date }
-		subtract_from_variable = { cannibalism_compact_vigilance_progress_days = cannibalism_compact_vigilance_start_date }
+		set_temp_variable = { chaosx_date_offset = global.date }
+		subtract_from_temp_variable = { chaosx_date_offset = cannibalism_compact_vigilance_start_date }
+		set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+		chaosx_convert_date_offset_to_days = yes
+		set_variable = { cannibalism_compact_vigilance_progress_days = chaosx_date_days }
 		clamp_variable = { var = cannibalism_compact_vigilance_progress_days min = constant:cannibalism_objective_value.zero max = constant:cannibalism_objective_timing.compact_vigilance_days }
 	}
 }
@@ -10078,8 +10135,11 @@ cannibalism_enqueue_spread_entry = {
 			cannibalism_spread_context_is_valid = yes
 		}
 		add_to_variable = { global.cannibalism_next_spread_id = 1 }
+		set_temp_variable = { chaosx_date_days = cannibalism_spread_delay_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
 		set_temp_variable = { cannibalism_spread_due_date = global.date }
-		add_to_temp_variable = { cannibalism_spread_due_date = cannibalism_spread_delay_days }
+		add_to_temp_variable = { cannibalism_spread_due_date = chaosx_date_offset }
 
 		add_to_array = { array = global.cannibalism_spread_queue_id_entries value = global.cannibalism_next_spread_id }
 		add_to_array = { array = global.cannibalism_spread_queue_source_country_entries value = event_target:cannibalism_spread_source_country }
@@ -11649,8 +11709,11 @@ cannibalism_try_start_ordinary_world_end = {
 # ---------------------------------------------------------------------------
 
 cannibalism_try_start_global_defeat_aftermath = {
-	set_variable = { global.cannibalism_global_defeat_duration_days = global.date }
-	subtract_from_variable = { global.cannibalism_global_defeat_duration_days = global.cannibalism_system_start_date }
+	set_temp_variable = { chaosx_date_offset = global.date }
+	subtract_from_temp_variable = { chaosx_date_offset = global.cannibalism_system_start_date }
+	set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+	chaosx_convert_date_offset_to_days = yes
+	set_variable = { global.cannibalism_global_defeat_duration_days = chaosx_date_days }
 	cannibalism_refresh_global_defeat_contributor_count = yes
 	if = {
 		limit = { cannibalism_global_defeat_aftermath_is_eligible = yes }
@@ -11990,7 +12053,7 @@ cannibalism_calculate_current_unification_host_score = {
 	if = {
 		limit = {
 			capital_scope = {
-				NOT = { any_neighbor_state = { is_controlled_by = PREV } }
+				NOT = { any_neighbor_state = { is_controlled_by = PREV.PREV } }
 				is_island_state = no
 			}
 		}
@@ -16849,7 +16912,7 @@ cannibalism_abandon_selected_exhausted_state = {
 			cannibalism_begin_current_state_recovery = yes
 			if = {
 				limit = { is_core_of = event_target:cannibalism_warlord_abandon_actor }
-				remove_state_core = event_target:cannibalism_warlord_abandon_actor
+				remove_core_of = event_target:cannibalism_warlord_abandon_actor
 			}
 			clr_state_flag = cannibalism_warlord_state
 			clr_state_flag = cannibalism_commune_state
@@ -19078,8 +19141,8 @@ cannibalism_break_loaded_wendigo_anchor = {
 		set_state_flag = cannibalism_recovery_active
 		set_temp_variable = { cannibalism_new_state_stage = constant:cannibalism_state_stage.liberated_emergency }
 		cannibalism_set_current_state_stage = yes
-		set_variable = { cannibalism_recovery_next_date = global.date }
-		add_to_variable = { cannibalism_recovery_next_date = constant:cannibalism_timing.liberated_emergency_days }
+		set_temp_variable = { cannibalism_recovery_stage_days = constant:cannibalism_timing.liberated_emergency_days }
+		cannibalism_schedule_current_state_recovery_date = yes
 		if = {
 			limit = { has_event_target = cannibalism_wendigo_merge_host }
 			event_target:cannibalism_wendigo_merge_host = {
@@ -19166,8 +19229,11 @@ cannibalism_try_start_wendigo_countdown = {
 		set_global_flag = cannibalism_wendigo_countdown_active
 		set_variable = { cannibalism_wendigo_transformation_stage = constant:cannibalism_wendigo_stage.locked }
 		set_variable = { cannibalism_wendigo_countdown_start_date = global.date }
+		set_temp_variable = { chaosx_date_days = constant:cannibalism_timing.wendigo_countdown_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
 		set_variable = { cannibalism_wendigo_countdown_estimated_end_date = global.date }
-		add_to_variable = { cannibalism_wendigo_countdown_estimated_end_date = constant:cannibalism_timing.wendigo_countdown_days }
+		add_to_variable = { cannibalism_wendigo_countdown_estimated_end_date = chaosx_date_offset }
 		country_event = { id = chaosx.nr14.75 hours = @CANNIBALISM_WENDIGO_STAGE_EVENT_HOURS }
 	}
 }
