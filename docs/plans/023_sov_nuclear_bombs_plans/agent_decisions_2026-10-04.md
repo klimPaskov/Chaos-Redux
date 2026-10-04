@@ -86,3 +86,10 @@ The router's production duty uses the same predicate, so the AI does not enter p
 Player production, batch arithmetic, grants and the ledger are unchanged.
 Basis: the closure addendum's inventory policy (parent-accepted 2026-10-03), Part 9 production AI ("should not build bombs without regard to delivery, reactors, and security"; priority falls when the stockpile exceeds the posture cap), and the lead's item list.
 Disposition: `implemented`; probability compare recorded with D11.
+
+## D7. State-targeted orders are chosen on the map
+
+Decision: all fifteen state-targeted Event 23 decisions use `on_map_mode = map_only`: the fourteen named in the closure addendum (`operational_command`, `collapse_command`, `harden_storage_site`, `disperse_reserve_package`, `expand_fissile_production`, `assemble_device_batch`, `survey_remote_test_state`, `select_coercion_target`, `redirect_strike_state`, `preserve_reserve`, `select_retaliation_target`, `select_disputed_depot`, `select_dismantlement_site`, `breakaway_secure_custody`, each with the `sov_nuclear_bombs_` prefix) and `sov_nuclear_bombs_breakaway_request_return`, which has the same one-row-per-state behaviour and would otherwise break the local custodian's two-row budget.
+Target pools, costs, availability and AI evaluation are unchanged; the category description tells the player that state choices are made on the map while the category is open.
+Basis: installed `common/decisions/_documentation.md` (each matching target creates its own entry), offline `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md` lines 576-595 (`on_map_mode = map_only`), the vanilla `FIN_set_up_weapon_caches_in_state` map-only precedent cited in the addendum, the addendum's presentation recommendation, and the lead's D7.
+Disposition: `implemented`; map icon discoverability and list density `needs_live_game`.
