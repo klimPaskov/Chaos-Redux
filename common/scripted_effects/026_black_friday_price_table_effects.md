@@ -28,10 +28,11 @@ Sale ratios are whole percents of `ratio_basis`, so the quote first turns the ra
 
 ## Registering a price
 
-1. Literal amount: add `pp_<N> = <N>` to the `black_friday_price_table` constant group if it is missing. Owner constant: use the owner's existing `constant:<group>.<key>` directly.
+1. Literal amount: add `pp_<N> = <N>` to the `black_friday_price_table` constant group if it is missing (`cp_<N>` for a whole-unit command power amount). Owner constant: use the owner's existing `constant:<group>.<key>` directly.
 2. Add one three-line entry to `black_friday_price_table_refresh_entries` under the owner's group comment. The variable name is `black_friday_price_pp_<N>` for a literal and `black_friday_price_<group>_<key>` for an owner constant.
 3. Bump `price_table_version` in `black_friday_event`. Bump it again whenever a registered ordinary amount changes, so running campaigns rebuild the table.
 4. Set the decision's cost to the global variable.
+5. Credit the achievement: add `hidden_effect = { black_friday_credit_political_power_purchase = yes }` to the decision's `complete_effect`, unless the effect already credits a family for that purchase.
 
 Example, for a decision that costs `constant:holy_realm_decision.chinese_core_cost`:
 

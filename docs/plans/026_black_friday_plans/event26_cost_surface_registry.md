@@ -447,6 +447,56 @@ Every remaining positive native or custom cost has a per-owner disposition (agen
 | Event 032 | 0 | 26 | owner adoption pending |
 | Fallout | 12 | 41 | owner adoption pending |
 | Germany Mengele (custom) | 0 | 4 | native converted (D5); clone adapters exist; remainder owner adoption pending |
+### Paid event options in owners queued to Event 26, 2026-10-05
+
+Agent decision D26 classifies every option with a negative resource effect in the inactive owners' events (`001`, `003`, `022`, `043`, `048`, `049`, `053`, `063`, `068`, `069`, `071`, `072`, `073`, `076`, `078`, `080`, `081`, `086`, `091`, `092`, and `093`): 40 options, five of them purchases.
+A purchase is an option where the player pays to obtain its outcome; it pays the registered table price through a negated temp variable, shows that amount in its option tooltip, and credits one achievement family in a `hidden_effect`.
+A refusal penalty or a consequence is `not_a_purchase_cost` and keeps its ordinary amount.
+AI chances are unchanged. The tooltip amount and the sale debit are `needs_live_game`.
+
+| Surface ID | Owner file | Option | Ordinary effect | Status | Price source or reason | Primary achievement family |
+| --- | --- | --- | --- | --- | --- | --- |
+| BF-EVO-001 | `events/001_communism_spread.txt` | `chaosx.nr1.2.b` Deploy security detachments | 10 Command Power, 1% Stability | implemented (source) | Command Power reads `global.black_friday_price_cp_10`; the 1% Stability loss is the crackdown's consequence and is one step, so it never changes | Command power |
+| BF-EVO-002 | `events/001_communism_spread.txt` | `chaosx.nr1.8.a` Launch emergency intervention now | 25 Command Power, 3% Stability | implemented (source) | Command Power reads `global.black_friday_price_cp_25`; the 3% Stability loss is the emergency crackdown's domestic consequence, as D21 treats coercion Stability losses | Command power |
+| BF-EVO-003 | `events/003_the_holy_realm.txt` | `chaosx.nr3.21.c` Remove the Arhat quietly | 25 Political Power | implemented (source) | Reads `global.black_friday_price_pp_25`; the payment moved out of the hidden block so the option tooltip shows the charged amount | Political power |
+| BF-EVO-004 | `events/053_mysterious_man.txt` | `chaosx.nr53.1.a` Pay him | 200 Political Power | implemented (source) | Reads `global.black_friday_price_pp_200` | Political power |
+| BF-EVO-005 | `events/078_border_war.txt` | `chaosx.nr78.2.b` Just end them | 100 Political Power, 20% War Support | implemented (source) | Political Power buys the annexation war and reads `global.black_friday_price_pp_100`; the War Support loss is the public reaction to that war, a consequence | Political power |
+| BF-EVO-006 | `events/001_communism_spread.txt` | `chaosx.nr1.5.a` This is becoming a territorial crisis. | 1.5% Stability | not_a_purchase_cost | Consequence of a state reaching full communist control; the only option | None |
+| BF-EVO-007 | `events/001_communism_spread.txt` | `chaosx.nr1.6.a` Keep pressure on the remaining cells. | 0.5% Stability | not_a_purchase_cost | Consequence of a completed intervention; the only option | None |
+| BF-EVO-008 | `events/003_the_holy_realm.txt` | `chaosx.nr3.2.c` Restrict the gatherings. | 5% Stability | not_a_purchase_cost | Consequence of the restriction policy, which also raises War Support | None |
+| BF-EVO-009 | `events/003_the_holy_realm.txt` | `chaosx.nr3.4.a` Open the refuge roads. | 2% Stability | not_a_purchase_cost | Consequence of admitting refugees, who add manpower | None |
+| BF-EVO-010 | `events/003_the_holy_realm.txt` | `chaosx.nr3.3.b` The pass remains ours. | 3% Stability | not_a_purchase_cost | Refusal penalty for rejecting the seal | None |
+| BF-EVO-011 | `events/003_the_holy_realm.txt` | `chaosx.nr3.21.b` Send an inquiry. | 1% Stability | not_a_purchase_cost | Consequence of the inquiry; one step | None |
+| BF-EVO-012 | `events/003_the_holy_realm.txt` | `chaosx.nr3.22.a` Expose the false attainment. | 2% Stability | not_a_purchase_cost | Consequence of the public exposure | None |
+| BF-EVO-013 | `events/003_the_holy_realm.txt` | `chaosx.nr3.76.b` Send one final envoy. | 1% Stability | not_a_purchase_cost | Consequence of the envoy; one step | None |
+| BF-EVO-014 | `events/003_the_holy_realm.txt` | `chaosx.nr3.76.c` Evacuate marked cities. | 3% Stability | not_a_purchase_cost | Consequence of the evacuation, which also raises War Support | None |
+| BF-EVO-015 | `events/003_the_holy_realm.txt` | `chaosx.nr3.121.a` Let the mission speak. | 1% War Support | not_a_purchase_cost | Consequence of the mission, which also raises Stability | None |
+| BF-EVO-016 | `events/022_jews_massacre.txt` | `chaosx.nr22.4.b` Stand aside | 10% Stability | not_a_purchase_cost | Refusal penalty | None |
+| BF-EVO-017 | `events/043_massive_flood.txt` | `chaosx.nr43.2.a` Move to higher ground. | 5% Stability | not_a_purchase_cost | Disaster consequence; the only option. The manpower per coastal state is lost in the `immediate` block, not paid by an option | None |
+| BF-EVO-018 | `events/048_old_great_bulgaria.txt` | `chaosx.nr48.2.b` | 25% Stability, 100% War Support | not_a_purchase_cost | Refusal penalty for declining the claim | None |
+| BF-EVO-019 | `events/049_mass_panic.txt` | `chaosx.nr49.4.a` This is still fixable! | 5% Stability | not_a_purchase_cost | Consequence of critical panic; the option also grants Political Power | None |
+| BF-EVO-020 | `events/053_mysterious_man.txt` | `chaosx.nr53.1.b` Suffer consequences | A random 50% Stability and War Support loss among other outcomes | not_a_purchase_cost | Refusal penalty for not paying | None |
+| BF-EVO-021 | `events/063_subject_independence.txt` | `chaosx.nr63.2.b` Accept the declaration. | 5% Stability | not_a_purchase_cost | Consequence of losing the subject | None |
+| BF-EVO-022 | `events/068_zin.txt` | `chaosx.nr68.3.b` Who are they!? | 10 Political Power | not_a_purchase_cost | Refusal penalty for refusing to yield land | None |
+| BF-EVO-023 | `events/069_boxer_rebellion.txt` | `chaosx.nr69.2.b` No | 15% Stability, 15% War Support, manpower, civil war | not_a_purchase_cost | Refusal penalty | None |
+| BF-EVO-024 | `events/069_boxer_rebellion.txt` | `chaosx.nr69.3.b` Cede the lands back to them | 50 Political Power | not_a_purchase_cost | Consequence of ceding territory; nothing is bought | None |
+| BF-EVO-025 | `events/071_persian_empire.txt` | `chaosx.nr71.2.b` It's not worth it | 20% Stability, 20% War Support, civil war | not_a_purchase_cost | Refusal penalty | None |
+| BF-EVO-026 | `events/072_ireland_reclaims_north.txt` | `chaosx.nr72.2.b` | 10% Stability, 10% War Support, civil war | not_a_purchase_cost | Refusal penalty | None |
+| BF-EVO-027 | `events/072_ireland_reclaims_north.txt` | `chaosx.nr72.3.b` It's not worth a war | 5% Stability | not_a_purchase_cost | Consequence of ceding Northern Ireland | None |
+| BF-EVO-028 | `events/072_ireland_reclaims_north.txt` | `chaosx.nr72.4.b` They shall be destroyed! | 50 Political Power, 15% War Support | not_a_purchase_cost | Refusal penalty for refusing peace | None |
+| BF-EVO-029 | `events/073_mongols_rise.txt` | `chaosx.nr73.2.b` Let history rest | 10% Stability, 10% War Support, civil war | not_a_purchase_cost | Refusal penalty | None |
+| BF-EVO-030 | `events/076_usa_tests_weapons.txt` | `chaosx.nr76.1.a` Nothing we can do | 25 Political Power, 5% Stability, 10,000 manpower | not_a_purchase_cost | Consequence of the weapons test | None |
+| BF-EVO-031 | `events/078_border_war.txt` | `chaosx.nr78.5.a` Could be worse | 10 Political Power, 1% War Support | not_a_purchase_cost | Consequence of a lost battle; the only option | None |
+| BF-EVO-032 | `events/078_border_war.txt` | `chaosx.nr78.6.a` Mhm | 1% War Support | not_a_purchase_cost | Consequence of a cancelled battle; the only option | None |
+| BF-EVO-033 | `events/080_airship.txt` | `chaosx.nr80.4.a` It was an accident! | 50 Political Power, 5% Stability | not_a_purchase_cost | Consequence of the crash; the only option | None |
+| BF-EVO-034 | `events/081_england_tax.txt` | `chaosx.nr81.3.a` Accept the tax. | 50 Political Power, 5% Stability | not_a_purchase_cost | Consequence of submitting to the tax; the tax idea is the outcome and nothing is bought | None |
+| BF-EVO-035 | `events/081_england_tax.txt` | `chaosx.nr81.4.b` Let them be | 20 Political Power, 2% Stability | not_a_purchase_cost | Refusal penalty for backing down | None |
+| BF-EVO-036 | `events/086_world_claims.txt` | `chaosx.nr86.2.b` We shouldn't announce such claims | 50 Political Power, 5% War Support | not_a_purchase_cost | Refusal penalty | None |
+| BF-EVO-037 | `events/091_the_great_revolution.txt` | `chaosx.nr91.3.a` That's not our revolution | 5% War Support | not_a_purchase_cost | Refusal penalty | None |
+| BF-EVO-038 | `events/092_greenland_sale.txt` | `chaosx.nr92.2.b` Keep Greenland! | 100 Political Power | not_a_purchase_cost | Refusal penalty for refusing the sale | None |
+| BF-EVO-039 | `events/093_portugal_galicia.txt` | `chaosx.nr93.2.b` Forfeit | 100 Political Power, 20% War Support | not_a_purchase_cost | Refusal penalty | None |
+| BF-EVO-040 | `events/093_portugal_galicia.txt` | `chaosx.nr93.3.b` We are not in a negotiable position | 50 Political Power, 10% War Support | not_a_purchase_cost | Consequence of ceding Galicia | None |
+
 ## Part 8 acceptance status
 
 The lifecycle and presentation paths are source-implemented for `BF-T01` through `BF-T19`, `BF-P01` through `BF-P06`, `BF-U01` through `BF-U10`, and the multiplayer scenarios, but live consumer evidence is not available to the coding agent.

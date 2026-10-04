@@ -5108,3 +5108,17 @@ black_friday_credit_sale_purchase = {
 	}
 	set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.zero }
 }
+
+# COUNTRY scope (payer). Credits one purchase paid in political power from the
+# sale price table toward the Political Power achievement family: sets the
+# family and a zero non-political input, then calls
+# black_friday_credit_sale_purchase, so it does nothing outside a valid natural
+# sale and AI, forced, manual, and debug sales stay excluded. Called once from a
+# hidden_effect in the complete_effect of a decision whose native cost reads
+# global.black_friday_price_*, and in an event option that pays a political
+# power table price.
+black_friday_credit_political_power_purchase = {
+	set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.political_power }
+	set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.zero }
+	black_friday_credit_sale_purchase = yes
+}

@@ -403,3 +403,23 @@ Basis: the README completion rule forbids a displayed price that differs from th
 The hidden `can_pay_*` triggers stay in each `available` block, so every decision keeps every gate it had; availability and AI weights are unchanged.
 
 Disposition: implemented (source). The red and green states of the new floor line are `needs_live_game`.
+
+## D26. Paid event options in owners queued to Event 26 follow the purchase rule
+
+Decision: every option with a negative resource effect in the inactive owners' events is classified by one rule. A purchase is an option where the player pays to obtain the option's outcome; it pays the registered table price, shows that amount in its option tooltip, and credits one achievement family in a `hidden_effect`. A refusal penalty or a consequence is `not_a_purchase_cost` and keeps its ordinary amount.
+A scan of `001`, `003`, `022`, `043`, `048`, `049`, `053`, `063`, `068`, `069`, `071`, `072`, `073`, `076`, `078`, `080`, `081`, `086`, `091`, `092`, and `093` finds 40 such options (the Event 043 manpower loss sits in its `immediate` block, not an option). Five are purchases:
+- `chaosx.nr1.2.b` Deploy security detachments: 10 Command Power from `global.black_friday_price_cp_10`.
+- `chaosx.nr1.8.a` Launch emergency intervention now: 25 Command Power from `global.black_friday_price_cp_25`.
+- `chaosx.nr3.21.c` Remove the Arhat quietly: 25 Political Power from `global.black_friday_price_pp_25`. The payment left the hidden block so the tooltip shows it, and `chaosx_nr3_21_c_tt` no longer repeats "spends Political Power".
+- `chaosx.nr53.1.a` Pay him: 200 Political Power from `global.black_friday_price_pp_200`.
+- `chaosx.nr78.2.b` Just end them: 100 Political Power from `global.black_friday_price_pp_100`.
+
+The Stability and War Support losses next to these payments (1% and 3% Stability in Event 001, 20% War Support in Event 078) are the domestic consequences of a crackdown or an aggressive war, as D21 treats coercion Stability losses, and keep their amounts.
+The other 35 options are refusal penalties (refusing a demand, a claim, a sale, or a peace) or consequences (a disaster, a lost battle, a ceded state, a submitted tax, a policy's own unrest), each recorded as `not_a_purchase_cost` with its reason in the registry's BF-EVO rows.
+Command Power literals register as `cp_10` and `cp_25` in `black_friday_price_table`, so the table reads by resource name, and `price_table_version` goes from 9 to 10.
+Political Power options credit through the new `black_friday_credit_political_power_purchase`, which item D27's decisions also use; Command Power options credit the Command Power family inline, as the Event 011 options do (D19).
+
+Basis: lead decision (3) for round 2 and the Event 011 precedent (D19); spec Part 4 lists paid event options as a purchase family, and the README completion rule needs a disposition for every discovered surface.
+No option gains a trigger and no AI chance changes, so availability and AI behaviour are unchanged.
+
+Disposition: implemented (source). The option tooltip amount and the sale debit are `needs_live_game`.
