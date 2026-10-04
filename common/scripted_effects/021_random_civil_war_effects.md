@@ -56,11 +56,12 @@ All tuning values are read from `common/script_constants/021_random_civil_war_co
 `event021_prepare_same_tag_route`, `event021_cleanup_same_tag_route`, `event021_apply_regional_exposure`, `event021_advance_regional_exposure`, `event021_cleanup_regional_exposure`, `event021_clear_received_sponsor_commitment_receipt`, and `event021_clear_sponsor_commitment_receipt` own same-tag and neighboring exposure state. Same-tag cleanup also removes the route and all-island receipts so a resolved contest cannot seed a later target review. Sponsor recording stores the actual redirected recipient scope on the sponsor, and exposure cleanup clears that recipient through the recipient-only helper plus the source-side and exposed-neighbour receipts before dropping the source pointer; durable settlement and achievement receipts are preserved.
 `event021_apply_regional_exposure` publishes both the durable exposure marker and the `random_civil_war_neighbor_exposure` presentation marker, so the category, decision, and AI surfaces follow the same live state. `event021_parent_review_exposure_lifecycle` runs from the bounded registered-country review and calls cleanup when the source crisis is no longer usable; cleanup removes both markers, route and role receipts, separate relief/support action state, and the saved source pointer before applying the centralized cooldown.
 
-`event021_sync_evolution_state` publishes the three evolution stages and invokes disabled-evolution safety.
+`event021_sync_evolution_state` publishes the current stage and the three evolution unlock flags from the Chaos tier.
 
-`event021_apply_disabled_evolution_safety` withdraws active consumers for explicitly disabled stages while leaving history flags intact.
+Stages switched off in the Events Log settings are handled by the parent scheduler, which never samples, fires, or records them; see `021_random_civil_war_parent_effects.md`.
 
 `event021_prepare_evolution_log_context`, `event021_apply_evolution_i`, `event021_apply_evolution_ii`, and `event021_apply_evolution_iii` own the reusable evolution flags and threat-source state.
+Each apply effect switches on only its own stage, so a later stage never activates the mechanics of an earlier stage that is switched off.
 Before calling `event021_prepare_evolution_log_context`, preinitialize the temporary event ID and type outputs in the caller so their assignments survive return.
 Preinitialize stage and tier as well if consuming those helper outputs rather than replacing them with the callback's explicit stage and tier.
 The three parent callbacks preserve the event ID and type outputs, then select a verified live actor through `event021_select_verified_evolution_log_actor` immediately before the shared recorder, as documented in `021_random_civil_war_evolution_log_effects.md`.

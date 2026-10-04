@@ -279,6 +279,21 @@ event021_parent_internal_war_ended = {
 	}
 }
 
+# ANY scope. Event 021 evolution stages switched off in the Events Log
+# settings. Flag names follow the shared `events_log_disabled_evolution_*`
+# contract for event 21, evolution type 21, and stages 1-3.
+event021_evolution_i_disabled = {
+	has_global_flag = events_log_disabled_evolution_21_21_1
+}
+
+event021_evolution_ii_disabled = {
+	has_global_flag = events_log_disabled_evolution_21_21_2
+}
+
+event021_evolution_iii_disabled = {
+	has_global_flag = events_log_disabled_evolution_21_21_3
+}
+
 # COUNTRY scope on the original crisis host. Normal campaigns require active
 # Evolution I. A High or Maximum manual scenario may use the same bounded
 # multi-front transaction only while its setup bypass is live.
@@ -286,7 +301,7 @@ event021_parent_multifront_setup_available = {
 	OR = {
 		AND = {
 			has_global_flag = random_civil_war_evolution_i_active
-			NOT = { has_global_flag = events_log_disabled_evolution_21_21_1 }
+			NOT = { event021_evolution_i_disabled = yes }
 		}
 		AND = {
 			has_global_flag = random_civil_war_manual_scenario_launch_in_progress

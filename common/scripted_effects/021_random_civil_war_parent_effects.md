@@ -13,6 +13,12 @@ The parent layer is the only owner of target-to-actor planning, route selection,
 Critical queue admission is independent from current theater capacity. A launch claims the queue row with a global lock and `random_civil_war_critical_launch_pending`; hidden callback `chaosx.nr21.18` owns the immediate opening attempt and records `launched`, `stabilized`, or `invalidated` before dequeueing. A still-valid Critical target remains queued after a failed preflight, while stale or recovered rows are removed with an exit receipt. Separate centralized admission and launch budgets bound both operations in one pulse.
 
 `event021_parent_process_evolution_schedule` calls each evolution wrapper once when its shared unlock is present and its record is not yet written.
+Before any sample or dispatch it builds each stage's Events Log context through `event021_parent_prepare_stage_evolution_context` and checks `is_current_evolution_enabled` for that stage.
+A stage switched off in the Events Log settings is never sampled, fired, activated, or recorded, and any stale due date is cleared.
+Evolution II needs Evolution I to be recorded or switched off, and Evolution III needs both earlier stages to be recorded or switched off, so stages stay in order while a switched-off stage never blocks a later one.
+`event021_apply_evolution_ii` and `event021_apply_evolution_iii` enable only their own mechanics, and the parent wrappers accept a switched-off earlier stage through `event021_evolution_i_disabled` and `event021_evolution_ii_disabled`, so a later stage never switches on a disabled stage's mechanics.
+Re-enabling a stage returns it to normal scheduling: it samples a due date and fires through its own wrapper even if a later stage already ran.
+This follows Event 004's independent per-stage `is_current_evolution_enabled` checks in `common/scripted_effects/004_random_war_effects.txt`.
 
 The schedule uses hidden callback events `chaosx.nr21.11`, `.12`, and `.13`, while the bounded registered-country review and scenario loops use `.14`, `.15`, and the host-bound preparation callback `.19`. Same-tag dispatch uses `.16`, Critical launch dispatch uses `.18`, and reconstruction cleanup uses `.10`, so the event file remains the callback boundary for these scoped transactions.
 

@@ -721,17 +721,68 @@ event021_parent_schedule_evolution_due_date = {
 	}
 }
 
+# ANY scope. Publishes the shared Events Log context for one scheduled stage.
+# Input: `event021_evolution_schedule_stage`. Outputs the four
+# `events_log_evolution_*` temporaries read by `is_current_evolution_enabled`.
+event021_parent_prepare_stage_evolution_context = {
+	set_temp_variable = { events_log_evolution_event_id = constant:random_civil_war_event.id }
+	set_temp_variable = { events_log_evolution_type = constant:random_civil_war_event.evolution_type }
+	set_temp_variable = { events_log_evolution_stage = event021_evolution_schedule_stage }
+	set_temp_variable = { events_log_evolution_tier = constant:chaos_meter_tier_id.tier_1 }
+	if = {
+		limit = { check_variable = { var = event021_evolution_schedule_stage value = constant:random_civil_war_event.evolution_ii_stage compare = equals } }
+		set_temp_variable = { events_log_evolution_tier = constant:chaos_meter_tier_id.tier_2 }
+	}
+	if = {
+		limit = { check_variable = { var = event021_evolution_schedule_stage value = constant:random_civil_war_event.evolution_iii_stage compare = equals } }
+		set_temp_variable = { events_log_evolution_tier = constant:chaos_meter_tier_id.tier_3 }
+	}
+}
+
 # COUNTRY scope on the existing Chaos global host. Evolution transitions use
 # immediate prefire activation only before Event 021 has committed an opening.
 # Active and historical campaigns receive one MTTH due date per stage. The
 # three guarded calls are a bounded transition queue, not a country scan.
+# Each stage is checked against its own Events Log setting before it is
+# sampled or fired. A disabled stage keeps no due date and is never recorded,
+# and a later stage may proceed past it without switching on its mechanics.
+# Re-enabling a stage returns it to normal scheduling.
 event021_parent_process_evolution_schedule = {
+	set_temp_variable = { event021_evolution_i_schedule_enabled = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_evolution_ii_schedule_enabled = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_evolution_iii_schedule_enabled = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_evolution_schedule_stage = constant:random_civil_war_event.evolution_i_stage }
+	event021_parent_prepare_stage_evolution_context = yes
+	if = {
+		limit = { is_current_evolution_enabled = yes }
+		set_temp_variable = { event021_evolution_i_schedule_enabled = constant:random_civil_war_value.one }
+	}
+	set_temp_variable = { event021_evolution_schedule_stage = constant:random_civil_war_event.evolution_ii_stage }
+	event021_parent_prepare_stage_evolution_context = yes
+	if = {
+		limit = { is_current_evolution_enabled = yes }
+		set_temp_variable = { event021_evolution_ii_schedule_enabled = constant:random_civil_war_value.one }
+	}
+	set_temp_variable = { event021_evolution_schedule_stage = constant:random_civil_war_event.evolution_iii_stage }
+	event021_parent_prepare_stage_evolution_context = yes
+	if = {
+		limit = { is_current_evolution_enabled = yes }
+		set_temp_variable = { event021_evolution_iii_schedule_enabled = constant:random_civil_war_value.one }
+	}
+	set_temp_variable = { events_log_evolution_event_id = constant:random_civil_war_value.zero }
+	set_temp_variable = { events_log_evolution_type = constant:random_civil_war_value.zero }
+	set_temp_variable = { events_log_evolution_stage = constant:random_civil_war_value.zero }
+	set_temp_variable = { events_log_evolution_tier = constant:random_civil_war_value.zero }
 	if = {
 		limit = {
 			has_global_flag = random_civil_war_evolution_i_unlocked
 			NOT = { has_global_flag = random_civil_war_evolution_i_recorded }
 		}
 		if = {
+			limit = { check_variable = { var = event021_evolution_i_schedule_enabled value = constant:random_civil_war_value.zero compare = equals } }
+			clear_variable = global.random_civil_war_evolution_i_due_date
+		}
+		else_if = {
 			limit = { NOT = { has_global_flag = random_civil_war_has_committed_opening } }
 			country_event = { id = chaosx.nr21.11 }
 			clear_variable = global.random_civil_war_evolution_i_due_date
@@ -750,10 +801,17 @@ event021_parent_process_evolution_schedule = {
 	if = {
 		limit = {
 			has_global_flag = random_civil_war_evolution_ii_unlocked
-			has_global_flag = random_civil_war_evolution_i_recorded
+			OR = {
+				has_global_flag = random_civil_war_evolution_i_recorded
+				check_variable = { var = event021_evolution_i_schedule_enabled value = constant:random_civil_war_value.zero compare = equals }
+			}
 			NOT = { has_global_flag = random_civil_war_evolution_ii_recorded }
 		}
 		if = {
+			limit = { check_variable = { var = event021_evolution_ii_schedule_enabled value = constant:random_civil_war_value.zero compare = equals } }
+			clear_variable = global.random_civil_war_evolution_ii_due_date
+		}
+		else_if = {
 			limit = { NOT = { has_global_flag = random_civil_war_has_committed_opening } }
 			country_event = { id = chaosx.nr21.12 }
 			clear_variable = global.random_civil_war_evolution_ii_due_date
@@ -772,10 +830,21 @@ event021_parent_process_evolution_schedule = {
 	if = {
 		limit = {
 			has_global_flag = random_civil_war_evolution_iii_unlocked
-			has_global_flag = random_civil_war_evolution_ii_recorded
+			OR = {
+				has_global_flag = random_civil_war_evolution_i_recorded
+				check_variable = { var = event021_evolution_i_schedule_enabled value = constant:random_civil_war_value.zero compare = equals }
+			}
+			OR = {
+				has_global_flag = random_civil_war_evolution_ii_recorded
+				check_variable = { var = event021_evolution_ii_schedule_enabled value = constant:random_civil_war_value.zero compare = equals }
+			}
 			NOT = { has_global_flag = random_civil_war_evolution_iii_recorded }
 		}
 		if = {
+			limit = { check_variable = { var = event021_evolution_iii_schedule_enabled value = constant:random_civil_war_value.zero compare = equals } }
+			clear_variable = global.random_civil_war_evolution_iii_due_date
+		}
+		else_if = {
 			limit = { NOT = { has_global_flag = random_civil_war_has_committed_opening } }
 			country_event = { id = chaosx.nr21.13 }
 			clear_variable = global.random_civil_war_evolution_iii_due_date
@@ -8239,7 +8308,8 @@ event021_parent_apply_evolution_i = {
 
 # ANY scope. Evolution II adds regional exposure to every currently registered
 # active side through a bounded front/theater array pass and rolls at most one
-# local strange incident per side in this invocation.
+# local strange incident per side in this invocation. A disabled Evolution I
+# does not block this stage and is not switched on by it.
 event021_parent_apply_evolution_ii = {
 	event021_parent_apply_evolution_i = yes
 	set_temp_variable = { events_log_evolution_event_id = constant:random_civil_war_value.zero }
@@ -8250,7 +8320,10 @@ event021_parent_apply_evolution_ii = {
 	if = {
 		limit = {
 			is_current_evolution_enabled = yes
-			has_global_flag = random_civil_war_evolution_i_active
+			OR = {
+				has_global_flag = random_civil_war_evolution_i_active
+				event021_evolution_i_disabled = yes
+			}
 		}
 		event021_apply_evolution_ii = yes
 		if = {
@@ -8273,7 +8346,8 @@ event021_parent_apply_evolution_ii = {
 
 # ANY scope. Evolution III is the nonterminal Global Fracture state. It only
 # updates the shared bands/caps and leaves all country launches to the due
-# registry and critical queue.
+# registry and critical queue. Disabled earlier stages neither block it nor
+# become active through it.
 event021_parent_apply_evolution_iii = {
 	event021_parent_apply_evolution_ii = yes
 	set_temp_variable = { events_log_evolution_event_id = constant:random_civil_war_value.zero }
@@ -8284,7 +8358,14 @@ event021_parent_apply_evolution_iii = {
 	if = {
 		limit = {
 			is_current_evolution_enabled = yes
-			has_global_flag = random_civil_war_evolution_ii_active
+			OR = {
+				has_global_flag = random_civil_war_evolution_ii_active
+				event021_evolution_ii_disabled = yes
+			}
+			OR = {
+				has_global_flag = random_civil_war_evolution_i_active
+				event021_evolution_i_disabled = yes
+			}
 		}
 		event021_apply_evolution_iii = yes
 		if = {

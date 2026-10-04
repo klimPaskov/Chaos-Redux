@@ -39,3 +39,14 @@ The hold mission shows the native countdown, cannot complete early, judges the o
 The existing `on_state_control_changed` hook still fails a capital or rail hold the moment control of the bound state changes.
 Basis: the mission spec (`021_random_civil_war_spec_part_3_decisions_missions_and_outcomes.md`, Mission families) requires timed holds with success and failure; vanilla `ETH_time_based_war_escalation_mission` uses a non-selectable mission with `available` never true to run a visible timer.
 No cost, AI weight or reward changes.
+
+## D4. Switched-off evolution stages are independent
+
+Decision: follow the Event 004 precedent of independent stages.
+`event021_parent_process_evolution_schedule` builds each stage's Events Log context and checks `is_current_evolution_enabled` before it samples a due date or fires the hidden callback.
+A stage switched off in the settings is never sampled, fired, activated, or recorded, and a stale due date is cleared.
+Evolution II needs Evolution I recorded or switched off; Evolution III needs both earlier stages recorded or switched off, which keeps enabled stages in order without letting a switched-off stage block a later one.
+`event021_apply_evolution_ii` and `event021_apply_evolution_iii` no longer call the earlier core effects, and the parent wrappers accept a switched-off earlier stage, so a later stage never switches on a disabled stage's mechanics.
+Re-enabling a stage returns it to normal scheduling through its own wrapper.
+Basis: the lead's round-1 assignment, the audit finding EV21-DISABLED-01 in `subagent_handoffs/event021_date_units_probability_audit_2026-10-03.md`, and `common/scripted_effects/004_random_war_effects.txt`, which checks `is_current_evolution_enabled` per stage.
+Contract: `common/scripted_effects/021_random_civil_war_parent_effects.md` (scheduler section).
