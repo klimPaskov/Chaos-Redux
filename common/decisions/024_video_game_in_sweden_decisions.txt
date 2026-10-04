@@ -58,7 +58,8 @@ video_game_in_sweden_program_category = {
 		custom_cost_trigger = { video_game_in_sweden_can_pay_logistics_module = yes }
 		days_remove = constant:video_game_in_sweden_timing.baseline_repeat_cooldown_days
 		fire_only_once = yes
-		cancel_if_not_visible = yes
+		cancel_if_not_visible = no
+		cancel_trigger = { NOT = { video_game_in_sweden_is_current_host = yes } }
 		ai_will_do = {
 			base = 2
 			modifier = { factor = constant:video_game_in_sweden_ai_factor.decision_logistics_supply video_game_in_sweden_has_campaign_supply_gap = yes }
@@ -314,7 +315,8 @@ video_game_in_sweden_program_category = {
 		custom_cost_trigger = { video_game_in_sweden_can_pay_protect_shifts = yes }
 		days_remove = constant:video_game_in_sweden_timing.protect_shifts_burden_days
 		fire_only_once = yes
-		cancel_if_not_visible = yes
+		cancel_if_not_visible = no
+		cancel_trigger = { NOT = { video_game_in_sweden_is_current_host = yes } }
 		ai_will_do = {
 			base = 1
 			modifier = { factor = constant:video_game_in_sweden_ai_factor.decision_protect_war has_war = yes }
@@ -393,7 +395,8 @@ video_game_in_sweden_program_category = {
 		custom_cost_trigger = { video_game_in_sweden_can_pay_foreign_licenses = yes }
 		days_remove = constant:video_game_in_sweden_timing.foreign_license_burden_days
 		fire_only_once = no
-		cancel_if_not_visible = yes
+		cancel_if_not_visible = no
+		cancel_trigger = { NOT = { video_game_in_sweden_is_current_host = yes } }
 		ai_will_do = {
 			base = constant:video_game_in_sweden_ai.foreign_interest
 			modifier = { factor = constant:video_game_in_sweden_ai_route.foreign_licenses_controlled has_country_flag = video_game_in_sweden_controlled_route }
@@ -531,6 +534,64 @@ video_game_in_sweden_program_category = {
 		}
 	}
 
+	# Audit-phase proof. These two rows replace the baseline rail table and the
+	# Evolution I red team while an audit is running, so every route can file
+	# the reviews a full report needs.
+	video_game_advanced_logistics_review = {
+		icon = GFX_decision_024_video_game_in_sweden_logistics_module
+		visible = {
+			has_country_flag = video_game_in_sweden_reality_audit_active
+			NOT = { has_country_flag = video_game_in_sweden_logistics_review_complete }
+		}
+		available = {
+			video_game_in_sweden_is_current_host = yes
+			video_game_in_sweden_can_pay_advanced_logistics = yes
+			custom_trigger_tooltip = {
+				tooltip = video_game_logistics_capacity_tt
+				hidden_trigger = { num_of_civilian_factories_available_for_projects > constant:video_game_in_sweden_value.zero }
+			}
+		}
+		modifier = { civilian_factory_use = @VIDEO_GAME_DECISION_FACTORY_BURDEN }
+		custom_cost_text = video_game_advanced_logistics_review_cost
+		custom_cost_trigger = { video_game_in_sweden_can_pay_advanced_logistics = yes }
+		days_remove = constant:video_game_in_sweden_timing.advanced_logistics_burden_days
+		fire_only_once = yes
+		# Completion files the review and hides the row. The office stays reserved
+		# for its full term, so only a lost host cancels the reservation.
+		cancel_if_not_visible = no
+		cancel_trigger = { NOT = { video_game_in_sweden_is_current_host = yes } }
+		ai_will_do = {
+			base = constant:video_game_in_sweden_ai.audit_review
+			modifier = { factor = constant:video_game_in_sweden_ai_factor.decision_logistics_supply video_game_in_sweden_has_campaign_supply_gap = yes }
+		}
+		complete_effect = {
+			video_game_in_sweden_do_advanced_logistics = yes
+		}
+	}
+
+	video_game_independent_adjudicators = {
+		icon = GFX_decision_024_video_game_in_sweden_red_team
+		visible = {
+			has_country_flag = video_game_in_sweden_reality_audit_active
+			NOT = { has_country_flag = video_game_in_sweden_red_team_complete }
+		}
+		available = {
+			video_game_in_sweden_is_current_host = yes
+			video_game_in_sweden_can_pay_adjudicators = yes
+		}
+		custom_cost_text = video_game_independent_adjudicators_cost
+		ai_hint_pp_cost = 50
+		custom_cost_trigger = { video_game_in_sweden_can_pay_adjudicators = yes }
+		fire_only_once = yes
+		ai_will_do = {
+			base = constant:video_game_in_sweden_ai.audit_review
+			modifier = { factor = constant:video_game_in_sweden_ai_factor.decision_red_democratic has_government = democratic }
+		}
+		complete_effect = {
+			video_game_in_sweden_do_adjudicators = yes
+		}
+	}
+
 	video_game_dual_track = {
 		icon = GFX_decision_024_video_game_in_sweden_dual_track
 		visible = {
@@ -554,7 +615,8 @@ video_game_in_sweden_program_category = {
 		custom_cost_trigger = { video_game_in_sweden_can_pay_dual_track = yes }
 		days_remove = constant:video_game_in_sweden_timing.dual_track_burden_days
 		fire_only_once = yes
-		cancel_if_not_visible = yes
+		cancel_if_not_visible = no
+		cancel_trigger = { NOT = { video_game_in_sweden_is_current_host = yes } }
 		ai_will_do = {
 			base = 2
 			modifier = { factor = constant:video_game_in_sweden_ai_factor.decision_dual_stable has_stability > constant:video_game_in_sweden_effect.public_program_stability }

@@ -449,7 +449,15 @@ country_event = {
 country_event = {
 	id = chaosx.nr24.32
 	title = chaosx.nr24.32.t
-	desc = chaosx.nr24.32.d
+	desc = {
+		trigger = { check_variable = { var = video_game_in_sweden_audit_result value = constant:video_game_in_sweden_value.result_full compare = equals } }
+		text = chaosx.nr24.32.full_d
+	}
+	desc = {
+		trigger = { check_variable = { var = video_game_in_sweden_audit_result value = constant:video_game_in_sweden_value.result_partial compare = equals } }
+		text = chaosx.nr24.32.partial_d
+	}
+	desc = { text = chaosx.nr24.32.d }
 	picture = GFX_report_event_024_video_game_in_sweden_release
 	is_triggered_only = yes
 	trigger = {
@@ -457,22 +465,29 @@ country_event = {
 		has_country_flag = video_game_in_sweden_reality_audit_report_pending
 	}
 
+	# The result is applied when the audit closes. Options state it and file the report.
 	option = {
 		name = chaosx.nr24.32.a
-		trigger = { has_country_flag = video_game_in_sweden_reality_audit_full_success }
+		trigger = { check_variable = { var = video_game_in_sweden_audit_result value = constant:video_game_in_sweden_value.result_full compare = equals } }
 		ai_chance = { base = 1 }
+		custom_effect_tooltip = video_game_audit_full_result_tt
 		clr_country_flag = video_game_in_sweden_reality_audit_report_pending
 	}
 	option = {
 		name = chaosx.nr24.32.b
-		trigger = { has_country_flag = video_game_in_sweden_reality_audit_partial }
+		trigger = { check_variable = { var = video_game_in_sweden_audit_result value = constant:video_game_in_sweden_value.result_partial compare = equals } }
 		ai_chance = { base = 1 }
+		custom_effect_tooltip = video_game_audit_partial_result_tt
 		clr_country_flag = video_game_in_sweden_reality_audit_report_pending
 	}
 	option = {
 		name = chaosx.nr24.32.c
-		trigger = { has_country_flag = video_game_in_sweden_reality_audit_failed }
+		trigger = {
+			NOT = { check_variable = { var = video_game_in_sweden_audit_result value = constant:video_game_in_sweden_value.result_full compare = equals } }
+			NOT = { check_variable = { var = video_game_in_sweden_audit_result value = constant:video_game_in_sweden_value.result_partial compare = equals } }
+		}
 		ai_chance = { base = 1 }
+		custom_effect_tooltip = video_game_audit_failed_result_tt
 		clr_country_flag = video_game_in_sweden_reality_audit_report_pending
 	}
 }

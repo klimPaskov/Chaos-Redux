@@ -137,6 +137,17 @@ video_game_in_sweden_can_pay_narrow_reality_audit = {
 	NOT = { has_equipment = { train_equipment < constant:video_game_in_sweden_cost.narrow_reality_audit_trains } }
 }
 
+video_game_in_sweden_can_pay_advanced_logistics = {
+	num_of_civilian_factories_available_for_projects > constant:video_game_in_sweden_value.zero
+	NOT = { has_equipment = { train_equipment < constant:video_game_in_sweden_cost.advanced_logistics_trains } }
+	NOT = { has_equipment = { motorized_equipment < constant:video_game_in_sweden_cost.advanced_logistics_trucks } }
+}
+
+video_game_in_sweden_can_pay_adjudicators = {
+	NOT = { has_political_power < constant:video_game_in_sweden_cost.adjudicators_political_power }
+	NOT = { has_army_experience < constant:video_game_in_sweden_cost.adjudicators_army_experience }
+}
+
 video_game_in_sweden_can_pay_dual_track = {
 	num_of_civilian_factories_available_for_projects > constant:video_game_in_sweden_value.zero
 	NOT = { has_army_experience < constant:video_game_in_sweden_cost.dual_track_army_experience }
@@ -487,8 +498,6 @@ video_game_in_sweden_can_begin_reality_audit = {
 		train_equipment > constant:video_game_in_sweden_cost.reality_audit_trains
 	}
 	has_fuel > constant:video_game_in_sweden_cost.reality_audit_fuel
-	has_country_flag = video_game_in_sweden_logistics_review_complete
-	has_country_flag = video_game_in_sweden_red_team_complete
 	has_stability > constant:video_game_in_sweden_effect.minimum_audit_stability
 }
 
@@ -679,6 +688,10 @@ video_game_in_sweden_reality_audit_objectives = {
 	video_game_in_sweden_has_committed_field_resources = yes
 	owns_state = constant:video_game_in_sweden_event.stockholm_state
 	controls_state = constant:video_game_in_sweden_event.stockholm_state
+	# Both staff reviews are proof within the audit. Without them the audit
+	# waits for its deadline and files a partial report.
+	has_country_flag = video_game_in_sweden_logistics_review_complete
+	has_country_flag = video_game_in_sweden_red_team_complete
 	OR = {
 		AND = {
 			has_country_flag = video_game_in_sweden_narrow_reality_audit_started

@@ -199,11 +199,17 @@ This safety gate means high Chaos can make the opening more forceful without for
 
 ### Reality audit
 
-The full audit requires the field package, a front presence, committed resources, a completed logistics review, and an independent red-team finding.
+The full audit starts from the field package, a front presence, committed resources, Stockholm and the minimum audit Stability.
+The rail-table review and independent red-team finding are proof inside the audit rather than start conditions.
+While an audit runs, `video_game_advanced_logistics_review` and `video_game_independent_adjudicators` appear for whichever review is still missing, so a high-Chaos commercial opening that skipped Evolution I can still reach a full report.
 
 It lasts 180 days with 120 days of proof and can end in full, partial, or failed validation.
+Without both reviews the audit waits for its deadline and files a partial report.
 
-A partial or failed audit opens the narrow 90-day recovery audit when the host can afford its smaller package.
+Every result only lowers Reliance: full caps it at Habit, partial at Doctrine.
+A partial result keeps Independent Staff Comparison for 120 days as a provisional comparison staff.
+A failed result restores Simulation Orthodoxy, keeps the Reliance already shed, and applies Unresolved Field Findings for 120 days.
+A partial or failed audit opens the narrow 90-day recovery audit when the host can afford its smaller package, and restriction stays available.
 
 Full validation grants the validated-methods idea for a finite period and begins the Reality Check achievement timer.
 
