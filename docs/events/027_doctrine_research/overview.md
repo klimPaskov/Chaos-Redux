@@ -68,7 +68,7 @@ Receipts record batch, choice number, action, domain, Grand Doctrine, track, tra
 | Chaos Warfare | `land` | Infantry, Combat Support, Armor, Operations | Requires the CBRN establishment package and its native requirements. |
 | Future custom | disabled | none | No action until a complete adapter is registered. |
 
-Every Special Forces token lists both Special Forces tracks, is xor-locked with its sibling, and can occupy only one track at a time, so Special Forces mastery is granted and read by folder and subdoctrine. While both Special Forces tracks are occupied, the first Special Forces entry, labelled "Special Forces", covers the active subdoctrines of both tracks and the second entry stays hidden. Empty-track candidates exclude a token whose sibling already holds a track.
+Every Special Forces token lists both Special Forces tracks, is xor-locked with its sibling, and can occupy only one track at a time, so Special Forces mastery is granted and read by folder and subdoctrine. While both Special Forces tracks are occupied, the first Special Forces entry, labelled "Special Forces", covers the active subdoctrines of both tracks and the second entry stays hidden. Empty-track candidates exclude a token whose sibling already holds a track. A Special Forces entry reports the Milestone of the token it shows, because completing a token completes whichever track holds it.
 
 ## AI
 

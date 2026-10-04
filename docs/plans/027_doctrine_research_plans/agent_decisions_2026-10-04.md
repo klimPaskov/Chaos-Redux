@@ -2,7 +2,7 @@
 
 Disposition: accepted and implemented under the full-authority mandate that the user granted for the Event 027 takeover. Each decision records the choice, its spec basis, and the implementing commit. Items that only a live session can prove are marked needs_live_game.
 
-Commits: `b55edd969` (adoption of the stopped rework plus D1 to D5, D7, D8, D9, D11), `317e43684` (D6), `2a8be6e32` (D10).
+Commits: `b55edd969` (adoption of the stopped rework plus D1 to D5, D7, D8, D9, D11), `317e43684` (D6), `2a8be6e32` (D10), `408809418` (D16), and the round 2 follow-up commits named in the final report (the D10 Milestone readback, D17, D18).
 
 ## D1. Reopen empty-track assignment with its first mastery step
 
@@ -68,7 +68,7 @@ Decision: the stopped thread's direct dispatch, firing envelopes, History binder
 
 Decision: Special Forces grants and readbacks filter by folder and subdoctrine only. While both tracks are occupied, the first Special Forces entry and page (labelled "Special Forces") cover the active subdoctrines of both tracks and the second entry stays hidden. Receipts keep the selected track label, and Joint Curriculum and the batch summary count Special Forces progress per subdoctrine. Empty-track candidates exclude a token whose xor sibling holds a track; assignment keeps the numeric `set_sub_doctrine` index.
 
-Basis: vanilla `special_forces_subdoctrines.txt` (each token lists both tracks and is xor-locked with its sibling) and the "fully adapted or explicitly absent" adapter criterion. Known display limit: the first track's Milestone readback reads the first native track even when the advanced token sits in the second.
+Basis: vanilla `special_forces_subdoctrines.txt` (each token lists both tracks and is xor-locked with its sibling) and the "fully adapted or explicitly absent" adapter criterion. The Special Forces Milestone readback follows the shown or advanced token (`doctrine_research_selected_special_forces_subdoctrine_completed`, round 2), because completing a token completes whichever native track holds it; an entry without a token reads its own track. The track menu (`.5`), result page (`.8`), and batch summary therefore report the Milestone of the token in either track.
 
 needs_live_game: two Special Forces tracks never holding the same token.
 
