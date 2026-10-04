@@ -360,8 +360,11 @@ random_terror_add_state_activity = {
 }
 
 random_terror_mark_state_cooldown = {
+	set_temp_variable = { chaosx_date_days = constant:random_terror_tuning.state_cooldown_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
 	set_variable = { random_terror_state_cooldown_until = global.date }
-	add_to_variable = { random_terror_state_cooldown_until = constant:random_terror_tuning.state_cooldown_days }
+	add_to_variable = { random_terror_state_cooldown_until = chaosx_date_offset }
 }
 
 random_terror_record_chaos = {
@@ -848,8 +851,11 @@ random_terror_schedule_next_evolution = {
 			else_if = { limit = { check_variable = { random_terror_evolution_candidate = constant:random_terror_evolution.final_jihad } } set_temp_variable = { random_terror_evolution_delay_days = mtth:random_terror_evolution_final_jihad_days } }
 			clamp_temp_variable = { var = random_terror_evolution_delay_days min = constant:random_terror_mtth_days.minimum max = constant:random_terror_mtth_days.maximum }
 			set_variable = { global.random_terror_evolution_candidate_stage = random_terror_evolution_candidate }
+			set_temp_variable = { chaosx_date_days = random_terror_evolution_delay_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
 			set_variable = { global.random_terror_evolution_candidate_due_date = global.date }
-			add_to_variable = { global.random_terror_evolution_candidate_due_date = random_terror_evolution_delay_days }
+			add_to_variable = { global.random_terror_evolution_candidate_due_date = chaosx_date_offset }
 			set_global_flag = random_terror_evolution_candidate_pending
 			country_event = { id = chaosx.nr31.92 days = random_terror_evolution_delay_days }
 		}
@@ -1840,7 +1846,7 @@ random_terror_try_spawn_actor = {
 		event_target:random_terror_spawn_state = { CONTROLLER = { save_global_event_target_as = random_terror_parent_jhx } }
 		event_target:random_terror_spawn_state = {
 			transfer_state_to = JHX
-			add_state_core = JHX
+			add_core_of = JHX
 		}
 		JHX = {
 			set_capital = { state = event_target:random_terror_spawn_state remember_old_capital = no }
@@ -1858,7 +1864,7 @@ random_terror_try_spawn_actor = {
 		event_target:random_terror_current_state = { save_event_target_as = random_terror_spawn_state }
 		JIX = { set_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.regional } }
 		event_target:random_terror_spawn_state = { CONTROLLER = { save_global_event_target_as = random_terror_parent_jix } }
-		event_target:random_terror_spawn_state = { transfer_state_to = JIX add_state_core = JIX }
+		event_target:random_terror_spawn_state = { transfer_state_to = JIX add_core_of = JIX }
 		JIX = {
 			set_capital = { state = event_target:random_terror_spawn_state remember_old_capital = no }
 			random_terror_initialize_actor = yes
@@ -1875,7 +1881,7 @@ random_terror_try_spawn_actor = {
 		event_target:random_terror_current_state = { save_event_target_as = random_terror_spawn_state }
 		JKX = { set_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.transnational } }
 		event_target:random_terror_spawn_state = { CONTROLLER = { save_global_event_target_as = random_terror_parent_jkx } }
-		event_target:random_terror_spawn_state = { transfer_state_to = JKX add_state_core = JKX }
+		event_target:random_terror_spawn_state = { transfer_state_to = JKX add_core_of = JKX }
 		JKX = {
 			set_capital = { state = event_target:random_terror_spawn_state remember_old_capital = no }
 			random_terror_initialize_actor = yes
@@ -1893,7 +1899,7 @@ random_terror_try_spawn_actor = {
 		event_target:random_terror_current_state = { save_event_target_as = random_terror_spawn_state }
 		JLX = { set_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.jihadist } }
 		event_target:random_terror_spawn_state = { CONTROLLER = { save_global_event_target_as = random_terror_parent_jlx } }
-		event_target:random_terror_spawn_state = { transfer_state_to = JLX add_state_core = JLX }
+		event_target:random_terror_spawn_state = { transfer_state_to = JLX add_core_of = JLX }
 		JLX = {
 			set_capital = { state = event_target:random_terror_spawn_state remember_old_capital = no }
 			random_terror_initialize_actor = yes
@@ -1914,7 +1920,7 @@ random_terror_try_spawn_actor = {
 			set_country_flag = random_terror_final_jihad_active
 		}
 		event_target:random_terror_spawn_state = { CONTROLLER = { save_global_event_target_as = random_terror_parent_jmx } }
-		event_target:random_terror_spawn_state = { transfer_state_to = JMX add_state_core = JMX }
+		event_target:random_terror_spawn_state = { transfer_state_to = JMX add_core_of = JMX }
 		JMX = {
 			set_capital = { state = event_target:random_terror_spawn_state remember_old_capital = no }
 			random_terror_initialize_actor = yes
@@ -1932,7 +1938,7 @@ random_terror_try_spawn_actor = {
 		event_target:random_terror_current_state = { save_event_target_as = random_terror_spawn_state }
 		JNX = { set_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.local } }
 		event_target:random_terror_spawn_state = { CONTROLLER = { save_global_event_target_as = random_terror_parent_jnx } }
-		event_target:random_terror_spawn_state = { transfer_state_to = JNX add_state_core = JNX }
+		event_target:random_terror_spawn_state = { transfer_state_to = JNX add_core_of = JNX }
 		JNX = {
 			set_capital = { state = event_target:random_terror_spawn_state remember_old_capital = no }
 			random_terror_initialize_actor = yes
@@ -1950,7 +1956,7 @@ random_terror_try_spawn_actor = {
 		event_target:random_terror_current_state = { save_event_target_as = random_terror_spawn_state }
 		JOX = { set_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.regional } }
 		event_target:random_terror_spawn_state = { CONTROLLER = { save_global_event_target_as = random_terror_parent_jox } }
-		event_target:random_terror_spawn_state = { transfer_state_to = JOX add_state_core = JOX }
+		event_target:random_terror_spawn_state = { transfer_state_to = JOX add_core_of = JOX }
 		JOX = {
 			set_capital = { state = event_target:random_terror_spawn_state remember_old_capital = no }
 			random_terror_initialize_actor = yes
@@ -1968,7 +1974,7 @@ random_terror_try_spawn_actor = {
 		event_target:random_terror_current_state = { save_event_target_as = random_terror_spawn_state }
 		JPX = { set_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.transnational } }
 		event_target:random_terror_spawn_state = { CONTROLLER = { save_global_event_target_as = random_terror_parent_jpx } }
-		event_target:random_terror_spawn_state = { transfer_state_to = JPX add_state_core = JPX }
+		event_target:random_terror_spawn_state = { transfer_state_to = JPX add_core_of = JPX }
 		JPX = {
 			set_capital = { state = event_target:random_terror_spawn_state remember_old_capital = no }
 			random_terror_initialize_actor = yes
@@ -2525,8 +2531,11 @@ random_terror_actor_accelerate_revelation = {
 			}
 			set_temp_variable = { random_terror_false_revelation_delay_days = mtth:random_terror_false_revelation_days }
 			clamp_temp_variable = { var = random_terror_false_revelation_delay_days min = constant:random_terror_mtth_days.minimum max = constant:random_terror_mtth_days.accelerated_maximum }
+			set_temp_variable = { chaosx_date_days = random_terror_false_revelation_delay_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
 			set_variable = { global.random_terror_false_revelation_candidate_due_date = global.date }
-			add_to_variable = { global.random_terror_false_revelation_candidate_due_date = random_terror_false_revelation_delay_days }
+			add_to_variable = { global.random_terror_false_revelation_candidate_due_date = chaosx_date_offset }
 			set_global_flag = random_terror_false_revelation_candidate_accelerated
 			country_event = { id = chaosx.nr31.94 days = random_terror_false_revelation_delay_days }
 		}
@@ -2709,7 +2718,7 @@ random_terror_try_takeover_state = {
 				set_state_flag = random_terror_achievement_state_lost_to_actor
 				save_event_target_as = random_terror_achievement_lost_state
 				transfer_state_to = ROOT
-				add_state_core = ROOT
+				add_core_of = ROOT
 				set_state_flag = random_terror_state_lost_local_control
 				set_state_flag = random_terror_territorial_takeover_recorded
 				if = {
@@ -2760,8 +2769,11 @@ random_terror_start_pressure_uprising = {
 			}
 		}
 		set_state_flag = random_terror_uprising_recent
+		set_temp_variable = { chaosx_date_days = constant:random_terror_tuning.state_cooldown_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
 		set_variable = { random_terror_uprising_cooldown_until = global.date }
-		add_to_variable = { random_terror_uprising_cooldown_until = constant:random_terror_tuning.state_cooldown_days }
+		add_to_variable = { random_terror_uprising_cooldown_until = chaosx_date_offset }
 		CONTROLLER = {
 			if = {
 				limit = {
@@ -4047,8 +4059,11 @@ random_terror_schedule_false_revelation = {
 		}
 		set_temp_variable = { random_terror_false_revelation_delay_days = mtth:random_terror_false_revelation_days }
 		clamp_temp_variable = { var = random_terror_false_revelation_delay_days min = constant:random_terror_mtth_days.minimum max = constant:random_terror_mtth_days.maximum }
+		set_temp_variable = { chaosx_date_days = random_terror_false_revelation_delay_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
 		set_variable = { global.random_terror_false_revelation_candidate_due_date = global.date }
-		add_to_variable = { global.random_terror_false_revelation_candidate_due_date = random_terror_false_revelation_delay_days }
+		add_to_variable = { global.random_terror_false_revelation_candidate_due_date = chaosx_date_offset }
 		set_global_flag = random_terror_false_revelation_candidate_pending
 		clr_global_flag = random_terror_false_revelation_candidate_lapsed
 		country_event = { id = chaosx.nr31.94 days = random_terror_false_revelation_delay_days }

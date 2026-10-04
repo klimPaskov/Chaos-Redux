@@ -124,8 +124,11 @@ random_terror_achievement_count_active_states = {
 random_terror_achievement_begin_short_crisis = {
 	set_country_flag = random_terror_achievement_short_crisis_tracking
 	set_variable = { random_terror_achievement_short_crisis_start = global.date }
+	set_temp_variable = { chaosx_date_days = constant:random_terror_tuning.achievement_short_crisis_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
 	set_variable = { random_terror_achievement_short_crisis_deadline = global.date }
-	add_to_variable = { random_terror_achievement_short_crisis_deadline = constant:random_terror_tuning.achievement_short_crisis_days }
+	add_to_variable = { random_terror_achievement_short_crisis_deadline = chaosx_date_offset }
 	set_variable = { random_terror_achievement_short_crisis_start_pressure = random_terror_pressure }
 	every_owned_state = {
 		limit = { random_terror_state_is_active_crisis = yes }
@@ -235,8 +238,11 @@ random_terror_achievement_record_state_loss = {
 		}
 		if = {
 			limit = { NOT = { has_country_flag = random_terror_achievement_original_capital_lost } }
+			set_temp_variable = { chaosx_date_days = constant:random_terror_tuning.achievement_restore_deadline_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
 			set_variable = { random_terror_achievement_capital_restore_deadline = global.date }
-			add_to_variable = { random_terror_achievement_capital_restore_deadline = constant:random_terror_tuning.achievement_restore_deadline_days }
+			add_to_variable = { random_terror_achievement_capital_restore_deadline = chaosx_date_offset }
 		}
 		set_country_flag = random_terror_achievement_original_capital_lost
 		set_country_flag = random_terror_achievement_war_without_capital_revealed
@@ -320,8 +326,11 @@ random_terror_achievement_record_capital_mission_success = {
 	if = {
 		limit = { has_country_flag = random_terror_achievement_city_tracking }
 		set_country_flag = random_terror_achievement_city_mission_succeeded
+		set_temp_variable = { chaosx_date_days = constant:random_terror_tuning.achievement_city_recovery_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
 		set_variable = { random_terror_achievement_city_recovery_deadline = global.date }
-		add_to_variable = { random_terror_achievement_city_recovery_deadline = constant:random_terror_tuning.achievement_city_recovery_days }
+		add_to_variable = { random_terror_achievement_city_recovery_deadline = chaosx_date_offset }
 	}
 }
 
