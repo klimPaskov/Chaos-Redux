@@ -1,0 +1,28 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 031 RANDOM TERROR ACTOR FOCUS EFFECTS
+# ============================================================================
+# Shared building blocks for the rewards of the actor focus tree
+# (common/national_focus/031_random_terror_focus.txt) and of the actor
+# decisions that raise formations.  COUNTRY scope throughout: the actor
+# completing the focus or taking the decision (ROOT).  Amounts live in the
+# random_terror_focus_reward, random_terror_unit and random_terror_mobilization
+# script constants.
+#
+# Focus context.  A focus reward that reuses an actor decision helper sets the
+# temp variable random_terror_focus_context first, so
+# random_terror_actor_action_common skips the decision cooldown.
+# ============================================================================
+
+# Raises one formation through random_terror_actor_raise_formation (same temp
+# inputs: random_terror_unit_experience, _equipment, _manpower and _id).  At
+# the actor division limit the command takes the formation's rifles into its
+# stockpile instead, so no reward can raise forces past the cap.
+random_terror_focus_raise_formation = {
+	if = {
+		limit = { num_divisions < constant:random_terror_tuning.actor_division_cap }
+		random_terror_actor_raise_formation = yes
+	}
+	else = {
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:random_terror_cost.actor_defector_equipment }
+	}
+}

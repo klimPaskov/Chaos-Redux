@@ -3651,8 +3651,26 @@ random_terror_actor_convert_militia = {
 	random_terror_actor_action_common = yes
 }
 
+# The command's declared program mobilizes its supporters.  One disciplined
+# formation musters (in random_terror_action_state when the decision saved
+# one), a second one after Codify the Doctrine, and the command gains
+# Mobilized Cadres for mobilization_days.  The timed active flag keeps the
+# decision closed until the mobilization ends; the recorded flag keeps the
+# Jihadist International entry open afterwards.
 random_terror_actor_ideological_mobilization = {
-	set_country_flag = random_terror_ideological_mobilization_active
+	set_temp_variable = { random_terror_unit_experience = constant:random_terror_unit.cadre_experience }
+	set_temp_variable = { random_terror_unit_equipment = constant:random_terror_unit.cadre_equipment }
+	set_temp_variable = { random_terror_unit_manpower = constant:random_terror_unit.cadre_manpower }
+	set_temp_variable = { random_terror_unit_id = constant:random_terror_unit.cadre_id }
+	random_terror_focus_raise_formation = yes
+	if = {
+		limit = { has_country_flag = random_terror_focus_doctrine_codified }
+		random_terror_focus_raise_formation = yes
+	}
+	set_temp_variable = { random_terror_mobilization_days = constant:random_terror_mobilization.mobilization_days }
+	add_dynamic_modifier = { modifier = random_terror_mobilized_cadres days = random_terror_mobilization_days }
+	set_country_flag = { flag = random_terror_ideological_mobilization_active days = random_terror_mobilization_days }
+	set_country_flag = random_terror_ideological_mobilization_recorded
 	random_terror_actor_action_common = yes
 }
 
@@ -6740,6 +6758,10 @@ random_terror_clear_actor_runtime = {
 	clr_country_flag = random_terror_civil_administration_active
 	clr_country_flag = random_terror_state_offensive_prepared
 	clr_country_flag = random_terror_foreign_fighters_recruited
+	clr_country_flag = random_terror_ideological_mobilization_active
+	clr_country_flag = random_terror_ideological_mobilization_recorded
+	remove_dynamic_modifier = { modifier = random_terror_mobilized_cadres }
+	remove_dynamic_modifier = { modifier = random_terror_synchronized_offensive }
 	every_country = {
 		limit = { has_country_flag = random_terror_parent_of_@PREV }
 		clr_country_flag = random_terror_parent_of_@PREV

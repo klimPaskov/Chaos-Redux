@@ -1030,7 +1030,7 @@ focus_tree = {
 		ai_will_do = {
 			base = 2
 			modifier = { factor = 4 random_terror_is_jihadist_actor = yes }
-			modifier = { factor = 3 has_country_flag = random_terror_ideological_mobilization_active }
+			modifier = { factor = 3 has_country_flag = random_terror_ideological_mobilization_recorded }
 			modifier = { factor = 2 check_variable = { random_terror_network_authority > constant:random_terror_value.unity_gate } }
 			modifier = { factor = 2 check_variable = { random_terror_territorial_control < constant:random_terror_value.territorial_gate } }
 		}
@@ -1071,10 +1071,12 @@ focus_tree = {
 			has_country_flag = random_terror_focus_route_ideological_secretariat
 		}
 		completion_reward = {
-			add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.actor_authority_civil_admin_gain }
-			set_country_flag = random_terror_focus_doctrine_codified
-			add_ideas = random_terror_cadre_authority
-			random_terror_clamp_actor_values = yes
+			custom_effect_tooltip = random_terror_codify_the_doctrine_reward_tt
+			hidden_effect = {
+				add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.actor_authority_civil_admin_gain }
+				set_country_flag = random_terror_focus_doctrine_codified
+				random_terror_clamp_actor_values = yes
+			}
 		}
 		ai_will_do = {
 			base = 2
@@ -1095,10 +1097,13 @@ focus_tree = {
 			has_country_flag = random_terror_focus_route_ideological_secretariat
 		}
 		completion_reward = {
-			set_temp_variable = { random_terror_focus_context = constant:random_terror_value.one }
-			random_terror_actor_ideological_mobilization = yes
 			add_manpower = constant:random_terror_cost.actor_mobilization_manpower
-			set_country_flag = random_terror_focus_ideological_mobilization
+			custom_effect_tooltip = random_terror_ideological_mobilization_focus_reward_tt
+			hidden_effect = {
+				set_temp_variable = { random_terror_focus_context = constant:random_terror_value.one }
+				random_terror_actor_ideological_mobilization = yes
+				set_country_flag = random_terror_focus_ideological_mobilization
+			}
 		}
 		ai_will_do = { base = 2 }
 	}
@@ -2396,7 +2401,7 @@ focus_tree = {
 			check_variable = { random_terror_network_authority > constant:random_terror_value.unity_gate }
 			OR = {
 				has_country_flag = random_terror_later_religious_opposition_registry
-				has_country_flag = random_terror_ideological_mobilization_active
+				has_country_flag = random_terror_ideological_mobilization_recorded
 				has_country_flag = random_terror_sponsor_contact_recorded
 			}
 		}
