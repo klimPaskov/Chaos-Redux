@@ -201,7 +201,6 @@ missiles_operation_sites_remain_valid = {
 					check_variable = { var = missiles_site_operation_id value = ROOT.missiles_active_operation_id compare = equals }
 					has_variable = missiles_site_operation_allocation
 					check_variable = { var = missiles_site_operation_allocation value = constant:missiles_program_value.zero compare = greater_than }
-					check_variable = { var = missiles_site_operation_allocation value = ROOT.missiles_operation_site_allocation compare = equals }
 					check_variable = { var = missiles_site_operation_allocation value = missiles_site_capacity compare = less_than_or_equals }
 				}
 			}
@@ -209,11 +208,13 @@ missiles_operation_sites_remain_valid = {
 	}
 }
 
-# COUNTRY scope, before escrow/markers: reject an allocation that any selected
-# site cannot physically hold. The root quote is computed once by the owner.
+# COUNTRY scope, before escrow and markers: the whole-missile projection placed
+# every missile on a controlled, launch-ready site within its spare capacity,
+# and the summed launchable capacity covers the operation.
 missiles_operation_projected_site_allocations_fit = {
-	check_variable = { var = missiles_operation_site_allocation value = constant:missiles_program_value.zero compare = greater_than }
 	any_of_scopes = { array = missiles_operation_sites is_controlled_by = ROOT }
+	check_variable = { var = missiles_operation_allocation_result value = constant:missiles_result.accepted compare = equals }
+	check_variable = { var = missiles_operation_site_capacity value = missiles_operation_missile_cost compare = greater_than_or_equals }
 	NOT = {
 		any_of_scopes = {
 			array = missiles_operation_sites
@@ -221,8 +222,6 @@ missiles_operation_projected_site_allocations_fit = {
 				AND = {
 					is_controlled_by = ROOT
 					missiles_site_can_launch = yes
-					has_variable = missiles_site_capacity
-					check_variable = { var = missiles_site_capacity value = ROOT.missiles_operation_site_allocation compare = greater_than_or_equals }
 				}
 			}
 		}

@@ -229,7 +229,12 @@ class OrdinaryPreparationContract(unittest.TestCase):
         self.assertIn(('has_variable', 'missiles_site_operation_allocation'), conditions)
         comparisons = [dict(v) for k, v in conditions if k == 'check_variable']
         self.assertIn({'var': 'missiles_site_operation_allocation', 'value': 'constant:missiles_program_value.zero', 'compare': 'greater_than'}, comparisons)
-        self.assertIn({'var': 'missiles_site_operation_allocation', 'value': 'ROOT.missiles_operation_site_allocation', 'compare': 'equals'}, comparisons)
+        self.assertIn({'var': 'missiles_site_operation_allocation', 'value': 'missiles_site_capacity', 'compare': 'less_than_or_equals'}, comparisons)
+        self.assertIn({'var': 'missiles_site_operation_id', 'value': 'ROOT.missiles_active_operation_id', 'compare': 'equals'}, comparisons)
+        fit = list(descendants(TRIGGERS['missiles_operation_projected_site_allocations_fit']))
+        fit_checks = [dict(v) for k, v in fit if k == 'check_variable']
+        self.assertIn({'var': 'missiles_operation_site_capacity', 'value': 'missiles_operation_missile_cost', 'compare': 'greater_than_or_equals'}, fit_checks)
+        self.assertIn({'var': 'missiles_operation_allocation_result', 'value': 'constant:missiles_result.accepted', 'compare': 'equals'}, fit_checks)
         # The first if divides the quote; the later guarded branch performs escrow.
         payment = next(v for k, v in EFFECTS['missiles_reserve_operation_resources'] if k == 'if' and ('missiles_reserve_for_operation', 'yes') in v)
         self.assertIn(('missiles_operation_projected_site_allocations_fit', 'yes'), value(payment, 'limit'))
@@ -255,6 +260,76 @@ class OrdinaryPreparationContract(unittest.TestCase):
         # Two family choices + clear; three profile choices + back + clear;
         # four preparations + optional integration + clear.
         self.assertLessEqual(max(2 + 1, 3 + 1 + 1, 4 + 1 + 1), 6)
+
+
+def project_allocations(cost, capacities, passes):
+    """Python model of missiles_project_operation_site_allocations."""
+    planned = [0] * len(capacities)
+    remaining = cost
+    for _ in range(passes):
+        open_sites = [i for i, cap in enumerate(capacities) if planned[i] < cap]
+        if remaining <= 0 or not open_sites:
+            break
+        exact = Decimal(remaining) / Decimal(len(open_sites))
+        share = int(exact.to_integral_value(rounding='ROUND_HALF_UP'))
+        if share > exact:
+            share -= 1
+        share = max(share, 1)
+        for i in open_sites:
+            if remaining <= 0:
+                break
+            give = min(share, capacities[i] - planned[i], remaining)
+            planned[i] += give
+            remaining -= give
+    return planned, remaining
+
+
+class WholeMissileAllocation(unittest.TestCase):
+    PASSES = int(number('constant:missiles_tuning.operation_max_sites_per_strike')) + 1
+
+    def test_projection_steps_match_the_model(self):
+        body = EFFECTS['missiles_project_operation_site_allocations']
+        nodes = list(descendants(body))
+        loop = value(body, 'for_loop_effect')
+        self.assertEqual(value(loop, 'end'), 'constant:missiles_tuning.operation_max_sites_per_strike')
+        self.assertEqual(value(loop, 'compare'), 'less_than_or_equals')
+        self.assertIn(('round_temp_variable', 'missiles_allocation_share'), nodes)
+        self.assertIn(('subtract_from_temp_variable', [('missiles_allocation_remaining', 'missiles_allocation_give')]), nodes)
+        self.assertIn(('add_to_variable', [('missiles_site_planned_allocation', 'missiles_allocation_give')]), nodes)
+        self.assertNotIn('divide_variable', [k for k, _ in descendants(EFFECTS['missiles_reserve_operation_resources'])])
+        marked = list(descendants(EFFECTS['missiles_mark_operation_sites_reserved']))
+        self.assertIn(('missiles_site_operation_allocation', 'missiles_site_planned_allocation'), marked)
+        self.assertIn(('remove_from_array', [('array', 'missiles_operation_sites'), ('value', 'PREV')]), marked)
+
+    def test_uneven_capacities_fill_whole_missiles_exactly(self):
+        cases = [
+            (10, [10, 2]), (10, [2, 10]), (7, [4, 4]), (9, [6, 6, 6]), (24, [10, 8, 6, 4]),
+            (3, [10, 10, 10, 10]), (5, [1, 1, 1, 10]), (12, [10, 2]), (16, [6, 4, 4, 4]),
+        ]
+        for cost, capacities in cases:
+            with self.subTest(cost=cost, capacities=capacities):
+                planned, remaining = project_allocations(cost, capacities, self.PASSES)
+                self.assertEqual(remaining, 0)
+                self.assertEqual(sum(planned), cost)
+                self.assertTrue(all(isinstance(a, int) and 0 <= a <= cap for a, cap in zip(planned, capacities)))
+        # The old equal split rejected 10 missiles over capacities 10 and 2.
+        self.assertGreater(Decimal(10) / 2, 2)
+        self.assertEqual(project_allocations(10, [10, 2], self.PASSES)[0], [8, 2])
+
+    def test_capacity_shortfall_is_refused(self):
+        planned, remaining = project_allocations(13, [10, 2], self.PASSES)
+        self.assertGreater(remaining, 0)
+
+    def test_lost_reserving_site_settles_its_allocation_once(self):
+        settle = EFFECTS['missiles_settle_lost_site_allocation']
+        guarded = value(settle, 'if')
+        keys = [k for k, _ in guarded]
+        self.assertLess(keys.index('missiles_abort_operation'), keys.index('missiles_cleanup_operation'))
+        loss = list(descendants(guarded))
+        self.assertIn(('subtract_from_variable', [('missiles_operational_reserve', 'missiles_lost_allocation')]), loss)
+        self.assertIn(('NOT', [('has_country_flag', 'missiles_operation_committed')]), value(guarded, 'limit'))
+        for caller in ('missiles_handle_site_control_changed', 'missiles_scuttle_site', 'missiles_scuttle_site_from_current_controller', 'missiles_natural_disaster_damage_site'):
+            self.assertIn(('missiles_settle_lost_site_allocation', 'yes'), list(descendants(EFFECTS[caller])), caller)
 
 
 if __name__ == '__main__':

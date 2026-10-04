@@ -102,3 +102,12 @@ Disposition: `implemented` (source evidence; timing distribution and live delive
 - `missiles_record_evolution_unlock` no longer sets the per-pulse marker flag and now clears the committed track's pending state, which also covers SCN-015 direct unlocks.
 - Pressure shortening: Rogue at two vulnerable programmes, Guidance at two programmes at war, Saturation at four programmes at war, Special at two payload owners, Retaliation at two responder pairs.
 - HOI4 MCP: `hoi4.probability_inspect` (`direct_random`, candidate `missiles_arm_evolution_track`, source `common/scripted_effects/032_missiles_operations_effects.txt`) returned `INTERNAL_ERROR`, as every probability inspect in this session did; the 2026-10-03 audit recorded 600-second timeouts for the same adapter family. No compare was possible, so the EVO timing distribution is unaudited by MCP.
+
+## Item 9: whole-missile allocation by capacity
+
+Disposition: `implemented` (source evidence and a Python model of the allocation; live behaviour `needs_live_game`).
+
+- Allocation is a bounded water-fill (at most `operation_max_sites_per_strike + 1` passes): each pass offers every site with spare capacity an equal whole share (floor of remaining divided by open sites, at least one) capped by its room. This keeps every site of a saturation barrage participating where possible, unlike a greedy fill of the first site, and sums exactly to the cost whenever the combined capacity covers it. Capacities 10 and 2 with a cost of 10 now allocate 8 and 2 instead of being refused.
+- A site that receives no missiles leaves the operation, so every listed site holds a positive allocation.
+- Settlement decision: a capture, owner scuttle, destruction by strike, or wrecking natural disaster of a reserving site ends the order, refunds the reservation, and then debits exactly that site's allocation once (the readied missiles are lost); a non-wrecking disaster refunds everything. Captured readied missiles are not credited to the captor, keeping the settlement exact and single.
+- The natural-disaster settlement previously compared against the disaster chain's ROOT instead of the site controller; the new helper matches the operation id inside the controller's own scope.

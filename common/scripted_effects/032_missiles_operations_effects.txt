@@ -1926,6 +1926,9 @@ missiles_scuttle_site = {
 		}
 		set_variable = { missiles_site_captured_reserve = constant:missiles_program_value.zero }
 	}
+	save_event_target_as = missiles_lost_allocation_site
+	set_temp_variable = { missiles_allocation_loss_mode = constant:missiles_program_value.one }
+	ROOT = { missiles_settle_lost_site_allocation = yes }
 	if = {
 		limit = { has_variable = missiles_site_reserve }
 		set_temp_variable = { missiles_scuttle_loss = missiles_site_reserve }
@@ -1962,9 +1965,13 @@ missiles_scuttle_site = {
 # physical state record is retired.
 missiles_scuttle_site_from_current_controller = {
 	controller = { save_event_target_as = missiles_site_scuttle_controller }
+	save_event_target_as = missiles_lost_allocation_site
+	set_temp_variable = { missiles_allocation_loss_mode = constant:missiles_program_value.one }
 	if = {
 		limit = { has_event_target = missiles_site_scuttle_controller }
 			event_target:missiles_site_scuttle_controller = {
+				# A destroyed reserving site loses its readied missiles once.
+				missiles_settle_lost_site_allocation = yes
 			if = {
 				limit = {
 					PREV = {
@@ -2999,24 +3006,163 @@ missiles_create_operation_receipt = {
 	set_country_flag = missiles_program_phase_prepared
 }
 
+# COUNTRY scope. Whole-missile allocation by capacity: every pass offers each
+# site with spare capacity an equal whole share of the remaining missiles, and
+# a site takes no more than its spare capacity. Passes are bounded by the
+# strike's site limit, and the planned allocations sum exactly to the cost
+# whenever the sites' combined capacity covers it.
+missiles_project_operation_site_allocations = {
+	set_variable = { missiles_operation_allocation_result = constant:missiles_result.rejected }
+	set_temp_variable = { missiles_allocation_remaining = missiles_operation_missile_cost }
+	for_each_scope_loop = {
+		array = missiles_operation_sites
+		set_variable = { missiles_site_planned_allocation = constant:missiles_program_value.zero }
+	}
+	set_temp_variable = { missiles_allocation_pass_break = constant:missiles_program_value.zero }
+	for_loop_effect = {
+		start = constant:missiles_program_value.zero
+		end = constant:missiles_tuning.operation_max_sites_per_strike
+		compare = less_than_or_equals
+		value = missiles_allocation_pass
+		break = missiles_allocation_pass_break
+		set_temp_variable = { missiles_allocation_open_sites = constant:missiles_program_value.zero }
+		for_each_scope_loop = {
+			array = missiles_operation_sites
+			if = {
+				limit = {
+					is_controlled_by = PREV
+					missiles_site_can_launch = yes
+					has_variable = missiles_site_capacity
+					check_variable = { var = missiles_site_planned_allocation value = missiles_site_capacity compare = less_than }
+				}
+				add_to_temp_variable = { missiles_allocation_open_sites = constant:missiles_program_value.one }
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = missiles_allocation_remaining value = constant:missiles_program_value.zero compare = less_than_or_equals }
+					check_variable = { var = missiles_allocation_open_sites value = constant:missiles_program_value.zero compare = equals }
+				}
+			}
+			set_temp_variable = { missiles_allocation_pass_break = constant:missiles_program_value.one }
+		}
+		else = {
+			# Whole share: the remaining missiles divided by the open sites, rounded
+			# down, but never less than one missile.
+			set_temp_variable = { missiles_allocation_exact_share = missiles_allocation_remaining }
+			divide_temp_variable = { var = missiles_allocation_exact_share value = missiles_allocation_open_sites if_zero = constant:missiles_program_value.one }
+			set_temp_variable = { missiles_allocation_share = missiles_allocation_exact_share }
+			round_temp_variable = missiles_allocation_share
+			if = {
+				limit = { check_variable = { var = missiles_allocation_share value = missiles_allocation_exact_share compare = greater_than } }
+				subtract_from_temp_variable = { missiles_allocation_share = constant:missiles_program_value.one }
+			}
+			clamp_temp_variable = { var = missiles_allocation_share min = constant:missiles_program_value.one }
+			for_each_scope_loop = {
+				array = missiles_operation_sites
+				if = {
+					limit = {
+						is_controlled_by = PREV
+						missiles_site_can_launch = yes
+						has_variable = missiles_site_capacity
+						check_variable = { var = missiles_site_planned_allocation value = missiles_site_capacity compare = less_than }
+						check_variable = { var = missiles_allocation_remaining value = constant:missiles_program_value.zero compare = greater_than }
+					}
+					set_temp_variable = { missiles_allocation_give = missiles_allocation_share }
+					set_temp_variable = { missiles_allocation_room = missiles_site_capacity }
+					subtract_from_temp_variable = { missiles_allocation_room = missiles_site_planned_allocation }
+					if = { limit = { check_variable = { var = missiles_allocation_give value = missiles_allocation_room compare = greater_than } } set_temp_variable = { missiles_allocation_give = missiles_allocation_room } }
+					if = { limit = { check_variable = { var = missiles_allocation_give value = missiles_allocation_remaining compare = greater_than } } set_temp_variable = { missiles_allocation_give = missiles_allocation_remaining } }
+					add_to_variable = { missiles_site_planned_allocation = missiles_allocation_give }
+					subtract_from_temp_variable = { missiles_allocation_remaining = missiles_allocation_give }
+				}
+			}
+		}
+	}
+	if = {
+		limit = { check_variable = { var = missiles_allocation_remaining value = constant:missiles_program_value.zero compare = equals } }
+		set_variable = { missiles_operation_allocation_result = constant:missiles_result.accepted }
+	}
+}
+
+# COUNTRY scope. Writes each site's planned whole allocation onto the receipt
+# and drops a site that received no missiles from the operation.
 missiles_mark_operation_sites_reserved = {
+	clear_temp_array = missiles_idle_operation_sites
 	for_each_scope_loop = {
 		array = missiles_operation_sites
 		if = {
-			limit = { is_controlled_by = ROOT missiles_site_can_launch = yes }
+			limit = {
+				is_controlled_by = ROOT
+				missiles_site_can_launch = yes
+				has_variable = missiles_site_planned_allocation
+				check_variable = { var = missiles_site_planned_allocation value = constant:missiles_program_value.zero compare = greater_than }
+			}
 			set_variable = { missiles_site_operation_id = ROOT.missiles_active_operation_id }
-			set_variable = { missiles_site_operation_allocation = ROOT.missiles_operation_site_allocation }
+			set_variable = { missiles_site_operation_allocation = missiles_site_planned_allocation }
+		}
+		else = {
+			add_to_temp_array = { array = missiles_idle_operation_sites value = THIS }
+		}
+		clear_variable = missiles_site_planned_allocation
+	}
+	for_each_scope_loop = {
+		array = missiles_idle_operation_sites
+		ROOT = {
+			remove_from_array = { array = missiles_operation_sites value = PREV }
+			subtract_from_variable = { missiles_operation_site_count = constant:missiles_program_value.one }
+		}
+	}
+}
+
+# COUNTRY scope: the owner of a prepared, uncommitted operation. Inputs: the
+# regular event target missiles_lost_allocation_site (STATE) and the temporary
+# missiles_allocation_loss_mode (one when that site's readied missiles are
+# lost, zero when they return). Ends the operation and settles the site's
+# exact allocation once.
+missiles_settle_lost_site_allocation = {
+	if = {
+		limit = {
+			has_event_target = missiles_lost_allocation_site
+			has_country_flag = missiles_operation_active
+			NOT = { has_country_flag = missiles_operation_committed }
+			has_variable = missiles_active_operation_id
+			event_target:missiles_lost_allocation_site = {
+				has_variable = missiles_site_operation_id
+				check_variable = { var = missiles_site_operation_id value = constant:missiles_program_value.zero compare = greater_than }
+				check_variable = { var = missiles_site_operation_id value = PREV.missiles_active_operation_id compare = equals }
+			}
+		}
+		set_temp_variable = { missiles_lost_allocation = constant:missiles_program_value.zero }
+		if = {
+			limit = {
+				check_variable = { var = missiles_allocation_loss_mode value = constant:missiles_program_value.one compare = equals }
+				event_target:missiles_lost_allocation_site = { has_variable = missiles_site_operation_allocation }
+			}
+			set_temp_variable = { missiles_lost_allocation = event_target:missiles_lost_allocation_site.missiles_site_operation_allocation }
+		}
+		set_variable = { missiles_last_preparation_failure = constant:missiles_preparation_failure.site }
+		set_variable = { missiles_last_failed_preparation_id = missiles_active_operation_id }
+		set_country_flag = missiles_preparation_failure_unread
+		missiles_abort_operation = yes
+		missiles_cleanup_operation = yes
+		if = {
+			limit = { check_variable = { var = missiles_lost_allocation value = constant:missiles_program_value.zero compare = greater_than } }
+			if = {
+				limit = { check_variable = { var = missiles_operational_reserve value = missiles_lost_allocation compare = less_than } }
+				set_temp_variable = { missiles_lost_allocation = missiles_operational_reserve }
+			}
+			subtract_from_variable = { missiles_operational_reserve = missiles_lost_allocation }
+			set_variable = { missiles_last_lost_allocation = missiles_lost_allocation }
+			missiles_clamp_program_values = yes
 		}
 	}
 }
 
 missiles_reserve_operation_resources = {
 	set_variable = { missiles_operation_resource_result = constant:missiles_result.rejected }
-	set_variable = { missiles_operation_site_allocation = missiles_operation_missile_cost }
-	if = {
-		limit = { check_variable = { var = missiles_operation_site_count value = constant:missiles_program_value.one compare = greater_than } }
-		divide_variable = { var = missiles_operation_site_allocation value = missiles_operation_site_count if_zero = constant:missiles_program_value.one }
-	}
+	missiles_project_operation_site_allocations = yes
 	set_temp_variable = { missiles_reserve_after_operation = missiles_operational_reserve }
 	subtract_from_temp_variable = { var = missiles_reserve_after_operation value = missiles_operation_missile_cost }
 	set_temp_variable = { missiles_ai_reserve_floor = constant:missiles_reserve.operation_reservation_floor }
@@ -4566,18 +4712,20 @@ missiles_natural_disaster_damage_site = {
 		}
 		if = {
 			limit = { has_event_target = missiles_disaster_controller }
+			# A hit that wrecks the site loses its readied missiles once; a lesser
+			# hit cancels the order and returns them.
+			save_event_target_as = missiles_lost_allocation_site
+			set_temp_variable = { missiles_allocation_loss_mode = constant:missiles_program_value.zero }
+			set_temp_variable = { missiles_disaster_projected_damage = missiles_site_damage }
+			add_to_temp_variable = { missiles_disaster_projected_damage = missiles_disaster_site_damage }
+			if = {
+				limit = { check_variable = { var = missiles_disaster_projected_damage value = constant:missiles_reserve.site_destroyed_threshold compare = greater_than_or_equals } }
+				set_temp_variable = { missiles_allocation_loss_mode = constant:missiles_program_value.one }
+			}
 			event_target:missiles_disaster_controller = {
 				if = {
-					limit = {
-						has_country_flag = missiles_program_initialized
-						has_country_flag = missiles_operation_active
-						has_variable = missiles_active_operation_id
-						PREV = {
-							check_variable = { var = missiles_disaster_site_operation_id value = ROOT.missiles_active_operation_id compare = equals }
-						}
-					}
-					missiles_abort_operation = yes
-					missiles_cleanup_operation = yes
+					limit = { has_country_flag = missiles_program_initialized }
+					missiles_settle_lost_site_allocation = yes
 				}
 			}
 		}
@@ -5987,20 +6135,11 @@ missiles_handle_site_control_changed = {
 			limit = { check_variable = { var = missiles_captured_reserve_amount value = FROM.missiles_operational_reserve compare = greater_than } }
 			set_temp_variable = { missiles_captured_reserve_amount = FROM.missiles_operational_reserve }
 		}
-		if = {
-			limit = {
-				has_variable = missiles_site_operation_id
-				check_variable = { var = missiles_site_operation_id value = constant:missiles_program_value.zero compare = greater_than }
-				FROM = {
-					has_country_flag = missiles_operation_active
-					check_variable = { var = missiles_active_operation_id value = PREV.missiles_site_operation_id compare = equals }
-				}
-			}
-			FROM = {
-				missiles_abort_operation = yes
-				missiles_cleanup_operation = yes
-			}
-		}
+		# The missiles readied at a captured reserving site are lost to the
+		# former controller once; the rest of its order returns to reserve.
+		save_event_target_as = missiles_lost_allocation_site
+		set_temp_variable = { missiles_allocation_loss_mode = constant:missiles_program_value.one }
+		FROM = { missiles_settle_lost_site_allocation = yes }
 		FROM = {
 			if = {
 				limit = { check_variable = { var = missiles_captured_reserve_amount value = constant:missiles_program_value.zero compare = greater_than } }
