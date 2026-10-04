@@ -268,27 +268,23 @@ random_terror_clamp_country_values = {
 	}
 }
 
+# COUNTRY scope.  Input: caller-owned temp random_terror_pending_pressure_delta,
+# consumed and reset to zero.
 random_terror_apply_pressure = {
 	random_terror_initialize_country_state = yes
-	if = {
-		limit = { NOT = { has_variable = random_terror_pending_pressure_delta } }
-		set_variable = { random_terror_pending_pressure_delta = constant:random_terror_value.zero }
-	}
 	add_to_variable = { random_terror_pressure = random_terror_pending_pressure_delta }
 	random_terror_clamp_country_values = yes
-	clear_variable = random_terror_pending_pressure_delta
+	set_temp_variable = { random_terror_pending_pressure_delta = constant:random_terror_value.zero }
 }
 
+# COUNTRY scope.  Input: caller-owned temp random_terror_pending_legitimacy_delta,
+# consumed and reset to zero.
 random_terror_apply_legitimacy = {
 	random_terror_initialize_country_state = yes
-	if = {
-		limit = { NOT = { has_variable = random_terror_pending_legitimacy_delta } }
-		set_variable = { random_terror_pending_legitimacy_delta = constant:random_terror_value.zero }
-	}
 	add_to_variable = { random_terror_response_legitimacy = random_terror_pending_legitimacy_delta }
 	random_terror_clamp_country_values = yes
 	random_terror_achievement_record_legitimacy = yes
-	clear_variable = random_terror_pending_legitimacy_delta
+	set_temp_variable = { random_terror_pending_legitimacy_delta = constant:random_terror_value.zero }
 }
 
 random_terror_update_state_stage = {
@@ -343,19 +339,17 @@ random_terror_update_state_stage = {
 	random_terror_achievement_record_state_stage = yes
 }
 
+# STATE scope.  Input: caller-owned temp random_terror_pending_activity_delta,
+# consumed and reset to zero.
 random_terror_add_state_activity = {
 	random_terror_initialize_state_state = yes
-	if = {
-		limit = { NOT = { has_variable = random_terror_pending_activity_delta } }
-		set_variable = { random_terror_pending_activity_delta = constant:random_terror_tuning.state_activity_gain }
-	}
 	add_to_variable = { random_terror_state_activity = random_terror_pending_activity_delta }
 	clamp_variable = {
 		var = random_terror_state_activity
 		min = constant:random_terror_value.minimum
 		max = constant:random_terror_value.maximum
 	}
-	clear_variable = random_terror_pending_activity_delta
+	set_temp_variable = { random_terror_pending_activity_delta = constant:random_terror_value.zero }
 	random_terror_update_state_stage = yes
 }
 
@@ -659,6 +653,13 @@ random_terror_apply_incident = {
 		max = constant:random_terror_value.maximum
 	}
 	set_temp_variable = { random_terror_pending_activity_delta = constant:random_terror_tuning.state_activity_gain }
+	# Opening shock (Part 1): a Clear or Dormant state enters Active, while an
+	# established cell advances by the ordinary incident gain.
+	if = {
+		limit = { check_variable = { random_terror_state_activity < constant:random_terror_tuning.state_activity_opening } }
+		set_temp_variable = { random_terror_pending_activity_delta = constant:random_terror_tuning.state_activity_opening }
+		subtract_from_temp_variable = { random_terror_pending_activity_delta = random_terror_state_activity }
+	}
 	random_terror_add_state_activity = yes
 	set_variable = { random_terror_last_incident_type = random_terror_incident_type }
 	CONTROLLER = {
@@ -688,6 +689,9 @@ random_terror_apply_incident = {
 		set_country_flag = { flag = random_terror_recent_incident days = random_terror_incident_memory_duration }
 		country_event = { id = chaosx.nr31.2 days = 1 }
 	}
+	# Re-read the stage before the controller schedules its next pulse.
+	random_terror_update_state_stage = yes
+	CONTROLLER = { random_terror_schedule_country_pulse = yes }
 	add_to_variable = { global.random_terror_total_incidents = 1 }
 	if = {
 		limit = { has_global_flag = random_terror_automatic_wave_active }
@@ -720,6 +724,58 @@ random_terror_apply_incident = {
 			CONTROLLER = { NOT = { has_country_flag = random_terror_civil_war_started } }
 		}
 		CONTROLLER = { random_terror_start_pressure_civil_war = yes }
+	}
+}
+
+# COUNTRY scope: an affected government.  Keeps at most one pending recurring
+# incident pulse while the country has an active crisis state.  The delay
+# comes from the Part 2 band of its most severe state, then a random spread
+# keeps neighbouring crises from firing in lockstep.  A timed guard flag
+# outlives the event slightly so a lost pulse can never block the next one.
+random_terror_schedule_country_pulse = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = random_terror_pulse_pending }
+			random_terror_country_can_receive_pulse = yes
+		}
+		set_temp_variable = { random_terror_pulse_delay_days = mtth:random_terror_incident_pulse_days }
+		set_temp_variable_to_random = {
+			var = random_terror_pulse_spread
+			min = constant:random_terror_tuning.pulse_spread_min
+			max = constant:random_terror_tuning.pulse_spread_max
+		}
+		multiply_temp_variable = { random_terror_pulse_delay_days = random_terror_pulse_spread }
+		clamp_temp_variable = {
+			var = random_terror_pulse_delay_days
+			min = constant:random_terror_mtth_days.pulse_minimum
+			max = constant:random_terror_mtth_days.pulse_maximum
+		}
+		round_temp_variable = random_terror_pulse_delay_days
+		set_temp_variable = { random_terror_pulse_guard_days = random_terror_pulse_delay_days }
+		add_to_temp_variable = { random_terror_pulse_guard_days = constant:random_terror_tuning.pulse_flag_buffer_days }
+		set_country_flag = { flag = random_terror_pulse_pending days = random_terror_pulse_guard_days }
+		country_event = { id = chaosx.nr31.96 days = random_terror_pulse_delay_days }
+	}
+}
+
+# COUNTRY scope: the hidden pulse event.  Applies one incident through the
+# ordinary incident engine to a valid active state, respecting the state
+# cooldown, then reschedules only while the crisis remains active.  It never
+# touches repeatable weight, minor-event pacing or the Event Logs history.
+random_terror_run_country_pulse = {
+	clr_country_flag = random_terror_pulse_pending
+	if = {
+		limit = { random_terror_country_can_receive_pulse = yes }
+		random_terror_initialize_global_state = yes
+		random_owned_controlled_state = {
+			limit = {
+				random_terror_state_is_active_crisis = yes
+				random_terror_state_is_eligible_incident_site = yes
+			}
+			random_terror_apply_incident = yes
+		}
+		# A pulse with no eligible site is postponed rather than redirected.
+		random_terror_schedule_country_pulse = yes
 	}
 }
 
@@ -1391,6 +1447,7 @@ random_terror_scenario_seed_country = {
 		set_country_flag = random_terror_scenario_report_sent
 		country_event = { id = chaosx.nr31.90 days = 1 }
 	}
+	random_terror_schedule_country_pulse = yes
 }
 
 random_terror_select_and_seed_scenario_country = {

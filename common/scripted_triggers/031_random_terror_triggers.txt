@@ -157,6 +157,30 @@ random_terror_can_government_response = {
 	}
 }
 
+# Any scope.  Event 31 remains enabled in the Event Logs settings.
+random_terror_event_is_enabled = {
+	NOT = {
+		is_in_array = {
+			array = global.disabled_events
+			value = constant:random_terror_identity.event_id
+		}
+	}
+}
+
+# COUNTRY scope: a government that can receive its next recurring incident
+# pulse.  Only countries with an active crisis state qualify, so the pulse
+# never becomes a world scan.
+random_terror_country_can_receive_pulse = {
+	exists = yes
+	NOT = { has_capitulated = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { has_country_flag = random_terror_actor }
+	NOT = { has_global_flag = world_end }
+	random_terror_event_is_enabled = yes
+	random_terror_country_has_active_state = yes
+}
+
 random_terror_can_actor_action = {
 	random_terror_is_actor = yes
 	NOT = { has_global_flag = random_terror_terminal_active }

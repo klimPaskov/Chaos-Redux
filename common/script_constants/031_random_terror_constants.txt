@@ -57,6 +57,13 @@ random_terror_mtth_days = {
 	minimum = 30
 	maximum = 420
 	accelerated_maximum = 60
+	# Recurring incident pulse bands (Part 2): about 60-90 days for a dormant
+	# or active cell, 30-60 when entrenched, 15-35 for armed insurgency.
+	pulse_active = 75
+	pulse_entrenched_offset = -30
+	pulse_armed_offset = -20
+	pulse_minimum = 15
+	pulse_maximum = 90
 }
 
 random_terror_mtth_factor = {
@@ -268,6 +275,9 @@ random_terror_tuning = {
 	jihadist_targets = 15
 	final_targets = 20
 	wave_cooldown_days = 2
+	pulse_spread_min = 0.8
+	pulse_spread_max = 1.2
+	pulse_flag_buffer_days = 7
 	super_event_duration_days = 30
 	state_cooldown_days = 28
 	incident_memory_days = 120
@@ -284,8 +294,12 @@ random_terror_tuning = {
 	protected_pressure_reduction = 8
 	response_legitimacy_gain = 6
 	response_legitimacy_loss = 8
-	state_activity_gain = 1
-	state_activity_loss = 1
+	# Activity uses the 0-100 stage ladder.  The first incident in a Clear or
+	# Dormant state opens it at Active; later incidents and setbacks advance
+	# it by gain, and routine response actions remove loss.
+	state_activity_gain = 8
+	state_activity_loss = 6
+	state_activity_opening = 22
 	state_activity_dormant_threshold = 0
 	state_activity_active_threshold = 20
 	state_activity_entrenched_threshold = 40
@@ -296,6 +310,7 @@ random_terror_tuning = {
 	readiness_gain = 5
 	response_capacity_gain = 1
 	response_reform_capacity_gain = 2
+	actor_control_minor_gain = 3
 	actor_control_militia_gain = 5
 	actor_control_defector_gain = 4
 	actor_control_convert_gain = 8

@@ -20,6 +20,14 @@ Every affected government maintains Terror Pressure, Response Legitimacy, incide
 
 Every affected state maintains activity, pressure, incident memory, exact civilian-loss accounting, cooldown state, territorial readiness, and action or mission commitments.
 
+State activity uses the 0-100 stage ladder with Active above 20, Entrenched above 40, Armed Insurgency above 60 and Lost Local Control above 78 activity and pressure.
+The first incident in a Clear or Dormant state opens it at Active (`state_activity_opening`), later incidents and setbacks add `state_activity_gain`, and routine response actions remove `state_activity_loss`, so a state normally advances one stage over a few incidents.
+
+Active crises recur through event-owned pacing rather than a world scan.
+Each affected government holds at most one pending hidden pulse (`chaosx.nr31.96`, guarded by the timed `random_terror_pulse_pending` flag).
+`random_terror_schedule_country_pulse` reads `random_terror_incident_pulse_days` in the country's scope, which follows the Part 2 bands of its most severe owned state (about 60-90 days Active, 30-60 Entrenched, 15-35 Armed Insurgency or worse), is delayed by successful protection missions and accelerated by failed operations, high Terror Pressure and high Network Reach, then receives a random 0.8-1.2 spread and the band clamp.
+The pulse applies one incident through `random_terror_apply_incident` to a valid active state that is off cooldown, postpones itself when no state is eligible, reschedules only while the crisis stays active, stops while Event 31 is disabled in the Event Logs settings, and never touches repeatable weight, minor-event pacing or the Event Logs history.
+
 Later evolutions add Network Reach, International Unity, territorial-control values, actor authority, external supply, strategic victories, and hidden apocalyptic readiness without changing the identity-neutral baseline targeting rules.
 
 Religion, ethnicity, nationality, refugee status, and ordinary ideology never increase baseline target or recruitment weight.
