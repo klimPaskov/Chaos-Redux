@@ -1,5 +1,11 @@
 # Event 021 dynamic repair resume packet
 
+## 2026-10-04 takeover status
+
+The Claude takeover engineer adopted and committed every uncommitted tranche described below: `de3f7de71` (external-war successor prompt), `4c041ead2` (dynamic front ledger, candidate traversal, MTTH actor predicates, Maximum scenario envelope, opening provenance), `00fe90801` (mission continuity, sponsor gating, routed fixes 1(a) and 1(b)), `628a50c32` (KUB Ivanis placeholder, orphan DDS removal) and `cdd75094b` (mission timers run as their own non-selectable missions).
+These tranches are implemented; the sections below are kept as the history of how they were built.
+Read `agent_decisions_2026-10-04.md` for the decisions taken during the takeover and the queued work that follows.
+
 Disposition: in-progress implementation handoff, not completion proof.
 The user resumed the full Event 021 goal after a connection loss and requires continued implementation, dynamic behavior, no unreported simplifications, clean user-supplied live QA evidence, and isolated shared-tree commits.
 Do not launch HOI4, ask for logs, overwrite other agents' work, or claim the goal complete.

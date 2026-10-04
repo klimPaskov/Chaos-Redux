@@ -54,3 +54,12 @@ The approved relation-only external-war fallback is unchanged by this repair.
 No gameplay simplification or new placeholder was introduced by the calendar fix.
 
 Skills used: `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-mtth`, `chaos-redux-subagents`, and `chaos-redux-shared-git-commit`.
+
+## 2026-10-04 publication of the deferred tranches
+
+Disposition: implemented and committed source; live confirmation pending.
+The ledger, external-war, mission redesign and MTTH-eligibility work that this date-only commit excluded is now published in its own commits.
+`de3f7de71` adds the successor external-war relation prompt, `4c041ead2` publishes the dynamic front ledger, candidate traversal, MTTH actor predicates, Maximum scenario front envelope and opening provenance, `00fe90801` publishes mission continuity and sponsor gating with the routed fixes 1(a) and 1(b), and `628a50c32` installs the KUB Ivanis placeholder and removes the orphaned achievement DDS files.
+`cdd75094b` then repairs the mission timers, because a selectable mission resolves on selection and never reaches its `timeout_effect`.
+Each commit was built in an isolated index and checked for definition, constant and brace closure against its own tree; the calendar, evolution-log and front-ledger source tests pass on the working tree.
+Decisions are recorded in `agent_decisions_2026-10-04.md`.

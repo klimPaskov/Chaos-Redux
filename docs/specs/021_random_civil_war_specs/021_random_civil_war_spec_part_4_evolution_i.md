@@ -89,8 +89,14 @@ Design direction:
 | Small and coherent | two belligerents |
 | Medium with two distinct regions or blocs | three belligerents |
 | Large with several viable actors | three or four belligerents |
-| Major with many regions and severe pressure | three to five belligerents within tested caps |
+| Major with many regions and severe pressure | multiple viable belligerents, bounded by live actors and shared front capacity |
 | Manual Maximum scenario | strongest sustainable plan under the scenario's global front cap |
+
+These profile rows are balance directions, not fixed per-country participant ceilings. Runtime state coverage and side count are derived from the current connected viable regions, protected remnant, distinct valid actors and routes, Fracture Pressure, State Authority, severity, resources, and remaining global front capacity; do not add a fixed per-crisis state, participant, plan-row, or division ceiling. Only the explicitly defined global scheduling, theater/front safety, and generation bounds remain hard caps.
+
+The Fracture Cascade Maximum scenario plans and commits every eligible normal human country rather than truncating the roster to ordinary launch capacity. Setup is immediate by default; a locked deterministic setup of no more than seven game days is permitted only after a measured one-frame performance failure demonstrates that immediate setup is unsafe.
+
+Acceptance basis: the user explicitly reaffirmed on 2026-09-26 that everything must remain dynamic and specified the Maximum scenario coverage and performance fallback in the implementation request.
 
 A side that cannot fight, negotiate, or survive should not be created.
 

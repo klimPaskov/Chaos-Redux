@@ -2,7 +2,7 @@
 
 Date: 2026-09-20.
 
-Disposition: **blocked**. The documented HOI4 contract cannot identify a particular predecessor war after annexation or guarantee that a participant joined through `add_to_war` remains in that war when its `targeted_alliance` is immediately annexed. This handoff is the only edit. Gameplay source, constants, and helper documentation remain unchanged. No external-war continuity or Event 021 completion claim is made.
+Historical disposition on 2026-09-20: **blocked**. The documented HOI4 contract cannot identify a particular predecessor war after annexation or guarantee that a participant joined through `add_to_war` remains in that war when its `targeted_alliance` is immediately annexed. On 2026-09-25 the user explicitly superseded the exact-war requirement with an accepted relation-only fallback and human-choice prompt, recorded in `docs/specs/021_random_civil_war_specs/021_random_civil_war_external_war_successor_addendum.md`. That dynamic fallback is implemented in `docs/plans/021_random_civil_war_plans/subagent_handoffs/event021_external_war_successor_implementation_2026-09-25.md` for test entry, with AI successors failing closed. This does not restore the predecessor's exact named war and is not runtime evidence or an Event 021 completion claim; prompt sequencing, persistence, declaration, and cleanup remain Needs Testing.
 
 ## Accepted task boundary and observed behavior
 
@@ -55,4 +55,4 @@ The strongest safe partial improvement available from the documented contract is
 
 Changed file: this handoff only. Implemented helper identifiers: none. New variable, flag, array, or event-target identifiers: none. Constants added or changed: none. Cleanup logic added: none. Gameplay behavior before and after: identical. No simplification or fallback was applied.
 
-The parent should treat external-war continuity as blocked until the same-war and post-annex survival contract is established through supported engine documentation or a reviewed runtime fixture. Then it can authorize the bounded transaction above and reconcile the resulting verification with Event 021's existing front and treaty lifecycle. The parent still owns final integration and any Event 021 completion claim.
+This recommendation describes the state before the user accepted a relation-only fallback. The same-war identity contract remains unsupported, while the parent may implement the narrower accepted relation check and human-choice replacement declaration recorded in the addendum. The parent still owns final integration and any Event 021 completion claim.

@@ -14,6 +14,7 @@ The mapping is an implementation disposition, not a claim that every family has 
 | Negotiate a regional guarantee | `event021_offer_emergency_settlement`, `chaosx.nr21.5` | Settlement talks open the regional guarantee and obligation selector; the named guarantee is a settlement term, not a duplicate action. |
 | Offer a limited amnesty | `event021_offer_emergency_settlement`, `event021_hold_settlement_terms_mission` | Amnesty is represented by the settlement obligation and its timed terms mission, with failure and postwar memory handled by settlement resolution. |
 | Call an emergency coalition | `event021_complete_coalition_governance` | Coalition governance is a settlement-obligation action and is unavailable outside its obligation phase. |
+| Secure sponsor withdrawal | `event021_end_sponsor_commitment` | The supported settlement signatory resolves its own front-bound withdrawal obligation against the exact incoming sponsor receipt. The external sponsor is not enrolled as a treaty signatory. |
 | Emergency requisition | `event021_secure_arsenals`, `event021_decision_seize_depot` | Requisition is deliberately bounded into arsenal/depot actions so it spends real stockpile resources and cannot become a repeatable free-source decision. |
 | Seize a local depot | `event021_seize_depot` | Direct opposition/front decision requiring a valid owned and controlled depot target. |
 | Organize regional recruitment | opening force package and `event021_integrate_formations` | Recruitment is package-specific opening/reinforcement logic; the visible action is integration because Event 006 actors must retain their own reinforcement content. |
@@ -23,8 +24,8 @@ The mapping is an implementation disposition, not a claim that every family has 
 | Request recognition | `event021_offer_emergency_settlement`, settlement outcomes | Recognition is a settlement gate and outcome rather than a free-standing diplomatic action. |
 | Coordinate with another opposition front | `event021_set_priority_front`, multi-front front registry | The priority-front action and front registry coordinate the selected front without introducing a second selection GUI. |
 | Reject the rival claim | settlement selection and `event021_set_priority_front` | Rival-claim rejection is represented by settlement terms and front-priority commitment; hardliner outcomes preserve separate claimant settlement paths. |
-| Hold the capital | `event021_hold_the_capital_mission` | Timed mission with distinct success and timeout effects. |
-| Secure the rail junctions | `event021_secure_rail_spine_mission` | Timed mission bound to an opening-front logistics state. |
+| Hold the capital | `event021_hold_the_capital_mission`, `event021_holding_the_capital_mission` | Selecting the commitment card starts a timed, non-selectable hold with distinct success and failure resolution. |
+| Secure the rail junctions | `event021_secure_rail_spine_mission`, `event021_securing_the_rail_spine_mission` | Selecting the commitment card starts a timed hold bound to an opening-front logistics state. |
 | Protect the depot belt | `event021_seize_depot`, depot state receipt, and settlement resolution | Depot protection is a state-targeted action with actual control proof; failed control is handled by the front and settlement lifecycle. |
 | Keep the corridor open | `event021_open_relief_corridor` | Separate civilian relief decision; armed support decisions do not reuse the civilian action. |
 | Complete local mobilization | opening force package, package reinforcement, and `event021_integrate_formations` | Mobilization is derived from actual force, manpower, equipment, and package limits rather than a free visible division-spawn action. |
@@ -32,4 +33,6 @@ The mapping is an implementation disposition, not a claim that every family has 
 | Preserve the civilian route | `event021_open_relief_corridor`, `event021_offer_mediation` | Civilian relief and mediation are separate effects and use distinct resource profiles. |
 
 The crosswalk therefore resolves the completion-audit finding that the specification names more families than the normal category can show at once.
-The remaining open gate is runtime proof that each phase-specific surface appears and resolves correctly in live play.
+The exposure and Global Fracture prevention surfaces use ordered phases. Before a border, support, or mediation commitment, up to five exposure actions remain visible and prevention actions stay hidden. After that commitment, the mutually exclusive exposure choices close, the relief action remains separate, and up to two prevention actions may appear. Settlement and reconstruction take precedence over both surfaces. This bounds the known overlap at five primary actions in source logic.
+Sponsor withdrawal is a settlement action of the recipient signatory. Reciprocal sponsor and recipient identifiers validate the receipt at obligation selection, and a durable settlement scope keeps the exact sponsor available for resolution after exposure cleanup. Each sponsor and recipient is limited to one active commitment in its corresponding direction so paired scope pointers cannot be overwritten.
+The remaining open gate is scenario and live-play proof that each phase-specific surface appears and resolves correctly.

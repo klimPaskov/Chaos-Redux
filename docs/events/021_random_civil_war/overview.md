@@ -14,6 +14,8 @@ Historical MCP and asset results apply only to their recorded source revisions a
 The late source repairs and their unresolved evidence boundary are recorded in `docs/plans/021_random_civil_war_plans/subagent_handoffs/late_source_repairs_2026-09-06.md`.
 The improvement-loop dispositions are recorded in `docs/plans/021_random_civil_war_plans/improvement_loop_disposition_2026-09-06.md`.
 The test-release decision is recorded in `docs/plans/021_random_civil_war_plans/subagent_handoffs/test_release_gate_2026-09-13.md`.
+The current dynamic ledger corrections and evidence limits are recorded in [`event021_dynamic_front_ledger_repair_2026-10-03.md`](../../plans/021_random_civil_war_plans/event021_dynamic_front_ledger_repair_2026-10-03.md).
+Its current-source findings supersede earlier source-completeness claims; the active-war Evolution I planning trace, inherited asset repairs, and full acceptance remain unresolved.
 
 ## Identity and scope
 
@@ -105,21 +107,23 @@ The final opening severity is centralized in `random_civil_war_severity` and `ev
 
 ## Front and region registry
 
-The opening state plan is connected and bounded by `maximum_multifront_states` and the active theater capacity.
+The opening state plan scales from live pressure, State Authority, severity, scenario intensity, and the current connected viable state pool while keeping the government remnant and capital protected.
 
 Each committed theater registers a stable Event 021 theater receipt, original host, anchor state, opposing actor, current phase, and generation.
 
 Each front registers a stable front id, actor pair, state reference, front goal, priority, and resolution receipt in the shared arrays.
 
-Before the opening engine call, Event 021 also creates an aligned bounded front-plan receipt with row identity, actor role, anchor and capital, connected-state membership, relationship, route or package provenance, objective, force envelope, and settlement lifecycle status. The normal row order is host remnant, primary claimant, up to two optional ordinary secondaries, and one optional Event 006 secondary, with a maximum of five rows.
+Before the opening engine call, Event 021 creates an aligned front-plan receipt with row identity, actor role, anchor and capital, state membership, relationship, route or package provenance, objective, force envelope, and settlement lifecycle status. The row count follows live viable state anchors, complete Event 006 packages, severity-derived crisis capacity, and the shared remaining-front registry; route archetypes may repeat for distinct anchors. After the mandatory host and primary rows commit, optional rows are activated serially by front id and their recorded source-front id, with each row's state and package receipts staged for one transaction at a time.
 
-Registration and priority binding consume the matching plan row by front id. Optional starters mark their row rejected when a frozen receipt cannot materialise, and settlement review does not report all internal fronts resolved while a plan row remains pending. Rollback and final cleanup clear the complete plan ledger.
+The bounded review reads the durable actor registry by crisis ID when deciding whether internal fronts have resolved. Ordinary secondary closure stages all eligible registered actors before any one actor unregisters, then rebuilds the host's secondary receipt from surviving sibling fronts. Event 006 secondary review and finalization likewise stage registered package actors, retain their package identity, and rebuild the host's live-front receipt.
+
+Registration and priority binding consume the matching plan row by front id. Optional starters mark their row rejected when a frozen receipt cannot materialise, and settlement review does not report all internal fronts resolved while a plan row remains pending. Rollback and final cleanup clear the complete plan ledger. Fracture Cascade freezes the same variable-length optional-row ledger per selected country, reserves mandatory fronts before target selection, and replays only the stored candidates without post-mutation rerolls.
 
 The Event 006-owned `independence_wave_initialize_event021_adapter_registry` and `independence_wave_capture_event021_adapter_actor` effects publish the complete package allowlist and matching carrier identity consumed by Event 021.
 
 Event 021 reads the selected package's validated anchor and carrier from that contract and hands the complete package to the generic Event 006 setup dispatcher.
 
-Evolution I enables viable secondary fronts, independence fronts, additional command authorities, and reduced-weight targeting of major countries. After an ordinary opening, one complete dormant Event 006 package may consume a distinct noncapital anchor and enter as an additional independence front when the host remnant and all front, theater, and belligerent caps remain valid.
+Evolution I enables viable multi-front openings, complete Event 006 independence fronts, and reduced-weight targeting of major countries. Each optional actor must have a distinct viable anchor or complete package, and its row is activated only while the host remnant and shared front/theater capacity remain valid.
 
 Ordinary secondary fronts require a connected state candidate, active opposition, a distinct unreserved evidence-backed route, available capacity, and the explicit Evolution I gate. The package-owned additional front uses the Event 006 registry and adapter instead of manufacturing an ordinary archetype, and is registered only after its war with the host is proved.
 
@@ -197,9 +201,9 @@ The decision package therefore exposes three to five phase-appropriate actions a
 
 Multi-front countries can rotate the registered priority-front state, while reconstruction repairs the selected rail-spine infrastructure and prevention reuses the communications, loyalty, and regional-administration actions.
 
-The three disjoint-phase missions are Hold the Capital, Secure the Rail Spine, and Enforce Settlement Terms.
+The three mission families are Hold the Capital, Secure the Rail Spine, and Enforce Settlement Terms.
 
-Selecting a mission starts its timed commitment; the timeout resolver then evaluates the stored control, supply, front, or settlement objective and dispatches the distinct success or failure effect in `021_random_civil_war_decision_effects.txt`.
+Selecting a mission commits the country to the hold: the selectable card closes and a separate non-selectable mission (Holding the Capital, Securing the Rail Spine, or Upholding the Settlement) shows the countdown and cannot finish early. Selecting a capital or rail mission binds its target state. Event-driven state-control changes fail the objective if control is lost, and the deadline resolver checks the same target plus its supply, infrastructure, defense, or settlement requirements. A failed rail mission cannot restart during that crisis, while the separate reconstruction action remains available.
 
 Relief and armed support are separate decisions and separate scripted effects.
 
@@ -257,7 +261,9 @@ The four intensities are Low, Medium, High, and Maximum.
 
 Low, Medium, and High use bounded shares of eligible normal human countries with intensity-specific target tickets, route, and force limits. Low favours minors, Medium is neutral, and High makes majors common; the ladder is centralized in `random_civil_war_scenario_target_weight` before shared crisis-load adjustment.
 
-Maximum freezes every country that passes the normal-human, topology, route-type, capacity, and opening-state preflight into one confirmation-time pool and visits every frozen row exactly once, while still excluding actual nonhuman countries. The run records preflight-selected, frozen commit-eligible, and preflight-skipped counts separately; it never replaces an unavailable plan after preparation. Countries created by an earlier launch cannot join that same scenario run.
+After a country is drawn, the scenario removes all of its remaining tickets by scanning the current pool length, so its major and load weighting applies to the initial draw without allowing it to occupy multiple country slots in one run.
+
+Maximum freezes every country that passes the normal-human, topology, route-type, individual-crisis-load, bespoke-route, and opening-state preflight into one confirmation-time pool and visits every frozen row exactly once, while still excluding actual nonhuman countries. Mandatory-front reservations are sized from that complete roster and its same-tag versus ordinary topology, plus any normal front capacity that remains; this scenario-local envelope does not change the shared normal front cap. The run records eligible, requested, preflight-selected, frozen commit-eligible, and preflight-skipped counts separately; it never replaces an unavailable plan after preparation. Countries created by an earlier launch cannot join that same scenario run.
 
 Scenario setup is immediate and uses the same reservation, connected-state, force, actor, front, settlement, and cleanup transaction as ordinary play.
 
@@ -353,15 +359,22 @@ The Event 006 independence route is gated on the existing package-complete predi
 
 The static icon handoff contains historical inherited ImageGen and Pillow fallback records for formerly missing icon states; current runtime/GFX inspection resolves all referenced states, and the records remain an asset-provenance simplification rather than character-portrait placeholders.
 
-No grounded portrait, custom GUI, animation, super-event, or 3D asset was requested or added.
+No Event 021-owned character package, custom GUI, animation, super-event, or 3D asset is introduced.
+The requested inherited Event 006 asset audit includes grounded portraits, flags, and formable assets; unresolved identity, provenance, style, wiring, and package-reachability rows are not completed assets.
+The missing KUB Ivanis full-size portrait is routed through the required portrait workflow, and a sourced placeholder cannot be certified as a styled final.
 
 No delayed scenario setup fallback was added because no measured performance failure justified it.
 
 The MCP event graph is selected-event evidence rather than a claim that every unrelated workspace helper has been fully projected. A current focus inspection and render successfully parsed and rendered all 184 Event 006 focuses with zero tree-local diagnostics at revision `55a900cb833aadee310a6c5b0f480af8cf0ea73522de74cef01f334788f351ae`; its sole warning concerns vanilla `continuous_restrict_freedom_desc` and is outside Event 021 ownership.
 
-The post-fix improvement loop is resolved in `docs/plans/021_random_civil_war_plans/post_fix_improvement_loop_closure_addendum_2026-08-31.md`: accepted P0/P1 design work is implemented, broad expansion is reject-ready, and only certification evidence remains queued. Current specialist outcomes and exact MCP blockers are reconciled in `acceptance_evidence.md`.
+The earlier improvement-loop output is dispositioned in `docs/plans/021_random_civil_war_plans/improvement_loop_disposition_2026-09-06.md`.
+The dynamic consumer repairs and the active-war Evolution I trace reopen narrow implementation review within the existing spec; broad expansion remains outside this repair.
+Historical closure wording does not prove the complete current runtime.
+Current specialist outcomes and exact MCP blockers are reconciled in `acceptance_evidence.md` and the current dynamic-ledger repair record.
 
-No live HOI4 run, save-state test, or log inspection is claimed by this repository implementation.
+The orchestrator supplied the October 3 cycle1 startup log, which the implementation owner inspected; no Event 021 match was found.
+This does not establish gameplay, save-state, cleanup, settlement, or performance acceptance.
+The implementation owner did not launch HOI4.
 
 ## Current test-entry repair record — 2026-09-19
 

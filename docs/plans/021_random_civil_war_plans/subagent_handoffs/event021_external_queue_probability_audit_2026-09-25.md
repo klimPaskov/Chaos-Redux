@@ -1,0 +1,70 @@
+# Event 021 external-successor queue probability audit
+
+Date: 2026-09-25.
+
+Disposition: incomplete probability certification; no balance claim. No gameplay source was edited by this auditor. This handoff is the only file added for this audit.
+
+## Scope and source review
+
+The audited surface is Event 021 target eligibility and the dynamic automatic/manual target pools for the accepted external-successor queue design. The user-approved design preserves only the successor-to-opponent relation, uses one human prompt per dynamic opponent with a live-valid generic goal choice or decline, and fails closed for AI successors. No fixed country list, opponent count, or country-specific goal mapping is present.
+
+The queue gate is event021_external_queue_blocks_new_crisis in common/scripted_triggers/021_random_civil_war_external_war_triggers.txt. It returns true while any of random_civil_war_external_snapshot_pending, random_civil_war_external_queue_ready, or random_civil_war_external_prompt_in_flight is set.
+
+The gate appears in random_civil_war_country_can_be_target, random_civil_war_country_can_be_scenario_target, random_civil_war_recurrence_valid, event021_parent_recurrence_window_open, event021_parent_country_is_opening_candidate, event021_parent_event6_dormant_candidate, and event021_parent_scenario_country_eligible. event021_parent_begin_target_transaction also rechecks the queue gate before opening, covering a candidate selected before a queue receipt became live.
+
+event021_external_snapshot_predecessor sets the pending receipt and calls event021_refresh_target_pool_membership. event021_external_clear_queue clears the queue receipts and calls the same refresh helper. The annex cleanup calls the receipt-only clear after its separate target-count removal, avoiding a second decrement. The queue dispatcher serializes opponents through one in-flight prompt; prompt eligibility rechecks the current relation and currently controlled core/claim states. AI paths require NOT is_ai = yes and clear the queue rather than declare a war.
+
+The target score remains the existing dynamic score from event021_random_civil_war_prepare_target: base plus pressure, authority, valid-route, stage, exposure, recent-memory, subject, and player contributions, with the existing major factor and min/max clamp. The pool helper divides by target_pool_weight_scale = 100, rounds, clamps to 1–10, applies the shared individual-crisis load ticket adjustment (4/2/1 for loads 0/1/2), and expands candidates into a ticket array before random_scope_in_array selects. This is probability-proportional ticket sampling, not an ai_will_do score race, ai_chance option roll, or MTTH timing distribution. The manual Maximum branch enumerates its frozen eligible set and is not a weighted draw.
+
+No target-score coefficient, AI score, random weight, or timing constant changed in the audited queue patch. The source-level effect is eligibility removal: event021_random_civil_war_prepare_target assigns the minimum target weight and clears random_civil_war_target_pool_candidate when the shared target gate fails; event021_refresh_target_pool_membership reconciles the country-local receipt and global candidate count. Clearing the queue can restore membership only if the country passes the current live eligibility checks.
+
+## Named scenarios and results
+
+| Scenario | Candidate/external-factor completeness | Finding and classification |
+| --- | --- | --- |
+| TGT-01 | Incomplete. No complete registered-country pool, country score bindings, route/pressure state, target reservations, or shared load-ticket state was supplied. | The patch adds no score modifier when neither candidate has a queue receipt. Relative selection and ranking remain unresolved. |
+| TGT-08 | Incomplete. No complete pool or actor/state fixture was supplied. | Source-exact predicate: random_civil_war_is_normal_human_country requires existence and excludes is_actual_nonhuman_country, so the nonhuman candidate fails before positive target scoring. MCP selection evidence remains unresolved. |
+| EXT-01 | Incomplete. The dynamic registry, candidate weights, active ticket factors, live queue array, and campaign scopes cannot be represented by the installed scenario adapter. | Source-exact eligibility direction: any live queue receipt excludes the successor from automatic, Critical-through-shared-target, recurrence, direct opening, dormant Event 006, and manual-scenario entry gates. Exact/bounded selection probability is unresolved. |
+| EXT-02 | No weighted selection surface. The live opponent and its currently controlled core/claim states are external runtime inputs. | Source-bounded human choice: decline, core, and claim options are conditionally exposed and revalidated at choice. There is no ai_chance or automatic weighted choice; live goal availability remains runtime-unverified. |
+| EXT-05 | Incomplete. Queue lifecycle state, registered candidates, scores, caps, and external crisis load are not bound. | Source-exact cleanup direction: queue clear invokes the existing refresh; if the country is still eligible, the helper restores its target receipt and updates the count once. The restored draw probability is unresolved. |
+
+For a fixed complete ticket pool, removing a queue-bearing successor removes its tickets and changes the remaining candidates’ normalized draw shares. The magnitude cannot be stated without the full pool and ticket values. No target ranking, rank reversal, starvation outside the intended queued-country exclusion, repetition rate, campaign timing, or snowball/exploit rate was measured. A stale queue receipt could leave a successor ineligible; source cleanup paths exist, but their runtime reachability and save/load behavior were not established here.
+
+## HOI4 MCP probability evidence
+
+All six refreshed custom_weighted_pool inspections returned PROBABILITY_SOURCE_INSPECTED with poolComplete=false, candidates=0, availableCandidates=0, availableAdapters=[], requiredInputs=0, and unresolved=0. The zero unresolved count is not a successful analysis: the adapter did not expose a candidate pool.
+
+| Source path | MCP sourceHash / sourceRevision | Artifact URI |
+| --- | --- | --- |
+| common/scripted_triggers/021_random_civil_war_triggers.txt | 30b2e2be0e1cc6ada9114a06bbd0fe89d3331111f0602a59590eb26d992bf11d / af0be4743e90b05bf247fff5fd3f8f860a0cf05468ecb4cfed94fd664de17f23 | hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/cbee04400b01e674397bd55f33cad66deefb0e5a87a1ba951bec8d9bb79c3de6/80344e9869494c9eb3efaf9ce1bb4d739ee36d28412ac3bd3e018ae82cfc7e61/probability-inspect-30b2e2be0e1c.json |
+| common/scripted_triggers/021_random_civil_war_parent_triggers.txt | a1fc35240590dc22cb72e49d790300f7755cef187a8e757f5cf6580b2e88c3ea / 90c8a77ad3cd9f05954885cd4770d98914b6968f382d514955bfb6e60a84bc0f | hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/5433e3a221a5390adc2122b1c0d14b1ac4b21bd4a1427bd3a3477c582d194044/db32882dbfaf68406a7c89c94bc1171099c75c3a10030c796380bfef13f97a35/probability-inspect-a1fc35240590.json |
+| common/scripted_effects/021_random_civil_war_effects.txt | b5c619a44b85f8b10e01bbfaf4288c5569545bc1d8b9781bf2795989f0767ac0 / fc9658b7e2c16d70aedd241b60d0533e9839dfc4aa0b3183862f51061fe51c8b | hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/8cb7bbc3063678a50e032096a61fce58fb2c67273355a29d48c49e9af8f00353/b5dd362e3e8d41abedb08212fe610554f2caa61376fb08264a6baef40f6a3fee/probability-inspect-b5c619a44b85.json |
+| common/scripted_effects/021_random_civil_war_parent_effects.txt | 01cc278f78215cb5dfb1849ae458d7f655081aae3ec4b277734863a57a43b6d7 / 6f49a39713d7ba64bad6f9e5e17f66ccfecc92905b270f78852b1b5ce71e313e | hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/079ee47509726e728bba8ccd761f8903543ca8614c2037447a6088f1d5f88b15/7d941ac87ddde05bd05ed15ab4e5b3d14dbc7d4bb2876f94c19847f1952cf479/probability-inspect-01cc278f7821.json |
+| common/scripted_effects/021_random_civil_war_lifecycle_effects.txt | aa7b9ecbefb80af4d2cf6bea649efc5e1d3471864462e9ce0d74d54455eea28e / 6f49a39713d7ba64bad6f9e5e17f66ccfecc92905b270f78852b1b5ce71e313e | hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/3ddf49690e43e74f36b76fcf579e2d8172494e4ad56f56c6ddd96e5304f82e17/3cfde60bf12ac90a9524844cfdc39ee290dac3ad4c611c7d9c6a7972fac4d081/probability-inspect-aa7b9ecbefb8.json |
+| common/scripted_effects/individual_crisis_targeting_effects.txt | fe7abecca820a057ef92e0a84a37fccef7341ae423578a1cfa08fcad5be27561 / 4e2585786acaa285ed3f4774f151356395ed89d0ad1b50dc851cd4fbe0c3a9f0 | hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/47ea95680496b8dca11ec69cc365e01c123977abaa9b2a9c3a04d9ef670bb016/2cc4fb5348e11368ec47cb8d828c03f604ae0e04109b6c45171e8bc767185a2d/probability-inspect-fe7abecca820.json |
+
+The current raw local SHA256 values for those six sources, in the same order, are CD50AF3C0E0871762041C2D97C97E2A14B255AF755691E7E95474B8B69A0CA3C, 97E43B7BEB01FEBE49D13E26F169FDE1EB2B751EB451250C7E35C748D24AC622, 5D483FC432023B3EB1231799BC1738933CCF5B76DB7B7879D6D3D21487BC03A3, 6EEEB131A027F1D364C5FA4116136818B079BF4FA74E16B210DEBBDCACE60816, 3F5ADDAF0C642C530BC60EE9D2C8612AF0249476581047B3B9DEE7A63B61F8F2, and 903562C1DC27BF9367E5A8AB8A807047A798FB16DE0BD8E1DF2841B6A2C40B16. MCP source hashes are normalized index hashes, not raw file hashes.
+
+Additional source-reviewed files and current raw hashes: common/scripted_triggers/021_random_civil_war_external_war_triggers.txt C15BC3F723AF73ED7BAA2D249E8DB16D11E2DC6638EF4156FD8FD3981BF58DA0; common/scripted_effects/021_random_civil_war_external_war_effects.txt 63E2F0FB367687A6A1E2A7CF0A2FF9BD88FB4EF4CFF42C604D1B8F50A289805E; events/021_random_civil_war_external_war_events.txt 74ECF5661E0795DF03F1DB1B9C278C800E8C88BC90FB7413CF633C29B34FBEF7; common/script_constants/021_random_civil_war_constants.txt 37DDEF2A1D2589B8B13F287A3781113AB6551759744A173772A2C1D9439B69AC; common/script_constants/individual_crisis_targeting_constants.txt 8B4471A8412E3A883570743E0EE17037129DCEAA889D63781AC8FC2C3529E002.
+
+The prior implementation handoff recorded INTERNAL_ERROR for direct custom-pool inspection of the core Event 021 effects and incomplete/zero-candidate results for lifecycle and parent effects. This refreshed pass returned a successful inspect envelope for those sources, but every pool remains incomplete with zero candidates.
+
+## Structural MCP evidence
+
+hoi4.event_inspect lint for chaosx.nr21_external.1 returned EVENT_INSPECTED_PARTIAL, revision f38750d657aae964fc445b75e7bd6dc5ca78a5f72ff6779d08ba080a8eaded7e, graphHash 0bc7b2ecdd292bf90391ac6caec342ef3b21516bfee286bb5fd82f5cfa352cc4, helpers=0, and zero blocking diagnostics. The workspace projection reported 2,194 diagnostics and deferred helper/lifecycle coverage. Artifact: hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/b6f377137f997e234bab775edf77bbf78c2d151bc3d023717792e6cf12bab4ff/d1442f58044a135d2d120548eb10114af59b3f691e6b47b810b941a0085b89ef/event-lint-f38750d657aa.json.
+
+hoi4.event_render options for chaosx.nr21_external.2 returned EVENT_RENDERED_PARTIAL at the same revision, selected seven nodes, omitted 42,846 nodes, and produced no blocking diagnostics; helper projections remained deferred. SVG: hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/ad82a7a591cdee75ae395ae514dfd66627ae4cf4ea24365f90ca5dae35f72849/4ce281dd5ea1ae91cdfeab079534cbfafcc14f9e1156dec3c24ef5e7ec2296b2/event-options-f38750d657aa.svg. This structural render does not establish target-pool probabilities or runtime scope behavior.
+
+## Skipped analyses and exact blockers
+
+No probability_evaluate or probability_sweep was submitted. The accepted scenario matrix gives expected relationships for TGT-01, TGT-08, EXT-01, EXT-02, and EXT-05, but not adapter-valid actor tags, complete candidate pools, Clausewitz variable bindings, scoped helper results, queue-state transitions, or external campaign factors. The installed scenarioSet contract requires actual actor strings, flat primitive state, flags, and typed scopes; making up any of these would invent a fixture. No scenarioHash or evaluation analysisId exists.
+
+No probability_compare was run. The probability_snapshots folder contains only the unrelated sponsor-resource-guard snapshot files; the September 2 target-pool baseline is a declared two-country projection, not a complete live pool or the same named queue scenario manifest. The earlier successor-grace projection is not an identical complete EXT scenario set. There is no real prepatch source path plus matching complete scenarioSet hash, so no comparison ID exists.
+
+No probability_render was run because this pass produced no evaluation analysisId to render. No probability_simulate was run because no uncertain-input distribution or seed was declared. No probability_sequence was run because the complete custom-pool manifest, cadence, queue transitions, caps, recovery/removal, and terminal state were unavailable.
+
+## Recommendation
+
+No gameplay weight or score patch is justified by this evidence. Preserve the queue gate at the listed target-entry predicates and the country-local refresh in event021_external_clear_queue. To certify selection odds, provide an adapter-valid scenario manifest containing the complete current global.random_civil_war_registered_countries roster, each candidate's target route/state and score inputs, target receipts/reservations, shared load-ticket inputs, and the explicit queue flags and transitions for the named scenarios. The relevant source path is event021_parent_prepare_random_event_fire and event021_parent_add_target_to_selection_pool in common/scripted_effects/021_random_civil_war_parent_effects.txt, with score calculation in event021_random_civil_war_prepare_target and membership reconciliation in event021_refresh_target_pool_membership. Rerun evaluate and sweeps only after those inputs are available; use compare only with a real prepatch snapshot and the identical complete named scenario manifest.
+
+Skills used: chaos-redux-subagents. No skill was changed.

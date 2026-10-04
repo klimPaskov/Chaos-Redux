@@ -104,6 +104,22 @@ The probability auditor must use the live complete candidate pools and the actua
 | REC-05 | Broken autonomy guarantee | Strong increase |
 | REC-06 | Actual nonhuman successor | Event 021 recurrence zero |
 
+## Ordinary successor external-war queue
+
+| Scenario ID | Context | Expected relationship |
+| --- | --- | --- |
+| EXT-01 | Human successor holds one or more unresolved predecessor-enemy prompts | Automatic targets, recurrence, Critical launch through the shared target gate, and manual-scenario candidates exclude that successor; its dynamic target weight is at the minimum and the live candidate count is reconciled |
+| EXT-02 | A queued opponent still has a currently controlled state matching the successor's core or claim | Only currently valid generic goal actions are shown for that opponent; declaration is revalidated at selection |
+| EXT-03 | A queued relation is restored or the opponent loses all currently valid goal states | No replacement declaration is made; the invalid row is skipped or the human declines, and the queue advances |
+| EXT-04 | Successor becomes AI-controlled before adoption completes | Queue clears without a prompt or automatic declaration |
+| EXT-05 | Adoption fails, terminal cleanup runs, the successor is annexed, or a queue receipt becomes invalid | Stale country-local queue receipts clear and the bounded target count follows the current eligibility result |
+| EXT-06 | A cluster or scenario already reserved the country before an external-war queue begins | Shared transaction and final opening-plan validation recheck the live queue receipt; no state transfer, actor commit, or stale candidate-count receipt bypasses the quarantine |
+| EXT-07 | A live cluster reservation reaches dispatch while the successor has an unresolved relation queue | The cluster launch is skipped with a continuity-pending reason, its reservation is released, the relation queue remains intact, and the candidate count is reconciled from current receipts |
+| EXT-08 | An unrelated opening transaction rolls back while the successor's continuity queue remains valid | Provisional opening receipts clear, the continuity queue survives, and candidate membership is refreshed while the live queue still blocks eligibility |
+| EXT-09 | An unrelated rollback occurs after predecessor enemies are snapshotted but before successor roster adoption finishes | The snapshot survives only while live adoption-phase and crisis receipts remain valid; after adoption, preservation requires the post-adoption queue receipt, and invalid identities clear |
+| EXT-10 | A human prompt remains unresolved through queue or terminal cleanup while a later crisis would target the same opponent, including save/load and default-close paths | One in-flight prompt slot preserves its original crisis/opponent receipt and keeps the country out of automatic, Critical, recurrence, and manual-scenario entry; dispatch cannot overwrite it, and no later queue is created until the old prompt resolves or default-closes; only then may a later live crisis queue and prompt that opponent with freshly evaluated relations and core/claim states; AI fails closed |
+| EXT-11 | A prompt-bearing successor is annexed before the player resolves its prompt, then its tag is later released | Annex cleanup removes target membership once and clears queue/snapshot receipts while preserving the in-flight prompt crisis/opponent receipt; any prompt option whose visibility was fixed before annexation revalidates current crisis, queue, opponent, relation, and territory at effect time and cannot declare from stale state; resolving the stale card releases quarantine, advances or clears the current queue from live relations, and refreshes eligibility from current state; a later crisis must pass current normal-human, capacity, cooldown, and territory checks |
+
 ## Global queue
 
 | Scenario ID | Country | Expected order |
