@@ -40,3 +40,17 @@ The amount is recorded in `cbrn_occupied_written_off_fee_total` and reported in 
 
 The occupied state pass uses `every_state` limited to receipts this donor owns and marked for recovery, so a receipt in a state the donor no longer controls is also closed.
 Basis: one player click is neither periodic nor a hook, and the alternative would strand any receipt whose state changed hands while blocked.
+
+## 4. Both containment maxima are bound in the containment scripted localisation
+
+Disposition: `implemented`.
+`GetDiseaseContainmentBoardMaximum` and `GetBlackPlagueTerminalMaximum` both live in `common/scripted_localisation/biowarfare_disease_containment_scripted_localisation.txt`, even though the royal-campaign maximum is an Event 020 constant.
+Basis: the containment localisation file is the only consumer of either maximum, the getter only reads the constant, and placing it beside its consumer avoids adding a second owner's localisation surface for one number.
+The Event 020 constant category itself is untouched.
+
+## 5. The Warfare help page teaches the loop in five named sections
+
+Disposition: `implemented`.
+`chaosx.help.body.warfare` keeps its existing Chaos Warfare, Chemical Warfare, Biological Warfare and Contamination sections and gains Authorization, Raids, Protection and Condemnation between them.
+Every number comes from source: the policy price is `cbrn_doctrine_policy_command_power_cost.policy_change` (5) and the interval is `cbrn_doctrine_timing.policy_reassessment_days` (90); the two categories are `chemical_raids` and `biological_raids` in `common/raids/categories/chaosx_raid_categories.txt`, both with `intel_source = army`; the raid requirements are the documented native source, division and target-state behaviour recorded in `common/raids/cbrn_chemical_land_raids.txt`; the Condemnation band is `condemnation_threshold.total_cap` (1000) with `cost_multiplier_maximum` (3) and the inspection burden `inspection_consumer_goods_minimum` to `_maximum` (5% to 15%) over `condemnation_duration_days.inspection` (180) days.
+Only that one key changed in the shared file; its mixed line endings were restored byte-for-byte after an editor normalised them.
