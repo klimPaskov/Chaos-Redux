@@ -437,3 +437,16 @@ Basis: lead decision (2) for round 2. The installed `documentation/` and vanilla
 No availability, cost, or AI weight changes.
 
 Disposition: implemented (source). The in-game credit check is `needs_live_game`.
+
+## D28. The consumed arms and aid corridor surcharges of Event 005 foreign aid take the sale price (addendum to D21)
+
+Decision: D21 kept the arms shipment and the aid corridor trains at their ordinary amounts because the recipient receives them. That holds for the base shipment only: the recipient receives `armaments_target_infantry_equipment` and `armaments_target_support_equipment` (equal to the base 1000 and 100) and `intelligence_trains` (equal to the base 4), while the regional and major surcharges (500 or 1000 infantry equipment, 50 or 100 support equipment, 2 or 4 trains) are consumed and never delivered.
+The six surcharges now read the price table: each `global.black_friday_price_soviet_collapse_foreign_intervention_<action>_<tier>_<resource>_extra_spend` holds the negated sale price of the surcharge, and each tier global (`..._armaments_regional_infantry_equipment`, `..._armaments_major_support_equipment`, `..._aid_corridor_regional_trains`, and the others) holds the ordinary base plus that price.
+`can_pay_soviet_collapse_foreign_armaments_cost` and `can_pay_soviet_collapse_foreign_aid_corridor_cost` compare the regional and major tiers against the tier globals with the inclusive check D21 uses, `soviet_collapse_apply_foreign_armaments_aid` and `soviet_collapse_apply_foreign_aid_corridor` pay the base constant plus the surcharge global, and the regional and major texts behind `GetSovietCollapseForeignAidArmamentsInfantryCost`, `...ArmamentsSupportCost`, and `...CorridorTrainCost` print the tier globals, so the shown, checked, and paid totals agree.
+At 100, 50, and 25 percent a regional infantry shipment costs 1500, 1250, and 1125; a major one 2000, 1500, and 1250; a regional support shipment 150, 125, and 113; a major one 200, 150, and 125; regional corridor trains 6, 5, and 5; major corridor trains 8, 6, and 5. Each surcharge rounds up with a one-unit minimum.
+A regional or major arms shipment credits the equipment family; a base-tier shipment pays only delivered goods, so it credits nothing. The aid corridor decisions already credit the convoy family.
+The volunteers and military construction surcharges already read the table from D21, so no other consumed surcharge keeps an ordinary price. `price_table_version` goes from 10 to 11.
+
+Basis: D11's transfer rule covers goods the recipient receives one for one, and the round 1 review recorded the undiscounted surcharges as a known limit. Base-tier checks keep their ordinary form, and no AI weight changes.
+
+Disposition: implemented (source). Live display, affordability, and payment for a regional and a major target during a sale are `needs_live_game`.

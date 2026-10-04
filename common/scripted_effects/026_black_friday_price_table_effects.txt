@@ -86,8 +86,9 @@ black_friday_price_table_quote = {
 # that the payment adds. A tier surcharge stores the difference between the
 # tier price and the base price, so a base payment plus its surcharge always
 # equals the tier price the affordability check required. Deliveries to another
-# country (arms shipments, aid corridor trains, Ukrainian League arms and grain
-# quotas) keep their ordinary amounts.
+# country (the base arms shipment, the base aid corridor trains, Ukrainian League
+# arms and grain quotas) keep their ordinary amounts; the consumed arms and
+# corridor-train surcharges are priced on top of the ordinary base.
 black_friday_price_table_refresh_soviet_collapse_entries = {
 	# soviet_collapse_breakaway_action
 	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_breakaway_action.coordinate_fuel }
@@ -1351,6 +1352,49 @@ black_friday_price_table_refresh_soviet_collapse_entries = {
 	black_friday_price_table_quote = yes
 	set_variable = { global.black_friday_price_soviet_collapse_uwr_balance_prisoner_intake_support_equipment = black_friday_price_payable }
 	set_variable = { global.black_friday_price_soviet_collapse_uwr_balance_prisoner_intake_support_equipment_spend = black_friday_price_spend }
+
+	# Arms shipment and aid corridor surcharges (agent decision D28). The base
+	# shipment reaches the recipient and keeps its ordinary amount; the regional
+	# or major surcharge is consumed, so it takes the sale price. Each _extra_spend
+	# global is the negated surcharge price, and each tier global is the ordinary
+	# base plus that price, which the affordability check and cost text read.
+	set_temp_variable = { black_friday_price_quantum = constant:black_friday_event.zero }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_event.zero }
+	subtract_from_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.armaments_regional_infantry_equipment_extra_spend }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_armaments_regional_infantry_equipment_extra_spend = black_friday_price_spend }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_armaments_regional_infantry_equipment = constant:soviet_collapse_foreign_intervention.armaments_infantry_equipment }
+	add_to_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_armaments_regional_infantry_equipment = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_event.zero }
+	subtract_from_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.armaments_major_infantry_equipment_extra_spend }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_armaments_major_infantry_equipment_extra_spend = black_friday_price_spend }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_armaments_major_infantry_equipment = constant:soviet_collapse_foreign_intervention.armaments_infantry_equipment }
+	add_to_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_armaments_major_infantry_equipment = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_event.zero }
+	subtract_from_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.armaments_regional_support_equipment_extra_spend }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_armaments_regional_support_equipment_extra_spend = black_friday_price_spend }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_armaments_regional_support_equipment = constant:soviet_collapse_foreign_intervention.armaments_support_equipment }
+	add_to_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_armaments_regional_support_equipment = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_event.zero }
+	subtract_from_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.armaments_major_support_equipment_extra_spend }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_armaments_major_support_equipment_extra_spend = black_friday_price_spend }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_armaments_major_support_equipment = constant:soviet_collapse_foreign_intervention.armaments_support_equipment }
+	add_to_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_armaments_major_support_equipment = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_event.zero }
+	subtract_from_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.aid_corridor_regional_train_extra_spend }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_aid_corridor_regional_train_extra_spend = black_friday_price_spend }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_aid_corridor_regional_trains = constant:soviet_collapse_foreign_intervention.aid_corridor_trains }
+	add_to_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_aid_corridor_regional_trains = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_event.zero }
+	subtract_from_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.aid_corridor_major_train_extra_spend }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_aid_corridor_major_train_extra_spend = black_friday_price_spend }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_aid_corridor_major_trains = constant:soviet_collapse_foreign_intervention.aid_corridor_trains }
+	add_to_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_aid_corridor_major_trains = black_friday_price_payable }
 }
 
 # ANY scope. Input: temp black_friday_price_ratio. Rewrites every registered
