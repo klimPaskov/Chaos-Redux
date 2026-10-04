@@ -33,6 +33,15 @@ country_event = {
 	picture = GFX_report_event_cannibalism_field_discovery
 	is_triggered_only = yes
 
+	immediate = {
+		set_temp_variable = { cannibalism_ui_new_incident = constant:cannibalism_ui_incident.discovery }
+		cannibalism_ui_record_current_country_report = yes
+		if = {
+			limit = { has_event_target = cannibalism_initial_state }
+			event_target:cannibalism_initial_state = { cannibalism_ui_record_current_state_report = yes }
+		}
+	}
+
 	option = {
 		name = chaosx.nr14.2.a
 		ai_chance = {
@@ -103,6 +112,8 @@ country_event = {
 		clear_variable = cannibalism_evolution_i_report_generation
 		clear_variable = cannibalism_evolution_i_report_due_date
 		set_country_flag = cannibalism_evolution_i_report_received
+		set_temp_variable = { cannibalism_ui_new_incident = constant:cannibalism_ui_incident.ritual }
+		cannibalism_ui_record_current_country_report = yes
 	}
 
 	option = {
@@ -166,6 +177,8 @@ country_event = {
 		clear_variable = cannibalism_evolution_ii_report_generation
 		clear_variable = cannibalism_evolution_ii_report_due_date
 		set_country_flag = cannibalism_evolution_ii_report_received
+		set_temp_variable = { cannibalism_ui_new_incident = constant:cannibalism_ui_incident.network }
+		cannibalism_ui_record_current_country_report = yes
 	}
 
 	option = {
@@ -219,6 +232,13 @@ country_event = {
 		event_target:cannibalism_warlord_new_country = {
 			exists = yes
 			is_cannibalism_warlord_country = yes
+		}
+	}
+	immediate = {
+		event_target:cannibalism_warlord_new_country = {
+			set_temp_variable = { cannibalism_ui_new_incident = constant:cannibalism_ui_incident.emergence }
+			set_temp_variable = { cannibalism_ui_new_operation = 0 }
+			cannibalism_ui_record_current_subject_incident = yes
 		}
 	}
 	option = {
@@ -279,6 +299,11 @@ country_event = {
 				}
 				set_variable = { cannibalism_warning_expected_spread_id = cannibalism_inbound_spread_id }
 				set_state_flag = cannibalism_spread_warning_event_open
+				set_temp_variable = { cannibalism_ui_new_route = cannibalism_inbound_spread_route }
+				cannibalism_ui_record_current_subject_route = yes
+				set_temp_variable = { cannibalism_ui_new_incident = constant:cannibalism_ui_incident.inbound_warning }
+				set_temp_variable = { cannibalism_ui_new_operation = 0 }
+				cannibalism_ui_record_current_subject_incident = yes
 			}
 		}
 	}
@@ -368,6 +393,15 @@ country_event = {
 		has_event_target = cannibalism_spread_target_state
 	}
 
+	immediate = {
+		set_temp_variable = { cannibalism_ui_new_incident = constant:cannibalism_ui_incident.arrival }
+		if = {
+			limit = { has_country_flag = cannibalism_external_reinfection_active }
+			set_temp_variable = { cannibalism_ui_new_incident = constant:cannibalism_ui_incident.reinfection }
+		}
+		cannibalism_ui_record_external_arrival_report = yes
+	}
+
 	option = {
 		name = chaosx.nr14.61.a
 		ai_chance = {
@@ -424,6 +458,11 @@ country_event = {
 	trigger = {
 		is_cannibalism_active_ordinary_country = yes
 		has_event_target = cannibalism_spread_target_state
+	}
+
+	immediate = {
+		set_temp_variable = { cannibalism_ui_new_incident = constant:cannibalism_ui_incident.repeat_arrival }
+		cannibalism_ui_record_external_arrival_report = yes
 	}
 
 	option = {

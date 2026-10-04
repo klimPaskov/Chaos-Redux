@@ -51,3 +51,23 @@ Validation does not fail on stale rows: a row whose source or target country has
 Only genuine corruption (misaligned arrays, duplicate IDs, illegal status or mismatched state metadata) sets the durable `cannibalism_spread_queue_invariant_failure` flag.
 
 Decision: keep the constructor preflight, which adds no blocking condition beyond the dispatcher's existing one and protects the irreversible reveal from starting on a queue that changed in between.
+
+## D5. Network dossier records are shared subject records, not per-viewer intelligence
+
+Disposition: `implemented`.
+
+Basis: audit finding E014-FINAL-02 and spec part 6 require seven fields per Network node card.
+The data API proposal (`2026-10-04_gui_data_implementation/evidence/owner_api_proposal.md`) stored every record per observer with `_@ROOT` keys, viewer epochs, reciprocal cleanup indexes and human tag-transfer rules, and left its two-human transfer case unresolved.
+The Network lists, however, are the shared global actor and node registries, visible to every viewer with the same rows; per-viewer records would leave most fields unknown for everyone except the report recipient and cannot be read by plain localisation.
+The lead allowed consolidating helpers where the required semantics hold: real writers only, unknown distinct from zero, reveal secrecy, and no whole-world iteration.
+
+Decision:
+
+- Records live on the subject STATE or COUNTRY and are read by every viewer; the viewer owns only its tab, sort, page and selection.
+- Writers are the delivered reports `.2`, `.20`, `.21`, `.30`, `.60`, `.61`, `.62`, the two route screening payments, spread containment and warning closure, and the start, result and clear effects of the six counteraction missions.
+- Certainty is derived from the stored dates: observed, stale (an incident later than the last strength measurement), partial (records but no measurement), or no reports.
+- Inbound route warnings appear as state rows while their warning is live, so a defender can see the route and its screening before arrival; the bounded spread queue is read only when the player refreshes the window.
+- Rows keep the 374x64 card art and show all seven fields on three lines; the selected dossier is a one-row native list on a dark vanilla `GFX_mini_bg` panel that adds dates and the ordering country.
+- The window keeps its centred placement through an explicit negative position instead of `origo = center`, which the production render showed clipping three quarters of the window.
+
+Implementation evidence: `docs/events/014_cannibalism/gui_data_contract.md`, the matching Event014 commit, and the MCP evidence in `subagent_handoffs/2026-10-04_network_dossier_mcp_evidence.md`.

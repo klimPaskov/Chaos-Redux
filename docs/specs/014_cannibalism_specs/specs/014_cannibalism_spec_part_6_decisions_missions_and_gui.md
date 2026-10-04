@@ -588,6 +588,11 @@ Node card information:
 
 The interface can show lines or threads between nodes as an animated decorative layer. The animation must not imply a named individual.
 
+Disposition (audit finding E014-FINAL-02): implemented.
+Acceptance basis: the parent-approved 2026-10-04 dossier composition and the delegated agent decision D5 in `docs/plans/014_cannibalism_plans/agent_decisions_2026-10-04.md` (one shared subject-scoped record model instead of per-viewer records).
+Implementation evidence: `docs/events/014_cannibalism/gui_data_contract.md`; rows and the one-row selected dossier show all seven fields from report, route, screening and mission records, with unknown values shown as text.
+In-game readability and populated-list behaviour remain for live verification.
+
 ### Cannibal command window
 
 Cannibal countries see:

@@ -106,17 +106,14 @@ scripted_gui = {
 				check_variable = { global.cannibalism_independent_node_count > constant:cannibalism_gui_value.zero }
 			}
 			cannibalism_island_alert_static_visible = { always = no }
-			cannibalism_selected_target_card_visible = {
-				OR = { has_variable = cannibalism_network_gui_selected_country has_variable = cannibalism_network_gui_selected_state }
+			cannibalism_network_detail_prompt_visible = {
+				NOT = { has_variable = cannibalism_network_gui_selected_country }
+				NOT = { has_variable = cannibalism_network_gui_selected_state }
 			}
-			cannibalism_selected_target_text_visible = {
-				OR = { has_variable = cannibalism_network_gui_selected_country has_variable = cannibalism_network_gui_selected_state }
-			}
-			cannibalism_selected_country_flag_visible = { has_variable = cannibalism_network_gui_selected_country }
-			cannibalism_selected_target_overlay_animated_visible = {
-				OR = { has_variable = cannibalism_network_gui_selected_country has_variable = cannibalism_network_gui_selected_state }
-			}
-			cannibalism_selected_target_overlay_static_visible = { always = no }
+			cannibalism_selected_country_overlay_animated_visible = { always = yes }
+			cannibalism_selected_country_overlay_static_visible = { always = no }
+			cannibalism_selected_state_overlay_animated_visible = { always = yes }
+			cannibalism_selected_state_overlay_static_visible = { always = no }
 			cannibalism_network_country_entry_select_click_enabled = { always = yes }
 			cannibalism_network_state_entry_select_click_enabled = { always = yes }
 		}
@@ -137,6 +134,21 @@ scripted_gui = {
 				change_scope = yes
 				entry_container = "cannibalism_network_state_entry"
 			}
+			cannibalism_network_selected_country_dynamic_list = {
+				array = cannibalism_network_gui_selected_country_entries
+				value = cannibalism_network_gui_dossier_country
+				index = cannibalism_network_gui_dossier_country_index
+				change_scope = yes
+				entry_container = "cannibalism_network_selected_country_detail"
+				country_scope_entry_container = "cannibalism_network_selected_country_detail"
+			}
+			cannibalism_network_selected_state_dynamic_list = {
+				array = cannibalism_network_gui_selected_state_entries
+				value = cannibalism_network_gui_dossier_state
+				index = cannibalism_network_gui_dossier_state_index
+				change_scope = yes
+				entry_container = "cannibalism_network_selected_state_detail"
+			}
 		}
 
 		properties = {
@@ -146,7 +158,7 @@ scripted_gui = {
 			cannibalism_network_tab_warlords = { image = "[GetCannibalismNetworkWarlordsTabSprite]" }
 			cannibalism_network_tab_counter = { image = "[GetCannibalismNetworkCounterTabSprite]" }
 			cannibalism_network_country_entry_flag = { image = "[This.GetFlag]" }
-			cannibalism_selected_country_flag = { image = "[?cannibalism_network_gui_selected_country.GetFlag]" }
+			cannibalism_selected_country_flag = { image = "[This.GetFlag]" }
 		}
 
 		ai_enabled = { always = no }

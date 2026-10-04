@@ -768,6 +768,62 @@ cannibalism_gui_state_matches_selected_tab = {
 	}
 }
 
+# COUNTRY scope. A country stays selectable while it is a registered actor.
+cannibalism_gui_country_is_ledger_subject = {
+	is_in_array = { array = global.cannibalism_actor_countries value = THIS }
+}
+
+# STATE scope. A state stays selectable while it is a confirmed node or the
+# target of a live inbound route warning.
+cannibalism_gui_state_is_ledger_subject = {
+	OR = {
+		has_state_flag = cannibalism_active_node
+		AND = {
+			has_state_flag = cannibalism_spread_inbound_active
+			has_variable = cannibalism_inbound_spread_id
+		}
+	}
+}
+
+# STATE or COUNTRY subject scope. Inputs: temp cannibalism_ui_actor and
+# cannibalism_ui_new_counteraction. True while that actor's order of that
+# kind is still the active order on the subject.
+cannibalism_ui_current_subject_has_actor_active_counteraction = {
+	has_variable = cannibalism_ui_counteraction
+	has_variable = cannibalism_ui_counteraction_actor
+	check_variable = { var = cannibalism_ui_counteraction value = cannibalism_ui_new_counteraction compare = equals }
+	check_variable = { cannibalism_ui_counteraction_status = constant:cannibalism_ui_action_status.active }
+	check_variable = { var = cannibalism_ui_counteraction_actor value = cannibalism_ui_actor compare = equals }
+}
+
+# Input: temp cannibalism_ui_new_action_status. Success and partial results
+# are the outcomes that measured the subject.
+cannibalism_ui_transition_measures_subject = {
+	OR = {
+		check_variable = { cannibalism_ui_new_action_status = constant:cannibalism_ui_action_status.succeeded }
+		check_variable = { cannibalism_ui_new_action_status = constant:cannibalism_ui_action_status.partial }
+	}
+}
+
+# STATE or COUNTRY subject scope. A later incident than the last strength
+# measurement makes the strength band stale.
+cannibalism_ui_current_subject_strength_is_stale = {
+	has_variable = cannibalism_ui_strength_band
+	has_variable = cannibalism_ui_strength_date
+	has_variable = cannibalism_ui_incident_date
+	check_variable = { var = cannibalism_ui_incident_date value = cannibalism_ui_strength_date compare = greater_than }
+}
+
+# STATE or COUNTRY subject scope. True when any dossier record exists.
+cannibalism_ui_current_subject_has_any_record = {
+	OR = {
+		has_variable = cannibalism_ui_strength_band
+		has_variable = cannibalism_ui_route
+		has_variable = cannibalism_ui_incident
+		has_variable = cannibalism_ui_counteraction
+	}
+}
+
 # ============================================================================
 # Consolidated source section: 014_cannibalism_integration_triggers.txt
 # ============================================================================

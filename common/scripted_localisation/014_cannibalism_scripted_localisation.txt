@@ -476,13 +476,6 @@ defined_text = {
 }
 
 defined_text = {
-	name = GetCannibalismSelectedNetworkTarget
-	text = { trigger = { has_variable = cannibalism_network_gui_selected_country } localization_key = cannibalism_gui_selected_country }
-	text = { trigger = { has_variable = cannibalism_network_gui_selected_state } localization_key = cannibalism_gui_selected_state }
-	text = { localization_key = cannibalism_gui_selected_none }
-}
-
-defined_text = {
 	name = GetCannibalismNetworkSortLabel
 	text = { trigger = { check_variable = { cannibalism_network_gui_sort = constant:cannibalism_gui_sort.newest_first } } localization_key = cannibalism_gui_sort_newest }
 	text = { localization_key = cannibalism_gui_sort_oldest }
@@ -516,4 +509,165 @@ defined_text = {
 	name = GetCannibalismNetworkCounterTabSprite
 	text = { trigger = { check_variable = { cannibalism_network_gui_tab = constant:cannibalism_gui_tab.countermeasures } } localization_key = GFX_chaosx_sort_button_100x29_2 }
 	text = { localization_key = GFX_sort_button_100x29 }
+}
+
+# ============================================================================
+# Network ledger dossier fields
+# ============================================================================
+# Every getter below runs in the scope of one Network row or of the one-row
+# selected dossier, so THIS is the subject STATE or COUNTRY. Each field reads
+# only the subject's own records; an absent record selects a distinct unknown
+# or none key and never a zero value.
+# ============================================================================
+
+defined_text = {
+	name = GetCannibalismUiStateTypeLine
+	text = { trigger = { has_state_flag = cannibalism_active_node } localization_key = cannibalism_ui_state_type_node }
+	text = { localization_key = cannibalism_ui_state_type_warning }
+}
+
+defined_text = {
+	name = GetCannibalismUiCertainty
+	text = { trigger = { cannibalism_ui_current_subject_strength_is_stale = yes } localization_key = cannibalism_ui_certainty_stale }
+	text = { trigger = { has_variable = cannibalism_ui_strength_band } localization_key = cannibalism_ui_certainty_observed }
+	text = { trigger = { cannibalism_ui_current_subject_has_any_record = yes } localization_key = cannibalism_ui_certainty_partial }
+	text = { localization_key = cannibalism_ui_certainty_absent }
+}
+
+defined_text = {
+	name = GetCannibalismUiCertaintyDetail
+	text = { trigger = { cannibalism_ui_current_subject_strength_is_stale = yes } localization_key = cannibalism_ui_certainty_detail_stale }
+	text = { trigger = { has_variable = cannibalism_ui_strength_band } localization_key = cannibalism_ui_certainty_detail_observed }
+	text = { trigger = { cannibalism_ui_current_subject_has_any_record = yes } localization_key = cannibalism_ui_certainty_detail_partial }
+	text = { localization_key = cannibalism_ui_certainty_detail_absent }
+}
+
+defined_text = {
+	name = GetCannibalismUiStrengthBand
+	text = { trigger = { has_variable = cannibalism_ui_strength_band check_variable = { cannibalism_ui_strength_band = constant:cannibalism_ui_strength_band.quiet } } localization_key = cannibalism_ui_strength_quiet }
+	text = { trigger = { has_variable = cannibalism_ui_strength_band check_variable = { cannibalism_ui_strength_band = constant:cannibalism_ui_strength_band.active } } localization_key = cannibalism_ui_strength_active }
+	text = { trigger = { has_variable = cannibalism_ui_strength_band check_variable = { cannibalism_ui_strength_band = constant:cannibalism_ui_strength_band.severe } } localization_key = cannibalism_ui_strength_severe }
+	text = { localization_key = cannibalism_ui_strength_unknown }
+}
+
+defined_text = {
+	name = GetCannibalismUiStrengthDetail
+	text = { trigger = { has_variable = cannibalism_ui_strength_band has_variable = cannibalism_ui_strength_date } localization_key = cannibalism_ui_strength_detail_known }
+	text = { localization_key = cannibalism_ui_strength_detail_unknown }
+}
+
+defined_text = {
+	name = GetCannibalismUiRouteName
+	text = { trigger = { has_variable = cannibalism_ui_route check_variable = { cannibalism_ui_route = constant:cannibalism_spread_route.retreat } } localization_key = cannibalism_ui_route_retreat }
+	text = { trigger = { has_variable = cannibalism_ui_route check_variable = { cannibalism_ui_route = constant:cannibalism_spread_route.prisoner_transfer } } localization_key = cannibalism_ui_route_prisoner_transfer }
+	text = { trigger = { has_variable = cannibalism_ui_route check_variable = { cannibalism_ui_route = constant:cannibalism_spread_route.convoy } } localization_key = cannibalism_ui_route_convoy }
+	text = { trigger = { has_variable = cannibalism_ui_route check_variable = { cannibalism_ui_route = constant:cannibalism_spread_route.volunteer_return } } localization_key = cannibalism_ui_route_volunteer_return }
+	text = { trigger = { has_variable = cannibalism_ui_route check_variable = { cannibalism_ui_route = constant:cannibalism_spread_route.occupation_turnover } } localization_key = cannibalism_ui_route_occupation_turnover }
+	text = { trigger = { has_variable = cannibalism_ui_route check_variable = { cannibalism_ui_route = constant:cannibalism_spread_route.deliberate_seed } } localization_key = cannibalism_ui_route_deliberate_seed }
+	text = { trigger = { has_variable = cannibalism_ui_route check_variable = { cannibalism_ui_route = constant:cannibalism_spread_route.conquest } } localization_key = cannibalism_ui_route_conquest }
+	text = { trigger = { has_variable = cannibalism_ui_route check_variable = { cannibalism_ui_route = constant:cannibalism_spread_route.survivor } } localization_key = cannibalism_ui_route_survivor }
+	text = { localization_key = cannibalism_ui_route_unknown }
+}
+
+defined_text = {
+	name = GetCannibalismUiRouteDetail
+	text = { trigger = { has_variable = cannibalism_ui_route has_variable = cannibalism_ui_route_date } localization_key = cannibalism_ui_route_detail_known }
+	text = { localization_key = cannibalism_ui_route_detail_unknown }
+}
+
+defined_text = {
+	name = GetCannibalismUiIncidentOperationName
+	text = { trigger = { check_variable = { cannibalism_ui_incident_operation = constant:cannibalism_ui_counteraction.investigation } } localization_key = cannibalism_ui_order_investigation }
+	text = { trigger = { check_variable = { cannibalism_ui_incident_operation = constant:cannibalism_ui_counteraction.prison } } localization_key = cannibalism_ui_order_prison }
+	text = { trigger = { check_variable = { cannibalism_ui_incident_operation = constant:cannibalism_ui_counteraction.island } } localization_key = cannibalism_ui_order_island }
+	text = { trigger = { check_variable = { cannibalism_ui_incident_operation = constant:cannibalism_ui_counteraction.break_network } } localization_key = cannibalism_ui_order_break_network }
+	text = { trigger = { check_variable = { cannibalism_ui_incident_operation = constant:cannibalism_ui_counteraction.stop_unification } } localization_key = cannibalism_ui_order_stop_unification }
+	text = { trigger = { check_variable = { cannibalism_ui_incident_operation = constant:cannibalism_ui_counteraction.stop_transformation } } localization_key = cannibalism_ui_order_stop_transformation }
+	text = { trigger = { check_variable = { cannibalism_ui_incident_operation = constant:cannibalism_ui_counteraction.humane_screening } } localization_key = cannibalism_ui_order_humane_screening }
+	text = { trigger = { check_variable = { cannibalism_ui_incident_operation = constant:cannibalism_ui_counteraction.hard_screening } } localization_key = cannibalism_ui_order_hard_screening }
+	text = { localization_key = cannibalism_ui_order_generic }
+}
+
+defined_text = {
+	name = GetCannibalismUiIncidentName
+	text = { trigger = { check_variable = { cannibalism_ui_incident = constant:cannibalism_ui_incident.discovery } } localization_key = cannibalism_ui_incident_discovery }
+	text = { trigger = { check_variable = { cannibalism_ui_incident = constant:cannibalism_ui_incident.ritual } } localization_key = cannibalism_ui_incident_ritual }
+	text = { trigger = { check_variable = { cannibalism_ui_incident = constant:cannibalism_ui_incident.network } } localization_key = cannibalism_ui_incident_network }
+	text = { trigger = { check_variable = { cannibalism_ui_incident = constant:cannibalism_ui_incident.emergence } } localization_key = cannibalism_ui_incident_emergence }
+	text = { trigger = { check_variable = { cannibalism_ui_incident = constant:cannibalism_ui_incident.inbound_warning } } localization_key = cannibalism_ui_incident_inbound_warning }
+	text = { trigger = { check_variable = { cannibalism_ui_incident = constant:cannibalism_ui_incident.arrival } } localization_key = cannibalism_ui_incident_arrival }
+	text = { trigger = { check_variable = { cannibalism_ui_incident = constant:cannibalism_ui_incident.reinfection } } localization_key = cannibalism_ui_incident_reinfection }
+	text = { trigger = { check_variable = { cannibalism_ui_incident = constant:cannibalism_ui_incident.repeat_arrival } } localization_key = cannibalism_ui_incident_repeat_arrival }
+	text = { trigger = { check_variable = { cannibalism_ui_incident = constant:cannibalism_ui_incident.route_screened } } localization_key = cannibalism_ui_incident_route_screened }
+	text = { trigger = { check_variable = { cannibalism_ui_incident = constant:cannibalism_ui_incident.route_contained } } localization_key = cannibalism_ui_incident_route_contained }
+	text = { trigger = { check_variable = { cannibalism_ui_incident = constant:cannibalism_ui_incident.operation_success } } localization_key = cannibalism_ui_incident_operation_success }
+	text = { trigger = { check_variable = { cannibalism_ui_incident = constant:cannibalism_ui_incident.operation_partial } } localization_key = cannibalism_ui_incident_operation_partial }
+	text = { localization_key = cannibalism_ui_incident_operation_failed }
+}
+
+defined_text = {
+	name = GetCannibalismUiIncidentRow
+	text = { trigger = { has_variable = cannibalism_ui_incident has_variable = cannibalism_ui_incident_date } localization_key = cannibalism_ui_incident_row_known }
+	text = { localization_key = cannibalism_ui_incident_row_none }
+}
+
+defined_text = {
+	name = GetCannibalismUiIncidentDetail
+	text = { trigger = { has_variable = cannibalism_ui_incident has_variable = cannibalism_ui_incident_date } localization_key = cannibalism_ui_incident_detail_known }
+	text = { localization_key = cannibalism_ui_incident_detail_none }
+}
+
+defined_text = {
+	name = GetCannibalismUiOrderName
+	text = { trigger = { check_variable = { cannibalism_ui_counteraction = constant:cannibalism_ui_counteraction.investigation } } localization_key = cannibalism_ui_order_investigation }
+	text = { trigger = { check_variable = { cannibalism_ui_counteraction = constant:cannibalism_ui_counteraction.prison } } localization_key = cannibalism_ui_order_prison }
+	text = { trigger = { check_variable = { cannibalism_ui_counteraction = constant:cannibalism_ui_counteraction.island } } localization_key = cannibalism_ui_order_island }
+	text = { trigger = { check_variable = { cannibalism_ui_counteraction = constant:cannibalism_ui_counteraction.break_network } } localization_key = cannibalism_ui_order_break_network }
+	text = { trigger = { check_variable = { cannibalism_ui_counteraction = constant:cannibalism_ui_counteraction.stop_unification } } localization_key = cannibalism_ui_order_stop_unification }
+	text = { trigger = { check_variable = { cannibalism_ui_counteraction = constant:cannibalism_ui_counteraction.stop_transformation } } localization_key = cannibalism_ui_order_stop_transformation }
+	text = { trigger = { check_variable = { cannibalism_ui_counteraction = constant:cannibalism_ui_counteraction.humane_screening } } localization_key = cannibalism_ui_order_humane_screening }
+	text = { trigger = { check_variable = { cannibalism_ui_counteraction = constant:cannibalism_ui_counteraction.hard_screening } } localization_key = cannibalism_ui_order_hard_screening }
+	text = { localization_key = cannibalism_ui_order_generic }
+}
+
+defined_text = {
+	name = GetCannibalismUiOrderTitle
+	text = { trigger = { check_variable = { cannibalism_ui_counteraction = constant:cannibalism_ui_counteraction.investigation } } localization_key = cannibalism_investigation_mission }
+	text = { trigger = { check_variable = { cannibalism_ui_counteraction = constant:cannibalism_ui_counteraction.prison } } localization_key = cannibalism_hold_prison_mission }
+	text = { trigger = { check_variable = { cannibalism_ui_counteraction = constant:cannibalism_ui_counteraction.island } } localization_key = cannibalism_reach_island_mission }
+	text = { trigger = { check_variable = { cannibalism_ui_counteraction = constant:cannibalism_ui_counteraction.break_network } } localization_key = cannibalism_break_network_mission }
+	text = { trigger = { check_variable = { cannibalism_ui_counteraction = constant:cannibalism_ui_counteraction.stop_unification } } localization_key = cannibalism_stop_unification_mission }
+	text = { trigger = { check_variable = { cannibalism_ui_counteraction = constant:cannibalism_ui_counteraction.stop_transformation } } localization_key = cannibalism_stop_transformation_mission }
+	text = { trigger = { check_variable = { cannibalism_ui_counteraction = constant:cannibalism_ui_counteraction.humane_screening } } localization_key = cannibalism_humane_route_screening }
+	text = { trigger = { check_variable = { cannibalism_ui_counteraction = constant:cannibalism_ui_counteraction.hard_screening } } localization_key = cannibalism_seal_inbound_route }
+	text = { localization_key = cannibalism_ui_order_generic }
+}
+
+defined_text = {
+	name = GetCannibalismUiOrderStatus
+	text = { trigger = { check_variable = { cannibalism_ui_counteraction_status = constant:cannibalism_ui_action_status.active } } localization_key = cannibalism_ui_order_status_active }
+	text = { trigger = { check_variable = { cannibalism_ui_counteraction_status = constant:cannibalism_ui_action_status.succeeded } } localization_key = cannibalism_ui_order_status_succeeded }
+	text = { trigger = { check_variable = { cannibalism_ui_counteraction_status = constant:cannibalism_ui_action_status.partial } } localization_key = cannibalism_ui_order_status_partial }
+	text = { trigger = { check_variable = { cannibalism_ui_counteraction_status = constant:cannibalism_ui_action_status.failed } } localization_key = cannibalism_ui_order_status_failed }
+	text = { localization_key = cannibalism_ui_order_status_cancelled }
+}
+
+defined_text = {
+	name = GetCannibalismUiOrderRow
+	text = { trigger = { has_variable = cannibalism_ui_counteraction has_variable = cannibalism_ui_counteraction_status } localization_key = cannibalism_ui_order_row_known }
+	text = { localization_key = cannibalism_ui_order_row_none }
+}
+
+defined_text = {
+	name = GetCannibalismUiOrderDetail
+	text = {
+		trigger = {
+			has_variable = cannibalism_ui_counteraction
+			has_variable = cannibalism_ui_counteraction_status
+			has_variable = cannibalism_ui_counteraction_actor
+			has_variable = cannibalism_ui_counteraction_date
+		}
+		localization_key = cannibalism_ui_order_detail_known
+	}
+	text = { localization_key = cannibalism_ui_order_detail_none }
 }

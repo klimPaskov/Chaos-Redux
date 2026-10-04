@@ -15,6 +15,11 @@
 @CANNIBALISM_NETWORK_HEIGHT = 620
 @CANNIBALISM_NETWORK_ENTRY_WIDTH = 374
 @CANNIBALISM_NETWORK_ENTRY_HEIGHT = 64
+@CANNIBALISM_NETWORK_LEFT = -430
+@CANNIBALISM_NETWORK_TOP = -295
+@CANNIBALISM_NETWORK_LIST_HEIGHT = 200
+@CANNIBALISM_NETWORK_DETAIL_WIDTH = 820
+@CANNIBALISM_NETWORK_DETAIL_HEIGHT = 136
 
 guiTypes = {
 	containerWindowType = {
@@ -50,9 +55,8 @@ guiTypes = {
 
 	containerWindowType = {
 		name = "cannibalism_network_window"
-		position = { x = 0 y = 15 }
+		position = { x = @CANNIBALISM_NETWORK_LEFT y = @CANNIBALISM_NETWORK_TOP }
 		orientation = center
-		origo = center
 		size = { width = @CANNIBALISM_NETWORK_WIDTH height = @CANNIBALISM_NETWORK_HEIGHT }
 		moveable = yes
 		click_to_front = yes
@@ -60,7 +64,7 @@ guiTypes = {
 
 		iconType = { name = "cannibalism_network_background" spriteType = "GFX_cannibalism_network_window_background" position = { x = 0 y = 0 } }
 		instantTextBoxType = { name = "cannibalism_network_title" position = { x = 22 y = 16 } font = "hoi_24header" text = "cannibalism.gui.network.title" format = left maxWidth = 430 maxHeight = 32 fixedsize = yes }
-		instantTextBoxType = { name = "cannibalism_network_summary" position = { x = 22 y = 46 } font = "hoi_16mbs" text = "cannibalism.gui.network.summary" format = left maxWidth = 520 maxHeight = 44 fixedsize = yes pdx_tooltip = "cannibalism.gui.network.summary.tt" }
+		instantTextBoxType = { name = "cannibalism_network_summary" position = { x = 22 y = 46 } font = "hoi_16mbs" text = "cannibalism.gui.network.summary" format = left maxWidth = 520 maxHeight = 40 fixedsize = yes pdx_tooltip = "cannibalism.gui.network.summary.tt" }
 		buttonType = { name = "cannibalism_network_close" position = { x = 720 y = 14 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_16mbs" buttonText = "cannibalism.gui.close" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "cannibalism.gui.close.tt" scale = 0.86 }
 
 		buttonType = { name = "cannibalism_network_tab_domestic" position = { x = 18 y = 88 } spriteType = "GFX_sort_button_100x29" buttonFont = "hoi_16mbs" buttonText = "cannibalism.gui.tab.domestic" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "cannibalism.gui.tab.domestic.tt" scale = 0.82 }
@@ -71,42 +75,40 @@ guiTypes = {
 		buttonType = { name = "cannibalism_network_sort" position = { x = 682 y = 88 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_16mbs" buttonText = "cannibalism.gui.sort" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "cannibalism.gui.sort.tt" scale = 0.72 }
 		buttonType = { name = "cannibalism_network_refresh" position = { x = 770 y = 90 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_16mbs" buttonText = "cannibalism.gui.refresh" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "cannibalism.gui.refresh.tt" scale = 0.58 }
 
-		iconType = { name = "cannibalism_network_threads_animated" spriteType = "GFX_cannibalism_network_threads_animated" position = { x = 18 y = 130 } }
-		iconType = { name = "cannibalism_network_threads_static" spriteType = "GFX_cannibalism_network_threads_static" position = { x = 18 y = 130 } }
-		iconType = { name = "cannibalism_island_alert_animated" spriteType = "GFX_cannibalism_island_alert_animated" position = { x = 770 y = 142 } }
-		iconType = { name = "cannibalism_island_alert_static" spriteType = "GFX_cannibalism_island_alert_static" position = { x = 770 y = 142 } }
+		iconType = { name = "cannibalism_network_threads_animated" spriteType = "GFX_cannibalism_network_threads_animated" position = { x = 18 y = 120 } }
+		iconType = { name = "cannibalism_network_threads_static" spriteType = "GFX_cannibalism_network_threads_static" position = { x = 18 y = 120 } }
+		iconType = { name = "cannibalism_island_alert_animated" spriteType = "GFX_cannibalism_island_alert_animated" position = { x = 770 y = 136 } }
+		iconType = { name = "cannibalism_island_alert_static" spriteType = "GFX_cannibalism_island_alert_static" position = { x = 770 y = 136 } }
 
-		instantTextBoxType = { name = "cannibalism_network_country_header" position = { x = 25 y = 264 } font = "hoi_18b" text = "cannibalism.gui.network.countries" format = left maxWidth = 374 maxHeight = 26 fixedsize = yes }
-		instantTextBoxType = { name = "cannibalism_network_state_header" position = { x = 438 y = 264 } font = "hoi_18b" text = "cannibalism.gui.network.states" format = left maxWidth = 374 maxHeight = 26 fixedsize = yes }
+		instantTextBoxType = { name = "cannibalism_network_country_header" position = { x = 25 y = 240 } font = "hoi_18b" text = "cannibalism.gui.network.countries" format = left maxWidth = 374 maxHeight = 22 fixedsize = yes }
+		instantTextBoxType = { name = "cannibalism_network_state_header" position = { x = 438 y = 240 } font = "hoi_18b" text = "cannibalism.gui.network.states" format = left maxWidth = 374 maxHeight = 22 fixedsize = yes }
 
 		containerWindowType = {
 			name = "cannibalism_network_country_list_panel"
-			position = { x = 18 y = 290 }
-			size = { width = 394 height = 222 }
+			position = { x = 18 y = 262 }
+			size = { width = 394 height = @CANNIBALISM_NETWORK_LIST_HEIGHT }
 			clipping = yes
-			verticalScrollbar = "right_vertical_slider_intel"
+			verticalScrollbar = "right_vertical_slider"
 			scroll_wheel_factor = 40
 			smooth_scrolling = yes
 			background = { name = "Background" quadTextureSprite = "GFX_tiled_window_transparent" }
-			gridBoxType = { name = "cannibalism_network_country_dynamic_list" position = { x = 4 y = 0 } size = { width = 374 height = 222 } slotsize = { width = @CANNIBALISM_NETWORK_ENTRY_WIDTH height = @CANNIBALISM_NETWORK_ENTRY_HEIGHT } format = "UPPER_LEFT" max_slots_horizontal = 1 }
+			gridBoxType = { name = "cannibalism_network_country_dynamic_list" position = { x = 4 y = 0 } size = { width = 374 height = @CANNIBALISM_NETWORK_LIST_HEIGHT } slotsize = { width = @CANNIBALISM_NETWORK_ENTRY_WIDTH height = @CANNIBALISM_NETWORK_ENTRY_HEIGHT } format = "UPPER_LEFT" max_slots_horizontal = 1 }
 		}
 		containerWindowType = {
 			name = "cannibalism_network_state_list_panel"
-			position = { x = 431 y = 290 }
-			size = { width = 394 height = 222 }
+			position = { x = 431 y = 262 }
+			size = { width = 394 height = @CANNIBALISM_NETWORK_LIST_HEIGHT }
 			clipping = yes
-			verticalScrollbar = "right_vertical_slider_intel"
+			verticalScrollbar = "right_vertical_slider"
 			scroll_wheel_factor = 40
 			smooth_scrolling = yes
 			background = { name = "Background" quadTextureSprite = "GFX_tiled_window_transparent" }
-			gridBoxType = { name = "cannibalism_network_state_dynamic_list" position = { x = 4 y = 0 } size = { width = 374 height = 222 } slotsize = { width = @CANNIBALISM_NETWORK_ENTRY_WIDTH height = @CANNIBALISM_NETWORK_ENTRY_HEIGHT } format = "UPPER_LEFT" max_slots_horizontal = 1 }
+			gridBoxType = { name = "cannibalism_network_state_dynamic_list" position = { x = 4 y = 0 } size = { width = 374 height = @CANNIBALISM_NETWORK_LIST_HEIGHT } slotsize = { width = @CANNIBALISM_NETWORK_ENTRY_WIDTH height = @CANNIBALISM_NETWORK_ENTRY_HEIGHT } format = "UPPER_LEFT" max_slots_horizontal = 1 }
 		}
 
-		iconType = { name = "cannibalism_selected_target_card" spriteType = "GFX_cannibalism_network_target_frame" position = { x = 243 y = 530 } }
-		iconType = { name = "cannibalism_selected_target_overlay_animated" spriteType = "GFX_cannibalism_selected_target_overlay_animated" position = { x = 243 y = 530 } }
-		iconType = { name = "cannibalism_selected_target_overlay_static" spriteType = "GFX_cannibalism_selected_target_overlay_static" position = { x = 243 y = 530 } }
-		iconType = { name = "cannibalism_selected_country_flag" quadTextureSprite = "GFX_flag_small2" position = { x = 255 y = 543 } }
-		instantTextBoxType = { name = "cannibalism_selected_target_text" position = { x = 302 y = 540 } font = "hoi_16mbs" text = "cannibalism.gui.network.selected_target" format = left maxWidth = 300 maxHeight = 45 fixedsize = yes pdx_tooltip = "cannibalism.gui.network.selected_target.tt" }
+		instantTextBoxType = { name = "cannibalism_network_detail_prompt" position = { x = 18 y = 526 } font = "hoi_16mbs" text = "cannibalism.gui.network.select_entry" format = center maxWidth = 824 maxHeight = 20 fixedsize = yes }
+		gridBoxType = { name = "cannibalism_network_selected_country_dynamic_list" position = { x = 22 y = 470 } size = { width = @CANNIBALISM_NETWORK_DETAIL_WIDTH height = @CANNIBALISM_NETWORK_DETAIL_HEIGHT } slotsize = { width = @CANNIBALISM_NETWORK_DETAIL_WIDTH height = @CANNIBALISM_NETWORK_DETAIL_HEIGHT } format = "UPPER_LEFT" max_slots_horizontal = 1 }
+		gridBoxType = { name = "cannibalism_network_selected_state_dynamic_list" position = { x = 22 y = 470 } size = { width = @CANNIBALISM_NETWORK_DETAIL_WIDTH height = @CANNIBALISM_NETWORK_DETAIL_HEIGHT } slotsize = { width = @CANNIBALISM_NETWORK_DETAIL_WIDTH height = @CANNIBALISM_NETWORK_DETAIL_HEIGHT } format = "UPPER_LEFT" max_slots_horizontal = 1 }
 	}
 
 	containerWindowType = {
@@ -115,8 +117,8 @@ guiTypes = {
 		size = { width = @CANNIBALISM_NETWORK_ENTRY_WIDTH height = @CANNIBALISM_NETWORK_ENTRY_HEIGHT }
 		background = { name = "Background" quadTextureSprite = "GFX_cannibalism_network_country_card" }
 		buttonType = { name = "cannibalism_network_country_entry_select" position = { x = 0 y = 0 } size = { x = @CANNIBALISM_NETWORK_ENTRY_WIDTH y = @CANNIBALISM_NETWORK_ENTRY_HEIGHT } quadTextureSprite = "GFX_tiled_window_transparent" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "cannibalism.gui.network.entry.select.tt" }
-		iconType = { name = "cannibalism_network_country_entry_flag" quadTextureSprite = "GFX_flag_small2" position = { x = 10 y = 12 } alwaysTransparent = yes }
-		instantTextBoxType = { name = "cannibalism_network_country_entry_text" position = { x = 58 y = 8 } font = "hoi_16mbs" text = "cannibalism.gui.network.country_entry" format = left maxWidth = 304 maxHeight = 56 fixedsize = yes alwaysTransparent = yes }
+		iconType = { name = "cannibalism_network_country_entry_flag" quadTextureSprite = "GFX_flag_small2" position = { x = 10 y = 8 } alwaysTransparent = yes }
+		instantTextBoxType = { name = "cannibalism_network_country_entry_text" position = { x = 58 y = 6 } font = "hoi_16mbs" text = "cannibalism.gui.network.country_entry" format = left maxWidth = 308 maxHeight = 54 fixedsize = yes alwaysTransparent = yes }
 	}
 
 	containerWindowType = {
@@ -125,7 +127,43 @@ guiTypes = {
 		size = { width = @CANNIBALISM_NETWORK_ENTRY_WIDTH height = @CANNIBALISM_NETWORK_ENTRY_HEIGHT }
 		background = { name = "Background" quadTextureSprite = "GFX_cannibalism_network_state_card" }
 		buttonType = { name = "cannibalism_network_state_entry_select" position = { x = 0 y = 0 } size = { x = @CANNIBALISM_NETWORK_ENTRY_WIDTH y = @CANNIBALISM_NETWORK_ENTRY_HEIGHT } quadTextureSprite = "GFX_tiled_window_transparent" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "cannibalism.gui.network.entry.select.tt" }
-		instantTextBoxType = { name = "cannibalism_network_state_entry_text" position = { x = 14 y = 8 } font = "hoi_16mbs" text = "cannibalism.gui.network.state_entry" format = left maxWidth = 346 maxHeight = 56 fixedsize = yes alwaysTransparent = yes }
+		instantTextBoxType = { name = "cannibalism_network_state_entry_text" position = { x = 14 y = 6 } font = "hoi_16mbs" text = "cannibalism.gui.network.state_entry" format = left maxWidth = 350 maxHeight = 54 fixedsize = yes alwaysTransparent = yes }
+	}
+
+	# One-row dossier for the selected country actor. Every field reads the
+	# subject's own records; the overlay marks the selected identity card.
+	containerWindowType = {
+		name = "cannibalism_network_selected_country_detail"
+		position = { x = 0 y = 0 }
+		size = { width = @CANNIBALISM_NETWORK_DETAIL_WIDTH height = @CANNIBALISM_NETWORK_DETAIL_HEIGHT }
+		background = { name = "Background" quadTextureSprite = "GFX_mini_bg" }
+		iconType = { name = "cannibalism_selected_country_card" spriteType = "GFX_cannibalism_network_target_frame" position = { x = 0 y = 0 } }
+		iconType = { name = "cannibalism_selected_country_overlay_animated" spriteType = "GFX_cannibalism_selected_target_overlay_animated" position = { x = 0 y = 0 } }
+		iconType = { name = "cannibalism_selected_country_overlay_static" spriteType = "GFX_cannibalism_selected_target_overlay_static" position = { x = 0 y = 0 } }
+		iconType = { name = "cannibalism_selected_country_flag" quadTextureSprite = "GFX_flag_small2" position = { x = 62 y = 12 } }
+		instantTextBoxType = { name = "cannibalism_selected_country_identity" position = { x = 108 y = 14 } font = "hoi_16mbs" text = "cannibalism.gui.network.detail_country_identity" format = left maxWidth = 196 maxHeight = 36 fixedsize = yes pdx_tooltip = "cannibalism.gui.network.selected_target.tt" }
+		instantTextBoxType = { name = "cannibalism_selected_country_strength" position = { x = 4 y = 72 } font = "hoi_16mbs" text = "cannibalism.gui.network.strength_band" format = left maxWidth = 370 maxHeight = 18 fixedsize = yes }
+		instantTextBoxType = { name = "cannibalism_selected_country_uncertainty" position = { x = 4 y = 92 } font = "hoi_16mbs" text = "cannibalism.gui.network.uncertainty" format = left maxWidth = 370 maxHeight = 36 fixedsize = yes pdx_tooltip = "cannibalism.gui.network.uncertainty.tt" }
+		instantTextBoxType = { name = "cannibalism_selected_country_route" position = { x = 392 y = 4 } font = "hoi_16mbs" text = "cannibalism.gui.network.known_route" format = left maxWidth = 426 maxHeight = 18 fixedsize = yes }
+		instantTextBoxType = { name = "cannibalism_selected_country_incident" position = { x = 392 y = 28 } font = "hoi_16mbs" text = "cannibalism.gui.network.last_incident" format = left maxWidth = 426 maxHeight = 36 fixedsize = yes }
+		instantTextBoxType = { name = "cannibalism_selected_country_order" position = { x = 392 y = 70 } font = "hoi_16mbs" text = "cannibalism.gui.network.counteraction" format = left maxWidth = 426 maxHeight = 54 fixedsize = yes pdx_tooltip = "cannibalism.gui.network.counteraction.tt" }
+	}
+
+	# One-row dossier for the selected state node or inbound route warning.
+	containerWindowType = {
+		name = "cannibalism_network_selected_state_detail"
+		position = { x = 0 y = 0 }
+		size = { width = @CANNIBALISM_NETWORK_DETAIL_WIDTH height = @CANNIBALISM_NETWORK_DETAIL_HEIGHT }
+		background = { name = "Background" quadTextureSprite = "GFX_mini_bg" }
+		iconType = { name = "cannibalism_selected_state_card" spriteType = "GFX_cannibalism_network_target_frame" position = { x = 0 y = 0 } }
+		iconType = { name = "cannibalism_selected_state_overlay_animated" spriteType = "GFX_cannibalism_selected_target_overlay_animated" position = { x = 0 y = 0 } }
+		iconType = { name = "cannibalism_selected_state_overlay_static" spriteType = "GFX_cannibalism_selected_target_overlay_static" position = { x = 0 y = 0 } }
+		instantTextBoxType = { name = "cannibalism_selected_state_identity" position = { x = 62 y = 14 } font = "hoi_16mbs" text = "cannibalism.gui.network.detail_state_identity" format = left maxWidth = 242 maxHeight = 36 fixedsize = yes pdx_tooltip = "cannibalism.gui.network.selected_target.tt" }
+		instantTextBoxType = { name = "cannibalism_selected_state_strength" position = { x = 4 y = 72 } font = "hoi_16mbs" text = "cannibalism.gui.network.strength_band" format = left maxWidth = 370 maxHeight = 18 fixedsize = yes }
+		instantTextBoxType = { name = "cannibalism_selected_state_uncertainty" position = { x = 4 y = 92 } font = "hoi_16mbs" text = "cannibalism.gui.network.uncertainty" format = left maxWidth = 370 maxHeight = 36 fixedsize = yes pdx_tooltip = "cannibalism.gui.network.uncertainty.tt" }
+		instantTextBoxType = { name = "cannibalism_selected_state_route" position = { x = 392 y = 4 } font = "hoi_16mbs" text = "cannibalism.gui.network.known_route" format = left maxWidth = 426 maxHeight = 18 fixedsize = yes }
+		instantTextBoxType = { name = "cannibalism_selected_state_incident" position = { x = 392 y = 28 } font = "hoi_16mbs" text = "cannibalism.gui.network.last_incident" format = left maxWidth = 426 maxHeight = 36 fixedsize = yes }
+		instantTextBoxType = { name = "cannibalism_selected_state_order" position = { x = 392 y = 70 } font = "hoi_16mbs" text = "cannibalism.gui.network.counteraction" format = left maxWidth = 426 maxHeight = 54 fixedsize = yes pdx_tooltip = "cannibalism.gui.network.counteraction.tt" }
 	}
 
 	containerWindowType = {

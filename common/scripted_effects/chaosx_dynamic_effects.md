@@ -463,4 +463,6 @@ The private Event 012 [unique tribute contract ledger](012_africa_gods_contract_
 
 The Event014 owner API [Larder logistics](../../docs/events/014_cannibalism/larder_logistics.md) documents country effective-capacity calculation, post-transaction clamp/publication, caller-owned exact distance quotes from frozen regular capital targets, one-shot dispatch/receipt commit, opening inheritance, generation guards, cleanup and the fifty-flag administrative development mapping.
 
+The Event014 owner API [Network ledger dossier records](../../docs/events/014_cannibalism/gui_data_contract.md) documents the STATE/COUNTRY subject records (`cannibalism_ui_*`), their writers in reports, route screening and the six counteraction missions, caller-set temporary inputs, certainty rules, cleanup on node and actor retirement, and the row and dossier getters.
+
 The private Event 012 [Gods original-owner recovery](012_africa_gods_recovery_effects.md) and [live epoch bindings](012_africa_gods_epoch_binding_effects.md) document exact host/consent proof, initial grant and revocation, current-due wake handling and bounded repair, native loss cleanup, historical report preservation, caller inputs, defaults, side effects, and boolean-helper usage.
