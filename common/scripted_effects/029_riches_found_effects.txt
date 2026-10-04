@@ -895,6 +895,10 @@ riches_found_refresh_mine_contribution = {
 			multiply_variable = { riches_found_mine_contribution_score = constant:riches_found_exposure.deep_output_loss_factor }
 		}
 		if = {
+			limit = { has_state_flag = riches_found_mine_damaged }
+			multiply_variable = { riches_found_mine_contribution_score = constant:riches_found_closure.damaged_output_factor }
+		}
+		if = {
 			limit = { is_owned_and_controlled_by = OWNER }
 			set_variable = { riches_found_control_factor = constant:riches_found_scaling.control_owned }
 		}
@@ -2021,7 +2025,21 @@ riches_found_recount_active_mission_slots = {
 riches_found_handle_occupation_change = {
 	if = {
 		limit = { riches_found_mine_is_occupied = yes }
-		if = { limit = { NOT = { has_state_flag = riches_found_occupation_active } } set_state_flag = riches_found_occupation_active set_variable = { riches_found_occupation_start_date = global.date } }
+		if = {
+			limit = { NOT = { has_state_flag = riches_found_occupation_active } }
+			set_state_flag = riches_found_occupation_active
+			set_variable = { riches_found_occupation_start_date = global.date }
+			riches_found_clear_occupation_choices = yes
+		}
+		else_if = {
+			# A different occupier starts its own occupation with every choice open.
+			limit = {
+				has_variable = riches_found_occupation_controller
+				check_variable = { var = riches_found_occupation_controller value = CONTROLLER compare = not_equals }
+			}
+			set_variable = { riches_found_occupation_start_date = global.date }
+			riches_found_clear_occupation_choices = yes
+		}
 		set_variable = { riches_found_occupation_controller = CONTROLLER }
 	}
 	else = {
@@ -2029,13 +2047,28 @@ riches_found_handle_occupation_change = {
 	}
 }
 
-# STATE scope. Clears occupation pointers while leaving public order and
-# legitimacy for the parent event's recovery choice.
+# STATE scope. Clears occupation pointers and the occupier's administrative
+# choices while leaving public order, legitimacy and physical damage for the
+# returning controller. Stripping and denial persist as development loss and
+# damage that the restoration route repairs.
 riches_found_clear_occupation_state = {
 	if = { limit = { has_state_flag = riches_found_occupation_active } set_variable = { riches_found_last_occupation_end_date = global.date } }
 	clr_state_flag = riches_found_occupation_active
 	clear_variable = riches_found_occupation_controller
 	clear_variable = riches_found_occupation_start_date
+	riches_found_clear_occupation_choices = yes
+}
+
+# STATE scope. The per-occupation choice flags. Each occupation offers its
+# full set of occupation actions again.
+riches_found_clear_occupation_choices = {
+	clr_state_flag = riches_found_occupation_reopened
+	clr_state_flag = riches_found_occupation_output_requisitioned
+	clr_state_flag = riches_found_occupation_admin_retained
+	clr_state_flag = riches_found_occupation_concession_replaced
+	clr_state_flag = riches_found_occupation_revenue_shared
+	clr_state_flag = riches_found_occupation_stripped
+	clr_state_flag = riches_found_occupation_denial
 }
 
 # STATE scope. Clears temporary/partial closure state only. Permanent seal and

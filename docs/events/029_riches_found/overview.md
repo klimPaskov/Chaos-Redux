@@ -64,6 +64,11 @@ Renewal, expiry, publication, audit, nationalization, buyout, and payment integr
 
 The security and crisis layer includes mine police, private guards, army cordons, pay-route protection, raid responses, occupation administration, transfer settlements, temporary closure, repair, collapse response, restoration, permanent sealing, and cleanup. Mission sequence and cooldown proofs prevent repeated completions from farming counters, benefits, or achievement progress. Permanent historical disqualifiers are not cleared by ordinary mission cleanup.
 
+### Occupation and recapture
+
+Occupation choices belong to one occupation: `riches_found_clear_occupation_choices` clears them when the occupation ends or a different occupier takes over.
+Stripping and denial leave lasting damage, a damaged mine produces `riches_found_closure.damaged_output_factor` of its output, and the header shows a repair objective until Restore the Shaft completes.
+
 ### Closure, collapse, and recovery
 
 Every closing action (Temporary Closure, the Gold Disease closure, and an occupier's Deny the Mine) runs `riches_found_begin_temporary_closure`, so the closure state, operating state, phase, review date, and suspended contract persist across presentation refreshes.

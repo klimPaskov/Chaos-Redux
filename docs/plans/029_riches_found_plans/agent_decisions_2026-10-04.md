@@ -96,3 +96,9 @@ The 15 staged transactions that had no guard (rail spur, port route, claim regis
 Repair and the district evacuation received their own guards in D5 and D6.
 Missions started by these decisions are already cancelled by the control-change, sealing, exhaustion and collapse cleanups, and those cancellations refund nothing, so a refund cannot be paid twice.
 The account and Drive Deeper decisions keep their stricter receipt guards, which already require the original payer and a nonterminal or active mine.
+
+## D10. Occupation choices reset per occupation; recapture keeps the damage
+
+The seven occupation choice flags (reopened, output requisitioned, administration retained, concession replaced, revenue shared, stripped, denied) are cleared when an occupation ends and when a different occupier takes over, so every occupier sees the full occupation set.
+Stripping and denial leave persistent damage (and denial a temporary closure), recorded with history flags; the returning controller repairs them through Repair and Restore the Shaft.
+A damaged mine contributes `riches_found_closure.damaged_output_factor` of its normal output, so the recapture contribution follows the current damage, and the category header shows a repair objective while damage remains.
