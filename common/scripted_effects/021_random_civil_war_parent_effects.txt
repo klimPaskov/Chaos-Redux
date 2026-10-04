@@ -3738,6 +3738,8 @@ event021_parent_initialize_secondary_opposition_actor = {
 	save_event_target_as = random_civil_war_secondary_actor_scope_target
 	set_variable = { random_civil_war_front_id = global.random_civil_war_pending_secondary_front_id }
 	event021_parent_copy_opening_state_receipts = yes
+	# The span copy's result is created here so it survives the copy's return.
+	set_temp_variable = { event021_planned_state_span_found = constant:random_civil_war_value.zero }
 	event021_parent_copy_planned_front_state_span = yes
 	if = {
 		limit = {
@@ -5079,61 +5081,75 @@ event021_parent_clear_event6_package_transaction = {
 # COUNTRY scope. Saves the host's own Event 006 package receipt across a
 # secondary-package lookup/adapter transaction. Event 021 may target a human
 # Event 006 country, so candidate scratch must never overwrite that country's
-# identity, anchor, region, depth, archetype, or opening receipt.
+# identity, anchor, region, depth, archetype, or opening receipt. The copy is
+# kept in normal variables and flags on the host, not temporaries, so it
+# survives this helper's return; the restore helper reads and clears it.
 event021_parent_save_event6_host_identity = {
-	set_temp_variable = { event021_host_event6_had_package_id = constant:random_civil_war_value.zero }
-	set_temp_variable = { event021_host_event6_had_anchor = constant:random_civil_war_value.zero }
-	set_temp_variable = { event021_host_event6_had_region = constant:random_civil_war_value.zero }
-	set_temp_variable = { event021_host_event6_had_depth = constant:random_civil_war_value.zero }
-	set_temp_variable = { event021_host_event6_had_archetype = constant:random_civil_war_value.zero }
-	set_temp_variable = { event021_host_event6_had_opening_count = constant:random_civil_war_value.zero }
-	set_temp_variable = { event021_host_event6_had_previous_generation = constant:random_civil_war_value.zero }
-	set_temp_variable = { event021_host_event6_had_dormant_flag = constant:random_civil_war_value.zero }
-	set_temp_variable = { event021_host_event6_had_actor_valid_flag = constant:random_civil_war_value.zero }
-	set_temp_variable = { event021_host_event6_had_anchor_valid_flag = constant:random_civil_war_value.zero }
-	set_temp_variable = { event021_host_event6_had_previous_capital_flag = constant:random_civil_war_value.zero }
-	set_temp_variable = { event021_host_event6_had_secondary_plan_flag = constant:random_civil_war_value.zero }
-	if = { limit = { has_variable = random_civil_war_event6_package_id } set_temp_variable = { event021_host_event6_had_package_id = constant:random_civil_war_value.one } set_temp_variable = { event021_host_event6_package_id = random_civil_war_event6_package_id } }
-	if = { limit = { has_variable = random_civil_war_event6_anchor_state } set_temp_variable = { event021_host_event6_had_anchor = constant:random_civil_war_value.one } set_temp_variable = { event021_host_event6_anchor = random_civil_war_event6_anchor_state } }
-	if = { limit = { has_variable = random_civil_war_event6_candidate_region } set_temp_variable = { event021_host_event6_had_region = constant:random_civil_war_value.one } set_temp_variable = { event021_host_event6_region = random_civil_war_event6_candidate_region } }
-	if = { limit = { has_variable = random_civil_war_event6_candidate_depth } set_temp_variable = { event021_host_event6_had_depth = constant:random_civil_war_value.one } set_temp_variable = { event021_host_event6_depth = random_civil_war_event6_candidate_depth } }
-	if = { limit = { has_variable = random_civil_war_event6_candidate_archetype } set_temp_variable = { event021_host_event6_had_archetype = constant:random_civil_war_value.one } set_temp_variable = { event021_host_event6_archetype = random_civil_war_event6_candidate_archetype } }
-	if = { limit = { has_variable = random_civil_war_event6_opening_state_count } set_temp_variable = { event021_host_event6_had_opening_count = constant:random_civil_war_value.one } set_temp_variable = { event021_host_event6_opening_count = random_civil_war_event6_opening_state_count } }
-	if = { limit = { has_variable = random_civil_war_event6_previous_generation } set_temp_variable = { event021_host_event6_had_previous_generation = constant:random_civil_war_value.one } set_temp_variable = { event021_host_event6_previous_generation = random_civil_war_event6_previous_generation } }
-	if = { limit = { has_country_flag = random_civil_war_event6_dormant_route_ready } set_temp_variable = { event021_host_event6_had_dormant_flag = constant:random_civil_war_value.one } }
-	if = { limit = { has_country_flag = random_civil_war_event6_selected_actor_valid } set_temp_variable = { event021_host_event6_had_actor_valid_flag = constant:random_civil_war_value.one } }
-	if = { limit = { has_country_flag = random_civil_war_event6_selected_anchor_valid } set_temp_variable = { event021_host_event6_had_anchor_valid_flag = constant:random_civil_war_value.one } }
-	if = { limit = { has_country_flag = random_civil_war_event6_previous_capital_saved } set_temp_variable = { event021_host_event6_had_previous_capital_flag = constant:random_civil_war_value.one } }
-	if = { limit = { has_country_flag = random_civil_war_event6_secondary_plan_frozen } set_temp_variable = { event021_host_event6_had_secondary_plan_flag = constant:random_civil_war_value.one } }
+	event021_parent_clear_saved_event6_host_identity = yes
+	if = { limit = { has_variable = random_civil_war_event6_package_id } set_variable = { random_civil_war_event6_saved_package_id = random_civil_war_event6_package_id } }
+	if = { limit = { has_variable = random_civil_war_event6_anchor_state } set_variable = { random_civil_war_event6_saved_anchor_state = random_civil_war_event6_anchor_state } }
+	if = { limit = { has_variable = random_civil_war_event6_candidate_region } set_variable = { random_civil_war_event6_saved_candidate_region = random_civil_war_event6_candidate_region } }
+	if = { limit = { has_variable = random_civil_war_event6_candidate_depth } set_variable = { random_civil_war_event6_saved_candidate_depth = random_civil_war_event6_candidate_depth } }
+	if = { limit = { has_variable = random_civil_war_event6_candidate_archetype } set_variable = { random_civil_war_event6_saved_candidate_archetype = random_civil_war_event6_candidate_archetype } }
+	if = { limit = { has_variable = random_civil_war_event6_opening_state_count } set_variable = { random_civil_war_event6_saved_opening_state_count = random_civil_war_event6_opening_state_count } }
+	if = { limit = { has_variable = random_civil_war_event6_previous_generation } set_variable = { random_civil_war_event6_saved_previous_generation = random_civil_war_event6_previous_generation } }
+	if = { limit = { has_country_flag = random_civil_war_event6_dormant_route_ready } set_country_flag = random_civil_war_event6_saved_dormant_route_ready }
+	if = { limit = { has_country_flag = random_civil_war_event6_selected_actor_valid } set_country_flag = random_civil_war_event6_saved_selected_actor_valid }
+	if = { limit = { has_country_flag = random_civil_war_event6_selected_anchor_valid } set_country_flag = random_civil_war_event6_saved_selected_anchor_valid }
+	if = { limit = { has_country_flag = random_civil_war_event6_previous_capital_saved } set_country_flag = random_civil_war_event6_saved_previous_capital_saved }
+	if = { limit = { has_country_flag = random_civil_war_event6_secondary_plan_frozen } set_country_flag = random_civil_war_event6_saved_secondary_plan_frozen }
+	set_country_flag = random_civil_war_event6_identity_saved
 }
 
 # COUNTRY scope. Restores only pre-existing host identity fields after the
-# Event 021-owned package-selection scratch has been cleared.
+# Event 021-owned package-selection scratch has been cleared, then drops the
+# saved copy. Without a saved copy on this country it changes nothing.
 event021_parent_restore_event6_host_identity = {
-	if = { limit = { check_variable = { var = event021_host_event6_had_package_id value = constant:random_civil_war_value.one compare = equals } } set_variable = { random_civil_war_event6_package_id = event021_host_event6_package_id } }
-	else = { clear_variable = random_civil_war_event6_package_id }
-	if = { limit = { check_variable = { var = event021_host_event6_had_anchor value = constant:random_civil_war_value.one compare = equals } } set_variable = { random_civil_war_event6_anchor_state = event021_host_event6_anchor } }
-	else = { clear_variable = random_civil_war_event6_anchor_state }
-	if = { limit = { check_variable = { var = event021_host_event6_had_region value = constant:random_civil_war_value.one compare = equals } } set_variable = { random_civil_war_event6_candidate_region = event021_host_event6_region } }
-	else = { clear_variable = random_civil_war_event6_candidate_region }
-	if = { limit = { check_variable = { var = event021_host_event6_had_depth value = constant:random_civil_war_value.one compare = equals } } set_variable = { random_civil_war_event6_candidate_depth = event021_host_event6_depth } }
-	else = { clear_variable = random_civil_war_event6_candidate_depth }
-	if = { limit = { check_variable = { var = event021_host_event6_had_archetype value = constant:random_civil_war_value.one compare = equals } } set_variable = { random_civil_war_event6_candidate_archetype = event021_host_event6_archetype } }
-	else = { clear_variable = random_civil_war_event6_candidate_archetype }
-	if = { limit = { check_variable = { var = event021_host_event6_had_opening_count value = constant:random_civil_war_value.one compare = equals } } set_variable = { random_civil_war_event6_opening_state_count = event021_host_event6_opening_count } }
-	else = { clear_variable = random_civil_war_event6_opening_state_count }
-	if = { limit = { check_variable = { var = event021_host_event6_had_previous_generation value = constant:random_civil_war_value.one compare = equals } } set_variable = { random_civil_war_event6_previous_generation = event021_host_event6_previous_generation } }
-	else = { clear_variable = random_civil_war_event6_previous_generation }
-	if = { limit = { check_variable = { var = event021_host_event6_had_dormant_flag value = constant:random_civil_war_value.one compare = equals } } set_country_flag = random_civil_war_event6_dormant_route_ready }
-	else = { clr_country_flag = random_civil_war_event6_dormant_route_ready }
-	if = { limit = { check_variable = { var = event021_host_event6_had_actor_valid_flag value = constant:random_civil_war_value.one compare = equals } } set_country_flag = random_civil_war_event6_selected_actor_valid }
-	else = { clr_country_flag = random_civil_war_event6_selected_actor_valid }
-	if = { limit = { check_variable = { var = event021_host_event6_had_anchor_valid_flag value = constant:random_civil_war_value.one compare = equals } } set_country_flag = random_civil_war_event6_selected_anchor_valid }
-	else = { clr_country_flag = random_civil_war_event6_selected_anchor_valid }
-	if = { limit = { check_variable = { var = event021_host_event6_had_previous_capital_flag value = constant:random_civil_war_value.one compare = equals } } set_country_flag = random_civil_war_event6_previous_capital_saved }
-	else = { clr_country_flag = random_civil_war_event6_previous_capital_saved }
-	if = { limit = { check_variable = { var = event021_host_event6_had_secondary_plan_flag value = constant:random_civil_war_value.one compare = equals } } set_country_flag = random_civil_war_event6_secondary_plan_frozen }
-	else = { clr_country_flag = random_civil_war_event6_secondary_plan_frozen }
+	if = {
+		limit = { has_country_flag = random_civil_war_event6_identity_saved }
+		if = { limit = { has_variable = random_civil_war_event6_saved_package_id } set_variable = { random_civil_war_event6_package_id = random_civil_war_event6_saved_package_id } }
+		else = { clear_variable = random_civil_war_event6_package_id }
+		if = { limit = { has_variable = random_civil_war_event6_saved_anchor_state } set_variable = { random_civil_war_event6_anchor_state = random_civil_war_event6_saved_anchor_state } }
+		else = { clear_variable = random_civil_war_event6_anchor_state }
+		if = { limit = { has_variable = random_civil_war_event6_saved_candidate_region } set_variable = { random_civil_war_event6_candidate_region = random_civil_war_event6_saved_candidate_region } }
+		else = { clear_variable = random_civil_war_event6_candidate_region }
+		if = { limit = { has_variable = random_civil_war_event6_saved_candidate_depth } set_variable = { random_civil_war_event6_candidate_depth = random_civil_war_event6_saved_candidate_depth } }
+		else = { clear_variable = random_civil_war_event6_candidate_depth }
+		if = { limit = { has_variable = random_civil_war_event6_saved_candidate_archetype } set_variable = { random_civil_war_event6_candidate_archetype = random_civil_war_event6_saved_candidate_archetype } }
+		else = { clear_variable = random_civil_war_event6_candidate_archetype }
+		if = { limit = { has_variable = random_civil_war_event6_saved_opening_state_count } set_variable = { random_civil_war_event6_opening_state_count = random_civil_war_event6_saved_opening_state_count } }
+		else = { clear_variable = random_civil_war_event6_opening_state_count }
+		if = { limit = { has_variable = random_civil_war_event6_saved_previous_generation } set_variable = { random_civil_war_event6_previous_generation = random_civil_war_event6_saved_previous_generation } }
+		else = { clear_variable = random_civil_war_event6_previous_generation }
+		if = { limit = { has_country_flag = random_civil_war_event6_saved_dormant_route_ready } set_country_flag = random_civil_war_event6_dormant_route_ready }
+		else = { clr_country_flag = random_civil_war_event6_dormant_route_ready }
+		if = { limit = { has_country_flag = random_civil_war_event6_saved_selected_actor_valid } set_country_flag = random_civil_war_event6_selected_actor_valid }
+		else = { clr_country_flag = random_civil_war_event6_selected_actor_valid }
+		if = { limit = { has_country_flag = random_civil_war_event6_saved_selected_anchor_valid } set_country_flag = random_civil_war_event6_selected_anchor_valid }
+		else = { clr_country_flag = random_civil_war_event6_selected_anchor_valid }
+		if = { limit = { has_country_flag = random_civil_war_event6_saved_previous_capital_saved } set_country_flag = random_civil_war_event6_previous_capital_saved }
+		else = { clr_country_flag = random_civil_war_event6_previous_capital_saved }
+		if = { limit = { has_country_flag = random_civil_war_event6_saved_secondary_plan_frozen } set_country_flag = random_civil_war_event6_secondary_plan_frozen }
+		else = { clr_country_flag = random_civil_war_event6_secondary_plan_frozen }
+		event021_parent_clear_saved_event6_host_identity = yes
+	}
+}
+
+# COUNTRY scope. Drops the saved host identity copy.
+event021_parent_clear_saved_event6_host_identity = {
+	clear_variable = random_civil_war_event6_saved_package_id
+	clear_variable = random_civil_war_event6_saved_anchor_state
+	clear_variable = random_civil_war_event6_saved_candidate_region
+	clear_variable = random_civil_war_event6_saved_candidate_depth
+	clear_variable = random_civil_war_event6_saved_candidate_archetype
+	clear_variable = random_civil_war_event6_saved_opening_state_count
+	clear_variable = random_civil_war_event6_saved_previous_generation
+	clr_country_flag = random_civil_war_event6_saved_dormant_route_ready
+	clr_country_flag = random_civil_war_event6_saved_selected_actor_valid
+	clr_country_flag = random_civil_war_event6_saved_selected_anchor_valid
+	clr_country_flag = random_civil_war_event6_saved_previous_capital_saved
+	clr_country_flag = random_civil_war_event6_saved_secondary_plan_frozen
+	clr_country_flag = random_civil_war_event6_identity_saved
 }
 
 # Compatibility name retained for the additional-front rollback paths.

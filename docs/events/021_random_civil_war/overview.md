@@ -193,7 +193,7 @@ The category shows one State Authority value, the current authority band, curren
 
 The opening view uses Secure the Arsenals, Defend the Capital, and Review Command Loyalty, with Seize an Opposition Depot atomically bound to an owned and controlled opening-front state containing a supply node or military factory.
 
-The multi-front view uses Review Command Loyalty, Integrate Loyal Formations, and Set the Priority Front.
+The multi-front view, and the Evolution I management phase of a war that gained no new side, uses Review Command Loyalty, Integrate Loyal Formations, and Set the Priority Front, and keeps Defend the Capital until it is used or the capital hold ends, because Hold the Capital stays on offer there and needs that defense.
 
 The exposure view separates Open a Relief Corridor from armed Support the Government or Support the Opposition and also provides border monitoring or mediation according to the live target.
 
@@ -205,7 +205,7 @@ The decision package therefore exposes three to five phase-appropriate actions a
 
 Multi-front countries can rotate the registered priority-front state, while reconstruction repairs the selected rail-spine infrastructure and prevention reuses the communications, loyalty, and regional-administration actions.
 
-The three mission families are Hold the Capital, Secure the Rail Spine, and Enforce Settlement Terms.
+The three mission families are Hold the Capital, Secure the Rail Spine, and Hold the Settlement Terms.
 
 Selecting a mission commits the country to the hold: the selectable card closes and a separate non-selectable mission (Holding the Capital, Securing the Rail Spine, or Upholding the Settlement) shows the countdown and cannot finish early. Selecting a capital or rail mission binds its target state. Event-driven state-control changes fail the objective if control is lost, and the deadline resolver checks the same target plus its supply, infrastructure, defense, or settlement requirements. A failed rail mission cannot restart during that crisis, while the separate reconstruction action remains available.
 

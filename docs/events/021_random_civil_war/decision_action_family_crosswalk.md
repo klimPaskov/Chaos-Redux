@@ -7,7 +7,7 @@ The mapping is an implementation disposition, not a claim that every family has 
 | Spec family | Current surface | Implementation disposition |
 | --- | --- | --- |
 | Secure the arsenals | `event021_secure_arsenals` | Direct opening decision with equipment, trains, command power, authority, pressure, and same-tag leverage effects. |
-| Establish a capital defense command | `event021_defend_capital` | Direct opening decision with manpower, infantry equipment, command power, capital defense state, and authority effects. |
+| Establish a capital defense command | `event021_defend_capital` | Direct decision with manpower, infantry equipment, command power, capital defense state, and authority effects; offered in the opening phase and, until used or until the capital hold ends, in the front-management phase, because Hold the Capital requires its defense. |
 | Restore the rail spine | `event021_secure_rail_spine_mission`, `event021_reconstruct_administration` | The mission holds a stored opening-front rail state and reconstruction repairs the same bounded state; no second rail action is exposed in the same phase. |
 | Conduct a bounded loyalty review | `event021_review_loyalty` | Direct decision with a hardliner failure branch and authority/pressure consequences. |
 | Integrate loyal formations | `event021_integrate_formations` | Direct active-front decision that advances integration progress and removes fractured-command pressure. |

@@ -52,8 +52,17 @@ event021_civil_war_crisis_category = {
 
 	event021_defend_capital = {
 		icon = GFX_decision_event021_capital_defense
+		# Hold the Capital stays on offer in the front-management phase and needs
+		# this defense, so the action stays reachable there until the hold ends.
 		visible = {
-			event021_country_can_manage_opening = yes
+			OR = {
+				event021_country_can_manage_opening = yes
+				AND = {
+					event021_country_can_manage_fronts = yes
+					NOT = { has_country_flag = event021_hold_capital_success }
+					NOT = { has_country_flag = event021_hold_capital_failed }
+				}
+			}
 			NOT = { has_country_flag = event021_capital_action_used }
 		}
 		available = {
@@ -831,8 +840,11 @@ event021_civil_war_crisis_category = {
 				has_country_flag = event021_settlement_resolved
 			}
 		}
-		cancel_effect = { event021_mission_hold_capital_release = yes }
-		timeout_effect = { event021_mission_hold_capital_resolve = yes }
+		cancel_effect = { hidden_effect = { event021_mission_hold_capital_release = yes } }
+		timeout_effect = {
+			custom_effect_tooltip = event021_holding_the_capital_outcome_tt
+			hidden_effect = { event021_mission_hold_capital_resolve = yes }
+		}
 	}
 
 	event021_secure_rail_spine_mission = {
@@ -932,8 +944,11 @@ event021_civil_war_crisis_category = {
 				NOT = { event021_country_can_manage_reconstruction = yes }
 			}
 		}
-		cancel_effect = { clr_country_flag = event021_secure_rail_mission_active }
-		timeout_effect = { event021_mission_secure_rail_resolve = yes }
+		cancel_effect = { hidden_effect = { clr_country_flag = event021_secure_rail_mission_active } }
+		timeout_effect = {
+			custom_effect_tooltip = event021_securing_the_rail_spine_outcome_tt
+			hidden_effect = { event021_mission_secure_rail_resolve = yes }
+		}
 	}
 
 	event021_hold_settlement_terms_mission = {
@@ -991,7 +1006,10 @@ event021_civil_war_crisis_category = {
 				NOT = { has_country_flag = random_civil_war_settlement_obligation_active }
 			}
 		}
-		cancel_effect = { clr_country_flag = event021_settlement_terms_mission_active }
-		timeout_effect = { event021_mission_hold_settlement_terms_resolve = yes }
+		cancel_effect = { hidden_effect = { clr_country_flag = event021_settlement_terms_mission_active } }
+		timeout_effect = {
+			custom_effect_tooltip = event021_upholding_the_settlement_outcome_tt
+			hidden_effect = { event021_mission_hold_settlement_terms_resolve = yes }
+		}
 	}
 }

@@ -135,3 +135,27 @@ Contract: `common/scripted_effects/021_random_civil_war_effects.md` (priority fr
 
 `event021_prepare_successor_roster_adoption` said the review retry date carries over to the successor, but the code copies only the queue receipt, crisis ID, epoch, reviewed front IDs, and management access.
 The comment now matches the code; the successor's grace already defers the review, so no behavior changes.
+
+## R3. Round 1 review: Defend the Capital stays reachable while Hold the Capital is on offer
+
+Finding: Hold the Capital is offered in the opening phase and in the front-management phase, and it can only be selected while `event021_capital_defense_active` is set, which only Defend the Capital sets.
+Defend the Capital was visible only in the opening phase, so a side that entered the Evolution I management phase (D6) or a real multi-front war before using it saw a Hold the Capital card it could never select.
+Decision: Defend the Capital is also visible in the front-management phase until it is used or the capital hold has succeeded or failed.
+The arsenal and depot actions stay excluded from that phase, as the addendum's management section requires; it names only those two opening actions as excluded and keeps the capital hold as the immediate mission.
+Cost, effect, and AI weights are unchanged; AI sides in the front-management phase can now take the action under its existing weights, which remains `needs_live_game`.
+Contract: `docs/events/021_random_civil_war/decision_action_family_crosswalk.md` and the accepted active-war review section of `021_random_civil_war_spec_part_4_evolution_i.md`.
+
+## R4. Round 1 review: hold mission outcomes are explained, not printed raw
+
+Finding: the three non-selectable hold missions added in D3 ran their resolvers directly in `timeout_effect` and `cancel_effect`, so the mission tooltip printed raw conditional effects and internal state instead of the outcome, unlike the selectable cards, which already wrap their commitment in a tooltip.
+Decision: each hold mission's timeout shows one outcome tooltip (`event021_holding_the_capital_outcome_tt`, `event021_securing_the_rail_spine_outcome_tt`, `event021_upholding_the_settlement_outcome_tt`) and runs its resolver hidden; cancellation runs hidden because it has no player-facing result.
+The capital hold names its bound state through `event021_GetHoldCapitalTargetName`, and the three selectable cards describe themselves as commitments, because selecting one starts the hold rather than finishing it.
+No gate, timer, cost, reward, or AI weight changes.
+
+## R5. Round 1 review: helper results that callers read survive the helper return
+
+Finding: the Evolution I review's Event 006 commit (D5) saves and restores the government's Event 006 receipt through `event021_parent_save_event6_host_identity` and `event021_parent_restore_event6_host_identity`, which kept the copy in temporaries first created inside the save helper.
+The repository's helper-output rule (`chaos-redux-events`, Helper output lifetime) treats such temporaries as lost after return, in which case the restore would erase the host's Event 006 receipt instead of restoring it; the opening path's two existing callers share the helper.
+Decision: the saved copy lives in normal `random_civil_war_event6_saved_*` variables and flags on the host, the restore runs only when this country holds a saved copy, and it clears the copy afterwards.
+The shared candidate collector now creates `event021_parent_event6_package_found` before it calls the Event 006 package finder, and the secondary initializer creates `event021_planned_state_span_found` before the span copy, so both results the callers read survive the call.
+No gate, cost, weight, or plan outcome changes; a restore without a saved copy now leaves the host unchanged instead of clearing it.
