@@ -351,3 +351,16 @@ Side effects accepted: the custom splinter payoff effects and the Factory City B
 Basis: D11 (constant amounts in the table, one global for display, affordability, and payment) and D10 (refunds return the charged price). No AI weight changes.
 
 Disposition: implemented (source). Live display, payment, and tier surcharges during a sale are `needs_live_game`.
+
+## D22. The nine Event 005 decisions that never charged their shown cost now pay it
+
+Decision: `soviet_collapse_write_restored_charter`, `fev_negotiate_japanese_liaison_officers`, `ijx_press_trade_city_claims`, `pra_raise_mobile_supply_yards`, `pra_drive_the_junction_columns`, `dsc_register_field_hospital_columns`, and `dsc_order_the_dead_army_forward` pay the medium splinter cost (Political Power, Command Power, and Army Experience) through the new `soviet_collapse_pay_custom_splinter_medium_cost`, and `pra_repair_the_branch_lines` and `dsc_mark_the_unfinished_front_roads` pay the low splinter cost's support equipment through `soviet_collapse_pay_custom_splinter_low_cost`.
+Both effects read the Black Friday price table, so the charge equals the shown and checked price during a sale, and credit one achievement family (Army Experience for the medium cost, equipment for the low cost), as the sibling decisions do.
+
+Basis: each decision shows `chaosx_sovcollapse_decision_blocked_custom_splinter_medium` or `_low` in its cost slot and requires it through `can_pay_soviet_collapse_custom_splinter_medium_cost`, `can_pay_soviet_collapse_returned_names_medium_cost`, or `can_pay_soviet_collapse_custom_splinter_low_cost`, and every other decision with the same cost text pays exactly these amounts through its reward effect (`soviet_collapse_apply_custom_splinter_mobilize_signature_forces`, `soviet_collapse_apply_custom_splinter_push_extreme_route`, `soviet_collapse_apply_returned_names_claim_pressure`, or `soviet_collapse_apply_custom_splinter_consolidate_claim`).
+A cost a player is shown and must hold but never pays is a defect, not a balance choice, so the shown price is charged instead of leaving it for an owner request.
+The low cost text's Stability figure is the `recognition_stability_floor` requirement rather than a payment, so only its support equipment is charged; the consolidate-claim siblings' extra 1% Stability belongs to their reward effect and is not added.
+A scan of every Event 005 decision with a custom cost text, following its completion and removal effects through the scripted effects they call, finds no other decision without a payment.
+No AI weight changes.
+
+Disposition: implemented (source). Live payment of one medium and one low decision, at full price and during a sale, is `needs_live_game`.

@@ -28542,6 +28542,33 @@ soviet_collapse_pay_republic_settlement_compromise_cost = {
 	set_temp_variable = { soviet_collapse_compromise_cost = constant:soviet_collapse_operational_priority.score_floor }
 }
 
+# COUNTRY scope. Pays the medium splinter cost that
+# chaosx_sovcollapse_decision_blocked_custom_splinter_medium shows and
+# can_pay_soviet_collapse_custom_splinter_medium_cost (or the returned-names
+# medium check) requires, at the Black Friday price during a sale, and credits
+# the purchase toward the Black Friday achievement. Used by the splinter
+# decisions whose reward effect does not already carry this payment.
+soviet_collapse_pay_custom_splinter_medium_cost = {
+	add_political_power = global.black_friday_price_soviet_collapse_breakaway_action_mobilize_political_power_spend
+	add_command_power = global.black_friday_price_soviet_collapse_breakaway_action_mobilize_command_power_spend
+	army_experience = global.black_friday_price_soviet_collapse_breakaway_action_seize_army_xp_spend
+	set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+	set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+	black_friday_credit_sale_purchase = yes
+}
+
+# COUNTRY scope. Pays the support equipment of the low splinter cost that
+# chaosx_sovcollapse_decision_blocked_custom_splinter_low shows and
+# can_pay_soviet_collapse_custom_splinter_low_cost requires (its Stability
+# figure is a floor, not a payment), at the Black Friday price during a sale,
+# and credits the purchase toward the Black Friday achievement.
+soviet_collapse_pay_custom_splinter_low_cost = {
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = global.black_friday_price_soviet_collapse_breakaway_action_coordinate_support_equipment_spend }
+	set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+	set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+	black_friday_credit_sale_purchase = yes
+}
+
 soviet_collapse_resolve_active_chain_of_command_objective_by_compromise = {
 	clr_country_flag = soviet_collapse_chain_compromise_resolution_applied
 	if = {
