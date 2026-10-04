@@ -156,3 +156,10 @@ Profile-specific report imagery is not added because no profile art exists; the 
 
 The in-game Event Details description and the three evolution bodies use the catalog's player-facing wording verbatim, except the catalog's interface sentence about N/A, which is requested for removal in `catalog_changes_pending.md`.
 The workbook and exported CSV files are not edited.
+
+## D17. Plain requirement text in every Event 029 availability block
+
+The mine-list selection flag reads "The mine list is open" (committed with D5), and the three flags that the containment work exposed (the revenue distribution cooldown and the active Resource Curse and opened-depths flags) have player labels.
+The 28 scripted triggers that appear in availability blocks have localisation keys with their own names, which is the vanilla convention for scripted-trigger tooltips (for example `is_controlled_by_ROOT_or_ally`).
+The 93 affordability triggers in availability blocks are wrapped in `hidden_trigger`, as the decisions skill allows when the cost row already shows each resource in its ready or blocked colour, so the requirement list no longer repeats raw resource comparisons.
+A source audit of every `available` block found no remaining flag or scripted trigger without a label; tooltip fit remains a live-game check.
