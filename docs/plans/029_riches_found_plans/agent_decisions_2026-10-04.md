@@ -60,3 +60,22 @@ The decision no longer queues `chaosx.nr29.906` on the same day as its own clean
 `chaosx.nr29.906` remains as a thin wrapper around the same guarded helper so a preparation already queued in a running campaign still finishes.
 The decision now requires a free evacuation mission slot and a rail or port route before payment, and its tooltip states that a lost route, slot or mine calls the evacuation off and returns the costs.
 Evacuate the Workforce can start and finish from collapsed workings, because the specification offers it for severe collapse; the mission no longer requires an undamaged active mine or the absence of a severe collapse.
+
+## D7. Evolution containment, aftermath and reusable responses
+
+Containment follows the lead's decision: one per-mine progress value per active track, fed by the specification's listed steps and sustained conditions on each controller pulse and decayed when they break.
+The thresholds are tuned so a mine meeting every condition contains its crisis in five pulse intervals and a mine meeting only the minimum needs about seven; falling below the minimum loses ten points an interval and a breaking condition twenty.
+Reaching the threshold clears only the active flag, so history, log rows and achievement predicates keep working, while presentation, contribution, incident pools, aggregate stages and response visibility follow the active flag.
+Reformed Resource Settlement now requires a contained curse instead of any single reform flag.
+
+Where no concession exists, an independent revenue authority stands in for the concession audit, because the audit action only exists for contracts.
+Independent revenue authority and administration replacement end tolerated corruption and patronage, which otherwise would block containment forever.
+Gold Disease susceptibility is a permanent state modifier plus a gold-exposure bonus after containment, so the fever can return under heavy extraction; the modifier uses a file-scoped constant because modifier fields do not read script constants.
+Gold incidents that expose hidden hoards or guard theft now leave seized material, which makes the existing Destroy or Secure Confiscated Material action reachable; it can be repeated whenever new material is seized.
+Demons containment end states are chosen from how the mine was contained, as listed in the specification, and closure end states block the ordinary reopening action.
+
+Crisis responses are reusable as timed measures (180 days for Gold Disease measures and the curse distribution cooldown, 365 days for assistance, worker screening and a revenue settlement cycle).
+Project and population-affecting responses stay one-time per mine, consistent with the lead's decision and the anti-farming rules: the purge, evacuation, sealing projects and funds.
+The tolerated-corruption bribe pays political power only the first time, so toggling the policy cannot farm political power.
+AI willingness for each response gains a factor when that response is the mine's next containment step; this is a weighted-logic change and remains subject to the probability audit item.
+Three report events announce containment, reusing the existing evolution and concession report pictures.

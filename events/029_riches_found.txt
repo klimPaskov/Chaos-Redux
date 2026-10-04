@@ -615,6 +615,90 @@ state_event = {
 	}
 }
 
+# ---------------------------------------------------------------------------
+# Containment reports. Each closes an active evolution on one mine; the
+# evolution history and its log row remain.
+# ---------------------------------------------------------------------------
+
+state_event = {
+	id = chaosx.nr29.121
+	title = chaosx.nr29.121.t
+	desc = chaosx.nr29.121.d
+	picture = GFX_report_event_riches_found_concession
+	is_triggered_only = yes
+	trigger = {
+		riches_found_mine_is_registered = yes
+		has_state_flag = riches_found_resource_curse_contained
+		has_state_flag = riches_found_report_pending
+		check_variable = { var = riches_found_report_kind value = constant:riches_found_report.curse_contained compare = equals }
+		CONTROLLER = { exists = yes }
+	}
+	option = {
+		name = chaosx.nr29.121.a
+		custom_effect_tooltip = riches_found.report_acknowledged
+		riches_found_complete_report = yes
+	}
+}
+
+state_event = {
+	id = chaosx.nr29.122
+	title = chaosx.nr29.122.t
+	desc = chaosx.nr29.122.d
+	picture = GFX_report_event_riches_found_gold_disease
+	is_triggered_only = yes
+	trigger = {
+		riches_found_mine_is_registered = yes
+		has_state_flag = riches_found_gold_disease_contained
+		has_state_flag = riches_found_report_pending
+		check_variable = { var = riches_found_report_kind value = constant:riches_found_report.gold_contained compare = equals }
+		CONTROLLER = { exists = yes }
+	}
+	option = {
+		name = chaosx.nr29.122.a
+		custom_effect_tooltip = riches_found.report_acknowledged
+		riches_found_complete_report = yes
+	}
+}
+
+state_event = {
+	id = chaosx.nr29.123
+	title = chaosx.nr29.123.t
+	desc = {
+		text = chaosx.nr29.123.d.guarded_district
+		trigger = { check_variable = { var = riches_found_demons_end_state value = constant:riches_found_demons_end_state.guarded_district compare = equals } }
+	}
+	desc = {
+		text = chaosx.nr29.123.d.monitored_closure
+		trigger = { check_variable = { var = riches_found_demons_end_state value = constant:riches_found_demons_end_state.monitored_closure compare = equals } }
+	}
+	desc = {
+		text = chaosx.nr29.123.d.protected_closure
+		trigger = { check_variable = { var = riches_found_demons_end_state value = constant:riches_found_demons_end_state.protected_closure compare = equals } }
+	}
+	desc = {
+		text = chaosx.nr29.123.d.strict_limits
+		trigger = {
+			NOT = { check_variable = { var = riches_found_demons_end_state value = constant:riches_found_demons_end_state.guarded_district compare = equals } }
+			NOT = { check_variable = { var = riches_found_demons_end_state value = constant:riches_found_demons_end_state.monitored_closure compare = equals } }
+			NOT = { check_variable = { var = riches_found_demons_end_state value = constant:riches_found_demons_end_state.protected_closure compare = equals } }
+		}
+	}
+	picture = GFX_report_event_riches_found_opened_depths
+	is_triggered_only = yes
+	trigger = {
+		riches_found_mine_is_registered = yes
+		has_state_flag = riches_found_demons_contained
+		has_state_flag = riches_found_report_pending
+		check_variable = { var = riches_found_report_kind value = constant:riches_found_report.demons_contained compare = equals }
+		CONTROLLER = { exists = yes }
+	}
+	option = {
+		name = chaosx.nr29.123.a
+		custom_effect_tooltip = riches_found.report_acknowledged
+		riches_found_complete_report = yes
+	}
+}
+
 state_event = {
 	id = chaosx.nr29.130
 	title = chaosx.nr29.130.t

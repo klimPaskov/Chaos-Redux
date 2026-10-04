@@ -607,6 +607,7 @@ riches_found_mine_closure_can_reopen = {
 	NOT = { has_state_flag = riches_found_mine_damaged }
 	NOT = { has_state_flag = riches_found_recovery_active }
 	NOT = { has_state_flag = riches_found_account_containment_pending }
+	NOT = { has_state_flag = riches_found_demons_contained_closure }
 }
 
 # STATE scope. The safety and order check for a controlled reopening: pressure
@@ -759,6 +760,29 @@ riches_found_evolution_iii_gate = {
 			has_state_flag = riches_found_supernatural_signs
 			check_variable = { var = riches_found_supernatural_pressure value = constant:riches_found_exposure.prefire_investigation_gate compare = greater_than_or_equals }
 		}
+	}
+}
+
+# STATE scope. Tolerated corruption, tolerated patronage or captured revenue
+# stop Resource Curse containment from advancing and wear it down.
+riches_found_curse_containment_is_broken = {
+	OR = {
+		has_state_flag = riches_found_curse_corruption_tolerated
+		has_state_flag = riches_found_patronage_tolerated
+		check_variable = { var = riches_found_illicit_capture value = constant:riches_found_threshold.illicit_capture_gate compare = greater_than_or_equals }
+	}
+}
+
+# STATE scope. An open infernal account or renewed deep digging stops Demons
+# Beneath the Mine containment from advancing and wears it down.
+riches_found_demons_containment_is_broken = {
+	OR = {
+		AND = {
+			has_state_flag = riches_found_bottomless_account
+			NOT = { has_state_flag = riches_found_account_closed }
+			NOT = { has_state_flag = riches_found_account_terms_bound }
+		}
+		has_state_flag = riches_found_deep_project_active
 	}
 }
 

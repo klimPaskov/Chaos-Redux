@@ -1,0 +1,497 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 029 RICHES FOUND EVOLUTION CONTAINMENT
+# ============================================================================
+# STATE scope throughout. Each active evolution on a registered mine keeps one
+# progress value from 0 to constant:riches_found_containment.progress_complete.
+# The controller pulse reviews it once per pulse interval:
+# - every listed containment condition that currently holds adds step_gain;
+# - fewer met conditions than the track minimum decay the progress;
+# - a breaking condition (tolerated corruption, runaway extraction, an open
+#   infernal account or renewed deep digging) decays it faster and blocks gains.
+# Reaching the threshold clears the track's active flag, keeps its evolution
+# history and log row, applies the specification's aftermath and queues one
+# report. A contained track can relapse when its breaking conditions return.
+# The first unmet condition of the highest-priority active track is stored as
+# riches_found_containment_step for the category header objective line.
+# No world or country scan is introduced: the parent maintenance pulse walks
+# only the bounded mine registry.
+# ============================================================================
+
+# STATE scope. Parent: riches_found_run_maintenance_pulse. Runs the three
+# track reviews once per controller pulse interval and refreshes the header
+# objective. Inputs: the mine's own flags and values. Side effects: progress
+# variables, active/contained flags, aftermath modifiers and reports.
+riches_found_review_evolution_containment = {
+	if = {
+		limit = { NOT = { has_variable = riches_found_last_containment_review_date } }
+		set_variable = { riches_found_last_containment_review_date = global.date }
+	}
+	set_temp_variable = { riches_found_next_containment_review_date = riches_found_last_containment_review_date }
+	set_temp_variable = { chaosx_date_days = constant:riches_found_duration.controller_pulse_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	add_to_temp_variable = { riches_found_next_containment_review_date = chaosx_date_offset }
+	if = {
+		limit = { check_variable = { var = global.date value = riches_found_next_containment_review_date compare = greater_than_or_equals } }
+		set_variable = { riches_found_last_containment_review_date = global.date }
+		riches_found_review_curse_containment = yes
+		riches_found_review_gold_containment = yes
+		riches_found_review_demons_containment = yes
+		riches_found_clamp_mine_values = yes
+	}
+	riches_found_refresh_containment_objective = yes
+}
+
+# STATE scope. Records one revenue settlement cycle. Any distribution, dividend
+# or local revenue settlement keeps the payment condition met for one cycle.
+riches_found_record_revenue_settlement = {
+	set_variable = { riches_found_revenue_settlement_expiry_date = global.date }
+	set_temp_variable = { chaosx_date_days = constant:riches_found_containment.revenue_cycle_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	add_to_variable = { riches_found_revenue_settlement_expiry_date = chaosx_date_offset }
+}
+
+# ---------------------------------------------------------------------------
+# The Resource Curse
+# ---------------------------------------------------------------------------
+
+riches_found_review_curse_containment = {
+	if = {
+		limit = { has_state_flag = riches_found_resource_curse_active }
+		if = { limit = { NOT = { has_variable = riches_found_curse_containment } } set_variable = { riches_found_curse_containment = constant:riches_found_value.zero } }
+		set_temp_variable = { riches_found_containment_met = constant:riches_found_value.zero }
+		set_variable = { riches_found_curse_next_step = constant:riches_found_containment_step.none }
+		if = {
+			limit = {
+				OR = {
+					has_state_flag = riches_found_audit_complete
+					AND = {
+						NOT = { has_state_flag = riches_found_contract_active }
+						OR = {
+							has_state_flag = riches_found_independent_revenue_authority
+							has_state_flag = riches_found_curse_independent_authority
+						}
+					}
+				}
+			}
+			add_to_temp_variable = { riches_found_containment_met = constant:riches_found_value.one }
+		}
+		else = { set_variable = { riches_found_curse_next_step = constant:riches_found_containment_step.curse_audit } }
+		if = {
+			limit = {
+				OR = {
+					has_state_flag = riches_found_contract_published
+					has_state_flag = riches_found_curse_state_extraction
+					NOT = { has_state_flag = riches_found_contract_active }
+				}
+			}
+			add_to_temp_variable = { riches_found_containment_met = constant:riches_found_value.one }
+		}
+		else_if = { limit = { check_variable = { riches_found_curse_next_step = constant:riches_found_containment_step.none } } set_variable = { riches_found_curse_next_step = constant:riches_found_containment_step.curse_public_terms } }
+		if = {
+			limit = {
+				OR = {
+					has_state_flag = riches_found_beneficial_owners_disclosed
+					NOT = { has_state_flag = riches_found_contract_active }
+				}
+			}
+			add_to_temp_variable = { riches_found_containment_met = constant:riches_found_value.one }
+		}
+		else_if = { limit = { check_variable = { riches_found_curse_next_step = constant:riches_found_containment_step.none } } set_variable = { riches_found_curse_next_step = constant:riches_found_containment_step.curse_disclosure } }
+		if = {
+			limit = {
+				has_variable = riches_found_revenue_settlement_expiry_date
+				check_variable = { var = riches_found_revenue_settlement_expiry_date value = global.date compare = greater_than }
+			}
+			add_to_temp_variable = { riches_found_containment_met = constant:riches_found_value.one }
+		}
+		else_if = { limit = { check_variable = { riches_found_curse_next_step = constant:riches_found_containment_step.none } } set_variable = { riches_found_curse_next_step = constant:riches_found_containment_step.curse_revenue } }
+		if = {
+			limit = {
+				OR = {
+					has_state_flag = riches_found_stabilization_fund
+					has_state_flag = riches_found_development_fund
+					has_state_flag = riches_found_curse_diversification_started
+				}
+			}
+			add_to_temp_variable = { riches_found_containment_met = constant:riches_found_value.one }
+		}
+		else_if = { limit = { check_variable = { riches_found_curse_next_step = constant:riches_found_containment_step.none } } set_variable = { riches_found_curse_next_step = constant:riches_found_containment_step.curse_fund } }
+		if = { limit = { NOT = { riches_found_mine_is_high_pressure = yes } } add_to_temp_variable = { riches_found_containment_met = constant:riches_found_value.one } }
+		else_if = { limit = { check_variable = { riches_found_curse_next_step = constant:riches_found_containment_step.none } } set_variable = { riches_found_curse_next_step = constant:riches_found_containment_step.curse_pressure } }
+		if = {
+			limit = {
+				check_variable = { var = riches_found_private_security_autonomy value = constant:riches_found_threshold.private_security_gate compare = less_than }
+				NOT = { has_state_flag = riches_found_private_enclave }
+				NOT = { has_state_flag = riches_found_curse_private_dominance }
+			}
+			add_to_temp_variable = { riches_found_containment_met = constant:riches_found_value.one }
+		}
+		else_if = { limit = { check_variable = { riches_found_curse_next_step = constant:riches_found_containment_step.none } } set_variable = { riches_found_curse_next_step = constant:riches_found_containment_step.curse_security } }
+		if = {
+			limit = {
+				OR = {
+					has_state_flag = riches_found_achievement_administration_replaced
+					has_state_flag = riches_found_curse_independent_authority
+					has_state_flag = riches_found_independent_revenue_authority
+				}
+			}
+			add_to_temp_variable = { riches_found_containment_met = constant:riches_found_value.one }
+		}
+		else_if = { limit = { check_variable = { riches_found_curse_next_step = constant:riches_found_containment_step.none } } set_variable = { riches_found_curse_next_step = constant:riches_found_containment_step.curse_administration } }
+		if = { limit = { check_variable = { riches_found_curse_next_step = constant:riches_found_containment_step.none } } set_variable = { riches_found_curse_next_step = constant:riches_found_containment_step.maintain } }
+
+		if = {
+			limit = { riches_found_curse_containment_is_broken = yes }
+			add_to_variable = { riches_found_curse_containment = constant:riches_found_containment.break_decay }
+			set_variable = { riches_found_curse_next_step = constant:riches_found_containment_step.curse_breaker }
+		}
+		else_if = {
+			limit = { check_variable = { var = riches_found_containment_met value = constant:riches_found_containment.curse_minimum_conditions compare = greater_than_or_equals } }
+			set_temp_variable = { riches_found_containment_gain = riches_found_containment_met }
+			multiply_temp_variable = { riches_found_containment_gain = constant:riches_found_containment.step_gain }
+			add_to_variable = { riches_found_curse_containment = riches_found_containment_gain }
+		}
+		else = { add_to_variable = { riches_found_curse_containment = constant:riches_found_containment.decay } }
+		clamp_variable = { var = riches_found_curse_containment min = constant:riches_found_value.zero max = constant:riches_found_containment.progress_complete }
+		if = {
+			limit = { check_variable = { var = riches_found_curse_containment value = constant:riches_found_containment.progress_complete compare = greater_than_or_equals } }
+			riches_found_contain_resource_curse = yes
+		}
+	}
+	else_if = {
+		limit = {
+			has_state_flag = riches_found_resource_curse_contained
+			riches_found_curse_containment_is_broken = yes
+			OR = {
+				has_state_flag = riches_found_curse_corruption_tolerated
+				has_state_flag = riches_found_patronage_tolerated
+				has_state_flag = riches_found_curse_private_dominance
+			}
+		}
+		riches_found_relapse_resource_curse = yes
+	}
+}
+
+# Contained curse: the active flag clears, the controller stage can become a
+# Reformed Resource Settlement, and the reform counts as a successful reform
+# for the late-outcome history. Evolution history and the log row remain.
+riches_found_contain_resource_curse = {
+	clr_state_flag = riches_found_resource_curse_active
+	set_state_flag = riches_found_resource_curse_contained
+	set_state_flag = riches_found_reformed_resource_settlement
+	set_state_flag = riches_found_curse_contained_history
+	set_variable = { riches_found_resource_curse_contained_date = global.date }
+	set_variable = { riches_found_curse_containment = constant:riches_found_value.zero }
+	clr_state_flag = riches_found_gilded_sovereignty_pending
+	add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_containment.curse_contained_legitimacy }
+	add_to_variable = { riches_found_illicit_capture = constant:riches_found_containment.curse_contained_capture_relief }
+	riches_found_record_successful_reform = yes
+	riches_found_clamp_mine_values = yes
+	riches_found_refresh_mine_presentation = yes
+	riches_found_refresh_mine_contribution = yes
+	set_variable = { riches_found_report_kind = constant:riches_found_report.curse_contained }
+	riches_found_queue_report = yes
+}
+
+# A contained curse returns when tolerated corruption, patronage or private
+# dominance again captures the revenue. No new evolution row is recorded.
+riches_found_relapse_resource_curse = {
+	clr_state_flag = riches_found_resource_curse_contained
+	clr_state_flag = riches_found_reformed_resource_settlement
+	set_state_flag = riches_found_resource_curse_active
+	set_variable = { riches_found_curse_containment = constant:riches_found_value.zero }
+	set_variable = { riches_found_resource_curse_relapse_date = global.date }
+	riches_found_refresh_mine_presentation = yes
+	riches_found_refresh_mine_contribution = yes
+}
+
+# ---------------------------------------------------------------------------
+# Gold Disease
+# ---------------------------------------------------------------------------
+
+riches_found_review_gold_containment = {
+	if = {
+		limit = { has_state_flag = riches_found_gold_disease_active }
+		if = { limit = { NOT = { has_variable = riches_found_gold_containment } } set_variable = { riches_found_gold_containment = constant:riches_found_value.zero } }
+		# Extraction is the strongest accelerator of an active Gold Disease.
+		if = {
+			limit = {
+				riches_found_mine_is_operating = yes
+				riches_found_mine_is_high_pressure = yes
+			}
+			add_to_variable = { riches_found_gold_disease_pressure = constant:riches_found_containment.gold_active_pressure_growth }
+		}
+		set_temp_variable = { riches_found_containment_met = constant:riches_found_value.zero }
+		set_variable = { riches_found_gold_next_step = constant:riches_found_containment_step.none }
+		if = { limit = { check_variable = { var = riches_found_gold_disease_pressure value = constant:riches_found_threshold.gold_disease_gate compare = less_than } } add_to_temp_variable = { riches_found_containment_met = constant:riches_found_value.one } }
+		else = { set_variable = { riches_found_gold_next_step = constant:riches_found_containment_step.gold_pressure } }
+		if = {
+			limit = {
+				OR = {
+					has_state_flag = riches_found_gold_quarantine
+					has_state_flag = riches_found_district_quarantined
+					has_state_flag = riches_found_gold_controlled_access
+					has_state_flag = riches_found_mine_temporary_closure
+				}
+			}
+			add_to_temp_variable = { riches_found_containment_met = constant:riches_found_value.one }
+		}
+		else_if = { limit = { check_variable = { riches_found_gold_next_step = constant:riches_found_containment_step.none } } set_variable = { riches_found_gold_next_step = constant:riches_found_containment_step.gold_movement } }
+		if = {
+			limit = {
+				has_variable = riches_found_revenue_settlement_expiry_date
+				check_variable = { var = riches_found_revenue_settlement_expiry_date value = global.date compare = greater_than }
+			}
+			add_to_temp_variable = { riches_found_containment_met = constant:riches_found_value.one }
+		}
+		else_if = { limit = { check_variable = { riches_found_gold_next_step = constant:riches_found_containment_step.none } } set_variable = { riches_found_gold_next_step = constant:riches_found_containment_step.gold_payment } }
+		if = {
+			limit = {
+				OR = {
+					has_state_flag = riches_found_gold_workforce_replaced
+					has_state_flag = riches_found_workforce_replaced
+					has_state_flag = riches_found_achievement_administration_replaced
+				}
+				NOT = { has_state_flag = riches_found_gold_sick_guards }
+			}
+			add_to_temp_variable = { riches_found_containment_met = constant:riches_found_value.one }
+		}
+		else_if = { limit = { check_variable = { riches_found_gold_next_step = constant:riches_found_containment_step.none } } set_variable = { riches_found_gold_next_step = constant:riches_found_containment_step.gold_teams } }
+		if = {
+			limit = {
+				NOT = { has_state_flag = riches_found_confiscated_material }
+				NOT = { has_state_flag = riches_found_shipment_threat }
+				NOT = { has_state_flag = riches_found_gold_sick_gang_control }
+			}
+			add_to_temp_variable = { riches_found_containment_met = constant:riches_found_value.one }
+		}
+		else_if = { limit = { check_variable = { riches_found_gold_next_step = constant:riches_found_containment_step.none } } set_variable = { riches_found_gold_next_step = constant:riches_found_containment_step.gold_material } }
+		if = { limit = { NOT = { has_state_flag = riches_found_mine_damaged } } add_to_temp_variable = { riches_found_containment_met = constant:riches_found_value.one } }
+		else_if = { limit = { check_variable = { riches_found_gold_next_step = constant:riches_found_containment_step.none } } set_variable = { riches_found_gold_next_step = constant:riches_found_containment_step.gold_repair } }
+		if = { limit = { check_variable = { riches_found_gold_next_step = constant:riches_found_containment_step.none } } set_variable = { riches_found_gold_next_step = constant:riches_found_containment_step.maintain } }
+
+		if = {
+			limit = { riches_found_mine_is_severe_pressure = yes }
+			add_to_variable = { riches_found_gold_containment = constant:riches_found_containment.break_decay }
+			set_variable = { riches_found_gold_next_step = constant:riches_found_containment_step.gold_breaker }
+		}
+		else_if = {
+			limit = { check_variable = { var = riches_found_containment_met value = constant:riches_found_containment.gold_minimum_conditions compare = greater_than_or_equals } }
+			set_temp_variable = { riches_found_containment_gain = riches_found_containment_met }
+			multiply_temp_variable = { riches_found_containment_gain = constant:riches_found_containment.step_gain }
+			add_to_variable = { riches_found_gold_containment = riches_found_containment_gain }
+		}
+		else = { add_to_variable = { riches_found_gold_containment = constant:riches_found_containment.decay } }
+		clamp_variable = { var = riches_found_gold_containment min = constant:riches_found_value.zero max = constant:riches_found_containment.progress_complete }
+		if = {
+			limit = { check_variable = { var = riches_found_gold_containment value = constant:riches_found_containment.progress_complete compare = greater_than_or_equals } }
+			riches_found_contain_gold_disease = yes
+		}
+	}
+	else_if = {
+		limit = {
+			has_state_flag = riches_found_gold_disease_contained
+			check_variable = { var = riches_found_gold_disease_pressure value = constant:riches_found_threshold.gold_disease_gate compare = greater_than_or_equals }
+			riches_found_mine_is_high_pressure = yes
+		}
+		riches_found_relapse_gold_disease = yes
+	}
+}
+
+# Contained Gold Disease: ordinary operation resumes with a lasting
+# susceptibility that lets gold pressure build again under heavy extraction.
+riches_found_contain_gold_disease = {
+	clr_state_flag = riches_found_gold_disease_active
+	set_state_flag = riches_found_gold_disease_contained
+	set_state_flag = riches_found_gold_susceptible
+	set_state_flag = riches_found_gold_contained_history
+	set_variable = { riches_found_gold_disease_contained_date = global.date }
+	set_variable = { riches_found_gold_containment = constant:riches_found_value.zero }
+	add_to_variable = { riches_found_gold_disease_pressure = constant:riches_found_containment.gold_contained_pressure_relief }
+	if = {
+		limit = { NOT = { has_dynamic_modifier = { modifier = riches_found_state_gold_susceptible } } }
+		add_dynamic_modifier = { modifier = riches_found_state_gold_susceptible }
+	}
+	riches_found_clamp_mine_values = yes
+	riches_found_refresh_mine_presentation = yes
+	riches_found_refresh_mine_contribution = yes
+	set_variable = { riches_found_report_kind = constant:riches_found_report.gold_contained }
+	riches_found_queue_report = yes
+}
+
+riches_found_relapse_gold_disease = {
+	clr_state_flag = riches_found_gold_disease_contained
+	set_state_flag = riches_found_gold_disease_active
+	set_variable = { riches_found_gold_containment = constant:riches_found_value.zero }
+	set_variable = { riches_found_gold_disease_relapse_date = global.date }
+	riches_found_refresh_mine_presentation = yes
+	riches_found_refresh_mine_contribution = yes
+}
+
+# ---------------------------------------------------------------------------
+# Demons Beneath the Mine
+# ---------------------------------------------------------------------------
+
+riches_found_review_demons_containment = {
+	if = {
+		limit = { has_state_flag = riches_found_demons_beneath_mine_active }
+		if = { limit = { NOT = { has_variable = riches_found_demons_containment } } set_variable = { riches_found_demons_containment = constant:riches_found_value.zero } }
+		set_temp_variable = { riches_found_containment_met = constant:riches_found_value.zero }
+		set_variable = { riches_found_demons_next_step = constant:riches_found_containment_step.none }
+		if = { limit = { check_variable = { var = riches_found_supernatural_pressure value = constant:riches_found_threshold.supernatural_pressure_gate compare = less_than } } add_to_temp_variable = { riches_found_containment_met = constant:riches_found_value.one } }
+		else = { set_variable = { riches_found_demons_next_step = constant:riches_found_containment_step.demons_pressure } }
+		if = {
+			limit = {
+				OR = {
+					has_state_flag = riches_found_depths_sealed
+					has_state_flag = riches_found_gold_depths_sealed
+					has_state_flag = riches_found_mine_partial_seal
+					has_state_flag = riches_found_mine_temporary_closure
+				}
+			}
+			add_to_temp_variable = { riches_found_containment_met = constant:riches_found_value.one }
+		}
+		else_if = { limit = { check_variable = { riches_found_demons_next_step = constant:riches_found_containment_step.none } } set_variable = { riches_found_demons_next_step = constant:riches_found_containment_step.demons_sealing } }
+		if = {
+			limit = {
+				OR = {
+					has_state_flag = riches_found_demons_district_evacuated
+					has_state_flag = riches_found_workforce_evacuated
+				}
+			}
+			add_to_temp_variable = { riches_found_containment_met = constant:riches_found_value.one }
+		}
+		else_if = { limit = { check_variable = { riches_found_demons_next_step = constant:riches_found_containment_step.none } } set_variable = { riches_found_demons_next_step = constant:riches_found_containment_step.demons_evacuation } }
+		if = {
+			limit = {
+				OR = {
+					has_state_flag = riches_found_demons_religious_assistance
+					has_state_flag = riches_found_demons_occult_assistance
+					has_state_flag = riches_found_demons_scientific_assistance
+				}
+			}
+			add_to_temp_variable = { riches_found_containment_met = constant:riches_found_value.one }
+		}
+		else_if = { limit = { check_variable = { riches_found_demons_next_step = constant:riches_found_containment_step.none } } set_variable = { riches_found_demons_next_step = constant:riches_found_containment_step.demons_assistance } }
+		if = { limit = { NOT = { riches_found_mine_is_high_pressure = yes } } add_to_temp_variable = { riches_found_containment_met = constant:riches_found_value.one } }
+		else_if = { limit = { check_variable = { riches_found_demons_next_step = constant:riches_found_containment_step.none } } set_variable = { riches_found_demons_next_step = constant:riches_found_containment_step.demons_extraction } }
+		if = { limit = { riches_found_state_has_security_presence = yes } add_to_temp_variable = { riches_found_containment_met = constant:riches_found_value.one } }
+		else_if = { limit = { check_variable = { riches_found_demons_next_step = constant:riches_found_containment_step.none } } set_variable = { riches_found_demons_next_step = constant:riches_found_containment_step.demons_guard } }
+		if = { limit = { check_variable = { var = riches_found_sealed_depth_integrity value = constant:riches_found_threshold.sealed_integrity_gate compare = greater_than_or_equals } } add_to_temp_variable = { riches_found_containment_met = constant:riches_found_value.one } }
+		else_if = { limit = { check_variable = { riches_found_demons_next_step = constant:riches_found_containment_step.none } } set_variable = { riches_found_demons_next_step = constant:riches_found_containment_step.demons_integrity } }
+		if = { limit = { check_variable = { riches_found_demons_next_step = constant:riches_found_containment_step.none } } set_variable = { riches_found_demons_next_step = constant:riches_found_containment_step.maintain } }
+
+		if = {
+			limit = { riches_found_demons_containment_is_broken = yes }
+			add_to_variable = { riches_found_demons_containment = constant:riches_found_containment.break_decay }
+			set_variable = { riches_found_demons_next_step = constant:riches_found_containment_step.demons_breaker }
+		}
+		else_if = {
+			limit = { check_variable = { var = riches_found_containment_met value = constant:riches_found_containment.demons_minimum_conditions compare = greater_than_or_equals } }
+			set_temp_variable = { riches_found_containment_gain = riches_found_containment_met }
+			multiply_temp_variable = { riches_found_containment_gain = constant:riches_found_containment.step_gain }
+			add_to_variable = { riches_found_demons_containment = riches_found_containment_gain }
+		}
+		else = { add_to_variable = { riches_found_demons_containment = constant:riches_found_containment.decay } }
+		clamp_variable = { var = riches_found_demons_containment min = constant:riches_found_value.zero max = constant:riches_found_containment.progress_complete }
+		if = {
+			limit = { check_variable = { var = riches_found_demons_containment value = constant:riches_found_containment.progress_complete compare = greater_than_or_equals } }
+			riches_found_contain_demons_beneath_mine = yes
+		}
+	}
+	else_if = {
+		limit = {
+			has_state_flag = riches_found_demons_contained
+			has_state_flag = riches_found_deep_project_active
+		}
+		riches_found_relapse_demons_beneath_mine = yes
+	}
+}
+
+# Contained Demons Beneath the Mine. The end state follows how the mine was
+# contained: a closed mine with scientific assistance becomes a monitored
+# closure, a closed mine with religious or occult assistance a protected
+# closure, any other closed mine a guarded abandoned district, and an open or
+# partly sealed mine keeps only its upper workings under strict limits.
+# Permanent sealing remains its own end through the sealing decisions.
+riches_found_contain_demons_beneath_mine = {
+	clr_state_flag = riches_found_demons_beneath_mine_active
+	clr_state_flag = riches_found_supernatural_crisis
+	clr_state_flag = riches_found_bottomless_account_pending
+	set_state_flag = riches_found_demons_contained
+	set_state_flag = riches_found_demons_contained_history
+	set_variable = { riches_found_demons_contained_date = global.date }
+	set_variable = { riches_found_demons_containment = constant:riches_found_value.zero }
+	add_to_variable = { riches_found_supernatural_pressure = constant:riches_found_containment.demons_contained_supernatural_relief }
+	if = {
+		limit = { has_state_flag = riches_found_mine_temporary_closure }
+		set_state_flag = riches_found_demons_contained_closure
+		if = {
+			limit = { has_state_flag = riches_found_demons_scientific_assistance }
+			set_variable = { riches_found_demons_end_state = constant:riches_found_demons_end_state.monitored_closure }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_state_flag = riches_found_demons_religious_assistance
+					has_state_flag = riches_found_demons_occult_assistance
+				}
+			}
+			set_variable = { riches_found_demons_end_state = constant:riches_found_demons_end_state.protected_closure }
+		}
+		else = { set_variable = { riches_found_demons_end_state = constant:riches_found_demons_end_state.guarded_district } }
+	}
+	else = {
+		set_variable = { riches_found_demons_end_state = constant:riches_found_demons_end_state.strict_limits }
+		if = {
+			limit = {
+				NOT = { has_state_flag = riches_found_mine_partial_seal }
+				riches_found_mine_can_begin_temporary_closure = yes
+			}
+			riches_found_begin_partial_seal = yes
+		}
+	}
+	riches_found_clamp_mine_values = yes
+	riches_found_refresh_mine_presentation = yes
+	riches_found_refresh_mine_contribution = yes
+	set_variable = { riches_found_report_kind = constant:riches_found_report.demons_contained }
+	riches_found_queue_report = yes
+}
+
+# Renewed deep digging in a contained mine reopens the crisis. No new
+# evolution row is recorded.
+riches_found_relapse_demons_beneath_mine = {
+	clr_state_flag = riches_found_demons_contained
+	clr_state_flag = riches_found_demons_contained_closure
+	set_state_flag = riches_found_demons_beneath_mine_active
+	set_state_flag = riches_found_supernatural_crisis
+	set_variable = { riches_found_demons_end_state = constant:riches_found_demons_end_state.none }
+	set_variable = { riches_found_demons_containment = constant:riches_found_value.zero }
+	set_variable = { riches_found_demons_relapse_date = global.date }
+	riches_found_refresh_mine_presentation = yes
+	riches_found_refresh_mine_contribution = yes
+}
+
+# ---------------------------------------------------------------------------
+# Category header objective
+# ---------------------------------------------------------------------------
+
+# Stores the first unmet step of the highest-priority active track (Demons,
+# then Gold Disease, then the Resource Curse) for the header objective line.
+riches_found_refresh_containment_objective = {
+	set_variable = { riches_found_containment_step = constant:riches_found_containment_step.none }
+	if = {
+		limit = { has_state_flag = riches_found_demons_beneath_mine_active has_variable = riches_found_demons_next_step }
+		set_variable = { riches_found_containment_step = riches_found_demons_next_step }
+	}
+	else_if = {
+		limit = { has_state_flag = riches_found_gold_disease_active has_variable = riches_found_gold_next_step }
+		set_variable = { riches_found_containment_step = riches_found_gold_next_step }
+	}
+	else_if = {
+		limit = { has_state_flag = riches_found_resource_curse_active has_variable = riches_found_curse_next_step }
+		set_variable = { riches_found_containment_step = riches_found_curse_next_step }
+	}
+}

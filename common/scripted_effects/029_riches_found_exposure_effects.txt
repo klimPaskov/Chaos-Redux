@@ -23,10 +23,15 @@ riches_found_review_preentry_exposure = {
 		if = {
 			limit = {
 				riches_found_evolution_ii_is_enabled = yes
-				NOT = { has_state_flag = riches_found_evolution_ii_recorded }
+				OR = {
+					NOT = { has_state_flag = riches_found_evolution_ii_recorded }
+					has_state_flag = riches_found_gold_disease_contained
+				}
 				check_variable = { var = global.chaos_meter_value value = constant:riches_found_evolution.gold_disease_chaos compare = greater_than_or_equals }
 			}
 			set_temp_variable = { riches_found_gold_exposure_delta = constant:riches_found_exposure.gold_ordinary_extraction }
+			# A contained Gold Disease leaves a lasting susceptibility.
+			if = { limit = { has_state_flag = riches_found_gold_susceptible } add_to_temp_variable = { riches_found_gold_exposure_delta = constant:riches_found_containment.gold_susceptibility_exposure } }
 			set_temp_variable = { riches_found_recent_theft_cutoff = global.date }
 			set_temp_variable = { chaosx_date_days = constant:riches_found_duration.controller_pulse_days }
 			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }

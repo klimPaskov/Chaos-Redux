@@ -381,6 +381,9 @@ riches_found_run_queued_report = {
 		else_if = { limit = { check_variable = { var = riches_found_report_kind value = constant:riches_found_report.gilded_sovereignty compare = equals } } state_event = { id = chaosx.nr29.111 trigger_for = controller } }
 		else_if = { limit = { check_variable = { var = riches_found_report_kind value = constant:riches_found_report.bottomless_account compare = equals } } state_event = { id = chaosx.nr29.112 trigger_for = controller } }
 		else_if = { limit = { check_variable = { var = riches_found_report_kind value = constant:riches_found_report.gold_incident compare = equals } } state_event = { id = chaosx.nr29.120 trigger_for = controller } }
+		else_if = { limit = { check_variable = { var = riches_found_report_kind value = constant:riches_found_report.curse_contained compare = equals } } state_event = { id = chaosx.nr29.121 trigger_for = controller } }
+		else_if = { limit = { check_variable = { var = riches_found_report_kind value = constant:riches_found_report.gold_contained compare = equals } } state_event = { id = chaosx.nr29.122 trigger_for = controller } }
+		else_if = { limit = { check_variable = { var = riches_found_report_kind value = constant:riches_found_report.demons_contained compare = equals } } state_event = { id = chaosx.nr29.123 trigger_for = controller } }
 		else_if = { limit = { check_variable = { var = riches_found_report_kind value = constant:riches_found_report.supernatural_incident compare = equals } } state_event = { id = chaosx.nr29.130 trigger_for = controller } }
 	}
 }
@@ -779,8 +782,11 @@ riches_found_refresh_mine_presentation = {
 	else_if = {
 		limit = {
 			OR = {
-				has_state_flag = riches_found_evolution_iii_recorded
-				has_state_flag = riches_found_prefire_evolution_iii
+				has_state_flag = riches_found_demons_beneath_mine_active
+				AND = {
+					has_state_flag = riches_found_prefire_evolution_iii
+					NOT = { has_state_flag = riches_found_evolution_iii_recorded }
+				}
 			}
 		}
 		add_dynamic_modifier = { modifier = riches_found_state_opened_depths }
@@ -788,8 +794,11 @@ riches_found_refresh_mine_presentation = {
 	else_if = {
 		limit = {
 			OR = {
-				has_state_flag = riches_found_evolution_ii_recorded
-				has_state_flag = riches_found_prefire_evolution_ii
+				has_state_flag = riches_found_gold_disease_active
+				AND = {
+					has_state_flag = riches_found_prefire_evolution_ii
+					NOT = { has_state_flag = riches_found_evolution_ii_recorded }
+				}
 			}
 		}
 		add_dynamic_modifier = { modifier = riches_found_state_gold_sick }
@@ -797,8 +806,11 @@ riches_found_refresh_mine_presentation = {
 	else_if = {
 		limit = {
 			OR = {
-				has_state_flag = riches_found_evolution_i_recorded
-				has_state_flag = riches_found_prefire_evolution_i
+				has_state_flag = riches_found_resource_curse_active
+				AND = {
+					has_state_flag = riches_found_prefire_evolution_i
+					NOT = { has_state_flag = riches_found_evolution_i_recorded }
+				}
 			}
 		}
 		add_dynamic_modifier = { modifier = riches_found_state_corrupted }
@@ -892,15 +904,15 @@ riches_found_refresh_mine_contribution = {
 
 		set_variable = { riches_found_evolution_factor = constant:riches_found_scaling.evolution_baseline_factor }
 		if = {
-			limit = { has_state_flag = riches_found_evolution_i_recorded }
+			limit = { has_state_flag = riches_found_resource_curse_active }
 			set_variable = { riches_found_evolution_factor = constant:riches_found_scaling.evolution_resource_curse_factor }
 		}
 		if = {
-			limit = { has_state_flag = riches_found_evolution_ii_recorded }
+			limit = { has_state_flag = riches_found_gold_disease_active }
 			set_variable = { riches_found_evolution_factor = constant:riches_found_scaling.evolution_gold_disease_factor }
 		}
 		if = {
-			limit = { has_state_flag = riches_found_evolution_iii_recorded }
+			limit = { has_state_flag = riches_found_demons_beneath_mine_active }
 			set_variable = { riches_found_evolution_factor = constant:riches_found_scaling.evolution_demons_factor }
 		}
 		multiply_variable = { riches_found_mine_contribution_score = riches_found_evolution_factor }

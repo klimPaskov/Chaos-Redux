@@ -1783,6 +1783,7 @@ decision_riches_found_dividend = {
 
 			FROM = {
 				set_state_flag = riches_found_dividend_paid
+				riches_found_record_revenue_settlement = yes
 				if = {
 					limit = { has_state_flag = riches_found_mission_public_settlement_progress }
 					set_state_flag = riches_found_public_project_complete
@@ -1873,6 +1874,7 @@ decision_riches_found_local_revenue = {
 
 			FROM = {
 				set_state_flag = riches_found_local_revenue_settled
+				riches_found_record_revenue_settlement = yes
 				if = {
 					limit = { has_state_flag = riches_found_mission_public_settlement_progress }
 					set_state_flag = riches_found_public_project_complete
@@ -2213,6 +2215,8 @@ decision_riches_found_replace_administration = {
 
 			FROM = {
 				set_state_flag = riches_found_administration_replaced
+				clr_state_flag = riches_found_curse_corruption_tolerated
+				clr_state_flag = riches_found_patronage_tolerated
 				add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_8 }
 				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_3 }
 				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_2 }
@@ -4490,6 +4494,7 @@ decision_riches_found_seal_depths = {
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
+		modifier = { factor = constant:riches_found_decision_ai.high_factor FROM = { OR = { check_variable = { riches_found_demons_next_step = constant:riches_found_containment_step.demons_sealing } check_variable = { riches_found_demons_next_step = constant:riches_found_containment_step.demons_integrity } } } }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor is_major = yes }
 			modifier = { factor = constant:riches_found_decision_ai.urgent_factor has_war = yes }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor FROM = { has_state_flag = riches_found_multiple_mine_priority } }
@@ -5535,7 +5540,7 @@ decision_riches_found_curse_nationalize_extraction = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_resource_curse
+			has_state_flag = riches_found_resource_curse_active
 			NOT = { has_state_flag = riches_found_curse_state_extraction }
 		}
 	}
@@ -5545,7 +5550,7 @@ decision_riches_found_curse_nationalize_extraction = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_resource_curse
+			has_state_flag = riches_found_resource_curse_active
 			NOT = { has_state_flag = riches_found_curse_state_extraction }
 		}
 	}
@@ -5559,7 +5564,7 @@ decision_riches_found_curse_nationalize_extraction = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_resource_curse
+			has_state_flag = riches_found_resource_curse_active
 			NOT = { has_state_flag = riches_found_curse_state_extraction }
 		}
 	}
@@ -5588,6 +5593,8 @@ decision_riches_found_curse_nationalize_extraction = {
 
 			FROM = {
 				set_state_flag = riches_found_curse_state_extraction
+				clr_state_flag = riches_found_curse_private_dominance
+				clr_state_flag = riches_found_private_enclave
 				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_6 }
 				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_8 }
 				add_to_variable = { riches_found_illicit_capture = constant:riches_found_action_delta.negative_8 }
@@ -5605,6 +5612,7 @@ decision_riches_found_curse_nationalize_extraction = {
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
+		modifier = { factor = constant:riches_found_decision_ai.urgent_factor FROM = { OR = { check_variable = { riches_found_curse_next_step = constant:riches_found_containment_step.curse_public_terms } check_variable = { riches_found_curse_next_step = constant:riches_found_containment_step.curse_security } } } }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor is_major = yes }
 			modifier = { factor = constant:riches_found_decision_ai.urgent_factor has_war = yes }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor FROM = { has_state_flag = riches_found_multiple_mine_priority } }
@@ -5622,8 +5630,8 @@ decision_riches_found_curse_distribute_revenue = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_resource_curse
-			NOT = { has_state_flag = riches_found_curse_revenue_distributed }
+			has_state_flag = riches_found_resource_curse_active
+			NOT = { has_state_flag = riches_found_curse_revenue_cooldown }
 		}
 	}
 	available = {
@@ -5632,8 +5640,8 @@ decision_riches_found_curse_distribute_revenue = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_resource_curse
-			NOT = { has_state_flag = riches_found_curse_revenue_distributed }
+			has_state_flag = riches_found_resource_curse_active
+			NOT = { has_state_flag = riches_found_curse_revenue_cooldown }
 		}
 	}
 	target_root_trigger = {
@@ -5646,8 +5654,8 @@ decision_riches_found_curse_distribute_revenue = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_resource_curse
-			NOT = { has_state_flag = riches_found_curse_revenue_distributed }
+			has_state_flag = riches_found_resource_curse_active
+			NOT = { has_state_flag = riches_found_curse_revenue_cooldown }
 		}
 	}
 	custom_cost_trigger = {
@@ -5674,6 +5682,9 @@ decision_riches_found_curse_distribute_revenue = {
 
 			FROM = {
 				set_state_flag = riches_found_curse_revenue_distributed
+				set_temp_variable = { riches_found_containment_days = constant:riches_found_containment.revenue_cooldown_days }
+				set_state_flag = { flag = riches_found_curse_revenue_cooldown days = riches_found_containment_days }
+				riches_found_record_revenue_settlement = yes
 				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_15 }
 				add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_8 }
 				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.negative_8 }
@@ -5690,6 +5701,7 @@ decision_riches_found_curse_distribute_revenue = {
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
+		modifier = { factor = constant:riches_found_decision_ai.urgent_factor FROM = { check_variable = { riches_found_curse_next_step = constant:riches_found_containment_step.curse_revenue } } }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor is_major = yes }
 			modifier = { factor = constant:riches_found_decision_ai.urgent_factor has_war = yes }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor FROM = { has_state_flag = riches_found_multiple_mine_priority } }
@@ -5708,7 +5720,7 @@ decision_riches_found_curse_stabilization_diversification = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_resource_curse
+			has_state_flag = riches_found_resource_curse_active
 			NOT = { has_state_flag = riches_found_curse_diversification_started }
 		}
 	}
@@ -5719,7 +5731,7 @@ decision_riches_found_curse_stabilization_diversification = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_resource_curse
+			has_state_flag = riches_found_resource_curse_active
 			NOT = { has_state_flag = riches_found_curse_diversification_started }
 		}
 		ROOT = { riches_found_country_has_free_mission_slot = yes }
@@ -5734,7 +5746,7 @@ decision_riches_found_curse_stabilization_diversification = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_resource_curse
+			has_state_flag = riches_found_resource_curse_active
 			NOT = { has_state_flag = riches_found_curse_diversification_started }
 		}
 	}
@@ -5770,6 +5782,7 @@ decision_riches_found_curse_stabilization_diversification = {
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
+		modifier = { factor = constant:riches_found_decision_ai.urgent_factor FROM = { check_variable = { riches_found_curse_next_step = constant:riches_found_containment_step.curse_fund } } }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor is_major = yes }
 			modifier = { factor = constant:riches_found_decision_ai.urgent_factor has_war = yes }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor FROM = { has_state_flag = riches_found_multiple_mine_priority } }
@@ -5787,7 +5800,7 @@ decision_riches_found_curse_tolerate_corruption = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_resource_curse
+			has_state_flag = riches_found_resource_curse_active
 			NOT = { has_state_flag = riches_found_curse_corruption_tolerated }
 		}
 	}
@@ -5797,7 +5810,7 @@ decision_riches_found_curse_tolerate_corruption = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_resource_curse
+			has_state_flag = riches_found_resource_curse_active
 			NOT = { has_state_flag = riches_found_curse_corruption_tolerated }
 		}
 	}
@@ -5811,7 +5824,7 @@ decision_riches_found_curse_tolerate_corruption = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_resource_curse
+			has_state_flag = riches_found_resource_curse_active
 			NOT = { has_state_flag = riches_found_curse_corruption_tolerated }
 		}
 	}
@@ -5842,7 +5855,11 @@ decision_riches_found_curse_tolerate_corruption = {
 				add_to_variable = { riches_found_illicit_capture = constant:riches_found_action_delta.positive_20 }
 				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_10 }
 			}
-			add_political_power = constant:riches_found_action_delta.positive_12
+			if = {
+				limit = { FROM = { NOT = { has_state_flag = riches_found_curse_corruption_paid } } }
+				add_political_power = constant:riches_found_action_delta.positive_12
+				FROM = { set_state_flag = riches_found_curse_corruption_paid }
+			}
 			riches_found_reconcile_controller = yes
 			riches_found_refresh_mine_state = yes
 
@@ -5854,6 +5871,7 @@ decision_riches_found_curse_tolerate_corruption = {
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
+		modifier = { factor = constant:riches_found_decision_ai.low_factor FROM = { check_variable = { var = riches_found_curse_containment value = constant:riches_found_value.zero compare = greater_than } } }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor is_major = yes }
 			modifier = { factor = constant:riches_found_decision_ai.urgent_factor has_war = yes }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor FROM = { has_state_flag = riches_found_multiple_mine_priority } }
@@ -5871,7 +5889,7 @@ decision_riches_found_curse_private_interests = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_resource_curse
+			has_state_flag = riches_found_resource_curse_active
 			NOT = { has_state_flag = riches_found_curse_private_dominance }
 		}
 	}
@@ -5881,7 +5899,7 @@ decision_riches_found_curse_private_interests = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_resource_curse
+			has_state_flag = riches_found_resource_curse_active
 			NOT = { has_state_flag = riches_found_curse_private_dominance }
 		}
 	}
@@ -5895,7 +5913,7 @@ decision_riches_found_curse_private_interests = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_resource_curse
+			has_state_flag = riches_found_resource_curse_active
 			NOT = { has_state_flag = riches_found_curse_private_dominance }
 		}
 	}
@@ -5923,6 +5941,7 @@ decision_riches_found_curse_private_interests = {
 
 			FROM = {
 				set_state_flag = riches_found_curse_private_dominance
+				clr_state_flag = riches_found_curse_state_extraction
 				set_state_flag = riches_found_private_enclave
 				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.negative_12 }
 				add_to_variable = { riches_found_illicit_capture = constant:riches_found_action_delta.positive_18 }
@@ -5940,6 +5959,7 @@ decision_riches_found_curse_private_interests = {
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
+		modifier = { factor = constant:riches_found_decision_ai.low_factor FROM = { check_variable = { var = riches_found_curse_containment value = constant:riches_found_value.zero compare = greater_than } } }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor is_major = yes }
 			modifier = { factor = constant:riches_found_decision_ai.urgent_factor has_war = yes }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor FROM = { has_state_flag = riches_found_multiple_mine_priority } }
@@ -5958,7 +5978,7 @@ decision_riches_found_curse_independent_revenue_authority = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_resource_curse
+			has_state_flag = riches_found_resource_curse_active
 			NOT = { has_state_flag = riches_found_curse_independent_authority }
 			NOT = { has_state_flag = riches_found_patronage_tolerated }
 		}
@@ -5969,7 +5989,7 @@ decision_riches_found_curse_independent_revenue_authority = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_resource_curse
+			has_state_flag = riches_found_resource_curse_active
 			NOT = { has_state_flag = riches_found_curse_independent_authority }
 			NOT = { has_state_flag = riches_found_patronage_tolerated }
 		}
@@ -5984,7 +6004,7 @@ decision_riches_found_curse_independent_revenue_authority = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_resource_curse
+			has_state_flag = riches_found_resource_curse_active
 			NOT = { has_state_flag = riches_found_curse_independent_authority }
 			NOT = { has_state_flag = riches_found_patronage_tolerated }
 		}
@@ -6013,6 +6033,8 @@ decision_riches_found_curse_independent_revenue_authority = {
 
 			FROM = {
 				set_state_flag = riches_found_curse_independent_authority
+				clr_state_flag = riches_found_curse_corruption_tolerated
+				clr_state_flag = riches_found_patronage_tolerated
 				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_18 }
 				add_to_variable = { riches_found_illicit_capture = constant:riches_found_action_delta.negative_20 }
 				add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_6 }
@@ -6029,6 +6051,7 @@ decision_riches_found_curse_independent_revenue_authority = {
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
+		modifier = { factor = constant:riches_found_decision_ai.urgent_factor FROM = { OR = { check_variable = { riches_found_curse_next_step = constant:riches_found_containment_step.curse_audit } check_variable = { riches_found_curse_next_step = constant:riches_found_containment_step.curse_administration } check_variable = { riches_found_curse_next_step = constant:riches_found_containment_step.curse_breaker } } } }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor is_major = yes }
 			modifier = { factor = constant:riches_found_decision_ai.urgent_factor has_war = yes }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor FROM = { has_state_flag = riches_found_multiple_mine_priority } }
@@ -6046,7 +6069,7 @@ decision_riches_found_gold_share_revenue = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_gold_disease
+			has_state_flag = riches_found_gold_disease_active
 			NOT = { has_state_flag = riches_found_gold_revenue_shared }
 		}
 	}
@@ -6056,7 +6079,7 @@ decision_riches_found_gold_share_revenue = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_gold_disease
+			has_state_flag = riches_found_gold_disease_active
 			NOT = { has_state_flag = riches_found_gold_revenue_shared }
 		}
 	}
@@ -6070,7 +6093,7 @@ decision_riches_found_gold_share_revenue = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_gold_disease
+			has_state_flag = riches_found_gold_disease_active
 			NOT = { has_state_flag = riches_found_gold_revenue_shared }
 		}
 	}
@@ -6097,7 +6120,9 @@ decision_riches_found_gold_share_revenue = {
 			}
 
 			FROM = {
-				set_state_flag = riches_found_gold_revenue_shared
+				set_temp_variable = { riches_found_containment_days = constant:riches_found_containment.measure_days }
+				set_state_flag = { flag = riches_found_gold_revenue_shared days = riches_found_containment_days }
+				riches_found_record_revenue_settlement = yes
 				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_10 }
 				add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_8 }
 				add_to_variable = { riches_found_gold_disease_pressure = constant:riches_found_action_delta.negative_15 }
@@ -6114,6 +6139,7 @@ decision_riches_found_gold_share_revenue = {
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
+		modifier = { factor = constant:riches_found_decision_ai.urgent_factor FROM = { check_variable = { riches_found_gold_next_step = constant:riches_found_containment_step.gold_payment } } }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor is_major = yes }
 			modifier = { factor = constant:riches_found_decision_ai.urgent_factor has_war = yes }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor FROM = { has_state_flag = riches_found_multiple_mine_priority } }
@@ -6132,7 +6158,7 @@ decision_riches_found_gold_replace_workforce = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_gold_disease
+			has_state_flag = riches_found_gold_disease_active
 			NOT = { has_state_flag = riches_found_gold_workforce_replaced }
 		}
 	}
@@ -6142,7 +6168,7 @@ decision_riches_found_gold_replace_workforce = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_gold_disease
+			has_state_flag = riches_found_gold_disease_active
 			NOT = { has_state_flag = riches_found_gold_workforce_replaced }
 		}
 	}
@@ -6156,7 +6182,7 @@ decision_riches_found_gold_replace_workforce = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_gold_disease
+			has_state_flag = riches_found_gold_disease_active
 			NOT = { has_state_flag = riches_found_gold_workforce_replaced }
 		}
 	}
@@ -6184,7 +6210,9 @@ decision_riches_found_gold_replace_workforce = {
 			}
 
 			FROM = {
-				set_state_flag = riches_found_gold_workforce_replaced
+				set_temp_variable = { riches_found_containment_days = constant:riches_found_containment.workforce_cycle_days }
+				set_state_flag = { flag = riches_found_gold_workforce_replaced days = riches_found_containment_days }
+				clr_state_flag = riches_found_gold_sick_guards
 				add_to_variable = { riches_found_gold_disease_pressure = constant:riches_found_action_delta.negative_18 }
 				add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_2 }
 				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.negative_4 }
@@ -6202,6 +6230,7 @@ decision_riches_found_gold_replace_workforce = {
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
+		modifier = { factor = constant:riches_found_decision_ai.urgent_factor FROM = { check_variable = { riches_found_gold_next_step = constant:riches_found_containment_step.gold_teams } } }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor is_major = yes }
 			modifier = { factor = constant:riches_found_decision_ai.urgent_factor has_war = yes }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor FROM = { has_state_flag = riches_found_multiple_mine_priority } }
@@ -6219,7 +6248,7 @@ decision_riches_found_gold_military_control = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_gold_disease
+			has_state_flag = riches_found_gold_disease_active
 			riches_found_state_has_supplied_force = yes
 			NOT = { has_state_flag = riches_found_gold_military_control }
 		}
@@ -6230,7 +6259,7 @@ decision_riches_found_gold_military_control = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_gold_disease
+			has_state_flag = riches_found_gold_disease_active
 			riches_found_state_has_supplied_force = yes
 			NOT = { has_state_flag = riches_found_gold_military_control }
 		}
@@ -6245,7 +6274,7 @@ decision_riches_found_gold_military_control = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_gold_disease
+			has_state_flag = riches_found_gold_disease_active
 			riches_found_state_has_supplied_force = yes
 			NOT = { has_state_flag = riches_found_gold_military_control }
 		}
@@ -6274,7 +6303,10 @@ decision_riches_found_gold_military_control = {
 			}
 
 			FROM = {
-				set_state_flag = riches_found_gold_military_control
+				set_temp_variable = { riches_found_containment_days = constant:riches_found_containment.measure_days }
+				set_state_flag = { flag = riches_found_gold_military_control days = riches_found_containment_days }
+				clr_state_flag = riches_found_gold_sick_gang_control
+				set_state_flag = riches_found_confiscated_material
 				add_to_variable = { riches_found_gold_disease_pressure = constant:riches_found_action_delta.negative_12 }
 				add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_15 }
 				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.negative_12 }
@@ -6292,6 +6324,7 @@ decision_riches_found_gold_military_control = {
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
+		modifier = { factor = constant:riches_found_decision_ai.high_factor FROM = { check_variable = { riches_found_gold_next_step = constant:riches_found_containment_step.gold_material } } }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor is_major = yes }
 			modifier = { factor = constant:riches_found_decision_ai.urgent_factor has_war = yes }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor FROM = { has_state_flag = riches_found_multiple_mine_priority } }
@@ -6309,7 +6342,7 @@ decision_riches_found_gold_quarantine = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_gold_disease
+			has_state_flag = riches_found_gold_disease_active
 			riches_found_state_can_control_access = yes
 			NOT = { has_state_flag = riches_found_gold_quarantine }
 		}
@@ -6320,7 +6353,7 @@ decision_riches_found_gold_quarantine = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_gold_disease
+			has_state_flag = riches_found_gold_disease_active
 			riches_found_state_can_control_access = yes
 			NOT = { has_state_flag = riches_found_gold_quarantine }
 		}
@@ -6335,7 +6368,7 @@ decision_riches_found_gold_quarantine = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_gold_disease
+			has_state_flag = riches_found_gold_disease_active
 			riches_found_state_can_control_access = yes
 			NOT = { has_state_flag = riches_found_gold_quarantine }
 		}
@@ -6364,7 +6397,8 @@ decision_riches_found_gold_quarantine = {
 			}
 
 			FROM = {
-				set_state_flag = riches_found_gold_quarantine
+				set_temp_variable = { riches_found_containment_days = constant:riches_found_containment.measure_days }
+				set_state_flag = { flag = riches_found_gold_quarantine days = riches_found_containment_days }
 				add_to_variable = { riches_found_gold_disease_pressure = constant:riches_found_action_delta.negative_15 }
 				add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.negative_4 }
 			}
@@ -6381,6 +6415,7 @@ decision_riches_found_gold_quarantine = {
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
+		modifier = { factor = constant:riches_found_decision_ai.urgent_factor FROM = { check_variable = { riches_found_gold_next_step = constant:riches_found_containment_step.gold_movement } } }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor is_major = yes }
 			modifier = { factor = constant:riches_found_decision_ai.urgent_factor has_war = yes }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor FROM = { has_state_flag = riches_found_multiple_mine_priority } }
@@ -6398,7 +6433,7 @@ decision_riches_found_gold_close_temporary = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_gold_disease
+			has_state_flag = riches_found_gold_disease_active
 			NOT = { has_state_flag = riches_found_gold_closed }
 			NOT = { has_state_flag = riches_found_mine_closed }
 			NOT = { has_state_flag = riches_found_reopen_cooldown }
@@ -6410,7 +6445,7 @@ decision_riches_found_gold_close_temporary = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_gold_disease
+			has_state_flag = riches_found_gold_disease_active
 			NOT = { has_state_flag = riches_found_gold_closed }
 			NOT = { has_state_flag = riches_found_mine_closed }
 			NOT = { has_state_flag = riches_found_reopen_cooldown }
@@ -6426,7 +6461,7 @@ decision_riches_found_gold_close_temporary = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_gold_disease
+			has_state_flag = riches_found_gold_disease_active
 			NOT = { has_state_flag = riches_found_gold_closed }
 			NOT = { has_state_flag = riches_found_mine_closed }
 			NOT = { has_state_flag = riches_found_reopen_cooldown }
@@ -6455,7 +6490,8 @@ decision_riches_found_gold_close_temporary = {
 			}
 
 			FROM = {
-				set_state_flag = riches_found_gold_closed
+				set_temp_variable = { riches_found_containment_days = constant:riches_found_containment.measure_days }
+				set_state_flag = { flag = riches_found_gold_closed days = riches_found_containment_days }
 				add_to_variable = { riches_found_gold_disease_pressure = constant:riches_found_action_delta.negative_20 }
 				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.negative_20 }
 				riches_found_begin_temporary_closure = yes
@@ -6472,6 +6508,7 @@ decision_riches_found_gold_close_temporary = {
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
+		modifier = { factor = constant:riches_found_decision_ai.urgent_factor FROM = { check_variable = { riches_found_gold_next_step = constant:riches_found_containment_step.gold_breaker } } }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor is_major = yes }
 			modifier = { factor = constant:riches_found_decision_ai.urgent_factor has_war = yes }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor FROM = { has_state_flag = riches_found_multiple_mine_priority } }
@@ -6489,7 +6526,7 @@ decision_riches_found_gold_seal_depths = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_gold_disease
+			has_state_flag = riches_found_gold_disease_active
 			NOT = { has_state_flag = riches_found_gold_depths_sealed }
 		}
 	}
@@ -6499,7 +6536,7 @@ decision_riches_found_gold_seal_depths = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_gold_disease
+			has_state_flag = riches_found_gold_disease_active
 			NOT = { has_state_flag = riches_found_gold_depths_sealed }
 		}
 	}
@@ -6513,7 +6550,7 @@ decision_riches_found_gold_seal_depths = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_gold_disease
+			has_state_flag = riches_found_gold_disease_active
 			NOT = { has_state_flag = riches_found_gold_depths_sealed }
 		}
 	}
@@ -6543,6 +6580,13 @@ decision_riches_found_gold_seal_depths = {
 			FROM = {
 				set_state_flag = riches_found_gold_depths_sealed
 				set_state_flag = riches_found_depths_sealed
+				if = {
+					limit = {
+						NOT = { has_state_flag = riches_found_mine_partial_seal }
+						riches_found_mine_can_begin_temporary_closure = yes
+					}
+					riches_found_begin_partial_seal = yes
+				}
 				add_to_variable = { riches_found_gold_disease_pressure = constant:riches_found_action_delta.negative_22 }
 				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.negative_18 }
 			}
@@ -6559,6 +6603,7 @@ decision_riches_found_gold_seal_depths = {
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
+		modifier = { factor = constant:riches_found_decision_ai.high_factor FROM = { check_variable = { riches_found_gold_next_step = constant:riches_found_containment_step.gold_pressure } } }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor is_major = yes }
 			modifier = { factor = constant:riches_found_decision_ai.urgent_factor has_war = yes }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor FROM = { has_state_flag = riches_found_multiple_mine_priority } }
@@ -6576,7 +6621,7 @@ decision_riches_found_gold_controlled_access = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_gold_disease
+			has_state_flag = riches_found_gold_disease_active
 			riches_found_state_can_control_access = yes
 			NOT = { has_state_flag = riches_found_gold_controlled_access }
 		}
@@ -6587,7 +6632,7 @@ decision_riches_found_gold_controlled_access = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_gold_disease
+			has_state_flag = riches_found_gold_disease_active
 			riches_found_state_can_control_access = yes
 			NOT = { has_state_flag = riches_found_gold_controlled_access }
 		}
@@ -6602,7 +6647,7 @@ decision_riches_found_gold_controlled_access = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_gold_disease
+			has_state_flag = riches_found_gold_disease_active
 			riches_found_state_can_control_access = yes
 			NOT = { has_state_flag = riches_found_gold_controlled_access }
 		}
@@ -6631,7 +6676,8 @@ decision_riches_found_gold_controlled_access = {
 			}
 
 			FROM = {
-				set_state_flag = riches_found_gold_controlled_access
+				set_temp_variable = { riches_found_containment_days = constant:riches_found_containment.measure_days }
+				set_state_flag = { flag = riches_found_gold_controlled_access days = riches_found_containment_days }
 				add_to_variable = { riches_found_gold_disease_pressure = constant:riches_found_action_delta.negative_8 }
 				add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_6 }
 			}
@@ -6648,6 +6694,7 @@ decision_riches_found_gold_controlled_access = {
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
+		modifier = { factor = constant:riches_found_decision_ai.urgent_factor FROM = { check_variable = { riches_found_gold_next_step = constant:riches_found_containment_step.gold_movement } } }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor is_major = yes }
 			modifier = { factor = constant:riches_found_decision_ai.urgent_factor has_war = yes }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor FROM = { has_state_flag = riches_found_multiple_mine_priority } }
@@ -6665,9 +6712,8 @@ decision_riches_found_gold_destroy_confiscated_material = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_gold_disease
+			has_state_flag = riches_found_gold_disease_active
 			has_state_flag = riches_found_confiscated_material
-			NOT = { has_state_flag = riches_found_confiscated_material_destroyed }
 		}
 	}
 	available = {
@@ -6676,9 +6722,8 @@ decision_riches_found_gold_destroy_confiscated_material = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_gold_disease
+			has_state_flag = riches_found_gold_disease_active
 			has_state_flag = riches_found_confiscated_material
-			NOT = { has_state_flag = riches_found_confiscated_material_destroyed }
 		}
 	}
 	target_root_trigger = {
@@ -6691,9 +6736,8 @@ decision_riches_found_gold_destroy_confiscated_material = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_gold_disease
+			has_state_flag = riches_found_gold_disease_active
 			has_state_flag = riches_found_confiscated_material
-			NOT = { has_state_flag = riches_found_confiscated_material_destroyed }
 		}
 	}
 	custom_cost_trigger = {
@@ -6721,6 +6765,11 @@ decision_riches_found_gold_destroy_confiscated_material = {
 
 			FROM = {
 				set_state_flag = riches_found_confiscated_material_destroyed
+				clr_state_flag = riches_found_confiscated_material
+				if = {
+					limit = { has_state_flag = riches_found_demons_beneath_mine_active }
+					add_to_variable = { riches_found_supernatural_pressure = constant:riches_found_containment.destroy_material_supernatural_add }
+				}
 				add_to_variable = { riches_found_gold_disease_pressure = constant:riches_found_action_delta.negative_18 }
 				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.negative_6 }
 			}
@@ -6737,6 +6786,7 @@ decision_riches_found_gold_destroy_confiscated_material = {
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
+		modifier = { factor = constant:riches_found_decision_ai.urgent_factor FROM = { check_variable = { riches_found_gold_next_step = constant:riches_found_containment_step.gold_material } } }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor is_major = yes }
 			modifier = { factor = constant:riches_found_decision_ai.urgent_factor has_war = yes }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor FROM = { has_state_flag = riches_found_multiple_mine_priority } }
@@ -6850,7 +6900,7 @@ decision_riches_found_demons_evacuate_district = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_demons
+			has_state_flag = riches_found_demons_beneath_mine_active
 			OR = { has_state_flag = riches_found_severe_collapse has_state_flag = riches_found_supernatural_crisis }
 			NOT = { has_state_flag = riches_found_demons_district_evacuated }
 			NOT = { has_state_flag = riches_found_demons_evacuation_preparation_pending }
@@ -6865,7 +6915,7 @@ decision_riches_found_demons_evacuate_district = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_demons
+			has_state_flag = riches_found_demons_beneath_mine_active
 			OR = { has_state_flag = riches_found_severe_collapse has_state_flag = riches_found_supernatural_crisis }
 			NOT = { has_state_flag = riches_found_demons_district_evacuated }
 			NOT = { has_state_flag = riches_found_demons_evacuation_preparation_pending }
@@ -6882,7 +6932,7 @@ decision_riches_found_demons_evacuate_district = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_demons
+			has_state_flag = riches_found_demons_beneath_mine_active
 			OR = { has_state_flag = riches_found_severe_collapse has_state_flag = riches_found_supernatural_crisis }
 			NOT = { has_state_flag = riches_found_demons_district_evacuated }
 			NOT = { has_state_flag = riches_found_demons_evacuation_preparation_pending }
@@ -6938,6 +6988,7 @@ decision_riches_found_demons_evacuate_district = {
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
+		modifier = { factor = constant:riches_found_decision_ai.urgent_factor FROM = { check_variable = { riches_found_demons_next_step = constant:riches_found_containment_step.demons_evacuation } } }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor is_major = yes }
 			modifier = { factor = constant:riches_found_decision_ai.urgent_factor has_war = yes }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor FROM = { has_state_flag = riches_found_multiple_mine_priority } }
@@ -6956,7 +7007,7 @@ decision_riches_found_demons_military_purge = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_demons
+			has_state_flag = riches_found_demons_beneath_mine_active
 			riches_found_state_has_supplied_force = yes
 			NOT = { has_state_flag = riches_found_demons_military_purge }
 		}
@@ -6967,7 +7018,7 @@ decision_riches_found_demons_military_purge = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_demons
+			has_state_flag = riches_found_demons_beneath_mine_active
 			riches_found_state_has_supplied_force = yes
 			NOT = { has_state_flag = riches_found_demons_military_purge }
 		}
@@ -6982,7 +7033,7 @@ decision_riches_found_demons_military_purge = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_demons
+			has_state_flag = riches_found_demons_beneath_mine_active
 			riches_found_state_has_supplied_force = yes
 			NOT = { has_state_flag = riches_found_demons_military_purge }
 		}
@@ -7048,7 +7099,7 @@ decision_riches_found_demons_religious_assistance = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_demons
+			has_state_flag = riches_found_demons_beneath_mine_active
 			NOT = { has_state_flag = riches_found_demons_religious_assistance }
 		}
 	}
@@ -7058,7 +7109,7 @@ decision_riches_found_demons_religious_assistance = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_demons
+			has_state_flag = riches_found_demons_beneath_mine_active
 			NOT = { has_state_flag = riches_found_demons_religious_assistance }
 		}
 	}
@@ -7072,7 +7123,7 @@ decision_riches_found_demons_religious_assistance = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_demons
+			has_state_flag = riches_found_demons_beneath_mine_active
 			NOT = { has_state_flag = riches_found_demons_religious_assistance }
 		}
 	}
@@ -7099,7 +7150,9 @@ decision_riches_found_demons_religious_assistance = {
 			}
 
 			FROM = {
-				set_state_flag = riches_found_demons_religious_assistance
+				set_temp_variable = { riches_found_containment_days = constant:riches_found_containment.assistance_days }
+				set_state_flag = { flag = riches_found_demons_religious_assistance days = riches_found_containment_days }
+				set_state_flag = riches_found_demons_religious_assistance_history
 				add_to_variable = { riches_found_supernatural_pressure = constant:riches_found_action_delta.negative_15 }
 				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_8 }
 				riches_found_record_achievement_assistance = yes
@@ -7116,6 +7169,7 @@ decision_riches_found_demons_religious_assistance = {
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
+		modifier = { factor = constant:riches_found_decision_ai.urgent_factor FROM = { check_variable = { riches_found_demons_next_step = constant:riches_found_containment_step.demons_assistance } } }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor is_major = yes }
 			modifier = { factor = constant:riches_found_decision_ai.urgent_factor has_war = yes }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor FROM = { has_state_flag = riches_found_multiple_mine_priority } }
@@ -7134,7 +7188,7 @@ decision_riches_found_demons_occult_assistance = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_demons
+			has_state_flag = riches_found_demons_beneath_mine_active
 			NOT = { has_state_flag = riches_found_demons_occult_assistance }
 		}
 	}
@@ -7144,7 +7198,7 @@ decision_riches_found_demons_occult_assistance = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_demons
+			has_state_flag = riches_found_demons_beneath_mine_active
 			NOT = { has_state_flag = riches_found_demons_occult_assistance }
 		}
 	}
@@ -7158,7 +7212,7 @@ decision_riches_found_demons_occult_assistance = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_demons
+			has_state_flag = riches_found_demons_beneath_mine_active
 			NOT = { has_state_flag = riches_found_demons_occult_assistance }
 		}
 	}
@@ -7185,7 +7239,9 @@ decision_riches_found_demons_occult_assistance = {
 			}
 
 			FROM = {
-				set_state_flag = riches_found_demons_occult_assistance
+				set_temp_variable = { riches_found_containment_days = constant:riches_found_containment.assistance_days }
+				set_state_flag = { flag = riches_found_demons_occult_assistance days = riches_found_containment_days }
+				set_state_flag = riches_found_demons_occult_assistance_history
 				add_to_variable = { riches_found_supernatural_pressure = constant:riches_found_action_delta.negative_20 }
 				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.negative_4 }
 				add_to_variable = { riches_found_illicit_capture = constant:riches_found_action_delta.positive_5 }
@@ -7202,6 +7258,7 @@ decision_riches_found_demons_occult_assistance = {
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
+		modifier = { factor = constant:riches_found_decision_ai.urgent_factor FROM = { check_variable = { riches_found_demons_next_step = constant:riches_found_containment_step.demons_assistance } } }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor is_major = yes }
 			modifier = { factor = constant:riches_found_decision_ai.urgent_factor has_war = yes }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor FROM = { has_state_flag = riches_found_multiple_mine_priority } }
@@ -7220,7 +7277,7 @@ decision_riches_found_demons_scientific_assistance = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_demons
+			has_state_flag = riches_found_demons_beneath_mine_active
 			NOT = { has_state_flag = riches_found_demons_scientific_assistance }
 		}
 	}
@@ -7230,7 +7287,7 @@ decision_riches_found_demons_scientific_assistance = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_demons
+			has_state_flag = riches_found_demons_beneath_mine_active
 			NOT = { has_state_flag = riches_found_demons_scientific_assistance }
 		}
 	}
@@ -7244,7 +7301,7 @@ decision_riches_found_demons_scientific_assistance = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_demons
+			has_state_flag = riches_found_demons_beneath_mine_active
 			NOT = { has_state_flag = riches_found_demons_scientific_assistance }
 		}
 	}
@@ -7272,7 +7329,9 @@ decision_riches_found_demons_scientific_assistance = {
 			}
 
 			FROM = {
-				set_state_flag = riches_found_demons_scientific_assistance
+				set_temp_variable = { riches_found_containment_days = constant:riches_found_containment.assistance_days }
+				set_state_flag = { flag = riches_found_demons_scientific_assistance days = riches_found_containment_days }
+				set_state_flag = riches_found_demons_scientific_assistance_history
 				add_to_variable = { riches_found_supernatural_pressure = constant:riches_found_action_delta.negative_16 }
 				add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.positive_5 }
 				riches_found_record_achievement_assistance = yes
@@ -7290,6 +7349,7 @@ decision_riches_found_demons_scientific_assistance = {
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
+		modifier = { factor = constant:riches_found_decision_ai.urgent_factor FROM = { check_variable = { riches_found_demons_next_step = constant:riches_found_containment_step.demons_assistance } } }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor is_major = yes }
 			modifier = { factor = constant:riches_found_decision_ai.urgent_factor has_war = yes }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor FROM = { has_state_flag = riches_found_multiple_mine_priority } }
@@ -7307,7 +7367,7 @@ decision_riches_found_demons_controlled_exploitation = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_demons
+			has_state_flag = riches_found_demons_beneath_mine_active
 			riches_found_state_can_control_access = yes
 			NOT = { has_state_flag = riches_found_demons_controlled_exploitation }
 		}
@@ -7318,7 +7378,7 @@ decision_riches_found_demons_controlled_exploitation = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_demons
+			has_state_flag = riches_found_demons_beneath_mine_active
 			riches_found_state_can_control_access = yes
 			NOT = { has_state_flag = riches_found_demons_controlled_exploitation }
 		}
@@ -7333,7 +7393,7 @@ decision_riches_found_demons_controlled_exploitation = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_demons
+			has_state_flag = riches_found_demons_beneath_mine_active
 			riches_found_state_can_control_access = yes
 			NOT = { has_state_flag = riches_found_demons_controlled_exploitation }
 		}
@@ -7399,7 +7459,7 @@ decision_riches_found_demons_make_agreement = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_demons
+			has_state_flag = riches_found_demons_beneath_mine_active
 			has_state_flag = riches_found_supernatural_confirmed
 			NOT = { has_state_flag = riches_found_demons_agreement }
 		}
@@ -7410,7 +7470,7 @@ decision_riches_found_demons_make_agreement = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_demons
+			has_state_flag = riches_found_demons_beneath_mine_active
 			has_state_flag = riches_found_supernatural_confirmed
 			NOT = { has_state_flag = riches_found_demons_agreement }
 		}
@@ -7425,7 +7485,7 @@ decision_riches_found_demons_make_agreement = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_demons
+			has_state_flag = riches_found_demons_beneath_mine_active
 			has_state_flag = riches_found_supernatural_confirmed
 			NOT = { has_state_flag = riches_found_demons_agreement }
 		}

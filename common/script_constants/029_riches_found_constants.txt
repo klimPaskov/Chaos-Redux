@@ -44,6 +44,9 @@ riches_found_report = {
 	gilded_sovereignty = 111
 	bottomless_account = 112
 	gold_incident = 120
+	curse_contained = 121
+	gold_contained = 122
+	demons_contained = 123
 	supernatural_incident = 130
 }
 
@@ -1218,4 +1221,71 @@ riches_found_closure = {
 	reopen_pressure_maximum = 60
 	reopen_legitimacy_add = 3
 	reopen_cooldown_days = 180
+}
+
+# Evolution containment. Each active evolution keeps a per-mine progress value
+# that the controller pulse raises while enough of the specification's reform
+# or containment conditions hold, and lowers when they break.
+riches_found_containment = {
+	schema = { any_key = yes data = fixed_point }
+	progress_complete = 100
+	step_gain = 3
+	decay = -10
+	break_decay = -20
+	curse_minimum_conditions = 5
+	gold_minimum_conditions = 4
+	demons_minimum_conditions = 4
+	measure_days = 180
+	assistance_days = 365
+	workforce_cycle_days = 365
+	revenue_cycle_days = 365
+	revenue_cooldown_days = 180
+	gold_active_pressure_growth = 4
+	gold_contained_pressure_relief = -20
+	gold_susceptibility_exposure = 3
+	curse_contained_legitimacy = 10
+	curse_contained_capture_relief = -15
+	demons_contained_supernatural_relief = -20
+	destroy_material_supernatural_add = 5
+}
+
+# Containment track and next-step identifiers read by the category header.
+riches_found_containment_step = {
+	schema = { any_key = yes data = int }
+	none = 0
+	curse_audit = 11
+	curse_public_terms = 12
+	curse_disclosure = 13
+	curse_revenue = 14
+	curse_fund = 15
+	curse_pressure = 16
+	curse_security = 17
+	curse_administration = 18
+	gold_pressure = 21
+	gold_movement = 22
+	gold_payment = 23
+	gold_teams = 24
+	gold_material = 25
+	gold_repair = 26
+	demons_pressure = 31
+	demons_sealing = 32
+	demons_evacuation = 33
+	demons_assistance = 34
+	demons_extraction = 35
+	demons_guard = 36
+	demons_integrity = 37
+	maintain = 90
+	curse_breaker = 91
+	gold_breaker = 92
+	demons_breaker = 93
+}
+
+# Demons Beneath the Mine containment end states.
+riches_found_demons_end_state = {
+	schema = { any_key = yes data = int }
+	none = 0
+	strict_limits = 1
+	guarded_district = 2
+	monitored_closure = 3
+	protected_closure = 4
 }
