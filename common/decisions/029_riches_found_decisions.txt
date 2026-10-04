@@ -85,8 +85,7 @@ decision_riches_found_survey = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -179,15 +178,29 @@ decision_riches_found_claim_register = {
 		}
 	}
 	remove_effect = {
-		FROM = {
-			set_state_flag = riches_found_claims_registered
-			add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.positive_7 }
-			add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_6 }
-			add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.negative_4 }
-			add_to_variable = { riches_found_illicit_capture = constant:riches_found_action_delta.positive_8 }
+		# The staged result lands only while this country still holds the
+		# registered, nonterminal mine; otherwise every cost is returned.
+		if = {
+			limit = {
+				FROM = {
+					riches_found_mine_still_valid_for_payer = yes
+				}
+			}
+			FROM = {
+				set_state_flag = riches_found_claims_registered
+				add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.positive_7 }
+				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_6 }
+				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.negative_4 }
+				add_to_variable = { riches_found_illicit_capture = constant:riches_found_action_delta.positive_8 }
+			}
+			riches_found_reconcile_controller = yes
+			riches_found_refresh_mine_state = yes
 		}
-		riches_found_reconcile_controller = yes
-		riches_found_refresh_mine_state = yes
+		else = {
+			add_political_power = constant:riches_found_decision_cost.pp_light
+			add_manpower = constant:riches_found_decision_cost.manpower_standard
+			add_equipment_to_stockpile = { type = support_equipment amount = constant:riches_found_decision_cost.support_light }
+		}
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
@@ -260,15 +273,29 @@ decision_riches_found_claim_freeze = {
 		}
 	}
 	remove_effect = {
-		FROM = {
-			set_state_flag = riches_found_claims_frozen
-			add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.negative_15 }
-			add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.negative_5 }
-			add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_5 }
-			add_to_variable = { riches_found_illicit_capture = constant:riches_found_action_delta.negative_8 }
+		# The staged result lands only while this country still holds the
+		# registered, nonterminal mine; otherwise every cost is returned.
+		if = {
+			limit = {
+				FROM = {
+					riches_found_mine_still_valid_for_payer = yes
+				}
+			}
+			FROM = {
+				set_state_flag = riches_found_claims_frozen
+				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.negative_15 }
+				add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.negative_5 }
+				add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_5 }
+				add_to_variable = { riches_found_illicit_capture = constant:riches_found_action_delta.negative_8 }
+			}
+			riches_found_reconcile_controller = yes
+			riches_found_refresh_mine_state = yes
 		}
-		riches_found_reconcile_controller = yes
-		riches_found_refresh_mine_state = yes
+		else = {
+			add_political_power = constant:riches_found_decision_cost.pp_standard
+			add_command_power = constant:riches_found_decision_cost.command_light
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:riches_found_decision_cost.infantry_light }
+		}
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
@@ -345,14 +372,27 @@ decision_riches_found_recognize_local_claims = {
 		}
 	}
 	remove_effect = {
-		FROM = {
-			set_state_flag = riches_found_local_claims_recognized
-			add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_15 }
-			add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_10 }
-			add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.negative_3 }
+		# The staged result lands only while this country still holds the
+		# registered, nonterminal mine; otherwise every cost is returned.
+		if = {
+			limit = {
+				FROM = {
+					riches_found_mine_still_valid_for_payer = yes
+				}
+			}
+			FROM = {
+				set_state_flag = riches_found_local_claims_recognized
+				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_15 }
+				add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_10 }
+				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.negative_3 }
+			}
+			riches_found_reconcile_controller = yes
+			riches_found_refresh_mine_state = yes
 		}
-		riches_found_reconcile_controller = yes
-		riches_found_refresh_mine_state = yes
+		else = {
+			add_political_power = constant:riches_found_decision_cost.pp_light
+			add_manpower = constant:riches_found_decision_cost.manpower_light
+		}
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
@@ -426,14 +466,28 @@ decision_riches_found_reserve_deposit = {
 		}
 	}
 	remove_effect = {
-		FROM = {
-			set_state_flag = riches_found_state_reserve
-			add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.positive_4 }
-			add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_3 }
-			add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.negative_4 }
+		# The staged result lands only while this country still holds the
+		# registered, nonterminal mine; otherwise every cost is returned.
+		if = {
+			limit = {
+				FROM = {
+					riches_found_mine_still_valid_for_payer = yes
+				}
+			}
+			FROM = {
+				set_state_flag = riches_found_state_reserve
+				add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.positive_4 }
+				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_3 }
+				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.negative_4 }
+			}
+			riches_found_reconcile_controller = yes
+			riches_found_refresh_mine_state = yes
 		}
-		riches_found_reconcile_controller = yes
-		riches_found_refresh_mine_state = yes
+		else = {
+			add_political_power = constant:riches_found_decision_cost.pp_standard
+			add_manpower = constant:riches_found_decision_cost.manpower_light
+			add_equipment_to_stockpile = { type = support_equipment amount = constant:riches_found_decision_cost.support_light }
+		}
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
@@ -506,15 +560,28 @@ decision_riches_found_claims_court = {
 		}
 	}
 	remove_effect = {
-		FROM = {
-			set_state_flag = riches_found_claims_court_open
-			set_state_flag = riches_found_claims_resolved
-			clr_state_flag = riches_found_claims_unresolved
-			clr_state_flag = riches_found_armed_claimants
-			add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_2 }
+		# The staged result lands only while this country still holds the
+		# registered, nonterminal mine; otherwise every cost is returned.
+		if = {
+			limit = {
+				FROM = {
+					riches_found_mine_still_valid_for_payer = yes
+				}
+			}
+			FROM = {
+				set_state_flag = riches_found_claims_court_open
+				set_state_flag = riches_found_claims_resolved
+				clr_state_flag = riches_found_claims_unresolved
+				clr_state_flag = riches_found_armed_claimants
+				add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_2 }
+			}
+			riches_found_reconcile_controller = yes
+			riches_found_refresh_mine_state = yes
 		}
-		riches_found_reconcile_controller = yes
-		riches_found_refresh_mine_state = yes
+		else = {
+			add_political_power = constant:riches_found_decision_cost.pp_standard
+			add_manpower = constant:riches_found_decision_cost.manpower_standard
+		}
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
@@ -582,8 +649,7 @@ decision_riches_found_camp_administration = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -677,8 +743,7 @@ decision_riches_found_license_traders = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -765,8 +830,7 @@ decision_riches_found_local_labor = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -857,8 +921,7 @@ decision_riches_found_specialist_labor = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -950,8 +1013,7 @@ decision_riches_found_worker_cooperatives = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -1041,8 +1103,7 @@ decision_riches_found_sanitation = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -1140,13 +1201,28 @@ decision_riches_found_rail_spur = {
 		}
 	}
 	remove_effect = {
-		FROM = {
-			set_state_flag = riches_found_rail_route
-			add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.positive_12 }
-			add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_4 }
+		# The staged result lands only while this country still holds the
+		# registered, nonterminal mine; otherwise every cost is returned.
+		if = {
+			limit = {
+				FROM = {
+					riches_found_mine_still_valid_for_payer = yes
+				}
+			}
+			FROM = {
+				set_state_flag = riches_found_rail_route
+				add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.positive_12 }
+				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_4 }
+			}
+			riches_found_reconcile_controller = yes
+			riches_found_refresh_mine_state = yes
 		}
-		riches_found_reconcile_controller = yes
-		riches_found_refresh_mine_state = yes
+		else = {
+			add_political_power = constant:riches_found_decision_cost.pp_standard
+			add_equipment_to_stockpile = { type = support_equipment amount = constant:riches_found_decision_cost.support_standard }
+			add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:riches_found_decision_cost.motorized_standard }
+			add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:riches_found_decision_cost.train_standard }
+		}
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
@@ -1225,14 +1301,29 @@ decision_riches_found_port_route = {
 		}
 	}
 	remove_effect = {
-		FROM = {
-			set_state_flag = riches_found_port_route
-			add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.positive_12 }
-			add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_4 }
-			add_to_variable = { riches_found_foreign_claim_pressure = constant:riches_found_action_delta.positive_4 }
+		# The staged result lands only while this country still holds the
+		# registered, nonterminal mine; otherwise every cost is returned.
+		if = {
+			limit = {
+				FROM = {
+					riches_found_mine_still_valid_for_payer = yes
+				}
+			}
+			FROM = {
+				set_state_flag = riches_found_port_route
+				add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.positive_12 }
+				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_4 }
+				add_to_variable = { riches_found_foreign_claim_pressure = constant:riches_found_action_delta.positive_4 }
+			}
+			riches_found_reconcile_controller = yes
+			riches_found_refresh_mine_state = yes
 		}
-		riches_found_reconcile_controller = yes
-		riches_found_refresh_mine_state = yes
+		else = {
+			add_political_power = constant:riches_found_decision_cost.pp_standard
+			add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:riches_found_decision_cost.motorized_standard }
+			add_fuel = constant:riches_found_decision_cost.fuel_standard
+			add_equipment_to_stockpile = { type = convoy_1 amount = constant:riches_found_decision_cost.convoy_standard }
+		}
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
@@ -1303,8 +1394,7 @@ decision_riches_found_shaft_reinforcement = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -1395,8 +1485,7 @@ decision_riches_found_processing_works = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -1489,8 +1578,7 @@ decision_riches_found_housing = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -1588,15 +1676,29 @@ decision_riches_found_development_fund = {
 		}
 	}
 	remove_effect = {
-		FROM = {
-			set_state_flag = riches_found_development_fund
-			add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.positive_6 }
-			add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_8 }
-			add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.negative_5 }
-			riches_found_record_achievement_public_project = yes
+		# The staged result lands only while this country still holds the
+		# registered, nonterminal mine; otherwise every cost is returned.
+		if = {
+			limit = {
+				FROM = {
+					riches_found_mine_still_valid_for_payer = yes
+				}
+			}
+			FROM = {
+				set_state_flag = riches_found_development_fund
+				add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.positive_6 }
+				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_8 }
+				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.negative_5 }
+				riches_found_record_achievement_public_project = yes
+			}
+			riches_found_reconcile_controller = yes
+			riches_found_refresh_mine_state = yes
 		}
-		riches_found_reconcile_controller = yes
-		riches_found_refresh_mine_state = yes
+		else = {
+			add_political_power = constant:riches_found_decision_cost.pp_standard
+			add_manpower = constant:riches_found_decision_cost.manpower_standard
+			add_equipment_to_stockpile = { type = support_equipment amount = constant:riches_found_decision_cost.support_light }
+		}
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
@@ -1776,8 +1878,7 @@ decision_riches_found_dividend = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -1867,8 +1968,7 @@ decision_riches_found_local_revenue = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -1958,8 +2058,7 @@ decision_riches_found_central_revenue = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -2048,14 +2147,28 @@ decision_riches_found_stabilization_fund = {
 		}
 	}
 	remove_effect = {
-		FROM = {
-			set_state_flag = riches_found_stabilization_fund
-			add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.positive_4 }
-			add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_8 }
-			add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.negative_5 }
+		# The staged result lands only while this country still holds the
+		# registered, nonterminal mine; otherwise every cost is returned.
+		if = {
+			limit = {
+				FROM = {
+					riches_found_mine_still_valid_for_payer = yes
+				}
+			}
+			FROM = {
+				set_state_flag = riches_found_stabilization_fund
+				add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.positive_4 }
+				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_8 }
+				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.negative_5 }
+			}
+			riches_found_reconcile_controller = yes
+			riches_found_refresh_mine_state = yes
 		}
-		riches_found_reconcile_controller = yes
-		riches_found_refresh_mine_state = yes
+		else = {
+			add_political_power = constant:riches_found_decision_cost.pp_heavy
+			add_manpower = constant:riches_found_decision_cost.manpower_standard
+			add_equipment_to_stockpile = { type = support_equipment amount = constant:riches_found_decision_cost.support_light }
+		}
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
@@ -2133,12 +2246,26 @@ decision_riches_found_audit = {
 		}
 	}
 	remove_effect = {
-		FROM = {
-			set_state_flag = riches_found_audit_started
-			add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_4 }
+		# The staged result lands only while this country still holds the
+		# registered, nonterminal mine; otherwise every cost is returned.
+		if = {
+			limit = {
+				FROM = {
+					riches_found_mine_still_valid_for_payer = yes
+				}
+			}
+			FROM = {
+				set_state_flag = riches_found_audit_started
+				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_4 }
+			}
+			riches_found_reconcile_controller = yes
+			riches_found_refresh_mine_state = yes
 		}
-		riches_found_reconcile_controller = yes
-		riches_found_refresh_mine_state = yes
+		else = {
+			add_political_power = constant:riches_found_decision_cost.pp_standard
+			add_manpower = constant:riches_found_decision_cost.manpower_standard
+			add_equipment_to_stockpile = { type = support_equipment amount = constant:riches_found_decision_cost.support_light }
+		}
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
@@ -2208,8 +2335,7 @@ decision_riches_found_replace_administration = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -2301,8 +2427,7 @@ decision_riches_found_independent_revenue_authority = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -2388,8 +2513,7 @@ decision_riches_found_tolerate_patronage = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -2485,8 +2609,7 @@ decision_riches_found_concession_auction = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -2594,8 +2717,7 @@ decision_riches_found_exclusive_concession = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -2701,8 +2823,7 @@ decision_riches_found_offtake = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -2815,8 +2936,7 @@ decision_riches_found_trade_access_infrastructure = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -2921,8 +3041,7 @@ decision_riches_found_disclosure = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -3014,8 +3133,7 @@ decision_riches_found_publish_contract = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -3110,8 +3228,7 @@ decision_riches_found_nationalize_with_compensation = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -3209,8 +3326,7 @@ decision_riches_found_nationalize_without_compensation = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -3303,8 +3419,7 @@ decision_riches_found_buyout = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -3394,8 +3509,7 @@ decision_riches_found_renegotiate_contract = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -3483,8 +3597,7 @@ decision_riches_found_mine_police = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -3572,8 +3685,7 @@ decision_riches_found_private_guards = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -3670,14 +3782,29 @@ decision_riches_found_army_cordon = {
 		}
 	}
 	remove_effect = {
-		FROM = {
-			set_state_flag = riches_found_army_cordon
-			add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_15 }
-			add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.negative_10 }
-			add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.negative_3 }
+		# The staged result lands only while this country still holds the
+		# registered, nonterminal mine; otherwise every cost is returned.
+		if = {
+			limit = {
+				FROM = {
+					riches_found_mine_still_valid_for_payer = yes
+				}
+			}
+			FROM = {
+				set_state_flag = riches_found_army_cordon
+				add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_15 }
+				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.negative_10 }
+				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.negative_3 }
+			}
+			riches_found_reconcile_controller = yes
+			riches_found_refresh_mine_state = yes
 		}
-		riches_found_reconcile_controller = yes
-		riches_found_refresh_mine_state = yes
+		else = {
+			add_political_power = constant:riches_found_decision_cost.pp_heavy
+			add_command_power = constant:riches_found_decision_cost.command_standard
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:riches_found_decision_cost.infantry_heavy }
+			add_fuel = constant:riches_found_decision_cost.fuel_standard
+		}
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
@@ -3747,8 +3874,7 @@ decision_riches_found_armed_workers = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -3851,14 +3977,29 @@ decision_riches_found_pay_train = {
 		}
 	}
 	remove_effect = {
-		FROM = {
-			set_state_flag = riches_found_pay_train_route_active
-			set_state_flag = riches_found_pay_train_protection_started
-			riches_found_move_gold_through_pay_transport = yes
-			add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_5 }
+		# The staged result lands only while this country still holds the
+		# registered, nonterminal mine; otherwise every cost is returned.
+		if = {
+			limit = {
+				FROM = {
+					riches_found_mine_still_valid_for_payer = yes
+				}
+			}
+			FROM = {
+				set_state_flag = riches_found_pay_train_route_active
+				set_state_flag = riches_found_pay_train_protection_started
+				riches_found_move_gold_through_pay_transport = yes
+				add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_5 }
+			}
+			riches_found_reconcile_controller = yes
+			riches_found_refresh_mine_state = yes
 		}
-		riches_found_reconcile_controller = yes
-		riches_found_refresh_mine_state = yes
+		else = {
+			add_political_power = constant:riches_found_decision_cost.pp_standard
+			add_command_power = constant:riches_found_decision_cost.command_light
+			add_fuel = constant:riches_found_decision_cost.fuel_standard
+			add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:riches_found_decision_cost.motorized_light }
+		}
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
@@ -3936,18 +4077,33 @@ decision_riches_found_clear_barricades = {
 		}
 	}
 	remove_effect = {
-		FROM = {
-			set_state_flag = riches_found_barricades_cleared
-			set_state_flag = riches_found_claims_resolved
-			clr_state_flag = riches_found_claims_unresolved
-			clr_state_flag = riches_found_armed_claimants
-			riches_found_record_barricade_harm = yes
-			add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_15 }
-			add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.negative_15 }
-			add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_5 }
+		# The staged result lands only while this country still holds the
+		# registered, nonterminal mine; otherwise every cost is returned.
+		if = {
+			limit = {
+				FROM = {
+					riches_found_mine_still_valid_for_payer = yes
+				}
+			}
+			FROM = {
+				set_state_flag = riches_found_barricades_cleared
+				set_state_flag = riches_found_claims_resolved
+				clr_state_flag = riches_found_claims_unresolved
+				clr_state_flag = riches_found_armed_claimants
+				riches_found_record_barricade_harm = yes
+				add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_15 }
+				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.negative_15 }
+				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_5 }
+			}
+			riches_found_reconcile_controller = yes
+			riches_found_refresh_mine_state = yes
 		}
-		riches_found_reconcile_controller = yes
-		riches_found_refresh_mine_state = yes
+		else = {
+			add_political_power = constant:riches_found_decision_cost.pp_heavy
+			add_command_power = constant:riches_found_decision_cost.command_standard
+			add_manpower = constant:riches_found_decision_cost.manpower_heavy
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:riches_found_decision_cost.infantry_heavy }
+		}
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
@@ -4020,17 +4176,30 @@ decision_riches_found_truce = {
 		}
 	}
 	remove_effect = {
-		FROM = {
-			set_state_flag = riches_found_mine_truce
-			set_state_flag = riches_found_claims_resolved
-			clr_state_flag = riches_found_claims_unresolved
-			clr_state_flag = riches_found_armed_claimants
-			add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_8 }
-			add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_10 }
-			add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.negative_12 }
+		# The staged result lands only while this country still holds the
+		# registered, nonterminal mine; otherwise every cost is returned.
+		if = {
+			limit = {
+				FROM = {
+					riches_found_mine_still_valid_for_payer = yes
+				}
+			}
+			FROM = {
+				set_state_flag = riches_found_mine_truce
+				set_state_flag = riches_found_claims_resolved
+				clr_state_flag = riches_found_claims_unresolved
+				clr_state_flag = riches_found_armed_claimants
+				add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_8 }
+				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_10 }
+				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.negative_12 }
+			}
+			riches_found_reconcile_controller = yes
+			riches_found_refresh_mine_state = yes
 		}
-		riches_found_reconcile_controller = yes
-		riches_found_refresh_mine_state = yes
+		else = {
+			add_political_power = constant:riches_found_decision_cost.pp_standard
+			add_manpower = constant:riches_found_decision_cost.manpower_light
+		}
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
@@ -4101,8 +4270,7 @@ decision_riches_found_disarm_private_forces = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -4288,8 +4456,7 @@ decision_riches_found_quarantine = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -4379,8 +4546,7 @@ decision_riches_found_workforce_replacement = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -4472,8 +4638,7 @@ decision_riches_found_seal_depths = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -4747,8 +4912,7 @@ decision_riches_found_evacuation = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -4838,8 +5002,7 @@ decision_riches_found_permanent_seal = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -4930,8 +5093,7 @@ decision_riches_found_occupation_reopen = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -5032,8 +5194,7 @@ decision_riches_found_occupation_requisition = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -5124,8 +5285,7 @@ decision_riches_found_occupation_keep_administration = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -5220,8 +5380,7 @@ decision_riches_found_occupation_replace_concession = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -5311,8 +5470,7 @@ decision_riches_found_occupation_share_revenue = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -5403,8 +5561,7 @@ decision_riches_found_occupation_strip_equipment = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -5588,8 +5745,7 @@ decision_riches_found_curse_nationalize_extraction = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -5677,8 +5833,7 @@ decision_riches_found_curse_distribute_revenue = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -5773,14 +5928,29 @@ decision_riches_found_curse_stabilization_diversification = {
 		}
 	}
 	remove_effect = {
-		FROM = {
-			set_state_flag = riches_found_curse_diversification_started
-			add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.positive_5 }
-			add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_10 }
-			add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.negative_8 }
+		# The staged result lands only while this country still holds the
+		# registered, nonterminal mine; otherwise every cost is returned.
+		if = {
+			limit = {
+				FROM = {
+					riches_found_mine_still_valid_for_payer = yes
+				}
+			}
+			FROM = {
+				set_state_flag = riches_found_curse_diversification_started
+				add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.positive_5 }
+				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_10 }
+				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.negative_8 }
+			}
+			riches_found_reconcile_controller = yes
+			riches_found_refresh_mine_state = yes
 		}
-		riches_found_reconcile_controller = yes
-		riches_found_refresh_mine_state = yes
+		else = {
+			add_political_power = constant:riches_found_decision_cost.pp_heavy
+			add_manpower = constant:riches_found_decision_cost.manpower_standard
+			add_equipment_to_stockpile = { type = support_equipment amount = constant:riches_found_decision_cost.support_standard }
+			add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:riches_found_decision_cost.motorized_light }
+		}
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
@@ -5846,8 +6016,7 @@ decision_riches_found_curse_tolerate_corruption = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -5936,8 +6105,7 @@ decision_riches_found_curse_private_interests = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -6028,8 +6196,7 @@ decision_riches_found_curse_independent_revenue_authority = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -6116,8 +6283,7 @@ decision_riches_found_gold_share_revenue = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -6206,8 +6372,7 @@ decision_riches_found_gold_replace_workforce = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -6300,8 +6465,7 @@ decision_riches_found_gold_military_control = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -6395,8 +6559,7 @@ decision_riches_found_gold_quarantine = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -6576,8 +6739,7 @@ decision_riches_found_gold_seal_depths = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -6674,8 +6836,7 @@ decision_riches_found_gold_controlled_access = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -6762,8 +6923,7 @@ decision_riches_found_gold_destroy_confiscated_material = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -6864,8 +7024,7 @@ decision_riches_found_demons_permanent_seal = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -7060,8 +7219,7 @@ decision_riches_found_demons_military_purge = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -7148,8 +7306,7 @@ decision_riches_found_demons_religious_assistance = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -7237,8 +7394,7 @@ decision_riches_found_demons_occult_assistance = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -7327,8 +7483,7 @@ decision_riches_found_demons_scientific_assistance = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -7420,8 +7575,7 @@ decision_riches_found_demons_controlled_exploitation = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -7511,8 +7665,7 @@ decision_riches_found_demons_make_agreement = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -7599,8 +7752,7 @@ decision_riches_found_gilded_revoke_charter = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -7687,8 +7839,7 @@ decision_riches_found_gilded_buy_back_district = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -7773,8 +7924,7 @@ decision_riches_found_gilded_share_sovereignty = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -7859,8 +8009,7 @@ decision_riches_found_gilded_recognize_board = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -7948,8 +8097,7 @@ decision_riches_found_gilded_violent_nationalization = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 
@@ -8036,8 +8184,7 @@ decision_riches_found_gilded_let_govern = {
 		if = {
 			limit = {
 				FROM = {
-					is_controlled_by = ROOT
-					riches_found_mine_is_registered = yes
+					riches_found_mine_still_valid_for_payer = yes
 				}
 			}
 

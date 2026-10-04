@@ -87,3 +87,12 @@ Every route rolls 40 against 60 and the spread weight is quartered under a quara
 A spread to a country is a temporary 180-day dynamic modifier (civil Gold Fever, or Gold Fever in the Ranks for the army rotation) rather than a new crisis record, matching the specification's "incidents or temporary country effects"; a spread to a mine raises that mine's gold pressure so its own Gold Disease gate can fire.
 The source mine's report names the route and destination; a smuggling spread replaces the theft report so one report covers both.
 The receiving neighbour and sponsor are not sent their own report event in this round; their modifier carries its own description.
+
+## D9. Payer-validity guard on every delayed decision result
+
+One shared state trigger, `riches_found_mine_still_valid_for_payer`, decides whether a delayed decision result may land: the deciding country still controls the registered mine and the mine is not terminal.
+All 66 existing control-only guards use it, so a result no longer lands on a sealed or exhausted mine.
+The 15 staged transactions that had no guard (rail spur, port route, claim register, claim freeze, recognize local claims, reserve deposit, claims court, development fund, stabilization fund, audit, army cordon, pay train, clear barricades, truce and the curse diversification program) now apply their result only behind that guard and otherwise refund exactly the debits their payment took; the refund list is derived from each payment block so the two cannot drift apart.
+Repair and the district evacuation received their own guards in D5 and D6.
+Missions started by these decisions are already cancelled by the control-change, sealing, exhaustion and collapse cleanups, and those cancellations refund nothing, so a refund cannot be paid twice.
+The account and Drive Deeper decisions keep their stricter receipt guards, which already require the original payer and a nonterminal or active mine.
