@@ -746,21 +746,64 @@ independence_wave_formable_clear_founding_invitation_from_root = {
 			check_variable = { var = independence_wave_formable_invitation_family value = ROOT.independence_wave_formable_proposal_family compare = equals }
 			check_variable = { var = independence_wave_formable_invitation_sequence value = ROOT.independence_wave_formable_proposal_sequence compare = equals }
 		}
-		if = {
-			limit = {
-				check_variable = {
-					var = independence_wave_formable_invitation_family
-					value = constant:independence_wave_formable_family.pacific_regional_federation
-					compare = equals
-				}
-			}
-			# FORM-48 human replies are invitation receipts. Clear them only
-			# while this exact Pacific proposal still owns the invitation.
-			clr_country_flag = independence_wave_form48_autonomous_invitation_authorized
-			clr_country_flag = independence_wave_form48_autonomous_invitation_withheld
-		}
-		independence_wave_formable_clear_founding_invitation_state = yes
+		independence_wave_formable_clear_matched_founding_invitation = yes
 	}
+}
+
+# Candidate-country scope with PREV as the carrier. Carrier-scope cleanup uses
+# this form because origin cleanup can run with ROOT set to the country that
+# ended or reset the carrier's origin.
+independence_wave_formable_clear_founding_invitation_from_prev = {
+	if = {
+		limit = {
+			has_variable = independence_wave_formable_inviting_carrier
+			has_variable = independence_wave_formable_inviting_carrier_generation
+			has_variable = independence_wave_formable_invitation_family
+			has_variable = independence_wave_formable_invitation_sequence
+			var:independence_wave_formable_inviting_carrier = { tag = PREV.PREV }
+			check_variable = { var = independence_wave_formable_inviting_carrier_generation value = PREV.independence_wave_formable_proposal_generation compare = equals }
+			check_variable = { var = independence_wave_formable_invitation_family value = PREV.independence_wave_formable_proposal_family compare = equals }
+			check_variable = { var = independence_wave_formable_invitation_sequence value = PREV.independence_wave_formable_proposal_sequence compare = equals }
+		}
+		independence_wave_formable_clear_matched_founding_invitation = yes
+	}
+}
+
+# Carrier-country scope. Clears an invitation the carrier holds from its own
+# proposal.
+independence_wave_formable_clear_own_founding_invitation = {
+	if = {
+		limit = {
+			has_variable = independence_wave_formable_inviting_carrier
+			has_variable = independence_wave_formable_inviting_carrier_generation
+			has_variable = independence_wave_formable_invitation_family
+			has_variable = independence_wave_formable_invitation_sequence
+			var:independence_wave_formable_inviting_carrier = { tag = PREV }
+			check_variable = { var = independence_wave_formable_inviting_carrier_generation value = independence_wave_formable_proposal_generation compare = equals }
+			check_variable = { var = independence_wave_formable_invitation_family value = independence_wave_formable_proposal_family compare = equals }
+			check_variable = { var = independence_wave_formable_invitation_sequence value = independence_wave_formable_proposal_sequence compare = equals }
+		}
+		independence_wave_formable_clear_matched_founding_invitation = yes
+	}
+}
+
+# Candidate-country scope, after the caller has matched the invitation to the
+# closing proposal.
+independence_wave_formable_clear_matched_founding_invitation = {
+	if = {
+		limit = {
+			check_variable = {
+				var = independence_wave_formable_invitation_family
+				value = constant:independence_wave_formable_family.pacific_regional_federation
+				compare = equals
+			}
+		}
+		# FORM-48 human replies are invitation receipts. Clear them only
+		# while this exact Pacific proposal still owns the invitation.
+		clr_country_flag = independence_wave_form48_autonomous_invitation_authorized
+		clr_country_flag = independence_wave_form48_autonomous_invitation_withheld
+	}
+	independence_wave_formable_clear_founding_invitation_state = yes
 }
 
 # Candidate-country scope with ROOT as the carrier.
@@ -792,7 +835,7 @@ independence_wave_formable_close_founding_proposal = {
 			while_loop_effect = {
 				limit = { check_variable = { var = independence_wave_formable_invited_cleanup_index value = independence_wave_formable_invited_country_entries^num compare = less_than } }
 				var:independence_wave_formable_invited_country_entries^independence_wave_formable_invited_cleanup_index = {
-					independence_wave_formable_clear_founding_invitation_from_root = yes
+					independence_wave_formable_clear_founding_invitation_from_prev = yes
 				}
 				add_to_temp_variable = { independence_wave_formable_invited_cleanup_index = constant:independence_wave_formable_tuning.loop_increment }
 			}
@@ -803,13 +846,13 @@ independence_wave_formable_close_founding_proposal = {
 			while_loop_effect = {
 				limit = { check_variable = { var = independence_wave_formable_invitation_cleanup_index value = global.independence_wave_active_countries^num compare = less_than } }
 				var:global.independence_wave_active_countries^independence_wave_formable_invitation_cleanup_index = {
-					independence_wave_formable_clear_founding_invitation_from_root = yes
+					independence_wave_formable_clear_founding_invitation_from_prev = yes
 				}
 				add_to_temp_variable = { independence_wave_formable_invitation_cleanup_index = constant:independence_wave_formable_tuning.loop_increment }
 			}
 		}
-		BEL = { independence_wave_formable_clear_founding_invitation_from_root = yes }
-		independence_wave_formable_clear_founding_invitation_from_root = yes
+		BEL = { independence_wave_formable_clear_founding_invitation_from_prev = yes }
+		independence_wave_formable_clear_own_founding_invitation = yes
 	}
 	clear_array = independence_wave_formable_invited_country_entries
 	clear_array = independence_wave_formable_invited_generation_entries
@@ -1061,10 +1104,12 @@ independence_wave_form07_cleanup_frozen_autonomous_members = {
 						has_country_flag = independence_wave_form07_autonomous_member
 						has_variable = independence_wave_form07_autonomous_carrier
 						has_variable = independence_wave_form07_autonomous_carrier_generation
-						var:independence_wave_form07_autonomous_carrier = { tag = ROOT }
-						check_variable = { var = independence_wave_form07_autonomous_carrier_generation value = ROOT.independence_wave_generation_id compare = equals }
+						# PREV is the carrier inside the member scope; origin cleanup
+						# can run with ROOT set to another country.
+						var:independence_wave_form07_autonomous_carrier = { tag = PREV.PREV }
+						check_variable = { var = independence_wave_form07_autonomous_carrier_generation value = PREV.independence_wave_generation_id compare = equals }
 # FORM07 merged-source continuation: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
-						check_variable = { var = independence_wave_form07_autonomous_family value = ROOT.independence_wave_formable_family compare = equals }
+						check_variable = { var = independence_wave_form07_autonomous_family value = PREV.independence_wave_formable_family compare = equals }
 					}
 					independence_wave_form07_clear_member_state = yes
 				}
@@ -1139,7 +1184,9 @@ independence_wave_form08_register_readiness = {
 			var:independence_wave_anchor_state = {
 # FORM08 merged-source continuation 3
 				state = 84
-				is_owned_and_controlled_by = ROOT
+				# PREV is the registering country. Wave setup runs this with
+				# ROOT set to the country that launched the wave.
+				is_owned_and_controlled_by = PREV
 			}
 			capital_scope = { state = 84 }
 		}
@@ -3075,7 +3122,9 @@ independence_wave_form39_cleanup_frozen_members = {
 				if = {
 					limit = {
 						OR = { original_tag = PNG original_tag = WPG }
-						ROOT = {
+						# PREV is the carrier; origin cleanup can run with ROOT
+						# set to another country.
+						PREV = {
 							check_variable = {
 								independence_wave_formable_profile_family = constant:independence_wave_formable_family.melanesian_federation
 							}
@@ -3090,8 +3139,8 @@ independence_wave_form39_cleanup_frozen_members = {
 					limit = {
 						has_country_flag = independence_wave_form39_autonomous_member
 						has_variable = independence_wave_form39_autonomous_carrier
-						var:independence_wave_form39_autonomous_carrier = { tag = ROOT }
-						check_variable = { var = independence_wave_form39_autonomous_family value = ROOT.independence_wave_formable_family compare = equals }
+						var:independence_wave_form39_autonomous_carrier = { tag = PREV.PREV }
+						check_variable = { var = independence_wave_form39_autonomous_family value = PREV.independence_wave_formable_family compare = equals }
 					}
 					independence_wave_form39_clear_autonomous_member_state = yes
 				}

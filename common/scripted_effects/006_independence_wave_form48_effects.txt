@@ -677,9 +677,11 @@ independence_wave_form48_cleanup_frozen_autonomous_members = {
 						has_variable = independence_wave_form48_autonomous_carrier
 						has_variable = independence_wave_form48_autonomous_carrier_generation
 						has_variable = independence_wave_form48_autonomous_family
-						var:independence_wave_form48_autonomous_carrier = { tag = ROOT }
-						check_variable = { var = independence_wave_form48_autonomous_carrier_generation value = ROOT.independence_wave_generation_id compare = equals }
-						check_variable = { var = independence_wave_form48_autonomous_family value = ROOT.independence_wave_formable_family compare = equals }
+						# PREV is the carrier inside the member scope; origin cleanup
+						# can run with ROOT set to another country.
+						var:independence_wave_form48_autonomous_carrier = { tag = PREV.PREV }
+						check_variable = { var = independence_wave_form48_autonomous_carrier_generation value = PREV.independence_wave_generation_id compare = equals }
+						check_variable = { var = independence_wave_form48_autonomous_family value = PREV.independence_wave_formable_family compare = equals }
 					}
 					independence_wave_form48_clear_autonomous_member_state = yes
 				}

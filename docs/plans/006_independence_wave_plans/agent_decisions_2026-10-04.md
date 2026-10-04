@@ -251,3 +251,66 @@ Foreign queue deadline (`.72`):
 - The roughly 230-day foreign-queue blocking stays as accepted design.
 
 Needs live game: a second NAV release in one campaign; a target released twice within 30 days with an open foreign queue.
+
+
+## D12. Round 2: release-path walk-through of the 31 SCN-008 Low packages
+
+Disposition: `implemented`.
+
+Basis: the lead's round-2 priority-1 item and decision 2. The finalizer is all-or-nothing, so one package that fails setup, activation, final validation or origin commit stops the whole wave.
+
+Method (source walk-through, 2026-10-05):
+
+- For each row, the closure of scripted effects and triggers reached from instantiation (`independence_wave_release_one_frozen_country`), the four finalizer passes (`independence_wave_prepare_country_origin`, the breakaway sponsorship step, the package setup, `independence_wave_activate_prepared_country_origin`, the package final validation and its generic focus tail, `independence_wave_commit_prepared_country_origin`) and the generation reset was walked with ROOT set to the launching country and the carrier as THIS.
+- Every ROOT, FROM and caller-level PREV read in that closure was listed and classified.
+- Every flag, variable, idea, event target, character and template that the package's `can_initialize_*`, `has_prepared_*`, runtime-ready and final-validation triggers require was matched against its writer in setup, in the shared prepare and activation passes, or in startup history (`history/countries`, `history/general/006_independence_wave_character_recruitment_registry.txt`, or the vanilla history file of the tag).
+- The planner's region, depth and archetype for each package id, and the force profile and military tradition decoded from `independence_wave_force_package_profile.p<id>` and `independence_wave_force_package_military_tradition.p<id>`, were compared with the values the package checks expect. All 31 match.
+- Every character id the checks read is defined in `common/characters` (mod or vanilla) or generated in setup with `generate_character`; every vanilla roster character is recruited at the top level of its vanilla 1936 history file; every corps-commander check names a character with a corps-commander role. The only fixed template id, DON's vanilla `Kavaleriyskaya Diviziya`, matches `history/units/DON_cossack_host.txt`.
+
+Defects found and fixed:
+
+- TRA (IW-023): `independence_wave_form08_register_readiness` read `is_owned_and_controlled_by = ROOT` for anchor 84. TRA's `has_prepared_independence_wave_iw_023_package_setup` requires `independence_wave_form08_readiness_attested`, so every TRA release failed setup and stopped its wave. It now reads PREV, the registering country.
+- The nine custom X-tag carriers (AFX, AGX, AJX, ARX, ASX, AXX, BAX, BBX, HBX) are created with `create_dynamic_country`. A dynamic carrier is a new country object, and the executor copied it from the former host (`copy_tag = THIS`). Every X-tag roster check reads characters that only startup history attaches to the tag, AJX's prepared check also reads startup laws, and the instantiation count requires the new country to exist, which a reserved dynamic country that owns no state yet may not. Decision: the template is now the carrier's own tag (no `copy_tag`, as in every vanilla `create_dynamic_country` call); the new `independence_wave_materialize_custom_carrier` moves the frozen anchor to the carrier inside its creation block, as `release` moves cored states for vanilla carriers; and `independence_wave_ensure_custom_carrier_startup_state` recruits any missing startup roster character and adds any missing startup law, mirroring each tag's startup history. Technology still comes from `inherit_technology` in the force package, so nothing the old `copy_tag` supplied is lost.
+- ASX (IW-019) cleanup removed the claims on states 117 and 156 from ROOT, which is the launching country during the setup reset and the annexer at origin end, so it stripped the wrong country's claims and left ASX's own claims on the tag. The cleanup and the focus reward that adds the claims now use PREV, the Sicilian carrier.
+- Origin cleanup reached from the generation reset and from `on_annex` read ROOT as the cleaned country in six more places, so it skipped its work whenever another country ran it: the Defensive Congress war mandate flag; the FORM-01/02/04, FORM-07, FORM-39 and FORM-48 frozen autonomous-member cleanup; the founding-invitation cleanup in `independence_wave_formable_close_founding_proposal` (new `independence_wave_formable_clear_founding_invitation_from_prev` and `independence_wave_formable_clear_own_founding_invitation`, sharing `independence_wave_formable_clear_matched_founding_invitation`); the rival-bloc pending invitation; and the reclamation-front coordinator check in `independence_wave_end_active_origin`. All now compare with the cleaned country through PREV or PREV.PREV.
+- FORM-16: `has_independence_wave_form16_member_connection_proof` compared ARM, GEO and AZR with ROOT and is evaluated during setup. It now uses the new `has_independence_wave_form16_connection_to_prev`, with the carrier as PREV. This only gated the AI connection receipt, not setup.
+
+Remaining ROOT reads in the closure are a temporary-variable write inside `ROOT = { }` in two rival-bloc registry effects (temporary variables have no scope, so the write is unaffected) and the Event Logs and other systems' code that the commit pass reaches through the Event Log history entry, which use ROOT as their own event actor. IW-093, IW-098, IW-177 and IW-179 still read ROOT for the carrier; they stay adapter-only and are fixed in their admission items.
+
+Per package (row order, anchor and host from the decoded `qa_scn008d` plan in D9):
+
+- SCO (IW-001, 121, ENG): passes. Civic convention and commandant generated in setup, advisors from startup history; full Event 006 tree; FORM-01/02 candidate flags unconditional.
+- WLS (IW-002, 122, ENG): passes. Same pattern as SCO.
+- BRI (IW-004, 14, FRA): passes. Vanilla BRI advisors from the vanilla history file, coastal commandant generated in setup.
+- BAY (IW-009, 52, GER): passes. Generated commandant, startup advisors, vanilla Rupprecht.
+- CAT (IW-014, 165, SPR): passes. Vanilla Companys roster.
+- MAC (IW-026, 106, YUG): passes. Startup Vardar presidium through the roster checkpoint; full tree.
+- BOS (IW-029, 104, YUG): passes. Startup Drina council; generic tree or the Austro-Hungarian overlay.
+- KAR (IW-033, 146, FIN): passes. Vanilla KAR roster (top-level 1936 history).
+- CRI (IW-041, 137, SOV): passes. Vanilla Tarkhan roster.
+- BSK (IW-045, 651, SOV): passes. Vanilla Bykin roster.
+- ARM (IW-070, 230, SOV): passes. Shared Transcaucasus validator, ARM branch.
+- GEO (IW-071, 231, SOV): passes. Vanilla Zhordania, Kvinitadze and Bagration.
+- AZR (IW-072, 229, SOV): passes. The traditional route is correctly excluded.
+- HAW (IW-173, 629, USA): passes. Startup territorial delegate; HAW branch of the Pacific command structure.
+- GLC (IW-015, 171, SPR): passes (the D7 fixes hold).
+- COR (IW-017, 1, FRA): passes. Startup COR roster; FORM-05 readiness unconditional.
+- MNT (IW-030, 105, YUG): passes. Vanilla Popovic and Jovanovic, startup Martinovic.
+- AFX (IW-006, 34, BEL): passes after the X-tag fix. FORM-03 readiness unconditional.
+- NAV (IW-013, 792, SPR): passes (the D7 and D11 fixes hold).
+- ASX (IW-019, 115, ITA): passes after the X-tag fix; cleanup claims fixed.
+- RUT (IW-038, 73, CZE): passes. Vanilla Voloshyn, startup Brodiy, Mondok and Klympush.
+- HBX (IW-184, 378, USA): passes after the X-tag fix.
+- AGX (IW-007, 36, HOL): passes after the X-tag fix.
+- ARX (IW-018, 114, ITA): passes after the X-tag fix.
+- BAX (IW-027, 184): passes after the X-tag fix.
+- BBX (IW-028, 185): passes after the X-tag fix.
+- RHI (IW-008, 51, GER): passes. Generated commandant, startup advisors, vanilla Matthes.
+- DON (IW-039, 245, SOV): passes (the D5 and D8 fixes hold); the vanilla template id matches.
+- AJX (IW-010, 42, GER): passes after the X-tag fix, which also restores its startup laws.
+- TRA (IW-023, 84, ROM): passes after the FORM-08 fix.
+- TAT (IW-044, 249, SOV): passes. Vanilla Alemasov roster.
+
+Validation: the allocator, country API, flag and FORM-16 audits pass; brace balance is 0 on every touched file.
+
+Needs live game: a fresh SCN-008 Low launch that releases all 31 countries, including at least one X-tag carrier (its name, flag, roster and anchor on creation) and TRA. If any stage still fails, the D9 failure-detail and package-id globals name it.

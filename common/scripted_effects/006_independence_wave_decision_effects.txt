@@ -73,8 +73,10 @@ independence_wave_decision_clear_active_league_target = {
 independence_wave_decision_clear_charter_war_mandate = {
 	if = {
 		limit = { has_variable = independence_wave_last_charter_war_mandate_target }
+		# PREV is the member holding the mandate. Origin cleanup can run this
+		# with ROOT set to another country, so the member is never read as ROOT.
 		var:independence_wave_last_charter_war_mandate_target = {
-			ROOT = { clr_country_flag = independence_wave_charter_war_authorized_@PREV }
+			PREV = { clr_country_flag = independence_wave_charter_war_authorized_@PREV }
 		}
 		clear_variable = independence_wave_last_charter_war_mandate_target
 		clear_variable = independence_wave_last_charter_war_mandate_date

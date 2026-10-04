@@ -677,13 +677,31 @@ has_independence_wave_form16_connection_to_root = {
 	}
 }
 
+# Candidate-country scope with PREV as the carrier. Same connection rule as
+# the ROOT form above, for callers where ROOT is another country, such as
+# readiness registration during wave setup.
+has_independence_wave_form16_connection_to_prev = {
+	exists = yes
+	NOT = { has_war_with = PREV }
+	OR = {
+		tag = PREV
+		is_neighbor_of = PREV
+		is_in_faction_with = PREV
+		has_non_aggression_pact_with = PREV
+		has_military_access_to = PREV
+		gives_military_access_to = PREV
+		has_guaranteed = PREV
+		is_guaranteed_by = PREV
+	}
+}
+
 # Carrier-country scope. The receipt is recorded before formation and is then
 # reused after the member countries have been absorbed, when their tags are no
 # longer addressable as independent scopes.
 has_independence_wave_form16_member_connection_proof = {
-	ARM = { has_independence_wave_form16_connection_to_root = yes }
-	GEO = { has_independence_wave_form16_connection_to_root = yes }
-	AZR = { has_independence_wave_form16_connection_to_root = yes }
+	ARM = { has_independence_wave_form16_connection_to_prev = yes }
+	GEO = { has_independence_wave_form16_connection_to_prev = yes }
+	AZR = { has_independence_wave_form16_connection_to_prev = yes }
 }
 # Family-specific readiness, discovery, member-policy, and commit gates for
 # the late-binding Transcaucasian federation. The generic formable registry

@@ -506,6 +506,107 @@ independence_wave_validate_execution_metadata = {
 	}
 	else = { clr_global_flag = independence_wave_execution_metadata_valid }
 }
+
+# COUNTRY scope: a custom X-tag carrier inside its own create_dynamic_country
+# block. Inputs are the execution event targets. The frozen anchor moves to the
+# new country at once, as `release` moves cored states for vanilla carriers, so
+# the carrier owns land before the instantiation count checks it. The later
+# transfer pass moves the remaining frozen states and re-applies the anchor.
+independence_wave_materialize_custom_carrier = {
+	if = {
+		limit = {
+			has_event_target = independence_wave_execution_anchor
+			event_target:independence_wave_execution_anchor = {
+				is_owned_by = event_target:independence_wave_execution_former_host
+			}
+		}
+		event_target:independence_wave_execution_anchor = {
+			set_state_owner_to = PREV
+			set_state_controller_to = PREV
+		}
+	}
+	independence_wave_ensure_custom_carrier_startup_state = yes
+}
+
+# COUNTRY scope: a custom X-tag carrier. A dynamic carrier is a new country
+# object, so the startup laws and characters that history attaches to its tag
+# are restored here when the template did not carry them over. Each block
+# mirrors the tag's startup history and is a no-op for anything already held.
+independence_wave_ensure_custom_carrier_startup_state = {
+	if = {
+		limit = {
+			OR = {
+				original_tag = AFX
+				original_tag = AGX
+				original_tag = AJX
+				original_tag = ARX
+				original_tag = ASX
+			}
+		}
+		if = { limit = { NOT = { has_idea = civilian_economy } } add_ideas = civilian_economy }
+		if = { limit = { NOT = { has_idea = export_focus } } add_ideas = export_focus }
+		if = { limit = { NOT = { has_idea = volunteer_only } } add_ideas = volunteer_only }
+	}
+	if = {
+		limit = { original_tag = AFX }
+		if = { limit = { NOT = { has_character = AFX_walloon_provisional_assembly } } recruit_character = AFX_walloon_provisional_assembly }
+		if = { limit = { NOT = { has_character = AFX_walloon_reserve_commander } } recruit_character = AFX_walloon_reserve_commander }
+	}
+	else_if = {
+		limit = { original_tag = AGX }
+		if = { limit = { NOT = { has_character = AGX_friesland_coastal_council } } recruit_character = AGX_friesland_coastal_council }
+		if = { limit = { NOT = { has_character = AGX_friesland_coastal_commander } } recruit_character = AGX_friesland_coastal_commander }
+	}
+	else_if = {
+		limit = { original_tag = AJX }
+		if = { limit = { NOT = { has_character = AJX_friedrich_hoffmann } } recruit_character = AJX_friedrich_hoffmann }
+		if = { limit = { NOT = { has_character = AJX_karl_becker } } recruit_character = AJX_karl_becker }
+		if = { limit = { NOT = { has_character = AJX_independence_wave_mine_rail_dispatch_superintendent } } recruit_character = AJX_independence_wave_mine_rail_dispatch_superintendent }
+		if = { limit = { NOT = { has_character = AJX_independence_wave_cross_border_accounts_comptroller } } recruit_character = AJX_independence_wave_cross_border_accounts_comptroller }
+		if = { limit = { NOT = { has_character = AJX_independence_wave_factory_security_inspector } } recruit_character = AJX_independence_wave_factory_security_inspector }
+	}
+	else_if = {
+		limit = { original_tag = ARX }
+		if = { limit = { NOT = { has_character = ARX_sardinian_provisional_assembly } } recruit_character = ARX_sardinian_provisional_assembly }
+		if = { limit = { NOT = { has_character = ARX_sardinian_crown_consultative_council } } recruit_character = ARX_sardinian_crown_consultative_council }
+		if = { limit = { NOT = { has_character = ARX_gavino_piras } } recruit_character = ARX_gavino_piras }
+		if = { limit = { NOT = { has_character = ARX_michele_corda } } recruit_character = ARX_michele_corda }
+		if = { limit = { NOT = { has_character = ARX_efisio_satta } } recruit_character = ARX_efisio_satta }
+	}
+	else_if = {
+		limit = { original_tag = ASX }
+		if = { limit = { NOT = { has_character = ASX_sicilian_provisional_assembly } } recruit_character = ASX_sicilian_provisional_assembly }
+		if = { limit = { NOT = { has_character = ASX_sicilian_crown_council } } recruit_character = ASX_sicilian_crown_council }
+		if = { limit = { NOT = { has_character = ASX_luigi_rizzo } } recruit_character = ASX_luigi_rizzo }
+		if = { limit = { NOT = { has_character = ASX_vincenzo_di_benedetto } } recruit_character = ASX_vincenzo_di_benedetto }
+		if = { limit = { NOT = { has_character = ASX_giuseppe_lo_giudice } } recruit_character = ASX_giuseppe_lo_giudice }
+		if = { limit = { NOT = { has_character = ASX_leone_messina } } recruit_character = ASX_leone_messina }
+	}
+	else_if = {
+		limit = { original_tag = AXX }
+		if = { limit = { NOT = { has_character = AXX_independence_wave_banat_presidium } } recruit_character = AXX_independence_wave_banat_presidium }
+		if = { limit = { NOT = { has_character = AXX_independence_wave_banat_presidium_despotism } } recruit_character = AXX_independence_wave_banat_presidium_despotism }
+		if = { limit = { NOT = { has_character = AXX_independence_wave_banat_presidium_liberalism } } recruit_character = AXX_independence_wave_banat_presidium_liberalism }
+	}
+	else_if = {
+		limit = { original_tag = BAX }
+		if = { limit = { NOT = { has_character = BAX_independence_wave_thrace_council } } recruit_character = BAX_independence_wave_thrace_council }
+		if = { limit = { NOT = { has_character = BAX_independence_wave_thrace_council_despotism } } recruit_character = BAX_independence_wave_thrace_council_despotism }
+		if = { limit = { NOT = { has_character = BAX_independence_wave_thrace_council_liberalism } } recruit_character = BAX_independence_wave_thrace_council_liberalism }
+	}
+	else_if = {
+		limit = { original_tag = BBX }
+		if = { limit = { NOT = { has_character = BBX_independence_wave_epirus_council } } recruit_character = BBX_independence_wave_epirus_council }
+		if = { limit = { NOT = { has_character = BBX_independence_wave_epirus_council_despotism } } recruit_character = BBX_independence_wave_epirus_council_despotism }
+		if = { limit = { NOT = { has_character = BBX_independence_wave_epirus_council_liberalism } } recruit_character = BBX_independence_wave_epirus_council_liberalism }
+		if = { limit = { NOT = { has_character = BBX_independence_wave_spyros_spyromilios } } recruit_character = BBX_independence_wave_spyros_spyromilios }
+	}
+	else_if = {
+		limit = { original_tag = HBX }
+		if = { limit = { NOT = { has_character = HBX_independence_wave_civic_convention_chair } } recruit_character = HBX_independence_wave_civic_convention_chair }
+	}
+}
+
 # Inputs are the current package event targets and
 # `independence_wave_execution_package_id`. The target's unplanned historical
 # cores are masked only for the fixed-tag release call, then restored. Planned
@@ -595,17 +696,19 @@ independence_wave_release_one_frozen_country = {
 			# The nine X-tag carriers have no historical state cores. `release` can
 			# only materialize a country from states already cored by that tag, so
 			# use the documented dynamic-country template path for these carriers.
-			# The Fallout fracture implementation uses the same literal-tag,
-			# `copy_tag = THIS`, reserved dynamic-country pattern. The child saves
-			# the live dynamic scope directly; planned cores are restored below.
+			# Like vanilla dynamic releases, the template is the carrier's own tag
+			# (no copy_tag), so the new country keeps its own name, flag, startup
+			# laws and roster instead of the former host's. The child saves the live
+			# dynamic scope and gives it its frozen anchor at once, as `release`
+			# does for vanilla carriers; planned cores are restored below.
 			if = {
 				limit = { tag = AFX }
 				event_target:independence_wave_execution_former_host = {
 					create_dynamic_country = {
 						original_tag = AFX
-						copy_tag = THIS
 						reserve_dynamic_country = yes
 						save_event_target_as = independence_wave_execution_country
+						independence_wave_materialize_custom_carrier = yes
 					}
 				}
 			}
@@ -614,9 +717,9 @@ independence_wave_release_one_frozen_country = {
 				event_target:independence_wave_execution_former_host = {
 					create_dynamic_country = {
 						original_tag = AGX
-						copy_tag = THIS
 						reserve_dynamic_country = yes
 						save_event_target_as = independence_wave_execution_country
+						independence_wave_materialize_custom_carrier = yes
 					}
 				}
 			}
@@ -625,9 +728,9 @@ independence_wave_release_one_frozen_country = {
 				event_target:independence_wave_execution_former_host = {
 					create_dynamic_country = {
 						original_tag = AJX
-						copy_tag = THIS
 						reserve_dynamic_country = yes
 						save_event_target_as = independence_wave_execution_country
+						independence_wave_materialize_custom_carrier = yes
 					}
 				}
 			}
@@ -636,9 +739,9 @@ independence_wave_release_one_frozen_country = {
 				event_target:independence_wave_execution_former_host = {
 					create_dynamic_country = {
 						original_tag = ARX
-						copy_tag = THIS
 						reserve_dynamic_country = yes
 						save_event_target_as = independence_wave_execution_country
+						independence_wave_materialize_custom_carrier = yes
 					}
 				}
 			}
@@ -647,9 +750,9 @@ independence_wave_release_one_frozen_country = {
 				event_target:independence_wave_execution_former_host = {
 					create_dynamic_country = {
 						original_tag = ASX
-						copy_tag = THIS
 						reserve_dynamic_country = yes
 						save_event_target_as = independence_wave_execution_country
+						independence_wave_materialize_custom_carrier = yes
 					}
 				}
 			}
@@ -658,9 +761,9 @@ independence_wave_release_one_frozen_country = {
 				event_target:independence_wave_execution_former_host = {
 					create_dynamic_country = {
 						original_tag = AXX
-						copy_tag = THIS
 						reserve_dynamic_country = yes
 						save_event_target_as = independence_wave_execution_country
+						independence_wave_materialize_custom_carrier = yes
 					}
 				}
 			}
@@ -669,9 +772,9 @@ independence_wave_release_one_frozen_country = {
 				event_target:independence_wave_execution_former_host = {
 					create_dynamic_country = {
 						original_tag = BAX
-						copy_tag = THIS
 						reserve_dynamic_country = yes
 						save_event_target_as = independence_wave_execution_country
+						independence_wave_materialize_custom_carrier = yes
 					}
 				}
 			}
@@ -680,9 +783,9 @@ independence_wave_release_one_frozen_country = {
 				event_target:independence_wave_execution_former_host = {
 					create_dynamic_country = {
 						original_tag = BBX
-						copy_tag = THIS
 						reserve_dynamic_country = yes
 						save_event_target_as = independence_wave_execution_country
+						independence_wave_materialize_custom_carrier = yes
 					}
 				}
 			}
@@ -691,9 +794,9 @@ independence_wave_release_one_frozen_country = {
 				event_target:independence_wave_execution_former_host = {
 					create_dynamic_country = {
 						original_tag = HBX
-						copy_tag = THIS
 						reserve_dynamic_country = yes
 						save_event_target_as = independence_wave_execution_country
+						independence_wave_materialize_custom_carrier = yes
 					}
 				}
 			}
