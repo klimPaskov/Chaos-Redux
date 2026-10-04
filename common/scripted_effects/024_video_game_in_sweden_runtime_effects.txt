@@ -30,6 +30,18 @@ video_game_in_sweden_observe_runtime = {
 	}
 	if = {
 		limit = { video_game_in_sweden_is_current_host = yes }
+		video_game_in_sweden_refresh_crisis_state = yes
+		# A treaty transfer can move Stockholm without a control callback.
+		if = {
+			limit = {
+				video_game_in_sweden_has_field_mission_running = yes
+				OR = {
+					NOT = { owns_state = constant:video_game_in_sweden_event.stockholm_state }
+					NOT = { controls_state = constant:video_game_in_sweden_event.stockholm_state }
+				}
+			}
+			set_country_flag = video_game_in_sweden_mission_capital_lost
+		}
 		if = {
 			limit = { NOT = { video_game_in_sweden_no_active_mission = yes } }
 			add_to_variable = { video_game_in_sweden_mission_elapsed_days = constant:video_game_in_sweden_timing.runtime_watch_days }
@@ -92,6 +104,7 @@ video_game_in_sweden_observe_runtime = {
 				OR = {
 					video_game_in_sweden_is_severe_campaign_crisis = yes
 					video_game_in_sweden_has_campaign_supply_gap = yes
+					has_country_flag = video_game_in_sweden_trust_model_major_mismatch
 					AND = {
 						has_country_flag = video_game_in_sweden_trust_model_meaningful_war
 						has_war = no
@@ -167,6 +180,50 @@ video_game_in_sweden_issue_restriction_orders = {
 	video_game_in_sweden_validate_commander = yes
 }
 
+# COUNTRY scope. Rebuilds the two crisis flags from the current situation:
+# Stockholm missing, an owned Swedish core held by someone else, or a loss
+# inside the finite memory window. Recovered ground stops counting once the
+# window has passed, so a brief occupation cannot lock later missions.
+video_game_in_sweden_refresh_crisis_state = {
+	if = {
+		limit = {
+			OR = {
+				NOT = { owns_state = constant:video_game_in_sweden_event.stockholm_state }
+				NOT = { controls_state = constant:video_game_in_sweden_event.stockholm_state }
+				has_country_flag = video_game_in_sweden_capital_loss_recent
+			}
+		}
+		set_country_flag = video_game_in_sweden_capital_threat
+	}
+	else = {
+		clr_country_flag = video_game_in_sweden_capital_threat
+	}
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = video_game_in_sweden_capital_threat
+				has_country_flag = video_game_in_sweden_core_loss_recent
+				any_owned_state = {
+					is_core_of = SWE
+					NOT = { is_controlled_by = OWNER }
+				}
+			}
+		}
+		set_country_flag = video_game_in_sweden_core_loss_crisis
+	}
+	else = {
+		clr_country_flag = video_game_in_sweden_core_loss_crisis
+	}
+}
+
+# COUNTRY scope. Clears the interruption record owned by one field, audit or
+# dual-track mission. Every mission start calls it before the work begins.
+video_game_in_sweden_reset_mission_interruptions = {
+	clr_country_flag = video_game_in_sweden_mission_core_lost
+	clr_country_flag = video_game_in_sweden_mission_capital_lost
+	set_variable = { video_game_in_sweden_mission_core_loss_count = constant:video_game_in_sweden_value.zero }
+}
+
 # COUNTRY scope, called for the old controller at a state-control transaction.
 video_game_in_sweden_record_control_loss = {
 	if = {
@@ -179,14 +236,33 @@ video_game_in_sweden_record_control_loss = {
 		clr_country_flag = video_game_in_sweden_reality_check_reliance_timer
 		clr_country_flag = video_game_in_sweden_reality_check_stockholm_held
 		clr_country_flag = video_game_in_sweden_trust_model_stockholm_continuous
+		set_temp_variable = { video_game_in_sweden_flag_days = constant:video_game_in_sweden_timing.crisis_memory_days }
+		set_country_flag = {
+			flag = video_game_in_sweden_capital_loss_recent
+			days = video_game_in_sweden_flag_days
+		}
 		set_country_flag = video_game_in_sweden_capital_threat
+		if = {
+			limit = { video_game_in_sweden_has_field_mission_running = yes }
+			set_country_flag = video_game_in_sweden_mission_capital_lost
+		}
 	}
 	if = {
 		limit = {
 			video_game_in_sweden_is_current_host = yes
 			FROM.FROM = { is_core_of = SWE }
 		}
+		set_temp_variable = { video_game_in_sweden_flag_days = constant:video_game_in_sweden_timing.crisis_memory_days }
+		set_country_flag = {
+			flag = video_game_in_sweden_core_loss_recent
+			days = video_game_in_sweden_flag_days
+		}
 		set_country_flag = video_game_in_sweden_core_loss_crisis
+		if = {
+			limit = { video_game_in_sweden_has_field_mission_running = yes }
+			set_country_flag = video_game_in_sweden_mission_core_lost
+			add_to_variable = { video_game_in_sweden_mission_core_loss_count = constant:video_game_in_sweden_value.one }
+		}
 		if = {
 			limit = {
 				has_country_flag = video_game_in_sweden_trust_model_active

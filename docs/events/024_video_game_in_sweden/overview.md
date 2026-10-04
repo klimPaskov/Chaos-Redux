@@ -259,6 +259,26 @@ The handler also applies the safer fallback when Chaos falls below a route gate 
 
 Normal closure removes the category state, active ideas, temporary modifiers, mission flags, commander traits, and event targets while preserving fire-once history and achievement records.
 
+### Crisis memory and mission interruptions
+
+The capital-threat and core-loss crisis flags describe the current campaign rather than permanent history.
+Daily observation rebuilds them from Stockholm ownership and control, any owned Swedish core held by another controller, and a finite memory of the last loss lasting `video_game_in_sweden_timing.crisis_memory_days` (60) days.
+Once the territory is back and the memory has passed, severe-crisis checks, the incident pause and the Trust the Model gate return to normal.
+Each field validation, Reality Audit, narrow audit and Dual-Track verification keeps its own interruption record, reset when the mission starts.
+One Swedish core lost during the mission limits the report to a partial result, while Stockholm or two lost cores cancel the mission into its failure result.
+Stockholm loss still permanently disqualifies the two achievements.
+
+### Trust the Model mismatches
+
+A wartime terrain, supply or enemy incident resolved during the surge is a battlefield mismatch.
+Admitting it ends the surge at the next daily review, and three dismissed battlefield mismatches in the same surge do the same.
+Incidents from before the surge never shorten it.
+
+### Evolution II reach gate
+
+Every path into Evolution II requires broad public reach, including the step from Evolution I.
+An officer or controlled programme that never widened civilian access stays in Evolution I and can conclude there.
+
 ## Commander lifecycle
 
 The Rulebook Commander is assigned to at most one valid Swedish corps commander.

@@ -33,6 +33,7 @@ class ObserverModel(life.FrameModel):
             "video_game_in_sweden_has_front_presence": True,
             "video_game_in_sweden_has_full_reality_audit_field_package": True,
             "video_game_in_sweden_is_severe_campaign_crisis": False,
+            "video_game_in_sweden_has_field_mission_running": False,
         }
         self.scheduled, self.called = [], []
         self.modifier_grants = []
@@ -49,6 +50,10 @@ class ObserverModel(life.FrameModel):
         # The AST's body, position, control flow and if/else grouping are retained.
         bridged = []
         for n in nodes:
+            if n.key == "set_country_flag" and isinstance(n.body, list):
+                # Timed flag: the age is native, the flag name is recorded.
+                self.flags.setdefault(self.actor, set()).add(life.field(n.body, "flag"))
+                continue
             if n.key in ("clr_country_flag", "country_event", "FROM.FROM", "state", "is_core_of",
                          "clear_global_event_target", "remove_mission", "remove_decision", "remove_ideas",
                          "every_unit_leader", "has_dynamic_modifier", "divide_temp_variable", "clamp_variable", "add_dynamic_modifier"):
@@ -107,7 +112,8 @@ class ObserverModel(life.FrameModel):
                 return True
         if name in self.native_predicates:
             return self.native_predicates[name]
-        if name in ("video_game_in_sweden_open_trust_reassessment", "video_game_in_sweden_update_trust_model_progress"):
+        if name in ("video_game_in_sweden_open_trust_reassessment", "video_game_in_sweden_update_trust_model_progress",
+                    "video_game_in_sweden_refresh_crisis_state"):
             self.called.append(name)
             return True
         return super().call(name)

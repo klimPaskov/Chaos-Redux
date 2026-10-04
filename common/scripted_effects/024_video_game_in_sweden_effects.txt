@@ -237,6 +237,16 @@ video_game_in_sweden_initialize_program = {
 			video_game_validated_wargaming_methods
 		}
 		add_ideas = video_game_experimental_war_game
+		# The opening choice reads the campaign as it stands on the day of release.
+		if = {
+			limit = { video_game_in_sweden_has_campaign_supply_gap = yes }
+			set_country_flag = video_game_in_sweden_supply_crisis
+		}
+		else = {
+			clr_country_flag = video_game_in_sweden_supply_crisis
+		}
+		video_game_in_sweden_refresh_crisis_state = yes
+		video_game_in_sweden_reset_mission_interruptions = yes
 		video_game_in_sweden_refresh_reliance_state = yes
 		video_game_in_sweden_record_normal_campaign = yes
 		video_game_in_sweden_start_runtime_watch = yes
@@ -827,6 +837,7 @@ video_game_in_sweden_do_rules_revision = {
 
 video_game_in_sweden_start_field_validation = {
 	video_game_in_sweden_pay_field_validation = yes
+	video_game_in_sweden_reset_mission_interruptions = yes
 	clr_country_flag = video_game_in_sweden_field_validation_resource_interrupted
 	clr_country_flag = video_game_in_sweden_field_validation_region_interrupted
 	set_country_flag = video_game_in_sweden_field_validation_active
@@ -972,20 +983,16 @@ video_game_in_sweden_begin_evolution_ii = {
 				value = constant:video_game_in_sweden_event.evolution_ii_min_chaos
 				compare = greater_than_or_equals
 			}
+			# Broad public reach is the premise of the national craze on every path.
+			has_country_flag = video_game_in_sweden_broad_public_reach
 			OR = {
 				has_country_flag = video_game_in_sweden_evolution_i_active
-				AND = {
-					has_country_flag = video_game_in_sweden_broad_public_reach
-					check_variable = {
-						var = video_game_in_sweden_route
-						value = constant:video_game_in_sweden_value.route_commercial
-						compare = equals
-					}
+				check_variable = {
+					var = video_game_in_sweden_route
+					value = constant:video_game_in_sweden_value.route_commercial
+					compare = equals
 				}
-				AND = {
-					has_country_flag = video_game_in_sweden_high_chaos_commercial_opening
-					has_country_flag = video_game_in_sweden_broad_public_reach
-				}
+				has_country_flag = video_game_in_sweden_high_chaos_commercial_opening
 			}
 			NOT = { has_country_flag = video_game_in_sweden_evolution_ii_recorded }
 			check_variable = {
@@ -1199,6 +1206,7 @@ video_game_in_sweden_handle_disabled_evolution = {
 video_game_in_sweden_start_reality_audit = {
 	video_game_in_sweden_pay_reality_audit = yes
 	video_game_in_sweden_clear_mission_state = yes
+	video_game_in_sweden_reset_mission_interruptions = yes
 	clr_country_flag = video_game_in_sweden_dual_track_failed
 	clr_country_flag = video_game_in_sweden_reality_audit_supply_interrupted
 	clr_country_flag = video_game_in_sweden_reality_audit_region_interrupted
@@ -1226,6 +1234,7 @@ video_game_in_sweden_start_reality_audit = {
 video_game_in_sweden_start_narrow_reality_audit = {
 	video_game_in_sweden_pay_narrow_reality_audit = yes
 	video_game_in_sweden_clear_mission_state = yes
+	video_game_in_sweden_reset_mission_interruptions = yes
 	clr_country_flag = video_game_in_sweden_reality_audit_supply_interrupted
 	clr_country_flag = video_game_in_sweden_reality_audit_region_interrupted
 	if = {
@@ -1251,6 +1260,7 @@ video_game_in_sweden_start_narrow_reality_audit = {
 video_game_in_sweden_start_dual_track = {
 	video_game_in_sweden_pay_dual_track = yes
 	video_game_in_sweden_clear_mission_state = yes
+	video_game_in_sweden_reset_mission_interruptions = yes
 	clr_country_flag = video_game_in_sweden_dual_track_failed
 	if = {
 		limit = { has_dynamic_modifier = video_game_in_sweden_field_failure_penalty }
@@ -1377,6 +1387,8 @@ video_game_in_sweden_start_trust_model = {
 	clr_country_flag = video_game_in_sweden_mandatory_reassessment_complete
 	clr_country_flag = video_game_in_sweden_mandatory_reassessment_pending
 	clr_country_flag = video_game_in_sweden_according_to_plan_disqualified
+	clr_country_flag = video_game_in_sweden_trust_model_major_mismatch
+	set_variable = { video_game_in_sweden_trust_model_mismatch_count = constant:video_game_in_sweden_value.zero }
 	set_country_flag = video_game_in_sweden_trust_model_active
 	set_variable = { video_game_in_sweden_trust_model_days_elapsed = 0 }
 	set_variable = { video_game_in_sweden_trust_model_start_date = global.date }
@@ -1855,6 +1867,9 @@ video_game_in_sweden_close_program = {
 		clr_country_flag = video_game_in_sweden_trust_model_active
 		clr_country_flag = video_game_in_sweden_mandatory_reassessment_pending
 		clr_country_flag = video_game_in_sweden_narrow_reality_audit_started
+		clr_country_flag = video_game_in_sweden_enemy_adaptation
+		clr_country_flag = video_game_in_sweden_trust_model_major_mismatch
+		clr_country_flag = video_game_in_sweden_incident_admitted
 		if = {
 			limit = {
 				has_country_flag = video_game_in_sweden_cleanup_owns_host
@@ -1940,6 +1955,33 @@ video_game_in_sweden_close_ordinary_program = {
 	country_event = { id = chaosx.nr24.20 days = 1 }
 }
 
+# COUNTRY scope. A wartime terrain, supply or enemy mismatch during the
+# Trust the Model surge is a battlefield mismatch. Admitting one, or
+# dismissing the stated number of them, ends the surge at the next review.
+video_game_in_sweden_record_trust_mismatch = {
+	if = {
+		limit = {
+			has_country_flag = video_game_in_sweden_trust_model_active
+			has_war = yes
+			video_game_in_sweden_current_incident_is_battlefield = yes
+		}
+		add_to_variable = { video_game_in_sweden_trust_model_mismatch_count = constant:video_game_in_sweden_value.one }
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = video_game_in_sweden_incident_admitted
+					check_variable = {
+						var = video_game_in_sweden_trust_model_mismatch_count
+						value = constant:video_game_in_sweden_event.trust_major_mismatch_count
+						compare = greater_than_or_equals
+					}
+				}
+			}
+			set_country_flag = video_game_in_sweden_trust_model_major_mismatch
+		}
+	}
+}
+
 video_game_in_sweden_mark_incident = {
 	if = {
 		limit = {
@@ -1979,6 +2021,8 @@ video_game_in_sweden_mark_incident = {
 		limit = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_party compare = equals } }
 		set_country_flag = video_game_in_sweden_incident_party_seen
 	}
+	video_game_in_sweden_record_trust_mismatch = yes
+	clr_country_flag = video_game_in_sweden_incident_admitted
 	set_variable = { video_game_in_sweden_incident_ready_day = video_game_in_sweden_program_days }
 	if = {
 		limit = { has_country_flag = video_game_in_sweden_trust_model_active }
@@ -2017,6 +2061,7 @@ video_game_in_sweden_roll_incident = {
 			clr_country_flag = video_game_in_sweden_incident_diplomatic_seen
 			clr_country_flag = video_game_in_sweden_incident_workplace_seen
 			clr_country_flag = video_game_in_sweden_incident_party_seen
+			clr_country_flag = video_game_in_sweden_enemy_adaptation
 			if = {
 				limit = { video_game_in_sweden_has_unseen_incident_family = yes }
 				set_temp_variable = { video_game_in_sweden_incident_pool_available = 1 }
@@ -2577,13 +2622,12 @@ video_game_in_sweden_maintenance = {
 					NOT = { controls_state = constant:video_game_in_sweden_event.stockholm_state }
 				}
 			}
-			set_country_flag = video_game_in_sweden_core_loss_crisis
-			set_country_flag = video_game_in_sweden_capital_threat
 			set_country_flag = video_game_in_sweden_reality_check_disqualified
 			set_country_flag = video_game_in_sweden_according_to_plan_disqualified
 			clr_country_flag = video_game_in_sweden_trust_model_stockholm_continuous
 			clr_country_flag = video_game_in_sweden_reality_check_stockholm_held
 		}
+		video_game_in_sweden_refresh_crisis_state = yes
 		if = {
 			limit = {
 				OR = {
@@ -2687,6 +2731,7 @@ video_game_in_sweden_maintenance = {
 		else_if = {
 			limit = {
 				has_country_flag = video_game_in_sweden_evolution_i_active
+				has_country_flag = video_game_in_sweden_broad_public_reach
 				check_variable = {
 					var = global.chaos_meter_value
 					value = constant:video_game_in_sweden_event.evolution_ii_min_chaos
@@ -2745,10 +2790,9 @@ video_game_in_sweden_maintenance = {
 					}
 					NOT = { controls_state = constant:video_game_in_sweden_event.stockholm_state }
 					has_country_flag = video_game_in_sweden_supply_crisis
-					has_country_flag = video_game_in_sweden_incident_enemy_seen
 					has_country_flag = video_game_in_sweden_core_loss_crisis
 					has_country_flag = video_game_in_sweden_capital_threat
-					has_country_flag = video_game_in_sweden_enemy_adaptation
+					has_country_flag = video_game_in_sweden_trust_model_major_mismatch
 					AND = {
 						has_country_flag = video_game_in_sweden_trust_model_meaningful_war
 						has_event_target = video_game_in_sweden_trust_model_opponent
@@ -2781,6 +2825,7 @@ video_game_in_sweden_complete_field_validation_mission_apply_current = {
 			NOT = { video_game_in_sweden_has_campaign_supply_gap = yes }
 			NOT = { has_country_flag = video_game_in_sweden_field_validation_resource_interrupted }
 			NOT = { has_country_flag = video_game_in_sweden_field_validation_region_interrupted }
+			NOT = { has_country_flag = video_game_in_sweden_mission_core_lost }
 		}
 		video_game_in_sweden_full_field_validation = yes
 	}
@@ -2801,6 +2846,7 @@ video_game_in_sweden_timeout_field_validation_mission_apply_current = {
 			video_game_in_sweden_has_front_presence = yes
 			video_game_in_sweden_has_committed_field_resources = yes
 			NOT = { video_game_in_sweden_has_campaign_supply_gap = yes }
+			NOT = { video_game_in_sweden_mission_lost_ground = yes }
 		}
 		video_game_in_sweden_partial_field_validation = yes
 	}
@@ -2817,6 +2863,7 @@ video_game_in_sweden_complete_reality_audit_mission_apply_current = {
 			OR = {
 				has_country_flag = video_game_in_sweden_reality_audit_supply_interrupted
 				has_country_flag = video_game_in_sweden_reality_audit_region_interrupted
+				has_country_flag = video_game_in_sweden_mission_core_lost
 				NOT = { video_game_in_sweden_has_committed_field_resources = yes }
 				NOT = { has_country_flag = video_game_in_sweden_logistics_review_complete }
 				NOT = { has_country_flag = video_game_in_sweden_red_team_complete }
@@ -2841,6 +2888,7 @@ video_game_in_sweden_timeout_reality_audit_mission_apply_current = {
 			video_game_in_sweden_has_front_presence = yes
 			video_game_in_sweden_has_committed_field_resources = yes
 			NOT = { video_game_in_sweden_has_campaign_supply_gap = yes }
+			NOT = { video_game_in_sweden_mission_lost_ground = yes }
 		}
 		video_game_in_sweden_partial_reality_audit = yes
 	}

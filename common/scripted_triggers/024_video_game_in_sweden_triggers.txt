@@ -240,6 +240,28 @@ video_game_in_sweden_no_active_mission = {
 	NOT = { has_active_mission = video_game_restriction_enforcement }
 }
 
+# A field validation, Reality Audit or Dual-Track verification is under way.
+# Restriction enforcement is excluded because it cannot be lost on the map.
+video_game_in_sweden_has_field_mission_running = {
+	OR = {
+		has_country_flag = video_game_in_sweden_field_validation_active
+		has_country_flag = video_game_in_sweden_reality_audit_active
+		has_country_flag = video_game_in_sweden_dual_track_active
+	}
+}
+
+# The running mission lost Stockholm or several Swedish cores after it began.
+video_game_in_sweden_mission_lost_ground = {
+	OR = {
+		has_country_flag = video_game_in_sweden_mission_capital_lost
+		check_variable = {
+			var = video_game_in_sweden_mission_core_loss_count
+			value = constant:video_game_in_sweden_event.several_core_losses
+			compare = greater_than_or_equals
+		}
+	}
+}
+
 video_game_in_sweden_evolution_iii_initial_choices_open = {
 	video_game_in_sweden_is_current_host = yes
 	video_game_in_sweden_no_active_mission = yes
@@ -420,6 +442,15 @@ video_game_in_sweden_has_alternative_incident_family = {
 			video_game_in_sweden_incident_party_is_valid = yes
 			NOT = { check_variable = { var = video_game_in_sweden_last_incident value = constant:video_game_in_sweden_value.incident_party compare = equals } }
 		}
+	}
+}
+
+# The incident now on the table concerns ground, transport or the opponent.
+video_game_in_sweden_current_incident_is_battlefield = {
+	OR = {
+		check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_terrain compare = equals }
+		check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_supply compare = equals }
+		check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_enemy compare = equals }
 	}
 }
 
