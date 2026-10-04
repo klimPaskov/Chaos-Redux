@@ -876,30 +876,25 @@ event021_civil_war_crisis_category = {
 			}
 		}
 		available = {
-			event021_secure_rail_mission_target_valid = yes
-			NOT = { has_country_flag = event021_rail_spine_lost }
-			NOT = {
-				AND = {
-					has_variable = random_civil_war_rail_mission_state
-					var:random_civil_war_rail_mission_state = {
-						OR = {
-							has_state_flag = event021_reconstruction_rail_repaired
-							has_state_flag = event021_rail_spine_restored
+			# The activation and cancel triggers already exclude a lost or
+			# repaired rail state; the hidden copy keeps the gate unchanged.
+			hidden_trigger = {
+				NOT = { has_country_flag = event021_rail_spine_lost }
+				NOT = {
+					AND = {
+						has_variable = random_civil_war_rail_mission_state
+						var:random_civil_war_rail_mission_state = {
+							OR = {
+								has_state_flag = event021_reconstruction_rail_repaired
+								has_state_flag = event021_rail_spine_restored
+							}
 						}
 					}
 				}
 			}
 			custom_trigger_tooltip = {
 				tooltip = event021_secure_rail_requirement_tt
-				var:random_civil_war_rail_mission_state = {
-					is_owned_by = ROOT
-					is_controlled_by = ROOT
-					is_in_array = { array = ROOT.random_civil_war_opening_core_states value = THIS }
-					OR = {
-						supply_node > constant:random_civil_war_value.zero
-						infrastructure > constant:event021_mission_tuning.rail_infrastructure_gate
-					}
-				}
+				event021_secure_rail_mission_target_valid = yes
 			}
 		}
 		cancel_trigger = {
@@ -968,11 +963,11 @@ event021_civil_war_crisis_category = {
 			NOT = { has_country_flag = event021_settlement_terms_mission_active }
 		}
 		available = {
-			has_variable = random_civil_war_settlement_terms_hold_until
-			NOT = { has_country_flag = random_civil_war_settlement_obligation_failed }
+			hidden_trigger = { has_variable = random_civil_war_settlement_terms_hold_until }
 			custom_trigger_tooltip = {
 				tooltip = event021_settlement_terms_requirement_tt
 				has_country_flag = random_civil_war_settlement_obligation_active
+				NOT = { has_country_flag = random_civil_war_settlement_obligation_failed }
 			}
 		}
 		cancel_trigger = {

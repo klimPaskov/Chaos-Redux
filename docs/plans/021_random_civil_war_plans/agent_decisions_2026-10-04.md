@@ -210,3 +210,10 @@ The package-incomplete failed opening still shows its reason because it records 
 The optional narrowing of the validator's tag-shortfall receipt to cluster and scenario launches is not taken: the global receipt is read only by this log snapshot, so recording the shortfall for ordinary openings keeps their failed-opening record explained.
 No gate, weight, or launch behavior changes, and the shared Events Log files are untouched.
 Contract: `common/scripted_effects/021_random_civil_war_parent_effects.md` (`event021_parent_record_system_log` paragraph).
+
+## D17. Mission availability shows plain requirements only
+
+Finding: the available blocks of Secure the Rail Spine and Hold the Settlement Terms showed `event021_secure_rail_mission_target_valid` (a raw `has_variable` and `is_in_array` check), a raw NOT/AND over the rail state's flags, `has_variable = random_civil_war_settlement_terms_hold_until`, and the obligation-failed flag as script text beside their own requirement lines.
+Decision: the rail card states its requirement through `event021_secure_rail_requirement_tt`, which names the bound state through `event021_GetRailMissionStateName` and now wraps `event021_secure_rail_mission_target_valid`; the lost and already-repaired checks, which activation and cancellation also enforce, sit in `hidden_trigger`.
+The settlement card states "The settlement's obligation, [obligation], is still in force and has not been broken" through `event021_settlement_terms_requirement_tt`, which wraps the active and not-failed obligation checks, and the hold-date variable check is hidden.
+Every gate is logically unchanged. A scripted pass over every available block in `common/decisions/021_random_civil_war_decisions.txt` finds no visible trigger at all outside `hidden_trigger` or `custom_trigger_tooltip` (the same pass on the previous file listed the seven raw checks above).
