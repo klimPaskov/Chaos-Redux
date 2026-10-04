@@ -67,3 +67,20 @@ Evidence: both test files pass, and the new `test_real_event34_row_keeps_baselin
 
 Closed as blocked on Event 34, not queued for Event 35: hidden-row paid paths, corridor restoration, breakup and scar, secured-value salvage, and multi-region inherited priority.
 Event 34 is a legacy event with no per-region project or corridor system, and the spec forbids inventing that history (spec part 8; inherited consumer audit, section B).
+
+## D5. Event Log wiring and the single history row
+
+Disposition: implemented.
+
+- Details: `GetEventsLogEventDetailDescription` shows `chaosx.events_log.window.event_details.great_depression`, whose wording matches the catalog Details column.
+  When the window is opened from a History row that names a country, it shows `chaosx.events_log.window.event_details.great_depression.history`, which adds that country and the Depression Severity stored as the row payload.
+- Evolutions: type, title, body and per-stage summary rows for evolution type 35 use `constant:great_depression_evolution_log.*` in the Evolutions, History and Event Details lists.
+  Stage and tier labels come from the shared numeric lists, so no Event 35 rows are needed there.
+- Toggles: the Event Details producer adds three preview rows (stages 1 to 3, tiers 2 to 4), so the existing `events_log_disabled_evolution_35_35_1..3` toggles that `is_current_evolution_enabled` already reads can be reached.
+- Single row: following the lead decision, the duplicate is fixed in Event 35's own file instead of a pre-fire branch in the shared dispatcher.
+  When the call comes from the independent Event 35 path (random pool or cluster dispatch), `great_depression_record_history` fills in the newest row if it is an Event 35 row from today with no country, writing the country and Severity into index 0.
+  Otherwise it appends its own row, so inherited, conversion and relapse starts, and a second country on the same day, keep separate rows.
+  The cluster path is included because it uses the same dispatcher and leaves the same countryless row.
+- `docs/events/035_great_depression.md` no longer claims Event Log surfaces that did not exist.
+
+needs_live_game: the fill-in relies on the dispatcher recording its row before the queued `chaosx.nr35.1`/`chaosx.nr35.9` events run, which is how the prefire actor bindings of other events already behave; if a live firing still shows two rows, the order is different and the dispatcher would need the pre-fire branch after all.

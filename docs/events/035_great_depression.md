@@ -252,7 +252,11 @@ The runtime audio is `sound/035_great_depression/super_event_106_second_great_de
 
 The seven achievement contracts expose the engine-facing `_NAME` and `_DESC` keys in the shared registry without unreferenced lower-case title or description aliases.
 
-The shared event name map, event-log actor map, event-details content, evolution details, and cluster surfaces identify Event 35 consistently.
+The Event Log shows the catalog Details text for Event 35, and a row opened from History also names the affected country and its Depression Severity when the crisis struck.
+
+Financial Contagion, Social Collapse, and The Second Great Depression show their type, title, body, summary, stage, and tier in the History, Evolutions, and Event Details tabs, and Event Details lists all three as evolution rows the player can switch off.
+
+A random or cluster firing leaves one history row: the shared dispatcher records it, and Event 35 fills in the selected country and Severity. Inherited, conversion, and relapse starts record their own row.
 
 The catalog source is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`.
 
