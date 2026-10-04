@@ -339,3 +339,17 @@ Four period documentary report sources (alluvial field, deep vein, gemstone bed,
 `chaosx.nr29.1` picks its picture through `GetRichesFoundDiscoveryPicture` from the profile of the mine just found (`riches_found_last_discovered_mine`, set when the discovery is committed), with the general discovery card as the default, following the wiki's scripted-localisation picture pattern and the Event 016 precedent.
 Agent decision: the skill routes generated report art and icons to asset subagents, which this workflow session cannot spawn, so the implementing agent produced and reviewed them under the same family contracts.
 How the pictures and icon read in game needs the live game.
+
+### Round 2 lead items commit index
+
+| Decisions | Commit |
+| --- | --- |
+| D20 to D23 (decision layers, crisis flags, Gold Disease duplicates, Port Route) | `1942c1066`, follow-up `705b46ff4` |
+| D24 (Retain the Administration) | `93531ba87` |
+| D25 (achievement history, Claim Jumper per controller) | `2afc5f8b0` |
+| D26 (Chaos Meter sources) | `ce0f0e8a1` |
+| D27 (AI and incident input producers) | `1fb5793e1` |
+| D28 (opening values, occupied output) | `301cc4825` |
+| D29 (Rail Spur railway) | `9a7a5b6ce` |
+| D30 (Gold Fever arrival report) | `456599d5d` |
+| D31 (profile discovery reports, Reopen icon) | `1acd2d5cb` |
