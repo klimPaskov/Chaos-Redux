@@ -78,7 +78,14 @@ The hostile operations and the data exchange are targeted decisions: the actor's
 
 ## AI behaviour
 
-The AI keeps its roster reserve floors (`chaosx_nr25_ai_keeps_reserve`) before any optional spending; restoring the outpost, crew rotation, shelter and withdrawal stay open so it can always recover or leave.
+The AI keeps two reserve levels.
+Optional spending keeps the roster-entry reserves (`chaosx_nr25_ai_keeps_reserve`: political power, fuel, support equipment and, on its own shipping, convoys).
+Phase-gate actions (authorisation, the gateways, the outpost, the survey actions while the survey gate is open and the five final approaches), survey actions that would reopen the site-confirmation objective, and the depot and polar-crew actions while Logistics Readiness is below the organising threshold use the smaller progress reserve (`chaosx_nr25_ai_keeps_progress_reserve`).
+That reserve is the core floor in `chaosx_nr25_ai_floor` (higher at war) plus the cost of the current phase's gate, so the AI keeps the core floor after paying; mobilisation saves for the coming gateway.
+`chaosx_nr25_refresh_ai_progress_floor` stores the floor on entry, on every phase change and on each participant pulse.
+Restoring the outpost, crew rotation and shelter have no reserve check so the AI can always recover.
+Withdrawal has no weight unless a spec 009 condition holds (`chaosx_nr25_ai_should_withdraw`): the route has collapsed twice (a failed gateway or supply-route objective counts once each), readiness has stayed below the objective failure floor for five pulses in a row, the expedition has gone 360 days without a new phase or objective while unable to pay for its next phase, its homeland is close to surrender, or a rival already works the wreck while it is still off the survey ground with nothing recovered.
+It never withdraws while holding major fragments, in or ready for the final recovery, or while gambling on the technology in a losing war.
 Hostile operations and armed Evolution III actions prefer rivals ahead in the race, avoid rivals with a countermeasure ready, lean towards a rival caught operating against the actor, and never repeat the last operation back to back; no weight reads whether the target is a player.
 Outpost reconfiguration happens only when the situation calls for that emphasis, and the Evolution V policies favour containment for stable or accident-hit programmes, risky integration only for countries losing a war or collapsing, and destruction only as a last resort.
 Factors live in the `chaosx_nr25_ai` constants; agent decision D19 in the plans folder lists the source-level scenario reads and the blocked MCP probability routes.

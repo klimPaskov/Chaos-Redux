@@ -349,3 +349,47 @@ Findings and decisions:
 - Evolution I to IV responses were visible only while their evolution was the highest one active, although each hazard keeps running in the pulse after a later evolution begins. With an evolved opening (D15) that starts Evolutions I to IV together, the signal, survivor and militarisation responses (including the rescue that the Nobody Gets Left on the Ice achievement needs) were never offered during the race. Each response now stays available while its own evolution is in force (`chaosx_nr25_<evolution>_evolution_in_force`, which also honours the Event Details toggle); the shared action cooldown still limits an expedition to one action per cooldown.
 
 Review evidence limits: `hoi4_probability_inspect` (`decision_ai_will_do`, aftermath decisions file) still returns `INTERNAL_ERROR`, so D19's MCP baseline stays `blocked`; one attempt was made and not retried. `hoi4_event_inspect` in `lint` mode rejected both selector forms tried, so event review was source-only.
+
+## D23. Progress reserve, readiness repair and conditional withdrawal
+
+Disposition: `implemented` for the source patch; `blocked` for the MCP probability inspect and compare.
+
+Basis: spec 009 (Phase behavior, Spending floors, Progress strategy, Withdrawal logic), the D19 reserve floors, and the lead's round 2 finding that every phase-gate action carried the full roster-entry floor with a zero factor, so an AI stalled after its first spends and then withdrew at random through a flat `base = 1`.
+
+Decision:
+
+- Two reserve levels. Optional spending keeps the roster-entry reserves (`chaosx_nr25_ai_keeps_reserve`, unchanged). Phase-gate actions use the new `chaosx_nr25_ai_keeps_progress_reserve`: political power, fuel (through `fuel_k`), support equipment and, on owned shipping, convoys must cover the core floor plus the cost of the current phase's gate, so the core floor is what remains after paying.
+- Core floors live in the new `chaosx_nr25_ai_floor` constants: peace 10 political power, 100 fuel, 25 support equipment, 5 convoys; war 25, 400, 100 and 15. The gate costs are read from the existing `chaosx_nr25_cost` requirement mirrors (authorisation or chartered entry, gateway, outpost, survey, final, with the chartered political-power variants). Mobilisation has no paid gate, so it saves for the coming gateway. `chaosx_nr25_refresh_ai_progress_floor` stores the floor at registration, on every phase change and on each pulse, so a change of war state is picked up within one pulse.
+- Progress-reserve actions: authorisation, the three gateways, establishing the outpost, the five final approaches, the three survey actions while the survey gate is open (`chaosx_nr25_survey_gate_open`), and rival reconnaissance, fragment recovery and fragment analysis while they would reopen the site-confirmation objective (`chaosx_nr25_action_reopens_site_objective`). Outside those states the survey trio keeps the full floor. The earlier phases have no objective-starting optional action for an AI, because the organising objective opens with the roster authorisation.
+- Spec 009 priority one: the depot and polar-crew actions draw on the progress reserve and gain weight (+12 and +6) while Logistics Readiness is below the organising threshold (`chaosx_nr25_phase_gate.crossing_readiness`), because the pulse drains readiness and nothing else repairs it before the outpost exists.
+- Withdrawal has no weight unless `chaosx_nr25_ai_should_withdraw` holds, and then weighs `chaosx_nr25_ai.withdraw_weight` (25). Conditions: two route collapses (`chaosx_nr25_route_collapses`, counted when a gateway or supply-route objective fails); five consecutive pulses below the objective failure floor (`chaosx_nr25_critical_readiness_pulses`); no new phase or objective for 360 days (`chaosx_nr25_withdraw_review_date`, set with the stall clock) while unable to pay for the current gate (`chaosx_nr25_phase_gate_cost_available`); surrender progress above 0.5; or a rival in final recovery while this expedition is not yet surveying and holds no fragment or survey evidence, with Evolution IV not in force. It is suppressed while the AI holds major fragments, is in final recovery or has a confirmed site, after the race resolves, and while it is at war with surrender progress between the desperate threshold (0.1) and 0.5.
+- The fragment-recovery weight read a country flag (`chaosx_nr25_evolution_wreck_breaking_apart`) that nothing sets; it now reads `chaosx_nr25_wreck_breaking_apart_evolution_in_force`.
+
+Source walk (deterministic reads, not probability results). Assumptions: owned shipping, peace floors, support equipment entering the stockpile at 0.75 a day, objective lengths from `chaosx_nr25_cost`.
+
+P01 peaceful maritime major, roster-entry stock 60 political power, 6,000 fuel, 120 convoys, 450 support equipment:
+
+| Phase | Stock before the action | Next phase-gate action | Cost gate | Progress floor | Weight |
+| --- | --- | --- | --- | --- | --- |
+| Entry | as above | Authorisation at roster selection | met | not used (event effect) | taken |
+| Mobilisation | 60 PP, 5,900 fuel, 110 convoys, 350 support | Organising objective runs; depot (optional, full floor met) | met | n/a | depot 10 |
+| Crossing | 60 PP, 5,800 fuel, 110 convoys, 290 support | Gateway | convoys > 12, fuel > 150, support > 100 | 10 PP, 0.25k fuel, 125 support, 17 convoys | 10, 18, 8 |
+| Outpost | 280 support, 98 convoys | Establish outpost | support > 150, fuel > 100 | 175 support, 0.2k fuel | 20 |
+| Survey | 242, then 176, then 110 support | Three surveys 12 days apart | support > 75, fuel > 75 | 100 support, 0.175k fuel | 12 to 21 each time |
+| Final | 125 support, rising | Controlled recovery | support > 125 | 150 support, 15 convoys | 20 to 40 once support passes 150 (about 35 days of production) |
+
+Under the old full floor the same country could not run a gateway, the outpost or any survey once its political power fell to 50 or below, although none of these owned-shipping actions costs political power, and in the survey phase it waited about 130 days for support equipment to climb back above 200 between surveys.
+
+P10 critical logistics, same stock with Logistics Readiness below 10:
+
+| Phase | Next useful action | Weight |
+| --- | --- | --- |
+| Mobilisation | Depot (progress reserve, readiness repair) | 22; polar crew 14 to 24 |
+| Crossing | Gateway (no readiness gate) | 8 to 18 |
+| Outpost | Establish outpost; reinforce and rotate have no reserve check | 20; reinforce 22, rotate 17 |
+| Survey | Surveys alongside reinforce and rotate | 12 to 21; reinforce 22, rotate 17 |
+| Final | Final approaches need readiness 40 and are unavailable; reinforce and rotate repair it | final 0 until repaired, then 20 to 40 |
+
+Withdrawal stays at 0 in both walks until readiness has been critical for five pulses before the final phase; P01 never meets a withdrawal condition.
+
+MCP route record: `hoi4_probability_inspect` (`decision_ai_will_do`, the patched decisions file, a three-decision pool) returned `INTERNAL_ERROR`. `hoi4_probability_compare` against the D19 before snapshot was rejected twice with `Invalid tool arguments` (the `scenarioSet` shape is not documented in the exposed schema); it was not retried further. No refresh, helper expansion or repository-wide query was used.

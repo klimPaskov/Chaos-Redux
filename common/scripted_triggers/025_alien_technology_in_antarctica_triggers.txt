@@ -1079,6 +1079,131 @@ chaosx_nr25_ai_target_is_known_attacker = {
 	check_variable = { var = chaosx_nr25_identified_attacker_id value = FROM.id compare = equals }
 }
 
+# Country scope. The AI's progress reserve. A phase-gate action, or an action
+# that reopens the current phase's objective, needs only the core floor left
+# after paying for the current phase's gate; the floor is stored by
+# chaosx_nr25_refresh_ai_progress_floor and is higher at war. Humans are
+# never limited.
+chaosx_nr25_ai_keeps_progress_reserve = {
+	OR = {
+		is_ai = no
+		AND = {
+			check_variable = { var = political_power value = chaosx_nr25_ai_floor_pp compare = greater_than_or_equals }
+			check_variable = { var = fuel_k value = chaosx_nr25_ai_floor_fuel_k compare = greater_than_or_equals }
+			check_variable = { var = num_equipment@support_equipment value = chaosx_nr25_ai_floor_support compare = greater_than_or_equals }
+			OR = {
+				chaosx_nr25_uses_chartered_passage = yes
+				check_variable = { var = num_equipment@convoy value = chaosx_nr25_ai_floor_convoys compare = greater_than_or_equals }
+			}
+		}
+	}
+}
+
+# Country scope. Spec 009 progress priority one: Logistics Readiness is below
+# the level the organising objective needs, so repairing it comes before any
+# other spending and the AI may draw on its progress reserve to do so.
+chaosx_nr25_ai_readiness_repair_needed = {
+	check_variable = { var = chaosx_nr25_logistics_readiness value = constant:chaosx_nr25_phase_gate.crossing_readiness compare = less_than }
+}
+
+# Country scope. The survey phase's gate is still open: the primary site is
+# unconfirmed or the survey evidence is short of the final-recovery gate.
+chaosx_nr25_survey_gate_open = {
+	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals }
+	OR = {
+		NOT = { has_country_flag = chaosx_nr25_primary_site_confirmed }
+		check_variable = { var = chaosx_nr25_survey_evidence value = constant:chaosx_nr25_phase_gate.survey_evidence compare = less_than }
+	}
+}
+
+# Country scope. A survey-phase action taken now would reopen the objective
+# that confirms the primary site: the evidence suffices, the site is still
+# unconfirmed and no objective is running. (The organising objective opens
+# with the expedition's authorisation, so the earlier phases have no
+# objective-starting optional action.)
+chaosx_nr25_action_reopens_site_objective = {
+	NOT = { has_country_flag = chaosx_nr25_phase_mission_active }
+	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals }
+	NOT = { has_country_flag = chaosx_nr25_primary_site_confirmed }
+	check_variable = { var = chaosx_nr25_survey_evidence value = constant:chaosx_nr25_phase_gate.survey_evidence compare = greater_than_or_equals }
+}
+
+# Country scope. The expedition can pay for its current phase's gate action.
+# Entry and mobilisation have no paid gate once the expedition is authorised,
+# and an established outpost needs no further gate payment.
+chaosx_nr25_phase_gate_cost_available = {
+	OR = {
+		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = less_than_or_equals }
+		AND = {
+			check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals }
+			chaosx_nr25_gateway_cost_available = yes
+		}
+		AND = {
+			check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals }
+			OR = {
+				has_country_flag = chaosx_nr25_outpost_established
+				chaosx_nr25_outpost_cost_available = yes
+			}
+		}
+		AND = {
+			check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals }
+			chaosx_nr25_survey_cost_available = yes
+		}
+		AND = {
+			check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals }
+			chaosx_nr25_final_cost_available = yes
+		}
+	}
+}
+
+# Country scope (AI). Spec 009 withdrawal. The AI leaves only when its route
+# has collapsed twice, its Logistics Readiness has stayed critical, it has
+# gone a long time without a new phase or objective while unable to pay for
+# its next phase, its homeland is close to surrender, or a rival already
+# works the wreck while this expedition is still off the survey ground with
+# nothing recovered. It stays while it holds major fragments, is in or ready
+# for the final recovery, or is gambling on the technology in a losing war.
+chaosx_nr25_ai_should_withdraw = {
+	NOT = { has_global_flag = chaosx_nr25_final_recovery_resolved }
+	NOT = { check_variable = { var = chaosx_nr25_fragment_count value = constant:chaosx_nr25_cost.fragment_major_threshold compare = greater_than_or_equals } }
+	NOT = { check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals } }
+	NOT = { has_country_flag = chaosx_nr25_final_mission_active }
+	NOT = {
+		AND = {
+			check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals }
+			has_country_flag = chaosx_nr25_primary_site_confirmed
+		}
+	}
+	NOT = {
+		AND = {
+			has_war = yes
+			surrender_progress > constant:chaosx_nr25_ai.desperate_surrender
+			NOT = { surrender_progress > constant:chaosx_nr25_ai.withdraw_home_defeat_surrender }
+		}
+	}
+	OR = {
+		check_variable = { var = chaosx_nr25_route_collapses value = constant:chaosx_nr25_ai.withdraw_route_collapses compare = greater_than_or_equals }
+		check_variable = { var = chaosx_nr25_critical_readiness_pulses value = constant:chaosx_nr25_ai.withdraw_critical_pulses compare = greater_than_or_equals }
+		AND = {
+			NOT = { has_country_flag = chaosx_nr25_phase_mission_active }
+			has_variable = chaosx_nr25_withdraw_review_date
+			check_variable = { var = global.date value = chaosx_nr25_withdraw_review_date compare = greater_than }
+			NOT = { chaosx_nr25_phase_gate_cost_available = yes }
+		}
+		AND = {
+			has_war = yes
+			surrender_progress > constant:chaosx_nr25_ai.withdraw_home_defeat_surrender
+		}
+		AND = {
+			check_variable = { var = global.chaosx_nr25_leading_phase value = constant:chaosx_nr25_phase.final_recovery compare = greater_than_or_equals }
+			check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = less_than }
+			NOT = { check_variable = { var = chaosx_nr25_fragment_count value = constant:chaosx_nr25_value.zero compare = greater_than } }
+			NOT = { check_variable = { var = chaosx_nr25_survey_evidence value = constant:chaosx_nr25_value.zero compare = greater_than } }
+			NOT = { chaosx_nr25_wreck_breaking_apart_evolution_in_force = yes }
+		}
+	}
+}
+
 # Country scope. The AI keeps a working reserve of political power, fuel,
 # support equipment and, on its own shipping, convoys before it spends on an
 # optional expedition action. The floors are the roster-entry floors.

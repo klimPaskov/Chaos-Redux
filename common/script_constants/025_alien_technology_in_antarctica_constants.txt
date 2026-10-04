@@ -1033,4 +1033,38 @@ chaosx_nr25_ai = {
 	integration_reliance_factor = 0.25
 	# A democracy is less willing to hide a dangerous programme.
 	concealment_democracy_factor = 0.5
+	# Withdrawal (spec 009): the AI leaves the race only after its route has
+	# collapsed this many times, after this many pulses in a row below the
+	# objective failure readiness floor, after this many days without a new
+	# phase or objective while it cannot pay for its next phase, or when its
+	# homeland is close to surrender.
+	withdraw_route_collapses = 2
+	withdraw_critical_pulses = 5
+	withdraw_unaffordable_days = 360
+	withdraw_home_defeat_surrender = 0.5
+	withdraw_weight = 25
+}
+
+# AI post-spend reserve floors for progress. A phase-gate action (authorize,
+# a gateway, the outpost, the survey actions and the final approaches) or an
+# action that reopens a phase objective needs only these core reserves left
+# after paying its own cost; optional spending keeps the larger roster-entry
+# reserves (chaosx_nr25_cost ai_reserve_*). Wartime floors protect fuel,
+# equipment and shipping for an active war.
+chaosx_nr25_ai_floor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	core_pp_peace = 10
+	core_pp_war = 25
+	core_fuel_peace = 100
+	core_fuel_war = 400
+	core_support_peace = 25
+	core_support_war = 100
+	core_convoys_peace = 5
+	core_convoys_war = 15
+	# Fuel is compared through the engine's thousands reader.
+	fuel_per_k = 1000
 }
