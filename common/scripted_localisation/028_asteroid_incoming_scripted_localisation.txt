@@ -196,11 +196,35 @@ defined_text = {
 defined_text = {
 	name = GetAsteroidIncomingCapitalRelocationClause
 	text = {
+		trigger = { has_country_flag = asteroid_incoming_capital_stayed_at_crater }
+		localization_key = asteroid_incoming.report.capital_stayed
+	}
+	text = {
 		trigger = { check_variable = { var = asteroid_incoming_country_capital_relocated_count value = 0 compare = greater_than } }
 		localization_key = asteroid_incoming.report.capital_relocated
 	}
 	text = {
 		localization_key = asteroid_incoming.report.capital_unchanged
+	}
+}
+
+# Event Details impact line for a struck capital. Empty when the impact centre
+# was not a capital.
+defined_text = {
+	name = GetAsteroidIncomingImpactCapitalClause
+	text = {
+		trigger = { has_global_flag = asteroid_incoming_capital_stayed_at_crater }
+		localization_key = asteroid_incoming.event_details.capital.stayed
+	}
+	text = {
+		trigger = {
+			has_global_flag = asteroid_incoming_capital_relocation_complete
+			has_event_target = asteroid_incoming_relocated_capital_state
+		}
+		localization_key = asteroid_incoming.event_details.capital.relocated
+	}
+	text = {
+		localization_key = asteroid_incoming.event_details.capital.none
 	}
 }
 

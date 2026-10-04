@@ -144,6 +144,63 @@ asteroid_incoming_select_surviving_capital = {
 	}
 }
 
+# STATE SCOPE inside the fallback scan. Keeps the best-scoring candidate of the
+# current tier, then the lowest state id. The caller initializes the best-score,
+# best-id, score and id temporary variables.
+asteroid_incoming_consider_fallback_capital = {
+	asteroid_incoming_score_backup_capital_candidate = yes
+	set_temp_variable = { asteroid_incoming_backup_capital_id = id }
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_event_target = asteroid_incoming_backup_capital_state }
+				check_variable = { var = asteroid_incoming_backup_capital_score value = asteroid_incoming_backup_capital_best_score compare = greater_than }
+				AND = {
+					check_variable = { var = asteroid_incoming_backup_capital_score value = asteroid_incoming_backup_capital_best_score compare = equals }
+					check_variable = { var = asteroid_incoming_backup_capital_id value = asteroid_incoming_backup_capital_best_id compare = less_than }
+				}
+			}
+		}
+		save_global_event_target_as = asteroid_incoming_backup_capital_state
+		set_temp_variable = { asteroid_incoming_backup_capital_best_score = asteroid_incoming_backup_capital_score }
+		set_temp_variable = { asteroid_incoming_backup_capital_best_id = asteroid_incoming_backup_capital_id }
+	}
+}
+
+# COUNTRY SCOPE. Used only when asteroid_incoming_select_surviving_capital found
+# no settled, fully controlled owned state. Tries, in order: any owned state the
+# country controls, any owned state even if occupied, then any state it
+# controls. Output: global backup_capital_state, absent when none qualifies.
+asteroid_incoming_select_fallback_capital = {
+	clear_global_event_target = asteroid_incoming_backup_capital_state
+	save_event_target_as = asteroid_incoming_backup_capital_country
+	set_temp_variable = { asteroid_incoming_backup_capital_best_score = constant:asteroid_incoming_runtime.zero }
+	set_temp_variable = { asteroid_incoming_backup_capital_best_id = constant:asteroid_incoming_runtime.zero }
+	set_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.zero }
+	set_temp_variable = { asteroid_incoming_backup_capital_id = constant:asteroid_incoming_runtime.zero }
+	every_owned_state = {
+		limit = {
+			asteroid_incoming_state_is_fallback_capital_site = yes
+			is_controlled_by = PREV
+		}
+		asteroid_incoming_consider_fallback_capital = yes
+	}
+	if = {
+		limit = { NOT = { has_event_target = asteroid_incoming_backup_capital_state } }
+		every_owned_state = {
+			limit = { asteroid_incoming_state_is_fallback_capital_site = yes }
+			asteroid_incoming_consider_fallback_capital = yes
+		}
+	}
+	if = {
+		limit = { NOT = { has_event_target = asteroid_incoming_backup_capital_state } }
+		every_controlled_state = {
+			limit = { asteroid_incoming_state_is_fallback_capital_site = yes }
+			asteroid_incoming_consider_fallback_capital = yes
+		}
+	}
+}
+
 # ANY SCOPE. Called once from the main-impact transaction after footprint
 # planning and before destruction. A same-transaction successful receipt makes
 # repeat calls inert. A failed attempt records the existing failure flag only.
@@ -162,6 +219,7 @@ asteroid_incoming_relocate_current_capital = {
 		clear_global_event_target = asteroid_incoming_capital_country
 		clear_global_event_target = asteroid_incoming_backup_capital_state
 		clear_global_event_target = asteroid_incoming_replacement_capital_state
+		clear_global_event_target = asteroid_incoming_relocated_capital_state
 		clr_global_flag = asteroid_incoming_capital_relocation_complete
 		clr_global_flag = asteroid_incoming_capital_relocation_failed
 		event_target:asteroid_incoming_locked_state = {
@@ -181,12 +239,17 @@ asteroid_incoming_relocate_current_capital = {
 				save_global_event_target_as = asteroid_incoming_capital_country
 				asteroid_incoming_select_surviving_capital = yes
 				if = {
+					limit = { NOT = { has_event_target = asteroid_incoming_backup_capital_state } }
+					asteroid_incoming_select_fallback_capital = yes
+				}
+				if = {
 					limit = { has_event_target = asteroid_incoming_backup_capital_state }
 					set_capital = { state = event_target:asteroid_incoming_backup_capital_state remember_old_capital = no }
 					if = {
 						limit = { capital_scope = { state = event_target:asteroid_incoming_backup_capital_state } }
 						set_country_flag = asteroid_incoming_capital_relocated
 						set_global_flag = asteroid_incoming_capital_relocation_complete
+						event_target:asteroid_incoming_backup_capital_state = { save_global_event_target_as = asteroid_incoming_relocated_capital_state }
 						event_target:asteroid_incoming_locked_state = {
 							set_variable = { asteroid_incoming_state_capital_relocated = constant:asteroid_incoming_runtime.one }
 							set_variable = { asteroid_incoming_state_capital_relocation_country = PREV }
@@ -202,12 +265,47 @@ asteroid_incoming_relocate_current_capital = {
 							event_target:asteroid_incoming_backup_capital_state = { save_global_event_target_as = asteroid_incoming_replacement_capital_state }
 						}
 					}
-					else = { set_global_flag = asteroid_incoming_capital_relocation_failed }
+					else = {
+						set_country_flag = asteroid_incoming_capital_relocation_failed
+						set_global_flag = asteroid_incoming_capital_relocation_failed
+					}
 				}
-				else = { set_global_flag = asteroid_incoming_capital_relocation_failed }
+				else = {
+					set_country_flag = asteroid_incoming_capital_relocation_failed
+					set_global_flag = asteroid_incoming_capital_relocation_failed
+				}
 			}
 		}
 	}
+}
+
+# ANY SCOPE. Called once after the preparedness aftermath. The impact always
+# proceeds at its locked coordinates. A country whose capital was the impact
+# centre and had no state to move to keeps its capital there, receives the full
+# government dislocation for the capital duration whatever its preparation, and
+# cannot earn Government Beyond the Crater, which requires a relocation. The
+# failure flags are consumed here; the outcome stays visible in the impact
+# report and Event Details.
+asteroid_incoming_apply_capital_relocation_failure = {
+	if = {
+		limit = {
+			has_global_flag = asteroid_incoming_capital_relocation_failed
+			has_event_target = asteroid_incoming_capital_country
+		}
+		event_target:asteroid_incoming_capital_country = {
+			remove_ideas = asteroid_incoming_government_dislocation_prepared
+			remove_ideas = asteroid_incoming_government_dislocation
+			set_temp_variable = { asteroid_incoming_government_dislocation_days = constant:asteroid_incoming_runtime.government_dislocation_capital_days }
+			add_timed_idea = {
+				idea = asteroid_incoming_government_dislocation
+				days = asteroid_incoming_government_dislocation_days
+			}
+			set_country_flag = asteroid_incoming_capital_stayed_at_crater
+			clr_country_flag = asteroid_incoming_capital_relocation_failed
+		}
+		set_global_flag = asteroid_incoming_capital_stayed_at_crater
+	}
+	clr_global_flag = asteroid_incoming_capital_relocation_failed
 }
 
 # STATE SCOPE. Called only within the deduplicated country-aggregation pass.

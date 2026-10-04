@@ -154,3 +154,12 @@ Every mod `on_nuke_drop` consumer that reacts to a nuclear strike skips a state 
 Basis: Part 3 makes the map visual the only nuclear-adjacent surface; a state-scoped marker still works when the callback does not fire synchronously inside `launch_nuke`.
 Native `on_nuke_drop` timing and the vanilla consequences of the visual remain a live-game check.
 The untracked Event 042 on_nuke_drop hook (`common/on_actions/042_equipment_from_heavens_on_actions.txt`) belongs to another in-progress package and needs the same one-line marker check from its owner.
+
+## Late capital loss (F02)
+
+Decision: the impact always proceeds at its locked coordinates and is never redirected or cancelled because of the capital.
+When the existing settled, fully controlled backup selection finds nothing, the relocation tries, in order, any owned state the country controls, any owned state even if occupied, then any state it controls, keeping the best backup score within each tier and then the lowest state id.
+If no state qualifies, or the engine refuses the move, the capital stays at the crater, the country receives the full Government Dislocation for the capital duration whatever its preparation, and Government Beyond the Crater stays closed because it requires a relocation.
+The failure flags are consumed after the preparedness aftermath, and the impact report and Event Details state the outcome.
+Basis: Part 2 fixes the coordinates and says peace, annexation and civil war never move the impact; this closes the resume packet's open capital question.
+The proposed `.4` rollback journal and publication-order changes are rejected as unneeded machinery: validity is checked before the physical phase, and the reentry guards already stop a duplicate resolution.

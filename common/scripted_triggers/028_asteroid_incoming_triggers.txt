@@ -93,6 +93,20 @@ asteroid_incoming_state_is_valid_main_center = {
 	}
 }
 
+# STATE scope inside the capital-relocation country's every_owned_state or
+# every_controlled_state. A fallback capital can be any usable state other than
+# the impact centre, wasteland, an impassable state or an already struck crater.
+asteroid_incoming_state_is_fallback_capital_site = {
+	hidden_trigger = {
+		scope_exists = yes
+		impassable = no
+		NOT = { has_state_category = wasteland }
+		NOT = { has_state_flag = asteroid_incoming_main_crater }
+		NOT = { has_state_flag = asteroid_incoming_state_transaction_applied }
+		NOT = { state = event_target:asteroid_incoming_locked_state }
+	}
+}
+
 asteroid_incoming_country_is_valid_target = {
 	hidden_trigger = {
 		asteroid_incoming_country_has_viable_target_pair = yes
