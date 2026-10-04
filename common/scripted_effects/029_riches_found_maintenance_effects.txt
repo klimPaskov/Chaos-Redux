@@ -143,9 +143,10 @@ riches_found_run_maintenance_pulse = {
 
 # STATE scope, called once per mine by the controller pulse above. The crisis
 # flags follow the mine's current values: each is raised while its value is in
-# crisis and lifted on the pulse after the value recovers (Local Order back in
-# the stable band for crime; Revenue Legitimacy stable and illicit capture
-# below its gate for a compromised administration). A severe mutiny is a wage
+# crisis and lifted on the pulse after the value recovers (Local Order out of
+# its crisis band for crime, so a gang outbreak above it lasts one pulse;
+# Revenue Legitimacy stable and illicit capture below its gate for a
+# compromised administration). A severe mutiny is a wage
 # dispute that has broken local order. A raid crisis ends once
 # riches_found_duration.raid_memory_days pass without a new raid; Army Cordon,
 # Clear the Claimant Barricades and a Mine Truce end it at once.
@@ -165,10 +166,7 @@ riches_found_review_mine_crisis_flags = {
 		limit = { riches_found_mine_is_local_order_crisis = yes }
 		set_state_flag = riches_found_crime_crisis
 	}
-	else_if = {
-		limit = { check_variable = { var = riches_found_local_order value = constant:riches_found_threshold.order_stable compare = greater_than_or_equals } }
-		clr_state_flag = riches_found_crime_crisis
-	}
+	else = { clr_state_flag = riches_found_crime_crisis }
 	if = {
 		limit = { riches_found_mine_is_legitimacy_crisis = yes }
 		set_state_flag = riches_found_administration_compromised

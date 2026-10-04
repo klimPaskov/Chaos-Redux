@@ -105,7 +105,7 @@ The largest set any combination of flags can show in each layer, with the exclus
 While Gold Disease is active its own quarantine, workforce replacement and sealing replace the baseline emergency versions; the baseline quarantine serves a district that keeps Gold Disease susceptibility after containment.
 Army Cordon is offered with a supplied force in either overlay when a raid crisis, a war or a collapse of local order gives it cause, and starts Hold the Mine During War.
 
-The overlay flags follow the controller pulse (`riches_found_review_mine_crisis_flags`): the crisis, crime and compromised-administration flags lift on the pulse after their value recovers, a severe mutiny is a wage dispute that has broken local order, and a raid crisis ends after `riches_found_duration.raid_memory_days` without a raid or at once when Army Cordon, Clear the Barricades or a Mine Truce succeeds.
+The overlay flags follow the controller pulse (`riches_found_review_mine_crisis_flags`): the crisis, crime and compromised-administration flags lift on the pulse after their value recovers (crime once Local Order leaves its crisis band, a compromised administration once Revenue Legitimacy is stable and illicit capture below its gate), a severe mutiny is a wage dispute that has broken local order, and a raid crisis ends after `riches_found_duration.raid_memory_days` without a raid or at once when Army Cordon, Clear the Barricades or a Mine Truce succeeds.
 Worker cooperatives, a dividend, local revenue or a truce settle a wage dispute.
 
 ## Baseline lifecycle
