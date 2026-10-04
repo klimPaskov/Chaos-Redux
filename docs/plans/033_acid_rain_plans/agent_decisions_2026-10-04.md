@@ -1,6 +1,6 @@
 # Event 033 agent decisions, 2026-10-04
 
-Disposition: implemented; D1 to D20 are promoted into the accepted Event 033 specs (Parts 2, 4, 5, 6, 7, 8, 10 and 11, each in its "Accepted implementation decisions, 2026-10-04" section), D21 is accepted and queued for the catalog owner, and D22 and D23 are implemented review fixes.
+Disposition: implemented; D1 to D20 are promoted into the accepted Event 033 specs (Parts 2, 4, 5, 6, 7, 8, 10 and 11, each in its "Accepted implementation decisions, 2026-10-04" section), D21 is accepted and queued for the catalog owner, and D22 to D24 are implemented review fixes.
 Acceptance basis: the user granted the Event 033 lead full design authority on 2026-10-04 and directed it to take the recommended, spec-consistent option for every open choice and record it here.
 Each decision below resolves an item that earlier handoffs left unresolved; implementation evidence is recorded separately when the work lands.
 
@@ -196,3 +196,11 @@ The acute-band selector reads the existing `acid_rain_aftermath.modifier_*` cons
 Disposition: implemented (commit "Plain wording for Acid Rain player text and achievements").
 The Acid Rain achievement texts and eligibility tooltip drop Event 33, valid campaign, eligible state, national responsibility, administrative early termination and scheduled route check wording and state the same conditions in player terms.
 The category, project, global-layer, world-map and Event Details texts drop "returns once", "safe cancellation", "dissipation check", "valid records", "registered at formation" and "valid inhabited state"; the queued catalog values in [catalog_changes_pending.md](catalog_changes_pending.md) match the new Event Details and Evo III text.
+
+### D24. Front markers follow their region
+
+Disposition: implemented (commit "Place Acid Rain front markers at the region each front covers").
+The three ordinary front markers sat at fixed per-front spots on the world map, so a front crossing Asia still showed its swirl over the Americas, which contradicts Part 6 (each front marker carries its current region at a reviewed region anchor).
+The GUI projection now places every front's ordinary, warning and severe markers, animated and still, at the D16 anchor of the region the front covers or is about to reach, through scripted GUI `x`/`y` properties; fronts never share a region, so no shift is needed, and a front without a region is not projected.
+The fixed GUI positions remain only as the pre-projection defaults.
+The offline GUI scenario route cannot set the global marker variables, so the placement itself is a live-game check.
