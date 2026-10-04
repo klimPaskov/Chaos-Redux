@@ -1062,63 +1062,32 @@ natural_disaster_cost = {
 	foreign_medical_fuel = 2000
 }
 
-# Inclusive affordability floors expressed for Clausewitz's strict `>`
-# equipment/manpower/fuel comparisons. Each value is one unit below the
-# amount actually deducted, so a country holding exactly the displayed cost
-# can take the action without creating a hidden reserve requirement.
+# Inclusive affordability floor step for Clausewitz's strict `>` equipment,
+# manpower, and fuel comparisons. Every material check reads its current price
+# from the Black Friday price table (global.black_friday_price_natural_disaster_*),
+# subtracts unit_step, and compares with `>`, so a country holding exactly the
+# displayed cost can take the action without a hidden reserve requirement.
 natural_disaster_cost_gate = {
 	schema = {
 		any_key = yes
 		data = int
 	}
 
-	warning_manpower = 2499
-	warning_support_equipment = 74
-	warning_trucks = 59
-	warning_trains = 2
-	warning_convoys = 7
-	warning_fuel = 1199
-	rescue_manpower = 4999
-	rescue_support_equipment = 149
-	rescue_trucks = 119
-	rescue_fuel = 2499
-	stabilize_support_equipment = 249
-	stabilize_trucks = 179
-	stabilize_trains = 7
-	stabilize_convoys = 15
-	stabilize_fuel = 3999
-	reconstruct_support_equipment = 399
-	reconstruct_trucks = 259
-	reconstruct_trains = 14
-	reconstruct_convoys = 23
-	reconstruct_fuel = 6499
-	foreign_support_equipment = 299
-	foreign_trucks = 199
-	foreign_convoys = 19
-	foreign_fuel = 4999
-	foreign_port_manpower = 2999
-	foreign_port_convoys = 29
-	foreign_port_fuel = 6499
-	foreign_engineer_support_equipment = 399
-	foreign_engineer_trucks = 159
-	foreign_engineer_trains = 9
-	foreign_engineer_fuel = 2999
-	foreign_medical_manpower = 3999
-	foreign_medical_support_equipment = 349
-	foreign_medical_trucks = 99
-	foreign_medical_fuel = 1999
+	unit_step = 1
 }
 
+# Fixed-point Stability and War Support floors. Stabilization and
+# reconstruction Stability checks read the Black Friday price table and
+# subtract stability_step to form the same inclusive floor.
 natural_disaster_cost_gate_fixed = {
 	schema = {
 		any_key = yes
 		data = fixed_point
 	}
 
+	stability_step = 0.001
 	warning_stability = 0.004
 	rescue_stability = 0.009
-	stabilize_stability = 0.014
-	reconstruct_stability = 0.019
 	foreign_relief_stability = 0.009
 	foreign_relief_war_support = 0.009
 }
@@ -1192,47 +1161,15 @@ natural_disaster_warning_cost = {
 	abnormal_civilian_factories = 4
 }
 
+# Warning-action civilian-factory requirement. It is a capacity check, not a
+# payment, so it keeps a fixed floor; the warning material checks read the
+# Black Friday price table.
 natural_disaster_warning_cost_gate = {
 	schema = {
 		any_key = yes
 		data = int
 	}
 
-	local_manpower = 1799
-	severe_manpower = 2499
-	regional_manpower = 3999
-	catastrophic_manpower = 5199
-	abnormal_manpower = 6499
-	local_support = 49
-	severe_support = 74
-	regional_support = 119
-	catastrophic_support = 159
-	abnormal_support = 199
-	local_trucks = 39
-	severe_trucks = 59
-	regional_trucks = 99
-	catastrophic_trucks = 129
-	abnormal_trucks = 159
-	local_trains = 1
-	severe_trains = 2
-	regional_trains = 4
-	catastrophic_trains = 5
-	abnormal_trains = 7
-	local_convoys = 4
-	severe_convoys = 7
-	regional_convoys = 13
-	catastrophic_convoys = 17
-	abnormal_convoys = 21
-	local_fuel = 799
-	severe_fuel = 1199
-	regional_fuel = 2199
-	catastrophic_fuel = 2849
-	abnormal_fuel = 3499
-	local_command_power = 2
-	severe_command_power = 4
-	regional_command_power = 7
-	catastrophic_command_power = 9
-	abnormal_command_power = 11
 	local_civilian_factories = 0
 	severe_civilian_factories = 1
 	regional_civilian_factories = 2

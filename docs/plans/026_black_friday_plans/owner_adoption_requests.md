@@ -225,6 +225,8 @@ These owners have no active engineer, and their remaining costs are queued for t
 
 #### Event 013 Natural Disasters
 
+Converted (agent decision D12): every cost trigger, payment, and cost text reads the sale price table; no Event 013 cost remains queued. The line list below predates the conversion.
+
 Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 108.
 
 | File | Native positive cost lines | Dynamic native cost lines | Custom cost trigger lines |

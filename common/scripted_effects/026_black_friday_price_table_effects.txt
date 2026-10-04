@@ -26,8 +26,8 @@
 # black_friday_price_quantum (smallest payable step; unset or zero means 1, and
 # stability or war support prices use their fixed-point quantum). Output:
 # caller-owned temp black_friday_price_payable, rounded up to a whole number of
-# steps and at least one step. Non-positive prices and full-price ratios return
-# the ordinary amount unchanged.
+# steps and at least one step, but never above the ordinary amount.
+# Non-positive prices and full-price ratios return the ordinary amount unchanged.
 black_friday_price_table_quote = {
 	set_temp_variable = { black_friday_price_payable = black_friday_price_ordinary }
 	if = {
@@ -67,6 +67,12 @@ black_friday_price_table_quote = {
 		}
 		set_temp_variable = { black_friday_price_payable = black_friday_price_whole }
 		multiply_temp_variable = { black_friday_price_payable = black_friday_price_step }
+		# A price smaller than one step keeps its ordinary amount, so rounding
+		# up can never charge more than the ordinary price.
+		if = {
+			limit = { check_variable = { black_friday_price_payable > black_friday_price_ordinary } }
+			set_temp_variable = { black_friday_price_payable = black_friday_price_ordinary }
+		}
 	}
 }
 
@@ -445,6 +451,236 @@ black_friday_price_table_refresh_entries = {
 	set_temp_variable = { black_friday_price_ordinary = constant:mengele_clone_decision.select_genius_embryos_cost }
 	black_friday_price_table_quote = yes
 	set_variable = { global.black_friday_price_mengele_clone_decision_select_genius_embryos_cost = black_friday_price_payable }
+
+	# natural_disaster_cost (Event 013 response, recovery, chain, and relief materials)
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.warning_manpower }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_warning_manpower = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.warning_support_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_warning_support_equipment = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.warning_trucks }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_warning_trucks = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.warning_trains }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_warning_trains = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.warning_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_warning_convoys = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.warning_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_warning_fuel = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.rescue_manpower }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_rescue_manpower = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.rescue_support_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_rescue_support_equipment = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.rescue_trucks }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_rescue_trucks = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.rescue_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_rescue_fuel = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.stabilize_support_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_stabilize_support_equipment = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.stabilize_trucks }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_stabilize_trucks = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.stabilize_trains }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_stabilize_trains = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.stabilize_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_stabilize_convoys = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.stabilize_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_stabilize_fuel = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.reconstruct_support_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_reconstruct_support_equipment = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.reconstruct_trucks }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_reconstruct_trucks = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.reconstruct_trains }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_reconstruct_trains = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.reconstruct_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_reconstruct_convoys = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.reconstruct_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_reconstruct_fuel = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.foreign_support_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_foreign_support_equipment = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.foreign_trucks }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_foreign_trucks = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.foreign_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_foreign_convoys = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.foreign_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_foreign_fuel = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.foreign_port_manpower }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_foreign_port_manpower = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.foreign_port_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_foreign_port_convoys = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.foreign_port_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_foreign_port_fuel = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.foreign_engineer_support_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_foreign_engineer_support_equipment = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.foreign_engineer_trucks }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_foreign_engineer_trucks = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.foreign_engineer_trains }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_foreign_engineer_trains = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.foreign_engineer_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_foreign_engineer_fuel = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.foreign_medical_manpower }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_foreign_medical_manpower = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.foreign_medical_support_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_foreign_medical_support_equipment = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.foreign_medical_trucks }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_foreign_medical_trucks = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost.foreign_medical_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_foreign_medical_fuel = black_friday_price_payable }
+
+	# natural_disaster_cost_fixed (Event 013 Stability losses that a sale step can lower).
+	# The owner constants are negative losses, so the table holds the positive
+	# amount. Warning, rescue, and relief losses are at or below one Stability
+	# step, so their sale price always equals the ordinary loss and they are not
+	# registered.
+	set_temp_variable = { black_friday_price_quantum = constant:universal_cost_fixed_point_quantum.stability }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_event.zero }
+	subtract_from_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost_fixed.stabilize_stability }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_fixed_stabilize_stability = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_event.zero }
+	subtract_from_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_cost_fixed.reconstruct_stability }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_cost_fixed_reconstruct_stability = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_quantum = constant:black_friday_event.zero }
+
+	# natural_disaster_warning_cost (Event 013 severity-scaled warning materials)
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.local_manpower }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_local_manpower = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.severe_manpower }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_severe_manpower = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.regional_manpower }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_regional_manpower = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.catastrophic_manpower }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_catastrophic_manpower = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.abnormal_manpower }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_abnormal_manpower = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.local_support }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_local_support = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.severe_support }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_severe_support = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.regional_support }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_regional_support = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.catastrophic_support }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_catastrophic_support = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.abnormal_support }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_abnormal_support = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.local_trucks }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_local_trucks = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.severe_trucks }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_severe_trucks = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.regional_trucks }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_regional_trucks = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.catastrophic_trucks }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_catastrophic_trucks = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.abnormal_trucks }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_abnormal_trucks = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.local_trains }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_local_trains = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.severe_trains }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_severe_trains = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.regional_trains }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_regional_trains = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.catastrophic_trains }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_catastrophic_trains = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.abnormal_trains }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_abnormal_trains = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.local_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_local_convoys = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.severe_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_severe_convoys = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.regional_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_regional_convoys = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.catastrophic_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_catastrophic_convoys = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.abnormal_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_abnormal_convoys = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.local_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_local_fuel = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.severe_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_severe_fuel = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.regional_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_regional_fuel = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.catastrophic_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_catastrophic_fuel = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.abnormal_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_abnormal_fuel = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.local_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_local_command_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.severe_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_severe_command_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.regional_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_regional_command_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.catastrophic_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_catastrophic_command_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:natural_disaster_warning_cost.abnormal_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_natural_disaster_warning_cost_abnormal_command_power = black_friday_price_payable }
 
 	# soviet_collapse_kmb_balance
 	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_kmb_balance.conquered_basin_concession_cost }

@@ -412,7 +412,7 @@ Every remaining positive native or custom cost has a per-owner disposition (agen
 | Camps | 78 | 34 | owner adoption pending |
 | Chaos warfare (CBRN) | 21 | 55 | owner adoption pending; seal-state and destroy-records requested. The three fixed procurement factory commitments are closed as accepted exceptions in `BF-CBRN-013` to `BF-CBRN-015`. |
 | Famine and migration | 0 | 26 | owner adoption pending |
-| Event 013 | 0 | 108 | queued: Event 26 conversion tranche 1 |
+| Event 013 | 0 | 108 | converted to the sale price table (D12): every material cost and the stabilization and reconstruction Stability losses read `global.black_friday_price_natural_disaster_*` in their trigger, payment, and text, and each paid action credits one achievement family; warning, rescue, and relief Stability and War Support losses are at or below one 1% step, so their sale price equals the ordinary loss; the warning civilian-factory requirement is a capacity gate, not a payment |
 | Event 020 | 0 | 98 | queued: Event 26 conversion tranche 1 |
 | Event 015 (custom) | 0 | 101 | native converted (D5); constant custom costs converted to the price table (D11); Auxiliary Contract and state-scaled growth costs queued: tranche 1 |
 | Event 005 (custom) | 0 | 198 | native converted (D5); custom queued: tranche 2 |

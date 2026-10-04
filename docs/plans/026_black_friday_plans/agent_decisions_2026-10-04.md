@@ -182,3 +182,26 @@ Kept at the ordinary amount, with reasons:
 
 Disposition: implemented (source) for the constant-amount Event 015 custom costs; the Auxiliary Contract and growth costs are `accepted and queued` under tranche 1.
 Live display and payment at 50 and 75 percent are `needs_live_game`.
+
+## D12. Event 013 Natural Disasters reads the sale price table
+
+Decision: every Event 013 material cost (manpower, support equipment, trucks, trains, convoys, fuel, and command power) of the 75 warning actions, the rescue, stabilization, chain-prevention, and reconstruction actions, the inbound relief route, and the four foreign relief offers reads the sale price table.
+The 35 `natural_disaster_cost` amounts and the 35 material amounts of `natural_disaster_warning_cost` (five severities by seven resources) are registered as `global.black_friday_price_natural_disaster_cost_<key>` and `global.black_friday_price_natural_disaster_warning_cost_<severity>_<resource>` (`price_table_version` 3).
+The affordability triggers, the payment effects and inline decision payments, and the cost texts read the same global, so the shown price, the requirement, and the debit agree.
+Affordability keeps Event 013's inclusive strict-`>` floor: each check copies the price into `nd_cost_gate`, subtracts `natural_disaster_cost_gate.unit_step`, and compares, which is the vanilla form in `common/decisions/INS.txt` (`subtract_from_temp_variable` then `has_manpower > var`).
+The per-cost floor constants that this replaces are removed from `natural_disaster_cost_gate`, `natural_disaster_warning_cost_gate`, and `natural_disaster_cost_gate_fixed`, so no stale ordinary floor remains to drift from the price.
+The stabilization (1.5%) and reconstruction (2%) Stability losses are registered as positive amounts with the shared 1% Stability step, so they fall to 1% during a sale; their checks subtract `natural_disaster_cost_gate_fixed.stability_step` and their tooltips show the live percentage.
+Warning (0.25% to 1%), rescue (1%), and relief (1%) Stability and War Support losses are at or below one 1% step, so under the shared rounding rule their sale price equals the ordinary loss; they are not registered and keep their fixed text.
+The warning civilian-factory requirement stays at its gate, because it is a capacity requirement and the burden it adds is a timed modifier, not a payment.
+Each paid action credits one achievement family through the new owner helper `natural_disaster_credit_black_friday_purchase`: equipment when the action pays support equipment or trucks (every warning profile except the coastal one, every rescue, stabilization, chain, and reconstruction action, and the neighbor, engineer, and medical relief offers), convoys for the coastal warning profile and the port lifeline, and the route's trains or convoys for the inbound relief route.
+Foreign relief equipment is consumed by the donor rather than delivered as stock to the recipient, so discounting it creates no equipment.
+
+The shared quote `black_friday_price_table_quote` now caps a sale price at the ordinary price.
+Before the cap, an ordinary price smaller than one rounding step would have been raised to one full step, for example a 0.25% Stability loss to 1%.
+
+Basis: the lead's tranche 1 acceptance (display, affordability, and payment share one quote; one primary family per multi-resource action; equipment payments keep the owner's model; penalties stay excluded), and the D11 price-table pattern for constant-amount owner costs.
+The inbound relief mission's timeout Stability and War Support loss is a penalty and stays excluded.
+No AI weight changes: the owner's `ai_will_do` blocks still read the same affordability triggers.
+
+Disposition: implemented (source).
+Live display and payment of an Event 013 action at 50 and 75 percent are `needs_live_game`.

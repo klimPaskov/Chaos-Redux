@@ -2492,16 +2492,16 @@ natural_disaster_aftermath_category = {
 		}
 		custom_cost_text = natural_disaster_cost_rescue_routed
 		complete_effect = {
-			set_temp_variable = { nd_rescue_manpower_cost = constant:natural_disaster_cost.rescue_manpower }
+			set_temp_variable = { nd_rescue_manpower_cost = global.black_friday_price_natural_disaster_cost_rescue_manpower }
 			multiply_temp_variable = { nd_rescue_manpower_cost = -1 }
 			add_manpower = nd_rescue_manpower_cost
-			set_temp_variable = { nd_rescue_support_cost = constant:natural_disaster_cost.rescue_support_equipment }
+			set_temp_variable = { nd_rescue_support_cost = global.black_friday_price_natural_disaster_cost_rescue_support_equipment }
 			multiply_temp_variable = { nd_rescue_support_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = support_equipment_1
 				amount = nd_rescue_support_cost
 			}
-			set_temp_variable = { nd_rescue_truck_cost = constant:natural_disaster_cost.rescue_trucks }
+			set_temp_variable = { nd_rescue_truck_cost = global.black_friday_price_natural_disaster_cost_rescue_trucks }
 			multiply_temp_variable = { nd_rescue_truck_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = motorized_equipment_1
@@ -2509,7 +2509,7 @@ natural_disaster_aftermath_category = {
 			}
 			if = {
 				limit = { FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } } }
-				set_temp_variable = { nd_rescue_transport_cost = constant:natural_disaster_cost.warning_trains }
+				set_temp_variable = { nd_rescue_transport_cost = global.black_friday_price_natural_disaster_cost_warning_trains }
 				multiply_temp_variable = { nd_rescue_transport_cost = -1 }
 				add_equipment_to_stockpile = {
 					type = train_equipment
@@ -2517,17 +2517,19 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			else = {
-				set_temp_variable = { nd_rescue_transport_cost = constant:natural_disaster_cost.warning_convoys }
+				set_temp_variable = { nd_rescue_transport_cost = global.black_friday_price_natural_disaster_cost_warning_convoys }
 				multiply_temp_variable = { nd_rescue_transport_cost = -1 }
 				add_equipment_to_stockpile = {
 					type = convoy_1
 					amount = nd_rescue_transport_cost
 				}
 			}
-			set_temp_variable = { nd_rescue_fuel_cost = constant:natural_disaster_cost.rescue_fuel }
+			set_temp_variable = { nd_rescue_fuel_cost = global.black_friday_price_natural_disaster_cost_rescue_fuel }
 			multiply_temp_variable = { nd_rescue_fuel_cost = -1 }
 			add_fuel = nd_rescue_fuel_cost
 			add_stability = constant:natural_disaster_cost_fixed.rescue_stability
+			set_temp_variable = { nd_sale_family = constant:universal_cost_family.equipment }
+			natural_disaster_credit_black_friday_purchase = yes
 			FROM = {
 				set_state_flag = {
 					flag = natural_disaster_rescue_search_teams_taken
@@ -2596,16 +2598,16 @@ natural_disaster_aftermath_category = {
 		}
 		custom_cost_text = natural_disaster_cost_rescue_routed
 		complete_effect = {
-			set_temp_variable = { nd_rescue_manpower_cost = constant:natural_disaster_cost.rescue_manpower }
+			set_temp_variable = { nd_rescue_manpower_cost = global.black_friday_price_natural_disaster_cost_rescue_manpower }
 			multiply_temp_variable = { nd_rescue_manpower_cost = -1 }
 			add_manpower = nd_rescue_manpower_cost
-			set_temp_variable = { nd_rescue_support_cost = constant:natural_disaster_cost.rescue_support_equipment }
+			set_temp_variable = { nd_rescue_support_cost = global.black_friday_price_natural_disaster_cost_rescue_support_equipment }
 			multiply_temp_variable = { nd_rescue_support_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = support_equipment_1
 				amount = nd_rescue_support_cost
 			}
-			set_temp_variable = { nd_rescue_truck_cost = constant:natural_disaster_cost.rescue_trucks }
+			set_temp_variable = { nd_rescue_truck_cost = global.black_friday_price_natural_disaster_cost_rescue_trucks }
 			multiply_temp_variable = { nd_rescue_truck_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = motorized_equipment_1
@@ -2613,7 +2615,7 @@ natural_disaster_aftermath_category = {
 			}
 			if = {
 				limit = { FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } } }
-				set_temp_variable = { nd_rescue_transport_cost = constant:natural_disaster_cost.warning_trains }
+				set_temp_variable = { nd_rescue_transport_cost = global.black_friday_price_natural_disaster_cost_warning_trains }
 				multiply_temp_variable = { nd_rescue_transport_cost = -1 }
 				add_equipment_to_stockpile = {
 					type = train_equipment
@@ -2621,17 +2623,19 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			else = {
-				set_temp_variable = { nd_rescue_transport_cost = constant:natural_disaster_cost.warning_convoys }
+				set_temp_variable = { nd_rescue_transport_cost = global.black_friday_price_natural_disaster_cost_warning_convoys }
 				multiply_temp_variable = { nd_rescue_transport_cost = -1 }
 				add_equipment_to_stockpile = {
 					type = convoy_1
 					amount = nd_rescue_transport_cost
 				}
 			}
-			set_temp_variable = { nd_rescue_fuel_cost = constant:natural_disaster_cost.rescue_fuel }
+			set_temp_variable = { nd_rescue_fuel_cost = global.black_friday_price_natural_disaster_cost_rescue_fuel }
 			multiply_temp_variable = { nd_rescue_fuel_cost = -1 }
 			add_fuel = nd_rescue_fuel_cost
 			add_stability = constant:natural_disaster_cost_fixed.rescue_stability
+			set_temp_variable = { nd_sale_family = constant:universal_cost_family.equipment }
+			natural_disaster_credit_black_friday_purchase = yes
 			FROM = {
 				set_temp_variable = { nd_refugee_action_id = 1 }
 				natural_disaster_achievement_record_refugee_action = yes
@@ -2679,36 +2683,42 @@ natural_disaster_aftermath_category = {
 		priority = @ND_PRIORITY_RESCUE
 		custom_cost_trigger = {
 			natural_disaster_can_pay_rescue = yes
-			has_fuel > constant:natural_disaster_cost_gate.rescue_fuel
-			has_equipment = { train_equipment > constant:natural_disaster_cost_gate.warning_trains }
+			set_temp_variable = { nd_cost_gate = global.black_friday_price_natural_disaster_cost_rescue_fuel }
+			subtract_from_temp_variable = { nd_cost_gate = constant:natural_disaster_cost_gate.unit_step }
+			has_fuel > nd_cost_gate
+			set_temp_variable = { nd_cost_gate = global.black_friday_price_natural_disaster_cost_warning_trains }
+			subtract_from_temp_variable = { nd_cost_gate = constant:natural_disaster_cost_gate.unit_step }
+			has_equipment = { train_equipment > nd_cost_gate }
 		}
 		custom_cost_text = natural_disaster_cost_rescue_train
 		complete_effect = {
-			set_temp_variable = { nd_rescue_manpower_cost = constant:natural_disaster_cost.rescue_manpower }
+			set_temp_variable = { nd_rescue_manpower_cost = global.black_friday_price_natural_disaster_cost_rescue_manpower }
 			multiply_temp_variable = { nd_rescue_manpower_cost = -1 }
 			add_manpower = nd_rescue_manpower_cost
-			set_temp_variable = { nd_rescue_support_cost = constant:natural_disaster_cost.rescue_support_equipment }
+			set_temp_variable = { nd_rescue_support_cost = global.black_friday_price_natural_disaster_cost_rescue_support_equipment }
 			multiply_temp_variable = { nd_rescue_support_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = support_equipment_1
 				amount = nd_rescue_support_cost
 			}
-			set_temp_variable = { nd_rescue_truck_cost = constant:natural_disaster_cost.rescue_trucks }
+			set_temp_variable = { nd_rescue_truck_cost = global.black_friday_price_natural_disaster_cost_rescue_trucks }
 			multiply_temp_variable = { nd_rescue_truck_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = motorized_equipment_1
 				amount = nd_rescue_truck_cost
 			}
-			set_temp_variable = { nd_rescue_transport_cost = constant:natural_disaster_cost.warning_trains }
+			set_temp_variable = { nd_rescue_transport_cost = global.black_friday_price_natural_disaster_cost_warning_trains }
 			multiply_temp_variable = { nd_rescue_transport_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = train_equipment
 				amount = nd_rescue_transport_cost
 			}
-			set_temp_variable = { nd_rescue_fuel_cost = constant:natural_disaster_cost.rescue_fuel }
+			set_temp_variable = { nd_rescue_fuel_cost = global.black_friday_price_natural_disaster_cost_rescue_fuel }
 			multiply_temp_variable = { nd_rescue_fuel_cost = -1 }
 			add_fuel = nd_rescue_fuel_cost
 			add_stability = constant:natural_disaster_cost_fixed.rescue_stability
+			set_temp_variable = { nd_sale_family = constant:universal_cost_family.equipment }
+			natural_disaster_credit_black_friday_purchase = yes
 			FROM = {
 				set_temp_variable = { nd_refugee_action_id = 2 }
 				natural_disaster_achievement_record_refugee_action = yes
@@ -2774,16 +2784,16 @@ natural_disaster_aftermath_category = {
 		}
 		custom_cost_text = natural_disaster_cost_rescue_routed
 		complete_effect = {
-			set_temp_variable = { nd_rescue_manpower_cost = constant:natural_disaster_cost.rescue_manpower }
+			set_temp_variable = { nd_rescue_manpower_cost = global.black_friday_price_natural_disaster_cost_rescue_manpower }
 			multiply_temp_variable = { nd_rescue_manpower_cost = -1 }
 			add_manpower = nd_rescue_manpower_cost
-			set_temp_variable = { nd_rescue_support_cost = constant:natural_disaster_cost.rescue_support_equipment }
+			set_temp_variable = { nd_rescue_support_cost = global.black_friday_price_natural_disaster_cost_rescue_support_equipment }
 			multiply_temp_variable = { nd_rescue_support_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = support_equipment_1
 				amount = nd_rescue_support_cost
 			}
-			set_temp_variable = { nd_rescue_truck_cost = constant:natural_disaster_cost.rescue_trucks }
+			set_temp_variable = { nd_rescue_truck_cost = global.black_friday_price_natural_disaster_cost_rescue_trucks }
 			multiply_temp_variable = { nd_rescue_truck_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = motorized_equipment_1
@@ -2791,7 +2801,7 @@ natural_disaster_aftermath_category = {
 			}
 			if = {
 				limit = { FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } } }
-				set_temp_variable = { nd_rescue_transport_cost = constant:natural_disaster_cost.warning_trains }
+				set_temp_variable = { nd_rescue_transport_cost = global.black_friday_price_natural_disaster_cost_warning_trains }
 				multiply_temp_variable = { nd_rescue_transport_cost = -1 }
 				add_equipment_to_stockpile = {
 					type = train_equipment
@@ -2799,17 +2809,19 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			else = {
-				set_temp_variable = { nd_rescue_transport_cost = constant:natural_disaster_cost.warning_convoys }
+				set_temp_variable = { nd_rescue_transport_cost = global.black_friday_price_natural_disaster_cost_warning_convoys }
 				multiply_temp_variable = { nd_rescue_transport_cost = -1 }
 				add_equipment_to_stockpile = {
 					type = convoy_1
 					amount = nd_rescue_transport_cost
 				}
 			}
-			set_temp_variable = { nd_rescue_fuel_cost = constant:natural_disaster_cost.rescue_fuel }
+			set_temp_variable = { nd_rescue_fuel_cost = global.black_friday_price_natural_disaster_cost_rescue_fuel }
 			multiply_temp_variable = { nd_rescue_fuel_cost = -1 }
 			add_fuel = nd_rescue_fuel_cost
 			add_stability = constant:natural_disaster_cost_fixed.rescue_stability
+			set_temp_variable = { nd_sale_family = constant:universal_cost_family.equipment }
+			natural_disaster_credit_black_friday_purchase = yes
 			FROM = {
 				set_temp_variable = { nd_refugee_action_id = 3 }
 				natural_disaster_achievement_record_refugee_action = yes
@@ -2864,16 +2876,16 @@ natural_disaster_aftermath_category = {
 		}
 		custom_cost_text = natural_disaster_cost_rescue_routed
 		complete_effect = {
-			set_temp_variable = { nd_rescue_manpower_cost = constant:natural_disaster_cost.rescue_manpower }
+			set_temp_variable = { nd_rescue_manpower_cost = global.black_friday_price_natural_disaster_cost_rescue_manpower }
 			multiply_temp_variable = { nd_rescue_manpower_cost = -1 }
 			add_manpower = nd_rescue_manpower_cost
-			set_temp_variable = { nd_rescue_support_cost = constant:natural_disaster_cost.rescue_support_equipment }
+			set_temp_variable = { nd_rescue_support_cost = global.black_friday_price_natural_disaster_cost_rescue_support_equipment }
 			multiply_temp_variable = { nd_rescue_support_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = support_equipment_1
 				amount = nd_rescue_support_cost
 			}
-			set_temp_variable = { nd_rescue_truck_cost = constant:natural_disaster_cost.rescue_trucks }
+			set_temp_variable = { nd_rescue_truck_cost = global.black_friday_price_natural_disaster_cost_rescue_trucks }
 			multiply_temp_variable = { nd_rescue_truck_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = motorized_equipment_1
@@ -2881,7 +2893,7 @@ natural_disaster_aftermath_category = {
 			}
 			if = {
 				limit = { FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } } }
-				set_temp_variable = { nd_rescue_transport_cost = constant:natural_disaster_cost.warning_trains }
+				set_temp_variable = { nd_rescue_transport_cost = global.black_friday_price_natural_disaster_cost_warning_trains }
 				multiply_temp_variable = { nd_rescue_transport_cost = -1 }
 				add_equipment_to_stockpile = {
 					type = train_equipment
@@ -2889,17 +2901,19 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			else = {
-				set_temp_variable = { nd_rescue_transport_cost = constant:natural_disaster_cost.warning_convoys }
+				set_temp_variable = { nd_rescue_transport_cost = global.black_friday_price_natural_disaster_cost_warning_convoys }
 				multiply_temp_variable = { nd_rescue_transport_cost = -1 }
 				add_equipment_to_stockpile = {
 					type = convoy_1
 					amount = nd_rescue_transport_cost
 				}
 			}
-			set_temp_variable = { nd_rescue_fuel_cost = constant:natural_disaster_cost.rescue_fuel }
+			set_temp_variable = { nd_rescue_fuel_cost = global.black_friday_price_natural_disaster_cost_rescue_fuel }
 			multiply_temp_variable = { nd_rescue_fuel_cost = -1 }
 			add_fuel = nd_rescue_fuel_cost
 			add_stability = constant:natural_disaster_cost_fixed.rescue_stability
+			set_temp_variable = { nd_sale_family = constant:universal_cost_family.equipment }
+			natural_disaster_credit_black_friday_purchase = yes
 			FROM = {
 				set_temp_variable = { nd_refugee_action_id = 4 }
 				natural_disaster_achievement_record_refugee_action = yes
@@ -2955,36 +2969,42 @@ natural_disaster_aftermath_category = {
 		priority = @ND_PRIORITY_RESCUE
 		custom_cost_trigger = {
 			natural_disaster_can_pay_rescue = yes
-			has_fuel > constant:natural_disaster_cost_gate.rescue_fuel
-			has_equipment = { convoy_1 > constant:natural_disaster_cost_gate.warning_convoys }
+			set_temp_variable = { nd_cost_gate = global.black_friday_price_natural_disaster_cost_rescue_fuel }
+			subtract_from_temp_variable = { nd_cost_gate = constant:natural_disaster_cost_gate.unit_step }
+			has_fuel > nd_cost_gate
+			set_temp_variable = { nd_cost_gate = global.black_friday_price_natural_disaster_cost_warning_convoys }
+			subtract_from_temp_variable = { nd_cost_gate = constant:natural_disaster_cost_gate.unit_step }
+			has_equipment = { convoy_1 > nd_cost_gate }
 		}
 		custom_cost_text = natural_disaster_cost_rescue_convoy
 		complete_effect = {
-			set_temp_variable = { nd_rescue_manpower_cost = constant:natural_disaster_cost.rescue_manpower }
+			set_temp_variable = { nd_rescue_manpower_cost = global.black_friday_price_natural_disaster_cost_rescue_manpower }
 			multiply_temp_variable = { nd_rescue_manpower_cost = -1 }
 			add_manpower = nd_rescue_manpower_cost
-			set_temp_variable = { nd_rescue_support_cost = constant:natural_disaster_cost.rescue_support_equipment }
+			set_temp_variable = { nd_rescue_support_cost = global.black_friday_price_natural_disaster_cost_rescue_support_equipment }
 			multiply_temp_variable = { nd_rescue_support_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = support_equipment_1
 				amount = nd_rescue_support_cost
 			}
-			set_temp_variable = { nd_rescue_truck_cost = constant:natural_disaster_cost.rescue_trucks }
+			set_temp_variable = { nd_rescue_truck_cost = global.black_friday_price_natural_disaster_cost_rescue_trucks }
 			multiply_temp_variable = { nd_rescue_truck_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = motorized_equipment_1
 				amount = nd_rescue_truck_cost
 			}
-			set_temp_variable = { nd_rescue_transport_cost = constant:natural_disaster_cost.warning_convoys }
+			set_temp_variable = { nd_rescue_transport_cost = global.black_friday_price_natural_disaster_cost_warning_convoys }
 			multiply_temp_variable = { nd_rescue_transport_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = convoy_1
 				amount = nd_rescue_transport_cost
 			}
-			set_temp_variable = { nd_rescue_fuel_cost = constant:natural_disaster_cost.rescue_fuel }
+			set_temp_variable = { nd_rescue_fuel_cost = global.black_friday_price_natural_disaster_cost_rescue_fuel }
 			multiply_temp_variable = { nd_rescue_fuel_cost = -1 }
 			add_fuel = nd_rescue_fuel_cost
 			add_stability = constant:natural_disaster_cost_fixed.rescue_stability
+			set_temp_variable = { nd_sale_family = constant:universal_cost_family.equipment }
+			natural_disaster_credit_black_friday_purchase = yes
 			FROM = {
 				set_state_flag = {
 					flag = natural_disaster_rescue_port_lifeline_taken
@@ -3045,13 +3065,13 @@ natural_disaster_aftermath_category = {
 		}
 		custom_cost_text = natural_disaster_cost_stabilization_routed
 		complete_effect = {
-			set_temp_variable = { nd_stabilization_support_cost = constant:natural_disaster_cost.stabilize_support_equipment }
+			set_temp_variable = { nd_stabilization_support_cost = global.black_friday_price_natural_disaster_cost_stabilize_support_equipment }
 			multiply_temp_variable = { nd_stabilization_support_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = support_equipment_1
 				amount = nd_stabilization_support_cost
 			}
-			set_temp_variable = { nd_stabilization_truck_cost = constant:natural_disaster_cost.stabilize_trucks }
+			set_temp_variable = { nd_stabilization_truck_cost = global.black_friday_price_natural_disaster_cost_stabilize_trucks }
 			multiply_temp_variable = { nd_stabilization_truck_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = motorized_equipment_1
@@ -3059,7 +3079,7 @@ natural_disaster_aftermath_category = {
 			}
 			if = {
 				limit = { FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } } }
-				set_temp_variable = { nd_stabilization_transport_cost = constant:natural_disaster_cost.stabilize_trains }
+				set_temp_variable = { nd_stabilization_transport_cost = global.black_friday_price_natural_disaster_cost_stabilize_trains }
 				multiply_temp_variable = { nd_stabilization_transport_cost = -1 }
 				add_equipment_to_stockpile = {
 					type = train_equipment
@@ -3067,17 +3087,21 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			else = {
-				set_temp_variable = { nd_stabilization_transport_cost = constant:natural_disaster_cost.stabilize_convoys }
+				set_temp_variable = { nd_stabilization_transport_cost = global.black_friday_price_natural_disaster_cost_stabilize_convoys }
 				multiply_temp_variable = { nd_stabilization_transport_cost = -1 }
 				add_equipment_to_stockpile = {
 					type = convoy_1
 					amount = nd_stabilization_transport_cost
 				}
 			}
-			set_temp_variable = { nd_stabilization_fuel_cost = constant:natural_disaster_cost.stabilize_fuel }
+			set_temp_variable = { nd_stabilization_fuel_cost = global.black_friday_price_natural_disaster_cost_stabilize_fuel }
 			multiply_temp_variable = { nd_stabilization_fuel_cost = -1 }
 			add_fuel = nd_stabilization_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.stabilize_stability
+			set_temp_variable = { nd_stability_payment = global.black_friday_price_natural_disaster_cost_fixed_stabilize_stability }
+			multiply_temp_variable = { nd_stability_payment = -1 }
+			add_stability = nd_stability_payment
+			set_temp_variable = { nd_sale_family = constant:universal_cost_family.equipment }
+			natural_disaster_credit_black_friday_purchase = yes
 			FROM = {
 				set_state_flag = {
 					flag = natural_disaster_stabilize_clean_water_taken
@@ -3127,33 +3151,41 @@ natural_disaster_aftermath_category = {
 		priority = @ND_PRIORITY_STABILIZATION
 		custom_cost_trigger = {
 			natural_disaster_can_pay_stabilization = yes
-			has_fuel > constant:natural_disaster_cost_gate.stabilize_fuel
-			has_equipment = { train_equipment > constant:natural_disaster_cost_gate.stabilize_trains }
+			set_temp_variable = { nd_cost_gate = global.black_friday_price_natural_disaster_cost_stabilize_fuel }
+			subtract_from_temp_variable = { nd_cost_gate = constant:natural_disaster_cost_gate.unit_step }
+			has_fuel > nd_cost_gate
+			set_temp_variable = { nd_cost_gate = global.black_friday_price_natural_disaster_cost_stabilize_trains }
+			subtract_from_temp_variable = { nd_cost_gate = constant:natural_disaster_cost_gate.unit_step }
+			has_equipment = { train_equipment > nd_cost_gate }
 		}
 		custom_cost_text = natural_disaster_cost_stabilization_train
 		complete_effect = {
-			set_temp_variable = { nd_stabilization_support_cost = constant:natural_disaster_cost.stabilize_support_equipment }
+			set_temp_variable = { nd_stabilization_support_cost = global.black_friday_price_natural_disaster_cost_stabilize_support_equipment }
 			multiply_temp_variable = { nd_stabilization_support_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = support_equipment_1
 				amount = nd_stabilization_support_cost
 			}
-			set_temp_variable = { nd_stabilization_truck_cost = constant:natural_disaster_cost.stabilize_trucks }
+			set_temp_variable = { nd_stabilization_truck_cost = global.black_friday_price_natural_disaster_cost_stabilize_trucks }
 			multiply_temp_variable = { nd_stabilization_truck_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = motorized_equipment_1
 				amount = nd_stabilization_truck_cost
 			}
-			set_temp_variable = { nd_stabilization_transport_cost = constant:natural_disaster_cost.stabilize_trains }
+			set_temp_variable = { nd_stabilization_transport_cost = global.black_friday_price_natural_disaster_cost_stabilize_trains }
 			multiply_temp_variable = { nd_stabilization_transport_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = train_equipment
 				amount = nd_stabilization_transport_cost
 			}
-			set_temp_variable = { nd_stabilization_fuel_cost = constant:natural_disaster_cost.stabilize_fuel }
+			set_temp_variable = { nd_stabilization_fuel_cost = global.black_friday_price_natural_disaster_cost_stabilize_fuel }
 			multiply_temp_variable = { nd_stabilization_fuel_cost = -1 }
 			add_fuel = nd_stabilization_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.stabilize_stability
+			set_temp_variable = { nd_stability_payment = global.black_friday_price_natural_disaster_cost_fixed_stabilize_stability }
+			multiply_temp_variable = { nd_stability_payment = -1 }
+			add_stability = nd_stability_payment
+			set_temp_variable = { nd_sale_family = constant:universal_cost_family.equipment }
+			natural_disaster_credit_black_friday_purchase = yes
 			FROM = {
 				set_state_flag = {
 					flag = natural_disaster_stabilize_restore_rail_taken
@@ -3211,33 +3243,41 @@ natural_disaster_aftermath_category = {
 		priority = @ND_PRIORITY_STABILIZATION
 		custom_cost_trigger = {
 			natural_disaster_can_pay_stabilization = yes
-			has_fuel > constant:natural_disaster_cost_gate.stabilize_fuel
-			has_equipment = { convoy_1 > constant:natural_disaster_cost_gate.stabilize_convoys }
+			set_temp_variable = { nd_cost_gate = global.black_friday_price_natural_disaster_cost_stabilize_fuel }
+			subtract_from_temp_variable = { nd_cost_gate = constant:natural_disaster_cost_gate.unit_step }
+			has_fuel > nd_cost_gate
+			set_temp_variable = { nd_cost_gate = global.black_friday_price_natural_disaster_cost_stabilize_convoys }
+			subtract_from_temp_variable = { nd_cost_gate = constant:natural_disaster_cost_gate.unit_step }
+			has_equipment = { convoy_1 > nd_cost_gate }
 		}
 		custom_cost_text = natural_disaster_cost_stabilization_convoy
 		complete_effect = {
-			set_temp_variable = { nd_stabilization_support_cost = constant:natural_disaster_cost.stabilize_support_equipment }
+			set_temp_variable = { nd_stabilization_support_cost = global.black_friday_price_natural_disaster_cost_stabilize_support_equipment }
 			multiply_temp_variable = { nd_stabilization_support_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = support_equipment_1
 				amount = nd_stabilization_support_cost
 			}
-			set_temp_variable = { nd_stabilization_truck_cost = constant:natural_disaster_cost.stabilize_trucks }
+			set_temp_variable = { nd_stabilization_truck_cost = global.black_friday_price_natural_disaster_cost_stabilize_trucks }
 			multiply_temp_variable = { nd_stabilization_truck_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = motorized_equipment_1
 				amount = nd_stabilization_truck_cost
 			}
-			set_temp_variable = { nd_stabilization_transport_cost = constant:natural_disaster_cost.stabilize_convoys }
+			set_temp_variable = { nd_stabilization_transport_cost = global.black_friday_price_natural_disaster_cost_stabilize_convoys }
 			multiply_temp_variable = { nd_stabilization_transport_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = convoy_1
 				amount = nd_stabilization_transport_cost
 			}
-			set_temp_variable = { nd_stabilization_fuel_cost = constant:natural_disaster_cost.stabilize_fuel }
+			set_temp_variable = { nd_stabilization_fuel_cost = global.black_friday_price_natural_disaster_cost_stabilize_fuel }
 			multiply_temp_variable = { nd_stabilization_fuel_cost = -1 }
 			add_fuel = nd_stabilization_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.stabilize_stability
+			set_temp_variable = { nd_stability_payment = global.black_friday_price_natural_disaster_cost_fixed_stabilize_stability }
+			multiply_temp_variable = { nd_stability_payment = -1 }
+			add_stability = nd_stability_payment
+			set_temp_variable = { nd_sale_family = constant:universal_cost_family.equipment }
+			natural_disaster_credit_black_friday_purchase = yes
 			FROM = {
 				set_state_flag = {
 					flag = natural_disaster_stabilize_reopen_port_taken
@@ -3294,13 +3334,13 @@ natural_disaster_aftermath_category = {
 		}
 		custom_cost_text = natural_disaster_cost_stabilization_routed
 		complete_effect = {
-			set_temp_variable = { nd_stabilization_support_cost = constant:natural_disaster_cost.stabilize_support_equipment }
+			set_temp_variable = { nd_stabilization_support_cost = global.black_friday_price_natural_disaster_cost_stabilize_support_equipment }
 			multiply_temp_variable = { nd_stabilization_support_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = support_equipment_1
 				amount = nd_stabilization_support_cost
 			}
-			set_temp_variable = { nd_stabilization_truck_cost = constant:natural_disaster_cost.stabilize_trucks }
+			set_temp_variable = { nd_stabilization_truck_cost = global.black_friday_price_natural_disaster_cost_stabilize_trucks }
 			multiply_temp_variable = { nd_stabilization_truck_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = motorized_equipment_1
@@ -3308,7 +3348,7 @@ natural_disaster_aftermath_category = {
 			}
 			if = {
 				limit = { FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } } }
-				set_temp_variable = { nd_stabilization_transport_cost = constant:natural_disaster_cost.stabilize_trains }
+				set_temp_variable = { nd_stabilization_transport_cost = global.black_friday_price_natural_disaster_cost_stabilize_trains }
 				multiply_temp_variable = { nd_stabilization_transport_cost = -1 }
 				add_equipment_to_stockpile = {
 					type = train_equipment
@@ -3316,17 +3356,21 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			else = {
-				set_temp_variable = { nd_stabilization_transport_cost = constant:natural_disaster_cost.stabilize_convoys }
+				set_temp_variable = { nd_stabilization_transport_cost = global.black_friday_price_natural_disaster_cost_stabilize_convoys }
 				multiply_temp_variable = { nd_stabilization_transport_cost = -1 }
 				add_equipment_to_stockpile = {
 					type = convoy_1
 					amount = nd_stabilization_transport_cost
 				}
 			}
-			set_temp_variable = { nd_stabilization_fuel_cost = constant:natural_disaster_cost.stabilize_fuel }
+			set_temp_variable = { nd_stabilization_fuel_cost = global.black_friday_price_natural_disaster_cost_stabilize_fuel }
 			multiply_temp_variable = { nd_stabilization_fuel_cost = -1 }
 			add_fuel = nd_stabilization_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.stabilize_stability
+			set_temp_variable = { nd_stability_payment = global.black_friday_price_natural_disaster_cost_fixed_stabilize_stability }
+			multiply_temp_variable = { nd_stability_payment = -1 }
+			add_stability = nd_stability_payment
+			set_temp_variable = { nd_sale_family = constant:universal_cost_family.equipment }
+			natural_disaster_credit_black_friday_purchase = yes
 			FROM = {
 				set_state_flag = {
 					flag = natural_disaster_stabilize_secure_food_taken
@@ -3387,13 +3431,13 @@ natural_disaster_aftermath_category = {
 		}
 		custom_cost_text = natural_disaster_cost_stabilization_routed
 		complete_effect = {
-			set_temp_variable = { nd_stabilization_support_cost = constant:natural_disaster_cost.stabilize_support_equipment }
+			set_temp_variable = { nd_stabilization_support_cost = global.black_friday_price_natural_disaster_cost_stabilize_support_equipment }
 			multiply_temp_variable = { nd_stabilization_support_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = support_equipment_1
 				amount = nd_stabilization_support_cost
 			}
-			set_temp_variable = { nd_stabilization_truck_cost = constant:natural_disaster_cost.stabilize_trucks }
+			set_temp_variable = { nd_stabilization_truck_cost = global.black_friday_price_natural_disaster_cost_stabilize_trucks }
 			multiply_temp_variable = { nd_stabilization_truck_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = motorized_equipment_1
@@ -3401,7 +3445,7 @@ natural_disaster_aftermath_category = {
 			}
 			if = {
 				limit = { FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } } }
-				set_temp_variable = { nd_stabilization_transport_cost = constant:natural_disaster_cost.stabilize_trains }
+				set_temp_variable = { nd_stabilization_transport_cost = global.black_friday_price_natural_disaster_cost_stabilize_trains }
 				multiply_temp_variable = { nd_stabilization_transport_cost = -1 }
 				add_equipment_to_stockpile = {
 					type = train_equipment
@@ -3409,17 +3453,21 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			else = {
-				set_temp_variable = { nd_stabilization_transport_cost = constant:natural_disaster_cost.stabilize_convoys }
+				set_temp_variable = { nd_stabilization_transport_cost = global.black_friday_price_natural_disaster_cost_stabilize_convoys }
 				multiply_temp_variable = { nd_stabilization_transport_cost = -1 }
 				add_equipment_to_stockpile = {
 					type = convoy_1
 					amount = nd_stabilization_transport_cost
 				}
 			}
-			set_temp_variable = { nd_stabilization_fuel_cost = constant:natural_disaster_cost.stabilize_fuel }
+			set_temp_variable = { nd_stabilization_fuel_cost = global.black_friday_price_natural_disaster_cost_stabilize_fuel }
 			multiply_temp_variable = { nd_stabilization_fuel_cost = -1 }
 			add_fuel = nd_stabilization_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.stabilize_stability
+			set_temp_variable = { nd_stability_payment = global.black_friday_price_natural_disaster_cost_fixed_stabilize_stability }
+			multiply_temp_variable = { nd_stability_payment = -1 }
+			add_stability = nd_stability_payment
+			set_temp_variable = { nd_sale_family = constant:universal_cost_family.equipment }
+			natural_disaster_credit_black_friday_purchase = yes
 			FROM = {
 				set_state_flag = {
 					flag = natural_disaster_stabilize_factory_inspection_taken
@@ -3705,13 +3753,13 @@ natural_disaster_aftermath_category = {
 		}
 		custom_cost_text = natural_disaster_cost_stabilization_routed
 		complete_effect = {
-			set_temp_variable = { nd_stabilization_support_cost = constant:natural_disaster_cost.stabilize_support_equipment }
+			set_temp_variable = { nd_stabilization_support_cost = global.black_friday_price_natural_disaster_cost_stabilize_support_equipment }
 			multiply_temp_variable = { nd_stabilization_support_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = support_equipment_1
 				amount = nd_stabilization_support_cost
 			}
-			set_temp_variable = { nd_stabilization_truck_cost = constant:natural_disaster_cost.stabilize_trucks }
+			set_temp_variable = { nd_stabilization_truck_cost = global.black_friday_price_natural_disaster_cost_stabilize_trucks }
 			multiply_temp_variable = { nd_stabilization_truck_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = motorized_equipment_1
@@ -3719,7 +3767,7 @@ natural_disaster_aftermath_category = {
 			}
 			if = {
 				limit = { FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } } }
-				set_temp_variable = { nd_stabilization_transport_cost = constant:natural_disaster_cost.stabilize_trains }
+				set_temp_variable = { nd_stabilization_transport_cost = global.black_friday_price_natural_disaster_cost_stabilize_trains }
 				multiply_temp_variable = { nd_stabilization_transport_cost = -1 }
 				add_equipment_to_stockpile = {
 					type = train_equipment
@@ -3727,17 +3775,21 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			else = {
-				set_temp_variable = { nd_stabilization_transport_cost = constant:natural_disaster_cost.stabilize_convoys }
+				set_temp_variable = { nd_stabilization_transport_cost = global.black_friday_price_natural_disaster_cost_stabilize_convoys }
 				multiply_temp_variable = { nd_stabilization_transport_cost = -1 }
 				add_equipment_to_stockpile = {
 					type = convoy_1
 					amount = nd_stabilization_transport_cost
 				}
 			}
-			set_temp_variable = { nd_stabilization_fuel_cost = constant:natural_disaster_cost.stabilize_fuel }
+			set_temp_variable = { nd_stabilization_fuel_cost = global.black_friday_price_natural_disaster_cost_stabilize_fuel }
 			multiply_temp_variable = { nd_stabilization_fuel_cost = -1 }
 			add_fuel = nd_stabilization_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.stabilize_stability
+			set_temp_variable = { nd_stability_payment = global.black_friday_price_natural_disaster_cost_fixed_stabilize_stability }
+			multiply_temp_variable = { nd_stability_payment = -1 }
+			add_stability = nd_stability_payment
+			set_temp_variable = { nd_sale_family = constant:universal_cost_family.equipment }
+			natural_disaster_credit_black_friday_purchase = yes
 			FROM = {
 				natural_disaster_achievement_record_chain_prevention = yes
 				set_state_flag = {
@@ -3813,33 +3865,41 @@ natural_disaster_aftermath_category = {
 		priority = @ND_PRIORITY_RECONSTRUCTION
 		custom_cost_trigger = {
 			natural_disaster_can_pay_reconstruction = yes
-			has_fuel > constant:natural_disaster_cost_gate.reconstruct_fuel
-			has_equipment = { train_equipment > constant:natural_disaster_cost_gate.reconstruct_trains }
+			set_temp_variable = { nd_cost_gate = global.black_friday_price_natural_disaster_cost_reconstruct_fuel }
+			subtract_from_temp_variable = { nd_cost_gate = constant:natural_disaster_cost_gate.unit_step }
+			has_fuel > nd_cost_gate
+			set_temp_variable = { nd_cost_gate = global.black_friday_price_natural_disaster_cost_reconstruct_trains }
+			subtract_from_temp_variable = { nd_cost_gate = constant:natural_disaster_cost_gate.unit_step }
+			has_equipment = { train_equipment > nd_cost_gate }
 		}
 		custom_cost_text = natural_disaster_cost_reconstruction_train
 		complete_effect = {
-			set_temp_variable = { nd_reconstruction_support_cost = constant:natural_disaster_cost.reconstruct_support_equipment }
+			set_temp_variable = { nd_reconstruction_support_cost = global.black_friday_price_natural_disaster_cost_reconstruct_support_equipment }
 			multiply_temp_variable = { nd_reconstruction_support_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = support_equipment_1
 				amount = nd_reconstruction_support_cost
 			}
-			set_temp_variable = { nd_reconstruction_truck_cost = constant:natural_disaster_cost.reconstruct_trucks }
+			set_temp_variable = { nd_reconstruction_truck_cost = global.black_friday_price_natural_disaster_cost_reconstruct_trucks }
 			multiply_temp_variable = { nd_reconstruction_truck_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = motorized_equipment_1
 				amount = nd_reconstruction_truck_cost
 			}
-			set_temp_variable = { nd_reconstruction_transport_cost = constant:natural_disaster_cost.reconstruct_trains }
+			set_temp_variable = { nd_reconstruction_transport_cost = global.black_friday_price_natural_disaster_cost_reconstruct_trains }
 			multiply_temp_variable = { nd_reconstruction_transport_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = train_equipment
 				amount = nd_reconstruction_transport_cost
 			}
-			set_temp_variable = { nd_reconstruction_fuel_cost = constant:natural_disaster_cost.reconstruct_fuel }
+			set_temp_variable = { nd_reconstruction_fuel_cost = global.black_friday_price_natural_disaster_cost_reconstruct_fuel }
 			multiply_temp_variable = { nd_reconstruction_fuel_cost = -1 }
 			add_fuel = nd_reconstruction_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.reconstruct_stability
+			set_temp_variable = { nd_stability_payment = global.black_friday_price_natural_disaster_cost_fixed_reconstruct_stability }
+			multiply_temp_variable = { nd_stability_payment = -1 }
+			add_stability = nd_stability_payment
+			set_temp_variable = { nd_sale_family = constant:universal_cost_family.equipment }
+			natural_disaster_credit_black_friday_purchase = yes
 			FROM = {
 				set_state_flag = {
 					flag = natural_disaster_reconstruct_resilient_rails_taken
@@ -3895,13 +3955,13 @@ natural_disaster_aftermath_category = {
 		}
 		custom_cost_text = natural_disaster_cost_reconstruction_routed
 		complete_effect = {
-			set_temp_variable = { nd_reconstruction_support_cost = constant:natural_disaster_cost.reconstruct_support_equipment }
+			set_temp_variable = { nd_reconstruction_support_cost = global.black_friday_price_natural_disaster_cost_reconstruct_support_equipment }
 			multiply_temp_variable = { nd_reconstruction_support_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = support_equipment_1
 				amount = nd_reconstruction_support_cost
 			}
-			set_temp_variable = { nd_reconstruction_truck_cost = constant:natural_disaster_cost.reconstruct_trucks }
+			set_temp_variable = { nd_reconstruction_truck_cost = global.black_friday_price_natural_disaster_cost_reconstruct_trucks }
 			multiply_temp_variable = { nd_reconstruction_truck_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = motorized_equipment_1
@@ -3909,7 +3969,7 @@ natural_disaster_aftermath_category = {
 			}
 			if = {
 				limit = { FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } } }
-				set_temp_variable = { nd_reconstruction_transport_cost = constant:natural_disaster_cost.reconstruct_trains }
+				set_temp_variable = { nd_reconstruction_transport_cost = global.black_friday_price_natural_disaster_cost_reconstruct_trains }
 				multiply_temp_variable = { nd_reconstruction_transport_cost = -1 }
 				add_equipment_to_stockpile = {
 					type = train_equipment
@@ -3917,17 +3977,21 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			else = {
-				set_temp_variable = { nd_reconstruction_transport_cost = constant:natural_disaster_cost.reconstruct_convoys }
+				set_temp_variable = { nd_reconstruction_transport_cost = global.black_friday_price_natural_disaster_cost_reconstruct_convoys }
 				multiply_temp_variable = { nd_reconstruction_transport_cost = -1 }
 				add_equipment_to_stockpile = {
 					type = convoy_1
 					amount = nd_reconstruction_transport_cost
 				}
 			}
-			set_temp_variable = { nd_reconstruction_fuel_cost = constant:natural_disaster_cost.reconstruct_fuel }
+			set_temp_variable = { nd_reconstruction_fuel_cost = global.black_friday_price_natural_disaster_cost_reconstruct_fuel }
 			multiply_temp_variable = { nd_reconstruction_fuel_cost = -1 }
 			add_fuel = nd_reconstruction_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.reconstruct_stability
+			set_temp_variable = { nd_stability_payment = global.black_friday_price_natural_disaster_cost_fixed_reconstruct_stability }
+			multiply_temp_variable = { nd_stability_payment = -1 }
+			add_stability = nd_stability_payment
+			set_temp_variable = { nd_sale_family = constant:universal_cost_family.equipment }
+			natural_disaster_credit_black_friday_purchase = yes
 			FROM = {
 				set_state_flag = {
 					flag = natural_disaster_reconstruct_seismic_retrofit_taken
@@ -3983,33 +4047,41 @@ natural_disaster_aftermath_category = {
 		priority = @ND_PRIORITY_RECONSTRUCTION
 		custom_cost_trigger = {
 			natural_disaster_can_pay_reconstruction = yes
-			has_fuel > constant:natural_disaster_cost_gate.reconstruct_fuel
-			has_equipment = { convoy_1 > constant:natural_disaster_cost_gate.reconstruct_convoys }
+			set_temp_variable = { nd_cost_gate = global.black_friday_price_natural_disaster_cost_reconstruct_fuel }
+			subtract_from_temp_variable = { nd_cost_gate = constant:natural_disaster_cost_gate.unit_step }
+			has_fuel > nd_cost_gate
+			set_temp_variable = { nd_cost_gate = global.black_friday_price_natural_disaster_cost_reconstruct_convoys }
+			subtract_from_temp_variable = { nd_cost_gate = constant:natural_disaster_cost_gate.unit_step }
+			has_equipment = { convoy_1 > nd_cost_gate }
 		}
 		custom_cost_text = natural_disaster_cost_reconstruction_convoy
 		complete_effect = {
-			set_temp_variable = { nd_reconstruction_support_cost = constant:natural_disaster_cost.reconstruct_support_equipment }
+			set_temp_variable = { nd_reconstruction_support_cost = global.black_friday_price_natural_disaster_cost_reconstruct_support_equipment }
 			multiply_temp_variable = { nd_reconstruction_support_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = support_equipment_1
 				amount = nd_reconstruction_support_cost
 			}
-			set_temp_variable = { nd_reconstruction_truck_cost = constant:natural_disaster_cost.reconstruct_trucks }
+			set_temp_variable = { nd_reconstruction_truck_cost = global.black_friday_price_natural_disaster_cost_reconstruct_trucks }
 			multiply_temp_variable = { nd_reconstruction_truck_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = motorized_equipment_1
 				amount = nd_reconstruction_truck_cost
 			}
-			set_temp_variable = { nd_reconstruction_transport_cost = constant:natural_disaster_cost.reconstruct_convoys }
+			set_temp_variable = { nd_reconstruction_transport_cost = global.black_friday_price_natural_disaster_cost_reconstruct_convoys }
 			multiply_temp_variable = { nd_reconstruction_transport_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = convoy_1
 				amount = nd_reconstruction_transport_cost
 			}
-			set_temp_variable = { nd_reconstruction_fuel_cost = constant:natural_disaster_cost.reconstruct_fuel }
+			set_temp_variable = { nd_reconstruction_fuel_cost = global.black_friday_price_natural_disaster_cost_reconstruct_fuel }
 			multiply_temp_variable = { nd_reconstruction_fuel_cost = -1 }
 			add_fuel = nd_reconstruction_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.reconstruct_stability
+			set_temp_variable = { nd_stability_payment = global.black_friday_price_natural_disaster_cost_fixed_reconstruct_stability }
+			multiply_temp_variable = { nd_stability_payment = -1 }
+			add_stability = nd_stability_payment
+			set_temp_variable = { nd_sale_family = constant:universal_cost_family.equipment }
+			natural_disaster_credit_black_friday_purchase = yes
 			FROM = {
 				set_state_flag = {
 					flag = natural_disaster_reconstruct_coastal_barriers_taken
@@ -4069,13 +4141,13 @@ natural_disaster_aftermath_category = {
 		}
 		custom_cost_text = natural_disaster_cost_reconstruction_routed
 		complete_effect = {
-			set_temp_variable = { nd_reconstruction_support_cost = constant:natural_disaster_cost.reconstruct_support_equipment }
+			set_temp_variable = { nd_reconstruction_support_cost = global.black_friday_price_natural_disaster_cost_reconstruct_support_equipment }
 			multiply_temp_variable = { nd_reconstruction_support_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = support_equipment_1
 				amount = nd_reconstruction_support_cost
 			}
-			set_temp_variable = { nd_reconstruction_truck_cost = constant:natural_disaster_cost.reconstruct_trucks }
+			set_temp_variable = { nd_reconstruction_truck_cost = global.black_friday_price_natural_disaster_cost_reconstruct_trucks }
 			multiply_temp_variable = { nd_reconstruction_truck_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = motorized_equipment_1
@@ -4083,7 +4155,7 @@ natural_disaster_aftermath_category = {
 			}
 			if = {
 				limit = { FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } } }
-				set_temp_variable = { nd_reconstruction_transport_cost = constant:natural_disaster_cost.reconstruct_trains }
+				set_temp_variable = { nd_reconstruction_transport_cost = global.black_friday_price_natural_disaster_cost_reconstruct_trains }
 				multiply_temp_variable = { nd_reconstruction_transport_cost = -1 }
 				add_equipment_to_stockpile = {
 					type = train_equipment
@@ -4091,17 +4163,21 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			else = {
-				set_temp_variable = { nd_reconstruction_transport_cost = constant:natural_disaster_cost.reconstruct_convoys }
+				set_temp_variable = { nd_reconstruction_transport_cost = global.black_friday_price_natural_disaster_cost_reconstruct_convoys }
 				multiply_temp_variable = { nd_reconstruction_transport_cost = -1 }
 				add_equipment_to_stockpile = {
 					type = convoy_1
 					amount = nd_reconstruction_transport_cost
 				}
 			}
-			set_temp_variable = { nd_reconstruction_fuel_cost = constant:natural_disaster_cost.reconstruct_fuel }
+			set_temp_variable = { nd_reconstruction_fuel_cost = global.black_friday_price_natural_disaster_cost_reconstruct_fuel }
 			multiply_temp_variable = { nd_reconstruction_fuel_cost = -1 }
 			add_fuel = nd_reconstruction_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.reconstruct_stability
+			set_temp_variable = { nd_stability_payment = global.black_friday_price_natural_disaster_cost_fixed_reconstruct_stability }
+			multiply_temp_variable = { nd_stability_payment = -1 }
+			add_stability = nd_stability_payment
+			set_temp_variable = { nd_sale_family = constant:universal_cost_family.equipment }
+			natural_disaster_credit_black_friday_purchase = yes
 			FROM = {
 				set_state_flag = {
 					flag = natural_disaster_reconstruct_firebreak_network_taken
@@ -4150,13 +4226,13 @@ natural_disaster_aftermath_category = {
 		}
 		custom_cost_text = natural_disaster_cost_reconstruction_routed
 		complete_effect = {
-			set_temp_variable = { nd_reconstruction_support_cost = constant:natural_disaster_cost.reconstruct_support_equipment }
+			set_temp_variable = { nd_reconstruction_support_cost = global.black_friday_price_natural_disaster_cost_reconstruct_support_equipment }
 			multiply_temp_variable = { nd_reconstruction_support_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = support_equipment_1
 				amount = nd_reconstruction_support_cost
 			}
-			set_temp_variable = { nd_reconstruction_truck_cost = constant:natural_disaster_cost.reconstruct_trucks }
+			set_temp_variable = { nd_reconstruction_truck_cost = global.black_friday_price_natural_disaster_cost_reconstruct_trucks }
 			multiply_temp_variable = { nd_reconstruction_truck_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = motorized_equipment_1
@@ -4164,7 +4240,7 @@ natural_disaster_aftermath_category = {
 			}
 			if = {
 				limit = { FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } } }
-				set_temp_variable = { nd_reconstruction_transport_cost = constant:natural_disaster_cost.reconstruct_trains }
+				set_temp_variable = { nd_reconstruction_transport_cost = global.black_friday_price_natural_disaster_cost_reconstruct_trains }
 				multiply_temp_variable = { nd_reconstruction_transport_cost = -1 }
 				add_equipment_to_stockpile = {
 					type = train_equipment
@@ -4172,17 +4248,21 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			else = {
-				set_temp_variable = { nd_reconstruction_transport_cost = constant:natural_disaster_cost.reconstruct_convoys }
+				set_temp_variable = { nd_reconstruction_transport_cost = global.black_friday_price_natural_disaster_cost_reconstruct_convoys }
 				multiply_temp_variable = { nd_reconstruction_transport_cost = -1 }
 				add_equipment_to_stockpile = {
 					type = convoy_1
 					amount = nd_reconstruction_transport_cost
 				}
 			}
-			set_temp_variable = { nd_reconstruction_fuel_cost = constant:natural_disaster_cost.reconstruct_fuel }
+			set_temp_variable = { nd_reconstruction_fuel_cost = global.black_friday_price_natural_disaster_cost_reconstruct_fuel }
 			multiply_temp_variable = { nd_reconstruction_fuel_cost = -1 }
 			add_fuel = nd_reconstruction_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.reconstruct_stability
+			set_temp_variable = { nd_stability_payment = global.black_friday_price_natural_disaster_cost_fixed_reconstruct_stability }
+			multiply_temp_variable = { nd_stability_payment = -1 }
+			add_stability = nd_stability_payment
+			set_temp_variable = { nd_sale_family = constant:universal_cost_family.equipment }
+			natural_disaster_credit_black_friday_purchase = yes
 			FROM = {
 				set_state_flag = {
 					flag = natural_disaster_reconstruct_volcanic_exclusion_routes_taken
@@ -4238,13 +4318,13 @@ natural_disaster_aftermath_category = {
 		}
 		custom_cost_text = natural_disaster_cost_reconstruction_routed
 		complete_effect = {
-			set_temp_variable = { nd_reconstruction_support_cost = constant:natural_disaster_cost.reconstruct_support_equipment }
+			set_temp_variable = { nd_reconstruction_support_cost = global.black_friday_price_natural_disaster_cost_reconstruct_support_equipment }
 			multiply_temp_variable = { nd_reconstruction_support_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = support_equipment_1
 				amount = nd_reconstruction_support_cost
 			}
-			set_temp_variable = { nd_reconstruction_truck_cost = constant:natural_disaster_cost.reconstruct_trucks }
+			set_temp_variable = { nd_reconstruction_truck_cost = global.black_friday_price_natural_disaster_cost_reconstruct_trucks }
 			multiply_temp_variable = { nd_reconstruction_truck_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = motorized_equipment_1
@@ -4252,7 +4332,7 @@ natural_disaster_aftermath_category = {
 			}
 			if = {
 				limit = { FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } } }
-				set_temp_variable = { nd_reconstruction_transport_cost = constant:natural_disaster_cost.reconstruct_trains }
+				set_temp_variable = { nd_reconstruction_transport_cost = global.black_friday_price_natural_disaster_cost_reconstruct_trains }
 				multiply_temp_variable = { nd_reconstruction_transport_cost = -1 }
 				add_equipment_to_stockpile = {
 					type = train_equipment
@@ -4260,17 +4340,21 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			else = {
-				set_temp_variable = { nd_reconstruction_transport_cost = constant:natural_disaster_cost.reconstruct_convoys }
+				set_temp_variable = { nd_reconstruction_transport_cost = global.black_friday_price_natural_disaster_cost_reconstruct_convoys }
 				multiply_temp_variable = { nd_reconstruction_transport_cost = -1 }
 				add_equipment_to_stockpile = {
 					type = convoy_1
 					amount = nd_reconstruction_transport_cost
 				}
 			}
-			set_temp_variable = { nd_reconstruction_fuel_cost = constant:natural_disaster_cost.reconstruct_fuel }
+			set_temp_variable = { nd_reconstruction_fuel_cost = global.black_friday_price_natural_disaster_cost_reconstruct_fuel }
 			multiply_temp_variable = { nd_reconstruction_fuel_cost = -1 }
 			add_fuel = nd_reconstruction_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.reconstruct_stability
+			set_temp_variable = { nd_stability_payment = global.black_friday_price_natural_disaster_cost_fixed_reconstruct_stability }
+			multiply_temp_variable = { nd_stability_payment = -1 }
+			add_stability = nd_stability_payment
+			set_temp_variable = { nd_sale_family = constant:universal_cost_family.equipment }
+			natural_disaster_credit_black_friday_purchase = yes
 			FROM = {
 				set_state_flag = {
 					flag = natural_disaster_reconstruct_water_security_taken
@@ -4318,13 +4402,13 @@ natural_disaster_aftermath_category = {
 		}
 		custom_cost_text = natural_disaster_cost_reconstruction_routed
 		complete_effect = {
-			set_temp_variable = { nd_reconstruction_support_cost = constant:natural_disaster_cost.reconstruct_support_equipment }
+			set_temp_variable = { nd_reconstruction_support_cost = global.black_friday_price_natural_disaster_cost_reconstruct_support_equipment }
 			multiply_temp_variable = { nd_reconstruction_support_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = support_equipment_1
 				amount = nd_reconstruction_support_cost
 			}
-			set_temp_variable = { nd_reconstruction_truck_cost = constant:natural_disaster_cost.reconstruct_trucks }
+			set_temp_variable = { nd_reconstruction_truck_cost = global.black_friday_price_natural_disaster_cost_reconstruct_trucks }
 			multiply_temp_variable = { nd_reconstruction_truck_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = motorized_equipment_1
@@ -4332,7 +4416,7 @@ natural_disaster_aftermath_category = {
 			}
 			if = {
 				limit = { FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } } }
-				set_temp_variable = { nd_reconstruction_transport_cost = constant:natural_disaster_cost.reconstruct_trains }
+				set_temp_variable = { nd_reconstruction_transport_cost = global.black_friday_price_natural_disaster_cost_reconstruct_trains }
 				multiply_temp_variable = { nd_reconstruction_transport_cost = -1 }
 				add_equipment_to_stockpile = {
 					type = train_equipment
@@ -4340,17 +4424,21 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			else = {
-				set_temp_variable = { nd_reconstruction_transport_cost = constant:natural_disaster_cost.reconstruct_convoys }
+				set_temp_variable = { nd_reconstruction_transport_cost = global.black_friday_price_natural_disaster_cost_reconstruct_convoys }
 				multiply_temp_variable = { nd_reconstruction_transport_cost = -1 }
 				add_equipment_to_stockpile = {
 					type = convoy_1
 					amount = nd_reconstruction_transport_cost
 				}
 			}
-			set_temp_variable = { nd_reconstruction_fuel_cost = constant:natural_disaster_cost.reconstruct_fuel }
+			set_temp_variable = { nd_reconstruction_fuel_cost = global.black_friday_price_natural_disaster_cost_reconstruct_fuel }
 			multiply_temp_variable = { nd_reconstruction_fuel_cost = -1 }
 			add_fuel = nd_reconstruction_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.reconstruct_stability
+			set_temp_variable = { nd_stability_payment = global.black_friday_price_natural_disaster_cost_fixed_reconstruct_stability }
+			multiply_temp_variable = { nd_stability_payment = -1 }
+			add_stability = nd_stability_payment
+			set_temp_variable = { nd_sale_family = constant:universal_cost_family.equipment }
+			natural_disaster_credit_black_friday_purchase = yes
 			FROM = {
 				set_state_flag = {
 					flag = natural_disaster_reconstruct_crater_or_exclusion_cordon_taken
@@ -4408,13 +4496,13 @@ natural_disaster_aftermath_category = {
 		}
 		custom_cost_text = natural_disaster_cost_reconstruction_routed
 		complete_effect = {
-			set_temp_variable = { nd_reconstruction_support_cost = constant:natural_disaster_cost.reconstruct_support_equipment }
+			set_temp_variable = { nd_reconstruction_support_cost = global.black_friday_price_natural_disaster_cost_reconstruct_support_equipment }
 			multiply_temp_variable = { nd_reconstruction_support_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = support_equipment_1
 				amount = nd_reconstruction_support_cost
 			}
-			set_temp_variable = { nd_reconstruction_truck_cost = constant:natural_disaster_cost.reconstruct_trucks }
+			set_temp_variable = { nd_reconstruction_truck_cost = global.black_friday_price_natural_disaster_cost_reconstruct_trucks }
 			multiply_temp_variable = { nd_reconstruction_truck_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = motorized_equipment_1
@@ -4422,7 +4510,7 @@ natural_disaster_aftermath_category = {
 			}
 			if = {
 				limit = { FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } } }
-				set_temp_variable = { nd_reconstruction_transport_cost = constant:natural_disaster_cost.reconstruct_trains }
+				set_temp_variable = { nd_reconstruction_transport_cost = global.black_friday_price_natural_disaster_cost_reconstruct_trains }
 				multiply_temp_variable = { nd_reconstruction_transport_cost = -1 }
 				add_equipment_to_stockpile = {
 					type = train_equipment
@@ -4430,17 +4518,21 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			else = {
-				set_temp_variable = { nd_reconstruction_transport_cost = constant:natural_disaster_cost.reconstruct_convoys }
+				set_temp_variable = { nd_reconstruction_transport_cost = global.black_friday_price_natural_disaster_cost_reconstruct_convoys }
 				multiply_temp_variable = { nd_reconstruction_transport_cost = -1 }
 				add_equipment_to_stockpile = {
 					type = convoy_1
 					amount = nd_reconstruction_transport_cost
 				}
 			}
-			set_temp_variable = { nd_reconstruction_fuel_cost = constant:natural_disaster_cost.reconstruct_fuel }
+			set_temp_variable = { nd_reconstruction_fuel_cost = global.black_friday_price_natural_disaster_cost_reconstruct_fuel }
 			multiply_temp_variable = { nd_reconstruction_fuel_cost = -1 }
 			add_fuel = nd_reconstruction_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.reconstruct_stability
+			set_temp_variable = { nd_stability_payment = global.black_friday_price_natural_disaster_cost_fixed_reconstruct_stability }
+			multiply_temp_variable = { nd_stability_payment = -1 }
+			add_stability = nd_stability_payment
+			set_temp_variable = { nd_sale_family = constant:universal_cost_family.equipment }
+			natural_disaster_credit_black_friday_purchase = yes
 			FROM = {
 				set_state_flag = {
 					flag = natural_disaster_reconstruct_weather_shelter_network_taken
@@ -4490,33 +4582,41 @@ natural_disaster_aftermath_category = {
 		priority = @ND_PRIORITY_RECONSTRUCTION
 		custom_cost_trigger = {
 			natural_disaster_can_pay_reconstruction = yes
-			has_fuel > constant:natural_disaster_cost_gate.reconstruct_fuel
-			has_equipment = { train_equipment > constant:natural_disaster_cost_gate.reconstruct_trains }
+			set_temp_variable = { nd_cost_gate = global.black_friday_price_natural_disaster_cost_reconstruct_fuel }
+			subtract_from_temp_variable = { nd_cost_gate = constant:natural_disaster_cost_gate.unit_step }
+			has_fuel > nd_cost_gate
+			set_temp_variable = { nd_cost_gate = global.black_friday_price_natural_disaster_cost_reconstruct_trains }
+			subtract_from_temp_variable = { nd_cost_gate = constant:natural_disaster_cost_gate.unit_step }
+			has_equipment = { train_equipment > nd_cost_gate }
 		}
 		custom_cost_text = natural_disaster_cost_reconstruction_train
 		complete_effect = {
-			set_temp_variable = { nd_reconstruction_support_cost = constant:natural_disaster_cost.reconstruct_support_equipment }
+			set_temp_variable = { nd_reconstruction_support_cost = global.black_friday_price_natural_disaster_cost_reconstruct_support_equipment }
 			multiply_temp_variable = { nd_reconstruction_support_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = support_equipment_1
 				amount = nd_reconstruction_support_cost
 			}
-			set_temp_variable = { nd_reconstruction_truck_cost = constant:natural_disaster_cost.reconstruct_trucks }
+			set_temp_variable = { nd_reconstruction_truck_cost = global.black_friday_price_natural_disaster_cost_reconstruct_trucks }
 			multiply_temp_variable = { nd_reconstruction_truck_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = motorized_equipment_1
 				amount = nd_reconstruction_truck_cost
 			}
-			set_temp_variable = { nd_reconstruction_transport_cost = constant:natural_disaster_cost.reconstruct_trains }
+			set_temp_variable = { nd_reconstruction_transport_cost = global.black_friday_price_natural_disaster_cost_reconstruct_trains }
 			multiply_temp_variable = { nd_reconstruction_transport_cost = -1 }
 			add_equipment_to_stockpile = {
 				type = train_equipment
 				amount = nd_reconstruction_transport_cost
 			}
-			set_temp_variable = { nd_reconstruction_fuel_cost = constant:natural_disaster_cost.reconstruct_fuel }
+			set_temp_variable = { nd_reconstruction_fuel_cost = global.black_friday_price_natural_disaster_cost_reconstruct_fuel }
 			multiply_temp_variable = { nd_reconstruction_fuel_cost = -1 }
 			add_fuel = nd_reconstruction_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.reconstruct_stability
+			set_temp_variable = { nd_stability_payment = global.black_friday_price_natural_disaster_cost_fixed_reconstruct_stability }
+			multiply_temp_variable = { nd_stability_payment = -1 }
+			add_stability = nd_stability_payment
+			set_temp_variable = { nd_sale_family = constant:universal_cost_family.equipment }
+			natural_disaster_credit_black_friday_purchase = yes
 			FROM = {
 				set_state_flag = {
 					flag = natural_disaster_reconstruct_slope_stabilization_taken
@@ -4563,12 +4663,12 @@ natural_disaster_aftermath_category = {
 					var:natural_disaster_inbound_relief_state = { natural_disaster_state_has_recovery_card = yes }
 					natural_disaster_can_route_inbound_relief = yes
 				}
-				set_temp_variable = { nd_warning_manpower_cost = constant:natural_disaster_cost.warning_manpower }
+				set_temp_variable = { nd_warning_manpower_cost = global.black_friday_price_natural_disaster_cost_warning_manpower }
 				multiply_temp_variable = { nd_warning_manpower_cost = -1 }
 				add_manpower = nd_warning_manpower_cost
 				if = {
 					limit = { has_country_flag = natural_disaster_inbound_relief_route_rail }
-					set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_trains }
+					set_temp_variable = { nd_warning_transport_cost = global.black_friday_price_natural_disaster_cost_warning_trains }
 					multiply_temp_variable = { nd_warning_transport_cost = -1 }
 					add_equipment_to_stockpile = {
 						type = train_equipment
@@ -4576,18 +4676,24 @@ natural_disaster_aftermath_category = {
 					}
 				}
 				else = {
-					set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_convoys }
+					set_temp_variable = { nd_warning_transport_cost = global.black_friday_price_natural_disaster_cost_warning_convoys }
 					multiply_temp_variable = { nd_warning_transport_cost = -1 }
 					add_equipment_to_stockpile = {
 						type = convoy_1
 						amount = nd_warning_transport_cost
 					}
 				}
-				set_temp_variable = { nd_warning_fuel_cost = constant:natural_disaster_cost.warning_fuel }
+				set_temp_variable = { nd_warning_fuel_cost = global.black_friday_price_natural_disaster_cost_warning_fuel }
 				multiply_temp_variable = { nd_warning_fuel_cost = -1 }
 				add_fuel = nd_warning_fuel_cost
 				add_stability = constant:natural_disaster_cost_fixed.warning_stability
 				add_war_support = constant:natural_disaster_cost_fixed.foreign_relief_war_support
+				set_temp_variable = { nd_sale_family = constant:universal_cost_family.convoy }
+				if = {
+					limit = { has_country_flag = natural_disaster_inbound_relief_route_rail }
+					set_temp_variable = { nd_sale_family = constant:universal_cost_family.trains }
+				}
+				natural_disaster_credit_black_friday_purchase = yes
 				set_country_flag = natural_disaster_inbound_relief_route_secured
 				set_temp_variable = { natural_disaster_relief_status_value = constant:natural_disaster_relief_status.route_secured }
 				var:natural_disaster_inbound_relief_state = { natural_disaster_set_foreign_relief_status = yes }

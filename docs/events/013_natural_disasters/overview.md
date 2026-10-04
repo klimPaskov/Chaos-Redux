@@ -155,6 +155,18 @@ The neighbor-relief blocked cost row is keyed only to the five material stock ch
 
 On success, the donor carries the hidden `natural_disaster_gods_of_africa_neighbor_relief_offered` flag for the Event 012 caller to check immediately after the effect returns, while the selected recipient carries `natural_disaster_gods_of_africa_neighbor_relief_active` to bind terminal cleanup to this bridge. The adapter clears an earlier donor receipt at entry. Event 013 clears both flags through `natural_disaster_clear_gods_of_africa_neighbor_relief_receipt` when the recipient refuses or the inbound mission completes, expires, cancels, or loses its selected state during a control transfer. The regular participant and priority-state event targets last only for the originating effect chain. Event 013's mission and abnormal-history cleanup remains independent, and this bridge does not cancel a disaster or alter its outcome.
 
+## Black Friday prices
+
+Every material cost of a warning, rescue, stabilization, chain-prevention, reconstruction, inbound-route, and foreign-relief action reads the Black Friday sale price table (Event 026).
+The ordinary amounts stay in `natural_disaster_cost` and `natural_disaster_warning_cost`; each one is registered in `common/scripted_effects/026_black_friday_price_table_effects.txt` as `global.black_friday_price_natural_disaster_cost_<key>` or `global.black_friday_price_natural_disaster_warning_cost_<severity>_<resource>`.
+Outside a sale each global equals the ordinary constant, and during a sale it holds the rounded-up sale price.
+The affordability triggers, the payment effects and inline decision payments, and the cost texts all read that one global, so the shown price, the requirement, and the debit agree.
+Affordability keeps the inclusive floor: the trigger subtracts `natural_disaster_cost_gate.unit_step` from the current price and keeps the strict `>` comparison, so holding exactly the shown amount is enough.
+The civilian-factory requirement of warning actions keeps its fixed `natural_disaster_warning_cost_gate` floor, because it is a capacity requirement rather than a payment.
+The stabilization (1.5%) and reconstruction (2%) Stability losses are registered as positive amounts in the same table and fall to 1% during a sale; their checks subtract `natural_disaster_cost_gate_fixed.stability_step`, and their tooltips show the live percentage.
+The warning, rescue, and relief Stability and War Support losses are at or below the sale's 1% rounding step, so their sale price equals the ordinary loss and they keep their fixed amounts.
+A paid action credits one Black Friday achievement family through `natural_disaster_credit_black_friday_purchase`: equipment when it pays support equipment or trucks, otherwise its trains or convoys.
+
 ## Abnormal disaster path map
 
 `common/scripted_guis/013_natural_disasters_scripted_gui.txt`, `interface/013_natural_disasters.gui`, and `interface/013_natural_disasters.gfx` define the Evolution III/manual-abnormal map. Normal disasters remain in the aftermath category.
