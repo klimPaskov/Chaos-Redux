@@ -632,6 +632,11 @@ In-game behaviour of populated lists remains for live verification.
 - Wendigo unit capacity
 - critical terminal warning
 
+Disposition (anchor-state cards): implemented.
+Acceptance basis: the lead's 2026-10-04 delegated decision to treat the anchor-state cards like audit findings E014-FINAL-02/03, recorded as agent decision D9 in `docs/plans/014_cannibalism_plans/agent_decisions_2026-10-04.md`.
+Implementation evidence: the Overview page keeps the transformed portrait, anchor totals, countdown, pack capacity and terminal warning; the Anchors page lists every transformation anchor with its name, standing, strength and holder (`docs/events/014_cannibalism/gui_data_contract.md`, `docs/plans/014_cannibalism_plans/subagent_handoffs/2026-10-04_command_windows_mcp_evidence.md`).
+In-game behaviour of the populated list remains for live verification.
+
 ## GUI button contract
 
 Every interactive button needs:

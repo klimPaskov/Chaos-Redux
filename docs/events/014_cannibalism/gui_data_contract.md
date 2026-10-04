@@ -106,10 +106,22 @@ It inserts the target country, the kind (`cannibalism_continental_target_kind`),
 A target that was an Event 014 actor and whose actor generation changed since the order is shown as a Host that no longer exists, so a recycled tag never inherits an older strike.
 Without a committed operation the page shows one empty card.
 
+## Wendigo transformation window
+
+`cannibalism_wendigo_command_window` has an Overview page with the live and broken anchor totals, the transformation countdown and Wendigo pack capacity, and an Anchors page.
+The page is the presentation-only country flag `cannibalism_wendigo_gui_anchors_view`; no gameplay check reads it, and `cannibalism_gui_clear_command_view` clears it on an incarnation reset.
+The Anchors page binds `cannibalism_wendigo_anchor_dynamic_list` directly to `global.cannibalism_transformation_anchor_states`, so it needs no rebuild and shows exactly the states the transformation counts.
+Each card shows the state's name, its standing and strength, and who holds it.
+`GetCannibalismUiAnchorStatus` reads, in order: lost to the enemy (no longer live and not controlled by the transformed host), broken (no longer live), locked into the transformation (`cannibalism_wendigo_anchor_terminal_locked`), identified (`cannibalism_wendigo_anchor_identified`, set by enemy counterwar intelligence) or unidentified.
+`GetCannibalismUiAnchorHolder` says whether the host or an enemy holds the state, and the tooltip adds the full controller name, the population, the recruitment-site condition and any frozen supply corridor.
+The window is shown only to the transformed host, so the identified status tells the host which anchors the enemy has found without revealing anything to other countries.
+The terminal line stays visible on both pages while the countdown runs.
+
 ## Icons and assets
 
 The dossier reuses existing sprites only: `GFX_cannibalism_network_country_card`, `GFX_cannibalism_network_state_card`, `GFX_cannibalism_network_target_frame`, `GFX_cannibalism_selected_target_overlay_animated` and its static fallback in `interface/014_cannibalism.gfx`, plus the vanilla `GFX_mini_bg` panel and `GFX_flag_small2`.
 The revealed command window reuses `GFX_cannibalism_continental_target_card` for each target card, the existing `GFX_portrait_<slot>_warlord_<region>` warlord portraits for loyalty rows, and the vanilla `GFX_sort_button_100x29` tab buttons and `GFX_mini_bg` row panels.
+The Wendigo Anchors page reuses `GFX_cannibalism_anchor_card` at 0.85 scale for each anchor row and at full size for the empty card, and the same vanilla tab buttons.
 No new icon is required.
 
 ## Future plans

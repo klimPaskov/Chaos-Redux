@@ -359,18 +359,54 @@ scripted_gui = {
 			is_cannibalism_wendigo_hannibal_country = yes
 			NOT = { has_global_flag = world_end }
 		}
+		# The page flag is view state only; no gameplay check reads it.
+		effects = {
+			cannibalism_wendigo_tab_overview_click = { clr_country_flag = cannibalism_wendigo_gui_anchors_view }
+			cannibalism_wendigo_tab_anchors_click = { set_country_flag = cannibalism_wendigo_gui_anchors_view }
+		}
 		triggers = {
+			cannibalism_wendigo_tab_overview_click_enabled = { always = yes }
+			cannibalism_wendigo_tab_anchors_click_enabled = { always = yes }
 			cannibalism_wendigo_portrait_animated_visible = { always = yes }
 			cannibalism_wendigo_portrait_static_visible = { always = no }
+			cannibalism_anchor_card_visible = { NOT = { has_country_flag = cannibalism_wendigo_gui_anchors_view } }
+			cannibalism_anchor_text_visible = { NOT = { has_country_flag = cannibalism_wendigo_gui_anchors_view } }
+			cannibalism_countdown_frame_visible = { NOT = { has_country_flag = cannibalism_wendigo_gui_anchors_view } }
+			cannibalism_countdown_text_visible = { NOT = { has_country_flag = cannibalism_wendigo_gui_anchors_view } }
+			cannibalism_wendigo_capacity_frame_visible = { NOT = { has_country_flag = cannibalism_wendigo_gui_anchors_view } }
+			cannibalism_wendigo_capacity_text_visible = { NOT = { has_country_flag = cannibalism_wendigo_gui_anchors_view } }
 			cannibalism_wendigo_anchor_pulse_animated_visible = {
+				NOT = { has_country_flag = cannibalism_wendigo_gui_anchors_view }
 				check_variable = { global.cannibalism_wendigo_active_anchor_count > constant:cannibalism_gui_value.zero }
 			}
 			cannibalism_wendigo_anchor_pulse_static_visible = { always = no }
+			cannibalism_wendigo_anchor_list_panel_visible = { has_country_flag = cannibalism_wendigo_gui_anchors_view }
+			cannibalism_wendigo_anchor_empty_card_visible = {
+				has_country_flag = cannibalism_wendigo_gui_anchors_view
+				check_variable = { global.cannibalism_transformation_anchor_states^num < 1 }
+			}
+			cannibalism_wendigo_anchor_empty_visible = {
+				has_country_flag = cannibalism_wendigo_gui_anchors_view
+				check_variable = { global.cannibalism_transformation_anchor_states^num < 1 }
+			}
 			cannibalism_wendigo_terminal_frame_animated_visible = {
 				has_country_flag = cannibalism_wendigo_countdown_active
 			}
 			cannibalism_wendigo_terminal_frame_static_visible = { always = no }
 			cannibalism_wendigo_terminal_text_visible = { has_country_flag = cannibalism_wendigo_countdown_active }
+		}
+		dynamic_lists = {
+			cannibalism_wendigo_anchor_dynamic_list = {
+				array = global.cannibalism_transformation_anchor_states
+				value = cannibalism_wendigo_gui_anchor
+				index = cannibalism_wendigo_gui_anchor_index
+				change_scope = yes
+				entry_container = "cannibalism_wendigo_anchor_entry"
+			}
+		}
+		properties = {
+			cannibalism_wendigo_tab_overview = { image = "[GetCannibalismWendigoOverviewTabSprite]" }
+			cannibalism_wendigo_tab_anchors = { image = "[GetCannibalismWendigoAnchorsTabSprite]" }
 		}
 		ai_enabled = { always = no }
 	}

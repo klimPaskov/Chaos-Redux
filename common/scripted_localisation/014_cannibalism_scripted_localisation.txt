@@ -780,6 +780,72 @@ defined_text = {
 	text = { localization_key = GFX_sort_button_100x29 }
 }
 
+defined_text = {
+	name = GetCannibalismWendigoOverviewTabSprite
+	text = { trigger = { NOT = { has_country_flag = cannibalism_wendigo_gui_anchors_view } } localization_key = GFX_chaosx_sort_button_100x29_2 }
+	text = { localization_key = GFX_sort_button_100x29 }
+}
+
+defined_text = {
+	name = GetCannibalismWendigoAnchorsTabSprite
+	text = { trigger = { has_country_flag = cannibalism_wendigo_gui_anchors_view } localization_key = GFX_chaosx_sort_button_100x29_2 }
+	text = { localization_key = GFX_sort_button_100x29 }
+}
+
+# STATE scope of one anchor card. The first matching line is the anchor's
+# standing: lost or broken anchors first, then the terminal lock, then
+# whether enemy intelligence has identified it.
+defined_text = {
+	name = GetCannibalismUiAnchorStatus
+	text = {
+		trigger = {
+			NOT = { cannibalism_current_wendigo_anchor_is_live = yes }
+			NOT = { CONTROLLER = { tag = event_target:cannibalism_wendigo_merge_host } }
+		}
+		localization_key = cannibalism_ui_anchor_status_lost
+	}
+	text = {
+		trigger = { NOT = { cannibalism_current_wendigo_anchor_is_live = yes } }
+		localization_key = cannibalism_ui_anchor_status_broken
+	}
+	text = {
+		trigger = { has_state_flag = cannibalism_wendigo_anchor_terminal_locked }
+		localization_key = cannibalism_ui_anchor_status_locked
+	}
+	text = {
+		trigger = { has_state_flag = cannibalism_wendigo_anchor_identified }
+		localization_key = cannibalism_ui_anchor_status_identified
+	}
+	text = { localization_key = cannibalism_ui_anchor_status_hidden }
+}
+
+defined_text = {
+	name = GetCannibalismUiAnchorHolder
+	text = {
+		trigger = { CONTROLLER = { tag = event_target:cannibalism_wendigo_merge_host } }
+		localization_key = cannibalism_ui_anchor_holder_host
+	}
+	text = { localization_key = cannibalism_ui_anchor_holder_enemy }
+}
+
+defined_text = {
+	name = GetCannibalismUiAnchorRecruitment
+	text = {
+		trigger = { has_state_flag = cannibalism_wendigo_recruitment_site_broken }
+		localization_key = cannibalism_ui_anchor_recruitment_broken
+	}
+	text = { localization_key = cannibalism_ui_anchor_recruitment_open }
+}
+
+defined_text = {
+	name = GetCannibalismUiAnchorCorridor
+	text = {
+		trigger = { has_state_flag = cannibalism_wendigo_frozen_supply_corridor_active }
+		localization_key = cannibalism_ui_anchor_corridor_frozen
+	}
+	text = { localization_key = cannibalism_ui_anchor_corridor_none }
+}
+
 # ROOT host scope inside a history row. The loader copies the aligned row into
 # temporary values that the nested history getters read.
 defined_text = {

@@ -115,3 +115,18 @@ Decision:
 - The page flags are view state only and clear with the other view state on an incarnation reset.
 
 Implementation evidence: `docs/events/014_cannibalism/gui_data_contract.md` and the MCP evidence in `subagent_handoffs/2026-10-04_command_windows_mcp_evidence.md`.
+
+## D9. Wendigo transformation window pages
+
+Disposition: `implemented`.
+
+Basis: spec part 6 lists anchor-state cards for the Wendigo transformation window, the lead treated them like the aggregate-display findings E014-FINAL-02/03, and `global.cannibalism_transformation_anchor_states` already holds the anchors.
+
+Decision:
+
+- The window has two pages: Overview (the existing totals, countdown and pack capacity) and Anchors.
+- The Anchors list binds the global anchor array directly, so the cards always match the anchors the transformation counts and no rebuild effect or new record is needed.
+- Each card shows the state name, its standing with its strength (unidentified, identified, locked, broken or lost) and who holds it; the holder line names an enemy by adjective so a long country name cannot push the status out of the card, and the tooltip gives the full name.
+- The window is shown only to the transformed host, so showing identification there tells the host what the enemy knows without leaking anything to other viewers.
+- The title drops "Winter", because the full title did not fit the 410-pixel header box.
+- The page flag is view state only and clears with the other view state on an incarnation reset.
