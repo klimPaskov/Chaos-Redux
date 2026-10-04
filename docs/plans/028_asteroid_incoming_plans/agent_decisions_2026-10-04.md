@@ -298,3 +298,17 @@ Basis: the perimeter-ownership decision; before this, a former holder that retoo
 ### Dust-protection modifier name
 
 Decision: `asteroid_incoming_national_dust_protection` has a display name, so modifier breakdowns no longer show its raw key.
+
+## Takeover round 2 (2026-10-05)
+
+### Achievement tracking runs without the Chaos Meter
+
+Decision: `asteroid_incoming_update_achievements` is called from the first global-host `on_monthly` block in `common/on_actions/chaosx_on_actions_chaos_meter.txt`, next to `asteroid_incoming_monthly_dust_update`, and no longer from the Chaos Meter decay block.
+Inside the updater, the original-target annexation check still runs whenever the target pointer exists, while hold tracking moves into `asteroid_incoming_update_player_achievement_progress`, which runs only when `asteroid_incoming_impact_recorded` is set without `asteroid_incoming_miss_recorded` and visits only existing human-controlled countries.
+AI fragment counts stay current through `asteroid_incoming_refresh_mineral_control`, which every crater control change already calls.
+Basis: Part 10 makes three achievements depend on this updater, and nothing else sets their flags, so the Chaos Meter setting must not decide whether they are attainable; a campaign without an impact should not carry Event 028 variables on every country.
+
+### Collector of Fallen Stars and subjects
+
+Decision: the Collector check no longer requires the player to be independent, and its tooltip says sites held by your subjects do not count.
+Basis: Part 10 says only that subject control does not count; `any_controlled_state` and `asteroid_incoming_count_controlled_mineral_fragments` already count direct control only.

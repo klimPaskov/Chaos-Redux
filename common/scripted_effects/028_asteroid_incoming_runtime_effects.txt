@@ -1983,19 +1983,14 @@ asteroid_incoming_award_world_reconnected = {
 	}
 }
 
-asteroid_incoming_update_achievements = {
-	# The host calls this once per month. All work below is country bounded, so
-	# achievement progress follows current control without retaining stale site
-	# ownership or requiring a new daily world iteration.
-	if = {
-		limit = {
-			has_event_target = asteroid_incoming_original_target_country
-			event_target:asteroid_incoming_original_target_country = { exists = no }
-		}
-		set_global_flag = asteroid_incoming_original_target_annexed
-	}
+# ANY SCOPE. Called only by asteroid_incoming_update_achievements after an
+# impact. Each human-controlled country tracks its own continuous hold periods.
+asteroid_incoming_update_player_achievement_progress = {
 	every_country = {
-		limit = { exists = yes }
+		limit = {
+			exists = yes
+			is_ai = no
+		}
 		if = {
 			limit = { NOT = { has_variable = asteroid_incoming_collector_hold_days } }
 			set_variable = { asteroid_incoming_collector_hold_days = constant:asteroid_incoming_runtime.zero }
@@ -2010,7 +2005,6 @@ asteroid_incoming_update_achievements = {
 				asteroid_incoming_achievement_player_valid = yes
 				has_global_flag = asteroid_incoming_minerals_active
 				any_controlled_state = { has_state_flag = asteroid_incoming_main_crater }
-				NOT = { is_subject = yes }
 				check_variable = {
 					var = asteroid_incoming_country_controlled_fragment_count
 					value = constant:asteroid_incoming_runtime.collector_minimum_controlled_fragments
@@ -2083,6 +2077,28 @@ asteroid_incoming_update_achievements = {
 			set_country_flag = asteroid_incoming_achievement_government_complete
 		}
 		asteroid_incoming_award_world_reconnected = yes
+	}
+}
+
+asteroid_incoming_update_achievements = {
+	# The global host calls this once per month whether or not the Chaos Meter
+	# is enabled. Hold tracking starts only after a recorded impact and only
+	# visits human-controlled countries, so campaigns where Event 028 never
+	# strikes receive no per-country Event 028 variables. AI site counts are
+	# refreshed by the mineral control hooks instead.
+	if = {
+		limit = {
+			has_event_target = asteroid_incoming_original_target_country
+			event_target:asteroid_incoming_original_target_country = { exists = no }
+		}
+		set_global_flag = asteroid_incoming_original_target_annexed
+	}
+	if = {
+		limit = {
+			has_global_flag = asteroid_incoming_impact_recorded
+			NOT = { has_global_flag = asteroid_incoming_miss_recorded }
+		}
+		asteroid_incoming_update_player_achievement_progress = yes
 	}
 }
 
