@@ -1,0 +1,112 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 FOREIGN REACTION CONSTANTS
+# Overview:
+# - Accepted interest score: direct stake 4, recorded relationship 3,
+#   strategic fit 2, political fit 1, one conflict penalty of -3, floor 0,
+#   detailed-event cutoff 6.
+# - Profile tiers, stance tokens, consent replies, and Event 6 history
+#   payloads for the post-wave foreign reaction queue.
+# - Dispatch spacing, the 13-day human response window, and the queue
+#   deadline margin. Event timeout fields mirror the response window as a
+#   file-scoped @-constant because `timeout_days` rejects script constants.
+# ============================================================================
+
+independence_wave_foreign_interest = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	floor = 0
+	direct_stake = 4
+	recorded_relationship = 3
+	strategic_fit = 2
+	political_fit = 1
+	conflict_penalty = -3
+	detailed_cutoff = 6
+	no_score = -1
+}
+
+independence_wave_foreign_tier = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	neighbor = 1
+	regional = 2
+	great_power = 3
+	earlier_wave = 4
+}
+
+independence_wave_foreign_action = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	noncommittal = 0
+	recognize = 1
+	mediate = 2
+	contain = 3
+	guarantee = 4
+	invest = 5
+	recognize_with_aid = 6
+	arms_offer = 7
+	share_institutions = 8
+	network_aid = 9
+	contest = 10
+}
+
+independence_wave_foreign_offer_reply = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	refuse = 0
+	accept = 1
+	limit = 2
+}
+
+independence_wave_foreign_reaction_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	dispatch_after_host_days = 1
+	dispatch_spacing_days = 1
+	response_timeout_days = 13
+	consent_timeout_days = 13
+	deadline_margin_days = 2
+}
+
+independence_wave_foreign_capacity = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	# A guarantor needs a standing army that can make the promise credible.
+	guarantee_min_divisions = 10
+	# Bounded queue: a wave never reserves more actor receipts than this.
+	actor_cap = 200
+}
+
+# Event 6 history payloads for public foreign outcomes. The released country
+# is the primary actor and the foreign government the secondary actor.
+# Private bargaining (patron offers, refusals, rivalry) records no history.
+independence_wave_foreign_history = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	recognition = 30
+	guarantee = 31
+	mediation = 32
+	containment = 33
+	network_aid = 34
+}

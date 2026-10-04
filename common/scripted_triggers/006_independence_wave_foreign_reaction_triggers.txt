@@ -1,0 +1,351 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 FOREIGN REACTION TRIGGERS
+# ============================================================================
+# Overview:
+# - Validate the committed-cohort target, the foreign actor/target pair, the
+#   one actor-wave receipt, and the released country's pending consent offer.
+# - Score inputs: the four accepted interest families (direct stake, recorded
+#   relationship, strategic fit, political fit) and the one conflict check.
+#   Each family is tested once; a fact belongs only to its strongest family.
+# - Stance availability for the four profile events and the consent reply.
+# - Score triggers read the regular event targets
+#   `independence_wave_foreign_actor`, `independence_wave_foreign_target`, and
+#   (when the temporary `independence_wave_foreign_target_has_host` equals the
+#   loop increment) `independence_wave_foreign_target_host`.
+# - Stance triggers run in the actor's own events, where ROOT is the actor,
+#   and read the actor's receipt variables instead of event targets.
+# No trigger scans the world or uses a weighted pool.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Cohort, pair and receipt validity
+# ---------------------------------------------------------------------------
+
+# Scope: a released country from the committed Event 006 cohort.
+is_valid_independence_wave_foreign_reaction_target = {
+	is_independence_wave_active_country = yes
+	has_country_flag = independence_wave_origin_committed
+	has_country_flag = independence_wave_package_setup_complete
+	has_variable = independence_wave_generation_id
+	check_variable = { independence_wave_generation_id > constant:independence_wave_value.minimum }
+}
+
+# Scope: a candidate foreign actor. A living, sovereign government that is
+# neither the target nor its former host and is not at war with the target.
+is_valid_independence_wave_foreign_actor_for_target = {
+	exists = yes
+	is_subject = no
+	NOT = { tag = event_target:independence_wave_foreign_target }
+	NOT = { has_war_with = event_target:independence_wave_foreign_target }
+	NOT = {
+		AND = {
+			check_variable = { independence_wave_foreign_target_has_host = constant:independence_wave_plan.loop_increment }
+			tag = event_target:independence_wave_foreign_target_host
+		}
+	}
+}
+
+# Scope: a foreign actor. The actor-wave receipt reserved by the queue builder,
+# without judging the target. Skip and cleanup paths consume this receipt.
+has_reserved_independence_wave_foreign_reaction_receipt = {
+	has_country_flag = independence_wave_foreign_reaction_pending
+	has_global_flag = independence_wave_foreign_reaction_queue_pending
+	has_variable = global.independence_wave_foreign_reaction_plan_id
+	has_variable = independence_wave_foreign_reaction_plan_id
+	check_variable = { var = independence_wave_foreign_reaction_plan_id value = global.independence_wave_foreign_reaction_plan_id compare = equals }
+	has_variable = global.independence_wave_foreign_reactions_remaining
+	check_variable = { global.independence_wave_foreign_reactions_remaining > constant:independence_wave_value.minimum }
+}
+
+# Scope: a foreign actor. The reserved receipt still names a living target of
+# the same origin generation that the actor is not fighting.
+has_current_independence_wave_foreign_reaction_receipt = {
+	exists = yes
+	is_subject = no
+	has_reserved_independence_wave_foreign_reaction_receipt = yes
+	has_variable = independence_wave_foreign_reaction_target
+	has_variable = independence_wave_foreign_reaction_target_generation
+	var:independence_wave_foreign_reaction_target = {
+		is_valid_independence_wave_foreign_reaction_target = yes
+		check_variable = { var = independence_wave_generation_id value = PREV.independence_wave_foreign_reaction_target_generation compare = equals }
+		NOT = { tag = PREV }
+		NOT = { has_war_with = PREV }
+	}
+}
+
+# Scope: a released country. A patron offer from this wave's queue is still
+# open, the offering government still waits for the answer, and neither side
+# has changed generation or gone to war.
+has_current_independence_wave_foreign_offer = {
+	has_country_flag = independence_wave_foreign_offer_pending
+	is_valid_independence_wave_foreign_reaction_target = yes
+	has_global_flag = independence_wave_foreign_reaction_queue_pending
+	has_variable = global.independence_wave_foreign_reaction_plan_id
+	has_variable = independence_wave_foreign_offer_plan_id
+	check_variable = { var = independence_wave_foreign_offer_plan_id value = global.independence_wave_foreign_reaction_plan_id compare = equals }
+	has_variable = independence_wave_foreign_offer_generation
+	check_variable = { var = independence_wave_foreign_offer_generation value = independence_wave_generation_id compare = equals }
+	has_variable = independence_wave_foreign_offer_country
+	var:independence_wave_foreign_offer_country = {
+		exists = yes
+		NOT = { has_war_with = PREV }
+		has_country_flag = independence_wave_foreign_reaction_awaiting_consent
+		has_variable = independence_wave_foreign_reaction_plan_id
+		check_variable = { var = independence_wave_foreign_reaction_plan_id value = PREV.independence_wave_foreign_offer_plan_id compare = equals }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Interest families (actor scope, event targets as described above)
+# ---------------------------------------------------------------------------
+
+# Direct stake: a shared frontier, a claim on territory the target governs,
+# or a guarantee already given.
+has_independence_wave_foreign_direct_stake = {
+	OR = {
+		is_neighbor_of = event_target:independence_wave_foreign_target
+		has_guaranteed = event_target:independence_wave_foreign_target
+		event_target:independence_wave_foreign_target = {
+			any_owned_state = { is_claimed_by = event_target:independence_wave_foreign_actor }
+		}
+	}
+}
+
+# Recorded relationship: a patron channel with the target, an earlier
+# recognition of it, Independence Network duty, an alliance with the target,
+# or an alliance with the target's former host.
+has_independence_wave_foreign_recorded_relationship = {
+	OR = {
+		event_target:independence_wave_foreign_target = {
+			is_in_array = { array = independence_wave_patron_country_entries value = PREV }
+		}
+		event_target:independence_wave_foreign_target = { has_independence_wave_recognition_receipt_from_prev = yes }
+		AND = {
+			is_independence_wave_active_country = yes
+			has_country_flag = independence_wave_network_member
+		}
+		is_ally_with = event_target:independence_wave_foreign_target
+		AND = {
+			check_variable = { independence_wave_foreign_target_has_host = constant:independence_wave_plan.loop_increment }
+			is_ally_with = event_target:independence_wave_foreign_target_host
+		}
+	}
+}
+
+# Strategic fit: military access between the two, a border with the former
+# host without a border with the target, a great power's reach on the same
+# continent, or a shared Event 006 region for an earlier-wave state.
+has_independence_wave_foreign_strategic_fit = {
+	OR = {
+		has_military_access_to = event_target:independence_wave_foreign_target
+		event_target:independence_wave_foreign_target = { has_military_access_to = PREV }
+		AND = {
+			check_variable = { independence_wave_foreign_target_has_host = constant:independence_wave_plan.loop_increment }
+			is_neighbor_of = event_target:independence_wave_foreign_target_host
+			NOT = { is_neighbor_of = event_target:independence_wave_foreign_target }
+		}
+		AND = {
+			is_major = yes
+			is_on_same_continent_as = event_target:independence_wave_foreign_target
+		}
+		AND = {
+			is_independence_wave_active_country = yes
+			has_variable = independence_wave_region
+			event_target:independence_wave_foreign_target = {
+				has_variable = independence_wave_region
+				check_variable = { var = independence_wave_region value = PREV.independence_wave_region compare = equals }
+			}
+		}
+	}
+}
+
+# Political fit: both governments belong to the same ideology group.
+has_independence_wave_foreign_political_fit = {
+	OR = {
+		AND = {
+			has_government = democratic
+			event_target:independence_wave_foreign_target = { has_government = democratic }
+		}
+		AND = {
+			has_government = communism
+			event_target:independence_wave_foreign_target = { has_government = communism }
+		}
+		AND = {
+			has_government = fascism
+			event_target:independence_wave_foreign_target = { has_government = fascism }
+		}
+		AND = {
+			has_government = neutrality
+			event_target:independence_wave_foreign_target = { has_government = neutrality }
+		}
+	}
+}
+
+# Conflict or overextension: the actor is already at war, or it has both
+# recognized and guaranteed the target so little remains to settle.
+has_independence_wave_foreign_conflict = {
+	OR = {
+		has_war = yes
+		AND = {
+			has_guaranteed = event_target:independence_wave_foreign_target
+			event_target:independence_wave_foreign_target = { has_independence_wave_recognition_receipt_from_prev = yes }
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Paid transactions already running for the same pair
+# ---------------------------------------------------------------------------
+
+# Scope: the released country. PREV: the foreign actor. The released country
+# has already paid for a recognition mission to this actor.
+has_independence_wave_pending_recognition_with_prev = {
+	has_decision = independence_wave_send_diplomatic_mission
+	has_variable = independence_wave_diplomatic_counterpart
+	check_variable = { var = independence_wave_diplomatic_counterpart value = PREV.id compare = equals }
+}
+
+# Scope: the released country. PREV: the foreign actor. The released country
+# has already paid to ask this actor for a guarantee or base treaty.
+has_independence_wave_pending_guarantee_with_prev = {
+	OR = {
+		has_decision = independence_wave_seek_regional_guarantee
+		has_decision = independence_wave_grant_base_or_transit_rights
+	}
+	has_variable = independence_wave_diplomatic_counterpart
+	check_variable = { var = independence_wave_diplomatic_counterpart value = PREV.id compare = equals }
+}
+
+# ---------------------------------------------------------------------------
+# Stance availability (actor scope, ROOT is the actor)
+# ---------------------------------------------------------------------------
+
+# The target still has a living former host that the actor is not fighting
+# and that is not at war with the target.
+has_independence_wave_foreign_reaction_host = {
+	has_variable = independence_wave_foreign_reaction_host
+	var:independence_wave_foreign_reaction_host = {
+		exists = yes
+		NOT = { tag = ROOT }
+		NOT = { has_war_with = ROOT }
+	}
+	var:independence_wave_foreign_reaction_target = {
+		has_independence_wave_living_former_host = yes
+		check_variable = { var = independence_wave_former_host value = ROOT.independence_wave_foreign_reaction_host compare = equals }
+		var:independence_wave_former_host = { NOT = { has_war_with = PREV } }
+	}
+}
+
+# The actor can reach the target overland, on its continent, or through an
+# access agreement.
+has_independence_wave_foreign_reach_to_target = {
+	OR = {
+		is_neighbor_of = var:independence_wave_foreign_reaction_target
+		is_on_same_continent_as = var:independence_wave_foreign_reaction_target
+		has_military_access_to = var:independence_wave_foreign_reaction_target
+		var:independence_wave_foreign_reaction_target = { has_military_access_to = ROOT }
+	}
+}
+
+can_independence_wave_foreign_recognize = {
+	var:independence_wave_foreign_reaction_target = { NOT = { has_independence_wave_recognition_receipt_from_prev = yes } }
+	OR = {
+		can_pay_independence_wave_diplomatic_light_cost = yes
+		var:independence_wave_foreign_reaction_target = { has_independence_wave_pending_recognition_with_prev = yes }
+	}
+}
+
+can_independence_wave_foreign_recognize_with_aid = {
+	can_independence_wave_foreign_recognize = yes
+	NOT = { has_equipment = { infantry_equipment < constant:independence_wave_decision_cost.infantry_light } }
+}
+
+can_independence_wave_foreign_share_institutions = {
+	can_independence_wave_foreign_recognize = yes
+	# A recognition campaign already paid for this member delivers the same
+	# recognition, so the offer waits for that campaign instead.
+	NOT = {
+		AND = {
+			has_decision = independence_wave_coordinate_recognition_campaign
+			has_variable = independence_wave_diplomatic_counterpart
+			check_variable = { var = independence_wave_diplomatic_counterpart value = ROOT.independence_wave_foreign_reaction_target compare = equals }
+		}
+	}
+}
+
+can_independence_wave_foreign_mediate = {
+	can_pay_independence_wave_diplomatic_standard_cost = yes
+	has_independence_wave_foreign_reaction_host = yes
+	var:independence_wave_foreign_reaction_target = {
+		NOT = { check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.voluntary_reunion } }
+		check_variable = { independence_wave_border_settlement_progress < constant:independence_wave_value.maximum }
+	}
+}
+
+can_independence_wave_foreign_contain_light = {
+	can_pay_independence_wave_diplomatic_light_cost = yes
+	has_independence_wave_foreign_reaction_host = yes
+}
+
+can_independence_wave_foreign_contain_standard = {
+	can_pay_independence_wave_diplomatic_standard_cost = yes
+	has_independence_wave_foreign_reaction_host = yes
+}
+
+can_independence_wave_foreign_guarantee = {
+	num_divisions > constant:independence_wave_foreign_capacity.guarantee_min_divisions
+	NOT = { has_guaranteed = var:independence_wave_foreign_reaction_target }
+	var:independence_wave_foreign_reaction_target = { NOT = { has_independence_wave_guarantee_receipt_from_prev = yes } }
+	has_independence_wave_foreign_reach_to_target = yes
+	OR = {
+		can_pay_independence_wave_diplomatic_standard_cost = yes
+		var:independence_wave_foreign_reaction_target = { has_independence_wave_pending_guarantee_with_prev = yes }
+	}
+}
+
+can_independence_wave_foreign_invest = {
+	can_pay_independence_wave_diplomatic_standard_cost = yes
+	OR = {
+		is_neighbor_of = var:independence_wave_foreign_reaction_target
+		has_military_access_to = var:independence_wave_foreign_reaction_target
+		var:independence_wave_foreign_reaction_target = { has_military_access_to = ROOT }
+	}
+	var:independence_wave_foreign_reaction_target = { NOT = { has_country_flag = independence_wave_foreign_offer_pending } }
+}
+
+can_independence_wave_foreign_offer_arms = {
+	can_pay_independence_wave_diplomatic_standard_cost = yes
+	NOT = { has_equipment = { infantry_equipment < constant:independence_wave_decision_cost.infantry_major } }
+	NOT = { has_equipment = { support_equipment < constant:independence_wave_decision_cost.support_standard } }
+	var:independence_wave_foreign_reaction_target = { NOT = { has_country_flag = independence_wave_foreign_offer_pending } }
+}
+
+can_independence_wave_foreign_network_aid = {
+	OR = {
+		has_country_flag = independence_wave_network_member
+		has_country_flag = independence_wave_league_member
+	}
+	NOT = { command_power < constant:independence_wave_decision_cost.command_power_light }
+	NOT = { has_equipment = { infantry_equipment < constant:independence_wave_decision_cost.infantry_light } }
+	NOT = { has_equipment = { support_equipment < constant:independence_wave_decision_cost.support_light } }
+}
+
+can_independence_wave_foreign_contest = {
+	can_pay_independence_wave_diplomatic_light_cost = yes
+	var:independence_wave_foreign_reaction_target = { any_owned_state = { is_claimed_by = ROOT } }
+}
+
+# Scope: the released country answering a patron offer. The offering
+# government still holds the arms it promised.
+can_independence_wave_foreign_offer_deliver_arms_in_full = {
+	var:independence_wave_foreign_offer_country = {
+		NOT = { has_equipment = { infantry_equipment < constant:independence_wave_decision_cost.infantry_major } }
+		NOT = { has_equipment = { support_equipment < constant:independence_wave_decision_cost.support_standard } }
+	}
+}
+
+can_independence_wave_foreign_offer_deliver_arms_limited = {
+	var:independence_wave_foreign_offer_country = {
+		NOT = { has_equipment = { infantry_equipment < constant:independence_wave_decision_cost.infantry_standard } }
+	}
+}

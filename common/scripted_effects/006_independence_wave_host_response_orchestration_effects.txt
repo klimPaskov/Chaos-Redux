@@ -5,8 +5,9 @@
 #   openings and the one aggregated response for every Event 006 state-losing
 #   host.
 # - Reconcile stale opening and host callbacks without a periodic world scan.
-# - Release the report/reset barrier after every host option resolves or its
-#   documented event timeout closes the receipt.
+# - After every host option resolves or its documented event timeout closes
+#   the receipt, hand the report/reset barrier to the foreign reaction queue,
+#   or release it when no foreign government qualifies.
 # ============================================================================
 
 # COUNTRY scope: count one valid country-opening choice. The actor keeps its
@@ -174,12 +175,19 @@ independence_wave_host_response_skip_invalid_current_host = {
 	}
 }
 
-# COUNTRY scope: clear every plan-scoped actor and host receipt, then release
-# the single global report/reset barrier. Persistent host actions and ledgers
+# COUNTRY scope: hand the report/reset barrier to the foreign reaction queue,
+# clear every plan-scoped actor and host receipt, then release the barrier
+# unless foreign reactions still hold it. Persistent host actions and ledgers
 # remain available for later waves.
 independence_wave_host_response_finish_plan = {
 	if = {
-		limit = { has_global_flag = independence_wave_country_opening_report_pending }
+		limit = {
+			has_global_flag = independence_wave_country_opening_report_pending
+			NOT = { has_global_flag = independence_wave_foreign_reaction_queue_pending }
+		}
+		# The foreign builder reads the committed cohort and this wave's host
+		# list, so it runs before either is cleared.
+		independence_wave_foreign_reaction_build_queue = yes
 		set_temp_variable = { independence_wave_host_response_finishing_plan_id = global.liberation_plan_id }
 		if = {
 			limit = { has_variable = global.independence_wave_plan_selected_count }
@@ -230,9 +238,19 @@ independence_wave_host_response_finish_plan = {
 		clear_variable = global.independence_wave_host_response_dispatch_plan_id
 		clear_variable = global.independence_wave_opening_response_plan_id
 		clear_variable = global.independence_wave_opening_responses_remaining
-		clear_variable = global.independence_wave_country_opening_report_plan_id
 		clr_global_flag = independence_wave_opening_response_queue_pending
 		clr_global_flag = independence_wave_host_response_queue_pending
-		clr_global_flag = independence_wave_country_opening_report_pending
+		if = {
+			limit = { NOT = { has_global_flag = independence_wave_foreign_reaction_queue_pending } }
+			independence_wave_host_response_release_report_barrier = yes
+		}
 	}
+}
+
+# Any scope: release the single global report/reset barrier. Called by the
+# host phase when no foreign reaction was queued, or by the foreign queue
+# after its last receipt closes.
+independence_wave_host_response_release_report_barrier = {
+	clear_variable = global.independence_wave_country_opening_report_plan_id
+	clr_global_flag = independence_wave_country_opening_report_pending
 }

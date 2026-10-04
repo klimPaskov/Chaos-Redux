@@ -1,0 +1,277 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 FOREIGN REACTION EVENTS
+# Overview:
+# - .64 hidden router: dispatches an actor's one reaction per wave and
+#   answers a patron offer for an AI released country.
+# - .72 hidden deadline: closes a queue whose receipts outlived every answer.
+# - .65 neighbor, .66 regional power, .67 great power and .68 earlier-wave
+#   state: one top-target choice per actor. The first option is the
+#   noncommittal stance, which the 13-day timeout selects.
+# - .71 consent: the released country answers a patron offer. The first
+#   option refuses, which the 13-day timeout selects.
+# - Every option applies its stance through the shared foreign reaction
+#   effects, which validate the receipt again before any cost or reward.
+# - The ordinary windows reuse the accepted ASSET-001 wave-summary report.
+# ============================================================================
+
+add_namespace = chaosx.nr6
+
+# `timeout_days` rejects script constants; this mirrors
+# `independence_wave_foreign_reaction_timing.response_timeout_days`.
+@CR_SC_INDEPENDENCE_WAVE_FOREIGN_REACTION_TIMEOUT_DAYS = 13
+
+country_event = {
+	id = chaosx.nr6.64
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				is_ai = yes
+				has_country_flag = independence_wave_foreign_offer_pending
+			}
+			# An invalid offer still closes once and frees the waiting actor.
+			independence_wave_foreign_reaction_resolve_ai_offer = yes
+		}
+		else_if = {
+			limit = {
+				has_country_flag = independence_wave_foreign_reaction_pending
+				NOT = { has_country_flag = independence_wave_foreign_reaction_routed }
+			}
+			independence_wave_foreign_reaction_route_actor = yes
+		}
+	}
+}
+
+# Queue deadline, scheduled on every target of the wave. It closes the queue
+# that scheduled it only if a receipt is still open, for example when an actor
+# vanished without being annexed.
+country_event = {
+	id = chaosx.nr6.72
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = { independence_wave_foreign_reaction_check_deadline = yes }
+}
+
+# Local neighbor: frontier anxiety.
+country_event = {
+	id = chaosx.nr6.65
+	title = chaosx.nr6.65.t
+	desc = chaosx.nr6.65.d
+	picture = GFX_report_event_006_asset_001_wave_summary
+	is_triggered_only = yes
+	timeout_days = @CR_SC_INDEPENDENCE_WAVE_FOREIGN_REACTION_TIMEOUT_DAYS
+
+	option = {
+		name = chaosx.nr6.65.a
+		custom_effect_tooltip = chaosx.nr6.65.a.tt
+		hidden_effect = {
+			set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.noncommittal }
+			independence_wave_foreign_reaction_resolve_choice = yes
+		}
+	}
+	option = {
+		name = chaosx.nr6.65.b
+		trigger = { can_independence_wave_foreign_recognize = yes }
+		custom_effect_tooltip = chaosx.nr6.65.b.tt
+		hidden_effect = {
+			set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.recognize }
+			independence_wave_foreign_reaction_resolve_choice = yes
+		}
+	}
+	option = {
+		name = chaosx.nr6.65.c
+		trigger = { can_independence_wave_foreign_mediate = yes }
+		custom_effect_tooltip = chaosx.nr6.65.c.tt
+		hidden_effect = {
+			set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.mediate }
+			independence_wave_foreign_reaction_resolve_choice = yes
+		}
+	}
+	option = {
+		name = chaosx.nr6.65.e
+		trigger = { can_independence_wave_foreign_contain_light = yes }
+		custom_effect_tooltip = chaosx.nr6.65.e.tt
+		hidden_effect = {
+			set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.contain }
+			independence_wave_foreign_reaction_resolve_choice = yes
+		}
+	}
+}
+
+# Regional power: balance and transit.
+country_event = {
+	id = chaosx.nr6.66
+	title = chaosx.nr6.66.t
+	desc = chaosx.nr6.66.d
+	picture = GFX_report_event_006_asset_001_wave_summary
+	is_triggered_only = yes
+	timeout_days = @CR_SC_INDEPENDENCE_WAVE_FOREIGN_REACTION_TIMEOUT_DAYS
+
+	option = {
+		name = chaosx.nr6.66.a
+		custom_effect_tooltip = chaosx.nr6.66.a.tt
+		hidden_effect = {
+			set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.noncommittal }
+			independence_wave_foreign_reaction_resolve_choice = yes
+		}
+	}
+	option = {
+		name = chaosx.nr6.66.b
+		trigger = { can_independence_wave_foreign_guarantee = yes }
+		custom_effect_tooltip = chaosx.nr6.66.b.tt
+		hidden_effect = {
+			set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.guarantee }
+			independence_wave_foreign_reaction_resolve_choice = yes
+		}
+	}
+	option = {
+		name = chaosx.nr6.66.c
+		trigger = { can_independence_wave_foreign_mediate = yes }
+		custom_effect_tooltip = chaosx.nr6.66.c.tt
+		hidden_effect = {
+			set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.mediate }
+			independence_wave_foreign_reaction_resolve_choice = yes
+		}
+	}
+	option = {
+		name = chaosx.nr6.66.e
+		trigger = { can_independence_wave_foreign_invest = yes }
+		custom_effect_tooltip = chaosx.nr6.66.e.tt
+		hidden_effect = {
+			set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.invest }
+			independence_wave_foreign_reaction_resolve_choice = yes
+		}
+	}
+}
+
+# Great power: commitments and precedent.
+country_event = {
+	id = chaosx.nr6.67
+	title = chaosx.nr6.67.t
+	desc = chaosx.nr6.67.d
+	picture = GFX_report_event_006_asset_001_wave_summary
+	is_triggered_only = yes
+	timeout_days = @CR_SC_INDEPENDENCE_WAVE_FOREIGN_REACTION_TIMEOUT_DAYS
+
+	option = {
+		name = chaosx.nr6.67.a
+		custom_effect_tooltip = chaosx.nr6.67.a.tt
+		hidden_effect = {
+			set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.noncommittal }
+			independence_wave_foreign_reaction_resolve_choice = yes
+		}
+	}
+	option = {
+		name = chaosx.nr6.67.b
+		trigger = { can_independence_wave_foreign_recognize_with_aid = yes }
+		custom_effect_tooltip = chaosx.nr6.67.b.tt
+		hidden_effect = {
+			set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.recognize_with_aid }
+			independence_wave_foreign_reaction_resolve_choice = yes
+		}
+	}
+	option = {
+		name = chaosx.nr6.67.c
+		trigger = { can_independence_wave_foreign_offer_arms = yes }
+		custom_effect_tooltip = chaosx.nr6.67.c.tt
+		hidden_effect = {
+			set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.arms_offer }
+			independence_wave_foreign_reaction_resolve_choice = yes
+		}
+	}
+	option = {
+		name = chaosx.nr6.67.e
+		trigger = { can_independence_wave_foreign_contain_standard = yes }
+		custom_effect_tooltip = chaosx.nr6.67.e.tt
+		hidden_effect = {
+			set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.contain }
+			independence_wave_foreign_reaction_resolve_choice = yes
+		}
+	}
+}
+
+# Earlier-wave Event 006 state: solidarity or rivalry.
+country_event = {
+	id = chaosx.nr6.68
+	title = chaosx.nr6.68.t
+	desc = chaosx.nr6.68.d
+	picture = GFX_report_event_006_asset_001_wave_summary
+	is_triggered_only = yes
+	timeout_days = @CR_SC_INDEPENDENCE_WAVE_FOREIGN_REACTION_TIMEOUT_DAYS
+
+	option = {
+		name = chaosx.nr6.68.a
+		custom_effect_tooltip = chaosx.nr6.68.a.tt
+		hidden_effect = {
+			set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.noncommittal }
+			independence_wave_foreign_reaction_resolve_choice = yes
+		}
+	}
+	option = {
+		name = chaosx.nr6.68.b
+		trigger = { can_independence_wave_foreign_share_institutions = yes }
+		custom_effect_tooltip = chaosx.nr6.68.b.tt
+		hidden_effect = {
+			set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.share_institutions }
+			independence_wave_foreign_reaction_resolve_choice = yes
+		}
+	}
+	option = {
+		name = chaosx.nr6.68.c
+		trigger = { can_independence_wave_foreign_network_aid = yes }
+		custom_effect_tooltip = chaosx.nr6.68.c.tt
+		hidden_effect = {
+			set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.network_aid }
+			independence_wave_foreign_reaction_resolve_choice = yes
+		}
+	}
+	option = {
+		name = chaosx.nr6.68.e
+		trigger = { can_independence_wave_foreign_contest = yes }
+		custom_effect_tooltip = chaosx.nr6.68.e.tt
+		hidden_effect = {
+			set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.contest }
+			independence_wave_foreign_reaction_resolve_choice = yes
+		}
+	}
+}
+
+# Released country: answer a foreign patron offer.
+country_event = {
+	id = chaosx.nr6.71
+	title = chaosx.nr6.71.t
+	desc = chaosx.nr6.71.d
+	picture = GFX_report_event_006_asset_001_wave_summary
+	is_triggered_only = yes
+	timeout_days = @CR_SC_INDEPENDENCE_WAVE_FOREIGN_REACTION_TIMEOUT_DAYS
+
+	option = {
+		name = chaosx.nr6.71.a
+		custom_effect_tooltip = chaosx.nr6.71.a.tt
+		hidden_effect = {
+			set_temp_variable = { independence_wave_foreign_offer_reply_input = constant:independence_wave_foreign_offer_reply.refuse }
+			independence_wave_foreign_reaction_resolve_offer = yes
+		}
+	}
+	option = {
+		name = chaosx.nr6.71.b
+		trigger = { has_current_independence_wave_foreign_offer = yes }
+		custom_effect_tooltip = chaosx.nr6.71.b.tt
+		hidden_effect = {
+			set_temp_variable = { independence_wave_foreign_offer_reply_input = constant:independence_wave_foreign_offer_reply.accept }
+			independence_wave_foreign_reaction_resolve_offer = yes
+		}
+	}
+	option = {
+		name = chaosx.nr6.71.c
+		trigger = { has_current_independence_wave_foreign_offer = yes }
+		custom_effect_tooltip = chaosx.nr6.71.c.tt
+		hidden_effect = {
+			set_temp_variable = { independence_wave_foreign_offer_reply_input = constant:independence_wave_foreign_offer_reply.limit }
+			independence_wave_foreign_reaction_resolve_offer = yes
+		}
+	}
+}

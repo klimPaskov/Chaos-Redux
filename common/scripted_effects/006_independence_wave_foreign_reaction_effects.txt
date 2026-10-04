@@ -1,0 +1,1299 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 FOREIGN REACTION EFFECTS
+# ============================================================================
+# Overview:
+# - Build one bounded foreign reaction queue from the committed Event 006
+#   cohort after every country opening and host response has resolved. The
+#   final host-response callback calls the builder before it clears its own
+#   plan receipts, so the report/reset barrier passes to this queue.
+# - Actor sources: each target's neighbors, its recorded patrons and earlier
+#   recognizers, the allies of its living former host, and the active Event
+#   006 countries of earlier waves. No world scan and no periodic hook.
+# - Score every actor/target pair with the accepted 4/3/2/1 families, one -3
+#   conflict penalty and a floor of 0, keep each actor's highest target with
+#   ties going to the first committed report row, and reserve one actor-wave
+#   receipt for every actor at or above the cutoff of 6.
+# - Dispatch hidden router chaosx.nr6.64 one day apart. Humans receive the
+#   neighbor .65, regional .66, great-power .67 or earlier-wave .68 profile;
+#   AI actors resolve the same stances through deterministic policy.
+# - Patron-style offers wait for the released country's consent (.71 for
+#   humans, the hidden router for AI) before any influence is booked.
+# - Every receipt is consumed exactly once: on an answer, the 13-day timeout,
+#   an invalid or re-released target, annexation of the actor, or the queue
+#   deadline. The last receipt releases the report/reset barrier.
+# Recognition and guarantees write the shared generation-matched bilateral
+# receipts, so a foreign act and a country-initiated decision never pay out
+# twice for the same pair.
+# ============================================================================
+
+# `add_ai_strategy` values are read from file-scoped constants.
+@CR_SC_INDEPENDENCE_WAVE_FOREIGN_AI_STRATEGY_STANDARD = 40
+@CR_SC_INDEPENDENCE_WAVE_FOREIGN_AI_STRATEGY_STRONG = 60
+
+# ---------------------------------------------------------------------------
+# Queue builder
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope (any). Called by `independence_wave_host_response_finish_plan`
+# while the committed report barrier is still raised. Sets the global queue
+# flag only when at least one actor receipt was reserved.
+independence_wave_foreign_reaction_build_queue = {
+	if = {
+		limit = {
+			has_global_flag = independence_wave_country_opening_report_pending
+			has_global_flag = liberation_release_plan_includes_event6
+			NOT = { has_global_flag = independence_wave_foreign_reaction_queue_pending }
+			check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.committed }
+			has_variable = global.liberation_plan_id
+			has_variable = global.independence_wave_country_opening_report_plan_id
+			check_variable = { var = global.independence_wave_country_opening_report_plan_id value = global.liberation_plan_id compare = equals }
+			NOT = { check_variable = { var = global.independence_wave_foreign_reaction_built_plan_id value = global.liberation_plan_id compare = equals } }
+			NOT = {
+				AND = {
+					has_global_flag = independence_wave_join_conversion_active
+					check_variable = { var = global.independence_wave_join_active_plan_id value = global.liberation_plan_id compare = equals }
+				}
+			}
+			has_variable = global.independence_wave_plan_selected_count
+			check_variable = { global.independence_wave_plan_selected_count > constant:independence_wave_value.minimum }
+			liberation_release_country_arrays_are_aligned = yes
+			independence_wave_plan_metadata_arrays_are_aligned = yes
+		}
+		set_variable = { global.independence_wave_foreign_reaction_built_plan_id = global.liberation_plan_id }
+		clear_temp_array = independence_wave_foreign_cohort_targets
+		clear_temp_array = independence_wave_foreign_candidates
+
+		# 1. Freeze the committed Event 006 cohort in public report row order.
+		set_temp_variable = { independence_wave_foreign_index = constant:independence_wave_plan.first_array_index }
+		while_loop_effect = {
+			limit = { check_variable = { var = independence_wave_foreign_index value = global.independence_wave_plan_selected_count compare = less_than } }
+			set_temp_variable = { independence_wave_foreign_row = global.independence_wave_plan_country_row_indices^independence_wave_foreign_index }
+			if = {
+				limit = {
+					check_variable = { var = independence_wave_foreign_row value = constant:independence_wave_plan.first_array_index compare = greater_than_or_equals }
+					check_variable = { var = independence_wave_foreign_row value = global.liberation_plan_countries^num compare = less_than }
+					check_variable = { var = global.liberation_plan_country_owners^independence_wave_foreign_row value = constant:liberation_plan_owner.independence_wave compare = equals }
+				}
+				var:global.liberation_plan_countries^independence_wave_foreign_row = {
+					if = {
+						limit = {
+							is_valid_independence_wave_foreign_reaction_target = yes
+							NOT = { is_in_array = { array = independence_wave_foreign_cohort_targets value = THIS } }
+						}
+						add_to_temp_array = { independence_wave_foreign_cohort_targets = THIS }
+					}
+				}
+			}
+			add_to_temp_variable = { independence_wave_foreign_index = constant:independence_wave_plan.loop_increment }
+		}
+
+		# 2. Gather the bounded actor sources once.
+		set_temp_variable = { independence_wave_foreign_index = constant:independence_wave_plan.first_array_index }
+		while_loop_effect = {
+			limit = { check_variable = { var = independence_wave_foreign_index value = independence_wave_foreign_cohort_targets^num compare = less_than } }
+			var:independence_wave_foreign_cohort_targets^independence_wave_foreign_index = {
+				every_neighbor_country = { independence_wave_foreign_reaction_add_candidate = yes }
+				for_each_scope_loop = {
+					array = independence_wave_patron_country_entries
+					independence_wave_foreign_reaction_add_candidate = yes
+				}
+				for_each_scope_loop = {
+					array = independence_wave_recognition_receipt_country_entries
+					independence_wave_foreign_reaction_add_candidate = yes
+				}
+				if = {
+					limit = { has_independence_wave_living_former_host = yes }
+					var:independence_wave_former_host = {
+						every_allied_country = { independence_wave_foreign_reaction_add_candidate = yes }
+					}
+				}
+			}
+			add_to_temp_variable = { independence_wave_foreign_index = constant:independence_wave_plan.loop_increment }
+		}
+		for_each_scope_loop = {
+			array = global.independence_wave_active_countries
+			if = {
+				limit = { is_independence_wave_active_country = yes }
+				independence_wave_foreign_reaction_add_candidate = yes
+			}
+		}
+
+		# 3. Score every pair and reserve each qualifying actor's top target.
+		set_variable = { global.independence_wave_foreign_reaction_plan_id = global.liberation_plan_id }
+		clear_array = global.independence_wave_foreign_reaction_actors
+		set_variable = { global.independence_wave_foreign_reactions_remaining = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_foreign_dispatch_delay = constant:independence_wave_foreign_reaction_timing.dispatch_after_host_days }
+		set_temp_variable = { independence_wave_foreign_actor_index = constant:independence_wave_plan.first_array_index }
+		while_loop_effect = {
+			limit = { check_variable = { var = independence_wave_foreign_actor_index value = independence_wave_foreign_candidates^num compare = less_than } }
+			var:independence_wave_foreign_candidates^independence_wave_foreign_actor_index = {
+				save_event_target_as = independence_wave_foreign_actor
+				set_temp_variable = { independence_wave_foreign_best_score = constant:independence_wave_foreign_interest.no_score }
+				set_temp_variable = { independence_wave_foreign_best_row = constant:independence_wave_plan.invalid_index }
+				set_temp_variable = { independence_wave_foreign_best_tier = constant:independence_wave_foreign_tier.none }
+				set_temp_variable = { independence_wave_foreign_target_index = constant:independence_wave_plan.first_array_index }
+				while_loop_effect = {
+					limit = { check_variable = { var = independence_wave_foreign_target_index value = independence_wave_foreign_cohort_targets^num compare = less_than } }
+					independence_wave_foreign_reaction_load_cohort_target = yes
+					if = {
+						limit = { is_valid_independence_wave_foreign_actor_for_target = yes }
+						independence_wave_foreign_reaction_score_pair = yes
+						# Strictly greater keeps the first committed report row on a tie.
+						if = {
+							limit = { check_variable = { var = independence_wave_foreign_score value = independence_wave_foreign_best_score compare = greater_than } }
+							set_temp_variable = { independence_wave_foreign_best_score = independence_wave_foreign_score }
+							set_temp_variable = { independence_wave_foreign_best_row = independence_wave_foreign_target_index }
+							set_temp_variable = { independence_wave_foreign_best_tier = independence_wave_foreign_tier_result }
+						}
+					}
+					add_to_temp_variable = { independence_wave_foreign_target_index = constant:independence_wave_plan.loop_increment }
+				}
+				if = {
+					limit = {
+						check_variable = { var = independence_wave_foreign_best_score value = constant:independence_wave_foreign_interest.detailed_cutoff compare = greater_than_or_equals }
+						check_variable = { var = independence_wave_foreign_best_row value = constant:independence_wave_plan.first_array_index compare = greater_than_or_equals }
+					}
+					set_temp_variable = { independence_wave_foreign_target_index = independence_wave_foreign_best_row }
+					independence_wave_foreign_reaction_load_cohort_target = yes
+					independence_wave_foreign_reaction_reserve_actor = yes
+				}
+			}
+			add_to_temp_variable = { independence_wave_foreign_actor_index = constant:independence_wave_plan.loop_increment }
+		}
+
+		# 4. Raise the queue and schedule its deadline on every target, so a
+		# receipt whose actor vanished without an annexation still closes.
+		if = {
+			limit = { check_variable = { global.independence_wave_foreign_reactions_remaining > constant:independence_wave_value.minimum } }
+			set_global_flag = independence_wave_foreign_reaction_queue_pending
+			set_temp_variable = { independence_wave_foreign_deadline_delay = independence_wave_foreign_dispatch_delay }
+			add_to_temp_variable = { independence_wave_foreign_deadline_delay = constant:independence_wave_foreign_reaction_timing.response_timeout_days }
+			add_to_temp_variable = { independence_wave_foreign_deadline_delay = constant:independence_wave_foreign_reaction_timing.consent_timeout_days }
+			add_to_temp_variable = { independence_wave_foreign_deadline_delay = constant:independence_wave_foreign_reaction_timing.deadline_margin_days }
+			set_temp_variable = { independence_wave_foreign_index = constant:independence_wave_plan.first_array_index }
+			while_loop_effect = {
+				limit = { check_variable = { var = independence_wave_foreign_index value = independence_wave_foreign_cohort_targets^num compare = less_than } }
+				var:independence_wave_foreign_cohort_targets^independence_wave_foreign_index = {
+					set_variable = { independence_wave_foreign_deadline_plan_id = global.independence_wave_foreign_reaction_plan_id }
+					country_event = { id = chaosx.nr6.72 days = independence_wave_foreign_deadline_delay }
+				}
+				add_to_temp_variable = { independence_wave_foreign_index = constant:independence_wave_plan.loop_increment }
+			}
+		}
+		else = {
+			clear_variable = global.independence_wave_foreign_reaction_plan_id
+			clear_variable = global.independence_wave_foreign_reactions_remaining
+			clear_array = global.independence_wave_foreign_reaction_actors
+		}
+	}
+}
+
+# COUNTRY scope: a candidate from one of the bounded sources. Living and
+# sovereign, outside the committed cohort, not a host answering this wave
+# through its own host response, and added once.
+independence_wave_foreign_reaction_add_candidate = {
+	if = {
+		limit = {
+			exists = yes
+			is_subject = no
+			NOT = { is_in_array = { array = independence_wave_foreign_candidates value = THIS } }
+			NOT = { is_in_array = { array = independence_wave_foreign_cohort_targets value = THIS } }
+			NOT = { is_in_array = { array = global.independence_wave_host_response_hosts value = THIS } }
+			check_variable = { var = independence_wave_foreign_candidates^num value = constant:independence_wave_foreign_capacity.actor_cap compare = less_than }
+		}
+		add_to_temp_array = { independence_wave_foreign_candidates = THIS }
+	}
+}
+
+# Any scope. Input: temporary `independence_wave_foreign_target_index`.
+# Loads the cohort target and its living former host as event targets.
+independence_wave_foreign_reaction_load_cohort_target = {
+	set_temp_variable = { independence_wave_foreign_target_has_host = constant:independence_wave_value.minimum }
+	var:independence_wave_foreign_cohort_targets^independence_wave_foreign_target_index = {
+		save_event_target_as = independence_wave_foreign_target
+		if = {
+			limit = { has_independence_wave_living_former_host = yes }
+			var:independence_wave_former_host = { save_event_target_as = independence_wave_foreign_target_host }
+			set_temp_variable = { independence_wave_foreign_target_has_host = constant:independence_wave_plan.loop_increment }
+		}
+	}
+}
+
+# COUNTRY scope: the actor. Loads the receipt's target, the stored former
+# host, and the actor itself as event targets for scoring and stances.
+independence_wave_foreign_reaction_load_receipt_targets = {
+	save_event_target_as = independence_wave_foreign_actor
+	set_temp_variable = { independence_wave_foreign_target_has_host = constant:independence_wave_value.minimum }
+	var:independence_wave_foreign_reaction_target = { save_event_target_as = independence_wave_foreign_target }
+	if = {
+		limit = {
+			has_variable = independence_wave_foreign_reaction_host
+			var:independence_wave_foreign_reaction_host = { exists = yes }
+		}
+		var:independence_wave_foreign_reaction_host = { save_event_target_as = independence_wave_foreign_target_host }
+		set_temp_variable = { independence_wave_foreign_target_has_host = constant:independence_wave_plan.loop_increment }
+	}
+}
+
+# COUNTRY scope: the actor. Inputs: event targets `independence_wave_foreign_actor`
+# (this country), `independence_wave_foreign_target`, and the optional host.
+# Outputs: temporary `independence_wave_foreign_score` (floor 0) and
+# `independence_wave_foreign_tier_result`. Each family contributes once.
+independence_wave_foreign_reaction_score_pair = {
+	set_temp_variable = { independence_wave_foreign_score = constant:independence_wave_foreign_interest.floor }
+	set_temp_variable = { independence_wave_foreign_strategic_hit = constant:independence_wave_value.minimum }
+	if = {
+		limit = { has_independence_wave_foreign_direct_stake = yes }
+		add_to_temp_variable = { independence_wave_foreign_score = constant:independence_wave_foreign_interest.direct_stake }
+	}
+	if = {
+		limit = { has_independence_wave_foreign_recorded_relationship = yes }
+		add_to_temp_variable = { independence_wave_foreign_score = constant:independence_wave_foreign_interest.recorded_relationship }
+	}
+	if = {
+		limit = { has_independence_wave_foreign_strategic_fit = yes }
+		add_to_temp_variable = { independence_wave_foreign_score = constant:independence_wave_foreign_interest.strategic_fit }
+		set_temp_variable = { independence_wave_foreign_strategic_hit = constant:independence_wave_plan.loop_increment }
+	}
+	if = {
+		limit = { has_independence_wave_foreign_political_fit = yes }
+		add_to_temp_variable = { independence_wave_foreign_score = constant:independence_wave_foreign_interest.political_fit }
+	}
+	if = {
+		limit = { has_independence_wave_foreign_conflict = yes }
+		add_to_temp_variable = { independence_wave_foreign_score = constant:independence_wave_foreign_interest.conflict_penalty }
+	}
+	if = {
+		limit = { check_variable = { var = independence_wave_foreign_score value = constant:independence_wave_foreign_interest.floor compare = less_than } }
+		set_temp_variable = { independence_wave_foreign_score = constant:independence_wave_foreign_interest.floor }
+	}
+	# Profile priority: earlier-wave country, great power, regional
+	# stakeholder, then local neighbor.
+	if = {
+		limit = { is_independence_wave_active_country = yes }
+		set_temp_variable = { independence_wave_foreign_tier_result = constant:independence_wave_foreign_tier.earlier_wave }
+	}
+	else_if = {
+		limit = { is_major = yes }
+		set_temp_variable = { independence_wave_foreign_tier_result = constant:independence_wave_foreign_tier.great_power }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { independence_wave_foreign_strategic_hit = constant:independence_wave_plan.loop_increment }
+				NOT = { is_neighbor_of = event_target:independence_wave_foreign_target }
+			}
+		}
+		set_temp_variable = { independence_wave_foreign_tier_result = constant:independence_wave_foreign_tier.regional }
+	}
+	else = {
+		set_temp_variable = { independence_wave_foreign_tier_result = constant:independence_wave_foreign_tier.neighbor }
+	}
+}
+
+# COUNTRY scope: the actor, with the event targets loaded. Records which
+# facts and families produced the live score so the event can name them.
+independence_wave_foreign_reaction_record_reasons = {
+	independence_wave_foreign_reaction_clear_reasons = yes
+	if = {
+		limit = { is_neighbor_of = event_target:independence_wave_foreign_target }
+		set_country_flag = independence_wave_foreign_fact_frontier
+	}
+	if = {
+		limit = {
+			event_target:independence_wave_foreign_target = {
+				any_owned_state = { is_claimed_by = event_target:independence_wave_foreign_actor }
+			}
+		}
+		set_country_flag = independence_wave_foreign_fact_claim
+	}
+	if = {
+		limit = { has_guaranteed = event_target:independence_wave_foreign_target }
+		set_country_flag = independence_wave_foreign_fact_guarantee
+	}
+	if = {
+		limit = { has_independence_wave_foreign_direct_stake = yes }
+		set_country_flag = independence_wave_foreign_family_direct
+	}
+	if = {
+		limit = {
+			event_target:independence_wave_foreign_target = {
+				is_in_array = { array = independence_wave_patron_country_entries value = PREV }
+			}
+		}
+		set_country_flag = independence_wave_foreign_fact_patron
+	}
+	if = {
+		limit = { event_target:independence_wave_foreign_target = { has_independence_wave_recognition_receipt_from_prev = yes } }
+		set_country_flag = independence_wave_foreign_fact_prior_recognition
+	}
+	if = {
+		limit = {
+			is_independence_wave_active_country = yes
+			has_country_flag = independence_wave_network_member
+		}
+		set_country_flag = independence_wave_foreign_fact_network
+	}
+	if = {
+		limit = { is_ally_with = event_target:independence_wave_foreign_target }
+		set_country_flag = independence_wave_foreign_fact_alliance
+	}
+	if = {
+		limit = {
+			check_variable = { independence_wave_foreign_target_has_host = constant:independence_wave_plan.loop_increment }
+			is_ally_with = event_target:independence_wave_foreign_target_host
+		}
+		set_country_flag = independence_wave_foreign_fact_host_ally
+	}
+	if = {
+		limit = { has_independence_wave_foreign_recorded_relationship = yes }
+		set_country_flag = independence_wave_foreign_family_relationship
+	}
+	if = {
+		limit = {
+			OR = {
+				has_military_access_to = event_target:independence_wave_foreign_target
+				event_target:independence_wave_foreign_target = { has_military_access_to = PREV }
+			}
+		}
+		set_country_flag = independence_wave_foreign_fact_access
+	}
+	if = {
+		limit = {
+			check_variable = { independence_wave_foreign_target_has_host = constant:independence_wave_plan.loop_increment }
+			is_neighbor_of = event_target:independence_wave_foreign_target_host
+			NOT = { is_neighbor_of = event_target:independence_wave_foreign_target }
+		}
+		set_country_flag = independence_wave_foreign_fact_balance
+	}
+	if = {
+		limit = {
+			is_major = yes
+			is_on_same_continent_as = event_target:independence_wave_foreign_target
+		}
+		set_country_flag = independence_wave_foreign_fact_reach
+	}
+	if = {
+		limit = {
+			is_independence_wave_active_country = yes
+			has_variable = independence_wave_region
+			event_target:independence_wave_foreign_target = {
+				has_variable = independence_wave_region
+				check_variable = { var = independence_wave_region value = PREV.independence_wave_region compare = equals }
+			}
+		}
+		set_country_flag = independence_wave_foreign_fact_region
+	}
+	if = {
+		limit = { has_independence_wave_foreign_strategic_fit = yes }
+		set_country_flag = independence_wave_foreign_family_strategic
+	}
+	if = {
+		limit = { has_independence_wave_foreign_political_fit = yes }
+		set_country_flag = independence_wave_foreign_fact_ideology
+		set_country_flag = independence_wave_foreign_family_political
+	}
+	if = {
+		limit = { has_war = yes }
+		set_country_flag = independence_wave_foreign_fact_war_burden
+	}
+	else_if = {
+		limit = { has_independence_wave_foreign_conflict = yes }
+		set_country_flag = independence_wave_foreign_fact_settled
+	}
+}
+
+independence_wave_foreign_reaction_clear_reasons = {
+	clr_country_flag = independence_wave_foreign_fact_frontier
+	clr_country_flag = independence_wave_foreign_fact_claim
+	clr_country_flag = independence_wave_foreign_fact_guarantee
+	clr_country_flag = independence_wave_foreign_fact_patron
+	clr_country_flag = independence_wave_foreign_fact_prior_recognition
+	clr_country_flag = independence_wave_foreign_fact_network
+	clr_country_flag = independence_wave_foreign_fact_alliance
+	clr_country_flag = independence_wave_foreign_fact_host_ally
+	clr_country_flag = independence_wave_foreign_fact_access
+	clr_country_flag = independence_wave_foreign_fact_balance
+	clr_country_flag = independence_wave_foreign_fact_reach
+	clr_country_flag = independence_wave_foreign_fact_region
+	clr_country_flag = independence_wave_foreign_fact_ideology
+	clr_country_flag = independence_wave_foreign_fact_war_burden
+	clr_country_flag = independence_wave_foreign_fact_settled
+	clr_country_flag = independence_wave_foreign_family_direct
+	clr_country_flag = independence_wave_foreign_family_relationship
+	clr_country_flag = independence_wave_foreign_family_strategic
+	clr_country_flag = independence_wave_foreign_family_political
+}
+
+# COUNTRY scope: the actor, with the chosen target loaded. Reserves the one
+# actor-wave receipt and schedules its router one day after the previous one.
+independence_wave_foreign_reaction_reserve_actor = {
+	independence_wave_foreign_reaction_clear_actor_receipt = yes
+	set_country_flag = independence_wave_foreign_reaction_pending
+	set_variable = { independence_wave_foreign_reaction_plan_id = global.independence_wave_foreign_reaction_plan_id }
+	set_variable = { independence_wave_foreign_reaction_target = event_target:independence_wave_foreign_target }
+	event_target:independence_wave_foreign_target = {
+		set_temp_variable = { independence_wave_foreign_target_generation = independence_wave_generation_id }
+	}
+	set_variable = { independence_wave_foreign_reaction_target_generation = independence_wave_foreign_target_generation }
+	set_variable = { independence_wave_foreign_reaction_tier = independence_wave_foreign_best_tier }
+	set_variable = { independence_wave_foreign_reaction_score = independence_wave_foreign_best_score }
+	if = {
+		limit = { check_variable = { independence_wave_foreign_target_has_host = constant:independence_wave_plan.loop_increment } }
+		set_variable = { independence_wave_foreign_reaction_host = event_target:independence_wave_foreign_target_host }
+	}
+	add_to_array = { array = global.independence_wave_foreign_reaction_actors value = THIS }
+	add_to_variable = { global.independence_wave_foreign_reactions_remaining = constant:independence_wave_plan.loop_increment }
+	country_event = { id = chaosx.nr6.64 days = independence_wave_foreign_dispatch_delay }
+	add_to_temp_variable = { independence_wave_foreign_dispatch_delay = constant:independence_wave_foreign_reaction_timing.dispatch_spacing_days }
+}
+
+# ---------------------------------------------------------------------------
+# Router, completion and cleanup
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope: the actor in the hidden router (ROOT is the actor). Re-checks
+# the receipt and the live pair score, then sends a human the profile event or
+# resolves an AI actor through the same stances.
+independence_wave_foreign_reaction_route_actor = {
+	set_country_flag = independence_wave_foreign_reaction_routed
+	set_temp_variable = { independence_wave_foreign_score = constant:independence_wave_foreign_interest.no_score }
+	if = {
+		limit = { has_current_independence_wave_foreign_reaction_receipt = yes }
+		independence_wave_foreign_reaction_load_receipt_targets = yes
+		if = {
+			limit = { is_valid_independence_wave_foreign_actor_for_target = yes }
+			independence_wave_foreign_reaction_score_pair = yes
+		}
+	}
+	if = {
+		limit = { check_variable = { var = independence_wave_foreign_score value = constant:independence_wave_foreign_interest.detailed_cutoff compare = greater_than_or_equals } }
+		set_variable = { independence_wave_foreign_reaction_tier = independence_wave_foreign_tier_result }
+		set_variable = { independence_wave_foreign_reaction_score = independence_wave_foreign_score }
+		independence_wave_foreign_reaction_record_reasons = yes
+		if = {
+			limit = { is_ai = yes }
+			independence_wave_foreign_reaction_resolve_ai_action = yes
+			independence_wave_foreign_reaction_resolve_choice = yes
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_foreign_reaction_tier = constant:independence_wave_foreign_tier.neighbor } }
+			country_event = { id = chaosx.nr6.65 }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_foreign_reaction_tier = constant:independence_wave_foreign_tier.regional } }
+			country_event = { id = chaosx.nr6.66 }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_foreign_reaction_tier = constant:independence_wave_foreign_tier.great_power } }
+			country_event = { id = chaosx.nr6.67 }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_foreign_reaction_tier = constant:independence_wave_foreign_tier.earlier_wave } }
+			country_event = { id = chaosx.nr6.68 }
+		}
+		else = { independence_wave_foreign_reaction_complete_current_actor = yes }
+	}
+	else = { independence_wave_foreign_reaction_complete_current_actor = yes }
+}
+
+# COUNTRY scope: the actor (ROOT). Input: temporary
+# `independence_wave_foreign_action_input`. Applies the stance, then consumes
+# the receipt unless a patron offer now waits for the target's consent.
+independence_wave_foreign_reaction_resolve_choice = {
+	independence_wave_foreign_reaction_apply_action = yes
+	independence_wave_foreign_reaction_complete_current_actor = yes
+}
+
+# COUNTRY scope: the actor. Consumes the actor-wave receipt exactly once. A
+# receipt waiting for a consent reply is consumed by that reply instead.
+independence_wave_foreign_reaction_complete_current_actor = {
+	if = {
+		limit = {
+			has_reserved_independence_wave_foreign_reaction_receipt = yes
+			NOT = { has_country_flag = independence_wave_foreign_reaction_awaiting_consent }
+		}
+		set_variable = { independence_wave_foreign_reaction_resolved_plan_id = global.independence_wave_foreign_reaction_plan_id }
+		independence_wave_foreign_reaction_clear_actor_receipt = yes
+		subtract_from_variable = { global.independence_wave_foreign_reactions_remaining = constant:independence_wave_plan.loop_increment }
+		if = {
+			limit = { check_variable = { var = global.independence_wave_foreign_reactions_remaining value = constant:independence_wave_value.minimum compare = less_than_or_equals } }
+			independence_wave_foreign_reaction_finish_queue = yes
+		}
+	}
+}
+
+# COUNTRY scope: the actor. Clears the receipt and reason state, never a
+# completed relationship.
+independence_wave_foreign_reaction_clear_actor_receipt = {
+	clr_country_flag = independence_wave_foreign_reaction_pending
+	clr_country_flag = independence_wave_foreign_reaction_routed
+	clr_country_flag = independence_wave_foreign_reaction_awaiting_consent
+	clear_variable = independence_wave_foreign_reaction_plan_id
+	clear_variable = independence_wave_foreign_reaction_target
+	clear_variable = independence_wave_foreign_reaction_target_generation
+	clear_variable = independence_wave_foreign_reaction_tier
+	clear_variable = independence_wave_foreign_reaction_score
+	clear_variable = independence_wave_foreign_reaction_host
+	clear_variable = independence_wave_foreign_reaction_offer_target
+	independence_wave_foreign_reaction_clear_reasons = yes
+}
+
+# COUNTRY scope: a released country. Clears its open patron offer.
+independence_wave_foreign_reaction_clear_offer = {
+	clr_country_flag = independence_wave_foreign_offer_pending
+	clear_variable = independence_wave_foreign_offer_country
+	clear_variable = independence_wave_foreign_offer_plan_id
+	clear_variable = independence_wave_foreign_offer_generation
+	clear_variable = independence_wave_foreign_offer_kind
+}
+
+# COUNTRY scope: a released country. Closes its open offer once and lets the
+# waiting actor's receipt complete, whether the offer was answered,
+# invalidated, or timed out.
+independence_wave_foreign_reaction_close_offer = {
+	if = {
+		limit = {
+			has_variable = independence_wave_foreign_offer_country
+			var:independence_wave_foreign_offer_country = {
+				has_country_flag = independence_wave_foreign_reaction_awaiting_consent
+				has_variable = independence_wave_foreign_reaction_plan_id
+				check_variable = { var = independence_wave_foreign_reaction_plan_id value = PREV.independence_wave_foreign_offer_plan_id compare = equals }
+			}
+		}
+		var:independence_wave_foreign_offer_country = {
+			clr_country_flag = independence_wave_foreign_reaction_awaiting_consent
+			independence_wave_foreign_reaction_complete_current_actor = yes
+		}
+	}
+	independence_wave_foreign_reaction_clear_offer = yes
+}
+
+# COUNTRY scope (any). Clears every receipt of the current queue, then
+# releases the report/reset barrier that the host phase handed to the queue.
+independence_wave_foreign_reaction_finish_queue = {
+	if = {
+		limit = { has_global_flag = independence_wave_foreign_reaction_queue_pending }
+		set_temp_variable = { independence_wave_foreign_finishing_plan_id = global.independence_wave_foreign_reaction_plan_id }
+		for_each_scope_loop = {
+			array = global.independence_wave_foreign_reaction_actors
+			if = {
+				limit = {
+					has_variable = independence_wave_foreign_reaction_plan_id
+					check_variable = { var = independence_wave_foreign_reaction_plan_id value = independence_wave_foreign_finishing_plan_id compare = equals }
+				}
+				if = {
+					limit = { has_variable = independence_wave_foreign_reaction_offer_target }
+					var:independence_wave_foreign_reaction_offer_target = {
+						if = {
+							limit = {
+								has_variable = independence_wave_foreign_offer_plan_id
+								check_variable = { var = independence_wave_foreign_offer_plan_id value = independence_wave_foreign_finishing_plan_id compare = equals }
+							}
+							independence_wave_foreign_reaction_clear_offer = yes
+						}
+					}
+				}
+				independence_wave_foreign_reaction_clear_actor_receipt = yes
+			}
+		}
+		clear_array = global.independence_wave_foreign_reaction_actors
+		clear_variable = global.independence_wave_foreign_reactions_remaining
+		clear_variable = global.independence_wave_foreign_reaction_plan_id
+		clr_global_flag = independence_wave_foreign_reaction_queue_pending
+		if = {
+			limit = {
+				has_variable = global.independence_wave_country_opening_report_plan_id
+				check_variable = { var = global.independence_wave_country_opening_report_plan_id value = independence_wave_foreign_finishing_plan_id compare = equals }
+			}
+			independence_wave_host_response_release_report_barrier = yes
+		}
+	}
+}
+
+# COUNTRY scope: a target holding a scheduled deadline. Closes the queue that
+# scheduled it if any receipt is still open; later queues are untouched.
+independence_wave_foreign_reaction_check_deadline = {
+	if = {
+		limit = {
+			has_variable = independence_wave_foreign_deadline_plan_id
+			has_global_flag = independence_wave_foreign_reaction_queue_pending
+			has_variable = global.independence_wave_foreign_reaction_plan_id
+			check_variable = { var = independence_wave_foreign_deadline_plan_id value = global.independence_wave_foreign_reaction_plan_id compare = equals }
+		}
+		independence_wave_foreign_reaction_finish_queue = yes
+	}
+	clear_variable = independence_wave_foreign_deadline_plan_id
+}
+
+# COUNTRY scope: the annexed country in `on_annex`. An actor's receipt is
+# consumed and a target's open offer is closed before the country disappears.
+independence_wave_foreign_reaction_release_annexed_country = {
+	if = {
+		limit = { has_country_flag = independence_wave_foreign_offer_pending }
+		independence_wave_foreign_reaction_close_offer = yes
+	}
+	if = {
+		limit = { has_reserved_independence_wave_foreign_reaction_receipt = yes }
+		if = {
+			limit = { has_variable = independence_wave_foreign_reaction_offer_target }
+			var:independence_wave_foreign_reaction_offer_target = { independence_wave_foreign_reaction_clear_offer = yes }
+		}
+		clr_country_flag = independence_wave_foreign_reaction_awaiting_consent
+		independence_wave_foreign_reaction_complete_current_actor = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Deterministic AI policy (actor scope, ROOT is the actor, reasons recorded)
+# ---------------------------------------------------------------------------
+
+independence_wave_foreign_reaction_resolve_ai_action = {
+	set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.noncommittal }
+	if = {
+		limit = { check_variable = { independence_wave_foreign_reaction_tier = constant:independence_wave_foreign_tier.neighbor } }
+		if = {
+			limit = {
+				has_country_flag = independence_wave_foreign_fact_host_ally
+				can_independence_wave_foreign_contain_light = yes
+			}
+			set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.contain }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_country_flag = independence_wave_foreign_fact_ideology
+					has_country_flag = independence_wave_foreign_fact_alliance
+				}
+				can_independence_wave_foreign_recognize = yes
+			}
+			set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.recognize }
+		}
+		else_if = {
+			limit = {
+				has_war = no
+				NOT = { has_country_flag = independence_wave_foreign_fact_host_ally }
+				can_independence_wave_foreign_mediate = yes
+			}
+			set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.mediate }
+		}
+		else_if = {
+			limit = {
+				NOT = { has_country_flag = independence_wave_foreign_fact_host_ally }
+				can_independence_wave_foreign_recognize = yes
+			}
+			set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.recognize }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_foreign_reaction_tier = constant:independence_wave_foreign_tier.regional } }
+		if = {
+			limit = { has_country_flag = independence_wave_foreign_fact_host_ally }
+			if = {
+				limit = { can_independence_wave_foreign_mediate = yes }
+				set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.mediate }
+			}
+		}
+		else_if = {
+			limit = {
+				has_war = no
+				OR = {
+					has_country_flag = independence_wave_foreign_fact_ideology
+					has_country_flag = independence_wave_foreign_fact_patron
+					has_country_flag = independence_wave_foreign_fact_alliance
+				}
+				can_independence_wave_foreign_guarantee = yes
+			}
+			set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.guarantee }
+		}
+		else_if = {
+			limit = { can_independence_wave_foreign_invest = yes }
+			set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.invest }
+		}
+		else_if = {
+			limit = { can_independence_wave_foreign_mediate = yes }
+			set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.mediate }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_foreign_reaction_tier = constant:independence_wave_foreign_tier.great_power } }
+		if = {
+			limit = {
+				has_country_flag = independence_wave_foreign_fact_host_ally
+				can_independence_wave_foreign_contain_standard = yes
+			}
+			set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.contain }
+		}
+		else_if = {
+			limit = {
+				NOT = { has_country_flag = independence_wave_foreign_fact_host_ally }
+				has_country_flag = independence_wave_foreign_fact_ideology
+				can_independence_wave_foreign_offer_arms = yes
+			}
+			set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.arms_offer }
+		}
+		else_if = {
+			limit = {
+				NOT = { has_country_flag = independence_wave_foreign_fact_host_ally }
+				can_independence_wave_foreign_recognize_with_aid = yes
+			}
+			set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.recognize_with_aid }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_foreign_reaction_tier = constant:independence_wave_foreign_tier.earlier_wave } }
+		if = {
+			limit = {
+				has_country_flag = independence_wave_foreign_fact_claim
+				NOT = { has_country_flag = independence_wave_foreign_fact_ideology }
+				can_independence_wave_foreign_contest = yes
+			}
+			set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.contest }
+		}
+		else_if = {
+			limit = {
+				var:independence_wave_foreign_reaction_target = {
+					OR = {
+						has_war = yes
+						has_independence_wave_severe_host_threat = yes
+					}
+				}
+				can_independence_wave_foreign_network_aid = yes
+			}
+			set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.network_aid }
+		}
+		else_if = {
+			limit = { can_independence_wave_foreign_share_institutions = yes }
+			set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.share_institutions }
+		}
+		else_if = {
+			limit = { can_independence_wave_foreign_network_aid = yes }
+			set_temp_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.network_aid }
+		}
+	}
+}
+
+# COUNTRY scope: the released country answering an offer through the hidden
+# router (ROOT is the released country). Accept while foreign influence is
+# below the dominance warning, accept a limited form below dependency, and
+# refuse beyond it.
+independence_wave_foreign_reaction_resolve_ai_offer = {
+	set_temp_variable = { independence_wave_foreign_offer_reply_input = constant:independence_wave_foreign_offer_reply.refuse }
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = independence_wave_strongest_patron_influence }
+				check_variable = { var = independence_wave_strongest_patron_influence value = constant:independence_wave_patron.dominance_warning compare = less_than }
+			}
+		}
+		set_temp_variable = { independence_wave_foreign_offer_reply_input = constant:independence_wave_foreign_offer_reply.accept }
+	}
+	else_if = {
+		limit = { check_variable = { var = independence_wave_strongest_patron_influence value = constant:independence_wave_patron.dependency compare = less_than } }
+		set_temp_variable = { independence_wave_foreign_offer_reply_input = constant:independence_wave_foreign_offer_reply.limit }
+	}
+	independence_wave_foreign_reaction_resolve_offer = yes
+}
+
+# ---------------------------------------------------------------------------
+# Stances (actor scope, ROOT is the actor)
+# ---------------------------------------------------------------------------
+
+# Input: temporary `independence_wave_foreign_action_input`. A stance whose
+# requirements no longer hold when it is applied resolves as noncommittal.
+independence_wave_foreign_reaction_apply_action = {
+	if = {
+		limit = { has_current_independence_wave_foreign_reaction_receipt = yes }
+		independence_wave_foreign_reaction_load_receipt_targets = yes
+		if = {
+			limit = {
+				check_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.recognize }
+				can_independence_wave_foreign_recognize = yes
+			}
+			independence_wave_foreign_reaction_apply_recognition = yes
+		}
+		else_if = {
+			limit = {
+				check_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.recognize_with_aid }
+				can_independence_wave_foreign_recognize_with_aid = yes
+			}
+			event_target:independence_wave_foreign_target = {
+				# The actor (ROOT) ships from its own stockpile to this country.
+				ROOT = {
+					send_equipment = {
+						equipment = infantry_equipment
+						amount = constant:independence_wave_decision_cost.infantry_light
+						target = PREV
+					}
+				}
+				set_temp_variable = { independence_wave_value_delta = constant:independence_wave_decision_effect.value_minor }
+				independence_wave_change_security = yes
+			}
+			independence_wave_foreign_reaction_apply_recognition = yes
+		}
+		else_if = {
+			limit = {
+				check_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.share_institutions }
+				can_independence_wave_foreign_share_institutions = yes
+			}
+			event_target:independence_wave_foreign_target = {
+				set_temp_variable = { independence_wave_value_delta = constant:independence_wave_decision_effect.value_minor }
+				independence_wave_change_capacity = yes
+				set_temp_variable = { independence_wave_network_delta = constant:independence_wave_decision_effect.network_standard }
+				independence_wave_change_network_standing = yes
+			}
+			set_temp_variable = { independence_wave_network_delta = constant:independence_wave_decision_effect.network_standard }
+			independence_wave_change_network_standing = yes
+			independence_wave_foreign_reaction_apply_recognition = yes
+		}
+		else_if = {
+			limit = {
+				check_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.mediate }
+				can_independence_wave_foreign_mediate = yes
+			}
+			independence_wave_foreign_reaction_apply_mediation = yes
+		}
+		else_if = {
+			limit = {
+				check_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.contain }
+				OR = {
+					AND = {
+						check_variable = { independence_wave_foreign_reaction_tier = constant:independence_wave_foreign_tier.great_power }
+						can_independence_wave_foreign_contain_standard = yes
+					}
+					AND = {
+						NOT = { check_variable = { independence_wave_foreign_reaction_tier = constant:independence_wave_foreign_tier.great_power } }
+						can_independence_wave_foreign_contain_light = yes
+					}
+				}
+			}
+			independence_wave_foreign_reaction_apply_containment = yes
+		}
+		else_if = {
+			limit = {
+				check_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.guarantee }
+				can_independence_wave_foreign_guarantee = yes
+			}
+			independence_wave_foreign_reaction_apply_guarantee = yes
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						check_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.invest }
+						can_independence_wave_foreign_invest = yes
+					}
+					AND = {
+						check_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.arms_offer }
+						can_independence_wave_foreign_offer_arms = yes
+					}
+				}
+			}
+			independence_wave_foreign_reaction_make_offer = yes
+		}
+		else_if = {
+			limit = {
+				check_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.network_aid }
+				can_independence_wave_foreign_network_aid = yes
+			}
+			independence_wave_foreign_reaction_apply_network_aid = yes
+		}
+		else_if = {
+			limit = {
+				check_variable = { independence_wave_foreign_action_input = constant:independence_wave_foreign_action.contest }
+				can_independence_wave_foreign_contest = yes
+			}
+			independence_wave_foreign_reaction_apply_contest = yes
+		}
+	}
+}
+
+# Recognition: the light diplomatic cost, unless the released country has
+# already paid for a recognition mission to this actor, which this answer
+# settles. The shared receipt awards Statehood progress only once.
+independence_wave_foreign_reaction_apply_recognition = {
+	if = {
+		limit = { event_target:independence_wave_foreign_target = { NOT = { has_independence_wave_pending_recognition_with_prev = yes } } }
+		independence_wave_decision_pay_diplomatic_light = yes
+	}
+	save_event_target_as = independence_wave_bilateral_actor
+	event_target:independence_wave_foreign_target = {
+		independence_wave_record_recognition_receipt = yes
+		if = {
+			limit = { check_variable = { independence_wave_bilateral_receipt_new = constant:independence_wave_plan.loop_increment } }
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_value.minimum }
+			independence_wave_decision_apply_country_deltas = yes
+			add_opinion_modifier = { target = event_target:independence_wave_foreign_actor modifier = independence_wave_foreign_recognition }
+			if = {
+				limit = { has_independence_wave_living_former_host = yes }
+				independence_wave_foreign_reaction_clear_host_deltas = yes
+				set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_minor }
+				set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_minor }
+				independence_wave_decision_apply_host_deltas = yes
+				var:independence_wave_former_host = {
+					add_opinion_modifier = { target = event_target:independence_wave_foreign_actor modifier = independence_wave_foreign_recognized_breakaway }
+				}
+			}
+			set_temp_variable = { independence_wave_foreign_history_payload = constant:independence_wave_foreign_history.recognition }
+			event_target:independence_wave_foreign_actor = { independence_wave_foreign_reaction_record_history = yes }
+		}
+	}
+	add_ai_strategy = {
+		type = befriend
+		id = event_target:independence_wave_foreign_target
+		value = @CR_SC_INDEPENDENCE_WAVE_FOREIGN_AI_STRATEGY_STANDARD
+	}
+}
+
+# Formal mediation: the standard diplomatic cost. Moves the live border and
+# hostility ledger toward settlement while both sides remain valid.
+independence_wave_foreign_reaction_apply_mediation = {
+	independence_wave_decision_pay_diplomatic_standard = yes
+	event_target:independence_wave_foreign_target = {
+		independence_wave_foreign_reaction_clear_host_deltas = yes
+		set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+		set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_decision_effect.bilateral_standard }
+		set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+		independence_wave_decision_apply_host_deltas = yes
+		set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+		set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+		independence_wave_decision_apply_country_deltas = yes
+		add_opinion_modifier = { target = event_target:independence_wave_foreign_actor modifier = independence_wave_foreign_mediation }
+	}
+	event_target:independence_wave_foreign_target_host = {
+		add_opinion_modifier = { target = event_target:independence_wave_foreign_actor modifier = independence_wave_foreign_mediation }
+	}
+	set_temp_variable = { independence_wave_foreign_history_payload = constant:independence_wave_foreign_history.mediation }
+	independence_wave_foreign_reaction_record_history = yes
+}
+
+# Containment: backs the former host diplomatically. The light cost for a
+# neighbor, the standard cost for a great power. It declares no war.
+independence_wave_foreign_reaction_apply_containment = {
+	if = {
+		limit = { check_variable = { independence_wave_foreign_reaction_tier = constant:independence_wave_foreign_tier.great_power } }
+		independence_wave_decision_pay_diplomatic_standard = yes
+	}
+	else = { independence_wave_decision_pay_diplomatic_light = yes }
+	event_target:independence_wave_foreign_target = {
+		independence_wave_foreign_reaction_clear_host_deltas = yes
+		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_minor }
+		set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_minor }
+		set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_decision_effect.bilateral_standard }
+		independence_wave_decision_apply_host_deltas = yes
+		set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor_loss }
+		set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor }
+		independence_wave_decision_apply_country_deltas = yes
+		add_opinion_modifier = { target = event_target:independence_wave_foreign_actor modifier = independence_wave_foreign_containment_pressure }
+	}
+	event_target:independence_wave_foreign_target_host = {
+		add_opinion_modifier = { target = event_target:independence_wave_foreign_actor modifier = independence_wave_foreign_containment_support }
+	}
+	add_ai_strategy = {
+		type = contain
+		id = event_target:independence_wave_foreign_target
+		value = @CR_SC_INDEPENDENCE_WAVE_FOREIGN_AI_STRATEGY_STANDARD
+	}
+	add_ai_strategy = {
+		type = befriend
+		id = event_target:independence_wave_foreign_target_host
+		value = @CR_SC_INDEPENDENCE_WAVE_FOREIGN_AI_STRATEGY_STANDARD
+	}
+	set_temp_variable = { independence_wave_foreign_history_payload = constant:independence_wave_foreign_history.containment }
+	independence_wave_foreign_reaction_record_history = yes
+}
+
+# Guarantee: the standard diplomatic cost, unless the released country has
+# already paid to ask this actor, which this answer settles. Creates the real
+# engine guarantee once and awards Statehood progress only when it is new.
+independence_wave_foreign_reaction_apply_guarantee = {
+	if = {
+		limit = { event_target:independence_wave_foreign_target = { NOT = { has_independence_wave_pending_guarantee_with_prev = yes } } }
+		independence_wave_decision_pay_diplomatic_standard = yes
+	}
+	save_event_target_as = independence_wave_bilateral_actor
+	event_target:independence_wave_foreign_target = {
+		independence_wave_apply_bilateral_guarantee = yes
+		if = {
+			limit = { check_variable = { independence_wave_bilateral_receipt_new = constant:independence_wave_plan.loop_increment } }
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_major }
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+			independence_wave_decision_apply_country_deltas = yes
+			add_opinion_modifier = { target = event_target:independence_wave_foreign_actor modifier = independence_wave_foreign_guarantee }
+			set_temp_variable = { independence_wave_foreign_history_payload = constant:independence_wave_foreign_history.guarantee }
+			event_target:independence_wave_foreign_actor = { independence_wave_foreign_reaction_record_history = yes }
+		}
+	}
+	add_ai_strategy = {
+		type = protect
+		id = event_target:independence_wave_foreign_target
+		value = @CR_SC_INDEPENDENCE_WAVE_FOREIGN_AI_STRATEGY_STRONG
+	}
+}
+
+# Network aid: an earlier-wave state sends rifles and support equipment from
+# its own stockpile and spends command attention.
+independence_wave_foreign_reaction_apply_network_aid = {
+	add_command_power = constant:independence_wave_decision_cost.command_power_light_spend
+	event_target:independence_wave_foreign_target = {
+		# The actor (ROOT) ships from its own stockpile to this country.
+		ROOT = {
+			send_equipment = {
+				equipment = infantry_equipment
+				amount = constant:independence_wave_decision_cost.infantry_light
+				target = PREV
+			}
+			send_equipment = {
+				equipment = support_equipment
+				amount = constant:independence_wave_decision_cost.support_light
+				target = PREV
+			}
+		}
+		set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+		if = {
+			limit = {
+				OR = {
+					has_war = yes
+					has_independence_wave_severe_host_threat = yes
+				}
+			}
+			set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_major }
+		}
+		independence_wave_decision_apply_country_deltas = yes
+		set_temp_variable = { independence_wave_network_delta = constant:independence_wave_decision_effect.network_minor }
+		independence_wave_change_network_standing = yes
+		add_opinion_modifier = { target = event_target:independence_wave_foreign_actor modifier = independence_wave_foreign_solidarity }
+	}
+	set_temp_variable = { independence_wave_network_delta = constant:independence_wave_decision_effect.network_standard }
+	independence_wave_change_network_standing = yes
+	add_ai_strategy = {
+		type = befriend
+		id = event_target:independence_wave_foreign_target
+		value = @CR_SC_INDEPENDENCE_WAVE_FOREIGN_AI_STRATEGY_STANDARD
+	}
+	set_temp_variable = { independence_wave_foreign_history_payload = constant:independence_wave_foreign_history.network_aid }
+	independence_wave_foreign_reaction_record_history = yes
+}
+
+# Rivalry: an earlier-wave state that claims land the newcomer governs
+# contests its standing. Private: no public history entry.
+independence_wave_foreign_reaction_apply_contest = {
+	independence_wave_decision_pay_diplomatic_light = yes
+	event_target:independence_wave_foreign_target = {
+		set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor_loss }
+		set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard_loss }
+		set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor }
+		independence_wave_decision_apply_country_deltas = yes
+		add_opinion_modifier = { target = event_target:independence_wave_foreign_actor modifier = independence_wave_foreign_rivalry }
+	}
+	add_ai_strategy = {
+		type = antagonize
+		id = event_target:independence_wave_foreign_target
+		value = @CR_SC_INDEPENDENCE_WAVE_FOREIGN_AI_STRATEGY_STANDARD
+	}
+}
+
+# Patron offers: the actor pays the standard diplomatic cost now and its
+# receipt waits for the released country's answer. Nothing is booked before
+# that answer.
+independence_wave_foreign_reaction_make_offer = {
+	independence_wave_decision_pay_diplomatic_standard = yes
+	set_country_flag = independence_wave_foreign_reaction_awaiting_consent
+	set_variable = { independence_wave_foreign_reaction_offer_target = event_target:independence_wave_foreign_target }
+	set_temp_variable = { independence_wave_foreign_offer_kind_input = independence_wave_foreign_action_input }
+	event_target:independence_wave_foreign_target = {
+		set_country_flag = independence_wave_foreign_offer_pending
+		set_variable = { independence_wave_foreign_offer_country = event_target:independence_wave_foreign_actor }
+		set_variable = { independence_wave_foreign_offer_plan_id = global.independence_wave_foreign_reaction_plan_id }
+		set_variable = { independence_wave_foreign_offer_generation = independence_wave_generation_id }
+		set_variable = { independence_wave_foreign_offer_kind = independence_wave_foreign_offer_kind_input }
+		if = {
+			limit = { is_ai = yes }
+			country_event = { id = chaosx.nr6.64 }
+		}
+		else = { country_event = { id = chaosx.nr6.71 } }
+	}
+}
+
+# COUNTRY scope: the released country answering (ROOT is that country).
+# Input: temporary `independence_wave_foreign_offer_reply_input`. Books the
+# patron channel only on acceptance or a limited acceptance, debits the
+# donor's real stockpile for arms, and always closes the offer once.
+independence_wave_foreign_reaction_resolve_offer = {
+	if = {
+		limit = { has_current_independence_wave_foreign_offer = yes }
+		var:independence_wave_foreign_offer_country = { save_event_target_as = independence_wave_action_patron }
+		if = {
+			limit = { check_variable = { independence_wave_foreign_offer_kind = constant:independence_wave_foreign_action.arms_offer } }
+			if = {
+				limit = {
+					check_variable = { independence_wave_foreign_offer_reply_input = constant:independence_wave_foreign_offer_reply.accept }
+					can_independence_wave_foreign_offer_deliver_arms_in_full = yes
+				}
+				event_target:independence_wave_action_patron = {
+					send_equipment = {
+						equipment = infantry_equipment
+						amount = constant:independence_wave_decision_cost.infantry_major
+						target = ROOT
+					}
+					send_equipment = {
+						equipment = support_equipment
+						amount = constant:independence_wave_decision_cost.support_standard
+						target = ROOT
+					}
+				}
+				set_temp_variable = { independence_wave_patron_channel = constant:independence_wave_patron_channel.arms }
+				set_temp_variable = { independence_wave_patron_influence_delta = constant:independence_wave_decision_effect.patron_influence_standard }
+				set_temp_variable = { independence_wave_patron_aid_delta = constant:independence_wave_decision_effect.patron_aid_major }
+				independence_wave_register_patron_channel = yes
+				set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor_loss }
+				set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor }
+				set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_value.minimum }
+				set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_major }
+				set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor }
+				independence_wave_decision_apply_country_deltas = yes
+				add_opinion_modifier = { target = event_target:independence_wave_action_patron modifier = independence_wave_foreign_patron_agreement }
+			}
+			else_if = {
+				limit = {
+					NOT = { check_variable = { independence_wave_foreign_offer_reply_input = constant:independence_wave_foreign_offer_reply.refuse } }
+					can_independence_wave_foreign_offer_deliver_arms_limited = yes
+				}
+				event_target:independence_wave_action_patron = {
+					send_equipment = {
+						equipment = infantry_equipment
+						amount = constant:independence_wave_decision_cost.infantry_standard
+						target = ROOT
+					}
+				}
+				set_temp_variable = { independence_wave_patron_channel = constant:independence_wave_patron_channel.arms }
+				set_temp_variable = { independence_wave_patron_influence_delta = constant:independence_wave_decision_effect.patron_influence_light }
+				set_temp_variable = { independence_wave_patron_aid_delta = constant:independence_wave_decision_effect.patron_aid_standard }
+				independence_wave_register_patron_channel = yes
+				set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_value.minimum }
+				set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor }
+				set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_value.minimum }
+				set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
+				set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_value.minimum }
+				independence_wave_decision_apply_country_deltas = yes
+			}
+			else = { independence_wave_foreign_reaction_apply_offer_refusal = yes }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_foreign_offer_kind = constant:independence_wave_foreign_action.invest } }
+			if = {
+				limit = { check_variable = { independence_wave_foreign_offer_reply_input = constant:independence_wave_foreign_offer_reply.accept } }
+				independence_wave_foreign_reaction_build_corridor = yes
+				set_temp_variable = { independence_wave_patron_channel = constant:independence_wave_patron_channel.trade_shipping }
+				set_temp_variable = { independence_wave_patron_influence_delta = constant:independence_wave_decision_effect.patron_influence_standard }
+				set_temp_variable = { independence_wave_patron_aid_delta = constant:independence_wave_decision_effect.patron_aid_standard }
+				independence_wave_register_patron_channel = yes
+				set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor_loss }
+				set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
+				set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+				set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_value.minimum }
+				set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor }
+				independence_wave_decision_apply_country_deltas = yes
+				add_opinion_modifier = { target = event_target:independence_wave_action_patron modifier = independence_wave_foreign_patron_agreement }
+			}
+			else_if = {
+				limit = { check_variable = { independence_wave_foreign_offer_reply_input = constant:independence_wave_foreign_offer_reply.limit } }
+				independence_wave_foreign_reaction_build_corridor = yes
+				set_temp_variable = { independence_wave_patron_channel = constant:independence_wave_patron_channel.trade_shipping }
+				set_temp_variable = { independence_wave_patron_influence_delta = constant:independence_wave_decision_effect.patron_influence_light }
+				set_temp_variable = { independence_wave_patron_aid_delta = constant:independence_wave_decision_effect.patron_aid_light }
+				independence_wave_register_patron_channel = yes
+				set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_value.minimum }
+				set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
+				set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+				set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_value.minimum }
+				set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_value.minimum }
+				independence_wave_decision_apply_country_deltas = yes
+			}
+			else = { independence_wave_foreign_reaction_apply_offer_refusal = yes }
+		}
+	}
+	independence_wave_foreign_reaction_close_offer = yes
+}
+
+# COUNTRY scope: the released country. Refusing a patron offer asserts its
+# independence and costs the offering government's goodwill.
+independence_wave_foreign_reaction_apply_offer_refusal = {
+	set_temp_variable = { independence_wave_value_delta = constant:independence_wave_decision_effect.value_minor }
+	independence_wave_change_legitimacy = yes
+	event_target:independence_wave_action_patron = {
+		add_opinion_modifier = { target = ROOT modifier = independence_wave_foreign_offer_refused }
+	}
+}
+
+# COUNTRY scope: the released country. The corridor works add one level of
+# infrastructure to the capital state.
+independence_wave_foreign_reaction_build_corridor = {
+	capital_scope = {
+		add_building_construction = {
+			type = infrastructure
+			level = constant:independence_wave_decision_effect.construction_infrastructure
+			instant_build = yes
+		}
+	}
+}
+
+# Any scope. Resets the eight bilateral delta inputs before a partial update.
+independence_wave_foreign_reaction_clear_host_deltas = {
+	set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_value.minimum }
+}
+
+# COUNTRY scope: the foreign actor, with the receipt target loaded. Writes one
+# public Event 6 history row naming the released country as the primary actor
+# and this government as the counterpart. Input: temporary
+# `independence_wave_foreign_history_payload`.
+independence_wave_foreign_reaction_record_history = {
+	set_temp_variable = { events_log_system_event_id = constant:independence_wave_event.id }
+	set_temp_variable = { events_log_system_event_type = constant:event_system_event_type.repeatable }
+	set_temp_variable = { events_log_system_payload = independence_wave_foreign_history_payload }
+	set_temp_variable = { events_log_system_secondary_actor = THIS.id }
+	set_temp_variable = { events_log_system_has_secondary_actor = constant:independence_wave_plan.loop_increment }
+	event_target:independence_wave_foreign_target = {
+		set_temp_variable = { events_log_system_actor = THIS.id }
+	}
+	set_temp_variable = { events_log_system_has_actor = constant:independence_wave_plan.loop_increment }
+	record_events_log_system_history_entry = yes
+	refresh_events_log_system_history_views = yes
+	set_temp_variable = { events_log_system_event_id = 0 }
+	set_temp_variable = { events_log_system_event_type = 0 }
+	set_temp_variable = { events_log_system_payload = 0 }
+	set_temp_variable = { events_log_system_actor = 0 }
+	set_temp_variable = { events_log_system_has_actor = 0 }
+	set_temp_variable = { events_log_system_secondary_actor = 0 }
+	set_temp_variable = { events_log_system_has_secondary_actor = 0 }
+}

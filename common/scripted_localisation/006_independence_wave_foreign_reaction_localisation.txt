@@ -1,0 +1,235 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 FOREIGN REACTION LOCALISATION
+# Overview:
+# - Names the facts behind a foreign government's interest in a new state:
+#   the strongest interest first, then one secondary interest from another
+#   family, then a war or settled-relationship note.
+# - Shows whether a recognition or guarantee settles a mission the new state
+#   has already paid for, and the terms of a patron offer.
+# - The profile events read the actor's own flags and variables (ROOT is the
+#   foreign actor); the consent event reads the released country's offer.
+# No entry changes state.
+# ============================================================================
+
+defined_text = {
+	name = GetIndependenceWaveForeignHostClause
+	text = {
+		trigger = {
+			has_variable = independence_wave_foreign_reaction_host
+			var:independence_wave_foreign_reaction_host = { exists = yes }
+		}
+		localization_key = independence_wave_foreign_host_clause
+	}
+	text = { localization_key = independence_wave_foreign_empty }
+}
+
+defined_text = {
+	name = GetIndependenceWaveForeignDirectFact
+	text = {
+		trigger = { has_country_flag = independence_wave_foreign_fact_frontier }
+		localization_key = independence_wave_foreign_fact_frontier
+	}
+	text = {
+		trigger = { has_country_flag = independence_wave_foreign_fact_claim }
+		localization_key = independence_wave_foreign_fact_claim
+	}
+	text = {
+		trigger = { has_country_flag = independence_wave_foreign_fact_guarantee }
+		localization_key = independence_wave_foreign_fact_guarantee
+	}
+	text = { localization_key = independence_wave_foreign_empty }
+}
+
+defined_text = {
+	name = GetIndependenceWaveForeignRelationshipFact
+	text = {
+		trigger = { has_country_flag = independence_wave_foreign_fact_host_ally }
+		localization_key = independence_wave_foreign_fact_host_ally
+	}
+	text = {
+		trigger = { has_country_flag = independence_wave_foreign_fact_alliance }
+		localization_key = independence_wave_foreign_fact_alliance
+	}
+	text = {
+		trigger = { has_country_flag = independence_wave_foreign_fact_patron }
+		localization_key = independence_wave_foreign_fact_patron
+	}
+	text = {
+		trigger = { has_country_flag = independence_wave_foreign_fact_network }
+		localization_key = independence_wave_foreign_fact_network
+	}
+	text = {
+		trigger = { has_country_flag = independence_wave_foreign_fact_prior_recognition }
+		localization_key = independence_wave_foreign_fact_prior_recognition
+	}
+	text = { localization_key = independence_wave_foreign_empty }
+}
+
+defined_text = {
+	name = GetIndependenceWaveForeignStrategicFact
+	text = {
+		trigger = { has_country_flag = independence_wave_foreign_fact_access }
+		localization_key = independence_wave_foreign_fact_access
+	}
+	text = {
+		trigger = { has_country_flag = independence_wave_foreign_fact_balance }
+		localization_key = independence_wave_foreign_fact_balance
+	}
+	text = {
+		trigger = { has_country_flag = independence_wave_foreign_fact_region }
+		localization_key = independence_wave_foreign_fact_region
+	}
+	text = {
+		trigger = { has_country_flag = independence_wave_foreign_fact_reach }
+		localization_key = independence_wave_foreign_fact_reach
+	}
+	text = { localization_key = independence_wave_foreign_empty }
+}
+
+defined_text = {
+	name = GetIndependenceWaveForeignPoliticalFact
+	text = {
+		trigger = { has_country_flag = independence_wave_foreign_fact_ideology }
+		localization_key = independence_wave_foreign_fact_ideology
+	}
+	text = { localization_key = independence_wave_foreign_empty }
+}
+
+# The strongest family that contributed to the score.
+defined_text = {
+	name = GetIndependenceWaveForeignPrimaryReason
+	text = {
+		trigger = { has_country_flag = independence_wave_foreign_family_direct }
+		localization_key = independence_wave_foreign_reason_direct
+	}
+	text = {
+		trigger = { has_country_flag = independence_wave_foreign_family_relationship }
+		localization_key = independence_wave_foreign_reason_relationship
+	}
+	text = {
+		trigger = { has_country_flag = independence_wave_foreign_family_strategic }
+		localization_key = independence_wave_foreign_reason_strategic
+	}
+	text = {
+		trigger = { has_country_flag = independence_wave_foreign_family_political }
+		localization_key = independence_wave_foreign_reason_political
+	}
+	text = { localization_key = independence_wave_foreign_empty }
+}
+
+# The next family after the primary one, when there is one.
+defined_text = {
+	name = GetIndependenceWaveForeignSecondaryReason
+	text = {
+		trigger = {
+			has_country_flag = independence_wave_foreign_family_direct
+			has_country_flag = independence_wave_foreign_family_relationship
+		}
+		localization_key = independence_wave_foreign_secondary_relationship
+	}
+	text = {
+		trigger = {
+			has_country_flag = independence_wave_foreign_family_direct
+			has_country_flag = independence_wave_foreign_family_strategic
+		}
+		localization_key = independence_wave_foreign_secondary_strategic
+	}
+	text = {
+		trigger = {
+			has_country_flag = independence_wave_foreign_family_direct
+			has_country_flag = independence_wave_foreign_family_political
+		}
+		localization_key = independence_wave_foreign_secondary_political
+	}
+	text = {
+		trigger = {
+			NOT = { has_country_flag = independence_wave_foreign_family_direct }
+			has_country_flag = independence_wave_foreign_family_relationship
+			has_country_flag = independence_wave_foreign_family_strategic
+		}
+		localization_key = independence_wave_foreign_secondary_strategic
+	}
+	text = {
+		trigger = {
+			NOT = { has_country_flag = independence_wave_foreign_family_direct }
+			has_country_flag = independence_wave_foreign_family_relationship
+			has_country_flag = independence_wave_foreign_family_political
+		}
+		localization_key = independence_wave_foreign_secondary_political
+	}
+	text = {
+		trigger = {
+			NOT = { has_country_flag = independence_wave_foreign_family_direct }
+			NOT = { has_country_flag = independence_wave_foreign_family_relationship }
+			has_country_flag = independence_wave_foreign_family_strategic
+			has_country_flag = independence_wave_foreign_family_political
+		}
+		localization_key = independence_wave_foreign_secondary_political
+	}
+	text = { localization_key = independence_wave_foreign_empty }
+}
+
+defined_text = {
+	name = GetIndependenceWaveForeignConflictNote
+	text = {
+		trigger = { has_country_flag = independence_wave_foreign_fact_war_burden }
+		localization_key = independence_wave_foreign_note_war_burden
+	}
+	text = {
+		trigger = { has_country_flag = independence_wave_foreign_fact_settled }
+		localization_key = independence_wave_foreign_note_settled
+	}
+	text = { localization_key = independence_wave_foreign_empty }
+}
+
+defined_text = {
+	name = GetIndependenceWaveForeignRecognitionCost
+	text = {
+		trigger = {
+			has_variable = independence_wave_foreign_reaction_target
+			var:independence_wave_foreign_reaction_target = { has_independence_wave_pending_recognition_with_prev = yes }
+		}
+		localization_key = independence_wave_foreign_cost_settles_recognition
+	}
+	text = { localization_key = independence_wave_foreign_cost_light }
+}
+
+defined_text = {
+	name = GetIndependenceWaveForeignGuaranteeCost
+	text = {
+		trigger = {
+			has_variable = independence_wave_foreign_reaction_target
+			var:independence_wave_foreign_reaction_target = { has_independence_wave_pending_guarantee_with_prev = yes }
+		}
+		localization_key = independence_wave_foreign_cost_settles_guarantee
+	}
+	text = { localization_key = independence_wave_foreign_cost_standard }
+}
+
+# Consent event (ROOT is the released country).
+defined_text = {
+	name = GetIndependenceWaveForeignOfferTerms
+	text = {
+		trigger = { check_variable = { independence_wave_foreign_offer_kind = constant:independence_wave_foreign_action.arms_offer } }
+		localization_key = independence_wave_foreign_offer_terms_arms
+	}
+	text = { localization_key = independence_wave_foreign_offer_terms_corridor }
+}
+
+defined_text = {
+	name = GetIndependenceWaveForeignOfferAcceptTerms
+	text = {
+		trigger = { check_variable = { independence_wave_foreign_offer_kind = constant:independence_wave_foreign_action.arms_offer } }
+		localization_key = independence_wave_foreign_offer_accept_arms
+	}
+	text = { localization_key = independence_wave_foreign_offer_accept_corridor }
+}
+
+defined_text = {
+	name = GetIndependenceWaveForeignOfferLimitTerms
+	text = {
+		trigger = { check_variable = { independence_wave_foreign_offer_kind = constant:independence_wave_foreign_action.arms_offer } }
+		localization_key = independence_wave_foreign_offer_limit_arms
+	}
+	text = { localization_key = independence_wave_foreign_offer_limit_corridor }
+}

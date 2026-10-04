@@ -22,7 +22,7 @@ Event 005 rows, Join conversions, repeated state rows, and unrelated release ori
 4. The host router waits two days after the last opening so the one-day IW-043 and IW-058 introductions can appear first.
 5. Hidden event `chaosx.nr6.63` checks each host receipt and sends a human host to limited `.60`, severe `.61`, or remnant `.62`, while AI hosts resolve through deterministic scripted logic.
 6. A human host event times out after 13 days and resolves its first option if the player does not choose an option.
-7. Each completed or invalid host receipt decrements the queue once, and the final receipt clears the plan arrays and releases the report/reset barrier.
+7. Each completed or invalid host receipt decrements the queue once. The final receipt hands the report/reset barrier to the foreign reaction queue (`foreign_reactions.md`), clears the host and opening receipts, and releases the barrier itself only when no foreign government qualifies.
 
 The queue is admitted as a cohort only after every distinct Event 006 state row, target country row, and host row aligns with the committed transaction.
 
