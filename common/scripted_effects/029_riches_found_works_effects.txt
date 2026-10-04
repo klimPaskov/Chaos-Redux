@@ -1,0 +1,101 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 029 RICHES FOUND PHYSICAL WORKS
+# ============================================================================
+# STATE scope throughout; THIS is the mine state. Completed transport projects
+# build real map buildings, and destructive raids and collapses damage them.
+# The game repairs damaged buildings through ordinary construction; the mine's
+# own damage is repaired through Repair and Restore the Shaft.
+# Building effects follow the vanilla add_building_construction and
+# damage_building precedents. Their level, damage and repair-speed fields do
+# not read script constants, so those values are file-scoped constants.
+# ============================================================================
+
+@riches_found_route_building_level = 1
+@riches_found_raid_infrastructure_damage = 1
+@riches_found_raid_naval_base_damage = 1
+@riches_found_collapse_infrastructure_damage = 2
+@riches_found_damage_repair_speed = -0.25
+
+# Rail Spur completion: one level of state infrastructure below the cap.
+riches_found_build_rail_spur = {
+	if = {
+		limit = { check_variable = { infrastructure_level < constant:riches_found_build.infrastructure_max } }
+		add_building_construction = {
+			type = infrastructure
+			level = @riches_found_route_building_level
+			instant_build = yes
+		}
+	}
+}
+
+# Port Route completion: one naval base level where the state already has a
+# port, otherwise a new naval base on its coast.
+riches_found_build_port_route = {
+	if = {
+		limit = { is_coastal = yes }
+		if = {
+			limit = { naval_base > constant:riches_found_value.zero }
+			if = {
+				limit = { naval_base < constant:riches_found_build.naval_base_max }
+				add_building_construction = {
+					type = naval_base
+					level = @riches_found_route_building_level
+					instant_build = yes
+					province = {
+						all_provinces = yes
+						limit_to_coastal = yes
+						limit_to_naval_base = yes
+					}
+				}
+			}
+		}
+		else = {
+			add_building_construction = {
+				type = naval_base
+				level = @riches_found_route_building_level
+				instant_build = yes
+				province = {
+					all_provinces = yes
+					limit_to_coastal = yes
+				}
+			}
+		}
+	}
+}
+
+# A destructive or lethal raid damages the port when it struck the sea route,
+# and otherwise the state's infrastructure.
+riches_found_damage_raided_works = {
+	if = {
+		limit = {
+			check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.raid_port_route }
+			naval_base > constant:riches_found_value.zero
+		}
+		damage_building = {
+			type = naval_base
+			damage = @riches_found_raid_naval_base_damage
+			repair_speed_modifier = @riches_found_damage_repair_speed
+		}
+	}
+	else_if = {
+		limit = { check_variable = { infrastructure_level > constant:riches_found_value.zero } }
+		damage_building = {
+			type = infrastructure
+			damage = @riches_found_raid_infrastructure_damage
+			repair_speed_modifier = @riches_found_damage_repair_speed
+		}
+	}
+}
+
+# A collapse that closes the workings brings down the surface infrastructure
+# around the shafts.
+riches_found_damage_collapsed_works = {
+	if = {
+		limit = { check_variable = { infrastructure_level > constant:riches_found_value.zero } }
+		damage_building = {
+			type = infrastructure
+			damage = @riches_found_collapse_infrastructure_damage
+			repair_speed_modifier = @riches_found_damage_repair_speed
+		}
+	}
+}

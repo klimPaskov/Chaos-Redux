@@ -102,3 +102,14 @@ The account and Drive Deeper decisions keep their stricter receipt guards, which
 The seven occupation choice flags (reopened, output requisitioned, administration retained, concession replaced, revenue shared, stripped, denied) are cleared when an occupation ends and when a different occupier takes over, so every occupier sees the full occupation set.
 Stripping and denial leave persistent damage (and denial a temporary closure), recorded with history flags; the returning controller repairs them through Repair and Restore the Shaft.
 A damaged mine contributes `riches_found_closure.damaged_output_factor` of its normal output, so the recapture contribution follows the current damage, and the category header shows a repair objective while damage remains.
+
+## D11. Physical projects commit civilian factories and build real works
+
+The seven physical projects (Rail Spur, Port Route, Processing Works, Housing, Shaft Reinforcement, Sanitation and Repair) replace their political-power payment with a civilian-factory commitment for the decision's removal period: two factories for standard projects and three for Processing Works, through `modifier = { civilian_factory_use = ... }` with file-scoped mirrors of `riches_found_decision_cost.civ_standard` and `civ_heavy`.
+Each still has four spendable costs; affordability requires that many free civilian factories through `num_of_available_civilian_factories`, matching the Event 016 precedent, and the cost rows show `£civ_factory` beside the remaining resources.
+A refund after a lost or terminal mine returns the stockpiled resources; factories already worked during the period are not refundable.
+The development fund and the curse diversification program stay political-power actions because they are financial programmes rather than construction.
+
+Rail Spur completion adds one level of state infrastructure below the vanilla cap of five, and Port Route completion adds one naval base level to an existing port or a new naval base on the state's coast, following the vanilla `add_building_construction` precedents (including the all-coastal-provinces form used by the Afghanistan focus tree).
+Destructive and lethal raids damage the naval base when they struck the sea route and the infrastructure otherwise; a collapse that closes the workings damages the infrastructure, with slower repair; the game repairs these buildings through ordinary construction while Restore the Shaft repairs the mine itself.
+Railway lines are not built because the railway effects need explicit province pairs that a generic mine state cannot supply; this is recorded as a limitation.

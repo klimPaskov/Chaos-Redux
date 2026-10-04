@@ -15,6 +15,11 @@
 @RICHES_FOUND_AI_HINT_PP_STANDARD = 25
 @RICHES_FOUND_AI_HINT_PP_HEAVY = 40
 
+# Decision modifiers require static values; these mirror civ_standard and
+# civ_heavy in riches_found_decision_cost.
+@RICHES_FOUND_CIVILIAN_FACTORY_STANDARD = 2
+@RICHES_FOUND_CIVILIAN_FACTORY_HEAVY = 3
+
 # AI scenario coverage is kept beside the willingness blocks: RF_POLICY_01_STABLE_DEMOCRACY,
 # RF_POLICY_02_AUTHORITARIAN_MAJOR_AT_WAR, RF_POLICY_03_POOR_MINOR, RF_POLICY_04_COLONIAL_OCCUPIER,
 # RF_DEV_01_INLAND_DEEP_REEF, RF_DEV_02_ISLAND_GEMSTONE, RF_DEV_03_COLLAPSE_WARNING,
@@ -1089,12 +1094,11 @@ decision_riches_found_sanitation = {
 		riches_found_can_afford_sanitation = yes
 	}
 	custom_cost_text = riches_found_cost_sanitation
-	ai_hint_pp_cost = @RICHES_FOUND_AI_HINT_PP_STANDARD
+	modifier = { civilian_factory_use = @RICHES_FOUND_CIVILIAN_FACTORY_STANDARD }
 	days_remove = constant:riches_found_decision_duration.project
 	fire_only_once = no
 	complete_effect = {
 		custom_effect_tooltip = decision_riches_found_sanitation_tt
-		add_political_power = constant:riches_found_decision_cost.pp_standard_negative
 		add_manpower = constant:riches_found_decision_cost.manpower_standard_negative
 		add_equipment_to_stockpile = { type = support_equipment amount = constant:riches_found_decision_cost.support_standard_negative }
 		add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:riches_found_decision_cost.motorized_light_negative }
@@ -1118,7 +1122,6 @@ decision_riches_found_sanitation = {
 
 		}
 		else = {
-			add_political_power = constant:riches_found_decision_cost.pp_standard
 			add_manpower = constant:riches_found_decision_cost.manpower_standard
 			add_equipment_to_stockpile = { type = support_equipment amount = constant:riches_found_decision_cost.support_standard }
 			add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:riches_found_decision_cost.motorized_light }
@@ -1185,12 +1188,11 @@ decision_riches_found_rail_spur = {
 		riches_found_country_can_start_open_railhead_mission = yes
 	}
 	custom_cost_text = riches_found_cost_rail_spur
-	ai_hint_pp_cost = @RICHES_FOUND_AI_HINT_PP_STANDARD
+	modifier = { civilian_factory_use = @RICHES_FOUND_CIVILIAN_FACTORY_STANDARD }
 	days_remove = constant:riches_found_decision_duration.long_project
 	fire_only_once = no
 	complete_effect = {
 		custom_effect_tooltip = decision_riches_found_rail_spur_tt
-		add_political_power = constant:riches_found_decision_cost.pp_standard_negative
 		add_equipment_to_stockpile = { type = support_equipment amount = constant:riches_found_decision_cost.support_standard_negative }
 		add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:riches_found_decision_cost.motorized_standard_negative }
 		add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:riches_found_decision_cost.train_standard_negative }
@@ -1211,6 +1213,7 @@ decision_riches_found_rail_spur = {
 			}
 			FROM = {
 				set_state_flag = riches_found_rail_route
+				riches_found_build_rail_spur = yes
 				add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.positive_12 }
 				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_4 }
 			}
@@ -1218,7 +1221,6 @@ decision_riches_found_rail_spur = {
 			riches_found_refresh_mine_state = yes
 		}
 		else = {
-			add_political_power = constant:riches_found_decision_cost.pp_standard
 			add_equipment_to_stockpile = { type = support_equipment amount = constant:riches_found_decision_cost.support_standard }
 			add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:riches_found_decision_cost.motorized_standard }
 			add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:riches_found_decision_cost.train_standard }
@@ -1285,12 +1287,11 @@ decision_riches_found_port_route = {
 		riches_found_country_can_start_open_railhead_mission = yes
 	}
 	custom_cost_text = riches_found_cost_port_route
-	ai_hint_pp_cost = @RICHES_FOUND_AI_HINT_PP_STANDARD
+	modifier = { civilian_factory_use = @RICHES_FOUND_CIVILIAN_FACTORY_STANDARD }
 	days_remove = constant:riches_found_decision_duration.long_project
 	fire_only_once = no
 	complete_effect = {
 		custom_effect_tooltip = decision_riches_found_port_route_tt
-		add_political_power = constant:riches_found_decision_cost.pp_standard_negative
 		add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:riches_found_decision_cost.motorized_standard_negative }
 		add_fuel = constant:riches_found_decision_cost.fuel_standard_negative
 		add_equipment_to_stockpile = { type = convoy_1 amount = constant:riches_found_decision_cost.convoy_standard_negative }
@@ -1311,6 +1312,7 @@ decision_riches_found_port_route = {
 			}
 			FROM = {
 				set_state_flag = riches_found_port_route
+				riches_found_build_port_route = yes
 				add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.positive_12 }
 				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_4 }
 				add_to_variable = { riches_found_foreign_claim_pressure = constant:riches_found_action_delta.positive_4 }
@@ -1319,7 +1321,6 @@ decision_riches_found_port_route = {
 			riches_found_refresh_mine_state = yes
 		}
 		else = {
-			add_political_power = constant:riches_found_decision_cost.pp_standard
 			add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:riches_found_decision_cost.motorized_standard }
 			add_fuel = constant:riches_found_decision_cost.fuel_standard
 			add_equipment_to_stockpile = { type = convoy_1 amount = constant:riches_found_decision_cost.convoy_standard }
@@ -1380,12 +1381,11 @@ decision_riches_found_shaft_reinforcement = {
 		riches_found_can_afford_shaft_reinforcement = yes
 	}
 	custom_cost_text = riches_found_cost_shaft_reinforcement
-	ai_hint_pp_cost = @RICHES_FOUND_AI_HINT_PP_STANDARD
+	modifier = { civilian_factory_use = @RICHES_FOUND_CIVILIAN_FACTORY_STANDARD }
 	days_remove = constant:riches_found_decision_duration.project
 	fire_only_once = no
 	complete_effect = {
 		custom_effect_tooltip = decision_riches_found_shaft_reinforcement_tt
-		add_political_power = constant:riches_found_decision_cost.pp_standard_negative
 		add_manpower = constant:riches_found_decision_cost.manpower_standard_negative
 		add_equipment_to_stockpile = { type = support_equipment amount = constant:riches_found_decision_cost.support_standard_negative }
 		add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:riches_found_decision_cost.motorized_light_negative }
@@ -1411,7 +1411,6 @@ decision_riches_found_shaft_reinforcement = {
 
 		}
 		else = {
-			add_political_power = constant:riches_found_decision_cost.pp_standard
 			add_manpower = constant:riches_found_decision_cost.manpower_standard
 			add_equipment_to_stockpile = { type = support_equipment amount = constant:riches_found_decision_cost.support_standard }
 			add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:riches_found_decision_cost.motorized_light }
@@ -1471,12 +1470,11 @@ decision_riches_found_processing_works = {
 		riches_found_can_afford_processing_works = yes
 	}
 	custom_cost_text = riches_found_cost_processing_works
-	ai_hint_pp_cost = @RICHES_FOUND_AI_HINT_PP_HEAVY
+	modifier = { civilian_factory_use = @RICHES_FOUND_CIVILIAN_FACTORY_HEAVY }
 	days_remove = constant:riches_found_decision_duration.long_project
 	fire_only_once = no
 	complete_effect = {
 		custom_effect_tooltip = decision_riches_found_processing_works_tt
-		add_political_power = constant:riches_found_decision_cost.pp_heavy_negative
 		add_equipment_to_stockpile = { type = support_equipment amount = constant:riches_found_decision_cost.support_heavy_negative }
 		add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:riches_found_decision_cost.motorized_standard_negative }
 		add_fuel = constant:riches_found_decision_cost.fuel_standard_negative
@@ -1504,7 +1502,6 @@ decision_riches_found_processing_works = {
 
 		}
 		else = {
-			add_political_power = constant:riches_found_decision_cost.pp_heavy
 			add_fuel = constant:riches_found_decision_cost.fuel_standard
 			add_equipment_to_stockpile = { type = support_equipment amount = constant:riches_found_decision_cost.support_heavy }
 			add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:riches_found_decision_cost.motorized_standard }
@@ -1564,12 +1561,11 @@ decision_riches_found_housing = {
 		riches_found_can_afford_housing = yes
 	}
 	custom_cost_text = riches_found_cost_housing
-	ai_hint_pp_cost = @RICHES_FOUND_AI_HINT_PP_STANDARD
+	modifier = { civilian_factory_use = @RICHES_FOUND_CIVILIAN_FACTORY_STANDARD }
 	days_remove = constant:riches_found_decision_duration.long_project
 	fire_only_once = no
 	complete_effect = {
 		custom_effect_tooltip = decision_riches_found_housing_tt
-		add_political_power = constant:riches_found_decision_cost.pp_standard_negative
 		add_manpower = constant:riches_found_decision_cost.manpower_heavy_negative
 		add_equipment_to_stockpile = { type = support_equipment amount = constant:riches_found_decision_cost.support_standard_negative }
 		add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:riches_found_decision_cost.motorized_standard_negative }
@@ -1597,7 +1593,6 @@ decision_riches_found_housing = {
 
 		}
 		else = {
-			add_political_power = constant:riches_found_decision_cost.pp_standard
 			add_manpower = constant:riches_found_decision_cost.manpower_heavy
 			add_equipment_to_stockpile = { type = support_equipment amount = constant:riches_found_decision_cost.support_standard }
 			add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:riches_found_decision_cost.motorized_standard }
@@ -4718,12 +4713,11 @@ decision_riches_found_repair = {
 		riches_found_country_can_start_restore_shaft_mission = yes
 	}
 	custom_cost_text = riches_found_cost_repair
-	ai_hint_pp_cost = @RICHES_FOUND_AI_HINT_PP_STANDARD
+	modifier = { civilian_factory_use = @RICHES_FOUND_CIVILIAN_FACTORY_STANDARD }
 	days_remove = constant:riches_found_decision_duration.long_project
 	fire_only_once = no
 	complete_effect = {
 		custom_effect_tooltip = decision_riches_found_repair_tt
-		add_political_power = constant:riches_found_decision_cost.pp_standard_negative
 		add_manpower = constant:riches_found_decision_cost.manpower_standard_negative
 		add_equipment_to_stockpile = { type = support_equipment amount = constant:riches_found_decision_cost.support_standard_negative }
 		add_fuel = constant:riches_found_decision_cost.fuel_standard_negative
@@ -4751,7 +4745,6 @@ decision_riches_found_repair = {
 			riches_found_refresh_mine_state = yes
 		}
 		else = {
-			add_political_power = constant:riches_found_decision_cost.pp_standard
 			add_manpower = constant:riches_found_decision_cost.manpower_standard
 			add_equipment_to_stockpile = { type = support_equipment amount = constant:riches_found_decision_cost.support_standard }
 			add_fuel = constant:riches_found_decision_cost.fuel_standard

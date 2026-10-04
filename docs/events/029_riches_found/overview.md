@@ -64,6 +64,11 @@ Renewal, expiry, publication, audit, nationalization, buyout, and payment integr
 
 The security and crisis layer includes mine police, private guards, army cordons, pay-route protection, raid responses, occupation administration, transfer settlements, temporary closure, repair, collapse response, restoration, permanent sealing, and cleanup. Mission sequence and cooldown proofs prevent repeated completions from farming counters, benefits, or achievement progress. Permanent historical disqualifiers are not cleared by ordinary mission cleanup.
 
+### Physical works
+
+Rail Spur, Port Route, Processing Works, Housing, Shaft Reinforcement, Sanitation and Repair commit two civilian factories (three for Processing Works) while they run, in place of political power.
+`common/scripted_effects/029_riches_found_works_effects.txt` adds one infrastructure level when the Rail Spur completes and one naval base level on the coast when the Port Route completes, and damages the naval base or infrastructure on destructive raids and the infrastructure on a closing collapse.
+
 ### Occupation and recapture
 
 Occupation choices belong to one occupation: `riches_found_clear_occupation_choices` clears them when the occupation ends or a different occupier takes over.
