@@ -113,3 +113,19 @@ Basis: Part 6 "restore a meaningful share of surviving pre-impact industrial and
 Decision: a mission whose named state leaves the country's control ends without any outcome.
 Only an expired mission applies failure consequences.
 Basis: Part 6 "missions cancel or transfer cleanly when the country ceases to control the required route".
+
+## Local emergencies and mission failure
+
+### Natural emergency closure
+
+Decision: emergency projects require a live local emergency (a rescue burden or the catastrophic, major, fragment-centre or heavy-fragment modifier).
+States with only outer-shock or light-fragment damage start with their emergency resolved, and the monthly recovery pass closes every other listed emergency once its burdens have ended.
+Basis: Part 6 phases urgent work before reconstruction; reconstruction actions required the resolved flag, which only a project could set, so states whose damage expired naturally never reached reconstruction.
+
+### Failure consequences
+
+Decision: an expired mission, once per named state and day, records a rescue-failure Deaths entry (1 percent of the state's population, 2 percent in the catastrophic ring or at a fragment centre, at most 25,000 people), brings back the state's ended impact-zone damage for 90 days, and applies the existing failure-pressure modifier and national recovery burden.
+Damage still running keeps its own timer, because the remaining days of a dynamic modifier cannot be read and re-adding it could shorten it.
+Emergency-class damage reopens the local emergency, so "failure keeps the emergency phase open" (Part 6).
+The temporary repair-cost increase is applied through the recovery cost quote.
+Basis: Part 6 failure lists "extend the state recovery modifier", "a bounded rescue-period death entry", and "raises future repair costs for a limited period".

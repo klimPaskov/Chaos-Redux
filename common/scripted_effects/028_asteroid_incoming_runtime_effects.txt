@@ -1305,6 +1305,7 @@ asteroid_incoming_apply_state_profile = {
 			add_to_variable = { global.asteroid_incoming_dust_fragment_points = constant:asteroid_incoming_dust.fragment_center_point }
 		}
 		asteroid_incoming_initialize_state_rescue_burden = yes
+		asteroid_incoming_register_local_emergency = yes
 		asteroid_incoming_aggregate_current_state = yes
 		asteroid_incoming_maybe_call_secondary_disaster = yes
 	}
@@ -1596,6 +1597,7 @@ asteroid_incoming_monthly_dust_update = {
 				check_variable = { global.asteroid_incoming_dust_score > constant:asteroid_incoming_dust.minimum }
 				has_global_flag = asteroid_incoming_local_recovery_active
 				check_variable = { global.asteroid_incoming_rescue_states^num > constant:asteroid_incoming_runtime.zero }
+				check_variable = { global.asteroid_incoming_emergency_states^num > constant:asteroid_incoming_runtime.zero }
 			}
 			OR = {
 				NOT = { has_variable = global.asteroid_incoming_last_monthly_update_day }
@@ -1610,6 +1612,7 @@ asteroid_incoming_monthly_dust_update = {
 # Internal monthly transaction after the public impact/date guard.
 asteroid_incoming_monthly_dust_update_apply = {
 	asteroid_incoming_process_monthly_rescue_deaths = yes
+	asteroid_incoming_process_emergency_closures = yes
 	if = {
 		limit = { check_variable = { global.asteroid_incoming_dust_score > 0 } }
 		set_temp_variable = { asteroid_incoming_old_dust_score = global.asteroid_incoming_dust_score }

@@ -590,10 +590,14 @@ asteroid_incoming_action_state_is_valid = {
 	}
 }
 
+# Emergency work needs a live local emergency: a rescue burden or an
+# emergency-class impact modifier. A state whose burdens have all expired is
+# closed by the monthly pass and moves on to reconstruction.
 asteroid_incoming_emergency_action_state_is_valid = {
 	hidden_trigger = {
 		asteroid_incoming_action_state_is_valid = yes
 		NOT = { has_state_flag = asteroid_incoming_local_emergency_resolved }
+		asteroid_incoming_state_has_active_local_emergency_burden = yes
 	}
 }
 

@@ -179,6 +179,47 @@ asteroid_incoming_close_state_emergency = {
 	add_to_variable = { asteroid_incoming_recovery_actions_completed = 1 }
 }
 
+# STATE SCOPE. At impact, a non-crater state with a live local emergency joins
+# the bounded monthly closure list; a state with only outer-shock or
+# light-fragment damage starts with its emergency already resolved.
+asteroid_incoming_register_local_emergency = {
+	if = {
+		limit = { NOT = { has_state_flag = asteroid_incoming_main_crater } }
+		if = {
+			limit = { asteroid_incoming_state_has_active_local_emergency_burden = yes }
+			if = {
+				limit = { NOT = { is_in_array = { array = global.asteroid_incoming_emergency_states value = THIS } } }
+				add_to_array = { array = global.asteroid_incoming_emergency_states value = THIS }
+			}
+		}
+		else = { set_state_flag = asteroid_incoming_local_emergency_resolved }
+	}
+}
+
+# GLOBAL-HOST SCOPE. Closes each listed local emergency once its rescue burden
+# and every emergency-class impact modifier have ended, which opens
+# reconstruction for that state. Closed states leave the list.
+asteroid_incoming_process_emergency_closures = {
+	clear_array = global.asteroid_incoming_emergency_states_next
+	for_each_scope_loop = {
+		array = global.asteroid_incoming_emergency_states
+		if = {
+			limit = {
+				NOT = { has_state_flag = asteroid_incoming_local_emergency_resolved }
+				asteroid_incoming_state_has_active_local_emergency_burden = yes
+			}
+			add_to_array = { array = global.asteroid_incoming_emergency_states_next value = THIS }
+		}
+		else = { set_state_flag = asteroid_incoming_local_emergency_resolved }
+	}
+	clear_array = global.asteroid_incoming_emergency_states
+	for_each_scope_loop = {
+		array = global.asteroid_incoming_emergency_states_next
+		add_to_array = { array = global.asteroid_incoming_emergency_states value = THIS }
+	}
+	clear_array = global.asteroid_incoming_emergency_states_next
+}
+
 # COUNTRY SCOPE. Bounded global mitigation from an accepted action.
 asteroid_incoming_add_mitigation = {
 	if = { limit = { NOT = { has_variable = global.asteroid_incoming_mitigation_points } } set_variable = { global.asteroid_incoming_mitigation_points = 0 } }
@@ -1006,12 +1047,123 @@ asteroid_incoming_regional_mission_success = {
 	asteroid_incoming_clear_economy_mission = yes
 }
 
-# STATE SCOPE, failing country in PREV. Applies the local consequence of an
-# expired mission to one named state the country still holds.
+# STATE SCOPE, failing country in PREV. Applies the local consequences of an
+# expired mission to one named state the country still holds, at most once per
+# state and day: a bounded rescue-failure death entry, the return of ended
+# impact damage, and renewed recovery pressure.
 asteroid_incoming_apply_mission_failure_to_state = {
-	add_dynamic_modifier = {
-		modifier = asteroid_incoming_mission_failure_pressure
-		days = constant:asteroid_incoming_recovery.mission_failure_pressure_days
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = asteroid_incoming_mission_failure_day }
+				NOT = { check_variable = { asteroid_incoming_mission_failure_day = global.num_days } }
+			}
+		}
+		set_variable = { asteroid_incoming_mission_failure_day = global.num_days }
+		asteroid_incoming_apply_mission_failure_deaths = yes
+		asteroid_incoming_reapply_state_impact_damage = yes
+		add_dynamic_modifier = {
+			modifier = asteroid_incoming_mission_failure_pressure
+			days = constant:asteroid_incoming_recovery.mission_failure_pressure_days
+		}
+	}
+}
+
+# STATE SCOPE. Records the people lost when relief fails as one Deaths entry
+# through the shared protected civilian-loss contract. The loss is a constant
+# share of the current population, doubled for the catastrophic ring and
+# fragment centres, and capped in people.
+asteroid_incoming_apply_mission_failure_deaths = {
+	set_temp_variable = { asteroid_incoming_failure_death_fraction = constant:asteroid_incoming_recovery_fraction.rescue_death_fraction }
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.main_ring_one compare = equals }
+				check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.fragment_center compare = equals }
+			}
+		}
+		set_temp_variable = { asteroid_incoming_failure_death_fraction = constant:asteroid_incoming_recovery_fraction.rescue_death_fraction_heavy }
+	}
+	set_temp_variable = { asteroid_incoming_failure_deaths_requested = state_population_k }
+	multiply_temp_variable = { asteroid_incoming_failure_deaths_requested = constant:chaos_meter_deaths.people_per_k }
+	multiply_temp_variable = { asteroid_incoming_failure_deaths_requested = asteroid_incoming_failure_death_fraction }
+	clamp_temp_variable = {
+		var = asteroid_incoming_failure_deaths_requested
+		min = constant:asteroid_incoming_runtime.zero
+		max = constant:asteroid_incoming_recovery_fraction.rescue_death_cap_people
+	}
+	round_temp_variable = asteroid_incoming_failure_deaths_requested
+	if = {
+		limit = { check_variable = { asteroid_incoming_failure_deaths_requested > constant:asteroid_incoming_runtime.zero } }
+		set_temp_variable = { state_civilian_population_loss_contract_supplied = constant:asteroid_incoming_runtime.one }
+		set_temp_variable = { state_civilian_population_loss_requested = asteroid_incoming_failure_deaths_requested }
+		set_temp_variable = { state_civilian_population_loss_minimum_remaining = constant:asteroid_incoming_population_loss.rescue_minimum_remaining_people }
+		set_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.asteroid_rescue_failure }
+		set_temp_variable = { state_civilian_population_loss_log_deaths = constant:asteroid_incoming_runtime.one }
+		set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
+		set_temp_variable = { state_civilian_population_loss_has_target_country = constant:asteroid_incoming_runtime.one }
+		apply_exact_state_civilian_population_loss = yes
+	}
+}
+
+# STATE SCOPE. Brings back the state's impact-zone damage for a constant period
+# when it has already ended; damage that is still running keeps its timer.
+# Emergency-class damage reopens the local emergency, which rejoins the
+# monthly closure list.
+asteroid_incoming_reapply_state_impact_damage = {
+	set_temp_variable = { asteroid_incoming_failure_damage_days = constant:asteroid_incoming_recovery.mission_failure_recovery_days }
+	if = {
+		limit = { check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.main_ring_one compare = equals } }
+		if = {
+			limit = { NOT = { has_dynamic_modifier = { modifier = asteroid_incoming_catastrophic_impact_zone } } }
+			add_dynamic_modifier = { modifier = asteroid_incoming_catastrophic_impact_zone days = asteroid_incoming_failure_damage_days }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.main_ring_two compare = equals } }
+		if = {
+			limit = { NOT = { has_dynamic_modifier = { modifier = asteroid_incoming_major_impact_zone } } }
+			add_dynamic_modifier = { modifier = asteroid_incoming_major_impact_zone days = asteroid_incoming_failure_damage_days }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.main_ring_three compare = equals } }
+		if = {
+			limit = { NOT = { has_dynamic_modifier = { modifier = asteroid_incoming_outer_shock_zone } } }
+			add_dynamic_modifier = { modifier = asteroid_incoming_outer_shock_zone days = asteroid_incoming_failure_damage_days }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.fragment_center compare = equals } }
+		if = {
+			limit = { NOT = { has_dynamic_modifier = { modifier = asteroid_incoming_fragment_center_recovery } } }
+			add_dynamic_modifier = { modifier = asteroid_incoming_fragment_center_recovery days = asteroid_incoming_failure_damage_days }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.fragment_ring_one compare = equals } }
+		if = {
+			limit = { NOT = { has_dynamic_modifier = { modifier = asteroid_incoming_heavy_fragment_damage } } }
+			add_dynamic_modifier = { modifier = asteroid_incoming_heavy_fragment_damage days = asteroid_incoming_failure_damage_days }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.fragment_ring_two compare = equals } }
+		if = {
+			limit = { NOT = { has_dynamic_modifier = { modifier = asteroid_incoming_light_fragment_damage } } }
+			add_dynamic_modifier = { modifier = asteroid_incoming_light_fragment_damage days = asteroid_incoming_failure_damage_days }
+		}
+	}
+	if = {
+		limit = {
+			has_state_flag = asteroid_incoming_local_emergency_resolved
+			asteroid_incoming_state_has_active_local_emergency_burden = yes
+		}
+		clr_state_flag = asteroid_incoming_local_emergency_resolved
+		if = {
+			limit = { NOT = { is_in_array = { array = global.asteroid_incoming_emergency_states value = THIS } } }
+			add_to_array = { array = global.asteroid_incoming_emergency_states value = THIS }
+		}
 	}
 }
 
