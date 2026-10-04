@@ -106,6 +106,9 @@ murder_mystery_triggerable_scenario_launch = {
 	}
 }
 
+# Scenario setup commits each missing stage up to the requested intensity in
+# order. A stage disabled in Event Details is a ceiling: it and every later
+# stage stay uncommitted, and each committed stage records one history row.
 murder_mystery_commit_scenario_evolution_stage = {
 	if = {
 		limit = {
@@ -115,38 +118,49 @@ murder_mystery_commit_scenario_evolution_stage = {
 			check_variable = { var = murder_mystery_scenario_stage_input value = constant:murder_mystery_evolution.stage_v compare = less_than }
 			check_variable = { var = murder_mystery_scenario_stage_input value = global.murder_mystery_evolution_stage compare = greater_than }
 		}
-		set_variable = { global.murder_mystery_evolution_stage = murder_mystery_scenario_stage_input }
-		if = {
-			limit = { check_variable = { var = murder_mystery_scenario_stage_input value = constant:murder_mystery_evolution.stage_i compare = greater_than_or_equals } }
-			set_global_flag = murder_mystery_evolution_i_committed
-			set_global_flag = murder_mystery_murder_cult_revealed
-			set_variable = { global.murder_mystery_lifecycle = constant:murder_mystery_lifecycle.murder_cult }
+		set_temp_variable = { murder_mystery_evolution_stage_check = global.murder_mystery_evolution_stage }
+		add_to_temp_variable = { murder_mystery_evolution_stage_check = constant:murder_mystery_identity.loop_increment }
+		while_loop_effect = {
+			limit = {
+				check_variable = { var = murder_mystery_evolution_stage_check value = murder_mystery_scenario_stage_input compare = less_than_or_equals }
+				murder_mystery_evolution_stage_check_is_enabled = yes
+			}
+			set_variable = { global.murder_mystery_evolution_stage = murder_mystery_evolution_stage_check }
+			if = {
+				limit = { check_variable = { var = murder_mystery_evolution_stage_check value = constant:murder_mystery_evolution.stage_i compare = equals } }
+				set_global_flag = murder_mystery_evolution_i_committed
+				set_global_flag = murder_mystery_murder_cult_revealed
+				set_variable = { global.murder_mystery_lifecycle = constant:murder_mystery_lifecycle.murder_cult }
+			}
+			else_if = {
+				limit = { check_variable = { var = murder_mystery_evolution_stage_check value = constant:murder_mystery_evolution.stage_ii compare = equals } }
+				set_global_flag = murder_mystery_evolution_ii_committed
+				set_global_flag = murder_mystery_international_network_open
+				set_variable = { global.murder_mystery_active_cell_cap = constant:murder_mystery_cell.mature_cap }
+				set_variable = { global.murder_mystery_lifecycle = constant:murder_mystery_lifecycle.international_network }
+			}
+			else_if = {
+				limit = { check_variable = { var = murder_mystery_evolution_stage_check value = constant:murder_mystery_evolution.stage_iii compare = equals } }
+				set_global_flag = murder_mystery_evolution_iii_committed
+				set_global_flag = murder_mystery_territorial_movement_open
+				set_variable = { global.murder_mystery_active_cell_cap = constant:murder_mystery_cell.stage_iii_cap }
+				set_variable = { global.murder_mystery_lifecycle = constant:murder_mystery_lifecycle.territorial_movement }
+			}
+			else_if = {
+				limit = { check_variable = { var = murder_mystery_evolution_stage_check value = constant:murder_mystery_evolution.stage_iv compare = equals } }
+				set_global_flag = murder_mystery_evolution_iv_committed
+				set_global_flag = murder_mystery_veiled_compact_open
+				set_variable = { global.murder_mystery_active_cell_cap = constant:murder_mystery_cell.stage_iv_cap }
+				set_variable = { global.murder_mystery_lifecycle = constant:murder_mystery_lifecycle.brotherhood_system }
+			}
+			set_temp_variable = { murder_mystery_log_stage = murder_mystery_evolution_stage_check }
+			murder_mystery_record_scenario_evolution_history = yes
+			add_to_temp_variable = { murder_mystery_evolution_stage_check = constant:murder_mystery_identity.loop_increment }
 		}
-		if = {
-			limit = { check_variable = { var = murder_mystery_scenario_stage_input value = constant:murder_mystery_evolution.stage_ii compare = greater_than_or_equals } }
-			set_global_flag = murder_mystery_evolution_ii_committed
-			set_global_flag = murder_mystery_international_network_open
-			set_variable = { global.murder_mystery_active_cell_cap = constant:murder_mystery_cell.mature_cap }
-			set_variable = { global.murder_mystery_lifecycle = constant:murder_mystery_lifecycle.international_network }
-		}
-		if = {
-			limit = { check_variable = { var = murder_mystery_scenario_stage_input value = constant:murder_mystery_evolution.stage_iii compare = greater_than_or_equals } }
-			set_global_flag = murder_mystery_evolution_iii_committed
-			set_global_flag = murder_mystery_territorial_movement_open
-			set_variable = { global.murder_mystery_active_cell_cap = constant:murder_mystery_cell.stage_iii_cap }
-			set_variable = { global.murder_mystery_lifecycle = constant:murder_mystery_lifecycle.territorial_movement }
-		}
-		if = {
-			limit = { check_variable = { var = murder_mystery_scenario_stage_input value = constant:murder_mystery_evolution.stage_iv compare = greater_than_or_equals } }
-			set_global_flag = murder_mystery_evolution_iv_committed
-			set_global_flag = murder_mystery_veiled_compact_open
-			set_variable = { global.murder_mystery_active_cell_cap = constant:murder_mystery_cell.stage_iv_cap }
-			set_variable = { global.murder_mystery_lifecycle = constant:murder_mystery_lifecycle.brotherhood_system }
-		}
-		murder_mystery_record_scenario_evolution_history = yes
 	}
 }
 
+# COUNTRY scope. Input: temp murder_mystery_log_stage.
 murder_mystery_record_scenario_evolution_history = {
 	if = {
 		limit = {
@@ -155,15 +169,27 @@ murder_mystery_record_scenario_evolution_history = {
 			check_variable = { var = global.murder_mystery_scenario_evolution_history_count value = constant:murder_mystery_registry.maximum_evolution_milestones compare = less_than }
 		}
 		add_to_variable = { global.murder_mystery_scenario_evolution_history_count = constant:murder_mystery_value.one }
-		set_variable = { global.murder_mystery_scenario_last_evolution = global.murder_mystery_evolution_stage }
-		set_temp_variable = { events_log_evolution_type = constant:event_system_event_type.fire_once }
-		set_temp_variable = { events_log_evolution_stage = global.murder_mystery_evolution_stage }
-		set_temp_variable = { events_log_evolution_event_id = constant:murder_mystery_identity.event_id }
-		set_temp_variable = { events_log_evolution_tier = constant:murder_mystery_value.one }
-		set_temp_variable = { events_log_evolution_has_actor = constant:murder_mystery_value.one }
-		set_temp_variable = { events_log_evolution_actor = THIS.id }
-		record_events_log_evolution_entry = yes
+		set_variable = { global.murder_mystery_scenario_last_evolution = murder_mystery_log_stage }
+		murder_mystery_record_evolution_log_entry = yes
 	}
+}
+
+# COUNTRY actor scope. Input: temp murder_mystery_log_stage (stage_i to stage_v).
+# Records one Events Log evolution row under Event 39's own evolution type,
+# with the stage's Chaos tier, so Event Details and the history views resolve
+# the Murder Mystery titles and descriptions.
+murder_mystery_record_evolution_log_entry = {
+	set_temp_variable = { events_log_evolution_event_id = constant:murder_mystery_identity.event_id }
+	set_temp_variable = { events_log_evolution_type = constant:murder_mystery_evolution_log.evolution_type }
+	set_temp_variable = { events_log_evolution_stage = murder_mystery_log_stage }
+	set_temp_variable = { events_log_evolution_tier = constant:murder_mystery_evolution_log.tier_i }
+	if = { limit = { check_variable = { var = murder_mystery_log_stage value = constant:murder_mystery_evolution_log.stage_ii compare = equals } } set_temp_variable = { events_log_evolution_tier = constant:murder_mystery_evolution_log.tier_ii } }
+	if = { limit = { check_variable = { var = murder_mystery_log_stage value = constant:murder_mystery_evolution_log.stage_iii compare = equals } } set_temp_variable = { events_log_evolution_tier = constant:murder_mystery_evolution_log.tier_iii } }
+	if = { limit = { check_variable = { var = murder_mystery_log_stage value = constant:murder_mystery_evolution_log.stage_iv compare = equals } } set_temp_variable = { events_log_evolution_tier = constant:murder_mystery_evolution_log.tier_iv } }
+	if = { limit = { check_variable = { var = murder_mystery_log_stage value = constant:murder_mystery_evolution_log.stage_v compare = equals } } set_temp_variable = { events_log_evolution_tier = constant:murder_mystery_evolution_log.tier_v } }
+	set_temp_variable = { events_log_evolution_has_actor = constant:murder_mystery_value.one }
+	set_temp_variable = { events_log_evolution_actor = THIS.id }
+	record_events_log_evolution_entry = yes
 }
 
 murder_mystery_apply_scenario_setup = {
@@ -230,7 +256,10 @@ murder_mystery_apply_scenario_setup = {
 			}
 		}
 		if = {
-			limit = { check_variable = { var = global.murder_mystery_scenario_launch_intensity value = constant:triggerable_scenario_intensity.high compare = greater_than_or_equals } }
+			limit = {
+				check_variable = { var = global.murder_mystery_scenario_launch_intensity value = constant:triggerable_scenario_intensity.high compare = greater_than_or_equals }
+				has_global_flag = murder_mystery_evolution_iii_committed
+			}
 			set_variable = { murder_mystery_requested_split_share = constant:murder_mystery_scenario.scenario_high_split_share }
 			murder_mystery_select_assassin_state_cluster = yes
 			murder_mystery_create_assassin_state_candidate = yes
@@ -239,6 +268,7 @@ murder_mystery_apply_scenario_setup = {
 		if = {
 			limit = {
 				check_variable = { var = global.murder_mystery_scenario_launch_intensity value = constant:triggerable_scenario_intensity.maximum compare = equals }
+				has_global_flag = murder_mystery_evolution_iv_committed
 				has_global_flag = murder_mystery_assassin_state_exists
 			}
 			set_variable = { global.murder_mystery_scenario_derivatives_target = constant:murder_mystery_scenario.scenario_maximum_derivatives }
@@ -525,15 +555,23 @@ murder_mystery_commit_opening_transaction = {
 			murder_mystery_record_incident = yes
 			murder_mystery_mark_opening_shock_complete = yes
 			clear_global_event_target = murder_mystery_opening_leader_character
-			set_temp_variable = { events_log_system_event_id = constant:murder_mystery_identity.event_id }
-			set_temp_variable = { events_log_system_event_type = constant:event_system_event_type.fire_once }
-			set_temp_variable = { events_log_system_payload = constant:murder_mystery_identity.event_id }
-			set_temp_variable = { events_log_system_actor = THIS.id }
-			set_temp_variable = { events_log_system_has_actor = constant:murder_mystery_value.one }
-			set_temp_variable = { events_log_system_secondary_actor = constant:murder_mystery_value.zero }
-			set_temp_variable = { events_log_system_has_secondary_actor = constant:murder_mystery_value.zero }
-			record_events_log_system_history_entry = yes
-			refresh_events_log_system_history_views = yes
+			# The event pool records a natural or manual fire itself. Only the
+			# scenario opening, which bypasses the pool, adds its own history row.
+			if = {
+				limit = { has_global_flag = murder_mystery_scenario_launch_in_progress }
+				set_temp_variable = { event_id = constant:murder_mystery_identity.event_id }
+				set_temp_variable = { event_type = constant:event_system_event_type.unknown }
+				get_event_type = yes
+				set_temp_variable = { events_log_system_event_id = constant:murder_mystery_identity.event_id }
+				set_temp_variable = { events_log_system_event_type = event_type }
+				set_temp_variable = { events_log_system_payload = constant:murder_mystery_identity.event_id }
+				set_temp_variable = { events_log_system_actor = THIS.id }
+				set_temp_variable = { events_log_system_has_actor = constant:murder_mystery_value.one }
+				set_temp_variable = { events_log_system_secondary_actor = constant:murder_mystery_value.zero }
+				set_temp_variable = { events_log_system_has_secondary_actor = constant:murder_mystery_value.zero }
+				record_events_log_system_history_entry = yes
+				refresh_events_log_system_history_views = yes
+			}
 			country_event = { id = chaosx.nr39.2 days = 1 }
 		}
 	}
@@ -1508,13 +1546,8 @@ murder_mystery_prepare_evolution_commit = {
 		if = { limit = { has_global_flag = murder_mystery_evolution_iv_committed } set_variable = { global.murder_mystery_active_cell_cap = constant:murder_mystery_cell.stage_iv_cap } }
 		if = { limit = { has_global_flag = murder_mystery_evolution_v_committed } set_variable = { global.murder_mystery_active_cell_cap = constant:murder_mystery_cell.stage_v_cap } }
 		murder_mystery_record_evolution_milestone = yes
-		set_temp_variable = { events_log_evolution_type = constant:event_system_event_type.fire_once }
-		set_temp_variable = { events_log_evolution_stage = global.murder_mystery_evolution_stage }
-		set_temp_variable = { events_log_evolution_event_id = constant:murder_mystery_identity.event_id }
-		set_temp_variable = { events_log_evolution_tier = constant:murder_mystery_value.one }
-		set_temp_variable = { events_log_evolution_has_actor = constant:murder_mystery_value.one }
-		set_temp_variable = { events_log_evolution_actor = THIS.id }
-		record_events_log_evolution_entry = yes
+		set_temp_variable = { murder_mystery_log_stage = global.murder_mystery_evolution_stage }
+		murder_mystery_record_evolution_log_entry = yes
 		if = { limit = { check_variable = { var = global.murder_mystery_evolution_stage value = constant:murder_mystery_evolution.stage_i compare = equals } } country_event = { id = chaosx.nr39.30 days = 1 } }
 		if = { limit = { check_variable = { var = global.murder_mystery_evolution_stage value = constant:murder_mystery_evolution.stage_ii compare = equals } } country_event = { id = chaosx.nr39.31 days = 1 } }
 		if = { limit = { check_variable = { var = global.murder_mystery_evolution_stage value = constant:murder_mystery_evolution.stage_iii compare = equals } } country_event = { id = chaosx.nr39.32 days = 1 } }

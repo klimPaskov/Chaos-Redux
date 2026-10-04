@@ -568,7 +568,7 @@ murder_mystery_derivative_postconditions_are_valid = {
 
 murder_mystery_evolution_i_is_ready = {
 	murder_mystery_runtime_is_active = yes
-	is_current_evolution_enabled = yes
+	NOT = { has_global_flag = events_log_disabled_evolution_39_39_1 }
 	has_variable = global.chaos_meter_value
 	check_variable = { var = global.chaos_meter_value value = constant:murder_mystery_evolution.chaos_stage_i compare = greater_than_or_equals }
 	check_variable = { var = global.murder_mystery_evolution_stage value = constant:murder_mystery_evolution.baseline compare = equals }
@@ -583,7 +583,7 @@ murder_mystery_evolution_i_is_ready = {
 
 murder_mystery_evolution_ii_is_ready = {
 	murder_mystery_runtime_is_active = yes
-	is_current_evolution_enabled = yes
+	NOT = { has_global_flag = events_log_disabled_evolution_39_39_2 }
 	has_variable = global.chaos_meter_value
 	check_variable = { var = global.chaos_meter_value value = constant:murder_mystery_evolution.chaos_stage_ii compare = greater_than_or_equals }
 	check_variable = { var = global.murder_mystery_evolution_stage value = constant:murder_mystery_evolution.stage_i compare = equals }
@@ -600,7 +600,7 @@ murder_mystery_evolution_ii_is_ready = {
 
 murder_mystery_evolution_iii_is_ready = {
 	murder_mystery_runtime_is_active = yes
-	is_current_evolution_enabled = yes
+	NOT = { has_global_flag = events_log_disabled_evolution_39_39_3 }
 	has_variable = global.chaos_meter_value
 	check_variable = { var = global.chaos_meter_value value = constant:murder_mystery_evolution.chaos_stage_iii compare = greater_than_or_equals }
 	check_variable = { var = global.murder_mystery_evolution_stage value = constant:murder_mystery_evolution.stage_ii compare = equals }
@@ -616,7 +616,7 @@ murder_mystery_evolution_iii_is_ready = {
 
 murder_mystery_evolution_iv_is_ready = {
 	murder_mystery_runtime_is_active = yes
-	is_current_evolution_enabled = yes
+	NOT = { has_global_flag = events_log_disabled_evolution_39_39_4 }
 	has_variable = global.chaos_meter_value
 	check_variable = { var = global.chaos_meter_value value = constant:murder_mystery_evolution.chaos_stage_iv compare = greater_than_or_equals }
 	check_variable = { var = global.murder_mystery_evolution_stage value = constant:murder_mystery_evolution.stage_iii compare = equals }
@@ -632,7 +632,7 @@ murder_mystery_evolution_iv_is_ready = {
 
 murder_mystery_evolution_v_is_ready = {
 	murder_mystery_runtime_is_active = yes
-	is_current_evolution_enabled = yes
+	NOT = { has_global_flag = events_log_disabled_evolution_39_39_5 }
 	has_variable = global.chaos_meter_value
 	check_variable = { var = global.chaos_meter_value value = constant:murder_mystery_evolution.chaos_stage_v compare = greater_than_or_equals }
 	check_variable = { var = global.murder_mystery_evolution_stage value = constant:murder_mystery_evolution.stage_iv compare = equals }
@@ -641,6 +641,33 @@ murder_mystery_evolution_v_is_ready = {
 	has_global_flag = murder_mystery_world_branch_enabled
 	NOT = { has_global_flag = world_end }
 	NOT = { has_global_flag = murder_mystery_evolution_v_committed }
+}
+
+# Event Details stores a disabled stage as events_log_disabled_evolution_<event>_<type>_<stage>.
+# Input: temp murder_mystery_evolution_stage_check (stage_i to stage_v).
+murder_mystery_evolution_stage_check_is_enabled = {
+	OR = {
+		AND = {
+			check_variable = { var = murder_mystery_evolution_stage_check value = constant:murder_mystery_evolution_log.stage_i compare = equals }
+			NOT = { has_global_flag = events_log_disabled_evolution_39_39_1 }
+		}
+		AND = {
+			check_variable = { var = murder_mystery_evolution_stage_check value = constant:murder_mystery_evolution_log.stage_ii compare = equals }
+			NOT = { has_global_flag = events_log_disabled_evolution_39_39_2 }
+		}
+		AND = {
+			check_variable = { var = murder_mystery_evolution_stage_check value = constant:murder_mystery_evolution_log.stage_iii compare = equals }
+			NOT = { has_global_flag = events_log_disabled_evolution_39_39_3 }
+		}
+		AND = {
+			check_variable = { var = murder_mystery_evolution_stage_check value = constant:murder_mystery_evolution_log.stage_iv compare = equals }
+			NOT = { has_global_flag = events_log_disabled_evolution_39_39_4 }
+		}
+		AND = {
+			check_variable = { var = murder_mystery_evolution_stage_check value = constant:murder_mystery_evolution_log.stage_v compare = equals }
+			NOT = { has_global_flag = events_log_disabled_evolution_39_39_5 }
+		}
+	}
 }
 
 murder_mystery_any_evolution_is_ready = {
