@@ -188,6 +188,23 @@ Each condition that currently holds adds `step_gain`; fewer than the track minim
 Crisis responses are reusable: revenue distributions and Gold Disease measures last a set number of days and can be renewed, assistance stays for a year, and the capture choices toggle against nationalization and the independent authority. Projects (funds, sealing the deep sections) and population-affecting actions (purge, evacuation) stay one-time per mine, and the corruption bribe pays only once.
 The first unmet condition of the highest-priority active track becomes the category header objective, and containment queues one report (`chaosx.nr29.121` to `.123`).
 
+## Chaos Meter
+
+`riches_found_apply_chaos_source` changes the shared Chaos Meter through `add_chaos_meter_value` with the Riches Found history reason (`chaos_meter_history_reason.special.riches_found`) and the mine's controller as history actor.
+Each source applies at most once per mine through its own receipt flag (`riches_found_chaos_<source>_applied`), so closures, reopenings, repeated raids and transfers cannot farm it, and the mine's output never adds chaos.
+The changes are in `riches_found_chaos_change`:
+
+| Source | Trigger | Change |
+| --- | --- | --- |
+| Lasting public settlement | Complete the Public Settlement succeeds | -4 |
+| Claim war | Claim jumpers, a violent eviction or a rival claimant arm the workings | +3 |
+| Major raid | A destructive or lethal raid | +3 |
+| Corrupt seizure | Nationalize without Compensation or Violent Nationalization | +4 |
+| Massacre | Mass death inflicted by people at the mine (not a collapse) | +10 |
+| Foreign intervention | Foreign military intervention is recorded | +8 |
+| Catastrophic collapse | The catastrophic collapse incident | +10 |
+| Demonic bargain | Make an Agreement or the Bottomless Account opens | +12 |
+
 ## AI and probability contract
 
 AI willingness is centralized through Event 029 constants and file-scoped aliases for country scale, ideology, war pressure, desperation, occupation, neighboring interest, concession seeking, raiding, multiple-mine burden, public-value thresholds, route state, and crisis state. Controller, occupier, partner, neighbor, and raider behavior is evaluated through the named scenarios in `docs/specs/029_riches_found_specs/029_riches_found_ai_probability_scenarios.md`.

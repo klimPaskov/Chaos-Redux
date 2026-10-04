@@ -60,6 +60,12 @@ riches_found_apply_harm_record = {
 			}
 			set_state_flag = riches_found_mass_death_occurred
 			riches_found_record_achievement_mass_death = yes
+			# Mass killing by people is a massacre; a collapse has its own source.
+			if = {
+				limit = { NOT = { check_variable = { var = riches_found_harm_context value = constant:condemnation_context.observer_report compare = equals } } }
+				set_temp_variable = { riches_found_chaos_source = constant:riches_found_chaos_source.massacre }
+				riches_found_apply_chaos_source = yes
+			}
 			if = {
 				limit = { CONTROLLER = { exists = yes } }
 				CONTROLLER = { set_country_flag = riches_found_mass_death_occurred }

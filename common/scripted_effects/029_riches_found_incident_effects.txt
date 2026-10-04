@@ -33,6 +33,18 @@ riches_found_reset_incident_deltas = {
 # review. Good management spaces incidents farther apart; a crisis shortens
 # the interval without making any single candidate certain.
 riches_found_finish_incident = {
+	# Armed claimants fighting over the workings are a claim war.
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = riches_found_incident_kind value = constant:riches_found_incident_kind.claims_jumpers compare = equals }
+				check_variable = { var = riches_found_incident_kind value = constant:riches_found_incident_kind.claims_violent_eviction compare = equals }
+				check_variable = { var = riches_found_incident_kind value = constant:riches_found_incident_kind.contract_rival_claimant compare = equals }
+			}
+		}
+		set_temp_variable = { riches_found_chaos_source = constant:riches_found_chaos_source.claim_war }
+		riches_found_apply_chaos_source = yes
+	}
 	add_to_variable = { riches_found_extraction_pressure = riches_found_incident_pressure_delta }
 	add_to_variable = { riches_found_mine_development = riches_found_incident_development_delta }
 	add_to_variable = { riches_found_local_order = riches_found_incident_order_delta }
@@ -579,6 +591,8 @@ riches_found_apply_raid_consequence = {
 		set_temp_variable = { riches_found_incident_collapse_delta = constant:riches_found_incident_delta.standard }
 		set_state_flag = riches_found_mine_damaged
 		riches_found_damage_raided_works = yes
+		set_temp_variable = { riches_found_chaos_source = constant:riches_found_chaos_source.major_raid }
+		riches_found_apply_chaos_source = yes
 	}
 	else_if = {
 		limit = { check_variable = { var = riches_found_raid_severity value = constant:riches_found_raid_severity.lethal compare = equals } }
@@ -588,6 +602,8 @@ riches_found_apply_raid_consequence = {
 		set_state_flag = riches_found_mine_damaged
 		riches_found_damage_raided_works = yes
 		riches_found_record_raid_harm = yes
+		set_temp_variable = { riches_found_chaos_source = constant:riches_found_chaos_source.major_raid }
+		riches_found_apply_chaos_source = yes
 	}
 	if = {
 		limit = {
@@ -683,6 +699,11 @@ riches_found_run_collapse_incident_pool = {
 		riches_found_collapse_mine = yes
 		set_state_flag = riches_found_severe_collapse
 		set_state_flag = riches_found_mine_damaged
+		if = {
+			limit = { check_variable = { var = riches_found_incident_kind value = constant:riches_found_incident_kind.collapse_catastrophic compare = equals } }
+			set_temp_variable = { riches_found_chaos_source = constant:riches_found_chaos_source.catastrophic_collapse }
+			riches_found_apply_chaos_source = yes
+		}
 	}
 }
 

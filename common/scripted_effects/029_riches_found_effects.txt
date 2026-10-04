@@ -2956,6 +2956,8 @@ riches_found_enter_bottomless_account = {
 		set_state_flag = riches_found_account_active
 		riches_found_start_account_obligation = yes
 		riches_found_record_achievement_bottomless_account = yes
+		set_temp_variable = { riches_found_chaos_source = constant:riches_found_chaos_source.demonic_bargain }
+		riches_found_apply_chaos_source = yes
 		# The open account becomes the mine's current layer.
 		riches_found_refresh_mine_presentation = yes
 		set_temp_variable = { riches_found_report_input_kind = constant:riches_found_report.bottomless_account }
@@ -3082,6 +3084,8 @@ riches_found_record_achievement_foreign_intervention = {
 	set_variable = { riches_found_achievement_foreign_intervention = constant:riches_found_value.one }
 	set_state_flag = riches_found_foreign_intervention_history
 	set_variable = { riches_found_last_foreign_intervention_date = global.date }
+	set_temp_variable = { riches_found_chaos_source = constant:riches_found_chaos_source.foreign_intervention }
+	riches_found_apply_chaos_source = yes
 	if = {
 		limit = { has_state_flag = riches_found_achievement_gilded_history }
 		set_state_flag = riches_found_achievement_foreign_intervention_recorded
@@ -3164,4 +3168,102 @@ riches_found_mark_foreign_intervention = {
 
 riches_found_mark_mass_death = {
 	riches_found_record_achievement_mass_death = yes
+}
+
+# ---------------------------------------------------------------------------
+# Chaos Meter
+# ---------------------------------------------------------------------------
+
+# STATE scope. Changes the Chaos Meter once per mine for one Event 029 source:
+# a lasting public settlement lowers it a little; a claim war, a major raid or
+# a corrupt seizure raises it a little; a massacre, foreign intervention, a
+# catastrophic collapse or a demonic bargain raises it more. Input: temporary
+# riches_found_chaos_source (a riches_found_chaos_source id), reset on exit.
+# Each source keeps its own receipt flag on the mine, so a closure, a
+# reopening, repeated raids or a transfer cannot apply it again. The current
+# controller is the history actor under the Riches Found history reason.
+riches_found_apply_chaos_source = {
+	if = {
+		limit = {
+			riches_found_mine_is_registered = yes
+			CONTROLLER = { exists = yes }
+			has_variable = riches_found_chaos_source
+		}
+		set_temp_variable = { riches_found_chaos_delta = constant:riches_found_value.zero }
+		if = {
+			limit = {
+				check_variable = { var = riches_found_chaos_source value = constant:riches_found_chaos_source.public_settlement compare = equals }
+				NOT = { has_state_flag = riches_found_chaos_public_settlement_applied }
+			}
+			set_state_flag = riches_found_chaos_public_settlement_applied
+			set_temp_variable = { riches_found_chaos_delta = constant:riches_found_chaos_change.public_settlement }
+		}
+		else_if = {
+			limit = {
+				check_variable = { var = riches_found_chaos_source value = constant:riches_found_chaos_source.claim_war compare = equals }
+				NOT = { has_state_flag = riches_found_chaos_claim_war_applied }
+			}
+			set_state_flag = riches_found_chaos_claim_war_applied
+			set_temp_variable = { riches_found_chaos_delta = constant:riches_found_chaos_change.claim_war }
+		}
+		else_if = {
+			limit = {
+				check_variable = { var = riches_found_chaos_source value = constant:riches_found_chaos_source.major_raid compare = equals }
+				NOT = { has_state_flag = riches_found_chaos_major_raid_applied }
+			}
+			set_state_flag = riches_found_chaos_major_raid_applied
+			set_temp_variable = { riches_found_chaos_delta = constant:riches_found_chaos_change.major_raid }
+		}
+		else_if = {
+			limit = {
+				check_variable = { var = riches_found_chaos_source value = constant:riches_found_chaos_source.corrupt_seizure compare = equals }
+				NOT = { has_state_flag = riches_found_chaos_corrupt_seizure_applied }
+			}
+			set_state_flag = riches_found_chaos_corrupt_seizure_applied
+			set_temp_variable = { riches_found_chaos_delta = constant:riches_found_chaos_change.corrupt_seizure }
+		}
+		else_if = {
+			limit = {
+				check_variable = { var = riches_found_chaos_source value = constant:riches_found_chaos_source.massacre compare = equals }
+				NOT = { has_state_flag = riches_found_chaos_massacre_applied }
+			}
+			set_state_flag = riches_found_chaos_massacre_applied
+			set_temp_variable = { riches_found_chaos_delta = constant:riches_found_chaos_change.massacre }
+		}
+		else_if = {
+			limit = {
+				check_variable = { var = riches_found_chaos_source value = constant:riches_found_chaos_source.foreign_intervention compare = equals }
+				NOT = { has_state_flag = riches_found_chaos_foreign_intervention_applied }
+			}
+			set_state_flag = riches_found_chaos_foreign_intervention_applied
+			set_temp_variable = { riches_found_chaos_delta = constant:riches_found_chaos_change.foreign_intervention }
+		}
+		else_if = {
+			limit = {
+				check_variable = { var = riches_found_chaos_source value = constant:riches_found_chaos_source.catastrophic_collapse compare = equals }
+				NOT = { has_state_flag = riches_found_chaos_catastrophic_collapse_applied }
+			}
+			set_state_flag = riches_found_chaos_catastrophic_collapse_applied
+			set_temp_variable = { riches_found_chaos_delta = constant:riches_found_chaos_change.catastrophic_collapse }
+		}
+		else_if = {
+			limit = {
+				check_variable = { var = riches_found_chaos_source value = constant:riches_found_chaos_source.demonic_bargain compare = equals }
+				NOT = { has_state_flag = riches_found_chaos_demonic_bargain_applied }
+			}
+			set_state_flag = riches_found_chaos_demonic_bargain_applied
+			set_temp_variable = { riches_found_chaos_delta = constant:riches_found_chaos_change.demonic_bargain }
+		}
+		if = {
+			limit = { NOT = { check_variable = { var = riches_found_chaos_delta value = constant:riches_found_value.zero compare = equals } } }
+			CONTROLLER = {
+				save_event_target_as = chaos_history_actor
+				set_temp_variable = { chaos_change = riches_found_chaos_delta }
+				set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.riches_found }
+				set_temp_variable = { chaos_history_reason_custom = constant:riches_found_value.one }
+				add_chaos_meter_value = yes
+			}
+		}
+	}
+	set_temp_variable = { riches_found_chaos_source = constant:riches_found_chaos_source.none }
 }
