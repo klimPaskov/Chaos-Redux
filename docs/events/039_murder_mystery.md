@@ -19,6 +19,7 @@ Baseline offender identity is allocated once for the original host and cannot re
 A surviving Assassin State loses bounded Cohesion and Reach after capture and keeps its country, forces, route and foreign network active.
 Capture alone does not certify worldwide dismantling or territorial inheritance.
 The implementation and evidence limits for the current objective repair are recorded in `docs/plans/039_murder_mystery_plans/validation/mission_repair_2026_10_03/repair_evidence.md`.
+The agent design decisions taken under the round-1 authority (D1 to D19: pool firing, evolution logging, the movement pulse, country outcomes, inheritance, ruler targeting, starting forces, scenario launch, World of Anarchy, achievements, decision costs, objective families, the technology branch, the Intelligence cluster and localisation) are recorded in `docs/plans/039_murder_mystery_plans/agent_decisions_2026-10-04.md`, and pending workbook corrections in `docs/plans/039_murder_mystery_plans/catalog_changes_pending.md`.
 
 ## Murdered rulers and their replacements
 
