@@ -1,0 +1,90 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 031 RANDOM TERROR STATE MAP MODE
+# ============================================================================
+# random_terror_state_map_mode shows where Event 31 cells operate.  Each state
+# is coloured by its activity stage, from pale Dormant through orange Active
+# and Entrenched to red Armed Insurgency and dark red Lost Local Control.
+# Border thickness grows with the stage, so the stages stay distinct without
+# colour, and the viewer's own priority crisis state and mission or emergency
+# subjects pulse.  The delayed tooltip names the stage, the viewer's mission
+# there and the broad next risk; hidden readiness values are never shown.
+# Colours and thickness live in the random_terror_map_mode script constants.
+# ============================================================================
+
+scripted_map_modes = {
+	random_terror_state_map_mode = {
+		top = {
+			type = state
+			thickness = yes
+			color = {
+				FROM = {
+					has_variable = random_terror_state_stage
+					check_variable = { random_terror_state_stage > constant:random_terror_state_stage.clear }
+				}
+				FROM = {
+					if = {
+						limit = { check_variable = { random_terror_state_stage = constant:random_terror_state_stage.lost_local_control } }
+						set_temp_variable = { red = constant:random_terror_map_mode.lost_red }
+						set_temp_variable = { green = constant:random_terror_map_mode.lost_green }
+						set_temp_variable = { blue = constant:random_terror_map_mode.lost_blue }
+						set_temp_variable = { alpha = constant:random_terror_map_mode.lost_alpha }
+						set_temp_variable = { thickness = constant:random_terror_map_mode.lost_thickness }
+					}
+					else_if = {
+						limit = { check_variable = { random_terror_state_stage = constant:random_terror_state_stage.armed_insurgency } }
+						set_temp_variable = { red = constant:random_terror_map_mode.armed_red }
+						set_temp_variable = { green = constant:random_terror_map_mode.armed_green }
+						set_temp_variable = { blue = constant:random_terror_map_mode.armed_blue }
+						set_temp_variable = { alpha = constant:random_terror_map_mode.armed_alpha }
+						set_temp_variable = { thickness = constant:random_terror_map_mode.armed_thickness }
+					}
+					else_if = {
+						limit = { check_variable = { random_terror_state_stage = constant:random_terror_state_stage.entrenched } }
+						set_temp_variable = { red = constant:random_terror_map_mode.entrenched_red }
+						set_temp_variable = { green = constant:random_terror_map_mode.entrenched_green }
+						set_temp_variable = { blue = constant:random_terror_map_mode.entrenched_blue }
+						set_temp_variable = { alpha = constant:random_terror_map_mode.entrenched_alpha }
+						set_temp_variable = { thickness = constant:random_terror_map_mode.entrenched_thickness }
+					}
+					else_if = {
+						limit = { check_variable = { random_terror_state_stage = constant:random_terror_state_stage.active } }
+						set_temp_variable = { red = constant:random_terror_map_mode.active_red }
+						set_temp_variable = { green = constant:random_terror_map_mode.active_green }
+						set_temp_variable = { blue = constant:random_terror_map_mode.active_blue }
+						set_temp_variable = { alpha = constant:random_terror_map_mode.active_alpha }
+						set_temp_variable = { thickness = constant:random_terror_map_mode.active_thickness }
+					}
+					else = {
+						set_temp_variable = { red = constant:random_terror_map_mode.dormant_red }
+						set_temp_variable = { green = constant:random_terror_map_mode.dormant_green }
+						set_temp_variable = { blue = constant:random_terror_map_mode.dormant_blue }
+						set_temp_variable = { alpha = constant:random_terror_map_mode.dormant_alpha }
+						set_temp_variable = { thickness = constant:random_terror_map_mode.dormant_thickness }
+					}
+					# The viewer's own targets pulse.
+					if = {
+						limit = { random_terror_state_is_response_target = yes }
+						set_temp_variable = { highlighted = 1 }
+					}
+				}
+				always = yes
+			}
+		}
+
+		bottom = {
+			type = country
+			thickness = yes
+			color = {
+				set_temp_variable = { red = constant:random_terror_map_mode.background_red }
+				set_temp_variable = { green = constant:random_terror_map_mode.background_green }
+				set_temp_variable = { blue = constant:random_terror_map_mode.background_blue }
+				set_temp_variable = { alpha = constant:random_terror_map_mode.background_alpha }
+				always = yes
+			}
+		}
+
+		far_text = country
+		near_text = state
+		update_daily = yes
+	}
+}

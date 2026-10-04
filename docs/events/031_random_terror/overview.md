@@ -174,6 +174,11 @@ Deterministic ordinary, transnational, and jihadist cycles expose all active ide
 
 Achievement states live directly under the engine-facing `gfx/achievements/` root as twelve colored, twelve grey, and twelve not-eligible DDS files whose basenames match their achievement IDs.
 
+The Terror Activity map mode (`random_terror_state_map_mode` in `common/map_modes/031_random_terror_map_mode.txt`) colours each state by its activity stage, thickens its border with each stage, pulses the viewer's priority crisis state and mission or emergency subjects, and shows a delayed tooltip with the stage, the viewer's mission there and the broad next risk through `GetRandomTerrorStateMapModeDetail`; it never shows hidden readiness.
+Its buttons `GFX_mapmode_buttons_selected_small_random_terror_state_map_mode` and `GFX_mapmode_buttons_deselected_small_random_terror_state_map_mode` are registered in `interface/031_random_terror.gfx` and point at `gfx/interface/mapmode/custom/random_terror_state_map_mode_selected.dds` and `_deselected.dds`, 20x18 one-level BGRA files matching the custom map mode button family (cream subject inside the family's shared one-pixel frame when selected, grey subject without frame when deselected).
+The subject is a lit round bomb generated with native alpha through the ChatGPT image tool (prompt: a single interface icon on a fully transparent background, a classic round black-powder bomb with a short curved fuse and a small spark, bold flat silhouette in pale parchment cream with darker tan shading and a thin dark outline, no text, frame, border or background), then cropped to its alpha bounds, resized with premultiplied Lanczos to 15x16, mapped onto the family's cream and grey ramps and given the frame copied from the existing famine button.
+The native-alpha source, processed PNGs and native and family contact sheet are kept under `docs/plans/031_random_terror_plans/evidence/map_mode_buttons_20261004/`; both DDS files decode back to their processed PNGs exactly.
+
 ## Achievement coverage
 
 The single root registry in `common/achievements/chaos_redux_achievements.txt` exposes the twelve accepted Event 031 IDs below.
