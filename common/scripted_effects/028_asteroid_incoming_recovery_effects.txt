@@ -176,7 +176,6 @@ asteroid_incoming_close_state_emergency = {
 	remove_dynamic_modifier = { modifier = asteroid_incoming_heavy_fragment_damage }
 	remove_dynamic_modifier = { modifier = asteroid_incoming_light_fragment_damage }
 	set_state_flag = asteroid_incoming_local_emergency_resolved
-	add_to_variable = { asteroid_incoming_recovery_actions_completed = 1 }
 }
 
 # STATE SCOPE. At impact, a non-crater state with a live local emergency joins
@@ -794,7 +793,6 @@ asteroid_incoming_rebuild_supply_spine = {
 		remove_dynamic_modifier = { modifier = asteroid_incoming_outer_shock_zone }
 		set_state_flag = asteroid_incoming_supply_spine_rebuilt
 		set_state_flag = asteroid_incoming_recovery_complete
-		add_to_variable = { asteroid_incoming_recovery_actions_completed = constant:asteroid_incoming_runtime.one }
 		asteroid_incoming_try_start_network_mission = yes
 	}
 }
@@ -814,7 +812,6 @@ asteroid_incoming_restore_outer_ring_industry = {
 		remove_dynamic_modifier = { modifier = asteroid_incoming_light_fragment_damage }
 		set_state_flag = asteroid_incoming_outer_industry_restored
 		set_state_flag = asteroid_incoming_recovery_complete
-		add_to_variable = { asteroid_incoming_recovery_actions_completed = constant:asteroid_incoming_runtime.one }
 		asteroid_incoming_try_start_outer_ring_mission = yes
 	}
 }
@@ -830,7 +827,6 @@ asteroid_incoming_rehouse_displaced_workers = {
 		asteroid_incoming_restore_industry = yes
 		set_state_flag = asteroid_incoming_workers_rehoused
 		remove_dynamic_modifier = { modifier = asteroid_incoming_catastrophic_impact_zone }
-		add_to_variable = { asteroid_incoming_recovery_actions_completed = constant:asteroid_incoming_runtime.one }
 		ROOT = { set_country_flag = asteroid_incoming_rehousing_complete }
 		asteroid_incoming_try_start_regional_economy_mission = yes
 	}
@@ -884,14 +880,13 @@ asteroid_incoming_join_observation_network = {
 # STATE SCOPE, crater in THIS and actor in ROOT. Each crater wrapper resolves
 # one paid action through its outcome helper in
 # 028_asteroid_incoming_crater_effects.txt. The decision initializes
-# asteroid_incoming_crater_action_applied to zero; completion counters and
-# record flags are written only when the helper reports success.
+# asteroid_incoming_crater_action_applied to zero; record flags are written
+# only when the helper reports success.
 asteroid_incoming_secure_crater_perimeter = {
 	asteroid_incoming_apply_crater_perimeter_security = yes
 	if = {
 		limit = { check_variable = { asteroid_incoming_crater_action_applied = constant:asteroid_incoming_runtime.one } }
 		ROOT = { set_country_flag = asteroid_incoming_crater_secured }
-		add_to_variable = { asteroid_incoming_recovery_actions_completed = constant:asteroid_incoming_runtime.one }
 	}
 }
 
@@ -900,7 +895,6 @@ asteroid_incoming_survey_extraordinary_material = {
 	if = {
 		limit = { check_variable = { asteroid_incoming_crater_action_applied = constant:asteroid_incoming_runtime.one } }
 		ROOT = { set_country_flag = asteroid_incoming_material_survey_complete }
-		add_to_variable = { asteroid_incoming_recovery_actions_completed = constant:asteroid_incoming_runtime.one }
 	}
 }
 
@@ -909,7 +903,6 @@ asteroid_incoming_fortify_crater_access = {
 	if = {
 		limit = { check_variable = { asteroid_incoming_crater_action_applied = constant:asteroid_incoming_runtime.one } }
 		ROOT = { set_country_flag = asteroid_incoming_crater_access_ready }
-		add_to_variable = { asteroid_incoming_recovery_actions_completed = constant:asteroid_incoming_runtime.one }
 	}
 }
 
@@ -1225,10 +1218,15 @@ asteroid_incoming_pay_dust_observation_quote = {
 # missions are released by the mission definition without any outcome.
 
 # COUNTRY SCOPE. The lighter national recovery form after a mission succeeds.
+# A failed mission's full burden keeps its stated window; the legacy replaces
+# it through the monthly recovery pass once that window ends.
 asteroid_incoming_grant_recovery_legacy = {
 	set_country_flag = asteroid_incoming_recovery_legacy_active
-	remove_ideas = asteroid_incoming_recovery_burden
-	add_ideas = asteroid_incoming_recovery_legacy
+	if = {
+		limit = { NOT = { has_country_flag = asteroid_incoming_recovery_failure_pressure } }
+		remove_ideas = asteroid_incoming_recovery_burden
+		add_ideas = asteroid_incoming_recovery_legacy
+	}
 }
 
 asteroid_incoming_rescue_route_mission_success = {
@@ -1445,13 +1443,20 @@ asteroid_incoming_reapply_state_impact_damage = {
 	}
 }
 
-# COUNTRY SCOPE. The national consequences of an expired mission: the
-# recovery burden returns and repair prices rise for a limited period.
+# COUNTRY SCOPE. The national consequences of an expired mission: the full
+# recovery burden replaces any recovery legacy for the stated window, and
+# repair prices rise for a limited period. The timed flag holds the monthly
+# recovery pass and the closeout report off the national idea until the
+# window ends; a later failure restarts both timers together.
 asteroid_incoming_apply_mission_failure_to_country = {
+	set_temp_variable = { asteroid_incoming_failure_pressure_days = constant:asteroid_incoming_recovery.mission_failure_pressure_days }
+	remove_ideas = asteroid_incoming_recovery_legacy
+	remove_ideas = asteroid_incoming_recovery_burden
 	add_timed_idea = {
 		idea = asteroid_incoming_recovery_burden
-		days = constant:asteroid_incoming_recovery.mission_failure_pressure_days
+		days = asteroid_incoming_failure_pressure_days
 	}
+	set_country_flag = { flag = asteroid_incoming_recovery_failure_pressure days = asteroid_incoming_failure_pressure_days }
 	asteroid_incoming_apply_repair_cost_surcharge = yes
 }
 
@@ -1507,6 +1512,9 @@ asteroid_incoming_regional_mission_failure = {
 # COUNTRY SCOPE. National recovery follows the country's real exact-state
 # burdens rather than the unrelated global dust clock. The closeout report is
 # queued once after every timed local burden and active mission has resolved.
+# While a failed mission's burden window runs, the national idea and the
+# closeout stay untouched; the normal legacy, burden or closeout logic resumes
+# on the first pass after it ends.
 # The monthly pass reaches this through every_country, so ROOT is not used.
 asteroid_incoming_refresh_national_recovery = {
 	if = {
@@ -1520,27 +1528,30 @@ asteroid_incoming_refresh_national_recovery = {
 		limit = { has_country_flag = asteroid_incoming_regional_economy_mission_ready }
 		asteroid_incoming_measure_regional_capacity = yes
 	}
-	remove_ideas = asteroid_incoming_recovery_burden
-	remove_ideas = asteroid_incoming_recovery_legacy
 	if = {
-		limit = {
-			has_country_flag = asteroid_incoming_affected_country
-			asteroid_incoming_country_has_unresolved_local_burden = yes
-		}
+		limit = { NOT = { has_country_flag = asteroid_incoming_recovery_failure_pressure } }
+		remove_ideas = asteroid_incoming_recovery_burden
+		remove_ideas = asteroid_incoming_recovery_legacy
 		if = {
-			limit = { has_country_flag = asteroid_incoming_recovery_legacy_active }
-			add_ideas = asteroid_incoming_recovery_legacy
+			limit = {
+				has_country_flag = asteroid_incoming_affected_country
+				asteroid_incoming_country_has_unresolved_local_burden = yes
+			}
+			if = {
+				limit = { has_country_flag = asteroid_incoming_recovery_legacy_active }
+				add_ideas = asteroid_incoming_recovery_legacy
+			}
+			else = { add_ideas = asteroid_incoming_recovery_burden }
 		}
-		else = { add_ideas = asteroid_incoming_recovery_burden }
-	}
-	else_if = {
-		limit = {
-			has_country_flag = asteroid_incoming_affected_country
-			has_global_flag = asteroid_incoming_impact_recorded
-			NOT = { has_country_flag = asteroid_incoming_recovery_closeout_sent }
-			NOT = { has_country_flag = asteroid_incoming_recovery_closeout_pending }
+		else_if = {
+			limit = {
+				has_country_flag = asteroid_incoming_affected_country
+				has_global_flag = asteroid_incoming_impact_recorded
+				NOT = { has_country_flag = asteroid_incoming_recovery_closeout_sent }
+				NOT = { has_country_flag = asteroid_incoming_recovery_closeout_pending }
+			}
+			set_country_flag = asteroid_incoming_recovery_closeout_pending
+			country_event = { id = chaosx.nr28.6 }
 		}
-		set_country_flag = asteroid_incoming_recovery_closeout_pending
-		country_event = { id = chaosx.nr28.6 }
 	}
 }

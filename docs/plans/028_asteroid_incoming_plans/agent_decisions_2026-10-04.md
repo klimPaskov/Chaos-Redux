@@ -216,3 +216,26 @@ Part 6 asks rival actions to "affect local supply" against the crater holder.
 
 Decision: the Stabilize the Damaged Zone severity multiplies the impact profile by `asteroid_incoming_recovery.stabilize_profile_rank_weight` (100) before adding the infrastructure and railway gap.
 Basis: profiles step by 10 while the combined gap can reach 10 or more, so the plain sum could rank a lighter ring above a heavier one, contrary to the recorded "impact profile first" rule.
+
+## Review round 2 corrections
+
+### One stored result for the target board
+
+Decision: the opening board (`chaosx.nr28.1`) and the reopened board (`chaosx.nr28.8`) read one global flag, `asteroid_incoming_board_ready`, for both their description and their options.
+The dispatcher sets it when its board validates, `chaosx.nr28.1` rebuilds its still-unseen board once in `immediate` when nothing is locked and the pairs are missing or invalid, and `chaosx.nr28.8` re-validates the saved pairs without rerolling through `asteroid_incoming_refresh_board_ready`.
+The single description key resolves through `GetAsteroidIncomingOpeningDesc` at display time, options a to d require the flag and the N/A option requires its absence.
+The target-pool reset, the lock, the miss, the fail-closed close and both cleanup helpers clear it, and the N/A close leaves a locked trajectory untouched so a duplicate opening popup cannot end it early.
+`chaosx.nr28.2` keeps its live pair re-check and its path for a coordinate that is no longer valid.
+Basis: Part 2 fail-closed target rules and the routed live defect in which the board described no trajectory while offering three; description and option triggers are evaluated at different moments, including when a pending popup is restored from a save, so they cannot each test the live pairs.
+No `ai_chance` value changed.
+Restoring a pending board from a save is a needs-live-game check.
+
+### A failed mission keeps its full burden for the stated window
+
+Decision: an expired mission removes the recovery legacy and the normal burden, applies the full `asteroid_incoming_recovery_burden` for `asteroid_incoming_recovery.mission_failure_pressure_days` (90) and sets the timed country flag `asteroid_incoming_recovery_failure_pressure` for the same days, both read from a temporary variable.
+While the flag runs, the monthly national recovery pass leaves the idea alone and queues no closeout report, and a mission success in that window records the legacy without swapping the idea; the normal legacy, burden or closeout logic resumes on the first monthly pass after the window.
+A second failure inside the window restarts both timers.
+The failure tooltip says the full burden returns for that many days and sets aside any recovery legacy until then.
+The never-read state counter `asteroid_incoming_recovery_actions_completed` is removed.
+Basis: Part 6 failure consequences ask for a real temporary escalation, and the tooltip already promised the window; the monthly pass used to replace the burden with the legacy or an untimed burden within a month.
+No `ai_will_do` or `ai_chance` value changed.
