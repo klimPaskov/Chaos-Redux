@@ -23,6 +23,7 @@ The effect and query contract is documented in `common/scripted_effects/016_conv
    - Without `Gotterdammerung`, the board exposes one paid, timed Prototype adapter for each family and records the same stage ledger, capacity burden, accident pressure, history, and reward callbacks without opening a native special-project card.
    - The no-DLC Singularity route records six separate component receipts before its paid Prototype adapter becomes available; partial component progress never advances the family.
 4. Advance Deployment only after the native prototype and the mapped technology, project, site, or stockpile prerequisites are present.
+   Xenobiological Synthesis also needs a locked control doctrine before its Prototype is recorded; see [Xenobiological control doctrine](#xenobiological-control-doctrine).
 5. Advance Weaponization only after the mapped late prerequisites. The stage adds a family-specific military or institutional output and a persistent history record.
 6. Every completed stage recalculates accident pressure from Exposure, stage burden, project condition, and suspension state. A failed pressure roll activates the exact family's incident mission and recovery action.
 7. Suspending a project through the Directorate review board releases half its occupied capacity, and a suspended project cannot begin its next stage until it is resumed. Resuming reoccupies that half. Dismantling releases the remaining burden while historical flags and Kruger's personal character history remain available to the wider Event 016 architecture.
@@ -61,13 +62,38 @@ The Directorate category keeps the Directorate GUI, governance, security, facili
 | Category | Sprite | Families and extra rows |
 | --- | --- | --- |
 | `brilliant_scientist_conventional_programs_category` | `GFX_decision_category_brilliant_scientist_directorate` | Computation, Electronics, Materials, Rocketry, High Energy |
-| `brilliant_scientist_biological_programs_category` | `GFX_decision_category_brilliant_scientist_krg_exotic_biological` | Biomedical, Cloning, Paleogenetics, Xenobiological Synthesis, Biological Weapons, plus the four xenobiological control choices |
+| `brilliant_scientist_biological_programs_category` | `GFX_decision_category_brilliant_scientist_krg_exotic_biological` | Biomedical, Cloning, Paleogenetics, Xenobiological Synthesis, Biological Weapons, plus the control-doctrine review and adopt rows |
 | `brilliant_scientist_advanced_programs_category` | `GFX_decision_category_brilliant_scientist_krg_portal_temporal` | Teleportation, Robotics, Alien Arms, Temporal, Strategic Singularity, plus the Singularity facility audit, command node, power link, and six no-DLC component rows |
 
 Each family contributes its Theory, Deployment, and Weaponization rows, its native Prototype integration row, its no-DLC Prototype row, and its incident mission and recovery decision; the stage gates show only the next stage, and only one family incident can be active at a time.
-In a mature portfolio each category therefore shows at most five stage rows plus the active incident pair; the four xenobiological control choices appear only while that family sits at Theory without a chosen control.
+In a mature portfolio each category therefore shows at most five stage rows plus the active incident pair; the Biological category adds at most two control-doctrine rows, and only while Xenobiological Synthesis has reached Theory without a locked doctrine.
 The categories are registered in `common/decisions/categories/016_brilliant_scientist_directorate_categories.txt` with priorities 95, 94, and 93, directly below the Directorate, and are visible to the current host, including a Kruger State that holds Kruger.
 Row bodies, costs, timers, cancellation, rewards, and AI weights are unchanged by the grouping.
+
+## Xenobiological control doctrine
+
+Xenobiological Synthesis is the only family whose later stages depend on an exclusive control doctrine: chemical, neural, machine, or researched control.
+The doctrine is stored as one of `brilliant_scientist_xeno_control_chemical`, `_neural`, `_machine`, or `_researched` and is read by `brilliant_scientist_xeno_control_is_locked`.
+
+The Biological category shows two rows from Theory onward while no doctrine is locked (`brilliant_scientist_xeno_control_can_be_chosen`):
+
+- `brilliant_scientist_review_xeno_control_doctrine` is a free, instant review that cycles chemical, neural, machine, researched through `brilliant_scientist_review_next_xeno_control_doctrine`. It stores the reviewed doctrine in `brilliant_scientist_xeno_control_review` and loads the order's cost and time into `brilliant_scientist_xeno_control_review_cost` and `brilliant_scientist_xeno_control_review_days` from `brilliant_scientist_project_board` (25 Political Power and 30 days, or 50 Political Power and 90 days for researched control). It is unavailable while an adoption is running.
+- `brilliant_scientist_adopt_xeno_control_doctrine` is the timed order. It uses one civilian factory, takes the reviewed doctrine's Political Power through the native cost field (so exactly the displayed amount is enough), and holds the stage-in-progress lock. The adopting doctrine is fixed in `brilliant_scientist_xeno_control_adopting` when the order starts. On completion `brilliant_scientist_set_xeno_control_doctrine` sets exactly one doctrine flag, records it on Kruger as `brilliant_scientist_personal_xeno_control_*` while he is present, calls `chaosx_reconcile_custom_xeno_control_grants` to retire any other control channel, and resyncs the force package.
+
+Scripted localisation names the reviewed doctrine and its effect (`GetBrilliantScientistXenoControlReviewName`, `GetBrilliantScientistXenoControlReviewDescription`, `GetBrilliantScientistXenoControlReviewEffect`, `GetBrilliantScientistXenoControlNextName`).
+
+Every path to Prototype checks the doctrine:
+
+- `brilliant_scientist_complete_native_prototype_stage` and `brilliant_scientist_begin_native_prototype_integration` require `brilliant_scientist_project_family_control_is_ready`, so a native synthesis completion without a doctrine leaves the family at Theory and the integration row stays available.
+- `brilliant_scientist_integrate_xenobiological_synthesis_prototype` shows the plain requirement `brilliant_scientist_xeno_control_required_tt`.
+- The no-DLC adapter keeps its existing gate through `brilliant_scientist_can_research_xenobiological_synthesis_prototype`.
+- Deployment and Weaponization keep their existing doctrine checks.
+
+Because the rows stay available at Prototype and Deployment, a programme that reached those stages without a doctrine can still adopt one and continue.
+
+Transfer carries the doctrine. The Kruger State formation copies the former host's flags, and an ordinary transfer reads Kruger's personal doctrine flag in `brilliant_scientist_inherit_kruger_xeno_control_doctrine` during the personal-history rebuild; the existing inheritance outputs then grant the matching control technology at Weaponization. The Kruger State's own control event `chaosx.brilliant_scientist_krg.30` uses the same helper.
+
+The AI reviews until the reviewed doctrine matches its preference (chemical at war, neural above 60% stability, machine once Robotics passes Theory, researched under the public compact, or any doctrine when none of these holds; `brilliant_scientist_ai_prefers_reviewed_xeno_control`) and then adopts it with the same base weight and preference factor the four former rows used. Integration is gated, so the AI adopts a doctrine first.
 
 ## Stage and capacity contract
 

@@ -360,6 +360,54 @@ brilliant_scientist_xeno_control_is_locked = {
 	}
 }
 
+# COUNTRY scope. The control doctrine can be reviewed and adopted at any
+# Xenobiological Synthesis stage from Theory onward until one is locked.
+brilliant_scientist_xeno_control_can_be_chosen = {
+	check_variable = { brilliant_scientist_project_stage_entries^10 > constant:brilliant_scientist_project_stage.none }
+	NOT = { brilliant_scientist_xeno_control_is_locked = yes }
+}
+
+# COUNTRY scope. Input: temporary brilliant_scientist_project_family. Only
+# Xenobiological Synthesis needs a locked control doctrine before its
+# Prototype is recorded; every other family passes.
+brilliant_scientist_project_family_control_is_ready = {
+	OR = {
+		NOT = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.xenobiological_synthesis } }
+		brilliant_scientist_xeno_control_is_locked = yes
+	}
+}
+
+# COUNTRY scope, AI only. True when the reviewed control doctrine is one the
+# AI would adopt: its own preference holds, or no doctrine preference holds.
+# The preferences mirror the adopt order's AI factors.
+brilliant_scientist_ai_prefers_reviewed_xeno_control = {
+	has_variable = brilliant_scientist_xeno_control_review
+	OR = {
+		AND = {
+			check_variable = { brilliant_scientist_xeno_control_review = constant:chaosx_custom_technology_control.chemical }
+			has_war = yes
+		}
+		AND = {
+			check_variable = { brilliant_scientist_xeno_control_review = constant:chaosx_custom_technology_control.neural }
+			has_stability > 0.60
+		}
+		AND = {
+			check_variable = { brilliant_scientist_xeno_control_review = constant:chaosx_custom_technology_control.machine }
+			check_variable = { brilliant_scientist_project_stage_entries^8 > constant:brilliant_scientist_project_stage.theory }
+		}
+		AND = {
+			check_variable = { brilliant_scientist_xeno_control_review = constant:chaosx_custom_technology_control.researched }
+			has_country_flag = brilliant_scientist_public_compact
+		}
+		AND = {
+			NOT = { has_war = yes }
+			NOT = { has_stability > 0.60 }
+			NOT = { check_variable = { brilliant_scientist_project_stage_entries^8 > constant:brilliant_scientist_project_stage.theory } }
+			NOT = { has_country_flag = brilliant_scientist_public_compact }
+		}
+	}
+}
+
 brilliant_scientist_can_pay_computation_theory = {
 	NOT = { num_of_available_civilian_factories < constant:brilliant_scientist_project_stage_cost.computation_theory_civilian_factories }
 	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.computation_theory_military_factories }

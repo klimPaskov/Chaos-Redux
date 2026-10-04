@@ -2358,6 +2358,10 @@ brilliant_scientist_biological_programs_category = {
 				NOT = { is_in_array = { array = brilliant_scientist_project_suspended_families value = constant:brilliant_scientist_project_family.xenobiological_synthesis } }
 			}
 			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_xeno_control_required_tt
+				brilliant_scientist_xeno_control_is_locked = yes
+			}
+			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_project_prototype_requirements_tt
 				hidden_trigger = {
 					brilliant_scientist_project_board_is_ready = yes
@@ -3315,53 +3319,41 @@ brilliant_scientist_biological_programs_category = {
 		ai_will_do = { base = constant:brilliant_scientist_project_board.ai_high }
 	}
 
-	brilliant_scientist_select_xeno_control_chemical = {
+	# Control doctrine selector. One free review row cycles the four exclusive
+	# doctrines and one timed order adopts the reviewed doctrine. Both rows stay
+	# available from Theory onward until a doctrine is locked, so a programme
+	# that reached a later stage without one can still recover.
+	brilliant_scientist_review_xeno_control_doctrine = {
 		icon = GFX_decision_generic_research
 		visible = {
 			hidden_trigger = {
 				brilliant_scientist_is_current_host = yes
-				check_variable = { brilliant_scientist_project_stage_entries^10 = constant:brilliant_scientist_project_stage.theory }
-				NOT = { brilliant_scientist_xeno_control_is_locked = yes }
+				brilliant_scientist_xeno_control_can_be_chosen = yes
 			}
 		}
 		available = {
 			custom_trigger_tooltip = {
-				tooltip = brilliant_scientist_project_control_requirements_tt
-				hidden_trigger = {
-					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
-					NOT = { has_country_flag = brilliant_scientist_project_incident_active }
-					NOT = { num_of_available_civilian_factories < @CR_SC_BRILLIANT_SCIENTIST_PROJECT_BOARD_XENO_CONTROL_CIVILIAN_FACTORIES }
-					check_variable = { var = political_power value = constant:brilliant_scientist_project_board.xeno_control_political_power compare = greater_than }
-				}
+				tooltip = brilliant_scientist_xeno_control_adoption_running_tt
+				NOT = { has_variable = brilliant_scientist_xeno_control_adopting }
 			}
 		}
-		cost = constant:brilliant_scientist_project_board.xeno_control_political_power
-		modifier = { civilian_factory_use = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_BOARD_XENO_CONTROL_CIVILIAN_FACTORIES }
-		days_remove = constant:brilliant_scientist_project_board.xeno_control_days
-		complete_effect = { set_country_flag = brilliant_scientist_project_stage_in_progress }
-		cancel_if_not_visible = yes
-		cancel_effect = { clr_country_flag = brilliant_scientist_project_stage_in_progress }
-		remove_effect = {
-			clr_country_flag = brilliant_scientist_xeno_control_chemical
-			clr_country_flag = brilliant_scientist_xeno_control_neural
-			clr_country_flag = brilliant_scientist_xeno_control_machine
-			clr_country_flag = brilliant_scientist_xeno_control_researched
-			set_country_flag = brilliant_scientist_xeno_control_chemical
-			clr_country_flag = brilliant_scientist_project_stage_in_progress
+		complete_effect = {
+			hidden_effect = { brilliant_scientist_review_next_xeno_control_doctrine = yes }
+			custom_effect_tooltip = brilliant_scientist_xeno_control_review_effect_tt
 		}
 		ai_will_do = {
 			base = constant:brilliant_scientist_project_board.ai_medium
-			modifier = { factor = constant:brilliant_scientist_project_ai.preferred_factor has_war = yes }
+			modifier = { factor = constant:brilliant_scientist_project_board.ai_never brilliant_scientist_ai_prefers_reviewed_xeno_control = yes }
 		}
 	}
 
-	brilliant_scientist_select_xeno_control_neural = {
+	brilliant_scientist_adopt_xeno_control_doctrine = {
 		icon = GFX_decision_generic_research
 		visible = {
 			hidden_trigger = {
 				brilliant_scientist_is_current_host = yes
-				check_variable = { brilliant_scientist_project_stage_entries^10 = constant:brilliant_scientist_project_stage.theory }
-				NOT = { brilliant_scientist_xeno_control_is_locked = yes }
+				brilliant_scientist_xeno_control_can_be_chosen = yes
+				has_variable = brilliant_scientist_xeno_control_review
 			}
 		}
 		available = {
@@ -3371,107 +3363,54 @@ brilliant_scientist_biological_programs_category = {
 					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
 					NOT = { has_country_flag = brilliant_scientist_project_incident_active }
 					NOT = { num_of_available_civilian_factories < @CR_SC_BRILLIANT_SCIENTIST_PROJECT_BOARD_XENO_CONTROL_CIVILIAN_FACTORIES }
-					check_variable = { var = political_power value = constant:brilliant_scientist_project_board.xeno_control_political_power compare = greater_than }
 				}
 			}
 		}
-		cost = constant:brilliant_scientist_project_board.xeno_control_political_power
+		cost = brilliant_scientist_xeno_control_review_cost
 		modifier = { civilian_factory_use = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_BOARD_XENO_CONTROL_CIVILIAN_FACTORIES }
-		days_remove = constant:brilliant_scientist_project_board.xeno_control_days
-		complete_effect = { set_country_flag = brilliant_scientist_project_stage_in_progress }
+		days_remove = brilliant_scientist_xeno_control_review_days
+		complete_effect = {
+			set_country_flag = brilliant_scientist_project_stage_in_progress
+			set_variable = { brilliant_scientist_xeno_control_adopting = brilliant_scientist_xeno_control_review }
+		}
 		cancel_if_not_visible = yes
-		cancel_effect = { clr_country_flag = brilliant_scientist_project_stage_in_progress }
-		remove_effect = {
-			clr_country_flag = brilliant_scientist_xeno_control_chemical
-			clr_country_flag = brilliant_scientist_xeno_control_neural
-			clr_country_flag = brilliant_scientist_xeno_control_machine
-			clr_country_flag = brilliant_scientist_xeno_control_researched
-			set_country_flag = brilliant_scientist_xeno_control_neural
+		cancel_effect = {
 			clr_country_flag = brilliant_scientist_project_stage_in_progress
+			clear_variable = brilliant_scientist_xeno_control_adopting
+		}
+		remove_effect = {
+			custom_effect_tooltip = brilliant_scientist_xeno_control_adopt_effect_tt
+			hidden_effect = {
+				set_temp_variable = { brilliant_scientist_xeno_control_choice = brilliant_scientist_xeno_control_adopting }
+				brilliant_scientist_set_xeno_control_doctrine = yes
+				clear_variable = brilliant_scientist_xeno_control_adopting
+				clr_country_flag = brilliant_scientist_project_stage_in_progress
+				brilliant_scientist_sync_project_force_runtime_after_ledger_change = yes
+			}
 		}
 		ai_will_do = {
 			base = constant:brilliant_scientist_project_board.ai_medium
-			modifier = { factor = constant:brilliant_scientist_project_ai.preferred_factor has_stability > 0.60 }
-		}
-	}
-
-	brilliant_scientist_select_xeno_control_machine = {
-		icon = GFX_decision_generic_research
-		visible = {
-			hidden_trigger = {
-				brilliant_scientist_is_current_host = yes
-				check_variable = { brilliant_scientist_project_stage_entries^10 = constant:brilliant_scientist_project_stage.theory }
-				NOT = { brilliant_scientist_xeno_control_is_locked = yes }
+			modifier = {
+				factor = constant:brilliant_scientist_project_ai.preferred_factor
+				check_variable = { brilliant_scientist_xeno_control_review = constant:chaosx_custom_technology_control.chemical }
+				has_war = yes
 			}
-		}
-		available = {
-			custom_trigger_tooltip = {
-				tooltip = brilliant_scientist_project_control_requirements_tt
-				hidden_trigger = {
-					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
-					NOT = { has_country_flag = brilliant_scientist_project_incident_active }
-					NOT = { num_of_available_civilian_factories < @CR_SC_BRILLIANT_SCIENTIST_PROJECT_BOARD_XENO_CONTROL_CIVILIAN_FACTORIES }
-					check_variable = { var = political_power value = constant:brilliant_scientist_project_board.xeno_control_political_power compare = greater_than }
-				}
+			modifier = {
+				factor = constant:brilliant_scientist_project_ai.preferred_factor
+				check_variable = { brilliant_scientist_xeno_control_review = constant:chaosx_custom_technology_control.neural }
+				has_stability > 0.60
 			}
-		}
-		cost = constant:brilliant_scientist_project_board.xeno_control_political_power
-		modifier = { civilian_factory_use = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_BOARD_XENO_CONTROL_CIVILIAN_FACTORIES }
-		days_remove = constant:brilliant_scientist_project_board.xeno_control_days
-		complete_effect = { set_country_flag = brilliant_scientist_project_stage_in_progress }
-		cancel_if_not_visible = yes
-		cancel_effect = { clr_country_flag = brilliant_scientist_project_stage_in_progress }
-		remove_effect = {
-			clr_country_flag = brilliant_scientist_xeno_control_chemical
-			clr_country_flag = brilliant_scientist_xeno_control_neural
-			clr_country_flag = brilliant_scientist_xeno_control_machine
-			clr_country_flag = brilliant_scientist_xeno_control_researched
-			set_country_flag = brilliant_scientist_xeno_control_machine
-			clr_country_flag = brilliant_scientist_project_stage_in_progress
-		}
-		ai_will_do = {
-			base = constant:brilliant_scientist_project_board.ai_medium
-			modifier = { factor = constant:brilliant_scientist_project_ai.preferred_factor check_variable = { brilliant_scientist_project_stage_entries^8 > constant:brilliant_scientist_project_stage.theory } }
-		}
-	}
-
-	brilliant_scientist_select_xeno_control_researched = {
-		icon = GFX_decision_generic_research
-		visible = {
-			hidden_trigger = {
-				brilliant_scientist_is_current_host = yes
-				check_variable = { brilliant_scientist_project_stage_entries^10 = constant:brilliant_scientist_project_stage.theory }
-				NOT = { brilliant_scientist_xeno_control_is_locked = yes }
+			modifier = {
+				factor = constant:brilliant_scientist_project_ai.preferred_factor
+				check_variable = { brilliant_scientist_xeno_control_review = constant:chaosx_custom_technology_control.machine }
+				check_variable = { brilliant_scientist_project_stage_entries^8 > constant:brilliant_scientist_project_stage.theory }
 			}
-		}
-		available = {
-			custom_trigger_tooltip = {
-				tooltip = brilliant_scientist_project_control_requirements_tt
-				hidden_trigger = {
-					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
-					NOT = { has_country_flag = brilliant_scientist_project_incident_active }
-					NOT = { num_of_available_civilian_factories < @CR_SC_BRILLIANT_SCIENTIST_PROJECT_BOARD_XENO_CONTROL_CIVILIAN_FACTORIES }
-					check_variable = { var = political_power value = constant:brilliant_scientist_project_board.xeno_control_researched_political_power compare = greater_than }
-				}
+			modifier = {
+				factor = constant:brilliant_scientist_project_ai.preferred_factor
+				check_variable = { brilliant_scientist_xeno_control_review = constant:chaosx_custom_technology_control.researched }
+				has_country_flag = brilliant_scientist_public_compact
 			}
-		}
-		cost = constant:brilliant_scientist_project_board.xeno_control_researched_political_power
-		modifier = { civilian_factory_use = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_BOARD_XENO_CONTROL_CIVILIAN_FACTORIES }
-		days_remove = constant:brilliant_scientist_project_board.xeno_control_researched_days
-		complete_effect = { set_country_flag = brilliant_scientist_project_stage_in_progress }
-		cancel_if_not_visible = yes
-		cancel_effect = { clr_country_flag = brilliant_scientist_project_stage_in_progress }
-		remove_effect = {
-			clr_country_flag = brilliant_scientist_xeno_control_chemical
-			clr_country_flag = brilliant_scientist_xeno_control_neural
-			clr_country_flag = brilliant_scientist_xeno_control_machine
-			clr_country_flag = brilliant_scientist_xeno_control_researched
-			set_country_flag = brilliant_scientist_xeno_control_researched
-			clr_country_flag = brilliant_scientist_project_stage_in_progress
-		}
-		ai_will_do = {
-			base = constant:brilliant_scientist_project_board.ai_medium
-			modifier = { factor = constant:brilliant_scientist_project_ai.preferred_factor has_country_flag = brilliant_scientist_public_compact }
+			modifier = { factor = constant:brilliant_scientist_project_board.ai_never NOT = { brilliant_scientist_ai_prefers_reviewed_xeno_control = yes } }
 		}
 	}
 

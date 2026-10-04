@@ -150,6 +150,7 @@ brilliant_scientist_begin_native_prototype_integration = {
 		limit = {
 			brilliant_scientist_project_board_is_ready = yes
 			brilliant_scientist_project_family_input_is_valid = yes
+			brilliant_scientist_project_family_control_is_ready = yes
 			check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index = constant:brilliant_scientist_project_stage.theory }
 			check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
 		}
@@ -177,7 +178,9 @@ brilliant_scientist_finish_native_prototype_integration = {
 
 # COUNTRY scope. Exact family input; only a genuine Theory-to-Prototype
 # transition adds cumulative Capacity burden. Native sync can run during an
-# integration timer and must not clear that timer's receipt.
+# integration timer and must not clear that timer's receipt. Xenobiological
+# Synthesis stays at Theory until a control doctrine is locked; its completed
+# native project then waits for the integration order.
 brilliant_scientist_complete_native_prototype_stage = {
 	set_temp_variable = { brilliant_scientist_project_stage_changed = constant:brilliant_scientist_value.zero }
 	set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
@@ -186,6 +189,7 @@ brilliant_scientist_complete_native_prototype_stage = {
 		limit = {
 			brilliant_scientist_project_context_is_valid = yes
 			brilliant_scientist_project_family_input_is_valid = yes
+			brilliant_scientist_project_family_control_is_ready = yes
 			check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index = constant:brilliant_scientist_project_stage.theory }
 			check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
 		}
@@ -204,6 +208,105 @@ brilliant_scientist_complete_native_prototype_stage = {
 			brilliant_scientist_refresh_project_capacity_from_gross = yes
 		}
 	}
+}
+
+# COUNTRY scope. Moves the control-doctrine review to the next doctrine in
+# chemical, neural, machine, researched order and loads that doctrine's
+# Political Power cost and adoption time for the single adopt order.
+brilliant_scientist_review_next_xeno_control_doctrine = {
+	add_to_variable = { brilliant_scientist_xeno_control_review = constant:brilliant_scientist_value.one }
+	if = {
+		limit = { check_variable = { brilliant_scientist_xeno_control_review > constant:chaosx_custom_technology_control.researched } }
+		set_variable = { brilliant_scientist_xeno_control_review = constant:chaosx_custom_technology_control.chemical }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_xeno_control_review = constant:chaosx_custom_technology_control.researched } }
+		set_variable = { brilliant_scientist_xeno_control_review_cost = constant:brilliant_scientist_project_board.xeno_control_researched_political_power }
+		set_variable = { brilliant_scientist_xeno_control_review_days = constant:brilliant_scientist_project_board.xeno_control_researched_days }
+	}
+	else = {
+		set_variable = { brilliant_scientist_xeno_control_review_cost = constant:brilliant_scientist_project_board.xeno_control_political_power }
+		set_variable = { brilliant_scientist_xeno_control_review_days = constant:brilliant_scientist_project_board.xeno_control_days }
+	}
+}
+
+# COUNTRY scope. Input: temporary brilliant_scientist_xeno_control_choice
+# (a constant:chaosx_custom_technology_control value). Locks exactly one
+# control doctrine on the country, records it on Kruger while he is present
+# so an ordinary transfer carries it, and lets the neutral control
+# reconciliation retire every other control channel. Invalid choices are
+# safe no-ops.
+brilliant_scientist_set_xeno_control_doctrine = {
+	if = {
+		limit = {
+			check_variable = { brilliant_scientist_xeno_control_choice > constant:chaosx_custom_technology_control.none }
+			NOT = { check_variable = { brilliant_scientist_xeno_control_choice > constant:chaosx_custom_technology_control.researched } }
+		}
+		clr_country_flag = brilliant_scientist_xeno_control_chemical
+		clr_country_flag = brilliant_scientist_xeno_control_neural
+		clr_country_flag = brilliant_scientist_xeno_control_machine
+		clr_country_flag = brilliant_scientist_xeno_control_researched
+		if = {
+			limit = { check_variable = { brilliant_scientist_xeno_control_choice = constant:chaosx_custom_technology_control.chemical } }
+			set_country_flag = brilliant_scientist_xeno_control_chemical
+		}
+		else_if = {
+			limit = { check_variable = { brilliant_scientist_xeno_control_choice = constant:chaosx_custom_technology_control.neural } }
+			set_country_flag = brilliant_scientist_xeno_control_neural
+		}
+		else_if = {
+			limit = { check_variable = { brilliant_scientist_xeno_control_choice = constant:chaosx_custom_technology_control.machine } }
+			set_country_flag = brilliant_scientist_xeno_control_machine
+		}
+		else = { set_country_flag = brilliant_scientist_xeno_control_researched }
+		if = {
+			limit = { brilliant_scientist_is_current_host = yes }
+			KRG_warren_kruger = {
+				clr_character_flag = brilliant_scientist_personal_xeno_control_chemical
+				clr_character_flag = brilliant_scientist_personal_xeno_control_neural
+				clr_character_flag = brilliant_scientist_personal_xeno_control_machine
+				clr_character_flag = brilliant_scientist_personal_xeno_control_researched
+			}
+			if = {
+				limit = { has_country_flag = brilliant_scientist_xeno_control_chemical }
+				KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_xeno_control_chemical }
+			}
+			else_if = {
+				limit = { has_country_flag = brilliant_scientist_xeno_control_neural }
+				KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_xeno_control_neural }
+			}
+			else_if = {
+				limit = { has_country_flag = brilliant_scientist_xeno_control_machine }
+				KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_xeno_control_machine }
+			}
+			else = { KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_xeno_control_researched } }
+		}
+		chaosx_reconcile_custom_xeno_control_grants = yes
+	}
+}
+
+# COUNTRY scope. Ordinary transfer: the control doctrine Kruger adopted at a
+# former host travels with his personal research history. A recipient keeps
+# its own doctrine when Kruger carries none.
+brilliant_scientist_inherit_kruger_xeno_control_doctrine = {
+	set_temp_variable = { brilliant_scientist_xeno_control_choice = constant:chaosx_custom_technology_control.none }
+	if = {
+		limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_xeno_control_chemical } }
+		set_temp_variable = { brilliant_scientist_xeno_control_choice = constant:chaosx_custom_technology_control.chemical }
+	}
+	else_if = {
+		limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_xeno_control_neural } }
+		set_temp_variable = { brilliant_scientist_xeno_control_choice = constant:chaosx_custom_technology_control.neural }
+	}
+	else_if = {
+		limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_xeno_control_machine } }
+		set_temp_variable = { brilliant_scientist_xeno_control_choice = constant:chaosx_custom_technology_control.machine }
+	}
+	else_if = {
+		limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_xeno_control_researched } }
+		set_temp_variable = { brilliant_scientist_xeno_control_choice = constant:chaosx_custom_technology_control.researched }
+	}
+	brilliant_scientist_set_xeno_control_doctrine = yes
 }
 
 # COUNTRY scope. Inputs: family. Releases the full retained burden before the
