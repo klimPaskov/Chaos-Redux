@@ -88,3 +88,109 @@ Basis: the matrix Final state budget row allows a terminal action, and it is the
 In-world event, focus, decision and news text names the movement directly and does not call it fictional.
 The scenario premise in the Triggerable Scenarios window keeps its framing sentence.
 Basis: the event writing rules, while the representation rule stays a design constraint in the spec.
+
+## Implementation round 1 status
+
+The round was asked to append to `agent_decisions_2026-10-04.md`; it appends here, to the existing decisions file of the same date, so the takeover keeps one decisions record.
+Implementation evidence below proves what exists in source; it does not replace live-game validation, which belongs to the user.
+
+| Decision | Disposition | Implementation commits | Validation limits |
+| --- | --- | --- | --- |
+| D1 Carrier availability and reuse | implemented | `cbf96a95e` | Carrier reuse after a peace-deal death needs a live save. |
+| D2 Scenario capacity and failed launches | implemented | `b69105ae4` | Launch at each intensity needs a live run. |
+| D3 Parent survival and actor war | implemented | `cbf96a95e` | `declare_war_on` availability depends on live diplomacy. |
+| D4 Recurring incident pulse | implemented | `33a9d3b30` | Pulse timing is MTTH-driven; the probability audit route failed (see below). |
+| D5 Measured mission objectives | implemented | `21f7cd1cc` | Mission completion needs live scenarios. |
+| D6 One control value | implemented | `be7cd444a` | None beyond source review. |
+| D7 State stage modifiers and map mode | implemented | `b25ba5124`, `26ef0bb94` | Map mode colours, thickness, pulse and button art need a live view. |
+| D8 One target row per decision | implemented | `9ea870a8c` | Row count needs a live decision panel. |
+| D9 Real actor operations | implemented | `8fe778928`, `e280dace9` | The `create_unit` and `delete_unit` meta-effect ids need a live check. |
+| D10 Faction joins, reports and news | implemented | `04c57ae5f`, `f82397910`, `b69105ae4` | `add_to_faction` direction and popup suppression need a live run. |
+| D11 Portrait pool consumers | implemented | `cfe741c34` | Displayed portraits need a live view. |
+| D12 Terminal counteroffensive | implemented | no change required; the existing action already fills the role | None. |
+| D13 In-world wording | implemented | `33e02046a` | The Evolution IV catalog row is queued in `catalog_changes_pending.md`. |
+
+## Round 1 decisions
+
+Each decision below was taken under the same delegated authority and is `implemented` in the commit named beside it.
+
+### R1 Lazy carrier release and capital coups (`cbf96a95e`)
+
+`random_terror_release_dead_carriers` clears a reservation only for a tag that no longer exists and runs at refresh, spawn, scenario launch and revelation, so no periodic hook is needed.
+A capital that reaches Lost Local Control and cannot secede triggers the existing coup branch instead of an actor spawn.
+
+### R2 Lifecycle refresh owns only its failure overlay (`e280dace9`)
+
+The actor lifecycle refresh adds and removes only the failure spirits it added itself, marked by `random_terror_lifecycle_owns_<idea>`, and never manages the starting profile pair, so focus-earned spirits are never stripped.
+
+### R3 Pulse stops when Event 31 is disabled (`33a9d3b30`)
+
+The hidden pulse event `chaosx.nr31.96` reschedules itself only while `random_terror_event_is_enabled` holds, so turning Event 31 off in the settings ends the recurring incidents.
+
+### R4 Mission outcome mapping (`21f7cd1cc`)
+
+Retaking a lost state succeeds on military control, and the resolver clears Lost Local Control.
+Restore Civil Authority advances through Support Victims in recovering states.
+The hostage deadline gains a partial outcome through a Security Surge on an armed cell or a partial raid.
+The Capital Uprisings scenario opens the capital mission.
+
+### R5 Global Jihad transaction details (`b69105ae4`, `f82397910`)
+
+The scenario resolves only its target evolution stage, clamps Maximum to the largest valid actor count with a floor of one, applies evolutions only after the preflight passes, and sends report `.6` to players whose countries were not seeded.
+The Evolution III report waits for the first actor, and every evolution report is held back during setup.
+
+### R6 Reinforcement and affordability (`8fe778928`, `2c0b7ed99`)
+
+Military Reinforcement blocks Lost Local Control in its state for `reinforcement_days` through the timed `random_terror_state_reinforced` flag.
+Affordability uses one inclusive `NOT = { x < cost }` trigger per decision instead of separate threshold constants.
+
+### R7 Target rows (`9ea870a8c`)
+
+Decisions keyed to a recorded marker keep that marker as their target, while generic crisis decisions use the priority crisis state and mission subjects.
+
+### R8 Terror Activity map mode (`26ef0bb94`)
+
+The map mode lives in its own file, colours and thickens state borders by stage, pulses the viewer's response targets and never shows hidden readiness.
+Its buttons use a native-alpha generated bomb subject mapped onto the custom map mode button family.
+
+### R9 Focus rewards (`d2407706f`)
+
+The eleven variable-only focuses run one `random_terror_focus_reward_<name>` effect behind a plain tooltip, as tabled in `docs/events/031_random_terror/overview.md`.
+Establish Political Offices opens Build a Civil Administration to the Ideological Secretariat.
+Lead the Coordination Structure never overrides another network leader or pulls in a command marked independent by Global Jihad setup.
+Challenge Rival Governments grants one `topple_government` war goal, preferring a neighbour facing Armed Insurgency or Lost Local Control.
+Break the Last Corridor never transfers a national capital.
+The route-choice focuses add their route's decision flag, because the tree audit found that choosing a route never opened that route's decisions, and the header route line prefers the chosen route.
+The two bunker focuses pass a province selection, since bunkers are province buildings.
+
+### R10 Wording (`33e02046a`)
+
+Fictional Religious Councils becomes Compliant Religious Councils and Forge the Fictional Seal becomes Forge the Seal; focus ids stay unchanged.
+The False Revelation world-end entry in the shared events log localisation drops the word as well.
+
+### R11 Movement restriction escalation (`a55eb8241`)
+
+Each use raises the Stability price by 0.05 and the support equipment price by 20, up to two steps; the base price check remains as a floor.
+The use counter replaces the old used flag, and every use after the first draws public condemnation.
+
+### R12 Orphaned actor states (`a55eb8241`)
+
+With no living parent, each state of a retired AI actor goes first to a living government outside the crisis that holds its core, and otherwise to the actor's strongest enemy by division count.
+An AI actor left with a state nobody can take keeps its Event 31 identity and units; no separate marker flag is set because nothing would read it.
+The JMX history uses the literal research slot count 3, matching `actor_research_slots`.
+
+### R13 Plan documents (`8cfe65359`)
+
+The stopped thread's finished audit handoffs, probability baselines and comparisons, before-snapshots and fixtures are committed as they stand, and the visual asset audit records the portrait pool consumers and the two map mode buttons.
+
+## Route evidence and gaps
+
+- `hoi4.probability_inspect` failed with `INTERNAL_ERROR` when given a source path and with invalid-argument errors without one, so the D4 pulse and the AI weight changes in `711d4fde2` have only the committed before-snapshot under `evidence/ai_modifier_before_20261004/`; the same-scenario baseline and comparison remain open.
+- `hoi4.focus_inspect` and `hoi4.focus_render` on `random_terror_actor_focus_tree` succeeded after the focus reward change: 114 focuses, zero connector crossings, zero long connectors, zero tree diagnostics, source revision `1d972cb10b478ad153f3e2f702945ae5e829a3eaf0d1a79e0e853b16e6252658`, layout hash `69ec88315409c5c578ffca2852052037f7ee6a48510a92189c11ac79a1a6d2a9` (layout unchanged).
+- `hoi4.reference_search` answered narrow queries for `add_building_construction`, `every_neighbor_state` and the related effects in the installed `effects_documentation.md`.
+
+## Open after round 1
+
+- Further focuses remain value-only or flag-only: among them Define Leadership, Relocate the Command, Distribute the Cells, Intelligence by Whisper, Command the Front, Bargain with Rivals, Seize the Urban District, Break the Parent Government, Lead the Final Jihad, Join the Jihadist International, and the three focuses that call `random_terror_actor_call_coordinated_uprising`, whose focus-side call only sets an unread flag.
+- Several shared tuning values are not multiples of five (`unity_gain` 4, `actor_control_convert_gain` 8, `actor_supply_corridor_gain` 8), and Convene the Cadre and Codify the Doctrine both add `random_terror_cadre_authority`.
+- The workbook owner must apply `catalog_changes_pending.md`.
