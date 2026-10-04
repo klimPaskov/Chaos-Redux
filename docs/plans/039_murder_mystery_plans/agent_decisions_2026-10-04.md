@@ -143,3 +143,17 @@ Cell actions are paid by the central movement state while it can act, matching w
 Operations kits have no vanilla texticon, so a 24x24 texticon was downscaled from the existing kit equipment icon rather than generated.
 The cost text colours every amount red when the payer cannot afford the action, the repository's established blocked-cost pattern; per-resource colouring would need a scripted localisation entry for every family and resource.
 The HOI4 MCP `probability_inspect` route returned `INTERNAL_ERROR` for a narrow `decision_ai_will_do` query on one decision, so no baseline or compare evidence exists for the changed AI blocked conditions; each changed condition only swaps the old political power gate for the family affordability trigger.
+
+## D16. Fourteen new objective missions complete the Part 8 families
+
+Disposition: implemented; binding, timers and outcomes need live confirmation.
+The missing families are now objectives: Run the Agency Operation for the host; Contest the Supply Route, Capture the Case Archive, Keep the Cell Supplied, Grow the Cell Quietly, Prepare the Revolt Cluster, Hold the Subjects Together and Synchronize the Cells for the central state; and Dismantle the Command Network, Force a Capitulation, Hold the Sector Capitals, Protect the Central Command, Protect the Successor Government and Reduce the Sector Governments for the terminal campaign.
+Each one binds concrete targets (a host border state, the selected cell's registry row, the current campaign target, the smallest derivative, or the sector snapshot) and has separate success, failure and, where the objective can be half done, partial outcomes with their own effects.
+A country still runs one objective at a time, as the existing sixteen do, because every objective shares one context and sets the phase-mission flag; the spec's one to three concurrent missions per country would need a second context and is not attempted.
+New objectives are started only through `murder_mystery_decision_offer_objective`, which refuses while an objective runs, so a later action never overwrites the running objective's type or targets.
+Starts follow the action that creates the objective: a successful Commit a Case Team or Audit Communications starts the agency operation; the Brotherhood's own cell missions start the three cell objectives; the opening war chains Survive the Opening War into Contest the Supply Route and then Capture the Case Archive while the war with the host lasts; each terminal decision starts the objective it implies; Complete the Terminal Sector chains into Hold the Sector Capitals.
+Hold the Subjects Together is also opened by the movement pulse when the central state's Cohesion falls below 40 while a derivative is bound to it, because a subject can break away without any player action.
+Cell values are read directly from the bounded cell registry; the synchronized-cell count and the sector count are published by the pulse, which already runs every ten days on one anchor, so those two objectives can complete up to one pulse late.
+The agency operation is host-only because missions belong to one category and foreign governments use a different category.
+Terminal objectives add a conquer or protect AI strategy toward their target; the AI has no other way to read a non-selectable mission.
+The fourteen missions reuse existing Event 039 decision textures (including the five previously unused ones) under new `GFX_mission_039_murder_mystery_<objective>` sprite names, so bespoke art can replace them later without renaming.

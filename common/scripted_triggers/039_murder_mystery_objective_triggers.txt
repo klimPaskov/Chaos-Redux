@@ -82,3 +82,299 @@ murder_mystery_objective_sector_has_partial_result = {
 		murder_mystery_objective_sector_country_is_resolved = yes
 	}
 }
+
+# ---------------------------------------------------------------------------
+# Agency, movement and terminal objectives
+# ---------------------------------------------------------------------------
+# All triggers below run in the mission owner's COUNTRY scope and read the
+# context written by murder_mystery_decision_bind_movement_objective. Cell
+# values come from the bounded cell registry row of the bound country.
+
+# The bound country still holds a live cell registry row.
+murder_mystery_objective_cell_is_registered = {
+	has_variable = murder_mystery_objective_country
+	var:murder_mystery_objective_country = {
+		exists = yes
+		murder_mystery_country_has_registered_cell = yes
+	}
+}
+
+# The bound cell's maturity has reached the stored target.
+murder_mystery_objective_cell_maturity_reached = {
+	murder_mystery_objective_cell_is_registered = yes
+	has_variable = murder_mystery_objective_target_value
+	any_of = {
+		array = global.murder_mystery_cell_country_entries
+		value = murder_mystery_objective_cell_row
+		index = murder_mystery_objective_cell_index
+		check_variable = { var = murder_mystery_objective_cell_row value = murder_mystery_objective_country compare = equals }
+		check_variable = { var = global.murder_mystery_cell_maturity_entries^murder_mystery_objective_cell_index value = murder_mystery_objective_target_value compare = greater_than_or_equals }
+	}
+}
+
+# The bound cell's maturity is above its value when the mission began.
+murder_mystery_objective_cell_maturity_rose = {
+	murder_mystery_objective_cell_is_registered = yes
+	has_variable = murder_mystery_objective_start_value
+	any_of = {
+		array = global.murder_mystery_cell_country_entries
+		value = murder_mystery_objective_cell_row
+		index = murder_mystery_objective_cell_index
+		check_variable = { var = murder_mystery_objective_cell_row value = murder_mystery_objective_country compare = equals }
+		check_variable = { var = global.murder_mystery_cell_maturity_entries^murder_mystery_objective_cell_index value = murder_mystery_objective_start_value compare = greater_than }
+	}
+}
+
+# The bound cell's exposure is still below the quiet ceiling.
+murder_mystery_objective_cell_exposure_is_low = {
+	murder_mystery_objective_cell_is_registered = yes
+	any_of = {
+		array = global.murder_mystery_cell_country_entries
+		value = murder_mystery_objective_cell_row
+		index = murder_mystery_objective_cell_index
+		check_variable = { var = murder_mystery_objective_cell_row value = murder_mystery_objective_country compare = equals }
+		check_variable = { var = global.murder_mystery_cell_exposure_entries^murder_mystery_objective_cell_index value = constant:murder_mystery_objective_tuning.quiet_exposure_ceiling compare = less_than }
+	}
+}
+
+# The bound cell is an insurrection cell with full revolt readiness.
+murder_mystery_objective_cell_revolt_is_ready = {
+	murder_mystery_objective_cell_is_registered = yes
+	any_of = {
+		array = global.murder_mystery_cell_country_entries
+		value = murder_mystery_objective_cell_row
+		index = murder_mystery_objective_cell_index
+		check_variable = { var = murder_mystery_objective_cell_row value = murder_mystery_objective_country compare = equals }
+		check_variable = { var = global.murder_mystery_cell_stage_entries^murder_mystery_objective_cell_index value = constant:murder_mystery_cell_stage.insurrection compare = greater_than_or_equals }
+		check_variable = { var = global.murder_mystery_cell_revolt_readiness_entries^murder_mystery_objective_cell_index value = constant:murder_mystery_revolt.readiness_threshold compare = greater_than_or_equals }
+	}
+}
+
+# The bound cell is at least half way to a revolt.
+murder_mystery_objective_cell_revolt_is_half_ready = {
+	murder_mystery_objective_cell_is_registered = yes
+	any_of = {
+		array = global.murder_mystery_cell_country_entries
+		value = murder_mystery_objective_cell_row
+		index = murder_mystery_objective_cell_index
+		check_variable = { var = murder_mystery_objective_cell_row value = murder_mystery_objective_country compare = equals }
+		check_variable = { var = global.murder_mystery_cell_revolt_readiness_entries^murder_mystery_objective_cell_index value = constant:murder_mystery_objective_tuning.revolt_cluster_partial_readiness compare = greater_than_or_equals }
+	}
+}
+
+# The government investigating the bound cell has nearly exposed it.
+murder_mystery_objective_cell_local_case_is_advanced = {
+	murder_mystery_objective_cell_is_registered = yes
+	any_of = {
+		array = global.murder_mystery_cell_country_entries
+		value = murder_mystery_objective_cell_row
+		index = murder_mystery_objective_cell_index
+		check_variable = { var = murder_mystery_objective_cell_row value = murder_mystery_objective_country compare = equals }
+		check_variable = { var = global.murder_mystery_cell_local_case_entries^murder_mystery_objective_cell_index value = constant:murder_mystery_objective_tuning.cell_supplied_exposed_case_progress compare = greater_than_or_equals }
+	}
+}
+
+# Agency operation: the case advanced far enough while evidence held up.
+murder_mystery_objective_agency_operation_is_complete = {
+	has_variable = murder_mystery_objective_target_value
+	check_variable = { var = murder_mystery_case_progress value = murder_mystery_objective_target_value compare = greater_than_or_equals }
+	check_variable = { var = murder_mystery_evidence_integrity value = constant:murder_mystery_objective_tuning.agency_evidence_floor compare = greater_than_or_equals }
+}
+
+# Agency operation: the network moved before the case closed in.
+murder_mystery_objective_agency_cell_moved = {
+	has_variable = murder_mystery_objective_limit_value
+	check_variable = { var = murder_mystery_network_reach value = murder_mystery_objective_limit_value compare = greater_than }
+}
+
+# The bound state is controlled, in full, by the owner.
+murder_mystery_objective_state_is_taken = {
+	has_variable = murder_mystery_objective_state
+	var:murder_mystery_objective_state = { is_controlled_by = ROOT }
+	has_full_control_of_state = var:murder_mystery_objective_state
+}
+
+# The bound state is controlled by the owner, possibly with fighting left in
+# some provinces.
+murder_mystery_objective_state_is_contested = {
+	has_variable = murder_mystery_objective_state
+	var:murder_mystery_objective_state = { is_controlled_by = ROOT }
+}
+
+# A derivative that was bound to the center when the objective began has left
+# its subject settlement.
+murder_mystery_objective_subject_has_left = {
+	any_of_scopes = {
+		array = murder_mystery_objective_subject_countries
+		exists = yes
+		NOT = { is_subject_of = ROOT }
+	}
+}
+
+# Enough registered cells stand at insurrection stage for a synchronized
+# operation. The pulse publishes the count.
+murder_mystery_objective_synchronized_cells_are_ready = {
+	has_variable = global.murder_mystery_insurrection_cell_count
+	check_variable = { var = global.murder_mystery_insurrection_cell_count value = constant:murder_mystery_objective_tuning.synchronized_cell_count compare = greater_than_or_equals }
+}
+
+murder_mystery_objective_synchronized_cells_are_partial = {
+	has_variable = global.murder_mystery_insurrection_cell_count
+	check_variable = { var = global.murder_mystery_insurrection_cell_count value = constant:murder_mystery_objective_tuning.synchronized_partial_cell_count compare = greater_than_or_equals }
+}
+
+# The bound government has capitulated, accepted subject status or is gone.
+murder_mystery_objective_target_is_defeated = {
+	has_variable = murder_mystery_objective_country
+	OR = {
+		NOT = { var:murder_mystery_objective_country = { exists = yes } }
+		var:murder_mystery_objective_country = {
+			OR = {
+				has_capitulated = yes
+				is_subject_of = ROOT
+			}
+		}
+	}
+}
+
+# The bound government's capital is held by the owner or one of its subjects.
+murder_mystery_objective_target_capital_is_taken = {
+	has_variable = murder_mystery_objective_country
+	var:murder_mystery_objective_country = {
+		exists = yes
+		capital_scope = {
+			controller = {
+				OR = {
+					tag = ROOT
+					is_subject_of = ROOT
+				}
+			}
+		}
+	}
+}
+
+# The owner or its subjects hold at least one state of the bound government.
+murder_mystery_objective_target_is_partly_taken = {
+	has_variable = murder_mystery_objective_country
+	var:murder_mystery_objective_country = {
+		exists = yes
+		any_owned_state = {
+			controller = {
+				OR = {
+					tag = ROOT
+					is_subject_of = ROOT
+				}
+			}
+		}
+	}
+}
+
+# The bound government is close to surrender.
+murder_mystery_objective_target_is_near_surrender = {
+	has_variable = murder_mystery_objective_country
+	var:murder_mystery_objective_country = {
+		exists = yes
+		surrender_progress > constant:murder_mystery_objective_tuning_float.capitulation_partial_surrender
+	}
+}
+
+# At least one sector government's capital is held by the owner or a subject,
+# or that government is already settled.
+murder_mystery_objective_holds_sector_capital = {
+	has_variable = murder_mystery_objective_sector
+	check_variable = { var = murder_mystery_objective_sector_countries^num value = constant:murder_mystery_value.zero compare = greater_than }
+	any_of_scopes = {
+		array = murder_mystery_objective_sector_countries
+		OR = {
+			NOT = { exists = yes }
+			is_subject_of = ROOT
+			capital_scope = {
+				controller = {
+					OR = {
+						tag = ROOT
+						is_subject_of = ROOT
+					}
+				}
+			}
+		}
+	}
+}
+
+# Enough sector governments are settled. The objective start and the pulse
+# publish murder_mystery_objective_progress_value.
+murder_mystery_objective_sector_reduction_is_complete = {
+	has_variable = murder_mystery_objective_progress_value
+	check_variable = { var = murder_mystery_objective_progress_value value = constant:murder_mystery_objective_tuning.reduce_governments_minimum compare = greater_than_or_equals }
+}
+
+murder_mystery_objective_sector_reduction_is_partial = {
+	has_variable = murder_mystery_objective_progress_value
+	check_variable = { var = murder_mystery_objective_progress_value value = constant:murder_mystery_value.zero compare = greater_than }
+}
+
+# The central command lost its original capital or its Cohesion broke.
+murder_mystery_objective_central_command_is_broken = {
+	OR = {
+		NOT = { murder_mystery_objective_original_capital_is_held = yes }
+		check_variable = { var = murder_mystery_brotherhood_cohesion value = constant:murder_mystery_objective_tuning.central_command_cohesion_floor compare = less_than }
+	}
+}
+
+# The protected derivative capitulated, left the settlement or is gone.
+murder_mystery_objective_derivative_is_lost = {
+	has_variable = murder_mystery_objective_country
+	OR = {
+		NOT = { var:murder_mystery_objective_country = { exists = yes } }
+		var:murder_mystery_objective_country = {
+			OR = {
+				has_capitulated = yes
+				NOT = { is_subject_of = ROOT }
+				has_country_flag = murder_mystery_derivative_loss_recorded
+			}
+		}
+	}
+}
+
+# The objective's required targets were bound. Objective types older than the
+# agency operation bind their own context and always pass.
+murder_mystery_objective_binding_is_valid = {
+	OR = {
+		check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.agency_operation compare = less_than }
+		check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.agency_operation compare = equals }
+		check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.synchronized_operation compare = equals }
+		check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.protect_central_command compare = equals }
+		AND = {
+			OR = {
+				check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.contest_supply_route compare = equals }
+				check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.capture_host_archive compare = equals }
+			}
+			has_variable = murder_mystery_objective_state
+			has_variable = murder_mystery_objective_country
+		}
+		AND = {
+			OR = {
+				check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.keep_cell_supplied compare = equals }
+				check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.raise_cell_quietly compare = equals }
+				check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.prepare_revolt_cluster compare = equals }
+			}
+			murder_mystery_objective_cell_is_registered = yes
+		}
+		AND = {
+			OR = {
+				check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.hold_subject_loyalty compare = equals }
+				check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.protect_derivative compare = equals }
+				check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.dismantle_command_network compare = equals }
+				check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.force_capitulation compare = equals }
+			}
+			has_variable = murder_mystery_objective_country
+		}
+		AND = {
+			OR = {
+				check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.hold_sector_capitals compare = equals }
+				check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.reduce_sector_governments compare = equals }
+			}
+			has_variable = murder_mystery_objective_sector
+			check_variable = { var = murder_mystery_objective_sector_countries^num value = constant:murder_mystery_value.zero compare = greater_than }
+		}
+	}
+}

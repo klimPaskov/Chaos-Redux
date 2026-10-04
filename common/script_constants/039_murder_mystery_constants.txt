@@ -206,6 +206,21 @@ murder_mystery_objective = {
 	hold_parent_capital_revolt_border = 14
 	survive_opening_war = 15
 	complete_terminal_sector = 16
+	agency_operation = 17
+	contest_supply_route = 18
+	capture_host_archive = 19
+	keep_cell_supplied = 20
+	raise_cell_quietly = 21
+	prepare_revolt_cluster = 22
+	hold_subject_loyalty = 23
+	synchronized_operation = 24
+	dismantle_command_network = 25
+	force_capitulation = 26
+	hold_sector_capitals = 27
+	protect_central_command = 28
+	protect_derivative = 29
+	reduce_sector_governments = 30
+	maximum = 30
 }
 
 murder_mystery_transaction = {
@@ -746,6 +761,66 @@ murder_mystery_cost_float = {
 	public_strain_stability = 0.03
 }
 
+# Thresholds and outcomes of the agency, movement and terminal objectives.
+murder_mystery_objective_tuning = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	# Agency operation: the case must gain this much progress before Network
+	# Reach climbs past its starting value plus the tolerance.
+	agency_case_progress_gain = 15
+	agency_evidence_floor = 40
+	agency_reach_tolerance = 10
+	# Quiet maturity: maturity gain to reach while cell exposure stays below
+	# the ceiling.
+	quiet_maturity_gain = 20
+	quiet_exposure_ceiling = 40
+	quiet_exposure_relief = -10
+	# Revolt cluster: a cell this far towards the revolt threshold earns a
+	# partial result.
+	revolt_cluster_partial_readiness = 50
+	# Keep a cell supplied: a local case this advanced turns success partial.
+	cell_supplied_exposed_case_progress = 60
+	cell_supplied_maturity_success = 15
+	cell_supplied_readiness_success = 10
+	cell_supplied_maturity_partial = 5
+	# Synchronized operation: registered cells at insurrection stage or above.
+	synchronized_cell_count = 2
+	synchronized_partial_cell_count = 1
+	synchronized_readiness_gain = 10
+	synchronized_reach_gain = 10
+	# Subject loyalty: started by the pulse when Cohesion falls below the
+	# threshold while a derivative is bound to the center.
+	subject_loyalty_start_cohesion = 40
+	subject_loyalty_cohesion_success = 10
+	subject_loyalty_cohesion_failure = -10
+	# Supply route and host archive outcomes against the original host.
+	supply_route_host_security_loss = -15
+	supply_route_fuel = 3000
+	archive_host_case_loss = -20
+	archive_host_evidence_loss = -20
+	archive_reach_gain = 10
+	# Terminal objectives.
+	central_command_cohesion_floor = 25
+	central_command_cohesion_success = 10
+	protect_derivative_cohesion_success = 5
+	reduce_governments_minimum = 2
+	capitulation_partial_cohesion = 3
+}
+
+murder_mystery_objective_tuning_float = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# Surrender progress that counts as a partial result for Force a
+	# Capitulation.
+	capitulation_partial_surrender = 0.30
+}
+
 murder_mystery_action_tuning = {
 	schema = {
 		any_key = yes
@@ -770,6 +845,20 @@ murder_mystery_action_tuning = {
 	objective_parent_border_days = 210
 	objective_opening_war_days = 180
 	objective_terminal_sector_days = 300
+	objective_agency_operation_days = 120
+	objective_supply_route_days = 150
+	objective_host_archive_days = 180
+	objective_cell_supplied_days = 150
+	objective_quiet_maturity_days = 120
+	objective_revolt_cluster_days = 180
+	objective_subject_loyalty_days = 120
+	objective_synchronized_operation_days = 150
+	objective_command_network_days = 240
+	objective_force_capitulation_days = 365
+	objective_sector_capitals_days = 180
+	objective_central_command_days = 200
+	objective_protect_derivative_days = 210
+	objective_reduce_governments_days = 300
 	objective_war_extension_days = 30
 	objective_major_extension_days = 15
 	objective_agency_reduction_days = -15

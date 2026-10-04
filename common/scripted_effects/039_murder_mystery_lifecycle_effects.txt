@@ -105,8 +105,42 @@ murder_mystery_run_pulse = {
 	murder_mystery_pulse_incidents = yes
 	murder_mystery_pulse_evolutions = yes
 	murder_mystery_pulse_revolts = yes
+	murder_mystery_pulse_objectives = yes
 	murder_mystery_achievement_pulse = yes
 	murder_mystery_evaluate_global_resolution = yes
+}
+
+# Any scope. Publishes the number of registered insurrection cells for the
+# Synchronized Operation objective, refreshes the central state's sector
+# count for Reduce the Sector Governments, and opens Hold the Subjects
+# Together when its Cohesion falls while a derivative is bound to it.
+murder_mystery_pulse_objectives = {
+	set_variable = { global.murder_mystery_insurrection_cell_count = constant:murder_mystery_value.zero }
+	if = {
+		limit = { murder_mystery_cell_registry_is_aligned = yes }
+		for_each_loop = {
+			array = global.murder_mystery_cell_stage_entries
+			value = murder_mystery_objective_stage_value
+			if = {
+				limit = { check_variable = { var = murder_mystery_objective_stage_value value = constant:murder_mystery_cell_stage.insurrection compare = greater_than_or_equals } }
+				add_to_variable = { global.murder_mystery_insurrection_cell_count = constant:murder_mystery_value.one }
+			}
+		}
+	}
+	if = {
+		limit = {
+			has_global_flag = murder_mystery_assassin_state_exists
+			has_event_target = murder_mystery_assassin_state
+			event_target:murder_mystery_assassin_state = { exists = yes }
+		}
+		event_target:murder_mystery_assassin_state = {
+			if = {
+				limit = { has_active_mission = murder_mystery_reduce_sector_governments }
+				murder_mystery_decision_count_sector_progress = yes
+			}
+			murder_mystery_decision_offer_subject_loyalty = yes
+		}
+	}
 }
 
 # ---------------------------------------------------------------------------

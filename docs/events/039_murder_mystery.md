@@ -56,7 +56,7 @@ Sector mission completion does not by itself resolve the entire World of Anarchy
 
 Every objective checks `murder_mystery_objective_owner_is_valid` in cancellation and reward delivery.
 Country loss, runtime resolution, or cleanup retires its receipt and prevents later mission rewards.
-The country cleanup helper explicitly removes all sixteen named objective missions without firing their complete or timeout effects.
+The country cleanup helper explicitly removes all thirty named objective missions without firing their complete or timeout effects.
 Global cleanup visits the original host, the central movement, and the existing bounded cell and derivative registries.
 It adds no periodic whole-world scan.
 
@@ -64,6 +64,34 @@ Government partial results improve Case Progress and reduce Network Reach while 
 Assassin partial results expand Reach at a Cohesion cost.
 Assassin failures reduce Reach and Cohesion, rather than increasing the movement's strength.
 These objective outcomes do not add Chaos.
+
+### Agency, movement and terminal objectives
+
+A country runs one objective at a time, and the objective sets the phase-mission flag, so no other selectable mission can start while it runs.
+New objectives are offered through `murder_mystery_decision_offer_objective`, which does nothing while an objective is already running; this keeps a later action from overwriting the running objective's context.
+`murder_mystery_decision_bind_movement_objective` binds their targets, and `murder_mystery_objective_binding_is_valid` refuses to start an objective whose target could not be found.
+Thresholds and outcome sizes live in `murder_mystery_objective_tuning` and `murder_mystery_objective_tuning_float`; durations in `murder_mystery_action_tuning`.
+
+| Objective | Owner and start | Target | Success | Partial | Failure |
+| --- | --- | --- | --- | --- | --- |
+| Run the Agency Operation | Original host, after a successful Commit a Case Team or Audit Communications | Case Progress target, Evidence Integrity floor, Network Reach ceiling | Case Progress reaches the target with evidence intact; a registered cell in the country loses maturity and a stage | Any Case Progress gained by the deadline | Network Reach passes the ceiling (the cell moved) or nothing gained |
+| Contest the Supply Route | Central state, after Survive the Opening War while still at war with the host | A host supply-hub state bordering the movement | Full control of the state; host route security falls, the movement captures fuel; Capture the Case Archive follows | The state is held but still contested; the archive objective follows | The state is not taken |
+| Capture the Case Archive | Central state, after Contest the Supply Route | The host capital if it borders the movement, otherwise a host border state | The state is taken; the host loses Case Progress and Evidence Integrity, the movement gains Reach | none | The state is not taken |
+| Keep the Cell Supplied | Central state, after Supply the Selected Cell | The selected cell | The cell survives; it gains maturity and revolt readiness | The cell survives with its local case advanced; small maturity gain | The cell is destroyed |
+| Grow the Cell Quietly | Central state, after Dispatch a Shadow Company | The selected cell's maturity target and exposure ceiling | Maturity target reached below the exposure ceiling; the cell sheds exposure | Some maturity gained | No growth, or the cell is lost |
+| Prepare the Revolt Cluster | Central state, after Prepare a Territorial Revolt | The selected cell and a non-capital state of its government | Insurrection stage with full readiness; the cell is first in line for the next revolt | Half readiness | Less, or the cell is lost |
+| Hold the Subjects Together | Central state, after Reconcile a Command Dispute, or opened by the pulse when Cohesion falls below `subject_loyalty_start_cohesion` | Every active derivative | No derivative leaves the subject settlement; Cohesion rises | none | A derivative leaves; Cohesion falls |
+| Synchronize the Cells | Central state, after a successful high-value operation | Registered insurrection cells (counted by the pulse) | Enough insurrection cells; every insurrection cell gains readiness, Reach rises | At least one insurrection cell | None |
+| Dismantle the Command Network | Central state, after Break the Command Spine | The current campaign target | Its capital held by the movement or a subject, or it surrendered | Part of its territory held | Nothing taken |
+| Force a Capitulation | Central state, after World of Anarchy activates | The current campaign target | It capitulates, becomes a subject or is gone | Surrender progress above `capitulation_partial_surrender`; small Cohesion gain | Otherwise |
+| Hold the Sector Capitals | Central state, after Complete the Terminal Sector | The sector snapshot | At least one sector capital held to the deadline | none | Every sector capital lost |
+| Protect the Central Command | Central state, after Reconstitute the Campaign Council | Its original capital and a Cohesion floor | Both held; Cohesion rises | none | Capital lost or Cohesion below the floor |
+| Protect the Successor Government | Central state, after Establish a Successor Administration | Its smallest active derivative | The derivative survives as a subject; its Cohesion rises | none | It capitulates, leaves or is destroyed |
+| Reduce the Sector Governments | Central state, after selecting a second or third campaign sector | The sector snapshot | At least `reduce_governments_minimum` governments settled | At least one settled | None |
+
+Terminal objectives add a conquer or protect AI strategy toward their target, so an AI center pursues them.
+The pulse publishes `global.murder_mystery_insurrection_cell_count` and refreshes the central state's sector count while Reduce the Sector Governments runs.
+The new missions reuse existing Event 039 decision art through `GFX_mission_039_murder_mystery_<objective>` sprites in `interface/039_murder_mystery_icons.gfx`.
 
 ## Movement pulse
 
@@ -226,7 +254,7 @@ A derivative counts as viable when its registry row is active, its starting forc
 
 | Surface | Source |
 | --- | --- |
-| Phase actions and sixteen objective missions | `common/decisions/039_murder_mystery_decisions.txt` |
+| Phase actions and thirty objective missions | `common/decisions/039_murder_mystery_decisions.txt` |
 | Recipient binding, snapshots, outcomes and removal | `common/scripted_effects/039_murder_mystery_decision_effects.txt` |
 | Objective receipt, full control, rail and sector predicates | `common/scripted_triggers/039_murder_mystery_objective_triggers.txt` |
 | Country loss and split integration | `common/scripted_effects/039_murder_mystery_integration_effects.txt` |
@@ -241,7 +269,7 @@ A derivative counts as viable when its registry row is active, its starting forc
 | Mission titles, named states and requirements | `localisation/english/039_murder_mystery_l_english.yml` |
 | Mission sprites | `interface/039_murder_mystery_icons.gfx` |
 
-The sixteen objective sprites use `GFX_mission_039_murder_mystery_<objective>` and runtime textures under `gfx/interface/decisions/039_murder_mystery/`.
+The original sixteen objective sprites use `GFX_mission_039_murder_mystery_<objective>` and their own runtime textures under `gfx/interface/decisions/039_murder_mystery/`; the fourteen later objectives reuse existing decision textures from the same folder under the same sprite naming.
 The objective names are `protect_witness_transfer`, `hold_government_quarter`, `secure_evidence_convoy`, `guard_named_route`, `place_supplied_divisions`, `keep_capital_connected`, `capture_safehouse_chain`, `preserve_target_attack_window`, `prevent_revolt_preparation`, `secure_depots_rail_hubs`, `dismantle_local_recruitment`, `protect_local_government`, `intercept_support_shipment`, `hold_parent_capital_revolt_border`, `survive_opening_war`, and `complete_terminal_sector`.
 The current repair reuses their existing bespoke textures and does not create or replace image files.
 The asset audit remains governed by the full per-asset review and consumer crosswalk in `docs/assets/039_murder_mystery/visual_asset_audit.md`.
@@ -249,7 +277,8 @@ The asset audit remains governed by the full per-asset review and consumer cross
 ## Remaining acceptance work
 
 The mission family count is not proof of complete objective coverage.
-The agency operation, foreign shipment receipts, witness state-to-state transfer, recruitment network outcomes, protected-character survival, derivative support, subject obedience, and all six terminal mandate families still require comparison against their accepted gameplay requirements.
+Every Part 8 mission family now has an objective, but foreign shipment receipts, the witness state-to-state transfer, recruitment network outcomes and protected-character survival still use the simplified checks described above.
+The agency operation, movement and terminal objectives need live confirmation of their binding, timers and outcomes.
 Route rewards, country viability, native technology and focus evidence, probability comparisons, both Meshy model packages and actions, licensed audio, workbook reconciliation, and the full Part 18 matrix remain separate completion gates.
 No runtime or persistence claim in this document substitutes for observed game state.
 
