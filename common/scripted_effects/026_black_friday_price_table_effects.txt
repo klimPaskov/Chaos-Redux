@@ -1402,6 +1402,27 @@ black_friday_price_table_refresh_entries = {
 	black_friday_price_table_quote = yes
 	set_variable = { global.black_friday_price_natural_disaster_warning_cost_abnormal_command_power = black_friday_price_payable }
 
+	# secret_alliance_decision_gate (Event 011 paid event options). The decision
+	# costs apply the table ratio inside secret_alliance_refresh_dynamic_costs.
+	set_temp_variable = { black_friday_price_ordinary = constant:secret_alliance_decision_gate.opening_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_secret_alliance_decision_gate_opening_command_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:secret_alliance_decision_gate.serious_incident_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_secret_alliance_decision_gate_serious_incident_command_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:secret_alliance_decision_gate.operation_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_secret_alliance_decision_gate_operation_command_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:secret_alliance_decision_gate.operation_army_experience }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_secret_alliance_decision_gate_operation_army_experience = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:secret_alliance_decision_gate.operation_support_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_secret_alliance_decision_gate_operation_support_equipment = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:secret_alliance_decision_gate.rumor_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_secret_alliance_decision_gate_rumor_political_power = black_friday_price_payable }
+
 	# soviet_collapse_kmb_balance
 	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_kmb_balance.conquered_basin_concession_cost }
 	black_friday_price_table_quote = yes
@@ -1636,6 +1657,11 @@ black_friday_price_table_refresh_owner_quotes = {
 	every_country = {
 		limit = { has_country_flag = infantry_spawn_participant }
 		infantry_spawn_refresh_request_costs = yes
+	}
+	# Event 011 cached response costs
+	every_country = {
+		limit = { has_variable = secret_alliance_cost_scale }
+		secret_alliance_refresh_dynamic_costs = yes
 	}
 }
 

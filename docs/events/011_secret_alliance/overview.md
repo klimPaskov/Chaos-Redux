@@ -157,6 +157,16 @@ The post-change HOI4 MCP inspection resolved 27 elements in `secret_alliance_cou
 
 The MCP source rewriter rejected the resize in whole-source, constants-only, and exact-property modes with `REWRITE_STRUCTURE_LIMIT`. The source change was therefore applied through the repository edit workflow and then re-inspected and rendered through the MCP. Repository-wide diagnostic truncation from unrelated GUI graphs remains present, so no claim is made that a global GUI validation pass is clean. The shared Event Log popup host remains outside this Event 011-only review.
 
+## Black Friday prices
+
+During a Black Friday sale (Event 026) Secret Alliance actions charge the sale price.
+`secret_alliance_refresh_dynamic_costs` applies the ratio the Black Friday price table currently holds (`global.black_friday_price_table_ratio`) to every cached cost after the country scale and rounding: the nine scaled material costs, the diplomacy Command Power, the four dossier Political Power costs, the investigation, diplomacy, and emergency Stability losses, and the preemption and border escalation War Support, with Stability and War Support rounded to their 1% step and nothing above the ordinary cost.
+The payments, the affordability triggers, and the cost texts read those cached variables, so shown, required, and paid amounts agree; the investigation Stability is split into its two paid parts (`secret_alliance_cost_investigation_stability` and `secret_alliance_cost_investigation_extra_stability`) so the shown intermediary total is their sum.
+Black Friday refreshes the cached costs of every country that has them when the sale starts and ends.
+The paid event options (opening plans, serious incidents, operations, and rumor control) read their `global.black_friday_price_secret_alliance_decision_gate_<cost>` table price in both the option trigger and the payment.
+Stability and War Support floors, mission objective checks, and the false-accusation Stability penalty keep their ordinary values.
+Each paid action credits one Black Friday achievement family.
+
 ## Balance notes
 
 Founder selection, membership caps, stage openings, operation cadence, clue values, component gains, decision gates, cost scaling, outcome bands, reveal conversion, war facts, scenario packages, and AI weights are centralized in `common/script_constants/011_secret_alliance_constants.txt`. Idea modifier fields use file-local constants in `common/ideas/011_secret_alliance_ideas.txt` because that database rejects script-constant tokens. MTTH cadence is centralized in `common/mtth/011_secret_alliance_mtth.txt`. The decision matrix enforces simultaneous-family caps so the target must choose between investigation, protection, diplomacy, offensive preparation, border escalation, and emergency response rather than buy every defense at once. The maximum live mixed capacity profile scales costs by `2.2425`, produces a rounded 168 PP maximum from the 75 PP base, and is covered by a 170 PP AI planning hint.

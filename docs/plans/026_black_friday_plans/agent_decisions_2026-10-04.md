@@ -301,3 +301,19 @@ Kept at ordinary amounts, with reason:
 Basis: the D11 and D15 patterns (constant amounts in the table; cached scaled costs apply the table ratio in their refresh). No AI weight changes.
 
 Disposition: implemented (source); provider family management `owner adoption pending`. Live request display and payment at 50 and 75 percent are `needs_live_game`.
+
+## D19. Event 011 Secret Alliance charges the sale price
+
+Decision: Secret Alliance purchases read the Black Friday price (`price_table_version` 8).
+
+- The owner already caches every response cost on the country in `secret_alliance_refresh_dynamic_costs`. That refresh applies the table ratio after the country scale and rounding to the nine scaled material costs, the diplomacy Command Power, the four dossier Political Power costs (including the public war aims action, which pays the partial dossier amount), the investigation, diplomacy, and emergency Stability losses (1% step), and the preemption and border escalation War Support (1% step).
+- Payments and affordability checks that read the ordinary constants directly now read the cached variables, so every shown, required, and paid amount comes from the same cache. The investigation Stability is cached as its two paid parts, and the displayed intermediary total is their sum.
+- The nine paid event options read `global.black_friday_price_secret_alliance_decision_gate_<cost>` in their trigger and payment; their achievement credit runs in a `hidden_effect` so the option tooltip shows only the payment.
+- `black_friday_price_table_refresh_owner_quotes` refreshes each country holding `secret_alliance_cost_scale` when the sale starts and ends.
+- Each composite payment (investigation, protection, diplomacy, offensive, emergency, war), each dossier action, the border escalation, and each paid event option credits one achievement family; the preemptive strike credits through its emergency payment only.
+
+Kept at ordinary values: the Stability and War Support floors (diplomacy, manhunt, rumor, preemption), the mission objective requirement checks, and the false-accusation Stability penalty.
+
+Basis: the D15 cached-cost pattern and spec Part 4 (event options with payment and Stability or War Support payments are purchases; floors and penalties are not). No AI weight changes.
+
+Disposition: implemented (source). Live display and payment during a sale are `needs_live_game`.

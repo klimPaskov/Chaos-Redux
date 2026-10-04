@@ -284,6 +284,8 @@ Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 35.
 
 #### Event 011 Secret Alliance
 
+Converted (agent decision D19). No Event 011 cost remains queued. The line list below predates the conversion.
+
 Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 56.
 
 | File | Native positive cost lines | Dynamic native cost lines | Custom cost trigger lines |
