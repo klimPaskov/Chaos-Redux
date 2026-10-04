@@ -10,7 +10,9 @@ The accepted evolution names are Organized Cells, Transnational Terror Network, 
 
 Global Jihad remains a scenario owned by Event 31, and The False Revelation remains the terminal world-end branch.
 
-The accepted proposal for `SCN-014` collided with the live Fallout registry entry, while `SCN-015` is occupied by Missile Age. Global Jihad therefore uses the next free triggerable-scenario slot, `SCN-016`; its separate world-end registry remains on its independently verified slot. Internal Fracture is not registered because its member package has not been accepted.
+The accepted proposal for `SCN-014` collided with Fallout, and `SCN-015` is occupied by Missile Age.
+Global Jihad uses triggerable-scenario slot `SCN-016` and its separate world-end registry uses slot 15.
+Internal Fracture is not registered because its member package has not been accepted.
 
 ## State model
 
@@ -24,17 +26,24 @@ Religion, ethnicity, nationality, refugee status, and ordinary ideology never in
 
 Evolution IV alone opens the wholly fictional jihadist branch, and its content includes opposition from Muslim governments, communities, clerics, soldiers, civic organizations, and fictional religious authorities.
 
-The final entity is presented as an unexplained presence whose followers make a claim; the game never confirms that it is Allah or any divine being.
+The final entity is presented as an unexplained presence whose followers make a divine claim.
+The game never confirms that it is Allah or any divine being.
 
 ## Outcomes and containment
 
-The baseline supports containment, continued spread, coups, civil war, state partition, territorial takeover, negotiated surrender, territorial actor formation, and final defeat.
+The accepted baseline covers containment, continued spread, coups, civil war, state partition, territorial takeover, negotiated surrender, territorial actor formation, and defeat.
+The current source contains those outcome families, with the unresolved unit, mission and transaction findings listed below.
 
 Disabled evolutions leave the ordinary incident, containment, state-response, surrender, and defeat paths available.
 
 The terminal transaction requires the normal Chaos and territorial-readiness gates even when Maximum Global Jihad activates The Final Jihad.
 
-The terminal actor safely resolves prior faction membership, creates the Final Command, records player choices, re-adds consenting subordinates, preserves multiplayer country scopes, and leaves coalition counterplay and defeat aftermath active.
+The actual terminal role requires the final profile, a country final-actor receipt and the active terminal transaction.
+Ordinary JMX is a human Final Jihad command with ordinary ideas and three research slots.
+Its symbolic Final Command Council precedes the entity, which is recruited without a leadership role and promoted only through the gated transaction.
+The terminal marker supplies five slots and records the host's prior count for exact cleanup restoration.
+The counteroffensive commits denial from its three-contribution quorum and terminal losses, allowing the objective to be established before the final-defeat predicate requires it.
+Member consent, merger accounting, faction handling and the full aftermath retain open validation and implementation findings.
 
 ## Decisions, missions, and exact states
 
@@ -50,7 +59,9 @@ Global Jihad is registered in the shared `chaosx_scenarios_window` list with all
 
 Eight predeclared carrier tags provide bounded territorial-country capacity without dynamic tags, custom units, Event 19 providers, 3D models, custom unit sounds, or bespoke counters.
 
-The country package supplies valid capitals, fictional leaders and councils, existing unit templates, compatible technologies, equipment and manpower, economy and reinforcement routes, diplomacy, AI, focus loading, surrender, and cleanup.
+The carrier framework declares capitals, fictional leaders and councils, existing infantry templates, basic technology, manpower and equipment setup, focus loading and diplomatic or cleanup helpers.
+The complete accepted country package requires dynamic safe capitals, resource-grounded forces, compatible donor research, functional economy, reinforcement, diplomacy, AI and playable cleanup.
+The current capacity/force audit identifies gaps in those requirements and does not approve the eight declarations as complete packages.
 
 The actor focus tree is `random_terror_actor_focus_tree` in `common/national_focus/031_random_terror_focus.txt`.
 
@@ -66,7 +77,7 @@ Focus icons live under `gfx/interface/goals/031_random_terror/` and use `GFX_goa
 
 Idea icons live under `gfx/interface/ideas/031_random_terror/` and use `GFX_idea_random_terror_*`.
 
-Decision and mission icons and the three category pictures live under `gfx/interface/decisions/031_random_terror/` and use `GFX_decision_random_terror_*`, `GFX_mission_random_terror_*`, and the three consumed `GFX_decision_category_031_random_terror_*` sprites.
+Decision and mission icons and the three category pictures live under `gfx/interface/decisions/031_random_terror/` and use `GFX_decision_random_terror_*`, `GFX_decision_mission_random_terror_*`, and the three consumed `GFX_decision_category_031_random_terror_*` sprites.
 
 Six news pictures and sixteen accepted report pictures live under `gfx/event_pictures/031_random_terror/`.
 
@@ -80,7 +91,7 @@ The explicit static fallback is `GFX_Portrait_Random_Terror_Entity_Static_Fallba
 
 Four large two-frame faction emblems and four miniature emblems live under `gfx/interface/emblems/031_random_terror/` and are consumed by the regional coordination, network confederation, Jihadist International, and Final Command faction transactions.
 
-Thirty-seven fictional cosmetic identities provide 111 normal, medium, and small TGA files under the standard `gfx/flags/` roots.
+Thirty-seven fictional cosmetic identities provide 111 normal, medium, and small TGA files under the standard `gfx/flags/` roots, alongside 24 base flag files for the eight carrier tags.
 
 Deterministic ordinary, transnational, and jihadist cycles expose all active identities over carrier generations, while cleanup assigns all eight dormant identities and the terminal actor uses the unique final identity.
 
@@ -117,13 +128,75 @@ Two super-event pictures live under `gfx/super_events/031_random_terror/`, are r
 
 ## Validation surfaces
 
-The HOI4 focus route resolves one 114-focus tree with 114 titles, zero connector crossings, and zero same-row spacing violations. Its structural render is 8,752 by 3,136; the post-fix decoded-icon raster route timed out after 180 seconds, so the earlier decoded raster remains icon evidence but is not claimed as post-fix topology proof.
+The current visual inventory contains 444 runtime files and is recorded row by row in `docs/plans/031_random_terror_plans/031_random_terror_visual_asset_inventory.md`.
+
+The complete event remains incomplete.
+
+Nine portrait identities have history recruitment and reachable role consumers, including the gated entity and human Final Command Council.
+Thirty-six additional identities have roleless definitions and a durable source archive, with recruitment, selection and recycling still open.
+Original per-image prompt records and two current source-to-DDS equality records remain missing.
+The capital-defense mission icon uses the reviewed native-alpha edit, with its inherited background-removal procedural gap resolved.
+The full achievement audit retains player-identity observation limits, and numerical probability comparison and final subsystem audits remain unresolved.
+
+The bounded multi-country wave repair is implemented in commit `b10e6a30292a51d09104aa1c120ab9843be6db25`, with source and acceptance evidence in `docs/plans/031_random_terror_plans/subagent_handoffs/031_multi_country_wave_scope_repair_20261003.md`.
+Candidate-state controller checks use the candidate's PREV scope, owned-and-controlled draws use intrinsic state eligibility, and action targets retain their explicit ROOT contract.
+The mapped callers initialize temporary outputs and pool storage, and automatic reservations follow successful incident application.
+The one-firing pacing path, raw ticket curve, provider definitions, cap, attempt counts and two-day reservation remain unchanged.
+The named wave baseline and comparison handoffs preserve the unchanged 17-case fixture, with 600-second failures and no numerical artifact.
+The narrower shared-curve comparison is still unreturned in the handoff, so normalized probabilities, complete provider pools and native execution remain unresolved.
+The newer mission audit in `docs/plans/031_random_terror_plans/subagent_handoffs/031_mission_owner_and_progress_contract_20261003.md` identifies cross-country consumption and cleanup of all eight generic mission subjects, owner-local recovery performing global cleanup, and shared-slot activation of the wrong mission family.
+Five success predicates lack an independently reachable progress producer, while the hostage slot blocks its only current progress action and its accepted partial outcome is missing.
+Mission receiver isolation is implemented in `38fd9b9da337f647f91a804628a24d3216075cb6`, with receiver-keyed subjects, family locks, guarded callbacks and exact-state descriptions.
+Restoration reserves its slot before invoking its helper, recovery waits for active missions to resolve, and only successful timed restoration records completed civil authority for the achievement check.
+The independent source review found no receiver-isolation defect, while the same-fixture numerical comparison remains blocked by archived-source recognition.
+Mission progress and outcome implementation remains incomplete.
+Foreign-owned controlled targets, external retake targets and controller-owned hostage/uprising missions remain part of the accepted design.
+The decision audit also retains split actor-control values, incomplete click-time affordability and exact-balance handling, missing cost companions, excessive target-row fan-out and actor operations that record receipts without performing the promised unit changes.
+The carrier audit identifies undeployed-carrier false-negative gates, occupied-tag reuse, stage-blind capacity counting, Maximum/map preflight gaps, weak geography constraints and unresolved force/research sources.
+The mapped accepted contracts remain implementation work under the user's instruction to complete the accepted specs and visual audit.
+Audit suggestions and proposed regression fixtures remain recommendations until the parent reviews them, and no gameplay simplification is approved.
+Carrier, force, technology, economy, exact-cost, AI and full terminal-atomicity coverage remain open.
+
+Detected daily control changes disqualify only the changed country, preserving unrelated player countries' eligibility.
+
+Same-day round trips and swaps between already-human countries remain unresolved because the daily country marker does not identify individual clients.
+
+The Event 31 CXT daily hook registers newly discovered content and marks it pending for manual application.
+
+The compact scenario-list label is `#016`, while the stable Global Jihad catalog identifier is SCN-016.
+The existing adjacent `#018` scenario label and SCN-018 identifier are preserved.
+
+Capital-dependent achievement tracking stores each government's exact original state and separately records the capital at Maximum scenario confirmation.
+
+Retaking and restoration proof requires a matching country-owned identity, current control is checked at completion, and repeated loss cannot extend the recovery deadline.
+
+The source repair and validation limits are recorded in `docs/plans/031_random_terror_plans/subagent_handoffs/031_achievement_capital_identity_repair_20261003.md`.
+
+The workbook mirrors Event 31 localisation and contains Global Jihad as SCN-016, with Event 31 classified as `To Be Reworked` and Global Jihad as `Needs Testing`.
+
+No Internal Fracture cluster is registered by this implementation.
+
+The achievement active-state count credits the government owning the counted states, including when the global wave's event root is a different country.
+
+The exact repair and its validation limits are recorded in `docs/plans/031_random_terror_plans/subagent_handoffs/031_achievement_count_scope_repair_20261003.md`.
+
+Measured casualty receipts are implemented in commit `bbb2ba6f90ec75462cb94f7274122c52df4abcb3` under the accepted civilian-loss and achievement contracts.
+`random_terror_apply_exact_state_loss` initializes both helper outputs, reads measured applied loss for the major-loss receipt and records that same measured amount rather than the requested loss.
+The strict major-loss threshold remains greater than 400 people, with the 0/300/400/450 boundary model and full validation limits recorded in `docs/plans/031_random_terror_plans/subagent_handoffs/031_measured_casualty_receipt_repair_20261003.md`.
+The current checkpoint lists eleven bounded repair commits and keeps full Event 31 validation open.
+
+The historical HOI4 focus route resolves one 114-focus tree with 114 titles, zero connector crossings and zero same-row spacing violations.
+Its structural render is 8,752 by 3,136.
+The post-fix decoded-icon raster route timed out after 180 seconds, so the earlier decoded raster remains icon evidence and does not prove post-fix topology.
 
 The event inspector accepts the Event 31 root and returns a partial artifact without an Event 31-specific blocker.
 
 The installed event renderer accepted an exact namespace selector but expanded into a full-workspace render and did not complete after more than six minutes, so namespace-scoped renderer evidence remains an exact tool-route blocker rather than being replaced by source-only proof.
 
-The mandatory GUI inspector and renderer both completed for `chaosx_scenarios_window` with Event 31’s selected ID, Random Pattern type, and Maximum intensity. The renderer produced the shared-window SVG at 1920x1080 and UI scale 1. The inspector reported no missing GUI fields; inherited shared-window overlap and alignment diagnostics remain shared-layout findings rather than Event 31-owned GUI work.
+The historical mandatory GUI inspector and renderer completed for `chaosx_scenarios_window` with Event 31 selected, Random Pattern and Maximum at 1920x1080 and UI scale 1.
+The inspector reported no missing fields.
+Shared-window overlap and alignment findings remain open.
+Current narrowed event/reference requests and terminal-role probability comparisons timed out after 600 seconds, with exact limitations in the MCP ledger and specialist handoffs.
 
 ## Future extensions
 

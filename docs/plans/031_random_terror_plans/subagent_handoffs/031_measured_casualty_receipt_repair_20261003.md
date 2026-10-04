@@ -36,7 +36,7 @@ Repository consumer search found the major-loss flags in achievement tracking an
 This is a source and contract test, not an observed engine population transaction or a multiplayer achievement test.
 
 The prior parent MCP attempts for the relevant temporary-variable references timed out at 600 seconds, including a narrower installed-documentation-only retry.
-The route blocker is retained in `docs/events/031_random_terror/031_random_terror_mcp_evidence.md`.
+The route blocker is retained in `docs/plans/031_random_terror_plans/031_random_terror_mcp_evidence.md`.
 No engine validation or probability artifact is claimed for this repair.
 No game was launched and no logs were requested.
 
