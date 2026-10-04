@@ -225,3 +225,9 @@ Decision: each card gains a `timeout_effect` that shows `event021_mission_offer_
 The duration is `constant:event021_action_tuning.action_cooldown_days`, copied into the temporary `event021_decision_flag_days` first because timed flags cannot take `days = constant:`.
 There is no penalty and no change to costs, rewards, timers, or AI weights. `event021_clear_mission_offer_lapses` clears the three flags; `event021_cleanup_decision_state` and both new-role helpers (`event021_commit_opening_evolution_provenance` and `event021_inherit_crisis_opening_evolution_provenance`) call it.
 Basis: the lead's round 2 assignment and the D2 finding that `timeout_effect` runs only for an unselected selectable card.
+
+## D19. Requirement-flag text describes the world
+
+The six origin and package flags that Event 006 package requirement blocks can display (`independence_wave_event021_adapter_setup_proven`, `independence_wave_event6_adapter_package_ready`, `random_civil_war_event6_adapter_complete`, `random_civil_war_event6_adapter_preparing`, `random_civil_war_event6_origin_recorded`, `random_civil_war_origin_adapter_complete`) described records and systems.
+Each now states the world fact the flag stands for, matched to when it is set (all at package setup during an Event 021 opening): the movement is ready to take up arms, is taking up arms, entered the war as an independence front, or the country rose from the civil war.
+Key names are unchanged, the file stays UTF-8 with BOM, and no Event 006 file is edited.
