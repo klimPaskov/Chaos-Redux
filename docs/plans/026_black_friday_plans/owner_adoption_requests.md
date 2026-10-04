@@ -191,6 +191,8 @@ Positive native costs: 78; dynamic native costs: 0; custom cost declarations: 34
 | `common/decisions/camp_repression_generic_decisions.txt` | 72, 235, 540, 582, 614, 883 | - | 73, 236, 305, 425, 541, 615, 688, 784, 821, 864, 884 |
 | `common/decisions/camp_repression_major_country_decisions.txt` | 42, 93, 179, 223, 261, 314, 358, 537, 585, 628, 659, 680, 717, 775, 805, 831, 873, 912, 937, 962, 1119, 1180, 1222, 1244, 1268, 1309, 1334, 1397, 1432 | - | 43, 94, 180, 224, 262, 315, 359, 538, 718, 776, 806, 832, 874, 963, 1120, 1181, 1269, 1310, 1335, 1433 |
 
+Camp-system payments called from the converted genocide crisis decisions also need the Camps owner's adoption: `camp_rework_germany_start_occupied_poland_expansion_mission_in_from` (manpower, support equipment, and trains from `camp_rework_cost.expansion_manpower` and `camp_rework_equipment_cost`, checked in `germany_expand_occupied_poland_camp_system`), `camp_occ_manual_transfer_can_pay` and its payment (`germany_transfer_prisoners_to_experiment_site`), and `camp_rework_consume_expansion_resources` (the Imperial occupation rail action). Each is an immediate payment that fits the price table (constant amounts) or the simple custom-cost API.
+
 ### Chaos warfare (CBRN)
 
 Positive native costs: 21; dynamic native costs: 0; custom cost declarations: 55.
@@ -305,6 +307,8 @@ Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 53.
 | `common/decisions/019_infantry_spawn_derivative_decisions.txt` | - | - | 37, 62, 87, 112, 150, 173, 191, 206, 221, 244, 284, 317, 350, 384, 413, 442, 499, 521 |
 
 #### Genocide crisis (custom costs; native costs converted)
+
+Converted (agent decision D16): the Command Power, Army Experience, and Political Power payments of the 16 genocide crisis decisions read the sale price table in their requirements, payments, and cost texts. The three camp-system payments these decisions call stay with the Camps owner (see Camps below). The line list below predates the conversion.
 
 Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 4.
 

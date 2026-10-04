@@ -420,7 +420,7 @@ Every remaining positive native or custom cost has a per-owner disposition (agen
 | Event 011 | 0 | 56 | queued: Event 26 conversion tranche 2 |
 | Event 018 | 0 | 100 | queued: Event 26 conversion tranche 2 |
 | Event 019 | 0 | 53 | derivative native converted (D5); custom queued: tranche 2 |
-| Genocide crisis (custom) | 0 | 4 | native converted (D5); custom queued: tranche 2 |
+| Genocide crisis (custom) | 0 | 4 | native converted (D5); the Command Power, Army Experience, and Political Power payments of 16 decisions read the price table (D16); the three camp-system payments they call are Camps `owner adoption pending` |
 | Event 001 | 0 | 5 | partial bounded adapters; remainder owner adoption pending |
 | Event 007 | 0 | 17 | partial bounded adapters; remainder owner adoption pending |
 | Event 017 | 0 | 10 | partial bounded adapters; remainder owner adoption pending |

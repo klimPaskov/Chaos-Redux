@@ -254,3 +254,17 @@ No AI weight changes.
 
 Disposition: implemented (source). Tranche 1 is complete with D12 to D15.
 Live checks that a focus-completion formation and an institutional batch charge the sale price, and that the Auxiliary Contract shows and charges the sale convoy price, are `needs_live_game`.
+
+## D16. Genocide crisis payments read the sale price table
+
+Decision: the Command Power, Army Experience, and Political Power that 16 genocide crisis decisions pay in their `complete_effect` read the Black Friday price table.
+The file-scoped `@GENOCIDE_*` amounts move to `genocide_decision_cost` script constants (`security_command_power`, `deportation_command_power`, `extermination_army_experience`, `extermination_command_power`, `rail_army_experience`, `records_command_power`, `gulag_command_power`, `gulag_army_experience`; the Gulag network's Political Power reuses the previously unused `build_gulag`), registered as `global.black_friday_price_genocide_decision_cost_<key>` (`price_table_version` 5).
+Requirements compare inclusively against the current price (`NOT = { command_power < price }`), so holding exactly the shown amount is enough; the former strict `>` checks required one point more than the payment. Bare requirement lines are wrapped in `custom_trigger_tooltip` with the matching `genocide_requires_*_tt` text, which now shows the live price (three new keys: records, Gulag resources, Gulag Army Experience).
+Each payment credits one achievement family (Army Experience before Command Power before Political Power).
+The static `ai_hint_pp_cost` literals stay, because that field takes no variable.
+
+Basis: these are immediate voluntary payments (spec Part 4: Command Power and Army Experience families) with constant amounts, the D11 pattern.
+The three camp-system payments the decisions call (`camp_rework_germany_start_occupied_poland_expansion_mission_in_from`, `camp_occ_manual_transfer_can_pay` with its payment, and `camp_rework_consume_expansion_resources`) belong to the active Camps workstream and are listed for its adoption in `owner_adoption_requests.md`.
+No AI weight changes.
+
+Disposition: implemented (source); camp-system components `owner adoption pending`.

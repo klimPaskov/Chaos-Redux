@@ -6,28 +6,10 @@
 # Soviet mass repression.
 # ============================================================================
 
-@GENOCIDE_EXTERMINATION_ARMY_XP_COST = 10
-@GENOCIDE_EXTERMINATION_ARMY_XP_COST_NEG = -10
-@GENOCIDE_EXTERMINATION_COMMAND_POWER_COST = 20
-@GENOCIDE_EXTERMINATION_COMMAND_POWER_COST_NEG = -20
-@GENOCIDE_DEPORTATION_COMMAND_POWER_COST = 15
-@GENOCIDE_DEPORTATION_COMMAND_POWER_COST_NEG = -15
-@GENOCIDE_SECURITY_COMMAND_POWER_COST = 20
-@GENOCIDE_SECURITY_COMMAND_POWER_COST_NEG = -20
-@GENOCIDE_RAIL_ARMY_XP_COST = 5
-@GENOCIDE_RAIL_ARMY_XP_COST_NEG = -5
 # Static AI hint mirrors genocide_decision_cost.german_experiment_transfer.
 @GENOCIDE_TRANSFER_AI_PP_HINT = 35
-@GENOCIDE_RECORDS_COMMAND_POWER_COST = 10
-@GENOCIDE_RECORDS_COMMAND_POWER_COST_NEG = -10
+# Static AI hint mirrors genocide_decision_cost.build_gulag.
 @GENOCIDE_GULAG_POLITICAL_POWER_COST = 10
-@GENOCIDE_GULAG_POLITICAL_POWER_COST_NEG = -10
-@GENOCIDE_GULAG_POLITICAL_POWER_COST_TRIGGER = 9
-@GENOCIDE_GULAG_COMMAND_POWER_COST = 5
-@GENOCIDE_GULAG_COMMAND_POWER_COST_NEG = -5
-@GENOCIDE_GULAG_COMMAND_POWER_COST_TRIGGER = 4
-@GENOCIDE_GULAG_ARMY_XP_COST = 5
-@GENOCIDE_GULAG_ARMY_XP_COST_NEG = -5
 
 genocide_crisis_category = {
 	germany_wartime_camp_administration = {
@@ -46,11 +28,16 @@ genocide_crisis_category = {
 			date > 1939.12.31
 			custom_trigger_tooltip = {
 				tooltip = genocide_requires_security_command_power_tt
-				command_power > @GENOCIDE_SECURITY_COMMAND_POWER_COST
+				set_temp_variable = { genocide_sale_price_check = global.black_friday_price_genocide_decision_cost_security_command_power } NOT = { command_power < genocide_sale_price_check }
 			}
 		}
 		complete_effect = {
-			add_command_power = @GENOCIDE_SECURITY_COMMAND_POWER_COST_NEG
+			set_temp_variable = { genocide_sale_payment = global.black_friday_price_genocide_decision_cost_security_command_power }
+			multiply_temp_variable = { genocide_sale_payment = constant:universal_cost_framework.negative_one }
+			add_command_power = genocide_sale_payment
+			set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+			set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+			black_friday_credit_sale_purchase = yes
 			genocide_germany_camp_administration = yes
 		}
 		ai_will_do = { base = constant:genocide_ai_weight.germany_direct_holocaust }
@@ -167,8 +154,8 @@ genocide_crisis_category = {
 			date > 1940.12.31
 			custom_trigger_tooltip = {
 				tooltip = genocide_requires_extermination_resources_tt
-				has_army_experience > @GENOCIDE_EXTERMINATION_ARMY_XP_COST
-				command_power > @GENOCIDE_EXTERMINATION_COMMAND_POWER_COST
+				set_temp_variable = { genocide_sale_price_check = global.black_friday_price_genocide_decision_cost_extermination_army_experience } NOT = { has_army_experience < genocide_sale_price_check }
+				set_temp_variable = { genocide_sale_price_check = global.black_friday_price_genocide_decision_cost_extermination_command_power } NOT = { command_power < genocide_sale_price_check }
 			}
 			FROM = {
 				camp_rework_state_can_accept_responsibility_from_root = yes
@@ -178,8 +165,15 @@ genocide_crisis_category = {
 			}
 		}
 		complete_effect = {
-			army_experience = @GENOCIDE_EXTERMINATION_ARMY_XP_COST_NEG
-			add_command_power = @GENOCIDE_EXTERMINATION_COMMAND_POWER_COST_NEG
+			set_temp_variable = { genocide_sale_payment = global.black_friday_price_genocide_decision_cost_extermination_army_experience }
+			multiply_temp_variable = { genocide_sale_payment = constant:universal_cost_framework.negative_one }
+			army_experience = genocide_sale_payment
+			set_temp_variable = { genocide_sale_payment = global.black_friday_price_genocide_decision_cost_extermination_command_power }
+			multiply_temp_variable = { genocide_sale_payment = constant:universal_cost_framework.negative_one }
+			add_command_power = genocide_sale_payment
+			set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+			set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+			black_friday_credit_sale_purchase = yes
 			genocide_build_extermination_camp_in_from = yes
 		}
 		ai_will_do = {
@@ -205,11 +199,16 @@ genocide_crisis_category = {
 			check_variable = { genocide_extermination_sites > 0 }
 			custom_trigger_tooltip = {
 				tooltip = genocide_requires_deportation_command_power_tt
-				command_power > @GENOCIDE_DEPORTATION_COMMAND_POWER_COST
+				set_temp_variable = { genocide_sale_price_check = global.black_friday_price_genocide_decision_cost_deportation_command_power } NOT = { command_power < genocide_sale_price_check }
 			}
 		}
 		complete_effect = {
-			add_command_power = @GENOCIDE_DEPORTATION_COMMAND_POWER_COST_NEG
+			set_temp_variable = { genocide_sale_payment = global.black_friday_price_genocide_decision_cost_deportation_command_power }
+			multiply_temp_variable = { genocide_sale_payment = constant:universal_cost_framework.negative_one }
+			add_command_power = genocide_sale_payment
+			set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+			set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+			black_friday_credit_sale_purchase = yes
 			genocide_germany_intensify_extermination_policy = yes
 		}
 		ai_will_do = { base = constant:genocide_ai_weight.germany_extermination }
@@ -333,8 +332,11 @@ genocide_crisis_category = {
 			camp_rework_fixed_country_can_use_extermination_route = yes
 			NOT = { has_country_flag = camp_rework_expansion_frozen }
 			OR = { is_ai = no camp_rework_country_under_ai_radicalized_cap = yes }
-			has_army_experience > @GENOCIDE_EXTERMINATION_ARMY_XP_COST
-			command_power > @GENOCIDE_EXTERMINATION_COMMAND_POWER_COST
+			custom_trigger_tooltip = {
+				tooltip = genocide_requires_extermination_resources_tt
+				set_temp_variable = { genocide_sale_price_check = global.black_friday_price_genocide_decision_cost_extermination_army_experience } NOT = { has_army_experience < genocide_sale_price_check }
+				set_temp_variable = { genocide_sale_price_check = global.black_friday_price_genocide_decision_cost_extermination_command_power } NOT = { command_power < genocide_sale_price_check }
+			}
 			NOT = {
 				AND = {
 					original_tag = GER
@@ -349,8 +351,15 @@ genocide_crisis_category = {
 		}
 
 		complete_effect = {
-			army_experience = @GENOCIDE_EXTERMINATION_ARMY_XP_COST_NEG
-			add_command_power = @GENOCIDE_EXTERMINATION_COMMAND_POWER_COST_NEG
+			set_temp_variable = { genocide_sale_payment = global.black_friday_price_genocide_decision_cost_extermination_army_experience }
+			multiply_temp_variable = { genocide_sale_payment = constant:universal_cost_framework.negative_one }
+			army_experience = genocide_sale_payment
+			set_temp_variable = { genocide_sale_payment = global.black_friday_price_genocide_decision_cost_extermination_command_power }
+			multiply_temp_variable = { genocide_sale_payment = constant:universal_cost_framework.negative_one }
+			add_command_power = genocide_sale_payment
+			set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+			set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+			black_friday_credit_sale_purchase = yes
 			genocide_build_extermination_camp_in_from = yes
 		}
 
@@ -396,10 +405,18 @@ genocide_crisis_category = {
 		available = {
 			hidden_trigger = { NOT = { has_country_flag = camp_admin_initialized } }
 			genocide_country_has_active_camps = yes
-			command_power > @GENOCIDE_DEPORTATION_COMMAND_POWER_COST
+			custom_trigger_tooltip = {
+				tooltip = genocide_requires_deportation_command_power_tt
+				set_temp_variable = { genocide_sale_price_check = global.black_friday_price_genocide_decision_cost_deportation_command_power } NOT = { command_power < genocide_sale_price_check }
+			}
 		}
 		complete_effect = {
-			add_command_power = @GENOCIDE_DEPORTATION_COMMAND_POWER_COST_NEG
+			set_temp_variable = { genocide_sale_payment = global.black_friday_price_genocide_decision_cost_deportation_command_power }
+			multiply_temp_variable = { genocide_sale_payment = constant:universal_cost_framework.negative_one }
+			add_command_power = genocide_sale_payment
+			set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+			set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+			black_friday_credit_sale_purchase = yes
 			genocide_intensify_deportations = yes
 		}
 		ai_will_do = {
@@ -473,10 +490,18 @@ genocide_crisis_category = {
 		available = {
 			hidden_trigger = { NOT = { has_country_flag = camp_admin_initialized } }
 			genocide_country_has_active_camps = yes
-			has_army_experience > @GENOCIDE_RAIL_ARMY_XP_COST
+			custom_trigger_tooltip = {
+				tooltip = genocide_requires_rail_army_xp_tt
+				set_temp_variable = { genocide_sale_price_check = global.black_friday_price_genocide_decision_cost_rail_army_experience } NOT = { has_army_experience < genocide_sale_price_check }
+			}
 		}
 		complete_effect = {
-			army_experience = @GENOCIDE_RAIL_ARMY_XP_COST_NEG
+			set_temp_variable = { genocide_sale_payment = global.black_friday_price_genocide_decision_cost_rail_army_experience }
+			multiply_temp_variable = { genocide_sale_payment = constant:universal_cost_framework.negative_one }
+			army_experience = genocide_sale_payment
+			set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+			set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+			black_friday_credit_sale_purchase = yes
 			genocide_redirect_trains_and_supplies = yes
 		}
 		ai_will_do = {
@@ -499,11 +524,19 @@ genocide_crisis_category = {
 		}
 		available = {
 			genocide_country_has_active_camps = yes
-			command_power > @GENOCIDE_SECURITY_COMMAND_POWER_COST
+			custom_trigger_tooltip = {
+				tooltip = genocide_requires_security_command_power_tt
+				set_temp_variable = { genocide_sale_price_check = global.black_friday_price_genocide_decision_cost_security_command_power } NOT = { command_power < genocide_sale_price_check }
+			}
 			check_variable = { genocide_resistance_pressure > constant:genocide_ai_threshold.resistance_low }
 		}
 		complete_effect = {
-			add_command_power = @GENOCIDE_SECURITY_COMMAND_POWER_COST_NEG
+			set_temp_variable = { genocide_sale_payment = global.black_friday_price_genocide_decision_cost_security_command_power }
+			multiply_temp_variable = { genocide_sale_payment = constant:universal_cost_framework.negative_one }
+			add_command_power = genocide_sale_payment
+			set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+			set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+			black_friday_credit_sale_purchase = yes
 			genocide_deal_with_resistance_sabotage = yes
 		}
 		ai_will_do = {
@@ -585,11 +618,19 @@ genocide_crisis_category = {
 				genocide_state_has_undiscovered_atrocity_evidence = yes
 				genocide_state_has_enemy_forces_near_root = yes
 			}
-			command_power > @GENOCIDE_RECORDS_COMMAND_POWER_COST
+			custom_trigger_tooltip = {
+				tooltip = genocide_requires_records_command_power_tt
+				set_temp_variable = { genocide_sale_price_check = global.black_friday_price_genocide_decision_cost_records_command_power } NOT = { command_power < genocide_sale_price_check }
+			}
 		}
 
 		complete_effect = {
-			add_command_power = @GENOCIDE_RECORDS_COMMAND_POWER_COST_NEG
+			set_temp_variable = { genocide_sale_payment = global.black_friday_price_genocide_decision_cost_records_command_power }
+			multiply_temp_variable = { genocide_sale_payment = constant:universal_cost_framework.negative_one }
+			add_command_power = genocide_sale_payment
+			set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+			set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+			black_friday_credit_sale_purchase = yes
 			genocide_destroy_camp_evidence_in_from = yes
 		}
 
@@ -705,14 +746,22 @@ imperial_occupation_crisis = {
 			has_government = fascism
 			has_war_with_chinese_country = yes
 			NOT = { has_country_flag = camp_rework_expansion_frozen }
-			command_power > @GENOCIDE_SECURITY_COMMAND_POWER_COST
+			custom_trigger_tooltip = {
+				tooltip = genocide_requires_security_command_power_tt
+				set_temp_variable = { genocide_sale_price_check = global.black_friday_price_genocide_decision_cost_security_command_power } NOT = { command_power < genocide_sale_price_check }
+			}
 			FROM = {
 				camp_rework_state_can_accept_responsibility_from_root = yes
 				is_japan_ordered_repression_pool_state = yes
 			}
 		}
 		complete_effect = {
-			add_command_power = @GENOCIDE_SECURITY_COMMAND_POWER_COST_NEG
+			set_temp_variable = { genocide_sale_payment = global.black_friday_price_genocide_decision_cost_security_command_power }
+			multiply_temp_variable = { genocide_sale_payment = constant:universal_cost_framework.negative_one }
+			add_command_power = genocide_sale_payment
+			set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+			set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+			black_friday_credit_sale_purchase = yes
 			genocide_japan_anti_partisan_reprisals_in_from = yes
 		}
 		ai_will_do = {
@@ -779,7 +828,7 @@ imperial_occupation_crisis = {
 			}
 			custom_trigger_tooltip = {
 				tooltip = genocide_requires_rail_army_xp_tt
-				check_variable = { var = army_experience value = @GENOCIDE_RAIL_ARMY_XP_COST compare = greater_than_or_equals }
+				set_temp_variable = { genocide_sale_price_check = global.black_friday_price_genocide_decision_cost_rail_army_experience } NOT = { has_army_experience < genocide_sale_price_check }
 			}
 			custom_trigger_tooltip = {
 				tooltip = camp_rework_transfer_guard_transport_cost_tt
@@ -802,7 +851,12 @@ imperial_occupation_crisis = {
 			}
 		}
 		complete_effect = {
-			army_experience = @GENOCIDE_RAIL_ARMY_XP_COST_NEG
+			set_temp_variable = { genocide_sale_payment = global.black_friday_price_genocide_decision_cost_rail_army_experience }
+			multiply_temp_variable = { genocide_sale_payment = constant:universal_cost_framework.negative_one }
+			army_experience = genocide_sale_payment
+			set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+			set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+			black_friday_credit_sale_purchase = yes
 			camp_rework_consume_expansion_resources = yes
 			camp_rework_japan_apply_prisoner_experiment = yes
 		}
@@ -851,10 +905,18 @@ imperial_occupation_crisis = {
 				genocide_state_has_undiscovered_atrocity_evidence = yes
 				genocide_state_has_enemy_forces_near_root = yes
 			}
-			command_power > @GENOCIDE_RECORDS_COMMAND_POWER_COST
+			custom_trigger_tooltip = {
+				tooltip = genocide_requires_records_command_power_tt
+				set_temp_variable = { genocide_sale_price_check = global.black_friday_price_genocide_decision_cost_records_command_power } NOT = { command_power < genocide_sale_price_check }
+			}
 		}
 		complete_effect = {
-			add_command_power = @GENOCIDE_RECORDS_COMMAND_POWER_COST_NEG
+			set_temp_variable = { genocide_sale_payment = global.black_friday_price_genocide_decision_cost_records_command_power }
+			multiply_temp_variable = { genocide_sale_payment = constant:universal_cost_framework.negative_one }
+			add_command_power = genocide_sale_payment
+			set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+			set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+			black_friday_credit_sale_purchase = yes
 			genocide_destroy_camp_evidence_in_from = yes
 		}
 		ai_will_do = { base = constant:genocide_ai_weight.evidence_destroy }
@@ -868,8 +930,8 @@ gulag_and_mass_repression_system = {
 		on_map_mode = map_and_decisions_view
 		ai_hint_pp_cost = @GENOCIDE_GULAG_POLITICAL_POWER_COST
 		custom_cost_trigger = {
-			has_political_power > @GENOCIDE_GULAG_POLITICAL_POWER_COST_TRIGGER
-			command_power > @GENOCIDE_GULAG_COMMAND_POWER_COST_TRIGGER
+			set_temp_variable = { genocide_sale_price_check = global.black_friday_price_genocide_decision_cost_build_gulag } NOT = { has_political_power < genocide_sale_price_check }
+			set_temp_variable = { genocide_sale_price_check = global.black_friday_price_genocide_decision_cost_gulag_command_power } NOT = { command_power < genocide_sale_price_check }
 		}
 		custom_cost_text = sov_gulag_network_cost
 		days_re_enable = constant:genocide_timing.decision_cooldown
@@ -908,8 +970,11 @@ gulag_and_mass_repression_system = {
 				is_ai = no
 				camp_rework_country_under_ai_site_cap = yes
 			}
-			command_power > @GENOCIDE_GULAG_COMMAND_POWER_COST_TRIGGER
-			has_political_power > @GENOCIDE_GULAG_POLITICAL_POWER_COST_TRIGGER
+			custom_trigger_tooltip = {
+				tooltip = genocide_requires_gulag_resources_tt
+				set_temp_variable = { genocide_sale_price_check = global.black_friday_price_genocide_decision_cost_gulag_command_power } NOT = { command_power < genocide_sale_price_check }
+				set_temp_variable = { genocide_sale_price_check = global.black_friday_price_genocide_decision_cost_build_gulag } NOT = { has_political_power < genocide_sale_price_check }
+			}
 			FROM = {
 				camp_rework_state_can_accept_responsibility_from_root = yes
 				NOT = { gulag_labor_camp_network > 0 }
@@ -917,8 +982,15 @@ gulag_and_mass_repression_system = {
 			}
 		}
 		complete_effect = {
-			add_political_power = @GENOCIDE_GULAG_POLITICAL_POWER_COST_NEG
-			add_command_power = @GENOCIDE_GULAG_COMMAND_POWER_COST_NEG
+			set_temp_variable = { genocide_sale_payment = global.black_friday_price_genocide_decision_cost_build_gulag }
+			multiply_temp_variable = { genocide_sale_payment = constant:universal_cost_framework.negative_one }
+			add_political_power = genocide_sale_payment
+			set_temp_variable = { genocide_sale_payment = global.black_friday_price_genocide_decision_cost_gulag_command_power }
+			multiply_temp_variable = { genocide_sale_payment = constant:universal_cost_framework.negative_one }
+			add_command_power = genocide_sale_payment
+			set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+			set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+			black_friday_credit_sale_purchase = yes
 			custom_effect_tooltip = sov_expand_gulag_network_effect_tt
 			hidden_effect = {
 				genocide_build_gulag_network_in_from = yes
@@ -976,14 +1048,22 @@ gulag_and_mass_repression_system = {
 			camp_rework_soviet_paranoia_medium = yes
 			NOT = { sov_camp_is_reform_route = yes }
 			hidden_trigger = { NOT = { has_country_flag = camp_rework_expansion_frozen } }
-			command_power > @GENOCIDE_DEPORTATION_COMMAND_POWER_COST
+			custom_trigger_tooltip = {
+				tooltip = genocide_requires_deportation_command_power_tt
+				set_temp_variable = { genocide_sale_price_check = global.black_friday_price_genocide_decision_cost_deportation_command_power } NOT = { command_power < genocide_sale_price_check }
+			}
 			FROM = {
 				camp_rework_state_can_accept_responsibility_from_root = yes
 				is_soviet_gulag_periphery_pool_state = yes
 			}
 		}
 		complete_effect = {
-			add_command_power = @GENOCIDE_DEPORTATION_COMMAND_POWER_COST_NEG
+			set_temp_variable = { genocide_sale_payment = global.black_friday_price_genocide_decision_cost_deportation_command_power }
+			multiply_temp_variable = { genocide_sale_payment = constant:universal_cost_framework.negative_one }
+			add_command_power = genocide_sale_payment
+			set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+			set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+			black_friday_credit_sale_purchase = yes
 			custom_effect_tooltip = sov_deport_suspected_opposition_groups_effect_tt
 			hidden_effect = {
 				genocide_soviet_deport_suspected_groups_in_from = yes
@@ -1034,14 +1114,22 @@ gulag_and_mass_repression_system = {
 			camp_rework_soviet_paranoia_high = yes
 			NOT = { sov_camp_is_reform_route = yes }
 			hidden_trigger = { NOT = { has_country_flag = camp_rework_expansion_frozen } }
-			has_army_experience > @GENOCIDE_GULAG_ARMY_XP_COST
+			custom_trigger_tooltip = {
+				tooltip = genocide_requires_gulag_army_xp_tt
+				set_temp_variable = { genocide_sale_price_check = global.black_friday_price_genocide_decision_cost_gulag_army_experience } NOT = { has_army_experience < genocide_sale_price_check }
+			}
 			FROM = {
 				camp_rework_state_can_accept_responsibility_from_root = yes
 				is_soviet_gulag_periphery_pool_state = yes
 			}
 		}
 		complete_effect = {
-			army_experience = @GENOCIDE_GULAG_ARMY_XP_COST_NEG
+			set_temp_variable = { genocide_sale_payment = global.black_friday_price_genocide_decision_cost_gulag_army_experience }
+			multiply_temp_variable = { genocide_sale_payment = constant:universal_cost_framework.negative_one }
+			army_experience = genocide_sale_payment
+			set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+			set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+			black_friday_credit_sale_purchase = yes
 			custom_effect_tooltip = sov_confiscate_food_from_disloyal_regions_effect_tt
 			hidden_effect = {
 				genocide_soviet_confiscate_food_in_from = yes
@@ -1066,8 +1154,8 @@ gulag_and_mass_repression_system = {
 		on_map_mode = map_and_decisions_view
 		ai_hint_pp_cost = @GENOCIDE_GULAG_POLITICAL_POWER_COST
 		custom_cost_trigger = {
-			has_political_power > @GENOCIDE_GULAG_POLITICAL_POWER_COST_TRIGGER
-			command_power > @GENOCIDE_GULAG_COMMAND_POWER_COST_TRIGGER
+			set_temp_variable = { genocide_sale_price_check = global.black_friday_price_genocide_decision_cost_build_gulag } NOT = { has_political_power < genocide_sale_price_check }
+			set_temp_variable = { genocide_sale_price_check = global.black_friday_price_genocide_decision_cost_gulag_command_power } NOT = { command_power < genocide_sale_price_check }
 		}
 		custom_cost_text = sov_gulag_network_cost
 		days_re_enable = constant:genocide_timing.decision_cooldown
@@ -1100,8 +1188,11 @@ gulag_and_mass_repression_system = {
 			camp_rework_soviet_paranoia_medium = yes
 			NOT = { sov_camp_is_reform_route = yes }
 			hidden_trigger = { NOT = { has_country_flag = camp_rework_expansion_frozen } }
-			command_power > @GENOCIDE_GULAG_COMMAND_POWER_COST_TRIGGER
-			has_political_power > @GENOCIDE_GULAG_POLITICAL_POWER_COST_TRIGGER
+			custom_trigger_tooltip = {
+				tooltip = genocide_requires_gulag_resources_tt
+				set_temp_variable = { genocide_sale_price_check = global.black_friday_price_genocide_decision_cost_gulag_command_power } NOT = { command_power < genocide_sale_price_check }
+				set_temp_variable = { genocide_sale_price_check = global.black_friday_price_genocide_decision_cost_build_gulag } NOT = { has_political_power < genocide_sale_price_check }
+			}
 			FROM = {
 				camp_rework_state_can_accept_responsibility_from_root = yes
 				OR = {
@@ -1111,8 +1202,15 @@ gulag_and_mass_repression_system = {
 			}
 		}
 		complete_effect = {
-			add_political_power = @GENOCIDE_GULAG_POLITICAL_POWER_COST_NEG
-			add_command_power = @GENOCIDE_GULAG_COMMAND_POWER_COST_NEG
+			set_temp_variable = { genocide_sale_payment = global.black_friday_price_genocide_decision_cost_build_gulag }
+			multiply_temp_variable = { genocide_sale_payment = constant:universal_cost_framework.negative_one }
+			add_political_power = genocide_sale_payment
+			set_temp_variable = { genocide_sale_payment = global.black_friday_price_genocide_decision_cost_gulag_command_power }
+			multiply_temp_variable = { genocide_sale_payment = constant:universal_cost_framework.negative_one }
+			add_command_power = genocide_sale_payment
+			set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+			set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+			black_friday_credit_sale_purchase = yes
 			custom_effect_tooltip = sov_purge_camp_administrators_effect_tt
 			hidden_effect = {
 				genocide_soviet_purge_camp_administrators_in_from = yes
@@ -1214,10 +1312,18 @@ gulag_and_mass_repression_system = {
 				genocide_state_has_undiscovered_atrocity_evidence = yes
 				genocide_state_has_enemy_forces_near_root = yes
 			}
-			command_power > @GENOCIDE_RECORDS_COMMAND_POWER_COST
+			custom_trigger_tooltip = {
+				tooltip = genocide_requires_records_command_power_tt
+				set_temp_variable = { genocide_sale_price_check = global.black_friday_price_genocide_decision_cost_records_command_power } NOT = { command_power < genocide_sale_price_check }
+			}
 		}
 		complete_effect = {
-			add_command_power = @GENOCIDE_RECORDS_COMMAND_POWER_COST_NEG
+			set_temp_variable = { genocide_sale_payment = global.black_friday_price_genocide_decision_cost_records_command_power }
+			multiply_temp_variable = { genocide_sale_payment = constant:universal_cost_framework.negative_one }
+			add_command_power = genocide_sale_payment
+			set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+			set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+			black_friday_credit_sale_purchase = yes
 			custom_effect_tooltip = sov_destroy_gulag_records_effect_tt
 			hidden_effect = {
 				genocide_destroy_camp_evidence_in_from = yes
