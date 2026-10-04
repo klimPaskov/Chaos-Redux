@@ -334,3 +334,14 @@ The fixed 365-day schedule stays, so the reassessment still arrives within one y
 While `.50` is pending, the category's audit, dual-track and restriction rows are hidden (their `visible` blocks need open initial choices or an active surge), so no mission can start between the report appearing and the answer; the restriction option therefore stays available whenever `.50` is shown.
 Basis: round 2 lead decision 5, spec part 2 Trust the Model (a mandatory reassessment no later than one year).
 Disposition: `implemented`; the popup sequence is needs_live_game.
+
+### R2-8. AI route matrix probability pass remains blocked
+
+Finding: CLAUDE.md requires a `chaosx_ai_probability_auditor` baseline and `hoi4.probability_compare` pass for the D23 scenarios (P24-O1 to O4, C1 to C7, F1 to F5) and for every weighted surface changed this round.
+Evidence this round: one narrow `hoi4.probability_inspect` call with adapter `event_option_ai_chance` and the documented in-memory selector `source: {inlineClausewitz: <two-option test event>}` (format from the installed package's `docs/probability.md`, "Proposed patches"), without `refresh`, returned `{"artifactCount":0,"code":"INTERNAL_ERROR","status":"error","workspaceId":"current"}`. The round 2 lead had the same result for the path selector, the identifier-plus-path selector and an inline event, so the service fails regardless of input. Following the task rule, it was not retried.
+Weighted surfaces changed this round, for the auditor once the service works:
+- The incident family `random_list` in `video_game_in_sweden_select_incident_family` gains peacetime entries (R2-2: `supply_table_weight` 75, `enemy_peace_factor` 0.75, `template_baseline_factor` 0.5); existing weights are unchanged.
+- The field-validation and Trust the Model `ai_will_do` factors and the three foreign-response `ai_chance` factors now read `video_game_in_sweden_cabinet_found_wanting` (R2-6). For the decision factors the triggering states are the same as before, because only a failed field validation or a lost Stockholm can precede those rows. The foreign factors no longer fire after a completed restriction, a dual-track success, a provisional settlement, a full result reached through a narrow audit, or Doctrine Reliance after the full report.
+- Option `.30.supply_b` no longer sets the supply crisis in peace (R2-2), which removes a peacetime path into the severe-crisis AI factors.
+Decision: no numeric probability acceptance is claimed for D23 or this round. Once an inline test no longer returns INTERNAL_ERROR, the auditor runs the baseline and compare with the documented scenario schema (`schemaVersion`, `scenarios[].actor/state/flags`, and `scopes` bindings for the foreign-response `event_target:video_game_in_sweden_host` factors) against the scenario ids in D23, and the results are recorded against D23.
+Disposition: `blocked` (missing input: a working `hoi4.probability_*` route).
