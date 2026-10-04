@@ -2,8 +2,8 @@
 
 ## Purpose
 
-Implementation status: incomplete against the accepted package and its pass/fail contract.
-The source tests described below cover specific transactions and do not establish live campaign, multiplayer, save/reload, GUI, technology, or probability acceptance.
+Implementation status: the 2026-10-04 completion pass implemented every gameplay, presentation, AI and asset item of the accepted package, and Event 25 is enabled by default in new campaigns (`event_log_event_is_reworked_default_enabled`).
+Live campaign, multiplayer and save/reload behaviour and the MCP probability baseline remain open; the source tests described below cover specific transactions only.
 
 Event 025 is a Calm World Major event with entry event chaosx.nr25.1 and one opening super-event. Human-controlled countries receive the same entry offer, while the bounded AI roster is selected after human entrants and accepts only the documented active Kruger State exception.
 
@@ -89,7 +89,7 @@ The five independently enabled evolutions are Active Signal, Something Survived,
 
 Each evolution has a separate Chaos gate and MTTH source.
 Delayed callbacks and recurring pulse hazards read their own enable/disable setting.
-Evolved first openings, full policy/GUI disabled behavior, timed-achievement guards, and the required probability evidence remain unfinished.
+An evolution that is enabled and already past its Chaos gate when Event 25 fires shapes the opening (agent decision D15); a disabled evolution changes nothing, including its board overlay and AI weights.
 
 Militarised Antarctica changes the expedition threat and diplomacy state without forcing a global war.
 
@@ -172,6 +172,6 @@ The source acceptance matrix is docs/specs/025_alien_technology_in_antarctica_sp
 
 The 58 source tests cover recovery arbitration, lifecycle, delayed callbacks, physical custody, report bindings, active pulse guards, physical destruction policy, and authorization's source cost budget.
 The tests use explicit callback spies for shared Chaos, Board refresh, and achievement internals, and do not emulate native scheduling or live economic state.
-Source-boundary evidence, independent audits, the authoritative catalog update, all accepted assets and routes, and supplied live-game evidence remain acceptance gates.
+The catalog row update is staged in `docs/plans/025_alien_technology_in_antarctica_plans/catalog_changes_pending.md`; the MCP probability baseline and compare (agent decision D19) and supplied live-game evidence remain acceptance gates.
 
 Any future board extension must preserve the three-main-value rule, participant privacy, bounded action trays, and the no-recurring-world-scan contract.

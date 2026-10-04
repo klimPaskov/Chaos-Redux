@@ -321,3 +321,14 @@ Decision:
 - Frame 000 of each loop replaces the old static overlays, two of which had painted checkerboard pixels.
 - A fifth header control toggles `chaosx_nr25_animations_disabled`, which nothing could set before, so the phase banner and overlay statics are reachable. The deadline text box narrows from 160 to 128 pixels to make room; its longest text, "Recovery resolved", still fits.
 - Static fallbacks take the animated sprites' base names, and the unused eight-frame banner registration under the base name is replaced by the banner's static frame.
+
+## D21. Default enabling and the catalog handoff
+
+Disposition: `implemented` for default enabling; `accepted and queued` for the catalog row.
+
+Basis: the lead's acceptance that Event 25 joins the reworked default-enabled list once items 1-17 are committed, and the rule that this workstream does not edit the workbook.
+
+Decision:
+
+- Event 25 is added to `event_log_event_is_reworked_default_enabled` through its identity constant, so new campaigns no longer start with it disabled.
+- The catalog row update (Details, the five evolution texts and the status `Needs Testing`) is staged in `catalog_changes_pending.md` with the exact in-game wording.
