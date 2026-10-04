@@ -1253,13 +1253,23 @@ murder_mystery_apply_limited_inheritance = {
 					}
 				}
 			}
+			# The commit proof, the recipient's inheritance marker, and the
+			# selected-target context belong to the Assassin State, not to the
+			# investigator who answered the inheritance event. Movement-wide
+			# facts are global, where the evolution and inheritance guards read them.
 			if = {
-				limit = { has_country_flag = murder_mystery_inheritance_commit_proof }
-				set_country_flag = murder_mystery_inherited_central_movement
-				set_country_flag = murder_mystery_central_or_heir_validated
+				limit = {
+					event_target:murder_mystery_assassin_state = { has_country_flag = murder_mystery_inheritance_commit_proof }
+				}
+				event_target:murder_mystery_assassin_state = {
+					clr_country_flag = murder_mystery_inheritance_commit_proof
+					set_country_flag = murder_mystery_inherited_central_movement
+					murder_mystery_clear_selected_target_context = yes
+				}
+				set_global_flag = murder_mystery_inherited_central_movement
+				set_global_flag = murder_mystery_central_or_heir_validated
 				set_global_flag = murder_mystery_inheritance_transaction_committed
 				clr_global_flag = murder_mystery_inheritance_transaction_active
-				murder_mystery_clear_selected_target_context = yes
 				if = { limit = { has_event_target = murder_mystery_inherited_leader_character } clear_global_event_target = murder_mystery_inherited_leader_character }
 			}
 		}
