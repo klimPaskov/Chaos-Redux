@@ -84,6 +84,14 @@ defined_text = {
 	text = { trigger = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.military_access } } localization_key = gods_of_africa_family_military_access }
 	text = { trigger = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.non_aggression } } localization_key = gods_of_africa_family_non_aggression }
 	text = { trigger = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.guarantee_africa } } localization_key = gods_of_africa_family_guarantee_africa }
+	text = {
+		trigger = {
+			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.continuing_support }
+			check_variable = { gods_of_africa_demand_instalment_material = constant:gods_of_africa_demand_family.fuel }
+		}
+		localization_key = gods_of_africa_family_continuing_fuel
+	}
+	text = { trigger = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.continuing_support } } localization_key = gods_of_africa_family_continuing_equipment }
 	text = { trigger = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.emergency_relief } } localization_key = gods_of_africa_family_emergency_relief }
 	text = { trigger = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.support_equipment } } localization_key = gods_of_africa_family_support_equipment }
 	text = { localization_key = gods_of_africa_family_unknown }
@@ -232,6 +240,32 @@ defined_text = {
 	text = { localization_key = gods_of_africa_coercion_claimant_none }
 }
 
+# Participant scope. Where an open continuing-support agreement stands
+# (decision L28).
+defined_text = {
+	name = GetGodsOfAfricaDemandInstalmentLine
+	text = {
+		trigger = {
+			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.continuing_support }
+			has_country_flag = gods_of_africa_instalments_signed
+			has_variable = gods_of_africa_next_instalment_date
+		}
+		localization_key = gods_of_africa_instalment_line_signed
+	}
+	text = {
+		trigger = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.continuing_support } }
+		localization_key = gods_of_africa_instalment_line_unsigned
+	}
+	text = { localization_key = gods_of_africa_demand_hardship_none }
+}
+
+# Participant scope. The material a continuing-support agreement moves.
+defined_text = {
+	name = GetGodsOfAfricaInstalmentIcon
+	text = { trigger = { check_variable = { gods_of_africa_demand_instalment_material = constant:gods_of_africa_demand_family.fuel } } localization_key = gods_of_africa_icon_fuel }
+	text = { localization_key = gods_of_africa_icon_land_equipment }
+}
+
 # Participant scope. The wartime easing frozen with the open demand.
 defined_text = {
 	name = GetGodsOfAfricaDemandHardshipLine
@@ -299,6 +333,7 @@ defined_text = {
 	text = { trigger = { check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.undelivered } } localization_key = gods_of_africa_response_undelivered_report }
 	text = { trigger = { check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.lapsed } } localization_key = gods_of_africa_response_lapsed_report }
 	text = { trigger = { check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.territory_lapsed } } localization_key = gods_of_africa_response_territory_lapsed_report }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.instalment } } localization_key = gods_of_africa_response_instalment_report }
 	text = { localization_key = gods_of_africa_response_unknown_report }
 }
 
@@ -541,6 +576,17 @@ defined_text = {
 defined_text = {
 	name = GetGodsOfAfricaPaymentIcon
 	text = {
+		trigger = {
+			check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.continuing_support }
+			check_variable = { gods_of_africa_payment_instalment_material = constant:gods_of_africa_demand_family.fuel }
+		}
+		localization_key = gods_of_africa_icon_fuel
+	}
+	text = {
+		trigger = { check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.continuing_support } }
+		localization_key = gods_of_africa_icon_land_equipment
+	}
+	text = {
 		trigger = { check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.land_equipment } }
 		localization_key = gods_of_africa_icon_land_equipment
 	}
@@ -581,6 +627,17 @@ defined_text = {
 
 defined_text = {
 	name = GetGodsOfAfricaDemandIcon
+	text = {
+		trigger = {
+			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.continuing_support }
+			check_variable = { gods_of_africa_demand_instalment_material = constant:gods_of_africa_demand_family.fuel }
+		}
+		localization_key = gods_of_africa_icon_fuel
+	}
+	text = {
+		trigger = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.continuing_support } }
+		localization_key = gods_of_africa_icon_land_equipment
+	}
 	text = {
 		trigger = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.land_equipment } }
 		localization_key = gods_of_africa_icon_land_equipment

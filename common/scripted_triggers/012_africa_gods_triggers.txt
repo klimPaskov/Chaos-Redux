@@ -332,6 +332,10 @@ gods_of_africa_demand_family_is_valid = {
 		check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.military_access }
 		check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.non_aggression }
 		check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.guarantee_africa }
+		AND = {
+			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.continuing_support }
+			has_variable = gods_of_africa_demand_instalment_material
+		}
 	}
 }
 
@@ -390,6 +394,22 @@ gods_of_africa_participant_has_capacity_for_family = {
 		AND = {
 			check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.manpower }
 			NOT = { has_manpower < gods_of_africa_capacity_requirement }
+		}
+		# Continuing support is paid in the rifles or fuel its contract names
+		# (decision L28).
+		AND = {
+			check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.continuing_support }
+			has_variable = gods_of_africa_payment_instalment_material
+			OR = {
+				AND = {
+					check_variable = { gods_of_africa_payment_instalment_material = constant:gods_of_africa_demand_family.fuel }
+					NOT = { has_fuel < gods_of_africa_capacity_requirement }
+				}
+				AND = {
+					check_variable = { gods_of_africa_payment_instalment_material = constant:gods_of_africa_demand_family.land_equipment }
+					NOT = { has_equipment = { infantry_equipment < gods_of_africa_capacity_requirement } }
+				}
+			}
 		}
 		AND = {
 			check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.resources }
@@ -643,6 +663,7 @@ gods_of_africa_payment_family_is_valid = {
 		check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.military_access }
 		check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.non_aggression }
 		check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.guarantee_africa }
+		check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.continuing_support }
 	}
 }
 
@@ -916,6 +937,7 @@ africa_gods_of_africa_participant_is_current = {
 gods_of_africa_family_needs_measured_transfer = {
 	OR = {
 		gods_of_africa_family_is_equipment = yes
+		check_variable = { gods_of_africa_family_to_check = constant:gods_of_africa_demand_family.continuing_support }
 		check_variable = { gods_of_africa_family_to_check = constant:gods_of_africa_demand_family.fuel }
 		check_variable = { gods_of_africa_family_to_check = constant:gods_of_africa_demand_family.manpower }
 	}
@@ -1193,6 +1215,41 @@ gods_of_africa_frozen_territory_payment_is_possible = {
 		NOT = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.territory } }
 		gods_of_africa_frozen_territory_is_held = yes
 	}
+}
+
+# ============================================================================
+# CONTINUING SUPPORT (decision L28)
+# ============================================================================
+
+# COUNTRY scope on a participant with an open continuing-support contract that
+# is not yet signed. Signing sends the first instalment at once.
+gods_of_africa_instalments_can_be_signed = {
+	gods_of_africa_demand_contract_is_current = yes
+	check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.continuing_support }
+	NOT = { has_country_flag = gods_of_africa_instalments_signed }
+	has_variable = gods_of_africa_instalment_amount
+	set_temp_variable = { gods_of_africa_instalment_needed = gods_of_africa_instalment_amount }
+	add_to_temp_variable = { gods_of_africa_instalment_needed = constant:gods_of_africa_value.capacity_floor_equipment }
+	OR = {
+		AND = {
+			check_variable = { gods_of_africa_demand_instalment_material = constant:gods_of_africa_demand_family.fuel }
+			NOT = { has_fuel < gods_of_africa_instalment_needed }
+		}
+		AND = {
+			check_variable = { gods_of_africa_demand_instalment_material = constant:gods_of_africa_demand_family.land_equipment }
+			NOT = { has_equipment = { infantry_equipment < gods_of_africa_instalment_needed } }
+		}
+	}
+}
+
+# COUNTRY scope on a participant. A signed agreement whose next instalment is
+# due.
+gods_of_africa_instalment_is_due = {
+	gods_of_africa_participant_has_active_demand = yes
+	check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.continuing_support }
+	has_country_flag = gods_of_africa_instalments_signed
+	has_variable = gods_of_africa_next_instalment_day
+	check_variable = { var = global.num_days value = gods_of_africa_next_instalment_day compare = greater_than_or_equals }
 }
 
 # ============================================================================

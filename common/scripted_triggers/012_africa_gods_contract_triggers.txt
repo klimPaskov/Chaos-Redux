@@ -147,7 +147,16 @@ gods_of_africa_contract_has_substitute_terms = {
 # one unit of fuel; every other family is always receivable here.
 gods_of_africa_host_can_receive_demand_payment = {
 	OR = {
-		NOT = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.fuel } }
+		AND = {
+			NOT = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.fuel } }
+			# Continuing support paid in fuel needs tank room too (decision L28).
+			NOT = {
+				AND = {
+					check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.continuing_support }
+					check_variable = { gods_of_africa_demand_instalment_material = constant:gods_of_africa_demand_family.fuel }
+				}
+			}
+		}
 		AND = {
 			has_event_target = africa_host
 			event_target:africa_host = {

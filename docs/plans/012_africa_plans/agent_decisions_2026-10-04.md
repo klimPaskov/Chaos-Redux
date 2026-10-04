@@ -373,3 +373,17 @@ Decisions:
 - Every new decision has constant-backed AI weights and an explicit `factor = 0` on each closed gate.
 
 MCP route evidence (2026-10-05): one narrow `hoi4_focus_inspect` (`mode = national`, `treeId = africa_continental_focus_tree`), revision `de29fe65`, reports 301 focuses, 297 diagnostics, 62 connector crossings and 53 node intersections, the same crossings and intersections as the L22 state, so the new node adds no overlap or crossing. Its single blocking diagnostic is the vanilla `TSR_lingguang_incident_joint_branch.txt` brace, outside this mod.
+
+## L28. Continuing support is an Event 012 instalment contract
+
+Disposition: `implemented` (the native timing of each owner-review delivery and fuel tank limits are `needs_live_game`).
+
+Basis: the full spec's "Lend-lease and continuing support" section ("Where exact inspection is unavailable, use an Event 012 owned periodic transfer contract with declared amounts and a clear deadline"), the round 2 remaining-work list (priority 3), and the installed effects documentation, which has no effect that ends native lend-lease.
+
+Decisions:
+
+- New family `continuing_support` (18), offered from Evolution II while Africa is at war and short of fuel or rifles, only to a participant that holds the whole amount above its operating floor; it is excluded during war with Africa by the ordinary dispatch gate. It comes right after Africa's own priority and its largest measured need in the selector.
+- The contract freezes the material, three whole-unit instalments and a 30-day interval (`gods_of_africa_instalments`). Signing sends the first instalment and makes the contract agreed terms; the owner review sends the rest through the measured transfer, crediting the contribution record by the existing infantry or fuel kinds; the last one settles the contract in full; a missed one is a failure of agreed terms through the ordinary deadline path.
+- Paying the whole balance at once remains possible; partial payment is not offered for this family.
+- Reports name the material, not the family, so the existing paid-amount and balance texts apply; a separate `.604` row reports each instalment.
+- The signing decision has constant-backed AI weights (higher under a heavy burden and for loyal allies, lower for rivals and against a weak Africa) and an explicit `factor = 0` on its closed gates.

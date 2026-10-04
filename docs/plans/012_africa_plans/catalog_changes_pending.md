@@ -53,3 +53,7 @@ If the workbook keeps per-event notes for Event 012, add these facts in the in-g
 
 - New focus "No Sanctuary for Occupiers" (`gods_of_africa_focus_no_sanctuary_for_occupiers`): "Africa can lay claim to the African core states a foreign government owns, gain a war goal to take them back, and arm the African claimant of that land."
 - New decisions "Send the African Expedition", "Pledge a Final Shipment", "Speak for Africa at the Council" and "No Sanctuary for Occupiers"; new reports "The African Expedition Arrives" (`chaosx.nr12.620.t`) and "Africa Claims Its Land" (`chaosx.nr12.621.t`).
+
+## Gods of Africa continuing support (agent decision L28)
+
+If the workbook keeps per-event notes for Event 012, add: "Sign the Support Agreement" (`gods_of_africa_sign_support_agreement`): "The first instalment of [amount] leaves our stocks now, and each later one every 30 days. The agreement becomes agreed terms: an instalment we cannot pay on its day breaks it."

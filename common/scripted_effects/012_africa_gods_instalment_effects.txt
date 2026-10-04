@@ -1,0 +1,147 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 GODS OF AFRICA CONTINUING SUPPORT
+# ============================================================================
+# Decision L28. The full spec asks for a fixed-period continuing-aid demand
+# and, because native lend-lease cannot be inspected or ended by script, an
+# Event 012 periodic transfer with declared amounts and a clear deadline.
+# - The contract (family continuing_support) freezes the material (rifles or
+#   fuel), the amount per instalment and the number of instalments.
+# - Signing the agreement sends the first instalment at once and makes the
+#   contract agreed terms.
+# - The bounded owner review (gods_of_africa_run_owner_tick, every
+#   gods_of_africa_timing.owner_tick_days) sends each later instalment when it
+#   is due, through the same measured transfer as any other payment, so each
+#   instalment is credited to the participant's contribution record.
+# - An instalment the participant cannot pay on its due day ends the contract
+#   as a failure of agreed terms through the ordinary deadline path.
+# Every amount is a constant in 012_africa_gods_constants.txt.
+# ============================================================================
+
+# COUNTRY scope on a participant at contract creation.
+gods_of_africa_freeze_instalment_terms = {
+	gods_of_africa_clear_instalment_terms = yes
+	if = {
+		limit = {
+			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.continuing_support }
+			has_variable = gods_of_africa_payment_instalment_material
+		}
+		set_variable = { gods_of_africa_demand_instalment_material = gods_of_africa_payment_instalment_material }
+		set_variable = { gods_of_africa_instalments_left = constant:gods_of_africa_instalments.count }
+		# Whole units per instalment; the contract total is the sum.
+		set_temp_variable = { gods_of_africa_equipment_amount = gods_of_africa_demand_amount }
+		divide_temp_variable = { gods_of_africa_equipment_amount = constant:gods_of_africa_instalments.count }
+		gods_of_africa_floor_equipment_amount = yes
+		if = {
+			limit = { check_variable = { gods_of_africa_equipment_amount < constant:gods_of_africa_value.one } }
+			set_temp_variable = { gods_of_africa_equipment_amount = constant:gods_of_africa_value.one }
+		}
+		set_variable = { gods_of_africa_instalment_amount = gods_of_africa_equipment_amount }
+		set_variable = { gods_of_africa_demand_amount = gods_of_africa_instalment_amount }
+		multiply_variable = { gods_of_africa_demand_amount = constant:gods_of_africa_instalments.count }
+		set_variable = { gods_of_africa_demand_remaining = gods_of_africa_demand_amount }
+		set_variable = { gods_of_africa_payment_amount = gods_of_africa_demand_amount }
+	}
+}
+
+# COUNTRY scope on a participant.
+gods_of_africa_clear_instalment_terms = {
+	clr_country_flag = gods_of_africa_instalments_signed
+	clear_variable = gods_of_africa_demand_instalment_material
+	clear_variable = gods_of_africa_instalment_amount
+	clear_variable = gods_of_africa_instalments_left
+	clear_variable = gods_of_africa_next_instalment_day
+	clear_variable = gods_of_africa_next_instalment_date
+}
+
+# COUNTRY scope on a participant. Schedules the next instalment one interval
+# from today, for the owner review (day count) and the mission text (date).
+gods_of_africa_schedule_next_instalment = {
+	set_variable = { gods_of_africa_next_instalment_day = global.num_days }
+	add_to_variable = { gods_of_africa_next_instalment_day = constant:gods_of_africa_instalments.interval_days }
+	set_temp_variable = { chaosx_date_days = constant:gods_of_africa_instalments.interval_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { gods_of_africa_next_instalment_date = global.date }
+	add_to_variable = { gods_of_africa_next_instalment_date = chaosx_date_offset }
+}
+
+# COUNTRY scope on a participant. Signing sends the first instalment now and
+# binds the participant to the rest as agreed terms.
+gods_of_africa_sign_support_agreement = {
+	if = {
+		limit = {
+			gods_of_africa_instalments_can_be_signed = yes
+			gods_of_africa_contract_ledger_can_close = yes
+			gods_of_africa_demand_transfer_is_clear = yes
+			gods_of_africa_payment_retry_is_open = yes
+			gods_of_africa_host_can_receive_demand_payment = yes
+		}
+		set_country_flag = gods_of_africa_instalments_signed
+		gods_of_africa_mark_contract_agreed = yes
+		# The deadline covers every instalment and one interval of grace.
+		set_temp_variable = { gods_of_africa_instalment_span = constant:gods_of_africa_instalments.count }
+		add_to_temp_variable = { gods_of_africa_instalment_span = constant:gods_of_africa_instalments.grace_intervals }
+		multiply_temp_variable = { gods_of_africa_instalment_span = constant:gods_of_africa_instalments.interval_days }
+		set_variable = { gods_of_africa_demand_deadline = global.num_days }
+		add_to_variable = { gods_of_africa_demand_deadline = gods_of_africa_instalment_span }
+		gods_of_africa_sync_demand_mission_timeout = yes
+		set_variable = { gods_of_africa_next_instalment_day = global.num_days }
+		gods_of_africa_deliver_instalment = yes
+	}
+}
+
+# COUNTRY scope on a participant whose signed agreement has an instalment due.
+# The last instalment settles the contract in full; a missed instalment ends it
+# as a failure of the agreed terms.
+gods_of_africa_deliver_instalment = {
+	if = {
+		limit = {
+			gods_of_africa_demand_contract_is_current = yes
+			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.continuing_support }
+			has_country_flag = gods_of_africa_instalments_signed
+			gods_of_africa_contract_ledger_can_close = yes
+		}
+		set_variable = { gods_of_africa_payment_family = gods_of_africa_demand_family }
+		set_variable = { gods_of_africa_payment_instalment_material = gods_of_africa_demand_instalment_material }
+		set_variable = { gods_of_africa_payment_amount = gods_of_africa_instalment_amount }
+		if = {
+			limit = { NOT = { check_variable = { gods_of_africa_instalments_left > constant:gods_of_africa_value.one } } }
+			set_variable = { gods_of_africa_payment_amount = gods_of_africa_demand_remaining }
+		}
+		clamp_variable = { var = gods_of_africa_payment_amount max = gods_of_africa_demand_remaining }
+		gods_of_africa_set_payment_capacity_requirement = yes
+		if = {
+			limit = {
+				gods_of_africa_participant_has_capacity_for_family = yes
+				gods_of_africa_demand_transfer_is_clear = yes
+				gods_of_africa_host_can_receive_demand_payment = yes
+			}
+			if = {
+				limit = { NOT = { check_variable = { gods_of_africa_instalments_left > constant:gods_of_africa_value.one } } }
+				# The last instalment settles the agreement in full.
+				gods_of_africa_resolve_full_compliance = yes
+			}
+			else = {
+				gods_of_africa_transfer_payment = yes
+				if = {
+					limit = { check_variable = { gods_of_africa_payment_success > constant:gods_of_africa_value.zero } }
+					subtract_from_variable = { gods_of_africa_instalments_left = constant:gods_of_africa_value.one }
+					gods_of_africa_schedule_next_instalment = yes
+					gods_of_africa_apply_partial_delivery = yes
+					# The report names the instalment rather than a partial payment.
+					set_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.instalment }
+					set_variable = { gods_of_africa_last_instalments_left = gods_of_africa_instalments_left }
+				}
+				else = {
+					set_temp_variable = { gods_of_africa_report_family = gods_of_africa_demand_instalment_material }
+					gods_of_africa_record_undelivered_payment = yes
+				}
+			}
+		}
+		else = {
+			# The participant could not pay the instalment on its due day.
+			set_variable = { gods_of_africa_demand_deadline = global.num_days }
+			gods_of_africa_fail_demand = yes
+		}
+	}
+}

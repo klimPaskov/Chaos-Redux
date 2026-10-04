@@ -403,6 +403,59 @@ gods_of_africa_participant_category = {
 		}
 	}
 
+	# Continuing support (decision L28): sign the agreement and send the first
+	# instalment; the owner review sends the rest.
+	gods_of_africa_sign_support_agreement = {
+		name = gods_of_africa_sign_support_agreement
+		desc = gods_of_africa_sign_support_agreement_desc
+		icon = GFX_decision_012_africa_gods_fulfill_demand
+		visible = {
+			gods_of_africa_participant_host_is_active = yes
+			gods_of_africa_participant_generation_is_current = yes
+			has_country_flag = gods_of_africa_demand_active
+			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.continuing_support }
+			NOT = { has_country_flag = gods_of_africa_instalments_signed }
+			NOT = { has_country_flag = gods_of_africa_negotiation_open }
+			NOT = { has_country_flag = gods_of_africa_defiant }
+		}
+		available = {
+			gods_of_africa_demand_payment_is_open = yes
+			gods_of_africa_demand_contract_is_current = yes
+			custom_trigger_tooltip = {
+				tooltip = gods_of_africa_instalment_stock_tt
+				gods_of_africa_instalments_can_be_signed = yes
+			}
+			custom_trigger_tooltip = {
+				tooltip = gods_of_africa_host_fuel_room_tt
+				gods_of_africa_host_can_receive_demand_payment = yes
+			}
+		}
+		custom_cost_trigger = { gods_of_africa_instalments_can_be_signed = yes }
+		custom_cost_text = gods_of_africa_instalment_cost
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_sign_support_agreement_effect_tt
+			hidden_effect = { gods_of_africa_sign_support_agreement = yes }
+		}
+		ai_will_do = {
+			base = constant:gods_of_africa_ai_response.instalment_sign_base
+			modifier = {
+				factor = 0
+				OR = {
+					NOT = { gods_of_africa_instalments_can_be_signed = yes }
+					NOT = { gods_of_africa_demand_payment_is_open = yes }
+					NOT = { gods_of_africa_host_can_receive_demand_payment = yes }
+				}
+			}
+			modifier = { factor = constant:gods_of_africa_ai_response.instalment_sign_heavy_burden has_country_flag = gods_of_africa_demand_heavy_burden }
+			modifier = { factor = constant:gods_of_africa_ai_response.instalment_sign_light_burden has_country_flag = gods_of_africa_demand_light_burden }
+			modifier = { factor = constant:gods_of_africa_ai_response.instalment_sign_loyal gods_of_africa_ai_is_loyal_ally = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.instalment_sign_rival gods_of_africa_ai_is_defiant_rival = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.instalment_sign_weak_africa gods_of_africa_ai_africa_is_weak = yes }
+		}
+	}
+
 	gods_of_africa_partial_compliance = {
 		name = gods_of_africa_partial_compliance
 		desc = gods_of_africa_partial_compliance_desc
@@ -413,8 +466,10 @@ gods_of_africa_participant_category = {
 			has_country_flag = gods_of_africa_demand_active
 			NOT = { has_country_flag = gods_of_africa_negotiation_open }
 			NOT = { has_country_flag = gods_of_africa_defiant }
-			# A diplomatic concession is made in full or not at all.
+			# A diplomatic concession is made in full or not at all, and a
+			# support agreement is paid by its instalments.
 			NOT = { gods_of_africa_demand_is_diplomatic = yes }
+			NOT = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.continuing_support } }
 		}
 		available = {
 			gods_of_africa_partial_payment_is_affordable = yes
