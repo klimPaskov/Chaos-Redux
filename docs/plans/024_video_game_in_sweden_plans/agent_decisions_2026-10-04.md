@@ -286,3 +286,11 @@ Decision:
 Which rows can be taken does not change: every removed visible line is still evaluated in `available`, and `can_pay_*` cost checks stay visible in `available`, as lead decision 6 requires.
 Basis: round 2 lead decision 6, D24 and D26 precedent, CLAUDE.md player-visible requirement rule, chaos-redux-decisions-missions trigger clarity.
 Disposition: `implemented`; the rendered tooltip wording is needs_live_game.
+
+### R2-4. The audit and field-validation requirement texts name every hidden condition
+
+Finding: `video_game_reality_audit_requirements_tt` named only Stockholm, reserves, stability and the full-report proof, although the hidden `video_game_in_sweden_can_begin_reality_audit` also checks `video_game_in_sweden_has_field_start_package` (an army, one supplied training region or an active front, and no wartime supply gap), so a player could see every listed condition met while the row stayed blocked; `video_game_field_validation_resources_tt` omitted the army and the no-supply-gap condition that also applies to the training-region path.
+Decision: both texts now name the army, the supplied training region in Skane, Sodermanland or Norrnorrland or an active front (with the shared `$video_game_supplied_region_rule$`), the wartime train, lorry and fuel condition "whichever proof is used", Stockholm, the reserves after payment and, for the audit, the stability floor; the audit text still states separately what a full report needs.
+No gating changed.
+Basis: CLAUDE.md player-visible requirement rule (state the real requirement), chaos-redux-decisions-missions trigger clarity.
+Disposition: `implemented`.
