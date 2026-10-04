@@ -183,6 +183,17 @@ Every formation a focus or actor action raises goes through `random_terror_focus
 | Control the Market | Coerced Extraction | `market_infantry_equipment` rifles and `market_fuel` fuel, with the extraction's condemnation. |
 | Secure the Fuel Stores | Coerced Extraction | `fuel_stores_fuel` fuel and, with a free slot, a fuel silo in the seat. |
 | Identify the Sponsor | Foreign Sponsorship | A sponsor request (`chaosx.nr31.42`) to a country at peace that could back the command, a neighbour first (`random_terror_focus_request_sponsor`). |
+| Map the Network | Network and Diplomacy | Military access to every live command at peace with the actor; AI commands open theirs in return. |
+| Protect Safe Havens | Network and Diplomacy | Support equipment, and up to `protected_cell_count` threatened cells abroad go to ground. |
+| Bargain with Rivals | Network and Diplomacy | Non-aggression pacts with every AI command at peace and outside the faction. |
+| Merge the Enclaves | Network and Diplomacy | A merger offer (`chaosx.nr31.43`) to a weaker command at peace, a neighbour first (`random_terror_focus_offer_merger`); the other command decides. |
+| A Common Front | Network and Diplomacy | Guarantees for every AI command at peace that is not independent. |
+| Form the Confederation | Network and Diplomacy | A leading command also brings in every AI command at peace, outside any faction, not independent and not serving the Jihadist International. |
+| Absorb a Compatible Enclave | Network and Diplomacy | A merger offer to a weaker command, a faction partner first. |
+| Claim the Transport Hub | Expansion | A claim on a neighbouring state above `hub_infrastructure`, else any neighbour, and roads in the facing state. |
+| Seize the Urban District | Expansion | A claim on a neighbouring enemy-held city above `urban_population_k`, else any enemy-held or foreign neighbour, pressed by `urban_seizure_activity`. |
+| Prepare the State Offensive | Expansion | `random_terror_commit_state_offensive` on one neighbouring enemy-held state, and army experience. |
+| Break the Parent Government | Expansion | The parent loses stability and war support, gains Terror Pressure, and its crisis states gain `parent_cell_activity`. |
 | Continuity Protocol | Shadow Council | Bunkers on the victory-point provinces of the seat; Relocate the Network stops costing Territorial Control. |
 | Establish Political Offices | Ideological Secretariat | The seat becomes a core state; Build a Civil Administration opens to the command (`random_terror_focus_political_offices`). |
 | Trace the Border Corridors | Expansion | Claims on every bordering crisis state the command does not own. |

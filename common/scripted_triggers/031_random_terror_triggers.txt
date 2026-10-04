@@ -225,6 +225,43 @@ random_terror_state_is_focus_cell_candidate = {
 	}
 }
 
+# COUNTRY scope, ROOT = an actor.  Another live Event 31 command at peace with
+# it, short of the terminal final command.  Network focuses that bind
+# partners without a consent event (access, pacts, guarantees, faction
+# entry) further require the partner to be an AI command.
+random_terror_focus_network_partner = {
+	NOT = { tag = ROOT }
+	random_terror_is_actor = yes
+	NOT = { has_capitulated = yes }
+	NOT = { has_war_with = ROOT }
+	NOT = { has_country_flag = random_terror_final_actor }
+}
+
+# COUNTRY scope, ROOT = an actor.  A weaker partner that a merger offer
+# (chaosx.nr31.43) can go to.  The partner accepts or refuses.
+random_terror_focus_merger_candidate = {
+	random_terror_focus_network_partner = yes
+	NOT = { has_country_flag = random_terror_absorption_offer_pending }
+	NOT = { has_country_flag = random_terror_independent_command }
+	check_variable = { var = random_terror_territorial_control value = ROOT.random_terror_territorial_control compare = less_than }
+}
+
+# STATE scope, ROOT = an actor.  A populated state next to the actor's
+# territory that it neither owns nor claims yet.
+random_terror_state_is_claim_candidate = {
+	state_population_k > constant:random_terror_value.zero
+	NOT = { is_owned_by = ROOT }
+	NOT = { is_claimed_by = ROOT }
+}
+
+# STATE scope, ROOT = an actor.  A populated state held by a country at war
+# with the actor.
+random_terror_state_is_enemy_held = {
+	state_population_k > constant:random_terror_value.zero
+	NOT = { is_controlled_by = ROOT }
+	CONTROLLER = { has_war_with = ROOT }
+}
+
 # COUNTRY scope, ROOT = an actor.  A country at peace with the actor that can
 # be asked to sponsor it (the same stock checks as Seek a Sponsor).
 random_terror_focus_sponsor_candidate = {

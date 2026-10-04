@@ -878,3 +878,323 @@ random_terror_focus_reward_armed_movement = {
 	add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_convert_gain }
 	set_country_flag = random_terror_focus_armed_movement_commanded
 }
+
+# Offers a merger (chaosx.nr31.43) to a weaker partner
+# (random_terror_focus_merger_candidate): a faction partner first when temp
+# random_terror_focus_prefer_faction = 1, then a neighbour, then any partner.
+# The partner accepts or refuses; the input is reset afterwards.
+random_terror_focus_offer_merger = {
+	if = {
+		limit = {
+			check_variable = { random_terror_focus_prefer_faction = constant:random_terror_value.one }
+			any_country = {
+				random_terror_focus_merger_candidate = yes
+				is_in_faction_with = ROOT
+			}
+		}
+		random_country = {
+			limit = {
+				random_terror_focus_merger_candidate = yes
+				is_in_faction_with = ROOT
+			}
+			save_event_target_as = random_terror_actor_absorption_target
+		}
+	}
+	else_if = {
+		limit = {
+			any_country = {
+				random_terror_focus_merger_candidate = yes
+				is_neighbor_of = ROOT
+			}
+		}
+		random_country = {
+			limit = {
+				random_terror_focus_merger_candidate = yes
+				is_neighbor_of = ROOT
+			}
+			save_event_target_as = random_terror_actor_absorption_target
+		}
+	}
+	else_if = {
+		limit = { any_country = { random_terror_focus_merger_candidate = yes } }
+		random_country = {
+			limit = { random_terror_focus_merger_candidate = yes }
+			save_event_target_as = random_terror_actor_absorption_target
+		}
+	}
+	if = {
+		limit = { has_event_target = random_terror_actor_absorption_target }
+		random_terror_commit_actor_absorption = yes
+	}
+	set_temp_variable = { random_terror_focus_prefer_faction = constant:random_terror_value.zero }
+}
+
+# Map the Network: the command opens its territory to every other live
+# command at peace with it, and every AI command among them opens its own.
+random_terror_focus_reward_map_network = {
+	every_country = {
+		limit = { random_terror_focus_network_partner = yes }
+		ROOT = { give_military_access = PREV }
+		if = {
+			limit = { is_ai = yes }
+			give_military_access = ROOT
+		}
+	}
+	add_to_variable = { global.random_terror_network_reach = constant:random_terror_tuning.network_reach_gain }
+	clamp_variable = { var = global.random_terror_network_reach min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+	add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.network_reach_gain }
+	set_country_flag = random_terror_focus_network_mapped
+}
+
+# Protect Safe Havens: threatened cells abroad go to ground.
+random_terror_focus_reward_safe_havens = {
+	random_terror_focus_protect_threatened_cells = yes
+	add_to_variable = { global.random_terror_network_reach = constant:random_terror_tuning.network_reach_gain }
+	clamp_variable = { var = global.random_terror_network_reach min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+	set_country_flag = random_terror_focus_safe_havens
+}
+
+# Bargain with Rivals: non-aggression pacts with every AI command at peace
+# with the command and outside its faction.
+random_terror_focus_reward_bargain_rivals = {
+	every_country = {
+		limit = {
+			random_terror_focus_network_partner = yes
+			is_ai = yes
+			NOT = { is_in_faction_with = ROOT }
+		}
+		diplomatic_relation = {
+			country = ROOT
+			relation = non_aggression_pact
+			active = yes
+		}
+	}
+	add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.network_reach_gain }
+	add_to_variable = { global.random_terror_international_unity = constant:random_terror_tuning.unity_gain }
+	clamp_variable = { var = global.random_terror_international_unity min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+	set_country_flag = random_terror_focus_rival_bargain
+}
+
+# A Common Front: the command guarantees every AI command at peace with it
+# that is not an independent command.
+random_terror_focus_reward_common_front = {
+	every_country = {
+		limit = {
+			random_terror_focus_network_partner = yes
+			is_ai = yes
+			NOT = { has_country_flag = random_terror_independent_command }
+		}
+		ROOT = { give_guarantee = PREV }
+	}
+	add_to_variable = { global.random_terror_international_unity = constant:random_terror_tuning.unity_gain }
+	clamp_variable = { var = global.random_terror_international_unity min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+	add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.actor_authority_civil_admin_gain }
+	set_country_flag = random_terror_focus_event_31_faction_route
+}
+
+# Form the Confederation: a leading command brings in every AI command at
+# peace with it that stands outside any faction, is not an independent
+# command and does not serve the Jihadist International.
+random_terror_focus_reward_confederation_members = {
+	if = {
+		limit = { is_faction_leader = yes }
+		every_country = {
+			limit = {
+				random_terror_focus_network_partner = yes
+				is_ai = yes
+				NOT = { is_in_faction = yes }
+				NOT = { has_country_flag = random_terror_independent_command }
+				NOT = { has_country_flag = random_terror_jihadist_international_member }
+			}
+			ROOT = { add_to_faction = PREV }
+		}
+	}
+}
+
+# Claim the Transport Hub: a claim on a neighbouring junction, one with good
+# roads first, and better roads in the command's state that faces it.
+random_terror_focus_reward_transport_hub = {
+	if = {
+		limit = {
+			any_owned_state = {
+				is_controlled_by = ROOT
+				any_neighbor_state = {
+					random_terror_state_is_claim_candidate = yes
+					infrastructure > constant:random_terror_focus_reward.hub_infrastructure
+				}
+			}
+		}
+		random_owned_controlled_state = {
+			limit = {
+				any_neighbor_state = {
+					random_terror_state_is_claim_candidate = yes
+					infrastructure > constant:random_terror_focus_reward.hub_infrastructure
+				}
+			}
+			add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			random_neighbor_state = {
+				limit = {
+					random_terror_state_is_claim_candidate = yes
+					infrastructure > constant:random_terror_focus_reward.hub_infrastructure
+				}
+				add_claim_by = ROOT
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			any_owned_state = {
+				is_controlled_by = ROOT
+				any_neighbor_state = { random_terror_state_is_claim_candidate = yes }
+			}
+		}
+		random_owned_controlled_state = {
+			limit = { any_neighbor_state = { random_terror_state_is_claim_candidate = yes } }
+			add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			random_neighbor_state = {
+				limit = { random_terror_state_is_claim_candidate = yes }
+				add_claim_by = ROOT
+			}
+		}
+	}
+	add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_militia_gain }
+	set_country_flag = random_terror_focus_transport_hub_claimed
+}
+
+# Seize the Urban District: a neighbouring city the enemy holds, a large one
+# first, is claimed and its cells are pressed by urban_seizure_activity.
+# Without an enemy on the border, any neighbouring state the command does
+# not own serves.
+random_terror_focus_reward_urban_district = {
+	if = {
+		limit = {
+			any_controlled_state = {
+				any_neighbor_state = {
+					random_terror_state_is_enemy_held = yes
+					state_population_k > constant:random_terror_focus_reward.urban_population_k
+				}
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				any_neighbor_state = {
+					random_terror_state_is_enemy_held = yes
+					state_population_k > constant:random_terror_focus_reward.urban_population_k
+				}
+			}
+			random_neighbor_state = {
+				limit = {
+					random_terror_state_is_enemy_held = yes
+					state_population_k > constant:random_terror_focus_reward.urban_population_k
+				}
+				save_event_target_as = random_terror_focus_target_state
+			}
+		}
+	}
+	else_if = {
+		limit = { any_controlled_state = { any_neighbor_state = { random_terror_state_is_enemy_held = yes } } }
+		random_controlled_state = {
+			limit = { any_neighbor_state = { random_terror_state_is_enemy_held = yes } }
+			random_neighbor_state = {
+				limit = { random_terror_state_is_enemy_held = yes }
+				save_event_target_as = random_terror_focus_target_state
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			any_controlled_state = {
+				any_neighbor_state = {
+					random_terror_state_is_claim_candidate = yes
+					NOT = { is_controlled_by = ROOT }
+				}
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				any_neighbor_state = {
+					random_terror_state_is_claim_candidate = yes
+					NOT = { is_controlled_by = ROOT }
+				}
+			}
+			random_neighbor_state = {
+				limit = {
+					random_terror_state_is_claim_candidate = yes
+					NOT = { is_controlled_by = ROOT }
+				}
+				save_event_target_as = random_terror_focus_target_state
+			}
+		}
+	}
+	if = {
+		limit = { has_event_target = random_terror_focus_target_state }
+		set_temp_variable = { random_terror_focus_activity_push = constant:random_terror_focus_reward.urban_seizure_activity }
+		event_target:random_terror_focus_target_state = {
+			if = {
+				limit = {
+					NOT = { is_owned_by = ROOT }
+					NOT = { is_claimed_by = ROOT }
+				}
+				add_claim_by = ROOT
+			}
+			set_state_flag = random_terror_transnational_link_active
+			random_terror_focus_push_state_activity = yes
+		}
+	}
+	add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_convert_gain }
+	set_country_flag = random_terror_focus_urban_district_seized
+}
+
+# Prepare the State Offensive: one neighbouring state the enemy holds is
+# claimed, linked and pressed ahead of the assault, as Prepare a State
+# Offensive does.
+random_terror_focus_reward_state_offensive = {
+	if = {
+		limit = { any_controlled_state = { any_neighbor_state = { random_terror_state_is_enemy_held = yes } } }
+		random_controlled_state = {
+			limit = { any_neighbor_state = { random_terror_state_is_enemy_held = yes } }
+			random_neighbor_state = {
+				limit = { random_terror_state_is_enemy_held = yes }
+				save_event_target_as = random_terror_action_state
+			}
+		}
+		random_terror_commit_state_offensive = yes
+	}
+	add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_offensive_gain }
+	set_country_flag = random_terror_focus_state_offensive_prepared
+}
+
+# Break the Parent Government: the parent loses stability and war support,
+# its national Terror Pressure rises and the cells in its crisis states the
+# command does not hold step up their activity.
+random_terror_focus_reward_break_parent = {
+	if = {
+		limit = {
+			any_country = {
+				exists = yes
+				has_country_flag = random_terror_parent_of_@ROOT
+			}
+		}
+		random_country = {
+			limit = {
+				exists = yes
+				has_country_flag = random_terror_parent_of_@ROOT
+			}
+			add_stability = constant:random_terror_focus_reward.parent_stability_loss
+			add_war_support = constant:random_terror_focus_reward.parent_war_support_loss
+			set_temp_variable = { random_terror_pending_pressure_delta = constant:random_terror_focus_reward.parent_pressure_gain }
+			random_terror_apply_pressure = yes
+			set_temp_variable = { random_terror_focus_activity_push = constant:random_terror_focus_reward.parent_cell_activity }
+			every_owned_state = {
+				limit = {
+					random_terror_state_is_active_crisis = yes
+					NOT = { is_controlled_by = ROOT }
+				}
+				random_terror_focus_push_state_activity = yes
+			}
+		}
+	}
+	add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_convert_gain }
+	add_to_variable = { global.random_terror_strategic_victories = constant:random_terror_tuning.one }
+	set_country_flag = random_terror_focus_parent_government_broken
+}

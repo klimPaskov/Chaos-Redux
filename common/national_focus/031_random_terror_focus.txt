@@ -1953,10 +1953,11 @@ focus_tree = {
 			has_country_flag = random_terror_focus_opening_complete
 		}
 		completion_reward = {
-			add_to_variable = { global.random_terror_network_reach = constant:random_terror_tuning.network_reach_gain }
-			add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.network_reach_gain }
-			set_country_flag = random_terror_focus_network_mapped
-			random_terror_clamp_actor_values = yes
+			custom_effect_tooltip = random_terror_map_the_network_reward_tt
+			hidden_effect = {
+				random_terror_focus_reward_map_network = yes
+				random_terror_clamp_actor_values = yes
+			}
 		}
 		ai_will_do = {
 			base = 5
@@ -1974,11 +1975,14 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		available = { random_terror_is_actor = yes }
 		completion_reward = {
-			set_temp_variable = { random_terror_focus_context = constant:random_terror_value.one }
-			random_terror_actor_support_foreign_cell = yes
-			add_to_variable = { global.random_terror_network_reach = constant:random_terror_tuning.network_reach_gain }
-			set_country_flag = random_terror_focus_safe_havens
-			random_terror_clamp_actor_values = yes
+			add_equipment_to_stockpile = {
+				type = support_equipment
+				amount = constant:random_terror_cost.actor_depot_support_equipment
+			}
+			custom_effect_tooltip = random_terror_protect_safe_havens_reward_tt
+			hidden_effect = {
+				random_terror_focus_reward_safe_havens = yes
+			}
 		}
 		ai_will_do = { base = 3 }
 	}
@@ -1993,10 +1997,11 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL }
 		available = { random_terror_is_actor = yes }
 		completion_reward = {
-			add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.network_reach_gain }
-			add_to_variable = { global.random_terror_international_unity = constant:random_terror_tuning.unity_gain }
-			set_country_flag = random_terror_focus_rival_bargain
-			random_terror_clamp_actor_values = yes
+			custom_effect_tooltip = random_terror_bargain_with_rivals_reward_tt
+			hidden_effect = {
+				random_terror_focus_reward_bargain_rivals = yes
+				random_terror_clamp_actor_values = yes
+			}
 		}
 		ai_will_do = {
 			base = 3
@@ -2017,11 +2022,13 @@ focus_tree = {
 			check_variable = { random_terror_network_authority > constant:random_terror_value.unity_gate }
 		}
 		completion_reward = {
-			set_temp_variable = { random_terror_focus_context = constant:random_terror_value.one }
-			random_terror_actor_absorb_actor = yes
-			add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.network_reach_gain }
-			set_country_flag = random_terror_focus_enclave_merger
-			random_terror_clamp_actor_values = yes
+			custom_effect_tooltip = random_terror_merge_the_enclaves_reward_tt
+			hidden_effect = {
+				random_terror_focus_offer_merger = yes
+				add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.network_reach_gain }
+				set_country_flag = random_terror_focus_enclave_merger
+				random_terror_clamp_actor_values = yes
+			}
 		}
 		ai_will_do = { base = 2 }
 	}
@@ -2067,10 +2074,11 @@ focus_tree = {
 			check_variable = { global.random_terror_international_unity > constant:random_terror_value.low }
 		}
 		completion_reward = {
-			set_country_flag = random_terror_focus_event_31_faction_route
-			add_to_variable = { global.random_terror_international_unity = constant:random_terror_tuning.unity_gain }
-			add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.actor_authority_civil_admin_gain }
-			random_terror_clamp_actor_values = yes
+			custom_effect_tooltip = random_terror_event_31_faction_route_reward_tt
+			hidden_effect = {
+				random_terror_focus_reward_common_front = yes
+				random_terror_clamp_actor_values = yes
+			}
 		}
 		ai_will_do = {
 			base = 1
@@ -2128,8 +2136,9 @@ focus_tree = {
 			else = {
 				random_terror_create_network_confederation_faction = yes
 			}
-			custom_effect_tooltip = random_terror_international_unity_rises_tt
+			custom_effect_tooltip = random_terror_form_the_confederation_reward_tt
 			hidden_effect = {
+				random_terror_focus_reward_confederation_members = yes
 				add_to_variable = { global.random_terror_international_unity = constant:random_terror_tuning.unity_gain }
 				clamp_variable = { var = global.random_terror_international_unity min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
 				set_country_flag = random_terror_focus_confederation_formed
@@ -2152,11 +2161,14 @@ focus_tree = {
 			check_variable = { random_terror_network_authority > constant:random_terror_value.unity_gate }
 		}
 		completion_reward = {
-			set_temp_variable = { random_terror_focus_context = constant:random_terror_value.one }
-			random_terror_actor_absorb_actor = yes
-			add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_militia_gain }
-			set_country_flag = random_terror_focus_compatible_enclave_absorbed
-			random_terror_clamp_actor_values = yes
+			custom_effect_tooltip = random_terror_absorb_compatible_enclave_reward_tt
+			hidden_effect = {
+				set_temp_variable = { random_terror_focus_prefer_faction = constant:random_terror_value.one }
+				random_terror_focus_offer_merger = yes
+				add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_militia_gain }
+				set_country_flag = random_terror_focus_compatible_enclave_absorbed
+				random_terror_clamp_actor_values = yes
+			}
 		}
 		ai_will_do = { base = 1 }
 	}
@@ -2197,11 +2209,11 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_INDUSTRY }
 		available = { random_terror_is_actor = yes }
 		completion_reward = {
-			set_temp_variable = { random_terror_focus_context = constant:random_terror_value.one }
-			random_terror_actor_open_external_corridor = yes
-			add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_militia_gain }
-			set_country_flag = random_terror_focus_transport_hub_claimed
-			random_terror_clamp_actor_values = yes
+			custom_effect_tooltip = random_terror_claim_the_transport_hub_reward_tt
+			hidden_effect = {
+				random_terror_focus_reward_transport_hub = yes
+				random_terror_clamp_actor_values = yes
+			}
 		}
 		ai_will_do = {
 			base = 2
@@ -2244,9 +2256,11 @@ focus_tree = {
 			check_variable = { random_terror_territorial_control > constant:random_terror_value.low }
 		}
 		completion_reward = {
-			add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_convert_gain }
-			set_country_flag = random_terror_focus_urban_district_seized
-			random_terror_clamp_actor_values = yes
+			custom_effect_tooltip = random_terror_seize_the_urban_district_reward_tt
+			hidden_effect = {
+				random_terror_focus_reward_urban_district = yes
+				random_terror_clamp_actor_values = yes
+			}
 		}
 		ai_will_do = {
 			base = 2
@@ -2264,11 +2278,12 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_ARMY_XP }
 		available = { random_terror_is_actor = yes }
 		completion_reward = {
-			set_temp_variable = { random_terror_focus_context = constant:random_terror_value.one }
-			random_terror_actor_prepare_state_offensive = yes
 			army_experience = constant:random_terror_cost.actor_offensive_experience
-			set_country_flag = random_terror_focus_state_offensive_prepared
-			random_terror_clamp_actor_values = yes
+			custom_effect_tooltip = random_terror_prepare_the_state_offensive_reward_tt
+			hidden_effect = {
+				random_terror_focus_reward_state_offensive = yes
+				random_terror_clamp_actor_values = yes
+			}
 		}
 		ai_will_do = {
 			base = 2
@@ -2290,10 +2305,11 @@ focus_tree = {
 			has_country_flag = random_terror_focus_state_offensive_prepared
 		}
 		completion_reward = {
-			add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_convert_gain }
-			add_to_variable = { global.random_terror_strategic_victories = constant:random_terror_tuning.one }
-			set_country_flag = random_terror_focus_parent_government_broken
-			random_terror_clamp_actor_values = yes
+			custom_effect_tooltip = random_terror_break_the_parent_government_reward_tt
+			hidden_effect = {
+				random_terror_focus_reward_break_parent = yes
+				random_terror_clamp_actor_values = yes
+			}
 		}
 		ai_will_do = {
 			base = 1
