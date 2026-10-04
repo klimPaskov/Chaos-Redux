@@ -38,3 +38,11 @@ If the workbook keeps per-event notes for Event 012, add these facts in the in-g
 - End support: "Africa can demand that a foreign government withdraw the guarantee, military access or volunteers it gives a country Africa is fighting." (`gods_of_africa_focus_end_sponsorship_tt`)
 - Security Oaths: "With Evolution III and Continental Strength or more, Africa can also demand military access, a non-aggression pact, or a guarantee of its independence from a free government outside its faction that does not already give it." (`gods_of_africa_focus_security_oaths_tt`)
 - The family once shown as "security access" no longer exists under that name; it is "an end to our support for Africa's enemies".
+
+## Gods of Africa punishments and the final ultimatum (agent decision L26)
+
+If the workbook keeps per-event notes for Event 012, add these facts in the in-game wording:
+
+- The Last Sentence: "Once Africa's Strength, Chaos and a participant's Wrath and record all reach their extreme gates, Africa delivers its final ultimatum: within 60 days the participant must hand back Africa's land and make peace, or pay an extraordinary settlement. Refusal or the deadline brings disaster and waves of civilian deaths across up to 3 of its states." (`gods_of_africa_focus_last_sentence_tt`)
+- New report event "Africa's Final Ultimatum" (`chaosx.nr12.618.t`) and host report "Arms for the Offender's Enemies" (`chaosx.nr12.619.t`).
+- New Event 012 log entries: "Africa Strikes [country] Across the Nation", "Africa's Final Ultimatum to [country]", "Catastrophe Falls on [country]" (`africa.event_log.gods.*` in `localisation/english/012_africa_event_log_l_english.yml`).

@@ -87,6 +87,114 @@ gods_of_africa_participant_category = {
 		ai_will_do = { base = 0 }
 	}
 
+	# Africa's final ultimatum before a catastrophe (decision L26). The owner
+	# opens it; the three answers below close it, and its deadline brings the
+	# catastrophe through the timeout.
+	gods_of_africa_final_ultimatum_mission = {
+		name = gods_of_africa_final_ultimatum_mission
+		desc = gods_of_africa_final_ultimatum_mission_desc
+		icon = GFX_decision_012_africa_gods_escalate_offense
+		activation = { always = no }
+		days_mission_timeout = constant:gods_of_africa_ultimatum.deadline_days
+		is_good = no
+		available = { hidden_trigger = { always = no } }
+		cancel_trigger = {
+			OR = {
+				NOT = { gods_of_africa_participant_generation_is_current = yes }
+				NOT = { has_country_flag = gods_of_africa_final_ultimatum_pending }
+				has_country_flag = gods_of_africa_final_settlement_committed
+			}
+		}
+		cancel_effect = { hidden_effect = { remove_mission = gods_of_africa_final_ultimatum_mission } }
+		timeout_effect = { gods_of_africa_expire_final_ultimatum = yes }
+		# Opened only by the owner; the AI answers through the decisions below.
+		ai_will_do = { base = 0 }
+	}
+
+	gods_of_africa_ultimatum_return_land = {
+		name = gods_of_africa_ultimatum_return_land
+		desc = gods_of_africa_ultimatum_return_land_desc
+		icon = GFX_decision_012_africa_gods_public_pardon
+		visible = {
+			gods_of_africa_final_ultimatum_is_open = yes
+			gods_of_africa_ultimatum_has_land_or_war = yes
+		}
+		available = { gods_of_africa_final_ultimatum_is_open = yes }
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_ultimatum_return_land_effect_tt
+			hidden_effect = { gods_of_africa_ultimatum_return_land = yes }
+		}
+		ai_will_do = {
+			base = constant:gods_of_africa_ai_response.ultimatum_return_land_base
+			modifier = {
+				factor = 0
+				OR = {
+					NOT = { gods_of_africa_final_ultimatum_is_open = yes }
+					NOT = { gods_of_africa_ultimatum_has_land_or_war = yes }
+				}
+			}
+			modifier = { factor = constant:gods_of_africa_ai_response.ultimatum_answer_loyal gods_of_africa_ai_is_loyal_ally = yes }
+		}
+	}
+
+	gods_of_africa_ultimatum_pay_settlement = {
+		name = gods_of_africa_ultimatum_pay_settlement
+		desc = gods_of_africa_ultimatum_pay_settlement_desc
+		icon = GFX_decision_012_africa_gods_fulfill_demand
+		visible = { gods_of_africa_final_ultimatum_is_open = yes }
+		available = {
+			gods_of_africa_final_ultimatum_is_open = yes
+			custom_trigger_tooltip = {
+				tooltip = gods_of_africa_ultimatum_settlement_tt
+				gods_of_africa_ultimatum_settlement_is_affordable = yes
+			}
+		}
+		custom_cost_trigger = { gods_of_africa_ultimatum_settlement_is_affordable = yes }
+		custom_cost_text = gods_of_africa_ultimatum_settlement_cost
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_ultimatum_pay_settlement_effect_tt
+			hidden_effect = { gods_of_africa_ultimatum_pay_settlement = yes }
+		}
+		ai_will_do = {
+			base = constant:gods_of_africa_ai_response.ultimatum_settlement_base
+			modifier = {
+				factor = 0
+				OR = {
+					NOT = { gods_of_africa_final_ultimatum_is_open = yes }
+					NOT = { gods_of_africa_ultimatum_settlement_is_affordable = yes }
+				}
+			}
+			modifier = { factor = constant:gods_of_africa_ai_response.ultimatum_answer_loyal gods_of_africa_ai_is_loyal_ally = yes }
+		}
+	}
+
+	gods_of_africa_ultimatum_refuse = {
+		name = gods_of_africa_ultimatum_refuse
+		desc = gods_of_africa_ultimatum_refuse_desc
+		icon = GFX_decision_012_africa_gods_defy
+		visible = { gods_of_africa_final_ultimatum_is_open = yes }
+		available = { gods_of_africa_final_ultimatum_is_open = yes }
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_ultimatum_refuse_effect_tt
+			hidden_effect = { gods_of_africa_expire_final_ultimatum = yes }
+		}
+		ai_will_do = {
+			base = constant:gods_of_africa_ai_response.ultimatum_refuse_base
+			modifier = {
+				factor = 0
+				NOT = { gods_of_africa_final_ultimatum_is_open = yes }
+			}
+			modifier = { factor = constant:gods_of_africa_ai_response.ultimatum_refuse_rival gods_of_africa_ai_is_defiant_rival = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.ultimatum_refuse_weak_africa gods_of_africa_ai_africa_is_weak = yes }
+		}
+	}
+
 	# A participant can make one meaningful voluntary shipment when Africa has
 	# a current material shortage and no ordinary demand is open. The effect
 	# chooses the displayed need deterministically and rechecks the reserve.
@@ -1674,6 +1782,62 @@ gods_of_africa_host_category = {
 				factor = constant:gods_of_africa_ai_response.judgment_reciprocal
 				check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.reciprocal_covenant }
 			}
+		}
+	}
+
+	# Let the World Answer (decision L26): Africa arms a country fighting a
+	# defiant government, a marked offender or an occupier, from its own stocks.
+	gods_of_africa_arm_offender_enemies = {
+		name = gods_of_africa_arm_offender_enemies
+		desc = gods_of_africa_arm_offender_enemies_desc
+		icon = GFX_decision_012_africa_gods_escalate_offense
+		target_array = gods_of_africa_participants
+		activation = { gods_of_africa_active_host_is_valid = yes }
+		target_root_trigger = {
+			gods_of_africa_active_host_is_valid = yes
+			has_country_flag = gods_of_africa_focus_sanctions_unlocked
+		}
+		target_trigger = {
+			FROM = {
+				exists = yes
+				has_country_flag = gods_of_africa_participant
+				gods_of_africa_coalition_target_is_valid = yes
+			}
+		}
+		visible = {
+			gods_of_africa_active_host_is_valid = yes
+			has_country_flag = gods_of_africa_focus_sanctions_unlocked
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = gods_of_africa_coalition_stock_tt
+				gods_of_africa_host_can_arm_coalition = yes
+			}
+			FROM = { gods_of_africa_coalition_target_is_valid = yes }
+		}
+		custom_cost_trigger = { gods_of_africa_host_can_arm_coalition = yes }
+		custom_cost_text = gods_of_africa_coalition_cost
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_arm_offender_enemies_effect_tt
+			hidden_effect = {
+				FROM = { save_event_target_as = gods_of_africa_coalition_offender }
+				gods_of_africa_arm_offender_enemies = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:gods_of_africa_ai_response.coalition_base
+			modifier = {
+				factor = 0
+				OR = {
+					NOT = { gods_of_africa_host_can_arm_coalition = yes }
+					FROM = { NOT = { gods_of_africa_coalition_target_is_valid = yes } }
+				}
+			}
+			modifier = { factor = constant:gods_of_africa_ai_response.coalition_holds_core FROM = { gods_of_africa_ai_holds_african_core = yes } }
+			modifier = { factor = constant:gods_of_africa_ai_response.coalition_at_war FROM = { has_war_with = ROOT } }
+			modifier = { factor = constant:gods_of_africa_ai_response.coalition_defiant FROM = { has_country_flag = gods_of_africa_defiant } }
 		}
 	}
 }

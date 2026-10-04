@@ -1,0 +1,637 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 GODS OF AFRICA PUNISHMENT FAMILIES AND ULTIMATUM
+# ============================================================================
+# Decision L26. gods_of_africa_evaluate_punishment (012_africa_gods_effects.txt)
+# still decides the tier from intent and caps it by Africa's Strength. This
+# file decides what that tier does:
+# - gods_of_africa_select_punishment_family picks a family that fits the
+#   offence (occupation, war with Africa, a broken agreement, high Chaos, or
+#   withheld material), skips the family used within the repeat window when
+#   another fits, and gives a target near capitulation a non-destructive one.
+# - gods_of_africa_apply_punishment_family carries it out against a bounded
+#   number of states (more at Crisis and Ultimatum), or against stockpiles,
+#   relations or, through the Event 013 gateway, a disaster.
+# - The Tier V catastrophe is staged: gods_of_africa_issue_final_ultimatum
+#   gives the participant a deadline to hand back Africa's land and make peace
+#   or to pay an extraordinary settlement; only refusal or the deadline brings
+#   the disaster and waves of civilian deaths.
+# - gods_of_africa_arm_offender_enemies is the Let the World Answer shipment.
+# Every number is a constant in 012_africa_gods_constants.txt.
+# ============================================================================
+
+# COUNTRY scope on a participant. Caller created the temporary
+# gods_of_africa_punishment_family_choice (zero) and
+# gods_of_africa_punishment_family_to_check; the candidate is taken when it is
+# valid and, unless gods_of_africa_punishment_allow_repeat is one, not recent.
+gods_of_africa_try_punishment_family = {
+	if = {
+		limit = {
+			check_variable = { gods_of_africa_punishment_family_choice = constant:gods_of_africa_value.zero }
+			check_variable = { gods_of_africa_punishment_family_to_check > constant:gods_of_africa_value.zero }
+			gods_of_africa_punishment_family_is_valid = yes
+			OR = {
+				check_variable = { gods_of_africa_punishment_allow_repeat = constant:gods_of_africa_value.one }
+				NOT = { gods_of_africa_punishment_family_is_recent = yes }
+			}
+		}
+		set_temp_variable = { gods_of_africa_punishment_family_choice = gods_of_africa_punishment_family_to_check }
+	}
+}
+
+# COUNTRY scope on a participant, after gods_of_africa_pending_punishment_tier
+# is final. Writes gods_of_africa_pending_punishment_family.
+gods_of_africa_select_punishment_family = {
+	set_temp_variable = { gods_of_africa_punishment_candidate_1 = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_punishment_candidate_2 = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_punishment_candidate_3 = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_punishment_candidate_4 = constant:gods_of_africa_value.zero }
+	# A target near capitulation receives a meaningful, non-destructive answer
+	# instead of needless duplicate destruction (spec PUN-13).
+	if = {
+		limit = { gods_of_africa_ai_is_collapsing_target = yes }
+		set_temp_variable = { gods_of_africa_punishment_candidate_1 = constant:gods_of_africa_punishment_family.diplomatic }
+		set_temp_variable = { gods_of_africa_punishment_candidate_2 = constant:gods_of_africa_punishment_family.pressure }
+	}
+	# Occupation of African land: military, uprising and supply retaliation.
+	else_if = {
+		limit = { gods_of_africa_ai_holds_african_core = yes }
+		set_temp_variable = { gods_of_africa_punishment_candidate_1 = constant:gods_of_africa_punishment_family.military }
+		set_temp_variable = { gods_of_africa_punishment_candidate_2 = constant:gods_of_africa_punishment_family.unrest }
+		set_temp_variable = { gods_of_africa_punishment_candidate_3 = constant:gods_of_africa_punishment_family.logistical }
+		set_temp_variable = { gods_of_africa_punishment_candidate_4 = constant:gods_of_africa_punishment_family.diplomatic }
+	}
+	# War with Africa: direct strategic retaliation.
+	else_if = {
+		limit = {
+			OR = {
+				has_war_with = event_target:africa_host
+				has_country_flag = gods_of_africa_unresolved_major_offense
+			}
+		}
+		set_temp_variable = { gods_of_africa_punishment_candidate_1 = constant:gods_of_africa_punishment_family.military }
+		set_temp_variable = { gods_of_africa_punishment_candidate_2 = constant:gods_of_africa_punishment_family.logistical }
+		set_temp_variable = { gods_of_africa_punishment_candidate_3 = constant:gods_of_africa_punishment_family.infrastructure }
+		set_temp_variable = { gods_of_africa_punishment_candidate_4 = constant:gods_of_africa_punishment_family.covert }
+	}
+	# A broken agreement: diplomatic isolation first.
+	else_if = {
+		limit = { has_country_flag = gods_of_africa_broken_treaty }
+		set_temp_variable = { gods_of_africa_punishment_candidate_1 = constant:gods_of_africa_punishment_family.diplomatic }
+		set_temp_variable = { gods_of_africa_punishment_candidate_2 = constant:gods_of_africa_punishment_family.unrest }
+		set_temp_variable = { gods_of_africa_punishment_candidate_3 = constant:gods_of_africa_punishment_family.covert }
+		set_temp_variable = { gods_of_africa_punishment_candidate_4 = constant:gods_of_africa_punishment_family.infrastructure }
+	}
+	# High Chaos: the Gods answer through disaster.
+	else_if = {
+		limit = { check_variable = { var = global.chaos_meter_value value = constant:gods_of_africa_value.catastrophe_chaos_gate compare = greater_than_or_equals } }
+		set_temp_variable = { gods_of_africa_punishment_candidate_1 = constant:gods_of_africa_punishment_family.disaster }
+		set_temp_variable = { gods_of_africa_punishment_candidate_2 = constant:gods_of_africa_punishment_family.infrastructure }
+		set_temp_variable = { gods_of_africa_punishment_candidate_3 = constant:gods_of_africa_punishment_family.unrest }
+		set_temp_variable = { gods_of_africa_punishment_candidate_4 = constant:gods_of_africa_punishment_family.stockpile }
+	}
+	# Withheld equipment, fuel or manpower: the stockpile pays.
+	else_if = {
+		limit = { gods_of_africa_last_answer_withheld_material = yes }
+		set_temp_variable = { gods_of_africa_punishment_candidate_1 = constant:gods_of_africa_punishment_family.stockpile }
+		set_temp_variable = { gods_of_africa_punishment_candidate_2 = constant:gods_of_africa_punishment_family.covert }
+		set_temp_variable = { gods_of_africa_punishment_candidate_3 = constant:gods_of_africa_punishment_family.military }
+		set_temp_variable = { gods_of_africa_punishment_candidate_4 = constant:gods_of_africa_punishment_family.infrastructure }
+	}
+	else = {
+		set_temp_variable = { gods_of_africa_punishment_candidate_1 = constant:gods_of_africa_punishment_family.infrastructure }
+		set_temp_variable = { gods_of_africa_punishment_candidate_2 = constant:gods_of_africa_punishment_family.unrest }
+		set_temp_variable = { gods_of_africa_punishment_candidate_3 = constant:gods_of_africa_punishment_family.stockpile }
+		set_temp_variable = { gods_of_africa_punishment_candidate_4 = constant:gods_of_africa_punishment_family.diplomatic }
+	}
+	set_temp_variable = { gods_of_africa_punishment_family_choice = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_punishment_family_to_check = constant:gods_of_africa_value.zero }
+	# First pass: a fitting family not used within the repeat window.
+	set_temp_variable = { gods_of_africa_punishment_allow_repeat = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_punishment_family_to_check = gods_of_africa_punishment_candidate_1 }
+	gods_of_africa_try_punishment_family = yes
+	set_temp_variable = { gods_of_africa_punishment_family_to_check = gods_of_africa_punishment_candidate_2 }
+	gods_of_africa_try_punishment_family = yes
+	set_temp_variable = { gods_of_africa_punishment_family_to_check = gods_of_africa_punishment_candidate_3 }
+	gods_of_africa_try_punishment_family = yes
+	set_temp_variable = { gods_of_africa_punishment_family_to_check = gods_of_africa_punishment_candidate_4 }
+	gods_of_africa_try_punishment_family = yes
+	# Second pass: the same family again only when nothing else fits.
+	set_temp_variable = { gods_of_africa_punishment_allow_repeat = constant:gods_of_africa_value.one }
+	set_temp_variable = { gods_of_africa_punishment_family_to_check = gods_of_africa_punishment_candidate_1 }
+	gods_of_africa_try_punishment_family = yes
+	set_temp_variable = { gods_of_africa_punishment_family_to_check = gods_of_africa_punishment_candidate_2 }
+	gods_of_africa_try_punishment_family = yes
+	set_temp_variable = { gods_of_africa_punishment_family_to_check = gods_of_africa_punishment_candidate_3 }
+	gods_of_africa_try_punishment_family = yes
+	set_temp_variable = { gods_of_africa_punishment_family_to_check = gods_of_africa_punishment_candidate_4 }
+	gods_of_africa_try_punishment_family = yes
+	set_variable = { gods_of_africa_pending_punishment_family = constant:gods_of_africa_punishment_family.pressure }
+	if = {
+		limit = { check_variable = { gods_of_africa_punishment_family_choice > constant:gods_of_africa_value.zero } }
+		set_variable = { gods_of_africa_pending_punishment_family = gods_of_africa_punishment_family_choice }
+	}
+}
+
+# STATE scope during gods_of_africa_strike_punishment_states; event target
+# gods_of_africa_punishment_participant is the target government and the
+# temporary gods_of_africa_punishment_family_to_check holds the family.
+gods_of_africa_strike_punishment_state = {
+	set_temp_variable = { gods_of_africa_punishment_state_struck = constant:gods_of_africa_value.zero }
+	if = {
+		limit = { check_variable = { gods_of_africa_punishment_family_to_check = constant:gods_of_africa_punishment_family.unrest } }
+		set_temp_variable = { gods_of_africa_resistance_before = resistance }
+		add_resistance = constant:gods_of_africa_punishment_effect.disruption_resistance_gain
+		set_temp_variable = { gods_of_africa_resistance_change = resistance }
+		subtract_from_temp_variable = { gods_of_africa_resistance_change = gods_of_africa_resistance_before }
+		if = {
+			limit = { check_variable = { gods_of_africa_resistance_change > constant:gods_of_africa_value.zero } }
+			set_temp_variable = { gods_of_africa_punishment_state_struck = constant:gods_of_africa_value.one }
+			event_target:gods_of_africa_punishment_participant = {
+				set_variable = { gods_of_africa_punishment_report_resistance_change = gods_of_africa_resistance_change }
+			}
+		}
+	}
+	else_if = {
+		limit = { check_variable = { gods_of_africa_punishment_family_to_check = constant:gods_of_africa_punishment_family.infrastructure } }
+		set_temp_variable = { gods_of_africa_building_damage = constant:gods_of_africa_punishment_effect.crisis_infrastructure_damage }
+		if = {
+			limit = {
+				event_target:gods_of_africa_punishment_participant = {
+					check_variable = { gods_of_africa_pending_punishment_tier = constant:gods_of_africa_punishment.ultimatum }
+				}
+			}
+			set_temp_variable = { gods_of_africa_building_damage = constant:gods_of_africa_punishment_effect.ultimatum_infrastructure_damage }
+		}
+		meta_effect = {
+			text = { damage_building = { type = infrastructure damage = [DAMAGE] } }
+			DAMAGE = "[?gods_of_africa_building_damage|.3]"
+		}
+		set_temp_variable = { gods_of_africa_punishment_state_struck = constant:gods_of_africa_value.one }
+	}
+	else_if = {
+		limit = { check_variable = { gods_of_africa_punishment_family_to_check = constant:gods_of_africa_punishment_family.covert } }
+		set_temp_variable = { gods_of_africa_building_damage = constant:gods_of_africa_punishment_effect.covert_factory_damage }
+		meta_effect = {
+			text = {
+				damage_building = { type = industrial_complex damage = [DAMAGE] }
+				damage_building = { type = arms_factory damage = [DAMAGE] }
+			}
+			DAMAGE = "[?gods_of_africa_building_damage|.3]"
+		}
+		set_temp_variable = { gods_of_africa_punishment_state_struck = constant:gods_of_africa_value.one }
+	}
+	else_if = {
+		limit = { check_variable = { gods_of_africa_punishment_family_to_check = constant:gods_of_africa_punishment_family.logistical } }
+		set_temp_variable = { gods_of_africa_building_damage = constant:gods_of_africa_punishment_effect.logistical_naval_damage }
+		meta_effect = {
+			text = {
+				damage_building = { type = naval_base damage = [DAMAGE] }
+				damage_building = { type = infrastructure damage = [DAMAGE] }
+			}
+			DAMAGE = "[?gods_of_africa_building_damage|.3]"
+		}
+		set_temp_variable = { gods_of_africa_punishment_state_struck = constant:gods_of_africa_value.one }
+	}
+	if = {
+		limit = { check_variable = { gods_of_africa_punishment_state_struck = constant:gods_of_africa_value.one } }
+		event_target:gods_of_africa_punishment_participant = {
+			if = {
+				limit = { check_variable = { gods_of_africa_punishment_report_state_count = constant:gods_of_africa_value.zero } }
+				set_variable = { gods_of_africa_punishment_report_state = PREV.id }
+			}
+			add_to_variable = { gods_of_africa_punishment_report_state_count = constant:gods_of_africa_value.one }
+		}
+	}
+}
+
+# COUNTRY scope on a participant. Strikes up to the tier's state budget:
+# occupied territory for unrest, and states that are not African cores of the
+# host for every other family, so Africa never wrecks its own future land.
+gods_of_africa_strike_punishment_states = {
+	set_variable = { gods_of_africa_punishment_report_state_count = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_punishment_state_budget = constant:gods_of_africa_punishment_scope.pressure_states }
+	if = { limit = { check_variable = { gods_of_africa_pending_punishment_tier = constant:gods_of_africa_punishment.disruption } } set_temp_variable = { gods_of_africa_punishment_state_budget = constant:gods_of_africa_punishment_scope.disruption_states } }
+	if = { limit = { check_variable = { gods_of_africa_pending_punishment_tier = constant:gods_of_africa_punishment.crisis } } set_temp_variable = { gods_of_africa_punishment_state_budget = constant:gods_of_africa_punishment_scope.crisis_states } }
+	if = { limit = { check_variable = { gods_of_africa_pending_punishment_tier = constant:gods_of_africa_punishment.ultimatum } } set_temp_variable = { gods_of_africa_punishment_state_budget = constant:gods_of_africa_punishment_scope.ultimatum_states } }
+	if = {
+		limit = { gods_of_africa_ai_is_collapsing_target = yes }
+		set_temp_variable = { gods_of_africa_punishment_state_budget = constant:gods_of_africa_punishment_scope.collapsing_target_states }
+	}
+	if = {
+		limit = { check_variable = { gods_of_africa_punishment_family_to_check = constant:gods_of_africa_punishment_family.unrest } }
+		every_controlled_state = {
+			limit = { NOT = { is_owned_by = event_target:gods_of_africa_punishment_participant } }
+			if = {
+				limit = {
+					event_target:gods_of_africa_punishment_participant = {
+						check_variable = { gods_of_africa_punishment_report_state_count < gods_of_africa_punishment_state_budget }
+					}
+				}
+				gods_of_africa_strike_punishment_state = yes
+			}
+		}
+	}
+	else = {
+		every_controlled_state = {
+			limit = { NOT = { is_core_of = event_target:africa_host } }
+			if = {
+				limit = {
+					event_target:gods_of_africa_punishment_participant = {
+						check_variable = { gods_of_africa_punishment_report_state_count < gods_of_africa_punishment_state_budget }
+					}
+				}
+				gods_of_africa_strike_punishment_state = yes
+			}
+		}
+	}
+}
+
+# COUNTRY scope on a participant. Removes up to the caller's temporary
+# gods_of_africa_punishment_loss_request of the caller's chosen material, or
+# half of it when the whole is not held; writes the loss actually taken to
+# gods_of_africa_punishment_report_loss. Caller sets the temporary
+# gods_of_africa_punishment_material to the infantry, support, fuel or convoys
+# value of gods_of_africa_contribution_kind.
+gods_of_africa_take_punishment_material = {
+	set_temp_variable = { gods_of_africa_punishment_loss_half = gods_of_africa_punishment_loss_request }
+	multiply_temp_variable = { gods_of_africa_punishment_loss_half = constant:gods_of_africa_punishment_effect.partial_loss_fraction }
+	set_temp_variable = { gods_of_africa_punishment_loss_taken = constant:gods_of_africa_value.zero }
+	if = {
+		limit = { check_variable = { gods_of_africa_punishment_material = constant:gods_of_africa_contribution_kind.infantry } }
+		if = {
+			limit = { NOT = { has_equipment = { infantry_equipment < gods_of_africa_punishment_loss_request } } }
+			set_temp_variable = { gods_of_africa_punishment_loss_taken = gods_of_africa_punishment_loss_request }
+		}
+		else_if = {
+			limit = { NOT = { has_equipment = { infantry_equipment < gods_of_africa_punishment_loss_half } } }
+			set_temp_variable = { gods_of_africa_punishment_loss_taken = gods_of_africa_punishment_loss_half }
+		}
+		if = {
+			limit = { check_variable = { gods_of_africa_punishment_loss_taken > constant:gods_of_africa_value.zero } }
+			set_temp_variable = { equipment_stockpile_removal_amount = gods_of_africa_punishment_loss_taken }
+			remove_infantry_equipment_from_stockpile = yes
+		}
+	}
+	else_if = {
+		limit = { check_variable = { gods_of_africa_punishment_material = constant:gods_of_africa_contribution_kind.support } }
+		if = {
+			limit = { NOT = { has_equipment = { support_equipment < gods_of_africa_punishment_loss_request } } }
+			set_temp_variable = { gods_of_africa_punishment_loss_taken = gods_of_africa_punishment_loss_request }
+		}
+		else_if = {
+			limit = { NOT = { has_equipment = { support_equipment < gods_of_africa_punishment_loss_half } } }
+			set_temp_variable = { gods_of_africa_punishment_loss_taken = gods_of_africa_punishment_loss_half }
+		}
+		if = {
+			limit = { check_variable = { gods_of_africa_punishment_loss_taken > constant:gods_of_africa_value.zero } }
+			set_temp_variable = { equipment_stockpile_removal_amount = gods_of_africa_punishment_loss_taken }
+			remove_support_equipment_from_stockpile = yes
+		}
+	}
+	else_if = {
+		limit = { check_variable = { gods_of_africa_punishment_material = constant:gods_of_africa_contribution_kind.fuel } }
+		if = {
+			limit = { NOT = { has_fuel < gods_of_africa_punishment_loss_request } }
+			set_temp_variable = { gods_of_africa_punishment_loss_taken = gods_of_africa_punishment_loss_request }
+		}
+		else_if = {
+			limit = { NOT = { has_fuel < gods_of_africa_punishment_loss_half } }
+			set_temp_variable = { gods_of_africa_punishment_loss_taken = gods_of_africa_punishment_loss_half }
+		}
+		if = {
+			limit = { check_variable = { gods_of_africa_punishment_loss_taken > constant:gods_of_africa_value.zero } }
+			set_temp_variable = { fuel_stockpile_removal_amount = gods_of_africa_punishment_loss_taken }
+			remove_fuel_from_stockpile = yes
+		}
+	}
+	else_if = {
+		limit = { check_variable = { gods_of_africa_punishment_material = constant:gods_of_africa_contribution_kind.convoys } }
+		if = {
+			limit = { NOT = { has_equipment = { convoy_1 < gods_of_africa_punishment_loss_request } } }
+			set_temp_variable = { gods_of_africa_punishment_loss_taken = gods_of_africa_punishment_loss_request }
+		}
+		if = {
+			limit = { check_variable = { gods_of_africa_punishment_loss_taken > constant:gods_of_africa_value.zero } }
+			set_temp_variable = { equipment_stockpile_removal_amount = gods_of_africa_punishment_loss_taken }
+			remove_convoys_from_stockpile = yes
+		}
+	}
+}
+
+# COUNTRY scope on a participant. Africa, its faction and the governments
+# that stand with it (protected or recognising participants) turn against the
+# target.
+gods_of_africa_apply_isolation = {
+	save_event_target_as = gods_of_africa_isolation_target
+	event_target:africa_host = {
+		add_opinion_modifier = { target = event_target:gods_of_africa_isolation_target modifier = gods_of_africa_isolation }
+		every_allied_country = {
+			limit = { NOT = { tag = event_target:gods_of_africa_isolation_target } }
+			add_opinion_modifier = { target = event_target:gods_of_africa_isolation_target modifier = gods_of_africa_isolation }
+		}
+		for_each_scope_loop = {
+			array = gods_of_africa_participants
+			if = {
+				limit = {
+					NOT = { tag = event_target:gods_of_africa_isolation_target }
+					OR = {
+						has_country_flag = gods_of_africa_protected
+						has_country_flag = gods_of_africa_recognition_granted
+					}
+				}
+				add_opinion_modifier = { target = event_target:gods_of_africa_isolation_target modifier = gods_of_africa_isolation }
+			}
+		}
+	}
+}
+
+# COUNTRY scope on a participant with gods_of_africa_pending_punishment_family
+# and gods_of_africa_pending_punishment_tier set; event target
+# gods_of_africa_punishment_participant saved by the caller. Never raises the
+# tier: material losses scale with it and state counts follow it.
+gods_of_africa_apply_punishment_family = {
+	clear_variable = gods_of_africa_punishment_report_loss
+	clear_variable = gods_of_africa_punishment_report_support_loss
+	clr_country_flag = gods_of_africa_punishment_report_fuel_lost
+	set_variable = { gods_of_africa_punishment_report_state_count = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_punishment_family_to_check = gods_of_africa_pending_punishment_family }
+	if = {
+		limit = {
+			gods_of_africa_punishment_family_targets_states = yes
+			has_country_flag = gods_of_africa_transport_secured
+		}
+		# Transport preparations stop the local attack.
+		set_country_flag = gods_of_africa_punishment_report_transport_protected
+	}
+	else_if = {
+		limit = { gods_of_africa_punishment_family_targets_states = yes }
+		gods_of_africa_strike_punishment_states = yes
+		if = {
+			limit = { check_variable = { gods_of_africa_pending_punishment_family = constant:gods_of_africa_punishment_family.logistical } }
+			set_temp_variable = { gods_of_africa_punishment_loss_request = gods_of_africa_pending_punishment_tier }
+			multiply_temp_variable = { gods_of_africa_punishment_loss_request = constant:gods_of_africa_punishment_effect.logistical_convoy_unit }
+			set_temp_variable = { gods_of_africa_punishment_material = constant:gods_of_africa_contribution_kind.convoys }
+			gods_of_africa_take_punishment_material = yes
+			set_variable = { gods_of_africa_punishment_report_loss = gods_of_africa_punishment_loss_taken }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { gods_of_africa_pending_punishment_family = constant:gods_of_africa_punishment_family.stockpile } }
+		set_temp_variable = { gods_of_africa_punishment_material = constant:gods_of_africa_contribution_kind.infantry }
+		set_temp_variable = { gods_of_africa_punishment_loss_request = gods_of_africa_pending_punishment_tier }
+		multiply_temp_variable = { gods_of_africa_punishment_loss_request = constant:gods_of_africa_punishment_effect.stockpile_equipment_unit }
+		# The refused material is the one lost.
+		if = {
+			limit = {
+				has_variable = gods_of_africa_last_response_family
+				check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.fuel }
+			}
+			set_temp_variable = { gods_of_africa_punishment_material = constant:gods_of_africa_contribution_kind.fuel }
+			set_temp_variable = { gods_of_africa_punishment_loss_request = gods_of_africa_pending_punishment_tier }
+			multiply_temp_variable = { gods_of_africa_punishment_loss_request = constant:gods_of_africa_punishment_effect.stockpile_fuel_unit }
+			set_country_flag = gods_of_africa_punishment_report_fuel_lost
+		}
+		gods_of_africa_take_punishment_material = yes
+		set_variable = { gods_of_africa_punishment_report_loss = gods_of_africa_punishment_loss_taken }
+	}
+	else_if = {
+		limit = { check_variable = { gods_of_africa_pending_punishment_family = constant:gods_of_africa_punishment_family.military } }
+		set_temp_variable = { gods_of_africa_punishment_material = constant:gods_of_africa_contribution_kind.infantry }
+		set_temp_variable = { gods_of_africa_punishment_loss_request = gods_of_africa_pending_punishment_tier }
+		multiply_temp_variable = { gods_of_africa_punishment_loss_request = constant:gods_of_africa_punishment_effect.military_infantry_unit }
+		gods_of_africa_take_punishment_material = yes
+		set_variable = { gods_of_africa_punishment_report_loss = gods_of_africa_punishment_loss_taken }
+		set_temp_variable = { gods_of_africa_punishment_material = constant:gods_of_africa_contribution_kind.support }
+		set_temp_variable = { gods_of_africa_punishment_loss_request = gods_of_africa_pending_punishment_tier }
+		multiply_temp_variable = { gods_of_africa_punishment_loss_request = constant:gods_of_africa_punishment_effect.military_support_unit }
+		gods_of_africa_take_punishment_material = yes
+		set_variable = { gods_of_africa_punishment_report_support_loss = gods_of_africa_punishment_loss_taken }
+	}
+	else_if = {
+		limit = { check_variable = { gods_of_africa_pending_punishment_family = constant:gods_of_africa_punishment_family.diplomatic } }
+		gods_of_africa_apply_isolation = yes
+	}
+	else_if = {
+		limit = { check_variable = { gods_of_africa_pending_punishment_family = constant:gods_of_africa_punishment_family.disaster } }
+		set_temp_variable = { gods_of_africa_disaster_severity = constant:natural_disaster_severity.regional }
+		if = {
+			limit = { check_variable = { gods_of_africa_pending_punishment_tier = constant:gods_of_africa_punishment.ultimatum } }
+			set_temp_variable = { gods_of_africa_disaster_severity = constant:natural_disaster_severity.catastrophic }
+		}
+		gods_of_africa_call_family_disaster = yes
+		# A rejected call fails closed into supply damage instead of an
+		# unvalidated disaster (spec Natural Disasters integration).
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = gods_of_africa_last_disaster_result }
+					NOT = { check_variable = { gods_of_africa_last_disaster_result = constant:natural_disaster_call_result.accepted } }
+				}
+			}
+			set_variable = { gods_of_africa_pending_punishment_family = constant:gods_of_africa_punishment_family.infrastructure }
+			set_temp_variable = { gods_of_africa_punishment_family_to_check = constant:gods_of_africa_punishment_family.infrastructure }
+			if = {
+				limit = { has_country_flag = gods_of_africa_transport_secured }
+				set_country_flag = gods_of_africa_punishment_report_transport_protected
+			}
+			else = { gods_of_africa_strike_punishment_states = yes }
+		}
+	}
+	set_variable = { gods_of_africa_punishment_report_other_states = gods_of_africa_punishment_report_state_count }
+	subtract_from_variable = { gods_of_africa_punishment_report_other_states = constant:gods_of_africa_value.one }
+	set_variable = { gods_of_africa_last_punishment_family = gods_of_africa_pending_punishment_family }
+	set_variable = { gods_of_africa_last_punishment_family_day = global.num_days }
+}
+
+# COUNTRY scope on a participant. One Event 013 disaster through the shared
+# gateway at the caller's temporary gods_of_africa_disaster_severity.
+gods_of_africa_call_family_disaster = {
+	clear_variable = gods_of_africa_last_disaster_result
+	clear_variable = gods_of_africa_last_disaster_sequence
+	if = {
+		limit = { has_event_target = africa_host }
+		save_event_target_as = natural_disaster_call_target_country
+		event_target:africa_host = {
+			set_temp_variable = { natural_disaster_call_caller_type = constant:natural_disaster_caller.random }
+			set_temp_variable = { natural_disaster_call_caller_event_id = constant:natural_disaster_event.id }
+			set_temp_variable = { natural_disaster_call_family = constant:natural_disaster_family.random }
+			set_temp_variable = { natural_disaster_call_family_group = constant:natural_disaster_family_group.random }
+			set_temp_variable = { natural_disaster_call_target_mode = constant:natural_disaster_target_mode.selected_country }
+			set_temp_variable = { natural_disaster_call_target_country_supplied = constant:africa_value.one }
+			set_temp_variable = { natural_disaster_call_severity = gods_of_africa_disaster_severity }
+			set_temp_variable = { natural_disaster_call_sequence_mode = constant:natural_disaster_sequence_mode.single }
+			set_temp_variable = { natural_disaster_call_sequence_count = constant:africa_value.one }
+			call_natural_disaster = yes
+			event_target:natural_disaster_call_target_country = {
+				set_variable = { gods_of_africa_last_disaster_result = natural_disaster_call_result }
+				set_variable = { gods_of_africa_last_disaster_sequence = natural_disaster_call_sequence_id }
+			}
+		}
+	}
+}
+
+# ============================================================================
+# FINAL ULTIMATUM
+# ============================================================================
+
+# COUNTRY scope on a participant whose punishment reached the Tier V gate.
+gods_of_africa_issue_final_ultimatum = {
+	if = {
+		limit = {
+			gods_of_africa_participant_generation_is_current = yes
+			NOT = { has_country_flag = gods_of_africa_final_ultimatum_pending }
+		}
+		set_country_flag = gods_of_africa_final_ultimatum_pending
+		set_variable = { gods_of_africa_final_ultimatum_due_day = global.num_days }
+		add_to_variable = { gods_of_africa_final_ultimatum_due_day = constant:gods_of_africa_ultimatum.deadline_days }
+		activate_mission = gods_of_africa_final_ultimatum_mission
+		country_event = { id = chaosx.nr12.618 }
+		set_variable = { gods_of_africa_milestone_payload = constant:africa_event_log.gods_final_ultimatum }
+		set_variable = { gods_of_africa_milestone_actor = event_target:africa_host.id }
+		set_variable = { gods_of_africa_milestone_secondary_actor = THIS.id }
+		gods_of_africa_record_milestone = yes
+	}
+}
+
+# COUNTRY scope on a participant. The ultimatum is met: the threat is lifted,
+# Wrath falls, and the history records it.
+gods_of_africa_resolve_final_ultimatum = {
+	clr_country_flag = gods_of_africa_final_ultimatum_pending
+	clear_variable = gods_of_africa_final_ultimatum_due_day
+	remove_mission = gods_of_africa_final_ultimatum_mission
+	set_variable = { gods_of_africa_wrath_request = constant:gods_of_africa_ultimatum.wrath_relief }
+	set_variable = { gods_of_africa_wrath_direction = constant:gods_of_africa_wrath.direction_decrease }
+	gods_of_africa_apply_wrath = yes
+	set_variable = { gods_of_africa_history_kind_request = constant:gods_of_africa_history_kind.ultimatum_met }
+	gods_of_africa_record_history = yes
+}
+
+# COUNTRY scope on a participant. Hands every African core state of the host it
+# holds to Africa and ends any war with Africa.
+gods_of_africa_ultimatum_return_land = {
+	if = {
+		limit = { gods_of_africa_final_ultimatum_is_open = yes }
+		save_event_target_as = gods_of_africa_ultimatum_participant
+		every_controlled_state = {
+			limit = {
+				is_on_continent = africa
+				is_core_of = event_target:africa_host
+			}
+			transfer_state_to = event_target:africa_host
+		}
+		every_owned_state = {
+			limit = {
+				is_on_continent = africa
+				is_core_of = event_target:africa_host
+			}
+			transfer_state_to = event_target:africa_host
+		}
+		if = {
+			limit = { has_war_with = event_target:africa_host }
+			event_target:africa_host = {
+				# PREV is the participant answering the ultimatum.
+				white_peace = {
+					tag = PREV
+					message = gods_of_africa_ultimatum_peace
+				}
+			}
+		}
+		set_country_flag = gods_of_africa_territory_returned
+		gods_of_africa_resolve_final_ultimatum = yes
+	}
+}
+
+# COUNTRY scope on a participant. Pays the extraordinary settlement.
+gods_of_africa_ultimatum_pay_settlement = {
+	if = {
+		limit = {
+			gods_of_africa_final_ultimatum_is_open = yes
+			gods_of_africa_ultimatum_settlement_is_affordable = yes
+		}
+		set_temp_variable = { gods_of_africa_ultimatum_pp_negative = constant:gods_of_africa_ultimatum.settlement_pp }
+		multiply_temp_variable = { gods_of_africa_ultimatum_pp_negative = -1 }
+		add_political_power = var:gods_of_africa_ultimatum_pp_negative
+		event_target:africa_host = { add_political_power = constant:gods_of_africa_ultimatum.settlement_pp }
+		send_equipment = { equipment = infantry_equipment amount = constant:gods_of_africa_ultimatum.settlement_equipment target = event_target:africa_host }
+		gods_of_africa_resolve_final_ultimatum = yes
+	}
+}
+
+# COUNTRY scope on a participant. Refusal or the deadline: the catastrophe
+# falls now if Africa can still deliver it, otherwise the strongest punishment
+# Africa's Strength allows.
+gods_of_africa_expire_final_ultimatum = {
+	if = {
+		limit = {
+			gods_of_africa_participant_generation_is_current = yes
+			has_country_flag = gods_of_africa_final_ultimatum_pending
+		}
+		clr_country_flag = gods_of_africa_final_ultimatum_pending
+		clear_variable = gods_of_africa_final_ultimatum_due_day
+		remove_mission = gods_of_africa_final_ultimatum_mission
+		set_country_flag = gods_of_africa_final_ultimatum_expired
+		clr_country_flag = gods_of_africa_punishment_applied
+		set_variable = { gods_of_africa_pending_punishment_tier = constant:gods_of_africa_punishment.catastrophe }
+		gods_of_africa_apply_punishment = yes
+		clr_country_flag = gods_of_africa_final_ultimatum_expired
+	}
+}
+
+# COUNTRY scope on a participant leaving the ledger: an open ultimatum ends
+# without consequence.
+gods_of_africa_clear_final_ultimatum = {
+	clr_country_flag = gods_of_africa_final_ultimatum_pending
+	clr_country_flag = gods_of_africa_final_ultimatum_expired
+	clear_variable = gods_of_africa_final_ultimatum_due_day
+	remove_mission = gods_of_africa_final_ultimatum_mission
+}
+
+# ============================================================================
+# LET THE WORLD ANSWER
+# ============================================================================
+
+# COUNTRY scope on the host; FROM-equivalent participant saved as event target
+# gods_of_africa_coalition_offender by the decision. Africa sends real
+# infantry equipment from its stocks to one country at war with the offender
+# that Africa is not fighting.
+gods_of_africa_arm_offender_enemies = {
+	if = {
+		limit = {
+			gods_of_africa_host_can_arm_coalition = yes
+			has_event_target = gods_of_africa_coalition_offender
+			event_target:gods_of_africa_coalition_offender = { gods_of_africa_coalition_target_is_valid = yes }
+		}
+		event_target:gods_of_africa_coalition_offender = {
+			random_enemy_country = {
+				limit = {
+					exists = yes
+					NOT = { has_capitulated = yes }
+					NOT = { tag = event_target:africa_host }
+					NOT = { has_war_with = event_target:africa_host }
+				}
+				save_event_target_as = gods_of_africa_coalition_recipient
+			}
+		}
+		if = {
+			limit = { has_event_target = gods_of_africa_coalition_recipient }
+			set_temp_variable = { gods_of_africa_coalition_pp_negative = constant:gods_of_africa_coalition.pp_cost }
+			multiply_temp_variable = { gods_of_africa_coalition_pp_negative = -1 }
+			add_political_power = var:gods_of_africa_coalition_pp_negative
+			send_equipment = { equipment = infantry_equipment amount = constant:gods_of_africa_coalition.equipment target = event_target:gods_of_africa_coalition_recipient }
+			# The same rifles leave the common-defence reserve Africa keeps.
+			if = {
+				limit = { has_variable = africa_common_defence_stockpile }
+				subtract_from_variable = { africa_common_defence_stockpile = constant:gods_of_africa_coalition.equipment }
+				clamp_variable = { var = africa_common_defence_stockpile min = constant:gods_of_africa_value.zero }
+			}
+			event_target:gods_of_africa_coalition_offender = {
+				set_variable = { gods_of_africa_coalition_due_day = global.num_days }
+				add_to_variable = { gods_of_africa_coalition_due_day = constant:gods_of_africa_coalition.cooldown_days }
+				set_variable = { gods_of_africa_coalition_last_recipient = event_target:gods_of_africa_coalition_recipient }
+			}
+			set_variable = { gods_of_africa_coalition_last_recipient = event_target:gods_of_africa_coalition_recipient }
+			set_variable = { gods_of_africa_coalition_last_offender = event_target:gods_of_africa_coalition_offender }
+			country_event = { id = chaosx.nr12.619 }
+		}
+	}
+}

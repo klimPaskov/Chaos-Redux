@@ -456,6 +456,89 @@ gods_of_africa_punishment_effect = {
 	ambiguity_crisis_war_support_loss = -0.015
 	ambiguity_ultimatum_stability_loss = -0.02
 	ambiguity_ultimatum_war_support_loss = -0.02
+	# Punishment families (decision L26). Material losses are this unit times
+	# the punishment tier (1 Pressure to 4 Ultimatum), and only what the
+	# target holds is taken.
+	stockpile_equipment_unit = 250
+	stockpile_fuel_unit = 250
+	military_infantry_unit = 500
+	military_support_unit = 100
+	logistical_convoy_unit = 5
+	logistical_naval_damage = 1
+	covert_factory_damage = 1
+	# A bluff at Limited Strength costs only this much political power.
+	bluff_pp_loss = 2
+	# One half of a material loss, when the target cannot lose the whole.
+	partial_loss_fraction = 0.5
+}
+
+# Punishment families (decision L26). The selector prefers a family that fits
+# the offence, avoids the family used within the repeat window, and falls back
+# to political pressure.
+gods_of_africa_punishment_family = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	pressure = 1
+	unrest = 2
+	infrastructure = 3
+	stockpile = 4
+	diplomatic = 5
+	covert = 6
+	logistical = 7
+	military = 8
+	disaster = 9
+}
+
+gods_of_africa_punishment_scope = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	repeat_window_days = 180
+	# States struck by a state-targeting family at each tier.
+	pressure_states = 1
+	disruption_states = 1
+	crisis_states = 3
+	ultimatum_states = 5
+	# A target near capitulation is struck in one state at most.
+	collapsing_target_states = 1
+	# At Limited Strength every second punishment is a bluff.
+	bluff_cycle = 2
+	# The catastrophe's waves of civilian deaths reach this many states.
+	catastrophe_wave_states = 3
+}
+
+# The staged final ultimatum before a catastrophe (decision L26).
+gods_of_africa_ultimatum = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	deadline_days = 60
+	settlement_pp = 150
+	settlement_equipment = 3000
+	# The settlement leaves the payer this much infantry equipment.
+	settlement_equipment_reserve = 500
+	wrath_relief = 25
+}
+
+# Let the World Answer: Africa arms the enemies of an offender (decision L26).
+gods_of_africa_coalition = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	equipment = 1000
+	# Africa keeps this much infantry equipment after the shipment.
+	host_reserve = 1000
+	pp_cost = 25
+	cooldown_days = 180
 }
 
 gods_of_africa_demand = {
@@ -572,6 +655,8 @@ gods_of_africa_history_kind = {
 	# Report-only: the named states left the participant's hands, so the
 	# territory demand lapsed without a failure.
 	territory_lapsed = 20
+	# The participant met Africa's final ultimatum.
+	ultimatum_met = 21
 }
 
 # One immutable equipment archetype within the existing mobile/artillery family.
@@ -753,6 +838,18 @@ gods_of_africa_ai_response = {
 	accept_reconciliation_near_collapse = 2
 	accept_reconciliation_reciprocal = 1.5
 	accept_reconciliation_exaction = 0.5
+	# Final ultimatum answers.
+	ultimatum_return_land_base = 30
+	ultimatum_settlement_base = 20
+	ultimatum_refuse_base = 2
+	ultimatum_refuse_rival = 4
+	ultimatum_refuse_weak_africa = 3
+	ultimatum_answer_loyal = 2
+	# Let the World Answer.
+	coalition_base = 5
+	coalition_holds_core = 3
+	coalition_at_war = 2
+	coalition_defiant = 1.5
 }
 
 # How heavy a demand is against the participant's usable stock (stock above its

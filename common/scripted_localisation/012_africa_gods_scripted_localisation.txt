@@ -362,22 +362,100 @@ defined_text = {
 	text = { localization_key = gods_of_africa_response_political_power_balance }
 }
 
+# The concrete consequence of the latest punishment, by family (decision L26).
 defined_text = {
 	name = GetGodsOfAfricaPunishmentLocalConsequence
-	text = { trigger = { has_country_flag = gods_of_africa_punishment_report_resistance_increased has_variable = gods_of_africa_punishment_report_state } localization_key = gods_of_africa_punishment_resistance_consequence }
-	text = { trigger = { has_country_flag = gods_of_africa_punishment_report_factories_targeted has_variable = gods_of_africa_punishment_report_state } localization_key = gods_of_africa_punishment_factory_consequence }
-	text = { trigger = { has_country_flag = gods_of_africa_punishment_report_infrastructure_targeted has_variable = gods_of_africa_punishment_report_state } localization_key = gods_of_africa_punishment_infrastructure_consequence }
+	text = { trigger = { has_country_flag = gods_of_africa_punishment_bluff } localization_key = gods_of_africa_punishment_bluff_consequence }
+	text = { trigger = { check_variable = { gods_of_africa_last_punishment_tier = constant:gods_of_africa_punishment.catastrophe } } localization_key = gods_of_africa_punishment_no_local_consequence }
+	text = { trigger = { has_country_flag = gods_of_africa_punishment_report_transport_protected } localization_key = gods_of_africa_punishment_transport_protected_consequence }
 	text = {
 		trigger = {
-			has_country_flag = gods_of_africa_punishment_report_transport_protected
-			OR = {
-				check_variable = { gods_of_africa_last_punishment_tier = constant:gods_of_africa_punishment.disruption }
-				check_variable = { gods_of_africa_last_punishment_tier = constant:gods_of_africa_punishment.crisis }
-				check_variable = { gods_of_africa_last_punishment_tier = constant:gods_of_africa_punishment.ultimatum }
-			}
+			check_variable = { gods_of_africa_last_punishment_family = constant:gods_of_africa_punishment_family.unrest }
+			check_variable = { gods_of_africa_punishment_report_state_count > constant:gods_of_africa_value.one }
 		}
-		localization_key = gods_of_africa_punishment_transport_protected_consequence
+		localization_key = gods_of_africa_punishment_unrest_many
 	}
+	text = {
+		trigger = {
+			check_variable = { gods_of_africa_last_punishment_family = constant:gods_of_africa_punishment_family.unrest }
+			check_variable = { gods_of_africa_punishment_report_state_count > constant:gods_of_africa_value.zero }
+		}
+		localization_key = gods_of_africa_punishment_unrest_one
+	}
+	text = {
+		trigger = {
+			check_variable = { gods_of_africa_last_punishment_family = constant:gods_of_africa_punishment_family.infrastructure }
+			check_variable = { gods_of_africa_punishment_report_state_count > constant:gods_of_africa_value.one }
+		}
+		localization_key = gods_of_africa_punishment_infrastructure_many
+	}
+	text = {
+		trigger = {
+			check_variable = { gods_of_africa_last_punishment_family = constant:gods_of_africa_punishment_family.infrastructure }
+			check_variable = { gods_of_africa_punishment_report_state_count > constant:gods_of_africa_value.zero }
+		}
+		localization_key = gods_of_africa_punishment_infrastructure_one
+	}
+	text = {
+		trigger = {
+			check_variable = { gods_of_africa_last_punishment_family = constant:gods_of_africa_punishment_family.covert }
+			check_variable = { gods_of_africa_punishment_report_state_count > constant:gods_of_africa_value.one }
+		}
+		localization_key = gods_of_africa_punishment_covert_many
+	}
+	text = {
+		trigger = {
+			check_variable = { gods_of_africa_last_punishment_family = constant:gods_of_africa_punishment_family.covert }
+			check_variable = { gods_of_africa_punishment_report_state_count > constant:gods_of_africa_value.zero }
+		}
+		localization_key = gods_of_africa_punishment_covert_one
+	}
+	text = {
+		trigger = {
+			check_variable = { gods_of_africa_last_punishment_family = constant:gods_of_africa_punishment_family.logistical }
+			check_variable = { gods_of_africa_punishment_report_state_count > constant:gods_of_africa_value.one }
+		}
+		localization_key = gods_of_africa_punishment_logistical_many
+	}
+	text = {
+		trigger = {
+			check_variable = { gods_of_africa_last_punishment_family = constant:gods_of_africa_punishment_family.logistical }
+			check_variable = { gods_of_africa_punishment_report_state_count > constant:gods_of_africa_value.zero }
+		}
+		localization_key = gods_of_africa_punishment_logistical_one
+	}
+	text = {
+		trigger = {
+			check_variable = { gods_of_africa_last_punishment_family = constant:gods_of_africa_punishment_family.stockpile }
+			check_variable = { gods_of_africa_punishment_report_loss > constant:gods_of_africa_value.zero }
+			has_country_flag = gods_of_africa_punishment_report_fuel_lost
+		}
+		localization_key = gods_of_africa_punishment_stockpile_fuel
+	}
+	text = {
+		trigger = {
+			check_variable = { gods_of_africa_last_punishment_family = constant:gods_of_africa_punishment_family.stockpile }
+			check_variable = { gods_of_africa_punishment_report_loss > constant:gods_of_africa_value.zero }
+		}
+		localization_key = gods_of_africa_punishment_stockpile_equipment
+	}
+	text = { trigger = { check_variable = { gods_of_africa_last_punishment_family = constant:gods_of_africa_punishment_family.stockpile } } localization_key = gods_of_africa_punishment_stockpile_empty }
+	text = { trigger = { check_variable = { gods_of_africa_last_punishment_family = constant:gods_of_africa_punishment_family.military } } localization_key = gods_of_africa_punishment_military }
+	text = { trigger = { check_variable = { gods_of_africa_last_punishment_family = constant:gods_of_africa_punishment_family.diplomatic } } localization_key = gods_of_africa_punishment_diplomatic }
+	text = {
+		trigger = {
+			check_variable = { gods_of_africa_last_punishment_family = constant:gods_of_africa_punishment_family.disaster }
+			has_variable = gods_of_africa_last_disaster_result
+			check_variable = { gods_of_africa_last_disaster_result = constant:natural_disaster_call_result.accepted }
+		}
+		localization_key = gods_of_africa_punishment_disaster
+	}
+	text = { localization_key = gods_of_africa_punishment_no_local_consequence }
+}
+
+defined_text = {
+	name = GetGodsOfAfricaPunishmentConvoyLine
+	text = { trigger = { check_variable = { gods_of_africa_punishment_report_loss > constant:gods_of_africa_value.zero } } localization_key = gods_of_africa_punishment_convoys_lost }
 	text = { localization_key = gods_of_africa_punishment_no_local_consequence }
 }
 
