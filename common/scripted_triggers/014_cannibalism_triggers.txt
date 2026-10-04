@@ -5076,6 +5076,23 @@ cannibalism_warlord_can_pay_march_operation_cost = {
 	command_power > constant:cannibalism_warlord_decision.march_operation_command_gate
 }
 
+# STATE scope, ROOT the March Host. A passable enemy-held state on the Host's
+# front whose single supply hub still has an undamaged level. One hub keeps
+# the state-scope strike unambiguous, because damage_building searches a
+# state's provinces for the first matching hub.
+cannibalism_warlord_march_raid_target_is_valid = {
+	impassable = no
+	NOT = { is_controlled_by = ROOT }
+	CONTROLLER = { has_war_with = ROOT }
+	any_neighbor_state = { is_controlled_by = ROOT }
+	supply_node > 0
+	supply_node < 2
+	non_damaged_building_level = {
+		building = supply_node
+		level > 0
+	}
+}
+
 # ============================================================================
 # Consolidated source section: 014_cannibalism_wendigo_decision_triggers.txt
 # ============================================================================

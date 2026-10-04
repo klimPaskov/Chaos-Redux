@@ -3504,6 +3504,7 @@ cannibalism_reset_current_country_incarnation_state = {
 	if = { limit = { has_dynamic_modifier = { modifier = cannibalism_island_convoy_ambush_operation } } remove_dynamic_modifier = { modifier = cannibalism_island_convoy_ambush_operation } }
 	if = { limit = { has_dynamic_modifier = { modifier = cannibalism_siege_relief_ambush_operation } } remove_dynamic_modifier = { modifier = cannibalism_siege_relief_ambush_operation } }
 	if = { limit = { has_dynamic_modifier = { modifier = cannibalism_march_supply_raid_operation } } remove_dynamic_modifier = { modifier = cannibalism_march_supply_raid_operation } }
+	cannibalism_clear_march_raid_receipt = yes
 }
 
 cannibalism_initialize_current_country = {
@@ -5757,6 +5758,7 @@ cannibalism_begin_current_warlord_slot_release = {
 		if = { limit = { has_dynamic_modifier = { modifier = cannibalism_island_convoy_ambush_operation } } remove_dynamic_modifier = { modifier = cannibalism_island_convoy_ambush_operation } }
 		if = { limit = { has_dynamic_modifier = { modifier = cannibalism_siege_relief_ambush_operation } } remove_dynamic_modifier = { modifier = cannibalism_siege_relief_ambush_operation } }
 		if = { limit = { has_dynamic_modifier = { modifier = cannibalism_march_supply_raid_operation } } remove_dynamic_modifier = { modifier = cannibalism_march_supply_raid_operation } }
+		cannibalism_clear_march_raid_receipt = yes
 	}
 }
 
@@ -17915,18 +17917,92 @@ cannibalism_begin_siege_relief_ambush_operation = {
 	}
 }
 
+# COUNTRY scope of the March Host, with event target
+# cannibalism_march_raid_target_state set to the decision's selected state.
+# The target and the costs are rechecked before payment, so a state that
+# stopped qualifying since selection charges nothing. A valid strike damages
+# the state's single supply hub, starts the preparation modifier, starts the
+# Host-wide raid cooldown, and writes the Host's raid receipt.
+# Output: temp cannibalism_march_raid_result (1 after a strike, else 0).
 cannibalism_begin_march_supply_raid_operation = {
+	set_temp_variable = { cannibalism_march_raid_result = 0 }
 	if = {
-		limit = { cannibalism_warlord_can_pay_march_operation_cost = yes }
+		limit = {
+			cannibalism_warlord_can_pay_march_operation_cost = yes
+			NOT = { has_country_flag = cannibalism_march_raid_cooldown }
+			has_event_target = cannibalism_march_raid_target_state
+			event_target:cannibalism_march_raid_target_state = { cannibalism_warlord_march_raid_target_is_valid = yes }
+		}
 		cannibalism_prepare_warlord_origin_operation_contract = yes
 		set_temp_variable = { cannibalism_warlord_operation_larder_cost = constant:cannibalism_warlord_decision.march_operation_larder_cost }
 		set_temp_variable = { cannibalism_warlord_operation_command_spend = constant:cannibalism_warlord_decision.march_operation_command_spend }
 		cannibalism_pay_warlord_operation_cost = yes
+		event_target:cannibalism_march_raid_target_state = {
+			set_temp_variable = { dynamic_building_damage_type = token:supply_node }
+			set_temp_variable = { dynamic_building_damage_amount = constant:cannibalism_warlord_decision.march_raid_supply_node_damage }
+			damage_state_building_dynamic = yes
+		}
 		set_temp_variable = { cannibalism_origin_operation_days = constant:cannibalism_warlord_decision.march_operation_days }
 		add_to_temp_variable = { cannibalism_origin_operation_days = cannibalism_origin_operation_duration_bonus }
 		add_dynamic_modifier = { modifier = cannibalism_march_supply_raid_operation days = cannibalism_origin_operation_days }
 		cannibalism_apply_warlord_origin_operation_recovery = yes
+		# A state-targeted decision re-enables per state; this flag keeps the
+		# raid cadence Host-wide.
+		set_temp_variable = { cannibalism_march_raid_cooldown_days = constant:cannibalism_warlord_decision.long_reenable_days }
+		set_country_flag = { flag = cannibalism_march_raid_cooldown days = cannibalism_march_raid_cooldown_days }
+		cannibalism_record_march_raid_receipt = yes
+		set_temp_variable = { cannibalism_march_raid_result = 1 }
 	}
+}
+
+# COUNTRY scope of the March Host after a strike. Replaces the Host's raid
+# receipt with the struck state, its result, the date, the Host's actor
+# generation, and the target controller with its actor generation when that
+# controller is an Event 014 actor. Earlier receipts are kept until a later
+# strike succeeds.
+cannibalism_record_march_raid_receipt = {
+	set_variable = { cannibalism_march_raid_target_state = event_target:cannibalism_march_raid_target_state }
+	set_variable = { cannibalism_march_raid_date = global.date }
+	set_variable = { cannibalism_march_raid_receipt_result = constant:cannibalism_march_raid_receipt_result.hub_damaged }
+	clear_variable = cannibalism_march_raid_owner_generation
+	if = {
+		limit = { has_variable = cannibalism_actor_generation }
+		set_variable = { cannibalism_march_raid_owner_generation = cannibalism_actor_generation }
+	}
+	clear_variable = cannibalism_march_raid_target_controller
+	clear_variable = cannibalism_march_raid_target_controller_generation
+	set_temp_variable = { cannibalism_march_raid_hub_disabled = 0 }
+	event_target:cannibalism_march_raid_target_state = {
+		if = {
+			limit = { NOT = { non_damaged_building_level = { building = supply_node level > 0 } } }
+			set_temp_variable = { cannibalism_march_raid_hub_disabled = 1 }
+		}
+		CONTROLLER = { save_event_target_as = cannibalism_march_raid_target_controller }
+	}
+	if = {
+		limit = { check_variable = { cannibalism_march_raid_hub_disabled > 0 } }
+		set_variable = { cannibalism_march_raid_receipt_result = constant:cannibalism_march_raid_receipt_result.hub_disabled }
+	}
+	if = {
+		limit = { has_event_target = cannibalism_march_raid_target_controller }
+		set_variable = { cannibalism_march_raid_target_controller = event_target:cannibalism_march_raid_target_controller }
+		if = {
+			limit = { event_target:cannibalism_march_raid_target_controller = { has_variable = cannibalism_actor_generation } }
+			set_variable = { cannibalism_march_raid_target_controller_generation = event_target:cannibalism_march_raid_target_controller.cannibalism_actor_generation }
+		}
+	}
+}
+
+# COUNTRY scope. Clears the March raid receipt and the Host-wide raid
+# cooldown when the Host's slot is released or its incarnation resets.
+cannibalism_clear_march_raid_receipt = {
+	clear_variable = cannibalism_march_raid_target_state
+	clear_variable = cannibalism_march_raid_date
+	clear_variable = cannibalism_march_raid_receipt_result
+	clear_variable = cannibalism_march_raid_owner_generation
+	clear_variable = cannibalism_march_raid_target_controller
+	clear_variable = cannibalism_march_raid_target_controller_generation
+	clr_country_flag = cannibalism_march_raid_cooldown
 }
 
 # ============================================================================

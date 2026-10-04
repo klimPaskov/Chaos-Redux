@@ -2566,8 +2566,13 @@ cannibalism_warlord_command_category = {
 		ai_will_do = { base = constant:cannibalism_decision_ai.high modifier = { factor = constant:cannibalism_decision_ai.urgent_factor has_war = yes } }
 	}
 
+	# State-targeted strike on an enemy supply hub beside the Host's front.
+	# The per-state re-enable is backed by a Host-wide raid cooldown flag, so
+	# the Host still raids at most once per re-enable period.
 	cannibalism_march_raid_supply_depot = {
 		icon = GFX_decision_cannibalism_march_raid_supply_depot
+		state_target = yes
+		on_map_mode = map_and_decisions_view
 		visible = {
 			OR = {
 				cannibalism_warlord_command_network_phase_is_open = yes
@@ -2576,13 +2581,21 @@ cannibalism_warlord_command_category = {
 			has_country_flag = cannibalism_origin_march_host
 			has_country_flag = cannibalism_warlord_march_actions_open
 		}
+		target_root_trigger = {
+			cannibalism_warlord_can_pay_march_operation_cost = yes
+			NOT = { has_country_flag = cannibalism_march_raid_cooldown }
+		}
+		target_trigger = { FROM = { cannibalism_warlord_march_raid_target_is_valid = yes } }
 		available = { cannibalism_warlord_can_pay_march_operation_cost = yes }
 		custom_cost_trigger = { hidden_trigger = { cannibalism_warlord_can_pay_march_operation_cost = yes } }
 		custom_cost_text = cannibalism_march_raid_supply_depot_cost_text
 		days_re_enable = constant:cannibalism_warlord_decision.long_reenable_days
 		complete_effect = {
 			custom_effect_tooltip = cannibalism_march_raid_supply_depot_effect_tt
-			hidden_effect = { cannibalism_begin_march_supply_raid_operation = yes }
+			hidden_effect = {
+				FROM = { save_event_target_as = cannibalism_march_raid_target_state }
+				cannibalism_begin_march_supply_raid_operation = yes
+			}
 		}
 		ai_will_do = { base = constant:cannibalism_decision_ai.high modifier = { factor = constant:cannibalism_decision_ai.urgent_factor has_war = yes } }
 	}

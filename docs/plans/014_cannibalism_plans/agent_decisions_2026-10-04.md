@@ -71,3 +71,15 @@ Decision:
 - The window keeps its centred placement through an explicit negative position instead of `origo = center`, which the production render showed clipping three quarters of the window.
 
 Implementation evidence: `docs/events/014_cannibalism/gui_data_contract.md`, the matching Event014 commit, and the MCP evidence in `subagent_handoffs/2026-10-04_network_dossier_mcp_evidence.md`.
+
+## D6. The targeted March raid keeps a Host-wide cooldown
+
+Disposition: `implemented`.
+
+Basis: the parent-accepted raid proposal keeps the existing 30-day `days_re_enable`, but a `state_target` decision re-enables per target state, which would let the March Host strike a different hub every day.
+That would change the action's cadence, its AI frequency and its Larder drain without an accepted balance change.
+
+Decision: a successful strike sets the timed country flag `cannibalism_march_raid_cooldown` for `cannibalism_warlord_decision.long_reenable_days`, and the decision's `target_root_trigger` hides the action while it runs.
+The per-state `days_re_enable` stays as the native re-enable value.
+Every target and cost check runs before the single debit, so no refund branch exists; a target that stopped qualifying since selection charges nothing and keeps the earlier receipt.
+The receipt result distinguishes a hub that kept an undamaged level from one put out of action, and its controller generation is stored only when the controller is an Event 014 actor.
