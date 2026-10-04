@@ -393,3 +393,17 @@ P10 critical logistics, same stock with Logistics Readiness below 10:
 Withdrawal stays at 0 in both walks until readiness has been critical for five pulses before the final phase; P01 never meets a withdrawal condition.
 
 MCP route record: `hoi4_probability_inspect` (`decision_ai_will_do`, the patched decisions file, a three-decision pool) returned `INTERNAL_ERROR`. `hoi4_probability_compare` against the D19 before snapshot was rejected twice with `Invalid tool arguments` (the `scenarioSet` shape is not documented in the exposed schema); it was not retried further. No refresh, helper expansion or repository-wide query was used.
+
+## D24. Plain requirement lines in decision and mission tooltips
+
+Disposition: `implemented`.
+
+Basis: CLAUDE.md section 2.7, the decisions skill (sections 6, 7 and 18) and the lead's scan showing raw `chaosx_nr25_` variables and two unlocalised flags in about 60 decision and all 16 mission requirement tooltips.
+
+Decision:
+
+- Checks that the decision's `visible` block already guarantees (the expedition's phase, a one-shot action already used, participation, an active race, the current outpost emphasis, the evidence-sharing limit) move into `hidden_trigger`, so the tooltip lists only what can actually block the order.
+- Live requirements become plain `custom_trigger_tooltip` lines: the shared order cooldown (`chaosx_nr25_order_ready`, "The expedition is ready for a new order"), the rival-operation cooldown, the final-recovery cooldown, Expedition Progress and Logistics Readiness thresholds with the current value, the route, the outpost, a surveyed sector before fragment recovery, a held fragment before analysis, the outpost-or-survey phase for reconfiguration, and the remote rig's intelligence threshold (`chaosx_nr25_remote_intelligence_ready`, shared with the board dispatcher).
+- Every mission's `available` block is one line: "The objective is due and the expedition can complete it" or "The recovery is due and the expedition can complete it".
+- `chaosx_nr25_outpost_lost` gets a requirement-flag key.
+- A rerun of the requirement scan (available and custom_cost_trigger blocks expanded through scripted triggers, skipping hidden_trigger and custom_trigger_tooltip) finds no raw `chaosx_nr25_` variable or unlocalised flag.

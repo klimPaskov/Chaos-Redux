@@ -430,15 +430,25 @@ chaosx_nr25_ai_candidate_available = {
 
 # Country scope. Shared gate for every primary, rival, and evolution action.
 chaosx_nr25_base_action_available = {
-	has_country_flag = chaosx_nr25_participant
-	has_global_flag = chaosx_nr25_active
+	hidden_trigger = {
+		has_country_flag = chaosx_nr25_participant
+		has_global_flag = chaosx_nr25_active
+		NOT = { has_country_flag = chaosx_nr25_terminal }
+	}
 	NOT = { has_global_flag = chaosx_nr25_final_recovery_resolved }
-	NOT = { has_country_flag = chaosx_nr25_terminal }
 	NOT = { has_country_flag = chaosx_nr25_evacuation_requested }
-	check_variable = {
-		var = chaosx_nr25_action_cooldown
-		value = constant:chaosx_nr25_value.zero
-		compare = less_than_or_equals
+	chaosx_nr25_order_ready = yes
+}
+
+# Country scope. The expedition's shared action cooldown has run out.
+chaosx_nr25_order_ready = {
+	custom_trigger_tooltip = {
+		tooltip = chaosx_nr25_order_ready_tt
+		check_variable = {
+			var = chaosx_nr25_action_cooldown
+			value = constant:chaosx_nr25_value.zero
+			compare = less_than_or_equals
+		}
 	}
 }
 
@@ -551,83 +561,105 @@ chaosx_nr25_entry_charter_available = {
 # event-owned board both call these contracts through the dispatcher below.
 chaosx_nr25_action_authorize_available = {
 	chaosx_nr25_primary_action_available = yes
-	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals }
-	NOT = { has_country_flag = chaosx_nr25_action_authorize_used }
+	hidden_trigger = {
+		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals }
+		NOT = { has_country_flag = chaosx_nr25_action_authorize_used }
+	}
 	chaosx_nr25_authorize_cost_available = yes
 	num_of_civilian_factories > constant:chaosx_nr25_cost.civilian_factory_floor
 }
 
 chaosx_nr25_action_charter_available = {
 	chaosx_nr25_primary_action_available = yes
-	NOT = { chaosx_nr25_uses_chartered_passage = yes }
-	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals }
-	NOT = { has_country_flag = chaosx_nr25_action_charter_used }
+	hidden_trigger = {
+		NOT = { chaosx_nr25_uses_chartered_passage = yes }
+		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals }
+		NOT = { has_country_flag = chaosx_nr25_action_charter_used }
+	}
 	chaosx_nr25_charter_cost_available = yes
 }
 
 chaosx_nr25_action_science_exchange_available = {
 	chaosx_nr25_primary_action_available = yes
-	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals }
-	NOT = { has_country_flag = chaosx_nr25_action_science_exchange_used }
+	hidden_trigger = {
+		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals }
+		NOT = { has_country_flag = chaosx_nr25_action_science_exchange_used }
+	}
 	chaosx_nr25_science_exchange_cost_available = yes
 }
 
 chaosx_nr25_action_conceal_departure_available = {
 	chaosx_nr25_primary_action_available = yes
-	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals }
-	NOT = { has_country_flag = chaosx_nr25_action_conceal_departure_used }
+	hidden_trigger = {
+		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals }
+		NOT = { has_country_flag = chaosx_nr25_action_conceal_departure_used }
+	}
 	chaosx_nr25_conceal_departure_cost_available = yes
 	num_of_civilian_factories > constant:chaosx_nr25_cost.civilian_factory_floor
 }
 
 chaosx_nr25_action_depot_available = {
 	chaosx_nr25_primary_action_available = yes
-	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals }
-	NOT = { has_country_flag = chaosx_nr25_action_depot_used }
+	hidden_trigger = {
+		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals }
+		NOT = { has_country_flag = chaosx_nr25_action_depot_used }
+	}
 	chaosx_nr25_depot_cost_available = yes
 }
 
 chaosx_nr25_action_aerial_available = {
 	chaosx_nr25_primary_action_available = yes
-	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals }
-	NOT = { has_country_flag = chaosx_nr25_action_aerial_used }
+	hidden_trigger = {
+		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals }
+		NOT = { has_country_flag = chaosx_nr25_action_aerial_used }
+	}
 	chaosx_nr25_aerial_cost_available = yes
 }
 
 chaosx_nr25_action_radio_available = {
 	chaosx_nr25_primary_action_available = yes
-	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals }
-	NOT = { has_country_flag = chaosx_nr25_action_radio_used }
+	hidden_trigger = {
+		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals }
+		NOT = { has_country_flag = chaosx_nr25_action_radio_used }
+	}
 	chaosx_nr25_radio_cost_available = yes
 }
 
 chaosx_nr25_action_crew_available = {
 	chaosx_nr25_primary_action_available = yes
-	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals }
-	NOT = { has_country_flag = chaosx_nr25_action_crew_used }
+	hidden_trigger = {
+		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals }
+		NOT = { has_country_flag = chaosx_nr25_action_crew_used }
+	}
 	chaosx_nr25_crew_cost_available = yes
 }
 
 chaosx_nr25_action_gateway_available = {
 	chaosx_nr25_primary_action_available = yes
-	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals }
-	NOT = { has_country_flag = chaosx_nr25_action_gateway_used }
+	hidden_trigger = {
+		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals }
+		NOT = { has_country_flag = chaosx_nr25_action_gateway_used }
+	}
 	chaosx_nr25_gateway_cost_available = yes
 }
 
 chaosx_nr25_action_establish_outpost_available = {
 	chaosx_nr25_primary_action_available = yes
-	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals }
-	NOT = { has_country_flag = chaosx_nr25_outpost_established }
+	hidden_trigger = {
+		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals }
+		NOT = { has_country_flag = chaosx_nr25_outpost_established }
+	}
 	chaosx_nr25_outpost_cost_available = yes
 }
 
 chaosx_nr25_action_reinforce_outpost_available = {
 	chaosx_nr25_primary_action_available = yes
-	chaosx_nr25_sustain_phase_active = yes
-	OR = {
-		has_country_flag = chaosx_nr25_outpost_established
-		has_country_flag = chaosx_nr25_outpost_lost
+	hidden_trigger = {
+		chaosx_nr25_sustain_phase_active = yes
+		OR = {
+			has_country_flag = chaosx_nr25_outpost_established
+			has_country_flag = chaosx_nr25_outpost_lost
+		}
 	}
 	chaosx_nr25_outpost_cost_available = yes
 }
@@ -636,22 +668,24 @@ chaosx_nr25_action_reinforce_outpost_available = {
 # exhausted crew, so they use the base gate rather than the primary gate.
 chaosx_nr25_action_rotate_crew_available = {
 	chaosx_nr25_base_action_available = yes
-	chaosx_nr25_sustain_phase_active = yes
+	hidden_trigger = { chaosx_nr25_sustain_phase_active = yes }
 	has_country_flag = chaosx_nr25_outpost_established
 	chaosx_nr25_rotate_cost_available = yes
 }
 
 chaosx_nr25_action_shelter_available = {
 	chaosx_nr25_base_action_available = yes
-	chaosx_nr25_sustain_phase_active = yes
+	hidden_trigger = { chaosx_nr25_sustain_phase_active = yes }
 	OR = { has_country_flag = chaosx_nr25_emergency_weather has_country_flag = chaosx_nr25_crew_exhausted }
 	chaosx_nr25_shelter_cost_available = yes
 }
 
 chaosx_nr25_action_alternate_landing_available = {
 	chaosx_nr25_primary_action_available = yes
-	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals }
-	NOT = { has_country_flag = chaosx_nr25_action_alternate_landing_used }
+	hidden_trigger = {
+		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals }
+		NOT = { has_country_flag = chaosx_nr25_action_alternate_landing_used }
+	}
 	OR = {
 		has_country_flag = chaosx_nr25_route_improvised
 		has_country_flag = chaosx_nr25_outpost_compromised
@@ -663,8 +697,10 @@ chaosx_nr25_action_alternate_landing_available = {
 
 chaosx_nr25_action_escort_convoys_available = {
 	chaosx_nr25_primary_action_available = yes
-	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals }
-	NOT = { has_country_flag = chaosx_nr25_action_escort_convoys_used }
+	hidden_trigger = {
+		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals }
+		NOT = { has_country_flag = chaosx_nr25_action_escort_convoys_used }
+	}
 	OR = {
 		has_country_flag = chaosx_nr25_convoy_incident
 		has_global_flag = chaosx_nr25_evolution_militarised_antarctica
@@ -675,20 +711,26 @@ chaosx_nr25_action_escort_convoys_available = {
 
 chaosx_nr25_action_survey_available = {
 	chaosx_nr25_primary_action_available = yes
-	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals }
+	hidden_trigger = { check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals } }
 	chaosx_nr25_survey_cost_available = yes
 }
 
 chaosx_nr25_action_fragment_available = {
 	chaosx_nr25_action_survey_available = yes
 	NOT = { has_country_flag = chaosx_nr25_action_recover_fragment_used }
-	check_variable = { var = chaosx_nr25_survey_evidence value = constant:chaosx_nr25_value.zero compare = greater_than }
+	custom_trigger_tooltip = {
+		tooltip = chaosx_nr25_fragment_needs_survey_tt
+		check_variable = { var = chaosx_nr25_survey_evidence value = constant:chaosx_nr25_value.zero compare = greater_than }
+	}
 }
 
 chaosx_nr25_action_fragment_analysis_available = {
 	chaosx_nr25_action_survey_available = yes
 	NOT = { has_country_flag = chaosx_nr25_action_fragment_analysis_used }
-	check_variable = { var = chaosx_nr25_fragment_count value = constant:chaosx_nr25_value.zero compare = greater_than }
+	custom_trigger_tooltip = {
+		tooltip = chaosx_nr25_analysis_needs_fragment_tt
+		check_variable = { var = chaosx_nr25_fragment_count value = constant:chaosx_nr25_value.zero compare = greater_than }
+	}
 	chaosx_nr25_fragment_analysis_cost_available = yes
 	num_of_civilian_factories > constant:chaosx_nr25_cost.civilian_factory_floor
 }
@@ -701,36 +743,39 @@ chaosx_nr25_outpost_emphasis_change_available = {
 	has_country_flag = chaosx_nr25_outpost_established
 	has_country_flag = chaosx_nr25_outpost_emphasis_selected
 	NOT = { has_country_flag = chaosx_nr25_phase_mission_active }
-	OR = {
-		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals }
-		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals }
+	custom_trigger_tooltip = {
+		tooltip = chaosx_nr25_outpost_or_survey_phase_tt
+		OR = {
+			check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals }
+			check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals }
+		}
 	}
 	chaosx_nr25_outpost_emphasis_change_cost_available = yes
 }
 
 chaosx_nr25_outpost_emphasis_logistics_available = {
 	chaosx_nr25_outpost_emphasis_change_available = yes
-	NOT = { check_variable = { var = chaosx_nr25_outpost_emphasis value = constant:chaosx_nr25_outpost_emphasis.logistics_depot compare = equals } }
+	hidden_trigger = { NOT = { check_variable = { var = chaosx_nr25_outpost_emphasis value = constant:chaosx_nr25_outpost_emphasis.logistics_depot compare = equals } } }
 }
 
 chaosx_nr25_outpost_emphasis_survey_available = {
 	chaosx_nr25_outpost_emphasis_change_available = yes
-	NOT = { check_variable = { var = chaosx_nr25_outpost_emphasis value = constant:chaosx_nr25_outpost_emphasis.survey_station compare = equals } }
+	hidden_trigger = { NOT = { check_variable = { var = chaosx_nr25_outpost_emphasis value = constant:chaosx_nr25_outpost_emphasis.survey_station compare = equals } } }
 }
 
 chaosx_nr25_outpost_emphasis_signals_available = {
 	chaosx_nr25_outpost_emphasis_change_available = yes
-	NOT = { check_variable = { var = chaosx_nr25_outpost_emphasis value = constant:chaosx_nr25_outpost_emphasis.signals_station compare = equals } }
+	hidden_trigger = { NOT = { check_variable = { var = chaosx_nr25_outpost_emphasis value = constant:chaosx_nr25_outpost_emphasis.signals_station compare = equals } } }
 }
 
 chaosx_nr25_outpost_emphasis_fortified_available = {
 	chaosx_nr25_outpost_emphasis_change_available = yes
-	NOT = { check_variable = { var = chaosx_nr25_outpost_emphasis value = constant:chaosx_nr25_outpost_emphasis.fortified_camp compare = equals } }
+	hidden_trigger = { NOT = { check_variable = { var = chaosx_nr25_outpost_emphasis value = constant:chaosx_nr25_outpost_emphasis.fortified_camp compare = equals } } }
 }
 
 chaosx_nr25_outpost_emphasis_mobile_available = {
 	chaosx_nr25_outpost_emphasis_change_available = yes
-	NOT = { check_variable = { var = chaosx_nr25_outpost_emphasis value = constant:chaosx_nr25_outpost_emphasis.mobile_traverse compare = equals } }
+	hidden_trigger = { NOT = { check_variable = { var = chaosx_nr25_outpost_emphasis value = constant:chaosx_nr25_outpost_emphasis.mobile_traverse compare = equals } } }
 }
 
 chaosx_nr25_action_final_available = {
@@ -745,7 +790,16 @@ chaosx_nr25_action_armed_final_available = {
 
 chaosx_nr25_action_remote_final_available = {
 	chaosx_nr25_action_final_available = yes
-	check_variable = { var = chaosx_nr25_intelligence value = constant:chaosx_nr25_value.twenty compare = greater_than_or_equals }
+	chaosx_nr25_remote_intelligence_ready = yes
+}
+
+# Country scope. The remote recovery rig needs this much intelligence on the
+# site.
+chaosx_nr25_remote_intelligence_ready = {
+	custom_trigger_tooltip = {
+		tooltip = chaosx_nr25_remote_intelligence_tt
+		check_variable = { var = chaosx_nr25_intelligence value = constant:chaosx_nr25_value.twenty compare = greater_than_or_equals }
+	}
 }
 
 # Any country scope. This dispatcher is the board's authoritative parity gate.
@@ -777,7 +831,7 @@ chaosx_nr25_board_action_contract_available = {
 		AND = { check_variable = { var = chaosx_nr25_board_action value = constant:chaosx_nr25_action.analyze_recovered_fragment compare = equals } chaosx_nr25_action_fragment_analysis_available = yes }
 		AND = { check_variable = { var = chaosx_nr25_board_action value = constant:chaosx_nr25_action.controlled_recovery compare = equals } chaosx_nr25_action_final_available = yes }
 		AND = { check_variable = { var = chaosx_nr25_board_action value = constant:chaosx_nr25_action.rapid_extraction compare = equals } chaosx_nr25_action_final_available = yes }
-		AND = { check_variable = { var = chaosx_nr25_board_action value = constant:chaosx_nr25_action.remote_rig compare = equals } chaosx_nr25_action_final_available = yes check_variable = { var = chaosx_nr25_intelligence value = constant:chaosx_nr25_value.twenty compare = greater_than_or_equals } }
+		AND = { check_variable = { var = chaosx_nr25_board_action value = constant:chaosx_nr25_action.remote_rig compare = equals } chaosx_nr25_action_remote_final_available = yes }
 		AND = { check_variable = { var = chaosx_nr25_board_action value = constant:chaosx_nr25_action.armed_retrieval compare = equals } chaosx_nr25_action_armed_final_available = yes }
 		AND = { check_variable = { var = chaosx_nr25_board_action value = constant:chaosx_nr25_action.distributed_salvage compare = equals } chaosx_nr25_action_final_available = yes }
 	}
@@ -1017,37 +1071,54 @@ chaosx_nr25_armed_final_cost_available = {
 # never be submitted before the survey evidence, access, and readiness gates.
 chaosx_nr25_final_action_available = {
 	chaosx_nr25_primary_action_available = yes
-	check_variable = {
-		var = chaosx_nr25_phase
-		value = constant:chaosx_nr25_phase.final_recovery
-		compare = equals
+	hidden_trigger = {
+		check_variable = {
+			var = chaosx_nr25_phase
+			value = constant:chaosx_nr25_phase.final_recovery
+			compare = equals
+		}
 	}
-	check_variable = {
-		var = chaosx_nr25_final_cooldown
-		value = constant:chaosx_nr25_value.zero
-		compare = less_than_or_equals
+	custom_trigger_tooltip = {
+		tooltip = chaosx_nr25_final_cooldown_ready_tt
+		check_variable = {
+			var = chaosx_nr25_final_cooldown
+			value = constant:chaosx_nr25_value.zero
+			compare = less_than_or_equals
+		}
 	}
 	NOT = { has_country_flag = chaosx_nr25_final_mission_active }
-	check_variable = {
-		var = chaosx_nr25_progress
-		value = constant:chaosx_nr25_phase_gate.survey_progress
-		compare = greater_than_or_equals
+	custom_trigger_tooltip = {
+		tooltip = chaosx_nr25_final_progress_tt
+		check_variable = {
+			var = chaosx_nr25_progress
+			value = constant:chaosx_nr25_phase_gate.survey_progress
+			compare = greater_than_or_equals
+		}
 	}
 	has_country_flag = chaosx_nr25_primary_site_confirmed
-	check_variable = {
-		var = chaosx_nr25_logistics_readiness
-		value = constant:chaosx_nr25_phase_gate.survey_readiness
-		compare = greater_than_or_equals
+	custom_trigger_tooltip = {
+		tooltip = chaosx_nr25_final_readiness_tt
+		check_variable = {
+			var = chaosx_nr25_logistics_readiness
+			value = constant:chaosx_nr25_phase_gate.survey_readiness
+			compare = greater_than_or_equals
+		}
 	}
-	check_variable = {
-		var = chaosx_nr25_access
-		value = constant:chaosx_nr25_value.one
-		compare = greater_than_or_equals
+	custom_trigger_tooltip = {
+		tooltip = chaosx_nr25_final_route_tt
+		check_variable = {
+			var = chaosx_nr25_access
+			value = constant:chaosx_nr25_value.one
+			compare = greater_than_or_equals
+		}
 	}
-	check_variable = {
-		var = chaosx_nr25_outpost_security
-		value = constant:chaosx_nr25_cost.outpost_min
-		compare = greater_than_or_equals
+	custom_trigger_tooltip = {
+		tooltip = chaosx_nr25_final_outpost_tt
+		check_variable = {
+			var = chaosx_nr25_outpost_security
+			value = constant:chaosx_nr25_cost.outpost_min
+			compare = greater_than_or_equals
+		}
 	}
 }
 
@@ -1058,10 +1129,13 @@ chaosx_nr25_final_action_available = {
 # it saves for the chain.
 chaosx_nr25_rival_action_available = {
 	chaosx_nr25_base_action_available = yes
-	check_variable = {
-		var = chaosx_nr25_rival_action_cooldown
-		value = constant:chaosx_nr25_value.zero
-		compare = less_than_or_equals
+	custom_trigger_tooltip = {
+		tooltip = chaosx_nr25_rival_agents_ready_tt
+		check_variable = {
+			var = chaosx_nr25_rival_action_cooldown
+			value = constant:chaosx_nr25_value.zero
+			compare = less_than_or_equals
+		}
 	}
 }
 
@@ -1249,11 +1323,7 @@ chaosx_nr25_pre_winner_exchange_cost_available = {
 
 chaosx_nr25_pre_winner_exchange_available = {
 	chaosx_nr25_base_action_available = yes
-	OR = {
-		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals }
-		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals }
-		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals }
-	}
+	hidden_trigger = { chaosx_nr25_sustain_phase_active = yes }
 	chaosx_nr25_pre_winner_exchange_cost_available = yes
 }
 
@@ -1318,11 +1388,7 @@ chaosx_nr25_aftermath_action_available = {
 	has_global_flag = chaosx_nr25_evolution_technology_changes_users
 	has_global_flag = chaosx_nr25_aftermath_active
 	NOT = { has_country_flag = chaosx_nr25_aftermath_closed }
-	check_variable = {
-		var = chaosx_nr25_action_cooldown
-		value = constant:chaosx_nr25_value.zero
-		compare = less_than_or_equals
-	}
+	chaosx_nr25_order_ready = yes
 }
 
 # Country scope. Analysis settlement is available to a participant only after
@@ -1339,11 +1405,7 @@ chaosx_nr25_analysis_base_available = {
 	NOT = { has_global_flag = chaosx_nr25_closed }
 	NOT = { has_global_flag = chaosx_nr25_closed_after_expeditions }
 	NOT = { has_global_flag = chaosx_nr25_closed_without_participant }
-	check_variable = {
-		var = chaosx_nr25_action_cooldown
-		value = constant:chaosx_nr25_value.zero
-		compare = less_than_or_equals
-	}
+	chaosx_nr25_order_ready = yes
 }
 
 chaosx_nr25_analysis_archive_available = {
@@ -1355,7 +1417,7 @@ chaosx_nr25_analysis_archive_available = {
 chaosx_nr25_analysis_share_available = {
 	chaosx_nr25_analysis_base_available = yes
 	has_country_flag = chaosx_nr25_recovery_winner
-	check_variable = { var = chaosx_nr25_shared_evidence_targets value = constant:chaosx_nr25_cost.shared_evidence_achievement_targets compare = less_than }
+	hidden_trigger = { check_variable = { var = chaosx_nr25_shared_evidence_targets value = constant:chaosx_nr25_cost.shared_evidence_achievement_targets compare = less_than } }
 	has_political_power > constant:chaosx_nr25_cost.pp_analysis_required
 	has_equipment = { support_equipment > constant:chaosx_nr25_cost.support_analysis_required }
 }
