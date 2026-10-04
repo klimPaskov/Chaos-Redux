@@ -171,6 +171,7 @@ asteroid_incoming_store_target_two = {
 }
 
 asteroid_incoming_clear_target_pool = {
+	clr_global_flag = asteroid_incoming_board_ready
 	clr_global_flag = asteroid_incoming_prefer_different_continent
 	clear_array = global.asteroid_incoming_target_countries
 	clear_global_event_target = asteroid_incoming_target_1_country
@@ -278,6 +279,7 @@ asteroid_incoming_prepare_random_event_fire = {
 		if = {
 			limit = { asteroid_incoming_has_three_valid_target_pairs = yes }
 			set_temp_variable = { asteroid_incoming_prefire_ready = 1 }
+			set_global_flag = asteroid_incoming_board_ready
 			set_variable = { global.asteroid_incoming_target_pool_unavailable = 0 }
 			set_temp_variable = { events_log_history_payload_override = constant:asteroid_incoming_event.history_payload_opening }
 			set_temp_variable = { events_log_history_payload_override_active = 1 }
@@ -291,9 +293,31 @@ asteroid_incoming_prepare_random_event_fire = {
 	}
 }
 
+# ANY SCOPE. Stores the single board validity result that the opening board's
+# description and its options both read. The engine evaluates description and
+# option triggers at different moments, including when a pending popup is
+# restored after loading a save, so neither may test the live pairs directly.
+# Only the dispatcher's successful board and this re-validation set the flag;
+# every terminal path and the target-pool reset clear it.
+asteroid_incoming_refresh_board_ready = {
+	if = {
+		limit = {
+			has_global_flag = asteroid_incoming_transaction_active
+			NOT = { has_global_flag = asteroid_incoming_target_locked }
+			NOT = { has_global_flag = asteroid_incoming_transaction_resolved }
+			asteroid_incoming_has_three_valid_target_pairs = yes
+		}
+		set_global_flag = asteroid_incoming_board_ready
+	}
+	else = {
+		clr_global_flag = asteroid_incoming_board_ready
+	}
+}
+
 # ANY SCOPE. A deliberate miss closes the pending target transaction without
 # touching a state, the atmosphere, the fragment registry, or any ledger.
 asteroid_incoming_resolve_miss = {
+	clr_global_flag = asteroid_incoming_board_ready
 	set_variable = { global.asteroid_incoming_outcome = constant:asteroid_incoming_event.history_payload_miss }
 	set_variable = { global.asteroid_incoming_close_passage_date = global.date }
 	set_variable = { global.asteroid_incoming_close_passage_day = global.num_days }
@@ -497,10 +521,13 @@ asteroid_incoming_cancel_selected_target = {
 
 # CHOOSER COUNTRY SCOPE. A board that lost its viable pairs closes without
 # selecting an unchosen coordinate, granting a miss achievement, or creating
-# physical aftermath. A previously resolved impact is never changed here.
+# physical aftermath. A locked trajectory or a previously resolved impact is
+# never changed here, so a duplicate opening popup cannot close it early.
 asteroid_incoming_close_unavailable_board = {
+	clr_global_flag = asteroid_incoming_board_ready
 	if = {
 		limit = {
+			NOT = { has_global_flag = asteroid_incoming_target_locked }
 			NOT = { has_global_flag = asteroid_incoming_impact_recorded }
 			NOT = { has_global_flag = asteroid_incoming_miss_recorded }
 			NOT = { has_global_flag = asteroid_incoming_transaction_resolved }
@@ -568,6 +595,7 @@ asteroid_incoming_accept_selected_target = {
 			set_variable = { global.asteroid_incoming_expected_impact_day = global.asteroid_incoming_lock_expires_day }
 			set_variable = { global.asteroid_incoming_lock_date = global.date }
 			set_global_flag = asteroid_incoming_target_locked
+			clr_global_flag = asteroid_incoming_board_ready
 			set_variable = { global.asteroid_incoming_preparedness = 0 }
 			if = {
 				limit = { NOT = { has_global_flag = asteroid_incoming_lock_news_sent } }
@@ -2093,6 +2121,7 @@ asteroid_incoming_on_state_control_changed = {
 }
 
 asteroid_incoming_cleanup_finished_transaction = {
+	clr_global_flag = asteroid_incoming_board_ready
 	clr_global_flag = asteroid_incoming_transaction_active
 	clr_global_flag = asteroid_incoming_target_locked
 	clear_global_event_target = asteroid_incoming_candidate_country

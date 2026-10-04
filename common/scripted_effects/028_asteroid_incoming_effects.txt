@@ -143,6 +143,7 @@ asteroid_incoming_lock_candidate_pair = {
 # ANY SCOPE. Parent-owned near-miss dispatch calls this when the locked target
 # fails closed. It creates no physical receipt and leaves no active lock.
 asteroid_incoming_fail_closed_transaction = {
+	clr_global_flag = asteroid_incoming_board_ready
 	set_global_flag = asteroid_incoming_transaction_failed_closed
 	if = {
 		limit = {
@@ -1730,6 +1731,7 @@ asteroid_incoming_cleanup_transaction = {
 	clear_variable = global.asteroid_incoming_lock_expires_day
 	clear_variable = global.asteroid_incoming_planner_mode
 	clear_variable = global.asteroid_incoming_planner_current_ring
+	clr_global_flag = asteroid_incoming_board_ready
 	clr_global_flag = asteroid_incoming_transaction_active
 	clr_global_flag = asteroid_incoming_target_locked
 	clr_global_flag = asteroid_incoming_transaction_resolved

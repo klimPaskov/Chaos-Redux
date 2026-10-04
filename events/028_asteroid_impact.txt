@@ -19,11 +19,7 @@ add_namespace = chaosx.nr28
 country_event = {
 	id = chaosx.nr28.1
 	title = chaosx.nr28.1.t
-	desc = {
-		text = chaosx.nr28.1.desc
-		trigger = { asteroid_incoming_has_three_valid_target_pairs = yes }
-	}
-	desc = { text = chaosx.nr28.1.blocked_desc }
+	desc = chaosx.nr28.1.board_desc
 	picture = GFX_report_event_028_asteroid_tracking
 	is_triggered_only = yes
 	fire_only_once = yes
@@ -39,12 +35,20 @@ country_event = {
 			}
 			set_global_flag = asteroid_incoming_achievement_manual_disqualified
 		}
+		# The player has not seen this board yet, so it may be rebuilt once
+		# when no trajectory is locked and the prepared pairs are missing or
+		# no longer valid. The stored result then drives the description and
+		# every option, including after the popup is restored from a save.
 		if = {
 			limit = {
-				NOT = { has_event_target = asteroid_incoming_target_1_country }
+				NOT = { has_global_flag = asteroid_incoming_target_locked }
+				NOT = { has_global_flag = asteroid_incoming_transaction_resolved }
+				NOT = { asteroid_incoming_has_three_valid_target_pairs = yes }
 			}
+			clr_global_flag = asteroid_incoming_transaction_active
 			asteroid_incoming_prepare_random_event_fire = yes
 		}
+		asteroid_incoming_refresh_board_ready = yes
 		if = {
 			limit = {
 				NOT = { has_global_flag = asteroid_incoming_evolution_snapshot_recorded }
@@ -91,7 +95,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr28.1.a
-		trigger = { asteroid_incoming_has_three_valid_target_pairs = yes }
+		trigger = { has_global_flag = asteroid_incoming_board_ready }
 		ai_chance = {
 			base = constant:asteroid_incoming_ai.strike_base
 			modifier = { factor = constant:asteroid_incoming_ai.protected_target_factor event_target:asteroid_incoming_target_1_country = { asteroid_incoming_ai_target_is_protected = yes } }
@@ -116,7 +120,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr28.1.b
-		trigger = { asteroid_incoming_has_three_valid_target_pairs = yes }
+		trigger = { has_global_flag = asteroid_incoming_board_ready }
 		ai_chance = {
 			base = constant:asteroid_incoming_ai.strike_base
 			modifier = { factor = constant:asteroid_incoming_ai.protected_target_factor event_target:asteroid_incoming_target_2_country = { asteroid_incoming_ai_target_is_protected = yes } }
@@ -141,7 +145,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr28.1.c
-		trigger = { asteroid_incoming_has_three_valid_target_pairs = yes }
+		trigger = { has_global_flag = asteroid_incoming_board_ready }
 		ai_chance = {
 			base = constant:asteroid_incoming_ai.strike_base
 			modifier = { factor = constant:asteroid_incoming_ai.protected_target_factor event_target:asteroid_incoming_target_3_country = { asteroid_incoming_ai_target_is_protected = yes } }
@@ -166,7 +170,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr28.1.d
-		trigger = { asteroid_incoming_has_three_valid_target_pairs = yes }
+		trigger = { has_global_flag = asteroid_incoming_board_ready }
 		ai_chance = {
 			base = constant:asteroid_incoming_ai.miss_base
 			modifier = { add = constant:asteroid_incoming_ai.miss_democratic_add has_government = democratic }
@@ -183,7 +187,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr28.1.na
-		trigger = { NOT = { asteroid_incoming_has_three_valid_target_pairs = yes } }
+		trigger = { NOT = { has_global_flag = asteroid_incoming_board_ready } }
 		ai_chance = { base = 100 }
 		custom_effect_tooltip = chaosx.nr28.1.na.tt
 		hidden_effect = { asteroid_incoming_close_unavailable_board = yes }
@@ -526,11 +530,7 @@ country_event = {
 country_event = {
 	id = chaosx.nr28.8
 	title = chaosx.nr28.1.t
-	desc = {
-		text = chaosx.nr28.1.desc
-		trigger = { asteroid_incoming_has_three_valid_target_pairs = yes }
-	}
-	desc = { text = chaosx.nr28.1.blocked_desc }
+	desc = chaosx.nr28.1.board_desc
 	picture = GFX_report_event_028_asteroid_tracking
 	is_triggered_only = yes
 	trigger = {
@@ -541,9 +541,15 @@ country_event = {
 		tag = event_target:asteroid_incoming_chooser
 	}
 
+	# The reopened board never rerolls. It re-validates the saved pairs once
+	# and stores the result for the description and the options.
+	immediate = {
+		asteroid_incoming_refresh_board_ready = yes
+	}
+
 	option = {
 		name = chaosx.nr28.8.a
-		trigger = { asteroid_incoming_has_three_valid_target_pairs = yes }
+		trigger = { has_global_flag = asteroid_incoming_board_ready }
 		ai_chance = {
 			base = constant:asteroid_incoming_ai.strike_base
 			modifier = { factor = constant:asteroid_incoming_ai.protected_target_factor event_target:asteroid_incoming_target_1_country = { asteroid_incoming_ai_target_is_protected = yes } }
@@ -568,7 +574,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr28.8.b
-		trigger = { asteroid_incoming_has_three_valid_target_pairs = yes }
+		trigger = { has_global_flag = asteroid_incoming_board_ready }
 		ai_chance = {
 			base = constant:asteroid_incoming_ai.strike_base
 			modifier = { factor = constant:asteroid_incoming_ai.protected_target_factor event_target:asteroid_incoming_target_2_country = { asteroid_incoming_ai_target_is_protected = yes } }
@@ -593,7 +599,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr28.8.c
-		trigger = { asteroid_incoming_has_three_valid_target_pairs = yes }
+		trigger = { has_global_flag = asteroid_incoming_board_ready }
 		ai_chance = {
 			base = constant:asteroid_incoming_ai.strike_base
 			modifier = { factor = constant:asteroid_incoming_ai.protected_target_factor event_target:asteroid_incoming_target_3_country = { asteroid_incoming_ai_target_is_protected = yes } }
@@ -618,7 +624,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr28.8.d
-		trigger = { asteroid_incoming_has_three_valid_target_pairs = yes }
+		trigger = { has_global_flag = asteroid_incoming_board_ready }
 		ai_chance = {
 			base = constant:asteroid_incoming_ai.miss_base
 			modifier = { add = constant:asteroid_incoming_ai.miss_democratic_add has_government = democratic }
@@ -635,7 +641,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr28.8.na
-		trigger = { NOT = { asteroid_incoming_has_three_valid_target_pairs = yes } }
+		trigger = { NOT = { has_global_flag = asteroid_incoming_board_ready } }
 		ai_chance = { base = 100 }
 		custom_effect_tooltip = chaosx.nr28.1.na.tt
 		hidden_effect = { asteroid_incoming_close_unavailable_board = yes }
