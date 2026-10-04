@@ -268,3 +268,20 @@ Basis: the round 2 remaining-work list (priority 2); L3 already made a partly de
 Decision: when part of an accepted substitute arrives, `gods_of_africa_resolve_substitute` sets `gods_of_africa_demand_amount` to the substitute amount and calls the new `gods_of_africa_compute_partial_payment_amount`, the same helper contract creation now uses (partial ratio constants, whole units for equipment, never below one, capacity requirement refreshed).
 The mission then shows the substitute family with matching remaining and total figures, and a partial payment is half of the substitute rather than an infantry-sized half clamped to the whole tank balance.
 The rejected and failed substitute paths are unchanged.
+
+## L22. Gods overlay rewards are visible and later nodes appear at their evolution
+
+Disposition: `implemented` (in-game appearance of the expanding branch and tooltips is `needs_live_game`).
+
+Basis: the accepted focus integration ("The branch should visibly expand at this milestone through new nodes or changed availability. It should not reveal every later focus from the start.") and the round 2 remaining-work list.
+
+Decisions:
+
+- Evolution II nodes (Rails, Ports, and Fuel; the Continental Reserve; the Hand of Judgment) add `africa_evolution_ii_logged`, and Evolution III nodes (Security Oaths; Sanctuary for Reliable Partners; the Last Sentence; Africa Speaks for Itself) add `africa_evolution_iii_logged` to `allow_branch`.
+  The Hand of Judgment is the spec's "Evolution II or III" node; it takes the Evolution II gate because its `available` already required Evolution II. Its Evolution III children stay hidden until their own evolution.
+  The layout refresh was already in place: `africa_activate_evolution_ii` and `_iii` call `africa_refresh_continental_focus_tree_layout`, which runs `mark_focus_tree_layout_dirty` on the host.
+- Every overlay node whose reward only set a country flag now shows a `gods_of_africa_focus_<name>_tt` effect tooltip in plain current wording; the Office of the Voices also shows the public-pardon unlock, Record Every Refusal shows the mark-offender and escalate-offense unlocks, and the Continental Proclamation's duplicate leniency unlock is replaced by the doctrine-choice tooltip.
+- The Hand of Judgment no longer shows `gods_of_africa_permanent_defiance`, a participant decision; its host-facing tooltip states what Africa gains.
+- The optional Sacred State / Veiled Instrument fork is `rejected`: the spec marks it optional ("Add it only if Event 012's existing political routes can support it without clutter"), and the three doctrine decisions already cover how Africa handles ambiguity. The four dead localisation keys are removed.
+
+MCP route evidence (2026-10-04, round 2): one narrow `hoi4_focus_inspect` call (`mode = national`, `treeId = africa_continental_focus_tree`) returned revision `23b4daad`, 300 focuses, 297 diagnostics, 62 connector crossings and 53 node intersections, the same counts as the L15 after-state, so the edits added no overlap or crossing. Its single blocking diagnostic is an unexpected brace in the vanilla file `game:common/national_focus/TSR_lingguang_incident_joint_branch.txt`, outside this mod. No raster was rendered.
