@@ -70,6 +70,9 @@ Government and actor actions use standard state-targeted decision presentation, 
 
 No Event 31-specific scripted GUI exists.
 
+Every costed decision has one inclusive affordability trigger, `random_terror_can_afford_<decision>` in `031_random_terror_triggers.txt`, used by its `custom_cost_trigger` and mirrored in `available` through `hidden_trigger`, so an exact balance pays and each line matches one debit in the decision's `complete_effect`.
+Every `custom_cost_text` key has `_blocked` (red values) and `_tooltip` companions, and cost rows put each texticon before its value.
+
 Every mission is started by a `random_terror_begin_<family>_mission` helper in the receiving country's scope and ended by the matching `random_terror_finish_<family>_mission`, which clears only that receiver's receipt.
 The begin helper keys the subject flag and the stored baseline to the receiver (`random_terror_<family>_goal_@<receiver>` and similar state variables), so each objective compares the state's live values with its own start.
 Country counters `random_terror_hotspot_count` (owned states that newly became an active crisis) and `random_terror_states_lost_count` (states lost to an actor), and state counters `random_terror_state_incident_count` and `random_terror_state_disruption_count`, measure spread, losses and attacks.
