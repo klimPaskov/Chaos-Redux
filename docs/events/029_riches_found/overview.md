@@ -31,13 +31,20 @@ The persistent state record contains the mine sequence, original discoverer, cur
 Each mine is an alluvial field, deep vein, gemstone bed or platinum lode (`riches_found_mine_profile`).
 The discovery report and category header name it; it sets the quality factor, shifts incident weights (claims and rush crime for alluvial, theft and smuggling for gemstones, foreign interference for platinum, collapse for deep veins), raises foreign interest for platinum and gemstones, adds collapse pressure to unreinforced deep veins, and steers AI development priorities.
 
+### Opening conditions
+
+`riches_found_apply_starting_conditions` shapes each mine's opening values once, at discovery, from `riches_found_starting_value`: the owner's stability below 0.4 lowers Local Order and Revenue Legitimacy and above 0.7 raises them, a core state starts more legitimate and a non-core state less legitimate and less orderly, each infrastructure level adds Mine Development, an owner at war or local resistance above its band lowers order, a Chaos Meter above its band raises Extraction Pressure, and a democratic owner starts with more legitimacy and less illicit capture.
+The deposit profile adds its own opening: alluvial fields start with weaker order and more illicit capture, deep veins with less development, gemstone beds with more illicit capture, and platinum lodes with foreign claim pressure.
+All values are clamped afterwards.
+
 ## Controller transfer and aggregate benefit
 
 The narrow `on_state_control_changed` hook uses the documented scope contract in which `ROOT` is the new controller, `FROM` is the old controller, and `FROM.FROM` is the changed state. It reconciles only when that state is an Event 029 mine. Annexation, peace-conference completion, and capitulation traverse only the bounded mine registry to cover ownership and occupation transitions that do not necessarily emit the same control change.
 
 Reconciliation removes the old controller's contribution, records the new controller once, migrates selected-mine and mission ownership, refreshes the state modifier and controller idea, and rebuilds both affected country aggregates. It does not copy the state record or leave a second contribution behind.
 
-The country aggregate applies marginal factors of 1.00 to the first controlled mine, 0.60 to the second, 0.25 to the third, and 0.10 to later mines. Contribution components are capped and rebuilt from the bounded registry, so transfer cannot duplicate them and temporary occupation receives the explicit occupied-control factor rather than an owner-equivalent windfall. The same rebuild replaces one mutually exclusive controller stage—Windfall Receipts, Managed Mineral Revenue, Resource-Dependent Treasury, Captured Revenue State, Gold-Sick Administration, Infernal Accounts, or Reformed Resource Settlement—rather than adding one permanent idea per mine.
+The country aggregate applies marginal factors of 1.00 to the first controlled mine, 0.60 to the second, 0.25 to the third, and 0.10 to later mines. Contribution components are capped and rebuilt from the bounded registry, so transfer cannot duplicate them and temporary occupation receives the explicit occupied-control factor rather than an owner-equivalent windfall.
+That occupied factor is further scaled when the contribution is refreshed: the state's resistance lowers it and its compliance raises it, a damaged route and a state that is not the occupier's core cut it, and `riches_found_occupied_output` keeps it between a floor and a cap. The same rebuild replaces one mutually exclusive controller stage—Windfall Receipts, Managed Mineral Revenue, Resource-Dependent Treasury, Captured Revenue State, Gold-Sick Administration, Infernal Accounts, or Reformed Resource Settlement—rather than adding one permanent idea per mine.
 
 ## Decision category and public values
 

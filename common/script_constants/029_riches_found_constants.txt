@@ -1389,3 +1389,45 @@ riches_found_chaos_change = {
 	catastrophic_collapse = 10
 	demonic_bargain = 12
 }
+
+# Opening conditions read once at discovery. Each band adds its deltas to the
+# riches_found_value public_initial_* baseline before the values are clamped.
+# Stability is the owner's stability (0 to 1); resistance and chaos use their
+# own scales.
+riches_found_starting_value = {
+	schema = { any_key = yes data = fixed_point }
+	low_stability_band = 0.4
+	high_stability_band = 0.7
+	low_stability_order = -10
+	low_stability_legitimacy = -8
+	high_stability_order = 5
+	high_stability_legitimacy = 5
+	core_legitimacy = 8
+	non_core_legitimacy = -8
+	non_core_order = -5
+	development_per_infrastructure = 2
+	war_or_resistance_order = -8
+	resistance_band = 25
+	high_chaos_band = 400
+	high_chaos_pressure = 10
+	democratic_legitimacy = 5
+	democratic_illicit_capture = -3
+	alluvial_order = -5
+	alluvial_illicit_capture = 8
+	deep_vein_development = -5
+	gemstone_illicit_capture = 5
+	platinum_foreign_claim_pressure = 10
+}
+
+# Output of an occupied mine. Resistance lowers it and compliance raises it
+# (both 0 to 100 per state), a damaged route and a non-core state cut it, and
+# the result never falls below the floor or rises above the cap.
+riches_found_occupied_output = {
+	schema = { any_key = yes data = fixed_point }
+	resistance_slope = 0.006
+	compliance_slope = 0.004
+	damaged_route_factor = 0.8
+	non_core_factor = 0.85
+	floor = 0.25
+	cap = 1.2
+}
