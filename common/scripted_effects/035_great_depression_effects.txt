@@ -5134,6 +5134,201 @@ great_depression_add_recovery_legacy = {
 	}
 }
 
+# COUNTRY scope. Score the frozen project at great_depression_durable_index for
+# a lasting positive district outcome. The caller initializes
+# great_depression_durable_score to zero, which a short treatment or a center
+# without a structural project keeps.
+great_depression_score_durable_project = {
+	set_temp_variable = { great_depression_durable_project = great_depression_last_completed_center_project_entries^great_depression_durable_index }
+	if = {
+		limit = { check_variable = { var = great_depression_durable_project value = constant:great_depression_center_project.lasting_capacity compare = equals } }
+		set_temp_variable = { great_depression_durable_score = constant:great_depression_state_outcome.project_lasting_capacity }
+	}
+	else_if = {
+		limit = { check_variable = { var = great_depression_durable_project value = constant:great_depression_center_project.international_reconstruction compare = equals } }
+		set_temp_variable = { great_depression_durable_score = constant:great_depression_state_outcome.project_international_reconstruction }
+	}
+	else_if = {
+		limit = { check_variable = { var = great_depression_durable_project value = constant:great_depression_center_project.public_works compare = equals } }
+		set_temp_variable = { great_depression_durable_score = constant:great_depression_state_outcome.project_public_works }
+	}
+	else_if = {
+		limit = { check_variable = { var = great_depression_durable_project value = constant:great_depression_center_project.transport_integration compare = equals } }
+		set_temp_variable = { great_depression_durable_score = constant:great_depression_state_outcome.project_transport_integration }
+	}
+	else_if = {
+		limit = { check_variable = { var = great_depression_durable_project value = constant:great_depression_center_project.strategic_rescue compare = equals } }
+		set_temp_variable = { great_depression_durable_score = constant:great_depression_state_outcome.project_strategic_rescue }
+	}
+	else_if = {
+		limit = { check_variable = { var = great_depression_durable_project value = constant:great_depression_center_project.finance_restoration compare = equals } }
+		set_temp_variable = { great_depression_durable_score = constant:great_depression_state_outcome.project_finance_restoration }
+	}
+	else_if = {
+		limit = { check_variable = { var = great_depression_durable_project value = constant:great_depression_center_project.asset_reorganization compare = equals } }
+		set_temp_variable = { great_depression_durable_score = constant:great_depression_state_outcome.project_asset_reorganization }
+	}
+	else_if = {
+		limit = { check_variable = { var = great_depression_durable_project value = constant:great_depression_center_project.trusteeship compare = equals } }
+		set_temp_variable = { great_depression_durable_score = constant:great_depression_state_outcome.project_trusteeship }
+	}
+}
+
+# COUNTRY scope, after great_depression_freeze_episode_summary. Accepted
+# addendum B3: at most two registered centers keep a lasting district outcome.
+# The positive outcome goes to the owned, reopened or restructured center with
+# the highest-value completed structural project. The scar goes to another
+# owned center with the largest unrepaired Event 35 loss, counting an abandoned
+# or liquidated center even without a factory loss. When no scar is due, a
+# second distinct structural project may keep a positive outcome. Only the
+# frozen episode arrays are read, and the outcomes use their own modifiers, so
+# the episode's center cleanup leaves them in place.
+great_depression_apply_durable_state_outcomes = {
+	clear_variable = great_depression_last_completed_recovered_district
+	clear_variable = great_depression_last_completed_second_recovered_district
+	clear_variable = great_depression_last_completed_scarred_district
+	set_temp_variable = { great_depression_durable_positive_found = constant:great_depression_api.zero }
+	set_temp_variable = { great_depression_durable_positive_index = constant:great_depression_api.zero }
+	set_temp_variable = { great_depression_durable_positive_best = constant:great_depression_api.zero }
+	set_temp_variable = { great_depression_durable_scar_found = constant:great_depression_api.zero }
+	set_temp_variable = { great_depression_durable_scar_index = constant:great_depression_api.zero }
+	set_temp_variable = { great_depression_durable_scar_best = constant:great_depression_api.zero }
+	set_temp_variable = { great_depression_durable_second_found = constant:great_depression_api.zero }
+	set_temp_variable = { great_depression_durable_second_index = constant:great_depression_api.zero }
+	set_temp_variable = { great_depression_durable_second_best = constant:great_depression_api.zero }
+	set_temp_variable = { great_depression_durable_score = constant:great_depression_api.zero }
+	if = {
+		limit = {
+			has_variable = great_depression_last_completed_center_state_ids^num
+			check_variable = { var = great_depression_last_completed_center_state_ids^num value = constant:great_depression_api.zero compare = greater_than }
+			check_variable = { var = great_depression_last_completed_center_outcome_entries^num value = great_depression_last_completed_center_state_ids^num compare = equals }
+			check_variable = { var = great_depression_last_completed_center_project_entries^num value = great_depression_last_completed_center_state_ids^num compare = equals }
+			check_variable = { var = great_depression_last_completed_center_civilian_loss_entries^num value = great_depression_last_completed_center_state_ids^num compare = equals }
+			check_variable = { var = great_depression_last_completed_center_military_loss_entries^num value = great_depression_last_completed_center_state_ids^num compare = equals }
+		}
+		for_loop_effect = {
+			start = 0
+			end = great_depression_last_completed_center_state_ids^num
+			value = great_depression_durable_index
+			set_temp_variable = { great_depression_durable_score = constant:great_depression_api.zero }
+			if = {
+				limit = {
+					OR = {
+						check_variable = { var = great_depression_last_completed_center_outcome_entries^great_depression_durable_index value = constant:great_depression_center_stage.reopened compare = equals }
+						check_variable = { var = great_depression_last_completed_center_outcome_entries^great_depression_durable_index value = constant:great_depression_center_stage.restructured compare = equals }
+					}
+					var:great_depression_last_completed_center_state_ids^great_depression_durable_index = { is_owned_by = ROOT }
+				}
+				great_depression_score_durable_project = yes
+			}
+			if = {
+				limit = { check_variable = { var = great_depression_durable_score value = great_depression_durable_positive_best compare = greater_than } }
+				set_temp_variable = { great_depression_durable_positive_best = great_depression_durable_score }
+				set_temp_variable = { great_depression_durable_positive_index = great_depression_durable_index }
+				set_temp_variable = { great_depression_durable_positive_found = constant:great_depression_api.one }
+			}
+		}
+		for_loop_effect = {
+			start = 0
+			end = great_depression_last_completed_center_state_ids^num
+			value = great_depression_durable_index
+			set_temp_variable = { great_depression_durable_score = constant:great_depression_api.zero }
+			if = {
+				limit = {
+					NOT = {
+						AND = {
+							check_variable = { var = great_depression_durable_positive_found value = constant:great_depression_api.one compare = equals }
+							check_variable = { var = great_depression_durable_index value = great_depression_durable_positive_index compare = equals }
+						}
+					}
+					NOT = { check_variable = { var = great_depression_last_completed_center_outcome_entries^great_depression_durable_index value = constant:great_depression_center_stage.reopened compare = equals } }
+					NOT = { check_variable = { var = great_depression_last_completed_center_outcome_entries^great_depression_durable_index value = constant:great_depression_center_stage.restructured compare = equals } }
+					var:great_depression_last_completed_center_state_ids^great_depression_durable_index = { is_owned_by = ROOT }
+				}
+				set_temp_variable = { great_depression_durable_score = great_depression_last_completed_center_civilian_loss_entries^great_depression_durable_index }
+				add_to_temp_variable = { great_depression_durable_score = great_depression_last_completed_center_military_loss_entries^great_depression_durable_index }
+				multiply_temp_variable = { great_depression_durable_score = constant:great_depression_state_outcome.scar_loss_level_weight }
+				if = {
+					limit = {
+						OR = {
+							check_variable = { var = great_depression_last_completed_center_outcome_entries^great_depression_durable_index value = constant:great_depression_center_stage.abandoned compare = equals }
+							check_variable = { var = great_depression_last_completed_center_outcome_entries^great_depression_durable_index value = constant:great_depression_center_stage.liquidated compare = equals }
+						}
+					}
+					add_to_temp_variable = { great_depression_durable_score = constant:great_depression_state_outcome.scar_abandoned_bonus }
+				}
+			}
+			if = {
+				limit = { check_variable = { var = great_depression_durable_score value = great_depression_durable_scar_best compare = greater_than } }
+				set_temp_variable = { great_depression_durable_scar_best = great_depression_durable_score }
+				set_temp_variable = { great_depression_durable_scar_index = great_depression_durable_index }
+				set_temp_variable = { great_depression_durable_scar_found = constant:great_depression_api.one }
+			}
+		}
+		if = {
+			limit = {
+				check_variable = { var = great_depression_durable_positive_found value = constant:great_depression_api.one compare = equals }
+				check_variable = { var = great_depression_durable_scar_found value = constant:great_depression_api.zero compare = equals }
+			}
+			for_loop_effect = {
+				start = 0
+				end = great_depression_last_completed_center_state_ids^num
+				value = great_depression_durable_index
+				set_temp_variable = { great_depression_durable_score = constant:great_depression_api.zero }
+				if = {
+					limit = {
+						NOT = { check_variable = { var = great_depression_durable_index value = great_depression_durable_positive_index compare = equals } }
+						OR = {
+							check_variable = { var = great_depression_last_completed_center_outcome_entries^great_depression_durable_index value = constant:great_depression_center_stage.reopened compare = equals }
+							check_variable = { var = great_depression_last_completed_center_outcome_entries^great_depression_durable_index value = constant:great_depression_center_stage.restructured compare = equals }
+						}
+						var:great_depression_last_completed_center_state_ids^great_depression_durable_index = { is_owned_by = ROOT }
+					}
+					great_depression_score_durable_project = yes
+				}
+				if = {
+					limit = { check_variable = { var = great_depression_durable_score value = great_depression_durable_second_best compare = greater_than } }
+					set_temp_variable = { great_depression_durable_second_best = great_depression_durable_score }
+					set_temp_variable = { great_depression_durable_second_index = great_depression_durable_index }
+					set_temp_variable = { great_depression_durable_second_found = constant:great_depression_api.one }
+				}
+			}
+		}
+		if = {
+			limit = { check_variable = { var = great_depression_durable_positive_found value = constant:great_depression_api.one compare = equals } }
+			set_variable = { great_depression_last_completed_recovered_district = great_depression_last_completed_center_state_ids^great_depression_durable_positive_index }
+			var:great_depression_last_completed_center_state_ids^great_depression_durable_positive_index = { great_depression_set_state_recovered_district = yes }
+		}
+		if = {
+			limit = { check_variable = { var = great_depression_durable_scar_found value = constant:great_depression_api.one compare = equals } }
+			set_variable = { great_depression_last_completed_scarred_district = great_depression_last_completed_center_state_ids^great_depression_durable_scar_index }
+			var:great_depression_last_completed_center_state_ids^great_depression_durable_scar_index = { great_depression_set_state_scarred_district = yes }
+		}
+		if = {
+			limit = { check_variable = { var = great_depression_durable_second_found value = constant:great_depression_api.one compare = equals } }
+			set_variable = { great_depression_last_completed_second_recovered_district = great_depression_last_completed_center_state_ids^great_depression_durable_second_index }
+			var:great_depression_last_completed_center_state_ids^great_depression_durable_second_index = { great_depression_set_state_recovered_district = yes }
+		}
+	}
+}
+
+# STATE scope. Write one lasting district outcome. A later episode's outcome for
+# the same state replaces the earlier one, so a recovered district can lose its
+# scar and a district can never hold both.
+great_depression_set_state_recovered_district = {
+	remove_dynamic_modifier = { modifier = great_depression_state_scarred_district }
+	remove_dynamic_modifier = { modifier = great_depression_state_recovered_district }
+	add_dynamic_modifier = { modifier = great_depression_state_recovered_district }
+	set_variable = { great_depression_state_outcome_episode_id = ROOT.great_depression_last_completed_episode_id }
+}
+
+great_depression_set_state_scarred_district = {
+	remove_dynamic_modifier = { modifier = great_depression_state_recovered_district }
+	remove_dynamic_modifier = { modifier = great_depression_state_scarred_district }
+	add_dynamic_modifier = { modifier = great_depression_state_scarred_district }
+	set_variable = { great_depression_state_outcome_episode_id = ROOT.great_depression_last_completed_episode_id }
+}
+
 # STATE scope. Classify one registered center by its final flags for the
 # frozen summary. The caller initializes great_depression_freeze_center_outcome
 # to the registered stage, which remains for a center with no terminal result.
@@ -5608,6 +5803,7 @@ great_depression_try_complete_recovery = {
 			limit = { has_country_flag = great_depression_recovery_watch_active }
 			add_ideas = great_depression_post_recovery
 		}
+		great_depression_apply_durable_state_outcomes = yes
 		great_depression_clear_registered_center_runtime = yes
 		great_depression_clear_center_resolution_receipts = yes
 		clear_variable = great_depression_selected_center_state

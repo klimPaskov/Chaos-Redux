@@ -174,6 +174,16 @@ The offsets are the `legacy_*` keys of `great_depression_hidden_component`, so n
 
 `great_depression_post_recovery` is the temporary safeguard: it is added when an episode closes with the recovery watch running, removed when the watch expires, and removed when any new episode, including a relapse, is committed.
 
+### Lasting district outcomes
+
+After the summary is frozen, `great_depression_apply_durable_state_outcomes` gives at most two registered centers a lasting district outcome (accepted addendum B3), reading only the frozen center arrays.
+The Recovered Industrial District (`great_depression_state_recovered_district`) goes to the owned, reopened or restructured center with the highest-value completed structural project, scored by `great_depression_state_outcome` (lasting capacity highest, then international reconstruction, public works and transport integration, strategic rescue and finance restoration, then asset reorganization and trusteeship); short treatments never earn it.
+The Scarred Industrial District (`great_depression_state_scarred_district`) goes to another owned center with the largest unrepaired Event 35 factory loss, and an abandoned or liquidated center qualifies even without a factory loss.
+When no scar is due, a second distinct structural project can keep a second Recovered Industrial District.
+A state never receives both, and a later episode's outcome for the same state replaces the earlier one, which is how a scar can be repaired.
+The two modifiers use their own names and the reopened and hollowed center icons, so the episode cleanup in `great_depression_clear_center_physical_stage` leaves them in place.
+The recovery report names the districts through `GetGreatDepressionRecoveryDistricts`.
+
 ## National Breakdown and Social Collapse
 
 Baseline National Breakdown opens only after sustained severe failure and runs through a warning, prevention mission, proof gate, and one recorded outcome in `chaosx.nr35.6`.

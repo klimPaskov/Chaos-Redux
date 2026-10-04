@@ -284,3 +284,16 @@ Disposition: implemented.
 - `great_depression_post_recovery` is added when an episode closes with the recovery watch running and removed when the watch expires or when any new episode commits, which covers relapse. Agent decision: the safeguard follows the watch, so a country that could not join the capped watch registry (32 rows) gets no safeguard instead of an unbounded one.
 - `great_depression_resolve_recovery_outcome` sets `great_depression_recovery_hollow` for a Hollow result and clears it for Strong or Uneven, which makes the contagion-vulnerability trigger and the worldwide-pressure score live without changing them.
 - AI: no `ai_will_do`, `ai_chance` or random-list weight changed. The legacy offsets change hidden Severity pressure in later episodes, which is not a weighted surface.
+
+## D17. Lasting district outcomes after recovery (round 2, item 5)
+
+Disposition: implemented.
+
+- Basis: accepted addendum B3 ("One country legacy and at most two state outcomes"), spec part 4 "Cleanup after recovery" step 4, and the lead's decision 5.
+- `great_depression_apply_durable_state_outcomes` runs in the recovery transaction after the freeze and reads only the frozen center arrays, including the final outcome array added in D13.
+- Agent decision on scoring: a structural project scores by type through the new `great_depression_state_outcome` constants (lasting capacity 6, international reconstruction 5, public works and transport integration 4, strategic rescue and finance restoration 3, asset reorganization and trusteeship 2). The short treatments (reopened capacity, protection) score zero, because addendum A separates them from structural projects. A scar scores each frozen Event 35 factory level lost plus one for an abandoned or liquidated center, and only a center that did not end reopened or restructured can be scarred, which is what "unrepaired" means here.
+- Agent decision on ownership: only centers the recovering country still owns are eligible, so a transferred district never receives an outcome from an episode its new owner did not run.
+- B3's rule that a second distinct project may keep a positive outcome when no scar is due is implemented. One state never gets both, and a later episode's outcome replaces the earlier one on the same state.
+- The modifiers `great_depression_state_recovered_district` and `great_depression_state_scarred_district` reuse `GFX_modifier_035_great_depression_center_reopened` and `_hollowed`; no new art.
+- The recovery report names the districts, so the outcome is visible at the moment it is granted.
+- needs_live_game: the state modifier display on the map and state view.
