@@ -180,3 +180,10 @@ Decision: the surge modifier carries `trust_war_support` (+5% war support), and 
 The widening decision formalises the officer league inside the army on the officer route (league package, commander roll, no broad reach) and can be taken a second time there to publish the tables, which gives the reach an officer programme needs for Evolution II; other routes keep civilian circulation.
 The decision can therefore repeat (`fire_only_once = no`) but hides once broad reach exists.
 Basis: spec part 2 Trust the Model (strong war support, a victory softens but cannot remove the reassessment), spec part 3 expand access and officer league (public reporting raises Evolution II pressure).
+
+## D22. Player text drops receipt and ledger wording
+
+Decision: player-facing Event 24 text uses departmental reports, staff manuals, conclusion of the trial and a shorter list of questions instead of receipts and ledgers, and the requirement-flag texts describe the campaign cabinet state in plain terms; the disqualifier flag reads as a requirement ("a review has already found the cabinet wanting, or Stockholm has been lost") rather than naming an achievement.
+Trust the Model now shows its stated requirement tooltip instead of the raw trigger lines, and that tooltip names the earlier-review condition.
+No Event Details or evolution title or body changed, so no catalog change is pending.
+Basis: lead item on implementation jargon, repository player-text rules.
