@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "chaos-redux-source-audit-fixture.v1",
+  "status": "persisted but not validated or evaluated by MCP",
+  "scenarioSet": {
+    "id": "event033_cluster_pacing_baseline_2026_10_03",
+    "scenarios": [
+      {
+        "id": "natural_disasters_without_33",
+        "label": "Accepted Event13 opening, Event33 absent from the prepared queue",
+        "actor": "GER",
+        "flags": [],
+        "state": {
+          "event_cluster_id": 5,
+          "event_cluster_type_value": 2,
+          "event_cluster_trigger_event_id": 13,
+          "event_fire_dispatched": 1,
+          "event_cluster_acid_rain_selected": 0,
+          "event_cluster_initial_major_dispatched": false,
+          "global.acid_rain_cluster_reserved": false,
+          "temp_event_cluster_firing_order_event_id_entries": [13],
+          "temp_event_cluster_firing_order_row_id_entries": [5001],
+          "timer_min_days": 45,
+          "timer_max_days": 60,
+          "timer_min_decrement_cap": 15,
+          "timer_max_decrement_cap": 5,
+          "timer_day_decrement": 0,
+          "timer_max_cap_reduction": 0,
+          "global.total_events_fired": 0,
+          "global.minor_events_since_major": 0,
+          "global.current_major_event_weight": 0,
+          "global.major_event_weight_per_minor": 150,
+          "global.minor_event_recovery_rate": 20,
+          "global.reduce_cap_factor": 0.5
+        }
+      },
+      {
+        "id": "natural_disasters_optional_33_after_13",
+        "label": "Accepted Event13 opening with valid selected Event33 queued next",
+        "actor": "GER",
+        "flags": [],
+        "state": {
+          "event_cluster_id": 5,
+          "event_cluster_type_value": 2,
+          "event_cluster_trigger_event_id": 13,
+          "event_fire_dispatched": 1,
+          "event_cluster_acid_rain_selected": 1,
+          "event_cluster_initial_major_dispatched": false,
+          "global.acid_rain_cluster_reserved": true,
+          "temp_event_cluster_firing_order_event_id_entries": [13, 33],
+          "temp_event_cluster_firing_order_row_id_entries": [5001, 5006],
+          "timer_min_days": 45,
+          "timer_max_days": 60,
+          "timer_min_decrement_cap": 15,
+          "timer_max_decrement_cap": 5,
+          "timer_day_decrement": 0,
+          "timer_max_cap_reduction": 0,
+          "global.total_events_fired": 0,
+          "global.minor_events_since_major": 0,
+          "global.current_major_event_weight": 0,
+          "global.major_event_weight_per_minor": 150,
+          "global.minor_event_recovery_rate": 20,
+          "global.reduce_cap_factor": 0.5
+        }
+      },
+      {
+        "id": "natural_disasters_33_trigger",
+        "label": "Accepted Event33 trigger followed by the required Event13 opening",
+        "actor": "GER",
+        "flags": ["event_cluster_initial_major_dispatched"],
+        "state": {
+          "event_cluster_id": 5,
+          "event_cluster_type_value": 2,
+          "event_cluster_trigger_event_id": 33,
+          "event_fire_dispatched": 1,
+          "event_cluster_acid_rain_selected": 1,
+          "event_cluster_initial_major_dispatched": true,
+          "global.acid_rain_cluster_reserved": false,
+          "temp_event_cluster_firing_order_event_id_entries": [33, 13],
+          "temp_event_cluster_firing_order_row_id_entries": [5006, 5001],
+          "timer_min_days": 45,
+          "timer_max_days": 60,
+          "timer_min_decrement_cap": 15,
+          "timer_max_decrement_cap": 5,
+          "timer_day_decrement": 0,
+          "timer_max_cap_reduction": 0,
+          "global.total_events_fired": 0,
+          "global.minor_events_since_major": 0,
+          "global.current_major_event_weight": 0,
+          "global.major_event_weight_per_minor": 150,
+          "global.minor_event_recovery_rate": 20,
+          "global.reduce_cap_factor": 0.5
+        }
+      }
+    ]
+  },
+  "contract": {
+    "entryPoint": "on_event_cluster_global_pacing_update after successful synchronous trigger dispatch",
+    "commonInitialValues": "Source defaults used as fixture inputs, not proposed balance targets",
+    "candidateCatalog": [
+      { "rowId": 5001, "eventId": 13, "role": "required", "name": "natural_disasters_opening" },
+      { "rowId": 5002, "eventId": 13, "role": "optional", "name": "natural_disasters_early" },
+      { "rowId": 5003, "eventId": 13, "role": "optional", "name": "natural_disasters_varied" },
+      { "rowId": 5004, "eventId": 13, "role": "optional", "name": "natural_disasters_regional" },
+      { "rowId": 5005, "eventId": 13, "role": "optional", "name": "natural_disasters_abnormal" },
+      { "rowId": 5006, "eventId": 33, "role": "optional", "name": "natural_disasters_acid_rain" },
+      { "rowId": 5007, "eventId": 51, "role": "optional", "name": "natural_disasters_heat_wave" }
+    ],
+    "selectionConditioning": "Prepared selected orders are explicit. All other optional rows are unselected. No optional participation or ordinary event-selection probability is asserted.",
+    "dispatchAssumptions": [
+      "Every selected member remains valid and its dispatch succeeds.",
+      "Event33 is prevalidated before launch, is reserved while pending, and is accepted at its declared dispatch.",
+      "Country scope remains GER through the batch.",
+      "The three cluster context flags are absent before the initial trigger. The scenario flags describe the launch helper entry after that trigger.",
+      "The delayed Event33 dispatch sets event_cluster_member_fire_context and has no event_cluster_initial_trigger_dispatch flag.",
+      "No unrelated global event or settings change occurs between launch and the declared delayed member."
+    ],
+    "cadence": {
+      "scheduler": "event_cluster_schedule_next_pending_member -> chaosx.event_clusters.2 -> event_cluster_fire_next_pending_member",
+      "tierAssumption": 1,
+      "delayInputsFromSource": { "minimumDays": 5, "maximumDays": 8 },
+      "randomInput": "set_temp_variable_to_random with integer=yes and an exclusive ceiling of maximumDays+1",
+      "terminalState": "All declared selected rows dispatched, pending queue drained, no further member callback for this fixture"
+    },
+    "scheduledStages": {
+      "natural_disasters_without_33": ["accepted Event13 trigger", "cluster launch pacing", "queue terminal"],
+      "natural_disasters_optional_33_after_13": ["accepted Event13 trigger", "cluster launch pacing", "one source-cadence delay", "accepted delayed Event33 member", "queue terminal"],
+      "natural_disasters_33_trigger": ["accepted Event33 trigger", "cluster launch pacing", "one source-cadence delay", "accepted delayed Event13 member", "queue terminal"]
+    },
+    "acceptanceBasis": "User follow-up of 2026-10-03 and Event033 spec Part 7 lines 231-246",
+    "requiredPacing": {
+      "natural_disasters_without_33": "One Minor launch commitment and no delayed Major reset",
+      "natural_disasters_optional_33_after_13": "One Major launch commitment and no delayed Major reset",
+      "natural_disasters_33_trigger": "One Major launch commitment and no delayed Major reset"
+    },
+    "sourceTraceBaseline": {
+      "natural_disasters_without_33": "Minor launch path, no delayed Major member in the fixture",
+      "natural_disasters_optional_33_after_13": "Minor launch path, then reset_major_event_pacing_state at delayed Event33 dispatch",
+      "natural_disasters_33_trigger": "Initial Major flag makes launch take the Major path, delayed Event13 adds no Major reset"
+    },
+    "completeness": {
+      "registeredClusterRowCatalog": "complete source catalog of seven rows",
+      "declaredSelectedQueue": "complete in each fixture",
+      "globalActiveEventPool": "incomplete and outside this conditional pacing fixture",
+      "dynamicMajorGainInputs": "unresolved because active-pool eligibility and source helper execution are not supplied or MCP evaluated",
+      "timerExternalFactors": "Chaos flag binding, live settings, Event008 timer pressure, current timers, and engine rounding have no MCP evidence",
+      "scopeAndValidity": "declared assumptions, not runtime observations"
+    },
+    "uncertainty": "Member delay and timer redraw are source-declared random inputs. No seed, simulation, sequence result, timing distribution, or normalized probability exists.",
+    "comparisonRule": "Reuse this exact saved scenarioSet for before-and-after analysis. Before source paths must name preserved snapshot files. If the live route rejects fixture fields, preserve this version and establish a newly validated before fixture with the same three scenario IDs before comparing."
+  }
+}

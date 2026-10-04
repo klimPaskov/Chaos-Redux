@@ -1,0 +1,66 @@
+{
+  "id": "generic_major_event_id_scratch_mutation_2026_10_03",
+  "disposition": "separate source-corroborated finding, unpatched",
+  "resultClassification": "unresolved for runtime consequences",
+  "source": {
+    "path": "common/scripted_effects/chaosx_logic_effects.txt",
+    "sha256": "C28EE6EAB4A2CEEA866C81CFFD6488E04A0B9D9ED509F650CFDDCC3F49B7548E",
+    "writes": [
+      {
+        "helper": "count_dynamic_major_weight_pool_events",
+        "line": 942,
+        "assignment": "event_id = global.major_events^i"
+      },
+      {
+        "helper": "count_dynamic_major_weight_pool_events",
+        "line": 954,
+        "assignment": "event_id = global.fire_once_events^i"
+      },
+      {
+        "helper": "count_dynamic_major_weight_pool_events",
+        "line": 966,
+        "assignment": "event_id = global.repeatable_events^i"
+      },
+      {
+        "helper": "update_repeatable_event_weights",
+        "line": 1056,
+        "assignment": "event_id = global.repeatable_events^i"
+      },
+      {
+        "helper": "reset_unfired_major_event_weights",
+        "line": 1309,
+        "assignment": "event_id = check_event_id"
+      }
+    ],
+    "affectedCallerBoundaries": [
+      "on_major_event_global_pacing_update",
+      "reset_major_event_pacing_state",
+      "calculate_dynamic_major_weight_gain"
+    ],
+    "majorHandler": "on_major_event_fired at line 1250 sets global.last_fired_event_id at line 1254, invokes pacing helpers, then calls history at line 1294"
+  },
+  "documentation": {
+    "path": "paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md",
+    "sha256": "62273F37ED30E5479ACB331A8973F48DADC1867C4913C8A940E3E790E7AF32D4",
+    "lines": [
+      437,
+      442
+    ],
+    "rule": "A temporary variable declared before a scripted helper is inherited and can be modified within it."
+  },
+  "mitigation": {
+    "path": "common/scripted_effects/chaosx_events_log_effects.txt",
+    "sha256": "DEBAC43A3BB604526EE2C4BB3C8DE5806DFC8C4F40FEF97BB3948B5FF780FCC9",
+    "helper": "record_events_log_history_entry",
+    "lines": [
+      685,
+      686
+    ],
+    "behavior": "Restores event_id from global.last_fired_event_id before appending the history row."
+  },
+  "conclusion": "Shared inherited event_id mutation is corroborated. Current history recording has a restoring step, so no incorrect history row or final handler identity is claimed from this source review alone. Helper-only callers still need an explicit scratch/preservation contract.",
+  "recommendation": "Owner should separately preserve stable event identity at any caller boundary that requires it, or document event_id as scratch state. Do not silently rely on a later history call as a universal restoration mechanism.",
+  "sourcePatchAppliedByAuditor": false,
+  "timingOrBalanceDecision": false,
+  "mcpArtifactURIs": []
+}

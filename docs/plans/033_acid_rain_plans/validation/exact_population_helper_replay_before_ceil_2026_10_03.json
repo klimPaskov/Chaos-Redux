@@ -1,0 +1,950 @@
+{
+  "evidenceKind": "actual_source_replay_with_native_mocks",
+  "sourceHash": "8b4db4f595a607d041d0f072de65dd906cdb10c40246690f78d3e4305dab4d49",
+  "helperBodies": [
+    {
+      "name": "apply_exact_state_civilian_population_loss",
+      "sha256": "eaa37b5174d4aee66b963bc65e0d4f7ff210ff2f120427094d6a7bd078394435"
+    },
+    {
+      "name": "apply_state_population_loss_without_recruitable_manpower_gain",
+      "sha256": "3c265b6ff088ff57a29b213f394d86bd12b9e5ec826707db680bd4ff5e6ad7dd"
+    }
+  ],
+  "mockedBoundary": [
+    "native arithmetic and variable/flag predicates",
+    "native state/country add_manpower",
+    "native state_population_k/manpower_k getters",
+    "out-of-scope chaos_meter_register_deaths call-envelope recorder"
+  ],
+  "scriptedHelperBodiesMocked": [],
+  "unknownCommands": "fail_closed",
+  "limits": [
+    "JS numeric/rounding model is not native fixed-point proof",
+    "population applied and recruitable credit are declared native fixtures",
+    "Deaths consumer body, ledgers, history, and Chaos progression are not executed",
+    "no HOI4 execution or save persistence evidence"
+  ],
+  "negativeControls": [
+    "missing caller output storage",
+    "record-only flag mutation",
+    "observed readback subtraction removed",
+    "controller scope replaced with owner"
+  ],
+  "results": [
+    {
+      "id": "positive_owner",
+      "status": "passed",
+      "applied": 100,
+      "physicalCalls": 1,
+      "events": [
+        {
+          "kind": "native_state_debit",
+          "requested": 100,
+          "applied": 100,
+          "before": 1000
+        },
+        {
+          "kind": "native_country_correction",
+          "country": "OWNER_A",
+          "amount": -20
+        },
+        {
+          "kind": "deaths_consumer",
+          "amount": 100,
+          "reason": 34,
+          "target": "OWNER_A",
+          "hasTarget": 1,
+          "populationAtCall": 900,
+          "applyStatePop": 0,
+          "recordStateLedger": 1
+        }
+      ],
+      "perHelperCleanup": [
+        {
+          "helper": "apply_state_population_loss_without_recruitable_manpower_gain",
+          "scope": "STATE",
+          "droppedKeyCount": 6,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 20,
+          "clearedTransactionLoss": 0
+        },
+        {
+          "helper": "apply_exact_state_civilian_population_loss",
+          "scope": "STATE",
+          "droppedKeyCount": 14,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 20,
+          "clearedTransactionLoss": 0
+        }
+      ]
+    },
+    {
+      "id": "native_zero_application",
+      "status": "passed",
+      "applied": 0,
+      "physicalCalls": 1,
+      "events": [
+        {
+          "kind": "native_state_debit",
+          "requested": 100,
+          "applied": 0,
+          "before": 1000
+        }
+      ],
+      "perHelperCleanup": [
+        {
+          "helper": "apply_state_population_loss_without_recruitable_manpower_gain",
+          "scope": "STATE",
+          "droppedKeyCount": 5,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        },
+        {
+          "helper": "apply_exact_state_civilian_population_loss",
+          "scope": "STATE",
+          "droppedKeyCount": 7,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        }
+      ]
+    },
+    {
+      "id": "partial_owner_controller",
+      "status": "passed",
+      "applied": 41,
+      "physicalCalls": 1,
+      "events": [
+        {
+          "kind": "native_state_debit",
+          "requested": 100,
+          "applied": 41,
+          "before": 1000
+        },
+        {
+          "kind": "native_country_correction",
+          "country": "OWNER_A",
+          "amount": -10
+        },
+        {
+          "kind": "native_country_correction",
+          "country": "CONTROLLER_B",
+          "amount": -7
+        },
+        {
+          "kind": "deaths_consumer",
+          "amount": 41,
+          "reason": 34,
+          "target": "CONTROLLER_B",
+          "hasTarget": 1,
+          "populationAtCall": 959,
+          "applyStatePop": 0,
+          "recordStateLedger": 1
+        }
+      ],
+      "perHelperCleanup": [
+        {
+          "helper": "apply_state_population_loss_without_recruitable_manpower_gain",
+          "scope": "STATE",
+          "droppedKeyCount": 7,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 17,
+          "clearedTransactionLoss": 0
+        },
+        {
+          "helper": "apply_exact_state_civilian_population_loss",
+          "scope": "STATE",
+          "droppedKeyCount": 14,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 17,
+          "clearedTransactionLoss": 0
+        }
+      ]
+    },
+    {
+      "id": "floor_limited",
+      "status": "passed",
+      "applied": 100,
+      "physicalCalls": 1,
+      "events": [
+        {
+          "kind": "native_state_debit",
+          "requested": 100,
+          "applied": 100,
+          "before": 1000
+        },
+        {
+          "kind": "deaths_consumer",
+          "amount": 100,
+          "reason": 34,
+          "target": "OWNER_A",
+          "hasTarget": 1,
+          "populationAtCall": 900,
+          "applyStatePop": 0,
+          "recordStateLedger": 1
+        }
+      ],
+      "perHelperCleanup": [
+        {
+          "helper": "apply_state_population_loss_without_recruitable_manpower_gain",
+          "scope": "STATE",
+          "droppedKeyCount": 5,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        },
+        {
+          "helper": "apply_exact_state_civilian_population_loss",
+          "scope": "STATE",
+          "droppedKeyCount": 14,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        }
+      ]
+    },
+    {
+      "id": "at_floor",
+      "status": "passed",
+      "applied": 0,
+      "physicalCalls": 0,
+      "events": [],
+      "perHelperCleanup": [
+        {
+          "helper": "apply_exact_state_civilian_population_loss",
+          "scope": "STATE",
+          "droppedKeyCount": 4,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        }
+      ]
+    },
+    {
+      "id": "floor_above_population",
+      "status": "passed",
+      "applied": 0,
+      "physicalCalls": 0,
+      "events": [],
+      "perHelperCleanup": [
+        {
+          "helper": "apply_exact_state_civilian_population_loss",
+          "scope": "STATE",
+          "droppedKeyCount": 4,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        }
+      ]
+    },
+    {
+      "id": "fractional_availability_floor",
+      "status": "passed",
+      "applied": 0,
+      "physicalCalls": 0,
+      "events": [],
+      "perHelperCleanup": [
+        {
+          "helper": "apply_exact_state_civilian_population_loss",
+          "scope": "STATE",
+          "droppedKeyCount": 4,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        }
+      ]
+    },
+    {
+      "id": "fractional_availability_whole_debit",
+      "status": "passed",
+      "applied": 1000,
+      "physicalCalls": 1,
+      "events": [
+        {
+          "kind": "native_state_debit",
+          "requested": 1000,
+          "applied": 1000,
+          "before": 1000.75
+        },
+        {
+          "kind": "deaths_consumer",
+          "amount": 1000,
+          "reason": 34,
+          "target": "OWNER_A",
+          "hasTarget": 1,
+          "populationAtCall": 0.75,
+          "applyStatePop": 0,
+          "recordStateLedger": 1
+        }
+      ],
+      "perHelperCleanup": [
+        {
+          "helper": "apply_state_population_loss_without_recruitable_manpower_gain",
+          "scope": "STATE",
+          "droppedKeyCount": 5,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        },
+        {
+          "helper": "apply_exact_state_civilian_population_loss",
+          "scope": "STATE",
+          "droppedKeyCount": 14,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        }
+      ]
+    },
+    {
+      "id": "rounded_request",
+      "status": "passed",
+      "applied": 11,
+      "physicalCalls": 1,
+      "events": [
+        {
+          "kind": "native_state_debit",
+          "requested": 11,
+          "applied": 11,
+          "before": 1000
+        },
+        {
+          "kind": "deaths_consumer",
+          "amount": 11,
+          "reason": 34,
+          "target": "OWNER_A",
+          "hasTarget": 1,
+          "populationAtCall": 989,
+          "applyStatePop": 0,
+          "recordStateLedger": 1
+        }
+      ],
+      "perHelperCleanup": [
+        {
+          "helper": "apply_state_population_loss_without_recruitable_manpower_gain",
+          "scope": "STATE",
+          "droppedKeyCount": 5,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        },
+        {
+          "helper": "apply_exact_state_civilian_population_loss",
+          "scope": "STATE",
+          "droppedKeyCount": 14,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        }
+      ]
+    },
+    {
+      "id": "negative_request",
+      "status": "passed",
+      "applied": 0,
+      "physicalCalls": 0,
+      "events": [],
+      "perHelperCleanup": [
+        {
+          "helper": "apply_exact_state_civilian_population_loss",
+          "scope": "STATE",
+          "droppedKeyCount": 4,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        }
+      ]
+    },
+    {
+      "id": "zero_request",
+      "status": "passed",
+      "applied": 0,
+      "physicalCalls": 0,
+      "events": [],
+      "perHelperCleanup": [
+        {
+          "helper": "apply_exact_state_civilian_population_loss",
+          "scope": "STATE",
+          "droppedKeyCount": 4,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        }
+      ]
+    },
+    {
+      "id": "zero_proof",
+      "status": "passed",
+      "applied": 0,
+      "physicalCalls": 0,
+      "events": [],
+      "perHelperCleanup": [
+        {
+          "helper": "apply_exact_state_civilian_population_loss",
+          "scope": "STATE",
+          "droppedKeyCount": 4,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        }
+      ]
+    },
+    {
+      "id": "log_zero",
+      "status": "passed",
+      "applied": 100,
+      "physicalCalls": 1,
+      "events": [
+        {
+          "kind": "native_state_debit",
+          "requested": 100,
+          "applied": 100,
+          "before": 1000
+        }
+      ],
+      "perHelperCleanup": [
+        {
+          "helper": "apply_state_population_loss_without_recruitable_manpower_gain",
+          "scope": "STATE",
+          "droppedKeyCount": 5,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        },
+        {
+          "helper": "apply_exact_state_civilian_population_loss",
+          "scope": "STATE",
+          "droppedKeyCount": 7,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        }
+      ]
+    },
+    {
+      "id": "logging_disabled",
+      "status": "passed",
+      "applied": 100,
+      "physicalCalls": 1,
+      "events": [
+        {
+          "kind": "native_state_debit",
+          "requested": 100,
+          "applied": 100,
+          "before": 1000
+        }
+      ],
+      "perHelperCleanup": [
+        {
+          "helper": "apply_state_population_loss_without_recruitable_manpower_gain",
+          "scope": "STATE",
+          "droppedKeyCount": 5,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        },
+        {
+          "helper": "apply_exact_state_civilian_population_loss",
+          "scope": "STATE",
+          "droppedKeyCount": 7,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        }
+      ]
+    },
+    {
+      "id": "cold_output_negative_control",
+      "status": "passed",
+      "applied": 100,
+      "physicalCalls": 1,
+      "events": [
+        {
+          "kind": "native_state_debit",
+          "requested": 100,
+          "applied": 100,
+          "before": 1000
+        },
+        {
+          "kind": "deaths_consumer",
+          "amount": 100,
+          "reason": 34,
+          "target": "OWNER_A",
+          "hasTarget": 1,
+          "populationAtCall": 900,
+          "applyStatePop": 0,
+          "recordStateLedger": 1
+        }
+      ],
+      "perHelperCleanup": [
+        {
+          "helper": "apply_state_population_loss_without_recruitable_manpower_gain",
+          "scope": "STATE",
+          "droppedKeyCount": 5,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        },
+        {
+          "helper": "apply_exact_state_civilian_population_loss",
+          "scope": "STATE",
+          "droppedKeyCount": 16,
+          "droppedPublicOutputs": [
+            "state_civilian_population_loss_applied",
+            "state_civilian_population_loss_result"
+          ],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        }
+      ]
+    },
+    {
+      "id": "cold_missing_floor",
+      "status": "passed",
+      "applied": 0,
+      "physicalCalls": 0,
+      "events": [],
+      "perHelperCleanup": [
+        {
+          "helper": "apply_exact_state_civilian_population_loss",
+          "scope": "STATE",
+          "droppedKeyCount": 5,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        }
+      ]
+    },
+    {
+      "id": "ambient_zero_floor_gap",
+      "status": "passed",
+      "policyResolved": false,
+      "applied": 100,
+      "physicalCalls": 1,
+      "events": [
+        {
+          "kind": "native_state_debit",
+          "requested": 100,
+          "applied": 100,
+          "before": 1000
+        },
+        {
+          "kind": "deaths_consumer",
+          "amount": 100,
+          "reason": 34,
+          "target": "OWNER_A",
+          "hasTarget": 1,
+          "populationAtCall": 900,
+          "applyStatePop": 0,
+          "recordStateLedger": 1
+        }
+      ],
+      "perHelperCleanup": [
+        {
+          "helper": "apply_state_population_loss_without_recruitable_manpower_gain",
+          "scope": "STATE",
+          "droppedKeyCount": 5,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        },
+        {
+          "helper": "apply_exact_state_civilian_population_loss",
+          "scope": "STATE",
+          "droppedKeyCount": 14,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        }
+      ]
+    },
+    {
+      "id": "disabled_logging_override_fallout_air_cleanliness_disabled",
+      "status": "passed",
+      "applied": 100,
+      "physicalCalls": 1,
+      "events": [
+        {
+          "kind": "native_state_debit",
+          "requested": 100,
+          "applied": 100,
+          "before": 1000
+        },
+        {
+          "kind": "deaths_consumer",
+          "amount": 100,
+          "reason": 34,
+          "target": "OWNER_A",
+          "hasTarget": 1,
+          "populationAtCall": 900,
+          "applyStatePop": 0,
+          "recordStateLedger": 1
+        }
+      ],
+      "perHelperCleanup": [
+        {
+          "helper": "apply_state_population_loss_without_recruitable_manpower_gain",
+          "scope": "STATE",
+          "droppedKeyCount": 5,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        },
+        {
+          "helper": "apply_exact_state_civilian_population_loss",
+          "scope": "STATE",
+          "droppedKeyCount": 14,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        }
+      ]
+    },
+    {
+      "id": "disabled_logging_override_fallout_transition_active",
+      "status": "passed",
+      "applied": 100,
+      "physicalCalls": 1,
+      "events": [
+        {
+          "kind": "native_state_debit",
+          "requested": 100,
+          "applied": 100,
+          "before": 1000
+        },
+        {
+          "kind": "deaths_consumer",
+          "amount": 100,
+          "reason": 34,
+          "target": "OWNER_A",
+          "hasTarget": 1,
+          "populationAtCall": 900,
+          "applyStatePop": 0,
+          "recordStateLedger": 1
+        }
+      ],
+      "perHelperCleanup": [
+        {
+          "helper": "apply_state_population_loss_without_recruitable_manpower_gain",
+          "scope": "STATE",
+          "droppedKeyCount": 5,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        },
+        {
+          "helper": "apply_exact_state_civilian_population_loss",
+          "scope": "STATE",
+          "droppedKeyCount": 14,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        }
+      ]
+    },
+    {
+      "id": "disabled_logging_override_fallout_active",
+      "status": "passed",
+      "applied": 100,
+      "physicalCalls": 1,
+      "events": [
+        {
+          "kind": "native_state_debit",
+          "requested": 100,
+          "applied": 100,
+          "before": 1000
+        },
+        {
+          "kind": "deaths_consumer",
+          "amount": 100,
+          "reason": 34,
+          "target": "OWNER_A",
+          "hasTarget": 1,
+          "populationAtCall": 900,
+          "applyStatePop": 0,
+          "recordStateLedger": 1
+        }
+      ],
+      "perHelperCleanup": [
+        {
+          "helper": "apply_state_population_loss_without_recruitable_manpower_gain",
+          "scope": "STATE",
+          "droppedKeyCount": 5,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        },
+        {
+          "helper": "apply_exact_state_civilian_population_loss",
+          "scope": "STATE",
+          "droppedKeyCount": 14,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        }
+      ]
+    },
+    {
+      "id": "disabled_logging_override_fallout_manual_scenario_active",
+      "status": "passed",
+      "applied": 100,
+      "physicalCalls": 1,
+      "events": [
+        {
+          "kind": "native_state_debit",
+          "requested": 100,
+          "applied": 100,
+          "before": 1000
+        },
+        {
+          "kind": "deaths_consumer",
+          "amount": 100,
+          "reason": 34,
+          "target": "OWNER_A",
+          "hasTarget": 1,
+          "populationAtCall": 900,
+          "applyStatePop": 0,
+          "recordStateLedger": 1
+        }
+      ],
+      "perHelperCleanup": [
+        {
+          "helper": "apply_state_population_loss_without_recruitable_manpower_gain",
+          "scope": "STATE",
+          "droppedKeyCount": 5,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        },
+        {
+          "helper": "apply_exact_state_civilian_population_loss",
+          "scope": "STATE",
+          "droppedKeyCount": 14,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        }
+      ]
+    },
+    {
+      "id": "disabled_logging_override_fallout_manual_sweep_active",
+      "status": "passed",
+      "applied": 100,
+      "physicalCalls": 1,
+      "events": [
+        {
+          "kind": "native_state_debit",
+          "requested": 100,
+          "applied": 100,
+          "before": 1000
+        },
+        {
+          "kind": "deaths_consumer",
+          "amount": 100,
+          "reason": 34,
+          "target": "OWNER_A",
+          "hasTarget": 1,
+          "populationAtCall": 900,
+          "applyStatePop": 0,
+          "recordStateLedger": 1
+        }
+      ],
+      "perHelperCleanup": [
+        {
+          "helper": "apply_state_population_loss_without_recruitable_manpower_gain",
+          "scope": "STATE",
+          "droppedKeyCount": 5,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        },
+        {
+          "helper": "apply_exact_state_civilian_population_loss",
+          "scope": "STATE",
+          "droppedKeyCount": 14,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        }
+      ]
+    },
+    {
+      "id": "disabled_logging_override_fallout_manual_countdown_active",
+      "status": "passed",
+      "applied": 100,
+      "physicalCalls": 1,
+      "events": [
+        {
+          "kind": "native_state_debit",
+          "requested": 100,
+          "applied": 100,
+          "before": 1000
+        },
+        {
+          "kind": "deaths_consumer",
+          "amount": 100,
+          "reason": 34,
+          "target": "OWNER_A",
+          "hasTarget": 1,
+          "populationAtCall": 900,
+          "applyStatePop": 0,
+          "recordStateLedger": 1
+        }
+      ],
+      "perHelperCleanup": [
+        {
+          "helper": "apply_state_population_loss_without_recruitable_manpower_gain",
+          "scope": "STATE",
+          "droppedKeyCount": 5,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        },
+        {
+          "helper": "apply_exact_state_civilian_population_loss",
+          "scope": "STATE",
+          "droppedKeyCount": 14,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        }
+      ]
+    },
+    {
+      "id": "override_retains_caller_log_zero",
+      "status": "passed",
+      "applied": 100,
+      "physicalCalls": 1,
+      "events": [
+        {
+          "kind": "native_state_debit",
+          "requested": 100,
+          "applied": 100,
+          "before": 1000
+        }
+      ],
+      "perHelperCleanup": [
+        {
+          "helper": "apply_state_population_loss_without_recruitable_manpower_gain",
+          "scope": "STATE",
+          "droppedKeyCount": 5,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        },
+        {
+          "helper": "apply_exact_state_civilian_population_loss",
+          "scope": "STATE",
+          "droppedKeyCount": 7,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        }
+      ]
+    },
+    {
+      "id": "missing_requested",
+      "status": "passed",
+      "applied": 0,
+      "physicalCalls": 0,
+      "events": [],
+      "perHelperCleanup": [
+        {
+          "helper": "apply_exact_state_civilian_population_loss",
+          "scope": "STATE",
+          "droppedKeyCount": 5,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        }
+      ]
+    },
+    {
+      "id": "missing_reason",
+      "status": "passed",
+      "applied": 0,
+      "physicalCalls": 0,
+      "events": [],
+      "perHelperCleanup": [
+        {
+          "helper": "apply_exact_state_civilian_population_loss",
+          "scope": "STATE",
+          "droppedKeyCount": 5,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        }
+      ]
+    },
+    {
+      "id": "missing_log_deaths",
+      "status": "passed",
+      "applied": 0,
+      "physicalCalls": 0,
+      "events": [],
+      "perHelperCleanup": [
+        {
+          "helper": "apply_exact_state_civilian_population_loss",
+          "scope": "STATE",
+          "droppedKeyCount": 5,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        }
+      ]
+    },
+    {
+      "id": "missing_target_country",
+      "status": "passed",
+      "applied": 0,
+      "physicalCalls": 0,
+      "events": [],
+      "perHelperCleanup": [
+        {
+          "helper": "apply_exact_state_civilian_population_loss",
+          "scope": "STATE",
+          "droppedKeyCount": 5,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        }
+      ]
+    },
+    {
+      "id": "missing_has_target_country",
+      "status": "passed",
+      "applied": 0,
+      "physicalCalls": 0,
+      "events": [],
+      "perHelperCleanup": [
+        {
+          "helper": "apply_exact_state_civilian_population_loss",
+          "scope": "STATE",
+          "droppedKeyCount": 5,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        }
+      ]
+    },
+    {
+      "id": "missing_contract_supplied",
+      "status": "passed",
+      "applied": 0,
+      "physicalCalls": 0,
+      "events": [],
+      "perHelperCleanup": [
+        {
+          "helper": "apply_exact_state_civilian_population_loss",
+          "scope": "STATE",
+          "droppedKeyCount": 5,
+          "droppedPublicOutputs": [],
+          "reconciledGain": 0,
+          "clearedTransactionLoss": 0
+        }
+      ]
+    }
+  ]
+}

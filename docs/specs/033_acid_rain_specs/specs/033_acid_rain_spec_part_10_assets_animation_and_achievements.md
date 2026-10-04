@@ -160,10 +160,14 @@ Event 33 requires difficult action-based achievements. The names below are ident
 
 ### `acid_rain_033_three_evacuations`
 
-- Goal: complete valid evacuations in three separate severe forecast states and keep each state below its accepted severe casualty threshold.
+- Goal: complete valid evacuations in three separate severe forecast states and keep each state's final severe-episode deaths strictly below 0.05 percent of its own frozen forecast-time population.
 - Eligibility: three distinct state IDs.
 - Disqualifier: action completes after first severe pulse.
 - Tracking: forecast ID, completion date, state deaths.
+- Threshold: divide each state's frozen forecast population by 10000, then multiply by 5, without rounding the fractional ceiling.
+- Settlement: compare actual helper-applied severe deaths at episode closure separately for each state.
+- Acceptance basis: the parent explicitly accepted this per-state strict 0.05 percent threshold on 2026-10-03 within the user/orchestrator authorization to choose recommended options and fully implement them.
+- Accepted clarification: [achievement threshold and launch-origin addendum](033_acid_rain_achievement_threshold_and_launch_acceptance.md).
 - Visibility: visible.
 - Difficulty: high.
 - Icon: three trucks beneath warning arrows.

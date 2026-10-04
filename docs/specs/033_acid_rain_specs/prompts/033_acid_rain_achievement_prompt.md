@@ -31,9 +31,11 @@ All titles below are working directions. Write final localization from the requi
 ## `acid_rain_033_three_evacuations`
 
 - Title direction: three timely evacuations beat three severe forecasts.
-- Description direction: require three distinct states and a separate accepted casualty threshold for each.
+- Description direction: require three distinct states and final severe-episode deaths strictly below 0.05 percent of each state's own frozen forecast-time population.
 - Eligible countries: any country receiving at least three valid severe forecasts across the event.
-- Unlock: complete valid pre-impact evacuation in three distinct forecast states and keep each below its severe casualty threshold.
+- Unlock: complete valid pre-impact evacuation in three distinct forecast states and keep each state's final actual applied severe deaths strictly below its frozen forecast-time population divided by 10000 and multiplied by 5.
+- Threshold precision: preserve the fractional ceiling, use strict less-than, and settle each state separately at episode closure.
+- Acceptance basis: the parent explicitly accepted this threshold on 2026-10-03 within the user/orchestrator authorization to choose recommended options and fully implement them.
 - Disqualifier: an evacuation completes after that state's first severe pulse.
 - Difficulty and reason: high because forecasts, resources, timing, and state distinction all matter.
 - Visibility: visible.
@@ -129,6 +131,14 @@ All titles below are working directions. Write final localization from the requi
 Use stored facts, not current modifiers alone. Allocate aligned variables or arrays for every baseline, state set, episode, visit, date, deadline, progress value, completion, and disqualification reason. Separate Event 33 generations. Prevent one action receipt from satisfying two incompatible requirements. State transfer must move responsibility once and cannot award two countries. Tag switching follows the shared achievement ownership contract.
 
 Cluster and independent launches remain eligible. Debug triggers, forced setup shortcuts, and invalid migration data set the shared disqualifier. Save and reload preserve all progress. Old saves initialize without invented progress. Administrative cleanup settles pending achievements honestly.
+
+The parent dispatcher arms the root recipient with `acid_rain_launch_authorized` for a normal accepted launch and `acid_rain_launch_forced` for a manual accepted launch.
+At a new runtime start, root Event033 latches `acid_rain_forced_generation` when the forced marker exists, the authorized marker is absent, or the recipient is CXT.
+A normal authorized start clears that global origin flag.
+Every root entry consumes both country markers, while a duplicate entry during an active runtime preserves the existing generation origin.
+Every initialized country reads that durable origin and receives the forced disqualifier when it is set, including countries joining later.
+The CXT debug disqualifier remains separate.
+This launch protocol and the per-state threshold have explicit parent acceptance in [the accepted addendum](../specs/033_acid_rain_achievement_threshold_and_launch_acceptance.md).
 
 Update achievements only from relevant Event 33 edges and bounded deadlines. Do not create a global daily achievement scan. Register one completion through the accepted framework, expose visible and revealed achievements in Event Details, and record each 64 by 64 DDS icon in the asset manifest.
 

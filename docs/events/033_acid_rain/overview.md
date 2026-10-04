@@ -1,6 +1,9 @@
 # Event 033 Acid Rain
 
-Event 033 is a Major Chaos level 2 member of Severe Natural Disasters. It can fire independently or as the sixth optional cluster member after Event 13's five logical slots, and both routes enter the same host-authoritative generation runtime. A cluster queue reserves its launch, while major-event weights and the event timer reset only when Event 33 actually dispatches.
+Event 033 is a Major Chaos level 2 member of Severe Natural Disasters.
+It can fire independently or as the sixth optional cluster member after Event 13's five logical slots, and both routes enter the same host-authoritative generation runtime.
+A validated queue containing Event 33 reserves its launch and commits Major pacing once when the cluster launches successfully.
+Its delayed Acid Rain member uses the stored batch receipt to record its own firing without another Major reset.
 
 ## Player loop
 
@@ -47,11 +50,46 @@ The scripted GUI reads projected values only. Opening the Acid Rain dashboard fr
 
 Event, report, news, and super-event scenes live under `gfx/event_pictures/` and are registered by `interface/033_acid_rain.gfx`. Their stable consumers include `GFX_super_event_033_acid_rain`, the arrival, warning, severe, shelter, transport, dissipation, and global event sprites, and the regional and global news sprites.
 
-The Acid Rain dashboard uses `gfx/interface/033_acid_rain/gui/` for the base map, seven region overlays, coverage and phase veils, front and warning markers, card backgrounds, coverage meters, the Preparedness badge, and component pips. Animated source frames and final sheets live under `gfx/interface/033_acid_rain/animation/`; their registered sprite identifiers retain static DDS fallbacks for consumers that cannot animate.
+The Acid Rain dashboard uses `gfx/interface/033_acid_rain/gui/` for the base map, seven region overlays, coverage and phase veils, front and warning markers, card backgrounds, coverage meters, the Preparedness badge, and component pips.
+The animation registrations target `gfx/interface/033_acid_rain/animation/` for four frame sheets and four static accessibility representatives.
+All eight runtime files have been delivered at their registered paths.
+The front, warning, and severe packages have individual parent source/processed/decoded review; prompt recovery, timed playback, static selection, and consumer-render acceptance remain open.
+The global animation is not accepted because its continuous curtain differs from the separated-cloud frame plan and can obscure the map.
+The art owner is repairing that package and reviewing both static veils against the actual map.
 
 National-response decision icons live with the Event 033 interface assets and use stable per-decision identifiers. Achievement art consists of one normal, one grey, and one not-eligible DDS for each of the ten `acid_rain_033_*` achievement identifiers under `gfx/achievements/`.
 
 Source, rights, generation, processing, alpha, checksum, uniqueness, and handoff evidence belongs under `docs/assets/033_acid_rain/`.
+
+The prototype decision icons, seven prototype region pictures, and three prototype report/news pictures have no current gameplay consumers.
+Their unused shared registrations and the unbound prototype map window are retired.
+The 35 retired DDS files are recoverable beneath `docs/assets/033_acid_rain/retired_runtime/` and are absent from their former shipped `gfx/` paths.
+They must not be represented as final art.
+The row-level record is [prototype presentation retirement](../../plans/033_acid_rain_plans/validation/033_acid_rain_legacy_asset_retirement.md).
+
+## Implementation evidence and validation limits
+
+The source implements the regional runtime, shared mortality gateway, Air request cap, national response decisions, and cumulative evolution paths described above.
+The description states the intended integrated behavior and does not establish that every acceptance gate has passed.
+The achievement integration handoff contains all ten authoritative bridge contracts and the accepted per-state evacuation threshold and durable forced-launch origin.
+Parent source review and runtime award evidence remain required.
+The dedicated GUI source repair and Event Details opener are present, while the mandatory matched render, resolution, scale, click-region, and static-accessibility gates remain open.
+Animation and veil acceptance has the limits listed in the visual inventory above.
+The shared population helper applies physical state loss first, reads back the observed decrease, and uses record-only Deaths registration; cross-system caller review and observed engine population proof remain required.
+Event Details and evolution text branches and conditional cost-family localisation exist, but displayed quotes still require comparison with the selected row's affordability and payment contract.
+Previous synthetic movement and cap results model the invariants and do not prove executed state-population removal, save migration, reload, multiplayer behavior, or engine performance.
+The final probability review and completion auditor evidence remain required.
+The improvement-loop handoff identifies departure aftermath, separate episode casualty caps, damage replay, paid-job continuity, response concurrency, and unreachable public quote/target paths.
+The accepted consequence repair is recorded in `docs/specs/033_acid_rain_specs/specs/033_acid_rain_consequence_repair_acceptance_2026_10_03.md`; implementation and affected checks remain in progress.
+The exact three-day forecast versus seven-day evacuation timing conflict remains unresolved.
+Audio source rights, installed hashes, and uniqueness have been rechecked, but actual full-recording listening is not proven by the retained waveform/spectrogram evidence and remains an acceptance gate.
+The Event 033 goal is incomplete.
+
+Prototype migration retains only acute `acid_rain_state` exposure as coverage and removes cloud presentation separately.
+Legacy timer identifiers exist only for native save lookup, with activation blocked and all former weather callbacks absent.
+Native mission removal runs through the existing migration state pass and formation country census.
+The current synthetic suite and source-contract checks pass after the mixed-Major source repair.
+Its before/after probability comparison and executed acceptance remain open with the other listed gates.
 
 ## Future extensions
 

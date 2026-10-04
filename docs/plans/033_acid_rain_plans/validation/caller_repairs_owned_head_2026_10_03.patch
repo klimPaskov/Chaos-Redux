@@ -1,0 +1,188 @@
+diff --git a/common/scripted_effects/020_black_plague_effects.txt b/common/scripted_effects/020_black_plague_effects.txt
+--- a/common/scripted_effects/020_black_plague_effects.txt
++++ b/common/scripted_effects/020_black_plague_effects.txt
+@@ -1448,7 +1448,7 @@ black_plague_apply_current_state_mortality_once = {
+ 				set_temp_variable = { famine_adapter_policy_proven = black_plague_phase }
+ 			}
+ 			set_temp_variable = { famine_adapter_actor_proven = event_target:famine_adapter_actor.id }
+-			set_temp_variable = { famine_adapter_cause_proven = state_civilian_population_loss_reason }
++			set_temp_variable = { famine_adapter_cause_proven = constant:chaos_meter_deaths_reason.black_plague }
+ 			set_temp_variable = { famine_adapter_source_proven = black_plague_provenance }
+ 			if = {
+ 				limit = { NOT = { check_variable = { black_plague_provenance > constant:black_plague_value.zero } } }
+diff --git a/common/scripted_effects/020_black_plague_scenario_effects.txt b/common/scripted_effects/020_black_plague_scenario_effects.txt
+--- a/common/scripted_effects/020_black_plague_scenario_effects.txt
++++ b/common/scripted_effects/020_black_plague_scenario_effects.txt
+@@ -309,6 +309,8 @@ black_plague_scenario_seed_state = {
+ 		set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
+ 		set_temp_variable = { state_civilian_population_loss_has_target_country = constant:black_plague_value.one }
+ 		set_temp_variable = { state_civilian_population_loss_contract_supplied = constant:black_plague_value.one }
++		set_temp_variable = { state_civilian_population_loss_applied = constant:chaos_meter_deaths.zero }
++		set_temp_variable = { state_civilian_population_loss_result = constant:chaos_meter_deaths.zero }
+ 		apply_exact_state_civilian_population_loss = yes
+ 		if = {
+ 			limit = { check_variable = { state_civilian_population_loss_applied > constant:black_plague_value.zero } }
+diff --git a/common/scripted_effects/029_riches_found_harm_effects.txt b/common/scripted_effects/029_riches_found_harm_effects.txt
+--- a/common/scripted_effects/029_riches_found_harm_effects.txt
++++ b/common/scripted_effects/029_riches_found_harm_effects.txt
+@@ -40,6 +40,8 @@ riches_found_apply_harm_record = {
+ 		set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
+ 		set_temp_variable = { state_civilian_population_loss_has_target_country = constant:riches_found_value.one }
+ 		set_temp_variable = { state_civilian_population_loss_contract_supplied = constant:riches_found_value.one }
++		set_temp_variable = { state_civilian_population_loss_applied = constant:chaos_meter_deaths.zero }
++		set_temp_variable = { state_civilian_population_loss_result = constant:chaos_meter_deaths.zero }
+ 		apply_exact_state_civilian_population_loss = yes
+ 		set_variable = { riches_found_harm_applied = state_civilian_population_loss_applied }
+ 		if = {
+diff --git a/common/scripted_effects/fallout_consolidated_effects.txt b/common/scripted_effects/fallout_consolidated_effects.txt
+--- a/common/scripted_effects/fallout_consolidated_effects.txt
++++ b/common/scripted_effects/fallout_consolidated_effects.txt
+@@ -4041,7 +4041,7 @@ air_winter_apply_state_population_loss = {
+ 				set_temp_variable = { famine_adapter_transport_proven = air_winter_shelter_capacity }
+ 				set_temp_variable = { famine_adapter_policy_proven = air_winter_adaptation }
+ 				set_temp_variable = { famine_adapter_actor_proven = event_target:famine_adapter_actor.id }
+-				set_temp_variable = { famine_adapter_cause_proven = state_civilian_population_loss_reason }
++				set_temp_variable = { famine_adapter_cause_proven = constant:chaos_meter_deaths_reason.air_winter_exposure }
+ 				set_temp_variable = { famine_adapter_source_proven = air_winter_phase }
+ 				set_temp_variable = { famine_adapter_generation = global.air_winter_cycle_id }
+ 				set_temp_variable = { famine_adapter_revision = air_winter_population_loss_memory }
+@@ -38619,6 +39829,8 @@ fallout_event_230_apply_movement_shares = {
+ 		set_temp_variable = { state_civilian_population_loss_log_deaths = constant:fallout_event_runtime.zero }
+ 		set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
+ 		set_temp_variable = { state_civilian_population_loss_has_target_country = constant:fallout_event_runtime.one }
++		set_temp_variable = { state_civilian_population_loss_applied = constant:chaos_meter_deaths.zero }
++		set_temp_variable = { state_civilian_population_loss_result = constant:chaos_meter_deaths.zero }
+ 		apply_exact_state_civilian_population_loss = yes
+ 		set_variable = { ROOT.fallout_event_230_population_applied = state_civilian_population_loss_applied }
+ 	}
+@@ -38629,7 +39841,7 @@ fallout_event_230_apply_movement_shares = {
+ 	set_variable = { fallout_event_230_population_deaths_applied = fallout_event_230_population_deaths }
+ 	if = {
+ 		limit = { check_variable = { fallout_event_230_population_moved > constant:fallout_event_runtime.zero } }
+-		var:fallout_event_230_destination_state_id = { add_manpower = var:ROOT.fallout_event_230_population_moved }
++		var:fallout_event_230_destination_state_id = { add_manpower = var:fallout_event_230_population_moved }
+ 	}
+ 	if = {
+ 		limit = { check_variable = { fallout_event_230_population_deaths > constant:fallout_event_runtime.zero } }
+@@ -60171,6 +61383,8 @@ fallout_orientation_record_country_deaths = {
+ 			set_temp_variable = { state_civilian_population_loss_log_deaths = constant:fallout_orientation_runtime.zero }
+ 			set_temp_variable = { state_civilian_population_loss_target_country = var:fallout_orientation_death_country_scope }
+ 			set_temp_variable = { state_civilian_population_loss_has_target_country = constant:fallout_orientation_runtime.one }
++			set_temp_variable = { state_civilian_population_loss_applied = constant:chaos_meter_deaths.zero }
++			set_temp_variable = { state_civilian_population_loss_result = constant:chaos_meter_deaths.zero }
+ 			apply_exact_state_civilian_population_loss = yes
+ 			add_to_temp_variable = { fallout_orientation_death_applied_total = state_civilian_population_loss_applied }
+ 			subtract_from_temp_variable = { fallout_orientation_death_remaining = state_civilian_population_loss_applied }
+@@ -60211,14 +61425,16 @@ fallout_orientation_record_state_deaths = {
+ 	round_temp_variable = fallout_orientation_state_death_request
+ 	var:fallout_orientation_state_target = {
+ 		set_temp_variable = { state_civilian_population_loss_contract_supplied = constant:fallout_orientation_runtime.one }
+-		set_temp_variable = { state_civilian_population_loss_requested = ROOT.fallout_orientation_state_death_request }
++		set_temp_variable = { state_civilian_population_loss_requested = fallout_orientation_state_death_request }
+ 		set_temp_variable = { state_civilian_population_loss_minimum_remaining = constant:fallout_orientation_runtime.minimum_remaining_people }
+ 		set_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.fallout_aftermath }
+ 		set_temp_variable = { state_civilian_population_loss_log_deaths = constant:fallout_orientation_runtime.one }
+ 		set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
+ 		set_temp_variable = { state_civilian_population_loss_has_target_country = constant:fallout_orientation_runtime.one }
++		set_temp_variable = { state_civilian_population_loss_applied = constant:chaos_meter_deaths.zero }
++		set_temp_variable = { state_civilian_population_loss_result = constant:chaos_meter_deaths.zero }
+ 		apply_exact_state_civilian_population_loss = yes
+-		set_variable = { ROOT.fallout_orientation_deaths_requested = ROOT.fallout_orientation_state_death_request }
++		set_variable = { ROOT.fallout_orientation_deaths_requested = fallout_orientation_state_death_request }
+ 		set_variable = { ROOT.fallout_orientation_deaths_applied = state_civilian_population_loss_applied }
+ 		set_variable = { ROOT.fallout_orientation_current_result_deaths_applied = state_civilian_population_loss_applied }
+ 	}
+@@ -60411,12 +61627,14 @@ fallout_orientation_apply_capital_evacuation = {
+ 	if = { limit = { check_variable = { fallout_orientation_migration_deaths > fallout_orientation_migration_total_request } } set_temp_variable = { fallout_orientation_migration_deaths = fallout_orientation_migration_total_request } }
+ 	var:fallout_orientation_state_target = {
+ 		set_temp_variable = { state_civilian_population_loss_contract_supplied = constant:fallout_orientation_runtime.one }
+-		set_temp_variable = { state_civilian_population_loss_requested = ROOT.fallout_orientation_migration_total_request }
++		set_temp_variable = { state_civilian_population_loss_requested = fallout_orientation_migration_total_request }
+ 		set_temp_variable = { state_civilian_population_loss_minimum_remaining = constant:fallout_orientation_runtime.minimum_remaining_people }
+ 		set_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.fallout_aftermath }
+ 		set_temp_variable = { state_civilian_population_loss_log_deaths = constant:fallout_orientation_runtime.zero }
+ 		set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
+ 		set_temp_variable = { state_civilian_population_loss_has_target_country = constant:fallout_orientation_runtime.one }
++		set_temp_variable = { state_civilian_population_loss_applied = constant:chaos_meter_deaths.zero }
++		set_temp_variable = { state_civilian_population_loss_result = constant:chaos_meter_deaths.zero }
+ 		apply_exact_state_civilian_population_loss = yes
+ 		set_variable = { ROOT.fallout_orientation_migration_applied = state_civilian_population_loss_applied }
+ 	}
+@@ -60427,7 +61645,7 @@ fallout_orientation_apply_capital_evacuation = {
+ 	set_variable = { fallout_orientation_migration_applied = fallout_orientation_migration_total_applied }
+ 	set_variable = { fallout_orientation_migration_moved = fallout_orientation_migration_movement }
+ 	set_variable = { fallout_orientation_migration_deaths_applied = fallout_orientation_migration_deaths }
+-	if = { limit = { check_variable = { fallout_orientation_migration_movement > constant:fallout_orientation_runtime.zero } } var:fallout_orientation_receiving_state_target = { add_manpower = var:ROOT.fallout_orientation_migration_movement } }
++	if = { limit = { check_variable = { fallout_orientation_migration_movement > constant:fallout_orientation_runtime.zero } } var:fallout_orientation_receiving_state_target = { add_manpower = var:fallout_orientation_migration_movement } }
+ 	if = { limit = { check_variable = { fallout_orientation_migration_deaths > constant:fallout_orientation_runtime.zero } } set_temp_variable = { fallout_orientation_death_count = fallout_orientation_migration_deaths } fallout_orientation_record_exact_country_deaths = yes }
+ 	if = {
+ 		limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.success } }
+@@ -70617,6 +71835,8 @@ fallout_event_100_apply_requisition_failure_deaths = {
+ 			set_temp_variable = { state_civilian_population_loss_log_deaths = constant:fallout_event_runtime.one }
+ 			set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
+ 			set_temp_variable = { state_civilian_population_loss_has_target_country = constant:fallout_event_runtime.one }
++			set_temp_variable = { state_civilian_population_loss_applied = constant:chaos_meter_deaths.zero }
++			set_temp_variable = { state_civilian_population_loss_result = constant:chaos_meter_deaths.zero }
+ 			apply_exact_state_civilian_population_loss = yes
+ 			add_to_variable = { ROOT.fallout_event_100_deaths_applied = state_civilian_population_loss_applied }
+ 		}
+@@ -80505,6 +81725,8 @@ fallout_event_243_apply_failure_deaths_and_damage = {
+ 			set_temp_variable = { state_civilian_population_loss_log_deaths = constant:fallout_event_runtime.zero }
+ 			set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
+ 			set_temp_variable = { state_civilian_population_loss_has_target_country = constant:fallout_event_runtime.one }
++			set_temp_variable = { state_civilian_population_loss_applied = constant:chaos_meter_deaths.zero }
++			set_temp_variable = { state_civilian_population_loss_result = constant:chaos_meter_deaths.zero }
+ 			apply_exact_state_civilian_population_loss = yes
+ 			set_variable = { ROOT.fallout_event_243_deaths_applied_count = state_civilian_population_loss_applied }
+ 			if = {
+@@ -107796,6 +109018,8 @@ fallout_event_499_apply_migration = {
+ 			set_temp_variable = { state_civilian_population_loss_log_deaths = constant:fallout_event_runtime.zero }
+ 			set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
+ 			set_temp_variable = { state_civilian_population_loss_has_target_country = constant:fallout_event_runtime.one }
++			set_temp_variable = { state_civilian_population_loss_applied = constant:chaos_meter_deaths.zero }
++			set_temp_variable = { state_civilian_population_loss_result = constant:chaos_meter_deaths.zero }
+ 			apply_exact_state_civilian_population_loss = yes
+ 			set_variable = { ROOT.fallout_event_499_migration_applied = state_civilian_population_loss_applied }
+ 			set_temp_variable = { fallout_event_499_migration_requested = 0 }
+diff --git a/common/scripted_effects/famine_adapter_effects.txt b/common/scripted_effects/famine_adapter_effects.txt
+--- a/common/scripted_effects/famine_adapter_effects.txt
++++ b/common/scripted_effects/famine_adapter_effects.txt
+@@ -563,10 +563,9 @@ famine_apply_related_state_deaths_exact = {
+ 		set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
+ 		set_temp_variable = { state_civilian_population_loss_has_target_country = constant:chaos_meter_deaths.one }
+ 		set_temp_variable = { state_civilian_population_loss_contract_supplied = constant:chaos_meter_deaths.one }
+-		if = {
+-			limit = { check_variable = { humanitarian_related_deaths_minimum_remaining > constant:humanitarian_population.zero } }
+-			set_temp_variable = { state_civilian_population_loss_minimum_remaining = humanitarian_related_deaths_minimum_remaining }
+-		}
++		set_temp_variable = { state_civilian_population_loss_minimum_remaining = humanitarian_related_deaths_minimum_remaining }
++		set_temp_variable = { state_civilian_population_loss_applied = constant:chaos_meter_deaths.zero }
++		set_temp_variable = { state_civilian_population_loss_result = constant:chaos_meter_deaths.zero }
+ 		apply_exact_state_civilian_population_loss = yes
+ 		set_temp_variable = { famine_related_deaths_applied = state_civilian_population_loss_applied }
+ 	}
+diff --git a/common/scripted_effects/famine_core_effects.txt b/common/scripted_effects/famine_core_effects.txt
+--- a/common/scripted_effects/famine_core_effects.txt
++++ b/common/scripted_effects/famine_core_effects.txt
+@@ -2630,6 +2630,8 @@ famine_apply_mortality = {
+ 				set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
+ 				set_temp_variable = { state_civilian_population_loss_has_target_country = constant:chaos_meter_deaths.one }
+ 				set_temp_variable = { state_civilian_population_loss_contract_supplied = constant:chaos_meter_deaths.one }
++				set_temp_variable = { state_civilian_population_loss_applied = constant:chaos_meter_deaths.zero }
++				set_temp_variable = { state_civilian_population_loss_result = constant:chaos_meter_deaths.zero }
+ 				apply_exact_state_civilian_population_loss = yes
+ 				set_variable = { famine_last_deaths_applied = state_civilian_population_loss_applied }
+ 				add_to_variable = { famine_total_deaths = state_civilian_population_loss_applied }
+diff --git a/common/scripted_effects/migration_adapter_effects.txt b/common/scripted_effects/migration_adapter_effects.txt
+--- a/common/scripted_effects/migration_adapter_effects.txt
++++ b/common/scripted_effects/migration_adapter_effects.txt
+@@ -59,6 +59,8 @@ migration_apply_related_state_deaths_exact = {
+ 		set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
+ 		set_temp_variable = { state_civilian_population_loss_has_target_country = constant:chaos_meter_deaths.one }
+ 		set_temp_variable = { state_civilian_population_loss_contract_supplied = constant:chaos_meter_deaths.one }
++		set_temp_variable = { state_civilian_population_loss_applied = constant:chaos_meter_deaths.zero }
++		set_temp_variable = { state_civilian_population_loss_result = constant:chaos_meter_deaths.zero }
+ 		apply_exact_state_civilian_population_loss = yes
+ 		set_temp_variable = { migration_related_deaths_applied = state_civilian_population_loss_applied }
+ 	}
+
