@@ -191,6 +191,17 @@ random_terror_state_transport_protected = {
 	}
 }
 
+# STATE scope, ROOT = a Shadow Council actor.  A crisis state outside the
+# actor's control that its government has swept for cells: a connected cell
+# there can still be moved before the next raid.
+random_terror_state_is_threatened_cell = {
+	NOT = { is_controlled_by = ROOT }
+	random_terror_state_is_active_crisis = yes
+	has_state_flag = random_terror_intelligence_sweep_completed
+	NOT = { has_state_flag = random_terror_cell_relocated }
+	NOT = { has_state_flag = random_terror_state_lost_local_control }
+}
+
 # Any scope.  Event 31 remains enabled in the Event Logs settings.
 random_terror_event_is_enabled = {
 	NOT = {

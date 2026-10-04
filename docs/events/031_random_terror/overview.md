@@ -114,6 +114,14 @@ An ordinary spawn (`random_terror_state_can_spawn_actor`) never takes the parent
 When a capital reaches Lost Local Control and cannot secede, its government faces a coup attempt, and the ordinary civil-war check carries any other blocked state.
 Every new actor, ordinary or created by Global Jihad, declares war on its parent through `random_terror_actor_declare_parent_war` when the game allows it, which opens the retake, isolation and offensive actions.
 
+Actor actions perform their matrix operations with existing units and buildings.
+`random_terror_actor_raise_formation` raises one formation of the carriers' shared `Infantry Division` template through `create_unit`, using the start factors and ids in the `random_terror_unit` constants, and the formation actions stay below `actor_division_cap` divisions.
+Raise Local Militia forms an under-strength militia keyed to its state and marks the state for conversion, Integrate Defectors forms one seasoned formation, Convert the Militia retires that state's militia by id and trains one regular formation in its place, and Recruit Foreign Fighters gives a net manpower and equipment intake with one experienced volunteer formation.
+Repair a Captured Depot rebuilds the depot as an arms factory, or as infrastructure when no factory slot is free, and Build a Civil Administration rebuilds infrastructure while raising Territorial Control and Network Authority.
+Relocate the Network moves a cell out of a crisis state its government has swept (`random_terror_cell_relocated`), so the next government raid there can at best be a partial success.
+Military Reinforcement keeps the government's state from falling into Lost Local Control for `reinforcement_days` (`random_terror_state_reinforced`).
+When focuses reuse these helpers without a target state, the formation forms in the actor's own provinces and the building work goes to a damaged depot or the capital.
+
 The three starting spirits are replaced by the route focuses.
 Actor decisions run `random_terror_refresh_actor_lifecycles`, which owns only a failure overlay: when Territorial Control, Network Authority or External Supply falls below the low band it adds the matching failure spirits that are absent and marks them with `random_terror_lifecycle_owns_<idea>` flags, and recovery removes only those owned spirits, so focus rewards are never stripped.
 

@@ -320,6 +320,7 @@ random_terror_update_state_stage = {
 		limit = {
 			check_variable = { random_terror_state_activity > constant:random_terror_value.minimum_pressure_for_territory }
 			check_variable = { random_terror_state_pressure > constant:random_terror_value.minimum_pressure_for_territory }
+			NOT = { has_state_flag = random_terror_state_reinforced }
 		}
 		set_variable = { random_terror_state_stage = constant:random_terror_state_stage.lost_local_control }
 		set_state_flag = random_terror_state_lost_local_control
@@ -2687,8 +2688,6 @@ random_terror_decision_quiet_sponsor_leverage = {
 
 random_terror_decision_military_reinforcement = {
 	random_terror_response_reduce_target = yes
-	add_manpower = constant:random_terror_tuning.government_military_manpower
-	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:random_terror_tuning.government_military_equipment }
 	set_country_flag = random_terror_military_reinforcement_active
 	random_terror_response_action_lock = yes
 }
@@ -2772,6 +2771,64 @@ random_terror_decision_security_reform = {
 # ideology.  The fictional religious branch records opposition explicitly
 # when it is entered, so its presence never becomes a baseline target weight.
 
+# COUNTRY scope: an actor, ROOT of the calling decision or focus.  Raises one
+# formation of the carrier's shared "Infantry Division" template.  Inputs
+# (temp): random_terror_unit_experience, random_terror_unit_equipment,
+# random_terror_unit_manpower and random_terror_unit_id.  With a saved
+# random_terror_action_state the formation musters there; otherwise it forms
+# in the actor's own provinces.  Callers keep the actor under
+# actor_division_cap.
+random_terror_actor_raise_formation = {
+	if = {
+		limit = { has_event_target = random_terror_action_state }
+		meta_effect = {
+			text = {
+				event_target:random_terror_action_state = {
+					create_unit = {
+						division = "division_template = \"Infantry Division\" start_experience_factor = [RT_EXPERIENCE] start_equipment_factor = [RT_EQUIPMENT] start_manpower_factor = [RT_MANPOWER]"
+						owner = ROOT
+						allow_spawning_on_enemy_provs = no
+						id = [RT_UNIT_ID]
+					}
+				}
+			}
+			RT_EXPERIENCE = "[?random_terror_unit_experience|.2]"
+			RT_EQUIPMENT = "[?random_terror_unit_equipment|.2]"
+			RT_MANPOWER = "[?random_terror_unit_manpower|.2]"
+			RT_UNIT_ID = "[?random_terror_unit_id|.0]"
+		}
+	}
+	else = {
+		meta_effect = {
+			text = {
+				create_unit = {
+					division = "division_template = \"Infantry Division\" start_experience_factor = [RT_EXPERIENCE] start_equipment_factor = [RT_EQUIPMENT] start_manpower_factor = [RT_MANPOWER]"
+					owner = ROOT
+					allow_spawning_on_enemy_provs = no
+					id = [RT_UNIT_ID]
+				}
+			}
+			RT_EXPERIENCE = "[?random_terror_unit_experience|.2]"
+			RT_EQUIPMENT = "[?random_terror_unit_equipment|.2]"
+			RT_MANPOWER = "[?random_terror_unit_manpower|.2]"
+			RT_UNIT_ID = "[?random_terror_unit_id|.0]"
+		}
+	}
+}
+
+# Sets random_terror_unit_id to base + the action state's id, so each state's
+# militia can later be converted without touching any other formation.
+# Input: temp random_terror_unit_id holding the base.
+random_terror_actor_key_unit_to_action_state = {
+	if = {
+		limit = { has_event_target = random_terror_action_state }
+		event_target:random_terror_action_state = {
+			set_temp_variable = { random_terror_unit_state_key = THIS }
+		}
+		add_to_temp_variable = { random_terror_unit_id = random_terror_unit_state_key }
+	}
+}
+
 random_terror_actor_action_common = {
 	set_temp_variable = { random_terror_actor_action_lock_duration = constant:random_terror_tuning.actor_action_cooldown_days }
 	set_country_flag = { flag = random_terror_actor_action_lock days = random_terror_actor_action_lock_duration }
@@ -2782,23 +2839,67 @@ random_terror_actor_action_common = {
 	random_terror_refresh_actor_lifecycles = yes
 }
 
+# One under-strength local militia.  In a targeted state it is keyed to that
+# state and marks it for later conversion.
 random_terror_actor_raise_local_militia = {
 	add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_militia_gain }
-	add_manpower = constant:random_terror_cost.actor_militia_manpower
-	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:random_terror_cost.actor_militia_equipment }
+	set_temp_variable = { random_terror_unit_experience = constant:random_terror_unit.militia_experience }
+	set_temp_variable = { random_terror_unit_equipment = constant:random_terror_unit.militia_equipment }
+	set_temp_variable = { random_terror_unit_manpower = constant:random_terror_unit.militia_manpower }
+	set_temp_variable = { random_terror_unit_id = constant:random_terror_unit.militia_id_base }
+	random_terror_actor_key_unit_to_action_state = yes
+	random_terror_actor_raise_formation = yes
+	if = {
+		limit = { has_event_target = random_terror_action_state }
+		event_target:random_terror_action_state = { set_state_flag = random_terror_actor_militia_present }
+	}
 	random_terror_actor_action_common = yes
 }
 
+# Defecting personnel arrive as one seasoned formation.
 random_terror_actor_integrate_defectors = {
-	add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.actor_authority_defector_gain }
 	add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_defector_gain }
 	set_country_flag = random_terror_military_defection_recorded
+	set_temp_variable = { random_terror_unit_experience = constant:random_terror_unit.defector_experience }
+	set_temp_variable = { random_terror_unit_equipment = constant:random_terror_unit.defector_equipment }
+	set_temp_variable = { random_terror_unit_manpower = constant:random_terror_unit.defector_manpower }
+	set_temp_variable = { random_terror_unit_id = constant:random_terror_unit.defector_id }
+	random_terror_actor_raise_formation = yes
 	random_terror_actor_action_common = yes
 }
 
+# Restores the damaged depot as a working arms factory, or as road and rail
+# capacity when the state has no free factory slot.
 random_terror_actor_repair_captured_depot = {
 	add_to_variable = { random_terror_external_supply = constant:random_terror_tuning.actor_supply_depot_gain }
-	set_country_flag = random_terror_captured_depot_repaired
+	if = {
+		limit = { NOT = { has_event_target = random_terror_action_state } }
+		if = {
+			limit = {
+				any_owned_state = {
+					is_controlled_by = ROOT
+					has_state_flag = random_terror_depot_compromised
+				}
+			}
+			random_owned_controlled_state = {
+				limit = { has_state_flag = random_terror_depot_compromised }
+				save_event_target_as = random_terror_action_state
+				clr_state_flag = random_terror_depot_compromised
+			}
+		}
+		else = {
+			capital_scope = { save_event_target_as = random_terror_action_state }
+		}
+	}
+	event_target:random_terror_action_state = {
+		if = {
+			limit = { free_building_slots = { building = arms_factory size > 0 } }
+			add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+		}
+		else = {
+			add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+		}
+	}
 	random_terror_actor_action_common = yes
 }
 
@@ -2819,15 +2920,57 @@ random_terror_actor_support_foreign_cell = {
 	random_terror_actor_action_common = yes
 }
 
+# Moves one threatened cell out of a state the government has swept.  The
+# next government raid there finds empty safe houses and can at best be a
+# partial success.  The move costs the command some local hold.
 random_terror_actor_relocate_network = {
-	set_country_flag = random_terror_network_relocated
+	if = {
+		limit = { NOT = { has_event_target = random_terror_action_state } }
+		random_state = {
+			limit = {
+				random_terror_state_is_active_crisis = yes
+				has_state_flag = random_terror_intelligence_sweep_completed
+				NOT = { has_state_flag = random_terror_cell_relocated }
+				NOT = { is_controlled_by = ROOT }
+			}
+			save_event_target_as = random_terror_action_state
+		}
+	}
+	if = {
+		limit = { has_event_target = random_terror_action_state }
+		event_target:random_terror_action_state = { set_state_flag = random_terror_cell_relocated }
+	}
+	subtract_from_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_minor_gain }
 	random_terror_actor_action_common = yes
 }
 
+# Retrains the militia of the targeted state into one regular formation: the
+# militia raised there (keyed by state) is retired and replaced, so no unit is
+# duplicated.  Without a target state, as a focus reward, it trains one new
+# regular formation.
 random_terror_actor_convert_militia = {
 	add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_convert_gain }
-	army_experience = constant:random_terror_cost.actor_convert_experience
-	set_country_flag = random_terror_militia_converted
+	if = {
+		limit = { has_event_target = random_terror_action_state }
+		set_temp_variable = { random_terror_unit_id = constant:random_terror_unit.militia_id_base }
+		random_terror_actor_key_unit_to_action_state = yes
+		meta_effect = {
+			text = {
+				delete_unit = {
+					id = [RT_UNIT_ID]
+					disband = no
+				}
+			}
+			RT_UNIT_ID = "[?random_terror_unit_id|.0]"
+		}
+		event_target:random_terror_action_state = { clr_state_flag = random_terror_actor_militia_present }
+	}
+	set_temp_variable = { random_terror_unit_experience = constant:random_terror_unit.converted_experience }
+	set_temp_variable = { random_terror_unit_equipment = constant:random_terror_unit.converted_equipment }
+	set_temp_variable = { random_terror_unit_manpower = constant:random_terror_unit.converted_manpower }
+	set_temp_variable = { random_terror_unit_id = constant:random_terror_unit.converted_id_base }
+	random_terror_actor_key_unit_to_action_state = yes
+	random_terror_actor_raise_formation = yes
 	random_terror_actor_action_common = yes
 }
 
@@ -2837,7 +2980,6 @@ random_terror_actor_ideological_mobilization = {
 }
 
 random_terror_actor_absorb_actor = {
-	set_country_flag = random_terror_actor_absorption_recorded
 	set_country_flag = random_terror_community_rejection_recorded
 	random_terror_actor_action_common = yes
 }
@@ -2851,23 +2993,43 @@ random_terror_actor_contest_network_leader = {
 
 random_terror_actor_prepare_state_offensive = {
 	add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_offensive_gain }
-	set_country_flag = random_terror_state_offensive_prepared
 	random_terror_actor_action_common = yes
 }
 
+# Offices replace improvised rule in a held state: roads and rail are rebuilt
+# and the command's hold on its territory and authority firms up.
 random_terror_actor_build_civil_administration = {
-	set_country_flag = random_terror_civil_administration_active
+	add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_convert_gain }
+	add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.actor_authority_civil_admin_gain }
+	if = {
+		limit = { NOT = { has_event_target = random_terror_action_state } }
+		capital_scope = { save_event_target_as = random_terror_action_state }
+	}
+	event_target:random_terror_action_state = {
+		add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+	}
 	random_terror_actor_action_common = yes
 }
 
 random_terror_actor_force_extraction = {
 	add_to_variable = { random_terror_external_supply = constant:random_terror_tuning.actor_supply_extraction_gain }
-	set_country_flag = random_terror_forced_extraction_recorded
 	random_terror_add_public_actor_atrocity_condemnation = yes
 	random_terror_actor_action_common = yes
 }
 
+# Volunteers arrive through the network: a net manpower intake and one
+# experienced formation at the actor's own provinces.
 random_terror_actor_recruit_foreign_fighters = {
+	add_manpower = constant:random_terror_tuning.foreign_fighter_manpower
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:random_terror_tuning.foreign_fighter_equipment }
+	add_to_variable = { global.random_terror_network_reach = constant:random_terror_tuning.actor_action_network_gain }
+	clamp_variable = { var = global.random_terror_network_reach min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+	set_country_flag = random_terror_foreign_fighters_recruited
+	set_temp_variable = { random_terror_unit_experience = constant:random_terror_unit.foreign_experience }
+	set_temp_variable = { random_terror_unit_equipment = constant:random_terror_unit.foreign_equipment }
+	set_temp_variable = { random_terror_unit_manpower = constant:random_terror_unit.foreign_manpower }
+	set_temp_variable = { random_terror_unit_id = constant:random_terror_unit.foreign_id }
+	random_terror_actor_raise_formation = yes
 	random_terror_actor_action_common = yes
 }
 
@@ -3355,6 +3517,18 @@ random_terror_resolve_targeted_raid_outcome = {
 					random_terror_draw_runtime_raid_mid_abusive = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.abusive_failure } }
 				}
 			}
+			# A relocated cell leaves only empty safe houses for the next raid.
+			if = {
+				limit = {
+					has_state_flag = random_terror_cell_relocated
+					OR = {
+						check_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.clean_success }
+						check_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.costly_success }
+					}
+				}
+				set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.partial_success }
+			}
+			clr_state_flag = random_terror_cell_relocated
 			if = {
 				limit = { check_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.clean_success } }
 				subtract_from_variable = { random_terror_state_activity = constant:random_terror_tuning.clean_operation_activity_reduction }
@@ -3591,18 +3765,17 @@ random_terror_resolve_quiet_sponsor_leverage = {
 	random_terror_check_for_defeat = yes
 }
 
+# The committed reserve holds the state: while it stays, the state cannot slip
+# into Lost Local Control (random_terror_update_state_stage), however high its
+# activity climbs.
 random_terror_commit_reinforcement = {
 	if = {
 		limit = { has_event_target = random_terror_action_state }
+		set_temp_variable = { random_terror_reinforcement_duration = constant:random_terror_tuning.reinforcement_days }
 		event_target:random_terror_action_state = {
-			set_state_flag = random_terror_reinforcement_committed
-			if = {
-				limit = { NOT = { has_variable = random_terror_reinforcement_required } }
-				set_variable = { random_terror_reinforcement_required = constant:random_terror_value.one }
-			}
+			set_state_flag = { flag = random_terror_state_reinforced days = random_terror_reinforcement_duration }
 		}
 	}
-	set_country_flag = random_terror_reinforcement_commitment_active
 }
 
 random_terror_commit_enclave_isolation = {
@@ -3907,7 +4080,6 @@ random_terror_commit_state_offensive = {
 			random_terror_initialize_state_state = yes
 			add_claim_by = ROOT
 			set_state_flag = random_terror_transnational_link_active
-			set_state_flag = random_terror_state_offensive_committed
 			add_to_variable = { random_terror_state_activity = constant:random_terror_tuning.state_offensive_activity_gain }
 			add_to_variable = { random_terror_state_pressure = constant:random_terror_tuning.minor_pressure_gain }
 			clamp_variable = { var = random_terror_state_activity min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
@@ -3915,7 +4087,6 @@ random_terror_commit_state_offensive = {
 			random_terror_update_state_stage = yes
 		}
 	}
-	set_country_flag = random_terror_state_offensive_committed
 }
 
 random_terror_commit_force_extraction = {
@@ -3931,20 +4102,7 @@ random_terror_commit_force_extraction = {
 		}
 	}
 	add_to_variable = { random_terror_external_supply = constant:random_terror_tuning.actor_action_supply_gain }
-	set_country_flag = random_terror_force_extraction_committed
 	random_terror_clamp_actor_values = yes
-}
-
-random_terror_commit_foreign_fighter_recruitment = {
-	if = {
-		limit = { NOT = { has_country_flag = random_terror_foreign_fighters_recruited } }
-		add_manpower = constant:random_terror_tuning.foreign_fighter_manpower
-		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:random_terror_tuning.foreign_fighter_equipment }
-		set_country_flag = random_terror_foreign_fighters_recruited
-		set_country_flag = random_terror_foreign_fighter_recruitment_committed
-		add_to_variable = { global.random_terror_network_reach = constant:random_terror_tuning.actor_action_network_gain }
-		clamp_variable = { var = global.random_terror_network_reach min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
-	}
 }
 
 random_terror_validate_jihad_transaction = {
@@ -5170,6 +5328,8 @@ random_terror_clear_state_commitments = {
 	clr_state_flag = random_terror_transport_protection_success
 	clr_state_flag = random_terror_uprising_subject
 	clr_state_flag = random_terror_uprising_stopped
+	clr_state_flag = random_terror_actor_militia_present
+	clr_state_flag = random_terror_cell_relocated
 }
 
 # COUNTRY scope: one receiver.  Removes its missions and clears only its own
