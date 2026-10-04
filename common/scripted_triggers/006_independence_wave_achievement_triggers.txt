@@ -4,7 +4,27 @@
 # Final-state proofs for the sixteen Independence Wave achievements. Historical
 # order and disqualifiers are represented by flags and dates written only by
 # Event 006 transactions or narrow engine on-actions.
+#
+# Stored proof dates are copies of global.date, which counts one game hour as
+# 0.00001. Survival clocks compare them with day thresholds only through
+# independence_wave_achievement_elapsed_days_reached.
 # ============================================================================
+
+# Any scope. Inputs: temporary independence_wave_achievement_elapsed_start_date,
+# a stored copy of global.date, and temporary
+# independence_wave_achievement_required_days, a day count. True once at least
+# that many days have passed since the start date. Both sides are compared in
+# whole game hours with the shared chaosx_date_units constants, the same
+# encoding chaosx_convert_days_to_date_offset uses, because a trigger cannot
+# call that scripted effect. The inputs are read without being changed.
+independence_wave_achievement_elapsed_days_reached = {
+	set_temp_variable = { independence_wave_achievement_elapsed_hours = global.date }
+	subtract_from_temp_variable = { independence_wave_achievement_elapsed_hours = independence_wave_achievement_elapsed_start_date }
+	multiply_temp_variable = { independence_wave_achievement_elapsed_hours = constant:chaosx_date_units.hours_per_date_unit }
+	set_temp_variable = { independence_wave_achievement_required_hours = independence_wave_achievement_required_days }
+	multiply_temp_variable = { independence_wave_achievement_required_hours = constant:chaosx_date_units.hours_per_day }
+	check_variable = { var = independence_wave_achievement_elapsed_hours value = independence_wave_achievement_required_hours compare = greater_than_or_equals }
+}
 
 is_independence_wave_achievement_sovereign_actor = {
 	is_independence_wave_active_country = yes
@@ -42,9 +62,9 @@ independence_wave_achievement_one_state_to_statehood_is_complete = {
 	has_independence_wave_entrenched_recognition = yes
 	check_variable = { var = independence_wave_capacity value = constant:independence_wave_capacity_band.mature compare = greater_than_or_equals }
 	has_variable = independence_wave_origin_date
-	set_temp_variable = { independence_wave_achievement_elapsed_days = global.date }
-	subtract_from_temp_variable = { independence_wave_achievement_elapsed_days = independence_wave_origin_date }
-	check_variable = { var = independence_wave_achievement_elapsed_days value = constant:independence_wave_achievement.one_state_survival_days compare = greater_than_or_equals }
+	set_temp_variable = { independence_wave_achievement_elapsed_start_date = independence_wave_origin_date }
+	set_temp_variable = { independence_wave_achievement_required_days = constant:independence_wave_achievement.one_state_survival_days }
+	independence_wave_achievement_elapsed_days_reached = yes
 }
 
 independence_wave_achievement_no_master_is_complete = {
@@ -66,9 +86,9 @@ independence_wave_achievement_peace_with_host_is_complete = {
 	NOT = { has_country_flag = independence_wave_achievement_forced_host_settlement }
 	var:independence_wave_former_host = { NOT = { has_war_with = ROOT } }
 	has_variable = independence_wave_achievement_peace_settlement_date
-	set_temp_variable = { independence_wave_achievement_elapsed_days = global.date }
-	subtract_from_temp_variable = { independence_wave_achievement_elapsed_days = independence_wave_achievement_peace_settlement_date }
-	check_variable = { var = independence_wave_achievement_elapsed_days value = constant:independence_wave_achievement.peaceful_host_settlement_days compare = greater_than_or_equals }
+	set_temp_variable = { independence_wave_achievement_elapsed_start_date = independence_wave_achievement_peace_settlement_date }
+	set_temp_variable = { independence_wave_achievement_required_days = constant:independence_wave_achievement.peaceful_host_settlement_days }
+	independence_wave_achievement_elapsed_days_reached = yes
 }
 
 independence_wave_achievement_break_reconquest_is_complete = {
@@ -120,9 +140,9 @@ independence_wave_achievement_cross_regional_league_is_complete = {
 	check_variable = { var = global.independence_wave_league_region_count value = constant:independence_wave_achievement.cross_regional_regions compare = greater_than_or_equals }
 	check_variable = { var = global.independence_wave_league_cohesion value = constant:independence_wave_achievement.cross_regional_cohesion compare = greater_than_or_equals }
 	has_variable = independence_wave_achievement_cross_regional_start_date
-	set_temp_variable = { independence_wave_achievement_elapsed_days = global.date }
-	subtract_from_temp_variable = { independence_wave_achievement_elapsed_days = independence_wave_achievement_cross_regional_start_date }
-	check_variable = { var = independence_wave_achievement_elapsed_days value = constant:independence_wave_achievement.cross_regional_days compare = greater_than_or_equals }
+	set_temp_variable = { independence_wave_achievement_elapsed_start_date = independence_wave_achievement_cross_regional_start_date }
+	set_temp_variable = { independence_wave_achievement_required_days = constant:independence_wave_achievement.cross_regional_days }
+	independence_wave_achievement_elapsed_days_reached = yes
 }
 
 independence_wave_achievement_rescue_member_is_complete = {
@@ -136,9 +156,9 @@ independence_wave_achievement_rescue_member_is_complete = {
 		NOT = { has_country_flag = independence_wave_host_voluntary_reunion }
 		has_country_flag = independence_wave_achievement_rescue_protected
 		has_variable = independence_wave_achievement_rescue_protected_date
-		set_temp_variable = { independence_wave_achievement_elapsed_days = global.date }
-		subtract_from_temp_variable = { independence_wave_achievement_elapsed_days = independence_wave_achievement_rescue_protected_date }
-		check_variable = { var = independence_wave_achievement_elapsed_days value = constant:independence_wave_achievement.rescue_survival_days compare = greater_than_or_equals }
+		set_temp_variable = { independence_wave_achievement_elapsed_start_date = independence_wave_achievement_rescue_protected_date }
+		set_temp_variable = { independence_wave_achievement_required_days = constant:independence_wave_achievement.rescue_survival_days }
+		independence_wave_achievement_elapsed_days_reached = yes
 	}
 }
 
@@ -227,9 +247,9 @@ independence_wave_achievement_radical_bloc_is_complete = {
 	has_country_flag = independence_wave_achievement_containment_engaged
 	NOT = { has_country_flag = independence_wave_achievement_scenario_forced_danger }
 	has_variable = independence_wave_achievement_containment_start_date
-	set_temp_variable = { independence_wave_achievement_elapsed_days = global.date }
-	subtract_from_temp_variable = { independence_wave_achievement_elapsed_days = independence_wave_achievement_containment_start_date }
-	check_variable = { var = independence_wave_achievement_elapsed_days value = constant:independence_wave_achievement.containment_survival_days compare = greater_than_or_equals }
+	set_temp_variable = { independence_wave_achievement_elapsed_start_date = independence_wave_achievement_containment_start_date }
+	set_temp_variable = { independence_wave_achievement_required_days = constant:independence_wave_achievement.containment_survival_days }
+	independence_wave_achievement_elapsed_days_reached = yes
 }
 
 independence_wave_achievement_every_flag_survival_is_complete = {
@@ -240,9 +260,9 @@ independence_wave_achievement_every_flag_survival_is_complete = {
 	check_variable = { global.independence_wave_scenario_last_intensity = constant:triggerable_scenario_intensity.low }
 	NOT = { check_variable = { global.independence_wave_scenario_last_type = constant:independence_wave_scenario_type.common_congress } }
 	check_variable = { var = global.independence_wave_achievement_scenario_initial_count value = constant:independence_wave_achievement.one compare = greater_than_or_equals }
-	set_temp_variable = { independence_wave_achievement_elapsed_days = global.date }
-	subtract_from_temp_variable = { independence_wave_achievement_elapsed_days = independence_wave_achievement_scenario_start_date }
-	check_variable = { var = independence_wave_achievement_elapsed_days value = constant:independence_wave_achievement.scenario_survival_days compare = greater_than_or_equals }
+	set_temp_variable = { independence_wave_achievement_elapsed_start_date = independence_wave_achievement_scenario_start_date }
+	set_temp_variable = { independence_wave_achievement_required_days = constant:independence_wave_achievement.scenario_survival_days }
+	independence_wave_achievement_elapsed_days_reached = yes
 	set_temp_variable = { independence_wave_achievement_survivor_percent_lhs = global.independence_wave_achievement_scenario_survivor_count }
 	multiply_temp_variable = { independence_wave_achievement_survivor_percent_lhs = constant:independence_wave_achievement.percentage_basis }
 	set_temp_variable = { independence_wave_achievement_survivor_percent_rhs = global.independence_wave_achievement_scenario_initial_count }
@@ -292,7 +312,7 @@ independence_wave_achievement_host_remnant_is_complete = {
 	has_variable = independence_wave_achievement_completed_breakaway_settlements
 	check_variable = { var = independence_wave_achievement_required_breakaway_settlements value = constant:independence_wave_achievement.one compare = greater_than_or_equals }
 	check_variable = { var = independence_wave_achievement_completed_breakaway_settlements value = independence_wave_achievement_required_breakaway_settlements compare = greater_than_or_equals }
-	set_temp_variable = { independence_wave_achievement_elapsed_days = global.date }
-	subtract_from_temp_variable = { independence_wave_achievement_elapsed_days = independence_wave_achievement_host_remnant_date }
-	check_variable = { var = independence_wave_achievement_elapsed_days value = constant:independence_wave_achievement.host_remnant_survival_days compare = greater_than_or_equals }
+	set_temp_variable = { independence_wave_achievement_elapsed_start_date = independence_wave_achievement_host_remnant_date }
+	set_temp_variable = { independence_wave_achievement_required_days = constant:independence_wave_achievement.host_remnant_survival_days }
+	independence_wave_achievement_elapsed_days_reached = yes
 }

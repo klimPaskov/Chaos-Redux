@@ -695,8 +695,11 @@ independence_wave_schedule_next_evolution_check = {
 			min = constant:independence_wave_evolution_mtth.minimum_days
 			max = constant:independence_wave_evolution_mtth.maximum_days
 		}
+		set_temp_variable = { chaosx_date_days = independence_wave_evolution_delay_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
 		set_variable = { global.independence_wave_next_evolution_date = global.date }
-		add_to_variable = { global.independence_wave_next_evolution_date = independence_wave_evolution_delay_days }
+		add_to_variable = { global.independence_wave_next_evolution_date = chaosx_date_offset }
 	}
 	else = { clear_variable = global.independence_wave_next_evolution_date }
 }

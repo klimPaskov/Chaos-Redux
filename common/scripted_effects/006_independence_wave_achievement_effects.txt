@@ -513,10 +513,13 @@ independence_wave_achievement_resolve_country_peace = {
 				has_country_flag = independence_wave_achievement_capital_loss_active
 				has_variable = independence_wave_achievement_capital_loss_date
 			}
-			set_temp_variable = { independence_wave_achievement_capital_loss_days = global.date }
-			subtract_from_temp_variable = { independence_wave_achievement_capital_loss_days = independence_wave_achievement_capital_loss_date }
+			set_temp_variable = { chaosx_date_days = constant:independence_wave_achievement.capital_loss_grace_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
+			set_temp_variable = { independence_wave_achievement_capital_loss_elapsed = global.date }
+			subtract_from_temp_variable = { independence_wave_achievement_capital_loss_elapsed = independence_wave_achievement_capital_loss_date }
 			if = {
-				limit = { check_variable = { var = independence_wave_achievement_capital_loss_days value = constant:independence_wave_achievement.capital_loss_grace_days compare = greater_than_or_equals } }
+				limit = { check_variable = { var = independence_wave_achievement_capital_loss_elapsed value = chaosx_date_offset compare = greater_than_or_equals } }
 				set_country_flag = independence_wave_achievement_capital_loss_failed
 			}
 		}
@@ -599,10 +602,13 @@ independence_wave_achievement_record_anchor_recovery = {
 			has_country_flag = independence_wave_achievement_capital_loss_active
 			has_variable = independence_wave_achievement_capital_loss_date
 		}
-		set_temp_variable = { independence_wave_achievement_capital_loss_days = global.date }
-		subtract_from_temp_variable = { independence_wave_achievement_capital_loss_days = independence_wave_achievement_capital_loss_date }
+		set_temp_variable = { chaosx_date_days = constant:independence_wave_achievement.capital_loss_grace_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		set_temp_variable = { independence_wave_achievement_capital_loss_elapsed = global.date }
+		subtract_from_temp_variable = { independence_wave_achievement_capital_loss_elapsed = independence_wave_achievement_capital_loss_date }
 		if = {
-			limit = { check_variable = { var = independence_wave_achievement_capital_loss_days value = constant:independence_wave_achievement.capital_loss_grace_days compare = greater_than_or_equals } }
+			limit = { check_variable = { var = independence_wave_achievement_capital_loss_elapsed value = chaosx_date_offset compare = greater_than_or_equals } }
 			set_country_flag = independence_wave_achievement_capital_loss_failed
 		}
 		clr_country_flag = independence_wave_achievement_capital_loss_active
