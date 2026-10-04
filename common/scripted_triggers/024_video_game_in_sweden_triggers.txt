@@ -769,6 +769,25 @@ video_game_in_sweden_evolution_iii_eligible = {
 	}
 }
 
+# An ignored baseline whose Reliance has reached Doctrine, with no evolution
+# able to take it further, is due a containment review.
+video_game_in_sweden_needs_containment_review = {
+	video_game_in_sweden_is_baseline = yes
+	video_game_in_sweden_no_active_mission = yes
+	check_variable = {
+		var = video_game_in_sweden_program_days
+		value = constant:video_game_in_sweden_timing.baseline_auto_close_days
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = simulation_reliance
+		value = constant:video_game_in_sweden_reliance.doctrine_min
+		compare = greater_than_or_equals
+	}
+	NOT = { video_game_in_sweden_evolution_i_eligible = yes }
+	NOT = { video_game_in_sweden_evolution_ii_eligible = yes }
+}
+
 video_game_in_sweden_next_evolution_disabled = {
 	OR = {
 		AND = {

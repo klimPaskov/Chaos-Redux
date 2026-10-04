@@ -94,6 +94,8 @@ The baseline category presents four primary actions.
 | Conclude the trial | `video_game_conclude_trial` | Close the baseline program after review and record an ordinary conclusion. | No spendable cost. |
 
 The baseline has a finite review window, a repeat cooldown, and an automatic close after the configured baseline lifetime.
+An ignored baseline that has reached Doctrine with no evolution able to take it further (for example an officer opening below Gathering Storm) receives containment review `chaosx.nr24.22` after the same 360 days.
+It can debrief the staff to Habit and conclude, or continue once under closer review for 120 days at a cost of 10 Reliance; the second review offers only the debrief, and the AI prefers containment.
 
 The ordinary conclusion is available without entering any evolution.
 

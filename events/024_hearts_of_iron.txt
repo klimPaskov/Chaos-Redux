@@ -350,6 +350,42 @@ country_event = {
 	}
 }
 
+# Containment review of an ignored baseline that has reached Doctrine.
+country_event = {
+	id = chaosx.nr24.22
+	title = chaosx.nr24.22.t
+	desc = chaosx.nr24.22.d
+	picture = GFX_report_event_024_video_game_in_sweden_release
+	is_triggered_only = yes
+	trigger = {
+		video_game_in_sweden_is_current_host = yes
+		video_game_in_sweden_needs_containment_review = yes
+	}
+
+	option = {
+		name = chaosx.nr24.22.a
+		ai_chance = { base = constant:video_game_in_sweden_ai.containment_debrief }
+		custom_effect_tooltip = video_game_containment_debrief_tt
+		hidden_effect = {
+			set_temp_variable = { video_game_in_sweden_reliance_cap = constant:video_game_in_sweden_reliance.habit_max }
+			video_game_in_sweden_cap_reliance = yes
+			video_game_in_sweden_close_ordinary_program = yes
+		}
+	}
+	option = {
+		name = chaosx.nr24.22.b
+		trigger = { NOT = { has_country_flag = video_game_in_sweden_containment_extended } }
+		ai_chance = { base = constant:video_game_in_sweden_ai.containment_continue }
+		custom_effect_tooltip = video_game_containment_continue_tt
+		hidden_effect = {
+			set_country_flag = video_game_in_sweden_containment_extended
+			set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.containment_continue_loss }
+			multiply_temp_variable = { video_game_in_sweden_reliance_delta = -1 }
+			video_game_in_sweden_change_reliance = yes
+		}
+	}
+}
+
 country_event = {
 	id = chaosx.nr24.30
 	title = chaosx.nr24.30.t

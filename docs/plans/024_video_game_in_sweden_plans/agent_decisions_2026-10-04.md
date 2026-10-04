@@ -151,3 +151,10 @@ The Evolution I follow-up is a 45-day decision whose remove effect settles the r
 The narrow reassessment consumes `followup_review_available` as the audit follow-up.
 Failed field validation, audit or dual-track verification sets `video_game_in_sweden_restriction_fee_factor` to `restriction_failure_fee_factor` (0.5); the restriction quote scales each nominal charge by it before limiting the charge to the reserve, so displayed and paid amounts agree.
 Basis: spec part 2 mandatory reassessment ("cannot remain indefinitely in Simulation Orthodoxy"), decision map field-validation and audit result tables, spec part 3 cheaper restriction after failure.
+
+## D18. An ignored high-Reliance baseline receives a containment review
+
+Decision: after `baseline_auto_close_days` with Reliance at or above Doctrine and neither evolution eligible, maintenance schedules report `.22`.
+Debriefing caps Reliance at Habit and runs the ordinary conclusion; continuing costs `containment_continue_loss` (10) Reliance and is allowed once, after which the review returns in `containment_review_days` (120) with only the debrief, so the baseline always ends.
+The AI weights are constants that favour containment (4 to 1).
+Basis: spec part 1 ("an ignored high-reliance program should first offer containment"), AI principle 6 and P24-D5.
