@@ -623,3 +623,68 @@ defined_text = {
 	text = { trigger = { has_country_flag = chaosx_nr25_recovery_winner } localization_key = chaosx_nr25_board_resolved_winner }
 	text = { localization_key = chaosx_nr25_board_resolved_loser }
 }
+
+# Winner report. Reads the Event 025 receipt written by the reward bridge; an
+# unapplied or pending grant shows the holding text instead of a success.
+defined_text = {
+	name = GetChaosxNr25WinnerResult
+	text = { trigger = { NOT = { has_country_flag = chaosx_alien_recovery_event025_reward_applied } } localization_key = chaosx_nr25_winner_result_pending }
+	text = { trigger = { check_variable = { var = chaosx_alien_recovery_event025_result value = constant:chaosx_nr25_result.alien_systems_integration compare = equals } } localization_key = chaosx_nr25_winner_result_integration }
+	text = { trigger = { check_variable = { var = chaosx_alien_recovery_event025_result value = constant:chaosx_nr25_result.overlap_conversion compare = equals } } localization_key = chaosx_nr25_winner_result_overlap }
+	text = { trigger = { check_variable = { var = chaosx_alien_recovery_event025_result value = constant:chaosx_nr25_result.compatible_upgrade compare = equals } } localization_key = chaosx_nr25_winner_result_upgrade }
+	text = {
+		trigger = {
+			check_variable = { var = chaosx_alien_recovery_event025_result value = constant:chaosx_nr25_result.base_operational compare = equals }
+			check_variable = { var = chaosx_alien_recovery_event025_overlap value = constant:chaosx_nr25_value.zero compare = greater_than }
+		}
+		localization_key = chaosx_nr25_winner_result_base_other_field
+	}
+	text = { trigger = { check_variable = { var = chaosx_alien_recovery_event025_result value = constant:chaosx_nr25_result.base_operational compare = equals } } localization_key = chaosx_nr25_winner_result_base }
+	text = { localization_key = chaosx_nr25_winner_result_pending }
+}
+
+# Broad public field of the Event 025 result. Aircraft and propulsion share
+# one public field.
+defined_text = {
+	name = GetChaosxNr25RecoveryField
+	text = { trigger = { check_variable = { var = chaosx_alien_recovery_event025_field value = constant:chaosx_nr25_alien_field.aircraft compare = equals } } localization_key = chaosx_nr25_field_flight }
+	text = { trigger = { check_variable = { var = chaosx_alien_recovery_event025_field value = constant:chaosx_nr25_alien_field.propulsion compare = equals } } localization_key = chaosx_nr25_field_flight }
+	text = { trigger = { check_variable = { var = chaosx_alien_recovery_event025_field value = constant:chaosx_nr25_alien_field.computation compare = equals } } localization_key = chaosx_nr25_field_computation }
+	text = { trigger = { check_variable = { var = chaosx_alien_recovery_event025_field value = constant:chaosx_nr25_alien_field.spatial compare = equals } } localization_key = chaosx_nr25_field_spatial }
+	text = { trigger = { check_variable = { var = chaosx_alien_recovery_event025_field value = constant:chaosx_nr25_alien_field.temporal compare = equals } } localization_key = chaosx_nr25_field_temporal }
+	text = { trigger = { check_variable = { var = chaosx_alien_recovery_event025_field value = constant:chaosx_nr25_alien_field.biological compare = equals } } localization_key = chaosx_nr25_field_biological }
+	text = { trigger = { check_variable = { var = chaosx_alien_recovery_event025_field value = constant:chaosx_nr25_alien_field.integrated compare = equals } } localization_key = chaosx_nr25_field_integrated }
+	text = { localization_key = chaosx_nr25_field_unclassified }
+}
+
+# Loser report. Fragment results are preferred over survey results, matching
+# the ledger, and the fragment tier follows the major-fragment threshold.
+defined_text = {
+	name = GetChaosxNr25LoserResult
+	text = {
+		trigger = {
+			check_variable = { var = chaosx_alien_recovery_loser_result value = constant:chaosx_nr25_result.fragment compare = equals }
+			has_country_flag = chaosx_nr25_highest_losing_fragment_tier
+		}
+		localization_key = chaosx_nr25_loser_result_major_fragment
+	}
+	text = { trigger = { check_variable = { var = chaosx_alien_recovery_loser_result value = constant:chaosx_nr25_result.fragment compare = equals } } localization_key = chaosx_nr25_loser_result_minor_fragment }
+	text = { trigger = { check_variable = { var = chaosx_alien_recovery_loser_result value = constant:chaosx_nr25_result.verified_survey compare = equals } } localization_key = chaosx_nr25_loser_result_survey }
+	text = { localization_key = chaosx_nr25_loser_result_none }
+}
+
+# Names the recovering expedition for losers when the historical owner exists.
+defined_text = {
+	name = GetChaosxNr25LoserWinnerLine
+	text = { trigger = { has_global_flag = chaosx_alien_recovery_event025_owner_recorded } localization_key = chaosx_nr25_loser_winner_named }
+	text = { localization_key = chaosx_nr25_loser_winner_unknown }
+}
+
+# Dossier summary for the analysis notice.
+defined_text = {
+	name = GetChaosxNr25DossierSummary
+	text = { trigger = { has_country_flag = chaosx_nr25_recovery_winner } localization_key = chaosx_nr25_dossier_winner }
+	text = { trigger = { has_country_flag = chaosx_nr25_fragment_reward } localization_key = chaosx_nr25_dossier_fragment }
+	text = { trigger = { has_country_flag = chaosx_nr25_verified_survey_reward } localization_key = chaosx_nr25_dossier_survey }
+	text = { localization_key = chaosx_nr25_dossier_empty }
+}
