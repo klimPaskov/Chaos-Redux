@@ -78,7 +78,12 @@ Basis: every element the fixture shows is sized and placed normally in the same 
 Both limits are recorded rather than waved away, and category-level visibility stays a source review because the fixture cannot set the country and global flags the gate reads.
 
 The round's evidence is appended to the existing recovery README instead of a new report folder, and the stale 144 KB schema dump in that folder was dropped.
-Basis: the task brief forbids new verification machinery, and the dump has no value now that the shared route returns results.
+Basis: the task brief forbids new verification machinery.
+
+Review correction, 2026-10-05: this section is accurate about the pre-change inspect and the spacing fix, and inaccurate about everything after it.
+The "exactly one genuine layout finding" claim is sound but belongs only to the pre-change inspect result in the recovery folder, which is complete and whose negative checks genuinely report no visible overlap.
+The shared route does not return results: all three 2026-10-04 attempts failed, three further reviewer attempts on 2026-10-05 were rejected as `Invalid tool arguments`, and no post-change inspect or render artifact of any resolution exists for this window.
+Visual acceptance for the board is therefore `unresolved`, not `implemented`; the layout and visibility source change stays `implemented` on source review and arithmetic.
 
 ## 8. The eighteen legacy chemical-tank companies are kept as a recorded exception
 

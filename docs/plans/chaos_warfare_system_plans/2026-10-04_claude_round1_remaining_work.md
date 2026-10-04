@@ -74,7 +74,7 @@ Every item's design choices and their basis are recorded in `agent_decisions_202
 | 1. Sabotage native-scope repair with the direct actor gate | implemented | `3137c7996` | The disappearance of the Country-only warnings is a live-load check. The source tests pass 106 of 106 against the current source. |
 | 2. CXT facility trace helper | implemented | `533549db3` | Remove helper and caller together once the orchestrator's trace names the native rejection. |
 | 3. Occupied and export record audits | implemented | `329048c82` | The native return and write-off counts during a real blocked refund are a live-game check. |
-| 4. Event 020 response board | implemented | `4e54aacd5` | Category-level visibility is reviewed in source because the GUI fixture cannot set the country and global flags the gate reads. |
+| 4. Event 020 response board | source change implemented; visual acceptance unresolved | `4e54aacd5` | Category-level visibility is reviewed in source because the GUI fixture cannot set the country and global flags the gate reads. The pre-change inspect and its one spacing finding are real, and the fix is correct in source, but no post-change inspect and no render of any resolution exists; the route was rejected again on 2026-10-05. Corrected by review on 2026-10-05. |
 | 5. CXT supply-connected placement | implemented | `23a9383ce` | Whether the native gate now accepts a candidate is item 15's live check. |
 | 6. Containment maxima | implemented | `de73c23f9` | None. |
 | 7. Warfare help page | implemented | `858cca927` | None. |
