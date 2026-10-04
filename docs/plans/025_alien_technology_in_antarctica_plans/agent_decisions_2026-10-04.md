@@ -192,3 +192,16 @@ Decision:
 - The public Evolution V crisis is the first accident of a programme that is not concealed, plus each concealed programme exposed by a custody handover.
 - The four news items reuse the delivered Event 025 news image (`news_event_025_winner.dds`, also aliased as the discovery picture); no separate news art exists for the milestone, clash, accident and exposure items.
 - The crossing report card now illustrates the departure and route-setback reports, and the rescue card both rescue reports.
+
+## D13. Event Details and Evolutions log
+
+Disposition: `implemented`.
+
+Basis: the lead's events-log item and the Event 028 wiring precedent in the shared Events Log files.
+
+Decision:
+
+- Event Details shows the premise plus one resolution line: not yet begun, under way, decided with the historical winner's name, or closed without a winner.
+- The five evolutions appear as Event Details preview rows of evolution type 25 with stages one to five, so their toggles set the `events_log_disabled_evolution_25_25_<stage>` flags the gates already read.
+- Each evolution's tier is the Chaos tier of its gate (Evolutions I to V on tiers one to five), both in the gate check and in the log milestone.
+- Type, name, title, body and summary text use the existing Event 025 evolution localisation on every evolution surface; only the Evolution V holder that delivers the opening is recorded as an actor.
