@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Mengele and Tibet Expedition content is a Germany gameplay chain, not a Chaos Redux random-event pool entry. It is implemented in `events/germany_mengele.txt` with the `germany_mengele.*` namespace and starts from normal HOI4 event triggers when fascist Germany controls Auschwitz after 1940.06.13.
+The Mengele and Tibet Expedition content is a Germany gameplay chain, not a Chaos Redux random-event pool entry. It is implemented in `events/germany_mengele.txt` with the `germany_mengele.*` namespace and starts from normal HOI4 event triggers no earlier than 1943-05-30, when fascist Germany controls an operational Auschwitz institution.
 
 The system has three connected layers:
 
@@ -14,7 +14,7 @@ These layers share variables, flags, condemnation, chaos-meter history, deaths-s
 
 ## Core Flow
 
-`germany_mengele.1` fires for fascist Germany once Auschwitz is controlled. Auschwitz is the shared Kielce-state node used elsewhere in the mod: state `88`, province `9412`. Germany can authorize the Auschwitz Experiments, restrict the file to camp administration, or shut it down.
+`germany_mengele.1` can fire from 1943-05-30 for fascist Germany when the operational Auschwitz institution is controlled. Auschwitz is the shared Kielce-state node used elsewhere in the mod: state `88`, province `9412`. Germany can authorize the Auschwitz Experiments, restrict the file to camp administration, or shut it down.
 
 Full authorization gives the timed `germany_auschwitz_experiments` national spirit for two years, sets `mengele_permission_level` to full authority, increases hidden `mengele_autonomy`, marks Auschwitz as an experiment-linked atrocity site, records condemnation memory, raises chaos slightly, schedules the report chain, and schedules `germany_mengele.23`, the cloning-project proposal. After the spirit expires, the program keeps a short `germany_mengele_program_recently_expired` window for coup eligibility, then closes through `germany_mengele_expire_program` if no coup has fired. Restriction gives a smaller timed spirit, marks Auschwitz as restricted experiment evidence, and sets permission to restricted. Rejection, closure, or expiry set permission back to rejected.
 
