@@ -1532,10 +1532,6 @@ random_terror_initialize_actor = {
 		set_country_flag = random_terror_achievement_player_actor_eligible
 	}
 	if = {
-		limit = { NOT = { has_variable = random_terror_actor_control } }
-		set_variable = { random_terror_actor_control = constant:random_terror_tuning.actor_control_start }
-	}
-	if = {
 		limit = { NOT = { has_variable = random_terror_network_authority } }
 		set_variable = { random_terror_network_authority = constant:random_terror_tuning.actor_authority_start }
 	}
@@ -2353,7 +2349,7 @@ random_terror_actor_action_common = {
 }
 
 random_terror_actor_raise_local_militia = {
-	add_to_variable = { random_terror_actor_control = constant:random_terror_tuning.actor_control_militia_gain }
+	add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_militia_gain }
 	add_manpower = constant:random_terror_cost.actor_militia_manpower
 	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:random_terror_cost.actor_militia_equipment }
 	random_terror_actor_action_common = yes
@@ -2361,7 +2357,7 @@ random_terror_actor_raise_local_militia = {
 
 random_terror_actor_integrate_defectors = {
 	add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.actor_authority_defector_gain }
-	add_to_variable = { random_terror_actor_control = constant:random_terror_tuning.actor_control_defector_gain }
+	add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_defector_gain }
 	set_country_flag = random_terror_military_defection_recorded
 	random_terror_actor_action_common = yes
 }
@@ -2395,7 +2391,7 @@ random_terror_actor_relocate_network = {
 }
 
 random_terror_actor_convert_militia = {
-	add_to_variable = { random_terror_actor_control = constant:random_terror_tuning.actor_control_convert_gain }
+	add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_convert_gain }
 	army_experience = constant:random_terror_cost.actor_convert_experience
 	set_country_flag = random_terror_militia_converted
 	random_terror_actor_action_common = yes
@@ -2414,13 +2410,13 @@ random_terror_actor_absorb_actor = {
 
 random_terror_actor_contest_network_leader = {
 	subtract_from_variable = { random_terror_network_authority = constant:random_terror_cost.actor_contest_authority }
-	add_to_variable = { random_terror_actor_control = constant:random_terror_tuning.actor_control_contest_gain }
+	add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_contest_gain }
 	set_country_flag = random_terror_network_leadership_contested
 	random_terror_actor_action_common = yes
 }
 
 random_terror_actor_prepare_state_offensive = {
-	add_to_variable = { random_terror_actor_control = constant:random_terror_tuning.actor_control_offensive_gain }
+	add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_offensive_gain }
 	set_country_flag = random_terror_state_offensive_prepared
 	random_terror_actor_action_common = yes
 }
@@ -2579,7 +2575,6 @@ random_terror_actor_accelerate_revelation = {
 }
 
 random_terror_clamp_actor_values = {
-	clamp_variable = { var = random_terror_actor_control min = constant:random_terror_value.minimum max = constant:random_terror_tuning.actor_control_cap }
 	clamp_variable = { var = random_terror_network_authority min = constant:random_terror_value.minimum max = constant:random_terror_tuning.actor_authority_cap }
 	clamp_variable = { var = random_terror_external_supply min = constant:random_terror_value.minimum max = constant:random_terror_tuning.actor_supply_cap }
 	clamp_variable = { var = random_terror_territorial_control min = constant:random_terror_value.minimum max = constant:random_terror_tuning.actor_control_cap }
@@ -2733,7 +2728,7 @@ random_terror_try_takeover_state = {
 	if = {
 		limit = {
 			random_terror_is_actor = yes
-			check_variable = { random_terror_actor_control > constant:random_terror_value.territorial_gate }
+			check_variable = { random_terror_territorial_control > constant:random_terror_value.territorial_gate }
 			has_event_target = random_terror_action_state
 		}
 		event_target:random_terror_action_state = {
@@ -3374,7 +3369,7 @@ random_terror_commit_actor_absorption = {
 random_terror_accept_actor_absorption = {
 	set_country_flag = random_terror_actor_absorption_accepted
 	clr_country_flag = random_terror_actor_absorption_refused
-	add_to_variable = { random_terror_actor_control = constant:random_terror_tuning.actor_merge_control_gain }
+	add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_merge_control_gain }
 	add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.actor_merge_authority_gain }
 	set_country_flag = random_terror_actor_absorption_committed
 	random_terror_clamp_actor_values = yes
@@ -4722,7 +4717,6 @@ random_terror_clear_actor_runtime = {
 	clr_country_flag = random_terror_lifecycle_owns_doctrinal_schism
 	clr_country_flag = random_terror_lifecycle_owns_sponsor_dependency
 	clear_variable = random_terror_actor_profile
-	clear_variable = random_terror_actor_control
 	clear_variable = random_terror_network_authority
 	clear_variable = random_terror_external_supply
 	clear_variable = random_terror_territorial_control
@@ -4806,7 +4800,6 @@ random_terror_cleanup_actor = {
 		clr_country_flag = random_terror_terminal_command
 		clr_country_flag = random_terror_terminal_world_order
 		set_country_flag = random_terror_cleanup_complete
-		clear_variable = random_terror_actor_control
 		clear_variable = random_terror_network_authority
 		clear_variable = random_terror_external_supply
 		clear_variable = random_terror_territorial_control
@@ -4839,7 +4832,6 @@ random_terror_cleanup_actor = {
 		clr_country_flag = random_terror_terminal_command
 		clr_country_flag = random_terror_terminal_world_order
 		set_country_flag = random_terror_cleanup_complete
-		clear_variable = random_terror_actor_control
 		clear_variable = random_terror_network_authority
 		clear_variable = random_terror_external_supply
 		clear_variable = random_terror_territorial_control
