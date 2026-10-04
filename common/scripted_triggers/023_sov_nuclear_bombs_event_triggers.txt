@@ -1320,7 +1320,7 @@ sov_nuclear_bombs_event_selected_breakaway_site_has_recovery_route = {
 }
 
 sov_nuclear_bombs_event_selected_breakaway_site_has_security_force = {
-	has_event_target = sov_nuclear_bombs_selected_state
+	hidden_trigger = { has_event_target = sov_nuclear_bombs_selected_state }
 	event_target:sov_nuclear_bombs_selected_state = {
 		is_controlled_by = ROOT
 	}
@@ -1389,8 +1389,8 @@ sov_nuclear_bombs_event_collapse_resolution_ready = {
 	sov_nuclear_bombs_event_actor_is_valid = yes
 	has_country_flag = sov_nuclear_bombs_collapse_active
 	sov_nuclear_bombs_event_no_active_project = yes
-	check_variable = { var = global.sov_nuclear_bombs_ledger_reconciliation value = constant:sov_nuclear_bombs_ledger.clean compare = equals }
-	sov_nuclear_bombs_event_selected_collapse_resolution_site_is_valid = yes
+	custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_devices_reconciled_tt check_variable = { var = global.sov_nuclear_bombs_ledger_reconciliation value = constant:sov_nuclear_bombs_ledger.clean compare = equals } }
+	custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_selected_depot_return_requested_tt sov_nuclear_bombs_event_selected_collapse_resolution_site_is_valid = yes }
 }
 
 sov_nuclear_bombs_event_can_enter_moratorium = {
@@ -1401,7 +1401,7 @@ sov_nuclear_bombs_event_can_enter_moratorium = {
 	NOT = { has_country_flag = sov_nuclear_bombs_limited_strike_prepared }
 	NOT = { has_country_flag = sov_nuclear_bombs_retaliation_authorized }
 	NOT = { has_country_flag = sov_nuclear_bombs_confirmed_pending_strike }
-	check_variable = { var = global.sov_nuclear_bombs_ledger_reconciliation value = constant:sov_nuclear_bombs_ledger.clean compare = equals }
+	custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_devices_reconciled_tt check_variable = { var = global.sov_nuclear_bombs_ledger_reconciliation value = constant:sov_nuclear_bombs_ledger.clean compare = equals } }
 }
 
 # Country scope. A Part 9 reason for the Soviet AI to enter the Atomic
@@ -1424,8 +1424,8 @@ sov_nuclear_bombs_event_can_reactivate_moratorium = {
 	sov_nuclear_bombs_event_actor_is_valid = yes
 	has_country_flag = sov_nuclear_bombs_atomic_moratorium
 	sov_nuclear_bombs_event_has_serious_crisis = yes
-	check_variable = { var = global.sov_nuclear_bombs_ledger_operational value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
-	check_variable = { var = global.sov_nuclear_bombs_ledger_reconciliation value = constant:sov_nuclear_bombs_ledger.clean compare = equals }
+	custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_operational_device_available_tt check_variable = { var = global.sov_nuclear_bombs_ledger_operational value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals } }
+	custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_devices_reconciled_tt check_variable = { var = global.sov_nuclear_bombs_ledger_reconciliation value = constant:sov_nuclear_bombs_ledger.clean compare = equals } }
 }
 
 sov_nuclear_bombs_event_has_local_delivery_capability = {

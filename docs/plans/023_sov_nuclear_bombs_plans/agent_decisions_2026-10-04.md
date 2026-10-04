@@ -274,3 +274,26 @@ If the Union retakes control of the state with a division and the rail route exi
 Basis: decision map "Destroy the site" (recovery impossible, operationalization imminent, exact site validated), Part 6, the probability scenario's "technical access and near command formation", and the lead's round 2 decision 3, adjusted for the denial contradiction under the user's full design authority.
 Probability: before sources frozen in `ai_surfaces_before_round2_2026-10-04/before_decisions.txt`; MCP compare see R2-10.
 Disposition: `implemented`; breakaway campaign behaviour `needs_live_game`.
+
+## Round 2, continuation (2026-10-05)
+
+Scope: the lead's rebuilt round 2 remaining-work list, taken over after the previous round 2 implementer stopped.
+
+### R2-4. The stopped round 2 tranche is adopted
+
+The uncommitted R2-3 working-tree hunks (the decisions file, the event triggers, two localisation lines, the event doc paragraph and the R2-3 record above) and the one-line `docs/systems/chaos_meter/README.md` index entry for the D1 non-yield test-accident endpoint were re-read and adopted unchanged.
+Review: `PREV.id` inside `var:sov_nuclear_bombs_site_holder = { ... }` is the depot state, the same pattern as the operationalization guard in the runtime effects; the demolition action contract (`sov_nuclear_bombs_action_source_is_valid` and the reservation path) has no technical-denial term; the demolition's `available` shows the no-active-project flags (all localised), the imminence sentence and `sov_nuclear_bombs_breakaway_recovery_impossible_tt`, with the actor and selection checks hidden.
+Commit: `f56c84b52`; the other workstreams' chaos meter hunks stayed unstaged.
+Disposition: `implemented`.
+
+### R2-5. Decision requirement tooltips show no internal names
+
+Finding: expanding every displayed `available` block through its scripted triggers (skipping `hidden_trigger` and `custom_trigger_tooltip`) found unlocalised `check_variable` or `has_variable` names in 21 decisions, and `has_event_target` lines ("sov_nuclear_bombs_selected_state is set", from the vanilla `TRIGGER_HAS_EVENT_TARGET` text) in eight, three of them outside those 21 (close the dossier, private signal, partial settlement).
+Decision: every such check is wrapped, never changed.
+Phase checks are hidden in the six decisions whose `visible` already requires the same phase, so the phase is never the only blocker; the coercion dossier's event target is hidden the same way in "Close the Coercion Dossier", and the security-force trigger hides its event-target guard.
+Selection checks read as plain sentences: the surveyed test site, the selected depot (intact and out of Soviet hands, reachable by rail, still holding transferred or assigned devices, or returned on request), the coercion target and the prepared strike.
+Thresholds show their values: test readiness shows the `minimum_test_readiness` constant and the current Arsenal Readiness, the demand shows its current level out of the maximum, the test site shows the population ceiling, and the strike shows current readiness and integrity.
+The custody-record checks inside `sov_nuclear_bombs_event_can_enter_moratorium`, `sov_nuclear_bombs_event_can_reactivate_moratorium` and `sov_nuclear_bombs_event_collapse_resolution_ready` are wrapped inside those triggers ("Every registered device is accounted for", "At least one device is operational"), so every caller shows the same lines.
+Equivalence: parsing `HEAD` and the working tree with `hidden_trigger` and `custom_trigger_tooltip` wrappers removed gives identical trees for the decisions and event-trigger files; a rerun of the expansion finds no unlocalised variable, flag or event-target name in any displayed `available` block.
+Basis: CLAUDE.md 2.4, 2.7 and 4.13, and the lead's round 2 decision 2.
+Disposition: `implemented`; final tooltip readability `needs_live_game`.
