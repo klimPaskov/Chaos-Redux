@@ -144,9 +144,11 @@ great_depression_incident_select_state = {
 			set_variable = { PREV.great_depression_incident_state_target = THIS }
 		}
 	}
+	# Fall back only when no registered center was saved above, so an incident
+	# names the exact center it chose.
 	if = {
 		limit = {
-			check_variable = { var = great_depression_incident_target_valid value = constant:great_depression_api.zero compare = equals }
+			NOT = { has_variable = great_depression_incident_state_target }
 		}
 		random_owned_controlled_state = {
 			limit = { great_depression_incident_state_target_is_valid = yes }

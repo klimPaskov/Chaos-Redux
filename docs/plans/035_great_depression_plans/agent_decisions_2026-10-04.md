@@ -32,3 +32,16 @@ Probability evidence: the required before/after `hoi4.probability_inspect`/`hoi4
 `hoi4.probability_inspect` with `adapter = decision_ai_will_do` returned `Invalid tool arguments` with a candidate pool and with no source, and `INTERNAL_ERROR` (zero artifacts) with `source.path = common/decisions/035_great_depression_decisions.txt`.
 `hoi4.decision_inspect` in `inspect` mode for `great_depression_acquire_distressed_assets` returned `Invalid tool arguments`.
 The route failure is recorded as a blocker for numeric AI evidence; target legality was reviewed from source.
+
+## D3. Incident state picker keeps the registered center
+
+Disposition: implemented.
+
+`great_depression_incident_select_state` first saves a valid registered center, then falls back to a random owned and controlled state only when no center target was saved (`NOT = { has_variable = great_depression_incident_state_target }`).
+Before this, the fallback read `great_depression_incident_target_valid`, which is set only after both branches, so it always ran and replaced the chosen center.
+Basis: spec part 4 requires an incident to name the exact center state and its current treatment.
+A country without a valid center still receives a valid owned state.
+
+Incident weights, factors and gates did not change.
+The K-09 audit (`subagent_handoffs/k09_incident_pool_audit_2026-09-05.md`) declared its center-specific gates as "usable centers" true or false, which is the behavior the picker now delivers, so the audited distribution is restored rather than changed.
+The K-09 manifest was never saved in the repository, and the probability routes failed in this session (see D2), so no new compare artifact exists; this is recorded as a route blocker, not as fresh numeric evidence.
