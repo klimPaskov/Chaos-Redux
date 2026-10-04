@@ -1,9 +1,9 @@
 # Event 028: Asteroid Incoming
 
-Status: implementation in progress and held disabled in the default event-log queue.
-Source coverage and required engine-backed acceptance are both incomplete; a working visible impact or a loaded main menu does not close the package.
-The gameplay sections below describe the intended contract and current source structure, not a completed acceptance claim.
-The [completion audit](../../plans/028_asteroid_incoming_plans/subagent_handoffs/completion_audit_20261003.md) records the open discrepancies, including province-level destruction, late capital safety, impact-time evolution eligibility, recovery missions/costs, frozen target display context, shared Details/evolution consumers, and nuclear-free map presentation.
+Status: enabled in the default event-log queue (`event_log_event_is_reworked_default_enabled` in `common/scripted_triggers/chaosx_settings_triggers.txt`) and awaiting live-game verification.
+The 2026-10-04 tranche resolved the [completion audit](../../plans/028_asteroid_incoming_plans/subagent_handoffs/completion_audit_20261003.md) source findings for crater actions, physical damage receipts, Event Details and evolution toggles, completable recovery missions, emergency closure and mission failure, impact-time evolution toggles, nuclear separation, late capital loss, main-crater clearance and scaled recovery prices.
+Each design choice and its basis is recorded in [agent_decisions_2026-10-04.md](../../plans/028_asteroid_incoming_plans/agent_decisions_2026-10-04.md); catalog row changes wait in [catalog_changes_pending.md](../../plans/028_asteroid_incoming_plans/catalog_changes_pending.md) for the catalog owner.
+Engine behaviour that only the running game can show remains a live check: native `on_nuke_drop` timing, province-building and railway clearance in the main crater, `has_railway_connection` results for the mission rail objectives, and the recovery price display in decision tooltips.
 
 Event 028 is a global fire-once Major event with a Calm World baseline. The shared Major-event registry owns its pacing and history classification, while `events/028_asteroid_impact.txt` owns the visible chain and the Event 028 scripted effects own the transaction.
 
@@ -90,7 +90,8 @@ The [decision artwork record](assets/decisions.md) documents fourteen installed 
 
 ## Future plans and extension suggestions
 
-The package should remain disabled in the default queue until the mandatory HOI4 MCP routes return current event, probability, and map evidence. After those routes are healthy, run the ten named AI scenarios plus the recovery decision scenarios against the same implementation and record before/after probability comparisons.
+When the HOI4 MCP probability and map routes return current evidence, run the ten named AI scenarios plus the recovery decision scenarios against the implementation and record the results; this tranche changed no AI weight.
+Recovery missions could later grow a second tier for countries that complete the first, such as a long-term crater-rim reconstruction objective, and AI countries could receive a simplified mission contract if their construction AI is taught to target the named states.
 
 The missing inherited impact-news provenance and remaining icon/source packages are current acceptance work, not optional future extensions.
 A separately commissioned rival-action icon family is a possible future expansion beyond the existing accepted reconnaissance alias.

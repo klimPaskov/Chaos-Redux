@@ -198,3 +198,8 @@ Decision: at impact the original target loses 2 percent of its trains, trucks an
 The fixed equipment grant is removed.
 Basis: Part 2 and Part 6 describe dispersal as preserving reserves that the impact would otherwise destroy; a grant with nothing at risk preserved nothing.
 No `ai_will_do` or `ai_chance` value changed, so no probability comparison is required; affordability gates now follow the scaled prices.
+
+## Default queue
+
+Decision: Event 028 joins `event_log_event_is_reworked_default_enabled`, so new campaigns include it in the normal event queue.
+Basis: the user wants every event from 1 to 40 playable, and every priority-1 and priority-2 source item from the 2026-10-04 remaining-work list is committed; what remains is live-game verification.
