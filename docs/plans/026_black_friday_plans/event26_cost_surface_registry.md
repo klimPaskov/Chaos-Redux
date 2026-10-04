@@ -386,8 +386,46 @@ Zero costs are unchanged, and no AI weight or availability rule changed.
 | Total | 399 | 25 |
 
 The committed `genocide_crisis_decisions.txt` still has one `cost = constant:genocide_decision_cost.german_experiment_transfer` (35) that the owner's uncommitted work replaces with a custom cost; it is left to that work and its custom-cost adoption.
-Native costs in active workstream files are `owner adoption pending` and are listed in [owner_adoption_requests.md](owner_adoption_requests.md) when published.
+Native costs in active workstream files are `owner adoption pending` and are listed in [owner_adoption_requests.md](owner_adoption_requests.md).
 Vanilla decision files are excluded under BF-NAT-001.
+
+### Owner adoption dispositions, 2026-10-04
+
+Every remaining positive native or custom cost has a per-owner disposition (agent decision D8). Exact file and line lists and the API each cost shape uses are in [owner_adoption_requests.md](owner_adoption_requests.md). Counts are raw decision-depth declarations and include costs that already have bounded owner adapters; the disposition applies to the unadapted remainder.
+
+| Owner | Positive native costs | Custom cost declarations | Disposition |
+| --- | ---: | ---: | --- |
+| 006 Independence Wave | 6 | 713 | owner adoption pending |
+| 012 Africa | 154 | 34 | owner adoption pending; RSA abnormal-settlement recovery requested |
+| 014 Cannibalism | 0 | 94 | owner adoption pending |
+| 016 Brilliant Scientist | 307 | 111 | owner adoption pending |
+| 021 Random Civil War | 0 | 18 | owner adoption pending |
+| 023 Soviet Nuclear Bombs | 0 | 64 | owner adoption pending |
+| 025 Alien Technology in Antarctica | 3 | 70 | owner adoption pending |
+| 029 Riches Found | 0 | 92 | owner adoption pending |
+| 031 Random Terror | 0 | 42 | owner adoption pending |
+| 033 Acid Rain | 0 | 13 | owner adoption pending |
+| 035 Great Depression | 0 | 89 | owner adoption pending |
+| Camps | 78 | 34 | owner adoption pending |
+| Chaos warfare (CBRN) | 21 | 55 | owner adoption pending; seal-state, destroy-records, and fixed procurement factory commitments requested |
+| Famine and migration | 0 | 26 | owner adoption pending |
+| Event 013 | 0 | 108 | queued: Event 26 conversion tranche 1 |
+| Event 020 | 0 | 98 | queued: Event 26 conversion tranche 1 |
+| Event 015 (custom) | 0 | 101 | native converted (D5); custom queued: tranche 1 |
+| Event 005 (custom) | 0 | 198 | native converted (D5); custom queued: tranche 2 |
+| Event 010 | 0 | 35 | queued: Event 26 conversion tranche 2 |
+| Event 011 | 0 | 56 | queued: Event 26 conversion tranche 2 |
+| Event 018 | 0 | 100 | queued: Event 26 conversion tranche 2 |
+| Event 019 | 0 | 53 | derivative native converted (D5); custom queued: tranche 2 |
+| Genocide crisis (custom) | 0 | 4 | native converted (D5); custom queued: tranche 2 |
+| Event 001 | 0 | 5 | partial bounded adapters; remainder owner adoption pending |
+| Event 007 | 0 | 17 | partial bounded adapters; remainder owner adoption pending |
+| Event 017 | 0 | 10 | partial bounded adapters; remainder owner adoption pending |
+| Event 024 | 0 | 19 | owner adoption pending |
+| Event 028 | 0 | 16 | owner adoption pending |
+| Event 032 | 0 | 26 | owner adoption pending |
+| Fallout | 12 | 41 | owner adoption pending |
+| Germany Mengele (custom) | 0 | 4 | native converted (D5); clone adapters exist; remainder owner adoption pending |
 ## Part 8 acceptance status
 
 The lifecycle and presentation paths are source-implemented for `BF-T01` through `BF-T19`, `BF-P01` through `BF-P06`, `BF-U01` through `BF-U10`, and the multiplayer scenarios, but live consumer evidence is not available to the coding agent.
