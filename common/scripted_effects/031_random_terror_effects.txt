@@ -2782,31 +2782,75 @@ random_terror_select_actor_leader = {
 }
 
 # COUNTRY scope: a non-terminal actor.  The refresh owns only the failure
-# overlay.  Starting ideas and stable forms belong to the route focuses, as
-# the ideas file describes.  A failure idea is added only when it is absent
-# and is then marked as owned by the overlay; recovery removes only owned
-# ideas, so focus-granted spirits survive any number of actor decisions.
+# overlay: at most one command failure and one economy failure, chosen by the
+# actor's route (Part 6 idea lifecycle table).  Collapsed Territorial Control
+# or Network Authority shows Compromised Network for the Shadow Council, Rival
+# Warlords for the War Directorate and Doctrinal Schism otherwise; collapsed
+# External Supply shows Looting Spiral on the coerced economy, Sponsor
+# Dependency under foreign sponsorship and Famine otherwise.  A failure idea
+# is added only when it is absent and is then marked as owned by the overlay;
+# recovery, or a route change, removes only owned ideas, so focus-granted
+# spirits survive any number of actor decisions.
 random_terror_refresh_actor_lifecycles = {
 	if = {
 		limit = {
 			random_terror_is_actor = yes
 			NOT = { has_country_flag = random_terror_final_actor }
 		}
-		set_temp_variable = { random_terror_lifecycle_general_failure = constant:random_terror_value.zero }
+		set_temp_variable = { random_terror_lifecycle_command_failure = constant:random_terror_value.zero }
 		if = {
 			limit = {
 				OR = {
 					check_variable = { random_terror_territorial_control < constant:random_terror_value.low }
 					check_variable = { random_terror_network_authority < constant:random_terror_value.low }
-					check_variable = { random_terror_external_supply < constant:random_terror_value.low }
 				}
 			}
-			set_temp_variable = { random_terror_lifecycle_general_failure = constant:random_terror_value.one }
+			set_temp_variable = { random_terror_lifecycle_command_failure = constant:random_terror_value.one }
 		}
-		# Any collapsed value: exposed cells and rival commanders.
+		set_temp_variable = { random_terror_lifecycle_economy_failure = constant:random_terror_value.zero }
+		if = {
+			limit = { check_variable = { random_terror_external_supply < constant:random_terror_value.low } }
+			set_temp_variable = { random_terror_lifecycle_economy_failure = constant:random_terror_value.one }
+		}
+		# The route chosen in the tree comes first, then the starting profile's.
+		if = {
+			limit = { has_country_flag = random_terror_focus_route_shadow_council }
+			set_temp_variable = { random_terror_lifecycle_route = constant:random_terror_route.shadow_council }
+		}
+		else_if = {
+			limit = { has_country_flag = random_terror_focus_route_war_directorate }
+			set_temp_variable = { random_terror_lifecycle_route = constant:random_terror_route.war_directorate }
+		}
+		else_if = {
+			limit = { has_country_flag = random_terror_focus_route_ideological_secretariat }
+			set_temp_variable = { random_terror_lifecycle_route = constant:random_terror_route.ideological_secretariat }
+		}
+		else_if = {
+			limit = { has_country_flag = random_terror_route_war_directorate }
+			set_temp_variable = { random_terror_lifecycle_route = constant:random_terror_route.war_directorate }
+		}
+		else_if = {
+			limit = { has_country_flag = random_terror_route_shadow_council }
+			set_temp_variable = { random_terror_lifecycle_route = constant:random_terror_route.shadow_council }
+		}
+		else = {
+			set_temp_variable = { random_terror_lifecycle_route = constant:random_terror_route.ideological_secretariat }
+		}
+		if = {
+			limit = { has_country_flag = random_terror_focus_coerced_economy }
+			set_temp_variable = { random_terror_lifecycle_economy = constant:random_terror_idea_form.looting_spiral }
+		}
+		else_if = {
+			limit = { has_country_flag = random_terror_focus_foreign_sponsorship }
+			set_temp_variable = { random_terror_lifecycle_economy = constant:random_terror_idea_form.sponsor_dependency }
+		}
+		else = {
+			set_temp_variable = { random_terror_lifecycle_economy = constant:random_terror_value.zero }
+		}
 		if = {
 			limit = {
-				check_variable = { random_terror_lifecycle_general_failure = constant:random_terror_value.one }
+				check_variable = { random_terror_lifecycle_command_failure = constant:random_terror_value.one }
+				check_variable = { random_terror_lifecycle_route = constant:random_terror_route.shadow_council }
 				NOT = { has_idea = random_terror_compromised_network }
 			}
 			add_ideas = random_terror_compromised_network
@@ -2814,15 +2858,21 @@ random_terror_refresh_actor_lifecycles = {
 		}
 		else_if = {
 			limit = {
-				check_variable = { random_terror_lifecycle_general_failure = constant:random_terror_value.zero }
 				has_country_flag = random_terror_lifecycle_owns_compromised_network
+				NOT = {
+					AND = {
+						check_variable = { random_terror_lifecycle_command_failure = constant:random_terror_value.one }
+						check_variable = { random_terror_lifecycle_route = constant:random_terror_route.shadow_council }
+					}
+				}
 			}
 			remove_ideas = random_terror_compromised_network
 			clr_country_flag = random_terror_lifecycle_owns_compromised_network
 		}
 		if = {
 			limit = {
-				check_variable = { random_terror_lifecycle_general_failure = constant:random_terror_value.one }
+				check_variable = { random_terror_lifecycle_command_failure = constant:random_terror_value.one }
+				check_variable = { random_terror_lifecycle_route = constant:random_terror_route.war_directorate }
 				NOT = { has_idea = random_terror_rival_warlords }
 			}
 			add_ideas = random_terror_rival_warlords
@@ -2830,49 +2880,21 @@ random_terror_refresh_actor_lifecycles = {
 		}
 		else_if = {
 			limit = {
-				check_variable = { random_terror_lifecycle_general_failure = constant:random_terror_value.zero }
 				has_country_flag = random_terror_lifecycle_owns_rival_warlords
+				NOT = {
+					AND = {
+						check_variable = { random_terror_lifecycle_command_failure = constant:random_terror_value.one }
+						check_variable = { random_terror_lifecycle_route = constant:random_terror_route.war_directorate }
+					}
+				}
 			}
 			remove_ideas = random_terror_rival_warlords
 			clr_country_flag = random_terror_lifecycle_owns_rival_warlords
 		}
-		# Collapsed External Supply: looting and hunger.
 		if = {
 			limit = {
-				check_variable = { random_terror_external_supply < constant:random_terror_value.low }
-				NOT = { has_idea = random_terror_looting_spiral }
-			}
-			add_ideas = random_terror_looting_spiral
-			set_country_flag = random_terror_lifecycle_owns_looting_spiral
-		}
-		else_if = {
-			limit = {
-				NOT = { check_variable = { random_terror_external_supply < constant:random_terror_value.low } }
-				has_country_flag = random_terror_lifecycle_owns_looting_spiral
-			}
-			remove_ideas = random_terror_looting_spiral
-			clr_country_flag = random_terror_lifecycle_owns_looting_spiral
-		}
-		if = {
-			limit = {
-				check_variable = { random_terror_external_supply < constant:random_terror_value.low }
-				NOT = { has_idea = random_terror_famine }
-			}
-			add_ideas = random_terror_famine
-			set_country_flag = random_terror_lifecycle_owns_famine
-		}
-		else_if = {
-			limit = {
-				NOT = { check_variable = { random_terror_external_supply < constant:random_terror_value.low } }
-				has_country_flag = random_terror_lifecycle_owns_famine
-			}
-			remove_ideas = random_terror_famine
-			clr_country_flag = random_terror_lifecycle_owns_famine
-		}
-		# Collapsed Network Authority: doctrinal dispute and patron leverage.
-		if = {
-			limit = {
-				check_variable = { random_terror_network_authority < constant:random_terror_value.low }
+				check_variable = { random_terror_lifecycle_command_failure = constant:random_terror_value.one }
+				check_variable = { random_terror_lifecycle_route = constant:random_terror_route.ideological_secretariat }
 				NOT = { has_idea = random_terror_doctrinal_schism }
 			}
 			add_ideas = random_terror_doctrinal_schism
@@ -2880,15 +2902,43 @@ random_terror_refresh_actor_lifecycles = {
 		}
 		else_if = {
 			limit = {
-				NOT = { check_variable = { random_terror_network_authority < constant:random_terror_value.low } }
 				has_country_flag = random_terror_lifecycle_owns_doctrinal_schism
+				NOT = {
+					AND = {
+						check_variable = { random_terror_lifecycle_command_failure = constant:random_terror_value.one }
+						check_variable = { random_terror_lifecycle_route = constant:random_terror_route.ideological_secretariat }
+					}
+				}
 			}
 			remove_ideas = random_terror_doctrinal_schism
 			clr_country_flag = random_terror_lifecycle_owns_doctrinal_schism
 		}
 		if = {
 			limit = {
-				check_variable = { random_terror_network_authority < constant:random_terror_value.low }
+				check_variable = { random_terror_lifecycle_economy_failure = constant:random_terror_value.one }
+				check_variable = { random_terror_lifecycle_economy = constant:random_terror_idea_form.looting_spiral }
+				NOT = { has_idea = random_terror_looting_spiral }
+			}
+			add_ideas = random_terror_looting_spiral
+			set_country_flag = random_terror_lifecycle_owns_looting_spiral
+		}
+		else_if = {
+			limit = {
+				has_country_flag = random_terror_lifecycle_owns_looting_spiral
+				NOT = {
+					AND = {
+						check_variable = { random_terror_lifecycle_economy_failure = constant:random_terror_value.one }
+						check_variable = { random_terror_lifecycle_economy = constant:random_terror_idea_form.looting_spiral }
+					}
+				}
+			}
+			remove_ideas = random_terror_looting_spiral
+			clr_country_flag = random_terror_lifecycle_owns_looting_spiral
+		}
+		if = {
+			limit = {
+				check_variable = { random_terror_lifecycle_economy_failure = constant:random_terror_value.one }
+				check_variable = { random_terror_lifecycle_economy = constant:random_terror_idea_form.sponsor_dependency }
 				NOT = { has_idea = random_terror_sponsor_dependency }
 			}
 			add_ideas = random_terror_sponsor_dependency
@@ -2896,11 +2946,38 @@ random_terror_refresh_actor_lifecycles = {
 		}
 		else_if = {
 			limit = {
-				NOT = { check_variable = { random_terror_network_authority < constant:random_terror_value.low } }
 				has_country_flag = random_terror_lifecycle_owns_sponsor_dependency
+				NOT = {
+					AND = {
+						check_variable = { random_terror_lifecycle_economy_failure = constant:random_terror_value.one }
+						check_variable = { random_terror_lifecycle_economy = constant:random_terror_idea_form.sponsor_dependency }
+					}
+				}
 			}
 			remove_ideas = random_terror_sponsor_dependency
 			clr_country_flag = random_terror_lifecycle_owns_sponsor_dependency
+		}
+		if = {
+			limit = {
+				check_variable = { random_terror_lifecycle_economy_failure = constant:random_terror_value.one }
+				check_variable = { random_terror_lifecycle_economy = constant:random_terror_value.zero }
+				NOT = { has_idea = random_terror_famine }
+			}
+			add_ideas = random_terror_famine
+			set_country_flag = random_terror_lifecycle_owns_famine
+		}
+		else_if = {
+			limit = {
+				has_country_flag = random_terror_lifecycle_owns_famine
+				NOT = {
+					AND = {
+						check_variable = { random_terror_lifecycle_economy_failure = constant:random_terror_value.one }
+						check_variable = { random_terror_lifecycle_economy = constant:random_terror_value.zero }
+					}
+				}
+			}
+			remove_ideas = random_terror_famine
+			clr_country_flag = random_terror_lifecycle_owns_famine
 		}
 	}
 }
@@ -4328,6 +4405,7 @@ random_terror_refresh_global_values = {
 			if = {
 				limit = {
 					OR = {
+						has_idea = random_terror_compromised_network
 						has_idea = random_terror_rival_warlords
 						has_idea = random_terror_doctrinal_schism
 						has_country_flag = random_terror_network_leadership_contested
@@ -4338,6 +4416,7 @@ random_terror_refresh_global_values = {
 			if = {
 				limit = {
 					check_variable = { var = random_terror_network_authority value = constant:random_terror_value.unity_gate compare = greater_than_or_equals }
+					NOT = { has_idea = random_terror_compromised_network }
 					NOT = { has_idea = random_terror_rival_warlords }
 					NOT = { has_idea = random_terror_doctrinal_schism }
 				}
