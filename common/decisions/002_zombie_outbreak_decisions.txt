@@ -519,6 +519,7 @@ chaosx_zzz_cure_category = {
 		}
 
 		complete_effect = {
+			set_variable = { zombie_cure_tier_0_paid_pp = global.black_friday_price_pp_20 }
 			add_timed_idea = {
 				idea = searching_for_cure
 				days = 60
@@ -526,6 +527,7 @@ chaosx_zzz_cure_category = {
 		}
 
 		remove_effect = {
+			clear_variable = zombie_cure_tier_0_paid_pp
 			# Calculate dynamic cure research value before applying
 			calculate_cure_research_value = yes
 
@@ -565,7 +567,7 @@ chaosx_zzz_cure_category = {
 			hidden_trigger = { has_idea = cure_activated }
 		}
 		cancel_effect = {
-			hidden_effect = { add_political_power = 20 }
+			hidden_effect = { add_political_power = zombie_cure_tier_0_paid_pp clear_variable = zombie_cure_tier_0_paid_pp }
 		}
 	}
 
@@ -679,6 +681,7 @@ chaosx_zzz_cure_category = {
 		}
 
 		complete_effect = {
+			set_variable = { zombie_cure_tier_1_paid_pp = global.black_friday_price_pp_30 }
 			add_timed_idea = {
 				idea = searching_for_cure_tier_1
 				days = 90
@@ -686,6 +689,7 @@ chaosx_zzz_cure_category = {
 		}
 
 		remove_effect = {
+			clear_variable = zombie_cure_tier_1_paid_pp
 			# Calculate dynamic cure research value before applying
 			calculate_cure_research_value = yes
 
@@ -724,7 +728,7 @@ chaosx_zzz_cure_category = {
 		hidden_trigger = { has_idea = cure_activated }
 	}
 	cancel_effect = {
-		hidden_effect = { add_political_power = 30 }
+		hidden_effect = { add_political_power = zombie_cure_tier_1_paid_pp clear_variable = zombie_cure_tier_1_paid_pp }
 	}
 }
 
@@ -851,12 +855,14 @@ find_cure_tier_2 = {
 	}
 
 	complete_effect = {
+		set_variable = { zombie_cure_tier_2_paid_pp = global.black_friday_price_pp_40 }
 		add_timed_idea = {
 			idea = searching_for_cure_tier_2
 			days = 120
 		}
 	}
 	remove_effect = {
+		clear_variable = zombie_cure_tier_2_paid_pp
 		# Calculate dynamic cure research value before applying
 		calculate_cure_research_value = yes
 
@@ -895,7 +901,7 @@ cancel_trigger = {
 	hidden_trigger = { has_idea = cure_activated }
 }
 cancel_effect = {
-	hidden_effect = { add_political_power = 40 }
+	hidden_effect = { add_political_power = zombie_cure_tier_2_paid_pp clear_variable = zombie_cure_tier_2_paid_pp }
 }
 }
 
@@ -1050,12 +1056,14 @@ find_cure_tier_3 = {
 	}
 
 	complete_effect = {
+		set_variable = { zombie_cure_tier_3_paid_pp = global.black_friday_price_pp_50 }
 		add_timed_idea = {
 			idea = searching_for_cure_tier_3
 			days = 150
 		}
 	}
 	remove_effect = {
+		clear_variable = zombie_cure_tier_3_paid_pp
 		# Calculate dynamic cure research value before applying
 		calculate_cure_research_value = yes
 
@@ -1094,7 +1102,7 @@ cancel_trigger = {
 	hidden_trigger = { has_idea = cure_activated }
 }
 cancel_effect = {
-	hidden_effect = { add_political_power = 50 }
+	hidden_effect = { add_political_power = zombie_cure_tier_3_paid_pp clear_variable = zombie_cure_tier_3_paid_pp }
 }
 }
 
@@ -2669,15 +2677,18 @@ chaosx_anti_zombie_league_category = {
 
 		complete_effect = {
 			set_country_flag = azl_formation_in_progress
+			set_variable = { anti_zombie_league_paid_pp = global.black_friday_price_anti_zombie_league_formation_pp_cost }
 		}
 
 		remove_effect = {
 			establish_anti_zombie_league = yes
+			clear_variable = anti_zombie_league_paid_pp
 		}
 
 		cancel_effect = {
 			clr_country_flag = azl_formation_in_progress
-			add_political_power = constant:anti_zombie_league.formation_pp_cost
+			add_political_power = anti_zombie_league_paid_pp
+			clear_variable = anti_zombie_league_paid_pp
 		}
 	}
 

@@ -144,3 +144,17 @@ Contract and conversion example: `common/scripted_effects/026_black_friday_simpl
 
 Disposition: implemented (source).
 Live display and payment through a converted owner decision are `needs_live_game`.
+
+## D10. Refunds of a price-table cost return the price that was charged
+
+Decision: a decision whose native cost reads the sale price table refunds the price it actually charged, not the ordinary constant.
+Timed decisions that refund on cancellation record the charged price when taken and refund that record: the four Zombie cure tiers (`zombie_cure_tier_<N>_paid_pp`) and the Anti-Zombie League formation (`anti_zombie_league_paid_pp`); the record is cleared on cancellation and on normal completion.
+Same-tick refunds read the current table price: the Event 015 auxiliary-contract failure branches refund `global.black_friday_price_utopia_manifesto_decision_cost_pp_large`.
+
+Basis: during a sale the engine debits the table price, so refunding the ordinary constant would pay out more than was charged and let a player profit by taking and cancelling a decision during the sale.
+A scan of every add_political_power in the converted decisions found these refunds; the other matches are rewards with their own amounts (Holy Realm audits, the Greenland payment to Denmark, the Kuzbass tender) and stay outside the sale, as D5 records for rewards.
+
+Two uncommitted refunds of the same kind belong to other threads' unfinished work and are left untouched: the Mengele import-subjects stale-completion refunds in `germany_mengele_decisions.txt` and the Soviet collapse aftermath invalid-target refunds in `005_soviet_collapse_effects.txt`.
+Both must refund the charged table price when that work lands, as recorded in `owner_adoption_requests.md`.
+
+Disposition: implemented (source) for the committed refunds; the two uncommitted refunds are `owner adoption pending`.

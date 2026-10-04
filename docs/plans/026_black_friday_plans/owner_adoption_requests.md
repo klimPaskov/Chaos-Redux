@@ -256,6 +256,8 @@ Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 101
 
 #### Event 005 Soviet Collapse (custom costs; native costs converted)
 
+The uncommitted invalid-target refunds in `soviet_collapse_dismantle_uwr_aftermath_site`, `soviet_collapse_secure_uwr_aftermath_site`, and `soviet_collapse_exploit_uwr_aftermath_site` (`common/scripted_effects/005_soviet_collapse_effects.txt`) refund the ordinary aftermath constants; when that work lands they must refund the matching `global.black_friday_price_soviet_collapse_uwr_aftermath_*_cost` (agent decision D10).
+
 Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 198.
 
 | File | Native positive cost lines | Dynamic native cost lines | Custom cost trigger lines |
@@ -365,6 +367,8 @@ Positive native costs: 12; dynamic native costs: 0; custom cost declarations: 41
 | `common/decisions/fallout_consolidated_decisions.txt` | 45, 96, 169, 1492, 1719, 1751, 2508, 2531, 2562, 2622, 2692, 2833 | - | 319, 382, 432, 480, 530, 583, 632, 681, 728, 780, 830, 877, 932, 983, 1033, 1080, 1133, 1188, 1247, 1316, 1383, 1452, 1493, 1554, 1593, 1636, 1680, 1784, 1834, 1888, 1946, 2017, 2116, 2159, 2229, 2317, 2355, 2394, 2431, 2468, 2778 |
 
 ### Germany Mengele (custom costs; native costs converted)
+
+The uncommitted stale-completion refunds in `import_subjects_from_japanese_china`, `import_subjects_from_india`, and `import_subjects_from_africa` refund the ordinary `constant:germany_mengele_decision.import_*_subjects_cost`; when that work lands they must refund `global.black_friday_price_germany_mengele_decision_import_*_subjects_cost`, which is what the decision charged (agent decision D10).
 
 Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 4.
 
