@@ -119,9 +119,12 @@ on_actions = {
 				# A Soviet detonation that is not the pending Event 23 request, such
 				# as a vanilla nuclear raid, still counts as Soviet nuclear use. An
 				# unconfirmed strike on the pending state stays with its own owner.
+				# A blast in a state the Union itself holds, such as another event's
+				# accident, is not a strike against anyone and is not recorded here.
 				else_if = {
 					limit = {
 						ROOT = { sov_nuclear_bombs_event_actor_is_valid = yes }
+						FROM = { NOT = { is_controlled_by = ROOT } }
 						NOT = {
 							AND = {
 								ROOT = { has_country_flag = sov_nuclear_bombs_native_delivery_pending has_variable = sov_nuclear_bombs_action_state_id }

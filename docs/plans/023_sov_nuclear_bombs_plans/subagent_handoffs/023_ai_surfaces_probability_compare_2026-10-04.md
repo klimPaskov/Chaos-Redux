@@ -58,3 +58,20 @@ These are deterministic reads of the after source, not probability results.
 ## Parent follow-up
 
 Rerun `probability_inspect`, `probability_evaluate` and `probability_compare` with the before paths above once the server's `decision_ai_will_do` adapter stops returning `INTERNAL_ERROR`.
+
+## Review additions (decision R4)
+
+The reviewer retried `hoi4_probability_inspect` once (`adapter = decision_ai_will_do`, `source = { path = common/decisions/023_sov_nuclear_bombs_decisions.txt }`, a two-decision candidate pool) and it again returned `INTERNAL_ERROR` with `artifactCount = 0`; the compare stays `blocked`.
+The before source for these surfaces is the same frozen `before_decisions.txt`; none of them changed between that snapshot and the review.
+
+| Surface | Before | After |
+| --- | --- | --- |
+| `sov_nuclear_bombs_enter_atomic_moratorium` | Base 0.90 whenever visible in custody | `factor = 0` without `sov_nuclear_bombs_event_ai_has_restraint_reason` |
+| `sov_nuclear_bombs_disperse_reserve_package` | Base 0.90 on every custody visit | `factor = 0` once `sov_nuclear_bombs_ai_dispersal_stage` reaches the attained stage |
+| `sov_nuclear_bombs_select_retaliation_target` | Any state in the pool | `factor = 0` for a state outside `sov_nuclear_bombs_event_state_has_delivery_access` |
+
+| Scenario | Expected after-source result |
+| --- | --- |
+| `P23_NAV_BASELINE_ALL_DOCTRINES_VALID` | Moratorium weight 0 at the opening unless the opening already made the arsenal public or a crisis is recorded |
+| `P23_NAV_IDLE_NO_PURPOSE` | Idle custody: one dispersal per stage, no moratorium without a restraint reason |
+| `P23_NAV_IV_MAJOR_PROSPECTIVE_VALID` | Selector weight only on reachable lower-consequence states |

@@ -126,3 +126,40 @@ Decision: the accepted closure addendum and decisions D2 to D9 are promoted into
 `docs/events/023_sov_nuclear_bombs.md` describes the current router, Evolution II and IV use, map-only presentation, delivery route, raid accounting and AI gate, default enablement and the queued catalog row; `023_sov_nuclear_bombs_runtime_effects.md` records the event-owned navigation helpers and the delivery preflight.
 The closure addendum is marked `promoted into an accepted spec`.
 Disposition: `implemented`.
+
+## Round 1 review (skeptical reviewer, 2026-10-04)
+
+Scope: every Round 1 commit from `aa1435e5c` to `280df0b95`, read with `git show` against the installed documentation and the existing Event 23 helpers.
+Helpers called with `= yes`, `constant:` references, localisation keys named by decisions and events, and brace balance all resolve in the touched files.
+The adopted Event 5 bridge lines and the shared Chaos Meter accident endpoint reference only constants present in `HEAD`.
+The vanilla raid override differs from the installed file only by the header and the six documented modifiers.
+
+### R1. Category description line break
+
+Finding: `d47e5ab5d` wrote a literal line break inside the quoted `sov_nuclear_bombs_command_category_desc` string, which the localisation parser does not accept as one entry.
+Decision: the sentence stays and joins the entry through `\n\n`.
+Disposition: `implemented`.
+
+### R2. Self-held detonations are not Soviet nuclear use
+
+Finding: the `on_nuke_drop` branch added in `9aac54b6b` recorded every non-pending Soviet detonation as combat use, so another event's accident in a Soviet state (Events 47, 53 and the airship decision launch `launch_nuke` on the launcher's own state) fired the first-use news, broke a moratorium or stand-down and counted toward the combat-use achievements.
+Decision: the branch also requires that the struck state is not controlled by the launcher; a vanilla raid always strikes a state at war with the Union, so raid booking is unchanged.
+Disposition: `implemented`; live raid confirmation `needs_live_game`.
+
+### R3. Repeatable survey and aborted targets
+
+Finding: `7bbd68da1` made the test-site survey repeatable while the surveyed site holds no device, but every survey still added 4 readiness, so readiness could be bought repeatedly with an empty site.
+Decision: a survey raises readiness only when no survey is already recorded for the current test family, and the result is clamped like every other readiness change.
+Finding: after an abort, the marked retaliation or first-use target stayed selected, so the Evolution IV preparation reopened at once and each retry paid the release cost again (listed by the engineer as a remaining gap).
+Decision: `sov_nuclear_bombs_abort_and_recover` clears the selected state unless an open coercion dossier still owns it; the coercion demand keeps its state.
+Disposition: `implemented`.
+
+### R4. AI restraint, dispersal and reach guards
+
+Finding: the router makes custody the AI's idle board, and the moratorium decision is visible there with base weight 0.90 and no reason, so an idle AI could seal its arsenal at the opening and stay in phase 8; an idle AI could also repeat reserve dispersal, paying command power, trains and fuel and resetting its posture each time (both listed by the engineer as remaining gaps).
+Decision: the moratorium AI weight is zero without `sov_nuclear_bombs_event_ai_has_restraint_reason` (Part 9: a demonstrated or employed arsenal, a serious nuclear crisis or test accident, or a verified reciprocal, stand-down or settlement agreement), and the AI disperses at most once per attained stage through the receipt `sov_nuclear_bombs_ai_dispersal_stage`, written when a dispersal completes.
+Finding: the retaliation selector's AI weight did not check reach, while preparation and authorization both require it, so the AI could repeatedly pay the command cost for an unreachable mark.
+Decision: the selector's AI weight is zero for a state outside `sov_nuclear_bombs_event_state_has_delivery_access`.
+No numeric weight changed; these are factor-zero eligibility gates like D5's.
+Basis: Part 9 moratorium and stand-down guidance, the closure addendum row 17 ("a justified restraint purpose"), and the user's full design authority.
+Disposition: `implemented`; MCP compare `blocked` (see D11 and the compare handoff); AI campaign behaviour `needs_live_game`.

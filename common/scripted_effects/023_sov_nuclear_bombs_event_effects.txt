@@ -2253,6 +2253,8 @@ sov_nuclear_bombs_select_disperse_source = {
 }
 
 sov_nuclear_bombs_disperse_reserve = {
+	# One AI dispersal per attained stage, recorded when the transfer completes.
+	if = { limit = { is_ai = yes } set_variable = { sov_nuclear_bombs_ai_dispersal_stage = sov_nuclear_bombs_evolution_stage } }
 	clr_country_flag = sov_nuclear_bombs_reserve_dispersion_succeeded
 	if = {
 		limit = { has_country_flag = sov_nuclear_bombs_transit_active }
@@ -2426,9 +2428,15 @@ sov_nuclear_bombs_strengthen_authentication = {
 	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
+# Readiness rises once per survey; moving an existing survey to another site
+# while the first holds no device only changes the selected test ground.
 sov_nuclear_bombs_survey_remote_test_state = {
+	if = {
+		limit = { NOT = { has_country_flag = sov_nuclear_bombs_test_site_surveyed } }
+		add_to_variable = { sov_nuclear_bombs_readiness = 4 }
+		clamp_variable = { var = sov_nuclear_bombs_readiness min = 0 max = 100 }
+	}
 	if = { limit = { has_event_target = sov_nuclear_bombs_selected_test_state } set_country_flag = sov_nuclear_bombs_test_site_surveyed }
-	add_to_variable = { sov_nuclear_bombs_readiness = 4 }
 }
 
 sov_nuclear_bombs_prepare_instrumented_test = {
@@ -2667,6 +2675,12 @@ sov_nuclear_bombs_abort_and_recover = {
 	clr_country_flag = sov_nuclear_bombs_final_authorization_reached
 	sov_nuclear_bombs_clear_action_context = yes
 	clear_variable = sov_nuclear_bombs_pending_action_type
+	# An aborted operation gives up its marked target; an open coercion dossier
+	# keeps its own selected state for the remaining demand.
+	if = {
+		limit = { NOT = { has_country_flag = sov_nuclear_bombs_coercion_open } }
+		sov_nuclear_bombs_clear_selected_state = yes
+	}
 	set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.custody }
 	add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_tuning.abort_readiness }
 	sov_nuclear_bombs_ai_request_phase_review = yes

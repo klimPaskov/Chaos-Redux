@@ -1329,6 +1329,22 @@ sov_nuclear_bombs_event_can_enter_moratorium = {
 	check_variable = { var = global.sov_nuclear_bombs_ledger_reconciliation value = constant:sov_nuclear_bombs_ledger.clean compare = equals }
 }
 
+# Country scope. A Part 9 reason for the Soviet AI to enter the Atomic
+# Moratorium: a demonstrated or employed arsenal, a serious nuclear crisis
+# (including a test accident), or a verified restraint agreement. The
+# decision's own gates already exclude an open exchange and live work.
+sov_nuclear_bombs_event_ai_has_restraint_reason = {
+	OR = {
+		check_variable = { var = sov_nuclear_bombs_public_knowledge value = constant:sov_nuclear_bombs_public_knowledge.demonstrated compare = greater_than_or_equals }
+		sov_nuclear_bombs_event_has_serious_crisis = yes
+		has_country_flag = sov_nuclear_bombs_test_accident_true_yield_recorded
+		has_country_flag = sov_nuclear_bombs_test_accident_no_yield_recorded
+		has_country_flag = sov_nuclear_bombs_reciprocal_restraint_recorded
+		has_country_flag = sov_nuclear_bombs_hotline_standdown_verified
+		has_country_flag = sov_nuclear_bombs_settlement_verified
+	}
+}
+
 sov_nuclear_bombs_event_can_reactivate_moratorium = {
 	sov_nuclear_bombs_event_actor_is_valid = yes
 	has_country_flag = sov_nuclear_bombs_atomic_moratorium
