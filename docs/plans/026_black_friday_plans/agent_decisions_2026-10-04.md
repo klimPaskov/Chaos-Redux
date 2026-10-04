@@ -373,3 +373,21 @@ Basis: the sale expires one day after activation (`active_duration_days`), and p
 The Evo I catalog cell carries the same sentence, so its new wording is queued in `catalog_changes_pending.md`.
 
 Disposition: implemented.
+
+## D24. Leader assignment, preferred tactics, and special projects keep their price, and the sale names every price it cannot change
+
+Decision: BF-ABS-001 (`assign_army_leader_cp_cost`, `assign_navy_leader_cp_cost`, `choose_preferred_tactics_cost`) and BF-ABS-003 (special-project `breakthrough_cost`, `prototype_cost`, and `resource_cost` blocks) take strategy D and become `engine_inaccessible`; no flat sale modifier approximates them.
+The report (`chaosx.nr26.2.d`) and the Event Details premise (`black_friday.event_detail.premise`) end with one sentence naming the purchases that keep their normal price: base-game national decisions, guarantees, intelligence operations, license purchases, military-industrial organizations, equipment upgrades, leader traits, preferred tactics, and special projects.
+The report's flavour line and the premise say staff officers instead of intelligence officers, so neither implies that intelligence operations are discounted.
+
+Basis:
+- The installed modifier documentation lists the three leader and tactic fields as numbers with 0 decimal places, not factors.
+- Vanilla has no base leader-assignment price: `common/defines/00_defines.lua` defines none, and the cost exists only when a modifier adds one, so a flat sale value would have nothing to halve.
+- Preferred tactics cost the flat define `PREFERRED_TACTIC_COMMAND_POWER_COST = 20` (`00_defines.lua:928`), and vanilla stacks flat modifiers on it (`common/ideas/army_spirits.txt:919`, `choose_preferred_tactics_cost = -15`). A flat sale value cannot multiply the current price and can take a 5 Command Power tactic to zero, breaking the one-quantum minimum.
+- Special projects define their costs as static blocks (`common/special_projects/special_projects_documentation.md`, `common/special_projects/projects/documentation.md`); the only special-project modifiers change speed and supply, which Part 4 excludes, and there is no generic start or confirmation hook.
+- Spec Part 4 requires a player-facing note for every visible strategy D limitation. The note covers these rows and the rows that were already `engine_inaccessible` (BF-NAT-007, BF-NAT-014, BF-NAT-016, BF-ABS-002, BF-ABS-004 to BF-ABS-010), which closes registry sign-off question 9.
+
+The catalog Details text is queued in `catalog_changes_pending.md`.
+The registry's BF-ABS-001 and BF-ADP-001 compatibility-effect lines no longer say that Event 26 is disabled.
+
+Disposition: implemented.
