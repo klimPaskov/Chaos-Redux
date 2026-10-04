@@ -255,3 +255,41 @@ The leadership rivalry count also counts Compromised Network, so a failing Shado
 
 Every actor spirit modifier and every staged state modifier now uses a multiple of 0.05, keeping each spirit's four modifiers and their direction and keeping the state penalties growing by stage.
 Final route forms carry 0.10 in their signature modifiers, and the terminal spirits keep their 0.10 to 0.20 scale.
+
+## Round 1 review fixes
+
+The round 1 review re-read every continuation commit against the Part 6 lifecycle table and the consent rule of R17.
+Each decision below was taken under the same delegated authority and is `implemented` in the review commit; live-game behaviour remains with the user.
+
+### R21 Failure forms follow the slots
+
+The crisis focuses still stacked failure spirits: Leadership Split and Compromised Network could show two command failures, the overlay could add a third beside a focus-chosen one and later strip the focus's spirit on recovery, and Local Revolt granted Local Revolt and Failed Rule together.
+Command failures chosen by a focus now go through `random_terror_set_command_failure_form`, which replaces any other command failure and takes the chosen one over from the overlay, and the overlay adds a command failure only while the actor shows none.
+Legitimacy failures go through `random_terror_add_legitimacy_failure`: the first shows as itself, and a second, different one merges both into Failed Rule, matching the table's "one of" failure forms.
+Negotiated Enclave and Return from the Crisis list and remove only the failure spirits the actor holds.
+
+### R22 Starting and terminal spirits are never granted twice
+
+Founding Crisis re-granted the three starting spirits the actor setup had already given; it now adds only missing ones.
+Ambiguous Light re-granted the three terminal spirits the terminal transition had already given; it now adds only missing ones and raises one final formation within the division limit.
+The terminal transition also removes International Mandate and the legitimacy failure spirits, so the final command carries only its terminal spirits.
+
+### R23 Consent rule applied to every binding reward
+
+Lead the Coordination Structure pulled player-run commands into its faction and Reconcile the Jihadists forced white peace on player-run commands, against R17.
+Both now bind only AI-run commands, and their tooltips say so in plain terms.
+
+### R24 Ideological mobilization reopens where it was called
+
+The decision marked its state permanently and hid every marked state, so a command with one eligible state could never mobilize again although the tooltip promises it.
+The timed country flag alone now gates the decision, so it reopens in any eligible state, the same one included, when the mobilization ends.
+
+### R25 Railway stays on the command's land
+
+Salvage the Rail Spur passes `build_only_on_allied = yes`, so the shortest path never lays track through a neighbour's provinces.
+
+## Route evidence for the review
+
+- `hoi4.focus_inspect` on `random_terror_actor_focus_tree` before (revision `a9aaf637fb9ea0884047255cf88985a1a832a216f6d98a590a3dbe1d532395e5`) and after (revision `081ddd6adefd652bbf16ba511e24d48335ea51c0001e9ddcc491cc1b134624b2`) the fixes: 114 focuses, zero tree diagnostics, zero connector crossings, layout hash `69ec88315409c5c578ffca2852052037f7ee6a48510a92189c11ac79a1a6d2a9` unchanged.
+- No AI weight, MTTH or random-selection value changed, so no probability comparison was required.
+- `needs_live_game`: the merged Failed Rule path, the slot tooltips shown through `if` blocks, and `build_only_on_allied` pathing on a concave command.

@@ -2789,6 +2789,8 @@ random_terror_select_actor_leader = {
 # External Supply shows Looting Spiral on the coerced economy, Sponsor
 # Dependency under foreign sponsorship and Famine otherwise.  A failure idea
 # is added only when it is absent and is then marked as owned by the overlay;
+# a command failure is added only while the actor shows none, so a failure
+# form chosen by a crisis focus is never doubled;
 # recovery, or a route change, removes only owned ideas, so focus-granted
 # spirits survive any number of actor decisions.
 random_terror_refresh_actor_lifecycles = {
@@ -2851,7 +2853,7 @@ random_terror_refresh_actor_lifecycles = {
 			limit = {
 				check_variable = { random_terror_lifecycle_command_failure = constant:random_terror_value.one }
 				check_variable = { random_terror_lifecycle_route = constant:random_terror_route.shadow_council }
-				NOT = { has_idea = random_terror_compromised_network }
+				NOT = { random_terror_has_command_failure_form = yes }
 			}
 			add_ideas = random_terror_compromised_network
 			set_country_flag = random_terror_lifecycle_owns_compromised_network
@@ -2873,7 +2875,7 @@ random_terror_refresh_actor_lifecycles = {
 			limit = {
 				check_variable = { random_terror_lifecycle_command_failure = constant:random_terror_value.one }
 				check_variable = { random_terror_lifecycle_route = constant:random_terror_route.war_directorate }
-				NOT = { has_idea = random_terror_rival_warlords }
+				NOT = { random_terror_has_command_failure_form = yes }
 			}
 			add_ideas = random_terror_rival_warlords
 			set_country_flag = random_terror_lifecycle_owns_rival_warlords
@@ -2895,7 +2897,7 @@ random_terror_refresh_actor_lifecycles = {
 			limit = {
 				check_variable = { random_terror_lifecycle_command_failure = constant:random_terror_value.one }
 				check_variable = { random_terror_lifecycle_route = constant:random_terror_route.ideological_secretariat }
-				NOT = { has_idea = random_terror_doctrinal_schism }
+				NOT = { random_terror_has_command_failure_form = yes }
 			}
 			add_ideas = random_terror_doctrinal_schism
 			set_country_flag = random_terror_lifecycle_owns_doctrinal_schism
@@ -4085,8 +4087,8 @@ random_terror_focus_reward_forge_seal = {
 
 # Lead the Coordination Structure: a command that is free or already leads a
 # faction founds or keeps the Jihadist International, takes the network
-# leadership when nobody holds it, and brings in every International actor
-# that is free, at peace with it and not an independent command.  A command
+# leadership when nobody holds it, and brings in every AI-run International
+# actor that is free, at peace with it and not an independent command.  A command
 # serving in another faction instead receives courier support.
 random_terror_focus_reward_lead_coordination = {
 	if = {
@@ -4125,6 +4127,8 @@ random_terror_focus_reward_lead_coordination = {
 				NOT = { has_country_flag = random_terror_independent_command }
 				NOT = { has_war_with = ROOT }
 				NOT = { has_capitulated = yes }
+				# A command run by a player joins only through its own choice.
+				is_ai = yes
 			}
 			ROOT = {
 				if = {
@@ -6211,9 +6215,16 @@ random_terror_mark_final_actor = {
 		random_terror_security_state
 		random_terror_claimed_authority
 		random_terror_recognized_enclave
+		random_terror_international_mandate
+		random_terror_local_revolt
+		random_terror_mass_defection
+		random_terror_failed_rule
+	}
+	if = {
+		limit = { NOT = { has_idea = random_terror_presence_of_the_entity } }
+		add_ideas = random_terror_presence_of_the_entity
 	}
 	add_ideas = {
-		random_terror_presence_of_the_entity
 		random_terror_world_in_revolt
 		random_terror_supply_through_ruin
 	}
@@ -6461,7 +6472,6 @@ random_terror_clear_state_commitments = {
 	clr_state_flag = random_terror_hostage_mission_subject
 	clr_state_flag = random_terror_hostages_recovered
 	clr_state_flag = random_terror_hostage_crisis_resolved
-	clr_state_flag = random_terror_ideological_mobilization_subject
 	clr_state_flag = random_terror_intelligence_sweep_completed
 	clr_state_flag = random_terror_intervention_subject
 	clr_state_flag = random_terror_intervention_accepted

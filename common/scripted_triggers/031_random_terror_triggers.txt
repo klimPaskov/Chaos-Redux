@@ -202,6 +202,17 @@ random_terror_state_is_threatened_cell = {
 	NOT = { has_state_flag = random_terror_state_lost_local_control }
 }
 
+# COUNTRY scope: an actor.  It already shows a command failure form, from a
+# crisis focus or from the failure overlay.  The overlay adds its route's form
+# only when this is false, so an actor never shows two command failures.
+random_terror_has_command_failure_form = {
+	OR = {
+		has_idea = random_terror_compromised_network
+		has_idea = random_terror_rival_warlords
+		has_idea = random_terror_doctrinal_schism
+	}
+}
+
 # STATE scope, ROOT = an actor.  An active cell abroad that an actor focus can
 # reach: an active crisis state short of Lost Local Control that neither the
 # actor nor any other Event 31 actor owns or holds.

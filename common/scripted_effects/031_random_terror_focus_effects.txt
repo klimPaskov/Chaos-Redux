@@ -321,6 +321,192 @@ random_terror_set_legitimacy_form = {
 	}
 }
 
+# Founding Crisis: the three starting problems, added only where the actor
+# setup has not already given them (a carrier reused without a fresh package).
+random_terror_focus_ensure_starting_forms = {
+	if = {
+		limit = { NOT = { has_idea = random_terror_improvised_command } }
+		add_ideas = random_terror_improvised_command
+	}
+	if = {
+		limit = { NOT = { has_idea = random_terror_captured_economy } }
+		add_ideas = random_terror_captured_economy
+	}
+	if = {
+		limit = { NOT = { has_idea = random_terror_contested_legitimacy } }
+		add_ideas = random_terror_contested_legitimacy
+	}
+}
+
+# ----------------------------------------------------------------------------
+# Failure forms chosen by the crisis focuses.  Each lifecycle shows one
+# failure form at a time (Part 6 idea lifecycle table).
+#
+# Command: Compromised Network, Rival Warlords or Doctrinal Schism.  The
+# chosen form replaces the other two and is owned by the focus, so the failure
+# overlay of random_terror_refresh_actor_lifecycles never strips it and never
+# adds a second command failure beside it.  Input: temp
+# random_terror_idea_form, a command failure form constant.
+# ----------------------------------------------------------------------------
+
+random_terror_set_command_failure_form = {
+	if = {
+		limit = {
+			has_idea = random_terror_compromised_network
+			NOT = { check_variable = { random_terror_idea_form = constant:random_terror_idea_form.compromised_network } }
+		}
+		remove_ideas = random_terror_compromised_network
+	}
+	if = {
+		limit = {
+			has_idea = random_terror_rival_warlords
+			NOT = { check_variable = { random_terror_idea_form = constant:random_terror_idea_form.rival_warlords } }
+		}
+		remove_ideas = random_terror_rival_warlords
+	}
+	if = {
+		limit = {
+			has_idea = random_terror_doctrinal_schism
+			NOT = { check_variable = { random_terror_idea_form = constant:random_terror_idea_form.doctrinal_schism } }
+		}
+		remove_ideas = random_terror_doctrinal_schism
+	}
+	if = {
+		limit = {
+			check_variable = { random_terror_idea_form = constant:random_terror_idea_form.compromised_network }
+			NOT = { has_idea = random_terror_compromised_network }
+		}
+		add_ideas = random_terror_compromised_network
+	}
+	if = {
+		limit = {
+			check_variable = { random_terror_idea_form = constant:random_terror_idea_form.rival_warlords }
+			NOT = { has_idea = random_terror_rival_warlords }
+		}
+		add_ideas = random_terror_rival_warlords
+	}
+	if = {
+		limit = {
+			check_variable = { random_terror_idea_form = constant:random_terror_idea_form.doctrinal_schism }
+			NOT = { has_idea = random_terror_doctrinal_schism }
+		}
+		add_ideas = random_terror_doctrinal_schism
+	}
+	hidden_effect = {
+		clr_country_flag = random_terror_lifecycle_owns_compromised_network
+		clr_country_flag = random_terror_lifecycle_owns_rival_warlords
+		clr_country_flag = random_terror_lifecycle_owns_doctrinal_schism
+	}
+}
+
+# Legitimacy: Local Revolt or Mass Defection, and Failed Rule once both have
+# struck.  A second, different legitimacy failure merges the first into Failed
+# Rule instead of stacking beside it.  Input: temp random_terror_idea_form,
+# local_revolt or mass_defection.
+random_terror_add_legitimacy_failure = {
+	if = {
+		limit = {
+			OR = {
+				has_idea = random_terror_failed_rule
+				AND = {
+					check_variable = { random_terror_idea_form = constant:random_terror_idea_form.local_revolt }
+					has_idea = random_terror_mass_defection
+				}
+				AND = {
+					check_variable = { random_terror_idea_form = constant:random_terror_idea_form.mass_defection }
+					has_idea = random_terror_local_revolt
+				}
+			}
+		}
+		if = {
+			limit = { has_idea = random_terror_local_revolt }
+			remove_ideas = random_terror_local_revolt
+		}
+		if = {
+			limit = { has_idea = random_terror_mass_defection }
+			remove_ideas = random_terror_mass_defection
+		}
+		if = {
+			limit = { NOT = { has_idea = random_terror_failed_rule } }
+			add_ideas = random_terror_failed_rule
+		}
+	}
+	else_if = {
+		limit = {
+			check_variable = { random_terror_idea_form = constant:random_terror_idea_form.local_revolt }
+			NOT = { has_idea = random_terror_local_revolt }
+		}
+		add_ideas = random_terror_local_revolt
+	}
+	else_if = {
+		limit = {
+			check_variable = { random_terror_idea_form = constant:random_terror_idea_form.mass_defection }
+			NOT = { has_idea = random_terror_mass_defection }
+		}
+		add_ideas = random_terror_mass_defection
+	}
+}
+
+# Negotiated Enclave and Return from the Crisis: ends every failure form the
+# actor holds, listing only those it actually has.  Overlay ownership is
+# cleared with them; the overlay brings a form back only while its value is
+# still collapsed.
+random_terror_focus_end_failure_forms = {
+	if = {
+		limit = { has_idea = random_terror_compromised_network }
+		remove_ideas = random_terror_compromised_network
+	}
+	if = {
+		limit = { has_idea = random_terror_rival_warlords }
+		remove_ideas = random_terror_rival_warlords
+	}
+	if = {
+		limit = { has_idea = random_terror_doctrinal_schism }
+		remove_ideas = random_terror_doctrinal_schism
+	}
+	if = {
+		limit = { has_idea = random_terror_local_revolt }
+		remove_ideas = random_terror_local_revolt
+	}
+	if = {
+		limit = { has_idea = random_terror_mass_defection }
+		remove_ideas = random_terror_mass_defection
+	}
+	if = {
+		limit = { has_idea = random_terror_failed_rule }
+		remove_ideas = random_terror_failed_rule
+	}
+	if = {
+		limit = {
+			has_idea = random_terror_famine
+			has_country_flag = random_terror_lifecycle_owns_famine
+		}
+		remove_ideas = random_terror_famine
+	}
+	if = {
+		limit = {
+			has_idea = random_terror_looting_spiral
+			has_country_flag = random_terror_lifecycle_owns_looting_spiral
+		}
+		remove_ideas = random_terror_looting_spiral
+	}
+	if = {
+		limit = {
+			has_idea = random_terror_sponsor_dependency
+			has_country_flag = random_terror_lifecycle_owns_sponsor_dependency
+		}
+		remove_ideas = random_terror_sponsor_dependency
+	}
+	hidden_effect = {
+		clr_country_flag = random_terror_lifecycle_owns_compromised_network
+		clr_country_flag = random_terror_lifecycle_owns_rival_warlords
+		clr_country_flag = random_terror_lifecycle_owns_doctrinal_schism
+		clr_country_flag = random_terror_lifecycle_owns_famine
+		clr_country_flag = random_terror_lifecycle_owns_looting_spiral
+		clr_country_flag = random_terror_lifecycle_owns_sponsor_dependency
+	}
+}
+
 # ----------------------------------------------------------------------------
 # Map and network helpers.
 # ----------------------------------------------------------------------------
@@ -565,11 +751,13 @@ random_terror_focus_reward_align_patron = {
 	set_country_flag = random_terror_focus_patron_aligned
 }
 
-# Reconcile the Jihadists: the command makes peace with every rival
-# International command it is fighting and ends the doctrinal dispute.
+# Reconcile the Jihadists: the command makes peace with every AI-run rival
+# International command it is fighting and ends the doctrinal dispute.  A
+# command run by a player is never forced out of its war.
 random_terror_focus_reward_reconcile_jihadists = {
 	every_enemy_country = {
 		limit = {
+			is_ai = yes
 			random_terror_is_actor = yes
 			OR = {
 				random_terror_is_jihadist_actor = yes
@@ -659,6 +847,7 @@ random_terror_focus_build_rail_to_focus_state = {
 			text = {
 				build_railway = {
 					level = 1
+					build_only_on_allied = yes
 					start_state = [RT_START]
 					target_state = [RT_TARGET]
 				}
@@ -1392,4 +1581,15 @@ random_terror_focus_reward_deny_revelation = {
 	clamp_variable = { var = global.random_terror_apocalyptic_readiness min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
 	set_country_flag = random_terror_focus_jihadist_rejected
 	set_country_flag = random_terror_focus_false_revelation_denied
+}
+
+# Ambiguous Light: the final command consolidates the entity's command
+# around one more veteran formation, within its division limit.  The focus
+# itself shows any terminal spirit the command does not hold yet.
+random_terror_focus_reward_ambiguous_light = {
+	set_temp_variable = { random_terror_unit_experience = constant:random_terror_unit.final_experience }
+	set_temp_variable = { random_terror_unit_equipment = constant:random_terror_unit.final_equipment }
+	set_temp_variable = { random_terror_unit_manpower = constant:random_terror_unit.final_manpower }
+	set_temp_variable = { random_terror_unit_id = constant:random_terror_unit.final_id }
+	random_terror_focus_raise_formation = yes
 }

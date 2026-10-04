@@ -120,11 +120,7 @@ focus_tree = {
 		available = { random_terror_is_actor = yes }
 		completion_reward = {
 			random_terror_initialize_global_state = yes
-			add_ideas = {
-				random_terror_improvised_command
-				random_terror_captured_economy
-				random_terror_contested_legitimacy
-			}
+			random_terror_focus_ensure_starting_forms = yes
 			set_variable = { random_terror_focus_route = constant:random_terror_route.none }
 			set_country_flag = random_terror_focus_foundation_recorded
 			army_experience = constant:random_terror_cost.actor_offensive_experience
@@ -1925,7 +1921,8 @@ focus_tree = {
 			}
 		}
 		completion_reward = {
-			add_ideas = random_terror_mass_defection
+			set_temp_variable = { random_terror_idea_form = constant:random_terror_idea_form.mass_defection }
+			random_terror_add_legitimacy_failure = yes
 			custom_effect_tooltip = random_terror_territorial_control_falls_tt
 			subtract_from_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_militia_gain }
 			set_country_flag = random_terror_focus_mass_defection
@@ -2385,7 +2382,8 @@ focus_tree = {
 			}
 		}
 		completion_reward = {
-			add_ideas = random_terror_rival_warlords
+			set_temp_variable = { random_terror_idea_form = constant:random_terror_idea_form.rival_warlords }
+			random_terror_set_command_failure_form = yes
 			custom_effect_tooltip = random_terror_network_authority_falls_tt
 			subtract_from_variable = { random_terror_network_authority = constant:random_terror_tuning.network_reach_gain }
 			set_country_flag = random_terror_focus_leadership_split
@@ -2411,7 +2409,8 @@ focus_tree = {
 			check_variable = { random_terror_network_authority < constant:random_terror_value.unity_gate }
 		}
 		completion_reward = {
-			add_ideas = random_terror_compromised_network
+			set_temp_variable = { random_terror_idea_form = constant:random_terror_idea_form.compromised_network }
+			random_terror_set_command_failure_form = yes
 			custom_effect_tooltip = random_terror_network_reach_falls_tt
 			subtract_from_variable = { global.random_terror_network_reach = constant:random_terror_tuning.network_reach_gain }
 			set_country_flag = random_terror_focus_network_compromised
@@ -2439,10 +2438,8 @@ focus_tree = {
 			}
 		}
 		completion_reward = {
-			add_ideas = {
-				random_terror_local_revolt
-				random_terror_failed_rule
-			}
+			set_temp_variable = { random_terror_idea_form = constant:random_terror_idea_form.local_revolt }
+			random_terror_add_legitimacy_failure = yes
 			custom_effect_tooltip = random_terror_territorial_control_falls_tt
 			subtract_from_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_militia_gain }
 			set_country_flag = random_terror_focus_local_revolt
@@ -2472,7 +2469,8 @@ focus_tree = {
 			}
 		}
 		completion_reward = {
-			add_ideas = random_terror_doctrinal_schism
+			set_temp_variable = { random_terror_idea_form = constant:random_terror_idea_form.doctrinal_schism }
+			random_terror_set_command_failure_form = yes
 			custom_effect_tooltip = random_terror_network_authority_falls_tt
 			subtract_from_variable = { random_terror_network_authority = constant:random_terror_tuning.network_reach_gain }
 			set_country_flag = random_terror_focus_doctrinal_schism
@@ -2501,10 +2499,21 @@ focus_tree = {
 		}
 		available_if_capitulated = yes
 		completion_reward = {
-			remove_ideas = {
-				random_terror_compromised_network
-				random_terror_local_revolt
-				random_terror_rival_warlords
+			if = {
+				limit = { has_idea = random_terror_compromised_network }
+				remove_ideas = random_terror_compromised_network
+			}
+			if = {
+				limit = { has_idea = random_terror_rival_warlords }
+				remove_ideas = random_terror_rival_warlords
+			}
+			if = {
+				limit = { has_idea = random_terror_local_revolt }
+				remove_ideas = random_terror_local_revolt
+			}
+			if = {
+				limit = { has_idea = random_terror_failed_rule }
+				remove_ideas = random_terror_failed_rule
 			}
 			set_temp_variable = { random_terror_idea_form = constant:random_terror_idea_form.recognized_enclave }
 			random_terror_set_legitimacy_form = yes
@@ -2535,18 +2544,7 @@ focus_tree = {
 		}
 		available_if_capitulated = yes
 		completion_reward = {
-			remove_ideas = {
-				random_terror_compromised_network
-				random_terror_rival_warlords
-				random_terror_doctrinal_schism
-				random_terror_local_revolt
-				random_terror_mass_defection
-				random_terror_failed_rule
-			}
-			if = {
-				limit = { has_country_flag = random_terror_lifecycle_owns_sponsor_dependency }
-				remove_ideas = random_terror_sponsor_dependency
-			}
+			random_terror_focus_end_failure_forms = yes
 			set_temp_variable = { random_terror_idea_form = constant:random_terror_idea_form.claimed_authority }
 			random_terror_set_legitimacy_form = yes
 			custom_effect_tooltip = random_terror_control_and_authority_rise_tt
@@ -3101,10 +3099,21 @@ focus_tree = {
 		completion_reward = {
 			set_country_flag = random_terror_focus_route_false_revelation
 			set_variable = { random_terror_focus_route = constant:random_terror_route.false_revelation }
-			add_ideas = {
-				random_terror_presence_of_the_entity
-				random_terror_world_in_revolt
-				random_terror_supply_through_ruin
+			if = {
+				limit = { NOT = { has_idea = random_terror_presence_of_the_entity } }
+				add_ideas = random_terror_presence_of_the_entity
+			}
+			if = {
+				limit = { NOT = { has_idea = random_terror_world_in_revolt } }
+				add_ideas = random_terror_world_in_revolt
+			}
+			if = {
+				limit = { NOT = { has_idea = random_terror_supply_through_ruin } }
+				add_ideas = random_terror_supply_through_ruin
+			}
+			custom_effect_tooltip = random_terror_ambiguous_light_reward_tt
+			hidden_effect = {
+				random_terror_focus_reward_ambiguous_light = yes
 			}
 			set_country_flag = random_terror_focus_terminal_overlay
 		}
