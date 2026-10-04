@@ -818,6 +818,7 @@ chaosx_nr25_confirm_primary_sector = {
 # reports. It never changes another participant's phase.
 chaosx_nr25_enter_phase = {
 	set_variable = { chaosx_nr25_phase = chaosx_nr25_new_phase }
+	chaosx_nr25_reset_stall_clock = yes
 	if = {
 		limit = { check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals } }
 		chaosx_nr25_report_departure = yes
@@ -1060,6 +1061,15 @@ chaosx_nr25_run_bounded_pulse = {
 	}
 	else = {
 		set_temp_variable = { chaosx_nr25_pulse_step = constant:chaosx_nr25_timing.pulse_days }
+		# A missed controller event cannot hold the race in entry.
+		if = {
+			limit = {
+				has_global_flag = chaosx_nr25_entry_open
+				has_variable = global.chaosx_nr25_entry_close_date
+				check_variable = { var = global.date value = global.chaosx_nr25_entry_close_date compare = greater_than }
+			}
+			chaosx_nr25_close_entry_window = yes
+		}
 		if = { limit = { has_global_flag = chaosx_nr25_active } chaosx_nr25_rehome_pending_evolutions = yes }
 		if = {
 			limit = { check_variable = { var = chaosx_nr25_action_cooldown value = constant:chaosx_nr25_value.zero compare = greater_than } }
@@ -1227,6 +1237,7 @@ chaosx_nr25_run_bounded_pulse = {
 			}
 			chaosx_nr25_resolve_final_candidate = yes
 		}
+		chaosx_nr25_recall_if_stalled = yes
 		chaosx_nr25_schedule_participant_pulse = yes
 	}
 }

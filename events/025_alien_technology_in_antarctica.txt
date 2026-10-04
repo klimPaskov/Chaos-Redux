@@ -89,9 +89,18 @@ country_event = {
 			# its first day; the entry and mobilisation reports describe them.
 			chaosx_nr25_apply_evolved_openings = yes
 			news_event = { id = chaosx.news.25 days = 4 }
+			# The entry window closes through the first delivered controller
+			# event. Every human receives one as well as the opening country, and
+			# expedition pulses close it by date, so a vanished opener cannot
+			# leave the race stuck in entry.
+			set_temp_variable = { chaosx_date_days = constant:chaosx_nr25_timing.entry_window_days }
+			chaosx_convert_days_to_date_offset = yes
+			set_variable = { global.chaosx_nr25_entry_close_date = global.date }
+			add_to_variable = { global.chaosx_nr25_entry_close_date = chaosx_date_offset }
 			every_country = {
 				limit = { is_ai = no }
 				country_event = { id = chaosx.nr25.2 days = 1 }
+				country_event = { id = chaosx.nr25.4 days = constant:chaosx_nr25_timing.entry_window_days }
 			}
 			country_event = { id = chaosx.nr25.4 days = constant:chaosx_nr25_timing.entry_window_days }
 		}
@@ -217,34 +226,7 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		if = {
-			limit = { has_global_flag = chaosx_nr25_entry_open }
-			clr_global_flag = chaosx_nr25_entry_open
-			chaosx_nr25_select_bounded_ai_roster = yes
-			if = {
-				limit = {
-					check_variable = { var = global.chaosx_nr25_participant_count value = constant:chaosx_nr25_value.zero compare = greater_than }
-				}
-				set_variable = { global.chaosx_nr25_phase = constant:chaosx_nr25_race_state.active }
-				for_each_scope_loop = {
-					array = global.chaosx_nr25_participants
-					if = {
-						limit = {
-							has_country_flag = chaosx_nr25_participant
-							check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals }
-						}
-						set_temp_variable = { chaosx_nr25_new_phase = constant:chaosx_nr25_phase.mobilization }
-						chaosx_nr25_enter_phase = yes
-						chaosx_nr25_advance_phase_if_ready = yes
-						chaosx_nr25_prepare_board_slots = yes
-						country_event = { id = chaosx.nr25.5 days = 1 }
-					}
-				}
-			}
-			else = {
-				country_event = { id = chaosx.nr25.299 days = 1 }
-			}
-		}
+		chaosx_nr25_close_entry_window = yes
 	}
 }
 
@@ -384,6 +366,21 @@ country_event = {
 			}
 			chaosx_nr25_prepare_phase_mission_completion = yes
 		}
+	}
+}
+
+# An expedition that stalled in one phase past the limit is recalled; its
+# verified evidence is preserved.
+country_event = {
+	id = chaosx.nr25.89
+	title = chaosx.nr25.89.t
+	desc = chaosx.nr25.89.d
+	picture = GFX_report_event_025_antarctic_aftermath
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr25.89.a
+		ai_chance = { base = 100 }
 	}
 }
 

@@ -206,3 +206,69 @@ chaosx_nr25_start_latent_dependence = {
 		}
 	}
 }
+
+# COUNTRY scope (any). Closes the entry window once: AI allocation fills only
+# the slots humans left, then every registered expedition moves from entry to
+# its own mobilisation phase; the loop reads only the stored registry. Called
+# by the delayed controller events and, once the stored close date has passed,
+# by any expedition pulse, so the window cannot stay open forever.
+chaosx_nr25_close_entry_window = {
+	if = {
+		limit = { has_global_flag = chaosx_nr25_entry_open }
+		clr_global_flag = chaosx_nr25_entry_open
+		chaosx_nr25_select_bounded_ai_roster = yes
+		if = {
+			limit = {
+				check_variable = { var = global.chaosx_nr25_participant_count value = constant:chaosx_nr25_value.zero compare = greater_than }
+			}
+			set_variable = { global.chaosx_nr25_phase = constant:chaosx_nr25_race_state.active }
+			for_each_scope_loop = {
+				array = global.chaosx_nr25_participants
+				if = {
+					limit = {
+						has_country_flag = chaosx_nr25_participant
+						check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals }
+					}
+					set_temp_variable = { chaosx_nr25_new_phase = constant:chaosx_nr25_phase.mobilization }
+					chaosx_nr25_enter_phase = yes
+					chaosx_nr25_advance_phase_if_ready = yes
+					chaosx_nr25_prepare_board_slots = yes
+					country_event = { id = chaosx.nr25.5 days = 1 }
+				}
+			}
+		}
+		else = {
+			country_event = { id = chaosx.nr25.299 days = 1 }
+		}
+	}
+}
+
+# COUNTRY scope. Recalls an expedition that has stayed in one phase past the
+# stall limit with no objective running. Its verified evidence is preserved,
+# and the race closes through the normal path once no expedition remains.
+chaosx_nr25_recall_if_stalled = {
+	if = {
+		limit = {
+			has_global_flag = chaosx_nr25_active
+			NOT = { has_global_flag = chaosx_nr25_entry_open }
+			has_country_flag = chaosx_nr25_participant
+			NOT = { has_country_flag = chaosx_nr25_terminal }
+			NOT = { has_country_flag = chaosx_nr25_phase_mission_active }
+			NOT = { has_country_flag = chaosx_nr25_final_mission_active }
+			NOT = { has_country_flag = chaosx_nr25_evacuation_requested }
+			has_variable = chaosx_nr25_stall_date
+			check_variable = { var = global.date value = chaosx_nr25_stall_date compare = greater_than }
+		}
+		set_country_flag = chaosx_nr25_recalled_after_stall
+		country_event = { id = chaosx.nr25.89 days = 1 }
+		chaosx_nr25_withdraw_participant = yes
+	}
+}
+
+# COUNTRY scope. Restarts the expedition's stall clock when it enters a phase.
+chaosx_nr25_reset_stall_clock = {
+	set_temp_variable = { chaosx_date_days = constant:chaosx_nr25_stall.phase_stall_days }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { chaosx_nr25_stall_date = global.date }
+	add_to_variable = { chaosx_nr25_stall_date = chaosx_date_offset }
+}

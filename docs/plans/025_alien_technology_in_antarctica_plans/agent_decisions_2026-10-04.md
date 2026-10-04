@@ -232,3 +232,14 @@ Decision:
 - Evolution V stays latent: every crew starts with 10 more Exposure Risk, and when Evolution V later activates during the race those crews start their Dependence at once instead of at settlement.
 - The entry and mobilisation reports append one sentence per evolved opening; disabled evolutions add nothing.
 - The entry option key collision (`chaosx.nr25.2.d` named both the entry description and the chartered option) is fixed by renaming the option to `chaosx.nr25.2.e`.
+
+## D16. Entry-window closure and stalled expeditions
+
+Disposition: `implemented`.
+
+Basis: the lead found that the entry controller ran only on the opening country and that no rule closed a race whose expeditions stopped progressing.
+
+Decision:
+
+- The controller body is one effect, `chaosx_nr25_close_entry_window`, that runs once. The delayed controller event goes to the opening country and to every human, and any expedition pulse closes the window once the stored close date has passed. None of these scans the world.
+- An expedition that stays in one phase for 720 days with no objective, final mission or evacuation running is recalled: it withdraws with its verified evidence through the normal withdrawal path and receives a report. When no expedition remains, the race closes through the existing closure path.
