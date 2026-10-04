@@ -206,8 +206,8 @@ chaosx_nr25_evolution_category = {
 
 	chaosx_nr25_dependence_contain = {
 		icon = GFX_decision_generic_military
-		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_technology_changes_users chaosx_nr25_evolution_v_holder_valid = yes }
-		available = { chaosx_nr25_evolution_technology_changes_users_action_available = yes chaosx_nr25_dependence_contain_cost_available = yes }
+		visible = { chaosx_nr25_evolution_v_policy_visible = yes }
+		available = { custom_trigger_tooltip = { tooltip = chaosx_nr25_evolution_v_action_ready_tt chaosx_nr25_evolution_technology_changes_users_action_available = yes } chaosx_nr25_dependence_contain_cost_available = yes }
 		custom_cost_trigger = { chaosx_nr25_dependence_contain_cost_available = yes }
 		custom_cost_text = chaosx_nr25_dependence_contain_cost
 		complete_effect = { custom_effect_tooltip = chaosx_nr25_dependence_contain_effect hidden_effect = { set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.contain } chaosx_nr25_execute_evolution_action = yes } }
@@ -215,7 +215,7 @@ chaosx_nr25_evolution_category = {
 	}
 	chaosx_nr25_dependence_destroy = {
 		icon = GFX_decision_generic_military
-		visible = { has_country_flag = chaosx_nr25_participant chaosx_nr25_technology_changes_users_evolution_in_force = yes chaosx_alien_recovery_ledger_has_physical_custody = yes }
+		visible = { chaosx_nr25_evolution_v_policy_visible = yes chaosx_nr25_technology_changes_users_evolution_in_force = yes chaosx_alien_recovery_ledger_has_physical_custody = yes }
 		available = {
 			custom_trigger_tooltip = { tooltip = chaosx_nr25_destroy_material_requirements chaosx_nr25_destroy_material_context_valid = yes }
 			hidden_trigger = { chaosx_nr25_dependence_destroy_cost_available = yes }
@@ -225,19 +225,42 @@ chaosx_nr25_evolution_category = {
 		complete_effect = { custom_effect_tooltip = chaosx_nr25_dependence_destroy_effect hidden_effect = { set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.destroy } chaosx_nr25_execute_evolution_action = yes } }
 		ai_will_do = { base = 8 }
 	}
+	# Custody goes only to a willing country: the offer asks the chosen
+	# recipient, and the material moves when it accepts.
 	chaosx_nr25_dependence_transfer = {
 		icon = GFX_decision_generic_research
-		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_technology_changes_users chaosx_nr25_evolution_v_holder_valid = yes }
-		available = { chaosx_nr25_evolution_technology_changes_users_action_available = yes chaosx_nr25_dependence_transfer_cost_available = yes }
+		target_array = chaosx_nr25_transfer_candidates
+		target_root_trigger = {
+			chaosx_nr25_evolution_v_policy_visible = yes
+			chaosx_alien_recovery_ledger_has_physical_custody = yes
+		}
+		target_trigger = { FROM = { chaosx_nr25_custody_candidate_valid = yes } }
+		visible = {
+			chaosx_nr25_evolution_v_policy_visible = yes
+			chaosx_alien_recovery_ledger_has_physical_custody = yes
+		}
+		available = {
+			custom_trigger_tooltip = { tooltip = chaosx_nr25_custody_offer_requirements_tt chaosx_nr25_custody_offer_available = yes }
+		}
 		custom_cost_trigger = { chaosx_nr25_dependence_transfer_cost_available = yes }
 		custom_cost_text = chaosx_nr25_dependence_transfer_cost
-		complete_effect = { custom_effect_tooltip = chaosx_nr25_dependence_transfer_effect hidden_effect = { set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.transfer } chaosx_nr25_execute_evolution_action = yes } }
-		ai_will_do = { base = 7 }
+		complete_effect = {
+			custom_effect_tooltip = chaosx_nr25_dependence_transfer_effect
+			hidden_effect = { chaosx_nr25_offer_custody = yes }
+		}
+		ai_will_do = {
+			base = 0
+			modifier = { add = 6 check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_holder.outcome_reliance_threshold compare = greater_than_or_equals } }
+			modifier = { add = 8 FROM = { is_in_faction_with = ROOT } }
+			modifier = { add = 4 FROM = { check_variable = { var = num_of_factories value = ROOT.num_of_factories compare = greater_than } } }
+			modifier = { factor = 0 has_country_flag = chaosx_nr25_dependence_integrate_route }
+			modifier = { factor = 0 FROM = { is_ai = no } }
+		}
 	}
 	chaosx_nr25_dependence_conceal = {
 		icon = GFX_decision_oppression
-		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_technology_changes_users chaosx_nr25_evolution_v_holder_valid = yes }
-		available = { chaosx_nr25_evolution_technology_changes_users_action_available = yes chaosx_nr25_dependence_conceal_cost_available = yes }
+		visible = { chaosx_nr25_evolution_v_policy_visible = yes }
+		available = { custom_trigger_tooltip = { tooltip = chaosx_nr25_evolution_v_action_ready_tt chaosx_nr25_evolution_technology_changes_users_action_available = yes } chaosx_nr25_dependence_conceal_cost_available = yes }
 		custom_cost_trigger = { chaosx_nr25_dependence_conceal_cost_available = yes }
 		custom_cost_text = chaosx_nr25_dependence_conceal_cost
 		complete_effect = { custom_effect_tooltip = chaosx_nr25_dependence_conceal_effect hidden_effect = { set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.conceal } chaosx_nr25_execute_evolution_action = yes } }
@@ -245,9 +268,9 @@ chaosx_nr25_evolution_category = {
 	}
 	chaosx_nr25_dependence_integrate = {
 		icon = GFX_decision_generic_research
-		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_technology_changes_users chaosx_nr25_evolution_v_holder_valid = yes }
+		visible = { chaosx_nr25_evolution_v_policy_visible = yes }
 		available = {
-			chaosx_nr25_evolution_technology_changes_users_action_available = yes
+			custom_trigger_tooltip = { tooltip = chaosx_nr25_evolution_v_action_ready_tt chaosx_nr25_evolution_technology_changes_users_action_available = yes }
 			custom_trigger_tooltip = { tooltip = chaosx_nr25_integration_material_required chaosx_nr25_active_material_incidents_allowed = yes }
 			chaosx_nr25_dependence_integrate_cost_available = yes
 		}

@@ -15,6 +15,10 @@ add_namespace = chaosx.nr25
 # Event 016 custom-technology owner API.
 # ============================================================================
 
+# add_tech_bonus does not read script constants, so the incident research
+# bonus is this file's only literal tuning value.
+@NR25_INCIDENT_TECH_BONUS = 0.5
+
 country_event = {
 	id = chaosx.nr25.1
 	title = chaosx.nr25.1.t
@@ -372,7 +376,7 @@ country_event = {
 	immediate = {
 		if = {
 			limit = {
-				has_country_flag = chaosx_nr25_participant
+				chaosx_nr25_phase_mission_owner_valid = yes
 				has_country_flag = chaosx_nr25_phase_mission_active
 			}
 			chaosx_nr25_prepare_phase_mission_completion = yes
@@ -592,13 +596,23 @@ country_event = {
 	picture = GFX_report_event_025_antarctic_dependence
 	is_triggered_only = yes
 
+	# During the race a participant delivers the opening; afterwards any
+	# material holder can, so the evolution may begin after the recovery.
 	trigger = {
-		has_global_flag = chaosx_nr25_active
-		has_country_flag = chaosx_nr25_participant
 		has_global_flag = chaosx_nr25_evolution_technology_changes_users_pending
 		chaosx_nr25_technology_changes_users_evolution_enabled = yes
 		has_event_target = chaosx_nr25_evolution_technology_changes_users_scheduler
 		event_target:chaosx_nr25_evolution_technology_changes_users_scheduler = { tag = ROOT }
+		OR = {
+			AND = {
+				has_global_flag = chaosx_nr25_active
+				has_country_flag = chaosx_nr25_participant
+			}
+			AND = {
+				NOT = { has_global_flag = chaosx_nr25_active }
+				chaosx_nr25_holder_scheduler_valid = yes
+			}
+		}
 	}
 	option = {
 		name = chaosx.nr25.220.a
@@ -640,5 +654,406 @@ country_event = {
 		ai_chance = { base = 100 }
 		clear_global_event_target = chaosx_nr25_history_actor
 		set_global_flag = chaosx_nr25_closure_notice_seen
+	}
+}
+
+# ============================================================================
+# EVOLUTION V AFTERMATH: HOLDER NOTICES, ACCIDENTS, INCIDENTS, OUTCOMES
+# ============================================================================
+# These reports reach only the country that holds the material. The bounded
+# holder watch (chaosx.nr25.281) schedules them; none of them scans the world.
+# Text reports what operators observe and never assigns the system a motive.
+
+# Evolution V reaches a holder other than the one that delivered the opening.
+country_event = {
+	id = chaosx.nr25.221
+	title = chaosx.nr25.220.t
+	desc = chaosx.nr25.221.d
+	picture = GFX_report_event_025_antarctic_dependence
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = chaosx_nr25_aftermath_open
+		chaosx_nr25_holds_alien_material = yes
+	}
+
+	option = {
+		name = chaosx.nr25.221.a
+		ai_chance = { base = 100 }
+		custom_effect_tooltip = chaosx_nr25_aftermath_opened_tt
+	}
+}
+
+# Dependence accident. The holder decides how the programme answers it.
+country_event = {
+	id = chaosx.nr25.225
+	title = chaosx.nr25.225.t
+	desc = chaosx.nr25.225.d
+	picture = GFX_report_event_025_antarctic_dependence
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_dependence_accident }
+
+	option = {
+		name = chaosx.nr25.225.a
+		ai_chance = {
+			base = 60
+			modifier = { add = 30 has_country_flag = chaosx_nr25_dependence_contained }
+			modifier = { factor = 0.5 has_country_flag = chaosx_nr25_dependence_integrate_route }
+		}
+		add_political_power = constant:chaosx_nr25_holder.accident_shutdown_pp
+		custom_effect_tooltip = chaosx_nr25_accident_shutdown_tt
+		hidden_effect = {
+			subtract_from_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.accident_shutdown_relief }
+			clamp_variable = { var = chaosx_nr25_dependence min = constant:chaosx_nr25_value.zero max = constant:chaosx_nr25_value.max }
+			clr_country_flag = chaosx_nr25_dependence_accident
+			set_country_flag = chaosx_nr25_accident_shutdown_ordered
+		}
+	}
+
+	option = {
+		name = chaosx.nr25.225.b
+		ai_chance = {
+			base = 30
+			modifier = { add = 30 has_country_flag = chaosx_nr25_dependence_integrate_route }
+		}
+		custom_effect_tooltip = chaosx_nr25_accident_running_tt
+		hidden_effect = {
+			set_temp_variable = { chaosx_nr25_stability_change = constant:chaosx_nr25_holder_fixed.accident_running_stability }
+			chaosx_nr25_apply_stability_change = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr25.225.c
+		trigger = { has_country_flag = chaosx_nr25_dependence_conceal_route }
+		ai_chance = { base = 10 }
+		add_political_power = constant:chaosx_nr25_holder.accident_conceal_pp
+		custom_effect_tooltip = chaosx_nr25_accident_buried_tt
+		hidden_effect = {
+			add_to_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.accident_conceal_pressure }
+			clamp_variable = { var = chaosx_nr25_dependence min = constant:chaosx_nr25_value.zero max = constant:chaosx_nr25_value.max }
+			clr_country_flag = chaosx_nr25_dependence_accident
+			set_country_flag = chaosx_nr25_accident_report_buried
+		}
+	}
+}
+
+# Strange behaviour one: engineers will not remove a component.
+country_event = {
+	id = chaosx.nr25.231
+	title = chaosx.nr25.231.t
+	desc = chaosx.nr25.231.d
+	picture = GFX_report_event_025_antarctic_dependence
+	is_triggered_only = yes
+
+	trigger = { chaosx_nr25_holds_alien_material = yes }
+	immediate = { hidden_effect = { set_country_flag = chaosx_nr25_incident_1_seen } }
+
+	option = {
+		name = chaosx.nr25.231.a
+		ai_chance = { base = 50 modifier = { add = 40 has_country_flag = chaosx_nr25_dependence_contained } modifier = { factor = 0.3 has_country_flag = chaosx_nr25_dependence_integrate_route } }
+		add_political_power = constant:chaosx_nr25_holder.incident_pp_cost
+		custom_effect_tooltip = chaosx_nr25_incident_relief_tt
+		hidden_effect = { subtract_from_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.incident_relief } chaosx_nr25_clamp_values = yes }
+	}
+	option = {
+		name = chaosx.nr25.231.b
+		ai_chance = { base = 30 modifier = { add = 40 has_country_flag = chaosx_nr25_dependence_integrate_route } }
+		add_tech_bonus = { name = chaosx_nr25_incident_component bonus = @NR25_INCIDENT_TECH_BONUS uses = 1 category = industry }
+		custom_effect_tooltip = chaosx_nr25_incident_pressure_tt
+		hidden_effect = { add_to_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.incident_pressure } chaosx_nr25_clamp_values = yes }
+	}
+}
+
+# Strange behaviour two: planners adopt patterns they cannot explain.
+country_event = {
+	id = chaosx.nr25.232
+	title = chaosx.nr25.232.t
+	desc = chaosx.nr25.232.d
+	picture = GFX_report_event_025_antarctic_dependence
+	is_triggered_only = yes
+
+	trigger = { chaosx_nr25_holds_alien_material = yes }
+	immediate = { hidden_effect = { set_country_flag = chaosx_nr25_incident_2_seen } }
+
+	option = {
+		name = chaosx.nr25.232.a
+		ai_chance = { base = 50 modifier = { add = 40 has_country_flag = chaosx_nr25_dependence_contained } modifier = { factor = 0.3 has_country_flag = chaosx_nr25_dependence_integrate_route } }
+		custom_effect_tooltip = chaosx_nr25_incident_stability_tt
+		custom_effect_tooltip = chaosx_nr25_incident_relief_tt
+		hidden_effect = {
+			set_temp_variable = { chaosx_nr25_stability_change = constant:chaosx_nr25_holder_fixed.incident_stability_cost }
+			chaosx_nr25_apply_stability_change = yes
+			subtract_from_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.incident_relief }
+			chaosx_nr25_clamp_values = yes
+		}
+	}
+	option = {
+		name = chaosx.nr25.232.b
+		ai_chance = { base = 30 modifier = { add = 40 has_country_flag = chaosx_nr25_dependence_integrate_route } }
+		add_tech_bonus = { name = chaosx_nr25_incident_planning bonus = @NR25_INCIDENT_TECH_BONUS uses = 1 category = land_doctrine }
+		custom_effect_tooltip = chaosx_nr25_incident_pressure_tt
+		hidden_effect = { add_to_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.incident_pressure } chaosx_nr25_clamp_values = yes }
+	}
+}
+
+# Strange behaviour three: production lines change their own tolerances.
+country_event = {
+	id = chaosx.nr25.233
+	title = chaosx.nr25.233.t
+	desc = chaosx.nr25.233.d
+	picture = GFX_report_event_025_antarctic_dependence
+	is_triggered_only = yes
+
+	trigger = { chaosx_nr25_holds_alien_material = yes }
+	immediate = { hidden_effect = { set_country_flag = chaosx_nr25_incident_3_seen } }
+
+	option = {
+		name = chaosx.nr25.233.a
+		ai_chance = { base = 50 modifier = { add = 40 has_country_flag = chaosx_nr25_dependence_contained } modifier = { factor = 0.3 has_country_flag = chaosx_nr25_dependence_integrate_route } }
+		add_political_power = constant:chaosx_nr25_holder.incident_pp_cost
+		custom_effect_tooltip = chaosx_nr25_incident_relief_tt
+		hidden_effect = { subtract_from_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.incident_relief } chaosx_nr25_clamp_values = yes }
+	}
+	option = {
+		name = chaosx.nr25.233.b
+		ai_chance = { base = 30 modifier = { add = 40 has_country_flag = chaosx_nr25_dependence_integrate_route } }
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_holder.incident_support_gain }
+		custom_effect_tooltip = chaosx_nr25_incident_pressure_tt
+		hidden_effect = { add_to_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.incident_pressure } chaosx_nr25_clamp_values = yes }
+	}
+}
+
+# Strange behaviour four: every laboratory converges on one design.
+country_event = {
+	id = chaosx.nr25.234
+	title = chaosx.nr25.234.t
+	desc = chaosx.nr25.234.d
+	picture = GFX_report_event_025_antarctic_dependence
+	is_triggered_only = yes
+
+	trigger = { chaosx_nr25_holds_alien_material = yes }
+	immediate = { hidden_effect = { set_country_flag = chaosx_nr25_incident_4_seen } }
+
+	option = {
+		name = chaosx.nr25.234.a
+		ai_chance = { base = 50 modifier = { add = 40 has_country_flag = chaosx_nr25_dependence_contained } modifier = { factor = 0.3 has_country_flag = chaosx_nr25_dependence_integrate_route } }
+		add_political_power = constant:chaosx_nr25_holder.incident_pp_cost
+		custom_effect_tooltip = chaosx_nr25_incident_relief_tt
+		hidden_effect = { subtract_from_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.incident_relief } chaosx_nr25_clamp_values = yes }
+	}
+	option = {
+		name = chaosx.nr25.234.b
+		ai_chance = { base = 30 modifier = { add = 40 has_country_flag = chaosx_nr25_dependence_integrate_route } }
+		add_tech_bonus = { name = chaosx_nr25_incident_design bonus = @NR25_INCIDENT_TECH_BONUS uses = 1 category = computing_tech }
+		custom_effect_tooltip = chaosx_nr25_incident_strong_pressure_tt
+		hidden_effect = { add_to_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.incident_strong_pressure } chaosx_nr25_clamp_values = yes }
+	}
+}
+
+# Strange behaviour five: officials put the signal ahead of their orders.
+country_event = {
+	id = chaosx.nr25.235
+	title = chaosx.nr25.235.t
+	desc = chaosx.nr25.235.d
+	picture = GFX_report_event_025_antarctic_signal
+	is_triggered_only = yes
+
+	trigger = { chaosx_nr25_holds_alien_material = yes }
+	immediate = { hidden_effect = { set_country_flag = chaosx_nr25_incident_5_seen } }
+
+	option = {
+		name = chaosx.nr25.235.a
+		ai_chance = { base = 50 modifier = { add = 40 has_country_flag = chaosx_nr25_dependence_contained } modifier = { factor = 0.3 has_country_flag = chaosx_nr25_dependence_integrate_route } }
+		custom_effect_tooltip = chaosx_nr25_incident_stability_tt
+		custom_effect_tooltip = chaosx_nr25_incident_strong_relief_tt
+		hidden_effect = {
+			set_temp_variable = { chaosx_nr25_stability_change = constant:chaosx_nr25_holder_fixed.incident_stability_cost }
+			chaosx_nr25_apply_stability_change = yes
+			subtract_from_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.incident_strong_relief }
+			chaosx_nr25_clamp_values = yes
+		}
+	}
+	option = {
+		name = chaosx.nr25.235.b
+		ai_chance = { base = 30 modifier = { add = 40 has_country_flag = chaosx_nr25_dependence_integrate_route } }
+		add_political_power = constant:chaosx_nr25_holder.incident_pp_gain
+		custom_effect_tooltip = chaosx_nr25_incident_pressure_tt
+		hidden_effect = { add_to_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.incident_pressure } chaosx_nr25_clamp_values = yes }
+	}
+}
+
+# Strange behaviour six: the recovered systems keep running after shutdown.
+country_event = {
+	id = chaosx.nr25.236
+	title = chaosx.nr25.236.t
+	desc = chaosx.nr25.236.d
+	picture = GFX_report_event_025_antarctic_dependence
+	is_triggered_only = yes
+
+	trigger = { chaosx_nr25_holds_alien_material = yes }
+	immediate = { hidden_effect = { set_country_flag = chaosx_nr25_incident_6_seen } }
+
+	option = {
+		name = chaosx.nr25.236.a
+		ai_chance = { base = 50 modifier = { add = 40 has_country_flag = chaosx_nr25_dependence_contained } modifier = { factor = 0.3 has_country_flag = chaosx_nr25_dependence_integrate_route } }
+		custom_effect_tooltip = chaosx_nr25_incident_casualty_tt
+		custom_effect_tooltip = chaosx_nr25_incident_stability_tt
+		custom_effect_tooltip = chaosx_nr25_incident_strong_relief_tt
+		hidden_effect = {
+			chaosx_nr25_record_casualties = yes
+			set_temp_variable = { chaosx_nr25_stability_change = constant:chaosx_nr25_holder_fixed.incident_stability_cost }
+			chaosx_nr25_apply_stability_change = yes
+			subtract_from_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.incident_strong_relief }
+			chaosx_nr25_clamp_values = yes
+		}
+	}
+	option = {
+		name = chaosx.nr25.236.b
+		ai_chance = { base = 30 modifier = { add = 40 has_country_flag = chaosx_nr25_dependence_integrate_route } }
+		add_tech_bonus = { name = chaosx_nr25_incident_running bonus = @NR25_INCIDENT_TECH_BONUS uses = 1 category = electronics }
+		custom_effect_tooltip = chaosx_nr25_incident_strong_pressure_tt
+		hidden_effect = { add_to_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.incident_strong_pressure } chaosx_nr25_clamp_values = yes }
+	}
+}
+
+# A settled institutional outcome. The new state replaces the previous idea.
+country_event = {
+	id = chaosx.nr25.240
+	title = chaosx.nr25.240.t
+	desc = chaosx.nr25.240.d
+	picture = GFX_report_event_025_antarctic_analysis
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_outcome_settled }
+
+	option = {
+		name = chaosx.nr25.240.a
+		ai_chance = { base = 100 }
+		custom_effect_tooltip = chaosx_nr25_outcome_settled_tt
+	}
+}
+
+# ============================================================================
+# EVOLUTION V CUSTODY TRANSFER
+# ============================================================================
+# FROM is the holder offering custody. The recipient's answer is the only
+# consent the ledger accepts; the holder pays only when the material moves.
+
+country_event = {
+	id = chaosx.nr25.250
+	title = chaosx.nr25.250.t
+	desc = chaosx.nr25.250.d
+	picture = GFX_report_event_025_antarctic_analysis
+	is_triggered_only = yes
+
+	trigger = {
+		FROM = { chaosx_nr25_custody_offer_open = yes }
+		chaosx_alien_recovery_ledger_custody_country_is_valid = yes
+	}
+
+	option = {
+		name = chaosx.nr25.250.a
+		ai_chance = {
+			base = 30
+			modifier = { add = 40 is_in_faction_with = FROM }
+			modifier = { add = 20 has_opinion = { target = FROM value > 25 } }
+			modifier = { add = -20 has_war = yes }
+			modifier = { factor = 0 has_war_with = FROM }
+		}
+		custom_effect_tooltip = chaosx_nr25_custody_accept_tt
+		hidden_effect = {
+			set_country_flag = chaosx_alien_recovery_custody_consent_@FROM
+			save_event_target_as = chaosx_alien_recovery_custody_recipient
+			FROM = { chaosx_nr25_complete_custody_transfer = yes }
+		}
+	}
+
+	option = {
+		name = chaosx.nr25.250.b
+		ai_chance = {
+			base = 30
+			modifier = { add = 40 has_opinion = { target = FROM value < -25 } }
+			modifier = { add = 20 has_country_flag = chaosx_nr25_material_holder }
+		}
+		custom_effect_tooltip = chaosx_nr25_custody_refuse_tt
+		hidden_effect = {
+			FROM = {
+				chaosx_nr25_clear_custody_offer = yes
+				country_event = { id = chaosx.nr25.252 days = 1 }
+			}
+		}
+	}
+}
+
+# The handover succeeded.
+country_event = {
+	id = chaosx.nr25.251
+	title = chaosx.nr25.251.t
+	desc = chaosx.nr25.251.d
+	picture = GFX_report_event_025_antarctic_analysis
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr25.251.a
+		ai_chance = { base = 100 }
+		custom_effect_tooltip = chaosx_nr25_custody_sent_tt
+	}
+}
+
+# The chosen country refused the offer.
+country_event = {
+	id = chaosx.nr25.252
+	title = chaosx.nr25.252.t
+	desc = chaosx.nr25.252.d
+	picture = GFX_report_event_025_antarctic_aftermath
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr25.252.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# The handover could not go ahead: the offer lapsed, the material had already
+# left, the two countries went to war, or the shipping was not available.
+country_event = {
+	id = chaosx.nr25.253
+	title = chaosx.nr25.253.t
+	desc = chaosx.nr25.253.d
+	picture = GFX_report_event_025_antarctic_aftermath
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr25.253.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# The recipient's own report once the material is in its custody.
+country_event = {
+	id = chaosx.nr25.254
+	title = chaosx.nr25.254.t
+	desc = chaosx.nr25.254.d
+	picture = GFX_report_event_025_antarctic_dependence
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr25.254.a
+		ai_chance = { base = 100 }
+		custom_effect_tooltip = chaosx_nr25_custody_received_tt
+	}
+}
+
+# The monthly holder watch. It processes only the current holder.
+country_event = {
+	id = chaosx.nr25.281
+	title = chaosx.nr25.281.t
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		chaosx_nr25_run_holder_pulse = yes
 	}
 }

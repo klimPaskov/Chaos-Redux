@@ -82,11 +82,10 @@ Do not expose exact foreign fragment holdings without the Board's intelligence/p
 `.tools/test_event025_custody.py` executes the selected source helpers for all six slots, rejected transfers, consent consumption, retained recipient fragments, destruction, abandonment, projections, and historical separation.
 It is a limited source interpreter, not engine scheduling, rendering, multiplayer, or save/reload evidence.
 Destruction dispatch uses the physical ledger with support-equipment and stability costs, receipt-gated consequences, and a retired-material incident guard.
-Transfer still needs recipient permission UI, actual dispatch, validated route commitments, Dependence consequences, and independent decision/probability review.
+Transfer is dispatched by `chaosx_nr25_complete_custody_transfer` in the Event 025 holder effects after the recipient accepts the offer event; it pays, moves Dependence, and records diplomacy only on a positive transaction receipt.
 The reward bridge is covered by source review only; physical-custody tests do not validate it.
 
 ## Future work
 
-Finish the accepted policy callers before treating either custody helper as a complete playable route.
-Integrate Event 036 material holders through a bounded direct seam instead of expanding the active pulse into a whole-world scan.
+Event 036 holders join the holder watch through the Event 036 resolver once Event 025 has fired; a holder that recovers Event 036 material before Event 025 fires is not enrolled.
 No additional country, portrait, formation, unrelated equipment, or technology copy is authorized by this ledger.

@@ -1,0 +1,97 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 MATERIAL HOLDER AND EVOLUTION V AFTERMATH CONSTANTS
+# ============================================================================
+# Overview:
+# - Tuning for the bounded holder watch, Evolution V Dependence pressure,
+#   accident and strange-behaviour reports, custody transfer, and the staged
+#   institutional outcome.
+# - chaosx_nr25_outcome holds the stable codes of the five outcome states.
+# - chaosx_nr25_holder_fixed holds the fractional values (stability and
+#   research-bonus amounts); every other value is an integer.
+# ============================================================================
+
+chaosx_nr25_holder = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	# The watch pulse runs once a month in each holder only.
+	pulse_days = 30
+
+	# Dependence pressure per pulse while the holder keeps material, the extra
+	# pressure of an integrated or concealed programme, the relief of a
+	# contained programme, and the monthly relief once the material is gone.
+	material_pressure = 2
+	integration_pressure = 2
+	concealment_pressure = 1
+	containment_relief = 1
+	release_relief = 3
+
+	# Accident report choices.
+	accident_shutdown_relief = 15
+	accident_shutdown_pp = -25
+	accident_conceal_pp = -10
+	accident_conceal_pressure = 5
+
+	# Strange-behaviour incidents. The weights out of the total give the chance
+	# that a pulse produces an incident once the cooldown has passed.
+	incident_floor = 20
+	incident_mid_threshold = 40
+	incident_high_threshold = 70
+	incident_weight_low = 10
+	incident_weight_mid = 25
+	incident_weight_high = 45
+	incident_weight_total = 100
+	incident_unseen_weight = 10
+	incident_seen_weight = 2
+	incident_cooldown_days = 90
+	incident_relief = 5
+	incident_strong_relief = 8
+	incident_pressure = 5
+	incident_strong_pressure = 6
+	incident_pp_cost = -20
+	incident_pp_gain = 30
+	incident_support_gain = 100
+
+	# Custody transfer.
+	transfer_relief = 15
+	transfer_recipient_floor = 10
+	transfer_cooldown_days = 180
+	transfer_offer_days = 30
+	transfer_intelligence = 6
+
+	# Institutional outcome thresholds. An outcome settles only after the
+	# holder has stayed in its band for the settle period.
+	outcome_settle_days = 180
+	outcome_autonomous_threshold = 90
+	outcome_integrated_threshold = 45
+	outcome_reliance_threshold = 65
+	outcome_contained_threshold = 35
+	outcome_independent_threshold = 25
+}
+
+chaosx_nr25_holder_fixed = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	accident_running_stability = -0.03
+	incident_stability_cost = -0.02
+	concealment_exposed_stability = -0.02
+}
+
+chaosx_nr25_outcome = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	contained = 1
+	independent = 2
+	integrated = 3
+	reliance = 4
+	autonomous = 5
+}

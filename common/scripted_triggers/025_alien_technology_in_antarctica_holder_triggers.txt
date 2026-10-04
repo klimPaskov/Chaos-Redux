@@ -1,0 +1,96 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 MATERIAL HOLDER TRIGGERS
+# ============================================================================
+# Overview:
+# - Read-only predicates for the bounded holder watch, Evolution V policy
+#   visibility, custody transfer offers, and phase-objective ownership.
+# - Physical custody always comes from the shared recovery ledger; these
+#   triggers never read counters as proof of possession.
+# ============================================================================
+
+# Country scope. Recovered Event 025 material in physical custody, or a
+# compatible Event 036 recovery.
+chaosx_nr25_holds_alien_material = {
+	OR = {
+		chaosx_alien_recovery_ledger_has_physical_custody = yes
+		has_country_flag = chaosx_alien_recovery_event036_recorded
+	}
+}
+
+# Country scope. A live race participant is served by its own expedition
+# pulse; every other holder is served by the holder watch.
+chaosx_nr25_race_pulse_owns_country = {
+	has_country_flag = chaosx_nr25_participant
+	has_global_flag = chaosx_nr25_active
+	NOT = { has_country_flag = chaosx_nr25_terminal }
+}
+
+# Country scope. The watch continues while the country holds material, or
+# while an Evolution V aftermath is still settling after the material left.
+chaosx_nr25_holder_watch_valid = {
+	exists = yes
+	OR = {
+		chaosx_nr25_holds_alien_material = yes
+		AND = {
+			has_country_flag = chaosx_nr25_aftermath_open
+			NOT = { has_country_flag = chaosx_nr25_aftermath_closed }
+			OR = {
+				check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_value.zero compare = greater_than }
+				NOT = { has_country_flag = chaosx_nr25_outcome_settled }
+			}
+		}
+	}
+}
+
+# Country scope. A holder that can deliver the delayed Evolution V opening.
+chaosx_nr25_holder_scheduler_valid = {
+	exists = yes
+	chaosx_alien_recovery_ledger_custody_country_is_valid = yes
+	chaosx_nr25_holds_alien_material = yes
+}
+
+# Country scope. Evolution V policy decisions follow the material, so a
+# country that transferred or destroyed everything no longer sees them, and
+# disabling Evolution V in the settings hides them.
+chaosx_nr25_evolution_v_policy_visible = {
+	OR = {
+		has_country_flag = chaosx_nr25_participant
+		has_country_flag = chaosx_nr25_material_holder
+	}
+	chaosx_nr25_technology_changes_users_evolution_in_force = yes
+	chaosx_nr25_holds_alien_material = yes
+}
+
+# Country scope. Running phase objectives belong to a participant, or to a
+# material holder for the containment objective.
+chaosx_nr25_phase_mission_owner_valid = {
+	OR = {
+		has_country_flag = chaosx_nr25_participant
+		has_country_flag = chaosx_nr25_material_holder
+	}
+}
+
+# THIS = candidate recipient, PREV = the holder offering custody.
+chaosx_nr25_custody_candidate_valid = {
+	chaosx_alien_recovery_ledger_custody_country_is_valid = yes
+	NOT = { tag = PREV }
+	NOT = { has_war_with = PREV }
+}
+
+# Country scope (holder). An earlier offer still awaits an answer.
+chaosx_nr25_custody_offer_open = {
+	has_country_flag = chaosx_nr25_custody_offer_pending
+	has_variable = chaosx_nr25_custody_offer_expiry
+	NOT = { check_variable = { var = global.date value = chaosx_nr25_custody_offer_expiry compare = greater_than } }
+}
+
+# Country scope (holder). Everything a custody offer needs except the chosen
+# recipient, which the targeted decision validates separately.
+chaosx_nr25_custody_offer_available = {
+	chaosx_nr25_evolution_technology_changes_users_action_available = yes
+	chaosx_alien_recovery_ledger_has_physical_custody = yes
+	chaosx_alien_recovery_ledger_physical_custody_is_consistent = yes
+	NOT = { chaosx_nr25_custody_offer_open = yes }
+	check_variable = { var = chaosx_nr25_transfer_cooldown value = constant:chaosx_nr25_value.zero compare = less_than_or_equals }
+	chaosx_nr25_dependence_transfer_cost_available = yes
+}

@@ -1,0 +1,608 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 MATERIAL HOLDERS AND EVOLUTION V AFTERMATH
+# ============================================================================
+# Overview:
+# - Countries holding recovered Event 025 material (the core or a fragment)
+#   or a compatible Event 036 recovery are enrolled in the bounded registry
+#   global.chaosx_nr25_holders. Each holder runs its own monthly watch pulse
+#   (chaosx.nr25.281). Nothing here iterates the world: loops read only the
+#   holder and participant registries and the holder's own allies.
+# - Before Evolution V, the watch only checks its setting, Chaos gate and MTTH
+#   so the evolution can begin after the race. Once it is in force, the watch
+#   applies Dependence pressure while material is held, relief once it has
+#   left, accident and strange-behaviour reports, the achievement streaks,
+#   and one staged institutional outcome idea.
+# - A live race participant keeps its own expedition pulse; the watch takes
+#   over every country once the race is over.
+# - Custody offers, recipient consent and the paid handover live here. The
+#   physical move itself is the ledger's consent-checked transaction.
+# ============================================================================
+
+# COUNTRY scope. Adds the country to the holder registry and starts its watch.
+chaosx_nr25_enroll_holder = {
+	if = {
+		limit = { exists = yes }
+		if = {
+			limit = { NOT = { is_in_array = { array = global.chaosx_nr25_holders value = THIS } } }
+			add_to_array = { array = global.chaosx_nr25_holders value = THIS }
+		}
+		set_country_flag = chaosx_nr25_material_holder
+		if = {
+			limit = { chaosx_alien_recovery_ledger_has_physical_custody = yes }
+			chaosx_nr25_refresh_transfer_candidates = yes
+		}
+		chaosx_nr25_schedule_holder_pulse = yes
+	}
+}
+
+# COUNTRY scope. One outstanding watch pulse per holder.
+chaosx_nr25_schedule_holder_pulse = {
+	if = {
+		limit = { NOT = { has_country_flag = chaosx_nr25_holder_pulse_pending } }
+		set_country_flag = chaosx_nr25_holder_pulse_pending
+		country_event = { id = chaosx.nr25.281 days = constant:chaosx_nr25_holder.pulse_days }
+	}
+}
+
+# COUNTRY scope. Ends the watch once nothing remains to follow.
+chaosx_nr25_leave_holder_watch = {
+	if = {
+		limit = { is_in_array = { array = global.chaosx_nr25_holders value = THIS } }
+		remove_from_array = { array = global.chaosx_nr25_holders value = THIS }
+	}
+	clr_country_flag = chaosx_nr25_material_holder
+	clear_array = chaosx_nr25_transfer_candidates
+}
+
+# COUNTRY scope. Body of the monthly holder watch pulse.
+chaosx_nr25_run_holder_pulse = {
+	clr_country_flag = chaosx_nr25_holder_pulse_pending
+	if = {
+		limit = { NOT = { chaosx_nr25_holder_watch_valid = yes } }
+		chaosx_nr25_leave_holder_watch = yes
+	}
+	else = {
+		if = {
+			limit = { NOT = { chaosx_nr25_race_pulse_owns_country = yes } }
+			chaosx_nr25_run_holder_aftermath_tick = yes
+		}
+		chaosx_nr25_check_holder_evolution_gate = yes
+		if = {
+			limit = { chaosx_alien_recovery_ledger_has_physical_custody = yes }
+			chaosx_nr25_refresh_transfer_candidates = yes
+		}
+		chaosx_nr25_update_achievement_tracking = yes
+		chaosx_nr25_schedule_holder_pulse = yes
+	}
+}
+
+# COUNTRY scope. Post-race upkeep for one holder: cooldowns, the containment
+# objective fallback, and the Evolution V aftermath while it is in force.
+chaosx_nr25_run_holder_aftermath_tick = {
+	set_temp_variable = { chaosx_nr25_pulse_step = constant:chaosx_nr25_holder.pulse_days }
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_action_cooldown value = constant:chaosx_nr25_value.zero compare = greater_than } }
+		subtract_from_variable = { chaosx_nr25_action_cooldown = chaosx_nr25_pulse_step }
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_transfer_cooldown value = constant:chaosx_nr25_value.zero compare = greater_than } }
+		subtract_from_variable = { chaosx_nr25_transfer_cooldown = chaosx_nr25_pulse_step }
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_incident_cooldown value = constant:chaosx_nr25_value.zero compare = greater_than } }
+		subtract_from_variable = { chaosx_nr25_incident_cooldown = chaosx_nr25_pulse_step }
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_dependence_accident_cooldown value = constant:chaosx_nr25_value.zero compare = greater_than } }
+		subtract_from_variable = { chaosx_nr25_dependence_accident_cooldown = chaosx_nr25_pulse_step }
+	}
+	if = {
+		limit = {
+			has_country_flag = chaosx_nr25_phase_mission_active
+			has_variable = chaosx_nr25_phase_mission_ready_date
+			NOT = { has_country_flag = chaosx_nr25_phase_mission_ready }
+			check_variable = { var = global.date value = chaosx_nr25_phase_mission_ready_date compare = greater_than }
+		}
+		chaosx_nr25_prepare_phase_mission_completion = yes
+	}
+	if = {
+		limit = {
+			chaosx_nr25_technology_changes_users_evolution_in_force = yes
+			has_country_flag = chaosx_nr25_aftermath_open
+			NOT = { has_country_flag = chaosx_nr25_aftermath_closed }
+		}
+		chaosx_nr25_apply_dependence_pressure = yes
+		chaosx_nr25_check_dependence_accident = yes
+		chaosx_nr25_roll_strange_incident = yes
+		chaosx_nr25_update_dependence_streaks = yes
+		chaosx_nr25_update_institutional_outcome = yes
+	}
+	chaosx_nr25_clamp_values = yes
+}
+
+# COUNTRY scope. Post-race Evolution V gate. The race pulse owns the gate while
+# the race is live; afterwards any holder arms it through the same setting,
+# Chaos threshold and MTTH, and re-arms it when an earlier opening lapsed.
+chaosx_nr25_check_holder_evolution_gate = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = chaosx_nr25_active }
+			NOT = { has_global_flag = chaosx_nr25_evolution_technology_changes_users }
+			chaosx_nr25_technology_changes_users_evolution_enabled = yes
+			chaosx_nr25_holder_scheduler_valid = yes
+		}
+		set_temp_variable = { chaosx_nr25_v_rearm = constant:chaosx_nr25_value.zero }
+		if = {
+			limit = { NOT = { has_global_flag = chaosx_nr25_evolution_technology_changes_users_pending } }
+			set_temp_variable = { chaosx_nr25_v_rearm = constant:chaosx_nr25_value.one }
+		}
+		else_if = {
+			limit = { NOT = { has_event_target = chaosx_nr25_evolution_technology_changes_users_scheduler } }
+			set_temp_variable = { chaosx_nr25_v_rearm = constant:chaosx_nr25_value.one }
+		}
+		else_if = {
+			limit = { NOT = { event_target:chaosx_nr25_evolution_technology_changes_users_scheduler = { chaosx_nr25_holder_scheduler_valid = yes } } }
+			set_temp_variable = { chaosx_nr25_v_rearm = constant:chaosx_nr25_value.one }
+		}
+		else_if = {
+			limit = { NOT = { has_variable = global.chaosx_nr25_evolution_v_due_date } }
+			set_temp_variable = { chaosx_nr25_v_rearm = constant:chaosx_nr25_value.one }
+		}
+		else_if = {
+			limit = { check_variable = { var = global.date value = global.chaosx_nr25_evolution_v_due_date compare = greater_than } }
+			set_temp_variable = { chaosx_nr25_v_rearm = constant:chaosx_nr25_value.one }
+		}
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_v_rearm value = constant:chaosx_nr25_value.one compare = equals } }
+			set_global_flag = chaosx_nr25_evolution_technology_changes_users_pending
+			clr_global_flag = chaosx_nr25_evolution_technology_changes_users_disabled
+			clear_global_event_target = chaosx_nr25_evolution_technology_changes_users_scheduler
+			save_global_event_target_as = chaosx_nr25_evolution_technology_changes_users_scheduler
+			set_temp_variable = { chaosx_nr25_evolution_delay = mtth:chaosx_nr25_evolution_v_interval }
+			# The due date lets a later pulse re-arm an opening that could not be
+			# delivered, for example while the setting was briefly disabled.
+			set_temp_variable = { chaosx_date_days = chaosx_nr25_evolution_delay }
+			add_to_temp_variable = { chaosx_date_days = constant:chaosx_nr25_holder.pulse_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
+			set_variable = { global.chaosx_nr25_evolution_v_due_date = global.date }
+			add_to_variable = { global.chaosx_nr25_evolution_v_due_date = chaosx_date_offset }
+			country_event = { id = chaosx.nr25.220 days = chaosx_nr25_evolution_delay }
+		}
+	}
+}
+
+# COUNTRY scope (the holder that delivered the opening). Opens the aftermath
+# for every holder outside a live race. Race participants open theirs at
+# settlement, so their final recovery stays unchanged.
+chaosx_nr25_open_aftermath_for_holders = {
+	if = {
+		limit = { NOT = { chaosx_nr25_race_pulse_owns_country = yes } }
+		chaosx_nr25_open_holder_aftermath = yes
+	}
+	for_each_scope_loop = {
+		array = global.chaosx_nr25_holders
+		if = {
+			limit = {
+				exists = yes
+				NOT = { tag = ROOT }
+				chaosx_nr25_holds_alien_material = yes
+				NOT = { has_country_flag = chaosx_nr25_aftermath_open }
+				NOT = { chaosx_nr25_race_pulse_owns_country = yes }
+			}
+			chaosx_nr25_open_holder_aftermath = yes
+			country_event = { id = chaosx.nr25.221 days = 1 }
+		}
+	}
+}
+
+# COUNTRY scope. Dependence follows the material: it rises while the holder
+# keeps it, faster under integration or concealment and slower under
+# containment, and falls once the material has left the country's custody.
+chaosx_nr25_apply_dependence_pressure = {
+	if = {
+		limit = {
+			chaosx_nr25_holds_alien_material = yes
+			chaosx_nr25_active_material_incidents_allowed = yes
+		}
+		add_to_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.material_pressure }
+		if = {
+			limit = { has_country_flag = chaosx_nr25_dependence_integrate_route }
+			add_to_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.integration_pressure }
+		}
+		if = {
+			limit = { has_country_flag = chaosx_nr25_dependence_conceal_route }
+			add_to_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.concealment_pressure }
+		}
+		if = {
+			limit = { has_country_flag = chaosx_nr25_dependence_contained }
+			subtract_from_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.containment_relief }
+		}
+	}
+	else = {
+		subtract_from_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.release_relief }
+	}
+	clamp_variable = { var = chaosx_nr25_dependence min = constant:chaosx_nr25_value.zero max = constant:chaosx_nr25_value.max }
+}
+
+# COUNTRY scope. A held system above the accident threshold causes one
+# reported accident per cooldown.
+chaosx_nr25_check_dependence_accident = {
+	if = {
+		limit = {
+			chaosx_nr25_holds_alien_material = yes
+			chaosx_nr25_active_material_incidents_allowed = yes
+			has_country_flag = chaosx_nr25_dependence_started
+			check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_cost.dependence_accident_threshold compare = greater_than_or_equals }
+			check_variable = { var = chaosx_nr25_dependence_accident_cooldown value = constant:chaosx_nr25_value.zero compare = less_than_or_equals }
+		}
+		chaosx_nr25_trigger_dependence_accident = yes
+	}
+}
+
+# COUNTRY scope. Shared accident body for the race pulse and the holder watch.
+# The report lets the holder choose between a shutdown, running on, or, under
+# concealment, burying the record.
+chaosx_nr25_trigger_dependence_accident = {
+	chaosx_nr25_record_casualties = yes
+	add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.dependence_accident_exposure }
+	set_variable = { chaosx_nr25_dependence_accident_cooldown = constant:chaosx_nr25_cost.dependence_accident_cooldown_days }
+	set_country_flag = chaosx_nr25_dependence_accident
+	set_country_flag = chaosx_nr25_dependence_accident_history
+	country_event = { id = chaosx.nr25.225 days = 1 }
+}
+
+# COUNTRY scope. Rolls one strange-behaviour incident when the cooldown has
+# passed. Higher Dependence makes an incident more likely.
+chaosx_nr25_roll_strange_incident = {
+	if = {
+		limit = {
+			chaosx_nr25_holds_alien_material = yes
+			chaosx_nr25_active_material_incidents_allowed = yes
+			check_variable = { var = chaosx_nr25_incident_cooldown value = constant:chaosx_nr25_value.zero compare = less_than_or_equals }
+			check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_holder.incident_floor compare = greater_than_or_equals }
+		}
+		set_temp_variable = { chaosx_nr25_incident_weight = constant:chaosx_nr25_holder.incident_weight_low }
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_holder.incident_high_threshold compare = greater_than_or_equals } }
+			set_temp_variable = { chaosx_nr25_incident_weight = constant:chaosx_nr25_holder.incident_weight_high }
+		}
+		else_if = {
+			limit = { check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_holder.incident_mid_threshold compare = greater_than_or_equals } }
+			set_temp_variable = { chaosx_nr25_incident_weight = constant:chaosx_nr25_holder.incident_weight_mid }
+		}
+		set_temp_variable = { chaosx_nr25_incident_quiet_weight = constant:chaosx_nr25_holder.incident_weight_total }
+		subtract_from_temp_variable = { chaosx_nr25_incident_quiet_weight = chaosx_nr25_incident_weight }
+		random_list = {
+			chaosx_nr25_incident_weight = { chaosx_nr25_fire_strange_incident = yes }
+			chaosx_nr25_incident_quiet_weight = { }
+		}
+	}
+}
+
+# COUNTRY scope. Picks one of the six observed behaviours. Unseen behaviours
+# are favoured, so all six appear before any repeats become common.
+chaosx_nr25_fire_strange_incident = {
+	set_variable = { chaosx_nr25_incident_cooldown = constant:chaosx_nr25_holder.incident_cooldown_days }
+	set_temp_variable = { chaosx_nr25_incident_weight_1 = constant:chaosx_nr25_holder.incident_unseen_weight }
+	set_temp_variable = { chaosx_nr25_incident_weight_2 = constant:chaosx_nr25_holder.incident_unseen_weight }
+	set_temp_variable = { chaosx_nr25_incident_weight_3 = constant:chaosx_nr25_holder.incident_unseen_weight }
+	set_temp_variable = { chaosx_nr25_incident_weight_4 = constant:chaosx_nr25_holder.incident_unseen_weight }
+	set_temp_variable = { chaosx_nr25_incident_weight_5 = constant:chaosx_nr25_holder.incident_unseen_weight }
+	set_temp_variable = { chaosx_nr25_incident_weight_6 = constant:chaosx_nr25_holder.incident_unseen_weight }
+	if = { limit = { has_country_flag = chaosx_nr25_incident_1_seen } set_temp_variable = { chaosx_nr25_incident_weight_1 = constant:chaosx_nr25_holder.incident_seen_weight } }
+	if = { limit = { has_country_flag = chaosx_nr25_incident_2_seen } set_temp_variable = { chaosx_nr25_incident_weight_2 = constant:chaosx_nr25_holder.incident_seen_weight } }
+	if = { limit = { has_country_flag = chaosx_nr25_incident_3_seen } set_temp_variable = { chaosx_nr25_incident_weight_3 = constant:chaosx_nr25_holder.incident_seen_weight } }
+	if = { limit = { has_country_flag = chaosx_nr25_incident_4_seen } set_temp_variable = { chaosx_nr25_incident_weight_4 = constant:chaosx_nr25_holder.incident_seen_weight } }
+	if = { limit = { has_country_flag = chaosx_nr25_incident_5_seen } set_temp_variable = { chaosx_nr25_incident_weight_5 = constant:chaosx_nr25_holder.incident_seen_weight } }
+	if = { limit = { has_country_flag = chaosx_nr25_incident_6_seen } set_temp_variable = { chaosx_nr25_incident_weight_6 = constant:chaosx_nr25_holder.incident_seen_weight } }
+	random_list = {
+		chaosx_nr25_incident_weight_1 = { country_event = { id = chaosx.nr25.231 days = 1 } }
+		chaosx_nr25_incident_weight_2 = { country_event = { id = chaosx.nr25.232 days = 1 } }
+		chaosx_nr25_incident_weight_3 = { country_event = { id = chaosx.nr25.233 days = 1 } }
+		chaosx_nr25_incident_weight_4 = { country_event = { id = chaosx.nr25.234 days = 1 } }
+		chaosx_nr25_incident_weight_5 = { country_event = { id = chaosx.nr25.235 days = 1 } }
+		chaosx_nr25_incident_weight_6 = { country_event = { id = chaosx.nr25.236 days = 1 } }
+	}
+}
+
+# COUNTRY scope. Shared stability change for incident and accident choices.
+# The amount is supplied in the temporary chaosx_nr25_stability_change.
+chaosx_nr25_apply_stability_change = {
+	add_stability = var:chaosx_nr25_stability_change
+}
+
+# COUNTRY scope. Chooses the institutional state the holder is drifting
+# towards, and settles it after the holder has stayed in that band for the
+# settle period. One outcome idea replaces Alien Dependence; the state can
+# change again later, so every outcome stays recoverable.
+chaosx_nr25_update_institutional_outcome = {
+	set_temp_variable = { chaosx_nr25_outcome_target = constant:chaosx_nr25_outcome.none }
+	if = {
+		limit = {
+			has_country_flag = chaosx_nr25_dependence_integrate_route
+			chaosx_nr25_holds_alien_material = yes
+			check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_holder.outcome_autonomous_threshold compare = greater_than_or_equals }
+		}
+		set_temp_variable = { chaosx_nr25_outcome_target = constant:chaosx_nr25_outcome.autonomous }
+	}
+	else_if = {
+		limit = {
+			has_country_flag = chaosx_nr25_dependence_integrate_route
+			chaosx_nr25_holds_alien_material = yes
+			check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_holder.outcome_integrated_threshold compare = greater_than_or_equals }
+		}
+		set_temp_variable = { chaosx_nr25_outcome_target = constant:chaosx_nr25_outcome.integrated }
+	}
+	else_if = {
+		limit = { check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_holder.outcome_reliance_threshold compare = greater_than_or_equals } }
+		set_temp_variable = { chaosx_nr25_outcome_target = constant:chaosx_nr25_outcome.reliance }
+	}
+	else_if = {
+		limit = {
+			NOT = { chaosx_nr25_holds_alien_material = yes }
+			check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_holder.outcome_independent_threshold compare = less_than }
+		}
+		set_temp_variable = { chaosx_nr25_outcome_target = constant:chaosx_nr25_outcome.independent }
+	}
+	else_if = {
+		limit = {
+			has_country_flag = chaosx_nr25_dependence_contained
+			chaosx_nr25_holds_alien_material = yes
+			check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_holder.outcome_contained_threshold compare = less_than }
+		}
+		set_temp_variable = { chaosx_nr25_outcome_target = constant:chaosx_nr25_outcome.contained }
+	}
+	if = {
+		limit = {
+			has_variable = chaosx_nr25_outcome_candidate
+			check_variable = { var = chaosx_nr25_outcome_candidate value = chaosx_nr25_outcome_target compare = equals }
+		}
+		add_to_variable = { chaosx_nr25_outcome_candidate_days = chaosx_nr25_pulse_step }
+	}
+	else = {
+		set_variable = { chaosx_nr25_outcome_candidate = chaosx_nr25_outcome_target }
+		set_variable = { chaosx_nr25_outcome_candidate_days = chaosx_nr25_pulse_step }
+	}
+	if = {
+		limit = {
+			NOT = { check_variable = { var = chaosx_nr25_outcome value = chaosx_nr25_outcome_candidate compare = equals } }
+			check_variable = { var = chaosx_nr25_outcome_candidate_days value = constant:chaosx_nr25_holder.outcome_settle_days compare = greater_than_or_equals }
+		}
+		set_variable = { chaosx_nr25_outcome = chaosx_nr25_outcome_candidate }
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_outcome value = constant:chaosx_nr25_outcome.none compare = greater_than } }
+			set_country_flag = chaosx_nr25_outcome_settled
+			country_event = { id = chaosx.nr25.240 days = 1 }
+		}
+		else = { clr_country_flag = chaosx_nr25_outcome_settled }
+	}
+	chaosx_nr25_sync_outcome_idea = yes
+}
+
+# COUNTRY scope. Keeps exactly one stage of the lifecycle: Alien Dependence
+# while the aftermath is unsettled, then the settled outcome idea.
+chaosx_nr25_sync_outcome_idea = {
+	if = {
+		limit = { NOT = { check_variable = { var = chaosx_nr25_outcome value = constant:chaosx_nr25_outcome.contained compare = equals } } has_idea = chaosx_nr25_outcome_contained }
+		remove_ideas = chaosx_nr25_outcome_contained
+	}
+	if = {
+		limit = { NOT = { check_variable = { var = chaosx_nr25_outcome value = constant:chaosx_nr25_outcome.independent compare = equals } } has_idea = chaosx_nr25_outcome_independent }
+		remove_ideas = chaosx_nr25_outcome_independent
+	}
+	if = {
+		limit = { NOT = { check_variable = { var = chaosx_nr25_outcome value = constant:chaosx_nr25_outcome.integrated compare = equals } } has_idea = chaosx_nr25_outcome_integrated }
+		remove_ideas = chaosx_nr25_outcome_integrated
+	}
+	if = {
+		limit = { NOT = { check_variable = { var = chaosx_nr25_outcome value = constant:chaosx_nr25_outcome.reliance compare = equals } } has_idea = chaosx_nr25_outcome_reliance }
+		remove_ideas = chaosx_nr25_outcome_reliance
+	}
+	if = {
+		limit = { NOT = { check_variable = { var = chaosx_nr25_outcome value = constant:chaosx_nr25_outcome.autonomous compare = equals } } has_idea = chaosx_nr25_outcome_autonomous }
+		remove_ideas = chaosx_nr25_outcome_autonomous
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_outcome value = constant:chaosx_nr25_outcome.contained compare = equals } NOT = { has_idea = chaosx_nr25_outcome_contained } }
+		add_ideas = chaosx_nr25_outcome_contained
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_outcome value = constant:chaosx_nr25_outcome.independent compare = equals } NOT = { has_idea = chaosx_nr25_outcome_independent } }
+		add_ideas = chaosx_nr25_outcome_independent
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_outcome value = constant:chaosx_nr25_outcome.integrated compare = equals } NOT = { has_idea = chaosx_nr25_outcome_integrated } }
+		add_ideas = chaosx_nr25_outcome_integrated
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_outcome value = constant:chaosx_nr25_outcome.reliance compare = equals } NOT = { has_idea = chaosx_nr25_outcome_reliance } }
+		add_ideas = chaosx_nr25_outcome_reliance
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_outcome value = constant:chaosx_nr25_outcome.autonomous compare = equals } NOT = { has_idea = chaosx_nr25_outcome_autonomous } }
+		add_ideas = chaosx_nr25_outcome_autonomous
+	}
+	if = {
+		limit = {
+			check_variable = { var = chaosx_nr25_outcome value = constant:chaosx_nr25_outcome.none compare = equals }
+			has_country_flag = chaosx_nr25_dependence_started
+			check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_value.zero compare = greater_than }
+			NOT = { has_idea = chaosx_nr25_alien_dependence }
+		}
+		add_ideas = chaosx_nr25_alien_dependence
+	}
+	else_if = {
+		limit = {
+			has_idea = chaosx_nr25_alien_dependence
+			OR = {
+				check_variable = { var = chaosx_nr25_outcome value = constant:chaosx_nr25_outcome.none compare = greater_than }
+				check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_value.zero compare = less_than_or_equals }
+			}
+		}
+		remove_ideas = chaosx_nr25_alien_dependence
+	}
+}
+
+# COUNTRY scope (holder). Rebuilds the holder's custody recipient list from
+# the participant and holder registries and the holder's own allies.
+chaosx_nr25_refresh_transfer_candidates = {
+	clear_array = chaosx_nr25_transfer_candidates
+	for_each_scope_loop = {
+		array = global.chaosx_nr25_participants
+		if = {
+			limit = {
+				chaosx_nr25_custody_candidate_valid = yes
+				NOT = { is_in_array = { array = PREV.chaosx_nr25_transfer_candidates value = THIS } }
+			}
+			PREV = { add_to_array = { array = chaosx_nr25_transfer_candidates value = PREV } }
+		}
+	}
+	for_each_scope_loop = {
+		array = global.chaosx_nr25_holders
+		if = {
+			limit = {
+				exists = yes
+				chaosx_nr25_custody_candidate_valid = yes
+				NOT = { is_in_array = { array = PREV.chaosx_nr25_transfer_candidates value = THIS } }
+			}
+			PREV = { add_to_array = { array = chaosx_nr25_transfer_candidates value = PREV } }
+		}
+	}
+	every_allied_country = {
+		limit = {
+			chaosx_nr25_custody_candidate_valid = yes
+			NOT = { is_in_array = { array = PREV.chaosx_nr25_transfer_candidates value = THIS } }
+		}
+		PREV = { add_to_array = { array = chaosx_nr25_transfer_candidates value = PREV } }
+	}
+}
+
+# COUNTRY scope (holder). Called by the targeted transfer decision with FROM as
+# the chosen recipient. Records one open offer and asks the recipient.
+chaosx_nr25_offer_custody = {
+	set_country_flag = chaosx_nr25_custody_offer_pending
+	set_variable = { chaosx_nr25_custody_offer_target = FROM }
+	set_temp_variable = { chaosx_date_days = constant:chaosx_nr25_holder.transfer_offer_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { chaosx_nr25_custody_offer_expiry = global.date }
+	add_to_variable = { chaosx_nr25_custody_offer_expiry = chaosx_date_offset }
+	set_variable = { chaosx_nr25_action_cooldown = constant:chaosx_nr25_timing.action_cooldown_days }
+	FROM = { country_event = { id = chaosx.nr25.250 days = 1 } }
+}
+
+# COUNTRY scope (holder). Clears the open offer and its recipient selection.
+chaosx_nr25_clear_custody_offer = {
+	clr_country_flag = chaosx_nr25_custody_offer_pending
+	clear_variable = chaosx_nr25_custody_offer_target
+	clear_variable = chaosx_nr25_custody_offer_expiry
+	clear_variable = chaosx_alien_recovery_custody_recipient_id
+}
+
+# COUNTRY scope (holder) inside the recipient's acceptance. The caller has set
+# the recipient's consent flag and saved the recipient as the event target
+# chaosx_alien_recovery_custody_recipient. Costs, Dependence movement,
+# cooldowns and diplomatic records apply only after the ledger reports that
+# the material really moved; otherwise the holder is told the handover failed.
+chaosx_nr25_complete_custody_transfer = {
+	set_temp_variable = { chaosx_nr25_custody_transfer_done = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_alien_recovery_custody_applied = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_alien_recovery_core_moved = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_alien_recovery_fragments_moved = constant:chaosx_nr25_value.zero }
+	if = {
+		limit = {
+			chaosx_nr25_custody_offer_open = yes
+			has_event_target = chaosx_alien_recovery_custody_recipient
+			event_target:chaosx_alien_recovery_custody_recipient = {
+				check_variable = { var = PREV.chaosx_nr25_custody_offer_target value = THIS compare = equals }
+			}
+			chaosx_nr25_dependence_transfer_cost_available = yes
+		}
+		set_variable = { chaosx_alien_recovery_custody_recipient_id = chaosx_nr25_custody_offer_target }
+		chaosx_alien_recovery_ledger_transfer_physical_custody = yes
+		if = {
+			limit = { check_variable = { var = chaosx_alien_recovery_custody_applied value = constant:chaosx_nr25_value.one compare = equals } }
+			if = {
+				limit = { chaosx_nr25_uses_chartered_passage = yes }
+				add_political_power = constant:chaosx_nr25_cost.pp_chartered_evolution
+			}
+			else = { add_equipment_to_stockpile = { type = convoy amount = constant:chaosx_nr25_cost.convoy_evolution } }
+			subtract_from_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.transfer_relief }
+			clamp_variable = { var = chaosx_nr25_dependence min = constant:chaosx_nr25_value.zero max = constant:chaosx_nr25_value.max }
+			set_country_flag = chaosx_nr25_dependence_started
+			set_country_flag = chaosx_nr25_dependence_transfer_route
+			set_country_flag = chaosx_nr25_custody_transferred
+			set_variable = { chaosx_nr25_transfer_cooldown = constant:chaosx_nr25_holder.transfer_cooldown_days }
+			set_variable = { chaosx_nr25_last_action = constant:chaosx_nr25_evolution_action.transfer }
+			# A concealed programme cannot stay hidden through a handover.
+			if = {
+				limit = { has_country_flag = chaosx_nr25_dependence_conceal_route }
+				clr_country_flag = chaosx_nr25_dependence_conceal_route
+				set_country_flag = chaosx_nr25_concealment_exposed
+				set_temp_variable = { chaosx_nr25_stability_change = constant:chaosx_nr25_holder_fixed.concealment_exposed_stability }
+				chaosx_nr25_apply_stability_change = yes
+			}
+			event_target:chaosx_alien_recovery_custody_recipient = {
+				set_variable = { chaosx_nr25_last_custody_sender = PREV }
+				set_country_flag = chaosx_nr25_custody_received
+				set_country_flag = chaosx_nr25_dependence_started
+				if = {
+					limit = { check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_holder.transfer_recipient_floor compare = less_than } }
+					set_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.transfer_recipient_floor }
+				}
+				add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_holder.transfer_intelligence }
+				set_variable = { chaosx_nr25_action_cooldown = constant:chaosx_nr25_timing.action_cooldown_days }
+				set_variable = { chaosx_nr25_transfer_cooldown = constant:chaosx_nr25_holder.transfer_cooldown_days }
+				add_opinion_modifier = { target = PREV modifier = chaosx_nr25_custody_entrusted }
+				chaosx_nr25_enroll_holder = yes
+				chaosx_nr25_open_holder_aftermath = yes
+				country_event = { id = chaosx.nr25.254 days = 1 }
+			}
+			chaosx_nr25_record_custody_transfer_reactions = yes
+			set_temp_variable = { chaosx_nr25_custody_transfer_done = constant:chaosx_nr25_value.one }
+		}
+	}
+	chaosx_nr25_clear_custody_offer = yes
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_custody_transfer_done value = constant:chaosx_nr25_value.one compare = equals } }
+		country_event = { id = chaosx.nr25.251 days = 1 }
+	}
+	else = {
+		# A refused transaction leaves no consent behind for a later offer.
+		if = {
+			limit = { has_event_target = chaosx_alien_recovery_custody_recipient }
+			event_target:chaosx_alien_recovery_custody_recipient = { clr_country_flag = chaosx_alien_recovery_custody_consent_@PREV }
+		}
+		country_event = { id = chaosx.nr25.253 days = 1 }
+	}
+	chaosx_nr25_update_achievement_tracking = yes
+}
+
+# COUNTRY scope (holder). Other registered holders and expeditions distrust
+# the country that now holds the material. Bounded to the two registries.
+chaosx_nr25_record_custody_transfer_reactions = {
+	for_each_scope_loop = {
+		array = global.chaosx_nr25_participants
+		if = {
+			limit = {
+				exists = yes
+				NOT = { tag = PREV }
+				NOT = { tag = event_target:chaosx_alien_recovery_custody_recipient }
+			}
+			add_opinion_modifier = { target = event_target:chaosx_alien_recovery_custody_recipient modifier = chaosx_nr25_custody_rival_holder }
+		}
+	}
+	for_each_scope_loop = {
+		array = global.chaosx_nr25_holders
+		if = {
+			limit = {
+				exists = yes
+				NOT = { tag = PREV }
+				NOT = { tag = event_target:chaosx_alien_recovery_custody_recipient }
+				NOT = { is_in_array = { array = global.chaosx_nr25_participants value = THIS } }
+			}
+			add_opinion_modifier = { target = event_target:chaosx_alien_recovery_custody_recipient modifier = chaosx_nr25_custody_rival_holder }
+		}
+	}
+}

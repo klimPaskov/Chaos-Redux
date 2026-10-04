@@ -1052,6 +1052,7 @@ chaosx_nr25_run_bounded_pulse = {
 		chaosx_nr25_cleanup_invalid_participant = yes
 	}
 	else = {
+		set_temp_variable = { chaosx_nr25_pulse_step = constant:chaosx_nr25_timing.pulse_days }
 		if = { limit = { has_global_flag = chaosx_nr25_active } chaosx_nr25_rehome_pending_evolutions = yes }
 		if = {
 			limit = { check_variable = { var = chaosx_nr25_action_cooldown value = constant:chaosx_nr25_value.zero compare = greater_than } }
@@ -1119,8 +1120,10 @@ chaosx_nr25_run_bounded_pulse = {
 				if = { limit = { check_variable = { var = chaosx_nr25_wreck_integrity value = constant:chaosx_nr25_value.twenty compare = less_than_or_equals } } set_country_flag = chaosx_nr25_wreck_critical }
 			}
 		}
+		# Race-time Dependence. After the race the holder watch owns it.
 		if = {
 			limit = {
+				has_global_flag = chaosx_nr25_active
 				chaosx_nr25_technology_changes_users_evolution_in_force = yes
 				chaosx_nr25_active_material_incidents_allowed = yes
 				OR = {
@@ -1172,20 +1175,16 @@ chaosx_nr25_run_bounded_pulse = {
 		}
 		if = {
 			limit = {
+				has_global_flag = chaosx_nr25_active
 				chaosx_nr25_technology_changes_users_evolution_in_force = yes
 				chaosx_nr25_active_material_incidents_allowed = yes
 				has_country_flag = chaosx_nr25_dependence_started
 				check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_cost.dependence_accident_threshold compare = greater_than_or_equals }
 				check_variable = { var = chaosx_nr25_dependence_accident_cooldown value = constant:chaosx_nr25_value.zero compare = less_than_or_equals }
 			}
-			chaosx_nr25_record_casualties = yes
-			add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.dependence_accident_exposure }
-			subtract_from_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_cost.dependence_destroy_reduction }
-			set_variable = { chaosx_nr25_dependence_accident_cooldown = constant:chaosx_nr25_cost.dependence_accident_cooldown_days }
-			set_country_flag = chaosx_nr25_dependence_accident
-			set_country_flag = chaosx_nr25_dependence_accident_history
+			chaosx_nr25_trigger_dependence_accident = yes
 		}
-		chaosx_nr25_update_dependence_streaks = yes
+		if = { limit = { has_global_flag = chaosx_nr25_active } chaosx_nr25_update_dependence_streaks = yes }
 		if = {
 			limit = { check_variable = { var = chaosx_nr25_exposure_risk value = constant:chaosx_nr25_cost.exposure_max compare = greater_than_or_equals } }
 			set_country_flag = chaosx_nr25_emergency_weather
@@ -1621,7 +1620,7 @@ chaosx_nr25_complete_phase_mission = {
 	if = {
 		limit = {
 			has_country_flag = chaosx_nr25_phase_mission_active
-			has_country_flag = chaosx_nr25_participant
+			chaosx_nr25_phase_mission_owner_valid = yes
 		}
 		set_temp_variable = { chaosx_nr25_phase_mission_was_evacuation = constant:chaosx_nr25_value.zero }
 		if = {
@@ -1776,7 +1775,7 @@ chaosx_nr25_fail_phase_mission = {
 	if = {
 		limit = {
 			has_country_flag = chaosx_nr25_phase_mission_active
-			has_country_flag = chaosx_nr25_participant
+			chaosx_nr25_phase_mission_owner_valid = yes
 		}
 		set_temp_variable = { chaosx_nr25_phase_mission_was_evacuation = constant:chaosx_nr25_value.zero }
 		if = {
@@ -2829,24 +2828,11 @@ chaosx_nr25_execute_evolution_action_unchecked = {
 		chaosx_nr25_execute_destroy_material = yes
 	}
 	if = {
-		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.transfer compare = equals } }
-		if = {
-			limit = { chaosx_nr25_uses_chartered_passage = yes }
-			add_political_power = constant:chaosx_nr25_cost.pp_chartered_evolution
-		}
-		else = { add_equipment_to_stockpile = { type = convoy amount = constant:chaosx_nr25_cost.convoy_evolution } }
-		add_to_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_cost.dependence_transfer }
-		add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_value.six }
-		set_country_flag = chaosx_nr25_dependence_started
-		set_country_flag = chaosx_nr25_dependence_transfer_route
-	}
-	if = {
 		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.conceal compare = equals } }
 		add_political_power = constant:chaosx_nr25_cost.pp_conceal
 		subtract_from_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_conceal_reduction }
 		subtract_from_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_cost.dependence_conceal_reduction }
 		set_country_flag = chaosx_nr25_dependence_started
-		set_country_flag = chaosx_nr25_dependence_contained
 		clr_country_flag = chaosx_nr25_dependence_accident
 		set_country_flag = chaosx_nr25_dependence_conceal_route
 	}
@@ -3169,6 +3155,10 @@ chaosx_nr25_activate_evolution_technology_changes_users = {
 		set_global_flag = chaosx_nr25_evolution_technology_changes_users
 		clr_global_flag = chaosx_nr25_evolution_technology_changes_users_pending
 		clear_global_event_target = chaosx_nr25_evolution_technology_changes_users_scheduler
+		clear_variable = global.chaosx_nr25_evolution_v_due_date
+		# Holders outside a live race open their aftermath first, so the log
+		# entry names the holder that delivered the opening.
+		chaosx_nr25_open_aftermath_for_holders = yes
 		set_temp_variable = { chaosx_nr25_evolution_stage = constant:chaosx_nr25_evolution.technology_changes_users }
 		chaosx_nr25_record_evolution_milestone = yes
 		if = { limit = { check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.technology_changes_users compare = less_than } } set_variable = { global.chaosx_nr25_current_evolution = constant:chaosx_nr25_evolution.technology_changes_users } }
@@ -3223,6 +3213,9 @@ chaosx_nr25_apply_winner_settlement = {
 	}
 	set_country_flag = chaosx_nr25_winner_settlement_complete
 	set_variable = { chaosx_nr25_action_cooldown = constant:chaosx_nr25_value.zero }
+	# The recovered core keeps the winner under the holder watch, so Evolution V
+	# can still begin after the race.
+	if = { limit = { chaosx_nr25_holds_alien_material = yes } chaosx_nr25_enroll_holder = yes }
 	chaosx_nr25_open_holder_aftermath = yes
 	set_global_flag = chaosx_nr25_winner_report_ready
 	chaosx_nr25_update_achievement_tracking = yes
@@ -3258,6 +3251,7 @@ chaosx_nr25_apply_loser_settlement = {
 	}
 	set_country_flag = chaosx_nr25_loser_settlement_complete
 	set_variable = { chaosx_nr25_action_cooldown = constant:chaosx_nr25_value.zero }
+	if = { limit = { chaosx_nr25_holds_alien_material = yes } chaosx_nr25_enroll_holder = yes }
 	chaosx_nr25_open_holder_aftermath = yes
 	chaosx_nr25_update_achievement_tracking = yes
 }

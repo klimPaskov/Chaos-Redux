@@ -25,11 +25,11 @@ The recurring pulse is scheduled only for registered participants. It is not an 
 A valid final recovery submits one candidate into a same-day window. The deterministic order is higher survey evidence, higher logistics readiness, higher outpost security, lower exposure risk, earlier final-readiness date, and lower stable participant entry order. A later day cannot displace an earlier candidate.
 
 The winner settlement calls the Event 016 external owner API through the Event 025/Event 036 ledger.
-The accepted reward order is a valid missing base family, then a compatible upgrade, then Alien Systems Integration when both pools are exhausted.
-The current owner API skips the entire base pool under an overlap flag, and its Portal/Temporal aircraft/propulsion labels do not prove shared aircraft IDs.
-That arbitration and exact-identity contract remain unfinished.
+The reward order is a valid missing base family, then a compatible upgrade, then Alien Systems Integration when both pools are exhausted.
+When the winner already holds an Event 036 recovery, the API excludes only the overlapping alien arms family while another base family remains.
+Every result is mapped to one broad public field (flight control, propulsion and weapons; computation and autonomous machinery; spatial manipulation; temporal instrumentation; biological synthesis; or integrated alien systems), and the winner report names the kind of result and its field.
 
-Losing countries receive only verified survey notes and exclusive fragment records. The loser path has no technology grant.
+Losing countries receive only verified survey notes and exclusive fragment records. The loser path has no technology grant, and the loser report names the recovering country and the expedition's fragment or survey tier.
 
 ## Expedition Board
 
@@ -52,7 +52,9 @@ The resource model includes convoys, fuel, support equipment, political power, c
 The accepted maximum is four spendable cost types per action, including committed industry.
 Authorization commits convoys, fuel, support equipment, and civilian industry, with three upfront resource entries and the industrial duration in its cost tooltip.
 Authorization uses inclusive resource predicates shared by its three cost-display components.
-The landlocked charter route, action-time payment revalidation, and other action families still need complete review.
+A human country without owned convoys, including a landlocked one, can enter by chartered passage: political power, more fuel, more support equipment and the civilian commitment replace convoys.
+Every later shipping cost of a chartered expedition is paid in political power, and its organising and gateway objectives run longer.
+Either entry warns when the civilian base or fuel reserve is thin, and such an entry starts with lower Logistics Readiness.
 
 Entry, mobilisation, crossing, outpost, survey, and final-recovery trays normally expose three to five primary actions and never exceed six. Evolution responses and the countermeasure are secondary routes.
 
@@ -69,7 +71,28 @@ Evolved first openings, full policy/GUI disabled behavior, timed-achievement gua
 Militarised Antarctica changes the expedition threat and diplomacy state without forcing a global war.
 
 Evolution V has contain, destroy, transfer, conceal, and integrate decision surfaces.
-The physical destruction route described below is source-wired, while transfer dispatch and complete containment, concealment, and integration behavior remain under review.
+They follow physical custody: a country sees them while it holds the recovered core, a fragment, or an Event 036 recovery, and loses them once the material has left.
+
+### Material holders and the Evolution V aftermath
+
+Countries that hold recovered material join the bounded holder registry `global.chaosx_nr25_holders` at settlement, on a custody transfer, or when an Event 036 recovery follows the race.
+Each holder runs its own monthly watch pulse, `chaosx.nr25.281`; nothing iterates the world.
+After the race the watch checks the Evolution V setting, Chaos gate and MTTH, so the evolution can begin after the recovery, and it re-arms an opening that could not be delivered.
+Once Evolution V is in force, every holder outside a live race opens its aftermath: Alien Dependence rises while the material is held (faster under integration or concealment, slower under containment) and falls once it has left.
+Above the accident threshold a holder suffers one reported accident per cooldown (`chaosx.nr25.225`), with a shutdown, run-on, or, under concealment, cover-up choice.
+Six observed-behaviour incidents (`chaosx.nr25.231` to `.236`) appear with a chance that grows with Dependence; each offers a costly correction or a useful concession that deepens Dependence.
+The holder drifts towards one of five institutional states, Contained Exotic Technology, Independent Human Adaptation, Integrated Alien Systems, Alien Systems Reliance, or Autonomous Research Network, and a state settles into a national spirit after 180 days in its band (`chaosx.nr25.240`).
+Alien Dependence is the unsettled stage of the same lifecycle, and a later policy or Dependence change can move the country to another state.
+Disabling Evolution V in the settings stops the pulse effects and hides the policy decisions.
+
+### Custody transfer
+
+The transfer decision targets a country from the holder's candidate list: registered expeditions, other holders, and the holder's allies, excluding countries at war with it.
+The chosen country receives an offer (`chaosx.nr25.250`); AI accepts more readily inside the same faction or with good relations.
+On acceptance the ledger moves the core and fragments exclusively, then the holder pays the shipping, its Dependence falls, and a concealed programme is exposed.
+The recipient joins the holder watch, opens its own aftermath with at least the transfer Dependence floor, gains the artifact decisions, trusts the giver, and is distrusted by other expeditions and holders.
+Learned technology and the historical winner record stay with the original owner.
+A lapsed, refused or invalid offer changes nothing and charges nothing (`chaosx.nr25.252`, `.253`), and both countries have a transfer cooldown after a handover.
 
 ### Physical destruction policy
 
@@ -92,8 +115,8 @@ common/scripted_effects/025_alien_technology_in_antarctica_ledger_effects.txt ow
 
 Fragment slots are persistent and exclusive. Invalid saved event targets are cleaned before resolution.
 
-Exact overlap must be country-scoped and backed by delivered technology/equipment identities.
-The current field-label comparisons do not establish that proof, and the architect's proposed aviation-owner extension remains unresolved until parent acceptance and implementation.
+Exact overlap is country-scoped: Event 036 overlaps only with an applied Event 025 reward in the flight, propulsion and weapons field, and then receives an upgrade or the Integration capstone instead of its jet package.
+The architect's proposed aviation-owner extension remains a proposal.
 
 Event 025 does not create a Kruger country, Warren Kruger, Directorate state, Event 016 history, Event 016 evolution, Strategic Singularity, free formation, or unrelated equipment.
 

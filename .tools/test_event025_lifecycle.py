@@ -7,6 +7,8 @@ from test_event025_final_recovery import ROOT, SOURCE as RUNTIME_SOURCE, Country
 
 LIFECYCLE = ROOT / "common/scripted_effects/025_alien_technology_in_antarctica_lifecycle_effects.txt"
 SOURCE = re.sub(r"#[^\n]*", "", LIFECYCLE.read_text(encoding="utf-8-sig"))
+HOLDER = ROOT / "common/scripted_effects/025_alien_technology_in_antarctica_holder_effects.txt"
+HOLDER_SOURCE = re.sub(r"#[^\n]*", "", HOLDER.read_text(encoding="utf-8-sig"))
 
 
 class LifecycleRuntime(Runtime):
@@ -20,6 +22,7 @@ class LifecycleRuntime(Runtime):
         **{name: block("chaosx_nr25_" + name, RUNTIME_SOURCE) for name in (
             "advance_phase_if_ready", "enter_phase",
         )},
+        "schedule_holder_pulse": block("chaosx_nr25_schedule_holder_pulse", HOLDER_SOURCE),
     }
 
 
@@ -93,6 +96,7 @@ class LifecycleTests(unittest.TestCase):
         actor.flags.add("chaosx_nr25_dependence_contained")
         actor.values["chaosx_nr25_dependence"] = 20
         rt = LifecycleRuntime([actor])
+        rt.temporary["chaosx_nr25_pulse_step"] = 12
         rt.run("update_dependence_streaks", actor)
         self.assertEqual(actor.values["chaosx_nr25_dependence_safe_days"], 12)
         actor.values["chaosx_nr25_dependence"] = 60
@@ -105,6 +109,7 @@ class LifecycleTests(unittest.TestCase):
                             "chaosx_nr25_dependence_integrate_route"})
         actor.values["chaosx_nr25_dependence"] = 75
         rt = LifecycleRuntime([actor])
+        rt.temporary["chaosx_nr25_pulse_step"] = 12
         rt.run("update_dependence_streaks", actor)
         self.assertEqual(actor.values["chaosx_nr25_dependence_stable_days"], 12)
         actor.flags.add("chaosx_nr25_dependence_accident")
@@ -133,8 +138,13 @@ class LifecycleTests(unittest.TestCase):
         actor.flags.update({"chaosx_nr25_terminal", "chaosx_nr25_aftermath_open"})
         rt = LifecycleRuntime([actor])
         rt.global_flags.clear()
+        # After the race the expedition pulse stops; the holder watch owns the
+        # aftermath clock, with one outstanding pulse per holder.
         rt.run("schedule_participant_pulse", actor)
-        self.assertEqual(rt.reports, [(1, "chaosx.nr25.280")])
+        self.assertEqual(rt.reports, [])
+        for _ in range(2):
+            rt.run("schedule_holder_pulse", actor)
+        self.assertEqual(rt.reports, [(1, "chaosx.nr25.281")])
         self.assertNotIn("chaosx_nr25_recovery_winner", actor.flags)
 
     def test_closed_holder_does_not_reschedule(self):

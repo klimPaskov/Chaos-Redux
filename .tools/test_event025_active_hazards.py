@@ -8,6 +8,7 @@ from test_event025_final_recovery import ROOT, Country, block
 
 GATES = (ROOT / "common/scripted_triggers/025_alien_technology_in_antarctica_evolution_gate_triggers.txt").read_text(encoding="utf-8-sig")
 RUNTIME = (ROOT / "common/scripted_effects/025_alien_technology_in_antarctica_runtime_effects.txt").read_text(encoding="utf-8-sig")
+HOLDER = re.sub(r"#[^\n]*", "", (ROOT / "common/scripted_effects/025_alien_technology_in_antarctica_holder_effects.txt").read_text(encoding="utf-8-sig"))
 PULSE = block("chaosx_nr25_run_bounded_pulse", re.sub(r"#[^\n]*", "", RUNTIME))
 
 
@@ -33,6 +34,10 @@ class HazardRuntime(CustodyRuntime):
         # Deliberate receipt spy: shared Deaths internals are out of scope.
         self.effects["chaosx_nr25_record_casualties"] = [
             ("add_to_temp_variable", [("casualty_calls", "1")])]
+        # The shared accident body, minus its report event, which is scheduling.
+        self.effects["chaosx_nr25_trigger_dependence_accident"] = [
+            (key, data) for key, data in block("chaosx_nr25_trigger_dependence_accident", HOLDER)
+            if key != "country_event"]
         self.temporary["casualty_calls"] = 0
         policy = (ROOT / "common/scripted_triggers/025_alien_technology_in_antarctica_custody_policy_triggers.txt").read_text(encoding="utf-8-sig")
         self.triggers["chaosx_nr25_active_material_incidents_allowed"] = block("chaosx_nr25_active_material_incidents_allowed", policy)
@@ -51,6 +56,8 @@ class ActiveHazardTests(unittest.TestCase):
                              "chaosx_nr25_entry_order": 1, "chaosx_nr25_outpost_security": 50})
         rt = HazardRuntime([actor])
         rt.global_flags = {f"chaosx_nr25_evolution_{track}" for track in TRACKS}
+        # Race-time hazards; the holder watch owns them after the race.
+        rt.global_flags.add("chaosx_nr25_active")
         rt.global_flags.update(f"events_log_disabled_evolution_25_25_{stage}" for stage in disabled)
         rt.global_values["chaos_meter_value"] = 0
         return rt, actor

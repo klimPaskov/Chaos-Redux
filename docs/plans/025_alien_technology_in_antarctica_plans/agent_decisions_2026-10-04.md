@@ -145,3 +145,35 @@ Decision:
 - `game_rules_allow_achievements` is not used, matching most Chaos Redux achievement sets, because the mod's own rules would otherwise hide every achievement.
 - Fragment roles are recorded as durable flags only when the ledger actually assigns the slot, so a failed cut or a taken slot can no longer mark a role.
   The Evolution IV cutting action is repeatable on its cooldown and targets the selected sector, so all six roles are reachable.
+
+## D10. Evolution V after the race: holder watch, accidents, incidents and outcomes
+
+Disposition: `implemented`.
+
+Basis: spec 004 says Evolution V affects every country that holds recovered Event 025 material or a compatible Event 036 recovery, uses the affected country as the log actor, and ends in one of five persistent institutional states held through one staged idea lifecycle; the lead found that Evolution V could not begin after the recovery.
+
+Decision:
+
+- Material holders join a bounded registry, `global.chaosx_nr25_holders`, and run their own monthly watch pulse `chaosx.nr25.281`. The race pulse stops when the race ends, so only one pulse ever processes a country's aftermath.
+- After the race the watch arms Evolution V through its own setting, Chaos gate and MTTH, stores a due date, and re-arms the opening if it could not be delivered. The opening's delivering holder is the log actor; other holders get a notice event.
+- Dependence pressure follows physical custody: 2 per month while material is held, 2 more under integration, 1 more under concealment, 1 less under containment, and 3 relief per month once the material has gone.
+- Concealment no longer marks the programme as contained, so it cannot count towards Human Factors.
+- The five states are Contained Exotic Technology, Independent Human Adaptation, Integrated Alien Systems, Alien Systems Reliance and Autonomous Research Network. The integrated state is displayed as "Integrated Alien Systems" so it is never confused with the Event 016 capstone idea, Alien Systems Integration.
+- A state settles only after 180 days in its band and replaces Alien Dependence; a later policy or Dependence change can move the country to another state, so every outcome is recoverable.
+- The outcome ideas reuse the existing Event 025 idea art (analysis, survey, fragment and dependence pictures); dedicated outcome art is not produced in this tranche.
+- The six strange-behaviour incidents follow the spec list. Each offers a costly correction or a useful concession that deepens Dependence; their AI chances lean to correction under containment and to concession under integration.
+- Event 036 holders join the watch when their recovery resolves after Event 025 has fired. A country that recovered Event 036 material before Event 025 fired is not enrolled; this edge stays open.
+
+## D11. Consent-based custody transfer
+
+Disposition: `implemented`.
+
+Basis: specs 004 and 006 and the arbitration matrix require that physical custody moves to a willing valid recipient, that future artifact actions and Dependence pressure follow custody, and that learned technology stays with the original owner.
+
+Decision:
+
+- The transfer decision is targeted. Candidates are registered expeditions, other holders, and the holder's allies, rebuilt monthly by the holder watch, excluding countries at war with the holder; a recipient may be outside the race registry.
+- The offer event is the only consent the ledger accepts. On acceptance the ledger moves the core and fragments exclusively; the holder then pays the shipping (convoys, or political power on chartered passage), loses 15 Dependence, and gets a 180-day transfer cooldown; a concealed programme is exposed and costs stability.
+- The recipient starts with at least 10 Dependence, gains intelligence, joins the holder watch, gains the artifact decisions, trusts the giver, and is distrusted by the other expeditions and holders.
+- Offers lapse after 30 days. A refused, lapsed or invalid handover changes nothing, charges nothing, clears the stale consent, and reports the failure.
+- AI offers custody only to AI countries, mostly when its Dependence is high, the recipient shares a faction, or the recipient is industrially stronger, and never while it pursues integration. AI recipients accept more readily inside the same faction or with good relations and refuse when hostile.

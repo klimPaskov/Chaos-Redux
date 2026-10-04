@@ -21,6 +21,8 @@ EVOLUTION = source("common/scripted_triggers/025_alien_technology_in_antarctica_
 RUNTIME = source("common/scripted_effects/025_alien_technology_in_antarctica_runtime_effects.txt")
 DYNAMIC = source("common/scripted_effects/chaosx_dynamic_effects.txt")
 CONSTANTS = source("common/script_constants/025_alien_technology_in_antarctica_custody_constants.txt")
+HOLDER_TRIGGERS = source("common/scripted_triggers/025_alien_technology_in_antarctica_holder_triggers.txt")
+HOLDER_EFFECTS = source("common/scripted_effects/025_alien_technology_in_antarctica_holder_effects.txt")
 
 
 class PolicyRuntime(CustodyRuntime):
@@ -34,9 +36,15 @@ class PolicyRuntime(CustodyRuntime):
                      "chaosx_nr25_update_achievement_tracking", "chaosx_nr25_check_evolution_gates"):
             self.effects[name] = [("add_to_variable", [(name + "_observed_calls", "1")])]
         self.triggers.update({name: block(name, GATES) for name in re.findall(r"^(chaosx_nr25_\w+)\s*=\s*\{", GATES, re.M)})
+        self.triggers.update({name: block(name, HOLDER_TRIGGERS) for name in re.findall(r"^(chaosx_nr25_\w+)\s*=\s*\{", HOLDER_TRIGGERS, re.M)})
         for name in re.findall(r"^(chaosx_nr25_\w+_evolution_in_force)\s*=\s*\{", EVOLUTION, re.M):
             self.triggers[name] = block(name, EVOLUTION)
         self.effects["chaosx_nr25_record_casualties"] = [("add_to_temp_variable", [("casualty_calls", "1")])]
+        self.effects["chaosx_nr25_check_dependence_accident"] = block("chaosx_nr25_check_dependence_accident", HOLDER_EFFECTS)
+        # The accident body without its report event, which is scheduling.
+        self.effects["chaosx_nr25_trigger_dependence_accident"] = [
+            (key, data) for key, data in block("chaosx_nr25_trigger_dependence_accident", HOLDER_EFFECTS)
+            if key != "country_event"]
         self.temporary["casualty_calls"] = 0
         for name in ("chaosx_nr25_evolution_technology_changes_users_action_available",
                      "chaosx_nr25_base_action_available", "chaosx_nr25_aftermath_action_available",
@@ -209,14 +217,16 @@ class DestructionPolicyTests(unittest.TestCase):
         rt, actor = self.fixture()
         self.run_policy(rt, actor)
         actor.values["chaosx_nr25_dependence"] = 90
-        rt.execute(hazard_branches(PULSE), actor)
+        # After the race, accidents come from the holder watch.
+        rt.run("chaosx_nr25_check_dependence_accident", actor)
         self.assertEqual(actor.values["chaosx_nr25_dependence"], 90)
         self.assertEqual(rt.temporary["casualty_calls"], 0)
         rt.temporary.update({PREFIX + "fragment_assigned": 0, PREFIX + "fragment_id": 2, PREFIX + "fragment_role": 2})
         rt.run(PREFIX + "ledger_assign_fragment", actor)
         self.assertTrue(rt.condition(rt.triggers["chaosx_nr25_active_material_incidents_allowed"], actor))
         self.assertEqual(actor.values["chaosx_nr25_fragment_count"], 1)
-        rt.execute(hazard_branches(PULSE), actor)
+        actor.flags.add("chaosx_nr25_dependence_started")
+        rt.run("chaosx_nr25_check_dependence_accident", actor)
         self.assertEqual(rt.temporary["casualty_calls"], 1)
         self.assertIn("chaosx_nr25_dependence_accident", actor.flags)
 

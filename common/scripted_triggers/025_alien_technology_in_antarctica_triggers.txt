@@ -810,13 +810,11 @@ chaosx_nr25_evolution_wreck_breaking_apart_action_available = {
 	check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.wreck_breaking_apart compare = equals }
 }
 
+# Country scope. Evolution V artifact choices follow physical custody: a
+# country that transferred or destroyed its material keeps its institutional
+# record but no longer acts on the artifact.
 chaosx_nr25_v_material_holder_valid = {
-	OR = {
-		chaosx_alien_recovery_ledger_has_physical_custody = yes
-		has_country_flag = chaosx_nr25_winner_settlement_complete
-		has_country_flag = chaosx_nr25_fragment_reward
-		has_country_flag = chaosx_alien_recovery_event036_recorded
-	}
+	chaosx_nr25_holds_alien_material = yes
 }
 
 chaosx_nr25_evolution_v_holder_valid = {
@@ -1158,7 +1156,7 @@ chaosx_nr25_countermeasure_available = {
 # gate so terminal primary actions cannot be reopened.
 chaosx_nr25_aftermath_action_available = {
 	has_country_flag = chaosx_nr25_aftermath_open
-	has_global_flag = chaosx_nr25_final_recovery_resolved
+	NOT = { chaosx_nr25_race_pulse_owns_country = yes }
 	has_global_flag = chaosx_nr25_evolution_technology_changes_users
 	has_global_flag = chaosx_nr25_aftermath_active
 	NOT = { has_country_flag = chaosx_nr25_aftermath_closed }
