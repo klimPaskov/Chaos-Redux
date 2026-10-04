@@ -310,3 +310,14 @@ Disposition: implemented.
 - Agent decision on art: the seven spirits use Event 35 sprite names that alias installed vanilla national-spirit textures (`idea_ARG_military_government`, `idea_SWE_saltsjobaden_agreement`, `idea_HUN_state_protection_authority_idea`, `idea_generic_nationalization`, `idea_CZE_industrialists_veto`, `idea_AFG_economic_regionalism`, `FRA_factory_strikes`). Each texture was confirmed present in the base game install. Bespoke Event 35 art remains an asset follow-up and only needs the texture paths changed.
 - AI: no event option, decision or random-list weight changed.
 - needs_live_game: spirit icons and tooltips in the national-spirit panel.
+
+## D19. World news for the global episode (round 2, item 7)
+
+Disposition: implemented for the three milestones in the acceptance; two spec milestones remain queued.
+
+- Basis: spec part 7 "News and reports" and spec part 10 "Recovery text direction" (end of the worldwide depression), and the lead's decision 3 (Event 35-owned news ids in the `chaosx.nr35` namespace).
+- `great_depression_queue_global_news` guards each news with its own global episode-id receipt (`global.great_depression_reconstruction_news_episode_id`, `_retirement_news_episode_id`, `_supplier_news_episode_id`), so the reconstruction news is not replayed when `great_depression_reset_global_recovery_proof` moves the stage back to recovery and it later returns.
+- The disabled check uses `has_disabled_current_evolution` with the Second Great Depression evolution identity, not the tier check, because the episode can outlive the Chaos tier that opened it.
+- Agent decision: the origin is copied into `global.great_depression_news_origin` from the global activation-source event target when the news is queued, because retirement clears that event target in the same pulse; the text names the origin only when that variable exists.
+- Agent decision on art: all three use `GFX_news_event_great_depression`. The registered recovery and boom-collapse pictures are 210x176 report images and would not fill the 397x153 news frame; dedicated news art for these milestones is an asset follow-up.
+- Accepted and queued: spec part 7 also lists news for the failure of a major recovery conference and the formation of a major clearing or protectionist bloc. Neither has a single transition point in the current source that marks "failure" or "major" formation, so they need a design pass before news can hang on them; the lead's acceptance for this round did not include them.

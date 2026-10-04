@@ -277,6 +277,11 @@ Supplier risk can reset recovery proof without replaying the worldwide shock or 
 
 The global lifecycle progresses through shock, contraction, coordination, recovery, international reconstruction, and retirement.
 
+`great_depression_queue_global_news` sends three world news events, each once per global episode id, so a stage that falls back and returns never replays it, and none while The Second Great Depression evolution is switched off: `chaosx.nr35.16` when the world enters International Reconstruction, `chaosx.nr35.17` when the global episode retires, and `chaosx.nr35.18` for the first supplier collapse of the episode, naming the supplier.
+The reconstruction and end news name the country where the worldwide depression began only when the activation source was known, through `global.great_depression_news_origin`, which is copied before retirement clears the global event target.
+They describe the world economy and never imply that every country is in a national depression.
+All three use the registered news picture, because the report pictures have report dimensions.
+
 ## Shared-system adapters and Chaos accounting
 
 Event 35 uses owner adapters for humanitarian pressure, occupation, Deaths, Condemnation, environmental effects, event history, evolutions, clusters, Event 21 civil conflict, Event 34 suppliers, and the shared Chaos meter.

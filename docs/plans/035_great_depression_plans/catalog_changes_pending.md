@@ -20,3 +20,7 @@ The workbook `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is the only edi
 
 - No change to the Event Details or evolution detail texts.
 - For any event listing kept outside the main row, Event 35 gained the reports `chaosx.nr35.12` (Contagion in the Credit Markets), `chaosx.nr35.13` (The Movement Takes Shape) and `chaosx.nr35.14` (Pressure from the origin, shown to an exposed partner), and the world news `chaosx.nr35.15` (Depression Spreads to the newly struck country).
+
+## 2026-10-05: global episode news
+
+- For any event listing kept outside the main row, Event 35 gained the world news `chaosx.nr35.16` (The World Begins to Rebuild), `chaosx.nr35.17` (The Second Great Depression Ends) and `chaosx.nr35.18` (Supplier Collapse in the supplier country).
