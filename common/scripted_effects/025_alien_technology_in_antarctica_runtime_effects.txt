@@ -3277,6 +3277,8 @@ chaosx_nr25_apply_winner_settlement = {
 	# The recovered core keeps the winner under the holder watch, so Evolution V
 	# can still begin after the race.
 	if = { limit = { chaosx_nr25_holds_alien_material = yes } chaosx_nr25_enroll_holder = yes }
+	# An active Event 016 host recognises the recovered artifact once.
+	brilliant_scientist_try_schedule_alien_artifact_contact = yes
 	chaosx_nr25_open_holder_aftermath = yes
 	set_global_flag = chaosx_nr25_winner_report_ready
 	chaosx_nr25_update_achievement_tracking = yes
@@ -3312,7 +3314,11 @@ chaosx_nr25_apply_loser_settlement = {
 	}
 	set_country_flag = chaosx_nr25_loser_settlement_complete
 	set_variable = { chaosx_nr25_action_cooldown = constant:chaosx_nr25_value.zero }
-	if = { limit = { chaosx_nr25_holds_alien_material = yes } chaosx_nr25_enroll_holder = yes }
+	if = {
+		limit = { chaosx_nr25_holds_alien_material = yes }
+		chaosx_nr25_enroll_holder = yes
+		brilliant_scientist_try_schedule_alien_artifact_contact = yes
+	}
 	chaosx_nr25_open_holder_aftermath = yes
 	chaosx_nr25_update_achievement_tracking = yes
 }

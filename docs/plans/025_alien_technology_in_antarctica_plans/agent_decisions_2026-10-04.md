@@ -205,3 +205,16 @@ Decision:
 - The five evolutions appear as Event Details preview rows of evolution type 25 with stages one to five, so their toggles set the `events_log_disabled_evolution_25_25_<stage>` flags the gates already read.
 - Each evolution's tier is the Chaos tier of its gate (Evolutions I to V on tiers one to five), both in the gate check and in the log milestone.
 - Type, name, title, body and summary text use the existing Event 025 evolution localisation on every evolution surface; only the Evolution V holder that delivers the opening is recorded as an actor.
+
+## D14. Event 016 Antarctic hooks and the legacy UFO race
+
+Disposition: `implemented`.
+
+Basis: spec 004's Event 016 relationship section and rule that Event 025 creates no Event 016 project history; the reworked race never granted the legacy `antarctica_success` idea, so every Event 016 Antarctic route was dead.
+
+Decision:
+
+- Event 025 publishes two read-only triggers in its custody-policy trigger file. `chaosx_nr25_has_antarctic_alien_evidence` is true while a country holds the recovered core or a fragment, or after it won the recovery, because the winner's scientists keep what they learned. `chaosx_nr25_holds_antarctic_core` is true only for the core's physical custodian.
+- Event 016's alien-artifact contact, its alien-arms theory prerequisite and the `chaosx.nr16.17` description read the evidence trigger; the Dhrondan craft bypass reads the core trigger, because it studies the craft itself.
+- Event 025 calls Event 016's existing contact helper when material reaches a country: at winner settlement, at a loser settlement with fragments, and for a custody recipient. The helper's own host check keeps it a no-op without an active Kruger host, and no Event 016 history is created.
+- The legacy Antarctica Race decisions, category, `antarctica_success` idea and their localisation are removed. Their legacy art registrations stay unused in the shared picture files; `GFX_report_event_antarctica_secured` is still Event 016's report picture.
