@@ -243,9 +243,10 @@ chaosx_nr25_close_entry_window = {
 	}
 }
 
-# COUNTRY scope. Recalls an expedition that has stayed in one phase past the
-# stall limit with no objective running. Its verified evidence is preserved,
-# and the race closes through the normal path once no expedition remains.
+# COUNTRY scope. Recalls an expedition that has neither entered a new phase
+# nor opened an objective or final recovery attempt within the stall limit,
+# and has none running. Its verified evidence is preserved, and the race
+# closes through the normal path once no expedition remains.
 chaosx_nr25_recall_if_stalled = {
 	if = {
 		limit = {
@@ -265,7 +266,8 @@ chaosx_nr25_recall_if_stalled = {
 	}
 }
 
-# COUNTRY scope. Restarts the expedition's stall clock when it enters a phase.
+# COUNTRY scope. Restarts the expedition's stall clock when it enters a phase
+# or opens an objective or final recovery attempt.
 chaosx_nr25_reset_stall_clock = {
 	set_temp_variable = { chaosx_date_days = constant:chaosx_nr25_stall.phase_stall_days }
 	chaosx_convert_days_to_date_offset = yes

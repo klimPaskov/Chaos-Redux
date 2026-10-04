@@ -332,3 +332,19 @@ Decision:
 
 - Event 25 is added to `event_log_event_is_reworked_default_enabled` through its identity constant, so new campaigns no longer start with it disabled.
 - The catalog row update (Details, the five evolution texts and the status `Needs Testing`) is staged in `catalog_changes_pending.md` with the exact in-game wording.
+
+## D22. Review round 1 corrections
+
+Disposition: `implemented`.
+
+Basis: the skeptical review of the round 1 commits (695bce4c8 to a1c2324b7) against the installed engine rules, the accepted design above and the player-facing writing rules.
+
+Findings and decisions:
+
+- The four actor-wording keys added in 5b46c56be were written as raw multi-line YAML strings, which the line-based localisation parser does not accept, so the entry, route-estimate and mobilisation paragraphs for nonhuman and special chaos actors would not load. They now use `\n` escapes. The uncommitted working-tree hunk that already made this fix, together with a constant-driven final-recovery tooltip and plainer recover-fragment wording, was finished and coherent and is adopted here.
+- Mission descriptions and the organise-objective tooltip printed the readiness thresholds as literal numbers. They now read `chaosx_nr25_mission_timing.failure_readiness_floor` and `chaosx_nr25_phase_gate.crossing_readiness`.
+- The stall recall (D16) counted only phase entries, so an expedition that kept attempting the final recovery for 720 days could be recalled during a cooldown between attempts without warning. Opening any objective or final recovery attempt now restarts the stall clock; an expedition is recalled only after 720 days without a new phase, objective or attempt. The recall report states the limit from `chaosx_nr25_stall.phase_stall_days`.
+- The armed-seizure decision tooltip and the evacuation objective outcomes now state the real casualty bands of D18 and that an evacuation ends the expedition's part in the race.
+- Several player-facing strings that used implementation wording ("participant", "persistent", "action tray and supporting board state") were rewritten in plain terms.
+
+Review evidence limits: `hoi4_probability_inspect` (`decision_ai_will_do`, aftermath decisions file) still returns `INTERNAL_ERROR`, so D19's MCP baseline stays `blocked`; one attempt was made and not retried. `hoi4_event_inspect` in `lint` mode rejected both selector forms tried, so event review was source-only.

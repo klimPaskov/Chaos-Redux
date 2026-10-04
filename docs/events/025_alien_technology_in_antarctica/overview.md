@@ -14,7 +14,7 @@ The expedition race is a country-scoped competition for alien-derived systems bu
 The hidden entry event initializes one global race, six sector records, the persistent participant array, the fragment-owner registry, the same-day candidate fields, and the opening super-event audio and art.
 
 The entry window sends one event to each human-controlled country and then closes once, through whichever controller event or expedition pulse reaches the stored close date first.
-An expedition that stays in one phase for two years with nothing running is recalled with its verified evidence, and the race closes once no expedition remains.
+An expedition that goes 720 days (`chaosx_nr25_stall.phase_stall_days`) without entering a new phase or opening an objective or final recovery attempt, and has nothing running, is recalled with its verified evidence (`chaosx.nr25.89`), and the race closes once no expedition remains.
 
 The controller registers human entrants first and fills only remaining bounded AI slots from eligible AI majors. The participant array is stored once and each participant receives its own country-scoped pulse event.
 

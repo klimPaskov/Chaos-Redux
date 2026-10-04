@@ -1473,10 +1473,12 @@ chaosx_nr25_check_evolution_gates = {
 	}
 }
 
-# COUNTRY scope. Executes one primary phase action. Decision visibility and
-# cost triggers are kept in the decision file, while this shared executor keeps
-# AI and human outcomes identical and caps the action cooldown in one place.
+# COUNTRY scope. Starts the final recovery mission chosen by the current
+# action and schedules its completion window. A new attempt restarts the
+# expedition's stall clock, so an expedition that keeps attempting the
+# recovery is never recalled as stalled.
 chaosx_nr25_start_final_mission = {
+	chaosx_nr25_reset_stall_clock = yes
 	chaosx_nr25_track_final_readiness = yes
 	set_country_flag = chaosx_nr25_final_mission_active
 	clr_country_flag = chaosx_nr25_final_mission_ready
@@ -1637,8 +1639,10 @@ chaosx_nr25_start_phase_mission = {
 # schedules its completion check for the day before timeout. The caller sets
 # the temporary `chaosx_nr25_phase_mission_days` duration. The stored duration
 # is shown on the mission card; the guard date keeps a callback from an older,
-# cancelled objective from completing a newer one early.
+# cancelled objective from completing a newer one early. Opening an objective
+# restarts the expedition's stall clock.
 chaosx_nr25_schedule_phase_mission_completion = {
+	chaosx_nr25_reset_stall_clock = yes
 	set_variable = { chaosx_nr25_phase_mission_duration = chaosx_nr25_phase_mission_days }
 	clr_country_flag = chaosx_nr25_phase_mission_ready
 	set_temp_variable = { chaosx_nr25_phase_mission_ready_delay = chaosx_nr25_phase_mission_days }
