@@ -132,3 +132,14 @@ Decision: verification needs two costed actions shown only during the mission, i
 The second action requires the first, and missing either lets the mission time out into the existing failure, which offers the Reality Audit and restriction.
 Player-facing dual-track text uses "dual-track staff" and "independent staff" instead of "second ledger".
 Basis: decision map Dual-Track proof (independent plans, compared assumptions, resolved differences), audits 20 and 23, recovery-route budget of up to four rows.
+
+## D16. Supplied divisions use a native proxy with an active-front alternative
+
+Decision: lead decision 3 is implemented.
+A training region (Skane 138, Sodermanland 141, Norrnorrland 666) counts as supplied when Sweden fully controls it, `divisions_in_state` shows at least two Swedish divisions, `any_state_division` finds a Swedish division with `unit_organization` above `video_game_in_sweden_supply_proxy.minimum_organization` (0.5), and `has_railway_connection` links it to Stockholm (141 is exempt); the national supply gap check stays in every mission objective.
+The active front alternative is at war, more than `active_front_min_divisions` (3) divisions, surrender progress below `active_front_surrender_limit` (0.25), no core lost within the crisis memory, no supply gap, and a Swedish-controlled state bordering enemy-controlled ground that holds an organised Swedish division.
+Field validation and the narrow reassessment accept either; the full Reality Audit accepts all three regions or an active front with the Stockholm region supplied, so a Sweden fighting abroad can still audit.
+State ids stay literal in state scopes, `divisions_in_state` and `has_railway_connection`, documented beside the triggers as mirrors of the front-state constants.
+Evidence: installed triggers documentation lists only `unit_organization`, `unit_strength` and template checks for divisions; the vanilla railway graph links 138 and 666 to 141; the proxy mirrors the Chaos Redux independence-wave "supplied division" organisation threshold.
+Live-game check: whether `has_railway_connection` accepts paths through allied territory is needs_live_game.
+Basis: spec part 3 Reality Audit setup (supplied divisions in three regions or equivalent active fronts), reports 16, 22 and 25.

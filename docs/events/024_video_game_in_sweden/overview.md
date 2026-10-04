@@ -205,9 +205,11 @@ The primary actions are:
 - `video_game_red_team` introduces a hostile review and lowers Reliance while improving adaptation.
 - `video_game_officer_league` gives the officer corps a bounded competitive institution.
 
-Field validation checks the configured Swedish front states, including southern state 138, central state 141, and northern state 666, along with the required front presence, committed field resources, and review conditions.
+Field validation checks the configured Swedish training regions, southern state 138, central state 141 and northern state 666, along with committed field resources and review conditions.
 
-The field package requires Stockholm under Swedish control and at least two Swedish divisions in one selected field region, while the full reality audit requires at least two divisions in each of the three named regions.
+The installed engine has no division-supply reader, so a training region counts as supplied through a native proxy: Sweden fully controls the state, keeps at least two Swedish divisions there with one above 50% organisation, and keeps a railway from it to Stockholm (Stockholm's own region is exempt from the railway check).
+At war, an active front is the equivalent: a Swedish-held state facing enemy-controlled ground with an organised Swedish division, more than three divisions in the field, surrender progress below 25%, no core lost in the last 60 days and no supply gap.
+Field validation and the narrow reassessment need one supplied region or an active front, and the full Reality Audit needs all three regions or an active front with the Stockholm region supplied, together with Stockholm itself.
 
 A full result resolves the field-validation mission and removes the temporary Rulebook Commander trait from a valid Swedish commander.
 

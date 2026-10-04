@@ -923,49 +923,110 @@ video_game_in_sweden_is_meaningful_trust_war = {
 	}
 }
 
-video_game_in_sweden_has_front_presence = {
-	OR = {
-		divisions_in_state = {
-			state = 138
-			size > @reality_audit_min_divisions_per_region
+# ----------------------------------------------------------------------------
+# Supplied-division proof
+# ----------------------------------------------------------------------------
+# The three training regions are Skane (138), Sodermanland around Stockholm
+# (141) and Norrnorrland (666), mirroring the video_game_in_sweden_event front
+# state constants. State scopes, divisions_in_state and has_railway_connection
+# take literal state ids, so the ids are written out here.
+# COUNTRY scope, ROOT is the Swedish host. A region counts as supplied when it
+# is fully controlled, holds at least two Swedish divisions with one of them
+# above the organisation threshold, and keeps a railway to Stockholm.
+video_game_in_sweden_southern_region_supplied = {
+	divisions_in_state = {
+		state = 138
+		size > @reality_audit_min_divisions_per_region
+	}
+	138 = {
+		is_fully_controlled_by = ROOT
+		any_state_division = {
+			OWNER = { tag = ROOT }
+			unit_organization > constant:video_game_in_sweden_supply_proxy.minimum_organization
 		}
-		divisions_in_state = {
-			state = 141
-			size > @reality_audit_min_divisions_per_region
-		}
-		divisions_in_state = {
-			state = 666
-			size > @reality_audit_min_divisions_per_region
+	}
+	has_railway_connection = {
+		start_state = 138
+		target_state = 141
+	}
+}
+
+video_game_in_sweden_central_region_supplied = {
+	divisions_in_state = {
+		state = 141
+		size > @reality_audit_min_divisions_per_region
+	}
+	141 = {
+		is_fully_controlled_by = ROOT
+		any_state_division = {
+			OWNER = { tag = ROOT }
+			unit_organization > constant:video_game_in_sweden_supply_proxy.minimum_organization
 		}
 	}
 }
 
-video_game_in_sweden_has_full_reality_audit_field_package = {
-	138 = {
-		is_fully_controlled_by = ROOT
-		ROOT = {
-			divisions_in_state = {
-				state = 138
-				size > @reality_audit_min_divisions_per_region
-			}
-		}
-	}
-	141 = {
-		is_fully_controlled_by = ROOT
-		ROOT = {
-			divisions_in_state = {
-				state = 141
-				size > @reality_audit_min_divisions_per_region
-			}
-		}
+video_game_in_sweden_northern_region_supplied = {
+	divisions_in_state = {
+		state = 666
+		size > @reality_audit_min_divisions_per_region
 	}
 	666 = {
 		is_fully_controlled_by = ROOT
-		ROOT = {
-			divisions_in_state = {
-				state = 666
-				size > @reality_audit_min_divisions_per_region
-			}
+		any_state_division = {
+			OWNER = { tag = ROOT }
+			unit_organization > constant:video_game_in_sweden_supply_proxy.minimum_organization
+		}
+	}
+	has_railway_connection = {
+		start_state = 666
+		target_state = 141
+	}
+}
+
+# COUNTRY scope, ROOT is the Swedish host. The wartime equivalent of a
+# training region: a Swedish-held state facing enemy-held ground holds an
+# organised Swedish division, the army is large enough to spare a field party,
+# surrender stays low, no core was lost recently and supply holds.
+video_game_in_sweden_has_active_front_proof = {
+	has_war = yes
+	has_army_size = { size > constant:video_game_in_sweden_event.active_front_min_divisions }
+	surrender_progress < constant:video_game_in_sweden_supply_proxy.active_front_surrender_limit
+	NOT = { has_country_flag = video_game_in_sweden_core_loss_recent }
+	NOT = { video_game_in_sweden_has_campaign_supply_gap = yes }
+	any_controlled_state = {
+		any_neighbor_state = {
+			CONTROLLER = { has_war_with = ROOT }
+		}
+		any_state_division = {
+			OWNER = { tag = ROOT }
+			unit_organization > constant:video_game_in_sweden_supply_proxy.minimum_organization
+		}
+	}
+}
+
+# One supplied training region or an active front: the field validation and
+# narrow reassessment proof.
+video_game_in_sweden_has_front_presence = {
+	OR = {
+		video_game_in_sweden_southern_region_supplied = yes
+		video_game_in_sweden_central_region_supplied = yes
+		video_game_in_sweden_northern_region_supplied = yes
+		video_game_in_sweden_has_active_front_proof = yes
+	}
+}
+
+# The full Reality Audit package: all three supplied regions, or an active
+# front with the Stockholm region still supplied.
+video_game_in_sweden_has_full_reality_audit_field_package = {
+	OR = {
+		AND = {
+			video_game_in_sweden_southern_region_supplied = yes
+			video_game_in_sweden_central_region_supplied = yes
+			video_game_in_sweden_northern_region_supplied = yes
+		}
+		AND = {
+			video_game_in_sweden_has_active_front_proof = yes
+			video_game_in_sweden_central_region_supplied = yes
 		}
 	}
 }
