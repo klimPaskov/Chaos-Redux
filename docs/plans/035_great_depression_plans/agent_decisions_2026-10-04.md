@@ -140,6 +140,50 @@ Disposition: implemented (commit `7704873f7`).
 
 `chaosx.news.40` uses `GFX_news_event_great_depression`, the Event 35 news art that `chaosx.news.95` already uses, instead of the generic gathering-protest picture.
 
+## D9. Deferred history row writer and Event Log refresh
+
+Disposition: implemented.
+
+The deferred `chaosx.nr35.10` callback runs an hour after the firing, so its fallback row (written only when the dispatcher left no countryless Event 35 row) uses `record_events_log_system_history_entry` with the repeatable event type instead of the borrowed `global.last_fired_event_id` path.
+Rewriting the last fired event an hour late would show Event 35 as the latest firing even when another event fired in between.
+After it fills or adds the row, the callback calls `refresh_events_log_system_history_views`, so an open History, Events or Event Details view shows the country and Severity at once instead of after the window is reopened.
+The comment on `great_depression_center_transport_target_is_valid` now states what the trigger checks; it never tested for a working plant.
+
+## D10. Decision AI evidence from `hoi4.decision_inspect`
+
+Disposition: implemented as evidence; numeric before/after comparison remains blocked.
+
+`hoi4.probability_inspect` with `adapter = decision_ai_will_do` still returns `Invalid tool arguments`, with and without a candidate pool.
+`hoi4.decision_inspect` in `inspect` mode with declared scenarios now works and runs the `decision_ai_will_do` adapter in baseline mode, so the new and changed decisions have scenario evidence.
+All scenarios use GER with `closedFlags`, an active coherent episode (Severity 40), every quoted cost variable present and resources above the quote.
+The routes report `DECISION_ANALYZED_PARTIAL` because `has_cosmetic_tag`, state iterators (`any_owned_state`, `any_controlled_state`) and partner relationship checks cannot be declared.
+
+| Decision | Scenario (profile, phase, war) | AI score |
+| --- | --- | --- |
+| End Rescue Dependence | fiscal retrencher, Stabilization, peace | 38 |
+| End Rescue Dependence | liquidation gambler, Stabilization, peace | 34 |
+| End Rescue Dependence | strategic mobilizer, Stabilization, peace | 24 |
+| End Rescue Dependence | state coordinator, Stabilization, peace | 24 |
+| End Rescue Dependence | strategic mobilizer, Stabilization, war | 0 |
+| Retain a Bounded Arsenal Institution | strategic mobilizer, Stabilization, war | 44 |
+| Retain a Bounded Arsenal Institution | strategic mobilizer, Stabilization, peace | 36 |
+| Retain a Bounded Arsenal Institution | state coordinator, Stabilization, peace | 32 |
+| Retain a Bounded Arsenal Institution | liquidation gambler, Stabilization, peace | 22 |
+| Retain a Bounded Arsenal Institution | fiscal retrencher, Stabilization, peace | 0 |
+| Restore Local Credit and Trade Connection (Idled center, 4 factories) | financial stabilizer, Depression, peace | 42 |
+| Restore Local Credit and Trade Connection | state coordinator, Depression, peace | 38 |
+| Restore Local Credit and Trade Connection | fiscal retrencher, Depression, peace | 28 |
+| Restore Local Credit and Trade Connection | financial stabilizer, Depression, war | 0 |
+
+End Rescue Dependence resolved as eligible in every scenario, with the actor gate, phase gate and quoted cost all true.
+The two closers rank as D6 intended: retrenchers and liquidation gamblers lean to ending the rescue, mobilizers and coordinators to keeping the arsenal, and war blocks ending it while raising the arsenal.
+Eligibility for the arsenal closer and the finance project stays unresolved only because their state checks cannot be declared.
+
+For Exploit Supply Gap, the partner target trigger now runs in partner-country scope: with FRA declared as a partner in its own active episode, `great_depression_active_crisis_is_coherent` resolves true on FRA, while the relationship and the meta-trigger cooldown stay unresolved and the score depends on undeclarable partner valuation.
+The pre-fix trigger had no before run, because a compare needs the whole 95 KB trigger file inline; it could never pass, because every condition in it was a state trigger evaluated on a country.
+
+Artifacts (workspace `mod_chaos_redux_ea3b2d67c2c0`): `decision-6148bb24c870ec1a7a58906a.json` (End Rescue Dependence), `decision-4a2def22c09ceceff5ab5739.json` (arsenal), `decision-0af142fc1b38432cd46b634c.json` (finance restoration), `decision-8bff4d692d2dd3640dd90f2f.json` (Exploit Supply Gap).
+
 ## Commit index
 
 | Decision | Commit |
@@ -152,9 +196,10 @@ Disposition: implemented (commit `7704873f7`).
 | D6 doctrine projects and producers | `97d28a7a4` |
 | D7 and the D5 amendment, Negative Economy cluster and deferred history completion | `0c0d4f8d7` |
 | D8 opening news picture | `7704873f7` |
+| D9 deferred history writer and D10 decision AI evidence | the commit "Write the late Event 35 history row without moving the last fired event" |
 
 ## Remaining limits
 
 - needs_live_game: super-event 105 display, the single history row on a random and on a cluster firing, the Event Details evolution toggles, the cluster appearing and firing, and the new decisions' tooltips and map targeting.
-- The HOI4 MCP probability routes (`hoi4.probability_inspect`, `hoi4.decision_inspect`) rejected every call this round, so no numeric before/after AI evidence exists for D2, D3 or D6.
+- `hoi4.probability_inspect` and `hoi4.probability_compare` still reject the decision adapter, so no numeric before/after comparison exists for D2, D3 or D6; D10 records the scenario baseline that `hoi4.decision_inspect` could produce.
 - Event 35 has no event-pool availability hook, so the normal pool and the Negative Economy trigger row can still select it when no country is a valid independent target; the firing then does nothing. Adding that hook means editing the shared pool evaluator and is left for the event-system owner.
