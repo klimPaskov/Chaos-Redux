@@ -3468,6 +3468,7 @@ decision_riches_found_nationalize_without_compensation = {
 
 			FROM = {
 				set_state_flag = riches_found_nationalized
+				set_state_flag = riches_found_nationalized_without_compensation
 				set_temp_variable = { riches_found_chaos_source = constant:riches_found_chaos_source.corrupt_seizure }
 				riches_found_apply_chaos_source = yes
 				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.negative_15 }
@@ -5361,7 +5362,6 @@ decision_riches_found_occupation_reopen = {
 			modifier = { factor = constant:riches_found_decision_ai.urgent_factor has_war = yes }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor FROM = { has_state_flag = riches_found_multiple_mine_priority } }
 			modifier = { factor = constant:riches_found_decision_ai.low_factor FROM = { check_variable = { var = riches_found_local_order value = constant:riches_found_decision_threshold.order_low compare = less_than } } }
-						modifier = { factor = constant:riches_found_decision_ai.high_factor FROM = { has_state_flag = riches_found_occupation_state } }
 	}
 }
 
@@ -7772,7 +7772,6 @@ decision_riches_found_demons_occult_assistance = {
 			modifier = { factor = constant:riches_found_decision_ai.high_factor FROM = { has_state_flag = riches_found_multiple_mine_priority } }
 			modifier = { factor = constant:riches_found_decision_ai.low_factor FROM = { check_variable = { var = riches_found_local_order value = constant:riches_found_decision_threshold.order_low compare = less_than } } }
 			modifier = { factor = constant:riches_found_decision_ai.high_factor has_government = neutrality }
-						modifier = { factor = constant:riches_found_decision_ai.high_factor FROM = { has_state_flag = riches_found_occult_network_available } }
 	}
 }
 
@@ -10045,6 +10044,7 @@ mission_riches_found_audit_concession = {
 					add_to_variable = { riches_found_illicit_capture = constant:riches_found_action_delta.positive_15 }
 					add_to_variable = { riches_found_foreign_claim_pressure = constant:riches_found_action_delta.positive_10 }
 			set_state_flag = riches_found_mission_audit_concession_failure
+			set_state_flag = riches_found_failed_audit
 			set_temp_variable = { riches_found_mission_cooldown_days = constant:riches_found_duration.mission_cooldown_days }
 			set_state_flag = { flag = riches_found_mission_audit_concession_cooldown days = riches_found_mission_cooldown_days }
 			clr_state_flag = riches_found_mission_audit_concession_subject

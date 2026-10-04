@@ -41,6 +41,9 @@ riches_found_record_contract_partner_share = {
 		set_variable = { riches_found_contract_share_controller = CONTROLLER }
 		event_target:riches_found_share_partner = {
 			add_to_variable = { riches_found_concession_share_count = constant:riches_found_value.one }
+			# A partner holding concessions has a network that makes it a
+			# stronger bidder for the next mine.
+			set_country_flag = riches_found_foreign_contract_network
 			if = {
 				limit = { NOT = { has_dynamic_modifier = { modifier = riches_found_country_concession_share } } }
 				add_dynamic_modifier = { modifier = riches_found_country_concession_share }
@@ -67,6 +70,7 @@ riches_found_release_contract_partner_share = {
 				if = {
 					limit = { NOT = { check_variable = { riches_found_concession_share_count > constant:riches_found_value.zero } } }
 					clear_variable = riches_found_concession_share_count
+					clr_country_flag = riches_found_foreign_contract_network
 					if = {
 						limit = { has_dynamic_modifier = { modifier = riches_found_country_concession_share } }
 						remove_dynamic_modifier = { modifier = riches_found_country_concession_share }

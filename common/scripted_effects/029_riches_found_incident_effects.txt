@@ -33,6 +33,18 @@ riches_found_reset_incident_deltas = {
 # review. Good management spaces incidents farther apart; a crisis shortens
 # the interval without making any single candidate certain.
 riches_found_finish_incident = {
+	# Smuggled material opens a route that smugglers keep using for a while.
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = riches_found_incident_kind value = constant:riches_found_incident_kind.rush_smuggling compare = equals }
+				check_variable = { var = riches_found_incident_kind value = constant:riches_found_incident_kind.gold_guard_theft compare = equals }
+				check_variable = { var = riches_found_incident_kind value = constant:riches_found_incident_kind.gold_false_permits compare = equals }
+			}
+		}
+		set_temp_variable = { riches_found_smuggling_route_days = constant:riches_found_duration.smuggling_route_memory_days }
+		set_state_flag = { flag = riches_found_smuggling_route days = riches_found_smuggling_route_days }
+	}
 	# Armed claimants fighting over the workings are a claim war.
 	if = {
 		limit = {
@@ -505,6 +517,13 @@ riches_found_run_foreign_interference_pool = {
 			constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { has_state_flag = riches_found_interference_actor_friendly } } modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.foreign_offer_assistance compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.foreign_offer_assistance } set_temp_variable = { riches_found_incident_development_delta = constant:riches_found_incident_delta.standard } set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.standard } set_state_flag = riches_found_foreign_assistance_offer }
 		}
 		riches_found_record_foreign_interference_evidence = yes
+		# A hostile actor's operation stays active around the mine for a while,
+		# threatening shipments and blocking a safe sealing of the depths.
+		if = {
+			limit = { has_state_flag = riches_found_interference_actor_hostile }
+			set_temp_variable = { riches_found_foreign_operation_days = constant:riches_found_duration.foreign_operation_memory_days }
+			set_state_flag = { flag = riches_found_foreign_operation_active days = riches_found_foreign_operation_days }
+		}
 		# Arming a local group or preparing a seizure is military intervention;
 		# bribes, inspections, sanctions and offers are not.
 		if = {

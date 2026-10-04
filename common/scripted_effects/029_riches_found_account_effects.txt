@@ -63,6 +63,7 @@ riches_found_fulfil_account_obligation = {
 		limit = { riches_found_account_obligation_can_settle = yes }
 		riches_found_clear_account_payment_receipt = yes
 		clr_state_flag = riches_found_account_obligation_active
+		clr_state_flag = riches_found_account_breach_imminent
 		clr_state_flag = riches_found_account_benefits_suspended
 		set_variable = { riches_found_account_last_payment_family = riches_found_account_payment_family }
 		set_variable = { riches_found_account_last_payment_date = global.date }
@@ -121,6 +122,7 @@ riches_found_breach_account_obligation = {
 	if = {
 		limit = { has_state_flag = riches_found_account_obligation_active }
 		clr_state_flag = riches_found_account_obligation_active
+		clr_state_flag = riches_found_account_breach_imminent
 		set_state_flag = riches_found_account_benefits_suspended
 		set_state_flag = riches_found_account_breach_recorded
 		set_variable = { riches_found_account_last_breach_date = global.date }
@@ -309,4 +311,16 @@ riches_found_service_account_obligation = {
 		}
 		riches_found_breach_account_obligation = yes
 	}
+	# The payment warning holds from the warning date until the promise is
+	# paid, breached or closed. It is an AI urgency input only.
+	if = {
+		limit = {
+			has_state_flag = riches_found_account_obligation_active
+			NOT = { has_state_flag = riches_found_account_closed }
+			has_variable = riches_found_account_deadline_warning_date
+			check_variable = { var = global.date value = riches_found_account_deadline_warning_date compare = greater_than_or_equals }
+		}
+		set_state_flag = riches_found_account_breach_imminent
+	}
+	else = { clr_state_flag = riches_found_account_breach_imminent }
 }
