@@ -802,15 +802,16 @@ event021_civil_war_crisis_category = {
 				has_country_flag = event021_hold_capital_failed
 			}
 		}
-		cancel_effect = {
-			clr_country_flag = event021_hold_capital_mission_active
-			clear_variable = event021_hold_capital_mission_target_state
-		}
+		# Selecting the mission commits to the hold. The selectable card closes on
+		# selection, so the timed hold runs as its own non-selectable mission.
 		complete_effect = {
-			set_country_flag = event021_hold_capital_mission_active
-			capital_scope = { set_variable = { ROOT.event021_hold_capital_mission_target_state = THIS } }
+			custom_effect_tooltip = event021_hold_capital_commit_tt
+			hidden_effect = {
+				set_country_flag = event021_hold_capital_mission_active
+				capital_scope = { set_variable = { ROOT.event021_hold_capital_mission_target_state = THIS } }
+				activate_mission = event021_holding_the_capital_mission
+			}
 		}
-		timeout_effect = { event021_mission_hold_capital_resolve = yes }
 		ai_will_do = {
 			base = constant:event021_ai.base_mission
 			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_government_side }
@@ -818,6 +819,27 @@ event021_civil_war_crisis_category = {
 			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_event6_front_active }
 			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_same_tag_route_active }
 		}
+	}
+
+	# Timed hold started by event021_hold_the_capital_mission. It cannot finish
+	# early: the timer judges the objective, a lost capital state fails it at once
+	# through on_state_control_changed, and the crisis ending cancels it quietly.
+	event021_holding_the_capital_mission = {
+		icon = GFX_mission_event021_hold_capital
+		days_mission_timeout = constant:event021_mission_tuning.hold_capital_days
+		is_good = yes
+		fire_only_once = no
+		activation = { always = no }
+		available = { hidden_trigger = { always = no } }
+		cancel_trigger = {
+			OR = {
+				NOT = { has_country_flag = event021_hold_capital_mission_active }
+				NOT = { event021_country_can_manage_crisis = yes }
+				has_country_flag = event021_settlement_resolved
+			}
+		}
+		cancel_effect = { event021_mission_hold_capital_release = yes }
+		timeout_effect = { event021_mission_hold_capital_resolve = yes }
 	}
 
 	event021_secure_rail_spine_mission = {
@@ -886,15 +908,39 @@ event021_civil_war_crisis_category = {
 				}
 			}
 		}
-		cancel_effect = { clr_country_flag = event021_secure_rail_mission_active }
-		complete_effect = { set_country_flag = event021_secure_rail_mission_active }
-		timeout_effect = { event021_mission_secure_rail_resolve = yes }
+		complete_effect = {
+			custom_effect_tooltip = event021_secure_rail_commit_tt
+			hidden_effect = {
+				set_country_flag = event021_secure_rail_mission_active
+				activate_mission = event021_securing_the_rail_spine_mission
+			}
+		}
 		ai_will_do = {
 			base = constant:event021_ai.base_mission
 			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_reconstruction_phase }
 			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_opposition_side }
 			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_event6_front_active }
 		}
+	}
+
+	# Timed rail hold started by event021_secure_rail_spine_mission. A control
+	# change on the rail state fails it at once; the timer judges supply and
+	# infrastructure on the bound state.
+	event021_securing_the_rail_spine_mission = {
+		icon = GFX_mission_event021_secure_rail
+		days_mission_timeout = constant:event021_mission_tuning.secure_rail_days
+		is_good = yes
+		fire_only_once = no
+		activation = { always = no }
+		available = { hidden_trigger = { always = no } }
+		cancel_trigger = {
+			OR = {
+				NOT = { has_country_flag = event021_secure_rail_mission_active }
+				NOT = { event021_country_can_manage_reconstruction = yes }
+			}
+		}
+		cancel_effect = { clr_country_flag = event021_secure_rail_mission_active }
+		timeout_effect = { event021_mission_secure_rail_resolve = yes }
 	}
 
 	event021_hold_settlement_terms_mission = {
@@ -923,12 +969,36 @@ event021_civil_war_crisis_category = {
 				NOT = { has_country_flag = random_civil_war_settlement_obligation_active }
 			}
 		}
-		cancel_effect = { clr_country_flag = event021_settlement_terms_mission_active }
-		complete_effect = { set_country_flag = event021_settlement_terms_mission_active }
-		timeout_effect = { event021_mission_hold_settlement_terms_resolve = yes }
+		complete_effect = {
+			custom_effect_tooltip = event021_settlement_terms_commit_tt
+			hidden_effect = {
+				set_country_flag = event021_settlement_terms_mission_active
+				activate_mission = event021_upholding_the_settlement_mission
+			}
+		}
 		ai_will_do = {
 			base = constant:event021_ai.base_mission
 			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_settlement_phase }
 		}
+	}
+
+	# Timed settlement hold started by event021_hold_settlement_terms_mission.
+	# The timer judges the live obligation objective.
+	event021_upholding_the_settlement_mission = {
+		icon = GFX_mission_event021_settlement_terms
+		days_mission_timeout = constant:event021_mission_tuning.settlement_terms_days
+		is_good = yes
+		fire_only_once = no
+		activation = { always = no }
+		available = { hidden_trigger = { always = no } }
+		cancel_trigger = {
+			OR = {
+				NOT = { has_country_flag = event021_settlement_terms_mission_active }
+				NOT = { event021_country_can_manage_settlement = yes }
+				NOT = { has_country_flag = random_civil_war_settlement_obligation_active }
+			}
+		}
+		cancel_effect = { clr_country_flag = event021_settlement_terms_mission_active }
+		timeout_effect = { event021_mission_hold_settlement_terms_resolve = yes }
 	}
 }
