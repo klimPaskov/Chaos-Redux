@@ -231,3 +231,23 @@ Decisions:
 - `has_independence_wave_safe_reserve_surplus` also reads ROOT but is reached only from decisions of the country itself, so it stays as it is.
 
 Validation: a call-graph walk from `independence_wave_refresh_country_state` and the five `independence_wave_change_*` entry points (58 or 59 reachable scripted effects and triggers) finds no remaining ROOT reference.
+
+## D11. Round 2: re-release defects in NAV and in the foreign queue deadline
+
+Disposition: `implemented`.
+
+Basis: the lead's round-2 item 3 and decision 3.
+
+NAV Aguirre roster:
+
+- Defect: `has_independence_wave_nav_command_roster`, read by NAV setup and by `has_prepared_independence_wave_iw_013_package_setup`, needs `NAV_independence_wave_jose_antonio_aguirre` as a corps commander. Only startup history recruits him, and `independence_wave_cleanup_iw_013_basque` retired him, so a second NAV release in one campaign always failed setup and stopped its whole wave.
+- Decision: cleanup no longer retires Aguirre. He is part of NAV's startup roster, like the vanilla NAV characters, and stays with the tag. The new `independence_wave_nav_ensure_command_roster` runs at the start of NAV setup: it recruits him with `recruit_character` when NAV does not have him, and gives him back his corps command with `add_corps_commander_role` (traits and skills from his character definition, held in file constants) when another effect removed it. The syntax follows `effects_documentation.md` (`recruit_character`, `retire_character`, `add_corps_commander_role`, all country scope).
+- Walk-through of a second release: cleanup keeps Aguirre, NAV is annexed and released again, setup passes `can_initialize_independence_wave_iw_013_package`, the ensure step finds Aguirre and his corps command (or restores them), so `has_independence_wave_nav_command_roster`, the roster checkpoint, the force load and `has_prepared_independence_wave_iw_013_package_setup` all pass as in the first release.
+
+Foreign queue deadline (`.72`):
+
+- Defect: every target stored only the plan id of the queue that scheduled its deadline. A `.72` scheduled by an earlier queue could fire after a newer queue raised on the same target, find the newer plan id, close the newer queue early and clear its schedule. This needs a re-release of the same target within about 30 days.
+- Decision: each target also stores `independence_wave_foreign_deadline_date`, the date from which its queue may close (last dispatch plus the response and consent timeouts), converted with `chaosx_convert_days_to_date_offset`. The event still fires `deadline_margin_days` later. `independence_wave_foreign_reaction_check_deadline` acts only when `global.date` has reached the stored date, and then closes the queue only if the stored plan id is still the open queue. An older event that arrives early finds the newer date and does nothing, so the newer queue keeps both its receipts and its own deadline. A schedule without a stored date keeps the plan-id check alone.
+- The roughly 230-day foreign-queue blocking stays as accepted design.
+
+Needs live game: a second NAV release in one campaign; a target released twice within 30 days with an open foreign queue.

@@ -169,12 +169,21 @@ independence_wave_foreign_reaction_build_queue = {
 			set_temp_variable = { independence_wave_foreign_deadline_delay = independence_wave_foreign_dispatch_delay }
 			add_to_temp_variable = { independence_wave_foreign_deadline_delay = constant:independence_wave_foreign_reaction_timing.response_timeout_days }
 			add_to_temp_variable = { independence_wave_foreign_deadline_delay = constant:independence_wave_foreign_reaction_timing.consent_timeout_days }
+			# Each target stores the date from which this queue may be closed: the
+			# last dispatch plus the response and consent timeouts. The margin days
+			# stay between that date and the event, so the event never arrives
+			# before the date it checks.
+			set_temp_variable = { chaosx_date_days = independence_wave_foreign_deadline_delay }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
 			add_to_temp_variable = { independence_wave_foreign_deadline_delay = constant:independence_wave_foreign_reaction_timing.deadline_margin_days }
 			set_temp_variable = { independence_wave_foreign_index = constant:independence_wave_plan.first_array_index }
 			while_loop_effect = {
 				limit = { check_variable = { var = independence_wave_foreign_index value = independence_wave_foreign_cohort_targets^num compare = less_than } }
 				var:independence_wave_foreign_cohort_targets^independence_wave_foreign_index = {
 					set_variable = { independence_wave_foreign_deadline_plan_id = global.independence_wave_foreign_reaction_plan_id }
+					set_variable = { independence_wave_foreign_deadline_date = global.date }
+					add_to_variable = { independence_wave_foreign_deadline_date = chaosx_date_offset }
 					country_event = { id = chaosx.nr6.72 days = independence_wave_foreign_deadline_delay }
 				}
 				add_to_temp_variable = { independence_wave_foreign_index = constant:independence_wave_plan.loop_increment }
@@ -614,16 +623,43 @@ independence_wave_foreign_reaction_finish_queue = {
 # COUNTRY scope: a target holding a scheduled deadline. Closes the queue that
 # scheduled it if any receipt is still open; later queues are untouched.
 independence_wave_foreign_reaction_check_deadline = {
+	# A deadline event from an earlier queue can arrive after a newer queue
+	# rescheduled this target. It acts only once the stored date of the current
+	# schedule has passed, so it never closes the newer queue early and never
+	# clears the newer schedule's receipt.
 	if = {
 		limit = {
 			has_variable = independence_wave_foreign_deadline_plan_id
-			has_global_flag = independence_wave_foreign_reaction_queue_pending
-			has_variable = global.independence_wave_foreign_reaction_plan_id
-			check_variable = { var = independence_wave_foreign_deadline_plan_id value = global.independence_wave_foreign_reaction_plan_id compare = equals }
+			has_variable = independence_wave_foreign_deadline_date
+			check_variable = { var = global.date value = independence_wave_foreign_deadline_date compare = greater_than_or_equals }
 		}
-		independence_wave_foreign_reaction_finish_queue = yes
+		if = {
+			limit = {
+				has_global_flag = independence_wave_foreign_reaction_queue_pending
+				has_variable = global.independence_wave_foreign_reaction_plan_id
+				check_variable = { var = independence_wave_foreign_deadline_plan_id value = global.independence_wave_foreign_reaction_plan_id compare = equals }
+			}
+			independence_wave_foreign_reaction_finish_queue = yes
+		}
+		clear_variable = independence_wave_foreign_deadline_plan_id
+		clear_variable = independence_wave_foreign_deadline_date
 	}
-	clear_variable = independence_wave_foreign_deadline_plan_id
+	# A schedule without a stored date keeps the plan-id check alone.
+	else_if = {
+		limit = {
+			has_variable = independence_wave_foreign_deadline_plan_id
+			NOT = { has_variable = independence_wave_foreign_deadline_date }
+		}
+		if = {
+			limit = {
+				has_global_flag = independence_wave_foreign_reaction_queue_pending
+				has_variable = global.independence_wave_foreign_reaction_plan_id
+				check_variable = { var = independence_wave_foreign_deadline_plan_id value = global.independence_wave_foreign_reaction_plan_id compare = equals }
+			}
+			independence_wave_foreign_reaction_finish_queue = yes
+		}
+		clear_variable = independence_wave_foreign_deadline_plan_id
+	}
 }
 
 # COUNTRY scope: the annexed country in `on_annex`. An actor's receipt is

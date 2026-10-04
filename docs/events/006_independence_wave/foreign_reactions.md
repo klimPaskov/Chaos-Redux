@@ -17,7 +17,7 @@ Acceptance basis: the accepted contract `docs/specs/006_independence_wave_specs/
 7. Hidden router `.64` reaches each actor one day after the previous one, starting one day after the host phase. It re-checks the receipt and the live score, sends a human the profile event, and resolves an AI actor through deterministic policy.
 8. A human actor has 13 days to answer; the first option, the noncommittal stance, is chosen when the window closes.
 9. A patron offer leaves the actor's receipt open until the released country answers through `.71` (human, 13 days, refusal by default) or the router (AI).
-10. The last receipt closes the queue and releases the report/reset barrier. A deadline event `.72` on every target closes a queue whose receipts outlived every answer, and `on_annex` consumes the receipt or open offer of an annexed country.
+10. The last receipt closes the queue and releases the report/reset barrier. A deadline event `.72` on every target closes a queue whose receipts outlived every answer. Each target stores the date from which its queue may close, so a deadline left over from an earlier queue cannot close a newer queue on the same target, and `on_annex` consumes the receipt or open offer of an annexed country.
 
 No daily, weekly or monthly hook and no world scan is used. The opening of the queue never depends on a random roll.
 

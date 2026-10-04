@@ -62,7 +62,7 @@ Mechanic overview: `docs/events/006_independence_wave/foreign_reactions.md`.
 
 ### `independence_wave_foreign_reaction_check_deadline`
 
-- Scope: a target in `.72`. Closes the queue that scheduled the deadline when it is still open; later queues are untouched.
+- Scope: a target in `.72`. Each target stores `independence_wave_foreign_deadline_plan_id` and `independence_wave_foreign_deadline_date` when the queue is raised; the date is the last dispatch plus the response and consent timeouts, converted with `chaosx_convert_days_to_date_offset`, and the event follows it by `deadline_margin_days`. The event closes the queue only once `global.date` has reached the stored date and the stored plan id is still the open queue. An earlier queue's event that arrives after the target was rescheduled finds a later date and does nothing, so it neither closes the newer queue nor clears its schedule.
 
 ### `independence_wave_foreign_reaction_release_annexed_country`
 
