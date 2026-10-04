@@ -172,6 +172,29 @@ Its row appears in the Event Details world-end list beside the other terminal ou
 `murder_mystery_world_branch_is_enabled` reads that toggle through `world_end_murder_mystery_world_of_anarchy_scenario_enabled` and the global `world_end_disabled` flag, so disabling the row blocks only the Evolution V world branch; the movement, its cells and its Assassin State keep running.
 The row shows as active while `world_end_murder_mystery` is set.
 
+## Achievements
+
+The eight achievements are registered in the Event 039 section of `common/achievements/chaos_redux_achievements.txt`.
+Each `happened` block reads one receipt flag; `common/scripted_effects/039_murder_mystery_achievement_effects.txt` writes the receipt once from the criteria in `common/scripted_triggers/039_murder_mystery_achievement_triggers.txt`.
+Every `possible` block is true at game start and reads only one-shot run-wide disqualifiers, because an achievement whose `possible` fails at game start can never be earned.
+Icons are the existing normal, grey and not-eligible triplets in `gfx/achievements/039_murder_mystery_<id>.dds`; the achievement interface resolves them by filename, so no sprite is needed.
+Names and descriptions use the `_NAME` and `_DESC` keys, and the requirement text uses `_tooltip`, in `localisation/english/039_murder_mystery_l_english.yml`.
+
+| Achievement | Earned by | Receipt edge | Main conditions |
+| --- | --- | --- | --- |
+| No Second Victim | Original host, natural run | Permanent resolution, movement end | The host's own final operation captured the original murderer, and no later Event 39 office casualty or leader killing happened anywhere (`murder_mystery_later_murder_recorded`) |
+| The Empty Chair Holds | Original host, natural run | Permanent resolution, movement end | No territorial split or Evolution III, verified successor installed at the opening and no later leader killing, no emergency repression, original capital controlled at resolution and never lost for more than `capital_grace_pulses` consecutive pulses, stability at least `empty_chair_stability` |
+| A Net Without Knives | Original host, natural run | Movement end | Evolution II, five simultaneous foreign cells (`murder_mystery_five_foreign_cells_reached`), the core captured, no derivative ever created, no heir or underground inheritance, no mature cell or active derivative left |
+| The Knife Breaks | Original host whose player stayed at the split | Movement end, terminal defeat | Natural run, the original player kept the host, the center defeated, no active derivative or mature cell, and either the host dealt the central defeat or completed `knife_breaks_minimum_objectives` case objectives after the split |
+| No Masters Above Us | Center on Cells Without Masters | Pulse, route capstone focus | Survive Without a Chair, original host defeated, its original capital controlled, at least `minimum_decentralized_derivatives` viable self-governing derivatives |
+| Necessary Hypocrisy | Center on The Necessary Mask | Pulse, route capstone focus | Return the Mask, the three pragmatic spirits, a Mechanized Assassin majority template with at least one fielded mechanized division, faction leader of the Veiled Compact with at least `minimum_pragmatic_derivatives` viable derivatives bound to it, Cohesion at least `necessary_hypocrisy_cohesion` |
+| Every Chair Empty | Center or its heir | Terminal victory | World of Anarchy activated through the normal transaction and every registry row resolved |
+| The Last Safe Cabinet | Player governments recorded at activation | Terminal defeat | Still independent and ordinary, the leader recorded at activation still rules, no Event 39 office casualty after activation, at least `minimum_terminal_contribution` case objectives completed during the war |
+
+Scenario launches disqualify the four investigation achievements; the route and terminal achievements stay open because the scenario setup never grants their conditions.
+The Last Safe Cabinet marks the sitting ruler at activation with the character flag `murder_mystery_achievement_cabinet_leader`, resolved through the existing anchor trait that is removed at once.
+A derivative counts as viable when its registry row is active, its starting forces package exists, it has not capitulated, and it owns at least `murder_mystery_inheritance.minimum_heir_states` states.
+
 ## Runtime ownership and presentation
 
 | Surface | Source |
@@ -181,6 +204,7 @@ The row shows as active while `world_end_murder_mystery` is set.
 | Objective receipt, full control, rail and sector predicates | `common/scripted_triggers/039_murder_mystery_objective_triggers.txt` |
 | Country loss and split integration | `common/scripted_effects/039_murder_mystery_integration_effects.txt` |
 | Shared Event 039 cleanup | `common/scripted_effects/039_murder_mystery_runtime_effects.txt` |
+| Achievement receipts and criteria | `common/scripted_effects/039_murder_mystery_achievement_effects.txt`, `common/scripted_triggers/039_murder_mystery_achievement_triggers.txt` |
 | Movement pulse, incidents, country outcomes, inheritance | `common/scripted_effects/039_murder_mystery_lifecycle_effects.txt` |
 | Lifecycle classifiers | `common/scripted_triggers/039_murder_mystery_lifecycle_triggers.txt` |
 | Pulse, incident, growth, seeding, defeat and inheritance tuning | `common/script_constants/039_murder_mystery_lifecycle_constants.txt` |

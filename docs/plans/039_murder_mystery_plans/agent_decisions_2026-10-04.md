@@ -117,3 +117,15 @@ The 039 world branch checked `murder_mystery_world_branch_disabled`, a flag noth
 World of Anarchy is now a registry row with scenario ID 16, the next free world-end ID after Global Jihad (15), owner event 39, and super-event 112, which is the World of Anarchy super-event in the shared numbering.
 The branch toggle reads `global.disabled_world_end_scenarios` through a scripted trigger in `chaosx_world_end_scenario_triggers.txt`, matching the Event 031 Global Jihad row it was cloned from.
 The shared edits are four minimal insertions in the registry constants, the registry and active-state blocks of `chaosx_events_log_effects.txt`, three scripted-localisation rows, and one trigger.
+
+## D14. Achievements read one-shot receipts
+
+Disposition: implemented; unlock behaviour needs live confirmation.
+The eight Part 16 achievements follow the Event 033 layout (`possible` and `happened` with custom tooltips, criteria triggers, receipt flags), with one change: `possible` reads only run-wide disqualifiers that are false at game start, because the offline wiki states that an achievement whose `possible` is false at game start can never be earned.
+Event 033's `possible` requires a tracking flag that does not exist at game start; that is outside this event and is reported rather than changed.
+Departures from Part 16, each kept within the spec's intent:
+A Net Without Knives counts five simultaneous foreign cells through the existing `murder_mystery_five_foreign_cells_reached` flag rather than five unique cell countries, and only the original host can earn it because no intelligence-coordinator role exists.
+The Knife Breaks contribution floor is dealing the central defeat or completing two case objectives after the split.
+The Empty Chair Holds forgives up to two consecutive pulses (about twenty to thirty days) without the original capital.
+Necessary Hypocrisy proves the Mechanized Assassin formation with a majority template and one fielded mechanized division; it does not measure the division's supply.
+The Last Safe Cabinet treats any Event 39 office casualty after activation as losing a protected office, and keeps the activation ruler through a character flag.

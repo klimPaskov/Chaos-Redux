@@ -1,0 +1,246 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 039 MURDER MYSTERY ACHIEVEMENT TRIGGERS
+# ============================================================================
+# Overview:
+# - Eligibility and completion predicates for the eight Event 039 achievements
+#   registered in common/achievements/chaos_redux_achievements.txt.
+# - `possible` reads only run-wide disqualifiers that are false at game start,
+#   so every achievement begins eligible and loses eligibility only through a
+#   one-shot disqualifier.
+# - `happened` reads one receipt flag. Receipts are written once by
+#   039_murder_mystery_achievement_effects.txt at the resolution, pulse,
+#   focus and terminal edges, from criteria that use one-shot flags rather
+#   than values a country can regain after failing.
+# - No trigger iterates the world. Derivative counts arrive as temporary
+#   values from the bounded registry loop in the effects file.
+# ============================================================================
+
+# has_army_size needs a literal size; the formation proof is one division.
+@MURDER_MYSTERY_ACHIEVEMENT_MECHANIZED_DIVISION_FLOOR = 0
+
+# ---------------------------------------------------------------------------
+# Eligibility
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope: the player's country.
+murder_mystery_achievement_campaign_is_valid = {
+	is_ai = no
+}
+
+# COUNTRY scope. Investigation achievements need the network to arise on its
+# own; a scenario launch changes the opening state.
+murder_mystery_achievement_natural_run_is_valid = {
+	murder_mystery_achievement_campaign_is_valid = yes
+	NOT = { has_global_flag = murder_mystery_scenario_launched }
+	NOT = { has_global_flag = murder_mystery_scenario_launch_in_progress }
+}
+
+# COUNTRY scope. The Knife Breaks also ends when the original player takes
+# command of the Assassin State at the split.
+murder_mystery_achievement_knife_breaks_is_possible = {
+	murder_mystery_achievement_natural_run_is_valid = yes
+	NOT = { has_global_flag = murder_mystery_original_player_switched_sides }
+}
+
+# ---------------------------------------------------------------------------
+# Completion receipts
+# ---------------------------------------------------------------------------
+
+murder_mystery_achievement_no_second_victim_is_complete = {
+	has_country_flag = murder_mystery_achievement_no_second_victim_receipt
+}
+
+murder_mystery_achievement_empty_chair_holds_is_complete = {
+	has_country_flag = murder_mystery_achievement_empty_chair_holds_receipt
+}
+
+murder_mystery_achievement_net_without_knives_is_complete = {
+	has_country_flag = murder_mystery_achievement_net_without_knives_receipt
+}
+
+murder_mystery_achievement_the_knife_breaks_is_complete = {
+	has_country_flag = murder_mystery_achievement_the_knife_breaks_receipt
+}
+
+murder_mystery_achievement_no_masters_above_us_is_complete = {
+	has_country_flag = murder_mystery_achievement_no_masters_above_us_receipt
+}
+
+murder_mystery_achievement_necessary_hypocrisy_is_complete = {
+	has_country_flag = murder_mystery_achievement_necessary_hypocrisy_receipt
+}
+
+murder_mystery_achievement_every_chair_empty_is_complete = {
+	has_country_flag = murder_mystery_achievement_every_chair_empty_receipt
+}
+
+murder_mystery_achievement_last_safe_cabinet_is_complete = {
+	has_country_flag = murder_mystery_achievement_last_safe_cabinet_receipt
+}
+
+# ---------------------------------------------------------------------------
+# Investigation criteria. COUNTRY scope: the original host, evaluated at a
+# resolution edge before runtime cleanup.
+# ---------------------------------------------------------------------------
+
+# A natural run in which the host's own final operation captured the original
+# murderer and no later Event 39 killing succeeded anywhere.
+murder_mystery_achievement_no_second_victim_criteria = {
+	exists = yes
+	has_country_flag = murder_mystery_original_host
+	has_global_flag = murder_mystery_natural_run
+	NOT = { has_global_flag = murder_mystery_scenario_launched }
+	has_country_flag = murder_mystery_final_capture_success
+	has_country_flag = murder_mystery_core_offender_captured
+	NOT = { has_global_flag = murder_mystery_later_murder_recorded }
+	NOT = { has_country_flag = murder_mystery_no_second_victim_disqualified }
+}
+
+# The case closed before the territorial split, with the verified successor
+# still in office, no emergency repression, the original capital held, and
+# high stability.
+murder_mystery_achievement_empty_chair_holds_criteria = {
+	exists = yes
+	has_country_flag = murder_mystery_original_host
+	has_global_flag = murder_mystery_natural_run
+	NOT = { has_global_flag = murder_mystery_scenario_launched }
+	NOT = { has_global_flag = murder_mystery_territorial_state_ever_created }
+	NOT = { has_global_flag = murder_mystery_evolution_iii_committed }
+	has_country_flag = murder_mystery_successor_verified
+	NOT = { has_country_flag = murder_mystery_achievement_succession_broken }
+	NOT = { has_country_flag = murder_mystery_response_emergency_repression }
+	NOT = { has_country_flag = murder_mystery_achievement_capital_lost }
+	has_capitulated = no
+	has_event_target = murder_mystery_original_host_capital_state
+	event_target:murder_mystery_original_host_capital_state = { is_controlled_by = PREV }
+	check_variable = { var = stability value = constant:murder_mystery_achievement.empty_chair_stability compare = greater_than_or_equals }
+}
+
+# The network reached five simultaneous foreign cells after Evolution II and
+# still ended without a breakaway cell state or an inherited movement.
+murder_mystery_achievement_net_without_knives_criteria = {
+	exists = yes
+	has_country_flag = murder_mystery_original_host
+	has_global_flag = murder_mystery_natural_run
+	NOT = { has_global_flag = murder_mystery_scenario_launched }
+	has_global_flag = murder_mystery_evolution_ii_committed
+	has_global_flag = murder_mystery_five_foreign_cells_reached
+	has_global_flag = murder_mystery_core_capture_committed
+	NOT = { has_global_flag = murder_mystery_derivative_ever_created }
+	NOT = { has_global_flag = murder_mystery_inheritance_outcome_heir }
+	NOT = { has_global_flag = murder_mystery_inheritance_outcome_underground }
+	NOT = { murder_mystery_has_underground_cell = yes }
+	NOT = { murder_mystery_has_active_derivative = yes }
+}
+
+# The original player stayed with the host through the split, contributed to
+# the central defeat, and the movement ended with no derivative, heir or
+# mature cell left.
+murder_mystery_achievement_the_knife_breaks_criteria = {
+	exists = yes
+	has_country_flag = murder_mystery_original_host
+	has_country_flag = murder_mystery_knife_breaks_player_side_valid
+	NOT = { has_country_flag = murder_mystery_knife_breaks_disqualified_by_switch }
+	NOT = { has_global_flag = murder_mystery_original_player_switched_sides }
+	NOT = { has_global_flag = murder_mystery_scenario_launched }
+	has_global_flag = murder_mystery_territorial_state_ever_created
+	has_global_flag = murder_mystery_center_defeated_once
+	NOT = { has_global_flag = murder_mystery_assassin_state_exists }
+	NOT = { murder_mystery_has_active_derivative = yes }
+	NOT = { murder_mystery_has_underground_cell = yes }
+	OR = {
+		has_country_flag = murder_mystery_achievement_host_broke_center
+		check_variable = { var = murder_mystery_achievement_objectives_after_split value = constant:murder_mystery_achievement.knife_breaks_minimum_objectives compare = greater_than_or_equals }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Assassin State route criteria. COUNTRY scope: the movement's center.
+# Inputs: temp murder_mystery_achievement_autonomous_derivatives and
+# murder_mystery_achievement_compact_derivatives from
+# murder_mystery_achievement_count_derivatives.
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope: a registered derivative with a real country package.
+murder_mystery_achievement_derivative_is_viable = {
+	exists = yes
+	has_country_flag = murder_mystery_derivative_country
+	has_country_flag = murder_mystery_starting_forces_created
+	NOT = { has_country_flag = murder_mystery_derivative_detached }
+	NOT = { has_country_flag = murder_mystery_derivative_loss_recorded }
+	NOT = { has_country_flag = murder_mystery_country_loss_recorded }
+	has_capitulated = no
+	check_variable = { var = num_owned_states value = constant:murder_mystery_inheritance.minimum_heir_states compare = greater_than_or_equals }
+}
+
+murder_mystery_achievement_no_masters_above_us_criteria = {
+	has_country_flag = murder_mystery_assassin_state_active
+	has_country_flag = murder_mystery_cells_without_masters_route
+	NOT = { has_country_flag = murder_mystery_subject_demands_open }
+	has_completed_focus = murder_mystery_survive_without_a_chair
+	has_global_flag = murder_mystery_host_defeated
+	has_event_target = murder_mystery_original_host_capital_state
+	event_target:murder_mystery_original_host_capital_state = { is_controlled_by = PREV }
+	check_variable = { var = murder_mystery_achievement_autonomous_derivatives value = constant:murder_mystery_achievement.minimum_decentralized_derivatives compare = greater_than_or_equals }
+}
+
+murder_mystery_achievement_necessary_hypocrisy_criteria = {
+	has_country_flag = murder_mystery_assassin_state_active
+	has_country_flag = murder_mystery_necessary_mask_route
+	has_completed_focus = murder_mystery_return_the_mask
+	has_idea = murder_mystery_pragmatic_government
+	has_idea = murder_mystery_pragmatic_cells_under_arms
+	has_idea = murder_mystery_pragmatic_leadership_contradiction
+	has_template_majority_unit = mechanized_assassin
+	has_army_size = { size > @MURDER_MYSTERY_ACHIEVEMENT_MECHANIZED_DIVISION_FLOOR type = mechanized }
+	has_country_flag = murder_mystery_veiled_compact_created
+	is_faction_leader = yes
+	check_variable = { var = murder_mystery_achievement_compact_derivatives value = constant:murder_mystery_achievement.minimum_pragmatic_derivatives compare = greater_than_or_equals }
+	has_variable = murder_mystery_brotherhood_cohesion
+	check_variable = { var = murder_mystery_brotherhood_cohesion value = constant:murder_mystery_achievement.necessary_hypocrisy_cohesion compare = greater_than_or_equals }
+}
+
+# ---------------------------------------------------------------------------
+# World of Anarchy criteria
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope: the center or inherited center at the terminal victory edge.
+murder_mystery_achievement_every_chair_empty_criteria = {
+	exists = yes
+	has_country_flag = murder_mystery_assassin_state_active
+	has_global_flag = murder_mystery_terminal_activation_succeeded
+	has_global_flag = murder_mystery_terminal_registry_completion_proven
+	murder_mystery_terminal_victory_is_ready = yes
+}
+
+# COUNTRY scope. A player government that may be recorded when World of
+# Anarchy begins.
+murder_mystery_achievement_cabinet_snapshot_is_valid = {
+	is_ai = no
+	exists = yes
+	is_subject = no
+	has_capitulated = no
+	uses_normal_civilian_systems = yes
+	NOT = { is_special_chaos_country = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { has_country_flag = murder_mystery_assassin_state }
+	NOT = { has_country_flag = murder_mystery_derivative_country }
+}
+
+# COUNTRY scope: a recorded government at the terminal defeat edge.
+murder_mystery_achievement_last_safe_cabinet_criteria = {
+	exists = yes
+	has_country_flag = murder_mystery_achievement_cabinet_snapshot
+	NOT = { has_country_flag = murder_mystery_achievement_last_safe_cabinet_disqualified }
+	is_subject = no
+	has_capitulated = no
+	NOT = { is_special_chaos_country = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { has_country_flag = murder_mystery_assassin_state }
+	NOT = { has_country_flag = murder_mystery_derivative_country }
+	any_character = {
+		is_country_leader = yes
+		has_character_flag = murder_mystery_achievement_cabinet_leader
+	}
+	check_variable = { var = murder_mystery_achievement_terminal_objectives value = constant:murder_mystery_achievement.minimum_terminal_contribution compare = greater_than_or_equals }
+}

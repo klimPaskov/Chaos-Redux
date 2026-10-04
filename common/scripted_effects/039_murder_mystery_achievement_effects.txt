@@ -1,0 +1,270 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 039 MURDER MYSTERY ACHIEVEMENT TRACKING EFFECTS
+# ============================================================================
+# Overview:
+# - Writes the one-shot receipts read by the eight Event 039 achievements.
+#   Criteria live in 039_murder_mystery_achievement_triggers.txt.
+# - Every recorder is called from an existing Event 039 edge; this file adds
+#   no on_action and no periodic world scan.
+#
+# Hook map
+# - murder_mystery_achievement_record_later_murder: a later Event 39 office
+#   casualty (murder_mystery_apply_generic_office_casualty).
+# - murder_mystery_achievement_record_leader_murder: a later Event 39 leader
+#   killing (murder_mystery_execute_foreign_leader_transaction).
+# - murder_mystery_achievement_record_objective_success: every successful
+#   case objective (murder_mystery_decision_resolve_objective_success).
+# - murder_mystery_achievement_record_central_defeat: the center's defeat
+#   (murder_mystery_resolve_central_defeat).
+# - murder_mystery_achievement_pulse: the movement pulse
+#   (murder_mystery_run_pulse) and the two route capstone focuses.
+# - murder_mystery_achievement_record_resolution: permanent case resolution,
+#   movement end and terminal defeat, before runtime cleanup.
+# - murder_mystery_achievement_record_terminal_activation, _terminal_victory
+#   and _terminal_defeat: the World of Anarchy edges.
+#
+# Receipts stay on the earning country after the runtime is cleaned up. The
+# achievement framework unlocks them for whichever player owns that country.
+# ============================================================================
+
+# COUNTRY scope: the government that lost an official to Event 39 after the
+# opening murder.
+murder_mystery_achievement_record_later_murder = {
+	set_global_flag = murder_mystery_later_murder_recorded
+	if = {
+		limit = { has_country_flag = murder_mystery_achievement_cabinet_snapshot }
+		set_country_flag = murder_mystery_achievement_last_safe_cabinet_disqualified
+	}
+}
+
+# COUNTRY scope: the government whose leader Event 39 killed after the opening.
+murder_mystery_achievement_record_leader_murder = {
+	murder_mystery_achievement_record_later_murder = yes
+	set_country_flag = murder_mystery_achievement_succession_broken
+}
+
+# COUNTRY scope: the owner of a successful case objective.
+murder_mystery_achievement_record_objective_success = {
+	if = {
+		limit = {
+			has_country_flag = murder_mystery_original_host
+			has_global_flag = murder_mystery_territorial_state_ever_created
+		}
+		add_to_variable = { murder_mystery_achievement_objectives_after_split = constant:murder_mystery_value.one }
+	}
+	if = {
+		limit = {
+			has_country_flag = murder_mystery_achievement_cabinet_snapshot
+			has_global_flag = murder_mystery_terminal_war_active
+		}
+		add_to_variable = { murder_mystery_achievement_terminal_objectives = constant:murder_mystery_value.one }
+	}
+}
+
+# COUNTRY scope: the defeated center. Input: regular event target
+# murder_mystery_loss_winner from the capitulation or annexation hook.
+murder_mystery_achievement_record_central_defeat = {
+	if = {
+		limit = {
+			has_event_target = murder_mystery_loss_winner
+			event_target:murder_mystery_loss_winner = { has_country_flag = murder_mystery_original_host }
+		}
+		event_target:murder_mystery_loss_winner = { set_country_flag = murder_mystery_achievement_host_broke_center }
+	}
+}
+
+# Any scope. Movement pulse: original-capital continuity before the split and
+# the Assassin State route receipts.
+murder_mystery_achievement_pulse = {
+	if = {
+		limit = {
+			has_event_target = murder_mystery_original_host
+			has_event_target = murder_mystery_original_host_capital_state
+			NOT = { has_global_flag = murder_mystery_territorial_state_ever_created }
+			event_target:murder_mystery_original_host = {
+				exists = yes
+				NOT = { has_country_flag = murder_mystery_achievement_capital_lost }
+			}
+		}
+		event_target:murder_mystery_original_host = {
+			if = {
+				limit = { event_target:murder_mystery_original_host_capital_state = { is_controlled_by = PREV } }
+				clear_variable = murder_mystery_achievement_capital_lost_pulses
+			}
+			else = {
+				add_to_variable = { murder_mystery_achievement_capital_lost_pulses = constant:murder_mystery_value.one }
+				if = {
+					limit = { check_variable = { var = murder_mystery_achievement_capital_lost_pulses value = constant:murder_mystery_achievement.capital_grace_pulses compare = greater_than } }
+					set_country_flag = murder_mystery_achievement_capital_lost
+					clear_variable = murder_mystery_achievement_capital_lost_pulses
+				}
+			}
+		}
+	}
+	if = {
+		limit = {
+			has_event_target = murder_mystery_assassin_state
+			event_target:murder_mystery_assassin_state = { exists = yes }
+		}
+		event_target:murder_mystery_assassin_state = { murder_mystery_achievement_refresh_route_receipts = yes }
+	}
+}
+
+# COUNTRY scope: the movement's center.
+murder_mystery_achievement_refresh_route_receipts = {
+	if = {
+		limit = {
+			has_country_flag = murder_mystery_assassin_state_active
+			OR = {
+				AND = {
+					has_country_flag = murder_mystery_cells_without_masters_route
+					NOT = { has_country_flag = murder_mystery_achievement_no_masters_above_us_receipt }
+				}
+				AND = {
+					has_country_flag = murder_mystery_necessary_mask_route
+					NOT = { has_country_flag = murder_mystery_achievement_necessary_hypocrisy_receipt }
+				}
+			}
+		}
+		murder_mystery_achievement_count_derivatives = yes
+		if = {
+			limit = { murder_mystery_achievement_no_masters_above_us_criteria = yes }
+			set_country_flag = murder_mystery_achievement_no_masters_above_us_receipt
+		}
+		if = {
+			limit = { murder_mystery_achievement_necessary_hypocrisy_criteria = yes }
+			set_country_flag = murder_mystery_achievement_necessary_hypocrisy_receipt
+		}
+	}
+}
+
+# COUNTRY scope: the movement's center. Outputs: temp
+# murder_mystery_achievement_autonomous_derivatives (self-governing Cells
+# Without Masters derivatives) and murder_mystery_achievement_compact_derivatives
+# (derivatives bound to the center as subjects or faction members). Both count
+# only viable derivatives in active registry rows.
+murder_mystery_achievement_count_derivatives = {
+	save_event_target_as = murder_mystery_achievement_center
+	set_temp_variable = { murder_mystery_achievement_autonomous_derivatives = constant:murder_mystery_value.zero }
+	set_temp_variable = { murder_mystery_achievement_compact_derivatives = constant:murder_mystery_value.zero }
+	set_temp_variable = { murder_mystery_achievement_derivative_index = constant:murder_mystery_identity.first_array_index }
+	while_loop_effect = {
+		limit = { check_variable = { var = murder_mystery_achievement_derivative_index value = global.murder_mystery_derivative_country_entries^num compare = less_than } }
+		if = {
+			limit = { check_variable = { var = global.murder_mystery_derivative_status_entries^murder_mystery_achievement_derivative_index value = constant:murder_mystery_derivative.status_active compare = equals } }
+			var:global.murder_mystery_derivative_country_entries^murder_mystery_achievement_derivative_index = {
+				if = {
+					limit = { murder_mystery_achievement_derivative_is_viable = yes }
+					if = {
+						limit = { has_country_flag = murder_mystery_derivative_autonomous }
+						add_to_temp_variable = { murder_mystery_achievement_autonomous_derivatives = constant:murder_mystery_value.one }
+					}
+					if = {
+						limit = {
+							OR = {
+								is_subject_of = event_target:murder_mystery_achievement_center
+								is_in_faction_with = event_target:murder_mystery_achievement_center
+							}
+						}
+						add_to_temp_variable = { murder_mystery_achievement_compact_derivatives = constant:murder_mystery_value.one }
+					}
+				}
+			}
+		}
+		add_to_temp_variable = { murder_mystery_achievement_derivative_index = constant:murder_mystery_identity.loop_increment }
+	}
+}
+
+# Any scope. Evaluates the four investigation receipts on the original host.
+# Callers run it before runtime cleanup clears the host event target.
+murder_mystery_achievement_record_resolution = {
+	if = {
+		limit = {
+			has_event_target = murder_mystery_original_host
+			event_target:murder_mystery_original_host = { exists = yes }
+		}
+		event_target:murder_mystery_original_host = {
+			if = {
+				limit = {
+					NOT = { has_country_flag = murder_mystery_achievement_no_second_victim_receipt }
+					murder_mystery_achievement_no_second_victim_criteria = yes
+				}
+				set_country_flag = murder_mystery_achievement_no_second_victim_receipt
+			}
+			if = {
+				limit = {
+					NOT = { has_country_flag = murder_mystery_achievement_empty_chair_holds_receipt }
+					murder_mystery_achievement_empty_chair_holds_criteria = yes
+				}
+				set_country_flag = murder_mystery_achievement_empty_chair_holds_receipt
+			}
+			if = {
+				limit = {
+					NOT = { has_country_flag = murder_mystery_achievement_net_without_knives_receipt }
+					murder_mystery_achievement_net_without_knives_criteria = yes
+				}
+				set_country_flag = murder_mystery_achievement_net_without_knives_receipt
+			}
+			if = {
+				limit = {
+					NOT = { has_country_flag = murder_mystery_achievement_the_knife_breaks_receipt }
+					murder_mystery_achievement_the_knife_breaks_criteria = yes
+				}
+				set_country_flag = murder_mystery_achievement_the_knife_breaks_receipt
+			}
+		}
+	}
+}
+
+# Any scope. World of Anarchy activation: records every player government that
+# can still earn The Last Safe Cabinet and marks its current leader.
+murder_mystery_achievement_record_terminal_activation = {
+	clear_array = global.murder_mystery_achievement_cabinet_entries
+	every_country = {
+		limit = { murder_mystery_achievement_cabinet_snapshot_is_valid = yes }
+		set_country_flag = murder_mystery_achievement_cabinet_snapshot
+		clr_country_flag = murder_mystery_achievement_last_safe_cabinet_disqualified
+		clear_variable = murder_mystery_achievement_terminal_objectives
+		add_to_array = { array = global.murder_mystery_achievement_cabinet_entries value = THIS }
+		# The anchor trait resolves the sitting ruler; it is removed at once.
+		add_country_leader_trait = murder_mystery_ruling_selection_anchor
+		every_character = {
+			limit = {
+				is_country_leader = yes
+				has_trait = murder_mystery_ruling_selection_anchor
+			}
+			set_character_flag = murder_mystery_achievement_cabinet_leader
+		}
+		remove_country_leader_trait = murder_mystery_ruling_selection_anchor
+	}
+}
+
+# Any scope. World of Anarchy victory: the center or its heir earns Every
+# Chair Empty. Runs before the victory clears the terminal flags.
+murder_mystery_achievement_record_terminal_victory = {
+	if = {
+		limit = {
+			has_event_target = murder_mystery_assassin_state
+			event_target:murder_mystery_assassin_state = { murder_mystery_achievement_every_chair_empty_criteria = yes }
+		}
+		event_target:murder_mystery_assassin_state = { set_country_flag = murder_mystery_achievement_every_chair_empty_receipt }
+	}
+	clear_array = global.murder_mystery_achievement_cabinet_entries
+}
+
+# Any scope. World of Anarchy defeat: each recorded government that kept its
+# leader and offices, contributed, and stayed independent earns The Last Safe
+# Cabinet.
+murder_mystery_achievement_record_terminal_defeat = {
+	for_each_scope_loop = {
+		array = global.murder_mystery_achievement_cabinet_entries
+		if = {
+			limit = {
+				NOT = { has_country_flag = murder_mystery_achievement_last_safe_cabinet_receipt }
+				murder_mystery_achievement_last_safe_cabinet_criteria = yes
+			}
+			set_country_flag = murder_mystery_achievement_last_safe_cabinet_receipt
+		}
+	}
+	clear_array = global.murder_mystery_achievement_cabinet_entries
+}

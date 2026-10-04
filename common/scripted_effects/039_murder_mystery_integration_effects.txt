@@ -979,6 +979,7 @@ murder_mystery_apply_generic_office_casualty = {
 			murder_mystery_mark_selected_target_removed = yes
 			set_country_flag = murder_mystery_later_casualty_recorded
 			set_country_flag = murder_mystery_no_second_victim_disqualified
+			murder_mystery_achievement_record_later_murder = yes
 			add_to_variable = { murder_mystery_later_casualty_count = constant:murder_mystery_value.one }
 			murder_mystery_record_incident = yes
 			set_temp_variable = { murder_mystery_incident_cooldown_days = constant:murder_mystery_cooldown.country_incident_days }
@@ -1072,6 +1073,7 @@ murder_mystery_execute_foreign_leader_transaction = {
 			murder_mystery_mark_selected_target_removed = yes
 			set_country_flag = murder_mystery_foreign_leader_assassinated
 			set_country_flag = murder_mystery_foreign_leader_transaction_committed
+			murder_mystery_achievement_record_leader_murder = yes
 			add_stability = constant:murder_mystery_response_stability.foreign_assassination_stability
 			add_war_support = constant:murder_mystery_response_stability.foreign_assassination_war_support
 			murder_mystery_record_incident = yes
@@ -1289,6 +1291,7 @@ murder_mystery_resolve_investigation_outcome = {
 			NOT = { has_country_flag = murder_mystery_permanent_resolution_recorded }
 		}
 		set_country_flag = murder_mystery_permanent_resolution_recorded
+		murder_mystery_achievement_record_resolution = yes
 		murder_mystery_finalize_runtime = yes
 		country_event = { id = chaosx.nr39.20 days = 1 }
 	}
@@ -2023,6 +2026,7 @@ murder_mystery_activate_world_end = {
 murder_mystery_resolve_terminal_victory = {
 	if = {
 		limit = { murder_mystery_terminal_victory_is_ready = yes }
+		murder_mystery_achievement_record_terminal_victory = yes
 		set_global_flag = murder_mystery_terminal_victory_recorded
 		clr_global_flag = murder_mystery_terminal_war_active
 		clr_global_flag = world_end
@@ -2055,6 +2059,8 @@ murder_mystery_resolve_terminal_defeat = {
 		else = {
 			country_event = { id = chaosx.nr39.61 days = constant:murder_mystery_identity.presentation_delay_days }
 		}
+		murder_mystery_achievement_record_terminal_defeat = yes
+		murder_mystery_achievement_record_resolution = yes
 		murder_mystery_retire_remnant_cells = yes
 		murder_mystery_finalize_runtime = yes
 	}
