@@ -1,0 +1,186 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 014 CANNIBALISM MTTH VALUES
+# ============================================================================
+# These entries return evolution delays in days. Event 014 stores the result
+# when a country first qualifies, then compares the elapsed candidate period on
+# its targeted self-scheduling pulse. Successful containment therefore delays
+# escalation while exploitation, spread, warlords, and high chaos accelerate it.
+# ============================================================================
+
+cannibalism_evolution_i_days = {
+	base = constant:cannibalism_evolution_mtth.base_days
+
+	modifier = {
+		factor = constant:cannibalism_evolution_mtth.exploitation_factor
+		has_country_flag = cannibalism_policy_exploitation
+	}
+	modifier = {
+		factor = constant:cannibalism_evolution_mtth.severe_factor
+		check_variable = {
+			var = cannibalism_field_hunger
+			value = constant:cannibalism_meter.severe
+			compare = greater_than_or_equals
+		}
+	}
+	modifier = {
+		factor = constant:cannibalism_evolution_mtth.critical_factor
+		check_variable = {
+			var = cannibalism_cell_strength
+			value = constant:cannibalism_meter.critical
+			compare = greater_than_or_equals
+		}
+	}
+	modifier = {
+		factor = constant:cannibalism_evolution_mtth.foreign_spread_factor
+		has_country_flag = cannibalism_foreign_seeding_active
+	}
+	modifier = {
+		factor = constant:cannibalism_evolution_mtth.clean_response_factor
+		has_country_flag = cannibalism_policy_open_emergency
+	}
+	modifier = {
+		factor = constant:cannibalism_evolution_mtth.high_integrity_factor
+		check_variable = {
+			var = cannibalism_command_integrity
+			value = constant:cannibalism_meter.severe
+			compare = greater_than_or_equals
+		}
+	}
+	modifier = {
+		factor = constant:cannibalism_evolution_mtth.contained_factor
+		has_variable = cannibalism_local_victory_due_date
+	}
+	modifier = {
+		factor = constant:cannibalism_evolution_mtth.high_chaos_factor
+		check_variable = {
+			var = global.chaos_meter_value
+			value = constant:chaos_meter_tier_range.tier_3.min
+			compare = greater_than_or_equals
+		}
+	}
+	modifier = {
+		factor = constant:cannibalism_evolution_mtth.final_chaos_factor
+		check_variable = {
+			var = global.chaos_meter_value
+			value = constant:chaos_meter_tier_range.tier_final.min
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Targeted-decision country weights
+# ---------------------------------------------------------------------------
+# Evaluated in targeted-decision actor scope: ROOT/default is the actor and
+# FROM is the candidate country. The predicates mirror the country scorers.
+
+cannibalism_unified_target_decision_weight = {
+	base = constant:cannibalism_target_score.base
+	modifier = { factor = constant:cannibalism_target_score.invalid NOT = { cannibalism_unified_scored_target_is_valid_from_decision = yes } }
+	modifier = { add = constant:cannibalism_target_score.very_high_population_add FROM = { cannibalism_target_has_very_high_population_center = yes } }
+	modifier = { add = constant:cannibalism_target_score.high_population_add FROM = { cannibalism_target_has_high_population_center = yes } }
+	modifier = { add = constant:cannibalism_target_score.weak_supply_add FROM = { cannibalism_target_has_weak_supply = yes } }
+	modifier = { add = constant:cannibalism_target_score.existing_cell_add FROM = { cannibalism_target_has_existing_cells = yes } }
+	modifier = { add = constant:cannibalism_target_score.prison_route_add FROM = { cannibalism_target_has_prison_route = yes } }
+	modifier = { add = constant:cannibalism_target_score.port_route_add FROM = { cannibalism_target_has_port_route = yes } }
+	modifier = { add = constant:cannibalism_target_score.low_stability_add FROM = { cannibalism_target_has_low_stability = yes } }
+	modifier = { add = constant:cannibalism_target_score.rail_or_naval_route_add FROM = { cannibalism_target_has_rail_or_naval_route = yes } }
+	modifier = { add = constant:cannibalism_target_score.coalition_leader_add FROM = { cannibalism_target_is_coalition_leader = yes } }
+	modifier = { add = constant:cannibalism_target_score.current_enemy_add cannibalism_scored_target_is_current_enemy_from_decision = yes }
+	modifier = { add = constant:cannibalism_target_score.adjacency_add cannibalism_scored_target_is_adjacent_to_actor_from_decision = yes }
+	modifier = { factor = constant:cannibalism_target_score.partial_contamination_factor FROM = { cannibalism_target_has_partial_contamination = yes } }
+	modifier = { factor = constant:cannibalism_target_score.distant_reachable_factor cannibalism_scored_target_has_only_distant_route_from_decision = yes }
+	modifier = { factor = constant:cannibalism_target_score.overextension_factor cannibalism_scoring_actor_is_overextended = yes }
+}
+
+cannibalism_wendigo_target_decision_weight = {
+	base = constant:cannibalism_target_score.base
+	modifier = { factor = constant:cannibalism_target_score.invalid NOT = { cannibalism_wendigo_scored_target_is_valid_from_decision = yes } }
+	modifier = { add = constant:cannibalism_target_score.very_high_population_add FROM = { cannibalism_target_has_very_high_population_center = yes } }
+	modifier = { add = constant:cannibalism_target_score.high_population_add FROM = { cannibalism_target_has_high_population_center = yes } }
+	modifier = { add = constant:cannibalism_target_score.weak_supply_add FROM = { cannibalism_target_has_weak_supply = yes } }
+	modifier = { add = constant:cannibalism_target_score.existing_cell_add FROM = { cannibalism_target_has_existing_cells = yes } }
+	modifier = { add = constant:cannibalism_target_score.prison_route_add FROM = { cannibalism_target_has_prison_route = yes } }
+	modifier = { add = constant:cannibalism_target_score.port_route_add FROM = { cannibalism_target_has_port_route = yes } }
+	modifier = { add = constant:cannibalism_target_score.low_stability_add FROM = { cannibalism_target_has_low_stability = yes } }
+	modifier = { add = constant:cannibalism_target_score.rail_or_naval_route_add FROM = { cannibalism_target_has_rail_or_naval_route = yes } }
+	modifier = { add = constant:cannibalism_target_score.coalition_leader_add FROM = { cannibalism_target_is_coalition_leader = yes } }
+	modifier = { add = constant:cannibalism_target_score.current_enemy_add cannibalism_scored_target_is_current_enemy_from_decision = yes }
+	modifier = { add = constant:cannibalism_target_score.adjacency_add cannibalism_scored_target_is_adjacent_to_actor_from_decision = yes }
+	modifier = { add = constant:cannibalism_target_score.cold_front_add NOT = { has_country_flag = cannibalism_wendigo_transformation_locked } FROM = { cannibalism_target_has_cold_front = yes } }
+	modifier = {
+		add = constant:cannibalism_target_score.postlock_population_add
+		has_country_flag = cannibalism_wendigo_transformation_locked
+		FROM = {
+			OR = {
+				cannibalism_target_has_high_population_center = yes
+				cannibalism_target_has_very_high_population_center = yes
+			}
+		}
+	}
+	modifier = { add = constant:cannibalism_target_score.postlock_capital_add has_country_flag = cannibalism_wendigo_transformation_locked FROM = { cannibalism_target_is_coalition_leader = yes } }
+	modifier = { factor = constant:cannibalism_target_score.partial_contamination_factor FROM = { cannibalism_target_has_partial_contamination = yes } }
+	modifier = { factor = constant:cannibalism_target_score.distant_reachable_factor cannibalism_scored_target_has_only_distant_route_from_decision = yes }
+	modifier = { factor = constant:cannibalism_target_score.overextension_factor cannibalism_scoring_actor_is_overextended = yes }
+}
+
+cannibalism_evolution_ii_days = {
+	base = constant:cannibalism_evolution_mtth.base_days
+
+	modifier = {
+		factor = constant:cannibalism_evolution_mtth.severe_factor
+		check_variable = {
+			var = cannibalism_cult_cohesion
+			value = constant:cannibalism_meter.severe
+			compare = greater_than_or_equals
+		}
+	}
+	modifier = {
+		factor = constant:cannibalism_evolution_mtth.foreign_spread_factor
+		check_variable = {
+			var = global.cannibalism_infected_country_count
+			value = constant:cannibalism_evolution_threshold.evolution_ii_infected_countries
+			compare = greater_than_or_equals
+		}
+	}
+	modifier = {
+		factor = constant:cannibalism_evolution_mtth.warlord_factor
+		check_variable = { global.cannibalism_warlord_count > 0 }
+	}
+	modifier = {
+		factor = constant:cannibalism_evolution_mtth.critical_factor
+		check_variable = {
+			var = global.cannibalism_network_reach
+			value = constant:cannibalism_meter.severe
+			compare = greater_than_or_equals
+		}
+	}
+	modifier = {
+		factor = constant:cannibalism_evolution_mtth.clean_response_factor
+		has_country_flag = cannibalism_policy_open_emergency
+	}
+	modifier = {
+		factor = constant:cannibalism_evolution_mtth.high_integrity_factor
+		check_variable = {
+			var = cannibalism_command_integrity
+			value = constant:cannibalism_meter.severe
+			compare = greater_than_or_equals
+		}
+	}
+	modifier = {
+		factor = constant:cannibalism_evolution_mtth.high_chaos_factor
+		check_variable = {
+			var = global.chaos_meter_value
+			value = constant:chaos_meter_tier_range.tier_3.min
+			compare = greater_than_or_equals
+		}
+	}
+	modifier = {
+		factor = constant:cannibalism_evolution_mtth.final_chaos_factor
+		check_variable = {
+			var = global.chaos_meter_value
+			value = constant:chaos_meter_tier_range.tier_final.min
+			compare = greater_than_or_equals
+		}
+	}
+}

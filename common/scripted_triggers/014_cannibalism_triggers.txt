@@ -5378,8 +5378,12 @@ cannibalism_is_valid_unification_destination = {
 
 cannibalism_has_valid_unification_destination = {
 	has_event_target = cannibalism_unification_host
+	has_variable = global.cannibalism_unification_host_generation
+	check_variable = { global.cannibalism_unification_host_generation > constant:cannibalism_larder_logistics.zero }
 	event_target:cannibalism_unification_host = {
 		cannibalism_is_valid_unification_destination = yes
+		has_variable = cannibalism_actor_generation
+		check_variable = { var = cannibalism_actor_generation value = global.cannibalism_unification_host_generation compare = equals }
 	}
 }
 
@@ -5481,5 +5485,65 @@ cannibalism_wendigo_can_lock_terminal_form = {
 		var = cannibalism_wendigo_transformation_progress
 		value = constant:cannibalism_wendigo_countdown.progress_max
 		compare = greater_than_or_equals
+	}
+}
+
+
+# Donor-country quote/commit context, including pre-reveal constructors.
+# Constructor mode permits the selected donor and exact planned recipient only.
+cannibalism_larder_transfer_context_is_valid = {
+	exists = yes
+	NOT = { has_capitulated = yes }
+	has_event_target = cannibalism_larder_source_country
+	has_event_target = cannibalism_larder_destination_country
+	tag = event_target:cannibalism_larder_source_country
+	has_variable = cannibalism_actor_generation
+	check_variable = { cannibalism_actor_generation > constant:cannibalism_larder_logistics.zero }
+	check_variable = { var = cannibalism_actor_generation value = cannibalism_transfer_source_generation compare = equals }
+	OR = {
+		AND = {
+			cannibalism_has_valid_unification_destination = yes
+			event_target:cannibalism_larder_destination_country = { tag = event_target:cannibalism_unification_host }
+		}
+		AND = {
+			check_variable = { var = cannibalism_transfer_constructor_context value = constant:cannibalism_larder_logistics.one compare = equals }
+			cannibalism_selected_unification_host_is_valid = yes
+			tag = event_target:cannibalism_unification_host
+			OR = {
+				event_target:cannibalism_larder_destination_country = { tag = CBL }
+				AND = {
+					cannibalism_selected_wendigo_merge_host_is_valid = yes
+					event_target:cannibalism_larder_destination_country = { tag = event_target:cannibalism_wendigo_merge_host }
+				}
+			}
+		}
+	}
+}
+
+# Existing live source, or the precisely proven opening CBL donor whose capital
+# was just transferred by this synchronous constructor. No later donor bypass.
+cannibalism_runtime_migration_source_is_valid = {
+	has_event_target = cannibalism_runtime_migration_source_country
+	OR = {
+		event_target:cannibalism_runtime_migration_source_country = { exists = yes }
+		AND = {
+			check_variable = { var = cannibalism_initial_cbl_source_validated value = constant:cannibalism_larder_logistics.one compare = equals }
+			check_variable = { var = cannibalism_transfer_result value = constant:cannibalism_larder_logistics.one compare = equals }
+			check_variable = { cannibalism_transfer_source_generation > constant:cannibalism_larder_logistics.zero }
+			has_event_target = cannibalism_larder_source_country
+			has_event_target = cannibalism_larder_destination_country
+			has_event_target = cannibalism_larder_source_capital
+			has_event_target = cannibalism_runtime_migration_destination_country
+			event_target:cannibalism_runtime_migration_source_country = { tag = event_target:cannibalism_larder_source_country }
+			event_target:cannibalism_runtime_migration_destination_country = {
+				tag = CBL
+				tag = event_target:cannibalism_larder_destination_country
+				exists = yes
+				has_variable = cannibalism_actor_generation
+				check_variable = { cannibalism_actor_generation > constant:cannibalism_larder_logistics.zero }
+				capital_scope = { state = event_target:cannibalism_larder_source_capital }
+			}
+			event_target:cannibalism_larder_source_capital = { is_owned_and_controlled_by = CBL }
+		}
 	}
 }

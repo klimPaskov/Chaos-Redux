@@ -213,6 +213,11 @@ The route should reward resistance without undermining the core requirement that
 - hidden hoards can create warlord loyalty events
 - the host receives a global Larder cap based on territory and network development
 
+Disposition (audit finding E014-FINAL-04): implemented.
+Acceptance basis: parent acceptance on 2026-10-04 of capacity 1200 plus 100 per controlled state plus 50 per administrative contract point, ceiling 5000, ordinary cap 2000, and route-fraction transfers that lose up to 60 percent with capital distance; a donor without a capturable capital ships at the maximum loss (agent decision recorded in `docs/plans/014_cannibalism_plans/agent_decisions_2026-10-04.md`).
+Implementation evidence: `docs/events/014_cannibalism/larder_logistics.md` and the Event014 Larder logistics commit; engine behaviour of the native distance read remains for live verification.
+The hidden-hoard loyalty-event line is tracked as a separate accepted requirement.
+
 ### Focus integration
 
 - local tree is replaced only for event-created host countries

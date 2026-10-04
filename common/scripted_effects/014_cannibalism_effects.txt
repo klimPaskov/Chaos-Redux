@@ -2153,6 +2153,7 @@ cannibalism_complete_current_country_local_victory = {
 			is_cannibalism_active_ordinary_country = yes
 			NOT = { has_country_flag = cannibalism_local_victory }
 		}
+		clear_variable = cannibalism_larder_effective_capacity
 		clr_country_flag = cannibalism_country_active
 		set_country_flag = cannibalism_local_victory
 		cannibalism_record_current_country_as_defeat_contributor = yes
@@ -2270,7 +2271,7 @@ cannibalism_process_current_actor_pulse = {
 			limit = { has_variable = cannibalism_cult_cohesion }
 			clamp_variable = { var = cannibalism_cult_cohesion min = constant:cannibalism_meter.min max = constant:cannibalism_meter.max }
 		}
-		clamp_variable = { var = cannibalism_larder min = constant:cannibalism_consumption.larder_min max = constant:cannibalism_consumption.larder_max }
+		cannibalism_clamp_and_publish_current_larder = yes
 		clamp_variable = { var = cannibalism_frenzy min = constant:cannibalism_consumption.frenzy_min max = constant:cannibalism_consumption.frenzy_max }
 		if = {
 			limit = { has_variable = cannibalism_network_alignment }
@@ -2572,6 +2573,11 @@ cannibalism_complete_global_cleanup = {
 		clear_global_event_target = cannibalism_latest_actor
 		clear_global_event_target = cannibalism_evolution_i_mtth_actor
 		clear_global_event_target = cannibalism_evolution_ii_mtth_actor
+		for_each_scope_loop = {
+			array = global.cannibalism_actor_countries
+			clear_variable = cannibalism_larder_effective_capacity
+		}
+		clear_variable = global.cannibalism_unification_host_generation
 		clear_global_event_target = cannibalism_unification_host
 		resize_array = { global.cannibalism_actor_countries = 0 }
 		resize_array = { global.cannibalism_objective_countries = 0 }
@@ -3397,6 +3403,7 @@ cannibalism_clear_all_current_country_mission_runtime = {
 }
 
 cannibalism_reset_current_country_incarnation_state = {
+	clear_variable = cannibalism_larder_effective_capacity
 	cannibalism_clear_all_current_country_mission_runtime = yes
 	cannibalism_clear_current_policy = yes
 	clr_country_flag = cannibalism_opening_policy_chosen
@@ -3511,6 +3518,7 @@ cannibalism_initialize_new_country_incarnation = {
 	clear_variable = cannibalism_cult_cohesion
 	clear_variable = cannibalism_network_alignment
 	set_variable = { cannibalism_larder = 0 }
+	cannibalism_refresh_larder_effective_capacity = yes
 	set_variable = { cannibalism_frenzy = 0 }
 	set_variable = { cannibalism_consumed_population = 0 }
 	set_variable = { cannibalism_consumed_population_k = 0 }
@@ -4252,8 +4260,7 @@ cannibalism_consume_current_state = {
 							}
 						}
 						add_to_variable = { cannibalism_larder = cannibalism_larder_gained }
-						clamp_variable = { var = cannibalism_larder min = constant:cannibalism_consumption.larder_min max = constant:cannibalism_unification.global_larder_maximum }
-						set_variable = { global.cannibalism_global_larder = cannibalism_larder }
+						cannibalism_clamp_and_publish_current_larder = yes
 					}
 					else = {
 						add_to_variable = { cannibalism_larder = cannibalism_larder_gained }
@@ -5256,6 +5263,7 @@ cannibalism_setup_current_warlord_country = {
 			set_variable = { cannibalism_cult_cohesion = constant:cannibalism_meter.critical }
 			set_variable = { cannibalism_network_alignment = constant:cannibalism_warlord_start.starting_alignment }
 			set_variable = { cannibalism_larder = 0 }
+			cannibalism_refresh_larder_effective_capacity = yes
 			set_variable = { cannibalism_frenzy = cannibalism_warlord_starting_frenzy }
 			set_variable = { cannibalism_consumed_population = 0 }
 			set_variable = { cannibalism_consumed_population_k = 0 }
@@ -6451,12 +6459,7 @@ cannibalism_authorize_terror_battalion = {
 
 cannibalism_pay_focus_closure_larder_cost = {
 	subtract_from_variable = { cannibalism_larder = cannibalism_focus_closure_larder_cost }
-	clamp_variable = {
-		var = cannibalism_larder
-		min = constant:cannibalism_consumption.larder_min
-		max = constant:cannibalism_unification.global_larder_maximum
-	}
-	set_variable = { global.cannibalism_global_larder = cannibalism_larder }
+	cannibalism_clamp_and_publish_current_larder = yes
 }
 
 # ---------------------------------------------------------------------------
@@ -10292,6 +10295,7 @@ cannibalism_activate_current_country_from_external_spread = {
 		set_variable = { cannibalism_cult_cohesion = constant:cannibalism_opening.network_cult_cohesion }
 		set_variable = { cannibalism_network_alignment = constant:cannibalism_consumption.alignment_resistant }
 		set_variable = { cannibalism_larder = 0 }
+		cannibalism_refresh_larder_effective_capacity = yes
 		set_variable = { cannibalism_frenzy = 0 }
 		set_variable = { cannibalism_consumed_population = 0 }
 		set_variable = { cannibalism_consumed_population_k = 0 }
@@ -11182,7 +11186,7 @@ cannibalism_execute_deliberate_foreign_seed = {
 				}
 			}
 			clamp_variable = { var = cannibalism_frenzy min = constant:cannibalism_consumption.frenzy_min max = constant:cannibalism_consumption.frenzy_max }
-			clamp_variable = { var = cannibalism_larder min = constant:cannibalism_consumption.larder_min max = constant:cannibalism_consumption.larder_max }
+			cannibalism_clamp_and_publish_current_larder = yes
 			clamp_variable = { var = global.cannibalism_network_reach min = constant:cannibalism_network.min max = constant:cannibalism_network.max }
 			set_temp_variable = { cannibalism_deliberate_seed_result = 1 }
 		}
@@ -11374,7 +11378,7 @@ cannibalism_migrate_spread_entries_between_countries = {
 			check_variable = { cannibalism_spread_queue_validation_result > 0 }
 			has_event_target = cannibalism_runtime_migration_source_country
 			has_event_target = cannibalism_runtime_migration_destination_country
-			event_target:cannibalism_runtime_migration_source_country = { exists = yes }
+			cannibalism_runtime_migration_source_is_valid = yes
 			event_target:cannibalism_runtime_migration_destination_country = {
 				exists = yes
 				has_variable = cannibalism_actor_generation
@@ -12135,6 +12139,153 @@ cannibalism_select_unification_host = {
 # Host inheritance and reusable-slot release
 # ---------------------------------------------------------------------------
 
+# ============================================================================ 
+# Event014 Larder logistics. Contract: docs/events/014_cannibalism/larder_logistics.md
+# Consuming owners allocate quote, proof and commit outputs before nested scopes.
+# No population, equipment, AI, on-action or GUI data mutations occur here.
+# ============================================================================ 
+
+cannibalism_refresh_larder_effective_capacity = {
+	set_variable = { cannibalism_larder_effective_capacity = constant:cannibalism_consumption.larder_max }
+	if = {
+		limit = {
+			OR = {
+				is_cannibalism_unified_country = yes
+				is_cannibalism_wendigo_hannibal_country = yes
+			}
+		}
+		cannibalism_unified_refresh_contract_capacities = yes
+		set_variable = { cannibalism_larder_effective_capacity = constant:cannibalism_larder_logistics.capacity_base }
+		set_temp_variable = { cannibalism_larder_capacity_territory_work = num_of_controlled_states }
+		multiply_temp_variable = { cannibalism_larder_capacity_territory_work = constant:cannibalism_larder_logistics.capacity_per_controlled_state }
+		add_to_variable = { cannibalism_larder_effective_capacity = cannibalism_larder_capacity_territory_work }
+		set_temp_variable = { cannibalism_larder_capacity_development_work = cannibalism_unified_larder_capacity }
+		multiply_temp_variable = { cannibalism_larder_capacity_development_work = constant:cannibalism_larder_logistics.capacity_per_development_point }
+		add_to_variable = { cannibalism_larder_effective_capacity = cannibalism_larder_capacity_development_work }
+		clamp_variable = {
+			var = cannibalism_larder_effective_capacity
+			min = constant:cannibalism_larder_logistics.capacity_base
+			max = constant:cannibalism_unification.global_larder_maximum
+		}
+	}
+}
+
+# Donor country. Caller owns the native capture proofs and source generation.
+# The transaction owner binds the explicit destination country.
+cannibalism_capture_current_larder_transfer_capitals = {
+	save_event_target_as = cannibalism_larder_source_country
+	set_temp_variable = { cannibalism_transfer_source_generation = cannibalism_actor_generation }
+	capital_scope = {
+		save_event_target_as = cannibalism_larder_source_capital
+		set_temp_variable = { cannibalism_larder_source_capital_captured = constant:cannibalism_larder_logistics.one }
+	}
+	event_target:cannibalism_larder_destination_country = {
+		if = {
+			limit = { exists = yes NOT = { has_capitulated = yes } }
+			capital_scope = {
+				save_event_target_as = cannibalism_larder_destination_capital
+				set_temp_variable = { cannibalism_larder_destination_capital_captured = constant:cannibalism_larder_logistics.one }
+			}
+		}
+	}
+}
+
+# Country. Finalize only at a completed store/territory boundary.
+# Only the current generation-validated host publishes the shared mirror.
+cannibalism_clamp_and_publish_current_larder = {
+	cannibalism_refresh_larder_effective_capacity = yes
+	clamp_variable = { var = cannibalism_larder min = constant:cannibalism_consumption.larder_min max = cannibalism_larder_effective_capacity }
+	if = {
+		limit = {
+			cannibalism_has_valid_unification_destination = yes
+			tag = event_target:cannibalism_unification_host
+		}
+		set_variable = { global.cannibalism_global_larder = cannibalism_larder }
+	}
+}
+
+# Recipient. One opening assignment after successful runtime migration.
+# The owner replaces the snapshot store by its distance-adjusted received quote.
+# The post-annex or explicit nonabsorbing human branch owns the clamp.
+cannibalism_apply_initial_larder_inheritance = {
+	set_variable = { cannibalism_larder = cannibalism_inherited_larder }
+	add_to_variable = { cannibalism_larder = constant:cannibalism_unification.starting_global_larder }
+	if = {
+		limit = { check_variable = { cannibalism_inherited_larder_route = constant:cannibalism_larder_route.rapid_consumption } }
+		add_to_variable = { cannibalism_larder = constant:cannibalism_larder_logistics.zero }
+	}
+	else_if = {
+		limit = { check_variable = { cannibalism_inherited_larder_route = constant:cannibalism_larder_route.managed_herds } }
+		add_to_variable = { cannibalism_larder = constant:cannibalism_unification.inherited_managed_larder }
+	}
+	else_if = {
+		limit = { check_variable = { cannibalism_inherited_larder_route = constant:cannibalism_larder_route.mobile_larder } }
+		add_to_variable = { cannibalism_larder = constant:cannibalism_unification.inherited_mobile_larder }
+	}
+}
+
+# Donor. Quote only. Invalid context fails closed; a missing capital capture or
+# unwritten distance quotes at constant distance_loss_maximum.
+cannibalism_prepare_larder_transfer_quote = {
+	set_temp_variable = { cannibalism_transfer_distance = constant:cannibalism_larder_logistics.minus_one }
+	set_temp_variable = { cannibalism_transfer_dispatch = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_received = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_loss_fraction = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_retention = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_result = constant:cannibalism_larder_logistics.zero }
+	if = {
+		limit = { cannibalism_larder_transfer_context_is_valid = yes }
+		if = {
+			limit = {
+				has_event_target = cannibalism_larder_source_capital
+				has_event_target = cannibalism_larder_destination_capital
+				check_variable = { var = cannibalism_larder_source_capital_captured value = constant:cannibalism_larder_logistics.one compare = equals }
+				check_variable = { var = cannibalism_larder_destination_capital_captured value = constant:cannibalism_larder_logistics.one compare = equals }
+			}
+			meta_effect = {
+				text = {
+					[SOURCE] = {
+						set_temp_variable = { cannibalism_transfer_distance = distance_to@[DESTINATION] }
+					}
+				}
+				SOURCE = "[cannibalism_larder_source_capital.GetID]"
+				DESTINATION = "[cannibalism_larder_destination_capital.GetID]"
+			}
+		}
+		set_temp_variable = { cannibalism_transfer_fraction_work = cannibalism_transfer_route_fraction }
+		clamp_temp_variable = { var = cannibalism_transfer_fraction_work min = constant:cannibalism_larder_logistics.zero max = constant:cannibalism_larder_logistics.one }
+		set_temp_variable = { cannibalism_transfer_dispatch = cannibalism_larder }
+		clamp_temp_variable = { var = cannibalism_transfer_dispatch min = constant:cannibalism_larder_logistics.zero }
+		multiply_temp_variable = { cannibalism_transfer_dispatch = cannibalism_transfer_fraction_work }
+		if = {
+			limit = {
+				check_variable = {
+					var = cannibalism_transfer_distance
+					value = constant:cannibalism_larder_logistics.zero
+					compare = greater_than_or_equals
+				}
+			}
+			set_temp_variable = { cannibalism_transfer_loss_fraction = cannibalism_transfer_distance }
+			divide_temp_variable = { cannibalism_transfer_loss_fraction = constant:cannibalism_larder_logistics.distance_loss_divisor }
+			clamp_temp_variable = { var = cannibalism_transfer_loss_fraction min = constant:cannibalism_larder_logistics.zero max = constant:cannibalism_larder_logistics.distance_loss_maximum }
+		}
+		else = {
+			# No capturable capital or measured route: the shipment travels at
+			# the worst route loss instead of blocking the transaction.
+			set_temp_variable = { cannibalism_transfer_loss_fraction = constant:cannibalism_larder_logistics.distance_loss_maximum }
+		}
+		set_temp_variable = { cannibalism_transfer_retention = constant:cannibalism_larder_logistics.one }
+		subtract_from_temp_variable = { cannibalism_transfer_retention = cannibalism_transfer_loss_fraction }
+		set_temp_variable = { cannibalism_transfer_received = cannibalism_transfer_dispatch }
+		multiply_temp_variable = { cannibalism_transfer_received = cannibalism_transfer_retention }
+		set_temp_variable = { cannibalism_transfer_result = constant:cannibalism_larder_logistics.one }
+	}
+	set_temp_variable = { cannibalism_larder_source_capital_captured = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_larder_destination_capital_captured = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_constructor_context = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_route_fraction = constant:cannibalism_larder_logistics.zero }
+}
+
 # Country donor snapshot. Inputs: current donor variables and three origin flags.
 # Caller owns all 16 cannibalism_inherited_* outputs at zero before this call.
 # Missing donor variables read as zero. Only temporary storage is modified.
@@ -12170,10 +12321,6 @@ cannibalism_apply_inherited_host_identity_to_cbl = {
 	set_variable = { cannibalism_network_alignment = cannibalism_inherited_alignment }
 	set_variable = { cannibalism_consumed_population = cannibalism_inherited_consumed_population }
 	set_variable = { cannibalism_consumed_population_k = cannibalism_inherited_consumed_population_k }
-	set_variable = { cannibalism_larder = cannibalism_inherited_larder }
-	add_to_variable = { cannibalism_larder = constant:cannibalism_unification.starting_global_larder }
-	clamp_variable = { var = cannibalism_larder min = constant:cannibalism_consumption.larder_min max = constant:cannibalism_unification.global_larder_maximum }
-	set_variable = { global.cannibalism_global_larder = cannibalism_larder }
 	set_variable = { cannibalism_command_authority = constant:cannibalism_unification.starting_authority }
 	set_variable = { cannibalism_unified_authority = constant:cannibalism_unification.starting_authority }
 	set_variable = { cannibalism_world_hostility = constant:cannibalism_unification.starting_world_hostility }
@@ -12204,7 +12351,6 @@ cannibalism_apply_inherited_host_identity_to_cbl = {
 	else_if = {
 		limit = { check_variable = { cannibalism_inherited_larder_route = constant:cannibalism_larder_route.managed_herds } }
 		set_country_flag = cannibalism_unified_inherited_managed_herds
-		add_to_variable = { cannibalism_larder = constant:cannibalism_unification.inherited_managed_larder }
 		add_to_variable = { cannibalism_unified_authority = constant:cannibalism_unification.inherited_managed_authority }
 		add_to_variable = { cannibalism_world_hostility = constant:cannibalism_unification.inherited_managed_hostility }
 	}
@@ -12212,7 +12358,6 @@ cannibalism_apply_inherited_host_identity_to_cbl = {
 		limit = { check_variable = { cannibalism_inherited_larder_route = constant:cannibalism_larder_route.mobile_larder } }
 		set_country_flag = cannibalism_unified_inherited_mobile_larder
 		set_country_flag = cannibalism_larder_mobile
-		add_to_variable = { cannibalism_larder = constant:cannibalism_unification.inherited_mobile_larder }
 		add_equipment_to_stockpile = { type = convoy_1 amount = constant:cannibalism_unification.inherited_mobile_convoys }
 		add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:cannibalism_unification.inherited_mobile_trains }
 		add_fuel = constant:cannibalism_unification.inherited_mobile_fuel
@@ -12239,8 +12384,6 @@ cannibalism_apply_inherited_host_identity_to_cbl = {
 	if = { limit = { check_variable = { cannibalism_inherited_origin_island > 0 } } set_country_flag = cannibalism_unified_origin_island_knowledge set_country_flag = cannibalism_unified_origin_specialists_inherited }
 	if = { limit = { check_variable = { cannibalism_inherited_origin_siege > 0 } } set_country_flag = cannibalism_unified_origin_siege_knowledge set_country_flag = cannibalism_unified_origin_specialists_inherited }
 	if = { limit = { check_variable = { cannibalism_inherited_origin_march > 0 } } set_country_flag = cannibalism_unified_origin_march_knowledge set_country_flag = cannibalism_unified_origin_specialists_inherited }
-	clamp_variable = { var = cannibalism_larder min = constant:cannibalism_consumption.larder_min max = constant:cannibalism_unification.global_larder_maximum }
-	set_variable = { global.cannibalism_global_larder = cannibalism_larder }
 	clamp_variable = { var = cannibalism_frenzy min = constant:cannibalism_meter.min max = constant:cannibalism_meter.max }
 	clamp_variable = { var = cannibalism_network_alignment min = constant:cannibalism_meter.min max = constant:cannibalism_meter.max }
 	clamp_variable = { var = cannibalism_world_hostility min = constant:cannibalism_meter.min max = constant:cannibalism_meter.max }
@@ -12286,6 +12429,7 @@ cannibalism_open_inherited_warlord_recruitment = {
 }
 
 cannibalism_prepare_current_warlord_slot_for_unification = {
+	clear_variable = cannibalism_larder_effective_capacity
 	set_temp_variable = { cannibalism_absorbed_warlord_slot_index = cannibalism_warlord_slot_index }
 	set_temp_variable = { cannibalism_absorbed_warlord_slot_generation = cannibalism_warlord_slot_generation }
 	save_event_target_as = cannibalism_warlord_integration_release_country
@@ -12493,6 +12637,23 @@ cannibalism_apply_unified_country_ai_strategy = {
 }
 
 cannibalism_create_unified_country_from_selected_host = {
+	set_temp_variable = { cannibalism_initial_cbl_source_validated = constant:cannibalism_larder_logistics.zero }
+	# Own Larder outputs before helpers and country scopes.
+	set_temp_variable = { cannibalism_larder_source_capital_captured = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_larder_destination_capital_captured = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_source_generation = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_dispatch = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_received = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_loss_fraction = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_retention = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_result = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_committed = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_route_fraction = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_constructor_context = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_distance = constant:cannibalism_larder_logistics.minus_one }
+	set_temp_variable = { cannibalism_runtime_migration_result = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_spread_queue_validation_result = constant:cannibalism_larder_logistics.zero }
+	cannibalism_validate_spread_queue = yes
 	set_temp_variable = { cannibalism_unified_creation_result = 0 }
 	# Own snapshot outputs before entering donor scopes or capture helpers.
 	set_temp_variable = { cannibalism_inherited_hierarchy = 0 }
@@ -12522,146 +12683,170 @@ cannibalism_create_unified_country_from_selected_host = {
 	set_temp_variable = { cannibalism_achievement_transfer_joint = 0 }
 	set_temp_variable = { cannibalism_achievement_transfer_decisive = 0 }
 	if = {
-		limit = { cannibalism_selected_unification_host_is_valid = yes }
+		limit = { cannibalism_selected_unification_host_is_valid = yes check_variable = { cannibalism_spread_queue_validation_result > constant:cannibalism_larder_logistics.zero } }
 		event_target:cannibalism_unification_host = {
 			save_event_target_as = cannibalism_runtime_migration_source_country
 			save_event_target_as = technology_union_donor
-			capital_scope = { save_event_target_as = cannibalism_unification_capital_state }
+			save_event_target_as = cannibalism_larder_source_country
+			set_temp_variable = { cannibalism_transfer_source_generation = cannibalism_actor_generation }
+			capital_scope = {
+				save_event_target_as = cannibalism_unification_capital_state
+				save_event_target_as = cannibalism_larder_source_capital
+				save_event_target_as = cannibalism_larder_destination_capital
+				set_temp_variable = { cannibalism_larder_source_capital_captured = constant:cannibalism_larder_logistics.one }
+				set_temp_variable = { cannibalism_larder_destination_capital_captured = constant:cannibalism_larder_logistics.one }
+			}
 			cannibalism_capture_current_warlord_inheritance = yes
 			set_temp_variable = { cannibalism_unification_host_was_human = 0 }
 			if = { limit = { is_ai = no } set_temp_variable = { cannibalism_unification_host_was_human = 1 } }
 		}
 
-		# The public flag is set before CBL, its leader, portrait, name, or tree
-		# can become visible to any player-facing system.
-		set_global_flag = cannibalism_reveal_complete
-		set_global_flag = cannibalism_evolution_iii_active
-		clr_global_flag = cannibalism_scenario_convergence_contract
-		clr_global_flag = cannibalism_convergence_active
-		clr_global_flag = cannibalism_convergence_broken
-		clr_global_flag = cannibalism_unification_pending
-		clr_global_flag = cannibalism_evolution_iii_transition_due
-		set_variable = { global.cannibalism_global_stage = constant:cannibalism_global_stage.unified }
-		clear_variable = global.cannibalism_convergence_due_date
-		clear_variable = global.cannibalism_convergence_rebuild_date
-
-		event_target:cannibalism_unification_capital_state = {
-			set_state_owner_to = CBL
-			set_state_controller_to = CBL
-		}
-		CBL = {
-			union_compatible_researched_technologies_from_donor = yes
-			set_technology = { elephantry = 1 popup = no }
-			set_research_slots = constant:cannibalism_unification.starting_research_slots
-			set_capital = { state = event_target:cannibalism_unification_capital_state }
-			set_politics = { ruling_party = neutrality elections_allowed = no }
-			set_variable = { cannibalism_integrated_named_commander_count = 1 }
-			set_variable = { cannibalism_integrated_servant_count = 0 }
-			set_country_flag = cannibalism_unified_country
-			set_country_flag = cannibalism_unified_decisions_open
-			set_country_flag = cannibalism_unified_focus_tree_available
-			set_country_flag = cannibalism_reveal_host
-			load_focus_tree = { tree = cannibalism_unified_focus_tree keep_completed = no }
-			cannibalism_unified_initialize_decision_values = yes
-			cannibalism_apply_unified_country_ai_strategy = yes
-			cannibalism_register_current_country_actor = yes
-			cannibalism_apply_inherited_host_identity_to_cbl = yes
-			cannibalism_create_current_warlord_templates = yes
-			cannibalism_open_inherited_warlord_recruitment = yes
-			country_lock_all_division_template = yes
-			if = { limit = { NOT = { has_idea = cannibalism_unified_command_burden } } add_ideas = cannibalism_unified_command_burden }
-				add_country_leader_role = {
-				character = CBL_hannibal
-				promote_leader = yes
-				country_leader = {
-					ideology = ritual_predation
-					traits = { cannibalism_hannibal_network_command }
-				}
-			}
-			add_named_threat = { threat = constant:cannibalism_unification.reveal_world_tension name = cannibalism_reveal_world_tension }
-		}
-
+		CBL = { save_event_target_as = cannibalism_larder_destination_country }
+		set_temp_variable = { cannibalism_transfer_constructor_context = constant:cannibalism_larder_logistics.one }
+		set_temp_variable = { cannibalism_transfer_route_fraction = constant:cannibalism_unification.host_larder_transfer_factor }
+		event_target:cannibalism_larder_source_country = { cannibalism_prepare_larder_transfer_quote = yes }
 		if = {
-			limit = { check_variable = { cannibalism_unification_host_was_human > 0 } }
-			event_target:cannibalism_unification_host = {
-				cannibalism_achievement_capture_current_player_ledger = yes
-				humanitarian_achievement_record_tag_switch = yes
+			limit = { check_variable = { cannibalism_transfer_result > constant:cannibalism_larder_logistics.zero } }
+			set_temp_variable = { cannibalism_inherited_larder = cannibalism_transfer_received }
+			set_temp_variable = { cannibalism_initial_cbl_source_validated = constant:cannibalism_larder_logistics.one }
+			# The public flag is set before CBL, its leader, portrait, name, or tree
+			# can become visible to any player-facing system.
+			set_global_flag = cannibalism_reveal_complete
+			set_global_flag = cannibalism_evolution_iii_active
+			clr_global_flag = cannibalism_scenario_convergence_contract
+			clr_global_flag = cannibalism_convergence_active
+			clr_global_flag = cannibalism_convergence_broken
+			clr_global_flag = cannibalism_unification_pending
+			clr_global_flag = cannibalism_evolution_iii_transition_due
+			set_variable = { global.cannibalism_global_stage = constant:cannibalism_global_stage.unified }
+			clear_variable = global.cannibalism_convergence_due_date
+			clear_variable = global.cannibalism_convergence_rebuild_date
+
+			event_target:cannibalism_unification_capital_state = {
+				set_state_owner_to = CBL
+				set_state_controller_to = CBL
 			}
 			CBL = {
-				cannibalism_achievement_apply_captured_player_ledger = yes
-				humanitarian_achievement_record_tag_switch = yes
-				set_country_flag = achievement_cannibalism_player_unification_host
-				change_tag_from = event_target:cannibalism_unification_host
-			}
-		}
-
-		CBL = {
-			save_event_target_as = cannibalism_runtime_migration_destination_country
-			cannibalism_migrate_runtime_references_to_unified_country = yes
-			set_variable = { cannibalism_integration_name_index = cannibalism_inherited_warlord_name_index }
-			set_variable = { cannibalism_integration_origin = cannibalism_inherited_warlord_origin }
-			set_variable = { cannibalism_integration_region = cannibalism_inherited_warlord_region }
-			set_variable = { cannibalism_integration_slot_index = cannibalism_inherited_warlord_slot_index }
-			set_variable = { cannibalism_integration_personality = cannibalism_inherited_warlord_personality }
-			set_variable = { cannibalism_integration_disposition = constant:cannibalism_warlord_disposition.host_commander }
-			cannibalism_record_integrated_warlord_slot = yes
-			cannibalism_create_integrated_warlord_commander = yes
-		}
-
-		# Join the selected host's existing wars before annexing it, so the new
-		# country cannot shed the player's active fronts during the transfer.
-		event_target:cannibalism_unification_host = {
-			every_enemy_country = {
-				CBL = {
-					add_to_war = {
-						targeted_alliance = event_target:cannibalism_unification_host
-						enemy = PREV
-						hostility_reason = ally
+				union_compatible_researched_technologies_from_donor = yes
+				set_technology = { elephantry = 1 popup = no }
+				set_research_slots = constant:cannibalism_unification.starting_research_slots
+				set_capital = { state = event_target:cannibalism_unification_capital_state }
+				set_politics = { ruling_party = neutrality elections_allowed = no }
+				set_variable = { cannibalism_integrated_named_commander_count = 1 }
+				set_variable = { cannibalism_integrated_servant_count = 0 }
+				set_country_flag = cannibalism_unified_country
+				set_country_flag = cannibalism_unified_decisions_open
+				set_country_flag = cannibalism_unified_focus_tree_available
+				set_country_flag = cannibalism_reveal_host
+				load_focus_tree = { tree = cannibalism_unified_focus_tree keep_completed = no }
+				cannibalism_unified_initialize_decision_values = yes
+				cannibalism_apply_unified_country_ai_strategy = yes
+				cannibalism_register_current_country_actor = yes
+				cannibalism_apply_inherited_host_identity_to_cbl = yes
+				cannibalism_create_current_warlord_templates = yes
+				cannibalism_open_inherited_warlord_recruitment = yes
+				country_lock_all_division_template = yes
+				if = { limit = { NOT = { has_idea = cannibalism_unified_command_burden } } add_ideas = cannibalism_unified_command_burden }
+				add_country_leader_role = {
+					character = CBL_hannibal
+					promote_leader = yes
+					country_leader = {
+						ideology = ritual_predation
+						traits = { cannibalism_hannibal_network_command }
 					}
 				}
+				add_named_threat = { threat = constant:cannibalism_unification.reveal_world_tension name = cannibalism_reveal_world_tension }
 			}
-			cannibalism_prepare_current_warlord_slot_for_unification = yes
-		}
-		CBL = {
-			annex_country = {
-				target = event_target:cannibalism_unification_host
-				transfer_troops = yes
-			}
-			save_global_event_target_as = cannibalism_unification_host
-			save_global_event_target_as = cannibalism_latest_actor
-			cannibalism_select_current_country_as_pulse_anchor = yes
-			set_temp_variable = { cannibalism_evolution_stage_to_record = constant:cannibalism_event.evolution_iii_stage }
-			cannibalism_record_current_evolution = yes
-			set_variable = { global.cannibalism_unification_host_generation = cannibalism_actor_generation }
-			set_temp_variable = { cannibalism_chaos_change = constant:cannibalism_delta.reveal_chaos }
-			set_temp_variable = { cannibalism_chaos_reason = constant:chaos_meter_history_reason.special.cannibalism_reveal }
-			cannibalism_apply_chaos_change = yes
-			cannibalism_emit_reveal_super_event = yes
-			country_event = { id = chaosx.nr14.70 hours = @CANNIBALISM_REVEAL_HOST_EVENT_HOURS }
-			news_event = { id = chaosx.news.90 hours = @CANNIBALISM_REVEAL_NEWS_HOURS }
-		}
 
-		# Rebuild the response roster at reveal so a warlord created during the
-		# warning window cannot escape submission, autonomy, or resistance merely
-		# because it was absent from the original convergence snapshot.
-		resize_array = { global.cannibalism_convergence_actor_countries = 0 }
-		for_each_scope_loop = {
-			array = global.cannibalism_actor_countries
 			if = {
-				limit = {
-					exists = yes
-					is_cannibalism_warlord_country = yes
-					NOT = { tag = CBL }
-					NOT = { has_capitulated = yes }
+				limit = { check_variable = { cannibalism_unification_host_was_human > 0 } }
+				event_target:cannibalism_unification_host = {
+					cannibalism_achievement_capture_current_player_ledger = yes
+					humanitarian_achievement_record_tag_switch = yes
 				}
-				set_country_flag = cannibalism_pending_absorption
-				set_country_flag = cannibalism_convergence_participant
-				add_to_array = { array = global.cannibalism_convergence_actor_countries value = THIS }
-				country_event = { id = chaosx.nr14.71 hours = @CANNIBALISM_WARLORD_RESPONSE_HOURS }
+				CBL = {
+					cannibalism_achievement_apply_captured_player_ledger = yes
+					humanitarian_achievement_record_tag_switch = yes
+					set_country_flag = achievement_cannibalism_player_unification_host
+					change_tag_from = event_target:cannibalism_unification_host
+				}
 			}
+
+			CBL = {
+				save_event_target_as = cannibalism_runtime_migration_destination_country
+				cannibalism_migrate_runtime_references_to_unified_country = yes
+			}
+			# Spread rows are validated before the reveal. After the public flag the
+			# constructor always completes; an unmigrated row is invalidated when due.
+			CBL = {
+				cannibalism_apply_initial_larder_inheritance = yes
+				set_variable = { cannibalism_integration_name_index = cannibalism_inherited_warlord_name_index }
+				set_variable = { cannibalism_integration_origin = cannibalism_inherited_warlord_origin }
+				set_variable = { cannibalism_integration_region = cannibalism_inherited_warlord_region }
+				set_variable = { cannibalism_integration_slot_index = cannibalism_inherited_warlord_slot_index }
+				set_variable = { cannibalism_integration_personality = cannibalism_inherited_warlord_personality }
+				set_variable = { cannibalism_integration_disposition = constant:cannibalism_warlord_disposition.host_commander }
+				cannibalism_record_integrated_warlord_slot = yes
+				cannibalism_create_integrated_warlord_commander = yes
+			}
+
+			# Join the selected host's existing wars before annexing it, so the new
+			# country cannot shed the player's active fronts during the transfer.
+			event_target:cannibalism_unification_host = {
+				every_enemy_country = {
+					CBL = {
+						add_to_war = {
+							targeted_alliance = event_target:cannibalism_unification_host
+							enemy = PREV
+							hostility_reason = ally
+						}
+					}
+				}
+				cannibalism_prepare_current_warlord_slot_for_unification = yes
+			}
+			CBL = {
+				annex_country = {
+					target = event_target:cannibalism_unification_host
+					transfer_troops = yes
+				}
+				save_global_event_target_as = cannibalism_unification_host
+				save_global_event_target_as = cannibalism_latest_actor
+				set_variable = { global.cannibalism_unification_host_generation = cannibalism_actor_generation }
+				cannibalism_clamp_and_publish_current_larder = yes
+				cannibalism_select_current_country_as_pulse_anchor = yes
+				set_temp_variable = { cannibalism_evolution_stage_to_record = constant:cannibalism_event.evolution_iii_stage }
+				cannibalism_record_current_evolution = yes
+				set_temp_variable = { cannibalism_chaos_change = constant:cannibalism_delta.reveal_chaos }
+				set_temp_variable = { cannibalism_chaos_reason = constant:chaos_meter_history_reason.special.cannibalism_reveal }
+				cannibalism_apply_chaos_change = yes
+				cannibalism_emit_reveal_super_event = yes
+				country_event = { id = chaosx.nr14.70 hours = @CANNIBALISM_REVEAL_HOST_EVENT_HOURS }
+				news_event = { id = chaosx.news.90 hours = @CANNIBALISM_REVEAL_NEWS_HOURS }
+			}
+
+			# Rebuild the response roster at reveal so a warlord created during the
+			# warning window cannot escape submission, autonomy, or resistance merely
+			# because it was absent from the original convergence snapshot.
+			resize_array = { global.cannibalism_convergence_actor_countries = 0 }
+			for_each_scope_loop = {
+				array = global.cannibalism_actor_countries
+				if = {
+					limit = {
+						exists = yes
+						is_cannibalism_warlord_country = yes
+						NOT = { tag = CBL }
+						NOT = { has_capitulated = yes }
+					}
+					set_country_flag = cannibalism_pending_absorption
+					set_country_flag = cannibalism_convergence_participant
+					add_to_array = { array = global.cannibalism_convergence_actor_countries value = THIS }
+					country_event = { id = chaosx.nr14.71 hours = @CANNIBALISM_WARLORD_RESPONSE_HOURS }
+				}
+			}
+			set_temp_variable = { cannibalism_unified_creation_result = 1 }
 		}
-		set_temp_variable = { cannibalism_unified_creation_result = 1 }
 	}
+	set_temp_variable = { cannibalism_initial_cbl_source_validated = constant:cannibalism_larder_logistics.zero }
 }
 
 cannibalism_execute_evolution_iii_reveal = {
@@ -12701,18 +12886,37 @@ cannibalism_execute_evolution_iii_reveal = {
 # ---------------------------------------------------------------------------
 
 cannibalism_add_current_warlord_larder_to_unified_host = {
-	set_temp_variable = { cannibalism_integrated_larder_transfer = cannibalism_larder }
-	multiply_temp_variable = { cannibalism_integrated_larder_transfer = cannibalism_integration_larder_factor }
-	subtract_from_variable = { cannibalism_larder = cannibalism_integrated_larder_transfer }
-	clamp_variable = { var = cannibalism_larder min = constant:cannibalism_consumption.larder_min max = constant:cannibalism_consumption.larder_max }
-	event_target:cannibalism_unification_host = {
-		add_to_variable = { cannibalism_larder = cannibalism_integrated_larder_transfer }
-		clamp_variable = { var = cannibalism_larder min = constant:cannibalism_consumption.larder_min max = constant:cannibalism_unification.global_larder_maximum }
-		set_variable = { global.cannibalism_global_larder = cannibalism_larder }
+	set_temp_variable = { cannibalism_transfer_committed = constant:cannibalism_larder_logistics.zero }
+	if = {
+		limit = {
+			check_variable = { var = cannibalism_transfer_result value = constant:cannibalism_larder_logistics.one compare = equals }
+			cannibalism_larder_transfer_context_is_valid = yes
+		}
+		# Consume success before either mutation to prevent a repeated debit.
+		set_temp_variable = { cannibalism_transfer_result = constant:cannibalism_larder_logistics.zero }
+		subtract_from_variable = { cannibalism_larder = cannibalism_transfer_dispatch }
+		clamp_variable = { var = cannibalism_larder min = constant:cannibalism_consumption.larder_min max = constant:cannibalism_consumption.larder_max }
+		event_target:cannibalism_larder_destination_country = {
+			add_to_variable = { cannibalism_larder = cannibalism_transfer_received }
+		}
+		set_temp_variable = { cannibalism_transfer_committed = constant:cannibalism_larder_logistics.one }
 	}
 }
 
 cannibalism_absorb_current_warlord_into_unified_host = {
+	# Own Larder outputs before helpers and country scopes.
+	set_temp_variable = { cannibalism_larder_source_capital_captured = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_larder_destination_capital_captured = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_source_generation = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_dispatch = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_received = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_loss_fraction = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_retention = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_result = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_committed = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_route_fraction = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_constructor_context = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_distance = constant:cannibalism_larder_logistics.minus_one }
 	set_temp_variable = { cannibalism_absorption_result = 0 }
 	# Retain migration success after the destination scope returns.
 	set_temp_variable = { cannibalism_runtime_migration_result = 0 }
@@ -12753,72 +12957,83 @@ cannibalism_absorb_current_warlord_into_unified_host = {
 		save_event_target_as = cannibalism_absorbed_warlord
 		save_event_target_as = technology_union_donor
 		cannibalism_capture_current_warlord_inheritance = yes
+		event_target:cannibalism_unification_host = { save_event_target_as = cannibalism_larder_destination_country }
+		cannibalism_capture_current_larder_transfer_capitals = yes
+		set_temp_variable = { cannibalism_transfer_route_fraction = cannibalism_integration_larder_factor }
+		cannibalism_prepare_larder_transfer_quote = yes
 		set_temp_variable = { cannibalism_absorbed_warlord_was_human = 0 }
 		if = { limit = { is_ai = no } set_temp_variable = { cannibalism_absorbed_warlord_was_human = 1 } }
-		event_target:cannibalism_unification_host = {
-			save_event_target_as = cannibalism_runtime_migration_destination_country
-			cannibalism_migrate_runtime_references_to_unified_country = yes
-		}
 		if = {
-			limit = { check_variable = { cannibalism_runtime_migration_result > 0 } }
-			cannibalism_add_current_warlord_larder_to_unified_host = yes
+			limit = { check_variable = { cannibalism_transfer_result > constant:cannibalism_larder_logistics.zero } }
 			event_target:cannibalism_unification_host = {
-				union_compatible_researched_technologies_from_donor = yes
-				set_variable = { cannibalism_integration_name_index = cannibalism_inherited_warlord_name_index }
-				set_variable = { cannibalism_integration_origin = cannibalism_inherited_warlord_origin }
-				set_variable = { cannibalism_integration_region = cannibalism_inherited_warlord_region }
-				set_variable = { cannibalism_integration_slot_index = cannibalism_inherited_warlord_slot_index }
-				set_variable = { cannibalism_integration_personality = cannibalism_inherited_warlord_personality }
-				set_variable = { cannibalism_integration_disposition = cannibalism_requested_warlord_disposition }
-				cannibalism_apply_absorbed_warlord_inheritance_to_unified_host = yes
-				cannibalism_record_integrated_warlord_slot = yes
-				if = {
-					limit = {
-						OR = {
-							check_variable = { cannibalism_requested_warlord_disposition = constant:cannibalism_warlord_disposition.retained_commander }
-							check_variable = { cannibalism_requested_warlord_disposition = constant:cannibalism_warlord_disposition.host_commander }
-						}
-					}
-					cannibalism_create_integrated_warlord_commander = yes
-					add_to_variable = { cannibalism_integrated_named_commander_count = 1 }
-				}
-				else_if = {
-					limit = { check_variable = { cannibalism_requested_warlord_disposition = constant:cannibalism_warlord_disposition.disposable_servant } }
-					cannibalism_create_integrated_warlord_servant = yes
-					add_to_variable = { cannibalism_integrated_servant_count = 1 }
-				}
-			}
-			every_enemy_country = {
-				limit = { NOT = { tag = event_target:cannibalism_unification_host } }
-				event_target:cannibalism_unification_host = {
-					add_to_war = {
-						targeted_alliance = event_target:cannibalism_absorbed_warlord
-						enemy = PREV
-						hostility_reason = ally
-					}
-				}
+				save_event_target_as = cannibalism_runtime_migration_destination_country
+				cannibalism_migrate_runtime_references_to_unified_country = yes
 			}
 			if = {
-				limit = { check_variable = { cannibalism_absorbed_warlord_was_human > 0 } }
-				event_target:cannibalism_absorbed_warlord = {
-					cannibalism_achievement_capture_current_player_ledger = yes
-					humanitarian_achievement_record_tag_switch = yes
-				}
-				event_target:cannibalism_unification_host = {
-					cannibalism_achievement_apply_captured_player_ledger = yes
-					humanitarian_achievement_record_tag_switch = yes
-					change_tag_from = event_target:cannibalism_absorbed_warlord
+				limit = { check_variable = { cannibalism_runtime_migration_result > 0 } }
+				cannibalism_add_current_warlord_larder_to_unified_host = yes
+				if = {
+					limit = { check_variable = { cannibalism_transfer_committed > constant:cannibalism_larder_logistics.zero } }
+					event_target:cannibalism_unification_host = {
+						union_compatible_researched_technologies_from_donor = yes
+						set_variable = { cannibalism_integration_name_index = cannibalism_inherited_warlord_name_index }
+						set_variable = { cannibalism_integration_origin = cannibalism_inherited_warlord_origin }
+						set_variable = { cannibalism_integration_region = cannibalism_inherited_warlord_region }
+						set_variable = { cannibalism_integration_slot_index = cannibalism_inherited_warlord_slot_index }
+						set_variable = { cannibalism_integration_personality = cannibalism_inherited_warlord_personality }
+						set_variable = { cannibalism_integration_disposition = cannibalism_requested_warlord_disposition }
+						cannibalism_apply_absorbed_warlord_inheritance_to_unified_host = yes
+						cannibalism_record_integrated_warlord_slot = yes
+						if = {
+							limit = {
+								OR = {
+									check_variable = { cannibalism_requested_warlord_disposition = constant:cannibalism_warlord_disposition.retained_commander }
+									check_variable = { cannibalism_requested_warlord_disposition = constant:cannibalism_warlord_disposition.host_commander }
+								}
+							}
+							cannibalism_create_integrated_warlord_commander = yes
+							add_to_variable = { cannibalism_integrated_named_commander_count = 1 }
+						}
+						else_if = {
+							limit = { check_variable = { cannibalism_requested_warlord_disposition = constant:cannibalism_warlord_disposition.disposable_servant } }
+							cannibalism_create_integrated_warlord_servant = yes
+							add_to_variable = { cannibalism_integrated_servant_count = 1 }
+						}
+					}
+					every_enemy_country = {
+						limit = { NOT = { tag = event_target:cannibalism_unification_host } }
+						event_target:cannibalism_unification_host = {
+							add_to_war = {
+								targeted_alliance = event_target:cannibalism_absorbed_warlord
+								enemy = PREV
+								hostility_reason = ally
+							}
+						}
+					}
+					if = {
+						limit = { check_variable = { cannibalism_absorbed_warlord_was_human > 0 } }
+						event_target:cannibalism_absorbed_warlord = {
+							cannibalism_achievement_capture_current_player_ledger = yes
+							humanitarian_achievement_record_tag_switch = yes
+						}
+						event_target:cannibalism_unification_host = {
+							cannibalism_achievement_apply_captured_player_ledger = yes
+							humanitarian_achievement_record_tag_switch = yes
+							change_tag_from = event_target:cannibalism_absorbed_warlord
+						}
+					}
+					cannibalism_prepare_current_warlord_slot_for_unification = yes
+					event_target:cannibalism_unification_host = {
+						annex_country = {
+							target = event_target:cannibalism_absorbed_warlord
+							transfer_troops = yes
+						}
+						cannibalism_clamp_and_publish_current_larder = yes
+						add_to_variable = { cannibalism_integrated_warlord_count = 1 }
+					}
+					set_temp_variable = { cannibalism_absorption_result = 1 }
 				}
 			}
-			cannibalism_prepare_current_warlord_slot_for_unification = yes
-			event_target:cannibalism_unification_host = {
-				annex_country = {
-					target = event_target:cannibalism_absorbed_warlord
-					transfer_troops = yes
-				}
-				add_to_variable = { cannibalism_integrated_warlord_count = 1 }
-			}
-			set_temp_variable = { cannibalism_absorption_result = 1 }
 		}
 	}
 }
@@ -12840,27 +13055,51 @@ cannibalism_submit_current_warlord_and_surrender_warband = {
 }
 
 cannibalism_bargain_current_warlord_autonomy = {
+	# Own Larder outputs before helpers and country scopes.
+	set_temp_variable = { cannibalism_larder_source_capital_captured = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_larder_destination_capital_captured = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_source_generation = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_dispatch = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_received = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_loss_fraction = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_retention = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_result = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_committed = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_route_fraction = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_constructor_context = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_distance = constant:cannibalism_larder_logistics.minus_one }
 	if = {
 		limit = {
 			is_cannibalism_warlord_country = yes
 			has_country_flag = cannibalism_pending_absorption
 			cannibalism_has_valid_unification_destination = yes
 		}
-		clr_country_flag = cannibalism_pending_absorption
-		clr_country_flag = cannibalism_convergence_participant
-		if = {
-			limit = { is_in_array = { array = global.cannibalism_convergence_actor_countries value = THIS } }
-			remove_from_array = { array = global.cannibalism_convergence_actor_countries value = THIS }
-		}
-		set_country_flag = cannibalism_autonomous_warlord_governor
-		set_variable = { cannibalism_warlord_disposition = constant:cannibalism_warlord_disposition.autonomous_governor }
+		event_target:cannibalism_unification_host = { save_event_target_as = cannibalism_larder_destination_country }
+		cannibalism_capture_current_larder_transfer_capitals = yes
 		set_temp_variable = { cannibalism_integration_larder_factor = constant:cannibalism_unification.autonomy_tribute_larder_factor }
 		if = {
 			limit = { has_country_flag = cannibalism_warlord_manipulation_endgame_open }
 			add_to_temp_variable = { cannibalism_integration_larder_factor = constant:cannibalism_warlord_contract.manipulation_autonomy_tribute_relief }
 		}
+		set_temp_variable = { cannibalism_transfer_route_fraction = cannibalism_integration_larder_factor }
+		cannibalism_prepare_larder_transfer_quote = yes
 		cannibalism_add_current_warlord_larder_to_unified_host = yes
-		event_target:cannibalism_unification_host = { puppet = ROOT add_to_variable = { cannibalism_autonomous_warlord_count = 1 } }
+		if = {
+			limit = { check_variable = { cannibalism_transfer_committed > constant:cannibalism_larder_logistics.zero } }
+			clr_country_flag = cannibalism_pending_absorption
+			clr_country_flag = cannibalism_convergence_participant
+			if = {
+				limit = { is_in_array = { array = global.cannibalism_convergence_actor_countries value = THIS } }
+				remove_from_array = { array = global.cannibalism_convergence_actor_countries value = THIS }
+			}
+			set_country_flag = cannibalism_autonomous_warlord_governor
+			set_variable = { cannibalism_warlord_disposition = constant:cannibalism_warlord_disposition.autonomous_governor }
+			event_target:cannibalism_larder_destination_country = {
+				puppet = event_target:cannibalism_larder_source_country
+				add_to_variable = { cannibalism_autonomous_warlord_count = 1 }
+				cannibalism_clamp_and_publish_current_larder = yes
+			}
+		}
 	}
 }
 
@@ -12962,7 +13201,6 @@ cannibalism_unified_initialize_decision_values = {
 		set_variable = { cannibalism_unified_rout_harvest_receipts = constant:cannibalism_unified_profile.zero }
 		set_variable = { cannibalism_unified_convoy_harvest_receipts = constant:cannibalism_unified_profile.zero }
 	}
-	cannibalism_unified_refresh_contract_capacities = yes
 	cannibalism_unified_refresh_operational_profiles = yes
 	cannibalism_unified_focus_refresh_terminal_route = yes
 }
@@ -14381,6 +14619,7 @@ cannibalism_unified_refresh_affordability_gates = {
 }
 
 cannibalism_unified_refresh_operational_profiles = {
+	cannibalism_refresh_larder_effective_capacity = yes
 	cannibalism_unified_refresh_command_profile = yes
 	cannibalism_unified_refresh_larder_profile = yes
 	cannibalism_unified_refresh_war_machine_profile = yes
@@ -14390,7 +14629,6 @@ cannibalism_unified_refresh_operational_profiles = {
 }
 
 cannibalism_unified_focus_finalize_reward = {
-	cannibalism_unified_refresh_contract_capacities = yes
 	cannibalism_unified_refresh_operational_profiles = yes
 	cannibalism_unified_focus_refresh_terminal_route = yes
 }
@@ -14403,8 +14641,7 @@ cannibalism_unified_pay_current_larder_cost = {
 	set_temp_variable = { cannibalism_unified_negative_cost = cannibalism_unified_larder_cost }
 	multiply_temp_variable = { cannibalism_unified_negative_cost = constant:cannibalism_unified_profile.minus_one }
 	add_to_variable = { cannibalism_larder = cannibalism_unified_negative_cost }
-	clamp_variable = { var = cannibalism_larder min = constant:cannibalism_consumption.larder_min max = constant:cannibalism_unification.global_larder_maximum }
-	set_variable = { global.cannibalism_global_larder = cannibalism_larder }
+	cannibalism_clamp_and_publish_current_larder = yes
 }
 
 cannibalism_unified_pay_current_fuel_cost = {
@@ -15230,8 +15467,7 @@ cannibalism_unified_execute_naval_operation = {
 cannibalism_unified_execute_convoy_harvest = {
 	add_to_variable = { cannibalism_unified_convoy_harvest_receipts = constant:cannibalism_unified_profile.minus_one }
 	add_to_variable = { cannibalism_larder = constant:cannibalism_unified_operation.convoy_harvest_larder_yield }
-	clamp_variable = { var = cannibalism_larder min = constant:cannibalism_consumption.larder_min max = constant:cannibalism_unification.global_larder_maximum }
-	set_variable = { global.cannibalism_global_larder = cannibalism_larder }
+	cannibalism_clamp_and_publish_current_larder = yes
 	add_to_variable = { cannibalism_world_hostility = cannibalism_unified_naval_hostility_gain }
 	cannibalism_unified_focus_clamp_values = yes
 	cannibalism_unified_record_larder_operation = yes
@@ -17979,12 +18215,7 @@ cannibalism_pay_wendigo_larder_and_command_cost = {
 	set_temp_variable = { cannibalism_wendigo_cost_negative = cannibalism_wendigo_larder_cost }
 	multiply_temp_variable = { cannibalism_wendigo_cost_negative = -1 }
 	add_to_variable = { cannibalism_larder = cannibalism_wendigo_cost_negative }
-	clamp_variable = {
-		var = cannibalism_larder
-		min = constant:cannibalism_consumption.larder_min
-		max = constant:cannibalism_unification.global_larder_maximum
-	}
-	set_variable = { global.cannibalism_global_larder = cannibalism_larder }
+	cannibalism_clamp_and_publish_current_larder = yes
 	set_temp_variable = { cannibalism_wendigo_cost_negative = cannibalism_wendigo_command_cost }
 	multiply_temp_variable = { cannibalism_wendigo_cost_negative = -1 }
 	add_command_power = cannibalism_wendigo_cost_negative
@@ -18816,7 +19047,6 @@ cannibalism_open_wendigo_inherited_cannibal_recruitment = {
 		limit = { NOT = { has_variable = cannibalism_wendigo_cannibal_formations_raised } }
 		set_variable = { cannibalism_wendigo_cannibal_formations_raised = constant:cannibalism_unified_profile.zero }
 	}
-	cannibalism_unified_refresh_contract_capacities = yes
 	cannibalism_unified_refresh_operational_profiles = yes
 }
 
@@ -18900,6 +19130,7 @@ cannibalism_record_wendigo_winter_victory = {
 }
 
 cannibalism_absorb_primary_warlord_donor_into_wendigo = {
+	set_temp_variable = { cannibalism_primary_larder_inheritance_result = constant:cannibalism_larder_logistics.zero }
 	# Own the nested migration result before entering either donor scope.
 	set_temp_variable = { cannibalism_runtime_migration_result = 0 }
 	if = {
@@ -18907,6 +19138,8 @@ cannibalism_absorb_primary_warlord_donor_into_wendigo = {
 			has_event_target = cannibalism_primary_warlord_donor
 			has_event_target = cannibalism_wendigo_merge_host
 			check_variable = { cannibalism_primary_warlord_donor_can_be_absorbed > 0 }
+			check_variable = { cannibalism_transfer_result > constant:cannibalism_larder_logistics.zero }
+			cannibalism_has_valid_unification_destination = yes
 			event_target:cannibalism_primary_warlord_donor = { is_cannibalism_warlord_country = yes }
 			event_target:cannibalism_wendigo_merge_host = { is_cannibalism_wendigo_hannibal_country = yes }
 		}
@@ -18922,6 +19155,7 @@ cannibalism_absorb_primary_warlord_donor_into_wendigo = {
 		if = {
 			limit = { check_variable = { cannibalism_runtime_migration_result > 0 } }
 			event_target:cannibalism_wendigo_merge_host = {
+				cannibalism_apply_initial_larder_inheritance = yes
 				union_compatible_researched_technologies_from_donor = yes
 				set_variable = { cannibalism_integration_name_index = cannibalism_inherited_warlord_name_index }
 				set_variable = { cannibalism_integration_origin = cannibalism_inherited_warlord_origin }
@@ -18951,8 +19185,11 @@ cannibalism_absorb_primary_warlord_donor_into_wendigo = {
 					target = event_target:cannibalism_primary_warlord_donor
 					transfer_troops = yes
 				}
+				cannibalism_clamp_and_publish_current_larder = yes
 				add_to_variable = { cannibalism_integrated_warlord_count = 1 }
 			}
+			set_temp_variable = { cannibalism_transfer_result = constant:cannibalism_larder_logistics.zero }
+			set_temp_variable = { cannibalism_primary_larder_inheritance_result = constant:cannibalism_larder_logistics.one }
 		}
 	}
 }
@@ -18977,6 +19214,22 @@ cannibalism_build_wendigo_warlord_response_roster = {
 }
 
 cannibalism_create_wendigo_unification_from_selected_hosts = {
+	# Own Larder outputs before helpers and country scopes.
+	set_temp_variable = { cannibalism_larder_source_capital_captured = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_larder_destination_capital_captured = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_source_generation = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_dispatch = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_received = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_loss_fraction = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_retention = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_result = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_committed = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_route_fraction = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_constructor_context = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_distance = constant:cannibalism_larder_logistics.minus_one }
+	set_temp_variable = { cannibalism_primary_larder_inheritance_result = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_spread_queue_validation_result = constant:cannibalism_larder_logistics.zero }
+	cannibalism_validate_spread_queue = yes
 	set_temp_variable = { cannibalism_wendigo_unification_result = 0 }
 	# Own snapshot outputs before entering donor scopes or capture helpers.
 	set_temp_variable = { cannibalism_inherited_hierarchy = 0 }
@@ -19009,6 +19262,7 @@ cannibalism_create_wendigo_unification_from_selected_hosts = {
 		limit = {
 			cannibalism_selected_wendigo_merge_host_is_valid = yes
 			cannibalism_selected_unification_host_is_valid = yes
+			check_variable = { cannibalism_spread_queue_validation_result > constant:cannibalism_larder_logistics.zero }
 		}
 		event_target:cannibalism_unification_host = {
 			save_event_target_as = cannibalism_primary_warlord_donor
@@ -19032,6 +19286,17 @@ cannibalism_create_wendigo_unification_from_selected_hosts = {
 			set_temp_variable = { cannibalism_inherited_larder = 0 }
 		}
 
+		event_target:cannibalism_wendigo_merge_host = { save_event_target_as = cannibalism_larder_destination_country }
+		if = {
+			limit = { check_variable = { cannibalism_primary_warlord_donor_can_be_absorbed > constant:cannibalism_larder_logistics.zero } }
+			set_temp_variable = { cannibalism_transfer_constructor_context = constant:cannibalism_larder_logistics.one }
+			set_temp_variable = { cannibalism_transfer_route_fraction = constant:cannibalism_unification.host_larder_transfer_factor }
+			event_target:cannibalism_primary_warlord_donor = {
+				cannibalism_capture_current_larder_transfer_capitals = yes
+				cannibalism_prepare_larder_transfer_quote = yes
+			}
+			set_temp_variable = { cannibalism_inherited_larder = cannibalism_transfer_received }
+		}
 		# The reveal flag precedes every transformed country, leader, portrait,
 		# focus, decision, cosmetic, report, news, or audio-facing operation.
 		set_global_flag = cannibalism_reveal_complete
@@ -19049,6 +19314,7 @@ cannibalism_create_wendigo_unification_from_selected_hosts = {
 
 		event_target:cannibalism_wendigo_merge_host = {
 			cannibalism_prepare_wendigo_merge_identity = yes
+			set_variable = { global.cannibalism_unification_host_generation = cannibalism_actor_generation }
 		}
 		if = {
 			limit = {
@@ -19067,8 +19333,19 @@ cannibalism_create_wendigo_unification_from_selected_hosts = {
 		}
 
 		cannibalism_absorb_primary_warlord_donor_into_wendigo = yes
+		# A donor that was not absorbed (both players human, or a failed
+		# absorption) keeps its own stores and answers the response roster.
+		if = {
+			limit = { check_variable = { cannibalism_primary_larder_inheritance_result < constant:cannibalism_larder_logistics.one } }
+			set_temp_variable = { cannibalism_inherited_larder = constant:cannibalism_larder_logistics.zero }
+			set_temp_variable = { cannibalism_transfer_result = constant:cannibalism_larder_logistics.zero }
+			event_target:cannibalism_wendigo_merge_host = {
+				cannibalism_apply_initial_larder_inheritance = yes
+				cannibalism_clamp_and_publish_current_larder = yes
+			}
+		}
+		# After the public flag the transformation always completes.
 		event_target:cannibalism_wendigo_merge_host = {
-			set_variable = { global.cannibalism_unification_host_generation = cannibalism_actor_generation }
 			set_temp_variable = { cannibalism_evolution_stage_to_record = constant:cannibalism_event.evolution_iii_stage }
 			cannibalism_record_current_evolution = yes
 			set_temp_variable = { cannibalism_chaos_change = constant:cannibalism_delta.reveal_chaos }
