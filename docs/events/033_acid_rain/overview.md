@@ -101,6 +101,7 @@ Opening or refreshing the map runs a read-only projection that cannot advance fr
 - Humanitarian pressure: `famine_adapt_acid_rain_state` in `common/scripted_effects/famine_adapter_effects.txt`
 - Achievements: the ten `acid_rain_033_*` entries in `common/achievements/chaos_redux_achievements.txt` with dedicated effects and triggers
 - Super-event audio: `sound/033_acid_rain/` with registration in `sound/chaosx_sound.asset`
+- Severe forecast cue: the six `chaosx_acid_rain_severe_forecast_cue_<volume>` sound effects in `sound/033_acid_rain_sound.asset`, built from the base game's one-shot thunder samples and listed in the Effects category of `sound/chaosx_sound.asset`; a player hears one with each forecast report for a severe cell or superstorm over their territory, at the super-event audio volume setting and never at x0
 - Catalog source: `docs/spreadsheets/chaos_redux_events_catalog.xlsx`; the three catalog CSV files are generated exports, and pending row changes are listed in `docs/plans/033_acid_rain_plans/catalog_changes_pending.md`
 
 ## Visual asset inventory
@@ -125,7 +126,7 @@ The row-level record of retired prototype art is [prototype presentation retirem
 ## Verification scope
 
 `.tools/validation/validate_033_acid_rain.py` checks the source contracts, coverage and movement model, Air caps and the exact-loss helper contract.
-Live-game confirmation covers executed population removal, save and reload, multiplayer presentation, decision AI behaviour, engine performance, the dashboard at 1920x1080 (the MCP render route accepts only smaller resolutions for this window), animation playback, and super-event audio listening.
+Live-game confirmation covers executed population removal, save and reload, multiplayer presentation, decision AI behaviour, engine performance, the dashboard at 1920x1080 (the MCP render route accepts only smaller resolutions for this window), animation playback, and listening to the super-event audio and the severe forecast cue.
 `hoi4.probability_inspect` returns `INTERNAL_ERROR` for the Event 033 decision file, so decision AI weights have no probability-route baseline or comparison.
 
 ## Future extensions

@@ -248,3 +248,12 @@ After the formation stage commits, `acid_rain_gui_open_at_formation` runs the no
 The national strip copy moved out of `acid_rain_gui_refresh_read_only` into `acid_rain_gui_refresh_national_strip`, which the full refresh still calls.
 Inside the host worker's existing participant loop, every human country with an open map of the current generation runs that strip refresh, and the host refresh that follows projects the shared world view, so Preparedness, warned, exposed, severe and aftermath counts, deaths and deaths prevented change on the next worker tick without a click.
 Only the strip, not the whole projection, runs per viewer, because the world view is shared and the host already projects it every tick; no world iterator was added and the refresh still writes only presentation variables.
+
+### D29. Severe forecast cue
+
+Disposition: implemented (commit "Play a thunder cue with each Acid Rain severe forecast").
+Part 6 asks for a stronger sound cue for a player whose country contains a forecast state.
+The cue reuses the base game's one-shot thunder samples (`weather_thunder_01` to `_04`) through six event-owned sound effects in `sound/033_acid_rain_sound.asset`, `chaosx_acid_rain_severe_forecast_cue_0_5` to `_3_0`, rather than adding sourced audio, following the event-owned asset precedent of Event 028; the names are listed in the Effects category of `sound/chaosx_sound.asset` so the effects volume slider applies.
+`acid_rain_play_severe_forecast_cue` runs in the same once-per-episode branch that sends the forecast report, for severe cells and superstorms alike, so a human controller hears one cue per forecast episode and later states of the same episode, AI countries and other players hear nothing.
+The suffix is chosen with the shared `GetSuperEventAudioVolumeToken`, the same mapping the super-event audio uses, and the x0 setting plays nothing; volumes run from 0.33 to 2.00, 1.00 at the default x1.5.
+Listening to the cue is a live-game check.

@@ -3192,6 +3192,26 @@ acid_rain_open_forecast_report = {
 	set_variable = { acid_rain_report_forecast_state_count = constant:acid_rain_runtime.zero }
 	set_variable = { acid_rain_report_forecast_top_population_k = constant:acid_rain_runtime.negative_one }
 	country_event = { id = chaosx.nr33.103 }
+	acid_rain_play_severe_forecast_cue = yes
+}
+
+# COUNTRY SCOPE. Plays the thunder cue of sound/033_acid_rain_sound.asset for
+# a human player whose territory has just received a severe cell or
+# superstorm forecast, once per episode with the forecast report. The cue
+# follows the player's super-event audio volume setting and stays silent at x0.
+acid_rain_play_severe_forecast_cue = {
+	if = {
+		limit = {
+			is_ai = no
+			NOT = { check_variable = { settings_super_event_audio_volume = constant:settings_super_event_audio_volume.x0 } }
+		}
+		meta_effect = {
+			text = {
+				scoped_sound_effect = "chaosx_acid_rain_severe_forecast_cue_[VOLUME_SUFFIX]"
+			}
+			VOLUME_SUFFIX = "[GetSuperEventAudioVolumeToken]"
+		}
+	}
 }
 
 # COUNTRY SCOPE, called from a forecast state's CONTROLLER block, so PREV is
