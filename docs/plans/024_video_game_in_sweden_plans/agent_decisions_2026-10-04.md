@@ -254,3 +254,19 @@ The variable is overwritten before every use, like the SIA precedent, so it need
 `add_dynamic_modifier` and `add_timed_idea` keep their variable day counts, because the installed effects documentation says dynamic-modifier days can be a variable and vanilla `SOV.txt` passes a variable to `add_timed_idea`.
 Basis: round 2 lead decision 1, Event 23 R2-2, CLAUDE.md 1.9.
 Disposition: `implemented`; the flags actually expiring is needs_live_game.
+
+### R2-2. A peaceful baseline and Evolution I draw real incidents
+
+Finding: in peace the baseline and Evolution I could only draw the counterplan and the bootleg, which share the 240-day rare cooldown, because the terrain, supply and enemy families needed war (or a supply gap) and the template family needed broad public reach and Evolution II or III.
+The decision map incident table gives enemy adaptation to a "repeated preferred scenario, weak red team" and the standardized template to an "officer league, high Reliance", spec part 1 lists "The logistics table is wrong" and "The perfect template craze" as rare baseline incidents, and spec part 2 puts over-standardized divisions among the Evolution I risks.
+Decision: the existing families widen their preconditions; no new family is added.
+- Supply: `video_game_in_sweden_incident_logistics_table_is_valid` (baseline or Evolution I, Habit Reliance or above, no rail-table review) is an alternative to a real supply gap. Without a gap the draw weight is `supply_table_weight` (75) instead of `supply_weight` (200), and the report shows the new timetable clause.
+- Enemy: `video_game_in_sweden_has_repeated_preferred_scenario` (controlled exercise strength below one, meaning at least one repeat in the same war state, or an officer league or competitive culture, and no red team) is an alternative to war. In peace the weight is multiplied by `enemy_peace_factor` (0.75), and the report shows the exercise-umpire clause.
+- Template: `video_game_in_sweden_incident_early_template_is_valid` (baseline or Evolution I before a successful field validation, with Evolution I officer competition or Doctrine Reliance or above) is an alternative to the public path. In the baseline the weight is multiplied by `template_baseline_factor` (0.5), and option `.30.template_b` reads "training timetable" so it fits both paths.
+The red team (`red_team_complete`, `enemy_mismatch_reduced`), the rail-table review (`logistics_review_complete`, `logistics_mismatch_reduced`) and field validation still suppress their families.
+Peacetime severity keeps every factor except war (1.5), so a Habit-stage peacetime report stays small and short (spec part 3: "embarrassing and temporary"); dismissing a supply report sets `video_game_in_sweden_supply_crisis` only at war, so a peacetime timetable error cannot raise the severe-crisis gate.
+Trust the Model still counts only wartime reports as battlefield mismatches (`video_game_in_sweden_record_trust_mismatch` requires war).
+The officer-competition check is one trigger, `video_game_in_sweden_has_officer_competition`, shared by the fire chance, the template weight and the new paths.
+Probability surface: the incident family `random_list` gains three peacetime entries; no existing weight changed. The MCP comparison is blocked (see R2-8).
+Basis: round 2 lead decision 2, decision map incident pool, spec parts 1 to 3.
+Disposition: `implemented`; draw frequencies in a live campaign are needs_live_game.

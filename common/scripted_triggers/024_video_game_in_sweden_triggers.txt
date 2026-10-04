@@ -444,35 +444,110 @@ video_game_in_sweden_incident_terrain_is_valid = {
 	NOT = { has_country_flag = video_game_in_sweden_incident_terrain_seen }
 }
 
+# A real supply gap, or an early timetable that has never met the railways.
 video_game_in_sweden_incident_supply_is_valid = {
-	video_game_in_sweden_has_campaign_supply_gap = yes
+	OR = {
+		video_game_in_sweden_has_campaign_supply_gap = yes
+		video_game_in_sweden_incident_logistics_table_is_valid = yes
+	}
 	NOT = { has_country_flag = video_game_in_sweden_incident_supply_seen }
 	NOT = { has_country_flag = video_game_in_sweden_logistics_mismatch_removed }
 	NOT = { has_country_flag = video_game_in_sweden_logistics_mismatch_reduced }
 }
 
+# A real opponent, or a peacetime opposing side that has learned the one
+# scenario Swedish teams keep rehearsing.
 video_game_in_sweden_incident_enemy_is_valid = {
-	has_war = yes
+	OR = {
+		has_war = yes
+		video_game_in_sweden_has_repeated_preferred_scenario = yes
+	}
 	NOT = { has_country_flag = video_game_in_sweden_incident_enemy_seen }
 	NOT = { has_country_flag = video_game_in_sweden_enemy_mismatch_removed }
 	NOT = { has_country_flag = video_game_in_sweden_enemy_mismatch_reduced }
 }
 
+# Public clubs converge on one pattern in Evolution II or III. Earlier, staff
+# competition or a Doctrine-level Reliance does the same until field
+# validation tests the pattern.
 video_game_in_sweden_incident_template_is_valid = {
-	has_country_flag = video_game_in_sweden_broad_public_reach
 	OR = {
-		check_variable = {
-			var = video_game_in_sweden_phase
-			value = constant:video_game_in_sweden_value.phase_evolution_ii
-			compare = equals
+		AND = {
+			has_country_flag = video_game_in_sweden_broad_public_reach
+			OR = {
+				check_variable = {
+					var = video_game_in_sweden_phase
+					value = constant:video_game_in_sweden_value.phase_evolution_ii
+					compare = equals
+				}
+				check_variable = {
+					var = video_game_in_sweden_phase
+					value = constant:video_game_in_sweden_value.phase_evolution_iii
+					compare = equals
+				}
+			}
 		}
-		check_variable = {
-			var = video_game_in_sweden_phase
-			value = constant:video_game_in_sweden_value.phase_evolution_iii
-			compare = equals
-		}
+		video_game_in_sweden_incident_early_template_is_valid = yes
 	}
 	NOT = { has_country_flag = video_game_in_sweden_incident_template_seen }
+}
+
+# Early template craze: Evolution I with officer competition, or the baseline
+# or Evolution I at Doctrine Reliance or above, before field validation.
+video_game_in_sweden_incident_early_template_is_valid = {
+	video_game_in_sweden_is_early_program = yes
+	NOT = { has_country_flag = video_game_in_sweden_field_validation_success }
+	OR = {
+		AND = {
+			check_variable = { var = video_game_in_sweden_phase value = constant:video_game_in_sweden_value.phase_evolution_i compare = equals }
+			video_game_in_sweden_has_officer_competition = yes
+		}
+		video_game_in_sweden_reliance_at_least_doctrine = yes
+	}
+}
+
+# The logistics table is wrong: a baseline or Evolution I timetable at Habit
+# Reliance or above that no rail-table review has checked.
+video_game_in_sweden_incident_logistics_table_is_valid = {
+	video_game_in_sweden_is_early_program = yes
+	video_game_in_sweden_reliance_at_least_habit = yes
+	NOT = { has_country_flag = video_game_in_sweden_logistics_review_complete }
+}
+
+# Repeated controlled exercises in one war state, or an officer league or
+# competitive culture, with no independent red team.
+video_game_in_sweden_has_repeated_preferred_scenario = {
+	NOT = { has_country_flag = video_game_in_sweden_red_team_complete }
+	OR = {
+		AND = {
+			has_variable = video_game_in_sweden_exercise_strength
+			check_variable = { var = video_game_in_sweden_exercise_strength value = constant:video_game_in_sweden_value.one compare = less_than }
+		}
+		video_game_in_sweden_has_officer_competition = yes
+	}
+}
+
+# An officer league or a competitive command culture.
+video_game_in_sweden_has_officer_competition = {
+	OR = {
+		has_country_flag = video_game_in_sweden_officer_league_complete
+		has_country_flag = video_game_in_sweden_competitive_command_culture
+	}
+}
+
+video_game_in_sweden_reliance_at_least_habit = {
+	OR = {
+		has_country_flag = video_game_in_sweden_reliance_habit
+		has_country_flag = video_game_in_sweden_reliance_doctrine
+		has_country_flag = video_game_in_sweden_reliance_worldview
+	}
+}
+
+video_game_in_sweden_reliance_at_least_doctrine = {
+	OR = {
+		has_country_flag = video_game_in_sweden_reliance_doctrine
+		has_country_flag = video_game_in_sweden_reliance_worldview
+	}
 }
 
 video_game_in_sweden_incident_diplomatic_is_valid = {

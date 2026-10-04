@@ -476,7 +476,12 @@ country_event = {
 		ai_chance = { base = 1 modifier = { factor = constant:video_game_in_sweden_ai_factor.incident_supply_crisis has_country_flag = video_game_in_sweden_supply_crisis } }
 		custom_effect_tooltip = video_game_incident_supply_dismiss_tt
 		hidden_effect = {
-			set_country_flag = video_game_in_sweden_supply_crisis
+			# An unchecked order strains a wartime supply net; a peacetime
+			# timetable error stays an embarrassment.
+			if = {
+				limit = { has_war = yes }
+				set_country_flag = video_game_in_sweden_supply_crisis
+			}
 			set_temp_variable = { video_game_in_sweden_incident_response = constant:video_game_in_sweden_value.incident_dismiss }
 			set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_award.incident_supply_overconfidence }
 			video_game_in_sweden_adjust_incident_reliance = yes

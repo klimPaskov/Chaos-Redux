@@ -331,6 +331,12 @@ The maintenance hook runs only for the bounded Event 24 host path and advances t
 It checks for twelve incident families: terrain, supply, enemy action, template failure, diplomacy, workplace disruption, party or public pressure, casualties as counters, an unexpected counterplan, a foreign bootleg, production without transport and the perfect offensive.
 Casualties as counters arises at war in Evolution III or at Worldview Reliance and costs war support and recruitable population.
 The unexpected counterplan and the foreign bootleg are rare baseline and Evolution I incidents (weight 50) that share a 240-day cooldown, so a peaceful early programme still meets the occasional embarrassment.
+Three more families also reach a peaceful early programme, each with its own prior-occurrence memory rather than the shared cooldown.
+The logistics table is a supply report without a real supply gap: it arises in the baseline or Evolution I at Habit Reliance or above until a rail-table review is filed (weight 75), and its report describes a clean timetable collapsing against real train capacity.
+Enemy adaptation arises in peace after repeated controlled exercises in the same war state or with an officer league or competitive culture, as long as no independent red team exists (three quarters of its wartime weight), and its report describes exercise umpires whose opposing side refused the rehearsed scenario.
+The template craze arises in Evolution I with an officer league or competitive culture, or in the baseline or Evolution I at Doctrine Reliance or above, until field validation succeeds; in the baseline it weighs half.
+Peacetime reports lack the war severity factor, so their penalties stay small and short, and dismissing a peacetime timetable report does not create a supply crisis.
+Trust the Model still counts only wartime reports as battlefield mismatches.
 Production without transport arises in Evolution III in peace or war and costs factory efficiency growth and supply, and the perfect offensive arises in Evolution III at war and costs attack and maximum planning.
 Entering Evolution III queues one opening incident five days after the evolution report, chosen by the campaign: production without transport always qualifies, a diplomatic category error needs a faction, overlord, war or licence business, and the perfect offensive or casualties as counters need a war.
 
@@ -341,7 +347,7 @@ The chance is multiplied by Reliance state (Instrument 0.6, Habit 0.85, Doctrine
 Incidents pause during a severe crisis, restriction enforcement and recovery.
 
 Family weights live in `video_game_in_sweden_incident`.
-Supply mismatches weigh twice the other families, terrain falls to a quarter after a successful field validation, enemy-behaviour reports rise with competitive culture, template reports rise with officer competition and a dismissed template report and fall after restriction, workplace reports rise by a quarter per national league season and fall to a quarter with protected shifts, and party reports rise with exhibitions or appropriation and halve with preparedness, a civic network or separate policy.
+Supply mismatches with a real supply gap weigh twice the other families, terrain falls to a quarter after a successful field validation, enemy-behaviour reports rise with competitive culture, template reports rise with officer competition and a dismissed template report and fall after restriction, workplace reports rise by a quarter per national league season and fall to a quarter with protected shifts, and party reports rise with exhibitions or appropriation and halve with preparedness, a civic network or separate policy.
 
 Every response applies the timed Cabinet Mismatch modifier (`video_game_in_sweden_mismatch_penalty`), priced when the incident is drawn so the report shows the exact cost of each answer.
 Severity is the Reliance-state factor (0.5 to 1.5) times war (1.5), Chaos 600 or higher (1.25), a prior relevant validation (0.75) and one tenth more per earlier mismatch up to half again, capped at 2.5.

@@ -2912,12 +2912,7 @@ video_game_in_sweden_compute_incident_chance = {
 		multiply_temp_variable = { video_game_in_sweden_incident_fire_weight = constant:video_game_in_sweden_incident.frequency_instrument }
 	}
 	if = {
-		limit = {
-			OR = {
-				has_country_flag = video_game_in_sweden_officer_league_complete
-				has_country_flag = video_game_in_sweden_competitive_command_culture
-			}
-		}
+		limit = { video_game_in_sweden_has_officer_competition = yes }
 		multiply_temp_variable = { video_game_in_sweden_incident_fire_weight = constant:video_game_in_sweden_incident.frequency_officer }
 	}
 	if = {
@@ -2984,6 +2979,12 @@ video_game_in_sweden_select_incident_family = {
 			}
 		}
 		set_temp_variable = { video_game_in_sweden_incident_supply_weight = constant:video_game_in_sweden_incident.supply_weight }
+		# Without a real gap the report is an early timetable error, rarer
+		# than a shortage at the front.
+		if = {
+			limit = { NOT = { video_game_in_sweden_has_campaign_supply_gap = yes } }
+			set_temp_variable = { video_game_in_sweden_incident_supply_weight = constant:video_game_in_sweden_incident.supply_table_weight }
+		}
 	}
 	if = {
 		limit = {
@@ -2994,6 +2995,11 @@ video_game_in_sweden_select_incident_family = {
 			}
 		}
 		set_temp_variable = { video_game_in_sweden_incident_enemy_weight = constant:video_game_in_sweden_incident.enemy_weight }
+		# In peace only an exercise opponent can expose the preferred scenario.
+		if = {
+			limit = { has_war = no }
+			multiply_temp_variable = { video_game_in_sweden_incident_enemy_weight = constant:video_game_in_sweden_incident.enemy_peace_factor }
+		}
 		# Officers who play for the score expect the enemy to play the same game.
 		if = {
 			limit = { has_country_flag = video_game_in_sweden_competitive_command_culture }
@@ -3010,13 +3016,13 @@ video_game_in_sweden_select_incident_family = {
 		}
 		set_temp_variable = { video_game_in_sweden_incident_template_weight = constant:video_game_in_sweden_incident.template_weight }
 		if = {
-			limit = {
-				OR = {
-					has_country_flag = video_game_in_sweden_officer_league_complete
-					has_country_flag = video_game_in_sweden_competitive_command_culture
-				}
-			}
+			limit = { video_game_in_sweden_has_officer_competition = yes }
 			multiply_temp_variable = { video_game_in_sweden_incident_template_weight = constant:video_game_in_sweden_incident.template_officer_factor }
+		}
+		# A baseline trial rarely settles on one pattern.
+		if = {
+			limit = { check_variable = { var = video_game_in_sweden_phase value = constant:video_game_in_sweden_value.phase_baseline compare = equals } }
+			multiply_temp_variable = { video_game_in_sweden_incident_template_weight = constant:video_game_in_sweden_incident.template_baseline_factor }
 		}
 		if = {
 			limit = { has_country_flag = video_game_in_sweden_template_craze }
