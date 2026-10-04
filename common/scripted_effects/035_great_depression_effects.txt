@@ -1019,6 +1019,12 @@ great_depression_complete_center_project = {
 		clr_state_flag = great_depression_center_project_active_work
 		clr_state_flag = great_depression_center_project_paused
 		clr_state_flag = great_depression_center_project_certification
+		ROOT = {
+			set_variable = { great_depression_inherited_resolution_state_id = PREV.id }
+			set_variable = { great_depression_inherited_resolution_authorization_id = PREV.great_depression_center_project_completed_authorization_id }
+			set_variable = { great_depression_inherited_resolution_outcome = constant:great_depression_center_stage.reopened }
+			great_depression_dispatch_inherited_state_resolution = yes
+		}
 	}
 }
 
@@ -1150,6 +1156,15 @@ great_depression_reconcile_center_transfer = {
 		set_state_flag = great_depression_center_transfer_contract_open
 		clr_state_flag = great_depression_center_transfer_adopted_receipt
 		set_variable = { great_depression_center_transfer_episode_id = ROOT.great_depression_active_episode_id }
+		if = {
+			limit = { NOT = { is_owned_by = ROOT } }
+			ROOT = {
+				set_country_flag = great_depression_inherited_permanent_transfer_proven
+				set_variable = { great_depression_inherited_resolution_state_id = PREV.id }
+				set_variable = { great_depression_inherited_resolution_outcome = constant:great_depression_region_control.transferred }
+				great_depression_dispatch_inherited_state_resolution = yes
+			}
+		}
 		if = {
 			limit = {
 				OR = {
@@ -2834,6 +2849,8 @@ great_depression_clear_center_resolution_receipts = {
 }
 
 great_depression_clear_registered_center_runtime = {
+	set_variable = { great_depression_inherited_cleanup_episode_id = great_depression_active_episode_id }
+	great_depression_clear_inherited_liability_runtime = yes
 	# Recovery and transaction rollback must also clean a registered state that
 	# changed hands. A controlled-state scan alone cannot reach that state.
 	if = {
@@ -4205,10 +4222,6 @@ great_depression_rebuild_hidden_components = {
 	}
 
 	if = {
-		limit = { has_country_flag = great_depression_event34_inherited }
-		add_to_variable = { great_depression_hidden_industrial_stress = constant:great_depression_hidden_component.industrial_inherited_region }
-	}
-	if = {
 		limit = { has_country_flag = great_depression_event34_supplier_pressure }
 		add_to_variable = { great_depression_hidden_industrial_stress = constant:great_depression_hidden_component.industrial_center_pressure }
 	}
@@ -4319,6 +4332,23 @@ great_depression_rebuild_hidden_components = {
 		}
 	}
 
+	# Inherited regional liabilities. The boom's credit hangover above is a
+	# national fact, so regional credit facts only add to it. The flat inherited
+	# industrial term stands in for the regions until a current inherited row
+	# carries a known project, protection or fragility fact; then the exact
+	# regional output replaces it. Visible stages and the opening formula stay
+	# separate.
+	great_depression_rebuild_inherited_liability = yes
+	add_to_variable = { great_depression_hidden_credit_stress = great_depression_inherited_credit_pressure }
+	add_to_variable = { great_depression_hidden_demand_stress = great_depression_inherited_demand_pressure }
+	if = {
+		limit = { check_variable = { var = great_depression_inherited_project_fact_count value = constant:great_depression_api.zero compare = greater_than } }
+		add_to_variable = { great_depression_hidden_industrial_stress = great_depression_inherited_industrial_pressure }
+	}
+	else_if = {
+		limit = { has_country_flag = great_depression_event34_inherited }
+		add_to_variable = { great_depression_hidden_industrial_stress = constant:great_depression_hidden_component.industrial_inherited_region }
+	}
 	set_temp_variable = { great_depression_hidden_net_value = great_depression_hidden_credit_stress }
 	add_to_temp_variable = { great_depression_hidden_net_value = great_depression_hidden_demand_stress }
 	add_to_temp_variable = { great_depression_hidden_net_value = great_depression_hidden_trade_stress }
@@ -4745,6 +4775,7 @@ great_depression_add_recovery_legacy = {
 }
 
 great_depression_freeze_episode_summary = {
+	great_depression_freeze_inherited_liability_summary = yes
 	set_variable = { great_depression_last_completed_episode_id = great_depression_active_episode_id }
 	set_variable = { great_depression_last_completed_episode_start_severity = great_depression_episode_start_severity }
 	set_variable = { great_depression_last_completed_episode_peak_severity = great_depression_episode_peak_severity }

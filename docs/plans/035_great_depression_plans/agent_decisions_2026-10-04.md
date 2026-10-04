@@ -45,3 +45,25 @@ A country without a valid center still receives a valid owned state.
 Incident weights, factors and gates did not change.
 The K-09 audit (`subagent_handoffs/k09_incident_pool_audit_2026-09-05.md`) declared its center-specific gates as "usable centers" true or false, which is the behavior the picker now delivers, so the audited distribution is restored rather than changed.
 The K-09 manifest was never saved in the repository, and the probability routes failed in this session (see D2), so no new compare artifact exists; this is recorded as a route blocker, not as fresh numeric evidence.
+
+## D4. Adopt the inherited-liability tranche with the national inheritance pressure kept
+
+Disposition: implemented.
+
+The stopped thread's inherited-liability consumer (`common/scripted_effects/035_great_depression_inherited_liability_effects.txt` and `.md`, hooks in the main, decision and region effects, `.tools/test_event035_inherited_hooks.py`, the `.tools/test_event035_center_projects.py` changes, `audit_inputs/liability_hooks_2026_10_03/` and its handoff) is adopted as finished work.
+As written, it deleted the flat `credit_boom_inheritance` and `industrial_inherited_region` terms from `great_depression_rebuild_hidden_components`.
+Its row consumer adds credit only for supplied regional project, protection or fragility facts, and Event 34 never supplies them (`industrial_boom_region_project_profile` and the related fields have no producer), so every real Event 34 to Event 35 handoff would have lost about 2 net hidden stress per pulse.
+
+Rule taken:
+
+- The boom credit hangover is a national fact: the flat `credit_boom_inheritance` term is restored for every `great_depression_event34_inherited` country, and the row credit output adds to it only for rows with supplied facts.
+- The flat `industrial_inherited_region` term applies while no current inherited row carries a supplied project profile, project stage, protection or fragility value (`great_depression_inherited_project_fact_count` is zero).
+  Once one does, the exact row industrial output replaces the flat term; the two are never both added.
+- Live control and damage, which Event 34 does supply, do not count as project facts, so a damaged or disconnected real row keeps the flat term instead of adding a second industrial unit.
+- Row demand output (hidden-row stage pressure and supplied exhaustion) is added as before; it has no flat counterpart.
+- The main -5 to 5 clamp is unchanged.
+
+Evidence: both test files pass, and the new `test_real_event34_row_keeps_baseline_hidden_pressure` shows an intact and a damaged real Event 34 row keep all seven hidden components and the net value of the frozen pre-tranche source.
+
+Closed as blocked on Event 34, not queued for Event 35: hidden-row paid paths, corridor restoration, breakup and scar, secured-value salvage, and multi-region inherited priority.
+Event 34 is a legacy event with no per-region project or corridor system, and the spec forbids inventing that history (spec part 8; inherited consumer audit, section B).

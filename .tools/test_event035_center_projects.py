@@ -18,6 +18,7 @@ EFFECT_FILES = (
     r"common\scripted_effects\035_great_depression_effects.txt",
     r"common\scripted_effects\035_great_depression_decision_effects.txt",
     r"common\scripted_effects\035_great_depression_region_effects.txt",
+    r"common\scripted_effects\035_great_depression_inherited_liability_effects.txt",
 )
 TRIGGER_FILES = (
     r"common\scripted_triggers\035_great_depression_triggers.txt",
@@ -25,6 +26,7 @@ TRIGGER_FILES = (
     r"common\scripted_triggers\035_great_depression_decision_surface_triggers.txt",
 )
 CONSTANTS_FILE = r"common\script_constants\035_great_depression_constants.txt"
+REGION_CONSTANTS_FILE = r"common\script_constants\035_great_depression_region_constants.txt"
 TOKEN = re.compile(r'"(?:[^"\\]|\\.)*"|[{}=<>]|[^\s{}=<>]+')
 HEADER = re.compile(r"(?m)^([A-Za-z_][A-Za-z0-9_]*)[ \t]*=[ \t]*\{")
 NUMBER = re.compile(r"^-?\d+(?:\.\d+)?$")
@@ -197,12 +199,12 @@ class Event35Runtime:
         self.events = []
 
     def _read_constants(self):
-        definitions = read_definitions(CONSTANTS_FILE)
         result = {}
-        for group, definition in definitions.items():
-            for node in definition.body:
-                if isinstance(node.value, str) and NUMBER.fullmatch(node.value):
-                    result[f"constant:{group}.{node.key}"] = float(node.value)
+        for constant_file in (CONSTANTS_FILE, REGION_CONSTANTS_FILE):
+            for group, definition in read_definitions(constant_file).items():
+                for node in definition.body:
+                    if isinstance(node.value, str) and NUMBER.fullmatch(node.value):
+                        result[f"constant:{group}.{node.key}"] = float(node.value)
         return result
 
     @property
@@ -425,7 +427,8 @@ class Event35Runtime:
                 return self._compare(self._numeric_builtin(key, scope), op, self._value(value))
             return self._compare(self._numeric_builtin(key, scope), op, self._value(value))
         if key == "NOT":
-            return not self._conditions(value, scope)
+            # Native NOT is NOR: any true child makes the block false.
+            return not any(self._condition(child, scope) for child in value)
         if key == "OR":
             return any(self._conditions([child], scope) for child in value)
         if key == "AND":
@@ -859,6 +862,18 @@ def pay_action(runtime, owner, site, action, target_trigger, cost_trigger):
 
 
 class CenterProjectSourceTests(unittest.TestCase):
+    def test_native_not_is_nor(self):
+        runtime, owner, _ = registered_case()
+        predicate = Node("NOT", "=", [
+            Node("has_country_flag", "=", "fixture_not_first", 0),
+            Node("has_country_flag", "=", "fixture_not_second", 0),
+        ], 0)
+        for first_flag, second_flag in ((False, False), (True, False), (False, True), (True, True)):
+            with self.subTest(first=first_flag, second=second_flag):
+                for flag, present in (("fixture_not_first", first_flag), ("fixture_not_second", second_flag)):
+                    (owner.flags.add if present else owner.flags.discard)(flag)
+                self.assertEqual(runtime._condition(predicate, owner), not (first_flag or second_flag))
+
     def prepared(self, stage="shuttered", episode=35):
         runtime, owner, site = registered_case(stage, episode)
         runtime.run_effect("great_depression_refresh_costs", owner, root=owner)
@@ -942,7 +957,6 @@ class CenterProjectSourceTests(unittest.TestCase):
         self.assertNotIn("great_depression_center_lasting_capacity", site.flags)
         self.assertIn("great_depression_center_lasting_capacity_completed_receipt", site.flags)
         self.assertTrue(runtime.test_trigger("great_depression_center_lasting_capacity_target_is_valid", site, root=owner) is False)
-        self._protection_branch_closes_only_after_total_work()
 
     def test_inherited_failed_receipt_can_reclose_then_accept_paid_reopening(self):
         runtime, owner, site = self.prepared("distressed", episode=41)
@@ -1013,7 +1027,7 @@ class CenterProjectSourceTests(unittest.TestCase):
         self.assertEqual(snapshot[2], site.flags)
         self.assertEqual(snapshot[3], site.values)
 
-    def _protection_branch_closes_only_after_total_work(self):
+    def test_protection_branch_closes_only_after_total_work(self):
         runtime, owner, site = self.prepared("distressed")
         owner.values["great_depression_pending_center_project"] = runtime.constants["constant:great_depression_center_project.protection"]
         runtime.run_effect("great_depression_authorize_center_project", site, root=owner)
