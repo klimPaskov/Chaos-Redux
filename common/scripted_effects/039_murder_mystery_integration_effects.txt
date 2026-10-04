@@ -27,10 +27,23 @@ murder_mystery_add_current_country_to_prefire_pool = {
 	}
 }
 
+# Input: temp murder_mystery_scenario_host_selection, one for a manual
+# scenario launch (no individual-crisis load cap), zero for the event pool.
 murder_mystery_select_weighted_prefire_host = {
 	clear_temp_array = murder_mystery_prefire_host_pool
 	every_country = {
-		limit = { murder_mystery_prefire_host_is_valid = yes }
+		limit = {
+			OR = {
+				AND = {
+					check_variable = { var = murder_mystery_scenario_host_selection value = constant:murder_mystery_value.zero compare = equals }
+					murder_mystery_prefire_host_is_valid = yes
+				}
+				AND = {
+					check_variable = { var = murder_mystery_scenario_host_selection value = constant:murder_mystery_value.one compare = equals }
+					murder_mystery_scenario_host_is_valid = yes
+				}
+			}
+		}
 		murder_mystery_add_current_country_to_prefire_pool = yes
 	}
 	if = {
@@ -49,6 +62,7 @@ murder_mystery_prepare_random_event_fire = {
 		limit = { has_event_target = murder_mystery_prefire_host }
 		clear_global_event_target = murder_mystery_prefire_host
 	}
+	set_temp_variable = { murder_mystery_scenario_host_selection = constant:murder_mystery_value.zero }
 	murder_mystery_select_weighted_prefire_host = yes
 	if = {
 		limit = { murder_mystery_prefire_host_is_current = yes }
@@ -82,28 +96,61 @@ murder_mystery_evaluate_event_pool_unavailability = {
 	}
 }
 
+# Manual Assassin Network launch. The opening runs at once on the chosen host,
+# so a launch is never left waiting on a delayed event that could be
+# rejected: it either commits and applies the intensity setup, or fails and
+# leaves the runtime dormant with the launch-failed receipt.
 murder_mystery_triggerable_scenario_launch = {
 	if = {
 		limit = { murder_mystery_triggerable_scenario_can_launch = yes }
+		clr_global_flag = murder_mystery_scenario_launch_failed
 		if = {
 			limit = { has_event_target = murder_mystery_prefire_host }
 			clear_global_event_target = murder_mystery_prefire_host
 		}
 		set_variable = { global.murder_mystery_scenario_launch_intensity = triggerable_scenarios_intensity }
 		set_global_flag = murder_mystery_scenario_launch_in_progress
+		set_temp_variable = { murder_mystery_scenario_host_selection = constant:murder_mystery_value.one }
 		murder_mystery_select_weighted_prefire_host = yes
 		if = {
 			limit = { has_event_target = murder_mystery_prefire_host }
-			event_target:murder_mystery_prefire_host = {
-				country_event = { id = chaosx.nr39.1 days = 1 }
-			}
+			event_target:murder_mystery_prefire_host = { murder_mystery_run_opening = yes }
 		}
+		clr_global_flag = murder_mystery_scenario_launch_in_progress
+		clear_variable = global.murder_mystery_scenario_launch_intensity
 		if = {
-			limit = { NOT = { has_event_target = murder_mystery_prefire_host } }
-			clr_global_flag = murder_mystery_scenario_launch_in_progress
-			clear_variable = global.murder_mystery_scenario_launch_intensity
+			limit = { NOT = { has_global_flag = murder_mystery_scenario_launched } }
+			set_global_flag = murder_mystery_scenario_launch_failed
 		}
 	}
+}
+
+# COUNTRY scope: the chosen host. Shared by the event-pool opening
+# (chaosx.nr39.1) and the manual scenario launch.
+murder_mystery_run_opening = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = murder_mystery_scenario_launched }
+			NOT = { has_global_flag = murder_mystery_scenario_launch_in_progress }
+		}
+		set_global_flag = murder_mystery_natural_run
+	}
+	murder_mystery_prepare_opening_package = yes
+	murder_mystery_commit_opening_transaction = yes
+	if = {
+		limit = { NOT = { has_global_flag = murder_mystery_opening_transaction_committed } }
+		murder_mystery_abort_opening_transaction = yes
+	}
+	if = {
+		limit = {
+			has_global_flag = murder_mystery_opening_transaction_committed
+			has_global_flag = murder_mystery_scenario_launch_in_progress
+		}
+		set_global_flag = murder_mystery_scenario_launched
+		murder_mystery_apply_scenario_setup = yes
+	}
+	clr_global_flag = murder_mystery_scenario_launch_in_progress
+	clear_variable = global.murder_mystery_scenario_launch_intensity
 }
 
 # Scenario setup commits each missing stage up to the requested intensity in

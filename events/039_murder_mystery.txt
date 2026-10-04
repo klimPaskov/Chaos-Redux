@@ -25,29 +25,7 @@ country_event = {
 		murder_mystery_prefire_host_is_valid = yes
 	}
 	immediate = {
-		if = {
-			limit = {
-				NOT = { has_global_flag = murder_mystery_scenario_launched }
-				NOT = { has_global_flag = murder_mystery_scenario_launch_in_progress }
-			}
-			set_global_flag = murder_mystery_natural_run
-		}
-		murder_mystery_prepare_opening_package = yes
-		murder_mystery_commit_opening_transaction = yes
-		if = {
-			limit = { NOT = { has_global_flag = murder_mystery_opening_transaction_committed } }
-			murder_mystery_abort_opening_transaction = yes
-		}
-		if = {
-			limit = {
-				has_global_flag = murder_mystery_opening_transaction_committed
-				has_global_flag = murder_mystery_scenario_launch_in_progress
-			}
-			set_global_flag = murder_mystery_scenario_launched
-			murder_mystery_apply_scenario_setup = yes
-		}
-		clr_global_flag = murder_mystery_scenario_launch_in_progress
-		clear_variable = global.murder_mystery_scenario_launch_intensity
+		murder_mystery_run_opening = yes
 	}
 }
 

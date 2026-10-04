@@ -102,3 +102,10 @@ A failed revolt returns every moved state to its government; the old rollback ga
 The derivative follows the central state's route instead of the caller's, which had made every pulse- or event-driven revolt a Cells Without Masters revolt.
 Maximum-intensity scenarios prime their first seeded cells as ready insurrection cells before raising their revolts.
 Cell seeding uses a land border with the host, a land border with an existing cell, or an ally of the host, one route per attempt.
+
+## D12. The scenario opening runs synchronously
+
+Disposition: implemented.
+The launch used to queue `chaosx.nr39.1` one day later and leave `murder_mystery_scenario_launch_in_progress` set forever if that event's trigger failed; it now runs the shared opening effect immediately on the chosen host and always clears the in-progress flag and intensity.
+A manual launch ignores the shared individual-crisis load cap, because the player explicitly asked for this crisis; High and Maximum prefer hosts with more than six controlled states so the opening split can succeed.
+The seeding and revolt loops stop after a constant attempt budget; the old loops could retry up to the engine's 1000-iteration limit.

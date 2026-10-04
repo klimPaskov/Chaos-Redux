@@ -9,7 +9,32 @@
 #   actual nonhuman countries.
 # ============================================================================
 
+# COUNTRY scope. The event pool also respects the shared individual-crisis
+# load cap; a manual scenario launch does not.
 murder_mystery_prefire_host_is_valid = {
+	murder_mystery_host_is_eligible = yes
+	individual_crisis_load_is_below_cap = yes
+}
+
+# COUNTRY scope. Manual Assassin Network launches. High and Maximum also need
+# a host large enough to lose a territorial cluster and keep a remnant.
+murder_mystery_scenario_host_is_valid = {
+	murder_mystery_host_is_eligible = yes
+	OR = {
+		NOT = { has_variable = global.murder_mystery_scenario_launch_intensity }
+		check_variable = { var = global.murder_mystery_scenario_launch_intensity value = constant:triggerable_scenario_intensity.high compare = less_than }
+		num_of_controlled_states > constant:murder_mystery_scenario.split_minimum_host_states
+	}
+}
+
+murder_mystery_has_any_scenario_host = {
+	any_country = {
+		murder_mystery_host_is_eligible = yes
+	}
+}
+
+# COUNTRY scope. Shared host requirements for every opening.
+murder_mystery_host_is_eligible = {
 	exists = yes
 	OR = {
 		is_major = yes
@@ -26,7 +51,6 @@ murder_mystery_prefire_host_is_valid = {
 	NOT = { has_global_flag = murder_mystery_runtime_active }
 	NOT = { has_global_flag = murder_mystery_runtime_resolved }
 	NOT = { has_global_flag = murder_mystery_terminal_war_active }
-	individual_crisis_load_is_below_cap = yes
 	num_of_controlled_states > constant:murder_mystery_split.minimum_cluster_states
 	has_civil_war = no
 	any_character = {
@@ -213,5 +237,5 @@ murder_mystery_triggerable_scenario_can_launch = {
 	NOT = { has_global_flag = world_end }
 	NOT = { has_global_flag = murder_mystery_scenario_launch_in_progress }
 	NOT = { has_global_flag = murder_mystery_scenario_launched }
-	murder_mystery_has_any_eligible_host = yes
+	murder_mystery_has_any_scenario_host = yes
 }

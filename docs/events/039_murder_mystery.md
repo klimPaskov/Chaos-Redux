@@ -158,6 +158,13 @@ Operations kits remain an Assassin-only cost.
 A foreign government's case opens when a cell is registered in its country; after mapping the network it moves straight to breaking the cell.
 A successful local raid dismantles the cell (immunity, Chaos decrease for the first few cells, report `chaosx.nr39.10`); a partial raid costs the cell maturity and one stage.
 
+## Assassin Network scenario launch
+
+The manual launch selects its host from the same weighted pool without the shared individual-crisis load cap, and High or Maximum intensity requires a host with more than `murder_mystery_scenario.split_minimum_host_states` controlled states.
+The opening runs at once on that host through `murder_mystery_run_opening`, the same effect the event-pool opening uses, so the launch never waits on a delayed event that could be rejected.
+The launch either commits and applies its intensity setup, or fails, leaves the runtime dormant and sets `murder_mystery_scenario_launch_failed`; the in-progress flag and stored intensity are always cleared.
+Intensity setup commits evolutions in order, opens the Assassin State at High and Maximum before recording Evolution III and IV, seeds cells and raises Maximum-intensity revolts within attempt budgets of `murder_mystery_seeding.maximum_attempts` per requested cell or revolt.
+
 ## Runtime ownership and presentation
 
 | Surface | Source |
