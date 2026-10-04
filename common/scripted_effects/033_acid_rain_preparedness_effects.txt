@@ -290,72 +290,59 @@ acid_rain_refresh_recovery_action_quote = {
 	acid_rain_refresh_country_action_quotes = yes
 }
 
+# COUNTRY SCOPE. Creates the four project rows. Indexed writes only change
+# existing elements, so every row is sized before the runtime uses it.
 acid_rain_initialize_project_ledgers = {
-	set_variable = { acid_rain_project_active_entries^1 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_project_tier_entries^1 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_project_end_day_entries^1 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_project_civ_entries^1 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_project_manpower_entries^1 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_project_generation_entries^1 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_project_ai_reserve_pass_entries^1 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_project_active_entries^2 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_project_tier_entries^2 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_project_end_day_entries^2 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_project_civ_entries^2 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_project_manpower_entries^2 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_project_generation_entries^2 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_project_ai_reserve_pass_entries^2 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_project_active_entries^3 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_project_tier_entries^3 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_project_end_day_entries^3 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_project_civ_entries^3 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_project_manpower_entries^3 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_project_generation_entries^3 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_project_ai_reserve_pass_entries^3 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_project_active_entries^4 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_project_tier_entries^4 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_project_end_day_entries^4 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_project_civ_entries^4 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_project_manpower_entries^4 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_project_generation_entries^4 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_project_ai_reserve_pass_entries^4 = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_array_size = constant:acid_rain_runtime.five }
+	clear_array = acid_rain_project_active_entries
+	resize_array = { array = acid_rain_project_active_entries size = acid_rain_array_size }
+	clear_array = acid_rain_project_tier_entries
+	resize_array = { array = acid_rain_project_tier_entries size = acid_rain_array_size }
+	clear_array = acid_rain_project_end_day_entries
+	resize_array = { array = acid_rain_project_end_day_entries size = acid_rain_array_size }
+	clear_array = acid_rain_project_civ_entries
+	resize_array = { array = acid_rain_project_civ_entries size = acid_rain_array_size }
+	clear_array = acid_rain_project_manpower_entries
+	resize_array = { array = acid_rain_project_manpower_entries size = acid_rain_array_size }
+	clear_array = acid_rain_project_generation_entries
+	resize_array = { array = acid_rain_project_generation_entries size = acid_rain_array_size }
+	clear_array = acid_rain_project_ai_reserve_pass_entries
+	resize_array = { array = acid_rain_project_ai_reserve_pass_entries size = acid_rain_array_size }
+	clear_array = acid_rain_project_target_tier_entries
+	resize_array = { array = acid_rain_project_target_tier_entries size = acid_rain_array_size }
 }
 
+# COUNTRY SCOPE. Creates the action quote rows, one element per action id.
 acid_rain_initialize_action_quote_arrays = {
-	set_variable = { acid_rain_action_days_entries^0 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_action_effect_days_entries^0 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_action_kind_entries^0 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_action_target_required_entries^0 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_action_family_count_entries^0 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_action_political_power_entries^0 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_action_civ_entries^0 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_action_support_entries^0 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_action_train_entries^0 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_action_convoy_entries^0 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_action_manpower_entries^0 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_action_motorized_entries^0 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_action_fuel_entries^0 = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_action_ai_reserve_pass_entries^0 = constant:acid_rain_runtime.zero }
-	set_temp_variable = { acid_rain_action_quote_loop_end = constant:acid_rain_runtime.action_loop_end }
-	for_loop_effect = {
-		start = constant:acid_rain_runtime.one
-		end = acid_rain_action_quote_loop_end
-		value = acid_rain_action_quote_index
-		set_variable = { acid_rain_action_days_entries^acid_rain_action_quote_index = constant:acid_rain_runtime.zero }
-		set_variable = { acid_rain_action_effect_days_entries^acid_rain_action_quote_index = constant:acid_rain_runtime.zero }
-		set_variable = { acid_rain_action_kind_entries^acid_rain_action_quote_index = constant:acid_rain_runtime.zero }
-		set_variable = { acid_rain_action_target_required_entries^acid_rain_action_quote_index = constant:acid_rain_runtime.zero }
-		set_variable = { acid_rain_action_family_count_entries^acid_rain_action_quote_index = constant:acid_rain_runtime.zero }
-		set_variable = { acid_rain_action_political_power_entries^acid_rain_action_quote_index = constant:acid_rain_runtime.zero }
-		set_variable = { acid_rain_action_civ_entries^acid_rain_action_quote_index = constant:acid_rain_runtime.zero }
-		set_variable = { acid_rain_action_support_entries^acid_rain_action_quote_index = constant:acid_rain_runtime.zero }
-		set_variable = { acid_rain_action_train_entries^acid_rain_action_quote_index = constant:acid_rain_runtime.zero }
-		set_variable = { acid_rain_action_convoy_entries^acid_rain_action_quote_index = constant:acid_rain_runtime.zero }
-		set_variable = { acid_rain_action_manpower_entries^acid_rain_action_quote_index = constant:acid_rain_runtime.zero }
-		set_variable = { acid_rain_action_motorized_entries^acid_rain_action_quote_index = constant:acid_rain_runtime.zero }
-		set_variable = { acid_rain_action_fuel_entries^acid_rain_action_quote_index = constant:acid_rain_runtime.zero }
-		set_variable = { acid_rain_action_ai_reserve_pass_entries^acid_rain_action_quote_index = constant:acid_rain_runtime.zero }
-	}
+	set_temp_variable = { acid_rain_array_size = constant:acid_rain_runtime.action_loop_end }
+	clear_array = acid_rain_action_days_entries
+	resize_array = { array = acid_rain_action_days_entries size = acid_rain_array_size }
+	clear_array = acid_rain_action_effect_days_entries
+	resize_array = { array = acid_rain_action_effect_days_entries size = acid_rain_array_size }
+	clear_array = acid_rain_action_kind_entries
+	resize_array = { array = acid_rain_action_kind_entries size = acid_rain_array_size }
+	clear_array = acid_rain_action_target_required_entries
+	resize_array = { array = acid_rain_action_target_required_entries size = acid_rain_array_size }
+	clear_array = acid_rain_action_family_count_entries
+	resize_array = { array = acid_rain_action_family_count_entries size = acid_rain_array_size }
+	clear_array = acid_rain_action_political_power_entries
+	resize_array = { array = acid_rain_action_political_power_entries size = acid_rain_array_size }
+	clear_array = acid_rain_action_civ_entries
+	resize_array = { array = acid_rain_action_civ_entries size = acid_rain_array_size }
+	clear_array = acid_rain_action_support_entries
+	resize_array = { array = acid_rain_action_support_entries size = acid_rain_array_size }
+	clear_array = acid_rain_action_train_entries
+	resize_array = { array = acid_rain_action_train_entries size = acid_rain_array_size }
+	clear_array = acid_rain_action_convoy_entries
+	resize_array = { array = acid_rain_action_convoy_entries size = acid_rain_array_size }
+	clear_array = acid_rain_action_manpower_entries
+	resize_array = { array = acid_rain_action_manpower_entries size = acid_rain_array_size }
+	clear_array = acid_rain_action_motorized_entries
+	resize_array = { array = acid_rain_action_motorized_entries size = acid_rain_array_size }
+	clear_array = acid_rain_action_fuel_entries
+	resize_array = { array = acid_rain_action_fuel_entries size = acid_rain_array_size }
+	clear_array = acid_rain_action_ai_reserve_pass_entries
+	resize_array = { array = acid_rain_action_ai_reserve_pass_entries size = acid_rain_array_size }
 }
 
 # ---------------------------------------------------------------------------

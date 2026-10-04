@@ -139,6 +139,14 @@ acid_rain_initialize_region_arrays = {
 	clear_array = global.acid_rain_region_first_visit_target_entries
 	clear_array = global.acid_rain_region_first_visit_observed_entries
 	clear_array = global.acid_rain_region_second_visit_observed_entries
+	# Indexed writes need existing elements: size every region row before use.
+	set_temp_variable = { acid_rain_array_size = constant:acid_rain_runtime.region_loop_end }
+	resize_array = { array = global.acid_rain_region_state_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_region_valid_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_region_touched_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_region_first_visit_target_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_region_first_visit_observed_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_region_second_visit_observed_entries size = acid_rain_array_size }
 	set_variable = { global.acid_rain_region_state_entries^0 = constant:acid_rain_region_state.complete }
 	set_variable = { global.acid_rain_region_valid_entries^0 = constant:acid_rain_runtime.zero }
 	set_variable = { global.acid_rain_region_touched_entries^0 = constant:acid_rain_runtime.zero }
@@ -185,6 +193,34 @@ acid_rain_initialize_front_arrays = {
 	clear_array = global.acid_rain_front_severe_entries
 	clear_array = global.acid_rain_front_severe_cooldown_day_entries
 	clear_array = global.acid_rain_front_cooldown_day_entries
+	# Indexed writes need existing elements: size every front row before use.
+	set_temp_variable = { acid_rain_array_size = constant:acid_rain_runtime.front_loop_end }
+	resize_array = { array = global.acid_rain_front_state_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_front_region_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_front_previous_region_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_front_next_region_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_front_visit_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_front_generation_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_front_target_goal_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_front_initial_footprint_goal_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_front_initial_footprint_done_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_front_visited_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_front_empty_move_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_front_created_day_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_front_next_work_day_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_front_next_warning_day_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_front_move_day_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_front_min_departure_day_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_front_max_departure_day_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_front_active_state_count_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_front_movement_count_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_front_coverage_at_entry_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_front_zero_gain_move_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_front_correction_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_front_intensity_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_front_severe_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_front_severe_cooldown_day_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_front_cooldown_day_entries size = acid_rain_array_size }
 	set_variable = { global.acid_rain_front_state_entries^0 = constant:acid_rain_front_state.inactive }
 	set_variable = { global.acid_rain_front_region_entries^0 = constant:acid_rain_runtime.zero }
 	set_variable = { global.acid_rain_front_previous_region_entries^0 = constant:acid_rain_runtime.zero }
@@ -345,6 +381,37 @@ acid_rain_initialize_runtime_scalars = {
 	clear_array = global.acid_rain_superstorm_planner_targets
 	clear_array = global.acid_rain_superstorm_planner_weighted_candidates
 	clear_array = global.acid_rain_achievement_receipt_ids
+	# Indexed writes need existing elements. Severe cells, superstorm slots and
+	# warning visits use bounded ids, so every row is sized to its cap here;
+	# an unused severe or superstorm slot reads as retired.
+	set_temp_variable = { acid_rain_array_retired = constant:acid_rain_runtime.two }
+	set_temp_variable = { acid_rain_array_size = constant:acid_rain_event.max_severe_cells }
+	add_to_temp_variable = { acid_rain_array_size = constant:acid_rain_runtime.loop_increment }
+	resize_array = { array = global.acid_rain_severe_cell_front_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_severe_cell_start_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_severe_cell_end_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_severe_cell_target_count_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_severe_cell_cooldown_day_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_severe_cell_death_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_severe_cell_damage_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_severe_cell_low_preparedness_exposure_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_severe_cell_supply_disruption_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_severe_cell_active_entries size = acid_rain_array_size value = acid_rain_array_retired }
+	set_temp_variable = { acid_rain_array_size = constant:acid_rain_event.max_superstorms }
+	add_to_temp_variable = { acid_rain_array_size = constant:acid_rain_runtime.loop_increment }
+	resize_array = { array = global.acid_rain_superstorm_start_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_superstorm_end_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_superstorm_target_count_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_superstorm_episode_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_superstorm_active_entries size = acid_rain_array_size value = acid_rain_array_retired }
+	set_temp_variable = { acid_rain_array_size = constant:acid_rain_runtime.region_loop_end }
+	resize_array = { array = global.acid_rain_superstorm_region_active_entries size = acid_rain_array_size }
+	set_temp_variable = { acid_rain_array_size = constant:acid_rain_event.max_warnings }
+	add_to_temp_variable = { acid_rain_array_size = constant:acid_rain_runtime.loop_increment }
+	resize_array = { array = global.acid_rain_warning_front_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_warning_region_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_warning_generation_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_warning_day_entries size = acid_rain_array_size }
 	set_variable = { global.acid_rain_severe_cell_death_entries^0 = constant:acid_rain_runtime.zero }
 	set_variable = { global.acid_rain_severe_cell_damage_entries^0 = constant:acid_rain_runtime.zero }
 	set_variable = { global.acid_rain_severe_cell_low_preparedness_exposure_entries^0 = constant:acid_rain_runtime.zero }
