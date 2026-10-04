@@ -71,7 +71,11 @@ gods_of_africa_participant_category = {
 				NOT = { gods_of_africa_participant_generation_is_current = yes }
 				NOT = { gods_of_africa_participant_needs_reconciliation = yes }
 				NOT = { has_country_flag = gods_of_africa_reconciliation_pending }
-				has_war = yes
+				# Only a war with Africa interrupts the window (decision L23).
+				AND = {
+					has_event_target = africa_host
+					has_war_with = event_target:africa_host
+				}
 				has_country_flag = gods_of_africa_final_settlement_committed
 			}
 		}

@@ -285,3 +285,21 @@ Decisions:
 - The optional Sacred State / Veiled Instrument fork is `rejected`: the spec marks it optional ("Add it only if Event 012's existing political routes can support it without clutter"), and the three doctrine decisions already cover how Africa handles ambiguity. The four dead localisation keys are removed.
 
 MCP route evidence (2026-10-04, round 2): one narrow `hoi4_focus_inspect` call (`mode = national`, `treeId = africa_continental_focus_tree`) returned revision `23b4daad`, 300 focuses, 297 diagnostics, 62 connector crossings and 53 node intersections, the same counts as the L15 after-state, so the edits added no overlap or crossing. Its single blocking diagnostic is an unexpected brace in the vanilla file `game:common/national_focus/TSR_lingguang_incident_joint_branch.txt`, outside this mod. No raster was rendered.
+
+## L23. Tribute and reconciliation pause only for war with Africa; other wars ease the demand
+
+Disposition: `implemented` (native `surrender_progress` readings for co-belligerents are `needs_live_game`).
+
+Basis: spec acceptance rows DEM-14 ("Target at war with Africa: ordinary demand pauses") and DEM-04 ("Target near capitulation with empty reserves: demand is delayed, reduced, or moved to valid nonmaterial family"), the full spec's "War with Africa" and "Rare reconciliation" sections (which require only no active war with Africa), and the round 2 remaining-work list (priority 1).
+The any-war gates came from Codex commit `0edbcc217` ("not a wartime tax"); that was an implementation choice with no user decision or spec row behind it, so it is replaced rather than kept.
+
+Decisions:
+
+- Demand dispatch (`gods_of_africa_participant_can_receive_demand`), reconciliation (`gods_of_africa_participant_can_reconcile`, `gods_of_africa_start_reconciliation`) and the reconciliation mission's `cancel_trigger` exclude a participant only while `has_war_with = event_target:africa_host`.
+  The held- and owned-host-core requirements for reconciliation are unchanged.
+- A participant at war elsewhere gets an easier demand: the demand scale drops by `gods_of_africa_demand_scale.wartime_delta` (20 points) and by `losing_war_delta` (25 more) above `gods_of_africa_hardship.losing_war_surrender` (0.25 surrender progress); the deadline grows by `gods_of_africa_timing.wartime_deadline_extension_days` (30) and `losing_war_deadline_extension_days` (30 more).
+- Above `gods_of_africa_hardship.near_capitulation_surrender` (0.5) the family ladder asks only for political tribute (emergency relief while Africa has an emergency, otherwise recognition once that lane is open); with neither, the demand is postponed by `gods_of_africa_timing.hardship_postpone_days` (60).
+- Any participant Africa cannot quote is passed over for `gods_of_africa_timing.unquotable_retry_days` (30). Before this, the dispatcher kept choosing the first eligible participant in the registry every seven days even when no contract could be formed for it, so later participants could starve.
+- The `.603` demand and the demand mission say when and why the demand was eased (`GetGodsOfAfricaDemandHardshipLine`); the wartime cancellation tooltip and the broken-agreement tooltip name the war with Africa explicitly.
+- Emergency relief is paid in political power, but `gods_of_africa_transaction.emergency_amount` was 500, which almost no government holds, so the emergency lane and the near-capitulation path could never form a contract. It is 50, on the scale of the other political families, and the unpayable-candidate fallback to emergency relief applies only while Africa has a real emergency need (`gods_of_africa_need_emergency`), so the family name never describes a demand Africa has no emergency for.
+  The grading's emergency package (`gods_of_africa_contribution_units.emergency_pp_per_package`) moves from 500 to 50 with it, so one base emergency demand still counts as one emergency package.

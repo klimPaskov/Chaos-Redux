@@ -1075,7 +1075,28 @@ gods_of_africa_select_demand_family = {
 		limit = { has_event_target = gods_of_africa_demand_participant }
 		event_target:gods_of_africa_demand_participant = { gods_of_africa_quote_mobile_tribute = yes }
 	}
+	# Near capitulation (spec DEM-04, decision L23) Africa asks only for
+	# political tribute: emergency relief while Africa has an emergency,
+	# otherwise recognition once that lane is open. With neither, no family is
+	# chosen and gods_of_africa_prepare_demand_for_participant postpones it.
 	if = {
+		limit = {
+			has_event_target = gods_of_africa_demand_participant
+			event_target:gods_of_africa_demand_participant = { gods_of_africa_participant_is_near_capitulation = yes }
+		}
+		if = {
+			limit = { check_variable = { gods_of_africa_need_emergency > constant:gods_of_africa_value.zero } }
+			set_variable = { gods_of_africa_family_candidate = constant:gods_of_africa_demand_family.emergency_relief }
+		}
+		else_if = {
+			limit = {
+				has_country_flag = gods_of_africa_focus_recognition_unlocked
+				event_target:gods_of_africa_demand_participant = { NOT = { has_country_flag = gods_of_africa_recognition_granted } }
+			}
+			set_variable = { gods_of_africa_family_candidate = constant:gods_of_africa_demand_family.recognition }
+		}
+	}
+	else_if = {
 		# A priority is meaningful only when its maintained need is active. This
 		# keeps host policy as a real tie-breaker without manufacturing a demand
 		# for a healthy lane.
@@ -1259,11 +1280,14 @@ gods_of_africa_select_demand_family = {
 			set_temp_variable = { gods_of_africa_family_selected = constant:gods_of_africa_value.one }
 		}
 	}
+	# A candidate the participant cannot pay falls back to emergency relief in
+	# political power, but only while Africa really has an emergency.
 	if = {
 		limit = {
 			check_variable = { gods_of_africa_family_selected = constant:gods_of_africa_value.zero }
 			has_variable = gods_of_africa_family_candidate
 			has_event_target = gods_of_africa_demand_participant
+			check_variable = { gods_of_africa_need_emergency > constant:gods_of_africa_value.zero }
 		}
 		event_target:gods_of_africa_demand_participant = {
 			set_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.emergency_relief }
@@ -1361,6 +1385,19 @@ gods_of_africa_calculate_demand_amount = {
 			}
 		}
 		add_to_temp_variable = { gods_of_africa_demand_scale = constant:gods_of_africa_demand_scale.need_delta }
+	}
+	# Wartime hardship (spec DEM-04, decision L23): a participant fighting
+	# another country is asked for less, and less again while it is losing.
+	if = {
+		limit = {
+			has_event_target = gods_of_africa_demand_participant
+			event_target:gods_of_africa_demand_participant = { gods_of_africa_participant_is_at_war_elsewhere = yes }
+		}
+		add_to_temp_variable = { gods_of_africa_demand_scale = constant:gods_of_africa_demand_scale.wartime_delta }
+		if = {
+			limit = { event_target:gods_of_africa_demand_participant = { gods_of_africa_participant_is_losing_war = yes } }
+			add_to_temp_variable = { gods_of_africa_demand_scale = constant:gods_of_africa_demand_scale.losing_war_delta }
+		}
 	}
 	if = {
 		limit = {
@@ -1551,6 +1588,19 @@ gods_of_africa_calculate_demand_deadline = {
 	if = {
 		limit = { check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.strategic_ambiguity } }
 		add_to_variable = { gods_of_africa_contract_deadline = constant:gods_of_africa_doctrine_effect.strategic_ambiguity_deadline_extension_days }
+	}
+	# Wartime hardship (decision L23): more time to answer during a war with
+	# another country, and more again while losing it.
+	if = {
+		limit = {
+			has_event_target = gods_of_africa_demand_participant
+			event_target:gods_of_africa_demand_participant = { gods_of_africa_participant_is_at_war_elsewhere = yes }
+		}
+		add_to_variable = { gods_of_africa_contract_deadline = constant:gods_of_africa_timing.wartime_deadline_extension_days }
+		if = {
+			limit = { event_target:gods_of_africa_demand_participant = { gods_of_africa_participant_is_losing_war = yes } }
+			add_to_variable = { gods_of_africa_contract_deadline = constant:gods_of_africa_timing.losing_war_deadline_extension_days }
+		}
 	}
 }
 
@@ -1818,6 +1868,22 @@ gods_of_africa_prepare_demand_for_participant = {
 				clear_variable = gods_of_africa_selected_amount
 			}
 		}
+		# A participant Africa could not quote is passed over for a while, so the
+		# dispatcher reaches the next participant instead of retrying the same
+		# one every few days. Near capitulation the wait is longer (decision L23).
+		event_target:gods_of_africa_demand_participant = {
+			if = {
+				limit = { NOT = { has_country_flag = gods_of_africa_demand_active } }
+				set_variable = { gods_of_africa_next_demand_date = global.num_days }
+				if = {
+					limit = { gods_of_africa_participant_is_near_capitulation = yes }
+					add_to_variable = { gods_of_africa_next_demand_date = constant:gods_of_africa_timing.hardship_postpone_days }
+				}
+				else = {
+					add_to_variable = { gods_of_africa_next_demand_date = constant:gods_of_africa_timing.unquotable_retry_days }
+				}
+			}
+		}
 		event_target:gods_of_africa_demand_participant = {
 			clear_variable = gods_of_africa_armor_quote_amount
 			clear_variable = gods_of_africa_armor_quote_ceiling
@@ -1874,6 +1940,18 @@ gods_of_africa_create_demand_contract = {
 			set_variable = { gods_of_africa_demand_band = event_target:africa_host.gods_of_africa_contract_band }
 			set_variable = { gods_of_africa_demand_deadline = event_target:africa_host.gods_of_africa_contract_deadline }
 			set_variable = { gods_of_africa_demand_status = constant:gods_of_africa_demand_status.open }
+			# The wartime easing applied to this quote (decision L23), for the
+			# demand event and mission text.
+			clr_country_flag = gods_of_africa_demand_eased_for_war
+			clr_country_flag = gods_of_africa_demand_eased_for_losing_war
+			if = {
+				limit = { gods_of_africa_participant_is_losing_war = yes }
+				set_country_flag = gods_of_africa_demand_eased_for_losing_war
+			}
+			else_if = {
+				limit = { gods_of_africa_participant_is_at_war_elsewhere = yes }
+				set_country_flag = gods_of_africa_demand_eased_for_war
+			}
 			gods_of_africa_bind_demand_epoch = yes
 			gods_of_africa_open_contract_ledger = yes
 			# Freeze whether this appeal answers a real current emergency, so a
@@ -2558,6 +2636,8 @@ gods_of_africa_clear_demand = {
 	clr_country_flag = gods_of_africa_contract_fulfillment_authorized
 	gods_of_africa_clear_mobile_quote = yes
 	clr_country_flag = gods_of_africa_demand_active
+	clr_country_flag = gods_of_africa_demand_eased_for_war
+	clr_country_flag = gods_of_africa_demand_eased_for_losing_war
 	clr_country_flag = gods_of_africa_negotiation_open
 	clr_country_flag = gods_of_africa_extension_used
 	clear_variable = gods_of_africa_armor_quote_amount
@@ -3405,8 +3485,10 @@ gods_of_africa_start_reconciliation = {
 		limit = {
 			gods_of_africa_participant_generation_is_current = yes
 			gods_of_africa_participant_needs_reconciliation = yes
-			# The window cannot be honoured during a war, so it opens after peace.
-			NOT = { has_war = yes }
+			# The window cannot be honoured during a war with Africa, so it opens
+			# after that peace. A war with anyone else does not delay it (L23).
+			has_event_target = africa_host
+			NOT = { has_war_with = event_target:africa_host }
 			NOT = { has_country_flag = gods_of_africa_reconciliation_pending }
 			NOT = { has_country_flag = gods_of_africa_demand_active }
 			OR = {
@@ -3450,7 +3532,8 @@ gods_of_africa_complete_reconciliation = {
 		# offer is still on file. Prior war, occupation, defiance and breach
 		# records stay permanent.
 		gods_of_africa_resolve_accepted_grading_conduct = yes
-		# This acceptance already proved peace and no held host-core territory.
+		# This acceptance already proved peace with Africa and no held host-core
+		# territory.
 		clr_country_flag = gods_of_africa_unresolved_major_offense
 		gods_of_africa_clear_reconciliation_epoch = yes
 		remove_mission = gods_of_africa_reconciliation_mission

@@ -256,9 +256,10 @@ gods_of_africa_demand_contract_can_resolve = {
 gods_of_africa_participant_can_receive_demand = {
 	gods_of_africa_participant_host_is_active = yes
 	gods_of_africa_participant_generation_is_current = yes
-	# Tribute is a political compact, not a wartime tax. A country at war must
-	# finish its current conflict before a fresh ordinary demand is issued.
-	NOT = { has_war = yes }
+	# Ordinary tribute pauses only while the participant is at war with Africa
+	# (spec DEM-14). A war with anyone else eases the demand instead: see
+	# gods_of_africa_calculate_demand_amount and _deadline (DEM-04, decision L23).
+	NOT = { has_war_with = event_target:africa_host }
 	NOT = { has_country_flag = gods_of_africa_defiant }
 	NOT = { has_country_flag = gods_of_africa_reconciliation_pending }
 	NOT = { has_country_flag = gods_of_africa_final_outcome_committed }
@@ -271,6 +272,25 @@ gods_of_africa_participant_can_receive_demand = {
 			compare = greater_than_or_equals
 		}
 	}
+}
+
+# COUNTRY scope on a participant. Wartime hardship eases an ordinary demand
+# (spec DEM-04). The dispatch gate already excludes war with Africa, so here
+# any war is a war against someone else.
+gods_of_africa_participant_is_at_war_elsewhere = {
+	has_war = yes
+	NOT = { has_war_with = event_target:africa_host }
+}
+
+gods_of_africa_participant_is_losing_war = {
+	gods_of_africa_participant_is_at_war_elsewhere = yes
+	check_variable = { var = surrender_progress value = constant:gods_of_africa_hardship.losing_war_surrender compare = greater_than }
+}
+
+# Near capitulation, Africa asks only for political tribute or waits.
+gods_of_africa_participant_is_near_capitulation = {
+	gods_of_africa_participant_is_at_war_elsewhere = yes
+	check_variable = { var = surrender_progress value = constant:gods_of_africa_hardship.near_capitulation_surrender compare = greater_than }
 }
 
 # Caller sets temporary gods_of_africa_family_to_check. Equipment shipments are
@@ -564,7 +584,8 @@ gods_of_africa_participant_can_reconcile = {
 	gods_of_africa_reconciliation_epoch_is_current = yes
 	gods_of_africa_participant_needs_reconciliation = yes
 	has_country_flag = gods_of_africa_reconciliation_pending
-	NOT = { has_war = yes }
+	# Only a war with Africa blocks reconciliation; a war elsewhere does not.
+	NOT = { has_war_with = event_target:africa_host }
 	NOT = { gods_of_africa_participant_holds_host_core_state = yes }
 	NOT = { gods_of_africa_participant_owns_host_core_state = yes }
 	has_variable = gods_of_africa_reconciliation_due_day

@@ -37,6 +37,15 @@ gods_of_africa_timing = {
 	# A payment or voluntary shipment that moved nothing cannot be resent
 	# until this many days have passed, so it is never repeated every day.
 	undelivered_retry_days = 7
+	# A participant at war with another country gets more time to answer, and
+	# more again while it is losing that war (spec DEM-04, decision L23).
+	wartime_deadline_extension_days = 30
+	losing_war_deadline_extension_days = 30
+	# Near capitulation with no political tribute to ask, Africa waits.
+	hardship_postpone_days = 60
+	# A participant Africa could not quote this time is passed over for a
+	# while, so the dispatcher moves on to the next participant.
+	unquotable_retry_days = 30
 }
 
 gods_of_africa_value = {
@@ -306,6 +315,17 @@ gods_of_africa_strength = {
 	weighted_divisor = 100
 }
 
+# Wartime hardship thresholds on the participant's surrender progress (0..1).
+gods_of_africa_hardship = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	losing_war_surrender = 0.25
+	near_capitulation_surrender = 0.5
+}
+
 gods_of_africa_transaction = {
 	schema = {
 		any_key = yes
@@ -328,7 +348,9 @@ gods_of_africa_transaction = {
 	recognition_pp_amount = 10
 	territory_pp_amount = 25
 	reconciliation_pp_amount = 10
-	emergency_amount = 500
+	# Emergency relief is paid in political power, so it sits on the same
+	# scale as the other political families.
+	emergency_amount = 50
 	max_substitutes = 3
 	pressure_pp_loss = 5
 	disruption_pp_loss = 10
@@ -460,6 +482,10 @@ gods_of_africa_demand_scale = {
 	need_delta = 20
 	conduct_delta = 15
 	repetition_delta = 10
+	# Wartime hardship (decision L23): a war elsewhere lowers the scale, and
+	# losing that war lowers it again.
+	wartime_delta = -20
+	losing_war_delta = -25
 	reciprocal_delta = -10
 	sovereign_delta = 20
 	percent_divisor = 100
