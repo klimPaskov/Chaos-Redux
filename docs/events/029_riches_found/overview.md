@@ -54,11 +54,60 @@ Scripted localisation converts exact values into concise bands and adds only the
 
 The baseline phases are discovery and claims, the rush, physical development, revenue settlement, foreign concessions, armed protection and raids, and consolidation, closure, or control crisis.
 The accepted presentation requires three to five primary actions per ordinary phase, at most six, and one to three active missions.
-Actual visibility, mission capacity, objective freshness, cleanup, and payment integrity remain subject to the parent's current review and the pending decision audit.
+
+### Decision layers
+
+`riches_found_phase` stores only the highest ordinary milestone the mine has reached: claims, rush, development, revenue or foreign concessions.
+`riches_found_reconcile_mine_phase` advances it one step at a time when the current milestone is complete (a survey and a claims policy; camp administration, sanitation and a labor route; a transport route, reinforced shafts and one settlement work; one revenue settlement) and never lowers it.
+Armed protection and the closure or control crisis are not stored phases: they are overlays worked out from current conditions on every refresh, so a mine that faces a raid during development returns to its development decisions, including any not yet taken, once the raid crisis ends.
+
+The same refresh shows exactly one decision layer per mine, in this order:
+
+1. Occupation (`riches_found_phase_occupation`): the occupier's own actions.
+2. An open Bottomless Account (`riches_found_layer_account`).
+3. Demons Beneath the Mine (`riches_found_layer_demons`).
+4. Gold Disease (`riches_found_layer_gold`).
+5. The emergency overlay (`riches_found_phase_emergency`): a temporary closure, quarantine, collapse, terminal mine or severe collapse, or Extraction Pressure, Local Order or Revenue Legitimacy in crisis (`riches_found_mine_needs_emergency_response`).
+6. The security overlay (`riches_found_phase_security`): armed claimants, a wage dispute, a crime crisis, a raid crisis, an enemy holding a neighbouring state (`riches_found_front_line`), or private forces beyond control (`riches_found_mine_needs_security_response`).
+7. An unanswered Gilded Sovereignty (`riches_found_layer_gilded`); any one of its six answers settles the district.
+8. The Resource Curse (`riches_found_layer_curse`).
+9. The milestone layer (`riches_found_phase_claims`, `_rush`, `_rush_services`, `_development`, `_revenue` or `_foreign`).
+
+Repair is offered in every layer except an unanswered Gilded Sovereignty, whose authority holds the works; the mine selector and the return-to-list action are navigation and are not counted below.
+Missions are not counted.
+The largest set any combination of flags can show in each layer, with the exclusions that keep it there:
+
+| Layer | Most decisions visible at once | What keeps it within six |
+| --- | --- | --- |
+| Claims | 5 and Repair | Survey hides the four claims policies until it completes |
+| Rush | 1 and Repair, then 5 and Repair | Camp administration opens the services set |
+| Development | 5 and Repair | Rail Spur, Port Route and Drive Deeper exclude each other: Port Route only where rail is invalid or the state is an island, Rail Spur only without any route, Drive Deeper only with one |
+| Revenue | 4 and Repair | Dividend needs a working administration, Replace the Administration a compromised one; the Stabilization Fund needs order and legitimacy above their floors, Tolerate Patronage legitimacy below its floor; Central Revenue needs a state, military or predatory policy or a war |
+| Foreign, no contract | 5 and Repair | Offers follow the opening policy (a concession economy sells concessions and offtake rights, not infrastructure access); mine police or private guards by policy; the Independent Revenue Authority only after an audit and without a contract |
+| Foreign, running contract | 5 and Repair | Audit, publication, at most two term extensions and the standing force |
+| Foreign, strained contract | 5 and Repair | A due renewal, dispute, exposed meddling, ledger irregularities or foreign claim pressure at its gate (`riches_found_contract_under_strain`) replaces the offers and the standing force with disclosure and the exits; Buy Out needs working relations and Nationalize with Compensation broken ones; Nationalize without Compensation needs war, a non-democratic government, exposed corruption or meddling; at renewal Renegotiate replaces the audit |
+| Security | 5 and Repair | One standing force by policy; Army Cordon, Escort the Pay Train and Clear the Barricades need a supplied force, Arm the Workers its absence; Disarm Private Forces waits until no claimants or raids remain |
+| Emergency | 5 and Repair | A collapse or severe collapse offers the cordon, sealing, evacuation and permanent sealing; a closure offers reopening or repair, sealing, workforce replacement and the cordon; an open crisis offers closure, the aftermath quarantine, workforce replacement, sealing and the cordon |
+| Occupation | 5 and Repair | Reopening only for a closed mine and the exploitation choices only for an open one; Deny the Mine only when the hold is about to break (`riches_found_retreat_imminent`), which hides keeping the administration and replacing the concession |
+| Bottomless Account | 4 and Repair | Spend Authority and Predatory Prosperity answer different obligations |
+| Demons Beneath the Mine | 5 and Repair | Evacuation and the purge exclude each other; the three kinds of assistance come once the district is cleared and give way to Controlled Exploitation once one is taken |
+| Gold Disease | 5 and Repair | Closure, quarantine and rationed access are offered while movement is unrestricted; revenue sharing, workforce replacement, sealing and destroying seized material once it is restricted; Military Control only against gangs, sick guards, claimants or disorder |
+| Gilded Sovereignty | 6 | Repair waits until the authority is answered |
+| Resource Curse | 5 and Repair | Tolerate Corruption needs Local Order below the stable band, the Independent Revenue Authority stable order |
+
+While Gold Disease is active its own quarantine, workforce replacement and sealing replace the baseline emergency versions; the baseline quarantine serves a district that keeps Gold Disease susceptibility after containment.
+Army Cordon is offered with a supplied force in either overlay when a raid crisis, a war or a collapse of local order gives it cause, and starts Hold the Mine During War.
+
+The overlay flags follow the controller pulse (`riches_found_review_mine_crisis_flags`): the crisis, crime and compromised-administration flags lift on the pulse after their value recovers, a severe mutiny is a wage dispute that has broken local order, and a raid crisis ends after `riches_found_duration.raid_memory_days` without a raid or at once when Army Cordon, Clear the Barricades or a Mine Truce succeeds.
+Worker cooperatives, a dividend, local revenue or a truce settle a wage dispute.
 
 ## Baseline lifecycle
 
-The claims phase surveys the deposit, registers claims, freezes claims, recognizes local claims, reserves the deposit, or opens a claims court. Rush actions establish camp administration, local labor, specialist labor, armed workers, or a truce. Development actions build rail or port access, processing works, housing, shaft reinforcement, and workforce systems. Revenue actions choose central receipts, local revenue, citizens' dividends, a development fund, disclosure, audits, and stabilization measures.
+The claims phase surveys the deposit, registers claims, freezes claims, recognizes local claims, reserves the deposit, or opens a claims court.
+Rush actions establish camp administration, licensed traders, local or specialist labor, worker cooperatives, and sanitation.
+Development actions build rail or port access, processing works, housing, shaft reinforcement and a development fund, and can drive deeper once a route serves the mine.
+Revenue actions choose central receipts, local revenue, citizens' dividends, a stabilization fund, a replaced administration, or tolerated patronage.
+Audits, disclosure, publication, contract exits and the independent revenue authority belong to the foreign concession layer.
 
 Foreign participation is represented by one state-owned contract record with one partner, review clock, renewal state, and term flags.
 Compatible limited-concession, offtake, and infrastructure-access terms use the existing partner record, while exclusive concessions block amendments.
@@ -87,7 +136,7 @@ Stripping and denial leave lasting damage, a damaged mine produces `riches_found
 
 ### Closure, collapse, and recovery
 
-Every closing action (Temporary Closure, the Gold Disease closure, and an occupier's Deny the Mine) runs `riches_found_begin_temporary_closure`, so the closure state, operating state, phase, review date, and suspended contract persist across presentation refreshes.
+Every closing action (Temporary Closure, the Gold Disease closure, and an occupier's Deny the Mine) runs `riches_found_begin_temporary_closure`, so the closure state, operating state, review date, and suspended contract persist across presentation refreshes.
 While a mine is temporarily closed, `riches_found_service_closed_mine` in the maintenance pulse lowers Extraction Pressure each pulse interval by `riches_found_closure.pressure_decay_per_pulse`, lowers collapse pressure until the closure review date, and lowers Revenue Legitimacy unless the workers hold a standing share (worker cooperatives or a public revenue share) or a revenue settlement (dividend, local revenue, curse revenue distribution or Gold Disease revenue sharing) was paid within `riches_found_containment.revenue_cycle_days`.
 At the review date the mine gains `riches_found_closure_review_complete`; a closure kept in place after that slowly raises collapse pressure unless the shafts were reinforced.
 A Demons Beneath the Mine closure end state (`riches_found_demons_contained_closure`) is kept under watch: it keeps relieving collapse pressure, does not lose Revenue Legitimacy for unpaid crews, and a reopening inspection that is still running when the depths are contained this way is cancelled and refunded.

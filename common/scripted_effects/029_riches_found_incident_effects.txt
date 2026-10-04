@@ -520,7 +520,7 @@ riches_found_select_raid_actor = {
 riches_found_select_raid_target = {
 	random_list = {
 		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { OR = { has_state_flag = riches_found_survey_complete has_state_flag = riches_found_processing_works } } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.raid_assay_office } set_state_flag = riches_found_raid_target_assay_office }
-		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { OR = { has_state_flag = riches_found_phase_revenue has_state_flag = riches_found_dividend_paid has_state_flag = riches_found_local_revenue_settled } } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.raid_payroll } set_state_flag = riches_found_raid_target_payroll }
+		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { OR = { check_variable = { var = riches_found_phase value = constant:riches_found_phase.revenue_settlement compare = greater_than_or_equals } has_state_flag = riches_found_dividend_paid has_state_flag = riches_found_local_revenue_settled } } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.raid_payroll } set_state_flag = riches_found_raid_target_payroll }
 		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { has_state_flag = riches_found_rail_route } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.raid_rail_route } set_state_flag = riches_found_raid_target_rail_route }
 		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { has_state_flag = riches_found_port_route } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.raid_port_route } set_state_flag = riches_found_raid_target_port_route }
 		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { has_state_flag = riches_found_processing_works } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.raid_processing_works } set_state_flag = riches_found_raid_target_processing_works }
@@ -607,7 +607,9 @@ riches_found_run_raid_incident_pool = {
 	riches_found_select_raid_target = yes
 	riches_found_select_raid_severity = yes
 	riches_found_apply_raid_consequence = yes
+	# Each raid restarts the quiet period that ends the raid crisis.
 	set_state_flag = riches_found_raid_crisis
+	set_variable = { riches_found_last_raid_date = global.date }
 	riches_found_finish_incident = yes
 }
 
@@ -803,7 +805,7 @@ riches_found_run_due_incident_review = {
 			constant:riches_found_incident_weight.raid_pool = {
 				modifier = { factor = constant:riches_found_incident_factor.high riches_found_mine_is_local_order_crisis = yes }
 				modifier = { factor = constant:riches_found_incident_factor.high has_state_flag = riches_found_raid_crisis }
-				modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { OR = { has_state_flag = riches_found_phase_security has_state_flag = riches_found_crime_crisis has_state_flag = riches_found_armed_claimants has_state_flag = riches_found_wage_dispute riches_found_mine_is_local_order_crisis = yes } } }
+				modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { OR = { riches_found_mine_needs_security_response = yes riches_found_mine_is_local_order_crisis = yes } } }
 				riches_found_run_raid_incident_pool = yes
 			}
 			constant:riches_found_incident_weight.collapse_pool = {

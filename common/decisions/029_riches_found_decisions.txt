@@ -1045,6 +1045,7 @@ decision_riches_found_worker_cooperatives = {
 
 			FROM = {
 				set_state_flag = riches_found_worker_cooperatives
+				clr_state_flag = riches_found_wage_dispute
 				set_state_flag = riches_found_labor_route_fixed
 				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_12 }
 				add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_7 }
@@ -1176,6 +1177,7 @@ decision_riches_found_rail_spur = {
 			has_state_flag = riches_found_phase_development
 			has_state_flag = riches_found_rail_route_valid
 			NOT = { has_state_flag = riches_found_rail_route }
+			NOT = { has_state_flag = riches_found_port_route }
 			NOT = { has_state_flag = riches_found_mission_open_railhead_subject }
 		}
 	}
@@ -1189,6 +1191,7 @@ decision_riches_found_rail_spur = {
 			has_state_flag = riches_found_phase_development
 			has_state_flag = riches_found_rail_route_valid
 			NOT = { has_state_flag = riches_found_rail_route }
+			NOT = { has_state_flag = riches_found_port_route }
 			NOT = { has_state_flag = riches_found_mission_open_railhead_subject }
 		}
 		ROOT = { riches_found_country_has_free_mission_slot = yes }
@@ -1206,6 +1209,7 @@ decision_riches_found_rail_spur = {
 			has_state_flag = riches_found_phase_development
 			has_state_flag = riches_found_rail_route_valid
 			NOT = { has_state_flag = riches_found_rail_route }
+			NOT = { has_state_flag = riches_found_port_route }
 			NOT = { has_state_flag = riches_found_mission_open_railhead_subject }
 		}
 	}
@@ -1275,6 +1279,7 @@ decision_riches_found_port_route = {
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_development
 			has_state_flag = riches_found_port_route_valid
+			NOT = { has_state_flag = riches_found_rail_route_valid }
 			NOT = { has_state_flag = riches_found_port_route }
 			NOT = { has_state_flag = riches_found_mission_open_railhead_subject }
 		}
@@ -1288,6 +1293,7 @@ decision_riches_found_port_route = {
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_development
 			has_state_flag = riches_found_port_route_valid
+			NOT = { has_state_flag = riches_found_rail_route_valid }
 			NOT = { has_state_flag = riches_found_port_route }
 			NOT = { has_state_flag = riches_found_mission_open_railhead_subject }
 		}
@@ -1305,6 +1311,7 @@ decision_riches_found_port_route = {
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_development
 			has_state_flag = riches_found_port_route_valid
+			NOT = { has_state_flag = riches_found_rail_route_valid }
 			NOT = { has_state_flag = riches_found_port_route }
 			NOT = { has_state_flag = riches_found_mission_open_railhead_subject }
 		}
@@ -1751,8 +1758,9 @@ decision_riches_found_drive_deeper = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			OR = { has_state_flag = riches_found_phase_development has_state_flag = riches_found_deep_excavation_authorized }
+			has_state_flag = riches_found_phase_development
 			riches_found_mine_is_operating = yes
+			riches_found_state_has_transport_route = yes
 			check_variable = { var = riches_found_mine_development value = constant:riches_found_decision_threshold.development_high compare = greater_than }
 			check_variable = { var = riches_found_local_order value = constant:riches_found_decision_threshold.order_floor compare = greater_than }
 			NOT = { has_state_flag = riches_found_deep_project_active }
@@ -1765,8 +1773,9 @@ decision_riches_found_drive_deeper = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			OR = { has_state_flag = riches_found_phase_development has_state_flag = riches_found_deep_excavation_authorized }
+			has_state_flag = riches_found_phase_development
 			riches_found_mine_is_operating = yes
+			riches_found_state_has_transport_route = yes
 			check_variable = { var = riches_found_mine_development value = constant:riches_found_decision_threshold.development_high compare = greater_than }
 			check_variable = { var = riches_found_local_order value = constant:riches_found_decision_threshold.order_floor compare = greater_than }
 			NOT = { has_state_flag = riches_found_deep_project_active }
@@ -1783,8 +1792,9 @@ decision_riches_found_drive_deeper = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			OR = { has_state_flag = riches_found_phase_development has_state_flag = riches_found_deep_excavation_authorized }
+			has_state_flag = riches_found_phase_development
 			riches_found_mine_is_operating = yes
+			riches_found_state_has_transport_route = yes
 			check_variable = { var = riches_found_mine_development value = constant:riches_found_decision_threshold.development_high compare = greater_than }
 			check_variable = { var = riches_found_local_order value = constant:riches_found_decision_threshold.order_floor compare = greater_than }
 			NOT = { has_state_flag = riches_found_deep_project_active }
@@ -1871,6 +1881,7 @@ decision_riches_found_dividend = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_revenue
+			NOT = { has_state_flag = riches_found_administration_compromised }
 			NOT = { has_state_flag = riches_found_dividend_paid }
 		}
 	}
@@ -1881,6 +1892,7 @@ decision_riches_found_dividend = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_revenue
+			NOT = { has_state_flag = riches_found_administration_compromised }
 			NOT = { has_state_flag = riches_found_dividend_paid }
 		}
 	}
@@ -1895,6 +1907,7 @@ decision_riches_found_dividend = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_revenue
+			NOT = { has_state_flag = riches_found_administration_compromised }
 			NOT = { has_state_flag = riches_found_dividend_paid }
 		}
 	}
@@ -1920,6 +1933,7 @@ decision_riches_found_dividend = {
 
 			FROM = {
 				set_state_flag = riches_found_dividend_paid
+				clr_state_flag = riches_found_wage_dispute
 				riches_found_record_revenue_settlement = yes
 				if = {
 					limit = { has_state_flag = riches_found_mission_public_settlement_progress }
@@ -2015,6 +2029,7 @@ decision_riches_found_local_revenue = {
 
 			FROM = {
 				set_state_flag = riches_found_local_revenue_settled
+				clr_state_flag = riches_found_wage_dispute
 				riches_found_record_revenue_settlement = yes
 				if = {
 					limit = { has_state_flag = riches_found_mission_public_settlement_progress }
@@ -2059,6 +2074,7 @@ decision_riches_found_central_revenue = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_revenue
+			riches_found_central_revenue_has_cause = yes
 			NOT = { has_state_flag = riches_found_central_receipts }
 		}
 	}
@@ -2069,6 +2085,7 @@ decision_riches_found_central_revenue = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_revenue
+			riches_found_central_revenue_has_cause = yes
 			NOT = { has_state_flag = riches_found_central_receipts }
 		}
 	}
@@ -2083,6 +2100,7 @@ decision_riches_found_central_revenue = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_revenue
+			riches_found_central_revenue_has_cause = yes
 			NOT = { has_state_flag = riches_found_central_receipts }
 		}
 	}
@@ -2144,6 +2162,7 @@ decision_riches_found_stabilization_fund = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_revenue
+			riches_found_mine_can_hold_a_fund = yes
 			NOT = { has_state_flag = riches_found_stabilization_fund }
 		}
 	}
@@ -2155,6 +2174,7 @@ decision_riches_found_stabilization_fund = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_revenue
+			riches_found_mine_can_hold_a_fund = yes
 			NOT = { has_state_flag = riches_found_stabilization_fund }
 		}
 		ROOT = { riches_found_country_has_free_mission_slot = yes }
@@ -2170,6 +2190,7 @@ decision_riches_found_stabilization_fund = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_revenue
+			riches_found_mine_can_hold_a_fund = yes
 			NOT = { has_state_flag = riches_found_stabilization_fund }
 		}
 	}
@@ -2240,6 +2261,7 @@ decision_riches_found_audit = {
 			riches_found_state_is_active_selected_or_only_mine = yes
 			riches_found_contract_maintenance_phase = yes
 			has_state_flag = riches_found_contract_active
+			NOT = { has_state_flag = riches_found_contract_renewal_due }
 			NOT = { has_state_flag = riches_found_mission_audit_concession_subject }
 			NOT = { has_state_flag = riches_found_mission_audit_concession_cooldown }
 		}
@@ -2253,6 +2275,7 @@ decision_riches_found_audit = {
 			riches_found_state_is_active_selected_or_only_mine = yes
 			riches_found_contract_maintenance_phase = yes
 			has_state_flag = riches_found_contract_active
+			NOT = { has_state_flag = riches_found_contract_renewal_due }
 			NOT = { has_state_flag = riches_found_mission_audit_concession_subject }
 			NOT = { has_state_flag = riches_found_mission_audit_concession_cooldown }
 		}
@@ -2270,6 +2293,7 @@ decision_riches_found_audit = {
 			riches_found_state_is_active_selected_or_only_mine = yes
 			riches_found_contract_maintenance_phase = yes
 			has_state_flag = riches_found_contract_active
+			NOT = { has_state_flag = riches_found_contract_renewal_due }
 			NOT = { has_state_flag = riches_found_mission_audit_concession_subject }
 			NOT = { has_state_flag = riches_found_mission_audit_concession_cooldown }
 		}
@@ -2433,7 +2457,8 @@ decision_riches_found_independent_revenue_authority = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_phase_revenue
+			has_state_flag = riches_found_phase_foreign
+			NOT = { has_state_flag = riches_found_contract_active }
 			has_state_flag = riches_found_audit_complete
 			NOT = { has_state_flag = riches_found_independent_revenue_authority }
 		}
@@ -2444,7 +2469,8 @@ decision_riches_found_independent_revenue_authority = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_phase_revenue
+			has_state_flag = riches_found_phase_foreign
+			NOT = { has_state_flag = riches_found_contract_active }
 			has_state_flag = riches_found_audit_complete
 			NOT = { has_state_flag = riches_found_independent_revenue_authority }
 		}
@@ -2459,7 +2485,8 @@ decision_riches_found_independent_revenue_authority = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_phase_revenue
+			has_state_flag = riches_found_phase_foreign
+			NOT = { has_state_flag = riches_found_contract_active }
 			has_state_flag = riches_found_audit_complete
 			NOT = { has_state_flag = riches_found_independent_revenue_authority }
 		}
@@ -2614,6 +2641,7 @@ decision_riches_found_concession_auction = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_foreign
+			NOT = { riches_found_contract_under_strain = yes }
 			riches_found_policy_allows_concession_auction = yes
 			riches_found_contract_or_foreign_target_is_valid = yes
 			riches_found_limited_contract_can_open_or_extend = yes
@@ -2628,6 +2656,7 @@ decision_riches_found_concession_auction = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_foreign
+			NOT = { riches_found_contract_under_strain = yes }
 			riches_found_policy_allows_concession_auction = yes
 			riches_found_contract_or_foreign_target_is_valid = yes
 			riches_found_limited_contract_can_open_or_extend = yes
@@ -2646,6 +2675,7 @@ decision_riches_found_concession_auction = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_foreign
+			NOT = { riches_found_contract_under_strain = yes }
 			riches_found_policy_allows_concession_auction = yes
 			riches_found_contract_or_foreign_target_is_valid = yes
 			riches_found_limited_contract_can_open_or_extend = yes
@@ -2836,6 +2866,7 @@ decision_riches_found_offtake = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_foreign
+			NOT = { riches_found_contract_under_strain = yes }
 			riches_found_policy_allows_offtake = yes
 			riches_found_contract_or_foreign_target_is_valid = yes
 			riches_found_limited_contract_can_open_or_extend = yes
@@ -2850,6 +2881,7 @@ decision_riches_found_offtake = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_foreign
+			NOT = { riches_found_contract_under_strain = yes }
 			riches_found_policy_allows_offtake = yes
 			riches_found_contract_or_foreign_target_is_valid = yes
 			riches_found_limited_contract_can_open_or_extend = yes
@@ -2868,6 +2900,7 @@ decision_riches_found_offtake = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_foreign
+			NOT = { riches_found_contract_under_strain = yes }
 			riches_found_policy_allows_offtake = yes
 			riches_found_contract_or_foreign_target_is_valid = yes
 			riches_found_limited_contract_can_open_or_extend = yes
@@ -2951,6 +2984,8 @@ decision_riches_found_trade_access_infrastructure = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_foreign
+			NOT = { riches_found_contract_under_strain = yes }
+			riches_found_mine_needs_foreign_builder = yes
 			riches_found_policy_allows_trade_access = yes
 			riches_found_contract_or_foreign_target_is_valid = yes
 			riches_found_limited_contract_can_open_or_extend = yes
@@ -2965,6 +3000,8 @@ decision_riches_found_trade_access_infrastructure = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_foreign
+			NOT = { riches_found_contract_under_strain = yes }
+			riches_found_mine_needs_foreign_builder = yes
 			riches_found_policy_allows_trade_access = yes
 			riches_found_contract_or_foreign_target_is_valid = yes
 			riches_found_limited_contract_can_open_or_extend = yes
@@ -2983,6 +3020,8 @@ decision_riches_found_trade_access_infrastructure = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_foreign
+			NOT = { riches_found_contract_under_strain = yes }
+			riches_found_mine_needs_foreign_builder = yes
 			riches_found_policy_allows_trade_access = yes
 			riches_found_contract_or_foreign_target_is_valid = yes
 			riches_found_limited_contract_can_open_or_extend = yes
@@ -3071,6 +3110,7 @@ decision_riches_found_disclosure = {
 			riches_found_state_is_active_selected_or_only_mine = yes
 			riches_found_contract_maintenance_phase = yes
 			has_state_flag = riches_found_concession_active
+			riches_found_contract_under_strain = yes
 			NOT = { has_state_flag = riches_found_beneficial_owners_disclosed }
 		}
 	}
@@ -3082,6 +3122,7 @@ decision_riches_found_disclosure = {
 			riches_found_state_is_active_selected_or_only_mine = yes
 			riches_found_contract_maintenance_phase = yes
 			has_state_flag = riches_found_concession_active
+			riches_found_contract_under_strain = yes
 			NOT = { has_state_flag = riches_found_beneficial_owners_disclosed }
 		}
 	}
@@ -3097,6 +3138,7 @@ decision_riches_found_disclosure = {
 			riches_found_state_is_active_selected_or_only_mine = yes
 			riches_found_contract_maintenance_phase = yes
 			has_state_flag = riches_found_concession_active
+			riches_found_contract_under_strain = yes
 			NOT = { has_state_flag = riches_found_beneficial_owners_disclosed }
 		}
 	}
@@ -3260,6 +3302,8 @@ decision_riches_found_nationalize_with_compensation = {
 			riches_found_state_is_active_selected_or_only_mine = yes
 			riches_found_contract_maintenance_phase = yes
 			has_state_flag = riches_found_concession_active
+			riches_found_contract_under_strain = yes
+			riches_found_contract_relations_broken = yes
 			NOT = { has_state_flag = riches_found_nationalized }
 		}
 	}
@@ -3271,6 +3315,8 @@ decision_riches_found_nationalize_with_compensation = {
 			riches_found_state_is_active_selected_or_only_mine = yes
 			riches_found_contract_maintenance_phase = yes
 			has_state_flag = riches_found_concession_active
+			riches_found_contract_under_strain = yes
+			riches_found_contract_relations_broken = yes
 			NOT = { has_state_flag = riches_found_nationalized }
 		}
 	}
@@ -3286,6 +3332,8 @@ decision_riches_found_nationalize_with_compensation = {
 			riches_found_state_is_active_selected_or_only_mine = yes
 			riches_found_contract_maintenance_phase = yes
 			has_state_flag = riches_found_concession_active
+			riches_found_contract_under_strain = yes
+			riches_found_contract_relations_broken = yes
 			NOT = { has_state_flag = riches_found_nationalized }
 		}
 	}
@@ -3361,6 +3409,8 @@ decision_riches_found_nationalize_without_compensation = {
 			riches_found_state_is_active_selected_or_only_mine = yes
 			riches_found_contract_maintenance_phase = yes
 			has_state_flag = riches_found_concession_active
+			riches_found_contract_under_strain = yes
+			riches_found_uncompensated_seizure_has_cause = yes
 			NOT = { has_state_flag = riches_found_nationalized }
 		}
 	}
@@ -3372,6 +3422,8 @@ decision_riches_found_nationalize_without_compensation = {
 			riches_found_state_is_active_selected_or_only_mine = yes
 			riches_found_contract_maintenance_phase = yes
 			has_state_flag = riches_found_concession_active
+			riches_found_contract_under_strain = yes
+			riches_found_uncompensated_seizure_has_cause = yes
 			NOT = { has_state_flag = riches_found_nationalized }
 		}
 	}
@@ -3387,6 +3439,8 @@ decision_riches_found_nationalize_without_compensation = {
 			riches_found_state_is_active_selected_or_only_mine = yes
 			riches_found_contract_maintenance_phase = yes
 			has_state_flag = riches_found_concession_active
+			riches_found_contract_under_strain = yes
+			riches_found_uncompensated_seizure_has_cause = yes
 			NOT = { has_state_flag = riches_found_nationalized }
 		}
 	}
@@ -3460,6 +3514,8 @@ decision_riches_found_buyout = {
 			riches_found_state_is_active_selected_or_only_mine = yes
 			riches_found_contract_maintenance_phase = yes
 			has_state_flag = riches_found_concession_active
+			riches_found_contract_under_strain = yes
+			NOT = { riches_found_contract_relations_broken = yes }
 			NOT = { has_state_flag = riches_found_buyout_complete }
 		}
 	}
@@ -3471,6 +3527,8 @@ decision_riches_found_buyout = {
 			riches_found_state_is_active_selected_or_only_mine = yes
 			riches_found_contract_maintenance_phase = yes
 			has_state_flag = riches_found_concession_active
+			riches_found_contract_under_strain = yes
+			NOT = { riches_found_contract_relations_broken = yes }
 			NOT = { has_state_flag = riches_found_buyout_complete }
 		}
 	}
@@ -3486,6 +3544,8 @@ decision_riches_found_buyout = {
 			riches_found_state_is_active_selected_or_only_mine = yes
 			riches_found_contract_maintenance_phase = yes
 			has_state_flag = riches_found_concession_active
+			riches_found_contract_under_strain = yes
+			NOT = { riches_found_contract_relations_broken = yes }
 			NOT = { has_state_flag = riches_found_buyout_complete }
 		}
 	}
@@ -3549,6 +3609,7 @@ decision_riches_found_renegotiate_contract = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
+			has_state_flag = riches_found_phase_foreign
 			has_state_flag = riches_found_contract_active
 			has_state_flag = riches_found_contract_renewal_due
 			NOT = { riches_found_mine_is_terminal = yes }
@@ -3560,6 +3621,7 @@ decision_riches_found_renegotiate_contract = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
+			has_state_flag = riches_found_phase_foreign
 			riches_found_contract_is_active_and_valid = yes
 			has_state_flag = riches_found_contract_renewal_due
 			NOT = { riches_found_mine_is_terminal = yes }
@@ -3576,6 +3638,7 @@ decision_riches_found_renegotiate_contract = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
+			has_state_flag = riches_found_phase_foreign
 			riches_found_contract_is_active_and_valid = yes
 			has_state_flag = riches_found_contract_renewal_due
 			NOT = { riches_found_mine_is_terminal = yes }
@@ -3732,7 +3795,6 @@ decision_riches_found_private_guards = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			riches_found_private_guards_is_phase_action = yes
-			OR = { has_state_flag = riches_found_phase_foreign has_state_flag = riches_found_concession_active has_state_flag = riches_found_crime_crisis }
 			NOT = { has_state_flag = riches_found_private_guards }
 		}
 	}
@@ -3743,7 +3805,6 @@ decision_riches_found_private_guards = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			riches_found_private_guards_is_phase_action = yes
-			OR = { has_state_flag = riches_found_phase_foreign has_state_flag = riches_found_concession_active has_state_flag = riches_found_crime_crisis }
 			NOT = { has_state_flag = riches_found_private_guards }
 		}
 	}
@@ -3758,7 +3819,6 @@ decision_riches_found_private_guards = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			riches_found_private_guards_is_phase_action = yes
-			OR = { has_state_flag = riches_found_phase_foreign has_state_flag = riches_found_concession_active has_state_flag = riches_found_crime_crisis }
 			NOT = { has_state_flag = riches_found_private_guards }
 		}
 	}
@@ -3822,8 +3882,8 @@ decision_riches_found_army_cordon = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_phase_security
-			has_state_flag = riches_found_raid_crisis
+			OR = { has_state_flag = riches_found_phase_security has_state_flag = riches_found_phase_emergency }
+			riches_found_mine_needs_army_cordon = yes
 			riches_found_state_has_supplied_force = yes
 			NOT = { has_state_flag = riches_found_army_cordon }
 		}
@@ -3835,8 +3895,8 @@ decision_riches_found_army_cordon = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_phase_security
-			has_state_flag = riches_found_raid_crisis
+			OR = { has_state_flag = riches_found_phase_security has_state_flag = riches_found_phase_emergency }
+			riches_found_mine_needs_army_cordon = yes
 			riches_found_state_has_supplied_force = yes
 			NOT = { has_state_flag = riches_found_army_cordon }
 		}
@@ -3852,8 +3912,8 @@ decision_riches_found_army_cordon = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_phase_security
-			has_state_flag = riches_found_raid_crisis
+			OR = { has_state_flag = riches_found_phase_security has_state_flag = riches_found_phase_emergency }
+			riches_found_mine_needs_army_cordon = yes
 			riches_found_state_has_supplied_force = yes
 			NOT = { has_state_flag = riches_found_army_cordon }
 		}
@@ -3889,6 +3949,7 @@ decision_riches_found_army_cordon = {
 			}
 			FROM = {
 				set_state_flag = riches_found_army_cordon
+				clr_state_flag = riches_found_raid_crisis
 				add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_15 }
 				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.negative_10 }
 				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.negative_3 }
@@ -3926,6 +3987,7 @@ decision_riches_found_armed_workers = {
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_security
 			has_state_flag = riches_found_worker_cooperatives
+			NOT = { riches_found_state_has_supplied_force = yes }
 			NOT = { has_state_flag = riches_found_armed_workers }
 		}
 	}
@@ -3937,6 +3999,7 @@ decision_riches_found_armed_workers = {
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_security
 			has_state_flag = riches_found_worker_cooperatives
+			NOT = { riches_found_state_has_supplied_force = yes }
 			NOT = { has_state_flag = riches_found_armed_workers }
 		}
 	}
@@ -3952,6 +4015,7 @@ decision_riches_found_armed_workers = {
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_security
 			has_state_flag = riches_found_worker_cooperatives
+			NOT = { riches_found_state_has_supplied_force = yes }
 			NOT = { has_state_flag = riches_found_armed_workers }
 		}
 	}
@@ -4189,6 +4253,7 @@ decision_riches_found_clear_barricades = {
 			}
 			FROM = {
 				set_state_flag = riches_found_barricades_cleared
+				clr_state_flag = riches_found_raid_crisis
 				set_state_flag = riches_found_claims_resolved
 				clr_state_flag = riches_found_claims_unresolved
 				clr_state_flag = riches_found_armed_claimants
@@ -4230,7 +4295,7 @@ decision_riches_found_truce = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_security
-			has_state_flag = riches_found_armed_claimants
+			riches_found_mine_has_negotiable_dispute = yes
 			NOT = { has_state_flag = riches_found_mission_break_claim_war_subject }
 		}
 	}
@@ -4242,7 +4307,7 @@ decision_riches_found_truce = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_security
-			has_state_flag = riches_found_armed_claimants
+			riches_found_mine_has_negotiable_dispute = yes
 			NOT = { has_state_flag = riches_found_mission_break_claim_war_subject }
 		}
 		ROOT = { riches_found_country_has_free_mission_slot = yes }
@@ -4258,7 +4323,7 @@ decision_riches_found_truce = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_security
-			has_state_flag = riches_found_armed_claimants
+			riches_found_mine_has_negotiable_dispute = yes
 			NOT = { has_state_flag = riches_found_mission_break_claim_war_subject }
 		}
 	}
@@ -4291,6 +4356,8 @@ decision_riches_found_truce = {
 			}
 			FROM = {
 				set_state_flag = riches_found_mine_truce
+				clr_state_flag = riches_found_wage_dispute
+				clr_state_flag = riches_found_raid_crisis
 				set_state_flag = riches_found_claims_resolved
 				clr_state_flag = riches_found_claims_unresolved
 				clr_state_flag = riches_found_armed_claimants
@@ -4329,7 +4396,9 @@ decision_riches_found_disarm_private_forces = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_security
-			OR = { has_state_flag = riches_found_private_guards has_state_flag = riches_found_private_enclave }
+			riches_found_private_forces_need_response = yes
+			NOT = { has_state_flag = riches_found_armed_claimants }
+			NOT = { has_state_flag = riches_found_raid_crisis }
 			NOT = { has_state_flag = riches_found_private_forces_disarmed }
 		}
 	}
@@ -4340,7 +4409,9 @@ decision_riches_found_disarm_private_forces = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_security
-			OR = { has_state_flag = riches_found_private_guards has_state_flag = riches_found_private_enclave }
+			riches_found_private_forces_need_response = yes
+			NOT = { has_state_flag = riches_found_armed_claimants }
+			NOT = { has_state_flag = riches_found_raid_crisis }
 			NOT = { has_state_flag = riches_found_private_forces_disarmed }
 		}
 	}
@@ -4355,7 +4426,9 @@ decision_riches_found_disarm_private_forces = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_security
-			OR = { has_state_flag = riches_found_private_guards has_state_flag = riches_found_private_enclave }
+			riches_found_private_forces_need_response = yes
+			NOT = { has_state_flag = riches_found_armed_claimants }
+			NOT = { has_state_flag = riches_found_raid_crisis }
 			NOT = { has_state_flag = riches_found_private_forces_disarmed }
 		}
 	}
@@ -4423,6 +4496,7 @@ decision_riches_found_temporary_closure = {
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_emergency
 			has_state_flag = riches_found_crisis_active
+			NOT = { has_state_flag = riches_found_severe_collapse }
 			NOT = { has_state_flag = riches_found_mine_closed }
 			NOT = { has_state_flag = riches_found_reopen_cooldown }
 		}
@@ -4435,6 +4509,7 @@ decision_riches_found_temporary_closure = {
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_emergency
 			has_state_flag = riches_found_crisis_active
+			NOT = { has_state_flag = riches_found_severe_collapse }
 			NOT = { has_state_flag = riches_found_mine_closed }
 			NOT = { has_state_flag = riches_found_reopen_cooldown }
 		}
@@ -4451,6 +4526,7 @@ decision_riches_found_temporary_closure = {
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_emergency
 			has_state_flag = riches_found_crisis_active
+			NOT = { has_state_flag = riches_found_severe_collapse }
 			NOT = { has_state_flag = riches_found_mine_closed }
 			NOT = { has_state_flag = riches_found_reopen_cooldown }
 		}
@@ -4516,7 +4592,8 @@ decision_riches_found_quarantine = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_emergency
-			has_state_flag = riches_found_gold_disease_active
+			riches_found_gold_relapse_threatens = yes
+			NOT = { has_state_flag = riches_found_severe_collapse }
 			riches_found_state_can_control_access = yes
 			NOT = { has_state_flag = riches_found_district_quarantined }
 		}
@@ -4528,7 +4605,8 @@ decision_riches_found_quarantine = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_emergency
-			has_state_flag = riches_found_gold_disease_active
+			riches_found_gold_relapse_threatens = yes
+			NOT = { has_state_flag = riches_found_severe_collapse }
 			riches_found_state_can_control_access = yes
 			NOT = { has_state_flag = riches_found_district_quarantined }
 		}
@@ -4544,7 +4622,8 @@ decision_riches_found_quarantine = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_emergency
-			has_state_flag = riches_found_gold_disease_active
+			riches_found_gold_relapse_threatens = yes
+			NOT = { has_state_flag = riches_found_severe_collapse }
 			riches_found_state_can_control_access = yes
 			NOT = { has_state_flag = riches_found_district_quarantined }
 		}
@@ -4611,7 +4690,10 @@ decision_riches_found_workforce_replacement = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_emergency
-			OR = { has_state_flag = riches_found_gold_disease_active has_state_flag = riches_found_severe_mutiny has_state_flag = riches_found_administration_compromised }
+			riches_found_workforce_needs_replacement = yes
+			NOT = { has_state_flag = riches_found_gold_disease_active }
+			NOT = { has_state_flag = riches_found_mine_collapsed }
+			NOT = { has_state_flag = riches_found_severe_collapse }
 			NOT = { has_state_flag = riches_found_workforce_replaced }
 		}
 	}
@@ -4622,7 +4704,10 @@ decision_riches_found_workforce_replacement = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_emergency
-			OR = { has_state_flag = riches_found_gold_disease_active has_state_flag = riches_found_severe_mutiny has_state_flag = riches_found_administration_compromised }
+			riches_found_workforce_needs_replacement = yes
+			NOT = { has_state_flag = riches_found_gold_disease_active }
+			NOT = { has_state_flag = riches_found_mine_collapsed }
+			NOT = { has_state_flag = riches_found_severe_collapse }
 			NOT = { has_state_flag = riches_found_workforce_replaced }
 		}
 	}
@@ -4637,7 +4722,10 @@ decision_riches_found_workforce_replacement = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_emergency
-			OR = { has_state_flag = riches_found_gold_disease_active has_state_flag = riches_found_severe_mutiny has_state_flag = riches_found_administration_compromised }
+			riches_found_workforce_needs_replacement = yes
+			NOT = { has_state_flag = riches_found_gold_disease_active }
+			NOT = { has_state_flag = riches_found_mine_collapsed }
+			NOT = { has_state_flag = riches_found_severe_collapse }
 			NOT = { has_state_flag = riches_found_workforce_replaced }
 		}
 	}
@@ -4706,7 +4794,8 @@ decision_riches_found_seal_depths = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_emergency
-			OR = { has_state_flag = riches_found_deep_mine has_state_flag = riches_found_collapse_warning has_state_flag = riches_found_gold_disease_active has_state_flag = riches_found_supernatural_signs }
+			OR = { has_state_flag = riches_found_deep_mine has_state_flag = riches_found_collapse_warning has_state_flag = riches_found_supernatural_signs }
+			NOT = { has_state_flag = riches_found_gold_disease_active }
 			NOT = { has_state_flag = riches_found_depths_sealed }
 		}
 	}
@@ -4717,7 +4806,8 @@ decision_riches_found_seal_depths = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_emergency
-			OR = { has_state_flag = riches_found_deep_mine has_state_flag = riches_found_collapse_warning has_state_flag = riches_found_gold_disease_active has_state_flag = riches_found_supernatural_signs }
+			OR = { has_state_flag = riches_found_deep_mine has_state_flag = riches_found_collapse_warning has_state_flag = riches_found_supernatural_signs }
+			NOT = { has_state_flag = riches_found_gold_disease_active }
 			NOT = { has_state_flag = riches_found_depths_sealed }
 		}
 	}
@@ -4732,7 +4822,8 @@ decision_riches_found_seal_depths = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_emergency
-			OR = { has_state_flag = riches_found_deep_mine has_state_flag = riches_found_collapse_warning has_state_flag = riches_found_gold_disease_active has_state_flag = riches_found_supernatural_signs }
+			OR = { has_state_flag = riches_found_deep_mine has_state_flag = riches_found_collapse_warning has_state_flag = riches_found_supernatural_signs }
+			NOT = { has_state_flag = riches_found_gold_disease_active }
 			NOT = { has_state_flag = riches_found_depths_sealed }
 		}
 	}
@@ -4800,6 +4891,7 @@ decision_riches_found_repair = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_mine_damaged
+			NOT = { has_state_flag = riches_found_layer_gilded }
 			NOT = { riches_found_mine_is_terminal = yes }
 			NOT = { has_state_flag = riches_found_mission_restore_shaft_subject }
 		}
@@ -4812,6 +4904,7 @@ decision_riches_found_repair = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_mine_damaged
+			NOT = { has_state_flag = riches_found_layer_gilded }
 			NOT = { riches_found_mine_is_terminal = yes }
 			NOT = { has_state_flag = riches_found_mission_restore_shaft_subject }
 		}
@@ -4828,6 +4921,7 @@ decision_riches_found_repair = {
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_mine_damaged
+			NOT = { has_state_flag = riches_found_layer_gilded }
 			NOT = { riches_found_mine_is_terminal = yes }
 			NOT = { has_state_flag = riches_found_mission_restore_shaft_subject }
 		}
@@ -4894,6 +4988,7 @@ decision_riches_found_reopen_mine = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
+			has_state_flag = riches_found_phase_emergency
 			riches_found_mine_closure_can_reopen = yes
 		}
 	}
@@ -4903,6 +4998,7 @@ decision_riches_found_reopen_mine = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
+			has_state_flag = riches_found_phase_emergency
 			hidden_trigger = { riches_found_mine_closure_can_reopen = yes }
 			custom_trigger_tooltip = {
 				tooltip = decision_riches_found_reopen_mine_safe_tt
@@ -4920,6 +5016,7 @@ decision_riches_found_reopen_mine = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
+			has_state_flag = riches_found_phase_emergency
 			riches_found_mine_closure_can_reopen = yes
 		}
 	}
@@ -5169,6 +5266,7 @@ decision_riches_found_occupation_reopen = {
 			has_state_flag = riches_found_phase_occupation
 			NOT = { is_owned_by = ROOT }
 			riches_found_occupation_mine_can_reopen = yes
+			has_state_flag = riches_found_mine_temporary_closure
 			NOT = { has_state_flag = riches_found_occupation_reopened }
 		}
 	}
@@ -5181,6 +5279,7 @@ decision_riches_found_occupation_reopen = {
 			has_state_flag = riches_found_phase_occupation
 			NOT = { is_owned_by = ROOT }
 			riches_found_occupation_mine_can_reopen = yes
+			has_state_flag = riches_found_mine_temporary_closure
 			NOT = { has_state_flag = riches_found_occupation_reopened }
 		}
 	}
@@ -5197,6 +5296,7 @@ decision_riches_found_occupation_reopen = {
 			has_state_flag = riches_found_phase_occupation
 			NOT = { is_owned_by = ROOT }
 			riches_found_occupation_mine_can_reopen = yes
+			has_state_flag = riches_found_mine_temporary_closure
 			NOT = { has_state_flag = riches_found_occupation_reopened }
 		}
 	}
@@ -5365,6 +5465,7 @@ decision_riches_found_occupation_keep_administration = {
 			has_state_flag = riches_found_phase_occupation
 			NOT = { is_owned_by = ROOT }
 			riches_found_occupation_mine_can_be_exploited = yes
+			NOT = { has_state_flag = riches_found_retreat_imminent }
 			has_state_flag = riches_found_previous_administration_valid
 			NOT = { has_state_flag = riches_found_occupation_admin_retained }
 		}
@@ -5378,6 +5479,7 @@ decision_riches_found_occupation_keep_administration = {
 			has_state_flag = riches_found_phase_occupation
 			NOT = { is_owned_by = ROOT }
 			riches_found_occupation_mine_can_be_exploited = yes
+			NOT = { has_state_flag = riches_found_retreat_imminent }
 			has_state_flag = riches_found_previous_administration_valid
 			NOT = { has_state_flag = riches_found_occupation_admin_retained }
 		}
@@ -5395,6 +5497,7 @@ decision_riches_found_occupation_keep_administration = {
 			has_state_flag = riches_found_phase_occupation
 			NOT = { is_owned_by = ROOT }
 			riches_found_occupation_mine_can_be_exploited = yes
+			NOT = { has_state_flag = riches_found_retreat_imminent }
 			has_state_flag = riches_found_previous_administration_valid
 			NOT = { has_state_flag = riches_found_occupation_admin_retained }
 		}
@@ -5460,6 +5563,7 @@ decision_riches_found_occupation_replace_concession = {
 			has_state_flag = riches_found_phase_occupation
 			NOT = { is_owned_by = ROOT }
 			riches_found_occupation_mine_can_be_exploited = yes
+			NOT = { has_state_flag = riches_found_retreat_imminent }
 			has_state_flag = riches_found_concession_active
 			NOT = { has_state_flag = riches_found_occupation_concession_replaced }
 		}
@@ -5473,6 +5577,7 @@ decision_riches_found_occupation_replace_concession = {
 			has_state_flag = riches_found_phase_occupation
 			NOT = { is_owned_by = ROOT }
 			riches_found_occupation_mine_can_be_exploited = yes
+			NOT = { has_state_flag = riches_found_retreat_imminent }
 			has_state_flag = riches_found_concession_active
 			NOT = { has_state_flag = riches_found_occupation_concession_replaced }
 		}
@@ -5490,6 +5595,7 @@ decision_riches_found_occupation_replace_concession = {
 			has_state_flag = riches_found_phase_occupation
 			NOT = { is_owned_by = ROOT }
 			riches_found_occupation_mine_can_be_exploited = yes
+			NOT = { has_state_flag = riches_found_retreat_imminent }
 			has_state_flag = riches_found_concession_active
 			NOT = { has_state_flag = riches_found_occupation_concession_replaced }
 		}
@@ -5741,6 +5847,7 @@ decision_riches_found_occupation_deny_mine = {
 			has_state_flag = riches_found_phase_occupation
 			NOT = { is_owned_by = ROOT }
 			riches_found_occupation_mine_can_be_denied = yes
+			has_state_flag = riches_found_retreat_imminent
 			NOT = { has_state_flag = riches_found_occupation_denial }
 		}
 	}
@@ -5753,6 +5860,7 @@ decision_riches_found_occupation_deny_mine = {
 			has_state_flag = riches_found_phase_occupation
 			NOT = { is_owned_by = ROOT }
 			riches_found_occupation_mine_can_be_denied = yes
+			has_state_flag = riches_found_retreat_imminent
 			NOT = { has_state_flag = riches_found_occupation_denial }
 		}
 	}
@@ -5769,6 +5877,7 @@ decision_riches_found_occupation_deny_mine = {
 			has_state_flag = riches_found_phase_occupation
 			NOT = { is_owned_by = ROOT }
 			riches_found_occupation_mine_can_be_denied = yes
+			has_state_flag = riches_found_retreat_imminent
 			NOT = { has_state_flag = riches_found_occupation_denial }
 		}
 	}
@@ -5838,7 +5947,7 @@ decision_riches_found_curse_nationalize_extraction = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_resource_curse_active
+			has_state_flag = riches_found_layer_curse
 			NOT = { has_state_flag = riches_found_curse_state_extraction }
 		}
 	}
@@ -5848,7 +5957,7 @@ decision_riches_found_curse_nationalize_extraction = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_resource_curse_active
+			has_state_flag = riches_found_layer_curse
 			NOT = { has_state_flag = riches_found_curse_state_extraction }
 		}
 	}
@@ -5862,7 +5971,7 @@ decision_riches_found_curse_nationalize_extraction = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_resource_curse_active
+			has_state_flag = riches_found_layer_curse
 			NOT = { has_state_flag = riches_found_curse_state_extraction }
 		}
 	}
@@ -5929,7 +6038,7 @@ decision_riches_found_curse_distribute_revenue = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_resource_curse_active
+			has_state_flag = riches_found_layer_curse
 			NOT = { has_state_flag = riches_found_curse_revenue_cooldown }
 		}
 	}
@@ -5939,7 +6048,7 @@ decision_riches_found_curse_distribute_revenue = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_resource_curse_active
+			has_state_flag = riches_found_layer_curse
 			NOT = { has_state_flag = riches_found_curse_revenue_cooldown }
 		}
 	}
@@ -5953,7 +6062,7 @@ decision_riches_found_curse_distribute_revenue = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_resource_curse_active
+			has_state_flag = riches_found_layer_curse
 			NOT = { has_state_flag = riches_found_curse_revenue_cooldown }
 		}
 	}
@@ -6020,7 +6129,7 @@ decision_riches_found_curse_stabilization_diversification = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_resource_curse_active
+			has_state_flag = riches_found_layer_curse
 			NOT = { has_state_flag = riches_found_curse_diversification_started }
 		}
 	}
@@ -6031,7 +6140,7 @@ decision_riches_found_curse_stabilization_diversification = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_resource_curse_active
+			has_state_flag = riches_found_layer_curse
 			NOT = { has_state_flag = riches_found_curse_diversification_started }
 		}
 		ROOT = { riches_found_country_has_free_mission_slot = yes }
@@ -6046,7 +6155,7 @@ decision_riches_found_curse_stabilization_diversification = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_resource_curse_active
+			has_state_flag = riches_found_layer_curse
 			NOT = { has_state_flag = riches_found_curse_diversification_started }
 		}
 	}
@@ -6117,7 +6226,8 @@ decision_riches_found_curse_tolerate_corruption = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_resource_curse_active
+			has_state_flag = riches_found_layer_curse
+			riches_found_mine_government_is_weak = yes
 			NOT = { has_state_flag = riches_found_curse_corruption_tolerated }
 		}
 	}
@@ -6127,7 +6237,8 @@ decision_riches_found_curse_tolerate_corruption = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_resource_curse_active
+			has_state_flag = riches_found_layer_curse
+			riches_found_mine_government_is_weak = yes
 			NOT = { has_state_flag = riches_found_curse_corruption_tolerated }
 		}
 	}
@@ -6141,7 +6252,8 @@ decision_riches_found_curse_tolerate_corruption = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_resource_curse_active
+			has_state_flag = riches_found_layer_curse
+			riches_found_mine_government_is_weak = yes
 			NOT = { has_state_flag = riches_found_curse_corruption_tolerated }
 		}
 	}
@@ -6207,7 +6319,7 @@ decision_riches_found_curse_private_interests = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_resource_curse_active
+			has_state_flag = riches_found_layer_curse
 			NOT = { has_state_flag = riches_found_curse_private_dominance }
 		}
 	}
@@ -6217,7 +6329,7 @@ decision_riches_found_curse_private_interests = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_resource_curse_active
+			has_state_flag = riches_found_layer_curse
 			NOT = { has_state_flag = riches_found_curse_private_dominance }
 		}
 	}
@@ -6231,7 +6343,7 @@ decision_riches_found_curse_private_interests = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_resource_curse_active
+			has_state_flag = riches_found_layer_curse
 			NOT = { has_state_flag = riches_found_curse_private_dominance }
 		}
 	}
@@ -6300,7 +6412,9 @@ decision_riches_found_curse_independent_revenue_authority = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_resource_curse_active
+			has_state_flag = riches_found_layer_curse
+			NOT = { riches_found_mine_government_is_weak = yes }
+			NOT = { has_state_flag = riches_found_curse_corruption_tolerated }
 			NOT = { has_state_flag = riches_found_curse_independent_authority }
 			NOT = { has_state_flag = riches_found_patronage_tolerated }
 		}
@@ -6311,7 +6425,9 @@ decision_riches_found_curse_independent_revenue_authority = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_resource_curse_active
+			has_state_flag = riches_found_layer_curse
+			NOT = { riches_found_mine_government_is_weak = yes }
+			NOT = { has_state_flag = riches_found_curse_corruption_tolerated }
 			NOT = { has_state_flag = riches_found_curse_independent_authority }
 			NOT = { has_state_flag = riches_found_patronage_tolerated }
 		}
@@ -6326,7 +6442,9 @@ decision_riches_found_curse_independent_revenue_authority = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_resource_curse_active
+			has_state_flag = riches_found_layer_curse
+			NOT = { riches_found_mine_government_is_weak = yes }
+			NOT = { has_state_flag = riches_found_curse_corruption_tolerated }
 			NOT = { has_state_flag = riches_found_curse_independent_authority }
 			NOT = { has_state_flag = riches_found_patronage_tolerated }
 		}
@@ -6392,7 +6510,8 @@ decision_riches_found_gold_share_revenue = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gold_disease_active
+			has_state_flag = riches_found_layer_gold
+			riches_found_gold_route_is_restricted = yes
 			NOT = { has_state_flag = riches_found_gold_revenue_shared }
 		}
 	}
@@ -6402,7 +6521,8 @@ decision_riches_found_gold_share_revenue = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gold_disease_active
+			has_state_flag = riches_found_layer_gold
+			riches_found_gold_route_is_restricted = yes
 			NOT = { has_state_flag = riches_found_gold_revenue_shared }
 		}
 	}
@@ -6416,7 +6536,8 @@ decision_riches_found_gold_share_revenue = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gold_disease_active
+			has_state_flag = riches_found_layer_gold
+			riches_found_gold_route_is_restricted = yes
 			NOT = { has_state_flag = riches_found_gold_revenue_shared }
 		}
 	}
@@ -6481,7 +6602,8 @@ decision_riches_found_gold_replace_workforce = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gold_disease_active
+			has_state_flag = riches_found_layer_gold
+			riches_found_gold_route_is_restricted = yes
 			NOT = { has_state_flag = riches_found_gold_workforce_replaced }
 		}
 	}
@@ -6491,7 +6613,8 @@ decision_riches_found_gold_replace_workforce = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gold_disease_active
+			has_state_flag = riches_found_layer_gold
+			riches_found_gold_route_is_restricted = yes
 			NOT = { has_state_flag = riches_found_gold_workforce_replaced }
 		}
 	}
@@ -6505,7 +6628,8 @@ decision_riches_found_gold_replace_workforce = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gold_disease_active
+			has_state_flag = riches_found_layer_gold
+			riches_found_gold_route_is_restricted = yes
 			NOT = { has_state_flag = riches_found_gold_workforce_replaced }
 		}
 	}
@@ -6572,7 +6696,8 @@ decision_riches_found_gold_military_control = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gold_disease_active
+			has_state_flag = riches_found_layer_gold
+			riches_found_gold_capture_needs_force = yes
 			riches_found_state_has_supplied_force = yes
 			NOT = { has_state_flag = riches_found_gold_military_control }
 		}
@@ -6583,7 +6708,8 @@ decision_riches_found_gold_military_control = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gold_disease_active
+			has_state_flag = riches_found_layer_gold
+			riches_found_gold_capture_needs_force = yes
 			riches_found_state_has_supplied_force = yes
 			NOT = { has_state_flag = riches_found_gold_military_control }
 		}
@@ -6598,7 +6724,8 @@ decision_riches_found_gold_military_control = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gold_disease_active
+			has_state_flag = riches_found_layer_gold
+			riches_found_gold_capture_needs_force = yes
 			riches_found_state_has_supplied_force = yes
 			NOT = { has_state_flag = riches_found_gold_military_control }
 		}
@@ -6668,7 +6795,8 @@ decision_riches_found_gold_quarantine = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gold_disease_active
+			has_state_flag = riches_found_layer_gold
+			NOT = { riches_found_gold_route_is_restricted = yes }
 			riches_found_state_can_control_access = yes
 			NOT = { has_state_flag = riches_found_gold_quarantine }
 		}
@@ -6679,7 +6807,8 @@ decision_riches_found_gold_quarantine = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gold_disease_active
+			has_state_flag = riches_found_layer_gold
+			NOT = { riches_found_gold_route_is_restricted = yes }
 			riches_found_state_can_control_access = yes
 			NOT = { has_state_flag = riches_found_gold_quarantine }
 		}
@@ -6694,7 +6823,8 @@ decision_riches_found_gold_quarantine = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gold_disease_active
+			has_state_flag = riches_found_layer_gold
+			NOT = { riches_found_gold_route_is_restricted = yes }
 			riches_found_state_can_control_access = yes
 			NOT = { has_state_flag = riches_found_gold_quarantine }
 		}
@@ -6759,7 +6889,8 @@ decision_riches_found_gold_close_temporary = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gold_disease_active
+			has_state_flag = riches_found_layer_gold
+			NOT = { riches_found_gold_route_is_restricted = yes }
 			NOT = { has_state_flag = riches_found_gold_closed }
 			NOT = { has_state_flag = riches_found_mine_closed }
 			NOT = { has_state_flag = riches_found_reopen_cooldown }
@@ -6771,7 +6902,8 @@ decision_riches_found_gold_close_temporary = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gold_disease_active
+			has_state_flag = riches_found_layer_gold
+			NOT = { riches_found_gold_route_is_restricted = yes }
 			NOT = { has_state_flag = riches_found_gold_closed }
 			NOT = { has_state_flag = riches_found_mine_closed }
 			NOT = { has_state_flag = riches_found_reopen_cooldown }
@@ -6787,7 +6919,8 @@ decision_riches_found_gold_close_temporary = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gold_disease_active
+			has_state_flag = riches_found_layer_gold
+			NOT = { riches_found_gold_route_is_restricted = yes }
 			NOT = { has_state_flag = riches_found_gold_closed }
 			NOT = { has_state_flag = riches_found_mine_closed }
 			NOT = { has_state_flag = riches_found_reopen_cooldown }
@@ -6853,7 +6986,8 @@ decision_riches_found_gold_seal_depths = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gold_disease_active
+			has_state_flag = riches_found_layer_gold
+			riches_found_gold_route_is_restricted = yes
 			NOT = { has_state_flag = riches_found_gold_depths_sealed }
 		}
 	}
@@ -6863,7 +6997,8 @@ decision_riches_found_gold_seal_depths = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gold_disease_active
+			has_state_flag = riches_found_layer_gold
+			riches_found_gold_route_is_restricted = yes
 			NOT = { has_state_flag = riches_found_gold_depths_sealed }
 		}
 	}
@@ -6877,7 +7012,8 @@ decision_riches_found_gold_seal_depths = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gold_disease_active
+			has_state_flag = riches_found_layer_gold
+			riches_found_gold_route_is_restricted = yes
 			NOT = { has_state_flag = riches_found_gold_depths_sealed }
 		}
 	}
@@ -6948,7 +7084,10 @@ decision_riches_found_gold_controlled_access = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gold_disease_active
+			has_state_flag = riches_found_layer_gold
+			NOT = { riches_found_gold_route_is_restricted = yes }
+			has_state_flag = riches_found_camp_administration
+			NOT = { riches_found_mine_government_is_weak = yes }
 			riches_found_state_can_control_access = yes
 			NOT = { has_state_flag = riches_found_gold_controlled_access }
 		}
@@ -6959,7 +7098,10 @@ decision_riches_found_gold_controlled_access = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gold_disease_active
+			has_state_flag = riches_found_layer_gold
+			NOT = { riches_found_gold_route_is_restricted = yes }
+			has_state_flag = riches_found_camp_administration
+			NOT = { riches_found_mine_government_is_weak = yes }
 			riches_found_state_can_control_access = yes
 			NOT = { has_state_flag = riches_found_gold_controlled_access }
 		}
@@ -6974,7 +7116,10 @@ decision_riches_found_gold_controlled_access = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gold_disease_active
+			has_state_flag = riches_found_layer_gold
+			NOT = { riches_found_gold_route_is_restricted = yes }
+			has_state_flag = riches_found_camp_administration
+			NOT = { riches_found_mine_government_is_weak = yes }
 			riches_found_state_can_control_access = yes
 			NOT = { has_state_flag = riches_found_gold_controlled_access }
 		}
@@ -7039,7 +7184,8 @@ decision_riches_found_gold_destroy_confiscated_material = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gold_disease_active
+			has_state_flag = riches_found_layer_gold
+			riches_found_gold_route_is_restricted = yes
 			has_state_flag = riches_found_confiscated_material
 		}
 	}
@@ -7049,7 +7195,8 @@ decision_riches_found_gold_destroy_confiscated_material = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gold_disease_active
+			has_state_flag = riches_found_layer_gold
+			riches_found_gold_route_is_restricted = yes
 			has_state_flag = riches_found_confiscated_material
 		}
 	}
@@ -7063,7 +7210,8 @@ decision_riches_found_gold_destroy_confiscated_material = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gold_disease_active
+			has_state_flag = riches_found_layer_gold
+			riches_found_gold_route_is_restricted = yes
 			has_state_flag = riches_found_confiscated_material
 		}
 	}
@@ -7132,7 +7280,7 @@ decision_riches_found_demons_permanent_seal = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_demons
+			has_state_flag = riches_found_layer_demons
 			has_state_flag = riches_found_demons_district_evacuated
 			NOT = { has_state_flag = riches_found_contract_active }
 			NOT = { has_state_flag = riches_found_occupation_active }
@@ -7145,7 +7293,7 @@ decision_riches_found_demons_permanent_seal = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_demons
+			has_state_flag = riches_found_layer_demons
 			has_state_flag = riches_found_demons_district_evacuated
 			NOT = { has_state_flag = riches_found_contract_active }
 			NOT = { has_state_flag = riches_found_occupation_active }
@@ -7162,7 +7310,7 @@ decision_riches_found_demons_permanent_seal = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_evolution_demons
+			has_state_flag = riches_found_layer_demons
 			has_state_flag = riches_found_demons_district_evacuated
 			NOT = { has_state_flag = riches_found_contract_active }
 			NOT = { has_state_flag = riches_found_occupation_active }
@@ -7227,7 +7375,8 @@ decision_riches_found_demons_evacuate_district = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_demons_beneath_mine_active
+			has_state_flag = riches_found_layer_demons
+			NOT = { has_state_flag = riches_found_demons_military_purge }
 			OR = { has_state_flag = riches_found_severe_collapse has_state_flag = riches_found_supernatural_crisis }
 			NOT = { has_state_flag = riches_found_demons_district_evacuated }
 			NOT = { has_state_flag = riches_found_demons_evacuation_preparation_pending }
@@ -7242,7 +7391,8 @@ decision_riches_found_demons_evacuate_district = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_demons_beneath_mine_active
+			has_state_flag = riches_found_layer_demons
+			NOT = { has_state_flag = riches_found_demons_military_purge }
 			OR = { has_state_flag = riches_found_severe_collapse has_state_flag = riches_found_supernatural_crisis }
 			NOT = { has_state_flag = riches_found_demons_district_evacuated }
 			NOT = { has_state_flag = riches_found_demons_evacuation_preparation_pending }
@@ -7259,7 +7409,8 @@ decision_riches_found_demons_evacuate_district = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_demons_beneath_mine_active
+			has_state_flag = riches_found_layer_demons
+			NOT = { has_state_flag = riches_found_demons_military_purge }
 			OR = { has_state_flag = riches_found_severe_collapse has_state_flag = riches_found_supernatural_crisis }
 			NOT = { has_state_flag = riches_found_demons_district_evacuated }
 			NOT = { has_state_flag = riches_found_demons_evacuation_preparation_pending }
@@ -7336,7 +7487,11 @@ decision_riches_found_demons_military_purge = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_demons_beneath_mine_active
+			has_state_flag = riches_found_layer_demons
+			NOT = { has_state_flag = riches_found_demons_district_evacuated }
+			NOT = { has_state_flag = riches_found_workforce_evacuated }
+			NOT = { has_state_flag = riches_found_demons_evacuation_preparation_pending }
+			NOT = { has_state_flag = riches_found_mission_evacuate_workforce_subject }
 			riches_found_state_has_supplied_force = yes
 			NOT = { has_state_flag = riches_found_demons_military_purge }
 		}
@@ -7347,7 +7502,11 @@ decision_riches_found_demons_military_purge = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_demons_beneath_mine_active
+			has_state_flag = riches_found_layer_demons
+			NOT = { has_state_flag = riches_found_demons_district_evacuated }
+			NOT = { has_state_flag = riches_found_workforce_evacuated }
+			NOT = { has_state_flag = riches_found_demons_evacuation_preparation_pending }
+			NOT = { has_state_flag = riches_found_mission_evacuate_workforce_subject }
 			riches_found_state_has_supplied_force = yes
 			NOT = { has_state_flag = riches_found_demons_military_purge }
 		}
@@ -7362,7 +7521,11 @@ decision_riches_found_demons_military_purge = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_demons_beneath_mine_active
+			has_state_flag = riches_found_layer_demons
+			NOT = { has_state_flag = riches_found_demons_district_evacuated }
+			NOT = { has_state_flag = riches_found_workforce_evacuated }
+			NOT = { has_state_flag = riches_found_demons_evacuation_preparation_pending }
+			NOT = { has_state_flag = riches_found_mission_evacuate_workforce_subject }
 			riches_found_state_has_supplied_force = yes
 			NOT = { has_state_flag = riches_found_demons_military_purge }
 		}
@@ -7430,7 +7593,9 @@ decision_riches_found_demons_religious_assistance = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_demons_beneath_mine_active
+			has_state_flag = riches_found_layer_demons
+			riches_found_demons_district_cleared = yes
+			NOT = { riches_found_demons_assistance_taken = yes }
 			NOT = { has_state_flag = riches_found_demons_religious_assistance }
 		}
 	}
@@ -7440,7 +7605,9 @@ decision_riches_found_demons_religious_assistance = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_demons_beneath_mine_active
+			has_state_flag = riches_found_layer_demons
+			riches_found_demons_district_cleared = yes
+			NOT = { riches_found_demons_assistance_taken = yes }
 			NOT = { has_state_flag = riches_found_demons_religious_assistance }
 		}
 	}
@@ -7454,7 +7621,9 @@ decision_riches_found_demons_religious_assistance = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_demons_beneath_mine_active
+			has_state_flag = riches_found_layer_demons
+			riches_found_demons_district_cleared = yes
+			NOT = { riches_found_demons_assistance_taken = yes }
 			NOT = { has_state_flag = riches_found_demons_religious_assistance }
 		}
 	}
@@ -7519,7 +7688,9 @@ decision_riches_found_demons_occult_assistance = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_demons_beneath_mine_active
+			has_state_flag = riches_found_layer_demons
+			riches_found_demons_district_cleared = yes
+			NOT = { riches_found_demons_assistance_taken = yes }
 			NOT = { has_state_flag = riches_found_demons_occult_assistance }
 		}
 	}
@@ -7529,7 +7700,9 @@ decision_riches_found_demons_occult_assistance = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_demons_beneath_mine_active
+			has_state_flag = riches_found_layer_demons
+			riches_found_demons_district_cleared = yes
+			NOT = { riches_found_demons_assistance_taken = yes }
 			NOT = { has_state_flag = riches_found_demons_occult_assistance }
 		}
 	}
@@ -7543,7 +7716,9 @@ decision_riches_found_demons_occult_assistance = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_demons_beneath_mine_active
+			has_state_flag = riches_found_layer_demons
+			riches_found_demons_district_cleared = yes
+			NOT = { riches_found_demons_assistance_taken = yes }
 			NOT = { has_state_flag = riches_found_demons_occult_assistance }
 		}
 	}
@@ -7608,7 +7783,9 @@ decision_riches_found_demons_scientific_assistance = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_demons_beneath_mine_active
+			has_state_flag = riches_found_layer_demons
+			riches_found_demons_district_cleared = yes
+			NOT = { riches_found_demons_assistance_taken = yes }
 			NOT = { has_state_flag = riches_found_demons_scientific_assistance }
 		}
 	}
@@ -7618,7 +7795,9 @@ decision_riches_found_demons_scientific_assistance = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_demons_beneath_mine_active
+			has_state_flag = riches_found_layer_demons
+			riches_found_demons_district_cleared = yes
+			NOT = { riches_found_demons_assistance_taken = yes }
 			NOT = { has_state_flag = riches_found_demons_scientific_assistance }
 		}
 	}
@@ -7632,7 +7811,9 @@ decision_riches_found_demons_scientific_assistance = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_demons_beneath_mine_active
+			has_state_flag = riches_found_layer_demons
+			riches_found_demons_district_cleared = yes
+			NOT = { riches_found_demons_assistance_taken = yes }
 			NOT = { has_state_flag = riches_found_demons_scientific_assistance }
 		}
 	}
@@ -7698,7 +7879,9 @@ decision_riches_found_demons_controlled_exploitation = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_demons_beneath_mine_active
+			has_state_flag = riches_found_layer_demons
+			riches_found_demons_assistance_taken = yes
+			riches_found_demons_exploitation_is_safe = yes
 			riches_found_state_can_control_access = yes
 			NOT = { has_state_flag = riches_found_demons_controlled_exploitation }
 		}
@@ -7709,7 +7892,9 @@ decision_riches_found_demons_controlled_exploitation = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_demons_beneath_mine_active
+			has_state_flag = riches_found_layer_demons
+			riches_found_demons_assistance_taken = yes
+			riches_found_demons_exploitation_is_safe = yes
 			riches_found_state_can_control_access = yes
 			NOT = { has_state_flag = riches_found_demons_controlled_exploitation }
 		}
@@ -7724,7 +7909,9 @@ decision_riches_found_demons_controlled_exploitation = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_demons_beneath_mine_active
+			has_state_flag = riches_found_layer_demons
+			riches_found_demons_assistance_taken = yes
+			riches_found_demons_exploitation_is_safe = yes
 			riches_found_state_can_control_access = yes
 			NOT = { has_state_flag = riches_found_demons_controlled_exploitation }
 		}
@@ -7792,7 +7979,7 @@ decision_riches_found_demons_make_agreement = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_demons_beneath_mine_active
+			has_state_flag = riches_found_layer_demons
 			has_state_flag = riches_found_supernatural_confirmed
 			NOT = { has_state_flag = riches_found_demons_agreement }
 		}
@@ -7803,7 +7990,7 @@ decision_riches_found_demons_make_agreement = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_demons_beneath_mine_active
+			has_state_flag = riches_found_layer_demons
 			has_state_flag = riches_found_supernatural_confirmed
 			NOT = { has_state_flag = riches_found_demons_agreement }
 		}
@@ -7818,7 +8005,7 @@ decision_riches_found_demons_make_agreement = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_demons_beneath_mine_active
+			has_state_flag = riches_found_layer_demons
 			has_state_flag = riches_found_supernatural_confirmed
 			NOT = { has_state_flag = riches_found_demons_agreement }
 		}
@@ -7883,7 +8070,7 @@ decision_riches_found_gilded_revoke_charter = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gilded_sovereignty
+			has_state_flag = riches_found_layer_gilded
 			NOT = { has_state_flag = riches_found_gilded_charter_revoked }
 		}
 	}
@@ -7893,7 +8080,7 @@ decision_riches_found_gilded_revoke_charter = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gilded_sovereignty
+			has_state_flag = riches_found_layer_gilded
 			NOT = { has_state_flag = riches_found_gilded_charter_revoked }
 		}
 	}
@@ -7907,7 +8094,7 @@ decision_riches_found_gilded_revoke_charter = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gilded_sovereignty
+			has_state_flag = riches_found_layer_gilded
 			NOT = { has_state_flag = riches_found_gilded_charter_revoked }
 		}
 	}
@@ -7971,7 +8158,7 @@ decision_riches_found_gilded_buy_back_district = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gilded_sovereignty
+			has_state_flag = riches_found_layer_gilded
 			NOT = { has_state_flag = riches_found_gilded_district_bought }
 		}
 	}
@@ -7981,7 +8168,7 @@ decision_riches_found_gilded_buy_back_district = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gilded_sovereignty
+			has_state_flag = riches_found_layer_gilded
 			NOT = { has_state_flag = riches_found_gilded_district_bought }
 		}
 	}
@@ -7995,7 +8182,7 @@ decision_riches_found_gilded_buy_back_district = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gilded_sovereignty
+			has_state_flag = riches_found_layer_gilded
 			NOT = { has_state_flag = riches_found_gilded_district_bought }
 		}
 	}
@@ -8058,7 +8245,7 @@ decision_riches_found_gilded_share_sovereignty = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gilded_sovereignty
+			has_state_flag = riches_found_layer_gilded
 			NOT = { has_state_flag = riches_found_gilded_sovereignty_shared }
 		}
 	}
@@ -8068,7 +8255,7 @@ decision_riches_found_gilded_share_sovereignty = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gilded_sovereignty
+			has_state_flag = riches_found_layer_gilded
 			NOT = { has_state_flag = riches_found_gilded_sovereignty_shared }
 		}
 	}
@@ -8082,7 +8269,7 @@ decision_riches_found_gilded_share_sovereignty = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gilded_sovereignty
+			has_state_flag = riches_found_layer_gilded
 			NOT = { has_state_flag = riches_found_gilded_sovereignty_shared }
 		}
 	}
@@ -8144,7 +8331,7 @@ decision_riches_found_gilded_recognize_board = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gilded_sovereignty
+			has_state_flag = riches_found_layer_gilded
 			NOT = { has_state_flag = riches_found_gilded_board_recognized }
 		}
 	}
@@ -8154,7 +8341,7 @@ decision_riches_found_gilded_recognize_board = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gilded_sovereignty
+			has_state_flag = riches_found_layer_gilded
 			NOT = { has_state_flag = riches_found_gilded_board_recognized }
 		}
 	}
@@ -8168,7 +8355,7 @@ decision_riches_found_gilded_recognize_board = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gilded_sovereignty
+			has_state_flag = riches_found_layer_gilded
 			NOT = { has_state_flag = riches_found_gilded_board_recognized }
 		}
 	}
@@ -8229,7 +8416,7 @@ decision_riches_found_gilded_violent_nationalization = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gilded_sovereignty
+			has_state_flag = riches_found_layer_gilded
 			riches_found_state_has_supplied_force = yes
 			NOT = { has_state_flag = riches_found_gilded_violently_nationalized }
 		}
@@ -8240,7 +8427,7 @@ decision_riches_found_gilded_violent_nationalization = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gilded_sovereignty
+			has_state_flag = riches_found_layer_gilded
 			riches_found_state_has_supplied_force = yes
 			NOT = { has_state_flag = riches_found_gilded_violently_nationalized }
 		}
@@ -8255,7 +8442,7 @@ decision_riches_found_gilded_violent_nationalization = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gilded_sovereignty
+			has_state_flag = riches_found_layer_gilded
 			riches_found_state_has_supplied_force = yes
 			NOT = { has_state_flag = riches_found_gilded_violently_nationalized }
 		}
@@ -8323,7 +8510,7 @@ decision_riches_found_gilded_let_govern = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gilded_sovereignty
+			has_state_flag = riches_found_layer_gilded
 			NOT = { has_state_flag = riches_found_gilded_governing_enclave }
 		}
 	}
@@ -8333,7 +8520,7 @@ decision_riches_found_gilded_let_govern = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gilded_sovereignty
+			has_state_flag = riches_found_layer_gilded
 			NOT = { has_state_flag = riches_found_gilded_governing_enclave }
 		}
 	}
@@ -8347,7 +8534,7 @@ decision_riches_found_gilded_let_govern = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_gilded_sovereignty
+			has_state_flag = riches_found_layer_gilded
 			NOT = { has_state_flag = riches_found_gilded_governing_enclave }
 		}
 	}
@@ -8410,7 +8597,7 @@ decision_riches_found_account_close = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-				has_state_flag = riches_found_bottomless_account
+				has_state_flag = riches_found_layer_account
 			NOT = { has_state_flag = riches_found_account_closed }
 			riches_found_account_resolution_can_start = yes
 		}
@@ -8421,7 +8608,7 @@ decision_riches_found_account_close = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-				has_state_flag = riches_found_bottomless_account
+				has_state_flag = riches_found_layer_account
 			NOT = { has_state_flag = riches_found_account_closed }
 			riches_found_account_resolution_can_start = yes
 		}
@@ -8436,7 +8623,7 @@ decision_riches_found_account_close = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_bottomless_account
+			has_state_flag = riches_found_layer_account
 			NOT = { has_state_flag = riches_found_account_closed }
 			riches_found_account_resolution_can_start = yes
 		}
@@ -8513,7 +8700,7 @@ decision_riches_found_account_bind_terms = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-				has_state_flag = riches_found_bottomless_account
+				has_state_flag = riches_found_layer_account
 			NOT = { has_state_flag = riches_found_account_terms_bound }
 			NOT = { has_state_flag = riches_found_account_closed }
 			riches_found_account_resolution_can_start = yes
@@ -8526,7 +8713,7 @@ decision_riches_found_account_bind_terms = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-				has_state_flag = riches_found_bottomless_account
+				has_state_flag = riches_found_layer_account
 			NOT = { has_state_flag = riches_found_account_terms_bound }
 			NOT = { has_state_flag = riches_found_account_closed }
 			riches_found_account_resolution_can_start = yes
@@ -8543,7 +8730,7 @@ decision_riches_found_account_bind_terms = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-				has_state_flag = riches_found_bottomless_account
+				has_state_flag = riches_found_layer_account
 			NOT = { has_state_flag = riches_found_account_terms_bound }
 			NOT = { has_state_flag = riches_found_account_closed }
 			riches_found_account_resolution_can_start = yes
@@ -8621,7 +8808,7 @@ decision_riches_found_account_pay_material = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_bottomless_account
+			has_state_flag = riches_found_layer_account
 			has_state_flag = riches_found_account_material_payment_possible
 			riches_found_account_has_payable_obligation = yes
 		}
@@ -8632,7 +8819,7 @@ decision_riches_found_account_pay_material = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_bottomless_account
+			has_state_flag = riches_found_layer_account
 			has_state_flag = riches_found_account_material_payment_possible
 			riches_found_account_has_payable_obligation = yes
 		}
@@ -8647,7 +8834,7 @@ decision_riches_found_account_pay_material = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_bottomless_account
+			has_state_flag = riches_found_layer_account
 			has_state_flag = riches_found_account_material_payment_possible
 			riches_found_account_has_payable_obligation = yes
 		}
@@ -8727,7 +8914,7 @@ decision_riches_found_account_spend_authority = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_bottomless_account
+			has_state_flag = riches_found_layer_account
 			riches_found_account_authority_payment_is_valid = yes
 		}
 	}
@@ -8737,7 +8924,7 @@ decision_riches_found_account_spend_authority = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_bottomless_account
+			has_state_flag = riches_found_layer_account
 			riches_found_account_authority_payment_is_valid = yes
 		}
 	}
@@ -8751,7 +8938,7 @@ decision_riches_found_account_spend_authority = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_bottomless_account
+			has_state_flag = riches_found_layer_account
 			riches_found_account_authority_payment_is_valid = yes
 		}
 	}
@@ -8832,7 +9019,7 @@ decision_riches_found_account_predatory_prosperity = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_bottomless_account
+			has_state_flag = riches_found_layer_account
 			has_state_flag = riches_found_account_active
 			riches_found_account_predatory_payment_is_valid = yes
 		}
@@ -8843,7 +9030,7 @@ decision_riches_found_account_predatory_prosperity = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_bottomless_account
+			has_state_flag = riches_found_layer_account
 			has_state_flag = riches_found_account_active
 			riches_found_account_predatory_payment_is_valid = yes
 		}
@@ -8858,7 +9045,7 @@ decision_riches_found_account_predatory_prosperity = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
-			has_state_flag = riches_found_bottomless_account
+			has_state_flag = riches_found_layer_account
 			has_state_flag = riches_found_account_active
 			riches_found_account_predatory_payment_is_valid = yes
 		}

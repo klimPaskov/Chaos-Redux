@@ -562,62 +562,63 @@ riches_found_refresh_mine_capabilities = {
 	else = { clr_state_flag = riches_found_account_material_payment_possible }
 }
 
-# STATE scope. Advances the durable mine phase after route milestones and
-# exposes the compatibility flags used by the ordinary decision category.
-# Occupation is orthogonal to the mine's own phase, so a controller can see
-# occupation actions while the underlying mine remains in its current phase.
+# STATE scope. Keeps the mine's stored milestone and works out the one
+# decision layer the controller sees. riches_found_phase holds the highest
+# ordinary milestone reached (claims, rush, development, revenue, foreign);
+# only a completed milestone advances it, one step at a time, and nothing
+# lowers it. Crises are layers worked out from current conditions on every
+# refresh, so when one ends the milestone decisions not yet taken return.
+# Layer order: the occupier's own actions, an open Bottomless Account, Demons
+# Beneath the Mine, Gold Disease, the emergency overlay, the security overlay,
+# an unanswered Gilded Sovereignty, the Resource Curse, then the milestone.
+# Each layer keeps six primary decisions or fewer; the overview lists them.
 riches_found_reconcile_mine_phase = {
 	if = { limit = { NOT = { has_variable = riches_found_phase } } set_variable = { riches_found_phase = constant:riches_found_phase.discovery_claims } }
+	# Only the five milestones are stored; any other value is rebuilt from
+	# the completed route by the steps below.
+	if = {
+		limit = { check_variable = { var = riches_found_phase value = constant:riches_found_phase.foreign_concessions compare = greater_than } }
+		set_variable = { riches_found_phase = constant:riches_found_phase.discovery_claims }
+	}
 	if = {
 		limit = {
-			riches_found_mine_is_registered = yes
+			check_variable = { var = riches_found_phase value = constant:riches_found_phase.discovery_claims compare = equals }
+			has_state_flag = riches_found_survey_complete
 			OR = {
-				has_state_flag = riches_found_mine_permanent_seal
-				has_state_flag = riches_found_mine_terminal
-				has_state_flag = riches_found_mine_closed
-				has_state_flag = riches_found_mine_temporary_closure
-				has_state_flag = riches_found_mine_quarantined
-				has_state_flag = riches_found_mine_partial_seal
-				has_state_flag = riches_found_mine_collapsed
-				 has_state_flag = riches_found_mine_exhausted
+				has_state_flag = riches_found_claims_registered
+				has_state_flag = riches_found_claims_frozen
+				has_state_flag = riches_found_local_claims_recognized
+				has_state_flag = riches_found_state_reserve
+				has_state_flag = riches_found_claims_court_open
 			}
 		}
-		set_variable = { riches_found_phase = constant:riches_found_phase.closure_control_crisis }
+		set_variable = { riches_found_phase = constant:riches_found_phase.rush }
 	}
-	else_if = {
+	if = {
 		limit = {
+			check_variable = { var = riches_found_phase value = constant:riches_found_phase.rush compare = equals }
+			has_state_flag = riches_found_camp_administration
+			has_state_flag = riches_found_sanitation
+			has_state_flag = riches_found_labor_route_fixed
+		}
+		set_variable = { riches_found_phase = constant:riches_found_phase.physical_development }
+	}
+	if = {
+		limit = {
+			check_variable = { var = riches_found_phase value = constant:riches_found_phase.physical_development compare = equals }
+			riches_found_state_has_transport_route = yes
+			has_state_flag = riches_found_shafts_reinforced
 			OR = {
-				riches_found_mine_is_severe_pressure = yes
-				riches_found_mine_is_local_order_crisis = yes
-				riches_found_mine_is_legitimacy_crisis = yes
-				has_state_flag = riches_found_raid_crisis
-				has_state_flag = riches_found_severe_collapse
-				has_state_flag = riches_found_severe_mutiny
+				has_state_flag = riches_found_processing_works
+				has_state_flag = riches_found_worker_housing
+				has_state_flag = riches_found_development_fund
 			}
 		}
-		if = { limit = { check_variable = { var = riches_found_phase value = constant:riches_found_phase.closure_control_crisis compare = less_than } } set_variable = { riches_found_phase = constant:riches_found_phase.closure_control_crisis } }
+		set_variable = { riches_found_phase = constant:riches_found_phase.revenue_settlement }
 	}
-	else_if = {
+	if = {
 		limit = {
-			OR = {
-				has_state_flag = riches_found_limited_concession
-				has_state_flag = riches_found_exclusive_concession
-				has_state_flag = riches_found_offtake_agreement
-				has_state_flag = riches_found_access_infrastructure_trade
-				has_state_flag = riches_found_mine_police
-				has_state_flag = riches_found_private_guards
-				has_state_flag = riches_found_army_cordon
-				has_state_flag = riches_found_armed_workers
-				has_state_flag = riches_found_raid_crisis
-				has_state_flag = riches_found_crime_crisis
-				has_state_flag = riches_found_wage_dispute
-				has_state_flag = riches_found_armed_claimants
-			}
-		}
-		if = { limit = { check_variable = { var = riches_found_phase value = constant:riches_found_phase.security_raids compare = less_than } } set_variable = { riches_found_phase = constant:riches_found_phase.security_raids } }
-	}
-	else_if = {
-		limit = {
+			check_variable = { var = riches_found_phase value = constant:riches_found_phase.revenue_settlement compare = equals }
 			OR = {
 				has_state_flag = riches_found_dividend_paid
 				has_state_flag = riches_found_local_revenue_settled
@@ -628,68 +629,51 @@ riches_found_reconcile_mine_phase = {
 				has_state_flag = riches_found_public_project_complete
 			}
 		}
-		if = { limit = { check_variable = { var = riches_found_phase value = constant:riches_found_phase.foreign_concessions compare = less_than } } set_variable = { riches_found_phase = constant:riches_found_phase.foreign_concessions } }
-	}
-	else_if = {
-		limit = {
-			riches_found_state_has_transport_route = yes
-			has_state_flag = riches_found_shafts_reinforced
-			OR = {
-				has_state_flag = riches_found_processing_works
-				has_state_flag = riches_found_worker_housing
-				has_state_flag = riches_found_development_fund
-			}
-		}
-		if = { limit = { check_variable = { var = riches_found_phase value = constant:riches_found_phase.revenue_settlement compare = less_than } } set_variable = { riches_found_phase = constant:riches_found_phase.revenue_settlement } }
-	}
-	else_if = {
-		limit = {
-			has_state_flag = riches_found_camp_administration
-			has_state_flag = riches_found_sanitation
-			has_state_flag = riches_found_labor_route_fixed
-		}
-		if = { limit = { check_variable = { var = riches_found_phase value = constant:riches_found_phase.physical_development compare = less_than } } set_variable = { riches_found_phase = constant:riches_found_phase.physical_development } }
-	}
-	else_if = {
-		limit = {
-			has_state_flag = riches_found_survey_complete
-			OR = {
-				has_state_flag = riches_found_claims_registered
-				has_state_flag = riches_found_claims_frozen
-				has_state_flag = riches_found_local_claims_recognized
-				has_state_flag = riches_found_state_reserve
-				has_state_flag = riches_found_claims_court_open
-			}
-		}
-		if = { limit = { check_variable = { var = riches_found_phase value = constant:riches_found_phase.rush compare = less_than } } set_variable = { riches_found_phase = constant:riches_found_phase.rush } }
+		set_variable = { riches_found_phase = constant:riches_found_phase.foreign_concessions }
 	}
 
+	riches_found_refresh_mine_threat_position = yes
 	if = { limit = { riches_found_mine_is_registered = yes } set_state_flag = riches_found_mine_state }
-	if = { limit = { check_variable = { var = riches_found_phase value = constant:riches_found_phase.discovery_claims compare = equals } } set_state_flag = riches_found_phase_claims }
-	else = { clr_state_flag = riches_found_phase_claims }
-	if = {
-		limit = { check_variable = { var = riches_found_phase value = constant:riches_found_phase.rush compare = equals } }
-		if = { limit = { NOT = { has_state_flag = riches_found_camp_administration } } set_state_flag = riches_found_phase_rush }
-		else = { clr_state_flag = riches_found_phase_rush }
-		if = { limit = { has_state_flag = riches_found_camp_administration } set_state_flag = riches_found_phase_rush_services }
-		else = { clr_state_flag = riches_found_phase_rush_services }
-	}
-	else = {
-		clr_state_flag = riches_found_phase_rush
-		clr_state_flag = riches_found_phase_rush_services
-	}
-	if = { limit = { check_variable = { var = riches_found_phase value = constant:riches_found_phase.physical_development compare = equals } } set_state_flag = riches_found_phase_development }
-	else = { clr_state_flag = riches_found_phase_development }
-	if = { limit = { check_variable = { var = riches_found_phase value = constant:riches_found_phase.revenue_settlement compare = equals } } set_state_flag = riches_found_phase_revenue }
-	else = { clr_state_flag = riches_found_phase_revenue }
-	if = { limit = { check_variable = { var = riches_found_phase value = constant:riches_found_phase.foreign_concessions compare = equals } } set_state_flag = riches_found_phase_foreign }
-	else = { clr_state_flag = riches_found_phase_foreign }
-	if = { limit = { check_variable = { var = riches_found_phase value = constant:riches_found_phase.security_raids compare = equals } } set_state_flag = riches_found_phase_security }
-	else = { clr_state_flag = riches_found_phase_security }
-	if = { limit = { check_variable = { var = riches_found_phase value = constant:riches_found_phase.closure_control_crisis compare = equals } } set_state_flag = riches_found_phase_emergency }
-	else = { clr_state_flag = riches_found_phase_emergency }
+	clr_state_flag = riches_found_phase_claims
+	clr_state_flag = riches_found_phase_rush
+	clr_state_flag = riches_found_phase_rush_services
+	clr_state_flag = riches_found_phase_development
+	clr_state_flag = riches_found_phase_revenue
+	clr_state_flag = riches_found_phase_foreign
+	clr_state_flag = riches_found_phase_security
+	clr_state_flag = riches_found_phase_emergency
+	clr_state_flag = riches_found_phase_occupation
+	clr_state_flag = riches_found_layer_account
+	clr_state_flag = riches_found_layer_demons
+	clr_state_flag = riches_found_layer_gold
+	clr_state_flag = riches_found_layer_gilded
+	clr_state_flag = riches_found_layer_curse
 	if = { limit = { riches_found_mine_is_occupied = yes } set_state_flag = riches_found_phase_occupation }
-	else = { clr_state_flag = riches_found_phase_occupation }
+	else_if = { limit = { riches_found_account_is_open = yes } set_state_flag = riches_found_layer_account }
+	else_if = { limit = { has_state_flag = riches_found_demons_beneath_mine_active } set_state_flag = riches_found_layer_demons }
+	else_if = { limit = { has_state_flag = riches_found_gold_disease_active } set_state_flag = riches_found_layer_gold }
+	else_if = { limit = { riches_found_mine_needs_emergency_response = yes } set_state_flag = riches_found_phase_emergency }
+	else_if = { limit = { riches_found_mine_needs_security_response = yes } set_state_flag = riches_found_phase_security }
+	else_if = { limit = { riches_found_gilded_is_open = yes } set_state_flag = riches_found_layer_gilded }
+	else_if = { limit = { has_state_flag = riches_found_resource_curse_active } set_state_flag = riches_found_layer_curse }
+	else_if = {
+		limit = { check_variable = { var = riches_found_phase value = constant:riches_found_phase.discovery_claims compare = equals } }
+		set_state_flag = riches_found_phase_claims
+	}
+	else_if = {
+		limit = { check_variable = { var = riches_found_phase value = constant:riches_found_phase.rush compare = equals } }
+		if = { limit = { has_state_flag = riches_found_camp_administration } set_state_flag = riches_found_phase_rush_services }
+		else = { set_state_flag = riches_found_phase_rush }
+	}
+	else_if = {
+		limit = { check_variable = { var = riches_found_phase value = constant:riches_found_phase.physical_development compare = equals } }
+		set_state_flag = riches_found_phase_development
+	}
+	else_if = {
+		limit = { check_variable = { var = riches_found_phase value = constant:riches_found_phase.revenue_settlement compare = equals } }
+		set_state_flag = riches_found_phase_revenue
+	}
+	else = { set_state_flag = riches_found_phase_foreign }
 
 	if = {
 		limit = {
@@ -709,6 +693,34 @@ riches_found_reconcile_mine_phase = {
 	if = {
 		limit = { has_state_flag = riches_found_mine_collapsed }
 		set_state_flag = riches_found_mine_damaged
+	}
+}
+
+# STATE scope. Marks a mine whose district borders a state held by an enemy
+# of its controller (riches_found_front_line) and, for an occupied mine, an
+# occupier that is about to lose it (riches_found_retreat_imminent): its war
+# is being lost or it keeps no supplied force in the district. Only the
+# mine's own neighbouring states are read.
+riches_found_refresh_mine_threat_position = {
+	clr_state_flag = riches_found_front_line
+	clr_state_flag = riches_found_retreat_imminent
+	if = {
+		limit = { CONTROLLER = { exists = yes has_war = yes } }
+		CONTROLLER = { save_event_target_as = riches_found_threat_controller }
+		if = {
+			limit = { any_neighbor_state = { CONTROLLER = { has_war_with = event_target:riches_found_threat_controller } } }
+			set_state_flag = riches_found_front_line
+			if = {
+				limit = {
+					riches_found_mine_is_occupied = yes
+					OR = {
+						CONTROLLER = { check_variable = { surrender_progress > constant:riches_found_overlay.retreat_surrender_progress } }
+						NOT = { riches_found_state_has_supplied_force = yes }
+					}
+				}
+				set_state_flag = riches_found_retreat_imminent
+			}
+		}
 	}
 }
 
@@ -2202,7 +2214,6 @@ riches_found_begin_temporary_closure = {
 		set_state_flag = riches_found_closure_history
 		clr_state_flag = riches_found_closure_review_complete
 		set_variable = { riches_found_operating_state = constant:riches_found_operating_state.temporarily_closed }
-		set_variable = { riches_found_phase = constant:riches_found_phase.closure_control_crisis }
 		set_variable = { riches_found_closure_start_date = global.date }
 		set_variable = { riches_found_last_closure_service_date = global.date }
 		set_variable = { riches_found_closure_review_date = global.date }
@@ -2226,7 +2237,6 @@ riches_found_begin_partial_seal = {
 		limit = { riches_found_mine_can_begin_temporary_closure = yes }
 		set_state_flag = riches_found_mine_partial_seal
 		set_variable = { riches_found_operating_state = constant:riches_found_operating_state.partially_sealed }
-		set_variable = { riches_found_phase = constant:riches_found_phase.closure_control_crisis }
 		add_to_variable = { riches_found_sealed_depth_integrity = constant:riches_found_scaling.partial_seal_integrity_loss }
 		add_to_variable = { riches_found_extraction_pressure = constant:riches_found_scaling.partial_seal_pressure_add }
 		riches_found_clear_mission_state = yes
@@ -2244,7 +2254,6 @@ riches_found_begin_quarantine = {
 		limit = { riches_found_mine_can_begin_temporary_closure = yes }
 		set_state_flag = riches_found_mine_quarantined
 		set_variable = { riches_found_operating_state = constant:riches_found_operating_state.quarantined }
-		set_variable = { riches_found_phase = constant:riches_found_phase.closure_control_crisis }
 		set_variable = { riches_found_closure_start_date = global.date }
 		add_to_variable = { riches_found_extraction_pressure = constant:riches_found_scaling.partial_seal_pressure_add }
 		riches_found_clear_mission_state = yes
@@ -2276,7 +2285,6 @@ riches_found_permanently_seal_mine = {
 			set_state_flag = riches_found_mine_closed
 			clr_state_flag = riches_found_mine_active
 		set_variable = { riches_found_operating_state = constant:riches_found_operating_state.permanently_sealed }
-		set_variable = { riches_found_phase = constant:riches_found_phase.closure_control_crisis }
 		set_variable = { riches_found_permanent_seal_date = global.date }
 		add_to_variable = { riches_found_extraction_pressure = constant:riches_found_scaling.permanent_seal_pressure_reduction }
 		add_to_variable = { riches_found_mine_development = constant:riches_found_scaling.permanent_seal_development_loss }
@@ -2335,7 +2343,6 @@ riches_found_collapse_mine = {
 			if = { limit = { riches_found_mine_is_severe_pressure = yes } set_state_flag = riches_found_severe_collapse }
 			riches_found_damage_collapsed_works = yes
 			set_variable = { riches_found_operating_state = constant:riches_found_operating_state.collapsed }
-		set_variable = { riches_found_phase = constant:riches_found_phase.closure_control_crisis }
 		set_variable = { riches_found_collapse_date = global.date }
 		set_variable = { riches_found_last_closure_service_date = global.date }
 		set_variable = { riches_found_collapse_recovery_date = global.date }
@@ -2370,7 +2377,6 @@ riches_found_begin_recovery = {
 		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
 		chaosx_convert_days_to_date_offset = yes
 		add_to_variable = { riches_found_recovery_review_date = chaosx_date_offset }
-		set_variable = { riches_found_phase = constant:riches_found_phase.physical_development }
 	}
 }
 
@@ -2398,7 +2404,6 @@ riches_found_complete_recovery = {
 			set_state_flag = riches_found_mine_partial_seal
 			set_variable = { riches_found_operating_state = constant:riches_found_operating_state.partially_sealed }
 		}
-		set_variable = { riches_found_phase = constant:riches_found_phase.revenue_settlement }
 		add_to_variable = { riches_found_local_order = constant:riches_found_value.two }
 		add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_value.two }
 		add_to_variable = { riches_found_sealed_depth_integrity = constant:riches_found_scaling.recovery_integrity_gain }
@@ -2450,7 +2455,6 @@ riches_found_complete_shaft_restoration = {
 					NOT = { has_state_flag = riches_found_mine_quarantined }
 				}
 				set_variable = { riches_found_operating_state = constant:riches_found_operating_state.open_regulated }
-				set_variable = { riches_found_phase = constant:riches_found_phase.revenue_settlement }
 			}
 		}
 	}
@@ -2484,7 +2488,6 @@ riches_found_partially_restore_shaft = {
 		set_state_flag = riches_found_mine_partial_seal
 		set_state_flag = riches_found_partial_restoration_history
 		set_variable = { riches_found_operating_state = constant:riches_found_operating_state.partially_sealed }
-		set_variable = { riches_found_phase = constant:riches_found_phase.closure_control_crisis }
 	}
 	riches_found_clamp_mine_values = yes
 	riches_found_refresh_mine_presentation = yes
@@ -2537,10 +2540,6 @@ riches_found_cancel_reopening = {
 		limit = { has_state_flag = riches_found_reopening_in_progress }
 		clr_state_flag = riches_found_reopening_in_progress
 		riches_found_clear_recovery_state = yes
-		if = {
-			limit = { has_state_flag = riches_found_mine_temporary_closure }
-			set_variable = { riches_found_phase = constant:riches_found_phase.closure_control_crisis }
-		}
 	}
 }
 
@@ -2874,6 +2873,8 @@ riches_found_enter_gilded_sovereignty = {
 		set_state_flag = riches_found_achievement_gilded_history
 		set_variable = { riches_found_gilded_sovereignty_date = global.date }
 		riches_found_record_achievement_gilded_sovereignty = yes
+		# The district's answer to the authority becomes the mine's current layer.
+		riches_found_refresh_mine_presentation = yes
 		set_temp_variable = { riches_found_report_input_kind = constant:riches_found_report.gilded_sovereignty }
 		riches_found_queue_report = yes
 		if = { limit = { CONTROLLER = { exists = yes } } CONTROLLER = { riches_found_refresh_controller_aggregate = yes } }
@@ -2891,6 +2892,8 @@ riches_found_enter_bottomless_account = {
 		set_state_flag = riches_found_account_active
 		riches_found_start_account_obligation = yes
 		riches_found_record_achievement_bottomless_account = yes
+		# The open account becomes the mine's current layer.
+		riches_found_refresh_mine_presentation = yes
 		set_temp_variable = { riches_found_report_input_kind = constant:riches_found_report.bottomless_account }
 		riches_found_queue_report = yes
 		if = { limit = { CONTROLLER = { exists = yes } } CONTROLLER = { riches_found_refresh_controller_aggregate = yes } }
