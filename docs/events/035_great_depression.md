@@ -317,7 +317,7 @@ Affordability, urgency, wartime industry needs, financial pressure, center condi
 
 The baseline, Financial Contagion, Social Collapse stage, and final Social Collapse outcome pools use centralized common, uncommon, rare, major, severe, positive, and no-incident weights with target validation and last-family cooldowns.
 
-Event choice weights are defined for the crisis report, coup response, and regional-autonomy response.
+Event choice weights in `great_depression_event_option_weight` cover the crisis report, coup response, regional-autonomy response, and National Breakdown outcomes, and the single-option recovery, contagion, social, exposed-partner, and world-news events read their own keys there.
 
 The named probability scenarios are defined in `docs/specs/035_great_depression_specs/035_great_depression_ai_probability_matrix.md`. The implementation report records the current evidence boundary: source and candidate-pool inspection succeeded, but the MCP transport closed before the required named evaluations, sweeps, sequence checks, and same-scenario comparison completed.
 
@@ -336,6 +336,8 @@ Event 34's Long Fall remains owned by Event 34 but shares the Event 35 asset pac
 `interface/chaosx_pictures.gfx`, `interface/035_great_depression.gfx`, and `interface/chaosx_super_events.gfx` register the six scene images, category picture, and super-event image.
 
 The complete 60-file icon inventory with source, processed, DDS, dimensions, alpha bounds, checksums, and runtime paths is stored in `docs/assets/035_great_depression/icon_manifest.json`. Together with six event/news images, the decision-category picture, and the super-event image, the Event 35 visual package contains 68 runtime DDS files.
+
+The Emergency Government spirit, the six political aftermath spirits, and the five country recovery scars use Event 35 sprite names that alias installed vanilla national-spirit textures, so they add no Event 35 DDS file; bespoke art can replace their texture paths without renaming the sprites. The two lasting district modifiers reuse the reopened and hollowed center icons.
 
 The regular icon families are eight decision/category icons under `gfx/interface/decisions/035_great_depression/`, eight mission icons in the same folder, three evolution icons in the same folder, twelve condition and legacy icons under `gfx/interface/ideas/035_great_depression/`, and eight state-status icons under `gfx/interface/state_modifiers/035_great_depression/`.
 

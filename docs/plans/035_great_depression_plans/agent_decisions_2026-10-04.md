@@ -333,3 +333,23 @@ Disposition: implemented.
 - Removal paths: a later strong recovery under the matching doctrine (or with the controls removed, a Social Compact aftermath, or no doctrine switch) clears an older scar, and a newly earned scar replaces it. Each scar carries one bounded modifier.
 - Art: the five spirits alias installed vanilla textures (`idea_AST_liberty_loans`, `idea_generic_foreign_capital`, `idea_can_wartime_prices_and_trade_board`, `idea_ICE_general_strike`, `idea_NOR_optimistic_cabinet_ns`), each confirmed present in the base install.
 - AI: no weight changed.
+
+## Round 2 commit index
+
+| Decision | Item | Commit |
+| --- | --- | --- |
+| D13 national recovery report | 1 | `51e9c1532` |
+| D14 real requirement text | 2 | `b2cb3c478` |
+| D15 evolution reports, exposed-partner report, first-spread news | 3 | `26512b905` |
+| D16 legacy costs, later-episode effects, safeguard, hollow flag | 4 | `d24652e14` |
+| D17 lasting district outcomes | 5 | `91822b390` |
+| D18 Emergency Government spirit and political aftermath | 6 | `95a90f663` |
+| D19 global episode news | 7 | `546f86a0e` |
+| D20 receipt-based country scars | 8 | `d7424e315` |
+
+## Round 2 remaining limits
+
+- needs_live_game: display of the eight new popups and their scripted names, the new spirit icons and tooltips, the district modifiers on the map, and the recovery report's option tooltip.
+- Accepted and queued: news for the failure of a major recovery conference and for the formation of a major clearing or protectionist bloc (D19).
+- Asset follow-up: bespoke Event 35 art for the twelve aliased spirits and dedicated news art for the reconstruction, end and supplier-collapse news.
+- The numeric AI probability comparison remains blocked by the decision adapter (D10); no weight changed in round 2.
