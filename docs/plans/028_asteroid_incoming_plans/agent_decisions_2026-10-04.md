@@ -129,3 +129,19 @@ Damage still running keeps its own timer, because the remaining days of a dynami
 Emergency-class damage reopens the local emergency, so "failure keeps the emergency phase open" (Part 6).
 The temporary repair-cost increase is applied through the recovery cost quote.
 Basis: Part 6 failure lists "extend the state recovery modifier", "a bounded rescue-period death entry", and "raises future repair costs for a limited period".
+
+## Evolutions at impact
+
+### Thresholds from the opening, toggles at impact (F04)
+
+Decision: Global Fragmentation applies at impact only when the opening snapshot recorded its Chaos threshold and `has_disabled_current_evolution` is false for event 28, type 2801, stage 1.
+Extraordinary Minerals activates only when its opening snapshot exists, type 2802 stage 1 is not disabled, and at least one fragment applied.
+The Chaos threshold is not re-checked live at impact; the fragment-site count still follows the current Chaos value.
+Basis: Part 5 and the event skill's rule that an evolution's enable state is read where it applies; the threshold is part of what the opening announced.
+No AI weight changed.
+
+### Near-miss eligibility (F14)
+
+Decision: "eligible" for the near-miss achievement means the Chaos threshold is met and both evolution toggles are enabled; there is no geographic check that two separated fragment centres would exist.
+The existing award logic stands, so no probability surface changes.
+Basis: Part 10 Achievement 1 lists only the threshold, the enabled and eligible evolutions, and the miss.

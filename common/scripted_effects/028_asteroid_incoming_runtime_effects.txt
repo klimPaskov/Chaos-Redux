@@ -685,11 +685,17 @@ asteroid_incoming_apply_target_preparedness_aftermath = {
 # FOOTPRINT, CAPITAL RELOCATION, AND PHYSICAL RECEIPTS
 # ============================================================================
 
+# Global Fragmentation applies when its opening snapshot recorded the Chaos
+# threshold and its shared toggle is still enabled at impact. The threshold is
+# not re-checked live; the site count follows the current Chaos value.
 asteroid_incoming_choose_fragment_sites = {
+	set_temp_variable = { events_log_evolution_event_id = constant:asteroid_incoming_event.id }
+	set_temp_variable = { events_log_evolution_type = constant:asteroid_incoming_event.evolution_i_type }
+	set_temp_variable = { events_log_evolution_stage = constant:asteroid_incoming_event.evolution_i_stage }
 	if = {
 		limit = {
-			asteroid_incoming_fragmentation_is_enabled = yes
 			has_global_flag = asteroid_incoming_evolution_i_eligible
+			NOT = { has_disabled_current_evolution = yes }
 		}
 		set_global_flag = asteroid_incoming_fragmentation_active
 		set_temp_variable = { asteroid_incoming_fragment_site_goal = constant:asteroid_incoming_runtime.fragment_site_goal_at_600 }

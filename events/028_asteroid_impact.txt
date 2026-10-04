@@ -332,9 +332,15 @@ country_event = {
 			set_variable = { global.asteroid_incoming_opening_dust_stage = constant:asteroid_incoming_dust.stage_none }
 			asteroid_incoming_plan_main_footprint = yes
 			asteroid_incoming_choose_fragment_sites = yes
+			# Extraordinary Minerals needs its opening snapshot, at least one
+			# applied fragment, and its shared toggle still enabled at impact.
+			set_temp_variable = { events_log_evolution_event_id = constant:asteroid_incoming_event.id }
+			set_temp_variable = { events_log_evolution_type = constant:asteroid_incoming_event.evolution_ii_type }
+			set_temp_variable = { events_log_evolution_stage = constant:asteroid_incoming_event.evolution_ii_stage }
 			if = {
 				limit = {
 					has_global_flag = asteroid_incoming_evolution_ii_eligible
+					NOT = { has_disabled_current_evolution = yes }
 					check_variable = {
 						var = global.asteroid_incoming_fragments_applied
 						value = constant:asteroid_incoming_runtime.one
