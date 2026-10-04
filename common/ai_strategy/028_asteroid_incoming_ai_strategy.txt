@@ -1,0 +1,43 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 028 ASTEROID INCOMING AI STRATEGY
+# ============================================================================
+# While Extraordinary Minerals is active, a country at war asks for more
+# divisions on fronts that cross a crater state. The same request holds a
+# controlled site and lets the normal attack logic take a nearby enemy site
+# when it already has the strength. The main crater weighs more than one
+# fragment site. The plan adds front unit requests only, with no front_control
+# rush, so ordinary survival logic still decides attacks, and it switches off
+# once the country is close to collapse so a losing home front keeps its
+# divisions. Crater value at peace talks lives in
+# common/peace_conference/ai_peace/028_asteroid_incoming_ai_peace.txt.
+# Vanilla precedent: CHI_bog_them_down_and_war_zones_concentrations
+# (front_unit_request with a state-flag state_trigger).
+# ============================================================================
+
+@ASTEROID_CRATER_MAIN_FRONT_REQUEST = 60
+@ASTEROID_CRATER_FRAGMENT_FRONT_REQUEST = 25
+@ASTEROID_CRATER_SURRENDER_LIMIT = 0.25
+
+asteroid_incoming_crater_fronts = {
+	enable = {
+		has_global_flag = asteroid_incoming_minerals_active
+		has_war = yes
+		NOT = { surrender_progress > @ASTEROID_CRATER_SURRENDER_LIMIT }
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = { has_state_flag = asteroid_incoming_main_crater }
+		value = @ASTEROID_CRATER_MAIN_FRONT_REQUEST
+	}
+
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = {
+			has_state_flag = asteroid_incoming_fragment_site
+			NOT = { has_state_flag = asteroid_incoming_main_crater }
+		}
+		value = @ASTEROID_CRATER_FRAGMENT_FRONT_REQUEST
+	}
+}

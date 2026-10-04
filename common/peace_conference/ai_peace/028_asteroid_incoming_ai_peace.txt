@@ -1,0 +1,43 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 028 ASTEROID INCOMING AI PEACE DESIRES
+# ============================================================================
+# While Extraordinary Minerals is active, an AI negotiator bidding for itself
+# values crater states more than an ordinary state. The main crater outranks
+# one fragment site, and each fragment site carries its own desire, so several
+# sites together weigh more than one. The bonuses stay below the vanilla core
+# desire and far below the influence cutoffs, so cores, claims, influence
+# range, faction leadership and bids made for subjects or allies still shape
+# the settlement. Scopes follow the installed ai_peace documentation: ROOT is
+# the negotiator, ROOT.FROM the taker and ROOT.FROM.FROM.FROM the state.
+# Front weighting for crater states lives in
+# common/ai_strategy/028_asteroid_incoming_ai_strategy.txt.
+# ============================================================================
+
+@ASTEROID_CRATER_MAIN_PEACE_DESIRE = 75
+@ASTEROID_CRATER_FRAGMENT_PEACE_DESIRE = 30
+
+peace_ai_desires = {
+
+	asteroid_incoming_take_main_crater = {
+		peace_action_type = { take_states }
+		enable = {
+			ROOT = { tag = ROOT.FROM } # Negotiating for ourselves
+			has_global_flag = asteroid_incoming_minerals_active
+			ROOT.FROM.FROM.FROM = { has_state_flag = asteroid_incoming_main_crater }
+		}
+		ai_desire = @ASTEROID_CRATER_MAIN_PEACE_DESIRE
+	}
+
+	asteroid_incoming_take_fragment_site = {
+		peace_action_type = { take_states }
+		enable = {
+			ROOT = { tag = ROOT.FROM } # Negotiating for ourselves
+			has_global_flag = asteroid_incoming_minerals_active
+			ROOT.FROM.FROM.FROM = {
+				has_state_flag = asteroid_incoming_fragment_site
+				NOT = { has_state_flag = asteroid_incoming_main_crater }
+			}
+		}
+		ai_desire = @ASTEROID_CRATER_FRAGMENT_PEACE_DESIRE
+	}
+}

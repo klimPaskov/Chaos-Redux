@@ -320,3 +320,14 @@ Decision: at the lock, `global.asteroid_incoming_expected_impact_date` is the cu
 The date is cleared by `asteroid_incoming_resolve_miss`, `asteroid_incoming_fail_closed_transaction` and `asteroid_incoming_cleanup_finished_transaction`.
 The preparedness event `chaosx.nr28.3` keeps its existing text, because a popup left open past the impact would read the cleared date.
 Basis: Part 8 (Observer trajectory notice) and Part 7 (Observer information) require the notice to name the intended target and impact date, and a single constant keeps the announced day and the real delay equal.
+
+### Crater AI strategy and peace value
+
+Decision: crater AI uses two documented vanilla mechanisms instead of new script.
+`asteroid_incoming_crater_fronts` (`common/ai_strategy/028_asteroid_incoming_ai_strategy.txt`) runs while Extraordinary Minerals is active, the country is at war and its surrender progress is at most 0.25, with `abort_when_not_enabled = yes`, and adds `front_unit_request` weight to fronts crossing the main crater (60) or a fragment site (25).
+It adds no `front_control` order, so the normal attack and defence logic still decides whether an offensive happens, and the surrender guard keeps a collapsing country from pulling divisions toward a distant site.
+`common/peace_conference/ai_peace/028_asteroid_incoming_ai_peace.txt` adds `take_states` desire when the negotiator bids for itself: 75 for the main crater and 30 for each fragment site, both below the vanilla `take_our_cores` desire of 100 and far below the -1000 influence cutoffs.
+Values are file-scoped `@` constants because no script reads them.
+`put_unit_buffers` was not used because it takes literal state ids and crater states are chosen at runtime.
+Basis: Part 7 (Crater control and Peace behavior) and the acceptance line "Crater AI values sites without abandoning normal survival logic"; vanilla `CHI_bog_them_down_and_war_zones_concentrations` (CHI.txt:705-728) and the installed `common/peace_conference/ai_peace/_documentation.md` scope list.
+Probability evidence: `hoi4_probability_inspect` with `adapter = ai_strategy_factor` returned INTERNAL_ERROR for a single-file source selector and rejected a one-name `candidatePool` as invalid arguments, so no baseline or `probability_compare` could be produced; the route has no adapter for `peace_ai_desires`. This is a recorded route gap; the review is source-only. The values are needs-live-game tuning checks.
