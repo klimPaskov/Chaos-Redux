@@ -194,3 +194,54 @@ The stopped thread's finished audit handoffs, probability baselines and comparis
 - Further focuses remain value-only or flag-only: among them Define Leadership, Relocate the Command, Distribute the Cells, Intelligence by Whisper, Command the Front, Bargain with Rivals, Seize the Urban District, Break the Parent Government, Lead the Final Jihad, Join the Jihadist International, and the three focuses that call `random_terror_actor_call_coordinated_uprising`, whose focus-side call only sets an unread flag.
 - Several shared tuning values are not multiples of five (`unity_gain` 4, `actor_control_convert_gain` 8, `actor_supply_corridor_gain` 8), and Convene the Cadre and Codify the Doctrine both add `random_terror_cadre_authority`.
 - The workbook owner must apply `catalog_changes_pending.md`.
+
+## Round 1 continuation
+
+The lead's 22 round-1 items were already implemented in the commits listed above, so the continuation resumed from "Open after round 1" and from defects found while reviewing the focus tree against the Part 6 reward rules.
+Each decision below was taken under the same delegated authority and is `implemented` in the commit named beside it; live-game behaviour remains with the user.
+
+### R14 Focus rewards never lock actor decisions (`9e9a7b806`)
+
+Thirty-five focuses reused actor decision helpers, which set the 14-day action lock through `random_terror_actor_action_common`.
+Focus rewards set the temp variable `random_terror_focus_context` first, and the common step starts the cooldown only outside that context.
+Unread bookkeeping flags (action record, membership record, uprising call, failed revelation gate) were removed, absorbing an actor no longer marks the absorber with the community-rejection flag, and actor retirement also removes International Mandate, Local Revolt, Mass Defection and Failed Rule.
+
+### R15 Ideological mobilization is a timed recruitment drive (`3f08c7355`)
+
+Begin Ideological Mobilization charged manpower and only set a permanent flag while its tooltip promised more manpower.
+Per the matrix row (recruitment and obedience, with a duration), its manpower price now becomes one disciplined formation (two after Codify the Doctrine), the command gains `random_terror_mobilized_cadres` for `mobilization_days`, and the decision reopens when the mobilization ends.
+A separate permanent `random_terror_ideological_mobilization_recorded` flag keeps the Jihadist International entry condition.
+
+### R16 One stable spirit per idea slot (`73dfc8045`)
+
+The tree stacked several forms of one institution (for example Distributed and Unified Field Command, or four legitimacy forms at once) and fourteen focuses granted a spirit the actor already held.
+Command, economy and legitimacy are slots, set only through `random_terror_set_<slot>_form`, which removes the other stable forms of the slot; the failure overlay stays outside the slots and keeps ownership of Looting Spiral and Sponsor Dependency unless a focus chooses them.
+The opening no longer replaces a starting spirit, so the three starting problems last until the route choices, matching the Part 6 lifecycle table.
+Every focus that only repeated a spirit received its own concrete reward, as listed in `docs/events/031_random_terror/overview.md`.
+
+### R17 Concrete rewards for the remaining hollow focuses (`d334dc062`, `173fad47c`, `09b093898`)
+
+Every remaining focus that only moved hidden values or set a flag now changes the map, forces, diplomacy, a decision transaction or a visible value, with a plain tooltip; the full table is in the overview.
+Rewards that bind another command use the existing consent events: the merger offer (`chaosx.nr31.43`), the sponsor request (`chaosx.nr31.42`) and the membership request (`chaosx.nr31.44`).
+Access, pacts, guarantees and faction entry granted without such an event apply only to AI commands, so a player command is never bound without its own choice.
+Open the Worldwide Uprising launches a real coordinated uprising only after Evolution V, because the government's Stop the Coordinated Uprising mission requires it; before then it prepares cells.
+Every formation raised by a focus or an actor action goes through `random_terror_focus_raise_formation`, which respects `actor_division_cap`.
+Salvage the Rail Spur used `add_building_construction` with `rail_way` in a state scope, which vanilla never does; it now lays a railway with `build_railway` between the seat and a border state.
+
+### R18 Tuning values in multiples of five (`a9b46c56d`)
+
+The actor gains and the two army-experience prices that double as focus rewards were 3, 4, 6, 8 or 12; they are now 5 or 10, as the focus-tree rules require, and every cost row reads the same constants.
+Government-side mission and pressure values were left as they are because they are outside the focus-tree rule and carry the accepted mission balance.
+
+## Route evidence for the continuation
+
+- `hoi4.focus_inspect` on `random_terror_actor_focus_tree` succeeded before (revision `93811ab314e9556dec7ed4d952dc4e0f2c7abccf541c118d2f26abc9cd4a2401`) and after (revision `fc0ea4895b3df48b810aad091d3de376609f25cb10d4745bb6dc7abd5aa94db2`) the reward changes: 114 focuses, zero tree diagnostics, zero connector crossings, layout hash `69ec88315409c5c578ffca2852052037f7ee6a48510a92189c11ac79a1a6d2a9` unchanged.
+- No AI weight, MTTH or random-selection value changed in the continuation, so no new probability comparison was required; the round-1 probability gap above still stands.
+- Source checks run on every commit: brace balance with comments stripped, every referenced script constant defined with a schema, every scripted effect and trigger call defined, every tooltip and cost key localised.
+
+## Open after the continuation
+
+- The new rewards that reach other countries (military access, pacts, guarantees, mergers, sponsor and membership requests, railways, uprisings) need a live run to confirm the engine accepts each scope and target as written; they are `needs_live_game`.
+- Idea modifiers inside each spirit still use small values such as 0.03 and 0.04, which the focus-tree rules call fairy dust; consolidating them is a balance pass of its own.
+- The government-side tuning values that are not multiples of five remain as accepted.
+- The workbook owner must apply `catalog_changes_pending.md`.
