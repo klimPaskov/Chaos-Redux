@@ -16,7 +16,7 @@ Event 39 moves from the repeatable list to the fire-once list.
 `fire_event_by_temp_id_no_cluster` runs `murder_mystery_prepare_random_event_fire` and sends `chaosx.nr39.1` to `event_target:murder_mystery_prefire_host`.
 When no host is valid the fire is refused, the automatic timer is recalculated, and nothing is recorded.
 The Events Log uses four Event 39 unavailability reasons (IDs 47 to 50: investigation active, case closed, world ended, no eligible host), which were the next free IDs in `event_system_event_unavailability_reason` when the change was made.
-Event 39 still is not in `event_log_event_is_reworked_default_enabled`, so a new game starts with it disabled until that shared rework list is updated by its owner.
+Event 39 is listed in `event_log_event_is_reworked_default_enabled`, so a new game starts with it enabled (D20).
 
 ## D3. Evolution logging and toggles
 
@@ -191,3 +191,21 @@ The legacy news event `chaosx.news.44` and its three keys are removed: nothing f
 Player text no longer uses ledger, transaction, callback, runtime or validation wording; the requirement texts that flag checks show in tooltips now describe the situation (for example "The Murder Mystery crisis is under way" instead of "The murder mystery runtime is active").
 The shared decision tooltips are neutral, so movement decisions no longer mention the government's case team.
 The inheritance reports (`chaosx.nr39.24` and `.25`) already describe the territorial heir and underground continuation from D7 and needed no change.
+
+## D20. Event 39 starts enabled in new campaigns
+
+Disposition: implemented; the default queue and first automatic fire need live confirmation.
+Reworked events join `event_log_event_is_reworked_default_enabled` in `common/scripted_triggers/chaosx_settings_triggers.txt` through their own owners (Events 028 and 032 added their own rows), so Event 39 adds its row after Event 32 as a one-line insertion in that shared file.
+Basis: the round-1 work makes Event 39 a complete fire-once pool event with its host gate, Events Log rows, cluster membership and outcomes; the catalog already lists it as Needs Testing, the same state in which Events 028 and 032 were enabled.
+The Events Log toggle still disables it for a campaign.
+
+## Round-1 review corrections
+
+Disposition: implemented; each correction is source-reviewed and needs live confirmation with the rest of the round.
+
+- Revolt clusters respect their size cap. The derivative neighbour loop read its remaining-state counter in the iterator `limit`, which the engine can evaluate before the body runs, so a revolt could take every eligible neighbour of its anchor state. The counter is now checked inside the body.
+- A completed Run the Agency Operation sets the host's national cell back by `murder_mystery_objective_tuning.agency_cell_maturity_loss` maturity. The objective is host-only and the host never holds a row in the foreign cell registry, so its only cell outcome could never apply.
+- Mechanized Infiltration's research requirement shows readable text for `murder_mystery_conventional_support_unlocked` instead of the raw flag name.
+- Dismantle the Local Cell states its cell requirement through `murder_mystery_local_cell_registered_tt` instead of exposing the cell flag and registry array check.
+- `murder_mystery_technology` holds only integers; its three fractional values moved to `murder_mystery_technology_float`, matching the category schemas.
+- The host-fall report (`chaosx.nr39.63`) says the government has fallen, which is true for both capitulation and annexation.

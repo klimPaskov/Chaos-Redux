@@ -2028,6 +2028,8 @@ murder_mystery_start_derivative_creation = {
 				add_to_array = { array = global.murder_mystery_derivative_transfer_states value = THIS }
 				transfer_state_to = event_target:murder_mystery_derivative_country_candidate
 			}
+			# The cluster cap is checked inside the body, one neighbour at a time,
+			# so it holds even when the iterator filters its limit up front.
 			set_temp_variable = { murder_mystery_derivative_extra_states = constant:murder_mystery_derivative.cluster_extra_states }
 			event_target:murder_mystery_derivative_anchor_state = {
 				every_neighbor_state = {
@@ -2035,11 +2037,13 @@ murder_mystery_start_derivative_creation = {
 						impassable = no
 						is_capital = no
 						is_owned_and_controlled_by = event_target:murder_mystery_selected_cell
-						check_variable = { var = murder_mystery_derivative_extra_states value = constant:murder_mystery_value.zero compare = greater_than }
 					}
-					add_to_array = { array = global.murder_mystery_derivative_transfer_states value = THIS }
-					transfer_state_to = event_target:murder_mystery_derivative_country_candidate
-					subtract_from_temp_variable = { murder_mystery_derivative_extra_states = constant:murder_mystery_value.one }
+					if = {
+						limit = { check_variable = { var = murder_mystery_derivative_extra_states value = constant:murder_mystery_value.zero compare = greater_than } }
+						add_to_array = { array = global.murder_mystery_derivative_transfer_states value = THIS }
+						transfer_state_to = event_target:murder_mystery_derivative_country_candidate
+						subtract_from_temp_variable = { murder_mystery_derivative_extra_states = constant:murder_mystery_value.one }
+					}
 				}
 			}
 			event_target:murder_mystery_derivative_country_candidate = {

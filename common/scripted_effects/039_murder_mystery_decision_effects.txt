@@ -941,14 +941,27 @@ murder_mystery_decision_apply_objective_outcome = {
 	set_temp_variable = { murder_mystery_objective_cell_readiness_delta = constant:murder_mystery_value.zero }
 	set_temp_variable = { murder_mystery_objective_cell_exposure_delta = constant:murder_mystery_value.zero }
 
-	# Agency operation: a completed operation breaks the cell's stage.
+	# Agency operation: a completed operation breaks the cell it was watching.
+	# The host's own cell is its national cell; a registered foreign cell row
+	# loses maturity and a stage.
 	if = {
 		limit = {
 			check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.agency_operation compare = equals }
 			check_variable = { var = murder_mystery_objective_outcome value = constant:murder_mystery_action_result.success compare = equals }
-			murder_mystery_objective_cell_is_registered = yes
 		}
-		var:murder_mystery_objective_country = { murder_mystery_damage_cell_row = yes }
+		if = {
+			limit = { murder_mystery_objective_cell_is_registered = yes }
+			var:murder_mystery_objective_country = { murder_mystery_damage_cell_row = yes }
+		}
+		else_if = {
+			limit = {
+				has_country_flag = murder_mystery_original_host
+				has_variable = murder_mystery_cell_maturity
+			}
+			set_variable = { murder_mystery_cell_maturity_delta = constant:murder_mystery_objective_tuning.agency_cell_maturity_loss }
+			murder_mystery_adjust_cell_maturity = yes
+			clear_variable = murder_mystery_cell_maturity_delta
+		}
 	}
 
 	# Supply route: the host's security corridor breaks and the movement

@@ -19,7 +19,7 @@ Baseline offender identity is allocated once for the original host and cannot re
 A surviving Assassin State loses bounded Cohesion and Reach after capture and keeps its country, forces, route and foreign network active.
 Capture alone does not certify worldwide dismantling or territorial inheritance.
 The implementation and evidence limits for the current objective repair are recorded in `docs/plans/039_murder_mystery_plans/validation/mission_repair_2026_10_03/repair_evidence.md`.
-The agent design decisions taken under the round-1 authority (D1 to D19: pool firing, evolution logging, the movement pulse, country outcomes, inheritance, ruler targeting, starting forces, scenario launch, World of Anarchy, achievements, decision costs, objective families, the technology branch, the Intelligence cluster and localisation) are recorded in `docs/plans/039_murder_mystery_plans/agent_decisions_2026-10-04.md`, and pending workbook corrections in `docs/plans/039_murder_mystery_plans/catalog_changes_pending.md`.
+The agent design decisions taken under the round-1 authority (D1 to D20: pool firing, evolution logging, the movement pulse, country outcomes, inheritance, ruler targeting, starting forces, scenario launch, World of Anarchy, achievements, decision costs, objective families, the technology branch, the Intelligence cluster, localisation and the default event queue) are recorded in `docs/plans/039_murder_mystery_plans/agent_decisions_2026-10-04.md`, and pending workbook corrections in `docs/plans/039_murder_mystery_plans/catalog_changes_pending.md`.
 
 ## Murdered rulers and their replacements
 
@@ -75,7 +75,7 @@ Thresholds and outcome sizes live in `murder_mystery_objective_tuning` and `murd
 
 | Objective | Owner and start | Target | Success | Partial | Failure |
 | --- | --- | --- | --- | --- | --- |
-| Run the Agency Operation | Original host, after a successful Commit a Case Team or Audit Communications | Case Progress target, Evidence Integrity floor, Network Reach ceiling | Case Progress reaches the target with evidence intact; a registered cell in the country loses maturity and a stage | Any Case Progress gained by the deadline | Network Reach passes the ceiling (the cell moved) or nothing gained |
+| Run the Agency Operation | Original host, after a successful Commit a Case Team or Audit Communications | Case Progress target, Evidence Integrity floor, Network Reach ceiling | Case Progress reaches the target with evidence intact; the host's national cell loses `murder_mystery_objective_tuning.agency_cell_maturity_loss` maturity (a registered foreign cell row would instead lose maturity and a stage) | Any Case Progress gained by the deadline | Network Reach passes the ceiling (the cell moved) or nothing gained |
 | Contest the Supply Route | Central state, after Survive the Opening War while still at war with the host | A host supply-hub state bordering the movement | Full control of the state; host route security falls, the movement captures fuel; Capture the Case Archive follows | The state is held but still contested; the archive objective follows | The state is not taken |
 | Capture the Case Archive | Central state, after Contest the Supply Route | The host capital if it borders the movement, otherwise a host border state | The state is taken; the host loses Case Progress and Evidence Integrity, the movement gains Reach | none | The state is not taken |
 | Keep the Cell Supplied | Central state, after Supply the Selected Cell | The selected cell | The cell survives; it gains maturity and revolt readiness | The cell survives with its local case advanced; small maturity gain | The cell is destroyed |
@@ -275,6 +275,11 @@ Event 39 is the optional Medium member of the Intelligence cluster (`event_clust
 The cluster is one-time and unlocks at Chaos level 1.
 Members fire through the normal event dispatcher, so Event 39 keeps its weighted host selection and its pool unavailability reasons, and a refused Event 39 is recorded as a skipped member.
 The workbook still lists the cluster as ID 8; the correction is queued in `docs/plans/039_murder_mystery_plans/catalog_changes_pending.md`.
+
+## Default event queue
+
+Event 39 is a fire-once event in the automatic event pool and is listed in `event_log_event_is_reworked_default_enabled` (`common/scripted_triggers/chaosx_settings_triggers.txt`), so a new campaign starts with it enabled (agent decision D20).
+The Events Log toggle can still disable it for a campaign.
 
 ## Runtime ownership and presentation
 
