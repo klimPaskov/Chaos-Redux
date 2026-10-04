@@ -54,6 +54,8 @@ The four decision rows use the same lifecycle.
 
 `famine_invite_relief` is intentionally land-only. It creates one exact land contract and leaves delivery to `famine_emergency_imports`; it no longer selects an impossible sea or air mode and no longer creates a cost-paid/no-contract fallback. `famine_emergency_imports` remains exact land donor-backed delivery. `famine_escorted_relief_convoy` and `famine_emergency_airlift` never call local reserve release; local release remains owned by `famine_release_reserves`.
 
+When delivery fails, or a paid relief decision finds its contract no longer current at removal, `famine_condemn_relief_contract_interruption` runs before the contract is cleaned up. It condemns a country at war with the relief actor that now holds the donor state, once per contract generation, when the recipient is at the famine or catastrophic stage.
+
 ## Cleanup and persistence
 
 `famine_relief_clear_selection`, `famine_relief_clear_contract`, `famine_relief_cleanup_contract`, `famine_relief_cleanup_state`, `famine_relief_unregister_donor_state`, `famine_relief_clear_corridor_proof`, and `famine_relief_clear_war_corridor_proof` are safe to repeat. The exact donor pointer is a normal scope-valued recipient variable and survives save/reload without a shared global pointer collision. Existing bounded control-change, retirement, and registry callbacks can call these helpers for the exact affected state; no new recurring world scan is required.

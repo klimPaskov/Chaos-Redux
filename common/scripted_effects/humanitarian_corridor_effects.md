@@ -86,6 +86,10 @@ The counterpart mirror persists `humanitarian_corridor_offer_cohort_id` and `hum
 
 The same callback first calls `migration_reception_front_intent_handle_control_change` on the changed state, so a front that changed hands drops the reception intent of any receiver that no longer owns and controls it.
 
+## Relief-obstruction hooks
+
+`humanitarian_corridor_reject_offer` and the response-deadline branch of `humanitarian_corridor_expire` call `famine_condemn_corridor_obstruction` on the origin before cleanup clears the corridor identity. Only an evacuation corridor from a famine or catastrophic famine state with measured people condemns the receiving country, once per route generation.
+
 ## Receiver-front reception intent hooks
 
 Evacuation corridors publish an identity-only intent row on their front state through [migration_reception_front_intent_effects.md](migration_reception_front_intent_effects.md).

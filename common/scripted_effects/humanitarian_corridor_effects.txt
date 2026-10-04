@@ -527,6 +527,9 @@ humanitarian_corridor_reject_offer = {
 			set_variable = { humanitarian_corridor_last_cleanup_reason = constant:humanitarian_corridor_reason.rejected }
 			set_variable = { humanitarian_corridor_cleanup_reason = constant:humanitarian_corridor_reason.rejected }
 			set_variable = { humanitarian_corridor_status = constant:humanitarian_corridor_status.rejected }
+			# Refusing to let civilians leave a famine state is relief obstruction.
+			set_temp_variable = { famine_condemnation_result = constant:humanitarian_runtime.zero }
+			famine_condemn_corridor_obstruction = yes
 			humanitarian_corridor_cleanup = yes
 		}
 		set_temp_variable = { humanitarian_corridor_response_result = constant:humanitarian_corridor_result.valid }
@@ -811,6 +814,9 @@ humanitarian_corridor_expire = {
 			limit = { check_variable = { var = humanitarian_corridor_status value = constant:humanitarian_corridor_status.offer_pending compare = equals } }
 			set_variable = { humanitarian_corridor_last_cleanup_reason = constant:humanitarian_corridor_reason.response_deadline }
 			set_variable = { humanitarian_corridor_cleanup_reason = constant:humanitarian_corridor_reason.response_deadline }
+			# Letting the request lapse unanswered obstructs relief like a refusal.
+			set_temp_variable = { famine_condemnation_result = constant:humanitarian_runtime.zero }
+			famine_condemn_corridor_obstruction = yes
 		}
 		if = {
 			limit = {

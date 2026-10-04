@@ -814,3 +814,179 @@ famine_condemn_concealment = {
 		set_temp_variable = { famine_condemnation_result = constant:humanitarian_runtime.one }
 	}
 }
+
+# Clears the famine condemnation request envelope after a wrapper call so no
+# later caller in the same effect chain can reuse stale proof values.
+famine_clear_condemnation_envelope = {
+	set_temp_variable = { famine_condemnation_state_proven = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_condemnation_food_proven = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_condemnation_environment_proven = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_condemnation_transport_proven = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_condemnation_policy_proven = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_condemnation_actor_proven = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_condemnation_cause_proven = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_condemnation_people_amount = constant:humanitarian_population.zero }
+	set_temp_variable = { famine_condemnation_generation = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_condemnation_revision = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_condemnation_request_id = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_condemnation_valid = constant:humanitarian_runtime.zero }
+	set_temp_variable = { condemnation_civilian_deaths = constant:humanitarian_population.zero }
+	set_temp_variable = { condemnation_contamination_value = constant:humanitarian_population.zero }
+}
+
+# STATE scope: the origin state of an evacuation corridor whose offer the
+# receiving country has just rejected or let expire, before corridor cleanup
+# clears its identity. When this state is at the famine or catastrophic stage,
+# the receiving country is condemned for obstructing relief. The affected
+# people are the corridor's measured transfer amount, and one corridor
+# generation can condemn only once.
+# Output: temporary famine_condemnation_result, declared by callers that read it.
+famine_condemn_corridor_obstruction = {
+	set_temp_variable = { famine_condemnation_result = constant:humanitarian_runtime.zero }
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			OR = {
+				has_state_flag = famine_food_stage_famine
+				has_state_flag = famine_food_stage_catastrophic
+			}
+			has_variable = famine_food_stage
+			check_variable = { var = famine_food_stage value = constant:famine_food_stage.famine compare = greater_than_or_equals }
+			has_variable = humanitarian_corridor_counterpart_country_id
+			check_variable = { var = humanitarian_corridor_counterpart_country_id value = constant:humanitarian_runtime.zero compare = greater_than }
+			has_variable = humanitarian_corridor_route_generation
+			check_variable = { var = humanitarian_corridor_route_generation value = constant:humanitarian_runtime.zero compare = greater_than }
+			has_variable = humanitarian_corridor_transfer_people
+			check_variable = { var = humanitarian_corridor_transfer_people value = constant:humanitarian_population.zero compare = greater_than }
+			OR = {
+				NOT = { has_variable = famine_corridor_obstruction_condemned_generation }
+				NOT = { check_variable = { var = famine_corridor_obstruction_condemned_generation value = humanitarian_corridor_route_generation compare = equals } }
+			}
+		}
+		var:humanitarian_corridor_counterpart_country_id = { save_event_target_as = famine_condemnation_actor }
+		if = {
+			limit = {
+				event_target:famine_condemnation_actor = { humanitarian_country_is_valid = yes }
+				NOT = { is_owned_by = event_target:famine_condemnation_actor }
+			}
+			save_event_target_as = famine_condemnation_state
+			set_temp_variable = { famine_condemnation_state_proven = id }
+			set_temp_variable = { famine_condemnation_food_proven = famine_food_stage }
+			set_temp_variable = { famine_condemnation_environment_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { famine_condemnation_transport_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { famine_condemnation_policy_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { famine_condemnation_actor_proven = humanitarian_corridor_counterpart_country_id }
+			set_temp_variable = { famine_condemnation_cause_proven = constant:condemnation_context.relief_obstruction }
+			set_temp_variable = { famine_condemnation_people_amount = humanitarian_corridor_transfer_people }
+			set_temp_variable = { famine_condemnation_generation = humanitarian_corridor_route_generation }
+			set_temp_variable = { famine_condemnation_revision = famine_food_stage }
+			set_temp_variable = { famine_condemnation_request_id = humanitarian_corridor_route_generation }
+			if = {
+				limit = {
+					has_variable = humanitarian_corridor_cohort_id
+					check_variable = { var = humanitarian_corridor_cohort_id value = constant:humanitarian_runtime.zero compare = greater_than }
+				}
+				set_temp_variable = { famine_condemnation_request_id = humanitarian_corridor_cohort_id }
+			}
+			set_temp_variable = { condemnation_civilian_deaths = constant:humanitarian_population.zero }
+			set_temp_variable = { condemnation_contamination_value = constant:humanitarian_population.zero }
+			event_target:famine_condemnation_actor = { famine_condemn_relief_obstruction = yes }
+			if = {
+				limit = { check_variable = { var = famine_condemnation_result value = constant:humanitarian_runtime.one compare = equals } }
+				set_variable = { famine_corridor_obstruction_condemned_generation = humanitarian_corridor_route_generation }
+			}
+		}
+	}
+	famine_clear_condemnation_envelope = yes
+}
+
+# STATE scope: a famine state whose foreign relief contract has just failed
+# before delivery, while its contract fields still exist. When the donor state
+# has been captured by a country at war with the relief actor and this state is
+# at the famine or catastrophic stage, that capturing country is condemned for
+# obstructing relief. The affected people are those the contract would have
+# fed: the live population scaled by the contract amount against the reserve
+# import it was sized for, capped at the whole population. One contract
+# generation can condemn only once.
+# Output: temporary famine_condemnation_result, declared by callers that read it.
+famine_condemn_relief_contract_interruption = {
+	set_temp_variable = { famine_condemnation_result = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_relief_interruption_people = constant:humanitarian_population.zero }
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			OR = {
+				has_state_flag = famine_food_stage_famine
+				has_state_flag = famine_food_stage_catastrophic
+			}
+			has_variable = famine_food_stage
+			check_variable = { var = famine_food_stage value = constant:famine_food_stage.famine compare = greater_than_or_equals }
+			has_variable = famine_relief_contract_generation
+			check_variable = { var = famine_relief_contract_generation value = constant:humanitarian_runtime.zero compare = greater_than }
+			has_variable = famine_relief_contract_amount
+			check_variable = { var = famine_relief_contract_amount value = constant:famine_food_reserve.zero compare = greater_than }
+			has_variable = famine_relief_actor
+			has_variable = famine_relief_donor_state
+			OR = {
+				NOT = { has_variable = famine_relief_obstruction_condemned_generation }
+				NOT = { check_variable = { var = famine_relief_obstruction_condemned_generation value = famine_relief_contract_generation compare = equals } }
+			}
+		}
+		var:famine_relief_actor = { save_event_target_as = famine_relief_interruption_actor }
+		var:famine_relief_donor_state = {
+			save_event_target_as = famine_relief_interruption_donor_state
+			CONTROLLER = { save_event_target_as = famine_condemnation_actor }
+		}
+		if = {
+			limit = {
+				event_target:famine_relief_interruption_actor = { humanitarian_country_is_valid = yes }
+				event_target:famine_condemnation_actor = {
+					humanitarian_country_is_valid = yes
+					NOT = { tag = event_target:famine_relief_interruption_actor }
+					has_war_with = event_target:famine_relief_interruption_actor
+					NOT = { is_in_faction_with = event_target:famine_relief_interruption_actor }
+				}
+				event_target:famine_relief_interruption_donor_state = {
+					NOT = { is_owned_by = event_target:famine_condemnation_actor }
+				}
+			}
+			# People the contract would have fed.
+			set_temp_variable = { famine_relief_interruption_people = state_population_k }
+			multiply_temp_variable = { famine_relief_interruption_people = constant:humanitarian_population.people_per_k }
+			if = {
+				limit = {
+					has_variable = famine_food_reserve_daily_need
+					check_variable = { var = famine_food_reserve_daily_need value = constant:famine_food_reserve.zero compare = greater_than }
+				}
+				set_temp_variable = { famine_relief_interruption_sized_import = famine_food_reserve_daily_need }
+				multiply_temp_variable = { famine_relief_interruption_sized_import = constant:famine_mission_contract.reserve_import_days }
+				set_temp_variable = { famine_relief_interruption_share = famine_relief_contract_amount }
+				divide_temp_variable = { famine_relief_interruption_share = famine_relief_interruption_sized_import }
+				clamp_temp_variable = { var = famine_relief_interruption_share min = constant:humanitarian_population.zero max = constant:humanitarian_runtime.one }
+				multiply_temp_variable = { famine_relief_interruption_people = famine_relief_interruption_share }
+			}
+			round_temp_variable = famine_relief_interruption_people
+			save_event_target_as = famine_condemnation_state
+			set_temp_variable = { famine_condemnation_state_proven = id }
+			set_temp_variable = { famine_condemnation_food_proven = famine_food_stage }
+			set_temp_variable = { famine_condemnation_environment_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { famine_condemnation_transport_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { famine_condemnation_policy_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { famine_condemnation_actor_proven = event_target:famine_condemnation_actor.id }
+			set_temp_variable = { famine_condemnation_cause_proven = constant:condemnation_context.relief_obstruction }
+			set_temp_variable = { famine_condemnation_people_amount = famine_relief_interruption_people }
+			set_temp_variable = { famine_condemnation_generation = famine_relief_contract_generation }
+			set_temp_variable = { famine_condemnation_revision = famine_food_stage }
+			set_temp_variable = { famine_condemnation_request_id = event_target:famine_relief_interruption_donor_state.id }
+			set_temp_variable = { condemnation_civilian_deaths = constant:humanitarian_population.zero }
+			set_temp_variable = { condemnation_contamination_value = constant:humanitarian_population.zero }
+			event_target:famine_condemnation_actor = { famine_condemn_relief_obstruction = yes }
+			if = {
+				limit = { check_variable = { var = famine_condemnation_result value = constant:humanitarian_runtime.one compare = equals } }
+				set_variable = { famine_relief_obstruction_condemned_generation = famine_relief_contract_generation }
+			}
+		}
+	}
+	set_temp_variable = { famine_relief_interruption_people = constant:humanitarian_population.zero }
+	famine_clear_condemnation_envelope = yes
+}
