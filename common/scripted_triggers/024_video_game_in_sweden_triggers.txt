@@ -669,6 +669,68 @@ video_game_in_sweden_is_baseline_or_early_evolution = {
 	}
 }
 
+# Evolution eligibility. Progress toward an evolution accrues only while it is
+# eligible, and the evolution fires once the progress reaches its base delay.
+video_game_in_sweden_evolution_i_eligible = {
+	check_variable = { var = video_game_in_sweden_phase value = constant:video_game_in_sweden_value.phase_baseline compare = equals }
+	NOT = { has_global_flag = events_log_disabled_evolution_24_24_1 }
+	NOT = { has_country_flag = video_game_in_sweden_evolution_i_recorded }
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:video_game_in_sweden_event.evolution_i_min_chaos
+		compare = greater_than_or_equals
+	}
+	OR = {
+		check_variable = {
+			var = simulation_reliance
+			value = constant:video_game_in_sweden_reliance.habit_min
+			compare = greater_than_or_equals
+		}
+		has_country_flag = video_game_in_sweden_officer_route
+		has_country_flag = video_game_in_sweden_officer_league_complete
+		has_country_flag = video_game_in_sweden_high_chaos_officer_opening
+	}
+}
+
+video_game_in_sweden_evolution_ii_eligible = {
+	OR = {
+		has_country_flag = video_game_in_sweden_evolution_i_active
+		AND = {
+			check_variable = { var = video_game_in_sweden_phase value = constant:video_game_in_sweden_value.phase_baseline compare = equals }
+			has_country_flag = video_game_in_sweden_commercial_route
+		}
+	}
+	NOT = { has_global_flag = events_log_disabled_evolution_24_24_2 }
+	NOT = { has_country_flag = video_game_in_sweden_evolution_ii_recorded }
+	has_country_flag = video_game_in_sweden_broad_public_reach
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:video_game_in_sweden_event.evolution_ii_min_chaos
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = simulation_reliance
+		value = constant:video_game_in_sweden_reliance.doctrine_min
+		compare = greater_than_or_equals
+	}
+}
+
+video_game_in_sweden_evolution_iii_eligible = {
+	has_country_flag = video_game_in_sweden_evolution_ii_active
+	NOT = { has_global_flag = events_log_disabled_evolution_24_24_3 }
+	NOT = { has_country_flag = video_game_in_sweden_evolution_iii_recorded }
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:video_game_in_sweden_event.evolution_iii_min_chaos
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = simulation_reliance
+		value = constant:video_game_in_sweden_reliance.worldview_min
+		compare = greater_than_or_equals
+	}
+}
+
 video_game_in_sweden_next_evolution_disabled = {
 	OR = {
 		AND = {

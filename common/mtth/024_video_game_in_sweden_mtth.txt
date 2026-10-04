@@ -1,0 +1,171 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 024 VIDEO GAME IN SWEDEN EVOLUTION PACING
+# ============================================================================
+# Pace multipliers for the three evolutions. Sampled only by the selected
+# Swedish host's monthly maintenance, which adds the elapsed days times the
+# pace to the progress of each currently eligible evolution. An evolution
+# fires once its progress reaches the base delay in
+# video_game_in_sweden_timing. A pace above one shortens the wait and a pace
+# below one lengthens it. No periodic or world-wide on_action samples them.
+# ============================================================================
+
+# Officer culture: war, inexperience, the officer route and apparent
+# predictions speed it; the controlled route, a red team, field validation
+# and an accepted mismatch slow it.
+video_game_in_sweden_evolution_i_pace = {
+	base = constant:video_game_in_sweden_pace.base
+
+	modifier = {
+		factor = constant:video_game_in_sweden_pace.i_war
+		has_war = yes
+	}
+	modifier = {
+		factor = constant:video_game_in_sweden_pace.i_low_experience
+		has_army_experience < constant:video_game_in_sweden_event.low_army_experience_gate
+	}
+	modifier = {
+		factor = constant:video_game_in_sweden_pace.i_officer
+		OR = {
+			has_country_flag = video_game_in_sweden_officer_route
+			has_country_flag = video_game_in_sweden_officer_league_complete
+		}
+	}
+	modifier = {
+		factor = constant:video_game_in_sweden_pace.i_prediction
+		has_country_flag = video_game_in_sweden_recent_victory
+	}
+	modifier = {
+		factor = constant:video_game_in_sweden_pace.i_controlled
+		has_country_flag = video_game_in_sweden_controlled_route
+	}
+	modifier = {
+		factor = constant:video_game_in_sweden_pace.i_red_team
+		has_country_flag = video_game_in_sweden_red_team_complete
+	}
+	modifier = {
+		factor = constant:video_game_in_sweden_pace.i_field_validated
+		has_country_flag = video_game_in_sweden_field_validation_success
+	}
+	modifier = {
+		factor = constant:video_game_in_sweden_pace.i_admitted_mismatch
+		has_country_flag = video_game_in_sweden_mismatch_admitted_recent
+	}
+}
+
+# National obsession: the commercial route, league seasons, high war support
+# under high tension, apparent predictions, foreign demand and a public
+# officer league speed it; protected shifts, separate policy, low stability,
+# a red team, auxiliary doctrine, field validation and an accepted mismatch
+# slow it.
+video_game_in_sweden_evolution_ii_pace = {
+	base = constant:video_game_in_sweden_pace.base
+
+	modifier = {
+		factor = constant:video_game_in_sweden_pace.ii_commercial
+		has_country_flag = video_game_in_sweden_commercial_route
+	}
+	modifier = {
+		factor = constant:video_game_in_sweden_pace.ii_league_season
+		check_variable = { video_game_in_sweden_national_league_seasons > constant:video_game_in_sweden_value.zero }
+	}
+	modifier = {
+		factor = constant:video_game_in_sweden_pace.ii_league_season
+		check_variable = { video_game_in_sweden_national_league_seasons > constant:video_game_in_sweden_value.one }
+	}
+	modifier = {
+		factor = constant:video_game_in_sweden_pace.ii_tension
+		has_war_support > constant:video_game_in_sweden_pace.high_war_support
+		check_variable = { global.threat > constant:video_game_in_sweden_pace.high_tension }
+	}
+	modifier = {
+		factor = constant:video_game_in_sweden_pace.ii_prediction
+		has_country_flag = video_game_in_sweden_recent_victory
+	}
+	modifier = {
+		factor = constant:video_game_in_sweden_pace.ii_foreign
+		OR = {
+			check_variable = { video_game_in_sweden_licence_days > constant:video_game_in_sweden_value.zero }
+			check_variable = { video_game_in_sweden_foreign_response_count > constant:video_game_in_sweden_value.zero }
+		}
+	}
+	modifier = {
+		factor = constant:video_game_in_sweden_pace.ii_officer_public
+		has_country_flag = video_game_in_sweden_officer_league_complete
+		has_country_flag = video_game_in_sweden_access_expanded
+	}
+	modifier = {
+		factor = constant:video_game_in_sweden_pace.ii_protected
+		has_country_flag = video_game_in_sweden_protected_shifts
+	}
+	modifier = {
+		factor = constant:video_game_in_sweden_pace.ii_separate
+		has_country_flag = video_game_in_sweden_separate_policy
+	}
+	modifier = {
+		factor = constant:video_game_in_sweden_pace.ii_low_stability
+		has_stability < constant:video_game_in_sweden_effect.stable_program_stability
+	}
+	modifier = {
+		factor = constant:video_game_in_sweden_pace.ii_red_team
+		has_country_flag = video_game_in_sweden_red_team_complete
+	}
+	modifier = {
+		factor = constant:video_game_in_sweden_pace.ii_auxiliary
+		has_country_flag = video_game_in_sweden_formal_auxiliary_doctrine
+	}
+	modifier = {
+		factor = constant:video_game_in_sweden_pace.ii_field_validated
+		has_country_flag = video_game_in_sweden_field_validation_success
+	}
+	modifier = {
+		factor = constant:video_game_in_sweden_pace.ii_admitted_mismatch
+		has_country_flag = video_game_in_sweden_mismatch_admitted_recent
+	}
+}
+
+# Loss of the sense of reality: officer competition, a state-backed league,
+# no field validation, apparent predictions and Totalen Chaos speed it; a red
+# team, protected shifts and an accepted mismatch slow it. Separate policy
+# also adds days to the base delay in maintenance.
+video_game_in_sweden_evolution_iii_pace = {
+	base = constant:video_game_in_sweden_pace.base
+
+	modifier = {
+		factor = constant:video_game_in_sweden_pace.iii_officer
+		OR = {
+			has_country_flag = video_game_in_sweden_competitive_command_culture
+			has_country_flag = video_game_in_sweden_officer_league_complete
+		}
+	}
+	modifier = {
+		factor = constant:video_game_in_sweden_pace.iii_state_league
+		OR = {
+			has_country_flag = video_game_in_sweden_public_exhibition_program
+			check_variable = { video_game_in_sweden_national_league_seasons > constant:video_game_in_sweden_value.zero }
+		}
+	}
+	modifier = {
+		factor = constant:video_game_in_sweden_pace.iii_unvalidated
+		NOT = { has_country_flag = video_game_in_sweden_field_validation_success }
+	}
+	modifier = {
+		factor = constant:video_game_in_sweden_pace.iii_prediction
+		has_country_flag = video_game_in_sweden_recent_victory
+	}
+	modifier = {
+		factor = constant:video_game_in_sweden_pace.iii_totalen
+		check_variable = { global.chaos_meter_value > constant:video_game_in_sweden_pace.totalen_chaos_floor }
+	}
+	modifier = {
+		factor = constant:video_game_in_sweden_pace.iii_red_team
+		has_country_flag = video_game_in_sweden_red_team_complete
+	}
+	modifier = {
+		factor = constant:video_game_in_sweden_pace.iii_protected
+		has_country_flag = video_game_in_sweden_protected_shifts
+	}
+	modifier = {
+		factor = constant:video_game_in_sweden_pace.iii_admitted_mismatch
+		has_country_flag = video_game_in_sweden_mismatch_admitted_recent
+	}
+}

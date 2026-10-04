@@ -201,6 +201,9 @@ video_game_in_sweden_initialize_program = {
 		set_variable = { video_game_in_sweden_national_league_seasons = 0 }
 		set_variable = { video_game_in_sweden_national_league_native_days = constant:video_game_in_sweden_timing.national_league_burden_days }
 		set_variable = { video_game_in_sweden_mission_elapsed_days = 0 }
+		set_variable = { video_game_in_sweden_evolution_i_progress = constant:video_game_in_sweden_value.zero }
+		set_variable = { video_game_in_sweden_evolution_ii_progress = constant:video_game_in_sweden_value.zero }
+		set_variable = { video_game_in_sweden_evolution_iii_progress = constant:video_game_in_sweden_value.zero }
 		set_variable = { video_game_in_sweden_status = constant:video_game_in_sweden_value.status_active }
 		clr_country_flag = video_game_in_sweden_according_to_plan_disqualified
 		clr_country_flag = video_game_in_sweden_trust_model_meaningful_war
@@ -1448,6 +1451,8 @@ video_game_in_sweden_begin_evolution_i = {
 		set_variable = { video_game_in_sweden_status = constant:video_game_in_sweden_value.status_review }
 		set_country_flag = video_game_in_sweden_evolution_i_active
 		set_country_flag = video_game_in_sweden_evolution_i_recorded
+		# The national obsession is measured from the staff-culture stage.
+		set_variable = { video_game_in_sweden_evolution_ii_progress = constant:video_game_in_sweden_value.zero }
 		video_game_in_sweden_refresh_stage_idea = yes
 		video_game_in_sweden_record_evolution = yes
 		country_event = { id = chaosx.nr24.11 days = 1 }
@@ -1490,6 +1495,7 @@ video_game_in_sweden_begin_evolution_ii = {
 		clr_country_flag = video_game_in_sweden_evolution_i_active
 		set_country_flag = video_game_in_sweden_evolution_ii_active
 		set_country_flag = video_game_in_sweden_evolution_ii_recorded
+		set_variable = { video_game_in_sweden_evolution_iii_progress = constant:video_game_in_sweden_value.zero }
 		video_game_in_sweden_refresh_stage_idea = yes
 		video_game_in_sweden_record_evolution = yes
 		country_event = { id = chaosx.nr24.12 days = 1 }
@@ -2662,6 +2668,14 @@ video_game_in_sweden_mark_incident = {
 # temps video_game_in_sweden_incident_response (incident_admit or
 # incident_dismiss) and video_game_in_sweden_reliance_delta.
 video_game_in_sweden_adjust_incident_reliance = {
+	if = {
+		limit = { check_variable = { var = video_game_in_sweden_incident_response value = constant:video_game_in_sweden_value.incident_admit compare = equals } }
+		set_temp_variable = { video_game_in_sweden_flag_days = constant:video_game_in_sweden_timing.admitted_mismatch_memory_days }
+		set_country_flag = {
+			flag = video_game_in_sweden_mismatch_admitted_recent
+			days = video_game_in_sweden_flag_days
+		}
+	}
 	video_game_in_sweden_apply_incident_penalty = yes
 	video_game_in_sweden_mark_incident = yes
 	video_game_in_sweden_change_reliance = yes
@@ -3640,6 +3654,29 @@ video_game_in_sweden_update_achievement_tracking = {
 	}
 }
 
+# COUNTRY scope. Adds one maintenance interval, multiplied by the MTTH pace,
+# to the progress of each currently eligible evolution.
+video_game_in_sweden_advance_evolution_progress = {
+	if = {
+		limit = { video_game_in_sweden_evolution_i_eligible = yes }
+		set_temp_variable = { video_game_in_sweden_evolution_pace = mtth:video_game_in_sweden_evolution_i_pace }
+		multiply_temp_variable = { video_game_in_sweden_evolution_pace = constant:video_game_in_sweden_timing.maintenance_days }
+		add_to_variable = { video_game_in_sweden_evolution_i_progress = video_game_in_sweden_evolution_pace }
+	}
+	if = {
+		limit = { video_game_in_sweden_evolution_ii_eligible = yes }
+		set_temp_variable = { video_game_in_sweden_evolution_pace = mtth:video_game_in_sweden_evolution_ii_pace }
+		multiply_temp_variable = { video_game_in_sweden_evolution_pace = constant:video_game_in_sweden_timing.maintenance_days }
+		add_to_variable = { video_game_in_sweden_evolution_ii_progress = video_game_in_sweden_evolution_pace }
+	}
+	if = {
+		limit = { video_game_in_sweden_evolution_iii_eligible = yes }
+		set_temp_variable = { video_game_in_sweden_evolution_pace = mtth:video_game_in_sweden_evolution_iii_pace }
+		multiply_temp_variable = { video_game_in_sweden_evolution_pace = constant:video_game_in_sweden_timing.maintenance_days }
+		add_to_variable = { video_game_in_sweden_evolution_iii_progress = video_game_in_sweden_evolution_pace }
+	}
+}
+
 video_game_in_sweden_maintenance = {
 	if = {
 		limit = { video_game_in_sweden_is_disabled = yes }
@@ -3790,79 +3827,26 @@ video_game_in_sweden_maintenance = {
 			}
 			set_country_flag = video_game_in_sweden_field_validation_region_interrupted
 		}
+		# Campaign-dependent pacing: eligible evolutions gain progress at their
+		# MTTH pace and fire when the progress reaches the base delay.
+		video_game_in_sweden_advance_evolution_progress = yes
 		if = {
 			limit = {
+				video_game_in_sweden_evolution_i_eligible = yes
 				check_variable = {
-					var = video_game_in_sweden_phase
-					value = constant:video_game_in_sweden_value.phase_baseline
-					compare = equals
-				}
-				check_variable = {
-					var = global.chaos_meter_value
-					value = constant:video_game_in_sweden_event.evolution_i_min_chaos
-					compare = greater_than_or_equals
-				}
-				check_variable = {
-					var = video_game_in_sweden_program_days
+					var = video_game_in_sweden_evolution_i_progress
 					value = constant:video_game_in_sweden_timing.evolution_i_delay_days
 					compare = greater_than_or_equals
-				}
-				OR = {
-					check_variable = {
-						var = simulation_reliance
-						value = constant:video_game_in_sweden_reliance.habit_min
-						compare = greater_than_or_equals
-					}
-					has_country_flag = video_game_in_sweden_officer_route
-					has_country_flag = video_game_in_sweden_officer_league_complete
-					has_country_flag = video_game_in_sweden_high_chaos_officer_opening
 				}
 			}
 			video_game_in_sweden_begin_evolution_i = yes
 		}
 		else_if = {
 			limit = {
+				video_game_in_sweden_evolution_ii_eligible = yes
 				check_variable = {
-					var = video_game_in_sweden_phase
-					value = constant:video_game_in_sweden_value.phase_baseline
-					compare = equals
-				}
-				check_variable = {
-					var = global.chaos_meter_value
-					value = constant:video_game_in_sweden_event.evolution_ii_min_chaos
-					compare = greater_than_or_equals
-				}
-				check_variable = {
-					var = video_game_in_sweden_program_days
+					var = video_game_in_sweden_evolution_ii_progress
 					value = constant:video_game_in_sweden_timing.evolution_ii_delay_days
-					compare = greater_than_or_equals
-				}
-				check_variable = {
-					var = simulation_reliance
-					value = constant:video_game_in_sweden_reliance.doctrine_min
-					compare = greater_than_or_equals
-				}
-				has_country_flag = video_game_in_sweden_broad_public_reach
-			}
-			video_game_in_sweden_begin_evolution_ii = yes
-		}
-		else_if = {
-			limit = {
-				has_country_flag = video_game_in_sweden_evolution_i_active
-				has_country_flag = video_game_in_sweden_broad_public_reach
-				check_variable = {
-					var = global.chaos_meter_value
-					value = constant:video_game_in_sweden_event.evolution_ii_min_chaos
-					compare = greater_than_or_equals
-				}
-				check_variable = {
-					var = video_game_in_sweden_evolution_elapsed_days
-					value = constant:video_game_in_sweden_timing.evolution_ii_delay_days
-					compare = greater_than_or_equals
-				}
-				check_variable = {
-					var = simulation_reliance
-					value = constant:video_game_in_sweden_reliance.doctrine_min
 					compare = greater_than_or_equals
 				}
 			}
@@ -3870,20 +3854,10 @@ video_game_in_sweden_maintenance = {
 		}
 		else_if = {
 			limit = {
-				has_country_flag = video_game_in_sweden_evolution_ii_active
+				video_game_in_sweden_evolution_iii_eligible = yes
 				check_variable = {
-					var = global.chaos_meter_value
-					value = constant:video_game_in_sweden_event.evolution_iii_min_chaos
-					compare = greater_than_or_equals
-				}
-				check_variable = {
-					var = video_game_in_sweden_evolution_elapsed_days
+					var = video_game_in_sweden_evolution_iii_progress
 					value = video_game_in_sweden_evolution_iii_wait
-					compare = greater_than_or_equals
-				}
-				check_variable = {
-					var = simulation_reliance
-					value = constant:video_game_in_sweden_reliance.worldview_min
 					compare = greater_than_or_equals
 				}
 			}

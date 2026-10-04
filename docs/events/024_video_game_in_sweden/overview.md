@@ -171,9 +171,23 @@ Routine maintenance advances the mission timer without cancelling a live mission
 
 Mission cancellation is reserved for explicit closure, recovery, or disabled-evolution cleanup.
 
+## Evolution pacing
+
+Each monthly maintenance adds 30 days times an MTTH pace (`common/mtth/024_video_game_in_sweden_mtth.txt`) to the progress of every evolution that is currently eligible, and an evolution fires when its progress reaches the base delay of 120, 150 or 120 days.
+Progress toward Evolution II restarts at the staff-culture stage, and progress toward Evolution III starts at Evolution II, so Evolution III can never fire in the opening chain or on the same day as Evolution II.
+All factors are `video_game_in_sweden_pace` constants.
+
+| Evolution | Faster | Slower |
+| --- | --- | --- |
+| I | War 1.4, low army experience 1.25, officer route or league 1.4, a recent apparent prediction 1.2 | Controlled route 0.75, red team 0.7, field validation 0.6, an admitted mismatch in the last 90 days 0.75 |
+| II | Commercial route 1.3, each of the first two league seasons 1.2, high war support under high tension 1.2, apparent prediction 1.2, foreign licences 1.15, a public officer league 1.2 | Protected shifts 0.7, separate policy 0.7, low stability 0.75, red team 0.8, auxiliary doctrine 0.85, field validation 0.8, admitted mismatch 0.8 |
+| III | Officer competition 1.25, a state-backed league 1.2, no field validation 1.15, apparent prediction 1.2, Totalen Chaos 2.0 | Red team 0.7, protected shifts 0.8, admitted mismatch 0.75, and separate policy adds 90 days |
+
+In source terms the scenario pairs order as required: P24-E1A paces at about 0.53 against 1.96 for P24-E1B, P24-E2A at about 0.64 against about 2.0 for P24-E2B, and P24-E3A at 0.7 with the 90-day separate-policy addition against about 4.1 for P24-E3B. Because progress is added monthly, real timings round up to whole 30-day steps.
+
 ## Evolution I: The Staff College Takes the Board
 
-Evolution I requires Chaos at least 200, a 120-day delay, and a valid early program route.
+Evolution I requires Chaos at least 200, a valid early program route and 120 days of paced progress (see Evolution pacing).
 
 Its event entry is `chaosx.nr24.11`.
 
@@ -205,7 +219,7 @@ The commander carrier is never duplicated, and cleanup removes it when the host 
 
 ## Evolution II: The Nation Takes Its Turn
 
-Evolution II requires Chaos at least 400, a 150-day delay, and a valid public route.
+Evolution II requires Chaos at least 400, Doctrine Reliance, broad public reach and 150 days of paced progress from the staff-culture stage or a commercial baseline.
 
 Its event entry is `chaosx.nr24.12`.
 
@@ -225,7 +239,7 @@ The public route can resolve through expansion, protected production, preparedne
 
 ## Evolution III: When the Board Directs the Cabinet
 
-Evolution III requires Chaos at least 600, a 120-day delay, and the prior route conditions.
+Evolution III requires Chaos at least 600, Worldview Reliance and 120 days of paced progress from Evolution II, plus 90 days when play is separated from policy.
 
 Its event entry is `chaosx.nr24.13`.
 

@@ -116,3 +116,12 @@ Decision: the incident pool gains casualties as counters (war support and recrui
 The National Final fires once after `national_final_seasons` (2) league seasons; its result is drawn when it is scheduled so the report text and option always agree, and an upset lowers Reliance while the favourite raises it.
 No new art was added; every new text uses the existing report picture.
 Basis: spec part 2 Evolution III opening crisis incidents and national final, spec part 1 rare baseline incidents, report 16 open items.
+
+## D14. Evolution pacing is accumulated progress at an MTTH pace
+
+Decision: the fixed evolution delays become progress counters, one per evolution, that grow each maintenance by the 30-day interval times an MTTH pace from `common/mtth/024_video_game_in_sweden_mtth.txt`, but only while that evolution is eligible (Chaos tier, Reliance band, reach and enable checks in the new eligibility triggers).
+An evolution fires when its progress reaches the unchanged base delay, so the base pace keeps the spec's four, five and four months, and campaign changes during the wait take effect from that month on.
+A progress model was chosen over a single MTTH draw because the 30-day maintenance tick is the only sampling point and the spec factors change during the wait.
+Separate policy keeps its explicit 90-day addition to the Evolution III threshold rather than a second pace factor, so the decision text stays exact.
+An admitted mismatch is remembered for `admitted_mismatch_memory_days` (90) through a timed flag that slows all three evolutions.
+Basis: spec part 2 evolution pacing and Evolution I to III pace factors, P24-E1A to E3B, chaos-redux-mtth skill.
