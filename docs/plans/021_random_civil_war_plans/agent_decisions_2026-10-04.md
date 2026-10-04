@@ -231,3 +231,12 @@ Basis: the lead's round 2 assignment and the D2 finding that `timeout_effect` ru
 The six origin and package flags that Event 006 package requirement blocks can display (`independence_wave_event021_adapter_setup_proven`, `independence_wave_event6_adapter_package_ready`, `random_civil_war_event6_adapter_complete`, `random_civil_war_event6_adapter_preparing`, `random_civil_war_event6_origin_recorded`, `random_civil_war_origin_adapter_complete`) described records and systems.
 Each now states the world fact the flag stands for, matched to when it is set (all at package setup during an Event 021 opening): the movement is ready to take up arms, is taking up arms, entered the war as an independence front, or the country rose from the civil war.
 Key names are unchanged, the file stays UTF-8 with BOM, and no Event 006 file is edited.
+
+## D20. Target tickets keep the major reduction at low scores
+
+Finding: `event021_parent_add_target_to_selection_pool` divided the 0-1000 target weight by 100, rounded it, and clamped it to 1-10, so a major's reduced weight (`major_target_factor` 0.35) and a minor's full weight both became one ticket for every raw score below 150, which erased the spec's lower major likelihood for weakly eligible targets.
+Decision: `target_pool_weight_scale` becomes 25 and `target_pool_weight_cap` 40, keeping their product at the 1000-point score ceiling, so a major draws fewer tickets than a minor with the same raw score from a raw score of 38 upward, which covers every candidate without the recent-war memory penalty.
+The helper also creates the shared curve's output before calling it. The pool stays bounded at 960 entries and 160 iterations per country.
+The before and after ticket table and the named TGT scenario shares are in `target_ticket_resolution_2026-10-05.md`. TGT-02, TGT-03, and TGT-05 keep their intents, and TGT-04 now follows the score ratio (2:1) instead of a rounding artifact (3:1).
+The MCP baseline was attempted once and returned `INTERNAL_ERROR`, so no compare exists. This is recorded as a blocker and was not retried.
+This closes the "Target ticket conversion" tuning group in `subagent_handoffs/script_constant_completion_2026-09-02.md`. Live selection shares remain `needs_live_game`.

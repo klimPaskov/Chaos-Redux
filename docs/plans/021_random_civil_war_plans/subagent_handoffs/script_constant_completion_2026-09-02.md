@@ -138,6 +138,8 @@ There are 9 unresolved tuning groups for parent-owner confirmation; none leaves 
 | Same-tag contest | Symmetric bases 50/50, half authority/pressure shares, 0-100 clamp, node weights and gains above | Same-tag route requires a meaningful contest without a duplicate tag; values reuse anchor/action ordering | The government or claimant can become too dominant before objective resolution |
 | Sponsor and incident tuning | `sponsor_support_amount = 100`, `sponsor_commitment_days = 90`, incident `.08/.92`, authority `-3`, pressure `+4` | Sponsor amount matches the 100-unit transfer tier and a bounded exposure commitment; the incident values are inherited from the prior handoff, not literal prose-spec balance targets | Sponsor aid may be too weak/strong or too short/long; the inherited incident probability still needs the required live probability comparison |
 
+The Target ticket conversion group is closed by agent decision D20 (2026-10-05): the scale is 25 and the cap 40, with the before and after tables in `../target_ticket_resolution_2026-10-05.md`.
+
 The enum choices do not have a corresponding unresolved numeric risk because every current consumer compares an enum value for equality and the codes are unique.
 
 ## Validation and evidence
