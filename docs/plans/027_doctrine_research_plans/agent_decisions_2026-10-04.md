@@ -95,3 +95,9 @@ Decision: `doctrine_research_evolution_pulse` runs `doctrine_research_process_ev
 Basis: acceptance criterion "Event enable and disable state controls automatic selection and evolution gates cleanly" and spec part 3 ("Every stage's availability, record, and effect must check its own enabled state"). Before the daily pulse existed, evolution processing only ran inside a firing, which a disabled event cannot reach; the D3 pulse removed that implicit gate, so a disabled Event 027 kept writing "Doctrine Research I to IV" rows into the Event Log. Event 026's daily pulse applies the same disabled-event check. Found in the second round 1 review; implemented in the review commit.
 
 Validation limit recorded with it: the one-point guard of D4 equals exactly one level's reward cost, so it also relies on `add_mastery` granting its literal amount when a country carries a negative `<doctrine>_mastery_gain_factor` (needs_live_game, listed in the overview's validation limits).
+
+## D15. Counts on the curriculum pages read as labels
+
+Decision: the opening (`.2`), domain (`.3`), continue (`.9`), and summary (`.10`) descriptions and the five domain options state their numbers as labels ("Choices in this curriculum: 1", "Choices remaining: 1", "Grand Doctrines established: 1", "tracks ready: 1") instead of number-plus-plural sentences.
+
+Basis: the baseline curriculum has one choice and is the most common page in a campaign, so the previous sentences rendered "with 1 doctrine choices", "has 1 choices remaining", and "offered 1 choices" for every Calm World firing; the domain options rendered "1 tracks". The other curriculum pages already used the "Choices remaining:" label. Found in the second round 1 review; implemented in the review commit.
