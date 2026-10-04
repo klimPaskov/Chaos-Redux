@@ -242,6 +242,16 @@ Government-side mission and pressure values were left as they are because they a
 ## Open after the continuation
 
 - The new rewards that reach other countries (military access, pacts, guarantees, mergers, sponsor and membership requests, railways, uprisings) need a live run to confirm the engine accepts each scope and target as written; they are `needs_live_game`.
-- Idea modifiers inside each spirit still use small values such as 0.03 and 0.04, which the focus-tree rules call fairy dust; consolidating them is a balance pass of its own.
 - The government-side tuning values that are not multiples of five remain as accepted.
 - The workbook owner must apply `catalog_changes_pending.md`.
+
+### R19 One failure spirit per slot (`d26dcd276`)
+
+The failure overlay added two spirits per collapsed value, up to six at once.
+Following the lifecycle table's "one of" failure forms, it now shows at most one command failure and one economy failure, chosen by the route chosen in the tree, else the starting profile's route: Compromised Network, Rival Warlords or Doctrinal Schism, and Looting Spiral, Sponsor Dependency or Famine.
+The leadership rivalry count also counts Compromised Network, so a failing Shadow Council still registers as a rivalry.
+
+### R20 Spirit and state modifiers in multiples of five (`aff63d7d3`, `55a4727f8`)
+
+Every actor spirit modifier and every staged state modifier now uses a multiple of 0.05, keeping each spirit's four modifiers and their direction and keeping the state penalties growing by stage.
+Final route forms carry 0.10 in their signature modifiers, and the terminal spirits keep their 0.10 to 0.20 scale.
