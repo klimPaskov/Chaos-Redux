@@ -164,10 +164,25 @@ Its 114 focuses cover opening survival, Shadow Council, War Directorate, Ideolog
 Actor decisions are gated by route flags (`random_terror_route_<route>`): the starting profile sets one, and the route-choice focuses (Shadow Network Directorate, Field Command Board, Convene the Cadre, Accept the International Claim) add their own, so choosing a route in the tree opens that route's decision family alongside the profile's.
 The header route line shows the route chosen in the tree before the starting profile.
 
-Focuses whose reward changes the map, units, factions or decisions run one `random_terror_focus_reward_<name>` effect hidden behind a plain custom tooltip, with amounts in the `random_terror_focus_reward` and `random_terror_unit` constants:
+Focuses whose reward changes the map, units, factions or decisions run one `random_terror_focus_reward_<name>` effect (in `031_random_terror_effects.txt` or `031_random_terror_focus_effects.txt`) hidden behind a plain custom tooltip, with amounts in the `random_terror_focus_reward` and `random_terror_unit` constants.
+Every formation a focus or actor action raises goes through `random_terror_focus_raise_formation`, which gives the formation's rifles instead once the actor reaches `actor_division_cap`, and a militia marks its state for conversion only when it actually forms:
 
 | Focus | Route | Reward |
 | --- | --- | --- |
+| Define Leadership | Opening | Political power and army experience; opens the three leadership routes. |
+| Secure Forward Depots | Opening | Roads and, with a free slot, a fuel silo in a state facing the enemy or on the border, plus `forward_depot_fuel` fuel. |
+| Relocate the Command | Opening | A fallback seat: bunkers on the key towns and anti-air in another held state, or anti-air over the seat. |
+| Distribute the Cells | Shadow Council | Up to `cell_select_count` foreign cells, bordering ones first, are linked to the network and gain `cell_seed_activity` (`random_terror_focus_reach_foreign_cells`). |
+| Foreign Cell Channels | Shadow Council | Links up to `cell_select_count` foreign cells and brings convoys. |
+| Foreign Cell Support | Shadow Council | Up to `cell_select_count` already linked foreign cells gain `cell_support_activity`. |
+| Command the Front | War Directorate | `random_terror_synchronized_offensive` for `synchronized_offensive_days`. |
+| Prepare the Parent Offensive | War Directorate | Claims, links and `parent_offensive_activity` on every populated state of the parent or another enemy bordering the command. |
+| Command the Armed Movement | War Directorate | One territorial brigade (`brigade_id`). |
+| Open the Border Corridor | Smuggling | The external corridor, roads in a border state and `forward_depot_fuel` fuel. |
+| Salvage the Rail Spur | Smuggling | A railway from the seat to a border state (`build_railway`) and roads there. |
+| Control the Market | Coerced Extraction | `market_infantry_equipment` rifles and `market_fuel` fuel, with the extraction's condemnation. |
+| Secure the Fuel Stores | Coerced Extraction | `fuel_stores_fuel` fuel and, with a free slot, a fuel silo in the seat. |
+| Identify the Sponsor | Foreign Sponsorship | A sponsor request (`chaosx.nr31.42`) to a country at peace that could back the command, a neighbour first (`random_terror_focus_request_sponsor`). |
 | Continuity Protocol | Shadow Council | Bunkers on the victory-point provinces of the seat; Relocate the Network stops costing Territorial Control. |
 | Establish Political Offices | Ideological Secretariat | The seat becomes a core state; Build a Civil Administration opens to the command (`random_terror_focus_political_offices`). |
 | Trace the Border Corridors | Expansion | Claims on every bordering crisis state the command does not own. |

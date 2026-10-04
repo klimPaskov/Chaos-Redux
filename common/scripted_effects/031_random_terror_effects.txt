@@ -3520,11 +3520,15 @@ random_terror_actor_raise_local_militia = {
 	set_temp_variable = { random_terror_unit_manpower = constant:random_terror_unit.militia_manpower }
 	set_temp_variable = { random_terror_unit_id = constant:random_terror_unit.militia_id_base }
 	random_terror_actor_key_unit_to_action_state = yes
-	random_terror_actor_raise_formation = yes
+	# Only a militia that actually forms marks its state for conversion.
 	if = {
-		limit = { has_event_target = random_terror_action_state }
+		limit = {
+			has_event_target = random_terror_action_state
+			num_divisions < constant:random_terror_tuning.actor_division_cap
+		}
 		event_target:random_terror_action_state = { set_state_flag = random_terror_actor_militia_present }
 	}
+	random_terror_focus_raise_formation = yes
 	random_terror_actor_action_common = yes
 }
 
@@ -3536,7 +3540,7 @@ random_terror_actor_integrate_defectors = {
 	set_temp_variable = { random_terror_unit_equipment = constant:random_terror_unit.defector_equipment }
 	set_temp_variable = { random_terror_unit_manpower = constant:random_terror_unit.defector_manpower }
 	set_temp_variable = { random_terror_unit_id = constant:random_terror_unit.defector_id }
-	random_terror_actor_raise_formation = yes
+	random_terror_focus_raise_formation = yes
 	random_terror_actor_action_common = yes
 }
 
@@ -3647,7 +3651,7 @@ random_terror_actor_convert_militia = {
 	set_temp_variable = { random_terror_unit_manpower = constant:random_terror_unit.converted_manpower }
 	set_temp_variable = { random_terror_unit_id = constant:random_terror_unit.converted_id_base }
 	random_terror_actor_key_unit_to_action_state = yes
-	random_terror_actor_raise_formation = yes
+	random_terror_focus_raise_formation = yes
 	random_terror_actor_action_common = yes
 }
 
@@ -3723,7 +3727,7 @@ random_terror_actor_recruit_foreign_fighters = {
 	set_temp_variable = { random_terror_unit_equipment = constant:random_terror_unit.foreign_equipment }
 	set_temp_variable = { random_terror_unit_manpower = constant:random_terror_unit.foreign_manpower }
 	set_temp_variable = { random_terror_unit_id = constant:random_terror_unit.foreign_id }
-	random_terror_actor_raise_formation = yes
+	random_terror_focus_raise_formation = yes
 	random_terror_actor_action_common = yes
 }
 

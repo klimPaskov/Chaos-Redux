@@ -583,3 +583,298 @@ random_terror_focus_reward_reconcile_jihadists = {
 	clamp_variable = { var = global.random_terror_international_unity min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
 	set_country_flag = random_terror_focus_jihadists_reconciled
 }
+
+# STATE scope: one cell chosen by random_terror_focus_reach_foreign_cells.
+random_terror_focus_mark_foreign_cell = {
+	set_state_flag = random_terror_focus_cell_selected
+	set_state_flag = random_terror_transnational_link_active
+	if = {
+		limit = { check_variable = { random_terror_focus_activity_push > constant:random_terror_value.zero } }
+		random_terror_focus_push_state_activity = yes
+	}
+}
+
+# Links up to cell_select_count cells abroad
+# (random_terror_state_is_focus_cell_candidate) to the command's network and,
+# when temp random_terror_focus_activity_push is above zero, raises their
+# activity by it.  Cells bordering the command come first.  With temp
+# random_terror_focus_require_link = 1 only cells that already carry a
+# transnational link qualify; the input is reset afterwards.
+random_terror_focus_reach_foreign_cells = {
+	set_temp_variable = { random_terror_focus_cells_done = constant:random_terror_value.zero }
+	while_loop_effect = {
+		limit = {
+			check_variable = { random_terror_focus_cells_done < constant:random_terror_focus_reward.cell_select_count }
+			any_state = { random_terror_state_is_focus_cell_candidate = yes }
+		}
+		if = {
+			limit = {
+				any_state = {
+					random_terror_state_is_focus_cell_candidate = yes
+					any_neighbor_state = { is_controlled_by = ROOT }
+				}
+			}
+			random_state = {
+				limit = {
+					random_terror_state_is_focus_cell_candidate = yes
+					any_neighbor_state = { is_controlled_by = ROOT }
+				}
+				random_terror_focus_mark_foreign_cell = yes
+			}
+		}
+		else = {
+			random_state = {
+				limit = { random_terror_state_is_focus_cell_candidate = yes }
+				random_terror_focus_mark_foreign_cell = yes
+			}
+		}
+		add_to_temp_variable = { random_terror_focus_cells_done = constant:random_terror_value.one }
+	}
+	every_state = {
+		limit = { has_state_flag = random_terror_focus_cell_selected }
+		clr_state_flag = random_terror_focus_cell_selected
+	}
+	set_temp_variable = { random_terror_focus_require_link = constant:random_terror_value.zero }
+}
+
+# Lays one railway level from the seat to random_terror_focus_state when that
+# state is not the seat.
+random_terror_focus_build_rail_to_focus_state = {
+	if = {
+		limit = { event_target:random_terror_focus_state = { NOT = { is_capital = yes } } }
+		capital_scope = { set_temp_variable = { random_terror_rail_start_state = THIS } }
+		event_target:random_terror_focus_state = { set_temp_variable = { random_terror_rail_target_state = THIS } }
+		meta_effect = {
+			text = {
+				build_railway = {
+					level = 1
+					start_state = [RT_START]
+					target_state = [RT_TARGET]
+				}
+			}
+			RT_START = "[?random_terror_rail_start_state|.0]"
+			RT_TARGET = "[?random_terror_rail_target_state|.0]"
+		}
+	}
+}
+
+# Secure Forward Depots: roads and a fuel silo in a state facing the enemy
+# (else a border state, else the seat), and fuel for the stores.
+random_terror_focus_reward_forward_depots = {
+	random_terror_focus_select_border_state = yes
+	event_target:random_terror_focus_state = {
+		add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+		if = {
+			limit = { free_building_slots = { building = fuel_silo size > 0 } }
+			add_building_construction = { type = fuel_silo level = 1 instant_build = yes }
+		}
+	}
+	add_fuel = constant:random_terror_focus_reward.forward_depot_fuel
+	add_to_variable = { random_terror_external_supply = constant:random_terror_tuning.actor_supply_depot_gain }
+	add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_minor_gain }
+	set_country_flag = random_terror_focus_forward_depots_secured
+}
+
+# Relocate the Command: a fallback seat with bunkers and anti-air in another
+# held state, or anti-air over the seat when the command holds no other.
+random_terror_focus_reward_fallback_seat = {
+	if = {
+		limit = {
+			any_owned_state = {
+				is_controlled_by = ROOT
+				NOT = { is_capital = yes }
+			}
+		}
+		random_owned_controlled_state = {
+			limit = { NOT = { is_capital = yes } }
+			add_building_construction = {
+				type = bunker
+				level = 1
+				province = { all_provinces = yes limit_to_victory_point = yes }
+				instant_build = yes
+			}
+			add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+		}
+	}
+	else = {
+		capital_scope = {
+			add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+		}
+	}
+	add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.network_reach_gain }
+	add_to_variable = { random_terror_external_supply = constant:random_terror_tuning.actor_supply_depot_gain }
+	set_country_flag = random_terror_focus_command_relocated
+}
+
+# Distribute the Cells: cells abroad, bordering ones first, gain a link to
+# the network and cell_seed_activity activity.
+random_terror_focus_reward_distribute_cells = {
+	set_temp_variable = { random_terror_focus_activity_push = constant:random_terror_focus_reward.cell_seed_activity }
+	random_terror_focus_reach_foreign_cells = yes
+	add_to_variable = { global.random_terror_network_reach = constant:random_terror_tuning.network_reach_gain }
+	clamp_variable = { var = global.random_terror_network_reach min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+	add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.network_reach_gain }
+	set_country_flag = random_terror_focus_cells_distributed
+}
+
+# Foreign Cell Channels: couriers link cells abroad to the network and
+# convoys arrive.
+random_terror_focus_reward_foreign_channels = {
+	set_temp_variable = { random_terror_focus_activity_push = constant:random_terror_value.zero }
+	random_terror_focus_reach_foreign_cells = yes
+	add_equipment_to_stockpile = { type = convoy_1 amount = constant:random_terror_cost.actor_corridor_convoys }
+	add_to_variable = { random_terror_external_supply = constant:random_terror_tuning.actor_supply_corridor_gain }
+	add_to_variable = { global.random_terror_network_reach = constant:random_terror_tuning.network_reach_gain }
+	clamp_variable = { var = global.random_terror_network_reach min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+	set_country_flag = random_terror_focus_foreign_channels
+}
+
+# Foreign Cell Support: linked cells abroad gain cell_support_activity.
+random_terror_focus_reward_foreign_cell_support = {
+	set_temp_variable = { random_terror_focus_require_link = constant:random_terror_value.one }
+	set_temp_variable = { random_terror_focus_activity_push = constant:random_terror_focus_reward.cell_support_activity }
+	random_terror_focus_reach_foreign_cells = yes
+	add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.network_reach_gain }
+	set_country_flag = random_terror_foreign_cell_supported
+}
+
+# Open the Border Corridor: the external corridor opens, roads improve in a
+# border state and fuel comes through.
+random_terror_focus_reward_border_corridor = {
+	set_temp_variable = { random_terror_focus_context = constant:random_terror_value.one }
+	random_terror_focus_select_border_state = yes
+	event_target:random_terror_focus_state = {
+		add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+	}
+	add_fuel = constant:random_terror_focus_reward.forward_depot_fuel
+	random_terror_actor_open_external_corridor = yes
+	add_to_variable = { global.random_terror_network_reach = constant:random_terror_tuning.network_reach_gain }
+	clamp_variable = { var = global.random_terror_network_reach min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+	set_country_flag = random_terror_focus_border_corridor_open
+}
+
+# Salvage the Rail Spur: a railway from the seat to a border state and
+# better roads there.
+random_terror_focus_reward_rail_spur = {
+	random_terror_focus_select_border_state = yes
+	event_target:random_terror_focus_state = {
+		add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+	}
+	random_terror_focus_build_rail_to_focus_state = yes
+	add_to_variable = { random_terror_external_supply = constant:random_terror_tuning.actor_supply_depot_gain }
+	set_country_flag = random_terror_focus_rail_spur_salvaged
+}
+
+# Control the Market: market stocks are seized by force.
+random_terror_focus_reward_control_market = {
+	set_temp_variable = { random_terror_focus_context = constant:random_terror_value.one }
+	random_terror_actor_force_extraction = yes
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:random_terror_focus_reward.market_infantry_equipment }
+	add_fuel = constant:random_terror_focus_reward.market_fuel
+	add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_minor_gain }
+	set_country_flag = random_terror_focus_market_controlled
+}
+
+# Secure the Fuel Stores: fuel, and a fuel silo in the seat when a slot is
+# free.
+random_terror_focus_reward_fuel_stores = {
+	add_fuel = constant:random_terror_focus_reward.fuel_stores_fuel
+	capital_scope = {
+		if = {
+			limit = { free_building_slots = { building = fuel_silo size > 0 } }
+			add_building_construction = { type = fuel_silo level = 1 instant_build = yes }
+		}
+	}
+	add_to_variable = { random_terror_external_supply = constant:random_terror_tuning.actor_supply_extraction_gain }
+	set_country_flag = random_terror_focus_fuel_stores_secured
+}
+
+# Identify the Sponsor: a sponsor request (chaosx.nr31.42) goes to a country
+# that could back the command, a neighbour first.  The country decides.
+random_terror_focus_request_sponsor = {
+	if = {
+		limit = { any_country = { random_terror_focus_sponsor_candidate = yes } }
+		if = {
+			limit = {
+				any_country = {
+					random_terror_focus_sponsor_candidate = yes
+					is_neighbor_of = ROOT
+				}
+			}
+			random_country = {
+				limit = {
+					random_terror_focus_sponsor_candidate = yes
+					is_neighbor_of = ROOT
+				}
+				save_event_target_as = random_terror_sponsor_target
+			}
+		}
+		else = {
+			random_country = {
+				limit = { random_terror_focus_sponsor_candidate = yes }
+				save_event_target_as = random_terror_sponsor_target
+			}
+		}
+		set_country_flag = random_terror_sponsor_contact_recorded
+		random_terror_commit_sponsor_request = yes
+	}
+}
+
+# Command the Front: a timed Synchronized Offensive.
+random_terror_focus_reward_command_front = {
+	set_temp_variable = { random_terror_focus_modifier_days = constant:random_terror_focus_reward.synchronized_offensive_days }
+	add_dynamic_modifier = { modifier = random_terror_synchronized_offensive days = random_terror_focus_modifier_days }
+	add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_defector_gain }
+	set_country_flag = random_terror_focus_front_commanded
+}
+
+# Prepare the Parent Offensive: every populated state of the parent or of
+# another enemy that borders the command is claimed, linked and pressed by
+# its cells.
+random_terror_focus_reward_parent_offensive = {
+	set_temp_variable = { random_terror_focus_activity_push = constant:random_terror_focus_reward.parent_offensive_activity }
+	every_controlled_state = {
+		every_neighbor_state = {
+			limit = {
+				NOT = { is_controlled_by = ROOT }
+				NOT = { has_state_flag = random_terror_focus_offensive_marked }
+				state_population_k > constant:random_terror_value.zero
+				CONTROLLER = {
+					OR = {
+						has_country_flag = random_terror_parent_of_@ROOT
+						has_war_with = ROOT
+					}
+				}
+			}
+			set_state_flag = random_terror_focus_offensive_marked
+			if = {
+				limit = {
+					NOT = { is_owned_by = ROOT }
+					NOT = { is_claimed_by = ROOT }
+				}
+				add_claim_by = ROOT
+			}
+			set_state_flag = random_terror_transnational_link_active
+			random_terror_focus_push_state_activity = yes
+		}
+	}
+	every_controlled_state = {
+		every_neighbor_state = {
+			limit = { has_state_flag = random_terror_focus_offensive_marked }
+			clr_state_flag = random_terror_focus_offensive_marked
+		}
+	}
+	add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_convert_gain }
+	set_country_flag = random_terror_focus_parent_offensive_prepared
+}
+
+# Command the Armed Movement: one territorial brigade musters.
+random_terror_focus_reward_armed_movement = {
+	set_temp_variable = { random_terror_unit_experience = constant:random_terror_unit.brigade_experience }
+	set_temp_variable = { random_terror_unit_equipment = constant:random_terror_unit.brigade_equipment }
+	set_temp_variable = { random_terror_unit_manpower = constant:random_terror_unit.brigade_manpower }
+	set_temp_variable = { random_terror_unit_id = constant:random_terror_unit.brigade_id }
+	random_terror_focus_raise_formation = yes
+	add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_convert_gain }
+	set_country_flag = random_terror_focus_armed_movement_commanded
+}

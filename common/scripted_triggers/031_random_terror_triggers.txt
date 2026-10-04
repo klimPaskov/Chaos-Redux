@@ -202,6 +202,47 @@ random_terror_state_is_threatened_cell = {
 	NOT = { has_state_flag = random_terror_state_lost_local_control }
 }
 
+# STATE scope, ROOT = an actor.  An active cell abroad that an actor focus can
+# reach: an active crisis state short of Lost Local Control that neither the
+# actor nor any other Event 31 actor owns or holds.
+random_terror_state_is_foreign_cell = {
+	random_terror_state_is_active_crisis = yes
+	NOT = { has_state_flag = random_terror_state_lost_local_control }
+	NOT = { is_controlled_by = ROOT }
+	CONTROLLER = { NOT = { random_terror_is_actor = yes } }
+	OWNER = { NOT = { random_terror_is_actor = yes } }
+}
+
+# STATE scope, ROOT = an actor.  A foreign cell that
+# random_terror_focus_reach_foreign_cells can still choose this time.  With
+# temp random_terror_focus_require_link = 1 it must already be linked.
+random_terror_state_is_focus_cell_candidate = {
+	random_terror_state_is_foreign_cell = yes
+	NOT = { has_state_flag = random_terror_focus_cell_selected }
+	OR = {
+		NOT = { check_variable = { random_terror_focus_require_link = constant:random_terror_value.one } }
+		has_state_flag = random_terror_transnational_link_active
+	}
+}
+
+# COUNTRY scope, ROOT = an actor.  A country at peace with the actor that can
+# be asked to sponsor it (the same stock checks as Seek a Sponsor).
+random_terror_focus_sponsor_candidate = {
+	exists = yes
+	NOT = { tag = ROOT }
+	NOT = { random_terror_is_actor = yes }
+	NOT = { has_capitulated = yes }
+	NOT = { has_war_with = ROOT }
+	NOT = { has_country_flag = random_terror_sponsor_contact_pending }
+	OR = {
+		is_neighbor_of = ROOT
+		is_in_faction_with = ROOT
+	}
+	has_political_power > constant:random_terror_cost.partner_sponsor_political_power
+	has_equipment = { infantry_equipment > constant:random_terror_cost.partner_sponsor_infantry_equipment }
+	has_equipment = { support_equipment > constant:random_terror_cost.partner_sponsor_support_equipment }
+}
+
 # STATE scope, ROOT = the responding government.  Government decisions with a
 # generic crisis target offer one row each: the government's priority crisis
 # state (random_terror_refresh_priority_state), a state under its emergency
