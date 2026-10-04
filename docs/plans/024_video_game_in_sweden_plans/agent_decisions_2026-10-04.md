@@ -173,3 +173,10 @@ Decision: every player-facing option in the opening, evolution, conclusion, inci
 Visible resource awards in conclusions stay as native effect lines.
 Report options whose result was applied when the mission closed state that result instead of repeating it.
 Basis: spec part 4 (every action shows its Reliance direction, no hidden cost after commitment).
+
+## D21. Trust the Model victories soften the reassessment and widening is route-sensitive
+
+Decision: the surge modifier carries `trust_war_support` (+5% war support), and `video_game_in_sweden_open_trust_reassessment` lowers Reliance once by `trust_victory_relief` (15) when an opponent victory is recorded, which report `.50` states; the path choice stays mandatory.
+The widening decision formalises the officer league inside the army on the officer route (league package, commander roll, no broad reach) and can be taken a second time there to publish the tables, which gives the reach an officer programme needs for Evolution II; other routes keep civilian circulation.
+The decision can therefore repeat (`fire_only_once = no`) but hides once broad reach exists.
+Basis: spec part 2 Trust the Model (strong war support, a victory softens but cannot remove the reassessment), spec part 3 expand access and officer league (public reporting raises Evolution II pressure).

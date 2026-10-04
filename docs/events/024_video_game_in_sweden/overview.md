@@ -90,7 +90,7 @@ The baseline category presents four primary actions.
 | --- | --- | --- | --- |
 | Conduct a controlled exercise | `video_game_controlled_exercise` | Run a small staff exercise and build measured confidence. | Army experience, support equipment, fuel. |
 | Add a logistics module | `video_game_logistics_module` | Test trains, trucks, support equipment, and factory time against the cabinet. | Trains, trucks, support equipment, civilian factory. |
-| Expand public access | `video_game_expand_access` | Let civilian institutions handle a bounded version of the exercise. | Political power and army experience. |
+| Widen the cabinet's circle | `video_game_expand_access` | Route-sensitive: the controlled and commercial routes go to public circulation and broad reach, while the officer route first formalises its league inside the army (league package and commander roll, no reach) and may later publish the tables to the press. | Political power and army experience. |
 | Conclude the trial | `video_game_conclude_trial` | Close the baseline program after review and record an ordinary conclusion. | No spendable cost. |
 
 The baseline has a finite review window, a repeat cooldown, and an automatic close after the configured baseline lifetime.
@@ -477,7 +477,8 @@ Its political power, Stability and War Support charges are each the lesser of th
 Localisation shows that quote, and payment recomputes all three amounts together before debiting them.
 The fixed political-power AI budget hint is absent from this variable-fee action, while its route and crisis willingness factors remain unchanged.
 
-The Trust the Model surge increases supply consumption by eight percent, alongside its planning benefit and recovery risks.
+The Trust the Model surge increases supply consumption by eight percent, alongside its planning, army-experience and 5% war-support benefits and its recovery risks.
+A recorded victory over the chosen opponent before the deadline softens the mandatory reassessment: when it opens, Reliance falls by a further 15 once, and report `.50` says so, but a path must still be chosen.
 
 Restriction closes official leagues, removes score-based policy authority, and withdraws state-supported public facilities through distinct departmental receipts.
 The existing sixty-day proof period yields receipts at days twenty, forty, and sixty within the existing ninety-day mission.

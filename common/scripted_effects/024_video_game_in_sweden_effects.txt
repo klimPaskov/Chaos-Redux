@@ -1355,14 +1355,31 @@ video_game_in_sweden_do_adjudicators = {
 	video_game_in_sweden_change_reliance = yes
 }
 
+# COUNTRY scope. Route-sensitive widening. The officer route first formalises
+# its league inside the army, with the league package and commander roll but
+# no civilian reach; only a second widening publishes the tables to the press.
+# The staff and civilian routes go straight to public circulation.
 video_game_in_sweden_do_expand_access = {
 	video_game_in_sweden_pay_expand_access = yes
-	set_country_flag = video_game_in_sweden_access_expanded
-	set_country_flag = video_game_in_sweden_public_response_available
-	set_country_flag = video_game_in_sweden_broad_public_reach
-	set_variable = { video_game_in_sweden_access_tier = constant:video_game_in_sweden_value.three }
-	set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.expand_access_gain }
-	video_game_in_sweden_change_reliance = yes
+	if = {
+		limit = {
+			has_country_flag = video_game_in_sweden_officer_route
+			NOT = { has_country_flag = video_game_in_sweden_officer_league_complete }
+		}
+		set_country_flag = video_game_in_sweden_officer_league_complete
+		set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.expand_access_gain }
+		video_game_in_sweden_change_reliance = yes
+		set_temp_variable = { video_game_in_sweden_commander_chance = constant:video_game_in_sweden_award.commander_chance_officer_league }
+		video_game_in_sweden_roll_rulebook_commander = yes
+	}
+	else = {
+		set_country_flag = video_game_in_sweden_access_expanded
+		set_country_flag = video_game_in_sweden_public_response_available
+		set_country_flag = video_game_in_sweden_broad_public_reach
+		set_variable = { video_game_in_sweden_access_tier = constant:video_game_in_sweden_value.three }
+		set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.expand_access_gain }
+		video_game_in_sweden_change_reliance = yes
+	}
 }
 
 video_game_in_sweden_do_rules_revision = {
@@ -2053,6 +2070,7 @@ video_game_in_sweden_start_trust_model = {
 	clr_country_flag = video_game_in_sweden_mandatory_reassessment_pending
 	clr_country_flag = video_game_in_sweden_according_to_plan_disqualified
 	clr_country_flag = video_game_in_sweden_trust_model_major_mismatch
+	clr_country_flag = video_game_in_sweden_trust_victory_relief
 	set_variable = { video_game_in_sweden_trust_model_mismatch_count = constant:video_game_in_sweden_value.zero }
 	set_country_flag = video_game_in_sweden_trust_model_active
 	set_variable = { video_game_in_sweden_trust_model_days_elapsed = 0 }
@@ -2371,6 +2389,18 @@ video_game_in_sweden_open_trust_reassessment = {
 	set_country_flag = video_game_in_sweden_mandatory_reassessment_pending
 	set_variable = { video_game_in_sweden_trust_model_reassessment_opened_date = global.date }
 	set_variable = { video_game_in_sweden_status = constant:video_game_in_sweden_value.status_review }
+	# A recorded victory over the chosen opponent softens the reassessment: the
+	# reviewers start from a lower Reliance, but they still must choose a path.
+	if = {
+		limit = {
+			has_country_flag = video_game_in_sweden_trust_model_opponent_victory
+			NOT = { has_country_flag = video_game_in_sweden_trust_victory_relief }
+		}
+		set_country_flag = video_game_in_sweden_trust_victory_relief
+		set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.trust_victory_relief }
+		multiply_temp_variable = { video_game_in_sweden_reliance_delta = -1 }
+		video_game_in_sweden_change_reliance = yes
+	}
 	video_game_in_sweden_update_achievement_tracking = yes
 }
 
