@@ -1,5 +1,7 @@
 # divisions_in_state.size requires a literal integer; mirrors riches_found_value.zero.
 @riches_found_division_floor = 0
+# has_opinion.value is literal-only; mirrors riches_found_foreign_interest_threshold.positive_opinion.
+@riches_found_positive_opinion = 25
 # ============================================================================
 # CHAOS REDUX - EVENT 029 RICHES FOUND SCRIPTED TRIGGERS
 # ============================================================================
@@ -122,6 +124,7 @@ riches_found_country_has_selected_mine = {
 	has_variable = riches_found_selected_mine
 	var:riches_found_selected_mine = {
 		riches_found_mine_is_registered = yes
+		NOT = { riches_found_mine_is_terminal = yes }
 		is_controlled_by = PREV
 	}
 }
@@ -133,9 +136,9 @@ riches_found_country_has_category_mine = {
 }
 
 riches_found_country_has_multiple_mines = {
-	has_variable = riches_found_controller_mine_count
+	has_variable = riches_found_controller_registered_mine_count
 	check_variable = {
-		var = riches_found_controller_mine_count
+		var = riches_found_controller_registered_mine_count
 		value = constant:riches_found_value.one
 		compare = greater_than
 	}
@@ -169,21 +172,16 @@ riches_found_state_is_active_selected_or_only_mine = {
 	riches_found_mine_is_registered = yes
 	CONTROLLER = {
 		exists = yes
-		riches_found_country_is_valid_recipient = yes
-	}
-	OR = {
-		CONTROLLER = {
-			NOT = { has_variable = riches_found_selected_mine }
-		}
-		CONTROLLER = {
-			check_variable = {
-				var = riches_found_selected_mine
-				value = PREV
-				compare = equals
+		OR = {
+			is_ai = yes
+			AND = {
+				has_variable = riches_found_selected_mine
+				check_variable = {
+					var = riches_found_selected_mine
+					value = PREV
+					compare = equals
+				}
 			}
-		}
-		CONTROLLER = {
-			NOT = { riches_found_country_has_multiple_mines = yes }
 		}
 	}
 }
@@ -197,6 +195,37 @@ riches_found_mine_is_operating = {
 		var = riches_found_operating_state
 		value = constant:riches_found_operating_state.temporarily_closed
 		compare = less_than
+	}
+}
+
+# STATE scope. Normal extraction and supervised upper workings both contribute
+# to the controller; closure is not a permission to extract unrestricted ore.
+# The maintenance pulse still uses mine_is_operating for extraction growth.
+riches_found_mine_provides_controller_output = {
+	NOT = { has_state_flag = riches_found_account_benefits_suspended }
+	OR = {
+		riches_found_mine_is_operating = yes
+		AND = {
+			riches_found_mine_is_active = yes
+			NOT = { has_state_flag = riches_found_mine_temporary_closure }
+			NOT = { has_state_flag = riches_found_mine_closed }
+			riches_found_state_can_control_access = yes
+			check_variable = { var = riches_found_local_order value = constant:riches_found_threshold.order_stable compare = greater_than_or_equals }
+			check_variable = { var = riches_found_extraction_pressure value = constant:riches_found_threshold.pressure_severe compare = less_than }
+			OR = {
+				AND = {
+					has_state_flag = riches_found_mine_quarantined
+					has_state_flag = riches_found_gold_controlled_access
+					check_variable = { var = riches_found_operating_state value = constant:riches_found_operating_state.quarantined compare = equals }
+					check_variable = { var = riches_found_revenue_legitimacy value = constant:riches_found_threshold.legitimacy_stable compare = greater_than_or_equals }
+				}
+				AND = {
+					has_state_flag = riches_found_mine_partial_seal
+					check_variable = { var = riches_found_operating_state value = constant:riches_found_operating_state.partially_sealed compare = equals }
+					check_variable = { var = riches_found_sealed_depth_integrity value = constant:riches_found_threshold.sealed_integrity_gate compare = greater_than_or_equals }
+				}
+			}
+		}
 	}
 }
 
@@ -237,10 +266,10 @@ riches_found_contract_is_active_and_valid = {
 	CONTROLLER = { exists = yes }
 	check_variable = { var = riches_found_contract_partner value = CONTROLLER compare = not_equals }
 	check_variable = { var = riches_found_contract_stage value = constant:riches_found_contract_stage.active compare = equals }
+	CONTROLLER = { NOT = { has_war_with = var:PREV.riches_found_contract_partner } }
 	var:riches_found_contract_partner = {
 		exists = yes
-		NOT = { is_special_chaos_country = yes }
-		NOT = { is_actual_nonhuman_country = yes }
+		NOT = { riches_found_country_is_excluded_actor = yes }
 		has_capitulated = no
 	}
 }
@@ -515,7 +544,6 @@ riches_found_country_has_free_mission_slot = {
 
 riches_found_mine_is_occupied = {
 	riches_found_mine_is_registered = yes
-	has_state_flag = riches_found_occupation_active
 	OWNER = {
 		exists = yes
 	}
@@ -543,20 +571,37 @@ riches_found_mine_can_recover = {
 	NOT = { has_state_flag = riches_found_mine_exhausted }
 }
 
-# STATE scope. A foreign actor is deliberately limited to an ordinary country
-# controlling a neighbouring land state. This keeps concession selection local
-# to the mine and avoids a country-wide or world-wide target scan.
+# STATE scope. Reads one cached offer prepared on discovery or a deliberate
+# action. Land, allied, invited, and maritime access remain eligible without
+# a world-country scan in a decision's recurring visibility or availability.
 riches_found_foreign_target_is_valid = {
 	riches_found_mine_is_registered = yes
 	CONTROLLER = { exists = yes }
-	any_neighbor_state = {
-		impassable = no
-		CONTROLLER = {
-			exists = yes
-			NOT = { tag = ROOT }
-			NOT = { is_special_chaos_country = yes }
-			NOT = { is_actual_nonhuman_country = yes }
-			has_capitulated = no
+	has_state_flag = riches_found_foreign_target_available
+	has_variable = riches_found_foreign_target
+	has_variable = riches_found_foreign_offer_controller
+	check_variable = { var = riches_found_foreign_offer_controller value = CONTROLLER compare = equals }
+	check_variable = { var = riches_found_foreign_target value = CONTROLLER compare = not_equals }
+	var:riches_found_foreign_target = {
+		exists = yes
+		NOT = { riches_found_country_is_excluded_actor = yes }
+		has_capitulated = no
+		NOT = { has_war_with = var:PREV.riches_found_recorded_controller }
+		OR = {
+			is_neighbor_of = var:PREV.riches_found_recorded_controller
+			is_in_faction_with = var:PREV.riches_found_recorded_controller
+			has_opinion = { target = var:PREV.riches_found_recorded_controller value > @riches_found_positive_opinion }
+			AND = {
+				check_variable = { var = num_equipment@convoy_1 value = constant:riches_found_foreign_interest_threshold.minimum_convoys compare = greater_than_or_equals }
+				any_controlled_state = { is_coastal = yes naval_base > constant:riches_found_value.zero }
+				PREV = {
+					OR = {
+						has_state_flag = riches_found_port_route_valid
+						has_state_flag = riches_found_port_route
+						has_state_flag = riches_found_island_mine
+					}
+				}
+			}
 		}
 	}
 }
@@ -641,27 +686,165 @@ riches_found_evolution_iii_gate = {
 	NOT = { has_state_flag = riches_found_evolution_iii_recorded }
 	has_variable = global.chaos_meter_value
 	check_variable = { var = global.chaos_meter_value value = constant:riches_found_evolution.demons_beneath_mine_chaos compare = greater_than_or_equals }
-	check_variable = { var = riches_found_extraction_pressure value = constant:riches_found_evolution.demons_beneath_mine_pressure compare = greater_than_or_equals }
-	check_variable = { var = riches_found_deep_excavation value = constant:riches_found_evolution.demons_beneath_mine_deep_excavation compare = greater_than_or_equals }
-	check_variable = { var = riches_found_sealed_depth_integrity value = constant:riches_found_threshold.sealed_integrity_gate compare = less_than }
+	OR = {
+		AND = {
+			check_variable = { var = riches_found_extraction_pressure value = constant:riches_found_evolution.demons_beneath_mine_pressure compare = greater_than_or_equals }
+			check_variable = { var = riches_found_deep_excavation value = constant:riches_found_evolution.demons_beneath_mine_deep_excavation compare = greater_than_or_equals }
+			check_variable = { var = riches_found_sealed_depth_integrity value = constant:riches_found_threshold.sealed_integrity_gate compare = less_than }
+		}
+		AND = {
+			has_state_flag = riches_found_prefire_evolution_iii
+			has_state_flag = riches_found_survey_complete
+			has_state_flag = riches_found_supernatural_signs
+			check_variable = { var = riches_found_supernatural_pressure value = constant:riches_found_exposure.prefire_investigation_gate compare = greater_than_or_equals }
+		}
+	}
+}
+
+riches_found_private_or_patronage_dominance = {
+	riches_found_mine_is_registered = yes
+	NOT = { riches_found_mine_is_terminal = yes }
+	OR = {
+		has_state_flag = riches_found_curse_private_dominance
+		has_state_flag = riches_found_private_enclave
+		has_state_flag = riches_found_patronage_tolerated
+		has_state_flag = riches_found_curse_corruption_tolerated
+	}
+	check_variable = { var = riches_found_illicit_capture value = constant:riches_found_threshold.illicit_capture_gate compare = greater_than_or_equals }
+	OR = {
+		check_variable = { var = riches_found_concession_exposure value = constant:riches_found_threshold.concession_exposure_gate compare = greater_than_or_equals }
+		check_variable = { var = riches_found_private_security_autonomy value = constant:riches_found_threshold.private_security_gate compare = greater_than_or_equals }
+	}
 }
 
 riches_found_gilded_sovereignty_gate = {
 	riches_found_mine_is_active = yes
+	has_state_flag = riches_found_resource_curse_active
 	has_state_flag = riches_found_evolution_i_recorded
 	NOT = { has_state_flag = riches_found_gilded_sovereignty }
-	check_variable = { var = riches_found_revenue_legitimacy value = constant:riches_found_threshold.legitimacy_high compare = greater_than_or_equals }
-	check_variable = { var = riches_found_mine_development value = constant:riches_found_threshold.order_high compare = greater_than_or_equals }
-	check_variable = { var = riches_found_concession_exposure value = constant:riches_found_threshold.concession_exposure_gate compare = less_than }
+	check_variable = { var = riches_found_revenue_legitimacy value = constant:riches_found_late_outcome.legitimacy_very_low compare = less_than }
+	check_variable = { var = riches_found_mine_development value = constant:riches_found_threshold.mature_development compare = greater_than_or_equals }
+	riches_found_private_or_patronage_dominance = yes
+	has_state_flag = riches_found_private_dominance_prolonged
+	has_state_flag = riches_found_treasury_depends_on_mine
+	check_variable = { var = riches_found_receipt_dependence_controller value = CONTROLLER compare = equals }
+	NOT = { has_state_flag = riches_found_recent_successful_reform }
 }
 
 riches_found_bottomless_account_gate = {
 	riches_found_mine_is_active = yes
+	has_state_flag = riches_found_demons_beneath_mine_active
 	has_state_flag = riches_found_evolution_iii_recorded
 	NOT = { has_state_flag = riches_found_bottomless_account }
-	check_variable = { var = riches_found_mine_development value = constant:riches_found_threshold.order_high compare = greater_than_or_equals }
-	check_variable = { var = riches_found_revenue_legitimacy value = constant:riches_found_threshold.legitimacy_high compare = greater_than_or_equals }
-	check_variable = { var = riches_found_sealed_depth_integrity value = constant:riches_found_threshold.sealed_integrity_gate compare = less_than }
+	has_state_flag = riches_found_accepted_account_terms
+	OR = {
+		has_state_flag = riches_found_demons_agreement
+		AND = {
+			has_state_flag = riches_found_demons_controlled_exploitation
+			has_variable = riches_found_post_contact_excavation
+			check_variable = { var = riches_found_post_contact_excavation value = constant:riches_found_late_outcome.repeated_post_contact_excavation compare = greater_than_or_equals }
+		}
+	}
+	check_variable = { var = riches_found_supernatural_pressure value = constant:riches_found_late_outcome.supernatural_pressure_very_high compare = greater_than_or_equals }
+	check_variable = { var = riches_found_extraction_pressure value = constant:riches_found_threshold.pressure_severe compare = greater_than_or_equals }
+	has_state_flag = riches_found_treasury_depends_on_mine
+	check_variable = { var = riches_found_receipt_dependence_controller value = CONTROLLER compare = equals }
+}
+
+riches_found_account_obligation_can_settle = {
+	riches_found_mine_is_active = yes
+	has_state_flag = riches_found_bottomless_account
+	has_state_flag = riches_found_account_obligation_active
+	NOT = { has_state_flag = riches_found_account_closed }
+	NOT = { has_state_flag = riches_found_account_terms_bound }
+	NOT = { has_state_flag = riches_found_account_terms_defaulted }
+	NOT = { has_state_flag = riches_found_account_terms_exhausted }
+	check_variable = { var = riches_found_account_paid_terms value = constant:riches_found_account_limit.maximum_paid_terms compare = less_than }
+	NOT = { check_variable = { var = global.date value = riches_found_account_obligation_due_date compare = greater_than } }
+	OR = {
+		NOT = { has_variable = riches_found_account_next_payment_date }
+		check_variable = { var = global.date value = riches_found_account_next_payment_date compare = greater_than_or_equals }
+	}
+}
+
+riches_found_account_has_payable_obligation = {
+	riches_found_account_obligation_can_settle = yes
+	NOT = { has_state_flag = riches_found_account_payment_pending }
+	NOT = { has_state_flag = riches_found_account_resolution_pending }
+}
+
+riches_found_site_has_sealing_access = {
+	riches_found_mine_is_registered = yes
+	NOT = { riches_found_mine_is_terminal = yes }
+	CONTROLLER = { exists = yes }
+	riches_found_state_has_transport_route = yes
+	NOT = { has_state_flag = riches_found_armed_claimants }
+	NOT = { has_state_flag = riches_found_foreign_operation_active }
+	OR = {
+		riches_found_state_has_supplied_force = yes
+		AND = {
+			has_state_flag = riches_found_mine_police
+			has_state_flag = riches_found_camp_administration
+			check_variable = { var = riches_found_local_order value = constant:riches_found_threshold.order_stable compare = greater_than_or_equals }
+		}
+	}
+}
+
+riches_found_account_binding_is_valid = {
+	riches_found_mine_is_active = yes
+	has_state_flag = riches_found_achievement_assistance_recorded
+	riches_found_site_has_sealing_access = yes
+	check_variable = { var = riches_found_local_order value = constant:riches_found_threshold.order_stable compare = greater_than_or_equals }
+	check_variable = { var = riches_found_supernatural_pressure value = constant:riches_found_late_outcome.supernatural_pressure_very_high compare = less_than }
+}
+
+riches_found_account_resolution_can_start = {
+	riches_found_mine_is_active = yes
+	has_state_flag = riches_found_bottomless_account
+	NOT = { has_state_flag = riches_found_account_closed }
+	NOT = { has_state_flag = riches_found_account_terms_bound }
+	NOT = { has_state_flag = riches_found_account_payment_pending }
+	NOT = { has_state_flag = riches_found_account_resolution_pending }
+}
+
+riches_found_account_authority_payment_is_valid = {
+	riches_found_account_has_payable_obligation = yes
+	riches_found_account_authority_terms_are_valid = yes
+}
+
+riches_found_account_authority_terms_are_valid = {
+	riches_found_account_obligation_can_settle = yes
+	OR = {
+		check_variable = { var = riches_found_account_next_obligation value = constant:riches_found_account_obligation.authority compare = equals }
+		check_variable = { var = riches_found_account_next_obligation value = constant:riches_found_account_obligation.public_trust compare = equals }
+	}
+	CONTROLLER = {
+		exists = yes
+		check_variable = { var = has_stability value = constant:riches_found_account_terms.minimum_stability_for_payment compare = greater_than_or_equals }
+	}
+}
+
+riches_found_account_predatory_payment_is_valid = {
+	riches_found_account_has_payable_obligation = yes
+	riches_found_account_predatory_terms_are_valid = yes
+}
+
+riches_found_account_predatory_terms_are_valid = {
+	riches_found_account_obligation_can_settle = yes
+	OR = {
+		AND = {
+			check_variable = { var = riches_found_account_next_obligation value = constant:riches_found_account_obligation.industrial_sacrifice compare = equals }
+			check_variable = { var = riches_found_mine_development value = constant:riches_found_account_terms.industrial_development_cost compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { var = riches_found_account_next_obligation value = constant:riches_found_account_obligation.human_crisis compare = equals }
+			check_variable = { var = global.chaos_meter_value value = constant:riches_found_evolution.demons_beneath_mine_chaos compare = greater_than_or_equals }
+			check_variable = { var = riches_found_supernatural_pressure value = constant:riches_found_late_outcome.supernatural_pressure_very_high compare = greater_than_or_equals }
+			NOT = { has_state_flag = riches_found_predatory_prosperity_harm_recorded }
+			riches_found_state_has_supplied_force = yes
+			check_variable = { var = state_population_k value = constant:riches_found_account_terms.human_worker_minimum_k compare = greater_than_or_equals }
+		}
+	}
 }
 
 # ---------------------------------------------------------------------------
@@ -682,4 +865,3 @@ riches_found_is_eligible_discovery_country = {
 riches_found_is_active_mine = {
 	riches_found_mine_is_active = yes
 }
-

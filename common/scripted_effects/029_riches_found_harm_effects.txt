@@ -40,6 +40,8 @@ riches_found_apply_harm_record = {
 		set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
 		set_temp_variable = { state_civilian_population_loss_has_target_country = constant:riches_found_value.one }
 		set_temp_variable = { state_civilian_population_loss_contract_supplied = constant:riches_found_value.one }
+		set_temp_variable = { state_civilian_population_loss_applied = constant:chaos_meter_deaths.zero }
+		set_temp_variable = { state_civilian_population_loss_result = constant:chaos_meter_deaths.zero }
 		apply_exact_state_civilian_population_loss = yes
 		set_variable = { riches_found_harm_applied = state_civilian_population_loss_applied }
 		if = {
@@ -57,6 +59,7 @@ riches_found_apply_harm_record = {
 				}
 			}
 			set_state_flag = riches_found_mass_death_occurred
+			riches_found_record_achievement_mass_death = yes
 			if = {
 				limit = { CONTROLLER = { exists = yes } }
 				CONTROLLER = { set_country_flag = riches_found_mass_death_occurred }

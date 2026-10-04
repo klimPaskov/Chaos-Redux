@@ -1,5 +1,15 @@
 # Event 029 Riches Found — AI probability baseline
 
+## Historical baseline disposition
+
+Disposition: `superseded` for current progress by [2026_10_03_resume_packet.md](2026_10_03_resume_packet.md), while retained as the unresolved 2026-08-29 baseline audit.
+The original source observations, scenario expectations, and exact unavailable-tool evidence below are preserved as historical evidence.
+They are not current findings and cannot substitute for a new baseline, complete candidate pools, or a same-scenario post-patch comparison.
+The parent preserved six exact pre-edit sources under `evidence/2026_10_03_before/` and reports that the new `chaosx_ai_probability_auditor` baseline is running.
+Preserve that auditor's eventual scenario-specific handoff, source identities, fixture, and unresolved inputs.
+The accepted design basis is the user's explicit request to implement `docs/specs/029_riches_found_specs/` fully.
+Historical route absence and render timeouts do not prove that the currently exposed service is unavailable.
+
 Status: baseline audit only. This report is incomplete and unresolved because the required HOI4 MCP probability and structural routes were not callable in this session. No gameplay, AI, event, focus, decision, mission, technology, localisation, or runtime source was changed. The only created artifact is this report and its parent folder.
 
 Audit date: 2026-08-29.

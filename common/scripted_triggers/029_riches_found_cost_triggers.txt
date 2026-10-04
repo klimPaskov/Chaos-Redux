@@ -1,0 +1,579 @@
+# Event 029 custom decision cost affordability.
+#
+# Country-scope triggers shared by each paid decision's available and custom_cost_trigger blocks.
+# Each decision composite mirrors the positive amounts in that decision's complete_effect.
+# This file checks affordability only. Payment remains in the decision's existing complete_effect.
+# Equipment checks use the exact inventory token used by the debit, including train_equipment_1.
+# manpower_k is measured in thousands; the file-scoped mirrors convert raw manpower costs by 1,000.
+
+@RICHES_FOUND_MANPOWER_LIGHT_K = 0.1
+@RICHES_FOUND_MANPOWER_STANDARD_K = 0.3
+@RICHES_FOUND_MANPOWER_HEAVY_K = 0.6
+@RICHES_FOUND_MANPOWER_EMERGENCY_K = 1.0
+
+# Inclusive resource predicates.
+riches_found_cost_can_afford_command_heavy = {
+	check_variable = { var = command_power value = constant:riches_found_decision_cost.command_heavy compare = greater_than_or_equals }
+}
+riches_found_cost_can_afford_command_light = {
+	check_variable = { var = command_power value = constant:riches_found_decision_cost.command_light compare = greater_than_or_equals }
+}
+riches_found_cost_can_afford_command_standard = {
+	check_variable = { var = command_power value = constant:riches_found_decision_cost.command_standard compare = greater_than_or_equals }
+}
+riches_found_cost_can_afford_convoy_heavy = {
+	check_variable = { var = num_equipment@convoy_1 value = constant:riches_found_decision_cost.convoy_heavy compare = greater_than_or_equals }
+}
+riches_found_cost_can_afford_convoy_light = {
+	check_variable = { var = num_equipment@convoy_1 value = constant:riches_found_decision_cost.convoy_light compare = greater_than_or_equals }
+}
+riches_found_cost_can_afford_convoy_standard = {
+	check_variable = { var = num_equipment@convoy_1 value = constant:riches_found_decision_cost.convoy_standard compare = greater_than_or_equals }
+}
+riches_found_cost_can_afford_fuel_standard = {
+	NOT = { has_fuel < constant:riches_found_decision_cost.fuel_standard }
+}
+riches_found_cost_can_afford_infantry_heavy = {
+	check_variable = { var = num_equipment@infantry_equipment value = constant:riches_found_decision_cost.infantry_heavy compare = greater_than_or_equals }
+}
+riches_found_cost_can_afford_infantry_light = {
+	check_variable = { var = num_equipment@infantry_equipment value = constant:riches_found_decision_cost.infantry_light compare = greater_than_or_equals }
+}
+riches_found_cost_can_afford_infantry_standard = {
+	check_variable = { var = num_equipment@infantry_equipment value = constant:riches_found_decision_cost.infantry_standard compare = greater_than_or_equals }
+}
+riches_found_cost_can_afford_manpower_emergency = {
+	check_variable = { var = manpower_k value = @RICHES_FOUND_MANPOWER_EMERGENCY_K compare = greater_than_or_equals }
+}
+riches_found_cost_can_afford_manpower_heavy = {
+	check_variable = { var = manpower_k value = @RICHES_FOUND_MANPOWER_HEAVY_K compare = greater_than_or_equals }
+}
+riches_found_cost_can_afford_manpower_light = {
+	check_variable = { var = manpower_k value = @RICHES_FOUND_MANPOWER_LIGHT_K compare = greater_than_or_equals }
+}
+riches_found_cost_can_afford_manpower_standard = {
+	check_variable = { var = manpower_k value = @RICHES_FOUND_MANPOWER_STANDARD_K compare = greater_than_or_equals }
+}
+riches_found_cost_can_afford_motorized_light = {
+	check_variable = { var = num_equipment@motorized_equipment_1 value = constant:riches_found_decision_cost.motorized_light compare = greater_than_or_equals }
+}
+riches_found_cost_can_afford_motorized_standard = {
+	check_variable = { var = num_equipment@motorized_equipment_1 value = constant:riches_found_decision_cost.motorized_standard compare = greater_than_or_equals }
+}
+riches_found_cost_can_afford_pp_heavy = {
+	check_variable = { var = political_power value = constant:riches_found_decision_cost.pp_heavy compare = greater_than_or_equals }
+}
+riches_found_cost_can_afford_pp_light = {
+	check_variable = { var = political_power value = constant:riches_found_decision_cost.pp_light compare = greater_than_or_equals }
+}
+riches_found_cost_can_afford_pp_standard = {
+	check_variable = { var = political_power value = constant:riches_found_decision_cost.pp_standard compare = greater_than_or_equals }
+}
+riches_found_cost_can_afford_support_heavy = {
+	check_variable = { var = num_equipment@support_equipment value = constant:riches_found_decision_cost.support_heavy compare = greater_than_or_equals }
+}
+riches_found_cost_can_afford_support_light = {
+	check_variable = { var = num_equipment@support_equipment value = constant:riches_found_decision_cost.support_light compare = greater_than_or_equals }
+}
+riches_found_cost_can_afford_support_standard = {
+	check_variable = { var = num_equipment@support_equipment value = constant:riches_found_decision_cost.support_standard compare = greater_than_or_equals }
+}
+riches_found_cost_can_afford_train_light = {
+	check_variable = { var = num_equipment@train_equipment_1 value = constant:riches_found_decision_cost.train_light compare = greater_than_or_equals }
+}
+riches_found_cost_can_afford_train_standard = {
+	check_variable = { var = num_equipment@train_equipment_1 value = constant:riches_found_decision_cost.train_standard compare = greater_than_or_equals }
+}
+
+# Per-decision composites. Invoke the same trigger in available and custom_cost_trigger.
+riches_found_can_afford_survey = {
+	riches_found_cost_can_afford_manpower_light = yes
+	riches_found_cost_can_afford_pp_light = yes
+	riches_found_cost_can_afford_motorized_light = yes
+}
+riches_found_can_afford_claim_register = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_light = yes
+	riches_found_cost_can_afford_support_light = yes
+}
+riches_found_can_afford_claim_freeze = {
+	riches_found_cost_can_afford_command_light = yes
+	riches_found_cost_can_afford_infantry_light = yes
+	riches_found_cost_can_afford_pp_standard = yes
+}
+riches_found_can_afford_recognize_local_claims = {
+	riches_found_cost_can_afford_manpower_light = yes
+	riches_found_cost_can_afford_pp_light = yes
+}
+riches_found_can_afford_reserve_deposit = {
+	riches_found_cost_can_afford_manpower_light = yes
+	riches_found_cost_can_afford_pp_standard = yes
+	riches_found_cost_can_afford_support_light = yes
+}
+riches_found_can_afford_claims_court = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_standard = yes
+}
+riches_found_can_afford_camp_administration = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_light = yes
+	riches_found_cost_can_afford_support_light = yes
+	riches_found_cost_can_afford_motorized_light = yes
+}
+riches_found_can_afford_license_traders = {
+	riches_found_cost_can_afford_manpower_light = yes
+	riches_found_cost_can_afford_pp_light = yes
+}
+riches_found_can_afford_local_labor = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_light = yes
+	riches_found_cost_can_afford_support_light = yes
+}
+riches_found_can_afford_specialist_labor = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_standard = yes
+	riches_found_cost_can_afford_train_light = yes
+	riches_found_cost_can_afford_support_standard = yes
+}
+riches_found_can_afford_worker_cooperatives = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_standard = yes
+	riches_found_cost_can_afford_support_light = yes
+}
+riches_found_can_afford_sanitation = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_standard = yes
+	riches_found_cost_can_afford_support_standard = yes
+	riches_found_cost_can_afford_motorized_light = yes
+}
+riches_found_can_afford_rail_spur = {
+	riches_found_cost_can_afford_pp_standard = yes
+	riches_found_cost_can_afford_train_standard = yes
+	riches_found_cost_can_afford_support_standard = yes
+	riches_found_cost_can_afford_motorized_standard = yes
+}
+riches_found_can_afford_port_route = {
+	riches_found_cost_can_afford_fuel_standard = yes
+	riches_found_cost_can_afford_pp_standard = yes
+	riches_found_cost_can_afford_motorized_standard = yes
+	riches_found_cost_can_afford_convoy_standard = yes
+}
+riches_found_can_afford_shaft_reinforcement = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_standard = yes
+	riches_found_cost_can_afford_support_standard = yes
+	riches_found_cost_can_afford_motorized_light = yes
+}
+riches_found_can_afford_processing_works = {
+	riches_found_cost_can_afford_fuel_standard = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_support_heavy = yes
+	riches_found_cost_can_afford_motorized_standard = yes
+}
+riches_found_can_afford_housing = {
+	riches_found_cost_can_afford_manpower_heavy = yes
+	riches_found_cost_can_afford_pp_standard = yes
+	riches_found_cost_can_afford_support_standard = yes
+	riches_found_cost_can_afford_motorized_standard = yes
+}
+riches_found_can_afford_development_fund = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_standard = yes
+	riches_found_cost_can_afford_support_light = yes
+}
+riches_found_can_afford_drive_deeper = {
+	riches_found_cost_can_afford_fuel_standard = yes
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_support_heavy = yes
+}
+riches_found_can_afford_dividend = {
+	riches_found_cost_can_afford_manpower_light = yes
+	riches_found_cost_can_afford_pp_standard = yes
+}
+riches_found_can_afford_local_revenue = {
+	riches_found_cost_can_afford_manpower_light = yes
+	riches_found_cost_can_afford_pp_light = yes
+}
+riches_found_can_afford_central_revenue = {
+	riches_found_cost_can_afford_manpower_light = yes
+	riches_found_cost_can_afford_pp_standard = yes
+}
+riches_found_can_afford_stabilization_fund = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_support_light = yes
+}
+riches_found_can_afford_audit = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_standard = yes
+	riches_found_cost_can_afford_support_light = yes
+}
+riches_found_can_afford_replace_administration = {
+	riches_found_cost_can_afford_manpower_heavy = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_support_standard = yes
+}
+riches_found_can_afford_independent_revenue_authority = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_support_standard = yes
+}
+riches_found_can_afford_tolerate_patronage = {
+	riches_found_cost_can_afford_manpower_light = yes
+	riches_found_cost_can_afford_pp_light = yes
+}
+riches_found_can_afford_concession_auction = {
+	riches_found_cost_can_afford_manpower_light = yes
+	riches_found_cost_can_afford_pp_standard = yes
+}
+riches_found_can_afford_exclusive_concession = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_support_standard = yes
+}
+riches_found_can_afford_offtake = {
+	riches_found_cost_can_afford_fuel_standard = yes
+	riches_found_cost_can_afford_pp_standard = yes
+	riches_found_cost_can_afford_convoy_standard = yes
+}
+riches_found_can_afford_trade_access_infrastructure = {
+	riches_found_cost_can_afford_pp_standard = yes
+	riches_found_cost_can_afford_support_standard = yes
+	riches_found_cost_can_afford_motorized_standard = yes
+	riches_found_cost_can_afford_convoy_light = yes
+}
+riches_found_can_afford_disclosure = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_standard = yes
+}
+riches_found_can_afford_publish_contract = {
+	riches_found_cost_can_afford_manpower_light = yes
+	riches_found_cost_can_afford_pp_standard = yes
+	riches_found_cost_can_afford_support_light = yes
+}
+riches_found_can_afford_nationalize_with_compensation = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_support_heavy = yes
+	riches_found_cost_can_afford_motorized_standard = yes
+}
+riches_found_can_afford_nationalize_without_compensation = {
+	riches_found_cost_can_afford_command_standard = yes
+	riches_found_cost_can_afford_infantry_heavy = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_support_standard = yes
+}
+riches_found_can_afford_buyout = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_support_standard = yes
+}
+riches_found_can_afford_renegotiate_contract = {
+	riches_found_cost_can_afford_manpower_light = yes
+	riches_found_cost_can_afford_pp_standard = yes
+	riches_found_cost_can_afford_support_light = yes
+}
+riches_found_can_afford_mine_police = {
+	riches_found_cost_can_afford_infantry_standard = yes
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_standard = yes
+	riches_found_cost_can_afford_support_standard = yes
+}
+riches_found_can_afford_private_guards = {
+	riches_found_cost_can_afford_infantry_standard = yes
+	riches_found_cost_can_afford_pp_standard = yes
+	riches_found_cost_can_afford_support_standard = yes
+}
+riches_found_can_afford_army_cordon = {
+	riches_found_cost_can_afford_command_standard = yes
+	riches_found_cost_can_afford_fuel_standard = yes
+	riches_found_cost_can_afford_infantry_heavy = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+}
+riches_found_can_afford_armed_workers = {
+	riches_found_cost_can_afford_infantry_standard = yes
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_standard = yes
+	riches_found_cost_can_afford_support_light = yes
+}
+riches_found_can_afford_pay_train = {
+	riches_found_cost_can_afford_command_light = yes
+	riches_found_cost_can_afford_fuel_standard = yes
+	riches_found_cost_can_afford_pp_standard = yes
+	riches_found_cost_can_afford_motorized_light = yes
+}
+riches_found_can_afford_clear_barricades = {
+	riches_found_cost_can_afford_command_standard = yes
+	riches_found_cost_can_afford_infantry_heavy = yes
+	riches_found_cost_can_afford_manpower_heavy = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+}
+riches_found_can_afford_truce = {
+	riches_found_cost_can_afford_manpower_light = yes
+	riches_found_cost_can_afford_pp_standard = yes
+}
+riches_found_can_afford_disarm_private_forces = {
+	riches_found_cost_can_afford_command_light = yes
+	riches_found_cost_can_afford_infantry_standard = yes
+	riches_found_cost_can_afford_pp_standard = yes
+	riches_found_cost_can_afford_support_light = yes
+}
+riches_found_can_afford_temporary_closure = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_standard = yes
+	riches_found_cost_can_afford_support_light = yes
+}
+riches_found_can_afford_quarantine = {
+	riches_found_cost_can_afford_command_standard = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_support_standard = yes
+	riches_found_cost_can_afford_motorized_standard = yes
+}
+riches_found_can_afford_workforce_replacement = {
+	riches_found_cost_can_afford_manpower_emergency = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_train_standard = yes
+	riches_found_cost_can_afford_convoy_standard = yes
+}
+riches_found_can_afford_seal_depths = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_support_heavy = yes
+	riches_found_cost_can_afford_motorized_standard = yes
+}
+riches_found_can_afford_repair = {
+	riches_found_cost_can_afford_fuel_standard = yes
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_standard = yes
+	riches_found_cost_can_afford_support_standard = yes
+}
+riches_found_can_afford_evacuation = {
+	riches_found_cost_can_afford_manpower_emergency = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_train_standard = yes
+	riches_found_cost_can_afford_convoy_heavy = yes
+}
+riches_found_can_afford_permanent_seal = {
+	riches_found_cost_can_afford_manpower_heavy = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_support_heavy = yes
+	riches_found_cost_can_afford_motorized_standard = yes
+}
+riches_found_can_afford_occupation_reopen = {
+	riches_found_cost_can_afford_command_standard = yes
+	riches_found_cost_can_afford_fuel_standard = yes
+	riches_found_cost_can_afford_infantry_standard = yes
+	riches_found_cost_can_afford_pp_standard = yes
+}
+riches_found_can_afford_occupation_requisition = {
+	riches_found_cost_can_afford_command_light = yes
+	riches_found_cost_can_afford_fuel_standard = yes
+	riches_found_cost_can_afford_pp_standard = yes
+}
+riches_found_can_afford_occupation_keep_administration = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_light = yes
+	riches_found_cost_can_afford_support_light = yes
+}
+riches_found_can_afford_occupation_replace_concession = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_support_standard = yes
+	riches_found_cost_can_afford_motorized_light = yes
+}
+riches_found_can_afford_occupation_share_revenue = {
+	riches_found_cost_can_afford_manpower_light = yes
+	riches_found_cost_can_afford_pp_standard = yes
+}
+riches_found_can_afford_occupation_strip_equipment = {
+	riches_found_cost_can_afford_command_light = yes
+	riches_found_cost_can_afford_fuel_standard = yes
+	riches_found_cost_can_afford_pp_light = yes
+}
+riches_found_can_afford_occupation_deny_mine = {
+	riches_found_cost_can_afford_command_standard = yes
+	riches_found_cost_can_afford_infantry_standard = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_support_standard = yes
+}
+riches_found_can_afford_curse_nationalize_extraction = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_support_heavy = yes
+	riches_found_cost_can_afford_motorized_standard = yes
+}
+riches_found_can_afford_curse_distribute_revenue = {
+	riches_found_cost_can_afford_manpower_light = yes
+	riches_found_cost_can_afford_pp_standard = yes
+	riches_found_cost_can_afford_support_light = yes
+}
+riches_found_can_afford_curse_stabilization_diversification = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_support_standard = yes
+	riches_found_cost_can_afford_motorized_light = yes
+}
+riches_found_can_afford_curse_tolerate_corruption = {
+	riches_found_cost_can_afford_manpower_light = yes
+	riches_found_cost_can_afford_pp_light = yes
+}
+riches_found_can_afford_curse_private_interests = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_support_standard = yes
+}
+riches_found_can_afford_curse_independent_revenue_authority = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_support_standard = yes
+}
+riches_found_can_afford_gold_share_revenue = {
+	riches_found_cost_can_afford_manpower_light = yes
+	riches_found_cost_can_afford_pp_standard = yes
+	riches_found_cost_can_afford_support_light = yes
+}
+riches_found_can_afford_gold_replace_workforce = {
+	riches_found_cost_can_afford_manpower_emergency = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_train_standard = yes
+	riches_found_cost_can_afford_convoy_standard = yes
+}
+riches_found_can_afford_gold_military_control = {
+	riches_found_cost_can_afford_command_standard = yes
+	riches_found_cost_can_afford_fuel_standard = yes
+	riches_found_cost_can_afford_infantry_heavy = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+}
+riches_found_can_afford_gold_quarantine = {
+	riches_found_cost_can_afford_command_standard = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_support_standard = yes
+	riches_found_cost_can_afford_motorized_standard = yes
+}
+riches_found_can_afford_gold_close_temporary = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_standard = yes
+	riches_found_cost_can_afford_support_light = yes
+}
+riches_found_can_afford_gold_seal_depths = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_support_heavy = yes
+	riches_found_cost_can_afford_motorized_standard = yes
+}
+riches_found_can_afford_gold_controlled_access = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_support_heavy = yes
+	riches_found_cost_can_afford_motorized_standard = yes
+}
+riches_found_can_afford_gold_destroy_confiscated_material = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_support_heavy = yes
+	riches_found_cost_can_afford_motorized_standard = yes
+}
+riches_found_can_afford_demons_permanent_seal = {
+	riches_found_cost_can_afford_manpower_heavy = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_support_heavy = yes
+	riches_found_cost_can_afford_motorized_standard = yes
+}
+riches_found_can_afford_demons_evacuate_district = {
+	riches_found_cost_can_afford_manpower_emergency = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_train_standard = yes
+	riches_found_cost_can_afford_convoy_heavy = yes
+}
+riches_found_can_afford_demons_military_purge = {
+	riches_found_cost_can_afford_command_standard = yes
+	riches_found_cost_can_afford_fuel_standard = yes
+	riches_found_cost_can_afford_infantry_heavy = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+}
+riches_found_can_afford_demons_religious_assistance = {
+	riches_found_cost_can_afford_command_standard = yes
+	riches_found_cost_can_afford_manpower_light = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+}
+riches_found_can_afford_demons_occult_assistance = {
+	riches_found_cost_can_afford_command_standard = yes
+	riches_found_cost_can_afford_manpower_light = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+}
+riches_found_can_afford_demons_scientific_assistance = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_train_light = yes
+	riches_found_cost_can_afford_support_heavy = yes
+}
+riches_found_can_afford_demons_controlled_exploitation = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_support_heavy = yes
+	riches_found_cost_can_afford_motorized_standard = yes
+}
+riches_found_can_afford_demons_make_agreement = {
+	riches_found_cost_can_afford_command_standard = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_support_standard = yes
+}
+riches_found_can_afford_gilded_revoke_charter = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_support_standard = yes
+	riches_found_cost_can_afford_motorized_standard = yes
+}
+riches_found_can_afford_gilded_buy_back_district = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_support_standard = yes
+	riches_found_cost_can_afford_motorized_standard = yes
+}
+riches_found_can_afford_gilded_share_sovereignty = {
+	riches_found_cost_can_afford_manpower_light = yes
+	riches_found_cost_can_afford_pp_standard = yes
+	riches_found_cost_can_afford_support_light = yes
+}
+riches_found_can_afford_gilded_recognize_board = {
+	riches_found_cost_can_afford_manpower_light = yes
+	riches_found_cost_can_afford_pp_standard = yes
+	riches_found_cost_can_afford_support_light = yes
+}
+riches_found_can_afford_gilded_violent_nationalization = {
+	riches_found_cost_can_afford_command_standard = yes
+	riches_found_cost_can_afford_infantry_heavy = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_support_standard = yes
+}
+riches_found_can_afford_gilded_let_govern = {
+	riches_found_cost_can_afford_manpower_light = yes
+	riches_found_cost_can_afford_pp_standard = yes
+}
+riches_found_can_afford_account_close = {
+	riches_found_cost_can_afford_manpower_standard = yes
+	riches_found_cost_can_afford_pp_standard = yes
+	riches_found_cost_can_afford_support_light = yes
+}
+riches_found_can_afford_account_bind_terms = {
+	riches_found_cost_can_afford_command_standard = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+	riches_found_cost_can_afford_support_standard = yes
+}
+riches_found_can_afford_account_pay_material = {
+	riches_found_cost_can_afford_fuel_standard = yes
+	riches_found_cost_can_afford_manpower_light = yes
+	riches_found_cost_can_afford_pp_standard = yes
+	riches_found_cost_can_afford_support_standard = yes
+}
+riches_found_can_afford_account_spend_authority = {
+	riches_found_cost_can_afford_command_heavy = yes
+	riches_found_cost_can_afford_manpower_light = yes
+	riches_found_cost_can_afford_pp_heavy = yes
+}
+riches_found_can_afford_account_predatory_prosperity = {
+	riches_found_cost_can_afford_command_standard = yes
+	riches_found_cost_can_afford_infantry_standard = yes
+	riches_found_cost_can_afford_support_light = yes
+}

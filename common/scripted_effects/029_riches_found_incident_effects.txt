@@ -306,6 +306,7 @@ riches_found_calculate_foreign_interest_score = {
 # partner only.
 riches_found_prepare_scored_foreign_partner = {
 	clear_variable = riches_found_foreign_target
+	clear_variable = riches_found_foreign_offer_controller
 	clr_state_flag = riches_found_foreign_target_available
 	save_event_target_as = riches_found_interest_mine
 	CONTROLLER = { save_event_target_as = riches_found_interest_controller }
@@ -314,8 +315,7 @@ riches_found_prepare_scored_foreign_partner = {
 		limit = {
 			exists = yes
 			NOT = { tag = event_target:riches_found_interest_controller }
-			NOT = { is_special_chaos_country = yes }
-			NOT = { is_actual_nonhuman_country = yes }
+			NOT = { riches_found_country_is_excluded_actor = yes }
 			has_capitulated = no
 			NOT = { has_war_with = event_target:riches_found_interest_controller }
 			OR = {
@@ -323,8 +323,8 @@ riches_found_prepare_scored_foreign_partner = {
 				is_in_faction_with = event_target:riches_found_interest_controller
 				has_opinion = { target = event_target:riches_found_interest_controller value > @riches_found_positive_opinion }
 				AND = {
-					is_major = yes
-					has_equipment = { convoy_1 > constant:riches_found_foreign_interest_threshold.minimum_convoys }
+					check_variable = { var = num_equipment@convoy_1 value = constant:riches_found_foreign_interest_threshold.minimum_convoys compare = greater_than_or_equals }
+					any_controlled_state = { is_coastal = yes naval_base > constant:riches_found_value.zero }
 					event_target:riches_found_interest_mine = {
 						OR = {
 							has_state_flag = riches_found_port_route_valid
@@ -343,8 +343,13 @@ riches_found_prepare_scored_foreign_partner = {
 		}
 	}
 	if = {
-		limit = { has_event_target = riches_found_contract_partner_target }
+		limit = {
+			check_variable = { riches_found_best_foreign_score > constant:riches_found_value.zero }
+			has_event_target = riches_found_contract_partner_target
+			event_target:riches_found_contract_partner_target = { exists = yes }
+		}
 		set_variable = { riches_found_foreign_target = event_target:riches_found_contract_partner_target }
+		set_variable = { riches_found_foreign_offer_controller = event_target:riches_found_interest_controller }
 		set_variable = { riches_found_foreign_interest_score = riches_found_best_foreign_score }
 		set_state_flag = riches_found_foreign_target_available
 	}
@@ -566,7 +571,14 @@ riches_found_apply_raid_consequence = {
 		set_state_flag = riches_found_route_damaged
 	}
 	if = { limit = { check_variable = { var = riches_found_incident_kind value = constant:riches_found_incident_kind.raid_contract_records compare = equals } } set_state_flag = riches_found_records_destroyed }
-	if = { limit = { check_variable = { var = riches_found_incident_kind value = constant:riches_found_incident_kind.raid_payroll compare = equals } } set_state_flag = riches_found_pay_robbery_succeeded }
+	if = {
+		limit = { check_variable = { var = riches_found_incident_kind value = constant:riches_found_incident_kind.raid_payroll compare = equals } }
+		set_state_flag = riches_found_pay_train_robbery_succeeded
+		set_state_flag = riches_found_pay_train_robbery_history
+		clr_state_flag = riches_found_achievement_pay_train_sequence_valid
+		clr_state_flag = riches_found_achievement_pay_train_ready
+		set_variable = { riches_found_achievement_pay_train_count = constant:riches_found_value.zero }
+	}
 }
 
 riches_found_run_raid_incident_pool = {

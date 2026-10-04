@@ -4,8 +4,8 @@ add_namespace = chaosx.nr29
 # CHAOS REDUX - EVENT 029 RICHES FOUND
 # ============================================================================
 # The root event is a repeatable discovery. Automatic firing prepares one
-# load-weighted ordinary country and one valid state before this event is
-# shown. The state then owns the durable mine record; controller changes are
+# uniformly chosen eligible ordinary country and one valid state before this
+# event is shown. The state then owns the durable mine record; controller changes are
 # handled by the narrow on_state_control_changed hook and the bounded registry.
 # Hidden state callbacks pace evolutions and reports without a world scan.
 # ============================================================================
@@ -56,10 +56,12 @@ country_event = {
 	trigger = {
 		OR = {
 			AND = {
-				check_variable = { riches_found_prefire_ready = constant:riches_found_value.one }
+				has_country_flag = riches_found_discovery_pending
+				has_variable = riches_found_prepared_discovery_state
 				has_event_target = riches_found_prefire_owner
 				has_event_target = riches_found_prefire_state
 				event_target:riches_found_prefire_owner = { tag = ROOT }
+				check_variable = { var = riches_found_prepared_discovery_state value = event_target:riches_found_prefire_state compare = equals }
 				event_target:riches_found_prefire_state = {
 					is_owned_and_controlled_by = ROOT
 					riches_found_is_valid_discovery_state = yes
@@ -68,6 +70,7 @@ country_event = {
 			AND = {
 				NOT = { has_event_target = riches_found_prefire_owner }
 				NOT = { has_event_target = riches_found_prefire_state }
+				NOT = { has_country_flag = riches_found_discovery_pending }
 				riches_found_is_eligible_discovery_country = yes
 			}
 		}
@@ -77,18 +80,19 @@ country_event = {
 		hidden_effect = {
 			# A direct country-event invocation is still bounded to one current
 			# country and one valid state. Automatic dispatcher invocations have
-			# already prepared the load-weighted recipient above.
+			# already prepared the uniformly chosen recipient from the pool.
 			if = {
 				limit = {
 					NOT = { has_event_target = riches_found_prefire_owner }
 					NOT = { has_event_target = riches_found_prefire_state }
+					NOT = { has_country_flag = riches_found_discovery_pending }
 					riches_found_is_eligible_discovery_country = yes
 				}
 				save_event_target_as = riches_found_prefire_owner
-	random_owned_controlled_state = {
-		limit = { riches_found_is_valid_discovery_state = yes }
-		riches_found_save_prefire_state = yes
-	}
+				random_owned_controlled_state = {
+					limit = { riches_found_is_valid_discovery_state = yes }
+					riches_found_save_prefire_state = yes
+				}
 				if = {
 					limit = { has_event_target = riches_found_prefire_state }
 					set_temp_variable = { riches_found_prefire_ready = constant:riches_found_value.one }
@@ -97,18 +101,17 @@ country_event = {
 
 			if = {
 				limit = {
-					OR = {
-						check_variable = { riches_found_prefire_ready = constant:riches_found_value.one }
-						has_event_target = riches_found_prefire_state
-					}
+					has_country_flag = riches_found_discovery_pending
+					has_variable = riches_found_prepared_discovery_state
 					has_event_target = riches_found_prefire_owner
 					has_event_target = riches_found_prefire_state
 					event_target:riches_found_prefire_owner = { tag = ROOT }
+					check_variable = { var = riches_found_prepared_discovery_state value = event_target:riches_found_prefire_state compare = equals }
 					event_target:riches_found_prefire_state = {
-					is_owned_and_controlled_by = ROOT
-					riches_found_is_valid_discovery_state = yes
+						is_owned_and_controlled_by = ROOT
+						riches_found_is_valid_discovery_state = yes
+					}
 				}
-			}
 				event_target:riches_found_prefire_state = {
 					save_event_target_as = riches_found_prepared_mine_state
 					save_event_target_as = riches_found_mine_state
@@ -260,13 +263,23 @@ country_event = {
 # ---------------------------------------------------------------------------
 
 country_event = {
+	id = chaosx.nr29.899
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		has_variable = riches_found_discovery_receipt_expiry_date
+		check_variable = { var = global.date value = riches_found_discovery_receipt_expiry_date compare = greater_than_or_equals }
+	}
+	immediate = { hidden_effect = { riches_found_expire_discovery_receipt = yes } }
+}
+
+country_event = {
 	id = chaosx.nr29.900
 	hidden = yes
 	is_triggered_only = yes
 
 	trigger = {
 		has_country_flag = riches_found_controller_pulse_scheduled
-		has_country_flag = riches_found_controller_aggregate_active
 	}
 
 	immediate = {

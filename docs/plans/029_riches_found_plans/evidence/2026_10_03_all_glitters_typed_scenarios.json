@@ -1,0 +1,145 @@
+{
+  "fixtureId": "event029_riches_found_all_glitters_typed_20261003",
+  "sourceFiles": [
+    "common/scripted_effects/029_riches_found_effects.txt::riches_found_rebuild_controller_aggregate",
+    "common/scripted_effects/029_riches_found_achievement_effects.txt::riches_found_refresh_controller_achievement_window",
+    "common/scripted_triggers/029_riches_found_achievement_triggers.txt::riches_found_achievement_multi_mine_safe_state",
+    "common/scripted_triggers/029_riches_found_achievement_triggers.txt::riches_found_achievement_all_that_glitters_route",
+    "common/script_constants/029_riches_found_constants.txt::riches_found_achievement_duration.all_that_glitters_hold_days"
+  ],
+  "fixtureDisposition": "These explicit state records exercise the source predicates and boundary intent; numeric records are controlled audit fixtures, not campaign saves, probability outputs, or engine proof. The accepted specification requires at least three active safe mines for a 180-day hold and disqualifies a closure during that window. The denominator intentionally uses every controlled registered mine, including closed or terminal tombstones; those mines do not become safe merely because they are counted.",
+  "scenarioSet": {
+    "id": "event029_all_glitters_count_window_caps_20261003",
+    "scenarios": [
+      {
+        "id": "RF_ALL_GLITTERS_179D_SAFE_REGISTERED",
+        "actor": "ENG",
+        "date": "1939.6.29",
+        "closedFlags": false,
+        "flags": ["riches_found_controller_aggregate_duplicate_safe"],
+        "state": {
+          "riches_found_controller_mine_count": 3,
+          "riches_found_controller_registered_mine_count": 3,
+          "riches_found_achievement_multi_mine_safe_count": 3,
+          "riches_found_controller_pp_gain": 0.30,
+          "riches_found_controller_construction": 0.18,
+          "riches_found_controller_efficiency": 0.10,
+          "riches_found_controller_factory_output": 0.12,
+          "riches_found_controller_consumer_goods_relief": 0.08,
+          "riches_found_achievement_all_glitters_deadline_date": 19390630
+        },
+        "scopes": {
+          "FROM": {"id": "64", "type": "state", "actor": "ENG", "flags": ["riches_found_mine_state", "riches_found_mine_registered", "riches_found_mine_active"], "state": {"riches_found_operating_state": 3, "riches_found_local_order": 80, "riches_found_revenue_legitimacy": 80}},
+          "MINE_65": {"id": "65", "type": "state", "actor": "ENG", "flags": ["riches_found_mine_state", "riches_found_mine_registered", "riches_found_mine_active"], "state": {"riches_found_operating_state": 3, "riches_found_local_order": 80, "riches_found_revenue_legitimacy": 80}},
+          "MINE_66": {"id": "66", "type": "state", "actor": "ENG", "flags": ["riches_found_mine_state", "riches_found_mine_registered", "riches_found_mine_active"], "state": {"riches_found_operating_state": 3, "riches_found_local_order": 80, "riches_found_revenue_legitimacy": 80}}
+        },
+        "controls": {"controlled_registered_count_includes_closed_and_tombstones": true, "window_days_elapsed": 179, "window_target_days": 180, "each_aggregate_cap": "exact equality", "fixture_mine_present": false, "expected": "not ready before the 180-day boundary"}
+      },
+      {
+        "id": "RF_ALL_GLITTERS_180D_ALL_SAFE_AT_CAP",
+        "actor": "ENG",
+        "date": "1939.6.30",
+        "closedFlags": false,
+        "flags": ["riches_found_controller_aggregate_duplicate_safe", "riches_found_achievement_all_glitters_ready"],
+        "state": {
+          "riches_found_controller_mine_count": 3,
+          "riches_found_controller_registered_mine_count": 3,
+          "riches_found_achievement_multi_mine_safe_count": 3,
+          "riches_found_controller_pp_gain": 0.30,
+          "riches_found_controller_construction": 0.18,
+          "riches_found_controller_efficiency": 0.10,
+          "riches_found_controller_factory_output": 0.12,
+          "riches_found_controller_consumer_goods_relief": 0.08,
+          "riches_found_achievement_all_glitters_deadline_date": 19390630
+        },
+        "scopes": {
+          "FROM": {"id": "64", "type": "state", "actor": "ENG", "flags": ["riches_found_mine_state", "riches_found_mine_registered", "riches_found_mine_active"], "state": {"riches_found_operating_state": 3, "riches_found_local_order": 80, "riches_found_revenue_legitimacy": 80}},
+          "MINE_65": {"id": "65", "type": "state", "actor": "ENG", "flags": ["riches_found_mine_state", "riches_found_mine_registered", "riches_found_mine_active"], "state": {"riches_found_operating_state": 3, "riches_found_local_order": 80, "riches_found_revenue_legitimacy": 80}},
+          "MINE_66": {"id": "66", "type": "state", "actor": "ENG", "flags": ["riches_found_mine_state", "riches_found_mine_registered", "riches_found_mine_active"], "state": {"riches_found_operating_state": 3, "riches_found_local_order": 80, "riches_found_revenue_legitimacy": 80}}
+        },
+        "controls": {"controlled_registered_count_includes_closed_and_tombstones": true, "window_days_elapsed": 180, "window_target_days": 180, "each_aggregate_cap": "exact equality permitted", "fixture_mine_present": false, "expected": "route may pass its count, hold, and cap predicates"}
+      },
+      {
+        "id": "RF_ALL_GLITTERS_CLOSED_TOMBSTONE_IN_DENOMINATOR",
+        "actor": "ENG",
+        "date": "1939.6.30",
+        "closedFlags": true,
+        "flags": ["riches_found_controller_aggregate_duplicate_safe", "riches_found_achievement_all_glitters_ready"],
+        "state": {
+          "riches_found_controller_mine_count": 3,
+          "riches_found_controller_registered_mine_count": 4,
+          "riches_found_achievement_multi_mine_safe_count": 3,
+          "riches_found_controller_pp_gain": 0.20,
+          "riches_found_controller_construction": 0.12,
+          "riches_found_controller_efficiency": 0.07,
+          "riches_found_controller_factory_output": 0.09,
+          "riches_found_controller_consumer_goods_relief": 0.06,
+          "riches_found_achievement_all_glitters_deadline_date": 19390630
+        },
+        "scopes": {
+          "FROM": {"id": "64", "type": "state", "actor": "ENG", "flags": ["riches_found_mine_state", "riches_found_mine_registered", "riches_found_mine_active"], "state": {"riches_found_operating_state": 3, "riches_found_local_order": 80, "riches_found_revenue_legitimacy": 80}},
+          "MINE_65": {"id": "65", "type": "state", "actor": "ENG", "flags": ["riches_found_mine_state", "riches_found_mine_registered", "riches_found_mine_active"], "state": {"riches_found_operating_state": 3, "riches_found_local_order": 80, "riches_found_revenue_legitimacy": 80}},
+          "MINE_66": {"id": "66", "type": "state", "actor": "ENG", "flags": ["riches_found_mine_state", "riches_found_mine_registered", "riches_found_mine_active"], "state": {"riches_found_operating_state": 3, "riches_found_local_order": 80, "riches_found_revenue_legitimacy": 80}},
+          "MINE_67": {"id": "67", "type": "state", "actor": "ENG", "flags": ["riches_found_mine_state", "riches_found_mine_registered", "riches_found_mine_terminal", "riches_found_mine_closed", "riches_found_mine_permanent_seal"], "state": {"riches_found_operating_state": 11, "riches_found_local_order": 80, "riches_found_revenue_legitimacy": 80}}
+        },
+        "controls": {"controlled_registered_count_includes_closed_and_tombstones": true, "window_days_elapsed": 180, "window_target_days": 180, "expected_safe_count": 3, "expected_registered_count": 4, "expected": "route fails safe_count equality; closed tombstone stays in denominator"}
+      },
+      {
+        "id": "RF_ALL_GLITTERS_ABOVE_FINAL_CAP_REJECTED",
+        "actor": "ENG",
+        "date": "1939.6.30",
+        "closedFlags": false,
+        "flags": ["riches_found_controller_aggregate_duplicate_safe", "riches_found_achievement_all_glitters_ready"],
+        "state": {
+          "riches_found_controller_mine_count": 3,
+          "riches_found_controller_registered_mine_count": 3,
+          "riches_found_achievement_multi_mine_safe_count": 3,
+          "riches_found_controller_pp_gain": 0.3001,
+          "riches_found_controller_construction": 0.18,
+          "riches_found_controller_efficiency": 0.10,
+          "riches_found_controller_factory_output": 0.12,
+          "riches_found_controller_consumer_goods_relief": 0.08,
+          "riches_found_achievement_all_glitters_deadline_date": 19390630
+        },
+        "scopes": {
+          "FROM": {"id": "64", "type": "state", "actor": "ENG", "flags": ["riches_found_mine_state", "riches_found_mine_registered", "riches_found_mine_active"], "state": {"riches_found_operating_state": 3, "riches_found_local_order": 80, "riches_found_revenue_legitimacy": 80}},
+          "MINE_65": {"id": "65", "type": "state", "actor": "ENG", "flags": ["riches_found_mine_state", "riches_found_mine_registered", "riches_found_mine_active"], "state": {"riches_found_operating_state": 3, "riches_found_local_order": 80, "riches_found_revenue_legitimacy": 80}},
+          "MINE_66": {"id": "66", "type": "state", "actor": "ENG", "flags": ["riches_found_mine_state", "riches_found_mine_registered", "riches_found_mine_active"], "state": {"riches_found_operating_state": 3, "riches_found_local_order": 80, "riches_found_revenue_legitimacy": 80}}
+        },
+        "controls": {"window_days_elapsed": 180, "window_target_days": 180, "pp_cap": 0.30, "pp_value": 0.3001, "expected": "route fails because a final aggregate exceeds its cap"}
+      },
+      {
+        "id": "RF_ALL_GLITTERS_CXT_FIXTURE_EXCLUDED",
+        "actor": "ENG",
+        "date": "1939.6.30",
+        "closedFlags": false,
+        "flags": ["riches_found_controller_aggregate_duplicate_safe", "riches_found_achievement_all_glitters_ready", "riches_found_controller_has_fixture_mine"],
+        "state": {
+          "riches_found_controller_mine_count": 3,
+          "riches_found_controller_registered_mine_count": 4,
+          "riches_found_achievement_multi_mine_safe_count": 3,
+          "riches_found_controller_pp_gain": 0.20,
+          "riches_found_controller_construction": 0.12,
+          "riches_found_controller_efficiency": 0.07,
+          "riches_found_controller_factory_output": 0.09,
+          "riches_found_controller_consumer_goods_relief": 0.06,
+          "riches_found_achievement_all_glitters_deadline_date": 19390630
+        },
+        "scopes": {
+          "FROM": {"id": "64", "type": "state", "actor": "ENG", "flags": ["riches_found_mine_state", "riches_found_mine_registered", "riches_found_mine_active"], "state": {"riches_found_operating_state": 3, "riches_found_local_order": 80, "riches_found_revenue_legitimacy": 80}},
+          "MINE_65": {"id": "65", "type": "state", "actor": "ENG", "flags": ["riches_found_mine_state", "riches_found_mine_registered", "riches_found_mine_active"], "state": {"riches_found_operating_state": 3, "riches_found_local_order": 80, "riches_found_revenue_legitimacy": 80}},
+          "MINE_66": {"id": "66", "type": "state", "actor": "ENG", "flags": ["riches_found_mine_state", "riches_found_mine_registered", "riches_found_mine_active"], "state": {"riches_found_operating_state": 3, "riches_found_local_order": 80, "riches_found_revenue_legitimacy": 80}},
+          "MINE_67": {"id": "67", "type": "state", "actor": "ENG", "flags": ["riches_found_mine_state", "riches_found_mine_registered", "riches_found_mine_active", "riches_found_cxt_fixture_mine"], "state": {"riches_found_operating_state": 3, "riches_found_local_order": 80, "riches_found_revenue_legitimacy": 80}}
+        },
+        "controls": {"window_days_elapsed": 180, "window_target_days": 180, "fixture_mine_in_registered_population": true, "fixture_mine_contributes_safe_count": false, "expected": "route fails and the CXT fixture mine is excluded from achievement safety"}
+      }
+    ]
+  },
+  "coverageByScenario": {
+    "RF_ALL_GLITTERS_179D_SAFE_REGISTERED": {"candidatePool": "not applicable; achievement gate, not a weighted candidate pool", "expectedSourceOutcome": "not ready before 180-day hold", "unresolved": ["Date arithmetic and repeated-window scheduling have not been proven in HOI4 runtime."]},
+    "RF_ALL_GLITTERS_180D_ALL_SAFE_AT_CAP": {"candidatePool": "not applicable; achievement gate, not a weighted candidate pool", "expectedSourceOutcome": "eligible at exact aggregate caps when safe count equals controlled registered count", "unresolved": ["The fixture declares the final aggregate receipt; it does not prove the engine recalculates it before the achievement consumer."]},
+    "RF_ALL_GLITTERS_CLOSED_TOMBSTONE_IN_DENOMINATOR": {"candidatePool": "not applicable; achievement gate, not a weighted candidate pool", "expectedSourceOutcome": "fails safe-count equality because the registered terminal state remains in the denominator", "unresolved": ["The live registry/controller reconciliation of closed tombstone states is not represented by this static typed record."]},
+    "RF_ALL_GLITTERS_ABOVE_FINAL_CAP_REJECTED": {"candidatePool": "not applicable; achievement gate, not a weighted candidate pool", "expectedSourceOutcome": "fails when any final aggregate is above its cap; equality is permitted", "unresolved": ["No source/runtime MCP route returned a cap-bound achievement result."]},
+    "RF_ALL_GLITTERS_CXT_FIXTURE_EXCLUDED": {"candidatePool": "not applicable; achievement gate, not a weighted candidate pool", "expectedSourceOutcome": "controller fixture flag rejects the achievement and the fixture state does not qualify as safe", "unresolved": ["The CXT registration/runtime fixture lifecycle is not represented by this record."]}
+  }
+}

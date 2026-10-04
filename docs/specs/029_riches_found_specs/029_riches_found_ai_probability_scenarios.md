@@ -286,6 +286,8 @@ A distant naval power can rank well for a coastal or island mine when it has con
 
 It should rank poorly for an inland mine without transit.
 
+The foreign-target eligibility gate must include the same remote maritime access case the scored selector accepts: a major with sufficient convoys and a mine with a valid port route, port route, or island access. A land-neighbor-only availability trigger leaves this scenario inaccessible before the scored partner selector runs.
+
 ### `RF_FOREIGN_03_HOSTILE_RIVAL`
 
 Expected result:
@@ -739,6 +741,13 @@ Expected factors:
 - country size, major status, ideology, faction, and player control do not change the country-selection weight
 - a country with no suitable state has zero weight and shows `N/A`
 - the selected state uses its separate suitability weighting after the country has been chosen
+- `RF_REPEATABLE_RECIPIENT_STATE_POOL` covers an empty eligible country/state pool while stale regular prefire owner and state targets remain in the effect chain. The current invocation must leave the prefire result unready unless a valid owner/state pair was selected during that invocation and revalidated. The adapter must bind both current-pool emptiness and regular-target freshness before this can be treated as more than a source-level fail-closed expectation.
+
+## Supplemental empty-pool comparison cases
+
+`RF_FOREIGN_EMPTY_CANDIDATES` is a supplemental comparison case for a foreign-partner pass with no positive-scoring valid ordinary country and stale regular partner-target state present. It supplements the 39 named Surface A–L scenarios and does not replace `RF_FOREIGN_03_HOSTILE_RIVAL` or `RF_FOREIGN_04_EXISTING_EXCLUSIVE_CONCESSION`.
+
+The dated fixture at `docs/plans/029_riches_found_plans/evidence/2026_10_03_scenarios.json` retains all 39 original scenario IDs, this foreign empty-candidate case, Surface M's incident-pool inventory, and the Surface N repeat-recipient edge case. It deliberately omits unconfirmed nested MCP state-binding fields. Until the connected adapter accepts those inputs, pool completeness and scenario state remain unresolved.
 
 ## Required comparison evidence
 

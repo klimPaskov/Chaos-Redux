@@ -1,0 +1,210 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 029 BOTTOMLESS ACCOUNT OBLIGATIONS
+# ============================================================================
+# STATE-owned, finite promises: one live obligation, five lifetime paid terms,
+# at most two breaches. Neither transfer nor closure replaces the paid-term or
+# breach receipts. Rewards multiply one mine component before aggregate caps;
+# no payment grants discovery PP, resources, units, or another evolution row.
+# Controller maintenance services dates through the bounded mine registry.
+# ============================================================================
+
+# STATE scope, called only by the deliberate agreement choice after its
+# current-controller transaction succeeds. The first promise names material,
+# not civilian deaths. A closed account cannot be reopened by this receipt.
+riches_found_accept_account_terms = {
+	if = {
+		limit = {
+			has_state_flag = riches_found_demons_beneath_mine_active
+			NOT = { has_state_flag = riches_found_accepted_account_terms }
+			NOT = { has_state_flag = riches_found_account_closed }
+		}
+		set_state_flag = riches_found_accepted_account_terms
+		set_variable = { riches_found_account_agreement_date = global.date }
+		set_variable = { riches_found_account_paid_terms = constant:riches_found_value.zero }
+		set_variable = { riches_found_account_breaches = constant:riches_found_value.zero }
+		set_variable = { riches_found_account_next_obligation = constant:riches_found_account_obligation.material }
+	}
+}
+
+# STATE scope. Begin servicing the accepted promises only after the late
+# outcome has actually entered. Reconciliation never resets an active date.
+riches_found_start_account_obligation = {
+	if = {
+		limit = {
+			riches_found_mine_is_active = yes
+			has_state_flag = riches_found_bottomless_account
+			has_state_flag = riches_found_accepted_account_terms
+			NOT = { has_state_flag = riches_found_account_closed }
+			NOT = { has_state_flag = riches_found_account_terms_bound }
+			NOT = { has_state_flag = riches_found_account_terms_defaulted }
+			NOT = { has_state_flag = riches_found_account_terms_exhausted }
+			NOT = { has_state_flag = riches_found_account_obligation_active }
+			check_variable = { var = riches_found_account_paid_terms value = constant:riches_found_account_limit.maximum_paid_terms compare = less_than }
+		}
+		set_state_flag = riches_found_account_obligation_active
+		set_variable = { riches_found_account_obligation_due_date = global.date }
+		add_to_variable = { riches_found_account_obligation_due_date = constant:riches_found_account_limit.obligation_days }
+	}
+}
+
+# STATE scope, after an exact, paid decision transaction. The caller selects
+# material, authority, trust, industrial, or human family in the temporary
+# payment-family value. One settlement consumes one state receipt and quote.
+riches_found_fulfil_account_obligation = {
+	if = {
+		limit = { riches_found_account_obligation_can_settle = yes }
+		riches_found_clear_account_payment_receipt = yes
+		clr_state_flag = riches_found_account_obligation_active
+		clr_state_flag = riches_found_account_benefits_suspended
+		set_variable = { riches_found_account_last_payment_family = riches_found_account_payment_family }
+		set_variable = { riches_found_account_last_payment_date = global.date }
+		set_variable = { riches_found_account_next_payment_date = global.date }
+		add_to_variable = { riches_found_account_next_payment_date = constant:riches_found_account_limit.payment_cooldown_days }
+		add_to_variable = { riches_found_account_paid_terms = constant:riches_found_value.one }
+		set_variable = { riches_found_account_output_factor = constant:riches_found_account_terms.material_output_factor }
+		if = {
+			limit = { check_variable = { var = riches_found_account_payment_family value = constant:riches_found_account_obligation.material compare = equals } }
+			set_state_flag = riches_found_account_material_arrangement
+		}
+		else_if = {
+			limit = { check_variable = { var = riches_found_account_payment_family value = constant:riches_found_account_obligation.authority compare = equals } }
+			set_state_flag = riches_found_account_authority_history
+			set_variable = { riches_found_account_output_factor = constant:riches_found_account_terms.authority_output_factor }
+		}
+		else_if = {
+			limit = { check_variable = { var = riches_found_account_payment_family value = constant:riches_found_account_obligation.public_trust compare = equals } }
+			set_state_flag = riches_found_account_trust_broken
+			set_variable = { riches_found_account_output_factor = constant:riches_found_account_terms.trust_output_factor }
+			clr_state_flag = riches_found_dividend_paid
+			clr_state_flag = riches_found_public_revenue_share_paid
+		}
+		else_if = {
+			limit = { check_variable = { var = riches_found_account_payment_family value = constant:riches_found_account_obligation.industrial_sacrifice compare = equals } }
+			set_state_flag = riches_found_account_industrial_sacrifice_history
+			set_variable = { riches_found_account_output_factor = constant:riches_found_account_terms.industrial_output_factor }
+		}
+		else_if = {
+			limit = { check_variable = { var = riches_found_account_payment_family value = constant:riches_found_account_obligation.human_crisis compare = equals } }
+			set_state_flag = riches_found_account_human_sacrifice_history
+			set_variable = { riches_found_account_output_factor = constant:riches_found_account_terms.human_output_factor }
+		}
+		if = {
+			limit = { check_variable = { var = riches_found_account_paid_terms value = constant:riches_found_account_limit.maximum_paid_terms compare = less_than } }
+			set_variable = { riches_found_account_next_obligation = riches_found_account_paid_terms }
+			add_to_variable = { riches_found_account_next_obligation = constant:riches_found_value.one }
+			riches_found_start_account_obligation = yes
+		}
+		else = {
+			set_state_flag = riches_found_account_terms_exhausted
+			clear_variable = riches_found_account_obligation_due_date
+		}
+		riches_found_clamp_mine_values = yes
+	}
+}
+
+# STATE scope. A missed promise is consumed once. Material breach destroys
+# works; authority/trust breach hollows out public legitimacy; industrial
+# breach damages the shaft. A human promise causes a bounded worker crisis,
+# never an arbitrary conversion of unrelated deaths into credit.
+riches_found_breach_account_obligation = {
+	if = {
+		limit = { has_state_flag = riches_found_account_obligation_active }
+		clr_state_flag = riches_found_account_obligation_active
+		set_state_flag = riches_found_account_benefits_suspended
+		set_variable = { riches_found_account_last_breach_date = global.date }
+		add_to_variable = { riches_found_account_breaches = constant:riches_found_value.one }
+		add_to_variable = { riches_found_supernatural_pressure = constant:riches_found_account_terms.breach_supernatural_pressure }
+		add_to_variable = { riches_found_local_order = constant:riches_found_account_terms.breach_order_loss }
+		if = {
+			limit = { check_variable = { var = riches_found_account_next_obligation value = constant:riches_found_account_obligation.material compare = equals } }
+			add_to_variable = { riches_found_mine_development = constant:riches_found_account_terms.breach_development_loss }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					check_variable = { var = riches_found_account_next_obligation value = constant:riches_found_account_obligation.authority compare = equals }
+					check_variable = { var = riches_found_account_next_obligation value = constant:riches_found_account_obligation.public_trust compare = equals }
+				}
+			}
+			add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.negative_20 }
+			CONTROLLER = { if = { limit = { exists = yes } add_stability = constant:riches_found_account_terms.trust_stability_loss } }
+		}
+		else_if = {
+			limit = { check_variable = { var = riches_found_account_next_obligation value = constant:riches_found_account_obligation.industrial_sacrifice compare = equals } }
+			set_state_flag = riches_found_mine_damaged
+			add_to_variable = { riches_found_mine_development = constant:riches_found_account_terms.breach_development_loss }
+			add_to_variable = { riches_found_sealed_depth_integrity = constant:riches_found_scaling.collapse_integrity_loss }
+		}
+		else = {
+			# Refusal of the marked-worker promise closes the entrances rather
+			# than accepting deaths from some unrelated system as a payment.
+			set_state_flag = riches_found_account_worker_breach
+			riches_found_begin_temporary_closure = yes
+		}
+		if = {
+			limit = { check_variable = { var = riches_found_account_breaches value = constant:riches_found_account_limit.maximum_breaches compare = greater_than_or_equals } }
+			set_state_flag = riches_found_account_terms_defaulted
+			riches_found_collapse_mine = yes
+		}
+		else = {
+			add_to_variable = { riches_found_account_next_obligation = constant:riches_found_value.one }
+			clamp_variable = { var = riches_found_account_next_obligation min = constant:riches_found_account_obligation.material max = constant:riches_found_account_obligation.human_crisis }
+			riches_found_start_account_obligation = yes
+		}
+		riches_found_clamp_mine_values = yes
+	}
+}
+
+# STATE scope. A pending native payment belongs to one original controller and
+# one response choice. The native timer retains that actor and target; loss of
+# control invalidates this state receipt instead of transferring the payment.
+riches_found_begin_account_payment_receipt = {
+	set_state_flag = riches_found_account_payment_pending
+	set_variable = { riches_found_account_payment_controller = CONTROLLER }
+	set_variable = { riches_found_account_payment_choice = riches_found_account_input_payment_choice }
+	set_variable = { riches_found_account_pending_obligation = riches_found_account_next_obligation }
+}
+
+riches_found_clear_account_payment_receipt = {
+	clr_state_flag = riches_found_account_payment_pending
+	clear_variable = riches_found_account_payment_controller
+	clear_variable = riches_found_account_payment_choice
+	clear_variable = riches_found_account_pending_obligation
+}
+
+# STATE scope inside a native decision effect. An old actor's failed timer must
+# not clear a newer controller's pending payment. The caller supplies only the
+# temporary expected response choice; ROOT remains the original country actor.
+riches_found_clear_owned_account_payment_receipt = {
+	if = {
+		limit = {
+			has_state_flag = riches_found_account_payment_pending
+			check_variable = { var = riches_found_account_payment_controller value = ROOT compare = equals }
+			check_variable = { var = riches_found_account_payment_choice value = riches_found_account_expected_payment_choice compare = equals }
+		}
+		riches_found_clear_account_payment_receipt = yes
+	}
+}
+
+# STATE scope, bounded controller maintenance. A transfer leaves the promise,
+# date and state receipts intact. Terminal closure consumes live obligations.
+riches_found_service_account_obligation = {
+	if = {
+		limit = {
+			OR = {
+				riches_found_mine_is_terminal = yes
+				has_state_flag = riches_found_account_closed
+				has_state_flag = riches_found_account_terms_bound
+			}
+		}
+		clr_state_flag = riches_found_account_obligation_active
+		clear_variable = riches_found_account_obligation_due_date
+	}
+	else_if = {
+		limit = {
+			has_state_flag = riches_found_account_obligation_active
+			check_variable = { var = global.date value = riches_found_account_obligation_due_date compare = greater_than }
+		}
+		riches_found_breach_account_obligation = yes
+	}
+}

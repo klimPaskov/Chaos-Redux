@@ -1,0 +1,65 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 029 VISIBLE ACCOUNT PROMISES
+# ============================================================================
+# Compact controller-category status and target-decision consequences. Raw
+# supernatural pressure and the internal receipt allocation are never exposed.
+# Category text uses the validated selected state; decision text uses FROM.
+# ============================================================================
+
+defined_text = {
+	name = GetRichesFoundAccountLine
+	text = {
+		trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { riches_found_mine_is_registered = yes is_controlled_by = ROOT has_state_flag = riches_found_account_resolution_pending } }
+		localization_key = riches_found.account.resolving
+	}
+	text = {
+		trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { riches_found_mine_is_registered = yes is_controlled_by = ROOT has_state_flag = riches_found_account_terms_bound } }
+		localization_key = riches_found.account.bound
+	}
+	text = {
+		trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { riches_found_mine_is_registered = yes is_controlled_by = ROOT has_state_flag = riches_found_account_containment_pending } }
+		localization_key = riches_found.account.containing
+	}
+	text = {
+		trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { riches_found_mine_is_registered = yes is_controlled_by = ROOT has_state_flag = riches_found_account_terms_defaulted } }
+		localization_key = riches_found.account.defaulted
+	}
+	text = {
+		trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { riches_found_mine_is_registered = yes is_controlled_by = ROOT has_state_flag = riches_found_account_terms_exhausted } }
+		localization_key = riches_found.account.exhausted
+	}
+	text = {
+		trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { riches_found_mine_is_registered = yes is_controlled_by = ROOT has_state_flag = riches_found_account_obligation_active } }
+		localization_key = riches_found.account.live
+	}
+	text = { localization_key = riches_found.account.none }
+}
+
+defined_text = {
+	name = GetRichesFoundAccountObligation
+	text = { trigger = { var:riches_found_selected_mine = { check_variable = { var = riches_found_account_next_obligation value = constant:riches_found_account_obligation.material compare = equals } } } localization_key = riches_found.account.material }
+	text = { trigger = { var:riches_found_selected_mine = { check_variable = { var = riches_found_account_next_obligation value = constant:riches_found_account_obligation.authority compare = equals } } } localization_key = riches_found.account.authority }
+	text = { trigger = { var:riches_found_selected_mine = { check_variable = { var = riches_found_account_next_obligation value = constant:riches_found_account_obligation.public_trust compare = equals } } } localization_key = riches_found.account.trust }
+	text = { trigger = { var:riches_found_selected_mine = { check_variable = { var = riches_found_account_next_obligation value = constant:riches_found_account_obligation.industrial_sacrifice compare = equals } } } localization_key = riches_found.account.industry }
+	text = { trigger = { var:riches_found_selected_mine = { check_variable = { var = riches_found_account_next_obligation value = constant:riches_found_account_obligation.human_crisis compare = equals } } } localization_key = riches_found.account.workers }
+	text = { localization_key = riches_found.account.none }
+}
+
+defined_text = {
+	name = GetRichesFoundAccountDeadlineBand
+	text = { trigger = { var:riches_found_selected_mine = { check_variable = { var = global.date value = riches_found_account_obligation_due_date compare = greater_than } } } localization_key = riches_found.account.overdue }
+	text = { trigger = { var:riches_found_selected_mine = { check_variable = { var = global.date value = riches_found_account_deadline_warning_date compare = greater_than_or_equals } } } localization_key = riches_found.account.due_soon }
+	text = { localization_key = riches_found.account.window_open }
+}
+
+defined_text = {
+	name = GetRichesFoundAccountAuthorityConsequence
+	text = { trigger = { FROM = { check_variable = { var = riches_found_account_next_obligation value = constant:riches_found_account_obligation.public_trust compare = equals } } } localization_key = riches_found.account.trust_consequence }
+	text = { localization_key = riches_found.account.authority_consequence }
+}
+
+defined_text = {
+	name = GetRichesFoundAccountPredatoryConsequence
+	text = { trigger = { FROM = { check_variable = { var = riches_found_account_next_obligation value = constant:riches_found_account_obligation.industrial_sacrifice compare = equals } } } localization_key = riches_found.account.industry_consequence }
+	text = { localization_key = riches_found.account.worker_consequence }
+}

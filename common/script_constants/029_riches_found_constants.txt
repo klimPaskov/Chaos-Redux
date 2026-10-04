@@ -792,6 +792,7 @@ riches_found_duration = {
 		data = int
 	}
 
+	discovery_receipt_days = 1
 	secure_rush_days = 105
 	secure_rush_min_days = 90
 	secure_rush_max_days = 120
@@ -1073,4 +1074,131 @@ riches_found_harm = {
 	raid_lethal_condemnation = 5
 	gold_violence_condemnation = 8
 	supernatural_incident_condemnation = 4
+}
+
+# Selection priorities are independent of the stable controller-stage ids.
+# A reformed mine cannot mask an unresolved crisis on another controlled mine.
+riches_found_controller_stage_priority = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	windfall_receipts = 1
+	managed_revenue = 2
+	reformed_settlement = 3
+	resource_dependence = 4
+	captured_revenue_state = 5
+	gold_sick_administration = 6
+	infernal_accounts = 7
+}
+
+# Original controller-idea terms, applied once inside the capped aggregate.
+# Consumer-goods relief is positive here and negated by aggregate publication.
+riches_found_controller_stage_terms = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	managed_consumer_goods_relief = 0.02
+	managed_stability = 0.02
+	dependence_consumer_goods_relief = 0.04
+	dependence_stability = -0.02
+	captured_consumer_goods_relief = 0.04
+	captured_stability = -0.04
+	captured_political_power = -0.04
+	gold_consumer_goods_relief = 0.04
+	gold_stability = -0.04
+	gold_efficiency = -0.02
+	infernal_consumer_goods_relief = 0.08
+	infernal_stability = -0.08
+	infernal_political_power = -0.04
+	reformed_political_power = 0.02
+	reformed_stability = 0.02
+}
+
+riches_found_late_outcome = {
+	schema = { any_key = yes data = fixed_point }
+	legitimacy_very_low = 20
+	supernatural_pressure_very_high = 85
+	receipt_dependence_entry_share = 0.05
+	receipt_dependence_exit_share = 0.03
+	nonmine_daily_pp_floor = 0.50
+	repeated_post_contact_excavation = 20
+}
+
+riches_found_late_duration = {
+	schema = { any_key = yes data = int }
+	private_dominance_hold_days = 120
+	receipt_dependence_hold_days = 90
+	receipt_dependence_exit_days = 90
+	reform_protection_days = 120
+}
+
+riches_found_account_obligation = {
+	schema = { any_key = yes data = int }
+	material = 1
+	authority = 2
+	public_trust = 3
+	industrial_sacrifice = 4
+	human_crisis = 5
+}
+
+riches_found_account_payment_choice = {
+	schema = { any_key = yes data = int }
+	material = 1
+	authority = 2
+	predatory = 3
+}
+
+riches_found_account_resolution_choice = {
+	schema = { any_key = yes data = int }
+	close = 1
+	bind = 2
+}
+
+riches_found_account_limit = {
+	schema = { any_key = yes data = int }
+	maximum_paid_terms = 5
+	maximum_breaches = 2
+	obligation_days = 120
+	payment_cooldown_days = 30
+}
+
+riches_found_account_terms = {
+	schema = { any_key = yes data = fixed_point }
+	material_output_factor = 1.10
+	authority_output_factor = 1.20
+	trust_output_factor = 1.30
+	industrial_output_factor = 1.45
+	human_output_factor = 1.60
+	authority_stability_loss = -0.02
+	trust_stability_loss = -0.05
+	minimum_stability_for_payment = 0.10
+	industrial_development_cost = 15
+	# The same 100 marked workers as harm.predatory_prosperity_civilian_deaths,
+	# expressed in the engine population getter's thousands unit.
+	human_worker_minimum_k = 0.100
+	breach_development_loss = -10
+	breach_order_loss = -10
+	breach_supernatural_pressure = 15
+	bound_integrity = 60
+	bound_pressure = 60
+}
+
+riches_found_exposure = {
+	schema = { any_key = yes data = fixed_point }
+	gold_ordinary_extraction = 4
+	gold_high_pressure = 6
+	gold_gemstone = 3
+	gold_private_guards = 3
+	gold_theft_or_smuggling = 3
+	gold_managed_containment = -3
+	supernatural_extraction = 6
+	deep_disturbance_gate = 40
+	supernatural_signs_gate = 40
+	prefire_investigation_gate = 60
+	deep_integrity_loss = -20
+	deep_output_loss_factor = 0.75
 }

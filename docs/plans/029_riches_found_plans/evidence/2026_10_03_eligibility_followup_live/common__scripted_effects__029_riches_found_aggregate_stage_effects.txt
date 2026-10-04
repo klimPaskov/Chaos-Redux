@@ -1,0 +1,183 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 029 RICHES FOUND AGGREGATE STAGE TERMS
+# ============================================================================
+# STATE collection selects the strongest unresolved controller stage across the
+# parent's bounded nonterminal mine registry. COUNTRY application adds the one
+# selected stage's original terms to the economic aggregate before its caps.
+# The seven country ideas retain their existing identities and icons but carry
+# no modifiers. No event, decision, or recurring scan is introduced here.
+# Documentation: docs/plans/029_riches_found_plans/subagent_handoffs/
+# aggregate_stage_2026_10_03.md.
+# ============================================================================
+
+# STATE scope. Parent inputs: regular riches_found_aggregate_controller target,
+# temporary riches_found_aggregate_stage_priority (initial zero), and temporary
+# riches_found_aggregate_controller_stage (initial windfall_receipts stage id).
+# Output: replaces those two temporary values only when this mine has a higher
+# priority. Active-crisis predicates are distinct from historical evolution ids.
+riches_found_collect_aggregate_stage = {
+	if = {
+		limit = {
+			riches_found_mine_is_registered = yes
+			NOT = { riches_found_mine_is_terminal = yes }
+			has_event_target = riches_found_aggregate_controller
+			is_controlled_by = event_target:riches_found_aggregate_controller
+		}
+		set_temp_variable = { riches_found_stage_candidate_priority = constant:riches_found_controller_stage_priority.windfall_receipts }
+		set_temp_variable = { riches_found_stage_candidate = constant:riches_found_controller_stage.windfall_receipts }
+		if = {
+			limit = {
+				OR = {
+					has_state_flag = riches_found_stabilization_fund
+					has_state_flag = riches_found_audit_complete
+					has_state_flag = riches_found_independent_revenue_authority
+					has_state_flag = riches_found_dividend_paid
+				}
+			}
+			set_temp_variable = { riches_found_stage_candidate_priority = constant:riches_found_controller_stage_priority.managed_revenue }
+			set_temp_variable = { riches_found_stage_candidate = constant:riches_found_controller_stage.managed_revenue }
+		}
+		if = {
+			limit = {
+				OR = {
+					has_state_flag = riches_found_curse_revenue_distributed
+					has_state_flag = riches_found_curse_diversification_started
+					has_state_flag = riches_found_curse_independent_authority
+					has_state_flag = riches_found_gilded_charter_revoked
+					has_state_flag = riches_found_gilded_district_bought
+					has_state_flag = riches_found_gilded_sovereignty_shared
+					has_state_flag = riches_found_gilded_board_recognized
+					has_state_flag = riches_found_account_closure_finalized
+					has_state_flag = riches_found_account_terms_bound
+					has_state_flag = riches_found_demons_permanent_seal
+				}
+			}
+			set_temp_variable = { riches_found_stage_candidate_priority = constant:riches_found_controller_stage_priority.reformed_settlement }
+			set_temp_variable = { riches_found_stage_candidate = constant:riches_found_controller_stage.reformed_settlement }
+		}
+		if = {
+			limit = {
+				has_state_flag = riches_found_resource_curse_active
+				check_variable = { var = riches_found_stage_candidate_priority value = constant:riches_found_controller_stage_priority.reformed_settlement compare = less_than }
+			}
+			set_temp_variable = { riches_found_stage_candidate_priority = constant:riches_found_controller_stage_priority.resource_dependence }
+			set_temp_variable = { riches_found_stage_candidate = constant:riches_found_controller_stage.resource_dependence }
+		}
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = riches_found_illicit_capture value = constant:riches_found_threshold.illicit_capture_gate compare = greater_than_or_equals }
+					has_state_flag = riches_found_gilded_governing_enclave
+					AND = {
+						OR = {
+							has_state_flag = riches_found_gilded_sovereignty
+							has_state_flag = riches_found_curse_private_dominance
+							has_state_flag = riches_found_private_enclave
+						}
+						NOT = {
+							OR = {
+								has_state_flag = riches_found_curse_independent_authority
+								has_state_flag = riches_found_gilded_charter_revoked
+								has_state_flag = riches_found_gilded_district_bought
+								has_state_flag = riches_found_gilded_sovereignty_shared
+								has_state_flag = riches_found_gilded_board_recognized
+								has_state_flag = riches_found_gilded_violently_nationalized
+							}
+						}
+					}
+				}
+			}
+			set_temp_variable = { riches_found_stage_candidate_priority = constant:riches_found_controller_stage_priority.captured_revenue_state }
+			set_temp_variable = { riches_found_stage_candidate = constant:riches_found_controller_stage.captured_revenue_state }
+		}
+		if = {
+			limit = { has_state_flag = riches_found_gold_disease_active }
+			set_temp_variable = { riches_found_stage_candidate_priority = constant:riches_found_controller_stage_priority.gold_sick_administration }
+			set_temp_variable = { riches_found_stage_candidate = constant:riches_found_controller_stage.gold_sick_administration }
+		}
+		if = {
+			limit = {
+				OR = {
+					has_state_flag = riches_found_bottomless_account
+					has_state_flag = riches_found_demons_beneath_mine_active
+					has_state_flag = riches_found_demons_agreement
+				}
+				NOT = {
+					OR = {
+						has_state_flag = riches_found_account_closure_finalized
+						has_state_flag = riches_found_account_terms_bound
+						has_state_flag = riches_found_demons_permanent_seal
+					}
+				}
+			}
+			set_temp_variable = { riches_found_stage_candidate_priority = constant:riches_found_controller_stage_priority.infernal_accounts }
+			set_temp_variable = { riches_found_stage_candidate = constant:riches_found_controller_stage.infernal_accounts }
+		}
+		if = {
+			limit = { check_variable = { var = riches_found_stage_candidate_priority value = riches_found_aggregate_stage_priority compare = greater_than } }
+			set_temp_variable = { riches_found_aggregate_stage_priority = riches_found_stage_candidate_priority }
+			set_temp_variable = { riches_found_aggregate_controller_stage = riches_found_stage_candidate }
+		}
+	}
+}
+
+# COUNTRY scope. Parent initializes all economic aggregate temporary values and
+# counts before collecting mines, then calls this helper exactly once before
+# final publication. Outputs: stage-adjusted pp, efficiency, consumer-goods
+# relief, temporary aggregate stability, and country controller_stability.
+# Positive economic terms require an operating mine. Political and efficiency
+# penalties and stability follow nonterminal maintenance. Existing upper caps
+# apply to the combined values and never floor a crisis penalty at zero.
+riches_found_apply_aggregate_stage_terms = {
+	set_temp_variable = { riches_found_stage_consumer_goods_relief = constant:riches_found_value.zero }
+	set_temp_variable = { riches_found_stage_political_power = constant:riches_found_value.zero }
+	set_temp_variable = { riches_found_stage_efficiency = constant:riches_found_value.zero }
+	set_temp_variable = { riches_found_aggregate_stability = constant:riches_found_value.zero }
+	if = {
+		limit = { check_variable = { var = riches_found_aggregate_controller_stage value = constant:riches_found_controller_stage.managed_revenue compare = equals } }
+		set_temp_variable = { riches_found_stage_consumer_goods_relief = constant:riches_found_controller_stage_terms.managed_consumer_goods_relief }
+		set_temp_variable = { riches_found_aggregate_stability = constant:riches_found_controller_stage_terms.managed_stability }
+	}
+	else_if = {
+		limit = { check_variable = { var = riches_found_aggregate_controller_stage value = constant:riches_found_controller_stage.resource_dependence compare = equals } }
+		set_temp_variable = { riches_found_stage_consumer_goods_relief = constant:riches_found_controller_stage_terms.dependence_consumer_goods_relief }
+		set_temp_variable = { riches_found_aggregate_stability = constant:riches_found_controller_stage_terms.dependence_stability }
+	}
+	else_if = {
+		limit = { check_variable = { var = riches_found_aggregate_controller_stage value = constant:riches_found_controller_stage.captured_revenue_state compare = equals } }
+		set_temp_variable = { riches_found_stage_consumer_goods_relief = constant:riches_found_controller_stage_terms.captured_consumer_goods_relief }
+		set_temp_variable = { riches_found_aggregate_stability = constant:riches_found_controller_stage_terms.captured_stability }
+		set_temp_variable = { riches_found_stage_political_power = constant:riches_found_controller_stage_terms.captured_political_power }
+	}
+	else_if = {
+		limit = { check_variable = { var = riches_found_aggregate_controller_stage value = constant:riches_found_controller_stage.gold_sick_administration compare = equals } }
+		set_temp_variable = { riches_found_stage_consumer_goods_relief = constant:riches_found_controller_stage_terms.gold_consumer_goods_relief }
+		set_temp_variable = { riches_found_aggregate_stability = constant:riches_found_controller_stage_terms.gold_stability }
+		set_temp_variable = { riches_found_stage_efficiency = constant:riches_found_controller_stage_terms.gold_efficiency }
+	}
+	else_if = {
+		limit = { check_variable = { var = riches_found_aggregate_controller_stage value = constant:riches_found_controller_stage.infernal_accounts compare = equals } }
+		set_temp_variable = { riches_found_stage_consumer_goods_relief = constant:riches_found_controller_stage_terms.infernal_consumer_goods_relief }
+		set_temp_variable = { riches_found_aggregate_stability = constant:riches_found_controller_stage_terms.infernal_stability }
+		set_temp_variable = { riches_found_stage_political_power = constant:riches_found_controller_stage_terms.infernal_political_power }
+	}
+	else_if = {
+		limit = { check_variable = { var = riches_found_aggregate_controller_stage value = constant:riches_found_controller_stage.reformed_settlement compare = equals } }
+		set_temp_variable = { riches_found_aggregate_stability = constant:riches_found_controller_stage_terms.reformed_stability }
+		set_temp_variable = { riches_found_stage_political_power = constant:riches_found_controller_stage_terms.reformed_political_power }
+	}
+	if = {
+		limit = { check_variable = { var = riches_found_aggregate_mine_count value = constant:riches_found_value.zero compare = greater_than } }
+		add_to_temp_variable = { riches_found_aggregate_consumer_goods_relief = riches_found_stage_consumer_goods_relief }
+		add_to_temp_variable = { riches_found_aggregate_pp = riches_found_stage_political_power }
+	}
+	else_if = {
+		limit = { check_variable = { var = riches_found_stage_political_power value = constant:riches_found_value.zero compare = less_than } }
+		add_to_temp_variable = { riches_found_aggregate_pp = riches_found_stage_political_power }
+	}
+	add_to_temp_variable = { riches_found_aggregate_efficiency = riches_found_stage_efficiency }
+	if = { limit = { check_variable = { riches_found_aggregate_pp > constant:riches_found_scaling.controller_pp_cap } } set_temp_variable = { riches_found_aggregate_pp = constant:riches_found_scaling.controller_pp_cap } }
+	if = { limit = { check_variable = { riches_found_aggregate_efficiency > constant:riches_found_scaling.controller_efficiency_cap } } set_temp_variable = { riches_found_aggregate_efficiency = constant:riches_found_scaling.controller_efficiency_cap } }
+	if = { limit = { check_variable = { riches_found_aggregate_consumer_goods_relief > constant:riches_found_scaling.controller_consumer_goods_relief_cap } } set_temp_variable = { riches_found_aggregate_consumer_goods_relief = constant:riches_found_scaling.controller_consumer_goods_relief_cap } }
+	set_variable = { riches_found_controller_stability = riches_found_aggregate_stability }
+}

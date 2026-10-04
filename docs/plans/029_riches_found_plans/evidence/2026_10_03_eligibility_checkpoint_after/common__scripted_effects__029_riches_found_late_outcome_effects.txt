@@ -1,0 +1,160 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 029 RICHES FOUND LATE OUTCOME RECORDS
+# ============================================================================
+# State-owned authority history and controller-bound receipt dependence.
+# COUNTRY receipt refresh traverses only the capped persistent mine registry.
+# Dates, rather than accumulated callback counts, measure uninterrupted time.
+# Transfer preserves local authority but cannot lend a former treasury's
+# dependence to an occupier. No evolution row or world-end route is introduced.
+# ============================================================================
+
+# COUNTRY scope, after aggregate publication and its dynamic-modifier refresh.
+# Inputs: current country daily PP and the newly published aggregate; each mine
+# stores its actual marginally weighted PP component and current contributor.
+# Output: state-specific receipt share and reliance/exit dates. A share meeting
+# the entry threshold for the hold duration grants treasury dependence. A share
+# below the lower exit threshold must persist for the exit duration to end it.
+# No discovery grant, stage bonus, or other mine's component enters this share.
+riches_found_refresh_controller_receipt_dependence = {
+	save_event_target_as = riches_found_receipt_controller
+	set_temp_variable = { riches_found_receipt_nonmine_pp = political_power_daily }
+	subtract_from_temp_variable = { riches_found_receipt_nonmine_pp = riches_found_controller_pp_gain }
+	if = {
+		limit = { check_variable = { riches_found_receipt_nonmine_pp < constant:riches_found_late_outcome.nonmine_daily_pp_floor } }
+		set_temp_variable = { riches_found_receipt_nonmine_pp = constant:riches_found_late_outcome.nonmine_daily_pp_floor }
+	}
+	set_temp_variable = { riches_found_receipt_total_pp = riches_found_receipt_nonmine_pp }
+	add_to_temp_variable = { riches_found_receipt_total_pp = riches_found_controller_pp_gain }
+	if = {
+		limit = { check_variable = { riches_found_receipt_total_pp < constant:riches_found_late_outcome.nonmine_daily_pp_floor } }
+		set_temp_variable = { riches_found_receipt_total_pp = constant:riches_found_late_outcome.nonmine_daily_pp_floor }
+	}
+	# Allocate only the capped economic receipts, excluding the once-per-country
+	# political stage term. This prevents raw mine components overstating receipts
+	# after a large holder reaches the aggregate cap.
+	set_temp_variable = { riches_found_receipt_allocation_factor = constant:riches_found_value.zero }
+	if = {
+		limit = { check_variable = { riches_found_controller_raw_mine_pp > constant:riches_found_value.zero } }
+		set_temp_variable = { riches_found_receipt_capped_mine_pp = riches_found_controller_pp_gain }
+		subtract_from_temp_variable = { riches_found_receipt_capped_mine_pp = riches_found_stage_political_power }
+		clamp_temp_variable = { var = riches_found_receipt_capped_mine_pp min = constant:riches_found_value.zero max = riches_found_controller_raw_mine_pp }
+		set_temp_variable = { riches_found_receipt_allocation_factor = riches_found_receipt_capped_mine_pp }
+		divide_temp_variable = { riches_found_receipt_allocation_factor = riches_found_controller_raw_mine_pp }
+	}
+	if = {
+		limit = { has_variable = global.riches_found_registered_mines^num }
+		for_each_scope_loop = {
+			array = global.riches_found_registered_mines
+			if = {
+				limit = {
+					riches_found_mine_is_registered = yes
+					is_controlled_by = event_target:riches_found_receipt_controller
+				}
+				if = {
+					limit = {
+						OR = {
+							NOT = { has_variable = riches_found_receipt_dependence_controller }
+							check_variable = { var = riches_found_receipt_dependence_controller value = CONTROLLER compare = not_equals }
+						}
+					}
+					set_variable = { riches_found_receipt_dependence_controller = CONTROLLER }
+					clr_state_flag = riches_found_treasury_depends_on_mine
+					clear_variable = riches_found_receipt_reliance_since
+					clear_variable = riches_found_receipt_exit_since
+				}
+				set_variable = { riches_found_receipt_share = constant:riches_found_value.zero }
+				set_variable = { riches_found_mine_receipt_pp_component = constant:riches_found_value.zero }
+				if = {
+					limit = {
+						riches_found_mine_provides_controller_output = yes
+						check_variable = { var = riches_found_mine_contribution_controller value = CONTROLLER compare = equals }
+					}
+					set_variable = { riches_found_mine_receipt_pp_component = riches_found_mine_weighted_pp_component }
+					multiply_variable = { riches_found_mine_receipt_pp_component = riches_found_receipt_allocation_factor }
+					set_variable = { riches_found_receipt_share = riches_found_mine_receipt_pp_component }
+					divide_variable = { riches_found_receipt_share = riches_found_receipt_total_pp }
+				}
+				if = {
+					limit = { check_variable = { var = riches_found_receipt_share value = constant:riches_found_late_outcome.receipt_dependence_entry_share compare = greater_than_or_equals } }
+					clear_variable = riches_found_receipt_exit_since
+					if = {
+						limit = { NOT = { has_variable = riches_found_receipt_reliance_since } }
+						set_variable = { riches_found_receipt_reliance_since = global.date }
+					}
+					set_temp_variable = { riches_found_receipt_dependence_ready_date = riches_found_receipt_reliance_since }
+					add_to_temp_variable = { riches_found_receipt_dependence_ready_date = constant:riches_found_late_duration.receipt_dependence_hold_days }
+					if = {
+						limit = { check_variable = { var = global.date value = riches_found_receipt_dependence_ready_date compare = greater_than_or_equals } }
+						set_state_flag = riches_found_treasury_depends_on_mine
+					}
+				}
+				else = {
+					clear_variable = riches_found_receipt_reliance_since
+					if = {
+						limit = { check_variable = { var = riches_found_receipt_share value = constant:riches_found_late_outcome.receipt_dependence_exit_share compare = less_than } }
+						if = {
+							limit = { NOT = { has_variable = riches_found_receipt_exit_since } }
+							set_variable = { riches_found_receipt_exit_since = global.date }
+						}
+						set_temp_variable = { riches_found_receipt_dependence_exit_date = riches_found_receipt_exit_since }
+						add_to_temp_variable = { riches_found_receipt_dependence_exit_date = constant:riches_found_late_duration.receipt_dependence_exit_days }
+						if = {
+							limit = { check_variable = { var = global.date value = riches_found_receipt_dependence_exit_date compare = greater_than_or_equals } }
+							clr_state_flag = riches_found_treasury_depends_on_mine
+						}
+					}
+					else = { clear_variable = riches_found_receipt_exit_since }
+				}
+				riches_found_refresh_local_authority_history = yes
+			}
+		}
+	}
+}
+
+# STATE scope. Current capture and authority must stay present continuously.
+# Authority dates follow the site through transfer; a successful reform's
+# protection window is a separately recorded real outcome, not a route label.
+riches_found_refresh_local_authority_history = {
+	if = {
+		limit = { has_state_flag = riches_found_evolution_iii_recorded has_variable = riches_found_deep_excavation_at_contact }
+		set_variable = { riches_found_post_contact_excavation = riches_found_deep_excavation }
+		subtract_from_variable = { riches_found_post_contact_excavation = riches_found_deep_excavation_at_contact }
+		clamp_variable = { var = riches_found_post_contact_excavation min = constant:riches_found_value.zero max = constant:riches_found_event.public_value_maximum }
+	}
+	if = {
+		limit = { riches_found_private_or_patronage_dominance = yes }
+		if = {
+			limit = { NOT = { has_variable = riches_found_private_dominance_since } }
+			set_variable = { riches_found_private_dominance_since = global.date }
+		}
+		set_temp_variable = { riches_found_private_dominance_ready_date = riches_found_private_dominance_since }
+		add_to_temp_variable = { riches_found_private_dominance_ready_date = constant:riches_found_late_duration.private_dominance_hold_days }
+		if = {
+			limit = { check_variable = { var = global.date value = riches_found_private_dominance_ready_date compare = greater_than_or_equals } }
+			set_state_flag = riches_found_private_dominance_prolonged
+		}
+	}
+	else = {
+		clear_variable = riches_found_private_dominance_since
+		clr_state_flag = riches_found_private_dominance_prolonged
+	}
+	clr_state_flag = riches_found_recent_successful_reform
+	if = {
+		limit = { has_variable = riches_found_successful_reform_date }
+		set_temp_variable = { riches_found_reform_protection_end_date = riches_found_successful_reform_date }
+		add_to_temp_variable = { riches_found_reform_protection_end_date = constant:riches_found_late_duration.reform_protection_days }
+		if = {
+			limit = { check_variable = { var = global.date value = riches_found_reform_protection_end_date compare = less_than } }
+			set_state_flag = riches_found_recent_successful_reform
+		}
+	}
+}
+
+# STATE scope. Called only by a successful, completed public settlement or a
+# successful sovereignty restoration; starting a reform never creates it.
+riches_found_record_successful_reform = {
+	set_variable = { riches_found_successful_reform_date = global.date }
+	set_state_flag = riches_found_recent_successful_reform
+	clear_variable = riches_found_private_dominance_since
+	clr_state_flag = riches_found_private_dominance_prolonged
+}

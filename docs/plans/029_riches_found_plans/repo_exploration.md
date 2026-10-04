@@ -1,5 +1,14 @@
 # Repo Explorer Handoff
 
+## Historical snapshot disposition
+
+Disposition: `superseded` for current progress by [2026_10_03_resume_packet.md](2026_10_03_resume_packet.md).
+The parent identifies this report as a 2026-08-29 observation.
+Its original findings, line references, missing-file claims, and unavailable-tool statements are retained below as historical evidence and do not describe the current worktree.
+Use the dated replacement before implementation to avoid recreating existing source or carrying old scaffold names forward.
+The accepted design basis is the user's explicit request to implement `docs/specs/029_riches_found_specs/` fully.
+Current MCP exposure and successful partial inspection do not establish full helper coverage, route validation, or service-wide health.
+
 ## Scope read
 
 - Parent task: read-only repository exploration for the complete Event 029 Riches Found rework.

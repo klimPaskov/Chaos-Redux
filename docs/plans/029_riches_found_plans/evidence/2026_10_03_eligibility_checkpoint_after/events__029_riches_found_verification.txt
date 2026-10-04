@@ -1,0 +1,34 @@
+add_namespace = chaosx.nr29
+
+# ============================================================================
+# CHAOS REDUX - EVENT 029 TERMINAL VERIFICATION
+# ============================================================================
+# One state-owned callback finishes verification after permanent sealing.
+# Terminal mines do not need a recurring controller pulse. Transfer preserves
+# the date but invalidates personal achievement routes through the existing
+# narrow controller-change helper. This hidden event adds no evolution row.
+# ============================================================================
+
+state_event = {
+	id = chaosx.nr29.907
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		has_event_target = riches_found_terminal_verification_mine
+		event_target:riches_found_terminal_verification_mine = {
+			riches_found_mine_is_registered = yes
+			has_state_flag = riches_found_terminal_verification_pending
+			check_variable = { var = global.date value = riches_found_terminal_verification_due_date compare = greater_than_or_equals }
+			CONTROLLER = { exists = yes }
+		}
+	}
+	immediate = {
+		hidden_effect = {
+			event_target:riches_found_terminal_verification_mine = {
+				clr_state_flag = riches_found_terminal_verification_pending
+				riches_found_refresh_state_achievement_timers = yes
+				CONTROLLER = { riches_found_refresh_controller_achievement_window = yes }
+			}
+		}
+	}
+}

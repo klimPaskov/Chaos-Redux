@@ -1,3 +1,5 @@
+# Timed country flags require a literal; mirrors riches_found_duration.discovery_receipt_days.
+@riches_found_discovery_receipt_days = 1
 # ============================================================================
 # CHAOS REDUX - EVENT 029 RICHES FOUND SCRIPTED EFFECTS
 # ============================================================================
@@ -36,15 +38,15 @@ riches_found_initialize_registry = {
 	}
 }
 
-# COUNTRY scope. Adds this eligible country to the shared temporary pool using
-# temporary pool. Event 029 chooses uniformly among eligible ordinary
-# countries; crisis load remains a gate and does not become a second weight.
+# COUNTRY scope. Adds this eligible country to the shared temporary pool.
+# Event 029 chooses uniformly among eligible ordinary countries; crisis load
+# remains a gate and does not become a second weight.
 riches_found_add_current_country_to_prefire_pool = {
 	add_to_temp_array = { riches_found_country_prefire_pool = THIS }
 }
 
-# COUNTRY scope. Selects the state after the country-level pressure roll has
-# chosen the exact owner.
+# COUNTRY scope. Selects the state after the uniform country draw has chosen
+# the exact owner.
 riches_found_prepare_selected_discovery_country = {
 	save_event_target_as = riches_found_prefire_owner
 	if = {
@@ -76,18 +78,26 @@ riches_found_prepare_selected_discovery_country = {
 		}
 	}
 	if = {
-		limit = { has_event_target = riches_found_prepared_mine_state }
-		set_country_flag = riches_found_discovery_pending
+		limit = {
+			check_variable = { riches_found_prefire_ready = constant:riches_found_value.one }
+			has_event_target = riches_found_prepared_mine_state
+			event_target:riches_found_prepared_mine_state = { is_owned_and_controlled_by = PREV }
+		}
+		set_country_flag = { flag = riches_found_discovery_pending days = @riches_found_discovery_receipt_days }
 		set_variable = { riches_found_discovery_prepared_date = global.date }
 	}
 }
 
-# COUNTRY scope. Selects one eligible ordinary country with load-aware tickets,
+# COUNTRY scope. Selects one uniformly random eligible ordinary country,
 # then one eligible state in that country. No value or grant changes here.
 riches_found_prepare_random_event_fire = {
+	set_temp_variable = { riches_found_prefire_ready = constant:riches_found_value.zero }
 	clear_temp_array = riches_found_country_prefire_pool
 	every_country = {
-		limit = { riches_found_is_eligible_discovery_country = yes }
+		limit = {
+			riches_found_is_eligible_discovery_country = yes
+			NOT = { has_country_flag = riches_found_discovery_pending }
+		}
 		riches_found_add_current_country_to_prefire_pool = yes
 	}
 	if = {
@@ -97,14 +107,22 @@ riches_found_prepare_random_event_fire = {
 			riches_found_prepare_selected_discovery_country = yes
 		}
 	}
-	clear_temp_array = riches_found_country_prefire_pool
 	if = {
 		limit = {
+			check_variable = { riches_found_prefire_ready = constant:riches_found_value.one }
+			check_variable = { riches_found_country_prefire_pool^num > constant:riches_found_value.zero }
 			has_event_target = riches_found_prefire_owner
 			has_event_target = riches_found_prefire_state
+			event_target:riches_found_prefire_owner = { riches_found_is_eligible_discovery_country = yes }
+			event_target:riches_found_prefire_state = {
+				riches_found_is_valid_discovery_state = yes
+				is_owned_and_controlled_by = event_target:riches_found_prefire_owner
+			}
 		}
 		set_temp_variable = { riches_found_prefire_ready = constant:riches_found_value.one }
 	}
+	else = { set_temp_variable = { riches_found_prefire_ready = constant:riches_found_value.zero } }
+	clear_temp_array = riches_found_country_prefire_pool
 }
 
 # STATE scope. Saves both state targets used by the shared repeatable-event
@@ -113,6 +131,33 @@ riches_found_prepare_random_event_fire = {
 riches_found_save_prefire_state = {
 	save_event_target_as = riches_found_prepared_mine_state
 	save_event_target_as = riches_found_prefire_state
+	set_temp_variable = { riches_found_prefire_ready = constant:riches_found_value.one }
+	OWNER = {
+		set_country_flag = { flag = riches_found_discovery_pending days = @riches_found_discovery_receipt_days }
+		set_variable = { riches_found_prepared_discovery_state = PREV }
+		set_variable = { riches_found_discovery_prepared_date = global.date }
+		set_variable = { riches_found_discovery_receipt_expiry_date = global.date }
+		set_temp_variable = { chaosx_date_days = constant:riches_found_duration.discovery_receipt_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		add_to_variable = { riches_found_discovery_receipt_expiry_date = chaosx_date_offset }
+		country_event = { id = chaosx.nr29.899 days = constant:riches_found_duration.discovery_receipt_days }
+	}
+}
+
+# COUNTRY scope. Releases only an expired provisional discovery receipt.
+# A prior cleanup callback cannot consume a newer receipt with a later date.
+riches_found_expire_discovery_receipt = {
+	if = {
+		limit = {
+			has_variable = riches_found_discovery_receipt_expiry_date
+			check_variable = { var = global.date value = riches_found_discovery_receipt_expiry_date compare = greater_than_or_equals }
+		}
+		clr_country_flag = riches_found_discovery_pending
+		clear_variable = riches_found_prepared_discovery_state
+		clear_variable = riches_found_discovery_prepared_date
+		clear_variable = riches_found_discovery_receipt_expiry_date
+	}
 }
 
 # COUNTRY scope. Commits the prepared event target, initializes exactly one
@@ -136,6 +181,9 @@ riches_found_commit_discovery = {
 			add_political_power = constant:riches_found_event.discovery_political_power
 			event_target:riches_found_prepared_mine_state = { set_state_flag = riches_found_discovery_grant_paid }
 			clr_country_flag = riches_found_discovery_pending
+			clear_variable = riches_found_prepared_discovery_state
+			clear_variable = riches_found_discovery_prepared_date
+			clear_variable = riches_found_discovery_receipt_expiry_date
 			event_target:riches_found_prepared_mine_state = {
 				set_variable = { riches_found_discoverer = event_target:riches_found_discovery_actor }
 				riches_found_record_achievement_discovery = yes
@@ -230,6 +278,8 @@ riches_found_initialize_mine_record = {
 		set_variable = { riches_found_private_security_autonomy = constant:riches_found_value.public_initial_security_autonomy }
 		set_variable = { riches_found_foreign_claim_pressure = constant:riches_found_value.public_initial_foreign_claim_pressure }
 		set_variable = { riches_found_gold_disease_pressure = constant:riches_found_value.public_initial_gold_disease }
+		set_variable = { riches_found_last_exposure_review_date = global.date }
+		set_variable = { riches_found_last_pressure_growth_date = global.date }
 		set_variable = { riches_found_supernatural_pressure = constant:riches_found_value.public_initial_supernatural_pressure }
 		set_variable = { riches_found_sealed_depth_integrity = constant:riches_found_value.public_initial_sealed_integrity }
 		set_variable = { riches_found_collapse_pressure = constant:riches_found_value.public_initial_collapse_pressure }
@@ -254,6 +304,7 @@ riches_found_initialize_mine_record = {
 		riches_found_register_achievement_hooks = yes
 		riches_found_refresh_mine_presentation = yes
 		riches_found_refresh_mine_contribution = yes
+		riches_found_prepare_foreign_partner = yes
 		riches_found_refresh_evolution_gates = yes
 		riches_found_refresh_state_achievement_timers = yes
 		if = { limit = { CONTROLLER = { exists = yes } } CONTROLLER = { riches_found_refresh_controller_aggregate = yes } }
@@ -579,12 +630,9 @@ riches_found_reconcile_mine_phase = {
 		limit = {
 			OR = {
 				has_state_flag = riches_found_mine_temporary_closure
-				has_state_flag = riches_found_mine_quarantined
-				has_state_flag = riches_found_mine_partial_seal
 				has_state_flag = riches_found_mine_permanent_seal
 				has_state_flag = riches_found_mine_collapsed
 				has_state_flag = riches_found_mine_exhausted
-				has_state_flag = riches_found_mine_closed
 			}
 		}
 		set_state_flag = riches_found_mine_closed
@@ -790,10 +838,9 @@ riches_found_refresh_mine_contribution = {
 	set_variable = { riches_found_mine_factory_component = constant:riches_found_value.zero }
 	set_variable = { riches_found_mine_consumer_goods_component = constant:riches_found_value.zero }
 	if = {
-		limit = { riches_found_mine_is_operating = yes }
+		limit = { riches_found_mine_provides_controller_output = yes }
 		set_variable = { riches_found_mine_contribution_score = riches_found_mine_quality_factor }
 		multiply_variable = { riches_found_mine_contribution_score = riches_found_mine_development }
-		divide_variable = { riches_found_mine_contribution_score = constant:riches_found_value.percent }
 
 		set_variable = { riches_found_operating_factor = constant:riches_found_scaling.operating_discovery }
 		if = { limit = { check_variable = { var = riches_found_operating_state value = constant:riches_found_operating_state.open_expanding compare = equals } } set_variable = { riches_found_operating_factor = constant:riches_found_scaling.operating_open_expanding } }
@@ -802,6 +849,9 @@ riches_found_refresh_mine_contribution = {
 		else_if = { limit = { check_variable = { var = riches_found_operating_state value = constant:riches_found_operating_state.open_military compare = equals } } set_variable = { riches_found_operating_factor = constant:riches_found_scaling.operating_open_military } }
 		else_if = { limit = { check_variable = { var = riches_found_operating_state value = constant:riches_found_operating_state.open_predatory compare = equals } } set_variable = { riches_found_operating_factor = constant:riches_found_scaling.operating_open_predatory } }
 		else_if = { limit = { check_variable = { var = riches_found_operating_state value = constant:riches_found_operating_state.contested compare = equals } } set_variable = { riches_found_operating_factor = constant:riches_found_scaling.operating_contested } }
+		else_if = { limit = { check_variable = { var = riches_found_operating_state value = constant:riches_found_operating_state.quarantined compare = equals } } set_variable = { riches_found_operating_factor = constant:riches_found_scaling.operating_quarantined } }
+		else_if = { limit = { check_variable = { var = riches_found_operating_state value = constant:riches_found_operating_state.partially_sealed compare = equals } } set_variable = { riches_found_operating_factor = constant:riches_found_scaling.operating_partially_sealed } }
+		if = { limit = { has_state_flag = riches_found_account_terms_bound } set_variable = { riches_found_operating_factor = constant:riches_found_scaling.operating_partially_sealed } }
 
 		multiply_variable = { riches_found_mine_contribution_score = riches_found_operating_factor }
 		set_variable = { riches_found_policy_factor = constant:riches_found_scaling.policy_unassigned }
@@ -829,10 +879,14 @@ riches_found_refresh_mine_contribution = {
 		multiply_variable = { riches_found_mine_contribution_score = riches_found_legitimacy_factor }
 
 		set_variable = { riches_found_pressure_factor = constant:riches_found_scaling.pressure_factor_floor }
-		set_temp_variable = { riches_found_pressure_factor_loss = riches_found_extraction_pressure }
-		multiply_temp_variable = { riches_found_pressure_factor_loss = constant:riches_found_scaling.pressure_factor_slope }
-		subtract_from_variable = { riches_found_pressure_factor = riches_found_pressure_factor_loss }
+		set_temp_variable = { riches_found_pressure_factor_gain = riches_found_extraction_pressure }
+		multiply_temp_variable = { riches_found_pressure_factor_gain = constant:riches_found_scaling.pressure_factor_slope }
+		add_to_variable = { riches_found_pressure_factor = riches_found_pressure_factor_gain }
 		multiply_variable = { riches_found_mine_contribution_score = riches_found_pressure_factor }
+		if = {
+			limit = { has_state_flag = riches_found_deep_project_active }
+			multiply_variable = { riches_found_mine_contribution_score = constant:riches_found_exposure.deep_output_loss_factor }
+		}
 		if = {
 			limit = { is_owned_and_controlled_by = OWNER }
 			set_variable = { riches_found_control_factor = constant:riches_found_scaling.control_owned }
@@ -855,6 +909,16 @@ riches_found_refresh_mine_contribution = {
 			set_variable = { riches_found_evolution_factor = constant:riches_found_scaling.evolution_demons_factor }
 		}
 		multiply_variable = { riches_found_mine_contribution_score = riches_found_evolution_factor }
+		if = {
+			limit = {
+				has_state_flag = riches_found_account_active
+				has_variable = riches_found_account_output_factor
+				NOT = { has_state_flag = riches_found_account_benefits_suspended }
+				NOT = { has_state_flag = riches_found_account_closed }
+				NOT = { has_state_flag = riches_found_account_terms_bound }
+			}
+			multiply_variable = { riches_found_mine_contribution_score = riches_found_account_output_factor }
+		}
 		if = { limit = { check_variable = { var = riches_found_concession_exposure value = constant:riches_found_threshold.concession_exposure_gate compare = greater_than_or_equals } } multiply_variable = { riches_found_mine_contribution_score = constant:riches_found_scaling.controller_evolution_penalty_factor } }
 		if = { limit = { check_variable = { riches_found_mine_contribution_score > constant:riches_found_event.public_value_maximum } } set_variable = { riches_found_mine_contribution_score = constant:riches_found_event.public_value_maximum } }
 		if = {
@@ -891,6 +955,13 @@ riches_found_refresh_controller_aggregate = {
 
 riches_found_rebuild_controller_aggregate = {
 	save_event_target_as = riches_found_aggregate_controller
+	clr_country_flag = riches_found_controller_has_fixture_mine
+	if = {
+		limit = { NOT = { riches_found_country_has_selected_mine = yes } }
+		clear_variable = riches_found_selected_mine
+	}
+	set_temp_variable = { riches_found_aggregate_registered_mine_count = constant:riches_found_value.zero }
+	set_temp_variable = { riches_found_aggregate_maintenance_mine_count = constant:riches_found_value.zero }
 	set_temp_variable = { riches_found_aggregate_mine_count = constant:riches_found_value.zero }
 	set_temp_variable = { riches_found_aggregate_safe_mine_count = constant:riches_found_value.zero }
 	set_temp_variable = { riches_found_aggregate_pp = constant:riches_found_value.zero }
@@ -900,6 +971,8 @@ riches_found_rebuild_controller_aggregate = {
 	set_temp_variable = { riches_found_aggregate_consumer_goods_relief = constant:riches_found_value.zero }
 	set_temp_variable = { riches_found_aggregate_highest_evolution = constant:riches_found_value.zero }
 	set_temp_variable = { riches_found_aggregate_controller_stage = constant:riches_found_controller_stage.windfall_receipts }
+	set_temp_variable = { riches_found_aggregate_stage_priority = constant:riches_found_value.zero }
+	set_temp_variable = { riches_found_aggregate_stability = constant:riches_found_value.zero }
 
 	if = {
 		limit = { has_variable = global.riches_found_registered_mines^num }
@@ -907,7 +980,58 @@ riches_found_rebuild_controller_aggregate = {
 			array = global.riches_found_registered_mines
 			if = {
 				limit = {
-					riches_found_mine_is_operating = yes
+					riches_found_mine_is_registered = yes
+					is_controlled_by = event_target:riches_found_aggregate_controller
+				}
+				add_to_temp_variable = { riches_found_aggregate_registered_mine_count = constant:riches_found_value.one }
+				set_variable = { riches_found_mine_weighted_pp_component = constant:riches_found_value.zero }
+				set_variable = { riches_found_mine_contribution_controller = CONTROLLER }
+				if = {
+					limit = { has_state_flag = riches_found_cxt_fixture_mine }
+					event_target:riches_found_aggregate_controller = { set_country_flag = riches_found_controller_has_fixture_mine }
+				}
+				event_target:riches_found_aggregate_controller = {
+					if = {
+						limit = {
+							NOT = { has_variable = riches_found_selected_mine }
+							OR = { is_ai = yes NOT = { has_country_flag = riches_found_selection_closed } }
+							PREV = { NOT = { riches_found_mine_is_terminal = yes } }
+						}
+						set_variable = { riches_found_selected_mine = PREV }
+					}
+				}
+				if = {
+					limit = { event_target:riches_found_aggregate_controller = { check_variable = { var = riches_found_selected_mine value = PREV compare = equals } } }
+					set_state_flag = riches_found_selected_target
+				}
+				else = { clr_state_flag = riches_found_selected_target }
+				if = {
+					limit = { NOT = { riches_found_mine_is_terminal = yes } }
+					add_to_temp_variable = { riches_found_aggregate_maintenance_mine_count = constant:riches_found_value.one }
+					riches_found_collect_aggregate_stage = yes
+					if = {
+						limit = { has_state_flag = riches_found_evolution_iii_recorded }
+						set_temp_variable = { riches_found_aggregate_highest_evolution = constant:riches_found_evolution.demons_beneath_mine_stage }
+					}
+					else_if = {
+						limit = {
+							has_state_flag = riches_found_evolution_ii_recorded
+							check_variable = { riches_found_aggregate_highest_evolution < constant:riches_found_evolution.gold_disease_stage }
+						}
+						set_temp_variable = { riches_found_aggregate_highest_evolution = constant:riches_found_evolution.gold_disease_stage }
+					}
+					else_if = {
+						limit = {
+							has_state_flag = riches_found_evolution_i_recorded
+							check_variable = { riches_found_aggregate_highest_evolution < constant:riches_found_evolution.resource_curse_stage }
+						}
+						set_temp_variable = { riches_found_aggregate_highest_evolution = constant:riches_found_evolution.resource_curse_stage }
+					}
+				}
+			}
+			if = {
+				limit = {
+					riches_found_mine_provides_controller_output = yes
 					is_controlled_by = event_target:riches_found_aggregate_controller
 				}
 				set_temp_variable = { riches_found_aggregate_marginal_factor = constant:riches_found_scaling.controller_first_mine }
@@ -927,6 +1051,7 @@ riches_found_rebuild_controller_aggregate = {
 				if = { limit = { riches_found_achievement_multi_mine_safe_state = yes } add_to_temp_variable = { riches_found_aggregate_safe_mine_count = constant:riches_found_value.one } }
 				set_temp_variable = { riches_found_weighted_component = riches_found_mine_pp_component }
 				multiply_temp_variable = { riches_found_weighted_component = riches_found_aggregate_marginal_factor }
+				set_variable = { riches_found_mine_weighted_pp_component = riches_found_weighted_component }
 				add_to_temp_variable = { riches_found_aggregate_pp = riches_found_weighted_component }
 				set_temp_variable = { riches_found_weighted_component = riches_found_mine_construction_component }
 				multiply_temp_variable = { riches_found_weighted_component = riches_found_aggregate_marginal_factor }
@@ -942,114 +1067,25 @@ riches_found_rebuild_controller_aggregate = {
 				add_to_temp_variable = { riches_found_aggregate_consumer_goods_relief = riches_found_weighted_component }
 				add_to_temp_variable = { riches_found_aggregate_mine_count = constant:riches_found_value.one }
 
-				if = {
-					limit = { has_state_flag = riches_found_evolution_iii_recorded }
-					set_temp_variable = { riches_found_aggregate_highest_evolution = constant:riches_found_evolution.demons_beneath_mine_stage }
-				}
-				else_if = {
-					limit = {
-						AND = {
-							has_state_flag = riches_found_evolution_ii_recorded
-							check_variable = { riches_found_aggregate_highest_evolution < constant:riches_found_evolution.gold_disease_stage }
-						}
-					}
-					set_temp_variable = { riches_found_aggregate_highest_evolution = constant:riches_found_evolution.gold_disease_stage }
-				}
-				else_if = {
-					limit = {
-						AND = {
-							has_state_flag = riches_found_evolution_i_recorded
-							check_variable = { riches_found_aggregate_highest_evolution < constant:riches_found_evolution.resource_curse_stage }
-						}
-					}
-					set_temp_variable = { riches_found_aggregate_highest_evolution = constant:riches_found_evolution.resource_curse_stage }
-				}
-
-				# The strongest visible stage represented among controlled mines
-				# replaces the prior country idea; stages never add together.
-				if = {
-					limit = {
-						OR = {
-							has_state_flag = riches_found_bottomless_account
-							has_state_flag = riches_found_demons_beneath_mine_active
-							has_state_flag = riches_found_demons_agreement
-						}
-						check_variable = { var = riches_found_aggregate_controller_stage value = constant:riches_found_controller_stage.infernal_accounts compare = less_than }
-					}
-					set_temp_variable = { riches_found_aggregate_controller_stage = constant:riches_found_controller_stage.infernal_accounts }
-				}
-				if = {
-					limit = {
-						OR = {
-							has_state_flag = riches_found_evolution_ii_recorded
-							has_state_flag = riches_found_gold_disease_active
-						}
-						check_variable = { var = riches_found_aggregate_controller_stage value = constant:riches_found_controller_stage.gold_sick_administration compare = less_than }
-					}
-					set_temp_variable = { riches_found_aggregate_controller_stage = constant:riches_found_controller_stage.gold_sick_administration }
-				}
-				if = {
-					limit = {
-						OR = {
-							has_state_flag = riches_found_gilded_sovereignty
-							has_state_flag = riches_found_curse_private_dominance
-							has_state_flag = riches_found_private_enclave
-							check_variable = { var = riches_found_illicit_capture value = constant:riches_found_threshold.illicit_capture_gate compare = greater_than_or_equals }
-						}
-						check_variable = { var = riches_found_aggregate_controller_stage value = constant:riches_found_controller_stage.captured_revenue_state compare = less_than }
-					}
-					set_temp_variable = { riches_found_aggregate_controller_stage = constant:riches_found_controller_stage.captured_revenue_state }
-				}
-				if = {
-					limit = {
-						OR = {
-							has_state_flag = riches_found_evolution_i_recorded
-							has_state_flag = riches_found_resource_curse_active
-						}
-						check_variable = { var = riches_found_aggregate_controller_stage value = constant:riches_found_controller_stage.resource_dependence compare = less_than }
-					}
-					set_temp_variable = { riches_found_aggregate_controller_stage = constant:riches_found_controller_stage.resource_dependence }
-				}
-				if = {
-					limit = {
-						OR = {
-							has_state_flag = riches_found_stabilization_fund
-							has_state_flag = riches_found_audit_complete
-							has_state_flag = riches_found_independent_revenue_authority
-							has_state_flag = riches_found_dividend_paid
-						}
-						check_variable = { var = riches_found_aggregate_controller_stage value = constant:riches_found_controller_stage.managed_revenue compare = less_than }
-					}
-					set_temp_variable = { riches_found_aggregate_controller_stage = constant:riches_found_controller_stage.managed_revenue }
-				}
-				if = {
-					limit = {
-						OR = {
-							has_state_flag = riches_found_curse_revenue_distributed
-							has_state_flag = riches_found_curse_diversification_started
-							has_state_flag = riches_found_curse_independent_authority
-							has_state_flag = riches_found_gilded_charter_revoked
-							has_state_flag = riches_found_gilded_district_bought
-							has_state_flag = riches_found_gilded_sovereignty_shared
-							has_state_flag = riches_found_gilded_board_recognized
-							has_state_flag = riches_found_account_closed
-							has_state_flag = riches_found_account_terms_bound
-							has_state_flag = riches_found_demons_permanent_seal
-						}
-						check_variable = { var = riches_found_aggregate_controller_stage value = constant:riches_found_controller_stage.reformed_settlement compare = less_than }
-					}
-					set_temp_variable = { riches_found_aggregate_controller_stage = constant:riches_found_controller_stage.reformed_settlement }
-				}
 			}
 		}
 	}
 
+	# Apply the selected stage exactly once before publishing capped values.
+	set_variable = { riches_found_controller_raw_mine_pp = riches_found_aggregate_pp }
+	riches_found_apply_aggregate_stage_terms = yes
 	if = { limit = { check_variable = { riches_found_aggregate_pp > constant:riches_found_scaling.controller_pp_cap } } set_temp_variable = { riches_found_aggregate_pp = constant:riches_found_scaling.controller_pp_cap } }
 	if = { limit = { check_variable = { riches_found_aggregate_construction > constant:riches_found_scaling.controller_construction_cap } } set_temp_variable = { riches_found_aggregate_construction = constant:riches_found_scaling.controller_construction_cap } }
 	if = { limit = { check_variable = { riches_found_aggregate_efficiency > constant:riches_found_scaling.controller_efficiency_cap } } set_temp_variable = { riches_found_aggregate_efficiency = constant:riches_found_scaling.controller_efficiency_cap } }
 	if = { limit = { check_variable = { riches_found_aggregate_factory_output > constant:riches_found_scaling.controller_factory_output_cap } } set_temp_variable = { riches_found_aggregate_factory_output = constant:riches_found_scaling.controller_factory_output_cap } }
 	if = { limit = { check_variable = { riches_found_aggregate_consumer_goods_relief > constant:riches_found_scaling.controller_consumer_goods_relief_cap } } set_temp_variable = { riches_found_aggregate_consumer_goods_relief = constant:riches_found_scaling.controller_consumer_goods_relief_cap } }
 
+	set_variable = { riches_found_controller_registered_mine_count = riches_found_aggregate_registered_mine_count }
+	if = {
+		limit = { check_variable = { riches_found_aggregate_maintenance_mine_count > constant:riches_found_value.zero } }
+		set_country_flag = riches_found_controller_maintenance_active
+	}
+	else = { clr_country_flag = riches_found_controller_maintenance_active }
 	set_variable = { riches_found_controller_mine_count = riches_found_aggregate_mine_count }
 	set_variable = { riches_found_controller_pp_gain = riches_found_aggregate_pp }
 	set_variable = { riches_found_controller_construction = riches_found_aggregate_construction }
@@ -1080,7 +1116,7 @@ riches_found_rebuild_controller_aggregate = {
 		riches_found_idea_reformed_settlement
 	}
 	if = {
-		limit = { check_variable = { var = riches_found_aggregate_mine_count value = constant:riches_found_value.zero compare = greater_than } }
+		limit = { has_country_flag = riches_found_controller_maintenance_active }
 		if = {
 			limit = { check_variable = { var = riches_found_aggregate_controller_stage value = constant:riches_found_controller_stage.reformed_settlement compare = equals } }
 			add_ideas = riches_found_idea_reformed_settlement
@@ -1109,7 +1145,7 @@ riches_found_rebuild_controller_aggregate = {
 	}
 
 	if = {
-		limit = { check_variable = { var = riches_found_aggregate_mine_count value = constant:riches_found_value.zero compare = greater_than } }
+		limit = { has_country_flag = riches_found_controller_maintenance_active }
 		set_country_flag = riches_found_controller_aggregate_active
 		if = { limit = { NOT = { has_dynamic_modifier = { modifier = riches_found_controller_aggregate } } } add_dynamic_modifier = { modifier = riches_found_controller_aggregate } }
 		force_update_dynamic_modifier = yes
@@ -1118,6 +1154,7 @@ riches_found_rebuild_controller_aggregate = {
 		clr_country_flag = riches_found_controller_aggregate_active
 		if = { limit = { has_dynamic_modifier = { modifier = riches_found_controller_aggregate } } remove_dynamic_modifier = { modifier = riches_found_controller_aggregate } }
 	}
+	riches_found_refresh_controller_receipt_dependence = yes
 	riches_found_refresh_controller_achievement_window = yes
 }
 
@@ -1142,6 +1179,25 @@ riches_found_refresh_mine_state = {
 		riches_found_refresh_state_achievement_timers = yes
 	}
 	riches_found_reconcile_controller = yes
+	riches_found_refresh_selected_foreign_offer = yes
+}
+
+# COUNTRY scope. Refreshes one selected mine's offer after a deliberate action.
+# The scored country pass runs on discovery or this transaction boundary only.
+# Controller pulses never invoke this helper or the whole-country candidate pass.
+riches_found_refresh_selected_foreign_offer = {
+	if = {
+		limit = { riches_found_country_has_selected_mine = yes }
+		var:riches_found_selected_mine = {
+			if = {
+				limit = {
+					riches_found_mine_is_active = yes
+					NOT = { has_state_flag = riches_found_contract_active }
+				}
+				riches_found_prepare_foreign_partner = yes
+			}
+		}
+	}
 }
 
 # COUNTRY scope. One scheduled event owns the controller pulse. The guard flag
@@ -1149,10 +1205,15 @@ riches_found_refresh_mine_state = {
 riches_found_schedule_controller_pulse = {
 	if = {
 		limit = {
-			has_country_flag = riches_found_controller_aggregate_active
+			has_country_flag = riches_found_controller_maintenance_active
 			NOT = { has_country_flag = riches_found_controller_pulse_scheduled }
 		}
 		set_country_flag = riches_found_controller_pulse_scheduled
+		set_variable = { riches_found_controller_pulse_due_date = global.date }
+		set_temp_variable = { chaosx_date_days = constant:riches_found_duration.controller_pulse_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		add_to_variable = { riches_found_controller_pulse_due_date = chaosx_date_offset }
 		country_event = { id = chaosx.nr29.900 days = constant:riches_found_duration.controller_pulse_days }
 	}
 }
@@ -1162,118 +1223,13 @@ riches_found_schedule_controller_pulse = {
 # value refresh and one MTTH-backed evolution check; no whole-world action is
 # introduced.
 riches_found_run_controller_pulse = {
-	clr_country_flag = riches_found_controller_pulse_scheduled
 	if = {
 		limit = {
-			has_country_flag = riches_found_controller_aggregate_active
-			has_variable = global.riches_found_registered_mines^num
+			has_country_flag = riches_found_controller_pulse_scheduled
+			check_variable = { var = global.date value = riches_found_controller_pulse_due_date compare = greater_than_or_equals }
 		}
-		for_each_scope_loop = {
-			array = global.riches_found_registered_mines
-			if = {
-				limit = {
-					riches_found_mine_is_registered = yes
-					is_controlled_by = ROOT
-					riches_found_mine_is_active = yes
-				}
-				riches_found_refresh_contract_lifecycle = yes
-				riches_found_run_due_incident_review = yes
-				set_temp_variable = { riches_found_pulse_pressure_delta = constant:riches_found_scaling.pulse_pressure_add }
-				if = { limit = { ROOT = { has_war = yes } } add_to_temp_variable = { riches_found_pulse_pressure_delta = constant:riches_found_scaling.pulse_war_pressure_add } }
-				if = { limit = { riches_found_mine_is_severe_pressure = yes } add_to_temp_variable = { riches_found_pulse_pressure_delta = constant:riches_found_scaling.pulse_severe_pressure_add } }
-				add_to_variable = { riches_found_extraction_pressure = riches_found_pulse_pressure_delta }
-				set_temp_variable = { riches_found_pulse_collapse_delta = constant:riches_found_scaling.pulse_collapse_pressure_add }
-				if = { limit = { riches_found_mine_is_local_order_crisis = yes } add_to_temp_variable = { riches_found_pulse_collapse_delta = constant:riches_found_scaling.pulse_low_order_collapse_add } }
-				if = { limit = { check_variable = { var = riches_found_sealed_depth_integrity value = constant:riches_found_threshold.sealed_integrity_gate compare = less_than } } add_to_temp_variable = { riches_found_pulse_collapse_delta = constant:riches_found_scaling.pulse_low_integrity_collapse_add } }
-				if = { limit = { check_variable = { var = riches_found_chaos_exposure value = constant:riches_found_value.zero compare = greater_than } } add_to_temp_variable = { riches_found_pulse_collapse_delta = constant:riches_found_scaling.pulse_chaos_collapse_add } }
-				add_to_variable = { riches_found_collapse_pressure = riches_found_pulse_collapse_delta }
-				if = { limit = { riches_found_mine_is_high_pressure = yes } set_state_flag = riches_found_collapse_warning }
-				if = {
-					limit = {
-						OR = {
-							riches_found_mine_is_severe_pressure = yes
-							riches_found_mine_is_local_order_crisis = yes
-							riches_found_mine_is_legitimacy_crisis = yes
-						}
-					}
-					set_state_flag = riches_found_crisis_active
-				}
-				if = { limit = { riches_found_mine_is_severe_pressure = yes } set_state_flag = riches_found_raid_crisis }
-				if = { limit = { riches_found_mine_is_local_order_crisis = yes } set_state_flag = riches_found_crime_crisis }
-				if = { limit = { riches_found_mine_is_legitimacy_crisis = yes } set_state_flag = riches_found_administration_compromised }
-				riches_found_clamp_mine_values = yes
-				riches_found_refresh_active_mission_progress = yes
-				if = {
-					limit = {
-						riches_found_mine_is_collapse_risk = yes
-						riches_found_mine_is_severe_pressure = yes
-						check_variable = { var = riches_found_sealed_depth_integrity value = constant:riches_found_threshold.sealed_integrity_gate compare = less_than }
-					}
-					riches_found_collapse_mine = yes
-				}
-				riches_found_refresh_mine_presentation = yes
-				riches_found_refresh_mine_contribution = yes
-				riches_found_refresh_evolution_gates = yes
-				riches_found_refresh_state_achievement_timers = yes
-				if = {
-					limit = { NOT = { riches_found_evolution_i_gate = yes } }
-					clr_state_flag = riches_found_evolution_i_pending
-				}
-				if = {
-					limit = { NOT = { riches_found_evolution_ii_gate = yes } }
-					clr_state_flag = riches_found_evolution_ii_pending
-				}
-				if = {
-					limit = { NOT = { riches_found_evolution_iii_gate = yes } }
-					clr_state_flag = riches_found_evolution_iii_pending
-				}
-				if = {
-					limit = { NOT = { riches_found_gilded_sovereignty_gate = yes } }
-					clr_state_flag = riches_found_gilded_sovereignty_pending
-				}
-				if = {
-					limit = { NOT = { riches_found_bottomless_account_gate = yes } }
-					clr_state_flag = riches_found_bottomless_account_pending
-				}
-				if = {
-					limit = { riches_found_evolution_i_gate = yes NOT = { has_state_flag = riches_found_evolution_i_pending } }
-					set_state_flag = riches_found_evolution_i_pending
-					set_temp_variable = { riches_found_evolution_delay_days = mtth:riches_found_evolution_i_interval }
-					clamp_temp_variable = { var = riches_found_evolution_delay_days min = constant:riches_found_duration.evolution_review_floor_days max = constant:riches_found_duration.evolution_review_ceiling_days }
-					state_event = { id = chaosx.nr29.901 days = riches_found_evolution_delay_days trigger_for = controller }
-				}
-				else_if = {
-					limit = { riches_found_evolution_ii_gate = yes NOT = { has_state_flag = riches_found_evolution_ii_pending } }
-					set_state_flag = riches_found_evolution_ii_pending
-					set_temp_variable = { riches_found_evolution_delay_days = mtth:riches_found_evolution_ii_interval }
-					clamp_temp_variable = { var = riches_found_evolution_delay_days min = constant:riches_found_duration.evolution_review_floor_days max = constant:riches_found_duration.evolution_review_ceiling_days }
-					state_event = { id = chaosx.nr29.902 days = riches_found_evolution_delay_days trigger_for = controller }
-				}
-				else_if = {
-					limit = { riches_found_evolution_iii_gate = yes NOT = { has_state_flag = riches_found_evolution_iii_pending } }
-					set_state_flag = riches_found_evolution_iii_pending
-					set_temp_variable = { riches_found_evolution_delay_days = mtth:riches_found_evolution_iii_interval }
-					clamp_temp_variable = { var = riches_found_evolution_delay_days min = constant:riches_found_duration.evolution_review_floor_days max = constant:riches_found_duration.evolution_review_ceiling_days }
-					state_event = { id = chaosx.nr29.903 days = riches_found_evolution_delay_days trigger_for = controller }
-				}
-				if = {
-					limit = { riches_found_gilded_sovereignty_gate = yes NOT = { has_state_flag = riches_found_gilded_sovereignty_pending } }
-					set_state_flag = riches_found_gilded_sovereignty_pending
-					set_temp_variable = { riches_found_late_outcome_delay_days = constant:riches_found_duration.late_outcome_review_days }
-					clamp_temp_variable = { var = riches_found_late_outcome_delay_days min = constant:riches_found_duration.late_outcome_review_floor_days max = constant:riches_found_duration.late_outcome_review_ceiling_days }
-					state_event = { id = chaosx.nr29.904 days = riches_found_late_outcome_delay_days trigger_for = controller }
-				}
-				if = {
-					limit = { riches_found_bottomless_account_gate = yes NOT = { has_state_flag = riches_found_bottomless_account_pending } }
-					set_state_flag = riches_found_bottomless_account_pending
-					set_temp_variable = { riches_found_late_outcome_delay_days = constant:riches_found_duration.late_outcome_review_days }
-					clamp_temp_variable = { var = riches_found_late_outcome_delay_days min = constant:riches_found_duration.late_outcome_review_floor_days max = constant:riches_found_duration.late_outcome_review_ceiling_days }
-					state_event = { id = chaosx.nr29.905 days = riches_found_late_outcome_delay_days trigger_for = controller }
-				}
-			}
-		}
+		riches_found_run_maintenance_pulse = yes
 	}
-	if = { limit = { has_country_flag = riches_found_controller_aggregate_active } riches_found_schedule_controller_pulse = yes }
 }
 
 # ---------------------------------------------------------------------------
@@ -1283,6 +1239,14 @@ riches_found_run_controller_pulse = {
 # STATE scope. Clears only transient foreign/action targets, never the
 # persistent mine identity or evolution history.
 riches_found_clear_stale_targets = {
+	clr_state_flag = riches_found_deep_project_active
+	clear_variable = riches_found_deep_project_controller
+	riches_found_clear_account_payment_receipt = yes
+	riches_found_clear_account_resolution_receipt = yes
+	clear_variable = riches_found_foreign_target
+	clear_variable = riches_found_foreign_offer_controller
+	clear_variable = riches_found_foreign_interest_score
+	clr_state_flag = riches_found_foreign_target_available
 	clear_variable = riches_found_selected_foreign_target
 	clear_variable = riches_found_contract_target
 	clear_variable = riches_found_mission_target
@@ -1342,8 +1306,11 @@ riches_found_begin_contract = {
 	if = {
 		limit = {
 			riches_found_contract_can_open = yes
+			has_state_flag = riches_found_foreign_target_available
+			has_variable = riches_found_foreign_target
 			has_event_target = riches_found_contract_partner_target
 			event_target:riches_found_contract_partner_target = { exists = yes }
+			check_variable = { var = riches_found_foreign_target value = event_target:riches_found_contract_partner_target compare = equals }
 		}
 		set_variable = { riches_found_contract_partner = event_target:riches_found_contract_partner_target }
 		if = {
@@ -1366,7 +1333,10 @@ riches_found_begin_contract = {
 		clear_variable = riches_found_contract_renewal_due_date
 		clear_variable = riches_found_contract_expiry_date
 		if = {
-			limit = { check_variable = { var = riches_found_contract_exclusive_request value = constant:riches_found_value.one compare = greater_than } }
+			limit = {
+				check_variable = { var = riches_found_contract_exclusive_request value = constant:riches_found_value.one compare = equals }
+				check_variable = { var = riches_found_contract_type value = constant:riches_found_contract_type.exclusive_concession compare = equals }
+			}
 			set_state_flag = riches_found_exclusive_contract
 			set_state_flag = riches_found_achievement_exclusive_concession_history
 		}
@@ -1395,7 +1365,10 @@ riches_found_extend_limited_contract = {
 		set_state_flag = riches_found_contract_amended
 		riches_found_clamp_mine_values = yes
 		riches_found_reconcile_mine_phase = yes
-		riches_found_refresh_mine_state = yes
+		if = {
+			limit = { CONTROLLER = { exists = yes } }
+			CONTROLLER = { riches_found_refresh_mine_state = yes }
+		}
 	}
 }
 
@@ -1561,7 +1534,17 @@ riches_found_expose_contract = {
 # activation/deactivation remain owned by the decision/mission consumer.
 riches_found_begin_mission = {
 	if = {
-		limit = { riches_found_mine_is_active = yes }
+		limit = {
+			riches_found_mine_is_registered = yes
+			NOT = { riches_found_mine_is_terminal = yes }
+			OR = {
+				riches_found_mine_is_active = yes
+				AND = {
+					check_variable = { var = riches_found_input_mission_kind value = constant:riches_found_mission_kind.restore_shaft compare = equals }
+					riches_found_mine_can_recover = yes
+				}
+			}
+		}
 		set_variable = { riches_found_mission_kind = riches_found_input_mission_kind }
 		set_variable = { riches_found_mission_start_date = global.date }
 		set_variable = { riches_found_mission_deadline = global.date }
@@ -1827,7 +1810,7 @@ riches_found_refresh_active_mission_progress = {
 			has_state_flag = riches_found_pay_train_risk_at_start
 			has_state_flag = riches_found_pay_train_route_active
 			NOT = { has_state_flag = riches_found_pay_train_route_lost }
-			NOT = { has_state_flag = riches_found_raid_robbery_succeeded }
+			NOT = { has_state_flag = riches_found_pay_train_robbery_succeeded }
 			riches_found_state_has_supplied_force = yes
 			check_variable = { var = global.date value = riches_found_mission_progress_date compare = greater_than_or_equals }
 		}
@@ -1883,6 +1866,14 @@ riches_found_complete_mission = {
 		limit = { riches_found_mission_is_active = yes }
 		set_variable = { riches_found_last_mission_result = constant:riches_found_mission_stage.success }
 		set_variable = { riches_found_mission_stage = constant:riches_found_mission_stage.success }
+		if = {
+			limit = {
+				check_variable = { var = riches_found_mission_kind value = constant:riches_found_mission_kind.public_settlement compare = equals }
+				has_state_flag = riches_found_public_project_complete
+				has_state_flag = riches_found_public_revenue_share_paid
+			}
+			riches_found_record_successful_reform = yes
+		}
 		set_state_flag = riches_found_mission_completed
 		clr_state_flag = riches_found_mission_active
 		clr_state_flag = riches_found_mission_cleanup_pending
@@ -2061,6 +2052,9 @@ riches_found_clear_mine_cleanup = {
 riches_found_begin_temporary_closure = {
 	if = {
 		limit = { riches_found_mine_can_begin_temporary_closure = yes }
+		set_variable = { riches_found_achievement_pay_train_count = constant:riches_found_value.zero }
+		clr_state_flag = riches_found_achievement_pay_train_sequence_valid
+		clr_state_flag = riches_found_achievement_pay_train_ready
 		set_state_flag = riches_found_mine_temporary_closure
 		set_variable = { riches_found_operating_state = constant:riches_found_operating_state.temporarily_closed }
 		set_variable = { riches_found_phase = constant:riches_found_phase.closure_control_crisis }
@@ -2122,6 +2116,14 @@ riches_found_permanently_seal_mine = {
 		limit = { riches_found_mine_is_registered = yes NOT = { has_state_flag = riches_found_mine_terminal } }
 		if = { limit = { CONTROLLER = { exists = yes } } CONTROLLER = { save_event_target_as = riches_found_closure_controller } }
 			riches_found_clear_mine_cleanup = yes
+		if = {
+			limit = { has_state_flag = riches_found_achievement_account_history }
+			set_state_flag = riches_found_account_closed
+			clr_state_flag = riches_found_account_active
+			clr_state_flag = riches_found_account_containment_pending
+			clr_state_flag = riches_found_account_obligation_active
+			clear_variable = riches_found_account_obligation_due_date
+		}
 			set_state_flag = riches_found_mine_permanent_seal
 			set_state_flag = riches_found_mine_terminal
 			set_state_flag = riches_found_permanently_sealed
@@ -2138,9 +2140,28 @@ riches_found_permanently_seal_mine = {
 			add_to_variable = { riches_found_extraction_pressure = constant:riches_found_scaling.demons_permanent_seal_pressure_reduction }
 		}
 		riches_found_record_achievement_permanent_seal = yes
+		if = { limit = { has_state_flag = riches_found_account_closed } riches_found_record_achievement_account_closure = yes }
 		riches_found_refresh_mine_presentation = yes
 		riches_found_refresh_mine_contribution = yes
 		riches_found_refresh_state_achievement_timers = yes
+		# Terminal mines stop periodic maintenance, but sealing achievements
+		# still require their one-time verification interval to elapse.
+		if = {
+			limit = { NOT = { has_state_flag = riches_found_terminal_verification_pending } }
+			set_state_flag = riches_found_terminal_verification_pending
+			set_temp_variable = { riches_found_terminal_verification_days = constant:riches_found_achievement_duration.last_shift_verify_days }
+			if = {
+				limit = { check_variable = { riches_found_terminal_verification_days < constant:riches_found_achievement_duration.account_closure_verify_days } }
+				set_temp_variable = { riches_found_terminal_verification_days = constant:riches_found_achievement_duration.account_closure_verify_days }
+			}
+			set_variable = { riches_found_terminal_verification_due_date = global.date }
+			set_temp_variable = { chaosx_date_days = riches_found_terminal_verification_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
+			add_to_variable = { riches_found_terminal_verification_due_date = chaosx_date_offset }
+			save_event_target_as = riches_found_terminal_verification_mine
+			state_event = { id = chaosx.nr29.907 days = riches_found_terminal_verification_days trigger_for = controller }
+		}
 		if = { limit = { has_event_target = riches_found_closure_controller } event_target:riches_found_closure_controller = { riches_found_refresh_controller_aggregate = yes } }
 	}
 }
@@ -2209,6 +2230,7 @@ riches_found_complete_recovery = {
 		riches_found_clear_closure_state = yes
 		riches_found_clear_collapse_state = yes
 		riches_found_clear_recovery_state = yes
+		clr_state_flag = riches_found_repair_started
 		set_variable = { riches_found_operating_state = constant:riches_found_operating_state.open_regulated }
 		set_variable = { riches_found_phase = constant:riches_found_phase.revenue_settlement }
 		add_to_variable = { riches_found_local_order = constant:riches_found_value.two }
@@ -2253,6 +2275,9 @@ riches_found_exhaust_mine = {
 riches_found_handle_state_control_change = {
 	if = {
 		limit = { riches_found_mine_is_registered = yes }
+		set_variable = { riches_found_achievement_pay_train_count = constant:riches_found_value.zero }
+		clr_state_flag = riches_found_achievement_pay_train_sequence_valid
+		clr_state_flag = riches_found_achievement_pay_train_ready
 		riches_found_clear_stale_targets = yes
 		if = {
 			limit = {
@@ -2277,6 +2302,20 @@ riches_found_handle_state_control_change = {
 		if = { limit = { has_state_flag = riches_found_account_closure_finalized } set_state_flag = riches_found_achievement_account_closure_invalidated }
 		if = { limit = { has_variable = riches_found_last_shift_controller } set_state_flag = riches_found_achievement_last_shift_invalidated }
 		riches_found_refresh_state_achievement_timers = yes
+		if = {
+			limit = { has_state_flag = riches_found_terminal_verification_pending CONTROLLER = { exists = yes } }
+			set_temp_variable = { chaosx_date_offset = riches_found_terminal_verification_due_date }
+			subtract_from_temp_variable = { chaosx_date_offset = global.date }
+			set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+			chaosx_convert_date_offset_to_days = yes
+			set_temp_variable = { riches_found_terminal_verification_remaining_days = chaosx_date_days }
+			if = {
+				limit = { check_variable = { riches_found_terminal_verification_remaining_days < constant:riches_found_value.one } }
+				set_temp_variable = { riches_found_terminal_verification_remaining_days = constant:riches_found_value.one }
+			}
+			save_event_target_as = riches_found_terminal_verification_mine
+			state_event = { id = chaosx.nr29.907 days = riches_found_terminal_verification_remaining_days trigger_for = controller }
+		}
 
 		if = {
 			limit = { has_event_target = riches_found_old_controller }
@@ -2496,9 +2535,13 @@ riches_found_enter_evolution_iii = {
 		limit = { riches_found_evolution_iii_gate = yes }
 			set_state_flag = riches_found_evolution_iii_recorded
 			set_state_flag = riches_found_demons_beneath_mine_active
+			set_state_flag = riches_found_supernatural_confirmed
+			set_state_flag = riches_found_supernatural_crisis
 			set_state_flag = riches_found_evolution_demons
 		set_variable = { riches_found_evolution_track = constant:riches_found_evolution.demons_beneath_mine_stage }
 		set_variable = { riches_found_evolution_iii_date = global.date }
+		set_variable = { riches_found_deep_excavation_at_contact = riches_found_deep_excavation }
+		set_variable = { riches_found_post_contact_excavation = constant:riches_found_value.zero }
 		clr_state_flag = riches_found_evolution_iii_pending
 		add_to_variable = { riches_found_extraction_pressure = constant:riches_found_scaling.demons_pressure_add }
 		add_to_variable = { riches_found_supernatural_pressure = constant:riches_found_scaling.demons_supernatural_pressure_add }
@@ -2541,6 +2584,8 @@ riches_found_enter_bottomless_account = {
 		set_state_flag = riches_found_bottomless_account
 		set_state_flag = riches_found_achievement_account_history
 		set_variable = { riches_found_bottomless_account_date = global.date }
+		set_state_flag = riches_found_account_active
+		riches_found_start_account_obligation = yes
 		riches_found_record_achievement_bottomless_account = yes
 		set_variable = { riches_found_report_kind = constant:riches_found_report.bottomless_account }
 		riches_found_queue_report = yes
@@ -2706,6 +2751,13 @@ riches_found_record_achievement_account_closure = {
 		limit = {
 			has_state_flag = riches_found_achievement_account_history
 			has_state_flag = riches_found_account_closed
+			OR = {
+				has_state_flag = riches_found_mine_permanent_seal
+				AND = {
+					has_state_flag = riches_found_account_terms_bound
+					check_variable = { var = riches_found_supernatural_pressure value = constant:riches_found_value.zero compare = equals }
+				}
+			}
 			CONTROLLER = { exists = yes }
 		}
 		set_state_flag = riches_found_account_closure_finalized
