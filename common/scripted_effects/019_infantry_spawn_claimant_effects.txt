@@ -264,8 +264,11 @@ infantry_spawn_stage_selected_claimant_revolt_warning = {
 		}
 		set_country_flag = infantry_spawn_claimant_revolt_warning_active
 		set_variable = { infantry_spawn_claimant_revolt_warning_index = infantry_spawn_selected_claimant_index }
+		set_temp_variable = { chaosx_date_days = constant:infantry_spawn_timer.derivative_revolt_warning_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
 		set_variable = { infantry_spawn_claimant_revolt_due_date = global.date }
-		add_to_variable = { infantry_spawn_claimant_revolt_due_date = constant:infantry_spawn_timer.derivative_revolt_warning_days }
+		add_to_variable = { infantry_spawn_claimant_revolt_due_date = chaosx_date_offset }
 		if = {
 			limit = { is_ai = no }
 			set_temp_variable = { infantry_spawn_claimant_localisation_index = infantry_spawn_selected_claimant_index }

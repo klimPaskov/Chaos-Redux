@@ -965,7 +965,9 @@ infantry_spawn_add_current_dynamic_equipment_to_exact_totals = {
 # (for example, a strange-force lot can carry several registered obligation
 # classes). Keep a parallel icon array so every token/amount row remains
 # aligned and the settlement line derives its icons from provider data rather
-# than an Event 19 equipment switch.
+# than an Event 19 equipment switch. Every derived <equipment>_text_icon token
+# is pre-registered in
+# common/synchronized_dynamic_tokens/019_infantry_spawn_icon_tokens.txt.
 infantry_spawn_build_exact_dynamic_equipment_icon_tokens = {
 	clear_array = infantry_spawn_exact_dynamic_equipment_icon_token_entries
 	set_temp_variable = { infantry_spawn_exact_dynamic_equipment_scan_index = constant:infantry_spawn_event.first_index }
@@ -1443,7 +1445,9 @@ infantry_spawn_requisition_copy_build_to_standardization = {
 
 # Resolve fixed Event 19 resource profiles to existing vanilla or mod texticons.
 # Provider-owned tokens keep their provider callback contract and use the
-# token's own *_text_icon localisation key in the fallback branch below.
+# token's own *_text_icon localisation key in the fallback branch below, and
+# that derived token is pre-registered in
+# common/synchronized_dynamic_tokens/019_infantry_spawn_icon_tokens.txt.
 infantry_spawn_requisition_resolve_icon_token = {
 	set_temp_variable = { infantry_spawn_requisition_current_icon_token = token:infantry_spawn_requisition_icon_unknown }
 	set_temp_variable = { infantry_spawn_requisition_icon_is_standard = 0 }

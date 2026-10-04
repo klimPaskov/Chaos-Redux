@@ -105,8 +105,11 @@ infantry_spawn_record_timed_family_management_action = {
 	set_temp_variable = { infantry_spawn_family_management_target_family_id = infantry_spawn_selected_family_id }
 	set_temp_variable = { infantry_spawn_family_management_target_action = infantry_spawn_family_management_action }
 	infantry_spawn_find_family_management_row = yes
+	set_temp_variable = { chaosx_date_days = infantry_spawn_family_management_duration_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
 	set_temp_variable = { infantry_spawn_family_management_until_date = global.date }
-	add_to_temp_variable = { infantry_spawn_family_management_until_date = infantry_spawn_family_management_duration_days }
+	add_to_temp_variable = { infantry_spawn_family_management_until_date = chaosx_date_offset }
 	if = {
 		limit = { check_variable = { infantry_spawn_family_management_row_index > constant:infantry_spawn_muster_gui_value.invalid_index } }
 		set_variable = { infantry_spawn_family_management_until_date_entries^infantry_spawn_family_management_row_index = infantry_spawn_family_management_until_date }

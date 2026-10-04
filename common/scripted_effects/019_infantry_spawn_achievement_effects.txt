@@ -753,8 +753,11 @@ infantry_spawn_achievement_start_rail_proof = {
 		limit = { check_variable = { infantry_spawn_lot_row_index > constant:infantry_spawn_event.invalid_index } }
 		set_variable = { infantry_spawn_achievement_rail_generation_uid = infantry_spawn_lot_generation_uid_entries^infantry_spawn_lot_row_index }
 		set_variable = { infantry_spawn_achievement_rail_target_state = infantry_spawn_lot_origin_state_entries^infantry_spawn_lot_row_index }
+		set_temp_variable = { chaosx_date_days = constant:infantry_spawn_achievement_threshold.rail_proof_expiry_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
 		set_variable = { infantry_spawn_achievement_rail_proof_expiry_date = global.date }
-		add_to_variable = { infantry_spawn_achievement_rail_proof_expiry_date = constant:infantry_spawn_achievement_threshold.rail_proof_expiry_days }
+		add_to_variable = { infantry_spawn_achievement_rail_proof_expiry_date = chaosx_date_offset }
 		set_country_flag = infantry_spawn_achievement_rail_attempt_active
 		clr_country_flag = infantry_spawn_achievement_rail_corridor_verified
 		clr_country_flag = infantry_spawn_achievement_rail_corridor_failed

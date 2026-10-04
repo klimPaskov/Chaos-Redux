@@ -953,8 +953,11 @@ infantry_spawn_compaction_finish_cycle = {
 	clr_country_flag = infantry_spawn_ledger_compaction_active
 	clr_country_flag = infantry_spawn_ledger_compaction_dirty
 	set_variable = { infantry_spawn_compaction_phase = constant:infantry_spawn_ledger_compaction.phase_idle }
+	set_temp_variable = { chaosx_date_days = constant:infantry_spawn_ledger_compaction.interval_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
 	set_variable = { infantry_spawn_compaction_due_date = global.date }
-	add_to_variable = { infantry_spawn_compaction_due_date = constant:infantry_spawn_ledger_compaction.interval_days }
+	add_to_variable = { infantry_spawn_compaction_due_date = chaosx_date_offset }
 	infantry_spawn_compaction_record_observed_sizes = yes
 }
 

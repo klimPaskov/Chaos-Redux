@@ -723,8 +723,11 @@ infantry_spawn_schedule_next_evolution_check = {
 			min = constant:infantry_spawn_evolution_mtth.minimum_days
 			max = constant:infantry_spawn_evolution_mtth.maximum_days
 		}
+		set_temp_variable = { chaosx_date_days = infantry_spawn_evolution_delay_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
 		set_variable = { global.infantry_spawn_next_evolution_check_date = global.date }
-		add_to_variable = { global.infantry_spawn_next_evolution_check_date = infantry_spawn_evolution_delay_days }
+		add_to_variable = { global.infantry_spawn_next_evolution_check_date = chaosx_date_offset }
 	}
 	else = { clear_variable = global.infantry_spawn_next_evolution_check_date }
 }
@@ -1579,8 +1582,11 @@ infantry_spawn_maybe_advance_global_evolution = {
 				}
 				# Move the date immediately so simultaneous participant pulses cannot
 				# score the same maintained snapshot or log duplicate stages.
+				set_temp_variable = { chaosx_date_days = constant:infantry_spawn_evolution_mtth.retry_days }
+				set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+				chaosx_convert_days_to_date_offset = yes
 				set_variable = { global.infantry_spawn_next_evolution_check_date = global.date }
-				add_to_variable = { global.infantry_spawn_next_evolution_check_date = constant:infantry_spawn_evolution_mtth.retry_days }
+				add_to_variable = { global.infantry_spawn_next_evolution_check_date = chaosx_date_offset }
 				infantry_spawn_load_evolution_counter_context = yes
 				infantry_spawn_score_next_evolution = yes
 				infantry_spawn_try_activate_next_evolution = yes
