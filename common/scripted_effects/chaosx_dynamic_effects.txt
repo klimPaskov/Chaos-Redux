@@ -790,3 +790,51 @@ remove_fuel_from_stockpile = {
 }
 
 # ============================================================================
+
+# Shared date-unit conversion. Date variables (global.date and stored copies)
+# count one game hour as 0.00001, so a day count must be converted before it
+# is added to a stored date, and a date difference must be converted back
+# before it feeds a native days = field. Constants live in
+# common/script_constants/chaosx_date_units_constants.txt.
+#
+# Temporary variables created inside a scripted effect may not survive its
+# return, so the caller initializes the output variable before each call.
+
+# ANY scope. Input: chaosx_date_days (day count, read only).
+# Output: chaosx_date_offset (date-unit offset to add to a stored date).
+# Fractional hours round up, so a due date never lands before the requested
+# duration has passed. Whole-day inputs are exact.
+chaosx_convert_days_to_date_offset = {
+	set_temp_variable = { chaosx_date_offset = chaosx_date_days }
+	multiply_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.hours_per_day }
+	set_temp_variable = { chaosx_date_unrounded_hours = chaosx_date_offset }
+	round_temp_variable = chaosx_date_offset
+	if = {
+		limit = { check_variable = { var = chaosx_date_offset value = chaosx_date_unrounded_hours compare = less_than } }
+		add_to_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.hour_step }
+	}
+	divide_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.hours_per_date_unit }
+}
+
+# ANY scope. Input: chaosx_date_offset (a date difference such as a stored
+# date minus global.date, read only).
+# Output: chaosx_date_days (whole days, rounded up, never below zero), so a
+# delayed event or timed effect that waits that many days resolves on or
+# after the stored date.
+chaosx_convert_date_offset_to_days = {
+	set_temp_variable = { chaosx_date_days = chaosx_date_offset }
+	multiply_temp_variable = { chaosx_date_days = constant:chaosx_date_units.hours_per_date_unit }
+	divide_temp_variable = { chaosx_date_days = constant:chaosx_date_units.hours_per_day }
+	set_temp_variable = { chaosx_date_unrounded_days = chaosx_date_days }
+	round_temp_variable = chaosx_date_days
+	if = {
+		limit = { check_variable = { var = chaosx_date_days value = chaosx_date_unrounded_days compare = less_than } }
+		add_to_temp_variable = { chaosx_date_days = constant:chaosx_date_units.day_step }
+	}
+	clamp_temp_variable = {
+		var = chaosx_date_days
+		min = constant:chaosx_date_units.zero
+	}
+}
+
+# ============================================================================

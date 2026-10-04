@@ -18,6 +18,8 @@ Event-owned orchestration, validation, adapters, and lifecycle helpers belong in
 - [apply_exact_state_civilian_population_loss](#apply_exact_state_civilian_population_loss)
 - [stockpile_debit_helpers](#stockpile_debit_helpers)
 - [cbrn_debit_motorized_stockpile_oldest_first](#cbrn_debit_motorized_stockpile_oldest_first)
+- [chaosx_convert_days_to_date_offset](#chaosx_convert_days_to_date_offset)
+- [chaosx_convert_date_offset_to_days](#chaosx_convert_date_offset_to_days)
 - [owner_owned_apis](#owner_owned_apis)
 - [maintenance_notes](#maintenance_notes)
 
@@ -338,6 +340,78 @@ add_to_variable = { cbrn_hq_motorized_losses_total = cbrn_motorized_stock_debit_
 ```
 
 The separate `remove_motorized_equipment_from_stockpile` helper is a legacy archetype debit and has no actual-payment output. CBRN callers that need exact payment should use this model-specific helper.
+
+## chaosx_convert_days_to_date_offset
+
+Purpose: convert a day count into the date-variable encoding so it can be added to `global.date` or to a stored copy of it.
+Date variables count one game hour as 0.00001, so one day is 0.00024 date units, and adding a raw day count to a stored date moves it decades instead of days.
+
+Scope: any scope. Temporary variables are unscoped, and the helper reads no scope data.
+
+Input: caller-set temporary `chaosx_date_days`, a day count. The helper reads it without changing it.
+
+Output: temporary `chaosx_date_offset`, the matching date-unit offset. It is overwritten on every call.
+The caller must set `chaosx_date_offset` before the call, for example to `constant:chaosx_date_units.zero`, because a temporary variable first created inside a scripted effect may not survive the effect's return, while one defined before the call is carried in and modified in place.
+
+Defaults: an unset input reads as zero and returns a zero offset.
+Whole-day inputs, positive or negative, convert exactly.
+Fractional days are converted at the engine's one-hour date resolution and round up to the next whole hour, so a due date built from the offset never lands before the requested duration has passed.
+Negative inputs produce a negative offset for comparisons against past dates.
+
+Side effects: none beyond temporary variables. The helper writes the private working value `chaosx_date_unrounded_hours`, which is not an output, and changes no date, flag, country, state, or persistent variable.
+
+Constants: category `chaosx_date_units` in [`chaosx_date_units_constants.txt`](../script_constants/chaosx_date_units_constants.txt), using `hours_per_day`, `hour_step`, and `hours_per_date_unit`.
+The day count is multiplied by `hours_per_day` and divided by `hours_per_date_unit`, so the int schema needs no five-decimal literal, and the five-decimal variable precision represents every whole-hour result exactly.
+
+Example, storing a due date a tuned number of days ahead:
+
+```txt
+set_temp_variable = { chaosx_date_days = constant:my_system_tuning.due_days }
+set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+chaosx_convert_days_to_date_offset = yes
+set_variable = { my_system_due_date = global.date }
+add_to_variable = { my_system_due_date = chaosx_date_offset }
+```
+
+Keep native `days =` fields, mission durations, timed flag durations, AI scores, and MTTH values in days.
+Convert only the value that is written into or compared with a stored date, and copy an already encoded stored date without converting it again.
+
+## chaosx_convert_date_offset_to_days
+
+Purpose: convert a date difference, such as a stored due date minus `global.date`, into a whole-day count for native `days =` delays and day-based displays.
+
+Scope: any scope. Temporary variables are unscoped, and the helper reads no scope data.
+
+Input: caller-set temporary `chaosx_date_offset`, a difference between two date-variable values. The helper reads it without changing it.
+
+Output: temporary `chaosx_date_days`, whole days rounded up and never below zero. It is overwritten on every call.
+The caller must set `chaosx_date_days` before the call, for example to `constant:chaosx_date_units.zero`, because a temporary variable first created inside a scripted effect may not survive the effect's return.
+
+Defaults: an unset input reads as zero and returns zero days.
+Any partial day rounds up to the next whole day, so a delayed event or timed effect that waits the returned number of days resolves on or after the stored date, never before it.
+A date that has already passed returns zero.
+
+Side effects: none beyond temporary variables. The helper writes the private working value `chaosx_date_unrounded_days`, which is not an output, and changes no date, flag, country, state, or persistent variable.
+
+Constants: category `chaosx_date_units`, using `hours_per_date_unit`, `hours_per_day`, `day_step`, and `zero`.
+The offset is multiplied by `hours_per_date_unit` into whole hours and divided by `hours_per_day`; a remainder of even one hour leaves a fraction of at least one twenty-fourth, which the round-up step always detects.
+
+Example, waking a worker on the stored due date:
+
+```txt
+set_temp_variable = { chaosx_date_offset = my_system_due_date }
+subtract_from_temp_variable = { chaosx_date_offset = global.date }
+set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+chaosx_convert_date_offset_to_days = yes
+set_temp_variable = { my_system_wake_days = chaosx_date_days }
+```
+
+Pass the returned day count to a field that accepts a variable, such as the `days` of a delayed `country_event` in the Event 013 job queue, or through `meta_effect` where a native field accepts only literal text.
+Calling this helper overwrites `chaosx_date_days`, so copy a day input that another consumer still needs before the call.
+
+References: the offline Data structures page, Game variables table, `date` row, documents one game hour as 0.00001 and the zero point of the encoding, and its Variables section documents the five-decimal variable precision and the scripted-effect temporary variable lifetime rule.
+Installed `documentation/dynamic_variables_documentation.md` describes `date` as a comparable date value, and `documentation/script_concept_documentation.md` and `common/script_constants/documentation.md` define the schema-first constant groups and `constant:` access in variable operations.
+Both helpers generalize the Event 013 `natural_disaster_convert_days_to_date_offset` and `natural_disaster_convert_date_offset_to_days` converters and the Event 021 `event021_days_to_date_offset` hour-rounding converter, which remain owner-private.
 
 ## owner_owned_apis
 
