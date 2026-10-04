@@ -2950,7 +2950,7 @@ cannibalism_begin_convergence_window = {
 		set_variable = { global.cannibalism_convergence_due_date = global.date }
 		add_to_variable = { global.cannibalism_convergence_due_date = chaosx_date_offset }
 		clear_variable = global.cannibalism_evolution_iii_due_date
-		clear_array = global.cannibalism_convergence_actor_countries
+		cannibalism_clear_convergence_roster = yes
 		for_each_scope_loop = {
 			array = global.cannibalism_actor_countries
 			if = {
@@ -13417,7 +13417,7 @@ cannibalism_create_unified_country_from_selected_host = {
 			# Rebuild the response roster at reveal so a warlord created during the
 			# warning window cannot escape submission, autonomy, or resistance merely
 			# because it was absent from the original convergence snapshot.
-			resize_array = { global.cannibalism_convergence_actor_countries = 0 }
+			cannibalism_clear_convergence_roster = yes
 			for_each_scope_loop = {
 				array = global.cannibalism_actor_countries
 				if = {
@@ -19918,8 +19918,22 @@ cannibalism_absorb_primary_warlord_donor_into_wendigo = {
 	}
 }
 
-cannibalism_build_wendigo_warlord_response_roster = {
+# GLOBAL or any scope. Empties the convergence response roster and clears the
+# participant flag of every country still on it, so a rebuilt roster never
+# leaves a former member marked as a participant.
+cannibalism_clear_convergence_roster = {
+	for_each_scope_loop = {
+		array = global.cannibalism_convergence_actor_countries
+		if = {
+			limit = { exists = yes }
+			clr_country_flag = cannibalism_convergence_participant
+		}
+	}
 	resize_array = { global.cannibalism_convergence_actor_countries = 0 }
+}
+
+cannibalism_build_wendigo_warlord_response_roster = {
+	cannibalism_clear_convergence_roster = yes
 	for_each_scope_loop = {
 		array = global.cannibalism_actor_countries
 		if = {
