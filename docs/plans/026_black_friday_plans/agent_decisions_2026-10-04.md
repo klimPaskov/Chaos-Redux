@@ -450,3 +450,16 @@ The volunteers and military construction surcharges already read the table from 
 Basis: D11's transfer rule covers goods the recipient receives one for one, and the round 1 review recorded the undiscounted surcharges as a known limit. Base-tier checks keep their ordinary form, and no AI weight changes.
 
 Disposition: implemented (source). Live display, affordability, and payment for a regional and a major target during a sale are `needs_live_game`.
+
+## D29. Coverage dispositions for owners the registry missed
+
+Decision:
+- `039_murder_mystery_decisions.txt` (42 custom costs; active owner) and `006_independence_wave_foreign_reaction_decisions.txt` (one custom cost at line 30) are `owner adoption pending`, with their line lists in `owner_adoption_requests.md` and rows in the registry's owner table.
+- Events 001, 007, and 017 and the Germany Mengele decisions are converted: a rescan finds that every custom-cost decision there reads the sale through its bounded adapter (BF-COM, BF-FUR, BF-RF, BF-MEN), the Mengele native costs read the table (D5) and credit Political Power (D27), and their paid event options are BF-EVO rows (D26).
+- Event 019 family-management providers: `chaos_unit_family_provider_511` (Event 002), `_512` and `_513` (Event 012), `_514` (Event 010), `_518` (Event 018), `_520` (Event 020), `_521` (CBRN), `_523` (Event 014), and `_524` (Event 039) only report whether the family can spawn or be sustained and charge nothing, so they are `not_a_purchase_cost`. The Event 016 providers `_504` to `_510` and `_522` pay real costs and stay Event 016 `owner adoption pending`. Event 019's own zombie, ghost, and golem providers `_501` to `_503` pay ordinary constants and are accepted and queued with the Event 26 engineer.
+- The Part 8 record's conclusion and the registry's freeze rule no longer say Event 26 must stay disabled or wait to be re-enabled.
+
+Basis: the README completion rule requires a disposition for every discovered purchase surface. The lead's round 2 list named the Event 012, 014, 039, and CBRN providers as payers, but their `_event19_pay_management_action` bodies contain no payment, so they join the no-op group; only Event 016 and Event 019's own providers pay.
+No gameplay file changes.
+
+Disposition: implemented (documentation). Providers `_501` to `_503` are accepted and queued: they need the price table in their payment, their checks in `019_infantry_spawn_derivative_package_triggers.txt`, and the management cost text.

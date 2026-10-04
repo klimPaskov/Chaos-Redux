@@ -418,7 +418,7 @@ Every remaining positive native or custom cost has a per-owner disposition (agen
 
 | Owner | Positive native costs | Custom cost declarations | Disposition |
 | --- | ---: | ---: | --- |
-| 006 Independence Wave | 6 | 713 | owner adoption pending |
+| 006 Independence Wave | 6 | 714 | owner adoption pending (the 2026-10-05 rescan adds `006_independence_wave_foreign_reaction_decisions.txt:30`) |
 | 012 Africa | 154 | 34 | owner adoption pending; RSA abnormal-settlement recovery requested |
 | 014 Cannibalism | 0 | 94 | owner adoption pending |
 | 016 Brilliant Scientist | 307 | 111 | owner adoption pending |
@@ -429,6 +429,7 @@ Every remaining positive native or custom cost has a per-owner disposition (agen
 | 031 Random Terror | 0 | 42 | owner adoption pending |
 | 033 Acid Rain | 0 | 13 | owner adoption pending |
 | 035 Great Depression | 0 | 89 | owner adoption pending |
+| 039 Murder Mystery | 0 | 42 | owner adoption pending (line list in `owner_adoption_requests.md`) |
 | Camps | 78 | 34 | owner adoption pending |
 | Chaos warfare (CBRN) | 21 | 55 | owner adoption pending; seal-state and destroy-records requested. The three fixed procurement factory commitments are closed as accepted exceptions in `BF-CBRN-013` to `BF-CBRN-015`. |
 | Famine and migration | 0 | 26 | owner adoption pending |
@@ -441,14 +442,15 @@ Every remaining positive native or custom cost has a per-owner disposition (agen
 | Event 018 | 0 | 100 | converted (D20): the shared project calculator applies the table ratio to every spent resource, the estimate context includes the ratio, and estimates refresh at sale start and end; factory availability and burdens are not purchases |
 | Event 019 | 0 | 53 | derivative native converted (D5); scaled formation requests, fixed management and prototype costs, claimant responses, derivative decisions, and the zombie rally band converted (D18); equipment that changes hands, claimant demand terms, and lot obligation and requisition settlements are `not_a_purchase_cost`; family management payments through the unit family providers stay with each provider's owner (`owner adoption pending`) |
 | Genocide crisis (custom) | 0 | 4 | native converted (D5); the Command Power, Army Experience, and Political Power payments of 16 decisions read the price table (D16); the three camp-system payments they call are Camps `owner adoption pending` |
-| Event 001 | 0 | 5 | partial bounded adapters; remainder owner adoption pending |
-| Event 007 | 0 | 17 | partial bounded adapters; remainder owner adoption pending |
-| Event 017 | 0 | 10 | partial bounded adapters; remainder owner adoption pending |
+| Event 001 | 0 | 5 | converted: every custom-cost decision reads the sale through the BF-COM adapters; paid event options are BF-EVO rows (D26) |
+| Event 007 | 0 | 17 | converted: every custom-cost decision reads the sale through the BF-FUR adapters |
+| Event 017 | 0 | 10 | converted: every custom-cost decision reads the sale through the BF-RF adapters |
 | Event 024 | 0 | 19 | owner adoption pending |
 | Event 028 | 0 | 16 | owner adoption pending |
 | Event 032 | 0 | 26 | owner adoption pending |
 | Fallout | 12 | 41 | owner adoption pending |
-| Germany Mengele (custom) | 0 | 4 | native converted (D5); clone adapters exist; remainder owner adoption pending |
+| Germany Mengele (custom) | 0 | 4 | converted: native costs read the table (D5) and credit Political Power (D27); the four clone decisions read the sale through the BF-MEN adapters |
+| Event 019 unit family providers | 0 | 0 | `chaos_unit_family_provider_511`, `_512`, `_513`, `_514`, `_518`, `_520`, `_521`, `_523`, and `_524` charge nothing (`not_a_purchase_cost`); the Event 016 providers `_504` to `_510` and `_522` pay (through `brilliant_scientist_event19_pay_project_force_management`, or the laser reserve for `_508`) and are 016 `owner adoption pending`; Event 019's own `_501` to `_503` pay ordinary constants and are queued with the Event 26 engineer |
 ### Paid event options in owners queued to Event 26, 2026-10-05
 
 Agent decision D26 classifies every option with a negative resource effect in the inactive owners' events (`001`, `003`, `022`, `043`, `048`, `049`, `053`, `063`, `068`, `069`, `071`, `072`, `073`, `076`, `078`, `080`, `081`, `086`, `091`, `092`, and `093`): 40 options, five of them purchases.
@@ -523,7 +525,7 @@ No live game launch was performed. Event 26 is on the default-enabled event list
 
 ## Freeze rule
 
-This document must be updated after every owner adapter or static variant change, exported only as part of the authoritative documentation change, and frozen against the exact implementation commit before Event 26 is re-enabled.
+This document must be updated after every owner adapter or static variant change, exported only as part of the authoritative documentation change, and frozen against the exact implementation commit when the live acceptance closes; Event 26 is already on the default-enabled list under agent decision D8.
 
 Any remaining `blocked_pending_evidence` row is a completion blocker and must be reported explicitly.
 

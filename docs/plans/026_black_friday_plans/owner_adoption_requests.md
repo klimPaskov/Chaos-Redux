@@ -2,7 +2,7 @@
 
 Disposition: `owner adoption pending` for every active workstream below (agent decision D8, 2026-10-04).
 The Event 26 engineer does not edit active owners' files in the shared tree; each owner converts its own positive voluntary costs and commits them with its own work, under the spec Part 4 Future coverage rule.
-Line numbers come from a decision-depth scan of the working tree at HEAD `280df0b95` on 2026-10-04, including uncommitted owner work present at that time; rescan before editing.
+Line numbers come from a decision-depth scan of the working tree at HEAD `280df0b95` on 2026-10-04, including uncommitted owner work present at that time; the Event 039 and Event 006 foreign-reaction lists come from HEAD `d0ceff0b2` on 2026-10-05. Rescan before editing.
 
 ## Which API to use
 
@@ -19,7 +19,7 @@ Line numbers come from a decision-depth scan of the working tree at HEAD `280df0
 
 ### 006 Independence Wave
 
-Positive native costs: 6; dynamic native costs: 0; custom cost declarations: 713.
+Positive native costs: 6; dynamic native costs: 0; custom cost declarations: 714.
 
 | File | Native positive cost lines | Dynamic native cost lines | Custom cost trigger lines |
 | --- | --- | --- | --- |
@@ -30,6 +30,7 @@ Positive native costs: 6; dynamic native costs: 0; custom cost declarations: 713
 | `common/decisions/006_independence_wave_far_eastern_decisions.txt` | - | - | 84, 128, 174, 235, 314, 361, 407, 454, 516, 576 |
 | `common/decisions/006_independence_wave_form01_02_04_decisions.txt` | - | - | 36, 94, 145, 206, 234, 256, 271, 286, 316, 332, 348, 363, 378, 408, 424, 440, 455, 470 |
 | `common/decisions/006_independence_wave_form03_decisions.txt` | - | - | 34, 81, 121, 157, 187, 220, 257, 296, 339, 372, 408, 450, 492, 522, 569, 629, 654, 684, 714, 742, 774, 804 |
+| `common/decisions/006_independence_wave_foreign_reaction_decisions.txt` | - | - | 30 |
 | `common/decisions/006_independence_wave_form05_decisions.txt` | - | - | 39, 81, 111, 144, 177, 209, 242, 275, 313, 375, 415, 457, 497, 530 |
 | `common/decisions/006_independence_wave_form48_decisions.txt` | - | - | 29, 76, 112, 147, 228, 282, 337 |
 | `common/decisions/006_independence_wave_formable_decisions.txt` | - | - | 33, 57, 81, 117, 173, 200, 224, 250, 281, 313 |
@@ -75,6 +76,8 @@ Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 94.
 ### 016 Brilliant Scientist
 
 Positive native costs: 307; dynamic native costs: 0; custom cost declarations: 111.
+
+Event 019 family management: `brilliant_scientist_event19_pay_project_force_management` (`common/scripted_effects/016_brilliant_scientist_project_force_event19_effects.txt`), which providers `chaos_unit_family_provider_504` to `_507`, `_509`, `_510`, and `_522` call, pays army experience, infantry and clone equipment, manpower, political power, and command power at ordinary constants. Provider `_508` debits its laser reserve in the shared landing effect instead. Both are real payments and stay `owner adoption pending`; the matching affordability checks and the Event 019 management cost text must read the same sale price.
 
 | File | Native positive cost lines | Dynamic native cost lines | Custom cost trigger lines |
 | --- | --- | --- | --- |
@@ -210,6 +213,16 @@ Remaining CBRN surfaces beyond the line lists: the seal-state and destroy-record
 
 The fixed procurement factory commitments in `common/decisions/cbrn_protection_decisions.txt` (`civilian_factory_use` at lines 48, 108, 163, 223, 289, and 327) have no sale variant; the Occupied Distribution (404 and 447) and Protective Aid (`cbrn_occupation_decisions.txt` 98 and 171) pairs show the accepted pattern of a mutually exclusive ordinary and sale commitment.
 
+### 039 Murder Mystery
+
+Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 42.
+
+| File | Native positive cost lines | Dynamic native cost lines | Custom cost trigger lines |
+| --- | --- | --- | --- |
+| `common/decisions/039_murder_mystery_decisions.txt` | - | - | 52, 103, 185, 261, 319, 380, 474, 551, 597, 648, 728, 805, 853, 901, 950, 1242, 1323, 1364, 1411, 1500, 1775, 1841, 1932, 1995, 2080, 2168, 2222, 2300, 2349, 2701, 2772, 2843, 2917, 2962, 3012, 3062, 3133, 3234, 3279, 3324, 3376, 3429 |
+
+Its Event 019 family provider (`chaos_unit_family_provider_524_event19_pay_management_action`) pays nothing, so it is not a purchase.
+
 ### Famine and migration
 
 Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 26.
@@ -306,7 +319,13 @@ Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 100
 
 #### Event 019 Infantry Spawn (custom costs; derivative native costs converted)
 
-Converted (agent decision D18): scaled formation requests, fixed management and prototype costs, claimant responses, derivative decisions, and the zombie rally band. Remaining with other owners: the family management payments that `infantry_spawn_derivative_pay_current_family_management` routes to each unit family provider (`chaos_unit_family_provider_<id>_event19_*` in the provider owners' files, such as Events 002, 010, and 012). The line list below predates the conversion.
+Converted (agent decision D18): scaled formation requests, fixed management and prototype costs, claimant responses, derivative decisions, and the zombie rally band. Family management payments that `infantry_spawn_derivative_pay_current_family_management` routes to each unit family provider (`chaos_unit_family_provider_<id>_event19_pay_management_action`), rescanned on 2026-10-05:
+
+- Not a purchase: `chaos_unit_family_provider_511` (Event 002, `002_zombie_outbreak_effects.txt`), `_514` (Event 010, `010_death_effects.txt`), `_518` (Event 018, `018_resources_found_cave_effects.txt`), `_520` (Event 020, `020_black_plague_effects.txt`), `_512` and `_513` (Event 012, `012_africa_effects.txt`), `_523` (Event 014, `014_cannibalism_effects.txt`), `_524` (Event 039, `039_murder_mystery_event19_effects.txt`), and `_521` (CBRN, `cbrn_doctrine_effects.txt`) only report whether the family can spawn or be sustained and charge nothing (`not_a_purchase_cost`).
+- Owner adoption pending: the Event 016 providers `_504` to `_507`, `_509`, `_510`, and `_522` pay through `brilliant_scientist_event19_pay_project_force_management`, and `_508` through its laser reserve (see 016 above).
+- Queued with the Event 26 engineer: Event 019's own zombie, ghost, and golem family providers `_501`, `_502`, and `_503` (`common/scripted_effects/019_infantry_spawn_unit_registry_effects.txt`) pay their training and sustainment costs at the ordinary `event19_zombie_family`, `event19_ghost_family`, and `event19_golem_family` constants, checked in `019_infantry_spawn_derivative_package_triggers.txt`. They are a missed discount, never a wrong charge.
+
+The line list below predates the conversion.
 
 Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 53.
 
@@ -328,9 +347,11 @@ Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 4.
 
 ## Other owners
 
-These owners are outside the lead's active list and both conversion tranches. Events 001, 007, and 017 and the Mengele clone decisions already carry bounded Black Friday adapters for part of their costs; each remaining cost is `owner adoption pending` until the lead assigns it to an active engineer or a conversion tranche.
+These owners are outside the lead's active list and both conversion tranches. A rescan on 2026-10-05 found that every custom-cost decision in Events 001, 007, and 017 and in the Mengele decisions reads the sale through its bounded adapter, so their decision costs are converted; their paid event options are classified in the registry's BF-EVO rows (agent decision D26). The remaining owners here are `owner adoption pending` until the lead assigns them to an active engineer or a conversion tranche.
 
 ### Event 001 Communism Spread
+
+Converted: all five custom-cost decisions read the sale through the BF-COM adapters.
 
 Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 5.
 
@@ -340,6 +361,8 @@ Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 5.
 
 ### Event 007 Fury
 
+Converted: all 17 custom-cost decisions read the sale through the BF-FUR adapters.
+
 Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 17.
 
 | File | Native positive cost lines | Dynamic native cost lines | Custom cost trigger lines |
@@ -347,6 +370,8 @@ Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 17.
 | `common/decisions/007_fury_decisions.txt` | - | - | 31, 58, 92, 138, 166, 222, 243, 297, 332, 363, 396, 419, 444, 506, 574, 596, 661 |
 
 ### Event 017 Random Faction
+
+Converted: all ten custom-cost decisions read the sale through the BF-RF adapters.
 
 Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 10.
 
@@ -387,6 +412,8 @@ Positive native costs: 12; dynamic native costs: 0; custom cost declarations: 41
 | `common/decisions/fallout_consolidated_decisions.txt` | 45, 96, 169, 1492, 1719, 1751, 2508, 2531, 2562, 2622, 2692, 2833 | - | 319, 382, 432, 480, 530, 583, 632, 681, 728, 780, 830, 877, 932, 983, 1033, 1080, 1133, 1188, 1247, 1316, 1383, 1452, 1493, 1554, 1593, 1636, 1680, 1784, 1834, 1888, 1946, 2017, 2116, 2159, 2229, 2317, 2355, 2394, 2431, 2468, 2778 |
 
 ### Germany Mengele (custom costs; native costs converted)
+
+Converted: the four custom-cost clone decisions read the sale through the BF-MEN adapters, and the native costs read the price table (D5) and credit Political Power (D27).
 
 The uncommitted stale-completion refunds in `import_subjects_from_japanese_china`, `import_subjects_from_india`, and `import_subjects_from_africa` refund the ordinary `constant:germany_mengele_decision.import_*_subjects_cost`; when that work lands they must refund `global.black_friday_price_germany_mengele_decision_import_*_subjects_cost`, which is what the decision charged (agent decision D10).
 
