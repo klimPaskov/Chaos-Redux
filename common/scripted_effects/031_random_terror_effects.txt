@@ -600,7 +600,13 @@ random_terror_apply_incident = {
 				limit = { NOT = { has_country_flag = random_terror_mission_slot_1 } }
 				set_country_flag = random_terror_hostage_crisis_active
 				set_country_flag = random_terror_mission_slot_1
-				event_target:random_terror_current_state = { set_state_flag = random_terror_hostage_mission_subject }
+				set_country_flag = random_terror_mission_active_hostage
+				set_variable = { random_terror_mission_target_hostage = event_target:random_terror_current_state }
+				event_target:random_terror_current_state = {
+					set_state_flag = random_terror_hostage_mission_subject_@PREV
+					clr_state_flag = random_terror_hostages_recovered_@PREV
+					clr_state_flag = random_terror_hostage_crisis_resolved_@PREV
+				}
 				activate_mission = random_terror_hostage_deadline
 			}
 		}
@@ -2082,7 +2088,7 @@ random_terror_decision_protect_transport = {
 	if = {
 		limit = { has_event_target = random_terror_action_state }
 		event_target:random_terror_action_state = {
-			set_state_flag = random_terror_transport_protection_success
+			set_state_flag = random_terror_transport_protection_success_@ROOT
 			random_terror_achievement_record_transport_restore = yes
 		}
 	}
@@ -2118,12 +2124,12 @@ random_terror_decision_security_surge = {
 		event_target:random_terror_action_state = {
 			if = {
 				limit = { has_state_flag = random_terror_hostage_crisis_recorded }
-				set_state_flag = random_terror_hostages_recovered
-				set_state_flag = random_terror_hostage_crisis_resolved
+				set_state_flag = random_terror_hostages_recovered_@ROOT
+				set_state_flag = random_terror_hostage_crisis_resolved_@ROOT
 			}
 			if = {
-				limit = { has_state_flag = random_terror_uprising_subject }
-				set_state_flag = random_terror_uprising_stopped
+				limit = { has_state_flag = random_terror_uprising_subject_@ROOT }
+				set_state_flag = random_terror_uprising_stopped_@ROOT
 			}
 		}
 	}
@@ -2217,8 +2223,8 @@ random_terror_decision_capital_security = {
 	set_country_flag = random_terror_capital_security_active
 	random_terror_achievement_record_capital_mission_start = yes
 	every_owned_state = {
-		limit = { has_state_flag = random_terror_capital_mission_subject }
-		set_state_flag = random_terror_capital_security_success
+		limit = { has_state_flag = random_terror_capital_mission_subject_@ROOT }
+		set_state_flag = random_terror_capital_security_success_@ROOT
 	}
 	random_terror_response_action_lock = yes
 }
@@ -2270,7 +2276,7 @@ random_terror_decision_restore_services = {
 	if = {
 		limit = { has_event_target = random_terror_action_state }
 		event_target:random_terror_action_state = {
-			set_state_flag = random_terror_civil_authority_restored
+			set_state_flag = random_terror_civil_authority_restored_@ROOT
 		}
 	}
 	random_terror_response_action_lock = yes
@@ -2938,8 +2944,8 @@ random_terror_resolve_support_disruption = {
 		event_target:random_terror_action_state = {
 			random_terror_initialize_state_state = yes
 			clr_state_flag = random_terror_smuggling_corridor_recorded
-			clr_state_flag = random_terror_support_disruption_committed
-			set_state_flag = random_terror_support_disruption_success
+			clr_state_flag = random_terror_support_disruption_committed_@ROOT
+			set_state_flag = random_terror_support_disruption_success_@ROOT
 			subtract_from_variable = { random_terror_state_activity = constant:random_terror_tuning.recovery_activity_reduction }
 			subtract_from_variable = { random_terror_state_pressure = constant:random_terror_tuning.recovery_pressure_reduction }
 			clamp_variable = { var = random_terror_state_activity min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
@@ -3150,7 +3156,7 @@ random_terror_commit_state_retake = {
 	if = {
 		limit = { has_event_target = random_terror_action_state }
 		event_target:random_terror_action_state = {
-			set_state_flag = random_terror_retake_commitment_active
+			set_state_flag = random_terror_retake_commitment_active_@ROOT
 		}
 	}
 	set_country_flag = random_terror_state_retake_committed
@@ -3613,8 +3619,8 @@ random_terror_cancel_uprising_mission = {
 
 random_terror_resolve_containment_mission_success = {
 	every_state = {
-		limit = { has_state_flag = random_terror_containment_mission_subject }
-		set_state_flag = random_terror_containment_success
+		limit = { has_state_flag = random_terror_containment_mission_subject_@ROOT }
+		set_state_flag = random_terror_containment_success_@ROOT
 		subtract_from_variable = { random_terror_state_activity = constant:random_terror_tuning.recovery_activity_reduction }
 		subtract_from_variable = { random_terror_state_pressure = constant:random_terror_tuning.recovery_pressure_reduction }
 		clamp_variable = { var = random_terror_state_activity min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
@@ -3628,7 +3634,7 @@ random_terror_resolve_containment_mission_success = {
 
 random_terror_resolve_containment_mission_partial = {
 	every_state = {
-		limit = { has_state_flag = random_terror_containment_mission_subject }
+		limit = { has_state_flag = random_terror_containment_mission_subject_@ROOT }
 		subtract_from_variable = { random_terror_state_activity = constant:random_terror_tuning.costly_operation_activity_reduction }
 		subtract_from_variable = { random_terror_state_pressure = constant:random_terror_tuning.protected_pressure_reduction }
 		set_state_flag = random_terror_containment_partial
@@ -3639,7 +3645,7 @@ random_terror_resolve_containment_mission_partial = {
 
 random_terror_resolve_containment_mission_failure = {
 	every_state = {
-		limit = { has_state_flag = random_terror_containment_mission_subject }
+		limit = { has_state_flag = random_terror_containment_mission_subject_@ROOT }
 		add_to_variable = { random_terror_state_pressure = constant:random_terror_tuning.failed_operation_pressure_gain }
 		add_to_variable = { random_terror_state_activity = constant:random_terror_tuning.state_activity_gain }
 		set_state_flag = random_terror_containment_failure
@@ -3653,8 +3659,8 @@ random_terror_resolve_containment_mission_failure = {
 
 random_terror_resolve_transport_protection_mission_success = {
 	every_state = {
-		limit = { has_state_flag = random_terror_transport_mission_subject }
-		set_state_flag = random_terror_transport_protection_success
+		limit = { has_state_flag = random_terror_transport_mission_subject_@ROOT }
+		set_state_flag = random_terror_transport_protection_success_@ROOT
 		random_terror_achievement_record_transport_restore = yes
 		clr_state_flag = random_terror_transport_disrupted
 		subtract_from_variable = { random_terror_state_activity = constant:random_terror_tuning.clean_operation_activity_reduction }
@@ -3668,7 +3674,7 @@ random_terror_resolve_transport_protection_mission_success = {
 
 random_terror_resolve_transport_protection_mission_partial = {
 	every_state = {
-		limit = { has_state_flag = random_terror_transport_mission_subject }
+		limit = { has_state_flag = random_terror_transport_mission_subject_@ROOT }
 		subtract_from_variable = { random_terror_state_pressure = constant:random_terror_tuning.protected_pressure_reduction }
 		set_state_flag = random_terror_transport_protection_partial
 		random_terror_update_state_stage = yes
@@ -3678,7 +3684,7 @@ random_terror_resolve_transport_protection_mission_partial = {
 
 random_terror_resolve_transport_protection_mission_failure = {
 	every_state = {
-		limit = { has_state_flag = random_terror_transport_mission_subject }
+		limit = { has_state_flag = random_terror_transport_mission_subject_@ROOT }
 		add_to_variable = { random_terror_state_pressure = constant:random_terror_tuning.failed_operation_pressure_gain }
 		set_state_flag = random_terror_transport_protection_failure
 		random_terror_update_state_stage = yes
@@ -3688,8 +3694,8 @@ random_terror_resolve_transport_protection_mission_failure = {
 
 random_terror_resolve_corridor_mission_success = {
 	every_state = {
-		limit = { has_state_flag = random_terror_corridor_mission_subject }
-		set_state_flag = random_terror_support_disruption_success
+		limit = { has_state_flag = random_terror_corridor_mission_subject_@ROOT }
+		set_state_flag = random_terror_support_disruption_success_@ROOT
 		clr_state_flag = random_terror_smuggling_corridor_recorded
 		random_terror_achievement_record_corridor_broken = yes
 		if = {
@@ -3709,7 +3715,7 @@ random_terror_resolve_corridor_mission_success = {
 
 random_terror_resolve_corridor_mission_partial = {
 	every_state = {
-		limit = { has_state_flag = random_terror_corridor_mission_subject }
+		limit = { has_state_flag = random_terror_corridor_mission_subject_@ROOT }
 		subtract_from_variable = { random_terror_state_pressure = constant:random_terror_tuning.protected_pressure_reduction }
 		set_state_flag = random_terror_support_disruption_partial
 		random_terror_update_state_stage = yes
@@ -3719,7 +3725,7 @@ random_terror_resolve_corridor_mission_partial = {
 
 random_terror_resolve_corridor_mission_failure = {
 	every_state = {
-		limit = { has_state_flag = random_terror_corridor_mission_subject }
+		limit = { has_state_flag = random_terror_corridor_mission_subject_@ROOT }
 		add_to_variable = { random_terror_state_pressure = constant:random_terror_tuning.failed_operation_pressure_gain }
 		set_state_flag = random_terror_support_disruption_failure
 		random_terror_update_state_stage = yes
@@ -3729,8 +3735,8 @@ random_terror_resolve_corridor_mission_failure = {
 
 random_terror_resolve_capital_security_mission_success = {
 	every_state = {
-		limit = { has_state_flag = random_terror_capital_mission_subject }
-		set_state_flag = random_terror_capital_security_success
+		limit = { has_state_flag = random_terror_capital_mission_subject_@ROOT }
+		set_state_flag = random_terror_capital_security_success_@ROOT
 		clr_state_flag = random_terror_capital_infiltration_recorded
 		subtract_from_variable = { random_terror_state_activity = constant:random_terror_tuning.capital_defense_activity_reduction }
 		subtract_from_variable = { random_terror_state_pressure = constant:random_terror_tuning.recovery_pressure_reduction }
@@ -3775,7 +3781,7 @@ random_terror_trigger_coup_attempt = {
 
 random_terror_resolve_capital_security_mission_partial = {
 	every_state = {
-		limit = { has_state_flag = random_terror_capital_mission_subject }
+		limit = { has_state_flag = random_terror_capital_mission_subject_@ROOT }
 		subtract_from_variable = { random_terror_state_pressure = constant:random_terror_tuning.protected_pressure_reduction }
 		set_state_flag = random_terror_capital_security_partial
 		random_terror_update_state_stage = yes
@@ -3785,7 +3791,7 @@ random_terror_resolve_capital_security_mission_partial = {
 
 random_terror_resolve_capital_security_mission_failure = {
 	every_state = {
-		limit = { has_state_flag = random_terror_capital_mission_subject }
+		limit = { has_state_flag = random_terror_capital_mission_subject_@ROOT }
 		add_to_variable = { random_terror_state_pressure = constant:random_terror_tuning.failed_operation_pressure_gain }
 		set_state_flag = random_terror_capital_security_failure
 		random_terror_update_state_stage = yes
@@ -3806,7 +3812,7 @@ random_terror_resolve_capital_security_mission_failure = {
 random_terror_resolve_retake_mission_success = {
 	every_state = {
 		limit = {
-			has_state_flag = random_terror_retake_mission_subject
+			has_state_flag = random_terror_retake_mission_subject_@ROOT
 			is_controlled_by = ROOT
 		}
 		clr_state_flag = random_terror_state_lost_local_control
@@ -3835,7 +3841,7 @@ random_terror_resolve_retake_mission_success = {
 
 random_terror_resolve_retake_mission_partial = {
 	every_state = {
-		limit = { has_state_flag = random_terror_retake_mission_subject }
+		limit = { has_state_flag = random_terror_retake_mission_subject_@ROOT }
 		subtract_from_variable = { random_terror_state_activity = constant:random_terror_tuning.partial_operation_activity_reduction }
 		set_state_flag = random_terror_state_retake_partial
 		random_terror_update_state_stage = yes
@@ -3845,7 +3851,7 @@ random_terror_resolve_retake_mission_partial = {
 
 random_terror_resolve_retake_mission_failure = {
 	every_state = {
-		limit = { has_state_flag = random_terror_retake_mission_subject }
+		limit = { has_state_flag = random_terror_retake_mission_subject_@ROOT }
 		add_to_variable = { random_terror_state_pressure = constant:random_terror_tuning.failed_operation_pressure_gain }
 		add_to_variable = { random_terror_state_activity = constant:random_terror_tuning.state_activity_gain }
 		set_state_flag = random_terror_state_retake_failure
@@ -3856,12 +3862,13 @@ random_terror_resolve_retake_mission_failure = {
 
 random_terror_resolve_restore_civil_authority_mission_success = {
 	every_state = {
-		limit = { has_state_flag = random_terror_restore_civil_authority_subject }
+		limit = { has_state_flag = random_terror_restore_civil_authority_subject_@ROOT }
 		if = {
 			limit = { check_variable = { random_terror_state_pressure > constant:random_terror_value.high } }
 			OWNER = { random_terror_achievement_record_restored_high_pressure = yes }
 		}
 		set_state_flag = random_terror_civil_authority_restored
+		set_state_flag = random_terror_civil_authority_restored_@ROOT
 		random_terror_achievement_record_civil_authority_restore = yes
 		clr_state_flag = random_terror_state_recovery
 		subtract_from_variable = { random_terror_state_activity = constant:random_terror_tuning.recovery_activity_reduction }
@@ -3877,7 +3884,7 @@ random_terror_resolve_restore_civil_authority_mission_success = {
 
 random_terror_resolve_restore_civil_authority_mission_partial = {
 	every_state = {
-		limit = { has_state_flag = random_terror_restore_civil_authority_subject }
+		limit = { has_state_flag = random_terror_restore_civil_authority_subject_@ROOT }
 		subtract_from_variable = { random_terror_state_activity = constant:random_terror_tuning.partial_operation_activity_reduction }
 		set_state_flag = random_terror_civil_authority_partial
 		random_terror_update_state_stage = yes
@@ -3887,7 +3894,7 @@ random_terror_resolve_restore_civil_authority_mission_partial = {
 
 random_terror_resolve_restore_civil_authority_mission_failure = {
 	every_state = {
-		limit = { has_state_flag = random_terror_restore_civil_authority_subject }
+		limit = { has_state_flag = random_terror_restore_civil_authority_subject_@ROOT }
 		add_to_variable = { random_terror_state_pressure = constant:random_terror_tuning.failed_operation_pressure_gain }
 		set_state_flag = random_terror_civil_authority_failure
 		random_terror_update_state_stage = yes
@@ -3897,7 +3904,7 @@ random_terror_resolve_restore_civil_authority_mission_failure = {
 
 random_terror_resolve_hostage_deadline_mission_success = {
 	every_state = {
-		limit = { has_state_flag = random_terror_hostage_mission_subject }
+		limit = { has_state_flag = random_terror_hostage_mission_subject_@ROOT }
 		clr_state_flag = random_terror_hostage_crisis_recorded
 		set_state_flag = random_terror_hostage_resolution_success
 		subtract_from_variable = { random_terror_state_pressure = constant:random_terror_tuning.recovery_pressure_reduction }
@@ -3910,7 +3917,7 @@ random_terror_resolve_hostage_deadline_mission_success = {
 
 random_terror_resolve_hostage_deadline_mission_failure = {
 	every_state = {
-		limit = { has_state_flag = random_terror_hostage_mission_subject }
+		limit = { has_state_flag = random_terror_hostage_mission_subject_@ROOT }
 		add_to_variable = { random_terror_state_pressure = constant:random_terror_tuning.major_pressure_gain }
 		set_state_flag = random_terror_hostage_resolution_failure
 		random_terror_update_state_stage = yes
@@ -3923,8 +3930,8 @@ random_terror_resolve_hostage_deadline_mission_failure = {
 
 random_terror_resolve_uprising_mission_success = {
 	every_state = {
-		limit = { has_state_flag = random_terror_uprising_subject }
-		set_state_flag = random_terror_uprising_stopped
+		limit = { has_state_flag = random_terror_uprising_subject_@ROOT }
+		set_state_flag = random_terror_uprising_stopped_@ROOT
 		clr_state_flag = random_terror_uprising_recent
 		subtract_from_variable = { random_terror_state_pressure = constant:random_terror_tuning.recovery_pressure_reduction }
 		subtract_from_variable = { random_terror_state_activity = constant:random_terror_tuning.recovery_activity_reduction }
@@ -3941,7 +3948,7 @@ random_terror_resolve_uprising_mission_success = {
 
 random_terror_resolve_uprising_mission_partial = {
 	every_state = {
-		limit = { has_state_flag = random_terror_uprising_subject }
+		limit = { has_state_flag = random_terror_uprising_subject_@ROOT }
 		subtract_from_variable = { random_terror_state_pressure = constant:random_terror_tuning.protected_pressure_reduction }
 		set_state_flag = random_terror_uprising_partial
 		random_terror_update_state_stage = yes
@@ -3951,7 +3958,7 @@ random_terror_resolve_uprising_mission_partial = {
 
 random_terror_resolve_uprising_mission_failure = {
 	every_state = {
-		limit = { has_state_flag = random_terror_uprising_subject }
+		limit = { has_state_flag = random_terror_uprising_subject_@ROOT }
 		add_to_variable = { random_terror_state_pressure = constant:random_terror_tuning.major_pressure_gain }
 		add_to_variable = { random_terror_state_activity = constant:random_terror_tuning.state_activity_gain }
 		set_state_flag = random_terror_uprising_failure
@@ -4270,6 +4277,22 @@ random_terror_clear_country_commitments = {
 	clr_country_flag = random_terror_mission_slot_1
 	clr_country_flag = random_terror_mission_slot_2
 	clr_country_flag = random_terror_mission_slot_3
+	clr_country_flag = random_terror_mission_active_containment
+	clr_country_flag = random_terror_mission_active_transport
+	clr_country_flag = random_terror_mission_active_corridor
+	clr_country_flag = random_terror_mission_active_capital
+	clr_country_flag = random_terror_mission_active_retake
+	clr_country_flag = random_terror_mission_active_restore
+	clr_country_flag = random_terror_mission_active_hostage
+	clr_country_flag = random_terror_mission_active_uprising
+	clear_variable = random_terror_mission_target_containment
+	clear_variable = random_terror_mission_target_transport
+	clear_variable = random_terror_mission_target_corridor
+	clear_variable = random_terror_mission_target_capital
+	clear_variable = random_terror_mission_target_retake
+	clear_variable = random_terror_mission_target_restore
+	clear_variable = random_terror_mission_target_hostage
+	clear_variable = random_terror_mission_target_uprising
 	clr_country_flag = random_terror_security_surge_active
 	clr_country_flag = random_terror_military_reinforcement_active
 	clr_country_flag = random_terror_reinforcement_commitment_active
@@ -4289,20 +4312,39 @@ random_terror_clear_country_commitments = {
 	clr_country_flag = random_terror_surrender_negotiations_active
 	clr_country_flag = random_terror_terminal_counteroffensive_recorded
 	clr_country_flag = random_terror_action_recent
+	# PREV is this receiver, even when the caller's ROOT is another country.
 	every_state = {
 		limit = {
 			OR = {
-				has_state_flag = random_terror_capital_mission_subject
-				has_state_flag = random_terror_containment_mission_subject
-				has_state_flag = random_terror_corridor_mission_subject
-				has_state_flag = random_terror_retake_mission_subject
-				has_state_flag = random_terror_transport_mission_subject
-				has_state_flag = random_terror_uprising_subject
-				has_state_flag = random_terror_hostage_mission_subject
-				has_state_flag = random_terror_restore_civil_authority_subject
+				has_state_flag = random_terror_containment_mission_subject_@PREV
+				has_state_flag = random_terror_transport_mission_subject_@PREV
+				has_state_flag = random_terror_corridor_mission_subject_@PREV
+				has_state_flag = random_terror_capital_mission_subject_@PREV
+				has_state_flag = random_terror_retake_mission_subject_@PREV
+				has_state_flag = random_terror_restore_civil_authority_subject_@PREV
+				has_state_flag = random_terror_hostage_mission_subject_@PREV
+				has_state_flag = random_terror_uprising_subject_@PREV
 			}
 		}
-		random_terror_clear_state_commitments = yes
+		clr_state_flag = random_terror_containment_mission_subject_@PREV
+		clr_state_flag = random_terror_transport_mission_subject_@PREV
+		clr_state_flag = random_terror_corridor_mission_subject_@PREV
+		clr_state_flag = random_terror_capital_mission_subject_@PREV
+		clr_state_flag = random_terror_retake_mission_subject_@PREV
+		clr_state_flag = random_terror_restore_civil_authority_subject_@PREV
+		clr_state_flag = random_terror_hostage_mission_subject_@PREV
+		clr_state_flag = random_terror_uprising_subject_@PREV
+		clr_state_flag = random_terror_containment_success_@PREV
+		clr_state_flag = random_terror_transport_protection_success_@PREV
+		clr_state_flag = random_terror_transport_protection_committed_@PREV
+		clr_state_flag = random_terror_support_disruption_success_@PREV
+		clr_state_flag = random_terror_support_disruption_committed_@PREV
+		clr_state_flag = random_terror_capital_security_success_@PREV
+		clr_state_flag = random_terror_civil_authority_restored_@PREV
+		clr_state_flag = random_terror_hostages_recovered_@PREV
+		clr_state_flag = random_terror_hostage_crisis_resolved_@PREV
+		clr_state_flag = random_terror_uprising_stopped_@PREV
+		clr_state_flag = random_terror_retake_commitment_active_@PREV
 	}
 }
 
@@ -4313,6 +4355,13 @@ random_terror_close_country_recovery = {
 			has_country_flag = random_terror_services_restored
 			has_country_flag = random_terror_public_accounting_complete
 			has_country_flag = random_terror_security_reform_complete
+			NOT = {
+				OR = {
+					has_country_flag = random_terror_mission_slot_1
+					has_country_flag = random_terror_mission_slot_2
+					has_country_flag = random_terror_mission_slot_3
+				}
+			}
 			NOT = { random_terror_country_has_active_state = yes }
 		}
 		random_terror_clear_country_commitments = yes
@@ -4386,13 +4435,13 @@ random_terror_resolve_defeat = {
 		clr_global_flag = random_terror_terminal_active
 		clr_global_flag = random_terror_global_jihad_active
 		every_country = {
+			random_terror_clear_country_commitments = yes
 			if = {
 				limit = { random_terror_is_actor = yes }
 				random_terror_cleanup_actor = yes
 			}
 			if = {
 				limit = { has_country_flag = random_terror_affected_country }
-				random_terror_clear_country_commitments = yes
 				set_country_flag = random_terror_reconstruction_available
 			}
 		}
@@ -4423,6 +4472,7 @@ random_terror_resolve_defeat = {
 }
 
 random_terror_clear_actor_runtime = {
+	random_terror_clear_country_commitments = yes
 	uncomplete_national_focus = {
 		focus = random_terror_founding_crisis
 		uncomplete_children = yes
@@ -4627,6 +4677,7 @@ random_terror_clear_actor_runtime = {
 }
 
 random_terror_cleanup_actor = {
+	random_terror_clear_country_commitments = yes
 	if = {
 		limit = { has_country_flag = random_terror_final_actor }
 		if = {

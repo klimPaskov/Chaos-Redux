@@ -75,17 +75,22 @@ random_terror_government_response_category = {
 		custom_cost_text = random_terror_establish_response_cell_cost
 		fire_only_once = yes
 		complete_effect = {
-			custom_effect_tooltip = random_terror_establish_response_cell_effect_tt
-			add_command_power = -constant:random_terror_cost.response_cell_command_power
-			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.response_cell_support_equipment }
-			FROM = { save_event_target_as = random_terror_action_state }
-			random_terror_decision_establish_response_cell = yes
-			set_country_flag = random_terror_mission_slot_1
-			FROM = {
-				set_state_flag = random_terror_containment_mission_subject
-				clr_state_flag = random_terror_containment_success
+			if = {
+				limit = { NOT = { has_country_flag = random_terror_mission_slot_1 } }
+				custom_effect_tooltip = random_terror_establish_response_cell_effect_tt
+				add_command_power = -constant:random_terror_cost.response_cell_command_power
+				add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.response_cell_support_equipment }
+				FROM = { save_event_target_as = random_terror_action_state }
+				random_terror_decision_establish_response_cell = yes
+				set_country_flag = random_terror_mission_slot_1
+				FROM = {
+					set_state_flag = random_terror_containment_mission_subject_@ROOT
+					clr_state_flag = random_terror_containment_success_@ROOT
+				}
+				set_country_flag = random_terror_mission_active_containment
+				set_variable = { random_terror_mission_target_containment = FROM }
+				activate_mission = random_terror_contain_attack_wave
 			}
-			activate_mission = random_terror_contain_attack_wave
 		}
 		ai_will_do = {
 			base = @rt_ai_medium
@@ -131,7 +136,7 @@ random_terror_government_response_category = {
 						has_state_flag = random_terror_transport_disrupted
 						has_state_flag = random_terror_port_disrupted
 					}
-					NOT = { has_state_flag = random_terror_transport_mission_subject }
+					NOT = { has_state_flag = random_terror_transport_mission_subject_@ROOT }
 				}
 			}
 		}
@@ -147,7 +152,7 @@ random_terror_government_response_category = {
 				is_controlled_by = ROOT
 				random_terror_state_is_active_crisis = yes
 				OR = { infrastructure > 0 has_state_flag = random_terror_transport_disrupted has_state_flag = random_terror_port_disrupted }
-				NOT = { has_state_flag = random_terror_transport_mission_subject }
+				NOT = { has_state_flag = random_terror_transport_mission_subject_@ROOT }
 			}
 		}
 		custom_cost_trigger = {
@@ -158,22 +163,27 @@ random_terror_government_response_category = {
 		custom_cost_text = random_terror_protect_transport_cost
 		days_re_enable = constant:random_terror_tuning.decision_action_cooldown_days
 		complete_effect = {
-			custom_effect_tooltip = random_terror_protect_transport_effect_tt
-			add_equipment_to_stockpile = { type = train_equipment amount = -constant:random_terror_cost.transport_trains }
-			add_fuel = -constant:random_terror_cost.transport_fuel
-			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.response_cell_support_equipment }
-			FROM = {
-				save_event_target_as = random_terror_action_state
-				set_state_flag = random_terror_transport_mission_subject
-				set_state_flag = random_terror_transport_protection_committed
+			if = {
+				limit = { NOT = { has_country_flag = random_terror_mission_slot_1 } }
+				custom_effect_tooltip = random_terror_protect_transport_effect_tt
+				add_equipment_to_stockpile = { type = train_equipment amount = -constant:random_terror_cost.transport_trains }
+				add_fuel = -constant:random_terror_cost.transport_fuel
+				add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.response_cell_support_equipment }
+				FROM = {
+					save_event_target_as = random_terror_action_state
+					set_state_flag = random_terror_transport_mission_subject_@ROOT
+					set_state_flag = random_terror_transport_protection_committed_@ROOT
+				}
+				random_terror_decision_protect_transport = yes
+				# The generic response wrapper records the initial outcome marker.  The
+				# mission owns the real completion signal, so do not resolve it on the
+				# commitment tick.
+				FROM = { clr_state_flag = random_terror_transport_protection_success_@ROOT }
+				set_country_flag = random_terror_mission_slot_1
+				set_country_flag = random_terror_mission_active_transport
+				set_variable = { random_terror_mission_target_transport = FROM }
+				activate_mission = random_terror_protect_transport_network
 			}
-			random_terror_decision_protect_transport = yes
-			# The generic response wrapper records the initial outcome marker.  The
-			# mission owns the real completion signal, so do not resolve it on the
-			# commitment tick.
-			FROM = { clr_state_flag = random_terror_transport_protection_success }
-			set_country_flag = random_terror_mission_slot_1
-			activate_mission = random_terror_protect_transport_network
 		}
 		ai_will_do = {
 			base = @rt_ai_medium
@@ -434,19 +444,24 @@ random_terror_government_response_category = {
 		custom_cost_text = random_terror_security_surge_cost
 		days_re_enable = constant:random_terror_tuning.decision_action_cooldown_days
 		complete_effect = {
-			custom_effect_tooltip = random_terror_security_surge_effect_tt
-			add_command_power = -constant:random_terror_cost.security_command_power
-			add_fuel = -constant:random_terror_cost.security_fuel
-			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.security_support_equipment }
-			FROM = {
-				save_event_target_as = random_terror_action_state
-				set_state_flag = random_terror_security_surge_target
-				set_state_flag = random_terror_containment_mission_subject
-				clr_state_flag = random_terror_containment_success
+			if = {
+				limit = { NOT = { has_country_flag = random_terror_mission_slot_1 } }
+				custom_effect_tooltip = random_terror_security_surge_effect_tt
+				add_command_power = -constant:random_terror_cost.security_command_power
+				add_fuel = -constant:random_terror_cost.security_fuel
+				add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.security_support_equipment }
+				FROM = {
+					save_event_target_as = random_terror_action_state
+					set_state_flag = random_terror_security_surge_target
+					set_state_flag = random_terror_containment_mission_subject_@ROOT
+					clr_state_flag = random_terror_containment_success_@ROOT
+				}
+				random_terror_decision_security_surge = yes
+				set_country_flag = random_terror_mission_slot_1
+				set_country_flag = random_terror_mission_active_containment
+				set_variable = { random_terror_mission_target_containment = FROM }
+				activate_mission = random_terror_contain_attack_wave
 			}
-			random_terror_decision_security_surge = yes
-			set_country_flag = random_terror_mission_slot_1
-			activate_mission = random_terror_contain_attack_wave
 		}
 		ai_will_do = {
 			base = @rt_ai_high
@@ -579,7 +594,7 @@ random_terror_government_response_category = {
 						has_state_flag = random_terror_sponsor_evidence_recorded
 						has_state_flag = random_terror_smuggling_corridor_recorded
 					}
-					NOT = { has_state_flag = random_terror_corridor_mission_subject }
+					NOT = { has_state_flag = random_terror_corridor_mission_subject_@ROOT }
 				}
 			}
 		}
@@ -595,7 +610,7 @@ random_terror_government_response_category = {
 			FROM = {
 				is_controlled_by = ROOT
 				OR = { has_state_flag = random_terror_sponsor_evidence_recorded has_state_flag = random_terror_smuggling_corridor_recorded }
-				NOT = { has_state_flag = random_terror_corridor_mission_subject }
+				NOT = { has_state_flag = random_terror_corridor_mission_subject_@ROOT }
 			}
 		}
 		custom_cost_trigger = {
@@ -606,18 +621,23 @@ random_terror_government_response_category = {
 		custom_cost_text = random_terror_disrupt_support_cost
 		days_re_enable = constant:random_terror_tuning.decision_action_cooldown_days
 		complete_effect = {
-			custom_effect_tooltip = random_terror_disrupt_support_effect_tt
-			add_equipment_to_stockpile = { type = convoy_1 amount = -constant:random_terror_cost.disrupt_convoys }
-			add_command_power = -constant:random_terror_cost.disrupt_command_power
-			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.intelligence_support_equipment }
-			FROM = {
-				save_event_target_as = random_terror_action_state
-				set_state_flag = random_terror_corridor_mission_subject
-				set_state_flag = random_terror_support_disruption_committed
+			if = {
+				limit = { NOT = { has_country_flag = random_terror_mission_slot_2 } }
+				custom_effect_tooltip = random_terror_disrupt_support_effect_tt
+				add_equipment_to_stockpile = { type = convoy_1 amount = -constant:random_terror_cost.disrupt_convoys }
+				add_command_power = -constant:random_terror_cost.disrupt_command_power
+				add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.intelligence_support_equipment }
+				FROM = {
+					save_event_target_as = random_terror_action_state
+					set_state_flag = random_terror_corridor_mission_subject_@ROOT
+					set_state_flag = random_terror_support_disruption_committed_@ROOT
+				}
+				random_terror_decision_disrupt_support = yes
+				set_country_flag = random_terror_mission_slot_2
+				set_country_flag = random_terror_mission_active_corridor
+				set_variable = { random_terror_mission_target_corridor = FROM }
+				activate_mission = random_terror_break_cross_border_corridor
 			}
-			random_terror_decision_disrupt_support = yes
-			set_country_flag = random_terror_mission_slot_2
-			activate_mission = random_terror_break_cross_border_corridor
 		}
 		ai_will_do = {
 			base = @rt_ai_medium
@@ -1143,21 +1163,26 @@ random_terror_government_response_category = {
 		custom_cost_text = random_terror_capital_security_cost
 		days_re_enable = constant:random_terror_tuning.decision_action_cooldown_days
 		complete_effect = {
-			custom_effect_tooltip = random_terror_capital_security_effect_tt
-			add_command_power = -constant:random_terror_cost.security_command_power
-			add_fuel = -constant:random_terror_cost.military_reinforcement_fuel
-			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.security_support_equipment }
-			FROM = {
-				save_event_target_as = random_terror_action_state
-				set_state_flag = random_terror_capital_mission_subject
+			if = {
+				limit = { NOT = { has_country_flag = random_terror_mission_slot_2 } }
+				custom_effect_tooltip = random_terror_capital_security_effect_tt
+				add_command_power = -constant:random_terror_cost.security_command_power
+				add_fuel = -constant:random_terror_cost.military_reinforcement_fuel
+				add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.security_support_equipment }
+				FROM = {
+					save_event_target_as = random_terror_action_state
+					set_state_flag = random_terror_capital_mission_subject_@ROOT
+				}
+				random_terror_decision_capital_security = yes
+				# The generic wrapper records a marker for the action.  The mission
+				# owns completion and the parent runtime must set it after continuity
+				# has actually been maintained.
+				FROM = { clr_state_flag = random_terror_capital_security_success_@ROOT }
+				set_country_flag = random_terror_mission_slot_2
+				set_country_flag = random_terror_mission_active_capital
+				set_variable = { random_terror_mission_target_capital = FROM }
+				activate_mission = random_terror_prevent_capital_seizure
 			}
-			random_terror_decision_capital_security = yes
-			# The generic wrapper records a marker for the action.  The mission
-			# owns completion and the parent runtime must set it after continuity
-			# has actually been maintained.
-			FROM = { clr_state_flag = random_terror_capital_security_success }
-			set_country_flag = random_terror_mission_slot_2
-			activate_mission = random_terror_prevent_capital_seizure
 		}
 		ai_will_do = {
 			base = @rt_ai_urgent
@@ -1425,25 +1450,30 @@ random_terror_government_response_category = {
 		custom_cost_text = random_terror_prepare_retake_cost
 		days_re_enable = constant:random_terror_tuning.decision_action_cooldown_days
 		complete_effect = {
-			custom_effect_tooltip = random_terror_prepare_retake_effect_tt
-			set_temp_variable = { random_terror_army_experience_payment = constant:random_terror_cost.retake_army_experience }
-			multiply_temp_variable = { random_terror_army_experience_payment = constant:universal_cost_framework.negative_one }
-			army_experience = random_terror_army_experience_payment
-			add_fuel = -constant:random_terror_cost.retake_fuel
-			add_equipment_to_stockpile = { type = infantry_equipment amount = -constant:random_terror_tuning.government_military_equipment }
-			FROM = {
-				save_event_target_as = random_terror_action_state
-				set_state_flag = random_terror_retake_mission_subject
+			if = {
+				limit = { NOT = { has_country_flag = random_terror_mission_slot_3 } }
+				custom_effect_tooltip = random_terror_prepare_retake_effect_tt
+				set_temp_variable = { random_terror_army_experience_payment = constant:random_terror_cost.retake_army_experience }
+				multiply_temp_variable = { random_terror_army_experience_payment = constant:universal_cost_framework.negative_one }
+				army_experience = random_terror_army_experience_payment
+				add_fuel = -constant:random_terror_cost.retake_fuel
+				add_equipment_to_stockpile = { type = infantry_equipment amount = -constant:random_terror_tuning.government_military_equipment }
+				FROM = {
+					save_event_target_as = random_terror_action_state
+					set_state_flag = random_terror_retake_mission_subject_@ROOT
+				}
+				random_terror_decision_prepare_retake = yes
+				# The existing helper grants preparation XP; the two debits make the
+				# displayed XP charge net real rather than a refund.
+				set_temp_variable = { random_terror_army_experience_payment = constant:random_terror_cost.retake_army_experience }
+				multiply_temp_variable = { random_terror_army_experience_payment = constant:universal_cost_framework.negative_one }
+				army_experience = random_terror_army_experience_payment
+				set_country_flag = random_terror_mission_slot_3
+				set_country_flag = random_terror_mission_active_retake
+				set_variable = { random_terror_mission_target_retake = FROM }
+				activate_mission = random_terror_retake_lost_state
+				random_terror_commit_state_retake = yes
 			}
-			random_terror_decision_prepare_retake = yes
-			# The existing helper grants preparation XP; the two debits make the
-			# displayed XP charge net real rather than a refund.
-			set_temp_variable = { random_terror_army_experience_payment = constant:random_terror_cost.retake_army_experience }
-			multiply_temp_variable = { random_terror_army_experience_payment = constant:universal_cost_framework.negative_one }
-			army_experience = random_terror_army_experience_payment
-			set_country_flag = random_terror_mission_slot_3
-			activate_mission = random_terror_retake_lost_state
-			random_terror_commit_state_retake = yes
 		}
 		ai_will_do = {
 			base = @rt_ai_high
@@ -1626,7 +1656,7 @@ random_terror_government_response_category = {
 			FROM = {
 				is_controlled_by = ROOT
 				has_state_flag = random_terror_state_recovery
-				NOT = { has_state_flag = random_terror_restore_civil_authority_subject }
+				NOT = { has_state_flag = random_terror_restore_civil_authority_subject_@ROOT }
 			}
 			NOT = { has_country_flag = random_terror_mission_slot_3 }
 		}
@@ -1638,7 +1668,7 @@ random_terror_government_response_category = {
 				FROM = {
 					is_controlled_by = ROOT
 					has_state_flag = random_terror_state_recovery
-					NOT = { has_state_flag = random_terror_restore_civil_authority_subject }
+					NOT = { has_state_flag = random_terror_restore_civil_authority_subject_@ROOT }
 				}
 			}
 		}
@@ -1646,14 +1676,14 @@ random_terror_government_response_category = {
 			any_controlled_state = {
 				is_controlled_by = ROOT
 				has_state_flag = random_terror_state_recovery
-				NOT = { has_state_flag = random_terror_restore_civil_authority_subject }
+				NOT = { has_state_flag = random_terror_restore_civil_authority_subject_@ROOT }
 			}
 		}
 		target_trigger = {
 			FROM = {
 				is_controlled_by = ROOT
 				has_state_flag = random_terror_state_recovery
-				NOT = { has_state_flag = random_terror_restore_civil_authority_subject }
+				NOT = { has_state_flag = random_terror_restore_civil_authority_subject_@ROOT }
 			}
 		}
 		custom_cost_trigger = {
@@ -1664,21 +1694,26 @@ random_terror_government_response_category = {
 		custom_cost_text = random_terror_restore_services_cost
 		days_re_enable = constant:random_terror_tuning.decision_action_cooldown_days
 		complete_effect = {
-			custom_effect_tooltip = random_terror_restore_services_effect_tt
-			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.restore_support_equipment }
-			add_equipment_to_stockpile = { type = train_equipment amount = -constant:random_terror_cost.transport_trains }
-			add_manpower = -constant:random_terror_tuning.government_military_manpower
-			FROM = {
-				save_event_target_as = random_terror_action_state
-				set_state_flag = random_terror_restore_civil_authority_subject
+			if = {
+				limit = { NOT = { has_country_flag = random_terror_mission_slot_3 } }
+				custom_effect_tooltip = random_terror_restore_services_effect_tt
+				add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.restore_support_equipment }
+				add_equipment_to_stockpile = { type = train_equipment amount = -constant:random_terror_cost.transport_trains }
+				add_manpower = -constant:random_terror_tuning.government_military_manpower
+				FROM = {
+					save_event_target_as = random_terror_action_state
+					set_state_flag = random_terror_restore_civil_authority_subject_@ROOT
+				}
+				set_country_flag = random_terror_mission_slot_3
+				set_country_flag = random_terror_mission_active_restore
+				set_variable = { random_terror_mission_target_restore = FROM }
+				random_terror_decision_restore_services = yes
+				# The generic response wrapper records the initial outcome marker.  The
+				# mission owns the real completion signal, so do not resolve it on the
+				# commitment tick.
+				FROM = { clr_state_flag = random_terror_civil_authority_restored_@ROOT }
+				activate_mission = random_terror_restore_civil_authority
 			}
-			random_terror_decision_restore_services = yes
-			# The generic response wrapper records the initial outcome marker.  The
-			# mission owns the real completion signal, so do not resolve it on the
-			# commitment tick.
-			FROM = { clr_state_flag = random_terror_civil_authority_restored }
-			set_country_flag = random_terror_mission_slot_3
-			activate_mission = random_terror_restore_civil_authority
 		}
 		ai_will_do = {
 			base = @rt_ai_high
@@ -3229,20 +3264,26 @@ random_terror_actor_command_category = {
 				FROM = {
 					save_event_target_as = random_terror_action_state
 					save_event_target_as = random_terror_uprising_state
-					set_state_flag = random_terror_uprising_subject
 				}
 				subtract_from_variable = { random_terror_network_authority = constant:random_terror_cost.actor_uprising_authority }
 				add_to_variable = { global.random_terror_international_unity = constant:random_terror_cost.actor_uprising_authority }
 				set_country_flag = random_terror_coordinated_uprising_called
 				random_terror_actor_action_common = yes
-				event_target:random_terror_uprising_state = { random_terror_start_pressure_uprising = yes }
-				random_terror_try_takeover_state = yes
-				FROM = {
+				# Bind the defender before the uprising can change state control.
+				event_target:random_terror_uprising_state = {
 					CONTROLLER = {
 						set_country_flag = random_terror_mission_slot_2
+						set_country_flag = random_terror_mission_active_uprising
+						set_variable = { random_terror_mission_target_uprising = event_target:random_terror_uprising_state }
+						event_target:random_terror_uprising_state = {
+							set_state_flag = random_terror_uprising_subject_@PREV
+							clr_state_flag = random_terror_uprising_stopped_@PREV
+						}
 						activate_mission = random_terror_stop_coordinated_uprising
 					}
 				}
+				event_target:random_terror_uprising_state = { random_terror_start_pressure_uprising = yes }
+				random_terror_try_takeover_state = yes
 				random_terror_commit_coordinated_uprising = yes
 				random_terror_clamp_actor_values = yes
 			}

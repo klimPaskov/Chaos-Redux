@@ -1,0 +1,136 @@
+{
+  "schemaVersion": "1.0",
+  "id": "event31_mission_owner_baseline_20261003",
+  "scenarios": [
+    {
+      "id": "mission_ai_neutral_baseline",
+      "label": "All eight mission IDs are the declared AI candidate pool. Pressure and legitimacy are midrange, international unity is midrange, world_end is false, Evolution V is false, no active hostage crisis is declared. War/major, mission ROOT, state subjects, state flags, and typed candidate scopes are not bound by this fixture.",
+      "state": { "random_terror_pressure": 50, "random_terror_response_legitimacy": 50, "global.random_terror_international_unity": 50, "world_end": 0, "random_terror_evolution_5_unlocked": 0, "random_terror_hostage_crisis_active": 0 }
+    },
+    {
+      "id": "mission_ai_high_pressure_context",
+      "label": "Country A is evaluated at maximum declared Terror Pressure for the containment AI modifier. Failed-raid status and has_war are deliberately not synthesized because their country/state binding is unresolved.",
+      "state": { "random_terror_pressure": 100, "random_terror_response_legitimacy": 50, "global.random_terror_international_unity": 50, "world_end": 0 }
+    },
+    {
+      "id": "mission_ai_low_legitimacy_context",
+      "label": "Country A has zero Response Legitimacy for the civil-authority mission AI modifier. War state and mission receipt scopes remain unresolved.",
+      "state": { "random_terror_pressure": 50, "random_terror_response_legitimacy": 0, "global.random_terror_international_unity": 50, "world_end": 0 }
+    },
+    {
+      "id": "mission_ai_final_unity_context",
+      "label": "Evolution V is enabled and global International Unity is set to 100 for the coordinated-uprising mission AI modifier. Pressure-backed uprising state and the receiving country/controller are descriptive only.",
+      "state": { "random_terror_pressure": 100, "random_terror_response_legitimacy": 50, "global.random_terror_international_unity": 100, "world_end": 0, "random_terror_evolution_5_unlocked": 1 }
+    },
+    {
+      "id": "mission_ai_capital_transport_target_priority",
+      "label": "Transport mission target is the receiving country's capital, exercising its capital-state subject AI modifier. Owner/controller may differ; typed capital and receipt scopes are unresolved. The second owner-keyed AI state-receipt consumer is retake and is isolated in mission_ai_retake_armed_state_priority.",
+      "state": { "random_terror_pressure": 50, "random_terror_response_legitimacy": 50, "global.random_terror_international_unity": 50, "world_end": 0 }
+    },
+    {
+      "id": "mission_ai_retake_armed_state_priority",
+      "label": "Retake mission subject is an armed-insurgency state, exercising the second AI state-receipt consumer. The mission receiver is A; state owner/controller and the receipt's owner-keyed binding remain unresolved until typed scope support is confirmed.",
+      "state": { "random_terror_pressure": 50, "random_terror_response_legitimacy": 50, "global.random_terror_international_unity": 50, "world_end": 0 }
+    },
+    {
+      "id": "mission_a_b_same_mission_separate_states",
+      "label": "Country A and Country B each hold the same mission type in the corresponding slot, on distinct states S_A and S_B. Complete or clear A's receipt and assert B's mission, state receipt, slot, and outcome are unchanged. A/B and state bindings are symbolic only.",
+      "state": { "random_terror_pressure": 50, "random_terror_response_legitimacy": 50, "global.random_terror_international_unity": 50, "world_end": 0 }
+    },
+    {
+      "id": "mission_slot1_cross_family_conflict",
+      "label": "A owns slot 1 for Protect Transport on S_A; B has a Contain Attack Wave subject on S_B. Neither receiver may awaken or complete the other family's mission from the shared slot flag or generic subject.",
+      "state": { "random_terror_pressure": 50, "random_terror_response_legitimacy": 50, "global.random_terror_international_unity": 50, "world_end": 0 }
+    },
+    {
+      "id": "mission_slot2_cross_family_conflict",
+      "label": "A owns slot 2 for Break Corridor on S_A; B has a Prevent Capital Seizure or Stop Uprising subject on S_B. Each slot permits one mission family for its receiver only; state and receiver bindings are symbolic.",
+      "state": { "random_terror_pressure": 50, "random_terror_response_legitimacy": 50, "global.random_terror_international_unity": 50, "world_end": 0 }
+    },
+    {
+      "id": "mission_slot3_cross_family_conflict",
+      "label": "A owns slot 3 for Retake Lost State on S_A; B has a Restore Civil Authority subject on S_B. Cross-country and cross-family activation must not exceed one mission per receiver slot.",
+      "state": { "random_terror_pressure": 50, "random_terror_response_legitimacy": 50, "global.random_terror_international_unity": 50, "world_end": 0 }
+    },
+    {
+      "id": "mission_same_state_distinct_receivers",
+      "label": "A and B have separate receiver-keyed receipts on the same physical state S. Resolving, cancelling, or timing out A's mission must not consume B's receipt or country slot unless B's own invalidation contract explicitly fires. The before-source generic state subjects cannot encode this distinction.",
+      "state": { "random_terror_pressure": 50, "random_terror_response_legitimacy": 50, "global.random_terror_international_unity": 50, "world_end": 0 }
+    },
+    {
+      "id": "mission_transport_foreign_owned_root_controlled",
+      "label": "Mission receiver A controls target state S, which is owned by B. Protect Transport activation/progress and AI targeting must preserve the accepted ROOT-control rule without requiring owner=ROOT; capital-priority status is separately varied.",
+      "state": { "random_terror_pressure": 50, "random_terror_response_legitimacy": 50, "global.random_terror_international_unity": 50, "world_end": 0 }
+    },
+    {
+      "id": "mission_capital_foreign_owned_root_controlled",
+      "label": "A controls its capital state S, which is owned by B. Prevent Capital Seizure uses current control and must remain eligible; owner-based state scans may not silently exclude it.",
+      "state": { "random_terror_pressure": 50, "random_terror_response_legitimacy": 50, "global.random_terror_international_unity": 50, "world_end": 0 }
+    },
+    {
+      "id": "mission_restore_foreign_owned_root_controlled",
+      "label": "A controls a foreign-owned recovery state S owned by B. Restore Civil Authority's receiver, target, success marker, and cleanup remain paired; no owner=ROOT substitution is assumed.",
+      "state": { "random_terror_pressure": 50, "random_terror_response_legitimacy": 50, "global.random_terror_international_unity": 50, "world_end": 0 }
+    },
+    {
+      "id": "mission_retake_external_claimed_enemy_controlled",
+      "label": "Mission receiver A has the accepted claim/core and war context for external state S; S is owned and controlled by B and has the lost-local-control stage. Retake remains an external-target mission and may not be narrowed to owned states. Claims, war, control and supply are descriptive until typed inputs are accepted.",
+      "state": { "random_terror_pressure": 50, "random_terror_response_legitimacy": 50, "global.random_terror_international_unity": 50, "world_end": 0 }
+    },
+    {
+      "id": "mission_hostage_state_owner_controller_distinct",
+      "label": "Hostage incident state S is owned by A and controlled by B; B is the actual receiving country when the mission is activated. Slot 1 conflict, active crisis, chosen response, and exact incident target are kept distinct. The mission has no accepted partial resolver in the before source.",
+      "state": { "random_terror_pressure": 50, "random_terror_response_legitimacy": 50, "global.random_terror_international_unity": 50, "world_end": 0, "random_terror_hostage_crisis_active": 1 }
+    },
+    {
+      "id": "mission_uprising_actor_owner_controller_distinct",
+      "label": "Uprising actor/ROOT is C; target state S is owned by A and controlled by B; B is the mission receiver. Keep actor, state owner, controller, receiver, exact subject, pressure, Evolution V, and slot 2 independent.",
+      "state": { "random_terror_pressure": 100, "random_terror_response_legitimacy": 50, "global.random_terror_international_unity": 50, "world_end": 0, "random_terror_evolution_5_unlocked": 1 }
+    },
+    {
+      "id": "mission_completion_owner_local_only",
+      "label": "A's mission completes successfully on its exact receipt; only A's slot, outcome, and receipt are cleared. B's same-family mission on another state remains active.",
+      "state": { "random_terror_pressure": 50, "random_terror_response_legitimacy": 50, "global.random_terror_international_unity": 50, "world_end": 0 }
+    },
+    {
+      "id": "mission_cancellation_owner_local_only",
+      "label": "A's mission becomes invalid and cancels. Cleanup must clear only A's receiver-target receipt and slot, leaving B's valid mission and state untouched.",
+      "state": { "random_terror_pressure": 50, "random_terror_response_legitimacy": 50, "global.random_terror_international_unity": 50, "world_end": 0 }
+    },
+    {
+      "id": "mission_timeout_owner_local_only",
+      "label": "A's mission reaches timeout with B's same-family receipt still active. Resolve A's outcome once and clear only A's receiver-target state.",
+      "state": { "random_terror_pressure": 50, "random_terror_response_legitimacy": 50, "global.random_terror_international_unity": 50, "world_end": 0 }
+    },
+    {
+      "id": "mission_recovery_close_owner_local",
+      "label": "A closes its recovery package while B has active Event 31 mission receipts. Owner-local recovery cleanup must leave B's receipts, slots, and outcomes intact.",
+      "state": { "random_terror_pressure": 0, "random_terror_response_legitimacy": 50, "global.random_terror_international_unity": 50, "world_end": 0 }
+    },
+    {
+      "id": "mission_global_defeat_cleanup",
+      "label": "Event 31 global defeat deliberately resolves all remaining mission receipts and slots once. Contrast with owner-local recovery cleanup; this is the only scenario that declares global cleanup intent.",
+      "state": { "random_terror_pressure": 0, "random_terror_response_legitimacy": 50, "global.random_terror_international_unity": 0, "world_end": 0 }
+    },
+    {
+      "id": "mission_capture_transfer_invalidation",
+      "label": "During each active mission, transfer target S between owners/controllers before completion, cancellation, and timeout. Old receiver A's policy is explicit; new receiver B may not inherit A's receipt. Retake's external claimed/core design remains distinct.",
+      "state": { "random_terror_pressure": 50, "random_terror_response_legitimacy": 50, "global.random_terror_international_unity": 50, "world_end": 0 }
+    },
+    {
+      "id": "mission_all_eight_success_outcome_criteria",
+      "label": "Apply accepted success criteria separately to all eight: containment pressure falls/spread is blocked or hotspot cleared; transport remains operational with supply preserved and activity falls; corridor consent/connection is resolved and reach or supply falls; capital continuity is held and compromised actors are exposed; retake control is restored and recovery opens; civil authority activity clears and legitimacy rises; hostage success resolves with bounded casualties; uprising collapses and world revolt weakens. The source fixture does not bind any of these state/country scopes.",
+      "state": { "random_terror_pressure": 25, "random_terror_response_legitimacy": 75, "global.random_terror_international_unity": 50, "world_end": 0 }
+    },
+    {
+      "id": "mission_all_eight_partial_outcome_criteria",
+      "label": "Apply accepted partial criteria separately to all eight: containment has no spread but original cell remains; transport route stays open with bounded damage; corridor weakens or shifts; capital holds with nearby loss; retake gains military control without civil restoration; civil authority remains contested; hostage partial means some freed while leaders escape (accepted by matrix but absent in current mission source); uprising holds one state while cells survive. Typed bindings and missing hostage partial producer remain unresolved.",
+      "state": { "random_terror_pressure": 50, "random_terror_response_legitimacy": 50, "global.random_terror_international_unity": 50, "world_end": 0 }
+    },
+    {
+      "id": "mission_all_eight_failure_outcome_criteria",
+      "label": "Apply accepted failure criteria separately to all eight: new hotspot or stage advance; transport disruption/captured supply/pressure; corridor spread or retaliation; coup/paralysis/civil war/capital loss; actor entrenchment and authority gain; dormant/entrenched return; hostage mass casualties/propaganda victory/pressure; uprising civil war or transfer. Outcomes must be owner-bound and resolve once; typed scopes remain unresolved.",
+      "state": { "random_terror_pressure": 75, "random_terror_response_legitimacy": 25, "global.random_terror_international_unity": 50, "world_end": 0 }
+    }
+  ]
+}

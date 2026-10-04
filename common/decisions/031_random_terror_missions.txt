@@ -21,69 +21,93 @@ random_terror_government_response_category = {
 		days_mission_timeout = constant:random_terror_tuning.containment_days
 		selectable_mission = no
 		fire_only_once = no
-		is_good = yes
+		is_good = no
 		activation = {
+			has_country_flag = random_terror_mission_active_containment
 			random_terror_can_government_response = yes
 			has_country_flag = random_terror_mission_slot_1
-			any_state = { has_state_flag = random_terror_containment_mission_subject }
+			any_state = { has_state_flag = random_terror_containment_mission_subject_@ROOT }
 		}
 		available = {
-			any_state = {
-				has_state_flag = random_terror_containment_mission_subject
-				has_state_flag = random_terror_containment_success
+			custom_trigger_tooltip = {
+				tooltip = random_terror_contain_attack_wave_objective_tt
+				hidden_trigger = { has_country_flag = random_terror_mission_active_containment }
+				any_state = {
+					has_state_flag = random_terror_containment_mission_subject_@ROOT
+					has_state_flag = random_terror_containment_success_@ROOT
+				}
 			}
 		}
 		cancel_trigger = {
 			OR = {
+				NOT = { has_country_flag = random_terror_mission_active_containment }
 				NOT = { random_terror_can_government_response = yes }
 				has_global_flag = world_end
 				NOT = { has_country_flag = random_terror_mission_slot_1 }
-				NOT = { any_state = { has_state_flag = random_terror_containment_mission_subject } }
+				NOT = { any_state = { has_state_flag = random_terror_containment_mission_subject_@ROOT } }
 			}
 		}
 		cancel_effect = {
-			random_terror_cancel_containment_mission = yes
-			every_state = {
-				limit = { has_state_flag = random_terror_containment_mission_subject }
-				clr_state_flag = random_terror_containment_mission_subject
-				clr_state_flag = random_terror_containment_success
+			if = {
+				limit = { has_country_flag = random_terror_mission_active_containment }
+				random_terror_cancel_containment_mission = yes
+				every_state = {
+					limit = { has_state_flag = random_terror_containment_mission_subject_@ROOT }
+					clr_state_flag = random_terror_containment_mission_subject_@ROOT
+					clr_state_flag = random_terror_containment_success_@ROOT
+				}
+				clr_country_flag = random_terror_mission_slot_1
+				clr_country_flag = random_terror_security_surge_active
+				clr_country_flag = random_terror_mission_active_containment
+				clear_variable = random_terror_mission_target_containment
+				random_terror_close_country_recovery = yes
 			}
-			clr_country_flag = random_terror_mission_slot_1
-			clr_country_flag = random_terror_security_surge_active
 		}
 		complete_effect = {
-			custom_effect_tooltip = random_terror_contain_attack_wave_complete_tt
-			random_terror_resolve_containment_mission_success = yes
-			every_state = {
-				limit = { has_state_flag = random_terror_containment_mission_subject }
-				clr_state_flag = random_terror_containment_mission_subject
-				clr_state_flag = random_terror_containment_success
+			if = {
+				limit = { has_country_flag = random_terror_mission_active_containment }
+				custom_effect_tooltip = random_terror_contain_attack_wave_complete_tt
+				random_terror_resolve_containment_mission_success = yes
+				every_state = {
+					limit = { has_state_flag = random_terror_containment_mission_subject_@ROOT }
+					clr_state_flag = random_terror_containment_mission_subject_@ROOT
+					clr_state_flag = random_terror_containment_success_@ROOT
+				}
+				clr_country_flag = random_terror_mission_slot_1
+				clr_country_flag = random_terror_security_surge_active
+				clr_country_flag = random_terror_mission_active_containment
+				clear_variable = random_terror_mission_target_containment
+				random_terror_close_country_recovery = yes
 			}
-			clr_country_flag = random_terror_mission_slot_1
-			clr_country_flag = random_terror_security_surge_active
 		}
 		timeout_effect = {
 			if = {
-				limit = {
-					any_state = {
-						has_state_flag = random_terror_containment_mission_subject
-						NOT = { check_variable = { random_terror_state_activity > constant:random_terror_tuning.state_activity_active_threshold } }
+				limit = { has_country_flag = random_terror_mission_active_containment }
+				if = {
+					limit = {
+						any_state = {
+							has_state_flag = random_terror_containment_mission_subject_@ROOT
+							NOT = { check_variable = { random_terror_state_activity > constant:random_terror_tuning.state_activity_active_threshold } }
+						}
 					}
+					custom_effect_tooltip = random_terror_contain_attack_wave_partial_tt
+					random_terror_resolve_containment_mission_partial = yes
 				}
-				custom_effect_tooltip = random_terror_contain_attack_wave_partial_tt
-				random_terror_resolve_containment_mission_partial = yes
+				else = {
+					custom_effect_tooltip = random_terror_contain_attack_wave_failure_tt
+					random_terror_resolve_containment_mission_failure = yes
+				}
+				every_state = {
+					limit = { has_state_flag = random_terror_containment_mission_subject_@ROOT }
+					clr_state_flag = random_terror_containment_mission_subject_@ROOT
+					clr_state_flag = random_terror_containment_success_@ROOT
+				}
+				clr_country_flag = random_terror_mission_slot_1
+				clr_country_flag = random_terror_security_surge_active
+				clr_country_flag = random_terror_mission_active_containment
+				clear_variable = random_terror_mission_target_containment
+				random_terror_close_country_recovery = yes
 			}
-			else = {
-				custom_effect_tooltip = random_terror_contain_attack_wave_failure_tt
-				random_terror_resolve_containment_mission_failure = yes
-			}
-			every_state = {
-				limit = { has_state_flag = random_terror_containment_mission_subject }
-				clr_state_flag = random_terror_containment_mission_subject
-				clr_state_flag = random_terror_containment_success
-			}
-			clr_country_flag = random_terror_mission_slot_1
-			clr_country_flag = random_terror_security_surge_active
 		}
 		ai_will_do = {
 			base = @rt_mission_ai_high
@@ -98,76 +122,101 @@ random_terror_government_response_category = {
 		days_mission_timeout = constant:random_terror_tuning.transport_mission_days
 		selectable_mission = no
 		fire_only_once = no
-		is_good = yes
+		is_good = no
 		activation = {
+			has_country_flag = random_terror_mission_active_transport
 			random_terror_can_government_response = yes
 			has_country_flag = random_terror_mission_slot_1
-			any_state = { has_state_flag = random_terror_transport_mission_subject }
+			any_state = { has_state_flag = random_terror_transport_mission_subject_@ROOT }
 		}
 		available = {
-			any_state = {
-				has_state_flag = random_terror_transport_mission_subject
-				is_controlled_by = ROOT
-				has_state_flag = random_terror_transport_protection_success
+			custom_trigger_tooltip = {
+				tooltip = random_terror_protect_transport_network_objective_tt
+				hidden_trigger = { has_country_flag = random_terror_mission_active_transport }
+				any_state = {
+					has_state_flag = random_terror_transport_mission_subject_@ROOT
+					is_controlled_by = ROOT
+					has_state_flag = random_terror_transport_protection_success_@ROOT
+				}
 			}
 		}
 		cancel_trigger = {
 			OR = {
+				NOT = { has_country_flag = random_terror_mission_active_transport }
 				NOT = { random_terror_can_government_response = yes }
 				has_global_flag = world_end
 				NOT = { has_country_flag = random_terror_mission_slot_1 }
-				NOT = { any_state = { has_state_flag = random_terror_transport_mission_subject } }
+				NOT = { any_state = { has_state_flag = random_terror_transport_mission_subject_@ROOT } }
 			}
 		}
 		cancel_effect = {
-			random_terror_cancel_transport_protection_mission = yes
-			every_state = {
-				limit = { has_state_flag = random_terror_transport_mission_subject }
-				clr_state_flag = random_terror_transport_mission_subject
-				clr_state_flag = random_terror_transport_protection_committed
+			if = {
+				limit = { has_country_flag = random_terror_mission_active_transport }
+				random_terror_cancel_transport_protection_mission = yes
+				every_state = {
+					limit = { has_state_flag = random_terror_transport_mission_subject_@ROOT }
+					clr_state_flag = random_terror_transport_protection_success_@ROOT
+					clr_state_flag = random_terror_transport_mission_subject_@ROOT
+					clr_state_flag = random_terror_transport_protection_committed_@ROOT
+				}
+				clr_country_flag = random_terror_mission_slot_1
+				clr_country_flag = random_terror_transport_protection_active
+				clr_country_flag = random_terror_mission_active_transport
+				clear_variable = random_terror_mission_target_transport
+				random_terror_close_country_recovery = yes
 			}
-			clr_country_flag = random_terror_mission_slot_1
-			clr_country_flag = random_terror_transport_protection_active
 		}
 		complete_effect = {
-			custom_effect_tooltip = random_terror_protect_transport_network_complete_tt
-			random_terror_resolve_transport_protection_mission_success = yes
-			every_state = {
-				limit = { has_state_flag = random_terror_transport_mission_subject }
-				clr_state_flag = random_terror_transport_mission_subject
-				clr_state_flag = random_terror_transport_protection_committed
-				clr_state_flag = random_terror_transport_protection_success
+			if = {
+				limit = { has_country_flag = random_terror_mission_active_transport }
+				custom_effect_tooltip = random_terror_protect_transport_network_complete_tt
+				random_terror_resolve_transport_protection_mission_success = yes
+				every_state = {
+					limit = { has_state_flag = random_terror_transport_mission_subject_@ROOT }
+					clr_state_flag = random_terror_transport_mission_subject_@ROOT
+					clr_state_flag = random_terror_transport_protection_committed_@ROOT
+					clr_state_flag = random_terror_transport_protection_success_@ROOT
+				}
+				clr_country_flag = random_terror_mission_slot_1
+				clr_country_flag = random_terror_transport_protection_active
+				clr_country_flag = random_terror_mission_active_transport
+				clear_variable = random_terror_mission_target_transport
+				random_terror_close_country_recovery = yes
 			}
-			clr_country_flag = random_terror_mission_slot_1
-			clr_country_flag = random_terror_transport_protection_active
 		}
 		timeout_effect = {
 			if = {
-				limit = {
-					any_state = {
-						has_state_flag = random_terror_transport_mission_subject
-						NOT = { has_state_flag = random_terror_transport_disrupted }
+				limit = { has_country_flag = random_terror_mission_active_transport }
+				if = {
+					limit = {
+						any_state = {
+							has_state_flag = random_terror_transport_mission_subject_@ROOT
+							NOT = { has_state_flag = random_terror_transport_disrupted }
+						}
 					}
+					custom_effect_tooltip = random_terror_protect_transport_network_partial_tt
+					random_terror_resolve_transport_protection_mission_partial = yes
 				}
-				custom_effect_tooltip = random_terror_protect_transport_network_partial_tt
-				random_terror_resolve_transport_protection_mission_partial = yes
+				else = {
+					custom_effect_tooltip = random_terror_protect_transport_network_failure_tt
+					random_terror_resolve_transport_protection_mission_failure = yes
+				}
+				every_state = {
+					limit = { has_state_flag = random_terror_transport_mission_subject_@ROOT }
+					clr_state_flag = random_terror_transport_mission_subject_@ROOT
+					clr_state_flag = random_terror_transport_protection_committed_@ROOT
+					clr_state_flag = random_terror_transport_protection_success_@ROOT
+				}
+				clr_country_flag = random_terror_mission_slot_1
+				clr_country_flag = random_terror_transport_protection_active
+				clr_country_flag = random_terror_mission_active_transport
+				clear_variable = random_terror_mission_target_transport
+				random_terror_close_country_recovery = yes
 			}
-			else = {
-				custom_effect_tooltip = random_terror_protect_transport_network_failure_tt
-				random_terror_resolve_transport_protection_mission_failure = yes
-			}
-			every_state = {
-				limit = { has_state_flag = random_terror_transport_mission_subject }
-				clr_state_flag = random_terror_transport_mission_subject
-				clr_state_flag = random_terror_transport_protection_committed
-				clr_state_flag = random_terror_transport_protection_success
-			}
-			clr_country_flag = random_terror_mission_slot_1
-			clr_country_flag = random_terror_transport_protection_active
 		}
 		ai_will_do = {
 			base = @rt_mission_ai_high
-			modifier = { factor = @rt_mission_ai_urgent_factor capital_scope = { has_state_flag = random_terror_transport_mission_subject } }
+			modifier = { factor = @rt_mission_ai_urgent_factor capital_scope = { has_state_flag = random_terror_transport_mission_subject_@ROOT } }
 			modifier = { factor = @rt_mission_ai_high_factor has_war = yes }
 		}
 	}
@@ -177,66 +226,93 @@ random_terror_government_response_category = {
 		days_mission_timeout = constant:random_terror_tuning.corridor_mission_days
 		selectable_mission = no
 		fire_only_once = no
-		is_good = yes
+		is_good = no
 		activation = {
+			has_country_flag = random_terror_mission_active_corridor
 			random_terror_can_government_response = yes
 			has_country_flag = random_terror_mission_slot_2
-			any_state = { has_state_flag = random_terror_corridor_mission_subject }
+			any_state = { has_state_flag = random_terror_corridor_mission_subject_@ROOT }
 		}
 		available = {
-			any_state = {
-				has_state_flag = random_terror_corridor_mission_subject
-				has_state_flag = random_terror_support_disruption_success
+			custom_trigger_tooltip = {
+				tooltip = random_terror_break_cross_border_corridor_objective_tt
+				hidden_trigger = { has_country_flag = random_terror_mission_active_corridor }
+				any_state = {
+					has_state_flag = random_terror_corridor_mission_subject_@ROOT
+					has_state_flag = random_terror_support_disruption_success_@ROOT
+				}
 			}
 		}
 		cancel_trigger = {
 			OR = {
+				NOT = { has_country_flag = random_terror_mission_active_corridor }
 				NOT = { random_terror_can_government_response = yes }
 				has_global_flag = world_end
 				NOT = { has_country_flag = random_terror_mission_slot_2 }
-				NOT = { any_state = { has_state_flag = random_terror_corridor_mission_subject } }
+				NOT = { any_state = { has_state_flag = random_terror_corridor_mission_subject_@ROOT } }
 			}
 		}
 		cancel_effect = {
-			random_terror_cancel_corridor_mission = yes
-			every_state = {
-				limit = { has_state_flag = random_terror_corridor_mission_subject }
-				clr_state_flag = random_terror_corridor_mission_subject
-				clr_state_flag = random_terror_support_disruption_success
+			if = {
+				limit = { has_country_flag = random_terror_mission_active_corridor }
+				random_terror_cancel_corridor_mission = yes
+				every_state = {
+					limit = { has_state_flag = random_terror_corridor_mission_subject_@ROOT }
+					clr_state_flag = random_terror_support_disruption_committed_@ROOT
+					clr_state_flag = random_terror_corridor_mission_subject_@ROOT
+					clr_state_flag = random_terror_support_disruption_success_@ROOT
+				}
+				clr_country_flag = random_terror_mission_slot_2
+				clr_country_flag = random_terror_mission_active_corridor
+				clear_variable = random_terror_mission_target_corridor
+				random_terror_close_country_recovery = yes
 			}
-			clr_country_flag = random_terror_mission_slot_2
 		}
 		complete_effect = {
-			custom_effect_tooltip = random_terror_break_cross_border_corridor_complete_tt
-			random_terror_resolve_corridor_mission_success = yes
-			every_state = {
-				limit = { has_state_flag = random_terror_corridor_mission_subject }
-				clr_state_flag = random_terror_corridor_mission_subject
-				clr_state_flag = random_terror_support_disruption_success
+			if = {
+				limit = { has_country_flag = random_terror_mission_active_corridor }
+				custom_effect_tooltip = random_terror_break_cross_border_corridor_complete_tt
+				random_terror_resolve_corridor_mission_success = yes
+				every_state = {
+					limit = { has_state_flag = random_terror_corridor_mission_subject_@ROOT }
+					clr_state_flag = random_terror_support_disruption_committed_@ROOT
+					clr_state_flag = random_terror_corridor_mission_subject_@ROOT
+					clr_state_flag = random_terror_support_disruption_success_@ROOT
+				}
+				clr_country_flag = random_terror_mission_slot_2
+				clr_country_flag = random_terror_mission_active_corridor
+				clear_variable = random_terror_mission_target_corridor
+				random_terror_close_country_recovery = yes
 			}
-			clr_country_flag = random_terror_mission_slot_2
 		}
 		timeout_effect = {
 			if = {
-				limit = {
-					any_state = {
-						has_state_flag = random_terror_corridor_mission_subject
-						NOT = { has_state_flag = random_terror_smuggling_corridor_recorded }
+				limit = { has_country_flag = random_terror_mission_active_corridor }
+				if = {
+					limit = {
+						any_state = {
+							has_state_flag = random_terror_corridor_mission_subject_@ROOT
+							NOT = { has_state_flag = random_terror_smuggling_corridor_recorded }
+						}
 					}
+					custom_effect_tooltip = random_terror_break_cross_border_corridor_partial_tt
+					random_terror_resolve_corridor_mission_partial = yes
 				}
-				custom_effect_tooltip = random_terror_break_cross_border_corridor_partial_tt
-				random_terror_resolve_corridor_mission_partial = yes
+				else = {
+					custom_effect_tooltip = random_terror_break_cross_border_corridor_failure_tt
+					random_terror_resolve_corridor_mission_failure = yes
+				}
+				every_state = {
+					limit = { has_state_flag = random_terror_corridor_mission_subject_@ROOT }
+					clr_state_flag = random_terror_support_disruption_committed_@ROOT
+					clr_state_flag = random_terror_corridor_mission_subject_@ROOT
+					clr_state_flag = random_terror_support_disruption_success_@ROOT
+				}
+				clr_country_flag = random_terror_mission_slot_2
+				clr_country_flag = random_terror_mission_active_corridor
+				clear_variable = random_terror_mission_target_corridor
+				random_terror_close_country_recovery = yes
 			}
-			else = {
-				custom_effect_tooltip = random_terror_break_cross_border_corridor_failure_tt
-				random_terror_resolve_corridor_mission_failure = yes
-			}
-			every_state = {
-				limit = { has_state_flag = random_terror_corridor_mission_subject }
-				clr_state_flag = random_terror_corridor_mission_subject
-				clr_state_flag = random_terror_support_disruption_success
-			}
-			clr_country_flag = random_terror_mission_slot_2
 		}
 		ai_will_do = {
 			base = @rt_mission_ai_high
@@ -250,72 +326,96 @@ random_terror_government_response_category = {
 		days_mission_timeout = constant:random_terror_tuning.capital_mission_days
 		selectable_mission = no
 		fire_only_once = no
-		is_good = yes
+		is_good = no
 		activation = {
+			has_country_flag = random_terror_mission_active_capital
 			random_terror_can_government_response = yes
 			has_country_flag = random_terror_mission_slot_2
-			any_state = { has_state_flag = random_terror_capital_mission_subject }
+			any_state = { has_state_flag = random_terror_capital_mission_subject_@ROOT }
 		}
 		available = {
-			any_state = {
-				has_state_flag = random_terror_capital_mission_subject
-				is_capital = yes
-				is_controlled_by = ROOT
-				has_state_flag = random_terror_capital_security_success
+			custom_trigger_tooltip = {
+				tooltip = random_terror_prevent_capital_seizure_objective_tt
+				hidden_trigger = { has_country_flag = random_terror_mission_active_capital }
+				any_state = {
+					has_state_flag = random_terror_capital_mission_subject_@ROOT
+					is_capital = yes
+					is_controlled_by = ROOT
+					has_state_flag = random_terror_capital_security_success_@ROOT
+				}
 			}
 		}
 		cancel_trigger = {
 			OR = {
+				NOT = { has_country_flag = random_terror_mission_active_capital }
 				NOT = { random_terror_can_government_response = yes }
 				has_global_flag = world_end
 				NOT = { has_country_flag = random_terror_mission_slot_2 }
-				NOT = { any_state = { has_state_flag = random_terror_capital_mission_subject } }
+				NOT = { any_state = { has_state_flag = random_terror_capital_mission_subject_@ROOT } }
 			}
 		}
 		cancel_effect = {
-			random_terror_cancel_capital_security_mission = yes
-			every_state = {
-				limit = { has_state_flag = random_terror_capital_mission_subject }
-				clr_state_flag = random_terror_capital_mission_subject
-				clr_state_flag = random_terror_capital_security_success
+			if = {
+				limit = { has_country_flag = random_terror_mission_active_capital }
+				random_terror_cancel_capital_security_mission = yes
+				every_state = {
+					limit = { has_state_flag = random_terror_capital_mission_subject_@ROOT }
+					clr_state_flag = random_terror_capital_mission_subject_@ROOT
+					clr_state_flag = random_terror_capital_security_success_@ROOT
+				}
+				clr_country_flag = random_terror_mission_slot_2
+				clr_country_flag = random_terror_capital_security_active
+				clr_country_flag = random_terror_mission_active_capital
+				clear_variable = random_terror_mission_target_capital
+				random_terror_close_country_recovery = yes
 			}
-			clr_country_flag = random_terror_mission_slot_2
-			clr_country_flag = random_terror_capital_security_active
 		}
 		complete_effect = {
-			custom_effect_tooltip = random_terror_prevent_capital_seizure_complete_tt
-			random_terror_resolve_capital_security_mission_success = yes
-			every_state = {
-				limit = { has_state_flag = random_terror_capital_mission_subject }
-				clr_state_flag = random_terror_capital_mission_subject
-				clr_state_flag = random_terror_capital_security_success
+			if = {
+				limit = { has_country_flag = random_terror_mission_active_capital }
+				custom_effect_tooltip = random_terror_prevent_capital_seizure_complete_tt
+				random_terror_resolve_capital_security_mission_success = yes
+				every_state = {
+					limit = { has_state_flag = random_terror_capital_mission_subject_@ROOT }
+					clr_state_flag = random_terror_capital_mission_subject_@ROOT
+					clr_state_flag = random_terror_capital_security_success_@ROOT
+				}
+				clr_country_flag = random_terror_mission_slot_2
+				clr_country_flag = random_terror_capital_security_active
+				clr_country_flag = random_terror_mission_active_capital
+				clear_variable = random_terror_mission_target_capital
+				random_terror_close_country_recovery = yes
 			}
-			clr_country_flag = random_terror_mission_slot_2
-			clr_country_flag = random_terror_capital_security_active
 		}
 		timeout_effect = {
 			if = {
-				limit = {
-					any_state = {
-						has_state_flag = random_terror_capital_mission_subject
-						is_capital = yes
-						is_controlled_by = ROOT
+				limit = { has_country_flag = random_terror_mission_active_capital }
+				if = {
+					limit = {
+						any_state = {
+							has_state_flag = random_terror_capital_mission_subject_@ROOT
+							is_capital = yes
+							is_controlled_by = ROOT
+						}
 					}
+					custom_effect_tooltip = random_terror_prevent_capital_seizure_partial_tt
+					random_terror_resolve_capital_security_mission_partial = yes
 				}
-				custom_effect_tooltip = random_terror_prevent_capital_seizure_partial_tt
-				random_terror_resolve_capital_security_mission_partial = yes
+				else = {
+					custom_effect_tooltip = random_terror_prevent_capital_seizure_failure_tt
+					random_terror_resolve_capital_security_mission_failure = yes
+				}
+				every_state = {
+					limit = { has_state_flag = random_terror_capital_mission_subject_@ROOT }
+					clr_state_flag = random_terror_capital_mission_subject_@ROOT
+					clr_state_flag = random_terror_capital_security_success_@ROOT
+				}
+				clr_country_flag = random_terror_mission_slot_2
+				clr_country_flag = random_terror_capital_security_active
+				clr_country_flag = random_terror_mission_active_capital
+				clear_variable = random_terror_mission_target_capital
+				random_terror_close_country_recovery = yes
 			}
-			else = {
-				custom_effect_tooltip = random_terror_prevent_capital_seizure_failure_tt
-				random_terror_resolve_capital_security_mission_failure = yes
-			}
-			every_state = {
-				limit = { has_state_flag = random_terror_capital_mission_subject }
-				clr_state_flag = random_terror_capital_mission_subject
-				clr_state_flag = random_terror_capital_security_success
-			}
-			clr_country_flag = random_terror_mission_slot_2
-			clr_country_flag = random_terror_capital_security_active
 		}
 		ai_will_do = {
 			base = @rt_mission_ai_urgent
@@ -329,74 +429,98 @@ random_terror_government_response_category = {
 		days_mission_timeout = constant:random_terror_tuning.retake_mission_days
 		selectable_mission = no
 		fire_only_once = no
-		is_good = yes
+		is_good = no
 		activation = {
+			has_country_flag = random_terror_mission_active_retake
 			random_terror_can_government_response = yes
 			has_country_flag = random_terror_mission_slot_3
-			any_state = { has_state_flag = random_terror_retake_mission_subject }
+			any_state = { has_state_flag = random_terror_retake_mission_subject_@ROOT }
 		}
 		available = {
-			any_state = {
-				has_state_flag = random_terror_retake_mission_subject
-				is_controlled_by = ROOT
-				NOT = { has_state_flag = random_terror_state_lost_local_control }
+			custom_trigger_tooltip = {
+				tooltip = random_terror_retake_lost_state_objective_tt
+				hidden_trigger = { has_country_flag = random_terror_mission_active_retake }
+				any_state = {
+					has_state_flag = random_terror_retake_mission_subject_@ROOT
+					is_controlled_by = ROOT
+					NOT = { has_state_flag = random_terror_state_lost_local_control }
+				}
 			}
 		}
 		cancel_trigger = {
 			OR = {
+				NOT = { has_country_flag = random_terror_mission_active_retake }
 				NOT = { random_terror_can_government_response = yes }
 				has_global_flag = world_end
 				NOT = { has_country_flag = random_terror_mission_slot_3 }
-				NOT = { any_state = { has_state_flag = random_terror_retake_mission_subject } }
+				NOT = { any_state = { has_state_flag = random_terror_retake_mission_subject_@ROOT } }
 			}
 		}
 		cancel_effect = {
-			random_terror_cancel_retake_mission = yes
-			every_state = {
-				limit = { has_state_flag = random_terror_retake_mission_subject }
-				clr_state_flag = random_terror_retake_mission_subject
-				clr_state_flag = random_terror_retake_commitment_active
+			if = {
+				limit = { has_country_flag = random_terror_mission_active_retake }
+				random_terror_cancel_retake_mission = yes
+				every_state = {
+					limit = { has_state_flag = random_terror_retake_mission_subject_@ROOT }
+					clr_state_flag = random_terror_retake_mission_subject_@ROOT
+					clr_state_flag = random_terror_retake_commitment_active_@ROOT
+				}
+				clr_country_flag = random_terror_mission_slot_3
+				clr_country_flag = random_terror_retake_prepared
+				clr_country_flag = random_terror_mission_active_retake
+				clear_variable = random_terror_mission_target_retake
+				random_terror_close_country_recovery = yes
 			}
-			clr_country_flag = random_terror_mission_slot_3
-			clr_country_flag = random_terror_retake_prepared
 		}
 		complete_effect = {
-			custom_effect_tooltip = random_terror_retake_lost_state_complete_tt
-			random_terror_resolve_retake_mission_success = yes
-			every_state = {
-				limit = { has_state_flag = random_terror_retake_mission_subject }
-				clr_state_flag = random_terror_retake_mission_subject
-				clr_state_flag = random_terror_retake_commitment_active
+			if = {
+				limit = { has_country_flag = random_terror_mission_active_retake }
+				custom_effect_tooltip = random_terror_retake_lost_state_complete_tt
+				random_terror_resolve_retake_mission_success = yes
+				every_state = {
+					limit = { has_state_flag = random_terror_retake_mission_subject_@ROOT }
+					clr_state_flag = random_terror_retake_mission_subject_@ROOT
+					clr_state_flag = random_terror_retake_commitment_active_@ROOT
+				}
+				clr_country_flag = random_terror_mission_slot_3
+				clr_country_flag = random_terror_retake_prepared
+				clr_country_flag = random_terror_mission_active_retake
+				clear_variable = random_terror_mission_target_retake
+				random_terror_close_country_recovery = yes
 			}
-			clr_country_flag = random_terror_mission_slot_3
-			clr_country_flag = random_terror_retake_prepared
 		}
 		timeout_effect = {
 			if = {
-				limit = {
-					any_state = {
-						has_state_flag = random_terror_retake_mission_subject
-						is_controlled_by = ROOT
+				limit = { has_country_flag = random_terror_mission_active_retake }
+				if = {
+					limit = {
+						any_state = {
+							has_state_flag = random_terror_retake_mission_subject_@ROOT
+							is_controlled_by = ROOT
+						}
 					}
+					custom_effect_tooltip = random_terror_retake_lost_state_partial_tt
+					random_terror_resolve_retake_mission_partial = yes
 				}
-				custom_effect_tooltip = random_terror_retake_lost_state_partial_tt
-				random_terror_resolve_retake_mission_partial = yes
+				else = {
+					custom_effect_tooltip = random_terror_retake_lost_state_failure_tt
+					random_terror_resolve_retake_mission_failure = yes
+				}
+				every_state = {
+					limit = { has_state_flag = random_terror_retake_mission_subject_@ROOT }
+					clr_state_flag = random_terror_retake_mission_subject_@ROOT
+					clr_state_flag = random_terror_retake_commitment_active_@ROOT
+				}
+				clr_country_flag = random_terror_mission_slot_3
+				clr_country_flag = random_terror_retake_prepared
+				clr_country_flag = random_terror_mission_active_retake
+				clear_variable = random_terror_mission_target_retake
+				random_terror_close_country_recovery = yes
 			}
-			else = {
-				custom_effect_tooltip = random_terror_retake_lost_state_failure_tt
-				random_terror_resolve_retake_mission_failure = yes
-			}
-			every_state = {
-				limit = { has_state_flag = random_terror_retake_mission_subject }
-				clr_state_flag = random_terror_retake_mission_subject
-				clr_state_flag = random_terror_retake_commitment_active
-			}
-			clr_country_flag = random_terror_mission_slot_3
-			clr_country_flag = random_terror_retake_prepared
 		}
 		ai_will_do = {
 			base = @rt_mission_ai_high
-			modifier = { factor = @rt_mission_ai_urgent_factor any_state = { has_state_flag = random_terror_retake_mission_subject has_state_flag = random_terror_state_armed_insurgency } }
+			modifier = { factor = @rt_mission_ai_urgent_factor any_state = { has_state_flag = random_terror_retake_mission_subject_@ROOT has_state_flag = random_terror_state_armed_insurgency } }
 			modifier = { factor = @rt_mission_ai_high_factor has_war = yes }
 		}
 	}
@@ -406,67 +530,91 @@ random_terror_government_response_category = {
 		days_mission_timeout = constant:random_terror_tuning.restore_mission_days
 		selectable_mission = no
 		fire_only_once = no
-		is_good = yes
+		is_good = no
 		activation = {
+			has_country_flag = random_terror_mission_active_restore
 			random_terror_can_government_response = yes
 			has_country_flag = random_terror_mission_slot_3
-			any_state = { has_state_flag = random_terror_restore_civil_authority_subject }
+			any_state = { has_state_flag = random_terror_restore_civil_authority_subject_@ROOT }
 		}
 		available = {
-			any_state = {
-				has_state_flag = random_terror_restore_civil_authority_subject
-				is_controlled_by = ROOT
-				has_state_flag = random_terror_civil_authority_restored
+			custom_trigger_tooltip = {
+				tooltip = random_terror_restore_civil_authority_objective_tt
+				hidden_trigger = { has_country_flag = random_terror_mission_active_restore }
+				any_state = {
+					has_state_flag = random_terror_restore_civil_authority_subject_@ROOT
+					is_controlled_by = ROOT
+					has_state_flag = random_terror_civil_authority_restored_@ROOT
+				}
 			}
 		}
 		cancel_trigger = {
 			OR = {
+				NOT = { has_country_flag = random_terror_mission_active_restore }
 				NOT = { random_terror_can_government_response = yes }
 				has_global_flag = world_end
 				NOT = { has_country_flag = random_terror_mission_slot_3 }
-				NOT = { any_state = { has_state_flag = random_terror_restore_civil_authority_subject } }
+				NOT = { any_state = { has_state_flag = random_terror_restore_civil_authority_subject_@ROOT } }
 			}
 		}
 		cancel_effect = {
-			random_terror_cancel_restore_civil_authority_mission = yes
-			every_state = {
-				limit = { has_state_flag = random_terror_restore_civil_authority_subject }
-				clr_state_flag = random_terror_restore_civil_authority_subject
-				clr_state_flag = random_terror_civil_authority_restored
+			if = {
+				limit = { has_country_flag = random_terror_mission_active_restore }
+				random_terror_cancel_restore_civil_authority_mission = yes
+				every_state = {
+					limit = { has_state_flag = random_terror_restore_civil_authority_subject_@ROOT }
+					clr_state_flag = random_terror_restore_civil_authority_subject_@ROOT
+					clr_state_flag = random_terror_civil_authority_restored_@ROOT
+				}
+				clr_country_flag = random_terror_mission_slot_3
+				clr_country_flag = random_terror_mission_active_restore
+				clear_variable = random_terror_mission_target_restore
+				random_terror_close_country_recovery = yes
 			}
-			clr_country_flag = random_terror_mission_slot_3
 		}
 		complete_effect = {
-			custom_effect_tooltip = random_terror_restore_civil_authority_complete_tt
-			random_terror_resolve_restore_civil_authority_mission_success = yes
-			every_state = {
-				limit = { has_state_flag = random_terror_restore_civil_authority_subject }
-				clr_state_flag = random_terror_restore_civil_authority_subject
-				clr_state_flag = random_terror_civil_authority_restored
+			if = {
+				limit = { has_country_flag = random_terror_mission_active_restore }
+				custom_effect_tooltip = random_terror_restore_civil_authority_complete_tt
+				random_terror_resolve_restore_civil_authority_mission_success = yes
+				every_state = {
+					limit = { has_state_flag = random_terror_restore_civil_authority_subject_@ROOT }
+					clr_state_flag = random_terror_restore_civil_authority_subject_@ROOT
+					clr_state_flag = random_terror_civil_authority_restored_@ROOT
+				}
+				clr_country_flag = random_terror_mission_slot_3
+				clr_country_flag = random_terror_mission_active_restore
+				clear_variable = random_terror_mission_target_restore
+				random_terror_close_country_recovery = yes
 			}
-			clr_country_flag = random_terror_mission_slot_3
 		}
 		timeout_effect = {
 			if = {
-				limit = {
-					any_state = {
-						has_state_flag = random_terror_restore_civil_authority_subject
-						has_state_flag = random_terror_state_dormant
+				limit = { has_country_flag = random_terror_mission_active_restore }
+				if = {
+					limit = {
+						any_state = {
+							has_state_flag = random_terror_restore_civil_authority_subject_@ROOT
+							has_state_flag = random_terror_state_dormant
+						}
 					}
+					custom_effect_tooltip = random_terror_restore_civil_authority_partial_tt
+					random_terror_resolve_restore_civil_authority_mission_partial = yes
 				}
-				custom_effect_tooltip = random_terror_restore_civil_authority_partial_tt
-				random_terror_resolve_restore_civil_authority_mission_partial = yes
+				else = {
+					custom_effect_tooltip = random_terror_restore_civil_authority_failure_tt
+					random_terror_resolve_restore_civil_authority_mission_failure = yes
+				}
+				every_state = {
+					limit = { has_state_flag = random_terror_restore_civil_authority_subject_@ROOT }
+					clr_state_flag = random_terror_restore_civil_authority_subject_@ROOT
+					clr_state_flag = random_terror_civil_authority_restored_@ROOT
+				}
+				clr_country_flag = random_terror_mission_slot_3
+				clr_country_flag = random_terror_mission_active_restore
+				clear_variable = random_terror_mission_target_restore
+				random_terror_close_country_recovery = yes
 			}
-			else = {
-				custom_effect_tooltip = random_terror_restore_civil_authority_failure_tt
-				random_terror_resolve_restore_civil_authority_mission_failure = yes
-			}
-			every_state = {
-				limit = { has_state_flag = random_terror_restore_civil_authority_subject }
-				clr_state_flag = random_terror_restore_civil_authority_subject
-				clr_state_flag = random_terror_civil_authority_restored
-			}
-			clr_country_flag = random_terror_mission_slot_3
 		}
 		ai_will_do = {
 			base = @rt_mission_ai_high
@@ -480,64 +628,88 @@ random_terror_government_response_category = {
 		days_mission_timeout = constant:random_terror_tuning.hostage_mission_days
 		selectable_mission = no
 		fire_only_once = no
-		is_good = yes
+		is_good = no
 		activation = {
+			has_country_flag = random_terror_mission_active_hostage
 			random_terror_can_government_response = yes
 			has_country_flag = random_terror_mission_slot_1
 			has_country_flag = random_terror_hostage_crisis_active
-			any_state = { has_state_flag = random_terror_hostage_mission_subject }
+			any_state = { has_state_flag = random_terror_hostage_mission_subject_@ROOT }
 		}
 		available = {
-			any_state = {
-				has_state_flag = random_terror_hostage_mission_subject
-				OR = {
-					has_state_flag = random_terror_hostages_recovered
-					has_state_flag = random_terror_hostage_crisis_resolved
+			custom_trigger_tooltip = {
+				tooltip = random_terror_hostage_deadline_objective_tt
+				hidden_trigger = { has_country_flag = random_terror_mission_active_hostage }
+				any_state = {
+					has_state_flag = random_terror_hostage_mission_subject_@ROOT
+					OR = {
+						has_state_flag = random_terror_hostages_recovered_@ROOT
+						has_state_flag = random_terror_hostage_crisis_resolved_@ROOT
+					}
 				}
 			}
 		}
 		cancel_trigger = {
 			OR = {
+				NOT = { has_country_flag = random_terror_mission_active_hostage }
 				NOT = { random_terror_can_government_response = yes }
 				has_global_flag = world_end
 				NOT = { has_country_flag = random_terror_mission_slot_1 }
 				NOT = { has_country_flag = random_terror_hostage_crisis_active }
-				NOT = { any_state = { has_state_flag = random_terror_hostage_mission_subject } }
+				NOT = { any_state = { has_state_flag = random_terror_hostage_mission_subject_@ROOT } }
 			}
 		}
 		cancel_effect = {
-			random_terror_cancel_hostage_deadline_mission = yes
+			if = {
+				limit = { has_country_flag = random_terror_mission_active_hostage }
+				random_terror_cancel_hostage_deadline_mission = yes
 				every_state = {
-				limit = { has_state_flag = random_terror_hostage_mission_subject }
-				clr_state_flag = random_terror_hostage_mission_subject
-				clr_state_flag = random_terror_hostages_recovered
-				clr_state_flag = random_terror_hostage_crisis_resolved
+					limit = { has_state_flag = random_terror_hostage_mission_subject_@ROOT }
+					clr_state_flag = random_terror_hostage_mission_subject_@ROOT
+					clr_state_flag = random_terror_hostages_recovered_@ROOT
+					clr_state_flag = random_terror_hostage_crisis_resolved_@ROOT
+				}
+				clr_country_flag = random_terror_mission_slot_1
+				clr_country_flag = random_terror_mission_active_hostage
+				clear_variable = random_terror_mission_target_hostage
+				random_terror_close_country_recovery = yes
 			}
-			clr_country_flag = random_terror_mission_slot_1
 		}
 		complete_effect = {
-			custom_effect_tooltip = random_terror_hostage_deadline_complete_tt
-			random_terror_resolve_hostage_deadline_mission_success = yes
-			every_state = {
-				limit = { has_state_flag = random_terror_hostage_mission_subject }
-				clr_state_flag = random_terror_hostage_mission_subject
-				clr_state_flag = random_terror_hostages_recovered
-				clr_state_flag = random_terror_hostage_crisis_resolved
+			if = {
+				limit = { has_country_flag = random_terror_mission_active_hostage }
+				custom_effect_tooltip = random_terror_hostage_deadline_complete_tt
+				random_terror_resolve_hostage_deadline_mission_success = yes
+				every_state = {
+					limit = { has_state_flag = random_terror_hostage_mission_subject_@ROOT }
+					clr_state_flag = random_terror_hostage_mission_subject_@ROOT
+					clr_state_flag = random_terror_hostages_recovered_@ROOT
+					clr_state_flag = random_terror_hostage_crisis_resolved_@ROOT
+				}
+				clr_country_flag = random_terror_mission_slot_1
+				clr_country_flag = random_terror_hostage_crisis_active
+				clr_country_flag = random_terror_mission_active_hostage
+				clear_variable = random_terror_mission_target_hostage
+				random_terror_close_country_recovery = yes
 			}
-			clr_country_flag = random_terror_mission_slot_1
-			clr_country_flag = random_terror_hostage_crisis_active
 		}
 		timeout_effect = {
-			custom_effect_tooltip = random_terror_hostage_deadline_failure_tt
-			random_terror_resolve_hostage_deadline_mission_failure = yes
-			every_state = {
-				limit = { has_state_flag = random_terror_hostage_mission_subject }
-				clr_state_flag = random_terror_hostage_mission_subject
-				clr_state_flag = random_terror_hostages_recovered
-				clr_state_flag = random_terror_hostage_crisis_resolved
+			if = {
+				limit = { has_country_flag = random_terror_mission_active_hostage }
+				custom_effect_tooltip = random_terror_hostage_deadline_failure_tt
+				random_terror_resolve_hostage_deadline_mission_failure = yes
+				every_state = {
+					limit = { has_state_flag = random_terror_hostage_mission_subject_@ROOT }
+					clr_state_flag = random_terror_hostage_mission_subject_@ROOT
+					clr_state_flag = random_terror_hostages_recovered_@ROOT
+					clr_state_flag = random_terror_hostage_crisis_resolved_@ROOT
+				}
+				clr_country_flag = random_terror_mission_slot_1
+				clr_country_flag = random_terror_hostage_crisis_active
+				clr_country_flag = random_terror_mission_active_hostage
+				clear_variable = random_terror_mission_target_hostage
+				random_terror_close_country_recovery = yes
 			}
-			clr_country_flag = random_terror_mission_slot_1
-			clr_country_flag = random_terror_hostage_crisis_active
 		}
 		ai_will_do = {
 			base = @rt_mission_ai_urgent
@@ -551,68 +723,92 @@ random_terror_government_response_category = {
 		days_mission_timeout = constant:random_terror_tuning.uprising_mission_days
 		selectable_mission = no
 		fire_only_once = no
-		is_good = yes
+		is_good = no
 		activation = {
+			has_country_flag = random_terror_mission_active_uprising
 			random_terror_can_government_response = yes
 			has_global_flag = random_terror_evolution_5_unlocked
 			has_country_flag = random_terror_mission_slot_2
-			any_state = { has_state_flag = random_terror_uprising_subject }
+			any_state = { has_state_flag = random_terror_uprising_subject_@ROOT }
 		}
 		available = {
-			any_state = {
-				has_state_flag = random_terror_uprising_subject
-				has_state_flag = random_terror_uprising_stopped
+			custom_trigger_tooltip = {
+				tooltip = random_terror_stop_coordinated_uprising_objective_tt
+				hidden_trigger = { has_country_flag = random_terror_mission_active_uprising }
+				any_state = {
+					has_state_flag = random_terror_uprising_subject_@ROOT
+					has_state_flag = random_terror_uprising_stopped_@ROOT
+				}
 			}
 		}
 		cancel_trigger = {
 			OR = {
+				NOT = { has_country_flag = random_terror_mission_active_uprising }
 				NOT = { random_terror_can_government_response = yes }
 				NOT = { has_global_flag = random_terror_evolution_5_unlocked }
 				has_global_flag = world_end
 				NOT = { has_country_flag = random_terror_mission_slot_2 }
-				NOT = { any_state = { has_state_flag = random_terror_uprising_subject } }
+				NOT = { any_state = { has_state_flag = random_terror_uprising_subject_@ROOT } }
 			}
 		}
 		cancel_effect = {
-			random_terror_cancel_uprising_mission = yes
-			every_state = {
-				limit = { has_state_flag = random_terror_uprising_subject }
-				clr_state_flag = random_terror_uprising_subject
-				clr_state_flag = random_terror_uprising_stopped
+			if = {
+				limit = { has_country_flag = random_terror_mission_active_uprising }
+				random_terror_cancel_uprising_mission = yes
+				every_state = {
+					limit = { has_state_flag = random_terror_uprising_subject_@ROOT }
+					clr_state_flag = random_terror_uprising_subject_@ROOT
+					clr_state_flag = random_terror_uprising_stopped_@ROOT
+				}
+				clr_country_flag = random_terror_mission_slot_2
+				clr_country_flag = random_terror_mission_active_uprising
+				clear_variable = random_terror_mission_target_uprising
+				random_terror_close_country_recovery = yes
 			}
-			clr_country_flag = random_terror_mission_slot_2
 		}
 		complete_effect = {
-			custom_effect_tooltip = random_terror_stop_coordinated_uprising_complete_tt
-			random_terror_resolve_uprising_mission_success = yes
-			every_state = {
-				limit = { has_state_flag = random_terror_uprising_subject }
-				clr_state_flag = random_terror_uprising_subject
-				clr_state_flag = random_terror_uprising_stopped
+			if = {
+				limit = { has_country_flag = random_terror_mission_active_uprising }
+				custom_effect_tooltip = random_terror_stop_coordinated_uprising_complete_tt
+				random_terror_resolve_uprising_mission_success = yes
+				every_state = {
+					limit = { has_state_flag = random_terror_uprising_subject_@ROOT }
+					clr_state_flag = random_terror_uprising_subject_@ROOT
+					clr_state_flag = random_terror_uprising_stopped_@ROOT
+				}
+				clr_country_flag = random_terror_mission_slot_2
+				clr_country_flag = random_terror_mission_active_uprising
+				clear_variable = random_terror_mission_target_uprising
+				random_terror_close_country_recovery = yes
 			}
-			clr_country_flag = random_terror_mission_slot_2
 		}
 		timeout_effect = {
 			if = {
-				limit = {
-					any_state = {
-						has_state_flag = random_terror_uprising_subject
-						is_controlled_by = ROOT
+				limit = { has_country_flag = random_terror_mission_active_uprising }
+				if = {
+					limit = {
+						any_state = {
+							has_state_flag = random_terror_uprising_subject_@ROOT
+							is_controlled_by = ROOT
+						}
 					}
+					custom_effect_tooltip = random_terror_stop_coordinated_uprising_partial_tt
+					random_terror_resolve_uprising_mission_partial = yes
 				}
-				custom_effect_tooltip = random_terror_stop_coordinated_uprising_partial_tt
-				random_terror_resolve_uprising_mission_partial = yes
+				else = {
+					custom_effect_tooltip = random_terror_stop_coordinated_uprising_failure_tt
+					random_terror_resolve_uprising_mission_failure = yes
+				}
+				every_state = {
+					limit = { has_state_flag = random_terror_uprising_subject_@ROOT }
+					clr_state_flag = random_terror_uprising_subject_@ROOT
+					clr_state_flag = random_terror_uprising_stopped_@ROOT
+				}
+				clr_country_flag = random_terror_mission_slot_2
+				clr_country_flag = random_terror_mission_active_uprising
+				clear_variable = random_terror_mission_target_uprising
+				random_terror_close_country_recovery = yes
 			}
-			else = {
-				custom_effect_tooltip = random_terror_stop_coordinated_uprising_failure_tt
-				random_terror_resolve_uprising_mission_failure = yes
-			}
-			every_state = {
-				limit = { has_state_flag = random_terror_uprising_subject }
-				clr_state_flag = random_terror_uprising_subject
-				clr_state_flag = random_terror_uprising_stopped
-			}
-			clr_country_flag = random_terror_mission_slot_2
 		}
 		ai_will_do = {
 			base = @rt_mission_ai_urgent
