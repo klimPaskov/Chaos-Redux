@@ -1,0 +1,61 @@
+{
+  "id": "DR-pending-receipt-identity",
+  "scenario": {
+    "schemaVersion": "1.0",
+    "id": "DR-pending-receipt-identity",
+    "actor": "GER",
+    "closedFlags": true,
+    "flags": [
+      "doctrine_research_transaction_receipt_pending"
+    ],
+    "state": {
+      "doctrine_research_active_batch_id": 101,
+      "doctrine_research_current_choice_number": 1,
+      "doctrine_research_pending_receipt_id": 202,
+      "doctrine_research_receipt_ids": [
+        201,
+        202
+      ],
+      "doctrine_research_receipt_batch_ids": [
+        101,
+        101
+      ],
+      "doctrine_research_receipt_choice_numbers": [
+        1,
+        1
+      ],
+      "doctrine_research_receipt_states": [
+        6,
+        0
+      ]
+    }
+  },
+  "steps": [
+    {
+      "kind": "effect",
+      "source": {
+        "kind": "scripted_effect",
+        "id": "doctrine_research_find_current_receipt"
+      },
+      "repeat": 1
+    }
+  ],
+  "assertions": [
+    {
+      "id": "pending_attempt_found",
+      "kind": "equals",
+      "path": {
+        "key": "doctrine_research_receipt_found"
+      },
+      "expected": 1
+    },
+    {
+      "id": "terminal_attempt_skipped",
+      "kind": "equals",
+      "path": {
+        "key": "doctrine_research_receipt_index"
+      },
+      "expected": 1
+    }
+  ]
+}

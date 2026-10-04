@@ -1,0 +1,127 @@
+{
+  "id": "DR-receipt-finalize-once",
+  "scenario": {
+    "schemaVersion": "1.0",
+    "id": "DR-receipt-finalize-once",
+    "actor": "GER",
+    "closedFlags": true,
+    "flags": [
+      "doctrine_research_active_batch"
+    ],
+    "state": {
+      "doctrine_research_active_batch_index": 0,
+      "doctrine_research_active_batch_id": 101,
+      "doctrine_research_current_choice_number": 1,
+      "doctrine_research_selected_action": 1,
+      "doctrine_research_selected_domain": 1,
+      "doctrine_research_selected_grand_doctrine": 1,
+      "doctrine_research_selected_track": 0,
+      "doctrine_research_selected_subdoctrine": 0,
+      "doctrine_research_receipt_index": 0,
+      "doctrine_research_transaction_post_level": 0,
+      "doctrine_research_batch_ids": [
+        101
+      ],
+      "doctrine_research_batch_stages": [
+        1
+      ],
+      "doctrine_research_batch_sizes": [
+        2
+      ],
+      "doctrine_research_batch_remaining_choices": [
+        2
+      ],
+      "doctrine_research_batch_statuses": [
+        1
+      ],
+      "doctrine_research_batch_created_dates": [
+        1
+      ],
+      "doctrine_research_batch_human_started": [
+        0
+      ],
+      "doctrine_research_receipt_ids": [
+        201
+      ],
+      "doctrine_research_receipt_batch_ids": [
+        101
+      ],
+      "doctrine_research_receipt_choice_numbers": [
+        1
+      ],
+      "doctrine_research_receipt_states": [
+        1
+      ],
+      "doctrine_research_receipt_actions": [
+        1
+      ],
+      "doctrine_research_receipt_domains": [
+        1
+      ],
+      "doctrine_research_receipt_grands": [
+        1
+      ],
+      "doctrine_research_receipt_tracks": [
+        0
+      ],
+      "doctrine_research_receipt_track_indices": [
+        -1
+      ],
+      "doctrine_research_receipt_subdoctrines": [
+        0
+      ],
+      "doctrine_research_receipt_pre_levels": [
+        0
+      ],
+      "doctrine_research_receipt_post_levels": [
+        0
+      ],
+      "doctrine_research_active_batch_successful_adoptions": 0,
+      "doctrine_research_active_batch_successful_mastery": 0
+    }
+  },
+  "steps": [
+    {
+      "kind": "effect",
+      "source": {
+        "kind": "scripted_effect",
+        "id": "doctrine_research_finalize_receipt"
+      },
+      "repeat": 2
+    }
+  ],
+  "assertions": [
+    {
+      "id": "one_choice_consumed",
+      "kind": "equals",
+      "path": {
+        "key": "doctrine_research_batch_remaining_choices^0"
+      },
+      "expected": 1
+    },
+    {
+      "id": "next_choice_number",
+      "kind": "equals",
+      "path": {
+        "key": "doctrine_research_current_choice_number"
+      },
+      "expected": 2
+    },
+    {
+      "id": "one_adoption_recorded",
+      "kind": "equals",
+      "path": {
+        "key": "doctrine_research_active_batch_successful_adoptions"
+      },
+      "expected": 1
+    },
+    {
+      "id": "selection_cannot_replay",
+      "kind": "equals",
+      "path": {
+        "key": "doctrine_research_selected_action"
+      },
+      "expected": 0
+    }
+  ]
+}

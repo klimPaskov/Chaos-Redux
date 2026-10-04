@@ -1,0 +1,585 @@
+# ============================================================================
+# CHAOS REDUX - EVENT CLUSTER SCRIPT CONSTANTS
+# ============================================================================
+# Shared constants for the event cluster layer above individual random events.
+# Cluster definitions live in scripted effects; these values keep roll chances,
+# IDs, and status codes centralized for UI, logging, and tuning.
+# ============================================================================
+
+event_cluster_id = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	wars = 1
+	liberations = 2
+	diplomatic_panic = 3
+	peace = 4
+	natural_disasters = 5
+	formables = 6
+	economy_positive = 7
+	diseases = 8
+	# The authoritative workbook assigns Various Anomalies cluster ID 11.
+	various_anomalies = 11
+	random_stuff = 12
+}
+
+event_cluster_type = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	one_time = 1
+	repeatable = 2
+	major = 3
+}
+
+event_cluster_member_role = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	required = 1
+	optional = 2
+	randomized = 3
+}
+
+event_cluster_member_status = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	fired = 1
+	skipped_disabled = 2
+	skipped_unavailable = 3
+	skipped_chaos_tier = 4
+	skipped_participation = 5
+	available = 6
+	guaranteed = 7
+	manual = 8
+	not_applicable = 9
+	skipped_runtime = 10
+	skipped_escalation_support = 11
+}
+
+event_cluster_cooldown_days = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	wars = 120
+	liberations = 90
+	diplomatic_panic = 120
+	peace = 120
+	natural_disasters = 120
+	formables = 120
+	economy_positive = 120
+	diseases = 120
+	random_stuff = 240
+}
+
+event_cluster_event013_context = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	sentinel = 0
+	baseline_first_slot = 1
+	evolution_i_slot = 3
+	evolution_ii_slot = 4
+	evolution_iii_slot = 5
+}
+
+event_cluster_member_danger = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	low = 1
+	medium = 2
+	high = 3
+	severe = 4
+}
+
+event_cluster_member_primary_trigger = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	no = 0
+	yes = 1
+}
+
+# Stable logical row IDs. These IDs are persisted in cluster history and the
+# pending queue, so duplicate event IDs remain distinguishable across saves.
+event_cluster_member_row_id = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	wars_random_war = 1001
+	wars_fury = 1002
+	wars_random_civil_war = 1003
+	liberations_independence_opening = 2001
+	liberations_independence_escalation = 2002
+	liberations_independence_crisis = 2003
+	liberations_soviet_collapse = 2004
+	diplomatic_panic_tensions = 3001
+	diplomatic_panic_faction = 3002
+	peace_white_peace_opening = 4001
+	peace_white_peace_followup = 4002
+	natural_disasters_opening = 5001
+	natural_disasters_early = 5002
+	natural_disasters_varied = 5003
+	natural_disasters_regional = 5004
+	natural_disasters_abnormal = 5005
+	natural_disasters_acid_rain = 5006
+	natural_disasters_heat_wave = 5007
+	formables_africa = 6001
+	economy_resources = 7001
+	diseases_black_plague = 8001
+	diseases_zombie = 8002
+	various_anomalies_equipment_from_heavens = 11001
+	various_anomalies_boom = 11002
+}
+
+# Severity floors are intentionally separate from each row's declared floor.
+# The effective floor is max(declared row floor, this severity floor).
+event_cluster_member_severity_floor = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	low = 0
+	medium = 1
+	high = 2
+	severe = 3
+}
+
+event_cluster_roll_chance_default = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	tier_0 = 5
+	tier_1 = 10
+	tier_2 = 15
+	tier_3 = 25
+	tier_4 = 35
+	tier_final = 50
+}
+
+event_cluster_roll = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	minimum = 1
+	maximum = 100
+}
+
+event_cluster_wars = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unlock_tier = 1
+}
+
+event_cluster_liberations = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unlock_tier = 0
+}
+
+event_cluster_diplomatic_panic = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unlock_tier = 0
+}
+
+event_cluster_peace = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unlock_tier = 0
+}
+
+event_cluster_natural_disasters = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unlock_tier = 0
+}
+
+# Event 051 predates package-owned identity constants. Keep the Natural
+# Disasters member registry free of a bare event id until that package is
+# modernized.
+event_cluster_heat_wave_event = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	id = 51
+}
+
+event_cluster_formables = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unlock_tier = 3
+}
+
+event_cluster_unavailability_reason = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	definition_missing = 1
+	disabled = 2
+	chaos_level = 3
+	already_fired = 4
+	cooldown = 5
+	no_available_members = 6
+}
+
+event_cluster_economy_positive = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unlock_tier = 3
+}
+
+event_cluster_diseases = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unlock_tier = 0
+}
+
+# Various Anomalies is a one-time catalogue cluster at Chaos level 4. Its
+# members keep their own independent event eligibility.
+event_cluster_various_anomalies = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unlock_tier = 3
+	boom_event_id = 47
+}
+
+# Random Stuff is a post-minor-event bonus batch rather than a fixed-member
+# cluster. Its roll is stored in basis points so sub-one-percent opening
+# chances and gradual drought growth retain integer-roll precision.
+event_cluster_random_stuff = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unlock_tier = 3
+	state_version = 2
+	row_id_base = 12000
+	roll_minimum = 1
+	roll_largest_result = 10000
+	# set_temp_variable_to_random uses an exclusive maximum, so 10001 yields
+	# exactly 10,000 integer outcomes from 1 through 10,000.
+	roll_maximum = 10001
+	basis_points_per_percent = 100
+	chance_minimum_basis_points = 1
+	batch_size_tier_3 = 3
+	batch_size_tier_4 = 4
+	batch_size_tier_final = 5
+}
+
+event_cluster_random_stuff_drought = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+	basis_points_per_failed_attempt = 0.25
+}
+
+event_cluster_random_stuff_base_chance = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	tier_3_basis_points = 30
+	tier_4_basis_points = 60
+	tier_final_basis_points = 85
+}
+
+event_cluster_random_stuff_success_factor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	first_two = 1.00
+	after_two = 0.75
+	after_three = 0.50
+}
+# Authoritative optional-member participation matrix. Columns are Low,
+# Medium, High, and Severe member severity; rows are current Chaos tiers.
+event_cluster_member_participation_matrix = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	calm_low = 70
+	calm_medium = 35
+	calm_high = 15
+	calm_severe = 5
+	gathering_low = 80
+	gathering_medium = 40
+	gathering_high = 20
+	gathering_severe = 10
+	rising_low = 90
+	rising_medium = 45
+	rising_high = 25
+	rising_severe = 15
+	chaos_low = 95
+	chaos_medium = 50
+	chaos_high = 30
+	chaos_severe = 20
+	totalen_low = 99
+	totalen_medium = 60
+	totalen_high = 40
+	totalen_severe = 25
+	collapse_low = 100
+	collapse_medium = 75
+	collapse_high = 50
+	collapse_severe = 30
+}
+
+event_cluster_activation_severity_factor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	low = 1.35
+	medium = 1.15
+	high = 0.85
+	severe = 0.65
+}
+
+event_cluster_activation_eligible_count_factor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	one = 1.40
+	two = 1.30
+	three = 1.20
+	four = 1.10
+	five_plus = 1.00
+}
+
+event_cluster_activation_fatigue_factor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	score_0 = 1.00
+	score_1 = 0.90
+	score_2 = 0.81
+	score_3 = 0.729
+	score_4 = 0.6561
+}
+
+event_cluster_activation_participation_factor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	up_to_25 = 1.40
+	over_25_to_50 = 1.30
+	over_50_to_75 = 1.15
+	over_75 = 1.00
+	neutral = 1.00
+}
+
+event_cluster_activation_participation_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	quarter = 0.25
+	half = 0.50
+	three_quarters = 0.75
+}
+
+event_cluster_member_optional_decay = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	factor = 0.95
+}
+
+event_cluster_probability_bounds = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	activation_minimum = 1
+	activation_maximum = 90
+	member_minimum = 1
+	member_maximum = 100
+}
+
+event_cluster_probability_state = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	version = 1
+	fatigue_minimum = 0
+	fatigue_maximum = 4
+	success_fatigue_delta = 1
+	failed_roll_fatigue_delta = 1
+}
+
+event_cluster_activation_result = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	success = 1
+	roll_failed = 2
+	gated = 3
+	runtime_failed = 4
+}
+
+event_cluster_catalogue_sort_mode = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	cluster_id = 0
+	type = 1
+	roll = 2
+	fired = 3
+	unlock_tier = 4
+	member_count = 5
+	minimum = 0
+	maximum = 5
+}
+
+event_cluster_member_order = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	score_minimum = 1
+	score_maximum = 100
+}
+
+# Optional rows normally preserve the Low -> Medium -> High -> Severe incident
+# progression. Higher Chaos tiers increasingly permit a cross-severity
+# inversion, without making the normal progression the minority outcome.
+event_cluster_optional_order_bias = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	tier_0 = 90
+	tier_1 = 88
+	tier_2 = 86
+	tier_3 = 84
+	tier_4 = 82
+	tier_final = 80
+}
+
+# Extra eligible logical rows carrying the selected trigger event strengthen
+# that event's activation chance for this cluster. The ordinary activation
+# ceiling remains the only saturation point.
+event_cluster_trigger_multiplicity = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_rows = 1
+	base_factor = 1
+	factor_per_extra_row = 0.15
+	minimum_points_per_extra_row = 1
+}
+
+event_cluster_member_cooldown_min = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	tier_0 = 5
+	tier_1 = 5
+	tier_2 = 4
+	tier_3 = 3
+	tier_4 = 2
+	tier_final = 2
+}
+
+event_cluster_member_cooldown_max = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	tier_0 = 10
+	tier_1 = 8
+	tier_2 = 7
+	tier_3 = 6
+	tier_4 = 5
+	tier_final = 3
+}
