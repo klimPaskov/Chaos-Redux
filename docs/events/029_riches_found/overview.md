@@ -95,6 +95,13 @@ Gold Disease is a fictional compulsive administrative and social crisis. It uses
 
 Demons Beneath the Mine uses an Event 029-specific supernatural-force record, deep-excavation pressure, bargains, evacuation, scientific, religious, engineering, sealing, and containment routes. It does not reuse Event 018 underground actors, Oth-Kesh, or any existing terminal entity. The Bottomless Account is a late Demons Beneath the Mine outcome, not a fifth evolution row.
 
+### Gold Disease movement routes
+
+`common/scripted_effects/029_riches_found_gold_route_effects.txt` moves Gold Disease only through the specification's six bounded routes, each called by one action or result: Replace the Workforce (and the emergency workforce replacement) sends the old crews to another active mine of the same controller, raising its gold pressure, or to the capital; a completed Protect the Pay Train delivers a shipment to the capital; the Pay Train escort carries wages; Military Control rotates soldiers into the army; guard-theft and false-permit incidents sell stolen material to one foreign controller of a neighbouring state; and a contract that ends while the fever is active sends the sponsor's staff home.
+Each route rolls `riches_found_gold_route.spread_weight` against `contained_weight`, multiplied by `restricted_factor` under a quarantine, rationed access or closure.
+A spread gives the receiving country a temporary `riches_found_country_gold_fever` (or `riches_found_country_gold_fever_army` for the rotation route) for `country_effect_days`, or raises gold pressure at the receiving mine, and the source mine reports the route and its destination by name.
+No route scans the world, runs on a timer or uses the biological outbreak systems.
+
 ### Containment and aftermath
 
 Each evolution has an active flag (`riches_found_resource_curse_active`, `riches_found_gold_disease_active`, `riches_found_demons_beneath_mine_active`) separate from its permanent history flag and log row.

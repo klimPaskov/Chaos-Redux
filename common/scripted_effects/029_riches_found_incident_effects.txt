@@ -664,6 +664,17 @@ riches_found_run_gold_disease_incident_pool = {
 		constant:riches_found_incident_weight.major = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_gold_disease_pressure value = constant:riches_found_threshold.gold_disease_gate compare = less_than } } modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.gold_unsafe_digging compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.gold_unsafe_digging } set_temp_variable = { riches_found_incident_gold_delta = constant:riches_found_incident_delta.major } set_temp_variable = { riches_found_incident_collapse_delta = constant:riches_found_incident_delta.severe } set_state_flag = riches_found_mine_damaged }
 	}
 	if = { limit = { has_state_flag = riches_found_gold_mass_violence } riches_found_record_gold_incident_harm = yes clr_state_flag = riches_found_gold_mass_violence }
+	# Stolen material can be sold across the border; a spread replaces the
+	# theft report with the smuggling route.
+	if = {
+		limit = {
+			OR = {
+				check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.gold_guard_theft }
+				check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.gold_false_permits }
+			}
+		}
+		riches_found_move_gold_through_smuggling = yes
+	}
 	riches_found_finish_incident = yes
 }
 

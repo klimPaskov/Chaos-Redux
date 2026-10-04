@@ -79,3 +79,11 @@ Project and population-affecting responses stay one-time per mine, consistent wi
 The tolerated-corruption bribe pays political power only the first time, so toggling the policy cannot farm political power.
 AI willingness for each response gains a factor when that response is the mine's next containment step; this is a weighted-logic change and remains subject to the probability audit item.
 Three report events announce containment, reusing the existing evolution and concession report pictures.
+
+## D8. Gold Disease movement routes
+
+Each of the specification's six movement routes is wired to exactly one action, mission result, incident or contract end, with no periodic scan: workforce replacement (to another mine of the same controller, or the capital when there is none), shipment delivery by Protect the Pay Train, pay transport by the Pay Train escort, guard or army rotation by Military Control, stolen material sold to one foreign neighbour after guard-theft or false-permit incidents, and concession staff returning to the sponsor when a contract ends.
+Every route rolls 40 against 60 and the spread weight is quartered under a quarantine, rationed access or closure, so containment measures visibly protect the rest of the country.
+A spread to a country is a temporary 180-day dynamic modifier (civil Gold Fever, or Gold Fever in the Ranks for the army rotation) rather than a new crisis record, matching the specification's "incidents or temporary country effects"; a spread to a mine raises that mine's gold pressure so its own Gold Disease gate can fire.
+The source mine's report names the route and destination; a smuggling spread replaces the theft report so one report covers both.
+The receiving neighbour and sponsor are not sent their own report event in this round; their modifier carries its own description.

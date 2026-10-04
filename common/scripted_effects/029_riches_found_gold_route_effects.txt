@@ -1,0 +1,203 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 029 RICHES FOUND GOLD DISEASE MOVEMENT ROUTES
+# ============================================================================
+# STATE scope throughout; THIS is the source mine. Gold Disease moves only
+# through the specification's bounded event-owned routes, each called by one
+# specific action, mission result, incident or contract end:
+# - worker transfer: Replace the Workforce sends the old crews to another
+#   registered mine of the same controller, or to the capital when none exists;
+# - shipment: a completed Protect the Pay Train mission delivers to the capital;
+# - pay transport: the Pay Train escort carries wages through the district;
+# - guard or army rotation: Military Control rotates soldiers out of the shafts;
+# - stolen material: a theft incident sells material through one neighbouring
+#   controller;
+# - concession staff: a contract that ends sends its staff home to the sponsor.
+# A route spreads only on a weighted roll that quarantine, rationed access or
+# closure makes much less likely. A spread raises gold pressure at a receiving
+# mine or gives the receiving country a temporary Gold Fever modifier, and the
+# source mine reports the route by name. This never creates a biological
+# outbreak, never scans the world and never runs on a periodic timer.
+# ============================================================================
+
+# STATE scope. Shared roll. Input: temporary riches_found_gold_route_kind
+# (an incident-kind id). Output: temporary riches_found_gold_route_spreads
+# (one when the route spreads the fever).
+riches_found_roll_gold_route = {
+	set_temp_variable = { riches_found_gold_route_spreads = constant:riches_found_value.zero }
+	if = {
+		limit = { has_state_flag = riches_found_gold_disease_active }
+		random_list = {
+			constant:riches_found_gold_route.spread_weight = {
+				modifier = { factor = constant:riches_found_gold_route.restricted_factor riches_found_gold_route_is_restricted = yes }
+				set_temp_variable = { riches_found_gold_route_spreads = constant:riches_found_value.one }
+			}
+			constant:riches_found_gold_route.contained_weight = { }
+		}
+	}
+}
+
+# STATE scope. Records the route on the source mine and queues its report.
+# Input: temporary riches_found_gold_route_kind.
+riches_found_report_gold_route = {
+	set_variable = { riches_found_incident_kind = riches_found_gold_route_kind }
+	set_variable = { riches_found_last_gold_route_date = global.date }
+	set_variable = { riches_found_report_kind = constant:riches_found_report.gold_incident }
+	riches_found_queue_report = yes
+}
+
+# COUNTRY scope. A receiving country carries the fever for a while.
+riches_found_apply_country_gold_fever = {
+	set_temp_variable = { riches_found_gold_fever_days = constant:riches_found_gold_route.country_effect_days }
+	add_dynamic_modifier = { modifier = riches_found_country_gold_fever days = riches_found_gold_fever_days }
+}
+
+# STATE scope. Worker transfer route, called by Replace the Workforce.
+riches_found_move_gold_through_workforce = {
+	set_temp_variable = { riches_found_gold_route_kind = constant:riches_found_incident_kind.gold_route_workers }
+	riches_found_roll_gold_route = yes
+	if = {
+		limit = { check_variable = { riches_found_gold_route_spreads = constant:riches_found_value.one } }
+		save_event_target_as = riches_found_gold_route_source
+		clear_variable = riches_found_gold_route_target
+		clear_variable = riches_found_gold_route_mine
+		if = {
+			limit = {
+				CONTROLLER = { exists = yes }
+				has_variable = global.riches_found_registered_mines^num
+			}
+			CONTROLLER = { save_event_target_as = riches_found_gold_route_controller }
+			# The source marks itself so the registry draw skips it.
+			set_state_flag = riches_found_gold_route_source_mine
+			random_scope_in_array = {
+				array = global.riches_found_registered_mines
+				limit = {
+					NOT = { has_state_flag = riches_found_gold_route_source_mine }
+					riches_found_mine_is_active = yes
+					is_controlled_by = event_target:riches_found_gold_route_controller
+				}
+				add_to_variable = { riches_found_gold_disease_pressure = constant:riches_found_gold_route.pressure_transfer }
+				riches_found_clamp_mine_values = yes
+				event_target:riches_found_gold_route_source = { set_variable = { riches_found_gold_route_mine = PREV } }
+			}
+			clr_state_flag = riches_found_gold_route_source_mine
+		}
+		if = {
+			limit = { NOT = { has_variable = riches_found_gold_route_mine } }
+			set_temp_variable = { riches_found_gold_route_kind = constant:riches_found_incident_kind.gold_route_capital_workers }
+			if = {
+				limit = { CONTROLLER = { exists = yes } }
+				CONTROLLER = { riches_found_apply_country_gold_fever = yes }
+				set_variable = { riches_found_gold_route_target = CONTROLLER }
+			}
+		}
+		add_to_variable = { riches_found_gold_disease_pressure = constant:riches_found_gold_route.source_relief }
+		riches_found_clamp_mine_values = yes
+		riches_found_report_gold_route = yes
+	}
+}
+
+# STATE scope. Shipment route, called when Protect the Pay Train delivers.
+riches_found_move_gold_through_shipment = {
+	set_temp_variable = { riches_found_gold_route_kind = constant:riches_found_incident_kind.gold_route_shipment }
+	riches_found_spread_gold_to_controller = yes
+}
+
+# STATE scope. Pay transport route, called when the Pay Train escort runs.
+riches_found_move_gold_through_pay_transport = {
+	set_temp_variable = { riches_found_gold_route_kind = constant:riches_found_incident_kind.gold_route_pay }
+	riches_found_spread_gold_to_controller = yes
+}
+
+# STATE scope. Guard or army rotation route, called by Military Control.
+# The rotated soldiers carry it into the army rather than the civil service.
+riches_found_move_gold_through_rotation = {
+	set_temp_variable = { riches_found_gold_route_kind = constant:riches_found_incident_kind.gold_route_rotation }
+	riches_found_roll_gold_route = yes
+	if = {
+		limit = {
+			check_variable = { riches_found_gold_route_spreads = constant:riches_found_value.one }
+			CONTROLLER = { exists = yes }
+		}
+		clear_variable = riches_found_gold_route_mine
+		set_variable = { riches_found_gold_route_target = CONTROLLER }
+		set_temp_variable = { riches_found_gold_fever_days = constant:riches_found_gold_route.country_effect_days }
+		CONTROLLER = { add_dynamic_modifier = { modifier = riches_found_country_gold_fever_army days = riches_found_gold_fever_days } }
+		riches_found_report_gold_route = yes
+	}
+}
+
+# STATE scope. Stolen-material route, called after a theft incident. Only the
+# mine state's own neighbours are considered.
+riches_found_move_gold_through_smuggling = {
+	set_temp_variable = { riches_found_gold_route_kind = constant:riches_found_incident_kind.gold_route_smuggling }
+	riches_found_roll_gold_route = yes
+	if = {
+		limit = {
+			check_variable = { riches_found_gold_route_spreads = constant:riches_found_value.one }
+			CONTROLLER = { exists = yes }
+		}
+		save_event_target_as = riches_found_gold_route_source
+		CONTROLLER = { save_event_target_as = riches_found_gold_route_controller }
+		clear_variable = riches_found_gold_route_mine
+		clear_variable = riches_found_gold_route_target
+		random_neighbor_state = {
+			limit = {
+				CONTROLLER = {
+					exists = yes
+					NOT = { riches_found_country_is_excluded_actor = yes }
+				}
+				NOT = { is_controlled_by = event_target:riches_found_gold_route_controller }
+			}
+			CONTROLLER = {
+				riches_found_apply_country_gold_fever = yes
+				event_target:riches_found_gold_route_source = { set_variable = { riches_found_gold_route_target = PREV } }
+			}
+		}
+		# Without a foreign neighbour the stolen material stays inside the
+		# district and nothing is reported.
+		if = {
+			limit = { has_variable = riches_found_gold_route_target }
+			riches_found_report_gold_route = yes
+		}
+	}
+}
+
+# STATE scope. Concession-staff route, called while a contract is ending and
+# its partner pointer still exists.
+riches_found_move_gold_through_sponsor = {
+	if = {
+		limit = {
+			has_state_flag = riches_found_gold_disease_active
+			has_variable = riches_found_contract_partner
+			var:riches_found_contract_partner = {
+				exists = yes
+				NOT = { riches_found_country_is_excluded_actor = yes }
+			}
+		}
+		set_temp_variable = { riches_found_gold_route_kind = constant:riches_found_incident_kind.gold_route_sponsor }
+		riches_found_roll_gold_route = yes
+		if = {
+			limit = { check_variable = { riches_found_gold_route_spreads = constant:riches_found_value.one } }
+			clear_variable = riches_found_gold_route_mine
+			set_variable = { riches_found_gold_route_target = riches_found_contract_partner }
+			var:riches_found_contract_partner = { riches_found_apply_country_gold_fever = yes }
+			riches_found_report_gold_route = yes
+		}
+	}
+}
+
+# STATE scope. Shared capital delivery used by the shipment and pay routes.
+# Input: temporary riches_found_gold_route_kind.
+riches_found_spread_gold_to_controller = {
+	riches_found_roll_gold_route = yes
+	if = {
+		limit = {
+			check_variable = { riches_found_gold_route_spreads = constant:riches_found_value.one }
+			CONTROLLER = { exists = yes }
+		}
+		clear_variable = riches_found_gold_route_mine
+		set_variable = { riches_found_gold_route_target = CONTROLLER }
+		CONTROLLER = { riches_found_apply_country_gold_fever = yes }
+		riches_found_report_gold_route = yes
+	}
+}
