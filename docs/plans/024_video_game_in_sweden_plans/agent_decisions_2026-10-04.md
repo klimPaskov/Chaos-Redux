@@ -238,3 +238,19 @@ The final review restriction option `.36.b` said only "at its current price"; it
 The overview now lists lost-ground cancellation among the mission cancellation causes and names the perfect offensive among the battlefield mismatches (D13).
 Basis: D2, D13, D19, D20 and D24 as accepted, CLAUDE.md player-visible requirement rule, chaos-redux-decisions-missions trigger clarity rules.
 Implementation evidence is source review and the bounded runtime-observation fixture (14 cases pass); the report timing after a lost-ground cancellation is needs_live_game.
+
+## Round 2 decisions
+
+Disposition: accepted under the same standing grant of design authority, taking the round 2 lead's decisions as the basis.
+Implementation evidence is source review and the bounded runtime-observation fixture; anything only the engine can show is marked needs_live_game.
+
+### R2-1. Timed flags read their day count from a normal variable
+
+Finding: six timed flags (`video_game_in_sweden_core_loss_recent`, `video_game_in_sweden_capital_loss_recent`, `video_game_in_sweden_rare_incident_recent`, `video_game_in_sweden_mismatch_admitted_recent`, `video_game_in_sweden_diplomacy_active` and `video_game_in_sweden_recent_victory`) passed the bare temporary variable `video_game_in_sweden_flag_days` as `days`.
+Installed `common/scripted_effects/SOV_scripted_effects.txt` (the commented line near line 28) notes that a timed flag does not take a variable that way, while `SIA_scripted_effects.txt` line 780 sets a normal variable from a script constant and passes it as `days = var:SIA_new_propaganda_campaign_duration_left`.
+If the day count were ignored, the crisis memory flags would never expire and `video_game_in_sweden_core_loss_crisis` would stay on, which would undo D1.
+Decision: each site now sets the normal country variable `video_game_in_sweden_flag_days` from its `video_game_in_sweden_timing` constant and passes `days = var:video_game_in_sweden_flag_days`, the SIA form; no Event 24 timed flag uses a temporary variable or a `constant:` token.
+The variable is overwritten before every use, like the SIA precedent, so it needs no separate cleanup.
+`add_dynamic_modifier` and `add_timed_idea` keep their variable day counts, because the installed effects documentation says dynamic-modifier days can be a variable and vanilla `SOV.txt` passes a variable to `add_timed_idea`.
+Basis: round 2 lead decision 1, Event 23 R2-2, CLAUDE.md 1.9.
+Disposition: `implemented`; the flags actually expiring is needs_live_game.
