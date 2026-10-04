@@ -70,6 +70,10 @@ Government and actor actions use standard state-targeted decision presentation, 
 
 No Event 31-specific scripted GUI exists.
 
+Each government keeps a priority crisis state, its most severe crisis among the states it controls and its own cores held by others (higher stage first, then higher activity), refreshed after each incident, on every stage change and when a state is lost (`random_terror_refresh_priority_state`, state flag `random_terror_priority_state_<tag>`).
+Decisions with a generic crisis target (response cell, transport, victim support, intelligence sweep, security surge, raid, allied intelligence, movement restrictions, reinforcement and the territorial actions) accept only that state, the government's hostage or uprising subject, or the subject of the containment, corridor or civil-authority mission they advance (`random_terror_state_is_response_target`), so each shows one row in normal play.
+Decisions keyed to a recorded marker (corridor, sponsor evidence, defection, community rejection, recovery or capital infiltration) keep that marker as their target.
+
 Every costed decision has one inclusive affordability trigger, `random_terror_can_afford_<decision>` in `031_random_terror_triggers.txt`, used by its `custom_cost_trigger` and mirrored in `available` through `hidden_trigger`, so an exact balance pays and each line matches one debit in the decision's `complete_effect`.
 Every `custom_cost_text` key has `_blocked` (red values) and `_tooltip` companions, and cost rows put each texticon before its value.
 

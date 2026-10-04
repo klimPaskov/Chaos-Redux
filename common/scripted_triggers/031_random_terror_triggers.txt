@@ -202,6 +202,20 @@ random_terror_state_is_threatened_cell = {
 	NOT = { has_state_flag = random_terror_state_lost_local_control }
 }
 
+# STATE scope, ROOT = the responding government.  Government decisions with a
+# generic crisis target offer one row each: the government's priority crisis
+# state (random_terror_refresh_priority_state), a state under its emergency
+# mission, or the subject of a mission the action advances.
+random_terror_state_is_response_target = {
+	OR = {
+		has_state_flag = random_terror_priority_state_@ROOT
+		random_terror_state_is_emergency_subject = yes
+		has_state_flag = random_terror_containment_mission_subject_@ROOT
+		has_state_flag = random_terror_corridor_mission_subject_@ROOT
+		has_state_flag = random_terror_restore_civil_authority_subject_@ROOT
+	}
+}
+
 # Any scope.  Event 31 remains enabled in the Event Logs settings.
 random_terror_event_is_enabled = {
 	NOT = {
