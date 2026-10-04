@@ -208,3 +208,19 @@ Disposition: news event `implemented`; super-event `blocked`.
   Downloading a new track needs the user's explicit permission, which no agent message can give.
   Exact missing input: one licensed, archived, unused track (about 110-120 seconds) for the Gods global-credibility role.
   Until it exists, no silent or duplicate super-event is shipped; the trigger contract stays as in the full spec (fires once while the Gods are active and the host is valid, when Strength first enters the global band, or at activation if it already qualifies).
+
+## L18. Round 1 review fixes
+
+Disposition: `implemented` (fuel-room gate and agreed-terms change are `needs_live_game` for appearance and native fuel readings).
+
+Basis: the skeptical round 1 review of the takeover commits, under the same full design authority.
+
+- `gods_of_africa_participant_owns_host_core_state` was defined twice (`012_africa_gods_epoch_binding_triggers.txt` and `012_africa_gods_triggers.txt`), which the engine reports as a duplicate scripted trigger; the second definition and a repeated `NOT` line in `gods_of_africa_participant_can_reconcile` are removed.
+- A full payment that arrives short (for example fuel limited by Africa's tank space) no longer turns the contract into agreed terms. Only the participant's own partial-payment decision does, as its tooltip already says; otherwise a click on "Fulfil the Demand" could expose the participant to a broken-agreement penalty it was never warned about.
+- "Fulfil the Demand" and the partial payment need room in Africa's fuel tanks for a fuel demand (`gods_of_africa_host_can_receive_demand_payment`, tooltip `gods_of_africa_host_fuel_room_tt`). Before, a full tank made the click do nothing and let the AI retry it every day.
+- The delivery row's re-enable interval reads `gods_of_africa_settlement_delivery.reenable_days`, and the achievement tooltips read their thresholds from `gods_of_africa_achievement` instead of repeating the numbers.
+- The settlement equipment budget creates `gods_of_africa_floor_output` before calling `gods_of_africa_floor_temporary_value`. The offline wiki warns that a temporary variable first created inside a scripted effect may not survive its return; without this the army reserve could fall back to the 500 floor and a batch could strip Africa's army stock.
+- The unused single-participant wrapper `gods_of_africa_commit_participant_settlement` is removed: settling one participant alone would skip the host's owed totals.
+- The archive cleanup no longer clears the emergency proof and substitute terms twice.
+
+MCP route evidence (review, 2026-10-04): one narrow `hoi4_probability_inspect` call (`decision_ai_will_do` with the three doctrine decisions as the candidate pool) and one `hoi4_decision_inspect` call (`mode = inspect`, `id = gods_of_africa_deliver_settlement_support`) both returned "Invalid tool arguments". The probability audit stays `blocked`; neither route was retried.

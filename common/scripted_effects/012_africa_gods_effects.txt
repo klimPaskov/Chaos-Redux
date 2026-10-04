@@ -491,8 +491,6 @@ gods_of_africa_archive_invalid_participant = {
 	clr_country_flag = gods_of_africa_contract_substitute_terms
 	gods_of_africa_clear_reconciliation_review = yes
 	remove_mission = gods_of_africa_demand_mission
-	gods_of_africa_clear_contract_emergency_proof = yes
-	clr_country_flag = gods_of_africa_contract_substitute_terms
 	remove_mission = gods_of_africa_reconciliation_mission
 	gods_of_africa_release_owned_offender_mark = yes
 	if = {
@@ -2270,6 +2268,8 @@ gods_of_africa_resolve_partial_compliance = {
 		gods_of_africa_transfer_payment = yes
 		if = {
 			limit = { check_variable = { gods_of_africa_payment_success > constant:gods_of_africa_value.zero } }
+			# A chosen partial payment binds the participant to the remaining terms.
+			gods_of_africa_mark_contract_agreed = yes
 			gods_of_africa_apply_partial_delivery = yes
 		}
 	}
@@ -2278,10 +2278,10 @@ gods_of_africa_resolve_partial_compliance = {
 # COUNTRY scope on a participant after a successful measured transfer that did
 # not cover the whole balance, or after a partial shipment. Only the measured
 # delivery reduces the balance; the remainder stays owed under the same running
-# deadline.
+# deadline. A full payment that arrives short (for example fuel limited by
+# Africa's free tank space) does not turn the contract into agreed terms; only
+# the participant's own partial-payment choice does.
 gods_of_africa_apply_partial_delivery = {
-	# A begun partial payment binds the participant to the remaining terms.
-	gods_of_africa_mark_contract_agreed = yes
 	subtract_from_variable = { gods_of_africa_demand_remaining = gods_of_africa_payment_delivered }
 	if = {
 		limit = { check_variable = { var = gods_of_africa_demand_remaining value = constant:gods_of_africa_value.zero compare = less_than_or_equals } }

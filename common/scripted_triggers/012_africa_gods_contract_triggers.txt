@@ -118,3 +118,20 @@ gods_of_africa_contract_has_substitute_terms = {
 		has_country_flag = gods_of_africa_contract_substitute_terms
 	}
 }
+
+# Participant COUNTRY. Africa can take delivery of the current demand. A fuel
+# payment is limited to Africa's free tank space, so it needs room for at least
+# one unit of fuel; every other family is always receivable here.
+gods_of_africa_host_can_receive_demand_payment = {
+	OR = {
+		NOT = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.fuel } }
+		AND = {
+			has_event_target = africa_host
+			event_target:africa_host = {
+				set_temp_variable = { gods_of_africa_host_fuel_room_k = max_fuel_k }
+				subtract_from_temp_variable = { gods_of_africa_host_fuel_room_k = fuel_k }
+				check_variable = { var = gods_of_africa_host_fuel_room_k value = constant:gods_of_africa_contribution_measure.k_per_native compare = greater_than_or_equals }
+			}
+		}
+	}
+}

@@ -21,7 +21,7 @@ Disposition: `accepted and queued` (basis: the takeover's catalog-alignment item
 - Material delivery: Favored and Respected governments are owed infantry equipment and fuel scaled to the material they sent and to Africa's Strength; the settling government delivers it in batches through "Deliver settlement support" (`gods_of_africa_settlement_delivery_name`).
 - Broken agreements: only a broken agreement (agreed tribute terms, protection compact, accepted reconciliation, renewed recognition) is a treaty breach (`chaosx.nr12.616.t` "An Agreement Broken by War").
 
-## Not yet in game (add the rows only when implemented)
+## Achievements, news event, and super-event
 
 | Item | Catalog surface | Status |
 | --- | --- | --- |

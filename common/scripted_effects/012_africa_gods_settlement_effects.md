@@ -94,13 +94,8 @@ Owner endpoint:
 gods_of_africa_commit_final_settlement = yes
 ```
 
-Internal census country:
-
-```text
-gods_of_africa_commit_participant_settlement = yes
-```
-
-The participant helper requires the owner's endpoint to be committed first.
+The three census passes (`gods_of_africa_settlement_classify_participant`, `gods_of_africa_initialize_settlement_obligation`, `gods_of_africa_settlement_finalize_participant`) are called only by that owner endpoint, in that order, with the host delivery initialization between the second and third pass.
+There is no single-participant settlement entry, because one participant settled alone would skip the host's owed totals.
 Direct early grading, reward, finalization, or receipt acknowledgement fails its own guard.
 `.608` retains `GFX_report_event_012_africa_gods_settlement`, registered in `interface/012_africa_event_pictures.gfx`.
 No image, DDS, new GUI, icon, portrait, or model is produced for this coverage repair.

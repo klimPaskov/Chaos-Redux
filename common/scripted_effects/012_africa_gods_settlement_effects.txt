@@ -203,13 +203,6 @@ gods_of_africa_settlement_finalize_participant = {
 	}
 }
 
-# Kept for direct callers: the full three-phase pass for one census entry.
-gods_of_africa_commit_participant_settlement = {
-	gods_of_africa_settlement_classify_participant = yes
-	gods_of_africa_initialize_settlement_obligation = yes
-	gods_of_africa_settlement_finalize_participant = yes
-}
-
 # ----------------------------------------------------------------------------
 # Donor-backed delivery
 # ----------------------------------------------------------------------------
@@ -246,7 +239,9 @@ gods_of_africa_measure_settlement_equipment_budget = {
 			has_variable = africa_common_defence_stockpile
 			check_variable = { gods_of_africa_reward_equipment_owed_total_k > constant:gods_of_africa_value.zero }
 		}
-		# Army reserve floor.
+		# Army reserve floor. The helper's output is created here, before the
+		# call, so it survives the scripted-effect boundary.
+		set_temp_variable = { gods_of_africa_floor_output = constant:gods_of_africa_value.zero }
 		set_temp_variable = { gods_of_africa_floor_input = num_target_equipment_in_armies_k@infantry_equipment }
 		multiply_temp_variable = { gods_of_africa_floor_input = constant:gods_of_africa_contribution_measure.native_per_k }
 		multiply_temp_variable = { gods_of_africa_floor_input = constant:gods_of_africa_reward_scale.army_equipment_reserve_fraction }
