@@ -494,3 +494,14 @@ Decision:
 - `chaosx_alien_recovery_ledger_resolve_event036` adds each newly recorded recoverer once to the bounded global array `global.chaosx_alien_recovery_event036_recoverers` (an array rather than one event target, because each Event 036 firing records a separate random country).
 - `chaosx_nr25_enroll_event036_recoverers` walks only that array and enrols each recoverer that still exists and still holds its recovery through `chaosx_nr25_enroll_holder`. It runs when Event 25 opens (before evolved openings, so an Evolution V opening already sees the holder) and again when Evolution V activates. If Evolution V is already active, a recoverer outside a live race opens its aftermath and receives the holder notice `chaosx.nr25.221` at once; otherwise the notice arrives through the existing Evolution V activation loop. Enrolment and aftermath opening are idempotent, so the post-opening resolver path never doubles a holder.
 - The ledger markdown documents the new array. Limit: a recovery recorded in a save from before the array existed is not enrolled retroactively, because finding it would need a world scan.
+
+## D30. Decision cost text reads the constants it pays
+
+Disposition: `implemented`.
+
+Basis: CLAUDE.md's no-magic-numbers rule and the round 1 review note that 48 cost strings printed literal amounts.
+
+Decision:
+
+- All 48 Event 025 cost strings with literal amounts (expedition tray, outpost, rival operations, countermeasure, data exchange, Evolution I to V responses and the analysis decisions) now print `[?constant:chaosx_nr25_cost.*_required|0]` with the matching texticon. Every amount already had a positive requirement mirror, so no display constant was added. The gateway and emergency charter costs read `chaosx_nr25_gateway` (D26).
+- Each string was checked against the executed effect and the decision's cost trigger. Three mismatches were fixed where the shown cost was right and the code was wrong: Recruit a Polar Crew required and showed fuel but never deducted it (it now pays `fuel_crew`); Integrate the Systems required and showed support equipment but never deducted it (it now pays `support_evolution`); Conceal the Program showed and paid 20 political power but only required 10 (its cost gate now reads `pp_conceal_required`).
