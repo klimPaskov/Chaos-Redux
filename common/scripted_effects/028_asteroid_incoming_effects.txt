@@ -156,63 +156,54 @@ asteroid_incoming_fail_closed_transaction = {
 	clear_global_event_target = asteroid_incoming_locked_state
 }
 
-# STATE SCOPE. Inputs: asteroid_incoming_profile_candidate and
-# asteroid_incoming_ring_candidate as positive temporary values. Output:
+# STATE SCOPE. Inputs: positive asteroid_incoming_profile_candidate and
+# nonnegative asteroid_incoming_ring_candidate as temporary values. Output:
 # asteroid_incoming_profile_recorded as a temporary result. The aligned
 # footprint arrays retain only the strongest profile and its shortest ring.
+# Caller-owned asteroid_incoming_profile_recorded must be initialized to zero
+# when consumed after return. The state cache belongs to one transaction and
+# must match the exact aligned array row. No column may be reordered or removed
+# during planning. Invalid proof sets asteroid_incoming_transaction_failed_closed.
 asteroid_incoming_record_footprint_profile = {
 	set_temp_variable = { asteroid_incoming_profile_recorded = constant:asteroid_incoming_runtime.zero }
 	if = {
 		limit = {
 			has_variable = asteroid_incoming_profile_candidate
 			has_variable = asteroid_incoming_ring_candidate
-			check_variable = {
-				var = asteroid_incoming_profile_candidate
-				value = constant:asteroid_incoming_profile.none
-				compare = greater_than
-			}
+			check_variable = { asteroid_incoming_profile_candidate > constant:asteroid_incoming_profile.none }
+			check_variable = { var = asteroid_incoming_ring_candidate value = constant:asteroid_incoming_runtime.first_array_index compare = greater_than_or_equals }
+			check_variable = { global.asteroid_incoming_transaction_id > constant:asteroid_incoming_runtime.zero }
 			asteroid_incoming_registry_arrays_are_aligned = yes
 		}
 		save_event_target_as = asteroid_incoming_profile_state_current
 		if = {
 			limit = {
-				NOT = {
-					is_in_array = {
-						array = global.asteroid_incoming_footprint_states
-						value = THIS
-					}
-				}
+				NOT = { is_in_array = { array = global.asteroid_incoming_footprint_states value = THIS } }
 			}
-			add_to_array = {
-				array = global.asteroid_incoming_footprint_states
-				value = THIS
-			}
-			add_to_array = {
-				array = global.asteroid_incoming_footprint_profiles
-				value = asteroid_incoming_profile_candidate
-			}
-			add_to_array = {
-				array = global.asteroid_incoming_footprint_rings
-				value = asteroid_incoming_ring_candidate
-			}
+			# Append-only columns keep this state-owned index stable for this transaction.
+			set_variable = { asteroid_incoming_state_footprint_index = global.asteroid_incoming_footprint_states^num }
+			set_variable = { asteroid_incoming_state_footprint_transaction_id = global.asteroid_incoming_transaction_id }
+			add_to_array = { array = global.asteroid_incoming_footprint_states value = THIS }
+			add_to_array = { array = global.asteroid_incoming_footprint_profiles value = asteroid_incoming_profile_candidate }
+			add_to_array = { array = global.asteroid_incoming_footprint_rings value = asteroid_incoming_ring_candidate }
 			set_variable = { asteroid_incoming_state_profile = asteroid_incoming_profile_candidate }
 			set_variable = { asteroid_incoming_state_ring = asteroid_incoming_ring_candidate }
 			set_temp_variable = { asteroid_incoming_profile_recorded = constant:asteroid_incoming_runtime.one }
 		}
 		else = {
-			set_temp_variable = { asteroid_incoming_profile_index = constant:asteroid_incoming_runtime.first_array_index }
-			while_loop_effect = {
+			# Check all bounds before entering the stored row. Never search or invent a row.
+			set_temp_variable = { asteroid_incoming_profile_index = asteroid_incoming_state_footprint_index }
+			round_temp_variable = asteroid_incoming_profile_index
+			if = {
 				limit = {
-					check_variable = {
-						var = asteroid_incoming_profile_recorded
-						value = constant:asteroid_incoming_runtime.zero
-						compare = equals
-					}
-					check_variable = {
-						var = asteroid_incoming_profile_index
-						value = global.asteroid_incoming_footprint_states^num
-						compare = less_than
-					}
+					has_variable = asteroid_incoming_state_footprint_index
+					has_variable = asteroid_incoming_state_footprint_transaction_id
+					check_variable = { asteroid_incoming_state_footprint_transaction_id = global.asteroid_incoming_transaction_id }
+					check_variable = { asteroid_incoming_profile_index = asteroid_incoming_state_footprint_index }
+					check_variable = { var = asteroid_incoming_profile_index value = constant:asteroid_incoming_runtime.first_array_index compare = greater_than_or_equals }
+					check_variable = { asteroid_incoming_profile_index < global.asteroid_incoming_footprint_states^num }
+					check_variable = { asteroid_incoming_profile_index < global.asteroid_incoming_footprint_profiles^num }
+					check_variable = { asteroid_incoming_profile_index < global.asteroid_incoming_footprint_rings^num }
 				}
 				var:global.asteroid_incoming_footprint_states^asteroid_incoming_profile_index = {
 					if = {
@@ -225,14 +216,8 @@ asteroid_incoming_record_footprint_profile = {
 									compare = greater_than
 								}
 							}
-							set_variable = {
-								global.asteroid_incoming_footprint_profiles^asteroid_incoming_profile_index = asteroid_incoming_profile_candidate
-							}
-							set_variable = {
-								global.asteroid_incoming_footprint_rings^asteroid_incoming_profile_index = asteroid_incoming_ring_candidate
-							}
-							set_variable = { asteroid_incoming_state_profile = asteroid_incoming_profile_candidate }
-							set_variable = { asteroid_incoming_state_ring = asteroid_incoming_ring_candidate }
+							set_variable = { global.asteroid_incoming_footprint_profiles^asteroid_incoming_profile_index = asteroid_incoming_profile_candidate }
+							set_variable = { global.asteroid_incoming_footprint_rings^asteroid_incoming_profile_index = asteroid_incoming_ring_candidate }
 						}
 						else_if = {
 							limit = {
@@ -247,51 +232,33 @@ asteroid_incoming_record_footprint_profile = {
 									compare = less_than
 								}
 							}
-							set_variable = {
-								global.asteroid_incoming_footprint_rings^asteroid_incoming_profile_index = asteroid_incoming_ring_candidate
-							}
-							set_variable = { asteroid_incoming_state_ring = asteroid_incoming_ring_candidate }
+							set_variable = { global.asteroid_incoming_footprint_rings^asteroid_incoming_profile_index = asteroid_incoming_ring_candidate }
 						}
-						else = {
-							set_variable = {
-								asteroid_incoming_state_profile = global.asteroid_incoming_footprint_profiles^asteroid_incoming_profile_index
-							}
-							set_variable = {
-								asteroid_incoming_state_ring = global.asteroid_incoming_footprint_rings^asteroid_incoming_profile_index
-							}
-						}
+						set_variable = { asteroid_incoming_state_profile = global.asteroid_incoming_footprint_profiles^asteroid_incoming_profile_index }
+						set_variable = { asteroid_incoming_state_ring = global.asteroid_incoming_footprint_rings^asteroid_incoming_profile_index }
 						set_temp_variable = { asteroid_incoming_profile_recorded = constant:asteroid_incoming_runtime.one }
 					}
-				}
-				add_to_temp_variable = {
-					asteroid_incoming_profile_index = constant:asteroid_incoming_runtime.loop_increment
 				}
 			}
 		}
 		if = {
-			limit = {
-					check_variable = {
-						var = global.asteroid_incoming_planner_mode
-						value = constant:asteroid_incoming_runtime.planner_main
-						compare = equals
-					}
-				NOT = {
-					is_in_array = {
-						array = global.asteroid_incoming_main_footprint_states
-						value = THIS
-					}
+			limit = { check_variable = { asteroid_incoming_profile_recorded = constant:asteroid_incoming_runtime.one } }
+			if = {
+				limit = {
+					check_variable = { global.asteroid_incoming_planner_mode = constant:asteroid_incoming_runtime.planner_main }
+					NOT = { is_in_array = { array = global.asteroid_incoming_main_footprint_states value = THIS } }
 				}
+				add_to_array = { array = global.asteroid_incoming_main_footprint_states value = THIS }
 			}
-			add_to_array = {
-				array = global.asteroid_incoming_main_footprint_states
-				value = THIS
-			}
+			set_variable = { asteroid_incoming_state_transaction_id = global.asteroid_incoming_transaction_id }
+			set_state_flag = asteroid_incoming_state_planned
 		}
-		set_variable = { asteroid_incoming_state_transaction_id = global.asteroid_incoming_transaction_id }
-		set_state_flag = asteroid_incoming_state_planned
+	}
+	if = {
+		limit = { check_variable = { asteroid_incoming_profile_recorded = constant:asteroid_incoming_runtime.zero } }
+		set_global_flag = asteroid_incoming_transaction_failed_closed
 	}
 }
-
 # ANY SCOPE. Clears the bounded planner work arrays, records the locked state
 # at ring zero, and advances through rings 1, 2, and 3 by land adjacency.
 asteroid_incoming_plan_main_footprint = {
@@ -458,6 +425,7 @@ asteroid_incoming_plan_next_land_ring = {
 # temporary fractions: asteroid_incoming_population_fraction,
 # asteroid_incoming_industry_fraction, asteroid_incoming_logistics_fraction,
 # and asteroid_incoming_strategic_fraction. Unknown profiles stay at zero.
+# The caller initializes all four outputs to zero before the call.
 asteroid_incoming_load_profile_fractions = {
 	set_temp_variable = { asteroid_incoming_population_fraction = constant:asteroid_incoming_dust.minimum }
 	set_temp_variable = { asteroid_incoming_industry_fraction = constant:asteroid_incoming_dust.minimum }
@@ -591,7 +559,8 @@ asteroid_incoming_apply_population_receipt = {
 # asteroid_incoming_selected_before, and asteroid_incoming_selected_fraction.
 # Output: asteroid_incoming_remove_levels. This is an event-owned dynamic
 # adapter around the supported remove_building effect; it does not call any
-# nuclear or fallout effect.
+# nuclear or fallout effect. The caller initializes asteroid_incoming_remove_levels
+# to zero before the call and consumes the returned nonnegative rounded count.
 asteroid_incoming_prepare_selected_building_loss = {
 	set_temp_variable = { asteroid_incoming_remove_levels = asteroid_incoming_selected_before }
 	multiply_temp_variable = {
@@ -608,33 +577,26 @@ asteroid_incoming_prepare_selected_building_loss = {
 # STATE SCOPE. Uses the token supplied by the caller and the already prepared
 # positive level count. The meta effect is limited to building type injection;
 # the before/after receipt remains explicit at each supported building call
-# site so actual levels, rather than requested levels, are recorded.
+# site so actual levels, rather than requested levels, are recorded. Native
+# removal takes a level count directly, avoiding a per-level loop ceiling.
+# Province building coverage requires exact province targeting and remains an
+# explicit native integration gap, not proven by the state aggregate reader.
 asteroid_incoming_remove_selected_building_levels = {
 	if = {
 		limit = {
 			has_variable = asteroid_incoming_selected_building
-			check_variable = {
-				var = asteroid_incoming_remove_levels
-				value = constant:asteroid_incoming_dust.minimum
-				compare = greater_than
-			}
+			check_variable = { asteroid_incoming_remove_levels > constant:asteroid_incoming_dust.minimum }
 		}
 		set_temp_variable = { asteroid_incoming_selected_state_id = THIS.id }
-		set_temp_variable = { asteroid_incoming_single_building_level = constant:asteroid_incoming_runtime.one }
-		for_loop_effect = {
-			start = constant:asteroid_incoming_runtime.zero
-			end = asteroid_incoming_remove_levels
-			value = asteroid_incoming_remove_building_loop_index
-			meta_effect = {
-				text = {
-					remove_building = {
-						type = [BUILDING_TYPE]
-						level = asteroid_incoming_single_building_level
-						state = var:asteroid_incoming_selected_state_id
-					}
+		meta_effect = {
+			text = {
+				remove_building = {
+					type = [BUILDING_TYPE]
+					level = asteroid_incoming_remove_levels
+					state = var:asteroid_incoming_selected_state_id
 				}
-				BUILDING_TYPE = "[?asteroid_incoming_selected_building.GetTokenKey]"
 			}
+			BUILDING_TYPE = "[?asteroid_incoming_selected_building.GetTokenKey]"
 		}
 	}
 }
@@ -642,6 +604,8 @@ asteroid_incoming_remove_selected_building_levels = {
 # STATE SCOPE. Inputs: asteroid_incoming_selected_before and
 # asteroid_incoming_selected_after. Output: asteroid_incoming_selected_actual
 # and the cumulative asteroid_incoming_state_building_levels_lost.
+# The caller initializes asteroid_incoming_selected_actual to zero before
+# the call. Only the observed nonnegative difference enters the receipts.
 asteroid_incoming_capture_selected_building_receipt = {
 	set_temp_variable = { asteroid_incoming_selected_actual = asteroid_incoming_selected_before }
 	subtract_from_temp_variable = {
@@ -661,6 +625,9 @@ asteroid_incoming_capture_selected_building_receipt = {
 # in asteroid_incoming_selected_building. Meta evaluation is used only to read
 # the dynamic building token before and after the explicit-state removal loop.
 asteroid_incoming_apply_selected_strategic_building_receipt = {
+	# Meta text also uses conservative call-frame lifetime. Own its readback storage.
+	set_temp_variable = { asteroid_incoming_selected_before = constant:asteroid_incoming_runtime.zero }
+	set_temp_variable = { asteroid_incoming_selected_after = constant:asteroid_incoming_runtime.zero }
 	meta_effect = {
 		text = {
 			set_temp_variable = { asteroid_incoming_selected_before = building_level@[BUILDING_TYPE] }
@@ -668,6 +635,7 @@ asteroid_incoming_apply_selected_strategic_building_receipt = {
 		BUILDING_TYPE = "[?asteroid_incoming_selected_building.GetTokenKey]"
 	}
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_strategic_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	meta_effect = {
@@ -676,6 +644,7 @@ asteroid_incoming_apply_selected_strategic_building_receipt = {
 		}
 		BUILDING_TYPE = "[?asteroid_incoming_selected_building.GetTokenKey]"
 	}
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_strategic_levels_lost = asteroid_incoming_selected_actual }
 }
@@ -693,6 +662,10 @@ asteroid_incoming_apply_building_receipt = {
 	if = {
 		limit = { NOT = { has_state_flag = asteroid_incoming_preimpact_snapshot_recorded } }
 		set_variable = { asteroid_incoming_preimpact_population_k = state_population_k }
+		if = {
+			limit = { has_variable = asteroid_incoming_state_population_before_k }
+			set_variable = { asteroid_incoming_preimpact_population_k = asteroid_incoming_state_population_before_k }
+		}
 		set_variable = { asteroid_incoming_preimpact_infrastructure = building_level@infrastructure }
 		set_variable = { asteroid_incoming_preimpact_railway = building_level@rail_way }
 		set_variable = { asteroid_incoming_preimpact_supply_node = building_level@supply_node }
@@ -708,36 +681,44 @@ asteroid_incoming_apply_building_receipt = {
 	set_temp_variable = { asteroid_incoming_selected_building = token:industrial_complex }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@industrial_complex }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_industry_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@industrial_complex }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_industry_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:arms_factory }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@arms_factory }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_industry_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@arms_factory }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_industry_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:dockyard }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@dockyard }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_industry_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@dockyard }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_industry_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:synthetic_refinery }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@synthetic_refinery }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_industry_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@synthetic_refinery }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_industry_levels_lost = asteroid_incoming_selected_actual }
 
@@ -745,63 +726,77 @@ asteroid_incoming_apply_building_receipt = {
 	set_temp_variable = { asteroid_incoming_selected_building = token:infrastructure }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@infrastructure }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_logistics_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@infrastructure }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_logistics_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:rail_way }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@rail_way }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_logistics_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@rail_way }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_logistics_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:supply_node }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@supply_node }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_logistics_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@supply_node }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_logistics_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:naval_base }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@naval_base }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_logistics_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@naval_base }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_logistics_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:naval_facility }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@naval_facility }
-	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_logistics_fraction }
+	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_strategic_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@naval_facility }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
-	add_to_variable = { asteroid_incoming_state_logistics_levels_lost = asteroid_incoming_selected_actual }
+	add_to_variable = { asteroid_incoming_state_strategic_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:naval_supply_hub }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@naval_supply_hub }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_logistics_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@naval_supply_hub }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_logistics_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:naval_headquarters }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@naval_headquarters }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_logistics_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@naval_headquarters }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_logistics_levels_lost = asteroid_incoming_selected_actual }
 
@@ -809,135 +804,165 @@ asteroid_incoming_apply_building_receipt = {
 	set_temp_variable = { asteroid_incoming_selected_building = token:air_base }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@air_base }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_strategic_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@air_base }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_strategic_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:radar_station }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@radar_station }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_strategic_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@radar_station }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_strategic_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:anti_air_building }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@anti_air_building }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_strategic_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@anti_air_building }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_strategic_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:fuel_silo }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@fuel_silo }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_strategic_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@fuel_silo }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_strategic_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:rocket_site }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@rocket_site }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_strategic_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@rocket_site }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_strategic_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:mega_gun_emplacement }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@mega_gun_emplacement }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_strategic_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@mega_gun_emplacement }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_strategic_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:bunker }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@bunker }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_strategic_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@bunker }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_strategic_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:coastal_bunker }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@coastal_bunker }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_strategic_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@coastal_bunker }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_strategic_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:stronghold_network }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@stronghold_network }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_strategic_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@stronghold_network }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_strategic_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:dam }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@dam }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_strategic_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@dam }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_strategic_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:dam_mountain }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@dam_mountain }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_strategic_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@dam_mountain }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_strategic_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:nuclear_facility }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@nuclear_facility }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_strategic_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@nuclear_facility }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_strategic_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:nuclear_reactor }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@nuclear_reactor }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_strategic_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@nuclear_reactor }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_strategic_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:nuclear_reactor_heavy_water }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@nuclear_reactor_heavy_water }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_strategic_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@nuclear_reactor_heavy_water }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_strategic_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:commercial_nuclear_reactor }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@commercial_nuclear_reactor }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_strategic_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@commercial_nuclear_reactor }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_strategic_levels_lost = asteroid_incoming_selected_actual }
 
@@ -945,148 +970,162 @@ asteroid_incoming_apply_building_receipt = {
 	set_temp_variable = { asteroid_incoming_selected_building = token:air_facility }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@air_facility }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_strategic_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@air_facility }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_strategic_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:land_facility }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@land_facility }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_strategic_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@land_facility }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_strategic_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:cataract_dam_mountain }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@cataract_dam_mountain }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_strategic_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@cataract_dam_mountain }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_strategic_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:canal_kiel }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@canal_kiel }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_logistics_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@canal_kiel }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_logistics_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:canal_panama }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@canal_panama }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_logistics_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@canal_panama }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_logistics_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:energy_infrastructure }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@energy_infrastructure }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_logistics_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@energy_infrastructure }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_logistics_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:industrial_infrastructure }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@industrial_infrastructure }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_industry_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@industrial_infrastructure }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_industry_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:biowarfare_facility }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@biowarfare_facility }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_strategic_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@biowarfare_facility }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_strategic_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:cw_facility }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@cw_facility }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_strategic_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@cw_facility }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_strategic_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:concentration_camp }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@concentration_camp }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_strategic_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@concentration_camp }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_strategic_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:extermination_camp }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@extermination_camp }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_strategic_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@extermination_camp }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_strategic_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:concentration_camp_site }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@concentration_camp_site }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_strategic_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@concentration_camp_site }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_strategic_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:extermination_camp_site }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@extermination_camp_site }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_strategic_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@extermination_camp_site }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_strategic_levels_lost = asteroid_incoming_selected_actual }
 
 	set_temp_variable = { asteroid_incoming_selected_building = token:gulag_labor_camp_network }
 	set_temp_variable = { asteroid_incoming_selected_before = building_level@gulag_labor_camp_network }
 	set_temp_variable = { asteroid_incoming_selected_fraction = asteroid_incoming_strategic_fraction }
+	set_temp_variable = { asteroid_incoming_remove_levels = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_prepare_selected_building_loss = yes
 	asteroid_incoming_remove_selected_building_levels = yes
 	set_temp_variable = { asteroid_incoming_selected_after = building_level@gulag_labor_camp_network }
+	set_temp_variable = { asteroid_incoming_selected_actual = constant:asteroid_incoming_runtime.zero }
 	asteroid_incoming_capture_selected_building_receipt = yes
 	add_to_variable = { asteroid_incoming_state_strategic_levels_lost = asteroid_incoming_selected_actual }
 
 	# Player-facing landmarks, map installations, and their registered visual
-	# anchors are still building levels. Including the complete current vanilla
-	# and mod registry prevents a main crater from leaving a functional or
-	# visible building behind when one of these sites occupies the target state.
+	# anchors are still building levels. Each token is dispatched only once.
+	# Province installations and queued projects require separately verified
+	# native targeting before a full crater-clearance claim.
 	set_temp_variable = { asteroid_incoming_selected_building = token:anomaly_signal_beacon_pilot }
-	asteroid_incoming_apply_selected_strategic_building_receipt = yes
-	set_temp_variable = { asteroid_incoming_selected_building = token:biowarfare_facility }
-	asteroid_incoming_apply_selected_strategic_building_receipt = yes
-	set_temp_variable = { asteroid_incoming_selected_building = token:concentration_camp_site }
-	asteroid_incoming_apply_selected_strategic_building_receipt = yes
-	set_temp_variable = { asteroid_incoming_selected_building = token:cw_facility }
-	asteroid_incoming_apply_selected_strategic_building_receipt = yes
-	set_temp_variable = { asteroid_incoming_selected_building = token:extermination_camp_site }
-	asteroid_incoming_apply_selected_strategic_building_receipt = yes
-	set_temp_variable = { asteroid_incoming_selected_building = token:dam }
-	asteroid_incoming_apply_selected_strategic_building_receipt = yes
-	set_temp_variable = { asteroid_incoming_selected_building = token:dam_mountain }
-	asteroid_incoming_apply_selected_strategic_building_receipt = yes
-	set_temp_variable = { asteroid_incoming_selected_building = token:cataract_dam_mountain }
 	asteroid_incoming_apply_selected_strategic_building_receipt = yes
 	set_temp_variable = { asteroid_incoming_selected_building = token:landmark_berlin_reichstag }
 	asteroid_incoming_apply_selected_strategic_building_receipt = yes
@@ -1126,29 +1165,11 @@ asteroid_incoming_apply_building_receipt = {
 	asteroid_incoming_apply_selected_strategic_building_receipt = yes
 	set_temp_variable = { asteroid_incoming_selected_building = token:landmark_sadabad_complex }
 	asteroid_incoming_apply_selected_strategic_building_receipt = yes
-	set_temp_variable = { asteroid_incoming_selected_building = token:canal_kiel }
-	asteroid_incoming_apply_selected_strategic_building_receipt = yes
-	set_temp_variable = { asteroid_incoming_selected_building = token:canal_panama }
-	asteroid_incoming_apply_selected_strategic_building_receipt = yes
 	set_temp_variable = { asteroid_incoming_selected_building = token:landmark_statue_of_liberty }
 	asteroid_incoming_apply_selected_strategic_building_receipt = yes
 	set_temp_variable = { asteroid_incoming_selected_building = token:landmark_taj_mahal }
 	asteroid_incoming_apply_selected_strategic_building_receipt = yes
 	set_temp_variable = { asteroid_incoming_selected_building = token:landmark_tokyo_imperial_palace }
-	asteroid_incoming_apply_selected_strategic_building_receipt = yes
-	set_temp_variable = { asteroid_incoming_selected_building = token:naval_base }
-	asteroid_incoming_apply_selected_strategic_building_receipt = yes
-	set_temp_variable = { asteroid_incoming_selected_building = token:nuclear_reactor }
-	asteroid_incoming_apply_selected_strategic_building_receipt = yes
-	set_temp_variable = { asteroid_incoming_selected_building = token:rocket_site }
-	asteroid_incoming_apply_selected_strategic_building_receipt = yes
-	set_temp_variable = { asteroid_incoming_selected_building = token:nuclear_facility }
-	asteroid_incoming_apply_selected_strategic_building_receipt = yes
-	set_temp_variable = { asteroid_incoming_selected_building = token:air_facility }
-	asteroid_incoming_apply_selected_strategic_building_receipt = yes
-	set_temp_variable = { asteroid_incoming_selected_building = token:land_facility }
-	asteroid_incoming_apply_selected_strategic_building_receipt = yes
-	set_temp_variable = { asteroid_incoming_selected_building = token:naval_facility }
 	asteroid_incoming_apply_selected_strategic_building_receipt = yes
 }
 
@@ -1158,15 +1179,20 @@ asteroid_incoming_apply_building_receipt = {
 # aggregation pass. Clear state projects, persistent crater modifiers, and
 # other presentation effects remain parent-owned.
 asteroid_incoming_apply_state_transaction = {
-	set_variable = { asteroid_incoming_state_population_lost_k = constant:asteroid_incoming_dust.minimum }
-	set_variable = { asteroid_incoming_state_population_lost_people = constant:asteroid_incoming_dust.minimum }
-	set_variable = { asteroid_incoming_state_actual_deaths = constant:asteroid_incoming_dust.minimum }
-	set_variable = { asteroid_incoming_state_industry_levels_lost = constant:asteroid_incoming_dust.minimum }
-	set_variable = { asteroid_incoming_state_logistics_levels_lost = constant:asteroid_incoming_dust.minimum }
-	set_variable = { asteroid_incoming_state_strategic_levels_lost = constant:asteroid_incoming_dust.minimum }
-	set_variable = { asteroid_incoming_state_building_levels_lost = constant:asteroid_incoming_dust.minimum }
 	if = {
 		limit = { asteroid_incoming_state_is_resolvable_transaction = yes }
+		# A refused or repeated call preserves the first physical receipt.
+		set_variable = { asteroid_incoming_state_population_lost_k = constant:asteroid_incoming_dust.minimum }
+		set_variable = { asteroid_incoming_state_population_lost_people = constant:asteroid_incoming_dust.minimum }
+		set_variable = { asteroid_incoming_state_actual_deaths = constant:asteroid_incoming_dust.minimum }
+		set_variable = { asteroid_incoming_state_industry_levels_lost = constant:asteroid_incoming_dust.minimum }
+		set_variable = { asteroid_incoming_state_logistics_levels_lost = constant:asteroid_incoming_dust.minimum }
+		set_variable = { asteroid_incoming_state_strategic_levels_lost = constant:asteroid_incoming_dust.minimum }
+		set_variable = { asteroid_incoming_state_building_levels_lost = constant:asteroid_incoming_dust.minimum }
+		set_temp_variable = { asteroid_incoming_population_fraction = constant:asteroid_incoming_runtime.zero }
+		set_temp_variable = { asteroid_incoming_industry_fraction = constant:asteroid_incoming_runtime.zero }
+		set_temp_variable = { asteroid_incoming_logistics_fraction = constant:asteroid_incoming_runtime.zero }
+		set_temp_variable = { asteroid_incoming_strategic_fraction = constant:asteroid_incoming_runtime.zero }
 		asteroid_incoming_load_profile_fractions = yes
 		asteroid_incoming_apply_population_receipt = yes
 		asteroid_incoming_apply_building_receipt = yes

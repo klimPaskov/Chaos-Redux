@@ -1317,6 +1317,7 @@ asteroid_incoming_process_footprint = {
 	set_variable = { global.asteroid_incoming_destroyed_logistics_levels = 0 }
 	set_variable = { global.asteroid_incoming_destroyed_strategic_levels = 0 }
 	set_variable = { global.asteroid_incoming_affected_state_count = 0 }
+	set_variable = { global.asteroid_incoming_affected_country_count = constant:asteroid_incoming_runtime.zero }
 	set_variable = { global.asteroid_incoming_dust_state_points = 0 }
 	set_variable = { global.asteroid_incoming_dust_fragment_points = 0 }
 	set_variable = { global.asteroid_incoming_secondary_disaster_count = 0 }
@@ -1332,22 +1333,18 @@ asteroid_incoming_process_footprint = {
 	}
 	asteroid_incoming_relocate_destroyed_capital = yes
 	asteroid_incoming_apply_target_preparedness_aftermath = yes
-	set_temp_variable = { asteroid_incoming_process_index = 0 }
-	while_loop_effect = {
+	# A transaction-time state iterator has no numeric loop-effect ceiling.
+	# Only exact planned members of this incident receive their stored profile.
+	every_state = {
 		limit = {
-			check_variable = {
-				var = asteroid_incoming_process_index
-				value = global.asteroid_incoming_footprint_states^num
-				compare = less_than
-			}
+			has_state_flag = asteroid_incoming_state_planned
+			check_variable = { var = asteroid_incoming_state_transaction_id value = global.asteroid_incoming_transaction_id compare = equals }
+			is_in_array = { array = global.asteroid_incoming_footprint_states value = THIS }
 		}
-		set_temp_variable = { asteroid_incoming_process_profile = global.asteroid_incoming_footprint_profiles^asteroid_incoming_process_index }
-		var:global.asteroid_incoming_footprint_states^asteroid_incoming_process_index = {
-			set_variable = { asteroid_incoming_state_profile = asteroid_incoming_process_profile }
-			asteroid_incoming_apply_state_profile = yes
-		}
-		add_to_temp_variable = { asteroid_incoming_process_index = 1 }
+		asteroid_incoming_apply_state_profile = yes
 	}
+	# Final unique recipients survive working-array cleanup and delayed news.
+	set_variable = { global.asteroid_incoming_affected_country_count = global.asteroid_incoming_affected_country_entries^num }
 }
 
 # ============================================================================
@@ -1370,6 +1367,7 @@ asteroid_incoming_recalculate_dust = {
 		max = constant:asteroid_incoming_dust.industry_point_cap
 	}
 	set_variable = { global.asteroid_incoming_dust_logistics_points = global.asteroid_incoming_destroyed_logistics_levels }
+	add_to_variable = { global.asteroid_incoming_dust_logistics_points = global.asteroid_incoming_destroyed_strategic_levels }
 	divide_variable = { global.asteroid_incoming_dust_logistics_points = constant:asteroid_incoming_dust.logistics_levels_per_point }
 	clamp_variable = {
 		var = global.asteroid_incoming_dust_logistics_points
