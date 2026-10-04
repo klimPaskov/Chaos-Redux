@@ -2,7 +2,7 @@
 
 Implement the complete Event 12 Africa rework from this package. Treat `specs/` as source design, `matrices/` as coverage and acceptance material, `diagrams/` as architecture guidance, `research/` as historical and language evidence, and `handoffs/` as reconciliation and audit instructions.
 
-> Current reconciliation boundary, 2026-09-05: Gods of Africa is owned by Event 012, the manual scenario is `SCN-011`, `chaosx_elephant` reuses vanilla `elephantry`, generated Gods art remains subject to parent/user visual review, and Event 070 is reserved for another idea.
+> Current reconciliation boundary, 2026-09-25: Gods of Africa is owned by Event 012, the manual scenario is `SCN-011`, `chaosx_elephant` reuses vanilla `elephantry`, generated Gods art remains subject to parent/user visual review, and Event 070's unassigned catalog row is available for a future idea.
 
 ## Required reading
 

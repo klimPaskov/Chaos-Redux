@@ -994,13 +994,13 @@ Acceptance basis: the active user goal explicitly requires the accepted Event 01
 
 | Doctrine | Demands | Protection | Retaliation | Hidden final settlement |
 | --- | --- | --- | --- | --- |
-| Reciprocal Covenant | Demand amounts use the existing 90% scale. | The repeat interval shortens by 30 days and protection lowers Wrath by 4. | Punishment intent falls by one tier, with Pressure as the floor; the existing first-failure, Strength, and catastrophe gates still apply. | Favored standing needs two fulfilled demands or one recorded support action. |
-| Sovereign Exaction | Demand amounts use the existing 120% scale. | Protection lowers Wrath by 1. | A host-marked proven offender raises punishment intent by one tier when intent is below Ultimatum; the normal first-failure and Strength ceilings still apply, and catastrophe remains behind its full gate. | Favored standing needs four fulfilled demands or two recorded support actions. |
+| Reciprocal Covenant | Demand amounts use the existing 90% scale. | The repeat interval shortens by 30 days and protection lowers Wrath by 4. | Punishment intent falls by one tier, with Pressure as the floor; the existing first-failure, Strength, and catastrophe gates still apply. | Favored standing follows the twelve-factor grade: at least 2 fulfilled demands, 80% fulfilled, current and longest streak 2, and real extra help or 4 fulfilled demands; Favored settlement support is a quarter larger. |
+| Sovereign Exaction | Demand amounts use the existing 120% scale. | Protection lowers Wrath by 1. | A host-marked proven offender raises punishment intent by one tier when intent is below Ultimatum; the normal first-failure and Strength ceilings still apply, and catastrophe remains behind its full gate. | Favored standing follows the twelve-factor grade: at least 4 fulfilled demands, 90% fulfilled, streak 4, and two packages of extra help or 6 fulfilled demands. |
 | Strategic Ambiguity | Each frozen deadline gains 30 days without changing the quoted amount. | Enemy intelligence rises from 5 to 10 in each shared category when La Résistance, the Security capability, both intelligence agencies, an active African war, and the eligible-enemy filter pass. | Direct stability and war-support losses are halved; host-marked offenders also receive the existing diplomatic sanctions memory. Strength and catastrophe gates are unchanged. | Respected standing tolerates up to two demand failures and two refusals, subject to the existing offender, treaty, Wrath, and defiance exclusions; Favored support remains at three fulfilled demands or one recorded support action. |
 
 These effects reuse the current protection transaction and its four-spendable-cost-type maximum. They add no public value, payment type, random pool, or AI weight. The numeric tuning is centralized in `common/script_constants/012_africa_gods_constants.txt`; current probability-adapter limitations remain separate from implementation evidence.
 
-The support-history threshold reads the existing hidden `gods_of_africa_aid_count`, which records participant voluntary aid and the host's leniency or protection actions. It adds no visible relationship meter and does not change the four settlement names.
+Final standing is decided by the twelve-factor grade in the 2026-10-04 section below, which reads measured contributions rather than the coarse `gods_of_africa_aid_count`. It adds no visible relationship meter and does not change the four settlement names.
 
 ## 2026-10-03 parent implementation correction: bounded enrollment and review cadence
 
@@ -1015,3 +1015,16 @@ Source paths, reference citations, scenario boundaries, and validation limits ar
 ## 2026-09-26 parent implementation decision: participant roster capacity
 
 Acceptance basis: the active user goal requires independent enrollment of every valid major and player country while retaining a bounded registry. The current installed vanilla and Chaos Redux `country_tags` files contain 609 distinct country-tag definitions, so the parent set `gods_of_africa_timing.max_participants` to 640. The one-time census and later owner-local onboarding remain bounded; the larger ceiling fits every currently defined tag without introducing a recurring world scan. This does not prove maximum-roster decision-list readability or live enrollment behavior, which remain validation items.
+
+## 2026-10-04 accepted design: Gods of Africa final grading and settlement support
+
+Acceptance basis: the user's complete-Gods, no-simplification goal tied to the full Gods spec (final evaluation and rewards), the parent's 2026-10-03 acceptance of `docs/plans/012_africa_plans/subagent_handoffs/012_africa_gods_full_grading_rewards_design_2026-10-03.md`, and the takeover agent decisions L3, L4, L12, L13, and L14 in `docs/plans/012_africa_plans/agent_decisions_2026-10-04.md`, taken under the user's full-authority grant.
+
+Disposition: `implemented`. Evidence: commits `f25db7e0d` (owned-agreement breaches), `b9dc8d137` (measured contributions), `5789030a7` (conduct record), `efd604218` (grader, obligation, delivery, report), and `ffa3c3120` (World Is One consumers and AI weights). Limits: native transfer deltas, the delivery row's appearance, and the AI weights' probability evidence remain live-game or blocked checks.
+
+- Every payment is measured on both stockpiles; only the delivered amount reduces a contract or counts as contribution, by kind, with voluntary, late-campaign, and emergency subsets.
+- A treaty breach is only the breach of an owned agreement (agreed tribute terms, protection compact, accepted reconciliation, renewed recognition).
+- Conduct counts war episodes and occupied host-core states and keeps prior war, occupation, defiance, and breach records; paid, accepted reconciliation resolves outstanding hostility but never the history.
+- Final standing is classified Enemy, Favored, Respected, Distrusted by the twelve factors and doctrine thresholds of the accepted design (`gods_of_africa_full_grade_*_is_valid`).
+- Favored and Respected survivors are owed a frozen, capability-scaled equipment and fuel obligation, delivered in bounded, proportional, donor-backed batches by the settling government; Distrusted and Enemy are owed nothing, and no political-power substitute exists.
+- Standing diplomacy and the World Is One record follow the frozen standing.

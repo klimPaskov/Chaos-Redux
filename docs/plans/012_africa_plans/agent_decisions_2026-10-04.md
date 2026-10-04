@@ -106,7 +106,7 @@ Basis: `country_event = { days = constant:... }` in the diaspora and focus-route
 
 ## L9. Excluded items and stopped-thread files
 
-Disposition: `accepted and queued` for the adoption; the excluded items keep their own dispositions.
+Disposition: `implemented` for the adoption (documentation commit of 2026-10-04); the excluded items keep their own dispositions.
 
 - Excluded: the Buganda portrait (needs the user's own HOI4-style final), the archival `elephant_shared_base` package (kept, no deletion), and the controlled-pool and queued polity backlog (accepted backlog).
 - The stopped thread's uncommitted `overview.md`, spec README, manifest, prompts, and Part 1 edits are finished and coherent (Event 070 catalog facts) and are adopted in the documentation commit with its untracked handoffs.

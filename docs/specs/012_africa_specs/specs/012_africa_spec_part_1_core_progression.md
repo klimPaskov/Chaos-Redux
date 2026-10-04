@@ -470,7 +470,7 @@ The League gains quarantine, medical corridor, and mutual aid responses. High-ch
 
 ### Historical Event 46 Gods of Africa planning note (superseded 2026-09-05)
 
-The event matrix listed Gods of Africa as a separate reserved event during the original planning pass. That planning boundary is superseded by the accepted Event 012-owned Gods of Africa subsystem documented in `docs/events/012_africa/gods_of_africa.md`; Event 012 now owns the fictional institution, its bounded relationship mechanics, and its Event 012 report and decision surfaces, while Event 070 remains reserved for another idea.
+The event matrix listed Gods of Africa as a separate reserved event during the original planning pass. That planning boundary is superseded by the accepted Event 012-owned Gods of Africa subsystem documented in `docs/events/012_africa/gods_of_africa.md`; Event 012 now owns the fictional institution, its bounded relationship mechanics, and its Event 012 report and decision surfaces, while Event 070's unassigned catalog row remains available for another idea.
 
 ### Event 98 New Ore
 
