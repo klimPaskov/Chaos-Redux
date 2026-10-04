@@ -1114,6 +1114,139 @@ brilliant_scientist_refresh_project_counts = {
 		add_to_temp_variable = { brilliant_scientist_project_count_index = constant:brilliant_scientist_value.one }
 	}
 	brilliant_scientist_refresh_directorate_idea_lifecycle = yes
+	brilliant_scientist_refresh_directorate_project_selection = yes
+}
+
+# COUNTRY scope. Moves the Directorate review to the next family after the
+# current selection that has a recorded stage, wrapping once through all
+# fifteen families. With no recorded family, the selection is cleared.
+brilliant_scientist_select_next_directorate_project = {
+	set_temp_variable = { brilliant_scientist_directorate_review_candidate = brilliant_scientist_directorate_selected_project_family }
+	set_temp_variable = { brilliant_scientist_directorate_review_steps = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_directorate_review_found = constant:brilliant_scientist_value.zero }
+	while_loop_effect = {
+		limit = {
+			check_variable = { brilliant_scientist_directorate_review_found = constant:brilliant_scientist_value.zero }
+			check_variable = { brilliant_scientist_directorate_review_steps < constant:brilliant_scientist_event.project_family_count }
+		}
+		add_to_temp_variable = { brilliant_scientist_directorate_review_candidate = constant:brilliant_scientist_value.one }
+		if = {
+			limit = {
+				check_variable = {
+					var = brilliant_scientist_directorate_review_candidate
+					value = constant:brilliant_scientist_project_family.max_exclusive
+					compare = greater_than_or_equals
+				}
+			}
+			set_temp_variable = { brilliant_scientist_directorate_review_candidate = constant:brilliant_scientist_value.one }
+		}
+		set_temp_variable = { brilliant_scientist_directorate_review_index = brilliant_scientist_directorate_review_candidate }
+		subtract_from_temp_variable = { brilliant_scientist_directorate_review_index = constant:brilliant_scientist_value.one }
+		if = {
+			limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_directorate_review_index > constant:brilliant_scientist_project_stage.none } }
+			set_temp_variable = { brilliant_scientist_directorate_review_found = constant:brilliant_scientist_value.one }
+		}
+		add_to_temp_variable = { brilliant_scientist_directorate_review_steps = constant:brilliant_scientist_value.one }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_directorate_review_found = constant:brilliant_scientist_value.one } }
+		set_variable = { brilliant_scientist_directorate_selected_project_family = brilliant_scientist_directorate_review_candidate }
+	}
+	else = {
+		clear_variable = brilliant_scientist_directorate_selected_project_family
+		clear_variable = brilliant_scientist_directorate_selected_project_stage
+	}
+	brilliant_scientist_refresh_directorate_project_selection = yes
+}
+
+# COUNTRY scope. Derives the reviewed family's stage and status flags from the
+# aligned ledgers. It uses only its own temporaries, so ledger writers can call
+# it without disturbing their family, index, or stage inputs.
+# - active or suspended: membership of the suspended-family array;
+# - damaged and published: membership of their family arrays;
+# - replicated: the independent stage has reached the current stage;
+# - replicable: Prototype or later, not replicated, and not suspended;
+# - publishable: replicated, unpublished, open governance, cooperative Kruger.
+# A family whose stage was dismantled clears the selection.
+brilliant_scientist_refresh_directorate_project_selection = {
+	clr_country_flag = brilliant_scientist_directorate_project_selection_ready
+	clr_country_flag = brilliant_scientist_directorate_selected_project_active
+	clr_country_flag = brilliant_scientist_directorate_selected_project_suspended
+	clr_country_flag = brilliant_scientist_directorate_selected_project_damaged
+	clr_country_flag = brilliant_scientist_directorate_selected_project_replicable
+	clr_country_flag = brilliant_scientist_directorate_selected_project_replicated
+	clr_country_flag = brilliant_scientist_directorate_selected_project_publishable
+	clr_country_flag = brilliant_scientist_directorate_selected_project_published
+	if = {
+		limit = { has_variable = brilliant_scientist_directorate_selected_project_family }
+		set_temp_variable = { brilliant_scientist_directorate_selection_index = brilliant_scientist_directorate_selected_project_family }
+		subtract_from_temp_variable = { brilliant_scientist_directorate_selection_index = constant:brilliant_scientist_value.one }
+		if = {
+			limit = {
+				check_variable = {
+					var = brilliant_scientist_directorate_selected_project_family
+					value = constant:brilliant_scientist_project_family.none
+					compare = greater_than
+				}
+				check_variable = {
+					var = brilliant_scientist_directorate_selected_project_family
+					value = constant:brilliant_scientist_project_family.max_exclusive
+					compare = less_than
+				}
+				check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_directorate_selection_index > constant:brilliant_scientist_project_stage.none }
+			}
+			set_variable = { brilliant_scientist_directorate_selected_project_stage = brilliant_scientist_project_stage_entries^brilliant_scientist_directorate_selection_index }
+			set_country_flag = brilliant_scientist_directorate_project_selection_ready
+			if = {
+				limit = { is_in_array = { array = brilliant_scientist_project_suspended_families value = brilliant_scientist_directorate_selected_project_family } }
+				set_country_flag = brilliant_scientist_directorate_selected_project_suspended
+			}
+			else = {
+				set_country_flag = brilliant_scientist_directorate_selected_project_active
+			}
+			if = {
+				limit = { is_in_array = { array = brilliant_scientist_project_damaged_families value = brilliant_scientist_directorate_selected_project_family } }
+				set_country_flag = brilliant_scientist_directorate_selected_project_damaged
+			}
+			if = {
+				limit = { is_in_array = { array = brilliant_scientist_project_published_families value = brilliant_scientist_directorate_selected_project_family } }
+				set_country_flag = brilliant_scientist_directorate_selected_project_published
+			}
+			if = {
+				limit = {
+					check_variable = {
+						var = brilliant_scientist_independent_project_stage_entries^brilliant_scientist_directorate_selection_index
+						value = brilliant_scientist_directorate_selected_project_stage
+						compare = greater_than_or_equals
+					}
+				}
+				set_country_flag = brilliant_scientist_directorate_selected_project_replicated
+			}
+			else_if = {
+				limit = {
+					check_variable = {
+						var = brilliant_scientist_directorate_selected_project_stage
+						value = constant:brilliant_scientist_project_stage.prototype
+						compare = greater_than_or_equals
+					}
+					has_country_flag = brilliant_scientist_directorate_selected_project_active
+				}
+				set_country_flag = brilliant_scientist_directorate_selected_project_replicable
+			}
+			if = {
+				limit = {
+					has_country_flag = brilliant_scientist_directorate_selected_project_replicated
+					NOT = { has_country_flag = brilliant_scientist_directorate_selected_project_published }
+					brilliant_scientist_directorate_publication_is_permitted = yes
+				}
+				set_country_flag = brilliant_scientist_directorate_selected_project_publishable
+			}
+		}
+		else = {
+			clear_variable = brilliant_scientist_directorate_selected_project_family
+			clear_variable = brilliant_scientist_directorate_selected_project_stage
+		}
+	}
 }
 
 # COUNTRY scope. Inputs: temporary family and requested stage. The request may

@@ -146,25 +146,56 @@ Opening foreign research access or a joint laboratory sets `brilliant_scientist_
 
 ## Generic project-board contract
 
-The family-native project package publishes the current Directorate selection through:
+The direct family rows are the approval surface: each Theory, Prototype, Deployment, and Weaponization row starts its own stage receipt, so the board has no separate approval order.
+The board manages programmes that already have a recorded stage through one review selector and five orders.
 
-- `brilliant_scientist_directorate_project_selection_ready`;
-- `brilliant_scientist_directorate_selected_project_family`;
-- `brilliant_scientist_directorate_selected_project_stage`;
-- the selected-status flags for active, suspended, damaged, replicable, replicated, publishable, and published state.
+### Review selector
 
-The Directorate then provides six generic commands:
+`brilliant_scientist_review_next_directorate_project` is an instant, free host decision that is visible once any family has a recorded stage and unavailable while another board order runs.
+It calls `brilliant_scientist_select_next_directorate_project`, which advances `brilliant_scientist_directorate_selected_project_family` to the next family after the current one whose `brilliant_scientist_project_stage_entries` value is above none, wrapping once through all fifteen families.
 
-1. Approval locks the selected family/stage for the decision duration and writes `brilliant_scientist_directorate_project_approval_requested` plus approved family/stage variables. It never advances a project stage.
-2. Suspension invokes `brilliant_scientist_suspend_project` and writes a family-native suspension request.
-3. Resumption invokes `brilliant_scientist_resume_project` and writes a family-native resumption request.
-4. Cancellation invokes `brilliant_scientist_dismantle_project` and writes a family-native cancellation request.
-5. Independent replication invokes `brilliant_scientist_replicate_project_to_requested_stage` for an eligible locked family/stage, then records the completed replication and updates Dependence, Exposure, Project Capacity, and Independent Capacity.
-6. Publication invokes `brilliant_scientist_publish_project` only for an independently replicated, publishable result, records completion, and sets `brilliant_scientist_public_reputation_established`, `brilliant_scientist_research_advantage_exposed`, and `brilliant_scientist_sovereign_science_authority`.
+`brilliant_scientist_refresh_directorate_project_selection` derives the rest of the selection from the aligned ledgers and uses only its own temporaries:
 
-Long-running approval, replication, and publication decisions lock family/stage values at start. If the visible selection changes or the host is lost, their cancel triggers prevent completion against a different project.
+- `brilliant_scientist_directorate_selected_project_stage` copies the family's current ledger stage;
+- `brilliant_scientist_directorate_project_selection_ready` is set while the family has a recorded stage, and the selection is cleared when the stage is dismantled;
+- `..._selected_project_suspended` or `..._selected_project_active` follow membership of `brilliant_scientist_project_suspended_families`;
+- `..._selected_project_damaged` and `..._selected_project_published` follow their family arrays;
+- `..._selected_project_replicated` is set when `brilliant_scientist_independent_project_stage_entries` has reached the current stage;
+- `..._selected_project_replicable` is set at Prototype or later when the programme is active and not yet replicated at its current stage;
+- `..._selected_project_publishable` is set when the programme is replicated and unpublished and `brilliant_scientist_directorate_publication_is_permitted` passes.
 
-The native project package must consume and clear the approval/suspend/resume/cancel request flags and their command variables after applying the matching family-specific effect. It must also rebuild the selected-status flags whenever the board selection or native project state changes.
+The refresh runs after the selector, after every board order, at the end of `brilliant_scientist_refresh_project_counts` (every stage, replication, and dismantling change), and at the end of `brilliant_scientist_sync_project_force_runtime_after_ledger_change` (every suspension, resumption, damage, repair, and dismantling change).
+The flags therefore always describe the current ledger, including incident damage and inherited suspensions.
+
+### Orders
+
+| Order | Visible for the reviewed programme | Additional requirements | Cost and time | Result |
+| --- | --- | --- | --- | --- |
+| Suspend | Active | No board order underway, no stage of this programme underway | Free, instant | Releases half the stage burden, disables stage modifiers, adds the family to the suspended array |
+| Resume | Suspended | No unrepaired damage, Project Capacity can absorb the stage | 10 Political Power, instant | Reoccupies capacity, removes suspension, restores stage modifiers |
+| Cancel | Any recorded stage | No stage of this programme underway, Singularity disarmament guard | 10 Political Power, instant | Releases capacity, dismantles operational outputs and the ledger stage |
+| Replicate independently | Replicable | 200 Support Equipment, 50 trucks, 500 fuel, no stage of this programme underway | 50 Political Power, 120 days, consumer-goods and efficiency burden | Raises the independent stage to the locked stage, recounts `brilliant_scientist_independently_replicated_family_count`, lowers Dependence, raises Independent Capacity, Exposure, and Project Capacity |
+| Publish the method | Publishable | Public compact or a civilian oversight body, Kruger not openly hostile | 35 Political Power, 60 days, consumer-goods and efficiency burden | Publishes and fully replicates the family, sets `brilliant_scientist_directorate_publication_completed`, `brilliant_scientist_public_reputation_established`, and `brilliant_scientist_research_advantage_exposed` |
+
+Mixed governance means a secret Directorate that answers to a Public Science Council, a University Research Network, or a Cabinet Safety Board.
+Kruger is openly hostile at extreme Grievance or after government control is lost.
+
+Replication and publication lock the family and stage when they start and set `brilliant_scientist_project_board_action_in_progress`, which also blocks the review selector.
+They cancel if the host is lost, the reviewed family changes, the programme is suspended, or publication stops being permitted.
+Replication completes against its locked stage even if the host advances the family meanwhile; the programme then becomes replicable again at its new stage.
+
+A suspended programme cannot begin its next stage: every Deployment, Weaponization, native Prototype integration, and no-DLC Prototype row carries a `brilliant_scientist_project_not_suspended_tt` requirement for its family.
+
+### Downstream consumers
+
+`brilliant_scientist_independently_replicated_family_count` feeds the containment government score, the Evolution and idea lifecycle checks, the `public_method` and `clean_break` achievements, and `brilliant_scientist_reconcile_old_host_after_transfer`, which leaves the former host with its independently replicated stages after Kruger departs.
+`brilliant_scientist_directorate_publication_completed` feeds the same achievements, the sovereignty-deadline good-faith adjustment, and the public renaissance and Kruger Method idea lifecycle.
+
+### AI
+
+The review selector stops while the reviewed programme has work the AI can act on: affordable replication, permitted publication, a resumable suspension, or active damage.
+It is blocked when no recorded programme needs board work, so the AI does not cycle without purpose.
+The order weights are unchanged, except that the AI suspends or cancels only a damaged programme or under compromised or lost control.
 
 ## AI and balance
 
