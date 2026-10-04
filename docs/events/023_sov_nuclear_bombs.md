@@ -78,6 +78,13 @@ The AI final-authorization weight is zero only when the staged state belongs to 
 Outside a confirmed exchange, the retaliation selector offers lower-consequence states of an enemy nuclear major only under `sov_nuclear_bombs_event_prospective_first_use_gate`: the full Evolution IV emergency, one line of release authority, unsuspended orders, no verified stand-down and an unreserved device.
 Strike preparation then stages that marked state once and enters authorization; certification, final authorization and the runtime first-use guard still decide release, and no exchange receipt is created.
 
+The emergency reads the weekly war assessment `sov_nuclear_bombs_assess_strategic_losses`, run from the existing `on_daily_SOV` block every `loss_assessment_interval_days` (7) while the Event 23 actor is valid and at war, and once at the opening.
+It counts five indicators into `sov_nuclear_bombs_strategic_losses`: the capital is threatened (the current capital is not Soviet-controlled or borders a state held by an enemy, or Moscow is lost), Moscow is occupied or held by an enemy, surrender progress is above 0.25 (front broken), surrender progress is above 0.50 (full collapse), and the manpower pool is below 250 thousand (`manpower_k`, reserve exhausted).
+It writes the gate flags `sov_nuclear_bombs_capital_threat_active`, `sov_nuclear_bombs_front_collapsed` and `sov_nuclear_bombs_reserve_exhausted` and clears every input at peace; all thresholds live in `sov_nuclear_bombs_tuning` and `sov_nuclear_bombs_surrender_progress`.
+The emergency still needs all three flags and at least three losses, so the smallest qualifying case is an enemy next to the capital, a broken front and an exhausted reserve.
+When the emergency starts or ends, the assessment asks the AI router for one review.
+At Evolution IV the category header and the first-use requirement tooltip show the assessment as one "War situation" line.
+
 Reserve dispersal is a two-endpoint action: the player selects the destination state, and the runtime locks one valid assigned source depot from the bounded Soviet custody pool when the mission starts.
 Departure moves one site's assigned device into an explicit transit subset while global and actor assigned totals continue to include it.
 The exact source, destination, holder and nonce persist; arrival credits the destination, while endpoint loss settles the device into returned, transferred, or missing custody before closing the same receipt.

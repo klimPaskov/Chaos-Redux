@@ -439,8 +439,37 @@ sov_nuclear_bombs_event_evolution_iv_world_gate = {
 	}
 }
 
+# Country scope, the Soviet actor. Inputs of the weekly war assessment in
+# sov_nuclear_bombs_assess_strategic_losses: the home capital (Moscow) is
+# occupied or held by an enemy of the Union, or the current capital is not
+# Soviet-controlled or borders a state held by a country at war with the Union.
+# A Moscow left to a breakaway at peace with the Union does not count.
+sov_nuclear_bombs_event_home_capital_is_lost = {
+	NOT = { controls_state = constant:sov_nuclear_bombs_tuning.home_capital_state }
+	OR = {
+		owns_state = constant:sov_nuclear_bombs_tuning.home_capital_state
+		any_enemy_country = { controls_state = constant:sov_nuclear_bombs_tuning.home_capital_state }
+	}
+}
+
+sov_nuclear_bombs_event_capital_is_threatened = {
+	OR = {
+		sov_nuclear_bombs_event_home_capital_is_lost = yes
+		capital_scope = {
+			OR = {
+				NOT = { is_controlled_by = SOV }
+				any_neighbor_state = {
+					controller = { has_war_with = SOV }
+				}
+			}
+		}
+	}
+}
+
 # Country scope. The Evolution IV emergency shared by a staged first use and
 # the prospective first-use target selection. It never reads a staged action.
+# The strategic-loss count and its three flags are written only by the weekly
+# war assessment, so this gate reads the last assessed war situation.
 sov_nuclear_bombs_event_first_use_emergency = {
 	sov_nuclear_bombs_event_has_evolution_iv = yes
 	check_variable = { var = global.chaos_meter_value value = constant:sov_nuclear_bombs_evolution.first_use_chaos compare = greater_than_or_equals }

@@ -486,6 +486,8 @@ sov_nuclear_bombs_initialize_event_state = {
 		clear_variable = sov_nuclear_bombs_opening_amount
 		sov_nuclear_bombs_schedule_reactor_completion_check = yes
 		sov_nuclear_bombs_schedule_evolution_check = yes
+		# A wartime opening sees its capital threat before the doctrine choice.
+		hidden_effect = { sov_nuclear_bombs_assess_strategic_losses = yes }
 	}
 }
 
@@ -2203,6 +2205,94 @@ sov_nuclear_bombs_apply_routine_maintenance = {
 		clamp_variable = { var = sov_nuclear_bombs_integrity min = constant:sov_nuclear_bombs_tuning.value_min max = constant:sov_nuclear_bombs_tuning.value_max }
 		set_country_flag = sov_nuclear_bombs_maintenance_cycle_recorded
 		sov_nuclear_bombs_refresh_world_threat_source = yes
+	}
+}
+
+# Country scope (the Soviet actor). The Evolution IV war assessment. It is the
+# only writer of sov_nuclear_bombs_strategic_losses and of the capital-threat,
+# front-collapse and reserve-exhaustion flags read by the first-use emergency,
+# doctrine reform and the doctrine AI. It reads vanilla country state only:
+# the capital and home capital, capitulation progress and the manpower pool in
+# thousands. Each satisfied indicator adds one loss, so the five indicators
+# together reach strategic_loss_critical. At peace or for an invalid actor
+# every input is cleared. When the first-use emergency starts or ends, the AI
+# router is asked for one coalesced review. No country or state list is scanned
+# beyond the capital's neighbours and the Union's enemies.
+sov_nuclear_bombs_assess_strategic_losses = {
+	set_variable = { sov_nuclear_bombs_next_loss_assessment_day = global.num_days }
+	add_to_variable = { sov_nuclear_bombs_next_loss_assessment_day = constant:sov_nuclear_bombs_tuning.loss_assessment_interval_days }
+	set_variable = { sov_nuclear_bombs_strategic_losses = constant:sov_nuclear_bombs_ledger.zero }
+	clr_country_flag = sov_nuclear_bombs_capital_threat_active
+	clr_country_flag = sov_nuclear_bombs_home_capital_lost
+	clr_country_flag = sov_nuclear_bombs_front_collapsed
+	clr_country_flag = sov_nuclear_bombs_front_collapse_severe
+	clr_country_flag = sov_nuclear_bombs_reserve_exhausted
+	if = {
+		limit = {
+			tag = SOV
+			sov_nuclear_bombs_event_actor_is_valid = yes
+			has_war = yes
+		}
+		if = {
+			limit = { sov_nuclear_bombs_event_capital_is_threatened = yes }
+			set_country_flag = sov_nuclear_bombs_capital_threat_active
+			add_to_variable = { sov_nuclear_bombs_strategic_losses = constant:sov_nuclear_bombs_tuning.strategic_loss_indicator }
+		}
+		if = {
+			limit = { sov_nuclear_bombs_event_home_capital_is_lost = yes }
+			set_country_flag = sov_nuclear_bombs_home_capital_lost
+			add_to_variable = { sov_nuclear_bombs_strategic_losses = constant:sov_nuclear_bombs_tuning.strategic_loss_indicator }
+		}
+		if = {
+			limit = { surrender_progress > constant:sov_nuclear_bombs_surrender_progress.front_collapse }
+			set_country_flag = sov_nuclear_bombs_front_collapsed
+			add_to_variable = { sov_nuclear_bombs_strategic_losses = constant:sov_nuclear_bombs_tuning.strategic_loss_indicator }
+		}
+		if = {
+			limit = { surrender_progress > constant:sov_nuclear_bombs_surrender_progress.severe_collapse }
+			set_country_flag = sov_nuclear_bombs_front_collapse_severe
+			add_to_variable = { sov_nuclear_bombs_strategic_losses = constant:sov_nuclear_bombs_tuning.strategic_loss_indicator }
+		}
+		if = {
+			limit = { check_variable = { manpower_k < constant:sov_nuclear_bombs_tuning.reserve_exhausted_manpower_k } }
+			set_country_flag = sov_nuclear_bombs_reserve_exhausted
+			add_to_variable = { sov_nuclear_bombs_strategic_losses = constant:sov_nuclear_bombs_tuning.strategic_loss_indicator }
+		}
+	}
+	if = {
+		limit = {
+			sov_nuclear_bombs_event_first_use_emergency = yes
+			NOT = { has_country_flag = sov_nuclear_bombs_first_use_emergency_observed }
+		}
+		set_country_flag = sov_nuclear_bombs_first_use_emergency_observed
+		sov_nuclear_bombs_ai_request_phase_review = yes
+	}
+	else_if = {
+		limit = {
+			has_country_flag = sov_nuclear_bombs_first_use_emergency_observed
+			NOT = { sov_nuclear_bombs_event_first_use_emergency = yes }
+		}
+		clr_country_flag = sov_nuclear_bombs_first_use_emergency_observed
+		sov_nuclear_bombs_ai_request_phase_review = yes
+	}
+}
+
+# Country scope (the Soviet actor), called by on_daily_SOV. Runs the war
+# assessment once per loss_assessment_interval_days, and at once when peace
+# leaves an earlier assessment standing.
+sov_nuclear_bombs_refresh_strategic_losses = {
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = sov_nuclear_bombs_next_loss_assessment_day }
+				check_variable = { var = global.num_days value = sov_nuclear_bombs_next_loss_assessment_day compare = greater_than_or_equals }
+				AND = {
+					has_war = no
+					check_variable = { var = sov_nuclear_bombs_strategic_losses value = constant:sov_nuclear_bombs_ledger.zero compare = greater_than }
+				}
+			}
+		}
+		sov_nuclear_bombs_assess_strategic_losses = yes
 	}
 }
 
