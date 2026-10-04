@@ -2142,6 +2142,7 @@ random_terror_initialize_actor = {
 			set_country_flag = random_terror_later_religious_opposition_registry
 			create_unit = { division = "name = \"International Field Column\" division_template = \"Infantry Division\" start_experience_factor = 0.40 start_manpower_factor = 1.00 start_equipment_factor = 0.90" owner = THIS count = random_terror_actor_division_count allow_spawning_on_enemy_provs = no }
 		}
+		random_terror_select_actor_leader = yes
 		set_country_flag = random_terror_actor_setup_complete
 	}
 }
@@ -2202,6 +2203,577 @@ random_terror_assign_actor_cosmetic_tag = {
 		else_if = { limit = { check_variable = { random_terror_cosmetic_cycle_index = constant:random_terror_cosmetic_cycle.index_14 } } set_cosmetic_tag = event31_ordinary_actor_23 }
 		else_if = { limit = { check_variable = { random_terror_cosmetic_cycle_index = constant:random_terror_cosmetic_cycle.index_15 } } set_cosmetic_tag = event31_ordinary_actor_24 }
 	}
+}
+
+random_terror_select_leader_jlx = {
+	set_temp_variable = { random_terror_previous_leader_slot = constant:random_terror_value.negative_one }
+	if = {
+		limit = { has_variable = random_terror_leader_slot }
+		set_temp_variable = { random_terror_previous_leader_slot = random_terror_leader_slot }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 1 } }
+		remove_country_leader_role = { character = JQX_random_terror_jihadist_02 ideology = despotism }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 2 } }
+		remove_country_leader_role = { character = JQX_random_terror_jihadist_03 ideology = despotism }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 3 } }
+		remove_country_leader_role = { character = JQX_random_terror_jihadist_04 ideology = despotism }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 4 } }
+		remove_country_leader_role = { character = JQX_random_terror_jihadist_05 ideology = despotism }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 5 } }
+		remove_country_leader_role = { character = JQX_random_terror_jihadist_06 ideology = despotism }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 6 } }
+		remove_country_leader_role = { character = JQX_random_terror_jihadist_07 ideology = despotism }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 7 } }
+		remove_country_leader_role = { character = JQX_random_terror_jihadist_08 ideology = despotism }
+	}
+	set_temp_variable = { random_terror_draw_leader_candidate = constant:random_terror_runtime_weight.leader_candidate }
+	random_list = {
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 0 } }
+			set_variable = { random_terror_leader_slot = 0 }
+			promote_character = JLX_random_terror_rasim_vey
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 1 } }
+			set_variable = { random_terror_leader_slot = 1 }
+			add_country_leader_role = {
+				character = JQX_random_terror_jihadist_02
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 2 } }
+			set_variable = { random_terror_leader_slot = 2 }
+			add_country_leader_role = {
+				character = JQX_random_terror_jihadist_03
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 3 } }
+			set_variable = { random_terror_leader_slot = 3 }
+			add_country_leader_role = {
+				character = JQX_random_terror_jihadist_04
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 4 } }
+			set_variable = { random_terror_leader_slot = 4 }
+			add_country_leader_role = {
+				character = JQX_random_terror_jihadist_05
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 5 } }
+			set_variable = { random_terror_leader_slot = 5 }
+			add_country_leader_role = {
+				character = JQX_random_terror_jihadist_06
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 6 } }
+			set_variable = { random_terror_leader_slot = 6 }
+			add_country_leader_role = {
+				character = JQX_random_terror_jihadist_07
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 7 } }
+			set_variable = { random_terror_leader_slot = 7 }
+			add_country_leader_role = {
+				character = JQX_random_terror_jihadist_08
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+	}
+}
+
+random_terror_select_leader_jnx = {
+	set_temp_variable = { random_terror_previous_leader_slot = constant:random_terror_value.negative_one }
+	if = {
+		limit = { has_variable = random_terror_leader_slot }
+		set_temp_variable = { random_terror_previous_leader_slot = random_terror_leader_slot }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 1 } }
+		remove_country_leader_role = { character = JQX_random_terror_clandestine_02 ideology = despotism }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 2 } }
+		remove_country_leader_role = { character = JQX_random_terror_clandestine_03 ideology = despotism }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 3 } }
+		remove_country_leader_role = { character = JQX_random_terror_clandestine_04 ideology = despotism }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 4 } }
+		remove_country_leader_role = { character = JQX_random_terror_clandestine_05 ideology = despotism }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 5 } }
+		remove_country_leader_role = { character = JQX_random_terror_clandestine_06 ideology = despotism }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 6 } }
+		remove_country_leader_role = { character = JQX_random_terror_criminal_01 ideology = despotism }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 7 } }
+		remove_country_leader_role = { character = JQX_random_terror_criminal_02 ideology = despotism }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 8 } }
+		remove_country_leader_role = { character = JQX_random_terror_criminal_03 ideology = despotism }
+	}
+	set_temp_variable = { random_terror_draw_leader_candidate = constant:random_terror_runtime_weight.leader_candidate }
+	random_list = {
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 0 } }
+			set_variable = { random_terror_leader_slot = 0 }
+			promote_character = JNX_random_terror_nera_vos
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 1 } }
+			set_variable = { random_terror_leader_slot = 1 }
+			add_country_leader_role = {
+				character = JQX_random_terror_clandestine_02
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 2 } }
+			set_variable = { random_terror_leader_slot = 2 }
+			add_country_leader_role = {
+				character = JQX_random_terror_clandestine_03
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 3 } }
+			set_variable = { random_terror_leader_slot = 3 }
+			add_country_leader_role = {
+				character = JQX_random_terror_clandestine_04
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 4 } }
+			set_variable = { random_terror_leader_slot = 4 }
+			add_country_leader_role = {
+				character = JQX_random_terror_clandestine_05
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 5 } }
+			set_variable = { random_terror_leader_slot = 5 }
+			add_country_leader_role = {
+				character = JQX_random_terror_clandestine_06
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 6 } }
+			set_variable = { random_terror_leader_slot = 6 }
+			add_country_leader_role = {
+				character = JQX_random_terror_criminal_01
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 7 } }
+			set_variable = { random_terror_leader_slot = 7 }
+			add_country_leader_role = {
+				character = JQX_random_terror_criminal_02
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 8 } }
+			set_variable = { random_terror_leader_slot = 8 }
+			add_country_leader_role = {
+				character = JQX_random_terror_criminal_03
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+	}
+}
+
+random_terror_select_leader_jox = {
+	set_temp_variable = { random_terror_previous_leader_slot = constant:random_terror_value.negative_one }
+	if = {
+		limit = { has_variable = random_terror_leader_slot }
+		set_temp_variable = { random_terror_previous_leader_slot = random_terror_leader_slot }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 1 } }
+		remove_country_leader_role = { character = JQX_random_terror_military_02 ideology = despotism }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 2 } }
+		remove_country_leader_role = { character = JQX_random_terror_military_03 ideology = despotism }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 3 } }
+		remove_country_leader_role = { character = JQX_random_terror_military_04 ideology = despotism }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 4 } }
+		remove_country_leader_role = { character = JQX_random_terror_military_05 ideology = despotism }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 5 } }
+		remove_country_leader_role = { character = JQX_random_terror_military_06 ideology = despotism }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 6 } }
+		remove_country_leader_role = { character = JQX_random_terror_criminal_04 ideology = despotism }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 7 } }
+		remove_country_leader_role = { character = JQX_random_terror_criminal_05 ideology = despotism }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 8 } }
+		remove_country_leader_role = { character = JQX_random_terror_criminal_06 ideology = despotism }
+	}
+	set_temp_variable = { random_terror_draw_leader_candidate = constant:random_terror_runtime_weight.leader_candidate }
+	random_list = {
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 0 } }
+			set_variable = { random_terror_leader_slot = 0 }
+			promote_character = JOX_random_terror_liora_vask
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 1 } }
+			set_variable = { random_terror_leader_slot = 1 }
+			add_country_leader_role = {
+				character = JQX_random_terror_military_02
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 2 } }
+			set_variable = { random_terror_leader_slot = 2 }
+			add_country_leader_role = {
+				character = JQX_random_terror_military_03
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 3 } }
+			set_variable = { random_terror_leader_slot = 3 }
+			add_country_leader_role = {
+				character = JQX_random_terror_military_04
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 4 } }
+			set_variable = { random_terror_leader_slot = 4 }
+			add_country_leader_role = {
+				character = JQX_random_terror_military_05
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 5 } }
+			set_variable = { random_terror_leader_slot = 5 }
+			add_country_leader_role = {
+				character = JQX_random_terror_military_06
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 6 } }
+			set_variable = { random_terror_leader_slot = 6 }
+			add_country_leader_role = {
+				character = JQX_random_terror_criminal_04
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 7 } }
+			set_variable = { random_terror_leader_slot = 7 }
+			add_country_leader_role = {
+				character = JQX_random_terror_criminal_05
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 8 } }
+			set_variable = { random_terror_leader_slot = 8 }
+			add_country_leader_role = {
+				character = JQX_random_terror_criminal_06
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+	}
+}
+
+random_terror_select_leader_jpx = {
+	set_temp_variable = { random_terror_previous_leader_slot = constant:random_terror_value.negative_one }
+	if = {
+		limit = { has_variable = random_terror_leader_slot }
+		set_temp_variable = { random_terror_previous_leader_slot = random_terror_leader_slot }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 1 } }
+		remove_country_leader_role = { character = JQX_random_terror_revolutionary_02 ideology = despotism }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 2 } }
+		remove_country_leader_role = { character = JQX_random_terror_revolutionary_03 ideology = despotism }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 3 } }
+		remove_country_leader_role = { character = JQX_random_terror_revolutionary_04 ideology = despotism }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 4 } }
+		remove_country_leader_role = { character = JQX_random_terror_revolutionary_05 ideology = despotism }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 5 } }
+		remove_country_leader_role = { character = JQX_random_terror_revolutionary_06 ideology = despotism }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 6 } }
+		remove_country_leader_role = { character = JQX_random_terror_millenarian_01 ideology = despotism }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 7 } }
+		remove_country_leader_role = { character = JQX_random_terror_millenarian_02 ideology = despotism }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 8 } }
+		remove_country_leader_role = { character = JQX_random_terror_millenarian_03 ideology = despotism }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 9 } }
+		remove_country_leader_role = { character = JQX_random_terror_millenarian_04 ideology = despotism }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 10 } }
+		remove_country_leader_role = { character = JQX_random_terror_millenarian_05 ideology = despotism }
+	}
+	if = {
+		limit = { check_variable = { random_terror_previous_leader_slot = 11 } }
+		remove_country_leader_role = { character = JQX_random_terror_millenarian_06 ideology = despotism }
+	}
+	set_temp_variable = { random_terror_draw_leader_candidate = constant:random_terror_runtime_weight.leader_candidate }
+	random_list = {
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 0 } }
+			set_variable = { random_terror_leader_slot = 0 }
+			promote_character = JPX_random_terror_arel_venn
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 1 } }
+			set_variable = { random_terror_leader_slot = 1 }
+			add_country_leader_role = {
+				character = JQX_random_terror_revolutionary_02
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 2 } }
+			set_variable = { random_terror_leader_slot = 2 }
+			add_country_leader_role = {
+				character = JQX_random_terror_revolutionary_03
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 3 } }
+			set_variable = { random_terror_leader_slot = 3 }
+			add_country_leader_role = {
+				character = JQX_random_terror_revolutionary_04
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 4 } }
+			set_variable = { random_terror_leader_slot = 4 }
+			add_country_leader_role = {
+				character = JQX_random_terror_revolutionary_05
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 5 } }
+			set_variable = { random_terror_leader_slot = 5 }
+			add_country_leader_role = {
+				character = JQX_random_terror_revolutionary_06
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 6 } }
+			set_variable = { random_terror_leader_slot = 6 }
+			add_country_leader_role = {
+				character = JQX_random_terror_millenarian_01
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 7 } }
+			set_variable = { random_terror_leader_slot = 7 }
+			add_country_leader_role = {
+				character = JQX_random_terror_millenarian_02
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 8 } }
+			set_variable = { random_terror_leader_slot = 8 }
+			add_country_leader_role = {
+				character = JQX_random_terror_millenarian_03
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 9 } }
+			set_variable = { random_terror_leader_slot = 9 }
+			add_country_leader_role = {
+				character = JQX_random_terror_millenarian_04
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 10 } }
+			set_variable = { random_terror_leader_slot = 10 }
+			add_country_leader_role = {
+				character = JQX_random_terror_millenarian_05
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+		random_terror_draw_leader_candidate = {
+			modifier = { factor = 0 check_variable = { random_terror_previous_leader_slot = 11 } }
+			set_variable = { random_terror_leader_slot = 11 }
+			add_country_leader_role = {
+				character = JQX_random_terror_millenarian_06
+				promote_leader = yes
+				country_leader = { ideology = despotism traits = { } }
+			}
+		}
+	}
+}
+
+random_terror_select_leader_jhx = {
+	if = {
+		limit = { check_variable = { random_terror_leader_slot = 1 } }
+		remove_country_leader_role = { character = JQX_random_terror_council_06 ideology = despotism }
+		set_variable = { random_terror_leader_slot = 0 }
+		promote_character = JHX_random_terror_shadow_council
+	}
+	else_if = {
+		limit = { has_country_flag = random_terror_carrier_used_before }
+		set_variable = { random_terror_leader_slot = 1 }
+		add_country_leader_role = {
+			character = JQX_random_terror_council_06
+			promote_leader = yes
+			country_leader = { ideology = despotism traits = { } }
+		}
+	}
+}
+
+random_terror_select_leader_jix = {
+	if = {
+		limit = { check_variable = { random_terror_leader_slot = 1 } }
+		remove_country_leader_role = { character = JQX_random_terror_council_05 ideology = despotism }
+		set_variable = { random_terror_leader_slot = 0 }
+		promote_character = JIX_random_terror_war_directorate
+	}
+	else_if = {
+		limit = { has_country_flag = random_terror_carrier_used_before }
+		set_variable = { random_terror_leader_slot = 1 }
+		add_country_leader_role = {
+			character = JQX_random_terror_council_05
+			promote_leader = yes
+			country_leader = { ideology = despotism traits = { } }
+		}
+	}
+}
+
+# COUNTRY scope: a carrier receiving a fresh actor package.
+random_terror_select_actor_leader = {
+	if = {
+		limit = { original_tag = JHX }
+		random_terror_select_leader_jhx = yes
+	}
+	else_if = {
+		limit = { original_tag = JIX }
+		random_terror_select_leader_jix = yes
+	}
+	else_if = {
+		limit = { original_tag = JLX }
+		random_terror_select_leader_jlx = yes
+	}
+	else_if = {
+		limit = { original_tag = JNX }
+		random_terror_select_leader_jnx = yes
+	}
+	else_if = {
+		limit = { original_tag = JOX }
+		random_terror_select_leader_jox = yes
+	}
+	else_if = {
+		limit = { original_tag = JPX }
+		random_terror_select_leader_jpx = yes
+	}
+	set_country_flag = random_terror_carrier_used_before
 }
 
 # COUNTRY scope: a non-terminal actor.  The refresh owns only the failure

@@ -129,6 +129,10 @@ Relocate the Network moves a cell out of a crisis state its government has swept
 Military Reinforcement keeps the government's state from falling into Lost Local Control for `reinforcement_days` (`random_terror_state_reinforced`).
 When focuses reuse these helpers without a target state, the formation forms in the actor's own provinces and the building work goes to a damaged depot or the capital.
 
+Each one-person carrier history recruits its leader and a small roleless candidate pool from `common/characters/031_random_terror_characters.txt`: JLX the jihadist pool, JNX the clandestine and three criminal candidates, JOX the military and three criminal candidates, and JPX the revolutionary and millenarian pools.
+A fresh actor package (`random_terror_select_actor_leader`) promotes one random candidate or the history leader, never the outgoing one, and removes the leader role of the pooled leader it replaces, with `random_terror_leader_slot` recording the current candidate.
+The Shadow Council and the War Directorate alternate with the Civic Coordination Council and the Regional Continuity Council when their carrier is reused, while the Ideological Secretariat, the Final Command Council and The Unanswered Presence keep their identities, so all 45 portraits have a consumer.
+
 The three starting spirits are replaced by the route focuses.
 Actor decisions run `random_terror_refresh_actor_lifecycles`, which owns only a failure overlay: when Territorial Control, Network Authority or External Supply falls below the low band it adds the matching failure spirits that are absent and marks them with `random_terror_lifecycle_owns_<idea>` flags, and recovery removes only those owned spirits, so focus rewards are never stripped.
 
