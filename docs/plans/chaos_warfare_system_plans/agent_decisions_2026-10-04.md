@@ -88,3 +88,12 @@ Basis: their identifiers are entries in the ordered `common/synchronized_dynamic
 Unreachability is proven rather than assumed: each definition carries `active = no`, which the offline unit-modding reference defines as usable only through an explicit technology unlock; no technology anywhere declares `enable_subunits` for any of the eighteen; they appear in no AI template, no history order of battle and no CXT unlock; and the only script naming them, `common/scripted_triggers/chemical_tank_shell_triggers.txt`, is itself called from nowhere.
 The three armored chassis roles stay intact and keep their technology unlock.
 The basis and the exact condition for a later removal are written into the unit file header and the requirement ledger so the deviation cannot be mistaken for an oversight.
+
+## 9. The three CBRN procurement factory commitments are accepted exceptions
+
+Disposition: `implemented`.
+`BF-CBRN-013` to `BF-CBRN-015` now record Rebuild Old Masks, Convert Mask Factories and Simplify Mask Filters as fixed native factory commitments with an accepted-exception status rather than converting them to sale-aware variants.
+Basis: the accepted procurement adapter `docs/plans/026_black_friday_plans/2026-09-27_cbrn_protection_pp_support_adapter.md` states in its own terms that each action "retains its existing project duration, output, AI weight, and civilian-factory commitment", and its price table heads the factory column "Unchanged factory commitment", so the sale was accepted as applying to the two spendable components only.
+`civilian_factory_use` is a static decision-modifier field that rejects a variable, so a discounted commitment would need duplicated ordinary and sale decision definitions, which that accepted adapter did not request for these three actions. Event 026's own `BF-CBRN-008` already carries a fixed one-factory commitment under the same reasoning.
+Parity is verified rather than assumed: the visible tooltip values come from `GetCbrnValueReconditionMasksFactories`, `GetCbrnValueConvertIndustryFactories` and `GetCbrnValueSimplifyFiltersFactories`, which read `cbrn_protection_decision_cost.recondition_masks_factories` (1), `convert_industry_factories` (3) and `simplify_filters_factories` (2), the same values the three `civilian_factory_use` modifiers commit through their file-scoped mirrors, so the displayed price equals the deducted price.
+Only the CBRN rows of the Event 026 registry were edited.
