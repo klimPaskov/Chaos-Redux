@@ -1,0 +1,23 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 026 BLACK FRIDAY CXT PRICE PROBE
+# ============================================================================
+# Player-only CXT control that pays one registered sale price through a native
+# decision cost read from a global variable. Live testing compares the shown
+# and debited political power outside a sale, at 50 percent off, and at 75
+# percent off before the price table is relied on by owner decisions.
+# ============================================================================
+
+chaosx_test_country_debug_category = {
+	chaosx_test_country_event026_price_probe_decision = {
+		icon = GFX_decision_generic_research
+		cost = global.black_friday_price_probe
+		visible = { tag = CXT is_ai = no has_country_flag = chaosx_test_country_initialized }
+		complete_effect = {
+			custom_effect_tooltip = chaosx_test_country_event026_price_probe_decision_tt
+			hidden_effect = {
+				log = "CHAOS REDUX BLACK FRIDAY: Price probe charged [?global.black_friday_price_probe] political power"
+			}
+		}
+		ai_will_do = { base = 0 }
+	}
+}

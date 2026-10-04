@@ -1,0 +1,575 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 026 BLACK FRIDAY SALE PRICE TABLE
+# ============================================================================
+# Native decision costs cannot be discounted by a modifier, so Chaos Redux
+# decisions read their political power price from one global variable per
+# registered ordinary amount: cost = global.black_friday_price_<key>.
+# The engine computes display, affordability, debit, and AI evaluation from
+# that single value, so they cannot disagree.
+#
+# Outside a sale every registered price equals its ordinary amount. Sale
+# activation sets each price to ceil(ordinary x payment ratio / ratio_basis),
+# at least 1 for a positive price; expiry and terminal cleanup restore the
+# ordinary amounts. Zero prices stay zero. The table is rebuilt whenever
+# constant:black_friday_event.price_table_version changes, so running
+# campaigns pick up newly registered keys.
+#
+# Registering a price: add one entry to black_friday_price_table_refresh_entries
+# (literal amounts use constant:black_friday_price_table.pp_<N>, owner prices
+# use the owner's own constant), bump price_table_version, and set the
+# decision's cost to the matching global.black_friday_price_<key>.
+# Contract: 026_black_friday_price_table_effects.md.
+# ============================================================================
+
+# ANY scope. Inputs: temp black_friday_price_ordinary and temp
+# black_friday_price_ratio (payment ratio in basis points). Output: caller-owned
+# temp black_friday_price_payable. Non-positive prices and full-price ratios
+# return the ordinary amount unchanged.
+black_friday_price_table_quote = {
+	set_temp_variable = { black_friday_price_payable = black_friday_price_ordinary }
+	if = {
+		limit = {
+			check_variable = { black_friday_price_ordinary > constant:black_friday_event.zero }
+			check_variable = {
+				var = black_friday_price_ratio
+				value = constant:black_friday_event.ratio_basis
+				compare = less_than
+			}
+		}
+		set_temp_variable = { black_friday_price_percent = black_friday_price_ratio }
+		divide_temp_variable = { black_friday_price_percent = constant:black_friday_event.ratio_per_percent }
+		multiply_temp_variable = { black_friday_price_payable = black_friday_price_percent }
+		divide_temp_variable = { black_friday_price_payable = constant:black_friday_event.percent_basis }
+		set_temp_variable = { black_friday_price_whole = black_friday_price_payable }
+		round_temp_variable = black_friday_price_whole
+		if = {
+			limit = {
+				check_variable = {
+					var = black_friday_price_whole
+					value = black_friday_price_payable
+					compare = less_than
+				}
+			}
+			add_to_temp_variable = { black_friday_price_whole = constant:black_friday_event.one }
+		}
+		set_temp_variable = { black_friday_price_payable = black_friday_price_whole }
+		clamp_temp_variable = {
+			var = black_friday_price_payable
+			min = constant:black_friday_event.one
+		}
+	}
+}
+
+# ANY scope. Input: temp black_friday_price_ratio. Rewrites every registered
+# global price from its ordinary amount. Keep entries grouped by owner.
+black_friday_price_table_refresh_entries = {
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_event.zero }
+	set_temp_variable = { black_friday_price_payable = constant:black_friday_event.zero }
+	# Event 026 live probe (CXT debug decision)
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_price_table.probe }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_probe = black_friday_price_payable }
+
+	# Literal ordinary amounts
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_price_table.pp_10 }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_pp_10 = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_price_table.pp_15 }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_pp_15 = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_price_table.pp_20 }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_pp_20 = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_price_table.pp_25 }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_pp_25 = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_price_table.pp_30 }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_pp_30 = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_price_table.pp_40 }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_pp_40 = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_price_table.pp_45 }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_pp_45 = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_price_table.pp_50 }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_pp_50 = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_price_table.pp_55 }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_pp_55 = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_price_table.pp_60 }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_pp_60 = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_price_table.pp_65 }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_pp_65 = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_price_table.pp_70 }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_pp_70 = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_price_table.pp_75 }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_pp_75 = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_price_table.pp_80 }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_pp_80 = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_price_table.pp_85 }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_pp_85 = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_price_table.pp_90 }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_pp_90 = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_price_table.pp_95 }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_pp_95 = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_price_table.pp_100 }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_pp_100 = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_price_table.pp_110 }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_pp_110 = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_price_table.pp_120 }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_pp_120 = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_price_table.pp_125 }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_pp_125 = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_price_table.pp_130 }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_pp_130 = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_price_table.pp_140 }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_pp_140 = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_price_table.pp_150 }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_pp_150 = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_price_table.pp_175 }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_pp_175 = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_price_table.pp_200 }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_pp_200 = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_price_table.pp_250 }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_pp_250 = black_friday_price_payable }
+
+	# anti_zombie_league
+	set_temp_variable = { black_friday_price_ordinary = constant:anti_zombie_league.formation_pp_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_anti_zombie_league_formation_pp_cost = black_friday_price_payable }
+
+	# genocide_decision_cost
+	set_temp_variable = { black_friday_price_ordinary = constant:genocide_decision_cost.build_concentration }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_genocide_decision_cost_build_concentration = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:genocide_decision_cost.build_extermination }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_genocide_decision_cost_build_extermination = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:genocide_decision_cost.deal_with_sabotage }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_genocide_decision_cost_deal_with_sabotage = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:genocide_decision_cost.destroy_evidence }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_genocide_decision_cost_destroy_evidence = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:genocide_decision_cost.foreign_publicize }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_genocide_decision_cost_foreign_publicize = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:genocide_decision_cost.foreign_resistance_support }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_genocide_decision_cost_foreign_resistance_support = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:genocide_decision_cost.foreign_tribunal }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_genocide_decision_cost_foreign_tribunal = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:genocide_decision_cost.german_camp_administration }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_genocide_decision_cost_german_camp_administration = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:genocide_decision_cost.handle_refugees }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_genocide_decision_cost_handle_refugees = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:genocide_decision_cost.hide_evidence }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_genocide_decision_cost_hide_evidence = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:genocide_decision_cost.intensify_deportations }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_genocide_decision_cost_intensify_deportations = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:genocide_decision_cost.military_objections }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_genocide_decision_cost_military_objections = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:genocide_decision_cost.redirect_trains }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_genocide_decision_cost_redirect_trains = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:genocide_decision_cost.restricted_chemical_escalation }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_genocide_decision_cost_restricted_chemical_escalation = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:genocide_decision_cost.soviet_forced_labor_quotas }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_genocide_decision_cost_soviet_forced_labor_quotas = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:genocide_decision_cost.suppress_reports }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_genocide_decision_cost_suppress_reports = black_friday_price_payable }
+
+	# germany_mengele_decision
+	set_temp_variable = { black_friday_price_ordinary = constant:germany_mengele_decision.centralize_race_offices_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_germany_mengele_decision_centralize_race_offices_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:germany_mengele_decision.classify_records_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_germany_mengele_decision_classify_records_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:germany_mengele_decision.close_program_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_germany_mengele_decision_close_program_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:germany_mengele_decision.crush_lab_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_germany_mengele_decision_crush_lab_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:germany_mengele_decision.expand_ss_archive_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_germany_mengele_decision_expand_ss_archive_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:germany_mengele_decision.import_african_subjects_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_germany_mengele_decision_import_african_subjects_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:germany_mengele_decision.import_indian_subjects_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_germany_mengele_decision_import_indian_subjects_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:germany_mengele_decision.import_japanese_china_subjects_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_germany_mengele_decision_import_japanese_china_subjects_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:germany_mengele_decision.military_review_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_germany_mengele_decision_military_review_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:germany_mengele_decision.prepare_tibet_mission_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_germany_mengele_decision_prepare_tibet_mission_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:germany_mengele_decision.protect_ahnenerbe_budget_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_germany_mengele_decision_protect_ahnenerbe_budget_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:germany_mengele_decision.purge_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_germany_mengele_decision_purge_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:germany_mengele_decision.reclaim_results_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_germany_mengele_decision_reclaim_results_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:germany_mengele_decision.search_ancestral_traces_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_germany_mengele_decision_search_ancestral_traces_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:germany_mengele_decision.silence_dissent_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_germany_mengele_decision_silence_dissent_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:germany_mengele_decision.truce_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_germany_mengele_decision_truce_cost = black_friday_price_payable }
+
+	# holy_realm_decision
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.arhat_audit_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_arhat_audit_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.bodhisattva_collapse_visit_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_bodhisattva_collapse_visit_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.bodhisattva_distant_visit_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_bodhisattva_distant_visit_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.bodhisattva_followup_letter_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_bodhisattva_followup_letter_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.bodhisattva_foreign_visit_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_bodhisattva_foreign_visit_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.bodhisattva_local_mission_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_bodhisattva_local_mission_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.bodhisattva_mandala_mission_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_bodhisattva_mandala_mission_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.bodhisattva_officer_teaching_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_bodhisattva_officer_teaching_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.bodhisattva_pilgrim_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_bodhisattva_pilgrim_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.bodhisattva_refugee_teaching_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_bodhisattva_refugee_teaching_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.bodhisattva_sympathetic_government_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_bodhisattva_sympathetic_government_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.buddha_power_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_buddha_power_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.chinese_core_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_chinese_core_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.concentration_hold_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_concentration_hold_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.concentration_vow_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_concentration_vow_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.false_buddha_debate_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_false_buddha_debate_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.false_buddha_echo_abroad_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_false_buddha_echo_abroad_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.false_buddha_suppression_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_false_buddha_suppression_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.final_shelter_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_final_shelter_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.final_target_audit_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_final_target_audit_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.final_warning_letter_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_final_warning_letter_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.forced_integration_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_forced_integration_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.great_mandala_form_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_great_mandala_form_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.great_mandala_stabilization_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_great_mandala_stabilization_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.himalayan_core_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_himalayan_core_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.kneeling_province_core_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_kneeling_province_core_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.mandala_anti_puppet_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_mandala_anti_puppet_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.mandala_arbitration_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_mandala_arbitration_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.mandala_development_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_mandala_development_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.mandala_joint_defense_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_mandala_joint_defense_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.mandala_observer_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_mandala_observer_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.mercy_commitment_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_mercy_commitment_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.northern_core_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_northern_core_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.peace_letter_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_peace_letter_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.pilgrimage_escort_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_pilgrimage_escort_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.protectorate_integration_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_protectorate_integration_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.protectorate_mission_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_protectorate_mission_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.refuge_commitment_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_refuge_commitment_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.regional_peace_letter_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_regional_peace_letter_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.renew_vow_under_fire_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_renew_vow_under_fire_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.silent_mandala_form_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_silent_mandala_form_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:holy_realm_decision.submitted_admin_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_holy_realm_decision_submitted_admin_cost = black_friday_price_payable }
+
+	# infantry_spawn_derivative_decision_cost
+	set_temp_variable = { black_friday_price_ordinary = constant:infantry_spawn_derivative_decision_cost.demand_submission_pp }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_infantry_spawn_derivative_decision_cost_demand_submission_pp = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:infantry_spawn_derivative_decision_cost.preserve_claimant_pp }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_infantry_spawn_derivative_decision_cost_preserve_claimant_pp = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:infantry_spawn_derivative_decision_cost.replace_claimant_pp }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_infantry_spawn_derivative_decision_cost_replace_claimant_pp = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:infantry_spawn_derivative_decision_cost.secure_depot_pp }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_infantry_spawn_derivative_decision_cost_secure_depot_pp = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:infantry_spawn_derivative_decision_cost.sustainment_site_pp }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_infantry_spawn_derivative_decision_cost_sustainment_site_pp = black_friday_price_payable }
+
+	# mengele_clone_decision
+	set_temp_variable = { black_friday_price_ordinary = constant:mengele_clone_decision.biowarfare_trial_series_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_mengele_clone_decision_biowarfare_trial_series_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:mengele_clone_decision.borderland_command_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_mengele_clone_decision_borderland_command_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:mengele_clone_decision.compile_activation_ledger_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_mengele_clone_decision_compile_activation_ledger_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:mengele_clone_decision.condition_clone_batches_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_mengele_clone_decision_condition_clone_batches_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:mengele_clone_decision.deepen_foreign_tank_network_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_mengele_clone_decision_deepen_foreign_tank_network_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:mengele_clone_decision.dispatch_biomedical_aid_mission_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_mengele_clone_decision_dispatch_biomedical_aid_mission_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:mengele_clone_decision.expand_growth_vats_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_mengele_clone_decision_expand_growth_vats_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:mengele_clone_decision.harden_clone_immunity_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_mengele_clone_decision_harden_clone_immunity_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:mengele_clone_decision.number_reclaimed_heartland_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_mengele_clone_decision_number_reclaimed_heartland_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:mengele_clone_decision.select_genius_embryos_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_mengele_clone_decision_select_genius_embryos_cost = black_friday_price_payable }
+
+	# soviet_collapse_kmb_balance
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_kmb_balance.conquered_basin_concession_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_kmb_balance_conquered_basin_concession_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_kmb_balance.conquered_basin_corridor_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_kmb_balance_conquered_basin_corridor_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_kmb_balance.conquered_basin_integration_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_kmb_balance_conquered_basin_integration_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_kmb_balance.deepen_subsoil_extraction_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_kmb_balance_deepen_subsoil_extraction_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_kmb_balance.force_mining_concession_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_kmb_balance_force_mining_concession_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_kmb_balance.industrial_tender_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_kmb_balance_industrial_tender_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_kmb_balance.open_export_auction_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_kmb_balance_open_export_auction_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_kmb_balance.sell_coal_for_machines_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_kmb_balance_sell_coal_for_machines_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_kmb_balance.sign_resource_treaty_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_kmb_balance_sign_resource_treaty_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_kmb_balance.trade_oil_for_trucks_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_kmb_balance_trade_oil_for_trucks_cost = black_friday_price_payable }
+
+	# soviet_collapse_uwr_aftermath
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_uwr_aftermath.containment_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_aftermath_containment_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_uwr_aftermath.dismantlement_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_aftermath_dismantlement_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_uwr_aftermath.exploitation_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_aftermath_exploitation_cost = black_friday_price_payable }
+
+	# soviet_collapse_uwr_balance
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_uwr_balance.blacksite_overclock_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_balance_blacksite_overclock_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_uwr_balance.camp_registry_expansion_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_balance_camp_registry_expansion_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_uwr_balance.field_release_raid_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_balance_field_release_raid_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_uwr_balance.prisoner_intake_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_balance_prisoner_intake_cost = black_friday_price_payable }
+
+	# triggerable_scenario_cure
+	set_temp_variable = { black_friday_price_ordinary = constant:triggerable_scenario_cure.counterstrain_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_triggerable_scenario_cure_counterstrain_cost = black_friday_price_payable }
+
+	# utopia_manifesto_decision_cost
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.pp_large }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_pp_large = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.pp_major }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_pp_major = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.pp_medium }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_pp_medium = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.pp_small }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_pp_small = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.pp_token }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_pp_token = black_friday_price_payable }
+
+	# utopia_manifesto_penal_method
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_penal_method.political_power_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_penal_method_political_power_cost = black_friday_price_payable }
+
+	# zombie_prevention
+	set_temp_variable = { black_friday_price_ordinary = constant:zombie_prevention.border_closure_pp_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_zombie_prevention_border_closure_pp_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:zombie_prevention.hygiene_pp_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_zombie_prevention_hygiene_pp_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:zombie_prevention.martial_law_pp_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_zombie_prevention_martial_law_pp_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:zombie_prevention.migration_pp_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_zombie_prevention_migration_pp_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:zombie_prevention.quarantine_pp_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_zombie_prevention_quarantine_pp_cost = black_friday_price_payable }
+}
+
+# ANY scope. Sets every registered price to the active sale price snapshotted
+# in global.black_friday_discount_ratio.
+black_friday_price_table_apply = {
+	set_temp_variable = { black_friday_price_ratio = global.black_friday_discount_ratio }
+	black_friday_price_table_refresh_entries = yes
+}
+
+# ANY scope. Restores every registered price to its ordinary amount.
+black_friday_price_table_restore = {
+	set_temp_variable = { black_friday_price_ratio = constant:black_friday_event.ratio_basis }
+	black_friday_price_table_refresh_entries = yes
+}
+
+# ANY scope. Builds the table once per price_table_version: at the active sale
+# price while a sale is running, otherwise at ordinary prices.
+black_friday_price_table_initialize = {
+	if = {
+		limit = {
+			NOT = {
+				check_variable = {
+					var = global.black_friday_price_table_version
+					value = constant:black_friday_event.price_table_version
+					compare = equals
+				}
+			}
+		}
+		if = {
+			limit = { black_friday_is_active = yes }
+			black_friday_price_table_apply = yes
+		}
+		else = {
+			black_friday_price_table_restore = yes
+		}
+		set_variable = { global.black_friday_price_table_version = constant:black_friday_event.price_table_version }
+	}
+}

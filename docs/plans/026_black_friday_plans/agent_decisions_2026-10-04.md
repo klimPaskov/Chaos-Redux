@@ -45,3 +45,26 @@ Peace-conference, annex, and puppet factors stay because they price a voluntary 
 Registry row BF-NAT-010 records trade upkeep as `not_a_purchase_cost`.
 
 Disposition: implemented.
+
+## D4. Chaos Redux native decisions use a global sale price table
+
+Decision: each registered ordinary political power price has one global variable, `global.black_friday_price_<key>`.
+`black_friday_price_table_initialize` builds the table at ordinary prices from `on_startup` and, once per `price_table_version`, from `black_friday_initialize_runtime`.
+`black_friday_activate_sale` sets every price to `ceil(ordinary x payment ratio / 10000)` with a minimum of 1, and `black_friday_expire_sale` (also reached from terminal cleanup) restores the ordinary price.
+Zero prices stay zero.
+Decisions read the price through `cost = global.black_friday_price_<key>`.
+Literal ordinary amounts are registered as `black_friday_price_pp_<N>` from the `black_friday_price_table` constant group; owner-constant prices keep the owner's constant as their source and are registered as `black_friday_price_<group>_<key>`.
+
+Basis: installed `documentation/modifiers_documentation.md` has no decision-cost modifier.
+The offline wiki Decision modding page (Decision cost, line 286) states that `cost` accepts a variable, and the Data structures page (line 549) documents `cost = var_name?100`.
+Vanilla uses `cost = TUR_etatism_cost_penalty_var?50` and `cost = var:AST_call_on_fascists_cost` (`common/decisions/AST.txt:2481`).
+Kaiserreich uses a global variable directly: `cost = global.UPC_coalition_cost_var` (`common/decisions/UPC decisions (Federalist China).txt:981`, set in `common/scripted_effects/UPC effects (Federalist China).txt:1655`).
+That production precedent for the `global.` form is why the inactive-owner conversion proceeds without waiting for the live probe; the CXT probe decision `chaosx_test_country_event026_price_probe_decision` (100, 50, and 25 political power) remains the live confirmation.
+If the probe shows the global form misbehaving, the fallback is the vanilla-proven country form `cost = black_friday_price_<key>?<ordinary>` written on every country by the same apply and restore effects.
+This is spec Part 4 strategy C (conditional data) with a single engine-computed price.
+
+Placement: the table and its registered entries live in `common/scripted_effects/026_black_friday_price_table_effects.txt` rather than in the 4,800-line lifecycle file, so the entry list stays reviewable; the lifecycle file only calls initialize, apply, and restore.
+The `on_startup` build matters because an unset price variable reads as zero, which would make a converted decision free before the first daily pulse.
+
+Disposition: implemented (source).
+Live display and debit at 100/50/25 percent are `needs_live_game` through the CXT probe.

@@ -1,0 +1,19 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 026 BLACK FRIDAY ON_ACTIONS
+# ============================================================================
+# Builds the sale price table at ordinary prices before the first day, so
+# Chaos Redux decisions that read global.black_friday_price_<key> show and
+# charge their normal price from the opening screen. on_startup has no default
+# scope, so one bounded existing-country scope runs the global writes once.
+# ============================================================================
+
+on_actions = {
+	on_startup = {
+		effect = {
+			random_country = {
+				limit = { exists = yes }
+				black_friday_price_table_initialize = yes
+			}
+		}
+	}
+}

@@ -49,6 +49,7 @@ black_friday_initialize_runtime = {
 		set_global_flag = black_friday_runtime_initialized
 	}
 	black_friday_update_calendar_flag = yes
+	black_friday_price_table_initialize = yes
 }
 
 black_friday_prepare_achievement_progress = {
@@ -2227,6 +2228,7 @@ black_friday_expire_sale = {
 	if = {
 		limit = { black_friday_is_active = yes }
 		universal_cost_source_clear_black_friday = yes
+		black_friday_price_table_restore = yes
 		clr_global_flag = black_friday_active
 		set_variable = { global.black_friday_state = constant:black_friday_event.state_expired }
 		set_variable = { global.black_friday_expiration_date = global.num_days }
@@ -4062,6 +4064,7 @@ black_friday_activate_sale = {
 		set_temp_variable = { universal_cost_source_ratio = global.black_friday_discount_ratio }
 		set_temp_variable = { universal_cost_source_eligibility_mask = constant:universal_cost_framework.source_all_mask }
 		universal_cost_source_register_black_friday = yes
+		black_friday_price_table_apply = yes
 		black_friday_record_activation_history = yes
 		if = {
 			limit = { check_variable = { global.black_friday_discount_ratio = constant:black_friday_event.evolution_payment_ratio } }
