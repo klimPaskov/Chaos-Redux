@@ -63,6 +63,14 @@ The carrier framework declares capitals, fictional leaders and councils, existin
 The complete accepted country package requires dynamic safe capitals, resource-grounded forces, compatible donor research, functional economy, reinforcement, diplomacy, AI and playable cleanup.
 The current capacity/force audit identifies gaps in those requirements and does not approve the eight declarations as complete packages.
 
+A carrier is free only when its tag does not exist and its `random_terror_slot_<tag>_used` flag is clear (`random_terror_carrier_is_free`).
+The spawner, the Global Jihad availability trigger and the scenario preflight share that predicate, and `random_terror_release_dead_carriers` clears a reservation only after the tag has stopped existing, so a retained or occupied carrier never receives a second package.
+A carrier that died in a peace deal without an Event 31 cleanup pass has its previous lifetime cleared before its next package.
+
+An ordinary spawn (`random_terror_state_can_spawn_actor`) never takes the parent's capital and requires the parent to keep its own controlled capital.
+When a capital reaches Lost Local Control and cannot secede, its government faces a coup attempt, and the ordinary civil-war check carries any other blocked state.
+Every new actor, ordinary or created by Global Jihad, declares war on its parent through `random_terror_actor_declare_parent_war` when the game allows it, which opens the retake, isolation and offensive actions.
+
 The actor focus tree is `random_terror_actor_focus_tree` in `common/national_focus/031_random_terror_focus.txt`.
 
 Its 114 focuses cover opening survival, Shadow Council, War Directorate, Ideological Secretariat, captured economy, armed movement, network and diplomacy, expansion, crisis, Jihadist International, Final Jihad, and False Revelation routes.

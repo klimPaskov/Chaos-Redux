@@ -294,18 +294,45 @@ random_terror_can_launch_global_jihad = {
 		has_global_flag = random_terror_global_jihad_manual_request
 	}
 	OR = {
-		JHX = { exists = yes NOT = { has_global_flag = random_terror_slot_jhx_used } }
-		JIX = { exists = yes NOT = { has_global_flag = random_terror_slot_jix_used } }
-		JKX = { exists = yes NOT = { has_global_flag = random_terror_slot_jkx_used } }
-		JLX = { exists = yes NOT = { has_global_flag = random_terror_slot_jlx_used } }
-		JMX = { exists = yes NOT = { has_global_flag = random_terror_slot_jmx_used } }
-		JNX = { exists = yes NOT = { has_global_flag = random_terror_slot_jnx_used } }
-		JOX = { exists = yes NOT = { has_global_flag = random_terror_slot_jox_used } }
-		JPX = { exists = yes NOT = { has_global_flag = random_terror_slot_jpx_used } }
+		random_terror_scenario_has_free_carrier = yes
 		any_country = { random_terror_is_actor = yes }
 	}
 	any_country = {
 		random_terror_country_is_eligible_wave_target = yes
+	}
+}
+
+# COUNTRY scope: one dormant carrier tag.  A carrier is free only when no live
+# country uses the tag and its reservation flag is clear.  The spawner, the
+# Global Jihad availability check and the scenario preflight share this rule,
+# so a retained or occupied carrier never receives a second package.
+random_terror_carrier_is_free = {
+	exists = no
+	OR = {
+		AND = { original_tag = JHX NOT = { has_global_flag = random_terror_slot_jhx_used } }
+		AND = { original_tag = JIX NOT = { has_global_flag = random_terror_slot_jix_used } }
+		AND = { original_tag = JKX NOT = { has_global_flag = random_terror_slot_jkx_used } }
+		AND = { original_tag = JLX NOT = { has_global_flag = random_terror_slot_jlx_used } }
+		AND = { original_tag = JMX NOT = { has_global_flag = random_terror_slot_jmx_used } }
+		AND = { original_tag = JNX NOT = { has_global_flag = random_terror_slot_jnx_used } }
+		AND = { original_tag = JOX NOT = { has_global_flag = random_terror_slot_jox_used } }
+		AND = { original_tag = JPX NOT = { has_global_flag = random_terror_slot_jpx_used } }
+	}
+}
+
+# STATE scope.  An actor can form from a populated state only when its owner
+# controls it, it is not the owner's capital, and the owner keeps its own
+# controlled capital, so the parent always survives the secession (Part 5).
+random_terror_state_can_spawn_actor = {
+	state_population_k > constant:random_terror_value.zero
+	NOT = { is_capital = yes }
+	is_controlled_by = OWNER
+	OWNER = {
+		NOT = { has_country_flag = random_terror_actor }
+		any_owned_state = {
+			is_capital = yes
+			is_controlled_by = PREV
+		}
 	}
 }
 
@@ -353,10 +380,7 @@ random_terror_scenario_candidate_state = {
 random_terror_scenario_actor_state = {
 	random_terror_scenario_candidate_state = yes
 	owner = { random_terror_scenario_actor_parent = yes }
-	OR = {
-		NOT = { is_capital = yes }
-		owner = { num_of_controlled_states > constant:random_terror_value.one }
-	}
+	random_terror_state_can_spawn_actor = yes
 }
 
 random_terror_scenario_extra_state = {
@@ -367,14 +391,14 @@ random_terror_scenario_extra_state = {
 
 random_terror_scenario_has_free_carrier = {
 	OR = {
-		JHX = { exists = yes NOT = { has_global_flag = random_terror_slot_jhx_used } }
-		JIX = { exists = yes NOT = { has_global_flag = random_terror_slot_jix_used } }
-		JKX = { exists = yes NOT = { has_global_flag = random_terror_slot_jkx_used } }
-		JLX = { exists = yes NOT = { has_global_flag = random_terror_slot_jlx_used } }
-		JMX = { exists = yes NOT = { has_global_flag = random_terror_slot_jmx_used } }
-		JNX = { exists = yes NOT = { has_global_flag = random_terror_slot_jnx_used } }
-		JOX = { exists = yes NOT = { has_global_flag = random_terror_slot_jox_used } }
-		JPX = { exists = yes NOT = { has_global_flag = random_terror_slot_jpx_used } }
+		JHX = { random_terror_carrier_is_free = yes }
+		JIX = { random_terror_carrier_is_free = yes }
+		JKX = { random_terror_carrier_is_free = yes }
+		JLX = { random_terror_carrier_is_free = yes }
+		JMX = { random_terror_carrier_is_free = yes }
+		JNX = { random_terror_carrier_is_free = yes }
+		JOX = { random_terror_carrier_is_free = yes }
+		JPX = { random_terror_carrier_is_free = yes }
 	}
 }
 

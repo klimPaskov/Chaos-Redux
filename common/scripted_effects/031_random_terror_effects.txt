@@ -702,6 +702,16 @@ random_terror_apply_incident = {
 			check_variable = { random_terror_state_stage = constant:random_terror_state_stage.lost_local_control }
 		}
 		random_terror_try_spawn_actor = yes
+		# A capital cannot secede.  Its government faces a coup attempt instead,
+		# and the civil-war check below carries any other blocked state.
+		if = {
+			limit = {
+				check_variable = { random_terror_actor_created = constant:random_terror_value.zero }
+				is_capital = yes
+				is_controlled_by = OWNER
+			}
+			OWNER = { random_terror_trigger_coup_attempt = yes }
+		}
 	}
 	if = {
 		limit = {
@@ -1242,14 +1252,14 @@ random_terror_scenario_preflight = {
 		limit = { random_terror_scenario_actor_state = yes }
 		add_to_temp_variable = { random_terror_scenario_valid_state_count = constant:random_terror_value.one }
 	}
-	JHX = { if = { limit = { exists = yes NOT = { has_global_flag = random_terror_slot_jhx_used } } add_to_temp_variable = { random_terror_scenario_free_carrier_count = constant:random_terror_value.one } } }
-	JIX = { if = { limit = { exists = yes NOT = { has_global_flag = random_terror_slot_jix_used } } add_to_temp_variable = { random_terror_scenario_free_carrier_count = constant:random_terror_value.one } } }
-	JKX = { if = { limit = { exists = yes NOT = { has_global_flag = random_terror_slot_jkx_used } } add_to_temp_variable = { random_terror_scenario_free_carrier_count = constant:random_terror_value.one } } }
-	JLX = { if = { limit = { exists = yes NOT = { has_global_flag = random_terror_slot_jlx_used } } add_to_temp_variable = { random_terror_scenario_free_carrier_count = constant:random_terror_value.one } } }
-	JMX = { if = { limit = { exists = yes NOT = { has_global_flag = random_terror_slot_jmx_used } } add_to_temp_variable = { random_terror_scenario_free_carrier_count = constant:random_terror_value.one } } }
-	JNX = { if = { limit = { exists = yes NOT = { has_global_flag = random_terror_slot_jnx_used } } add_to_temp_variable = { random_terror_scenario_free_carrier_count = constant:random_terror_value.one } } }
-	JOX = { if = { limit = { exists = yes NOT = { has_global_flag = random_terror_slot_jox_used } } add_to_temp_variable = { random_terror_scenario_free_carrier_count = constant:random_terror_value.one } } }
-	JPX = { if = { limit = { exists = yes NOT = { has_global_flag = random_terror_slot_jpx_used } } add_to_temp_variable = { random_terror_scenario_free_carrier_count = constant:random_terror_value.one } } }
+	if = { limit = { JHX = { random_terror_carrier_is_free = yes } } add_to_temp_variable = { random_terror_scenario_free_carrier_count = constant:random_terror_value.one } }
+	if = { limit = { JIX = { random_terror_carrier_is_free = yes } } add_to_temp_variable = { random_terror_scenario_free_carrier_count = constant:random_terror_value.one } }
+	if = { limit = { JKX = { random_terror_carrier_is_free = yes } } add_to_temp_variable = { random_terror_scenario_free_carrier_count = constant:random_terror_value.one } }
+	if = { limit = { JLX = { random_terror_carrier_is_free = yes } } add_to_temp_variable = { random_terror_scenario_free_carrier_count = constant:random_terror_value.one } }
+	if = { limit = { JMX = { random_terror_carrier_is_free = yes } } add_to_temp_variable = { random_terror_scenario_free_carrier_count = constant:random_terror_value.one } }
+	if = { limit = { JNX = { random_terror_carrier_is_free = yes } } add_to_temp_variable = { random_terror_scenario_free_carrier_count = constant:random_terror_value.one } }
+	if = { limit = { JOX = { random_terror_carrier_is_free = yes } } add_to_temp_variable = { random_terror_scenario_free_carrier_count = constant:random_terror_value.one } }
+	if = { limit = { JPX = { random_terror_carrier_is_free = yes } } add_to_temp_variable = { random_terror_scenario_free_carrier_count = constant:random_terror_value.one } }
 	set_variable = { global.random_terror_scenario_new_actor_target = global.random_terror_scenario_actor_target }
 	subtract_from_variable = { global.random_terror_scenario_new_actor_target = global.random_terror_scenario_existing_actor_count }
 	if = {
@@ -1442,57 +1452,6 @@ random_terror_scenario_seed_actors = {
 	}
 }
 
-random_terror_scenario_declare_parent_wars = {
-	JHX = {
-		if = {
-			limit = { has_country_flag = random_terror_scenario_actor_created has_event_target = random_terror_parent_jhx event_target:random_terror_parent_jhx = { exists = yes } can_declare_war_on = event_target:random_terror_parent_jhx }
-			declare_war_on = { target = event_target:random_terror_parent_jhx type = annex_everything }
-		}
-	}
-	JIX = {
-		if = {
-			limit = { has_country_flag = random_terror_scenario_actor_created has_event_target = random_terror_parent_jix event_target:random_terror_parent_jix = { exists = yes } can_declare_war_on = event_target:random_terror_parent_jix }
-			declare_war_on = { target = event_target:random_terror_parent_jix type = annex_everything }
-		}
-	}
-	JKX = {
-		if = {
-			limit = { has_country_flag = random_terror_scenario_actor_created has_event_target = random_terror_parent_jkx event_target:random_terror_parent_jkx = { exists = yes } can_declare_war_on = event_target:random_terror_parent_jkx }
-			declare_war_on = { target = event_target:random_terror_parent_jkx type = annex_everything }
-		}
-	}
-	JLX = {
-		if = {
-			limit = { has_country_flag = random_terror_scenario_actor_created has_event_target = random_terror_parent_jlx event_target:random_terror_parent_jlx = { exists = yes } can_declare_war_on = event_target:random_terror_parent_jlx }
-			declare_war_on = { target = event_target:random_terror_parent_jlx type = annex_everything }
-		}
-	}
-	JMX = {
-		if = {
-			limit = { has_country_flag = random_terror_scenario_actor_created has_event_target = random_terror_parent_jmx event_target:random_terror_parent_jmx = { exists = yes } can_declare_war_on = event_target:random_terror_parent_jmx }
-			declare_war_on = { target = event_target:random_terror_parent_jmx type = annex_everything }
-		}
-	}
-	JNX = {
-		if = {
-			limit = { has_country_flag = random_terror_scenario_actor_created has_event_target = random_terror_parent_jnx event_target:random_terror_parent_jnx = { exists = yes } can_declare_war_on = event_target:random_terror_parent_jnx }
-			declare_war_on = { target = event_target:random_terror_parent_jnx type = annex_everything }
-		}
-	}
-	JOX = {
-		if = {
-			limit = { has_country_flag = random_terror_scenario_actor_created has_event_target = random_terror_parent_jox event_target:random_terror_parent_jox = { exists = yes } can_declare_war_on = event_target:random_terror_parent_jox }
-			declare_war_on = { target = event_target:random_terror_parent_jox type = annex_everything }
-		}
-	}
-	JPX = {
-		if = {
-			limit = { has_country_flag = random_terror_scenario_actor_created has_event_target = random_terror_parent_jpx event_target:random_terror_parent_jpx = { exists = yes } can_declare_war_on = event_target:random_terror_parent_jpx }
-			declare_war_on = { target = event_target:random_terror_parent_jpx type = annex_everything }
-		}
-	}
-}
-
 random_terror_scenario_record_history = {
 	if = {
 		limit = { NOT = { has_global_flag = random_terror_triggerable_scenario_history_recorded } }
@@ -1509,6 +1468,7 @@ random_terror_scenario_record_history = {
 
 random_terror_launch_global_jihad = {
 	random_terror_initialize_global_state = yes
+	random_terror_release_dead_carriers = yes
 	if = {
 		limit = { random_terror_can_launch_global_jihad = yes }
 		random_terror_resolve_scenario_profile = yes
@@ -1525,9 +1485,9 @@ random_terror_launch_global_jihad = {
 			set_variable = { global.random_terror_scenario_launch_date = global.date }
 			random_terror_scenario_seed_targets = yes
 			random_terror_scenario_seed_extra_states = yes
-			random_terror_scenario_seed_actors = yes
+			# Each created actor opens its own war with its parent during seeding.
 			# Maximum enables Final Jihad, not the entity or its terminal package.
-			random_terror_scenario_declare_parent_wars = yes
+			random_terror_scenario_seed_actors = yes
 			random_terror_refresh_global_values = yes
 			set_variable = { global.random_terror_network_reach = global.random_terror_scenario_network_reach }
 			set_variable = { global.random_terror_international_unity = global.random_terror_scenario_unity }
@@ -1570,10 +1530,6 @@ random_terror_initialize_actor = {
 		limit = { is_ai = no }
 		random_terror_achievement_initialize_country = yes
 		set_country_flag = random_terror_achievement_player_actor_eligible
-	}
-	if = {
-		limit = { has_global_flag = random_terror_global_jihad_setup_in_progress }
-		set_country_flag = random_terror_scenario_actor_created
 	}
 	if = {
 		limit = { NOT = { has_variable = random_terror_actor_control } }
@@ -1833,174 +1789,193 @@ random_terror_refresh_actor_lifecycles = {
 	}
 }
 
+# Releases every carrier whose country no longer exists, including an actor
+# that died in a peace deal without an Event 31 cleanup pass.  Callers never
+# run it between a carrier claim and the state transfer that revives the tag.
+random_terror_release_dead_carriers = {
+	if = { limit = { has_global_flag = random_terror_slot_jhx_used JHX = { exists = no } } clr_global_flag = random_terror_slot_jhx_used }
+	if = { limit = { has_global_flag = random_terror_slot_jix_used JIX = { exists = no } } clr_global_flag = random_terror_slot_jix_used }
+	if = { limit = { has_global_flag = random_terror_slot_jkx_used JKX = { exists = no } } clr_global_flag = random_terror_slot_jkx_used }
+	if = { limit = { has_global_flag = random_terror_slot_jlx_used JLX = { exists = no } } clr_global_flag = random_terror_slot_jlx_used }
+	if = { limit = { has_global_flag = random_terror_slot_jmx_used JMX = { exists = no } } clr_global_flag = random_terror_slot_jmx_used }
+	if = { limit = { has_global_flag = random_terror_slot_jnx_used JNX = { exists = no } } clr_global_flag = random_terror_slot_jnx_used }
+	if = { limit = { has_global_flag = random_terror_slot_jox_used JOX = { exists = no } } clr_global_flag = random_terror_slot_jox_used }
+	if = { limit = { has_global_flag = random_terror_slot_jpx_used JPX = { exists = no } } clr_global_flag = random_terror_slot_jpx_used }
+}
+
+# COUNTRY scope: a newly created actor.  Opens its war with the parent when
+# the game allows it.  Ordinary spawns and Global Jihad setup share this step.
+random_terror_actor_declare_parent_war = {
+	if = {
+		limit = {
+			has_event_target = random_terror_actor_parent
+			event_target:random_terror_actor_parent = { exists = yes }
+			NOT = { has_war_with = event_target:random_terror_actor_parent }
+			can_declare_war_on = event_target:random_terror_actor_parent
+		}
+		declare_war_on = { target = event_target:random_terror_actor_parent type = annex_everything }
+	}
+}
+
+# COUNTRY scope: the claimed carrier immediately after the spawn state was
+# transferred to it.  A carrier that died without a cleanup pass still holds
+# its previous lifetime, so that lifetime is cleared before the new package.
+# Inputs: temp random_terror_spawn_profile, event targets
+# random_terror_spawn_state and random_terror_actor_parent.
+random_terror_setup_spawned_carrier = {
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = random_terror_actor
+				has_country_flag = random_terror_actor_setup_complete
+			}
+		}
+		random_terror_clear_actor_runtime = yes
+	}
+	set_variable = { random_terror_actor_profile = random_terror_spawn_profile }
+	set_capital = { state = event_target:random_terror_spawn_state remember_old_capital = no }
+	random_terror_initialize_actor = yes
+	random_terror_assign_actor_cosmetic_tag = yes
+	random_terror_actor_declare_parent_war = yes
+}
+
+# STATE scope: a Lost Local Control state.  A carrier is claimed only when it
+# is free and the parent keeps its own controlled capital (Part 5).  Later
+# carriers open as the crisis evolves.
 random_terror_try_spawn_actor = {
 	set_temp_variable = { random_terror_actor_created = constant:random_terror_value.zero }
-	CONTROLLER = { save_event_target_as = random_terror_spawn_former_owner }
+	random_terror_release_dead_carriers = yes
 	if = {
-		limit = { NOT = { has_global_flag = random_terror_slot_jhx_used } }
-		set_global_flag = random_terror_slot_jhx_used
-		event_target:random_terror_current_state = { save_event_target_as = random_terror_spawn_state }
-		JHX = {
-			set_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.local }
-		}
-		event_target:random_terror_spawn_state = { CONTROLLER = { save_global_event_target_as = random_terror_parent_jhx } }
-		event_target:random_terror_spawn_state = {
-			transfer_state_to = JHX
-			add_core_of = JHX
-		}
-		JHX = {
-			set_capital = { state = event_target:random_terror_spawn_state remember_old_capital = no }
-			random_terror_initialize_actor = yes
-			random_terror_assign_actor_cosmetic_tag = yes
-		}
-		set_temp_variable = { random_terror_actor_created = constant:random_terror_value.one }
-	}
-	if = {
-		limit = {
-			check_variable = { random_terror_actor_created = constant:random_terror_value.zero }
-			NOT = { has_global_flag = random_terror_slot_jix_used }
-		}
-		set_global_flag = random_terror_slot_jix_used
-		event_target:random_terror_current_state = { save_event_target_as = random_terror_spawn_state }
-		JIX = { set_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.regional } }
-		event_target:random_terror_spawn_state = { CONTROLLER = { save_global_event_target_as = random_terror_parent_jix } }
-		event_target:random_terror_spawn_state = { transfer_state_to = JIX add_core_of = JIX }
-		JIX = {
-			set_capital = { state = event_target:random_terror_spawn_state remember_old_capital = no }
-			random_terror_initialize_actor = yes
-			random_terror_assign_actor_cosmetic_tag = yes
-		}
-		set_temp_variable = { random_terror_actor_created = constant:random_terror_value.one }
-	}
-	if = {
-		limit = {
-			check_variable = { random_terror_actor_created = constant:random_terror_value.zero }
-			NOT = { has_global_flag = random_terror_slot_jkx_used }
-		}
-		set_global_flag = random_terror_slot_jkx_used
-		event_target:random_terror_current_state = { save_event_target_as = random_terror_spawn_state }
-		JKX = { set_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.transnational } }
-		event_target:random_terror_spawn_state = { CONTROLLER = { save_global_event_target_as = random_terror_parent_jkx } }
-		event_target:random_terror_spawn_state = { transfer_state_to = JKX add_core_of = JKX }
-		JKX = {
-			set_capital = { state = event_target:random_terror_spawn_state remember_old_capital = no }
-			random_terror_initialize_actor = yes
-			random_terror_assign_actor_cosmetic_tag = yes
-		}
-		set_temp_variable = { random_terror_actor_created = constant:random_terror_value.one }
-	}
-	if = {
-		limit = {
-			check_variable = { random_terror_actor_created = constant:random_terror_value.zero }
-			NOT = { has_global_flag = random_terror_slot_jlx_used }
-			has_global_flag = random_terror_evolution_4_unlocked
-		}
-		set_global_flag = random_terror_slot_jlx_used
-		event_target:random_terror_current_state = { save_event_target_as = random_terror_spawn_state }
-		JLX = { set_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.jihadist } }
-		event_target:random_terror_spawn_state = { CONTROLLER = { save_global_event_target_as = random_terror_parent_jlx } }
-		event_target:random_terror_spawn_state = { transfer_state_to = JLX add_core_of = JLX }
-		JLX = {
-			set_capital = { state = event_target:random_terror_spawn_state remember_old_capital = no }
-			random_terror_initialize_actor = yes
-			random_terror_assign_actor_cosmetic_tag = yes
-		}
-		set_temp_variable = { random_terror_actor_created = constant:random_terror_value.one }
-	}
-	if = {
-		limit = {
-			check_variable = { random_terror_actor_created = constant:random_terror_value.zero }
-			NOT = { has_global_flag = random_terror_slot_jmx_used }
-			has_global_flag = random_terror_evolution_5_unlocked
-		}
-		set_global_flag = random_terror_slot_jmx_used
-		event_target:random_terror_current_state = { save_event_target_as = random_terror_spawn_state }
-		JMX = {
-			set_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.jihadist }
-			set_country_flag = random_terror_final_jihad_active
-		}
-		event_target:random_terror_spawn_state = { CONTROLLER = { save_global_event_target_as = random_terror_parent_jmx } }
-		event_target:random_terror_spawn_state = { transfer_state_to = JMX add_core_of = JMX }
-		JMX = {
-			set_capital = { state = event_target:random_terror_spawn_state remember_old_capital = no }
-			random_terror_initialize_actor = yes
-			random_terror_assign_actor_cosmetic_tag = yes
-		}
-		set_temp_variable = { random_terror_actor_created = constant:random_terror_value.one }
-	}
-	if = {
-		limit = {
-			check_variable = { random_terror_actor_created = constant:random_terror_value.zero }
-			NOT = { has_global_flag = random_terror_slot_jnx_used }
-			has_global_flag = random_terror_evolution_1_unlocked
-		}
-		set_global_flag = random_terror_slot_jnx_used
-		event_target:random_terror_current_state = { save_event_target_as = random_terror_spawn_state }
-		JNX = { set_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.local } }
-		event_target:random_terror_spawn_state = { CONTROLLER = { save_global_event_target_as = random_terror_parent_jnx } }
-		event_target:random_terror_spawn_state = { transfer_state_to = JNX add_core_of = JNX }
-		JNX = {
-			set_capital = { state = event_target:random_terror_spawn_state remember_old_capital = no }
-			random_terror_initialize_actor = yes
-			random_terror_assign_actor_cosmetic_tag = yes
-		}
-		set_temp_variable = { random_terror_actor_created = constant:random_terror_value.one }
-	}
-	if = {
-		limit = {
-			check_variable = { random_terror_actor_created = constant:random_terror_value.zero }
-			NOT = { has_global_flag = random_terror_slot_jox_used }
-			has_global_flag = random_terror_evolution_2_unlocked
-		}
-		set_global_flag = random_terror_slot_jox_used
-		event_target:random_terror_current_state = { save_event_target_as = random_terror_spawn_state }
-		JOX = { set_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.regional } }
-		event_target:random_terror_spawn_state = { CONTROLLER = { save_global_event_target_as = random_terror_parent_jox } }
-		event_target:random_terror_spawn_state = { transfer_state_to = JOX add_core_of = JOX }
-		JOX = {
-			set_capital = { state = event_target:random_terror_spawn_state remember_old_capital = no }
-			random_terror_initialize_actor = yes
-			random_terror_assign_actor_cosmetic_tag = yes
-		}
-		set_temp_variable = { random_terror_actor_created = constant:random_terror_value.one }
-	}
-	if = {
-		limit = {
-			check_variable = { random_terror_actor_created = constant:random_terror_value.zero }
-			NOT = { has_global_flag = random_terror_slot_jpx_used }
-			has_global_flag = random_terror_evolution_3_unlocked
-		}
-		set_global_flag = random_terror_slot_jpx_used
-		event_target:random_terror_current_state = { save_event_target_as = random_terror_spawn_state }
-		JPX = { set_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.transnational } }
-		event_target:random_terror_spawn_state = { CONTROLLER = { save_global_event_target_as = random_terror_parent_jpx } }
-		event_target:random_terror_spawn_state = { transfer_state_to = JPX add_core_of = JPX }
-		JPX = {
-			set_capital = { state = event_target:random_terror_spawn_state remember_old_capital = no }
-			random_terror_initialize_actor = yes
-			random_terror_assign_actor_cosmetic_tag = yes
-		}
-		set_temp_variable = { random_terror_actor_created = constant:random_terror_value.one }
-	}
-	if = {
-		limit = { check_variable = { random_terror_actor_created > constant:random_terror_value.zero } }
-		event_target:random_terror_spawn_state = {
-			set_state_flag = random_terror_achievement_state_lost_to_actor
-			save_event_target_as = random_terror_achievement_lost_state
+		limit = { random_terror_state_can_spawn_actor = yes }
+		save_event_target_as = random_terror_spawn_state
+		OWNER = {
+			save_event_target_as = random_terror_spawn_former_owner
+			save_event_target_as = random_terror_actor_parent
 		}
 		if = {
-			limit = { has_event_target = random_terror_spawn_former_owner }
+			limit = { JHX = { random_terror_carrier_is_free = yes } }
+			set_global_flag = random_terror_slot_jhx_used
+			set_temp_variable = { random_terror_spawn_profile = constant:random_terror_actor_profile.local }
+			event_target:random_terror_actor_parent = { save_global_event_target_as = random_terror_parent_jhx }
+			transfer_state_to = JHX
+			add_core_of = JHX
+			JHX = { random_terror_setup_spawned_carrier = yes }
+			set_temp_variable = { random_terror_actor_created = constant:random_terror_value.one }
+		}
+		if = {
+			limit = {
+				check_variable = { random_terror_actor_created = constant:random_terror_value.zero }
+				JIX = { random_terror_carrier_is_free = yes }
+			}
+			set_global_flag = random_terror_slot_jix_used
+			set_temp_variable = { random_terror_spawn_profile = constant:random_terror_actor_profile.regional }
+			event_target:random_terror_actor_parent = { save_global_event_target_as = random_terror_parent_jix }
+			transfer_state_to = JIX
+			add_core_of = JIX
+			JIX = { random_terror_setup_spawned_carrier = yes }
+			set_temp_variable = { random_terror_actor_created = constant:random_terror_value.one }
+		}
+		if = {
+			limit = {
+				check_variable = { random_terror_actor_created = constant:random_terror_value.zero }
+				JKX = { random_terror_carrier_is_free = yes }
+			}
+			set_global_flag = random_terror_slot_jkx_used
+			set_temp_variable = { random_terror_spawn_profile = constant:random_terror_actor_profile.transnational }
+			event_target:random_terror_actor_parent = { save_global_event_target_as = random_terror_parent_jkx }
+			transfer_state_to = JKX
+			add_core_of = JKX
+			JKX = { random_terror_setup_spawned_carrier = yes }
+			set_temp_variable = { random_terror_actor_created = constant:random_terror_value.one }
+		}
+		if = {
+			limit = {
+				check_variable = { random_terror_actor_created = constant:random_terror_value.zero }
+				has_global_flag = random_terror_evolution_4_unlocked
+				JLX = { random_terror_carrier_is_free = yes }
+			}
+			set_global_flag = random_terror_slot_jlx_used
+			set_temp_variable = { random_terror_spawn_profile = constant:random_terror_actor_profile.jihadist }
+			event_target:random_terror_actor_parent = { save_global_event_target_as = random_terror_parent_jlx }
+			transfer_state_to = JLX
+			add_core_of = JLX
+			JLX = { random_terror_setup_spawned_carrier = yes }
+			set_temp_variable = { random_terror_actor_created = constant:random_terror_value.one }
+		}
+		if = {
+			limit = {
+				check_variable = { random_terror_actor_created = constant:random_terror_value.zero }
+				has_global_flag = random_terror_evolution_5_unlocked
+				JMX = { random_terror_carrier_is_free = yes }
+			}
+			set_global_flag = random_terror_slot_jmx_used
+			set_temp_variable = { random_terror_spawn_profile = constant:random_terror_actor_profile.jihadist }
+			event_target:random_terror_actor_parent = { save_global_event_target_as = random_terror_parent_jmx }
+			transfer_state_to = JMX
+			add_core_of = JMX
+			JMX = {
+				random_terror_setup_spawned_carrier = yes
+				set_country_flag = random_terror_final_jihad_active
+			}
+			set_temp_variable = { random_terror_actor_created = constant:random_terror_value.one }
+		}
+		if = {
+			limit = {
+				check_variable = { random_terror_actor_created = constant:random_terror_value.zero }
+				has_global_flag = random_terror_evolution_1_unlocked
+				JNX = { random_terror_carrier_is_free = yes }
+			}
+			set_global_flag = random_terror_slot_jnx_used
+			set_temp_variable = { random_terror_spawn_profile = constant:random_terror_actor_profile.local }
+			event_target:random_terror_actor_parent = { save_global_event_target_as = random_terror_parent_jnx }
+			transfer_state_to = JNX
+			add_core_of = JNX
+			JNX = { random_terror_setup_spawned_carrier = yes }
+			set_temp_variable = { random_terror_actor_created = constant:random_terror_value.one }
+		}
+		if = {
+			limit = {
+				check_variable = { random_terror_actor_created = constant:random_terror_value.zero }
+				has_global_flag = random_terror_evolution_2_unlocked
+				JOX = { random_terror_carrier_is_free = yes }
+			}
+			set_global_flag = random_terror_slot_jox_used
+			set_temp_variable = { random_terror_spawn_profile = constant:random_terror_actor_profile.regional }
+			event_target:random_terror_actor_parent = { save_global_event_target_as = random_terror_parent_jox }
+			transfer_state_to = JOX
+			add_core_of = JOX
+			JOX = { random_terror_setup_spawned_carrier = yes }
+			set_temp_variable = { random_terror_actor_created = constant:random_terror_value.one }
+		}
+		if = {
+			limit = {
+				check_variable = { random_terror_actor_created = constant:random_terror_value.zero }
+				has_global_flag = random_terror_evolution_3_unlocked
+				JPX = { random_terror_carrier_is_free = yes }
+			}
+			set_global_flag = random_terror_slot_jpx_used
+			set_temp_variable = { random_terror_spawn_profile = constant:random_terror_actor_profile.transnational }
+			event_target:random_terror_actor_parent = { save_global_event_target_as = random_terror_parent_jpx }
+			transfer_state_to = JPX
+			add_core_of = JPX
+			JPX = { random_terror_setup_spawned_carrier = yes }
+			set_temp_variable = { random_terror_actor_created = constant:random_terror_value.one }
+		}
+		if = {
+			limit = { check_variable = { random_terror_actor_created > constant:random_terror_value.zero } }
+			set_state_flag = random_terror_achievement_state_lost_to_actor
+			save_event_target_as = random_terror_achievement_lost_state
 			event_target:random_terror_spawn_former_owner = {
 				random_terror_achievement_record_actor_formation = yes
 				random_terror_achievement_record_state_loss = yes
 			}
-		}
-		add_to_variable = { global.random_terror_territorial_state_count = 1 }
-		add_to_variable = { global.random_terror_territorial_control = constant:random_terror_tuning.actor_control_start }
-		set_global_flag = random_terror_territorial_actor_exists
-		if = {
-			limit = { has_global_flag = random_terror_global_jihad_setup_in_progress }
-			add_to_variable = { global.random_terror_scenario_actors_created = constant:random_terror_value.one }
+			add_to_variable = { global.random_terror_territorial_state_count = 1 }
+			add_to_variable = { global.random_terror_territorial_control = constant:random_terror_tuning.actor_control_start }
+			set_global_flag = random_terror_territorial_actor_exists
+			if = {
+				limit = { has_global_flag = random_terror_global_jihad_setup_in_progress }
+				add_to_variable = { global.random_terror_scenario_actors_created = constant:random_terror_value.one }
+			}
 		}
 	}
 }
@@ -2589,7 +2564,6 @@ random_terror_scenario_cleanup = {
 		clr_country_flag = random_terror_scenario_target
 		clr_country_flag = random_terror_target_reserved
 		clr_country_flag = random_terror_scenario_report_sent
-		clr_country_flag = random_terror_scenario_actor_created
 	}
 	every_state = {
 		clr_state_flag = random_terror_scenario_state_seeded
@@ -2612,6 +2586,7 @@ random_terror_scenario_cleanup = {
 
 random_terror_refresh_global_values = {
 	random_terror_initialize_global_state = yes
+	random_terror_release_dead_carriers = yes
 	set_variable = { global.random_terror_territorial_state_count = constant:random_terror_value.zero }
 	set_variable = { global.random_terror_territorial_control = constant:random_terror_value.zero }
 	set_variable = { global.random_terror_international_unity = constant:random_terror_value.zero }
@@ -4100,6 +4075,7 @@ random_terror_begin_false_revelation = {
 		limit = { random_terror_can_begin_false_revelation = yes }
 		clear_global_event_target = random_terror_final_actor
 		clear_global_event_target = random_terror_final_capital
+		random_terror_release_dead_carriers = yes
 		random_terror_select_dominant_actor = yes
 		if = {
 			limit = {
@@ -4109,7 +4085,7 @@ random_terror_begin_false_revelation = {
 					random_terror_is_viable_actor = yes
 					any_owned_state = { always = yes }
 				}
-				NOT = { has_global_flag = random_terror_slot_jmx_used }
+				JMX = { random_terror_carrier_is_free = yes }
 			}
 			set_global_flag = random_terror_slot_jmx_used
 			event_target:random_terror_dominant_actor = {
@@ -4117,6 +4093,15 @@ random_terror_begin_false_revelation = {
 			}
 			JMX = {
 				annex_country = { target = event_target:random_terror_dominant_actor transfer_troops = yes }
+				if = {
+					limit = {
+						OR = {
+							has_country_flag = random_terror_actor
+							has_country_flag = random_terror_actor_setup_complete
+						}
+					}
+					random_terror_clear_actor_runtime = yes
+				}
 				set_capital = { state = event_target:random_terror_final_capital remember_old_capital = no }
 				set_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.final }
 				random_terror_initialize_actor = yes
@@ -4716,42 +4701,34 @@ random_terror_cleanup_actor = {
 		if = {
 			limit = { original_tag = JHX has_event_target = random_terror_parent_jhx event_target:random_terror_parent_jhx = { exists = yes } }
 			every_owned_state = { transfer_state_to = event_target:random_terror_parent_jhx }
-			clr_global_flag = random_terror_slot_jhx_used
 		}
 		if = {
 			limit = { original_tag = JIX has_event_target = random_terror_parent_jix event_target:random_terror_parent_jix = { exists = yes } }
 			every_owned_state = { transfer_state_to = event_target:random_terror_parent_jix }
-			clr_global_flag = random_terror_slot_jix_used
 		}
 		if = {
 			limit = { original_tag = JKX has_event_target = random_terror_parent_jkx event_target:random_terror_parent_jkx = { exists = yes } }
 			every_owned_state = { transfer_state_to = event_target:random_terror_parent_jkx }
-			clr_global_flag = random_terror_slot_jkx_used
 		}
 		if = {
 			limit = { original_tag = JLX has_event_target = random_terror_parent_jlx event_target:random_terror_parent_jlx = { exists = yes } }
 			every_owned_state = { transfer_state_to = event_target:random_terror_parent_jlx }
-			clr_global_flag = random_terror_slot_jlx_used
 		}
 		if = {
 			limit = { original_tag = JMX has_event_target = random_terror_parent_jmx event_target:random_terror_parent_jmx = { exists = yes } }
 			every_owned_state = { transfer_state_to = event_target:random_terror_parent_jmx }
-			clr_global_flag = random_terror_slot_jmx_used
 		}
 		if = {
 			limit = { original_tag = JNX has_event_target = random_terror_parent_jnx event_target:random_terror_parent_jnx = { exists = yes } }
 			every_owned_state = { transfer_state_to = event_target:random_terror_parent_jnx }
-			clr_global_flag = random_terror_slot_jnx_used
 		}
 		if = {
 			limit = { original_tag = JOX has_event_target = random_terror_parent_jox event_target:random_terror_parent_jox = { exists = yes } }
 			every_owned_state = { transfer_state_to = event_target:random_terror_parent_jox }
-			clr_global_flag = random_terror_slot_jox_used
 		}
 		if = {
 			limit = { original_tag = JPX has_event_target = random_terror_parent_jpx event_target:random_terror_parent_jpx = { exists = yes } }
 			every_owned_state = { transfer_state_to = event_target:random_terror_parent_jpx }
-			clr_global_flag = random_terror_slot_jpx_used
 		}
 		delete_units = { disband = no }
 		remove_ideas = {
@@ -4795,14 +4772,6 @@ random_terror_cleanup_actor = {
 			clr_state_flag = random_terror_territorial_partition_recorded
 			clr_state_flag = random_terror_scenario_actor_state_reserved
 		}
-		if = { limit = { original_tag = JHX } clr_global_flag = random_terror_slot_jhx_used }
-		if = { limit = { original_tag = JIX } clr_global_flag = random_terror_slot_jix_used }
-		if = { limit = { original_tag = JKX } clr_global_flag = random_terror_slot_jkx_used }
-		if = { limit = { original_tag = JLX } clr_global_flag = random_terror_slot_jlx_used }
-		if = { limit = { original_tag = JMX } clr_global_flag = random_terror_slot_jmx_used }
-		if = { limit = { original_tag = JNX } clr_global_flag = random_terror_slot_jnx_used }
-		if = { limit = { original_tag = JOX } clr_global_flag = random_terror_slot_jox_used }
-		if = { limit = { original_tag = JPX } clr_global_flag = random_terror_slot_jpx_used }
 		clr_country_flag = random_terror_actor
 		clr_country_flag = random_terror_active_actor
 		clr_country_flag = random_terror_final_actor
