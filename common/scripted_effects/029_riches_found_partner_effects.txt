@@ -1,0 +1,164 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 029 RICHES FOUND CONCESSION PARTNERS
+# ============================================================================
+# STATE scope unless noted; THIS is the mine. A signed contract gives the
+# partner a bounded concession share (one country dynamic modifier no matter
+# how many Event 029 contracts it holds) and gives both governments a positive
+# opinion modifier. A buyout or compensated nationalization pays the partner
+# its compensation; an uncompensated nationalization leaves the sponsor
+# aggrieved, hostile and more likely to interfere with this mine for a while.
+# The partner pointer is the mine's existing contract record; nothing here
+# scans the world.
+# ============================================================================
+
+# STATE scope. Called once by riches_found_begin_contract after the partner
+# pointer is stored. Side effects: partner share count and modifier, mutual
+# opinion modifiers, state flag riches_found_contract_share_recorded.
+riches_found_record_contract_partner_share = {
+	if = {
+		limit = {
+			NOT = { has_state_flag = riches_found_contract_share_recorded }
+			has_variable = riches_found_contract_partner
+			var:riches_found_contract_partner = { exists = yes }
+			CONTROLLER = { exists = yes }
+		}
+		set_state_flag = riches_found_contract_share_recorded
+		var:riches_found_contract_partner = { save_event_target_as = riches_found_share_partner }
+		CONTROLLER = { save_event_target_as = riches_found_share_controller }
+		event_target:riches_found_share_partner = {
+			add_to_variable = { riches_found_concession_share_count = constant:riches_found_value.one }
+			if = {
+				limit = { NOT = { has_dynamic_modifier = { modifier = riches_found_country_concession_share } } }
+				add_dynamic_modifier = { modifier = riches_found_country_concession_share }
+			}
+			add_opinion_modifier = { target = event_target:riches_found_share_controller modifier = riches_found_concession_partner }
+		}
+		event_target:riches_found_share_controller = {
+			add_opinion_modifier = { target = event_target:riches_found_share_partner modifier = riches_found_concession_partner }
+		}
+	}
+}
+
+# STATE scope. Called by riches_found_clear_contract_state while the partner
+# pointer still exists. The share ends with the partner's last contract.
+riches_found_release_contract_partner_share = {
+	if = {
+		limit = { has_state_flag = riches_found_contract_share_recorded }
+		clr_state_flag = riches_found_contract_share_recorded
+		if = {
+			limit = {
+				has_variable = riches_found_contract_partner
+				var:riches_found_contract_partner = { exists = yes }
+			}
+			var:riches_found_contract_partner = {
+				add_to_variable = { riches_found_concession_share_count = constant:riches_found_value.negative_one }
+				if = {
+					limit = { NOT = { check_variable = { riches_found_concession_share_count > constant:riches_found_value.zero } } }
+					clear_variable = riches_found_concession_share_count
+					if = {
+						limit = { has_dynamic_modifier = { modifier = riches_found_country_concession_share } }
+						remove_dynamic_modifier = { modifier = riches_found_country_concession_share }
+					}
+				}
+			}
+			if = {
+				limit = {
+					CONTROLLER = { exists = yes }
+					var:riches_found_contract_partner = { NOT = { has_variable = riches_found_concession_share_count } }
+				}
+				var:riches_found_contract_partner = { save_event_target_as = riches_found_share_partner }
+				CONTROLLER = { save_event_target_as = riches_found_share_controller }
+				event_target:riches_found_share_partner = { remove_opinion_modifier = { target = event_target:riches_found_share_controller modifier = riches_found_concession_partner } }
+				event_target:riches_found_share_controller = { remove_opinion_modifier = { target = event_target:riches_found_share_partner modifier = riches_found_concession_partner } }
+			}
+		}
+	}
+}
+
+# STATE scope. Buyout and compensated nationalization: the partner receives
+# the compensation the controller paid and remembers a fair settlement. Call
+# before riches_found_end_contract clears the partner pointer.
+riches_found_compensate_contract_partner = {
+	if = {
+		limit = {
+			has_variable = riches_found_contract_partner
+			var:riches_found_contract_partner = { exists = yes }
+			CONTROLLER = { exists = yes }
+		}
+		var:riches_found_contract_partner = { save_event_target_as = riches_found_share_partner }
+		CONTROLLER = { save_event_target_as = riches_found_share_controller }
+		event_target:riches_found_share_partner = {
+			add_political_power = constant:riches_found_concession.compensation_political_power
+			add_opinion_modifier = { target = event_target:riches_found_share_controller modifier = riches_found_concession_settled }
+		}
+	}
+}
+
+# STATE scope. Uncompensated nationalization: the sponsor turns hostile and
+# is remembered on this mine as an aggrieved party whose interference is more
+# likely until the grievance fades. Call before riches_found_end_contract.
+riches_found_expropriate_contract_partner = {
+	if = {
+		limit = {
+			has_variable = riches_found_contract_partner
+			var:riches_found_contract_partner = { exists = yes }
+			CONTROLLER = { exists = yes }
+		}
+		var:riches_found_contract_partner = { save_event_target_as = riches_found_share_partner }
+		CONTROLLER = { save_event_target_as = riches_found_share_controller }
+		event_target:riches_found_share_partner = {
+			add_opinion_modifier = { target = event_target:riches_found_share_controller modifier = riches_found_concession_expropriated }
+		}
+		set_variable = { riches_found_aggrieved_sponsor = riches_found_contract_partner }
+		set_variable = { riches_found_aggrieved_sponsor_expiry_date = global.date }
+		set_temp_variable = { chaosx_date_days = constant:riches_found_concession.grievance_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		add_to_variable = { riches_found_aggrieved_sponsor_expiry_date = chaosx_date_offset }
+		set_state_flag = riches_found_sponsor_aggrieved
+	}
+}
+
+# STATE scope. Clears a faded or vanished grievance. Called by the controller
+# pulse through the contract lifecycle.
+riches_found_refresh_aggrieved_sponsor = {
+	if = {
+		limit = {
+			has_state_flag = riches_found_sponsor_aggrieved
+			OR = {
+				NOT = { has_variable = riches_found_aggrieved_sponsor }
+				NOT = { var:riches_found_aggrieved_sponsor = { exists = yes } }
+				check_variable = { var = global.date value = riches_found_aggrieved_sponsor_expiry_date compare = greater_than_or_equals }
+			}
+		}
+		clr_state_flag = riches_found_sponsor_aggrieved
+		clear_variable = riches_found_aggrieved_sponsor
+		clear_variable = riches_found_aggrieved_sponsor_expiry_date
+	}
+}
+
+# COUNTRY scope. Stores the selected mine's current or offered partner on the
+# controller so decision tooltips can name it. No scoring runs here.
+riches_found_refresh_partner_display = {
+	clear_variable = riches_found_selected_foreign_partner
+	if = {
+		limit = { riches_found_country_has_selected_mine = yes }
+		var:riches_found_selected_mine = {
+			if = {
+				limit = {
+					has_variable = riches_found_contract_partner
+					var:riches_found_contract_partner = { exists = yes }
+				}
+				PREV = { set_variable = { riches_found_selected_foreign_partner = PREV.riches_found_contract_partner } }
+			}
+			else_if = {
+				limit = {
+					has_state_flag = riches_found_foreign_target_available
+					has_variable = riches_found_foreign_target
+					var:riches_found_foreign_target = { exists = yes }
+				}
+				PREV = { set_variable = { riches_found_selected_foreign_partner = PREV.riches_found_foreign_target } }
+			}
+		}
+	}
+}

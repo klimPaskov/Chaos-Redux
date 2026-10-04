@@ -121,3 +121,12 @@ The Event Details producer adds the three Riches Found evolution preview rows fr
 The Event Details weight lock now reads `riches_found_has_no_valid_discovery_pair`, a non-mutating trigger that is true only when no eligible ordinary country owns and controls a valid discovery state anywhere, so the event shows N/A only when it truly cannot fire rather than whenever the viewer's own country is ineligible.
 It prepares no receipt during UI refresh; its `any_country` check stops at the first eligible country.
 All three shared-file changes were made as minimal hunks and committed alone, leaving another owner's uncommitted Event Log hunks in those files untouched.
+
+## D13. Concession partner consequences
+
+The partner's share is a single country dynamic modifier (+0.05 daily political power and +1% factory efficiency growth) with a per-partner contract count, so several contracts cannot stack it and it ends with the partner's last contract.
+Both governments receive a +15 opinion modifier for the contract's lifetime.
+Compensation is paid as political power equal to the heavy political-power cost the controller pays for a buyout or compensated nationalization, which keeps the transfer bounded and visible; the partner also gains a fading +10 settlement opinion.
+An uncompensated nationalization gives the sponsor a -40 opinion modifier that fades over twenty months and marks it as the mine's aggrieved sponsor for two years: it becomes the preferred interference actor and doubles the interference pool weight, and it falls below the hostile-opinion threshold, which excludes it from new cooperative offers.
+Hostile partners (at war or below -25 opinion toward the controller) are excluded both from the scored offer and from the offer validity check.
+Decision tooltips name the partner through a country variable refreshed with the selected mine's offer and the controller aggregate, because a second-level variable reference in localisation is not a verified syntax.

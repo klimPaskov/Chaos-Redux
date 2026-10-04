@@ -318,6 +318,8 @@ riches_found_prepare_scored_foreign_partner = {
 			NOT = { riches_found_country_is_excluded_actor = yes }
 			has_capitulated = no
 			NOT = { has_war_with = event_target:riches_found_interest_controller }
+			# Hostile governments are never offered cooperative terms.
+			NOT = { has_opinion = { target = event_target:riches_found_interest_controller value < @riches_found_hostile_opinion } }
 			OR = {
 				is_neighbor_of = event_target:riches_found_interest_controller
 				is_in_faction_with = event_target:riches_found_interest_controller
@@ -369,6 +371,15 @@ riches_found_prepare_narrow_interference_actor = {
 			var:riches_found_contract_partner = { exists = yes }
 		}
 		set_variable = { riches_found_interference_actor = riches_found_contract_partner }
+	}
+	else_if = {
+		# An expropriated sponsor keeps working against the mine for a while.
+		limit = {
+			has_state_flag = riches_found_sponsor_aggrieved
+			has_variable = riches_found_aggrieved_sponsor
+			var:riches_found_aggrieved_sponsor = { exists = yes }
+		}
+		set_variable = { riches_found_interference_actor = riches_found_aggrieved_sponsor }
 	}
 	else_if = {
 		limit = {
@@ -767,11 +778,13 @@ riches_found_run_due_incident_review = {
 			}
 			constant:riches_found_incident_weight.foreign_pool = {
 				modifier = { factor = constant:riches_found_incident_factor.high check_variable = { var = riches_found_foreign_claim_pressure value = constant:riches_found_threshold.concession_exposure_gate compare = greater_than_or_equals } }
+				modifier = { factor = constant:riches_found_incident_factor.high has_state_flag = riches_found_sponsor_aggrieved }
 				modifier = {
 					factor = constant:riches_found_incident_factor.disabled
 					NOT = {
 						OR = {
 							has_variable = riches_found_contract_partner
+							has_state_flag = riches_found_sponsor_aggrieved
 							any_neighbor_state = {
 								impassable = no
 								CONTROLLER = { exists = yes NOT = { tag = ROOT } NOT = { is_special_chaos_country = yes } NOT = { is_actual_nonhuman_country = yes } }

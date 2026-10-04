@@ -59,6 +59,9 @@ Foreign participation is represented by one state-owned contract record with one
 Compatible limited-concession, offtake, and infrastructure-access terms use the existing partner record, while exclusive concessions block amendments.
 The parent corrected `riches_found_begin_contract` to require exclusive request 1 and the stored exclusive contract type, and corrected limited-contract amendment refresh to run through the current `CONTROLLER`.
 These source repairs and their validation limits are recorded in `docs/plans/029_riches_found_plans/subagent_handoffs/2026_10_03_parent_contract_repairs.md`.
+Signing a contract gives the partner one bounded `riches_found_country_concession_share` modifier (however many Event 029 contracts it holds) and gives both governments the `riches_found_concession_partner` opinion modifier, removed when the partner's last contract ends (`common/scripted_effects/029_riches_found_partner_effects.txt`).
+A buyout or compensated nationalization pays the partner `riches_found_concession.compensation_political_power` and leaves a fading settlement opinion; an uncompensated nationalization gives the sponsor the hostile `riches_found_concession_expropriated` modifier and records it on the mine as an aggrieved sponsor that is preferred as the interference actor and raises the foreign-interference weight for `riches_found_concession.grievance_days`.
+Partners at war with the controller or below the hostile-opinion threshold toward it are never offered cooperative terms, and decision tooltips name the selected mine's current or offered partner.
 Land-only foreign availability, including the required distant naval-power route, remains unresolved.
 Renewal, expiry, publication, audit, nationalization, buyout, and payment integrity remain subject to the pending audits.
 

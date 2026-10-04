@@ -1167,6 +1167,7 @@ riches_found_rebuild_controller_aggregate = {
 	}
 	riches_found_refresh_controller_receipt_dependence = yes
 	riches_found_refresh_controller_achievement_window = yes
+	riches_found_refresh_partner_display = yes
 }
 
 # COUNTRY scope. Public reconciliation alias used by decisions and missions.
@@ -1209,6 +1210,7 @@ riches_found_refresh_selected_foreign_offer = {
 			}
 		}
 	}
+	riches_found_refresh_partner_display = yes
 }
 
 # COUNTRY scope. One scheduled event owns the controller pulse. The guard flag
@@ -1282,6 +1284,7 @@ riches_found_prepare_foreign_partner = {
 riches_found_clear_contract_state = {
 	# Departing concession staff can carry Gold Disease home to the sponsor.
 	riches_found_move_gold_through_sponsor = yes
+	riches_found_release_contract_partner_share = yes
 	if = {
 		limit = { has_state_flag = riches_found_contract_active }
 		set_state_flag = riches_found_contract_closed
@@ -1326,6 +1329,7 @@ riches_found_begin_contract = {
 			check_variable = { var = riches_found_foreign_target value = event_target:riches_found_contract_partner_target compare = equals }
 		}
 		set_variable = { riches_found_contract_partner = event_target:riches_found_contract_partner_target }
+		riches_found_record_contract_partner_share = yes
 		if = {
 			limit = { has_variable = riches_found_input_contract_type }
 			set_variable = { riches_found_contract_type = riches_found_input_contract_type }
@@ -1497,6 +1501,7 @@ riches_found_expire_contract = {
 # the renewal window on the stored review date and expires a missed or invalid
 # contract without scanning unrelated countries or states.
 riches_found_refresh_contract_lifecycle = {
+	riches_found_refresh_aggrieved_sponsor = yes
 	if = {
 		limit = { has_state_flag = riches_found_contract_active }
 		if = {

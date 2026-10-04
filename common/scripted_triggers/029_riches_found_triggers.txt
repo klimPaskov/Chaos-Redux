@@ -2,6 +2,8 @@
 @riches_found_division_floor = 0
 # has_opinion.value is literal-only; mirrors riches_found_foreign_interest_threshold.positive_opinion.
 @riches_found_positive_opinion = 25
+# Literal mirror of the hostile-opinion threshold used by the partner scoring.
+@riches_found_hostile_opinion = -25
 # ============================================================================
 # CHAOS REDUX - EVENT 029 RICHES FOUND SCRIPTED TRIGGERS
 # ============================================================================
@@ -649,6 +651,7 @@ riches_found_foreign_target_is_valid = {
 		NOT = { riches_found_country_is_excluded_actor = yes }
 		has_capitulated = no
 		NOT = { has_war_with = var:PREV.riches_found_recorded_controller }
+		NOT = { has_opinion = { target = var:PREV.riches_found_recorded_controller value < @riches_found_hostile_opinion } }
 		OR = {
 			is_neighbor_of = var:PREV.riches_found_recorded_controller
 			is_in_faction_with = var:PREV.riches_found_recorded_controller
