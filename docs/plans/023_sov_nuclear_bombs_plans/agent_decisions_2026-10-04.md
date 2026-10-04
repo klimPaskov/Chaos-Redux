@@ -341,3 +341,10 @@ Finding: 23 `add_to_variable` lines in `common/scripted_effects/023_sov_nuclear_
 Every one already had a matching, unused key in `sov_nuclear_bombs_tuning` with the same value (`audit_integrity`, `harden_integrity`/`harden_readiness`, `centralize_*`, `delegate_*`, `authentication_*`, `evacuation_integrity`, `investigate_*`, `technical_*`, `veto_*`, `hold_integrity`, `limit_retaliation_readiness`, `reserve_integrity`, `suspend_readiness`, `seal_integrity`, `observers_integrity`, `reactivate_readiness`).
 Decision: each line reads its key; negative deltas are negative constant values added, never a unary minus on a token. A script mapped each line by its enclosing effect and asserted the key's value equals the literal it replaced, so no gameplay value changes; the clamps are untouched, and a grep for a literal readiness or integrity delta in the Event 23 effects returns nothing.
 Disposition: `implemented`.
+
+### R2-10. MCP probability compare for the round 1 and round 2 surfaces
+
+The lead's narrow `decision_ai_will_do` attempt and this round's `event_mean_time_to_happen` (R2-7) and `ai_strategy_factor` (R2-8) attempts all returned `INTERNAL_ERROR` with `artifactCount = 0`; each was made once, without refresh or a repository-wide query, and none was retried.
+Evaluate and compare were therefore not run for D4 to D7, R4, R6, R8, R9, R2-1, R2-3, R2-7 or R2-8; the before sources stay frozen in `probability_source_snapshots/ai_surfaces_before_2026-10-04/`, `probability_source_snapshots/ai_surfaces_before_round2_2026-10-04/` and `HEAD` `1cebd5393` for R9.
+The exact errors and the source-level scenario expectations are in `subagent_handoffs/023_ai_surfaces_probability_compare_2026-10-04.md` under "Round 2 additions"; they are not compare evidence.
+Disposition: `blocked` on the MCP probability route (`INTERNAL_ERROR`, no artifacts).

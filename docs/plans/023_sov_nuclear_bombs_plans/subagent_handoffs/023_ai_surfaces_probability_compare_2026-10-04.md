@@ -109,3 +109,30 @@ The before source for these surfaces is `HEAD` `1cebd5393e82e8661fab4d92e35c5807
 | `P23_NAV_AUDIT_DISPUTE_RESOLVABLE` | Once the stockpile covers custody again, the router's custody row applies after the audit interval and the audit keeps base 1.20 |
 | `P23_NAV_IV_MAJOR_PROSPECTIVE_UNREACHABLE` | Every candidate state is beyond the delivery ceiling: no row 5, the router continues to rows 6 to 11 |
 | `P23_NAV_IV_MAJOR_PROSPECTIVE_VALID` | Unchanged: a reachable candidate enters phase 6 at once |
+
+## Round 2 additions (decisions R2-1, R2-3, R2-7 and R2-8)
+
+This round made two narrow inspect attempts, one per new surface family, both without `refresh` and without repository-wide or helper-expansion queries, and neither was retried:
+
+- `adapter = event_mean_time_to_happen`, `source = { path = common/mtth/023_sov_nuclear_bombs_mtth.txt }`, `candidatePool = ["sov_nuclear_bombs_evolution_iv_interval"]`: `INTERNAL_ERROR`, `artifactCount = 0`.
+- `adapter = ai_strategy_factor`, `source = { path = common/ai_strategy/023_sov_nuclear_bombs_ai_strategy.txt }`, `candidatePool` holding the plan id before its rename to `sov_nuclear_bombs_ai_delivery_bombers`: `INTERNAL_ERROR`, `artifactCount = 0`.
+
+The lead's earlier attempt this round (`decision_ai_will_do`, the decisions file, `candidatePool = ["sov_nuclear_bombs_disable_devices"]`) failed the same way, so evaluate and compare were not run and the disposition stays `blocked`.
+The rows below are the source-level expectations for the named scenarios; they are not compare evidence.
+Before sources: `probability_source_snapshots/ai_surfaces_before_round2_2026-10-04/` (constants, decisions, event effects, event triggers, MTTH and on_actions from `b6d4c6e45`); the AI strategy is new, and its before state is the installed vanilla Soviet plan (`SOV_unit_production`: strategic bomber unit ratio 0, production factor -20; `SOV_bomber_production`: one strategic bomber line above 30 military factories).
+
+| Surface | Before | After |
+| --- | --- | --- |
+| Severe first-use gate inputs (R2-1) | `sov_nuclear_bombs_strategic_losses`, `capital_threat_active`, `front_collapsed` and `reserve_exhausted` never written, so the gate never held | Written weekly at war by `sov_nuclear_bombs_assess_strategic_losses`; numeric weights unchanged |
+| `sov_nuclear_bombs_conduct_recovery_raid` and `sov_nuclear_bombs_disable_devices` imminence factors (R2-3) | x1.80 and x2.00 on a flag nothing set | The same factors on `sov_nuclear_bombs_event_selected_breakaway_operationalization_is_imminent` |
+| Evolution III interval (R2-7) | 180 days, factors for exchange, enemy use, war, low integrity, moratorium | Adds x0.80 for a threatened capital |
+| Evolution IV interval (R2-7) | 90 days, factors for collapse, exchange, enemy use, restraint, centralized authority, low integrity, moratorium | Adds x0.80 threatened capital, x0.80 front in full collapse, x0.85 critical strategic losses |
+| Soviet AI strategic bomber demand (R2-8) | Vanilla values only | +3 unit weight, +20 production factor, one minimum line while the deployed force is at or below the delivery floor |
+
+| Scenario | Expected after-source result |
+| --- | --- |
+| `P23_COLLAPSE_RAID_IMMINENT_OPERATIONALIZATION` | Reachable: technical access done and command formation running for the selected depot doubles the disablement weight and raises the raid's; "Destroy a Compromised Site" becomes available when recovery is impossible |
+| `P23_EVO3_MAJOR_RIVAL_NORMAL` | Unchanged at 180 days: at peace the war assessment clears the capital threat; a wartime threat to the capital gives 144 days |
+| `P23_EVO4_COLLAPSE_ACCELERATED` | Before: 90 days, since no factor read the war situation; after: about 58 days with the threatened capital and the front in full collapse, about 49 when the losses are also critical; it still records once |
+| `P23_EVO4_GATE_BLOCKED` | Unchanged: timing never bypasses the stage gate |
+| `P23_FIRST_USE_TIER_1000_SEVERE_RARE` | The gate can now hold when all five war inputs and the delivery, command and enemy-use requirements are met; first use stays limited to that case |
