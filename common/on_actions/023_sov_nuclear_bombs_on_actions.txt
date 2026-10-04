@@ -50,7 +50,7 @@ on_actions = {
 				FROM.FROM = { sov_nuclear_bombs_reactor_control_changed = yes }
 			}
 			if = {
-				limit = { FROM.FROM = { sov_nuclear_bombs_state_is_registered = yes } }
+				limit = { FROM.FROM = { OR = { sov_nuclear_bombs_state_is_registered = yes has_state_flag = sov_nuclear_bombs_production_reactor_site has_state_flag = sov_nuclear_bombs_central_command_site has_state_flag = sov_nuclear_bombs_backup_command_site has_state_flag = sov_nuclear_bombs_assembly_site has_state_flag = sov_nuclear_bombs_transit_source_active has_state_flag = sov_nuclear_bombs_transit_destination_pending has_state_flag = sov_nuclear_bombs_active_dismantlement_site } } }
 				FROM.FROM = { sov_nuclear_bombs_reconcile_state_control_change = yes }
 			}
 		}
@@ -112,7 +112,7 @@ on_actions = {
 				}
 				FROM = {
 					if = {
-						limit = { ROOT = { NOT = { tag = SOV } } owner = { tag = SOV } }
+						limit = { ROOT = { NOT = { tag = SOV } has_war_with = SOV } owner = { tag = SOV } }
 						owner = {
 							if = {
 								limit = { sov_nuclear_bombs_event_actor_is_valid = yes }
@@ -151,7 +151,7 @@ on_actions = {
 						}
 					}
 					else_if = {
-						limit = { ROOT = { NOT = { tag = SOV } } controller = { tag = SOV } }
+						limit = { ROOT = { NOT = { tag = SOV } has_war_with = SOV } controller = { tag = SOV } }
 						controller = {
 							if = {
 								limit = { sov_nuclear_bombs_event_actor_is_valid = yes }

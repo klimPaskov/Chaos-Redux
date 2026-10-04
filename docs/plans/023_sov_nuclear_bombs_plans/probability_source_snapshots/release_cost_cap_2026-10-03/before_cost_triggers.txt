@@ -1,0 +1,43 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 023 RESOURCE COST TRIGGERS
+# ============================================================================
+# Each action uses one bounded cost profile. Political authority, material
+# stockpiles, logistics, and diplomatic communications are kept distinct so
+# the arsenal cannot be advanced by political power alone.
+# ============================================================================
+
+sov_nuclear_bombs_can_pay_command_cost = {
+	NOT = { has_political_power < constant:sov_nuclear_bombs_cost.command }
+	NOT = { command_power < constant:sov_nuclear_bombs_cost.command_power_standard }
+}
+
+sov_nuclear_bombs_can_pay_security_cost = {
+	NOT = { has_political_power < constant:sov_nuclear_bombs_cost.harden }
+	NOT = { has_equipment = { support_equipment < constant:sov_nuclear_bombs_cost.support_equipment_light } }
+	NOT = { has_manpower < constant:sov_nuclear_bombs_cost.manpower_light }
+}
+
+sov_nuclear_bombs_can_pay_logistics_cost = {
+	NOT = { command_power < constant:sov_nuclear_bombs_cost.command_power_light }
+	NOT = { has_equipment = { train_equipment < constant:sov_nuclear_bombs_cost.train_equipment_light } }
+	NOT = { has_fuel < constant:sov_nuclear_bombs_cost.fuel_light }
+}
+
+sov_nuclear_bombs_can_pay_diplomatic_cost = {
+	NOT = { has_political_power < constant:sov_nuclear_bombs_cost.ultimatum }
+	NOT = { command_power < constant:sov_nuclear_bombs_cost.command_power_light }
+	NOT = { has_equipment = { convoy < constant:sov_nuclear_bombs_cost.convoy_light } }
+}
+
+sov_nuclear_bombs_can_pay_strategic_cost = {
+	NOT = { has_political_power < constant:sov_nuclear_bombs_cost.authorization }
+	NOT = { command_power < constant:sov_nuclear_bombs_cost.command_power_heavy }
+	NOT = { has_equipment = { support_equipment < constant:sov_nuclear_bombs_cost.support_equipment_light } }
+	NOT = { has_fuel < constant:sov_nuclear_bombs_cost.fuel_light }
+}
+
+sov_nuclear_bombs_event_phase_is = {
+	# Callers set sov_nuclear_bombs_requested_phase before invoking this helper.
+	has_variable = sov_nuclear_bombs_requested_phase
+	check_variable = { var = sov_nuclear_bombs_phase value = sov_nuclear_bombs_requested_phase compare = equals }
+}

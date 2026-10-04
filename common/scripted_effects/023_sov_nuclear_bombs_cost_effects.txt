@@ -1,7 +1,7 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 023 RESOURCE COST EFFECTS
 # ============================================================================
-# Payment helpers mirror the four visible cost profiles used by Event 23
+# Payment helpers mirror the bounded visible cost profiles used by Event 23
 # decisions. They are called only after the matching custom cost trigger has
 # passed and never touch the nuclear ledger.
 # ============================================================================
@@ -31,6 +31,14 @@ sov_nuclear_bombs_pay_diplomatic_cost = {
 
 sov_nuclear_bombs_pay_strategic_cost = {
 	add_political_power = constant:sov_nuclear_bombs_cost.political_power_strategic_spend
+	add_command_power = constant:sov_nuclear_bombs_cost.command_power_heavy_spend
+	add_equipment_to_stockpile = { type = support_equipment amount = constant:sov_nuclear_bombs_cost.support_equipment_light_spend }
+	add_fuel = constant:sov_nuclear_bombs_cost.fuel_light_spend
+}
+
+# Device-bearing actions use three resource types plus their ledger-owned
+# device. Non-device strategic actions keep the separate political cost.
+sov_nuclear_bombs_pay_release_cost = {
 	add_command_power = constant:sov_nuclear_bombs_cost.command_power_heavy_spend
 	add_equipment_to_stockpile = { type = support_equipment amount = constant:sov_nuclear_bombs_cost.support_equipment_light_spend }
 	add_fuel = constant:sov_nuclear_bombs_cost.fuel_light_spend

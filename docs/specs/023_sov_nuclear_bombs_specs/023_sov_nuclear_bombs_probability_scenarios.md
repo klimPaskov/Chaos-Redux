@@ -210,6 +210,36 @@ Expected ordering:
 - Foreign observation is much higher than in `P23_TEST_PROOF_SECURE`.
 - No result has negative or missing normalized weight.
 
+The accident consequence scenarios below are conditional on the accident candidate; they test the physical-severity dispatch and do not change or rebalance the four-entry outcome pool.
+
+### `P23_TEST_ACCIDENT_NON_YIELD_ABOVE_CRITICAL`
+
+State:
+
+- A test accident result is selected.
+- Integrity is 11 at outcome resolution, one point above the parent-selected catastrophic threshold of 10.
+- The exact remote test state remains valid.
+
+Expected:
+
+- The action is explicitly non-detonating and commits exactly one reserved device through the shared Event 23 action contract.
+- The shared non-yield accident endpoint records its nonce once and applies the accident profile to that exact state.
+- No native `launch_nuke`, `on_nuke_drop`, or terminal Fallout consequence occurs.
+
+### `P23_TEST_ACCIDENT_TRUE_YIELD_AT_CRITICAL`
+
+State:
+
+- A test accident result is selected.
+- Integrity is 10 at outcome resolution, at the parent-selected catastrophic threshold.
+- The exact remote test state remains valid.
+
+Expected:
+
+- The action requires one native detonation through the shared Event 23 action contract.
+- The exact `on_nuke_drop` receipt confirms the action and applies the shared accident classification once.
+- The non-yield endpoint does not run, and no private Event 23 consequence is applied.
+
 ### `P23_TEST_PUBLIC_PREPARED`
 
 State:

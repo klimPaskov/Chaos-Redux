@@ -278,6 +278,18 @@ Expected:
 - Shared consequences apply once.
 - Public demonstration activates arms-race hooks without forcing another event.
 
+Case D1:
+
+- A test accident is selected with Integrity 11 at outcome resolution, above the parent-selected catastrophic threshold of 10.
+
+Expected: the non-yield accident commits one device through the shared action contract, invokes the shared accident consequence endpoint once for the selected state, and produces no native nuclear detonation or terminal Fallout.
+
+Case D2:
+
+- A test accident is selected with Integrity 10 at outcome resolution, at the parent-selected catastrophic threshold.
+
+Expected: the true-yield accident uses the native action and exact `on_nuke_drop` confirmation once; the non-yield endpoint does not run, and accident-specific shared consequences are not duplicated.
+
 ## Acceptance scenario E: Coercion
 
 Cases:

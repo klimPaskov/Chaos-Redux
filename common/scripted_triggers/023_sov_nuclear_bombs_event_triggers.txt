@@ -291,7 +291,9 @@ sov_nuclear_bombs_event_state_is_valid_collapse_site = {
 
 sov_nuclear_bombs_event_state_is_valid_breakaway_custody_site = {
 	sov_nuclear_bombs_state_is_registered = yes
+	check_variable = { var = sov_nuclear_bombs_site_custody_state value = constant:sov_nuclear_bombs_custody.breakaway_physical compare = equals }
 	check_variable = { var = sov_nuclear_bombs_site_transferred value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
+	NOT = { has_state_flag = sov_nuclear_bombs_event5_snapshot_pending }
 	NOT = { has_state_flag = sov_nuclear_bombs_site_dismantled }
 	NOT = { has_state_flag = sov_nuclear_bombs_site_missing }
 	NOT = { has_state_flag = sov_nuclear_bombs_site_technical_denial }
@@ -576,11 +578,32 @@ sov_nuclear_bombs_event_has_reactor_entitlement = {
 	check_variable = { var = sov_nuclear_bombs_reactor_count value = sov_nuclear_bombs_reactor_entitlement_count compare = less_than }
 }
 
+# Country scope. Scratch-only quote shared by production and its UI. Callers
+# initialize the output before invoking this trigger so it survives helper scope.
+sov_nuclear_bombs_prepare_production_quote = {
+	set_temp_variable = { sov_nuclear_bombs_production_quote = constant:sov_nuclear_bombs_tuning.production_batch_minimum }
+	set_temp_variable = { sov_nuclear_bombs_production_quote_reactor_bonus = constant:sov_nuclear_bombs_ledger.zero }
+	if = {
+		limit = { has_variable = sov_nuclear_bombs_reactor_count }
+		set_temp_variable = { sov_nuclear_bombs_production_quote_reactor_bonus = sov_nuclear_bombs_reactor_count }
+		multiply_temp_variable = { sov_nuclear_bombs_production_quote_reactor_bonus = constant:sov_nuclear_bombs_tuning.production_batch_per_reactor }
+		add_to_temp_variable = { sov_nuclear_bombs_production_quote = sov_nuclear_bombs_production_quote_reactor_bonus }
+	}
+	add_to_temp_variable = { sov_nuclear_bombs_production_quote = constant:sov_nuclear_bombs_tuning.production_batch_base }
+	clamp_temp_variable = { var = sov_nuclear_bombs_production_quote min = constant:sov_nuclear_bombs_tuning.production_batch_minimum max = constant:sov_nuclear_bombs_tuning.production_batch_maximum }
+	always = yes
+}
+
 sov_nuclear_bombs_event_has_production_capacity = {
 	sov_nuclear_bombs_event_actor_is_valid = yes
 	NOT = { has_country_flag = sov_nuclear_bombs_atomic_moratorium }
 	has_variable = sov_nuclear_bombs_reactor_count
 	check_variable = { var = sov_nuclear_bombs_reactor_count value = constant:sov_nuclear_bombs_ledger.zero compare = greater_than }
+	any_owned_state = {
+		is_controlled_by = PREV
+		has_state_flag = sov_nuclear_bombs_production_reactor_site
+		nuclear_reactor > 0
+	}
 }
 
 sov_nuclear_bombs_event_has_selected_state = {
@@ -642,6 +665,31 @@ sov_nuclear_bombs_event_state_is_valid_storage_site = {
 	infrastructure > 0
 }
 
+# State scope. Assembly uses an existing industrial storage depot, not a
+# country's aggregate industry or a facility inferred from reactor ownership.
+sov_nuclear_bombs_event_state_is_valid_assembly_site = {
+	sov_nuclear_bombs_event_state_is_valid_storage_site = yes
+	is_owned_by = SOV
+	is_controlled_by = SOV
+	OR = { arms_factory > 0 industrial_complex > 0 }
+}
+
+# Country scope. All mirrors must match the exact active batch. A variable
+# scope still resolving does not establish that its state remains controlled.
+sov_nuclear_bombs_event_active_assembly_site_is_valid = {
+	has_variable = sov_nuclear_bombs_assembly_state
+	has_variable = sov_nuclear_bombs_assembly_state_id
+	has_variable = sov_nuclear_bombs_assembly_nonce
+	var:sov_nuclear_bombs_assembly_state = {
+		sov_nuclear_bombs_event_state_is_valid_assembly_site = yes
+		has_state_flag = sov_nuclear_bombs_assembly_batch_active
+		check_variable = { var = THIS.id value = PREV.sov_nuclear_bombs_assembly_state_id compare = equals }
+		check_variable = { var = sov_nuclear_bombs_assembly_batch_nonce value = PREV.sov_nuclear_bombs_assembly_nonce compare = equals }
+		has_variable = sov_nuclear_bombs_assembly_site_owner
+		var:sov_nuclear_bombs_assembly_site_owner = { exists = yes tag = SOV }
+	}
+}
+
 sov_nuclear_bombs_event_state_is_valid_hardening_site = {
 	sov_nuclear_bombs_event_state_is_valid_storage_site = yes
 	NOT = { has_state_flag = sov_nuclear_bombs_site_hardened }
@@ -694,7 +742,8 @@ sov_nuclear_bombs_event_has_unreserved_device = {
 	NOT = { has_country_flag = sov_nuclear_bombs_action_reservation_active }
 	OR = {
 		check_variable = { var = sov_nuclear_bombs_actor_operational value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
-		check_variable = { var = sov_nuclear_bombs_actor_assigned value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
+		AND = { NOT = { has_variable = sov_nuclear_bombs_actor_in_transit } check_variable = { var = sov_nuclear_bombs_actor_assigned value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals } }
+		AND = { has_variable = sov_nuclear_bombs_actor_in_transit check_variable = { var = sov_nuclear_bombs_actor_assigned value = sov_nuclear_bombs_actor_in_transit compare = greater_than } }
 	}
 }
 
@@ -1016,19 +1065,68 @@ sov_nuclear_bombs_event_selected_breakaway_site_is_valid = {
 }
 
 sov_nuclear_bombs_event_selected_breakaway_site_is_valid_for_actor = {
-	has_event_target = sov_nuclear_bombs_selected_state
-	event_target:sov_nuclear_bombs_selected_state = {
+	has_variable = sov_nuclear_bombs_local_custody_state
+	has_variable = sov_nuclear_bombs_local_custody_state_id
+	var:sov_nuclear_bombs_local_custody_state = {
+		check_variable = { var = THIS.id value = PREV.sov_nuclear_bombs_local_custody_state_id compare = equals }
 		sov_nuclear_bombs_state_is_registered = yes
 		check_variable = { var = sov_nuclear_bombs_site_transferred value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
 		NOT = { has_state_flag = sov_nuclear_bombs_site_missing }
 		NOT = { has_state_flag = sov_nuclear_bombs_site_dismantled }
 		NOT = { has_state_flag = sov_nuclear_bombs_site_technical_denial }
 		NOT = { has_state_flag = sov_nuclear_bombs_breakaway_site_operationalized }
+		NOT = { has_state_flag = sov_nuclear_bombs_event5_snapshot_pending }
+		check_variable = { var = sov_nuclear_bombs_site_custody_state value = constant:sov_nuclear_bombs_custody.breakaway_physical compare = equals }
+		has_variable = sov_nuclear_bombs_site_holder
+		var:sov_nuclear_bombs_site_holder = { exists = yes tag = ROOT }
 		OR = {
 			is_owned_by = ROOT
 			is_controlled_by = ROOT
 		}
 	}
+}
+
+# State scope. Stage receipts belong to the site's actual holder, not to a
+# country-wide history flag or a previous occupant's institutional markers.
+sov_nuclear_bombs_event_state_has_local_custody_receipt = {
+	has_state_flag = sov_nuclear_bombs_breakaway_custody_secured
+	has_variable = sov_nuclear_bombs_local_custody_actor
+	has_variable = sov_nuclear_bombs_site_holder
+	check_variable = { var = sov_nuclear_bombs_local_custody_actor value = sov_nuclear_bombs_site_holder compare = equals }
+	check_variable = { var = sov_nuclear_bombs_site_custody_state value = constant:sov_nuclear_bombs_custody.breakaway_physical compare = equals }
+}
+
+sov_nuclear_bombs_event_state_has_local_technical_receipt = {
+	sov_nuclear_bombs_event_state_has_local_custody_receipt = yes
+	has_state_flag = sov_nuclear_bombs_institutional_access_site
+	NOT = { has_state_flag = sov_nuclear_bombs_institutional_access_contested }
+	has_variable = sov_nuclear_bombs_institutional_access_actor
+	check_variable = { var = sov_nuclear_bombs_institutional_access_actor value = sov_nuclear_bombs_site_holder compare = equals }
+}
+
+sov_nuclear_bombs_event_state_has_local_command_receipt = {
+	sov_nuclear_bombs_event_state_has_local_technical_receipt = yes
+	has_state_flag = sov_nuclear_bombs_breakaway_command_site
+	NOT = { has_state_flag = sov_nuclear_bombs_breakaway_command_site_contested }
+	has_variable = sov_nuclear_bombs_breakaway_command_actor
+	check_variable = { var = sov_nuclear_bombs_breakaway_command_actor value = sov_nuclear_bombs_site_holder compare = equals }
+}
+
+# Country scope. The selected state/id/current-holder checks remain the
+# authorization boundary even when another depot has historical receipts.
+sov_nuclear_bombs_event_selected_site_has_local_custody_receipt = {
+	sov_nuclear_bombs_event_selected_breakaway_site_is_valid_for_actor = yes
+	var:sov_nuclear_bombs_local_custody_state = { sov_nuclear_bombs_event_state_has_local_custody_receipt = yes }
+}
+
+sov_nuclear_bombs_event_selected_site_has_local_technical_receipt = {
+	sov_nuclear_bombs_event_selected_breakaway_site_is_valid_for_actor = yes
+	var:sov_nuclear_bombs_local_custody_state = { sov_nuclear_bombs_event_state_has_local_technical_receipt = yes }
+}
+
+sov_nuclear_bombs_event_selected_site_has_local_command_receipt = {
+	sov_nuclear_bombs_event_selected_breakaway_site_is_valid_for_actor = yes
+	var:sov_nuclear_bombs_local_custody_state = { sov_nuclear_bombs_event_state_has_local_command_receipt = yes }
 }
 
 sov_nuclear_bombs_event_selected_breakaway_site_has_recovery_route = {
@@ -1051,23 +1149,30 @@ sov_nuclear_bombs_event_selected_breakaway_site_has_security_force = {
 	}
 }
 
-# State scope is kept separate from the Soviet route. A breakaway may only
+# Country scope, using this actor's persistent custody-site selection. A breakaway may only
 # finish delivery integration when the current physical holder has its own
 # installed atomic capability, strategic bomber route, airbase, fuel, and an
 # exact endpoint. The staged technical and command missions remain separate.
 sov_nuclear_bombs_event_selected_breakaway_site_has_delivery_capability = {
-	has_event_target = sov_nuclear_bombs_selected_state
-	event_target:sov_nuclear_bombs_selected_state = {
-		has_variable = sov_nuclear_bombs_site_holder
-		var:sov_nuclear_bombs_site_holder = {
-			exists = yes
-			NOT = { tag = SOV }
-			has_tech = atomic_research
-			has_tech = nukes
-			sov_nuclear_bombs_event_has_delivery_route = yes
-			event_target:sov_nuclear_bombs_selected_state = {
-				sov_nuclear_bombs_event_state_has_delivery_access = yes
-			}
+	has_variable = sov_nuclear_bombs_local_custody_state
+	var:sov_nuclear_bombs_local_custody_state = {
+		sov_nuclear_bombs_event_state_has_breakaway_delivery_capability = yes
+	}
+}
+
+# State scope. The actual site's holder is the delivery actor; no other
+# country's selected-state target can redirect this capability test.
+sov_nuclear_bombs_event_state_has_breakaway_delivery_capability = {
+	sov_nuclear_bombs_state_is_registered = yes
+	has_variable = sov_nuclear_bombs_site_holder
+	var:sov_nuclear_bombs_site_holder = {
+		exists = yes
+		NOT = { tag = SOV }
+		has_tech = atomic_research
+		has_tech = nukes
+		sov_nuclear_bombs_event_has_delivery_route = yes
+		PREV = {
+			sov_nuclear_bombs_event_state_has_delivery_access = yes
 		}
 	}
 }

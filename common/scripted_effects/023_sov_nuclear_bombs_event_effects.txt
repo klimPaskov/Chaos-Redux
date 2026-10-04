@@ -128,7 +128,10 @@ sov_nuclear_bombs_prepare_opening_package = {
 # the actor operational bucket until the player chooses where to place them.
 sov_nuclear_bombs_initialize_opening_sites = {
 	set_variable = { sov_nuclear_bombs_site_registration_amount = constant:sov_nuclear_bombs_tuning.baseline_site_primary }
-	capital_scope = { sov_nuclear_bombs_register_storage_site = yes }
+	capital_scope = {
+		sov_nuclear_bombs_register_storage_site = yes
+		sov_nuclear_bombs_register_central_command_state = yes
+	}
 	set_variable = { sov_nuclear_bombs_site_registration_amount = constant:sov_nuclear_bombs_tuning.baseline_site_secondary }
 	random_owned_controlled_state = {
 		limit = {
@@ -292,6 +295,7 @@ sov_nuclear_bombs_register_completed_reactor = {
 			nuclear_reactor > 0
 		}
 		set_state_flag = sov_nuclear_bombs_reactor_event_owned
+		sov_nuclear_bombs_register_production_reactor_site = yes
 		clr_state_flag = sov_nuclear_bombs_reactor_site_pending
 		ROOT = {
 			if = {
@@ -707,6 +711,20 @@ sov_nuclear_bombs_stage_action_context = {
 				set_variable = { ROOT.sov_nuclear_bombs_action_source_state = THIS }
 			}
 		}
+		# A depleted assigned-site pool does not strand the actor's separately
+		# accounted operational reserve. Lock an existing controlled depot as
+		# its source identity without creating a site reservation or new device.
+		if = {
+			limit = {
+				NOT = { has_variable = sov_nuclear_bombs_action_source_state }
+				check_variable = { var = sov_nuclear_bombs_actor_operational value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
+				check_variable = { var = global.sov_nuclear_bombs_ledger_operational value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
+			}
+			random_owned_controlled_state = {
+				limit = { sov_nuclear_bombs_state_is_registered = yes }
+				set_variable = { ROOT.sov_nuclear_bombs_action_source_state = THIS }
+			}
+		}
 		var:sov_nuclear_bombs_action_state = {
 			set_variable = { ROOT.sov_nuclear_bombs_action_state_id = THIS.id }
 			if = {
@@ -721,13 +739,13 @@ sov_nuclear_bombs_stage_action_context = {
 		var:sov_nuclear_bombs_action_target = {
 			set_variable = { ROOT.sov_nuclear_bombs_action_target_country_id = THIS.id }
 		}
-		set_variable = { sov_nuclear_bombs_action_actor_proven = constant:sov_nuclear_bombs_ledger.one }
-		set_variable = { sov_nuclear_bombs_action_authorized = constant:sov_nuclear_bombs_ledger.one }
+		set_country_flag = sov_nuclear_bombs_action_actor_proven
+		set_country_flag = sov_nuclear_bombs_action_authorized
 		set_variable = { sov_nuclear_bombs_action_weapon = constant:sov_nuclear_bombs_action.nuclear_bomb }
 		set_variable = { sov_nuclear_bombs_action_route = constant:sov_nuclear_bombs_action.native_launch_nuke }
 		if = {
 			limit = { check_variable = { var = sov_nuclear_bombs_pending_action_type value = constant:sov_nuclear_bombs_action.demolition compare = equals } }
-			set_variable = { sov_nuclear_bombs_action_detonation = constant:sov_nuclear_bombs_action.non_detonating }
+			set_country_flag = sov_nuclear_bombs_action_non_detonating clr_country_flag = sov_nuclear_bombs_action_detonating
 		}
 		else_if = {
 			limit = {
@@ -735,9 +753,9 @@ sov_nuclear_bombs_stage_action_context = {
 				has_variable = sov_nuclear_bombs_action_outcome
 				check_variable = { var = sov_nuclear_bombs_action_outcome value = constant:sov_nuclear_bombs_tuning.test_result_failure compare = equals }
 			}
-			set_variable = { sov_nuclear_bombs_action_detonation = constant:sov_nuclear_bombs_action.non_detonating }
+			set_country_flag = sov_nuclear_bombs_action_non_detonating clr_country_flag = sov_nuclear_bombs_action_detonating
 		}
-		else = { set_variable = { sov_nuclear_bombs_action_detonation = constant:sov_nuclear_bombs_action.detonation_required } }
+		else = { set_country_flag = sov_nuclear_bombs_action_detonating clr_country_flag = sov_nuclear_bombs_action_non_detonating }
 		set_variable = { sov_nuclear_bombs_action_type = sov_nuclear_bombs_pending_action_type }
 		set_variable = { sov_nuclear_bombs_action_nonce = sov_nuclear_bombs_last_action_nonce }
 		add_to_variable = { sov_nuclear_bombs_action_nonce = constant:sov_nuclear_bombs_ledger.one }
@@ -746,9 +764,9 @@ sov_nuclear_bombs_stage_action_context = {
 }
 
 # Classify a prepared test before the shared action contract is executed. A
-# failure is a non-detonating instrument result and consumes its reserved
-# device as unusable; success, partial yield, and accident continue through the
-# one native delivery route.
+# failed instrument result and an accident above catastrophic low Integrity
+# are non-detonating; success, partial yield, and an accident at or below the
+# threshold use the single native action route.
 sov_nuclear_bombs_prepare_test_outcome = {
 	if = {
 		limit = {
@@ -803,9 +821,16 @@ sov_nuclear_bombs_prepare_test_outcome = {
 		}
 		if = {
 			limit = { check_variable = { var = sov_nuclear_bombs_action_outcome value = constant:sov_nuclear_bombs_tuning.test_result_failure compare = equals } }
-			set_variable = { sov_nuclear_bombs_action_detonation = constant:sov_nuclear_bombs_action.non_detonating }
+			set_country_flag = sov_nuclear_bombs_action_non_detonating clr_country_flag = sov_nuclear_bombs_action_detonating
 		}
-		else = { set_variable = { sov_nuclear_bombs_action_detonation = constant:sov_nuclear_bombs_action.detonation_required } }
+		else_if = {
+			limit = {
+				check_variable = { var = sov_nuclear_bombs_action_outcome value = constant:sov_nuclear_bombs_tuning.test_result_accident compare = equals }
+				check_variable = { var = sov_nuclear_bombs_integrity value = constant:sov_nuclear_bombs_tuning.test_accident_catastrophic_integrity_threshold compare = greater_than }
+			}
+			set_country_flag = sov_nuclear_bombs_action_non_detonating clr_country_flag = sov_nuclear_bombs_action_detonating
+		}
+		else = { set_country_flag = sov_nuclear_bombs_action_detonating clr_country_flag = sov_nuclear_bombs_action_non_detonating }
 	}
 }
 
@@ -840,11 +865,24 @@ sov_nuclear_bombs_record_action_receipt = {
 			add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_tuning.test_accident_integrity }
 			set_country_flag = sov_nuclear_bombs_test_accident
 			set_country_flag = sov_nuclear_bombs_serious_crisis
+			if = {
+				limit = { has_country_flag = sov_nuclear_bombs_action_non_detonating }
+				set_country_flag = sov_nuclear_bombs_test_accident_no_yield_recorded
+				clr_country_flag = sov_nuclear_bombs_test_accident_true_yield_recorded
+			}
+			else = {
+				set_country_flag = sov_nuclear_bombs_test_accident_true_yield_recorded
+				clr_country_flag = sov_nuclear_bombs_test_accident_no_yield_recorded
+			}
 		}
 			clamp_variable = { var = sov_nuclear_bombs_integrity min = 0 max = 100 }
 			if = {
 				limit = { has_country_flag = sov_nuclear_bombs_test_accident }
-				country_event = { id = chaosx.nr23.102 days = constant:sov_nuclear_bombs_tuning.action_report_delay }
+				if = {
+					limit = { has_country_flag = sov_nuclear_bombs_action_non_detonating }
+					country_event = { id = chaosx.nr23.104 days = constant:sov_nuclear_bombs_tuning.action_report_delay }
+				}
+				else = { country_event = { id = chaosx.nr23.102 days = constant:sov_nuclear_bombs_tuning.action_report_delay } }
 			}
 			else = { country_event = { id = chaosx.nr23.101 days = constant:sov_nuclear_bombs_tuning.action_report_delay } }
 			clr_country_flag = sov_nuclear_bombs_test_instrumented
@@ -967,7 +1005,7 @@ sov_nuclear_bombs_record_action_receipt = {
 	clamp_variable = { var = sov_nuclear_bombs_integrity min = 0 max = 100 }
 	if = {
 		limit = { has_country_flag = sov_nuclear_bombs_last_action_accepted }
-		if = { limit = { has_variable = sov_nuclear_bombs_action_state } set_variable = { sov_nuclear_bombs_last_target_state = sov_nuclear_bombs_action_state.id } }
+		if = { limit = { has_variable = sov_nuclear_bombs_action_state } var:sov_nuclear_bombs_action_state = { set_variable = { PREV.sov_nuclear_bombs_last_target_state = THIS.id } } }
 	}
 	sov_nuclear_bombs_achievement_refresh_receipts = yes
 }
@@ -1848,10 +1886,10 @@ sov_nuclear_bombs_open_collapse_recovery = {
 	}
 }
 
-	sov_nuclear_bombs_restore_selected_site = {
+sov_nuclear_bombs_restore_selected_site = {
 	if = {
 		limit = { has_event_target = sov_nuclear_bombs_selected_state }
-		 event_target:sov_nuclear_bombs_selected_state = {
+		event_target:sov_nuclear_bombs_selected_state = {
 			if = { limit = { sov_nuclear_bombs_state_is_registered = yes } sov_nuclear_bombs_restore_site_to_soviet = yes }
 		}
 		sov_nuclear_bombs_clear_selected_state = yes
@@ -1868,7 +1906,7 @@ sov_nuclear_bombs_demolish_selected_site = {
 		}
 		event_target:sov_nuclear_bombs_selected_state = {
 			set_variable = { ROOT.sov_nuclear_bombs_pending_action_type = constant:sov_nuclear_bombs_action.demolition }
-			set_variable = { ROOT.sov_nuclear_bombs_action_remote_recovery_authorized = constant:sov_nuclear_bombs_ledger.one }
+			ROOT = { set_country_flag = sov_nuclear_bombs_action_remote_recovery_authorized }
 			ROOT = { sov_nuclear_bombs_begin_action = yes }
 		}
 		sov_nuclear_bombs_clear_selected_state = yes
@@ -1898,11 +1936,13 @@ sov_nuclear_bombs_complete_production_mission = {
 		clr_country_flag = sov_nuclear_bombs_production_mission_active
 		if = {
 			limit = {
+				has_country_flag = sov_nuclear_bombs_actor_registered
 				sov_nuclear_bombs_event_actor_is_valid = yes
 				sov_nuclear_bombs_event_has_production_capacity = yes
 				has_tech = atomic_research
 				has_tech = nukes
 				has_variable = sov_nuclear_bombs_production_amount
+				sov_nuclear_bombs_event_active_assembly_site_is_valid = yes
 				check_variable = { var = sov_nuclear_bombs_production_amount value = constant:sov_nuclear_bombs_ledger.zero compare = greater_than }
 			}
 			sov_nuclear_bombs_register_production_devices = yes
@@ -1918,6 +1958,7 @@ sov_nuclear_bombs_complete_production_mission = {
 			set_country_flag = sov_nuclear_bombs_production_rejected
 			add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_tuning.action_rejection_integrity }
 		}
+		sov_nuclear_bombs_close_assembly_receipt = yes
 		set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.production }
 		clamp_variable = { var = sov_nuclear_bombs_readiness min = 0 max = 100 }
 		clamp_variable = { var = sov_nuclear_bombs_integrity min = 0 max = 100 }
@@ -1931,6 +1972,7 @@ sov_nuclear_bombs_cancel_production_mission = {
 		limit = { has_country_flag = sov_nuclear_bombs_production_mission_active }
 		clr_country_flag = sov_nuclear_bombs_production_mission_active
 		clear_variable = sov_nuclear_bombs_production_amount
+		sov_nuclear_bombs_close_assembly_receipt = yes
 		set_country_flag = sov_nuclear_bombs_production_cancelled
 		set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.production }
 		add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_tuning.action_rejection_integrity }
@@ -2024,6 +2066,7 @@ sov_nuclear_bombs_harden_storage = {
 		limit = { has_event_target = sov_nuclear_bombs_selected_state }
 		event_target:sov_nuclear_bombs_selected_state = {
 			set_state_flag = sov_nuclear_bombs_site_hardened
+			sov_nuclear_bombs_register_backup_command_state = yes
 		}
 	}
 	add_to_variable = { sov_nuclear_bombs_integrity = 9 }
@@ -2076,18 +2119,9 @@ sov_nuclear_bombs_select_disperse_source = {
 sov_nuclear_bombs_disperse_reserve = {
 	clr_country_flag = sov_nuclear_bombs_reserve_dispersion_succeeded
 	if = {
-		limit = {
-			sov_nuclear_bombs_event_selected_storage_site_is_valid = yes
-			sov_nuclear_bombs_event_selected_disperse_source_is_valid = yes
-		}
-			event_target:sov_nuclear_bombs_disperse_source_state = {
-				subtract_from_variable = { sov_nuclear_bombs_site_assigned = constant:sov_nuclear_bombs_ledger.one }
-			}
-			event_target:sov_nuclear_bombs_selected_state = {
-				add_to_variable = { sov_nuclear_bombs_site_assigned = constant:sov_nuclear_bombs_ledger.one }
-			}
-			set_country_flag = sov_nuclear_bombs_reserve_dispersion_succeeded
-		}
+		limit = { has_country_flag = sov_nuclear_bombs_transit_active }
+		sov_nuclear_bombs_complete_transit = yes
+	}
 	if = {
 		limit = { has_country_flag = sov_nuclear_bombs_reserve_dispersion_succeeded }
 		sov_nuclear_bombs_clear_disperse_selection = yes
@@ -2102,7 +2136,10 @@ sov_nuclear_bombs_disperse_reserve = {
 		sov_nuclear_bombs_set_posture = yes
 		sov_nuclear_bombs_refresh_ledger_reconciliation = yes
 	}
-	else = { set_country_flag = sov_nuclear_bombs_reserve_dispersion_failed }
+	else = {
+		sov_nuclear_bombs_cancel_transit = yes
+		set_country_flag = sov_nuclear_bombs_reserve_dispersion_failed
+	}
 	clamp_variable = { var = sov_nuclear_bombs_integrity min = 0 max = 100 }
 	clamp_variable = { var = sov_nuclear_bombs_readiness min = 0 max = 100 }
 }
@@ -2126,6 +2163,7 @@ sov_nuclear_bombs_delegate_retaliation = {
 }
 
 sov_nuclear_bombs_begin_production = {
+	set_temp_variable = { sov_nuclear_bombs_production_quote = constant:sov_nuclear_bombs_ledger.zero }
 	if = {
 		limit = {
 			sov_nuclear_bombs_event_actor_is_valid = yes
@@ -2133,18 +2171,15 @@ sov_nuclear_bombs_begin_production = {
 			has_tech = atomic_research
 			has_tech = nukes
 			NOT = { has_country_flag = sov_nuclear_bombs_production_mission_active }
+			NOT = { has_country_flag = sov_nuclear_bombs_assembly_receipt_disputed }
+			NOT = { has_variable = sov_nuclear_bombs_assembly_nonce }
 			NOT = { has_country_flag = sov_nuclear_bombs_atomic_moratorium }
+			has_event_target = sov_nuclear_bombs_assembly_selection
+			event_target:sov_nuclear_bombs_assembly_selection = { sov_nuclear_bombs_event_state_is_valid_assembly_site = yes }
+			sov_nuclear_bombs_prepare_production_quote = yes
 		}
-		set_variable = { sov_nuclear_bombs_production_amount = constant:sov_nuclear_bombs_tuning.production_batch_minimum }
-		if = {
-			limit = { has_variable = sov_nuclear_bombs_reactor_count }
-			set_variable = { sov_nuclear_bombs_reactor_bonus = sov_nuclear_bombs_reactor_count }
-			multiply_variable = { sov_nuclear_bombs_reactor_bonus = constant:sov_nuclear_bombs_tuning.production_batch_per_reactor }
-			add_to_variable = { sov_nuclear_bombs_production_amount = sov_nuclear_bombs_reactor_bonus }
-			clear_variable = sov_nuclear_bombs_reactor_bonus
-		}
-		add_to_variable = { sov_nuclear_bombs_production_amount = constant:sov_nuclear_bombs_tuning.production_batch_base }
-		clamp_variable = { var = sov_nuclear_bombs_production_amount min = constant:sov_nuclear_bombs_tuning.production_batch_minimum max = constant:sov_nuclear_bombs_tuning.production_batch_maximum }
+		sov_nuclear_bombs_register_assembly_site = yes
+		set_variable = { sov_nuclear_bombs_production_amount = sov_nuclear_bombs_production_quote }
 		set_country_flag = sov_nuclear_bombs_production_mission_active
 		set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.production }
 		clr_country_flag = sov_nuclear_bombs_production_rejected
@@ -2168,6 +2203,7 @@ sov_nuclear_bombs_prepare_delivery_crews = {
 			NOT = { has_country_flag = sov_nuclear_bombs_delivery_crews_mission_active }
 		}
 		set_country_flag = sov_nuclear_bombs_delivery_crews_mission_active
+		sov_nuclear_bombs_register_delivery_force_owner = yes
 		set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.production }
 		activate_mission = sov_nuclear_bombs_delivery_crews_mission
 	}
@@ -2196,6 +2232,7 @@ sov_nuclear_bombs_complete_delivery_crews = {
 			limit = { sov_nuclear_bombs_event_actor_is_valid = yes sov_nuclear_bombs_event_has_delivery_route = yes }
 			set_country_flag = sov_nuclear_bombs_delivery_crews_ready
 			set_country_flag = sov_nuclear_bombs_delivery_crews_certified
+			sov_nuclear_bombs_register_delivery_force_owner = yes
 			add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_tuning.delivery_crews_complete_readiness }
 		}
 		else = { set_country_flag = sov_nuclear_bombs_delivery_crews_preparation_failed }
@@ -2749,7 +2786,7 @@ sov_nuclear_bombs_cancel_breakaway_operationalization = {
 	clr_country_flag = sov_nuclear_bombs_breakaway_operationalization_mission_active
 	set_country_flag = sov_nuclear_bombs_breakaway_operationalization_paused
 	clear_variable = sov_nuclear_bombs_breakaway_progress_stage
-	sov_nuclear_bombs_clear_selected_state = yes
+	# Retain this actor's depot for a valid retry; never clear Soviet selection.
 	sov_nuclear_bombs_achievement_refresh_receipts = yes
 }
 
@@ -2861,10 +2898,16 @@ sov_nuclear_bombs_prepare_dismantlement_mission = {
 			NOT = { has_country_flag = sov_nuclear_bombs_dismantlement_mission_active }
 		}
 		set_variable = { sov_nuclear_bombs_pending_action_type = constant:sov_nuclear_bombs_action.demolition }
+		clr_country_flag = sov_nuclear_bombs_last_action_accepted
 		sov_nuclear_bombs_stage_action_context = yes
-		set_country_flag = sov_nuclear_bombs_dismantlement_mission_active
-		activate_mission = sov_nuclear_bombs_dismantlement_inspection_mission
-		set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.moratorium }
+		sov_nuclear_bombs_register_active_dismantlement = yes
+		if = {
+			limit = { has_country_flag = sov_nuclear_bombs_dismantlement_registry_active }
+			set_country_flag = sov_nuclear_bombs_dismantlement_mission_active
+			activate_mission = sov_nuclear_bombs_dismantlement_inspection_mission
+			set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.moratorium }
+		}
+		else = { sov_nuclear_bombs_clear_action_context = yes clear_variable = sov_nuclear_bombs_pending_action_type }
 	}
 }
 
@@ -2872,16 +2915,27 @@ sov_nuclear_bombs_complete_dismantlement = {
 	if = {
 		limit = { has_country_flag = sov_nuclear_bombs_dismantlement_mission_active }
 		if = {
-			limit = { has_variable = sov_nuclear_bombs_pending_action_type }
+			limit = {
+				has_variable = sov_nuclear_bombs_pending_action_type
+				has_country_flag = sov_nuclear_bombs_dismantlement_registry_active
+				has_variable = sov_nuclear_bombs_dismantlement_action_nonce
+				has_variable = sov_nuclear_bombs_action_source_state
+				check_variable = { var = sov_nuclear_bombs_action_nonce value = sov_nuclear_bombs_dismantlement_action_nonce compare = equals }
+				var:sov_nuclear_bombs_action_source_state = {
+					check_variable = { var = THIS.id value = PREV.sov_nuclear_bombs_dismantlement_source_id compare = equals }
+				}
+			}
 			sov_nuclear_bombs_execute_shared_action = yes
 			if = {
 				limit = { has_country_flag = sov_nuclear_bombs_last_action_accepted }
 				sov_nuclear_bombs_record_action_receipt = yes
+				sov_nuclear_bombs_close_active_dismantlement = yes
 				sov_nuclear_bombs_clear_action_context = yes
 				clear_variable = sov_nuclear_bombs_pending_action_type
 			}
 			else = { sov_nuclear_bombs_cancel_dismantlement = yes }
 		}
+		else = { sov_nuclear_bombs_cancel_dismantlement = yes }
 		if = {
 			limit = { has_event_target = sov_nuclear_bombs_selected_state }
 			event_target:sov_nuclear_bombs_selected_state = {
@@ -2917,6 +2971,8 @@ sov_nuclear_bombs_complete_dismantlement = {
 
 sov_nuclear_bombs_cancel_dismantlement = {
 	sov_nuclear_bombs_clear_action_context = yes
+	sov_nuclear_bombs_close_active_dismantlement = yes
+	clr_country_flag = sov_nuclear_bombs_last_action_accepted
 	clr_country_flag = sov_nuclear_bombs_dismantlement_mission_active
 	clear_variable = sov_nuclear_bombs_pending_action_type
 	sov_nuclear_bombs_clear_selected_state = yes
@@ -2927,11 +2983,15 @@ sov_nuclear_bombs_cancel_dismantlement = {
 sov_nuclear_bombs_start_breakaway_technical_access = {
 	if = {
 		limit = {
+			has_tech = atomic_research
+			has_tech = nukes
 			sov_nuclear_bombs_event_has_breakaway_custody_crisis = yes
 			sov_nuclear_bombs_event_no_active_project = yes
 			has_country_flag = sov_nuclear_bombs_breakaway_custody_secured
+			sov_nuclear_bombs_event_selected_site_has_local_custody_receipt = yes
+			NOT = { sov_nuclear_bombs_event_selected_site_has_local_technical_receipt = yes }
 			sov_nuclear_bombs_event_selected_breakaway_site_is_valid_for_actor = yes
-			event_target:sov_nuclear_bombs_selected_state = {
+			var:sov_nuclear_bombs_local_custody_state = {
 				check_variable = {
 					var = sov_nuclear_bombs_site_custody_state
 					value = constant:sov_nuclear_bombs_custody.breakaway_physical
@@ -2948,14 +3008,16 @@ sov_nuclear_bombs_start_breakaway_technical_access = {
 	}
 }
 
-	sov_nuclear_bombs_start_breakaway_command_formation = {
+sov_nuclear_bombs_start_breakaway_command_formation = {
 	if = {
 		limit = {
 			has_country_flag = sov_nuclear_bombs_breakaway_technical_access
+			sov_nuclear_bombs_event_selected_site_has_local_technical_receipt = yes
+			NOT = { sov_nuclear_bombs_event_selected_site_has_local_command_receipt = yes }
 			sov_nuclear_bombs_event_has_breakaway_custody_crisis = yes
 			sov_nuclear_bombs_event_no_active_project = yes
 			sov_nuclear_bombs_event_selected_breakaway_site_is_valid_for_actor = yes
-			event_target:sov_nuclear_bombs_selected_state = {
+			var:sov_nuclear_bombs_local_custody_state = {
 				check_variable = {
 					var = sov_nuclear_bombs_site_custody_state
 					value = constant:sov_nuclear_bombs_custody.breakaway_physical
@@ -2976,11 +3038,12 @@ sov_nuclear_bombs_start_breakaway_delivery_integration = {
 	if = {
 		limit = {
 				has_country_flag = sov_nuclear_bombs_breakaway_command_formed
+				sov_nuclear_bombs_event_selected_site_has_local_command_receipt = yes
 				sov_nuclear_bombs_event_has_breakaway_custody_crisis = yes
 				sov_nuclear_bombs_event_no_active_project = yes
 				sov_nuclear_bombs_event_selected_breakaway_site_is_valid_for_actor = yes
 				sov_nuclear_bombs_event_selected_breakaway_site_has_delivery_capability = yes
-			event_target:sov_nuclear_bombs_selected_state = {
+			var:sov_nuclear_bombs_local_custody_state = {
 				check_variable = {
 					var = sov_nuclear_bombs_site_custody_state
 					value = constant:sov_nuclear_bombs_custody.breakaway_physical
@@ -2992,6 +3055,7 @@ sov_nuclear_bombs_start_breakaway_delivery_integration = {
 		clr_country_flag = sov_nuclear_bombs_breakaway_operationalization_failed
 		clr_country_flag = sov_nuclear_bombs_breakaway_operationalization_succeeded
 		set_variable = { sov_nuclear_bombs_breakaway_progress_stage = constant:sov_nuclear_bombs_tuning.breakaway_delivery_stage }
+		sov_nuclear_bombs_register_delivery_force_owner = yes
 		set_country_flag = sov_nuclear_bombs_breakaway_operationalization_mission_active
 		activate_mission = sov_nuclear_bombs_breakaway_delivery_integration_mission
 	}
@@ -3004,10 +3068,13 @@ sov_nuclear_bombs_complete_breakaway_operationalization = {
 		if = {
 			limit = {
 				check_variable = { var = sov_nuclear_bombs_breakaway_progress_stage value = constant:sov_nuclear_bombs_tuning.breakaway_technical_stage compare = equals }
+				has_tech = atomic_research
+				has_tech = nukes
 				sov_nuclear_bombs_event_has_breakaway_custody_crisis = yes
 				has_country_flag = sov_nuclear_bombs_breakaway_custody_secured
+				sov_nuclear_bombs_event_selected_site_has_local_custody_receipt = yes
 				sov_nuclear_bombs_event_selected_breakaway_site_is_valid_for_actor = yes
-				event_target:sov_nuclear_bombs_selected_state = {
+				var:sov_nuclear_bombs_local_custody_state = {
 					check_variable = {
 						var = sov_nuclear_bombs_site_custody_state
 						value = constant:sov_nuclear_bombs_custody.breakaway_physical
@@ -3016,6 +3083,7 @@ sov_nuclear_bombs_complete_breakaway_operationalization = {
 				}
 			}
 			set_country_flag = sov_nuclear_bombs_breakaway_technical_access
+			var:sov_nuclear_bombs_local_custody_state = { sov_nuclear_bombs_register_institutional_access = yes }
 			set_country_flag = sov_nuclear_bombs_breakaway_operationalization_succeeded
 		}
 		else_if = {
@@ -3023,8 +3091,9 @@ sov_nuclear_bombs_complete_breakaway_operationalization = {
 				check_variable = { var = sov_nuclear_bombs_breakaway_progress_stage value = constant:sov_nuclear_bombs_tuning.breakaway_command_stage compare = equals }
 				sov_nuclear_bombs_event_has_breakaway_custody_crisis = yes
 				has_country_flag = sov_nuclear_bombs_breakaway_technical_access
+				sov_nuclear_bombs_event_selected_site_has_local_technical_receipt = yes
 				sov_nuclear_bombs_event_selected_breakaway_site_is_valid_for_actor = yes
-				event_target:sov_nuclear_bombs_selected_state = {
+				var:sov_nuclear_bombs_local_custody_state = {
 					check_variable = {
 						var = sov_nuclear_bombs_site_custody_state
 						value = constant:sov_nuclear_bombs_custody.breakaway_physical
@@ -3033,6 +3102,7 @@ sov_nuclear_bombs_complete_breakaway_operationalization = {
 				}
 			}
 			set_country_flag = sov_nuclear_bombs_breakaway_command_formed
+			var:sov_nuclear_bombs_local_custody_state = { sov_nuclear_bombs_register_breakaway_command_site = yes }
 			set_country_flag = sov_nuclear_bombs_breakaway_operationalization_succeeded
 		}
 		else_if = {
@@ -3040,9 +3110,10 @@ sov_nuclear_bombs_complete_breakaway_operationalization = {
 				check_variable = { var = sov_nuclear_bombs_breakaway_progress_stage value = constant:sov_nuclear_bombs_tuning.breakaway_delivery_stage compare = equals }
 					sov_nuclear_bombs_event_has_breakaway_custody_crisis = yes
 					has_country_flag = sov_nuclear_bombs_breakaway_command_formed
+					sov_nuclear_bombs_event_selected_site_has_local_command_receipt = yes
 				sov_nuclear_bombs_event_selected_breakaway_site_has_delivery_capability = yes
 				sov_nuclear_bombs_event_selected_breakaway_site_is_valid_for_actor = yes
-				event_target:sov_nuclear_bombs_selected_state = {
+				var:sov_nuclear_bombs_local_custody_state = {
 					check_variable = {
 						var = sov_nuclear_bombs_site_custody_state
 						value = constant:sov_nuclear_bombs_custody.breakaway_physical
@@ -3050,9 +3121,11 @@ sov_nuclear_bombs_complete_breakaway_operationalization = {
 					}
 				}
 			}
-			event_target:sov_nuclear_bombs_selected_state = { sov_nuclear_bombs_operationalize_breakaway_site = yes }
+			var:sov_nuclear_bombs_local_custody_state = { sov_nuclear_bombs_operationalize_breakaway_site = yes }
 			if = {
-				limit = { event_target:sov_nuclear_bombs_selected_state = { has_state_flag = sov_nuclear_bombs_breakaway_site_operationalized } }
+				limit = { var:sov_nuclear_bombs_local_custody_state = { has_state_flag = sov_nuclear_bombs_breakaway_site_operationalized } }
+				sov_nuclear_bombs_register_delivery_force_owner = yes
+				var:sov_nuclear_bombs_local_custody_state = { sov_nuclear_bombs_register_delivery_force_site = yes }
 				set_country_flag = sov_nuclear_bombs_breakaway_delivery_integrated
 				set_country_flag = sov_nuclear_bombs_breakaway_operationalization_complete
 				set_country_flag = sov_nuclear_bombs_breakaway_operationalization_succeeded
@@ -3064,7 +3137,7 @@ sov_nuclear_bombs_complete_breakaway_operationalization = {
 		}
 		clr_country_flag = sov_nuclear_bombs_breakaway_operationalization_mission_active
 		clear_variable = sov_nuclear_bombs_breakaway_progress_stage
-		sov_nuclear_bombs_clear_selected_state = yes
+		# Preserve this actor's exact depot between its three distinct stages.
 		sov_nuclear_bombs_achievement_refresh_receipts = yes
 	}
 }
@@ -3074,12 +3147,12 @@ sov_nuclear_bombs_request_breakaway_return = {
 		limit = {
 			sov_nuclear_bombs_event_has_breakaway_custody_crisis = yes
 			sov_nuclear_bombs_event_no_active_project = yes
-			has_event_target = sov_nuclear_bombs_selected_state
-			event_target:sov_nuclear_bombs_selected_state = {
+			has_variable = sov_nuclear_bombs_return_request_state
+			var:sov_nuclear_bombs_return_request_state = {
 				sov_nuclear_bombs_event_state_is_valid_breakaway_return_site = yes
 			}
 		}
-		event_target:sov_nuclear_bombs_selected_state = {
+		var:sov_nuclear_bombs_return_request_state = {
 			set_state_flag = sov_nuclear_bombs_return_requested
 			set_variable = { sov_nuclear_bombs_site_reconciliation_state = constant:sov_nuclear_bombs_custody.disputed }
 		}
@@ -3094,16 +3167,24 @@ sov_nuclear_bombs_breakaway_secure_local_custody = {
 		limit = {
 			sov_nuclear_bombs_event_has_breakaway_custody_crisis = yes
 			sov_nuclear_bombs_event_no_active_project = yes
-			NOT = { has_country_flag = sov_nuclear_bombs_breakaway_custody_secured }
-			has_event_target = sov_nuclear_bombs_selected_state
+			has_variable = sov_nuclear_bombs_local_custody_state
 			sov_nuclear_bombs_event_selected_breakaway_site_is_valid_for_actor = yes
 		}
-		event_target:sov_nuclear_bombs_selected_state = {
+		# These flags project only the selected depot. Historical operational
+		# actor registration remains separate and is never reset here.
+		clr_country_flag = sov_nuclear_bombs_breakaway_custody_secured
+		clr_country_flag = sov_nuclear_bombs_breakaway_technical_access
+		clr_country_flag = sov_nuclear_bombs_breakaway_command_formed
+		clr_country_flag = sov_nuclear_bombs_breakaway_delivery_integrated
+		var:sov_nuclear_bombs_local_custody_state = {
 			set_state_flag = sov_nuclear_bombs_breakaway_custody_secured
+			set_variable = { sov_nuclear_bombs_local_custody_actor = PREV }
 			set_variable = { sov_nuclear_bombs_site_custody_state = constant:sov_nuclear_bombs_custody.breakaway_physical }
 			set_variable = { sov_nuclear_bombs_site_reconciliation_state = constant:sov_nuclear_bombs_custody.reconciled }
 		}
-		if = { limit = { has_event_target = sov_nuclear_bombs_selected_state } set_country_flag = sov_nuclear_bombs_breakaway_custody_secured }
+		set_country_flag = sov_nuclear_bombs_breakaway_custody_secured
+		if = { limit = { sov_nuclear_bombs_event_selected_site_has_local_technical_receipt = yes } set_country_flag = sov_nuclear_bombs_breakaway_technical_access }
+		if = { limit = { sov_nuclear_bombs_event_selected_site_has_local_command_receipt = yes } set_country_flag = sov_nuclear_bombs_breakaway_command_formed }
 		sov_nuclear_bombs_achievement_refresh_receipts = yes
 	}
 }

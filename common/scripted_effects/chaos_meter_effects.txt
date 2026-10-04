@@ -3286,11 +3286,14 @@ chaos_meter_apply_nuclear_fallout_to_state = {
 }
 
 chaos_meter_register_nuclear_condemnation = {
+		# Country scope. The caller supplies one exact state pointer and clears it
+		# after the shared source transaction; FROM is not available to a
+		# non-detonating Event 23 accident.
 		set_temp_variable = { chaos_nuke_condemnation_add = constant:condemnation_source_default_gain.nuclear_low_population }
 		set_temp_variable = { chaos_nuke_condemnation_pop_millions = 0 }
 		set_temp_variable = { chaos_nuke_condemnation_density_mult = 1 }
 
-		FROM = {
+		var:chaos_meter_nuclear_target_state = {
 			set_temp_variable = { chaos_nuke_condemnation_pop_millions = state_population_k }
 			divide_temp_variable = { chaos_nuke_condemnation_pop_millions = constant:condemnation_source_default_gain.nuclear_population_divisor }
 			set_temp_variable = { chaos_state_deaths_mult = 1 }
@@ -3346,6 +3349,7 @@ chaos_meter_register_nuclear_condemnation = {
 			limit = {
 				has_tech = thermonuclear_bombs
 				NOT = { has_country_flag = sov_nuclear_bombs_atomic_delivery_context }
+				NOT = { has_country_flag = sov_nuclear_bombs_shared_accident_context }
 			}
 			multiply_temp_variable = { chaos_nuke_condemnation_add = constant:condemnation_source_default_gain.thermonuclear_multiplier }
 		}
@@ -3361,11 +3365,18 @@ chaos_meter_register_nuclear_condemnation = {
 				limit = {
 					has_tech = thermonuclear_bombs
 					NOT = { has_country_flag = sov_nuclear_bombs_atomic_delivery_context }
+					NOT = { has_country_flag = sov_nuclear_bombs_shared_accident_context }
 				}
 				set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.doomsday }
 				set_temp_variable = { condemnation_context_type = constant:condemnation_context.thermonuclear_strike }
 			}
 			if = {
+				limit = { has_country_flag = sov_nuclear_bombs_shared_accident_context }
+				set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.discovered }
+				set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.mass_death }
+				set_temp_variable = { condemnation_context_type = constant:condemnation_context.observer_report }
+			}
+			else_if = {
 				limit = { has_country_flag = sov_nuclear_bombs_shared_test_context }
 				set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.hidden }
 				set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.minor }
@@ -3392,27 +3403,18 @@ chaos_meter_register_nuclear_condemnation = {
 				set_temp_variable = { condemnation_context_type = constant:condemnation_context.experiment_site }
 			}
 			else_if = {
-				limit = { has_country_flag = sov_nuclear_bombs_shared_accident_context }
-				set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.discovered }
-				set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.mass_death }
-				set_temp_variable = { condemnation_context_type = constant:condemnation_context.observer_report }
-			}
-			if = {
 				limit = {
 					has_country_flag = sov_nuclear_bombs_atomic_delivery_context
-					NOT = { has_country_flag = sov_nuclear_bombs_shared_test_context }
-					NOT = { has_country_flag = sov_nuclear_bombs_shared_demonstration_context }
-					NOT = { has_country_flag = sov_nuclear_bombs_shared_accident_context }
 				}
 				set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
 				set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.combat }
 				set_temp_variable = { condemnation_context_type = constant:condemnation_context.nuclear_strike }
 				if = {
-					limit = { FROM = { check_variable = { var = state_population_k value = constant:sov_nuclear_bombs_tuning.first_use_populated_state_min_k compare = greater_than } } }
+					limit = { var:chaos_meter_nuclear_target_state = { check_variable = { var = state_population_k value = constant:sov_nuclear_bombs_tuning.first_use_populated_state_min_k compare = greater_than } } }
 					set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.mass_death }
 				}
 				if = {
-					limit = { FROM = { is_capital = yes } }
+					limit = { var:chaos_meter_nuclear_target_state = { is_capital = yes } }
 					set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.major }
 				}
 			}
@@ -5876,6 +5878,7 @@ chaos_meter_on_subject_annexed = {
 
 chaos_meter_on_nuke_drop = {
 	save_event_target_as = chaos_history_actor
+	set_variable = { chaos_meter_nuclear_target_state = FROM }
 	if = {
 		limit = {
 			NOT = {
@@ -6018,6 +6021,7 @@ chaos_meter_on_nuke_drop = {
 	}
 
 	chaos_meter_register_nuclear_condemnation = yes
+	clear_variable = chaos_meter_nuclear_target_state
 
 	if = {
 		limit = {
@@ -6045,6 +6049,106 @@ chaos_meter_on_nuke_drop = {
 	# Clear it after the shared hook so an unrelated later nuke can use its
 	# normal thermonuclear consequence profile.
 	clr_country_flag = sov_nuclear_bombs_atomic_delivery_context
+	# These profile inputs are consumed by this detonation's deaths, fallout,
+	# condemnation and treaty processing; they must not label a later source.
+	clr_country_flag = sov_nuclear_bombs_shared_test_context
+	clr_country_flag = sov_nuclear_bombs_shared_partial_yield_context
+	clr_country_flag = sov_nuclear_bombs_shared_accident_context
+	clr_country_flag = sov_nuclear_bombs_shared_demonstration_context
+}
+
+# SOV country scope. Called only after Event 23 has accepted and committed one
+# non-yield test accident. The action context is input, not authority. The
+# receipt is written before consequences so a repeated call cannot replay them.
+chaos_meter_on_non_yield_test_accident = {
+	if = {
+		limit = {
+			tag = SOV
+			NOT = { has_global_flag = settings_chaos_meter_disabled }
+			has_country_flag = sov_nuclear_bombs_last_action_accepted
+			NOT = { has_country_flag = sov_nuclear_bombs_action_reservation_active }
+			NOT = { has_country_flag = sov_nuclear_bombs_native_delivery_pending }
+			has_variable = sov_nuclear_bombs_action_state
+			has_variable = sov_nuclear_bombs_action_state_id
+			has_variable = sov_nuclear_bombs_action_nonce
+			has_variable = sov_nuclear_bombs_action_outcome
+			has_variable = sov_nuclear_bombs_action_type
+			has_country_flag = sov_nuclear_bombs_action_non_detonating
+			NOT = { has_country_flag = sov_nuclear_bombs_action_detonating }
+			has_variable = sov_nuclear_bombs_action_transaction_sequence
+			has_variable = sov_nuclear_bombs_last_action_nonce
+			has_variable = sov_nuclear_bombs_last_action_result
+			check_variable = { var = sov_nuclear_bombs_last_action_result value = constant:sov_nuclear_bombs_action.accepted compare = equals }
+			check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.test compare = equals }
+			check_variable = { var = sov_nuclear_bombs_action_outcome value = constant:sov_nuclear_bombs_tuning.test_result_accident compare = equals }
+			check_variable = { var = sov_nuclear_bombs_action_nonce value = sov_nuclear_bombs_last_action_nonce compare = equals }
+			check_variable = { var = sov_nuclear_bombs_action_transaction_sequence value = global.sov_nuclear_bombs_ledger_transaction_sequence compare = equals }
+			var:sov_nuclear_bombs_action_state = {
+				impassable = no
+				check_variable = { var = THIS.id value = PREV.sov_nuclear_bombs_action_state_id compare = equals }
+			}
+			OR = {
+				NOT = { has_variable = chaos_meter_non_yield_accident_nonce }
+				check_variable = { var = sov_nuclear_bombs_action_nonce value = chaos_meter_non_yield_accident_nonce compare = greater_than }
+			}
+		}
+		set_variable = { chaos_meter_non_yield_accident_nonce = sov_nuclear_bombs_action_nonce }
+		set_variable = { chaos_meter_nuclear_target_state = sov_nuclear_bombs_action_state }
+		set_country_flag = sov_nuclear_bombs_shared_accident_context
+		save_event_target_as = chaos_history_actor
+		if = { limit = { NOT = { has_variable = global.chaos_meter_nuclear_accident_uses } } set_variable = { global.chaos_meter_nuclear_accident_uses = 0 } }
+		add_to_variable = { global.chaos_meter_nuclear_accident_uses = 1 }
+		set_temp_variable = { chaos_change = constant:chaos_meter_delta.nuke.accident }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.nuke.accident }
+		set_temp_variable = { chaos_history_reason_custom = 1 }
+		add_chaos_meter_value = yes
+		set_temp_variable = { chaos_fallout_duration_days = constant:chaos_meter_nuclear_fallout.accident_duration_days }
+		set_temp_variable = { chaos_fallout_intensity_add = constant:chaos_meter_nuclear_fallout.accident_intensity_add }
+		set_temp_variable = { chaos_nuke_civilian_deaths = 0 }
+		set_temp_variable = { air_cleanliness_system_enabled = 1 }
+		if = {
+			limit = {
+				OR = {
+					has_global_flag = settings_air_cleanliness_disabled
+					has_global_flag = fallout_air_cleanliness_disabled
+					has_global_flag = fallout_air_contamination_permanent_99
+				}
+			}
+			set_temp_variable = { air_cleanliness_system_enabled = 0 }
+		}
+		var:chaos_meter_nuclear_target_state = {
+			set_temp_variable = { chaos_deaths_change = 0 }
+			set_temp_variable = { chaos_state_deaths_percent = constant:chaos_meter_state_death_dynamic.accident_percent }
+			set_temp_variable = { chaos_state_deaths_mult = 1 }
+			chaos_meter_apply_nuclear_state_death_environment_multiplier = yes
+			if = {
+				limit = { has_state_flag = sov_nuclear_bombs_target_evacuation_ordered }
+				multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.event23_evacuation_multiplier }
+			}
+			set_temp_variable = { chaos_state_deaths_cap_factor = constant:chaos_meter_state_death_dynamic.accident_cap_factor }
+			set_temp_variable = { chaos_state_deaths_random_min = constant:chaos_meter_state_death_dynamic.nuclear_random_min }
+			set_temp_variable = { chaos_state_deaths_random_span = constant:chaos_meter_state_death_dynamic.nuclear_random_span }
+			set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.nuclear_accident }
+			chaos_meter_register_state_civilian_deaths_percent = yes
+			set_temp_variable = { chaos_nuke_civilian_deaths = chaos_deaths_change }
+			if = {
+				limit = { check_variable = { air_cleanliness_system_enabled > 0 } }
+				chaos_meter_apply_nuclear_fallout_to_state = yes
+			}
+			else_if = {
+				limit = { has_global_flag = fallout_air_cleanliness_disabled }
+				if = {
+					limit = { has_dynamic_modifier = nuclear_fallout_state }
+					remove_dynamic_modifier = { modifier = nuclear_fallout_state }
+				}
+			}
+			clr_state_flag = sov_nuclear_bombs_target_evacuation_ordered
+		}
+		chaos_meter_register_nuclear_condemnation = yes
+		# A preparation accident is not weapon use for the Air Treaty hook.
+		clear_variable = chaos_meter_nuclear_target_state
+		clr_country_flag = sov_nuclear_bombs_shared_accident_context
+	}
 }
 
 # chaos_meter_on_civil_war = {

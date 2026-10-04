@@ -21,6 +21,31 @@ If Event 23 has not fired and no registered Soviet arsenal exists, Event 5 proce
 
 ## Pre-collapse custody snapshot
 
+### Accepted bounded registry selection, 2026-10-03
+
+Acceptance basis: the user explicitly chose to design and implement the bounded registry for the fields missing from the original source.
+The parent selects one existing registered industrial storage depot through the existing Assemble Device Batch decision as the assembly-site identity.
+It must be owned and controlled by SOV, have usable infrastructure and at least one actual civilian or military factory, and have no missing, dismantled, technical-denial, or pending Event 5 custody state.
+Existing reactor, atomic-technology, cost, batch-size, and mission-duration requirements remain authoritative.
+The selected state pointer, id, owner and batch nonce persist for the existing production mission; completion revalidates that exact site, while site loss cancels without rerouting, granting a batch, or transferring Soviet technical access to a successor.
+The site retains its historical facility role, with active and closed nonce receipts distinguished in the before/after snapshot.
+This selection adds no decision, mission, building, spendable cost, unit, aircraft, or technology.
+Institutional access markers satisfy the technical-staff representation; physical custody alone cannot grant the later technical, command, or delivery stages.
+Implementation surfaces are the Event 23 decision, event/runtime effects, event triggers, on-actions, and English localisation files.
+Source implementation exists, but MCP and save/reload scenario acceptance remains outstanding.
+
+### Accepted per-depot receipt selection, 2026-10-03
+
+Acceptance basis: the parent applies the user's bounded-registry authorization and the existing requirement that physical custody, technical access, command formation and delivery integration remain separate for every valid local custody track.
+The existing Secure Custody action selects the next depot only after the actor's current depot completes operationalization or ceases to be a valid pending physical-custody site.
+Each depot records its actual securing actor and retains actor-bound institutional and command receipts rather than inheriting another depot's country-wide stage flags.
+Joint custody and pending Event 5 reconciliation block unilateral technical or command progress.
+Site loss cancels the exact local mission, and a holder change contests the former holder's access records.
+A valid returning custodian can retain only its own uncontested completed stages, while a new custodian must complete the separate month-scale stages.
+Operationalization requires a completed command receipt and the current holder's active delivery stage for that exact state ID.
+This uses the existing actions, costs and mission durations and introduces no new periodic update or capability grant.
+Source repairs are implemented, while named-scenario MCP comparison and save/reload conservation acceptance remain unresolved.
+
 Before Event 5 transfers states, releases countries, or changes controllers, the bridge records a frozen custody snapshot.
 
 The snapshot includes:

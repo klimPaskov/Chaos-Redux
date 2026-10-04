@@ -87,6 +87,8 @@ Event 23 should call the shared route and should not add these values itself.
 
 Tests, accidents, and demolitions may need separate shared profiles. Their contamination should reflect the actual physical event. A failed high-explosive accident should not automatically receive the same global contamination as a full nuclear yield.
 
+For Soviet test accidents, the user authorized a physical low-Integrity severity gate on 2026-09-26. Above the parent-selected catastrophic threshold, the accident is non-yield and the shared accident endpoint applies its accident-strength Chaos, Deaths, local radiological contamination, and condemnation profile once without a nuclear strike or terminal Fallout. At or below the threshold, a true yield uses the native action and `on_nuke_drop` shared consequence path once. Event 23 owns this classification and authorization; the shared system owns each consequence path. The current accident coefficients are reused and their physical scale remains subject to balance review.
+
 Every net 1 percent contamination change already influences Chaos through the shared system. Event 23 should not add a second contamination-derived Chaos change.
 
 ## Deaths integration

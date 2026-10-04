@@ -165,6 +165,10 @@ Tests should resolve through a weighted result model that is audited with named 
 - Command Integrity falls sharply.
 - The player must choose between evacuation, cover-up, technical investigation, and public admission.
 
+Resolution basis: the user authorized a physical severity gate on 2026-09-26. Parent implementation treats an accidental test result as non-yield when Integrity is above `constant:sov_nuclear_bombs_tuning.test_accident_catastrophic_integrity_threshold`; a true yield is permitted only at or below that threshold. The current parent-selected threshold is 10 on the 0–100 Integrity scale and remains centralized for tuning; the user did not specify that numeric value. Accident weights and evolution timing are unchanged.
+
+Both branches pass once through the Event 23 shared nuclear action contract. A non-yield accident consumes its reserved device and uses the shared accident consequence endpoint without calling `launch_nuke`; a true-yield accident remains a native detonation and receives shared consequences only from `on_nuke_drop`. Neither branch applies private Event 23 deaths, contamination, condemnation, or Fallout.
+
 ### Foreign observation
 
 This can occur alongside another result.
