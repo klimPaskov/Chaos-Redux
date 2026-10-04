@@ -422,8 +422,6 @@ riches_found_state_is_high_rush = {
 	}
 }
 
-# STATE scope. Policy-specific foreign-phase menus keep each route between
-# three and five visible actions while preserving distinct contract profiles.
 # STATE scope. The five AI policy profiles of the specification, read from
 # the opening and claims policy stored on the mine.
 riches_found_policy_profile_public = {
@@ -459,6 +457,8 @@ riches_found_policy_profile_predatory = {
 	}
 }
 
+# STATE scope. Policy-specific foreign-phase menus keep each route between
+# three and five visible actions while preserving distinct contract profiles.
 riches_found_policy_allows_concession_auction = {
 	OR = {
 		check_variable = { riches_found_policy = constant:riches_found_policy.public_development }
@@ -742,6 +742,23 @@ riches_found_foreign_target_is_valid = {
 				}
 			}
 		}
+	}
+}
+
+# Any scope. Inputs: event targets riches_found_share_partner and
+# riches_found_share_controller. True when another registered mine still holds
+# a recorded contract share between this partner and this controller, so their
+# mutual opinion pair is added once and removed with their last contract. The
+# caller's own mine has not recorded, or has already released, its share.
+riches_found_partner_pair_has_other_share = {
+	has_variable = global.riches_found_registered_mines^num
+	any_of_scopes = {
+		array = global.riches_found_registered_mines
+		has_state_flag = riches_found_contract_share_recorded
+		has_variable = riches_found_contract_partner
+		has_variable = riches_found_contract_share_controller
+		check_variable = { var = riches_found_contract_partner value = event_target:riches_found_share_partner compare = equals }
+		check_variable = { var = riches_found_contract_share_controller value = event_target:riches_found_share_controller compare = equals }
 	}
 }
 

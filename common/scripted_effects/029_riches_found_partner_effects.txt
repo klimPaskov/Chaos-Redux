@@ -11,9 +11,12 @@
 # scans the world.
 # ============================================================================
 
-# STATE scope. Called once by riches_found_begin_contract after the partner
-# pointer is stored. Side effects: partner share count and modifier, mutual
-# opinion modifiers, state flag riches_found_contract_share_recorded.
+# STATE scope. Called by riches_found_begin_contract after the partner pointer
+# is stored, and by riches_found_repoint_contract_partner_share when a resumed
+# contract passes to a new controller. Side effects: partner share count and
+# modifier, the stored share controller riches_found_contract_share_controller,
+# state flag riches_found_contract_share_recorded, and one mutual opinion pair
+# per partner and controller however many contracts the two share.
 riches_found_record_contract_partner_share = {
 	if = {
 		limit = {
@@ -22,25 +25,34 @@ riches_found_record_contract_partner_share = {
 			var:riches_found_contract_partner = { exists = yes }
 			CONTROLLER = { exists = yes }
 		}
-		set_state_flag = riches_found_contract_share_recorded
 		var:riches_found_contract_partner = { save_event_target_as = riches_found_share_partner }
 		CONTROLLER = { save_event_target_as = riches_found_share_controller }
+		# Read before this mine records its own share.
+		if = {
+			limit = { NOT = { riches_found_partner_pair_has_other_share = yes } }
+			event_target:riches_found_share_partner = {
+				add_opinion_modifier = { target = event_target:riches_found_share_controller modifier = riches_found_concession_partner }
+			}
+			event_target:riches_found_share_controller = {
+				add_opinion_modifier = { target = event_target:riches_found_share_partner modifier = riches_found_concession_partner }
+			}
+		}
+		set_state_flag = riches_found_contract_share_recorded
+		set_variable = { riches_found_contract_share_controller = CONTROLLER }
 		event_target:riches_found_share_partner = {
 			add_to_variable = { riches_found_concession_share_count = constant:riches_found_value.one }
 			if = {
 				limit = { NOT = { has_dynamic_modifier = { modifier = riches_found_country_concession_share } } }
 				add_dynamic_modifier = { modifier = riches_found_country_concession_share }
 			}
-			add_opinion_modifier = { target = event_target:riches_found_share_controller modifier = riches_found_concession_partner }
-		}
-		event_target:riches_found_share_controller = {
-			add_opinion_modifier = { target = event_target:riches_found_share_partner modifier = riches_found_concession_partner }
 		}
 	}
 }
 
 # STATE scope. Called by riches_found_clear_contract_state while the partner
-# pointer still exists. The share ends with the partner's last contract.
+# pointer still exists. The share modifier ends with the partner's last
+# contract; the opinion pair ends with the last contract between the partner
+# and the controller that holds the share, even after the mine changed hands.
 riches_found_release_contract_partner_share = {
 	if = {
 		limit = { has_state_flag = riches_found_contract_share_recorded }
@@ -63,16 +75,35 @@ riches_found_release_contract_partner_share = {
 			}
 			if = {
 				limit = {
-					CONTROLLER = { exists = yes }
-					var:riches_found_contract_partner = { NOT = { has_variable = riches_found_concession_share_count } }
+					has_variable = riches_found_contract_share_controller
+					var:riches_found_contract_share_controller = { exists = yes }
 				}
 				var:riches_found_contract_partner = { save_event_target_as = riches_found_share_partner }
-				CONTROLLER = { save_event_target_as = riches_found_share_controller }
-				event_target:riches_found_share_partner = { remove_opinion_modifier = { target = event_target:riches_found_share_controller modifier = riches_found_concession_partner } }
-				event_target:riches_found_share_controller = { remove_opinion_modifier = { target = event_target:riches_found_share_partner modifier = riches_found_concession_partner } }
+				var:riches_found_contract_share_controller = { save_event_target_as = riches_found_share_controller }
+				if = {
+					limit = { NOT = { riches_found_partner_pair_has_other_share = yes } }
+					event_target:riches_found_share_partner = { remove_opinion_modifier = { target = event_target:riches_found_share_controller modifier = riches_found_concession_partner } }
+					event_target:riches_found_share_controller = { remove_opinion_modifier = { target = event_target:riches_found_share_partner modifier = riches_found_concession_partner } }
+				}
 			}
 		}
+		clear_variable = riches_found_contract_share_controller
 	}
+}
+
+# STATE scope. Called when a suspended contract resumes after a control or
+# ownership change. A share recorded for the previous controller moves to the
+# current one, so the old pair's opinion ends and the new pair's begins.
+riches_found_repoint_contract_partner_share = {
+	if = {
+		limit = {
+			has_state_flag = riches_found_contract_share_recorded
+			has_variable = riches_found_contract_share_controller
+			check_variable = { var = riches_found_contract_share_controller value = CONTROLLER compare = not_equals }
+		}
+		riches_found_release_contract_partner_share = yes
+	}
+	riches_found_record_contract_partner_share = yes
 }
 
 # STATE scope. Buyout and compensated nationalization: the partner receives

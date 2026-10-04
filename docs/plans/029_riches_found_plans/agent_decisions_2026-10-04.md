@@ -225,3 +225,24 @@ Concessions report their contract type (limited, exclusive, offtake, infrastruct
 Collapses, evolution entries and containment results are priority reports: they replace an undelivered ordinary report, or wait in one deferred slot that is queued when the open report closes, so a waiting evolution report is never replaced and is not lost.
 Any other report arriving while one waits is dropped, and a report of the same kind that has not been delivered takes the newer text (the collapse pool and its collapse helper share one report).
 New ids live in the `riches_found_report_text` constant category (2001 and up), outside the incident id range.
+
+## Round 1 review, second pass
+
+Disposition: implemented by the round 1 reviewer under the same full-authority grant; source review only, and live-game behaviour remains with the orchestrator.
+
+R6. Concession opinion pairs (D13) were removed through the mine's current controller and only when the partner held no other Event 029 contract, so a contract that ended after the mine changed hands, or a partner holding contracts with two controllers, left a permanent `riches_found_concession_partner` pair behind.
+The share now stores the controller that holds it (`riches_found_contract_share_controller`), adds one opinion pair per partner and controller, and removes that pair with the last contract between those two, read through `riches_found_partner_pair_has_other_share`, a bounded check over the mine registry.
+A suspended contract that resumes under a new controller moves its share and opinion pair to that controller through `riches_found_repoint_contract_partner_share`, called from the resume branch of `riches_found_review_contract`.
+
+R7. An occupier's Reopen the Occupied Mine (D5, D10) still lifted a Demons Beneath the Mine closure end state, which the controller's own Reopen the Mine refuses; it now leaves a guarded, monitored or protected closure shut.
+
+R8. The Evacuate the Workforce mission description still said a severe collapse stops the evacuation, although D6 lets it start and finish from collapsed workings.
+It now says workers can be brought out of collapsed workings and that a new collapse or a closure during the evacuation stops it, which is what `riches_found_clear_mission_state` does when either begins.
+
+R9. The R5 timing sentence undercounted Demons Beneath the Mine: like the Resource Curse it has seven containment conditions, so a Demons mine meeting all seven is contained in five pulse intervals and one meeting the minimum four needs nine, while Gold Disease (six conditions, minimum four) takes six to nine.
+
+R10. The comment describing the foreign-phase policy menus sat above the D14 profile triggers after their insertion; it is back above `riches_found_policy_allows_concession_auction`.
+
+Reviewed and not changed: the refund branch of every paid decision returns exactly what its payment block took (a scripted comparison of each `complete_effect` debit list with its `remove_effect` refund list found no mismatch); every flag and scripted trigger shown in an `available` block has a label; every constant, helper, event id, sprite, dynamic modifier and opinion modifier the package references is defined; the shared Event Log hunks of `5777c32b1` contain only Event 029 lines; and no engineer commit touched another owner's file.
+A report event whose trigger fails at delivery would leave the mine's report slot pending; the only state-dependent triggers are the containment reports, whose tracks cannot relapse within the one-day delivery delay or an open report's timeout, so this is recorded rather than changed.
+MCP routes: `hoi4_event_inspect` in `lint` mode rejected string and object selectors for `chaosx.nr29.123` with "Invalid tool arguments", and `hoi4_decision_inspect` returned only a workspace-wide `DECISION_ANALYZED_PARTIAL` inventory, so this pass rests on source review.

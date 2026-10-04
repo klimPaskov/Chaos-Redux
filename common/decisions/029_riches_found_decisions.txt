@@ -5223,11 +5223,14 @@ decision_riches_found_occupation_reopen = {
 			}
 
 			FROM = {
+				# Only an undamaged ordinary closure reopens; depths contained
+				# as a guarded, monitored or protected closure stay shut.
 				if = {
 					limit = {
 						has_state_flag = riches_found_mine_temporary_closure
 						NOT = { has_state_flag = riches_found_mine_damaged }
 						NOT = { has_state_flag = riches_found_account_containment_pending }
+						NOT = { has_state_flag = riches_found_demons_contained_closure }
 					}
 					riches_found_begin_recovery = yes
 					riches_found_complete_recovery = yes
