@@ -2614,7 +2614,14 @@ africa_world_polity_actions_category = {
 				country_event = { id = africa_world_package.1 days = 1 }
 			}
 		}
-		ai_will_do = { base = constant:africa_world_package_protocol.ai_accept }
+		ai_will_do = {
+			base = constant:africa_world_package_protocol.ai_accept
+			# A government honoured at the Gods settlement is invited first.
+			modifier = {
+				factor = constant:africa_world_package_protocol.ai_gods_favored_invite_factor
+				FROM = { has_country_flag = gods_of_africa_world_history_favored }
+			}
+		}
 	}
 
 	# Constituent-owned: a member opens a time-bounded withdrawal notice.
@@ -2642,7 +2649,14 @@ africa_world_polity_actions_category = {
 		target_trigger = { FROM = { africa_world_constituent_can_coerce = yes } }
 		cost = constant:africa_world_roster.constituent_coercion_pp
 		complete_effect = { FROM = { africa_world_record_constituent_coercion = yes } }
-		ai_will_do = { base = constant:africa_world_package_protocol.ai_withdrawal_contest }
+		ai_will_do = {
+			base = constant:africa_world_package_protocol.ai_withdrawal_contest
+			# A government that permanently defied the Gods of Africa is a holdout.
+			modifier = {
+				factor = constant:africa_world_package_protocol.ai_gods_holdout_coerce_factor
+				FROM = { has_country_flag = gods_of_africa_world_history_holdout }
+			}
+		}
 	}
 
 	# Crossroads and Europe package polity boards.

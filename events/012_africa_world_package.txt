@@ -27,21 +27,45 @@ country_event = {
 	option = {
 		name = africa_world_package.1.a
 		custom_effect_tooltip = africa_world_package.1.a.tt
-		ai_chance = { base = constant:africa_world_package_protocol.ai_accept }
+		ai_chance = {
+			base = constant:africa_world_package_protocol.ai_accept
+			# The Gods of Africa settlement record carries into the world order.
+			modifier = {
+				factor = constant:africa_world_package_protocol.ai_gods_favored_accept_factor
+				has_country_flag = gods_of_africa_world_history_favored
+			}
+		}
 		set_country_flag = africa_world_constituent_protocol_accept
 		event_target:africa_world_protocol_package = { country_event = { id = africa_world_package.2 } }
 	}
 	option = {
 		name = africa_world_package.1.b
 		custom_effect_tooltip = africa_world_package.1.b.tt
-		ai_chance = { base = constant:africa_world_package_protocol.ai_negotiate }
+		ai_chance = {
+			base = constant:africa_world_package_protocol.ai_negotiate
+			# A government that gave Africa voluntary aid bargains from strength.
+			modifier = {
+				factor = constant:africa_world_package_protocol.ai_gods_voluntary_negotiate_factor
+				has_country_flag = gods_of_africa_world_history_voluntary_partner
+			}
+		}
 		africa_world_open_constituent_counterterms = yes
 		event_target:africa_world_protocol_package = { country_event = { id = africa_world_package.3 } }
 	}
 	option = {
 		name = africa_world_package.1.c
 		custom_effect_tooltip = africa_world_package.1.c.tt
-		ai_chance = { base = constant:africa_world_package_protocol.ai_refuse }
+		ai_chance = {
+			base = constant:africa_world_package_protocol.ai_refuse
+			modifier = {
+				factor = constant:africa_world_package_protocol.ai_gods_distrusted_refuse_factor
+				has_country_flag = gods_of_africa_world_history_distrusted
+			}
+			modifier = {
+				factor = constant:africa_world_package_protocol.ai_gods_holdout_refuse_factor
+				has_country_flag = gods_of_africa_world_history_holdout
+			}
+		}
 		set_country_flag = africa_world_constituent_protocol_refuse
 		event_target:africa_world_protocol_package = { country_event = { id = africa_world_package.4 } }
 	}

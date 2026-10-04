@@ -136,7 +136,15 @@ Favored and Respected governments are owed infantry equipment and fuel scaled to
 
 The obligation is frozen at the settlement and paid from Africa's real stocks: a first batch leaves at once, and the settling government's **Deliver settlement support** decision sends a further fair batch every 30 days. Each batch shares the spare equipment and fuel proportionally among the governments still owed, keeps Africa's operating reserves and a tenth of its army's equipment requirement, never overfills a fuel tank, and skips a government that is at war with Africa. The `.608` report names the standing, a short cause, and what has been delivered and is still owed.
 
-Standing diplomacy is applied once: Favored governments gain a strong positive memory and Africa's guarantee, Respected governments a positive memory and a non-aggression pact, Distrusted governments Africa's suspicion, and Enemies a hostile memory in both directions. A defeated, capitulated, or disappearing unifier cancels active demands, punishment jobs, participant presentation, and current authority. Delayed work is generation-checked and cannot revive the old system.
+Standing diplomacy is applied once: Favored governments gain a strong positive memory and Africa's guarantee, Respected governments a positive memory and a non-aggression pact, Distrusted governments Africa's suspicion, and Enemies a hostile memory in both directions.
+
+### World Is One
+
+When the world order opens, `gods_of_africa_initialize_world_order_history` seeds each Scramble participant's World record and then lets every country with real Gods history override it through `gods_of_africa_sync_world_history`; a settlement made while the world order is open updates the record at once.
+The frozen standing is used when one exists; before the settlement, permanent defiance or an unresolved broken agreement counts as Enemy.
+Enemies are excluded from ordinary founding invitations and remain holdout targets for the continental war.
+A Favored government is invited first and accepts more readily, a Distrusted government refuses more readily, a government that sent voluntary aid bargains (counterterms) more readily, and a government that permanently defied the Gods refuses far more often and is a likelier target of coercion.
+World Is One keeps its own invitation, consent, coercion, and terminal rules; these are only weights and exclusions on its existing choices. A defeated, capitulated, or disappearing unifier cancels active demands, punishment jobs, participant presentation, and current authority. Delayed work is generation-checked and cannot revive the old system.
 
 Final evaluation uses the maintained candidate census and retained enrollment history, so archived, capitulated, or later converted surviving participants can be evaluated without reopening their live contracts.
 Exact current-generation proof or the one explicitly inherited generation/origin is required, and previously unenrolled or vanished country objects receive nothing.

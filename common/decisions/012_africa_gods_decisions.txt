@@ -48,7 +48,9 @@ gods_of_africa_participant_category = {
 		}
 		complete_effect = { gods_of_africa_comply_demand = yes }
 		timeout_effect = { gods_of_africa_fail_demand = yes }
-		ai_will_do = { base = 1 }
+		# Opened only by the owner and closed only by response decisions or the
+		# timeout; the AI never selects this mission, so its score is zero.
+		ai_will_do = { base = 0 }
 	}
 
 	# A defiant or treaty-breaking participant receives a bounded reconciliation window. The
@@ -76,7 +78,9 @@ gods_of_africa_participant_category = {
 		cancel_effect = { hidden_effect = { remove_mission = gods_of_africa_reconciliation_mission } }
 		complete_effect = { hidden_effect = { gods_of_africa_complete_reconciliation = yes } }
 		timeout_effect = { gods_of_africa_fail_reconciliation = yes }
-		ai_will_do = { base = 1 }
+		# Opened only by the owner and closed only by response decisions or the
+		# timeout; the AI never selects this mission, so its score is zero.
+		ai_will_do = { base = 0 }
 	}
 
 	# A participant can make one meaningful voluntary shipment when Africa has
@@ -576,7 +580,20 @@ gods_of_africa_host_category = {
 			custom_effect_tooltip = gods_of_africa_choose_reciprocal_covenant_effect_tt
 			hidden_effect = { gods_of_africa_choose_reciprocal_covenant = yes }
 		}
-		ai_will_do = { base = 10 }
+		ai_will_do = {
+			base = constant:gods_of_africa_ai.doctrine_base
+			modifier = {
+				factor = constant:gods_of_africa_ai.reciprocal_peace_factor
+				has_war = no
+			}
+			modifier = {
+				factor = constant:gods_of_africa_ai.reciprocal_cooperation_factor
+				any_of_scopes = {
+					array = gods_of_africa_participants
+					has_country_flag = gods_of_africa_reliable_memory_applied
+				}
+			}
+		}
 	}
 
 	gods_of_africa_choose_sovereign_exaction = {
@@ -594,7 +611,20 @@ gods_of_africa_host_category = {
 			custom_effect_tooltip = gods_of_africa_choose_sovereign_exaction_effect_tt
 			hidden_effect = { gods_of_africa_choose_sovereign_exaction = yes }
 		}
-		ai_will_do = { base = 10 }
+		ai_will_do = {
+			base = constant:gods_of_africa_ai.doctrine_base
+			modifier = {
+				factor = constant:gods_of_africa_ai.exaction_war_factor
+				has_war = yes
+			}
+			modifier = {
+				factor = constant:gods_of_africa_ai.exaction_occupation_factor
+				any_of_scopes = {
+					array = gods_of_africa_participants
+					has_country_flag = gods_of_africa_territory_floor
+				}
+			}
+		}
 	}
 
 	gods_of_africa_choose_strategic_ambiguity = {
@@ -612,7 +642,13 @@ gods_of_africa_host_category = {
 			custom_effect_tooltip = gods_of_africa_choose_strategic_ambiguity_effect_tt
 			hidden_effect = { gods_of_africa_choose_strategic_ambiguity = yes }
 		}
-		ai_will_do = { base = 10 }
+		ai_will_do = {
+			base = constant:gods_of_africa_ai.doctrine_base
+			modifier = {
+				factor = constant:gods_of_africa_ai.ambiguity_high_chaos_factor
+				check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_4.min compare = greater_than_or_equals }
+			}
+		}
 	}
 
 	# Priority is a host policy choice, not a country selector. Each policy is
@@ -1099,7 +1135,11 @@ gods_of_africa_host_category = {
 			hidden_effect = { gods_of_africa_deliver_settlement_obligations = yes }
 		}
 		ai_will_do = {
-			base = 1
+			base = constant:gods_of_africa_ai.settlement_delivery_base
+			modifier = {
+				factor = constant:gods_of_africa_ai.settlement_delivery_war_factor
+				has_war = yes
+			}
 		}
 	}
 

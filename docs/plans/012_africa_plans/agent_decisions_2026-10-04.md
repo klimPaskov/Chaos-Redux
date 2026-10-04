@@ -152,3 +152,21 @@ Decisions:
 - A receiver at war with Africa keeps its balance and is skipped until peace; Africa does not arm a current enemy.
 - Distrusted standing records Africa's suspicion one way (the participant has no grievance to remember); Enemy standing records hostility both ways.
 - The report cause has six values (`gods_of_africa_settlement_cause`): sustained, mixed, inconsistent, unrecovered, no record, and hostility.
+
+## L14. Gods records in World Is One and the Gods AI weights
+
+Disposition: `implemented`; the probability audit is `blocked` (route below).
+
+Decisions:
+
+- World Is One reads the Gods record through the existing `gods_of_africa_world_history_*` flags, which are now set from the frozen settlement standing (or, before it, from permanent defiance and unresolved broken agreements) for every country with Gods history, on top of the Scramble-derived seed.
+  New markers: `gods_of_africa_world_history_voluntary_partner` (voluntary aid given) and `gods_of_africa_world_history_holdout` (permanent defiance).
+- Consumers are weights on existing World choices, from `africa_world_package_protocol` constants: invitation AI x2 for a Favored constituent, constituent accept x2 when Favored, refuse x2 when Distrusted and x4 for a holdout, counterterms x1.5 for a voluntary partner, coercion AI x2 against a holdout.
+  The existing Enemy exclusion from founding invitations and the holdout war-target signal are unchanged.
+- Doctrine weights come from the new `gods_of_africa_ai` group: base 10; Reciprocal Covenant x3 at peace and x1.5 when a participant has proven reliable; Sovereign Exaction x3 at war and x2 when a participant holds African core territory of the host; Strategic Ambiguity x4 from Chaos tier 4.
+- The two Gods missions are opened only by the owner and closed only by response decisions or timeout, so their AI score is an explicit zero.
+- Deliver settlement support: base 10, x0.25 while the host is at war.
+
+MCP route evidence (2026-10-04): `hoi4_probability_inspect` rejected every adapter-bearing call (`decision_ai_will_do` with a candidate pool, with a relative-path source, and alone) with "Invalid tool arguments", and an argument-free call returned `INTERNAL_ERROR` with zero artifacts.
+No baseline or same-scenario compare could be produced; per the takeover instruction the route was not retried in a loop.
+The weights above therefore carry no probability evidence and are listed for the separately routed AI probability audit.

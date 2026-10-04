@@ -310,6 +310,83 @@ gods_of_africa_initialize_world_order_history = {
 				}
 			}
 		}
+		# A real Gods of Africa record outranks the Scramble evidence.
+		for_each_scope_loop = {
+			array = gods_of_africa_candidate_registry
+			if = {
+				limit = { exists = yes }
+				gods_of_africa_sync_world_history = yes
+			}
+		}
+	}
+}
+
+# COUNTRY scope on a country with Gods of Africa history. World Is One reads the
+# frozen settlement standing, or the live record before the settlement:
+# permanent defiance or an unresolved broken agreement count as Enemy. Voluntary
+# aid and permanent defiance leave their own World markers.
+gods_of_africa_sync_world_history = {
+	if = {
+		limit = {
+			has_global_flag = africa_world_order_open
+			has_event_target = africa_host
+			gods_of_africa_participant_has_settlement_history = yes
+		}
+		set_temp_variable = { gods_of_africa_world_standing = constant:gods_of_africa_settlement.none }
+		if = {
+			limit = {
+				has_country_flag = gods_of_africa_final_outcome_committed
+				gods_of_africa_final_settlement_value_is_valid = yes
+			}
+			set_temp_variable = { gods_of_africa_world_standing = gods_of_africa_final_settlement }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_country_flag = gods_of_africa_defiant
+					has_country_flag = gods_of_africa_permanent_opt_out
+					has_country_flag = gods_of_africa_unresolved_treaty_break
+				}
+			}
+			set_temp_variable = { gods_of_africa_world_standing = constant:gods_of_africa_settlement.enemy }
+		}
+		if = {
+			limit = { check_variable = { gods_of_africa_world_standing > constant:gods_of_africa_settlement.none } }
+			set_country_flag = gods_of_africa_world_history_seeded
+			set_variable = { gods_of_africa_world_history_generation = event_target:africa_host.africa_host_generation }
+			set_variable = { gods_of_africa_world_history_status = gods_of_africa_world_standing }
+			clr_country_flag = gods_of_africa_world_history_favored
+			clr_country_flag = gods_of_africa_world_history_respected
+			clr_country_flag = gods_of_africa_world_history_distrusted
+			clr_country_flag = gods_of_africa_world_history_enemy
+			if = {
+				limit = { check_variable = { gods_of_africa_world_standing = constant:gods_of_africa_settlement.favored } }
+				set_country_flag = gods_of_africa_world_history_favored
+			}
+			else_if = {
+				limit = { check_variable = { gods_of_africa_world_standing = constant:gods_of_africa_settlement.respected } }
+				set_country_flag = gods_of_africa_world_history_respected
+			}
+			else_if = {
+				limit = { check_variable = { gods_of_africa_world_standing = constant:gods_of_africa_settlement.distrusted } }
+				set_country_flag = gods_of_africa_world_history_distrusted
+			}
+			else = { set_country_flag = gods_of_africa_world_history_enemy }
+		}
+		if = {
+			limit = { check_variable = { gods_of_africa_voluntary_aid_count > constant:gods_of_africa_value.zero } }
+			set_country_flag = gods_of_africa_world_history_voluntary_partner
+		}
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = gods_of_africa_permanent_opt_out
+					has_country_flag = gods_of_africa_grade_permanent_opt_out
+				}
+			}
+			set_country_flag = gods_of_africa_world_history_holdout
+		}
+		else = { clr_country_flag = gods_of_africa_world_history_holdout }
 	}
 }
 
