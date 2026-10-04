@@ -287,7 +287,11 @@ An officer or controlled programme that never widened civilian access stays in E
 
 ## Commander lifecycle
 
-The Rulebook Commander is assigned to at most one valid Swedish corps commander.
+The Rulebook Commander is a rare result of competitive command culture, not a guaranteed reward.
+The officer opening rolls a 20 percent chance, the competitive command culture option of `chaosx.nr24.11` rolls 35 percent, and a formal officer league rolls 25 percent, each from `video_game_in_sweden_award` constants.
+At most one commander is marked per programme, and the roll is skipped when no serving army commander leads troops.
+
+The trait is a land personality trait following the vanilla `war_hero` pattern, with `new_commander_weight` at zero, so it never appears in a trait tree and is never rolled for new leaders.
 
 The selection prefers an active Swedish field marshal and then an active Swedish general.
 

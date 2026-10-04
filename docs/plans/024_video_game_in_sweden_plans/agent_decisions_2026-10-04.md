@@ -61,3 +61,12 @@ Basis: spec part 3 and the decision map result table (partial falls to Doctrine 
 Decision: the logistics module, protect shifts, foreign licences, Dual-Track and the advanced logistics review use `cancel_if_not_visible = no` with a lost-host `cancel_trigger`.
 Each of these rows hides itself on completion, which previously cancelled the native timer at once and dropped the factory reservation the cost row promised.
 Basis: offline Decision modding, cancel behaviour (cancel_if_not_visible copies visible into cancel_trigger), and the cost philosophy in spec part 3.
+
+## D8. Rulebook Commander is an event-granted personality trait and a rare roll
+
+Decision: the trait is `type = land`, `trait_type = personality_trait` with `new_commander_weight` factor 0, following the vanilla `war_hero` precedent in `common/unit_leader/00_traits.txt`.
+It no longer uses `assignable_trait` or `gui_row = 16`, so it cannot appear in a corps commander's trait tree beside the purchasable CBRN trait on that row.
+Assignment is a constant-weighted `random_list` roll through `video_game_in_sweden_roll_rulebook_commander`: 20 percent at the officer opening, 35 percent on choosing competitive command culture in `chaosx.nr24.11`, and 25 percent on formalizing the officer league.
+The persistent `video_game_in_sweden_rulebook_commander_granted` flag limits the programme to one marked commander, even after validation removes the trait.
+Validation, transfer, retirement and closure removal are unchanged.
+Basis: spec part 2 commander rules (only one commander, rare route result, safe skip) and the installed `random_list` documentation, which accepts variable weights.

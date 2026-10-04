@@ -178,6 +178,7 @@ video_game_in_sweden_initialize_program = {
 			clear_global_event_target = video_game_in_sweden_last_partner
 		}
 		clr_country_flag = video_game_in_sweden_rulebook_commander_assigned
+		clr_country_flag = video_game_in_sweden_rulebook_commander_granted
 		set_country_flag = video_game_in_sweden_host_selected
 		set_country_flag = video_game_in_sweden_program_active
 		clr_country_flag = video_game_in_sweden_program_closing
@@ -519,7 +520,8 @@ video_game_in_sweden_open_competitive_officer_league = {
 	}
 	army_experience = constant:video_game_in_sweden_award.officer_opening_army_experience
 	add_command_power = constant:video_game_in_sweden_award.officer_opening_command_power
-	video_game_in_sweden_assign_rulebook_commander = yes
+	set_temp_variable = { video_game_in_sweden_commander_chance = constant:video_game_in_sweden_award.commander_chance_officer_opening }
+	video_game_in_sweden_roll_rulebook_commander = yes
 	video_game_in_sweden_refresh_reliance_state = yes
 	video_game_in_sweden_refresh_stage_idea = yes
 	set_variable = { video_game_in_sweden_incident_ready_day = constant:video_game_in_sweden_timing.incident_cooldown_days }
@@ -530,9 +532,45 @@ video_game_in_sweden_open_competitive_officer_league = {
 	country_event = { id = chaosx.nr24.90 days = constant:video_game_in_sweden_timing.maintenance_days }
 }
 
+# COUNTRY scope. Rare competitive-culture result. Input: caller-owned temp
+# video_game_in_sweden_commander_chance, a percentage from the award constants.
+# The officer opening, competitive command culture and a formal officer league
+# each roll once. At most one commander is ever marked per programme, and the
+# roll is skipped safely when no serving army commander leads troops.
+video_game_in_sweden_roll_rulebook_commander = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = video_game_in_sweden_rulebook_commander_granted }
+			check_variable = { video_game_in_sweden_commander_chance > constant:video_game_in_sweden_value.zero }
+			any_unit_leader = {
+				is_army_leader = yes
+				is_assigned = yes
+				num_units > constant:video_game_in_sweden_value.zero
+			}
+		}
+		set_temp_variable = { video_game_in_sweden_commander_miss = constant:video_game_in_sweden_value.maximum }
+		subtract_from_temp_variable = { video_game_in_sweden_commander_miss = video_game_in_sweden_commander_chance }
+		clamp_temp_variable = {
+			var = video_game_in_sweden_commander_miss
+			min = constant:video_game_in_sweden_value.zero
+			max = constant:video_game_in_sweden_value.maximum
+		}
+		random_list = {
+			video_game_in_sweden_commander_chance = {
+				video_game_in_sweden_assign_rulebook_commander = yes
+			}
+			video_game_in_sweden_commander_miss = {
+			}
+		}
+	}
+}
+
 video_game_in_sweden_assign_rulebook_commander = {
 	if = {
-		limit = { NOT = { has_country_flag = video_game_in_sweden_rulebook_commander_assigned } }
+		limit = {
+			NOT = { has_country_flag = video_game_in_sweden_rulebook_commander_assigned }
+			NOT = { has_country_flag = video_game_in_sweden_rulebook_commander_granted }
+		}
 		if = {
 			limit = {
 				any_unit_leader = {
@@ -580,6 +618,7 @@ video_game_in_sweden_assign_rulebook_commander = {
 		if = {
 			limit = { has_event_target = video_game_in_sweden_rulebook_commander }
 			set_country_flag = video_game_in_sweden_rulebook_commander_assigned
+			set_country_flag = video_game_in_sweden_rulebook_commander_granted
 		}
 	}
 }
@@ -925,6 +964,8 @@ video_game_in_sweden_do_officer_league = {
 	set_country_flag = video_game_in_sweden_officer_league_complete
 	set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.officer_league_gain }
 	video_game_in_sweden_change_reliance = yes
+	set_temp_variable = { video_game_in_sweden_commander_chance = constant:video_game_in_sweden_award.commander_chance_officer_league }
+	video_game_in_sweden_roll_rulebook_commander = yes
 }
 
 video_game_in_sweden_do_national_league = {
