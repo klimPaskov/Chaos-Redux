@@ -1207,6 +1207,14 @@ acid_rain_prepare_current_row_quote = {
 	}
 	else = { set_temp_variable = { acid_rain_quote_valid = constant:acid_rain_runtime.zero } }
 	if = { limit = { check_variable = { var = acid_rain_quote_days value = constant:acid_rain_runtime.zero compare = less_than_or_equals } } set_temp_variable = { acid_rain_quote_valid = constant:acid_rain_runtime.zero } }
+	acid_rain_finalize_loaded_quote = yes
+	always = yes
+}
+
+# COUNTRY SCOPE. Applies the universal cost quote to every loaded raw family
+# in the acid_rain_quote_* temporaries and rejects a factory commitment above
+# the authored limit. Shared by affordability, debit and the cost display.
+acid_rain_finalize_loaded_quote = {
 	set_temp_variable = { acid_rain_component_ordinary = acid_rain_quote_political_power }
 	set_temp_variable = { acid_rain_component_family = constant:universal_cost_family.political_power }
 	acid_rain_quote_component = yes

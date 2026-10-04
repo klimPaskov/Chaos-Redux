@@ -1,103 +1,309 @@
 # Event 033: Acid Rain
-# Omits zero-valued resource families from the decision cost quote while preserving every nonzero commitment.
+# Decision cost text parts and the world window presentation helpers.
+
+# Decision cost text. Each part reads a persistent display row written by
+# acid_rain_store_project_cost_display or acid_rain_store_action_cost_display
+# and stays empty when that family costs nothing.
 
 defined_text = {
-	name = GetAcidRainQuotedPoliticalPowerCost
-	text = { trigger = { check_variable = { var = acid_rain_quote_political_power value = constant:acid_rain_runtime.zero compare = greater_than } } localization_key = acid_rain_cost.political_power }
-	text = { localization_key = acid_rain_cost.empty }
+	name = GetAcidRainCostProjectShelterCiv
+	text = { trigger = { check_variable = { acid_rain_cost_project_shelter_civ > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_project_shelter_civ_part }
+	text = { localization_key = acid_rain_cost_empty }
 }
 
 defined_text = {
-	name = GetAcidRainQuotedPoliticalPowerCostBlocked
-	text = { trigger = { check_variable = { var = acid_rain_quote_political_power value = constant:acid_rain_runtime.zero compare = greater_than } } localization_key = acid_rain_cost.political_power.blocked }
-	text = { localization_key = acid_rain_cost.empty }
+	name = GetAcidRainCostProjectShelterSupport
+	text = { trigger = { check_variable = { acid_rain_cost_project_shelter_support > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_project_shelter_support_part }
+	text = { localization_key = acid_rain_cost_empty }
 }
 
 defined_text = {
-	name = GetAcidRainQuotedCivilianFactoryCost
-	text = { trigger = { check_variable = { var = acid_rain_quote_civilian_factories value = constant:acid_rain_runtime.zero compare = greater_than } } localization_key = acid_rain_cost.civilian_factories }
-	text = { localization_key = acid_rain_cost.empty }
+	name = GetAcidRainCostProjectShelterManpower
+	text = { trigger = { check_variable = { acid_rain_cost_project_shelter_manpower > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_project_shelter_manpower_part }
+	text = { localization_key = acid_rain_cost_empty }
 }
 
 defined_text = {
-	name = GetAcidRainQuotedCivilianFactoryCostBlocked
-	text = { trigger = { check_variable = { var = acid_rain_quote_civilian_factories value = constant:acid_rain_runtime.zero compare = greater_than } } localization_key = acid_rain_cost.civilian_factories.blocked }
-	text = { localization_key = acid_rain_cost.empty }
+	name = GetAcidRainCostProjectWaterCiv
+	text = { trigger = { check_variable = { acid_rain_cost_project_water_civ > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_project_water_civ_part }
+	text = { localization_key = acid_rain_cost_empty }
 }
 
 defined_text = {
-	name = GetAcidRainQuotedManpowerCost
-	text = { trigger = { check_variable = { var = acid_rain_quote_manpower value = constant:acid_rain_runtime.zero compare = greater_than } } localization_key = acid_rain_cost.manpower }
-	text = { localization_key = acid_rain_cost.empty }
+	name = GetAcidRainCostProjectWaterSupport
+	text = { trigger = { check_variable = { acid_rain_cost_project_water_support > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_project_water_support_part }
+	text = { localization_key = acid_rain_cost_empty }
 }
 
 defined_text = {
-	name = GetAcidRainQuotedManpowerCostBlocked
-	text = { trigger = { check_variable = { var = acid_rain_quote_manpower value = constant:acid_rain_runtime.zero compare = greater_than } } localization_key = acid_rain_cost.manpower.blocked }
-	text = { localization_key = acid_rain_cost.empty }
+	name = GetAcidRainCostProjectWaterTrain
+	text = { trigger = { check_variable = { acid_rain_cost_project_water_train > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_project_water_train_part }
+	text = { localization_key = acid_rain_cost_empty }
 }
 
 defined_text = {
-	name = GetAcidRainQuotedSupportEquipmentCost
-	text = { trigger = { check_variable = { var = acid_rain_quote_support value = constant:acid_rain_runtime.zero compare = greater_than } } localization_key = acid_rain_cost.support_equipment }
-	text = { localization_key = acid_rain_cost.empty }
+	name = GetAcidRainCostProjectWaterConvoy
+	text = { trigger = { check_variable = { acid_rain_cost_project_water_convoy > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_project_water_convoy_part }
+	text = { localization_key = acid_rain_cost_empty }
 }
 
 defined_text = {
-	name = GetAcidRainQuotedSupportEquipmentCostBlocked
-	text = { trigger = { check_variable = { var = acid_rain_quote_support value = constant:acid_rain_runtime.zero compare = greater_than } } localization_key = acid_rain_cost.support_equipment.blocked }
-	text = { localization_key = acid_rain_cost.empty }
+	name = GetAcidRainCostProjectWaterManpower
+	text = { trigger = { check_variable = { acid_rain_cost_project_water_manpower > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_project_water_manpower_part }
+	text = { localization_key = acid_rain_cost_empty }
 }
 
 defined_text = {
-	name = GetAcidRainQuotedTrainCost
-	text = { trigger = { check_variable = { var = acid_rain_quote_train value = constant:acid_rain_runtime.zero compare = greater_than } } localization_key = acid_rain_cost.trains }
-	text = { localization_key = acid_rain_cost.empty }
+	name = GetAcidRainCostProjectMedicalCiv
+	text = { trigger = { check_variable = { acid_rain_cost_project_medical_civ > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_project_medical_civ_part }
+	text = { localization_key = acid_rain_cost_empty }
 }
 
 defined_text = {
-	name = GetAcidRainQuotedTrainCostBlocked
-	text = { trigger = { check_variable = { var = acid_rain_quote_train value = constant:acid_rain_runtime.zero compare = greater_than } } localization_key = acid_rain_cost.trains.blocked }
-	text = { localization_key = acid_rain_cost.empty }
+	name = GetAcidRainCostProjectMedicalSupport
+	text = { trigger = { check_variable = { acid_rain_cost_project_medical_support > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_project_medical_support_part }
+	text = { localization_key = acid_rain_cost_empty }
 }
 
 defined_text = {
-	name = GetAcidRainQuotedConvoyCost
-	text = { trigger = { check_variable = { var = acid_rain_quote_convoy value = constant:acid_rain_runtime.zero compare = greater_than } } localization_key = acid_rain_cost.convoys }
-	text = { localization_key = acid_rain_cost.empty }
+	name = GetAcidRainCostProjectMedicalManpower
+	text = { trigger = { check_variable = { acid_rain_cost_project_medical_manpower > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_project_medical_manpower_part }
+	text = { localization_key = acid_rain_cost_empty }
 }
 
 defined_text = {
-	name = GetAcidRainQuotedConvoyCostBlocked
-	text = { trigger = { check_variable = { var = acid_rain_quote_convoy value = constant:acid_rain_runtime.zero compare = greater_than } } localization_key = acid_rain_cost.convoys.blocked }
-	text = { localization_key = acid_rain_cost.empty }
+	name = GetAcidRainCostProjectMedicalFuel
+	text = { trigger = { check_variable = { acid_rain_cost_project_medical_fuel > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_project_medical_fuel_part }
+	text = { localization_key = acid_rain_cost_empty }
 }
 
 defined_text = {
-	name = GetAcidRainQuotedMotorizedCost
-	text = { trigger = { check_variable = { var = acid_rain_quote_motorized value = constant:acid_rain_runtime.zero compare = greater_than } } localization_key = acid_rain_cost.motorized }
-	text = { localization_key = acid_rain_cost.empty }
+	name = GetAcidRainCostProjectTransportCiv
+	text = { trigger = { check_variable = { acid_rain_cost_project_transport_civ > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_project_transport_civ_part }
+	text = { localization_key = acid_rain_cost_empty }
 }
 
 defined_text = {
-	name = GetAcidRainQuotedMotorizedCostBlocked
-	text = { trigger = { check_variable = { var = acid_rain_quote_motorized value = constant:acid_rain_runtime.zero compare = greater_than } } localization_key = acid_rain_cost.motorized.blocked }
-	text = { localization_key = acid_rain_cost.empty }
+	name = GetAcidRainCostProjectTransportTrain
+	text = { trigger = { check_variable = { acid_rain_cost_project_transport_train > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_project_transport_train_part }
+	text = { localization_key = acid_rain_cost_empty }
 }
 
 defined_text = {
-	name = GetAcidRainQuotedFuelCost
-	text = { trigger = { check_variable = { var = acid_rain_quote_fuel value = constant:acid_rain_runtime.zero compare = greater_than } } localization_key = acid_rain_cost.fuel }
-	text = { localization_key = acid_rain_cost.empty }
+	name = GetAcidRainCostProjectTransportMotorized
+	text = { trigger = { check_variable = { acid_rain_cost_project_transport_motorized > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_project_transport_motorized_part }
+	text = { localization_key = acid_rain_cost_empty }
 }
 
 defined_text = {
-	name = GetAcidRainQuotedFuelCostBlocked
-	text = { trigger = { check_variable = { var = acid_rain_quote_fuel value = constant:acid_rain_runtime.zero compare = greater_than } } localization_key = acid_rain_cost.fuel.blocked }
-	text = { localization_key = acid_rain_cost.empty }
+	name = GetAcidRainCostProjectTransportFuel
+	text = { trigger = { check_variable = { acid_rain_cost_project_transport_fuel > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_project_transport_fuel_part }
+	text = { localization_key = acid_rain_cost_empty }
 }
 
-# GUI-only presentation helpers. Cost helpers above remain unchanged.
+defined_text = {
+	name = GetAcidRainCostUrgentShelterPoliticalPower
+	text = { trigger = { check_variable = { acid_rain_cost_urgent_shelter_political_power > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_urgent_shelter_political_power_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostUrgentShelterSupport
+	text = { trigger = { check_variable = { acid_rain_cost_urgent_shelter_support > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_urgent_shelter_support_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostUrgentShelterManpower
+	text = { trigger = { check_variable = { acid_rain_cost_urgent_shelter_manpower > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_urgent_shelter_manpower_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostUrgentWaterSupport
+	text = { trigger = { check_variable = { acid_rain_cost_urgent_water_support > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_urgent_water_support_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostUrgentWaterTrain
+	text = { trigger = { check_variable = { acid_rain_cost_urgent_water_train > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_urgent_water_train_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostUrgentWaterConvoy
+	text = { trigger = { check_variable = { acid_rain_cost_urgent_water_convoy > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_urgent_water_convoy_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostUrgentWaterManpower
+	text = { trigger = { check_variable = { acid_rain_cost_urgent_water_manpower > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_urgent_water_manpower_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostUrgentMedicalSupport
+	text = { trigger = { check_variable = { acid_rain_cost_urgent_medical_support > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_urgent_medical_support_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostUrgentMedicalManpower
+	text = { trigger = { check_variable = { acid_rain_cost_urgent_medical_manpower > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_urgent_medical_manpower_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostUrgentMedicalFuel
+	text = { trigger = { check_variable = { acid_rain_cost_urgent_medical_fuel > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_urgent_medical_fuel_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostUrgentTransportTrain
+	text = { trigger = { check_variable = { acid_rain_cost_urgent_transport_train > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_urgent_transport_train_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostUrgentTransportMotorized
+	text = { trigger = { check_variable = { acid_rain_cost_urgent_transport_motorized > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_urgent_transport_motorized_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostUrgentTransportFuel
+	text = { trigger = { check_variable = { acid_rain_cost_urgent_transport_fuel > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_urgent_transport_fuel_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostEvacuateLandManpower
+	text = { trigger = { check_variable = { acid_rain_cost_evacuate_land_manpower > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_evacuate_land_manpower_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostEvacuateLandMotorized
+	text = { trigger = { check_variable = { acid_rain_cost_evacuate_land_motorized > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_evacuate_land_motorized_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostEvacuateLandTrain
+	text = { trigger = { check_variable = { acid_rain_cost_evacuate_land_train > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_evacuate_land_train_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostEvacuateLandFuel
+	text = { trigger = { check_variable = { acid_rain_cost_evacuate_land_fuel > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_evacuate_land_fuel_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostEvacuateIslandConvoy
+	text = { trigger = { check_variable = { acid_rain_cost_evacuate_island_convoy > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_evacuate_island_convoy_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostRecoveryTransportCiv
+	text = { trigger = { check_variable = { acid_rain_cost_recovery_transport_civ > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_recovery_transport_civ_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostRecoveryTransportTrain
+	text = { trigger = { check_variable = { acid_rain_cost_recovery_transport_train > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_recovery_transport_train_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostRecoveryTransportMotorized
+	text = { trigger = { check_variable = { acid_rain_cost_recovery_transport_motorized > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_recovery_transport_motorized_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostRecoveryTransportFuel
+	text = { trigger = { check_variable = { acid_rain_cost_recovery_transport_fuel > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_recovery_transport_fuel_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostDecontaminateLandCiv
+	text = { trigger = { check_variable = { acid_rain_cost_decontaminate_land_civ > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_decontaminate_land_civ_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostDecontaminateLandSupport
+	text = { trigger = { check_variable = { acid_rain_cost_decontaminate_land_support > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_decontaminate_land_support_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostDecontaminateLandManpower
+	text = { trigger = { check_variable = { acid_rain_cost_decontaminate_land_manpower > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_decontaminate_land_manpower_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostDecontaminateLandTrain
+	text = { trigger = { check_variable = { acid_rain_cost_decontaminate_land_train > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_decontaminate_land_train_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostDecontaminateIslandConvoy
+	text = { trigger = { check_variable = { acid_rain_cost_decontaminate_island_convoy > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_decontaminate_island_convoy_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostRecoveryIndustryCiv
+	text = { trigger = { check_variable = { acid_rain_cost_recovery_industry_civ > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_recovery_industry_civ_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostRecoveryIndustrySupport
+	text = { trigger = { check_variable = { acid_rain_cost_recovery_industry_support > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_recovery_industry_support_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostRecoveryIndustryManpower
+	text = { trigger = { check_variable = { acid_rain_cost_recovery_industry_manpower > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_recovery_industry_manpower_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostDemobilizePoliticalPower
+	text = { trigger = { check_variable = { acid_rain_cost_demobilize_political_power > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_demobilize_political_power_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostEvacuateRoute
+	text = { trigger = { check_variable = { acid_rain_cost_evacuate_land_train > constant:acid_rain_runtime.zero } check_variable = { acid_rain_cost_evacuate_island_convoy > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_evacuate_route_both_part }
+	text = { trigger = { check_variable = { acid_rain_cost_evacuate_land_train > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_evacuate_land_train_part }
+	text = { trigger = { check_variable = { acid_rain_cost_evacuate_island_convoy > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_evacuate_island_convoy_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+defined_text = {
+	name = GetAcidRainCostDecontaminateRoute
+	text = { trigger = { check_variable = { acid_rain_cost_decontaminate_land_train > constant:acid_rain_runtime.zero } check_variable = { acid_rain_cost_decontaminate_island_convoy > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_decontaminate_route_both_part }
+	text = { trigger = { check_variable = { acid_rain_cost_decontaminate_land_train > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_decontaminate_land_train_part }
+	text = { trigger = { check_variable = { acid_rain_cost_decontaminate_island_convoy > constant:acid_rain_runtime.zero } } localization_key = acid_rain_cost_decontaminate_island_convoy_part }
+	text = { localization_key = acid_rain_cost_empty }
+}
+
+# GUI presentation helpers.
 defined_text = {
 	name = GetAcidRainGuiPhase
 	text = { trigger = { check_variable = { var = global.acid_rain_phase value = constant:acid_rain_phase.formation compare = equals } } localization_key = acid_rain_gui_phase_formation }

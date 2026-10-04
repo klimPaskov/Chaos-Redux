@@ -8,11 +8,10 @@
 # below selects a matrix row and calls the runtime API; it never scans the
 # world or substitutes a mortality effect.
 #
-# The quote effects must populate the acid_rain_quote_* variables before the
-# cost trigger is evaluated and again immediately before the start effect.
-# All zero-valued quote fields must remain zero so the shared dynamic cost
-# localisation can hide them and keep every action at four or fewer spendable
-# cost families.
+# Each custom_cost_trigger rebuilds the final quote from the stored row, the
+# same path the start effect debits. The custom_cost_text keys read the
+# persistent acid_rain_cost_<row>_<family> display rows that the quote
+# refresh effects publish for players, and hide every zero-valued family.
 
 @acid_rain_ai_project_shelter = 120
 @acid_rain_ai_project_water = 115
