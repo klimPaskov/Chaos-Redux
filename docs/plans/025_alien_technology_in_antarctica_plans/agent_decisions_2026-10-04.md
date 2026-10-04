@@ -433,3 +433,20 @@ Source count of listed entries per phase (one rival selected, missions excluded,
 | Final recovery | 5 (five approaches) | 3 (+1 countermeasure) | 3 upkeep |
 
 The Expedition Board category never exceeds five entries and Rival Operations never exceeds six. Before the change the survey phase listed up to 14 entries in one category for a single rival and five more for every further rival.
+
+## D26. Gateway groups, route bands and route interruption
+
+Disposition: `implemented`; actual map behaviour is `needs_live_game`.
+
+Basis: spec 002 (Route burden, Gateway groups), spec 005 (Secure gateway access), the participant and route matrix (route families, cost factors, invalidation), spec 014 section 3, and the lead's finding that the three gateways differed only in a display variable.
+
+Decision:
+
+- Gateway groups follow the route matrix and spec 002, with New Zealand as its own fourth group: Cape Horn (Tierra del Fuego 953, Magallanes 507, the Falklands 299), Cape Town (the Cape 681, Natal 719), Tasman (Tasmania 518, Victoria 517) and Ross Sea (Canterbury 723, Otago 1081). The ids were taken from a narrow source lookup of the installed `history/states` files and `state_names_l_english.yml` (Chaos Redux ships no state or map overrides) and live in `chaosx_nr25_gateway_state`. A fourth gateway decision, Open the Ross Sea Gateway, takes the free fourth crossing slot on the board.
+- Bands are rated per expedition from those nine states only (`chaosx_nr25_refresh_gateway_bands`): direct if the expedition controls a port; allied if the port holder is a faction partner, a subject, its overlord or has an opinion of the expedition above 50 (a file constant, because opinion comparisons in the existing precedents use `@` constants); long ocean otherwise; chartered for a chartered-passage expedition; closed when every port holder is at war with the expedition. Improvised is the route band after a failed gateway objective or an alternate landing from a cut route.
+- The band sets the gateway cost (at most three resource types: the allied band trades support equipment for a political fee, since the port holder supplies the stores), the reach-the-gateway objective's length (90/120/150/150 days, with `add_days_mission_timeout` moving the native timer to match) and the route upkeep each pulse (1/2/3/3, 4 improvised or cut, 2 before sailing), all in `chaosx_nr25_gateway`. The flat crossing constants and the flat pulse drain are retired. Authorisation and the entry charter no longer pre-set a gateway route, so the board shows "Not selected" until a gateway is chosen.
+- Cost rows, `_blocked` and `_tooltip` variants, board card costs and the board route row (route and band) read the band through scripted localisation. The AI progress floor (D23) saves for the best open band's cost.
+- A gateway is unavailable while every port holder of its group is at war with the expedition (stored band) and while the holder of its best port is at war with it (live check). When the expedition's chosen group closes, the pulse cuts the route: report `chaosx.nr25.13` (reusing the crossing report card), readiness −8, one route collapse for AI withdrawal, and the crossing, outpost and supply-route objectives cannot complete. Recovery is the alternate landing (now offered while the route is cut, from crossing to final recovery, as an improvised route) or the new Charter Emergency Passage in Expedition Safety (40 political power, 100 fuel, a chartered route; also offered after an improvised landing). The AI weighs both (+24 and +20 while cut) on the progress reserve.
+- The AI adds 30 to a direct-band gateway and 15 to an allied one, enough to outweigh the earlier mobilisation preferences (+10), so it takes the best open band.
+
+Validation limits: the band rating, the `var:` state scope from a stored state id and the trigger-side temporary band variable follow the wiki's Data structures rules and vanilla trigger precedents but are `needs_live_game`; no map render was made because the change reads existing states without editing the map.

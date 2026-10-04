@@ -547,6 +547,17 @@ chaosx_nr25_phase_mission_can_complete = {
 	NOT = { has_country_flag = chaosx_nr25_emergency_weather }
 	NOT = { has_country_flag = chaosx_nr25_crew_exhausted }
 	check_variable = { var = chaosx_nr25_logistics_readiness value = constant:chaosx_nr25_mission_timing.failure_readiness_floor compare = greater_than_or_equals }
+	# A cut supply route stops the objectives that depend on it.
+	NOT = {
+		AND = {
+			has_country_flag = chaosx_nr25_route_interrupted
+			OR = {
+				check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.reach_gateway compare = equals }
+				check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.establish_outpost compare = equals }
+				check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.protect_supply_route compare = equals }
+			}
+		}
+	}
 }
 
 # Country scope. The recovery receipt requirements, excluding the mission-state
@@ -705,7 +716,107 @@ chaosx_nr25_action_gateway_available = {
 		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals }
 		NOT = { has_country_flag = chaosx_nr25_action_gateway_used }
 	}
-	chaosx_nr25_gateway_cost_available = yes
+}
+
+# Country scope. One contract per gateway group: the group is open (one of its
+# ports is held by a country not at war with us, as stored by
+# chaosx_nr25_refresh_gateway_bands and checked live against the port holder
+# of the best band), and the expedition can pay that band's cost. The cost row
+# shows the payment, so the cost check stays out of the requirement list.
+chaosx_nr25_action_south_america_gateway_available = {
+	chaosx_nr25_action_gateway_available = yes
+	chaosx_nr25_gateway_south_america_open = yes
+	hidden_trigger = { chaosx_nr25_gateway_south_america_cost_available = yes }
+}
+
+chaosx_nr25_gateway_south_america_open = {
+	custom_trigger_tooltip = {
+		tooltip = chaosx_nr25_gateway_open_tt
+		check_variable = { var = chaosx_nr25_gateway_band_south_america value = constant:chaosx_nr25_gateway_band.none compare = greater_than }
+		check_variable = { var = chaosx_nr25_gateway_band_south_america value = constant:chaosx_nr25_gateway_band.closed compare = less_than }
+		has_variable = chaosx_nr25_gateway_controller_south_america
+		var:chaosx_nr25_gateway_controller_south_america = { NOT = { has_war_with = PREV } }
+	}
+}
+
+chaosx_nr25_gateway_south_america_cost_available = {
+	custom_trigger_tooltip = {
+		tooltip = chaosx_nr25_gateway_cost_ready_tt
+		set_temp_variable = { chaosx_nr25_gw_band = chaosx_nr25_gateway_band_south_america }
+		chaosx_nr25_gateway_band_cost_available = yes
+	}
+}
+
+chaosx_nr25_action_africa_gateway_available = {
+	chaosx_nr25_action_gateway_available = yes
+	chaosx_nr25_gateway_africa_open = yes
+	hidden_trigger = { chaosx_nr25_gateway_africa_cost_available = yes }
+}
+
+chaosx_nr25_gateway_africa_open = {
+	custom_trigger_tooltip = {
+		tooltip = chaosx_nr25_gateway_open_tt
+		check_variable = { var = chaosx_nr25_gateway_band_africa value = constant:chaosx_nr25_gateway_band.none compare = greater_than }
+		check_variable = { var = chaosx_nr25_gateway_band_africa value = constant:chaosx_nr25_gateway_band.closed compare = less_than }
+		has_variable = chaosx_nr25_gateway_controller_africa
+		var:chaosx_nr25_gateway_controller_africa = { NOT = { has_war_with = PREV } }
+	}
+}
+
+chaosx_nr25_gateway_africa_cost_available = {
+	custom_trigger_tooltip = {
+		tooltip = chaosx_nr25_gateway_cost_ready_tt
+		set_temp_variable = { chaosx_nr25_gw_band = chaosx_nr25_gateway_band_africa }
+		chaosx_nr25_gateway_band_cost_available = yes
+	}
+}
+
+chaosx_nr25_action_tasmania_gateway_available = {
+	chaosx_nr25_action_gateway_available = yes
+	chaosx_nr25_gateway_tasmania_open = yes
+	hidden_trigger = { chaosx_nr25_gateway_tasmania_cost_available = yes }
+}
+
+chaosx_nr25_gateway_tasmania_open = {
+	custom_trigger_tooltip = {
+		tooltip = chaosx_nr25_gateway_open_tt
+		check_variable = { var = chaosx_nr25_gateway_band_tasmania value = constant:chaosx_nr25_gateway_band.none compare = greater_than }
+		check_variable = { var = chaosx_nr25_gateway_band_tasmania value = constant:chaosx_nr25_gateway_band.closed compare = less_than }
+		has_variable = chaosx_nr25_gateway_controller_tasmania
+		var:chaosx_nr25_gateway_controller_tasmania = { NOT = { has_war_with = PREV } }
+	}
+}
+
+chaosx_nr25_gateway_tasmania_cost_available = {
+	custom_trigger_tooltip = {
+		tooltip = chaosx_nr25_gateway_cost_ready_tt
+		set_temp_variable = { chaosx_nr25_gw_band = chaosx_nr25_gateway_band_tasmania }
+		chaosx_nr25_gateway_band_cost_available = yes
+	}
+}
+
+chaosx_nr25_action_new_zealand_gateway_available = {
+	chaosx_nr25_action_gateway_available = yes
+	chaosx_nr25_gateway_new_zealand_open = yes
+	hidden_trigger = { chaosx_nr25_gateway_new_zealand_cost_available = yes }
+}
+
+chaosx_nr25_gateway_new_zealand_open = {
+	custom_trigger_tooltip = {
+		tooltip = chaosx_nr25_gateway_open_tt
+		check_variable = { var = chaosx_nr25_gateway_band_new_zealand value = constant:chaosx_nr25_gateway_band.none compare = greater_than }
+		check_variable = { var = chaosx_nr25_gateway_band_new_zealand value = constant:chaosx_nr25_gateway_band.closed compare = less_than }
+		has_variable = chaosx_nr25_gateway_controller_new_zealand
+		var:chaosx_nr25_gateway_controller_new_zealand = { NOT = { has_war_with = PREV } }
+	}
+}
+
+chaosx_nr25_gateway_new_zealand_cost_available = {
+	custom_trigger_tooltip = {
+		tooltip = chaosx_nr25_gateway_cost_ready_tt
+		set_temp_variable = { chaosx_nr25_gw_band = chaosx_nr25_gateway_band_new_zealand }
+		chaosx_nr25_gateway_band_cost_available = yes
+	}
 }
 
 chaosx_nr25_action_establish_outpost_available = {
@@ -748,16 +859,55 @@ chaosx_nr25_action_shelter_available = {
 chaosx_nr25_action_alternate_landing_available = {
 	chaosx_nr25_primary_action_available = yes
 	hidden_trigger = {
-		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals }
 		NOT = { has_country_flag = chaosx_nr25_action_alternate_landing_used }
+		OR = {
+			check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals }
+			chaosx_nr25_route_recovery_phase = yes
+		}
 	}
 	OR = {
+		has_country_flag = chaosx_nr25_route_interrupted
 		has_country_flag = chaosx_nr25_route_improvised
 		has_country_flag = chaosx_nr25_outpost_compromised
 		has_country_flag = chaosx_nr25_convoy_incident
 		has_country_flag = chaosx_nr25_emergency_weather
 	}
 	chaosx_nr25_alternate_landing_cost_available = yes
+}
+
+# Country scope. The expedition is past its departure and before the race
+# resolves, so a cut route can be replaced.
+chaosx_nr25_route_recovery_phase = {
+	has_country_flag = chaosx_nr25_route_interrupted
+	OR = {
+		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals }
+		chaosx_nr25_sustain_phase_active = yes
+	}
+}
+
+# Country scope. Emergency neutral charter replaces a route that was cut by a
+# war with its port holders or that collapsed into an improvised landing.
+chaosx_nr25_emergency_charter_needed = {
+	has_country_flag = chaosx_nr25_action_gateway_used
+	OR = {
+		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals }
+		chaosx_nr25_sustain_phase_active = yes
+	}
+	OR = {
+		has_country_flag = chaosx_nr25_route_interrupted
+		check_variable = { var = chaosx_nr25_route_band value = constant:chaosx_nr25_gateway_band.improvised compare = equals }
+	}
+}
+
+chaosx_nr25_emergency_charter_cost_available = {
+	check_variable = { var = political_power value = constant:chaosx_nr25_gateway.emergency_charter_pp compare = greater_than_or_equals }
+	NOT = { has_fuel < constant:chaosx_nr25_gateway.emergency_charter_fuel }
+}
+
+chaosx_nr25_action_emergency_charter_available = {
+	chaosx_nr25_base_action_available = yes
+	hidden_trigger = { chaosx_nr25_emergency_charter_needed = yes }
+	hidden_trigger = { chaosx_nr25_emergency_charter_cost_available = yes }
 }
 
 chaosx_nr25_action_escort_convoys_available = {
@@ -879,9 +1029,10 @@ chaosx_nr25_board_action_contract_available = {
 		AND = { check_variable = { var = chaosx_nr25_board_action value = constant:chaosx_nr25_action.aerial compare = equals } chaosx_nr25_action_aerial_available = yes }
 		AND = { check_variable = { var = chaosx_nr25_board_action value = constant:chaosx_nr25_action.radio compare = equals } chaosx_nr25_action_radio_available = yes }
 		AND = { check_variable = { var = chaosx_nr25_board_action value = constant:chaosx_nr25_action.crew compare = equals } chaosx_nr25_action_crew_available = yes }
-		AND = { check_variable = { var = chaosx_nr25_board_action value = constant:chaosx_nr25_action.south_america_gateway compare = equals } chaosx_nr25_action_gateway_available = yes }
-		AND = { check_variable = { var = chaosx_nr25_board_action value = constant:chaosx_nr25_action.africa_gateway compare = equals } chaosx_nr25_action_gateway_available = yes }
-		AND = { check_variable = { var = chaosx_nr25_board_action value = constant:chaosx_nr25_action.tasmania_gateway compare = equals } chaosx_nr25_action_gateway_available = yes }
+		AND = { check_variable = { var = chaosx_nr25_board_action value = constant:chaosx_nr25_action.south_america_gateway compare = equals } chaosx_nr25_action_south_america_gateway_available = yes }
+		AND = { check_variable = { var = chaosx_nr25_board_action value = constant:chaosx_nr25_action.africa_gateway compare = equals } chaosx_nr25_action_africa_gateway_available = yes }
+		AND = { check_variable = { var = chaosx_nr25_board_action value = constant:chaosx_nr25_action.tasmania_gateway compare = equals } chaosx_nr25_action_tasmania_gateway_available = yes }
+		AND = { check_variable = { var = chaosx_nr25_board_action value = constant:chaosx_nr25_action.new_zealand_gateway compare = equals } chaosx_nr25_action_new_zealand_gateway_available = yes }
 		AND = { check_variable = { var = chaosx_nr25_board_action value = constant:chaosx_nr25_action.establish_outpost compare = equals } chaosx_nr25_action_establish_outpost_available = yes }
 		AND = { check_variable = { var = chaosx_nr25_board_action value = constant:chaosx_nr25_action.reinforce_outpost compare = equals } chaosx_nr25_action_reinforce_outpost_available = yes }
 		AND = { check_variable = { var = chaosx_nr25_board_action value = constant:chaosx_nr25_action.rotate_crew compare = equals } chaosx_nr25_action_rotate_crew_available = yes }
@@ -1022,22 +1173,46 @@ chaosx_nr25_uses_chartered_passage = {
 	has_country_flag = chaosx_nr25_chartered_passage
 }
 
-chaosx_nr25_gateway_cost_available = {
-	custom_trigger_tooltip = {
-		tooltip = chaosx_nr25_gateway_shipping_tt
-		OR = {
-			AND = {
-				NOT = { chaosx_nr25_uses_chartered_passage = yes }
-				has_equipment = { convoy > constant:chaosx_nr25_cost.convoy_crossing_required }
-			}
-			AND = {
-				chaosx_nr25_uses_chartered_passage = yes
-				has_political_power > constant:chaosx_nr25_cost.pp_chartered_gateway_required
-			}
+# Country scope. The expedition can pay the gateway cost of the band held in
+# the temporary chaosx_nr25_gw_band (set by the group cost gates). Checks are
+# inclusive, so holding exactly the shown amount is enough.
+chaosx_nr25_gateway_band_cost_available = {
+	OR = {
+		AND = {
+			check_variable = { var = chaosx_nr25_gw_band value = constant:chaosx_nr25_gateway_band.direct compare = equals }
+			check_variable = { var = num_equipment@convoy value = constant:chaosx_nr25_gateway.direct_convoys compare = greater_than_or_equals }
+			NOT = { has_fuel < constant:chaosx_nr25_gateway.direct_fuel }
+			check_variable = { var = num_equipment@support_equipment value = constant:chaosx_nr25_gateway.direct_support compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { var = chaosx_nr25_gw_band value = constant:chaosx_nr25_gateway_band.allied compare = equals }
+			check_variable = { var = num_equipment@convoy value = constant:chaosx_nr25_gateway.allied_convoys compare = greater_than_or_equals }
+			NOT = { has_fuel < constant:chaosx_nr25_gateway.allied_fuel }
+			check_variable = { var = political_power value = constant:chaosx_nr25_gateway.allied_pp compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { var = chaosx_nr25_gw_band value = constant:chaosx_nr25_gateway_band.long_ocean compare = equals }
+			check_variable = { var = num_equipment@convoy value = constant:chaosx_nr25_gateway.long_ocean_convoys compare = greater_than_or_equals }
+			NOT = { has_fuel < constant:chaosx_nr25_gateway.long_ocean_fuel }
+			check_variable = { var = num_equipment@support_equipment value = constant:chaosx_nr25_gateway.long_ocean_support compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { var = chaosx_nr25_gw_band value = constant:chaosx_nr25_gateway_band.chartered compare = equals }
+			check_variable = { var = political_power value = constant:chaosx_nr25_gateway.chartered_pp compare = greater_than_or_equals }
+			NOT = { has_fuel < constant:chaosx_nr25_gateway.chartered_fuel }
+			check_variable = { var = num_equipment@support_equipment value = constant:chaosx_nr25_gateway.chartered_support compare = greater_than_or_equals }
 		}
 	}
-	has_fuel > constant:chaosx_nr25_cost.fuel_crossing_required
-	has_equipment = { support_equipment > constant:chaosx_nr25_cost.support_crossing_required }
+}
+
+# Country scope. Some gateway group is open and affordable.
+chaosx_nr25_any_gateway_available = {
+	OR = {
+		AND = { chaosx_nr25_gateway_south_america_open = yes chaosx_nr25_gateway_south_america_cost_available = yes }
+		AND = { chaosx_nr25_gateway_africa_open = yes chaosx_nr25_gateway_africa_cost_available = yes }
+		AND = { chaosx_nr25_gateway_tasmania_open = yes chaosx_nr25_gateway_tasmania_cost_available = yes }
+		AND = { chaosx_nr25_gateway_new_zealand_open = yes chaosx_nr25_gateway_new_zealand_cost_available = yes }
+	}
 }
 
 chaosx_nr25_outpost_cost_available = {
@@ -1275,7 +1450,7 @@ chaosx_nr25_phase_gate_cost_available = {
 		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = less_than_or_equals }
 		AND = {
 			check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals }
-			chaosx_nr25_gateway_cost_available = yes
+			chaosx_nr25_any_gateway_available = yes
 		}
 		AND = {
 			check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals }

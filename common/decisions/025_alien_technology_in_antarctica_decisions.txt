@@ -174,15 +174,20 @@ chaosx_nr25_expedition_category = {
 			NOT = { has_country_flag = chaosx_nr25_action_gateway_used }
 		}
 		available = {
-			chaosx_nr25_action_gateway_available = yes
+			chaosx_nr25_action_south_america_gateway_available = yes
 		}
-		custom_cost_trigger = { chaosx_nr25_gateway_cost_available = yes }
-		custom_cost_text = chaosx_nr25_gateway_cost
+		custom_cost_trigger = { chaosx_nr25_gateway_south_america_cost_available = yes }
+		custom_cost_text = chaosx_nr25_south_america_gateway_cost
 		complete_effect = {
 			custom_effect_tooltip = chaosx_nr25_south_america_gateway_effect
 			hidden_effect = { set_temp_variable = { chaosx_nr25_action = constant:chaosx_nr25_action.south_america_gateway } chaosx_nr25_execute_action = yes }
 		}
-		ai_will_do = { base = 10 modifier = { add = 10 has_country_flag = chaosx_nr25_action_radio_used } modifier = { factor = constant:chaosx_nr25_ai.blocked_factor chaosx_nr25_ai_keeps_progress_reserve = no } }
+		ai_will_do = {
+			base = 10 modifier = { add = 10 has_country_flag = chaosx_nr25_action_radio_used }
+			modifier = { add = constant:chaosx_nr25_gateway.ai_direct_weight check_variable = { var = chaosx_nr25_gateway_band_south_america value = constant:chaosx_nr25_gateway_band.direct compare = equals } }
+			modifier = { add = constant:chaosx_nr25_gateway.ai_allied_weight check_variable = { var = chaosx_nr25_gateway_band_south_america value = constant:chaosx_nr25_gateway_band.allied compare = equals } }
+			modifier = { factor = constant:chaosx_nr25_ai.blocked_factor chaosx_nr25_ai_keeps_progress_reserve = no }
+		}
 	}
 
 	chaosx_nr25_southern_africa_gateway = {
@@ -193,15 +198,20 @@ chaosx_nr25_expedition_category = {
 			NOT = { has_country_flag = chaosx_nr25_action_gateway_used }
 		}
 		available = {
-			chaosx_nr25_action_gateway_available = yes
+			chaosx_nr25_action_africa_gateway_available = yes
 		}
-		custom_cost_trigger = { chaosx_nr25_gateway_cost_available = yes }
-		custom_cost_text = chaosx_nr25_gateway_cost
+		custom_cost_trigger = { chaosx_nr25_gateway_africa_cost_available = yes }
+		custom_cost_text = chaosx_nr25_southern_africa_gateway_cost
 		complete_effect = {
 			custom_effect_tooltip = chaosx_nr25_southern_africa_gateway_effect
 			hidden_effect = { set_temp_variable = { chaosx_nr25_action = constant:chaosx_nr25_action.africa_gateway } chaosx_nr25_execute_action = yes }
 		}
-		ai_will_do = { base = 8 modifier = { add = 10 has_country_flag = chaosx_nr25_action_depot_used } modifier = { factor = constant:chaosx_nr25_ai.blocked_factor chaosx_nr25_ai_keeps_progress_reserve = no } }
+		ai_will_do = {
+			base = 8 modifier = { add = 10 has_country_flag = chaosx_nr25_action_depot_used }
+			modifier = { add = constant:chaosx_nr25_gateway.ai_direct_weight check_variable = { var = chaosx_nr25_gateway_band_africa value = constant:chaosx_nr25_gateway_band.direct compare = equals } }
+			modifier = { add = constant:chaosx_nr25_gateway.ai_allied_weight check_variable = { var = chaosx_nr25_gateway_band_africa value = constant:chaosx_nr25_gateway_band.allied compare = equals } }
+			modifier = { factor = constant:chaosx_nr25_ai.blocked_factor chaosx_nr25_ai_keeps_progress_reserve = no }
+		}
 	}
 
 	chaosx_nr25_tasmania_gateway = {
@@ -212,15 +222,44 @@ chaosx_nr25_expedition_category = {
 			NOT = { has_country_flag = chaosx_nr25_action_gateway_used }
 		}
 		available = {
-			chaosx_nr25_action_gateway_available = yes
+			chaosx_nr25_action_tasmania_gateway_available = yes
 		}
-		custom_cost_trigger = { chaosx_nr25_gateway_cost_available = yes }
-		custom_cost_text = chaosx_nr25_gateway_cost
+		custom_cost_trigger = { chaosx_nr25_gateway_tasmania_cost_available = yes }
+		custom_cost_text = chaosx_nr25_tasmania_gateway_cost
 		complete_effect = {
 			custom_effect_tooltip = chaosx_nr25_tasmania_gateway_effect
 			hidden_effect = { set_temp_variable = { chaosx_nr25_action = constant:chaosx_nr25_action.tasmania_gateway } chaosx_nr25_execute_action = yes }
 		}
-		ai_will_do = { base = 8 modifier = { add = 10 has_country_flag = chaosx_nr25_action_aerial_used } modifier = { factor = constant:chaosx_nr25_ai.blocked_factor chaosx_nr25_ai_keeps_progress_reserve = no } }
+		ai_will_do = {
+			base = 8 modifier = { add = 10 has_country_flag = chaosx_nr25_action_aerial_used }
+			modifier = { add = constant:chaosx_nr25_gateway.ai_direct_weight check_variable = { var = chaosx_nr25_gateway_band_tasmania value = constant:chaosx_nr25_gateway_band.direct compare = equals } }
+			modifier = { add = constant:chaosx_nr25_gateway.ai_allied_weight check_variable = { var = chaosx_nr25_gateway_band_tasmania value = constant:chaosx_nr25_gateway_band.allied compare = equals } }
+			modifier = { factor = constant:chaosx_nr25_ai.blocked_factor chaosx_nr25_ai_keeps_progress_reserve = no }
+		}
+	}
+
+	chaosx_nr25_new_zealand_gateway = {
+		icon = GFX_decision_generic_research
+		visible = {
+			has_country_flag = chaosx_nr25_participant
+			check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals }
+			NOT = { has_country_flag = chaosx_nr25_action_gateway_used }
+		}
+		available = {
+			chaosx_nr25_action_new_zealand_gateway_available = yes
+		}
+		custom_cost_trigger = { chaosx_nr25_gateway_new_zealand_cost_available = yes }
+		custom_cost_text = chaosx_nr25_new_zealand_gateway_cost
+		complete_effect = {
+			custom_effect_tooltip = chaosx_nr25_new_zealand_gateway_effect
+			hidden_effect = { set_temp_variable = { chaosx_nr25_action = constant:chaosx_nr25_action.new_zealand_gateway } chaosx_nr25_execute_action = yes }
+		}
+		ai_will_do = {
+			base = 8 modifier = { add = 10 has_country_flag = chaosx_nr25_action_crew_used }
+			modifier = { add = constant:chaosx_nr25_gateway.ai_direct_weight check_variable = { var = chaosx_nr25_gateway_band_new_zealand value = constant:chaosx_nr25_gateway_band.direct compare = equals } }
+			modifier = { add = constant:chaosx_nr25_gateway.ai_allied_weight check_variable = { var = chaosx_nr25_gateway_band_new_zealand value = constant:chaosx_nr25_gateway_band.allied compare = equals } }
+			modifier = { factor = constant:chaosx_nr25_ai.blocked_factor chaosx_nr25_ai_keeps_progress_reserve = no }
+		}
 	}
 
 	chaosx_nr25_establish_outpost = {
@@ -246,13 +285,18 @@ chaosx_nr25_expedition_category = {
 		icon = GFX_decision_generic_military
 		visible = {
 			has_country_flag = chaosx_nr25_participant
-			check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals }
 			NOT = { has_country_flag = chaosx_nr25_action_alternate_landing_used }
 			OR = {
-				has_country_flag = chaosx_nr25_route_improvised
-				has_country_flag = chaosx_nr25_outpost_compromised
-				has_country_flag = chaosx_nr25_convoy_incident
-				has_country_flag = chaosx_nr25_emergency_weather
+				chaosx_nr25_route_recovery_phase = yes
+				AND = {
+					check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals }
+					OR = {
+						has_country_flag = chaosx_nr25_route_improvised
+						has_country_flag = chaosx_nr25_outpost_compromised
+						has_country_flag = chaosx_nr25_convoy_incident
+						has_country_flag = chaosx_nr25_emergency_weather
+					}
+				}
 			}
 		}
 		available = { chaosx_nr25_action_alternate_landing_available = yes }
@@ -262,7 +306,7 @@ chaosx_nr25_expedition_category = {
 			custom_effect_tooltip = chaosx_nr25_prepare_alternate_landing_effect
 			hidden_effect = { set_temp_variable = { chaosx_nr25_action = constant:chaosx_nr25_action.alternate_landing } chaosx_nr25_execute_action = yes }
 		}
-		ai_will_do = { base = 12 modifier = { add = 24 has_country_flag = chaosx_nr25_route_improvised } modifier = { add = 18 has_country_flag = chaosx_nr25_outpost_compromised } modifier = { factor = constant:chaosx_nr25_ai.blocked_factor chaosx_nr25_ai_keeps_reserve = no } }
+		ai_will_do = { base = 12 modifier = { add = 24 has_country_flag = chaosx_nr25_route_improvised } modifier = { add = 18 has_country_flag = chaosx_nr25_outpost_compromised } modifier = { add = 24 has_country_flag = chaosx_nr25_route_interrupted } modifier = { factor = constant:chaosx_nr25_ai.blocked_factor has_country_flag = chaosx_nr25_route_interrupted chaosx_nr25_ai_keeps_progress_reserve = no } modifier = { factor = constant:chaosx_nr25_ai.blocked_factor NOT = { has_country_flag = chaosx_nr25_route_interrupted } chaosx_nr25_ai_keeps_reserve = no } }
 	}
 
 	chaosx_nr25_escort_supply_convoys = {
@@ -792,6 +836,29 @@ chaosx_nr25_rival_operations_category = {
 }
 
 chaosx_nr25_utility_category = {
+	# Replaces a gateway route cut by war with its port holders, or an
+	# improvised landing, with neutral charter shipping.
+	chaosx_nr25_charter_emergency_passage = {
+		icon = GFX_decision_generic_research
+		visible = {
+			chaosx_nr25_race_action_visible = yes
+			chaosx_nr25_emergency_charter_needed = yes
+		}
+		available = { chaosx_nr25_action_emergency_charter_available = yes }
+		custom_cost_trigger = { chaosx_nr25_emergency_charter_cost_available = yes }
+		custom_cost_text = chaosx_nr25_emergency_charter_cost
+		complete_effect = {
+			custom_effect_tooltip = chaosx_nr25_emergency_charter_effect
+			hidden_effect = { set_temp_variable = { chaosx_nr25_action = constant:chaosx_nr25_action.emergency_charter } chaosx_nr25_execute_action = yes }
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { add = 20 has_country_flag = chaosx_nr25_route_interrupted }
+			modifier = { add = 8 check_variable = { var = chaosx_nr25_logistics_readiness value = constant:chaosx_nr25_cost.readiness_min compare = less_than } }
+			modifier = { factor = constant:chaosx_nr25_ai.blocked_factor chaosx_nr25_ai_keeps_progress_reserve = no }
+		}
+	}
+
 	chaosx_nr25_withdraw_expedition = {
 		icon = GFX_decision_generic_research
 		visible = {

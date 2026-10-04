@@ -151,6 +151,8 @@ chaosx_nr25_action = {
 	alternate_landing = 33
 	escort_convoys = 34
 	analyze_recovered_fragment = 35
+	new_zealand_gateway = 36
+	emergency_charter = 37
 }
 
 chaosx_nr25_evolution_action = {
@@ -283,6 +285,113 @@ chaosx_nr25_route = {
 	africa = 2
 	tasmania = 3
 	inland = 4
+	new_zealand = 5
+	# Neutral charter shipping taken after a gateway was lost.
+	chartered = 6
+}
+
+# Gateway staging states. Each gateway group is the set of live ports an
+# expedition can stage through; an expedition sails on the best band any of
+# the group's ports offers it. These ids are never shown to the player.
+chaosx_nr25_gateway_state = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	# South Atlantic route (Cape Horn): Tierra del Fuego, Magallanes, Falklands.
+	south_atlantic_fuego = 953
+	south_atlantic_magallanes = 507
+	south_atlantic_falklands = 299
+	# Southern Indian Ocean route (Cape Town): the Cape and Natal.
+	cape_town = 681
+	cape_natal = 719
+	# Australasian route (Tasman): Tasmania and Victoria.
+	tasman_hobart = 518
+	tasman_melbourne = 517
+	# New Zealand and Ross Sea route: Canterbury and Otago.
+	ross_canterbury = 723
+	ross_otago = 1081
+}
+
+# Route bands, best first. Closed means every port of the group is held by a
+# country at war with the expedition.
+chaosx_nr25_gateway_band = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	direct = 1
+	allied = 2
+	long_ocean = 3
+	chartered = 4
+	improvised = 5
+	closed = 9
+}
+
+# Route burden by band: the gateway's cost, the reach-the-gateway objective's
+# length and the Logistics Readiness each pulse costs on that route. Signed
+# deltas are paid; the positive mirrors gate affordability and fill the text.
+chaosx_nr25_gateway = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# Direct: the expedition holds a port of the group.
+	direct_convoys = 8
+	direct_fuel = 100
+	direct_support = 75
+	direct_convoy_delta = -8
+	direct_fuel_delta = -100
+	direct_support_delta = -75
+	direct_days = 90
+	direct_upkeep = 1
+	# Allied or sponsored: a faction partner, subject, overlord or friendly
+	# port holder grants staging rights and stores for a political fee.
+	allied_convoys = 12
+	allied_fuel = 150
+	allied_pp = 15
+	allied_convoy_delta = -12
+	allied_fuel_delta = -150
+	allied_pp_delta = -15
+	allied_days = 120
+	allied_upkeep = 2
+	# Long ocean: no friendly port, the expedition carries everything itself.
+	long_ocean_convoys = 18
+	long_ocean_fuel = 250
+	long_ocean_support = 125
+	long_ocean_convoy_delta = -18
+	long_ocean_fuel_delta = -250
+	long_ocean_support_delta = -125
+	long_ocean_days = 150
+	long_ocean_upkeep = 3
+	# Chartered: neutral ships replace convoys at a political cost.
+	chartered_pp = 30
+	chartered_fuel = 150
+	chartered_support = 100
+	chartered_pp_delta = -30
+	chartered_fuel_delta = -150
+	chartered_support_delta = -100
+	chartered_days = 150
+	chartered_upkeep = 3
+	# Improvised: an inland landing after the route failed or was cut.
+	improvised_upkeep = 4
+	# Before a gateway is chosen.
+	unrouted_upkeep = 2
+	# A port holder at war with the expedition cuts the route.
+	interruption_readiness_loss = 8
+	# Emergency charter to replace a lost or failed route.
+	emergency_charter_pp = 40
+	emergency_charter_fuel = 100
+	emergency_charter_pp_delta = -40
+	emergency_charter_fuel_delta = -100
+	emergency_charter_readiness = 4
+	# AI preference for the better band.
+	ai_direct_weight = 30
+	ai_allied_weight = 15
 }
 
 chaosx_nr25_outpost_emphasis = {
@@ -416,11 +525,9 @@ chaosx_nr25_cost = {
 	pp_science = -20
 	convoy_authorize = -10
 	convoy_charter = -8
-	convoy_crossing = -12
 	convoy_final = -10
 	fuel_authorize = -100
 	fuel_charter = -50
-	fuel_crossing = -150
 	fuel_final = -100
 	support_authorize = -100
 	support_science = -75
@@ -437,11 +544,9 @@ chaosx_nr25_cost = {
 	pp_science_required = 20
 	convoy_authorize_required = 10
 	convoy_charter_required = 8
-	convoy_crossing_required = 12
 	convoy_final_required = 10
 	fuel_authorize_required = 100
 	fuel_charter_required = 50
-	fuel_crossing_required = 150
 	fuel_final_required = 100
 	support_authorize_required = 100
 	support_science_required = 75
@@ -617,8 +722,6 @@ chaosx_nr25_cost = {
 	fuel_charter_entry_required = 150
 	support_charter_entry = -125
 	support_charter_entry_required = 125
-	pp_chartered_gateway = -30
-	pp_chartered_gateway_required = 30
 	pp_chartered_alternate_landing = -15
 	pp_chartered_alternate_landing_required = 15
 	pp_chartered_escort = -15
@@ -637,7 +740,6 @@ chaosx_nr25_cost = {
 	entry_weak_readiness_penalty = 10
 	# Bounded race and final-mission controls.
 	outpost_participant_target = 5
-	readiness_pulse_drain = 2
 	final_mission_controlled_days = 120
 	final_mission_rapid_days = 90
 	final_mission_remote_days = 150
@@ -747,7 +849,6 @@ chaosx_nr25_cost = {
 	fuel_rival = -50
 	fuel_shelter = -50
 	fuel_survey = -75
-	support_crossing = -100
 	support_crew = -50
 	support_evolution = -50
 	support_shelter = -50
@@ -772,7 +873,6 @@ chaosx_nr25_cost = {
 	fuel_rival_required = 50
 	fuel_shelter_required = 50
 	fuel_survey_required = 75
-	support_crossing_required = 100
 	support_crew_required = 50
 	support_evolution_required = 50
 	support_shelter_required = 50

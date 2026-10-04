@@ -24,7 +24,7 @@ The review opened every source, processed, and decoded final image in the Event 
 
 | Runtime family | Count | Expected consumer dimensions or frames | Current result |
 | --- | ---: | --- | --- |
-| Event pictures | 15 | One 397x153 news image and fourteen 210x176 report cards | Present and individually inspected. The crossing card is used by the departure and route-setback reports and the rescue card by both rescue reports. The sabotage binding is repaired below. |
+| Event pictures | 15 | One 397x153 news image and fourteen 210x176 report cards | Present and individually inspected. The crossing card is used by the departure, route-setback and route-cut (`chaosx.nr25.13`) reports and the rescue card by both rescue reports. The sabotage binding is repaired below. |
 | Expedition Board | 71 | 1024x640 background, scaled panel families, state strips, icons, meters, overlays, and eight sector-state variants | Present and individually inspected; eight standalone sector-state DDS files have no verified live consumer, and layout evidence remains incomplete. |
 | Achievements | 42 | Fourteen independent 64x64 normal/grey/not-eligible triplets | Present, individually inspected, and wired. |
 | Super-event | 1 | 457x328 | Present, individually inspected, and wired through the dedicated super-event alias. |

@@ -32,6 +32,17 @@ Every result is mapped to one broad public field (flight control, propulsion and
 
 Losing countries receive only verified survey notes and exclusive fragment records. The loser path has no technology grant, and the loser report names the recovering country and the expedition's fragment or survey tier.
 
+## Gateways and route burden
+
+Four gateway groups map to live staging states in `chaosx_nr25_gateway_state` (ids never shown to players): Cape Horn (Tierra del Fuego 953, Magallanes 507, the Falklands 299), Cape Town (the Cape 681, Natal 719), Tasman (Tasmania 518, Victoria 517) and Ross Sea (Canterbury 723, Otago 1081).
+`chaosx_nr25_refresh_gateway_bands` rates each group for one expedition by reading only those nine states and their controllers: direct when the expedition controls a port, allied when the port holder is a faction partner, a subject, its overlord or has an opinion of the expedition above 50, long ocean otherwise, and chartered for an expedition on chartered passage. A port held by a country at war with the expedition offers nothing, and a group whose ports are all held by enemies is closed.
+The bands are refreshed at registration, on every phase change, on each participant pulse and at the moment a gateway is ordered; each gateway decision also checks live that the port holder of its best band is not at war with the expedition.
+The band (`chaosx_nr25_gateway` constants) sets the gateway cost (direct 8 convoys, 100 fuel, 75 support equipment; allied 12 convoys, 150 fuel, 15 political power; long ocean 18 convoys, 250 fuel, 125 support equipment; chartered 30 political power, 150 fuel, 100 support equipment), the reach-the-gateway objective's length (90, 120, 150 and 150 days, with the native mission timer moved to match) and the Logistics Readiness each pulse costs on that route (1, 2, 3 and 3; 4 on an improvised landing or a cut route; 2 before any gateway).
+Gateway cost rows, their tooltips and the board cards show each route's band and terms, and the board's route row shows the route and its band.
+If every port of the chosen group falls to countries at war with the expedition, the pulse cuts the route (`chaosx.nr25.13`): readiness falls by 8, the route counts as one collapse for AI withdrawal, and the crossing, outpost and supply-route objectives cannot complete until the expedition prepares an alternate landing (an improvised route) or takes Charter Emergency Passage (40 political power, 100 fuel, a chartered route).
+A failed reach-the-gateway objective also leaves an improvised route that the emergency charter can replace.
+The AI adds 30 to a gateway with a direct band and 15 to an allied one, so it takes the best open route.
+
 ## Reports and news
 
 Every state change reaches only the affected country, once per change: the departure (`chaosx.nr25.10`), a failed gateway (`.12`), the first camp (`.20`), a lost or restored camp (`.21`, `.22`), a probable or confirmed site (`.30`, `.31`), a discovered false lead (`.32`), a recovered or lost fragment (`.40`, `.41`), a rescue for both countries (`.50`, `.51`), sabotage (`.60` unidentified, `.61` identified), an armed clash for its target (`.165`), and the end of an evacuation, with its dead when it collapses (`.14`).
