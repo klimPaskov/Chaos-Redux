@@ -203,3 +203,16 @@ No `ai_will_do` or `ai_chance` value changed, so no probability comparison is re
 
 Decision: Event 028 joins `event_log_event_is_reworked_default_enabled`, so new campaigns include it in the normal event queue.
 Basis: the user wants every event from 1 to 40 playable, and every priority-1 and priority-2 source item from the 2026-10-04 remaining-work list is committed; what remains is live-game verification.
+
+## Review round 1 corrections
+
+### Crater access disruption penalises the enemy
+
+Decision: Disrupt Extraction Routes applies `local_supplies_for_controller` at `asteroid_incoming_crater.access_supply_disruption` (minus 20 percent), scoped to the hostile controller of each disrupted access state.
+Basis: vanilla uses a positive `local_supply_impact_factor` as a penalty (`dam_blown_modifier`, `yellow_river_blown`) and a negative `local_supplies_for_controller` as a penalty (`ITA_mafia_on_the_rise`), so the earlier negative supply-impact value eased the enemy's supply instead of disrupting it.
+Part 6 asks rival actions to "affect local supply" against the crater holder.
+
+### Stabilize ranks by impact profile first
+
+Decision: the Stabilize the Damaged Zone severity multiplies the impact profile by `asteroid_incoming_recovery.stabilize_profile_rank_weight` (100) before adding the infrastructure and railway gap.
+Basis: profiles step by 10 while the combined gap can reach 10 or more, so the plain sum could rank a lighter ring above a heavier one, contrary to the recorded "impact profile first" rule.
