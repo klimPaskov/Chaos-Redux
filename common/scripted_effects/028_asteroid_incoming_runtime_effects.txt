@@ -1331,6 +1331,16 @@ asteroid_incoming_process_footprint = {
 		clear_variable = asteroid_incoming_report_logistics
 		clear_variable = asteroid_incoming_report_strategic
 	}
+	# Rail links are read before any damage or capital move, so recovery
+	# missions only ask for links that existed before the impact.
+	every_state = {
+		limit = {
+			has_state_flag = asteroid_incoming_state_planned
+			check_variable = { var = asteroid_incoming_state_transaction_id value = global.asteroid_incoming_transaction_id compare = equals }
+			is_in_array = { array = global.asteroid_incoming_footprint_states value = THIS }
+		}
+		asteroid_incoming_record_preimpact_rail_link = yes
+	}
 	asteroid_incoming_relocate_destroyed_capital = yes
 	asteroid_incoming_apply_target_preparedness_aftermath = yes
 	# A transaction-time state iterator has no numeric loop-effect ceiling.

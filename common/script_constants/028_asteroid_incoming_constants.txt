@@ -156,10 +156,22 @@ asteroid_incoming_recovery = {
 	mission_failure_pressure_days = 90
 	mission_rescue_route_days = 150
 	mission_stabilize_zone_days = 120
-	mission_infrastructure_floor = 3
+	# AI logistics thresholds read by the target-weight and preparedness choices.
 	mission_railway_floor = 1
 	mission_supply_node_floor = 0
-	mission_industry_floor = 0
+	# Each objective can be met once its hold period has run. The hold period is
+	# the native timeout minus this grace window, so success is always possible
+	# before the deadline. The grace window spans at least one monthly recovery
+	# pass, which measures the regional economy.
+	mission_grace_days = 45
+	# Missions ask for this share of the levels a state had before the impact,
+	# rounded to whole levels. A building the state never had is never required.
+	mission_repair_share = 0.60
+	# Rebuild the Regional Economy compares totals across the surviving damaged
+	# states with the same totals before the impact.
+	regional_capacity_share = 0.75
+	# No more than this many recovery missions run at once (spec Part 6).
+	active_mission_limit = 2
 
 	phase_emergency = 1
 	phase_reconstruction = 2

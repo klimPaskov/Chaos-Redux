@@ -47,3 +47,69 @@ Decision: crater actions open once the country's own emergency and reconstructio
 Global dust can last for more than a year, and holding crater competition behind it hid the Extraordinary Minerals actions for most wars.
 Basis: Part 6 Phase 4 is "visible only when Extraordinary Minerals is active and the country controls, borders, or is at war over a crater site" and does not wait for Phase 3 to end.
 No `ai_will_do` block changed; only decision visibility widened.
+
+## Recovery missions
+
+### Missions run alongside projects
+
+Decision: a pending paid project still blocks a second project in the same country, but an active mission no longer blocks projects.
+Each mission keeps its own state pointers and hold date, and no more than `asteroid_incoming_recovery.active_mission_limit` (two) missions run at once.
+Basis: Part 6 asks each phase to show three or four primary actions and no more than two active missions.
+With one shared reservation, every project was followed by a mission of 120 to 365 days that froze the whole category, so a country with several ring states could not leave the emergency phase before the recovery deadline, and Restore the Outer Ring could never clear major-ring damage it was not allowed to work on.
+No `ai_will_do` block changed.
+
+### Missions are for player governments
+
+Decision: completed projects start missions only for countries with `is_ai = no`.
+AI countries keep every project effect but receive no mission contract.
+Basis: mission success depends on ordinary construction of infrastructure, railway and factories in named states, which the AI cannot plan toward; AI countries would otherwise collect failure consequences they cannot avoid.
+The network and outer-ring flags feed only a player achievement, so AI play loses nothing it could use.
+
+### Hold period and grace window
+
+Decision: each mission's objective can be met from `timeout - asteroid_incoming_recovery.mission_grace_days` (45 days), and the mission completes as soon as its conditions hold after that day.
+Basis: the completion day and the native timeout used to fall on the same day, so success was unreachable.
+45 days keeps at least one monthly recovery review inside the window for the regional economy measurement.
+
+### Repair targets from the pre-impact snapshot
+
+Decision: mission repair targets are `asteroid_incoming_recovery.mission_repair_share` (60 percent) of each state's pre-impact infrastructure, railway, supply hubs, civilian factories and military factories, rounded to whole levels.
+The fixed floors (infrastructure above 3, railway above 1, a supply node, one factory) are removed from the missions.
+Basis: a fixed floor asked states that never had that level or building to exceed it, so many missions were impossible, and Part 6 asks for named states and exact public thresholds tied to the damage.
+The AI preparedness and target weights still read `mission_railway_floor` and `mission_supply_node_floor`, which keep their values.
+
+### Rail links that existed before the impact
+
+Decision: rail objectives ask only for links that existed before the impact, recorded per footprint state from its controller's capital before any damage or capital move.
+Basis: an island state or a state without a railway can never reach the capital by rail, and "reconnect" means restoring links that were cut.
+
+### Stabilize the Damaged Zone
+
+Decision: the mission captures, at activation, the two damaged states the country holds that still miss their targets, ranked by impact profile first and then by the infrastructure and railway gap.
+A country with only one such state gets a one-state mission.
+Success closes both local emergencies so reconstruction can begin there.
+Basis: Part 6 "repair named infrastructure, railway, or supply thresholds in its two worst affected states" and "success should move the country into reconstruction earlier".
+The old requirement that catastrophic and heavy-fragment damage be absent is removed, because those modifiers last 270 to 720 days and could not be cleared while the mission ran.
+
+### Reconnect the National Network
+
+Decision: every damaged state the country holds that was linked before the impact must be linked to the current capital, every damaged state must meet its infrastructure target, and the largest industrial state that is or was on the network (captured at activation) must be linked to the capital.
+Success closes the emergency work in every damaged state the country holds.
+Basis: Part 6 "restore defined infrastructure and railway links between the capital, major industry, and damaged states" and "closes obsolete emergency decisions".
+
+### Restore the Outer Ring
+
+Decision: no held affected state may keep the Outer Shock Zone or Light Fragment Damage, and the Ring 2 burden is defined per state: every held state of the major impact ring must meet its infrastructure and both factory targets.
+Basis: Part 6 "remove all timed Ring 3 and light fragment modifiers and reduce Ring 2 burden below a defined threshold".
+A count of states still carrying the 405-day major-impact modifier could not be reduced by construction during the mission; repair targets can.
+
+### Rebuild the Regional Economy
+
+Decision: the monthly recovery review sums current factories, infrastructure and railway across the surviving damaged states the country holds and compares each total with the same pre-impact total; each must reach `asteroid_incoming_recovery.regional_capacity_share` (75 percent).
+Basis: Part 6 "restore a meaningful share of surviving pre-impact industrial and logistical capacity outside the permanent crater".
+
+### Cancellation carries no penalty
+
+Decision: a mission whose named state leaves the country's control ends without any outcome.
+Only an expired mission applies failure consequences.
+Basis: Part 6 "missions cancel or transfer cleanly when the country ceases to control the required route".
