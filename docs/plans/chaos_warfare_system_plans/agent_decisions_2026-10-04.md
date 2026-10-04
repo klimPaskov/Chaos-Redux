@@ -65,3 +65,17 @@ Supply connectivity is expressed as capital, supply node or railway in the new `
 
 The harness documentation update is recorded in the CXT audit note rather than in `docs/testing/chaosx_test_country.md`.
 Basis: that file currently holds another owner's uncommitted Event 029 paragraph together with a whole-file line-ending rewrite, and the shared-tree rules forbid reformatting another owner's file.
+
+## 7. The Event 020 board gets one spacing rhythm, and its evidence is kept as one record
+
+Disposition: `implemented`.
+The pre-fix inspect reported exactly one genuine layout finding, `GUI_INCONSISTENT_SPACING` with sibling vertical gaps from 3px to 16px. I gave the 282px window 14px top and bottom padding and a uniform 9px gap between all six rows, and centred the summary panel's labels at y=21 inside its 70px height.
+Basis: the window height, the six row heights and five gaps determine the padding exactly, so a uniform 9px gap with symmetric 14px padding is the only even rhythm that fits without resizing a row or the window; nothing was resized.
+The repeated 20px margin and 480px content width became named constants, and the five meter band offsets became named constants beside the existing segment-width constant, which is documented as matching the 96x27 fill sprite.
+
+The fourteen `GUI_ACCIDENTAL_CLIPPING` and `GUI_INVALID_SIZE` warnings are hidden-element `0x0` reports and the one `GUI_UNRESOLVED_DYNAMIC_VALUE` is the offline renderer not evaluating scripted localisation.
+Basis: every element the fixture shows is sized and placed normally in the same result, so the reports are a renderer limit for hidden elements rather than a defect; no visible element's finding was dismissed.
+Both limits are recorded rather than waved away, and category-level visibility stays a source review because the fixture cannot set the country and global flags the gate reads.
+
+The round's evidence is appended to the existing recovery README instead of a new report folder, and the stale 144 KB schema dump in that folder was dropped.
+Basis: the task brief forbids new verification machinery, and the dump has no value now that the shared route returns results.
