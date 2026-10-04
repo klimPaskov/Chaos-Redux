@@ -672,15 +672,17 @@ gods_of_africa_apply_wrath = {
 	}
 }
 
+# The applicable floor is the highest floor among the current causes; a later,
+# lower cause never lowers it.
 gods_of_africa_enforce_wrath_floor = {
 	if = {
 		limit = { gods_of_africa_participant_generation_is_current = yes }
 		set_temp_variable = { gods_of_africa_wrath_floor = constant:gods_of_africa_value.minimum_wrath }
-		if = { limit = { has_country_flag = gods_of_africa_war_floor } set_temp_variable = { gods_of_africa_wrath_floor = constant:gods_of_africa_wrath.floor_war } }
-		if = { limit = { has_country_flag = gods_of_africa_territory_floor } set_temp_variable = { gods_of_africa_wrath_floor = constant:gods_of_africa_wrath.floor_territory } }
-		if = { limit = { has_country_flag = gods_of_africa_broken_treaty } set_temp_variable = { gods_of_africa_wrath_floor = constant:gods_of_africa_wrath.floor_broken_treaty } }
-		if = { limit = { has_country_flag = gods_of_africa_defiant } set_temp_variable = { gods_of_africa_wrath_floor = constant:gods_of_africa_wrath.floor_defiant } }
-		if = { limit = { has_country_flag = gods_of_africa_recent_extreme_punishment } set_temp_variable = { gods_of_africa_wrath_floor = constant:gods_of_africa_wrath.floor_recent_extreme } }
+		if = { limit = { has_country_flag = gods_of_africa_war_floor } clamp_temp_variable = { var = gods_of_africa_wrath_floor min = constant:gods_of_africa_wrath.floor_war } }
+		if = { limit = { has_country_flag = gods_of_africa_territory_floor } clamp_temp_variable = { var = gods_of_africa_wrath_floor min = constant:gods_of_africa_wrath.floor_territory } }
+		if = { limit = { has_country_flag = gods_of_africa_broken_treaty } clamp_temp_variable = { var = gods_of_africa_wrath_floor min = constant:gods_of_africa_wrath.floor_broken_treaty } }
+		if = { limit = { has_country_flag = gods_of_africa_defiant } clamp_temp_variable = { var = gods_of_africa_wrath_floor min = constant:gods_of_africa_wrath.floor_defiant } }
+		if = { limit = { has_country_flag = gods_of_africa_recent_extreme_punishment } clamp_temp_variable = { var = gods_of_africa_wrath_floor min = constant:gods_of_africa_wrath.floor_recent_extreme } }
 		if = {
 			limit = {
 				OR = {
@@ -714,6 +716,10 @@ gods_of_africa_refresh_participant_floors = {
 			}
 			clr_country_flag = gods_of_africa_recent_extreme_punishment
 		}
+		# Bounded conduct observation for this participant only: war episodes,
+		# occupied and owned host-core states, and prior hostility. It refreshes
+		# the war and territory floor causes from the same observation.
+		gods_of_africa_refresh_grading_conduct = yes
 		gods_of_africa_enforce_wrath_floor = yes
 	}
 }
@@ -3253,10 +3259,16 @@ gods_of_africa_complete_reconciliation = {
 			}
 		}
 		gods_of_africa_record_accepted_reconciliation = yes
-		gods_of_africa_clear_reconciliation_epoch = yes
-		remove_mission = gods_of_africa_reconciliation_mission
 		clr_country_flag = gods_of_africa_defiant
 		clr_country_flag = gods_of_africa_permanent_opt_out
+		# Resolve the outstanding hostility of the conduct record while the paid
+		# offer is still on file. Prior war, occupation, defiance and breach
+		# records stay permanent.
+		gods_of_africa_resolve_accepted_grading_conduct = yes
+		# This acceptance already proved peace and no held host-core territory.
+		clr_country_flag = gods_of_africa_unresolved_major_offense
+		gods_of_africa_clear_reconciliation_epoch = yes
+		remove_mission = gods_of_africa_reconciliation_mission
 		# Acceptance resolves an outstanding broken agreement and its Wrath floor.
 		# The breach count and the prior-breach record remain permanent.
 		clr_country_flag = gods_of_africa_unresolved_treaty_break

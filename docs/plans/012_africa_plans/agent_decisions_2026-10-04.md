@@ -93,7 +93,7 @@ Reuse a unique licensed track already archived in the repository if one exists; 
 
 ## L7. Wrath floor ordering is not a defect
 
-Disposition: `accepted and queued`.
+Disposition: `implemented`; `gods_of_africa_enforce_wrath_floor` now takes the maximum of the current causes.
 
 Basis: the floor constants rise in assignment order (50, 60, 70, 70, 80).
 The floor still moves to the maximum-floor helper during conduct integration.
@@ -121,3 +121,15 @@ Known blockers to record instead of retrying: probability pools empty or incompl
 
 Defects and the gate first, then the treaty-breach fix and contribution wiring, then conduct, the grader, the settlement obligation, delivery and its decision, then Enemy and World Is One consequences, achievements, the super-event, and AI.
 Each step is committed through the shared-tree workflow with only this owner's paths or hunks.
+
+## L12. Outstanding hostility is reconciled, not forgotten
+
+Disposition: `implemented`.
+
+Basis: the grading design's factor 6 and its Enemy rule ("an actual unresolved major-offense mark"), and its "Agreements and reconciliation" rule that only paid, host-accepted reconciliation resolves outstanding offences.
+
+Decision:
+
+- `gods_of_africa_unresolved_major_offense` is set by the conduct observation for war with the host, controlled or owned host-core territory, and defiance, and it stays until Africa accepts a paid reconciliation; prior war, occupation, defiance, and breach records are permanent.
+- Because that mark makes a participant Enemy at the settlement, a participant that fought or occupied Africa without defying it must also be able to reconcile: `gods_of_africa_participant_needs_reconciliation` includes the mark, so the existing reconciliation window opens once it is at peace.
+- Reconciliation requires that the participant neither controls nor owns any African core state of the host, matching the conduct resolver's two cached counts.
