@@ -6,6 +6,10 @@ The Claude takeover engineer adopted and committed every uncommitted tranche des
 These tranches are implemented; the sections below are kept as the history of how they were built.
 Read `agent_decisions_2026-10-04.md` for the decisions taken during the takeover and the queued work that follows.
 
+Round 1 of the takeover then implemented, in source, the lead's remaining Event 021 queue: `3e8b83278` (switched-off evolutions neither reschedule nor block later stages), `92e5aed69` (Evolution I review of running wars and the no-side management phase), `445c8ace6` (Set the Priority Front resolves a real front state), `4ff987b4a` (dynamic tag capacity guard), `637742b2b` (settlement cost row and support text), `4a59165ec` (helper outputs created before each call), and `17f9ac0d0` (date conversion through the shared helper).
+Catalog wording for those behaviors is queued in `catalog_changes_pending.md`.
+Live campaign behavior of every item remains Needs Testing for the user.
+
 Disposition: in-progress implementation handoff, not completion proof.
 The user resumed the full Event 021 goal after a connection loss and requires continued implementation, dynamic behavior, no unreported simplifications, clean user-supplied live QA evidence, and isolated shared-tree commits.
 Do not launch HOI4, ask for logs, overwrite other agents' work, or claim the goal complete.

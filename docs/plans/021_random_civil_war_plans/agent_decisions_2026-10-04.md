@@ -106,3 +106,9 @@ The duplicate `event021_calendar` constants and their file `common/script_consta
 `.tools/test_event021_date_units.py` now runs the wrapper through the shared helper and the shared `chaosx_date_units` constants and still passes.
 The shared registry row in `chaosx_dynamic_effects.md` was updated with a single-row edit.
 Basis: the harness rule that day and date arithmetic uses the shared converter, and the lead's round-1 assignment.
+
+## D11. Event detail and catalog wording
+
+Decision: `event021_event_log_detail` gains two sentences describing the Evolution I review of running wars and the successor's choice of a new war for its own core or claimed territory, and `event021_evolution_i_body` and `event021_evolution_i_log` describe the stage as it now plays.
+The matching catalog Details and Evo I wording is queued in `catalog_changes_pending.md` with Status kept at Needs Testing; no spreadsheet or CSV was edited.
+Basis: the lead's round-1 assignment and the rule that catalog fields match in-game localisation.

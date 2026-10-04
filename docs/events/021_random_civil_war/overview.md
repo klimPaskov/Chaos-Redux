@@ -15,7 +15,8 @@ The late source repairs and their unresolved evidence boundary are recorded in `
 The improvement-loop dispositions are recorded in `docs/plans/021_random_civil_war_plans/improvement_loop_disposition_2026-09-06.md`.
 The test-release decision is recorded in `docs/plans/021_random_civil_war_plans/subagent_handoffs/test_release_gate_2026-09-13.md`.
 The current dynamic ledger corrections and evidence limits are recorded in [`event021_dynamic_front_ledger_repair_2026-10-03.md`](../../plans/021_random_civil_war_plans/event021_dynamic_front_ledger_repair_2026-10-03.md).
-Its current-source findings supersede earlier source-completeness claims; the active-war Evolution I planning trace, inherited asset repairs, and full acceptance remain unresolved.
+Its current-source findings supersede earlier source-completeness claims; inherited asset repairs and full acceptance remain unresolved.
+The active-war Evolution I review is implemented in source on 2026-10-04 and documented in `common/scripted_effects/021_random_civil_war_active_evolution_effects.md`; its live campaign behavior remains Needs Testing.
 
 ## Identity and scope
 
@@ -162,6 +163,9 @@ The Event 021 evolution records are `Gathering Fronts`, `Regional Exposure`, and
 The parent transition wrappers write each record once through the shared Event Log and Event Details evolution registry.
 
 Evolution I adds viable multi-front wars, independence fronts, and reduced-weight major targeting.
+Its first record also reviews every war that was already running: each side may give up a connected region, or the government a complete Event 006 package, only while it keeps its capital, a connected remnant, and its reserved divisions, and the new side opens at once inside the same crisis.
+Those wars also enter the Evolution I management phase, which swaps the opening actions for loyalty review, formation integration, the priority front, and Protect State Communications without creating an actor; settlement removes it.
+Switched-off evolution stages are never scheduled or recorded and never block or switch on another stage.
 
 Evolution II adds Regional Exposure, neighboring actions, sponsors, stronger sides, separate civilian relief and armed support, and a rare uncertain strange incident.
 
