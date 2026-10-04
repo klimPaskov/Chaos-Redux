@@ -325,3 +325,12 @@ The achievement tooltip lists the new disqualifiers, and the old flag's requirem
 The runtime fixture's Stockholm-loss case now checks both sides of the full report; all 14 cases pass.
 Basis: round 2 lead decision 3, spec part 4 Reality Check core route and disqualifiers, spec A9.
 Disposition: `implemented`; achievement unlock is needs_live_game.
+
+### R2-7. Only one reassessment report per reassessment
+
+Finding: `video_game_in_sweden_start_trust_model` always queues `chaosx.nr24.50` for day 365, and the runtime watch, maintenance and control-loss paths queue another `.50` when they open an early reassessment. If the early report was still unanswered when the one-year report fired, its trigger passed because the reassessment was still pending. Answering the first report then started a mission, and every option of the second (all require no active mission) was invalid.
+Decision: `.50` sets `video_game_in_sweden_reassessment_shown` in its `immediate` block and requires it absent in its trigger. The flag is cleared wherever `video_game_in_sweden_mandatory_reassessment_pending` is cleared: programme start, Trust the Model start, `video_game_in_sweden_mark_trust_reassessment`, disabled-stage cleanup and closure.
+The fixed 365-day schedule stays, so the reassessment still arrives within one year even though maintenance runs only every 30 days and an early review could otherwise come as late as day 390.
+While `.50` is pending, the category's audit, dual-track and restriction rows are hidden (their `visible` blocks need open initial choices or an active surge), so no mission can start between the report appearing and the answer; the restriction option therefore stays available whenever `.50` is shown.
+Basis: round 2 lead decision 5, spec part 2 Trust the Model (a mandatory reassessment no later than one year).
+Disposition: `implemented`; the popup sequence is needs_live_game.

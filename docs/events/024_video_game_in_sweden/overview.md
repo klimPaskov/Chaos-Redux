@@ -499,6 +499,7 @@ The fixed political-power AI budget hint is absent from this variable-fee action
 
 The Trust the Model surge increases supply consumption by eight percent, alongside its planning, army-experience and 5% war-support benefits and its recovery risks.
 A recorded victory over the chosen opponent before the deadline softens the mandatory reassessment: when it opens, Reliance falls by a further 15 once, and report `.50` says so, but a path must still be chosen.
+Report `.50` is shown once per reassessment: the fixed one-year review and any early review opened by a crisis, a battlefield mismatch or lost ground can all be queued, but `video_game_in_sweden_reassessment_shown` lets only the first through until the reassessment is answered or the programme closes.
 
 Restriction closes official leagues, removes score-based policy authority, and withdraws state-supported public facilities through distinct departmental receipts.
 The existing sixty-day proof period yields receipts at days twenty, forty, and sixty within the existing ninety-day mission.

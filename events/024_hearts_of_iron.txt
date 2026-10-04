@@ -1118,8 +1118,12 @@ country_event = {
 			has_country_flag = video_game_in_sweden_trust_model_active
 			has_country_flag = video_game_in_sweden_mandatory_reassessment_pending
 		}
+		# One report per reassessment: an early review and the fixed one-year
+		# review can both be queued, but only the first is shown.
+		NOT = { has_country_flag = video_game_in_sweden_reassessment_shown }
 	}
 	immediate = {
+		set_country_flag = video_game_in_sweden_reassessment_shown
 		if = {
 			limit = { has_country_flag = video_game_in_sweden_trust_model_active }
 			video_game_in_sweden_update_trust_model_progress = yes
