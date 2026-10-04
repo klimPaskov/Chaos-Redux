@@ -78,6 +78,7 @@ chaosx_test_country_provision_facility_type = {
 				}
 				clear_array = chaosx_test_facility_rejected_states
 				set_temp_variable = { chaosx_test_facility_type_candidate_failed = 0 }
+				set_temp_variable = { chaosx_test_facility_type_candidate_tries = 0 }
 				if = {
 					limit = { has_country_flag = chaosx_test_country_setup_trace_active }
 					log = "CXT_SETUP_TRACE facility_search_begin type=[FACILITY] date=[?global.date|.3]"
@@ -127,6 +128,7 @@ chaosx_test_country_provision_facility_type = {
 						if = {
 							limit = { ROOT = { has_country_flag = chaosx_test_country_setup_trace_active } }
 							log = "CXT_SETUP_TRACE facility_transfer_end state=[This.GetName] type=[FACILITY] date=[?global.date|.3]"
+							chaosx_test_country_trace_facility_candidate = yes
 						}
 						if = {
 							limit = {
@@ -157,6 +159,12 @@ chaosx_test_country_provision_facility_type = {
 					}
 					if = {
 						limit = { check_variable = { chaosx_test_facility_type_candidate_selected < 1 } }
+						set_temp_variable = { chaosx_test_facility_type_candidate_failed = 1 }
+					}
+					# Each try transfers a foreign state and back, so a type that no state can host must not walk the whole map.
+					add_to_temp_variable = { chaosx_test_facility_type_candidate_tries = 1 }
+					if = {
+						limit = { check_variable = { chaosx_test_facility_type_candidate_tries > constant:chaosx_test_country_count.facility_search_max_candidates } }
 						set_temp_variable = { chaosx_test_facility_type_candidate_failed = 1 }
 					}
 				}
