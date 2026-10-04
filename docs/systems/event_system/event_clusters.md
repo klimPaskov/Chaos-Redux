@@ -470,9 +470,14 @@ Cluster ID `10` is the Negative Economy cluster.
 
 Event 035 Great Depression 2.0 is the Negative Economy slot 1 member with Low severity.
 
-Its runtime role and declared minimum remain architecture metadata rather than membership-catalogue fields.
+Negative Economy is registered in the live runtime at cluster ID 10 as a one-time cluster with unlock tier 0 (Chaos level 1).
+Its rows are Event 035 Great Depression 2.0 (row 10001, required, Low, primary trigger) and Event 050 The Great Embargo (row 10002, optional, Medium, primary trigger).
+The Event 050 id lives in `event_cluster_negative_economy.great_embargo_event_id` until that legacy event gains its own identity constants.
 
-The cluster dispatch preserves the selected Event 35 country and enters the same fail-closed independent start contract used by standalone firing. Cluster dispatch never rerolls the target, never duplicates an active depression, and never gives contagion, worldwide conversion, Event 34 inheritance, or relapse ownership of normal pacing.
+Both normal and cluster dispatch fire Event 35 on the event-system host, which then picks one weighted country through the same fail-closed independent start contract.
+A country already in Event 35 is never a candidate, so the cluster never duplicates an active depression and never rerolls a chosen country.
+A cluster pick keeps the cluster's consequence pacing lane through `great_depression_cluster_target_pending`.
+Event 34 collapse, contagion conversion, the Evolution III spread and relapse start depressions directly and never roll the cluster.
 
 ### Wars: Random War, Fury, and Random Civil War
 

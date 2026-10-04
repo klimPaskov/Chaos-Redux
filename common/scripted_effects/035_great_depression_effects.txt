@@ -335,7 +335,12 @@ great_depression_prepare_independent_call = {
 	set_variable = { great_depression_call_receipt_id = great_depression_last_receipt_id }
 	set_variable = { great_depression_call_pacing_mode = constant:great_depression_pacing.normal_event }
 	if = {
-		limit = { has_country_flag = event_cluster_member_fire_context }
+		limit = {
+			OR = {
+				has_country_flag = event_cluster_member_fire_context
+				has_country_flag = great_depression_cluster_target_pending
+			}
+		}
 		set_variable = { great_depression_call_pacing_mode = constant:great_depression_pacing.consequence_no_pacing }
 	}
 	set_variable = { great_depression_call_history_mode = constant:great_depression_history_mode.normal }
@@ -1627,6 +1632,11 @@ great_depression_select_independent_target = {
 			array = great_depression_independent_target_pool
 			# The entry sender may differ from the selected country. The receiver
 			# gives the existing start transaction the selected country as ROOT.
+			# A Negative Economy cluster pick keeps the cluster's pacing lane.
+			if = {
+				limit = { ROOT = { has_country_flag = event_cluster_member_fire_context } }
+				set_country_flag = great_depression_cluster_target_pending
+			}
 			country_event = { id = chaosx.nr35.9 }
 		}
 	}
@@ -2639,24 +2649,20 @@ great_depression_record_history = {
 	set_temp_variable = { events_log_history_actor_override = THIS }
 	if = {
 		limit = { has_variable = global.events_log_history_sequence }
-		# A random or cluster firing already left today's Event 35 row from the
-		# shared dispatcher, which cannot know the selected country yet. Complete
-		# that row instead of adding a second one. Inherited, conversion and
-		# relapse starts record their own row.
+		# A random or cluster firing also gets a history row from the shared
+		# dispatcher, which cannot know the selected country. Complete that row
+		# an hour later, once the dispatcher has written it, instead of adding a
+		# second one. Inherited, conversion and relapse starts record their own.
 		if = {
-			limit = {
-				check_variable = { var = great_depression_call_caller_type value = constant:great_depression_caller.independent_event_35 compare = equals }
-				check_variable = { var = global.events_log_history_event_id_entries^num value = constant:great_depression_api.zero compare = greater_than }
-				check_variable = { var = global.events_log_history_actor_entries^num value = constant:great_depression_api.zero compare = greater_than }
-				check_variable = { var = global.events_log_history_has_actor_entries^num value = constant:great_depression_api.zero compare = greater_than }
-				check_variable = { var = global.events_log_history_payload_entries^num value = constant:great_depression_api.zero compare = greater_than }
-				check_variable = { var = global.events_log_history_event_id_entries^0 value = constant:great_depression_api.event_35_id compare = equals }
-				check_variable = { var = global.events_log_history_date_entries^0 value = global.date compare = equals }
-				check_variable = { var = global.events_log_history_has_actor_entries^0 value = constant:great_depression_api.zero compare = equals }
+			limit = { check_variable = { var = great_depression_call_caller_type value = constant:great_depression_caller.independent_event_35 compare = equals } }
+			set_variable = { great_depression_history_completion_floor = global.events_log_history_sequence }
+			if = {
+				limit = { has_variable = global.great_depression_history_dispatch_floor }
+				set_variable = { great_depression_history_completion_floor = global.great_depression_history_dispatch_floor }
 			}
-			set_variable = { global.events_log_history_actor_entries^0 = THIS }
-			set_variable = { global.events_log_history_has_actor_entries^0 = constant:great_depression_api.one }
-			set_variable = { global.events_log_history_payload_entries^0 = great_depression_depression_severity }
+			set_variable = { great_depression_history_completion_severity = great_depression_depression_severity }
+			set_country_flag = great_depression_history_completion_pending
+			country_event = { id = chaosx.nr35.10 hours = 1 }
 			set_temp_variable = { events_log_history_payload_override_active = constant:great_depression_api.zero }
 			set_temp_variable = { events_log_history_actor_override_active = constant:great_depression_api.zero }
 		}
@@ -2664,6 +2670,69 @@ great_depression_record_history = {
 			record_events_log_history_entry = yes
 		}
 		set_variable = { great_depression_call_history_recorded = constant:great_depression_api.one }
+	}
+}
+
+# COUNTRY scope, Event 35 entry. Remember the newest history sequence before
+# the dispatcher's row exists (synchronous dispatch) or right after it was
+# written (queued dispatch); that row is at or above this floor either way.
+great_depression_mark_history_dispatch = {
+	set_variable = { global.great_depression_history_dispatch_floor = constant:great_depression_api.zero }
+	if = {
+		limit = { has_variable = global.events_log_history_sequence }
+		set_variable = { global.great_depression_history_dispatch_floor = global.events_log_history_sequence }
+	}
+}
+
+# COUNTRY scope, the selected country. Fill the newest countryless Event 35
+# row at or above the dispatch floor with this country and its Severity at
+# the start; record a full row only when the dispatcher left none.
+great_depression_complete_pending_history = {
+	if = {
+		limit = {
+			has_country_flag = great_depression_history_completion_pending
+			has_variable = great_depression_history_completion_floor
+			has_variable = great_depression_history_completion_severity
+		}
+		clr_country_flag = great_depression_history_completion_pending
+		set_temp_variable = { great_depression_history_scan_index = constant:great_depression_api.zero }
+		set_temp_variable = { great_depression_history_scan_found = constant:great_depression_api.zero }
+		if = {
+			limit = { has_variable = global.events_log_history_sequence }
+			while_loop_effect = {
+				limit = {
+					check_variable = { var = great_depression_history_scan_found value = constant:great_depression_api.zero compare = equals }
+					check_variable = { var = great_depression_history_scan_index value = global.events_log_history_sequence_entries^num compare = less_than }
+					check_variable = { var = great_depression_history_scan_index value = global.events_log_history_event_id_entries^num compare = less_than }
+					check_variable = { var = great_depression_history_scan_index value = global.events_log_history_actor_entries^num compare = less_than }
+					check_variable = { var = great_depression_history_scan_index value = global.events_log_history_has_actor_entries^num compare = less_than }
+					check_variable = { var = great_depression_history_scan_index value = global.events_log_history_payload_entries^num compare = less_than }
+					check_variable = { var = global.events_log_history_sequence_entries^great_depression_history_scan_index value = great_depression_history_completion_floor compare = greater_than_or_equals }
+				}
+				if = {
+					limit = {
+						check_variable = { var = global.events_log_history_event_id_entries^great_depression_history_scan_index value = constant:great_depression_api.event_35_id compare = equals }
+						check_variable = { var = global.events_log_history_has_actor_entries^great_depression_history_scan_index value = constant:great_depression_api.zero compare = equals }
+					}
+					set_variable = { global.events_log_history_actor_entries^great_depression_history_scan_index = THIS }
+					set_variable = { global.events_log_history_has_actor_entries^great_depression_history_scan_index = constant:great_depression_api.one }
+					set_variable = { global.events_log_history_payload_entries^great_depression_history_scan_index = great_depression_history_completion_severity }
+					set_temp_variable = { great_depression_history_scan_found = constant:great_depression_api.one }
+				}
+				add_to_temp_variable = { great_depression_history_scan_index = constant:great_depression_api.one }
+			}
+			if = {
+				limit = { check_variable = { var = great_depression_history_scan_found value = constant:great_depression_api.zero compare = equals } }
+				set_variable = { global.last_fired_event_id = constant:great_depression_api.event_35_id }
+				set_temp_variable = { events_log_history_payload_override_active = constant:great_depression_api.one }
+				set_temp_variable = { events_log_history_payload_override = great_depression_history_completion_severity }
+				set_temp_variable = { events_log_history_actor_override_active = constant:great_depression_api.one }
+				set_temp_variable = { events_log_history_actor_override = THIS }
+				record_events_log_history_entry = yes
+			}
+		}
+		clear_variable = great_depression_history_completion_floor
+		clear_variable = great_depression_history_completion_severity
 	}
 }
 

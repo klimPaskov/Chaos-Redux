@@ -4,6 +4,10 @@
 
 Event 35 is a Minor Repeatable, Chaos level 1, Low-severity member of the Negative Economy cluster.
 
+Negative Economy (cluster ID 10) is a one-time cluster at Chaos level 1: Event 35 is its required Low trigger row and The Great Embargo (Event 50) its optional Medium row.
+Both a random firing and a cluster firing pick one weighted country that is not already in a depression; a cluster pick keeps the cluster's pacing lane.
+Event 34 collapse, contagion conversion, the Evolution III spread, and relapse start depressions directly and never roll the cluster.
+
 The event targets one valid major or player country, including a non-major player, and rejects active depressions, special Chaos actors, nonhuman economies, incompatible crises, and countries without a usable civilian economy.
 
 Independent firing uses `chaosx.nr35.1` and owns normal event pacing.
@@ -264,7 +268,7 @@ The Event Log shows the catalog Details text for Event 35, and a row opened from
 
 Financial Contagion, Social Collapse, and The Second Great Depression show their type, title, body, summary, stage, and tier in the History, Evolutions, and Event Details tabs, and Event Details lists all three as evolution rows the player can switch off.
 
-A random or cluster firing leaves one history row: the shared dispatcher records it, and Event 35 fills in the selected country and Severity. Inherited, conversion, and relapse starts record their own row.
+A random or cluster firing leaves one history row: the shared dispatcher records it, and an hour later Event 35 fills in the selected country and the Severity it started with, whichever order the engine runs the dispatcher and the event in. If the dispatcher left no row, Event 35 records a full row instead. Inherited, conversion, and relapse starts record their own row.
 
 The catalog source is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`.
 

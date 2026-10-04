@@ -109,3 +109,27 @@ Evidence: `.tools/test_event035_center_projects.py` gained `DoctrineProjectProdu
 Probability evidence: the doctrine-scenario before/after pass could not run; `hoi4.probability_inspect` with `adapter = decision_ai_will_do` returned `Invalid tool arguments` again with a three-decision candidate pool and a workspace source selector (see D2).
 The AI weights were set by source review against the existing doctrine profiles; numeric AI balance remains unverified.
 Catalog notes are in `catalog_changes_pending.md`.
+
+## D7. Negative Economy cluster registration and cluster targeting
+
+Disposition: implemented.
+
+- Registration follows `docs/systems/event_system/event_clusters.md`: cluster ID 10, Minor Fire-Once (`event_cluster_type.one_time`), unlock tier 0 (Chaos level 1).
+  Event 35 is the required Low primary-trigger row (10001), and Event 50 The Great Embargo is the optional Medium primary-trigger row (10002).
+  Event 50 has no identity constant, so its id lives in `event_cluster_negative_economy.great_embargo_event_id`, as Various Anomalies does for Event 47.
+  The candidate mapping is derived from `load_event_cluster_members`, so no separate event-to-cluster table was needed.
+  Names and the description show in the Event Details cluster line, History, the Clusters tab, the selected-cluster view and the settings cluster browser.
+- Targeting: the cluster fires Event 35 on the event-system host, not on a chosen country, so the old cluster branch would have started a depression on the host or silently done nothing when the host was already in one.
+  Both entries now use the weighted independent selector, which never offers a country already in Event 35; a cluster pick carries `great_depression_cluster_target_pending` so the start keeps the cluster's consequence pacing lane.
+  Basis: spec part 8, "a country already in Event 35 is skipped as an independent cluster target".
+- Event 34 collapse, contagion conversion, the Evolution III spread and relapse call the start contract directly and never pass through the event dispatcher, so they cannot roll or replay the cluster.
+- Event 50 is a legacy event owned by its own engineer; it keeps picking its own target and is only referenced here as an optional member.
+
+## D5 amendment: history completion is deferred
+
+Disposition: implemented, superseding the immediate fill-in described in D5.
+
+The shared cluster documents treat no-delay `country_event` dispatch as synchronous, which means the dispatcher writes its countryless row only after Event 35's chain returns.
+`chaosx.nr35.1` therefore records the newest history sequence as a dispatch floor, and an independent start schedules the hidden `chaosx.nr35.10` one hour later.
+That callback fills the newest countryless Event 35 row at or above the floor with the country and its starting Severity, which works whether dispatch is synchronous (the row is one above the floor) or queued (the row is at the floor), and an older stale row below the floor is never touched.
+If no such row exists, it records a full row itself.

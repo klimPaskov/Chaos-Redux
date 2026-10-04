@@ -1,8 +1,9 @@
 add_namespace = chaosx.nr35
 
 # Event 35 is a repeatable, low-severity Negative Economy member. The normal
-# pool selects a country here, while a cluster dispatch has already selected
-# the current country and must not be rerolled.
+# pool and the Negative Economy cluster both fire it on the event-system host,
+# so both pick one weighted country that is not already in a depression. A
+# cluster pick keeps the cluster's pacing lane.
 
 country_event = {
 	id = chaosx.nr35.1
@@ -12,18 +13,8 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		if = {
-			limit = {
-				has_country_flag = event_cluster_member_fire_context
-				great_depression_is_valid_independent_target = yes
-			}
-			great_depression_prepare_independent_call = yes
-			great_depression_start_or_deepen = yes
-		}
-		else_if = {
-			limit = { NOT = { has_country_flag = event_cluster_member_fire_context } }
-			great_depression_select_independent_target = yes
-		}
+		great_depression_mark_history_dispatch = yes
+		great_depression_select_independent_target = yes
 	}
 }
 
@@ -187,9 +178,8 @@ country_event = {
 	}
 }
 
-# Normal selection preserves its one chosen country and revalidates it at
-# delivery. Cluster entry already has the correct ROOT and keeps its direct
-# transaction. This receiver never chooses a replacement target.
+# Normal and cluster selection preserve their one chosen country and
+# revalidate it at delivery. This receiver never chooses a replacement target.
 country_event = {
 	id = chaosx.nr35.9
 	hidden = yes
@@ -200,5 +190,17 @@ country_event = {
 			great_depression_prepare_independent_call = yes
 			great_depression_start_or_deepen = yes
 		}
+		clr_country_flag = great_depression_cluster_target_pending
+	}
+}
+
+# An independent firing completes the dispatcher's history row once the
+# dispatcher has written it, then records its own row only if none arrived.
+country_event = {
+	id = chaosx.nr35.10
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		great_depression_complete_pending_history = yes
 	}
 }

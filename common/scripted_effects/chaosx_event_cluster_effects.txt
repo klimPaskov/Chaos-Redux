@@ -278,6 +278,9 @@ initialize_event_cluster_definitions = {
 	add_to_array = { global.event_clusters = constant:event_cluster_id.national_breakthroughs }
 	add_to_array = { array = global.event_cluster_type_entries value = constant:event_cluster_type.repeatable }
 	add_to_array = { array = global.event_cluster_unlock_tier_entries value = constant:event_cluster_national_breakthroughs.unlock_tier }
+	add_to_array = { global.event_clusters = constant:event_cluster_id.negative_economy }
+	add_to_array = { array = global.event_cluster_type_entries value = constant:event_cluster_type.one_time }
+	add_to_array = { array = global.event_cluster_unlock_tier_entries value = constant:event_cluster_negative_economy.unlock_tier }
 	add_to_array = { global.event_clusters = constant:event_cluster_id.random_stuff }
 	add_to_array = {
 		array = global.event_cluster_type_entries
@@ -1390,6 +1393,26 @@ load_event_cluster_members = {
 		set_temp_variable = { event_cluster_member_min_tier = constant:chaos_meter_tier_id.tier_0 }
 		set_temp_variable = { event_cluster_member_severity = constant:event_cluster_member_danger.medium }
 		set_temp_variable = { event_cluster_member_row_id = constant:doctrine_research_event.cluster_member_row_id }
+		set_temp_variable = { event_cluster_member_primary_trigger = constant:event_cluster_member_primary_trigger.yes }
+		event_cluster_append_member_definition = yes
+	}
+	else_if = {
+		limit = { check_variable = { event_cluster_id = constant:event_cluster_id.negative_economy } }
+		# Event 035 always runs at Low and chooses one weighted country that is
+		# not already in a depression. Event 050 is the optional Medium member.
+		set_temp_variable = { event_cluster_member_event_id = constant:great_depression_event.id }
+		set_temp_variable = { event_cluster_member_role = constant:event_cluster_member_role.required }
+		set_temp_variable = { event_cluster_member_min_tier = constant:chaos_meter_tier_id.tier_0 }
+		set_temp_variable = { event_cluster_member_severity = constant:event_cluster_member_danger.low }
+		set_temp_variable = { event_cluster_member_row_id = constant:event_cluster_member_row_id.negative_economy_great_depression }
+		set_temp_variable = { event_cluster_member_primary_trigger = constant:event_cluster_member_primary_trigger.yes }
+		event_cluster_append_member_definition = yes
+
+		set_temp_variable = { event_cluster_member_event_id = constant:event_cluster_negative_economy.great_embargo_event_id }
+		set_temp_variable = { event_cluster_member_role = constant:event_cluster_member_role.optional }
+		set_temp_variable = { event_cluster_member_min_tier = constant:chaos_meter_tier_id.tier_0 }
+		set_temp_variable = { event_cluster_member_severity = constant:event_cluster_member_danger.medium }
+		set_temp_variable = { event_cluster_member_row_id = constant:event_cluster_member_row_id.negative_economy_great_embargo }
 		set_temp_variable = { event_cluster_member_primary_trigger = constant:event_cluster_member_primary_trigger.yes }
 		event_cluster_append_member_definition = yes
 	}
