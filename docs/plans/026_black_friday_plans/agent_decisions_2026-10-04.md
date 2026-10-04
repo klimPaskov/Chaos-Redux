@@ -391,3 +391,15 @@ The catalog Details text is queued in `catalog_changes_pending.md`.
 The registry's BF-ABS-001 and BF-ADP-001 compatibility-effect lines no longer say that Event 26 is disabled.
 
 Disposition: implemented.
+
+## D25. Requirement lines and cost slots show only what they check or charge
+
+Decision:
+- The seven Event 005 breakaway and internal-compact requirement tooltips (`soviet_collapse_mobilize_defense_units_req_tt`, `_seize_depots_req_tt`, `_coordinate_fronts_req_tt`, and the northern rail, Volga-Ural oilfield, Tuvan road, and common-front compact keys) print the price globals their wrapped `can_pay_soviet_collapse_breakaway_{mobilize,seize_depots,coordinate_fronts}_cost` triggers compare against; the 35% Stability floor stays a fixed figure (commit `e368476a0`).
+- Establish Muster Districts, Appoint Integration Staff, and Reserve Rail Corridors (Event 019) no longer repeat their cost checks in `available`, so the requirement tooltip shows no raw variable names; `custom_cost_trigger` still blocks them (commit `ba23efb1b`).
+- The Event 005 low splinter and returned-names cost texts (`chaosx_sovcollapse_decision_blocked_custom_splinter_low`, `chaosx_sovcollapse_decision_blocked_returned_names`) show only the support equipment price. The 28 low splinter decisions and the three returned-names decisions state their Stability floor in `available` through a `custom_trigger_tooltip` (`soviet_collapse_splinter_stability_floor_tt` above `recognition_stability_floor`, `soviet_collapse_returned_names_stability_floor_tt` above `good_stability`), and their `custom_cost_trigger` checks only the support equipment through the new `has_soviet_collapse_splinter_support_equipment_price`, so a Stability shortfall no longer turns the price red.
+
+Basis: the README completion rule forbids a displayed price that differs from the checked and paid price, D22 already records that the Stability figure is a floor rather than a payment, and CLAUDE.md section 2 requires plain requirement lines without raw identifiers.
+The hidden `can_pay_*` triggers stay in each `available` block, so every decision keeps every gate it had; availability and AI weights are unchanged.
+
+Disposition: implemented (source). The red and green states of the new floor line are `needs_live_game`.
