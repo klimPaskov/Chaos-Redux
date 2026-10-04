@@ -1172,6 +1172,27 @@ brilliant_scientist_sensor_saturation_active = {
 	static_anti_air_hit_chance_factor = constant:brilliant_scientist_technology_action.sensor_interception
 }
 
+# STATE scope. The saturated region slows, starves, and blinds enemy forces in
+# the target state and in neighbouring states the actor controls. It applies
+# only while the state's recorded actor still controls it.
+brilliant_scientist_sensor_saturation_region = {
+	icon = GFX_idea_generic_research_bonus
+	enable = {
+		has_variable = brilliant_scientist_sensor_saturation_actor
+		is_controlled_by = var:brilliant_scientist_sensor_saturation_actor
+	}
+	remove_trigger = {
+		OR = {
+			NOT = { has_variable = brilliant_scientist_sensor_saturation_actor }
+			NOT = { is_controlled_by = var:brilliant_scientist_sensor_saturation_actor }
+		}
+	}
+	enemy_army_speed_factor = constant:brilliant_scientist_technology_action.sensor_region_enemy_speed
+	enemy_attrition = constant:brilliant_scientist_technology_action.sensor_region_enemy_attrition
+	enemy_local_supplies = constant:brilliant_scientist_technology_action.sensor_region_enemy_supplies
+	local_intel_to_enemies = constant:brilliant_scientist_technology_action.sensor_region_enemy_intel
+}
+
 brilliant_scientist_high_speed_strike_active = {
 	icon = GFX_idea_generic_research_bonus
 	air_range_factor = constant:brilliant_scientist_technology_action.rocketry_range

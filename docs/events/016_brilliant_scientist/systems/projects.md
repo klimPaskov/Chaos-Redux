@@ -186,7 +186,7 @@ Each family stage applies a cumulative persistent modifier while the country rem
 | Family | Cumulative strategic identity at Weaponization |
 | --- | --- |
 | Computation | One research slot, +50% cumulative research speed at Deployment, +100% at Weaponization, overwhelming encryption, decryption, planning, intelligence, and the paid Predictive Campaign directive. |
-| Electronics | Overwhelming radar, air and naval detection, decryption, mission efficiency, interception, anti-air coordination, and the paid Sensor Saturation directive. |
+| Electronics | Overwhelming radar, air and naval detection, decryption, mission efficiency, interception, anti-air coordination, and the paid regional Sensor Saturation directive. |
 | Advanced Materials | Extreme efficiency growth, output, repair, extraction, conversion, armor, construction, and permanent state synthesis works that create strategic resources. |
 | Rocketry | Extreme special-project speed, range, air efficiency, strategic bombing, high-speed strike tempo, and a paid long-range industrial-delivery attack. |
 | High Energy | Extreme reactor output, fuel production, special-project speed, nuclear production, industrial power, command capacity, and the paid Field Projector grid. |
@@ -255,6 +255,13 @@ Native completion activates the existing output; native cancellation refunds the
 The custom-cost rows use eleven country-scoped presentation queries in `common/scripted_localisation/016_brilliant_scientist_technology_action_cost_scripted_localisation.txt` to colour only the resource entries the country cannot afford.
 The rows reuse registered `command_power`, `support_equipment_text_icon`, `fuel_texticon`, and `civ_factory` texticons; no new visual asset is required for payment presentation.
 Their numerical source is `common/script_constants/016_brilliant_scientist_technology_action_constants.txt`; native static `civilian_factory_use` fields retain matching file-local constants in the decision file.
+
+Sensor Saturation is a regional directive.
+`brilliant_scientist_activate_sensor_saturation` applies the state modifier `brilliant_scientist_sensor_saturation_region` for the ninety-day action duration to the selected anchor state and to every neighbouring state the actor controls.
+The region gives enemy forces -30% movement speed, +20% attrition, -25% local supplies, and -50% local intelligence, from the `sensor_region_*` constants.
+Each regional state records its actor in `brilliant_scientist_sensor_saturation_actor`, and the modifier lapses if another country takes control of that state.
+The national `brilliant_scientist_sensor_saturation_active` modifier is reduced to a minor coordination bonus: +20% air detection, +10% air mission efficiency, and +15% interception detection and static anti-air targeting.
+Costs, cooldown, targeting, and AI are unchanged.
 
 ### Project-stage payments
 

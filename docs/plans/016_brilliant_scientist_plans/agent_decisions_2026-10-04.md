@@ -115,3 +115,15 @@ Known limit: while Xenobiological Synthesis sits at Theory without a chosen cont
 
 Evidence: `common/decisions/016_brilliant_scientist_directorate_project_board.txt`, `common/decisions/categories/016_brilliant_scientist_directorate_categories.txt`, `localisation/english/016_brilliant_scientist_directorate_l_english.yml`, `docs/events/016_brilliant_scientist/systems/projects.md`.
 Needs live game: category ordering and density in the decision list.
+
+## D10. Sensor Saturation is region-dependent
+
+Decision: Sensor Saturation becomes a genuine regional operation.
+The selected anchor state and every neighbouring state the actor controls receive the state modifier `brilliant_scientist_sensor_saturation_region` for the action duration: enemy army speed -30%, enemy attrition +20%, enemy local supplies -25%, and local intelligence to enemies -50%.
+The modifier records its actor per state and lapses if another country takes control.
+The former overwhelming national air bonus (+100% to four air values) is reduced to a minor coordination component (+20% air detection, +10% air mission efficiency, +15% interception detection and static anti-air targeting), so the action's value now depends on where it is placed.
+All values are constants in `brilliant_scientist_technology_action`; costs, cooldown, targeting, and AI weights are unchanged, so no weighted surface changes.
+The effect tooltip names the anchor state and its controlled neighbours.
+
+Evidence: `common/scripted_effects/016_brilliant_scientist_technology_action_effects.txt`, `common/dynamic_modifiers/016_brilliant_scientist_project_modifiers.txt`, `common/script_constants/016_brilliant_scientist_technology_action_constants.txt`, `localisation/english/016_brilliant_scientist_technology_actions_l_english.yml`, `docs/events/016_brilliant_scientist/systems/projects.md`.
+Needs live game: state-modifier display and the regional effect on enemy divisions.
