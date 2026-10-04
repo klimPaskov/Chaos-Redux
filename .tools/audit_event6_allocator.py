@@ -473,8 +473,10 @@ def main() -> int:
 
 	# The accepted closure keeps the RHI/AJX reservation group intact and admits
 	# exactly that pair through a documented two-slot exception. IW-045 adds its
-	# independently audited RG-651 carrier without changing that exception. Keep
-	# the canonical matrix and runtime consumers source-audited so a tempting map
+	# independently audited RG-651 carrier without changing that exception.
+	# IW-039 joins the attested set after its 2026-10-04 source review; it shares
+	# RG-DON-KUBAN with IW-040 at the ordinary capacity of one per wave. Keep the
+	# canonical matrix and runtime consumers source-audited so a tempting map
 	# rebind cannot silently manufacture capacity.
 	dispatch = read("common/scripted_triggers/006_independence_wave_package_dispatch_triggers.txt")
 	adapter = extract_script_block(
@@ -503,10 +505,10 @@ def main() -> int:
 	)
 	expected_adapter_ids = {
 		1, 2, 4, 6, 7, 8, 9, 10, 12, 13, 14, 15, 17, 18, 19,
-		23, 24, 26, 27, 28, 29, 30, 31, 33, 38, 40, 41, 43, 44, 45, 58, 70,
+		23, 24, 26, 27, 28, 29, 30, 31, 33, 38, 39, 40, 41, 43, 44, 45, 58, 70,
 		71, 72, 93, 98, 173, 177, 179, 184,
 	}
-	expected_attested_ids = {1, 2, 4, 6, 7, 8, 9, 10, 12, 14, 17, 18, 19, 23, 24, 26, 27, 28, 29, 30, 31, 33, 38, 40, 41, 44, 45, 70, 71, 72, 173, 184}
+	expected_attested_ids = {1, 2, 4, 6, 7, 8, 9, 10, 12, 14, 17, 18, 19, 23, 24, 26, 27, 28, 29, 30, 31, 33, 38, 39, 40, 41, 44, 45, 70, 71, 72, 173, 184}
 	require(
 		set(adapter_ids) == expected_adapter_ids,
 		"runtime adapter set changed without updating the accepted Event 006 closure: "
@@ -563,7 +565,7 @@ def main() -> int:
 		family = re.sub(r"_package_(?:setup|final_validation|cleanup)$", "", call)
 		phase_families.setdefault(family, set()).add(phase)
 	require(
-		len(phase_families) == 26,
+		len(phase_families) == 27,
 		"central package dispatcher family count changed: " + repr(sorted(phase_families)),
 		errors,
 	)
@@ -614,7 +616,7 @@ def main() -> int:
 	if len(attested_groups) == len(expected_attested_ids):
 		require(
 			len(set(attested_groups.values())) == 29,
-			"accepted thirty-two-package closure no longer exposes exactly twenty-nine compatible reservation groups: "
+			"accepted thirty-three-package closure no longer exposes exactly twenty-nine compatible reservation groups: "
 			+ repr(attested_groups),
 			errors,
 		)
@@ -625,7 +627,13 @@ def main() -> int:
 			errors,
 		)
 		require(
-			len(set(attested_anchors.values())) == 32,
+			attested_groups.get(39) == "rg_don_kuban" and attested_groups.get(40) == "rg_don_kuban",
+			"accepted DON/KUB shared RG-DON-KUBAN disposition changed without a new closure: "
+			+ repr({39: attested_groups.get(39), 40: attested_groups.get(40)}),
+			errors,
+		)
+		require(
+			len(set(attested_anchors.values())) == 33,
 			"attested package anchors are not pairwise unique: " + repr(attested_anchors),
 			errors,
 		)
@@ -643,6 +651,13 @@ def main() -> int:
 			"can_plan_independence_wave_package_iw_008" in reservation_triggers
 			and "can_plan_independence_wave_package_iw_010" in reservation_triggers,
 			"RG-RHINE-SAAR pair-capacity package triggers are missing",
+			errors,
+		)
+		don_kuban_gate = "NOT = { is_in_array = { array = global.liberation_plan_reservation_groups value = constant:independence_wave_reservation_group_id.rg_don_kuban } }"
+		require(
+			"rg_don_kuban" not in reservation_effects
+			and reservation_triggers.count(don_kuban_gate) == 2,
+			"RG-DON-KUBAN must keep capacity one: no pair exception and one group gate in each of the DON and KUB planners",
 			errors,
 		)
 		require(

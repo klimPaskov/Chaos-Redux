@@ -1744,6 +1744,77 @@ independence_wave_kub_emergency_guard = {
 	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_KUB_DEFENSE }
 }
 
+# [source: 006_independence_wave_don.txt]
+@CR_SC_IW_DON_ARMY = 86
+@CR_SC_IW_DON_PRODUCTION = 40
+@CR_SC_IW_DON_SUPPORT = 50
+@CR_SC_IW_DON_ARTILLERY = 20
+@CR_SC_IW_DON_INFRASTRUCTURE = 74
+@CR_SC_IW_DON_DEFENSE = 76
+@CR_SC_IW_DON_EMERGENCY = 118
+@CR_SC_IW_DON_FOUNDING_RESTRAINT = -260
+@CR_SC_IW_DON_SETTLED_RESTRAINT = -430
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-039 DON HOST AI
+# ============================================================================
+# Millerovo is an inland railhead seat: the host keeps a mounted survival lane
+# and rail investment while its charter is open, restrains wars against the
+# former host until the charter is settled, and adds a defense lane while the
+# emergency host staff governs. Route choice belongs to the package decisions
+# and shared focus framework.
+# ============================================================================
+
+independence_wave_don_mounted_survival = {
+	allowed = { original_tag = DON }
+	enable = {
+		is_independence_wave_don_package = yes
+		has_country_flag = independence_wave_iw_039_don_setup_complete
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_DON_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_IW_DON_PRODUCTION }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_IW_DON_ARTILLERY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_IW_DON_SUPPORT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_DON_INFRASTRUCTURE }
+}
+
+independence_wave_don_host_restraint = {
+	allowed = { original_tag = DON }
+	enable = {
+		is_independence_wave_don_package = yes
+		has_country_flag = independence_wave_iw_039_don_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_don_charter_complete }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_DON_FOUNDING_RESTRAINT }
+}
+
+independence_wave_don_chartered_host = {
+	allowed = { original_tag = DON }
+	enable = {
+		is_independence_wave_don_package = yes
+		has_country_flag = independence_wave_don_charter_complete
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_DON_ARMY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_DON_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_DON_INFRASTRUCTURE }
+}
+
+independence_wave_don_emergency_guard = {
+	allowed = { original_tag = DON }
+	enable = {
+		is_independence_wave_don_package = yes
+		has_country_flag = independence_wave_don_emergency_host_staff
+		NOT = { has_country_flag = independence_wave_don_emergency_review_complete }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_DON_EMERGENCY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_DON_DEFENSE }
+}
+
 # [source: 006_independence_wave_kurdistan.txt]
 @CR_SC_IW_KUR_ARMY = 94
 @CR_SC_IW_KUR_PRODUCTION = 44

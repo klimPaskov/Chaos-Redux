@@ -199,6 +199,13 @@ has_independence_wave_runtime_package_content_attestation_for_execution_id = {
 		# rejects a living carrier, an occupied anchor, or an origin collision.
 		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_033 }
 		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_041 }
+		# IW-039 DON is admitted after the 2026-10-04 source review: state 245 is
+		# the anchor and capital, optional 238 is trimmed or blocked by Event 005
+		# exactly as accepted, 218 is never reserved, SOV keeps 219, DHC is closed
+		# in both event orders on the reserved carrier, any DON cavalry template is
+		# removed before the single p39 force application, and cleanup is bound
+		# to the package generation. FORM-11 stays a later-gate marker.
+		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_039 }
 	}
 }
 
@@ -508,6 +515,19 @@ is_independence_wave_scenario_package_preflight_ready = {
 			check_variable = { independence_wave_scenario_dispatch_package_id = constant:independence_wave_package_id.iw_038 }
 			is_independence_wave_dormant_country_scope = yes
 			is_independence_wave_exact_package_iw_038_tag_available = yes
+		}
+		AND = {
+			check_variable = { independence_wave_scenario_dispatch_package_id = constant:independence_wave_package_id.iw_039 }
+			is_independence_wave_dormant_country_scope = yes
+			is_independence_wave_exact_package_iw_039_tag_available = yes
+			# Scenario preflight runs before reservation, so it also applies the
+			# planner's strict Event 005 DHC and state 218/238 collision check.
+			is_don_dhc_cross_event_collision_clear = yes
+		}
+		AND = {
+			check_variable = { independence_wave_scenario_dispatch_package_id = constant:independence_wave_package_id.iw_026 }
+			is_independence_wave_dormant_country_scope = yes
+			is_independence_wave_exact_package_iw_026_tag_available = yes
 		}
 		AND = {
 			check_variable = { independence_wave_scenario_dispatch_package_id = constant:independence_wave_package_id.iw_040 }

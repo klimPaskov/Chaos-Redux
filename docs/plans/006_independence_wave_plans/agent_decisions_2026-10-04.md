@@ -92,3 +92,30 @@ Decisions:
 - The petition does not hold the report/reset barrier: it belongs to the host's identity epoch, not to the foreign queue, and its window and answer close on their own timers.
 
 Needs live game: decision visibility and the named recipient, AI threat gating, `give_guarantee` from a `ROOT = { ... PREV }` chain, the access concession, and the `.70` text for each outcome.
+
+## D5. Central admission of IW-039 DON (Millerovo)
+
+Disposition: `implemented`.
+
+Basis: the user's 2026-09-26 DON design (245 anchor and capital, optional 238, 218 excluded, SOV 219 protected, DHC excluded in both orders) and the lead's round-1 item 5; admission standard 3 of the lead's decisions.
+
+Source review findings:
+
+- Setup is Event 006-only: it removes any `Kavaleriyskaya Diviziya` units (the only vanilla DON OOB, loaded by vanilla Polish events) before the single p39 force application, guarded by the current-generation force receipt, and sets the capital to 245 after the execution capital pass.
+- Optional 238 is reserved through the ordinary compact path and trimmed when unavailable; Event 005 ownership, control or reservation of 218 or 238 blocks DON exactly as accepted. 218 is never reserved.
+- DHC is rejected in both orders: `is_soviet_collapse_dhc_creation_clear` blocks DHC while DON is reserved, prepared or active, and the DON preflight requires that no DHC exists.
+- Cleanup is bound to `independence_wave_don_package_generation_id`.
+
+Defects fixed:
+
+- `is_independence_wave_exact_package_iw_039_tag_available` used the pre-reservation check `is_don_dhc_cross_event_collision_clear`, which rejects a DON that carries `liberation_release_reserved_country`. The execution preflight runs on the reserved carrier, so an admitted DON would have failed execution validation and invalidated its whole wave. The identity trigger now uses the reserved-safe `is_iw039_dhc_runtime_preflight_clear`; the planner keeps the strict check, and the scenario preflight (which runs before reservation) adds it explicitly.
+- The SCN-008 scenario preflight had no entry for IW-039 or for the already admitted IW-026 Macedonia, so both were always rejected as unready in scenarios. Both entries were added.
+
+Admission:
+
+- IW-039 is added to the content attestation, the Join probe order (after IW-038) and the scenario preflight; it was already in the SCN-008 ranked registry and the central adapter.
+- AI strategy profiles `independence_wave_don_mounted_survival`, `_host_restraint`, `_chartered_host` and `_emergency_guard` mirror the Kuban host profiles.
+- `.tools/audit_event6_allocator.py`: the stopped thread's uncommitted adapter-set and dispatcher-family updates were coherent and are adopted; the expected attested set gains IW-039, attested anchors are 33 unique, and a new check proves RG-DON-KUBAN keeps capacity one (no pair exception, one group gate in each of the DON and KUB planners). The audit passes with 33 attested packages and 29 compatible groups.
+- FORM-11 remains the internal later-gate marker `independence_wave_don_form11_docket_open` with no carrier.
+
+Needs live game: a DON release with and without 238, the DHC interlock in both orders, the p39 force after a cavalry cleanup, and a scenario run that now reaches DON and MAC.
