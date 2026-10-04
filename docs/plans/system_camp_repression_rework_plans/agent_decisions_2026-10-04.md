@@ -76,6 +76,7 @@ Basis: same-scenario before/after compares (pre-tranche snapshots against curren
 Fix: `uk_hold_raj_security_line` cancelled itself on its first check because a Raj state is never a Libyan pool state; the cancel trigger now checks only the site, the responsible controller and the Raj pool, matching its success requirements.
 Evidence: `administration_redesign_2026-09-06/ai_evidence/camp_probability_2026-10-04.md`; `hoi4_probability_inspect` returned `INTERNAL_ERROR` on two pools and is recorded as a route failure.
 Limits: decision results are score-only; AI selection frequency and the UK mission's full duration are `needs_live_game`.
+Commit: `6359a4d79974e7ec36d35658faf883a0f8fc42dd`.
 
 ## 10. Dated Axis-partner deportation from Hungary, 1944
 
@@ -86,3 +87,4 @@ Behaviour: each European Hungarian-held state with an unregistered foreign origi
 Surface: `camp_occ_partner.hungary_deportation_share`; triggers `camp_occ_partner_deportation_window_open`, `camp_occ_partner_under_german_influence`, `camp_occ_partner_deportation_candidate`, `camp_occ_state_has_partner_authority`, `camp_occ_state_has_route_authority`; effects `camp_occ_stage_german_origin_request` (shared with ordinary enrollment), `camp_occ_register_partner_state`, `camp_occ_try_partner_deportation`; the partner proof in `camp_occ_register_cohort`, the route authority in `camp_occ_transfer_to_custody_exact`, and the partner exception in the monthly closure loop and control-change callback.
 Evidence: `administration_redesign_2026-09-06/occupation/partner_deportation_source_tests.py` (twelve cases on the production monthly pass, May-September 1944): with two supported extermination levels, 235,847 of 235,849 people placed under orders move (150,000 in June, the rest in July), 153,297 arrival-phase deaths are recorded on bound rows, no campaign death is recorded inside Hungary, and every refusal case registers nothing. All other camp source suites still pass.
 Limits: `needs_live_game` for real Hungarian state populations, the vanilla Hungarian government and faction path, and engine population receipts. Hungary has no decision of its own in this route; a Hungarian player response (delay or refusal) is future work.
+Commit: `878e6527ab109db07abc01641e6111952cd17a21`.
