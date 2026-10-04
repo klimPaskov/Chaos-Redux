@@ -20,6 +20,19 @@ A surviving Assassin State loses bounded Cohesion and Reach after capture and ke
 Capture alone does not certify worldwide dismantling or territorial inheritance.
 The implementation and evidence limits for the current objective repair are recorded in `docs/plans/039_murder_mystery_plans/validation/mission_repair_2026_10_03/repair_evidence.md`.
 
+## Murdered rulers and their replacements
+
+The opening murder and a foreign cell's high-value murder both target only the sitting ruler, resolved through the synchronous anchor-trait helper `murder_mystery_capture_current_ruling_character`; an unresolved or ambiguous ruler fails the transaction closed, so an opposition party leader is never killed in the ruler's place.
+The replacement takes office before the victim is retired, through `murder_mystery_install_emergency_successor`:
+
+1. A curated native successor row applies first. The only row is Britain: a murdered `ENG_stanley_baldwin` is succeeded by `ENG_neville_chamberlain`, recruited and promoted in the ruling democratic party, with his vanilla portrait.
+2. Otherwise an institutional body named from the country's adjective takes office in the ruling party's ideology: the "Emergency Council" after the opening murder, the "Acting Cabinet" after a foreign murder.
+   It carries a marker trait (`murder_mystery_emergency_council` or `murder_mystery_acting_cabinet`) with a small stability penalty and uses `GFX_portrait_039_emergency_council`, an institutional portrait that shows no individual.
+
+The transaction verifies through the anchor helper that the replacement, not the victim, is the sitting ruler before it retires the victim.
+No invented individual is created for a real government; the generated individual portrait previously used for every host is no longer referenced.
+The opening host gate excludes countries in a civil war and countries carrying a stale anchor trait.
+
 ## Objective lifecycle
 
 Ordinary phase actions start event-owned missions through `murder_mystery_decision_start_bound_objective`.

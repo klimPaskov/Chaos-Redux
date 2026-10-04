@@ -73,3 +73,13 @@ Registering a cell opens the foreign government's local case, and foreign cases 
 
 The HOI4 MCP probability route returned `INTERNAL_ERROR` for a narrow `mission_ai_will_do` inspect of the two raid missions; no baseline or compare evidence exists for the changed blocked-weight conditions.
 All lifecycle behaviour is source-reviewed only and needs live-game confirmation: pulse cadence, incident frequency, evolution timing, capitulation and annexation hooks, heir rebinding, and the winner absorbing a capitulated movement country.
+
+## D9. Murdered rulers are resolved by the anchor helper and replaced by an institution
+
+Disposition: implemented; the institutional portrait art is blocked (see below).
+The opening and foreign-leader transactions resolve exactly the sitting ruler through `murder_mystery_capture_current_ruling_character` and fail closed when it cannot be resolved; the inheritance path no longer selects or retires anyone (D7).
+Grounded governments receive an institutional replacement named from the country adjective through a meta effect (the cannibalism warlord-name precedent): an Emergency Council after the opening murder and an Acting Cabinet after a foreign murder, each with a marker trait that the post-install ruler check reads.
+The curated native row is Britain only: `ENG_stanley_baldwin` to `ENG_neville_chamberlain`, same party and ideology, vanilla portrait, verified as ruling after promotion; this follows the stopped thread's ENG succession audit.
+A general per-country focus-route dependency check is not available in script, so the host gate excludes civil wars and stale anchors; the institutional replacement keeps the ruling ideology, which keeps ideology-gated focus routes open.
+Asset blocker: Part 3 classifies an institution of a real polity as grounded, which requires sourced institutional material through `chaosx_portrait_creator`; this session cannot spawn that worker and needs the user's permission to download a source image.
+`GFX_portrait_039_emergency_council` is registered and wired to the vanilla unknown-leader texture (`gfx/leaders/leader_unknown.dds`) until a sourced, people-free institutional emblem replaces the texture at the same sprite name.

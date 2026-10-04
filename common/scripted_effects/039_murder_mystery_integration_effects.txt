@@ -404,9 +404,13 @@ murder_mystery_prepare_opening_package = {
 		limit = { has_event_target = murder_mystery_opening_leader_character }
 		clear_global_event_target = murder_mystery_opening_leader_character
 	}
-	random_character = {
-		limit = { is_country_leader = yes }
-		save_global_event_target_as = murder_mystery_opening_leader_character
+	# Only the sitting ruler can be the opening victim. An unresolved or
+	# ambiguous ruler leaves the opening without a target, and it fails closed.
+	set_country_flag = murder_mystery_ruling_selection_authorized
+	murder_mystery_capture_current_ruling_character = yes
+	if = {
+		limit = { has_country_flag = murder_mystery_ruling_character_resolved }
+		event_target:murder_mystery_current_ruling_character = { save_global_event_target_as = murder_mystery_opening_leader_character }
 	}
 	if = {
 		limit = { has_event_target = murder_mystery_opening_leader_character }
@@ -473,47 +477,19 @@ murder_mystery_prepare_opening_package = {
 murder_mystery_install_verified_successor = {
 	set_country_flag = murder_mystery_successor_transaction_active
 	clr_country_flag = murder_mystery_successor_verified
+	clr_country_flag = murder_mystery_successor_verified_before_death
 	clr_country_flag = murder_mystery_safe_successor_registered
 	clr_country_flag = murder_mystery_opening_leader_character_removed
-	# The successor is created in the same ruling ideology. The previously
-	# captured character pointer is retired only after the successor exists.
+	# The replacement takes office in the ruling ideology first. The captured
+	# ruler is retired only after the replacement is verified as the ruler.
 	if = {
-		limit = { has_government = democratic }
-		create_country_leader = {
-			name = MURDER_MYSTERY_EMERGENCY_SUCCESSOR_NAME
-			desc = MURDER_MYSTERY_EMERGENCY_SUCCESSOR_DESC
-			picture = GFX_portrait_039_emergency_constitutional_successor
-			ideology = liberalism
-		}
-	}
-	else_if = {
-		limit = { has_government = fascism }
-		create_country_leader = {
-			name = MURDER_MYSTERY_EMERGENCY_SUCCESSOR_NAME
-			desc = MURDER_MYSTERY_EMERGENCY_SUCCESSOR_DESC
-			picture = GFX_portrait_039_emergency_constitutional_successor
-			ideology = fascism_ideology
-		}
-	}
-	else_if = {
-		limit = { has_government = communism }
-		create_country_leader = {
-			name = MURDER_MYSTERY_EMERGENCY_SUCCESSOR_NAME
-			desc = MURDER_MYSTERY_EMERGENCY_SUCCESSOR_DESC
-			picture = GFX_portrait_039_emergency_constitutional_successor
-			ideology = marxism
-		}
-	}
-	else = {
-		create_country_leader = {
-			name = MURDER_MYSTERY_EMERGENCY_SUCCESSOR_NAME
-			desc = MURDER_MYSTERY_EMERGENCY_SUCCESSOR_DESC
-			picture = GFX_portrait_039_emergency_constitutional_successor
-			ideology = despotism
-		}
+		limit = { has_event_target = murder_mystery_opening_leader_character }
+		event_target:murder_mystery_opening_leader_character = { save_event_target_as = murder_mystery_victim_character }
+		set_temp_variable = { murder_mystery_successor_style = constant:murder_mystery_successor.style_emergency_council }
+		murder_mystery_install_emergency_successor = yes
 	}
 	if = {
-		limit = { has_country_leader = { name = MURDER_MYSTERY_EMERGENCY_SUCCESSOR_NAME } }
+		limit = { has_country_flag = murder_mystery_emergency_successor_installed }
 		set_country_flag = murder_mystery_successor_verified_before_death
 	}
 	if = {
@@ -532,14 +508,11 @@ murder_mystery_install_verified_successor = {
 			event_target:murder_mystery_opening_leader_character = { retire = yes }
 			set_country_flag = murder_mystery_opening_leader_character_removed
 		}
-			if = {
-				limit = {
-					has_country_flag = murder_mystery_opening_leader_character_removed
-					has_country_leader = { name = MURDER_MYSTERY_EMERGENCY_SUCCESSOR_NAME }
-				}
-				set_country_flag = murder_mystery_successor_verified
-				set_country_flag = murder_mystery_safe_successor_registered
-			}
+		if = {
+			limit = { has_country_flag = murder_mystery_opening_leader_character_removed }
+			set_country_flag = murder_mystery_successor_verified
+			set_country_flag = murder_mystery_safe_successor_registered
+		}
 	}
 	clr_country_flag = murder_mystery_successor_transaction_active
 }
@@ -983,10 +956,14 @@ murder_mystery_execute_foreign_leader_transaction = {
 		add_to_variable = { global.murder_mystery_transaction_sequence = constant:murder_mystery_value.one }
 		set_variable = { murder_mystery_operation_target_id = constant:murder_mystery_value.dynamic_target_base_id }
 		add_to_variable = { murder_mystery_operation_target_id = global.murder_mystery_transaction_sequence }
-		random_character = {
-			limit = { is_country_leader = yes }
-			save_global_event_target_as = murder_mystery_foreign_leader_character
-			save_global_event_target_as = murder_mystery_target_registration_character
+		set_country_flag = murder_mystery_ruling_selection_authorized
+		murder_mystery_capture_current_ruling_character = yes
+		if = {
+			limit = { has_country_flag = murder_mystery_ruling_character_resolved }
+			event_target:murder_mystery_current_ruling_character = {
+				save_global_event_target_as = murder_mystery_foreign_leader_character
+				save_global_event_target_as = murder_mystery_target_registration_character
+			}
 		}
 		set_country_flag = murder_mystery_target_owner_callback_passed
 		set_variable = { murder_mystery_target_registration_id = murder_mystery_operation_target_id }
@@ -1002,44 +979,15 @@ murder_mystery_execute_foreign_leader_transaction = {
 			murder_mystery_approve_selected_target_owner = yes
 		}
 		if = {
-			limit = { has_country_flag = murder_mystery_selected_target_owner_approved }
+			limit = {
+				has_country_flag = murder_mystery_selected_target_owner_approved
+				has_event_target = murder_mystery_foreign_leader_character
+			}
+			event_target:murder_mystery_foreign_leader_character = { save_event_target_as = murder_mystery_victim_character }
+			set_temp_variable = { murder_mystery_successor_style = constant:murder_mystery_successor.style_acting_cabinet }
+			murder_mystery_install_emergency_successor = yes
 			if = {
-				limit = { has_government = democratic }
-				create_country_leader = {
-					name = MURDER_MYSTERY_FOREIGN_EMERGENCY_SUCCESSOR_NAME
-					desc = MURDER_MYSTERY_FOREIGN_EMERGENCY_SUCCESSOR_DESC
-					picture = GFX_portrait_039_emergency_constitutional_successor
-					ideology = liberalism
-				}
-			}
-			else_if = {
-				limit = { has_government = fascism }
-				create_country_leader = {
-					name = MURDER_MYSTERY_FOREIGN_EMERGENCY_SUCCESSOR_NAME
-					desc = MURDER_MYSTERY_FOREIGN_EMERGENCY_SUCCESSOR_DESC
-					picture = GFX_portrait_039_emergency_constitutional_successor
-					ideology = fascism_ideology
-				}
-			}
-			else_if = {
-				limit = { has_government = communism }
-				create_country_leader = {
-					name = MURDER_MYSTERY_FOREIGN_EMERGENCY_SUCCESSOR_NAME
-					desc = MURDER_MYSTERY_FOREIGN_EMERGENCY_SUCCESSOR_DESC
-					picture = GFX_portrait_039_emergency_constitutional_successor
-					ideology = marxism
-				}
-			}
-			else = {
-				create_country_leader = {
-					name = MURDER_MYSTERY_FOREIGN_EMERGENCY_SUCCESSOR_NAME
-					desc = MURDER_MYSTERY_FOREIGN_EMERGENCY_SUCCESSOR_DESC
-					picture = GFX_portrait_039_emergency_constitutional_successor
-					ideology = despotism
-				}
-			}
-			if = {
-				limit = { has_country_leader = { name = MURDER_MYSTERY_FOREIGN_EMERGENCY_SUCCESSOR_NAME } }
+				limit = { has_country_flag = murder_mystery_emergency_successor_installed }
 				set_country_flag = murder_mystery_foreign_successor_verified
 			}
 		}
@@ -1068,7 +1016,7 @@ murder_mystery_execute_foreign_leader_transaction = {
 		if = {
 			limit = {
 				has_country_flag = murder_mystery_foreign_leader_removed
-				has_country_leader = { name = MURDER_MYSTERY_FOREIGN_EMERGENCY_SUCCESSOR_NAME }
+				has_country_flag = murder_mystery_emergency_successor_installed
 			}
 			murder_mystery_approve_selected_target_owner = yes
 			murder_mystery_mark_selected_target_removed = yes

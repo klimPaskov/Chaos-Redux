@@ -188,3 +188,128 @@ murder_mystery_apply_live_central_capture_shock = {
 		}
 	}
 }
+
+# COUNTRY scope: a government whose ruler is about to be murdered.
+# Input: chain-local event target murder_mystery_victim_character (the sitting
+# ruler resolved by murder_mystery_capture_current_ruling_character) and temp
+# murder_mystery_successor_style (constant:murder_mystery_successor.style_*).
+# Installs the replacement before the victim is removed: a curated native
+# successor when a verified row applies, otherwise an institutional emergency
+# body named for the country in the ruling ideology. No invented individual is
+# created for a real government.
+# Output: country flag murder_mystery_emergency_successor_installed only when
+# the sitting ruler is now the replacement and not the victim.
+murder_mystery_install_emergency_successor = {
+	clr_country_flag = murder_mystery_emergency_successor_installed
+	clr_country_flag = murder_mystery_curated_successor_used
+	murder_mystery_try_curated_successor = yes
+	if = {
+		limit = { NOT = { has_country_flag = murder_mystery_curated_successor_used } }
+		murder_mystery_create_emergency_body = yes
+	}
+	set_country_flag = murder_mystery_ruling_selection_authorized
+	murder_mystery_capture_current_ruling_character = yes
+	if = {
+		limit = {
+			has_country_flag = murder_mystery_ruling_character_resolved
+			has_event_target = murder_mystery_victim_character
+			NOT = { event_target:murder_mystery_current_ruling_character = { is_character = event_target:murder_mystery_victim_character } }
+			OR = {
+				has_country_flag = murder_mystery_curated_successor_used
+				event_target:murder_mystery_current_ruling_character = {
+					OR = {
+						has_trait = murder_mystery_emergency_council
+						has_trait = murder_mystery_acting_cabinet
+					}
+				}
+			}
+		}
+		set_country_flag = murder_mystery_emergency_successor_installed
+	}
+}
+
+# COUNTRY scope. Curated native successor rows: the exact victim token, the
+# successor token from the same roster and ideology, and a ruling check after
+# promotion. Add a row only for a verified historical succession.
+murder_mystery_try_curated_successor = {
+	if = {
+		limit = {
+			original_tag = ENG
+			has_government = democratic
+			has_event_target = murder_mystery_victim_character
+			event_target:murder_mystery_victim_character = { is_character = ENG_stanley_baldwin }
+		}
+		recruit_character = ENG_neville_chamberlain
+		promote_character = ENG_neville_chamberlain
+		if = {
+			limit = { has_country_leader = { character = ENG_neville_chamberlain ruling_only = yes } }
+			set_country_flag = murder_mystery_curated_successor_used
+		}
+	}
+}
+
+# COUNTRY scope. Input: temp murder_mystery_successor_style. Creates an
+# emergency council (opening murder) or acting cabinet (foreign murder) named
+# from the country's adjective, in the ruling party's ideology, with an
+# institutional portrait and a marker trait that verification reads.
+murder_mystery_create_emergency_body = {
+	if = {
+		limit = { check_variable = { var = murder_mystery_successor_style value = constant:murder_mystery_successor.style_acting_cabinet compare = equals } }
+		if = {
+			limit = { has_government = democratic }
+			meta_effect = {
+				text = { create_country_leader = { name = "[BODY_NAME]" desc = MURDER_MYSTERY_ACTING_CABINET_DESC picture = GFX_portrait_039_emergency_council ideology = liberalism traits = { murder_mystery_acting_cabinet } } }
+				BODY_NAME = "[This.GetMurderMysteryActingCabinetName]"
+			}
+		}
+		else_if = {
+			limit = { has_government = fascism }
+			meta_effect = {
+				text = { create_country_leader = { name = "[BODY_NAME]" desc = MURDER_MYSTERY_ACTING_CABINET_DESC picture = GFX_portrait_039_emergency_council ideology = fascism_ideology traits = { murder_mystery_acting_cabinet } } }
+				BODY_NAME = "[This.GetMurderMysteryActingCabinetName]"
+			}
+		}
+		else_if = {
+			limit = { has_government = communism }
+			meta_effect = {
+				text = { create_country_leader = { name = "[BODY_NAME]" desc = MURDER_MYSTERY_ACTING_CABINET_DESC picture = GFX_portrait_039_emergency_council ideology = marxism traits = { murder_mystery_acting_cabinet } } }
+				BODY_NAME = "[This.GetMurderMysteryActingCabinetName]"
+			}
+		}
+		else = {
+			meta_effect = {
+				text = { create_country_leader = { name = "[BODY_NAME]" desc = MURDER_MYSTERY_ACTING_CABINET_DESC picture = GFX_portrait_039_emergency_council ideology = despotism traits = { murder_mystery_acting_cabinet } } }
+				BODY_NAME = "[This.GetMurderMysteryActingCabinetName]"
+			}
+		}
+	}
+	else = {
+		if = {
+			limit = { has_government = democratic }
+			meta_effect = {
+				text = { create_country_leader = { name = "[BODY_NAME]" desc = MURDER_MYSTERY_EMERGENCY_COUNCIL_DESC picture = GFX_portrait_039_emergency_council ideology = liberalism traits = { murder_mystery_emergency_council } } }
+				BODY_NAME = "[This.GetMurderMysteryEmergencyCouncilName]"
+			}
+		}
+		else_if = {
+			limit = { has_government = fascism }
+			meta_effect = {
+				text = { create_country_leader = { name = "[BODY_NAME]" desc = MURDER_MYSTERY_EMERGENCY_COUNCIL_DESC picture = GFX_portrait_039_emergency_council ideology = fascism_ideology traits = { murder_mystery_emergency_council } } }
+				BODY_NAME = "[This.GetMurderMysteryEmergencyCouncilName]"
+			}
+		}
+		else_if = {
+			limit = { has_government = communism }
+			meta_effect = {
+				text = { create_country_leader = { name = "[BODY_NAME]" desc = MURDER_MYSTERY_EMERGENCY_COUNCIL_DESC picture = GFX_portrait_039_emergency_council ideology = marxism traits = { murder_mystery_emergency_council } } }
+				BODY_NAME = "[This.GetMurderMysteryEmergencyCouncilName]"
+			}
+		}
+		else = {
+			meta_effect = {
+				text = { create_country_leader = { name = "[BODY_NAME]" desc = MURDER_MYSTERY_EMERGENCY_COUNCIL_DESC picture = GFX_portrait_039_emergency_council ideology = despotism traits = { murder_mystery_emergency_council } } }
+				BODY_NAME = "[This.GetMurderMysteryEmergencyCouncilName]"
+			}
+		}
+	}
+}
