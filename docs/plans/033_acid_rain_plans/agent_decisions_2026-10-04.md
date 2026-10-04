@@ -92,3 +92,11 @@ The AI does not demobilize while the crisis is active and projects are running, 
 
 Disposition: implemented (same commit as D10).
 When a warning visit is recorded for a state, its controller binds every running urgent operation and evacuation that has no visit yet to that visit; the existing arrival recorder then credits only completion strictly before arrival and rejects starts after arrival.
+
+### D13. Recovery actions follow the recorded burden
+
+Disposition: implemented (commit "Tie Acid Rain recovery to the damage the rain recorded").
+Restore Transport targets only states with rain-recorded infrastructure or railway damage points and clears those points when it finishes; Repair Industry does the same for civilian and military factory points, so neither can repair more than the rain damaged.
+Decontamination targets states whose rain impact left an environmental burden (`acid_rain_environmental_burden`, set by every recorded window impact and cleared when the aftermath tier reaches zero); it consumes nothing else, so a state can always be cleared once its structural damage is repaired.
+AI scoring favours transport when transport points are the larger structural burden, industry when factory points are larger, and decontamination when no structural damage remains.
+Probability evidence: `hoi4.probability_inspect` with adapter `decision_ai_will_do` on `common/decisions/033_acid_rain_decisions.txt` returned `INTERNAL_ERROR` on 2026-10-04, as it did for the lead, so no baseline or comparison could be produced; the factors are the existing `@acid_rain_ai_*` aftermath factors plus one new 1.5 factor.

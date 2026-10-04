@@ -1877,6 +1877,62 @@ acid_rain_state_is_recovery_target = {
 	NOT = { acid_rain_state_has_live_forecast = yes }
 }
 
+# STATE SCOPE. Recovery burdens recorded from this state's own rain damage.
+acid_rain_state_has_recorded_transport_damage = {
+	OR = {
+		check_variable = { acid_rain_damage_infrastructure_points > constant:acid_rain_aftermath.zero }
+		check_variable = { acid_rain_damage_rail_way_points > constant:acid_rain_aftermath.zero }
+	}
+}
+
+acid_rain_state_has_recorded_industry_damage = {
+	OR = {
+		check_variable = { acid_rain_damage_industrial_complex_points > constant:acid_rain_aftermath.zero }
+		check_variable = { acid_rain_damage_arms_factory_points > constant:acid_rain_aftermath.zero }
+	}
+}
+
+acid_rain_state_has_environmental_burden = {
+	has_state_flag = acid_rain_environmental_burden
+}
+
+# STATE SCOPE, ROOT is the acting country. A recovery target that carries the
+# burden the given recovery action repairs.
+acid_rain_state_is_transport_recovery_target = {
+	acid_rain_state_is_recovery_target = yes
+	acid_rain_state_has_recorded_transport_damage = yes
+}
+
+acid_rain_state_is_decontamination_target = {
+	acid_rain_state_is_recovery_target = yes
+	acid_rain_state_has_environmental_burden = yes
+}
+
+acid_rain_state_is_industry_recovery_target = {
+	acid_rain_state_is_recovery_target = yes
+	acid_rain_state_has_recorded_industry_damage = yes
+}
+
+# STATE SCOPE. The structural damage this state still carries, used by AI
+# scoring to pick the recovery that matches its main burden.
+acid_rain_state_transport_damage_is_main_burden = {
+	acid_rain_state_has_recorded_transport_damage = yes
+	set_temp_variable = { acid_rain_burden_transport = acid_rain_damage_infrastructure_points }
+	add_to_temp_variable = { acid_rain_burden_transport = acid_rain_damage_rail_way_points }
+	set_temp_variable = { acid_rain_burden_industry = acid_rain_damage_industrial_complex_points }
+	add_to_temp_variable = { acid_rain_burden_industry = acid_rain_damage_arms_factory_points }
+	check_variable = { var = acid_rain_burden_transport value = acid_rain_burden_industry compare = greater_than_or_equals }
+}
+
+acid_rain_state_industry_damage_is_main_burden = {
+	acid_rain_state_has_recorded_industry_damage = yes
+	set_temp_variable = { acid_rain_burden_transport = acid_rain_damage_infrastructure_points }
+	add_to_temp_variable = { acid_rain_burden_transport = acid_rain_damage_rail_way_points }
+	set_temp_variable = { acid_rain_burden_industry = acid_rain_damage_industrial_complex_points }
+	add_to_temp_variable = { acid_rain_burden_industry = acid_rain_damage_arms_factory_points }
+	check_variable = { var = acid_rain_burden_industry value = acid_rain_burden_transport compare = greater_than }
+}
+
 # COUNTRY SCOPE, ROOT is the acting country. The state stored in
 # acid_rain_selected_action_state suits acid_rain_selected_action.
 acid_rain_selected_state_accepts_action = {
@@ -1890,8 +1946,16 @@ acid_rain_selected_state_accepts_action = {
 		}
 		var:acid_rain_selected_action_state = { acid_rain_state_is_evacuation_target = yes }
 	}
+	else_if = {
+		limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_transport compare = equals } }
+		var:acid_rain_selected_action_state = { acid_rain_state_is_transport_recovery_target = yes }
+	}
+	else_if = {
+		limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_industry compare = equals } }
+		var:acid_rain_selected_action_state = { acid_rain_state_is_industry_recovery_target = yes }
+	}
 	else = {
-		var:acid_rain_selected_action_state = { acid_rain_state_is_recovery_target = yes }
+		var:acid_rain_selected_action_state = { acid_rain_state_is_decontamination_target = yes }
 	}
 }
 

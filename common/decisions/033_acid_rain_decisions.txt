@@ -45,6 +45,7 @@
 @acid_rain_ai_water_aftermath = 2.00
 @acid_rain_ai_transport_aftermath = 1.75
 @acid_rain_ai_industry_aftermath = 1.50
+@acid_rain_ai_environment_main_burden = 1.50
 @acid_rain_legacy_mission_retirement_days = 1
 
 chaosx_acid_rain_decision_category = {
@@ -563,6 +564,10 @@ chaosx_acid_rain_decision_category = {
 					tooltip = acid_rain_tt_recovery_target
 					acid_rain_state_is_recovery_target = yes
 				}
+				custom_trigger_tooltip = {
+					tooltip = acid_rain_tt_transport_damage
+					acid_rain_state_is_transport_recovery_target = yes
+				}
 			}
 		}
 		on_map_mode = map_and_decisions_view
@@ -574,7 +579,7 @@ chaosx_acid_rain_decision_category = {
 			clear_variable = acid_rain_selected_action_state
 			FROM = {
 				if = {
-					limit = { acid_rain_state_is_recovery_target = yes }
+					limit = { acid_rain_state_is_transport_recovery_target = yes }
 					set_variable = { ROOT.acid_rain_selected_action_state = THIS }
 				}
 			}
@@ -584,7 +589,7 @@ chaosx_acid_rain_decision_category = {
 		}
 		ai_will_do = {
 			base = @acid_rain_ai_recovery_transport
-			modifier = { factor = @acid_rain_ai_transport_aftermath FROM = { rail_way < constant:acid_rain_runtime.two } }
+			modifier = { factor = @acid_rain_ai_transport_aftermath FROM = { acid_rain_state_transport_damage_is_main_burden = yes } }
 			modifier = { factor = @acid_rain_ai_capital_target FROM = { is_capital = yes } }
 		}
 	}
@@ -627,6 +632,10 @@ chaosx_acid_rain_decision_category = {
 					tooltip = acid_rain_tt_recovery_target
 					acid_rain_state_is_recovery_target = yes
 				}
+				custom_trigger_tooltip = {
+					tooltip = acid_rain_tt_environment_burden
+					acid_rain_state_is_decontamination_target = yes
+				}
 			}
 		}
 		on_map_mode = map_and_decisions_view
@@ -638,7 +647,7 @@ chaosx_acid_rain_decision_category = {
 			clear_variable = acid_rain_selected_action_state
 			FROM = {
 				if = {
-					limit = { acid_rain_state_is_recovery_target = yes }
+					limit = { acid_rain_state_is_decontamination_target = yes }
 					set_variable = { ROOT.acid_rain_selected_action_state = THIS }
 				}
 			}
@@ -649,6 +658,13 @@ chaosx_acid_rain_decision_category = {
 		ai_will_do = {
 			base = @acid_rain_ai_recovery_decontaminate
 			modifier = { factor = @acid_rain_ai_water_aftermath FROM = { check_variable = { var = acid_rain_state_aftermath_tier value = constant:acid_rain_runtime.two compare = greater_than } } }
+			modifier = {
+				factor = @acid_rain_ai_environment_main_burden
+				FROM = {
+					NOT = { acid_rain_state_has_recorded_transport_damage = yes }
+					NOT = { acid_rain_state_has_recorded_industry_damage = yes }
+				}
+			}
 			modifier = { factor = @acid_rain_ai_island_route FROM = { acid_rain_state_is_island_capable = yes } }
 		}
 	}
@@ -691,6 +707,10 @@ chaosx_acid_rain_decision_category = {
 					tooltip = acid_rain_tt_recovery_target
 					acid_rain_state_is_recovery_target = yes
 				}
+				custom_trigger_tooltip = {
+					tooltip = acid_rain_tt_industry_damage
+					acid_rain_state_is_industry_recovery_target = yes
+				}
 			}
 		}
 		on_map_mode = map_and_decisions_view
@@ -702,7 +722,7 @@ chaosx_acid_rain_decision_category = {
 			clear_variable = acid_rain_selected_action_state
 			FROM = {
 				if = {
-					limit = { acid_rain_state_is_recovery_target = yes }
+					limit = { acid_rain_state_is_industry_recovery_target = yes }
 					set_variable = { ROOT.acid_rain_selected_action_state = THIS }
 				}
 			}
@@ -712,7 +732,7 @@ chaosx_acid_rain_decision_category = {
 		}
 		ai_will_do = {
 			base = @acid_rain_ai_recovery_industry
-			modifier = { factor = @acid_rain_ai_industry_aftermath FROM = { has_state_flag = acid_rain_state_damage_receipt } }
+			modifier = { factor = @acid_rain_ai_industry_aftermath FROM = { acid_rain_state_industry_damage_is_main_burden = yes } }
 			modifier = { factor = @acid_rain_ai_capital_target FROM = { is_capital = yes } }
 			modifier = { factor = 0 FROM = { check_variable = { var = acid_rain_state_aftermath_tier value = constant:acid_rain_runtime.zero compare = equals } } }
 		}

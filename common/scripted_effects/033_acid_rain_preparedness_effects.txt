@@ -1544,6 +1544,7 @@ acid_rain_apply_recovery_result = {
 	if = {
 		limit = { check_variable = { var = acid_rain_state_aftermath_tier value = constant:acid_rain_response.recovery_tier_minimum compare = equals } }
 		clr_state_flag = acid_rain_aftercare_unresolved
+		clr_state_flag = acid_rain_environmental_burden
 		set_state_flag = acid_rain_aftercare_recovered
 		if = {
 			limit = { NOT = { has_state_flag = acid_rain_recovery_reported } }
@@ -1569,6 +1570,18 @@ acid_rain_apply_recovery_result = {
 	}
 	acid_rain_033_achievement_record_recovery_completion = yes
 	set_variable = { acid_rain_last_recovery_action = acid_rain_completed_action_type }
+	# Transport and industry repairs consume the damage the rain recorded here,
+	# so neither can be repeated for damage it did not cause.
+	if = {
+		limit = { check_variable = { var = acid_rain_completed_action_type value = constant:acid_rain_action.recovery_transport compare = equals } }
+		set_variable = { acid_rain_damage_infrastructure_points = constant:acid_rain_aftermath.zero }
+		set_variable = { acid_rain_damage_rail_way_points = constant:acid_rain_aftermath.zero }
+	}
+	if = {
+		limit = { check_variable = { var = acid_rain_completed_action_type value = constant:acid_rain_action.recovery_industry compare = equals } }
+		set_variable = { acid_rain_damage_industrial_complex_points = constant:acid_rain_aftermath.zero }
+		set_variable = { acid_rain_damage_arms_factory_points = constant:acid_rain_aftermath.zero }
+	}
 	set_temp_variable = { acid_rain_recovery_transport_days = constant:acid_rain_preparedness.urgent_transport_effect_days }
 	set_temp_variable = { acid_rain_recovery_bonus_days = constant:acid_rain_preparedness.urgent_water_effect_days }
 	if = { limit = { check_variable = { var = acid_rain_completed_action_type value = constant:acid_rain_action.recovery_transport compare = equals } } add_dynamic_modifier = { modifier = acid_rain_recovery_transport days = acid_rain_recovery_transport_days } }
