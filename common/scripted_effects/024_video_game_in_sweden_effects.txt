@@ -1380,10 +1380,11 @@ video_game_in_sweden_start_trust_model = {
 	set_country_flag = video_game_in_sweden_trust_model_active
 	set_variable = { video_game_in_sweden_trust_model_days_elapsed = 0 }
 	set_variable = { video_game_in_sweden_trust_model_start_date = global.date }
+	set_temp_variable = { chaosx_date_days = constant:video_game_in_sweden_timing.trust_model_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
 	set_variable = { video_game_in_sweden_trust_model_reassessment_deadline = global.date }
-	add_to_variable = {
-		video_game_in_sweden_trust_model_reassessment_deadline = constant:video_game_in_sweden_timing.trust_model_days
-	}
+	add_to_variable = { video_game_in_sweden_trust_model_reassessment_deadline = chaosx_date_offset }
 	set_variable = { video_game_in_sweden_trust_model_peak_war_score = 0 }
 	set_variable = { simulation_reliance = constant:video_game_in_sweden_reliance.trust_model_value }
 	video_game_in_sweden_refresh_reliance_state = yes
