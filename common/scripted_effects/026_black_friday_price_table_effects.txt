@@ -45,10 +45,11 @@ black_friday_price_table_quote = {
 			limit = { check_variable = { black_friday_price_quantum > constant:black_friday_event.zero } }
 			set_temp_variable = { black_friday_price_step = black_friday_price_quantum }
 		}
-		set_temp_variable = { black_friday_price_percent = black_friday_price_ratio }
-		divide_temp_variable = { black_friday_price_percent = constant:black_friday_event.ratio_per_percent }
-		multiply_temp_variable = { black_friday_price_payable = black_friday_price_percent }
-		divide_temp_variable = { black_friday_price_payable = constant:black_friday_event.percent_basis }
+		# The ratio becomes a fraction first (0.5 or 0.25), so no intermediate
+		# product exceeds the ordinary amount, even for large scaled quotes.
+		set_temp_variable = { black_friday_price_fraction = black_friday_price_ratio }
+		divide_temp_variable = { black_friday_price_fraction = constant:black_friday_event.ratio_basis }
+		multiply_temp_variable = { black_friday_price_payable = black_friday_price_fraction }
 		divide_temp_variable = { black_friday_price_payable = black_friday_price_step }
 		set_temp_variable = { black_friday_price_whole = black_friday_price_payable }
 		round_temp_variable = black_friday_price_whole

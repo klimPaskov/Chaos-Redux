@@ -24,7 +24,7 @@ The CXT decision `chaosx_test_country_event026_price_probe_decision` is the live
 | `black_friday_price_table_initialize` | Any | `constant:black_friday_event.price_table_version` | Builds the table once per version, at the sale price while a sale is active and at ordinary prices otherwise, then stores `global.black_friday_price_table_version`. Called from `on_startup` and from `black_friday_initialize_runtime` on every Event 26 pulse. |
 
 Defaults: before the first build a price variable is unset and reads as zero, which is why the table is built in `on_startup` before the first day.
-Sale ratios are whole percents (`ratio_per_percent`), so the payable product is exact before the ceiling.
+Sale ratios are whole percents of `ratio_basis`, so the quote first turns the ratio into an exact fraction (0.5 or 0.25) and multiplies the ordinary amount by it; no intermediate value exceeds the ordinary amount, and the product is exact before the ceiling.
 
 ## Registering a price
 
