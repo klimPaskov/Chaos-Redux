@@ -801,9 +801,11 @@ sov_nuclear_bombs_execute_shared_action = {
 			}
 			else_if = { limit = { check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.demonstration compare = equals } } set_country_flag = sov_nuclear_bombs_shared_demonstration_context }
 			else_if = { limit = { check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.accident compare = equals } } set_country_flag = sov_nuclear_bombs_shared_accident_context }
-			# launch_nuke detonates; it does not select an air wing or start a raid.
-			# Event 23 keeps one pending detonation request until on_nuke_drop returns.
-			# A verified real bomber-delivery adapter remains an acceptance requirement.
+			# Event 23's authorization chain releases through launch_nuke, the same
+			# effect the vanilla nuclear raid outcomes call. The event preflight
+			# mirrors the vanilla nuclear_strike requirements; launch_nuke itself does
+			# not select an air wing or start a raid, and vanilla raids remain the
+			# parallel native route. One pending request waits for on_nuke_drop.
 			set_variable = { sov_nuclear_bombs_action_native_stockpile_before = num_of_nukes }
 			set_variable = { sov_nuclear_bombs_action_native_stockpile_expected_after = sov_nuclear_bombs_action_native_stockpile_before }
 			subtract_from_variable = { sov_nuclear_bombs_action_native_stockpile_expected_after = constant:sov_nuclear_bombs_ledger.one }
