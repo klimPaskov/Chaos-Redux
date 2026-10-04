@@ -450,12 +450,14 @@ murder_mystery_install_verified_successor = {
 			murder_mystery_selected_target_allows_opening_action = yes
 			has_event_target = murder_mystery_opening_leader_character
 		}
-		event_target:murder_mystery_opening_leader_character = {
-			if = {
-				limit = { exists = yes }
-				retire = yes
-				ROOT = { set_country_flag = murder_mystery_opening_leader_character_removed }
+		# CHARACTER scope has no exists trigger. The host's recruited roster
+		# proves the saved opening leader is still present before retirement.
+		if = {
+			limit = {
+				any_character = { is_character = event_target:murder_mystery_opening_leader_character }
 			}
+			event_target:murder_mystery_opening_leader_character = { retire = yes }
+			set_country_flag = murder_mystery_opening_leader_character_removed
 		}
 			if = {
 				limit = {
@@ -894,14 +896,15 @@ murder_mystery_execute_foreign_leader_transaction = {
 				limit = {
 					murder_mystery_selected_target_allows_named_action = yes
 					has_event_target = murder_mystery_selected_target_character
-				}
-				event_target:murder_mystery_selected_target_character = {
-					if = {
-						limit = { exists = yes }
-						retire = yes
-						event_target:murder_mystery_selected_target_owner = { set_country_flag = murder_mystery_foreign_leader_removed }
+					has_event_target = murder_mystery_selected_target_owner
+					# CHARACTER scope has no exists trigger. The owner's recruited
+					# roster proves the saved leader is still present.
+					event_target:murder_mystery_selected_target_owner = {
+						any_character = { is_character = event_target:murder_mystery_selected_target_character }
 					}
 				}
+				event_target:murder_mystery_selected_target_character = { retire = yes }
+				event_target:murder_mystery_selected_target_owner = { set_country_flag = murder_mystery_foreign_leader_removed }
 			}
 		}
 		if = {
@@ -1230,12 +1233,16 @@ murder_mystery_apply_limited_inheritance = {
 								murder_mystery_selected_target_allows_named_action = yes
 								has_event_target = murder_mystery_inherited_leader_character
 							}
-							event_target:murder_mystery_inherited_leader_character = {
-								if = {
-									limit = { exists = yes }
-									retire = yes
-									ROOT = { set_country_flag = murder_mystery_inherited_leader_removed }
+							# CHARACTER scope has no exists trigger. This country's recruited
+							# roster proves the saved leader is still present, and the removal
+							# receipt stays on this country, where the next check reads it.
+							clr_country_flag = murder_mystery_inherited_leader_removed
+							if = {
+								limit = {
+									any_character = { is_character = event_target:murder_mystery_inherited_leader_character }
 								}
+								event_target:murder_mystery_inherited_leader_character = { retire = yes }
+								set_country_flag = murder_mystery_inherited_leader_removed
 							}
 							if = {
 								limit = { has_country_flag = murder_mystery_inherited_leader_removed }
@@ -1250,7 +1257,7 @@ murder_mystery_apply_limited_inheritance = {
 				limit = { has_country_flag = murder_mystery_inheritance_commit_proof }
 				set_country_flag = murder_mystery_inherited_central_movement
 				set_country_flag = murder_mystery_central_or_heir_validated
-				set_country_flag = murder_mystery_inheritance_transaction_committed
+				set_global_flag = murder_mystery_inheritance_transaction_committed
 				clr_global_flag = murder_mystery_inheritance_transaction_active
 				murder_mystery_clear_selected_target_context = yes
 				if = { limit = { has_event_target = murder_mystery_inherited_leader_character } clear_global_event_target = murder_mystery_inherited_leader_character }
