@@ -158,6 +158,7 @@ doctrine_research_schedule_next_evolution = {
 doctrine_research_process_evolution = {
 	if = { limit = { NOT = { has_variable = global.doctrine_research_current_stage } } set_variable = { global.doctrine_research_current_stage = constant:doctrine_research_stage.baseline_calm_world } }
 	set_global_flag = doctrine_research_evolution_clock_started
+	set_temp_variable = { doctrine_research_target_stage = constant:doctrine_research_stage.baseline_calm_world }
 	doctrine_research_get_highest_enabled_stage = yes
 	if = {
 		limit = {
@@ -181,6 +182,7 @@ doctrine_research_process_evolution = {
 				compare = greater_than_or_equals
 			}
 		}
+		set_temp_variable = { doctrine_research_next_stage = global.doctrine_research_current_stage }
 		doctrine_research_get_next_enabled_stage = yes
 		if = {
 			limit = {
@@ -210,6 +212,7 @@ doctrine_research_process_evolution = {
 
 doctrine_research_prepare_evolution_stage = {
 	if = { limit = { NOT = { has_variable = global.doctrine_research_current_stage } } set_variable = { global.doctrine_research_current_stage = constant:doctrine_research_stage.baseline_calm_world } }
+	set_temp_variable = { doctrine_research_target_stage = constant:doctrine_research_stage.baseline_calm_world }
 	doctrine_research_get_highest_enabled_stage = yes
 	if = {
 		limit = {
