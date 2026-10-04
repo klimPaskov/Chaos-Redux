@@ -785,6 +785,7 @@ acid_rain_initialize_country_record = {
 	clear_variable = acid_rain_last_superstorm_forecast_report_id
 	clear_variable = acid_rain_last_severe_impact_report_id
 	clear_variable = acid_rain_last_superstorm_impact_report_id
+	clear_variable = acid_rain_exposure_start_day
 	set_variable = { acid_rain_last_preparation_report_day = constant:acid_rain_runtime.zero }
 	set_country_flag = acid_rain_country_registered
 }
@@ -1407,6 +1408,7 @@ acid_rain_record_country_active_exposure = {
 		if = {
 			limit = { check_variable = { var = acid_rain_active_exposed_states value = constant:acid_rain_runtime.zero compare = equals } }
 			set_variable = { acid_rain_033_achievement_last_runtime_check_day = global.date }
+			set_variable = { acid_rain_exposure_start_day = global.date }
 			set_country_flag = acid_rain_country_exposure_active
 			set_country_flag = acid_rain_country_had_exposure
 			if = {
@@ -1457,6 +1459,7 @@ acid_rain_release_front_state = {
 						}
 					}
 					set_variable = { acid_rain_last_departure_report_day = global.date }
+					acid_rain_store_departure_report_facts = yes
 					country_event = { id = chaosx.nr33.107 }
 				}
 			}
@@ -1469,6 +1472,39 @@ acid_rain_release_front_state = {
 		clear_variable = acid_rain_target_front_id
 		clear_variable = acid_rain_front_entry_day
 	}
+}
+
+# COUNTRY SCOPE. Stores the departure report facts just before the report is
+# sent: the length of the national exposure that has just ended, the
+# controlled states still carrying aftermath, and the highest aftermath tier
+# among them. Only this country's controlled states are read, and only when
+# some of them carry aftermath.
+acid_rain_store_departure_report_facts = {
+	set_variable = { acid_rain_report_exposure_days = constant:acid_rain_runtime.zero }
+	if = {
+		limit = { has_variable = acid_rain_exposure_start_day }
+		set_temp_variable = { chaosx_date_offset = global.date }
+		subtract_from_temp_variable = { chaosx_date_offset = acid_rain_exposure_start_day }
+		set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+		chaosx_convert_date_offset_to_days = yes
+		set_variable = { acid_rain_report_exposure_days = chaosx_date_days }
+	}
+	set_variable = { acid_rain_report_aftermath_state_count = acid_rain_aftermath_state_count }
+	set_temp_variable = { acid_rain_departure_highest_tier = constant:acid_rain_aftermath.zero }
+	if = {
+		limit = { check_variable = { var = acid_rain_aftermath_state_count value = constant:acid_rain_aftermath.zero compare = greater_than } }
+		every_controlled_state = {
+			limit = {
+				has_state_flag = acid_rain_published_aftermath
+				has_variable = acid_rain_state_aftermath_tier
+			}
+			if = {
+				limit = { check_variable = { var = acid_rain_state_aftermath_tier value = acid_rain_departure_highest_tier compare = greater_than } }
+				set_temp_variable = { acid_rain_departure_highest_tier = acid_rain_state_aftermath_tier }
+			}
+		}
+	}
+	set_variable = { acid_rain_report_highest_aftermath_tier = acid_rain_departure_highest_tier }
 }
 
 # COUNTRY SCOPE. Reports cumulative Event 33 deaths at 10,000, 100,000,
@@ -1635,12 +1671,15 @@ acid_rain_select_weighted_region = {
 	}
 }
 
-# ANY SCOPE. Output temporary acid_rain_warning_report_key names one front
-# visit for the advance warning report. It is the allocated warning visit id,
-# or, when the visit registry is full and that id is 0, a negative key built
-# from the front id and the publication date so it never equals a visit id.
-# Inputs: acid_rain_current_warning_visit_id and acid_rain_front_id.
-acid_rain_compute_warning_report_key = {
+# ANY SCOPE. Prepares one front warning publication for its reports.
+# Output temporary acid_rain_warning_report_key names the front visit: the
+# allocated warning visit id, or, when the visit registry is full and that id
+# is 0, a negative key built from the front id and the publication date so it
+# never equals a visit id. Output acid_rain_warning_arrival_days counts the
+# whole days until the front arrives.
+# Inputs: acid_rain_current_warning_visit_id, acid_rain_front_id and
+# acid_rain_warning_arrival_day (the stored arrival date).
+acid_rain_prepare_warning_report = {
 	set_temp_variable = { acid_rain_warning_report_key = acid_rain_current_warning_visit_id }
 	if = {
 		limit = { check_variable = { var = acid_rain_current_warning_visit_id value = constant:acid_rain_runtime.zero compare = equals } }
@@ -1649,13 +1688,20 @@ acid_rain_compute_warning_report_key = {
 		add_to_temp_variable = { acid_rain_warning_report_key = global.date }
 		multiply_temp_variable = { acid_rain_warning_report_key = constant:acid_rain_runtime.negative_one }
 	}
+	set_temp_variable = { chaosx_date_offset = acid_rain_warning_arrival_day }
+	subtract_from_temp_variable = { chaosx_date_offset = global.date }
+	set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+	chaosx_convert_date_offset_to_days = yes
+	set_temp_variable = { acid_rain_warning_arrival_days = chaosx_date_days }
 }
 
 # COUNTRY SCOPE. Runs for every warned state the country controls during one
-# front warning publication. The first state of a front visit sends the
-# advance warning; later states of the same visit send nothing, while a new
-# visit by any front, including a return to the same region, warns again.
-# Input: temporary acid_rain_warning_report_key.
+# front warning publication. The first state of a front visit stores the
+# report facts and sends the advance warning; later states of the same visit
+# only add to the warned-state count it shows, while a new visit by any
+# front, including a return to the same region, warns again.
+# Inputs: temporary acid_rain_warning_report_key, acid_rain_warning_arrival_days
+# and acid_rain_selected_region_id.
 acid_rain_send_front_warning_report = {
 	if = {
 		limit = {
@@ -1665,7 +1711,40 @@ acid_rain_send_front_warning_report = {
 			}
 		}
 		set_variable = { acid_rain_last_warning_visit_id = acid_rain_warning_report_key }
+		set_variable = { acid_rain_report_region_id = acid_rain_selected_region_id }
+		set_variable = { acid_rain_report_arrival_days = acid_rain_warning_arrival_days }
+		set_variable = { acid_rain_report_warned_state_count = constant:acid_rain_runtime.zero }
+		acid_rain_store_report_weakest_component = yes
 		country_event = { id = chaosx.nr33.102 }
+	}
+	add_to_variable = { acid_rain_report_warned_state_count = constant:acid_rain_runtime.loop_increment }
+}
+
+# COUNTRY SCOPE. Stores the lowest-tier Preparedness component for reports.
+# Components are checked in Preparedness weight order, so a tie names the
+# heavier one; 0 means every component has reached its last tier.
+acid_rain_store_report_weakest_component = {
+	set_variable = { acid_rain_report_weakest_component = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_weakest_component_tier = constant:acid_rain_project.max_tier }
+	if = {
+		limit = { check_variable = { var = acid_rain_shelter_tier value = acid_rain_weakest_component_tier compare = less_than } }
+		set_variable = { acid_rain_report_weakest_component = constant:acid_rain_project.component_shelter }
+		set_temp_variable = { acid_rain_weakest_component_tier = acid_rain_shelter_tier }
+	}
+	if = {
+		limit = { check_variable = { var = acid_rain_water_tier value = acid_rain_weakest_component_tier compare = less_than } }
+		set_variable = { acid_rain_report_weakest_component = constant:acid_rain_project.component_water }
+		set_temp_variable = { acid_rain_weakest_component_tier = acid_rain_water_tier }
+	}
+	if = {
+		limit = { check_variable = { var = acid_rain_medical_tier value = acid_rain_weakest_component_tier compare = less_than } }
+		set_variable = { acid_rain_report_weakest_component = constant:acid_rain_project.component_medical }
+		set_temp_variable = { acid_rain_weakest_component_tier = acid_rain_medical_tier }
+	}
+	if = {
+		limit = { check_variable = { var = acid_rain_transport_tier value = acid_rain_weakest_component_tier compare = less_than } }
+		set_variable = { acid_rain_report_weakest_component = constant:acid_rain_project.component_transport }
+		set_temp_variable = { acid_rain_weakest_component_tier = acid_rain_transport_tier }
 	}
 }
 
@@ -1743,7 +1822,8 @@ acid_rain_commit_front_region = {
 		set_global_flag = acid_rain_warning_registry_overflow
 		set_temp_variable = { acid_rain_current_warning_visit_id = constant:acid_rain_runtime.zero }
 	}
-	acid_rain_compute_warning_report_key = yes
+	set_temp_variable = { acid_rain_warning_arrival_day = global.acid_rain_front_next_warning_day_entries^acid_rain_front_id }
+	acid_rain_prepare_warning_report = yes
 	if = {
 		limit = {
 			check_variable = { var = acid_rain_previous_region_id value = constant:acid_rain_runtime.zero compare = greater_than }
@@ -1983,7 +2063,8 @@ acid_rain_prepare_front_warning = {
 			set_global_flag = acid_rain_warning_registry_overflow
 			set_temp_variable = { acid_rain_current_warning_visit_id = constant:acid_rain_runtime.zero }
 		}
-		acid_rain_compute_warning_report_key = yes
+		set_temp_variable = { acid_rain_warning_arrival_day = global.acid_rain_front_move_day_entries^acid_rain_front_id }
+		acid_rain_prepare_warning_report = yes
 		set_temp_variable = { acid_rain_cursor_region = acid_rain_selected_region_id }
 		acid_rain_prepare_region_cursor = yes
 		set_temp_variable = { acid_rain_warning_cursor_end = acid_rain_cursor_end }
@@ -3001,23 +3082,7 @@ acid_rain_apply_state_pulse = {
 				}
 			}
 			save_event_target_as = acid_rain_report_state
-			# The severe episode this pulse belongs to: the severe cell id, or the
-			# superstorm episode serial stamped on the state at forecast.
-			set_temp_variable = { acid_rain_impact_episode_key = constant:acid_rain_runtime.zero }
-			if = {
-				limit = {
-					check_variable = { var = acid_rain_pulse_class value = constant:acid_rain_mortality_class.superstorm compare = equals }
-					has_variable = acid_rain_superstorm_forecast_id
-				}
-				set_temp_variable = { acid_rain_impact_episode_key = acid_rain_superstorm_forecast_id }
-			}
-			else_if = {
-				limit = {
-					check_variable = { var = acid_rain_pulse_class value = constant:acid_rain_mortality_class.severe compare = equals }
-					has_variable = acid_rain_severe_cell_id
-				}
-				set_temp_variable = { acid_rain_impact_episode_key = acid_rain_severe_cell_id }
-			}
+			acid_rain_prepare_severe_impact_report = yes
 			CONTROLLER = {
 				acid_rain_register_country_on_control_transfer = yes
 				add_to_variable = { acid_rain_severe_pulse_count = constant:acid_rain_runtime.loop_increment }
@@ -3027,13 +3092,51 @@ acid_rain_apply_state_pulse = {
 	}
 }
 
+# STATE SCOPE. Reads the facts of a positive severe or superstorm pulse for
+# the impact report. Outputs (temporary): acid_rain_impact_episode_key, the
+# severe cell id or the superstorm episode serial stamped at forecast;
+# acid_rain_impact_evacuation_status, whether this state's evacuation had
+# finished, was still under way with partial protection, or was absent; and
+# acid_rain_impact_end_day, the stored end of the severe episode.
+# Input: temporary acid_rain_pulse_class.
+acid_rain_prepare_severe_impact_report = {
+	set_temp_variable = { acid_rain_impact_episode_key = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_impact_end_day = global.date }
+	if = {
+		limit = {
+			check_variable = { var = acid_rain_pulse_class value = constant:acid_rain_mortality_class.superstorm compare = equals }
+			has_variable = acid_rain_superstorm_forecast_id
+		}
+		set_temp_variable = { acid_rain_impact_episode_key = acid_rain_superstorm_forecast_id }
+		if = { limit = { has_variable = acid_rain_superstorm_forecast_end_day } set_temp_variable = { acid_rain_impact_end_day = acid_rain_superstorm_forecast_end_day } }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = acid_rain_pulse_class value = constant:acid_rain_mortality_class.severe compare = equals }
+			has_variable = acid_rain_severe_cell_id
+		}
+		set_temp_variable = { acid_rain_impact_episode_key = acid_rain_severe_cell_id }
+		if = { limit = { has_variable = acid_rain_severe_forecast_end_day } set_temp_variable = { acid_rain_impact_end_day = acid_rain_severe_forecast_end_day } }
+	}
+	set_temp_variable = { acid_rain_impact_evacuation_status = constant:acid_rain_reporting.evacuation_none }
+	if = {
+		limit = { has_state_flag = acid_rain_evacuated }
+		set_temp_variable = { acid_rain_impact_evacuation_status = constant:acid_rain_reporting.evacuation_finished }
+	}
+	else_if = {
+		limit = { acid_rain_state_has_partial_evacuation = yes }
+		set_temp_variable = { acid_rain_impact_evacuation_status = constant:acid_rain_reporting.evacuation_partial }
+	}
+}
+
 # COUNTRY SCOPE. Sends the severe impact report after the first positive pulse
 # of each severe episode in the country's territory. Severe cell ids and
 # superstorm episode serials only grow within a generation, so a key above
 # the stored one is a new episode; later pulses of the same episode, and of an
 # older episode that overlaps a newer one, send nothing. Cells and superstorms
 # keep separate keys because their serials are counted separately.
-# Inputs: temporary acid_rain_pulse_class and acid_rain_impact_episode_key.
+# Inputs: temporary acid_rain_pulse_class and the outputs of
+# acid_rain_prepare_severe_impact_report.
 acid_rain_send_severe_impact_report = {
 	if = {
 		limit = { check_variable = { var = acid_rain_impact_episode_key value = constant:acid_rain_runtime.zero compare = greater_than } }
@@ -3047,7 +3150,7 @@ acid_rain_send_severe_impact_report = {
 					}
 				}
 				set_variable = { acid_rain_last_superstorm_impact_report_id = acid_rain_impact_episode_key }
-				country_event = { id = chaosx.nr33.104 }
+				acid_rain_fire_severe_impact_report = yes
 			}
 		}
 		else_if = {
@@ -3058,8 +3161,46 @@ acid_rain_send_severe_impact_report = {
 				}
 			}
 			set_variable = { acid_rain_last_severe_impact_report_id = acid_rain_impact_episode_key }
-			country_event = { id = chaosx.nr33.104 }
+			acid_rain_fire_severe_impact_report = yes
 		}
+	}
+}
+
+# COUNTRY SCOPE. Stores the impact report facts and sends the report.
+acid_rain_fire_severe_impact_report = {
+	set_variable = { acid_rain_report_impact_kind = acid_rain_pulse_class }
+	set_variable = { acid_rain_report_evacuation_status = acid_rain_impact_evacuation_status }
+	set_temp_variable = { chaosx_date_offset = acid_rain_impact_end_day }
+	subtract_from_temp_variable = { chaosx_date_offset = global.date }
+	set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+	chaosx_convert_date_offset_to_days = yes
+	set_variable = { acid_rain_report_episode_remaining_days = chaosx_date_days }
+	country_event = { id = chaosx.nr33.104 }
+}
+
+# COUNTRY SCOPE. Opens the forecast report of a new severe cell or superstorm
+# episode in the country's territory and sends it. The forecast loop then adds
+# each of the country's forecast states through
+# acid_rain_add_state_to_forecast_report, so the report counts them all and
+# names the most populous one.
+# Inputs: temporary acid_rain_forecast_report_kind (a mortality class) and
+# acid_rain_forecast_report_lead_days.
+acid_rain_open_forecast_report = {
+	set_variable = { acid_rain_report_forecast_kind = acid_rain_forecast_report_kind }
+	set_variable = { acid_rain_report_forecast_lead_days = acid_rain_forecast_report_lead_days }
+	set_variable = { acid_rain_report_forecast_state_count = constant:acid_rain_runtime.zero }
+	set_variable = { acid_rain_report_forecast_top_population_k = constant:acid_rain_runtime.negative_one }
+	country_event = { id = chaosx.nr33.103 }
+}
+
+# COUNTRY SCOPE, called from a forecast state's CONTROLLER block, so PREV is
+# that state. Input: temporary acid_rain_forecast_state_population_k.
+acid_rain_add_state_to_forecast_report = {
+	add_to_variable = { acid_rain_report_forecast_state_count = constant:acid_rain_runtime.loop_increment }
+	if = {
+		limit = { check_variable = { var = acid_rain_report_forecast_top_population_k value = acid_rain_forecast_state_population_k compare = less_than } }
+		set_variable = { acid_rain_report_forecast_top_population_k = acid_rain_forecast_state_population_k }
+		set_variable = { acid_rain_report_forecast_state = PREV }
 	}
 }
 
@@ -3793,6 +3934,7 @@ acid_rain_create_severe_cell = {
 				set_variable = { acid_rain_severe_cell_opening_recorded = constant:acid_rain_runtime.zero }
 				acid_rain_033_achievement_record_runtime_forecast = yes
 				save_event_target_as = acid_rain_report_state
+				set_temp_variable = { acid_rain_forecast_state_population_k = state_population_k }
 				CONTROLLER = {
 					acid_rain_register_country_on_control_transfer = yes
 					set_country_flag = acid_rain_country_severe_forecast_active
@@ -3805,8 +3947,11 @@ acid_rain_create_severe_cell = {
 						}
 						set_variable = { acid_rain_last_severe_forecast_report_id = acid_rain_new_severe_cell_id }
 						add_to_variable = { acid_rain_severe_forecast_count = constant:acid_rain_runtime.loop_increment }
-						country_event = { id = chaosx.nr33.103 }
+						set_temp_variable = { acid_rain_forecast_report_kind = constant:acid_rain_mortality_class.severe }
+						set_temp_variable = { acid_rain_forecast_report_lead_days = constant:acid_rain_evolution.severe_forecast_lead_days }
+						acid_rain_open_forecast_report = yes
 					}
+					acid_rain_add_state_to_forecast_report = yes
 				}
 				if = {
 					limit = { CONTROLLER = { check_variable = { var = acid_rain_preparedness value = constant:acid_rain_evolution.severe_low_preparedness_threshold compare = less_than } } }
@@ -4598,6 +4743,7 @@ acid_rain_create_superstorm_forecast = {
 					acid_rain_publish_state_country_counts = yes
 					acid_rain_033_achievement_record_runtime_forecast = yes
 					save_event_target_as = acid_rain_report_state
+					set_temp_variable = { acid_rain_forecast_state_population_k = state_population_k }
 					CONTROLLER = {
 						acid_rain_register_country_on_control_transfer = yes
 						set_country_flag = acid_rain_country_severe_forecast_active
@@ -4610,8 +4756,11 @@ acid_rain_create_superstorm_forecast = {
 							}
 							set_variable = { acid_rain_last_superstorm_forecast_report_id = global.acid_rain_superstorm_total_episodes }
 							add_to_variable = { acid_rain_severe_forecast_count = constant:acid_rain_runtime.loop_increment }
-							country_event = { id = chaosx.nr33.103 }
+							set_temp_variable = { acid_rain_forecast_report_kind = constant:acid_rain_mortality_class.superstorm }
+							set_temp_variable = { acid_rain_forecast_report_lead_days = constant:acid_rain_evolution.superstorm_lead_days }
+							acid_rain_open_forecast_report = yes
 						}
+						acid_rain_add_state_to_forecast_report = yes
 					}
 				}
 				for_each_scope_loop = {
@@ -4893,6 +5042,21 @@ acid_rain_apply_dissipation_step = {
 	}
 }
 
+# ANY SCOPE. Stores the worldwide summary the dissipation report shows, once,
+# when acute rain closes. It only reads the event totals.
+# Input: temporary acid_rain_unresolved_aftermath_count, counted by the final
+# cleanup pass over the frozen states.
+acid_rain_store_dissipation_report_facts = {
+	set_temp_variable = { chaosx_date_offset = global.date }
+	subtract_from_temp_variable = { chaosx_date_offset = global.acid_rain_runtime_start_day }
+	set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+	chaosx_convert_date_offset_to_days = yes
+	set_variable = { global.acid_rain_report_duration_days = chaosx_date_days }
+	set_variable = { global.acid_rain_report_air_added_percent = global.acid_rain_air_lifetime_added_bp }
+	divide_variable = { global.acid_rain_report_air_added_percent = constant:acid_rain_runtime.percentage_divisor }
+	set_variable = { global.acid_rain_report_unresolved_aftermath_states = acid_rain_unresolved_aftermath_count }
+}
+
 # ANY SCOPE. One final bounded cleanup is idempotent. Durable coverage,
 # generation, positive-loss receipts, Event 33 totals, Air additions, and
 # aftermath flags remain available to reports and achievements.
@@ -4902,6 +5066,7 @@ acid_rain_finish_runtime = {
 		set_temp_variable = { acid_rain_033_natural_closure = constant:acid_rain_runtime.zero }
 		if = { limit = { has_global_flag = acid_rain_dissipation_pending NOT = { has_global_flag = world_end } } set_temp_variable = { acid_rain_033_natural_closure = constant:acid_rain_runtime.one } }
 		clr_global_flag = acid_rain_global_transition_active
+		set_temp_variable = { acid_rain_unresolved_aftermath_count = constant:acid_rain_runtime.zero }
 		for_each_scope_loop = {
 			array = global.acid_rain_frozen_states
 			acid_rain_advance_consequence_interval = yes
@@ -4926,12 +5091,14 @@ acid_rain_finish_runtime = {
 				acid_rain_033_achievement_record_dissipation_state_snapshot = yes
 			}
 			acid_rain_close_state_evacuation = yes
+			if = { limit = { has_state_flag = acid_rain_aftercare_unresolved } add_to_temp_variable = { acid_rain_unresolved_aftermath_count = constant:acid_rain_runtime.loop_increment } }
 		}
 		clear_array = global.acid_rain_ordinary_target_states
 		clear_array = global.acid_rain_severe_target_states
 		clear_array = global.acid_rain_superstorm_target_states
 		clear_array = global.acid_rain_active_consequence_states
 		clr_global_flag = acid_rain_global_layer_active
+		acid_rain_store_dissipation_report_facts = yes
 		for_each_scope_loop = {
 			array = global.acid_rain_participant_countries
 			acid_rain_project_country_obligations = yes

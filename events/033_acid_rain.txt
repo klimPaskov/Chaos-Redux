@@ -374,8 +374,22 @@ country_event = {
 
 country_event = {
 	id = chaosx.nr33.103
-	title = chaosx.nr33.103.t
-	desc = chaosx.nr33.103.d
+	title = {
+		text = chaosx.nr33.103.t_superstorm
+		trigger = { check_variable = { var = acid_rain_report_forecast_kind value = constant:acid_rain_mortality_class.superstorm compare = equals } }
+	}
+	title = {
+		text = chaosx.nr33.103.t
+		trigger = { NOT = { check_variable = { var = acid_rain_report_forecast_kind value = constant:acid_rain_mortality_class.superstorm compare = equals } } }
+	}
+	desc = {
+		text = chaosx.nr33.103.d_superstorm
+		trigger = { check_variable = { var = acid_rain_report_forecast_kind value = constant:acid_rain_mortality_class.superstorm compare = equals } }
+	}
+	desc = {
+		text = chaosx.nr33.103.d
+		trigger = { NOT = { check_variable = { var = acid_rain_report_forecast_kind value = constant:acid_rain_mortality_class.superstorm compare = equals } } }
+	}
 	picture = GFX_event_033_acid_rain_severe
 	is_triggered_only = yes
 	option = { name = chaosx.nr33.report_close }
@@ -383,7 +397,14 @@ country_event = {
 
 country_event = {
 	id = chaosx.nr33.104
-	title = chaosx.nr33.104.t
+	title = {
+		text = chaosx.nr33.104.t_superstorm
+		trigger = { check_variable = { var = acid_rain_report_impact_kind value = constant:acid_rain_mortality_class.superstorm compare = equals } }
+	}
+	title = {
+		text = chaosx.nr33.104.t
+		trigger = { NOT = { check_variable = { var = acid_rain_report_impact_kind value = constant:acid_rain_mortality_class.superstorm compare = equals } } }
+	}
 	desc = chaosx.nr33.104.d
 	picture = GFX_event_033_acid_rain_severe
 	is_triggered_only = yes
@@ -410,8 +431,23 @@ country_event = {
 
 country_event = {
 	id = chaosx.nr33.107
-	title = chaosx.nr33.107.t
-	desc = chaosx.nr33.107.d
+	# Another front already warning the country makes this a temporary departure.
+	title = {
+		text = chaosx.nr33.107.t_temporary
+		trigger = { has_country_flag = acid_rain_country_warning_active }
+	}
+	title = {
+		text = chaosx.nr33.107.t
+		trigger = { NOT = { has_country_flag = acid_rain_country_warning_active } }
+	}
+	desc = {
+		text = chaosx.nr33.107.d_temporary
+		trigger = { has_country_flag = acid_rain_country_warning_active }
+	}
+	desc = {
+		text = chaosx.nr33.107.d
+		trigger = { NOT = { has_country_flag = acid_rain_country_warning_active } }
+	}
 	picture = GFX_event_033_acid_rain_transport
 	is_triggered_only = yes
 	option = { name = chaosx.nr33.report_close }
