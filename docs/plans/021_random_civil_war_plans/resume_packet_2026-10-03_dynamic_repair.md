@@ -57,7 +57,10 @@ These helpers do not implement the missing active-war review by themselves.
 Generation zero is the baseline, with descendants one and two under the existing cap.
 An additional front within the same crisis inherits the source generation, including two, without creating a third descendant.
 
-## Current implementation work
+## Active-war Evolution I work (history)
+
+Disposition: implemented in `92e5aed69` and promoted into the "Accepted active-war review" section of `docs/specs/021_random_civil_war_specs/021_random_civil_war_spec_part_4_evolution_i.md`; the native tag-capacity guard below is implemented in `4ff987b4a`.
+The paragraphs in this section record the queue as it stood before round 1 and are not open instructions.
 
 The complete active-war Evolution I repair addendum is accepted and queued in `event021_active_war_evolution_i_repair_addendum_2026-10-03.md`.
 Its previous proposal status is superseded by the parent acceptance at the top of that document.

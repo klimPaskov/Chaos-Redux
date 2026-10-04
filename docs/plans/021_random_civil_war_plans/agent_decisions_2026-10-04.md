@@ -112,3 +112,11 @@ Basis: the harness rule that day and date arithmetic uses the shared converter, 
 Decision: `event021_event_log_detail` gains two sentences describing the Evolution I review of running wars and the successor's choice of a new war for its own core or claimed territory, and `event021_evolution_i_body` and `event021_evolution_i_log` describe the stage as it now plays.
 The matching catalog Details and Evo I wording is queued in `catalog_changes_pending.md` with Status kept at Needs Testing; no spreadsheet or CSV was edited.
 Basis: the lead's round-1 assignment and the rule that catalog fields match in-game localisation.
+
+## D12. Tag-capacity accounting in the opening validator
+
+Finding from the takeover's post-round review: a same-tag plan that fails its remnant check falls into the ordinary branch of `event021_parent_validate_opening_plan`, where the tag guard could label it `cap_reached`, and a reserved cluster target rejected for tags was also counted as a failed state reservation.
+Decision: the tag guard skips same-tag plans as well as Event 006 plans, and the cluster opening caller creates `event021_dynamic_tag_short` before the call and records `state_reservation_failed` only when no tag shortfall was already recorded.
+No gate, cost, weight, or plan outcome changes; only the skip reason and skip count become accurate.
+Basis: decision D8 and the acceptance that same-tag rows never use dynamic-tag capacity.
+Contract: `common/scripted_effects/021_random_civil_war_dynamic_tag_effects.md` (Callers).

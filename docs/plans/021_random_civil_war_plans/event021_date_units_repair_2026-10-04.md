@@ -63,3 +63,10 @@ The ledger, external-war, mission redesign and MTTH-eligibility work that this d
 `cdd75094b` then repairs the mission timers, because a selectable mission resolves on selection and never reaches its `timeout_effect`.
 Each commit was built in an isolated index and checked for definition, constant and brace closure against its own tree; the calendar, evolution-log and front-ledger source tests pass on the working tree.
 Decisions are recorded in `agent_decisions_2026-10-04.md`.
+
+## 2026-10-04 round 1 follow-up
+
+Disposition: implemented and committed source; live confirmation pending.
+`3e8b83278` resolves the disabled-stage resampling and predecessor-gating findings above: a stage switched off in the Events Log settings is never sampled, fired, activated, or recorded, and a later stage needs each earlier stage recorded or switched off (agent decision D4).
+`17f9ac0d0` turns `event021_days_to_date_offset` into a thin wrapper over the shared `chaosx_convert_days_to_date_offset` and removes the private `event021_calendar` constants and their file, so the calendar constants described in the Implementation section now live only in the shared `chaosx_date_units` category (agent decision D10).
+The 41 call sites are unchanged, and `.tools/test_event021_date_units.py` runs the wrapper through the shared helper and passes.

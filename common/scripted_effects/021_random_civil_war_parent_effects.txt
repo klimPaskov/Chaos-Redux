@@ -3010,7 +3010,10 @@ event021_parent_validate_opening_plan = {
 		set_temp_variable = { event021_dynamic_tag_free = constant:random_civil_war_value.zero }
 		set_temp_variable = { event021_dynamic_tag_live_count = constant:random_civil_war_value.zero }
 		if = {
-			limit = { NOT = { check_variable = { var = random_civil_war_archetype value = constant:random_civil_war_archetype.event006 compare = equals } } }
+			limit = {
+				NOT = { check_variable = { var = random_civil_war_archetype value = constant:random_civil_war_archetype.event006 compare = equals } }
+				NOT = { check_variable = { var = random_civil_war_archetype value = constant:random_civil_war_archetype.same_tag compare = equals } }
+			}
 			event021_count_free_dynamic_tags = yes
 			if = {
 				limit = { check_variable = { var = event021_dynamic_tag_free value = constant:random_civil_war_value.one compare = less_than } }
@@ -8156,6 +8159,7 @@ event021_parent_dispatch_opening = {
 			}
 			event021_parent_begin_target_transaction = yes
 			event021_parent_plan_connected_states = yes
+			set_temp_variable = { event021_dynamic_tag_short = constant:random_civil_war_value.zero }
 			event021_parent_validate_opening_plan = yes
 			if = {
 				limit = {
@@ -8185,12 +8189,14 @@ event021_parent_dispatch_opening = {
 				event021_parent_start_ordinary_civil_war = yes
 			}
 			else = {
+				# A full dynamic tag pool has already recorded its own capacity skip.
 				if = {
 					limit = {
 						OR = {
 							has_country_flag = random_civil_war_cluster_target_reserved
 							has_country_flag = random_civil_war_event021_cluster_reservation_consumed
 						}
+						check_variable = { var = event021_dynamic_tag_short value = constant:random_civil_war_value.zero compare = equals }
 					}
 					set_temp_variable = { event021_cluster_skip_reason = constant:random_civil_war_cluster_skip_reason.state_reservation_failed }
 					event021_parent_record_cluster_skip = yes

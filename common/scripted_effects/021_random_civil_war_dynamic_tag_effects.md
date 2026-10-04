@@ -26,7 +26,7 @@ It needs one tag for an ordinary primary claimant and one for each frozen ordina
 
 ## Callers
 
-- `event021_parent_validate_opening_plan` rejects an ordinary or regional opening with `cap_reached` when no tag is free; Event 006 and same-tag openings are unaffected.
+- `event021_parent_validate_opening_plan` rejects an ordinary or regional opening with `cap_reached` when no tag is free; Event 006 and same-tag openings, including a same-tag plan that fails its own remnant check, are unaffected. It reports the shortfall in `event021_dynamic_tag_short`, which the cluster opening caller creates before the call, so a reserved target rejected for tags is not counted a second time as a failed state reservation.
 - `event021_parent_collect_dynamic_optional_front_candidates` limits optional ordinary rows to the free tags left after the primary claimant's own tag.
 - `event021_parent_freeze_scenario_plan` holds the tags of every frozen ordinary plan, so a Maximum batch cannot plan past the pool; a plan that cannot be covered is skipped and counted by the existing scenario skip counters with `cap_reached` as the last skip reason.
 - The scenario controller releases a country's hold right after its commit, resets the batch total at confirmation, and clears it when the batch ends; `event021_parent_clear_scenario_plan_receipt` also releases it on rollback or cleanup.
