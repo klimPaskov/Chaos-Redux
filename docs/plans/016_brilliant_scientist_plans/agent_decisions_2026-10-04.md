@@ -158,3 +158,11 @@ A scripted comparison confirmed that each wrapped condition set is identical to 
 Probability evidence: the HOI4 MCP exposes no raid adapter (`hoi4.probability_inspect` lists decision, mission, focus, technology, event, random-list, strategy, and custom-pool adapters only), and one narrow `hoi4.probability_inspect` call on `brilliant_scientist_anthrax_battlefield_biological_raid` returned `INTERNAL_ERROR`; it was not retried.
 
 Evidence: `common/raids/016_brilliant_scientist_biological_raids.txt`.
+
+## D14. Caller-owned incident pressure outputs
+
+Both Mengele incident dispatchers now set `mengele_event016_computation_incident_pressure` and `mengele_event016_computation_incident_complement` to zero before calling `brilliant_scientist_mengele_load_computation_incident_pressure`, following the repository rule that a temporary first created inside a scripted effect may not survive its return.
+The pressure formula, weights, and incident outcomes are unchanged, and the two API documents record the caller-owned outputs.
+This closes the follow-up in `016_funded_provider_cold_lifetime_2026-10-03.md`.
+
+Evidence: `common/scripted_effects/016_mengele_computation_incident_effects.txt` and `.md`, `common/scripted_effects/016_mengele_conventional_incident_effects.txt` and `.md`.
