@@ -125,6 +125,34 @@ sov_nuclear_bombs_event_has_delivery_route = {
 	}
 }
 
+# Country scope. True while the deployed strategic bomber force is at or
+# below the delivery floor, so the preflight above cannot pass on bombers.
+sov_nuclear_bombs_event_bomber_force_below_delivery_floor = {
+	set_temp_variable = { sov_nuclear_bombs_delivery_bomber_floor = constant:sov_nuclear_bombs_delivery.deployed_bomber_floor }
+	meta_trigger = {
+		text = {
+			NOT = { has_deployed_air_force_size = { size > [BOMBERS] type = strategic_bomber } }
+		}
+		BOMBERS = "[?sov_nuclear_bombs_delivery_bomber_floor|.0]"
+	}
+}
+
+# Country scope. The Soviet AI production plan in
+# common/ai_strategy/023_sov_nuclear_bombs_ai_strategy.txt holds while the
+# AI-run Event 23 arsenal is past its opening, has the atomic technologies,
+# is not under the Atomic Moratorium, and lacks the bombers its delivery
+# preflight needs.
+sov_nuclear_bombs_event_ai_needs_delivery_bombers = {
+	sov_nuclear_bombs_event_actor_is_valid = yes
+	is_ai = yes
+	has_tech = atomic_research
+	has_tech = nukes
+	has_variable = sov_nuclear_bombs_phase
+	NOT = { sov_nuclear_bombs_event_phase_opening = yes }
+	NOT = { has_country_flag = sov_nuclear_bombs_atomic_moratorium }
+	sov_nuclear_bombs_event_bomber_force_below_delivery_floor = yes
+}
+
 sov_nuclear_bombs_event_has_delivery_crew_certification = {
 	has_country_flag = sov_nuclear_bombs_delivery_crews_ready
 	has_country_flag = sov_nuclear_bombs_delivery_crews_certified
