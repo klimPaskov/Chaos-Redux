@@ -314,3 +314,37 @@ Per package (row order, anchor and host from the decoded `qa_scn008d` plan in D9
 Validation: the allocator, country API, flag and FORM-16 audits pass; brace balance is 0 on every touched file.
 
 Needs live game: a fresh SCN-008 Low launch that releases all 31 countries, including at least one X-tag carrier (its name, flag, roster and anchor on creation) and TRA. If any stage still fails, the D9 failure-detail and package-id globals name it.
+
+
+## D13. Round 2: admission of the IW-043 CHU and IW-058 ASY signature packages
+
+Disposition: `implemented`.
+
+Basis: the lead's round-2 priority-2 item and decisions 3 and 4, and the D12 walk-through method applied to both packages.
+
+Adopted hunks: the interrupted round-2 implementer's uncommitted ROOT-to-PREV edits in `006_independence_wave_iw043_iw058_package_triggers.txt` and `006_independence_wave_iw043_iw058_package_effects.txt` were reviewed scope by scope (country scope into states and former hosts, and `random_country_division`, `any_country_division` and the bound division target, where PREV is the country) and are adopted as this workstream's own.
+
+Further scope fixes: the setup, anchor, capital and former-host reads that still used ROOT for the carrier now use PREV (`independence_wave_iw043_safe_action_reserve`, `_iw058_`, the FORM-12, FORM-13 and FORM-18 local settlement contracts, `has_independence_wave_iw058_valid_autonomy_treaty_partner` and the two IW-058 achievement writers). The partner-reach, formable-member and `_from_root` formable triggers keep ROOT, because their callers evaluate them with the carrier as ROOT. A call-graph scan of the CHU/ASY setup, final validation and cleanup closure finds no ROOT read.
+
+Setup defects found and fixed:
+
+- Neither setup ever set `independence_wave_command_roster_ready`, which gates the opening force, so `has_independence_wave_iw043_setup_surface` and `_iw058_` could never pass and both packages always failed setup. New `has_independence_wave_iw043_command_roster` and `has_independence_wave_iw058_command_roster` check the startup roster; setup sets the roster flag before the force pass, and setup completion and final validation also require the roster.
+- The opening and federal CHU leaders and the opening ASY leader carried `centrism`, a neutrality sub-ideology, while those routes are ruled by the democratic party, so the country would have shown a generated leader. They now carry `liberalism`; cleanup removes the matching role.
+- FORM-12, FORM-13 and FORM-18 are in the shared commit allowlist, but `independence_wave_formable_readiness_family` was never written for them, and the shared family dispatcher had no branch for them, so a focus that switched CHU between FORM-12 and FORM-13 cleared the shared receipts for good. The dispatcher now calls `independence_wave_iw_formable_register_signature_readiness`, and setup writes the receipts through `independence_wave_iw_formable_write_signature_readiness_receipts`.
+
+Portraits (round-1 admission standard; the parent acts as rights reviewer; no generated face of a real person):
+
+- Every repainted real-person portrait is replaced by its unchanged source photograph, cropped with the event-assets crop tool in `source_placeholder` mode and converted with its DDS converter: Mirsaid Sultan-Galiev (1923), Gayaz Ishaki (book plate), Karim Tinchurin (1934), Luka Spasov (1938) and Ignatius Afram I Barsoum. Evidence packages and completed provenance contracts are in `docs/assets/portraits/006_independence_wave/round2_source_placeholders/`. The existing Gallo Shabo portrait is already a source crop.
+- The federal presidium's displayed name was Galimzhan Ibrahimov while its portrait source is Gayaz Ishaki; the name and description now follow the source. The Bolgar presidium and the concordat council now show Karim Tinchurin and Ignatius Afram I Barsoum, the people their portraits show.
+- Werda (civic national assembly) is rejected as decided. Haydo (levies guardianship) is accepted on rights, but the working tree holds only his repaint and not the source photograph, and downloading it again needs the user's approval, which this run cannot request. Both consumers are unwired (character, startup recruitment, sprite and runtime DDS removed). The civic route gives the vanilla Mar Shimun XXI Eshai one added conservatism role, the guardianship route promotes his own vanilla despotism role with the guardianship trait added for the route, and the popular route promotes the vanilla Benjamin Arsanis. Cleanup removes only the added role and trait.
+- Route gap: this run has no subagent tool, so `chaosx_portrait_creator` could not be spawned. The work used the same skill tools in source-placeholder mode and no ImageGen, repaint or RunPod.
+
+Admission: IW-043 and IW-058 are in the content attestation and the Join probe order. Their SCN-008 preflight rows, ranked list entries, planner and reservation publishers and AI strategy profiles already existed. CHU shares anchor 249 and RG-MIDDLE-VOLGA-KAZAN with TAT, so a wave holds at most one of them; ASY uses RG-NORTHERN-MESOPOTAMIA. Both stay high-chaos only.
+
+Formables and achievements: FORM-12, FORM-13 and FORM-18 now pass the shared readiness receipts and keep their keyed commit gates. The IW-043 restoration and federal route proofs remain mutually exclusive through the route flags; the three IW-058 proofs are independent achievements, as designed.
+
+Walk-through: region, depth and archetype match the planner loaders; every required flag and variable is written in setup; every character read is defined and recruited (startup history or vanilla 1936 history); the two fixed templates are defined in setup.
+
+Validation: the allocator audit passes with 37 attested packages and 32 reservation groups (updated to allow only the CHU/TAT shared anchor); the country API, flag, FORM-16 and SCN-008 matrix audits pass.
+
+Needs live game: a high-chaos wave or SCN-008 launch that releases CHU or ASY; the leader shown on each route; a FORM-12, FORM-13 or FORM-18 congress.

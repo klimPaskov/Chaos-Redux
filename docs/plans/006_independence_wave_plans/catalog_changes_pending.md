@@ -57,3 +57,12 @@ Disposition: `accepted and queued` for the catalog owner; implementation is comm
 | `chaosx.triggerable_scenarios.81` | Country | No Banner Rises | Sent to the launching player when an Every Banner Rises launch releases no country or is called off; one option "The old borders stand." |
 
 - Basque Country (IW-013) and Galicia (IW-015) can now be chosen by ordinary Independence Waves, not only by the scenario.
+
+
+## 2026-10-05: Middle Volga and Assyria packages (D13)
+
+Disposition: `accepted and queued` for the catalog owner; implementation is committed.
+
+- IW-043 Middle Volga (CHU) and IW-058 Assyria (ASY) can now appear in high-chaos Independence Waves and Every Banner Rises launches. Middle Volga never appears in the same wave as Tatarstan.
+- Their federations FORM-12 "Volga-Ural Federation", FORM-13 "Idel-Ural" and FORM-18 "Mesopotamian Federation" can now be formed.
+- Assyria's civic route is led by Mar Shimun XXI Eshai, its guardianship route by Mar Shimun with the Levies, and its popular route by Benjamin Arsanis.

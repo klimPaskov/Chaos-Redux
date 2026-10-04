@@ -81,7 +81,7 @@ independence_wave_record_iw058_autonomy_external_treaty_terms = {
 			is_independence_wave_iw058_country = yes
 			is_subject = no
 			has_independence_wave_iw058_all_community_guarantees = yes
-			676 = { is_owned_by = ROOT is_controlled_by = ROOT }
+			676 = { is_owned_by = PREV is_controlled_by = PREV }
 		}
 		set_country_flag = iw058_autonomy_boundary_record_complete
 		set_country_flag = iw058_autonomy_boundary_settlement_complete
@@ -359,7 +359,7 @@ independence_wave_apply_iw043_institutional_surface = {
 			add_country_leader_role = {
 				character = CHU_independence_wave_middle_volga_congress
 				promote_leader = yes
-				country_leader = { ideology = centrism traits = { iw043_middle_volga_congress_trait } }
+				country_leader = { ideology = liberalism traits = { iw043_middle_volga_congress_trait } }
 			}
 		}
 		if = {
@@ -377,7 +377,7 @@ independence_wave_apply_iw043_institutional_surface = {
 			add_country_leader_role = {
 				character = CHU_independence_wave_federal_presidium
 				promote_leader = yes
-				country_leader = { ideology = centrism traits = { iw043_federal_presidium_trait } }
+				country_leader = { ideology = liberalism traits = { iw043_federal_presidium_trait } }
 			}
 		}
 		if = { limit = { has_country_flag = independence_wave_iw043_route_restoration }
@@ -485,7 +485,7 @@ independence_wave_apply_iw058_institutional_surface = {
 			add_country_leader_role = {
 				character = ASY_independence_wave_provisional_national_council
 				promote_leader = yes
-				country_leader = { ideology = centrism traits = { iw058_provisional_national_council_trait } }
+				country_leader = { ideology = liberalism traits = { iw058_provisional_national_council_trait } }
 			}
 		}
 		if = {
@@ -511,22 +511,39 @@ independence_wave_apply_iw058_institutional_surface = {
 					}
 				}
 			}
+			# The vanilla Assyrian roster supplies the assembly chair: Mar
+			# Shimun XXI Eshai gains a democratic role for this route only.
 			if = {
-				limit = { ASY_independence_wave_civic_national_assembly = { NOT = { has_ideology = centrism } } }
-				add_country_leader_role = {
-					character = ASY_independence_wave_civic_national_assembly
-					promote_leader = no
-					country_leader = { ideology = centrism traits = { iw058_civic_national_assembly_trait } }
+				limit = {
+					has_character = ASY_shimun_eshai
+					NOT = { has_country_flag = independence_wave_iw058_civic_role_added }
 				}
+				add_country_leader_role = {
+					character = ASY_shimun_eshai
+					promote_leader = no
+					country_leader = { ideology = conservatism traits = { iw058_civic_national_assembly_trait } }
+				}
+				set_country_flag = independence_wave_iw058_civic_role_added
 			}
-			promote_character = { character = ASY_independence_wave_civic_national_assembly ideology = centrism }
+			if = {
+				limit = { has_country_flag = independence_wave_iw058_civic_role_added }
+				promote_character = { character = ASY_shimun_eshai ideology = conservatism }
+			}
 		}
-		if = { limit = { OR = { has_country_flag = independence_wave_iw058_route_levies_guardianship has_country_flag = independence_wave_route_emergency_military } NOT = { has_country_leader = { ruling_only = no character = ASY_independence_wave_levies_guardianship } } }
-			add_country_leader_role = {
-				character = ASY_independence_wave_levies_guardianship
-				promote_leader = yes
-				country_leader = { ideology = despotism traits = { iw058_levies_guardianship_trait } }
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = independence_wave_iw058_route_levies_guardianship
+					has_country_flag = independence_wave_route_emergency_military
+				}
+				has_character = ASY_shimun_eshai
 			}
+			if = {
+				limit = { NOT = { has_country_flag = independence_wave_iw058_levies_trait_added } }
+				ASY_shimun_eshai = { add_country_leader_trait = { ideology = despotism trait = iw058_levies_guardianship_trait } }
+				set_country_flag = independence_wave_iw058_levies_trait_added
+			}
+			promote_character = { character = ASY_shimun_eshai ideology = despotism }
 		}
 		if = {
 			limit = {
@@ -534,14 +551,9 @@ independence_wave_apply_iw058_institutional_surface = {
 				NOT = { has_country_flag = independence_wave_iw058_route_church_compact }
 				NOT = { has_country_flag = independence_wave_iw058_route_civic_assembly }
 				NOT = { has_country_flag = independence_wave_iw058_route_levies_guardianship }
-				NOT = { has_country_flag = independence_wave_iw058_popular_leader_role_added }
+				has_character = ASY_benjamin_arsanis
 			}
-			add_country_leader_role = {
-				character = ASY_independence_wave_civic_national_assembly
-				promote_leader = yes
-				country_leader = { ideology = marxism traits = { iw058_civic_national_assembly_trait } }
-			}
-			set_country_flag = independence_wave_iw058_popular_leader_role_added
+			promote_character = { character = ASY_benjamin_arsanis ideology = marxism }
 		}
 		if = {
 			limit = {
@@ -611,7 +623,11 @@ independence_wave_restore_iw043_civilian_surface = {
 independence_wave_restore_iw058_civilian_surface = {
 	if = {
 		limit = { is_independence_wave_iw058_country = yes }
-		remove_country_leader_role = { character = ASY_independence_wave_levies_guardianship ideology = despotism }
+		if = {
+			limit = { has_country_flag = independence_wave_iw058_levies_trait_added }
+			ASY_shimun_eshai = { remove_country_leader_trait = { ideology = despotism trait = iw058_levies_guardianship_trait } }
+			clr_country_flag = independence_wave_iw058_levies_trait_added
+		}
 		if = { limit = { has_idea = independence_wave_iw058_levies_guardianship_idea } remove_ideas = independence_wave_iw058_levies_guardianship_idea }
 		independence_wave_apply_iw058_institutional_surface = yes
 		independence_wave_restore_iw058_preserved_civilian_cosmetic_identity = yes
@@ -744,7 +760,7 @@ independence_wave_record_iw043_force_receipts = {
 		if = {
 			limit = {
 				check_variable = { var = independence_wave_opening_force_budget value = constant:independence_wave_force_tier.armed_budget compare = greater_than_or_equals }
-				256 = { is_owned_and_controlled_by = ROOT }
+				256 = { is_owned_and_controlled_by = PREV }
 				NOT = { has_country_flag = iw043_workshop_guard_created }
 			}
 			set_country_flag = iw043_workshop_guard_created
@@ -804,7 +820,7 @@ independence_wave_bind_iw043_force_package = {
 				has_variable = independence_wave_force_division_package_id
 				check_variable = { var = independence_wave_force_division_package_id value = constant:independence_wave_package_id.iw_043 compare = equals }
 				has_variable = independence_wave_force_division_generation_id
-				check_variable = { var = independence_wave_force_division_generation_id value = ROOT.independence_wave_generation_id compare = equals }
+				check_variable = { var = independence_wave_force_division_generation_id value = PREV.independence_wave_generation_id compare = equals }
 				division_has_majority_template = infantry
 				division_has_battalion_in_template = engineer
 				division_has_battalion_in_template = recon
@@ -846,7 +862,7 @@ independence_wave_commit_iw043_force_discipline = {
 		event_target:independence_wave_iw043_bound_force_division = {
 			change_division_template = { division_template = "Middle Volga River Guard" }
 			set_unit_organization = constant:independence_wave_iw043.force_discipline_organization
-			set_variable = { independence_wave_iw043_designated_formation_generation = ROOT.independence_wave_generation_id }
+			set_variable = { independence_wave_iw043_designated_formation_generation = PREV.independence_wave_generation_id }
 		}
 		set_variable = { independence_wave_iw043_designated_formation_generation = independence_wave_generation_id }
 		set_country_flag = iw043_river_guard_formation_designated
@@ -884,7 +900,7 @@ independence_wave_bind_iw058_force_package = {
 				has_variable = independence_wave_force_division_package_id
 				check_variable = { var = independence_wave_force_division_package_id value = constant:independence_wave_package_id.iw_058 compare = equals }
 				has_variable = independence_wave_force_division_generation_id
-				check_variable = { var = independence_wave_force_division_generation_id value = ROOT.independence_wave_generation_id compare = equals }
+				check_variable = { var = independence_wave_force_division_generation_id value = PREV.independence_wave_generation_id compare = equals }
 				division_has_majority_template = infantry
 				division_has_battalion_in_template = artillery_brigade
 				division_has_battalion_in_template = engineer
@@ -922,7 +938,7 @@ independence_wave_commit_iw058_force_discipline = {
 		event_target:independence_wave_iw058_bound_force_division = {
 			change_division_template = { division_template = "Assyrian Levies Detachment" }
 			set_unit_organization = constant:independence_wave_iw058.force_discipline_organization
-			set_variable = { independence_wave_iw058_designated_formation_generation = ROOT.independence_wave_generation_id }
+			set_variable = { independence_wave_iw058_designated_formation_generation = PREV.independence_wave_generation_id }
 		}
 		set_variable = { independence_wave_iw058_designated_formation_generation = independence_wave_generation_id }
 		set_country_flag = iw058_levies_formation_designated
@@ -1270,6 +1286,8 @@ independence_wave_setup_iw043_middle_volga = {
 	set_temp_variable = { independence_wave_iw043_setup_result = constant:independence_wave_planner.no_candidates }
 	if = {
 		limit = { can_initialize_independence_wave_iw043_package = yes }
+		# The startup roster must be present before the opening force is raised.
+		if = { limit = { has_independence_wave_iw043_command_roster = yes } set_country_flag = independence_wave_command_roster_ready }
 		if = { limit = { NOT = { has_country_flag = independence_wave_force_mapping_loaded } } independence_wave_load_force_package_mapping = yes }
 		if = {
 			limit = {
@@ -1356,18 +1374,14 @@ independence_wave_setup_iw043_middle_volga = {
 					has_valid_independence_wave_chu_package_mutex = yes
 					has_valid_independence_wave_iw043_route_mutex = yes
 					has_valid_independence_wave_iw043_values = yes
+					has_independence_wave_iw043_command_roster = yes
 				}
 				set_country_flag = independence_wave_iw043_setup_complete
 				set_country_flag = independence_wave_package_setup_complete
 				set_country_flag = independence_wave_iw043_achievement_writers_attested
 				set_country_flag = independence_wave_form12_adapter_attested
 				set_country_flag = independence_wave_form13_adapter_attested
-				set_country_flag = independence_wave_formable_territory_adapter_ready
-				set_country_flag = independence_wave_formable_x_tag_reserved
-				set_country_flag = independence_wave_formable_flag_package_ready
-				set_country_flag = independence_wave_formable_identity_adapter_ready
-				set_country_flag = independence_wave_formable_integration_adapter_ready
-				set_country_flag = independence_wave_formable_member_policy_audited
+				independence_wave_iw_formable_write_signature_readiness_receipts = yes
 				set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_planner.selected }
 				set_temp_variable = { independence_wave_iw043_setup_result = constant:independence_wave_planner.selected }
 			}
@@ -1385,6 +1399,8 @@ independence_wave_setup_iw058_assyria = {
 	set_temp_variable = { independence_wave_iw058_setup_result = constant:independence_wave_planner.no_candidates }
 	if = {
 		limit = { can_initialize_independence_wave_iw058_package = yes }
+		# The startup roster must be present before the opening force is raised.
+		if = { limit = { has_independence_wave_iw058_command_roster = yes } set_country_flag = independence_wave_command_roster_ready }
 		if = { limit = { NOT = { has_country_flag = independence_wave_force_mapping_loaded } } independence_wave_load_force_package_mapping = yes }
 		if = {
 			limit = {
@@ -1470,17 +1486,13 @@ independence_wave_setup_iw058_assyria = {
 					has_country_flag = independence_wave_host_reclamation_route_available
 					has_valid_independence_wave_iw058_route_mutex = yes
 					has_valid_independence_wave_iw058_values = yes
+					has_independence_wave_iw058_command_roster = yes
 				}
 				set_country_flag = independence_wave_iw058_setup_complete
 				set_country_flag = independence_wave_package_setup_complete
 				set_country_flag = independence_wave_iw058_achievement_writers_attested
 				set_country_flag = independence_wave_form18_adapter_attested
-				set_country_flag = independence_wave_formable_territory_adapter_ready
-				set_country_flag = independence_wave_formable_x_tag_reserved
-				set_country_flag = independence_wave_formable_flag_package_ready
-				set_country_flag = independence_wave_formable_identity_adapter_ready
-				set_country_flag = independence_wave_formable_integration_adapter_ready
-				set_country_flag = independence_wave_formable_member_policy_audited
+				independence_wave_iw_formable_write_signature_readiness_receipts = yes
 				set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_planner.selected }
 				set_temp_variable = { independence_wave_iw058_setup_result = constant:independence_wave_planner.selected }
 			}
@@ -1520,6 +1532,7 @@ independence_wave_validate_iw043_package = {
 			has_valid_independence_wave_chu_package_mutex = yes
 			has_valid_independence_wave_iw043_route_mutex = yes
 			has_valid_independence_wave_iw043_values = yes
+			has_independence_wave_iw043_command_roster = yes
 		}
 		set_temp_variable = { independence_wave_package_final_validation_success = constant:independence_wave_planner.selected }
 	}
@@ -1556,6 +1569,7 @@ independence_wave_validate_iw058_package = {
 			independence_wave_iw058_anchor_secured = yes
 			has_valid_independence_wave_iw058_route_mutex = yes
 			has_valid_independence_wave_iw058_values = yes
+			has_independence_wave_iw058_command_roster = yes
 		}
 		set_temp_variable = { independence_wave_package_final_validation_success = constant:independence_wave_planner.selected }
 	}
@@ -1614,13 +1628,13 @@ independence_wave_cleanup_iw043_middle_volga = {
 		}
 		if = {
 			limit = { has_character = CHU_independence_wave_middle_volga_congress }
-			remove_country_leader_role = { character = CHU_independence_wave_middle_volga_congress ideology = centrism }
+			remove_country_leader_role = { character = CHU_independence_wave_middle_volga_congress ideology = liberalism }
 			remove_country_leader_role = { character = CHU_independence_wave_middle_volga_congress ideology = marxism }
 			remove_country_leader_role = { character = CHU_independence_wave_middle_volga_congress ideology = oligarchism }
 		}
 		if = {
 			limit = { has_character = CHU_independence_wave_federal_presidium }
-			remove_country_leader_role = { character = CHU_independence_wave_federal_presidium ideology = centrism }
+			remove_country_leader_role = { character = CHU_independence_wave_federal_presidium ideology = liberalism }
 		}
 		if = {
 			limit = { has_character = CHU_independence_wave_bolgar_civic_presidium }
@@ -1895,7 +1909,7 @@ independence_wave_cleanup_iw058_assyria = {
 		}
 		if = {
 			limit = { has_character = ASY_independence_wave_provisional_national_council }
-			remove_country_leader_role = { character = ASY_independence_wave_provisional_national_council ideology = centrism }
+			remove_country_leader_role = { character = ASY_independence_wave_provisional_national_council ideology = liberalism }
 			remove_country_leader_role = { character = ASY_independence_wave_provisional_national_council ideology = oligarchism }
 		}
 		if = {
@@ -1904,14 +1918,21 @@ independence_wave_cleanup_iw058_assyria = {
 			remove_country_leader_role = { character = ASY_independence_wave_concordat_council ideology = oligarchism }
 		}
 		if = {
-			limit = { has_character = ASY_independence_wave_civic_national_assembly }
-			remove_country_leader_role = { character = ASY_independence_wave_civic_national_assembly ideology = centrism }
-			remove_country_leader_role = { character = ASY_independence_wave_civic_national_assembly ideology = marxism }
+			limit = {
+				has_country_flag = independence_wave_iw058_civic_role_added
+				has_character = ASY_shimun_eshai
+			}
+			remove_country_leader_role = { character = ASY_shimun_eshai ideology = conservatism }
 		}
+		clr_country_flag = independence_wave_iw058_civic_role_added
 		if = {
-			limit = { has_character = ASY_independence_wave_levies_guardianship }
-			remove_country_leader_role = { character = ASY_independence_wave_levies_guardianship ideology = despotism }
+			limit = {
+				has_country_flag = independence_wave_iw058_levies_trait_added
+				has_character = ASY_shimun_eshai
+			}
+			ASY_shimun_eshai = { remove_country_leader_trait = { ideology = despotism trait = iw058_levies_guardianship_trait } }
 		}
+		clr_country_flag = independence_wave_iw058_levies_trait_added
 		if = { limit = { has_country_flag = independence_wave_iw058_cosmetic_active } drop_cosmetic_tag = yes }
 		clr_country_flag = independence_wave_iw058_constitutional_capstone_complete
 		clr_country_flag = independence_wave_iw058_opening_event_fired
@@ -2480,6 +2501,55 @@ independence_wave_iw_formable_failure_cleanup = {
 	clr_country_flag = independence_wave_formable_identity_committed
 	clr_country_flag = independence_wave_formable_integration_committed
 	clr_country_flag = independence_wave_formable_mutation_prevalidated
+}
+
+# Carrier-country scope. Called by the shared family readiness dispatcher when
+# CHU selects FORM-12 or FORM-13 or ASY selects FORM-18. The dispatcher has
+# just cleared the shared readiness receipts, so a carrier whose package setup
+# attested that family's adapter gets them back for the newly selected family.
+# A carrier still inside its first setup pass is skipped here; setup writes the
+# same receipts once its whole surface validates.
+independence_wave_iw_formable_register_signature_readiness = {
+	if = {
+		limit = {
+			has_country_flag = independence_wave_formable_profile_loaded
+			OR = {
+				AND = {
+					is_independence_wave_iw043_country = yes
+					has_country_flag = independence_wave_iw043_setup_complete
+					OR = {
+						AND = {
+							check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.volga_ural_federation }
+							has_country_flag = independence_wave_form12_adapter_attested
+						}
+						AND = {
+							check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.idel_ural }
+							has_country_flag = independence_wave_form13_adapter_attested
+						}
+					}
+				}
+				AND = {
+					is_independence_wave_iw058_country = yes
+					has_country_flag = independence_wave_iw058_setup_complete
+					check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.mesopotamian_federation }
+					has_country_flag = independence_wave_form18_adapter_attested
+				}
+			}
+		}
+		independence_wave_iw_formable_write_signature_readiness_receipts = yes
+	}
+}
+
+# Carrier-country scope. The shared readiness receipts for an attested CHU or
+# ASY signature formable; the family adapters own every stricter gate.
+independence_wave_iw_formable_write_signature_readiness_receipts = {
+	set_variable = { independence_wave_formable_readiness_family = independence_wave_formable_profile_family }
+	set_country_flag = independence_wave_formable_territory_adapter_ready
+	set_country_flag = independence_wave_formable_x_tag_reserved
+	set_country_flag = independence_wave_formable_flag_package_ready
+	set_country_flag = independence_wave_formable_identity_adapter_ready
+	set_country_flag = independence_wave_formable_integration_adapter_ready
+	set_country_flag = independence_wave_formable_member_policy_audited
 }
 
 # Carrier-country scope after a current proposal ledger has been rebuilt.
