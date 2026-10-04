@@ -175,3 +175,10 @@ No extra Political Power is granted.
 The helper was removed after a repository scan found no other caller and no reader of `dhrondan_diplomatic_credit_established`; the 88-focus layout and AI weights are unchanged.
 
 Evidence: `common/national_focus/016_dhrondan_focus_tree.txt`, `common/scripted_effects/016_dhrondan_focus_effects.txt`, `localisation/english/016_dhrondan_focus_l_english.yml`, `docs/plans/016_brilliant_scientist_plans/016_final_dhr_diplomatic_rewards_plan_2026-09-02.md`.
+
+## D16. Event 028 asteroid impact reaches the Kruger host again
+
+The accepted asteroid-incident connection from commit `49a7a68ad` was lost when Event 028 was reworked, leaving `brilliant_scientist_record_asteroid_impact` without a caller.
+One line in `asteroid_incoming_add_state_receipt_to_country` (`common/scripted_effects/028_asteroid_incoming_effects.txt`) now calls the hook in the country scope of each owner or controller of a state the impact actually damaged.
+The hook acts only for the current Kruger host and is guarded by its country and character receipt flags, so it records once; no other Event 028 behaviour changes.
+The Event 028 file was clean before the edit, and the edit is the single added line, made after re-reading the current file.
