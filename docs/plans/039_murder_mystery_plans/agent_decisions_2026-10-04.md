@@ -170,3 +170,15 @@ Master Cadre Command can be researched only after Evolution V and Mechanized Inf
 AI weights are 3, doubled at war, so movement countries research their own line ahead of generic technologies.
 MCP evidence: `hoi4.tech_inspect` trace before the change showed the root with no descendants; after it, the trace shows the six path edges in five layers, the `lint` of the root in the infantry folder reports no issues, and `hoi4.tech_render` of the infantry folder resolves all seven icons with source-accurate layout.
 The `hoi4.probability_inspect` route returned `INTERNAL_ERROR` for a narrow `technology_ai_will_do` query, so no probability baseline or compare exists for the new weights.
+
+## D18. The Intelligence cluster takes runtime ID 20
+
+Disposition: implemented; cluster rolls and Events Log rows need live confirmation; the workbook change is queued in `catalog_changes_pending.md`.
+The workbook lists Intelligence as cluster 8 with members 39 and 52, but runtime cluster 8 is Diseases (workbook 13), so the workbook ID cannot be used.
+Intelligence takes `event_cluster_id.intelligence = 20`, free in both the runtime registry and the workbook.
+It is a one-time cluster at unlock tier 0 (Chaos level 1), matching the workbook's Minor Fire-Once type.
+Event 52 is the required Low baseline and Event 39 the optional Medium member, following the Negative Economy pattern where the Low event anchors the cluster and the heavier event joins by chance.
+Both members fire through `fire_event_by_temp_id_no_cluster`, so Event 39 still passes through its weighted prefire host selection and its pool unavailability reasons; the cluster cannot pick a host itself, bypass the succession gate or open a second network, and a refused Event 39 is recorded as a skipped member.
+Existing saves receive the cluster through an append-only migration beside the Random Stuff one; new games receive it from the definitions list.
+The Events Log and settings name rows and the cluster description were added beside Negative Economy as minimal insertions in the shared files; the two localisation keys live in the Event 039 localisation file because the shared GUI localisation file has mixed line endings.
+Another engineer's uncommitted Various Anomalies hunks in the same shared files were left uncommitted and untouched; this commit contains only the Intelligence lines.

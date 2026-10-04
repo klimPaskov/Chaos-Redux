@@ -23,6 +23,10 @@ event_cluster_id = {
 	national_breakthroughs = 9
 	negative_economy = 10
 	random_stuff = 12
+	# The workbook lists Intelligence as cluster 8, which the runtime already
+	# uses for Diseases; Intelligence takes 20, free in both the runtime and
+	# the workbook.
+	intelligence = 20
 }
 
 event_cluster_type = {
@@ -152,6 +156,8 @@ event_cluster_member_row_id = {
 	diseases_zombie = 8002
 	negative_economy_great_depression = 10001
 	negative_economy_great_embargo = 10002
+	intelligence_murder_mystery = 20001
+	intelligence_leak = 20002
 }
 
 # Severity floors are intentionally separate from each row's declared floor.
@@ -307,6 +313,20 @@ event_cluster_negative_economy = {
 
 	unlock_tier = 0
 	great_embargo_event_id = 50
+}
+
+# Intelligence is a one-time cluster at Chaos level 1. Event 52 is its Low
+# baseline member and Event 39 its optional Medium member; both keep their
+# own host, target and pool gates because members fire through the normal
+# event dispatcher.
+event_cluster_intelligence = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unlock_tier = 0
+	intelligence_leak_event_id = 52
 }
 
 # Random Stuff is a post-minor-event bonus batch rather than a fixed-member

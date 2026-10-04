@@ -268,6 +268,13 @@ Scenario launches disqualify the four investigation achievements; the route and 
 The Last Safe Cabinet marks the sitting ruler at activation with the character flag `murder_mystery_achievement_cabinet_leader`, resolved through the existing anchor trait that is removed at once.
 A derivative counts as viable when its registry row is active, its starting forces package exists, it has not capitulated, and it owns at least `murder_mystery_inheritance.minimum_heir_states` states.
 
+## Intelligence cluster
+
+Event 39 is the optional Medium member of the Intelligence cluster (`event_cluster_id.intelligence`, runtime ID 20), whose required Low baseline is Event 52.
+The cluster is one-time and unlocks at Chaos level 1.
+Members fire through the normal event dispatcher, so Event 39 keeps its weighted host selection and its pool unavailability reasons, and a refused Event 39 is recorded as a skipped member.
+The workbook still lists the cluster as ID 8; the correction is queued in `docs/plans/039_murder_mystery_plans/catalog_changes_pending.md`.
+
 ## Runtime ownership and presentation
 
 | Surface | Source |
