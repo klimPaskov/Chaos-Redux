@@ -101,3 +101,17 @@ Validation limit recorded with it: the one-point guard of D4 equals exactly one 
 Decision: the opening (`.2`), domain (`.3`), continue (`.9`), and summary (`.10`) descriptions and the five domain options state their numbers as labels ("Choices in this curriculum: 1", "Choices remaining: 1", "Grand Doctrines established: 1", "tracks ready: 1") instead of number-plus-plural sentences.
 
 Basis: the baseline curriculum has one choice and is the most common page in a campaign, so the previous sentences rendered "with 1 doctrine choices", "has 1 choices remaining", and "offered 1 choices" for every Calm World firing; the domain options rendered "1 tracks". The other curriculum pages already used the "Choices remaining:" label. Found in the second round 1 review; implemented in the review commit.
+
+## D16. AI scores mirror the native doctrine preferences
+
+Decision: the stopped thread's uncommitted round 2 AI scoring is adopted and finished (lead decision D-R2-1). Grand Doctrine and subdoctrine scores multiply the campaign-evidence score by the vanilla `ai_will_do` factors, held in the `doctrine_research_ai_native_*` constant categories:
+
+- Grand Battleplan starts from its native base 2; Convoy Raiding and Battlefield Support take factor 10 for a country that is not a major.
+- A minor never takes Mobile Warfare or Superior Firepower (native factor 0) unless it fields armour or motorised templates (`doctrine_research_ai_fields_mobile_forces`) or they are its only valid Army Grand Doctrines. Mass Assault's force term reads infantry without mobile templates, or militia and irregulars.
+- `doctrine_research_ai_score_selected_subdoctrine_fit` runs for all 107 subdoctrine candidates. Each naval, air, and Special Forces subdoctrine adds the forces term only for its own ship, plane (`has_deployed_air_force_size` or `num_deployed_planes_with_type@<airframe>`), or battalion type; Marines add the coast term and Mountaineers the mountain term. The vanilla base, original-tag, minor, and major factors then multiply the score, starting from `doctrine_research_ai_native_base.neutral`, and a product below the base weight is raised to the base weight, so every valid choice stays possible.
+
+Basis: spec part 3 ("use native or country-specific doctrine preferences where available", "preserve country-specific and custom-system AI factors") and the AI acceptance criterion "Grand Doctrine scoring reuses native or country-specific strategy where available". The factors were checked against every `ai_will_do` block in vanilla `common/doctrines/grand_doctrines/*.txt` and `subdoctrines/**/*.txt` (tag lists, minor and major factors, base-0 subdoctrines, the Irregulars and Guerilla War template requirement, and the Flying Batteries `rocket_artillery` requirement); no mismatch was found. Deviation from vanilla, by design: a native zero leaves a valid candidate at the base weight instead of removing it, because Event 027 must spend every choice on some valid doctrine.
+
+Evidence: `probability_native_preferences_2026-10-05.md` (analyses `probability-3073104d02ab0bddedb3a99e` and `probability-f5be3a5b4624a7ace9ad0003`). Baseline: HEAD `c065f4e31`; the stopped thread's `probability_round2_before/` copy is identical to it and is not committed.
+
+needs_live_game: the AI doctrine mix of minors and of the tagged majors in a real campaign.

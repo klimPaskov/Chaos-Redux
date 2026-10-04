@@ -380,3 +380,181 @@ doctrine_research_ai_ratio = {
 
 	naval_industry = 2
 }
+
+# Native Grand Doctrine AI preferences mirrored from vanilla
+# common/doctrines/grand_doctrines/*.txt ai_will_do. Grand Battleplan starts
+# from base 2 instead of 1, and Convoy Raiding and Battlefield Support take
+# factor 10 for a country that is not a major. Mobile Warfare and Superior
+# Firepower take factor 0 for a minor; the chooser applies that zero only
+# when the minor fields no armour or motorised templates and another Army
+# Grand Doctrine is valid.
+doctrine_research_ai_native_grand = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	grand_battleplan_base = 2
+	minor_preference = 10
+}
+
+# Native subdoctrine AI preferences mirrored from vanilla
+# common/doctrines/subdoctrines/**/*.txt ai_will_do. Each subdoctrine score is
+# multiplied by its base factor, its country factor when the country's
+# original tag is one that vanilla lists for it, and its minor or major factor.
+# A product below the base weight leaves the candidate at the base weight
+# instead, so every valid choice keeps a positive weight. Subdoctrines without
+# an entry keep the neutral factor. Air keys drop the air_subdoctrine_ prefix,
+# and the Special Forces keys and the _no_lar variants share the entry of their
+# branch.
+doctrine_research_ai_native_base = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# Starting factor of every subdoctrine before its native preferences apply.
+	neutral = 1
+	commandos = 0
+	anti_tank_frontline = 0
+	air_cavalry = 0
+	self_propelled_support = 0
+	siege_artillery = 0
+	tank_destroyer_force = 0
+	last_stand = 0
+	expeditionary_warfare = 0
+	torpedo_primacy = 0
+	fighter_bombers = 0
+	flexible_fire_support = 0
+	carrier_strikes = 0
+	aerial_reconnaissance = 0
+	coastal_air_patrol = 0
+	open_ocean_air_patrol = 0
+	# Irregulars and Guerilla War without irregular or militia templates, and
+	# Flying Batteries without the rocket artillery technology.
+	missing_requirement = 0
+}
+
+doctrine_research_ai_native_country = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# Land infantry
+	mobile_infantry = 95
+	defensive_postures = 95
+	large_unit_tactics = 95
+	assault_infantry = 95
+	peoples_war = 95
+	great_war_infantry = 95
+	# Land combat support
+	fire_concentration = 75
+	mobile_recon_and_assault = 75
+	field_engineering = 75
+	# Land armor
+	armored_spearhead = 25
+	armored_infantry_support = 25
+	streamlined_deployment = 25
+	mobile_defense = 25
+	armored_cavalry = 25
+	# Land operations
+	mission_type_tactics = 50
+	infiltration_tactics = 50
+	grand_assault = 50
+	deep_battle = 50
+	rapid_domination = 50
+	dispersed_operations = 40
+	# Naval capital ships
+	line_of_battle = 75
+	battlecruiser_supremacy = 75
+	armored_raiders = 50
+	# Naval carriers
+	carrier_battlegroups = 50
+	floating_airfields = 25
+	massed_carrier_fleet = 50
+	light_task_forces = 25
+	# Naval screens
+	convoy_escort = 95
+	support_integrated_operations = 95
+	hunter_killers = 95
+	torpedo_primacy = 95
+	# Naval submarines
+	wolfpacks = 75
+	submarine_fleet_operations = 25
+	capital_hunters = 25
+	# Air fighter aircraft
+	escort_fighter = 95
+	tactical_flexibility = 95
+	dogfighting_mastery = 95
+	fighter_central_field = 95
+	# Air strike aircraft
+	flying_artillery = 75
+	dive_bombers = 75
+	naval_strike_tactics = 75
+	naval_torpedo_tactics = 75
+	# Air medium aircraft
+	long_range_escort = 50
+	operational_air_support = 50
+	tactical_battlefield_support = 50
+	theater_interdiction = 50
+	# Air heavy aircraft
+	night_bombing = 25
+	carpet_bombing = 25
+	deep_air_raids = 25
+	flying_fortresses = 25
+	heavy_aircraft_focus = 25
+	# Special Forces
+	mountaineers = 25
+	marines = 25
+	paratroopers = 15
+	rangers = 25
+}
+
+doctrine_research_ai_native_minor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	mobile_infantry = 0.5
+	large_unit_tactics = 0.5
+	assault_infantry = 0.5
+	irregulars = 2
+	peoples_war = 2
+	mobile_recon_and_assault = 0
+	armored_spearhead = 0.5
+	armored_infantry_support = 0.5
+	mobile_defense = 0.5
+	mission_type_tactics = 0.5
+	deep_battle = 0.5
+	guerilla_war = 2
+	rapid_domination = 0.5
+	floating_airfields = 0
+	fighter_homeland_defense = 95
+	escort_fighter = 0.5
+	tactical_flexibility = 0.5
+	fighter_central_field = 0
+	naval_strike_tactics = 0
+	naval_torpedo_tactics = 0
+	bomber_interception = 0
+	long_range_escort = 0
+	operational_air_support = 2
+	tactical_battlefield_support = 0.5
+	theater_interdiction = 0.5
+	carpet_bombing = 0.5
+	deep_air_raids = 0.5
+	flying_fortresses = 0.5
+	heavy_aircraft_focus = 2
+}
+
+doctrine_research_ai_native_major = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	mounted_infantry = 0.5
+	guerilla_war = 0
+	floating_airfields = 2
+}

@@ -82,6 +82,13 @@ The AI picks a domain, then a Grand Doctrine or a track and subdoctrine, each th
 
 Completion value and strategy signals add weight in every domain. If no domain scores at all, every valid domain falls back to the base weight, so a choice is never wasted. All weights live in `doctrine_research_ai_weight` and the dockyard ratio in `doctrine_research_ai_ratio`.
 
+Grand Doctrine and subdoctrine scores also follow the native doctrine preferences of vanilla `ai_will_do`, mirrored in the `doctrine_research_ai_native_grand`, `_base`, `_country`, `_minor`, and `_major` constant categories:
+
+- Grand Battleplan starts from base 2, and Convoy Raiding and Battlefield Support score ten times higher for a country that is not a major. A minor skips Mobile Warfare and Superior Firepower unless it fields armour or motorised templates or they are its only valid Army Grand Doctrines. Mass Assault values infantry without mobile templates, militia, or irregulars.
+- `doctrine_research_ai_score_selected_subdoctrine_fit` gives each naval, air, and Special Forces subdoctrine the forces term only for its own ship, plane, or battalion type (Marines also read a coast and Mountaineers mountains), then applies the native base, original-tag, minor, and major factors. A candidate that vanilla would never pick keeps the base weight, so every valid choice stays possible.
+
+Evidence: `docs/plans/027_doctrine_research_plans/probability_native_preferences_2026-10-05.md`.
+
 ## Evolutions
 
 | Stage | Chaos tier | Batch size |
@@ -148,5 +155,4 @@ These behaviours depend on the live engine and are checked in a live session:
 
 - Register further doctrine domains only through a complete adapter: native folder, Grand Doctrine and track identities, one-step mastery steps, AI selector, cleanup, and localisation.
 - Add the remaining National Breakthroughs members as their reworks land.
-- Give the AI country-specific doctrine preferences through owner-provided strategy flags without changing the shared validity pool.
 - Read planned naval expansion (dockyard construction, coastal war goals) so a landlocked country with a credible maritime plan can value Navy before it reaches the coast.
