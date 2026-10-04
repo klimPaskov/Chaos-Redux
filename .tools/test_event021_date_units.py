@@ -129,7 +129,8 @@ class CalendarTests(unittest.TestCase):
                         self.assertNotEqual(seed[0][1], 'event021_date_offset')
                         self.assertEqual(nodes[index - 1], ('event021_days_to_date_offset', 'yes'))
                     count += 1
-        self.assertEqual(count, 41)
+        # D15 removed the unused emergency-settlement deadline (41 -> 40).
+        self.assertEqual(count, 40)
 
     def test_native_day_fields_and_mtth_day_values_are_unchanged_from_head(self):
         def day_fields(text):

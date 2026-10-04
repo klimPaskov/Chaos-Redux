@@ -70,11 +70,21 @@ country_event = {
 	is_triggered_only = yes
 	trigger = { has_country_flag = event021_settlement_pending }
 
+	# Signing settles the war at once. The pending marker must still be set
+	# here, because event021_parent_apply_settlement accepts it as the reason
+	# to settle a war that is still being fought, and clears it afterwards.
+	# A same-tag loyalty contest closes through its own resolver, which also
+	# retires the contest route.
 	option = {
 		name = chaosx.nr21.5.a
-		set_country_flag = random_civil_war_settlement_signed
-		clr_country_flag = event021_settlement_pending
-		event021_parent_apply_settlement = yes
+		custom_effect_tooltip = chaosx.nr21.5.a.tt
+		hidden_effect = {
+			if = {
+				limit = { event021_parent_same_tag_active = yes }
+				event021_parent_resolve_same_tag_takeover = yes
+			}
+			else = { event021_parent_apply_settlement = yes }
+		}
 	}
 }
 

@@ -1282,3 +1282,29 @@ event021_country_can_offer_settlement = {
 	NOT = { has_country_flag = event021_settlement_resolved }
 	NOT = { has_country_flag = event021_settlement_talks_open }
 }
+
+# COUNTRY scope on a crisis government. Signed terms reintegrate or partition
+# the ordinary claimants and end an Event 006 host war, but they cannot settle
+# a package-owned independence front fighting beside them, and they must never
+# annex or partition a side another player controls. Either case keeps Offer
+# Emergency Terms unavailable.
+event021_settlement_offer_blocked = {
+	OR = {
+		has_country_flag = random_civil_war_event6_secondary_front_active
+		any_of_scopes = {
+			array = random_civil_war_opposition_actors
+			exists = yes
+			has_country_flag = random_civil_war_active
+			has_country_flag = random_civil_war_opposition_actor
+			is_ai = no
+		}
+		AND = {
+			has_variable = random_civil_war_opposition_actor_scope
+			var:random_civil_war_opposition_actor_scope = {
+				exists = yes
+				has_country_flag = random_civil_war_active
+				is_ai = no
+			}
+		}
+	}
+}

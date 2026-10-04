@@ -5677,11 +5677,12 @@ event021_parent_execute_same_tag_takeover = {
 	}
 }
 
-# COUNTRY scope. Chooses one settlement family from the surviving side and the
-# recorded route. The choice is deliberately conservative: ordinary wars end
-# in a government settlement, Event 006 keeps its own identity, and negotiated
-# terms are only offered when the signatory has enough authority to enforce
-# them.
+# COUNTRY scope. Records the surviving-front topology that
+# `event021_parent_select_settlement_terms` uses to choose one settlement
+# family. Ordinary wars that end on the battlefield close in a government
+# settlement or a partition, Event 006 keeps its own identity, and signed
+# terms choose between merger, autonomy, coalition, and partition by the
+# signatory's authority.
 event021_parent_evaluate_settlement_topology = {
 	clr_country_flag = random_civil_war_partition_topology_ready
 	clr_country_flag = random_civil_war_merger_topology_ready
@@ -5820,40 +5821,57 @@ event021_parent_select_settlement_terms = {
 			set_country_flag = random_civil_war_same_tag_government_prevailed
 		}
 	}
+	# Signed terms never become a government military victory. A government
+	# with the authority to enforce them reintegrates a lone regional or legal
+	# front by merger, grants autonomy on a regional route, or forms a
+	# coalition. A weaker government accepts partition where the fronts can
+	# stand on their own and otherwise a coalition.
+	else_if = {
+		limit = { has_country_flag = event021_settlement_talks_open }
+		if = {
+			limit = {
+				check_variable = {
+					var = random_civil_war_state_authority
+					value = constant:random_civil_war_settlement_tuning.strong_settlement_threshold
+					compare = greater_than_or_equals
+				}
+			}
+			if = {
+				limit = { has_country_flag = random_civil_war_merger_topology_ready }
+				set_variable = { random_civil_war_settlement_type = constant:random_civil_war_settlement.merger }
+			}
+			else_if = {
+				limit = { has_country_flag = random_civil_war_regional_route_ready }
+				set_variable = { random_civil_war_settlement_type = constant:random_civil_war_settlement.autonomy }
+			}
+			else = { set_variable = { random_civil_war_settlement_type = constant:random_civil_war_settlement.coalition } }
+		}
+		else_if = {
+			limit = { has_country_flag = random_civil_war_partition_topology_ready }
+			set_variable = { random_civil_war_settlement_type = constant:random_civil_war_settlement.partition }
+		}
+		else = { set_variable = { random_civil_war_settlement_type = constant:random_civil_war_settlement.coalition } }
+	}
 	else_if = {
 		limit = { has_country_flag = random_civil_war_partition_topology_ready }
 		set_variable = { random_civil_war_settlement_type = constant:random_civil_war_settlement.partition }
-	}
-	else_if = {
-		limit = { has_country_flag = random_civil_war_merger_topology_ready }
-		set_variable = { random_civil_war_settlement_type = constant:random_civil_war_settlement.merger }
-	}
-	else_if = {
-		limit = {
-			has_country_flag = event021_settlement_talks_open
-			check_variable = {
-				var = random_civil_war_state_authority
-				value = constant:random_civil_war_settlement_tuning.strong_settlement_threshold
-				compare = greater_than_or_equals
-			}
-		}
-		if = {
-			limit = { has_country_flag = random_civil_war_regional_route_ready }
-			set_variable = { random_civil_war_settlement_type = constant:random_civil_war_settlement.autonomy }
-		}
-		else = { set_variable = { random_civil_war_settlement_type = constant:random_civil_war_settlement.coalition } }
 	}
 	else = { set_variable = { random_civil_war_settlement_type = constant:random_civil_war_settlement.government_victory } }
 }
 
 # COUNTRY scope. Ends the internal war with an ordinary generated actor. The
 # actor is cleaned before annexation so its front row, ideas, mission state,
-# and queue entry cannot survive as a stale dynamic country.
+# and queue entry cannot survive as a stale dynamic country. An Event 006 host
+# reaches this only after signing terms; its Event 006 actors are excluded by
+# the per-actor filter and keep their own independence path.
 event021_parent_close_ordinary_opposition = {
 	event021_parent_bind_current_crisis_targets = yes
 	if = {
 		limit = {
-			NOT = { has_country_flag = random_civil_war_event6_host_side }
+			OR = {
+				NOT = { has_country_flag = random_civil_war_event6_host_side }
+				has_country_flag = event021_settlement_talks_open
+			}
 		}
 		save_event_target_as = random_civil_war_ordinary_cleanup_host
 		clear_temp_array = event021_ordinary_cleanup_actors
@@ -5975,6 +5993,16 @@ event021_parent_preserve_partition_successors = {
 	for_each_scope_loop = {
 		array = event021_partition_successor_actors
 		if = { limit = { has_war_with = ROOT } white_peace = ROOT }
+		# Signed terms can partition a war whose nested front is still fighting
+		# its own source claimant; the partition ends that war as well.
+		if = {
+			limit = {
+				has_variable = random_civil_war_immediate_opponent_scope
+				var:random_civil_war_immediate_opponent_scope = { exists = yes }
+				has_war_with = var:random_civil_war_immediate_opponent_scope
+			}
+			white_peace = var:random_civil_war_immediate_opponent_scope
+		}
 		set_variable = { random_civil_war_settlement_type = constant:random_civil_war_settlement.partition }
 		set_country_flag = random_civil_war_partition_successor
 		set_country_flag = random_civil_war_successor_side
@@ -6766,6 +6794,12 @@ event021_parent_apply_settlement = {
 				}
 			}
 			event021_parent_end_event6_war = yes
+			# Signed terms bind every side at once, so ordinary claimants that
+			# fight beside the independence front rejoin the state as well.
+			if = {
+				limit = { has_country_flag = event021_settlement_talks_open }
+				event021_parent_close_ordinary_opposition = yes
+			}
 		}
 		else_if = {
 			limit = { has_country_flag = random_civil_war_opposition_actor }

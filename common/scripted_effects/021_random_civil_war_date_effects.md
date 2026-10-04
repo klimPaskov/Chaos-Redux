@@ -10,7 +10,7 @@ Nonintegral durations are represented at the engine's one-hour resolution and ca
 No country, state, registry, flag, or game clock is mutated by the helper.
 Event 021 keeps no calendar constants of its own.
 
-Example: set `event021_date_offset = constant:event021_action_tuning.settlement_obligation_days`, call `event021_days_to_date_offset = yes`, and add `event021_date_offset` to `event021_settlement_deadline` after copying `global.date` into it.
+Example: set `event021_date_offset = constant:event021_parent_tuning.settlement_terms_hold_days`, call `event021_days_to_date_offset = yes`, and add `event021_date_offset` to `random_civil_war_settlement_terms_hold_until` after copying `global.date` into it.
 Leave native `days =`, mission durations, flag durations, AI scores, and MTTH values in days.
 Do not convert the day input in place when another consumer still expects days.
 Already encoded stored dates, including the recurrence base date and treaty hold-date copies, are copied without another conversion.

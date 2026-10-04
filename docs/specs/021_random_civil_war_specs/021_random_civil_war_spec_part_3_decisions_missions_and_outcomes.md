@@ -498,6 +498,17 @@ A temporary regional movement can merge into:
 
 The merger needs clear territorial, leadership, force, and identity handling.
 
+### Accepted signed-terms settlement
+
+Acceptance basis: the event and decision text that promise a settlement can stop the guns, the action-family crosswalk that routes settlement talks into the obligation selector, the probability matrix intents SET-01, SET-03, and SET-05, and agent decision D15 in `docs/plans/021_random_civil_war_plans/agent_decisions_2026-10-04.md`, taken under the user's full-authority takeover grant.
+
+- Offer Emergency Terms opens talks and fires The Terms of Peace. Signing applies the negotiated settlement immediately, while the war is still being fought, through the same settlement transaction that closes a war won on the battlefield.
+- After signing, no internal war of the crisis remains active. Ordinary claimants rejoin the state through the existing close path or survive as partition successors, which also make peace with the claimant they split from. An Event 006 host war ends through the recognized-independence branch, and ordinary claimants fighting beside it rejoin the state.
+- A same-tag loyalty contest closes through its own resolver, giving the claimant autonomy when its leverage leads and a coalition otherwise.
+- Signed terms never become a government military victory. At or above the strong-settlement authority threshold, a lone regional or legal front is reintegrated by merger, a regional route receives autonomy, and any other war ends in a coalition. Below the threshold, the fronts become a partition when at least two of them hold their own capital and distinct anchor, and otherwise the war ends in a coalition.
+- Offer Emergency Terms is unavailable while a package-owned Event 006 independence front fights beside the crisis, because the close paths cannot settle it, and while any opposing side is controlled by a player, so no player is annexed or partitioned without consent.
+- The signed settlement creates the usual front-bound obligation and its terms-hold date, and the settlement phase stays open until that obligation is fulfilled or breached.
+
 ## Postwar settlement memory
 
 The winning or surviving country receives `Unsettled Settlement`.

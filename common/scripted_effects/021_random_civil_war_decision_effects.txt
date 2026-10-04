@@ -113,14 +113,14 @@ event021_decision_open_relief_corridor = {
 	event021_refresh_country_state = yes
 }
 
+# COUNTRY scope on the crisis government. Opens talks and asks the government
+# to sign at once through chaosx.nr21.5; signing applies the settlement
+# through event021_parent_apply_settlement, which accepts the pending marker
+# as its reason to settle a war that is still being fought. The obligation and
+# its hold date are created by event021_parent_select_settlement_obligation.
 event021_decision_offer_settlement = {
 	set_country_flag = event021_settlement_talks_open
 	set_country_flag = event021_settlement_action_used
-	set_country_flag = event021_settlement_obligation_active
-	set_variable = { event021_settlement_deadline = global.date }
-	set_temp_variable = { event021_date_offset = constant:event021_action_tuning.settlement_obligation_days }
-	event021_days_to_date_offset = yes
-	add_to_variable = { event021_settlement_deadline = event021_date_offset }
 	set_variable = { random_civil_war_pending_authority_delta = constant:event021_action_tuning.settlement_authority_cost }
 	event021_add_authority = yes
 	set_country_flag = event021_settlement_pending
