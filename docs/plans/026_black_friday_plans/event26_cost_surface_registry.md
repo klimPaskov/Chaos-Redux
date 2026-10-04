@@ -359,6 +359,35 @@ The mod has 1,316 active native declarations partitioned into 343 literal zero, 
 Vanilla has 2,903 active native declarations partitioned into 387 literal zero, 2,150 numeric nonzero, and 366 symbolic or unresolved values, with 52 commented matches excluded.
 Symbolic declarations are not certified as positive purchases until their actual cost providers are resolved.
 Native one-time decisions remain owner-adapter or complete-variant work, and a missing generic factor alone does not establish strategy D for a script-accessible decision definition.
+
+### Sale price table conversion, 2026-10-04
+
+Disposition: implemented (source) for the owners below; live display and debit pend on the CXT probe `chaosx_test_country_event026_price_probe_decision`.
+Every positive decision-level `cost = N` or `cost = constant:K` in these owner files reads its registered `global.black_friday_price_<key>` (agent decisions D4 and D5, 2026-10-04).
+Zero costs are unchanged, and no AI weight or availability rule changed.
+
+| Owner file | Converted positive costs | Unchanged zero costs |
+| --- | ---: | ---: |
+| `common/decisions/formable_nation_decisions.txt` | 42 | 0 |
+| `common/decisions/003_holy_realm_decisions.txt` | 108 | 5 |
+| `common/decisions/015_utopia_manifesto_decisions.txt` | 98 | 0 |
+| `common/decisions/015_utopia_manifesto_evolution_consumption_decisions.txt` | 15 | 0 |
+| `common/decisions/015_utopia_manifesto_prefire_evolution_decisions.txt` | 1 | 0 |
+| `common/decisions/002_zombie_outbreak_decisions.txt` | 29 | 8 |
+| `common/decisions/044_space_race_decisions.txt` | 21 | 0 |
+| `common/decisions/germany_mengele_decisions.txt` | 26 | 0 |
+| `common/decisions/genocide_crisis_decisions.txt` | 26 | 0 |
+| `common/decisions/005_soviet_collapse_decisions.txt` | 18 | 0 |
+| `common/decisions/019_infantry_spawn_derivative_decisions.txt` | 5 | 12 |
+| `common/decisions/079_the_master_decisions.txt` | 4 | 0 |
+| `common/decisions/080_airship_decisions.txt` | 3 | 0 |
+| `common/decisions/049_mass_panic_decisions.txt` | 2 | 0 |
+| `common/decisions/092_greenland_sale_decisions.txt` | 1 | 0 |
+| Total | 399 | 25 |
+
+The committed `genocide_crisis_decisions.txt` still has one `cost = constant:genocide_decision_cost.german_experiment_transfer` (35) that the owner's uncommitted work replaces with a custom cost; it is left to that work and its custom-cost adoption.
+Native costs in active workstream files are `owner adoption pending` and are listed in [owner_adoption_requests.md](owner_adoption_requests.md) when published.
+Vanilla decision files are excluded under BF-NAT-001.
 ## Part 8 acceptance status
 
 The lifecycle and presentation paths are source-implemented for `BF-T01` through `BF-T19`, `BF-P01` through `BF-P06`, `BF-U01` through `BF-U10`, and the multiplayer scenarios, but live consumer evidence is not available to the coding agent.

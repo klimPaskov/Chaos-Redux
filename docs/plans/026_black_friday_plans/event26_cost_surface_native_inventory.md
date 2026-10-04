@@ -1,6 +1,7 @@
 # Event 26 native cost declaration inventory — 2026-10-03
 
 Disposition: implemented declaration-discovery refresh; manual semantic coverage remains unresolved.
+Update 2026-10-04: the 399 positive native costs in the 15 inactive owner files listed in the registry's Appendix B conversion table now read `global.black_friday_price_<key>`; the hashes below predate that conversion and need a rescan at the final freeze.
 The acceptance basis is the parent prompt dated 2026-10-03, which records the original user goal of a full universal cost registry against the final commit.
 The current worktree is evidence of declarations and call sites only; it does not establish design approval, working discounts, or universal coverage.
 Event 26 implementation remains incomplete and default-disabled according to the parent; this refresh does not change that disposition.
