@@ -285,6 +285,15 @@ Every stage decision has a nonzero family priority only after its exact visibili
 
 Native project AI uses the same host and capacity conditions and retains the engine's facility and breakthrough requirements. Incident recovery is urgent. The ordinary `chaosx.nr16.13` report now resolves a family-specific risk clause for all fifteen ledgers, so computation, electronics, materials, rocketry, high energy, biomedical, teleportation, cloning, robotics, paleogenetics, xenobiological synthesis, biological weapons, alien arms, temporal research, and the Strategic Singularity each explain their own failure signature before the shared governance response. The report also appends the retained host-archetype clause at standard, major, and severe pressure, keeping the same risk readable as a university, industrial, militarized, threatened, colonial, refugee, or default Directorate incident. Both clauses are descriptive only and do not create a second incident, reward, or resource path.
 
+## Temporal anchor control
+
+The authenticated temporal anchor is a physical site that enemies can take.
+When the controller of the anchor state changes, the `on_state_control_changed` handler in `common/on_actions/016_brilliant_scientist_project_on_actions.txt` calls `brilliant_scientist_lose_temporal_anchor` once for the previous controller if that country held the anchor: an authenticated anchor, the current host, or the Kruger State.
+The loss clears the anchor target, its state flag, authentication, and any bound temporal target, and sets `brilliant_scientist_temporal_anchor_lost`, which blocks temporal actions.
+Temporal debt and temporal history are kept.
+With no anchor target left, the Kruger State anchor discovery and authentication decisions open again; registering a new anchor clears the lost flag.
+No world scan is used.
+
 ## Strategic Singularity guard contract
 
 This portfolio keeps Strategic Singularity preparation behind the component, command-node, power-link, facility, and map guards and exposes a separate terminal lifecycle. Paid timed decisions own arming, fail-deadly activation, deliberate detonation, controlled disarmament, and Laboratory World audit/finalization; the source-aware terminal effect owns the Fallout request and retry cleanup. Static wiring is present, but live terminal/Fallout scenarios and final MCP comparisons remain open.

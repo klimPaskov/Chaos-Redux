@@ -59,6 +59,27 @@ on_actions = {
 					limit = { brilliant_scientist_is_kruger_sovereign_country = yes }
 					brilliant_scientist_refresh_world_threat_source = yes
 				}
+				if = {
+					limit = { brilliant_scientist_is_current_host = yes }
+					brilliant_scientist_reconcile_multi_site_network = yes
+				}
+			}
+			# The previous controller of the authenticated temporal anchor state
+			# loses the anchor once; debt and temporal history are kept, and the
+			# rediscovery and authentication decisions open again.
+			if = {
+				limit = {
+					FROM.FROM = { has_state_flag = brilliant_scientist_temporal_anchor }
+					FROM = {
+						NOT = { has_country_flag = brilliant_scientist_temporal_anchor_lost }
+						OR = {
+							has_country_flag = brilliant_scientist_temporal_anchor_authenticated
+							brilliant_scientist_is_current_host = yes
+							brilliant_scientist_is_kruger_sovereign_country = yes
+						}
+					}
+				}
+				FROM = { brilliant_scientist_lose_temporal_anchor = yes }
 			}
 			FROM = {
 				if = {
@@ -82,6 +103,10 @@ on_actions = {
 				if = {
 					limit = { brilliant_scientist_is_kruger_sovereign_country = yes }
 					brilliant_scientist_refresh_world_threat_source = yes
+				}
+				if = {
+					limit = { brilliant_scientist_is_current_host = yes }
+					brilliant_scientist_reconcile_multi_site_network = yes
 				}
 			}
 		}

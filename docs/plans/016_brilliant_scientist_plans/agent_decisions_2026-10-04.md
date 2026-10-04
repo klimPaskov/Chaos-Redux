@@ -75,3 +75,16 @@ The gate is wrapped in a plain-language custom tooltip.
 Military command is satisfied whenever the gate's own final-authority requirement holds, so the effective bar is three further domains, which keeps takeover rare.
 
 Evidence: `common/scripted_effects/016_brilliant_scientist_containment_effects.txt`, `common/scripted_effects/016_brilliant_scientist_effects.txt`, `common/scripted_effects/016_brilliant_scientist_evolution_effects.txt`, `common/scripted_effects/016_brilliant_scientist_country_effects.txt`, `common/scripted_triggers/016_brilliant_scientist_triggers.txt`, `localisation/english/016_brilliant_scientist_containment_l_english.yml`, `docs/events/016_brilliant_scientist/systems/containment.md`.
+
+## D5. Multi-site network from real facility state
+
+Decision: `brilliant_scientist_multi_site_network_verified` is derived by `brilliant_scientist_reconcile_multi_site_network`, set while the current host owns and controls a valid primary and a valid secondary laboratory in two distinct core states, and cleared otherwise.
+The two distinct facility states are the network minimum. `brilliant_scientist_formation.multi_site_minimum_states` (4) stays the multi-site formation band's territory minimum, checked by `brilliant_scientist_can_form_multi_site`; reusing it as a facility-count minimum would demand four laboratory states that no host can build, and the band would stay dead.
+The helper runs after primary campus and secondary laboratory establishment, after a successful relocation, in the existing `on_state_control_changed` handler for the gaining and losing host, and at the start of territory planning and containment scoring. No world iteration is added.
+
+## D6. Temporal anchor capture
+
+Decision: the existing `on_state_control_changed` handler calls `brilliant_scientist_lose_temporal_anchor` once for the previous controller of the anchor state when that country held the anchor (authenticated anchor, current host, or Kruger State) and has not already lost it.
+Debt and history are kept; the cleared global target reopens the Kruger State discovery and authentication decisions.
+
+Evidence for D5 and D6: `common/scripted_effects/016_brilliant_scientist_effects.txt`, `common/decisions/016_brilliant_scientist_directorate_facilities.txt`, `common/scripted_effects/016_brilliant_scientist_directorate_outcome_effects.txt`, `common/scripted_effects/016_brilliant_scientist_territory_effects.txt`, `common/scripted_effects/016_brilliant_scientist_containment_effects.txt`, `common/on_actions/016_brilliant_scientist_project_on_actions.txt`, `docs/events/016_brilliant_scientist/systems/directorate.md`, `docs/events/016_brilliant_scientist/systems/projects.md`.

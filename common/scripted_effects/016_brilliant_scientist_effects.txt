@@ -993,6 +993,36 @@ brilliant_scientist_clean_invalid_facility_targets = {
 	}
 }
 
+# COUNTRY scope. The multi-site network exists while this current host owns and
+# controls a valid primary laboratory and a valid secondary laboratory in two
+# distinct core states; the facility validity triggers already exclude a shared
+# state and destroyed sites. Otherwise the flag is cleared. Runs after facility
+# establishment, relocation, and control changes, and before territory planning
+# and containment scoring, so formation and containment read the current value.
+brilliant_scientist_reconcile_multi_site_network = {
+	if = {
+		limit = {
+			brilliant_scientist_is_current_host = yes
+			brilliant_scientist_primary_facility_is_valid = yes
+			brilliant_scientist_secondary_facility_is_valid = yes
+			event_target:brilliant_scientist_primary_facility = {
+				is_owned_by = PREV
+				is_controlled_by = PREV
+				NOT = { has_state_flag = brilliant_scientist_secondary_facility }
+			}
+			event_target:brilliant_scientist_secondary_facility = {
+				is_owned_by = PREV
+				is_controlled_by = PREV
+				NOT = { has_state_flag = brilliant_scientist_primary_facility }
+			}
+		}
+		set_country_flag = brilliant_scientist_multi_site_network_verified
+	}
+	else = {
+		clr_country_flag = brilliant_scientist_multi_site_network_verified
+	}
+}
+
 # ---------------------------------------------------------------------------
 # Fifteen-family project ledger
 # ---------------------------------------------------------------------------
