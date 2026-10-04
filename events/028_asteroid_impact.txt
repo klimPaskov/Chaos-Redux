@@ -71,8 +71,11 @@ country_event = {
 			set_temp_variable = { events_log_evolution_type = constant:asteroid_incoming_event.evolution_ii_type }
 			set_temp_variable = { events_log_evolution_stage = constant:asteroid_incoming_event.evolution_ii_stage }
 			set_temp_variable = { events_log_evolution_tier = constant:asteroid_incoming_event.evolution_ii_tier }
+			# Extraordinary Minerals forms only in fragment craters, so it is
+			# announced only when Global Fragmentation joined this snapshot.
 			if = {
 				limit = {
+					has_global_flag = asteroid_incoming_evolution_i_eligible
 					check_variable = {
 						var = global.chaos_meter_value
 						value = constant:asteroid_incoming_runtime.minerals_chaos_threshold
@@ -245,7 +248,7 @@ country_event = {
 			}
 			modifier = {
 				add = constant:asteroid_incoming_ai.preparedness_medium_add
-				NOT = { has_stability > 0.45 }
+				NOT = { has_stability > constant:asteroid_incoming_ai.preparedness_unstable_stability_threshold }
 			}
 		}
 		custom_effect_tooltip = chaosx.nr28.3.a.tt

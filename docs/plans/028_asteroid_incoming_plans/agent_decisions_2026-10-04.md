@@ -239,3 +239,42 @@ The failure tooltip says the full burden returns for that many days and sets asi
 The never-read state counter `asteroid_incoming_recovery_actions_completed` is removed.
 Basis: Part 6 failure consequences ask for a real temporary escalation, and the tooltip already promised the window; the monthly pass used to replace the burden with the legacy or an untimed burden within a month.
 No `ai_will_do` or `ai_chance` value changed.
+
+### Minerals eligibility follows the fragmentation snapshot
+
+Decision: the opening snapshot sets `asteroid_incoming_evolution_ii_eligible` only when `asteroid_incoming_evolution_i_eligible` was set in the same snapshot, so the board, the confirmation and the near-miss check never announce Extraordinary Minerals while Global Fragmentation is disabled or below its threshold.
+Basis: the catalog evolution text says Extraordinary Minerals requires Global Fragmentation, and the impact already needs an applied fragment before minerals can activate.
+The AI factors `strike_mineral_holder_factor` and `miss_mineral_holder_add` read the chooser's existing crater holdings, not this flag, so no weight changes.
+
+### Named AI stability threshold
+
+Decision: the Command Continuity weight on `chaosx.nr28.3` reads `asteroid_incoming_ai.preparedness_unstable_stability_threshold` (0.45) instead of a literal.
+Basis: the repository rule that tuning thresholds live in constants; the value is unchanged, so no probability comparison is needed.
+
+## Open acceptance points closed in round 2
+
+### Historical target identity (F06)
+
+Decision: Event Details and the history rows keep naming the target through the persistent `asteroid_incoming_original_target_country` and `asteroid_incoming_original_target_state` pointers, the impact news and super-event read the `asteroid_incoming_super_event_target_*` pointers saved from the locked pair, and no separate name or flag snapshot is stored.
+`GetName` and `GetFlag` still resolve for a tag that no longer exists, so a target annexed inside the two-day window is shown as the former country.
+A cosmetic rename inside the two-day window shows the current name, which is accepted.
+Basis: Part 2 freezes the target country and state, and no engine-supported effect stores a name or flag string; annexation is the realistic change within two days.
+The display of an annexed target's name and flag is a needs-live-game check.
+
+### Rail objectives across the main crater
+
+Decision: rail objectives keep the links recorded before the impact, and a main crater that sat on a state's only rail route to the capital is accepted.
+The crater's railways are wrecked beyond repair, and players can build detours through ordinary neighbouring states to restore the link.
+Basis: Part 6 asks missions to restore links that the impact cut, and Part 3 keeps the crater itself unusable.
+Whether a detour is buildable for a specific map position is a needs-live-game check.
+
+### Secondary-disaster order
+
+Decision: secondary-disaster slots keep filling in state-id order, because `asteroid_incoming_process_footprint` applies profiles through `every_state` and only catastrophic-ring states and fragment centres in a disaster-prone zone can call one, up to `asteroid_incoming_runtime.secondary_disaster_maximum`.
+Basis: the spec sets a slot limit but no ring priority, so any stable order meets it, and the state-id order is deterministic across saves.
+
+### Event 042 nuclear-drop hook
+
+Decision: the missing `asteroid_incoming_visual_strike_state` guard in `common/on_actions/042_equipment_from_heavens_on_actions.txt` is a cross-owner dependency on the Event 042 package, not Event 028 work.
+That file is untracked and belongs to another in-progress owner; Event 028 keeps the state marker and global flag that the guard needs.
+Basis: the shared-tree ownership rule and the nuclear-separation decision above.
