@@ -34,3 +34,14 @@ Carrying all three would apply the sale twice to every recruit (to zero if the e
 
 Disposition: implemented.
 The live check that recruiting a general costs half during the sale is `needs_live_game`.
+
+## D3. Trade upkeep factors leave the sale
+
+Decision: `trade_cost_for_target_factor` and `overlord_trade_cost_factor` are removed from both sale ideas; `embargo_cost_factor` stays.
+
+Basis: the two trade factors change the civilian factories committed to ongoing trade deals.
+That is passive upkeep, which spec Part 4 excludes from the sale, rather than a one-time voluntary purchase.
+Peace-conference, annex, and puppet factors stay because they price a voluntary one-off commitment.
+Registry row BF-NAT-010 records trade upkeep as `not_a_purchase_cost`.
+
+Disposition: implemented.
