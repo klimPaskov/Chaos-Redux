@@ -61,14 +61,14 @@ soviet_collapse_soviet_category = {
 		days_re_enable = @soviet_collapse_response_days_reenable
 		complete_effect = {
 			hidden_effect = {
-				add_manpower = constant:soviet_collapse_decision_cost.restore_party_control_manpower_spend
+				add_manpower = global.black_friday_price_soviet_collapse_decision_cost_restore_party_control_manpower_spend
 				add_equipment_to_stockpile = {
 					type = infantry_equipment
-					amount = constant:soviet_collapse_decision_cost.restore_party_control_infantry_equipment_spend
+					amount = global.black_friday_price_soviet_collapse_decision_cost_restore_party_control_infantry_equipment_spend
 				}
 				add_equipment_to_stockpile = {
 					type = support_equipment_1
-					amount = constant:soviet_collapse_decision_cost.restore_party_control_support_equipment_spend
+					amount = global.black_friday_price_soviet_collapse_decision_cost_restore_party_control_support_equipment_spend
 				}
 			}
 			set_temp_variable = {
@@ -83,6 +83,11 @@ soviet_collapse_soviet_category = {
 			soviet_collapse_apply_objective_source_pressure_delta = yes
 			add_ideas = soviet_collapse_emergency_union_authority
 			custom_effect_tooltip = soviet_collapse_restore_party_control_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -126,8 +131,8 @@ soviet_collapse_soviet_category = {
 		days_re_enable = @soviet_collapse_response_days_reenable
 		complete_effect = {
 			hidden_effect = {
-				army_experience = constant:soviet_collapse_decision_cost.send_loyalist_officers_army_xp_spend
-				add_command_power = constant:soviet_collapse_decision_cost.send_loyalist_officers_command_power_spend
+				army_experience = global.black_friday_price_soviet_collapse_decision_cost_send_loyalist_officers_army_xp_spend
+				add_command_power = global.black_friday_price_soviet_collapse_decision_cost_send_loyalist_officers_command_power_spend
 			}
 			set_temp_variable = {
 				soviet_collapse_objective_obedience_delta = constant:soviet_collapse_decision_cost.send_loyalist_officers_obedience
@@ -138,6 +143,11 @@ soviet_collapse_soviet_category = {
 			soviet_collapse_apply_objective_source_pressure_delta = yes
 			add_ideas = soviet_collapse_loyalist_officer_corps
 			custom_effect_tooltip = soviet_collapse_send_loyalist_officers_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -177,10 +187,10 @@ soviet_collapse_soviet_category = {
 		days_re_enable = @soviet_collapse_response_days_reenable
 		complete_effect = {
 			hidden_effect = {
-				add_fuel = constant:soviet_collapse_decision_cost.cut_rebel_supply_routes_fuel_spend
+				add_fuel = global.black_friday_price_soviet_collapse_decision_cost_cut_rebel_supply_routes_fuel_spend
 				add_equipment_to_stockpile = {
 					type = train_equipment_1
-					amount = constant:soviet_collapse_decision_cost.cut_rebel_supply_routes_train_spend
+					amount = global.black_friday_price_soviet_collapse_decision_cost_cut_rebel_supply_routes_train_spend
 				}
 			}
 			set_temp_variable = {
@@ -195,6 +205,11 @@ soviet_collapse_soviet_category = {
 			}
 			soviet_collapse_apply_foreign_pressure_delta = yes
 			custom_effect_tooltip = soviet_collapse_cut_rebel_supply_routes_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.trains }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -245,6 +260,11 @@ soviet_collapse_soviet_category = {
 				soviet_collapse_pay_chain_of_command_compromise_cost = yes
 				soviet_collapse_resolve_active_chain_of_command_objective_by_compromise = yes
 			}
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -290,6 +310,11 @@ soviet_collapse_soviet_category = {
 				soviet_collapse_pay_corridors_and_depots_compromise_cost = yes
 				soviet_collapse_resolve_active_corridors_and_depots_objective_by_compromise = yes
 			}
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.political_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.zero }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -334,6 +359,11 @@ soviet_collapse_soviet_category = {
 			hidden_effect = {
 				soviet_collapse_pay_republic_settlement_compromise_cost = yes
 				soviet_collapse_resolve_active_republic_settlement_objective_by_compromise = yes
+			}
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.political_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.zero }
+				black_friday_credit_sale_purchase = yes
 			}
 		}
 		ai_will_do = {
@@ -382,9 +412,9 @@ soviet_collapse_soviet_category = {
 		complete_effect = {
 			set_country_flag = soviet_collapse_emergency_mobilization_used
 			add_to_variable = { soviet_collapse_emergency_mobilization_count = 1 }
-			add_stability = constant:soviet_collapse_decision_cost.emergency_mobilization_stability
-			add_war_support = constant:soviet_collapse_decision_cost.emergency_mobilization_war_support
-			add_command_power = constant:soviet_collapse_decision_cost.emergency_mobilization_command_power_spend
+			add_stability = global.black_friday_price_soviet_collapse_decision_cost_emergency_mobilization_stability_spend
+			add_war_support = global.black_friday_price_soviet_collapse_decision_cost_emergency_mobilization_war_support_spend
+			add_command_power = global.black_friday_price_soviet_collapse_decision_cost_emergency_mobilization_command_power_spend
 			add_manpower = constant:soviet_collapse_decision_cost.emergency_mobilization_manpower
 			add_equipment_to_stockpile = {
 				type = infantry_equipment
@@ -418,6 +448,11 @@ soviet_collapse_soviet_category = {
 			soviet_collapse_apply_foreign_pressure_delta = yes
 			soviet_collapse_apply_objective_source_pressure_delta = yes
 			custom_effect_tooltip = soviet_collapse_emergency_mobilization_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -4969,6 +5004,11 @@ soviet_collapse_moscow_republic_category = {
 		complete_effect = {
 			soviet_collapse_apply_moscow_union_treaty_offer = yes
 			custom_effect_tooltip = soviet_collapse_offer_new_union_treaty_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.trains }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -5021,6 +5061,11 @@ soviet_collapse_moscow_republic_category = {
 		complete_effect = {
 			soviet_collapse_apply_moscow_negotiation_table = yes
 			custom_effect_tooltip = soviet_collapse_open_republic_negotiation_table_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.trains }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -5075,6 +5120,11 @@ soviet_collapse_moscow_republic_category = {
 		complete_effect = {
 			soviet_collapse_apply_moscow_loyal_administrators = yes
 			custom_effect_tooltip = soviet_collapse_embed_loyal_republic_administrators_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -5121,6 +5171,11 @@ soviet_collapse_moscow_republic_category = {
 		complete_effect = {
 			soviet_collapse_apply_moscow_federal_compact = yes
 			custom_effect_tooltip = soviet_collapse_offer_federal_reintegration_compact_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.trains }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -5179,6 +5234,11 @@ soviet_collapse_moscow_republic_category = {
 		complete_effect = {
 			soviet_collapse_apply_moscow_military_ultimatum = yes
 			custom_effect_tooltip = soviet_collapse_issue_republic_military_ultimatum_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -5229,6 +5289,11 @@ soviet_collapse_moscow_republic_category = {
 		complete_effect = {
 			soviet_collapse_launch_moscow_punitive_operation = yes
 			custom_effect_tooltip = soviet_collapse_authorize_republic_punitive_operation_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -5274,6 +5339,11 @@ soviet_collapse_moscow_republic_category = {
 		complete_effect = {
 			soviet_collapse_apply_terminal_reclamation_front = yes
 			custom_effect_tooltip = soviet_collapse_coordinate_reclamation_front_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.trains }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = { base = @soviet_collapse_ai_medium }
 	}
@@ -5391,6 +5461,11 @@ soviet_collapse_breakaway_category = {
 		complete_effect = {
 			soviet_collapse_apply_breakaway_recognition_request = yes
 			custom_effect_tooltip = soviet_collapse_request_foreign_recognition_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.stability }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -5464,6 +5539,11 @@ soviet_collapse_breakaway_category = {
 			soviet_collapse_apply_breakaway_recognition_request = yes
 			soviet_collapse_apply_internal_far_eastern_japanese_contact = yes
 			custom_effect_tooltip = soviet_collapse_negotiate_pacific_liaison_officers_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.stability }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -5577,7 +5657,7 @@ soviet_collapse_breakaway_category = {
 		days_re_enable = @soviet_collapse_breakaway_action_days_reenable
 		complete_effect = {
 			hidden_effect = {
-				add_stability = constant:soviet_collapse_breakaway_action.mobilize_stability_spend
+				add_stability = global.black_friday_price_soviet_collapse_breakaway_action_mobilize_stability_spend
 			}
 			soviet_collapse_apply_breakaway_mobilization = yes
 			if = {
@@ -5593,6 +5673,11 @@ soviet_collapse_breakaway_category = {
 				soviet_collapse_update_consolidated_republic_ideas = yes
 			}
 			custom_effect_tooltip = soviet_collapse_mobilize_defense_units_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -5728,6 +5813,11 @@ soviet_collapse_breakaway_category = {
 		complete_effect = {
 			soviet_collapse_apply_breakaway_depot_seizure = yes
 			custom_effect_tooltip = soviet_collapse_seize_depots_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -5835,6 +5925,11 @@ soviet_collapse_breakaway_category = {
 		complete_effect = {
 			soviet_collapse_apply_breakaway_front_coordination = yes
 			custom_effect_tooltip = soviet_collapse_coordinate_fronts_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -5905,6 +6000,11 @@ soviet_collapse_breakaway_category = {
 		complete_effect = {
 			soviet_collapse_apply_breakaway_high_chaos_offensive = yes
 			custom_effect_tooltip = soviet_collapse_launch_high_chaos_offensive_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -5958,6 +6058,11 @@ soviet_collapse_breakaway_category = {
 			soviet_collapse_apply_internal_compact_payoff = yes
 			clr_country_flag = soviet_collapse_internal_compact_payoff_select_northern_rail
 			custom_effect_tooltip = soviet_collapse_compact_northern_rail_timber_board_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -6016,6 +6121,11 @@ soviet_collapse_breakaway_category = {
 			soviet_collapse_apply_internal_compact_payoff = yes
 			clr_country_flag = soviet_collapse_internal_compact_payoff_select_volga_oilfield
 			custom_effect_tooltip = soviet_collapse_compact_volga_ural_oilfield_security_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -6070,6 +6180,11 @@ soviet_collapse_breakaway_category = {
 			soviet_collapse_apply_internal_compact_payoff = yes
 			clr_country_flag = soviet_collapse_internal_compact_payoff_select_black_sea_observers
 			custom_effect_tooltip = soviet_collapse_compact_black_sea_observer_vote_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -6124,12 +6239,17 @@ soviet_collapse_breakaway_category = {
 		fire_only_once = yes
 		complete_effect = {
 			hidden_effect = {
-				add_stability = constant:soviet_collapse_breakaway_action.mobilize_stability_spend
+				add_stability = global.black_friday_price_soviet_collapse_breakaway_action_mobilize_stability_spend
 			}
 			set_country_flag = soviet_collapse_internal_compact_payoff_select_tuvan_roads
 			soviet_collapse_apply_internal_compact_payoff = yes
 			clr_country_flag = soviet_collapse_internal_compact_payoff_select_tuvan_roads
 			custom_effect_tooltip = soviet_collapse_compact_tuvan_border_road_pact_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -6185,12 +6305,17 @@ soviet_collapse_breakaway_category = {
 		fire_only_once = yes
 		complete_effect = {
 			hidden_effect = {
-				add_stability = constant:soviet_collapse_breakaway_action.mobilize_stability_spend
+				add_stability = global.black_friday_price_soviet_collapse_breakaway_action_mobilize_stability_spend
 			}
 			set_country_flag = soviet_collapse_internal_compact_payoff_select_common_front
 			soviet_collapse_apply_internal_compact_payoff = yes
 			clr_country_flag = soviet_collapse_internal_compact_payoff_select_common_front
 			custom_effect_tooltip = soviet_collapse_compact_common_front_volunteer_standards_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -6308,6 +6433,11 @@ soviet_collapse_foreign_patron_category = {
 				soviet_collapse_apply_foreign_recognition_aid = yes
 			}
 			custom_effect_tooltip = soviet_collapse_recognize_breakaway_government_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.convoy }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -6383,6 +6513,11 @@ soviet_collapse_foreign_patron_category = {
 				soviet_collapse_apply_foreign_liaison_aid = yes
 			}
 			custom_effect_tooltip = soviet_collapse_fund_ideological_liaison_offices_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -6531,6 +6666,11 @@ soviet_collapse_foreign_patron_category = {
 				soviet_collapse_apply_foreign_adviser_aid = yes
 			}
 			custom_effect_tooltip = soviet_collapse_dispatch_military_advisers_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.manpower }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -6600,6 +6740,11 @@ soviet_collapse_foreign_patron_category = {
 				soviet_collapse_apply_foreign_intelligence_aid = yes
 			}
 			custom_effect_tooltip = soviet_collapse_open_republican_intelligence_channel_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.trains }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -6674,6 +6819,11 @@ soviet_collapse_foreign_patron_category = {
 				soviet_collapse_apply_foreign_volunteer_aid = yes
 			}
 			custom_effect_tooltip = soviet_collapse_sponsor_volunteer_corps_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -6743,6 +6893,11 @@ soviet_collapse_foreign_patron_category = {
 				soviet_collapse_apply_foreign_trade_aid = yes
 			}
 			custom_effect_tooltip = soviet_collapse_negotiate_republican_trade_mission_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.convoy }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -6813,6 +6968,11 @@ soviet_collapse_foreign_patron_category = {
 				soviet_collapse_apply_foreign_civilian_construction_aid = yes
 			}
 			custom_effect_tooltip = soviet_collapse_fund_civilian_construction_mission_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.convoy }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -6883,6 +7043,11 @@ soviet_collapse_foreign_patron_category = {
 				soviet_collapse_apply_foreign_military_construction_aid = yes
 			}
 			custom_effect_tooltip = soviet_collapse_fund_military_construction_mission_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -6947,6 +7112,11 @@ soviet_collapse_foreign_patron_category = {
 				soviet_collapse_apply_foreign_press_network_aid = yes
 			}
 			custom_effect_tooltip = soviet_collapse_sponsor_press_and_radio_network_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.stability }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -7025,6 +7195,11 @@ soviet_collapse_foreign_patron_category = {
 				soviet_collapse_apply_foreign_aid_corridor = yes
 			}
 			custom_effect_tooltip = soviet_collapse_secure_republican_aid_corridor_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.convoy }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -7092,6 +7267,11 @@ soviet_collapse_foreign_patron_category = {
 				soviet_collapse_apply_foreign_league_conference = yes
 			}
 			custom_effect_tooltip = soviet_collapse_build_republics_league_conference_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -7161,6 +7341,11 @@ soviet_collapse_foreign_patron_category = {
 				soviet_collapse_apply_foreign_league_logistics_aid = yes
 			}
 			custom_effect_tooltip = soviet_collapse_route_aid_through_league_logistics_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.trains }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -7233,6 +7418,11 @@ soviet_collapse_foreign_patron_category = {
 				soviet_collapse_apply_anti_puppet_clause = yes
 			}
 			custom_effect_tooltip = soviet_collapse_demand_anti_puppet_clause_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -7309,6 +7499,11 @@ soviet_collapse_foreign_patron_category = {
 				soviet_collapse_apply_foreign_protection_treaty = yes
 			}
 			custom_effect_tooltip = soviet_collapse_offer_protection_treaty_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -7381,6 +7576,11 @@ soviet_collapse_foreign_patron_category = {
 				soviet_collapse_apply_foreign_adviser_privileges = yes
 			}
 			custom_effect_tooltip = soviet_collapse_demand_adviser_privileges_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.manpower }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -7447,6 +7647,11 @@ soviet_collapse_foreign_patron_category = {
 				soviet_collapse_apply_foreign_client_cabinet = yes
 			}
 			custom_effect_tooltip = soviet_collapse_install_client_cabinet_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -7501,6 +7706,11 @@ soviet_collapse_foreign_patron_category = {
 		complete_effect = {
 			soviet_collapse_apply_foreign_aid_corridor = yes
 			custom_effect_tooltip = soviet_collapse_sustain_terminal_republic_front_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.convoy }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -7521,10 +7731,10 @@ soviet_collapse_regional_faction_category = {
 		}
 		custom_cost_trigger = {
 			set_temp_variable = {
-				soviet_collapse_regional_faction_found_pp_cost_display = constant:soviet_collapse_regional_faction.found_political_power
+				soviet_collapse_regional_faction_found_pp_cost_display = global.black_friday_price_soviet_collapse_regional_faction_found_political_power
 			}
 			set_temp_variable = {
-				soviet_collapse_regional_faction_found_cp_cost_display = constant:soviet_collapse_regional_faction.found_command_power
+				soviet_collapse_regional_faction_found_cp_cost_display = global.black_friday_price_soviet_collapse_regional_faction_found_command_power
 			}
 			hidden_trigger = { can_pay_soviet_collapse_regional_faction_found_cost = yes }
 		}
@@ -7533,6 +7743,11 @@ soviet_collapse_regional_faction_category = {
 		complete_effect = {
 			soviet_collapse_found_baltic_restoration_pact = yes
 			custom_effect_tooltip = soviet_collapse_found_baltic_restoration_pact_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -7554,10 +7769,10 @@ soviet_collapse_regional_faction_category = {
 		}
 		custom_cost_trigger = {
 			set_temp_variable = {
-				soviet_collapse_regional_faction_found_pp_cost_display = constant:soviet_collapse_regional_faction.found_political_power
+				soviet_collapse_regional_faction_found_pp_cost_display = global.black_friday_price_soviet_collapse_regional_faction_found_political_power
 			}
 			set_temp_variable = {
-				soviet_collapse_regional_faction_found_cp_cost_display = constant:soviet_collapse_regional_faction.found_command_power
+				soviet_collapse_regional_faction_found_cp_cost_display = global.black_friday_price_soviet_collapse_regional_faction_found_command_power
 			}
 			hidden_trigger = { can_pay_soviet_collapse_regional_faction_found_cost = yes }
 		}
@@ -7566,6 +7781,11 @@ soviet_collapse_regional_faction_category = {
 		complete_effect = {
 			soviet_collapse_found_caucasus_defense_compact = yes
 			custom_effect_tooltip = soviet_collapse_found_caucasus_defense_compact_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -7590,10 +7810,10 @@ soviet_collapse_regional_faction_category = {
 		}
 		custom_cost_trigger = {
 			set_temp_variable = {
-				soviet_collapse_regional_faction_found_pp_cost_display = constant:soviet_collapse_regional_faction.found_political_power
+				soviet_collapse_regional_faction_found_pp_cost_display = global.black_friday_price_soviet_collapse_regional_faction_found_political_power
 			}
 			set_temp_variable = {
-				soviet_collapse_regional_faction_found_cp_cost_display = constant:soviet_collapse_regional_faction.found_command_power
+				soviet_collapse_regional_faction_found_cp_cost_display = global.black_friday_price_soviet_collapse_regional_faction_found_command_power
 			}
 			hidden_trigger = { can_pay_soviet_collapse_regional_faction_found_cost = yes }
 		}
@@ -7602,6 +7822,11 @@ soviet_collapse_regional_faction_category = {
 		complete_effect = {
 			soviet_collapse_found_central_asian_league = yes
 			custom_effect_tooltip = soviet_collapse_found_steppe_federation_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -7623,10 +7848,10 @@ soviet_collapse_regional_faction_category = {
 		}
 		custom_cost_trigger = {
 			set_temp_variable = {
-				soviet_collapse_regional_faction_found_pp_cost_display = constant:soviet_collapse_regional_faction.found_political_power
+				soviet_collapse_regional_faction_found_pp_cost_display = global.black_friday_price_soviet_collapse_regional_faction_found_political_power
 			}
 			set_temp_variable = {
-				soviet_collapse_regional_faction_found_cp_cost_display = constant:soviet_collapse_regional_faction.found_command_power
+				soviet_collapse_regional_faction_found_cp_cost_display = global.black_friday_price_soviet_collapse_regional_faction_found_command_power
 			}
 			hidden_trigger = { can_pay_soviet_collapse_regional_faction_found_cost = yes }
 		}
@@ -7635,6 +7860,11 @@ soviet_collapse_regional_faction_category = {
 		complete_effect = {
 			soviet_collapse_found_black_international = yes
 			custom_effect_tooltip = soviet_collapse_found_black_international_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -7656,10 +7886,10 @@ soviet_collapse_regional_faction_category = {
 		}
 		custom_cost_trigger = {
 			set_temp_variable = {
-				soviet_collapse_regional_faction_found_pp_cost_display = constant:soviet_collapse_regional_faction.found_political_power
+				soviet_collapse_regional_faction_found_pp_cost_display = global.black_friday_price_soviet_collapse_regional_faction_found_political_power
 			}
 			set_temp_variable = {
-				soviet_collapse_regional_faction_found_cp_cost_display = constant:soviet_collapse_regional_faction.found_command_power
+				soviet_collapse_regional_faction_found_cp_cost_display = global.black_friday_price_soviet_collapse_regional_faction_found_command_power
 			}
 			hidden_trigger = { can_pay_soviet_collapse_regional_faction_found_cost = yes }
 		}
@@ -7668,6 +7898,11 @@ soviet_collapse_regional_faction_category = {
 		complete_effect = {
 			soviet_collapse_found_free_soviet_congress = yes
 			custom_effect_tooltip = soviet_collapse_found_free_soviet_congress_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -7689,10 +7924,10 @@ soviet_collapse_regional_faction_category = {
 		}
 		custom_cost_trigger = {
 			set_temp_variable = {
-				soviet_collapse_regional_faction_found_pp_cost_display = constant:soviet_collapse_regional_faction.found_political_power
+				soviet_collapse_regional_faction_found_pp_cost_display = global.black_friday_price_soviet_collapse_regional_faction_found_political_power
 			}
 			set_temp_variable = {
-				soviet_collapse_regional_faction_found_cp_cost_display = constant:soviet_collapse_regional_faction.found_command_power
+				soviet_collapse_regional_faction_found_cp_cost_display = global.black_friday_price_soviet_collapse_regional_faction_found_command_power
 			}
 			hidden_trigger = { can_pay_soviet_collapse_regional_faction_found_cost = yes }
 		}
@@ -7701,6 +7936,11 @@ soviet_collapse_regional_faction_category = {
 		complete_effect = {
 			soviet_collapse_found_iron_production_bloc = yes
 			custom_effect_tooltip = soviet_collapse_found_iron_production_bloc_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -7722,7 +7962,7 @@ soviet_collapse_regional_faction_category = {
 		}
 		custom_cost_trigger = {
 			set_temp_variable = {
-				soviet_collapse_regional_faction_invite_pp_cost_display = constant:soviet_collapse_regional_faction.invite_political_power
+				soviet_collapse_regional_faction_invite_pp_cost_display = global.black_friday_price_soviet_collapse_regional_faction_invite_political_power
 			}
 			hidden_trigger = { can_pay_soviet_collapse_regional_faction_invite_cost = yes }
 		}
@@ -7731,6 +7971,11 @@ soviet_collapse_regional_faction_category = {
 		complete_effect = {
 			soviet_collapse_apply_regional_faction_invite = yes
 			custom_effect_tooltip = soviet_collapse_invite_regional_partners_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.political_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.zero }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -7760,13 +8005,13 @@ soviet_collapse_regional_faction_category = {
 		}
 		custom_cost_trigger = {
 			set_temp_variable = {
-				soviet_collapse_regional_faction_coordinate_pp_cost_display = constant:soviet_collapse_regional_faction.coordinate_political_power
+				soviet_collapse_regional_faction_coordinate_pp_cost_display = global.black_friday_price_soviet_collapse_regional_faction_coordinate_political_power
 			}
 			set_temp_variable = {
-				soviet_collapse_regional_faction_coordinate_cp_cost_display = constant:soviet_collapse_regional_faction.coordinate_command_power
+				soviet_collapse_regional_faction_coordinate_cp_cost_display = global.black_friday_price_soviet_collapse_regional_faction_coordinate_command_power
 			}
 			set_temp_variable = {
-				soviet_collapse_regional_faction_coordinate_fuel_cost_display = constant:soviet_collapse_regional_faction.coordinate_fuel
+				soviet_collapse_regional_faction_coordinate_fuel_cost_display = global.black_friday_price_soviet_collapse_regional_faction_coordinate_fuel
 			}
 			hidden_trigger = {
 				can_pay_soviet_collapse_regional_faction_coordinate_cost = yes
@@ -7777,6 +8022,11 @@ soviet_collapse_regional_faction_category = {
 		complete_effect = {
 			soviet_collapse_apply_regional_faction_coordinate = yes
 			custom_effect_tooltip = soviet_collapse_coordinate_regional_faction_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -7801,13 +8051,13 @@ soviet_collapse_regional_faction_category = {
 		}
 		custom_cost_trigger = {
 			set_temp_variable = {
-				soviet_collapse_regional_external_mandate_pp_cost_display = constant:soviet_collapse_regional_faction.external_mandate_political_power
+				soviet_collapse_regional_external_mandate_pp_cost_display = global.black_friday_price_soviet_collapse_regional_faction_external_mandate_political_power
 			}
 			set_temp_variable = {
-				soviet_collapse_regional_external_mandate_cp_cost_display = constant:soviet_collapse_regional_faction.external_mandate_command_power
+				soviet_collapse_regional_external_mandate_cp_cost_display = global.black_friday_price_soviet_collapse_regional_faction_external_mandate_command_power
 			}
 			set_temp_variable = {
-				soviet_collapse_regional_external_mandate_fuel_cost_display = constant:soviet_collapse_regional_faction.external_mandate_fuel
+				soviet_collapse_regional_external_mandate_fuel_cost_display = global.black_friday_price_soviet_collapse_regional_faction_external_mandate_fuel
 			}
 			hidden_trigger = {
 				can_pay_soviet_collapse_regional_faction_external_mandate_cost = yes
@@ -7827,6 +8077,11 @@ soviet_collapse_regional_faction_category = {
 		complete_effect = {
 			soviet_collapse_apply_regional_security_zone_mandate = yes
 			custom_effect_tooltip = soviet_collapse_issue_regional_security_zone_mandate_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -7856,7 +8111,7 @@ soviet_collapse_regional_faction_category = {
 		}
 		custom_cost_trigger = {
 			set_temp_variable = {
-				soviet_collapse_regional_faction_goal_pp_cost_display = constant:soviet_collapse_regional_faction.goal_political_power
+				soviet_collapse_regional_faction_goal_pp_cost_display = global.black_friday_price_soviet_collapse_regional_faction_goal_political_power
 			}
 			hidden_trigger = { can_pay_soviet_collapse_regional_faction_goal_cost = yes }
 		}
@@ -7865,6 +8120,11 @@ soviet_collapse_regional_faction_category = {
 		complete_effect = {
 			soviet_collapse_set_regional_faction_defense_goal = yes
 			custom_effect_tooltip = soviet_collapse_set_regional_defense_goal_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.political_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.zero }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -7887,7 +8147,7 @@ soviet_collapse_regional_faction_category = {
 		}
 		custom_cost_trigger = {
 			set_temp_variable = {
-				soviet_collapse_regional_faction_goal_pp_cost_display = constant:soviet_collapse_regional_faction.goal_political_power
+				soviet_collapse_regional_faction_goal_pp_cost_display = global.black_friday_price_soviet_collapse_regional_faction_goal_political_power
 			}
 			hidden_trigger = { can_pay_soviet_collapse_regional_faction_goal_cost = yes }
 		}
@@ -7896,6 +8156,11 @@ soviet_collapse_regional_faction_category = {
 		complete_effect = {
 			soviet_collapse_set_regional_faction_recognition_goal = yes
 			custom_effect_tooltip = soviet_collapse_set_regional_recognition_goal_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.political_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.zero }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -7927,7 +8192,7 @@ soviet_collapse_regional_faction_category = {
 		}
 		custom_cost_trigger = {
 			set_temp_variable = {
-				soviet_collapse_regional_faction_goal_pp_cost_display = constant:soviet_collapse_regional_faction.goal_political_power
+				soviet_collapse_regional_faction_goal_pp_cost_display = global.black_friday_price_soviet_collapse_regional_faction_goal_political_power
 			}
 			hidden_trigger = { can_pay_soviet_collapse_regional_faction_goal_cost = yes }
 		}
@@ -7936,6 +8201,11 @@ soviet_collapse_regional_faction_category = {
 		complete_effect = {
 			soviet_collapse_set_regional_faction_logistics_goal = yes
 			custom_effect_tooltip = soviet_collapse_set_regional_logistics_goal_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.political_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.zero }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -8017,7 +8287,7 @@ soviet_collapse_regional_faction_category = {
 		}
 		custom_cost_trigger = {
 			set_temp_variable = {
-				soviet_collapse_regional_faction_tension_cp_cost_display = constant:soviet_collapse_regional_faction.tension_command_power
+				soviet_collapse_regional_faction_tension_cp_cost_display = global.black_friday_price_soviet_collapse_regional_faction_tension_command_power
 			}
 			hidden_trigger = { can_pay_soviet_collapse_regional_faction_tension_cost = yes }
 		}
@@ -8026,6 +8296,11 @@ soviet_collapse_regional_faction_category = {
 		complete_effect = {
 			soviet_collapse_reduce_regional_faction_tension = yes
 			custom_effect_tooltip = soviet_collapse_reduce_regional_faction_tension_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = { base = @soviet_collapse_ai_low }
 	}
@@ -8048,13 +8323,13 @@ soviet_collapse_regional_faction_category = {
 		}
 		custom_cost_trigger = {
 			set_temp_variable = {
-				soviet_collapse_regional_faction_war_cp_cost_display = constant:soviet_collapse_regional_faction.war_command_power
+				soviet_collapse_regional_faction_war_cp_cost_display = global.black_friday_price_soviet_collapse_regional_faction_war_command_power
 			}
 			set_temp_variable = {
-				soviet_collapse_regional_faction_war_manpower_cost_display = constant:soviet_collapse_regional_faction.war_manpower
+				soviet_collapse_regional_faction_war_manpower_cost_display = global.black_friday_price_soviet_collapse_regional_faction_war_manpower
 			}
 			set_temp_variable = {
-				soviet_collapse_regional_faction_war_fuel_cost_display = constant:soviet_collapse_regional_faction.war_fuel
+				soviet_collapse_regional_faction_war_fuel_cost_display = global.black_friday_price_soviet_collapse_regional_faction_war_fuel
 			}
 			hidden_trigger = { can_pay_soviet_collapse_regional_faction_war_cost = yes }
 		}
@@ -8063,6 +8338,11 @@ soviet_collapse_regional_faction_category = {
 		complete_effect = {
 			soviet_collapse_call_regional_league_defensive_war = yes
 			custom_effect_tooltip = soviet_collapse_call_regional_league_defensive_war_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.manpower }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -8090,10 +8370,10 @@ soviet_collapse_regional_faction_category = {
 		}
 		custom_cost_trigger = {
 			set_temp_variable = {
-				soviet_collapse_league_rifle_cadres_fuel_cost_display = constant:soviet_collapse_regional_faction.league_rifle_cadres_fuel
+				soviet_collapse_league_rifle_cadres_fuel_cost_display = global.black_friday_price_soviet_collapse_regional_faction_league_rifle_cadres_fuel
 			}
 			set_temp_variable = {
-				soviet_collapse_league_rifle_cadres_manpower_cost_display = constant:soviet_collapse_regional_faction.league_rifle_cadres_manpower
+				soviet_collapse_league_rifle_cadres_manpower_cost_display = global.black_friday_price_soviet_collapse_regional_faction_league_rifle_cadres_manpower
 			}
 			hidden_trigger = { can_pay_soviet_collapse_league_rifle_cadres_cost = yes }
 		}
@@ -8102,6 +8382,11 @@ soviet_collapse_regional_faction_category = {
 		complete_effect = {
 			soviet_collapse_deploy_league_rifle_cadres = yes
 			custom_effect_tooltip = soviet_collapse_deploy_league_rifle_cadres_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.manpower }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -8125,10 +8410,10 @@ soviet_collapse_regional_faction_category = {
 		}
 		custom_cost_trigger = {
 			set_temp_variable = {
-				soviet_collapse_league_motor_columns_fuel_cost_display = constant:soviet_collapse_regional_faction.league_motor_columns_fuel
+				soviet_collapse_league_motor_columns_fuel_cost_display = global.black_friday_price_soviet_collapse_regional_faction_league_motor_columns_fuel
 			}
 			set_temp_variable = {
-				soviet_collapse_league_motor_columns_manpower_cost_display = constant:soviet_collapse_regional_faction.league_motor_columns_manpower
+				soviet_collapse_league_motor_columns_manpower_cost_display = global.black_friday_price_soviet_collapse_regional_faction_league_motor_columns_manpower
 			}
 			hidden_trigger = { can_pay_soviet_collapse_league_motor_columns_cost = yes }
 		}
@@ -8137,6 +8422,11 @@ soviet_collapse_regional_faction_category = {
 		complete_effect = {
 			soviet_collapse_deploy_league_motor_columns = yes
 			custom_effect_tooltip = soviet_collapse_deploy_league_motor_columns_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.manpower }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -8201,6 +8491,11 @@ soviet_collapse_ukrainian_league_category = {
 			}
 			ukr_soviet_collapse_apply_league_arbitration_board = yes
 			custom_effect_tooltip = ukr_soviet_collapse_convene_league_arbitration_board_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -8248,6 +8543,11 @@ soviet_collapse_ukrainian_league_category = {
 			}
 			ukr_soviet_collapse_apply_league_program_credit = yes
 			custom_effect_tooltip = ukr_soviet_collapse_open_external_border_arbitration_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -8285,6 +8585,11 @@ soviet_collapse_ukrainian_league_category = {
 			from = { ukr_soviet_collapse_receive_league_arms_quota = yes }
 			ukr_soviet_collapse_apply_league_program_credit = yes
 			custom_effect_tooltip = ukr_soviet_collapse_assign_league_arms_quota_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.political_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.zero }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -8337,6 +8642,11 @@ soviet_collapse_ukrainian_league_category = {
 				}
 			}
 			custom_effect_tooltip = ukr_soviet_collapse_open_grain_relief_compact_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.political_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.zero }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -8378,6 +8688,11 @@ soviet_collapse_ukrainian_league_category = {
 			}
 			ukr_soviet_collapse_apply_league_program_credit = yes
 			custom_effect_tooltip = ukr_soviet_collapse_black_sea_security_mission_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.convoy }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -8423,6 +8738,11 @@ soviet_collapse_ukrainian_league_category = {
 			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
 			ukr_soviet_collapse_apply_league_program_credit = yes
 			custom_effect_tooltip = ukr_soviet_collapse_issue_league_security_zone_mandate_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.convoy }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -8462,6 +8782,11 @@ soviet_collapse_ukrainian_league_category = {
 			from = { soviet_collapse_apply_compact_client_firebreak = yes }
 			ukr_soviet_collapse_apply_league_program_credit = yes
 			custom_effect_tooltip = ukr_soviet_collapse_write_anti_client_charter_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -8561,6 +8886,11 @@ soviet_collapse_reconstruction_state = {
 				}
 			}
 			custom_effect_tooltip = cfr_survey_unfinished_sites_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -8642,6 +8972,11 @@ soviet_collapse_reconstruction_state = {
 				}
 			}
 			custom_effect_tooltip = cfr_issue_reconstruction_contracts_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -8710,6 +9045,11 @@ soviet_collapse_reconstruction_state = {
 				soviet_collapse_apply_cfr_seize_idle_construction_queues = yes
 			}
 			custom_effect_tooltip = cfr_seize_idle_construction_queues_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -8756,6 +9096,11 @@ soviet_collapse_reconstruction_state = {
 				soviet_collapse_apply_cfr_raise_factory_city_belt = yes
 			}
 			custom_effect_tooltip = cfr_raise_factory_city_belt_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -8822,6 +9167,11 @@ soviet_collapse_arsenal_state = {
 				}
 			}
 			custom_effect_tooltip = mfr_audit_arsenal_orders_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -8916,6 +9266,11 @@ soviet_collapse_arsenal_state = {
 				}
 			}
 			custom_effect_tooltip = mfr_convert_depots_to_arms_lines_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -8982,6 +9337,11 @@ soviet_collapse_returned_names = {
 		complete_effect = {
 			soviet_collapse_apply_returned_names_open_museum_cabinets = yes
 			custom_effect_tooltip = soviet_collapse_open_museum_cabinets_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -9018,6 +9378,11 @@ soviet_collapse_returned_names = {
 		complete_effect = {
 			soviet_collapse_apply_returned_names_recruit_archivists = yes
 			custom_effect_tooltip = soviet_collapse_recruit_archivists_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -9054,6 +9419,11 @@ soviet_collapse_returned_names = {
 		complete_effect = {
 			soviet_collapse_apply_returned_names_commission_old_banner = yes
 			custom_effect_tooltip = soviet_collapse_commission_old_banner_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -9140,6 +9510,11 @@ soviet_collapse_returned_names = {
 			set_country_flag = soviet_collapse_khazar_toll_claim_asserted
 			soviet_collapse_apply_returned_names_claim_pressure = yes
 			custom_effect_tooltip = soviet_collapse_argue_khazar_toll_claim_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -9178,6 +9553,11 @@ soviet_collapse_returned_names = {
 			set_country_flag = soviet_collapse_sogdian_city_claim_asserted
 			soviet_collapse_apply_returned_names_claim_pressure = yes
 			custom_effect_tooltip = soviet_collapse_argue_sogdian_city_claim_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -9215,6 +9595,11 @@ soviet_collapse_returned_names = {
 			set_country_flag = soviet_collapse_khwarazmian_oasis_claim_asserted
 			soviet_collapse_apply_returned_names_claim_pressure = yes
 			custom_effect_tooltip = soviet_collapse_argue_khwarazmian_oasis_claim_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -9250,6 +9635,11 @@ soviet_collapse_returned_names = {
 			set_country_flag = soviet_collapse_alan_pass_claim_asserted
 			soviet_collapse_apply_returned_names_claim_pressure = yes
 			custom_effect_tooltip = soviet_collapse_argue_alan_pass_claim_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -9278,6 +9668,11 @@ soviet_collapse_returned_names = {
 		complete_effect = {
 			soviet_collapse_apply_returned_names_reject_antiquarians = yes
 			custom_effect_tooltip = soviet_collapse_reject_antiquarians_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -9307,6 +9702,11 @@ soviet_collapse_kronstadt_council = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_consolidate_claim = yes
 			custom_effect_tooltip = aox_consolidate_claim_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -9349,6 +9749,11 @@ soviet_collapse_kronstadt_council = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_mobilize_signature_forces = yes
 			custom_effect_tooltip = aox_mobilize_signature_forces_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -9396,6 +9801,11 @@ soviet_collapse_kronstadt_council = {
 			soviet_collapse_apply_custom_splinter_push_extreme_route = yes
 			soviet_collapse_complete_port_council_endgame = yes
 			custom_effect_tooltip = aox_push_extreme_route_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -9449,6 +9859,11 @@ soviet_collapse_free_territory = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_consolidate_claim = yes
 			custom_effect_tooltip = fth_consolidate_claim_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -9491,6 +9906,11 @@ soviet_collapse_free_territory = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_mobilize_signature_forces = yes
 			custom_effect_tooltip = fth_mobilize_signature_forces_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -9538,6 +9958,11 @@ soviet_collapse_free_territory = {
 			soviet_collapse_apply_custom_splinter_push_extreme_route = yes
 			soviet_collapse_complete_black_banner_endgame = yes
 			custom_effect_tooltip = fth_push_extreme_route_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -9591,6 +10016,11 @@ soviet_collapse_black_banner_host = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_consolidate_claim = yes
 			custom_effect_tooltip = bbh_consolidate_claim_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -9633,6 +10063,11 @@ soviet_collapse_black_banner_host = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_mobilize_signature_forces = yes
 			custom_effect_tooltip = bbh_mobilize_signature_forces_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -9680,6 +10115,11 @@ soviet_collapse_black_banner_host = {
 			soviet_collapse_apply_custom_splinter_push_extreme_route = yes
 			soviet_collapse_complete_black_banner_endgame = yes
 			custom_effect_tooltip = bbh_push_extreme_route_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -9733,6 +10173,11 @@ soviet_collapse_basmachi_confederation = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_consolidate_claim = yes
 			custom_effect_tooltip = aex_consolidate_claim_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -9775,6 +10220,11 @@ soviet_collapse_basmachi_confederation = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_mobilize_signature_forces = yes
 			custom_effect_tooltip = aex_mobilize_signature_forces_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -9822,6 +10272,11 @@ soviet_collapse_basmachi_confederation = {
 			soviet_collapse_apply_custom_splinter_push_extreme_route = yes
 			soviet_collapse_complete_basmachi_endgame = yes
 			custom_effect_tooltip = aex_push_extreme_route_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -9875,6 +10330,11 @@ soviet_collapse_turkestan_national_council = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_consolidate_claim = yes
 			custom_effect_tooltip = tnc_consolidate_claim_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -9917,6 +10377,11 @@ soviet_collapse_turkestan_national_council = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_mobilize_signature_forces = yes
 			custom_effect_tooltip = tnc_mobilize_signature_forces_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -9964,6 +10429,11 @@ soviet_collapse_turkestan_national_council = {
 			soviet_collapse_apply_custom_splinter_push_extreme_route = yes
 			soviet_collapse_complete_turkestan_endgame = yes
 			custom_effect_tooltip = tnc_push_extreme_route_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -10017,6 +10487,11 @@ soviet_collapse_alash_restoration_authority = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_consolidate_claim = yes
 			custom_effect_tooltip = aax_consolidate_claim_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -10059,6 +10534,11 @@ soviet_collapse_alash_restoration_authority = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_mobilize_signature_forces = yes
 			custom_effect_tooltip = aax_mobilize_signature_forces_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -10106,6 +10586,11 @@ soviet_collapse_alash_restoration_authority = {
 			soviet_collapse_apply_custom_splinter_push_extreme_route = yes
 			soviet_collapse_complete_alash_endgame = yes
 			custom_effect_tooltip = aax_push_extreme_route_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -10163,6 +10648,11 @@ soviet_collapse_union_defense_committee = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_consolidate_claim = yes
 			custom_effect_tooltip = udc_consolidate_claim_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -10205,6 +10695,11 @@ soviet_collapse_union_defense_committee = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_mobilize_signature_forces = yes
 			custom_effect_tooltip = udc_mobilize_signature_forces_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -10255,6 +10750,11 @@ soviet_collapse_union_defense_committee = {
 			soviet_collapse_apply_custom_splinter_push_extreme_route = yes
 			soviet_collapse_complete_union_defense_endgame = yes
 			custom_effect_tooltip = udc_push_extreme_route_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -10312,6 +10812,11 @@ soviet_collapse_security_directorate_zone = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_consolidate_claim = yes
 			custom_effect_tooltip = sdz_consolidate_claim_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -10354,6 +10859,11 @@ soviet_collapse_security_directorate_zone = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_mobilize_signature_forces = yes
 			custom_effect_tooltip = sdz_mobilize_signature_forces_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -10404,6 +10914,11 @@ soviet_collapse_security_directorate_zone = {
 			soviet_collapse_apply_custom_splinter_push_extreme_route = yes
 			soviet_collapse_complete_security_directorate_endgame = yes
 			custom_effect_tooltip = sdz_push_extreme_route_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -10457,6 +10972,11 @@ soviet_collapse_green_army_congress = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_consolidate_claim = yes
 			custom_effect_tooltip = gac_consolidate_claim_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -10499,6 +11019,11 @@ soviet_collapse_green_army_congress = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_mobilize_signature_forces = yes
 			custom_effect_tooltip = gac_mobilize_signature_forces_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -10546,6 +11071,11 @@ soviet_collapse_green_army_congress = {
 			soviet_collapse_apply_custom_splinter_push_extreme_route = yes
 			soviet_collapse_complete_green_army_endgame = yes
 			custom_effect_tooltip = gac_push_extreme_route_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -10599,6 +11129,11 @@ soviet_collapse_don_host_emergency_circle = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_consolidate_claim = yes
 			custom_effect_tooltip = dhc_consolidate_claim_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -10641,6 +11176,11 @@ soviet_collapse_don_host_emergency_circle = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_mobilize_signature_forces = yes
 			custom_effect_tooltip = dhc_mobilize_signature_forces_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -10688,6 +11228,11 @@ soviet_collapse_don_host_emergency_circle = {
 			soviet_collapse_apply_custom_splinter_push_extreme_route = yes
 			soviet_collapse_complete_don_host_endgame = yes
 			custom_effect_tooltip = dhc_push_extreme_route_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -10741,6 +11286,11 @@ soviet_collapse_kuban_host_provisional_council = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_consolidate_claim = yes
 			custom_effect_tooltip = khc_consolidate_claim_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -10783,6 +11333,11 @@ soviet_collapse_kuban_host_provisional_council = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_mobilize_signature_forces = yes
 			custom_effect_tooltip = khc_mobilize_signature_forces_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -10830,6 +11385,11 @@ soviet_collapse_kuban_host_provisional_council = {
 			soviet_collapse_apply_custom_splinter_push_extreme_route = yes
 			soviet_collapse_complete_kuban_host_endgame = yes
 			custom_effect_tooltip = khc_push_extreme_route_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -10883,6 +11443,11 @@ soviet_collapse_far_eastern_republic_revival = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_consolidate_claim = yes
 			custom_effect_tooltip = fev_consolidate_claim_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -10925,6 +11490,11 @@ soviet_collapse_far_eastern_republic_revival = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_mobilize_signature_forces = yes
 			custom_effect_tooltip = fev_mobilize_signature_forces_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -11017,6 +11587,11 @@ soviet_collapse_far_eastern_republic_revival = {
 			soviet_collapse_apply_custom_splinter_push_extreme_route = yes
 			soviet_collapse_complete_far_eastern_endgame = yes
 			custom_effect_tooltip = fev_push_extreme_route_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -11070,6 +11645,11 @@ soviet_collapse_siberian_zemstvo_authority = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_consolidate_claim = yes
 			custom_effect_tooltip = sza_consolidate_claim_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -11112,6 +11692,11 @@ soviet_collapse_siberian_zemstvo_authority = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_mobilize_signature_forces = yes
 			custom_effect_tooltip = sza_mobilize_signature_forces_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -11159,6 +11744,11 @@ soviet_collapse_siberian_zemstvo_authority = {
 			soviet_collapse_apply_custom_splinter_push_extreme_route = yes
 			soviet_collapse_complete_siberian_zemstvo_endgame = yes
 			custom_effect_tooltip = sza_push_extreme_route_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -11212,6 +11802,11 @@ soviet_collapse_ural_workers_directorate = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_consolidate_claim = yes
 			custom_effect_tooltip = uwd_consolidate_claim_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -11254,6 +11849,11 @@ soviet_collapse_ural_workers_directorate = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_mobilize_signature_forces = yes
 			custom_effect_tooltip = uwd_mobilize_signature_forces_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -11301,6 +11901,11 @@ soviet_collapse_ural_workers_directorate = {
 			soviet_collapse_apply_custom_splinter_push_extreme_route = yes
 			soviet_collapse_complete_ural_workers_endgame = yes
 			custom_effect_tooltip = uwd_push_extreme_route_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -11354,6 +11959,11 @@ soviet_collapse_mountain_republic_of_the_caucasus = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_consolidate_claim = yes
 			custom_effect_tooltip = imx_consolidate_claim_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -11396,6 +12006,11 @@ soviet_collapse_mountain_republic_of_the_caucasus = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_mobilize_signature_forces = yes
 			custom_effect_tooltip = imx_mobilize_signature_forces_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -11445,6 +12060,11 @@ soviet_collapse_mountain_republic_of_the_caucasus = {
 			soviet_collapse_apply_custom_splinter_push_extreme_route = yes
 			soviet_collapse_complete_mountain_republic_endgame = yes
 			custom_effect_tooltip = imx_push_extreme_route_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -11498,6 +12118,11 @@ soviet_collapse_idel_ural_league = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_consolidate_claim = yes
 			custom_effect_tooltip = iul_consolidate_claim_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -11540,6 +12165,11 @@ soviet_collapse_idel_ural_league = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_mobilize_signature_forces = yes
 			custom_effect_tooltip = iul_mobilize_signature_forces_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -11587,6 +12217,11 @@ soviet_collapse_idel_ural_league = {
 			soviet_collapse_apply_custom_splinter_push_extreme_route = yes
 			soviet_collapse_complete_idel_ural_endgame = yes
 			custom_effect_tooltip = iul_push_extreme_route_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -11643,6 +12278,11 @@ soviet_collapse_old_great_bulgaria = {
 				ijx_volga_legitimacy = constant:soviet_collapse_factory_ancient.small_mandate_gain
 			}
 			custom_effect_tooltip = ijx_consolidate_volga_registers_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -11685,6 +12325,11 @@ soviet_collapse_old_great_bulgaria = {
 				ijx_river_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain
 			}
 			custom_effect_tooltip = ijx_guard_kazan_ferry_line_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -11732,6 +12377,11 @@ soviet_collapse_old_great_bulgaria = {
 				ijx_steppe_patrol_depth = constant:soviet_collapse_factory_ancient.ijx_steppe_patrol_gain
 			}
 			custom_effect_tooltip = ijx_raise_steppe_host_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -11802,6 +12452,11 @@ soviet_collapse_old_great_bulgaria = {
 			soviet_collapse_apply_custom_splinter_push_extreme_route = yes
 			soviet_collapse_complete_old_great_bulgaria_endgame = yes
 			custom_effect_tooltip = ijx_declare_the_volga_restoration_state_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -11839,6 +12494,11 @@ soviet_collapse_birobidzhan_autonomous_commune = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_consolidate_claim = yes
 			custom_effect_tooltip = adx_consolidate_claim_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -11881,6 +12541,11 @@ soviet_collapse_birobidzhan_autonomous_commune = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_mobilize_signature_forces = yes
 			custom_effect_tooltip = adx_mobilize_signature_forces_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -11928,6 +12593,11 @@ soviet_collapse_birobidzhan_autonomous_commune = {
 			soviet_collapse_apply_custom_splinter_push_extreme_route = yes
 			soviet_collapse_complete_birobidzhan_endgame = yes
 			custom_effect_tooltip = adx_push_extreme_route_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -11984,6 +12654,11 @@ soviet_collapse_pale_railway_authority = {
 				pra_rail_authority = constant:soviet_collapse_factory_ancient.small_mandate_gain
 			}
 			custom_effect_tooltip = pra_consolidate_timetable_courts_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -12050,6 +12725,11 @@ soviet_collapse_pale_railway_authority = {
 				}
 			}
 			custom_effect_tooltip = pra_mobilize_station_guard_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -12299,6 +12979,11 @@ soviet_collapse_pale_railway_authority = {
 			soviet_collapse_complete_pale_railway_endgame = yes
 			soviet_collapse_update_pra_authority_idea = yes
 			custom_effect_tooltip = pra_declare_the_moving_state_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -12344,6 +13029,11 @@ soviet_collapse_tunguska_star_committee = {
 				ilx_signal_authority = constant:soviet_collapse_factory_ancient.small_mandate_gain
 			}
 			custom_effect_tooltip = ilx_secure_the_observation_posts_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -12380,6 +13070,11 @@ soviet_collapse_tunguska_star_committee = {
 				ilx_anomaly_research = constant:soviet_collapse_factory_ancient.medium_mandate_gain
 			}
 			custom_effect_tooltip = ilx_mobilize_field_station_guard_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -12428,6 +13123,11 @@ soviet_collapse_tunguska_star_committee = {
 			}
 			soviet_collapse_complete_tunguska_star_endgame = yes
 			custom_effect_tooltip = ilx_declare_the_starfall_mandate_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -12468,6 +13168,11 @@ soviet_collapse_iron_commissariat_of_the_dead = {
 				icd_dead_roll_authority = constant:soviet_collapse_factory_ancient.small_mandate_gain
 			}
 			custom_effect_tooltip = icd_audit_the_dead_rolls_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -12503,6 +13208,11 @@ soviet_collapse_iron_commissariat_of_the_dead = {
 				icd_memorial_mobilization = constant:soviet_collapse_factory_ancient.medium_mandate_gain
 			}
 			custom_effect_tooltip = icd_mobilize_memorial_battalions_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -12546,6 +13256,11 @@ soviet_collapse_iron_commissariat_of_the_dead = {
 			}
 			soviet_collapse_complete_iron_commissariat_endgame = yes
 			custom_effect_tooltip = icd_declare_citizens_after_death_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -12588,6 +13303,11 @@ soviet_collapse_red_martyrs_resurrection_cult = {
 				ikx_martyr_legitimacy = constant:soviet_collapse_factory_ancient.small_mandate_gain
 			}
 			custom_effect_tooltip = ikx_collect_martyr_testimonies_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -12624,6 +13344,11 @@ soviet_collapse_red_martyrs_resurrection_cult = {
 				ikx_resurrection_mobilization = constant:soviet_collapse_factory_ancient.medium_mandate_gain
 			}
 			custom_effect_tooltip = ikx_raise_reliquary_guard_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -12666,6 +13391,11 @@ soviet_collapse_red_martyrs_resurrection_cult = {
 			soviet_collapse_advance_ikx_reliquary_guard_depth = yes
 			soviet_collapse_complete_red_martyrs_endgame = yes
 			custom_effect_tooltip = ikx_proclaim_resurrection_communes_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -12706,6 +13436,11 @@ soviet_collapse_dead_soldiers_congress = {
 				dsc_roll_call_legitimacy = constant:soviet_collapse_factory_ancient.small_mandate_gain
 			}
 			custom_effect_tooltip = dsc_verify_the_roll_call_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -12825,6 +13560,11 @@ soviet_collapse_dead_soldiers_congress = {
 				}
 			}
 			custom_effect_tooltip = dsc_raise_dead_regiment_columns_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -12970,6 +13710,11 @@ soviet_collapse_dead_soldiers_congress = {
 				declare_war_on = { target = SOV type = annex_everything }
 			}
 			custom_effect_tooltip = dsc_convene_the_dead_army_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -13010,6 +13755,11 @@ soviet_collapse_northern_revenant_fleet = {
 				nrf_revenant_fleet_authority = constant:soviet_collapse_factory_ancient.small_mandate_gain
 			}
 			custom_effect_tooltip = nrf_recover_drowned_ship_logs_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -13063,6 +13813,11 @@ soviet_collapse_northern_revenant_fleet = {
 				}
 			}
 			custom_effect_tooltip = nrf_raise_icebound_marines_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -13106,6 +13861,11 @@ soviet_collapse_northern_revenant_fleet = {
 			}
 			soviet_collapse_complete_northern_revenant_endgame = yes
 			custom_effect_tooltip = nrf_call_the_revenant_fleet_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -13143,6 +13903,11 @@ soviet_collapse_arctic_naval_directorate = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_consolidate_claim = yes
 			custom_effect_tooltip = ard_consolidate_claim_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -13198,6 +13963,11 @@ soviet_collapse_arctic_naval_directorate = {
 				}
 			}
 			custom_effect_tooltip = ard_mobilize_signature_forces_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -13271,6 +14041,11 @@ soviet_collapse_arctic_naval_directorate = {
 			}
 			soviet_collapse_complete_arctic_directorate_endgame = yes
 			custom_effect_tooltip = ard_push_extreme_route_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -13328,6 +14103,11 @@ soviet_collapse_northern_lights_commune = {
 				nlc_soviet_collapse_apply_tundra_watch_consolidation = yes
 			}
 			custom_effect_tooltip = nlc_consolidate_claim_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -13370,6 +14150,11 @@ soviet_collapse_northern_lights_commune = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_mobilize_signature_forces = yes
 			custom_effect_tooltip = nlc_mobilize_signature_forces_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -13417,6 +14202,11 @@ soviet_collapse_northern_lights_commune = {
 			soviet_collapse_apply_custom_splinter_push_extreme_route = yes
 			soviet_collapse_complete_northern_lights_endgame = yes
 			custom_effect_tooltip = nlc_push_extreme_route_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_low
@@ -13577,6 +14367,11 @@ soviet_collapse_kuznetsk_mining_board = {
 				soviet_collapse_liaison_reach = constant:soviet_collapse_republic_focus.small_league_gain
 			}
 			custom_effect_tooltip = kmb_open_export_auction_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.convoy }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -13635,6 +14430,11 @@ soviet_collapse_kuznetsk_mining_board = {
 			soviet_collapse_apply_focus_foreign_supply_plan = yes
 			soviet_collapse_apply_kmb_treaty_corridor_crisis_hook = yes
 			custom_effect_tooltip = kmb_sign_resource_treaty_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.convoy }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -13730,6 +14530,11 @@ soviet_collapse_kuznetsk_mining_board = {
 			}
 			soviet_collapse_kmb_add_metal_quota_surge = yes
 			custom_effect_tooltip = kmb_force_mining_concession_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = 0
@@ -13883,6 +14688,11 @@ soviet_collapse_kuznetsk_mining_board = {
 			set_country_flag = kmb_machine_tool_bid_accepted
 			soviet_collapse_apply_kmb_treaty_corridor_crisis_hook = yes
 			custom_effect_tooltip = kmb_accept_machine_tool_bid_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.convoy }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -13935,6 +14745,11 @@ soviet_collapse_kuznetsk_mining_board = {
 			set_country_flag = kmb_armaments_bid_accepted
 			soviet_collapse_apply_kmb_treaty_corridor_crisis_hook = yes
 			custom_effect_tooltip = kmb_accept_armaments_bid_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.convoy }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -13985,6 +14800,11 @@ soviet_collapse_uwr_blacksite_category = {
 			}
 			set_country_flag = uwr_decision_blacksite_overclocked
 			custom_effect_tooltip = uwr_overclock_blacksite_network_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -14024,6 +14844,11 @@ soviet_collapse_uwr_blacksite_category = {
 			add_manpower = constant:soviet_collapse_uwr_balance.starting_manpower
 			set_country_flag = uwr_decision_camp_registry_expanded
 			custom_effect_tooltip = uwr_expand_experiment_camp_registry_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -14063,6 +14888,11 @@ soviet_collapse_uwr_blacksite_category = {
 			soviet_collapse_apply_high_chaos_neighbor_expansion_plan = yes
 			add_war_support = constant:soviet_collapse_uwr_balance.field_release_raid_war_support
 			custom_effect_tooltip = uwr_authorize_field_release_raids_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -14093,6 +14923,11 @@ soviet_collapse_uwr_blacksite_category = {
 				FROM = { save_event_target_as = soviet_collapse_uwr_prisoner_intake_state }
 				soviet_collapse_pay_uwr_prisoner_intake_cost = yes
 				soviet_collapse_complete_uwr_prisoner_intake = yes
+			}
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
 			}
 		}
 		ai_will_do = {
@@ -14232,6 +15067,11 @@ soviet_collapse_breakaway_category = {
 		complete_effect = {
 			central_asia_soviet_collapse_apply_water_council = yes
 			custom_effect_tooltip = central_asia_soviet_collapse_register_water_sharing_council_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.trains }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @central_asia_soviet_collapse_ai_medium
@@ -14269,6 +15109,11 @@ soviet_collapse_breakaway_category = {
 		complete_effect = {
 			central_asia_soviet_collapse_apply_cotton_rail_quota = yes
 			custom_effect_tooltip = central_asia_soviet_collapse_levy_cotton_rail_quota_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.trains }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @central_asia_soviet_collapse_ai_medium
@@ -14313,6 +15158,11 @@ soviet_collapse_breakaway_category = {
 		complete_effect = {
 			central_asia_soviet_collapse_apply_caravan_board = yes
 			custom_effect_tooltip = central_asia_soviet_collapse_convene_pass_and_caravan_board_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @central_asia_soviet_collapse_ai_high
@@ -14351,6 +15201,11 @@ soviet_collapse_breakaway_category = {
 		complete_effect = {
 			central_asia_soviet_collapse_apply_member_vote_protocol = yes
 			custom_effect_tooltip = central_asia_soviet_collapse_submit_member_vote_protocol_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @central_asia_soviet_collapse_ai_high
@@ -14388,6 +15243,11 @@ soviet_collapse_breakaway_category = {
 		complete_effect = {
 			central_asia_soviet_collapse_apply_mediation_desk = yes
 			custom_effect_tooltip = central_asia_soviet_collapse_request_foreign_mediation_desk_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.convoy }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @central_asia_soviet_collapse_ai_medium
@@ -14421,6 +15281,11 @@ soviet_collapse_breakaway_category = {
 		complete_effect = {
 			central_asia_soviet_collapse_apply_survival_settlement = yes
 			custom_effect_tooltip = central_asia_soviet_collapse_ratify_southern_survival_settlement_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @central_asia_soviet_collapse_ai_high
@@ -14466,6 +15331,11 @@ soviet_collapse_breakaway_category = {
 		complete_effect = {
 			kaz_soviet_collapse_apply_alash_court_commissions = yes
 			custom_effect_tooltip = kaz_soviet_collapse_convene_alash_court_commissions_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @kaz_soviet_collapse_ai_medium
@@ -14496,6 +15366,11 @@ soviet_collapse_breakaway_category = {
 		complete_effect = {
 			kaz_soviet_collapse_apply_steppe_soviet_supply_plan = yes
 			custom_effect_tooltip = kaz_soviet_collapse_issue_steppe_soviet_supply_plan_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.trains }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @kaz_soviet_collapse_ai_medium
@@ -14530,6 +15405,11 @@ soviet_collapse_breakaway_category = {
 		complete_effect = {
 			kaz_soviet_collapse_apply_minehead_guard_contracts = yes
 			custom_effect_tooltip = kaz_soviet_collapse_secure_minehead_guard_contracts_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @kaz_soviet_collapse_ai_high
@@ -14565,6 +15445,11 @@ soviet_collapse_breakaway_category = {
 		complete_effect = {
 			kaz_soviet_collapse_apply_concession_ledger_audit = yes
 			custom_effect_tooltip = kaz_soviet_collapse_audit_foreign_concession_ledgers_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.convoy }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @kaz_soviet_collapse_ai_medium
@@ -14611,6 +15496,11 @@ soviet_collapse_moldova_route_category = {
 		complete_effect = {
 			mol_soviet_collapse_apply_prut_statute_negotiation = yes
 			custom_effect_tooltip = mol_soviet_collapse_negotiate_prut_statute_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -14650,6 +15540,11 @@ soviet_collapse_moldova_route_category = {
 		complete_effect = {
 			mol_soviet_collapse_apply_romanian_military_mission = yes
 			custom_effect_tooltip = mol_soviet_collapse_accept_romanian_military_mission_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -14687,6 +15582,11 @@ soviet_collapse_moldova_route_category = {
 		complete_effect = {
 			mol_soviet_collapse_apply_sfat_veto_clause = yes
 			custom_effect_tooltip = mol_soviet_collapse_assert_no_union_without_sfat_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.political_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.zero }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -14727,6 +15627,11 @@ soviet_collapse_moldova_route_category = {
 		complete_effect = {
 			mol_soviet_collapse_apply_dniester_line_fortification = yes
 			custom_effect_tooltip = mol_soviet_collapse_fortify_bendery_tiraspol_line_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -14760,6 +15665,11 @@ soviet_collapse_moldova_route_category = {
 		complete_effect = {
 			mol_soviet_collapse_apply_odessa_chisinau_customs_board = yes
 			custom_effect_tooltip = mol_soviet_collapse_open_odessa_chisinau_customs_board_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.trains }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -14793,6 +15703,11 @@ soviet_collapse_moldova_route_category = {
 		complete_effect = {
 			mol_soviet_collapse_apply_patronage_limits = yes
 			custom_effect_tooltip = mol_soviet_collapse_publish_sfat_limits_on_patronage_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.political_power }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.zero }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -14859,6 +15774,11 @@ soviet_collapse_ukraine_bread_state_category = {
 			set_country_flag = soviet_collapse_ukraine_bread_state_granary_network
 			ukr_soviet_collapse_apply_black_soil_committees = yes
 			custom_effect_tooltip = ukr_soviet_collapse_register_black_soil_committees_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -14890,6 +15810,11 @@ soviet_collapse_ukraine_bread_state_category = {
 		complete_effect = {
 			ukr_soviet_collapse_apply_total_grain_census = yes
 			custom_effect_tooltip = ukr_soviet_collapse_conduct_total_grain_census_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.trains }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
@@ -14932,6 +15857,11 @@ soviet_collapse_ukraine_bread_state_category = {
 		complete_effect = {
 			ukr_soviet_collapse_apply_bread_line_lockdown = yes
 			custom_effect_tooltip = ukr_soviet_collapse_lock_the_bread_line_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -14979,6 +15909,11 @@ soviet_collapse_ukraine_bread_state_category = {
 		complete_effect = {
 			ukr_soviet_collapse_apply_village_ration_relief = yes
 			custom_effect_tooltip = ukr_soviet_collapse_release_village_rations_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.trains }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
@@ -15016,6 +15951,11 @@ soviet_collapse_ukraine_bread_state_category = {
 		complete_effect = {
 			ukr_soviet_collapse_apply_last_harvest_plan = yes
 			custom_effect_tooltip = ukr_soviet_collapse_execute_last_harvest_plan_tt
+			hidden_effect = {
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.trains }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+				black_friday_credit_sale_purchase = yes
+			}
 		}
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium

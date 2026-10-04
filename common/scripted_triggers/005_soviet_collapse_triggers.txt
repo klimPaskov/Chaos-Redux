@@ -3459,19 +3459,19 @@ is_soviet_collapse_caucasus_or_central_asia_breakaway = {
 }
 
 can_pay_soviet_collapse_restore_party_control_cost = {
-	has_equipment = { infantry_equipment > constant:soviet_collapse_decision_cost.restore_party_control_infantry_equipment }
-	has_equipment = { support_equipment > constant:soviet_collapse_decision_cost.restore_party_control_support_equipment }
-	has_manpower > constant:soviet_collapse_decision_cost.restore_party_control_manpower
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_decision_cost_restore_party_control_infantry_equipment } NOT = { has_equipment = { infantry_equipment < soviet_collapse_sale_price_check } }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_decision_cost_restore_party_control_support_equipment } NOT = { has_equipment = { support_equipment < soviet_collapse_sale_price_check } }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_decision_cost_restore_party_control_manpower } NOT = { has_manpower < soviet_collapse_sale_price_check }
 }
 
 can_pay_soviet_collapse_send_loyalist_officers_cost = {
-	has_army_experience > constant:soviet_collapse_decision_cost.send_loyalist_officers_army_xp
-	command_power > constant:soviet_collapse_decision_cost.send_loyalist_officers_command_power
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_decision_cost_send_loyalist_officers_army_xp } NOT = { has_army_experience < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_decision_cost_send_loyalist_officers_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
 }
 
 can_pay_soviet_collapse_cut_rebel_supply_routes_cost = {
-	has_fuel > constant:soviet_collapse_decision_cost.cut_rebel_supply_routes_fuel_gate
-	has_equipment = { train_equipment > constant:soviet_collapse_decision_cost.cut_rebel_supply_routes_trains_gate }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_decision_cost_cut_rebel_supply_routes_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_decision_cost_cut_rebel_supply_routes_trains } NOT = { has_equipment = { train_equipment < soviet_collapse_sale_price_check } }
 }
 
 # State scope. The terminal reclamation action may only strike original Union
@@ -3851,24 +3851,24 @@ can_pay_soviet_collapse_breakaway_recognition_cost = {
 
 can_pay_soviet_collapse_breakaway_mobilize_cost = {
 	has_stability > constant:soviet_collapse_breakaway_action.mobilize_stability_floor
-	has_political_power > constant:soviet_collapse_breakaway_action.mobilize_political_power
-	command_power > constant:soviet_collapse_breakaway_action.mobilize_command_power
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_breakaway_action_mobilize_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_breakaway_action_mobilize_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
 }
 
 can_pay_soviet_collapse_breakaway_seize_depots_cost = {
-	has_army_experience > constant:soviet_collapse_breakaway_action.seize_depot_army_xp
-	command_power > constant:soviet_collapse_breakaway_action.seize_command_power
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_breakaway_action_seize_depot_army_xp } NOT = { has_army_experience < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_breakaway_action_seize_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
 }
 
 can_pay_soviet_collapse_breakaway_coordinate_fronts_cost = {
-	has_fuel > constant:soviet_collapse_breakaway_action.coordinate_fuel
-	has_equipment = { support_equipment > constant:soviet_collapse_breakaway_action.coordinate_support_equipment }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_breakaway_action_coordinate_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_breakaway_action_coordinate_support_equipment } NOT = { has_equipment = { support_equipment < soviet_collapse_sale_price_check } }
 }
 
 can_pay_soviet_collapse_breakaway_high_chaos_offensive_cost = {
-	has_fuel > constant:soviet_collapse_breakaway_action.offensive_fuel
-	command_power > constant:soviet_collapse_breakaway_action.offensive_command_power
-	has_equipment = { support_equipment > constant:soviet_collapse_breakaway_action.offensive_support_equipment }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_breakaway_action_offensive_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_breakaway_action_offensive_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_breakaway_action_offensive_support_equipment } NOT = { has_equipment = { support_equipment < soviet_collapse_sale_price_check } }
 }
 
 can_soviet_collapse_launch_high_chaos_offensive = {
@@ -3909,21 +3909,21 @@ can_pay_soviet_collapse_foreign_recognition_cost = {
 	OR = {
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_major_target = yes }
-			has_political_power > constant:soviet_collapse_foreign_intervention.recognition_major_political_power
-			has_equipment = { convoy_1 > constant:soviet_collapse_foreign_intervention.recognition_major_convoys }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_recognition_major_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_recognition_major_convoys } NOT = { has_equipment = { convoy_1 < soviet_collapse_sale_price_check } }
 		}
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_regional_target = yes }
-			has_political_power > constant:soviet_collapse_foreign_intervention.recognition_regional_political_power
-			has_equipment = { convoy_1 > constant:soviet_collapse_foreign_intervention.recognition_regional_convoys }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_recognition_regional_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_recognition_regional_convoys } NOT = { has_equipment = { convoy_1 < soviet_collapse_sale_price_check } }
 		}
 		AND = {
 			FROM = {
 				NOT = { is_soviet_collapse_foreign_aid_major_target = yes }
 				NOT = { is_soviet_collapse_foreign_aid_regional_target = yes }
 			}
-			has_political_power > constant:soviet_collapse_foreign_intervention.recognition_political_power
-			has_equipment = { convoy_1 > constant:soviet_collapse_foreign_intervention.recognition_convoys }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_recognition_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_recognition_convoys } NOT = { has_equipment = { convoy_1 < soviet_collapse_sale_price_check } }
 		}
 	}
 }
@@ -3932,21 +3932,21 @@ can_pay_soviet_collapse_foreign_liaison_cost = {
 	OR = {
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_major_target = yes }
-			has_political_power > constant:soviet_collapse_foreign_intervention.liaison_major_political_power
-			command_power > constant:soviet_collapse_foreign_intervention.liaison_major_command_power
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_liaison_major_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_liaison_major_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
 		}
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_regional_target = yes }
-			has_political_power > constant:soviet_collapse_foreign_intervention.liaison_regional_political_power
-			command_power > constant:soviet_collapse_foreign_intervention.liaison_regional_command_power
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_liaison_regional_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_liaison_regional_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
 		}
 		AND = {
 			FROM = {
 				NOT = { is_soviet_collapse_foreign_aid_major_target = yes }
 				NOT = { is_soviet_collapse_foreign_aid_regional_target = yes }
 			}
-			has_political_power > constant:soviet_collapse_foreign_intervention.liaison_political_power
-			command_power > constant:soviet_collapse_foreign_intervention.liaison_command_power
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_liaison_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_liaison_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
 		}
 	}
 }
@@ -3978,21 +3978,21 @@ can_pay_soviet_collapse_foreign_advisers_cost = {
 	OR = {
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_major_target = yes }
-			has_army_experience > constant:soviet_collapse_foreign_intervention.advisers_major_army_xp
-			has_manpower > constant:soviet_collapse_foreign_intervention.advisers_major_manpower
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_advisers_major_army_xp } NOT = { has_army_experience < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_advisers_major_manpower } NOT = { has_manpower < soviet_collapse_sale_price_check }
 		}
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_regional_target = yes }
-			has_army_experience > constant:soviet_collapse_foreign_intervention.advisers_regional_army_xp
-			has_manpower > constant:soviet_collapse_foreign_intervention.advisers_regional_manpower
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_advisers_regional_army_xp } NOT = { has_army_experience < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_advisers_regional_manpower } NOT = { has_manpower < soviet_collapse_sale_price_check }
 		}
 		AND = {
 			FROM = {
 				NOT = { is_soviet_collapse_foreign_aid_major_target = yes }
 				NOT = { is_soviet_collapse_foreign_aid_regional_target = yes }
 			}
-			has_army_experience > constant:soviet_collapse_foreign_intervention.advisers_army_xp
-			has_manpower > constant:soviet_collapse_foreign_intervention.advisers_manpower
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_advisers_army_xp } NOT = { has_army_experience < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_advisers_manpower } NOT = { has_manpower < soviet_collapse_sale_price_check }
 		}
 	}
 }
@@ -4001,21 +4001,21 @@ can_pay_soviet_collapse_foreign_intelligence_cost = {
 	OR = {
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_major_target = yes }
-			has_fuel > constant:soviet_collapse_foreign_intervention.intelligence_major_fuel
-			has_equipment = { train_equipment > constant:soviet_collapse_foreign_intervention.intelligence_major_trains }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_intelligence_major_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_intelligence_major_trains } NOT = { has_equipment = { train_equipment < soviet_collapse_sale_price_check } }
 		}
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_regional_target = yes }
-			has_fuel > constant:soviet_collapse_foreign_intervention.intelligence_regional_fuel
-			has_equipment = { train_equipment > constant:soviet_collapse_foreign_intervention.intelligence_regional_trains }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_intelligence_regional_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_intelligence_regional_trains } NOT = { has_equipment = { train_equipment < soviet_collapse_sale_price_check } }
 		}
 		AND = {
 			FROM = {
 				NOT = { is_soviet_collapse_foreign_aid_major_target = yes }
 				NOT = { is_soviet_collapse_foreign_aid_regional_target = yes }
 			}
-			has_fuel > constant:soviet_collapse_foreign_intervention.intelligence_fuel
-			has_equipment = { train_equipment > constant:soviet_collapse_foreign_intervention.intelligence_trains }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_intelligence_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_intelligence_trains } NOT = { has_equipment = { train_equipment < soviet_collapse_sale_price_check } }
 		}
 	}
 }
@@ -4025,14 +4025,14 @@ can_pay_soviet_collapse_foreign_volunteers_cost = {
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_major_target = yes }
 			num_divisions > constant:soviet_collapse_foreign_intervention.volunteers_major_min_divisions
-			has_manpower > constant:soviet_collapse_foreign_intervention.volunteers_major_manpower
-			has_equipment = { infantry_equipment > constant:soviet_collapse_foreign_intervention.volunteers_major_infantry_equipment }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_volunteers_major_manpower } NOT = { has_manpower < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_volunteers_major_infantry_equipment } NOT = { has_equipment = { infantry_equipment < soviet_collapse_sale_price_check } }
 		}
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_regional_target = yes }
 			num_divisions > constant:soviet_collapse_foreign_intervention.volunteers_regional_min_divisions
-			has_manpower > constant:soviet_collapse_foreign_intervention.volunteers_regional_manpower
-			has_equipment = { infantry_equipment > constant:soviet_collapse_foreign_intervention.volunteers_regional_infantry_equipment }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_volunteers_regional_manpower } NOT = { has_manpower < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_volunteers_regional_infantry_equipment } NOT = { has_equipment = { infantry_equipment < soviet_collapse_sale_price_check } }
 		}
 		AND = {
 			FROM = {
@@ -4040,8 +4040,8 @@ can_pay_soviet_collapse_foreign_volunteers_cost = {
 				NOT = { is_soviet_collapse_foreign_aid_regional_target = yes }
 			}
 			num_divisions > constant:soviet_collapse_foreign_intervention.volunteers_base_min_divisions
-			has_manpower > constant:soviet_collapse_foreign_intervention.volunteers_manpower
-			has_equipment = { infantry_equipment > constant:soviet_collapse_foreign_intervention.volunteers_infantry_equipment }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_volunteers_manpower } NOT = { has_manpower < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_volunteers_infantry_equipment } NOT = { has_equipment = { infantry_equipment < soviet_collapse_sale_price_check } }
 		}
 	}
 }
@@ -4050,21 +4050,21 @@ can_pay_soviet_collapse_foreign_trade_cost = {
 	OR = {
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_major_target = yes }
-			has_fuel > constant:soviet_collapse_foreign_intervention.trade_major_fuel
-			has_equipment = { convoy_1 > constant:soviet_collapse_foreign_intervention.trade_major_convoys }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_trade_major_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_trade_major_convoys } NOT = { has_equipment = { convoy_1 < soviet_collapse_sale_price_check } }
 		}
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_regional_target = yes }
-			has_fuel > constant:soviet_collapse_foreign_intervention.trade_regional_fuel
-			has_equipment = { convoy_1 > constant:soviet_collapse_foreign_intervention.trade_regional_convoys }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_trade_regional_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_trade_regional_convoys } NOT = { has_equipment = { convoy_1 < soviet_collapse_sale_price_check } }
 		}
 		AND = {
 			FROM = {
 				NOT = { is_soviet_collapse_foreign_aid_major_target = yes }
 				NOT = { is_soviet_collapse_foreign_aid_regional_target = yes }
 			}
-			has_fuel > constant:soviet_collapse_foreign_intervention.trade_fuel
-			has_equipment = { convoy_1 > constant:soviet_collapse_foreign_intervention.trade_convoys }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_trade_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_trade_convoys } NOT = { has_equipment = { convoy_1 < soviet_collapse_sale_price_check } }
 		}
 	}
 }
@@ -4073,24 +4073,24 @@ can_pay_soviet_collapse_foreign_civilian_construction_cost = {
 	OR = {
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_major_target = yes }
-			has_political_power > constant:soviet_collapse_foreign_intervention.civilian_construction_major_political_power
-			has_fuel > constant:soviet_collapse_foreign_intervention.civilian_construction_major_fuel
-			has_equipment = { convoy_1 > constant:soviet_collapse_foreign_intervention.civilian_construction_major_convoys }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_major_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_major_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_major_convoys } NOT = { has_equipment = { convoy_1 < soviet_collapse_sale_price_check } }
 		}
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_regional_target = yes }
-			has_political_power > constant:soviet_collapse_foreign_intervention.civilian_construction_regional_political_power
-			has_fuel > constant:soviet_collapse_foreign_intervention.civilian_construction_regional_fuel
-			has_equipment = { convoy_1 > constant:soviet_collapse_foreign_intervention.civilian_construction_regional_convoys }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_regional_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_regional_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_regional_convoys } NOT = { has_equipment = { convoy_1 < soviet_collapse_sale_price_check } }
 		}
 		AND = {
 			FROM = {
 				NOT = { is_soviet_collapse_foreign_aid_major_target = yes }
 				NOT = { is_soviet_collapse_foreign_aid_regional_target = yes }
 			}
-			has_political_power > constant:soviet_collapse_foreign_intervention.civilian_construction_political_power
-			has_fuel > constant:soviet_collapse_foreign_intervention.civilian_construction_fuel
-			has_equipment = { convoy_1 > constant:soviet_collapse_foreign_intervention.civilian_construction_convoys }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_convoys } NOT = { has_equipment = { convoy_1 < soviet_collapse_sale_price_check } }
 		}
 	}
 }
@@ -4099,24 +4099,24 @@ can_pay_soviet_collapse_foreign_military_construction_cost = {
 	OR = {
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_major_target = yes }
-			command_power > constant:soviet_collapse_foreign_intervention.military_construction_major_command_power
-			has_fuel > constant:soviet_collapse_foreign_intervention.military_construction_major_fuel
-			has_equipment = { support_equipment_1 > constant:soviet_collapse_foreign_intervention.military_construction_major_support_equipment }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_major_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_major_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_major_support_equipment } NOT = { has_equipment = { support_equipment_1 < soviet_collapse_sale_price_check } }
 		}
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_regional_target = yes }
-			command_power > constant:soviet_collapse_foreign_intervention.military_construction_regional_command_power
-			has_fuel > constant:soviet_collapse_foreign_intervention.military_construction_regional_fuel
-			has_equipment = { support_equipment_1 > constant:soviet_collapse_foreign_intervention.military_construction_regional_support_equipment }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_regional_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_regional_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_regional_support_equipment } NOT = { has_equipment = { support_equipment_1 < soviet_collapse_sale_price_check } }
 		}
 		AND = {
 			FROM = {
 				NOT = { is_soviet_collapse_foreign_aid_major_target = yes }
 				NOT = { is_soviet_collapse_foreign_aid_regional_target = yes }
 			}
-			command_power > constant:soviet_collapse_foreign_intervention.military_construction_command_power
-			has_fuel > constant:soviet_collapse_foreign_intervention.military_construction_fuel
-			has_equipment = { support_equipment_1 > constant:soviet_collapse_foreign_intervention.military_construction_support_equipment }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_support_equipment } NOT = { has_equipment = { support_equipment_1 < soviet_collapse_sale_price_check } }
 		}
 	}
 }
@@ -4125,12 +4125,12 @@ can_pay_soviet_collapse_foreign_press_network_cost = {
 	OR = {
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_major_target = yes }
-			has_political_power > constant:soviet_collapse_foreign_intervention.press_network_major_political_power
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_press_network_major_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
 			has_stability > constant:soviet_collapse_foreign_intervention.press_network_major_stability_floor
 		}
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_regional_target = yes }
-			has_political_power > constant:soviet_collapse_foreign_intervention.press_network_regional_political_power
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_press_network_regional_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
 			has_stability > constant:soviet_collapse_foreign_intervention.press_network_regional_stability_floor
 		}
 		AND = {
@@ -4138,7 +4138,7 @@ can_pay_soviet_collapse_foreign_press_network_cost = {
 				NOT = { is_soviet_collapse_foreign_aid_major_target = yes }
 				NOT = { is_soviet_collapse_foreign_aid_regional_target = yes }
 			}
-			has_political_power > constant:soviet_collapse_foreign_intervention.press_network_political_power
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_press_network_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
 			has_stability > constant:soviet_collapse_foreign_intervention.press_network_stability_floor
 		}
 	}
@@ -4148,24 +4148,24 @@ can_pay_soviet_collapse_foreign_aid_corridor_cost = {
 	OR = {
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_major_target = yes }
-			has_fuel > constant:soviet_collapse_foreign_intervention.aid_corridor_major_fuel_gate
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_aid_corridor_major_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
 			has_equipment = { train_equipment > constant:soviet_collapse_foreign_intervention.aid_corridor_major_trains_gate }
-			has_equipment = { convoy_1 > constant:soviet_collapse_foreign_intervention.aid_corridor_major_convoys_gate }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_aid_corridor_major_convoys } NOT = { has_equipment = { convoy_1 < soviet_collapse_sale_price_check } }
 		}
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_regional_target = yes }
-			has_fuel > constant:soviet_collapse_foreign_intervention.aid_corridor_regional_fuel_gate
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_aid_corridor_regional_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
 			has_equipment = { train_equipment > constant:soviet_collapse_foreign_intervention.aid_corridor_regional_trains_gate }
-			has_equipment = { convoy_1 > constant:soviet_collapse_foreign_intervention.aid_corridor_regional_convoys_gate }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_aid_corridor_regional_convoys } NOT = { has_equipment = { convoy_1 < soviet_collapse_sale_price_check } }
 		}
 		AND = {
 			FROM = {
 				NOT = { is_soviet_collapse_foreign_aid_major_target = yes }
 				NOT = { is_soviet_collapse_foreign_aid_regional_target = yes }
 			}
-			has_fuel > constant:soviet_collapse_foreign_intervention.aid_corridor_fuel_gate
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_aid_corridor_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
 			has_equipment = { train_equipment > constant:soviet_collapse_foreign_intervention.aid_corridor_trains_gate }
-			has_equipment = { convoy_1 > constant:soviet_collapse_foreign_intervention.aid_corridor_convoys_gate }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_aid_corridor_convoys } NOT = { has_equipment = { convoy_1 < soviet_collapse_sale_price_check } }
 		}
 	}
 }
@@ -4174,21 +4174,21 @@ can_pay_soviet_collapse_foreign_conference_cost = {
 	OR = {
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_major_target = yes }
-			has_political_power > constant:soviet_collapse_foreign_intervention.conference_major_political_power
-			command_power > constant:soviet_collapse_foreign_intervention.conference_major_command_power
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_conference_major_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_conference_major_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
 		}
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_regional_target = yes }
-			has_political_power > constant:soviet_collapse_foreign_intervention.conference_regional_political_power
-			command_power > constant:soviet_collapse_foreign_intervention.conference_regional_command_power
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_conference_regional_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_conference_regional_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
 		}
 		AND = {
 			FROM = {
 				NOT = { is_soviet_collapse_foreign_aid_major_target = yes }
 				NOT = { is_soviet_collapse_foreign_aid_regional_target = yes }
 			}
-			has_political_power > constant:soviet_collapse_foreign_intervention.conference_political_power
-			command_power > constant:soviet_collapse_foreign_intervention.conference_command_power
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_conference_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_conference_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
 		}
 	}
 }
@@ -4197,27 +4197,27 @@ can_pay_soviet_collapse_foreign_league_logistics_cost = {
 	OR = {
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_major_target = yes }
-			has_political_power > constant:soviet_collapse_foreign_intervention.league_logistics_major_political_power
-			has_fuel > constant:soviet_collapse_foreign_intervention.league_logistics_major_fuel
-			has_equipment = { train_equipment > constant:soviet_collapse_foreign_intervention.league_logistics_major_trains }
-			has_equipment = { convoy_1 > constant:soviet_collapse_foreign_intervention.league_logistics_major_convoys }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_major_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_major_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_major_trains } NOT = { has_equipment = { train_equipment < soviet_collapse_sale_price_check } }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_major_convoys } NOT = { has_equipment = { convoy_1 < soviet_collapse_sale_price_check } }
 		}
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_regional_target = yes }
-			has_political_power > constant:soviet_collapse_foreign_intervention.league_logistics_regional_political_power
-			has_fuel > constant:soviet_collapse_foreign_intervention.league_logistics_regional_fuel
-			has_equipment = { train_equipment > constant:soviet_collapse_foreign_intervention.league_logistics_regional_trains }
-			has_equipment = { convoy_1 > constant:soviet_collapse_foreign_intervention.league_logistics_regional_convoys }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_regional_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_regional_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_regional_trains } NOT = { has_equipment = { train_equipment < soviet_collapse_sale_price_check } }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_regional_convoys } NOT = { has_equipment = { convoy_1 < soviet_collapse_sale_price_check } }
 		}
 		AND = {
 			FROM = {
 				NOT = { is_soviet_collapse_foreign_aid_major_target = yes }
 				NOT = { is_soviet_collapse_foreign_aid_regional_target = yes }
 			}
-			has_political_power > constant:soviet_collapse_foreign_intervention.league_logistics_political_power
-			has_fuel > constant:soviet_collapse_foreign_intervention.league_logistics_fuel
-			has_equipment = { train_equipment > constant:soviet_collapse_foreign_intervention.league_logistics_trains }
-			has_equipment = { convoy_1 > constant:soviet_collapse_foreign_intervention.league_logistics_convoys }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_trains } NOT = { has_equipment = { train_equipment < soviet_collapse_sale_price_check } }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_convoys } NOT = { has_equipment = { convoy_1 < soviet_collapse_sale_price_check } }
 		}
 	}
 }
@@ -4226,68 +4226,68 @@ can_pay_soviet_collapse_anti_puppet_clause_cost = {
 	OR = {
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_major_target = yes }
-			has_political_power > constant:soviet_collapse_foreign_intervention.anti_puppet_clause_major_political_power
-			command_power > constant:soviet_collapse_foreign_intervention.anti_puppet_clause_major_command_power
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_anti_puppet_clause_major_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_anti_puppet_clause_major_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
 		}
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_regional_target = yes }
-			has_political_power > constant:soviet_collapse_foreign_intervention.anti_puppet_clause_regional_political_power
-			command_power > constant:soviet_collapse_foreign_intervention.anti_puppet_clause_regional_command_power
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_anti_puppet_clause_regional_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_anti_puppet_clause_regional_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
 		}
 		AND = {
 			FROM = {
 				NOT = { is_soviet_collapse_foreign_aid_major_target = yes }
 				NOT = { is_soviet_collapse_foreign_aid_regional_target = yes }
 			}
-			has_political_power > constant:soviet_collapse_foreign_intervention.anti_puppet_clause_political_power
-			command_power > constant:soviet_collapse_foreign_intervention.anti_puppet_clause_command_power
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_anti_puppet_clause_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_anti_puppet_clause_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
 		}
 	}
 }
 
 can_pay_soviet_collapse_regional_faction_found_cost = {
-	has_political_power > constant:soviet_collapse_regional_faction.found_political_power
-	command_power > constant:soviet_collapse_regional_faction.found_command_power
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_regional_faction_found_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_regional_faction_found_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
 }
 
 can_pay_soviet_collapse_regional_faction_invite_cost = {
-	has_political_power > constant:soviet_collapse_regional_faction.invite_political_power
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_regional_faction_invite_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
 }
 
 can_pay_soviet_collapse_regional_faction_coordinate_cost = {
-	has_political_power > constant:soviet_collapse_regional_faction.coordinate_political_power
-	command_power > constant:soviet_collapse_regional_faction.coordinate_command_power
-	has_fuel > constant:soviet_collapse_regional_faction.coordinate_fuel
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_regional_faction_coordinate_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_regional_faction_coordinate_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_regional_faction_coordinate_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
 }
 
 can_pay_soviet_collapse_regional_faction_goal_cost = {
-	has_political_power > constant:soviet_collapse_regional_faction.goal_political_power
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_regional_faction_goal_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
 }
 
 can_pay_soviet_collapse_regional_faction_tension_cost = {
-	command_power > constant:soviet_collapse_regional_faction.tension_command_power
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_regional_faction_tension_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
 }
 
 can_pay_soviet_collapse_regional_faction_war_cost = {
-	command_power > constant:soviet_collapse_regional_faction.war_command_power
-	has_manpower > constant:soviet_collapse_regional_faction.war_manpower
-	has_fuel > constant:soviet_collapse_regional_faction.war_fuel
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_regional_faction_war_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_regional_faction_war_manpower } NOT = { has_manpower < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_regional_faction_war_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
 }
 
 can_pay_soviet_collapse_league_rifle_cadres_cost = {
-	has_fuel > constant:soviet_collapse_regional_faction.league_rifle_cadres_fuel
-	has_manpower > constant:soviet_collapse_regional_faction.league_rifle_cadres_manpower
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_regional_faction_league_rifle_cadres_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_regional_faction_league_rifle_cadres_manpower } NOT = { has_manpower < soviet_collapse_sale_price_check }
 }
 
 can_pay_soviet_collapse_league_motor_columns_cost = {
-	has_fuel > constant:soviet_collapse_regional_faction.league_motor_columns_fuel
-	has_manpower > constant:soviet_collapse_regional_faction.league_motor_columns_manpower
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_regional_faction_league_motor_columns_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_regional_faction_league_motor_columns_manpower } NOT = { has_manpower < soviet_collapse_sale_price_check }
 }
 
 can_pay_soviet_collapse_regional_faction_external_mandate_cost = {
-	has_political_power > constant:soviet_collapse_regional_faction.external_mandate_political_power
-	command_power > constant:soviet_collapse_regional_faction.external_mandate_command_power
-	has_fuel > constant:soviet_collapse_regional_faction.external_mandate_fuel
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_regional_faction_external_mandate_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_regional_faction_external_mandate_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_regional_faction_external_mandate_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
 }
 
 is_soviet_collapse_regional_mandate_border_crisis_ready = {
@@ -4913,65 +4913,65 @@ can_soviet_collapse_call_regional_league_defensive_war = {
 }
 
 can_pay_soviet_collapse_moscow_union_treaty_cost = {
-	has_political_power > constant:soviet_collapse_moscow_reintegration.union_treaty_political_power
-	command_power > constant:soviet_collapse_moscow_reintegration.union_treaty_command_power
-	has_fuel > constant:soviet_collapse_moscow_reintegration.union_treaty_fuel
-	has_equipment = { train_equipment > constant:soviet_collapse_moscow_reintegration.union_treaty_trains }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moscow_reintegration_union_treaty_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moscow_reintegration_union_treaty_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moscow_reintegration_union_treaty_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moscow_reintegration_union_treaty_trains } NOT = { has_equipment = { train_equipment < soviet_collapse_sale_price_check } }
 }
 
 can_pay_soviet_collapse_moscow_negotiation_table_cost = {
-	has_political_power > constant:soviet_collapse_moscow_reintegration.negotiation_table_political_power
-	command_power > constant:soviet_collapse_moscow_reintegration.negotiation_table_command_power
-	has_fuel > constant:soviet_collapse_moscow_reintegration.negotiation_table_fuel
-	has_equipment = { train_equipment > constant:soviet_collapse_moscow_reintegration.negotiation_table_trains }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moscow_reintegration_negotiation_table_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moscow_reintegration_negotiation_table_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moscow_reintegration_negotiation_table_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moscow_reintegration_negotiation_table_trains } NOT = { has_equipment = { train_equipment < soviet_collapse_sale_price_check } }
 }
 
 can_pay_soviet_collapse_moscow_loyal_administrator_cost = {
-	has_political_power > constant:soviet_collapse_moscow_reintegration.loyal_administrator_political_power
-	has_manpower > constant:soviet_collapse_moscow_reintegration.loyal_administrator_manpower
-	has_equipment = { support_equipment > constant:soviet_collapse_moscow_reintegration.loyal_administrator_support_equipment }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moscow_reintegration_loyal_administrator_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moscow_reintegration_loyal_administrator_manpower } NOT = { has_manpower < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moscow_reintegration_loyal_administrator_support_equipment } NOT = { has_equipment = { support_equipment < soviet_collapse_sale_price_check } }
 }
 
 can_pay_soviet_collapse_moscow_military_ultimatum_cost = {
-	command_power > constant:soviet_collapse_moscow_reintegration.military_ultimatum_command_power
-	has_fuel > constant:soviet_collapse_moscow_reintegration.military_ultimatum_fuel
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moscow_reintegration_military_ultimatum_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moscow_reintegration_military_ultimatum_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
 }
 
 can_pay_soviet_collapse_moscow_punitive_operation_cost = {
-	command_power > constant:soviet_collapse_moscow_reintegration.punitive_operation_command_power
-	has_fuel > constant:soviet_collapse_moscow_reintegration.punitive_operation_fuel
-	has_equipment = { infantry_equipment > constant:soviet_collapse_moscow_reintegration.punitive_operation_infantry_equipment }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moscow_reintegration_punitive_operation_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moscow_reintegration_punitive_operation_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moscow_reintegration_punitive_operation_infantry_equipment } NOT = { has_equipment = { infantry_equipment < soviet_collapse_sale_price_check } }
 }
 
 can_pay_soviet_collapse_moscow_federal_compact_cost = {
-	has_political_power > constant:soviet_collapse_moscow_reintegration.federal_compact_political_power
-	command_power > constant:soviet_collapse_moscow_reintegration.federal_compact_command_power
-	has_fuel > constant:soviet_collapse_moscow_reintegration.federal_compact_fuel
-	has_equipment = { train_equipment > constant:soviet_collapse_moscow_reintegration.federal_compact_trains }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moscow_reintegration_federal_compact_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moscow_reintegration_federal_compact_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moscow_reintegration_federal_compact_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moscow_reintegration_federal_compact_trains } NOT = { has_equipment = { train_equipment < soviet_collapse_sale_price_check } }
 }
 
 can_pay_soviet_collapse_foreign_protection_treaty_cost = {
 	OR = {
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_major_target = yes }
-			has_political_power > constant:soviet_collapse_foreign_intervention.protection_treaty_major_political_power
-			command_power > constant:soviet_collapse_foreign_intervention.protection_treaty_major_command_power
-			has_fuel > constant:soviet_collapse_foreign_intervention.protection_treaty_major_fuel
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_major_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_major_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_major_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
 		}
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_regional_target = yes }
-			has_political_power > constant:soviet_collapse_foreign_intervention.protection_treaty_regional_political_power
-			command_power > constant:soviet_collapse_foreign_intervention.protection_treaty_regional_command_power
-			has_fuel > constant:soviet_collapse_foreign_intervention.protection_treaty_regional_fuel
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_regional_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_regional_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_regional_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
 		}
 		AND = {
 			FROM = {
 				NOT = { is_soviet_collapse_foreign_aid_major_target = yes }
 				NOT = { is_soviet_collapse_foreign_aid_regional_target = yes }
 			}
-			has_political_power > constant:soviet_collapse_foreign_intervention.protection_treaty_political_power
-			command_power > constant:soviet_collapse_foreign_intervention.protection_treaty_command_power
-			has_fuel > constant:soviet_collapse_foreign_intervention.protection_treaty_fuel
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
 		}
 	}
 }
@@ -4980,24 +4980,24 @@ can_pay_soviet_collapse_foreign_adviser_privileges_cost = {
 	OR = {
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_major_target = yes }
-			has_army_experience > constant:soviet_collapse_foreign_intervention.adviser_privileges_major_army_xp
-			command_power > constant:soviet_collapse_foreign_intervention.adviser_privileges_major_command_power
-			has_manpower > constant:soviet_collapse_foreign_intervention.adviser_privileges_major_manpower
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_major_army_xp } NOT = { has_army_experience < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_major_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_major_manpower } NOT = { has_manpower < soviet_collapse_sale_price_check }
 		}
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_regional_target = yes }
-			has_army_experience > constant:soviet_collapse_foreign_intervention.adviser_privileges_regional_army_xp
-			command_power > constant:soviet_collapse_foreign_intervention.adviser_privileges_regional_command_power
-			has_manpower > constant:soviet_collapse_foreign_intervention.adviser_privileges_regional_manpower
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_regional_army_xp } NOT = { has_army_experience < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_regional_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_regional_manpower } NOT = { has_manpower < soviet_collapse_sale_price_check }
 		}
 		AND = {
 			FROM = {
 				NOT = { is_soviet_collapse_foreign_aid_major_target = yes }
 				NOT = { is_soviet_collapse_foreign_aid_regional_target = yes }
 			}
-			has_army_experience > constant:soviet_collapse_foreign_intervention.adviser_privileges_army_xp
-			command_power > constant:soviet_collapse_foreign_intervention.adviser_privileges_command_power
-			has_manpower > constant:soviet_collapse_foreign_intervention.adviser_privileges_manpower
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_army_xp } NOT = { has_army_experience < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_manpower } NOT = { has_manpower < soviet_collapse_sale_price_check }
 		}
 	}
 }
@@ -5006,56 +5006,56 @@ can_pay_soviet_collapse_foreign_client_cabinet_cost = {
 	OR = {
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_major_target = yes }
-			has_political_power > constant:soviet_collapse_foreign_intervention.client_cabinet_major_political_power
-			command_power > constant:soviet_collapse_foreign_intervention.client_cabinet_major_command_power
-			has_fuel > constant:soviet_collapse_foreign_intervention.client_cabinet_major_fuel
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_major_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_major_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_major_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
 		}
 		AND = {
 			FROM = { is_soviet_collapse_foreign_aid_regional_target = yes }
-			has_political_power > constant:soviet_collapse_foreign_intervention.client_cabinet_regional_political_power
-			command_power > constant:soviet_collapse_foreign_intervention.client_cabinet_regional_command_power
-			has_fuel > constant:soviet_collapse_foreign_intervention.client_cabinet_regional_fuel
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_regional_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_regional_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_regional_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
 		}
 		AND = {
 			FROM = {
 				NOT = { is_soviet_collapse_foreign_aid_major_target = yes }
 				NOT = { is_soviet_collapse_foreign_aid_regional_target = yes }
 			}
-			has_political_power > constant:soviet_collapse_foreign_intervention.client_cabinet_political_power
-			command_power > constant:soviet_collapse_foreign_intervention.client_cabinet_command_power
-			has_fuel > constant:soviet_collapse_foreign_intervention.client_cabinet_fuel
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+			set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
 		}
 	}
 }
 
 can_pay_ukr_soviet_collapse_league_arbitration_cost = {
-	has_political_power > constant:soviet_collapse_ukraine_league.arbitration_political_power
-	command_power > constant:soviet_collapse_ukraine_league.arbitration_command_power
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_ukraine_league_arbitration_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_ukraine_league_arbitration_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
 }
 
 can_pay_ukr_soviet_collapse_league_arms_quota_cost = {
-	has_political_power > constant:soviet_collapse_ukraine_league.arms_quota_political_power
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_ukraine_league_arms_quota_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
 	has_equipment = { infantry_equipment > constant:soviet_collapse_ukraine_league.arms_quota_infantry_equipment }
 	has_equipment = { support_equipment_1 > constant:soviet_collapse_ukraine_league.arms_quota_support_equipment }
 	has_equipment = { train_equipment > constant:soviet_collapse_ukraine_league.arms_quota_trains }
 }
 
 can_pay_ukr_soviet_collapse_grain_compact_cost = {
-	has_political_power > constant:soviet_collapse_ukraine_league.grain_compact_political_power
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_ukraine_league_grain_compact_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
 	has_equipment = { train_equipment > constant:soviet_collapse_ukraine_league.grain_compact_trains }
 	has_equipment = { convoy_1 > constant:soviet_collapse_ukraine_league.grain_compact_convoys }
 }
 
 can_pay_ukr_soviet_collapse_black_sea_mission_cost = {
-	has_political_power > constant:soviet_collapse_ukraine_league.black_sea_mission_political_power
-	command_power > constant:soviet_collapse_ukraine_league.black_sea_mission_command_power
-	has_equipment = { convoy_1 > constant:soviet_collapse_ukraine_league.black_sea_mission_convoys }
-	has_fuel > constant:soviet_collapse_ukraine_league.black_sea_mission_fuel
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_ukraine_league_black_sea_mission_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_ukraine_league_black_sea_mission_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_ukraine_league_black_sea_mission_convoys } NOT = { has_equipment = { convoy_1 < soviet_collapse_sale_price_check } }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_ukraine_league_black_sea_mission_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
 }
 
 can_pay_ukr_soviet_collapse_anti_client_charter_cost = {
-	has_political_power > constant:soviet_collapse_ukraine_league.anti_client_charter_political_power
-	command_power > constant:soviet_collapse_ukraine_league.anti_client_charter_command_power
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_ukraine_league_anti_client_charter_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_ukraine_league_anti_client_charter_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
 }
 
 has_ukr_soviet_collapse_bread_state_decision_surface = {
@@ -5072,34 +5072,34 @@ has_ukr_soviet_collapse_bread_state_decision_surface = {
 }
 
 can_pay_ukr_soviet_collapse_black_soil_committees_cost = {
-	has_political_power > constant:soviet_collapse_ukraine_bread_state.granary_political_power
-	command_power > constant:soviet_collapse_ukraine_bread_state.granary_command_power
-	has_equipment = { infantry_equipment > constant:soviet_collapse_ukraine_bread_state.granary_infantry_equipment }
-	has_equipment = { support_equipment_1 > constant:soviet_collapse_ukraine_bread_state.granary_support_equipment }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_ukraine_bread_state_granary_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_ukraine_bread_state_granary_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_ukraine_bread_state_granary_infantry_equipment } NOT = { has_equipment = { infantry_equipment < soviet_collapse_sale_price_check } }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_ukraine_bread_state_granary_support_equipment } NOT = { has_equipment = { support_equipment_1 < soviet_collapse_sale_price_check } }
 }
 
 can_pay_ukr_soviet_collapse_grain_census_cost = {
-	has_political_power > constant:soviet_collapse_ukraine_bread_state.census_political_power
-	has_equipment = { train_equipment > constant:soviet_collapse_ukraine_bread_state.census_trains }
-	has_fuel > constant:soviet_collapse_ukraine_bread_state.census_fuel
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_ukraine_bread_state_census_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_ukraine_bread_state_census_trains } NOT = { has_equipment = { train_equipment < soviet_collapse_sale_price_check } }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_ukraine_bread_state_census_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
 }
 
 can_pay_ukr_soviet_collapse_bread_line_cost = {
-	has_political_power > constant:soviet_collapse_ukraine_bread_state.bread_line_political_power
-	command_power > constant:soviet_collapse_ukraine_bread_state.bread_line_command_power
-	has_equipment = { infantry_equipment > constant:soviet_collapse_ukraine_bread_state.bread_line_infantry_equipment }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_ukraine_bread_state_bread_line_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_ukraine_bread_state_bread_line_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_ukraine_bread_state_bread_line_infantry_equipment } NOT = { has_equipment = { infantry_equipment < soviet_collapse_sale_price_check } }
 }
 
 can_pay_ukr_soviet_collapse_village_ration_relief_cost = {
-	has_political_power > constant:soviet_collapse_ukraine_bread_state.relief_political_power
-	has_equipment = { train_equipment > constant:soviet_collapse_ukraine_bread_state.relief_trains }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_ukraine_bread_state_relief_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_ukraine_bread_state_relief_trains } NOT = { has_equipment = { train_equipment < soviet_collapse_sale_price_check } }
 }
 
 can_pay_ukr_soviet_collapse_last_harvest_plan_cost = {
-	has_political_power > constant:soviet_collapse_ukraine_bread_state.last_harvest_political_power
-	has_equipment = { train_equipment > constant:soviet_collapse_ukraine_bread_state.last_harvest_trains }
-	has_equipment = { convoy_1 > constant:soviet_collapse_ukraine_bread_state.last_harvest_convoys }
-	has_fuel > constant:soviet_collapse_ukraine_bread_state.last_harvest_fuel
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_ukraine_bread_state_last_harvest_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_ukraine_bread_state_last_harvest_trains } NOT = { has_equipment = { train_equipment < soviet_collapse_sale_price_check } }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_ukraine_bread_state_last_harvest_convoys } NOT = { has_equipment = { convoy_1 < soviet_collapse_sale_price_check } }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_ukraine_bread_state_last_harvest_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
 }
 
 can_ukr_soviet_collapse_release_village_rations = {
@@ -5142,34 +5142,34 @@ has_mol_soviet_collapse_route_decision_surface = {
 }
 
 can_pay_mol_soviet_collapse_prut_statute_cost = {
-	has_political_power > constant:soviet_collapse_moldova_route.prut_statute_political_power
-	command_power > constant:soviet_collapse_moldova_route.prut_statute_command_power
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moldova_route_prut_statute_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moldova_route_prut_statute_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
 }
 
 can_pay_mol_soviet_collapse_romanian_mission_cost = {
-	has_political_power > constant:soviet_collapse_moldova_route.romanian_mission_political_power
-	command_power > constant:soviet_collapse_moldova_route.romanian_mission_command_power
-	has_fuel > constant:soviet_collapse_moldova_route.romanian_mission_fuel
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moldova_route_romanian_mission_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moldova_route_romanian_mission_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moldova_route_romanian_mission_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
 }
 
 can_pay_mol_soviet_collapse_sfat_veto_cost = {
-	has_political_power > constant:soviet_collapse_moldova_route.sfat_veto_political_power
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moldova_route_sfat_veto_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
 }
 
 can_pay_mol_soviet_collapse_dniester_line_cost = {
-	command_power > constant:soviet_collapse_moldova_route.dniester_line_command_power
-	has_equipment = { infantry_equipment > constant:soviet_collapse_moldova_route.dniester_line_infantry_equipment }
-	has_equipment = { support_equipment_1 > constant:soviet_collapse_moldova_route.dniester_line_support_equipment }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moldova_route_dniester_line_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moldova_route_dniester_line_infantry_equipment } NOT = { has_equipment = { infantry_equipment < soviet_collapse_sale_price_check } }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moldova_route_dniester_line_support_equipment } NOT = { has_equipment = { support_equipment_1 < soviet_collapse_sale_price_check } }
 }
 
 can_pay_mol_soviet_collapse_customs_board_cost = {
-	has_political_power > constant:soviet_collapse_moldova_route.customs_board_political_power
-	has_equipment = { train_equipment > constant:soviet_collapse_moldova_route.customs_board_trains }
-	has_equipment = { convoy_1 > constant:soviet_collapse_moldova_route.customs_board_convoys }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moldova_route_customs_board_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moldova_route_customs_board_trains } NOT = { has_equipment = { train_equipment < soviet_collapse_sale_price_check } }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moldova_route_customs_board_convoys } NOT = { has_equipment = { convoy_1 < soviet_collapse_sale_price_check } }
 }
 
 can_pay_mol_soviet_collapse_patronage_limits_cost = {
-	has_political_power > constant:soviet_collapse_moldova_route.patronage_limits_political_power
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_moldova_route_patronage_limits_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
 }
 
 can_mol_soviet_collapse_publish_sfat_limits = {
@@ -5207,40 +5207,40 @@ has_central_asia_soviet_collapse_league_decision_surface = {
 }
 
 can_pay_central_asia_soviet_collapse_water_council_cost = {
-	has_political_power > constant:soviet_collapse_central_asia_league.water_council_political_power
-	has_equipment = { train_equipment > constant:soviet_collapse_central_asia_league.water_council_trains }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_central_asia_league_water_council_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_central_asia_league_water_council_trains } NOT = { has_equipment = { train_equipment < soviet_collapse_sale_price_check } }
 }
 
 can_pay_central_asia_soviet_collapse_cotton_rail_cost = {
-	has_political_power > constant:soviet_collapse_central_asia_league.cotton_rail_political_power
-	has_equipment = { train_equipment > constant:soviet_collapse_central_asia_league.cotton_rail_trains }
-	has_fuel > constant:soviet_collapse_central_asia_league.cotton_rail_fuel
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_central_asia_league_cotton_rail_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_central_asia_league_cotton_rail_trains } NOT = { has_equipment = { train_equipment < soviet_collapse_sale_price_check } }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_central_asia_league_cotton_rail_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
 }
 
 can_pay_central_asia_soviet_collapse_caravan_board_cost = {
-	command_power > constant:soviet_collapse_central_asia_league.caravan_board_command_power
-	has_equipment = { infantry_equipment > constant:soviet_collapse_central_asia_league.caravan_board_infantry_equipment }
-	has_equipment = { support_equipment_1 > constant:soviet_collapse_central_asia_league.caravan_board_support_equipment }
-	has_fuel > constant:soviet_collapse_central_asia_league.caravan_board_fuel
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_central_asia_league_caravan_board_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_central_asia_league_caravan_board_infantry_equipment } NOT = { has_equipment = { infantry_equipment < soviet_collapse_sale_price_check } }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_central_asia_league_caravan_board_support_equipment } NOT = { has_equipment = { support_equipment_1 < soviet_collapse_sale_price_check } }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_central_asia_league_caravan_board_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
 }
 
 can_pay_central_asia_soviet_collapse_member_vote_cost = {
-	has_political_power > constant:soviet_collapse_central_asia_league.member_vote_political_power
-	command_power > constant:soviet_collapse_central_asia_league.member_vote_command_power
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_central_asia_league_member_vote_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_central_asia_league_member_vote_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
 }
 
 can_pay_central_asia_soviet_collapse_mediation_cost = {
-	has_political_power > constant:soviet_collapse_central_asia_league.mediation_political_power
-	has_equipment = { convoy_1 > constant:soviet_collapse_central_asia_league.mediation_convoys }
-	has_fuel > constant:soviet_collapse_central_asia_league.mediation_fuel
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_central_asia_league_mediation_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_central_asia_league_mediation_convoys } NOT = { has_equipment = { convoy_1 < soviet_collapse_sale_price_check } }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_central_asia_league_mediation_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
 }
 
 can_pay_central_asia_soviet_collapse_settlement_cost = {
-	has_political_power > constant:soviet_collapse_central_asia_league.settlement_political_power
-	command_power > constant:soviet_collapse_central_asia_league.settlement_command_power
-	has_equipment = { infantry_equipment > constant:soviet_collapse_central_asia_league.settlement_infantry_equipment }
-	has_equipment = { support_equipment_1 > constant:soviet_collapse_central_asia_league.settlement_support_equipment }
-	has_equipment = { train_equipment > constant:soviet_collapse_central_asia_league.settlement_trains }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_central_asia_league_settlement_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_central_asia_league_settlement_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_central_asia_league_settlement_infantry_equipment } NOT = { has_equipment = { infantry_equipment < soviet_collapse_sale_price_check } }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_central_asia_league_settlement_support_equipment } NOT = { has_equipment = { support_equipment_1 < soviet_collapse_sale_price_check } }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_central_asia_league_settlement_trains } NOT = { has_equipment = { train_equipment < soviet_collapse_sale_price_check } }
 }
 
 can_central_asia_soviet_collapse_ratify_survival_settlement = {
@@ -5269,26 +5269,26 @@ has_kaz_soviet_collapse_route_decision_surface = {
 }
 
 can_pay_kaz_soviet_collapse_alash_court_cost = {
-	has_political_power > constant:soviet_collapse_kazakhstan_route.alash_court_political_power
-	command_power > constant:soviet_collapse_kazakhstan_route.alash_court_command_power
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_kazakhstan_route_alash_court_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_kazakhstan_route_alash_court_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
 }
 
 can_pay_kaz_soviet_collapse_socialist_plan_cost = {
-	has_political_power > constant:soviet_collapse_kazakhstan_route.socialist_plan_political_power
-	has_equipment = { train_equipment > constant:soviet_collapse_kazakhstan_route.socialist_plan_trains }
-	has_fuel > constant:soviet_collapse_kazakhstan_route.socialist_plan_fuel
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_kazakhstan_route_socialist_plan_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_kazakhstan_route_socialist_plan_trains } NOT = { has_equipment = { train_equipment < soviet_collapse_sale_price_check } }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_kazakhstan_route_socialist_plan_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
 }
 
 can_pay_kaz_soviet_collapse_mine_guard_cost = {
-	command_power > constant:soviet_collapse_kazakhstan_route.mine_guard_command_power
-	has_equipment = { infantry_equipment > constant:soviet_collapse_kazakhstan_route.mine_guard_infantry_equipment }
-	has_equipment = { support_equipment_1 > constant:soviet_collapse_kazakhstan_route.mine_guard_support_equipment }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_kazakhstan_route_mine_guard_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_kazakhstan_route_mine_guard_infantry_equipment } NOT = { has_equipment = { infantry_equipment < soviet_collapse_sale_price_check } }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_kazakhstan_route_mine_guard_support_equipment } NOT = { has_equipment = { support_equipment_1 < soviet_collapse_sale_price_check } }
 }
 
 can_pay_kaz_soviet_collapse_concession_audit_cost = {
-	has_political_power > constant:soviet_collapse_kazakhstan_route.concession_audit_political_power
-	has_equipment = { convoy_1 > constant:soviet_collapse_kazakhstan_route.concession_audit_convoys }
-	has_fuel > constant:soviet_collapse_kazakhstan_route.concession_audit_fuel
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_kazakhstan_route_concession_audit_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_kazakhstan_route_concession_audit_convoys } NOT = { has_equipment = { convoy_1 < soviet_collapse_sale_price_check } }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_kazakhstan_route_concession_audit_fuel } NOT = { has_fuel < soviet_collapse_sale_price_check }
 }
 
 is_soviet_collapse_republic_protected_from_external_dependency = {
@@ -8514,13 +8514,13 @@ can_soviet_collapse_spawn_nlc = {
 
 can_pay_soviet_collapse_custom_splinter_low_cost = {
 	has_stability > constant:soviet_collapse_breakaway_action.recognition_stability_floor
-	has_equipment = { support_equipment > constant:soviet_collapse_breakaway_action.coordinate_support_equipment }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_breakaway_action_coordinate_support_equipment } NOT = { has_equipment = { support_equipment < soviet_collapse_sale_price_check } }
 }
 
 can_pay_soviet_collapse_custom_splinter_medium_cost = {
-	has_political_power > constant:soviet_collapse_breakaway_action.mobilize_political_power
-	command_power > constant:soviet_collapse_breakaway_action.mobilize_command_power
-	has_army_experience > constant:soviet_collapse_breakaway_action.seize_army_xp
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_breakaway_action_mobilize_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_breakaway_action_mobilize_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_breakaway_action_seize_army_xp } NOT = { has_army_experience < soviet_collapse_sale_price_check }
 }
 
 has_soviet_collapse_custom_splinter_diplomatic_payoff = {
@@ -8619,16 +8619,16 @@ can_pay_soviet_collapse_returned_names_low_cost = {
 	has_country_flag = soviet_collapse_returned_names_claim_lines_active
 	NOT = { has_country_flag = soviet_collapse_returned_names_rejected }
 	has_stability > constant:soviet_collapse_soviet_objective.good_stability
-	has_equipment = { support_equipment > constant:soviet_collapse_breakaway_action.coordinate_support_equipment }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_breakaway_action_coordinate_support_equipment } NOT = { has_equipment = { support_equipment < soviet_collapse_sale_price_check } }
 }
 
 can_pay_soviet_collapse_returned_names_medium_cost = {
 	is_soviet_collapse_active = yes
 	has_country_flag = soviet_collapse_returned_names_claim_lines_active
 	NOT = { has_country_flag = soviet_collapse_returned_names_rejected }
-	has_political_power > constant:soviet_collapse_breakaway_action.mobilize_political_power
-	command_power > constant:soviet_collapse_breakaway_action.mobilize_command_power
-	has_army_experience > constant:soviet_collapse_breakaway_action.seize_army_xp
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_breakaway_action_mobilize_political_power } NOT = { has_political_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_breakaway_action_mobilize_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_breakaway_action_seize_army_xp } NOT = { has_army_experience < soviet_collapse_sale_price_check }
 	has_country_flag = soviet_collapse_returned_names_archivists_recruited
 }
 
@@ -8691,35 +8691,35 @@ has_soviet_collapse_belarus_state_route_completed = {
 
 can_pay_cfr_survey_unfinished_sites_cost = {
 	tag = CFR
-	command_power > constant:soviet_collapse_factory_ancient.command_power_low_cost
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_factory_ancient_command_power_low_cost } NOT = { command_power < soviet_collapse_sale_price_check }
 }
 
 can_pay_cfr_issue_reconstruction_contracts_cost = {
 	tag = CFR
-	command_power > constant:soviet_collapse_factory_ancient.command_power_medium_cost
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_factory_ancient_command_power_medium_cost } NOT = { command_power < soviet_collapse_sale_price_check }
 	check_variable = { var = cfr_construction_mandates value = constant:soviet_collapse_factory_ancient.small_mandate_gain compare = greater_than_or_equals }
 }
 
 can_pay_cfr_seize_idle_construction_queues_cost = {
 	tag = CFR
-	command_power > constant:soviet_collapse_factory_ancient.command_power_high_cost
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_factory_ancient_command_power_high_cost } NOT = { command_power < soviet_collapse_sale_price_check }
 	check_variable = { var = cfr_construction_mandates value = constant:soviet_collapse_factory_ancient.medium_mandate_gain compare = greater_than_or_equals }
 }
 
 can_pay_cfr_raise_factory_city_belt_cost = {
 	tag = CFR
-	command_power > constant:soviet_collapse_factory_ancient.command_power_high_cost
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_factory_ancient_command_power_high_cost } NOT = { command_power < soviet_collapse_sale_price_check }
 	check_variable = { var = cfr_construction_mandates value = constant:soviet_collapse_factory_ancient.large_mandate_gain compare = greater_than_or_equals }
 }
 
 can_pay_mfr_audit_arsenal_orders_cost = {
 	tag = MFR
-	command_power > constant:soviet_collapse_factory_ancient.command_power_low_cost
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_factory_ancient_command_power_low_cost } NOT = { command_power < soviet_collapse_sale_price_check }
 }
 
 can_pay_mfr_convert_depots_to_arms_lines_cost = {
 	tag = MFR
-	command_power > constant:soviet_collapse_factory_ancient.command_power_medium_cost
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_factory_ancient_command_power_medium_cost } NOT = { command_power < soviet_collapse_sale_price_check }
 	check_variable = { var = mfr_arsenal_quotas value = constant:soviet_collapse_factory_ancient.small_mandate_gain compare = greater_than_or_equals }
 }
 
@@ -8787,19 +8787,19 @@ has_soviet_collapse_kmb_export_partner = {
 }
 
 can_pay_soviet_collapse_kmb_open_export_auction_cost = {
-	has_equipment = { convoy_1 > constant:soviet_collapse_kmb_balance.export_auction_convoys_gate }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_kmb_balance_export_auction_convoys } NOT = { has_equipment = { convoy_1 < soviet_collapse_sale_price_check } }
 }
 
 can_pay_soviet_collapse_kmb_resource_treaty_cost = {
-	has_equipment = { convoy_1 > constant:soviet_collapse_kmb_balance.resource_treaty_convoys_gate }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_kmb_balance_resource_treaty_convoys } NOT = { has_equipment = { convoy_1 < soviet_collapse_sale_price_check } }
 }
 
 can_pay_soviet_collapse_kmb_force_mining_concession_cost = {
-	command_power > constant:soviet_collapse_kmb_balance.force_mining_concession_command_power
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_kmb_balance_force_mining_concession_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
 }
 
 can_pay_soviet_collapse_kmb_industrial_tender_cost = {
-	has_equipment = { convoy_1 > constant:soviet_collapse_kmb_balance.industrial_tender_convoys_gate }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_kmb_balance_industrial_tender_convoys } NOT = { has_equipment = { convoy_1 < soviet_collapse_sale_price_check } }
 }
 
 can_choose_soviet_collapse_kmb_conquered_basin_policy = {
@@ -8878,27 +8878,27 @@ has_soviet_collapse_uwr_experiment_camp_capacity = {
 }
 
 can_pay_soviet_collapse_uwr_blacksite_overclock_cost = {
-	command_power > constant:soviet_collapse_uwr_balance.blacksite_overclock_command_power
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_uwr_balance_blacksite_overclock_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
 }
 
 can_pay_soviet_collapse_uwr_experiment_camp_cost = {
-	command_power > constant:soviet_collapse_uwr_balance.camp_registry_expansion_command_power
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_uwr_balance_camp_registry_expansion_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
 }
 
 can_pay_soviet_collapse_uwr_field_release_raid_cost = {
-	has_army_experience > constant:soviet_collapse_uwr_balance.field_release_raid_army_xp
-	command_power > constant:soviet_collapse_uwr_balance.field_release_raid_command_power
-	has_manpower > constant:soviet_collapse_uwr_balance.field_release_raid_manpower_gate
-	has_equipment = { infantry_equipment_1 > constant:soviet_collapse_uwr_balance.field_release_raid_infantry_equipment_gate }
-	has_equipment = { support_equipment_1 > constant:soviet_collapse_uwr_balance.field_release_raid_support_equipment_gate }
-	has_equipment = { artillery_equipment_1 > constant:soviet_collapse_uwr_balance.field_release_raid_artillery_equipment_gate }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_uwr_balance_field_release_raid_army_xp } NOT = { has_army_experience < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_uwr_balance_field_release_raid_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_uwr_balance_field_release_raid_manpower } NOT = { has_manpower < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_uwr_balance_field_release_raid_infantry_equipment } NOT = { has_equipment = { infantry_equipment_1 < soviet_collapse_sale_price_check } }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_uwr_balance_field_release_raid_support_equipment } NOT = { has_equipment = { support_equipment_1 < soviet_collapse_sale_price_check } }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_uwr_balance_field_release_raid_artillery_equipment } NOT = { has_equipment = { artillery_equipment_1 < soviet_collapse_sale_price_check } }
 }
 
 can_pay_soviet_collapse_uwr_prisoner_intake_cost = {
-	command_power > constant:soviet_collapse_uwr_balance.prisoner_intake_command_power
-	has_manpower > constant:soviet_collapse_uwr_balance.prisoner_intake_manpower_gate
-	has_equipment = { infantry_equipment_1 > constant:soviet_collapse_uwr_balance.prisoner_intake_infantry_equipment_gate }
-	has_equipment = { support_equipment_1 > constant:soviet_collapse_uwr_balance.prisoner_intake_support_equipment_gate }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_uwr_balance_prisoner_intake_command_power } NOT = { command_power < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_uwr_balance_prisoner_intake_manpower } NOT = { has_manpower < soviet_collapse_sale_price_check }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_uwr_balance_prisoner_intake_infantry_equipment } NOT = { has_equipment = { infantry_equipment_1 < soviet_collapse_sale_price_check } }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_uwr_balance_prisoner_intake_support_equipment } NOT = { has_equipment = { support_equipment_1 < soviet_collapse_sale_price_check } }
 }
 
 is_soviet_collapse_uwr_prisoner_intake_state = {
@@ -9202,18 +9202,18 @@ has_soviet_collapse_release_cause_foreign_league_rupture = {
 
 can_pay_soviet_collapse_chain_of_command_compromise_cost = {
 	has_active_soviet_collapse_chain_of_command_objective = yes
-	command_power > constant:soviet_collapse_operational_priority.chain_compromise_command_power_gate
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_operational_priority_chain_compromise_command_power_cost } NOT = { command_power < soviet_collapse_sale_price_check }
 }
 
 can_pay_soviet_collapse_corridors_and_depots_compromise_cost = {
 	has_active_soviet_collapse_corridors_and_depots_objective = yes
 	has_soviet_collapse_selected_corridor_state = yes
-	check_variable = { var = political_power value = constant:soviet_collapse_operational_priority.corridor_compromise_political_power_gate compare = greater_than }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_operational_priority_corridor_compromise_political_power_cost } NOT = { has_political_power < soviet_collapse_sale_price_check }
 }
 
 can_pay_soviet_collapse_republic_settlement_compromise_cost = {
 	has_active_soviet_collapse_republic_settlement_objective = yes
-	check_variable = { var = political_power value = constant:soviet_collapse_operational_priority.settlement_compromise_political_power_gate compare = greater_than }
+	set_temp_variable = { soviet_collapse_sale_price_check = global.black_friday_price_soviet_collapse_operational_priority_settlement_compromise_political_power_cost } NOT = { has_political_power < soviet_collapse_sale_price_check }
 }
 
 has_soviet_collapse_uwr_contamination_aftermath = {

@@ -24,9 +24,10 @@
 # ANY scope. Inputs: temp black_friday_price_ordinary, temp
 # black_friday_price_ratio (payment ratio in basis points), and optional temp
 # black_friday_price_quantum (smallest payable step; unset or zero means 1, and
-# stability or war support prices use their fixed-point quantum). Output:
+# stability or war support prices use their fixed-point quantum). Outputs:
 # caller-owned temp black_friday_price_payable, rounded up to a whole number of
-# steps and at least one step, but never above the ordinary amount.
+# steps and at least one step, but never above the ordinary amount, and temp
+# black_friday_price_spend, its negation, which a payment line adds directly.
 # Non-positive prices and full-price ratios return the ordinary amount unchanged.
 black_friday_price_table_quote = {
 	set_temp_variable = { black_friday_price_payable = black_friday_price_ordinary }
@@ -74,6 +75,1281 @@ black_friday_price_table_quote = {
 			set_temp_variable = { black_friday_price_payable = black_friday_price_ordinary }
 		}
 	}
+	set_temp_variable = { black_friday_price_spend = constant:black_friday_event.zero }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+}
+
+# Event 005 Soviet Collapse decision prices (agent decision D21). Each entry
+# stores the positive sale price, read by affordability checks and cost texts,
+# and, for each payment constant of that amount, the matching negative amount
+# that the payment adds. A tier surcharge stores the difference between the
+# tier price and the base price, so a base payment plus its surcharge always
+# equals the tier price the affordability check required. Deliveries to another
+# country (arms shipments, aid corridor trains, Ukrainian League arms and grain
+# quotas) keep their ordinary amounts.
+black_friday_price_table_refresh_soviet_collapse_entries = {
+	# soviet_collapse_breakaway_action
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_breakaway_action.coordinate_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_breakaway_action_coordinate_fuel = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_breakaway_action_coordinate_fuel_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_breakaway_action.coordinate_support_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_breakaway_action_coordinate_support_equipment = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_breakaway_action_coordinate_support_equipment_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_breakaway_action.mobilize_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_breakaway_action_mobilize_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_breakaway_action_mobilize_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_breakaway_action.mobilize_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_breakaway_action_mobilize_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_breakaway_action_mobilize_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_quantum = constant:universal_cost_fixed_point_quantum.stability }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_event.zero }
+	subtract_from_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_breakaway_action.mobilize_stability_spend }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_breakaway_action_mobilize_stability = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_breakaway_action_mobilize_stability_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_quantum = constant:black_friday_event.zero }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_breakaway_action.offensive_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_breakaway_action_offensive_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_breakaway_action_offensive_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_breakaway_action.offensive_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_breakaway_action_offensive_fuel = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_breakaway_action_offensive_fuel_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_breakaway_action.offensive_support_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_breakaway_action_offensive_support_equipment = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_breakaway_action_offensive_support_equipment_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_quantum = constant:universal_cost_fixed_point_quantum.stability }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_event.zero }
+	subtract_from_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_breakaway_action.recognition_stability_spend }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_breakaway_action_recognition_stability = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_breakaway_action_recognition_stability_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_quantum = constant:black_friday_event.zero }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_breakaway_action.seize_army_xp }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_breakaway_action_seize_army_xp = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_breakaway_action_seize_army_xp_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_breakaway_action.seize_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_breakaway_action_seize_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_breakaway_action_seize_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_breakaway_action.seize_depot_army_xp }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_breakaway_action_seize_depot_army_xp = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_breakaway_action_seize_depot_army_xp_spend = black_friday_price_spend }
+	# soviet_collapse_central_asia_league
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_central_asia_league.caravan_board_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_caravan_board_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_caravan_board_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_central_asia_league.caravan_board_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_caravan_board_fuel = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_caravan_board_fuel_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_central_asia_league.caravan_board_infantry_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_caravan_board_infantry_equipment = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_caravan_board_infantry_equipment_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_central_asia_league.caravan_board_support_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_caravan_board_support_equipment = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_caravan_board_support_equipment_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_central_asia_league.cotton_rail_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_cotton_rail_fuel = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_cotton_rail_fuel_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_central_asia_league.cotton_rail_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_cotton_rail_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_cotton_rail_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_central_asia_league.cotton_rail_trains }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_cotton_rail_trains = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_cotton_rail_trains_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_central_asia_league.mediation_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_mediation_convoys = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_mediation_convoys_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_central_asia_league.mediation_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_mediation_fuel = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_mediation_fuel_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_central_asia_league.mediation_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_mediation_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_mediation_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_central_asia_league.member_vote_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_member_vote_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_member_vote_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_central_asia_league.member_vote_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_member_vote_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_member_vote_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_central_asia_league.settlement_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_settlement_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_settlement_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_central_asia_league.settlement_infantry_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_settlement_infantry_equipment = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_settlement_infantry_equipment_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_central_asia_league.settlement_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_settlement_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_settlement_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_central_asia_league.settlement_support_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_settlement_support_equipment = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_settlement_support_equipment_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_central_asia_league.settlement_trains }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_settlement_trains = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_settlement_trains_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_central_asia_league.water_council_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_water_council_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_water_council_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_central_asia_league.water_council_trains }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_water_council_trains = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_central_asia_league_water_council_trains_spend = black_friday_price_spend }
+	# soviet_collapse_decision_cost
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_decision_cost.cut_rebel_supply_routes_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_decision_cost_cut_rebel_supply_routes_fuel = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_decision_cost_cut_rebel_supply_routes_fuel_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_decision_cost.cut_rebel_supply_routes_trains }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_decision_cost_cut_rebel_supply_routes_trains = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_decision_cost_cut_rebel_supply_routes_train_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_decision_cost.emergency_mobilization_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_decision_cost_emergency_mobilization_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_decision_cost_emergency_mobilization_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_decision_cost.restore_party_control_infantry_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_decision_cost_restore_party_control_infantry_equipment = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_decision_cost_restore_party_control_infantry_equipment_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_decision_cost.restore_party_control_manpower }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_decision_cost_restore_party_control_manpower = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_decision_cost_restore_party_control_manpower_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_decision_cost.restore_party_control_support_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_decision_cost_restore_party_control_support_equipment = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_decision_cost_restore_party_control_support_equipment_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_decision_cost.send_loyalist_officers_army_xp }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_decision_cost_send_loyalist_officers_army_xp = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_decision_cost_send_loyalist_officers_army_xp_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_decision_cost.send_loyalist_officers_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_decision_cost_send_loyalist_officers_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_decision_cost_send_loyalist_officers_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_quantum = constant:universal_cost_fixed_point_quantum.stability }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_event.zero }
+	subtract_from_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_decision_cost.emergency_mobilization_stability }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_decision_cost_emergency_mobilization_stability = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_decision_cost_emergency_mobilization_stability_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_quantum = constant:black_friday_event.zero }
+	set_temp_variable = { black_friday_price_quantum = constant:universal_cost_fixed_point_quantum.war_support }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_event.zero }
+	subtract_from_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_decision_cost.emergency_mobilization_war_support }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_decision_cost_emergency_mobilization_war_support = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_decision_cost_emergency_mobilization_war_support_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_quantum = constant:black_friday_event.zero }
+	# soviet_collapse_factory_ancient
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_factory_ancient.command_power_high_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_factory_ancient_command_power_high_cost = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_factory_ancient_command_power_high_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_factory_ancient.command_power_low_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_factory_ancient_command_power_low_cost = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_factory_ancient_command_power_low_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_factory_ancient.command_power_medium_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_factory_ancient_command_power_medium_cost = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_factory_ancient_command_power_medium_spend = black_friday_price_spend }
+	# soviet_collapse_foreign_intervention
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.adviser_privileges_army_xp }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_army_xp = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_army_xp_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.adviser_privileges_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.adviser_privileges_manpower }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_manpower = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_manpower_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.advisers_army_xp }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_advisers_army_xp = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_advisers_army_xp_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.advisers_manpower }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_advisers_manpower = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_advisers_manpower_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.aid_corridor_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_aid_corridor_convoys = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_aid_corridor_convoy_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.aid_corridor_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_aid_corridor_fuel = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_aid_corridor_fuel_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.anti_puppet_clause_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_anti_puppet_clause_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_anti_puppet_clause_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.anti_puppet_clause_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_anti_puppet_clause_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_anti_puppet_clause_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.civilian_construction_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_convoys = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_convoy_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.civilian_construction_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_fuel = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_fuel_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.civilian_construction_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.client_cabinet_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.client_cabinet_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_fuel = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_fuel_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.client_cabinet_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.conference_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_conference_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_conference_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.conference_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_conference_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_conference_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.intelligence_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_intelligence_fuel = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_intelligence_fuel_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.intelligence_trains }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_intelligence_trains = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_intelligence_train_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.league_logistics_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_convoys = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_convoy_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.league_logistics_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_fuel = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_fuel_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.league_logistics_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.league_logistics_trains }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_trains = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_train_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.liaison_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_liaison_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_liaison_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.liaison_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_liaison_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_liaison_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.military_construction_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.military_construction_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_fuel = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_fuel_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.military_construction_support_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_support_equipment = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_support_equipment_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.press_network_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_press_network_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_press_network_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_quantum = constant:universal_cost_fixed_point_quantum.stability }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_event.zero }
+	subtract_from_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.press_network_stability_spend }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_press_network_stability = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_press_network_stability_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_quantum = constant:black_friday_event.zero }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.protection_treaty_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.protection_treaty_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_fuel = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_fuel_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.protection_treaty_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.recognition_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_recognition_convoys = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_recognition_convoy_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.recognition_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_recognition_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_recognition_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.trade_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_trade_convoys = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_trade_convoy_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.trade_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_trade_fuel = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_trade_fuel_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.volunteers_infantry_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_volunteers_infantry_equipment = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_volunteers_infantry_equipment_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.volunteers_manpower }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_volunteers_manpower = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_volunteers_manpower_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.adviser_privileges_major_army_xp }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_major_army_xp = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_army_xp }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_major_army_xp_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.adviser_privileges_major_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_major_command_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_command_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_major_command_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.adviser_privileges_major_manpower }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_major_manpower = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_manpower }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_major_manpower_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.adviser_privileges_regional_army_xp }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_regional_army_xp = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_army_xp }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_regional_army_xp_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.adviser_privileges_regional_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_regional_command_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_command_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_regional_command_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.adviser_privileges_regional_manpower }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_regional_manpower = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_manpower }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_adviser_privileges_regional_manpower_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.advisers_major_army_xp }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_advisers_major_army_xp = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_advisers_army_xp }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_advisers_major_army_xp_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.advisers_major_manpower }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_advisers_major_manpower = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_advisers_manpower }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_advisers_major_manpower_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.advisers_regional_army_xp }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_advisers_regional_army_xp = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_advisers_army_xp }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_advisers_regional_army_xp_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.advisers_regional_manpower }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_advisers_regional_manpower = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_advisers_manpower }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_advisers_regional_manpower_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.aid_corridor_major_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_aid_corridor_major_convoys = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_aid_corridor_convoys }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_aid_corridor_major_convoy_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.aid_corridor_major_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_aid_corridor_major_fuel = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_aid_corridor_fuel }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_aid_corridor_major_fuel_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.aid_corridor_regional_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_aid_corridor_regional_convoys = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_aid_corridor_convoys }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_aid_corridor_regional_convoy_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.aid_corridor_regional_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_aid_corridor_regional_fuel = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_aid_corridor_fuel }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_aid_corridor_regional_fuel_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.anti_puppet_clause_major_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_anti_puppet_clause_major_command_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_anti_puppet_clause_command_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_anti_puppet_clause_major_command_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.anti_puppet_clause_major_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_anti_puppet_clause_major_political_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_anti_puppet_clause_political_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_anti_puppet_clause_major_political_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.anti_puppet_clause_regional_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_anti_puppet_clause_regional_command_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_anti_puppet_clause_command_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_anti_puppet_clause_regional_command_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.anti_puppet_clause_regional_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_anti_puppet_clause_regional_political_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_anti_puppet_clause_political_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_anti_puppet_clause_regional_political_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.civilian_construction_major_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_major_convoys = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_convoys }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_major_convoy_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.civilian_construction_major_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_major_fuel = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_fuel }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_major_fuel_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.civilian_construction_major_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_major_political_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_political_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_major_political_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.civilian_construction_regional_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_regional_convoys = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_convoys }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_regional_convoy_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.civilian_construction_regional_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_regional_fuel = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_fuel }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_regional_fuel_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.civilian_construction_regional_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_regional_political_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_political_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_civilian_construction_regional_political_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.client_cabinet_major_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_major_command_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_command_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_major_command_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.client_cabinet_major_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_major_fuel = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_fuel }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_major_fuel_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.client_cabinet_major_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_major_political_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_political_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_major_political_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.client_cabinet_regional_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_regional_command_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_command_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_regional_command_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.client_cabinet_regional_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_regional_fuel = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_fuel }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_regional_fuel_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.client_cabinet_regional_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_regional_political_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_political_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_client_cabinet_regional_political_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.conference_major_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_conference_major_command_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_conference_command_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_conference_major_command_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.conference_major_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_conference_major_political_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_conference_political_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_conference_major_political_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.conference_regional_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_conference_regional_command_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_conference_command_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_conference_regional_command_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.conference_regional_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_conference_regional_political_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_conference_political_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_conference_regional_political_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.intelligence_major_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_intelligence_major_fuel = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_intelligence_fuel }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_intelligence_major_fuel_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.intelligence_major_trains }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_intelligence_major_trains = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_intelligence_trains }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_intelligence_major_train_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.intelligence_regional_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_intelligence_regional_fuel = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_intelligence_fuel }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_intelligence_regional_fuel_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.intelligence_regional_trains }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_intelligence_regional_trains = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_intelligence_trains }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_intelligence_regional_train_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.league_logistics_major_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_major_convoys = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_convoys }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_major_convoy_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.league_logistics_major_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_major_fuel = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_fuel }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_major_fuel_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.league_logistics_major_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_major_political_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_political_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_major_political_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.league_logistics_major_trains }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_major_trains = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_trains }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_major_train_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.league_logistics_regional_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_regional_convoys = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_convoys }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_regional_convoy_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.league_logistics_regional_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_regional_fuel = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_fuel }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_regional_fuel_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.league_logistics_regional_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_regional_political_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_political_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_regional_political_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.league_logistics_regional_trains }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_regional_trains = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_trains }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_regional_train_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.liaison_major_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_liaison_major_command_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_liaison_command_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_liaison_major_command_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.liaison_major_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_liaison_major_political_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_liaison_political_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_liaison_major_political_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.liaison_regional_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_liaison_regional_command_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_liaison_command_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_liaison_regional_command_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.liaison_regional_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_liaison_regional_political_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_liaison_political_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_liaison_regional_political_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.military_construction_major_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_major_command_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_command_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_major_command_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.military_construction_major_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_major_fuel = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_fuel }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_major_fuel_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.military_construction_major_support_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_major_support_equipment = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_support_equipment }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_major_support_equipment_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.military_construction_regional_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_regional_command_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_command_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_regional_command_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.military_construction_regional_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_regional_fuel = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_fuel }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_regional_fuel_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.military_construction_regional_support_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_regional_support_equipment = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_support_equipment }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_military_construction_regional_support_equipment_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.press_network_major_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_press_network_major_political_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_press_network_political_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_press_network_major_political_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_quantum = constant:universal_cost_fixed_point_quantum.stability }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_event.zero }
+	subtract_from_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.press_network_stability_spend }
+	subtract_from_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.press_network_major_stability_extra_spend }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_press_network_major_stability = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_press_network_stability }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_press_network_major_stability_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_quantum = constant:black_friday_event.zero }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.press_network_regional_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_press_network_regional_political_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_press_network_political_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_press_network_regional_political_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_quantum = constant:universal_cost_fixed_point_quantum.stability }
+	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_event.zero }
+	subtract_from_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.press_network_stability_spend }
+	subtract_from_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.press_network_regional_stability_extra_spend }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_press_network_regional_stability = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_press_network_stability }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_press_network_regional_stability_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_quantum = constant:black_friday_event.zero }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.protection_treaty_major_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_major_command_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_command_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_major_command_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.protection_treaty_major_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_major_fuel = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_fuel }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_major_fuel_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.protection_treaty_major_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_major_political_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_political_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_major_political_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.protection_treaty_regional_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_regional_command_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_command_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_regional_command_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.protection_treaty_regional_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_regional_fuel = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_fuel }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_regional_fuel_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.protection_treaty_regional_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_regional_political_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_political_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_protection_treaty_regional_political_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.recognition_major_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_recognition_major_convoys = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_recognition_convoys }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_recognition_major_convoy_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.recognition_major_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_recognition_major_political_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_recognition_political_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_recognition_major_political_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.recognition_regional_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_recognition_regional_convoys = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_recognition_convoys }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_recognition_regional_convoy_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.recognition_regional_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_recognition_regional_political_power = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_recognition_political_power }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_recognition_regional_political_power_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.trade_major_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_trade_major_convoys = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_trade_convoys }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_trade_major_convoy_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.trade_major_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_trade_major_fuel = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_trade_fuel }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_trade_major_fuel_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.trade_regional_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_trade_regional_convoys = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_trade_convoys }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_trade_regional_convoy_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.trade_regional_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_trade_regional_fuel = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_trade_fuel }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_trade_regional_fuel_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.volunteers_major_infantry_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_volunteers_major_infantry_equipment = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_volunteers_infantry_equipment }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_volunteers_major_infantry_equipment_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.volunteers_major_manpower }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_volunteers_major_manpower = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_volunteers_manpower }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_volunteers_major_manpower_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.volunteers_regional_infantry_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_volunteers_regional_infantry_equipment = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_volunteers_infantry_equipment }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_volunteers_regional_infantry_equipment_extra_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_foreign_intervention.volunteers_regional_manpower }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_volunteers_regional_manpower = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_spend = global.black_friday_price_soviet_collapse_foreign_intervention_volunteers_manpower }
+	subtract_from_temp_variable = { black_friday_price_spend = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_foreign_intervention_volunteers_regional_manpower_extra_spend = black_friday_price_spend }
+	# soviet_collapse_kazakhstan_route
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_kazakhstan_route.alash_court_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_kazakhstan_route_alash_court_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_kazakhstan_route_alash_court_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_kazakhstan_route.alash_court_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_kazakhstan_route_alash_court_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_kazakhstan_route_alash_court_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_kazakhstan_route.concession_audit_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_kazakhstan_route_concession_audit_convoys = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_kazakhstan_route_concession_audit_convoys_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_kazakhstan_route.concession_audit_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_kazakhstan_route_concession_audit_fuel = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_kazakhstan_route_concession_audit_fuel_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_kazakhstan_route.concession_audit_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_kazakhstan_route_concession_audit_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_kazakhstan_route_concession_audit_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_kazakhstan_route.mine_guard_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_kazakhstan_route_mine_guard_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_kazakhstan_route_mine_guard_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_kazakhstan_route.mine_guard_infantry_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_kazakhstan_route_mine_guard_infantry_equipment = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_kazakhstan_route_mine_guard_infantry_equipment_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_kazakhstan_route.mine_guard_support_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_kazakhstan_route_mine_guard_support_equipment = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_kazakhstan_route_mine_guard_support_equipment_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_kazakhstan_route.socialist_plan_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_kazakhstan_route_socialist_plan_fuel = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_kazakhstan_route_socialist_plan_fuel_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_kazakhstan_route.socialist_plan_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_kazakhstan_route_socialist_plan_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_kazakhstan_route_socialist_plan_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_kazakhstan_route.socialist_plan_trains }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_kazakhstan_route_socialist_plan_trains = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_kazakhstan_route_socialist_plan_trains_spend = black_friday_price_spend }
+	# soviet_collapse_kmb_balance
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_kmb_balance.export_auction_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_kmb_balance_export_auction_convoys = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_kmb_balance_export_auction_convoys_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_kmb_balance.force_mining_concession_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_kmb_balance_force_mining_concession_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_kmb_balance_force_mining_concession_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_kmb_balance.industrial_tender_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_kmb_balance_industrial_tender_convoys = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_kmb_balance_industrial_tender_convoys_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_kmb_balance.resource_treaty_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_kmb_balance_resource_treaty_convoys = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_kmb_balance_resource_treaty_convoys_spend = black_friday_price_spend }
+	# soviet_collapse_moldova_route
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moldova_route.customs_board_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moldova_route_customs_board_convoys = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moldova_route_customs_board_convoys_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moldova_route.customs_board_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moldova_route_customs_board_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moldova_route_customs_board_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moldova_route.customs_board_trains }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moldova_route_customs_board_trains = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moldova_route_customs_board_trains_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moldova_route.dniester_line_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moldova_route_dniester_line_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moldova_route_dniester_line_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moldova_route.dniester_line_infantry_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moldova_route_dniester_line_infantry_equipment = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moldova_route_dniester_line_infantry_equipment_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moldova_route.dniester_line_support_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moldova_route_dniester_line_support_equipment = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moldova_route_dniester_line_support_equipment_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moldova_route.patronage_limits_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moldova_route_patronage_limits_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moldova_route_patronage_limits_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moldova_route.prut_statute_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moldova_route_prut_statute_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moldova_route_prut_statute_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moldova_route.prut_statute_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moldova_route_prut_statute_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moldova_route_prut_statute_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moldova_route.romanian_mission_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moldova_route_romanian_mission_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moldova_route_romanian_mission_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moldova_route.romanian_mission_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moldova_route_romanian_mission_fuel = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moldova_route_romanian_mission_fuel_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moldova_route.romanian_mission_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moldova_route_romanian_mission_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moldova_route_romanian_mission_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moldova_route.sfat_veto_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moldova_route_sfat_veto_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moldova_route_sfat_veto_political_power_spend = black_friday_price_spend }
+	# soviet_collapse_moscow_reintegration
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moscow_reintegration.federal_compact_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_federal_compact_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_federal_compact_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moscow_reintegration.federal_compact_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_federal_compact_fuel = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_federal_compact_fuel_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moscow_reintegration.federal_compact_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_federal_compact_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_federal_compact_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moscow_reintegration.federal_compact_trains }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_federal_compact_trains = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_federal_compact_train_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moscow_reintegration.loyal_administrator_manpower }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_loyal_administrator_manpower = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_loyal_administrator_manpower_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moscow_reintegration.loyal_administrator_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_loyal_administrator_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_loyal_administrator_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moscow_reintegration.loyal_administrator_support_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_loyal_administrator_support_equipment = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_loyal_administrator_support_equipment_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moscow_reintegration.military_ultimatum_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_military_ultimatum_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_military_ultimatum_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moscow_reintegration.military_ultimatum_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_military_ultimatum_fuel = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_military_ultimatum_fuel_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moscow_reintegration.negotiation_table_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_negotiation_table_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_negotiation_table_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moscow_reintegration.negotiation_table_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_negotiation_table_fuel = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_negotiation_table_fuel_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moscow_reintegration.negotiation_table_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_negotiation_table_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_negotiation_table_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moscow_reintegration.negotiation_table_trains }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_negotiation_table_trains = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_negotiation_table_train_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moscow_reintegration.punitive_operation_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_punitive_operation_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_punitive_operation_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moscow_reintegration.punitive_operation_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_punitive_operation_fuel = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_punitive_operation_fuel_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moscow_reintegration.punitive_operation_infantry_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_punitive_operation_infantry_equipment = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_punitive_operation_infantry_equipment_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moscow_reintegration.union_treaty_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_union_treaty_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_union_treaty_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moscow_reintegration.union_treaty_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_union_treaty_fuel = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_union_treaty_fuel_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moscow_reintegration.union_treaty_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_union_treaty_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_union_treaty_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_moscow_reintegration.union_treaty_trains }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_union_treaty_trains = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_moscow_reintegration_union_treaty_train_spend = black_friday_price_spend }
+	# soviet_collapse_operational_priority
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_operational_priority.chain_compromise_command_power_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_operational_priority_chain_compromise_command_power_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_operational_priority.corridor_compromise_political_power_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_operational_priority_corridor_compromise_political_power_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_operational_priority.settlement_compromise_political_power_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_operational_priority_settlement_compromise_political_power_cost = black_friday_price_payable }
+	# soviet_collapse_regional_faction
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_regional_faction.coordinate_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_coordinate_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_coordinate_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_regional_faction.coordinate_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_coordinate_fuel = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_coordinate_fuel_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_regional_faction.coordinate_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_coordinate_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_coordinate_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_regional_faction.external_mandate_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_external_mandate_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_external_mandate_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_regional_faction.external_mandate_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_external_mandate_fuel = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_external_mandate_fuel_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_regional_faction.external_mandate_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_external_mandate_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_external_mandate_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_regional_faction.found_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_found_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_found_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_regional_faction.found_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_found_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_found_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_regional_faction.goal_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_goal_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_goal_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_regional_faction.invite_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_invite_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_invite_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_regional_faction.league_motor_columns_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_league_motor_columns_fuel = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_league_motor_columns_fuel_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_regional_faction.league_motor_columns_manpower }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_league_motor_columns_manpower = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_league_motor_columns_manpower_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_regional_faction.league_rifle_cadres_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_league_rifle_cadres_fuel = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_league_rifle_cadres_fuel_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_regional_faction.league_rifle_cadres_manpower }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_league_rifle_cadres_manpower = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_league_rifle_cadres_manpower_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_regional_faction.tension_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_tension_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_tension_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_regional_faction.war_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_war_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_war_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_regional_faction.war_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_war_fuel = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_war_fuel_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_regional_faction.war_manpower }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_war_manpower = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_regional_faction_war_manpower_spend = black_friday_price_spend }
+	# soviet_collapse_ukraine_bread_state
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_ukraine_bread_state.bread_line_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_bread_line_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_bread_line_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_ukraine_bread_state.bread_line_infantry_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_bread_line_infantry_equipment = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_bread_line_infantry_equipment_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_ukraine_bread_state.bread_line_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_bread_line_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_bread_line_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_ukraine_bread_state.census_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_census_fuel = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_census_fuel_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_ukraine_bread_state.census_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_census_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_census_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_ukraine_bread_state.census_trains }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_census_trains = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_census_trains_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_ukraine_bread_state.granary_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_granary_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_granary_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_ukraine_bread_state.granary_infantry_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_granary_infantry_equipment = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_granary_infantry_equipment_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_ukraine_bread_state.granary_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_granary_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_granary_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_ukraine_bread_state.granary_support_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_granary_support_equipment = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_granary_support_equipment_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_ukraine_bread_state.last_harvest_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_last_harvest_convoys = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_last_harvest_convoys_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_ukraine_bread_state.last_harvest_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_last_harvest_fuel = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_last_harvest_fuel_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_ukraine_bread_state.last_harvest_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_last_harvest_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_last_harvest_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_ukraine_bread_state.last_harvest_trains }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_last_harvest_trains = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_last_harvest_trains_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_ukraine_bread_state.relief_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_relief_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_relief_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_ukraine_bread_state.relief_trains }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_relief_trains = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_bread_state_relief_trains_spend = black_friday_price_spend }
+	# soviet_collapse_ukraine_league
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_ukraine_league.anti_client_charter_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_league_anti_client_charter_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_league_anti_client_charter_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_ukraine_league.anti_client_charter_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_league_anti_client_charter_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_league_anti_client_charter_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_ukraine_league.arbitration_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_league_arbitration_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_league_arbitration_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_ukraine_league.arbitration_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_league_arbitration_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_league_arbitration_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_ukraine_league.arms_quota_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_league_arms_quota_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_league_arms_quota_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_ukraine_league.black_sea_mission_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_league_black_sea_mission_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_league_black_sea_mission_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_ukraine_league.black_sea_mission_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_league_black_sea_mission_convoys = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_league_black_sea_mission_convoys_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_ukraine_league.black_sea_mission_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_league_black_sea_mission_fuel = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_league_black_sea_mission_fuel_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_ukraine_league.black_sea_mission_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_league_black_sea_mission_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_league_black_sea_mission_political_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_ukraine_league.grain_compact_political_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_league_grain_compact_political_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_ukraine_league_grain_compact_political_power_spend = black_friday_price_spend }
+	# soviet_collapse_uwr_balance
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_uwr_balance.blacksite_overclock_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_balance_blacksite_overclock_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_balance_blacksite_overclock_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_uwr_balance.camp_registry_expansion_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_balance_camp_registry_expansion_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_balance_camp_registry_expansion_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_uwr_balance.field_release_raid_army_xp }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_balance_field_release_raid_army_xp = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_balance_field_release_raid_army_xp_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_uwr_balance.field_release_raid_artillery_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_balance_field_release_raid_artillery_equipment = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_balance_field_release_raid_artillery_equipment_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_uwr_balance.field_release_raid_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_balance_field_release_raid_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_balance_field_release_raid_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_uwr_balance.field_release_raid_infantry_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_balance_field_release_raid_infantry_equipment = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_balance_field_release_raid_infantry_equipment_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_uwr_balance.field_release_raid_manpower }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_balance_field_release_raid_manpower = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_balance_field_release_raid_manpower_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_uwr_balance.field_release_raid_support_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_balance_field_release_raid_support_equipment = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_balance_field_release_raid_support_equipment_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_uwr_balance.prisoner_intake_command_power }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_balance_prisoner_intake_command_power = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_balance_prisoner_intake_command_power_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_uwr_balance.prisoner_intake_infantry_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_balance_prisoner_intake_infantry_equipment = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_balance_prisoner_intake_infantry_equipment_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_uwr_balance.prisoner_intake_manpower }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_balance_prisoner_intake_manpower = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_balance_prisoner_intake_manpower_spend = black_friday_price_spend }
+	set_temp_variable = { black_friday_price_ordinary = constant:soviet_collapse_uwr_balance.prisoner_intake_support_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_balance_prisoner_intake_support_equipment = black_friday_price_payable }
+	set_variable = { global.black_friday_price_soviet_collapse_uwr_balance_prisoner_intake_support_equipment_spend = black_friday_price_spend }
 }
 
 # ANY scope. Input: temp black_friday_price_ratio. Rewrites every registered
@@ -1625,6 +2901,9 @@ black_friday_price_table_refresh_entries = {
 	set_temp_variable = { black_friday_price_ordinary = constant:zombie_prevention.quarantine_pp_cost }
 	black_friday_price_table_quote = yes
 	set_variable = { global.black_friday_price_zombie_prevention_quarantine_pp_cost = black_friday_price_payable }
+
+	# Event 005 Soviet Collapse decision prices
+	black_friday_price_table_refresh_soviet_collapse_entries = yes
 }
 
 # ANY scope. Sets every registered price to the active sale price snapshotted

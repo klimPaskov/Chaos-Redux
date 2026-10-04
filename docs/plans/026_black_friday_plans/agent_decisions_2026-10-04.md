@@ -327,3 +327,27 @@ Civilian and military factory amounts are availability checks and project burden
 Basis: the D15 and D19 cached-cost pattern; the owner's fail-closed estimate context. No AI weight changes; no Event 018 payment is refunded.
 
 Disposition: implemented (source). Live estimate refresh and payment during a sale are `needs_live_game`.
+
+## D21. Event 005 Soviet Collapse charges the sale price
+
+Decision: every Event 005 decision price reads the Black Friday price table (`price_table_version` 9).
+
+- `black_friday_price_table_refresh_soviet_collapse_entries`, called from `black_friday_price_table_refresh_entries`, registers 190 positive amounts as `global.black_friday_price_soviet_collapse_<group>_<key>` and stores, for each `_spend` payment constant of that amount, its negation as `global.black_friday_price_soviet_collapse_<group>_<key>_spend`. The quote helper now also returns that negation (`black_friday_price_spend`), so each of the 288 payment lines in the effects and the 11 in the decisions only swaps the constant for the global.
+- Foreign aid actions charge a base amount plus a regional or major surcharge. The 78 surcharge globals hold the base price minus the tier price, so the base payment plus the surcharge always equals the tier price that the `can_pay_*` trigger required; quoting each part separately could have charged more than the shown and checked price.
+- The 270 resource comparisons in the `can_pay_*` triggers compare against the positive price with an inclusive check (`set_temp_variable` copy, then `NOT = { <resource> < copy }`), replacing the strict `>` checks and the one-below `_gate` constants, so holding exactly the shown amount is enough. The three operational-priority compromises charge the table price through their owner's own negation.
+- Stability and War Support prices use the 1% step. Stability losses without a positive constant (breakaway mobilization and recognition, the press network tiers, emergency mobilization) are registered from their negative constants.
+- Cost texts show the table price: 264 fixed numbers and 51 `[?constant:...]` values in the cost and blocked texts, the 117 foreign aid tier texts behind the `GetSovietCollapseForeign*Cost` getters, the regional faction display values set in `custom_cost_trigger`, and the League formation cost in the breakaway category description.
+- 188 paid decisions credit one achievement family from a hidden block at the end of their completion effect, by the primary paid resource (equipment, trains, convoys, manpower, army experience, command power, fuel, Stability, War Support, then political power).
+- The invalid-target refunds of the three UWR aftermath actions return the native price the decision charged (D10).
+
+Kept at ordinary amounts, with reason:
+- Arms shipments, aid corridor trains, the Ukrainian League arms quota equipment and trains, and the grain compact trains and convoys: the recipient receives them one for one (D11 transfer rule). Their political power still reads the table.
+- Stability floors, division counts, and construction mandate and arsenal quota amounts: requirements or owner meters, not payments.
+- The resources the Soviet objective missions consume on completion: mission objective completion, not a purchase (as in D19).
+- The patronage, coercion, and client cabinet Stability losses: consequences of the action, not its price.
+
+Side effects accepted: the custom splinter payoff effects and the Factory City Belt effect are also called by focuses, so a focus completed during a sale pays the sale price there as well; only decisions credit the achievement. Nine decisions show and check a cost but charge nothing (owner defect, listed in owner_adoption_requests.md); their check and text follow the sale price.
+
+Basis: D11 (constant amounts in the table, one global for display, affordability, and payment) and D10 (refunds return the charged price). No AI weight changes.
+
+Disposition: implemented (source). Live display, payment, and tier surcharges during a sale are `needs_live_game`.

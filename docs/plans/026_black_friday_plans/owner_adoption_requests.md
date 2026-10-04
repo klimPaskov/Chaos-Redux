@@ -264,7 +264,9 @@ Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 101
 
 #### Event 005 Soviet Collapse (custom costs; native costs converted)
 
-The uncommitted invalid-target refunds in `soviet_collapse_dismantle_uwr_aftermath_site`, `soviet_collapse_secure_uwr_aftermath_site`, and `soviet_collapse_exploit_uwr_aftermath_site` (`common/scripted_effects/005_soviet_collapse_effects.txt`) refund the ordinary aftermath constants; when that work lands they must refund the matching `global.black_friday_price_soviet_collapse_uwr_aftermath_*_cost` (agent decision D10).
+Converted (agent decision D21). No Event 005 cost remains queued. The UWR aftermath invalid-target refunds return the charged price (D10). The line list below predates the conversion.
+
+Owner defect for the Event 005 owner: nine decisions show and check a cost but never charge it: `soviet_collapse_write_restored_charter`, `fev_negotiate_japanese_liaison_officers`, `ijx_press_trade_city_claims`, `pra_repair_the_branch_lines`, `pra_raise_mobile_supply_yards`, `pra_drive_the_junction_columns`, `dsc_register_field_hospital_columns`, `dsc_mark_the_unfinished_front_roads`, and `dsc_order_the_dead_army_forward`. Adding the matching payoff payment (for example `soviet_collapse_apply_custom_splinter_mobilize_signature_forces` or `soviet_collapse_apply_custom_splinter_consolidate_claim`, which already read the sale price) is an owner balance decision.
 
 Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 198.
 

@@ -23,6 +23,18 @@ Event 005 is a major Soviet crisis started through `chaosx.nr5.1` and visible ev
 
 The historical asset archive `docs/assets/005_soviet_union_collapse/` was deleted by Git commit `79bb425aa6`. Retain that path for provenance only. The current `docs/assets/005_soviet_collapse/` folder contains the 2026-09-01 audio evidence package, while runtime assets remain under the `gfx/`, `interface/`, `music/`, and `sound/` paths above.
 
+## Black Friday sale prices
+
+During a Black Friday sale (Event 026) every Event 005 decision price is charged at the sale price (agent decision D21 in `docs/plans/026_black_friday_plans/agent_decisions_2026-10-04.md`).
+Each positive cost amount is registered in `black_friday_price_table_refresh_soviet_collapse_entries` (`common/scripted_effects/026_black_friday_price_table_effects.txt`) as `global.black_friday_price_soviet_collapse_<group>_<key>`, and each `_spend` payment constant has a matching negative `global.black_friday_price_soviet_collapse_<group>_<key>_spend`.
+The `can_pay_*` triggers compare the resource against the positive price with an inclusive check, so holding exactly the shown amount is enough, the payment effects add the negative global, and the cost texts, the foreign aid tier texts, and the regional faction display values read the same price.
+Foreign aid tier surcharges hold the base price minus the tier price, so the base payment plus the surcharge always equals the tier price the trigger required.
+Each paid decision credits one Black Friday achievement family from a hidden block at the end of its completion effect.
+
+Kept at ordinary amounts: arms shipments, aid corridor trains, and the Ukrainian League arms quota equipment and grain compact trains and convoys, which the recipient receives one for one; Stability floors, division and mandate requirements; mission completion consumption of the Soviet objectives; the patronage, coercion, and client cabinet Stability penalties.
+The shared splinter effects that focuses also call charge the sale price there too, because the price lives in the payment line; only decisions credit the achievement.
+Nine decisions show a cost text and check it but charge nothing: `soviet_collapse_write_restored_charter`, `fev_negotiate_japanese_liaison_officers`, `ijx_press_trade_city_claims`, `pra_repair_the_branch_lines`, `pra_raise_mobile_supply_yards`, `pra_drive_the_junction_columns`, `dsc_register_field_hospital_columns`, `dsc_mark_the_unfinished_front_roads`, and `dsc_order_the_dead_army_forward`. Their check and text follow the sale price; the missing charge is listed for the owner in `docs/plans/026_black_friday_plans/owner_adoption_requests.md`.
+
 ## Event 023 custody bridge
 
 When Event 005 releases a state, each Event 023-registered storage site is snapshotted immediately before the release effect transfers ownership or control. The snapshot records operational, assigned, reserved, transferred, dismantled, missing, holder, owner, controller, custody, and reconciliation values for that exact state.
