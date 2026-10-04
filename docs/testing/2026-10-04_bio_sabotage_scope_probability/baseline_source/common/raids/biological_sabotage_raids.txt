@@ -1,0 +1,1645 @@
+# ============================================================================
+# CHAOS REDUX - NATIVE BIOLOGICAL SUPPLY-CHAIN RAIDS
+# ============================================================================
+# Overview:
+# - Twelve exact-state land raids replace the retired agent-by-doctrine
+#   state-targeted sabotage decisions.
+# - Each raid reserves one agent-specific payload archetype plus support
+#   equipment. The native timer is the complete preparation.
+# - Four native outcomes enter one shared food/water/medical lifecycle adapter.
+# - Values below mirror biological_sabotage_constants.txt because raid database
+#   fields do not accept script-constant tokens.
+# ============================================================================
+
+@BIO_SABOTAGE_NATIVE_ANTHRAX_BASE_DAYS = 160
+@BIO_SABOTAGE_NATIVE_ANTHRAX_THEATER_DAYS = 136
+@BIO_SABOTAGE_NATIVE_ANTHRAX_TERMINAL_DAYS = 120
+@BIO_SABOTAGE_NATIVE_PLAGUE_BASE_DAYS = 240
+@BIO_SABOTAGE_NATIVE_PLAGUE_THEATER_DAYS = 204
+@BIO_SABOTAGE_NATIVE_PLAGUE_TERMINAL_DAYS = 180
+@BIO_SABOTAGE_NATIVE_TULAREMIA_BASE_DAYS = 180
+@BIO_SABOTAGE_NATIVE_TULAREMIA_THEATER_DAYS = 153
+@BIO_SABOTAGE_NATIVE_TULAREMIA_TERMINAL_DAYS = 135
+@BIO_SABOTAGE_NATIVE_SMALLPOX_BASE_DAYS = 300
+@BIO_SABOTAGE_NATIVE_SMALLPOX_THEATER_DAYS = 255
+@BIO_SABOTAGE_NATIVE_SMALLPOX_TERMINAL_DAYS = 225
+@BIO_SABOTAGE_NATIVE_BASE_COOLDOWN = 60
+@BIO_SABOTAGE_NATIVE_THEATER_COOLDOWN = 45
+@BIO_SABOTAGE_NATIVE_TERMINAL_COOLDOWN = 30
+@BIO_SABOTAGE_NATIVE_ANTHRAX_PAYLOAD = 10
+@BIO_SABOTAGE_NATIVE_PLAGUE_PAYLOAD = 12
+@BIO_SABOTAGE_NATIVE_TULAREMIA_PAYLOAD = 10
+@BIO_SABOTAGE_NATIVE_SMALLPOX_PAYLOAD = 8
+@BIO_SABOTAGE_NATIVE_ANTHRAX_SUPPORT = 40
+@BIO_SABOTAGE_NATIVE_PLAGUE_SUPPORT = 50
+@BIO_SABOTAGE_NATIVE_TULAREMIA_SUPPORT = 40
+@BIO_SABOTAGE_NATIVE_SMALLPOX_SUPPORT = 60
+@BIO_SABOTAGE_NATIVE_ANTHRAX_CP = 12
+@BIO_SABOTAGE_NATIVE_PLAGUE_CP = 15
+@BIO_SABOTAGE_NATIVE_TULAREMIA_CP = 12
+@BIO_SABOTAGE_NATIVE_SMALLPOX_CP = 20
+@BIO_SABOTAGE_NATIVE_BASE_SUCCESS = 0.55
+@BIO_SABOTAGE_NATIVE_THEATER_SUCCESS = 0.60
+@BIO_SABOTAGE_NATIVE_TERMINAL_SUCCESS = 0.65
+@BIO_SABOTAGE_NATIVE_INTEGRATED_SUCCESS = 0.10
+@BIO_SABOTAGE_NATIVE_FULL_SUCCESS = 0.15
+@BIO_SABOTAGE_NATIVE_DESIGNER_SUCCESS = 0.15
+@BIO_SABOTAGE_NATIVE_CRITICAL = 0.12
+@BIO_SABOTAGE_NATIVE_DISASTER = 0.10
+@BIO_SABOTAGE_NATIVE_AI_MIN_SUCCESS = 0.35
+@BIO_SABOTAGE_NATIVE_FAILURE_ORG_DAMAGE = 0.60
+@BIO_SABOTAGE_NATIVE_FAILURE_STR_DAMAGE = 0.30
+@BIO_SABOTAGE_NATIVE_LIMITED_ORG_DAMAGE = 0.35
+@BIO_SABOTAGE_NATIVE_LIMITED_STR_DAMAGE = 0.10
+@BIO_SABOTAGE_NATIVE_SUCCESS_ORG_DAMAGE = 0.20
+@BIO_SABOTAGE_NATIVE_SUCCESS_STR_DAMAGE = 0.05
+@BIO_SABOTAGE_NATIVE_CRITICAL_ORG_DAMAGE = 0.10
+@BIO_SABOTAGE_NATIVE_CRITICAL_STR_DAMAGE = 0.02
+@BIO_SABOTAGE_NATIVE_FAILURE_XP = 0.05
+@BIO_SABOTAGE_NATIVE_LIMITED_XP = 0.15
+@BIO_SABOTAGE_NATIVE_SUCCESS_XP = 0.25
+@BIO_SABOTAGE_NATIVE_CRITICAL_XP = 0.35
+
+types = {
+	bio_sabotage_anthrax_base = {
+		days_to_prepare = @BIO_SABOTAGE_NATIVE_ANTHRAX_BASE_DAYS
+		days_re_enable = @BIO_SABOTAGE_NATIVE_BASE_COOLDOWN
+		fire_only_once = no
+		ai_min_success_chance = @BIO_SABOTAGE_NATIVE_AI_MIN_SUCCESS
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_anthrax_strike
+		equipment_icon = GFX_anthrax_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_biological_sabotage_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @BIO_SABOTAGE_NATIVE_ANTHRAX_CP
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:bio_sabotage_ai.anthrax_base
+			modifier = { factor = constant:bio_sabotage_ai.disabled var:target_state = { NOT = { bio_sabotage_ai_may_target_state = yes } } }
+			modifier = { factor = constant:bio_sabotage_ai.retaliation_factor var:target_state = { bio_sabotage_ai_is_exact_retaliation_target = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.first_use_factor ROOT = { cbrn_ai_route_allows_first_use = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.unrestricted_factor ROOT = { cbrn_ai_route_allows_unrestricted_use = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.prepared_program_factor ROOT = { bio_sabotage_ai_has_safe_domestic_program = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.desperate_factor ROOT = { bio_sabotage_ai_is_desperate_route = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.defensive_profile_factor ROOT = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.sanction_vulnerability_factor ROOT = { check_variable = { var = condemnation_total value = constant:bio_sabotage_ai.high_condemnation_threshold compare = greater_than_or_equals } check_variable = { var = condemnation_import_vulnerability value = constant:bio_sabotage_ai.high_import_vulnerability_threshold compare = greater_than_or_equals } } }
+			modifier = { factor = constant:bio_sabotage_ai.anthrax_target_factor var:target_state = { bio_sabotage_anthrax_target_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.active_outbreak_factor var:target_state = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.japan_china_factor var:target_state = { bio_sabotage_ai_is_japan_china_state = yes } }
+		}
+		visible = { is_special_project_completed = sp:anthrax_bomb bio_sabotage_uses_base_preparation = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_anthrax_target_tooltip
+				hidden_trigger = { bio_sabotage_raid_target_from_is_valid = yes var:target_state = { bio_sabotage_anthrax_target_state = yes } }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_anthrax_available_tooltip
+				hidden_trigger = { bio_sabotage_raid_can_prepare_against_from = yes bio_sabotage_actor_has_anthrax_cost = yes var:target_state = { bio_sabotage_anthrax_target_state = yes } }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_anthrax_launch_tooltip
+				hidden_trigger = { bio_sabotage_raid_can_launch_against_from = yes var:target_state = { bio_sabotage_anthrax_target_state = yes } }
+			}
+		}
+		target_type = { state = { bio_sabotage_anthrax_target_state = yes } }
+		starting_point = { building_types = { supply_node } }
+		unit_requirements = { battalion_types = { infantry = { min = 3 } } }
+		unit_requirements = { battalion_types = { motorized = { min = 3 } } }
+		unit_requirements = { battalion_types = { mechanized = { min = 3 } } }
+		essential_equipment = { anthrax_bomb_equipment = @BIO_SABOTAGE_NATIVE_ANTHRAX_PAYLOAD support_equipment = @BIO_SABOTAGE_NATIVE_ANTHRAX_SUPPORT }
+		success_factors = {
+			success = {
+				base = @BIO_SABOTAGE_NATIVE_BASE_SUCCESS
+				bio_sabotage_integrated_readiness = { scope = country formula = { base = 0 modifier = { cbrn_country_has_integrated_readiness = yes NOT = { cbrn_country_has_full_readiness = yes } add = 1 } } weight = @BIO_SABOTAGE_NATIVE_INTEGRATED_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+				bio_sabotage_full_readiness = { scope = country formula = { base = 0 modifier = { cbrn_country_has_full_readiness = yes add = 1 } } weight = @BIO_SABOTAGE_NATIVE_FULL_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+				bio_sabotage_designer = { scope = country formula = { base = 0 modifier = { cbrn_designer_has_stable_weaponization = yes add = 1 } } weight = @BIO_SABOTAGE_NATIVE_DESIGNER_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+			}
+			critical = { base = @BIO_SABOTAGE_NATIVE_CRITICAL }
+			disaster = { base = @BIO_SABOTAGE_NATIVE_DISASTER }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_failure_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_anthrax }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_failure country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_FAILURE_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_FAILURE_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_FAILURE_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_failure_target_tt } }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_partial_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_anthrax }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_limited_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_LIMITED_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_LIMITED_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_LIMITED_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_partial_target_tt } }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_success_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_anthrax }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_SUCCESS_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_SUCCESS_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_SUCCESS_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_critical_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_anthrax }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_critical_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_CRITICAL_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_CRITICAL_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_CRITICAL_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_critical_target_tt } }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+	bio_sabotage_anthrax_theater = {
+		days_to_prepare = @BIO_SABOTAGE_NATIVE_ANTHRAX_THEATER_DAYS
+		days_re_enable = @BIO_SABOTAGE_NATIVE_THEATER_COOLDOWN
+		fire_only_once = no
+		ai_min_success_chance = @BIO_SABOTAGE_NATIVE_AI_MIN_SUCCESS
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_anthrax_strike
+		equipment_icon = GFX_anthrax_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_biological_sabotage_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @BIO_SABOTAGE_NATIVE_ANTHRAX_CP
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:bio_sabotage_ai.anthrax_base
+			modifier = { factor = constant:bio_sabotage_ai.theater_doctrine_factor always = yes }
+			modifier = { factor = constant:bio_sabotage_ai.disabled var:target_state = { NOT = { bio_sabotage_ai_may_target_state = yes } } }
+			modifier = { factor = constant:bio_sabotage_ai.retaliation_factor var:target_state = { bio_sabotage_ai_is_exact_retaliation_target = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.first_use_factor ROOT = { cbrn_ai_route_allows_first_use = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.unrestricted_factor ROOT = { cbrn_ai_route_allows_unrestricted_use = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.prepared_program_factor ROOT = { bio_sabotage_ai_has_safe_domestic_program = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.desperate_factor ROOT = { bio_sabotage_ai_is_desperate_route = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.defensive_profile_factor ROOT = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.sanction_vulnerability_factor ROOT = { check_variable = { var = condemnation_total value = constant:bio_sabotage_ai.high_condemnation_threshold compare = greater_than_or_equals } check_variable = { var = condemnation_import_vulnerability value = constant:bio_sabotage_ai.high_import_vulnerability_threshold compare = greater_than_or_equals } } }
+			modifier = { factor = constant:bio_sabotage_ai.anthrax_target_factor var:target_state = { bio_sabotage_anthrax_target_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.active_outbreak_factor var:target_state = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.japan_china_factor var:target_state = { bio_sabotage_ai_is_japan_china_state = yes } }
+		}
+		visible = { is_special_project_completed = sp:anthrax_bomb bio_sabotage_uses_theater_preparation = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_anthrax_target_tooltip
+				hidden_trigger = { bio_sabotage_raid_target_from_is_valid = yes var:target_state = { bio_sabotage_anthrax_target_state = yes } }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_anthrax_available_tooltip
+				hidden_trigger = { bio_sabotage_raid_can_prepare_against_from = yes bio_sabotage_actor_has_anthrax_cost = yes var:target_state = { bio_sabotage_anthrax_target_state = yes } }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_anthrax_launch_tooltip
+				hidden_trigger = { bio_sabotage_raid_can_launch_against_from = yes var:target_state = { bio_sabotage_anthrax_target_state = yes } }
+			}
+		}
+		target_type = { state = { bio_sabotage_anthrax_target_state = yes } }
+		starting_point = { building_types = { supply_node } }
+		unit_requirements = { battalion_types = { infantry = { min = 3 } } }
+		unit_requirements = { battalion_types = { motorized = { min = 3 } } }
+		unit_requirements = { battalion_types = { mechanized = { min = 3 } } }
+		essential_equipment = { anthrax_bomb_equipment = @BIO_SABOTAGE_NATIVE_ANTHRAX_PAYLOAD support_equipment = @BIO_SABOTAGE_NATIVE_ANTHRAX_SUPPORT }
+		success_factors = {
+			success = {
+				base = @BIO_SABOTAGE_NATIVE_THEATER_SUCCESS
+				bio_sabotage_integrated_readiness = { scope = country formula = { base = 0 modifier = { cbrn_country_has_integrated_readiness = yes NOT = { cbrn_country_has_full_readiness = yes } add = 1 } } weight = @BIO_SABOTAGE_NATIVE_INTEGRATED_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+				bio_sabotage_full_readiness = { scope = country formula = { base = 0 modifier = { cbrn_country_has_full_readiness = yes add = 1 } } weight = @BIO_SABOTAGE_NATIVE_FULL_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+				bio_sabotage_designer = { scope = country formula = { base = 0 modifier = { cbrn_designer_has_stable_weaponization = yes add = 1 } } weight = @BIO_SABOTAGE_NATIVE_DESIGNER_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+			}
+			critical = { base = @BIO_SABOTAGE_NATIVE_CRITICAL }
+			disaster = { base = @BIO_SABOTAGE_NATIVE_DISASTER }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_failure_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_anthrax }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_failure country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_FAILURE_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_FAILURE_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_FAILURE_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_failure_target_tt } }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_partial_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_anthrax }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_limited_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_LIMITED_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_LIMITED_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_LIMITED_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_partial_target_tt } }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_success_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_anthrax }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_SUCCESS_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_SUCCESS_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_SUCCESS_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_critical_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_anthrax }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_critical_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_CRITICAL_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_CRITICAL_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_CRITICAL_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_critical_target_tt } }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+	bio_sabotage_anthrax_terminal = {
+		days_to_prepare = @BIO_SABOTAGE_NATIVE_ANTHRAX_TERMINAL_DAYS
+		days_re_enable = @BIO_SABOTAGE_NATIVE_TERMINAL_COOLDOWN
+		fire_only_once = no
+		ai_min_success_chance = @BIO_SABOTAGE_NATIVE_AI_MIN_SUCCESS
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_anthrax_strike
+		equipment_icon = GFX_anthrax_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_biological_sabotage_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @BIO_SABOTAGE_NATIVE_ANTHRAX_CP
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:bio_sabotage_ai.anthrax_base
+			modifier = { factor = constant:bio_sabotage_ai.terminal_doctrine_factor always = yes }
+			modifier = { factor = constant:bio_sabotage_ai.disabled var:target_state = { NOT = { bio_sabotage_ai_may_target_state = yes } } }
+			modifier = { factor = constant:bio_sabotage_ai.retaliation_factor var:target_state = { bio_sabotage_ai_is_exact_retaliation_target = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.first_use_factor ROOT = { cbrn_ai_route_allows_first_use = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.unrestricted_factor ROOT = { cbrn_ai_route_allows_unrestricted_use = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.prepared_program_factor ROOT = { bio_sabotage_ai_has_safe_domestic_program = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.desperate_factor ROOT = { bio_sabotage_ai_is_desperate_route = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.defensive_profile_factor ROOT = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.sanction_vulnerability_factor ROOT = { check_variable = { var = condemnation_total value = constant:bio_sabotage_ai.high_condemnation_threshold compare = greater_than_or_equals } check_variable = { var = condemnation_import_vulnerability value = constant:bio_sabotage_ai.high_import_vulnerability_threshold compare = greater_than_or_equals } } }
+			modifier = { factor = constant:bio_sabotage_ai.anthrax_target_factor var:target_state = { bio_sabotage_anthrax_target_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.active_outbreak_factor var:target_state = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.japan_china_factor var:target_state = { bio_sabotage_ai_is_japan_china_state = yes } }
+		}
+		visible = { is_special_project_completed = sp:anthrax_bomb bio_sabotage_uses_terminal_preparation = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_anthrax_target_tooltip
+				hidden_trigger = { bio_sabotage_raid_target_from_is_valid = yes var:target_state = { bio_sabotage_anthrax_target_state = yes } }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_anthrax_available_tooltip
+				hidden_trigger = { bio_sabotage_raid_can_prepare_against_from = yes bio_sabotage_actor_has_anthrax_cost = yes var:target_state = { bio_sabotage_anthrax_target_state = yes } }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_anthrax_launch_tooltip
+				hidden_trigger = { bio_sabotage_raid_can_launch_against_from = yes var:target_state = { bio_sabotage_anthrax_target_state = yes } }
+			}
+		}
+		target_type = { state = { bio_sabotage_anthrax_target_state = yes } }
+		starting_point = { building_types = { supply_node } }
+		unit_requirements = { battalion_types = { infantry = { min = 3 } } }
+		unit_requirements = { battalion_types = { motorized = { min = 3 } } }
+		unit_requirements = { battalion_types = { mechanized = { min = 3 } } }
+		essential_equipment = { anthrax_bomb_equipment = @BIO_SABOTAGE_NATIVE_ANTHRAX_PAYLOAD support_equipment = @BIO_SABOTAGE_NATIVE_ANTHRAX_SUPPORT }
+		success_factors = {
+			success = {
+				base = @BIO_SABOTAGE_NATIVE_TERMINAL_SUCCESS
+				bio_sabotage_integrated_readiness = { scope = country formula = { base = 0 modifier = { cbrn_country_has_integrated_readiness = yes NOT = { cbrn_country_has_full_readiness = yes } add = 1 } } weight = @BIO_SABOTAGE_NATIVE_INTEGRATED_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+				bio_sabotage_full_readiness = { scope = country formula = { base = 0 modifier = { cbrn_country_has_full_readiness = yes add = 1 } } weight = @BIO_SABOTAGE_NATIVE_FULL_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+				bio_sabotage_designer = { scope = country formula = { base = 0 modifier = { cbrn_designer_has_stable_weaponization = yes add = 1 } } weight = @BIO_SABOTAGE_NATIVE_DESIGNER_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+			}
+			critical = { base = @BIO_SABOTAGE_NATIVE_CRITICAL }
+			disaster = { base = @BIO_SABOTAGE_NATIVE_DISASTER }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_failure_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_anthrax }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_failure country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_FAILURE_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_FAILURE_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_FAILURE_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_failure_target_tt } }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_partial_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_anthrax }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_limited_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_LIMITED_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_LIMITED_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_LIMITED_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_partial_target_tt } }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_success_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_anthrax }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_SUCCESS_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_SUCCESS_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_SUCCESS_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_critical_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_anthrax }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_critical_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_CRITICAL_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_CRITICAL_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_CRITICAL_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_critical_target_tt } }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+	bio_sabotage_plague_base = {
+		days_to_prepare = @BIO_SABOTAGE_NATIVE_PLAGUE_BASE_DAYS
+		days_re_enable = @BIO_SABOTAGE_NATIVE_BASE_COOLDOWN
+		fire_only_once = no
+		ai_min_success_chance = @BIO_SABOTAGE_NATIVE_AI_MIN_SUCCESS
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_plague_strike
+		equipment_icon = GFX_plague_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_biological_sabotage_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @BIO_SABOTAGE_NATIVE_PLAGUE_CP
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:bio_sabotage_ai.plague_base
+			modifier = { factor = constant:bio_sabotage_ai.disabled var:target_state = { NOT = { bio_sabotage_ai_may_target_state = yes } } }
+			modifier = { factor = constant:bio_sabotage_ai.retaliation_factor var:target_state = { bio_sabotage_ai_is_exact_retaliation_target = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.first_use_factor ROOT = { cbrn_ai_route_allows_first_use = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.unrestricted_factor ROOT = { cbrn_ai_route_allows_unrestricted_use = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.prepared_program_factor ROOT = { bio_sabotage_ai_has_safe_domestic_program = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.desperate_factor ROOT = { bio_sabotage_ai_is_desperate_route = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.defensive_profile_factor ROOT = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.sanction_vulnerability_factor ROOT = { check_variable = { var = condemnation_total value = constant:bio_sabotage_ai.high_condemnation_threshold compare = greater_than_or_equals } check_variable = { var = condemnation_import_vulnerability value = constant:bio_sabotage_ai.high_import_vulnerability_threshold compare = greater_than_or_equals } } }
+			modifier = { factor = constant:bio_sabotage_ai.plague_target_factor var:target_state = { bio_sabotage_plague_target_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.active_outbreak_factor var:target_state = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.japan_china_factor var:target_state = { bio_sabotage_ai_is_japan_china_state = yes } }
+		}
+		visible = { is_special_project_completed = sp:plague_bomb bio_sabotage_uses_base_preparation = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_plague_target_tooltip
+				hidden_trigger = { bio_sabotage_raid_target_from_is_valid = yes var:target_state = { bio_sabotage_plague_target_state = yes } }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_plague_available_tooltip
+				hidden_trigger = { bio_sabotage_raid_can_prepare_against_from = yes bio_sabotage_actor_has_plague_cost = yes var:target_state = { bio_sabotage_plague_target_state = yes } }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_plague_launch_tooltip
+				hidden_trigger = { bio_sabotage_raid_can_launch_against_from = yes var:target_state = { bio_sabotage_plague_target_state = yes } }
+			}
+		}
+		target_type = { state = { bio_sabotage_plague_target_state = yes } }
+		starting_point = { building_types = { supply_node } }
+		unit_requirements = { battalion_types = { infantry = { min = 3 } } }
+		unit_requirements = { battalion_types = { motorized = { min = 3 } } }
+		unit_requirements = { battalion_types = { mechanized = { min = 3 } } }
+		essential_equipment = { plague_bomb_equipment = @BIO_SABOTAGE_NATIVE_PLAGUE_PAYLOAD support_equipment = @BIO_SABOTAGE_NATIVE_PLAGUE_SUPPORT }
+		success_factors = {
+			success = {
+				base = @BIO_SABOTAGE_NATIVE_BASE_SUCCESS
+				bio_sabotage_integrated_readiness = { scope = country formula = { base = 0 modifier = { cbrn_country_has_integrated_readiness = yes NOT = { cbrn_country_has_full_readiness = yes } add = 1 } } weight = @BIO_SABOTAGE_NATIVE_INTEGRATED_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+				bio_sabotage_full_readiness = { scope = country formula = { base = 0 modifier = { cbrn_country_has_full_readiness = yes add = 1 } } weight = @BIO_SABOTAGE_NATIVE_FULL_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+				bio_sabotage_designer = { scope = country formula = { base = 0 modifier = { cbrn_designer_has_stable_weaponization = yes add = 1 } } weight = @BIO_SABOTAGE_NATIVE_DESIGNER_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+			}
+			critical = { base = @BIO_SABOTAGE_NATIVE_CRITICAL }
+			disaster = { base = @BIO_SABOTAGE_NATIVE_DISASTER }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_failure_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_plague }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_failure country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_FAILURE_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_FAILURE_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_FAILURE_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_failure_target_tt } }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_partial_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_plague }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_limited_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_LIMITED_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_LIMITED_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_LIMITED_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_partial_target_tt } }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_success_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_plague }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_SUCCESS_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_SUCCESS_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_SUCCESS_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_critical_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_plague }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_critical_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_CRITICAL_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_CRITICAL_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_CRITICAL_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_critical_target_tt } }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+	bio_sabotage_plague_theater = {
+		days_to_prepare = @BIO_SABOTAGE_NATIVE_PLAGUE_THEATER_DAYS
+		days_re_enable = @BIO_SABOTAGE_NATIVE_THEATER_COOLDOWN
+		fire_only_once = no
+		ai_min_success_chance = @BIO_SABOTAGE_NATIVE_AI_MIN_SUCCESS
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_plague_strike
+		equipment_icon = GFX_plague_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_biological_sabotage_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @BIO_SABOTAGE_NATIVE_PLAGUE_CP
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:bio_sabotage_ai.plague_base
+			modifier = { factor = constant:bio_sabotage_ai.theater_doctrine_factor always = yes }
+			modifier = { factor = constant:bio_sabotage_ai.disabled var:target_state = { NOT = { bio_sabotage_ai_may_target_state = yes } } }
+			modifier = { factor = constant:bio_sabotage_ai.retaliation_factor var:target_state = { bio_sabotage_ai_is_exact_retaliation_target = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.first_use_factor ROOT = { cbrn_ai_route_allows_first_use = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.unrestricted_factor ROOT = { cbrn_ai_route_allows_unrestricted_use = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.prepared_program_factor ROOT = { bio_sabotage_ai_has_safe_domestic_program = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.desperate_factor ROOT = { bio_sabotage_ai_is_desperate_route = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.defensive_profile_factor ROOT = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.sanction_vulnerability_factor ROOT = { check_variable = { var = condemnation_total value = constant:bio_sabotage_ai.high_condemnation_threshold compare = greater_than_or_equals } check_variable = { var = condemnation_import_vulnerability value = constant:bio_sabotage_ai.high_import_vulnerability_threshold compare = greater_than_or_equals } } }
+			modifier = { factor = constant:bio_sabotage_ai.plague_target_factor var:target_state = { bio_sabotage_plague_target_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.active_outbreak_factor var:target_state = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.japan_china_factor var:target_state = { bio_sabotage_ai_is_japan_china_state = yes } }
+		}
+		visible = { is_special_project_completed = sp:plague_bomb bio_sabotage_uses_theater_preparation = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_plague_target_tooltip
+				hidden_trigger = { bio_sabotage_raid_target_from_is_valid = yes var:target_state = { bio_sabotage_plague_target_state = yes } }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_plague_available_tooltip
+				hidden_trigger = { bio_sabotage_raid_can_prepare_against_from = yes bio_sabotage_actor_has_plague_cost = yes var:target_state = { bio_sabotage_plague_target_state = yes } }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_plague_launch_tooltip
+				hidden_trigger = { bio_sabotage_raid_can_launch_against_from = yes var:target_state = { bio_sabotage_plague_target_state = yes } }
+			}
+		}
+		target_type = { state = { bio_sabotage_plague_target_state = yes } }
+		starting_point = { building_types = { supply_node } }
+		unit_requirements = { battalion_types = { infantry = { min = 3 } } }
+		unit_requirements = { battalion_types = { motorized = { min = 3 } } }
+		unit_requirements = { battalion_types = { mechanized = { min = 3 } } }
+		essential_equipment = { plague_bomb_equipment = @BIO_SABOTAGE_NATIVE_PLAGUE_PAYLOAD support_equipment = @BIO_SABOTAGE_NATIVE_PLAGUE_SUPPORT }
+		success_factors = {
+			success = {
+				base = @BIO_SABOTAGE_NATIVE_THEATER_SUCCESS
+				bio_sabotage_integrated_readiness = { scope = country formula = { base = 0 modifier = { cbrn_country_has_integrated_readiness = yes NOT = { cbrn_country_has_full_readiness = yes } add = 1 } } weight = @BIO_SABOTAGE_NATIVE_INTEGRATED_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+				bio_sabotage_full_readiness = { scope = country formula = { base = 0 modifier = { cbrn_country_has_full_readiness = yes add = 1 } } weight = @BIO_SABOTAGE_NATIVE_FULL_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+				bio_sabotage_designer = { scope = country formula = { base = 0 modifier = { cbrn_designer_has_stable_weaponization = yes add = 1 } } weight = @BIO_SABOTAGE_NATIVE_DESIGNER_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+			}
+			critical = { base = @BIO_SABOTAGE_NATIVE_CRITICAL }
+			disaster = { base = @BIO_SABOTAGE_NATIVE_DISASTER }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_failure_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_plague }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_failure country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_FAILURE_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_FAILURE_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_FAILURE_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_failure_target_tt } }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_partial_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_plague }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_limited_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_LIMITED_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_LIMITED_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_LIMITED_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_partial_target_tt } }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_success_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_plague }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_SUCCESS_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_SUCCESS_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_SUCCESS_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_critical_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_plague }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_critical_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_CRITICAL_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_CRITICAL_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_CRITICAL_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_critical_target_tt } }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+	bio_sabotage_plague_terminal = {
+		days_to_prepare = @BIO_SABOTAGE_NATIVE_PLAGUE_TERMINAL_DAYS
+		days_re_enable = @BIO_SABOTAGE_NATIVE_TERMINAL_COOLDOWN
+		fire_only_once = no
+		ai_min_success_chance = @BIO_SABOTAGE_NATIVE_AI_MIN_SUCCESS
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_plague_strike
+		equipment_icon = GFX_plague_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_biological_sabotage_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @BIO_SABOTAGE_NATIVE_PLAGUE_CP
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:bio_sabotage_ai.plague_base
+			modifier = { factor = constant:bio_sabotage_ai.terminal_doctrine_factor always = yes }
+			modifier = { factor = constant:bio_sabotage_ai.disabled var:target_state = { NOT = { bio_sabotage_ai_may_target_state = yes } } }
+			modifier = { factor = constant:bio_sabotage_ai.retaliation_factor var:target_state = { bio_sabotage_ai_is_exact_retaliation_target = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.first_use_factor ROOT = { cbrn_ai_route_allows_first_use = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.unrestricted_factor ROOT = { cbrn_ai_route_allows_unrestricted_use = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.prepared_program_factor ROOT = { bio_sabotage_ai_has_safe_domestic_program = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.desperate_factor ROOT = { bio_sabotage_ai_is_desperate_route = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.defensive_profile_factor ROOT = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.sanction_vulnerability_factor ROOT = { check_variable = { var = condemnation_total value = constant:bio_sabotage_ai.high_condemnation_threshold compare = greater_than_or_equals } check_variable = { var = condemnation_import_vulnerability value = constant:bio_sabotage_ai.high_import_vulnerability_threshold compare = greater_than_or_equals } } }
+			modifier = { factor = constant:bio_sabotage_ai.plague_target_factor var:target_state = { bio_sabotage_plague_target_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.active_outbreak_factor var:target_state = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.japan_china_factor var:target_state = { bio_sabotage_ai_is_japan_china_state = yes } }
+		}
+		visible = { is_special_project_completed = sp:plague_bomb bio_sabotage_uses_terminal_preparation = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_plague_target_tooltip
+				hidden_trigger = { bio_sabotage_raid_target_from_is_valid = yes var:target_state = { bio_sabotage_plague_target_state = yes } }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_plague_available_tooltip
+				hidden_trigger = { bio_sabotage_raid_can_prepare_against_from = yes bio_sabotage_actor_has_plague_cost = yes var:target_state = { bio_sabotage_plague_target_state = yes } }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_plague_launch_tooltip
+				hidden_trigger = { bio_sabotage_raid_can_launch_against_from = yes var:target_state = { bio_sabotage_plague_target_state = yes } }
+			}
+		}
+		target_type = { state = { bio_sabotage_plague_target_state = yes } }
+		starting_point = { building_types = { supply_node } }
+		unit_requirements = { battalion_types = { infantry = { min = 3 } } }
+		unit_requirements = { battalion_types = { motorized = { min = 3 } } }
+		unit_requirements = { battalion_types = { mechanized = { min = 3 } } }
+		essential_equipment = { plague_bomb_equipment = @BIO_SABOTAGE_NATIVE_PLAGUE_PAYLOAD support_equipment = @BIO_SABOTAGE_NATIVE_PLAGUE_SUPPORT }
+		success_factors = {
+			success = {
+				base = @BIO_SABOTAGE_NATIVE_TERMINAL_SUCCESS
+				bio_sabotage_integrated_readiness = { scope = country formula = { base = 0 modifier = { cbrn_country_has_integrated_readiness = yes NOT = { cbrn_country_has_full_readiness = yes } add = 1 } } weight = @BIO_SABOTAGE_NATIVE_INTEGRATED_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+				bio_sabotage_full_readiness = { scope = country formula = { base = 0 modifier = { cbrn_country_has_full_readiness = yes add = 1 } } weight = @BIO_SABOTAGE_NATIVE_FULL_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+				bio_sabotage_designer = { scope = country formula = { base = 0 modifier = { cbrn_designer_has_stable_weaponization = yes add = 1 } } weight = @BIO_SABOTAGE_NATIVE_DESIGNER_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+			}
+			critical = { base = @BIO_SABOTAGE_NATIVE_CRITICAL }
+			disaster = { base = @BIO_SABOTAGE_NATIVE_DISASTER }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_failure_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_plague }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_failure country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_FAILURE_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_FAILURE_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_FAILURE_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_failure_target_tt } }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_partial_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_plague }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_limited_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_LIMITED_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_LIMITED_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_LIMITED_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_partial_target_tt } }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_success_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_plague }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_SUCCESS_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_SUCCESS_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_SUCCESS_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_critical_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_plague }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_critical_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_CRITICAL_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_CRITICAL_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_CRITICAL_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_critical_target_tt } }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+	bio_sabotage_tularemia_base = {
+		days_to_prepare = @BIO_SABOTAGE_NATIVE_TULAREMIA_BASE_DAYS
+		days_re_enable = @BIO_SABOTAGE_NATIVE_BASE_COOLDOWN
+		fire_only_once = no
+		ai_min_success_chance = @BIO_SABOTAGE_NATIVE_AI_MIN_SUCCESS
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_tularemia_strike
+		equipment_icon = GFX_tularemia_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_biological_sabotage_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @BIO_SABOTAGE_NATIVE_TULAREMIA_CP
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:bio_sabotage_ai.tularemia_base
+			modifier = { factor = constant:bio_sabotage_ai.disabled var:target_state = { NOT = { bio_sabotage_ai_may_target_state = yes } } }
+			modifier = { factor = constant:bio_sabotage_ai.retaliation_factor var:target_state = { bio_sabotage_ai_is_exact_retaliation_target = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.first_use_factor ROOT = { cbrn_ai_route_allows_first_use = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.unrestricted_factor ROOT = { cbrn_ai_route_allows_unrestricted_use = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.prepared_program_factor ROOT = { bio_sabotage_ai_has_safe_domestic_program = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.desperate_factor ROOT = { bio_sabotage_ai_is_desperate_route = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.defensive_profile_factor ROOT = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.sanction_vulnerability_factor ROOT = { check_variable = { var = condemnation_total value = constant:bio_sabotage_ai.high_condemnation_threshold compare = greater_than_or_equals } check_variable = { var = condemnation_import_vulnerability value = constant:bio_sabotage_ai.high_import_vulnerability_threshold compare = greater_than_or_equals } } }
+			modifier = { factor = constant:bio_sabotage_ai.tularemia_target_factor var:target_state = { bio_sabotage_tularemia_target_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.active_outbreak_factor var:target_state = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.japan_china_factor var:target_state = { bio_sabotage_ai_is_japan_china_state = yes } }
+		}
+		visible = { is_special_project_completed = sp:tularemia_bomb bio_sabotage_uses_base_preparation = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_tularemia_target_tooltip
+				hidden_trigger = { bio_sabotage_raid_target_from_is_valid = yes var:target_state = { bio_sabotage_tularemia_target_state = yes } }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_tularemia_available_tooltip
+				hidden_trigger = { bio_sabotage_raid_can_prepare_against_from = yes bio_sabotage_actor_has_tularemia_cost = yes var:target_state = { bio_sabotage_tularemia_target_state = yes } }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_tularemia_launch_tooltip
+				hidden_trigger = { bio_sabotage_raid_can_launch_against_from = yes var:target_state = { bio_sabotage_tularemia_target_state = yes } }
+			}
+		}
+		target_type = { state = { bio_sabotage_tularemia_target_state = yes } }
+		starting_point = { building_types = { supply_node } }
+		unit_requirements = { battalion_types = { infantry = { min = 3 } } }
+		unit_requirements = { battalion_types = { motorized = { min = 3 } } }
+		unit_requirements = { battalion_types = { mechanized = { min = 3 } } }
+		essential_equipment = { tularemia_bomb_equipment = @BIO_SABOTAGE_NATIVE_TULAREMIA_PAYLOAD support_equipment = @BIO_SABOTAGE_NATIVE_TULAREMIA_SUPPORT }
+		success_factors = {
+			success = {
+				base = @BIO_SABOTAGE_NATIVE_BASE_SUCCESS
+				bio_sabotage_integrated_readiness = { scope = country formula = { base = 0 modifier = { cbrn_country_has_integrated_readiness = yes NOT = { cbrn_country_has_full_readiness = yes } add = 1 } } weight = @BIO_SABOTAGE_NATIVE_INTEGRATED_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+				bio_sabotage_full_readiness = { scope = country formula = { base = 0 modifier = { cbrn_country_has_full_readiness = yes add = 1 } } weight = @BIO_SABOTAGE_NATIVE_FULL_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+				bio_sabotage_designer = { scope = country formula = { base = 0 modifier = { cbrn_designer_has_stable_weaponization = yes add = 1 } } weight = @BIO_SABOTAGE_NATIVE_DESIGNER_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+			}
+			critical = { base = @BIO_SABOTAGE_NATIVE_CRITICAL }
+			disaster = { base = @BIO_SABOTAGE_NATIVE_DISASTER }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_failure_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_tularemia }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_failure country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_FAILURE_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_FAILURE_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_FAILURE_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_failure_target_tt } }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_partial_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_tularemia }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_limited_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_LIMITED_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_LIMITED_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_LIMITED_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_partial_target_tt } }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_success_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_tularemia }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_SUCCESS_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_SUCCESS_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_SUCCESS_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_critical_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_tularemia }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_critical_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_CRITICAL_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_CRITICAL_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_CRITICAL_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_critical_target_tt } }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+	bio_sabotage_tularemia_theater = {
+		days_to_prepare = @BIO_SABOTAGE_NATIVE_TULAREMIA_THEATER_DAYS
+		days_re_enable = @BIO_SABOTAGE_NATIVE_THEATER_COOLDOWN
+		fire_only_once = no
+		ai_min_success_chance = @BIO_SABOTAGE_NATIVE_AI_MIN_SUCCESS
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_tularemia_strike
+		equipment_icon = GFX_tularemia_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_biological_sabotage_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @BIO_SABOTAGE_NATIVE_TULAREMIA_CP
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:bio_sabotage_ai.tularemia_base
+			modifier = { factor = constant:bio_sabotage_ai.theater_doctrine_factor always = yes }
+			modifier = { factor = constant:bio_sabotage_ai.disabled var:target_state = { NOT = { bio_sabotage_ai_may_target_state = yes } } }
+			modifier = { factor = constant:bio_sabotage_ai.retaliation_factor var:target_state = { bio_sabotage_ai_is_exact_retaliation_target = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.first_use_factor ROOT = { cbrn_ai_route_allows_first_use = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.unrestricted_factor ROOT = { cbrn_ai_route_allows_unrestricted_use = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.prepared_program_factor ROOT = { bio_sabotage_ai_has_safe_domestic_program = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.desperate_factor ROOT = { bio_sabotage_ai_is_desperate_route = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.defensive_profile_factor ROOT = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.sanction_vulnerability_factor ROOT = { check_variable = { var = condemnation_total value = constant:bio_sabotage_ai.high_condemnation_threshold compare = greater_than_or_equals } check_variable = { var = condemnation_import_vulnerability value = constant:bio_sabotage_ai.high_import_vulnerability_threshold compare = greater_than_or_equals } } }
+			modifier = { factor = constant:bio_sabotage_ai.tularemia_target_factor var:target_state = { bio_sabotage_tularemia_target_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.active_outbreak_factor var:target_state = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.japan_china_factor var:target_state = { bio_sabotage_ai_is_japan_china_state = yes } }
+		}
+		visible = { is_special_project_completed = sp:tularemia_bomb bio_sabotage_uses_theater_preparation = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_tularemia_target_tooltip
+				hidden_trigger = { bio_sabotage_raid_target_from_is_valid = yes var:target_state = { bio_sabotage_tularemia_target_state = yes } }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_tularemia_available_tooltip
+				hidden_trigger = { bio_sabotage_raid_can_prepare_against_from = yes bio_sabotage_actor_has_tularemia_cost = yes var:target_state = { bio_sabotage_tularemia_target_state = yes } }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_tularemia_launch_tooltip
+				hidden_trigger = { bio_sabotage_raid_can_launch_against_from = yes var:target_state = { bio_sabotage_tularemia_target_state = yes } }
+			}
+		}
+		target_type = { state = { bio_sabotage_tularemia_target_state = yes } }
+		starting_point = { building_types = { supply_node } }
+		unit_requirements = { battalion_types = { infantry = { min = 3 } } }
+		unit_requirements = { battalion_types = { motorized = { min = 3 } } }
+		unit_requirements = { battalion_types = { mechanized = { min = 3 } } }
+		essential_equipment = { tularemia_bomb_equipment = @BIO_SABOTAGE_NATIVE_TULAREMIA_PAYLOAD support_equipment = @BIO_SABOTAGE_NATIVE_TULAREMIA_SUPPORT }
+		success_factors = {
+			success = {
+				base = @BIO_SABOTAGE_NATIVE_THEATER_SUCCESS
+				bio_sabotage_integrated_readiness = { scope = country formula = { base = 0 modifier = { cbrn_country_has_integrated_readiness = yes NOT = { cbrn_country_has_full_readiness = yes } add = 1 } } weight = @BIO_SABOTAGE_NATIVE_INTEGRATED_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+				bio_sabotage_full_readiness = { scope = country formula = { base = 0 modifier = { cbrn_country_has_full_readiness = yes add = 1 } } weight = @BIO_SABOTAGE_NATIVE_FULL_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+				bio_sabotage_designer = { scope = country formula = { base = 0 modifier = { cbrn_designer_has_stable_weaponization = yes add = 1 } } weight = @BIO_SABOTAGE_NATIVE_DESIGNER_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+			}
+			critical = { base = @BIO_SABOTAGE_NATIVE_CRITICAL }
+			disaster = { base = @BIO_SABOTAGE_NATIVE_DISASTER }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_failure_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_tularemia }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_failure country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_FAILURE_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_FAILURE_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_FAILURE_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_failure_target_tt } }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_partial_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_tularemia }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_limited_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_LIMITED_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_LIMITED_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_LIMITED_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_partial_target_tt } }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_success_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_tularemia }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_SUCCESS_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_SUCCESS_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_SUCCESS_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_critical_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_tularemia }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_critical_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_CRITICAL_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_CRITICAL_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_CRITICAL_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_critical_target_tt } }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+	bio_sabotage_tularemia_terminal = {
+		days_to_prepare = @BIO_SABOTAGE_NATIVE_TULAREMIA_TERMINAL_DAYS
+		days_re_enable = @BIO_SABOTAGE_NATIVE_TERMINAL_COOLDOWN
+		fire_only_once = no
+		ai_min_success_chance = @BIO_SABOTAGE_NATIVE_AI_MIN_SUCCESS
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_tularemia_strike
+		equipment_icon = GFX_tularemia_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_biological_sabotage_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @BIO_SABOTAGE_NATIVE_TULAREMIA_CP
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:bio_sabotage_ai.tularemia_base
+			modifier = { factor = constant:bio_sabotage_ai.terminal_doctrine_factor always = yes }
+			modifier = { factor = constant:bio_sabotage_ai.disabled var:target_state = { NOT = { bio_sabotage_ai_may_target_state = yes } } }
+			modifier = { factor = constant:bio_sabotage_ai.retaliation_factor var:target_state = { bio_sabotage_ai_is_exact_retaliation_target = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.first_use_factor ROOT = { cbrn_ai_route_allows_first_use = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.unrestricted_factor ROOT = { cbrn_ai_route_allows_unrestricted_use = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.prepared_program_factor ROOT = { bio_sabotage_ai_has_safe_domestic_program = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.desperate_factor ROOT = { bio_sabotage_ai_is_desperate_route = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.defensive_profile_factor ROOT = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.sanction_vulnerability_factor ROOT = { check_variable = { var = condemnation_total value = constant:bio_sabotage_ai.high_condemnation_threshold compare = greater_than_or_equals } check_variable = { var = condemnation_import_vulnerability value = constant:bio_sabotage_ai.high_import_vulnerability_threshold compare = greater_than_or_equals } } }
+			modifier = { factor = constant:bio_sabotage_ai.tularemia_target_factor var:target_state = { bio_sabotage_tularemia_target_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.active_outbreak_factor var:target_state = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.japan_china_factor var:target_state = { bio_sabotage_ai_is_japan_china_state = yes } }
+		}
+		visible = { is_special_project_completed = sp:tularemia_bomb bio_sabotage_uses_terminal_preparation = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_tularemia_target_tooltip
+				hidden_trigger = { bio_sabotage_raid_target_from_is_valid = yes var:target_state = { bio_sabotage_tularemia_target_state = yes } }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_tularemia_available_tooltip
+				hidden_trigger = { bio_sabotage_raid_can_prepare_against_from = yes bio_sabotage_actor_has_tularemia_cost = yes var:target_state = { bio_sabotage_tularemia_target_state = yes } }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_tularemia_launch_tooltip
+				hidden_trigger = { bio_sabotage_raid_can_launch_against_from = yes var:target_state = { bio_sabotage_tularemia_target_state = yes } }
+			}
+		}
+		target_type = { state = { bio_sabotage_tularemia_target_state = yes } }
+		starting_point = { building_types = { supply_node } }
+		unit_requirements = { battalion_types = { infantry = { min = 3 } } }
+		unit_requirements = { battalion_types = { motorized = { min = 3 } } }
+		unit_requirements = { battalion_types = { mechanized = { min = 3 } } }
+		essential_equipment = { tularemia_bomb_equipment = @BIO_SABOTAGE_NATIVE_TULAREMIA_PAYLOAD support_equipment = @BIO_SABOTAGE_NATIVE_TULAREMIA_SUPPORT }
+		success_factors = {
+			success = {
+				base = @BIO_SABOTAGE_NATIVE_TERMINAL_SUCCESS
+				bio_sabotage_integrated_readiness = { scope = country formula = { base = 0 modifier = { cbrn_country_has_integrated_readiness = yes NOT = { cbrn_country_has_full_readiness = yes } add = 1 } } weight = @BIO_SABOTAGE_NATIVE_INTEGRATED_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+				bio_sabotage_full_readiness = { scope = country formula = { base = 0 modifier = { cbrn_country_has_full_readiness = yes add = 1 } } weight = @BIO_SABOTAGE_NATIVE_FULL_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+				bio_sabotage_designer = { scope = country formula = { base = 0 modifier = { cbrn_designer_has_stable_weaponization = yes add = 1 } } weight = @BIO_SABOTAGE_NATIVE_DESIGNER_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+			}
+			critical = { base = @BIO_SABOTAGE_NATIVE_CRITICAL }
+			disaster = { base = @BIO_SABOTAGE_NATIVE_DISASTER }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_failure_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_tularemia }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_failure country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_FAILURE_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_FAILURE_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_FAILURE_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_failure_target_tt } }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_partial_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_tularemia }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_limited_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_LIMITED_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_LIMITED_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_LIMITED_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_partial_target_tt } }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_success_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_tularemia }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_SUCCESS_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_SUCCESS_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_SUCCESS_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_critical_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_tularemia }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_critical_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_CRITICAL_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_CRITICAL_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_CRITICAL_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_critical_target_tt } }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+	bio_sabotage_smallpox_base = {
+		days_to_prepare = @BIO_SABOTAGE_NATIVE_SMALLPOX_BASE_DAYS
+		days_re_enable = @BIO_SABOTAGE_NATIVE_BASE_COOLDOWN
+		fire_only_once = no
+		ai_min_success_chance = @BIO_SABOTAGE_NATIVE_AI_MIN_SUCCESS
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_smallpox_strike
+		equipment_icon = GFX_smallpox_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_biological_sabotage_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @BIO_SABOTAGE_NATIVE_SMALLPOX_CP
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:bio_sabotage_ai.smallpox_base
+			modifier = { factor = constant:bio_sabotage_ai.disabled var:target_state = { NOT = { bio_sabotage_ai_may_target_state = yes } } }
+			modifier = { factor = constant:bio_sabotage_ai.retaliation_factor var:target_state = { bio_sabotage_ai_is_exact_retaliation_target = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.first_use_factor ROOT = { cbrn_ai_route_allows_first_use = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.unrestricted_factor ROOT = { cbrn_ai_route_allows_unrestricted_use = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.prepared_program_factor ROOT = { bio_sabotage_ai_has_safe_domestic_program = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.desperate_factor ROOT = { bio_sabotage_ai_is_desperate_route = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.defensive_profile_factor ROOT = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.sanction_vulnerability_factor ROOT = { check_variable = { var = condemnation_total value = constant:bio_sabotage_ai.high_condemnation_threshold compare = greater_than_or_equals } check_variable = { var = condemnation_import_vulnerability value = constant:bio_sabotage_ai.high_import_vulnerability_threshold compare = greater_than_or_equals } } }
+			modifier = { factor = constant:bio_sabotage_ai.smallpox_target_factor var:target_state = { bio_sabotage_smallpox_target_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.active_outbreak_factor var:target_state = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.japan_china_factor var:target_state = { bio_sabotage_ai_is_japan_china_state = yes } }
+		}
+		visible = { is_special_project_completed = sp:smallpox_bomb bio_sabotage_uses_base_preparation = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_smallpox_target_tooltip
+				hidden_trigger = { bio_sabotage_raid_target_from_is_valid = yes var:target_state = { bio_sabotage_smallpox_target_state = yes } }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_smallpox_available_tooltip
+				hidden_trigger = { bio_sabotage_raid_can_prepare_against_from = yes bio_sabotage_actor_has_smallpox_cost = yes var:target_state = { bio_sabotage_smallpox_target_state = yes } }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_smallpox_launch_tooltip
+				hidden_trigger = { bio_sabotage_raid_can_launch_against_from = yes var:target_state = { bio_sabotage_smallpox_target_state = yes } }
+			}
+		}
+		target_type = { state = { bio_sabotage_smallpox_target_state = yes } }
+		starting_point = { building_types = { supply_node } }
+		unit_requirements = { battalion_types = { infantry = { min = 3 } } }
+		unit_requirements = { battalion_types = { motorized = { min = 3 } } }
+		unit_requirements = { battalion_types = { mechanized = { min = 3 } } }
+		essential_equipment = { smallpox_bomb_equipment = @BIO_SABOTAGE_NATIVE_SMALLPOX_PAYLOAD support_equipment = @BIO_SABOTAGE_NATIVE_SMALLPOX_SUPPORT }
+		success_factors = {
+			success = {
+				base = @BIO_SABOTAGE_NATIVE_BASE_SUCCESS
+				bio_sabotage_integrated_readiness = { scope = country formula = { base = 0 modifier = { cbrn_country_has_integrated_readiness = yes NOT = { cbrn_country_has_full_readiness = yes } add = 1 } } weight = @BIO_SABOTAGE_NATIVE_INTEGRATED_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+				bio_sabotage_full_readiness = { scope = country formula = { base = 0 modifier = { cbrn_country_has_full_readiness = yes add = 1 } } weight = @BIO_SABOTAGE_NATIVE_FULL_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+				bio_sabotage_designer = { scope = country formula = { base = 0 modifier = { cbrn_designer_has_stable_weaponization = yes add = 1 } } weight = @BIO_SABOTAGE_NATIVE_DESIGNER_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+			}
+			critical = { base = @BIO_SABOTAGE_NATIVE_CRITICAL }
+			disaster = { base = @BIO_SABOTAGE_NATIVE_DISASTER }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_failure_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_smallpox }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_failure country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_FAILURE_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_FAILURE_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_FAILURE_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_failure_target_tt } }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_partial_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_smallpox }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_limited_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_LIMITED_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_LIMITED_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_LIMITED_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_partial_target_tt } }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_success_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_smallpox }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_SUCCESS_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_SUCCESS_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_SUCCESS_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_critical_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_smallpox }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_critical_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_CRITICAL_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_CRITICAL_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_CRITICAL_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_critical_target_tt } }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+	bio_sabotage_smallpox_theater = {
+		days_to_prepare = @BIO_SABOTAGE_NATIVE_SMALLPOX_THEATER_DAYS
+		days_re_enable = @BIO_SABOTAGE_NATIVE_THEATER_COOLDOWN
+		fire_only_once = no
+		ai_min_success_chance = @BIO_SABOTAGE_NATIVE_AI_MIN_SUCCESS
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_smallpox_strike
+		equipment_icon = GFX_smallpox_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_biological_sabotage_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @BIO_SABOTAGE_NATIVE_SMALLPOX_CP
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:bio_sabotage_ai.smallpox_base
+			modifier = { factor = constant:bio_sabotage_ai.theater_doctrine_factor always = yes }
+			modifier = { factor = constant:bio_sabotage_ai.disabled var:target_state = { NOT = { bio_sabotage_ai_may_target_state = yes } } }
+			modifier = { factor = constant:bio_sabotage_ai.retaliation_factor var:target_state = { bio_sabotage_ai_is_exact_retaliation_target = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.first_use_factor ROOT = { cbrn_ai_route_allows_first_use = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.unrestricted_factor ROOT = { cbrn_ai_route_allows_unrestricted_use = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.prepared_program_factor ROOT = { bio_sabotage_ai_has_safe_domestic_program = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.desperate_factor ROOT = { bio_sabotage_ai_is_desperate_route = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.defensive_profile_factor ROOT = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.sanction_vulnerability_factor ROOT = { check_variable = { var = condemnation_total value = constant:bio_sabotage_ai.high_condemnation_threshold compare = greater_than_or_equals } check_variable = { var = condemnation_import_vulnerability value = constant:bio_sabotage_ai.high_import_vulnerability_threshold compare = greater_than_or_equals } } }
+			modifier = { factor = constant:bio_sabotage_ai.smallpox_target_factor var:target_state = { bio_sabotage_smallpox_target_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.active_outbreak_factor var:target_state = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.japan_china_factor var:target_state = { bio_sabotage_ai_is_japan_china_state = yes } }
+		}
+		visible = { is_special_project_completed = sp:smallpox_bomb bio_sabotage_uses_theater_preparation = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_smallpox_target_tooltip
+				hidden_trigger = { bio_sabotage_raid_target_from_is_valid = yes var:target_state = { bio_sabotage_smallpox_target_state = yes } }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_smallpox_available_tooltip
+				hidden_trigger = { bio_sabotage_raid_can_prepare_against_from = yes bio_sabotage_actor_has_smallpox_cost = yes var:target_state = { bio_sabotage_smallpox_target_state = yes } }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_smallpox_launch_tooltip
+				hidden_trigger = { bio_sabotage_raid_can_launch_against_from = yes var:target_state = { bio_sabotage_smallpox_target_state = yes } }
+			}
+		}
+		target_type = { state = { bio_sabotage_smallpox_target_state = yes } }
+		starting_point = { building_types = { supply_node } }
+		unit_requirements = { battalion_types = { infantry = { min = 3 } } }
+		unit_requirements = { battalion_types = { motorized = { min = 3 } } }
+		unit_requirements = { battalion_types = { mechanized = { min = 3 } } }
+		essential_equipment = { smallpox_bomb_equipment = @BIO_SABOTAGE_NATIVE_SMALLPOX_PAYLOAD support_equipment = @BIO_SABOTAGE_NATIVE_SMALLPOX_SUPPORT }
+		success_factors = {
+			success = {
+				base = @BIO_SABOTAGE_NATIVE_THEATER_SUCCESS
+				bio_sabotage_integrated_readiness = { scope = country formula = { base = 0 modifier = { cbrn_country_has_integrated_readiness = yes NOT = { cbrn_country_has_full_readiness = yes } add = 1 } } weight = @BIO_SABOTAGE_NATIVE_INTEGRATED_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+				bio_sabotage_full_readiness = { scope = country formula = { base = 0 modifier = { cbrn_country_has_full_readiness = yes add = 1 } } weight = @BIO_SABOTAGE_NATIVE_FULL_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+				bio_sabotage_designer = { scope = country formula = { base = 0 modifier = { cbrn_designer_has_stable_weaponization = yes add = 1 } } weight = @BIO_SABOTAGE_NATIVE_DESIGNER_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+			}
+			critical = { base = @BIO_SABOTAGE_NATIVE_CRITICAL }
+			disaster = { base = @BIO_SABOTAGE_NATIVE_DISASTER }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_failure_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_smallpox }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_failure country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_FAILURE_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_FAILURE_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_FAILURE_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_failure_target_tt } }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_partial_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_smallpox }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_limited_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_LIMITED_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_LIMITED_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_LIMITED_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_partial_target_tt } }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_success_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_smallpox }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_SUCCESS_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_SUCCESS_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_SUCCESS_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_critical_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_smallpox }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_critical_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_CRITICAL_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_CRITICAL_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_CRITICAL_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_critical_target_tt } }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+	bio_sabotage_smallpox_terminal = {
+		days_to_prepare = @BIO_SABOTAGE_NATIVE_SMALLPOX_TERMINAL_DAYS
+		days_re_enable = @BIO_SABOTAGE_NATIVE_TERMINAL_COOLDOWN
+		fire_only_once = no
+		ai_min_success_chance = @BIO_SABOTAGE_NATIVE_AI_MIN_SUCCESS
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_smallpox_strike
+		equipment_icon = GFX_smallpox_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_biological_sabotage_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @BIO_SABOTAGE_NATIVE_SMALLPOX_CP
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:bio_sabotage_ai.smallpox_base
+			modifier = { factor = constant:bio_sabotage_ai.terminal_doctrine_factor always = yes }
+			modifier = { factor = constant:bio_sabotage_ai.disabled var:target_state = { NOT = { bio_sabotage_ai_may_target_state = yes } } }
+			modifier = { factor = constant:bio_sabotage_ai.retaliation_factor var:target_state = { bio_sabotage_ai_is_exact_retaliation_target = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.first_use_factor ROOT = { cbrn_ai_route_allows_first_use = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.unrestricted_factor ROOT = { cbrn_ai_route_allows_unrestricted_use = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.prepared_program_factor ROOT = { bio_sabotage_ai_has_safe_domestic_program = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.desperate_factor ROOT = { bio_sabotage_ai_is_desperate_route = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.defensive_profile_factor ROOT = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.sanction_vulnerability_factor ROOT = { check_variable = { var = condemnation_total value = constant:bio_sabotage_ai.high_condemnation_threshold compare = greater_than_or_equals } check_variable = { var = condemnation_import_vulnerability value = constant:bio_sabotage_ai.high_import_vulnerability_threshold compare = greater_than_or_equals } } }
+			modifier = { factor = constant:bio_sabotage_ai.smallpox_target_factor var:target_state = { bio_sabotage_smallpox_target_state = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.active_outbreak_factor var:target_state = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+			modifier = { factor = constant:bio_sabotage_ai.japan_china_factor var:target_state = { bio_sabotage_ai_is_japan_china_state = yes } }
+		}
+		visible = { is_special_project_completed = sp:smallpox_bomb bio_sabotage_uses_terminal_preparation = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_smallpox_target_tooltip
+				hidden_trigger = { bio_sabotage_raid_target_from_is_valid = yes var:target_state = { bio_sabotage_smallpox_target_state = yes } }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_smallpox_available_tooltip
+				hidden_trigger = { bio_sabotage_raid_can_prepare_against_from = yes bio_sabotage_actor_has_smallpox_cost = yes var:target_state = { bio_sabotage_smallpox_target_state = yes } }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = bio_sabotage_raid_smallpox_launch_tooltip
+				hidden_trigger = { bio_sabotage_raid_can_launch_against_from = yes var:target_state = { bio_sabotage_smallpox_target_state = yes } }
+			}
+		}
+		target_type = { state = { bio_sabotage_smallpox_target_state = yes } }
+		starting_point = { building_types = { supply_node } }
+		unit_requirements = { battalion_types = { infantry = { min = 3 } } }
+		unit_requirements = { battalion_types = { motorized = { min = 3 } } }
+		unit_requirements = { battalion_types = { mechanized = { min = 3 } } }
+		essential_equipment = { smallpox_bomb_equipment = @BIO_SABOTAGE_NATIVE_SMALLPOX_PAYLOAD support_equipment = @BIO_SABOTAGE_NATIVE_SMALLPOX_SUPPORT }
+		success_factors = {
+			success = {
+				base = @BIO_SABOTAGE_NATIVE_TERMINAL_SUCCESS
+				bio_sabotage_integrated_readiness = { scope = country formula = { base = 0 modifier = { cbrn_country_has_integrated_readiness = yes NOT = { cbrn_country_has_full_readiness = yes } add = 1 } } weight = @BIO_SABOTAGE_NATIVE_INTEGRATED_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+				bio_sabotage_full_readiness = { scope = country formula = { base = 0 modifier = { cbrn_country_has_full_readiness = yes add = 1 } } weight = @BIO_SABOTAGE_NATIVE_FULL_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+				bio_sabotage_designer = { scope = country formula = { base = 0 modifier = { cbrn_designer_has_stable_weaponization = yes add = 1 } } weight = @BIO_SABOTAGE_NATIVE_DESIGNER_SUCCESS reference = 1 can_actor_affect = yes can_target_affect = no }
+			}
+			critical = { base = @BIO_SABOTAGE_NATIVE_CRITICAL }
+			disaster = { base = @BIO_SABOTAGE_NATIVE_DISASTER }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_failure_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_smallpox }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_failure country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_FAILURE_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_FAILURE_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_FAILURE_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_failure_target_tt } }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_partial_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_smallpox }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_limited_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_LIMITED_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_LIMITED_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_LIMITED_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_partial_target_tt } }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_success_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_smallpox }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_SUCCESS_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_SUCCESS_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_SUCCESS_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = bio_sabotage_raid_critical_actor_tt
+					hidden_effect = {
+					var:actor_country = { save_event_target_as = bio_sabotage_actor_target save_event_target_as = bio_sabotage_bridge_agent_smallpox }
+					var:target_state = { save_event_target_as = bio_sabotage_state_target }
+					var:victim_country = { save_event_target_as = bio_sabotage_victim_target }
+					var:actor_country = { save_event_target_as = bio_sabotage_bridge_outcome_critical_success country_event = { id = biological_native_raid_bridge.2 } }
+				}
+					raid_damage_units = { org_damage = @BIO_SABOTAGE_NATIVE_CRITICAL_ORG_DAMAGE str_damage = @BIO_SABOTAGE_NATIVE_CRITICAL_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @BIO_SABOTAGE_NATIVE_CRITICAL_XP
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = bio_sabotage_raid_critical_target_tt } }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+}
+

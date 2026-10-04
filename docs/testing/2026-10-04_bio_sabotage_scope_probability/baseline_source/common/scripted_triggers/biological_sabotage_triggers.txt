@@ -1,0 +1,205 @@
+# ============================================================================
+# CHAOS REDUX - BIOLOGICAL SUPPLY-CHAIN RAID TRIGGERS
+# ============================================================================
+# Overview:
+# - Supplies exact state and agent target profiles, doctrine-tier gates,
+#   stock requirements, and AI targeting to native biological raids.
+# - Decision transaction and committed-state record gates are retired.
+# ============================================================================
+
+bio_sabotage_actor_cooldown_is_ready = {
+	OR = {
+		NOT = { has_variable = bio_sabotage_next_allowed_day }
+		check_variable = {
+			var = bio_sabotage_next_allowed_day
+			value = global.num_days
+			compare = less_than_or_equals
+		}
+	}
+}
+
+bio_sabotage_uses_base_preparation = {
+	NOT = { has_idea = cbrn_theater_contamination_doctrine_spirit }
+	NOT = { has_idea = cbrn_terminal_hazard_doctrine_spirit }
+}
+
+bio_sabotage_uses_theater_preparation = {
+	has_idea = cbrn_theater_contamination_doctrine_spirit
+	NOT = { has_idea = cbrn_terminal_hazard_doctrine_spirit }
+}
+
+bio_sabotage_uses_terminal_preparation = {
+	has_idea = cbrn_terminal_hazard_doctrine_spirit
+}
+
+bio_sabotage_actor_has_anthrax_cost = {
+	is_special_project_completed = sp:anthrax_bomb
+	has_equipment = { anthrax_bomb_1 > constant:bio_sabotage_cost.anthrax_payload_floor }
+	has_equipment = { support_equipment > constant:bio_sabotage_cost.anthrax_support_floor }
+	command_power > constant:bio_sabotage_cost.anthrax_command_power_floor
+}
+
+bio_sabotage_actor_has_plague_cost = {
+	is_special_project_completed = sp:plague_bomb
+	has_equipment = { plague_bomb_1 > constant:bio_sabotage_cost.plague_payload_floor }
+	has_equipment = { support_equipment > constant:bio_sabotage_cost.plague_support_floor }
+	command_power > constant:bio_sabotage_cost.plague_command_power_floor
+}
+
+bio_sabotage_actor_has_tularemia_cost = {
+	is_special_project_completed = sp:tularemia_bomb
+	has_equipment = { tularemia_bomb_1 > constant:bio_sabotage_cost.tularemia_payload_floor }
+	has_equipment = { support_equipment > constant:bio_sabotage_cost.tularemia_support_floor }
+	command_power > constant:bio_sabotage_cost.tularemia_command_power_floor
+}
+
+bio_sabotage_actor_has_smallpox_cost = {
+	is_special_project_completed = sp:smallpox_bomb
+	has_equipment = { smallpox_bomb_1 > constant:bio_sabotage_cost.smallpox_payload_floor }
+	has_equipment = { support_equipment > constant:bio_sabotage_cost.smallpox_support_floor }
+	command_power > constant:bio_sabotage_cost.smallpox_command_power_floor
+}
+
+bio_sabotage_state_relationship_is_valid = {
+	CONTROLLER = {
+		exists = yes
+		NOT = { tag = ROOT }
+		NOT = { is_subject_of = ROOT }
+		ROOT = {
+			NOT = { is_in_faction_with = PREV }
+			NOT = { is_subject_of = PREV }
+			PREV = { set_temp_variable = { cbrn_retaliation_target_id = id } }
+			OR = {
+				AND = {
+					has_war_with = PREV
+					cbrn_policy_allows_strategic_use_against_target_id = yes
+				}
+				AND = {
+					NOT = { has_war_with = PREV }
+					cbrn_policy_allows_extreme_use = yes
+				}
+			}
+		}
+	}
+}
+
+bio_sabotage_common_target_state = {
+	bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+	impassable = no
+	state_population_k > constant:bio_sabotage_cost.minimum_target_population_k
+	NOT = { has_state_flag = bio_sabotage_operation_active }
+	bio_sabotage_state_relationship_is_valid = yes
+}
+
+bio_sabotage_anthrax_target_state = {
+	bio_sabotage_common_target_state = yes
+	NOT = { bio_lifecycle_state_has_anthrax_episode = yes }
+	OR = {
+		naval_base > constant:bio_sabotage_target_profile.building_floor
+		supply_node > constant:bio_sabotage_target_profile.building_floor
+		industrial_complex > constant:bio_sabotage_target_profile.anthrax_industry_threshold
+		arms_factory > constant:bio_sabotage_target_profile.anthrax_industry_threshold
+		biowarfare_facility > constant:bio_sabotage_target_profile.building_floor
+	}
+}
+
+bio_sabotage_plague_target_state = {
+	bio_sabotage_common_target_state = yes
+	NOT = { bio_lifecycle_state_has_plague_episode = yes }
+	OR = {
+		is_capital = yes
+		has_state_category = city
+		has_state_category = large_city
+		has_state_category = metropolis
+		has_state_category = megalopolis
+		state_population_k > constant:bio_sabotage_target_profile.plague_population_threshold_k
+	}
+}
+
+bio_sabotage_tularemia_target_state = {
+	bio_sabotage_common_target_state = yes
+	NOT = { bio_lifecycle_state_has_tularemia_episode = yes }
+	OR = {
+		any_state_division = { always = yes }
+		supply_node > constant:bio_sabotage_target_profile.building_floor
+	}
+}
+
+bio_sabotage_smallpox_target_state = {
+	bio_sabotage_common_target_state = yes
+	NOT = { bio_lifecycle_state_has_smallpox_episode = yes }
+	OR = {
+		is_capital = yes
+		has_state_category = metropolis
+		has_state_category = megalopolis
+		state_population_k > constant:bio_sabotage_target_profile.smallpox_population_threshold_k
+	}
+}
+
+bio_sabotage_ai_has_safe_domestic_program = {
+	has_tech = pathogen_handling_protocols
+	has_tech = rapid_outbreak_response
+}
+
+bio_sabotage_ai_is_desperate_route = {
+	cbrn_ai_route_allows_unrestricted_use = yes
+	cbrn_policy_allows_extreme_use = yes
+	surrender_progress > constant:bio_sabotage_ai.desperate_surrender_threshold
+}
+
+bio_sabotage_ai_target_owner_is_friendly = {
+	OWNER = {
+		OR = {
+			tag = ROOT
+			is_in_faction_with = ROOT
+			is_subject_of = ROOT
+			ROOT = { is_subject_of = PREV }
+		}
+	}
+}
+
+bio_sabotage_ai_is_japan_china_state = {
+	ROOT = {
+		original_tag = JAP
+		is_japan_china_chemical_campaign_war = yes
+	}
+	CONTROLLER = {
+		OR = {
+			original_tag = CHI
+			original_tag = PRC
+			original_tag = SHX
+			original_tag = GXC
+			original_tag = YUN
+			original_tag = XSM
+			original_tag = SIK
+		}
+	}
+}
+
+bio_sabotage_ai_may_target_state = {
+	bio_sabotage_common_target_state = yes
+	NOT = { bio_sabotage_ai_target_owner_is_friendly = yes }
+	ROOT = {
+		bio_kruger_last_resort_ai_is_valid = yes
+		OR = {
+			bio_sabotage_ai_has_safe_domestic_program = yes
+			bio_sabotage_ai_is_desperate_route = yes
+		}
+	}
+	CONTROLLER = {
+		set_temp_variable = { cbrn_retaliation_target_id = id }
+	}
+	OR = {
+		ROOT = { cbrn_country_has_active_retaliation_right_against_target_id = yes }
+		ROOT = { cbrn_ai_route_allows_first_use = yes }
+		ROOT = { bio_sabotage_ai_is_desperate_route = yes }
+	}
+}
+
+bio_sabotage_ai_is_exact_retaliation_target = {
+	CONTROLLER = {
+		exists = yes
+		set_temp_variable = { cbrn_retaliation_target_id = id }
+	}
+	ROOT = { cbrn_country_has_active_retaliation_right_against_target_id = yes }
+}

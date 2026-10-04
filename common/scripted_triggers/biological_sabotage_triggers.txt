@@ -60,35 +60,39 @@ bio_sabotage_actor_has_smallpox_cost = {
 	command_power > constant:bio_sabotage_cost.smallpox_command_power_floor
 }
 
-bio_sabotage_state_relationship_is_valid = {
-	CONTROLLER = {
+# COUNTRY preflight: ROOT is the native raid actor; FROM is its victim.
+# Native target_type.state roots on STATE and never calls this contract.
+bio_sabotage_actor_relationship_with_from_is_valid = {
+	exists = yes
+	FROM = {
 		exists = yes
 		NOT = { tag = ROOT }
 		NOT = { is_subject_of = ROOT }
-		ROOT = {
-			NOT = { is_in_faction_with = PREV }
-			NOT = { is_subject_of = PREV }
-			PREV = { set_temp_variable = { cbrn_retaliation_target_id = id } }
-			OR = {
-				AND = {
-					has_war_with = PREV
-					cbrn_policy_allows_strategic_use_against_target_id = yes
-				}
-				AND = {
-					NOT = { has_war_with = PREV }
-					cbrn_policy_allows_extreme_use = yes
-				}
-			}
+	}
+	NOT = { is_in_faction_with = FROM }
+	NOT = { is_subject_of = FROM }
+	set_temp_variable = { cbrn_retaliation_target_id = constant:cbrn_math.zero }
+	FROM = { set_temp_variable = { cbrn_retaliation_target_id = id } }
+	OR = {
+		AND = {
+			has_war_with = FROM
+			cbrn_policy_allows_strategic_use_against_target_id = yes
+		}
+		AND = {
+			NOT = { has_war_with = FROM }
+			cbrn_policy_allows_extreme_use = yes
 		}
 	}
 }
+
+# STATE-only physical profile. Actor diplomacy and policy are checked by the
+# country preflight, never by actor-free target enumeration.
 
 bio_sabotage_common_target_state = {
 	bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
 	impassable = no
 	state_population_k > constant:bio_sabotage_cost.minimum_target_population_k
 	NOT = { has_state_flag = bio_sabotage_operation_active }
-	bio_sabotage_state_relationship_is_valid = yes
 }
 
 bio_sabotage_anthrax_target_state = {
@@ -177,6 +181,7 @@ bio_sabotage_ai_is_japan_china_state = {
 }
 
 bio_sabotage_ai_may_target_state = {
+	ROOT = { bio_sabotage_actor_relationship_with_from_is_valid = yes }
 	bio_sabotage_common_target_state = yes
 	NOT = { bio_sabotage_ai_target_owner_is_friendly = yes }
 	ROOT = {

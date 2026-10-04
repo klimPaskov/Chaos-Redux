@@ -1,8 +1,20 @@
 # Biological Supply-Chain Sabotage
 
+## Native state and actor scope contract
+
+The loaded `common/raids/biological_sabotage_raids.txt` defines twelve supply-chain raid types with four physical pathogen profiles and three preparation tiers.
+`target_type.state` runs the physical profile independently of an actor country; it must never call faction, subject, war or authorization checks through a state ROOT.
+`bio_sabotage_actor_relationship_with_from_is_valid` is COUNTRY-only, with native actor ROOT and victim FROM.
+`bio_sabotage_raid_target_from_is_valid` invokes it before checking the selected state's controller and physical eligibility, and all native show/prepare/launch gates use that contract.
+AI selection uses the same actor gate before its existing route checks.
+The original restrictions and exact retaliation ID remain; battlefield-only authorization does not authorize this strategic route.
+Native outcome dispatch retains its explicit actor/victim/state event targets.
+The [2026-10-04 scope repair](../../../plans/chaos_warfare_system_plans/2026-10-04_biological_sabotage_native_scope_repair.md) records source tests and unsupported native probability coverage.
+This exact source mapping supersedes the older migration-only descriptions below as a claim about which raid definitions are loaded; their legacy accounting narrative does not authorize a different route or prove native completion.
+
 ## Purpose
 
-This subsystem preserves the ledger and cleanup contract for the retired generic supply-chain decision family. New covert ordinary-agent deployment uses the four native operative operations, which select one exact state without filling the decision view with one card per eligible state.
+This subsystem supplies four ordinary-agent profiles, shared evidence parameters and twelve native land-raid definitions for exact-state supply-chain deployment. Native operative operations retain their own separate source and permissions.
 
 It is not battlefield dissemination. Battlefield delivery remains in `common/raids/biological_battlefield_raids.txt` and reuses the established military-raid icons. It is also separate from weaponized-zombie projects, operations, state records, AI, and outcomes. Japan's China-theater actions are migrating to native raids; the doomsday release uses `biological_stockpile_doomsday_raid`.
 
@@ -10,7 +22,7 @@ It is not battlefield dissemination. Battlefield delivery remains in `common/rai
 
 - Strategic and battlefield deployment use native raid surfaces.
 - Covert ordinary-agent deployment uses the native operative operations.
-- Japan's bounded China-theater actions remain exact-state decisions.
+- Japan's bounded China-theater actions use their dedicated native raids.
 - Doomsday release is a native raid under `biological_raids`.
 
 The twelve supply-chain sabotage decisions have no definitions in `common/decisions/`, so nothing lists new targets. Their exact-state ledger, resolver, and cleanup helpers remain only so an already committed record can end safely.
@@ -25,7 +37,7 @@ The route's critical outcome is an operational delivery band, not a weapon-sever
 
 ## Migration tuning
 
-Lifecycle, route, doctrine, and AI tuning remains centralized in `common/script_constants/biological_lifecycle_constants.txt` and the route-specific raid and operation constants. `common/script_constants/biological_sabotage_constants.txt` remains migration-only tuning for committed legacy records.
+Lifecycle, route, doctrine, and AI tuning remains centralized in `common/script_constants/biological_lifecycle_constants.txt` and the route-specific raid and operation constants. `common/script_constants/biological_sabotage_constants.txt` supplies active native target profiles, AI and resolution tuning; database-only raid fields mirror their anchors locally.
 
 | Agent | Payload | Support equipment | Command Power | Base / Theater / Terminal preparation |
 |---|---:|---:|---:|---:|
@@ -34,7 +46,7 @@ Lifecycle, route, doctrine, and AI tuning remains centralized in `common/script_
 | Tularemia | 10 | 40 | 12 | 180 / 153 / 135 days |
 | Smallpox | 8 | 60 | 20 | 300 / 255 / 225 days |
 
-These values apply only if an already committed legacy record is loaded. They do not create a new player-facing route.
+These values are the preparation/material profiles of the loaded native supply-chain raid definitions. Native equipment reservation and command-power allocation own payment; scripted outcomes do not debit them again.
 
 ## Legacy doctrine interaction
 
@@ -64,7 +76,8 @@ AI cannot select the retired generic decision family. Active raids, operative op
 
 ## Files and identifiers
 
-- Migration-only resolvers: `common/scripted_effects/biological_sabotage_effects.txt`, `common/script_constants/biological_sabotage_constants.txt`, and `common/scripted_triggers/biological_sabotage_triggers.txt`
+- Active native profiles, tuning and evidence helpers: `common/scripted_effects/biological_sabotage_effects.txt`, `common/script_constants/biological_sabotage_constants.txt`, and `common/scripted_triggers/biological_sabotage_triggers.txt`
+- Native types and country/state preflight: `common/raids/biological_sabotage_raids.txt` and `common/scripted_triggers/biological_sabotage_raid_triggers.txt`
 - Shared lifecycle effects: `common/scripted_effects/biological_lifecycle_effects.txt`
 - Historical campaign and doomsday raids: `common/raids/japan_cbrn_campaign_raids.txt` and `common/raids/cbrn_doomsday_raids.txt`
 - Sabotage raid localisation: `localisation/english/biological_sabotage_raids_l_english.yml`
