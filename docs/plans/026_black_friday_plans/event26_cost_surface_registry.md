@@ -411,7 +411,7 @@ Every remaining positive native or custom cost has a per-owner disposition (agen
 | Famine and migration | 0 | 26 | owner adoption pending |
 | Event 013 | 0 | 108 | queued: Event 26 conversion tranche 1 |
 | Event 020 | 0 | 98 | queued: Event 26 conversion tranche 1 |
-| Event 015 (custom) | 0 | 101 | native converted (D5); custom queued: tranche 1 |
+| Event 015 (custom) | 0 | 101 | native converted (D5); constant custom costs converted to the price table (D11); Auxiliary Contract and state-scaled growth costs queued: tranche 1 |
 | Event 005 (custom) | 0 | 198 | native converted (D5); custom queued: tranche 2 |
 | Event 010 | 0 | 35 | queued: Event 26 conversion tranche 2 |
 | Event 011 | 0 | 56 | queued: Event 26 conversion tranche 2 |

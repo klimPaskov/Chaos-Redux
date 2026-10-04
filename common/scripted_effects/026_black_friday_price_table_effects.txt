@@ -21,10 +21,13 @@
 # Contract: 026_black_friday_price_table_effects.md.
 # ============================================================================
 
-# ANY scope. Inputs: temp black_friday_price_ordinary and temp
-# black_friday_price_ratio (payment ratio in basis points). Output: caller-owned
-# temp black_friday_price_payable. Non-positive prices and full-price ratios
-# return the ordinary amount unchanged.
+# ANY scope. Inputs: temp black_friday_price_ordinary, temp
+# black_friday_price_ratio (payment ratio in basis points), and optional temp
+# black_friday_price_quantum (smallest payable step; unset or zero means 1, and
+# stability or war support prices use their fixed-point quantum). Output:
+# caller-owned temp black_friday_price_payable, rounded up to a whole number of
+# steps and at least one step. Non-positive prices and full-price ratios return
+# the ordinary amount unchanged.
 black_friday_price_table_quote = {
 	set_temp_variable = { black_friday_price_payable = black_friday_price_ordinary }
 	if = {
@@ -36,10 +39,16 @@ black_friday_price_table_quote = {
 				compare = less_than
 			}
 		}
+		set_temp_variable = { black_friday_price_step = constant:black_friday_event.one }
+		if = {
+			limit = { check_variable = { black_friday_price_quantum > constant:black_friday_event.zero } }
+			set_temp_variable = { black_friday_price_step = black_friday_price_quantum }
+		}
 		set_temp_variable = { black_friday_price_percent = black_friday_price_ratio }
 		divide_temp_variable = { black_friday_price_percent = constant:black_friday_event.ratio_per_percent }
 		multiply_temp_variable = { black_friday_price_payable = black_friday_price_percent }
 		divide_temp_variable = { black_friday_price_payable = constant:black_friday_event.percent_basis }
+		divide_temp_variable = { black_friday_price_payable = black_friday_price_step }
 		set_temp_variable = { black_friday_price_whole = black_friday_price_payable }
 		round_temp_variable = black_friday_price_whole
 		if = {
@@ -52,11 +61,12 @@ black_friday_price_table_quote = {
 			}
 			add_to_temp_variable = { black_friday_price_whole = constant:black_friday_event.one }
 		}
-		set_temp_variable = { black_friday_price_payable = black_friday_price_whole }
 		clamp_temp_variable = {
-			var = black_friday_price_payable
+			var = black_friday_price_whole
 			min = constant:black_friday_event.one
 		}
+		set_temp_variable = { black_friday_price_payable = black_friday_price_whole }
+		multiply_temp_variable = { black_friday_price_payable = black_friday_price_step }
 	}
 }
 
@@ -65,6 +75,7 @@ black_friday_price_table_quote = {
 black_friday_price_table_refresh_entries = {
 	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_event.zero }
 	set_temp_variable = { black_friday_price_payable = constant:black_friday_event.zero }
+	set_temp_variable = { black_friday_price_quantum = constant:black_friday_event.zero }
 	# Event 026 live probe (CXT debug decision)
 	set_temp_variable = { black_friday_price_ordinary = constant:black_friday_price_table.probe }
 	black_friday_price_table_quote = yes
@@ -513,11 +524,113 @@ black_friday_price_table_refresh_entries = {
 	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.pp_token }
 	black_friday_price_table_quote = yes
 	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_pp_token = black_friday_price_payable }
+	# Event 015 custom costs: equipment, manpower, experience, command power, stability, and war support
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.manpower_small }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_manpower_small = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.manpower_medium }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_manpower_medium = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.manpower_large }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_manpower_large = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.infantry_small }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_infantry_small = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.infantry_medium }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_infantry_medium = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.infantry_large }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_infantry_large = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.support_small }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_support_small = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.support_medium }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_support_medium = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.support_large }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_support_large = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.motorized_small }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_motorized_small = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.motorized_medium }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_motorized_medium = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.motorized_large }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_motorized_large = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.trains_small }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_trains_small = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.trains_medium }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_trains_medium = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.trains_large }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_trains_large = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.convoys_small }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_convoys_small = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.convoys_medium }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_convoys_medium = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.convoys_large }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_convoys_large = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.army_xp_small }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_army_xp_small = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.army_xp_medium }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_army_xp_medium = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.army_xp_large }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_army_xp_large = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.command_power_small }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_command_power_small = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.command_power_medium }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_command_power_medium = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.command_power_large }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_command_power_large = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_quantum = constant:universal_cost_fixed_point_quantum.stability }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.stability_small }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_stability_small = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_quantum = constant:black_friday_event.zero }
+	set_temp_variable = { black_friday_price_quantum = constant:universal_cost_fixed_point_quantum.stability }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.stability_medium }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_stability_medium = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_quantum = constant:black_friday_event.zero }
+	set_temp_variable = { black_friday_price_quantum = constant:universal_cost_fixed_point_quantum.war_support }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.war_support_small }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_war_support_small = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_quantum = constant:black_friday_event.zero }
+	set_temp_variable = { black_friday_price_quantum = constant:universal_cost_fixed_point_quantum.war_support }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_decision_cost.war_support_medium }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_decision_cost_war_support_medium = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_quantum = constant:black_friday_event.zero }
 
 	# utopia_manifesto_penal_method
 	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_penal_method.political_power_cost }
 	black_friday_price_table_quote = yes
 	set_variable = { global.black_friday_price_utopia_manifesto_penal_method_political_power_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_penal_method.manpower_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_penal_method_manpower_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_penal_method.infantry_equipment_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_penal_method_infantry_equipment_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:utopia_manifesto_penal_method.support_equipment_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_utopia_manifesto_penal_method_support_equipment_cost = black_friday_price_payable }
 
 	# zombie_prevention
 	set_temp_variable = { black_friday_price_ordinary = constant:zombie_prevention.border_closure_pp_cost }

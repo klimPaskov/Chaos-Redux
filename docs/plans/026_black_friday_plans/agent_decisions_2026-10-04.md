@@ -158,3 +158,27 @@ Two uncommitted refunds of the same kind belong to other threads' unfinished wor
 Both must refund the charged table price when that work lands, as recorded in `owner_adoption_requests.md`.
 
 Disposition: implemented (source) for the committed refunds; the two uncommitted refunds are `owner adoption pending`.
+
+## D11. Constant-amount owner custom costs read the sale price table
+
+Decision: an owner custom cost whose ordinary amount is a script constant registers that constant in the sale price table, and its `custom_cost_trigger`, payment, and cost text all read the same `global.black_friday_price_<group>_<key>`.
+The price table quote takes an optional step (`black_friday_price_quantum`), so stability and war support round up to their 0.01 fixed-point quantum instead of a whole point.
+Payment stays in the owner's own effect, which keeps the owner's equipment types and family rules, and the owner calls `black_friday_credit_sale_purchase` (new shared helper, also used by the simple API) once per action with one primary family.
+Variable-amount custom costs use the simple API (D9).
+
+Basis: the lead's tranche 1 acceptance asks that display, affordability, and payment share one quote, that multi-resource actions credit one primary family, and that equipment payments keep the owner's model and family rules.
+The table gives one engine-read value for all three, exactly as D4 does for native costs.
+For Event 015, whose 92 cost texts print fixed numbers next to resource icons, the table lets each text read the live price in place (`[?global.<key>|0]`), where the simple API would need an owner `defined_text` wrapper per text.
+The simple API's shared payment would also have narrowed Event 015's archetype payments (`motorized_equipment`, `train_equipment`, `convoy_1`) to single models, which the stopped thread's inspection of the prefire domestic-shore purchase specifically ruled out.
+
+Event 015 application (tranche 1): 28 `utopia_manifesto_decision_cost` amounts and the three Penal Works material amounts are registered (`price_table_version` 2).
+Apart from the exceptions below, every custom cost of the 101 Event 015 custom-cost decisions reads the table in its trigger, its payment temps, the seven evolution-policy profile triggers, and the policy payment effect, and 279 cost and effect texts show the table price.
+`utopia_manifesto_pay_prepared_decision_cost` credits one family per action: equipment first, then trains, convoys, manpower, army experience, command power, stability, and war support, and any of these counts as a non-political payment.
+Kept at the ordinary amount, with reasons:
+- the support equipment shipped by Send Surplus Abroad and Pool Reconstruction Brigades, because it is delivered to the recipient and a discount would create equipment;
+- the district founding reserve thresholds, which are requirements rather than payments;
+- the Auxiliary Contract's custom costs, because its support requirement is a combined total with the state-scaled formation cost that is refreshed outside the sale, so converting only part would make the shown price, the requirement, and the payment disagree (its native political power already reads the table);
+- the state-scaled military and institutional growth costs, which are variable amounts recomputed by `utopia_manifesto_refresh_dynamic_costs` and remain queued for the simple API.
+
+Disposition: implemented (source) for the constant-amount Event 015 custom costs; the Auxiliary Contract and growth costs are `accepted and queued` under tranche 1.
+Live display and payment at 50 and 75 percent are `needs_live_game`.

@@ -11,7 +11,54 @@
 # All inputs are consumed and reset before this effect returns.
 # Inputs: utopia_manifesto_cost_{manpower,infantry,support,motorized,trains,
 # convoys,army_xp,command_power,stability,war_support}.
+# Decision callers pass the Black Friday sale price table values, so a sale
+# purchase credits one achievement family: equipment first, then trains,
+# convoys, manpower, army experience, command power, stability, war support.
 utopia_manifesto_pay_prepared_decision_cost = {
+	set_temp_variable = { black_friday_purchase_family_id = constant:utopia_manifesto_decision_value.none }
+	set_temp_variable = { black_friday_purchase_non_political = constant:utopia_manifesto_decision_value.none }
+	if = {
+		limit = { check_variable = { utopia_manifesto_cost_war_support > constant:utopia_manifesto_decision_value.none } }
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.war_support }
+	}
+	if = {
+		limit = { check_variable = { utopia_manifesto_cost_stability > constant:utopia_manifesto_decision_value.none } }
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.stability }
+	}
+	if = {
+		limit = { check_variable = { utopia_manifesto_cost_command_power > constant:utopia_manifesto_decision_value.none } }
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+	}
+	if = {
+		limit = { check_variable = { utopia_manifesto_cost_army_xp > constant:utopia_manifesto_decision_value.none } }
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+	}
+	if = {
+		limit = { check_variable = { utopia_manifesto_cost_manpower > constant:utopia_manifesto_decision_value.none } }
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.manpower }
+	}
+	if = {
+		limit = { check_variable = { utopia_manifesto_cost_convoys > constant:utopia_manifesto_decision_value.none } }
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.convoy }
+	}
+	if = {
+		limit = { check_variable = { utopia_manifesto_cost_trains > constant:utopia_manifesto_decision_value.none } }
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.trains }
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = { utopia_manifesto_cost_infantry > constant:utopia_manifesto_decision_value.none }
+				check_variable = { utopia_manifesto_cost_support > constant:utopia_manifesto_decision_value.none }
+				check_variable = { utopia_manifesto_cost_motorized > constant:utopia_manifesto_decision_value.none }
+			}
+		}
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+	}
+	if = {
+		limit = { check_variable = { black_friday_purchase_family_id > constant:utopia_manifesto_decision_value.none } }
+		set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+	}
 	if = {
 		limit = { has_variable = utopia_manifesto_cost_manpower }
 		multiply_temp_variable = { utopia_manifesto_cost_manpower = constant:utopia_manifesto_decision_value.cost_negation_multiplier }
@@ -87,6 +134,7 @@ utopia_manifesto_pay_prepared_decision_cost = {
 	set_temp_variable = { utopia_manifesto_cost_command_power = constant:utopia_manifesto_decision_value.none }
 	set_temp_variable = { utopia_manifesto_cost_stability = constant:utopia_manifesto_decision_value.none }
 	set_temp_variable = { utopia_manifesto_cost_war_support = constant:utopia_manifesto_decision_value.none }
+	black_friday_credit_sale_purchase = yes
 }
 
 # Inputs: utopia_manifesto_duration_base_input and

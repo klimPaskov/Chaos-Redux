@@ -5064,25 +5064,47 @@ black_friday_simple_cost_pay = {
 				limit = {
 					check_variable = { black_friday_simple_cost_quoted = constant:universal_cost_framework.one }
 					check_variable = { black_friday_simple_cost_payable > constant:universal_cost_framework.zero }
-					black_friday_achievement_is_valid_sale = yes
-					has_variable = black_friday_achievement_indexed_sale_sequence
-					check_variable = { black_friday_achievement_indexed_sale_sequence = global.black_friday_sale_sequence }
 				}
+				set_temp_variable = { black_friday_purchase_family_id = black_friday_simple_cost_family }
 				if = {
-					limit = {
-						NOT = { check_variable = { black_friday_simple_cost_kind = constant:universal_cost_resource_kind.political_power } }
-					}
-					add_to_variable = { black_friday_achievement_non_political_receipt_count = constant:black_friday_event.one }
+					limit = { check_variable = { black_friday_simple_cost_no_credit = constant:universal_cost_framework.one } }
+					set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_framework.zero }
 				}
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
 				if = {
-					limit = {
-						NOT = { check_variable = { black_friday_simple_cost_no_credit = constant:universal_cost_framework.one } }
-					}
-					set_temp_variable = { black_friday_purchase_family_id = black_friday_simple_cost_family }
-					black_friday_add_committed_achievement_family = yes
+					limit = { check_variable = { black_friday_simple_cost_kind = constant:universal_cost_resource_kind.political_power } }
+					set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.zero }
 				}
+				black_friday_credit_sale_purchase = yes
 			}
 		}
 	}
 	set_temp_variable = { black_friday_simple_cost_no_credit = constant:universal_cost_framework.zero }
+}
+
+# COUNTRY scope (payer). Credits one purchase that its owner paid at a sale
+# price, from the price table or a simple-API quote, toward the achievement.
+# Inputs: temps black_friday_purchase_family_id (constant:universal_cost_family.*,
+# zero for no family) and black_friday_purchase_non_political (1 when the
+# purchase paid any resource other than political power). Credits only during a
+# valid natural sale whose achievement progress is prepared; forced, manual,
+# debug, AI, and already-awarded progress stay excluded. Consumes the
+# non-political input. Owners call it once per purchase, after paying.
+black_friday_credit_sale_purchase = {
+	if = {
+		limit = {
+			black_friday_achievement_is_valid_sale = yes
+			has_variable = black_friday_achievement_indexed_sale_sequence
+			check_variable = { black_friday_achievement_indexed_sale_sequence = global.black_friday_sale_sequence }
+		}
+		if = {
+			limit = { check_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one } }
+			add_to_variable = { black_friday_achievement_non_political_receipt_count = constant:black_friday_event.one }
+		}
+		if = {
+			limit = { check_variable = { black_friday_purchase_family_id > constant:universal_cost_framework.zero } }
+			black_friday_add_committed_achievement_family = yes
+		}
+	}
+	set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.zero }
 }

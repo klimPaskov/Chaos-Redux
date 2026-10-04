@@ -15,7 +15,7 @@ The CXT decision `chaosx_test_country_event026_price_probe_decision` is the live
 
 | Effect | Scope | Inputs | Outputs and side effects |
 | --- | --- | --- | --- |
-| `black_friday_price_table_quote` | Any | Temp `black_friday_price_ordinary`, temp `black_friday_price_ratio` (payment ratio in basis points of `constant:black_friday_event.ratio_basis`) | Caller-owned temp `black_friday_price_payable`. A positive price below the full ratio becomes `ceil(ordinary x ratio / ratio_basis)`, at least 1. Zero, negative, and full-ratio prices are returned unchanged. No other side effect. |
+| `black_friday_price_table_quote` | Any | Temp `black_friday_price_ordinary`, temp `black_friday_price_ratio` (payment ratio in basis points of `constant:black_friday_event.ratio_basis`), optional temp `black_friday_price_quantum` (smallest payable step; unset or zero means 1) | Caller-owned temp `black_friday_price_payable`. A positive price below the full ratio becomes `ordinary x ratio / ratio_basis` rounded up to a whole number of steps, at least one step. Zero, negative, and full-ratio prices are returned unchanged. No other side effect. |
 | `black_friday_price_table_refresh_entries` | Any | Temp `black_friday_price_ratio` | Rewrites every registered `global.black_friday_price_<key>`. |
 | `black_friday_price_table_apply` | Any | `global.black_friday_discount_ratio` | Sets every registered price to the active sale price. Called by `black_friday_activate_sale` after the sale ratio is snapshotted. |
 | `black_friday_price_table_restore` | Any | None | Sets every registered price back to its ordinary amount. Called by `black_friday_expire_sale`, which terminal cleanup also uses. |
@@ -44,5 +44,14 @@ cost = global.black_friday_price_holy_realm_decision_chinese_core_cost
 ```
 
 Zero costs stay `cost = 0`.
-Custom costs (`custom_cost_trigger`) use the custom-cost sale API instead.
 Base-game decision files are not registered; they keep their normal price (agent decision D7 in `docs/plans/026_black_friday_plans/agent_decisions_2026-10-04.md`).
+
+## Owner custom costs with constant amounts
+
+An owner custom cost whose ordinary amount is a script constant can register that constant in the same table and read the global price in its `custom_cost_trigger`, its payment, and its cost text (agent decision D11).
+Integer resources (equipment, manpower, experience, command power) use the default step of 1; stability and war support set `black_friday_price_quantum = constant:universal_cost_fixed_point_quantum.<stability|war_support>` before the quote and reset it to zero after.
+The trigger copies the price into a temp before comparing, for example `set_temp_variable = { utopia_manifesto_cost_check = global.black_friday_price_utopia_manifesto_decision_cost_trains_small } NOT = { has_equipment = { train_equipment < utopia_manifesto_cost_check } }`.
+The payment passes the same global to the owner's own payment effect, which keeps the owner's equipment types and calls `black_friday_credit_sale_purchase` once with the action's primary family.
+Cost text shows `[?global.black_friday_price_<key>|0]`, or `|%0` for stability and war support.
+A component that is transferred to another country, such as shipped aid, keeps its ordinary amount so the recipient never receives more than the payer gave.
+Variable amounts use the [simple custom-cost API](026_black_friday_simple_cost_api.md) instead.
