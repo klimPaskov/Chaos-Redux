@@ -355,3 +355,21 @@ Decisions:
 - Judgment focuses: Reach Beyond the Coast opens covert and logistical families, Let the World Answer adds the coalition decision `gods_of_africa_arm_offender_enemies` (1000 infantry equipment from Africa's stocks and 25 political power to a country fighting a defiant government, occupier or marked offender; `.619` report), and the Hand of Judgment opens military losses and, from Crisis, disaster. Each focus tooltip states its own result; the Strength ceiling is unchanged.
 - The Tier IV report line reads "Africa has struck us across the nation." so it is not confused with the real final ultimatum.
 - The ultimatum notice reuses the punishment report image and the coalition report reuses the protection report image, as the user accepted for `.611` to `.614`.
+
+## L27. Gods focus payoffs deliver real play, and occupier coercion gets its own node
+
+Disposition: `implemented` (native results of `send_equipment`, `add_building_construction`, `add_claim_by` and `create_wargoal` on live countries are `needs_live_game`). Promoted into the accepted focus spec: `docs/specs/012_africa_specs/specs/012_africa_spec_part_3_focus_tree_architecture.md`, section "2026-10-05 accepted design".
+
+Basis: the Gods focus integration spec (`012_gods_of_africa_focus_integration.md`), the 2026-09-25 focus audit's "Missing or simplified content" (Expedition only adds war support, Final Council only records standings, Measure Needs only lowers the emergency threshold, Continental Arsenals has no build-out, "No Sanctuary for Occupiers" replaced by the Sanctuary node), the user's 2026-09-25 acceptance of the Sanctuary node's protection role, and the round 2 remaining-work list (priority 3).
+
+Decisions:
+
+- Expedition: a host target decision with constant-backed rifles, support equipment and manpower from Africa's own forces, a political-power cost, Africa's reserves and a 180-day cooldown; the target must be on track for Favored, at peace with Africa, and at war with a country whose capital is outside Africa. The `.620` report goes to the partner.
+- Final Council: the Favored and Respected entitlement coefficient and ceilings rise by 1.25; each participant may pledge a final shipment (counted as aid) or speak for Africa before the settlement, and World Is One weighs that voice (1.5) in invitations and acceptances.
+- Measure Needs: surplus suppression and the largest measured shortfall among rifles, fuel, manpower and industry; transport, aircraft and support needs keep their fixed order because the game exposes no matching stock measure for them.
+- Continental Arsenals: a one-off arms factory and infrastructure level (air base level at full infrastructure) in the capital state, or the first owned and controlled African state with room.
+- No Sanctuary for Occupiers: a new Evolution III judgment node at (90, 27) after the Hand of Judgment; its host decision claims the African core states a participant owns, creates a vanilla `take_claimed_state` war goal (the `afghanistan.txt` pattern), and arms the first African government Africa deals with that holds a core on that land. Event 012 has no existing war-goal helper (the old `africa_targeted_colonial_war_plan_ready` flag has no consumer), so the vanilla claimed-state route is used.
+- Focus cost: the new node uses the 10-week standard cost of judgment steps.
+- Every new decision has constant-backed AI weights and an explicit `factor = 0` on each closed gate.
+
+MCP route evidence (2026-10-05): one narrow `hoi4_focus_inspect` (`mode = national`, `treeId = africa_continental_focus_tree`), revision `de29fe65`, reports 301 focuses, 297 diagnostics, 62 connector crossings and 53 node intersections, the same crossings and intersections as the L22 state, so the new node adds no overlap or crossing. Its single blocking diagnostic is the vanilla `TSR_lingguang_incident_joint_branch.txt` brace, outside this mod.

@@ -195,6 +195,74 @@ gods_of_africa_participant_category = {
 		}
 	}
 
+	# A Place at the Final Council (decision L27): before the settlement a
+	# participant may pledge a final shipment or speak for Africa. World Is One
+	# remembers the voice.
+	gods_of_africa_council_pledge = {
+		name = gods_of_africa_council_pledge
+		desc = gods_of_africa_council_pledge_desc
+		icon = GFX_decision_012_africa_gods_fulfill_demand
+		visible = { gods_of_africa_council_is_open = yes }
+		available = {
+			gods_of_africa_council_is_open = yes
+			custom_trigger_tooltip = {
+				tooltip = gods_of_africa_council_pledge_stock_tt
+				gods_of_africa_council_pledge_is_affordable = yes
+			}
+		}
+		custom_cost_trigger = { gods_of_africa_council_pledge_is_affordable = yes }
+		custom_cost_text = gods_of_africa_council_pledge_cost
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_council_pledge_effect_tt
+			hidden_effect = { gods_of_africa_council_pledge = yes }
+		}
+		ai_will_do = {
+			base = constant:gods_of_africa_ai_response.council_pledge_base
+			modifier = {
+				factor = 0
+				OR = {
+					NOT = { gods_of_africa_council_is_open = yes }
+					NOT = { gods_of_africa_council_pledge_is_affordable = yes }
+				}
+			}
+			modifier = { factor = constant:gods_of_africa_ai_response.council_pledge_loyal gods_of_africa_ai_is_loyal_ally = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.council_pledge_rival gods_of_africa_ai_is_defiant_rival = yes }
+		}
+	}
+
+	gods_of_africa_council_speech = {
+		name = gods_of_africa_council_speech
+		desc = gods_of_africa_council_speech_desc
+		icon = GFX_decision_012_africa_gods_public_pardon
+		visible = { gods_of_africa_council_is_open = yes }
+		available = {
+			gods_of_africa_council_is_open = yes
+			gods_of_africa_council_speech_is_affordable = yes
+		}
+		custom_cost_trigger = { gods_of_africa_council_speech_is_affordable = yes }
+		custom_cost_text = gods_of_africa_council_speech_cost
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_council_speech_effect_tt
+			hidden_effect = { gods_of_africa_council_speech = yes }
+		}
+		ai_will_do = {
+			base = constant:gods_of_africa_ai_response.council_speech_base
+			modifier = {
+				factor = 0
+				OR = {
+					NOT = { gods_of_africa_council_is_open = yes }
+					NOT = { gods_of_africa_council_speech_is_affordable = yes }
+				}
+			}
+			modifier = { factor = constant:gods_of_africa_ai_response.council_speech_friendly gods_of_africa_ai_is_friendly_to_africa = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.council_speech_rival gods_of_africa_ai_is_defiant_rival = yes }
+		}
+	}
+
 	# A participant can make one meaningful voluntary shipment when Africa has
 	# a current material shortage and no ordinary demand is open. The effect
 	# chooses the displayed need deterministically and rechecks the reserve.
@@ -1838,6 +1906,114 @@ gods_of_africa_host_category = {
 			modifier = { factor = constant:gods_of_africa_ai_response.coalition_holds_core FROM = { gods_of_africa_ai_holds_african_core = yes } }
 			modifier = { factor = constant:gods_of_africa_ai_response.coalition_at_war FROM = { has_war_with = ROOT } }
 			modifier = { factor = constant:gods_of_africa_ai_response.coalition_defiant FROM = { has_country_flag = gods_of_africa_defiant } }
+		}
+	}
+
+	# The African Expedition (decision L27): rifles, support equipment and men
+	# from Africa's own forces for a partner fighting outside Africa.
+	gods_of_africa_send_expedition = {
+		name = gods_of_africa_send_expedition
+		desc = gods_of_africa_send_expedition_desc
+		icon = GFX_decision_012_africa_gods_protect_partner
+		target_array = gods_of_africa_participants
+		activation = { gods_of_africa_active_host_is_valid = yes }
+		target_root_trigger = {
+			gods_of_africa_active_host_is_valid = yes
+			has_country_flag = gods_of_africa_focus_expedition_unlocked
+		}
+		target_trigger = {
+			FROM = {
+				exists = yes
+				has_country_flag = gods_of_africa_participant
+				gods_of_africa_expedition_target_is_valid = yes
+			}
+		}
+		visible = {
+			gods_of_africa_active_host_is_valid = yes
+			has_country_flag = gods_of_africa_focus_expedition_unlocked
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = gods_of_africa_expedition_stock_tt
+				gods_of_africa_host_can_send_expedition = yes
+			}
+			FROM = { gods_of_africa_expedition_target_is_valid = yes }
+		}
+		custom_cost_trigger = { gods_of_africa_host_can_send_expedition = yes }
+		custom_cost_text = gods_of_africa_expedition_cost
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_send_expedition_effect_tt
+			hidden_effect = {
+				FROM = { save_event_target_as = gods_of_africa_expedition_partner }
+				gods_of_africa_send_expedition = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:gods_of_africa_ai_response.expedition_base
+			modifier = {
+				factor = 0
+				OR = {
+					NOT = { gods_of_africa_host_can_send_expedition = yes }
+					FROM = { NOT = { gods_of_africa_expedition_target_is_valid = yes } }
+				}
+			}
+			modifier = { factor = constant:gods_of_africa_ai_response.expedition_loyal FROM = { gods_of_africa_ai_is_loyal_ally = yes } }
+		}
+	}
+
+	# No Sanctuary for Occupiers (decision L27): claims and a war goal against a
+	# government that owns African core states of Africa, and rifles for the
+	# African claimant of that land.
+	gods_of_africa_coerce_occupier = {
+		name = gods_of_africa_coerce_occupier
+		desc = gods_of_africa_coerce_occupier_desc
+		icon = GFX_decision_012_africa_gods_mark_offender
+		target_array = gods_of_africa_participants
+		activation = { gods_of_africa_active_host_is_valid = yes }
+		target_root_trigger = {
+			gods_of_africa_active_host_is_valid = yes
+			has_country_flag = gods_of_africa_focus_occupier_coercion_unlocked
+		}
+		target_trigger = {
+			FROM = {
+				exists = yes
+				has_country_flag = gods_of_africa_participant
+				gods_of_africa_occupier_coercion_target_is_valid = yes
+			}
+		}
+		visible = {
+			gods_of_africa_active_host_is_valid = yes
+			has_country_flag = gods_of_africa_focus_occupier_coercion_unlocked
+		}
+		available = {
+			gods_of_africa_host_can_coerce_occupier = yes
+			FROM = { gods_of_africa_occupier_coercion_target_is_valid = yes }
+		}
+		custom_cost_trigger = { gods_of_africa_host_can_coerce_occupier = yes }
+		custom_cost_text = gods_of_africa_coercion_cost
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_coerce_occupier_effect_tt
+			hidden_effect = {
+				FROM = { save_event_target_as = gods_of_africa_coerced_occupier }
+				gods_of_africa_coerce_occupier = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:gods_of_africa_ai_response.coercion_base
+			modifier = {
+				factor = 0
+				OR = {
+					NOT = { gods_of_africa_host_can_coerce_occupier = yes }
+					FROM = { NOT = { gods_of_africa_occupier_coercion_target_is_valid = yes } }
+				}
+			}
+			modifier = { factor = constant:gods_of_africa_ai_response.coercion_strong_africa gods_of_africa_ai_africa_is_strong = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.coercion_weak_africa gods_of_africa_ai_africa_is_weak = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.coercion_at_war has_war = yes }
 		}
 	}
 }

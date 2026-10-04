@@ -1028,3 +1028,13 @@ Disposition: `implemented`. Evidence: commits `f25db7e0d` (owned-agreement breac
 - Final standing is classified Enemy, Favored, Respected, Distrusted by the twelve factors and doctrine thresholds of the accepted design (`gods_of_africa_full_grade_*_is_valid`).
 - Favored and Respected survivors are owed a frozen, capability-scaled equipment and fuel obligation, delivered in bounded, proportional, donor-backed batches by the settling government; Distrusted and Enemy are owed nothing, and no political-power substitute exists.
 - Standing diplomacy and the World Is One record follow the frozen standing.
+
+## 2026-10-05 accepted design: Gods of Africa focus payoffs and No Sanctuary for Occupiers
+
+Acceptance basis: agent decision L27 in `docs/plans/012_africa_plans/agent_decisions_2026-10-04.md`, taken under the user's full-authority grant for the Event 012 takeover, implementing the unresolved items of the Gods focus integration spec (`012_gods_of_africa_focus_integration.md`) and the 2026-09-25 Gods focus audit. The user's 2026-09-25 acceptance of the Sanctuary node's protection and Arms Against Tyranny role stands; occupier coercion is therefore a separate node.
+
+- The African Expedition opens a host decision that sends a partner on track for Favored, fighting a country whose capital lies outside Africa, a package of infantry equipment, support equipment and manpower from Africa's own forces, at a political-power cost and with a cooldown.
+- A Place at the Final Council raises the settlement support owed to Favored and Respected governments by a constant multiplier, and lets each participant pledge a final shipment or speak for Africa before the settlement; World Is One reads that council voice in its invitation and acceptance weights.
+- Measure the Needs of the Continent makes the demand selector skip a material Africa holds in surplus and ask first for its largest measured shortfall among rifles, fuel, manpower and industry.
+- Raise the Continental Arsenals builds one arms factory and one level of infrastructure (an air base level where infrastructure is complete) in the capital state, or the first owned and controlled African state with room.
+- The new Evolution III judgment node No Sanctuary for Occupiers (`gods_of_africa_focus_no_sanctuary_for_occupiers`, x 90, y 27, after the Hand of Judgment) opens a host decision that claims the African core states a foreign government owns, creates a claimed-state war goal through the vanilla route, and arms the African claimant of that land. The narrow focus inspection after the change reports 301 focuses, 62 connector crossings and 53 node intersections, unchanged from the earlier overlay state, and no blocking diagnostic in this mod.

@@ -7555,6 +7555,7 @@ focus_tree = {
 		completion_reward = {
 			custom_effect_tooltip = gods_of_africa_focus_continental_arsenals_tt
 			set_country_flag = gods_of_africa_focus_arsenal_support_unlocked
+			hidden_effect = { gods_of_africa_build_continental_arsenal = yes }
 		}
 
 		ai_will_do = {
@@ -7852,6 +7853,7 @@ focus_tree = {
 		completion_reward = {
 			custom_effect_tooltip = gods_of_africa_focus_expedition_tt
 			set_country_flag = gods_of_africa_focus_expedition_unlocked
+			unlock_decision_tooltip = gods_of_africa_send_expedition
 		}
 
 		ai_will_do = {
@@ -8054,6 +8056,52 @@ focus_tree = {
 		}
 
 		ai_will_do = { factor = @africa_ai_elevated }
+	}
+
+	# No Sanctuary for Occupiers (decision L27): the Evolution III judgment node
+	# that turns African land held by a foreign government into claims, a war
+	# goal and rifles for the African claimant of that land.
+	focus = {
+		id = gods_of_africa_focus_no_sanctuary_for_occupiers
+		icon = GFX_goal_012_africa_gods_judgment
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		x = 90
+		y = 27
+		cost = @africa_focus_standard
+		prerequisite = { focus = gods_of_africa_focus_hand_judgment }
+		# Revealed when Africa reaches this evolution.
+		allow_branch = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_global_flag = africa_evolution_iii_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		available = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_global_flag = africa_evolution_iii_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		cancel_if_invalid = yes
+
+		completion_reward = {
+			custom_effect_tooltip = gods_of_africa_focus_no_sanctuary_for_occupiers_tt
+			set_country_flag = gods_of_africa_focus_occupier_coercion_unlocked
+			unlock_decision_tooltip = gods_of_africa_coerce_occupier
+		}
+
+		ai_will_do = {
+			factor = @africa_ai_elevated
+			modifier = {
+				factor = @africa_ai_preferred_multiplier
+				any_of_scopes = {
+					array = gods_of_africa_participants
+					gods_of_africa_ai_holds_african_core = yes
+				}
+			}
+		}
 	}
 
 	focus = {

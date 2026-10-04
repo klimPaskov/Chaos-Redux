@@ -382,6 +382,11 @@ gods_of_africa_sync_world_history = {
 			limit = { has_country_flag = gods_of_africa_recognition_granted }
 			set_country_flag = gods_of_africa_world_history_recognised
 		}
+		# A voice at the Final Council (decision L27).
+		if = {
+			limit = { has_country_flag = gods_of_africa_council_voice }
+			set_country_flag = gods_of_africa_world_history_council_voice
+		}
 		if = {
 			limit = {
 				OR = {
@@ -1069,6 +1074,98 @@ gods_of_africa_build_need_profile = {
 			}
 			set_variable = { gods_of_africa_need_resources = constant:gods_of_africa_value.one }
 		}
+		# Measure the Needs of the Continent (decision L27): a material Africa
+		# holds in surplus is never demanded, and the largest measured shortfall
+		# among rifles, fuel, manpower and industry is asked for first.
+		clear_variable = gods_of_africa_need_largest_family
+		if = {
+			limit = { has_country_flag = gods_of_africa_focus_needs_profile_unlocked }
+			if = {
+				limit = { NOT = { has_equipment = { infantry_equipment < constant:gods_of_africa_needs.land_surplus } } }
+				set_variable = { gods_of_africa_need_land_equipment = constant:gods_of_africa_value.zero }
+			}
+			if = {
+				limit = { NOT = { has_equipment = { support_equipment < constant:gods_of_africa_needs.support_surplus } } }
+				set_variable = { gods_of_africa_need_support_equipment = constant:gods_of_africa_value.zero }
+			}
+			if = {
+				limit = { NOT = { has_equipment = { fighter_equipment_1 < constant:gods_of_africa_needs.aircraft_surplus } } }
+				set_variable = { gods_of_africa_need_aircraft = constant:gods_of_africa_value.zero }
+			}
+			if = {
+				limit = { NOT = { has_manpower < constant:gods_of_africa_needs.manpower_surplus } }
+				set_variable = { gods_of_africa_need_manpower = constant:gods_of_africa_value.zero }
+			}
+			gods_of_africa_rank_largest_need = yes
+		}
+	}
+}
+
+# COUNTRY scope on the host, with the need profile just built. Each measured
+# need's shortfall is a percentage of its own threshold; the largest wins.
+gods_of_africa_rank_largest_need = {
+	set_temp_variable = { gods_of_africa_need_best_percent = constant:gods_of_africa_value.zero }
+	if = {
+		limit = { check_variable = { gods_of_africa_need_land_equipment > constant:gods_of_africa_value.zero } }
+		set_temp_variable = { gods_of_africa_need_percent = constant:gods_of_africa_needs.percent }
+		if = {
+			limit = { has_variable = africa_common_defence_stockpile }
+			set_temp_variable = { gods_of_africa_need_stock = africa_common_defence_stockpile }
+			multiply_temp_variable = { gods_of_africa_need_stock = constant:gods_of_africa_needs.percent }
+			divide_temp_variable = { gods_of_africa_need_stock = constant:gods_of_africa_transaction.land_equipment_amount }
+			subtract_from_temp_variable = { gods_of_africa_need_percent = gods_of_africa_need_stock }
+		}
+		if = {
+			limit = { check_variable = { gods_of_africa_need_percent > gods_of_africa_need_best_percent } }
+			set_temp_variable = { gods_of_africa_need_best_percent = gods_of_africa_need_percent }
+			set_variable = { gods_of_africa_need_largest_family = constant:gods_of_africa_demand_family.land_equipment }
+		}
+	}
+	if = {
+		limit = { check_variable = { gods_of_africa_need_fuel > constant:gods_of_africa_value.zero } }
+		set_temp_variable = { gods_of_africa_need_percent = constant:gods_of_africa_needs.percent }
+		set_temp_variable = { gods_of_africa_need_stock = fuel_k }
+		multiply_temp_variable = { gods_of_africa_need_stock = constant:gods_of_africa_contribution_measure.native_per_k }
+		multiply_temp_variable = { gods_of_africa_need_stock = constant:gods_of_africa_needs.percent }
+		divide_temp_variable = { gods_of_africa_need_stock = constant:gods_of_africa_transaction.fuel_amount }
+		subtract_from_temp_variable = { gods_of_africa_need_percent = gods_of_africa_need_stock }
+		if = {
+			limit = { check_variable = { gods_of_africa_need_percent > gods_of_africa_need_best_percent } }
+			set_temp_variable = { gods_of_africa_need_best_percent = gods_of_africa_need_percent }
+			set_variable = { gods_of_africa_need_largest_family = constant:gods_of_africa_demand_family.fuel }
+		}
+	}
+	if = {
+		limit = { check_variable = { gods_of_africa_need_manpower > constant:gods_of_africa_value.zero } }
+		set_temp_variable = { gods_of_africa_need_percent = constant:gods_of_africa_needs.percent }
+		if = {
+			limit = { has_variable = africa_continental_war_readiness }
+			set_temp_variable = { gods_of_africa_need_stock = africa_continental_war_readiness }
+			multiply_temp_variable = { gods_of_africa_need_stock = constant:gods_of_africa_needs.percent }
+			divide_temp_variable = { gods_of_africa_need_stock = constant:africa_measure.high }
+			subtract_from_temp_variable = { gods_of_africa_need_percent = gods_of_africa_need_stock }
+		}
+		if = {
+			limit = { check_variable = { gods_of_africa_need_percent > gods_of_africa_need_best_percent } }
+			set_temp_variable = { gods_of_africa_need_best_percent = gods_of_africa_need_percent }
+			set_variable = { gods_of_africa_need_largest_family = constant:gods_of_africa_demand_family.manpower }
+		}
+	}
+	if = {
+		limit = { check_variable = { gods_of_africa_need_industry > constant:gods_of_africa_value.zero } }
+		set_temp_variable = { gods_of_africa_need_percent = constant:gods_of_africa_needs.percent }
+		if = {
+			limit = { has_variable = africa_central_capacity }
+			set_temp_variable = { gods_of_africa_need_stock = africa_central_capacity }
+			multiply_temp_variable = { gods_of_africa_need_stock = constant:gods_of_africa_needs.percent }
+			divide_temp_variable = { gods_of_africa_need_stock = constant:africa_measure.medium }
+			subtract_from_temp_variable = { gods_of_africa_need_percent = gods_of_africa_need_stock }
+		}
+		if = {
+			limit = { check_variable = { gods_of_africa_need_percent > gods_of_africa_need_best_percent } }
+			set_temp_variable = { gods_of_africa_need_best_percent = gods_of_africa_need_percent }
+			set_variable = { gods_of_africa_need_largest_family = constant:gods_of_africa_demand_family.industry_repair }
+		}
 	}
 }
 
@@ -1196,6 +1293,11 @@ gods_of_africa_select_demand_family = {
 			}
 		}
 		set_variable = { gods_of_africa_family_candidate = gods_of_africa_priority_family }
+	}
+	# Measure the Needs of the Continent: the largest measured shortfall.
+	else_if = {
+		limit = { has_variable = gods_of_africa_need_largest_family }
+		set_variable = { gods_of_africa_family_candidate = gods_of_africa_need_largest_family }
 	}
 	else_if = {
 		limit = { check_variable = { gods_of_africa_need_emergency > constant:gods_of_africa_value.zero } }

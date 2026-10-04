@@ -46,3 +46,10 @@ If the workbook keeps per-event notes for Event 012, add these facts in the in-g
 - The Last Sentence: "Once Africa's Strength, Chaos and a participant's Wrath and record all reach their extreme gates, Africa delivers its final ultimatum: within 60 days the participant must hand back Africa's land and make peace, or pay an extraordinary settlement. Refusal or the deadline brings disaster and waves of civilian deaths across up to 3 of its states." (`gods_of_africa_focus_last_sentence_tt`)
 - New report event "Africa's Final Ultimatum" (`chaosx.nr12.618.t`) and host report "Arms for the Offender's Enemies" (`chaosx.nr12.619.t`).
 - New Event 012 log entries: "Africa Strikes [country] Across the Nation", "Africa's Final Ultimatum to [country]", "Catastrophe Falls on [country]" (`africa.event_log.gods.*` in `localisation/english/012_africa_event_log_l_english.yml`).
+
+## Gods of Africa focus payoffs (agent decision L27)
+
+If the workbook keeps per-event notes for Event 012, add these facts in the in-game wording:
+
+- New focus "No Sanctuary for Occupiers" (`gods_of_africa_focus_no_sanctuary_for_occupiers`): "Africa can lay claim to the African core states a foreign government owns, gain a war goal to take them back, and arm the African claimant of that land."
+- New decisions "Send the African Expedition", "Pledge a Final Shipment", "Speak for Africa at the Council" and "No Sanctuary for Occupiers"; new reports "The African Expedition Arrives" (`chaosx.nr12.620.t`) and "Africa Claims Its Land" (`chaosx.nr12.621.t`).

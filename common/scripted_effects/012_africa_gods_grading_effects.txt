@@ -691,6 +691,21 @@ gods_of_africa_calculate_settlement_entitlement = {
 			set_temp_variable = { gods_of_africa_entitlement_equipment_ceiling = constant:gods_of_africa_reward_units.respected_equipment_ceiling }
 			set_temp_variable = { gods_of_africa_entitlement_fuel_ceiling = constant:gods_of_africa_reward_units.respected_fuel_ceiling }
 		}
+		# A Place at the Final Council raises Favored and Respected support
+		# (decision L27).
+		if = {
+			limit = {
+				OR = {
+					check_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.favored }
+					check_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.respected }
+				}
+				has_event_target = africa_host
+				event_target:africa_host = { has_country_flag = gods_of_africa_focus_final_council_unlocked }
+			}
+			multiply_temp_variable = { gods_of_africa_entitlement_coefficient = constant:gods_of_africa_reward_scale.final_council_multiplier }
+			multiply_temp_variable = { gods_of_africa_entitlement_equipment_ceiling = constant:gods_of_africa_reward_scale.final_council_multiplier }
+			multiply_temp_variable = { gods_of_africa_entitlement_fuel_ceiling = constant:gods_of_africa_reward_scale.final_council_multiplier }
+		}
 		set_temp_variable = { gods_of_africa_scaled_entitlement_output = constant:gods_of_africa_value.zero }
 		gods_of_africa_floor_scaled_entitlement = yes
 		set_temp_variable = { gods_of_africa_entitlement_equipment_completed = gods_of_africa_scaled_entitlement_output }
