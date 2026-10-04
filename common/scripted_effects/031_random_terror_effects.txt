@@ -1056,8 +1056,14 @@ random_terror_record_evolution = {
 	random_terror_emit_evolution_report = yes
 }
 
-# One report per evolution.  Global Jihad setup records its evolutions in the
-# Event Logs but holds these popups back in favour of its own launch reports.
+# One presentation per evolution, each guarded by a one-time global flag.
+# Global Jihad setup records its evolutions in the Event Logs but holds these
+# popups and news back in favour of its own launch reports; the guard flags
+# are still set so nothing fires late.
+#   II  report chaosx.nr31.3 and news 311
+#   III report chaosx.nr31.4, deferred until the first territorial actor exists
+#   IV  report chaosx.nr31.5
+#   V   news 313
 random_terror_emit_evolution_report = {
 	if = {
 		limit = {
@@ -1069,6 +1075,14 @@ random_terror_emit_evolution_report = {
 			limit = { NOT = { has_global_flag = random_terror_global_jihad_setup_in_progress } }
 			every_country = { limit = { is_ai = no exists = yes } country_event = { id = chaosx.nr31.3 } }
 		}
+		if = {
+			limit = { NOT = { has_global_flag = random_terror_network_news_sent } }
+			set_global_flag = random_terror_network_news_sent
+			if = {
+				limit = { NOT = { has_global_flag = random_terror_global_jihad_setup_in_progress } }
+				news_event = { id = chaosx.news.311 days = 1 }
+			}
+		}
 	}
 	if = {
 		limit = {
@@ -1078,7 +1092,13 @@ random_terror_emit_evolution_report = {
 		set_global_flag = random_terror_evolution_3_report_sent
 		if = {
 			limit = { NOT = { has_global_flag = random_terror_global_jihad_setup_in_progress } }
-			every_country = { limit = { is_ai = no exists = yes } country_event = { id = chaosx.nr31.4 } }
+			if = {
+				limit = { has_global_flag = random_terror_territorial_actor_exists }
+				every_country = { limit = { is_ai = no exists = yes } country_event = { id = chaosx.nr31.4 } }
+			}
+			else = {
+				set_global_flag = random_terror_evolution_3_report_deferred
+			}
 		}
 	}
 	if = {
@@ -1089,7 +1109,39 @@ random_terror_emit_evolution_report = {
 		set_global_flag = random_terror_evolution_4_report_sent
 		if = {
 			limit = { NOT = { has_global_flag = random_terror_global_jihad_setup_in_progress } }
-			every_country = { limit = { is_ai = no exists = yes } country_event = { id = chaosx.nr31.6 } }
+			every_country = { limit = { is_ai = no exists = yes } country_event = { id = chaosx.nr31.5 } }
+		}
+	}
+	if = {
+		limit = {
+			check_variable = { global.random_terror_evolution_stage = constant:random_terror_evolution.final_jihad }
+			NOT = { has_global_flag = random_terror_final_jihad_news_sent }
+		}
+		set_global_flag = random_terror_final_jihad_news_sent
+		if = {
+			limit = { NOT = { has_global_flag = random_terror_global_jihad_setup_in_progress } }
+			news_event = { id = chaosx.news.313 days = 1 }
+		}
+	}
+}
+
+# The first territorial actor of the campaign: world news 312 once, and the
+# Territorial Insurgency report when that evolution arrived before any actor.
+random_terror_emit_first_actor_news = {
+	if = {
+		limit = { NOT = { has_global_flag = random_terror_first_actor_news_sent } }
+		set_global_flag = random_terror_first_actor_news_sent
+		if = {
+			limit = { NOT = { has_global_flag = random_terror_global_jihad_setup_in_progress } }
+			news_event = { id = chaosx.news.312 days = 1 }
+		}
+	}
+	if = {
+		limit = { has_global_flag = random_terror_evolution_3_report_deferred }
+		clr_global_flag = random_terror_evolution_3_report_deferred
+		if = {
+			limit = { NOT = { has_global_flag = random_terror_global_jihad_setup_in_progress } }
+			every_country = { limit = { is_ai = no exists = yes } country_event = { id = chaosx.nr31.4 days = 1 } }
 		}
 	}
 }
@@ -2317,6 +2369,7 @@ random_terror_try_spawn_actor = {
 			add_to_variable = { global.random_terror_territorial_state_count = 1 }
 			add_to_variable = { global.random_terror_territorial_control = constant:random_terror_tuning.actor_control_start }
 			set_global_flag = random_terror_territorial_actor_exists
+			random_terror_emit_first_actor_news = yes
 			if = {
 				limit = { has_global_flag = random_terror_global_jihad_setup_in_progress }
 				add_to_variable = { global.random_terror_scenario_actors_created = constant:random_terror_value.one }
@@ -5189,6 +5242,11 @@ random_terror_resolve_defeat = {
 			limit = { check_variable = { random_terror_terminal_defeat = constant:random_terror_value.one } }
 			set_global_flag = random_terror_defeat_aftermath_active
 			every_country = { limit = { is_ai = no exists = yes } country_event = { id = chaosx.nr31.8 } }
+			if = {
+				limit = { NOT = { has_global_flag = random_terror_broken_claim_news_sent } }
+				set_global_flag = random_terror_broken_claim_news_sent
+				news_event = { id = chaosx.news.314 days = 1 }
+			}
 			random_terror_emit_super_event = yes
 		}
 		else = {

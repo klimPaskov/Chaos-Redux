@@ -8,6 +8,10 @@ The hidden entry event calls `random_terror_run_global_wave`, refreshes the glob
 
 The accepted evolution names are Organized Cells, Transnational Terror Network, Territorial Insurgency, The Jihadist International, and The Final Jihad.
 
+Each evolution has one presentation guarded by a one-time global flag (`random_terror_emit_evolution_report`): Evolution II sends report `chaosx.nr31.3` and news `chaosx.news.311`, Evolution III sends report `chaosx.nr31.4` once a territorial actor exists (deferred to the first actor otherwise), Evolution IV sends report `chaosx.nr31.5`, and Evolution V sends news `chaosx.news.313`.
+The first territorial actor of the campaign sends news `chaosx.news.312` (`random_terror_emit_first_actor_news`), and a terminal defeat sends news `chaosx.news.314` beside report `chaosx.nr31.8` and the Broken Claim super-event.
+Global Jihad setup holds all of these back while still setting their guards.
+
 Global Jihad remains a scenario owned by Event 31, and The False Revelation remains the terminal world-end branch.
 
 The accepted proposal for `SCN-014` collided with Fallout, and `SCN-015` is occupied by Missile Age.
