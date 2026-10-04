@@ -1050,8 +1050,11 @@ chaosx_nr25_final_action_available = {
 	}
 }
 
-# Country scope. Rival sabotage is only actionable when the initiator has a
-# selected, live participant target and its separate rival cooldown is clear.
+# Country scope (the acting country). A hostile operation is actionable
+# while the actor's own rival cooldown is clear. The targeted decisions check
+# the target itself in their target_trigger (FROM): a live participant whose
+# received-operation cooldown is clear. The executor re-validates the target
+# it saves for the chain.
 chaosx_nr25_rival_action_available = {
 	chaosx_nr25_base_action_available = yes
 	check_variable = {
@@ -1059,11 +1062,37 @@ chaosx_nr25_rival_action_available = {
 		value = constant:chaosx_nr25_value.zero
 		compare = less_than_or_equals
 	}
-	has_variable = chaosx_nr25_rival_target
-	has_event_target = chaosx_nr25_rival_target_scope
-	event_target:chaosx_nr25_rival_target_scope = {
-		chaosx_nr25_target_participant_valid = yes
-		check_variable = { var = chaosx_nr25_rival_received_cooldown value = constant:chaosx_nr25_value.zero compare = less_than_or_equals }
+}
+
+# Country scope (the acting country, FROM the candidate target). AI target
+# preference for hostile operations: rivals ahead in the race first, rivals
+# with a countermeasure ready last. Player status plays no part.
+chaosx_nr25_ai_target_leads = {
+	FROM = { check_variable = { var = chaosx_nr25_progress value = ROOT.chaosx_nr25_progress compare = greater_than } }
+}
+
+# Country scope (the acting country, FROM the candidate target). The target
+# was caught operating against the actor.
+chaosx_nr25_ai_target_is_known_attacker = {
+	has_variable = chaosx_nr25_identified_attacker_id
+	check_variable = { var = chaosx_nr25_identified_attacker_id value = FROM.id compare = equals }
+}
+
+# Country scope. The AI keeps a working reserve of political power, fuel,
+# support equipment and, on its own shipping, convoys before it spends on an
+# optional expedition action. The floors are the roster-entry floors.
+chaosx_nr25_ai_keeps_reserve = {
+	OR = {
+		is_ai = no
+		AND = {
+			has_political_power > constant:chaosx_nr25_cost.ai_reserve_pp
+			has_fuel > constant:chaosx_nr25_cost.ai_reserve_fuel
+			has_equipment = { support_equipment > constant:chaosx_nr25_cost.ai_reserve_support }
+			OR = {
+				chaosx_nr25_uses_chartered_passage = yes
+				has_equipment = { convoy > constant:chaosx_nr25_cost.ai_reserve_convoys }
+			}
+		}
 	}
 }
 
@@ -1100,9 +1129,12 @@ chaosx_nr25_pre_winner_exchange_available = {
 		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals }
 	}
 	chaosx_nr25_pre_winner_exchange_cost_available = yes
-	has_variable = chaosx_nr25_rival_target
-	has_event_target = chaosx_nr25_rival_target_scope
-	event_target:chaosx_nr25_rival_target_scope = {
+}
+
+# Country scope (the acting country, FROM the candidate partner). One exchange
+# per partner.
+chaosx_nr25_pre_winner_exchange_partner_valid = {
+	FROM = {
 		chaosx_nr25_target_participant_valid = yes
 		NOT = { is_in_array = { array = ROOT.chaosx_nr25_pre_winner_exchange_target_ids value = THIS } }
 	}

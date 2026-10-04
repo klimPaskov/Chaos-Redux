@@ -2617,6 +2617,14 @@ chaosx_nr25_apply_militarisation_target = {
 			has_variable = chaosx_nr25_rival_target has_event_target = chaosx_nr25_rival_target_scope
 			event_target:chaosx_nr25_rival_target_scope = { chaosx_nr25_target_participant_valid = yes }
 		}
+		# Armed actions are public: the target knows who acted, and the actor
+		# remembers its last armed action so the AI does not repeat it back to
+		# back. A rescue is not hostile and changes neither.
+		if = {
+			limit = { NOT = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.rescue compare = equals } } }
+			set_variable = { chaosx_nr25_last_militarisation_action = chaosx_nr25_evolution_action }
+			event_target:chaosx_nr25_rival_target_scope = { set_variable = { chaosx_nr25_identified_attacker_id = ROOT.id } }
+		}
 		event_target:chaosx_nr25_rival_target_scope = {
 			if = {
 				limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.blockade compare = equals } }
@@ -3150,6 +3158,7 @@ chaosx_nr25_execute_rival_sabotage = {
 						}
 					}
 					add_opinion_modifier = { target = ROOT modifier = chaosx_nr25_sabotage_suspicion }
+					set_variable = { chaosx_nr25_identified_attacker_id = ROOT.id }
 					# Identified false coordinates no longer mislead the surveys.
 					if = {
 						limit = { check_variable = { var = ROOT.chaosx_nr25_rival_operation value = constant:chaosx_nr25_rival_operation.feed_false_coordinates compare = equals } }
@@ -3168,6 +3177,8 @@ chaosx_nr25_execute_rival_sabotage = {
 				set_variable = { chaosx_nr25_false_map_baseline_evidence = chaosx_nr25_survey_evidence }
 			}
 			set_country_flag = chaosx_nr25_rival_action_used
+			# The AI never repeats the same operation back to back.
+			set_variable = { chaosx_nr25_last_rival_operation = chaosx_nr25_rival_operation }
 			clear_variable = chaosx_nr25_rival_operation
 			clear_variable = chaosx_nr25_rival_target
 			clear_variable = chaosx_nr25_rival_target_id

@@ -273,3 +273,35 @@ Decision:
 - The shared Deaths ledger gains the `antarctic_expedition` reason (39), shown as "Antarctic expedition losses" in both deaths-cause views and counted in the military country bucket, so expedition deaths stay on the military side without a new Chaos Meter column.
 - Deaths per incident come from the `chaosx_nr25_casualty` bands instead of one death per incident: 12 for a field accident (the default), 6 for staff cut off in a forced shutdown, 30 for a camp seized by troops and 45 for a collapsed evacuation. The two unused or replaced constants (`dependence_accident_casualties`, `mission_evacuate_failure_casualties`) are removed.
 - The evacuation objective, which ended the expedition silently, now reports its end (`chaosx.nr25.14`), including the dead when the evacuation collapses.
+
+## D19. AI weights, reserve floors and the hostile-operation gates
+
+Disposition: `implemented` for the source patch; `blocked` for the MCP probability baseline and compare.
+
+Basis: the AI probability scenario contract (`matrices/025_ai_probability_scenarios.md`), its hard-failure list, spec 009, and the lead's acceptance that the AI keeps its reserve floors, cannot launch an invalid final recovery and cannot repeat one hostile action every cooldown.
+
+Defects found and fixed:
+
+- The five targeted hostile operations and the pre-winner data exchange required a chain-local event target inside `available`, which never exists while a decision is evaluated, so none of them could ever be taken by a player or the AI. Their actor gates now check only the actor's own readiness and cooldown; the target is checked in `target_trigger` through FROM (a live participant whose received-operation cooldown is clear, and for the exchange one not already exchanged with). Plain sabotage now also respects the target's received cooldown.
+- Four AI modifiers read flags that nothing sets (`chaosx_nr25_survey_evidence_ready`, `chaosx_nr25_action_recon_used`, `chaosx_nr25_action_signal_triangulation_used`, `chaosx_nr25_first_among_equals_candidate`); they now read the survey-evidence gate, intelligence, an active fragmenting wreck and the recovery winner.
+
+Decision:
+
+- Every optional spending decision carries a zero factor while the AI is below its roster reserve floors (political power, fuel, support equipment and, on its own shipping, convoys). Reinforcing or restoring the outpost, rotating crews, emergency shelter and withdrawal stay exempt so an AI can always recover or leave.
+- Hostile operations and the armed Evolution III actions prefer a rival ahead of the actor (x1.5), avoid a rival with a countermeasure ready (x0.5), lean towards a rival caught operating against the actor (x1.3), and never repeat the actor's last operation or armed action back to back. No factor reads whether the target is a player.
+- Outpost reconfiguration has no base weight; the AI reconfigures only when its situation calls for that emphasis, so it no longer cycles paid reconfigurations. The opening emphasis choice (`chaosx.nr25.70`) shows each emphasis's effect and weights the depot for low readiness, the fortified camp for militarisation or war, the signals station for an active signal and the traverse camp for an improvised route.
+- Evolution V: containment rises with reliance, a recorded accident and stability; controlled integration suits a stable country with low Dependence, risky integration a country losing a war or collapsing, and integration is cut once an accident is on record or reliance has set in; destruction is a last resort after an accident at the accident threshold, never during integration; a democracy is half as willing to conceal.
+- Tuning lives in the `chaosx_nr25_ai` constants.
+
+Source-level scenario reads (deterministic, not probability results): P03 human entry is an event offer with no roll; P04 an AI minor fails the roster gate; A04 critical readiness fails the final-recovery gate (Logistics Readiness 40) and the reserve floor; R01 the leader carries x1.5; R02 a defended leader (x0.75) falls below an exposed rival that is also ahead (x1.5); R03 retaliation (x1.3) does not override race relevance; R04 no player-status factor; R05 a withdrawn rival fails `chaosx_nr25_target_participant_valid`; R06 the actor's rival cooldown, the target's received cooldown and the last-operation guard each zero a repeat.
+
+MCP route record: `hoi4_probability_inspect` with `adapter = decision_ai_will_do`, `source = { path = common/decisions/025_alien_technology_in_antarctica_decisions.txt }` and a five-decision pool returned `INTERNAL_ERROR` twice (once with a mistyped pool, once with the exact pool), and `mission_ai_will_do` on the missions file returned `INTERNAL_ERROR`. `hoi4_probability_compare` with the frozen before snapshot under `evidence/probability_before_20261004/` returned `PROBABILITY_SURFACE_EMPTY`, as the Event 031 record also found for snapshots outside `common/`. No refresh, helper expansion or repository-wide query was used and no route was retried in a loop. The before snapshots (HEAD `5b46c56be` blobs, SHA-256 in the folder listing below) are kept for a later compare.
+
+| Before snapshot | SHA-256 |
+| --- | --- |
+| `common/decisions/025_alien_technology_in_antarctica_decisions.txt` | `ac63ccd891dadd0201af5598296ae1e9127f836fe4c3505db1e9805f120ae082` |
+| `common/decisions/025_alien_technology_in_antarctica_evolution_decisions.txt` | `e43030c5185ecefd131761f0627153257636a2a9fe56967be5a0976024bf7b7e` |
+| `common/decisions/025_alien_technology_in_antarctica_aftermath_decisions.txt` | `1e7cdf6d0651972529df327b36c6459721a0dc85070efd3e9bc7e0b162232c3b` |
+| `common/decisions/025_alien_technology_in_antarctica_missions.txt` | `58d0bf81b779d30d399acb3bb40e563f92a2a19fb27dbb0b9c5127c32921a821` |
+| `common/scripted_triggers/025_alien_technology_in_antarctica_triggers.txt` | `975d71468d6978572c2874fd7dfef6944e2db64eb230959612be90a82fe9d05a` |
+| `events/025_alien_technology_in_antarctica.txt` | `9d968ac7bad33b48bc490f9190e1590317b84d76719b71b3a218a4b7ecdf8c5c` |

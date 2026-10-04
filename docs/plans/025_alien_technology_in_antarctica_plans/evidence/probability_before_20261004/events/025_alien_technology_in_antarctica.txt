@@ -1,0 +1,1406 @@
+add_namespace = chaosx.nr25
+
+# ============================================================================
+# CHAOS REDUX - EVENT 025 ALIEN TECHNOLOGY IN ANTARCTICA
+# ============================================================================
+# Event-owned six-phase expedition race. The entry event initializes the
+# bounded participant registry, opens one human entry window, selects the
+# bounded AI-major roster after human responses, and shows one opening
+# super-event. Participant state is advanced by country-scoped scheduled pulse
+# events and decisions; no recurring world scan is used.
+#
+# The gameplay helpers live in
+# common/scripted_effects/025_alien_technology_in_antarctica_runtime_effects.txt.
+# The shared recovery ledger lives in the Event 025/Event 036 adapter and the
+# Event 016 custom-technology owner API.
+# ============================================================================
+
+# add_tech_bonus does not read script constants, so the incident research
+# bonus is this file's only literal tuning value.
+@NR25_INCIDENT_TECH_BONUS = 0.5
+
+country_event = {
+	id = chaosx.nr25.1
+	title = chaosx.nr25.1.t
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				NOT = { has_global_flag = chaosx_nr25_started }
+			}
+			set_global_flag = chaosx_nr25_started
+			set_global_flag = chaosx_nr25_active
+			set_global_flag = chaosx_nr25_entry_open
+			set_variable = { global.chaosx_nr25_phase = constant:chaosx_nr25_race_state.entry }
+			set_variable = { global.chaosx_nr25_leading_phase = constant:chaosx_nr25_phase.entry }
+			set_variable = { global.chaosx_nr25_next_entry_order = constant:chaosx_nr25_value.zero }
+			set_variable = { global.chaosx_nr25_human_count = constant:chaosx_nr25_value.zero }
+			set_variable = { global.chaosx_nr25_participant_count = constant:chaosx_nr25_value.zero }
+			set_variable = { global.chaosx_nr25_active_participant_count = constant:chaosx_nr25_value.zero }
+			set_variable = { global.chaosx_nr25_outpost_participant_count = constant:chaosx_nr25_value.zero }
+			set_variable = { global.chaosx_nr25_ai_slots = constant:chaosx_nr25_value.zero }
+			set_variable = { global.chaosx_nr25_final_resolution_pending = constant:chaosx_nr25_value.zero }
+			set_variable = { global.chaosx_nr25_final_candidate_date = constant:chaosx_nr25_value.zero }
+			set_variable = { global.chaosx_nr25_final_candidate_survey = constant:chaosx_nr25_value.zero }
+			set_variable = { global.chaosx_nr25_final_candidate_readiness = constant:chaosx_nr25_value.zero }
+			set_variable = { global.chaosx_nr25_final_candidate_exposure = constant:chaosx_nr25_value.zero }
+			set_variable = { global.chaosx_nr25_final_candidate_outpost = constant:chaosx_nr25_value.zero }
+			set_variable = { global.chaosx_nr25_final_candidate_ready_date = constant:chaosx_nr25_value.zero }
+			clear_array = global.chaosx_nr25_participants
+			clear_array = global.chaosx_nr25_fragment_owners
+			clear_array = global.chaosx_nr25_fragment_status
+			clear_array = global.chaosx_nr25_sector_status
+			clear_array = global.chaosx_nr25_sector_confirmed_by
+			clear_array = global.chaosx_nr25_pre_winner_exchange_target_ids
+			set_variable = { global.chaosx_nr25_pre_winner_exchange_targets = constant:chaosx_nr25_value.zero }
+			set_variable = { global.chaosx_nr25_sector_ice_shelf = constant:chaosx_nr25_sector.unresolved }
+			set_variable = { global.chaosx_nr25_sector_mountain_shadow = constant:chaosx_nr25_sector.unresolved }
+			set_variable = { global.chaosx_nr25_sector_signal_basin = constant:chaosx_nr25_sector.unresolved }
+			set_variable = { global.chaosx_nr25_sector_coastal_fracture = constant:chaosx_nr25_sector.unresolved }
+			set_variable = { global.chaosx_nr25_sector_magnetic_silence = constant:chaosx_nr25_sector.unresolved }
+			set_variable = { global.chaosx_nr25_sector_false_map = constant:chaosx_nr25_sector.unresolved }
+			# The core sector is seeded once and persists across reloads. Its value is
+			# hidden from players; false coordinates remain a survey-state concern.
+			set_variable = { global.chaosx_nr25_primary_sector = constant:chaosx_nr25_value.zero }
+			random_list = {
+				1 = { set_variable = { global.chaosx_nr25_primary_sector = constant:chaosx_nr25_value.one } }
+				1 = { set_variable = { global.chaosx_nr25_primary_sector = constant:chaosx_nr25_value.two } }
+				1 = { set_variable = { global.chaosx_nr25_primary_sector = constant:chaosx_nr25_value.three } }
+				1 = { set_variable = { global.chaosx_nr25_primary_sector = constant:chaosx_nr25_value.four } }
+				1 = { set_variable = { global.chaosx_nr25_primary_sector = constant:chaosx_nr25_value.five } }
+				1 = { set_variable = { global.chaosx_nr25_primary_sector = constant:chaosx_nr25_value.six } }
+			}
+			set_variable = { global.chaosx_nr25_chaos = constant:chaosx_nr25_value.zero }
+			set_variable = { global.chaosx_nr25_current_evolution = constant:chaosx_nr25_evolution.none }
+			set_variable = { global.chaosx_nr25_winner = constant:chaosx_nr25_value.zero }
+			set_variable = { global.chaosx_nr25_recovery_order = constant:chaosx_nr25_value.zero }
+			save_global_event_target_as = chaosx_nr25_history_actor
+			set_global_flag = chaosx_nr25_opening_super_event_fired
+			set_temp_variable = { chaosx_nr25_super_event_visible_days = constant:chaosx_nr25_timing.super_event_visible_days }
+			set_global_flag = { flag = super_event_visible days = chaosx_nr25_super_event_visible_days value = constant:chaosx_nr25_identity.super_event_id }
+			set_variable = { global.current_super_event_audio_id = constant:chaosx_nr25_identity.super_event_audio_id }
+			every_country = {
+				limit = { is_ai = no }
+				play_current_super_event_audio = yes
+			}
+			# Evolutions already eligible at the opening change the race from
+			# its first day; the entry and mobilisation reports describe them.
+			chaosx_nr25_apply_evolved_openings = yes
+			news_event = { id = chaosx.news.25 days = 4 }
+			# The entry window closes through the first delivered controller
+			# event. Every human receives one as well as the opening country, and
+			# expedition pulses close it by date, so a vanished opener cannot
+			# leave the race stuck in entry.
+			set_temp_variable = { chaosx_date_days = constant:chaosx_nr25_timing.entry_window_days }
+			chaosx_convert_days_to_date_offset = yes
+			set_variable = { global.chaosx_nr25_entry_close_date = global.date }
+			add_to_variable = { global.chaosx_nr25_entry_close_date = chaosx_date_offset }
+			every_country = {
+				limit = { is_ai = no }
+				country_event = { id = chaosx.nr25.2 days = 1 }
+				country_event = { id = chaosx.nr25.4 days = constant:chaosx_nr25_timing.entry_window_days }
+			}
+			country_event = { id = chaosx.nr25.4 days = constant:chaosx_nr25_timing.entry_window_days }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr25.2
+	title = chaosx.nr25.2.t
+	desc = chaosx.nr25.2.d
+	picture = GFX_report_event_025_antarctic_entry
+	is_triggered_only = yes
+
+	trigger = {
+		is_ai = no
+		has_global_flag = chaosx_nr25_entry_open
+		NOT = { has_country_flag = chaosx_nr25_participant }
+	}
+
+	option = {
+		name = chaosx.nr25.2.a
+		trigger = { chaosx_nr25_entry_authorize_available = yes }
+		ai_chance = { base = 100 }
+		custom_effect_tooltip = chaosx_nr25_entry_owned_cost_tt
+		custom_effect_tooltip = chaosx_nr25_entry_readiness_tt
+		hidden_effect = {
+			chaosx_nr25_register_participant = yes
+			set_temp_variable = { chaosx_nr25_action = constant:chaosx_nr25_action.authorize }
+			chaosx_nr25_execute_action = yes
+		}
+	}
+
+	# Chartered passage is open to every human country, including landlocked
+	# ones and countries without the convoys for an owned-shipping entry.
+	option = {
+		name = chaosx.nr25.2.e
+		trigger = { chaosx_nr25_entry_charter_available = yes }
+		ai_chance = { base = 0 }
+		custom_effect_tooltip = chaosx_nr25_entry_charter_cost_tt
+		custom_effect_tooltip = chaosx_nr25_entry_readiness_tt
+		hidden_effect = {
+			set_country_flag = chaosx_nr25_chartered_passage
+			chaosx_nr25_register_participant = yes
+			set_temp_variable = { chaosx_nr25_action = constant:chaosx_nr25_action.authorize }
+			chaosx_nr25_execute_action = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr25.2.c
+		ai_chance = { base = 0 }
+		hidden_effect = {
+			set_country_flag = chaosx_nr25_route_estimate_requested
+			country_event = { id = chaosx.nr25.3 days = 1 }
+		}
+	}
+
+	option = {
+		name = chaosx.nr25.2.b
+		ai_chance = { base = 0 }
+		set_country_flag = chaosx_nr25_declined
+	}
+}
+
+# Optional human briefing. It makes the route tradeoff explicit before the
+# same bounded entry contract is charged; no country is required to expose its
+# expedition to the world merely to request the estimate.
+country_event = {
+	id = chaosx.nr25.3
+	title = chaosx.nr25.3.t
+	desc = chaosx.nr25.3.d
+	picture = GFX_report_event_025_antarctic_entry
+	is_triggered_only = yes
+
+	trigger = {
+		is_ai = no
+		has_global_flag = chaosx_nr25_entry_open
+		NOT = { has_country_flag = chaosx_nr25_participant }
+		NOT = { has_country_flag = chaosx_nr25_declined }
+	}
+
+	option = {
+		name = chaosx.nr25.3.a
+		trigger = { chaosx_nr25_entry_authorize_available = yes }
+		custom_effect_tooltip = chaosx_nr25_entry_owned_cost_tt
+		custom_effect_tooltip = chaosx_nr25_entry_readiness_tt
+		hidden_effect = {
+			chaosx_nr25_register_participant = yes
+			set_temp_variable = { chaosx_nr25_action = constant:chaosx_nr25_action.authorize }
+			chaosx_nr25_execute_action = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr25.3.c
+		trigger = { chaosx_nr25_entry_charter_available = yes }
+		ai_chance = { base = 0 }
+		custom_effect_tooltip = chaosx_nr25_entry_charter_cost_tt
+		custom_effect_tooltip = chaosx_nr25_entry_readiness_tt
+		hidden_effect = {
+			set_country_flag = chaosx_nr25_chartered_passage
+			chaosx_nr25_register_participant = yes
+			set_temp_variable = { chaosx_nr25_action = constant:chaosx_nr25_action.authorize }
+			chaosx_nr25_execute_action = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr25.3.b
+		ai_chance = { base = 0 }
+		set_country_flag = chaosx_nr25_declined
+	}
+}
+
+# The one entry-window controller runs once after human responses. Humans have
+# already registered, so AI allocation cannot displace a human entrant. Every
+# registered expedition then moves from entry to its own mobilisation phase;
+# the loop reads only the stored participant registry.
+country_event = {
+	id = chaosx.nr25.4
+	title = chaosx.nr25.4.t
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		chaosx_nr25_close_entry_window = yes
+	}
+}
+
+# Opening participant status notice. The actual board is the event-owned
+# decision category, so this event only establishes the phase handoff.
+country_event = {
+	id = chaosx.nr25.5
+	title = chaosx.nr25.5.t
+	desc = chaosx.nr25.5.d
+	picture = GFX_report_event_025_antarctic_mobilisation
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.5.a
+		ai_chance = { base = 100 }
+		set_country_flag = chaosx_nr25_mobilisation_seen
+	}
+}
+
+# Public outpost role selection. This is a participant-owned briefing rather
+# than a sixth primary action; the later reconfiguration decisions use the
+# same reversible ledger and a meaningful resource cost.
+country_event = {
+	id = chaosx.nr25.70
+	title = chaosx.nr25.70.t
+	desc = chaosx.nr25.70.d
+	picture = GFX_report_event_025_antarctic_outpost
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = chaosx_nr25_active
+		has_country_flag = chaosx_nr25_participant
+		has_country_flag = chaosx_nr25_outpost_established
+		has_country_flag = chaosx_nr25_outpost_emphasis_pending
+		NOT = { has_country_flag = chaosx_nr25_outpost_emphasis_selected }
+		NOT = { has_country_flag = chaosx_nr25_terminal }
+	}
+
+	option = {
+		name = chaosx.nr25.70.a
+		ai_chance = { base = 25 }
+		hidden_effect = {
+			set_temp_variable = { chaosx_nr25_emphasis_selection = constant:chaosx_nr25_outpost_emphasis.logistics_depot }
+			chaosx_nr25_apply_outpost_emphasis = yes
+		}
+	}
+	option = {
+		name = chaosx.nr25.70.b
+		ai_chance = { base = 25 }
+		hidden_effect = {
+			set_temp_variable = { chaosx_nr25_emphasis_selection = constant:chaosx_nr25_outpost_emphasis.survey_station }
+			chaosx_nr25_apply_outpost_emphasis = yes
+		}
+	}
+	option = {
+		name = chaosx.nr25.70.c
+		ai_chance = { base = 20 }
+		hidden_effect = {
+			set_temp_variable = { chaosx_nr25_emphasis_selection = constant:chaosx_nr25_outpost_emphasis.signals_station }
+			chaosx_nr25_apply_outpost_emphasis = yes
+		}
+	}
+	option = {
+		name = chaosx.nr25.70.d_option
+		ai_chance = { base = 15 }
+		hidden_effect = {
+			set_temp_variable = { chaosx_nr25_emphasis_selection = constant:chaosx_nr25_outpost_emphasis.fortified_camp }
+			chaosx_nr25_apply_outpost_emphasis = yes
+		}
+	}
+	option = {
+		name = chaosx.nr25.70.e
+		ai_chance = { base = 15 }
+		hidden_effect = {
+			set_temp_variable = { chaosx_nr25_emphasis_selection = constant:chaosx_nr25_outpost_emphasis.mobile_traverse }
+			chaosx_nr25_apply_outpost_emphasis = yes
+		}
+	}
+}
+
+# Deterministic same-day final-candidate resolver. The first valid candidate
+# owns the date; if another valid candidate arrives on that date, the ledger
+# comparator chooses survey evidence, readiness, outpost security, exposure,
+# final-readiness date, and finally the stable participant sequence.
+country_event = {
+	id = chaosx.nr25.84
+	title = chaosx.nr25.84.t
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_global_flag = chaosx_nr25_active
+				check_variable = { var = global.chaosx_nr25_final_resolution_pending value = 1 compare = greater_than_or_equals }
+			}
+			chaosx_nr25_resolve_final_candidate = yes
+		}
+	}
+}
+
+# Opens the completion window for the currently active final mission. The
+# named mission remains visible until the player confirms it or it times out.
+country_event = {
+	id = chaosx.nr25.85
+	title = chaosx.nr25.85.t
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_country_flag = chaosx_nr25_participant
+				has_country_flag = chaosx_nr25_final_mission_active
+			}
+			chaosx_nr25_prepare_final_mission_completion = yes
+		}
+	}
+}
+
+# Opens the completion window for the running phase objective on the day
+# before its timeout. Objectives the expedition cannot finish time out as the
+# mission's failure result.
+country_event = {
+	id = chaosx.nr25.87
+	title = chaosx.nr25.87.t
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				chaosx_nr25_phase_mission_owner_valid = yes
+				has_country_flag = chaosx_nr25_phase_mission_active
+			}
+			chaosx_nr25_prepare_phase_mission_completion = yes
+		}
+	}
+}
+
+# An expedition that stalled in one phase past the limit is recalled; its
+# verified evidence is preserved.
+country_event = {
+	id = chaosx.nr25.89
+	title = chaosx.nr25.89.t
+	desc = chaosx.nr25.89.d
+	picture = GFX_report_event_025_antarctic_aftermath
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr25.89.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# Player-facing partial failure notice for a final recovery mission. The
+# expedition remains eligible for a later attempt after its cooldown.
+country_event = {
+	id = chaosx.nr25.86
+	title = chaosx.nr25.86.t
+	desc = chaosx.nr25.86.d
+	picture = GFX_report_event_025_antarctic_sabotage
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = chaosx_nr25_participant
+		has_country_flag = chaosx_nr25_final_mission_failed
+		NOT = { has_country_flag = chaosx_nr25_final_mission_failure_seen }
+	}
+
+	option = {
+		name = chaosx.nr25.86.a
+		ai_chance = { base = 100 }
+		set_country_flag = chaosx_nr25_final_mission_failure_seen
+	}
+}
+
+country_event = {
+	id = chaosx.nr25.81
+	title = chaosx.nr25.81.t
+	desc = chaosx.nr25.81.d
+	picture = GFX_report_event_025_antarctic_recovery
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = chaosx_nr25_recovery_winner
+		has_global_flag = chaosx_nr25_final_recovery_resolved
+		has_country_flag = chaosx_nr25_winner_settlement_complete
+		NOT = { has_country_flag = chaosx_nr25_winner_report_seen }
+	}
+
+	option = {
+		name = chaosx.nr25.81.a
+		ai_chance = { base = 100 }
+		set_country_flag = chaosx_nr25_winner_report_seen
+		country_event = { id = chaosx.nr25.83 days = 1 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr25.82
+	title = chaosx.nr25.82.t
+	desc = chaosx.nr25.82.d
+	picture = GFX_report_event_025_antarctic_aftermath
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = chaosx_nr25_participant
+		NOT = { has_country_flag = chaosx_nr25_recovery_winner }
+		has_global_flag = chaosx_nr25_final_recovery_resolved
+		has_country_flag = chaosx_nr25_loser_settlement_complete
+		NOT = { has_country_flag = chaosx_nr25_loser_report_seen }
+	}
+
+	option = {
+		name = chaosx.nr25.82.a
+		ai_chance = { base = 100 }
+		set_country_flag = chaosx_nr25_loser_report_seen
+		country_event = { id = chaosx.nr25.83 days = 1 }
+	}
+}
+
+# Winner and loser settlement both reach this analysis notice so Event Details,
+# casualty memory, and the board have one terminal handoff point.
+country_event = {
+	id = chaosx.nr25.83
+	title = chaosx.nr25.83.t
+	desc = chaosx.nr25.83.d
+	picture = GFX_report_event_025_antarctic_analysis
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.83.a
+		ai_chance = { base = 100 }
+		set_country_flag = chaosx_nr25_analysis_seen
+	}
+}
+
+# The bounded pulse is scheduled independently by each participant and only
+# processes the current country. It never iterates the world.
+country_event = {
+	id = chaosx.nr25.280
+	title = chaosx.nr25.280.t
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		clr_country_flag = chaosx_nr25_pulse_pending
+		if = {
+			limit = {
+				has_country_flag = chaosx_nr25_participant
+				OR = {
+					AND = {
+						has_global_flag = chaosx_nr25_active
+						NOT = { has_country_flag = chaosx_nr25_terminal }
+					}
+					AND = {
+						has_country_flag = chaosx_nr25_aftermath_open
+						NOT = { has_country_flag = chaosx_nr25_aftermath_closed }
+					}
+				}
+			}
+			chaosx_nr25_run_bounded_pulse = yes
+		}
+	}
+}
+
+# Evolution openings are active-race entries. Each has one opening event and
+# one player-facing log milestone; the evolution packages add hazards while
+# leaving baseline final recovery reachable.
+country_event = {
+	id = chaosx.nr25.100
+	title = chaosx.nr25.100.t
+	desc = chaosx.nr25.100.d
+	picture = GFX_report_event_025_antarctic_signal
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = chaosx_nr25_active
+		has_country_flag = chaosx_nr25_participant
+		has_global_flag = chaosx_nr25_evolution_active_signal_pending
+		chaosx_nr25_active_signal_evolution_enabled = yes
+		has_event_target = chaosx_nr25_evolution_active_signal_scheduler
+		event_target:chaosx_nr25_evolution_active_signal_scheduler = { tag = ROOT }
+	}
+	option = {
+		name = chaosx.nr25.100.a
+		ai_chance = { base = 100 }
+		chaosx_nr25_activate_evolution_active_signal = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr25.130
+	title = chaosx.nr25.130.t
+	desc = chaosx.nr25.130.d
+	picture = GFX_report_event_025_antarctic_survivor
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = chaosx_nr25_active
+		has_country_flag = chaosx_nr25_participant
+		has_global_flag = chaosx_nr25_evolution_something_survived_pending
+		chaosx_nr25_something_survived_evolution_enabled = yes
+		has_event_target = chaosx_nr25_evolution_something_survived_scheduler
+		event_target:chaosx_nr25_evolution_something_survived_scheduler = { tag = ROOT }
+	}
+	option = {
+		name = chaosx.nr25.130.a
+		ai_chance = { base = 100 }
+		chaosx_nr25_activate_evolution_something_survived = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr25.160
+	title = chaosx.nr25.160.t
+	desc = chaosx.nr25.160.d
+	picture = GFX_report_event_025_antarctic_militarised
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = chaosx_nr25_active
+		has_country_flag = chaosx_nr25_participant
+		has_global_flag = chaosx_nr25_evolution_militarised_antarctica_pending
+		chaosx_nr25_militarised_antarctica_evolution_enabled = yes
+		has_event_target = chaosx_nr25_evolution_militarised_antarctica_scheduler
+		event_target:chaosx_nr25_evolution_militarised_antarctica_scheduler = { tag = ROOT }
+	}
+	option = {
+		name = chaosx.nr25.160.a
+		ai_chance = { base = 100 }
+		chaosx_nr25_activate_evolution_militarised_antarctica = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr25.190
+	title = chaosx.nr25.190.t
+	desc = chaosx.nr25.190.d
+	picture = GFX_report_event_025_antarctic_wreck
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = chaosx_nr25_active
+		has_country_flag = chaosx_nr25_participant
+		has_global_flag = chaosx_nr25_evolution_wreck_breaking_apart_pending
+		chaosx_nr25_wreck_breaking_apart_evolution_enabled = yes
+		has_event_target = chaosx_nr25_evolution_wreck_breaking_apart_scheduler
+		event_target:chaosx_nr25_evolution_wreck_breaking_apart_scheduler = { tag = ROOT }
+	}
+	option = {
+		name = chaosx.nr25.190.a
+		ai_chance = { base = 100 }
+		chaosx_nr25_activate_evolution_wreck_breaking_apart = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr25.220
+	title = chaosx.nr25.220.t
+	desc = chaosx.nr25.220.d
+	picture = GFX_report_event_025_antarctic_dependence
+	is_triggered_only = yes
+
+	# During the race a participant delivers the opening; afterwards any
+	# material holder can, so the evolution may begin after the recovery.
+	trigger = {
+		has_global_flag = chaosx_nr25_evolution_technology_changes_users_pending
+		chaosx_nr25_technology_changes_users_evolution_enabled = yes
+		has_event_target = chaosx_nr25_evolution_technology_changes_users_scheduler
+		event_target:chaosx_nr25_evolution_technology_changes_users_scheduler = { tag = ROOT }
+		OR = {
+			AND = {
+				has_global_flag = chaosx_nr25_active
+				has_country_flag = chaosx_nr25_participant
+			}
+			AND = {
+				NOT = { has_global_flag = chaosx_nr25_active }
+				chaosx_nr25_holder_scheduler_valid = yes
+			}
+		}
+	}
+	option = {
+		name = chaosx.nr25.220.a
+		ai_chance = { base = 100 }
+		chaosx_nr25_activate_evolution_technology_changes_users = yes
+	}
+}
+
+# Clean terminal path for a race that opened but never acquired a valid entry.
+country_event = {
+	id = chaosx.nr25.299
+	title = chaosx.nr25.299.t
+	desc = chaosx.nr25.299.d
+	picture = GFX_report_event_025_antarctic_aftermath
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr25.299.a
+		ai_chance = { base = 100 }
+		clear_global_event_target = chaosx_nr25_history_actor
+		clr_global_flag = chaosx_nr25_active
+		set_global_flag = chaosx_nr25_closed_without_participant
+		set_variable = { global.chaosx_nr25_phase = constant:chaosx_nr25_race_state.closed }
+		set_country_flag = chaosx_nr25_terminal
+	}
+}
+
+# Clean terminal path after every expedition has withdrawn, failed, or been
+# invalidated without producing a valid final candidate.
+country_event = {
+	id = chaosx.nr25.298
+	title = chaosx.nr25.298.t
+	desc = chaosx.nr25.298.d
+	picture = GFX_report_event_025_antarctic_aftermath
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr25.298.a
+		ai_chance = { base = 100 }
+		clear_global_event_target = chaosx_nr25_history_actor
+		set_global_flag = chaosx_nr25_closure_notice_seen
+	}
+}
+
+# ============================================================================
+# EVOLUTION V AFTERMATH: HOLDER NOTICES, ACCIDENTS, INCIDENTS, OUTCOMES
+# ============================================================================
+# These reports reach only the country that holds the material. The bounded
+# holder watch (chaosx.nr25.281) schedules them; none of them scans the world.
+# Text reports what operators observe and never assigns the system a motive.
+
+# Evolution V reaches a holder other than the one that delivered the opening.
+country_event = {
+	id = chaosx.nr25.221
+	title = chaosx.nr25.220.t
+	desc = chaosx.nr25.221.d
+	picture = GFX_report_event_025_antarctic_dependence
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = chaosx_nr25_aftermath_open
+		chaosx_nr25_holds_alien_material = yes
+	}
+
+	option = {
+		name = chaosx.nr25.221.a
+		ai_chance = { base = 100 }
+		custom_effect_tooltip = chaosx_nr25_aftermath_opened_tt
+	}
+}
+
+# Dependence accident. The holder decides how the programme answers it.
+country_event = {
+	id = chaosx.nr25.225
+	title = chaosx.nr25.225.t
+	desc = chaosx.nr25.225.d
+	picture = GFX_report_event_025_antarctic_dependence
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_dependence_accident }
+
+	option = {
+		name = chaosx.nr25.225.a
+		ai_chance = {
+			base = 60
+			modifier = { add = 30 has_country_flag = chaosx_nr25_dependence_contained }
+			modifier = { factor = 0.5 has_country_flag = chaosx_nr25_dependence_integrate_route }
+		}
+		add_political_power = constant:chaosx_nr25_holder.accident_shutdown_pp
+		custom_effect_tooltip = chaosx_nr25_accident_shutdown_tt
+		hidden_effect = {
+			subtract_from_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.accident_shutdown_relief }
+			clamp_variable = { var = chaosx_nr25_dependence min = constant:chaosx_nr25_value.zero max = constant:chaosx_nr25_value.max }
+			clr_country_flag = chaosx_nr25_dependence_accident
+			set_country_flag = chaosx_nr25_accident_shutdown_ordered
+		}
+	}
+
+	option = {
+		name = chaosx.nr25.225.b
+		ai_chance = {
+			base = 30
+			modifier = { add = 30 has_country_flag = chaosx_nr25_dependence_integrate_route }
+		}
+		custom_effect_tooltip = chaosx_nr25_accident_running_tt
+		hidden_effect = {
+			set_temp_variable = { chaosx_nr25_stability_change = constant:chaosx_nr25_holder_fixed.accident_running_stability }
+			chaosx_nr25_apply_stability_change = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr25.225.c
+		trigger = { has_country_flag = chaosx_nr25_dependence_conceal_route }
+		ai_chance = { base = 10 }
+		add_political_power = constant:chaosx_nr25_holder.accident_conceal_pp
+		custom_effect_tooltip = chaosx_nr25_accident_buried_tt
+		hidden_effect = {
+			add_to_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.accident_conceal_pressure }
+			clamp_variable = { var = chaosx_nr25_dependence min = constant:chaosx_nr25_value.zero max = constant:chaosx_nr25_value.max }
+			clr_country_flag = chaosx_nr25_dependence_accident
+			set_country_flag = chaosx_nr25_accident_report_buried
+		}
+	}
+}
+
+# Strange behaviour one: engineers will not remove a component.
+country_event = {
+	id = chaosx.nr25.231
+	title = chaosx.nr25.231.t
+	desc = chaosx.nr25.231.d
+	picture = GFX_report_event_025_antarctic_dependence
+	is_triggered_only = yes
+
+	trigger = { chaosx_nr25_holds_alien_material = yes }
+	immediate = { hidden_effect = { set_country_flag = chaosx_nr25_incident_1_seen } }
+
+	option = {
+		name = chaosx.nr25.231.a
+		ai_chance = { base = 50 modifier = { add = 40 has_country_flag = chaosx_nr25_dependence_contained } modifier = { factor = 0.3 has_country_flag = chaosx_nr25_dependence_integrate_route } }
+		add_political_power = constant:chaosx_nr25_holder.incident_pp_cost
+		custom_effect_tooltip = chaosx_nr25_incident_relief_tt
+		hidden_effect = { subtract_from_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.incident_relief } chaosx_nr25_clamp_values = yes }
+	}
+	option = {
+		name = chaosx.nr25.231.b
+		ai_chance = { base = 30 modifier = { add = 40 has_country_flag = chaosx_nr25_dependence_integrate_route } }
+		add_tech_bonus = { name = chaosx_nr25_incident_component bonus = @NR25_INCIDENT_TECH_BONUS uses = 1 category = industry }
+		custom_effect_tooltip = chaosx_nr25_incident_pressure_tt
+		hidden_effect = { add_to_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.incident_pressure } chaosx_nr25_clamp_values = yes }
+	}
+}
+
+# Strange behaviour two: planners adopt patterns they cannot explain.
+country_event = {
+	id = chaosx.nr25.232
+	title = chaosx.nr25.232.t
+	desc = chaosx.nr25.232.d
+	picture = GFX_report_event_025_antarctic_dependence
+	is_triggered_only = yes
+
+	trigger = { chaosx_nr25_holds_alien_material = yes }
+	immediate = { hidden_effect = { set_country_flag = chaosx_nr25_incident_2_seen } }
+
+	option = {
+		name = chaosx.nr25.232.a
+		ai_chance = { base = 50 modifier = { add = 40 has_country_flag = chaosx_nr25_dependence_contained } modifier = { factor = 0.3 has_country_flag = chaosx_nr25_dependence_integrate_route } }
+		custom_effect_tooltip = chaosx_nr25_incident_stability_tt
+		custom_effect_tooltip = chaosx_nr25_incident_relief_tt
+		hidden_effect = {
+			set_temp_variable = { chaosx_nr25_stability_change = constant:chaosx_nr25_holder_fixed.incident_stability_cost }
+			chaosx_nr25_apply_stability_change = yes
+			subtract_from_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.incident_relief }
+			chaosx_nr25_clamp_values = yes
+		}
+	}
+	option = {
+		name = chaosx.nr25.232.b
+		ai_chance = { base = 30 modifier = { add = 40 has_country_flag = chaosx_nr25_dependence_integrate_route } }
+		add_tech_bonus = { name = chaosx_nr25_incident_planning bonus = @NR25_INCIDENT_TECH_BONUS uses = 1 category = land_doctrine }
+		custom_effect_tooltip = chaosx_nr25_incident_pressure_tt
+		hidden_effect = { add_to_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.incident_pressure } chaosx_nr25_clamp_values = yes }
+	}
+}
+
+# Strange behaviour three: production lines change their own tolerances.
+country_event = {
+	id = chaosx.nr25.233
+	title = chaosx.nr25.233.t
+	desc = chaosx.nr25.233.d
+	picture = GFX_report_event_025_antarctic_dependence
+	is_triggered_only = yes
+
+	trigger = { chaosx_nr25_holds_alien_material = yes }
+	immediate = { hidden_effect = { set_country_flag = chaosx_nr25_incident_3_seen } }
+
+	option = {
+		name = chaosx.nr25.233.a
+		ai_chance = { base = 50 modifier = { add = 40 has_country_flag = chaosx_nr25_dependence_contained } modifier = { factor = 0.3 has_country_flag = chaosx_nr25_dependence_integrate_route } }
+		add_political_power = constant:chaosx_nr25_holder.incident_pp_cost
+		custom_effect_tooltip = chaosx_nr25_incident_relief_tt
+		hidden_effect = { subtract_from_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.incident_relief } chaosx_nr25_clamp_values = yes }
+	}
+	option = {
+		name = chaosx.nr25.233.b
+		ai_chance = { base = 30 modifier = { add = 40 has_country_flag = chaosx_nr25_dependence_integrate_route } }
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_holder.incident_support_gain }
+		custom_effect_tooltip = chaosx_nr25_incident_pressure_tt
+		hidden_effect = { add_to_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.incident_pressure } chaosx_nr25_clamp_values = yes }
+	}
+}
+
+# Strange behaviour four: every laboratory converges on one design.
+country_event = {
+	id = chaosx.nr25.234
+	title = chaosx.nr25.234.t
+	desc = chaosx.nr25.234.d
+	picture = GFX_report_event_025_antarctic_dependence
+	is_triggered_only = yes
+
+	trigger = { chaosx_nr25_holds_alien_material = yes }
+	immediate = { hidden_effect = { set_country_flag = chaosx_nr25_incident_4_seen } }
+
+	option = {
+		name = chaosx.nr25.234.a
+		ai_chance = { base = 50 modifier = { add = 40 has_country_flag = chaosx_nr25_dependence_contained } modifier = { factor = 0.3 has_country_flag = chaosx_nr25_dependence_integrate_route } }
+		add_political_power = constant:chaosx_nr25_holder.incident_pp_cost
+		custom_effect_tooltip = chaosx_nr25_incident_relief_tt
+		hidden_effect = { subtract_from_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.incident_relief } chaosx_nr25_clamp_values = yes }
+	}
+	option = {
+		name = chaosx.nr25.234.b
+		ai_chance = { base = 30 modifier = { add = 40 has_country_flag = chaosx_nr25_dependence_integrate_route } }
+		add_tech_bonus = { name = chaosx_nr25_incident_design bonus = @NR25_INCIDENT_TECH_BONUS uses = 1 category = computing_tech }
+		custom_effect_tooltip = chaosx_nr25_incident_strong_pressure_tt
+		hidden_effect = { add_to_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.incident_strong_pressure } chaosx_nr25_clamp_values = yes }
+	}
+}
+
+# Strange behaviour five: officials put the signal ahead of their orders.
+country_event = {
+	id = chaosx.nr25.235
+	title = chaosx.nr25.235.t
+	desc = chaosx.nr25.235.d
+	picture = GFX_report_event_025_antarctic_signal
+	is_triggered_only = yes
+
+	trigger = { chaosx_nr25_holds_alien_material = yes }
+	immediate = { hidden_effect = { set_country_flag = chaosx_nr25_incident_5_seen } }
+
+	option = {
+		name = chaosx.nr25.235.a
+		ai_chance = { base = 50 modifier = { add = 40 has_country_flag = chaosx_nr25_dependence_contained } modifier = { factor = 0.3 has_country_flag = chaosx_nr25_dependence_integrate_route } }
+		custom_effect_tooltip = chaosx_nr25_incident_stability_tt
+		custom_effect_tooltip = chaosx_nr25_incident_strong_relief_tt
+		hidden_effect = {
+			set_temp_variable = { chaosx_nr25_stability_change = constant:chaosx_nr25_holder_fixed.incident_stability_cost }
+			chaosx_nr25_apply_stability_change = yes
+			subtract_from_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.incident_strong_relief }
+			chaosx_nr25_clamp_values = yes
+		}
+	}
+	option = {
+		name = chaosx.nr25.235.b
+		ai_chance = { base = 30 modifier = { add = 40 has_country_flag = chaosx_nr25_dependence_integrate_route } }
+		add_political_power = constant:chaosx_nr25_holder.incident_pp_gain
+		custom_effect_tooltip = chaosx_nr25_incident_pressure_tt
+		hidden_effect = { add_to_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.incident_pressure } chaosx_nr25_clamp_values = yes }
+	}
+}
+
+# Strange behaviour six: the recovered systems keep running after shutdown.
+country_event = {
+	id = chaosx.nr25.236
+	title = chaosx.nr25.236.t
+	desc = chaosx.nr25.236.d
+	picture = GFX_report_event_025_antarctic_dependence
+	is_triggered_only = yes
+
+	trigger = { chaosx_nr25_holds_alien_material = yes }
+	immediate = { hidden_effect = { set_country_flag = chaosx_nr25_incident_6_seen } }
+
+	option = {
+		name = chaosx.nr25.236.a
+		ai_chance = { base = 50 modifier = { add = 40 has_country_flag = chaosx_nr25_dependence_contained } modifier = { factor = 0.3 has_country_flag = chaosx_nr25_dependence_integrate_route } }
+		custom_effect_tooltip = chaosx_nr25_incident_casualty_tt
+		custom_effect_tooltip = chaosx_nr25_incident_stability_tt
+		custom_effect_tooltip = chaosx_nr25_incident_strong_relief_tt
+		hidden_effect = {
+			set_temp_variable = { chaosx_nr25_casualty_amount = constant:chaosx_nr25_casualty.incident }
+			chaosx_nr25_record_casualties = yes
+			set_temp_variable = { chaosx_nr25_stability_change = constant:chaosx_nr25_holder_fixed.incident_stability_cost }
+			chaosx_nr25_apply_stability_change = yes
+			subtract_from_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.incident_strong_relief }
+			chaosx_nr25_clamp_values = yes
+		}
+	}
+	option = {
+		name = chaosx.nr25.236.b
+		ai_chance = { base = 30 modifier = { add = 40 has_country_flag = chaosx_nr25_dependence_integrate_route } }
+		add_tech_bonus = { name = chaosx_nr25_incident_running bonus = @NR25_INCIDENT_TECH_BONUS uses = 1 category = electronics }
+		custom_effect_tooltip = chaosx_nr25_incident_strong_pressure_tt
+		hidden_effect = { add_to_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_holder.incident_strong_pressure } chaosx_nr25_clamp_values = yes }
+	}
+}
+
+# A settled institutional outcome. The new state replaces the previous idea.
+country_event = {
+	id = chaosx.nr25.240
+	title = chaosx.nr25.240.t
+	desc = chaosx.nr25.240.d
+	picture = GFX_report_event_025_antarctic_analysis
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_outcome_settled }
+
+	option = {
+		name = chaosx.nr25.240.a
+		ai_chance = { base = 100 }
+		custom_effect_tooltip = chaosx_nr25_outcome_settled_tt
+	}
+}
+
+# ============================================================================
+# EVOLUTION V CUSTODY TRANSFER
+# ============================================================================
+# FROM is the holder offering custody. The recipient's answer is the only
+# consent the ledger accepts; the holder pays only when the material moves.
+
+country_event = {
+	id = chaosx.nr25.250
+	title = chaosx.nr25.250.t
+	desc = chaosx.nr25.250.d
+	picture = GFX_report_event_025_antarctic_analysis
+	is_triggered_only = yes
+
+	trigger = {
+		FROM = { chaosx_nr25_custody_offer_open = yes }
+		chaosx_alien_recovery_ledger_custody_country_is_valid = yes
+	}
+
+	option = {
+		name = chaosx.nr25.250.a
+		ai_chance = {
+			base = 30
+			modifier = { add = 40 is_in_faction_with = FROM }
+			modifier = { add = 20 has_opinion = { target = FROM value > 25 } }
+			modifier = { add = -20 has_war = yes }
+			modifier = { factor = 0 has_war_with = FROM }
+		}
+		custom_effect_tooltip = chaosx_nr25_custody_accept_tt
+		hidden_effect = {
+			set_country_flag = chaosx_alien_recovery_custody_consent_@FROM
+			save_event_target_as = chaosx_alien_recovery_custody_recipient
+			FROM = { chaosx_nr25_complete_custody_transfer = yes }
+		}
+	}
+
+	option = {
+		name = chaosx.nr25.250.b
+		ai_chance = {
+			base = 30
+			modifier = { add = 40 has_opinion = { target = FROM value < -25 } }
+			modifier = { add = 20 has_country_flag = chaosx_nr25_material_holder }
+		}
+		custom_effect_tooltip = chaosx_nr25_custody_refuse_tt
+		hidden_effect = {
+			FROM = {
+				chaosx_nr25_clear_custody_offer = yes
+				country_event = { id = chaosx.nr25.252 days = 1 }
+			}
+		}
+	}
+}
+
+# The handover succeeded.
+country_event = {
+	id = chaosx.nr25.251
+	title = chaosx.nr25.251.t
+	desc = chaosx.nr25.251.d
+	picture = GFX_report_event_025_antarctic_analysis
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr25.251.a
+		ai_chance = { base = 100 }
+		custom_effect_tooltip = chaosx_nr25_custody_sent_tt
+	}
+}
+
+# The chosen country refused the offer.
+country_event = {
+	id = chaosx.nr25.252
+	title = chaosx.nr25.252.t
+	desc = chaosx.nr25.252.d
+	picture = GFX_report_event_025_antarctic_aftermath
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr25.252.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# The handover could not go ahead: the offer lapsed, the material had already
+# left, the two countries went to war, or the shipping was not available.
+country_event = {
+	id = chaosx.nr25.253
+	title = chaosx.nr25.253.t
+	desc = chaosx.nr25.253.d
+	picture = GFX_report_event_025_antarctic_aftermath
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr25.253.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# The recipient's own report once the material is in its custody.
+country_event = {
+	id = chaosx.nr25.254
+	title = chaosx.nr25.254.t
+	desc = chaosx.nr25.254.d
+	picture = GFX_report_event_025_antarctic_dependence
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr25.254.a
+		ai_chance = { base = 100 }
+		custom_effect_tooltip = chaosx_nr25_custody_received_tt
+	}
+}
+
+# The monthly holder watch. It processes only the current holder.
+country_event = {
+	id = chaosx.nr25.281
+	title = chaosx.nr25.281.t
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		chaosx_nr25_run_holder_pulse = yes
+	}
+}
+
+# ============================================================================
+# PARTICIPANT REPORTS
+# ============================================================================
+# Each report reaches only the affected country, once per state change. The
+# dispatch helpers live in 025_alien_technology_in_antarctica_report_effects.
+
+# The route is locked and the crossing begins.
+country_event = {
+	id = chaosx.nr25.10
+	title = chaosx.nr25.10.t
+	desc = chaosx.nr25.10.d
+	picture = GFX_report_event_025_antarctic_crossing
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.10.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# The gateway objective failed and the expedition improvised a route.
+country_event = {
+	id = chaosx.nr25.12
+	title = chaosx.nr25.12.t
+	desc = chaosx.nr25.12.d
+	picture = GFX_report_event_025_antarctic_crossing
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.12.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# The evacuation objective resolved and the expedition has left the race. A
+# collapsed evacuation reports its dead.
+country_event = {
+	id = chaosx.nr25.14
+	title = {
+		text = chaosx.nr25.14.t_failed
+		trigger = { has_country_flag = chaosx_nr25_evacuation_mission_failed }
+	}
+	title = {
+		text = chaosx.nr25.14.t
+		trigger = { NOT = { has_country_flag = chaosx_nr25_evacuation_mission_failed } }
+	}
+	desc = {
+		text = chaosx.nr25.14.d_failed
+		trigger = { has_country_flag = chaosx_nr25_evacuation_mission_failed }
+	}
+	desc = {
+		text = chaosx.nr25.14.d
+		trigger = { NOT = { has_country_flag = chaosx_nr25_evacuation_mission_failed } }
+	}
+	picture = GFX_report_event_025_antarctic_crossing
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			has_country_flag = chaosx_nr25_evacuation_mission_success
+			has_country_flag = chaosx_nr25_evacuation_mission_failed
+		}
+	}
+
+	option = {
+		name = chaosx.nr25.14.a
+		ai_chance = { base = 100 }
+		custom_effect_tooltip = chaosx_nr25_evacuation_report_tt
+	}
+}
+
+# The first camp stands on the ice.
+country_event = {
+	id = chaosx.nr25.20
+	title = chaosx.nr25.20.t
+	desc = chaosx.nr25.20.d
+	picture = GFX_report_event_025_antarctic_outpost
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.20.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# The camp was lost to weather, patrols or a rival landing.
+country_event = {
+	id = chaosx.nr25.21
+	title = chaosx.nr25.21.t
+	desc = chaosx.nr25.21.d
+	picture = GFX_report_event_025_antarctic_militarised
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.21.a
+		ai_chance = { base = 100 }
+		custom_effect_tooltip = chaosx_nr25_outpost_lost_tt
+	}
+}
+
+# A lost camp was restored.
+country_event = {
+	id = chaosx.nr25.22
+	title = chaosx.nr25.22.t
+	desc = chaosx.nr25.22.d
+	picture = GFX_report_event_025_antarctic_outpost
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.22.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# The expedition's own surveys point to a probable core site.
+country_event = {
+	id = chaosx.nr25.30
+	title = chaosx.nr25.30.t
+	desc = chaosx.nr25.30.d
+	picture = GFX_report_event_025_antarctic_signal
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.30.a
+		ai_chance = { base = 100 }
+		custom_effect_tooltip = chaosx_nr25_probable_site_tt
+	}
+}
+
+# The primary site is confirmed.
+country_event = {
+	id = chaosx.nr25.31
+	title = chaosx.nr25.31.t
+	desc = chaosx.nr25.31.d
+	picture = GFX_report_event_025_antarctic_signal
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.31.a
+		ai_chance = { base = 100 }
+		custom_effect_tooltip = chaosx_nr25_site_confirmed_tt
+	}
+}
+
+# A false lead is discovered.
+country_event = {
+	id = chaosx.nr25.32
+	title = chaosx.nr25.32.t
+	desc = chaosx.nr25.32.d
+	picture = GFX_report_event_025_antarctic_sabotage
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.32.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# A fragment of the wreck is recovered.
+country_event = {
+	id = chaosx.nr25.40
+	title = chaosx.nr25.40.t
+	desc = chaosx.nr25.40.d
+	picture = GFX_report_event_025_antarctic_wreck
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr25.40.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# A fragment returned to the unclaimed pool when our government lost its
+# independence.
+country_event = {
+	id = chaosx.nr25.41
+	title = chaosx.nr25.41.t
+	desc = chaosx.nr25.41.d
+	picture = GFX_report_event_025_antarctic_aftermath
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr25.41.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# Rescued expedition. FROM is the rescuer; the rescuer gets its own report.
+country_event = {
+	id = chaosx.nr25.50
+	title = chaosx.nr25.50.t
+	desc = chaosx.nr25.50.d
+	picture = GFX_report_event_025_antarctic_rescue
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = { FROM = { country_event = { id = chaosx.nr25.51 days = 1 } } }
+	}
+
+	option = {
+		name = chaosx.nr25.50.a
+		ai_chance = { base = 100 }
+		custom_effect_tooltip = chaosx_nr25_rescue_received_tt
+	}
+}
+
+# Rescuer's report. FROM is the rescued country.
+country_event = {
+	id = chaosx.nr25.51
+	title = chaosx.nr25.51.t
+	desc = chaosx.nr25.51.d
+	picture = GFX_report_event_025_antarctic_rescue
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr25.51.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# Damage the victim noticed without identifying the acting country.
+country_event = {
+	id = chaosx.nr25.60
+	title = chaosx.nr25.60.t
+	desc = chaosx.nr25.60.d
+	picture = GFX_report_event_025_antarctic_sabotage
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.60.a
+		ai_chance = { base = 100 }
+		custom_effect_tooltip = chaosx_nr25_sabotage_countermeasure_tt
+	}
+}
+
+# Sabotage identified. FROM is the acting country.
+country_event = {
+	id = chaosx.nr25.61
+	title = chaosx.nr25.61.t
+	desc = chaosx.nr25.61.d
+	picture = GFX_report_event_025_antarctic_sabotage
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.61.a
+		ai_chance = { base = 100 }
+		custom_effect_tooltip = chaosx_nr25_sabotage_attributed_tt
+	}
+}
+
+# Armed clash reported to the targeted expedition. FROM is the acting country;
+# armed actions are public.
+country_event = {
+	id = chaosx.nr25.165
+	title = chaosx.nr25.165.t
+	desc = chaosx.nr25.165.d
+	picture = GFX_report_event_025_antarctic_militarised
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.165.a
+		ai_chance = { base = 100 }
+		custom_effect_tooltip = chaosx_nr25_clash_opinion_tt
+	}
+}
+
+# ============================================================================
+# GLOBAL NEWS
+# ============================================================================
+# Each item fires once per public milestone; the guard flags live in the
+# report effects. The named country is saved as a global event target.
+
+news_event = {
+	id = chaosx.nr25.90
+	title = chaosx.nr25.90.t
+	desc = chaosx.nr25.90.d
+	picture = GFX_news_event_025_discovery
+	major = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr25.90.a
+	}
+}
+
+news_event = {
+	id = chaosx.nr25.91
+	title = chaosx.nr25.91.t
+	desc = chaosx.nr25.91.d
+	picture = GFX_news_event_025_discovery
+	major = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr25.91.a
+	}
+}
+
+news_event = {
+	id = chaosx.nr25.92
+	title = chaosx.nr25.92.t
+	desc = chaosx.nr25.92.d
+	picture = GFX_news_event_025_winner
+	major = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr25.92.a
+	}
+}
+
+news_event = {
+	id = chaosx.nr25.93
+	title = chaosx.nr25.93.t
+	desc = chaosx.nr25.93.d
+	picture = GFX_news_event_025_winner
+	major = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr25.93.a
+	}
+}

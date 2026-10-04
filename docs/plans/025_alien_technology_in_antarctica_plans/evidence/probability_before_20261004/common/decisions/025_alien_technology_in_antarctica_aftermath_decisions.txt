@@ -1,0 +1,84 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 ANALYSIS SETTLEMENT DECISIONS
+# ============================================================================
+# These choices appear only after the race resolves. They preserve evidence,
+# share verified findings with one selected participant, or contain the
+# recovered systems; they cannot change the winner or re-open final recovery.
+# ============================================================================
+
+chaosx_nr25_analysis_category = {
+	chaosx_nr25_archive_analysis = {
+		icon = GFX_decision_generic_research
+		visible = {
+			has_country_flag = chaosx_nr25_participant
+			OR = { has_country_flag = chaosx_nr25_recovery_winner has_country_flag = chaosx_nr25_loser_settlement_complete }
+			NOT = { has_country_flag = chaosx_nr25_analysis_archived }
+		}
+		available = { chaosx_nr25_analysis_archive_available = yes }
+		custom_cost_trigger = { has_political_power > constant:chaosx_nr25_cost.pp_analysis_required }
+		custom_cost_text = chaosx_nr25_analysis_archive_cost
+		complete_effect = {
+			custom_effect_tooltip = chaosx_nr25_analysis_archive_effect
+			hidden_effect = { set_variable = { chaosx_nr25_analysis_action = constant:chaosx_nr25_analysis_action.archive } chaosx_nr25_execute_analysis_action = yes }
+		}
+		ai_will_do = { base = 12 }
+	}
+
+	chaosx_nr25_share_verified_evidence = {
+		icon = GFX_decision_generic_research
+		target_array = global.chaosx_nr25_participants
+		target_root_trigger = { has_country_flag = chaosx_nr25_participant }
+		target_trigger = { FROM = { chaosx_nr25_target_participant_valid = yes NOT = { has_country_flag = chaosx_nr25_received_shared_evidence } } }
+		visible = {
+			has_country_flag = chaosx_nr25_participant
+			has_country_flag = chaosx_nr25_recovery_winner
+			check_variable = {
+				var = chaosx_nr25_shared_evidence_targets
+				value = constant:chaosx_nr25_cost.shared_evidence_achievement_targets
+				compare = less_than
+			}
+		}
+		available = { chaosx_nr25_analysis_share_available = yes }
+		custom_cost_trigger = { has_political_power > constant:chaosx_nr25_cost.pp_analysis_required has_equipment = { support_equipment > constant:chaosx_nr25_cost.support_analysis_required } }
+		custom_cost_text = chaosx_nr25_analysis_exchange_cost
+		complete_effect = {
+			custom_effect_tooltip = chaosx_nr25_analysis_exchange_effect
+			hidden_effect = { FROM = { save_event_target_as = chaosx_nr25_analysis_target_scope } set_variable = { chaosx_nr25_analysis_target = FROM } set_variable = { chaosx_nr25_analysis_target_id = FROM.id } set_variable = { chaosx_nr25_analysis_action = constant:chaosx_nr25_analysis_action.share } chaosx_nr25_execute_analysis_action = yes }
+		}
+		ai_will_do = { base = 8 modifier = { add = 10 has_country_flag = chaosx_nr25_first_among_equals_candidate } }
+	}
+
+	chaosx_nr25_contain_recovered_systems = {
+		icon = GFX_decision_generic_research
+		visible = {
+			has_country_flag = chaosx_nr25_recovery_winner
+			has_country_flag = chaosx_nr25_winner_settlement_complete
+			NOT = { has_country_flag = chaosx_nr25_analysis_contained }
+		}
+		available = { chaosx_nr25_analysis_contain_available = yes }
+		custom_cost_trigger = { has_political_power > constant:chaosx_nr25_cost.pp_analysis_required has_equipment = { support_equipment > constant:chaosx_nr25_cost.support_analysis_required } }
+		custom_cost_text = chaosx_nr25_analysis_containment_cost
+		complete_effect = {
+			custom_effect_tooltip = chaosx_nr25_analysis_containment_effect
+			hidden_effect = { set_variable = { chaosx_nr25_analysis_action = constant:chaosx_nr25_analysis_action.contain } chaosx_nr25_execute_analysis_action = yes }
+		}
+		ai_will_do = { base = 10 }
+	}
+
+	chaosx_nr25_seal_analysis_archive = {
+		icon = GFX_decision_generic_research
+		visible = {
+			has_country_flag = chaosx_nr25_participant
+			OR = { has_country_flag = chaosx_nr25_recovery_winner has_country_flag = chaosx_nr25_loser_settlement_complete }
+			NOT = { has_country_flag = chaosx_nr25_analysis_sealed }
+		}
+		available = { chaosx_nr25_analysis_seal_available = yes }
+		custom_cost_trigger = { has_political_power > constant:chaosx_nr25_cost.pp_analysis_required }
+		custom_cost_text = chaosx_nr25_analysis_seal_cost
+		complete_effect = {
+			custom_effect_tooltip = chaosx_nr25_analysis_seal_effect
+			hidden_effect = { set_variable = { chaosx_nr25_analysis_action = constant:chaosx_nr25_analysis_action.seal } chaosx_nr25_execute_analysis_action = yes }
+		}
+		ai_will_do = { base = 6 }
+	}
+}

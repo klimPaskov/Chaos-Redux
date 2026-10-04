@@ -74,6 +74,14 @@ Either entry warns when the civilian base or fuel reserve is thin, and such an e
 Entry, mobilisation, crossing, outpost, survey, and final-recovery trays normally expose three to five primary actions and never exceed six. Evolution responses and the countermeasure are secondary routes.
 
 Rival actions require a selected valid participant target, one-use or cooldown cleanup, evidence state, counterplay, AI weights, and partial outcomes. Sabotage applies a partial result when the target has insufficient evidence or countermeasures, and the target can answer through the bounded countermeasure path.
+The hostile operations and the data exchange are targeted decisions: the actor's own cooldown gates the decision, and `target_trigger` checks the target through FROM (live participant, received-operation cooldown clear, one exchange per partner).
+
+## AI behaviour
+
+The AI keeps its roster reserve floors (`chaosx_nr25_ai_keeps_reserve`) before any optional spending; restoring the outpost, crew rotation, shelter and withdrawal stay open so it can always recover or leave.
+Hostile operations and armed Evolution III actions prefer rivals ahead in the race, avoid rivals with a countermeasure ready, lean towards a rival caught operating against the actor, and never repeat the last operation back to back; no weight reads whether the target is a player.
+Outpost reconfiguration happens only when the situation calls for that emphasis, and the Evolution V policies favour containment for stable or accident-hit programmes, risky integration only for countries losing a war or collapsing, and destruction only as a last resort.
+Factors live in the `chaosx_nr25_ai` constants; agent decision D19 in the plans folder lists the source-level scenario reads and the blocked MCP probability routes.
 
 ## Evolutions
 

@@ -1002,3 +1002,34 @@ chaosx_nr25_casualty = {
 	# A collapsed evacuation of the whole expedition.
 	evacuation_failure = 45
 }
+
+# AI weighting for expedition decisions. Factors multiply a decision's score;
+# stability thresholds read the engine's 0-1 stability value.
+chaosx_nr25_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# A rival ahead of the actor is the natural target of a hostile operation.
+	target_leader_factor = 1.5
+	# A rival with a countermeasure prepared is a poorer target.
+	target_defended_factor = 0.5
+	# A rival that was caught operating against the actor invites retaliation.
+	target_retaliation_factor = 1.3
+	# A blocked option, such as repeating the last hostile operation back to
+	# back or spending below the AI reserve floor.
+	blocked_factor = 0
+	# Evolution V policy: a stable country can afford a controlled programme,
+	# a collapsing one looks for any way out.
+	stable_stability = 0.6
+	collapsing_stability = 0.35
+	# A losing war makes risky integration attractive.
+	desperate_surrender = 0.1
+	# Integration is a poor choice once an accident is on record or reliance
+	# has set in.
+	integration_accident_factor = 0.3
+	integration_reliance_factor = 0.25
+	# A democracy is less willing to hide a dangerous programme.
+	concealment_democracy_factor = 0.5
+}
