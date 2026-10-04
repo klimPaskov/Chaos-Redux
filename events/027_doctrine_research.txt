@@ -4945,7 +4945,13 @@ country_event = {
 				limit = { NOT = { has_country_flag = doctrine_research_active_batch } }
 				doctrine_research_start_next_batch = yes
 			}
-			else = { country_event = { id = chaosx.nr27.2 } }
+			# A wake or lifecycle callback may already have opened the next
+			# curriculum while this page was waiting; show it only once.
+			else_if = {
+				limit = { NOT = { has_country_flag = doctrine_research_active_batch_prompted_human } }
+				set_country_flag = doctrine_research_active_batch_prompted_human
+				country_event = { id = chaosx.nr27.2 }
+			}
 		}
 	}
 }

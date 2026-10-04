@@ -2015,15 +2015,45 @@ doctrine_research_capture_selected_domain_grand_doctrine = {
 	}
 }
 
+# Global scope. The firing uses the highest reached stage whose own Event
+# Details setting is still enabled, so a stage switched off after it was
+# reached stops enlarging new batches while lower enabled stages still apply.
 doctrine_research_prepare_firing_profile = {
 	doctrine_research_prepare_evolution_stage = yes
 	set_variable = { global.doctrine_research_firing_stage = constant:doctrine_research_stage.baseline_calm_world }
-	set_variable = { global.doctrine_research_firing_stage = global.doctrine_research_current_stage }
+	if = {
+		limit = {
+			check_variable = { var = global.doctrine_research_current_stage value = constant:doctrine_research_stage.gathering_storm compare = greater_than_or_equals }
+			doctrine_research_evolution_i_setting_enabled = yes
+		}
+		set_variable = { global.doctrine_research_firing_stage = constant:doctrine_research_stage.gathering_storm }
+	}
+	if = {
+		limit = {
+			check_variable = { var = global.doctrine_research_current_stage value = constant:doctrine_research_stage.rising_chaos compare = greater_than_or_equals }
+			doctrine_research_evolution_ii_setting_enabled = yes
+		}
+		set_variable = { global.doctrine_research_firing_stage = constant:doctrine_research_stage.rising_chaos }
+	}
+	if = {
+		limit = {
+			check_variable = { var = global.doctrine_research_current_stage value = constant:doctrine_research_stage.chaos_tier compare = greater_than_or_equals }
+			doctrine_research_evolution_iii_setting_enabled = yes
+		}
+		set_variable = { global.doctrine_research_firing_stage = constant:doctrine_research_stage.chaos_tier }
+	}
+	if = {
+		limit = {
+			check_variable = { var = global.doctrine_research_current_stage value = constant:doctrine_research_stage.totalen_chaos compare = greater_than_or_equals }
+			doctrine_research_evolution_iv_setting_enabled = yes
+		}
+		set_variable = { global.doctrine_research_firing_stage = constant:doctrine_research_stage.totalen_chaos }
+	}
 	set_variable = { global.doctrine_research_firing_size = constant:doctrine_research_event.base_batch_size }
-	if = { limit = { check_variable = { global.doctrine_research_current_stage = constant:doctrine_research_stage.totalen_chaos } } set_variable = { global.doctrine_research_firing_size = constant:doctrine_research_event.evolution_iv_batch_size } }
-	else_if = { limit = { check_variable = { global.doctrine_research_current_stage = constant:doctrine_research_stage.chaos_tier } } set_variable = { global.doctrine_research_firing_size = constant:doctrine_research_event.evolution_iii_batch_size } }
-	else_if = { limit = { check_variable = { global.doctrine_research_current_stage = constant:doctrine_research_stage.rising_chaos } } set_variable = { global.doctrine_research_firing_size = constant:doctrine_research_event.evolution_ii_batch_size } }
-	else_if = { limit = { check_variable = { global.doctrine_research_current_stage = constant:doctrine_research_stage.gathering_storm } } set_variable = { global.doctrine_research_firing_size = constant:doctrine_research_event.evolution_i_batch_size } }
+	if = { limit = { check_variable = { global.doctrine_research_firing_stage = constant:doctrine_research_stage.totalen_chaos } } set_variable = { global.doctrine_research_firing_size = constant:doctrine_research_event.evolution_iv_batch_size } }
+	else_if = { limit = { check_variable = { global.doctrine_research_firing_stage = constant:doctrine_research_stage.chaos_tier } } set_variable = { global.doctrine_research_firing_size = constant:doctrine_research_event.evolution_iii_batch_size } }
+	else_if = { limit = { check_variable = { global.doctrine_research_firing_stage = constant:doctrine_research_stage.rising_chaos } } set_variable = { global.doctrine_research_firing_size = constant:doctrine_research_event.evolution_ii_batch_size } }
+	else_if = { limit = { check_variable = { global.doctrine_research_firing_stage = constant:doctrine_research_stage.gathering_storm } } set_variable = { global.doctrine_research_firing_size = constant:doctrine_research_event.evolution_i_batch_size } }
 	set_variable = { global.doctrine_research_last_firing_size = global.doctrine_research_firing_size }
 }
 

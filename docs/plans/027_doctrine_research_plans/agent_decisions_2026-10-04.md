@@ -75,3 +75,15 @@ needs_live_game: two Special Forces tracks never holding the same token.
 ## D11. Catalog changes are recorded, not applied
 
 Decision: the workbook changes are listed in `catalog_changes_pending.md` for the workbook owner; agents do not edit the xlsx or the exported CSVs.
+
+## D12. A reached stage applies only while its own setting is enabled
+
+Decision: `doctrine_research_prepare_firing_profile` sizes each firing from the highest reached stage whose Event Details setting is still enabled (`doctrine_research_evolution_i_setting_enabled` to `_iv_setting_enabled`), instead of the raw reached stage. Switching Evolution IV off after it was reached makes the next firing use Evolution III, or the highest lower stage that stays enabled; batches already created keep their stored stage and size. The reached stage itself, the promotion clock, and the recorded evolution rows are unchanged.
+
+Basis: spec part 3, "Every stage's availability, record, and effect must check its own enabled state", and the acceptance criterion "Event enable and disable state controls automatic selection and evolution gates cleanly". The round 1 profile read the reached stage directly, so a disabled stage kept enlarging every later batch. Found in the round 1 review; implemented in the review commit.
+
+## D13. One opening page after a suspended curriculum
+
+Decision: the `.12` continue option starts the next curriculum when none is active, and otherwise opens `.2` only when no Event 027 page has been shown for the active curriculum (the prompted flag). A `.14` wake or a lifecycle callback that already opened the next curriculum while `.12` was waiting no longer produces a second `.2` page.
+
+Basis: D5 (exactly one open page per curriculum). Found in the round 1 review; implemented in the review commit.

@@ -94,6 +94,8 @@ Completion value and strategy signals add weight in every domain. If no domain s
 
 The first firing opens at the highest stage the Chaos Meter has already enabled. After that, `doctrine_research_evolution_pulse` runs once a day from each global-host branch of the Chaos Meter coordinator. It touches only global variables. A stage that becomes eligible is promoted 90 days later (converted through `chaosx_convert_days_to_date_offset`), one stage per interval, and disabled stages are skipped. Each promotion records one actorless evolution row.
 
+Each firing then sizes its batches from the highest reached stage whose own Event Details setting is still enabled (`doctrine_research_prepare_firing_profile` with the `doctrine_research_evolution_*_setting_enabled` triggers). A stage switched off after it was reached stops enlarging new batches, while lower reached stages that stay enabled still apply; batches already created keep their stored stage and size.
+
 ## Lifecycle
 
 All batch, receipt, choice, and achievement state is owned by the country and never transfers. State control, puppet, release, subject, government, exile, reinstatement, and civil-war callbacks reconcile the affected country: an AI resolves its active batch, a human without an open Event 027 page is shown it once, and a country without active or queued work returns before any ledger work. On a player tag switch the former host is reconciled before its global-host marker is cleared and the new host after it is set. Annexation discards the annexed country's unused batches and receipts.
