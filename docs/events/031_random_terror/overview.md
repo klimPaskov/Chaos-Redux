@@ -194,6 +194,14 @@ Every formation a focus or actor action raises goes through `random_terror_focus
 | Seize the Urban District | Expansion | A claim on a neighbouring enemy-held city above `urban_population_k`, else any enemy-held or foreign neighbour, pressed by `urban_seizure_activity`. |
 | Prepare the State Offensive | Expansion | `random_terror_commit_state_offensive` on one neighbouring enemy-held state, and army experience. |
 | Break the Parent Government | Expansion | The parent loses stability and war support, gains Terror Pressure, and its crisis states gain `parent_cell_activity`. |
+| Join the Jihadist International | Jihadist International | A membership request (`chaosx.nr31.44`) to the jihadist command that leads the International, which decides; with no other leader the command founds the International or leads it in its own faction (`random_terror_focus_request_membership`). |
+| Unify the Jihadist Cells | Jihadist International | Up to `cell_select_count` foreign cells are linked and gain `cell_seed_activity`. |
+| Command the International | Jihadist International | One International column (`column_id`). |
+| Prepare the Global Uprising | Jihadist International | Up to `cell_select_count` linked foreign cells gain `cell_support_activity`, and each government holding one gains `uprising_pressure_gain` Terror Pressure. |
+| Open the Worldwide Uprising | Jihadist International | After Evolution V, one linked cell whose government meets the uprising pressure rises through `random_terror_launch_coordinated_uprising`, shared with Call a Coordinated Uprising; before that it prepares cells as above. |
+| Lead the Final Jihad | Final Jihad | Takes the free network leadership and raises one final formation (`final_id`). |
+| Contest the Final Claim | Final Jihad | Runs `random_terror_resolve_network_leadership_contest` against the jihadist leader, or takes a free leadership. |
+| Deny the False Revelation | Final Jihad | Ends The Presence of the Entity and restores `revelation_denial_stability`. |
 | Continuity Protocol | Shadow Council | Bunkers on the victory-point provinces of the seat; Relocate the Network stops costing Territorial Control. |
 | Establish Political Offices | Ideological Secretariat | The seat becomes a core state; Build a Civil Administration opens to the command (`random_terror_focus_political_offices`). |
 | Trace the Border Corridors | Expansion | Claims on every bordering crisis state the command does not own. |

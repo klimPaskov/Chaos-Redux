@@ -592,6 +592,13 @@ random_terror_focus_mark_foreign_cell = {
 		limit = { check_variable = { random_terror_focus_activity_push > constant:random_terror_value.zero } }
 		random_terror_focus_push_state_activity = yes
 	}
+	if = {
+		limit = { check_variable = { random_terror_focus_raise_controller_pressure = constant:random_terror_value.one } }
+		CONTROLLER = {
+			set_temp_variable = { random_terror_pending_pressure_delta = constant:random_terror_focus_reward.uprising_pressure_gain }
+			random_terror_apply_pressure = yes
+		}
+	}
 }
 
 # Links up to cell_select_count cells abroad
@@ -599,7 +606,10 @@ random_terror_focus_mark_foreign_cell = {
 # when temp random_terror_focus_activity_push is above zero, raises their
 # activity by it.  Cells bordering the command come first.  With temp
 # random_terror_focus_require_link = 1 only cells that already carry a
-# transnational link qualify; the input is reset afterwards.
+# transnational link qualify, and with temp
+# random_terror_focus_raise_controller_pressure = 1 the government holding
+# each cell gains uprising_pressure_gain Terror Pressure; both inputs are
+# reset afterwards.
 random_terror_focus_reach_foreign_cells = {
 	set_temp_variable = { random_terror_focus_cells_done = constant:random_terror_value.zero }
 	while_loop_effect = {
@@ -635,6 +645,7 @@ random_terror_focus_reach_foreign_cells = {
 		clr_state_flag = random_terror_focus_cell_selected
 	}
 	set_temp_variable = { random_terror_focus_require_link = constant:random_terror_value.zero }
+	set_temp_variable = { random_terror_focus_raise_controller_pressure = constant:random_terror_value.zero }
 }
 
 # Lays one railway level from the seat to random_terror_focus_state when that
@@ -1197,4 +1208,188 @@ random_terror_focus_reward_break_parent = {
 	add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_convert_gain }
 	add_to_variable = { global.random_terror_strategic_victories = constant:random_terror_tuning.one }
 	set_country_flag = random_terror_focus_parent_government_broken
+}
+
+# Join the Jihadist International: a membership request (chaosx.nr31.44) goes
+# to the command that leads the International, which accepts or refuses.
+# When no other command leads it, the command founds the International
+# itself, or takes its leadership inside the faction it already leads.
+random_terror_focus_request_membership = {
+	if = {
+		limit = {
+			any_country = {
+				NOT = { tag = ROOT }
+				random_terror_is_jihadist_actor = yes
+				has_country_flag = random_terror_network_leader
+				NOT = { has_capitulated = yes }
+				NOT = { has_war_with = ROOT }
+			}
+		}
+		random_country = {
+			limit = {
+				NOT = { tag = ROOT }
+				random_terror_is_jihadist_actor = yes
+				has_country_flag = random_terror_network_leader
+				NOT = { has_capitulated = yes }
+				NOT = { has_war_with = ROOT }
+			}
+			save_event_target_as = random_terror_jihadist_international_target
+		}
+		random_terror_validate_jihad_transaction = yes
+		random_terror_commit_jihad_transaction = yes
+	}
+	else = {
+		if = {
+			limit = { NOT = { is_in_faction = yes } }
+			random_terror_create_jihadist_international_faction = yes
+		}
+		if = {
+			limit = {
+				is_faction_leader = yes
+				NOT = {
+					any_country = {
+						NOT = { tag = ROOT }
+						random_terror_is_actor = yes
+						has_country_flag = random_terror_network_leader
+					}
+				}
+			}
+			set_country_flag = random_terror_network_leader
+		}
+		set_country_flag = random_terror_jihadist_international_member
+		set_country_flag = random_terror_later_religious_opposition_registry
+	}
+}
+
+# Takes the network leadership when no other live command holds it.
+random_terror_focus_take_free_leadership = {
+	if = {
+		limit = {
+			NOT = {
+				any_country = {
+					NOT = { tag = ROOT }
+					random_terror_is_actor = yes
+					has_country_flag = random_terror_network_leader
+				}
+			}
+		}
+		set_country_flag = random_terror_network_leader
+	}
+}
+
+# Unify the Jihadist Cells: cells abroad, bordering ones first, are brought
+# into the International's chain of command and step up their activity.
+random_terror_focus_reward_unify_cells = {
+	set_temp_variable = { random_terror_focus_activity_push = constant:random_terror_focus_reward.cell_seed_activity }
+	random_terror_focus_reach_foreign_cells = yes
+	add_to_variable = { global.random_terror_international_unity = constant:random_terror_tuning.unity_gain }
+	clamp_variable = { var = global.random_terror_international_unity min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+	set_country_flag = random_terror_focus_jihadist_cells_unified
+}
+
+# Command the International: one experienced International column musters.
+random_terror_focus_reward_command_international = {
+	set_temp_variable = { random_terror_unit_experience = constant:random_terror_unit.column_experience }
+	set_temp_variable = { random_terror_unit_equipment = constant:random_terror_unit.column_equipment }
+	set_temp_variable = { random_terror_unit_manpower = constant:random_terror_unit.column_manpower }
+	set_temp_variable = { random_terror_unit_id = constant:random_terror_unit.column_id }
+	random_terror_focus_raise_formation = yes
+	add_to_variable = { global.random_terror_international_unity = constant:random_terror_tuning.unity_gain }
+	clamp_variable = { var = global.random_terror_international_unity min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+	set_country_flag = random_terror_focus_international_command
+}
+
+# Prepares cells abroad for a rising: linked cells step up their activity and
+# the governments holding them face more Terror Pressure.
+random_terror_focus_prepare_uprising_cells = {
+	set_temp_variable = { random_terror_focus_require_link = constant:random_terror_value.one }
+	set_temp_variable = { random_terror_focus_raise_controller_pressure = constant:random_terror_value.one }
+	set_temp_variable = { random_terror_focus_activity_push = constant:random_terror_focus_reward.cell_support_activity }
+	random_terror_focus_reach_foreign_cells = yes
+}
+
+# Open the Worldwide Uprising: once The Final Jihad has begun, one linked
+# cell whose government is under enough Terror Pressure rises at once
+# (random_terror_launch_coordinated_uprising).  Before that, or without such
+# a cell, the command prepares cells abroad instead.
+random_terror_focus_reward_worldwide_uprising = {
+	if = {
+		limit = {
+			has_global_flag = random_terror_evolution_5_unlocked
+			any_state = { random_terror_state_can_host_uprising = yes }
+		}
+		random_state = {
+			limit = { random_terror_state_can_host_uprising = yes }
+			save_event_target_as = random_terror_action_state
+			save_event_target_as = random_terror_uprising_state
+		}
+		set_temp_variable = { random_terror_focus_context = constant:random_terror_value.one }
+		random_terror_launch_coordinated_uprising = yes
+	}
+	else = {
+		random_terror_focus_prepare_uprising_cells = yes
+	}
+	add_to_variable = { global.random_terror_apocalyptic_readiness = constant:random_terror_tuning.readiness_gain }
+	clamp_variable = { var = global.random_terror_apocalyptic_readiness min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+	set_country_flag = random_terror_focus_worldwide_uprising_open
+}
+
+# Lead the Final Jihad: the command takes the free network leadership and
+# raises one final command formation.
+random_terror_focus_reward_lead_final_jihad = {
+	random_terror_focus_take_free_leadership = yes
+	set_temp_variable = { random_terror_unit_experience = constant:random_terror_unit.final_experience }
+	set_temp_variable = { random_terror_unit_equipment = constant:random_terror_unit.final_equipment }
+	set_temp_variable = { random_terror_unit_manpower = constant:random_terror_unit.final_manpower }
+	set_temp_variable = { random_terror_unit_id = constant:random_terror_unit.final_id }
+	random_terror_focus_raise_formation = yes
+	add_to_variable = { global.random_terror_apocalyptic_readiness = constant:random_terror_tuning.readiness_gain }
+	add_to_variable = { global.random_terror_international_unity = constant:random_terror_tuning.unity_gain }
+	clamp_variable = { var = global.random_terror_apocalyptic_readiness min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+	clamp_variable = { var = global.random_terror_international_unity min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+	set_country_flag = random_terror_focus_final_jihad
+}
+
+# Contest the Final Claim: against a jihadist command that leads the
+# network, the command runs the leadership contest of Contest the Network
+# Leader (random_terror_resolve_network_leadership_contest); with no leader
+# it takes the leadership.
+random_terror_focus_reward_contest_final_claim = {
+	if = {
+		limit = {
+			any_country = {
+				NOT = { tag = ROOT }
+				random_terror_is_jihadist_actor = yes
+				has_country_flag = random_terror_network_leader
+				NOT = { has_country_flag = random_terror_final_actor }
+				NOT = { has_capitulated = yes }
+			}
+		}
+		random_country = {
+			limit = {
+				NOT = { tag = ROOT }
+				random_terror_is_jihadist_actor = yes
+				has_country_flag = random_terror_network_leader
+				NOT = { has_country_flag = random_terror_final_actor }
+				NOT = { has_capitulated = yes }
+			}
+			save_event_target_as = random_terror_network_leader_target
+		}
+		set_country_flag = random_terror_network_leadership_contested
+		random_terror_resolve_network_leadership_contest = yes
+	}
+	else = {
+		random_terror_focus_take_free_leadership = yes
+	}
+	add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_contest_gain }
+	set_country_flag = random_terror_focus_final_claim_contested
+}
+
+# Deny the False Revelation: the network's hidden readiness falls.  The
+# focus itself ends The Presence of the Entity and restores stability.
+random_terror_focus_reward_deny_revelation = {
+	subtract_from_variable = { global.random_terror_apocalyptic_readiness = constant:random_terror_tuning.readiness_gain }
+	clamp_variable = { var = global.random_terror_apocalyptic_readiness min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+	set_country_flag = random_terror_focus_jihadist_rejected
+	set_country_flag = random_terror_focus_false_revelation_denied
 }

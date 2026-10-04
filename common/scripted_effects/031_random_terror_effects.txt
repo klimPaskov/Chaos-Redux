@@ -3830,10 +3830,6 @@ random_terror_actor_join_jihadist_international = {
 	random_terror_actor_action_common = yes
 }
 
-random_terror_actor_call_coordinated_uprising = {
-	random_terror_actor_action_common = yes
-}
-
 random_terror_actor_accelerate_revelation = {
 	if = {
 		limit = { random_terror_can_begin_false_revelation = yes }
@@ -5241,14 +5237,29 @@ random_terror_commit_coordinated_uprising = {
 				}
 			}
 		}
-		set_country_flag = random_terror_coordinated_uprising_committed
 		add_to_variable = { global.random_terror_apocalyptic_readiness = constant:random_terror_tuning.uprising_readiness_gain }
 		clamp_variable = { var = global.random_terror_apocalyptic_readiness min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
 	}
-	if = {
-		limit = { NOT = { has_country_flag = random_terror_coordinated_uprising_committed } }
-		set_country_flag = random_terror_coordinated_uprising_failed
+}
+
+# COUNTRY scope: an actor launching a coordinated uprising in event target
+# random_terror_uprising_state, also saved as random_terror_action_state.
+# The government holding the state receives Stop the Coordinated Uprising,
+# the uprising starts where the state's pressure allows, the actor takes the
+# state when its Territorial Control is high enough, and the network's
+# readiness grows.  Call a Coordinated Uprising and the Open the Worldwide
+# Uprising focus share it; callers pay their price first.
+random_terror_launch_coordinated_uprising = {
+	random_terror_actor_action_common = yes
+	# Bind the defender before the uprising can change state control.
+	event_target:random_terror_uprising_state = {
+		save_event_target_as = random_terror_mission_subject
+		CONTROLLER = { random_terror_begin_uprising_mission = yes }
 	}
+	event_target:random_terror_uprising_state = { random_terror_start_pressure_uprising = yes }
+	random_terror_try_takeover_state = yes
+	random_terror_commit_coordinated_uprising = yes
+	random_terror_clamp_actor_values = yes
 }
 
 random_terror_validate_revelation_transaction = {
