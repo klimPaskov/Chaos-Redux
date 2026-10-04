@@ -111,21 +111,27 @@ gods_of_africa_participant_category = {
 			hidden_effect = { gods_of_africa_offer_voluntary_aid = yes }
 		}
 		ai_will_do = {
-			base = 10
+			base = constant:gods_of_africa_ai_response.aid_base
 			modifier = {
 				factor = 0
 				NOT = { gods_of_africa_participant_aid_can_be_sent = yes }
 			}
+			# Loyal allies treat aid as alliance support, most of all in an
+			# African emergency; rivals and gamblers keep their stocks.
+			modifier = { factor = constant:gods_of_africa_ai_response.aid_loyal gods_of_africa_ai_is_loyal_ally = yes }
 			modifier = {
-				factor = 1.5
-				has_variable = gods_of_africa_wrath
-				check_variable = { gods_of_africa_wrath < constant:gods_of_africa_wrath.hostile }
+				factor = constant:gods_of_africa_ai_response.aid_african_emergency
+				event_target:africa_host = { check_variable = { gods_of_africa_need_emergency > constant:gods_of_africa_value.zero } }
 			}
+			modifier = { factor = constant:gods_of_africa_ai_response.aid_low_wrath gods_of_africa_ai_wrath_is_low = yes }
 			modifier = {
-				factor = 0.5
+				factor = constant:gods_of_africa_ai_response.aid_repeat
 				has_variable = gods_of_africa_voluntary_aid_count
 				check_variable = { gods_of_africa_voluntary_aid_count > constant:gods_of_africa_value.zero }
 			}
+			modifier = { factor = constant:gods_of_africa_ai_response.aid_rival gods_of_africa_ai_is_defiant_rival = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.aid_gambler gods_of_africa_ai_is_selective_gambler = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.aid_losing_war gods_of_africa_participant_is_losing_war = yes }
 		}
 	}
 
@@ -158,10 +164,30 @@ gods_of_africa_participant_category = {
 			hidden_effect = { gods_of_africa_comply_demand = yes }
 		}
 		ai_will_do = {
-			base = 100
+			base = constant:gods_of_africa_ai_response.comply_base
 			modifier = {
 				factor = 0
-				NOT = { gods_of_africa_current_demand_can_be_paid = yes }
+				OR = {
+					NOT = { gods_of_africa_current_demand_can_be_paid = yes }
+					NOT = { gods_of_africa_host_can_receive_demand_payment = yes }
+				}
+			}
+			modifier = { factor = constant:gods_of_africa_ai_response.comply_light_burden has_country_flag = gods_of_africa_demand_light_burden }
+			modifier = { factor = constant:gods_of_africa_ai_response.comply_heavy_burden has_country_flag = gods_of_africa_demand_heavy_burden }
+			modifier = { factor = constant:gods_of_africa_ai_response.comply_strong_africa gods_of_africa_ai_africa_is_strong = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.comply_weak_africa gods_of_africa_ai_africa_is_weak = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.comply_loyal gods_of_africa_ai_is_loyal_ally = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.comply_rival gods_of_africa_ai_is_defiant_rival = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.comply_gambler gods_of_africa_ai_is_selective_gambler = yes }
+			modifier = {
+				factor = constant:gods_of_africa_ai_response.comply_fear
+				gods_of_africa_ai_wrath_is_high = yes
+				gods_of_africa_ai_africa_is_strong = yes
+			}
+			modifier = { factor = constant:gods_of_africa_ai_response.comply_losing_war gods_of_africa_participant_is_losing_war = yes }
+			modifier = {
+				factor = constant:gods_of_africa_ai_response.comply_high_chaos
+				check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_4.min compare = greater_than_or_equals }
 			}
 		}
 	}
@@ -193,19 +219,23 @@ gods_of_africa_participant_category = {
 			hidden_effect = { gods_of_africa_partial_compliance = yes }
 		}
 		ai_will_do = {
-			base = 15
+			base = constant:gods_of_africa_ai_response.partial_base
 			modifier = {
 				factor = 0
-				NOT = { gods_of_africa_partial_payment_is_affordable = yes }
+				OR = {
+					NOT = { gods_of_africa_partial_payment_is_affordable = yes }
+					NOT = { gods_of_africa_host_can_receive_demand_payment = yes }
+				}
 			}
+			modifier = { factor = constant:gods_of_africa_ai_response.partial_full_payable gods_of_africa_current_demand_can_be_paid = yes }
 			modifier = {
-				factor = 0.25
-				gods_of_africa_current_demand_can_be_paid = yes
-			}
-			modifier = {
-				factor = 1.5
+				factor = constant:gods_of_africa_ai_response.partial_full_unpayable
 				NOT = { gods_of_africa_current_demand_can_be_paid = yes }
 			}
+			modifier = { factor = constant:gods_of_africa_ai_response.partial_heavy_burden has_country_flag = gods_of_africa_demand_heavy_burden }
+			modifier = { factor = constant:gods_of_africa_ai_response.partial_loyal gods_of_africa_ai_is_loyal_ally = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.partial_rival gods_of_africa_ai_is_defiant_rival = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.partial_losing_war gods_of_africa_participant_is_losing_war = yes }
 		}
 	}
 
@@ -230,13 +260,22 @@ gods_of_africa_participant_category = {
 			hidden_effect = { gods_of_africa_negotiate_demand = yes }
 		}
 		ai_will_do = {
-			base = 20
+			base = constant:gods_of_africa_ai_response.negotiate_base
 			modifier = {
-				factor = 2
-				NOT = { gods_of_africa_current_demand_can_be_paid = yes }
+				factor = 0
+				NOT = { gods_of_africa_participant_can_request_extension = yes }
 			}
 			modifier = {
-				factor = 0.5
+				factor = constant:gods_of_africa_ai_response.negotiate_unpayable
+				NOT = { gods_of_africa_current_demand_can_be_paid = yes }
+			}
+			modifier = { factor = constant:gods_of_africa_ai_response.negotiate_heavy_burden has_country_flag = gods_of_africa_demand_heavy_burden }
+			modifier = { factor = constant:gods_of_africa_ai_response.negotiate_light_burden has_country_flag = gods_of_africa_demand_light_burden }
+			modifier = { factor = constant:gods_of_africa_ai_response.negotiate_losing_war gods_of_africa_participant_is_losing_war = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.negotiate_gambler gods_of_africa_ai_is_selective_gambler = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.negotiate_rival gods_of_africa_ai_is_defiant_rival = yes }
+			modifier = {
+				factor = constant:gods_of_africa_ai_response.negotiate_vengeful
 				has_variable = gods_of_africa_wrath
 				check_variable = { gods_of_africa_wrath > constant:gods_of_africa_wrath.vengeful }
 			}
@@ -266,16 +305,9 @@ gods_of_africa_participant_category = {
 			hidden_effect = { gods_of_africa_substitute_demand = yes }
 		}
 		ai_will_do = {
-			base = 10
-			modifier = {
-				factor = 2
-				NOT = { gods_of_africa_current_demand_can_be_paid = yes }
-			}
-			modifier = {
-				factor = 0.5
-				has_variable = gods_of_africa_wrath
-				check_variable = { gods_of_africa_wrath > constant:gods_of_africa_wrath.vengeful }
-			}
+			# The AI names its offer through the three slot decisions, which
+			# weigh what Africa needs; this shortcut is for players.
+			base = 0
 		}
 	}
 
@@ -303,15 +335,25 @@ gods_of_africa_participant_category = {
 			hidden_effect = { gods_of_africa_substitute_demand_slot_1 = yes }
 		}
 		ai_will_do = {
-			base = 10
+			base = constant:gods_of_africa_ai_response.substitute_slot_base
 			modifier = {
 				factor = 0
-				NOT = { gods_of_africa_substitute_slot_1_transfer_is_clear = yes }
+				OR = {
+					NOT = { gods_of_africa_substitute_slot_1_is_valid = yes }
+					NOT = { gods_of_africa_substitute_slot_1_transfer_is_clear = yes }
+				}
+			}
+			# Africa accepts only what it lacks, so the AI offers that first.
+			modifier = { factor = constant:gods_of_africa_ai_response.substitute_needed_family gods_of_africa_ai_substitute_slot_1_is_needed = yes }
+			modifier = {
+				factor = constant:gods_of_africa_ai_response.substitute_unneeded_family
+				NOT = { gods_of_africa_ai_substitute_slot_1_is_needed = yes }
 			}
 			modifier = {
-				factor = 2
+				factor = constant:gods_of_africa_ai_response.substitute_unpayable
 				NOT = { gods_of_africa_current_demand_can_be_paid = yes }
 			}
+			modifier = { factor = constant:gods_of_africa_ai_response.substitute_heavy_burden has_country_flag = gods_of_africa_demand_heavy_burden }
 		}
 	}
 
@@ -339,15 +381,25 @@ gods_of_africa_participant_category = {
 			hidden_effect = { gods_of_africa_substitute_demand_slot_2 = yes }
 		}
 		ai_will_do = {
-			base = 9
+			base = constant:gods_of_africa_ai_response.substitute_slot_base
 			modifier = {
 				factor = 0
-				NOT = { gods_of_africa_substitute_slot_2_transfer_is_clear = yes }
+				OR = {
+					NOT = { gods_of_africa_substitute_slot_2_is_valid = yes }
+					NOT = { gods_of_africa_substitute_slot_2_transfer_is_clear = yes }
+				}
+			}
+			# Africa accepts only what it lacks, so the AI offers that first.
+			modifier = { factor = constant:gods_of_africa_ai_response.substitute_needed_family gods_of_africa_ai_substitute_slot_2_is_needed = yes }
+			modifier = {
+				factor = constant:gods_of_africa_ai_response.substitute_unneeded_family
+				NOT = { gods_of_africa_ai_substitute_slot_2_is_needed = yes }
 			}
 			modifier = {
-				factor = 2
+				factor = constant:gods_of_africa_ai_response.substitute_unpayable
 				NOT = { gods_of_africa_current_demand_can_be_paid = yes }
 			}
+			modifier = { factor = constant:gods_of_africa_ai_response.substitute_heavy_burden has_country_flag = gods_of_africa_demand_heavy_burden }
 		}
 	}
 
@@ -375,15 +427,25 @@ gods_of_africa_participant_category = {
 			hidden_effect = { gods_of_africa_substitute_demand_slot_3 = yes }
 		}
 		ai_will_do = {
-			base = 8
+			base = constant:gods_of_africa_ai_response.substitute_slot_base
 			modifier = {
 				factor = 0
-				NOT = { gods_of_africa_substitute_slot_3_transfer_is_clear = yes }
+				OR = {
+					NOT = { gods_of_africa_substitute_slot_3_is_valid = yes }
+					NOT = { gods_of_africa_substitute_slot_3_transfer_is_clear = yes }
+				}
+			}
+			# Africa accepts only what it lacks, so the AI offers that first.
+			modifier = { factor = constant:gods_of_africa_ai_response.substitute_needed_family gods_of_africa_ai_substitute_slot_3_is_needed = yes }
+			modifier = {
+				factor = constant:gods_of_africa_ai_response.substitute_unneeded_family
+				NOT = { gods_of_africa_ai_substitute_slot_3_is_needed = yes }
 			}
 			modifier = {
-				factor = 2
+				factor = constant:gods_of_africa_ai_response.substitute_unpayable
 				NOT = { gods_of_africa_current_demand_can_be_paid = yes }
 			}
+			modifier = { factor = constant:gods_of_africa_ai_response.substitute_heavy_burden has_country_flag = gods_of_africa_demand_heavy_burden }
 		}
 	}
 
@@ -415,7 +477,7 @@ gods_of_africa_participant_category = {
 			custom_effect_tooltip = gods_of_africa_return_to_demand_effect_tt
 			hidden_effect = { gods_of_africa_return_from_negotiation = yes }
 		}
-		ai_will_do = { base = 5 }
+		ai_will_do = { base = constant:gods_of_africa_ai_response.return_to_demand_base }
 	}
 
 	gods_of_africa_refuse_demand = {
@@ -442,15 +504,27 @@ gods_of_africa_participant_category = {
 			hidden_effect = { gods_of_africa_refuse_demand = yes }
 		}
 		ai_will_do = {
-			base = 5
+			base = constant:gods_of_africa_ai_response.refuse_base
 			modifier = {
-				factor = 3
+				factor = 0
+				NOT = { gods_of_africa_demand_contract_is_current = yes }
+			}
+			# Refusing agreed terms is a broken agreement.
+			modifier = { factor = constant:gods_of_africa_ai_response.refuse_agreed_terms gods_of_africa_contract_is_agreed = yes }
+			modifier = {
+				factor = constant:gods_of_africa_ai_response.refuse_unpayable
 				NOT = { gods_of_africa_current_demand_can_be_paid = yes }
 			}
-			modifier = {
-				factor = 0.5
-				gods_of_africa_current_demand_can_be_paid = yes
-			}
+			modifier = { factor = constant:gods_of_africa_ai_response.refuse_heavy_burden has_country_flag = gods_of_africa_demand_heavy_burden }
+			modifier = { factor = constant:gods_of_africa_ai_response.refuse_light_burden has_country_flag = gods_of_africa_demand_light_burden }
+			modifier = { factor = constant:gods_of_africa_ai_response.refuse_weak_africa gods_of_africa_ai_africa_is_weak = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.refuse_strong_africa gods_of_africa_ai_africa_is_strong = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.refuse_loyal gods_of_africa_ai_is_loyal_ally = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.refuse_rival gods_of_africa_ai_is_defiant_rival = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.refuse_gambler gods_of_africa_ai_is_selective_gambler = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.refuse_holds_core gods_of_africa_ai_holds_african_core = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.refuse_low_wrath gods_of_africa_ai_wrath_is_low = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.refuse_high_wrath gods_of_africa_ai_wrath_is_high = yes }
 		}
 	}
 
@@ -477,26 +551,40 @@ gods_of_africa_participant_category = {
 			hidden_effect = { gods_of_africa_permanent_defiance = yes }
 		}
 		ai_will_do = {
-			# Defiance is a real AI option, but remains rarer than ordinary
-			# responses and is suppressed while reconciliation is pending.
-			base = 5
-			modifier = {
-				factor = 4
-				has_country_flag = gods_of_africa_offender
-			}
-			modifier = {
-				factor = 3
-				has_variable = gods_of_africa_wrath
-				check_variable = { var = gods_of_africa_wrath value = constant:gods_of_africa_wrath.hostile compare = greater_than_or_equals }
-			}
-			modifier = {
-				factor = 2
-				has_country_flag = gods_of_africa_demand_active
-			}
+			# Defiance needs a reason in the current state: a rival posture, an
+			# offence record, high Wrath, or a heavy demand from a weak Africa.
+			base = constant:gods_of_africa_ai_response.defiance_base
 			modifier = {
 				factor = 0
-				has_country_flag = gods_of_africa_reconciliation_pending
+				OR = {
+					NOT = { gods_of_africa_participant_can_defy = yes }
+					has_country_flag = gods_of_africa_reconciliation_pending
+					NOT = {
+						OR = {
+							gods_of_africa_ai_is_defiant_rival = yes
+							has_country_flag = gods_of_africa_offender
+							gods_of_africa_ai_wrath_is_high = yes
+							AND = {
+								has_country_flag = gods_of_africa_demand_heavy_burden
+								gods_of_africa_ai_africa_is_weak = yes
+							}
+						}
+					}
+				}
 			}
+			modifier = { factor = constant:gods_of_africa_ai_response.defiance_loyal gods_of_africa_ai_is_loyal_ally = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.defiance_holds_core gods_of_africa_ai_holds_african_core = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.defiance_hostile_faction gods_of_africa_ai_leads_hostile_faction = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.defiance_offender has_country_flag = gods_of_africa_offender }
+			modifier = { factor = constant:gods_of_africa_ai_response.defiance_high_wrath gods_of_africa_ai_wrath_is_high = yes }
+			modifier = {
+				factor = constant:gods_of_africa_ai_response.defiance_low_credibility
+				gods_of_africa_ai_is_stronger_than_africa = yes
+				gods_of_africa_ai_africa_is_weak = yes
+			}
+			modifier = { factor = constant:gods_of_africa_ai_response.defiance_dominant_africa gods_of_africa_ai_africa_is_dominant = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.defiance_demand_active has_country_flag = gods_of_africa_demand_active }
+			modifier = { factor = constant:gods_of_africa_ai_response.defiance_heavy_burden has_country_flag = gods_of_africa_demand_heavy_burden }
 		}
 	}
 
@@ -518,7 +606,16 @@ gods_of_africa_participant_category = {
 			custom_effect_tooltip = gods_of_africa_prepare_defensive_defiance_effect_tt
 			hidden_effect = { gods_of_africa_prepare_defensive_defiance = yes }
 		}
-		ai_will_do = { base = 10 }
+		ai_will_do = {
+			base = constant:gods_of_africa_ai_response.defense_base
+			modifier = {
+				factor = 0
+				NOT = { gods_of_africa_can_prepare_defensive_defiance = yes }
+			}
+			modifier = { factor = constant:gods_of_africa_ai_response.defense_high_wrath gods_of_africa_ai_wrath_is_high = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.defense_dominant_africa gods_of_africa_ai_africa_is_dominant = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.defense_weak_africa gods_of_africa_ai_africa_is_weak = yes }
+		}
 	}
 
 	gods_of_africa_harden_stockpiles = {
@@ -539,7 +636,16 @@ gods_of_africa_participant_category = {
 			custom_effect_tooltip = gods_of_africa_harden_stockpiles_effect_tt
 			hidden_effect = { gods_of_africa_harden_stockpiles = yes }
 		}
-		ai_will_do = { base = 8 }
+		ai_will_do = {
+			base = constant:gods_of_africa_ai_response.defense_base
+			modifier = {
+				factor = 0
+				NOT = { gods_of_africa_can_harden_stockpiles = yes }
+			}
+			modifier = { factor = constant:gods_of_africa_ai_response.defense_high_wrath gods_of_africa_ai_wrath_is_high = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.defense_dominant_africa gods_of_africa_ai_africa_is_dominant = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.defense_weak_africa gods_of_africa_ai_africa_is_weak = yes }
+		}
 	}
 
 	gods_of_africa_secure_transport = {
@@ -560,7 +666,16 @@ gods_of_africa_participant_category = {
 			custom_effect_tooltip = gods_of_africa_secure_transport_effect_tt
 			hidden_effect = { gods_of_africa_secure_transport = yes }
 		}
-		ai_will_do = { base = 8 }
+		ai_will_do = {
+			base = constant:gods_of_africa_ai_response.defense_base
+			modifier = {
+				factor = 0
+				NOT = { gods_of_africa_can_secure_transport = yes }
+			}
+			modifier = { factor = constant:gods_of_africa_ai_response.defense_high_wrath gods_of_africa_ai_wrath_is_high = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.defense_dominant_africa gods_of_africa_ai_africa_is_dominant = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.defense_weak_africa gods_of_africa_ai_africa_is_weak = yes }
+		}
 	}
 
 	gods_of_africa_prepare_countermeasures = {
@@ -581,7 +696,16 @@ gods_of_africa_participant_category = {
 			custom_effect_tooltip = gods_of_africa_prepare_countermeasures_effect_tt
 			hidden_effect = { gods_of_africa_prepare_countermeasures = yes }
 		}
-		ai_will_do = { base = 8 }
+		ai_will_do = {
+			base = constant:gods_of_africa_ai_response.defense_base
+			modifier = {
+				factor = 0
+				NOT = { gods_of_africa_can_prepare_countermeasures = yes }
+			}
+			modifier = { factor = constant:gods_of_africa_ai_response.defense_high_wrath gods_of_africa_ai_wrath_is_high = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.defense_dominant_africa gods_of_africa_ai_africa_is_dominant = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.defense_weak_africa gods_of_africa_ai_africa_is_weak = yes }
+		}
 	}
 
 	gods_of_africa_seek_reconciliation = {
@@ -612,7 +736,16 @@ gods_of_africa_participant_category = {
 			custom_effect_tooltip = gods_of_africa_seek_reconciliation_effect_tt
 			hidden_effect = { gods_of_africa_seek_reconciliation = yes }
 		}
-		ai_will_do = { base = 10 }
+		ai_will_do = {
+			base = constant:gods_of_africa_ai_response.reconcile_base
+			modifier = {
+				factor = 0
+				NOT = { gods_of_africa_reconciliation_can_be_paid = yes }
+			}
+			modifier = { factor = constant:gods_of_africa_ai_response.reconcile_friendly gods_of_africa_ai_is_friendly_to_africa = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.reconcile_strong_africa gods_of_africa_ai_africa_is_strong = yes }
+			modifier = { factor = constant:gods_of_africa_ai_response.reconcile_rival gods_of_africa_ai_is_defiant_rival = yes }
+		}
 	}
 }
 
@@ -926,7 +1059,33 @@ gods_of_africa_host_category = {
 			custom_effect_tooltip = gods_of_africa_grant_leniency_effect_tt
 			hidden_effect = { FROM = { gods_of_africa_grant_leniency = yes } }
 		}
-		ai_will_do = { base = 1 }
+		ai_will_do = {
+			base = constant:gods_of_africa_ai_response.mercy_base
+			modifier = {
+				factor = 0
+				FROM = {
+					OR = {
+						NOT = { has_country_flag = gods_of_africa_demand_active }
+						NOT = { has_country_flag = gods_of_africa_offender }
+						has_country_flag = gods_of_africa_defiant
+						has_country_flag = gods_of_africa_leniency_used
+					}
+				}
+			}
+			# Keep a useful partner in hardship rather than provoke defiance.
+			modifier = { factor = constant:gods_of_africa_ai_response.mercy_favored_track FROM = { gods_of_africa_ai_is_on_track_for_favored = yes } }
+			modifier = { factor = constant:gods_of_africa_ai_response.mercy_hardship FROM = { gods_of_africa_participant_is_at_war_elsewhere = yes } }
+			modifier = { factor = constant:gods_of_africa_ai_response.mercy_loyal FROM = { gods_of_africa_ai_is_loyal_ally = yes } }
+			modifier = { factor = constant:gods_of_africa_ai_response.mercy_holds_core FROM = { gods_of_africa_ai_holds_african_core = yes } }
+			modifier = {
+				factor = constant:gods_of_africa_ai_response.mercy_reciprocal
+				check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.reciprocal_covenant }
+			}
+			modifier = {
+				factor = constant:gods_of_africa_ai_response.mercy_exaction
+				check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.sovereign_exaction }
+			}
+		}
 	}
 
 	gods_of_africa_public_pardon = {
@@ -969,7 +1128,24 @@ gods_of_africa_host_category = {
 			custom_effect_tooltip = gods_of_africa_public_pardon_effect_tt
 			hidden_effect = { FROM = { gods_of_africa_public_pardon = yes } }
 		}
-		ai_will_do = { base = 1 }
+		ai_will_do = {
+			base = constant:gods_of_africa_ai_response.mercy_base
+			modifier = {
+				factor = 0
+				FROM = { NOT = { gods_of_africa_can_public_pardon = yes } }
+			}
+			modifier = { factor = constant:gods_of_africa_ai_response.mercy_favored_track FROM = { gods_of_africa_ai_is_proven_partner = yes } }
+			modifier = { factor = constant:gods_of_africa_ai_response.mercy_loyal FROM = { gods_of_africa_ai_is_loyal_ally = yes } }
+			modifier = { factor = constant:gods_of_africa_ai_response.mercy_holds_core FROM = { gods_of_africa_ai_holds_african_core = yes } }
+			modifier = {
+				factor = constant:gods_of_africa_ai_response.mercy_reciprocal
+				check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.reciprocal_covenant }
+			}
+			modifier = {
+				factor = constant:gods_of_africa_ai_response.mercy_exaction
+				check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.sovereign_exaction }
+			}
+		}
 	}
 
 	gods_of_africa_protect_partner = {
@@ -1029,7 +1205,17 @@ gods_of_africa_host_category = {
 			custom_effect_tooltip = gods_of_africa_protect_partner_effect_tt
 			hidden_effect = { FROM = { gods_of_africa_protect_partner = yes } }
 		}
-		ai_will_do = { base = 1 }
+		ai_will_do = {
+			base = constant:gods_of_africa_ai_response.protect_base
+			modifier = {
+				factor = 0
+				FROM = { NOT = { gods_of_africa_protection_package_is_affordable = yes } }
+			}
+			# Partners that paid or gave aid come before merely reliable ones.
+			modifier = { factor = constant:gods_of_africa_ai_response.protect_proven_partner FROM = { gods_of_africa_ai_is_proven_partner = yes } }
+			modifier = { factor = constant:gods_of_africa_ai_response.protect_common_enemy FROM = { gods_of_africa_ai_shares_enemy_with_africa = yes } }
+			modifier = { factor = constant:gods_of_africa_ai_response.protect_near_collapse gods_of_africa_ai_africa_is_collapsing = yes }
+		}
 	}
 
 	gods_of_africa_accept_substitute = {
@@ -1073,7 +1259,7 @@ gods_of_africa_host_category = {
 			hidden_effect = { FROM = { gods_of_africa_accept_substitute = yes } }
 		}
 		ai_will_do = {
-			base = 2
+			base = constant:gods_of_africa_ai_response.accept_substitute_base
 			modifier = {
 				factor = 0
 				FROM = {
@@ -1081,9 +1267,17 @@ gods_of_africa_host_category = {
 						NOT = { gods_of_africa_substitute_offer_is_affordable = yes }
 						NOT = { gods_of_africa_substitute_transfer_is_clear = yes }
 						NOT = { gods_of_africa_payment_retry_is_open = yes }
+						# Africa takes only a family it currently lacks (PAY-07).
+						NOT = { gods_of_africa_ai_substitute_offer_is_needed = yes }
 					}
 				}
 			}
+			modifier = {
+				factor = constant:gods_of_africa_ai_response.accept_substitute_emergency
+				check_variable = { gods_of_africa_need_emergency > constant:gods_of_africa_value.zero }
+			}
+			modifier = { factor = constant:gods_of_africa_ai_response.accept_substitute_reliable FROM = { gods_of_africa_ai_is_proven_partner = yes } }
+			modifier = { factor = constant:gods_of_africa_ai_response.accept_substitute_high_wrath FROM = { gods_of_africa_ai_wrath_is_high = yes } }
 		}
 	}
 
@@ -1125,7 +1319,23 @@ gods_of_africa_host_category = {
 			custom_effect_tooltip = gods_of_africa_reject_substitute_effect_tt
 			hidden_effect = { FROM = { gods_of_africa_reject_substitute = yes } }
 		}
-		ai_will_do = { base = 1 }
+		ai_will_do = {
+			base = constant:gods_of_africa_ai_response.reject_substitute_base
+			modifier = {
+				factor = constant:gods_of_africa_ai_response.reject_substitute_unneeded
+				FROM = {
+					gods_of_africa_substitute_offer_is_pending = yes
+					NOT = { gods_of_africa_ai_substitute_offer_is_needed = yes }
+				}
+			}
+			modifier = {
+				factor = constant:gods_of_africa_ai_response.reject_substitute_high_wrath
+				FROM = {
+					gods_of_africa_substitute_offer_is_pending = yes
+					gods_of_africa_ai_wrath_is_high = yes
+				}
+			}
+		}
 	}
 
 	gods_of_africa_commit_settlement = {
@@ -1259,7 +1469,18 @@ gods_of_africa_host_category = {
 			custom_effect_tooltip = gods_of_africa_accept_reconciliation_effect_tt
 			hidden_effect = { FROM = { gods_of_africa_accept_reconciliation = yes } }
 		}
-		ai_will_do = { base = 4 }
+		ai_will_do = {
+			base = constant:gods_of_africa_ai_response.accept_reconciliation_base
+			modifier = { factor = constant:gods_of_africa_ai_response.accept_reconciliation_near_collapse gods_of_africa_ai_africa_is_collapsing = yes }
+			modifier = {
+				factor = constant:gods_of_africa_ai_response.accept_reconciliation_reciprocal
+				check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.reciprocal_covenant }
+			}
+			modifier = {
+				factor = constant:gods_of_africa_ai_response.accept_reconciliation_exaction
+				check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.sovereign_exaction }
+			}
+		}
 	}
 
 	gods_of_africa_mark_offender = {
@@ -1318,7 +1539,34 @@ gods_of_africa_host_category = {
 			custom_effect_tooltip = gods_of_africa_mark_offender_effect_tt
 			hidden_effect = { FROM = { gods_of_africa_mark_offender = yes } }
 		}
-		ai_will_do = { base = 1 }
+		ai_will_do = {
+			base = constant:gods_of_africa_ai_response.judgment_base
+			# Africa pauses broad escalation while it is itself near collapse
+			# (spec AI-10).
+			modifier = {
+				factor = 0
+				OR = {
+					gods_of_africa_ai_africa_is_collapsing = yes
+					NOT = { gods_of_africa_priority_offender_capacity_available = yes }
+					FROM = { NOT = { AND = { gods_of_africa_proven_offender = yes OR = { has_country_flag = gods_of_africa_demand_active has_country_flag = gods_of_africa_defiant } NOT = { has_country_flag = gods_of_africa_enemy_marked } } } }
+				}
+			}
+			# Occupiers and enemies at war with Africa come first.
+			modifier = { factor = constant:gods_of_africa_ai_response.judgment_holds_core FROM = { gods_of_africa_ai_holds_african_core = yes } }
+			modifier = { factor = constant:gods_of_africa_ai_response.judgment_at_war FROM = { has_war_with = ROOT } }
+			modifier = { factor = constant:gods_of_africa_ai_response.judgment_defiant FROM = { has_country_flag = gods_of_africa_defiant } }
+			# A target that can no longer pay is not worth destroying.
+			modifier = { factor = constant:gods_of_africa_ai_response.judgment_target_collapsing FROM = { gods_of_africa_ai_is_collapsing_target = yes } }
+			modifier = { factor = constant:gods_of_africa_ai_response.judgment_weak_africa gods_of_africa_ai_africa_is_weak = yes }
+			modifier = {
+				factor = constant:gods_of_africa_ai_response.judgment_exaction
+				check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.sovereign_exaction }
+			}
+			modifier = {
+				factor = constant:gods_of_africa_ai_response.judgment_reciprocal
+				check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.reciprocal_covenant }
+			}
+		}
 	}
 
 	gods_of_africa_escalate_offense = {
@@ -1363,6 +1611,32 @@ gods_of_africa_host_category = {
 			custom_effect_tooltip = gods_of_africa_escalate_offense_effect_tt
 			hidden_effect = { FROM = { gods_of_africa_escalate_offense = yes } }
 		}
-		ai_will_do = { base = 1 }
+		ai_will_do = {
+			base = constant:gods_of_africa_ai_response.judgment_base
+			# Africa pauses broad escalation while it is itself near collapse
+			# (spec AI-10).
+			modifier = {
+				factor = 0
+				OR = {
+					gods_of_africa_ai_africa_is_collapsing = yes
+					FROM = { NOT = { gods_of_africa_can_escalate_offense = yes } }
+				}
+			}
+			# Occupiers and enemies at war with Africa come first.
+			modifier = { factor = constant:gods_of_africa_ai_response.judgment_holds_core FROM = { gods_of_africa_ai_holds_african_core = yes } }
+			modifier = { factor = constant:gods_of_africa_ai_response.judgment_at_war FROM = { has_war_with = ROOT } }
+			modifier = { factor = constant:gods_of_africa_ai_response.judgment_defiant FROM = { has_country_flag = gods_of_africa_defiant } }
+			# A target that can no longer pay is not worth destroying.
+			modifier = { factor = constant:gods_of_africa_ai_response.judgment_target_collapsing FROM = { gods_of_africa_ai_is_collapsing_target = yes } }
+			modifier = { factor = constant:gods_of_africa_ai_response.judgment_weak_africa gods_of_africa_ai_africa_is_weak = yes }
+			modifier = {
+				factor = constant:gods_of_africa_ai_response.judgment_exaction
+				check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.sovereign_exaction }
+			}
+			modifier = {
+				factor = constant:gods_of_africa_ai_response.judgment_reciprocal
+				check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.reciprocal_covenant }
+			}
+		}
 	}
 }

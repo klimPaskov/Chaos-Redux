@@ -201,6 +201,21 @@ The participant and host decision-category descriptions show the existing Streng
 
 The source-present provision, reserve, relief, expedition, priority, recognition, territory, sponsorship, judgment, judgment-reach, sanctions, sanctuary, and settlement witnesses feed runtime gates or effects. Judgment reach gates offender escalation, sanctions add a bounded diplomacy memory during punishment, and sanctuary or security adds the corresponding guarantee or access compact to protection. The logistics, reconstruction, separately selected Event 013 relief, Migration reception, market-access, and intelligence outcomes are also implemented through their existing owner systems and remain subject to the individual gates described above.
 
+## AI response posture
+
+Participant and Africa AI weights follow the current campaign state, never a per-country personality (decision L24). The posture triggers at the end of `common/scripted_triggers/012_africa_gods_triggers.txt` read Africa's Strength band (`gods_of_africa_ai_africa_is_weak` for Limited or Regional, `_strong` for Continental and above, `_dominant` for Global and above), the participant's Wrath band, its opinion of Africa (above 25 or below -25), whether it holds or owns Africa's core land, whether it is in Africa's faction, protected by Africa or fighting a common enemy, whether it leads a faction hostile to Africa, its surrender progress, and whether it has more factories than Africa. From these, a government is a loyal ally, a defiant rival, a selective gambler (a stronger power that is neither, while Africa is below the Global band), or by default a cooperative pragmatist.
+
+Contract creation freezes the demand's burden (`gods_of_africa_freeze_demand_burden`): heavy when the participant's usable stock above its operating floor could not cover the demand `gods_of_africa_ai_burden.heavy_multiple` (5) times over, light when it could cover it `light_multiple` (10) times over. Every base and factor is a `gods_of_africa_ai_response` constant, and every closed gate keeps an explicit `factor = 0`.
+
+- Fulfil the Demand rises for a light burden, a Continental or stronger Africa, loyal allies, and fear of a strong Africa at high Wrath; it falls for a heavy burden, a weak Africa, rivals, gamblers, and a participant losing a war.
+- Refusal rises for a heavy or unpayable demand, a weak Africa, rivals, gamblers, held African land and low Wrath, and falls sharply for loyal allies and agreed terms.
+- Negotiation (extension and substitute offers) rises for a heavy burden, a participant losing a war and gamblers; the substitute slots prefer a family Africa currently lacks.
+- Permanent defiance scores zero without a reason in the current state (rival posture, offence record, high Wrath, or a heavy demand from a weak Africa) and rises for held African land, a hostile faction leader, and a stronger power facing a weak Africa; a dominant Africa suppresses it.
+- Voluntary aid is mostly a loyal ally's act and doubles in an African emergency.
+- Africa protects partners with fulfilled demands or voluntary aid before merely reliable ones, marks and escalates against occupiers and enemies at war with it first, stops both while it is itself near capitulation (`africa_action_threshold.near_capitulation`), and spares a target that can no longer pay. Leniency and pardon rise for a participant on track for Favored, in hardship, or allied. Africa accepts a substitute only of a family it currently lacks (`gods_of_africa_host_needs_family`) and otherwise rejects it.
+
+Representative scores: a strong participant facing a heavy demand from a Regional Africa at low Wrath scores refuse 112, negotiate 60 and comply 7; a cheap demand from a Continental Africa scores comply 150 and refuse under 1; a loyal ally scores comply 90 and refuse about 1 even against a weak Africa; an occupier scores refuse 15 and defiance 16 where a peaceful neighbour scores 2.5 and 0.
+
 ## Armoured tribute
 
 Africa can request tanks when its army has an unfilled armoured requirement, or after Evolution II when its armoured reserve is below the configured reserve need.

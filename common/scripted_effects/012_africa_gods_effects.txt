@@ -1961,6 +1961,7 @@ gods_of_africa_create_demand_contract = {
 				set_variable = { gods_of_africa_payment_family = event_target:africa_host.gods_of_africa_selected_family }
 				set_variable = { gods_of_africa_payment_amount = event_target:africa_host.gods_of_africa_contract_amount }
 				gods_of_africa_set_payment_capacity_requirement = yes
+				gods_of_africa_freeze_demand_burden = yes
 				gods_of_africa_build_substitute_set = yes
 				activate_mission = gods_of_africa_demand_mission
 				gods_of_africa_sync_demand_mission_timeout = yes
@@ -1973,6 +1974,42 @@ gods_of_africa_create_demand_contract = {
 			gods_of_africa_record_milestone = yes
 		}
 		add_to_variable = { gods_of_africa_active_demand_count = constant:gods_of_africa_value.one }
+	}
+}
+
+# COUNTRY scope on a participant, at contract creation. Freezes how heavy the
+# demand is against the participant's usable stock above its operating floor,
+# for the AI response weights (decision L24): heavy when the stock could not
+# cover it gods_of_africa_ai_burden.heavy_multiple times over, light when it
+# could cover it light_multiple times over. The payment quote and its capacity
+# requirement are restored to the contract afterwards.
+gods_of_africa_freeze_demand_burden = {
+	clr_country_flag = gods_of_africa_demand_heavy_burden
+	clr_country_flag = gods_of_africa_demand_light_burden
+	if = {
+		limit = {
+			has_variable = gods_of_africa_demand_family
+			has_variable = gods_of_africa_demand_amount
+		}
+		set_variable = { gods_of_africa_payment_family = gods_of_africa_demand_family }
+		set_variable = { gods_of_africa_payment_amount = gods_of_africa_demand_amount }
+		multiply_variable = { gods_of_africa_payment_amount = constant:gods_of_africa_ai_burden.heavy_multiple }
+		gods_of_africa_set_payment_capacity_requirement = yes
+		if = {
+			limit = { NOT = { gods_of_africa_participant_has_capacity_for_family = yes } }
+			set_country_flag = gods_of_africa_demand_heavy_burden
+		}
+		else = {
+			set_variable = { gods_of_africa_payment_amount = gods_of_africa_demand_amount }
+			multiply_variable = { gods_of_africa_payment_amount = constant:gods_of_africa_ai_burden.light_multiple }
+			gods_of_africa_set_payment_capacity_requirement = yes
+			if = {
+				limit = { gods_of_africa_participant_has_capacity_for_family = yes }
+				set_country_flag = gods_of_africa_demand_light_burden
+			}
+		}
+		set_variable = { gods_of_africa_payment_amount = gods_of_africa_demand_amount }
+		gods_of_africa_set_payment_capacity_requirement = yes
 	}
 }
 
@@ -2638,6 +2675,8 @@ gods_of_africa_clear_demand = {
 	clr_country_flag = gods_of_africa_demand_active
 	clr_country_flag = gods_of_africa_demand_eased_for_war
 	clr_country_flag = gods_of_africa_demand_eased_for_losing_war
+	clr_country_flag = gods_of_africa_demand_heavy_burden
+	clr_country_flag = gods_of_africa_demand_light_burden
 	clr_country_flag = gods_of_africa_negotiation_open
 	clr_country_flag = gods_of_africa_extension_used
 	clear_variable = gods_of_africa_armor_quote_amount

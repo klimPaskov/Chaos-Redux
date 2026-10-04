@@ -593,6 +593,140 @@ gods_of_africa_ai = {
 	settlement_delivery_war_factor = 0.25
 }
 
+# Event 012 Gods participant and Africa AI response weights (decision L24).
+# Decision scores, not probabilities. Posture comes from the current state
+# through the gods_of_africa_ai_* triggers in 012_africa_gods_triggers.txt; no
+# country carries a fixed personality.
+gods_of_africa_ai_response = {
+	schema = { any_key = yes data = fixed_point }
+	# Fulfil the Demand.
+	comply_base = 50
+	comply_light_burden = 2
+	comply_heavy_burden = 0.4
+	comply_strong_africa = 1.5
+	comply_weak_africa = 0.6
+	comply_loyal = 3
+	comply_rival = 0.2
+	comply_gambler = 0.6
+	# High Wrath against a Continental or stronger Africa: fear of retaliation.
+	comply_fear = 1.5
+	comply_losing_war = 0.6
+	comply_high_chaos = 1.2
+	# Partial payment.
+	partial_base = 15
+	partial_full_payable = 0.25
+	partial_full_unpayable = 1.5
+	partial_heavy_burden = 1.5
+	partial_loyal = 1.5
+	partial_rival = 0.3
+	partial_losing_war = 1.5
+	# Negotiate: extension and substitute offers.
+	negotiate_base = 20
+	negotiate_unpayable = 2
+	negotiate_heavy_burden = 2
+	negotiate_light_burden = 0.3
+	negotiate_losing_war = 2
+	negotiate_gambler = 1.5
+	negotiate_rival = 0.5
+	negotiate_vengeful = 0.5
+	# Substitute slots: offer what Africa needs.
+	substitute_slot_base = 10
+	substitute_needed_family = 3
+	substitute_unneeded_family = 0.2
+	substitute_unpayable = 2
+	substitute_heavy_burden = 2
+	return_to_demand_base = 5
+	# Refuse.
+	refuse_base = 5
+	refuse_agreed_terms = 0.3
+	refuse_unpayable = 4
+	refuse_heavy_burden = 3
+	refuse_light_burden = 0.3
+	refuse_weak_africa = 2.5
+	refuse_strong_africa = 0.5
+	refuse_loyal = 0.1
+	refuse_rival = 3
+	refuse_gambler = 2
+	refuse_holds_core = 2
+	refuse_low_wrath = 1.5
+	refuse_high_wrath = 0.6
+	# Permanent defiance.
+	defiance_base = 2
+	defiance_loyal = 0.05
+	defiance_holds_core = 4
+	defiance_hostile_faction = 3
+	defiance_offender = 2
+	defiance_high_wrath = 3
+	# A stronger power facing a weak Africa doubts its threats.
+	defiance_low_credibility = 3
+	defiance_dominant_africa = 0.3
+	defiance_demand_active = 2
+	defiance_heavy_burden = 1.5
+	# Defensive preparation after defiance.
+	defense_base = 8
+	defense_high_wrath = 1.5
+	defense_dominant_africa = 1.5
+	defense_weak_africa = 0.5
+	# Reconciliation and voluntary aid.
+	reconcile_base = 10
+	reconcile_friendly = 2
+	reconcile_strong_africa = 1.5
+	reconcile_rival = 0.2
+	aid_base = 4
+	aid_loyal = 5
+	aid_african_emergency = 2
+	aid_low_wrath = 1.5
+	aid_repeat = 0.5
+	aid_rival = 0.05
+	aid_gambler = 0.3
+	aid_losing_war = 0.3
+	# Africa: protection.
+	protect_base = 10
+	protect_proven_partner = 3
+	protect_common_enemy = 1.5
+	protect_near_collapse = 0.3
+	# Africa: mark and escalate.
+	judgment_base = 5
+	judgment_holds_core = 4
+	judgment_at_war = 3
+	judgment_defiant = 2
+	judgment_target_collapsing = 0.2
+	judgment_weak_africa = 0.5
+	judgment_exaction = 1.5
+	judgment_reciprocal = 0.5
+	# Africa: public pardon and leniency.
+	mercy_base = 3
+	mercy_favored_track = 3
+	mercy_hardship = 3
+	mercy_loyal = 2
+	mercy_holds_core = 0.1
+	mercy_reciprocal = 2
+	mercy_exaction = 0.5
+	# Africa: substitute answers.
+	accept_substitute_base = 10
+	accept_substitute_emergency = 2
+	accept_substitute_reliable = 1.5
+	accept_substitute_high_wrath = 0.5
+	reject_substitute_base = 2
+	reject_substitute_unneeded = 5
+	reject_substitute_high_wrath = 2
+	# Africa: reconciliation.
+	accept_reconciliation_base = 4
+	accept_reconciliation_near_collapse = 2
+	accept_reconciliation_reciprocal = 1.5
+	accept_reconciliation_exaction = 0.5
+}
+
+# How heavy a demand is against the participant's usable stock (stock above its
+# operating floor), frozen at contract creation for the AI weights: heavy when
+# the stock could not cover the demand this many times over, light when it
+# could cover it this many times over.
+gods_of_africa_ai_burden = {
+	schema = { any_key = yes data = int }
+	heavy_multiple = 5
+	light_multiple = 10
+}
+
 # Event 012 Gods achievement thresholds.
 gods_of_africa_achievement = {
 	schema = { any_key = yes data = int }

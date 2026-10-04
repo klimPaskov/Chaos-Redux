@@ -303,3 +303,21 @@ Decisions:
 - The `.603` demand and the demand mission say when and why the demand was eased (`GetGodsOfAfricaDemandHardshipLine`); the wartime cancellation tooltip and the broken-agreement tooltip name the war with Africa explicitly.
 - Emergency relief is paid in political power, but `gods_of_africa_transaction.emergency_amount` was 500, which almost no government holds, so the emergency lane and the near-capitulation path could never form a contract. It is 50, on the scale of the other political families, and the unpayable-candidate fallback to emergency relief applies only while Africa has a real emergency need (`gods_of_africa_need_emergency`), so the family name never describes a demand Africa has no emergency for.
   The grading's emergency package (`gods_of_africa_contribution_units.emergency_pp_per_package`) moves from 500 to 50 with it, so one base emergency demand still counts as one emergency package.
+
+## L24. Gods AI responses follow the campaign state
+
+Disposition: `implemented` (scores only; the normalized probability audit is `blocked`, see below; live AI behaviour is `needs_live_game`).
+
+Basis: the full spec's "AI design" section (participant archetypes "should emerge from campaign state" with no permanent per-tag personality, the participant decision factors, and the Africa AI list), acceptance rows AI-01 to AI-04, AI-09, AI-10, PAY-06 and PAY-07, the named scenarios in `012_gods_of_africa_ai_probability_scenarios.md`, and the round 2 remaining-work list (priority 2).
+Before this, Fulfil scored a flat 100 whenever payable, Africa's targeted actions all scored a flat 1 and substitute acceptance ignored Africa's needs, which failed AI-02, AI-03, AI-04, AI-09, AI-10 and PAY-06/07.
+
+Decisions:
+
+- Posture is computed from the current state by scripted triggers (`gods_of_africa_ai_*` in `012_africa_gods_triggers.txt`): Africa's Strength band, the participant's Wrath band, its opinion of Africa (file-scoped macros 25 and -25, because `has_opinion` takes only a literal), held or owned host cores, faction membership with Africa, protection, a common enemy, leadership of a faction hostile to Africa, surrender progress, factories compared with Africa's, and the Chaos tier.
+  The four spec archetypes map to `gods_of_africa_ai_is_loyal_ally`, `_is_defiant_rival`, `_is_selective_gambler`, and the default (cooperative pragmatist).
+- The demand burden is frozen at contract creation from the frozen capacity requirement (`gods_of_africa_freeze_demand_burden`, flags `gods_of_africa_demand_heavy_burden` and `_light_burden`, thresholds in `gods_of_africa_ai_burden`).
+- All bases and factors are constants in `gods_of_africa_ai_response`; every closed gate has an explicit `factor = 0`. Weights stay as direct modifiers on named posture triggers instead of an MTTH entry, so each decision's score remains readable in place.
+- Representative source scores (computed by hand from the constants): strong gambler, heavy burden, Regional Africa, low Wrath: refuse 112.5, negotiate 60, defiance 18, comply 7.2 (AI-02). Cheap demand, Continental Africa, pragmatist: comply 150, negotiate 6, refuse 0.75 (AI-01). Occupier with Continental Africa: refuse 15 and defiance 16 against 2.5 and 0 for the same country without African land (AI-03). Loyal ally against a Regional Africa: comply 90, refuse 1.25, defiance 0; voluntary aid 60 in an African emergency against 6 for a pragmatist (AI-04). Protection: proven partner 30 against a neutral reliable one 10 (AI-09). Mark and escalate: 0 while Africa's surrender progress is above `africa_action_threshold.near_capitulation` (AI-10). Substitute acceptance: 10 (20 in an African emergency) for a needed family against rejection 2; 0 for an unneeded family against rejection 10 (PAY-06/07). Leniency for a participant on track for Favored that is fighting another war: 27 against 3.
+- The generic "Offer a Substitute" shortcut scores 0 for the AI, which names its offer through the three slot decisions that weigh Africa's needs.
+
+MCP route evidence: none was run this round. The round-2 lead recorded `hoi4_probability_inspect` (adapter `decision_ai_will_do`) returning "Invalid tool arguments"; the `chaosx_ai_probability_auditor` baseline and the `hoi4_probability_compare` pass stay `blocked` on that route and were not retried.
