@@ -67,3 +67,15 @@ Disposition: `implemented` (source evidence; live behaviour `needs_live_game`).
 - Once-per-incident rule: accelerated recovery and debris investigation reset when an incident opens or closes; recalibration stays armed until the next launch consumes it. Every action also has a native cooldown.
 - Budget: aftermath actions, compensation, and site suspension step aside while a captured site awaits resolution, and suspension steps aside during an own guidance failure, so the incident phase shows at most six actions.
 - Icons reuse the same-family Event 032 decision icons (readiness, compensation, guidance, and inspection).
+
+## Item 6: saturation doctrine and retaliation posture as country choices
+
+Disposition: `implemented` (source evidence; live behaviour `needs_live_game`).
+
+- `missiles_evaluate_country_evolution_adoption` no longer adopts Saturation Arsenals and no longer arms the retaliation network. The Automatic Retaliation unlock still sets `missiles_evolution_automatic_retaliation`, which now means access to the warning network; posture stays Off until chosen.
+- Adopt Saturation Doctrine: offered while the track is unlocked, enabled, and not adopted; requires stage Guided or higher, an active site, more than `missiles_tuning.saturation_adoption_factories = 15` factories, Command Control at the operation minimum, Launch Readiness at the floor, and no rogue command; costs 25 command power, 140 support equipment, and 700 fuel. Adoption raises the reserve ceiling to the saturation cap at once.
+- Reserve packages and the mature package read `missiles_saturation_active` (enabled and adopted) instead of the raw adoption flag, so disabling the track also suspends the larger ceiling on later packages.
+- Set Retaliation Posture: 15 command power and 5 Launch Readiness, 70-day cooldown, blocked during a warning, a committed retaliation operation, or a severed network; it fires `chaosx.nr32.40`, whose options now carry public tradeoff tooltips. The Automatic option keeps `missiles_posture_can_be_automatic`.
+- Budget: both decisions share the maintenance visibility rule; the doctrine decision additionally hides in the human war view while a strike can be prepared, so the operations view stays within six actions. Posture and network restoration are mutually exclusive (posture requires an intact network).
+- AI: the doctrine is weighted toward war, majors, multi-site programs, and away from restrained deterrents; posture changes are weighted toward war, away from countries with false-warning history, and suppressed in peace once a posture other than Off is set.
+- HOI4 MCP: `hoi4.probability_inspect` (`decision_ai_will_do`, the two new decisions, source path) returned `INTERNAL_ERROR` again; `hoi4.decision_inspect` (inspect, `missiles_adopt_saturation_doctrine`, scenarios `war_major_two_sites` and `peace_restrained`) returned `DECISION_ANALYZED_PARTIAL`, report `decision-fcf01ed57b09121a…`, source revision `ae9c5befede8…`, with unbound scenario inputs. No numeric probability comparison was produced.

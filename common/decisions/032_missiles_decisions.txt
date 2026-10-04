@@ -262,6 +262,84 @@ missiles_program_management_category = {
 		}
 	}
 
+	missiles_set_retaliation_posture = {
+		icon = GFX_decision_032_missiles_restore_retaliation_network
+		visible = {
+			missiles_maintenance_actions_are_visible = yes
+			missiles_retaliation_posture_can_change = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = missiles_retaliation_posture_requirements_tt
+				missiles_retaliation_posture_can_change = yes
+				missiles_retaliation_network_available = yes
+			}
+		}
+		custom_cost_trigger = {
+			command_power > @m32_command_standard
+			check_variable = { var = missiles_launch_readiness value = constant:missiles_program_value.five compare = greater_than_or_equals }
+		}
+		custom_cost_text = missiles_cost_retaliation_posture
+		days_re_enable = @m32_reenable_medium
+		complete_effect = {
+			custom_effect_tooltip = missiles_set_posture_effect_tt
+			hidden_effect = {
+				add_command_power = @m32_command_standard_negative
+				subtract_from_variable = { missiles_launch_readiness = constant:missiles_program_value.five }
+				missiles_clamp_program_values = yes
+				country_event = { id = chaosx.nr32.40 }
+			}
+		}
+		ai_will_do = {
+			base = @m32_ai_medium
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 0.5 has_country_flag = missiles_false_warning_history }
+			modifier = { factor = 0 NOT = { has_war = yes } check_variable = { var = missiles_retaliation_posture value = constant:missiles_retaliation_posture.off compare = greater_than } }
+		}
+	}
+
+	missiles_adopt_saturation_doctrine = {
+		icon = GFX_decision_032_missiles_saturation_barrage
+		visible = {
+			missiles_maintenance_actions_are_visible = yes
+			OR = {
+				has_country_flag = missiles_program_phase_maintenance
+				is_ai = yes
+				NOT = { missiles_country_can_prepare_operation = yes }
+			}
+			missiles_saturation_doctrine_is_offered = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = missiles_saturation_doctrine_requirements_tt
+				missiles_saturation_doctrine_requirements_met = yes
+			}
+		}
+		custom_cost_trigger = {
+			command_power > @m32_command_high
+			has_equipment = { support_equipment > @m32_support_high }
+			has_fuel > @m32_fuel_high
+		}
+		custom_cost_text = missiles_cost_saturation_doctrine
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = missiles_adopt_saturation_effect_tt
+			hidden_effect = {
+				add_command_power = @m32_command_high_negative
+				add_equipment_to_stockpile = { type = support_equipment amount = @m32_support_high_negative }
+				add_fuel = @m32_fuel_high_negative
+				missiles_adopt_saturation_doctrine = yes
+			}
+		}
+		ai_will_do = {
+			base = @m32_ai_low
+			modifier = { factor = 4 has_war = yes }
+			modifier = { factor = 2 is_major = yes }
+			modifier = { factor = 2 check_variable = { var = missiles_active_site_count value = constant:missiles_program_value.two compare = greater_than_or_equals } }
+			modifier = { factor = 0.25 check_variable = { var = missiles_ai_profile value = constant:missiles_ai_profile.restrained_deterrent compare = equals } }
+		}
+	}
+
 	missiles_harden_launch_site = {
 		icon = GFX_decision_032_missiles_harden_site
 		state_target = any_owned_state
@@ -1466,10 +1544,7 @@ missiles_program_management_category = {
 	missiles_restore_retaliation_network = {
 		icon = GFX_decision_032_missiles_restore_retaliation_network
 		visible = {
-			OR = {
-				has_country_flag = missiles_program_phase_maintenance
-				has_country_flag = missiles_program_phase_operations
-			}
+			missiles_maintenance_actions_are_visible = yes
 			has_country_flag = missiles_retaliation_network_severed
 			NOT = { has_active_mission = missiles_retaliation_network_restoration_mission }
 		}

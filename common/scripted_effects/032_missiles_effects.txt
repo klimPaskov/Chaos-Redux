@@ -538,7 +538,7 @@ missiles_add_first_reserve_package = {
 	missiles_add_reserve = yes
 	set_variable = { missiles_reserve_cap = constant:missiles_reserve.initial_cap }
 	if = {
-		limit = { has_country_flag = missiles_evolution_saturation_arsenals }
+		limit = { missiles_saturation_active = yes }
 		set_variable = { missiles_reserve_cap = constant:missiles_reserve.saturation_cap }
 	}
 }
@@ -548,7 +548,7 @@ missiles_add_repeat_reserve_package = {
 		limit = { check_variable = { var = missiles_program_stage value = constant:missiles_stage.complete compare = greater_than_or_equals } }
 		set_country_flag = missiles_program_mature
 		set_variable = { missiles_reserve_cap = constant:missiles_reserve.mature_cap }
-		if = { limit = { has_country_flag = missiles_evolution_saturation_arsenals } set_variable = { missiles_reserve_cap = constant:missiles_reserve.saturation_cap } }
+		if = { limit = { missiles_saturation_active = yes } set_variable = { missiles_reserve_cap = constant:missiles_reserve.saturation_cap } }
 		missiles_calculate_reserve_package = yes
 	}
 	else = {

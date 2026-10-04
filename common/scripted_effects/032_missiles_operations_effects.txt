@@ -133,17 +133,8 @@ missiles_assign_ai_profile = {
 }
 
 missiles_evaluate_country_evolution_adoption = {
-	if = {
-		limit = {
-			has_global_flag = missiles_evolution_saturation_unlocked
-			NOT = { has_global_flag = events_log_disabled_evolution_32_1_1 }
-			check_variable = { var = missiles_program_stage value = constant:missiles_evolution_pressure.minimum_guidance_stage compare = greater_than_or_equals }
-			missiles_country_has_active_site = yes
-			check_variable = { var = missiles_command_control value = constant:missiles_evolution_pressure.minimum_retaliation_control compare = greater_than_or_equals }
-		}
-		set_country_flag = missiles_evolution_saturation_arsenals
-		set_country_flag = missiles_saturation_doctrine_adopted
-	}
+	# Saturation Arsenals is adopted only through missiles_adopt_saturation_doctrine;
+	# the global unlock grants the decision, never the doctrine itself.
 	if = {
 		limit = {
 			has_global_flag = missiles_evolution_unreliable_guidance_unlocked
@@ -175,8 +166,26 @@ missiles_evaluate_country_evolution_adoption = {
 			check_variable = { var = missiles_command_control value = constant:missiles_evolution_pressure.minimum_retaliation_control compare = greater_than_or_equals }
 			missiles_country_has_active_site = yes
 		}
+		# Access to the warning network only. Posture stays Off until the
+		# country chooses one through missiles_set_retaliation_posture.
 		set_country_flag = missiles_evolution_automatic_retaliation
-		set_country_flag = missiles_retaliation_network_active
+	}
+}
+
+# COUNTRY scope (saturation doctrine decision). Adoption raises the reserve
+# ceiling at once; barrage and reserve bonuses read missiles_saturation_active.
+missiles_adopt_saturation_doctrine = {
+	if = {
+		limit = { missiles_saturation_doctrine_is_offered = yes }
+		set_country_flag = missiles_evolution_saturation_arsenals
+		set_country_flag = missiles_saturation_doctrine_adopted
+		set_variable = { missiles_saturation_adoption_date = global.date }
+		if = {
+			limit = { check_variable = { var = missiles_reserve_cap value = constant:missiles_reserve.saturation_cap compare = less_than } }
+			set_variable = { missiles_reserve_cap = constant:missiles_reserve.saturation_cap }
+		}
+		missiles_assign_ai_profile = yes
+		missiles_set_program_phases = yes
 	}
 }
 
@@ -762,7 +771,7 @@ missiles_apply_mature_program_package = {
 		set_country_flag = missiles_supported_line_complete
 		set_variable = { missiles_reserve_cap = constant:missiles_reserve.mature_cap }
 		if = {
-			limit = { has_country_flag = missiles_evolution_saturation_arsenals }
+			limit = { missiles_saturation_active = yes }
 			set_variable = { missiles_reserve_cap = constant:missiles_reserve.saturation_cap }
 		}
 		add_to_variable = { missiles_launch_readiness = constant:missiles_tuning.program_mature_readiness_gain }

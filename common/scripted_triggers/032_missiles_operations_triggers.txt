@@ -811,3 +811,42 @@ missiles_incident_debris_is_reachable = {
 		}
 	}
 }
+
+# -----------------------------------------------------------------------------
+# Evolution access choices
+# -----------------------------------------------------------------------------
+# COUNTRY scope. An evolution unlock grants access; the country decides.
+
+# Saturation Arsenals is unlocked, enabled, and not yet adopted.
+missiles_saturation_doctrine_is_offered = {
+	has_global_flag = missiles_evolution_saturation_unlocked
+	missiles_saturation_enabled = yes
+	NOT = { has_country_flag = missiles_evolution_saturation_arsenals }
+	NOT = { has_country_flag = missiles_program_capture_shell }
+	missiles_country_can_manage_program = yes
+}
+
+# A guided program with a working site, industry for mass production, and a
+# command chain that has not collapsed.
+missiles_saturation_doctrine_requirements_met = {
+	check_variable = { var = missiles_program_stage value = constant:missiles_stage.guided compare = greater_than_or_equals }
+	missiles_country_has_active_site = yes
+	num_of_factories > constant:missiles_tuning.saturation_adoption_factories
+	check_variable = { var = missiles_command_control value = constant:missiles_tuning.operation_minimum_control compare = greater_than_or_equals }
+	check_variable = { var = missiles_launch_readiness value = constant:missiles_program_value.launch_readiness_floor compare = greater_than_or_equals }
+	NOT = { has_country_flag = missiles_rogue_command_active }
+}
+
+# Retaliation posture can change outside a warning or committed response and
+# while the network is intact.
+missiles_retaliation_posture_can_change = {
+	missiles_automatic_retaliation_active = yes
+	NOT = { has_country_flag = missiles_warning_active }
+	NOT = { has_country_flag = missiles_retaliation_network_severed }
+	NOT = {
+		AND = {
+			has_country_flag = missiles_operation_active
+			check_variable = { var = missiles_operation_type value = constant:missiles_operation.retaliation compare = equals }
+		}
+	}
+}

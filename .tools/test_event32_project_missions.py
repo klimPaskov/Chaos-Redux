@@ -164,8 +164,9 @@ class ProjectMissionContract(unittest.TestCase):
         site_triggers = source('common/scripted_triggers/032_missiles_triggers.txt')
         self.assertIn(('NOT', [('has_state_flag', 'missiles_site_suspended')]), site_triggers['missiles_site_can_launch'])
         visible = list(descendants(value(DECISIONS['missiles_restore_retaliation_network'], 'visible')))
-        self.assertIn(('has_country_flag', 'missiles_program_phase_maintenance'), visible)
+        self.assertIn(('missiles_maintenance_actions_are_visible', 'yes'), visible)
         self.assertNotIn(('has_country_flag', 'missiles_program_phase_retaliation'), visible)
+        self.assertIn(('has_country_flag', 'missiles_program_phase_maintenance'), list(descendants(TRIGGERS['missiles_maintenance_actions_are_visible'])))
 
     def test_projects_use_separate_state_pointers(self):
         pointers = {
