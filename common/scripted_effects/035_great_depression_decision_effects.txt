@@ -394,6 +394,28 @@ great_depression_guarantee_essential_orders = {
 	set_country_flag = great_depression_freight_secured
 }
 
+# COUNTRY scope. Strategic Industry stabilization closer: withdraw the rescue
+# so protected plants stand on ordinary orders again. Closes the route's
+# temporary support and lowers lasting fiscal pressure.
+great_depression_end_rescue_dependence = {
+	set_variable = { great_depression_cost_family = constant:great_depression_cost_family.policy_review }
+	set_temp_variable = { great_depression_action_delta = constant:great_depression_action.strong_relief }
+	great_depression_commit_country_action = yes
+	set_country_flag = great_depression_rescue_dependence_ended
+	clr_country_flag = great_depression_essential_orders_guaranteed
+}
+
+# COUNTRY scope. Strategic Industry stabilization closer: keep the designated
+# plant network as a bounded standing institution. Essential orders continue
+# and help in war, at a lasting fiscal upkeep.
+great_depression_retain_bounded_arsenal_institution = {
+	set_variable = { great_depression_cost_family = constant:great_depression_cost_family.strategic_rescue }
+	set_temp_variable = { great_depression_action_delta = constant:great_depression_action.standard_relief }
+	great_depression_commit_country_action = yes
+	set_country_flag = great_depression_arsenal_institution_retained
+	set_country_flag = great_depression_essential_orders_guaranteed
+}
+
 great_depression_declare_temporary_bank_holiday_and_audit = {
 	set_variable = { great_depression_cost_family = constant:great_depression_cost_family.finance_trade }
 	set_temp_variable = { great_depression_action_delta = constant:great_depression_action.moderate_pressure }
@@ -660,6 +682,129 @@ great_depression_designate_strategic_plant_network = {
 		}
 		great_depression_authorize_center_project = yes
 	}
+}
+
+great_depression_restore_local_credit_and_trade_connection = {
+	if = {
+		limit = { great_depression_can_start_finance_restoration = yes }
+		ROOT = {
+			set_variable = { great_depression_cost_family = constant:great_depression_cost_family.finance_trade }
+			set_temp_variable = { great_depression_action_delta = constant:great_depression_action.center_restructure_relief }
+			set_variable = { great_depression_pending_center_project = constant:great_depression_center_project.finance_restoration }
+			great_depression_commit_country_action = yes
+		}
+		great_depression_authorize_center_project = yes
+	}
+}
+
+# STATE scope with ROOT as the crisis country. A paid action that already
+# covers the work supplies the project id; no further cost is charged here.
+great_depression_start_paid_center_project = {
+	if = {
+		limit = {
+			ROOT = { has_variable = great_depression_paid_center_project }
+		}
+		ROOT = { set_variable = { great_depression_pending_center_project = great_depression_paid_center_project } }
+		great_depression_authorize_center_project = yes
+		ROOT = {
+			clear_variable = great_depression_pending_center_project
+			clear_variable = great_depression_paid_center_project
+		}
+	}
+}
+
+# COUNTRY scope. Keep Essential Freight Moving restores basic transport and
+# supply for the selected center: it starts Transport Integration there, or
+# shortens the project already running there once.
+great_depression_apply_freight_to_selected_center = {
+	set_temp_variable = { great_depression_freight_center_done = constant:great_depression_api.zero }
+	if = {
+		limit = {
+			has_variable = great_depression_selected_center_state
+			var:great_depression_selected_center_state = { great_depression_center_transport_target_is_valid = yes }
+		}
+		set_variable = { great_depression_paid_center_project = constant:great_depression_center_project.transport_integration }
+		var:great_depression_selected_center_state = { great_depression_start_paid_center_project = yes }
+		set_temp_variable = { great_depression_freight_center_done = constant:great_depression_api.one }
+	}
+	else_if = {
+		limit = {
+			has_variable = great_depression_selected_center_state
+			var:great_depression_selected_center_state = { great_depression_center_project_accepts_freight_credit = yes }
+		}
+		var:great_depression_selected_center_state = { great_depression_credit_center_project_freight = yes }
+		set_temp_variable = { great_depression_freight_center_done = constant:great_depression_api.one }
+	}
+	# The AI does not keep a selected center, so it uses one valid center.
+	if = {
+		limit = {
+			is_ai = yes
+			check_variable = { var = great_depression_freight_center_done value = constant:great_depression_api.zero compare = equals }
+		}
+		if = {
+			limit = {
+				any_owned_state = {
+					is_controlled_by = ROOT
+					has_state_flag = great_depression_center
+					great_depression_center_has_current_registration = yes
+					great_depression_center_transport_target_is_valid = yes
+				}
+			}
+			random_owned_controlled_state = {
+				limit = {
+					has_state_flag = great_depression_center
+					great_depression_center_has_current_registration = yes
+					great_depression_center_transport_target_is_valid = yes
+				}
+				ROOT = { set_variable = { great_depression_paid_center_project = constant:great_depression_center_project.transport_integration } }
+				great_depression_start_paid_center_project = yes
+			}
+		}
+		else = {
+			random_owned_controlled_state = {
+				limit = {
+					has_state_flag = great_depression_center
+					great_depression_center_has_current_registration = yes
+					great_depression_center_project_accepts_freight_credit = yes
+				}
+				great_depression_credit_center_project_freight = yes
+			}
+		}
+	}
+	clear_variable = great_depression_paid_center_project
+}
+
+# STATE scope. One bounded freight credit per project authorization.
+great_depression_credit_center_project_freight = {
+	set_variable = { great_depression_center_freight_credit_authorization_id = great_depression_center_project_authorization_id }
+	add_to_variable = { great_depression_center_project_work_days = constant:great_depression_center_project_credit.freight_days }
+}
+
+# COUNTRY scope. Coordinated reconstruction rebuilds the selected closed
+# center, or for the AI one valid closed center, when no other center project
+# is running.
+great_depression_start_international_reconstruction_project = {
+	if = {
+		limit = {
+			has_variable = great_depression_selected_center_state
+			var:great_depression_selected_center_state = { great_depression_center_international_reconstruction_target_is_valid = yes }
+		}
+		set_variable = { great_depression_paid_center_project = constant:great_depression_center_project.international_reconstruction }
+		var:great_depression_selected_center_state = { great_depression_start_paid_center_project = yes }
+	}
+	else_if = {
+		limit = { is_ai = yes }
+		random_owned_controlled_state = {
+			limit = {
+				has_state_flag = great_depression_center
+				great_depression_center_has_current_registration = yes
+				great_depression_center_international_reconstruction_target_is_valid = yes
+			}
+			ROOT = { set_variable = { great_depression_paid_center_project = constant:great_depression_center_project.international_reconstruction } }
+			great_depression_start_paid_center_project = yes
+		}
+	}
+	clear_variable = great_depression_paid_center_project
 }
 
 great_depression_consolidate_failing_industry = {
@@ -975,6 +1120,7 @@ great_depression_coordinated_public_works_and_reconstruction = {
 		great_depression_increment_global_contribution = yes
 		set_country_flag = great_depression_global_public_works_complete
 	}
+	great_depression_start_international_reconstruction_project = yes
 }
 
 great_depression_international_debt_conference = {
@@ -1653,6 +1799,7 @@ great_depression_complete_keep_essential_freight_moving = {
 	set_country_flag = great_depression_freight_secured
 	set_variable = { great_depression_mission_cost_family = constant:great_depression_cost_family.foreign_support }
 	great_depression_mission_complete = yes
+	great_depression_apply_freight_to_selected_center = yes
 }
 
 great_depression_complete_reopen_depression_center = {

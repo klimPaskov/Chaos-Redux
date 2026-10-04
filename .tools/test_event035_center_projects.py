@@ -1210,5 +1210,77 @@ class CenterProjectSourceTests(unittest.TestCase):
         self.assertEqual(second.values["great_depression_center_episode_id"], 85)
 
 
+class DoctrineProjectProducerTests(unittest.TestCase):
+    """Producers for finance_restoration, transport_integration and
+    international_reconstruction, and the Strategic Industry closers."""
+
+    prepared = CenterProjectSourceTests.prepared
+    complete_by_processing = CenterProjectSourceTests.complete_by_processing
+
+    def project(self, runtime, name):
+        return runtime.constants["constant:great_depression_center_project." + name]
+
+    def test_finance_restoration_needs_audit_then_reopens_restructured(self):
+        runtime, owner, site = self.prepared("shuttered")
+        owner.values["great_depression_doctrine"] = 3
+        self.assertFalse(runtime.test_trigger("great_depression_can_start_finance_restoration", site, root=owner))
+        owner.flags.add("great_depression_bank_audit_complete")
+        self.assertTrue(pay_action(runtime, owner, site, "great_depression_restore_local_credit_and_trade_connection",
+                                   "great_depression_can_start_finance_restoration", "great_depression_can_pay_finance_trade"))
+        self.assertEqual(site.values["great_depression_center_project_type"], self.project(runtime, "finance_restoration"))
+        self.assertNotIn("great_depression_pending_center_project", owner.values)
+        self.complete_by_processing(runtime, owner, site)
+        self.assertIn("great_depression_center_finance_restored", site.flags)
+        self.assertIn("great_depression_center_restructured", site.flags)
+
+    def test_freight_success_starts_transport_then_credits_once(self):
+        runtime, owner, site = self.prepared("idled")
+        runtime.run_effect("great_depression_apply_freight_to_selected_center", owner, root=owner)
+        self.assertEqual(site.values["great_depression_center_project_type"], self.project(runtime, "transport_integration"))
+        self.assertNotIn("great_depression_paid_center_project", owner.values)
+        self.assertNotIn("great_depression_pending_center_project", owner.values)
+        runtime.advance(5)
+        runtime.run_effect("great_depression_process_center_project", site, root=owner)
+        before = site.values["great_depression_center_project_work_days"]
+        runtime.run_effect("great_depression_apply_freight_to_selected_center", owner, root=owner)
+        credit = runtime.constants["constant:great_depression_center_project_credit.freight_days"]
+        self.assertEqual(site.values["great_depression_center_project_work_days"], before + credit)
+        runtime.run_effect("great_depression_apply_freight_to_selected_center", owner, root=owner)
+        self.assertEqual(site.values["great_depression_center_project_work_days"], before + credit)
+        self.complete_by_processing(runtime, owner, site)
+        self.assertIn("great_depression_center_reopened", site.flags)
+        self.assertNotIn("great_depression_center_restructured", site.flags)
+
+    def test_coordinated_reconstruction_starts_project_only_when_slot_is_open(self):
+        runtime, owner, site = self.prepared("shuttered")
+        owner.flags.add("great_depression_center_project_active")
+        runtime.run_effect("great_depression_start_international_reconstruction_project", owner, root=owner)
+        self.assertNotIn("great_depression_center_project_type", site.values)
+        self.assertNotIn("great_depression_pending_center_project", owner.values)
+        owner.flags.discard("great_depression_center_project_active")
+        runtime.run_effect("great_depression_start_international_reconstruction_project", owner, root=owner)
+        self.assertEqual(site.values["great_depression_center_project_type"], self.project(runtime, "international_reconstruction"))
+        self.complete_by_processing(runtime, owner, site)
+        self.assertIn("great_depression_center_public_works", site.flags)
+
+    def test_strategic_closers_satisfy_relapse_measure_and_exclude_each_other(self):
+        for closer, flag in (("great_depression_end_rescue_dependence", "great_depression_rescue_dependence_ended"),
+                             ("great_depression_retain_bounded_arsenal_institution", "great_depression_arsenal_institution_retained")):
+            with self.subTest(closer=closer):
+                runtime, owner, site = self.prepared("reopened")
+                owner.values["great_depression_doctrine"] = 2
+                owner.flags.add("great_depression_strategic_network_designated")
+                site.flags.add("great_depression_center_strategic")
+                self.assertTrue(runtime.test_trigger("great_depression_should_show_strategic_rescue_closer", owner, root=owner))
+                self.assertFalse(runtime.test_trigger("great_depression_strategic_closer_phase_is_open", owner, root=owner))
+                owner.values["great_depression_phase"] = runtime.constants["constant:great_depression_phase.stabilization"]
+                self.assertTrue(runtime.test_trigger("great_depression_strategic_closer_phase_is_open", owner, root=owner))
+                runtime.run_effect(closer, owner, root=owner)
+                self.assertIn(flag, owner.flags)
+                self.assertFalse(runtime.test_trigger("great_depression_should_show_strategic_rescue_closer", owner, root=owner))
+                self.assertEqual(flag == "great_depression_arsenal_institution_retained",
+                                 "great_depression_essential_orders_guaranteed" in owner.flags)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

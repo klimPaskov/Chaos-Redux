@@ -69,7 +69,12 @@ The six recovery doctrines are Emergency Public Works, Rescue Strategic Industry
 
 Each doctrine has its own mapped actions, AI preference profile, crisis legacy, and recovery tradeoffs.
 
-The decision category contains 75 decisions and 15 missions.
+The decision category contains 78 decisions and 15 missions.
+
+Every doctrine has a state project and a Stabilization closer.
+Stabilize Finance and Trade restores a selected Distressed, Idled, or Shuttered center through Restore Local Credit and Trade Connection, which needs a completed bank audit and runs the finance restoration project; the center reopens as restructured.
+Rescue Strategic Industry closes its route in Stabilization or Recovery with exactly one of two decisions: End Rescue Dependence withdraws the essential orders for a lasting fiscal relief, while Retain a Bounded Arsenal Institution keeps them as a standing institution with a lasting fiscal upkeep and wartime supply relief.
+Either closer counts as the durable recovery measure that Prevent a Relapse requires.
 
 Dynamic costs are calculated from the usable economy and grouped into doctrine, policy, center, freight, relief, credit, industrial, contagion, social, liquidation, and global-recovery families.
 
@@ -113,9 +118,12 @@ Mapped center statuses include distressed, idled, shuttered, abandoned works, pr
 
 Mapped projects include emergency public works, strategic-industry rescue, credit clearing, austerity administration, state coordination, controlled liquidation, freight restoration, reopening, and center protection where their doctrine and state gates permit them.
 
-This is the mapped design, not certification of every producer and inherited consumer.
-The current inherited-region audit identifies missing ongoing hidden-liability, secured-work salvage, and corridor-resolution consumers, plus missing authorizing producers for finance restoration, transport integration, and international reconstruction.
-Those accepted requirements remain queued, separately from unavailable upstream Event 34 history.
+Every mapped project type has a producer.
+Finance restoration starts from Restore Local Credit and Trade Connection.
+A successful Keep Essential Freight Moving mission restores basic transport and supply for the selected center: it starts transport integration on a closed center with no running project, or moves the project already running there several weeks closer to completion, once per project.
+Coordinated Public Works and Reconstruction starts international reconstruction on the selected closed center, including an abandoned one that was not liquidated, when no other center project is running.
+The AI, which does not keep a selected center, uses one valid center of its own for both producers.
+The inherited-liability consumer adds ongoing hidden pressure for inherited regions; hidden-row paid paths, corridor outcomes, secured-value salvage, and multi-region inherited priority need a per-region Event 34 project system that does not exist and are closed for Event 35.
 
 Factory loss is delayed until sustained severe failure or a deliberate liquidation action.
 

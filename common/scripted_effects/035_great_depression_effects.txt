@@ -2974,6 +2974,8 @@ great_depression_reset_episode_policy_state = {
 	clr_country_flag = great_depression_cleared_economy_certification_active
 	clr_country_flag = great_depression_cleared_economy_certified
 	clr_country_flag = great_depression_strategic_network_designated
+	clr_country_flag = great_depression_rescue_dependence_ended
+	clr_country_flag = great_depression_arsenal_institution_retained
 	clr_country_flag = great_depression_distressed_assets_sold
 	clr_country_flag = great_depression_distressed_assets_acquired
 	clr_country_flag = great_depression_occupations_broken
@@ -4272,9 +4274,14 @@ great_depression_rebuild_hidden_components = {
 				has_country_flag = great_depression_emergency_budget_balanced
 				has_country_flag = great_depression_public_obligations_restructured
 				has_country_flag = great_depression_ordinary_budget_restored
+				has_country_flag = great_depression_rescue_dependence_ended
 			}
 		}
 		add_to_variable = { great_depression_hidden_fiscal_stress = constant:great_depression_hidden_component.fiscal_response }
+	}
+	if = {
+		limit = { has_country_flag = great_depression_arsenal_institution_retained }
+		add_to_variable = { great_depression_hidden_fiscal_stress = constant:great_depression_hidden_component.fiscal_arsenal_upkeep }
 	}
 	if = {
 		limit = { has_country_flag = great_depression_reserves_reserved }
@@ -4352,6 +4359,10 @@ great_depression_rebuild_hidden_components = {
 		if = {
 			limit = { has_stability > constant:great_depression_thresholds.social_high_stability_floor }
 			add_to_variable = { great_depression_hidden_war_stress = constant:great_depression_hidden_component.war_stability_relief }
+		}
+		if = {
+			limit = { has_country_flag = great_depression_arsenal_institution_retained }
+			add_to_variable = { great_depression_hidden_war_stress = constant:great_depression_hidden_component.war_arsenal_relief }
 		}
 	}
 

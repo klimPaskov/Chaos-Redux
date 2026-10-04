@@ -84,3 +84,28 @@ Disposition: implemented.
 - `docs/events/035_great_depression.md` no longer claims Event Log surfaces that did not exist.
 
 needs_live_game: the fill-in relies on the dispatcher recording its row before the queued `chaosx.nr35.1`/`chaosx.nr35.9` events run, which is how the prefire actor bindings of other events already behave; if a live firing still shows two rows, the order is different and the dispatcher would need the pre-fire branch after all.
+
+## D6. Doctrine projects and producers for the unused center project types
+
+Disposition: implemented.
+
+Basis: the decision map names "Restore Local Credit and Trade Connection" as the Finance and Trade state project and "End Rescue Dependence or retain bounded arsenal institution" as the Strategic Industry Stabilization action, and spec part 4 lists restored basic transport and supply as a reopening need.
+`finance_restoration`, `transport_integration` and `international_reconstruction` had completion branches but no producer, and Prevent a Relapse accepted no Strategic Industry recovery measure.
+
+- Restore Local Credit and Trade Connection: a state-targeted Finance and Trade decision on the selected (AI: any valid) Distressed, Idled or Shuttered center with an open project slot.
+  It needs a completed bank audit, pays the existing `finance_trade` family through the shared affordability check and cost quote, and authorizes `finance_restoration`; completion reopens the center as restructured.
+- Keep Essential Freight Moving: on completion, the selected center (AI: one valid center) gets `transport_integration` when it is closed and no center project runs; if a project already runs there, it gains `great_depression_center_project_credit.freight_days` of work once per authorization.
+  The mission's own cost pays for the work, so no second charge is made.
+- Coordinated Public Works and Reconstruction: after its existing contribution, starts `international_reconstruction` on the selected (AI: one valid) closed center, including an abandoned one that was not liquidated, when no center project runs.
+- Strategic Industry closers: two mutually exclusive decisions in Stabilization or Recovery.
+  End Rescue Dependence (policy-review cost, strong Severity relief) clears the essential orders and adds the existing `fiscal_response` hidden relief.
+  Retain a Bounded Arsenal Institution (strategic-rescue cost, standard Severity relief) needs a completed strategic center, keeps the essential orders, and adds `fiscal_arsenal_upkeep` hidden fiscal pressure and `war_arsenal_relief` hidden war relief while at war.
+  Both flags count as the durable recovery measure for Prevent a Relapse and are cleared with the other doctrine flags at episode cleanup.
+- Icons reuse the doctrine plates through new aliases in `interface/035_great_depression.gfx`, so bespoke art can replace a texture later without code changes.
+- Every new decision has a name, description, cost text, tooltips and an explicit `ai_will_do` built from the existing profile triggers: financial stabilizers prefer the finance project and avoid it under blockade or trade failure; fiscal retrenchers and liquidation gamblers prefer ending the rescue, which the AI never does at war; strategic mobilizers and wartime countries prefer keeping the arsenal, which fiscal retrenchers avoid.
+
+Evidence: `.tools/test_event035_center_projects.py` gained `DoctrineProjectProducerTests` (finance restoration gated by the audit and completing as restructured, freight starting transport integration and then crediting once, reconstruction starting only with an open slot, and both closers satisfying the shared closer gate exclusively); all 15 tests pass.
+
+Probability evidence: the doctrine-scenario before/after pass could not run; `hoi4.probability_inspect` with `adapter = decision_ai_will_do` returned `Invalid tool arguments` again with a three-decision candidate pool and a workspace source selector (see D2).
+The AI weights were set by source review against the existing doctrine profiles; numeric AI balance remains unverified.
+Catalog notes are in `catalog_changes_pending.md`.

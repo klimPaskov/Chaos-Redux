@@ -923,6 +923,76 @@ great_depression_category = {
 		}
 	}
 
+	# Stabilization closers for Rescue Strategic Industry. Exactly one of the
+	# two can be taken in an episode.
+	great_depression_end_rescue_dependence = {
+		icon = GFX_decision_great_depression_end_rescue_dependence
+		priority = 85
+		visible = {
+			great_depression_active_crisis_is_coherent = yes
+			great_depression_is_active_decision_surface = yes
+			great_depression_doctrine_is_rescue_strategic_industry = yes
+			great_depression_should_show_doctrine_primary_actions = yes
+			great_depression_should_show_strategic_rescue_closer = yes
+		}
+		available = {
+			hidden_trigger = { great_depression_can_pay_policy_review = yes }
+			great_depression_can_end_rescue_dependence = yes
+		}
+		custom_cost_trigger = {
+			great_depression_can_pay_policy_review = yes
+		}
+		custom_cost_text = great_depression_cost_policy_review
+		days_re_enable = constant:great_depression_event.recovery_proof_days
+		complete_effect = {
+			custom_effect_tooltip = great_depression_end_rescue_dependence_tt
+			great_depression_end_rescue_dependence = yes
+		}
+		ai_will_do = {
+			base = constant:great_depression_ai_weight.blocked
+			modifier = { add = constant:great_depression_ai_weight.priority great_depression_ai_action_is_stabilization = yes }
+			modifier = { add = constant:great_depression_ai_weight.dominant great_depression_ai_profile_is_fiscal_retrencher = yes }
+			modifier = { add = constant:great_depression_ai_weight.elevated great_depression_ai_profile_is_liquidation_gambler = yes }
+			modifier = { add = constant:great_depression_ai_weight.elevated great_depression_ai_profile_is_financial_stabilizer = yes }
+			modifier = { add = constant:great_depression_ai_weight.strong great_depression_ai_action_is_affordable = yes }
+			modifier = { factor = constant:great_depression_ai_weight.blocked has_war = yes }
+		}
+	}
+
+	great_depression_retain_bounded_arsenal_institution = {
+		icon = GFX_decision_great_depression_retain_bounded_arsenal_institution
+		priority = 84
+		visible = {
+			great_depression_active_crisis_is_coherent = yes
+			great_depression_is_active_decision_surface = yes
+			great_depression_doctrine_is_rescue_strategic_industry = yes
+			great_depression_should_show_doctrine_primary_actions = yes
+			great_depression_should_show_strategic_rescue_closer = yes
+		}
+		available = {
+			hidden_trigger = { great_depression_can_pay_strategic_rescue = yes }
+			great_depression_can_retain_bounded_arsenal_institution = yes
+		}
+		custom_cost_trigger = {
+			great_depression_can_pay_strategic_rescue = yes
+		}
+		custom_cost_text = great_depression_cost_strategic_rescue
+		days_re_enable = constant:great_depression_event.recovery_proof_days
+		complete_effect = {
+			custom_effect_tooltip = great_depression_retain_bounded_arsenal_institution_tt
+			great_depression_retain_bounded_arsenal_institution = yes
+		}
+		ai_will_do = {
+			base = constant:great_depression_ai_weight.blocked
+			modifier = { add = constant:great_depression_ai_weight.priority great_depression_ai_action_is_stabilization = yes }
+			modifier = { add = constant:great_depression_ai_weight.dominant great_depression_ai_profile_is_strategic_mobilizer = yes }
+			modifier = { add = constant:great_depression_ai_weight.elevated great_depression_ai_profile_is_state_coordinator = yes }
+			modifier = { add = constant:great_depression_ai_weight.strong has_war = yes }
+			modifier = { add = constant:great_depression_ai_weight.standard great_depression_ai_action_is_affordable = yes }
+			modifier = { factor = constant:great_depression_ai_weight.blocked great_depression_ai_profile_is_fiscal_retrencher = yes }
+		}
+	}
+
 	# --------------------------------------------------------------------------
 	# Doctrine 3: Stabilize Finance and Trade.
 	# --------------------------------------------------------------------------
@@ -1034,6 +1104,58 @@ great_depression_category = {
 			modifier = { add = constant:great_depression_target_weight.major FROM = { is_major = yes } }
 			modifier = { add = constant:great_depression_target_weight.stable_country FROM = { great_depression_ai_partner_is_stable = yes } }
 			modifier = { factor = constant:great_depression_ai_weight.blocked FROM = { great_depression_ai_partner_is_blockaded = yes } }
+		}
+	}
+
+	great_depression_restore_local_credit_and_trade_connection = {
+		state_target = any_controlled_state
+		target_root_trigger = {
+			great_depression_active_crisis_is_coherent = yes
+			great_depression_is_active_decision_surface = yes
+			great_depression_doctrine_is_stabilize_finance_and_trade = yes
+			great_depression_should_show_doctrine_primary_actions = yes
+			great_depression_should_show_restore_local_credit_and_trade_connection = yes
+		}
+		target_trigger = {
+			FROM = {
+				great_depression_center_finance_restoration_target_is_valid = yes
+				OR = {
+					ROOT = { is_ai = yes }
+					great_depression_selected_center_target_is_valid = yes
+				}
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		icon = GFX_decision_great_depression_restore_local_credit_and_trade_connection
+		priority = 86
+		visible = {
+			OR = {
+				is_ai = yes
+				FROM = { great_depression_selected_center_target_is_valid = yes }
+			}
+		}
+		available = {
+			hidden_trigger = { great_depression_can_pay_finance_trade = yes }
+			great_depression_action_slot_is_open = yes
+			FROM = { great_depression_can_start_finance_restoration = yes }
+		}
+		custom_cost_trigger = {
+			great_depression_can_pay_finance_trade = yes
+		}
+		custom_cost_text = great_depression_cost_finance_trade
+		days_re_enable = constant:great_depression_event.center_mission_days
+		complete_effect = {
+			FROM = { great_depression_restore_local_credit_and_trade_connection = yes }
+		}
+		ai_will_do = {
+			base = constant:great_depression_target_weight.base
+			modifier = { add = constant:great_depression_ai_weight.dominant great_depression_ai_profile_is_financial_stabilizer = yes }
+			modifier = { add = constant:great_depression_ai_weight.elevated great_depression_ai_profile_is_state_coordinator = yes }
+			modifier = { add = constant:great_depression_ai_weight.standard great_depression_ai_action_is_affordable = yes }
+			modifier = { add = constant:great_depression_ai_weight.strong FROM = { great_depression_ai_center_target_is_recoverable = yes } }
+			modifier = { add = constant:great_depression_scaling.center_industry_weight FROM = { great_depression_ai_center_target_is_high_value = yes } }
+			modifier = { factor = constant:great_depression_ai_weight.blocked great_depression_ai_blockade_or_trade_failure = yes }
+			modifier = { factor = constant:great_depression_ai_weight.blocked FROM = { great_depression_ai_center_target_is_doomed = yes } }
 		}
 	}
 
@@ -2512,6 +2634,7 @@ great_depression_category = {
 		custom_cost_text = great_depression_cost_global_reconstruction
 		days_re_enable = constant:great_depression_event.center_mission_days
 		complete_effect = {
+			custom_effect_tooltip = great_depression_coordinated_reconstruction_center_tt
 			great_depression_coordinated_public_works_and_reconstruction = yes
 		}
 		ai_will_do = {
@@ -2920,6 +3043,7 @@ great_depression_category = {
 			great_depression_cancel_keep_essential_freight_moving = yes
 		}
 		complete_effect = {
+			custom_effect_tooltip = great_depression_keep_essential_freight_moving_center_tt
 			great_depression_complete_keep_essential_freight_moving = yes
 		}
 		timeout_effect = {

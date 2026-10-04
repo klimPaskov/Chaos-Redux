@@ -184,6 +184,16 @@ great_depression_should_show_consolidate_failing_industry = {
 	great_depression_decision_surface_is_ready = yes
 }
 
+great_depression_should_show_restore_local_credit_and_trade_connection = {
+	great_depression_decision_surface_is_ready = yes
+}
+
+great_depression_should_show_strategic_rescue_closer = {
+	great_depression_decision_surface_is_ready = yes
+	NOT = { has_country_flag = great_depression_rescue_dependence_ended }
+	NOT = { has_country_flag = great_depression_arsenal_institution_retained }
+}
+
 great_depression_should_show_convert_works_into_lasting_capacity = {
 	great_depression_decision_surface_is_ready = yes
 }
@@ -809,6 +819,58 @@ great_depression_center_consolidation_target_is_valid = {
 	great_depression_selected_center_target_is_valid = yes
 	great_depression_center_project_target_is_open = yes
 	NOT = { has_state_flag = great_depression_center_reopened }
+}
+
+# STATE scope with ROOT as the crisis country. Finance and Trade restores the
+# credit and commercial links of a center that has not yet reopened.
+great_depression_center_finance_restoration_target_is_valid = {
+	great_depression_selected_center_target_is_valid = yes
+	great_depression_center_project_target_is_open = yes
+	NOT = { has_state_flag = great_depression_center_reopened }
+	OR = { has_state_flag = great_depression_center_distressed has_state_flag = great_depression_center_idled has_state_flag = great_depression_center_shuttered }
+}
+
+# STATE scope. Restored freight can reopen a closed center that still has a
+# working plant to supply.
+great_depression_center_transport_target_is_valid = {
+	great_depression_selected_center_target_is_valid = yes
+	great_depression_center_project_target_is_open = yes
+	NOT = { has_state_flag = great_depression_center_reopened }
+	OR = { has_state_flag = great_depression_center_distressed has_state_flag = great_depression_center_idled has_state_flag = great_depression_center_shuttered }
+}
+
+# STATE scope. A running, unfinished center project that restored freight can
+# shorten once per authorization.
+great_depression_center_project_accepts_freight_credit = {
+	great_depression_selected_center_target_is_valid = yes
+	OR = {
+		has_state_flag = great_depression_center_project_authorized
+		has_state_flag = great_depression_center_project_active_work
+		has_state_flag = great_depression_center_project_paused
+		has_state_flag = great_depression_center_project_certification
+	}
+	great_depression_center_project_has_unspent_authorization = yes
+	NOT = { check_variable = { var = great_depression_center_project_type value = constant:great_depression_center_project.protection compare = equals } }
+	NOT = {
+		AND = {
+			has_variable = great_depression_center_freight_credit_authorization_id
+			check_variable = { var = great_depression_center_freight_credit_authorization_id value = great_depression_center_project_authorization_id compare = equals }
+		}
+	}
+}
+
+# STATE scope. International reconstruction can rebuild any closed center of
+# the current program, including an abandoned one that was not liquidated.
+great_depression_center_international_reconstruction_target_is_valid = {
+	great_depression_selected_center_target_is_valid = yes
+	great_depression_center_project_target_is_open = yes
+	NOT = { has_state_flag = great_depression_center_reopened }
+	OR = {
+		has_state_flag = great_depression_center_distressed
+		has_state_flag = great_depression_center_idled
+		has_state_flag = great_depression_center_shuttered
+		has_state_flag = great_depression_center_abandoned
+	}
 }
 
 great_depression_center_lasting_capacity_target_is_valid = {
@@ -1690,6 +1752,52 @@ great_depression_can_start_industry_consolidation = {
 	great_depression_center_consolidation_target_is_valid = yes
 }
 
+# STATE scope with ROOT as the crisis country.
+great_depression_can_start_finance_restoration = {
+	great_depression_center_finance_restoration_target_is_valid = yes
+	custom_trigger_tooltip = {
+		tooltip = great_depression_finance_restoration_needs_audit_tt
+		ROOT = { has_country_flag = great_depression_bank_audit_complete }
+	}
+}
+
+# COUNTRY scope. Ending or keeping the strategic rescue closes the Rescue
+# Strategic Industry route once the economy is stabilizing.
+great_depression_strategic_closer_phase_is_open = {
+	custom_trigger_tooltip = {
+		tooltip = great_depression_strategic_closer_phase_is_open_tt
+		OR = {
+			check_variable = { var = great_depression_phase value = constant:great_depression_phase.stabilization compare = equals }
+			check_variable = { var = great_depression_phase value = constant:great_depression_phase.recovery compare = equals }
+		}
+	}
+}
+
+great_depression_can_end_rescue_dependence = {
+	great_depression_action_slot_is_open = yes
+	great_depression_strategic_closer_phase_is_open = yes
+	custom_trigger_tooltip = {
+		tooltip = great_depression_strategic_rescue_is_running_tt
+		OR = {
+			has_country_flag = great_depression_strategic_network_designated
+			has_country_flag = great_depression_essential_orders_guaranteed
+		}
+	}
+}
+
+great_depression_can_retain_bounded_arsenal_institution = {
+	great_depression_action_slot_is_open = yes
+	great_depression_strategic_closer_phase_is_open = yes
+	custom_trigger_tooltip = {
+		tooltip = great_depression_strategic_center_is_completed_tt
+		has_country_flag = great_depression_strategic_network_designated
+		any_owned_state = {
+			is_controlled_by = ROOT
+			has_state_flag = great_depression_center_strategic
+		}
+	}
+}
+
 great_depression_can_start_industry_trusteeship = {
 	great_depression_trusteeship_target_is_valid = yes
 }
@@ -2010,6 +2118,8 @@ great_depression_prevent_a_relapse_objective_is_met = {
 		has_country_flag = great_depression_recovery_plan_active
 		has_country_flag = great_depression_cleared_economy_certification_active
 		has_country_flag = great_depression_emergency_controls_removed
+		has_country_flag = great_depression_rescue_dependence_ended
+		has_country_flag = great_depression_arsenal_institution_retained
 	}
 }
 
