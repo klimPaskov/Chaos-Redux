@@ -88,3 +88,18 @@ Decision: the existing `on_state_control_changed` handler calls `brilliant_scien
 Debt and history are kept; the cleared global target reopens the Kruger State discovery and authentication decisions.
 
 Evidence for D5 and D6: `common/scripted_effects/016_brilliant_scientist_effects.txt`, `common/decisions/016_brilliant_scientist_directorate_facilities.txt`, `common/scripted_effects/016_brilliant_scientist_directorate_outcome_effects.txt`, `common/scripted_effects/016_brilliant_scientist_territory_effects.txt`, `common/scripted_effects/016_brilliant_scientist_containment_effects.txt`, `common/on_actions/016_brilliant_scientist_project_on_actions.txt`, `docs/events/016_brilliant_scientist/systems/directorate.md`, `docs/events/016_brilliant_scientist/systems/projects.md`.
+
+## D7. Small player-visible and guard defects
+
+- `brilliant_scientist_mengele_computation_incident` gets plain name and description keys ("Corrupted Computation Model"), matching its sibling conventional incident modifiers.
+- The Kruger State recognition focus path reads the scripted trigger `brilliant_scientist_formed_by_charter = yes`; the old check read a flag that never existed, so chartered states could not use the recognition focus.
+- The project incident report event checks `has_global_flag = world_end`; the old country-flag check never fired.
+- Alien Arms "fielded" checks read the new public reader `alien_infantry_has_fielded_landing_cohort`, which is true once the country's landing-state registry holds a committed landing site. Seven world-threat, news, host-flavour, aftermath, and achievement reads of the never-written `brilliant_scientist_project_force_alien_arms_formation_count` now use it.
+
+## D8. Capitulation cancels a pending alien landing
+
+Decision: `alien_infantry_landing_reservation_is_valid` and `alien_infantry_can_call_landing_without_reserve` require `has_capitulated = no`.
+A capitulated caller can no longer request a landing, and a pending one is cancelled by the mission's existing cancel trigger, whose cancel effect refunds the 2,000 laser weapons once.
+The Event 026 adapter file is untouched; it reads the shared request gate and therefore inherits the same capitulation rule.
+
+Evidence for D7 and D8: `localisation/english/016_mengele_computation_incident_l_english.yml`, `common/scripted_triggers/016_brilliant_scientist_focus_triggers.txt`, `events/016_brilliant_scientist_project_incident_events.txt`, `common/scripted_triggers/016_alien_infantry_api_triggers.txt`, `common/scripted_effects/016_alien_infantry_api_effects.md`, and the five consumer files listed in the commit.

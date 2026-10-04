@@ -56,10 +56,22 @@ alien_infantry_landing_target_is_valid = {
 	}
 }
 
-# COUNTRY scope. Pending reservation remains valid only while contact and the
-# selected controlled state survive. Losing the state therefore refunds it.
+# COUNTRY scope. The country has fielded at least one Alien Infantry landing
+# cohort: its landing-state registry records every committed landing site.
+alien_infantry_has_fielded_landing_cohort = {
+	check_variable = {
+		var = alien_infantry_landing_state_registry^num
+		value = constant:alien_infantry_landing.zero
+		compare = greater_than
+	}
+}
+
+# COUNTRY scope. Pending reservation remains valid only while contact, the
+# selected controlled state, and the caller's resistance survive. Losing the
+# state or capitulating therefore cancels the mission and refunds it once.
 alien_infantry_landing_reservation_is_valid = {
 	has_country_flag = alien_infantry_landing_pending
+	has_capitulated = no
 	alien_infantry_has_contact = yes
 	alien_infantry_landing_target_is_valid = yes
 	NOT = { has_global_flag = world_end }
@@ -70,6 +82,7 @@ alien_infantry_landing_reservation_is_valid = {
 # two callers below so a discounted reservation can quote its payable amount
 # without weakening contact, target, cooldown, or terminal-state checks.
 alien_infantry_can_call_landing_without_reserve = {
+	has_capitulated = no
 	alien_infantry_has_contact = yes
 	NOT = { has_country_flag = alien_infantry_landing_pending }
 	NOT = { has_country_flag = alien_infantry_landing_cooldown }
