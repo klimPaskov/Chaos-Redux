@@ -123,9 +123,9 @@ The four operations from the baseline spec 02 treaty table are timed decisions i
 They share one lifecycle:
 
 1. The start effect re-checks the full affordability and target gate, pays every equipment cost once, and records the sponsor's receipt (an active flag, the target, and the treaty generation).
-2. The decision's `cancel_trigger` re-validates the receipt every day. Treaty dissolution, membership loss, war between the pair, a generation change, and the Fallout transition all cancel through the operation's cancel effect, which sends report `chaosx_air_treaty.14` with an operation-specific description. Equipment already sent is not refunded.
+2. The decision's `cancel_trigger` re-validates the receipt every day. Treaty dissolution, membership loss, war between the pair, a generation change, and the Fallout transition all cancel through the operation's cancel effect, which sends report `chaosx_air_treaty.14` with an operation-specific description (no report is sent once the Fallout transition has begun). Equipment already sent is not refunded.
 3. The `remove_effect` re-validates once more and applies the result, or cancels.
-4. Locks shared with other countries (the global grid lock, the evacuation source and receiving states, and the burner's pending flag) are timed flags that outlive the operation by `reservation_slack_days`, so an annexed sponsor can never leave a permanent lock.
+4. Locks shared with other countries (the global grid lock, the evacuation source and receiving states, and the burner's pending flag) are timed flags that outlive the operation by `reservation_slack_days`, so an annexed sponsor can never leave a permanent lock. `air_cleanliness_treaty_handle_annexed_country` also releases an annexed sponsor's operation receipts and locks at once, without a withdrawal report, so a restored tag starts with no stale operation.
 
 Costs use `custom_cost_trigger` and `custom_cost_text` with texticons; the same affordability trigger gates `available`.
 
