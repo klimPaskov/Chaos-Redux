@@ -1,0 +1,21 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 ACHIEVEMENT TRIGGERS
+# ============================================================================
+# Overview:
+# - Campaign eligibility for the fourteen Event 025 achievements.
+# - The route flags themselves are written by
+#   chaosx_nr25_update_achievement_tracking; the shared achievement file reads
+#   only this eligibility trigger and those durable flags.
+# - chaosx_nr25_achievement_disqualified is set once, when a debug or
+#   force-triggered campaign registers an expedition, and is never cleared.
+# ============================================================================
+
+# COUNTRY scope. A human campaign that has not been debugged, force-triggered
+# into the expedition, or set up as the test country.
+chaosx_nr25_achievement_campaign_is_valid = {
+	exists = yes
+	is_ai = no
+	NOT = { is_debug = yes }
+	NOT = { has_country_flag = chaosx_test_country_initialized }
+	NOT = { has_country_flag = chaosx_nr25_achievement_disqualified }
+}

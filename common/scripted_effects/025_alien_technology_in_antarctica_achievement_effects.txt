@@ -9,19 +9,37 @@
 #   reload, terminal settlement, and a later Event 036 overlap conversion.
 # ============================================================================
 
+# COUNTRY scope. Records a debug or force-triggered expedition once. The flag
+# is never cleared, so a later clean session cannot restore eligibility.
+chaosx_nr25_check_achievement_disqualifiers = {
+	if = {
+		limit = {
+			OR = {
+				is_debug = yes
+				has_country_flag = force_trigger_mode_enabled
+				has_country_flag = chaosx_test_country_initialized
+			}
+		}
+		set_country_flag = chaosx_nr25_achievement_disqualified
+	}
+}
+
+# COUNTRY scope. Called only after the ledger assigned a fragment slot to this
+# country. The fragment role equals the debris sector, so six distinct role
+# flags mean one fragment from each of the six debris fields.
+chaosx_nr25_record_fragment_role = {
+	if = { limit = { check_variable = { var = chaosx_nr25_fragment_role value = constant:chaosx_nr25_value.one compare = equals } } set_country_flag = chaosx_nr25_fragment_role_one }
+	if = { limit = { check_variable = { var = chaosx_nr25_fragment_role value = constant:chaosx_nr25_value.two compare = equals } } set_country_flag = chaosx_nr25_fragment_role_two }
+	if = { limit = { check_variable = { var = chaosx_nr25_fragment_role value = constant:chaosx_nr25_value.three compare = equals } } set_country_flag = chaosx_nr25_fragment_role_three }
+	if = { limit = { check_variable = { var = chaosx_nr25_fragment_role value = constant:chaosx_nr25_value.four compare = equals } } set_country_flag = chaosx_nr25_fragment_role_four }
+	if = { limit = { check_variable = { var = chaosx_nr25_fragment_role value = constant:chaosx_nr25_value.five compare = equals } } set_country_flag = chaosx_nr25_fragment_role_five }
+	if = { limit = { check_variable = { var = chaosx_nr25_fragment_role value = constant:chaosx_nr25_value.six compare = equals } } set_country_flag = chaosx_nr25_fragment_role_six }
+}
+
 # COUNTRY scope. Converts already-recorded expedition evidence into durable
 # achievement route flags. The achievement definitions remain in the shared
 # achievement file and read only these flags.
 chaosx_nr25_update_achievement_tracking = {
-	if = {
-		limit = { has_country_flag = chaosx_nr25_fragment_recovered }
-		if = { limit = { check_variable = { var = chaosx_nr25_fragment_role value = constant:chaosx_nr25_value.one compare = equals } } set_country_flag = chaosx_nr25_fragment_role_one }
-		if = { limit = { check_variable = { var = chaosx_nr25_fragment_role value = constant:chaosx_nr25_value.two compare = equals } } set_country_flag = chaosx_nr25_fragment_role_two }
-		if = { limit = { check_variable = { var = chaosx_nr25_fragment_role value = constant:chaosx_nr25_value.three compare = equals } } set_country_flag = chaosx_nr25_fragment_role_three }
-		if = { limit = { check_variable = { var = chaosx_nr25_fragment_role value = constant:chaosx_nr25_value.four compare = equals } } set_country_flag = chaosx_nr25_fragment_role_four }
-		if = { limit = { check_variable = { var = chaosx_nr25_fragment_role value = constant:chaosx_nr25_value.five compare = equals } } set_country_flag = chaosx_nr25_fragment_role_five }
-		if = { limit = { check_variable = { var = chaosx_nr25_fragment_role value = constant:chaosx_nr25_value.six compare = equals } } set_country_flag = chaosx_nr25_fragment_role_six }
-	}
 	if = {
 		limit = {
 			has_country_flag = chaosx_nr25_recovery_winner

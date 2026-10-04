@@ -130,3 +130,18 @@ Decision:
 - With an overlap, Event 025 still requests a base reward and the API excludes only the alien arms family; an empty remaining pool falls through to an upgrade and then the capstone. A later Event 036 conversion requests no base reward, so it receives an upgrade or the capstone.
 - Achievement routes read the durable `chaosx_alien_recovery_event025_reward_applied` flag instead of the latest-call flag, and a later Event 036 resolution re-runs the Event 025 winner's achievement tracking, so Two Crashes, One Answer is set only after a real conversion.
 - The architect's proposed new aviation family stays a proposal.
+
+## D9. Achievement registration and eligibility
+
+Disposition: `implemented`.
+
+Basis: spec 011 requires full tracking, disqualifiers and save persistence, and says achievements must not unlock from a force-triggered test.
+
+Decision:
+
+- The fourteen achievements are registered in the shared achievement file with the pattern used by the Event 027 set: `possible` stays true once the route flag exists, and `happened` reads the eligibility trigger and the durable route flag.
+- Eligibility lives in `chaosx_nr25_achievement_campaign_is_valid`: a human country, not in debug mode, not the test country, and without `chaosx_nr25_achievement_disqualified`.
+  That flag is set once when an expedition registers in debug mode, from a force-trigger player or as the test country, and is never cleared.
+- `game_rules_allow_achievements` is not used, matching most Chaos Redux achievement sets, because the mod's own rules would otherwise hide every achievement.
+- Fragment roles are recorded as durable flags only when the ledger actually assigns the slot, so a failed cut or a taken slot can no longer mark a role.
+  The Evolution IV cutting action is repeatable on its cooldown and targets the selected sector, so all six roles are reachable.
