@@ -8,10 +8,12 @@
 # effects resolve the Event 016 consequences after the native outcome has been
 # selected: the breach seizes one province, reconstructs the raid's assigned
 # Portal Raider formation there, and transfers exact factories or strategic
-# facilities. The raid outcome destroys the original formation before this
-# fixed-template reconstruction, preventing duplicate formation count. Exact
-# carried manpower/equipment conservation is not established: the reconstruction
-# currently uses full readiness and must not be certified as a unit teleport.
+# facilities. The raid outcome destroys the original formation after this
+# fixed-template reconstruction, preventing duplicate formation count. The
+# reconstruction is a paid new cadre, not a unit teleport: it arrives with the
+# constant-driven transit losses in brilliant_scientist_portal_lifecycle and
+# refills through ordinary reinforcement, so a damaged formation never returns
+# at full strength for free.
 # ============================================================================
 
 @CR_SC_PORTAL_RAID_LIGHT_DAMAGE = 1
@@ -280,9 +282,10 @@ brilliant_scientist_portal_cleanup_country_beachheads = {
 # formation. A scope-less transaction receipt is raised only after the breach
 # controller and replacement cadre have been committed; the native raid's
 # division outcome consumes the selected formation only against that receipt.
-# This keeps the formation count and the six-battalion baseline budget conserved
-# without using teleport_armies, whose documented STATE scope would move every
-# qualifying army in the origin state rather than the selected raid formation.
+# This keeps the formation count conserved without using teleport_armies, whose
+# documented STATE scope would move every qualifying army in the origin state
+# rather than the selected raid formation. The cadre starts with the transit
+# experience, equipment, and manpower factors and then reinforces normally.
 brilliant_scientist_portal_raid_establish_beachhead = {
 	set_temp_variable = { brilliant_scientist_portal_reconstruction_committed = constant:brilliant_scientist_value.zero }
 	if = {
@@ -292,6 +295,9 @@ brilliant_scientist_portal_raid_establish_beachhead = {
 		}
 		brilliant_scientist_portal_register_beachhead = yes
 		set_temp_variable = { brilliant_scientist_portal_spawn_province = var:ROOT.target_province }
+		set_temp_variable = { brilliant_scientist_portal_cadre_experience = constant:brilliant_scientist_portal_lifecycle.cadre_experience_factor }
+		set_temp_variable = { brilliant_scientist_portal_cadre_equipment = constant:brilliant_scientist_portal_lifecycle.cadre_equipment_factor }
+		set_temp_variable = { brilliant_scientist_portal_cadre_manpower = constant:brilliant_scientist_portal_lifecycle.cadre_manpower_factor }
 		var:ROOT.actor_country = {
 			set_country_flag = brilliant_scientist_portal_beachhead_established_ever
 			add_to_variable = { brilliant_scientist_portal_beachheads = constant:brilliant_scientist_value.one }
@@ -299,7 +305,7 @@ brilliant_scientist_portal_raid_establish_beachhead = {
 				text = {
 					set_province_controller = [PORTAL_PROVINCE]
 					create_unit = {
-						division = "name = \"Portal Breach Cadre\" division_template = \"Quantum Transit Raiders\" start_experience_factor = 0.50 start_equipment_factor = 1.00 start_manpower_factor = 1.00"
+						division = "name = \"Portal Breach Cadre\" division_template = \"Quantum Transit Raiders\" start_experience_factor = [CADRE_EXPERIENCE] start_equipment_factor = [CADRE_EQUIPMENT] start_manpower_factor = [CADRE_MANPOWER]"
 						owner = THIS
 						prioritize_location = [PORTAL_PROVINCE]
 						allow_spawning_on_enemy_provs = yes
@@ -307,6 +313,9 @@ brilliant_scientist_portal_raid_establish_beachhead = {
 					}
 				}
 				PORTAL_PROVINCE = "[?brilliant_scientist_portal_spawn_province|.0]"
+				CADRE_EXPERIENCE = "[?brilliant_scientist_portal_cadre_experience|.2]"
+				CADRE_EQUIPMENT = "[?brilliant_scientist_portal_cadre_equipment|.2]"
+				CADRE_MANPOWER = "[?brilliant_scientist_portal_cadre_manpower|.2]"
 			}
 			set_temp_variable = { brilliant_scientist_portal_reconstruction_committed = constant:brilliant_scientist_value.one }
 		}

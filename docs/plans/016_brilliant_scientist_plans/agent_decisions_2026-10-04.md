@@ -51,3 +51,13 @@ References: installed `common/raids/_documentation.md` (raid instance variables 
 
 Needs live game: the native building raid supplying `var:target_province` for a facility target, and the meta-trigger province paste resolving in state scope.
 Not changed: the state-target Portal raid still lands in `var:ROOT.target_province`; whether the engine fills that variable for a state target remains a live-game question recorded for the raid owner.
+
+## D3. Portal breach cadre is a paid new cadre
+
+Decision: the open raid-lifecycle blocker is resolved as a paid new cadre, because no documented primitive relocates one exact division and `teleport_armies` moves every qualifying army in a state.
+The cadre keeps its 0.50 experience factor and arrives with 0.60 equipment and 0.70 manpower factors, read from `brilliant_scientist_portal_lifecycle` and pasted into the `create_unit` division string through the existing meta effect.
+It refills through ordinary reinforcement, so a damaged raiding formation can no longer turn into a full-strength one.
+The success and critical-success actor tooltips say the formation arrives under-strength.
+
+Evidence: `common/script_constants/016_brilliant_scientist_raid_lifecycle_constants.txt`, `common/scripted_effects/016_brilliant_scientist_raid_effects.txt`, `localisation/english/chaosx_raids_l_english.yml` (two lines), `docs/events/016_brilliant_scientist/systems/portal_raider_api.md`.
+Needs live game: the spawned cadre's initial strength readout.
