@@ -365,6 +365,7 @@ video_game_in_sweden_has_foreign_partner_available = {
 	}
 }
 
+# THIS is the candidate partner and ROOT the Swedish host.
 video_game_in_sweden_is_valid_foreign_partner = {
 	exists = yes
 	NOT = { tag = ROOT }
@@ -377,6 +378,32 @@ video_game_in_sweden_is_valid_foreign_partner = {
 		has_market_access_with = ROOT
 		ROOT = { is_in_faction_with = THIS }
 		ROOT = { is_subject_of = THIS }
+	}
+	# A low-autonomy subject may license only to its overlord or faction.
+	OR = {
+		ROOT = { video_game_in_sweden_is_low_autonomy_subject = no }
+		ROOT = { is_subject_of = THIS }
+		ROOT = { is_in_faction_with = THIS }
+	}
+	# Packets beyond the land frontier travel by sea.
+	OR = {
+		is_neighbor_of = ROOT
+		ROOT = { video_game_in_sweden_has_open_sea_lanes = yes }
+	}
+}
+
+# Sweden answers to an overlord that grants it little freedom.
+video_game_in_sweden_is_low_autonomy_subject = {
+	is_subject = yes
+	compare_autonomy_state < autonomy_dominion
+}
+
+# A coastal Sweden whose navy is not outmatched by its enemies at sea.
+video_game_in_sweden_has_open_sea_lanes = {
+	any_owned_state = { is_coastal = yes }
+	OR = {
+		has_war = no
+		enemies_naval_strength_ratio > constant:video_game_in_sweden_effect.foreign_blockade_naval_ratio
 	}
 }
 

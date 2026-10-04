@@ -420,6 +420,12 @@ The host receives no more than two visible foreign reports unless a human foreig
 
 Foreign countries do not receive Sweden's decision category, Reliance variable, staged ideas, missions, or evolution chain.
 
+A Sweden that is a subject below dominion autonomy may license only to its overlord or faction partners.
+Partners beyond the land frontier need a coastal Sweden whose navy is not outmatched at sea: at war, the enemies' naval strength ratio must stay above 0.5.
+The AI licenses less as a subject (0.4) and when its sea lanes are closed in war (0.3).
+Every government that ridiculed the cabinet is remembered, and if Sweden later ends a war with a favourable war score and no recent core loss during the programme, each receives Embarrassment over the Swedish Cabinet (political power gain -5% for 60 days) once.
+The four response opinion modifiers decay by one point a month.
+
 The foreign response is dispatched after the configured delay and rechecks the host, partner, pending flag, war state, and capitulation state before opening. The host receives a compact report event after the foreign response is resolved.
 
 ## AI and safety contract

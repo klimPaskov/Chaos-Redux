@@ -158,3 +158,11 @@ Decision: after `baseline_auto_close_days` with Reliance at or above Doctrine an
 Debriefing caps Reliance at Habit and runs the ordinary conclusion; continuing costs `containment_continue_loss` (10) Reliance and is allowed once, after which the review returns in `containment_review_days` (120) with only the debrief, so the baseline always ends.
 The AI weights are constants that favour containment (4 to 1).
 Basis: spec part 1 ("an ignored high-reliance program should first offer containment"), AI principle 6 and P24-D5.
+
+## D19. Foreign licences respect autonomy and sea access, and ridicule can backfire
+
+Decision: a subject below `autonomy_dominion` may license only to its overlord or faction partners, and non-neighbour partners need a coastal Sweden with open sea lanes (at peace, or at war with `enemies_naval_strength_ratio` above `foreign_blockade_naval_ratio`, 0.5); both rules live in the partner validity trigger so the existing availability tooltip covers them.
+The licence AI factor drops for a subject and for closed sea lanes in war.
+Ridiculing partners are stored in a host array, and a later peace with the recent-victory flag and no recent core loss gives each a finite political embarrassment once.
+The four response opinion modifiers now decay by one point a month, matching their file description as temporary impressions.
+Basis: spec parts 1 and 3 on subject caution and blockaded licensing, spec part 2 ridicule row, decision audit 23.

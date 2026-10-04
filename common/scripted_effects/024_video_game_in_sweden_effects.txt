@@ -2634,6 +2634,7 @@ video_game_in_sweden_close_program = {
 			clear_global_event_target = video_game_in_sweden_host
 		}
 		clr_country_flag = video_game_in_sweden_cleanup_owns_host
+		clear_array = video_game_in_sweden_ridiculers
 	}
 }
 
@@ -3686,6 +3687,8 @@ video_game_in_sweden_resolve_foreign_ridicule = {
 		event_target:video_game_in_sweden_host = {
 			set_variable = { video_game_in_sweden_foreign_outcome = constant:video_game_in_sweden_value.foreign_ridicule }
 			add_political_power = constant:video_game_in_sweden_award.foreign_ridicule_political_power
+			# A later Swedish victory embarrasses the newspapers that laughed.
+			add_to_array = { video_game_in_sweden_ridiculers = PREV }
 		}
 		add_opinion_modifier = {
 			target = event_target:video_game_in_sweden_host
@@ -3803,6 +3806,32 @@ video_game_in_sweden_advance_evolution_progress = {
 	}
 }
 
+# COUNTRY scope. Sweden has come out of a war on the winning side of the
+# score: every government that ridiculed the cabinet during the programme
+# receives a short political embarrassment, once.
+video_game_in_sweden_check_ridicule_embarrassment = {
+	if = {
+		limit = {
+			has_war = no
+			has_country_flag = video_game_in_sweden_recent_victory
+			NOT = { has_country_flag = video_game_in_sweden_core_loss_recent }
+			check_variable = { video_game_in_sweden_ridiculers^num > constant:video_game_in_sweden_value.zero }
+		}
+		set_temp_variable = { video_game_in_sweden_embarrassment_days = constant:video_game_in_sweden_timing.ridicule_embarrassment_days }
+		for_each_scope_loop = {
+			array = video_game_in_sweden_ridiculers
+			if = {
+				limit = { exists = yes }
+				add_dynamic_modifier = {
+					modifier = video_game_in_sweden_ridicule_embarrassment
+					days = video_game_in_sweden_embarrassment_days
+				}
+			}
+		}
+		clear_array = video_game_in_sweden_ridiculers
+	}
+}
+
 video_game_in_sweden_maintenance = {
 	if = {
 		limit = { video_game_in_sweden_is_disabled = yes }
@@ -3887,6 +3916,7 @@ video_game_in_sweden_maintenance = {
 				days = video_game_in_sweden_flag_days
 			}
 		}
+		video_game_in_sweden_check_ridicule_embarrassment = yes
 		if = {
 			limit = {
 				has_country_flag = video_game_in_sweden_reality_audit_active
