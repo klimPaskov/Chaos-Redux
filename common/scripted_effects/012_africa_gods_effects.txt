@@ -3321,105 +3321,6 @@ gods_of_africa_fail_reconciliation = {
 	}
 }
 
-gods_of_africa_resolve_participant_final_outcome = {
-	if = {
-		limit = { gods_of_africa_settlement_can_commit = yes }
-		gods_of_africa_retire_open_contract = yes
-		set_variable = { gods_of_africa_settlement_generation = event_target:africa_host.africa_host_generation }
-		set_variable = { gods_of_africa_settlement_origin_host_id = event_target:africa_host.africa_origin_host_id }
-		set_variable = { gods_of_africa_settlement_history_generation = gods_of_africa_participant_generation }
-		set_variable = { gods_of_africa_settlement_strength = event_target:africa_host.gods_of_africa_strength }
-		set_variable = { gods_of_africa_settlement_doctrine = event_target:africa_host.gods_of_africa_doctrine }
-		if = {
-			limit = { gods_of_africa_final_enemy_is_valid = yes }
-			set_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.enemy }
-		}
-		else_if = {
-			limit = { gods_of_africa_final_favored_is_valid = yes }
-			set_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.favored }
-		}
-		else_if = {
-			limit = { gods_of_africa_final_respected_is_valid = yes }
-			set_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.respected }
-		}
-		else = { set_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.distrusted } }
-		set_country_flag = gods_of_africa_final_outcome_committed
-	}
-}
-
-# COUNTRY scope on a participant. Final settlement is a real, one-time
-# transfer from the host when the reserve can support it. If the physical
-# package is unavailable, the participant receives the smaller political-power
-# equivalent instead of a fictional equipment grant.
-gods_of_africa_grant_settlement_reward = {
-	if = {
-		limit = {
-			gods_of_africa_participant_has_settlement_history = yes
-			has_country_flag = gods_of_africa_final_outcome_committed
-			event_target:africa_host = { has_country_flag = gods_of_africa_final_settlement_committed }
-			gods_of_africa_final_settlement_value_is_valid = yes
-			NOT = { has_country_flag = gods_of_africa_settlement_reward_granted }
-			has_event_target = africa_host
-		}
-		set_country_flag = gods_of_africa_settlement_reward_granted
-		save_event_target_as = gods_of_africa_settlement_participant
-		if = {
-			limit = {
-				check_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.favored }
-				event_target:africa_host = {
-					NOT = { has_equipment = { infantry_equipment < constant:gods_of_africa_transaction.settlement_favored_infantry_equipment } }
-					NOT = { has_fuel < constant:gods_of_africa_transaction.settlement_favored_fuel }
-					has_variable = africa_common_defence_stockpile
-					check_variable = { var = africa_common_defence_stockpile value = constant:gods_of_africa_transaction.settlement_favored_infantry_equipment compare = greater_than_or_equals }
-				}
-			}
-			event_target:africa_host = {
-				send_equipment = { equipment = infantry_equipment amount = constant:gods_of_africa_transaction.settlement_favored_infantry_equipment target = event_target:gods_of_africa_settlement_participant }
-				set_temp_variable = { fuel_stockpile_removal_amount = constant:gods_of_africa_transaction.settlement_favored_fuel }
-				remove_fuel_from_stockpile = yes
-				subtract_from_variable = { africa_common_defence_stockpile = constant:gods_of_africa_transaction.settlement_favored_infantry_equipment }
-			}
-			add_fuel = constant:gods_of_africa_transaction.settlement_favored_fuel
-			add_opinion_modifier = { target = event_target:africa_host modifier = gods_of_africa_settlement_favor }
-		}
-		else_if = {
-			limit = { check_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.favored } }
-			add_political_power = constant:gods_of_africa_transaction.settlement_favored_pp
-			add_opinion_modifier = { target = event_target:africa_host modifier = gods_of_africa_settlement_favor }
-		}
-		else_if = {
-			limit = {
-				check_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.respected }
-				event_target:africa_host = {
-					NOT = { has_equipment = { infantry_equipment < constant:gods_of_africa_transaction.settlement_respected_infantry_equipment } }
-					NOT = { has_fuel < constant:gods_of_africa_transaction.settlement_respected_fuel }
-					has_variable = africa_common_defence_stockpile
-					check_variable = { var = africa_common_defence_stockpile value = constant:gods_of_africa_transaction.settlement_respected_infantry_equipment compare = greater_than_or_equals }
-				}
-			}
-			event_target:africa_host = {
-				send_equipment = { equipment = infantry_equipment amount = constant:gods_of_africa_transaction.settlement_respected_infantry_equipment target = event_target:gods_of_africa_settlement_participant }
-				set_temp_variable = { fuel_stockpile_removal_amount = constant:gods_of_africa_transaction.settlement_respected_fuel }
-				remove_fuel_from_stockpile = yes
-				subtract_from_variable = { africa_common_defence_stockpile = constant:gods_of_africa_transaction.settlement_respected_infantry_equipment }
-			}
-			add_fuel = constant:gods_of_africa_transaction.settlement_respected_fuel
-			add_opinion_modifier = { target = event_target:africa_host modifier = gods_of_africa_settlement_favor }
-		}
-		else_if = { limit = { check_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.respected } } add_political_power = constant:gods_of_africa_transaction.settlement_respected_pp add_opinion_modifier = { target = event_target:africa_host modifier = gods_of_africa_settlement_favor } }
-		else_if = { limit = { check_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.distrusted } } add_political_power = constant:gods_of_africa_transaction.settlement_distrusted_pp }
-		if = {
-			limit = {
-				OR = {
-					check_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.favored }
-					check_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.respected }
-				}
-			}
-			event_target:africa_host = { add_opinion_modifier = { target = event_target:gods_of_africa_settlement_participant modifier = gods_of_africa_settlement_favor } }
-		}
-	}
-}
-
 # COUNTRY scope on a participant. History and the final settlement are kept;
 # all active contract state and registry identity are removed idempotently.
 gods_of_africa_clean_participant = {
@@ -3790,11 +3691,38 @@ gods_of_africa_commit_final_settlement = {
 		gods_of_africa_refresh_strength = yes
 		set_country_flag = gods_of_africa_final_settlement_committed
 		set_variable = { gods_of_africa_final_settlement_day = global.num_days }
+		# Every survivor is graded against the same frozen capability and doctrine.
+		if = {
+			limit = { NOT = { has_variable = gods_of_africa_settlement_final_strength } }
+			set_variable = { gods_of_africa_settlement_final_strength = constant:gods_of_africa_value.zero }
+			if = {
+				limit = { has_variable = gods_of_africa_strength }
+				set_variable = { gods_of_africa_settlement_final_strength = gods_of_africa_strength }
+			}
+			set_variable = { gods_of_africa_settlement_final_doctrine = constant:gods_of_africa_value.zero }
+			if = {
+				limit = { has_variable = gods_of_africa_doctrine }
+				set_variable = { gods_of_africa_settlement_final_doctrine = gods_of_africa_doctrine }
+			}
+		}
 		if = {
 			limit = { has_variable = gods_of_africa_candidate_count }
+			# Phase 1: classify every historical survivor.
 			for_each_scope_loop = {
 				array = gods_of_africa_candidate_registry
-				gods_of_africa_commit_participant_settlement = yes
+				gods_of_africa_settlement_classify_participant = yes
+			}
+			# Phase 2: freeze each obligation and apply standing diplomacy once.
+			for_each_scope_loop = {
+				array = gods_of_africa_candidate_registry
+				gods_of_africa_initialize_settlement_obligation = yes
+			}
+			gods_of_africa_initialize_settlement_delivery = yes
+			# Phase 3: one bounded batch, then the reports.
+			gods_of_africa_deliver_settlement_obligations = yes
+			for_each_scope_loop = {
+				array = gods_of_africa_candidate_registry
+				gods_of_africa_settlement_finalize_participant = yes
 			}
 		}
 		if = {

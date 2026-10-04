@@ -1071,6 +1071,38 @@ gods_of_africa_host_category = {
 		ai_will_do = { base = 1 }
 	}
 
+	# After the settlement the commit row has no live participants left. The
+	# settling government delivers its frozen settlement obligations here, one
+	# fair batch of real equipment and fuel per use, from its own stocks.
+	gods_of_africa_deliver_settlement_support = {
+		name = gods_of_africa_settlement_delivery_name
+		desc = gods_of_africa_settlement_delivery_desc
+		icon = GFX_goal_012_africa_gods_continental_settlement
+		visible = {
+			gods_of_africa_settlement_source_has_pending_delivery = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = gods_of_africa_settlement_delivery_source_tt
+				gods_of_africa_settlement_source_has_pending_delivery = yes
+			}
+			custom_trigger_tooltip = {
+				tooltip = gods_of_africa_settlement_delivery_stock_tt
+				gods_of_africa_settlement_source_has_spare_stock = yes
+			}
+		}
+		cost = 0
+		fire_only_once = no
+		days_re_enable = 30
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_settlement_delivery_effect_tt
+			hidden_effect = { gods_of_africa_deliver_settlement_obligations = yes }
+		}
+		ai_will_do = {
+			base = 1
+		}
+	}
+
 	gods_of_africa_accept_reconciliation = {
 		name = gods_of_africa_accept_reconciliation
 		desc = gods_of_africa_accept_reconciliation_desc

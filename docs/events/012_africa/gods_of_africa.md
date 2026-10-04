@@ -115,15 +115,33 @@ The host category exposes the current Strength band, doctrine, one qualitative p
 
 The accepted doctrine matrix changes only the hidden relationship rules and effects of existing host choices. It creates no third public value or new protection payment; the base equipment, fuel, and political-power price and optional fourth logistics type are unchanged.
 
-The Favored-settlement support threshold reads the existing hidden `gods_of_africa_aid_count`, incremented by participant voluntary aid and host leniency or protection. The separate visible values remain Strength and Wrath.
+The separate visible values remain Strength and Wrath; the conduct and contribution records behind the final standing stay hidden.
 
-When Event 012 secures the continent, ordinary demands stop before settlement. The owner computes one hidden relationship result per surviving participant: Favored, Respected, Distrusted, or Enemy. Loyal support earns substantial reciprocal rewards. A defeated, capitulated, or disappearing unifier cancels active demands, punishment jobs, participant presentation, and current authority. Delayed work is generation-checked and cannot revive the old system.
+When Event 012 secures the continent, ordinary demands stop before settlement. The owner computes one hidden relationship result per surviving participant: Favored, Respected, Distrusted, or Enemy.
+
+### Final standing
+
+Every survivor is graded against the same frozen Strength and doctrine, in the order Enemy, Favored, Respected, Distrusted:
+
+- **Enemy**: current war with Africa, held African core territory of the host, an unresolved broken agreement, permanent defiance, unreconciled war or occupation, Wrath above 80, or three or more refusals (after an accepted reconciliation, refusals since then).
+- **Favored**: no Enemy cause, Wrath below 40, at least two normalized packages of material actually sent, no failures in the applicable record, and the doctrine's record: Reciprocal Covenant 2 fulfilled demands, 80% fulfilled, current and longest streak 2, plus one package of voluntary, emergency, or wartime help, a returned state, or 4 fulfilled demands; Sovereign Exaction 4, 90%, streak 4, plus two packages of such help or 6 fulfilled demands; Strategic Ambiguity or no doctrine 3, 80%, streak 3, plus one package of such help or 5 fulfilled demands. A country with past defiance, war, occupation, or a broken agreement also needs an accepted reconciliation followed by four fulfilled demands in a row without a failure or refusal.
+- **Respected**: no Enemy cause, Wrath below 70, fewer than two failures and two refusals (three under Strategic Ambiguity), and either at least half its demands fulfilled or one package of voluntary, emergency, or wartime help or a returned state. Past hostility needs an accepted reconciliation followed by two fulfilled demands in a row.
+- **Distrusted**: every other survivor, including governments that were simply never asked for anything.
+
+Normalized packages are 1000 infantry equipment, 500 support equipment, 100 trucks, 50 artillery, 25 armoured vehicles, 50 aircraft, 1000 fuel, 20 convoys or trains, or 10000 manpower; 500 political power of qualified emergency relief counts as one emergency package. Only measured deliveries count.
+
+### Settlement support
+
+Favored and Respected governments are owed infantry equipment and fuel scaled to the material they sent (with a premium for voluntary and late-campaign help, up to 16 packages) and to Africa's frozen Strength; Reciprocal Covenant raises Favored support by a quarter. Favored support is capped at 50000 equipment and 25000 fuel, Respected at 10000 and 5000. A government that sent no material is owed nothing, and Distrusted and Enemy governments are owed nothing.
+
+The obligation is frozen at the settlement and paid from Africa's real stocks: a first batch leaves at once, and the settling government's **Deliver settlement support** decision sends a further fair batch every 30 days. Each batch shares the spare equipment and fuel proportionally among the governments still owed, keeps Africa's operating reserves and a tenth of its army's equipment requirement, never overfills a fuel tank, and skips a government that is at war with Africa. The `.608` report names the standing, a short cause, and what has been delivered and is still owed.
+
+Standing diplomacy is applied once: Favored governments gain a strong positive memory and Africa's guarantee, Respected governments a positive memory and a non-aggression pact, Distrusted governments Africa's suspicion, and Enemies a hostile memory in both directions. A defeated, capitulated, or disappearing unifier cancels active demands, punishment jobs, participant presentation, and current authority. Delayed work is generation-checked and cannot revive the old system.
 
 Final evaluation uses the maintained candidate census and retained enrollment history, so archived, capitulated, or later converted surviving participants can be evaluated without reopening their live contracts.
 Exact current-generation proof or the one explicitly inherited generation/origin is required, and previously unenrolled or vanished country objects receive nothing.
 Genuine enrollment stamps country owner and Event 012 origin; host succession transfers the exact prior generation alongside the census.
 The final owner pass freezes each outcome's generation, origin, Strength, and doctrine before public Strength is cleared.
-Reciprocal infantry support uses native transfers with the existing fuel and common-defence reserve debits.
 Each `.608` receipt carries the settling host as a regular event target and requires a separate durable outcome proof; acknowledgement consumes presentation only, preserving standing, rewards, and history without touching a later host's roster.
 The contract and acceptance limits are in `common/scripted_effects/012_africa_gods_settlement_effects.md` and `012_africa_gods_survivor_settlement_2026-10-03.md`.
 
@@ -181,7 +199,7 @@ Owner-driven population loss captures the participant explicitly for exact-loss 
 The report contract and its review limits are recorded in `common/scripted_effects/012_africa_gods_report_effects.md` and `012_africa_gods_response_reports_2026-10-03.md`.
 The lifecycle retention and interrupted-review fixes are recorded in `012_africa_gods_lifecycle_fix_2026-10-03.md`; the survivor-settlement source repair is separately recorded with its audit and lineage/capacity limits.
 The victor recognition milestone is implemented over an already active committed host.
-Recovered-original-host or government-in-exile reopening of a cancelled global Gods lifecycle, full hidden-history grading and reward scaling, weighted scenario evidence, and full native owner-loop acceptance remain outstanding.
+Weighted scenario evidence and full native owner-loop acceptance remain live-game checks.
 The core Gods decision/trigger flag requirements and overlay entry flags have player-facing English text in `localisation/english/012_africa_requirement_flags_l_english.yml`, including named focus prerequisites and concrete tribute-offer conditions.
 The bounded key and semantic review is recorded in `012_africa_gods_requirement_text_2026-10-03.md`; native tooltip layout remains unobserved.
 The timer/text correction and its narrow MCP trace are recorded in `docs/plans/012_africa_plans/subagent_handoffs/012_africa_gods_timer_and_text_2026-10-03.md`.
@@ -226,7 +244,7 @@ Native participant capitulation and annexation use the same retirement and froze
 The [bounded contract audit](../../plans/012_africa_plans/subagent_handoffs/012_africa_gods_contract_audit_2026-10-03.md) records resolved issuance, partial-equality, replacement-owner, victor-race, and malformed-offer cases; native lifecycle acceptance remains separate.
 Current and longest compliance streaks persist across re-entry, while actual paid, host-accepted reconciliation starts a separate recovery streak and post-reconciliation record.
 The [contract helper contract](../../../common/scripted_effects/012_africa_gods_contract_effects.md) identifies the exact write owners and validation limits.
-The twelve-factor final grader and measured material settlement remain under implementation.
+The twelve-factor final grader reads these counts, and the measured contribution record supplies the material quantities.
 
 ## Original-owner recovery and live permission
 

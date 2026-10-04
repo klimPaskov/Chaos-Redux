@@ -29,31 +29,47 @@ No additional lineage array, discovery scan, or clock is introduced.
 Current-generation history predating the stamps retains its existing country-local initialization/generation proof; unproven inherited origin is rejected.
 Country-object cloning, slot reuse, and historical migration without origin proof remain separate runtime/coverage questions.
 
-## Commit, classification, and reward
+## Commit, classification, and obligation
 
 `gods_of_africa_commit_final_settlement = yes` runs on the current active host and fails before the authoritative endpoint.
-It sets the host final-commit receipt before iterating, closing ordinary response/dispatch authority.
-Each candidate calls `gods_of_africa_commit_participant_settlement = yes`.
-This participant COUNTRY effect requires valid retained history, the host final-commit receipt, and no already committed outcome.
-It saves regular `gods_of_africa_settlement_host` from the actual settling host and delegates grading, reward, live cleanup, and report presentation in that order.
-There are no caller parameters, inferred recipients, or defaults.
+It sets the host final-commit receipt, freezes `gods_of_africa_settlement_final_strength` and `gods_of_africa_settlement_final_doctrine` once, and then runs three bounded passes over the retained candidate census.
 
-The grading helper guards its own direct calls, retains the existing Enemy/Favored/Respected/Distrusted priority and thresholds, and snapshots five normal fields before public Strength is zeroed: settlement generation, origin, historical generation, Strength, and doctrine.
-Permanent opt-out remains an Enemy condition independently of cleared live defiance.
-The final standing and `gods_of_africa_final_outcome_committed` are durable.
-Full-spec ratios, streaks, final-campaign contribution, and capability-scaled rewards require their separate accepted grading tranche; this lifecycle contract does not claim those factors already exist.
+| Phase | Helper (scope) | What it does |
+| --- | --- | --- |
+| 1 | `gods_of_africa_settlement_classify_participant` (census entry) | Requires `gods_of_africa_settlement_can_commit`. Saves the regular `gods_of_africa_settlement_host` target, neutral-retires any open demand, refreshes the conduct record, calls `gods_of_africa_freeze_final_grade_inputs`, and classifies Enemy, then Favored, then Respected, then Distrusted with the `gods_of_africa_full_grade_*_is_valid` triggers. Stores the report cause in `gods_of_africa_settlement_cause`. A broken accounting invariant leaves `gods_of_africa_grading_unresolved` and `gods_of_africa_settlement_grade_unresolved` with the evidence intact and assigns no standing. |
+| 2 | `gods_of_africa_initialize_settlement_obligation` (census entry) | Once per country: `gods_of_africa_calculate_settlement_entitlement`, then the frozen receipt (`gods_of_africa_reward_source_id`, `_source_generation`, `_source_origin_id`, `_receiver_id`) and the equipment and fuel entitlement, owed, and delivered amounts. Zero entitlement completes the obligation at once (`gods_of_africa_settlement_reward_granted`); otherwise `gods_of_africa_settlement_delivery_pending`. Calls `gods_of_africa_apply_settlement_diplomacy` once. A missing entitlement sets `gods_of_africa_settlement_obligation_unresolved` and never pretends zero. |
+| 2 | `gods_of_africa_initialize_settlement_delivery` (host) | Sets `gods_of_africa_settlement_delivery_initialized` and computes the host owed totals in thousands. |
+| 3 | `gods_of_africa_deliver_settlement_obligations` (host) | One bounded batch (below). |
+| 3 | `gods_of_africa_settlement_finalize_participant` (census entry) | Finalizes live authority and sends `.608`. |
 
-The reward helper requires retained history, a committed valid endpoint, a present standing, and no `gods_of_africa_settlement_reward_granted` receipt.
-It sets that receipt once, uses the existing Favored/Respected quantities and native affordability/reserve gates, and preserves the existing fuel and common-defence ledger debits.
-Native `send_equipment` sends actual infantry equipment variants from Africa to the explicitly captured participant; there is no recipient equipment synthesis.
-Existing political-power branches and diplomatic memories remain unchanged by this coverage repair.
-Their full-spec balance and material fallback disposition remain separate from lifecycle acceptance.
-Neither report presentation nor acknowledgement grants a reward.
+Entitlements follow the accepted formula: equipment `floor(min(ceiling, 1000 * C * B))`, fuel `floor(min(ceiling, 500 * C * B))`, with `C = min(16, M + 0.5 V + 0.5 L)` in packages, `B = (1 + 2S) * doctrine multiplier` for Favored (Reciprocal Covenant 1.25), `B = 0.25 + 0.75S` for Respected, and `B = 0` for Distrusted and Enemy.
+Favored ceilings are 50000 equipment and 25000 fuel; Respected ceilings are 10000 and 5000.
+For each component, `entitlement = delivered + owed` always holds.
 
-Finalization is itself guarded by retained history, a committed valid standing, and the owner endpoint.
-It withdraws owned protection, removes live missions and permissions, remembers durable opt-out before removing live defiance, clears quote/payment/substitute work, and clears the participant authority flag.
-It retains history, outcome, reward, and settlement snapshots.
-Host cleanup clears the live registries and their counters once after the census pass.
+Standing diplomacy (`gods_of_africa_apply_settlement_diplomacy`, once per country):
+
+| Standing | Diplomacy |
+| --- | --- |
+| Favored | `gods_of_africa_settlement_honor` (+50) both ways, and Africa guarantees the country when they are at peace and no guarantee exists. |
+| Respected | `gods_of_africa_settlement_favor` (+30) both ways, and a non-aggression pact when they are at peace and none exists. |
+| Distrusted | Africa holds `gods_of_africa_settlement_suspicion` (-20) toward the country. |
+| Enemy | `gods_of_africa_settlement_hostility` (-60) both ways. |
+
+## Donor-backed delivery
+
+`gods_of_africa_deliver_settlement_obligations` runs on the settling host for the first batch at the endpoint and again each time the host takes **Deliver settlement support** (`gods_of_africa_deliver_settlement_support`, host category, visible only while `gods_of_africa_settlement_source_has_pending_delivery` holds on the deciding country itself, enabled while `gods_of_africa_settlement_source_has_spare_stock` holds, 30-day re-enable).
+
+1. Recompute the owed totals in thousands from valid receipts (`gods_of_africa_settlement_receipt_is_owed_by_source`): the receipt's source ID, generation, and origin must match the deciding host, and its receiver ID must match the receiver. A vanished receiver drops out; its receipt is never moved to another country.
+2. Equipment budget: the greatest shipment `q`, at most the 20000 batch ceiling, the owed total, and the common-defence ledger above its 500 floor, for which `has_equipment` still leaves the army reserve (`max(500, ceil(0.1 * army infantry requirement))`). Found by a halving search of at most 16 steps.
+3. Fuel budget: fuel above the 500 floor, at most 20000, read in thousands and bounded before conversion.
+4. Each receiver's fuel basis is `min(fuel owed, free tank space)`; a full tank leaves the debt owed.
+5. Proportional pass: each receiver gets `floor(A * share_k / T_k)`, multiplied before dividing; then one residual pass gives at most one more unit per receiver while budget remains. A receiver at war with Africa is skipped this batch and keeps its balance.
+6. Every shipment is measured on both sides (`num_equipment@infantry_equipment`, `fuel_k`); only the common delivered amount leaves the owed balance, joins the delivered total, and (for equipment) leaves the common-defence ledger.
+7. A receiver whose two balances reach zero gets `gods_of_africa_settlement_reward_granted`, and the totals are recomputed.
+
+Finalization withdraws owned protection, removes live missions and permissions, remembers durable opt-out before removing live defiance, clears quote/payment/substitute work, and clears the participant authority flag.
+It retains history, outcome, obligation, and settlement snapshots.
+Host cleanup clears the live registries once after the census pass and keeps the candidate census for later deliveries.
 
 ## Independent receipt lifetime
 
@@ -68,7 +84,7 @@ A replay with no pending presentation is a no-op.
 A vanished or changed frozen host rejects presentation while preserving committed accounting; exact native object/event lifetime remains unobserved.
 
 The existing targeted `gods_of_africa_commit_settlement` helper delegates the complete terminal pass to the host once its continental flag is valid.
-The existing action and tooltip describe all surviving participants; no decision row, category, currency, or public meter is added.
+After the endpoint, the settling host's delivery row is the only settlement action; no currency or public meter is added.
 
 ## Usage and assets
 
@@ -89,10 +105,8 @@ Direct early grading, reward, finalization, or receipt acknowledgement fails its
 `.608` retains `GFX_report_event_012_africa_gods_settlement`, registered in `interface/012_africa_event_pictures.gfx`.
 No image, DDS, new GUI, icon, portrait, or model is produced for this coverage repair.
 
-## Evidence and further accepted work
+## Evidence and limits
 
-Source and scenario evidence belong in `docs/plans/012_africa_plans/subagent_handoffs/012_africa_gods_survivor_settlement_2026-10-03.md` and its independent audit.
-The architecture source is `012_africa_gods_survivor_victor_design_2026-10-03.md`; the parent accepts its survivor method within the user's complete-Gods goal and queues explicit bilateral victor renewal as the next authority tranche.
-Meaningful cases include live and archived survivors, zero-conduct enrollment, converted historical actors, vanished objects, never-enrolled candidates, the exact inherited generation, wrong origin or owner stamp, replayed acknowledgement, direct early helper calls, and native donor affordability/reserve checks.
-No in-game execution, clean error.log, complete weighted validation, or full Gods completion is claimed by source proof.
-The native collection and inherited-origin contracts retain their separate runtime acceptance limits.
+Design and scenarios: `docs/plans/012_africa_plans/subagent_handoffs/012_africa_gods_full_grading_rewards_design_2026-10-03.md` (scenarios `G12_*`), implemented under the 2026-10-04 takeover.
+The survivor census and lineage proof are documented in `012_africa_gods_survivor_settlement_2026-10-03.md` and its audit.
+Native `send_equipment` variant selection, the exact fuel and equipment deltas, and the decision row's appearance are live-game checks; no in-game run is claimed here.

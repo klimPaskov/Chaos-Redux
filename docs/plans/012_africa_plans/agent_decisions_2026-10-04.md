@@ -133,3 +133,22 @@ Decision:
 - `gods_of_africa_unresolved_major_offense` is set by the conduct observation for war with the host, controlled or owned host-core territory, and defiance, and it stays until Africa accepts a paid reconciliation; prior war, occupation, defiance, and breach records are permanent.
 - Because that mark makes a participant Enemy at the settlement, a participant that fought or occupied Africa without defying it must also be able to reconcile: `gods_of_africa_participant_needs_reconciliation` includes the mark, so the existing reconciliation window opens once it is at peace.
 - Reconciliation requires that the participant neither controls nor owns any African core state of the host, matching the conduct resolver's two cached counts.
+
+## L13. Final settlement: twelve-factor grade, frozen obligation, donor-backed delivery
+
+Disposition: `implemented` (native transfer deltas and the decision row's appearance are `needs_live_game`).
+
+Basis: the accepted grading design (`subagent_handoffs/012_africa_gods_full_grading_rewards_design_2026-10-03.md`, accepted by the parent on 2026-10-03 under the complete-Gods goal) and the takeover remaining-work list.
+
+Decisions:
+
+- The endpoint runs three passes over the retained census: classify (freeze host Strength and doctrine once, neutral-retire, refresh conduct, freeze inputs, classify with the `full_grade` triggers), initialize obligations and standing diplomacy, then one delivery batch, finalization and `.608`.
+  The old flag-based `gods_of_africa_final_*_is_valid` triggers, the flat 2500/1000 packages and the political-power fallbacks are removed, together with their constants.
+- A broken accounting invariant leaves `gods_of_africa_settlement_grade_unresolved`, keeps the evidence, cleans live authority, and assigns no standing or obligation.
+- The end-phase delivery is a separate untargeted row, `gods_of_africa_deliver_settlement_support`, in the host category with the settlement icon.
+  The targeted commit row lists live participants, which are gone after the endpoint, and one fair batch cannot be expressed as a per-recipient target without giving the clicked target priority.
+  The commit row keeps its pre-endpoint behaviour and disappears at the endpoint, so the player sees the delivery row take its place.
+- The delivery row re-enables after 30 days, so each use moves one real batch and an AI host cannot drain its reserves every day.
+- A receiver at war with Africa keeps its balance and is skipped until peace; Africa does not arm a current enemy.
+- Distrusted standing records Africa's suspicion one way (the participant has no grievance to remember); Enemy standing records hostility both ways.
+- The report cause has six values (`gods_of_africa_settlement_cause`): sustained, mixed, inconsistent, unrecovered, no record, and hostility.

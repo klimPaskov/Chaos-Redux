@@ -70,3 +70,68 @@ gods_of_africa_settlement_receipt_is_current = {
 		check_variable = { africa_origin_host_id = PREV.gods_of_africa_settlement_origin_host_id }
 	}
 }
+
+# RECEIVER. A frozen settlement obligation that the saved delivery source
+# (event_target:gods_of_africa_delivery_source) still owes this exact country.
+gods_of_africa_settlement_receipt_is_owed_by_source = {
+	exists = yes
+	has_event_target = gods_of_africa_delivery_source
+	has_country_flag = gods_of_africa_settlement_obligation_committed
+	has_country_flag = gods_of_africa_settlement_delivery_pending
+	NOT = { has_country_flag = gods_of_africa_settlement_reward_granted }
+	gods_of_africa_final_settlement_value_is_valid = yes
+	OR = {
+		check_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.favored }
+		check_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.respected }
+	}
+	has_variable = gods_of_africa_reward_receiver_id
+	check_variable = { gods_of_africa_reward_receiver_id = THIS.id }
+	has_variable = gods_of_africa_reward_source_id
+	check_variable = { gods_of_africa_reward_source_id = event_target:gods_of_africa_delivery_source.id }
+	check_variable = { gods_of_africa_reward_source_generation = event_target:gods_of_africa_delivery_source.africa_host_generation }
+	check_variable = { gods_of_africa_reward_source_origin_id = event_target:gods_of_africa_delivery_source.africa_origin_host_id }
+}
+
+# RECEIVER. Owed and able to take a shipment now; a receiver at war with the
+# source keeps its balance until peace.
+gods_of_africa_settlement_receipt_can_receive_batch = {
+	gods_of_africa_settlement_receipt_is_owed_by_source = yes
+	NOT = { has_war_with = event_target:gods_of_africa_delivery_source }
+	NOT = { tag = event_target:gods_of_africa_delivery_source }
+}
+
+# SETTLING HOST, checked on the deciding country itself.
+gods_of_africa_settlement_source_has_pending_delivery = {
+	has_country_flag = gods_of_africa_final_settlement_committed
+	has_country_flag = gods_of_africa_settlement_delivery_initialized
+	has_variable = africa_host_generation
+	has_variable = africa_origin_host_id
+	OR = {
+		check_variable = { gods_of_africa_reward_equipment_owed_total_k > constant:gods_of_africa_value.zero }
+		check_variable = { gods_of_africa_reward_fuel_owed_total_k > constant:gods_of_africa_value.zero }
+	}
+}
+
+# SETTLING HOST. Africa holds infantry equipment or fuel beyond its operating
+# reserves for a settlement shipment.
+gods_of_africa_settlement_source_has_spare_stock = {
+	OR = {
+		AND = {
+			check_variable = { gods_of_africa_reward_equipment_owed_total_k > constant:gods_of_africa_value.zero }
+			has_variable = africa_common_defence_stockpile
+			check_variable = { africa_common_defence_stockpile > constant:gods_of_africa_value.capacity_floor_equipment }
+			set_temp_variable = { gods_of_africa_floor_input = num_target_equipment_in_armies_k@infantry_equipment }
+			multiply_temp_variable = { gods_of_africa_floor_input = constant:gods_of_africa_contribution_measure.native_per_k }
+			multiply_temp_variable = { gods_of_africa_floor_input = constant:gods_of_africa_reward_scale.army_equipment_reserve_fraction }
+			clamp_temp_variable = { var = gods_of_africa_floor_input min = constant:gods_of_africa_value.capacity_floor_equipment }
+			add_to_temp_variable = { gods_of_africa_floor_input = constant:gods_of_africa_value.one }
+			NOT = { has_equipment = { infantry_equipment < gods_of_africa_floor_input } }
+		}
+		AND = {
+			check_variable = { gods_of_africa_reward_fuel_owed_total_k > constant:gods_of_africa_value.zero }
+			set_temp_variable = { gods_of_africa_floor_input = constant:gods_of_africa_value.capacity_floor_fuel }
+			add_to_temp_variable = { gods_of_africa_floor_input = constant:gods_of_africa_value.one }
+			NOT = { has_fuel < gods_of_africa_floor_input }
+		}
+	}
+}

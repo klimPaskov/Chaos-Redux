@@ -644,5 +644,50 @@ defined_text = {
 	name = GetGodsOfAfricaHostCategoryDesc
 	text = { trigger = { gods_of_africa_original_host_recovery_is_open = yes } localization_key = gods_of_africa_recovery_host_category_desc }
 	text = { trigger = { gods_of_africa_recovery_committed_identity_is_current = yes has_country_flag = gods_of_africa_consolidation_pending } localization_key = gods_of_africa_recovery_consolidation_category_desc }
+	text = { trigger = { NOT = { has_country_flag = gods_of_africa_active } gods_of_africa_settlement_source_has_pending_delivery = yes } localization_key = gods_of_africa_settlement_delivery_category_desc }
 	text = { localization_key = gods_of_africa_host_category_desc_ordinary }
+}
+
+# Settlement report: one short cause line for the frozen standing.
+defined_text = {
+	name = GetGodsOfAfricaSettlementCause
+	text = { trigger = { check_variable = { gods_of_africa_settlement_cause = constant:gods_of_africa_settlement_cause.sustained } } localization_key = gods_of_africa_settlement_cause_sustained }
+	text = { trigger = { check_variable = { gods_of_africa_settlement_cause = constant:gods_of_africa_settlement_cause.mixed } } localization_key = gods_of_africa_settlement_cause_mixed }
+	text = { trigger = { check_variable = { gods_of_africa_settlement_cause = constant:gods_of_africa_settlement_cause.unrecovered } } localization_key = gods_of_africa_settlement_cause_unrecovered }
+	text = { trigger = { check_variable = { gods_of_africa_settlement_cause = constant:gods_of_africa_settlement_cause.no_record } } localization_key = gods_of_africa_settlement_cause_no_record }
+	text = { trigger = { check_variable = { gods_of_africa_settlement_cause = constant:gods_of_africa_settlement_cause.hostility } } localization_key = gods_of_africa_settlement_cause_hostility }
+	text = { localization_key = gods_of_africa_settlement_cause_inconsistent }
+}
+
+# Settlement report: what was delivered and what is still owed, read from this
+# country's own frozen obligation. Never claims undelivered goods arrived.
+defined_text = {
+	name = GetGodsOfAfricaSettlementMaterial
+	text = {
+		trigger = {
+			NOT = { check_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.favored } }
+			NOT = { check_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.respected } }
+		}
+		localization_key = gods_of_africa_settlement_material_none
+	}
+	text = {
+		trigger = {
+			has_country_flag = gods_of_africa_settlement_reward_granted
+			check_variable = { gods_of_africa_reward_equipment_entitlement < constant:gods_of_africa_value.one }
+			check_variable = { gods_of_africa_reward_fuel_entitlement < constant:gods_of_africa_value.one }
+		}
+		localization_key = gods_of_africa_settlement_material_unearned
+	}
+	text = {
+		trigger = { has_country_flag = gods_of_africa_settlement_reward_granted }
+		localization_key = gods_of_africa_settlement_material_complete
+	}
+	text = {
+		trigger = {
+			has_event_target = gods_of_africa_settlement_host
+			event_target:gods_of_africa_settlement_host = { exists = yes }
+		}
+		localization_key = gods_of_africa_settlement_material_pending
+	}
+	text = { localization_key = gods_of_africa_settlement_material_unavailable }
 }

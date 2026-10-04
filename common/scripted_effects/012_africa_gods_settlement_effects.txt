@@ -1,18 +1,537 @@
-# Event 012 Gods one-time settlement for existing historical participants.
-# The owner traverses its bounded candidate census, rather than just live members.
-# Reward and presentation are separate from ordinary demand authority.
+# ============================================================================
+# CHAOS REDUX - EVENT 012 GODS OF AFRICA FINAL SETTLEMENT
+# ============================================================================
+# The settling host traverses its retained candidate census in three phases:
+#   1. classify every historical survivor with the twelve-factor grader;
+#   2. freeze each survivor's capability-scaled material obligation and apply
+#      its standing diplomacy once;
+#   3. deliver one bounded batch from Africa's real stocks, then finalize live
+#      authority and send each survivor its .608 report.
+# Later batches come only from the settling host's "Deliver settlement support"
+# decision. Nothing here runs on a clock or scans the world.
+# Contract and scenarios: 012_africa_gods_settlement_effects.md.
+# ============================================================================
 
-gods_of_africa_commit_participant_settlement = {
+# ----------------------------------------------------------------------------
+# Phase 1: classification
+# ----------------------------------------------------------------------------
+
+# PARTICIPANT (census entry) inside the settling host's transaction.
+gods_of_africa_settlement_classify_participant = {
 	if = {
 		limit = { gods_of_africa_settlement_can_commit = yes }
 		event_target:africa_host = { save_event_target_as = gods_of_africa_settlement_host }
-		gods_of_africa_resolve_participant_final_outcome = yes
+		# An unfinished ordinary demand is retired neutrally, so it neither pads
+		# nor harms the record.
 		if = {
-			limit = { has_country_flag = gods_of_africa_final_outcome_committed }
-			gods_of_africa_grant_settlement_reward = yes
-			gods_of_africa_finalize_participant = yes
-			set_country_flag = gods_of_africa_settlement_report_pending
-			country_event = { id = chaosx.nr12.608 }
+			limit = { has_country_flag = gods_of_africa_demand_active }
+			remove_mission = gods_of_africa_demand_mission
+			gods_of_africa_clear_demand = yes
 		}
+		gods_of_africa_retire_open_contract = yes
+		gods_of_africa_refresh_grading_conduct = yes
+		gods_of_africa_freeze_final_grade_inputs = yes
+		if = {
+			limit = { gods_of_africa_full_grade_inputs_are_valid = yes }
+			if = {
+				limit = { gods_of_africa_full_grade_enemy_is_valid = yes }
+				set_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.enemy }
+			}
+			else_if = {
+				limit = { gods_of_africa_full_grade_favored_is_valid = yes }
+				set_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.favored }
+			}
+			else_if = {
+				limit = { gods_of_africa_full_grade_respected_is_valid = yes }
+				set_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.respected }
+			}
+			else = { set_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.distrusted } }
+			gods_of_africa_capture_settlement_cause = yes
+			set_country_flag = gods_of_africa_final_outcome_committed
+			set_country_flag = gods_of_africa_settlement_pass_pending
+		}
+		else = {
+			# A broken accounting record keeps its evidence and stays unresolved;
+			# no contract, standing or entitlement is invented for it.
+			set_country_flag = gods_of_africa_settlement_grade_unresolved
+			gods_of_africa_clean_participant = yes
+		}
+	}
+}
+
+# PARTICIPANT. The report names one short cause for the frozen standing.
+gods_of_africa_capture_settlement_cause = {
+	if = {
+		limit = { check_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.enemy } }
+		set_variable = { gods_of_africa_settlement_cause = constant:gods_of_africa_settlement_cause.hostility }
+	}
+	else_if = {
+		limit = { check_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.favored } }
+		set_variable = { gods_of_africa_settlement_cause = constant:gods_of_africa_settlement_cause.sustained }
+	}
+	else_if = {
+		limit = { check_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.respected } }
+		set_variable = { gods_of_africa_settlement_cause = constant:gods_of_africa_settlement_cause.mixed }
+	}
+	else_if = {
+		limit = { gods_of_africa_full_grade_has_prior_hostility = yes }
+		set_variable = { gods_of_africa_settlement_cause = constant:gods_of_africa_settlement_cause.unrecovered }
+	}
+	else_if = {
+		limit = { has_country_flag = gods_of_africa_grade_no_contract_history }
+		set_variable = { gods_of_africa_settlement_cause = constant:gods_of_africa_settlement_cause.no_record }
+	}
+	else = { set_variable = { gods_of_africa_settlement_cause = constant:gods_of_africa_settlement_cause.inconsistent } }
+}
+
+# ----------------------------------------------------------------------------
+# Phase 2: frozen obligation and standing diplomacy
+# ----------------------------------------------------------------------------
+
+# PARTICIPANT inside the settling host's transaction. The obligation is bound to
+# the settling host object, never to a later global host pointer.
+gods_of_africa_initialize_settlement_obligation = {
+	if = {
+		limit = {
+			has_country_flag = gods_of_africa_settlement_pass_pending
+			has_country_flag = gods_of_africa_final_outcome_committed
+			gods_of_africa_final_settlement_value_is_valid = yes
+			gods_of_africa_full_grade_inputs_are_valid = yes
+			NOT = { has_country_flag = gods_of_africa_settlement_obligation_committed }
+			has_event_target = gods_of_africa_settlement_host
+		}
+		gods_of_africa_calculate_settlement_entitlement = yes
+		if = {
+			limit = {
+				has_variable = gods_of_africa_reward_equipment_entitlement
+				has_variable = gods_of_africa_reward_fuel_entitlement
+			}
+			set_country_flag = gods_of_africa_settlement_obligation_committed
+			set_variable = { gods_of_africa_reward_source_id = event_target:gods_of_africa_settlement_host.id }
+			set_variable = { gods_of_africa_reward_source_generation = event_target:gods_of_africa_settlement_host.africa_host_generation }
+			set_variable = { gods_of_africa_reward_source_origin_id = event_target:gods_of_africa_settlement_host.africa_origin_host_id }
+			set_variable = { gods_of_africa_reward_receiver_id = THIS.id }
+			set_variable = { gods_of_africa_reward_equipment_owed = gods_of_africa_reward_equipment_entitlement }
+			set_variable = { gods_of_africa_reward_fuel_owed = gods_of_africa_reward_fuel_entitlement }
+			set_variable = { gods_of_africa_reward_equipment_delivered = constant:gods_of_africa_value.zero }
+			set_variable = { gods_of_africa_reward_fuel_delivered = constant:gods_of_africa_value.zero }
+			if = {
+				limit = {
+					OR = {
+						check_variable = { gods_of_africa_reward_equipment_owed > constant:gods_of_africa_value.zero }
+						check_variable = { gods_of_africa_reward_fuel_owed > constant:gods_of_africa_value.zero }
+					}
+				}
+				set_country_flag = gods_of_africa_settlement_delivery_pending
+			}
+			else = {
+				# Nothing is owed, so the obligation is complete without a grant.
+				set_country_flag = gods_of_africa_settlement_reward_granted
+			}
+			gods_of_africa_apply_settlement_diplomacy = yes
+		}
+		else = { set_country_flag = gods_of_africa_settlement_obligation_unresolved }
+	}
+}
+
+# PARTICIPANT. Standing diplomacy is applied once and follows the frozen standing.
+gods_of_africa_apply_settlement_diplomacy = {
+	if = {
+		limit = {
+			has_country_flag = gods_of_africa_final_outcome_committed
+			gods_of_africa_final_settlement_value_is_valid = yes
+			NOT = { has_country_flag = gods_of_africa_settlement_diplomacy_applied }
+			has_event_target = gods_of_africa_settlement_host
+			exists = yes
+		}
+		set_country_flag = gods_of_africa_settlement_diplomacy_applied
+		save_event_target_as = gods_of_africa_settlement_participant
+		if = {
+			limit = { check_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.favored } }
+			add_opinion_modifier = { target = event_target:gods_of_africa_settlement_host modifier = gods_of_africa_settlement_honor }
+			event_target:gods_of_africa_settlement_host = {
+				add_opinion_modifier = { target = event_target:gods_of_africa_settlement_participant modifier = gods_of_africa_settlement_honor }
+				if = {
+					limit = {
+						NOT = { has_war_with = event_target:gods_of_africa_settlement_participant }
+						NOT = { has_guaranteed = event_target:gods_of_africa_settlement_participant }
+					}
+					give_guarantee = event_target:gods_of_africa_settlement_participant
+				}
+			}
+		}
+		else_if = {
+			limit = { check_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.respected } }
+			add_opinion_modifier = { target = event_target:gods_of_africa_settlement_host modifier = gods_of_africa_settlement_favor }
+			event_target:gods_of_africa_settlement_host = { add_opinion_modifier = { target = event_target:gods_of_africa_settlement_participant modifier = gods_of_africa_settlement_favor } }
+			if = {
+				limit = {
+					NOT = { has_war_with = event_target:gods_of_africa_settlement_host }
+					NOT = { has_non_aggression_pact_with = event_target:gods_of_africa_settlement_host }
+				}
+				event_target:gods_of_africa_settlement_host = {
+					diplomatic_relation = { country = event_target:gods_of_africa_settlement_participant relation = non_aggression_pact active = yes }
+				}
+			}
+		}
+		else_if = {
+			limit = { check_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.distrusted } }
+			event_target:gods_of_africa_settlement_host = { add_opinion_modifier = { target = event_target:gods_of_africa_settlement_participant modifier = gods_of_africa_settlement_suspicion } }
+		}
+		else = {
+			add_opinion_modifier = { target = event_target:gods_of_africa_settlement_host modifier = gods_of_africa_settlement_hostility }
+			event_target:gods_of_africa_settlement_host = { add_opinion_modifier = { target = event_target:gods_of_africa_settlement_participant modifier = gods_of_africa_settlement_hostility } }
+		}
+	}
+}
+
+# ----------------------------------------------------------------------------
+# Phase 3: finalize and report
+# ----------------------------------------------------------------------------
+
+# PARTICIPANT. Live authority ends; history, standing and obligation stay.
+gods_of_africa_settlement_finalize_participant = {
+	if = {
+		limit = { has_country_flag = gods_of_africa_settlement_pass_pending }
+		clr_country_flag = gods_of_africa_settlement_pass_pending
+		gods_of_africa_finalize_participant = yes
+		set_country_flag = gods_of_africa_settlement_report_pending
+		country_event = { id = chaosx.nr12.608 }
+	}
+}
+
+# Kept for direct callers: the full three-phase pass for one census entry.
+gods_of_africa_commit_participant_settlement = {
+	gods_of_africa_settlement_classify_participant = yes
+	gods_of_africa_initialize_settlement_obligation = yes
+	gods_of_africa_settlement_finalize_participant = yes
+}
+
+# ----------------------------------------------------------------------------
+# Donor-backed delivery
+# ----------------------------------------------------------------------------
+
+# HOST. Recomputes the host's owed totals, in thousands, from the valid
+# receipts in its retained census. A vanished receiver is left out; its receipt
+# is never moved to another country.
+gods_of_africa_refresh_settlement_owed_totals = {
+	save_event_target_as = gods_of_africa_delivery_source
+	set_variable = { gods_of_africa_reward_equipment_owed_total_k = constant:gods_of_africa_value.zero }
+	set_variable = { gods_of_africa_reward_fuel_owed_total_k = constant:gods_of_africa_value.zero }
+	for_each_scope_loop = {
+		array = gods_of_africa_candidate_registry
+		if = {
+			limit = { gods_of_africa_settlement_receipt_is_owed_by_source = yes }
+			set_temp_variable = { gods_of_africa_delivery_owed_k = gods_of_africa_reward_equipment_owed }
+			multiply_temp_variable = { gods_of_africa_delivery_owed_k = constant:gods_of_africa_contribution_measure.k_per_native }
+			event_target:gods_of_africa_delivery_source = { add_to_variable = { gods_of_africa_reward_equipment_owed_total_k = gods_of_africa_delivery_owed_k } }
+			set_temp_variable = { gods_of_africa_delivery_owed_k = gods_of_africa_reward_fuel_owed }
+			multiply_temp_variable = { gods_of_africa_delivery_owed_k = constant:gods_of_africa_contribution_measure.k_per_native }
+			event_target:gods_of_africa_delivery_source = { add_to_variable = { gods_of_africa_reward_fuel_owed_total_k = gods_of_africa_delivery_owed_k } }
+		}
+	}
+}
+
+# HOST. Spendable infantry for one batch: never below the operating floor or a
+# tenth of the army's equipment requirement, never more than the common-defence
+# ledger above its floor, and found with the native stock check in at most
+# gods_of_africa_reward_units.availability_search_iterations steps.
+gods_of_africa_measure_settlement_equipment_budget = {
+	set_variable = { gods_of_africa_delivery_equipment_budget = constant:gods_of_africa_value.zero }
+	if = {
+		limit = {
+			has_variable = africa_common_defence_stockpile
+			check_variable = { gods_of_africa_reward_equipment_owed_total_k > constant:gods_of_africa_value.zero }
+		}
+		# Army reserve floor.
+		set_temp_variable = { gods_of_africa_floor_input = num_target_equipment_in_armies_k@infantry_equipment }
+		multiply_temp_variable = { gods_of_africa_floor_input = constant:gods_of_africa_contribution_measure.native_per_k }
+		multiply_temp_variable = { gods_of_africa_floor_input = constant:gods_of_africa_reward_scale.army_equipment_reserve_fraction }
+		gods_of_africa_floor_temporary_value = yes
+		set_temp_variable = { gods_of_africa_delivery_army_floor = gods_of_africa_floor_output }
+		if = {
+			limit = { check_variable = { gods_of_africa_delivery_army_floor < gods_of_africa_floor_input } }
+			add_to_temp_variable = { gods_of_africa_delivery_army_floor = constant:gods_of_africa_value.one }
+		}
+		clamp_temp_variable = { var = gods_of_africa_delivery_army_floor min = constant:gods_of_africa_value.capacity_floor_equipment }
+		# Upper bound: batch ceiling, total owed and the spendable ledger.
+		set_temp_variable = { gods_of_africa_delivery_high = gods_of_africa_reward_equipment_owed_total_k }
+		set_temp_variable = { gods_of_africa_delivery_batch_k = constant:gods_of_africa_reward_units.batch_equipment_ceiling }
+		multiply_temp_variable = { gods_of_africa_delivery_batch_k = constant:gods_of_africa_contribution_measure.k_per_native }
+		clamp_temp_variable = { var = gods_of_africa_delivery_high max = gods_of_africa_delivery_batch_k }
+		multiply_temp_variable = { gods_of_africa_delivery_high = constant:gods_of_africa_contribution_measure.native_per_k }
+		set_temp_variable = { gods_of_africa_equipment_amount = africa_common_defence_stockpile }
+		subtract_from_temp_variable = { gods_of_africa_equipment_amount = constant:gods_of_africa_value.capacity_floor_equipment }
+		clamp_temp_variable = { var = gods_of_africa_equipment_amount min = constant:gods_of_africa_value.zero }
+		gods_of_africa_floor_equipment_amount = yes
+		clamp_temp_variable = { var = gods_of_africa_delivery_high max = gods_of_africa_equipment_amount }
+		set_temp_variable = { gods_of_africa_equipment_amount = gods_of_africa_delivery_high }
+		gods_of_africa_floor_equipment_amount = yes
+		set_temp_variable = { gods_of_africa_delivery_high = gods_of_africa_equipment_amount }
+		# Greatest shipment q that keeps the army floor in stock.
+		set_temp_variable = { gods_of_africa_delivery_low = constant:gods_of_africa_value.zero }
+		set_temp_variable = { gods_of_africa_delivery_steps = constant:gods_of_africa_value.zero }
+		while_loop_effect = {
+			limit = {
+				check_variable = { gods_of_africa_delivery_low < gods_of_africa_delivery_high }
+				check_variable = { gods_of_africa_delivery_steps < constant:gods_of_africa_reward_units.availability_search_iterations }
+			}
+			add_to_temp_variable = { gods_of_africa_delivery_steps = constant:gods_of_africa_value.one }
+			set_temp_variable = { gods_of_africa_equipment_amount = gods_of_africa_delivery_low }
+			add_to_temp_variable = { gods_of_africa_equipment_amount = gods_of_africa_delivery_high }
+			add_to_temp_variable = { gods_of_africa_equipment_amount = constant:gods_of_africa_value.one }
+			divide_temp_variable = { gods_of_africa_equipment_amount = constant:gods_of_africa_settlement_delivery.search_divisor }
+			gods_of_africa_floor_equipment_amount = yes
+			set_temp_variable = { gods_of_africa_delivery_probe = gods_of_africa_equipment_amount }
+			add_to_temp_variable = { gods_of_africa_delivery_probe = gods_of_africa_delivery_army_floor }
+			if = {
+				limit = { NOT = { has_equipment = { infantry_equipment < gods_of_africa_delivery_probe } } }
+				set_temp_variable = { gods_of_africa_delivery_low = gods_of_africa_equipment_amount }
+			}
+			else = {
+				set_temp_variable = { gods_of_africa_delivery_high = gods_of_africa_equipment_amount }
+				subtract_from_temp_variable = { gods_of_africa_delivery_high = constant:gods_of_africa_value.one }
+			}
+		}
+		set_variable = { gods_of_africa_delivery_equipment_budget = gods_of_africa_delivery_low }
+	}
+}
+
+# HOST. Spendable fuel for one batch above the operating fuel floor.
+gods_of_africa_measure_settlement_fuel_budget = {
+	set_variable = { gods_of_africa_delivery_fuel_budget = constant:gods_of_africa_value.zero }
+	if = {
+		limit = { check_variable = { gods_of_africa_reward_fuel_owed_total_k > constant:gods_of_africa_value.zero } }
+		# Read in thousands and bound before converting, so a large stockpile
+		# never overflows the raw value.
+		set_temp_variable = { gods_of_africa_delivery_batch_k = constant:gods_of_africa_reward_units.batch_fuel_ceiling }
+		add_to_temp_variable = { gods_of_africa_delivery_batch_k = constant:gods_of_africa_value.capacity_floor_fuel }
+		multiply_temp_variable = { gods_of_africa_delivery_batch_k = constant:gods_of_africa_contribution_measure.k_per_native }
+		set_temp_variable = { gods_of_africa_equipment_amount = fuel_k }
+		clamp_temp_variable = { var = gods_of_africa_equipment_amount max = gods_of_africa_delivery_batch_k }
+		multiply_temp_variable = { gods_of_africa_equipment_amount = constant:gods_of_africa_contribution_measure.native_per_k }
+		gods_of_africa_floor_equipment_amount = yes
+		subtract_from_temp_variable = { gods_of_africa_equipment_amount = constant:gods_of_africa_value.capacity_floor_fuel }
+		clamp_temp_variable = { var = gods_of_africa_equipment_amount min = constant:gods_of_africa_value.zero max = constant:gods_of_africa_reward_units.batch_fuel_ceiling }
+		set_variable = { gods_of_africa_delivery_fuel_budget = gods_of_africa_equipment_amount }
+	}
+}
+
+# RECEIVER. Free tank space in raw fuel, bounded by its own fuel balance.
+gods_of_africa_measure_settlement_fuel_basis = {
+	set_variable = { gods_of_africa_reward_fuel_basis = constant:gods_of_africa_value.zero }
+	if = {
+		limit = { check_variable = { gods_of_africa_reward_fuel_owed > constant:gods_of_africa_value.zero } }
+		set_temp_variable = { gods_of_africa_equipment_amount = max_fuel_k }
+		subtract_from_temp_variable = { gods_of_africa_equipment_amount = fuel_k }
+		clamp_temp_variable = { var = gods_of_africa_equipment_amount min = constant:gods_of_africa_value.zero }
+		set_temp_variable = { gods_of_africa_delivery_batch_k = gods_of_africa_reward_fuel_owed }
+		multiply_temp_variable = { gods_of_africa_delivery_batch_k = constant:gods_of_africa_contribution_measure.k_per_native }
+		clamp_temp_variable = { var = gods_of_africa_equipment_amount max = gods_of_africa_delivery_batch_k }
+		multiply_temp_variable = { gods_of_africa_equipment_amount = constant:gods_of_africa_contribution_measure.native_per_k }
+		gods_of_africa_floor_equipment_amount = yes
+		set_variable = { gods_of_africa_reward_fuel_basis = gods_of_africa_equipment_amount }
+	}
+}
+
+# RECEIVER inside the delivery pass. Input: normal gods_of_africa_delivery_allocation.
+# The donor and receiver stocks are measured around the native send; only the
+# common delivered amount leaves the obligation and the common-defence ledger.
+gods_of_africa_send_settlement_equipment = {
+	if = {
+		limit = { check_variable = { gods_of_africa_delivery_allocation > constant:gods_of_africa_value.zero } }
+		save_event_target_as = gods_of_africa_delivery_receiver
+		set_temp_variable = { gods_of_africa_delivery_shipment = gods_of_africa_delivery_allocation }
+		set_temp_variable = { gods_of_africa_delivery_receiver_before = num_equipment@infantry_equipment }
+		event_target:gods_of_africa_delivery_source = {
+			set_temp_variable = { gods_of_africa_delivery_source_before = num_equipment@infantry_equipment }
+			send_equipment = { equipment = infantry_equipment amount = gods_of_africa_delivery_shipment target = event_target:gods_of_africa_delivery_receiver }
+			set_temp_variable = { gods_of_africa_delivery_source_after = num_equipment@infantry_equipment }
+		}
+		set_temp_variable = { gods_of_africa_delivery_actual = num_equipment@infantry_equipment }
+		subtract_from_temp_variable = { gods_of_africa_delivery_actual = gods_of_africa_delivery_receiver_before }
+		set_temp_variable = { gods_of_africa_delivery_debit = gods_of_africa_delivery_source_before }
+		subtract_from_temp_variable = { gods_of_africa_delivery_debit = gods_of_africa_delivery_source_after }
+		clamp_temp_variable = { var = gods_of_africa_delivery_actual min = constant:gods_of_africa_value.zero max = gods_of_africa_delivery_debit }
+		clamp_temp_variable = { var = gods_of_africa_delivery_actual max = gods_of_africa_delivery_shipment }
+		subtract_from_variable = { gods_of_africa_reward_equipment_owed = gods_of_africa_delivery_actual }
+		add_to_variable = { gods_of_africa_reward_equipment_delivered = gods_of_africa_delivery_actual }
+		add_to_variable = { gods_of_africa_reward_batch_equipment = gods_of_africa_delivery_actual }
+		event_target:gods_of_africa_delivery_source = {
+			subtract_from_variable = { africa_common_defence_stockpile = gods_of_africa_delivery_actual }
+			subtract_from_variable = { gods_of_africa_delivery_equipment_remaining = gods_of_africa_delivery_actual }
+			add_to_variable = { gods_of_africa_delivery_equipment_sent = gods_of_africa_delivery_actual }
+		}
+	}
+	set_variable = { gods_of_africa_delivery_allocation = constant:gods_of_africa_value.zero }
+}
+
+# RECEIVER inside the delivery pass. Input: normal gods_of_africa_delivery_allocation.
+gods_of_africa_send_settlement_fuel = {
+	if = {
+		limit = { check_variable = { gods_of_africa_delivery_allocation > constant:gods_of_africa_value.zero } }
+		set_temp_variable = { gods_of_africa_delivery_shipment = gods_of_africa_delivery_allocation }
+		set_temp_variable = { gods_of_africa_delivery_receiver_before = fuel_k }
+		event_target:gods_of_africa_delivery_source = {
+			set_temp_variable = { gods_of_africa_delivery_source_before = fuel_k }
+			set_temp_variable = { fuel_stockpile_removal_amount = gods_of_africa_delivery_shipment }
+			remove_fuel_from_stockpile = yes
+			set_temp_variable = { gods_of_africa_delivery_source_after = fuel_k }
+		}
+		add_fuel = gods_of_africa_delivery_shipment
+		set_temp_variable = { gods_of_africa_delivery_actual = fuel_k }
+		subtract_from_temp_variable = { gods_of_africa_delivery_actual = gods_of_africa_delivery_receiver_before }
+		set_temp_variable = { gods_of_africa_delivery_debit = gods_of_africa_delivery_source_before }
+		subtract_from_temp_variable = { gods_of_africa_delivery_debit = gods_of_africa_delivery_source_after }
+		clamp_temp_variable = { var = gods_of_africa_delivery_actual min = constant:gods_of_africa_value.zero max = gods_of_africa_delivery_debit }
+		multiply_temp_variable = { gods_of_africa_delivery_actual = constant:gods_of_africa_contribution_measure.native_per_k }
+		clamp_temp_variable = { var = gods_of_africa_delivery_actual max = gods_of_africa_delivery_shipment }
+		subtract_from_variable = { gods_of_africa_reward_fuel_owed = gods_of_africa_delivery_actual }
+		add_to_variable = { gods_of_africa_reward_fuel_delivered = gods_of_africa_delivery_actual }
+		add_to_variable = { gods_of_africa_reward_batch_fuel = gods_of_africa_delivery_actual }
+		subtract_from_variable = { gods_of_africa_reward_fuel_basis = gods_of_africa_delivery_actual }
+		event_target:gods_of_africa_delivery_source = {
+			subtract_from_variable = { gods_of_africa_delivery_fuel_remaining = gods_of_africa_delivery_actual }
+			add_to_variable = { gods_of_africa_delivery_fuel_sent = gods_of_africa_delivery_actual }
+		}
+	}
+	set_variable = { gods_of_africa_delivery_allocation = constant:gods_of_africa_value.zero }
+}
+
+# HOST. One bounded batch: each owed receiver gets its proportional share of
+# the spendable equipment and fuel, then one residual pass hands out rounding
+# leftovers one unit at a time. Fuel that does not fit a receiver's tank stays
+# with Africa. The clicked or first receiver gets no priority.
+gods_of_africa_deliver_settlement_obligations = {
+	if = {
+		limit = { gods_of_africa_settlement_source_has_pending_delivery = yes }
+		gods_of_africa_refresh_settlement_owed_totals = yes
+		gods_of_africa_measure_settlement_equipment_budget = yes
+		gods_of_africa_measure_settlement_fuel_budget = yes
+		set_variable = { gods_of_africa_delivery_equipment_remaining = gods_of_africa_delivery_equipment_budget }
+		set_variable = { gods_of_africa_delivery_fuel_remaining = gods_of_africa_delivery_fuel_budget }
+		set_variable = { gods_of_africa_delivery_equipment_sent = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_delivery_fuel_sent = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_delivery_fuel_basis_total_k = constant:gods_of_africa_value.zero }
+		# Claimable fuel is limited by each receiver's free tank space.
+		for_each_scope_loop = {
+			array = gods_of_africa_candidate_registry
+			if = {
+				limit = { has_country_flag = gods_of_africa_settlement_obligation_committed }
+				set_variable = { gods_of_africa_reward_batch_equipment = constant:gods_of_africa_value.zero }
+				set_variable = { gods_of_africa_reward_batch_fuel = constant:gods_of_africa_value.zero }
+			}
+			if = {
+				limit = { gods_of_africa_settlement_receipt_can_receive_batch = yes }
+				gods_of_africa_measure_settlement_fuel_basis = yes
+				set_temp_variable = { gods_of_africa_delivery_owed_k = gods_of_africa_reward_fuel_basis }
+				multiply_temp_variable = { gods_of_africa_delivery_owed_k = constant:gods_of_africa_contribution_measure.k_per_native }
+				event_target:gods_of_africa_delivery_source = { add_to_variable = { gods_of_africa_delivery_fuel_basis_total_k = gods_of_africa_delivery_owed_k } }
+			}
+		}
+		set_variable = { gods_of_africa_delivery_equipment_pool = gods_of_africa_delivery_equipment_budget }
+		set_variable = { gods_of_africa_delivery_fuel_pool = gods_of_africa_delivery_fuel_budget }
+		# Proportional pass. Budget times share is multiplied before dividing.
+		for_each_scope_loop = {
+			array = gods_of_africa_candidate_registry
+			if = {
+				limit = { gods_of_africa_settlement_receipt_can_receive_batch = yes }
+				if = {
+					limit = {
+						check_variable = { gods_of_africa_reward_equipment_owed > constant:gods_of_africa_value.zero }
+						event_target:gods_of_africa_delivery_source = {
+							check_variable = { gods_of_africa_delivery_equipment_remaining > constant:gods_of_africa_value.zero }
+							check_variable = { gods_of_africa_reward_equipment_owed_total_k > constant:gods_of_africa_value.zero }
+						}
+					}
+					set_temp_variable = { gods_of_africa_equipment_amount = gods_of_africa_reward_equipment_owed }
+					multiply_temp_variable = { gods_of_africa_equipment_amount = constant:gods_of_africa_contribution_measure.k_per_native }
+					multiply_temp_variable = { gods_of_africa_equipment_amount = event_target:gods_of_africa_delivery_source.gods_of_africa_delivery_equipment_pool }
+					divide_temp_variable = { gods_of_africa_equipment_amount = event_target:gods_of_africa_delivery_source.gods_of_africa_reward_equipment_owed_total_k }
+					gods_of_africa_floor_equipment_amount = yes
+					clamp_temp_variable = { var = gods_of_africa_equipment_amount max = gods_of_africa_reward_equipment_owed }
+					clamp_temp_variable = { var = gods_of_africa_equipment_amount max = event_target:gods_of_africa_delivery_source.gods_of_africa_delivery_equipment_remaining }
+					set_variable = { gods_of_africa_delivery_allocation = gods_of_africa_equipment_amount }
+					gods_of_africa_send_settlement_equipment = yes
+				}
+				if = {
+					limit = {
+						check_variable = { gods_of_africa_reward_fuel_basis > constant:gods_of_africa_value.zero }
+						event_target:gods_of_africa_delivery_source = {
+							check_variable = { gods_of_africa_delivery_fuel_remaining > constant:gods_of_africa_value.zero }
+							check_variable = { gods_of_africa_delivery_fuel_basis_total_k > constant:gods_of_africa_value.zero }
+						}
+					}
+					set_temp_variable = { gods_of_africa_equipment_amount = gods_of_africa_reward_fuel_basis }
+					multiply_temp_variable = { gods_of_africa_equipment_amount = constant:gods_of_africa_contribution_measure.k_per_native }
+					multiply_temp_variable = { gods_of_africa_equipment_amount = event_target:gods_of_africa_delivery_source.gods_of_africa_delivery_fuel_pool }
+					divide_temp_variable = { gods_of_africa_equipment_amount = event_target:gods_of_africa_delivery_source.gods_of_africa_delivery_fuel_basis_total_k }
+					gods_of_africa_floor_equipment_amount = yes
+					clamp_temp_variable = { var = gods_of_africa_equipment_amount max = gods_of_africa_reward_fuel_basis }
+					clamp_temp_variable = { var = gods_of_africa_equipment_amount max = event_target:gods_of_africa_delivery_source.gods_of_africa_delivery_fuel_remaining }
+					set_variable = { gods_of_africa_delivery_allocation = gods_of_africa_equipment_amount }
+					gods_of_africa_send_settlement_fuel = yes
+				}
+			}
+		}
+		# Rounding residue: at most one more unit per receiver while budget remains.
+		for_each_scope_loop = {
+			array = gods_of_africa_candidate_registry
+			if = {
+				limit = { gods_of_africa_settlement_receipt_can_receive_batch = yes }
+				if = {
+					limit = {
+						check_variable = { gods_of_africa_reward_equipment_owed > constant:gods_of_africa_value.zero }
+						event_target:gods_of_africa_delivery_source = { check_variable = { gods_of_africa_delivery_equipment_remaining > constant:gods_of_africa_value.zero } }
+					}
+					set_variable = { gods_of_africa_delivery_allocation = constant:gods_of_africa_value.one }
+					gods_of_africa_send_settlement_equipment = yes
+				}
+				if = {
+					limit = {
+						check_variable = { gods_of_africa_reward_fuel_basis > constant:gods_of_africa_value.zero }
+						event_target:gods_of_africa_delivery_source = { check_variable = { gods_of_africa_delivery_fuel_remaining > constant:gods_of_africa_value.zero } }
+					}
+					set_variable = { gods_of_africa_delivery_allocation = constant:gods_of_africa_value.one }
+					gods_of_africa_send_settlement_fuel = yes
+				}
+			}
+		}
+		# Completion receipts.
+		for_each_scope_loop = {
+			array = gods_of_africa_candidate_registry
+			if = {
+				limit = {
+					gods_of_africa_settlement_receipt_is_owed_by_source = yes
+					check_variable = { gods_of_africa_reward_equipment_owed < constant:gods_of_africa_value.one }
+					check_variable = { gods_of_africa_reward_fuel_owed < constant:gods_of_africa_value.one }
+				}
+				set_country_flag = gods_of_africa_settlement_reward_granted
+				clr_country_flag = gods_of_africa_settlement_delivery_pending
+			}
+			if = {
+				limit = { has_variable = gods_of_africa_reward_fuel_basis }
+				clear_variable = gods_of_africa_reward_fuel_basis
+			}
+		}
+		gods_of_africa_refresh_settlement_owed_totals = yes
+		set_variable = { gods_of_africa_delivery_last_day = global.num_days }
+		clear_variable = gods_of_africa_delivery_equipment_pool
+		clear_variable = gods_of_africa_delivery_fuel_pool
+		clear_variable = gods_of_africa_delivery_equipment_remaining
+		clear_variable = gods_of_africa_delivery_fuel_remaining
+		clear_variable = gods_of_africa_delivery_fuel_basis_total_k
+	}
+}
+
+# HOST. Owner endpoint for the settlement obligations after classification.
+gods_of_africa_initialize_settlement_delivery = {
+	if = {
+		limit = {
+			has_country_flag = gods_of_africa_final_settlement_committed
+			NOT = { has_country_flag = gods_of_africa_settlement_delivery_initialized }
+		}
+		set_country_flag = gods_of_africa_settlement_delivery_initialized
+		gods_of_africa_refresh_settlement_owed_totals = yes
 	}
 }
