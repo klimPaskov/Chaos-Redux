@@ -1142,6 +1142,24 @@ event021_exposure_opposition_target_aligned = {
 	}
 }
 
+# STATE scope. The state can carry ROOT's priority front while ROOT owns and
+# controls it and it belongs to ROOT's current front.
+event021_priority_front_state_candidate = {
+	is_owned_by = ROOT
+	is_controlled_by = ROOT
+	is_in_array = { array = ROOT.random_civil_war_opening_core_states value = THIS }
+}
+
+# COUNTRY scope on the decision taker (ROOT). Shared by Set the Priority
+# Front's availability and its setter, so the cost is only paid when a held
+# state of the current front can become the priority front.
+event021_priority_front_target_valid = {
+	any_of_scopes = {
+		array = random_civil_war_opening_core_states
+		event021_priority_front_state_candidate = yes
+	}
+}
+
 event021_priority_front_depot_target_valid = {
 	has_variable = random_civil_war_priority_front_state
 	var:random_civil_war_priority_front_state = {

@@ -1046,8 +1046,17 @@ event021_reject_pending_front_plan_row = {
 
 # STATE or COUNTRY scope through the current anchor target. The priority state
 # is a global event target because selected-front decisions outlive one event
-# chain. Full cleanup must call `event021_clear_priority_front`.
+# chain. Full cleanup must call `event021_clear_priority_front`. Opening
+# chains pass their chain-local anchor target; a later decision has no such
+# target, so the setter resolves the taker's own front state first.
 event021_set_priority_front = {
+	if = {
+		limit = {
+			NOT = { has_event_target = random_civil_war_anchor_state }
+			event021_priority_front_target_valid = yes
+		}
+		event021_resolve_priority_front_target = yes
+	}
 	if = {
 		limit = { has_event_target = random_civil_war_anchor_state }
 		event_target:random_civil_war_anchor_state = {
@@ -1060,6 +1069,47 @@ event021_set_priority_front = {
 		}
 		set_global_flag = random_civil_war_priority_front_active
 		event021_bind_current_front_plan_row = yes
+	}
+}
+
+# COUNTRY scope on the decision taker (ROOT). Saves the chain-local
+# `random_civil_war_anchor_state` target from durable front receipts, in order:
+# the country's own anchor, the shared opening anchor, the capital, then the
+# first held state of its current front. Each choice must pass
+# `event021_priority_front_state_candidate`, the same check the decision uses.
+event021_resolve_priority_front_target = {
+	set_temp_variable = { event021_priority_target_found = constant:random_civil_war_value.zero }
+	if = {
+		limit = {
+			has_variable = random_civil_war_anchor_state
+			var:random_civil_war_anchor_state = { event021_priority_front_state_candidate = yes }
+		}
+		var:random_civil_war_anchor_state = { save_event_target_as = random_civil_war_anchor_state }
+		set_temp_variable = { event021_priority_target_found = constant:random_civil_war_value.one }
+	}
+	else_if = {
+		limit = {
+			has_event_target = random_civil_war_global_anchor_state
+			event_target:random_civil_war_global_anchor_state = { event021_priority_front_state_candidate = yes }
+		}
+		event_target:random_civil_war_global_anchor_state = { save_event_target_as = random_civil_war_anchor_state }
+		set_temp_variable = { event021_priority_target_found = constant:random_civil_war_value.one }
+	}
+	else_if = {
+		limit = { capital_scope = { event021_priority_front_state_candidate = yes } }
+		capital_scope = { save_event_target_as = random_civil_war_anchor_state }
+		set_temp_variable = { event021_priority_target_found = constant:random_civil_war_value.one }
+	}
+	else = {
+		for_each_scope_loop = {
+			array = random_civil_war_opening_core_states
+			break = event021_priority_target_found
+			if = {
+				limit = { event021_priority_front_state_candidate = yes }
+				save_event_target_as = random_civil_war_anchor_state
+				set_temp_variable = { event021_priority_target_found = constant:random_civil_war_value.one }
+			}
+		}
 	}
 }
 

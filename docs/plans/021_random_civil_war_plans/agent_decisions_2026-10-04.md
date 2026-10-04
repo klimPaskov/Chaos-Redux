@@ -73,3 +73,12 @@ While Evolution I is active and switched on, that receipt moves the side out of 
 Settlement removes the receipt from every side of the crisis, crisis cleanup removes it per country, and any new crisis role starts without it.
 No AI weight, cost, or mission changed; the hold-capital mission keeps its existing activation.
 Basis: the spec's no-side outcome and the addendum's management section; granting at queueing instead of after a no-side verdict keeps the phase available while a review waits on a temporary blocker.
+
+## D7. Set the Priority Front resolves its own target
+
+Finding: `event021_set_priority_front` acted only on the chain-local `random_civil_war_anchor_state` target, which exists only inside opening chains, so the decision charged command power and did nothing; calling it also cleared the row-bound receipt.
+Decision: when that target is absent, the setter resolves the taker's own front state from durable receipts in a fixed order (its own anchor, the shared opening anchor, its capital, then the first held state of its current front), each owned and controlled by the taker and inside its current front membership.
+The decision's `available` and the setter share `event021_priority_front_target_valid`, and the decision tooltip names the chosen state with the same order.
+`event021_bind_front_plan_row` now replaces the bound receipt only when a plan is published.
+Opening chains keep their exact behavior because they always pass the anchor target.
+Basis: the lead's round-1 assignment and the 2026-09-26 decision audit finding.

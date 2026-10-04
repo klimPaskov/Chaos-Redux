@@ -53,3 +53,4 @@ All actual nonhuman immunity is inherited from the normal-human predicate and it
 `event021_country_can_manage_opening` excludes that phase, and `event021_country_can_manage_fronts` admits it alongside a real multi-front war, so a war without new sides swaps its opening actions for the front-management actions.
 `event021_country_can_use_evolution_i_prevention` admits Protect State Communications for such a war while `event021_evolution_i_communications_target_valid` holds: the capital is controlled and keeps a supply node.
 
+`event021_priority_front_state_candidate` accepts a state that ROOT owns, controls, and holds in its current front membership; `event021_priority_front_target_valid` is true when any state of that membership passes it. Set the Priority Front's availability and its setter share both triggers.

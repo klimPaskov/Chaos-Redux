@@ -153,6 +153,31 @@ defined_text = {
 	text = { localization_key = event021_priority_front_none }
 }
 
+# The state Set the Priority Front will choose, in the same order as
+# event021_resolve_priority_front_target.
+defined_text = {
+	name = event021_GetPriorityFrontCandidateName
+	text = {
+		trigger = {
+			has_variable = random_civil_war_anchor_state
+			var:random_civil_war_anchor_state = { event021_priority_front_state_candidate = yes }
+		}
+		localization_key = "[?random_civil_war_anchor_state.GetName]"
+	}
+	text = {
+		trigger = {
+			has_event_target = random_civil_war_global_anchor_state
+			event_target:random_civil_war_global_anchor_state = { event021_priority_front_state_candidate = yes }
+		}
+		localization_key = "[random_civil_war_global_anchor_state.GetName]"
+	}
+	text = {
+		trigger = { capital_scope = { event021_priority_front_state_candidate = yes } }
+		localization_key = "[ROOT.Capital.GetName]"
+	}
+	text = { localization_key = event021_priority_front_candidate_fallback }
+}
+
 defined_text = {
 	name = event021_GetRailMissionStateName
 	text = {
