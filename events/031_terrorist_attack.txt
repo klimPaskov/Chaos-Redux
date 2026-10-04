@@ -176,14 +176,7 @@ country_event = {
 		set_country_flag = random_terror_terminal_subordinate
 		set_country_flag = random_terror_terminal_choice_recorded
 		random_terror_achievement_record_final_submission = yes
-		if = {
-			limit = {
-				has_event_target = random_terror_final_actor
-				event_target:random_terror_final_actor = { is_in_faction = yes }
-				NOT = { is_in_faction_with = event_target:random_terror_final_actor }
-			}
-			add_to_faction = event_target:random_terror_final_actor
-		}
+		random_terror_join_final_command = yes
 	}
 
 	option = {
@@ -402,13 +395,27 @@ country_event = {
 		}
 		clr_country_flag = random_terror_jihad_membership_offer_pending
 		random_terror_create_jihadist_international_faction = yes
-		event_target:random_terror_jihad_applicant = {
-			if = {
-				limit = { NOT = { is_in_faction_with = ROOT } }
-				add_to_faction = ROOT
+		# The leader adds the applicant to its own faction.
+		if = {
+			limit = {
+				is_faction_leader = yes
+				NOT = { is_in_faction_with = event_target:random_terror_jihad_applicant }
 			}
-			random_terror_accept_jihad_membership = yes
+			event_target:random_terror_jihad_applicant = {
+				if = {
+					limit = { is_in_faction = yes }
+					if = {
+						limit = { is_faction_leader = yes }
+						dismantle_faction = yes
+					}
+					else = {
+						leave_faction = yes
+					}
+				}
+			}
+			add_to_faction = event_target:random_terror_jihad_applicant
 		}
+		event_target:random_terror_jihad_applicant = { random_terror_accept_jihad_membership = yes }
 	}
 
 	option = {

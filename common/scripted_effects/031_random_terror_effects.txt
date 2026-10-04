@@ -4933,12 +4933,37 @@ random_terror_finalize_false_revelation = {
 				limit = {
 					has_country_flag = random_terror_terminal_subordinate
 					NOT = { is_in_faction_with = event_target:random_terror_final_actor }
+					event_target:random_terror_final_actor = { is_faction_leader = yes }
 				}
-				add_to_faction = event_target:random_terror_final_actor
+				random_terror_join_final_command = yes
 			}
 		}
 		set_global_flag = random_terror_world_end_ready
 		refresh_world_threat_state = yes
+	}
+}
+
+# COUNTRY scope: an actor submitting to the final command.  It leaves any
+# other faction first; the final actor, as faction leader, then adds it
+# (add_to_faction adds its target to the scope country's faction).
+random_terror_join_final_command = {
+	if = {
+		limit = {
+			has_event_target = random_terror_final_actor
+			event_target:random_terror_final_actor = { is_faction_leader = yes }
+			NOT = { is_in_faction_with = event_target:random_terror_final_actor }
+		}
+		if = {
+			limit = { is_in_faction = yes }
+			if = {
+				limit = { is_faction_leader = yes }
+				dismantle_faction = yes
+			}
+			else = {
+				leave_faction = yes
+			}
+		}
+		event_target:random_terror_final_actor = { add_to_faction = PREV }
 	}
 }
 
