@@ -27,11 +27,20 @@ It is exhaustive declaration discovery at recorded hashes, with semantic decompo
 The full canonical Event 26 `state_flow` request failed with `timed out awaiting tools/call after 600s` and returned no artifact.
 Focused trace/render requests cannot close the missing full helper/lifecycle proof.
 
+## Calendar anchor correction, 2026-10-04
+
+Disposition: implemented (source), live date progression unresolved.
+`global.num_days` counts days since the start of year 0 in the engine's 365-day calendar; the offline wiki Data structures page gives 706640 for 1 January 1936, and the save `qa_cxt_base.hoi4` dated 1936.1.3 stores `great_depression_recent_major_industrial_state_loss_day=706642`, a variable set from `global.num_days`.
+706642 % 7 = 6 and 3 January 1936 was a Friday, so `friday_remainder` is 6; the earlier remainder 2 opened the sale on Mondays (6 January 1936 and every seven days after).
+`black_friday_update_calendar_flag` sets `black_friday_friday` on 706642 and 706649 and on no day between them.
+The engine calendar has no leap days, so the in-game Friday drifts one real weekday after each skipped 29 February; this is accepted as the in-game week and recorded in [the agent decisions](agent_decisions_2026-10-04.md).
+Rows marked `Calendar-calibration-blocked` below now depend only on live date-progression evidence.
+
 ## Historical acceptance snapshot
 
 ## Evidence boundary
 
-This record is reconciled against the current implementation worktree on 2026-09-02 and is not a claim of completion. `Source` means the relevant script, localisation, registry, or asset path was inspected. `MCP-partial` means the installed HOI4 MCP returned a workspace-wide partial result without a selector-specific blocker. `Live-blocked` means the scenario requires the user-owned live game or multiplayer session. `Calendar-calibration-blocked` means the absolute `global.num_days % 7 == 2` source anchor resolves known Fridays on 3 January 1936, 17 June 1938 (project day 898), and 1 September 1939, but installed Vanilla exposes no weekday trigger or Friday-index precedent and the running engine has not supplied live date progression evidence. `Adapter-blocked` means the final cost registry has no complete owner callsite or engine-accessible route for the scenario; the bounded Communist-spread, Fury, Japan chemical, biological medical-capacity, CBRN shelter, Japan biological, Germany Mengele, and D'Rhondan alien-reserve source tranches have separate bounded adapter status.
+This record is reconciled against the current implementation worktree on 2026-09-02 and is not a claim of completion. `Source` means the relevant script, localisation, registry, or asset path was inspected. `MCP-partial` means the installed HOI4 MCP returned a workspace-wide partial result without a selector-specific blocker. `Live-blocked` means the scenario requires the user-owned live game or multiplayer session. `Calendar-calibration-blocked` originally meant the absolute `global.num_days % 7 == 2` source anchor; that anchor was wrong and is superseded by the 2026-10-04 calendar correction above, so the remaining label only marks the live date-progression evidence that is still outstanding. `Adapter-blocked` means the final cost registry has no complete owner callsite or engine-accessible route for the scenario; the bounded Communist-spread, Fury, Japan chemical, biological medical-capacity, CBRN shelter, Japan biological, Germany Mengele, and D'Rhondan alien-reserve source tranches have separate bounded adapter status.
 
 Event 26 remains disabled in the default event allowlist until every completion blocker below is resolved.
 

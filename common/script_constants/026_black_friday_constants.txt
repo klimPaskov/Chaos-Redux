@@ -22,11 +22,14 @@ black_friday_event = {
 	evolution_type = 26
 	evolution_stage_i = 1
 	evolution_tier_i = 3
-	# global.num_days is the numeric day index from the 1 January 1936 bookmark
-	# in the existing project date contract. 3 January 1936, 17 June 1938 (day
-	# 898), and 1 September 1939 all resolve to remainder 2 and are Fridays.
+	# global.num_days counts days since the start of year 0 in the engine's
+	# 365-day calendar: 1 January 1936 is 706640 (offline wiki, Data structures),
+	# so 3 January 1936 is 706642, and 706642 % 7 = 6. 3 January 1936 was a
+	# Friday, so the in-game Friday is every day whose remainder is 6. The
+	# engine has no leap days, so this seven-day cycle drifts one weekday from
+	# the real calendar after each skipped 29 February (from March 1936 on).
 	weekday_cycle = 7
-	friday_remainder = 2
+	friday_remainder = 6
 	baseline_discount_percent = 50
 	evolution_discount_percent = 75
 	zero_date = 0
