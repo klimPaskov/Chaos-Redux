@@ -1337,9 +1337,12 @@ independence_wave_trigger_scenario = {
 	clr_global_flag = independence_wave_scenario_committed
 	clr_global_flag = independence_wave_scenario_failed
 	clr_global_flag = independence_wave_scenario_finalization_failed
+	clr_global_flag = independence_wave_scenario_launch_called_off
 	clear_variable = global.independence_wave_scenario_last_plan_id
 	clear_variable = global.independence_wave_scenario_last_failure
 	clear_variable = global.independence_wave_execution_last_failure
+	clear_variable = global.independence_wave_execution_last_failure_detail
+	clear_variable = global.independence_wave_execution_last_failure_package_id
 	independence_wave_scenario_set_intensity_tuning = yes
 
 	set_temp_variable = { liberation_call_mode = constant:liberation_plan_mode.triggerable_scenario }
@@ -1435,8 +1438,10 @@ independence_wave_trigger_scenario = {
 			}
 			else = { liberation_release_abort_plan = yes }
 		}
-		# Failure diagnostics are intentionally discarded before returning. The
-		# public ledger is published only by the committed branch above.
+		# The public ledger is published only by the committed branch above. The
+		# failure code and its persistent executor detail stay in globals, and
+		# the launching player receives a short result naming the outcome.
 		independence_wave_scenario_reset_summary = yes
+		country_event = { id = chaosx.triggerable_scenarios.81 }
 	}
 }

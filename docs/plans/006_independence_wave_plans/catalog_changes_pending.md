@@ -47,3 +47,13 @@ Disposition: `accepted and queued` for the catalog owner; implementation is comm
 Disposition: `accepted and queued` for the catalog owner; implementation is committed.
 
 - IW-039 Don Host (DON) can now appear in Independence Waves, with Millerovo as its capital and Volgodonsk as optional territory; it never appears alongside Event 005's Don Host Republic, and it shares one wave slot with the Kuban package.
+
+## 2026-10-04: SCN-008 failure result (D9)
+
+Disposition: `accepted and queued` for the catalog owner; implementation is committed.
+
+| ID | Type | Title | Notes |
+| --- | --- | --- | --- |
+| `chaosx.triggerable_scenarios.81` | Country | No Banner Rises | Sent to the launching player when an Every Banner Rises launch releases no country or is called off; one option "The old borders stand." |
+
+- Basque Country (IW-013) and Galicia (IW-015) can now be chosen by ordinary Independence Waves, not only by the scenario.

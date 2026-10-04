@@ -660,6 +660,8 @@ country_event = {
 			set_variable = { global.independence_wave_scenario_territory_level = independence_wave_wave_territory_level }
 			set_variable = { global.independence_wave_scenario_force_level = independence_wave_wave_force_level }
 			set_variable = { global.independence_wave_scenario_last_failure = constant:liberation_plan_reject_reason.stale_plan }
+			set_global_flag = independence_wave_scenario_launch_called_off
+			country_event = { id = chaosx.triggerable_scenarios.81 }
 		}
 	}
 }
@@ -692,4 +694,31 @@ country_event = {
 		clr_global_flag = independence_wave_scenario_result_pending
 	}
 
+}
+
+# Player-facing SCN-008 failure result. A launch that releases no country, or
+# a queued launch called off before the transaction, reports its outcome to
+# the launching player. The failure code and the executor detail stay in
+# globals for inspection.
+country_event = {
+	id = chaosx.triggerable_scenarios.81
+	title = chaosx.triggerable_scenarios.81.t
+	desc = {
+		text = chaosx.triggerable_scenarios.81.d_unfinished
+		trigger = { has_global_flag = independence_wave_scenario_finalization_failed }
+	}
+	desc = {
+		text = chaosx.triggerable_scenarios.81.d
+		trigger = { NOT = { has_global_flag = independence_wave_scenario_finalization_failed } }
+	}
+	picture = GFX_report_event_006_asset_001_wave_summary
+	is_triggered_only = yes
+	trigger = {
+		has_global_flag = independence_wave_scenario_failed
+		NOT = { has_global_flag = independence_wave_scenario_committed }
+	}
+
+	option = {
+		name = chaosx.triggerable_scenarios.81.a
+	}
 }

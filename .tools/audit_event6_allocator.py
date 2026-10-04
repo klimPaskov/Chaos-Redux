@@ -857,15 +857,26 @@ def main() -> int:
 			# activates it. The target is normally absent, but an empty startup
 			# carrier shell is also valid; the sponsorship country is the already-
 			# existing side of the ledger.
-			dormant_target_validation = (
-				rf"event_target:{re.escape(target)}\s*=\s*\{{"
-				rf"(?:(?:\s*#.*\n)*)"
-				rf"\s*(?:exists\s*=\s*no|is_independence_wave_dormant_country_scope\s*=\s*yes)"
-				rf"\s*{re.escape(first_readiness_trigger)}"
-			)
+			# Each carrier proof is a separate ordered check with its own
+			# failure-detail code: dormant shell, current reservation, then the
+			# exact package preflight.
+			for carrier_check in (
+				"is_independence_wave_dormant_country_scope = yes",
+				first_readiness_trigger,
+				"is_independence_wave_runtime_package_preflight_ready = yes",
+			):
+				carrier_validation = (
+					rf"NOT\s*=\s*\{{\s*event_target:{re.escape(target)}\s*=\s*\{{"
+					rf"\s*{re.escape(carrier_check)}\s*\}}\s*\}}"
+				)
+				require(
+					re.search(carrier_validation, execution_metadata) is not None,
+					f"Event 006 execution metadata does not validate {target} with {carrier_check} before release",
+					errors,
+				)
 			require(
-				re.search(dormant_target_validation, execution_metadata) is not None,
-				f"Event 006 execution metadata does not validate dormant {target} before release",
+				"independence_wave_execution_failure_detail.carrier_preflight_failed" in execution_metadata,
+				"Event 006 execution metadata does not record a carrier preflight failure detail",
 				errors,
 			)
 			continue
@@ -888,6 +899,25 @@ def main() -> int:
 			f"Event 006 execution metadata inverts the existence test for {target}",
 			errors,
 		)
+	# Exact identity triggers run again inside execution preflight, after the
+	# package anchor has been reserved for the same carrier. The plain
+	# candidate-anchor proof rejects every reserved state, so it made each
+	# anchor-bound package fail execution with invalid_scope.
+	for trigger_path in sorted((ROOT / "common/scripted_triggers").glob("006_*.txt")):
+		trigger_text = trigger_path.read_text(encoding="utf-8-sig")
+		for identity_match in re.finditer(
+			r"^(is_independence_wave_exact_package_iw_\d+_tag_available)\s*=\s*\{", trigger_text, re.M
+		):
+			try:
+				identity_block = extract_script_block(trigger_text, identity_match.group(1))
+			except ValueError as exc:
+				errors.append(str(exc))
+				continue
+			require(
+				"is_independence_wave_candidate_anchor_available" not in identity_block,
+				f"{identity_match.group(1)} uses the pre-reservation anchor proof that rejects its own frozen anchor",
+				errors,
+			)
 	try:
 		achievement_initialize = extract_script_block(
 			read("common/scripted_effects/006_independence_wave_achievement_effects.txt"),
