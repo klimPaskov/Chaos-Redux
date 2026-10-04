@@ -38,6 +38,7 @@ A rejected settlement leaves the row, both ledgers and the national integration 
 Because a settled row is completed with zero people, repeating the action cannot settle it again, consume another cohort's reception load, or credit integration twice.
 
 The decision pays its fee before the settlement, as accepted for the paid-action tranche.
+Its visibility, target filter, availability and start preflight all require `migration_local_integration_host_can_settle`, so the fee is only taken when the integrating country owns and controls the host and both reception ledgers already cover the hosted group, which are the settlement's own ledger conditions.
 After a successful settlement it records the integrated receiving state and cohort-resolution achievements, asks `migration_cleanup_cohort_record` to remove the terminal row once nothing else references it, and updates the migration phase flags.
 
 ## `migration_integrate_displaced_cohort`

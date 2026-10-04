@@ -78,3 +78,17 @@ No workbook or exported CSV was edited, and no catalog change is pending.
 - needs_live_game: decision tooltips and cost colours, paid receipts and the five refunds, intent colours and hover text, integration settlement, capture flight and food assessment, and the two condemnation seams.
 - The mandatory numeric probability comparison stays blocked on the MCP routes above.
 - Event-owner-specific hooks remain with their owners (decision 6).
+
+## Round-1 review decisions
+
+Disposition: accepted and implemented by the round-1 reviewer under the same grant of design authority.
+
+11. **Local integration is offered only where the settlement can run.**
+    The decision targeted any controlled state and checked only that both reception loads were positive, while the settlement debits the owner's state and national ledgers and requires the integrating country to own and control the host and both ledgers to cover the whole hosted group.
+    A hosted group in an occupied state, or a ledger that did not cover the group, therefore took the fee and settled nothing.
+    The new `migration_local_integration_host_can_settle` trigger carries the settlement's own ledger conditions into `visible`, `available`, `target_trigger` and the start preflight.
+12. **Corridor refusal condemns only a receiver that could have accepted.**
+    Rejection and an unanswered lapse were condemned even when the receiver's front was unsafe or its reception capacity could not hold the request, so a receiver without room was condemned whichever way it answered.
+    The specification asks for a proven, deliberate obstruction, so `famine_condemn_corridor_obstruction` also requires `humanitarian_corridor_full_request_headroom_is_valid`; a stale capacity revision fails closed and condemns nothing.
+13. **Plainer intent and integration text.**
+    The three receiver-front intent lines and the integration effect tooltip were reworded so they say what has and has not happened yet.

@@ -864,15 +864,19 @@ famine_clear_condemnation_envelope = {
 # STATE scope: the origin state of an evacuation corridor whose offer the
 # receiving country has just rejected or let expire, before corridor cleanup
 # clears its identity. When this state is at the famine or catastrophic stage,
-# the receiving country is condemned for obstructing relief. The affected
-# people are the corridor's measured transfer amount, and one corridor
-# generation can condemn only once.
+# the receiving country is condemned for obstructing relief. Only a refusal the
+# receiver could have avoided counts: its safe front and current reception
+# capacity must have had room for the whole request, so a country that could
+# not have accepted is not condemned. The affected people are the corridor's
+# measured transfer amount, and one corridor generation can condemn only once.
 # Output: temporary famine_condemnation_result, declared by callers that read it.
 famine_condemn_corridor_obstruction = {
 	set_temp_variable = { famine_condemnation_result = constant:humanitarian_runtime.zero }
 	if = {
 		limit = {
 			humanitarian_state_is_valid = yes
+			# The receiver had room to accept everything the corridor carried.
+			humanitarian_corridor_full_request_headroom_is_valid = yes
 			OR = {
 				has_state_flag = famine_food_stage_famine
 				has_state_flag = famine_food_stage_catastrophic

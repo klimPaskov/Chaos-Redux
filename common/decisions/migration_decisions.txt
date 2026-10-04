@@ -2201,6 +2201,7 @@ migration_decision_category = {
 			has_variable = migration_reception_capacity
 			NOT = { check_variable = { var = migration_reception_load value = migration_reception_capacity compare = greater_than } }
 			FROM = {
+				migration_local_integration_host_can_settle = yes
 				migration_decision_exact_hosted_cohort_is_valid = yes
 				has_variable = migration_state_reception_load
 				check_variable = { var = migration_state_reception_load value = constant:humanitarian_population.zero compare = greater_than }
@@ -2225,12 +2226,13 @@ migration_decision_category = {
 					NOT = { has_state_flag = migration_cohort_selection_ambiguous }
 				}
 			}
-			hidden_trigger = { FROM = { is_controlled_by = ROOT } }
+			hidden_trigger = { FROM = { migration_local_integration_host_can_settle = yes } }
 			hidden_trigger = { humanitarian_cost_pp20_support100_fuel500_is_affordable = yes }
 		}
 		target_trigger = {
 			migration_decision_reception_host_is_valid = yes
 			FROM = {
+				migration_local_integration_host_can_settle = yes
 				migration_decision_exact_hosted_cohort_is_valid = yes
 				check_variable = { var = migration_state_reception_load value = constant:humanitarian_population.zero compare = greater_than }
 				has_variable = migration_current_cohort_id

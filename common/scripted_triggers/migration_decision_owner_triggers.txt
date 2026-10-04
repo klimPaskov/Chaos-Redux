@@ -582,13 +582,30 @@ migration_local_integration_can_start = {
 		num_of_civilian_factories > constant:humanitarian_population.zero
 		check_variable = { var = migration_reception_load value = constant:humanitarian_population.zero compare = greater_than }
 		FROM = {
-			is_controlled_by = ROOT
+			migration_local_integration_host_can_settle = yes
 			migration_decision_exact_hosted_cohort_is_valid = yes
 			check_variable = { var = migration_state_reception_load value = constant:humanitarian_population.zero compare = greater_than }
 			has_variable = migration_current_cohort_id
 			NOT = { has_state_flag = migration_cohort_selection_ambiguous }
 		}
 		humanitarian_cost_pp20_support100_fuel500_is_affordable = yes
+	}
+}
+
+# STATE scope: the integration host, with ROOT as the integrating country.
+# The settlement debits the owner's state and national reception ledgers, so
+# the host must be owned and controlled by ROOT and both ledgers must already
+# carry the whole hosted group; otherwise the paid settlement could not run.
+migration_local_integration_host_can_settle = {
+	hidden_trigger = {
+		is_owned_and_controlled_by = ROOT
+		has_variable = migration_state_reception_load
+		has_variable = migration_state_live_cohort_amount
+		check_variable = { var = migration_state_reception_load value = migration_state_live_cohort_amount compare = greater_than_or_equals }
+		OWNER = {
+			has_variable = migration_reception_load
+			check_variable = { var = migration_reception_load value = PREV.migration_state_live_cohort_amount compare = greater_than_or_equals }
+		}
 	}
 }
 

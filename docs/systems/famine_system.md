@@ -78,7 +78,7 @@ Famine retirement is owner-local: a stable, pressure-free, non-blockaded state w
 
 ## Adapters
 
-Deliberately blocking relief from a famine or catastrophic famine state is condemned as relief obstruction. A receiving country that rejects an evacuation corridor from such a state, or lets the request lapse unanswered, is condemned for the corridor's measured people; a country that captures the donor state of a live relief contract and breaks it is condemned for the people that contract would have fed. Each corridor or contract generation condemns only once, and the request values are cleared after every attempt.
+Deliberately blocking relief from a famine or catastrophic famine state is condemned as relief obstruction. A receiving country that rejects an evacuation corridor from such a state, or lets the request lapse unanswered, while its safe front and reception capacity had room for everyone the corridor carried, is condemned for the corridor's measured people; a receiver that could not have accepted is not condemned; a country that captures the donor state of a live relief contract and breaks it is condemned for the people that contract would have fed. Each corridor or contract generation condemns only once, and the request values are cleared after every attempt.
 
 Famine accepts explicit, owner-proven changes from occupation conduct, extraction, camps, forced labor, bombing, nuclear damage, fallout, outbreaks, natural disasters, war, relief, condemnation, and relevant event or scenario owners. An adapter must provide the state, actor, source, amount or normalized component, and the required generation/revision proof. Missing facts remain API-only blockers and do not produce a guessed pressure pulse.
 
