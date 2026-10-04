@@ -29,7 +29,7 @@ The opening transaction records its own history row only for scenario launches, 
 
 ## D4. The movement escalates through one hidden pulse event
 
-Disposition: implemented (commit recorded in the round report).
+Disposition: implemented (commit `e83c64376`).
 A hidden, self-rescheduling event (`chaosx.nr39.90`) runs every 10 days on one anchor: the original host, then the central Assassin State, then the underground center, then the government that owns the case.
 Part 12 forbids only new whole-world loops; the pulse touches the anchor, the host and the bounded cell and derivative registries.
 A recorded due date, not a per-country ticket, rejects a pulse that was queued before the chain was rescheduled, so a lost anchor never leaves two chains running.
@@ -109,3 +109,11 @@ Disposition: implemented.
 The launch used to queue `chaosx.nr39.1` one day later and leave `murder_mystery_scenario_launch_in_progress` set forever if that event's trigger failed; it now runs the shared opening effect immediately on the chosen host and always clears the in-progress flag and intensity.
 A manual launch ignores the shared individual-crisis load cap, because the player explicitly asked for this crisis; High and Maximum prefer hosts with more than six controlled states so the opening split can succeed.
 The seeding and revolt loops stop after a constant attempt budget; the old loops could retry up to the engine's 1000-iteration limit.
+
+## D13. World of Anarchy uses the shared world-end toggle
+
+Disposition: implemented.
+The 039 world branch checked `murder_mystery_world_branch_disabled`, a flag nothing set, so the branch could not be switched off from Event Details.
+World of Anarchy is now a registry row with scenario ID 16, the next free world-end ID after Global Jihad (15), owner event 39, and super-event 112, which is the World of Anarchy super-event in the shared numbering.
+The branch toggle reads `global.disabled_world_end_scenarios` through a scripted trigger in `chaosx_world_end_scenario_triggers.txt`, matching the Event 031 Global Jihad row it was cloned from.
+The shared edits are four minimal insertions in the registry constants, the registry and active-state blocks of `chaosx_events_log_effects.txt`, three scripted-localisation rows, and one trigger.

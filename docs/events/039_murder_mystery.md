@@ -165,6 +165,13 @@ The opening runs at once on that host through `murder_mystery_run_opening`, the 
 The launch either commits and applies its intensity setup, or fails, leaves the runtime dormant and sets `murder_mystery_scenario_launch_failed`; the in-progress flag and stored intensity are always cleared.
 Intensity setup commits evolutions in order, opens the Assassin State at High and Maximum before recording Evolution III and IV, seeds cells and raises Maximum-intensity revolts within attempt budgets of `murder_mystery_seeding.maximum_attempts` per requested cell or revolt.
 
+## World of Anarchy in Event Details
+
+World of Anarchy is registered in the shared world-end registry as scenario ID `world_end_scenario_id.world_of_anarchy` (16), owned by Event 39, public, enabled by default, and linked to super-event 112.
+Its row appears in the Event Details world-end list beside the other terminal outcomes, and the shared toggle adds or removes ID 16 from `global.disabled_world_end_scenarios`.
+`murder_mystery_world_branch_is_enabled` reads that toggle through `world_end_murder_mystery_world_of_anarchy_scenario_enabled` and the global `world_end_disabled` flag, so disabling the row blocks only the Evolution V world branch; the movement, its cells and its Assassin State keep running.
+The row shows as active while `world_end_murder_mystery` is set.
+
 ## Runtime ownership and presentation
 
 | Surface | Source |
