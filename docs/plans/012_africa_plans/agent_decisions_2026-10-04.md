@@ -243,3 +243,18 @@ Decisions:
 - Every one of these decisions has an explicit `factor = 0` AI modifier while its gate is closed.
 - A material demand that an unaccounted earlier shipment made unpayable lapses at its deadline as a neutral retirement (`.604` row `gods_of_africa_response_lapsed_report`) instead of a failure with Wrath and punishment, because the participant had no way to pay it.
   The report-only kinds `undelivered` (17) and `lapsed` (18) extend `gods_of_africa_history_kind` and are never written to the history arrays.
+
+## L20. Only the aggressor breaks an agreement, and one war adds one Wrath gain
+
+Disposition: `implemented` (which side the engine reports as attacker for co-belligerents is `needs_live_game`).
+
+Basis: the round 2 remaining-work list (priority 2) and the lead's decision that a treaty breach requires the participant's own aggression; this replaces L4's "war against the host" wording for the breach factor only.
+
+Decisions:
+
+- A war breaks the participant's live agreements, or agreed contract terms, only when the participant is on the attacking side against the host: `has_offensive_war_with = event_target:africa_host` (`triggers_documentation.md` `has_offensive_war_with`), which also covers joining an attacker's war.
+- When Africa is the aggressor (`event_target:africa_host = { has_offensive_war_with = PREV }`), the agreements end without a participant breach: protection is withdrawn through `gods_of_africa_withdraw_protection_package`, the reconciliation stops being live, a renewed recognition ends through the new `gods_of_africa_victor_renewal_ended_sequence` (not the breach marker), the history records the new kind `agreement_ended_by_host` (19), and the participant sees `.616` "Africa Breaks Its Word" or a `.613` line naming Africa.
+- An open contract cancelled by Africa's own war is retired neutrally (it no longer counts as broken by war in the grade) and adds no Wrath. Wrath measures Africa's grievance against the participant, and a war Africa started is not the participant's offence.
+  War and occupation conduct marks, the war Wrath floor (50) and the outstanding-hostility mark stay exactly as before, as the lead required.
+- One war produces one Wrath gain: the wartime cancellation applies the breach gain (20) when an agreed contract or any live agreement stands, otherwise the ordinary war gain (10), and sets the per-war flag `gods_of_africa_agreement_war_breach_recorded`, which the owner review's agreement observation reads; the flag clears at peace.
+- `gods_of_africa_retire_interrupted_contract` closes a contract as broken by war only when the participant attacked Africa; otherwise it retires it.

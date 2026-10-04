@@ -370,6 +370,7 @@ country_event = {
 		custom_effect_tooltip = gods_of_africa_wartime_demand_cancelled_effect_tt
 		clr_country_flag = gods_of_africa_wartime_demand_report_pending
 		clr_country_flag = gods_of_africa_wartime_breach_reported
+		clr_country_flag = gods_of_africa_wartime_host_aggression_reported
 	}
 }
 
@@ -409,12 +410,28 @@ country_event = {
 	}
 }
 
-# War with Africa broke a live protection compact, accepted reconciliation or
-# renewed recognition. The breach is already recorded by the owner review.
+# War with Africa ended a live protection compact, accepted reconciliation or
+# renewed recognition. When this government attacked, the owner review already
+# recorded the broken agreement; when Africa attacked, the agreement ended
+# without a breach and the report names Africa as the party that broke it.
 country_event = {
 	id = chaosx.nr12.616
-	title = chaosx.nr12.616.t
-	desc = chaosx.nr12.616.d
+	title = {
+		trigger = { NOT = { has_country_flag = gods_of_africa_agreement_ended_by_host } }
+		text = chaosx.nr12.616.t
+	}
+	title = {
+		trigger = { has_country_flag = gods_of_africa_agreement_ended_by_host }
+		text = chaosx.nr12.616.t_host
+	}
+	desc = {
+		trigger = { NOT = { has_country_flag = gods_of_africa_agreement_ended_by_host } }
+		text = chaosx.nr12.616.d
+	}
+	desc = {
+		trigger = { has_country_flag = gods_of_africa_agreement_ended_by_host }
+		text = chaosx.nr12.616.d_host
+	}
 	picture = GFX_report_event_012_africa_gods_defiance
 	is_triggered_only = yes
 	trigger = {
@@ -423,8 +440,16 @@ country_event = {
 	}
 	option = {
 		name = chaosx.nr12.616.a
+		trigger = { NOT = { has_country_flag = gods_of_africa_agreement_ended_by_host } }
 		custom_effect_tooltip = gods_of_africa_agreement_breach_effect_tt
 		clr_country_flag = gods_of_africa_agreement_breach_report_pending
+	}
+	option = {
+		name = chaosx.nr12.616.b
+		trigger = { has_country_flag = gods_of_africa_agreement_ended_by_host }
+		custom_effect_tooltip = gods_of_africa_agreement_ended_by_host_effect_tt
+		clr_country_flag = gods_of_africa_agreement_breach_report_pending
+		clr_country_flag = gods_of_africa_agreement_ended_by_host
 	}
 }
 

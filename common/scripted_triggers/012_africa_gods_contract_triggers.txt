@@ -88,6 +88,29 @@ gods_of_africa_victor_renewal_agreement_is_live = {
 			check_variable = { gods_of_africa_victor_renewal_breached_sequence = gods_of_africa_victor_relegitimated_sequence }
 		}
 	}
+	# Africa's own war against the victor ends the renewal without a breach.
+	NOT = {
+		AND = {
+			has_variable = gods_of_africa_victor_renewal_ended_sequence
+			check_variable = { gods_of_africa_victor_renewal_ended_sequence = gods_of_africa_victor_relegitimated_sequence }
+		}
+	}
+}
+
+# Participant COUNTRY. The participant is on the attacking side of a war with
+# Africa: it declared the war or joined an attacker's war against Africa
+# (triggers_documentation.md, has_offensive_war_with). Only this aggression
+# breaks its agreements with Africa.
+gods_of_africa_participant_is_aggressor_against_host = {
+	has_event_target = africa_host
+	has_offensive_war_with = event_target:africa_host
+}
+
+# Participant COUNTRY. Africa is on the attacking side of a war with this
+# participant.
+gods_of_africa_host_is_aggressor_against_participant = {
+	has_event_target = africa_host
+	event_target:africa_host = { has_offensive_war_with = PREV }
 }
 
 # Participant COUNTRY. Live relationship agreements that war with Africa breaks.
