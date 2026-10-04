@@ -74,6 +74,9 @@ def fixture(camp=True, ordinary=False, gulag=False, accepted=True, target=True, 
     runtime.triggers['soviet_collapse_uwr_aftermath_requires_camp_receipt'] = camp_obligation
     for key, value in values.items():
         runtime.constants['soviet_collapse_uwr_aftermath.' + key] = value
+    # Refunds read the charged Black Friday price global; outside a sale it equals the base cost.
+    for key in ('dismantlement_cost', 'containment_cost', 'exploitation_cost'):
+        runtime.temp['global.black_friday_price_soviet_collapse_uwr_aftermath_' + key] = values[key]
     site['flags'].add('soviet_collapse_uwr_blacksite_aftermath_site')
     site['biowarfare_facility'] = 1
     site['cw_facility'] = 1

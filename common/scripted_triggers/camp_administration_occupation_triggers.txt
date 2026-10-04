@@ -201,6 +201,11 @@ camp_occ_manual_transfer_source_ready = {
 	NOT = { has_state_flag = camp_occ_custody_rollback_failed }
 	NOT = { has_state_flag = camp_occ_transfer_rollback_failed }
 	var:camp_occ_responsible_country = { original_tag = GER }
+	# The dated Danish deferral keeps these people out of deportation orders too.
+	OR = {
+		NOT = { has_variable = camp_occ_cohort_origin_state }
+		var:camp_occ_cohort_origin_state = { NOT = { camp_occ_origin_campaign_deferred = yes } }
+	}
 }
 
 # State. Fresh decision/tooltip eligibility for the same native living row used
