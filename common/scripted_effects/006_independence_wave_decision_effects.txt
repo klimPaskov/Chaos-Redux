@@ -55,13 +55,16 @@ independence_wave_decision_apply_league_deltas = {
 independence_wave_decision_store_active_league_target = {
 	FROM = {
 		owner = {
+			set_temp_variable = { independence_wave_league_target_generation = independence_wave_generation_id }
 			ROOT = { set_variable = { independence_wave_active_league_target_country = PREV } }
 		}
 	}
+	set_variable = { independence_wave_active_league_target_generation = independence_wave_league_target_generation }
 }
 
 independence_wave_decision_clear_active_league_target = {
 	clear_variable = independence_wave_active_league_target_country
+	clear_variable = independence_wave_active_league_target_generation
 }
 
 # Country scope. At most one unconsumed defensive-charter war mandate is kept
@@ -1142,6 +1145,7 @@ independence_wave_rollback_reclamation_front_staging = {
 independence_wave_cleanup_decision_layer = {
 	independence_wave_formable_cleanup_runtime = yes
 	independence_wave_decision_clear_active_league_target = yes
+	independence_wave_clear_bilateral_receipts = yes
 	independence_wave_decision_clear_charter_war_mandate = yes
 	clr_country_flag = independence_wave_reclamation_front_ready
 	clear_variable = independence_wave_reclamation_front_days
@@ -2023,4 +2027,159 @@ independence_wave_iw098_cleanup_decision_content = {
 	clear_variable = independence_wave_iw098_paid_convoy_cost
 	remove_ideas = independence_wave_iw098_disputed_emirate_compact_idea
 	remove_ideas = independence_wave_iw098_caravan_network_compact_idea
+}
+
+# ---------------------------------------------------------------------------
+# Frozen diplomatic counterparts and bilateral receipts
+# ---------------------------------------------------------------------------
+# Decision scope with FROM as the selected capital state. The payer's own
+# recognition or protection is at stake (DM-11/12/13/34), so the payer's
+# generation is frozen with the owner chosen when the decision begins.
+independence_wave_decision_freeze_diplomatic_counterpart = {
+	FROM = {
+		owner = {
+			ROOT = { set_variable = { independence_wave_diplomatic_counterpart = PREV } }
+		}
+	}
+	set_variable = { independence_wave_diplomatic_released_country = ROOT }
+	set_variable = { independence_wave_diplomatic_generation = independence_wave_generation_id }
+}
+
+# Decision scope with FROM as the selected capital state. DM-16 endorses the
+# selected Event 006 country, so that country's generation is frozen.
+independence_wave_decision_freeze_endorsement_counterpart = {
+	FROM = {
+		owner = {
+			set_temp_variable = { independence_wave_endorsed_generation = independence_wave_generation_id }
+			ROOT = {
+				set_variable = { independence_wave_diplomatic_counterpart = PREV }
+				set_variable = { independence_wave_diplomatic_released_country = PREV }
+			}
+		}
+	}
+	set_variable = { independence_wave_diplomatic_generation = independence_wave_endorsed_generation }
+}
+
+independence_wave_decision_clear_diplomatic_counterpart = {
+	clear_variable = independence_wave_diplomatic_counterpart
+	clear_variable = independence_wave_diplomatic_released_country
+	clear_variable = independence_wave_diplomatic_generation
+}
+
+# Decision scope. Registers a patron channel with the frozen counterpart.
+# Inputs: the same temporary values as
+# `independence_wave_decision_register_targeted_patron_channel`.
+independence_wave_decision_register_counterpart_patron_channel = {
+	if = {
+		limit = { has_valid_independence_wave_diplomatic_counterpart = yes }
+		var:independence_wave_diplomatic_counterpart = { save_event_target_as = independence_wave_action_patron }
+		set_temp_variable = { independence_wave_patron_channel = independence_wave_decision_patron_channel }
+		set_temp_variable = { independence_wave_patron_influence_delta = independence_wave_decision_patron_influence_delta }
+		set_temp_variable = { independence_wave_patron_aid_delta = independence_wave_decision_patron_aid_delta }
+		independence_wave_register_patron_channel = yes
+	}
+}
+
+# Scope: the released country. Input: event target
+# `independence_wave_bilateral_actor`. Writes the generation-matched
+# recognition receipt once. Output: temporary
+# `independence_wave_bilateral_receipt_new` equals the loop increment only
+# when this call created the receipt; callers award Statehood progress only
+# on that value.
+independence_wave_record_recognition_receipt = {
+	set_temp_variable = { independence_wave_bilateral_receipt_new = constant:independence_wave_value.minimum }
+	if = {
+		limit = {
+			has_variable = independence_wave_generation_id
+			has_event_target = independence_wave_bilateral_actor
+			event_target:independence_wave_bilateral_actor = {
+				exists = yes
+				NOT = { tag = PREV }
+			}
+			NOT = { has_independence_wave_recognition_receipt = yes }
+		}
+		save_event_target_as = independence_wave_bilateral_receiver
+		event_target:independence_wave_bilateral_actor = {
+			event_target:independence_wave_bilateral_receiver = {
+				if = {
+					limit = { NOT = { is_in_array = { array = independence_wave_recognition_receipt_country_entries value = PREV } } }
+					add_to_array = { array = independence_wave_recognition_receipt_country_entries value = PREV }
+				}
+				set_variable = { independence_wave_recognized_by_generation_@PREV = independence_wave_generation_id }
+			}
+		}
+		set_temp_variable = { independence_wave_bilateral_receipt_new = constant:independence_wave_plan.loop_increment }
+	}
+}
+
+# Scope: the released country. Input: event target
+# `independence_wave_bilateral_actor`. Records the guarantee receipt for the
+# current generation without creating a guarantee.
+independence_wave_record_guarantee_receipt = {
+	if = {
+		limit = {
+			has_variable = independence_wave_generation_id
+			has_event_target = independence_wave_bilateral_actor
+			event_target:independence_wave_bilateral_actor = {
+				exists = yes
+				NOT = { tag = PREV }
+			}
+			NOT = { has_independence_wave_guarantee_receipt = yes }
+		}
+		save_event_target_as = independence_wave_bilateral_receiver
+		event_target:independence_wave_bilateral_actor = {
+			event_target:independence_wave_bilateral_receiver = {
+				if = {
+					limit = { NOT = { is_in_array = { array = independence_wave_guarantee_receipt_country_entries value = PREV } } }
+					add_to_array = { array = independence_wave_guarantee_receipt_country_entries value = PREV }
+				}
+				set_variable = { independence_wave_guaranteed_by_generation_@PREV = independence_wave_generation_id }
+			}
+		}
+	}
+}
+
+# Scope: the released country. Input: event target
+# `independence_wave_bilateral_actor`. Creates the real engine guarantee only
+# when the actor has neither a guarantee nor a receipt for this generation,
+# then records the receipt. Output: temporary
+# `independence_wave_bilateral_receipt_new` equals the loop increment only
+# when this call created the guarantee.
+independence_wave_apply_bilateral_guarantee = {
+	set_temp_variable = { independence_wave_bilateral_receipt_new = constant:independence_wave_value.minimum }
+	if = {
+		limit = {
+			has_variable = independence_wave_generation_id
+			has_event_target = independence_wave_bilateral_actor
+			event_target:independence_wave_bilateral_actor = {
+				exists = yes
+				NOT = { tag = PREV }
+				NOT = { has_war_with = PREV }
+			}
+		}
+		if = {
+			limit = { NOT = { has_independence_wave_guarantee_from_actor = yes } }
+			event_target:independence_wave_bilateral_actor = { give_guarantee = PREV }
+			set_temp_variable = { independence_wave_bilateral_receipt_new = constant:independence_wave_plan.loop_increment }
+		}
+		independence_wave_record_guarantee_receipt = yes
+	}
+}
+
+# Scope: an Event 006 country whose origin generation is being reset. Clears
+# every receipt row through its bounded actor arrays and any frozen
+# counterpart. Real engine guarantees are left to ordinary relationship rules.
+independence_wave_clear_bilateral_receipts = {
+	save_event_target_as = independence_wave_bilateral_cleanup_country
+	for_each_scope_loop = {
+		array = independence_wave_recognition_receipt_country_entries
+		event_target:independence_wave_bilateral_cleanup_country = { clear_variable = independence_wave_recognized_by_generation_@PREV }
+	}
+	clear_array = independence_wave_recognition_receipt_country_entries
+	for_each_scope_loop = {
+		array = independence_wave_guarantee_receipt_country_entries
+		event_target:independence_wave_bilateral_cleanup_country = { clear_variable = independence_wave_guaranteed_by_generation_@PREV }
+	}
+	clear_array = independence_wave_guarantee_receipt_country_entries
+	independence_wave_decision_clear_diplomatic_counterpart = yes
 }
