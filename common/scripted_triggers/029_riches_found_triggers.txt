@@ -958,6 +958,18 @@ riches_found_is_eligible_discovery_country = {
 	individual_crisis_load_is_below_cap = yes
 }
 
+# Any scope. Non-mutating Event Details lock: true only when no eligible
+# ordinary country owns and controls a valid discovery state anywhere, so the
+# event shows N/A for every viewer instead of for an ineligible viewer only.
+# It prepares no receipt and changes no state.
+riches_found_has_no_valid_discovery_pair = {
+	NOT = {
+		any_country = {
+			riches_found_is_eligible_discovery_country = yes
+		}
+	}
+}
+
 riches_found_is_active_mine = {
 	riches_found_mine_is_active = yes
 }

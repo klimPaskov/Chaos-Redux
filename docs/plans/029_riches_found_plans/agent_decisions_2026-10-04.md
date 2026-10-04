@@ -113,3 +113,11 @@ The development fund and the curse diversification program stay political-power 
 Rail Spur completion adds one level of state infrastructure below the vanilla cap of five, and Port Route completion adds one naval base level to an existing port or a new naval base on the state's coast, following the vanilla `add_building_construction` precedents (including the all-coastal-provinces form used by the Afghanistan focus tree).
 Destructive and lethal raids damage the naval base when they struck the sea route and the infrastructure otherwise; a collapse that closes the workings damages the infrastructure, with slower repair; the game repairs these buildings through ordinary construction while Restore the Shaft repairs the mine itself.
 Railway lines are not built because the railway effects need explicit province pairs that a generic mine state cannot supply; this is recorded as a limitation.
+
+## D12. Event Log actor, evolution previews and the global N/A lock
+
+The shared default-actor helper gains a Riches Found branch that records `riches_found_prefire_owner` as the history actor, mirroring the Event 018 branch, so discovery rows carry their recipient.
+The Event Details producer adds the three Riches Found evolution preview rows from the evolution type, tier and stage constants; the existing title and body lookups already resolved those rows.
+The Event Details weight lock now reads `riches_found_has_no_valid_discovery_pair`, a non-mutating trigger that is true only when no eligible ordinary country owns and controls a valid discovery state anywhere, so the event shows N/A only when it truly cannot fire rather than whenever the viewer's own country is ineligible.
+It prepares no receipt during UI refresh; its `any_country` check stops at the first eligible country.
+All three shared-file changes were made as minimal hunks and committed alone, leaving another owner's uncommitted Event Log hunks in those files untouched.
