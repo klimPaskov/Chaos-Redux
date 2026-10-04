@@ -68,6 +68,57 @@ camp_occ_danish_rescue_source_ready = {
 	camp_occ_state_has_current_authority = yes
 	NOT = { has_state_flag = camp_occ_danish_rescue_done }
 }
+# Any scope. USHMM: deportations from Hungary ran from 15 May 1944 until Horthy
+# halted them on 9 July 1944.
+camp_occ_partner_deportation_window_open = {
+	date > 1944.5.14
+	date < 1944.7.10
+}
+# COUNTRY, the partner. Hungary handed its Jews over only under German
+# domination: as a German subject, or with a fascist government inside
+# Germany's faction. Horthy's government in the Axis refused until then.
+camp_occ_partner_under_german_influence = {
+	original_tag = HUN
+	NOT = { has_war_with = GER }
+	OR = {
+		is_subject_of = GER
+		AND = {
+			is_in_faction_with = GER
+			has_government = fascism
+		}
+	}
+}
+# STATE. A European partner-held state with a foreign origin cohort that no
+# authority has registered yet.
+camp_occ_partner_deportation_candidate = {
+	is_on_continent = europe
+	camp_occ_has_foreign_german_campaign_origin = yes
+	NOT = { has_state_flag = camp_occ_registered }
+	CONTROLLER = { camp_occ_partner_under_german_influence = yes }
+}
+# STATE. A registered partner-held cohort while the dated order stands. This is
+# never a current authority: campaign violence, generic movement, rescue and the
+# manual order all ignore it, and the monthly pass closes it once the order lapses.
+camp_occ_state_has_partner_authority = {
+	has_state_flag = camp_occ_registered
+	has_state_flag = camp_occ_partner_host
+	NOT = { has_state_flag = camp_occ_closed }
+	has_variable = camp_occ_responsible_country
+	var:camp_occ_responsible_country = { exists = yes original_tag = GER camp_occ_authority_has_campaign = yes }
+	camp_occ_partner_deportation_window_open = yes
+	CONTROLLER = { camp_occ_partner_under_german_influence = yes }
+}
+# STATE. Source authority for the exact custody transfer: the current authority,
+# or a partner-held cohort when the dated partner route staged its temp proof.
+camp_occ_state_has_route_authority = {
+	OR = {
+		camp_occ_state_has_current_authority = yes
+		AND = {
+			check_variable = { camp_occ_custody_partner_route = constant:camp_occ_value.transfer_valid }
+			camp_occ_state_has_partner_authority = yes
+		}
+	}
+}
 camp_occ_country_has_records = {
 	OR = { check_variable = { camp_occ_states^num > 0 } check_variable = { camp_occ_eligible_states^num > 0 } }
 }
