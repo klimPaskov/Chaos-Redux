@@ -5277,9 +5277,11 @@ cannibalism_warlord_can_pay_march_operation_cost = {
 }
 
 # STATE scope, ROOT the March Host. A passable enemy-held state on the Host's
-# front whose single supply hub still has an undamaged level. One hub keeps
-# the state-scope strike unambiguous, because damage_building searches a
-# state's provinces for the first matching hub.
+# front with exactly one supply hub (the vanilla SWE raid count check) that no
+# raid struck within the hub repair window. One hub keeps the state-scope
+# strike unambiguous, because damage_building searches a state's provinces for
+# the first matching hub. Provincial damage cannot be read from a state, so
+# the recent-strike flag stands in for a hub still under repair.
 cannibalism_warlord_march_raid_target_is_valid = {
 	impassable = no
 	NOT = { is_controlled_by = ROOT }
@@ -5287,10 +5289,7 @@ cannibalism_warlord_march_raid_target_is_valid = {
 	any_neighbor_state = { is_controlled_by = ROOT }
 	supply_node > 0
 	supply_node < 2
-	non_damaged_building_level = {
-		building = supply_node
-		level > 0
-	}
+	NOT = { has_state_flag = cannibalism_march_raid_recent_strike }
 }
 
 # ============================================================================

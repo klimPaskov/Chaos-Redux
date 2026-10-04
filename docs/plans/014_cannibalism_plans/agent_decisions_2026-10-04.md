@@ -84,6 +84,8 @@ The per-state `days_re_enable` stays as the native re-enable value.
 Every target and cost check runs before the single debit, so no refund branch exists; a target that stopped qualifying since selection charges nothing and keeps the earlier receipt.
 The receipt result distinguishes a hub that kept an undamaged level from one put out of action, and its controller generation is stored only when the controller is an Event 014 actor.
 
+Addendum (round 2, R2-1): the receipt no longer reads provincial damage; see R2-1 below.
+
 ## D7. Host command window pages
 
 Disposition: `implemented`.
@@ -147,3 +149,19 @@ Decision:
 - The seizure mission requires the host's own divisions in the cache state: two for the whole cache, one for half at the deadline, none loses it. The AI opens a seizure only where two of its divisions already stand, so it never starts a mission it cannot complete; the same target trigger gates player and AI.
 - The three new decision and mission icons were generated in the unified decision icon style instead of reusing existing textures, keeping the spec's one-to-one unified decision asset contract.
 - The transformed Wendigo host records caches and answers reviews, but has no unified authority and no investigation or seizure.
+
+## R2-1. The March raid hub check reads hub count and a recent-strike flag, not damage
+
+Disposition: `implemented`.
+
+Basis: lead round 2 decision R2-1 and the QA live load, which reported "Not a valid state building" at the raid target trigger and the raid receipt.
+`non_damaged_building_level` accepts state buildings only (`documentation/triggers_documentation.md` 6554-6567; vanilla uses it for factories and dockyards), while `supply_node` is a province building (vanilla `common/buildings/00_buildings.txt`, `level_cap province_max = 1`).
+No documented trigger reads damage on a province building from a state.
+
+Decision:
+
+- The target trigger follows vanilla `common/decisions/SWE.txt` 2232-2256: a passable enemy-held state beside the Host with `supply_node > 0` and `supply_node < 2`, so exactly one single-level hub, and without the timed state flag `cannibalism_march_raid_recent_strike`.
+- A strike sets that flag on the struck state for `cannibalism_warlord_decision.march_raid_hub_repair_days` (30), passed through a temporary variable because timed flags do not accept `constant:` days. The flag keeps a hub under repair off every March Host's list, including other March Hosts that the per-state re-enable does not cover.
+- The receipt result is decided from tuning: put out of action when `march_raid_supply_node_damage` (0.50) is not below `march_raid_hub_level` (1), otherwise damaged. At current tuning every strike records a damaged hub, which is what the strike does.
+- The 0.50 damage, the per-state `days_re_enable`, the Host-wide cooldown and `ai_will_do` are unchanged. The target pool only loses states struck in the last 30 days, which the same Host could not strike again within its own 30-day cooldown anyway, so no probability comparison was run; a matching `hoi4.probability_compare` remains advisable if the target pool changes further.
+- The tooltip names the repair window instead of an undamaged hub, and the raid card text already reads "damaged" or "put out of action".

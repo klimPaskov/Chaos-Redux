@@ -73,6 +73,7 @@ The page is the presentation-only country flag `cannibalism_warlord_gui_states_v
 Opening the States page runs `cannibalism_gui_rebuild_warlord_state_view`, which fills `cannibalism_command_gui_state_entries` from `every_controlled_state` of the viewing Host.
 Each card rechecks control when drawn and shows the state's name, its status (no longer held, liberated and recovering, exhausted or unusable, feeding territory resting or ready, or held ground), its population and its feedings against the exhaustion limit.
 The raid card reads the March Host's own receipt (`cannibalism_march_raid_target_state`, `_date`, `_receipt_result`, `_owner_generation`, `_target_controller`, `_target_controller_generation`), written only by a successful targeted depot raid.
+The result reads "put out of action" when `march_raid_supply_node_damage` is not below `march_raid_hub_level`, otherwise "damaged"; provincial hub damage cannot be read from a state, so the card never claims more than the strike did.
 A receipt from an earlier actor generation of the same tag is not shown, and a reusable warlord tag (CBA to CBH) whose actor generation changed since the strike is shown as a Host that no longer exists; any other controller keeps its name even when its outbreak ended or returned with a new generation.
 Without a receipt the card says no raid was committed.
 

@@ -1667,6 +1667,12 @@ cannibalism_warlord_decision = {
 	march_operation_command_spend = -10
 	march_operation_days = 30
 	march_raid_supply_node_damage = 0.50
+	# Level of the one supply hub a raid target holds: the target trigger
+	# accepts a state with exactly one hub, and a hub is a single-level
+	# province building.
+	march_raid_hub_level = 1
+	# Days a struck hub stays off the raid target list while it is repaired.
+	march_raid_hub_repair_days = 30
 	march_operation_speed = 0.15
 	march_operation_planning = 0.10
 	march_operation_out_of_supply = -0.15
@@ -2168,8 +2174,9 @@ cannibalism_continental_target_record = {
 	rolling_count = 3
 }
 
-# Result recorded on the March Host's raid receipt: the struck supply hub
-# either kept an undamaged level or was put out of action.
+# Result recorded on the March Host's raid receipt: the strike either damaged
+# the struck supply hub or, when the raid damage is not below the hub's level,
+# put it out of action.
 cannibalism_march_raid_receipt_result = {
 	schema = {
 		any_key = yes
