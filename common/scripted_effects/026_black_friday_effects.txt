@@ -5042,7 +5042,10 @@ black_friday_settle_cbrn_external_aid_pp_fee_receipt = {
 # quote was invalid, unaffordable, or in a resource without a native payment.
 # A payment priced by a valid natural sale credits its resource family toward
 # the achievement; a payment in any resource other than political power also
-# counts as the non-political payment. No receipt or refund path is kept.
+# counts as the non-political payment. For a multi-resource action, set temp
+# black_friday_simple_cost_no_credit = 1 before each secondary component and pay
+# the primary component last, so the action credits one family. The flag is
+# consumed by each call. No receipt or refund path is kept.
 # Contract: common/scripted_effects/026_black_friday_simple_cost_api.md.
 black_friday_simple_cost_pay = {
 	set_temp_variable = { black_friday_simple_cost_paid = constant:universal_cost_framework.zero }
@@ -5071,9 +5074,15 @@ black_friday_simple_cost_pay = {
 					}
 					add_to_variable = { black_friday_achievement_non_political_receipt_count = constant:black_friday_event.one }
 				}
-				set_temp_variable = { black_friday_purchase_family_id = black_friday_simple_cost_family }
-				black_friday_add_committed_achievement_family = yes
+				if = {
+					limit = {
+						NOT = { check_variable = { black_friday_simple_cost_no_credit = constant:universal_cost_framework.one } }
+					}
+					set_temp_variable = { black_friday_purchase_family_id = black_friday_simple_cost_family }
+					black_friday_add_committed_achievement_family = yes
+				}
 			}
 		}
 	}
+	set_temp_variable = { black_friday_simple_cost_no_credit = constant:universal_cost_framework.zero }
 }
