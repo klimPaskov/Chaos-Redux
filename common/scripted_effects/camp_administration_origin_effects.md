@@ -44,7 +44,7 @@ The acknowledgment for that unique row never clears mixed ambiguity.
 | `camp_origin_adjust_known_receipt` | State effect | Complete temporary measured before/after snapshots, contract and expected sequence | `camp_origin_known_adjustment_accepted`, then fresh residual observation outputs on acceptance | Updates only the common baseline from the measured receipt, increments its sequence and observes remaining unexplained change. Rejects missing/stale/malformed receipts and consumes all request inputs on either path |
 | `camp_origin_reconcile_host_membership` | State effect | Current physical host and existing owner arrays | `camp_origin_reconciled_custody_k`, `camp_origin_reconciled_occupation_k` | Observes once, delegates an exact sole-row retirement to the owning family and exports its accepted actual receipt. Mixed rows remain frozen |
 | `camp_origin_quarantine_transaction` | State effect | Actual endpoint after preserved incomplete transaction measurements | Sticky transaction/ambiguity flags and a separate raw checkpoint | Preserves the canonical verified opening and checkpoints subsequent physical territory changes without counting the incomplete movement as outside loss |
-| `camp_origin_commit_endpoint_observation` | Internal state effect | Required `open_sequence`, `open_population_k`, `open_state_deaths_people`, `after_population_k`, `after_state_deaths_people` script parameters naming caller tokens | Known baseline result and residual observation | Used only after complete commit/inverse, delegates measured adjustment, quarantines an endpoint if its baseline receipt rejects |
+| `camp_origin_commit_endpoint_observation` | Internal state effect, called as `= yes` | Caller stages the temporary `camp_origin_known_observation_sequence`, `camp_origin_known_before_population_k`, `camp_origin_known_before_state_deaths_people`, `camp_origin_known_after_population_k` and `camp_origin_known_after_state_deaths_people` inputs from its retained endpoint tokens, in the endpoint scope, immediately before each call | Known baseline result and residual observation | Used only after complete commit/inverse, arms the receipt contract, preinitializes the nested acceptance result, delegates measured adjustment, quarantines an endpoint if its baseline receipt rejects |
 | `camp_origin_occupation_host_ready_for_reform` | State trigger, PREV is owner country | Existing owner's bounded `camp_occ_states` entry | Boolean | Consumes an explicit temporary owner binding to inspect the actual owner registry when host markers are missing. Rejects live rows with missing proof and permits structurally valid empty history without generating a release |
 | `camp_origin_acknowledge_single_origin_reconciliation` | State effect | Unique-row pending record, temporary contract, expected sequence and completed owner retirement amount | `camp_origin_single_reconciliation_accepted` | Verifies the exact row identity, surviving amount, outside-removal increment and unchanged death/release history. Clears only the unique-row pending record after a full valid ledger receipt, otherwise remains inert. Consumes all request inputs |
 | `camp_origin_mark_ambiguous` | Internal state effect | Current common observation sequence | Sticky flag and first ambiguity sequence | Idempotent and preserves the first ambiguous epoch. No clear counterpart exists |
@@ -198,6 +198,7 @@ This accounting never authorizes another action at a quarantined endpoint.
 
 `camp_origin_known_adjustment_accepted = 1` proves only that a bounded baseline receipt matched the staged sequence and snapshots.
 It is not a transfer, source debit, destination credit, bind, death or release success result.
+A caller that reads this result after return sets `camp_origin_known_adjustment_accepted` to zero before the call, because a temporary first created inside a scripted effect may not survive its return.
 The existing physical and row receipts remain authoritative.
 The helper cannot authenticate an arbitrary caller's declared measurements or identify an external loss from a boolean contract token.
 The parent must bind these inputs to the existing measured transaction and inspect the resulting provenance readiness before another action.
@@ -236,18 +237,18 @@ The parent must review every new API use, test actual existing row retirement an
 
 ## Endpoint wrapper and quarantine examples
 
-The internal endpoint wrapper requires all five script parameters, naming retained measured caller variables.
+The internal endpoint wrapper takes no arguments: HOI4 scripted effects are called as `= yes` and have no parameter substitution.
+The caller stages its five retained measured values as temporary inputs in the endpoint scope immediately before each call, so a second endpoint never reuses the first endpoint's snapshots.
 Its default result is the underlying zero acceptance, and a rejected receipt quarantines the endpoint without undoing a committed physical transaction.
 It is called by both owned movement completion adapters after physical/row commit or a complete inverse.
 
 ```text
-camp_origin_commit_endpoint_observation = {
-	open_sequence = retained_endpoint_sequence
-	open_population_k = retained_endpoint_open_population_k
-	open_state_deaths_people = retained_endpoint_open_shared_people
-	after_population_k = measured_endpoint_after_population_k
-	after_state_deaths_people = retained_endpoint_open_shared_people
-}
+set_temp_variable = { camp_origin_known_observation_sequence = retained_endpoint_sequence }
+set_temp_variable = { camp_origin_known_before_population_k = retained_endpoint_open_population_k }
+set_temp_variable = { camp_origin_known_before_state_deaths_people = retained_endpoint_open_shared_people }
+set_temp_variable = { camp_origin_known_after_population_k = measured_endpoint_after_population_k }
+set_temp_variable = { camp_origin_known_after_state_deaths_people = retained_endpoint_open_shared_people }
+camp_origin_commit_endpoint_observation = yes
 ```
 
 The example supplies zero shared change for movement and its inverse.

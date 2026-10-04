@@ -62,16 +62,17 @@ camp_origin_reconcile_host_membership = {
 }
 
 # STATE. Internal measured endpoint adapter after a complete owner commit or
-# complete inverse. Parameters name the caller's retained opening/after tokens.
+# complete inverse. Called as `= yes`. Immediately before each call, in this
+# endpoint's scope, the caller stages its retained opening/after snapshots as
+# camp_origin_known_observation_sequence, camp_origin_known_before_population_k,
+# camp_origin_known_before_state_deaths_people, camp_origin_known_after_population_k
+# and camp_origin_known_after_state_deaths_people.
 # A rejected baseline receipt quarantines this endpoint, never rolls back a
 # transaction whose physical and row receipt already committed successfully.
 camp_origin_commit_endpoint_observation = {
 	set_temp_variable = { camp_origin_known_contract = constant:camp_admin_value.one }
-	set_temp_variable = { camp_origin_known_observation_sequence = $open_sequence$ }
-	set_temp_variable = { camp_origin_known_before_population_k = $open_population_k$ }
-	set_temp_variable = { camp_origin_known_before_state_deaths_people = $open_state_deaths_people$ }
-	set_temp_variable = { camp_origin_known_after_population_k = $after_population_k$ }
-	set_temp_variable = { camp_origin_known_after_state_deaths_people = $after_state_deaths_people$ }
+	# Caller-owned storage for the nested result read below.
+	set_temp_variable = { camp_origin_known_adjustment_accepted = constant:camp_admin_value.zero }
 	camp_origin_adjust_known_receipt = yes
 	if = {
 		limit = { NOT = { check_variable = { camp_origin_known_adjustment_accepted = constant:camp_admin_value.one } } }
