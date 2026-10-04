@@ -2,7 +2,7 @@
 
 ## Scope and sources read
 
-Disposition: `unresolved` for every item below until its own acceptance evidence is recorded.
+Disposition: items 1 to 11 are `implemented` with the commits listed under Round 1 outcome; items 12 to 15 stay `unresolved` until the orchestrator's live run.
 
 The controlling accepted design is `../../specs/chaos_warfare_system_specs/specs/13_2026_09_20_accepted_cbrn_overhaul.md` with the corrections folder beside it.
 Status inputs were the Codex handoff `handoff_to_claude_2026-10-04.md`, the requirement ledger `2026-09-20_cbrn_overhaul_requirement_ledger.md`, the completion report `2026-09-25_cbrn_overhaul_completion_report.md`, the routed defect list and the takeover fix/review results for this workstream.
@@ -64,3 +64,21 @@ The orchestrator owns these; no agent launches the game.
 13. Cost rows and engine debits for the occupied, export, emergency, hospital, aid, diplomacy and theater families: the displayed price must equal the deducted price.
 14. Technology and doctrine presentation in the engine, and effective division statistics inside the accepted combined caps.
 15. Load cleanliness for the dormant holder tag and dated scientists, the chemical facility shader response, and the CXT facility placement after the search change.
+
+## Round 1 outcome
+
+Every item's design choices and their basis are recorded in `agent_decisions_2026-10-04.md`.
+
+| Item | Status | Commit | What remains |
+| --- | --- | --- | --- |
+| 1. Sabotage native-scope repair with the direct actor gate | implemented | `3137c7996` | The disappearance of the Country-only warnings is a live-load check. The source tests pass 106 of 106 against the current source. |
+| 2. CXT facility trace helper | implemented | `533549db3` | Remove helper and caller together once the orchestrator's trace names the native rejection. |
+| 3. Occupied and export record audits | implemented | `329048c82` | The native return and write-off counts during a real blocked refund are a live-game check. |
+| 4. Event 020 response board | implemented | `4e54aacd5` | Category-level visibility is reviewed in source because the GUI fixture cannot set the country and global flags the gate reads. |
+| 5. CXT supply-connected placement | implemented | `23a9383ce` | Whether the native gate now accepts a candidate is item 15's live check. |
+| 6. Containment maxima | implemented | `de73c23f9` | None. |
+| 7. Warfare help page | implemented | `858cca927` | None. |
+| 8. Procurement factory commitments | implemented as accepted exceptions | `ca65fd278` | None. |
+| 9. Assault-battalion audio lineage | implemented | `e0af506e4` | Choosing which audio lineage ships is a listening decision for the user. The package manifest under the ignored `docs/assets/` folder is updated on disk only. |
+| 10. Legacy chemical-tank companies | implemented as a recorded exception | `5bdc93d89` | Removal waits for a coordinated change to the synchronized token list. |
+| 11. Commander service wording | implemented | `42b516034` | None. |

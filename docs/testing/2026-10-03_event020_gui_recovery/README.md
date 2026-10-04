@@ -45,7 +45,7 @@ The baseline image and fixture artifacts are references from the 2026-09-27 hand
 
 The Git pre-patch baseline supplied in the render request is HEAD:interface/020_black_plague_response.gui at commit 15440b1021799216fc391e9e8375d9e00f66a761, Git blob 26bac5b07149558d348d5be64bdaa2055ae7859c. This is the source snapshot passed as sourceBaseline; because the render did not return, no comparison result is available.
 
-| Current working source | SHA-256 |
+| Working source on 2026-10-03 | SHA-256 |
 | --- | --- |
 | common/decisions/categories/020_black_plague_response_categories.txt | 2d738e5b90b52c63d79f627ff5d7e9fa01beb2b03a4c9c6c818d56a638800f0d |
 | common/scripted_guis/020_black_plague_response_scripted_guis.txt | c2669749de9103c29c3b62485c07433a1bff14a207e715489c81dd814bd1f04d |
@@ -57,7 +57,7 @@ Four of the five current working source hashes match the values recorded in the 
 
 ## Before and after behavior
 
-Before the accepted correction, a tracked local state could satisfy the older category helper before establishment, and the attached summary had no distinct neutral presentation for zero or missing total capacity. The accepted source patch now requires an established relevant local state or an active national response after global establishment, and shows “Not organized” when total capacity is absent or zero; positive-total exhaustion remains separate. Those behaviors are visible in the current source and current hash table, while current after-images and matching source-comparison artifacts remain unavailable.
+Before the accepted correction, a tracked local state could satisfy the older category helper before establishment, and the attached summary had no distinct neutral presentation for zero or missing total capacity. The accepted source patch now requires an established relevant local state or an active national response after global establishment, and shows “Not organized” when total capacity is absent or zero; positive-total exhaustion remains separate. Those behaviors are visible in the current source, and the 2026-10-04 round below supplies the after-images and matching inspect results.
 
 ## Documentation and vanilla precedent
 
@@ -65,7 +65,7 @@ The prior handoff cites the installed common/scripted_guis/_documentation.md at 
 
 The exact vanilla precedent inspected is interface/sov_paranoia_system_scripted_gui.gui with common/scripted_guis/SOV_paranoia_system_scripted_gui.txt. Its independent decision_category-context window separates meter/background sprites, text, and image elements, matching the native-element approach used here.
 
-## Current route retries
+## 2026-10-03 route retries (history)
 
 The direct tool schemas were exposed as mcp__hoi4_agent_tools__hoi4_gui_inspect and mcp__hoi4_agent_tools__hoi4_gui_render; the schema declares windowName, scenario, generatedScenarios, resolutions, and sourceBaseline. The session exposed no separate server version or health tool, so exposure alone does not establish backend health.
 
@@ -77,7 +77,7 @@ The direct tool schemas were exposed as mcp__hoi4_agent_tools__hoi4_gui_inspect 
 
 No 2560×1440 render or other current-source fixture was attempted because the first current-source render did not return. The prior 2026-09-27 handoff also records an older batch/final attempt that was terminated without structured evidence.
 
-## State matrix and visual review
+## 2026-10-03 state matrix (history)
 
 | Fixture | Expected state | Current-source MCP evidence |
 | --- | --- | --- |
@@ -97,13 +97,15 @@ The schema-correct request wrappers are [gui-inspect.request.json](gui-inspect.r
 
 The active-zero fixture sets progress, national deaths, total response capacity, and remaining capacity to 0. It does not invent country/state scope facts because the live schema result did not identify a supported scope-fact field; therefore category-level outbreak visibility is not proven by this fixture. Any explicit visibility expectation remains a declared render assumption, not runtime evidence.
 
-## Remaining work and handoff limits
+## 2026-10-03 remaining work (history)
 
 The parent must invoke the saved requests through its available private SDK route using an actually registered private workspace, inspect any returned production PNGs and diagnostics, add the 2560×1440 scale-1 render if the 1920 render succeeds, and continue through all five accepted fixtures before updating visual status. Compare only artifacts whose scenario values, source revision, language, UI scale, resolution, and source baseline match.
 
 The parent retains review of category visibility logic, neutral capacity wording, gameplay outcomes, decision costs, AI behavior, balance, and final integration. Live consumer validation remains with the user. The task is incomplete for GUI visual acceptance until the post-change inspect/render artifacts are returned and visually reviewed.
 
-## Simplifications, omissions, and blockers
+## 2026-10-03 blockers (history)
+
+The 2026-10-04 round below closes the first two blockers and the open visual gate; the artifact-retrieval limit stays recorded for the pre-change baseline only.
 
 - Current-source post-change MCP inspection and production rendering remain unresolved because the narrow old-workspace calls did not return and the new private probe id was not registered on the shared tool route.
 - Current-source images for pre-outbreak hidden, organized capacity, exhausted capacity, and recovered-without-response were not produced; 2560×1440 was not attempted because the single 1920×1080 render did not return.
