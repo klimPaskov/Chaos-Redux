@@ -783,31 +783,32 @@ chaosx_nr25_board_action_contract_available = {
 	}
 }
 
-# Country scope. Only the highest active evolution owns the visible evolution
-# tray. Earlier hazards remain active in the pulse but their old controls are
-# removed from the actionable surface.
+# Country scope. Every evolution in force keeps its own responses available,
+# because its hazard stays active in the pulse after a later evolution begins
+# (and an evolved opening can start several evolutions at once). A disabled
+# evolution offers no responses.
 chaosx_nr25_evolution_active_signal_action_available = {
 	chaosx_nr25_base_action_available = yes
 	has_global_flag = chaosx_nr25_evolution_active_signal
-	check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.active_signal compare = equals }
+	hidden_trigger = { chaosx_nr25_active_signal_evolution_in_force = yes }
 }
 
 chaosx_nr25_evolution_something_survived_action_available = {
 	chaosx_nr25_base_action_available = yes
 	has_global_flag = chaosx_nr25_evolution_something_survived
-	check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.something_survived compare = equals }
+	hidden_trigger = { chaosx_nr25_something_survived_evolution_in_force = yes }
 }
 
 chaosx_nr25_evolution_militarised_antarctica_action_available = {
 	chaosx_nr25_base_action_available = yes
 	has_global_flag = chaosx_nr25_evolution_militarised_antarctica
-	check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.militarised_antarctica compare = equals }
+	hidden_trigger = { chaosx_nr25_militarised_antarctica_evolution_in_force = yes }
 }
 
 chaosx_nr25_evolution_wreck_breaking_apart_action_available = {
 	chaosx_nr25_base_action_available = yes
 	has_global_flag = chaosx_nr25_evolution_wreck_breaking_apart
-	check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.wreck_breaking_apart compare = equals }
+	hidden_trigger = { chaosx_nr25_wreck_breaking_apart_evolution_in_force = yes }
 }
 
 # Country scope. Evolution V artifact choices follow physical custody: a

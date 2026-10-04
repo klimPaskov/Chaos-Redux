@@ -93,6 +93,9 @@ An evolution that is enabled and already past its Chaos gate when Event 25 fires
 
 Militarised Antarctica changes the expedition threat and diplomacy state without forcing a global war.
 
+Every evolution in force keeps its own response decisions while its hazard lasts, so a later evolution, or an opening that starts several at once, never removes the answers to an earlier one.
+A disabled evolution offers no responses.
+
 An evolution whose own setting is enabled and whose Chaos gate is already met when Event 25 fires shapes the opening, and the entry and mobilisation reports describe it.
 Active Signal starts with the signal already answering, Something Survived with tracks and a missing survey party, Militarised Antarctica with escorted AI expeditions that fortify their first camp as a security zone, and The Wreck Is Breaking Apart with an unstable hull and open fragment fields.
 These four begin at once and log once; The Technology Changes Its Users stays latent, raising every crew's starting Exposure Risk and starting their Dependence as soon as it activates during the race.
