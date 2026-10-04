@@ -705,6 +705,7 @@ acid_rain_initialize_country_record = {
 	clr_country_flag = acid_rain_country_severe_forecast_active
 	clr_country_flag = acid_rain_country_warning_active
 	clr_country_flag = acid_rain_country_project_arrival_risk
+	# Retired once-per-campaign impact gate of older saves; impact reports are keyed by episode.
 	clr_country_flag = acid_rain_severe_impact_reported
 	clr_country_flag = acid_rain_national_action_active
 	clr_country_flag = acid_rain_action_receipt
@@ -782,6 +783,8 @@ acid_rain_initialize_country_record = {
 	clear_variable = acid_rain_first_opening_shock_state_id
 	clear_variable = acid_rain_last_severe_forecast_report_id
 	clear_variable = acid_rain_last_superstorm_forecast_report_id
+	clear_variable = acid_rain_last_severe_impact_report_id
+	clear_variable = acid_rain_last_superstorm_impact_report_id
 	set_variable = { acid_rain_last_preparation_report_day = constant:acid_rain_runtime.zero }
 	set_country_flag = acid_rain_country_registered
 }
@@ -2998,15 +3001,64 @@ acid_rain_apply_state_pulse = {
 				}
 			}
 			save_event_target_as = acid_rain_report_state
+			# The severe episode this pulse belongs to: the severe cell id, or the
+			# superstorm episode serial stamped on the state at forecast.
+			set_temp_variable = { acid_rain_impact_episode_key = constant:acid_rain_runtime.zero }
+			if = {
+				limit = {
+					check_variable = { var = acid_rain_pulse_class value = constant:acid_rain_mortality_class.superstorm compare = equals }
+					has_variable = acid_rain_superstorm_forecast_id
+				}
+				set_temp_variable = { acid_rain_impact_episode_key = acid_rain_superstorm_forecast_id }
+			}
+			else_if = {
+				limit = {
+					check_variable = { var = acid_rain_pulse_class value = constant:acid_rain_mortality_class.severe compare = equals }
+					has_variable = acid_rain_severe_cell_id
+				}
+				set_temp_variable = { acid_rain_impact_episode_key = acid_rain_severe_cell_id }
+			}
 			CONTROLLER = {
 				acid_rain_register_country_on_control_transfer = yes
 				add_to_variable = { acid_rain_severe_pulse_count = constant:acid_rain_runtime.loop_increment }
-				if = {
-					limit = { NOT = { has_country_flag = acid_rain_severe_impact_reported } }
-					set_country_flag = acid_rain_severe_impact_reported
-					country_event = { id = chaosx.nr33.104 }
+				acid_rain_send_severe_impact_report = yes
+			}
+		}
+	}
+}
+
+# COUNTRY SCOPE. Sends the severe impact report after the first positive pulse
+# of each severe episode in the country's territory. Severe cell ids and
+# superstorm episode serials only grow within a generation, so a key above
+# the stored one is a new episode; later pulses of the same episode, and of an
+# older episode that overlaps a newer one, send nothing. Cells and superstorms
+# keep separate keys because their serials are counted separately.
+# Inputs: temporary acid_rain_pulse_class and acid_rain_impact_episode_key.
+acid_rain_send_severe_impact_report = {
+	if = {
+		limit = { check_variable = { var = acid_rain_impact_episode_key value = constant:acid_rain_runtime.zero compare = greater_than } }
+		if = {
+			limit = { check_variable = { var = acid_rain_pulse_class value = constant:acid_rain_mortality_class.superstorm compare = equals } }
+			if = {
+				limit = {
+					OR = {
+						NOT = { has_variable = acid_rain_last_superstorm_impact_report_id }
+						check_variable = { var = acid_rain_last_superstorm_impact_report_id value = acid_rain_impact_episode_key compare = less_than }
+					}
+				}
+				set_variable = { acid_rain_last_superstorm_impact_report_id = acid_rain_impact_episode_key }
+				country_event = { id = chaosx.nr33.104 }
+			}
+		}
+		else_if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = acid_rain_last_severe_impact_report_id }
+					check_variable = { var = acid_rain_last_severe_impact_report_id value = acid_rain_impact_episode_key compare = less_than }
 				}
 			}
+			set_variable = { acid_rain_last_severe_impact_report_id = acid_rain_impact_episode_key }
+			country_event = { id = chaosx.nr33.104 }
 		}
 	}
 }

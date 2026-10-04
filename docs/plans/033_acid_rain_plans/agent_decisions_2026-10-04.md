@@ -216,3 +216,12 @@ Part 9 asks for one warning per front and destination country and a warning cool
 The controller now stores `acid_rain_last_warning_visit_id` and receives chaosx.nr33.102 whenever the publication's key differs from it.
 The key is the warning visit id that both publication paths already allocate per visit and generation; when the 24-entry visit registry is full and the id is 0, `acid_rain_compute_warning_report_key` builds a negative key from the front id times `acid_rain_reporting.warning_fallback_front_stride` plus the publication date, which can never equal a visit id.
 Several warned states of one visit still produce one report, a return to the same region and a visit by another front each produce a new one, and the country initializer clears the new key and the retired `acid_rain_last_warning_front_id`.
+
+### D26. Severe impact reports are keyed by episode
+
+Disposition: implemented (commit "Send the Acid Rain severe impact report once per episode").
+The impact report chaosx.nr33.104 was gated by a country flag cleared only at formation, so a country saw one impact report for the whole campaign; Part 9's cooldown ledger keys severe impact reports by episode ID.
+At a positive severe or superstorm pulse the state supplies its episode key, the severe cell id for cells and the superstorm episode serial stamped at forecast for superstorms, and `acid_rain_send_severe_impact_report` reports only when the key is above the controller's stored key.
+Cells and superstorms keep separate keys (`acid_rain_last_severe_impact_report_id`, `acid_rain_last_superstorm_impact_report_id`) because their serials are counted separately, and the comparison is "greater than" rather than "different": both serials only grow within a generation, and two overlapping episodes over one country, such as two fronts' cells over a country spanning two regions, would otherwise alternate one shared key and resend the report on every pulse.
+The first positive pulse of each episode therefore reports once per affected country and later pulses of that episode report nothing; the cost of the strict ordering is that an older episode whose first positive pulse in a country comes after a newer episode's report does not report again, which the newer report already covers.
+The retired once-per-campaign flag is still cleared at initialization for older saves.
