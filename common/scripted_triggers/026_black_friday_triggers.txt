@@ -117,6 +117,16 @@ black_friday_achievement_is_valid_sale = {
 	NOT = { has_country_flag = black_friday_achievement_awarded }
 }
 
+# Engine-priced purchases (laws, advisors, staff, experience, command power)
+# credit at expiry, while the sale is still active, only for the human country
+# whose activation snapshot and achievement progress belong to this sale.
+black_friday_engine_purchase_can_credit = {
+	black_friday_achievement_is_valid_sale = yes
+	has_variable = black_friday_engine_snapshot_sale_sequence
+	check_variable = { black_friday_engine_snapshot_sale_sequence = global.black_friday_sale_sequence }
+	check_variable = { black_friday_achievement_indexed_sale_sequence = global.black_friday_sale_sequence }
+}
+
 # Native Japan campaign raids reserve equipment when prepared during the sale
 # and resolve after its one-day window. Only a successful, accepted outcome
 # may credit the already-open sale sequence; ordinary purchases still use the
