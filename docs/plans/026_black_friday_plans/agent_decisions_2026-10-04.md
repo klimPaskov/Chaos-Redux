@@ -268,3 +268,18 @@ The three camp-system payments the decisions call (`camp_rework_germany_start_oc
 No AI weight changes.
 
 Disposition: implemented (source); camp-system components `owner adoption pending`.
+
+## D17. Event 010 Death human payments read the sale price table
+
+Decision: the 84 `death_decision_cost` payments (Command Power, Political Power, Army Experience, fuel, manpower, support equipment, trucks, infantry equipment, trains, convoys, Stability, and War Support) of the survey, telegraph, quarantine, recognition, compact, patrol, wasteland gear, quarantine line, coastal watch, survey and outpost, Transit Custodianship and its maintenance, Last Shores, and Black Book actions read the Black Friday price table (`price_table_version` 6).
+The owner keeps each payment as a negative `<cost>_spend` constant and an affordability floor `<cost>_gate`; the table registers the positive spend amount as `global.black_friday_price_death_decision_cost_<cost>` (Stability and War Support with their 1% step), the `can_pay_death_*` triggers compare inclusively against it, the `death_pay_*` effects pay its negation, and the 242 numbers in the cost texts read it (`|0`, or `|%0` for Stability and War Support).
+Each paid action credits one achievement family through `black_friday_credit_sale_purchase` (equipment, then trains, convoys, manpower, Army Experience, Command Power, fuel, Stability, War Support, Political Power); a Political Power-only action is not a non-political payment.
+
+Excluded, with reason (`not_a_purchase_cost`):
+- Death's soul power (`can_pay_death_*_souls`): the meter of a special chaos actor (`is_death_country`) that paces its spread toward the world-end route, the same reasoning as D14.
+- Custodial capacity (Sealed Exclusion, Memorial Stewardship, and the capacity part of Transit Custodianship): an earned policy budget from surveys, outposts, the Living Compact, and the Death war; discounting it would let a country hold policies its earned capacity does not cover, which spec Part 4's qualifying test excludes as bypassing a non-cost requirement.
+
+Basis: immediate voluntary payments with constant amounts (spec Part 4 families), the D11 pattern; the Transit Custodianship maintenance is a player decision rather than passive upkeep, so it is a purchase.
+No AI weight changes.
+
+Disposition: implemented (source). Live display and payment during a sale are `needs_live_game`.

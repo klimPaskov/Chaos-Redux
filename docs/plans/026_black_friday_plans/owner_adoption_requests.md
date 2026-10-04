@@ -274,6 +274,8 @@ Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 198
 
 #### Event 010 Death
 
+Converted (agent decision D17): every human payment reads the sale price table; Death's soul power and custodial capacity are not purchases. No Event 010 cost remains queued. The line list below predates the conversion.
+
 Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 35.
 
 | File | Native positive cost lines | Dynamic native cost lines | Custom cost trigger lines |

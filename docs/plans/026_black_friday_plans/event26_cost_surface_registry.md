@@ -416,7 +416,7 @@ Every remaining positive native or custom cost has a per-owner disposition (agen
 | Event 020 | 0 | 98 | response projects, shared disease actions, national programmes, last-response missions, and weaponization converted (D13): population-scaled quotes apply the table ratio to spent components, fixed amounts read the price table, and each paid action credits one family; on-hand requirements, Stability and War Support floors, and static factory commitments keep their ordinary amounts; the 36 Rat Nation and Rat King meter decisions are `not_a_purchase_cost` (D14: special chaos actors' escalation-pacing meters and one-for-one meter conversions) |
 | Event 015 (custom) | 0 | 101 | native converted (D5); constant custom costs converted to the price table (D11); state-scaled military and institutional growth costs apply the table ratio in their cost refresh and the Auxiliary Contract's consumed convoys read the table (D15); shipped aid and the Auxiliary Contract's delivered support equipment and trucks keep their ordinary amounts as transfers |
 | Event 005 (custom) | 0 | 198 | native converted (D5); custom queued: tranche 2 |
-| Event 010 | 0 | 35 | queued: Event 26 conversion tranche 2 |
+| Event 010 | 0 | 35 | converted (D17): the 84 `death_decision_cost` payments of the human response, compact, custodianship, and Black Book actions read the price table in their triggers, payments, and texts; Death's soul power (special chaos actor meter) and custodial capacity (earned policy capacity) are `not_a_purchase_cost` |
 | Event 011 | 0 | 56 | queued: Event 26 conversion tranche 2 |
 | Event 018 | 0 | 100 | queued: Event 26 conversion tranche 2 |
 | Event 019 | 0 | 53 | derivative native converted (D5); custom queued: tranche 2 |
