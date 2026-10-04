@@ -103,6 +103,10 @@ chaosx_test_country_provision_facility_type = {
 							NOT = { chaosx_test_country_state_has_special_facility = yes }
 							OWNER = { exists = yes }
 							CONTROLLER = { exists = yes }
+							# Every facility declares need_supply, so a borrowed state must
+							# touch territory this country controls; otherwise it can never
+							# join its supply network after the transfer.
+							any_neighbor_state = { is_controlled_by = ROOT }
 							OR = {
 								NOT = { check_variable = { chaosx_test_country_current_facility = token:naval_facility } }
 								is_coastal = yes
@@ -172,19 +176,48 @@ chaosx_test_country_provision_facility_type = {
 					limit = { has_country_flag = chaosx_test_country_setup_trace_active }
 					log = "CXT_SETUP_TRACE facility_search_end type=[FACILITY] date=[?global.date|.3]"
 				}
+				# A supply-connected owned state is tried first, because
+				# construct_building_in_random_province picks any province in the
+				# state and every facility needs a supplied one.
 				random_owned_controlled_state = {
 					limit = {
 						chaosx_test_country_state_meets_facility_requirements = yes
+						chaosx_test_country_state_is_supply_connected = yes
 						can_construct_building = [FACILITY]
 					}
 					if = {
 						limit = { ROOT = { has_country_flag = chaosx_test_country_setup_trace_active } }
-						log = "CXT_SETUP_TRACE facility_construction_begin state=[This.GetName] type=[FACILITY] date=[?global.date|.3]"
+						log = "CXT_SETUP_TRACE facility_construction_begin state=[This.GetName] type=[FACILITY] supply=connected date=[?global.date|.3]"
 					}
 					construct_building_in_random_province = { [FACILITY] = 1 }
 					if = {
 						limit = { ROOT = { has_country_flag = chaosx_test_country_setup_trace_active } }
-						log = "CXT_SETUP_TRACE facility_construction_end state=[This.GetName] type=[FACILITY] date=[?global.date|.3]"
+						log = "CXT_SETUP_TRACE facility_construction_end state=[This.GetName] type=[FACILITY] supply=connected date=[?global.date|.3]"
+					}
+				}
+				if = {
+					limit = {
+						NOT = {
+							any_owned_state = {
+								is_controlled_by = ROOT
+								[FACILITY] > 0
+							}
+						}
+					}
+					random_owned_controlled_state = {
+						limit = {
+							chaosx_test_country_state_meets_facility_requirements = yes
+							can_construct_building = [FACILITY]
+						}
+						if = {
+							limit = { ROOT = { has_country_flag = chaosx_test_country_setup_trace_active } }
+							log = "CXT_SETUP_TRACE facility_construction_begin state=[This.GetName] type=[FACILITY] supply=unverified date=[?global.date|.3]"
+						}
+						construct_building_in_random_province = { [FACILITY] = 1 }
+						if = {
+							limit = { ROOT = { has_country_flag = chaosx_test_country_setup_trace_active } }
+							log = "CXT_SETUP_TRACE facility_construction_end state=[This.GetName] type=[FACILITY] supply=unverified date=[?global.date|.3]"
+						}
 					}
 				}
 				clear_array = chaosx_test_facility_rejected_states

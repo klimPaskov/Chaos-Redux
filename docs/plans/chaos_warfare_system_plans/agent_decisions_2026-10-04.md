@@ -54,3 +54,14 @@ Disposition: `implemented`.
 `chaosx.help.body.warfare` keeps its existing Chaos Warfare, Chemical Warfare, Biological Warfare and Contamination sections and gains Authorization, Raids, Protection and Condemnation between them.
 Every number comes from source: the policy price is `cbrn_doctrine_policy_command_power_cost.policy_change` (5) and the interval is `cbrn_doctrine_timing.policy_reassessment_days` (90); the two categories are `chemical_raids` and `biological_raids` in `common/raids/categories/chaosx_raid_categories.txt`, both with `intel_source = army`; the raid requirements are the documented native source, division and target-state behaviour recorded in `common/raids/cbrn_chemical_land_raids.txt`; the Condemnation band is `condemnation_threshold.total_cap` (1000) with `cost_multiplier_maximum` (3) and the inspection burden `inspection_consumer_goods_minimum` to `_maximum` (5% to 15%) over `condemnation_duration_days.inspection` (180) days.
 Only that one key changed in the shared file; its mixed line endings were restored byte-for-byte after an editor normalised them.
+
+## 6. CXT facility placement treats the supply requirement as the cause
+
+Disposition: `implemented`.
+The candidate search now requires a borrowed foreign state to neighbour CXT-controlled territory, and the construction pass prefers a supply-connected owned state before any other owned state.
+Basis: every special-project facility declares `need_supply`, the installed facility documentation requires a supply-connected province to start construction, and a randomly grabbed foreign state that touches no CXT territory can never join CXT's network, which matches every tested candidate failing the native gate.
+No gate is bypassed, no DLC lock is claimed, the retry bound is unchanged and rejected transfers still restore owner and controller.
+Supply connectivity is expressed as capital, supply node or railway in the new `chaosx_test_country_state_is_supply_connected` trigger, because the installed trigger documentation exposes no state-level "is on the supply network" check; the native `can_construct_building` remains the decider, so the trigger only orders candidates.
+
+The harness documentation update is recorded in the CXT audit note rather than in `docs/testing/chaosx_test_country.md`.
+Basis: that file currently holds another owner's uncommitted Event 029 paragraph together with a whole-file line-ending rewrite, and the shared-tree rules forbid reformatting another owner's file.

@@ -56,6 +56,22 @@ The helper is published so that the caller already committed in `eb08e1dde` reso
 
 The decisive unresolved values are whether the transferred state is actually owned and controlled by CXT at the check, whether the live DLC check is true, and whether the shared group/level or another native condition makes the building unavailable. The currently available userQA summary does not distinguish these branches. No logs or saves are requested by this report.
 
+## Supply requirement and the placement change (parent, 2026-10-04)
+
+`need_supply = yes` is declared by every special-project facility: vanilla `land_facility` at installed `common/buildings/00_buildings.txt:556-577`, and the mod's `biowarfare_facility` at `common/buildings/chaosx_buildings.txt:38-72`, together with `naval_facility`, `nuclear_facility`, `air_facility` and `cw_facility`.
+The installed special-project facility documentation requires a supply-connected province before construction can start, and the state-scope `can_construct_building` trigger evaluates the country in `ROOT` against the state in scope, so an unsupplied state fails that gate.
+A randomly selected foreign state that touches no CXT-controlled territory can never join CXT's supply network after the temporary transfer, which is consistent with every tested candidate returning false.
+
+The parent therefore made two bounded source changes.
+The foreign candidate filter now also requires `any_neighbor_state = { is_controlled_by = ROOT }`, so a borrowed state can actually join the network.
+The construction pass now tries a supply-connected owned state first, through the new `chaosx_test_country_state_is_supply_connected` state trigger (capital, supply node or railway), and only then falls back to any owned state that passes the native gate; `construct_building_in_random_province` picks an arbitrary province in the state, so the preference matters.
+No gate is bypassed, the native trigger remains the decider, the retry bound is unchanged, and rejected temporary transfers still restore both owner and controller.
+The temporary trace now also records `supply_connected` and `adjacent_to_actor` for each tested candidate, so the orchestrator's run shows which branch the rejection belongs to.
+
+One limitation stays open and can only be settled in a live session: the facility phase runs inside the same effect chain as the annexation, so the engine's supply network may not yet include the newly acquired states at the moment the gate is evaluated.
+If the trace reports owned, adjacent and supply-connected candidates that still return `native_can_construct=no`, the next change is to move the facility phase to a later tick rather than to weaken the gate.
+`docs/testing/chaosx_test_country.md` currently carries another owner's uncommitted Event 029 paragraph plus a whole-file line-ending rewrite, so the harness documentation update is recorded here instead of editing that file.
+
 ## Work and validation record
 
 Only this audit handoff is written. No tags, states, leaders, parties, focus ids, localisation keys, formables, or gameplay files changed. No map operation or in-game validation was performed. The source lookups, targeted technology search, building definition review, reference searches/reads, and live read-only technology inspect/render calls are the meaningful checks for this bounded diagnostic.

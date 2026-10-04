@@ -21,6 +21,16 @@ chaosx_test_country_trace_facility_candidate = {
 			log = "CXT_FACILITY_GATE shared_placement=yes"
 		}
 		else = { log = "CXT_FACILITY_GATE shared_placement=no" }
+		if = {
+			limit = { chaosx_test_country_state_is_supply_connected = yes }
+			log = "CXT_FACILITY_GATE supply_connected=yes"
+		}
+		else = { log = "CXT_FACILITY_GATE supply_connected=no" }
+		if = {
+			limit = { any_neighbor_state = { is_controlled_by = ROOT } }
+			log = "CXT_FACILITY_GATE adjacent_to_actor=yes"
+		}
+		else = { log = "CXT_FACILITY_GATE adjacent_to_actor=no" }
 		meta_effect = {
 			text = {
 				if = {
