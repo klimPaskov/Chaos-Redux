@@ -37,6 +37,35 @@ chaosx_nr25_expedition_category = {
 		ai_will_do = { base = 15 }
 	}
 
+	# Chartered passage runs the same objectives on neutral shipping schedules.
+	chaosx_nr25_organize_chartered_expedition_mission = {
+		icon = GFX_decision_generic_research
+		days_mission_timeout = constant:chaosx_nr25_cost.mission_organize_chartered_days
+		is_good = yes
+		fire_only_once = no
+		activation = { always = no }
+		visible = { has_country_flag = chaosx_nr25_participant has_country_flag = chaosx_nr25_phase_mission_active }
+		available = { has_country_flag = chaosx_nr25_phase_mission_ready check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.organize compare = equals } }
+		cancel_trigger = { OR = { NOT = { has_country_flag = chaosx_nr25_participant } has_country_flag = chaosx_nr25_terminal has_global_flag = chaosx_nr25_final_recovery_resolved NOT = { has_country_flag = chaosx_nr25_phase_mission_active } } }
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_organize_mission_success_tt hidden_effect = { chaosx_nr25_complete_phase_mission = yes } }
+		timeout_effect = { custom_effect_tooltip = chaosx_nr25_organize_mission_timeout_tt hidden_effect = { chaosx_nr25_fail_phase_mission = yes } }
+		ai_will_do = { base = 16 }
+	}
+
+	chaosx_nr25_reach_chartered_gateway_mission = {
+		icon = GFX_decision_generic_research
+		days_mission_timeout = constant:chaosx_nr25_cost.mission_gateway_chartered_days
+		is_good = yes
+		fire_only_once = no
+		activation = { always = no }
+		visible = { has_country_flag = chaosx_nr25_participant has_country_flag = chaosx_nr25_phase_mission_active }
+		available = { has_country_flag = chaosx_nr25_phase_mission_ready check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.reach_gateway compare = equals } }
+		cancel_trigger = { OR = { NOT = { has_country_flag = chaosx_nr25_participant } has_country_flag = chaosx_nr25_terminal has_global_flag = chaosx_nr25_final_recovery_resolved NOT = { has_country_flag = chaosx_nr25_phase_mission_active } } }
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_gateway_mission_success_tt hidden_effect = { chaosx_nr25_complete_phase_mission = yes } }
+		timeout_effect = { custom_effect_tooltip = chaosx_nr25_gateway_mission_timeout_tt hidden_effect = { chaosx_nr25_fail_phase_mission = yes } }
+		ai_will_do = { base = 15 }
+	}
+
 	chaosx_nr25_establish_antarctic_outpost_mission = {
 		icon = GFX_decision_generic_military
 		days_mission_timeout = constant:chaosx_nr25_cost.mission_outpost_days

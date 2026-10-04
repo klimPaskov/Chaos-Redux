@@ -95,6 +95,23 @@ chaosx_nr25_register_participant = {
 	}
 }
 
+# COUNTRY scope. Owned-shipping entry: convoys, fuel, and support equipment.
+# The civilian commitment is the fourth spendable type, applied by the caller.
+chaosx_nr25_pay_owned_shipping_entry = {
+	add_equipment_to_stockpile = { type = convoy amount = constant:chaosx_nr25_cost.convoy_authorize }
+	add_fuel = constant:chaosx_nr25_cost.fuel_authorize
+	add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_authorize }
+}
+
+# COUNTRY scope. Chartered-passage entry: political power for neutral
+# shipping, more fuel, and more support equipment. The civilian commitment is
+# the fourth spendable type, applied by the caller.
+chaosx_nr25_pay_chartered_entry = {
+	add_political_power = constant:chaosx_nr25_cost.pp_charter_entry
+	add_fuel = constant:chaosx_nr25_cost.fuel_charter_entry
+	add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_charter_entry }
+}
+
 # COUNTRY scope. Builds at most three anonymous rival cards from the stored
 # participant registry. The card IDs are private viewer-local variables; the
 # board reveals only an evidence band and uses the ID for a later target
@@ -285,6 +302,8 @@ chaosx_nr25_record_evacuate_failure_casualties = {
 chaosx_nr25_remove_phase_missions = {
 	if = { limit = { has_active_mission = chaosx_nr25_organize_southern_expedition_mission } remove_mission = chaosx_nr25_organize_southern_expedition_mission }
 	if = { limit = { has_active_mission = chaosx_nr25_reach_gateway_mission } remove_mission = chaosx_nr25_reach_gateway_mission }
+	if = { limit = { has_active_mission = chaosx_nr25_organize_chartered_expedition_mission } remove_mission = chaosx_nr25_organize_chartered_expedition_mission }
+	if = { limit = { has_active_mission = chaosx_nr25_reach_chartered_gateway_mission } remove_mission = chaosx_nr25_reach_chartered_gateway_mission }
 	if = { limit = { has_active_mission = chaosx_nr25_establish_antarctic_outpost_mission } remove_mission = chaosx_nr25_establish_antarctic_outpost_mission }
 	if = { limit = { has_active_mission = chaosx_nr25_triangulate_crash_zone_mission } remove_mission = chaosx_nr25_triangulate_crash_zone_mission }
 	if = { limit = { has_active_mission = chaosx_nr25_protect_supply_route_mission } remove_mission = chaosx_nr25_protect_supply_route_mission }
@@ -1250,7 +1269,11 @@ chaosx_nr25_begin_evacuation = {
 		clr_country_flag = chaosx_nr25_final_mission_active
 		clr_country_flag = chaosx_nr25_final_mission_ready
 		clear_variable = chaosx_nr25_final_mission_kind
-		add_equipment_to_stockpile = { type = convoy amount = constant:chaosx_nr25_cost.convoy_evacuation }
+		if = {
+			limit = { chaosx_nr25_uses_chartered_passage = yes }
+			add_political_power = constant:chaosx_nr25_cost.pp_chartered_evacuation
+		}
+		else = { add_equipment_to_stockpile = { type = convoy amount = constant:chaosx_nr25_cost.convoy_evacuation } }
 		add_fuel = constant:chaosx_nr25_cost.fuel_evacuation
 		set_variable = { chaosx_nr25_phase_mission_kind = constant:chaosx_nr25_phase_mission.evacuate_expedition }
 		set_country_flag = chaosx_nr25_phase_mission_active
@@ -1439,10 +1462,18 @@ chaosx_nr25_start_phase_mission = {
 				}
 			}
 			set_variable = { chaosx_nr25_phase_mission_kind = constant:chaosx_nr25_phase_mission.organize }
-			set_temp_variable = { chaosx_nr25_phase_mission_days = constant:chaosx_nr25_cost.mission_organize_days }
 			set_country_flag = chaosx_nr25_phase_mission_active
-			chaosx_nr25_schedule_phase_mission_completion = yes
-			activate_mission = chaosx_nr25_organize_southern_expedition_mission
+			if = {
+				limit = { chaosx_nr25_uses_chartered_passage = yes }
+				set_temp_variable = { chaosx_nr25_phase_mission_days = constant:chaosx_nr25_cost.mission_organize_chartered_days }
+				chaosx_nr25_schedule_phase_mission_completion = yes
+				activate_mission = chaosx_nr25_organize_chartered_expedition_mission
+			}
+			else = {
+				set_temp_variable = { chaosx_nr25_phase_mission_days = constant:chaosx_nr25_cost.mission_organize_days }
+				chaosx_nr25_schedule_phase_mission_completion = yes
+				activate_mission = chaosx_nr25_organize_southern_expedition_mission
+			}
 		}
 		else_if = {
 			limit = {
@@ -1454,10 +1485,18 @@ chaosx_nr25_start_phase_mission = {
 				}
 			}
 			set_variable = { chaosx_nr25_phase_mission_kind = constant:chaosx_nr25_phase_mission.reach_gateway }
-			set_temp_variable = { chaosx_nr25_phase_mission_days = constant:chaosx_nr25_cost.mission_gateway_days }
 			set_country_flag = chaosx_nr25_phase_mission_active
-			chaosx_nr25_schedule_phase_mission_completion = yes
-			activate_mission = chaosx_nr25_reach_gateway_mission
+			if = {
+				limit = { chaosx_nr25_uses_chartered_passage = yes }
+				set_temp_variable = { chaosx_nr25_phase_mission_days = constant:chaosx_nr25_cost.mission_gateway_chartered_days }
+				chaosx_nr25_schedule_phase_mission_completion = yes
+				activate_mission = chaosx_nr25_reach_chartered_gateway_mission
+			}
+			else = {
+				set_temp_variable = { chaosx_nr25_phase_mission_days = constant:chaosx_nr25_cost.mission_gateway_days }
+				chaosx_nr25_schedule_phase_mission_completion = yes
+				activate_mission = chaosx_nr25_reach_gateway_mission
+			}
 		}
 		else_if = {
 			limit = {
@@ -1851,15 +1890,33 @@ chaosx_nr25_execute_action = {
 
 	if = {
 		limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.authorize compare = equals } }
-		add_equipment_to_stockpile = { type = convoy amount = constant:chaosx_nr25_cost.convoy_authorize }
-		add_fuel = constant:chaosx_nr25_cost.fuel_authorize
-		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_authorize }
+		# Readiness is judged on the reserves the country held when it chose to
+		# enter, matching the warning shown on the entry options.
+		if = {
+			limit = { chaosx_nr25_entry_readiness_weak = yes }
+			subtract_from_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.entry_weak_readiness_penalty }
+			set_country_flag = chaosx_nr25_entry_weak_readiness
+		}
+		# The entry event sets the chartered-passage flag before this action when
+		# the country enters on neutral shipping instead of its own convoys.
+		if = {
+			limit = { chaosx_nr25_uses_chartered_passage = yes }
+			chaosx_nr25_pay_chartered_entry = yes
+		}
+		else = {
+			chaosx_nr25_pay_owned_shipping_entry = yes
+		}
 		set_temp_variable = { chaosx_nr25_civilian_commitment_days = constant:chaosx_nr25_cost.civilian_commitment_days }
 		add_timed_idea = { idea = chaosx_nr25_civilian_commitment days = chaosx_nr25_civilian_commitment_days }
 		set_variable = { chaosx_nr25_civilian_commitment = constant:chaosx_nr25_value.one }
 		set_variable = { chaosx_nr25_access = constant:chaosx_nr25_value.one }
 		if = {
-			limit = { has_country_flag = chaosx_nr25_entry_lacked_direct_coastal_access }
+			limit = {
+				OR = {
+					has_country_flag = chaosx_nr25_entry_lacked_direct_coastal_access
+					chaosx_nr25_uses_chartered_passage = yes
+				}
+			}
 			set_variable = { chaosx_nr25_route = constant:chaosx_nr25_route.inland }
 			set_country_flag = chaosx_nr25_route_chartered
 		}
@@ -1959,7 +2016,11 @@ chaosx_nr25_execute_action = {
 				check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.tasmania_gateway compare = equals }
 			}
 		}
-		add_equipment_to_stockpile = { type = convoy amount = constant:chaosx_nr25_cost.convoy_crossing }
+		if = {
+			limit = { chaosx_nr25_uses_chartered_passage = yes }
+			add_political_power = constant:chaosx_nr25_cost.pp_chartered_gateway
+		}
+		else = { add_equipment_to_stockpile = { type = convoy amount = constant:chaosx_nr25_cost.convoy_crossing } }
 		add_fuel = constant:chaosx_nr25_cost.fuel_crossing
 		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_crossing }
 		set_variable = { chaosx_nr25_access = constant:chaosx_nr25_value.two }
@@ -2030,7 +2091,11 @@ chaosx_nr25_execute_action = {
 	}
 	if = {
 		limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.alternate_landing compare = equals } }
-		add_equipment_to_stockpile = { type = convoy amount = constant:chaosx_nr25_cost.convoy_alternate_landing }
+		if = {
+			limit = { chaosx_nr25_uses_chartered_passage = yes }
+			add_political_power = constant:chaosx_nr25_cost.pp_chartered_alternate_landing
+		}
+		else = { add_equipment_to_stockpile = { type = convoy amount = constant:chaosx_nr25_cost.convoy_alternate_landing } }
 		add_fuel = constant:chaosx_nr25_cost.fuel_alternate_landing
 		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_alternate_landing }
 		set_variable = { chaosx_nr25_route = constant:chaosx_nr25_route.inland }
@@ -2044,7 +2109,11 @@ chaosx_nr25_execute_action = {
 	}
 	if = {
 		limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.escort_convoys compare = equals } }
-		add_equipment_to_stockpile = { type = convoy amount = constant:chaosx_nr25_cost.convoy_escort }
+		if = {
+			limit = { chaosx_nr25_uses_chartered_passage = yes }
+			add_political_power = constant:chaosx_nr25_cost.pp_chartered_escort
+		}
+		else = { add_equipment_to_stockpile = { type = convoy amount = constant:chaosx_nr25_cost.convoy_escort } }
 		add_fuel = constant:chaosx_nr25_cost.fuel_escort
 		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_escort }
 		add_manpower = constant:chaosx_nr25_cost.manpower_escort
@@ -2133,7 +2202,11 @@ chaosx_nr25_execute_action = {
 				check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.distributed_salvage compare = equals }
 			}
 		}
-		add_equipment_to_stockpile = { type = convoy amount = constant:chaosx_nr25_cost.convoy_final }
+		if = {
+			limit = { chaosx_nr25_uses_chartered_passage = yes }
+			add_political_power = constant:chaosx_nr25_cost.pp_chartered_final
+		}
+		else = { add_equipment_to_stockpile = { type = convoy amount = constant:chaosx_nr25_cost.convoy_final } }
 		add_fuel = constant:chaosx_nr25_cost.fuel_final
 		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_final }
 		if = { limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.controlled_recovery compare = equals } } add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.progress_controlled } add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.readiness_controlled } }
@@ -2726,7 +2799,11 @@ chaosx_nr25_execute_evolution_action_unchecked = {
 	}
 	if = {
 		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.distribute compare = equals } }
-		add_equipment_to_stockpile = { type = convoy amount = constant:chaosx_nr25_cost.convoy_evolution }
+		if = {
+			limit = { chaosx_nr25_uses_chartered_passage = yes }
+			add_political_power = constant:chaosx_nr25_cost.pp_chartered_evolution
+		}
+		else = { add_equipment_to_stockpile = { type = convoy amount = constant:chaosx_nr25_cost.convoy_evolution } }
 		add_to_variable = { chaosx_nr25_survey_evidence = constant:chaosx_nr25_value.two }
 		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_value.five }
 		set_country_flag = chaosx_nr25_wreck_distribute_route
@@ -2750,7 +2827,11 @@ chaosx_nr25_execute_evolution_action_unchecked = {
 	}
 	if = {
 		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.transfer compare = equals } }
-		add_equipment_to_stockpile = { type = convoy amount = constant:chaosx_nr25_cost.convoy_evolution }
+		if = {
+			limit = { chaosx_nr25_uses_chartered_passage = yes }
+			add_political_power = constant:chaosx_nr25_cost.pp_chartered_evolution
+		}
+		else = { add_equipment_to_stockpile = { type = convoy amount = constant:chaosx_nr25_cost.convoy_evolution } }
 		add_to_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_cost.dependence_transfer }
 		add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_value.six }
 		set_country_flag = chaosx_nr25_dependence_started

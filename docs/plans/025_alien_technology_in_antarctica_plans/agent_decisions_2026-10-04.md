@@ -97,3 +97,20 @@ Disposition: `implemented`.
 Basis: the rival-card and rival-target loops wrote through ROOT and compared against ROOT, so AI entrants registered from the controller event wrote the controller's cards and could list themselves.
 
 Decision: inside the registry loops, the new trigger `chaosx_nr25_rival_card_candidate_valid` excludes `PREV`, and card counts, slot IDs and flags are written through `PREV`, the participant being prepared.
+
+## D7. Chartered passage for countries without owned shipping
+
+Disposition: `implemented`.
+
+Basis: the participant and route matrix lists a chartered route for landlocked or small human entrants, and the accepted rules say every human may enter and that distance and access change only cost and timing.
+
+Decision:
+
+- Both human entry events offer a chartered passage beside the owned-shipping entry.
+  It costs political power, fuel, support equipment and the civilian commitment, so it stays within four spendable types, and it needs no convoys.
+- The chartered flag `chaosx_nr25_chartered_passage` makes every later shipping cost (gateway crossing, alternate landing, escort, final recovery, evacuation, the Evolution IV distribution and the Evolution V transfer) cost political power instead of convoys, through one shared trigger `chaosx_nr25_uses_chartered_passage` and matching cost selectors.
+- The organising and gateway objectives run on their own chartered missions with longer constant-driven durations, so a chartered expedition pays more and arrives later but can finish every phase.
+- Either entry warns when the civilian base or fuel reserve is below the ideal reserve, and such an entry starts with lower Logistics Readiness, judged on the reserves held when the choice is made.
+- The optional entry-phase "Charter Neutral Shipping" action stays an owned-shipping supplement and is hidden from chartered expeditions.
+- The hostile convoy interception still needs the attacker's own convoys, because it is optional and never gates progression.
+- AI entry, AI reserve floors and AI weights are unchanged; the chartered options carry zero AI chance because AI entrants are chosen by the bounded roster.

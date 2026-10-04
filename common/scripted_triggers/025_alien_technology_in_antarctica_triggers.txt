@@ -514,7 +514,8 @@ chaosx_nr25_scheduler_participant_valid = {
 
 # Human entry scope. This gate intentionally does not require the participant
 # flag because it is evaluated before the country commits to the expedition.
-# Landlocked countries remain eligible through the chartered/inland route.
+# Countries without the owned shipping for this entry use the chartered
+# passage gate below.
 chaosx_nr25_entry_authorize_available = {
 	is_ai = no
 	has_global_flag = chaosx_nr25_active
@@ -522,6 +523,20 @@ chaosx_nr25_entry_authorize_available = {
 	NOT = { has_country_flag = chaosx_nr25_participant }
 	NOT = { has_country_flag = chaosx_nr25_declined }
 	chaosx_nr25_authorize_cost_available = yes
+	num_of_civilian_factories > constant:chaosx_nr25_cost.civilian_factory_floor
+}
+
+# Human entry scope. Chartered passage lets any human country enter without
+# owned convoys, including a landlocked one: neutral shipping is paid with
+# political power, fuel, support equipment, and the civilian commitment, and
+# its organising and gateway objectives take longer.
+chaosx_nr25_entry_charter_available = {
+	is_ai = no
+	has_global_flag = chaosx_nr25_active
+	has_global_flag = chaosx_nr25_entry_open
+	NOT = { has_country_flag = chaosx_nr25_participant }
+	NOT = { has_country_flag = chaosx_nr25_declined }
+	chaosx_nr25_charter_entry_cost_available = yes
 	num_of_civilian_factories > constant:chaosx_nr25_cost.civilian_factory_floor
 }
 
@@ -538,6 +553,7 @@ chaosx_nr25_action_authorize_available = {
 
 chaosx_nr25_action_charter_available = {
 	chaosx_nr25_primary_action_available = yes
+	NOT = { chaosx_nr25_uses_chartered_passage = yes }
 	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals }
 	NOT = { has_country_flag = chaosx_nr25_action_charter_used }
 	chaosx_nr25_charter_cost_available = yes
@@ -875,8 +891,27 @@ chaosx_nr25_crew_cost_available = {
 	has_manpower > constant:chaosx_nr25_cost.manpower_crew_required
 }
 
+# Country scope. Shipping costs follow the expedition's route. An expedition
+# that entered by chartered passage pays political power for neutral
+# shipping wherever an owned-shipping expedition commits convoys.
+chaosx_nr25_uses_chartered_passage = {
+	has_country_flag = chaosx_nr25_chartered_passage
+}
+
 chaosx_nr25_gateway_cost_available = {
-	has_equipment = { convoy > constant:chaosx_nr25_cost.convoy_crossing_required }
+	custom_trigger_tooltip = {
+		tooltip = chaosx_nr25_gateway_shipping_tt
+		OR = {
+			AND = {
+				NOT = { chaosx_nr25_uses_chartered_passage = yes }
+				has_equipment = { convoy > constant:chaosx_nr25_cost.convoy_crossing_required }
+			}
+			AND = {
+				chaosx_nr25_uses_chartered_passage = yes
+				has_political_power > constant:chaosx_nr25_cost.pp_chartered_gateway_required
+			}
+		}
+	}
 	has_fuel > constant:chaosx_nr25_cost.fuel_crossing_required
 	has_equipment = { support_equipment > constant:chaosx_nr25_cost.support_crossing_required }
 }
@@ -899,13 +934,37 @@ chaosx_nr25_shelter_cost_available = {
 }
 
 chaosx_nr25_alternate_landing_cost_available = {
-	has_equipment = { convoy > constant:chaosx_nr25_cost.convoy_alternate_landing_required }
+	custom_trigger_tooltip = {
+		tooltip = chaosx_nr25_alternate_landing_shipping_tt
+		OR = {
+			AND = {
+				NOT = { chaosx_nr25_uses_chartered_passage = yes }
+				has_equipment = { convoy > constant:chaosx_nr25_cost.convoy_alternate_landing_required }
+			}
+			AND = {
+				chaosx_nr25_uses_chartered_passage = yes
+				has_political_power > constant:chaosx_nr25_cost.pp_chartered_alternate_landing_required
+			}
+		}
+	}
 	has_fuel > constant:chaosx_nr25_cost.fuel_alternate_landing_required
 	has_equipment = { support_equipment > constant:chaosx_nr25_cost.support_alternate_landing_required }
 }
 
 chaosx_nr25_escort_convoys_cost_available = {
-	has_equipment = { convoy > constant:chaosx_nr25_cost.convoy_escort_required }
+	custom_trigger_tooltip = {
+		tooltip = chaosx_nr25_escort_shipping_tt
+		OR = {
+			AND = {
+				NOT = { chaosx_nr25_uses_chartered_passage = yes }
+				has_equipment = { convoy > constant:chaosx_nr25_cost.convoy_escort_required }
+			}
+			AND = {
+				chaosx_nr25_uses_chartered_passage = yes
+				has_political_power > constant:chaosx_nr25_cost.pp_chartered_escort_required
+			}
+		}
+	}
 	has_fuel > constant:chaosx_nr25_cost.fuel_escort_required
 	has_equipment = { support_equipment > constant:chaosx_nr25_cost.support_escort_required }
 	has_manpower > constant:chaosx_nr25_cost.manpower_escort_required
@@ -927,7 +986,19 @@ chaosx_nr25_outpost_emphasis_change_cost_available = {
 }
 
 chaosx_nr25_final_cost_available = {
-	has_equipment = { convoy > constant:chaosx_nr25_cost.convoy_final_required }
+	custom_trigger_tooltip = {
+		tooltip = chaosx_nr25_final_shipping_tt
+		OR = {
+			AND = {
+				NOT = { chaosx_nr25_uses_chartered_passage = yes }
+				has_equipment = { convoy > constant:chaosx_nr25_cost.convoy_final_required }
+			}
+			AND = {
+				chaosx_nr25_uses_chartered_passage = yes
+				has_political_power > constant:chaosx_nr25_cost.pp_chartered_final_required
+			}
+		}
+	}
 	has_fuel > constant:chaosx_nr25_cost.fuel_final_required
 	has_equipment = { support_equipment > constant:chaosx_nr25_cost.support_final_required }
 }
@@ -1035,7 +1106,35 @@ chaosx_nr25_pre_winner_exchange_available = {
 
 chaosx_nr25_evacuation_cost_available = {
 	has_fuel > constant:chaosx_nr25_cost.fuel_evacuation_required
-	has_equipment = { convoy > constant:chaosx_nr25_cost.convoy_evacuation_required }
+	custom_trigger_tooltip = {
+		tooltip = chaosx_nr25_evacuation_shipping_tt
+		OR = {
+			AND = {
+				NOT = { chaosx_nr25_uses_chartered_passage = yes }
+				has_equipment = { convoy > constant:chaosx_nr25_cost.convoy_evacuation_required }
+			}
+			AND = {
+				chaosx_nr25_uses_chartered_passage = yes
+				has_political_power > constant:chaosx_nr25_cost.pp_chartered_evacuation_required
+			}
+		}
+	}
+}
+
+chaosx_nr25_evolution_shipping_cost_available = {
+	custom_trigger_tooltip = {
+		tooltip = chaosx_nr25_evolution_shipping_tt
+		OR = {
+			AND = {
+				NOT = { chaosx_nr25_uses_chartered_passage = yes }
+				has_equipment = { convoy > constant:chaosx_nr25_cost.convoy_evolution_required }
+			}
+			AND = {
+				chaosx_nr25_uses_chartered_passage = yes
+				has_political_power > constant:chaosx_nr25_cost.pp_chartered_evolution_required
+			}
+		}
+	}
 }
 
 # Country scope. Countermeasure is intentionally reactionary and can restore
@@ -1123,7 +1222,7 @@ chaosx_nr25_dependence_destroy_cost_available = {
 }
 
 chaosx_nr25_dependence_transfer_cost_available = {
-	has_equipment = { convoy > constant:chaosx_nr25_cost.convoy_evolution_required }
+	chaosx_nr25_evolution_shipping_cost_available = yes
 }
 
 chaosx_nr25_dependence_conceal_cost_available = {

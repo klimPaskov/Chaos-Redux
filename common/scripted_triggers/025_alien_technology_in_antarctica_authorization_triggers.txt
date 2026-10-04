@@ -11,3 +11,32 @@ chaosx_nr25_authorize_fuel_available = {
 chaosx_nr25_authorize_support_available = {
 	check_variable = { var = num_equipment@support_equipment value = constant:chaosx_nr25_cost.support_authorize_required compare = greater_than_or_equals }
 }
+
+# Event 025 chartered-passage entry costs. Inclusive checks match the cost
+# display, so a country holding exactly the shown amount can enter.
+chaosx_nr25_charter_entry_pp_available = {
+	NOT = { has_political_power < constant:chaosx_nr25_cost.pp_charter_entry_required }
+}
+
+chaosx_nr25_charter_entry_fuel_available = {
+	NOT = { has_fuel < constant:chaosx_nr25_cost.fuel_charter_entry_required }
+}
+
+chaosx_nr25_charter_entry_support_available = {
+	check_variable = { var = num_equipment@support_equipment value = constant:chaosx_nr25_cost.support_charter_entry_required compare = greater_than_or_equals }
+}
+
+chaosx_nr25_charter_entry_cost_available = {
+	chaosx_nr25_charter_entry_pp_available = yes
+	chaosx_nr25_charter_entry_fuel_available = yes
+	chaosx_nr25_charter_entry_support_available = yes
+}
+
+# A country may enter below the ideal civilian base or fuel reserve, but its
+# expedition starts with weaker Logistics Readiness.
+chaosx_nr25_entry_readiness_weak = {
+	OR = {
+		num_of_civilian_factories < constant:chaosx_nr25_cost.entry_ideal_civilian_factories
+		has_fuel < constant:chaosx_nr25_cost.entry_ideal_fuel
+	}
+}

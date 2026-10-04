@@ -12,13 +12,24 @@ class AuthorizationBudgetTests(unittest.TestCase):
         executor = block("chaosx_nr25_execute_action", source)
         authorize = next(body for key, body in executor if key == "if" and
                          "constant:chaosx_nr25_action.authorize" in repr(dict(body).get("limit")))
-        costs = set()
-        for key, data in authorize:
-            if key == "add_equipment_to_stockpile": costs.add(dict(data)["type"])
-            if key == "add_fuel": costs.add("fuel")
-            if key == "add_timed_idea" and dict(data)["idea"] == "chaosx_nr25_civilian_commitment": costs.add("civilian_industry")
-            if key == "add_political_power": costs.add("political_power")
-        self.assertEqual(costs, {"convoy", "fuel", "support_equipment", "civilian_industry"})
+
+        def spend(nodes):
+            costs = set()
+            for key, data in nodes:
+                if key == "add_equipment_to_stockpile": costs.add(dict(data)["type"])
+                if key == "add_fuel": costs.add("fuel")
+                if key == "add_timed_idea" and dict(data)["idea"] == "chaosx_nr25_civilian_commitment": costs.add("civilian_industry")
+                if key == "add_political_power": costs.add("political_power")
+            return costs
+
+        shared = spend(authorize)
+        self.assertEqual(shared, {"civilian_industry"})
+        route = next(body for key, body in authorize if key == "if" and ("chaosx_nr25_pay_chartered_entry", "yes") in body)
+        self.assertIn(("chaosx_nr25_pay_chartered_entry", "yes"), route)
+        owned = spend(block("chaosx_nr25_pay_owned_shipping_entry", source)) | shared
+        chartered = spend(block("chaosx_nr25_pay_chartered_entry", source)) | shared
+        self.assertEqual(owned, {"convoy", "fuel", "support_equipment", "civilian_industry"})
+        self.assertEqual(chartered, {"political_power", "fuel", "support_equipment", "civilian_industry"})
         ideas = (ROOT / "common/ideas/025_alien_technology_in_antarctica_ideas.txt").read_text(encoding="utf-8-sig")
         commitment = block("chaosx_nr25_civilian_commitment", re.sub(r"#[^\n]*", "", ideas))
         self.assertEqual(set(dict(dict(commitment)["modifier"])), {"consumer_goods_factor"})
@@ -46,8 +57,12 @@ class AuthorizationBudgetTests(unittest.TestCase):
         display = (ROOT / "common/scripted_localisation/025_alien_technology_in_antarctica_authorization_scripted_localisation.txt").read_text(encoding="utf-8-sig")
         for component in ("convoys", "fuel", "support"):
             self.assertIn("chaosx_nr25_authorize_" + component + "_available = yes", display)
-        self.assertEqual(gates.count("compare = greater_than_or_equals"), 2)
+        authorize_gates = gates.split("chaosx_nr25_charter_entry_pp_available", 1)[0]
+        self.assertEqual(authorize_gates.count("compare = greater_than_or_equals"), 2)
         self.assertRegex(gates, r"NOT\s*=\s*\{\s*has_fuel\s*<\s*constant:chaosx_nr25_cost.fuel_authorize_required\s*\}")
+        for component in ("pp", "fuel", "support"):
+            self.assertIn("chaosx_nr25_charter_entry_" + component + "_available = yes", display)
+        self.assertRegex(gates, r"NOT\s*=\s*\{\s*has_political_power\s*<\s*constant:chaosx_nr25_cost.pp_charter_entry_required\s*\}")
 
 
 if __name__ == "__main__":
