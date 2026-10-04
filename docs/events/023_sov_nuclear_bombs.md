@@ -106,6 +106,9 @@ Physical, technical and command receipts belong to that exact site's current hol
 Joint custody and pending Event 5 reconciliation block unilateral progress.
 Country stage flags project only the selected depot's receipts, while historical operational registration remains separate.
 Operationalization also requires the current holder's active delivery stage for the exact state ID, and each cancellation rechecks the corresponding local receipt.
+From the Soviet side, a selected breakaway depot is about to become operational (`sov_nuclear_bombs_event_selected_breakaway_operationalization_is_imminent`) when its current holder has the local technical receipt and either the local command receipt or a command formation or delivery integration mission running for that exact state, while the site is intact, held, not technically denied and not yet operational.
+That state doubles the AI weight of device disablement and raises the recovery raid's, and it shows "Destroy a Compromised Site", which becomes available when recovery is impossible (no rail route or no Soviet security force in the depot's state, the joint requirement of recall, the rail corridor and joint custody).
+Disabling the devices sets technical denial, which ends the holder's progress, so the demolition is only the last resort for a site the Union cannot reach.
 
 Event 5 integration brackets its direct state transfers and release operations with a pre-transfer snapshot and explicit post-transfer reconciliation.
 Each exact affected state records its owner, controller, site buckets, wider command context and bounded registry roles before the native command.

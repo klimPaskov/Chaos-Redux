@@ -1264,6 +1264,52 @@ sov_nuclear_bombs_event_selected_site_has_local_command_receipt = {
 	var:sov_nuclear_bombs_local_custody_state = { sov_nuclear_bombs_event_state_has_local_command_receipt = yes }
 }
 
+# State scope, read from the Soviet side. Operationalization of a breakaway
+# depot is imminent when its current holder has the local technical receipt
+# (technical access done) and either the local command receipt or a command
+# formation or delivery integration mission running for this exact site, and
+# the site is still intact, held, not technically denied and not operational.
+sov_nuclear_bombs_event_state_breakaway_operationalization_is_imminent = {
+	sov_nuclear_bombs_state_is_registered = yes
+	check_variable = { var = sov_nuclear_bombs_site_transferred value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
+	NOT = { has_state_flag = sov_nuclear_bombs_site_missing }
+	NOT = { has_state_flag = sov_nuclear_bombs_site_dismantled }
+	NOT = { has_state_flag = sov_nuclear_bombs_site_technical_denial }
+	NOT = { has_state_flag = sov_nuclear_bombs_breakaway_site_operationalized }
+	NOT = { has_state_flag = sov_nuclear_bombs_event5_snapshot_pending }
+	sov_nuclear_bombs_event_state_has_local_technical_receipt = yes
+	var:sov_nuclear_bombs_site_holder = { exists = yes }
+	OR = {
+		sov_nuclear_bombs_event_state_has_local_command_receipt = yes
+		var:sov_nuclear_bombs_site_holder = {
+			has_country_flag = sov_nuclear_bombs_breakaway_operationalization_mission_active
+			check_variable = { var = sov_nuclear_bombs_breakaway_progress_stage value = constant:sov_nuclear_bombs_tuning.breakaway_command_stage compare = greater_than_or_equals }
+			has_variable = sov_nuclear_bombs_local_custody_state_id
+			check_variable = { var = sov_nuclear_bombs_local_custody_state_id value = PREV.id compare = equals }
+		}
+	}
+}
+
+# Country scope (the Soviet actor), for the selected breakaway depot.
+sov_nuclear_bombs_event_selected_breakaway_operationalization_is_imminent = {
+	sov_nuclear_bombs_event_selected_breakaway_site_is_valid = yes
+	event_target:sov_nuclear_bombs_selected_state = {
+		sov_nuclear_bombs_event_state_breakaway_operationalization_is_imminent = yes
+	}
+}
+
+# Country scope (the Soviet actor). Recall, the rail corridor and joint
+# custody all need a rail recovery route and a Soviet security force in the
+# selected depot's state; without both, recovery is impossible.
+sov_nuclear_bombs_event_selected_breakaway_recovery_is_impossible = {
+	NOT = {
+		AND = {
+			sov_nuclear_bombs_event_selected_breakaway_site_has_recovery_route = yes
+			sov_nuclear_bombs_event_selected_breakaway_site_has_security_force = yes
+		}
+	}
+}
+
 sov_nuclear_bombs_event_selected_breakaway_site_has_recovery_route = {
 	has_event_target = sov_nuclear_bombs_selected_state
 	event_target:sov_nuclear_bombs_selected_state = {

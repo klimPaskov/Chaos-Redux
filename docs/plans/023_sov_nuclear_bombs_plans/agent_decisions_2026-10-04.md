@@ -259,3 +259,18 @@ Decision: both flags are built inside a `meta_effect` whose text receives intege
 No timed flag in the Event 23 files keeps a variable or `constant:` token; event delays keep `days = constant:`, which vanilla supports for events.
 Basis: the lead's round 2 decision 1 and CLAUDE.md 1.9.
 Disposition: `implemented`; flag expiry and the super-event picture `needs_live_game`.
+
+### R2-3. Imminent breakaway operationalization is derived
+
+Finding: "Destroy a Compromised Site" required the never-set country flag `sov_nuclear_bombs_breakaway_operationalization_imminent` in `visible` and `available`, and the recovery raid and device disablement AI factors boosted on the same flag, so the decision-map and Part 6 last resort never appeared and `P23_COLLAPSE_RAID_IMMINENT_OPERATIONALIZATION` could not occur.
+The decision also required `sov_nuclear_bombs_site_technical_denial` on the site, but technical denial (set by "Disable the Devices") changes the site's custody state away from breakaway physical custody, so the holder's local receipts and every operationalization step fail on a denied site; imminence and denial are mutually exclusive.
+Decision: the flag is replaced by the state trigger `sov_nuclear_bombs_event_state_breakaway_operationalization_is_imminent` and its selected-depot wrapper `sov_nuclear_bombs_event_selected_breakaway_operationalization_is_imminent`: the holder has the local technical receipt and either the local command receipt or a command formation or delivery integration mission for that exact state id, and the site is intact, held, not denied and not operational.
+It is used in all four places; the two AI modifiers keep their numbers (recovery raid base 0.20 with factor 1.80, disablement base 1.40 with factor 2.00).
+The demolition's technical-denial requirement is replaced by Part 6's "recovery impossible", `sov_nuclear_bombs_event_selected_breakaway_recovery_is_impossible`: the selected depot lacks the rail recovery route or the Soviet security force that recall, the rail corridor and joint custody all require.
+In `available` both appear as localised custom tooltips (the existing requirement sentence for imminence and `sov_nuclear_bombs_breakaway_recovery_impossible_tt`), with the actor and selection checks hidden; the demolition action contract is unchanged and needs no denial.
+Source scenario walk: a breakaway holds a transferred depot in a state it controls; after technical access completes and it starts command formation for that state, the trigger holds, the raid and disablement AI factors apply, and "Destroy a Compromised Site" is visible and available because the Union has no force in the state.
+Before technical access completes, after the holder finishes delivery integration (operational), after "Disable the Devices" (denied), or when the holder's running mission belongs to another depot, the decision is hidden.
+If the Union retakes control of the state with a division and the rail route exists, the decision stays visible but unavailable, and recall becomes the route.
+Basis: decision map "Destroy the site" (recovery impossible, operationalization imminent, exact site validated), Part 6, the probability scenario's "technical access and near command formation", and the lead's round 2 decision 3, adjusted for the denial contradiction under the user's full design authority.
+Probability: before sources frozen in `ai_surfaces_before_round2_2026-10-04/before_decisions.txt`; MCP compare see R2-10.
+Disposition: `implemented`; breakaway campaign behaviour `needs_live_game`.

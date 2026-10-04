@@ -9,7 +9,7 @@ This directory documents the shared Chaos Meter, deaths accounting, war-declarat
 - [`chaos_meter_combat_contamination_occupation_deaths.md`](chaos_meter_combat_contamination_occupation_deaths.md) defines combat, contamination, and occupation death sources.
 - [`chaos_meter_deaths_and_events_log_ui.md`](chaos_meter_deaths_and_events_log_ui.md) defines the deaths data exposed to the Chaos Meter and Event Logs surfaces.
 - [`chaos_meter_war_declaration_counting.md`](chaos_meter_war_declaration_counting.md) defines war-declaration source registration and duplicate suppression.
-- [`nuclear_chaos_ladder.md`](nuclear_chaos_ladder.md) defines direct Chaos gains and escalation tiers for nuclear use.
+- [`nuclear_chaos_ladder.md`](nuclear_chaos_ladder.md) defines direct Chaos gains, escalation tiers, and the shared non-yield Event 23 test-accident consequence endpoint.
 
 Atmospheric contamination belongs in [air_cleanliness/](../air_cleanliness/README.md).
 Condemnation and CBRN consequences belong in [cbrn_warfare/](../cbrn_warfare/README.md).
