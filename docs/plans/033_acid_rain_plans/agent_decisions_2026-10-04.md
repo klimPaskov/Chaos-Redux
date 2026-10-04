@@ -100,3 +100,12 @@ Restore Transport targets only states with rain-recorded infrastructure or railw
 Decontamination targets states whose rain impact left an environmental burden (`acid_rain_environmental_burden`, set by every recorded window impact and cleared when the aftermath tier reaches zero); it consumes nothing else, so a state can always be cleared once its structural damage is repaired.
 AI scoring favours transport when transport points are the larger structural burden, industry when factory points are larger, and decontamination when no structural damage remains.
 Probability evidence: `hoi4.probability_inspect` with adapter `decision_ai_will_do` on `common/decisions/033_acid_rain_decisions.txt` returned `INTERNAL_ERROR` on 2026-10-04, as it did for the lead, so no baseline or comparison could be produced; the factors are the existing `@acid_rain_ai_*` aftermath factors plus one new 1.5 factor.
+
+### D14. Humanitarian amounts (D5)
+
+Disposition: implemented (commit "Register Acid Rain humanitarian pressure with the famine system").
+`famine_adapt_acid_rain_state` is a minimal append to the famine-owned adapter file and its documentation table; it mirrors the Event 013 adapter and requests natural-disaster pressure.
+Event 033 builds the proof bundle in `acid_rain_register_humanitarian_pressure` with source id 33, the Acid Rain death reason, the current generation and a per-transaction revision (positive pulse receipt count, aftermath tier, or evacuation operation key).
+Registered amounts: each exact positive pulse loss; 0.5 percent of the state population when its aftermath first reaches tier 2 and 1 percent at tier 3; 2 percent when an evacuation of a state with at least 500k people finishes.
+At the famine owner's 20 percent maximum share these are small pressure steps, so the rain adds strain without overriding famine's own drivers.
+The famine and migration owner could not be reached from this run; the append touches no existing famine code and is recorded here for that owner's review.

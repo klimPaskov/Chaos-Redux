@@ -126,6 +126,7 @@ acid_rain_clear_state_runtime_receipts = {
 	clear_variable = acid_rain_acute_supplies
 	clear_variable = acid_rain_acute_attrition
 	clear_variable = acid_rain_acute_truck_attrition
+	clear_variable = acid_rain_humanitarian_tier_registered
 	clear_variable = acid_rain_damage_infrastructure_points
 	clear_variable = acid_rain_damage_rail_way_points
 	clear_variable = acid_rain_damage_industrial_complex_points
@@ -2764,6 +2765,10 @@ acid_rain_apply_state_pulse = {
 			add_to_variable = { acid_rain_state_deaths = state_civilian_population_loss_applied }
 			add_to_variable = { global.acid_rain_total_deaths = state_civilian_population_loss_applied }
 			add_to_variable = { global.acid_rain_pulse_positive_receipt_count = constant:acid_rain_runtime.loop_increment }
+			set_temp_variable = { acid_rain_humanitarian_amount = state_civilian_population_loss_applied }
+			set_temp_variable = { acid_rain_humanitarian_kind = constant:acid_rain_humanitarian.kind_deaths }
+			set_temp_variable = { acid_rain_humanitarian_revision = global.acid_rain_pulse_positive_receipt_count }
+			acid_rain_register_humanitarian_pressure = yes
 			if = {
 				limit = {
 					check_variable = {

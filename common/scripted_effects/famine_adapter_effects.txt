@@ -742,6 +742,33 @@ famine_adapt_natural_disaster_state = {
 	famine_clear_state_local_food_receipt = yes
 }
 
+# STATE SCOPE. Event 033 Acid Rain registers its own proven pressure: exact
+# applied rain deaths, tier-2 and tier-3 aftermath, and completed large
+# evacuations. The caller supplies the complete proof bundle with Acid Rain
+# source and generation identities and the positive temporary
+# acid_rain_humanitarian_amount. Evacuation is disaster pressure here, never a
+# migration cohort.
+famine_adapt_acid_rain_state = {
+	set_temp_variable = { famine_adapter_result = constant:humanitarian_runtime.zero }
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			check_variable = { acid_rain_humanitarian_amount > constant:humanitarian_population.zero }
+		}
+		set_temp_variable = { famine_adapter_amount = acid_rain_humanitarian_amount }
+		famine_validate_state_local_food_receipt_exact = yes
+		if = {
+			limit = { check_variable = { famine_adapter_contract_valid = constant:humanitarian_runtime.one } }
+			set_temp_variable = { famine_pressure_request_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { famine_pressure_request_amount = famine_adapter_amount }
+			set_temp_variable = { famine_pressure_request_actor_proven = famine_adapter_actor_proven }
+			famine_request_disaster_pressure = yes
+			set_temp_variable = { famine_adapter_result = famine_pressure_request_result }
+		}
+	}
+	famine_clear_state_local_food_receipt = yes
+}
+
 # COUNTRY scope. Condemnation remains a downstream evidence owner, but famine
 # actions must still provide the exact state-local food/environment/transport/
 # policy/actor receipt before this wrapper can emit a famine cause.

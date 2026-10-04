@@ -1206,6 +1206,17 @@ acid_rain_apply_action_effect = {
 				set_variable = { acid_rain_evacuation_country_id = CONTROLLER.id }
 				set_variable = { acid_rain_evacuation_completion_day = global.date }
 				acid_rain_033_achievement_record_runtime_evacuation_completion = yes
+				# A large evacuation strains food and shelter where people arrive.
+				if = {
+					limit = { check_variable = { var = state_population_k value = constant:acid_rain_humanitarian.evacuation_large_population_k compare = greater_than_or_equals } }
+					set_temp_variable = { acid_rain_humanitarian_amount = state_population_k }
+					multiply_temp_variable = { acid_rain_humanitarian_amount = constant:acid_rain_humanitarian.people_per_k }
+					multiply_temp_variable = { acid_rain_humanitarian_amount = constant:acid_rain_humanitarian.evacuation_share }
+					round_temp_variable = acid_rain_humanitarian_amount
+					set_temp_variable = { acid_rain_humanitarian_kind = constant:acid_rain_humanitarian.kind_evacuation }
+					set_temp_variable = { acid_rain_humanitarian_revision = acid_rain_action_key }
+					acid_rain_register_humanitarian_pressure = yes
+				}
 			}
 		}
 	}

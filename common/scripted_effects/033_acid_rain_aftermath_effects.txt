@@ -261,6 +261,7 @@ acid_rain_assess_window_aftermath = {
 			limit = { check_variable = { var = acid_rain_new_window_charge value = constant:acid_rain_aftermath.zero compare = greater_than } }
 			add_to_variable = { acid_rain_state_aftermath_tier = acid_rain_new_window_charge }
 			clamp_variable = { var = acid_rain_state_aftermath_tier max = constant:acid_rain_aftermath.tier_max }
+			acid_rain_register_aftermath_humanitarian_pressure = yes
 			set_variable = { acid_rain_window_charged_tier = acid_rain_assessed_tier }
 			if = {
 				limit = { NOT = { has_variable = acid_rain_aftercare_deadline } }
@@ -600,5 +601,71 @@ acid_rain_reconcile_state_consequences = {
 		acid_rain_033_achievement_record_aftermath_tier = yes
 		acid_rain_publish_consequence_band = yes
 		acid_rain_publish_state_country_counts = yes
+	}
+}
+
+# STATE SCOPE. Registers one Acid Rain humanitarian transaction with the
+# famine owner. Inputs: temporary acid_rain_humanitarian_amount (people),
+# acid_rain_humanitarian_kind (acid_rain_humanitarian.kind_*) and
+# acid_rain_humanitarian_revision (unique per source transaction). Callers
+# submit each accepted loss, tier or evacuation once.
+acid_rain_register_humanitarian_pressure = {
+	if = {
+		limit = {
+			acid_rain_state_is_frozen_valid = yes
+			check_variable = { acid_rain_humanitarian_amount > constant:acid_rain_aftermath.zero }
+			check_variable = { acid_rain_humanitarian_revision > constant:acid_rain_aftermath.zero }
+		}
+		OWNER = { save_event_target_as = famine_adapter_actor }
+		set_temp_variable = { acid_rain_humanitarian_water = constant:acid_rain_humanitarian.proof_floor }
+		set_temp_variable = { acid_rain_humanitarian_transport = constant:acid_rain_humanitarian.proof_floor }
+		set_temp_variable = { acid_rain_humanitarian_policy = constant:acid_rain_humanitarian.proof_floor }
+		CONTROLLER = {
+			if = { limit = { has_variable = acid_rain_water_tier } add_to_temp_variable = { acid_rain_humanitarian_water = acid_rain_water_tier } }
+			if = { limit = { has_variable = acid_rain_transport_tier } add_to_temp_variable = { acid_rain_humanitarian_transport = acid_rain_transport_tier } }
+			if = { limit = { has_variable = acid_rain_preparedness } add_to_temp_variable = { acid_rain_humanitarian_policy = acid_rain_preparedness } }
+		}
+		set_temp_variable = { acid_rain_humanitarian_environment = constant:acid_rain_humanitarian.proof_floor }
+		if = { limit = { has_variable = acid_rain_state_aftermath_tier } add_to_temp_variable = { acid_rain_humanitarian_environment = acid_rain_state_aftermath_tier } }
+		set_temp_variable = { famine_adapter_state_proven = THIS.id }
+		set_temp_variable = { famine_adapter_food_proven = acid_rain_humanitarian_water }
+		set_temp_variable = { famine_adapter_environment_proven = acid_rain_humanitarian_environment }
+		set_temp_variable = { famine_adapter_transport_proven = acid_rain_humanitarian_transport }
+		set_temp_variable = { famine_adapter_policy_proven = acid_rain_humanitarian_policy }
+		set_temp_variable = { famine_adapter_actor_proven = event_target:famine_adapter_actor.id }
+		set_temp_variable = { famine_adapter_cause_proven = constant:chaos_meter_deaths_reason.acid_rain }
+		set_temp_variable = { famine_adapter_source_proven = constant:acid_rain_humanitarian.source_id }
+		set_temp_variable = { famine_adapter_generation = global.acid_rain_generation_id }
+		set_temp_variable = { famine_adapter_revision = acid_rain_humanitarian_revision }
+		set_temp_variable = { famine_adapter_request_id = global.date }
+		set_temp_variable = { famine_adapter_result = constant:acid_rain_aftermath.zero }
+		famine_adapt_acid_rain_state = yes
+	}
+	set_temp_variable = { acid_rain_humanitarian_amount = constant:acid_rain_aftermath.zero }
+}
+
+# STATE SCOPE. Registers aftermath pressure once for each newly reached tier
+# 2 or tier 3 of the current generation.
+acid_rain_register_aftermath_humanitarian_pressure = {
+	if = {
+		limit = {
+			check_variable = { var = acid_rain_state_aftermath_tier value = constant:acid_rain_runtime.two compare = greater_than_or_equals }
+			OR = {
+				NOT = { has_variable = acid_rain_humanitarian_tier_registered }
+				check_variable = { var = acid_rain_humanitarian_tier_registered value = acid_rain_state_aftermath_tier compare = less_than }
+			}
+		}
+		set_variable = { acid_rain_humanitarian_tier_registered = acid_rain_state_aftermath_tier }
+		set_temp_variable = { acid_rain_humanitarian_amount = state_population_k }
+		multiply_temp_variable = { acid_rain_humanitarian_amount = constant:acid_rain_humanitarian.people_per_k }
+		if = {
+			limit = { check_variable = { var = acid_rain_state_aftermath_tier value = constant:acid_rain_aftermath.tier_max compare = greater_than_or_equals } }
+			multiply_temp_variable = { acid_rain_humanitarian_amount = constant:acid_rain_humanitarian.aftermath_tier_three_share }
+		}
+		else = { multiply_temp_variable = { acid_rain_humanitarian_amount = constant:acid_rain_humanitarian.aftermath_tier_two_share } }
+		round_temp_variable = acid_rain_humanitarian_amount
+		set_temp_variable = { acid_rain_humanitarian_kind = constant:acid_rain_humanitarian.kind_aftermath }
+		set_temp_variable = { acid_rain_humanitarian_revision = acid_rain_state_aftermath_tier }
+		acid_rain_register_humanitarian_pressure = yes
 	}
 }
