@@ -166,3 +166,10 @@ The licence AI factor drops for a subject and for closed sea lanes in war.
 Ridiculing partners are stored in a host array, and a later peace with the recent-victory flag and no recent core loss gives each a finite political embarrassment once.
 The four response opinion modifiers now decay by one point a month, matching their file description as temporary impressions.
 Basis: spec parts 1 and 3 on subject caution and blockaded licensing, spec part 2 ridicule row, decision audit 23.
+
+## D20. Event options state their consequences and hide raw operations
+
+Decision: every player-facing option in the opening, evolution, conclusion, incident, report, foreign-response, final-review and reassessment events shows a `custom_effect_tooltip` with its Reliance movement and main consequence, built from constants or the incident's priced variables, while the scripted effects that change variables and flags run inside `hidden_effect`.
+Visible resource awards in conclusions stay as native effect lines.
+Report options whose result was applied when the mission closed state that result instead of repeating it.
+Basis: spec part 4 (every action shows its Reliance direction, no hidden cost after commitment).

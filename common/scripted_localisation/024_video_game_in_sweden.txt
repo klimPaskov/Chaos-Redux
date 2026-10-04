@@ -436,3 +436,67 @@ defined_text = {
 		localization_key = video_game_trust_admission_none
 	}
 }
+
+# What the filed foreign reply did for Sweden.
+defined_text = {
+	name = GetVideoGameForeignOutcomeEffect
+	text = {
+		trigger = { check_variable = { var = video_game_in_sweden_foreign_outcome value = constant:video_game_in_sweden_value.foreign_copy compare = equals } }
+		localization_key = video_game_foreign_effect_copy
+	}
+	text = {
+		trigger = { check_variable = { var = video_game_in_sweden_foreign_outcome value = constant:video_game_in_sweden_value.foreign_study compare = equals } }
+		localization_key = video_game_foreign_effect_study
+	}
+	text = {
+		trigger = { check_variable = { var = video_game_in_sweden_foreign_outcome value = constant:video_game_in_sweden_value.foreign_ban compare = equals } }
+		localization_key = video_game_foreign_effect_ban
+	}
+	text = {
+		trigger = { check_variable = { var = video_game_in_sweden_foreign_outcome value = constant:video_game_in_sweden_value.foreign_ridicule compare = equals } }
+		localization_key = video_game_foreign_effect_ridicule
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = video_game_foreign_effect_none
+	}
+}
+
+# High-Chaos opening notes on the opening options.
+defined_text = {
+	name = GetVideoGameCommercialOpeningNote
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:video_game_in_sweden_event.evolution_ii_min_chaos
+				compare = greater_than_or_equals
+			}
+			NOT = { has_global_flag = events_log_disabled_evolution_24_24_2 }
+		}
+		localization_key = video_game_opening_commercial_high_chaos
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = video_game_opening_note_none
+	}
+}
+
+defined_text = {
+	name = GetVideoGameOfficerOpeningNote
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:video_game_in_sweden_event.evolution_i_min_chaos
+				compare = greater_than_or_equals
+			}
+			NOT = { has_global_flag = events_log_disabled_evolution_24_24_1 }
+		}
+		localization_key = video_game_opening_officer_high_chaos
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = video_game_opening_note_none
+	}
+}
