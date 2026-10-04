@@ -1125,6 +1125,41 @@ video_game_in_sweden_pay_dual_track = {
 	set_variable = { video_game_in_sweden_civilian_burden_days = constant:video_game_in_sweden_timing.dual_track_burden_days }
 }
 
+video_game_in_sweden_pay_dual_track_plans = {
+	set_temp_variable = { video_game_in_sweden_cost = constant:video_game_in_sweden_cost.dual_track_plans_army_experience }
+	multiply_temp_variable = { video_game_in_sweden_cost = -1 }
+	army_experience = video_game_in_sweden_cost
+	set_temp_variable = { video_game_in_sweden_cost = constant:video_game_in_sweden_cost.dual_track_plans_command_power }
+	multiply_temp_variable = { video_game_in_sweden_cost = -1 }
+	add_command_power = video_game_in_sweden_cost
+}
+
+video_game_in_sweden_pay_dual_track_resolve = {
+	set_temp_variable = { video_game_in_sweden_cost = constant:video_game_in_sweden_cost.dual_track_resolve_political_power }
+	multiply_temp_variable = { video_game_in_sweden_cost = -1 }
+	add_political_power = video_game_in_sweden_cost
+	set_temp_variable = { video_game_in_sweden_cost = constant:video_game_in_sweden_cost.dual_track_resolve_army_experience }
+	multiply_temp_variable = { video_game_in_sweden_cost = -1 }
+	army_experience = video_game_in_sweden_cost
+}
+
+# COUNTRY scope. Dual-Track proof, first step: the conventional staff draws up
+# its own plan from field reports without the cabinet.
+video_game_in_sweden_do_dual_track_plans = {
+	video_game_in_sweden_pay_dual_track_plans = yes
+	set_country_flag = video_game_in_sweden_dual_track_independent_plans
+}
+
+# COUNTRY scope. Dual-Track proof, second step: the two staffs compare their
+# assumptions and settle each difference against the field reports.
+video_game_in_sweden_do_dual_track_resolve = {
+	video_game_in_sweden_pay_dual_track_resolve = yes
+	set_country_flag = video_game_in_sweden_dual_track_differences_resolved
+	set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.dual_track_resolve_loss }
+	multiply_temp_variable = { video_game_in_sweden_reliance_delta = -1 }
+	video_game_in_sweden_change_reliance = yes
+}
+
 video_game_in_sweden_pay_restriction = {
 	# Caller-owned output storage survives the quote helper's return.
 	set_temp_variable = { video_game_in_sweden_restriction_political_power_quote = constant:video_game_in_sweden_value.zero }
@@ -1803,6 +1838,8 @@ video_game_in_sweden_start_dual_track = {
 	video_game_in_sweden_clear_mission_state = yes
 	video_game_in_sweden_reset_mission_interruptions = yes
 	clr_country_flag = video_game_in_sweden_dual_track_failed
+	clr_country_flag = video_game_in_sweden_dual_track_independent_plans
+	clr_country_flag = video_game_in_sweden_dual_track_differences_resolved
 	if = {
 		limit = { has_dynamic_modifier = video_game_in_sweden_field_failure_penalty }
 		remove_dynamic_modifier = { modifier = video_game_in_sweden_field_failure_penalty }
@@ -2418,6 +2455,8 @@ video_game_in_sweden_close_program = {
 		remove_decision = video_game_advanced_logistics_review
 		remove_decision = video_game_independent_adjudicators
 		remove_decision = video_game_dual_track
+		remove_decision = video_game_dual_track_independent_plans
+		remove_decision = video_game_dual_track_resolve_differences
 		remove_decision = video_game_restrict_use
 		remove_decision = video_game_trust_model
 		if = {

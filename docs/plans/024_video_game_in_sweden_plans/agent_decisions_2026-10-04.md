@@ -125,3 +125,10 @@ A progress model was chosen over a single MTTH draw because the 30-day maintenan
 Separate policy keeps its explicit 90-day addition to the Evolution III threshold rather than a second pace factor, so the decision text stays exact.
 An admitted mismatch is remembered for `admitted_mismatch_memory_days` (90) through a timed flag that slows all three evolutions.
 Basis: spec part 2 evolution pacing and Evolution I to III pace factors, P24-E1A to E3B, chaos-redux-mtth skill.
+
+## D15. Dual-Track verification proves an actual comparison
+
+Decision: verification needs two costed actions shown only during the mission, independent staff plans and resolved differences, plus Stockholm and no supply gap after the proof period.
+The second action requires the first, and missing either lets the mission time out into the existing failure, which offers the Reality Audit and restriction.
+Player-facing dual-track text uses "dual-track staff" and "independent staff" instead of "second ledger".
+Basis: decision map Dual-Track proof (independent plans, compared assumptions, resolved differences), audits 20 and 23, recovery-route budget of up to four rows.

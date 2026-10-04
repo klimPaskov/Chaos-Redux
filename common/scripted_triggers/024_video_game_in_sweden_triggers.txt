@@ -148,6 +148,16 @@ video_game_in_sweden_can_pay_adjudicators = {
 	NOT = { has_army_experience < constant:video_game_in_sweden_cost.adjudicators_army_experience }
 }
 
+video_game_in_sweden_can_pay_dual_track_plans = {
+	NOT = { has_army_experience < constant:video_game_in_sweden_cost.dual_track_plans_army_experience }
+	NOT = { command_power < constant:video_game_in_sweden_cost.dual_track_plans_command_power }
+}
+
+video_game_in_sweden_can_pay_dual_track_resolve = {
+	NOT = { has_political_power < constant:video_game_in_sweden_cost.dual_track_resolve_political_power }
+	NOT = { has_army_experience < constant:video_game_in_sweden_cost.dual_track_resolve_army_experience }
+}
+
 video_game_in_sweden_can_pay_dual_track = {
 	num_of_civilian_factories_available_for_projects > constant:video_game_in_sweden_value.zero
 	NOT = { has_army_experience < constant:video_game_in_sweden_cost.dual_track_army_experience }
@@ -874,6 +884,10 @@ video_game_in_sweden_dual_track_objectives = {
 	}
 	owns_state = constant:video_game_in_sweden_event.stockholm_state
 	controls_state = constant:video_game_in_sweden_event.stockholm_state
+	NOT = { video_game_in_sweden_has_campaign_supply_gap = yes }
+	# The comparison itself: two independent plans, then their differences resolved.
+	has_country_flag = video_game_in_sweden_dual_track_independent_plans
+	has_country_flag = video_game_in_sweden_dual_track_differences_resolved
 }
 
 video_game_in_sweden_restriction_objectives = {

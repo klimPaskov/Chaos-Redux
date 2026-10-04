@@ -275,6 +275,9 @@ Full validation grants the validated-methods idea for a finite period and begins
 ### Dual track
 
 Dual track tests the cabinet beside normal planning for 120 days with 90 days of proof.
+Verification needs the comparison itself: `video_game_dual_track_independent_plans` (army experience and command power) has the conventional staff draw up its own plan, and `video_game_dual_track_resolve_differences` (political power and army experience, Reliance -4) settles each difference against field reports.
+Success also needs Stockholm and no supply gap at the end of the proof period; without both comparisons the mission times out into failure, which leaves the Reality Audit and restriction as the final choice.
+These two rows are the only actions shown during verification.
 
 Its outcome preserves the ordinary chain of command while recording whether the model has earned a limited planning role.
 
