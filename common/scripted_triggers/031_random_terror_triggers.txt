@@ -670,9 +670,13 @@ random_terror_can_afford_offer_defection_channel = {
 	NOT = { has_equipment = { support_equipment < constant:random_terror_cost.intelligence_support_equipment } }
 }
 
+# The base price always applies; a government that has used the restrictions
+# before also needs the raised price in random_terror_movement_*_cost.
 random_terror_can_afford_movement_restrictions = {
 	NOT = { has_stability < constant:random_terror_cost.movement_stability }
 	NOT = { has_equipment = { support_equipment < constant:random_terror_cost.movement_support_equipment } }
+	NOT = { check_variable = { var = has_stability value = random_terror_movement_stability_cost compare = less_than } }
+	NOT = { check_variable = { var = num_equipment@support_equipment value = random_terror_movement_equipment_cost compare = less_than } }
 	NOT = { has_manpower < constant:random_terror_tuning.government_military_manpower }
 }
 

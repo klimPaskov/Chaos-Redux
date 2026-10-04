@@ -140,6 +140,11 @@ random_terror_initialize_country_state = {
 		limit = { NOT = { has_variable = random_terror_response_capacity } }
 		set_variable = { random_terror_response_capacity = constant:random_terror_value.zero }
 	}
+	if = {
+		limit = { NOT = { has_variable = random_terror_movement_restrictions_uses } }
+		set_variable = { random_terror_movement_restrictions_uses = constant:random_terror_value.zero }
+		random_terror_update_movement_restrictions_cost = yes
+	}
 	random_terror_achievement_initialize_country = yes
 }
 
@@ -3286,19 +3291,37 @@ random_terror_decision_offer_defection_channel = {
 	random_terror_response_action_lock = yes
 }
 
+# The decision itself sets the timed random_terror_movement_restrictions_active
+# flag.  Every use after the first draws public condemnation, and each use
+# raises the price of the next one.
 random_terror_decision_movement_restrictions = {
 	random_terror_response_reduce_target = yes
 	set_temp_variable = { random_terror_movement_stability_delta = constant:random_terror_tuning.actor_stability_restriction_delta }
-	multiply_temp_variable = { random_terror_movement_stability_delta = -1 }
+	multiply_temp_variable = { random_terror_movement_stability_delta = constant:random_terror_value.negative_one }
 	add_stability = random_terror_movement_stability_delta
-	set_country_flag = random_terror_movement_restrictions_active
 	if = {
-		limit = { has_country_flag = random_terror_movement_restrictions_used }
+		limit = { check_variable = { random_terror_movement_restrictions_uses > constant:random_terror_value.zero } }
 		random_terror_add_public_government_abuse_condemnation = yes
 	}
-	set_country_flag = random_terror_movement_restrictions_used
+	add_to_variable = { random_terror_movement_restrictions_uses = constant:random_terror_value.one }
+	random_terror_update_movement_restrictions_cost = yes
 	random_terror_achievement_record_movement_restrictions = yes
 	random_terror_response_action_lock = yes
+}
+
+# COUNTRY scope: a government.  Sets the current Stability and support
+# equipment price of Temporary Movement Restrictions from its earlier uses
+# (random_terror_movement_restrictions_uses): each use adds one repeat step,
+# up to movement_repeat_max_steps.
+random_terror_update_movement_restrictions_cost = {
+	set_temp_variable = { random_terror_movement_repeat_steps = random_terror_movement_restrictions_uses }
+	clamp_temp_variable = { var = random_terror_movement_repeat_steps min = constant:random_terror_value.zero max = constant:random_terror_cost.movement_repeat_max_steps }
+	set_variable = { random_terror_movement_stability_cost = random_terror_movement_repeat_steps }
+	multiply_variable = { random_terror_movement_stability_cost = constant:random_terror_cost.movement_stability_repeat_step }
+	add_to_variable = { random_terror_movement_stability_cost = constant:random_terror_cost.movement_stability }
+	set_variable = { random_terror_movement_equipment_cost = random_terror_movement_repeat_steps }
+	multiply_variable = { random_terror_movement_equipment_cost = constant:random_terror_cost.movement_support_equipment_repeat_step }
+	add_to_variable = { random_terror_movement_equipment_cost = constant:random_terror_cost.movement_support_equipment }
 }
 
 random_terror_decision_protect_community_sites = {
@@ -6743,6 +6766,62 @@ random_terror_clear_actor_runtime = {
 	if = { limit = { original_tag = JPX } set_cosmetic_tag = event31_dormant_carrier_08 }
 }
 
+# COUNTRY scope: an AI actor being retired.  Its states go to its living
+# parent.  Without one, each state goes to a living government outside the
+# crisis that holds its core, otherwise to the actor's strongest enemy by
+# division count.  A state nobody can take stays with the actor.
+random_terror_return_actor_states = {
+	if = { limit = { original_tag = JHX has_event_target = random_terror_parent_jhx event_target:random_terror_parent_jhx = { exists = yes } } event_target:random_terror_parent_jhx = { save_event_target_as = random_terror_cleanup_parent } }
+	if = { limit = { original_tag = JIX has_event_target = random_terror_parent_jix event_target:random_terror_parent_jix = { exists = yes } } event_target:random_terror_parent_jix = { save_event_target_as = random_terror_cleanup_parent } }
+	if = { limit = { original_tag = JKX has_event_target = random_terror_parent_jkx event_target:random_terror_parent_jkx = { exists = yes } } event_target:random_terror_parent_jkx = { save_event_target_as = random_terror_cleanup_parent } }
+	if = { limit = { original_tag = JLX has_event_target = random_terror_parent_jlx event_target:random_terror_parent_jlx = { exists = yes } } event_target:random_terror_parent_jlx = { save_event_target_as = random_terror_cleanup_parent } }
+	if = { limit = { original_tag = JMX has_event_target = random_terror_parent_jmx event_target:random_terror_parent_jmx = { exists = yes } } event_target:random_terror_parent_jmx = { save_event_target_as = random_terror_cleanup_parent } }
+	if = { limit = { original_tag = JNX has_event_target = random_terror_parent_jnx event_target:random_terror_parent_jnx = { exists = yes } } event_target:random_terror_parent_jnx = { save_event_target_as = random_terror_cleanup_parent } }
+	if = { limit = { original_tag = JOX has_event_target = random_terror_parent_jox event_target:random_terror_parent_jox = { exists = yes } } event_target:random_terror_parent_jox = { save_event_target_as = random_terror_cleanup_parent } }
+	if = { limit = { original_tag = JPX has_event_target = random_terror_parent_jpx event_target:random_terror_parent_jpx = { exists = yes } } event_target:random_terror_parent_jpx = { save_event_target_as = random_terror_cleanup_parent } }
+	if = {
+		limit = { has_event_target = random_terror_cleanup_parent }
+		every_owned_state = { transfer_state_to = event_target:random_terror_cleanup_parent }
+	}
+	else = {
+		set_temp_variable = { random_terror_cleanup_best_divisions = constant:random_terror_value.negative_one }
+		every_enemy_country = {
+			limit = {
+				exists = yes
+				NOT = { random_terror_is_actor = yes }
+			}
+			set_temp_variable = { random_terror_cleanup_divisions = num_divisions }
+			if = {
+				limit = { check_variable = { random_terror_cleanup_divisions > random_terror_cleanup_best_divisions } }
+				set_temp_variable = { random_terror_cleanup_best_divisions = random_terror_cleanup_divisions }
+				save_event_target_as = random_terror_cleanup_enemy
+			}
+		}
+		every_owned_state = {
+			set_temp_variable = { random_terror_cleanup_state_placed = constant:random_terror_value.zero }
+			for_each_scope_loop = {
+				array = core_countries
+				break = random_terror_cleanup_state_placed
+				if = {
+					limit = {
+						exists = yes
+						NOT = { random_terror_is_actor = yes }
+					}
+					transfer_state = PREV
+					set_temp_variable = { random_terror_cleanup_state_placed = constant:random_terror_value.one }
+				}
+			}
+			if = {
+				limit = {
+					check_variable = { random_terror_cleanup_state_placed = constant:random_terror_value.zero }
+					has_event_target = random_terror_cleanup_enemy
+				}
+				transfer_state_to = event_target:random_terror_cleanup_enemy
+			}
+		}
+	}
+}
+
 random_terror_cleanup_actor = {
 	random_terror_clear_country_commitments = yes
 	if = {
@@ -6765,37 +6844,14 @@ random_terror_cleanup_actor = {
 	every_owned_state = { random_terror_clear_state_commitments = yes }
 	if = {
 		limit = { is_ai = yes }
-		if = {
-			limit = { original_tag = JHX has_event_target = random_terror_parent_jhx event_target:random_terror_parent_jhx = { exists = yes } }
-			every_owned_state = { transfer_state_to = event_target:random_terror_parent_jhx }
-		}
-		if = {
-			limit = { original_tag = JIX has_event_target = random_terror_parent_jix event_target:random_terror_parent_jix = { exists = yes } }
-			every_owned_state = { transfer_state_to = event_target:random_terror_parent_jix }
-		}
-		if = {
-			limit = { original_tag = JKX has_event_target = random_terror_parent_jkx event_target:random_terror_parent_jkx = { exists = yes } }
-			every_owned_state = { transfer_state_to = event_target:random_terror_parent_jkx }
-		}
-		if = {
-			limit = { original_tag = JLX has_event_target = random_terror_parent_jlx event_target:random_terror_parent_jlx = { exists = yes } }
-			every_owned_state = { transfer_state_to = event_target:random_terror_parent_jlx }
-		}
-		if = {
-			limit = { original_tag = JMX has_event_target = random_terror_parent_jmx event_target:random_terror_parent_jmx = { exists = yes } }
-			every_owned_state = { transfer_state_to = event_target:random_terror_parent_jmx }
-		}
-		if = {
-			limit = { original_tag = JNX has_event_target = random_terror_parent_jnx event_target:random_terror_parent_jnx = { exists = yes } }
-			every_owned_state = { transfer_state_to = event_target:random_terror_parent_jnx }
-		}
-		if = {
-			limit = { original_tag = JOX has_event_target = random_terror_parent_jox event_target:random_terror_parent_jox = { exists = yes } }
-			every_owned_state = { transfer_state_to = event_target:random_terror_parent_jox }
-		}
-		if = {
-			limit = { original_tag = JPX has_event_target = random_terror_parent_jpx event_target:random_terror_parent_jpx = { exists = yes } }
-			every_owned_state = { transfer_state_to = event_target:random_terror_parent_jpx }
+		random_terror_return_actor_states = yes
+	}
+	# An AI actor that still owns states nobody could take keeps its Event 31
+	# identity and units, so the crisis can still defeat or absorb it later.
+	if = {
+		limit = {
+			is_ai = yes
+			NOT = { any_owned_state = { is_owned_by = PREV } }
 		}
 		delete_units = { disband = no }
 		remove_ideas = {
@@ -6817,7 +6873,8 @@ random_terror_cleanup_actor = {
 		clear_variable = random_terror_territorial_control
 		random_terror_clear_actor_runtime = yes
 	}
-	else = {
+	else_if = {
+		limit = { is_ai = no }
 		# A human-controlled carrier is never deleted or stripped of units.  It is
 		# retired in place after surrender/defeat so a multiplayer participant can
 		# keep a valid country scope while the shared scenario closes.

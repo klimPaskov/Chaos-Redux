@@ -875,8 +875,13 @@ random_terror_government_response_category = {
 		days_re_enable = constant:random_terror_tuning.decision_action_cooldown_days
 		complete_effect = {
 			custom_effect_tooltip = random_terror_movement_restrictions_effect_tt
-			add_stability = constant:random_terror_cost.movement_stability_spend
-			add_equipment_to_stockpile = { type = support_equipment amount = constant:random_terror_cost.movement_support_equipment_spend }
+			random_terror_initialize_country_state = yes
+			set_temp_variable = { random_terror_movement_payment = random_terror_movement_stability_cost }
+			multiply_temp_variable = { random_terror_movement_payment = constant:random_terror_value.negative_one }
+			add_stability = random_terror_movement_payment
+			set_temp_variable = { random_terror_movement_payment = random_terror_movement_equipment_cost }
+			multiply_temp_variable = { random_terror_movement_payment = constant:random_terror_value.negative_one }
+			add_equipment_to_stockpile = { type = support_equipment amount = random_terror_movement_payment }
 			add_manpower = constant:random_terror_tuning.government_military_manpower_spend
 			FROM = { save_event_target_as = random_terror_action_state }
 			random_terror_decision_movement_restrictions = yes

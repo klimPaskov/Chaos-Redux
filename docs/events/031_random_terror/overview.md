@@ -76,6 +76,7 @@ Decisions keyed to a recorded marker (corridor, sponsor evidence, defection, com
 
 Every costed decision has one inclusive affordability trigger, `random_terror_can_afford_<decision>` in `031_random_terror_triggers.txt`, used by its `custom_cost_trigger` and mirrored in `available` through `hidden_trigger`, so an exact balance pays and each line matches one debit in the decision's `complete_effect`.
 Every `custom_cost_text` key has `_blocked` (red values) and `_tooltip` companions, and cost rows put each texticon before its value.
+Temporary Movement Restrictions is the one escalating price: each use adds to `random_terror_movement_restrictions_uses`, and `random_terror_update_movement_restrictions_cost` raises the Stability and support equipment price by one repeat step per earlier use, up to `movement_repeat_max_steps`; its only state flag is the timed `random_terror_movement_restrictions_active`, and every use after the first draws public condemnation.
 
 Every mission is started by a `random_terror_begin_<family>_mission` helper in the receiving country's scope and ended by the matching `random_terror_finish_<family>_mission`, which clears only that receiver's receipt.
 The begin helper keys the subject flag and the stored baseline to the receiver (`random_terror_<family>_goal_@<receiver>` and similar state variables), so each objective compares the state's live values with its own start.
@@ -116,6 +117,8 @@ The current capacity/force audit identifies gaps in those requirements and does 
 A carrier is free only when its tag does not exist and its `random_terror_slot_<tag>_used` flag is clear (`random_terror_carrier_is_free`).
 The spawner, the Global Jihad availability trigger and the scenario preflight share that predicate, and `random_terror_release_dead_carriers` clears a reservation only after the tag has stopped existing, so a retained or occupied carrier never receives a second package.
 A carrier that died in a peace deal without an Event 31 cleanup pass has its previous lifetime cleared before its next package.
+When an AI actor is retired, `random_terror_return_actor_states` hands its states to its living parent; without one, each state goes to a living government outside the crisis that holds its core, otherwise to the actor's strongest enemy by division count.
+An AI actor left holding a state that nobody could take keeps its Event 31 flags, units and carrier reservation, so the crisis can still defeat or absorb it, and a human actor is always retired in place.
 
 An ordinary spawn (`random_terror_state_can_spawn_actor`) never takes the parent's capital and requires the parent to keep its own controlled capital.
 When a capital reaches Lost Local Control and cannot secede, its government faces a coup attempt, and the ordinary civil-war check carries any other blocked state.
