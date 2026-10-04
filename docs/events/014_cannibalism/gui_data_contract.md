@@ -73,7 +73,7 @@ The page is the presentation-only country flag `cannibalism_warlord_gui_states_v
 Opening the States page runs `cannibalism_gui_rebuild_warlord_state_view`, which fills `cannibalism_command_gui_state_entries` from `every_controlled_state` of the viewing Host.
 Each card rechecks control when drawn and shows the state's name, its status (no longer held, liberated and recovering, exhausted or unusable, feeding territory resting or ready, or held ground), its population and its feedings against the exhaustion limit.
 The raid card reads the March Host's own receipt (`cannibalism_march_raid_target_state`, `_date`, `_receipt_result`, `_owner_generation`, `_target_controller`, `_target_controller_generation`), written only by a successful targeted depot raid.
-A receipt from an earlier actor generation of the same tag is not shown, and a controller whose actor generation changed since the strike is shown as a Host that no longer exists.
+A receipt from an earlier actor generation of the same tag is not shown, and a reusable warlord tag (CBA to CBH) whose actor generation changed since the strike is shown as a Host that no longer exists; any other controller keeps its name even when its outbreak ended or returned with a new generation.
 Without a receipt the card says no raid was committed.
 
 ## Revealed command window
@@ -103,7 +103,7 @@ The row shows the warlord's current answer to the revealed host: awaiting absorp
 `cannibalism_unified_record_continental_target` runs at the end of the six committed continental executors (front collapse, army cell seeding, global campaign, terror ultimatum, border incident and coalition hub strike).
 It inserts the target country, the kind (`cannibalism_continental_target_kind`), the commit date and the target's actor generation at the front of four aligned arrays and trims them to `cannibalism_continental_target_record.rolling_count` (three).
 `cannibalism_ui_load_continental_target_row` reads the row at `cannibalism_continental_index`.
-A target that was an Event 014 actor and whose actor generation changed since the order is shown as a Host that no longer exists, so a recycled tag never inherits an older strike.
+A target on a reusable warlord tag (CBA to CBH) whose actor generation changed since the order is shown as a Host that no longer exists, so a recycled tag never inherits an older strike; any other target keeps its name even when its outbreak ended or returned with a new generation.
 Without a committed operation the page shows one empty card.
 
 ## Wendigo transformation window
