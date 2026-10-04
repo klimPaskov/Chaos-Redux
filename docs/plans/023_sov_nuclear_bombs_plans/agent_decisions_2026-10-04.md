@@ -104,3 +104,10 @@ Breakaway delivery integration uses the same preflight for its own holder.
 Basis: spec Part 4 lines 305-311 (use the installed vanilla delivery system; raids or another current vanilla path; validate range, fuel, air access and readiness; no parallel combat system or free aircraft), installed `common/raids/nuclear_raids.txt` (the raid outcomes call `launch_nuke` and require ten `strategic_bomber` or `strat_bomber_intercontinental_equipment` and an air base), installed `documentation/effects_documentation.md` lines 4745-4758 (`launch_nuke` takes a state or province and consumes a bomb; no documented effect starts a raid), installed `common/units/air.txt` (`strat_bomber` and `strat_bomber_intercontinental` share `type = strategic_bomber`), and `subagent_handoffs/023_vanilla_delivery_route_audit_2026-09-26.md`.
 This closes the long-standing `blocked` disposition of the native bomber delivery route: no script effect can start a raid, so the accepted Event 23 delivery is the launch_nuke release behind this preflight, not a raid adapter.
 Disposition: `implemented`; release timing and on_nuke_drop confirmation `needs_live_game`.
+
+## D11. Probability baseline and compare
+
+Decision: before sources for every changed AI surface were frozen in `probability_source_snapshots/ai_surfaces_before_2026-10-04/` before the edits, and the compare request with source-level scenario outcomes is `subagent_handoffs/023_ai_surfaces_probability_compare_2026-10-04.md`.
+The MCP `probability_inspect` route (`decision_ai_will_do`, narrow source path, with and without a candidate pool) returned `INTERNAL_ERROR` with no artifact, so the MCP evaluate and compare passes are recorded as an exact blocker rather than retried.
+No numeric weight or deferred evolution timing (120/120/180/90) changed (lead's D8).
+Disposition: `blocked` on the server error for the MCP compare; source-level evidence recorded.
