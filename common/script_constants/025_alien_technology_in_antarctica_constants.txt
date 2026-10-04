@@ -593,7 +593,6 @@ chaosx_nr25_cost = {
 	dependence_safe_year_days = 365
 	dependence_stable_two_year_days = 730
 	dependence_accident_cooldown_days = 120
-	dependence_accident_casualties = 1
 	dependence_accident_exposure = 10
 	signal_opening_intensity = 20
 	signal_pulse_intensity = 5
@@ -720,7 +719,6 @@ chaosx_nr25_cost = {
 	mission_failure_progress = -8
 	mission_failure_readiness = -6
 	mission_failure_exposure = 6
-	mission_evacuate_failure_casualties = 2
 
 	# Rival losses are signed values applied to participant ledgers.
 	rival_partial_progress_loss = -4
@@ -983,4 +981,24 @@ chaosx_nr25_sector_frame = {
 	surveyed = 6
 	recovered = 7
 	blocked = 8
+}
+
+# Expedition deaths per incident, recorded in the shared Deaths ledger under
+# the Antarctic expedition reason. A caller sets the temporary
+# chaosx_nr25_casualty_amount to one band before calling
+# chaosx_nr25_record_casualties; the field band is the default.
+chaosx_nr25_casualty = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	# A crew lost at a camp, a test bench or on a traverse.
+	field = 12
+	# Staff cut off during a forced shutdown of the recovered systems.
+	incident = 6
+	# A camp stormed by another expedition's troops.
+	armed_seizure = 30
+	# A collapsed evacuation of the whole expedition.
+	evacuation_failure = 45
 }

@@ -902,6 +902,7 @@ country_event = {
 		custom_effect_tooltip = chaosx_nr25_incident_stability_tt
 		custom_effect_tooltip = chaosx_nr25_incident_strong_relief_tt
 		hidden_effect = {
+			set_temp_variable = { chaosx_nr25_casualty_amount = constant:chaosx_nr25_casualty.incident }
 			chaosx_nr25_record_casualties = yes
 			set_temp_variable = { chaosx_nr25_stability_change = constant:chaosx_nr25_holder_fixed.incident_stability_cost }
 			chaosx_nr25_apply_stability_change = yes
@@ -1093,6 +1094,43 @@ country_event = {
 	option = {
 		name = chaosx.nr25.12.a
 		ai_chance = { base = 100 }
+	}
+}
+
+# The evacuation objective resolved and the expedition has left the race. A
+# collapsed evacuation reports its dead.
+country_event = {
+	id = chaosx.nr25.14
+	title = {
+		text = chaosx.nr25.14.t_failed
+		trigger = { has_country_flag = chaosx_nr25_evacuation_mission_failed }
+	}
+	title = {
+		text = chaosx.nr25.14.t
+		trigger = { NOT = { has_country_flag = chaosx_nr25_evacuation_mission_failed } }
+	}
+	desc = {
+		text = chaosx.nr25.14.d_failed
+		trigger = { has_country_flag = chaosx_nr25_evacuation_mission_failed }
+	}
+	desc = {
+		text = chaosx.nr25.14.d
+		trigger = { NOT = { has_country_flag = chaosx_nr25_evacuation_mission_failed } }
+	}
+	picture = GFX_report_event_025_antarctic_crossing
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			has_country_flag = chaosx_nr25_evacuation_mission_success
+			has_country_flag = chaosx_nr25_evacuation_mission_failed
+		}
+	}
+
+	option = {
+		name = chaosx.nr25.14.a
+		ai_chance = { base = 100 }
+		custom_effect_tooltip = chaosx_nr25_evacuation_report_tt
 	}
 }
 

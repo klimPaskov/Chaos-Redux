@@ -260,3 +260,16 @@ Decision:
 - Each action card shows a short board label and either the cost (whole icon-and-number groups per line) or the blocking status; the tooltip repeats the full name, effect, cost and status, and the confirmation window keeps the full name and one-line cost.
 - Dead visibility triggers for elements that no longer exist were removed, and the confirmation window and empty-rivals note now use triggers whose names match their elements, so neither is drawn when it should be hidden.
 - Hover, pressed and disabled card states were not rendered; the disabled action-card frame was re-fitted so all four frames share one footprint.
+
+## D18. Actor-appropriate wording, casualty bands and the Antarctic deaths reason
+
+Disposition: `implemented`.
+
+Basis: the participant and route matrix row for human-controlled special chaos and actual nonhuman countries, spec 014's actor-text criterion, spec 004's personnel-loss rule (a dedicated Event 025 reason, losses proportional to scale and severity), spec 006's military-side rule and spec 013's casualty bands.
+
+Decision:
+
+- Wording follows the shared classifiers `is_actual_nonhuman_country` and `is_special_chaos_country`, with nonhuman wording first. The entry offer, the route estimate and the mobilisation order append one paragraph for such an actor; the field and programme casualty lines, the armed-seizure line and the incident tooltip have their own variants. Ordinary countries keep the existing text.
+- The shared Deaths ledger gains the `antarctic_expedition` reason (39), shown as "Antarctic expedition losses" in both deaths-cause views and counted in the military country bucket, so expedition deaths stay on the military side without a new Chaos Meter column.
+- Deaths per incident come from the `chaosx_nr25_casualty` bands instead of one death per incident: 12 for a field accident (the default), 6 for staff cut off in a forced shutdown, 30 for a camp seized by troops and 45 for a collapsed evacuation. The two unused or replaced constants (`dependence_accident_casualties`, `mission_evacuate_failure_casualties`) are removed.
+- The evacuation objective, which ended the expedition silently, now reports its end (`chaosx.nr25.14`), including the dead when the evacuation collapses.

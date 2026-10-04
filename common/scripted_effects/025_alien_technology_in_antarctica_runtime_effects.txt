@@ -268,35 +268,35 @@ chaosx_nr25_raise_chaos = {
 	add_to_variable = { global.chaosx_nr25_chaos = constant:chaosx_nr25_tuning.action_chaos }
 }
 
-# COUNTRY scope. Registers one expedition casualty in the shared Chaos deaths
-# history and leaves a durable rescue-memory marker for Evolution III. The
-# amount is intentionally one per verified accident or rival seizure; callers
-# cannot bypass the shared ledger with an unrelated Event 016 cause.
+# COUNTRY scope. Registers one expedition casualty incident in the shared
+# Chaos deaths ledger under the dedicated Antarctic expedition reason, on the
+# military side, and leaves a durable rescue-memory marker for Evolution III.
+# The caller may set the temporary chaosx_nr25_casualty_amount to a
+# chaosx_nr25_casualty band; otherwise the field band applies. The amount is
+# cleared after use so a second incident in the same chain picks its own band,
+# and chaosx_nr25_last_casualties keeps it for the report text.
 chaosx_nr25_record_casualties = {
-	set_temp_variable = { chaosx_nr25_casualty_amount = constant:chaosx_nr25_value.one }
+	if = {
+		limit = { NOT = { check_variable = { var = chaosx_nr25_casualty_amount value = constant:chaosx_nr25_value.zero compare = greater_than } } }
+		set_temp_variable = { chaosx_nr25_casualty_amount = constant:chaosx_nr25_casualty.field }
+	}
 	add_to_variable = { chaosx_nr25_casualties = chaosx_nr25_casualty_amount }
+	set_variable = { chaosx_nr25_last_casualties = chaosx_nr25_casualty_amount }
 	set_country_flag = chaosx_nr25_casualty_memory_ready
 	set_temp_variable = { chaos_deaths_change = chaosx_nr25_casualty_amount }
-	set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.military_casualties }
+	set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.antarctic_expedition }
 	set_temp_variable = { chaos_deaths_is_civilian = constant:chaosx_nr25_value.zero }
 	set_temp_variable = { chaos_deaths_target_country = THIS }
 	set_temp_variable = { chaos_deaths_has_target_country = constant:chaosx_nr25_value.one }
 	chaos_meter_register_deaths = yes
+	set_temp_variable = { chaosx_nr25_casualty_amount = constant:chaosx_nr25_value.zero }
 }
 
-# COUNTRY scope. Emergency evacuation failures record the configured field
-# loss through the same shared deaths API without duplicating an inline call
-# site. The batch is deliberately bounded to the two-casualty contract.
+# COUNTRY scope. A collapsed evacuation records the evacuation-failure band
+# through the same shared deaths API and reports the losses to the expedition.
 chaosx_nr25_record_evacuate_failure_casualties = {
-	set_temp_variable = { chaosx_nr25_evacuate_failure_casualties = constant:chaosx_nr25_cost.mission_evacuate_failure_casualties }
-	if = {
-		limit = { check_variable = { var = chaosx_nr25_evacuate_failure_casualties value = constant:chaosx_nr25_value.two compare = greater_than_or_equals } }
-		chaosx_nr25_record_casualties = yes
-	}
-	if = {
-		limit = { check_variable = { var = chaosx_nr25_evacuate_failure_casualties value = constant:chaosx_nr25_value.one compare = greater_than_or_equals } }
-		chaosx_nr25_record_casualties = yes
-	}
+	set_temp_variable = { chaosx_nr25_casualty_amount = constant:chaosx_nr25_casualty.evacuation_failure }
+	chaosx_nr25_record_casualties = yes
 }
 
 # COUNTRY scope. Phase mission cleanup is idempotent and is used by objective
@@ -1828,6 +1828,7 @@ chaosx_nr25_complete_phase_mission = {
 		if = {
 			limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.evacuate_expedition compare = equals } }
 			set_country_flag = chaosx_nr25_evacuation_mission_success
+			chaosx_nr25_report_evacuation = yes
 			chaosx_nr25_withdraw_participant = yes
 		}
 		if = {
@@ -1872,6 +1873,7 @@ chaosx_nr25_fail_phase_mission = {
 			limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.evacuate_expedition compare = equals } }
 			set_country_flag = chaosx_nr25_evacuation_mission_failed
 			chaosx_nr25_record_evacuate_failure_casualties = yes
+			chaosx_nr25_report_evacuation = yes
 			chaosx_nr25_withdraw_participant = yes
 		}
 		if = {
@@ -2642,6 +2644,7 @@ chaosx_nr25_apply_militarisation_target = {
 				}
 				else = { add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.rival_partial_progress_loss } }
 				add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_militarisation_seize }
+				set_temp_variable = { chaosx_nr25_casualty_amount = constant:chaosx_nr25_casualty.armed_seizure }
 				chaosx_nr25_record_casualties = yes
 				set_country_flag = chaosx_nr25_militarisation_seized
 				add_opinion_modifier = { target = ROOT modifier = chaosx_nr25_armed_incident }

@@ -943,3 +943,51 @@ defined_text = {
 	text = { trigger = { has_global_flag = chaosx_nr25_opening_technology_changes_users } localization_key = chaosx_nr25_mobilisation_opening_technology_changes_users }
 	text = { localization_key = chaosx_nr25_opening_none }
 }
+
+# Actor-appropriate wording. A human-controlled actual nonhuman country or
+# special chaos country may join the race; its entry, mobilisation and
+# casualty reports use wording that fits who it sends south. Nonhuman wording
+# takes precedence over the broader special-country wording.
+defined_text = {
+	name = GetChaosxNr25ActorEntryNote
+	text = { trigger = { is_actual_nonhuman_country = yes } localization_key = chaosx_nr25_actor_entry_nonhuman }
+	text = { trigger = { is_special_chaos_country = yes } localization_key = chaosx_nr25_actor_entry_special }
+	text = { localization_key = chaosx_nr25_opening_none }
+}
+
+defined_text = {
+	name = GetChaosxNr25ActorMobilisationNote
+	text = { trigger = { is_actual_nonhuman_country = yes } localization_key = chaosx_nr25_actor_mobilisation_nonhuman }
+	text = { trigger = { is_special_chaos_country = yes } localization_key = chaosx_nr25_actor_mobilisation_special }
+	text = { localization_key = chaosx_nr25_opening_none }
+}
+
+# Deaths among the expedition's own field teams.
+defined_text = {
+	name = GetChaosxNr25FieldCasualtyLine
+	text = { trigger = { is_actual_nonhuman_country = yes } localization_key = chaosx_nr25_casualty_field_nonhuman }
+	text = { trigger = { is_special_chaos_country = yes } localization_key = chaosx_nr25_casualty_field_special }
+	text = { localization_key = chaosx_nr25_casualty_field_default }
+}
+
+# Deaths among the staff of an alien-material programme, which may belong to a
+# holder that never sent an expedition.
+defined_text = {
+	name = GetChaosxNr25ProgrammeCasualtyLine
+	text = { trigger = { is_actual_nonhuman_country = yes } localization_key = chaosx_nr25_casualty_programme_nonhuman }
+	text = { trigger = { is_special_chaos_country = yes } localization_key = chaosx_nr25_casualty_programme_special }
+	text = { localization_key = chaosx_nr25_casualty_programme_default }
+}
+
+# Only a seized camp costs lives in an armed clash.
+defined_text = {
+	name = GetChaosxNr25ClashCasualtyLine
+	text = { trigger = { check_variable = { var = chaosx_nr25_last_clash_kind value = constant:chaosx_nr25_evolution_action.seize compare = equals } } localization_key = chaosx_nr25_clash_casualty_line }
+	text = { localization_key = chaosx_nr25_opening_none }
+}
+
+defined_text = {
+	name = GetChaosxNr25IncidentCasualtyText
+	text = { trigger = { is_actual_nonhuman_country = yes } localization_key = chaosx_nr25_incident_casualty_nonhuman }
+	text = { localization_key = chaosx_nr25_incident_casualty_default }
+}
