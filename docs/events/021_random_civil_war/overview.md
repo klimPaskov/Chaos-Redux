@@ -219,9 +219,13 @@ The settlement selector is bounded by the surviving actors, front goals, State A
 
 Settlement obligations are recorded before temporary war state is removed.
 
+The settlement phase stays open from the moment terms are applied until the obligation is fulfilled or breached, whether or not the settlement event has been answered. Throughout that period the obligation's own action, when it has one (Complete Disarmament, Complete Coalition Governance, or End Sponsor Commitment), and Hold the Settlement Terms remain available beside the reconstruction actions.
+
 Reconstruction restores administration through a finite due-date sequence instead of an always-running maintenance loop.
 
 Completion applies reconstruction relief, records the settlement and achievement receipts, prepares recurrence memory, and then cleans temporary Event 021 state.
+
+The global review keeps visiting a settled crisis after reconstruction ends. The obligation is judged on the first review at or after its hold date, and the crisis then closes, which frees its theater for a new civil war.
 
 `No State Left Behind` snapshots every original core state at opening rather than only the states transferred to the claimant.
 

@@ -173,3 +173,16 @@ An obligation breached early, such as a failed terms mission, resolves inside th
 No periodic hook or world iteration is added, and all date offsets still pass through `event021_days_to_date_offset` and the shared converter.
 Basis: the lead's round 2 assignment and the spec's requirement that settlements create obligations that must resolve before the category closes.
 Contract: `common/scripted_effects/021_random_civil_war_parent_effects.md` (reconstruction tick paragraph).
+
+## D14. The settlement phase lasts for the whole obligation period
+
+Finding: `chaosx.nr21.9` fires as soon as terms are applied, and its option cleared `random_civil_war_settlement_phase`, which turned `event021_country_can_manage_settlement` false.
+Complete Disarmament, Complete Coalition Governance, and End Sponsor Commitment disappeared, Hold the Settlement Terms stopped activating, and Upholding the Settlement was cancelled, so those obligations could only end in breach, and AI governments, which answer the event at once, essentially always breached.
+Decision: Event 9 keeps firing when a settlement is applied, but its option no longer clears the phase; it shows one outcome tooltip (`chaosx.nr21.9.a.tt`) and runs the reconstruction flag and first tick hidden.
+`event021_parent_review_settlement_obligation` clears the settlement phase once the obligation is fulfilled or breached, so the phase lasts from settlement until the obligation resolves whether or not the event was answered.
+Event 9's title and description now describe the settlement just reached and the obligation ahead (`event021_GetSettlementObligationName`), and the settlement summary line says the fighting has stopped.
+During the overlap the visible set is Reconstruct Administration, at most one obligation action, Protect State Communications, Review Regional Administration, Secure the Rail Spine, and Hold the Settlement Terms, which stays within the six-action ceiling.
+Opening, front, multi-front, Evolution I prevention, and exposure gates already exclude the settlement and reconstruction phases (`event021_country_can_manage_opening`, `event021_country_can_manage_fronts`, `event021_country_can_manage_multifront`, `event021_country_can_use_evolution_i_prevention`, and `event021_country_can_manage_exposure`), and settlement application sets both phases, so none of them reopens.
+No AI weight, cost, timer, or MTTH constant changed. The Evolution I and II MTTH `settlement_progress_factor` keys on `random_civil_war_settlement_phase`, so for a sampled settled theater it now applies for the whole obligation period instead of until Event 9 was answered, which is the period the factor describes.
+Basis: the spec and decision prompt require settlement obligations to resolve before the category closes, and the crosswalk maps the amnesty, coalition, and guarantee families to these obligation actions.
+Contract: `docs/events/021_random_civil_war/overview.md` (Settlement, reconstruction, and recurrence).

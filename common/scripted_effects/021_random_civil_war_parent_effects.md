@@ -183,7 +183,7 @@ The global review calls it whenever `event021_parent_reconstruction_due` holds: 
 The final block (administration restored, recurrence prepared, reconstruction record, `chaosx.nr21.10` cleanup) runs once per crisis generation because it requires `random_civil_war_reconstruction_resolved` to be absent, so an Event 006 actor that host cleanup already finalized is only judged on its obligation.
 With `reconstruction_days = 120` and `settlement_terms_hold_days = 180`, reconstruction completes on the first review at or after day 120, the obligation is judged held or breached on the first review at or after day 180, and the same tick fires `chaosx.nr21.10`, which unregisters the theater and clears `random_civil_war_active`, releasing global capacity.
 An obligation breached early, for example by a failed terms mission, is resolved by that mission and reaches cleanup on the first review after reconstruction completes.
-`event021_parent_review_settlement_obligation` treats a terms mission that confirmed the objective (`random_civil_war_settlement_obligation_objective_met`) as sufficient at the hold date, matching the fulfilled branch.
+`event021_parent_review_settlement_obligation` treats a terms mission that confirmed the objective (`random_civil_war_settlement_obligation_objective_met`) as sufficient at the hold date, matching the fulfilled branch, and closes the settlement phase once the obligation is no longer open.
 No periodic hook is added: the tick rides the existing global-host review pulse.
 
 `event021_parent_finalize_event6_actor` closes the primary Event 006 side state while preserving the durable Event 006 package and origin history.

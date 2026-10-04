@@ -122,11 +122,15 @@ country_event = {
 	picture = GFX_report_event_021_random_civil_war_opening
 	is_triggered_only = yes
 	trigger = { has_country_flag = random_civil_war_settlement_recorded }
+	# The settlement phase stays open until the obligation is fulfilled or
+	# breached; event021_parent_review_settlement_obligation closes it.
 	option = {
 		name = chaosx.nr21.9.a
-		set_country_flag = random_civil_war_reconstruction_phase
-		clr_country_flag = random_civil_war_settlement_phase
-		event021_parent_reconstruction_tick = yes
+		custom_effect_tooltip = chaosx.nr21.9.a.tt
+		hidden_effect = {
+			set_country_flag = random_civil_war_reconstruction_phase
+			event021_parent_reconstruction_tick = yes
+		}
 	}
 }
 
