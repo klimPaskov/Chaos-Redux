@@ -278,3 +278,23 @@ Basis: the spec sets a slot limit but no ring priority, so any stable order meet
 Decision: the missing `asteroid_incoming_visual_strike_state` guard in `common/on_actions/042_equipment_from_heavens_on_actions.txt` is a cross-owner dependency on the Event 042 package, not Event 028 work.
 That file is untracked and belongs to another in-progress owner; Event 028 keeps the state marker and global flag that the guard needs.
 Basis: the shared-tree ownership rule and the nuclear-separation decision above.
+
+## Review round 3 corrections
+
+### Timed flags take literal days
+
+Decision: every Event 028 timed flag is built inside a `meta_effect` whose text receives integer literals from `[?temp|.0]`: the impact super-event flag (`super_event_visible`, days from `asteroid_incoming_runtime.super_event_visible_days` and value from `asteroid_incoming_event.super_event_id`), the struck-state map-visual marker (`asteroid_incoming_mark_visual_strike_state`, from `asteroid_incoming_runtime.visual_strike_marker_days`), the mission-failure repair surcharge (`asteroid_incoming_repair_costs_raised`, from `asteroid_incoming_cost.failure_surcharge_days`) and the national failure window (`asteroid_incoming_recovery_failure_pressure`, from `asteroid_incoming_recovery.mission_failure_pressure_days`).
+The state failure-pressure modifier reads its duration from a temporary variable instead of a `constant:` token.
+Basis: installed `common/scripted_effects/SOV_scripted_effects.txt` notes that a timed flag's days do not read variables, and Event 5 and Event 23 use the same literal-injection pattern; a flag that ignored its duration could leave repair prices raised and the national recovery idea frozen for the rest of the campaign, or keep a struck state out of later nuclear consequences.
+Values are unchanged; flag expiry is a needs-live-game check.
+
+### The crater perimeter lapses with control
+
+Decision: the perimeter modifier's `enable` and `remove_trigger` name the crater state through `ROOT`, as the vanilla scoped state modifiers `CHI_bog_defensive_modifier` and `CZE_sudetenland_paramilitaries_modifier` do, because the modifier is added with `scope` set to the securing country.
+`asteroid_incoming_on_state_control_changed` clears the perimeter flag and holder id once another country controls the site, so a former holder that retakes it must secure it again and regains the modifier, as the perimeter-ownership decision above states.
+The survey record and its one-use research bonus stay on the state.
+Basis: the perimeter-ownership decision; before this, a former holder that retook the site kept a held perimeter without its modifier and could not secure it again.
+
+### Dust-protection modifier name
+
+Decision: `asteroid_incoming_national_dust_protection` has a display name, so modifier breakdowns no longer show its raw key.

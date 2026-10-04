@@ -1062,8 +1062,15 @@ asteroid_incoming_refresh_state_cost_quotes = {
 # COUNTRY SCOPE. Raises this country's repair prices for a limited period
 # after a failed mission and re-quotes the affected states it holds.
 asteroid_incoming_apply_repair_cost_surcharge = {
+	# A timed flag's days take a literal only, so the constant is injected as
+	# an integer.
 	set_temp_variable = { asteroid_incoming_surcharge_days = constant:asteroid_incoming_cost.failure_surcharge_days }
-	set_country_flag = { flag = asteroid_incoming_repair_costs_raised days = asteroid_incoming_surcharge_days }
+	meta_effect = {
+		text = {
+			set_country_flag = { flag = asteroid_incoming_repair_costs_raised days = [SURCHARGE_DAYS] }
+		}
+		SURCHARGE_DAYS = "[?asteroid_incoming_surcharge_days|.0]"
+	}
 	every_controlled_state = {
 		limit = { is_in_array = { array = global.asteroid_incoming_affected_states value = THIS } }
 		asteroid_incoming_quote_state_recovery_costs = yes
@@ -1338,9 +1345,10 @@ asteroid_incoming_apply_mission_failure_to_state = {
 		set_variable = { asteroid_incoming_mission_failure_day = global.num_days }
 		asteroid_incoming_apply_mission_failure_deaths = yes
 		asteroid_incoming_reapply_state_impact_damage = yes
+		set_temp_variable = { asteroid_incoming_failure_state_pressure_days = constant:asteroid_incoming_recovery.mission_failure_pressure_days }
 		add_dynamic_modifier = {
 			modifier = asteroid_incoming_mission_failure_pressure
-			days = constant:asteroid_incoming_recovery.mission_failure_pressure_days
+			days = asteroid_incoming_failure_state_pressure_days
 		}
 	}
 }
@@ -1456,7 +1464,14 @@ asteroid_incoming_apply_mission_failure_to_country = {
 		idea = asteroid_incoming_recovery_burden
 		days = asteroid_incoming_failure_pressure_days
 	}
-	set_country_flag = { flag = asteroid_incoming_recovery_failure_pressure days = asteroid_incoming_failure_pressure_days }
+	# A timed flag's days take a literal only, so the same duration is
+	# injected as an integer.
+	meta_effect = {
+		text = {
+			set_country_flag = { flag = asteroid_incoming_recovery_failure_pressure days = [FAILURE_PRESSURE_DAYS] }
+		}
+		FAILURE_PRESSURE_DAYS = "[?asteroid_incoming_failure_pressure_days|.0]"
+	}
 	asteroid_incoming_apply_repair_cost_surcharge = yes
 }
 

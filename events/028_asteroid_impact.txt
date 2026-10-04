@@ -401,11 +401,20 @@ country_event = {
 				limit = { has_event_target = asteroid_incoming_main_crater_state }
 				event_target:asteroid_incoming_main_crater_state = { save_global_event_target_as = asteroid_incoming_super_event_main_state }
 			}
+			# A timed flag's days and value take literals only, so both are
+			# injected as integers from the constants (the Event 5 pattern).
 			set_temp_variable = { asteroid_incoming_super_event_visible_days = constant:asteroid_incoming_runtime.super_event_visible_days }
-			set_global_flag = {
-				flag = super_event_visible
-				days = asteroid_incoming_super_event_visible_days
-				value = constant:asteroid_incoming_event.super_event_id
+			set_temp_variable = { asteroid_incoming_super_event_id = constant:asteroid_incoming_event.super_event_id }
+			meta_effect = {
+				text = {
+					set_global_flag = {
+						flag = super_event_visible
+						days = [VISIBLE_DAYS]
+						value = [SUPER_EVENT_ID]
+					}
+				}
+				VISIBLE_DAYS = "[?asteroid_incoming_super_event_visible_days|.0]"
+				SUPER_EVENT_ID = "[?asteroid_incoming_super_event_id|.0]"
 			}
 			set_variable = { global.current_super_event_audio_id = constant:asteroid_incoming_event.super_event_audio_id }
 			every_country = {

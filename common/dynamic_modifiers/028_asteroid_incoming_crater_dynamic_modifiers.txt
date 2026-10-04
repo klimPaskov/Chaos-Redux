@@ -8,11 +8,14 @@
 # ============================================================================
 
 # The perimeter belongs to the country that secured it and lapses as soon as
-# another country controls the crater.
+# another country controls the crater. The modifier is added with scope set to
+# that country, so its triggers name the crater state through ROOT, as vanilla
+# scoped state modifiers do (CHI_bog_defensive_modifier,
+# CZE_sudetenland_paramilitaries_modifier).
 asteroid_incoming_crater_perimeter_security = {
 	icon = GFX_idea_asteroid_incoming_fragment_crater
-	enable = { asteroid_incoming_crater_perimeter_is_held = yes }
-	remove_trigger = { NOT = { asteroid_incoming_crater_perimeter_is_held = yes } }
+	enable = { ROOT = { asteroid_incoming_crater_perimeter_is_held = yes } }
+	remove_trigger = { ROOT = { NOT = { asteroid_incoming_crater_perimeter_is_held = yes } } }
 	army_defence_factor = constant:asteroid_incoming_crater.security_defence
 	attrition_for_controller = constant:asteroid_incoming_crater.security_attrition
 }

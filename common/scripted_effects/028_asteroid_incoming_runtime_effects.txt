@@ -1261,6 +1261,20 @@ asteroid_incoming_process_monthly_rescue_deaths = {
 	}
 }
 
+# STATE SCOPE, the main centre or a fragment centre just before its map visual.
+# The struck state carries a timed marker so every on_nuke_drop consumer can
+# skip this visual even if the callback is late. A timed flag's days take a
+# literal only, so the constant is injected as an integer.
+asteroid_incoming_mark_visual_strike_state = {
+	set_temp_variable = { asteroid_incoming_visual_strike_days = constant:asteroid_incoming_runtime.visual_strike_marker_days }
+	meta_effect = {
+		text = {
+			set_state_flag = { flag = asteroid_incoming_visual_strike_state days = [VISUAL_STRIKE_DAYS] }
+		}
+		VISUAL_STRIKE_DAYS = "[?asteroid_incoming_visual_strike_days|.0]"
+	}
+}
+
 asteroid_incoming_apply_state_profile = {
 	if = {
 		limit = { asteroid_incoming_state_is_resolvable_transaction = yes }
@@ -1311,8 +1325,7 @@ asteroid_incoming_apply_state_profile = {
 			set_global_flag = asteroid_incoming_main_crater_registered
 			# The struck state carries a timed marker so every on_nuke_drop
 			# consumer can skip this map visual even if the callback is late.
-			set_temp_variable = { asteroid_incoming_visual_strike_days = constant:asteroid_incoming_runtime.visual_strike_marker_days }
-			set_state_flag = { flag = asteroid_incoming_visual_strike_state days = asteroid_incoming_visual_strike_days }
+			asteroid_incoming_mark_visual_strike_state = yes
 			CONTROLLER = {
 				# Presentation-only thermonuclear-scale impact. Shared nuclear
 				# callbacks are guarded so this cannot create nuclear ledgers.
@@ -1366,8 +1379,7 @@ asteroid_incoming_apply_state_profile = {
 				set_temp_variable = { asteroid_incoming_local_burden_days = constant:asteroid_incoming_runtime.fragment_center_recovery_days }
 				asteroid_incoming_adjust_local_burden_for_medical_preparation = yes
 				add_dynamic_modifier = { modifier = asteroid_incoming_fragment_center_recovery days = asteroid_incoming_local_burden_days }
-				set_temp_variable = { asteroid_incoming_visual_strike_days = constant:asteroid_incoming_runtime.visual_strike_marker_days }
-				set_state_flag = { flag = asteroid_incoming_visual_strike_state days = asteroid_incoming_visual_strike_days }
+				asteroid_incoming_mark_visual_strike_state = yes
 				CONTROLLER = {
 					set_global_flag = asteroid_incoming_visual_strike_active
 					launch_nuke = {
@@ -2116,6 +2128,16 @@ asteroid_incoming_on_state_control_changed = {
 	if = {
 		limit = { has_state_flag = asteroid_incoming_fragment_site }
 		CONTROLLER = { clr_country_flag = asteroid_incoming_fragment_capture_hold_active }
+	}
+	# A secured perimeter lapses with control, so a former holder that retakes
+	# the site must secure it again and regains its perimeter modifier.
+	if = {
+		limit = {
+			has_state_flag = asteroid_incoming_crater_perimeter_secured
+			NOT = { asteroid_incoming_crater_perimeter_is_held = yes }
+		}
+		clr_state_flag = asteroid_incoming_crater_perimeter_secured
+		clear_variable = asteroid_incoming_crater_perimeter_controller_id
 	}
 	asteroid_incoming_refresh_mineral_control = yes
 }
