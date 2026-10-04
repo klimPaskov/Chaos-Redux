@@ -892,9 +892,32 @@ great_depression_distressed_asset_state_target_is_valid = {
 	great_depression_center_project_target_is_open = yes
 }
 
+# Partner-country scope with ROOT as the buyer. The seller must be a linked
+# partner outside the bilateral cooldown, be in its own active Event 35 crisis,
+# and still hold a failed center from that crisis that can be bought.
 great_depression_distressed_asset_target_is_valid = {
-	great_depression_selected_center_target_is_valid = yes
-	OR = { has_state_flag = great_depression_center_shuttered has_state_flag = great_depression_center_abandoned }
+	great_depression_has_proved_partner_relationship = yes
+	great_depression_partner_pair_cooldown_is_open = yes
+	great_depression_active_crisis_is_coherent = yes
+	great_depression_partner_has_failed_center = yes
+}
+
+# Partner-country scope. True when the country owns and controls a center
+# registered to its current episode that is Shuttered or Abandoned and has not
+# been liquidated.
+great_depression_partner_has_failed_center = {
+	custom_trigger_tooltip = {
+		tooltip = great_depression_partner_has_failed_center_tt
+		any_owned_state = {
+			is_controlled_by = PREV
+			has_state_flag = great_depression_center
+			NOT = { has_state_flag = great_depression_center_liquidated }
+			OR = { has_state_flag = great_depression_center_shuttered has_state_flag = great_depression_center_abandoned }
+			has_variable = great_depression_center_episode_id
+			check_variable = { var = great_depression_center_episode_id value = PREV.great_depression_active_episode_id compare = equals }
+			is_in_array = { array = PREV.great_depression_center_state_ids value = THIS }
+		}
+	}
 }
 
 great_depression_distressed_market_target_is_valid = {
@@ -1022,8 +1045,13 @@ great_depression_supervision_partner_target_is_valid = {
 	OR = { is_major = yes is_ai = no is_subject_of = ROOT ROOT = { is_subject_of = PREV } }
 }
 
+# Partner-country scope with ROOT as the importer. The supplier at risk must be
+# a linked partner outside the bilateral cooldown and in its own active Event 35
+# crisis; a healthy economy has no supply gap to exploit.
 great_depression_supply_gap_target_is_valid = {
-	great_depression_selected_center_target_is_valid = yes
+	great_depression_has_proved_partner_relationship = yes
+	great_depression_partner_pair_cooldown_is_open = yes
+	great_depression_active_crisis_is_coherent = yes
 }
 
 great_depression_trusteeship_target_is_valid = {
