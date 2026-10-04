@@ -249,3 +249,14 @@ Disposition: implemented.
 - The freeze also records `great_depression_last_completed_episode_doctrine` and `great_depression_last_completed_doctrine_switch_count`. The report names the institution the final doctrine leaves and its weakness from the frozen doctrine, because `great_depression_doctrine` stays live until the next episode resets it.
 - The report has no gameplay effect. The option shows the recovery ideas the country holds, and its AI weight is the new constant `great_depression_event_option_weight.recovery_report`.
 - The counts are shown without the number of centers struck, because transferred centers count as resolved but have no final outcome of their own, and a total would not add up.
+
+## D14. Real requirement text for the evolution and partner actions (round 2, item 2)
+
+Disposition: implemented.
+
+- The 21 `great_depression_can_*` keys that showed the generic sentence about crisis state, resources and target now name what their trigger bodies check, with no trigger change.
+- Financial Contagion actions read "Requires an open national response slot and active Financial Contagion."; Break the Occupations and Nationalize or Socialize Occupied Industry name Social Collapse; Coordinate International Rescue names Social Collapse and The Second Great Depression spreading worldwide.
+- Prioritize Domestic Recovery, Restrict Capital Outflows and Support Contagion Source name the open response slot and either active Financial Contagion or an open foreign exposure without a national depression, which is the exposed-economy branch of their trigger.
+- Select Depression Center names the active depression and a controlled, unliquidated center with people and industry. `great_depression_center_selection_lock` is never set anywhere, so the text does not mention it.
+- Use Foreign Partner names the slot and the recent-support cooldown without a day count, because the 30-day duration is a file-scoped `@` constant that the text would otherwise duplicate.
+- Resource affordability stays with the existing cost tooltips.
