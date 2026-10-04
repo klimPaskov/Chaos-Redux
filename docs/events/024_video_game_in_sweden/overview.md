@@ -294,7 +294,11 @@ The favorable result records a distinct completion flag for According to Plan an
 
 The maintenance hook runs only for the bounded Event 24 host path and advances the finite program every 30 days.
 
-It checks for seven incident families: terrain, supply, enemy action, template failure, diplomacy, workplace disruption, and party or public pressure.
+It checks for twelve incident families: terrain, supply, enemy action, template failure, diplomacy, workplace disruption, party or public pressure, casualties as counters, an unexpected counterplan, a foreign bootleg, production without transport and the perfect offensive.
+Casualties as counters arises at war in Evolution III or at Worldview Reliance and costs war support and recruitable population.
+The unexpected counterplan and the foreign bootleg are rare baseline and Evolution I incidents (weight 50) that share a 240-day cooldown, so a peaceful early programme still meets the occasional embarrassment.
+Production without transport arises in Evolution III in peace or war and costs factory efficiency growth and supply, and the perfect offensive arises in Evolution III at war and costs attack and maximum planning.
+Entering Evolution III queues one opening incident five days after the evolution report, chosen by the campaign: production without transport always qualifies, a diplomatic category error needs a faction, overlord, war or licence business, and the perfect offensive or casualties as counters need a war.
 
 Only currently valid families enter the weighted incident pool. The pool avoids the last family when another valid family exists and starts a new family cycle after all valid families have appeared.
 
@@ -341,6 +345,12 @@ Stockholm loss still permanently disqualifies the two achievements.
 A wartime terrain, supply or enemy incident resolved during the surge is a battlefield mismatch.
 Admitting it ends the surge at the next daily review, and three dismissed battlefield mismatches in the same surge do the same.
 Incidents from before the surge never shorten it.
+
+### National Final
+
+The second national league season schedules `chaosx.nr24.35`, a national final 30 days later, once per programme.
+The official favourite (weight 60, raised by half under state exhibitions) raises Reliance by 6 and adds 2% war support.
+An outsider's upset (weight 40, raised by half with a red team and by a quarter with civic clubs or a preparedness charter) lowers Reliance by 8 and grants 15 political power.
 
 ### Evolution II reach gate
 

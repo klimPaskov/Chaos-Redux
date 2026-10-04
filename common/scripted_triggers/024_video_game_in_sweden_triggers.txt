@@ -427,6 +427,50 @@ video_game_in_sweden_incident_party_is_valid = {
 	NOT = { has_country_flag = video_game_in_sweden_incident_party_seen }
 }
 
+# Officials treat losses as counters returned to the box.
+video_game_in_sweden_incident_casualties_is_valid = {
+	has_war = yes
+	OR = {
+		has_country_flag = video_game_in_sweden_evolution_iii_active
+		has_country_flag = video_game_in_sweden_reliance_worldview
+	}
+	NOT = { has_country_flag = video_game_in_sweden_incident_casualties_seen }
+}
+
+# Rare early incidents: an unexpected counterplan and a foreign bootleg. A
+# shared timed flag keeps them to one in several months.
+video_game_in_sweden_incident_counterplan_is_valid = {
+	video_game_in_sweden_is_early_program = yes
+	NOT = { has_country_flag = video_game_in_sweden_rare_incident_recent }
+	NOT = { has_country_flag = video_game_in_sweden_incident_counterplan_seen }
+}
+
+video_game_in_sweden_incident_bootleg_is_valid = {
+	video_game_in_sweden_is_early_program = yes
+	NOT = { has_country_flag = video_game_in_sweden_rare_incident_recent }
+	NOT = { has_country_flag = video_game_in_sweden_incident_bootleg_seen }
+}
+
+# Official authority produces plans that ignore transport, in peace or war.
+video_game_in_sweden_incident_production_is_valid = {
+	has_country_flag = video_game_in_sweden_evolution_iii_active
+	NOT = { has_country_flag = video_game_in_sweden_incident_production_seen }
+}
+
+video_game_in_sweden_incident_offensive_is_valid = {
+	has_war = yes
+	has_country_flag = video_game_in_sweden_evolution_iii_active
+	NOT = { has_country_flag = video_game_in_sweden_incident_offensive_seen }
+}
+
+# Baseline trial or staff-culture stage.
+video_game_in_sweden_is_early_program = {
+	OR = {
+		check_variable = { var = video_game_in_sweden_phase value = constant:video_game_in_sweden_value.phase_baseline compare = equals }
+		check_variable = { var = video_game_in_sweden_phase value = constant:video_game_in_sweden_value.phase_evolution_i compare = equals }
+	}
+}
+
 video_game_in_sweden_has_unseen_incident_family = {
 	OR = {
 		video_game_in_sweden_incident_terrain_is_valid = yes
@@ -436,6 +480,11 @@ video_game_in_sweden_has_unseen_incident_family = {
 		video_game_in_sweden_incident_diplomatic_is_valid = yes
 		video_game_in_sweden_incident_workplace_is_valid = yes
 		video_game_in_sweden_incident_party_is_valid = yes
+		video_game_in_sweden_incident_casualties_is_valid = yes
+		video_game_in_sweden_incident_counterplan_is_valid = yes
+		video_game_in_sweden_incident_bootleg_is_valid = yes
+		video_game_in_sweden_incident_production_is_valid = yes
+		video_game_in_sweden_incident_offensive_is_valid = yes
 	}
 }
 
@@ -469,15 +518,37 @@ video_game_in_sweden_has_alternative_incident_family = {
 			video_game_in_sweden_incident_party_is_valid = yes
 			NOT = { check_variable = { var = video_game_in_sweden_last_incident value = constant:video_game_in_sweden_value.incident_party compare = equals } }
 		}
+		AND = {
+			video_game_in_sweden_incident_casualties_is_valid = yes
+			NOT = { check_variable = { var = video_game_in_sweden_last_incident value = constant:video_game_in_sweden_value.incident_casualties compare = equals } }
+		}
+		AND = {
+			video_game_in_sweden_incident_counterplan_is_valid = yes
+			NOT = { check_variable = { var = video_game_in_sweden_last_incident value = constant:video_game_in_sweden_value.incident_counterplan compare = equals } }
+		}
+		AND = {
+			video_game_in_sweden_incident_bootleg_is_valid = yes
+			NOT = { check_variable = { var = video_game_in_sweden_last_incident value = constant:video_game_in_sweden_value.incident_bootleg compare = equals } }
+		}
+		AND = {
+			video_game_in_sweden_incident_production_is_valid = yes
+			NOT = { check_variable = { var = video_game_in_sweden_last_incident value = constant:video_game_in_sweden_value.incident_production compare = equals } }
+		}
+		AND = {
+			video_game_in_sweden_incident_offensive_is_valid = yes
+			NOT = { check_variable = { var = video_game_in_sweden_last_incident value = constant:video_game_in_sweden_value.incident_offensive compare = equals } }
+		}
 	}
 }
 
-# The incident now on the table concerns ground, transport or the opponent.
+# The incident on the table concerns ground, transport, the opponent or a
+# planned offensive.
 video_game_in_sweden_current_incident_is_battlefield = {
 	OR = {
 		check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_terrain compare = equals }
 		check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_supply compare = equals }
 		check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_enemy compare = equals }
+		check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_offensive compare = equals }
 	}
 }
 

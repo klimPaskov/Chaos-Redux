@@ -1329,6 +1329,52 @@ video_game_in_sweden_do_national_league = {
 	add_to_variable = { video_game_in_sweden_national_league_seasons = 1 }
 	# Each season adds to the cumulative productivity pressure of the craze.
 	video_game_in_sweden_refresh_program_package = yes
+	video_game_in_sweden_queue_national_final = yes
+}
+
+# COUNTRY scope. A national final follows the configured league season once.
+# Its result is drawn when the final is scheduled: the official favourite is
+# likelier under state exhibitions, an upset under a red team or civic clubs.
+video_game_in_sweden_queue_national_final = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = video_game_in_sweden_national_final_held }
+			check_variable = {
+				var = video_game_in_sweden_national_league_seasons
+				value = constant:video_game_in_sweden_event.national_final_seasons
+				compare = greater_than_or_equals
+			}
+		}
+		set_country_flag = video_game_in_sweden_national_final_held
+		set_temp_variable = { video_game_in_sweden_final_favourite_weight = constant:video_game_in_sweden_incident.final_favourite_weight }
+		set_temp_variable = { video_game_in_sweden_final_upset_weight = constant:video_game_in_sweden_incident.final_upset_weight }
+		if = {
+			limit = { has_country_flag = video_game_in_sweden_public_exhibition_program }
+			multiply_temp_variable = { video_game_in_sweden_final_favourite_weight = constant:video_game_in_sweden_incident.final_exhibition_factor }
+		}
+		if = {
+			limit = { has_country_flag = video_game_in_sweden_red_team_complete }
+			multiply_temp_variable = { video_game_in_sweden_final_upset_weight = constant:video_game_in_sweden_incident.final_red_team_factor }
+		}
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = video_game_in_sweden_civic_copy_network
+					has_country_flag = video_game_in_sweden_preparedness_clubs
+				}
+			}
+			multiply_temp_variable = { video_game_in_sweden_final_upset_weight = constant:video_game_in_sweden_incident.final_civic_factor }
+		}
+		random_list = {
+			video_game_in_sweden_final_favourite_weight = {
+				clr_country_flag = video_game_in_sweden_national_final_upset
+			}
+			video_game_in_sweden_final_upset_weight = {
+				set_country_flag = video_game_in_sweden_national_final_upset
+			}
+		}
+		country_event = { id = chaosx.nr24.35 days = constant:video_game_in_sweden_timing.national_final_days }
+	}
 }
 
 video_game_in_sweden_do_protect_shifts = {
@@ -1479,6 +1525,59 @@ video_game_in_sweden_begin_evolution_iii = {
 		video_game_in_sweden_refresh_stage_idea = yes
 		video_game_in_sweden_record_evolution = yes
 		country_event = { id = chaosx.nr24.13 days = 1 }
+		video_game_in_sweden_queue_opening_incident = yes
+	}
+}
+
+# COUNTRY scope. Evolution III opens with one incident chosen by the campaign:
+# production without transport in any state, a diplomatic category error when
+# Sweden has foreign business, and the perfect offensive or casualties as
+# counters at war. It skips the cooldown but never a pending incident or a
+# severe crisis, and its penalty is priced like any other incident.
+video_game_in_sweden_queue_opening_incident = {
+	if = {
+		limit = {
+			check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.zero compare = equals }
+			NOT = { has_country_flag = video_game_in_sweden_opening_incident_queued }
+			NOT = { video_game_in_sweden_is_incident_pause_crisis = yes }
+		}
+		set_country_flag = video_game_in_sweden_opening_incident_queued
+		set_temp_variable = { video_game_in_sweden_opening_production_weight = constant:video_game_in_sweden_incident.opening_production_weight }
+		set_temp_variable = { video_game_in_sweden_opening_diplomatic_weight = constant:video_game_in_sweden_value.zero }
+		set_temp_variable = { video_game_in_sweden_opening_offensive_weight = constant:video_game_in_sweden_value.zero }
+		set_temp_variable = { video_game_in_sweden_opening_casualties_weight = constant:video_game_in_sweden_value.zero }
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = video_game_in_sweden_diplomacy_active
+					is_in_faction = yes
+					is_subject = yes
+					has_war = yes
+				}
+			}
+			set_temp_variable = { video_game_in_sweden_opening_diplomatic_weight = constant:video_game_in_sweden_incident.opening_diplomatic_weight }
+		}
+		if = {
+			limit = { has_war = yes }
+			set_temp_variable = { video_game_in_sweden_opening_offensive_weight = constant:video_game_in_sweden_incident.opening_offensive_weight }
+			set_temp_variable = { video_game_in_sweden_opening_casualties_weight = constant:video_game_in_sweden_incident.opening_casualties_weight }
+		}
+		random_list = {
+			video_game_in_sweden_opening_production_weight = {
+				set_variable = { video_game_in_sweden_current_incident = constant:video_game_in_sweden_value.incident_production }
+			}
+			video_game_in_sweden_opening_diplomatic_weight = {
+				set_variable = { video_game_in_sweden_current_incident = constant:video_game_in_sweden_value.incident_diplomatic }
+			}
+			video_game_in_sweden_opening_offensive_weight = {
+				set_variable = { video_game_in_sweden_current_incident = constant:video_game_in_sweden_value.incident_offensive }
+			}
+			video_game_in_sweden_opening_casualties_weight = {
+				set_variable = { video_game_in_sweden_current_incident = constant:video_game_in_sweden_value.incident_casualties }
+			}
+		}
+		video_game_in_sweden_prepare_incident_severity = yes
+		country_event = { id = chaosx.nr24.30 days = constant:video_game_in_sweden_timing.evolution_iii_opening_incident_days }
 	}
 }
 
@@ -2512,6 +2611,40 @@ video_game_in_sweden_mark_incident = {
 		limit = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_party compare = equals } }
 		set_country_flag = video_game_in_sweden_incident_party_seen
 	}
+	else_if = {
+		limit = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_casualties compare = equals } }
+		set_country_flag = video_game_in_sweden_incident_casualties_seen
+	}
+	else_if = {
+		limit = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_counterplan compare = equals } }
+		set_country_flag = video_game_in_sweden_incident_counterplan_seen
+	}
+	else_if = {
+		limit = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_bootleg compare = equals } }
+		set_country_flag = video_game_in_sweden_incident_bootleg_seen
+	}
+	else_if = {
+		limit = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_production compare = equals } }
+		set_country_flag = video_game_in_sweden_incident_production_seen
+	}
+	else_if = {
+		limit = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_offensive compare = equals } }
+		set_country_flag = video_game_in_sweden_incident_offensive_seen
+	}
+	# The rare early incidents share one long cooldown.
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_counterplan compare = equals }
+				check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_bootleg compare = equals }
+			}
+		}
+		set_temp_variable = { video_game_in_sweden_flag_days = constant:video_game_in_sweden_timing.rare_incident_days }
+		set_country_flag = {
+			flag = video_game_in_sweden_rare_incident_recent
+			days = video_game_in_sweden_flag_days
+		}
+	}
 	video_game_in_sweden_record_trust_mismatch = yes
 	clr_country_flag = video_game_in_sweden_incident_admitted
 	set_variable = { video_game_in_sweden_incident_ready_day = video_game_in_sweden_program_days }
@@ -2544,6 +2677,11 @@ video_game_in_sweden_reset_incident_cycle = {
 	clr_country_flag = video_game_in_sweden_incident_diplomatic_seen
 	clr_country_flag = video_game_in_sweden_incident_workplace_seen
 	clr_country_flag = video_game_in_sweden_incident_party_seen
+	clr_country_flag = video_game_in_sweden_incident_casualties_seen
+	clr_country_flag = video_game_in_sweden_incident_counterplan_seen
+	clr_country_flag = video_game_in_sweden_incident_bootleg_seen
+	clr_country_flag = video_game_in_sweden_incident_production_seen
+	clr_country_flag = video_game_in_sweden_incident_offensive_seen
 	clr_country_flag = video_game_in_sweden_enemy_adaptation
 }
 
@@ -2646,6 +2784,11 @@ video_game_in_sweden_select_incident_family = {
 	set_temp_variable = { video_game_in_sweden_incident_diplomatic_weight = 0 }
 	set_temp_variable = { video_game_in_sweden_incident_workplace_weight = 0 }
 	set_temp_variable = { video_game_in_sweden_incident_party_weight = 0 }
+	set_temp_variable = { video_game_in_sweden_incident_casualties_weight = 0 }
+	set_temp_variable = { video_game_in_sweden_incident_counterplan_weight = 0 }
+	set_temp_variable = { video_game_in_sweden_incident_bootleg_weight = 0 }
+	set_temp_variable = { video_game_in_sweden_incident_production_weight = 0 }
+	set_temp_variable = { video_game_in_sweden_incident_offensive_weight = 0 }
 	if = {
 		limit = {
 			video_game_in_sweden_incident_terrain_is_valid = yes
@@ -2777,6 +2920,56 @@ video_game_in_sweden_select_incident_family = {
 			multiply_temp_variable = { video_game_in_sweden_incident_party_weight = constant:video_game_in_sweden_incident.party_separate_factor }
 		}
 	}
+	if = {
+		limit = {
+			video_game_in_sweden_incident_casualties_is_valid = yes
+			OR = {
+				NOT = { video_game_in_sweden_has_alternative_incident_family = yes }
+				NOT = { check_variable = { var = video_game_in_sweden_last_incident value = constant:video_game_in_sweden_value.incident_casualties compare = equals } }
+			}
+		}
+		set_temp_variable = { video_game_in_sweden_incident_casualties_weight = constant:video_game_in_sweden_incident.casualties_weight }
+	}
+	if = {
+		limit = {
+			video_game_in_sweden_incident_counterplan_is_valid = yes
+			OR = {
+				NOT = { video_game_in_sweden_has_alternative_incident_family = yes }
+				NOT = { check_variable = { var = video_game_in_sweden_last_incident value = constant:video_game_in_sweden_value.incident_counterplan compare = equals } }
+			}
+		}
+		set_temp_variable = { video_game_in_sweden_incident_counterplan_weight = constant:video_game_in_sweden_incident.counterplan_weight }
+	}
+	if = {
+		limit = {
+			video_game_in_sweden_incident_bootleg_is_valid = yes
+			OR = {
+				NOT = { video_game_in_sweden_has_alternative_incident_family = yes }
+				NOT = { check_variable = { var = video_game_in_sweden_last_incident value = constant:video_game_in_sweden_value.incident_bootleg compare = equals } }
+			}
+		}
+		set_temp_variable = { video_game_in_sweden_incident_bootleg_weight = constant:video_game_in_sweden_incident.bootleg_weight }
+	}
+	if = {
+		limit = {
+			video_game_in_sweden_incident_production_is_valid = yes
+			OR = {
+				NOT = { video_game_in_sweden_has_alternative_incident_family = yes }
+				NOT = { check_variable = { var = video_game_in_sweden_last_incident value = constant:video_game_in_sweden_value.incident_production compare = equals } }
+			}
+		}
+		set_temp_variable = { video_game_in_sweden_incident_production_weight = constant:video_game_in_sweden_incident.production_weight }
+	}
+	if = {
+		limit = {
+			video_game_in_sweden_incident_offensive_is_valid = yes
+			OR = {
+				NOT = { video_game_in_sweden_has_alternative_incident_family = yes }
+				NOT = { check_variable = { var = video_game_in_sweden_last_incident value = constant:video_game_in_sweden_value.incident_offensive compare = equals } }
+			}
+		}
+		set_temp_variable = { video_game_in_sweden_incident_offensive_weight = constant:video_game_in_sweden_incident.offensive_weight }
+	}
 	random_list = {
 		video_game_in_sweden_incident_terrain_weight = {
 			set_variable = { video_game_in_sweden_current_incident = constant:video_game_in_sweden_value.incident_terrain }
@@ -2798,6 +2991,21 @@ video_game_in_sweden_select_incident_family = {
 		}
 		video_game_in_sweden_incident_party_weight = {
 			set_variable = { video_game_in_sweden_current_incident = constant:video_game_in_sweden_value.incident_party }
+		}
+		video_game_in_sweden_incident_casualties_weight = {
+			set_variable = { video_game_in_sweden_current_incident = constant:video_game_in_sweden_value.incident_casualties }
+		}
+		video_game_in_sweden_incident_counterplan_weight = {
+			set_variable = { video_game_in_sweden_current_incident = constant:video_game_in_sweden_value.incident_counterplan }
+		}
+		video_game_in_sweden_incident_bootleg_weight = {
+			set_variable = { video_game_in_sweden_current_incident = constant:video_game_in_sweden_value.incident_bootleg }
+		}
+		video_game_in_sweden_incident_production_weight = {
+			set_variable = { video_game_in_sweden_current_incident = constant:video_game_in_sweden_value.incident_production }
+		}
+		video_game_in_sweden_incident_offensive_weight = {
+			set_variable = { video_game_in_sweden_current_incident = constant:video_game_in_sweden_value.incident_offensive }
 		}
 	}
 }
@@ -2853,6 +3061,14 @@ video_game_in_sweden_prepare_incident_severity = {
 					check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_enemy compare = equals }
 					has_country_flag = video_game_in_sweden_red_team_complete
 				}
+				AND = {
+					check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_production compare = equals }
+					has_country_flag = video_game_in_sweden_logistics_review_complete
+				}
+				AND = {
+					check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_offensive compare = equals }
+					has_country_flag = video_game_in_sweden_field_validation_success
+				}
 			}
 		}
 		multiply_temp_variable = { video_game_in_sweden_incident_severity = constant:video_game_in_sweden_incident.severity_validated }
@@ -2907,6 +3123,30 @@ video_game_in_sweden_prepare_incident_severity = {
 		limit = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_party compare = equals } }
 		set_temp_variable = { video_game_in_sweden_incident_stat_1 = constant:video_game_in_sweden_incident.party_stability }
 		set_temp_variable = { video_game_in_sweden_incident_stat_2 = constant:video_game_in_sweden_incident.party_political_power }
+	}
+	else_if = {
+		limit = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_casualties compare = equals } }
+		set_temp_variable = { video_game_in_sweden_incident_stat_1 = constant:video_game_in_sweden_incident.casualties_war_support }
+		set_temp_variable = { video_game_in_sweden_incident_stat_2 = constant:video_game_in_sweden_incident.casualties_recruitable }
+	}
+	else_if = {
+		limit = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_counterplan compare = equals } }
+		set_temp_variable = { video_game_in_sweden_incident_stat_1 = constant:video_game_in_sweden_incident.counterplan_planning }
+	}
+	else_if = {
+		limit = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_bootleg compare = equals } }
+		set_temp_variable = { video_game_in_sweden_incident_stat_1 = constant:video_game_in_sweden_incident.bootleg_political_power }
+		set_temp_variable = { video_game_in_sweden_incident_stat_2 = constant:video_game_in_sweden_incident.bootleg_opinion }
+	}
+	else_if = {
+		limit = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_production compare = equals } }
+		set_temp_variable = { video_game_in_sweden_incident_stat_1 = constant:video_game_in_sweden_incident.production_efficiency }
+		set_temp_variable = { video_game_in_sweden_incident_stat_2 = constant:video_game_in_sweden_incident.production_supply }
+	}
+	else_if = {
+		limit = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_offensive compare = equals } }
+		set_temp_variable = { video_game_in_sweden_incident_stat_1 = constant:video_game_in_sweden_incident.offensive_attack }
+		set_temp_variable = { video_game_in_sweden_incident_stat_2 = constant:video_game_in_sweden_incident.offensive_max_planning }
 	}
 	# Admitting the error halves the damage and its duration.
 	set_temp_variable = { video_game_in_sweden_incident_response_factor = constant:video_game_in_sweden_incident.response_admit }
@@ -3011,6 +3251,30 @@ video_game_in_sweden_apply_incident_penalty = {
 		limit = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_party compare = equals } }
 		set_variable = { video_game_in_sweden_mm_stability = video_game_in_sweden_incident_loss_1 }
 		set_variable = { video_game_in_sweden_mm_political_power = video_game_in_sweden_incident_loss_2 }
+	}
+	else_if = {
+		limit = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_casualties compare = equals } }
+		set_variable = { video_game_in_sweden_mm_war_support = video_game_in_sweden_incident_loss_1 }
+		set_variable = { video_game_in_sweden_mm_recruitable = video_game_in_sweden_incident_loss_2 }
+	}
+	else_if = {
+		limit = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_counterplan compare = equals } }
+		set_variable = { video_game_in_sweden_mm_planning = video_game_in_sweden_incident_loss_1 }
+	}
+	else_if = {
+		limit = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_bootleg compare = equals } }
+		set_variable = { video_game_in_sweden_mm_political_power = video_game_in_sweden_incident_loss_1 }
+		set_variable = { video_game_in_sweden_mm_opinion = video_game_in_sweden_incident_loss_2 }
+	}
+	else_if = {
+		limit = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_production compare = equals } }
+		set_variable = { video_game_in_sweden_mm_efficiency = video_game_in_sweden_incident_loss_1 }
+		set_variable = { video_game_in_sweden_mm_supply = video_game_in_sweden_incident_price_2 }
+	}
+	else_if = {
+		limit = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_offensive compare = equals } }
+		set_variable = { video_game_in_sweden_mm_attack = video_game_in_sweden_incident_loss_1 }
+		set_variable = { video_game_in_sweden_mm_max_planning = video_game_in_sweden_incident_loss_2 }
 	}
 	add_dynamic_modifier = {
 		modifier = video_game_in_sweden_mismatch_penalty

@@ -108,3 +108,11 @@ Family weights were rescaled to hundreds so the random draw never depends on fra
 The previously unread template, access, diplomatic and party flags now scale their family's weight, and the 0/1 temporary sentinels in incident selection were replaced by direct trigger checks.
 Incidents pause during restriction enforcement and recovery through the live-package trigger.
 Basis: spec part 3 incident severity and decision map penalties (one to three months), P24-I1 to I5, lead item on incident consequences.
+
+## D13. Five more incident families, an Evolution III opening incident and a National Final
+
+Decision: the incident pool gains casualties as counters (war support and recruitable population, war in Evolution III or at Worldview), the unexpected counterplan and the foreign bootleg (rare early incidents sharing `rare_incident_days`, 240), production without transport (Evolution III, peace-valid) and the perfect offensive (Evolution III at war, counts as a battlefield mismatch for Trust the Model).
+`video_game_in_sweden_begin_evolution_iii` queues one opening incident chosen by campaign weights, with production without transport always available so a peaceful Sweden still receives one; it respects a pending incident and the severe-crisis pause.
+The National Final fires once after `national_final_seasons` (2) league seasons; its result is drawn when it is scheduled so the report text and option always agree, and an upset lowers Reliance while the favourite raises it.
+No new art was added; every new text uses the existing report picture.
+Basis: spec part 2 Evolution III opening crisis incidents and national final, spec part 1 rare baseline incidents, report 16 open items.
