@@ -139,6 +139,24 @@ No government decision escalates the movement against its own country.
 
 Derivatives also receive two research slots, neutrality politics without elections, stability and war support from `murder_mystery_starting_forces_float`, political power, and the Cells Under Arms idea.
 Shadow Companies, Silent Guards, Master Assassins and Mechanized Assassins stay locked until their technologies are researched or granted by focus.
+
+### Assassin technology line
+
+The seven technologies in `common/technologies/039_murder_mystery_assassin_technologies.txt` form one branch at the bottom of the infantry folder, rooted in the `murder_mystery_clandestine_combat_training_tree` gridbox of `interface/countrytechtreeview.gui` (pixel origin 140, 1730, below the special forces branch).
+`allow_branch` on the root hides the whole branch from every country that is not an Assassin State or derivative, and each technology's `allow` limits research to the same countries.
+
+| Technology | Row, column | Reached from | Extra research gate | Unlocks |
+| --- | --- | --- | --- | --- |
+| Clandestine Combat Training | 0, 2 | root | none | Assassin Cadres, operations kits |
+| Compartmented Logistics | 0, 4 | Clandestine Combat Training | none | cadre supply and defence |
+| Urban and Rough-Terrain Infiltration | 0, 6 | Compartmented Logistics | none | Saboteur Cells |
+| Shadow Operations Doctrine | 0, 8 | Urban and Rough-Terrain Infiltration | none | Shadow Companies |
+| Protected Command Doctrine | 1, 8 | Urban and Rough-Terrain Infiltration | none | Silent Guard |
+| Mechanized Infiltration | 0, 10 | Shadow Operations Doctrine | the pragmatic route's `murder_mystery_conventional_support_unlocked` | Mechanized Assassins |
+| Master Cadre Command | 1, 10 | Protected Command Doctrine, also requires Shadow Operations Doctrine | Evolution V committed | Master Assassins |
+
+Movement countries weight the line at 3, doubled at war, and focuses still grant the same technologies through `set_technology`.
+Technology icons are the existing `GFX_murder_mystery_<technology>_medium` sprites.
 Each new country adds conquer and antagonize AI strategies against the government it split from.
 `common/ai_strategy/039_murder_mystery_ai_strategy.txt` keeps active movement countries building an army of roughly one third cadres and two thirds infantry, and `common/ai_templates/039_murder_mystery_ai_templates.txt` gives them an Assassin cadre target template; every other country has zero upgrade priority for that role.
 

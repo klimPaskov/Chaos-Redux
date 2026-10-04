@@ -157,3 +157,16 @@ Cell values are read directly from the bounded cell registry; the synchronized-c
 The agency operation is host-only because missions belong to one category and foreign governments use a different category.
 Terminal objectives add a conquer or protect AI strategy toward their target; the AI has no other way to read a non-selectable mission.
 The fourteen missions reuse existing Event 039 decision textures (including the five previously unused ones) under new `GFX_mission_039_murder_mystery_<objective>` sprite names, so bespoke art can replace them later without renaming.
+
+## D17. The Assassin technology line is a visible infantry-folder branch
+
+Disposition: implemented; on-screen placement needs live confirmation.
+The seven technologies had no folder, no position and an AI weight of zero, so they existed only as focus grants.
+They now form one branch at the bottom of the infantry folder, the closest thematic folder with free space below its special forces branch; the support folder has no free rows and a new folder would need new tabs in the shared tech tree interface.
+A new folder branch needs a gridbox in `interface/countrytechtreeview.gui`, so one gridbox (`murder_mystery_clandestine_combat_training_tree`) was inserted beside the special forces gridbox as a minimal edit in that shared file, preserving its CRLF line endings.
+The other six technologies hang from the root through `path`, which the engine uses both to draw the lines and to require the parent.
+`allow_branch` on the root hides the branch from every ordinary country, and every `allow` keeps research to Assassin States and derivatives.
+Master Cadre Command can be researched only after Evolution V and Mechanized Infiltration only on the pragmatic route (`murder_mystery_conventional_support_unlocked`), the gates Part 9 attaches to those units; the focus grants still bypass them through `set_technology`.
+AI weights are 3, doubled at war, so movement countries research their own line ahead of generic technologies.
+MCP evidence: `hoi4.tech_inspect` trace before the change showed the root with no descendants; after it, the trace shows the six path edges in five layers, the `lint` of the root in the infantry folder reports no issues, and `hoi4.tech_render` of the infantry folder resolves all seven icons with source-accurate layout.
+The `hoi4.probability_inspect` route returned `INTERNAL_ERROR` for a narrow `technology_ai_will_do` query, so no probability baseline or compare exists for the new weights.
