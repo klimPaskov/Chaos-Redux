@@ -158,3 +158,17 @@ FORM-07 Iberian Federation:
 - The FORM-07 member ledger, consent, corridor proof, integration adapter and state-puzzle overlay already existed; no GUI file changed, so no before/after GUI evidence applies. A narrow `hoi4.gui_inspect` call on `chaosx_independence_wave_formable_state_puzzle_window` was rejected as invalid arguments by the tool schema.
 
 Needs live game: NAV and GLC releases (setup now passes), FORM-07 congress with CAT, NAV and GLC, the IFX flag and names, and the NAV route change after federation.
+
+## D8. Round-1 review corrections
+
+Disposition: `implemented`.
+
+Basis: the skeptical review of the round-1 commits (`ada1dbd8a`, `240711ff9`, `608ba49bf`, `78534832b`, `71217beff`, `bba9eda1e`, `854e31bc6`).
+
+- IW-039 DON final validation: `independence_wave_validate_iw_039_don` reads `is_independence_wave_exact_package_iw_039_runtime_ready`, which reads `has_independence_wave_don_anchor_control`. That trigger compared state 245 with `ROOT`, but final validation runs inside `event_target:independence_wave_execution_country` in the wave executor, where ROOT is the country that fired the wave. Every admitted DON release would therefore have failed validation and invalidated its wave, the same defect class D7 fixed for NAV and GLC. The trigger now uses `PREV` (the checked country), which is also correct in the DON decisions and focus gates where the country is in scope.
+- Transcaucasus: `has_stable_independence_wave_iw070/071/072_settlement` also compared the capital state with `ROOT`; `independence_wave_transcaucasus_refresh_package_ideas` evaluates them during setup, so they now use `PREV` as well. The FORM-16 anchor checks keep `ROOT` because they run in the carrier's own decision.
+- Foreign reaction router `.64`: a router sent to an AI only to answer a patron offer or a remnant petition no longer routes that country's own pending reaction early; the scheduled `.64` routes it on its dispatch day, keeping the contract's one-day spacing.
+
+Known setup defects outside this round (not admitted, left for their admission items): the same `ROOT`-for-carrier pattern is still present in the setup or validation triggers of IW-043, IW-047, IW-050, IW-057, IW-058, IW-060, IW-093, IW-095, IW-098, IW-177 and IW-179; each must use `PREV` before it is admitted. The shared `has_independence_wave_current_capital_controlled_by_root` and provisional-capital cost triggers reached from `independence_wave_refresh_country_state` also read `ROOT` during setup; they only delay the provisional-phase check until the next refresh and are left to the core-framework owner.
+
+Needs live game: a DON release that now passes final validation.

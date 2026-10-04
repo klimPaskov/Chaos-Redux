@@ -32,6 +32,7 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
+		set_temp_variable = { independence_wave_router_answered_request = constant:independence_wave_value.minimum }
 		if = {
 			limit = {
 				is_ai = yes
@@ -39,6 +40,7 @@ country_event = {
 			}
 			# An invalid offer still closes once and frees the waiting actor.
 			independence_wave_foreign_reaction_resolve_ai_offer = yes
+			set_temp_variable = { independence_wave_router_answered_request = constant:independence_wave_plan.loop_increment }
 		}
 		if = {
 			limit = {
@@ -46,9 +48,13 @@ country_event = {
 				has_country_flag = independence_wave_remnant_petition_received
 			}
 			independence_wave_remnant_petition_resolve_ai = yes
+			set_temp_variable = { independence_wave_router_answered_request = constant:independence_wave_plan.loop_increment }
 		}
+		# A router sent only to answer an offer or a petition leaves the actor's
+		# own reaction to its scheduled dispatch day.
 		if = {
 			limit = {
+				check_variable = { independence_wave_router_answered_request = constant:independence_wave_value.minimum }
 				has_country_flag = independence_wave_foreign_reaction_pending
 				NOT = { has_country_flag = independence_wave_foreign_reaction_routed }
 			}

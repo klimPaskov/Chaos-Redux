@@ -41,3 +41,9 @@ Disposition: `accepted and queued` for the catalog owner; implementation is comm
 
 - IW-013 Basque Country (NAV) and IW-015 Galicia (GLC) can now appear in Independence Waves.
 - FORM-07 "Iberian Federation" can now be formed by CAT, NAV and GLC; the federation takes the name "Iberian Federation" and a new flag.
+
+## 2026-10-04: Don Host package (D5)
+
+Disposition: `accepted and queued` for the catalog owner; implementation is committed.
+
+- IW-039 Don Host (DON) can now appear in Independence Waves, with Millerovo as its capital and Volgodonsk as optional territory; it never appears alongside Event 005's Don Host Republic, and it shares one wave slot with the Kuban package.

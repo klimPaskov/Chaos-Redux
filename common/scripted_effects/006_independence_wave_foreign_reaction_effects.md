@@ -45,6 +45,7 @@ Mechanic overview: `docs/events/006_independence_wave/foreign_reactions.md`.
 
 - Scope: the actor in `.64`, where ROOT is the actor.
 - Re-checks the receipt and the live pair score. Humans receive `.65` to `.68` by tier; AI actors resolve through `independence_wave_foreign_reaction_resolve_ai_action` and `independence_wave_foreign_reaction_resolve_choice`. An invalid receipt or a score below 6 completes without effect.
+- `.64` routes the actor only when it was not sent to answer a patron offer or a remnant petition, so an AI recipient's own reaction keeps its scheduled dispatch day.
 
 ### `independence_wave_foreign_reaction_resolve_choice`
 
