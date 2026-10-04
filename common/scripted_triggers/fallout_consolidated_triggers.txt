@@ -4474,13 +4474,16 @@ fallout_manual_population_contract_preflight_is_current = {
 # closed when the Fallout transition generation or allocation receipt is stale.
 # ============================================================================
 
+# Supported scope: COUNTRY. PREV is the checked country inside each state
+# block, so the survivor allocation pass can test NZL or the dynamic NZL while
+# ROOT is the transition coordinator.
 fallout_nzl_has_exact_state_package = {
-	284 = { is_owned_and_controlled_by = ROOT }
-	1079 = { is_owned_and_controlled_by = ROOT }
-	723 = { is_owned_and_controlled_by = ROOT }
-	1080 = { is_owned_and_controlled_by = ROOT }
-	1081 = { is_owned_and_controlled_by = ROOT }
-	NOT = { 726 = { is_owned_by = ROOT } }
+	284 = { is_owned_and_controlled_by = PREV }
+	1079 = { is_owned_and_controlled_by = PREV }
+	723 = { is_owned_and_controlled_by = PREV }
+	1080 = { is_owned_and_controlled_by = PREV }
+	1081 = { is_owned_and_controlled_by = PREV }
+	NOT = { 726 = { is_owned_by = PREV } }
 }
 
 fallout_nzl_assignment_identity_is_current = {
@@ -4545,8 +4548,8 @@ fallout_nzl_conflict_disposition_inputs_are_current = {
 	fallout_successor_conflict_ledger_is_current = yes
 	fallout_nzl_has_exact_state_package = yes
 	726 = {
-		NOT = { is_owned_by = ROOT }
-		NOT = { is_controlled_by = ROOT }
+		NOT = { is_owned_by = PREV }
+		NOT = { is_controlled_by = PREV }
 	}
 	SAM = {
 		OR = {
@@ -4625,35 +4628,35 @@ fallout_nzl_fragmented_transfer_can_commit = {
 	284 = {
 		fallout_successor_state_inventory_row_is_current = yes
 		fallout_successor_state_is_candidate = yes
-		NOT = { is_owned_by = ROOT }
+		NOT = { is_owned_by = PREV }
 		is_controlled_by = OWNER
 		OWNER = { check_variable = { num_owned_states = constant:fallout_nzl_schema.one } }
 	}
 	1079 = {
 		fallout_successor_state_inventory_row_is_current = yes
 		fallout_successor_state_is_candidate = yes
-		NOT = { is_owned_by = ROOT }
+		NOT = { is_owned_by = PREV }
 		is_controlled_by = OWNER
 		OWNER = { check_variable = { num_owned_states = constant:fallout_nzl_schema.one } }
 	}
 	723 = {
 		fallout_successor_state_inventory_row_is_current = yes
 		fallout_successor_state_is_candidate = yes
-		NOT = { is_owned_by = ROOT }
+		NOT = { is_owned_by = PREV }
 		is_controlled_by = OWNER
 		OWNER = { check_variable = { num_owned_states = constant:fallout_nzl_schema.one } }
 	}
 	1080 = {
 		fallout_successor_state_inventory_row_is_current = yes
 		fallout_successor_state_is_candidate = yes
-		NOT = { is_owned_by = ROOT }
+		NOT = { is_owned_by = PREV }
 		is_controlled_by = OWNER
 		OWNER = { check_variable = { num_owned_states = constant:fallout_nzl_schema.one } }
 	}
 	1081 = {
 		fallout_successor_state_inventory_row_is_current = yes
 		fallout_successor_state_is_candidate = yes
-		NOT = { is_owned_by = ROOT }
+		NOT = { is_owned_by = PREV }
 		is_controlled_by = OWNER
 		OWNER = { check_variable = { num_owned_states = constant:fallout_nzl_schema.one } }
 	}
@@ -21033,7 +21036,7 @@ fallout_event_642_state_has_native_resource_work = {
 
 fallout_event_642_state_is_current = {
 	owner = { fallout_event_timeline_phase_receipt_is_current = yes }
-	is_controlled_by = ROOT
+	is_controlled_by = OWNER
 	fallout_survival_state_identity_row_is_current = yes
 	fallout_survival_state_resource_row_is_durable = yes
 	has_variable = fallout_pretransition_air_winter_food_reserve
@@ -21193,20 +21196,22 @@ fallout_event_642_registry_is_current = {
 	}
 }
 
+# Supported scope: STATE, entered directly from the chain country (PREV). The
+# scheduler reconciles the chain with the coordinator as ROOT.
 fallout_event_642_state_resource_class_is_current = {
 	OR = {
-		AND = { check_variable = { var = ROOT.fallout_event_642_selected_resource_class value = constant:fallout_event_642_resource_class.coal compare = equals } has_resources_amount = { resource = coal amount > @FALLOUT_MINE_RESOURCE_PRESENCE_AMOUNT } }
-		AND = { check_variable = { var = ROOT.fallout_event_642_selected_resource_class value = constant:fallout_event_642_resource_class.steel compare = equals } has_resources_amount = { resource = steel amount > @FALLOUT_MINE_RESOURCE_PRESENCE_AMOUNT } }
-		AND = { check_variable = { var = ROOT.fallout_event_642_selected_resource_class value = constant:fallout_event_642_resource_class.tungsten compare = equals } has_resources_amount = { resource = tungsten amount > @FALLOUT_MINE_RESOURCE_PRESENCE_AMOUNT } }
-		AND = { check_variable = { var = ROOT.fallout_event_642_selected_resource_class value = constant:fallout_event_642_resource_class.chromium compare = equals } has_resources_amount = { resource = chromium amount > @FALLOUT_MINE_RESOURCE_PRESENCE_AMOUNT } }
-		AND = { check_variable = { var = ROOT.fallout_event_642_selected_resource_class value = constant:fallout_event_642_resource_class.aluminium compare = equals } has_resources_amount = { resource = aluminium amount > @FALLOUT_MINE_RESOURCE_PRESENCE_AMOUNT } }
+		AND = { check_variable = { var = PREV.fallout_event_642_selected_resource_class value = constant:fallout_event_642_resource_class.coal compare = equals } has_resources_amount = { resource = coal amount > @FALLOUT_MINE_RESOURCE_PRESENCE_AMOUNT } }
+		AND = { check_variable = { var = PREV.fallout_event_642_selected_resource_class value = constant:fallout_event_642_resource_class.steel compare = equals } has_resources_amount = { resource = steel amount > @FALLOUT_MINE_RESOURCE_PRESENCE_AMOUNT } }
+		AND = { check_variable = { var = PREV.fallout_event_642_selected_resource_class value = constant:fallout_event_642_resource_class.tungsten compare = equals } has_resources_amount = { resource = tungsten amount > @FALLOUT_MINE_RESOURCE_PRESENCE_AMOUNT } }
+		AND = { check_variable = { var = PREV.fallout_event_642_selected_resource_class value = constant:fallout_event_642_resource_class.chromium compare = equals } has_resources_amount = { resource = chromium amount > @FALLOUT_MINE_RESOURCE_PRESENCE_AMOUNT } }
+		AND = { check_variable = { var = PREV.fallout_event_642_selected_resource_class value = constant:fallout_event_642_resource_class.aluminium compare = equals } has_resources_amount = { resource = aluminium amount > @FALLOUT_MINE_RESOURCE_PRESENCE_AMOUNT } }
 	}
 }
 
 fallout_event_642_state_receipt_is_current = {
 	fallout_event_642_state_is_current = yes
-	check_variable = { var = ROOT.fallout_event_642_frozen_owner value = OWNER compare = equals }
-	check_variable = { var = ROOT.fallout_event_642_frozen_controller value = CONTROLLER compare = equals }
+	check_variable = { var = PREV.fallout_event_642_frozen_owner value = OWNER compare = equals }
+	check_variable = { var = PREV.fallout_event_642_frozen_controller value = CONTROLLER compare = equals }
 	fallout_event_642_state_resource_class_is_current = yes
 }
 
@@ -21728,7 +21733,7 @@ fallout_event_887_requested_branch_is_affordable = {
 
 fallout_event_635_state_is_current = {
 	owner = { fallout_event_timeline_phase_receipt_is_current = yes }
-	is_controlled_by = ROOT
+	is_controlled_by = OWNER
 	fallout_survival_state_identity_row_is_current = yes
 	fallout_survival_state_resource_row_is_durable = yes
 	has_variable = fallout_pretransition_air_winter_shelter_capacity

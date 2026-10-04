@@ -96,3 +96,11 @@ Disposition: implemented (static review only; tree loading, the dynamic NZL path
 ## A12. Radio Service Coordinator portrait
 
 Disposition: implemented (commit `493815feb`). The portrait-creator subagent could not be spawned from this session, so the parent produced the fictional portrait with the same native ImageGen route and the shared tools: a 1024x1536 ImageGen master, `extract_portrait_source_crop.py --auto` for the 156x210 head-and-shoulders master, and `create_advisor_icon.py` at the measured dossier opening (30.477406 x 45.094508, rotation -4.76, offset 0 0, sepia 0.18; opening gap, inner-edge gap, and exterior leak all 0). The runtime card is `gfx/interface/ideas/fallout_world_end/nzl_lifeboat_state/NZL_fallout_radio_service_coordinator.dds` (65x67, LFS) registered as `GFX_portrait_NZL_fallout_radio_service_coordinator_small`. The master, crop record, review images, and manifest stay in the ignored local folder `docs/assets/fallout_nzl_lifeboat_state/portraits/`.
+
+## R1. Round 1 review fixes
+
+Disposition: implemented (static review only; every item below is `needs_live_game`). These are corrections, not new design.
+
+- Survivor allocation runs the B7 pass with the transition coordinator as ROOT. The NZL footprint trigger (`fallout_nzl_has_exact_state_package`), the Samoa disposition check, and the fragmented-transfer source checks tested ROOT, so an AI NZL could never pass, the dynamic NZL failed its footprint check and raised a transition error, and the fragmented transfer would have handed the five island states and the opening Home Guard divisions to the coordinator. They now use PREV, the checked country. The NZL and USA capital rows record PREV, not the coordinator, as the assigned country.
+- With the scheduler active, the coordinator reconciles every country, and the Mountain Pass Census (635) and Mine Generator (642) reconcilers tested `owner = { tag = ROOT }`, so every AI opening or running chain of either kind would have been cancelled as target lost. The reconcilers now test PREV, the state triggers test OWNER or PREV, and the chain history names the reconciled country as its actor.
+- Tooltips that said civilians "enter the Deaths ledger" now say they are added to the death toll, and the failed civic sealing result no longer mentions the ledger.
