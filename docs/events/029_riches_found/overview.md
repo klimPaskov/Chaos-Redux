@@ -131,6 +131,8 @@ Rail Spur, Port Route, Processing Works, Housing, Shaft Reinforcement, Sanitatio
 ### Occupation and recapture
 
 Occupation choices belong to one occupation: `riches_found_clear_occupation_choices` clears them when the occupation ends or a different occupier takes over.
+When an occupation begins or passes to a new occupier, `riches_found_record_previous_administration` marks a working civil administration (`riches_found_previous_administration_valid`): the camp administration was built, it is not compromised, and no private enclave or Gilded Sovereignty governs the works.
+That record is what Retain the Administration keeps; it is lifted when the occupation ends, the occupier changes, or the administration is compromised.
 An occupier's reopening lifts only an undamaged ordinary closure; depths contained as a guarded, monitored or protected closure stay shut, as they do for the controller's own Reopen the Mine action.
 Stripping and denial leave lasting damage, a damaged mine produces `riches_found_closure.damaged_output_factor` of its output, and the header shows a repair objective until Restore the Shaft completes.
 

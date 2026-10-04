@@ -288,3 +288,8 @@ The baseline quarantine required an active Gold Disease, so hiding it would have
 D23. Port Route only where rail does not serve (lead decision 2): Port Route needs a port route and an invalid rail route, so islands and railless coasts only.
 
 MCP routes for D20 to D23: a narrow `hoi4_decision_inspect` (`inspect` mode, `decision_riches_found_army_cordon`, one declared wartime raid scenario) returned only a workspace-wide `DECISION_ANALYZED_PARTIAL` result with a failed coverage check, so the layer counts rest on the source enumeration. No `ai_will_do` block changed in this tranche.
+
+D24. Retain the Administration is reachable.
+No Event 029 file set `riches_found_previous_administration_valid`, so the occupier's Retain the Administration (one of the seven occupation actions in spec part 3 and a Claim Jumper settlement route) could never be taken.
+`riches_found_record_previous_administration` now sets it when an occupation begins or passes to a new occupier and the mine has a working civil administration (camp administration built, not compromised, no private enclave, no Gilded Sovereignty); `riches_found_clear_occupation_state` lifts it when the occupation ends, and the refresh lifts it as soon as the administration is compromised.
+Source trace: `riches_found_handle_state_control_change` calls `riches_found_handle_occupation_change`, which records the administration before the presentation refresh puts the occupier in the occupation layer, where the decision needs only an open mine, the record and no imminent retreat.

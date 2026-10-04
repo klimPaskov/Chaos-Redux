@@ -633,6 +633,11 @@ riches_found_reconcile_mine_phase = {
 	}
 
 	riches_found_refresh_mine_threat_position = yes
+	# A compromised administration is no longer one an occupier can keep.
+	if = {
+		limit = { has_state_flag = riches_found_administration_compromised }
+		clr_state_flag = riches_found_previous_administration_valid
+	}
 	if = { limit = { riches_found_mine_is_registered = yes } set_state_flag = riches_found_mine_state }
 	clr_state_flag = riches_found_phase_claims
 	clr_state_flag = riches_found_phase_rush
@@ -2112,6 +2117,7 @@ riches_found_handle_occupation_change = {
 			set_state_flag = riches_found_occupation_active
 			set_variable = { riches_found_occupation_start_date = global.date }
 			riches_found_clear_occupation_choices = yes
+			riches_found_record_previous_administration = yes
 		}
 		else_if = {
 			# A different occupier starts its own occupation with every choice open.
@@ -2121,6 +2127,7 @@ riches_found_handle_occupation_change = {
 			}
 			set_variable = { riches_found_occupation_start_date = global.date }
 			riches_found_clear_occupation_choices = yes
+			riches_found_record_previous_administration = yes
 		}
 		set_variable = { riches_found_occupation_controller = CONTROLLER }
 	}
@@ -2139,6 +2146,26 @@ riches_found_clear_occupation_state = {
 	clear_variable = riches_found_occupation_controller
 	clear_variable = riches_found_occupation_start_date
 	riches_found_clear_occupation_choices = yes
+	clr_state_flag = riches_found_previous_administration_valid
+}
+
+# STATE scope. Called when an occupation begins or passes to a different
+# occupier. The district keeps a working civil administration the occupier
+# can retain only when the camp administration was built, it is not
+# compromised, and no private enclave or Gilded Sovereignty governs the works.
+# The record is lifted when the occupation ends, the occupier changes, or the
+# administration is compromised (riches_found_reconcile_mine_phase).
+riches_found_record_previous_administration = {
+	clr_state_flag = riches_found_previous_administration_valid
+	if = {
+		limit = {
+			has_state_flag = riches_found_camp_administration
+			NOT = { has_state_flag = riches_found_administration_compromised }
+			NOT = { has_state_flag = riches_found_private_enclave }
+			NOT = { has_state_flag = riches_found_gilded_sovereignty }
+		}
+		set_state_flag = riches_found_previous_administration_valid
+	}
 }
 
 # STATE scope. The per-occupation choice flags. Each occupation offers its
