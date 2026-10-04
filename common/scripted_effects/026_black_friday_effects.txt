@@ -5031,3 +5031,49 @@ black_friday_settle_cbrn_external_aid_pp_fee_receipt = {
 		}
 	}
 }
+
+# ---------------------------------------------------------------------------
+# Simple custom-cost sale API
+# ---------------------------------------------------------------------------
+# COUNTRY scope (payer). Inputs: temps black_friday_simple_cost_ordinary and
+# black_friday_simple_cost_kind, as for black_friday_simple_cost_quote. Pays the
+# current quote once through universal_cost_pay_component. Output: temp
+# black_friday_simple_cost_paid, 1 when the payment went through and 0 when the
+# quote was invalid, unaffordable, or in a resource without a native payment.
+# A payment priced by a valid natural sale credits its resource family toward
+# the achievement; a payment in any resource other than political power also
+# counts as the non-political payment. No receipt or refund path is kept.
+# Contract: common/scripted_effects/026_black_friday_simple_cost_api.md.
+black_friday_simple_cost_pay = {
+	set_temp_variable = { black_friday_simple_cost_paid = constant:universal_cost_framework.zero }
+	if = {
+		limit = {
+			black_friday_simple_cost_quote = yes
+			check_variable = { black_friday_simple_cost_valid = constant:universal_cost_framework.one }
+		}
+		set_temp_variable = { universal_cost_payment_resource_kind = black_friday_simple_cost_kind }
+		set_temp_variable = { universal_cost_payment_amount = black_friday_simple_cost_payable }
+		universal_cost_pay_component = yes
+		if = {
+			limit = { check_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_success } }
+			set_temp_variable = { black_friday_simple_cost_paid = constant:universal_cost_framework.one }
+			if = {
+				limit = {
+					check_variable = { black_friday_simple_cost_quoted = constant:universal_cost_framework.one }
+					check_variable = { black_friday_simple_cost_payable > constant:universal_cost_framework.zero }
+					black_friday_achievement_is_valid_sale = yes
+					has_variable = black_friday_achievement_indexed_sale_sequence
+					check_variable = { black_friday_achievement_indexed_sale_sequence = global.black_friday_sale_sequence }
+				}
+				if = {
+					limit = {
+						NOT = { check_variable = { black_friday_simple_cost_kind = constant:universal_cost_resource_kind.political_power } }
+					}
+					add_to_variable = { black_friday_achievement_non_political_receipt_count = constant:black_friday_event.one }
+				}
+				set_temp_variable = { black_friday_purchase_family_id = black_friday_simple_cost_family }
+				black_friday_add_committed_achievement_family = yes
+			}
+		}
+	}
+}

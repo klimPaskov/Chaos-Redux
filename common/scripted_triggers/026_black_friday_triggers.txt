@@ -1717,3 +1717,151 @@ black_friday_can_pay_cbrn_external_aid_pp_fee = {
 	check_variable = { var = black_friday_cbrn_external_aid_pp_quote_valid value = constant:universal_cost_framework.one compare = equals }
 	check_variable = { var = black_friday_cbrn_external_aid_pp_affordable value = constant:universal_cost_framework.one compare = equals }
 }
+
+# ---------------------------------------------------------------------------
+# Simple custom-cost sale API
+# ---------------------------------------------------------------------------
+# Drop-in sale pricing for an immediate custom cost paid in one native
+# resource, with no refund or delayed settlement. Display, affordability, and
+# payment read the same quote. Outside a sale the payable amount is the
+# ordinary amount. Contract and conversion example:
+# common/scripted_effects/026_black_friday_simple_cost_api.md.
+
+# ANY scope. Input: temp black_friday_simple_cost_kind
+# (constant:universal_cost_resource_kind.*). Output: temp
+# black_friday_simple_cost_family, the achievement family and sale mask for
+# that resource, or zero for a kind without a family. Always true.
+black_friday_simple_cost_read_family = {
+	set_temp_variable = { black_friday_simple_cost_family = constant:universal_cost_framework.zero }
+	if = {
+		limit = { check_variable = { black_friday_simple_cost_kind = constant:universal_cost_resource_kind.political_power } }
+		set_temp_variable = { black_friday_simple_cost_family = constant:universal_cost_family.political_power }
+	}
+	if = {
+		limit = { check_variable = { black_friday_simple_cost_kind = constant:universal_cost_resource_kind.command_power } }
+		set_temp_variable = { black_friday_simple_cost_family = constant:universal_cost_family.command_power }
+	}
+	if = {
+		limit = { check_variable = { black_friday_simple_cost_kind = constant:universal_cost_resource_kind.manpower } }
+		set_temp_variable = { black_friday_simple_cost_family = constant:universal_cost_family.manpower }
+	}
+	if = {
+		limit = { check_variable = { black_friday_simple_cost_kind = constant:universal_cost_resource_kind.fuel } }
+		set_temp_variable = { black_friday_simple_cost_family = constant:universal_cost_family.fuel }
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = { black_friday_simple_cost_kind = constant:universal_cost_resource_kind.infantry_equipment }
+				check_variable = { black_friday_simple_cost_kind = constant:universal_cost_resource_kind.support_equipment }
+				check_variable = { black_friday_simple_cost_kind = constant:universal_cost_resource_kind.motorized_equipment }
+				check_variable = { black_friday_simple_cost_kind = constant:universal_cost_resource_kind.support_equipment_1 }
+				check_variable = { black_friday_simple_cost_kind = constant:universal_cost_resource_kind.motorized_equipment_0 }
+				check_variable = { black_friday_simple_cost_kind = constant:universal_cost_resource_kind.motorized_equipment_1 }
+				AND = {
+					check_variable = { black_friday_simple_cost_kind > constant:universal_cost_resource_kind.war_support }
+					check_variable = { black_friday_simple_cost_kind < constant:universal_cost_resource_kind.motorized_equipment_0 }
+				}
+			}
+		}
+		set_temp_variable = { black_friday_simple_cost_family = constant:universal_cost_family.equipment }
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = { black_friday_simple_cost_kind = constant:universal_cost_resource_kind.train_equipment }
+				check_variable = { black_friday_simple_cost_kind = constant:universal_cost_resource_kind.train_equipment_1 }
+			}
+		}
+		set_temp_variable = { black_friday_simple_cost_family = constant:universal_cost_family.trains }
+	}
+	if = {
+		limit = { check_variable = { black_friday_simple_cost_kind = constant:universal_cost_resource_kind.convoy } }
+		set_temp_variable = { black_friday_simple_cost_family = constant:universal_cost_family.convoy }
+	}
+	if = {
+		limit = { check_variable = { black_friday_simple_cost_kind = constant:universal_cost_resource_kind.army_experience } }
+		set_temp_variable = { black_friday_simple_cost_family = constant:universal_cost_family.army_experience }
+	}
+	if = {
+		limit = { check_variable = { black_friday_simple_cost_kind = constant:universal_cost_resource_kind.navy_experience } }
+		set_temp_variable = { black_friday_simple_cost_family = constant:universal_cost_family.navy_experience }
+	}
+	if = {
+		limit = { check_variable = { black_friday_simple_cost_kind = constant:universal_cost_resource_kind.air_experience } }
+		set_temp_variable = { black_friday_simple_cost_family = constant:universal_cost_family.air_experience }
+	}
+	if = {
+		limit = { check_variable = { black_friday_simple_cost_kind = constant:universal_cost_resource_kind.stability } }
+		set_temp_variable = { black_friday_simple_cost_family = constant:universal_cost_family.stability }
+	}
+	if = {
+		limit = { check_variable = { black_friday_simple_cost_kind = constant:universal_cost_resource_kind.war_support } }
+		set_temp_variable = { black_friday_simple_cost_family = constant:universal_cost_family.war_support }
+	}
+	always = yes
+}
+
+# COUNTRY scope (payer). Inputs: temps black_friday_simple_cost_ordinary (the
+# owner's current ordinary amount) and black_friday_simple_cost_kind. Outputs:
+# temps black_friday_simple_cost_payable, black_friday_simple_cost_family,
+# black_friday_simple_cost_quoted (1 when an active sale priced the cost),
+# black_friday_simple_cost_on_sale (1 when the payable amount is below the
+# ordinary amount), black_friday_simple_cost_valid (0 when an active sale could
+# not price the cost, which blocks the purchase rather than charging a wrong
+# price), and black_friday_simple_cost_affordable. Always true.
+black_friday_simple_cost_quote = {
+	set_temp_variable = { black_friday_simple_cost_payable = black_friday_simple_cost_ordinary }
+	set_temp_variable = { black_friday_simple_cost_quoted = constant:universal_cost_framework.zero }
+	set_temp_variable = { black_friday_simple_cost_on_sale = constant:universal_cost_framework.zero }
+	set_temp_variable = { black_friday_simple_cost_valid = constant:universal_cost_framework.one }
+	set_temp_variable = { black_friday_simple_cost_affordable = constant:universal_cost_framework.zero }
+	black_friday_simple_cost_read_family = yes
+	if = {
+		limit = {
+			black_friday_is_active = yes
+			check_variable = { black_friday_simple_cost_ordinary > constant:universal_cost_framework.zero }
+			check_variable = { black_friday_simple_cost_family > constant:universal_cost_framework.zero }
+		}
+		set_temp_variable = { black_friday_simple_cost_valid = constant:universal_cost_framework.zero }
+		set_temp_variable = { universal_cost_source_query_id = constant:universal_cost_framework.black_friday_source_id }
+		if = {
+			limit = { universal_cost_source_is_active = yes }
+			set_temp_variable = { black_friday_quote_ordinary_cost = black_friday_simple_cost_ordinary }
+			set_temp_variable = { black_friday_quote_family_mask = black_friday_simple_cost_family }
+			if = {
+				limit = {
+					# Caller-owned cost API outputs.
+					set_temp_variable = { black_friday_quote_final_cost = black_friday_quote_ordinary_cost }
+					black_friday_quote_custom_cost = yes
+				}
+				set_temp_variable = { black_friday_simple_cost_payable = black_friday_quote_final_cost }
+				set_temp_variable = { black_friday_simple_cost_quoted = constant:universal_cost_framework.one }
+				set_temp_variable = { black_friday_simple_cost_valid = constant:universal_cost_framework.one }
+			}
+		}
+	}
+	if = {
+		limit = { check_variable = { black_friday_simple_cost_payable < black_friday_simple_cost_ordinary } }
+		set_temp_variable = { black_friday_simple_cost_on_sale = constant:universal_cost_framework.one }
+	}
+	set_temp_variable = { universal_cost_affordability_resource_kind = black_friday_simple_cost_kind }
+	set_temp_variable = { universal_cost_affordability_amount = black_friday_simple_cost_payable }
+	if = {
+		limit = {
+			check_variable = { black_friday_simple_cost_valid = constant:universal_cost_framework.one }
+			universal_cost_resource_kind_is_native = yes
+			universal_cost_component_is_affordable = yes
+		}
+		set_temp_variable = { black_friday_simple_cost_affordable = constant:universal_cost_framework.one }
+	}
+	always = yes
+}
+
+# COUNTRY scope (payer). Same inputs as black_friday_simple_cost_quote. True
+# when the current quote is valid and affordable. Use it as the decision's
+# custom_cost_trigger so the shown price and the requirement agree.
+black_friday_simple_cost_is_affordable = {
+	black_friday_simple_cost_quote = yes
+	check_variable = { black_friday_simple_cost_affordable = constant:universal_cost_framework.one }
+}

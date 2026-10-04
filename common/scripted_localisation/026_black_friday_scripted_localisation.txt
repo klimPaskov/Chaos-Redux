@@ -919,3 +919,69 @@ defined_text = {
 	}
 	text = { localization_key = bio_expand_medical_capacity.cost.normal_blocked }
 }
+
+# Simple custom-cost sale API display. An owner's own defined_text sets
+# black_friday_simple_cost_ordinary and black_friday_simple_cost_kind in its
+# trigger, runs black_friday_simple_cost_quote, and points at
+# black_friday_simple_cost.line; these selectors read that quote.
+# Contract: common/scripted_effects/026_black_friday_simple_cost_api.md.
+
+defined_text = {
+	name = GetBlackFridaySimpleCostLine
+	text = {
+		trigger = { check_variable = { black_friday_simple_cost_kind = constant:universal_cost_resource_kind.political_power } }
+		localization_key = black_friday_simple_cost.line.political_power
+	}
+	text = {
+		trigger = { check_variable = { black_friday_simple_cost_kind = constant:universal_cost_resource_kind.command_power } }
+		localization_key = black_friday_simple_cost.line.command_power
+	}
+	text = {
+		trigger = { check_variable = { black_friday_simple_cost_kind = constant:universal_cost_resource_kind.army_experience } }
+		localization_key = black_friday_simple_cost.line.army_experience
+	}
+	text = {
+		trigger = { check_variable = { black_friday_simple_cost_kind = constant:universal_cost_resource_kind.navy_experience } }
+		localization_key = black_friday_simple_cost.line.navy_experience
+	}
+	text = {
+		trigger = { check_variable = { black_friday_simple_cost_kind = constant:universal_cost_resource_kind.air_experience } }
+		localization_key = black_friday_simple_cost.line.air_experience
+	}
+	text = {
+		trigger = { check_variable = { black_friday_simple_cost_kind = constant:universal_cost_resource_kind.manpower } }
+		localization_key = black_friday_simple_cost.line.manpower
+	}
+	text = { localization_key = black_friday_simple_cost.line.other }
+}
+
+defined_text = {
+	name = GetBlackFridaySimpleCostAmount
+	text = {
+		trigger = {
+			check_variable = { black_friday_simple_cost_valid = constant:universal_cost_framework.one }
+			check_variable = { black_friday_simple_cost_on_sale = constant:universal_cost_framework.one }
+			check_variable = { black_friday_simple_cost_affordable = constant:universal_cost_framework.one }
+		}
+		localization_key = black_friday_simple_cost.amount.sale
+	}
+	text = {
+		trigger = {
+			check_variable = { black_friday_simple_cost_valid = constant:universal_cost_framework.one }
+			check_variable = { black_friday_simple_cost_on_sale = constant:universal_cost_framework.one }
+		}
+		localization_key = black_friday_simple_cost.amount.sale_blocked
+	}
+	text = {
+		trigger = {
+			check_variable = { black_friday_simple_cost_valid = constant:universal_cost_framework.one }
+			check_variable = { black_friday_simple_cost_affordable = constant:universal_cost_framework.one }
+		}
+		localization_key = black_friday_simple_cost.amount.normal
+	}
+	text = {
+		trigger = { check_variable = { black_friday_simple_cost_valid = constant:universal_cost_framework.one } }
+		localization_key = black_friday_simple_cost.amount.normal_blocked
+	}
+	text = { localization_key = black_friday_simple_cost.amount.unavailable }
+}

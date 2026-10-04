@@ -127,3 +127,20 @@ Until an owner adopts the sale, its custom costs charge their ordinary price, wh
 
 Disposition: implemented.
 Live confirmation that a new campaign starts with Black Friday enabled is `needs_live_game`.
+
+## D9. Simple custom costs get a lightweight sale API
+
+Decision: an immediate custom cost in one native resource adopts the sale through `black_friday_simple_cost_quote` and `black_friday_simple_cost_is_affordable` (scripted triggers), `black_friday_simple_cost_pay` (scripted effect), and `GetBlackFridaySimpleCostLine` / `GetBlackFridaySimpleCostAmount` (scripted localisation).
+The caller supplies only the ordinary amount and the resource kind; the API derives the sale mask and achievement family from the kind, prices the cost with `black_friday_quote_custom_cost`, checks it with `universal_cost_component_is_affordable`, pays it with `universal_cost_pay_component`, and credits the family during a valid natural sale.
+A payment in a resource other than political power also counts as the achievement's non-political payment.
+There is no receipt or refund path, and the receipt framework stays in use only for refundable, delayed, or multi-resource atomic transactions.
+During an active sale a cost that cannot be priced is blocked rather than charged at an unchecked price, matching the existing CBRN external-aid owner (`black_friday_quote_cbrn_external_aid_pp_fee`).
+The display is recomputed inside an owner `defined_text`, matching the South Africa purchase text, because a `custom_cost_text` cannot rely on an earlier evaluation of `custom_cost_trigger`.
+
+Basis: the existing owner adapters run to roughly 100 to 200 lines per decision, while most of the roughly 2,300 unadapted custom-cost declarations are plain immediate payments; the task directive favours playable coverage over verification machinery.
+No AI weight, MTTH, or random weight changes, so no probability comparison is required.
+
+Contract and conversion example: `common/scripted_effects/026_black_friday_simple_cost_api.md`, indexed in `chaosx_dynamic_effects.md` as `black_friday_simple_costs`.
+
+Disposition: implemented (source).
+Live display and payment through a converted owner decision are `needs_live_game`.
