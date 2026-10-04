@@ -593,6 +593,31 @@ missiles_retaliation_launch_slot_available = {
 	}
 }
 
+# COUNTRY scope. One gate for every route that answers a warning: the warning
+# event option, the Accept decision, and the Delegated or Automatic posture.
+# The warning is still open, no response was accepted for it or for its root,
+# the chain caps hold, a controlled site can fire, the response reserve is
+# stored, and no other strike is being prepared.
+missiles_retaliation_response_can_be_accepted = {
+	missiles_warning_is_actionable = yes
+	NOT = { has_country_flag = missiles_retaliation_response_accepted }
+	has_variable = missiles_warning_actor
+	has_variable = missiles_warning_root_country
+	OR = {
+		NOT = { has_variable = missiles_last_retaliation_root_id }
+		NOT = { check_variable = { var = missiles_last_retaliation_root_id value = missiles_warning_root_id compare = equals } }
+	}
+	check_variable = { var = missiles_warning_generation value = constant:missiles_chain_limits.maximum_generation compare = less_than_or_equals }
+	missiles_retaliation_launch_slot_available = yes
+	var:missiles_warning_root_country = {
+		check_variable = { var = missiles_root_incident_count value = constant:missiles_chain_limits.maximum_incidents compare = less_than }
+		check_variable = { var = missiles_root_participant_count value = constant:missiles_chain_limits.maximum_countries compare = less_than_or_equals }
+	}
+	any_controlled_state = { missiles_site_can_launch = yes }
+	check_variable = { var = missiles_operational_reserve value = constant:missiles_reserve.retaliation_reserve_cap compare = greater_than_or_equals }
+	missiles_country_can_prepare_operation = yes
+}
+
 missiles_posture_can_be_automatic = {
 	missiles_automatic_posture_allowed = yes
 	NOT = { has_country_flag = missiles_retaliation_network_severed }
@@ -1010,4 +1035,31 @@ missiles_evolution_automatic_retaliation_is_eligible = {
 }
 missiles_evolution_automatic_retaliation_pressure_is_high = {
 	check_variable = { var = missiles_pressure_hostile_pairs value = constant:missiles_evolution_pacing.retaliation_pressure_pairs compare = greater_than_or_equals }
+}
+
+# Any scope. At least one enabled evolution track has not unlocked yet, so the
+# evolution watch keeps checking eligibility between Event 32 firings.
+missiles_evolution_track_awaits_unlock = {
+	OR = {
+		AND = {
+			NOT = { has_global_flag = missiles_evolution_rogue_launch_commands_unlocked }
+			NOT = { has_global_flag = events_log_disabled_evolution_32_4_1 }
+		}
+		AND = {
+			NOT = { has_global_flag = missiles_evolution_unreliable_guidance_unlocked }
+			NOT = { has_global_flag = events_log_disabled_evolution_32_2_1 }
+		}
+		AND = {
+			NOT = { has_global_flag = missiles_evolution_saturation_unlocked }
+			NOT = { has_global_flag = events_log_disabled_evolution_32_1_1 }
+		}
+		AND = {
+			NOT = { has_global_flag = missiles_evolution_special_warheads_unlocked }
+			NOT = { has_global_flag = events_log_disabled_evolution_32_3_1 }
+		}
+		AND = {
+			NOT = { has_global_flag = missiles_evolution_automatic_retaliation_unlocked }
+			NOT = { has_global_flag = events_log_disabled_evolution_32_5_1 }
+		}
+	}
 }

@@ -188,7 +188,8 @@ class EvolutionPacingContract(unittest.TestCase):
         queue = list(descendants(EFFECTS['missiles_queue_evolution_job']))
         self.assertIn(('missiles_select_evolution_host', 'yes'), queue)
         self.assertTrue(any(k == 'country_event' and dict(v)['id'] == 'chaosx.nr32.190' for k, v in queue))
-        for name in ('missiles_measure_evolution_pressure', 'missiles_run_evolution_job', 'missiles_evaluate_evolution_unlocks', 'missiles_select_evolution_host'):
+        for name in ('missiles_measure_evolution_pressure', 'missiles_run_evolution_job', 'missiles_evaluate_evolution_unlocks', 'missiles_select_evolution_host',
+                     'missiles_run_evolution_watch', 'missiles_queue_evolution_watch'):
             nodes = list(descendants(EFFECTS[name]))
             self.assertFalse(any(k in ('every_country', 'any_country', 'random_country') for k, _ in nodes), name)
         loop = value(EFFECTS['missiles_measure_evolution_pressure'], 'for_each_scope_loop')
@@ -205,6 +206,22 @@ class EvolutionPacingContract(unittest.TestCase):
         self.assertIn(('missiles_measure_evolution_pressure', 'yes'), job)
         self.assertEqual(sum(1 for k, v in job if k == 'missiles_commit_evolution_track'), len(PACING))
         self.assertIn(('missiles_evolution_due_remaining', 'constant:missiles_program_value.one'), job)
+
+    def test_watch_rechecks_eligibility_between_firings(self):
+        events = {value(body, 'id'): body for key, body in EVENT_LIST if key == 'country_event'}
+        self.assertIn(('immediate', [('missiles_run_evolution_watch', 'yes')]), events['chaosx.nr32.191'])
+        self.assertIn(('missiles_evaluate_evolution_unlocks', 'yes'), list(descendants(EFFECTS['missiles_run_evolution_watch'])))
+        self.assertIn(('missiles_queue_evolution_watch', 'yes'), list(descendants(EFFECTS['missiles_evaluate_evolution_unlocks'])))
+        queue = list(descendants(EFFECTS['missiles_queue_evolution_watch']))
+        self.assertIn(('missiles_evolution_track_awaits_unlock', 'yes'), queue)
+        self.assertIn(('set_global_flag', 'missiles_evolution_watch_queued'), queue)
+        self.assertTrue(any(k == 'country_event' and dict(v)['id'] == 'chaosx.nr32.191' for k, v in queue))
+        self.assertEqual(constant('constant:missiles_evolution_pacing.watch_days'), 30)
+        awaits = list(descendants(OPERATIONS['missiles_evolution_track_awaits_unlock']))
+        for key, enum, index, timing, days in PACING:
+            self.assertIn(('has_global_flag', f'missiles_evolution_{key}_unlocked'), awaits)
+            self.assertIn(('has_global_flag', f'events_log_disabled_evolution_32_{index}_1'), awaits)
+        self.assertIn(('missiles_queue_evolution_watch', 'yes'), list(descendants(EFFECTS['missiles_cleanup_removed_country'])))
 
     def test_disabling_a_track_clears_its_pending_job(self):
         clear = list(descendants(EFFECTS['missiles_clear_disabled_evolution_pending']))

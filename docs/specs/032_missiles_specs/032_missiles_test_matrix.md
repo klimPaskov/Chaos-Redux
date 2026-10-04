@@ -597,8 +597,10 @@ These live cases cover the 2026-10-04 gameplay round. Their source contracts are
 | `ALLOC-01` | Saturation barrage over sites with capacities 10 and 2 for 10 missiles | The order is accepted with allocations 8 and 2 |
 | `ALLOC-02` | Capture a reserving site before launch | The order ends and exactly that site's allocation is lost |
 | `EVO-PACE-01` | First firing above several thresholds | Unlocks arrive about 21 days later, staggered about 14 days apart |
-| `EVO-PACE-02` | Track becomes eligible between firings | The track unlocks near its base delay without another Event 32 firing |
+| `EVO-PACE-02` | Track becomes eligible between firings | The evolution watch arms it within about 30 days and it unlocks near its base delay without another Event 32 firing |
 | `EVO-PACE-03` | Disable a pending track | Its pending job clears and it never records an unlock |
+| `WARN-01` | Two warnings in a row under Automatic posture, the first proven false | Each warning can be delayed once; the second is answered automatically when its short window closes |
+| `WARN-02` | Verified warning; take Accept the Current Response | A retaliation against the warning's attacker enters preparation and the warning closes |
 
 ## Long progression test
 

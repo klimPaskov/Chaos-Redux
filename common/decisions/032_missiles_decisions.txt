@@ -1526,17 +1526,27 @@ missiles_program_management_category = {
 		ai_will_do = { base = @m32_ai_urgent }
 	}
 
+	# One delay per warning: the per-warning flag clears when the next warning opens.
 	missiles_delay_retaliation = {
 		icon = GFX_decision_032_missiles_delay_retaliation
-		visible = { has_country_flag = missiles_program_phase_retaliation has_country_flag = missiles_warning_active }
-		available = { has_country_flag = missiles_warning_active }
+		visible = {
+			has_country_flag = missiles_program_phase_retaliation
+			has_country_flag = missiles_warning_active
+			NOT = { has_country_flag = missiles_warning_delayed }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = missiles_delay_retaliation_requirements_tt
+				missiles_warning_is_actionable = yes
+			}
+		}
 		custom_cost_trigger = {
 			command_power > @m32_command_low
 			has_fuel > @m32_fuel_low
 		}
 		custom_cost_text = missiles_cost_delay_retaliation
 		days_re_enable = @m32_reenable_short
-		fire_only_once = yes
+		fire_only_once = no
 		complete_effect = {
 			custom_effect_tooltip = missiles_delay_retaliation_effect_tt
 			hidden_effect = {
@@ -1545,7 +1555,12 @@ missiles_program_management_category = {
 				missiles_delay_retaliation = yes
 			}
 		}
-		ai_will_do = { base = @m32_ai_high modifier = { factor = 3 NOT = { has_country_flag = missiles_warning_verified } } }
+		ai_will_do = {
+			base = @m32_ai_high
+			modifier = { factor = 3 NOT = { has_country_flag = missiles_warning_verified } }
+			# A verified warning is answered or left to expire, not postponed.
+			modifier = { factor = 0 has_country_flag = missiles_warning_verified }
+		}
 	}
 
 	missiles_sever_retaliation_network = {
@@ -1599,13 +1614,24 @@ missiles_program_management_category = {
 		ai_will_do = { base = @m32_ai_high }
 	}
 
+	# The same response route as the warning event's accept option: it prepares
+	# a retaliation against the warning's attacker and resolves the warning.
 	missiles_accept_retaliation_response = {
 		icon = GFX_decision_032_missiles_verify_warning
-		visible = { has_country_flag = missiles_program_phase_retaliation has_country_flag = missiles_warning_active }
-		available = { has_country_flag = missiles_warning_active any_controlled_state = { missiles_site_can_launch = yes } }
+		visible = {
+			has_country_flag = missiles_program_phase_retaliation
+			has_country_flag = missiles_warning_active
+			NOT = { has_country_flag = missiles_retaliation_response_accepted }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = missiles_accept_retaliation_requirements_tt
+				missiles_retaliation_response_can_be_accepted = yes
+			}
+		}
 		complete_effect = {
 			custom_effect_tooltip = missiles_accept_retaliation_effect_tt
-			hidden_effect = { missiles_commit_operation = yes }
+			hidden_effect = { missiles_accept_retaliation_response = yes }
 		}
 		ai_will_do = { base = @m32_ai_urgent modifier = { factor = 0 NOT = { has_country_flag = missiles_warning_verified } } }
 	}

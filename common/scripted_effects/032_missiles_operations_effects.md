@@ -104,7 +104,8 @@ Chemical agent is only proven sufficient by `missiles_check_chemical_payload_sto
 `missiles_register_program` keeps every live programme in `global.missiles_program_registry` (first package, scenario package, capture shell, civil-war child); `missiles_cleanup_removed_country` removes it and rehomes a removed evolution host through `missiles_requeue_pending_evolution_jobs`.
 `missiles_measure_evolution_pressure` recounts programmes, operational programmes, wars, vulnerability, low readiness, overstock, unmaintained advanced programmes, payload owners, and responder/war pairs over that registry and publishes unscoped temporaries for the `missiles_evolution_*_is_eligible` and `*_pressure_is_high` triggers; `global.missiles_launch_total` counts committed launches.
 `missiles_evaluate_evolution_unlocks` (firing fallback) and `missiles_run_evolution_job` (`chaosx.nr32.190` on `global.missiles_evolution_host`) clear disabled pending state, recount, arm newly eligible tracks through `missiles_arm_evolution_track`, and commit at most one due track through `missiles_commit_evolution_track`, which sets the shared evolution-log temporaries, requires `is_current_evolution_enabled`, records the unlock, and refreshes each programme through `chaosx.nr32.8`.
-Tuning lives in `missiles_evolution_timing` (base delays) and `missiles_evolution_pacing` (spread, first-firing stagger, job stagger, and eligibility thresholds).
+`missiles_queue_evolution_watch` keeps one watch (`chaosx.nr32.191`, flag `missiles_evolution_watch_queued`, date `global.missiles_evolution_watch_due_date`) queued on the host while `missiles_evolution_track_awaits_unlock` holds; `missiles_run_evolution_watch` reruns `missiles_evaluate_evolution_unlocks` every `watch_days`, so a track that becomes eligible between firings is armed, and a removed host hands the watch to a living programme.
+Tuning lives in `missiles_evolution_timing` (base delays) and `missiles_evolution_pacing` (spread, first-firing stagger, job stagger, watch interval, and eligibility thresholds).
 
 ## Whole-missile site allocation
 
@@ -116,3 +117,11 @@ Tuning lives in `missiles_evolution_timing` (base delays) and `missiles_evolutio
 
 `missiles_state_has_registered_site` includes `missiles_site_suspended`, so a site under its repair programme is still struck, captured, inherited, split, and cleaned up like any registered site.
 `missiles_record_incoming_operation_site_damage` writes the repair flags and `missiles_site_repair_due_date` only when no `missiles_site_repair_mission` is active, and `missiles_country_can_start_survey` waits for that mission, so damage elsewhere never postpones or cancels a running repair.
+
+## Retaliation warning responses
+
+`missiles_retaliation_response_can_be_accepted` (COUNTRY scope) is the single gate for every route that answers a warning: the `chaosx.nr32.80` accept option, the Accept the Current Response decision, and the Delegated or Automatic posture in `missiles_process_scheduled_warning_response`.
+It requires an actionable warning not yet answered, the chain caps, an open retaliation launch slot, a launch-capable controlled site, the retaliation reserve, and `missiles_country_can_prepare_operation`; `missiles_accept_retaliation_response` uses it as its limit.
+`missiles_clear_warning_outcome_flags` clears the per-warning outcome flags (`missiles_warning_delayed`, `missiles_warning_false_or_conflicting`, `missiles_warning_expired_without_launch`, `missiles_retaliation_response_accepted`) when a warning opens, when it resolves, and in removed-country cleanup; each route sets its outcome flag after `missiles_resolve_warning_queue_receipt`, so the record describes the last warning only.
+`missiles_false_warning_history` is the long-term record and is never cleared by a new warning.
+`.tools/test_event32_retaliation_warning.py` pins the shared gate, the clearing points, and the outcome ordering.

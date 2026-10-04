@@ -122,3 +122,10 @@ No Hearts of Iron IV process or autonomous desktop test was launched. Live save,
 The existing accepted closure in `docs/specs/032_missiles_specs/032_missiles_improvement_loop_closure.md` rejects broad expansion families and finds no missing accepted design family. A final `chaosx_improvement_loop_planner` worker was dispatched with `fork_context=false`, but returned no handoff after bounded waits and was shut down; its blocked disposition is recorded in `docs/plans/032_missiles_plans/subagent_handoffs/032_improvement_loop_planner_handoff_2026-09-05.md` and is not presented as independent planner evidence. The completion-auditor review is recorded in `docs/plans/032_missiles_plans/subagent_handoffs/032_event_completion_auditor_handoff_2026-09-05.md`.
 
 This record remains partial/blocked until the recorded MCP, probability, native-raid-consumer, and independent-planner gaps are resolved or explicitly accepted by the user; no completion claim is made.
+
+## Round 1 review, second pass (2026-10-05)
+
+- Source tests: all 12 `.tools/test_event32_*.py` modules pass, including the rewritten `test_event32_retaliation_warning.py` (shared response gate, outcome-flag clearing and ordering, once-per-warning delay) and the new watch pin in `test_event32_evolution_gates.py`.
+- `hoi4.event_inspect` (`mode = trace`, selector `{ kind = event, eventId = chaosx.nr32.80 }` downstream depth 2, and `chaosx.nr32.191` both directions depth 1, no refresh) returned `EVENT_INSPECTED_PARTIAL` at revision `4f23aa51c415…` with 0 blocking diagnostics; without a refresh the index may predate this pass, so the new watch event is source-reviewed only.
+- `hoi4.probability_inspect` (`decision_ai_will_do`, candidates `missiles_delay_retaliation` and `missiles_accept_retaliation_response`, source path) returned `INTERNAL_ERROR` again; no AI weight changed in this pass apart from the delay decision's zero factor for a verified warning, which is source-reviewed only.
+- Needs live game: `WARN-01`, `WARN-02`, and the revised `EVO-PACE-02`.

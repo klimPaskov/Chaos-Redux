@@ -15,7 +15,9 @@
 #   operation references before it can be used again.
 # - Evolution unlocks are evaluated from an Event 032 firing transaction, the
 #   bounded delayed evolution job (chaosx.nr32.190) over the programme registry,
-#   or an exact scenario setup. No recurring all-country scan is introduced here.
+#   the single evolution watch (chaosx.nr32.191) that rechecks the same registry
+#   while a track is locked, or an exact scenario setup. No recurring
+#   all-country scan is introduced here.
 # - Payload consequences are submitted to the existing owning systems. The
 #   conventional adapter below owns only conventional damage, shared Deaths,
 #   evidence, attribution, and the Event 032 incident record.
@@ -477,8 +479,10 @@ missiles_record_evolution_unlock = {
 # arms short, staggered jobs instead. The job runs on a living programme host
 # (chaosx.nr32.190), recounts pressure live over global.missiles_program_registry
 # (no world scan), and commits at most one due track per run through the shared
-# evolution log. Every Event 32 firing repeats the same evaluation as a
-# fallback. Disabling a track clears its pending state at the next evaluation.
+# evolution log. Every Event 32 firing runs the same evaluation, and one
+# evolution watch (chaosx.nr32.191) repeats it every watch_days while an
+# enabled track is locked, so eligibility reached between firings is armed.
+# Disabling a track clears its pending state at the next evaluation.
 
 # COUNTRY scope. Durable membership in the bounded programme registry.
 missiles_register_program = {
@@ -929,6 +933,46 @@ missiles_evaluate_evolution_unlocks = {
 			}
 		}
 		set_global_flag = missiles_evolution_first_pulse_done
+		# Keeps one watch queued so a track that becomes eligible between
+		# firings is armed without waiting for the next Event 32 firing.
+		missiles_queue_evolution_watch = yes
+	}
+}
+
+# COUNTRY scope through chaosx.nr32.191 on the evolution host. The watch repeats
+# the firing evaluation over the programme registry: it arms newly eligible
+# tracks, commits at most one due track, and queues the next watch.
+missiles_run_evolution_watch = {
+	clr_global_flag = missiles_evolution_watch_queued
+	clear_variable = global.missiles_evolution_watch_due_date
+	missiles_evaluate_evolution_unlocks = yes
+}
+
+# Any scope. Queues one watch on the evolution host while an enabled track is
+# still locked. A watch whose host disappeared is replaced once its date passes.
+missiles_queue_evolution_watch = {
+	if = {
+		limit = {
+			has_global_flag = missiles_program_ever_initialized
+			missiles_evolution_track_awaits_unlock = yes
+			OR = {
+				NOT = { has_global_flag = missiles_evolution_watch_queued }
+				NOT = { has_variable = global.missiles_evolution_watch_due_date }
+				check_variable = { var = global.date value = global.missiles_evolution_watch_due_date compare = greater_than }
+			}
+		}
+		missiles_select_evolution_host = yes
+		if = {
+			limit = { has_variable = global.missiles_evolution_host }
+			set_temp_variable = { chaosx_date_days = constant:missiles_evolution_pacing.watch_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
+			set_variable = { global.missiles_evolution_watch_due_date = global.date }
+			add_to_variable = { global.missiles_evolution_watch_due_date = chaosx_date_offset }
+			set_global_flag = missiles_evolution_watch_queued
+			set_temp_variable = { missiles_evolution_watch_days = constant:missiles_evolution_pacing.watch_days }
+			var:global.missiles_evolution_host = { country_event = { id = chaosx.nr32.191 days = missiles_evolution_watch_days } }
+		}
 	}
 }
 
@@ -5493,8 +5537,10 @@ missiles_process_scheduled_warning_response = {
 		}
 		if = {
 			limit = { has_country_flag = missiles_warning_active }
-			set_country_flag = missiles_warning_expired_without_launch
 			missiles_resolve_warning_queue_receipt = yes
+			# Recorded after resolution as the outcome of the last warning; the
+			# next warning clears it when it opens.
+			set_country_flag = missiles_warning_expired_without_launch
 		}
 	}
 }
@@ -5537,6 +5583,8 @@ missiles_queue_warning_for_impact_country = {
 		}
 		var:missiles_operation_root_country = { save_event_target_as = missiles_achievement_incident_root }
 		var:missiles_operation_impact_country = {
+			missiles_clear_warning_outcome_flags = yes
+			clr_country_flag = missiles_warning_resolved
 			set_country_flag = missiles_warning_active
 			set_country_flag = missiles_program_phase_retaliation
 			set_variable = { missiles_warning_source_incident_id = ROOT.missiles_current_incident_id }
@@ -5575,9 +5623,22 @@ missiles_queue_warning_for_impact_country = {
 	}
 }
 
+# COUNTRY scope (warning recipient). These flags describe one warning: a delay,
+# a false or conflicting verification, an expiry, or an accepted response.
+# Opening a warning and resolving it both clear them, so every warning can be
+# delayed once and answered by its posture. The long-term record
+# missiles_false_warning_history is kept.
+missiles_clear_warning_outcome_flags = {
+	clr_country_flag = missiles_warning_delayed
+	clr_country_flag = missiles_warning_false_or_conflicting
+	clr_country_flag = missiles_warning_expired_without_launch
+	clr_country_flag = missiles_retaliation_response_accepted
+}
+
 missiles_resolve_warning_queue_receipt = {
 	if = {
 		limit = { has_country_flag = missiles_warning_active }
+		missiles_clear_warning_outcome_flags = yes
 		set_variable = { missiles_last_processed_warning_root_id = missiles_warning_root_id }
 		if = {
 			limit = { has_variable = missiles_warning_root_country }
@@ -5628,9 +5689,10 @@ missiles_complete_warning_verification = {
 			set_country_flag = missiles_warning_verified
 		}
 		else = {
-			set_country_flag = missiles_warning_false_or_conflicting
 			set_country_flag = missiles_false_warning_history
 			missiles_resolve_warning_queue_receipt = yes
+			# Outcome of the last warning, cleared when the next one opens.
+			set_country_flag = missiles_warning_false_or_conflicting
 		}
 	}
 	clr_country_flag = missiles_warning_verification_active
@@ -5692,23 +5754,11 @@ missiles_restore_retaliation_network = {
 	missiles_refresh_program_status_idea = yes
 }
 
+# COUNTRY scope (warning recipient). The single response route shared by the
+# warning event, the Accept decision, and the Delegated or Automatic posture.
 missiles_accept_retaliation_response = {
 	if = {
-		limit = {
-			missiles_warning_is_actionable = yes
-			has_variable = missiles_warning_actor
-			has_variable = missiles_warning_root_country
-			OR = {
-				NOT = { has_variable = missiles_last_retaliation_root_id }
-				NOT = { check_variable = { var = missiles_last_retaliation_root_id value = missiles_warning_root_id compare = equals } }
-			}
-			check_variable = { var = missiles_warning_generation value = constant:missiles_chain_limits.maximum_generation compare = less_than_or_equals }
-			missiles_retaliation_launch_slot_available = yes
-			var:missiles_warning_root_country = {
-				check_variable = { var = missiles_root_incident_count value = constant:missiles_chain_limits.maximum_incidents compare = less_than }
-				check_variable = { var = missiles_root_participant_count value = constant:missiles_chain_limits.maximum_countries compare = less_than_or_equals }
-			}
-		}
+		limit = { missiles_retaliation_response_can_be_accepted = yes }
 		set_variable = { missiles_selected_target = missiles_warning_actor }
 		var:missiles_warning_actor = { ROOT = { set_variable = { missiles_selected_target_country_id = PREV.id } } }
 		set_country_flag = missiles_target_selected
@@ -5725,9 +5775,10 @@ missiles_accept_retaliation_response = {
 			set_variable = { missiles_retaliation_launch_root_id = missiles_warning_root_id }
 			set_variable = { missiles_retaliation_launch_count = constant:missiles_program_value.one }
 			set_variable = { missiles_last_retaliation_root_id = missiles_warning_root_id }
-			set_country_flag = missiles_retaliation_response_accepted
 			country_event = { id = chaosx.nr32.83 days = missiles_operation_preparation_days }
 			missiles_resolve_warning_queue_receipt = yes
+			# Outcome of the last warning, cleared when the next one opens.
+			set_country_flag = missiles_retaliation_response_accepted
 		}
 	}
 }
@@ -6666,6 +6717,10 @@ missiles_cleanup_removed_country = {
 			}
 			clear_variable = global.missiles_evolution_host
 			missiles_requeue_pending_evolution_jobs = yes
+			# Its queued watch is lost with it; a living host takes the next one.
+			clr_global_flag = missiles_evolution_watch_queued
+			clear_variable = global.missiles_evolution_watch_due_date
+			missiles_queue_evolution_watch = yes
 		}
 		if = {
 			limit = { has_country_flag = missiles_operation_active }
@@ -6794,6 +6849,8 @@ missiles_cleanup_removed_country = {
 	clr_country_flag = missiles_warning_verified
 	clr_country_flag = missiles_warning_verification_active
 	clr_country_flag = missiles_warning_response_scheduled
+	missiles_clear_warning_outcome_flags = yes
+	clr_country_flag = missiles_warning_resolved
 	clr_country_flag = missiles_root_incident_active
 	clr_country_flag = missiles_program_initialized
 	clr_country_flag = missiles_program_mature

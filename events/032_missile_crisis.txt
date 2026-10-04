@@ -55,6 +55,16 @@ country_event = {
 	immediate = { missiles_run_evolution_job = yes }
 }
 
+# Evolution watch on the living programme host. While an enabled track is
+# still locked it rechecks eligibility over the programme registry, arms newly
+# eligible tracks, and queues the next watch.
+country_event = {
+	id = chaosx.nr32.191
+	hidden = yes
+	is_triggered_only = yes
+	immediate = { missiles_run_evolution_watch = yes }
+}
+
 country_event = {
 	id = chaosx.nr32.6
 	hidden = yes
@@ -417,20 +427,30 @@ country_event = {
 
 	option = {
 		name = chaosx.nr32.80.a
-		trigger = { missiles_warning_is_actionable = yes }
+		# Hidden once verification was ordered through the decision.
+		trigger = {
+			missiles_warning_is_actionable = yes
+			NOT = { has_country_flag = missiles_warning_verified }
+			NOT = { has_country_flag = missiles_warning_verification_active }
+		}
 		ai_chance = {
 			base = constant:missiles_ai_weight.high
 			modifier = { factor = constant:missiles_ai_factor.prefer_verification NOT = { has_country_flag = missiles_warning_verified } }
 		}
+		custom_effect_tooltip = missiles_verify_warning_effect_tt
 		hidden_effect = {
 			missiles_verify_warning = yes
-			activate_mission = missiles_warning_verification_mission
+			if = {
+				limit = { has_country_flag = missiles_warning_verification_active }
+				activate_mission = missiles_warning_verification_mission
+			}
 		}
 	}
 	option = {
 		name = chaosx.nr32.80.b
 		trigger = { missiles_warning_is_actionable = yes NOT = { has_country_flag = missiles_warning_delayed } }
 		ai_chance = { base = constant:missiles_ai_weight.medium }
+		custom_effect_tooltip = missiles_delay_retaliation_effect_tt
 		hidden_effect = { missiles_delay_retaliation = yes }
 	}
 	option = {
@@ -452,12 +472,13 @@ country_event = {
 	}
 	option = {
 		name = chaosx.nr32.80.d
-		trigger = { missiles_warning_is_actionable = yes any_controlled_state = { missiles_site_can_launch = yes } }
+		trigger = { missiles_retaliation_response_can_be_accepted = yes }
 		ai_chance = {
 			base = constant:missiles_ai_weight.low
 			modifier = { factor = constant:missiles_ai_factor.prefer_escalation has_country_flag = missiles_warning_verified }
 			modifier = { factor = constant:missiles_ai_factor.reject NOT = { has_country_flag = missiles_warning_verified } }
 		}
+		custom_effect_tooltip = missiles_accept_retaliation_effect_tt
 		hidden_effect = { missiles_accept_retaliation_response = yes }
 	}
 	option = {
