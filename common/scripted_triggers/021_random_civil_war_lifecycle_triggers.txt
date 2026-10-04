@@ -15,11 +15,25 @@
 random_civil_war_front_capacity_available = {
 	OR = {
 		NOT = { has_global_flag = random_civil_war_capacity_initialized }
-		NOT = {
-			check_variable = {
-				var = global.random_civil_war_active_front_count
-				value = global.random_civil_war_max_active_fronts
-				compare = greater_than_or_equals
+		AND = {
+			has_global_flag = random_civil_war_scenario_maximum_mode
+			has_variable = global.random_civil_war_scenario_front_cap
+			NOT = {
+				check_variable = {
+					var = global.random_civil_war_active_front_count
+					value = global.random_civil_war_scenario_front_cap
+					compare = greater_than_or_equals
+				}
+			}
+		}
+		AND = {
+			NOT = { has_global_flag = random_civil_war_scenario_maximum_mode }
+			NOT = {
+				check_variable = {
+					var = global.random_civil_war_active_front_count
+					value = global.random_civil_war_max_active_fronts
+					compare = greater_than_or_equals
+				}
 			}
 		}
 	}

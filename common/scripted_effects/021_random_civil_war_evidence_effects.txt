@@ -473,7 +473,13 @@ event021_record_sponsor_commitment = {
 	if = { limit = { has_variable = event021_recipient_id } set_variable = { random_civil_war_sponsor_recipient_id = event021_recipient_id } }
 	if = { limit = { has_variable = event021_front_id } set_variable = { random_civil_war_sponsor_front_id = event021_front_id } }
 	if = { limit = { has_variable = event021_support_amount } set_variable = { random_civil_war_sponsor_support_amount = event021_support_amount } }
-	if = { limit = { has_variable = event021_sponsor_duration } set_variable = { random_civil_war_sponsor_commitment_until = global.date } set_temp_variable = { event021_date_offset = event021_sponsor_duration } event021_days_to_date_offset = yes add_to_variable = { random_civil_war_sponsor_commitment_until = event021_date_offset } }
+	if = {
+		limit = { has_variable = event021_sponsor_duration }
+		set_variable = { random_civil_war_sponsor_commitment_until = global.date }
+		set_temp_variable = { event021_date_offset = event021_sponsor_duration }
+		event021_days_to_date_offset = yes
+		add_to_variable = { random_civil_war_sponsor_commitment_until = event021_date_offset }
+	}
 	set_temp_variable = { event021_evidence_source = constant:random_civil_war_evidence_source.sponsor }
 	set_temp_variable = { event021_evidence_strength = constant:random_civil_war_evidence_strength.credible }
 	set_temp_variable = { event021_evidence_duration = constant:event021_evidence_tuning.sponsor_receipt_days }

@@ -39,6 +39,8 @@ If a save has a missing aggregate count, the helper initializes it to zero and p
 
 The annex helper applies the same present-receipt transition directly before removing the country, so an annexed or otherwise disappearing candidate cannot keep live target capacity.
 
+Annex teardown clears the disappearing country's external-war queue and snapshot receipts. If a human prompt is still in flight, it preserves the prompt's country-local crisis/opponent receipt and in-flight quarantine; without an in-flight prompt it clears both prompt fields. The triggered event remains visible while the in-flight flag exists. Newly fired stale prompts hide invalid core/claim options, but option visibility may not refresh on an already-open card; each choice effect rechecks the full live queue, crisis, opponent, relation, declaration eligibility, and territorial basis before declaring, then safely advances without a declaration if stale. This is a source-level safety contract; persistence and popup timing across annexation and later tag release remain live-game tests.
+
 ## Annex and successor lifecycle
 
 The annex helper removes the current country from the registered-country array, Critical queue, exposed-country array, CXT extension array, and active-theater array using reverse index loops.

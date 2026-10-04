@@ -27,11 +27,13 @@ These pointer guards do not replace the separate requirement to adopt and resolv
 
 `event021_parent_event6_secondary_front_candidate` admits one additional complete Event 006 package only for an ordinary government host with a preserved remnant and open crisis, front, and theater capacity.
 
-`event021_parent_has_unreserved_secondary_route` admits only a live ideological, legal, regional, or command receipt that has not already produced a belligerent. Event 006 and same-tag routes remain owned by their dedicated adapters.
+`event021_parent_has_viable_secondary_route` admits any live ideological, legal, regional, or command receipt. The route is evidence for a candidate, not a one-front-per-archetype reservation; distinct state anchors and shared front capacity determine how many rows are materialized. Event 006 and same-tag routes remain owned by their dedicated adapters.
 
 `event021_parent_scenario_country_eligible`, `event021_parent_scenario_type_route_valid`, and `event021_parent_scenario_requires_same_tag` validate the selected SCN-018 profile without creating temporary actors. Unsafe one-state and all-island topology forces the same-tag route for every scenario type.
 
 `event021_parent_scenario_anchor_state_candidate` and `event021_parent_scenario_capital_state_candidate` exclude ordinary Event 021 reservations, live front states, and confirmation-time scenario reservations. They are consumed by the per-country frozen-plan receipt before any ownership mutation.
+
+`event021_secure_rail_mission_target_valid` shares one live target predicate across rail-mission activation, selection, and deadline resolution. It requires the stored rail target to exist, remain owned and controlled by the crisis country, belong to its opening front, and retain a supply node or usable infrastructure.
 
 `event021_parent_opening_force_valid`, `event021_parent_global_capacity_ready`, and `event021_parent_opening_external_war_valid` protect the force, cap, and achievement-related opening checks. `event021_parent_reserved_critical_launch_valid` is the owner-aware exception that permits only the claimed Critical target to pass capacity validation while the launch lock is held; it requires the same target to remain in the queue, Critical, generation-eligible, and route-valid.
 

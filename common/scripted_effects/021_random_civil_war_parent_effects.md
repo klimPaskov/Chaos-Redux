@@ -18,9 +18,39 @@ The schedule uses hidden callback events `chaosx.nr21.11`, `.12`, and `.13`, whi
 
 `event021_global_review_current_country` performs one country review, removes stale neighboring-exposure receipts when their source crisis is no longer usable, closes due same-tag contests, reviews fronts, and applies settlement or reconstruction when due. Critical queueing and bounded launch claims are additionally gated by active Evolution III; review itself never opens a due country outside the Critical queue.
 
+`event021_parent_update_front_resolution_receipts` reads every active durable front row whose crisis ID matches the current country. It inspects opposition actors and their immediate opponents, then publishes `random_civil_war_internal_fronts_resolved` only when no registered opposition relationship remains at war and no planned row remains pending. The country is the input scope, its crisis ID is the only required input, and absent crisis identity or misaligned front actor, crisis, or status arrays fail closed. It does not mutate the registry, end wars, annex actors, clear sibling fronts, or change tuning. A registered opposition actor with no immediate-opponent pointer also remains unresolved; government rows do not require such a pointer. Example: call the helper after front review during the bounded country review; it evaluates all registered opposition fronts of that crisis regardless of which actor was most recently stored in a compatibility pointer.
+
+`event021_parent_find_registered_front_source` accepts a source front id and the current crisis id on the host country, then saves the matching active registered opposition actor as `random_civil_war_dynamic_front_source_country`. Misaligned registry arrays, a missing row, a closed row, or mismatched actor receipts return no source and cause the optional row to be rejected. It does not change registry rows.
+
+`event021_parent_activate_planned_optional_front_rows` runs on a committed crisis host after the primary front and serially visits every optional planned row through array iteration.
+Ordinary rows resolve their source front id, stage the exact row state span, and call the ordinary adapter; Event 006 rows stage their package, anchor, and origin receipt and call the complete-package adapter.
+The dynamic candidate writer admits variable-length disjoint viable regions and complete package receipts, not a fixed optional-row count.
+Registration consumes the row only after exact receipt validation; rejection changes global row status without rebinding the host to the child row.
+Each row's transfer markers are cleared before the next iteration, and the activation flag prevents legacy recursion from consuming a sibling.
+
+`event021_parent_copy_planned_front_state_span` runs on a newly created ordinary secondary actor and copies only states in its exact row that are owned and controlled by that actor.
+It publishes a count only when the entire frozen span is verified; a missing or partial row leaves an empty receipt and is never reconstructed from generic markers.
+The secondary initializer validates that receipt before registry publication and reverses an invalid created child into its exact recorded source.
+After optional openings, the host and actors refresh retained membership and measured force receipts from the transaction-owned ledger; historical opening provenance stays separate.
+See [`021_random_civil_war_front_ledger_effects.md`](021_random_civil_war_front_ledger_effects.md) for scope, input, output, cleanup, and validation limits.
+
+`event021_parent_review_registered_ordinary_fronts` runs on the crisis host and snapshots all same-crisis AI ordinary secondary actors whose immediate wars have ended. It then closes those actors from the stable temporary snapshot, allowing each close to unregister its durable row without mutating the array under enumeration. It accepts the host's crisis ID, changes only eligible actor and host lifecycle state through `event021_parent_close_secondary_front`, and has no fixed actor count or tuning inputs. An absent crisis ID is rejected by its public caller. Example: the bounded country review calls `event021_parent_review_secondary_front`, which delegates to this helper and can close several resolved nested claimants in one pass.
+
+`event021_parent_refresh_ordinary_secondary_presence` runs on the crisis host after one ordinary secondary front closes. Its inputs are the host crisis ID and aligned durable front actor, crisis, and status arrays. It rebuilds the host's ordinary secondary presence flag and compatibility actor pointer from active registered same-crisis actors still at war with their recorded immediate opponents. It does not mutate registry rows or other countries. With no surviving actor, both receipts stay absent. Example: closing one nested claimant leaves a second live claimant discoverable for later review and settlement checks.
+
+`event021_parent_review_event6_secondary_front` snapshots same-crisis registered Event 006 secondary actors whose host war has ended, records their independence outcome, and clears only those actors' active secondary role. Its temporary snapshot is separate from the durable registry, so settlement and cleanup may remove registry rows without changing the array under iteration. `event021_parent_refresh_event6_secondary_presence` then rebuilds the host's presence flag and compatibility pointer from still-warring registered package actors. `event021_parent_finalize_event6_secondary_actor` snapshots all same-crisis actors with the durable secondary-package origin role and finalizes each independently at host cleanup. These helpers require the host crisis ID, use no fixed package count, and do not initialize, alter, or duplicate Event 006 packages. Example: two complete package fronts can have independent war outcomes while the host keeps a pointer to a surviving one, and both receive their own cleanup receipts after the host reconstructs.
+
 The same review gives a country opened after Evolution II the bounded neighboring-exposure and strange-incident pass, and emits the multi-front presentation once per crisis when its host is known. The Evolution III record emits the country report and the nonterminal Global Fracture news presentation once, subject to the shared Event Log setting.
 
 ## Opening transaction
+
+`event021_parent_reject_secondary_transfer` accepts COUNTRY scope on the recorded source of the current serial secondary transaction.
+It clears the existing pending-force scratch, marks the source's secondary attempt rejected, clears the pending secondary flag and route receipt, and releases the pending anchor/source global targets and front ID/goal/archetype.
+Both the initial receipt gate and the final revalidation gate use this one cleanup path.
+It creates no country, moves no state or unit, changes no tuning or weighted selection, and does not unregister a living front.
+The starter alone owns the following common marker cleanup.
+Example: call the rejection helper from the false branch of `event021_secondary_transfer_valid` after receipt validation.
+The final positive branch surrounds ratio publication, missile preflight, and every native government branch, including its fallback.
 
 The Event 006 selected actor and anchor remain regular event targets and expire with their effect chain.
 `event021_parent_prepare_route_evidence` and `event021_parent_find_event6_package` bind `random_civil_war_event6_selection_owner` to the actual host and clear its `random_civil_war_event6_selected_actor_valid` and `random_civil_war_event6_selected_anchor_valid` country flags before selection.
@@ -48,19 +78,21 @@ The presentation continuation `chaosx.nr21.8` does not consume either selection 
 
 `event021_parent_begin_target_transaction` saves the target and host scopes and claims the shared target reservation.
 
-`event021_parent_plan_connected_states` selects a viable capital or anchor and adds only connected controlled states below the centralized plan cap.
+`event021_parent_plan_connected_states` selects a viable capital or anchor and adds connected controlled states within the dynamic severity-and-region budget while preserving the remnant.
 
-`event021_parent_build_front_plan` now writes a bounded aligned pre-commit ledger before any opening mutation. Its row arrays store the front id, archetype, anchor and capital scopes, objective, status, source or carrier scope, actor type, generation, route provenance, Event 006 package id, flattened connected-state membership with row offsets, force and stockpile envelopes, naval and air shares, and the front relationship.
+`event021_parent_build_front_plan` writes an aligned pre-commit ledger before any opening mutation. Its row arrays store the front id, source-front id, archetype, anchor and capital scopes, objective, status, source or carrier scope, actor type, generation, route provenance, Event 006 package id plus region/depth/package-archetype receipts, flattened state membership with row offsets, force and stockpile envelopes, naval and air shares, and the front relationship.
 
-The normal row order is host remnant, primary claimant, up to two frozen ordinary secondaries, and one frozen Event 006 secondary, with optional rows appended only when their independent receipts already exist. The host remnant uses the distinct `administrative_continuity` objective, while the primary, nested, independence, and same-tag rows retain their route-specific terminal objectives.
+The normal row order is host remnant, primary claimant, and every optional candidate row admitted by the dynamic state/package ledger. Ordinary row count follows distinct viable state anchors, while Event 006 row count follows complete package receipts; route archetypes may repeat across independent anchors. The host remnant uses the distinct `administrative_continuity` objective, while the primary, nested, independence, and same-tag rows retain their route-specific terminal objectives.
 
-`event021_parent_validate_front_plan` rejects missing, misaligned, empty, or over-cap rows before the start effect. `event021_parent_load_planned_primary_front` and `event021_parent_load_planned_secondary_front` rehydrate the selected row rather than recalculating against the changed map. The plan remains available until all rows are consumed or explicitly rejected, then `event021_parent_clear_front_plan` removes every aligned array during rollback or final cleanup.
+`event021_parent_validate_front_plan` rejects missing, misaligned, empty, or over-cap plans before the start effect. Automatic and lower-intensity scenario candidates use the live state-derived crisis capacity and shared global front cap; Maximum scenario plans use a temporary front envelope derived from the complete eligible roster, current active fronts, and remaining normal capacity. `event021_parent_load_planned_primary_front` and `event021_parent_load_planned_secondary_front` rehydrate a selected row rather than recalculating against a changed map. The plan remains available until every row is consumed or explicitly rejected, then `event021_parent_clear_front_plan` removes every aligned array during rollback or final cleanup.
 
-`event021_register_front`, `event021_set_priority_front`, and the secondary review and close paths bind live actors back to their planned row. Failed optional ordinary or Event 006 starters mark their frozen row rejected, and settlement review remains unresolved while any planned row is neither consumed nor rejected. The bounded release admits at most five rows; the second ordinary row is limited to severe or critical major targets with at least three opening states and uses a smaller force envelope.
+`event021_register_front`, `event021_set_priority_front`, and the secondary review and close paths bind live actors back to their planned row. Failed optional ordinary or Event 006 starters mark their row rejected, and settlement review remains unresolved while any planned row is neither consumed nor rejected. `event021_parent_activate_planned_optional_front_rows` iterates optional rows by front id, resolves each ordinary source through the same-crisis registry, and stages only that row's state or package receipt before activation.
 
-`event021_parent_freeze_scenario_plan` records the selected scenario archetype, severity, anchor, bounded connected-state set, and high-intensity ordinary and Event 006 secondary receipts on the target country before the confirmation callback. The ordinary secondary state is stored as a country-scoped state pointer, not a chain-local target, so the receipt survives into the callback. `event021_parent_apply_frozen_scenario_plan` rehydrates both independent receipts into the single global transaction and rechecks each state through `event021_reserve_state`; it never searches for a replacement after the opening begins.
+`event021_parent_freeze_scenario_plan` records the selected scenario archetype, severity, anchor, bounded connected-state set, and a variable-length optional-front receipt on the target country before any scenario country commits. `event021_parent_freeze_scenario_optional_front_rows` stores aligned route, actor, anchor, state-span, package, and score arrays; `event021_parent_load_scenario_optional_front_rows` rehydrates that exact receipt and rejects stale state ownership/control or misaligned rows without searching for a replacement. The scenario controller reserves mandatory front capacity as countries are selected, and optional rows consume only the remaining shared capacity. The old named scenario secondary fields are compatibility-cleanup receipts and do not control row count or replay.
 
-`random_civil_war_trigger_manual_scenario` maintains separate confirmation-time snapshots for preflight-selected countries and frozen commit-eligible countries. Maximum enumerates every country that passes the normal-human, topology, route-type, capacity, and opening-state preflight, freezes all of those rows through `chaosx.nr21.19`, and sends `chaosx.nr21.15` only to the resulting commit set. `global.random_civil_war_scenario_preflight_count`, `global.random_civil_war_scenario_plan_eligible_count`, and `global.random_civil_war_scenario_preflight_skipped_count` expose the distinction; a failed freeze is accounted for as a skip and cannot be replaced by a post-mutation reroll.
+`random_civil_war_trigger_manual_scenario` maintains separate confirmation-time snapshots for eligible selected countries and frozen commit-eligible countries. Maximum enumerates every eligible normal-human country, derives mandatory front reservations from same-tag versus ordinary topology, and establishes a temporary front envelope large enough for those openings plus current normal spare capacity without changing the shared normal cap. Each selected country's primary and variable-length optional plan freezes through `chaosx.nr21.19`, and `chaosx.nr21.15` reaches only the resulting commit set. `global.random_civil_war_scenario_eligible_count`, `global.random_civil_war_scenario_requested_count`, `global.random_civil_war_scenario_preflight_count`, `global.random_civil_war_scenario_plan_eligible_count`, and `global.random_civil_war_scenario_preflight_skipped_count` preserve eligibility, request, freeze, and commit counts separately; a failed freeze is accounted for as a skip and cannot be replaced by a post-mutation reroll.
+
+`event021_parent_prepare_maximum_scenario_front_envelope` accepts the normal spare-front count and topology-derived mandatory-front total, then adds the current active count to publish a scenario-local total cap. An uninitialized active count defaults to no existing active rows, and the effect never writes the shared stage-specific global cap.
 
 The scenario confirmation reservation uses `global.random_civil_war_scenario_reserved_states` and `global.random_civil_war_scenario_reserved_event6_packages` to prevent overlapping state or package selections while the one-shot setup is running. `event021_parent_clear_scenario_plan_receipt` removes those reservations and state markers on rollback, successful dispatch cleanup, or crisis cleanup without touching durable crisis history.
 
@@ -78,7 +110,9 @@ Example: call `event021_parent_copy_opening_state_receipts = yes` in the newly i
 The dedicated helpers in `021_random_civil_war_achievement_effects.md` own capital continuity and authority-minimum receipts; current-capital control alone does not prove continuity.
 Successor receipt transfer, complete generation reset, and runtime certification remain separate lifecycle gates.
 
-`event021_parent_prepare_dynamic_force_package` scans only the bounded connected plan for local divisions, population support, depots, arsenals, ports, and airfields, then combines that evidence with actor identity, equipment availability, external war, and severity. It clears all prior force-readiness receipts before recomputation and publishes capped army, manpower, stockpile, air, and naval receipts; air and naval shares remain zero without both a suitable base and live assets, and Event 006 retains its package-owned force profile.
+`event021_parent_record_force_state_context` runs in one selected state scope and writes only the host's local-unit, population, depot, arsenal, port, and airfield evidence flags; its caller supplies either one frozen scenario state span or the current connected transaction plan.
+
+`event021_parent_prepare_dynamic_force_package` scans that bounded state source, then combines its observations with actor identity, equipment availability, external war, and severity. During `random_civil_war_scenario_force_preflight_active`, it reads the exact confirmation-time frozen state region; otherwise it reads `global.random_civil_war_plan_states`. It clears all prior force-readiness receipts before recomputation and publishes capped army, manpower, stockpile, air, and naval receipts; air and naval shares remain zero without both a suitable base and live assets, and Event 006 retains its package-owned force profile.
 
 `event021_parent_capture_actual_actor_force_receipt` runs in the created actor scope after the engine split or Event 006 package setup. It records actual actor divisions, manpower, and equipment availability into the actor record and immutable opening-log arrays, while `event021_parent_clear_pending_force_transaction` consumes and clears the temporary cross-scope ratio receipts on success and rollback.
 
@@ -107,12 +141,13 @@ Example: a failed generation-two attempt from generation one restores generation
 `event021_parent_start_ordinary_civil_war` invokes the dynamic vanilla civil-war adapter after plan validation.
 
 `event021_parent_start_event6_front` invokes the existing complete setup contract for the selected one of 32 content-attested Event 006 packages, applies the Event 021 origin receipt, and does not publish the actor or host-side pointer until an actual war with the host is present.
+`event021_parent_find_event6_package` derives its scan bound from the initialized package array's live `^num`, begins at a normalized rotating cursor, and admits a row only after checking the current host, anchor ownership/control, state reservations and fronts, and package runtime preflight. The finite package-ID array is the authored complete-content crosswalk, not a live country eligibility roster.
 
 `event021_parent_clear_event6_package_transaction` consumes the package selection and adapter-pending receipts on success or rollback without clearing the ordinary crisis identity or force transaction.
 
 `event021_parent_commit_same_tag_takeover` uses the same-tag contest route for unsafe one-state and all-island countries without releasing a duplicate tag.
 
-`event021_parent_rollback_transaction` clears all provisional target, state, front, force, and reservation state when validation fails.
+`event021_parent_rollback_transaction` clears all provisional target, state, front, force, and reservation state when validation fails. It preserves a still-valid pre-adoption external-war snapshot or post-adoption successor queue, clears invalid continuity receipts, and refreshes target-pool membership only after provisional eligibility receipts are cleared.
 
 ## Active fronts and extensions
 
@@ -136,16 +171,17 @@ The sponsor helper carries recipient and front identifiers through normal countr
 
 `event021_parent_promote_ordinary_successor` requires an ordinary opposition actor and a distinct living predecessor with the same nonmissing crisis ID.
 An absent country-scoped predecessor may be restored from the global host pointer only after the same-crisis check; an existing stale pointer is never silently replaced by another theater.
-The helper copies predecessor achievement history, marks the successor, and makes white peace before annexing the explicit chain-local predecessor target.
+The helper copies predecessor achievement history, marks the successor, prepares its surviving-front roster, snapshots the predecessor's live external enemy-country scopes, and only then makes white peace and annexes the explicit chain-local predecessor target.
 It does not run predecessor core cleanup before annexation, because `on_annex` needs the old host and front receipts to transfer surviving fronts through `event021_handle_annexed_country`.
 Example: claimant A replaces government B while front C survives; the annex callback rebinds C to A rather than unregistering C as collateral cleanup.
+The external-war snapshot is relation-only: after roster adoption, a human successor may choose a currently valid new core- or claimed-state war goal against each opponent whose relation is missing, or decline; AI successors fail closed. It does not preserve or claim the predecessor's exact war identity or goal.
 This documents the scripted promotion path; natural engine civil-war annexation, continuing-front obligations, and runtime ordering still require their own evidence.
 
 `event021_parent_prepare_annex_successor` runs from the vanilla `on_civil_war_end_before_annexation` and `on_annex` contexts, with ROOT as winner and FROM as the annexed country.
 Before FROM cleanup, it recognizes a surviving ordinary opposition actor only when its explicit host pointer names FROM, FROM retains the government role, and both countries have matching crisis IDs.
 It copies historical receipts and marks succession without annexing, declaring war, or granting an award.
 This covers natural engine victory before the next bounded settlement review; Event 006 independence actors and unrelated annexers do not receive ordinary-successor status.
-The subsequent lifecycle helper owns surviving-front pointer transfer; continuity of the remaining wars still requires separate verification.
+The subsequent lifecycle helper owns surviving-front pointer transfer. The ordinary-successor external-war helper keeps an idempotent snapshot of the predecessor's live enemy relations across the repeated pre-annex/annex callbacks and dispatches dynamic player goal choices only after successful roster adoption; the exact named wars are not continued, and runtime ordering remains Needs Testing.
 
 `event021_parent_cleanup_crisis` removes temporary ideas, missions, flags, targets, registry entries, scenario bypass, and front state while retaining settlement, recurrence, achievement, and Event 006 history.
 
@@ -164,6 +200,10 @@ No delayed fallback is present because the implementation has no measured perfor
 The manual picker clears `random_civil_war_scenario_target_draw_succeeded` on the calling country before every draw.
 The `random_scope_in_array` success body saves the real selected-country target and sets that flag through PREV, which is the picker country.
 The dispatch gate requires both the flag and the local target; an empty eligible subset therefore cannot reuse a preceding successful draw's target.
-The existing failure branch consumes the remaining selection budget, while the success branch preserves the existing ticket-removal count and selected-count increment.
+The existing failure branch consumes the remaining selection budget.
+On success, `event021_parent_remove_scenario_target_tickets` traverses the complete scope array into a separate retained-ticket array, then rebuilds the pool after iteration.
+It removes all selected-country tickets and preserves every other ticket's order and multiplicity without changing base major/load weights or the draw budget.
+The exact 2,005-entry arithmetic fixture retains FRA's 999 and BRA's 1,002 tickets and removes all four GER tickets; the previous numeric traversal left three GER tickets.
+This is a source/arithmetic uniqueness check, not engine execution or a numeric campaign probability certificate.
 The flag is cleared after the loop and the regular target expires with the event chain.
 No delayed event reads the draw flag.

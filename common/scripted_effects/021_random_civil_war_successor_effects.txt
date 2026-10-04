@@ -43,14 +43,6 @@ event021_prepare_successor_roster_adoption = {
 		set_variable = { random_civil_war_belligerent_cap = event_target:event021_successor_roster_adoption_predecessor.random_civil_war_belligerent_cap }
 		set_variable = { random_civil_war_route_evidence_count = event_target:event021_successor_roster_adoption_predecessor.random_civil_war_route_evidence_count }
 		if = {
-			limit = { event_target:event021_successor_roster_adoption_predecessor = { has_country_flag = random_civil_war_secondary_front_active } }
-			set_country_flag = random_civil_war_secondary_front_active
-		}
-		if = {
-			limit = { event_target:event021_successor_roster_adoption_predecessor = { has_country_flag = random_civil_war_multifront_active } }
-			set_country_flag = random_civil_war_multifront_active
-		}
-		if = {
 			limit = { event_target:event021_successor_roster_adoption_predecessor = { has_country_flag = random_civil_war_evolution_i_multifront } }
 			set_country_flag = random_civil_war_evolution_i_multifront
 		}
@@ -111,8 +103,8 @@ event021_adopt_successor_roster = {
 # `event021_successor_roster_adoption_expected_host` is the predecessor before
 # annex and the successor after lifecycle rebinding. The authoritative row
 # count is global.random_civil_war_front_ids^num, so no country/world scan is
-# needed. Missing optional status rows are treated as unresolved; a present
-# non-active status excludes that row from the adopted actor roster.
+# needed. Every adopted row needs aligned current-crisis and active-status
+# receipts, so a missing row cannot stand in for an unresolved sibling.
 event021_rebuild_successor_roster = {
 	if = {
 		limit = {
@@ -133,11 +125,10 @@ event021_rebuild_successor_roster = {
 		clear_array = random_civil_war_opposition_actors
 		clear_variable = random_civil_war_opposition_actor_scope
 		clear_variable = random_civil_war_secondary_actor_scope
+		clr_country_flag = random_civil_war_multifront_active
 		set_variable = { random_civil_war_successor_roster_count = constant:random_civil_war_value.zero }
 		set_temp_variable = { event021_successor_roster_index = global.random_civil_war_front_ids^num }
 		set_temp_variable = { event021_successor_roster_first_candidate_found = constant:random_civil_war_value.zero }
-		set_temp_variable = { event021_successor_roster_primary_found = constant:random_civil_war_value.zero }
-		set_temp_variable = { event021_successor_roster_secondary_found = constant:random_civil_war_value.zero }
 		while_loop_effect = {
 			limit = {
 				check_variable = {
@@ -170,9 +161,8 @@ event021_rebuild_successor_roster = {
 				}
 				set_temp_variable = { event021_successor_roster_row_in_crisis = constant:random_civil_war_value.one }
 			}
-			# The actor's live crisis id is the current writer contract. A
-			# front_crisis_ids row, when present, is an additional aligned witness;
-			# a missing or short optional array must not erase a valid actor row.
+			# All live front rows have aligned crisis and status receipts. A
+			# missing row cannot stand in for an active sibling front.
 			if = {
 				limit = {
 					check_variable = {
@@ -180,17 +170,9 @@ event021_rebuild_successor_roster = {
 						value = constant:random_civil_war_value.one
 						compare = equals
 					}
-					check_variable = {
-						var = global.random_civil_war_front_crisis_ids^num
-						value = event021_successor_roster_index
-						compare = greater_than
-					}
-					NOT = {
-						check_variable = {
-							var = global.random_civil_war_front_crisis_ids^event021_successor_roster_index
-							value = event021_successor_roster_crisis_id
-							compare = equals
-						}
+					OR = {
+						NOT = { check_variable = { var = global.random_civil_war_front_crisis_ids^num value = event021_successor_roster_index compare = greater_than } }
+						NOT = { check_variable = { var = global.random_civil_war_front_crisis_ids^event021_successor_roster_index value = event021_successor_roster_crisis_id compare = equals } }
 					}
 				}
 				set_temp_variable = { event021_successor_roster_row_in_crisis = constant:random_civil_war_value.zero }
@@ -202,17 +184,9 @@ event021_rebuild_successor_roster = {
 						value = constant:random_civil_war_value.one
 						compare = equals
 					}
-					check_variable = {
-						var = global.random_civil_war_front_statuses^num
-						value = event021_successor_roster_index
-						compare = greater_than
-					}
-					NOT = {
-						check_variable = {
-							var = global.random_civil_war_front_statuses^event021_successor_roster_index
-							value = constant:random_civil_war_front_status.active
-							compare = equals
-						}
+					OR = {
+						NOT = { check_variable = { var = global.random_civil_war_front_statuses^num value = event021_successor_roster_index compare = greater_than } }
+						NOT = { check_variable = { var = global.random_civil_war_front_statuses^event021_successor_roster_index value = constant:random_civil_war_front_status.active compare = equals } }
 					}
 				}
 				set_temp_variable = { event021_successor_roster_row_in_crisis = constant:random_civil_war_value.zero }
@@ -363,42 +337,6 @@ event021_rebuild_successor_roster = {
 									value = event_target:event021_successor_roster_candidate
 								}
 								add_to_variable = { random_civil_war_successor_roster_count = constant:random_civil_war_value.one }
-								if = {
-									limit = {
-										check_variable = {
-											var = event021_successor_roster_primary_found
-											value = constant:random_civil_war_value.zero
-											compare = equals
-										}
-										NOT = {
-											event_target:event021_successor_roster_candidate = {
-												OR = {
-													has_country_flag = random_civil_war_secondary_front_active
-													has_country_flag = random_civil_war_event6_secondary_front_active
-												}
-											}
-										}
-									}
-									set_variable = { random_civil_war_opposition_actor_scope = event_target:event021_successor_roster_candidate }
-									set_temp_variable = { event021_successor_roster_primary_found = constant:random_civil_war_value.one }
-								}
-								if = {
-									limit = {
-										check_variable = {
-											var = event021_successor_roster_secondary_found
-											value = constant:random_civil_war_value.zero
-											compare = equals
-										}
-										event_target:event021_successor_roster_candidate = {
-											OR = {
-												has_country_flag = random_civil_war_secondary_front_active
-												has_country_flag = random_civil_war_event6_secondary_front_active
-											}
-										}
-									}
-									set_variable = { random_civil_war_secondary_actor_scope = event_target:event021_successor_roster_candidate }
-									set_temp_variable = { event021_successor_roster_secondary_found = constant:random_civil_war_value.one }
-								}
 							}
 						}
 					}
@@ -408,19 +346,19 @@ event021_rebuild_successor_roster = {
 		if = {
 			limit = {
 				check_variable = {
-					var = event021_successor_roster_primary_found
-					value = constant:random_civil_war_value.zero
-					compare = equals
-				}
-				check_variable = {
 					var = event021_successor_roster_first_candidate_found
 					value = constant:random_civil_war_value.one
 					compare = equals
 				}
+				check_variable = { var = random_civil_war_successor_roster_count value = constant:random_civil_war_value.zero compare = greater_than }
 			}
 			event_target:event021_successor_roster_adoption_successor = {
 				set_variable = { random_civil_war_opposition_actor_scope = event_target:event021_successor_roster_first_candidate }
 			}
+		}
+		if = {
+			limit = { check_variable = { var = random_civil_war_successor_roster_count value = constant:random_civil_war_value.one compare = greater_than } }
+			set_country_flag = random_civil_war_multifront_active
 		}
 	}
 }

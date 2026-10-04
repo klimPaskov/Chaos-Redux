@@ -1,0 +1,353 @@
+# Event 021 precommit front-ledger validation and exact transaction receipts.
+# See the companion markdown for inputs, outputs, scope, and reference evidence.
+
+# ANY scope. Additional span checks run only after array alignment succeeds.
+# COUNTRY scope on the just-committed opening host. The public wrapper invokes
+# this only after its synchronous mutation executor and every child return.
+# Incomplete templates remain visible to resolution checks and are not erased.
+event021_parent_release_completed_front_plan = {
+	set_temp_variable = { event021_completed_plan_release_ready = constant:random_civil_war_value.zero }
+	if = {
+		limit = {
+			has_global_flag = random_civil_war_front_plan_ready
+			has_country_flag = random_civil_war_active
+			has_country_flag = random_civil_war_plan_committed
+			has_country_flag = random_civil_war_front_registered
+			has_variable = random_civil_war_front_id
+			has_variable = random_civil_war_crisis_id
+			has_variable = random_civil_war_opening_evolution_stage
+			has_variable = global.random_civil_war_pending_host_front_id
+			has_variable = global.random_civil_war_pending_crisis_id
+			check_variable = { var = random_civil_war_front_id value = global.random_civil_war_pending_host_front_id compare = equals }
+			check_variable = { var = random_civil_war_crisis_id value = global.random_civil_war_pending_crisis_id compare = equals }
+			check_variable = { var = global.random_civil_war_planned_front_ids^0 value = random_civil_war_front_id compare = equals }
+			check_variable = { var = global.random_civil_war_planned_front_status_entries^0 value = constant:random_civil_war_planned_front_status.consumed compare = equals }
+			check_variable = { var = global.random_civil_war_planned_front_status_entries^num value = global.random_civil_war_planned_front_count compare = equals }
+			NOT = { has_country_flag = random_civil_war_opening_transfer_pending }
+			NOT = { has_global_flag = random_civil_war_plan_active }
+			NOT = { has_global_flag = random_civil_war_planning_lock }
+			NOT = { has_global_flag = random_civil_war_secondary_front_pending }
+			NOT = { has_global_flag = random_civil_war_event6_secondary_front_pending }
+			NOT = { has_global_flag = random_civil_war_dynamic_front_activation_active }
+		}
+		set_temp_variable = { event021_completed_plan_release_ready = constant:random_civil_war_value.one }
+		if = {
+			limit = { NOT = { has_country_flag = random_civil_war_same_tag_route_active } }
+			if = {
+				limit = {
+					NOT = {
+						AND = {
+							has_variable = random_civil_war_opposition_actor_scope
+							var:random_civil_war_opposition_actor_scope = {
+								exists = yes
+								has_country_flag = random_civil_war_front_registered
+								has_country_flag = random_civil_war_opposition_actor
+								has_variable = random_civil_war_front_id
+								has_variable = random_civil_war_crisis_id
+								has_variable = random_civil_war_opening_evolution_stage
+								check_variable = { var = random_civil_war_front_id value = global.random_civil_war_pending_opposition_front_id compare = equals }
+								check_variable = { var = random_civil_war_crisis_id value = global.random_civil_war_pending_crisis_id compare = equals }
+							}
+						}
+					}
+				}
+				set_temp_variable = { event021_completed_plan_release_ready = constant:random_civil_war_value.zero }
+			}
+		}
+		set_temp_variable = { event021_completed_plan_release_break = constant:random_civil_war_value.zero }
+		for_each_loop = {
+			array = global.random_civil_war_planned_front_status_entries
+			value = event021_completed_plan_row_status
+			break = event021_completed_plan_release_break
+			if = {
+				limit = {
+					NOT = {
+						OR = {
+							check_variable = { var = event021_completed_plan_row_status value = constant:random_civil_war_planned_front_status.consumed compare = equals }
+							check_variable = { var = event021_completed_plan_row_status value = constant:random_civil_war_planned_front_status.rejected compare = equals }
+						}
+					}
+				}
+				set_temp_variable = { event021_completed_plan_release_ready = constant:random_civil_war_value.zero }
+			}
+		}
+		if = {
+			limit = { check_variable = { var = event021_completed_plan_release_ready value = constant:random_civil_war_value.one compare = equals } }
+			event021_parent_clear_front_plan = yes
+			clear_variable = global.random_civil_war_pending_opening_evolution_stage
+		}
+	}
+}
+
+# COUNTRY scope on a secondary source. Proves that the current marker set is
+# exactly the pending row and recalculates the army share from its live force.
+event021_parent_validate_secondary_transfer_receipt = {
+	set_temp_variable = { event021_secondary_transfer_valid = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_secondary_marker_count = constant:random_civil_war_value.zero }
+	save_event_target_as = event021_secondary_receipt_source
+	every_controlled_state = {
+		limit = { has_state_flag = random_civil_war_secondary_transfer_state }
+		add_to_temp_variable = { event021_secondary_marker_count = constant:random_civil_war_value.one }
+	}
+	set_temp_variable = { event021_secondary_receipt_row_break = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_secondary_receipt_state_break = constant:random_civil_war_value.zero }
+	if = {
+		limit = { has_global_flag = random_civil_war_front_plan_ready has_variable = global.random_civil_war_pending_secondary_front_id has_variable = random_civil_war_front_id }
+		for_each_loop = {
+			array = global.random_civil_war_planned_front_ids
+			value = event021_secondary_receipt_id
+			index = event021_secondary_receipt_row
+			break = event021_secondary_receipt_row_break
+			if = {
+				limit = {
+					check_variable = { var = event021_secondary_receipt_id value = global.random_civil_war_pending_secondary_front_id compare = equals }
+					check_variable = { var = global.random_civil_war_planned_front_source_ids^event021_secondary_receipt_row value = random_civil_war_front_id compare = equals }
+				}
+				set_temp_variable = { event021_secondary_receipt_offset = global.random_civil_war_planned_front_state_offsets^event021_secondary_receipt_row }
+				set_temp_variable = { event021_secondary_receipt_count = global.random_civil_war_planned_front_state_counts^event021_secondary_receipt_row }
+				set_temp_variable = { event021_secondary_receipt_end = event021_secondary_receipt_offset }
+				add_to_temp_variable = { event021_secondary_receipt_end = event021_secondary_receipt_count }
+				set_temp_variable = { event021_secondary_receipt_verified_count = constant:random_civil_war_value.zero }
+				for_each_loop = {
+					array = global.random_civil_war_planned_front_state_entries
+					value = event021_secondary_receipt_state
+					index = event021_secondary_receipt_state_index
+					break = event021_secondary_receipt_state_break
+					if = {
+						limit = {
+							check_variable = { var = event021_secondary_receipt_state_index value = event021_secondary_receipt_offset compare = greater_than_or_equals }
+							check_variable = { var = event021_secondary_receipt_state_index value = event021_secondary_receipt_end compare = less_than }
+						}
+						var:event021_secondary_receipt_state = {
+							if = {
+								limit = { is_owned_by = event_target:event021_secondary_receipt_source is_controlled_by = event_target:event021_secondary_receipt_source has_state_flag = random_civil_war_secondary_transfer_state }
+								add_to_temp_variable = { event021_secondary_receipt_verified_count = constant:random_civil_war_value.one }
+							}
+						}
+					}
+				}
+				set_temp_variable = { event021_secondary_receipt_divisions = global.random_civil_war_planned_front_force_division_entries^event021_secondary_receipt_row }
+				set_temp_variable = { event021_secondary_receipt_live_divisions = num_divisions }
+				if = {
+					limit = {
+						check_variable = { var = event021_secondary_receipt_verified_count value = event021_secondary_receipt_count compare = equals }
+						num_of_controlled_states > event021_secondary_receipt_count
+						check_variable = { var = event021_secondary_marker_count value = event021_secondary_receipt_count compare = equals }
+						check_variable = { var = event021_secondary_receipt_count value = constant:random_civil_war_value.zero compare = greater_than }
+						check_variable = { var = event021_secondary_receipt_divisions value = constant:random_civil_war_value.zero compare = greater_than }
+						check_variable = { var = event021_secondary_receipt_divisions value = event021_secondary_receipt_live_divisions compare = less_than }
+					}
+					set_temp_variable = { event021_secondary_transfer_valid = constant:random_civil_war_value.one }
+					set_variable = { global.random_civil_war_pending_secondary_opening_state_count = event021_secondary_receipt_verified_count }
+					set_variable = { random_civil_war_secondary_army_ratio = event021_secondary_receipt_divisions }
+					divide_variable = { random_civil_war_secondary_army_ratio = event021_secondary_receipt_live_divisions }
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY scope. Publish current retained membership from transaction-owned
+# states after all detachments, including rejected child regions still owned.
+# Historical opening provenance remains separate from retained membership.
+event021_parent_refresh_retained_front_receipt = {
+	if = {
+		limit = {
+			has_global_flag = random_civil_war_front_plan_ready
+			has_country_flag = random_civil_war_front_registered
+			has_country_flag = random_civil_war_active
+			has_variable = random_civil_war_crisis_id
+			has_variable = global.random_civil_war_pending_crisis_id
+			check_variable = { var = random_civil_war_crisis_id value = global.random_civil_war_pending_crisis_id compare = equals }
+		}
+		save_event_target_as = event021_retained_front_owner
+		clear_array = random_civil_war_opening_core_states
+		set_temp_variable = { event021_retained_front_break = constant:random_civil_war_value.zero }
+		for_each_scope_loop = {
+			array = global.random_civil_war_planned_front_state_entries
+			break = event021_retained_front_break
+			if = {
+				limit = { is_owned_by = event_target:event021_retained_front_owner }
+				event_target:event021_retained_front_owner = { add_to_array = { array = random_civil_war_opening_core_states value = PREV } }
+			}
+		}
+		set_variable = { random_civil_war_opening_state_count = random_civil_war_opening_core_states^num }
+		event021_parent_capture_actual_actor_force_receipt = yes
+		set_temp_variable = { event021_retained_front_registry_break = constant:random_civil_war_value.zero }
+		for_each_loop = {
+			array = global.random_civil_war_front_ids
+			value = event021_retained_front_registry_id
+			index = event021_retained_front_registry_index
+			break = event021_retained_front_registry_break
+			if = {
+				limit = { check_variable = { var = event021_retained_front_registry_id value = random_civil_war_front_id compare = equals } }
+				set_variable = { global.random_civil_war_front_region_counts^event021_retained_front_registry_index = random_civil_war_opening_state_count }
+			}
+		}
+	}
+}
+
+event021_parent_validate_front_ledger_identity = {
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = global.random_civil_war_pending_host_front_id }
+				NOT = { has_variable = global.random_civil_war_pending_archetype }
+				NOT = { has_event_target = random_civil_war_global_host_country }
+			}
+		}
+		set_temp_variable = { event021_planned_front_plan_valid = constant:random_civil_war_value.zero }
+	}
+	else = {
+		if = {
+			limit = { NOT = { check_variable = { var = global.random_civil_war_planned_front_ids^0 value = global.random_civil_war_pending_host_front_id compare = equals } } }
+			set_temp_variable = { event021_planned_front_plan_valid = constant:random_civil_war_value.zero }
+		}
+		if = {
+			limit = { check_variable = { var = global.random_civil_war_pending_archetype value = constant:random_civil_war_archetype.same_tag compare = equals } }
+			if = {
+				limit = {
+					OR = {
+						NOT = { check_variable = { var = global.random_civil_war_planned_front_count value = constant:random_civil_war_value.one compare = equals } }
+						NOT = { check_variable = { var = global.random_civil_war_planned_front_actor_type_entries^0 value = constant:random_civil_war_planned_actor_type.same_tag_claimant compare = equals } }
+					}
+				}
+				set_temp_variable = { event021_planned_front_plan_valid = constant:random_civil_war_value.zero }
+			}
+		}
+		else = {
+			if = {
+				limit = { OR = { NOT = { has_variable = global.random_civil_war_pending_opposition_front_id } check_variable = { var = global.random_civil_war_planned_front_count value = constant:random_civil_war_value.two compare = less_than } } }
+				set_temp_variable = { event021_planned_front_plan_valid = constant:random_civil_war_value.zero }
+			}
+			else = {
+				if = {
+					limit = {
+						OR = {
+							NOT = { check_variable = { var = global.random_civil_war_planned_front_ids^1 value = global.random_civil_war_pending_opposition_front_id compare = equals } }
+							NOT = { check_variable = { var = global.random_civil_war_planned_front_actor_type_entries^0 value = constant:random_civil_war_planned_actor_type.host_remnant compare = equals } }
+							NOT = {
+								OR = {
+									check_variable = { var = global.random_civil_war_planned_front_actor_type_entries^1 value = constant:random_civil_war_planned_actor_type.ordinary_claimant compare = equals }
+									check_variable = { var = global.random_civil_war_planned_front_actor_type_entries^1 value = constant:random_civil_war_planned_actor_type.event006_carrier compare = equals }
+								}
+							}
+						}
+					}
+					set_temp_variable = { event021_planned_front_plan_valid = constant:random_civil_war_value.zero }
+				}
+			}
+		}
+	}
+}
+
+# ANY scope. Contiguous exhaustive spans, unique ids/states, row-local anchors.
+event021_parent_validate_front_ledger_members = {
+	clear_temp_array = event021_ledger_seen_ids
+	clear_temp_array = event021_ledger_seen_states
+	set_temp_variable = { event021_ledger_row_break = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_ledger_state_break = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_ledger_member_break = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_ledger_expected_offset = constant:random_civil_war_value.zero }
+	for_each_scope_loop = {
+		array = global.random_civil_war_planned_front_state_entries
+		break = event021_ledger_state_break
+		if = {
+			limit = { OR = { is_in_array = { array = event021_ledger_seen_states value = THIS } NOT = { is_owned_by = event_target:random_civil_war_global_host_country } } }
+			set_temp_variable = { event021_planned_front_plan_valid = constant:random_civil_war_value.zero }
+		}
+		add_to_temp_array = { array = event021_ledger_seen_states value = THIS }
+	}
+	if = {
+		limit = { NOT = { check_variable = { var = global.random_civil_war_pending_archetype value = constant:random_civil_war_archetype.same_tag compare = equals } } }
+		event_target:random_civil_war_global_host_country = {
+			every_owned_state = {
+				if = {
+					limit = { NOT = { is_in_array = { array = event021_ledger_seen_states value = THIS } } }
+					set_temp_variable = { event021_planned_front_plan_valid = constant:random_civil_war_value.zero }
+				}
+			}
+		}
+	}
+	for_each_loop = {
+		array = global.random_civil_war_planned_front_ids
+		value = event021_ledger_row_id
+		index = event021_ledger_row_index
+		break = event021_ledger_row_break
+		if = {
+			limit = { OR = { check_variable = { var = event021_ledger_row_id value = constant:random_civil_war_value.zero compare = less_than_or_equals } is_in_array = { array = event021_ledger_seen_ids value = event021_ledger_row_id } } }
+			set_temp_variable = { event021_planned_front_plan_valid = constant:random_civil_war_value.zero }
+		}
+		add_to_temp_array = { array = event021_ledger_seen_ids value = event021_ledger_row_id }
+		if = {
+			limit = {
+				check_variable = { var = event021_ledger_row_index value = constant:random_civil_war_value.two compare = greater_than_or_equals }
+				OR = {
+					check_variable = { var = global.random_civil_war_planned_front_actor_type_entries^event021_ledger_row_index value = constant:random_civil_war_planned_actor_type.host_remnant compare = equals }
+					check_variable = { var = global.random_civil_war_planned_front_actor_type_entries^event021_ledger_row_index value = constant:random_civil_war_planned_actor_type.same_tag_claimant compare = equals }
+				}
+			}
+			set_temp_variable = { event021_planned_front_plan_valid = constant:random_civil_war_value.zero }
+		}
+		set_temp_variable = { event021_ledger_count = constant:random_civil_war_value.zero }
+		event021_parent_validate_front_ledger_row_span = yes
+		add_to_temp_variable = { event021_ledger_expected_offset = event021_ledger_count }
+	}
+	if = {
+		limit = { NOT = { check_variable = { var = event021_ledger_expected_offset value = global.random_civil_war_planned_front_state_entries^num compare = equals } } }
+		set_temp_variable = { event021_planned_front_plan_valid = constant:random_civil_war_value.zero }
+	}
+	clear_temp_array = event021_ledger_seen_ids
+	clear_temp_array = event021_ledger_seen_states
+}
+
+# ANY scope. Input: event021_ledger_row_index; output: validity/count scratch.
+event021_parent_validate_front_ledger_row_span = {
+	set_temp_variable = { event021_ledger_count = global.random_civil_war_planned_front_state_counts^event021_ledger_row_index }
+	set_temp_variable = { event021_ledger_integer_count = event021_ledger_count }
+	round_temp_variable = event021_ledger_integer_count
+	set_temp_variable = { event021_ledger_offset = global.random_civil_war_planned_front_state_offsets^event021_ledger_row_index }
+	set_temp_variable = { event021_ledger_end = event021_ledger_offset }
+	add_to_temp_variable = { event021_ledger_end = event021_ledger_count }
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = event021_ledger_count value = constant:random_civil_war_value.zero compare = less_than_or_equals }
+				NOT = { check_variable = { var = event021_ledger_count value = event021_ledger_integer_count compare = equals } }
+				NOT = { check_variable = { var = event021_ledger_offset value = event021_ledger_expected_offset compare = equals } }
+				check_variable = { var = event021_ledger_end value = global.random_civil_war_planned_front_state_entries^num compare = greater_than }
+			}
+		}
+		set_temp_variable = { event021_planned_front_plan_valid = constant:random_civil_war_value.zero }
+	}
+	set_temp_variable = { event021_ledger_anchor_found = constant:random_civil_war_value.zero }
+	for_each_loop = {
+		array = global.random_civil_war_planned_front_state_entries
+		value = event021_ledger_member
+		index = event021_ledger_member_index
+		break = event021_ledger_member_break
+		if = {
+			limit = {
+				check_variable = { var = event021_ledger_member_index value = event021_ledger_offset compare = greater_than_or_equals }
+				check_variable = { var = event021_ledger_member_index value = event021_ledger_end compare = less_than }
+				check_variable = { var = event021_ledger_member value = global.random_civil_war_planned_front_anchor_entries^event021_ledger_row_index compare = equals }
+			}
+			set_temp_variable = { event021_ledger_anchor_found = constant:random_civil_war_value.one }
+		}
+	}
+	if = {
+		limit = { check_variable = { var = event021_ledger_anchor_found value = constant:random_civil_war_value.zero compare = equals } }
+		set_temp_variable = { event021_planned_front_plan_valid = constant:random_civil_war_value.zero }
+	}
+}
+
+event021_parent_validate_front_ledger_spans = {
+	if = {
+		limit = { check_variable = { var = event021_planned_front_plan_valid value = constant:random_civil_war_value.one compare = equals } }
+		event021_parent_validate_front_ledger_identity = yes
+		if = {
+			limit = { check_variable = { var = event021_planned_front_plan_valid value = constant:random_civil_war_value.one compare = equals } }
+			event021_parent_validate_front_ledger_members = yes
+		}
+	}
+}

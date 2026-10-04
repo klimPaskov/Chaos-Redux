@@ -126,3 +126,58 @@ event021_successor_roster_actor_valid = {
 	}
 	random_civil_war_front_id_is_registered = yes
 }
+
+# COUNTRY scope on the actor selected for an evolution delay sample. At least
+# two distinct live opposition actors from this crisis must remain registered
+# and fighting their own immediate opponents. This reads the durable actor
+# array and actor receipts without relying on a secondary-slot pointer.
+event021_evolution_has_extra_active_actor = {
+	has_variable = random_civil_war_crisis_id
+	any_of_scopes = {
+		array = global.random_civil_war_front_actors
+		exists = yes
+		has_country_flag = random_civil_war_active
+		has_country_flag = random_civil_war_opposition_actor
+		has_country_flag = random_civil_war_front_registered
+		random_civil_war_front_id_is_registered = yes
+		has_variable = random_civil_war_crisis_id
+		check_variable = { var = random_civil_war_crisis_id value = PREV.random_civil_war_crisis_id compare = equals }
+		has_variable = random_civil_war_immediate_opponent_scope
+		var:random_civil_war_immediate_opponent_scope = { exists = yes }
+		has_war_with = var:random_civil_war_immediate_opponent_scope
+		any_of_scopes = {
+			array = global.random_civil_war_front_actors
+			exists = yes
+			NOT = { tag = PREV }
+			has_country_flag = random_civil_war_active
+			has_country_flag = random_civil_war_opposition_actor
+			has_country_flag = random_civil_war_front_registered
+			random_civil_war_front_id_is_registered = yes
+			has_variable = random_civil_war_crisis_id
+			check_variable = { var = random_civil_war_crisis_id value = PREV.random_civil_war_crisis_id compare = equals }
+			has_variable = random_civil_war_immediate_opponent_scope
+			var:random_civil_war_immediate_opponent_scope = { exists = yes }
+			has_war_with = var:random_civil_war_immediate_opponent_scope
+		}
+	}
+}
+
+# COUNTRY scope on the evolution delay sample actor. The active Event 006
+# front role covers both a primary Event 006 opening and later Event 006 rows.
+event021_evolution_has_active_event6_actor = {
+	has_variable = random_civil_war_crisis_id
+	any_of_scopes = {
+		array = global.random_civil_war_front_actors
+		exists = yes
+		has_country_flag = random_civil_war_active
+		has_country_flag = random_civil_war_opposition_actor
+		has_country_flag = random_civil_war_event6_front_active
+		has_country_flag = random_civil_war_front_registered
+		random_civil_war_front_id_is_registered = yes
+		has_variable = random_civil_war_crisis_id
+		check_variable = { var = random_civil_war_crisis_id value = PREV.random_civil_war_crisis_id compare = equals }
+		has_variable = random_civil_war_immediate_opponent_scope
+		var:random_civil_war_immediate_opponent_scope = { exists = yes }
+		has_war_with = var:random_civil_war_immediate_opponent_scope
+	}
+}

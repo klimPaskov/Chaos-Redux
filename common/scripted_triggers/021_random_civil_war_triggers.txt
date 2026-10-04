@@ -529,17 +529,13 @@ random_civil_war_critical_queue_entry_valid = {
 
 random_civil_war_scenario_launch_valid = {
 	# Manual scenario targets may be stable before the selected scenario type
-	# creates its route receipt. The target pool already proved the normal-human,
-	# type-preflight, terminal, and individual-crisis gates. Automatic consumers
-	# continue to require the stricter live-route target predicate.
+	# creates its route receipt. The target pool and base-front reservation prove
+	# eligibility once; the preparation callback must not claim the same slots a
+	# second time. Automatic consumers continue to require the live-route gate.
 	OR = {
 		random_civil_war_country_can_be_scenario_target = yes
 		AND = {
-			event021_parent_scenario_country_eligible = yes
-			OR = {
-				has_country_flag = random_civil_war_scenario_target_confirmed
-				has_global_flag = random_civil_war_scenario_target_confirmed
-			}
+			event021_parent_scenario_reserved_plan_target_valid = yes
 		}
 	}
 	OR = {

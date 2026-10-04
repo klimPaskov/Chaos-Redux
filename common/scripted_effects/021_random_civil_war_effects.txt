@@ -671,19 +671,17 @@ event021_prepare_force_package = {
 		set_variable = { random_civil_war_requested_force_manpower_k = manpower_k }
 		multiply_variable = { random_civil_war_requested_force_manpower_k = constant:random_civil_war_force.actor_manpower_ratio }
 	}
-	clamp_variable = {
-		var = random_civil_war_requested_force_divisions
-		min = constant:random_civil_war_capacity.minimum_force_divisions
-		max = constant:random_civil_war_capacity.maximum_force_divisions
-	}
+	set_temp_variable = { event021_force_division_ceiling = num_divisions }
 	if = {
-		limit = {
-			OR = {
-				has_country_flag = random_civil_war_one_state_route
-				has_country_flag = random_civil_war_all_island_route_ready
-			}
+		limit = { check_variable = { var = event021_force_division_ceiling value = constant:random_civil_war_value.zero compare = greater_than } }
+		clamp_variable = {
+			var = random_civil_war_requested_force_divisions
+			min = constant:random_civil_war_capacity.minimum_force_divisions
+			max = event021_force_division_ceiling
 		}
-		set_variable = { random_civil_war_requested_force_divisions = constant:random_civil_war_force.one_state_division_count }
+	}
+	else = {
+		set_variable = { random_civil_war_requested_force_divisions = constant:random_civil_war_value.zero }
 	}
 	if = {
 		limit = { NOT = { has_variable = random_civil_war_requested_force_equipment } }
@@ -717,6 +715,7 @@ event021_random_civil_war_commit_opening = {
 	if = {
 		limit = { random_civil_war_opening_plan_valid = yes }
 		set_country_flag = random_civil_war_active
+		event021_commit_opening_evolution_provenance = yes
 		event021_parent_mark_treaty_recurrence = yes
 		event021_parent_commit_generation_history = yes
 		event021_begin_achievement_history = yes
@@ -888,30 +887,21 @@ event021_unregister_front = {
 		limit = { has_country_flag = random_civil_war_front_registered }
 		if = {
 			limit = { has_variable = random_civil_war_front_id }
-			set_temp_variable = { event021_front_unregister_index = global.random_civil_war_front_ids^num }
 			set_temp_variable = { event021_front_unregister_found = constant:random_civil_war_value.zero }
-			while_loop_effect = {
-				limit = {
-					check_variable = {
-						var = event021_front_unregister_index
-						value = constant:random_civil_war_value.zero
-						compare = greater_than
-					}
-					check_variable = {
-						var = event021_front_unregister_found
-						value = constant:random_civil_war_value.zero
-						compare = equals
-					}
-				}
-				subtract_from_temp_variable = { event021_front_unregister_index = constant:random_civil_war_value.one }
+			for_each_loop = {
+				array = global.random_civil_war_front_ids
+				value = event021_front_unregister_row_id
+				index = event021_front_unregister_scan_index
+				break = event021_front_unregister_found
 				if = {
 					limit = {
 						check_variable = {
-							var = global.random_civil_war_front_ids^event021_front_unregister_index
+							var = event021_front_unregister_row_id
 							value = random_civil_war_front_id
 							compare = equals
 						}
 					}
+					set_temp_variable = { event021_front_unregister_index = event021_front_unregister_scan_index }
 					set_temp_variable = { event021_front_unregister_found = constant:random_civil_war_value.one }
 				}
 			}
@@ -973,15 +963,17 @@ event021_unregister_front = {
 # reserved its id. The status and receipt fields remain aligned by row index;
 # no post-mutation map search is used to infer a missing plan row.
 event021_bind_front_plan_row = {
+	set_temp_variable = { event021_front_plan_bind_break = constant:random_civil_war_value.zero }
 	clr_country_flag = random_civil_war_front_plan_row_bound
 	if = {
 		limit = {
 			has_global_flag = random_civil_war_front_plan_ready
 		}
-		for_loop_effect = {
-			start = constant:random_civil_war_value.zero
-			end = global.random_civil_war_planned_front_ids^num
-			value = event021_front_plan_bind_index
+		for_each_loop = {
+			array = global.random_civil_war_planned_front_ids
+			value = event021_front_plan_bind_id
+			index = event021_front_plan_bind_index
+			break = event021_front_plan_bind_break
 			if = {
 				limit = {
 					check_variable = {
@@ -998,6 +990,13 @@ event021_bind_front_plan_row = {
 				set_variable = { random_civil_war_front_plan_row_route = global.random_civil_war_planned_front_route_entries^event021_front_plan_bind_index }
 				set_variable = { random_civil_war_front_plan_row_package = global.random_civil_war_planned_front_package_entries^event021_front_plan_bind_index }
 				set_variable = { random_civil_war_front_plan_row_state_count = global.random_civil_war_planned_front_state_counts^event021_front_plan_bind_index }
+				if = {
+					limit = {
+						NOT = { check_variable = { var = global.random_civil_war_planned_front_actor_type_entries^event021_front_plan_bind_index value = constant:random_civil_war_planned_actor_type.host_remnant compare = equals } }
+						NOT = { check_variable = { var = global.random_civil_war_planned_front_actor_type_entries^event021_front_plan_bind_index value = constant:random_civil_war_planned_actor_type.same_tag_claimant compare = equals } }
+					}
+					set_variable = { random_civil_war_source_front_id = global.random_civil_war_planned_front_source_ids^event021_front_plan_bind_index }
+				}
 				set_country_flag = random_civil_war_front_plan_row_bound
 			}
 		}
@@ -1019,8 +1018,19 @@ event021_bind_current_front_plan_row = {
 # starter cannot materialise it. This prevents settlement from waiting on a
 # row that was explicitly rolled back.
 event021_reject_pending_front_plan_row = {
+	set_temp_variable = { event021_front_plan_reject_break = constant:random_civil_war_value.zero }
 	set_temp_variable = { event021_planned_front_status_to_mark = constant:random_civil_war_planned_front_status.rejected }
-	event021_bind_front_plan_row = yes
+	set_temp_variable = { event021_front_plan_reject_index = constant:random_civil_war_value.zero }
+	for_each_loop = {
+		array = global.random_civil_war_planned_front_ids
+		value = event021_front_plan_reject_id
+		break = event021_front_plan_reject_break
+		if = {
+			limit = { check_variable = { var = event021_front_plan_reject_id value = event021_planned_front_id_to_mark compare = equals } }
+			set_variable = { global.random_civil_war_planned_front_status_entries^event021_front_plan_reject_index = event021_planned_front_status_to_mark }
+		}
+		add_to_temp_variable = { event021_front_plan_reject_index = constant:random_civil_war_value.one }
+	}
 }
 
 # STATE or COUNTRY scope through the current anchor target. The priority state
@@ -1489,6 +1499,18 @@ event021_refresh_global_capacity = {
 		set_variable = { global.random_civil_war_active_front_count = constant:random_civil_war_value.zero }
 	}
 	set_global_flag = random_civil_war_capacity_initialized
+	if = {
+		limit = { NOT = { has_global_flag = random_civil_war_manual_scenario_launch_in_progress } }
+		set_variable = { global.random_civil_war_scenario_available_front_count = global.random_civil_war_max_active_fronts }
+		if = {
+			limit = { has_variable = global.random_civil_war_active_front_count }
+			subtract_from_variable = { global.random_civil_war_scenario_available_front_count = global.random_civil_war_active_front_count }
+		}
+		if = {
+			limit = { check_variable = { var = global.random_civil_war_scenario_available_front_count value = constant:random_civil_war_value.zero compare = less_than } }
+			set_variable = { global.random_civil_war_scenario_available_front_count = constant:random_civil_war_value.zero }
+		}
+	}
 }
 
 # ANY scope. Adds the current existing country to the persistent bounded review
@@ -2073,6 +2095,7 @@ event021_cleanup_crisis = {
 		}
 		clr_country_flag = random_civil_war_event6_package_admission_ready
 		clr_country_flag = random_civil_war_event6_identity_candidate_ready
+		clr_country_flag = random_civil_war_event6_secondary_origin
 		set_country_flag = random_civil_war_recent_target
 		set_variable = { random_civil_war_recent_target_until = global.date }
 		set_temp_variable = { event021_date_offset = constant:random_civil_war_timing.target_cooldown_days }
@@ -2085,6 +2108,7 @@ event021_cleanup_crisis = {
 		add_to_variable = { random_civil_war_memory_until = event021_date_offset }
 		set_variable = { random_civil_war_last_cleanup_date = global.date }
 		clear_variable = random_civil_war_front_id
+		clear_variable = random_civil_war_source_front_id
 		clear_variable = random_civil_war_front_registered_date
 		clear_variable = random_civil_war_front_plan_row_index
 		clear_variable = random_civil_war_front_plan_row_id

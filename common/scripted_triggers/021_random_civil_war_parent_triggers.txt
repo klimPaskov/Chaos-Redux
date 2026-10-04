@@ -91,7 +91,7 @@ event021_parent_event6_package_setup_proven = {
 	var:independence_wave_anchor_state = {
 		is_owned_and_controlled_by = PREV
 		state_population_k > constant:event021_parent_tuning.minimum_state_population_k
-		check_variable = { infrastructure_level > constant:random_civil_war_value.zero }
+		infrastructure > constant:random_civil_war_value.zero
 	}
 	var:independence_wave_former_host = { exists = yes NOT = { tag = PREV } }
 	has_independence_wave_force_package_for_current_generation = yes
@@ -153,7 +153,7 @@ event021_parent_event6_existing_actor = {
 # by random_civil_war_state_can_be_reserved at commit time.
 event021_parent_viable_anchor_state = {
 	state_population_k > 0
-	check_variable = { infrastructure_level > 0 }
+	infrastructure > constant:random_civil_war_value.zero
 	OR = {
 		NOT = { is_capital = yes }
 		event_target:random_civil_war_host_country = {
@@ -174,7 +174,7 @@ event021_parent_viable_anchor_state = {
 # revalidates the receipt through event021_reserve_state.
 event021_parent_scenario_anchor_state_candidate = {
 	state_population_k > constant:event021_parent_tuning.minimum_state_population_k
-	check_variable = { infrastructure_level > constant:random_civil_war_value.zero }
+	infrastructure > constant:random_civil_war_value.zero
 	NOT = { is_capital = yes }
 	is_owned_by = ROOT
 	is_controlled_by = ROOT
@@ -185,7 +185,7 @@ event021_parent_scenario_anchor_state_candidate = {
 
 event021_parent_scenario_capital_state_candidate = {
 	state_population_k > constant:event021_parent_tuning.minimum_state_population_k
-	check_variable = { infrastructure_level > constant:random_civil_war_value.zero }
+	infrastructure > constant:random_civil_war_value.zero
 	is_capital = yes
 	is_owned_by = ROOT
 	is_controlled_by = ROOT
@@ -319,41 +319,35 @@ event021_parent_secondary_front_candidate = {
 		event021_parent_multifront_setup_available = yes
 		has_variable = random_civil_war_total_belligerent_count
 		has_variable = random_civil_war_belligerent_cap
-		has_variable = random_civil_war_route_evidence_count
 		check_variable = {
 			var = random_civil_war_total_belligerent_count
 			value = random_civil_war_belligerent_cap
 			compare = less_than
 		}
-		check_variable = {
-			var = random_civil_war_route_evidence_count
-			value = random_civil_war_total_belligerent_count
-			compare = greater_than_or_equals
-		}
-		event021_parent_has_unreserved_secondary_route = yes
+					OR = {
+						AND = {
+							has_global_flag = random_civil_war_dynamic_front_activation_active
+							has_global_flag = random_civil_war_secondary_front_preplanned
+							has_variable = global.random_civil_war_pending_secondary_front_id
+						}
+						AND = {
+						event021_parent_has_viable_secondary_route = yes
+						}
+					}
 	}
 }
 
-# COUNTRY scope on the original crisis host. A package-owned Event 006 actor
-# may occupy one additional Evolution I front after an ordinary opening, but
-# only while the host can preserve a remnant and every host/global cap remains
-# open. The package loader performs the exact tag, character, and anchor proof.
+# COUNTRY scope on the original crisis host. A distinct complete Event 006
+# package may occupy an optional Evolution I front while the host can preserve
+# a remnant and shared global capacity remains. Package, tag, character, and
+# anchor proofs are performed by the package loader for each staged row.
 event021_parent_event6_secondary_front_candidate = {
 	event021_parent_multifront_setup_available = yes
 	has_country_flag = random_civil_war_active
 	has_country_flag = random_civil_war_government_side
-	NOT = { has_country_flag = random_civil_war_event6_host_side }
-	NOT = { has_country_flag = random_civil_war_event6_secondary_host_side }
 	NOT = { has_country_flag = random_civil_war_same_tag_route_active }
 	num_of_controlled_states > constant:random_civil_war_value.one
 	random_civil_war_front_capacity_available = yes
-	has_variable = random_civil_war_total_belligerent_count
-	has_variable = random_civil_war_belligerent_cap
-	check_variable = {
-		var = random_civil_war_total_belligerent_count
-		value = random_civil_war_belligerent_cap
-		compare = less_than
-	}
 	OR = {
 		independence_wave_event021_dormant_package_available = yes
 		AND = {
@@ -367,30 +361,18 @@ event021_parent_event6_secondary_front_candidate = {
 # consume only a distinct, live route receipt that has not already produced a
 # belligerent. Event 006 and same-tag receipts have dedicated actor adapters and
 # are deliberately excluded from the ordinary civil-war split.
-event021_parent_has_unreserved_secondary_route = {
+event021_parent_has_viable_secondary_route = {
 	OR = {
-		AND = {
-			random_civil_war_regional_route_valid = yes
-			NOT = { has_country_flag = random_civil_war_regional_route_reserved }
-		}
-		AND = {
-			random_civil_war_command_route_valid = yes
-			NOT = { has_country_flag = random_civil_war_command_route_reserved }
-		}
-		AND = {
-			random_civil_war_legal_route_valid = yes
-			NOT = { has_country_flag = random_civil_war_legal_route_reserved }
-		}
-		AND = {
-			random_civil_war_ideological_route_valid = yes
-			NOT = { has_country_flag = random_civil_war_ideological_route_reserved }
-		}
+		random_civil_war_regional_route_valid = yes
+		random_civil_war_command_route_valid = yes
+		random_civil_war_legal_route_valid = yes
+		random_civil_war_ideological_route_valid = yes
 	}
 }
 
 event021_parent_secondary_state_candidate = {
 	state_population_k > constant:event021_parent_tuning.minimum_state_population_k
-	check_variable = { infrastructure_level > constant:random_civil_war_value.zero }
+	infrastructure > constant:random_civil_war_value.zero
 	NOT = { is_capital = yes }
 	NOT = { has_state_flag = random_civil_war_secondary_transfer_state }
 	is_owned_by = ROOT
@@ -403,16 +385,39 @@ event021_parent_secondary_state_candidate = {
 # state after the primary split has changed ownership.
 event021_parent_preplanned_secondary_state_candidate = {
 	state_population_k > constant:event021_parent_tuning.minimum_state_population_k
-	check_variable = { infrastructure_level > constant:random_civil_war_value.zero }
+	infrastructure > constant:random_civil_war_value.zero
 	NOT = { is_capital = yes }
 	has_state_flag = random_civil_war_secondary_transfer_state
-	is_owned_by = ROOT
-	is_controlled_by = ROOT
+	has_event_target = random_civil_war_secondary_source_country
+	is_owned_by = event_target:random_civil_war_secondary_source_country
+	is_controlled_by = event_target:random_civil_war_secondary_source_country
 }
 
 event021_parent_territorial_war_ended = {
 	event021_parent_internal_war_ended = yes
 	NOT = { has_country_flag = random_civil_war_same_tag_route_active }
+}
+
+event021_parent_scenario_base_front_capacity_available = {
+	has_variable = global.random_civil_war_scenario_available_front_count
+	OR = {
+		AND = {
+			event021_parent_scenario_requires_same_tag = yes
+			check_variable = {
+				var = global.random_civil_war_scenario_available_front_count
+				value = constant:random_civil_war_value.one
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			NOT = { event021_parent_scenario_requires_same_tag = yes }
+			check_variable = {
+				var = global.random_civil_war_scenario_available_front_count
+				value = constant:random_civil_war_value.two
+				compare = greater_than_or_equals
+			}
+		}
+	}
 }
 
 event021_parent_scenario_country_eligible = {
@@ -423,6 +428,8 @@ event021_parent_scenario_country_eligible = {
 		has_global_flag = random_civil_war_manual_scenario_launch_in_progress
 		random_civil_war_successor_grace_clear = yes
 	}
+	NOT = { event021_external_queue_blocks_new_crisis = yes }
+	NOT = { random_civil_war_has_incompatible_bespoke_route = yes }
 	NOT = { has_country_flag = random_civil_war_active }
 	NOT = { has_country_flag = random_civil_war_target_reserved }
 	NOT = { has_country_flag = random_civil_war_cluster_target_reserved }
@@ -433,6 +440,37 @@ event021_parent_scenario_country_eligible = {
 	num_of_controlled_states > constant:random_civil_war_value.zero
 	event021_parent_scenario_type_preflight_valid = yes
 	event021_parent_scenario_opening_state_preflight_valid = yes
+}
+
+event021_parent_scenario_country_capacity_eligible = {
+	event021_parent_scenario_country_eligible = yes
+	event021_parent_scenario_base_front_capacity_available = yes
+}
+
+# COUNTRY scope. Revalidates a target whose mandatory front capacity was
+# already reserved by the scenario controller, so the preparation callback
+# does not demand the same slots a second time.
+event021_parent_scenario_reserved_plan_target_valid = {
+	has_country_flag = random_civil_war_scenario_base_front_reserved
+	random_civil_war_is_normal_human_country = yes
+	NOT = { random_civil_war_has_terminal_lock = yes }
+	OR = {
+		has_global_flag = random_civil_war_manual_scenario_launch_in_progress
+		random_civil_war_successor_grace_clear = yes
+	}
+	NOT = { event021_external_queue_blocks_new_crisis = yes }
+	NOT = { random_civil_war_has_incompatible_bespoke_route = yes }
+	NOT = { has_country_flag = random_civil_war_active }
+	NOT = { has_country_flag = random_civil_war_target_reserved }
+	NOT = { has_country_flag = random_civil_war_cluster_target_reserved }
+	individual_crisis_load_is_below_cap = yes
+	num_of_controlled_states > constant:random_civil_war_value.zero
+	event021_parent_scenario_type_preflight_valid = yes
+	event021_parent_scenario_opening_state_preflight_valid = yes
+	OR = {
+		has_country_flag = random_civil_war_scenario_target_confirmed
+		has_global_flag = random_civil_war_scenario_target_confirmed
+	}
 }
 
 # COUNTRY scope of the shared scenario window. The selected type is copied into

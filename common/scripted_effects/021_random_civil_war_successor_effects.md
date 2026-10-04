@@ -26,7 +26,7 @@ The predecessor must expose the existing host counters `random_civil_war_total_b
 
 The effect saves chain-local successor, predecessor, and expected-host targets, stores the crisis id in `random_civil_war_successor_adoption_crisis_id`, and sets the two transient pending receipts.
 
-It copies only host operational counters and the existing host multifront role flags. It does not copy or clear Event 006 package identity, origin history, recurrence memory, achievement history, settlement facts, terminal receipts, or war state.
+It copies only host operational counters and the existing historical evolution-I multifront receipt. The live multifront flag is recomputed from the adopted roster. It does not copy or clear Event 006 package identity, origin history, recurrence memory, achievement history, settlement facts, terminal receipts, or war state.
 
 The preparation worker may rebuild the successor's current local actor array from the front ledger, but the predecessor remains the expected host until the annex lifecycle callback runs.
 
@@ -42,7 +42,7 @@ The effect sets the successor active and government roles, clears only its oppos
 
 It clears an immediate-opponent pointer only when that pointer resolves to the successor itself. It never assigns the successor as its own opponent. The lifecycle helper is responsible for clearing the defeated predecessor pointer and rebinding other surviving actors.
 
-The effect then rebuilds `random_civil_war_opposition_actors` and the existing `random_civil_war_opposition_actor_scope` and `random_civil_war_secondary_actor_scope` pointers from surviving active front rows, records `random_civil_war_successor_roster_count`, saves a chain-local completion target, clears the transient crisis receipt, and clears the two pending receipts.
+The effect then rebuilds `random_civil_war_opposition_actors` from surviving active front rows and records `random_civil_war_successor_roster_count`. It sets `random_civil_war_opposition_actor_scope` to one live compatibility actor when the roster is nonempty, clears the obsolete `random_civil_war_secondary_actor_scope`, and derives `random_civil_war_multifront_active` from a roster of at least two unresolved opposition actors. It saves a chain-local completion target, clears the transient crisis receipt, and clears the two pending receipts.
 
 The successor-side `random_civil_war_successor_side` and `random_civil_war_successor_claimed` receipts remain intact. Event 006 actors may remain in the adopted roster when they pass the live actor predicate; no Event 006 flag, package variable, durable origin marker, or `independence_wave_*` state is copied, cleared, or rewritten here.
 
@@ -52,9 +52,9 @@ If no eligible actor remains, adoption completes with a zero roster count and no
 
 `global.random_civil_war_front_ids^num` is the authoritative bounded row count.
 
-Every inspected row must have a current actor row in `global.random_civil_war_front_actors`, and that actor's `random_civil_war_front_id` must equal the same-index `global.random_civil_war_front_ids` value. The actor's live crisis id must equal the adoption crisis. When `global.random_civil_war_front_crisis_ids` has a row at the same index, it is an additional aligned witness and must also equal the adoption crisis.
+Every inspected row must have aligned actor, crisis, and status rows in `global.random_civil_war_front_actors`, `global.random_civil_war_front_crisis_ids`, and `global.random_civil_war_front_statuses`. The actor's `random_civil_war_front_id` must equal the same-index `global.random_civil_war_front_ids` value, and both actor and row crisis ids must equal the adoption crisis.
 
-When `global.random_civil_war_front_statuses` has a row at the same index, only `constant:random_civil_war_front_status.active` is unresolved; a missing or short status array is treated as unresolved for compatibility with partially initialized ledgers.
+Only `constant:random_civil_war_front_status.active` is unresolved. A missing or short crisis or status array excludes the row rather than inventing a live sibling.
 
 A row is associated with the predecessor before annex when its optional `global.random_civil_war_front_hosts` row, actor `random_civil_war_crisis_host_scope`, or actor `random_civil_war_host_country_scope` identifies the explicit predecessor.
 
@@ -64,7 +64,7 @@ Actors must be existing normal-human, non-capitulated countries with owned state
 
 The current successor is excluded from its own opposition roster. This is intentional: a winning actor's own surviving ledger row is not another opposition actor. The helper does not unregister or rewrite that row; the parent/front resolver owns any later interpretation or settlement of a successor-actor row.
 
-The roster append is guarded by `is_in_array`, so repeated calls do not duplicate actor rows. The worker clears and rebuilds the successor's local array once per authorized transaction, and the preparation/completion event-target receipts block repeated before/after calls without leaving a recurrence-sticky country flag.
+The roster append is guarded by `is_in_array`, so repeated calls do not duplicate actor rows. The worker clears and rebuilds the successor's local array once per authorized transaction, and the preparation/completion event-target receipts block repeated before/after calls without leaving a recurrence-sticky country flag. It does not mutate the global array while iterating it.
 
 The worker does not modify any aligned global front array, active-theater array, queue, cursor, or global count. `event021_handle_annexed_country` remains the sole lifecycle owner of row removal/rebinding and cursor/count repair.
 
@@ -86,9 +86,9 @@ The parent must not treat a successful roster adoption as proof that any real wa
 
 The available vanilla documentation describes `annex_country` and optional `transfer_troops`, but it does not specify that annexation transfers every remaining war relation from FROM to ROOT.
 
-The Event 021 source stores `random_civil_war_external_war_at_opening` as a historical boolean and `random_civil_war_immediate_opponent_scope` as one pointer, not a complete enemy roster.
+The Event 021 external-war successor path stores a bounded snapshot and queue of live predecessor enemies separately from this helper. `random_civil_war_external_war_at_opening` remains historical, and `random_civil_war_immediate_opponent_scope` identifies a front opponent rather than a complete external enemy roster.
 
-Therefore actual surviving-front continuity requires a separate parent-owned pre-annex snapshot of every required enemy, an explicit documented `add_to_war` or `declare_war_on` operation in the correct war context, and post-annex `has_war_with` verification for each relation.
+The accepted parent contract is relation-only continuity. A relation still present after annexation needs no action. A missing relation gets a case-specific human prompt with currently valid core or claim goals; AI successors fail closed. This helper neither redeclares existing relations nor selects goals.
 
 No helper in this file declares, joins, ends, white-peaces, or otherwise mutates a war.
 
@@ -96,7 +96,7 @@ No helper in this file declares, joins, ends, white-peaces, or otherwise mutates
 
 No constants were added. Existing `random_civil_war_value.zero`, `random_civil_war_value.one`, and `random_civil_war_front_status.active` values are reused.
 
-No existing gameplay file or call site is edited by this tranche. The parent owns wiring the exact before/after sequence and reconciling any target-name changes before integration.
+The evolution delay entries in `../mtth/021_random_civil_war_mtth.txt` now call two read-only predicates in `../scripted_triggers/021_random_civil_war_successor_triggers.txt`. The parent owns the existing before/after successor call sequence and its external-war relation queue.
 
 If an authorized preparation transaction is abandoned before annexation, the parent must clear the two pending receipts and `random_civil_war_successor_adoption_crisis_id`; the regular event targets expire with the chain.
 

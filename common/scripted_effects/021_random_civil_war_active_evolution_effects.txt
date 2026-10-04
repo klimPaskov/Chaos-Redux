@@ -1,0 +1,49 @@
+# Event 021 active-war evolution provenance and owned transaction helpers.
+# Opening provenance is captured before mutation and committed with the crisis.
+# Active-war review must keep its receipt separate from the opening template.
+
+# ANY scope. Snapshot actual opening stage into serial transaction scratch.
+# No actor, country history, generation, weight, or timing is changed here.
+event021_capture_pending_opening_evolution_stage = {
+	set_variable = { global.random_civil_war_pending_opening_evolution_stage = constant:random_civil_war_value.zero }
+	if = {
+		limit = { has_global_flag = random_civil_war_evolution_i_active }
+		set_variable = { global.random_civil_war_pending_opening_evolution_stage = constant:random_civil_war_event.evolution_i_stage }
+	}
+	if = {
+		limit = { has_global_flag = random_civil_war_evolution_ii_active }
+		set_variable = { global.random_civil_war_pending_opening_evolution_stage = constant:random_civil_war_event.evolution_ii_stage }
+	}
+	if = {
+		limit = { has_global_flag = random_civil_war_evolution_iii_active }
+		set_variable = { global.random_civil_war_pending_opening_evolution_stage = constant:random_civil_war_event.evolution_iii_stage }
+	}
+}
+
+# COUNTRY scope on a successful host or primary. Missing scratch is not
+# inferred from current world stage or the number of surviving actors.
+event021_commit_opening_evolution_provenance = {
+	if = {
+		limit = { has_variable = global.random_civil_war_pending_opening_evolution_stage }
+		set_variable = { random_civil_war_opening_evolution_stage = global.random_civil_war_pending_opening_evolution_stage }
+	}
+}
+
+# COUNTRY scope on an additional actor. Preserve the original crisis opening
+# stage through both prefire and active-war additions, rather than recasting
+# an old baseline war as a fresh evolved opening.
+event021_inherit_crisis_opening_evolution_provenance = {
+	if = {
+		limit = {
+			has_variable = random_civil_war_crisis_host_scope
+			var:random_civil_war_crisis_host_scope = {
+				exists = yes
+				has_variable = random_civil_war_opening_evolution_stage
+			}
+		}
+		var:random_civil_war_crisis_host_scope = {
+			set_temp_variable = { event021_inherited_opening_evolution_stage = random_civil_war_opening_evolution_stage }
+		}
+		set_variable = { random_civil_war_opening_evolution_stage = event021_inherited_opening_evolution_stage }
+	}
+}
