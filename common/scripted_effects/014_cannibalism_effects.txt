@@ -14135,9 +14135,11 @@ cannibalism_confront_reviewed_hoard = {
 	cannibalism_load_hoard_review_target = yes
 	if = {
 		limit = { check_variable = { cannibalism_hoard_target_valid > constant:cannibalism_hoard.zero } }
+		# Pay the share the event quoted, even when investigators located the
+		# cache while this review was open.
 		set_temp_variable = { cannibalism_hoard_recovery_share = constant:cannibalism_hoard.confront_recovery }
 		if = {
-			limit = { event_target:cannibalism_hoard_target_state = { has_state_flag = cannibalism_hoard_located } }
+			limit = { has_country_flag = cannibalism_hoard_review_located }
 			set_temp_variable = { cannibalism_hoard_recovery_share = constant:cannibalism_hoard.located_confront_recovery }
 		}
 		set_temp_variable = { cannibalism_hoard_resistance_level = constant:cannibalism_hoard.resistance_mild }
