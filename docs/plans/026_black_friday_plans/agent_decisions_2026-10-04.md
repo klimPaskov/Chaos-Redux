@@ -423,3 +423,17 @@ Basis: lead decision (3) for round 2 and the Event 011 precedent (D19); spec Par
 No option gains a trigger and no AI chance changes, so availability and AI behaviour are unchanged.
 
 Disposition: implemented (source). The option tooltip amount and the sale debit are `needs_live_game`.
+
+## D27. Native price-table decisions credit Political Power when taken
+
+Decision: every decision whose native `cost` reads `global.black_friday_price_*` counts as a Political Power purchase toward the achievement (registry BF-NAT-017).
+`black_friday_credit_political_power_purchase` (in `026_black_friday_effects.txt`) sets the family to Political Power and the non-political input to zero, then calls `black_friday_credit_sale_purchase`, so it credits once during a valid natural sale and does nothing otherwise; AI, forced, manual, and debug sales stay excluded by that effect's trigger.
+Of the 399 converted decisions in the 15 owner files, 272 call it from a `hidden_effect` at the start of `complete_effect`, which runs when the decision is taken (23 of them, the European Union expansion decisions and the Zombie containment measures and their revocations, had no `complete_effect` and get one holding only that call).
+The other 127 already credit one family through their own payment and are left as they are, so no decision credits twice: 87 Event 015 decisions through `utopia_manifesto_pay_prepared_decision_cost`, 15 Event 015 evolution decisions through `utopia_manifesto_start_prepared_evolution_policy_action`, two through the Utopia growth payments alone, 14 genocide crisis decisions (D16), and nine Event 005 Kuznetsk and UWR decisions.
+`utopia_manifesto_pay_prepared_decision_cost` credited nothing when a decision paid no material cost; every caller also pays a Political Power table price, so it now falls back to the Political Power family.
+The four Zombie cure tiers and the Anti-Zombie League formation, which refund their charged price when cancelled (D10), call the new `black_friday_withdraw_political_power_purchase` in that refund, so a cancelled purchase in the same sale is not counted.
+
+Basis: lead decision (2) for round 2. The installed `documentation/` and vanilla `common/on_actions` have no decision-taken hook, and a political power snapshot would also count law and advisor spending that D6 already credits to their own families. A source scan of the scripted effects each decision calls, including transaction-based credit, confirms that none of the 272 decisions credits another family.
+No availability, cost, or AI weight changes.
+
+Disposition: implemented (source). The in-game credit check is `needs_live_game`.

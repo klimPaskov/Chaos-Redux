@@ -13,7 +13,8 @@
 # convoys,army_xp,command_power,stability,war_support}.
 # Decision callers pass the Black Friday sale price table values, so a sale
 # purchase credits one achievement family: equipment first, then trains,
-# convoys, manpower, army experience, command power, stability, war support.
+# convoys, manpower, army experience, command power, stability, war support,
+# and political power when the decision paid no material cost.
 utopia_manifesto_pay_prepared_decision_cost = {
 	set_temp_variable = { black_friday_purchase_family_id = constant:utopia_manifesto_decision_value.none }
 	set_temp_variable = { black_friday_purchase_non_political = constant:utopia_manifesto_decision_value.none }
@@ -134,6 +135,12 @@ utopia_manifesto_pay_prepared_decision_cost = {
 	set_temp_variable = { utopia_manifesto_cost_command_power = constant:utopia_manifesto_decision_value.none }
 	set_temp_variable = { utopia_manifesto_cost_stability = constant:utopia_manifesto_decision_value.none }
 	set_temp_variable = { utopia_manifesto_cost_war_support = constant:utopia_manifesto_decision_value.none }
+	# Every caller is a decision that also pays a political power table price,
+	# so a purchase without a material component credits Political Power.
+	if = {
+		limit = { check_variable = { black_friday_purchase_family_id = constant:utopia_manifesto_decision_value.none } }
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.political_power }
+	}
 	black_friday_credit_sale_purchase = yes
 }
 
