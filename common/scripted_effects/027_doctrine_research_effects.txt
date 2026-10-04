@@ -2938,6 +2938,20 @@ doctrine_research_reconcile_country_lifecycle = {
 	}
 }
 
+# Country scope. Scores each domain that has a valid action. Every term reads
+# capability that belongs to that domain, so war, production, geography, and
+# alliance pressure separate Army, Navy, Air, Special Forces, and Chaos Warfare
+# instead of raising them all equally:
+# - the industry focus term goes to Navy when dockyards are a large share of
+#   war industry, and to Army otherwise;
+# - Army takes the war and geography terms for a land front, while Navy takes
+#   the war term only for a war without one and the geography term only for a
+#   coastal capital;
+# - Special Forces readiness, war, production, and alliance terms require
+#   templates that field Special Forces battalions.
+# Navy without a coast, dockyards, ships, convoys, or naval doctrine scores
+# zero. When no capability-weighted domain scores at all, every valid domain
+# falls back to the base weight so the choice is never wasted.
 doctrine_research_ai_score_domains = {
 	set_temp_variable = { doctrine_research_ai_saved_domain = doctrine_research_selected_domain }
 	set_temp_variable = { doctrine_research_ai_saved_grand = doctrine_research_selected_grand_doctrine }
@@ -2948,6 +2962,16 @@ doctrine_research_ai_score_domains = {
 	set_temp_variable = { doctrine_research_ai_score_air = 0 }
 	set_temp_variable = { doctrine_research_ai_score_special_forces = 0 }
 	set_temp_variable = { doctrine_research_ai_score_chaos_warfare = 0 }
+	set_temp_variable = { doctrine_research_ai_naval_industry_share = num_of_naval_factories }
+	multiply_temp_variable = { doctrine_research_ai_naval_industry_share = constant:doctrine_research_ai_ratio.naval_industry }
+	set_temp_variable = { doctrine_research_ai_naval_industry_led = 0 }
+	if = {
+		limit = {
+			num_of_naval_factories > 0
+			check_variable = { var = doctrine_research_ai_naval_industry_share value = num_of_military_factories compare = greater_than_or_equals }
+		}
+		set_temp_variable = { doctrine_research_ai_naval_industry_led = 1 }
+	}
 	if = { limit = { doctrine_research_army_has_valid_action = yes }
 		set_variable = { doctrine_research_selected_domain = constant:doctrine_research_domain.army }
 		set_temp_variable = { doctrine_research_ai_domain_completion_found = 0 }
@@ -2956,23 +2980,25 @@ doctrine_research_ai_score_domains = {
 		if = { limit = { num_divisions > 0 } add_to_temp_variable = { doctrine_research_ai_score_army = constant:doctrine_research_ai_weight.forces } }
 		if = { limit = { OR = { has_template_containing_unit = infantry has_template_containing_unit = motorized has_template_containing_unit = light_armor has_template_containing_unit = medium_armor has_template_containing_unit = heavy_armor } } add_to_temp_variable = { doctrine_research_ai_score_army = constant:doctrine_research_ai_weight.forces } }
 		if = { limit = { num_of_military_factories > 0 } add_to_temp_variable = { doctrine_research_ai_score_army = constant:doctrine_research_ai_weight.production } }
-		if = { limit = { has_war = yes } add_to_temp_variable = { doctrine_research_ai_score_army = constant:doctrine_research_ai_weight.war } }
-		if = { limit = { any_controlled_state = { is_coastal = yes } } add_to_temp_variable = { doctrine_research_ai_score_army = constant:doctrine_research_ai_weight.geography } }
-		if = { limit = { is_in_faction = yes } add_to_temp_variable = { doctrine_research_ai_score_army = constant:doctrine_research_ai_weight.theater } }
+		if = { limit = { num_of_military_factories > 0 check_variable = { doctrine_research_ai_naval_industry_led < 1 } } add_to_temp_variable = { doctrine_research_ai_score_army = constant:doctrine_research_ai_weight.industry_focus } }
+		if = { limit = { has_war = yes num_divisions > 0 } add_to_temp_variable = { doctrine_research_ai_score_army = constant:doctrine_research_ai_weight.war } }
+		if = { limit = { doctrine_research_ai_has_land_front = yes } add_to_temp_variable = { doctrine_research_ai_score_army = constant:doctrine_research_ai_weight.geography } }
+		if = { limit = { is_in_faction = yes num_divisions > 0 } add_to_temp_variable = { doctrine_research_ai_score_army = constant:doctrine_research_ai_weight.theater } }
 		if = { limit = { check_variable = { doctrine_research_ai_domain_completion_found > 0 } } add_to_temp_variable = { doctrine_research_ai_score_army = constant:doctrine_research_ai_weight.completion } }
 		if = { limit = { doctrine_research_ai_has_army_strategy_signal = yes } add_to_temp_variable = { doctrine_research_ai_score_army = constant:doctrine_research_ai_weight.strategy } }
 		add_to_temp_variable = { doctrine_research_ai_score_army = constant:doctrine_research_ai_weight.owner_readiness }
 	}
-	if = { limit = { doctrine_research_navy_has_valid_action = yes }
+	if = { limit = { doctrine_research_navy_has_valid_action = yes doctrine_research_ai_has_naval_capability = yes }
 		set_variable = { doctrine_research_selected_domain = constant:doctrine_research_domain.navy }
 		set_temp_variable = { doctrine_research_ai_domain_completion_found = 0 }
 		doctrine_research_ai_check_domain_completion = yes
 		add_to_temp_variable = { doctrine_research_ai_score_navy = constant:doctrine_research_ai_weight.base }
-		if = { limit = { OR = { has_navy_size = { unit = submarine size > 0 } has_navy_size = { unit = destroyer size > 0 } OR = { has_navy_size = { unit = light_cruiser size > 0 } has_navy_size = { unit = heavy_cruiser size > 0 } } has_navy_size = { unit = battleship size > 0 } has_navy_size = { unit = carrier size > 0 } } } add_to_temp_variable = { doctrine_research_ai_score_navy = constant:doctrine_research_ai_weight.forces } }
+		if = { limit = { doctrine_research_ai_has_warships = yes } add_to_temp_variable = { doctrine_research_ai_score_navy = constant:doctrine_research_ai_weight.forces } }
 		if = { limit = { num_of_naval_factories > 0 } add_to_temp_variable = { doctrine_research_ai_score_navy = constant:doctrine_research_ai_weight.production } }
-		if = { limit = { has_war = yes } add_to_temp_variable = { doctrine_research_ai_score_navy = constant:doctrine_research_ai_weight.war } }
-		if = { limit = { any_controlled_state = { is_coastal = yes } } add_to_temp_variable = { doctrine_research_ai_score_navy = constant:doctrine_research_ai_weight.geography } }
-		if = { limit = { is_in_faction = yes } add_to_temp_variable = { doctrine_research_ai_score_navy = constant:doctrine_research_ai_weight.theater } }
+		if = { limit = { check_variable = { doctrine_research_ai_naval_industry_led > 0 } } add_to_temp_variable = { doctrine_research_ai_score_navy = constant:doctrine_research_ai_weight.industry_focus } }
+		if = { limit = { has_war = yes doctrine_research_ai_has_warships = yes NOT = { doctrine_research_ai_has_land_front = yes } } add_to_temp_variable = { doctrine_research_ai_score_navy = constant:doctrine_research_ai_weight.war } }
+		if = { limit = { capital_scope = { is_coastal = yes } } add_to_temp_variable = { doctrine_research_ai_score_navy = constant:doctrine_research_ai_weight.geography } }
+		if = { limit = { is_in_faction = yes doctrine_research_ai_has_warships = yes } add_to_temp_variable = { doctrine_research_ai_score_navy = constant:doctrine_research_ai_weight.theater } }
 		if = { limit = { check_variable = { doctrine_research_ai_domain_completion_found > 0 } } add_to_temp_variable = { doctrine_research_ai_score_navy = constant:doctrine_research_ai_weight.completion } }
 		if = { limit = { doctrine_research_ai_has_navy_strategy_signal = yes } add_to_temp_variable = { doctrine_research_ai_score_navy = constant:doctrine_research_ai_weight.strategy } }
 		if = { limit = { doctrine_research_ai_navy_owner_system_ready = yes } add_to_temp_variable = { doctrine_research_ai_score_navy = constant:doctrine_research_ai_weight.owner_readiness } }
@@ -2982,11 +3008,10 @@ doctrine_research_ai_score_domains = {
 		set_temp_variable = { doctrine_research_ai_domain_completion_found = 0 }
 		doctrine_research_ai_check_domain_completion = yes
 		add_to_temp_variable = { doctrine_research_ai_score_air = constant:doctrine_research_ai_weight.base }
-		if = { limit = { OR = { has_deployed_air_force_size = { type = fighter size > 0 } has_deployed_air_force_size = { type = cas size > 0 } has_deployed_air_force_size = { type = naval_bomber size > 0 } has_deployed_air_force_size = { type = tactical_bomber size > 0 } has_deployed_air_force_size = { type = strategic_bomber size > 0 } } } add_to_temp_variable = { doctrine_research_ai_score_air = constant:doctrine_research_ai_weight.forces } }
+		if = { limit = { doctrine_research_ai_has_air_wings = yes } add_to_temp_variable = { doctrine_research_ai_score_air = constant:doctrine_research_ai_weight.forces } }
 		if = { limit = { num_of_military_factories > 0 } add_to_temp_variable = { doctrine_research_ai_score_air = constant:doctrine_research_ai_weight.production } }
-		if = { limit = { has_war = yes } add_to_temp_variable = { doctrine_research_ai_score_air = constant:doctrine_research_ai_weight.war } }
-		if = { limit = { any_controlled_state = { is_coastal = yes } } add_to_temp_variable = { doctrine_research_ai_score_air = constant:doctrine_research_ai_weight.geography } }
-		if = { limit = { is_in_faction = yes } add_to_temp_variable = { doctrine_research_ai_score_air = constant:doctrine_research_ai_weight.theater } }
+		if = { limit = { has_war = yes doctrine_research_ai_has_air_wings = yes } add_to_temp_variable = { doctrine_research_ai_score_air = constant:doctrine_research_ai_weight.war } }
+		if = { limit = { is_in_faction = yes doctrine_research_ai_has_air_wings = yes } add_to_temp_variable = { doctrine_research_ai_score_air = constant:doctrine_research_ai_weight.theater } }
 		if = { limit = { check_variable = { doctrine_research_ai_domain_completion_found > 0 } } add_to_temp_variable = { doctrine_research_ai_score_air = constant:doctrine_research_ai_weight.completion } }
 		if = { limit = { doctrine_research_ai_has_air_strategy_signal = yes } add_to_temp_variable = { doctrine_research_ai_score_air = constant:doctrine_research_ai_weight.strategy } }
 		if = { limit = { doctrine_research_ai_air_owner_system_ready = yes } add_to_temp_variable = { doctrine_research_ai_score_air = constant:doctrine_research_ai_weight.owner_readiness } }
@@ -2996,14 +3021,14 @@ doctrine_research_ai_score_domains = {
 		set_temp_variable = { doctrine_research_ai_domain_completion_found = 0 }
 		doctrine_research_ai_check_domain_completion = yes
 		add_to_temp_variable = { doctrine_research_ai_score_special_forces = constant:doctrine_research_ai_weight.base }
-		if = { limit = { OR = { has_template_containing_unit = mountaineers has_template_containing_unit = marine has_template_containing_unit = paratrooper has_template_containing_unit = ranger_battalion } } add_to_temp_variable = { doctrine_research_ai_score_special_forces = constant:doctrine_research_ai_weight.forces } }
-		if = { limit = { num_of_military_factories > 0 } add_to_temp_variable = { doctrine_research_ai_score_special_forces = constant:doctrine_research_ai_weight.production } }
-		if = { limit = { has_war = yes } add_to_temp_variable = { doctrine_research_ai_score_special_forces = constant:doctrine_research_ai_weight.war } }
+		if = { limit = { doctrine_research_ai_special_forces_ready = yes } add_to_temp_variable = { doctrine_research_ai_score_special_forces = constant:doctrine_research_ai_weight.forces } }
+		if = { limit = { num_of_military_factories > 0 doctrine_research_ai_special_forces_ready = yes } add_to_temp_variable = { doctrine_research_ai_score_special_forces = constant:doctrine_research_ai_weight.production } }
+		if = { limit = { has_war = yes doctrine_research_ai_special_forces_ready = yes } add_to_temp_variable = { doctrine_research_ai_score_special_forces = constant:doctrine_research_ai_weight.war } }
 		if = { limit = { OR = { any_controlled_state = { is_coastal = yes } doctrine_research_controls_state_with_mountain = yes } } add_to_temp_variable = { doctrine_research_ai_score_special_forces = constant:doctrine_research_ai_weight.geography } }
-		if = { limit = { is_in_faction = yes } add_to_temp_variable = { doctrine_research_ai_score_special_forces = constant:doctrine_research_ai_weight.theater } }
+		if = { limit = { is_in_faction = yes doctrine_research_ai_special_forces_ready = yes } add_to_temp_variable = { doctrine_research_ai_score_special_forces = constant:doctrine_research_ai_weight.theater } }
 		if = { limit = { check_variable = { doctrine_research_ai_domain_completion_found > 0 } } add_to_temp_variable = { doctrine_research_ai_score_special_forces = constant:doctrine_research_ai_weight.completion } }
 		if = { limit = { doctrine_research_ai_has_special_forces_strategy_signal = yes } add_to_temp_variable = { doctrine_research_ai_score_special_forces = constant:doctrine_research_ai_weight.strategy } }
-		add_to_temp_variable = { doctrine_research_ai_score_special_forces = constant:doctrine_research_ai_weight.owner_readiness }
+		if = { limit = { doctrine_research_ai_special_forces_ready = yes } add_to_temp_variable = { doctrine_research_ai_score_special_forces = constant:doctrine_research_ai_weight.owner_readiness } }
 	}
 	if = { limit = { doctrine_research_chaos_warfare_has_valid_action = yes }
 		set_variable = { doctrine_research_selected_domain = constant:doctrine_research_domain.chaos_warfare }
@@ -3011,13 +3036,28 @@ doctrine_research_ai_score_domains = {
 		doctrine_research_ai_check_domain_completion = yes
 		add_to_temp_variable = { doctrine_research_ai_score_chaos_warfare = constant:doctrine_research_ai_weight.base }
 		if = { limit = { num_divisions > 0 } add_to_temp_variable = { doctrine_research_ai_score_chaos_warfare = constant:doctrine_research_ai_weight.forces } }
-		if = { limit = { num_of_military_factories > 0 } add_to_temp_variable = { doctrine_research_ai_score_chaos_warfare = constant:doctrine_research_ai_weight.production } }
-		if = { limit = { has_war = yes } add_to_temp_variable = { doctrine_research_ai_score_chaos_warfare = constant:doctrine_research_ai_weight.war } }
+		if = { limit = { num_of_military_factories > 0 cbrn_chaos_warfare_ai_has_viable_program = yes } add_to_temp_variable = { doctrine_research_ai_score_chaos_warfare = constant:doctrine_research_ai_weight.production } }
+		if = { limit = { has_war = yes num_divisions > 0 } add_to_temp_variable = { doctrine_research_ai_score_chaos_warfare = constant:doctrine_research_ai_weight.war } }
 		if = { limit = { OR = { doctrine_research_controls_state_with_plains = yes doctrine_research_controls_state_with_mountain = yes } } add_to_temp_variable = { doctrine_research_ai_score_chaos_warfare = constant:doctrine_research_ai_weight.geography } }
-		if = { limit = { is_in_faction = yes } add_to_temp_variable = { doctrine_research_ai_score_chaos_warfare = constant:doctrine_research_ai_weight.theater } }
+		if = { limit = { doctrine_research_ai_has_land_front = yes } add_to_temp_variable = { doctrine_research_ai_score_chaos_warfare = constant:doctrine_research_ai_weight.theater } }
 		if = { limit = { check_variable = { doctrine_research_ai_domain_completion_found > 0 } } add_to_temp_variable = { doctrine_research_ai_score_chaos_warfare = constant:doctrine_research_ai_weight.completion } }
 		if = { limit = { doctrine_research_ai_has_chaos_warfare_strategy_signal = yes } add_to_temp_variable = { doctrine_research_ai_score_chaos_warfare = constant:doctrine_research_ai_weight.strategy } }
 		if = { limit = { cbrn_chaos_warfare_ai_has_viable_program = yes } add_to_temp_variable = { doctrine_research_ai_score_chaos_warfare = constant:doctrine_research_ai_weight.owner_readiness } }
+	}
+	# Minimal fallback: when every capability-weighted score is zero, each
+	# domain with a valid action receives the base weight.
+	set_temp_variable = { doctrine_research_ai_score_total = doctrine_research_ai_score_army }
+	add_to_temp_variable = { doctrine_research_ai_score_total = doctrine_research_ai_score_navy }
+	add_to_temp_variable = { doctrine_research_ai_score_total = doctrine_research_ai_score_air }
+	add_to_temp_variable = { doctrine_research_ai_score_total = doctrine_research_ai_score_special_forces }
+	add_to_temp_variable = { doctrine_research_ai_score_total = doctrine_research_ai_score_chaos_warfare }
+	if = {
+		limit = { check_variable = { doctrine_research_ai_score_total < 1 } }
+		if = { limit = { doctrine_research_army_has_valid_action = yes } set_temp_variable = { doctrine_research_ai_score_army = constant:doctrine_research_ai_weight.base } }
+		if = { limit = { doctrine_research_navy_has_valid_action = yes } set_temp_variable = { doctrine_research_ai_score_navy = constant:doctrine_research_ai_weight.base } }
+		if = { limit = { doctrine_research_air_has_valid_action = yes } set_temp_variable = { doctrine_research_ai_score_air = constant:doctrine_research_ai_weight.base } }
+		if = { limit = { doctrine_research_special_forces_has_valid_action = yes } set_temp_variable = { doctrine_research_ai_score_special_forces = constant:doctrine_research_ai_weight.base } }
+		if = { limit = { doctrine_research_chaos_warfare_has_valid_action = yes } set_temp_variable = { doctrine_research_ai_score_chaos_warfare = constant:doctrine_research_ai_weight.base } }
 	}
 	set_variable = { doctrine_research_selected_domain = doctrine_research_ai_saved_domain }
 	set_variable = { doctrine_research_selected_grand_doctrine = doctrine_research_ai_saved_grand }

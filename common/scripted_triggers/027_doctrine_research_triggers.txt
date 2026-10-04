@@ -110,6 +110,52 @@ doctrine_research_ai_navy_owner_system_ready = {
 	}
 }
 
+# Navy is weighted only for a country that can use a fleet now or has a
+# visible naval plan: a coast, dockyards, ships, convoys, or naval doctrine.
+doctrine_research_ai_has_naval_capability = {
+	OR = {
+		doctrine_research_ai_navy_owner_system_ready = yes
+		doctrine_research_ai_has_navy_strategy_signal = yes
+	}
+}
+
+doctrine_research_ai_has_warships = {
+	OR = {
+		has_navy_size = { unit = submarine size > 0 }
+		has_navy_size = { unit = destroyer size > 0 }
+		has_navy_size = { unit = light_cruiser size > 0 }
+		has_navy_size = { unit = heavy_cruiser size > 0 }
+		has_navy_size = { unit = battleship size > 0 }
+		has_navy_size = { unit = carrier size > 0 }
+	}
+}
+
+doctrine_research_ai_has_air_wings = {
+	OR = {
+		has_deployed_air_force_size = { type = fighter size > 0 }
+		has_deployed_air_force_size = { type = cas size > 0 }
+		has_deployed_air_force_size = { type = naval_bomber size > 0 }
+		has_deployed_air_force_size = { type = tactical_bomber size > 0 }
+		has_deployed_air_force_size = { type = strategic_bomber size > 0 }
+	}
+}
+
+# Special Forces readiness requires templates that actually field them.
+doctrine_research_ai_special_forces_ready = {
+	OR = {
+		has_template_containing_unit = mountaineers
+		has_template_containing_unit = marine
+		has_template_containing_unit = marine_commando
+		has_template_containing_unit = paratrooper
+		has_template_containing_unit = ranger_battalion
+	}
+}
+
+# A land front with an enemy neighbour makes Army doctrine immediately useful.
+doctrine_research_ai_has_land_front = {
+	any_neighbor_country = { has_war_with = PREV }
+}
+
 doctrine_research_ai_air_owner_system_ready = {
 	OR = {
 		has_deployed_air_force_size = { type = fighter size > 0 }
