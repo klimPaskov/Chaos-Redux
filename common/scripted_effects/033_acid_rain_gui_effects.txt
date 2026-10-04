@@ -47,6 +47,27 @@ acid_rain_gui_close_event_details_view = {
 	clear_variable = acid_rain_gui_view_generation
 }
 
+# COUNTRY SCOPE. Closes the world map and opens the Event Log on the Event 33
+# Event Details page through the shared Event Log entry points. Presentation
+# only: no weather, timer or gameplay value changes.
+acid_rain_gui_open_event_log_details = {
+	acid_rain_gui_close_event_details_view = yes
+	if = {
+		limit = {
+			exists = yes
+			is_ai = no
+		}
+		open_events_log_events_tab = yes
+		set_variable = { events_log_selected_event_id = constant:acid_rain_event.id }
+		set_temp_variable = { event_id = events_log_selected_event_id }
+		set_temp_variable = { event_type = constant:event_system_event_type.unknown }
+		get_event_type = yes
+		set_variable = { events_log_selected_event_type = event_type }
+		events_log_add_event_details_entry = yes
+		clr_country_flag = events_log_evolution_details_open
+	}
+}
+
 # COUNTRY SCOPE. A presentation preference only; absent flag means motion on.
 # Keep the preference across close/reopen and episode generations.
 acid_rain_gui_toggle_motion = {

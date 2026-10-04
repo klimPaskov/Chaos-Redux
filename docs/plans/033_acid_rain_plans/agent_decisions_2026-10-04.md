@@ -138,3 +138,10 @@ The warning veil keeps the defringed v6 art (no saturated red or yellow edge pix
 `GFX_acid_rain_global_veil` is registered but no window element displays it, because the global layer uses the animated sheet and its still frame; its file is left unchanged and has no in-game effect.
 Render evidence: `hoi4.gui_render` scenario `event033_global_phase_v3_isolated_1366` (1366x768, UI scale 1, source revision `d2ebe7b4077590277`), with only the global-phase layers shown, displays the sparse banks over a readable map with the three superstorm markers legible on top; 1920x1080 remains refused by the route's aggregate pixel budget.
 The working package (sources, processed frames, sheet PNG, review-only GIF, contact sheet, lineage and `animation_manifest_v3.json`) is under `docs/assets/033_acid_rain/icon_artist/animations/acid_rain_gui/global_repair_v3/`, which is not tracked in Git; the facts above are the durable record.
+
+### D18. World window footer navigation
+
+Disposition: implemented (commit "Add Back and Details to the Acid Rain world map footer").
+HOI4 script cannot open the decisions panel, so the Part 6 category return is a Back button that closes the map and reveals the view it was opened from: the Acid Rain decision category, or Event Details when the map was opened there; its tooltip names that view.
+Details closes the map and opens the Event Log on the Event 33 Event Details page through the shared entry points (`open_events_log_events_tab`, `get_event_type`, `events_log_add_event_details_entry`); it is hidden when the map was opened from Event Details, where Back already returns there.
+Footer order is Refresh, Back, Details, the shortened hint, and the motion toggle; `hoi4.gui_render` scenario `event033_footer_nav_1366` (1366x768, UI scale 1, normal and hover, source revision `e5defa54f5953522`) shows the four buttons evenly spaced with separate click regions and the hint unclipped.

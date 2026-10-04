@@ -3,9 +3,10 @@
 # ============================================================================
 # The stable category attachment owns a compact native opener. The dedicated
 # world window uses player_context and a country-owned, generation-bound gate.
-# Clicks open, close, refresh or switch motion presentation only. Display entries read
-# presentation variables and never mutate fronts, states, counters, costs,
-# targets, deaths, contamination, timers, or global gameplay state.
+# Clicks open, close, refresh, switch motion presentation or move to the
+# Event Details page only. Display entries read presentation variables and
+# never mutate fronts, states, counters, costs, targets, deaths,
+# contamination, timers, or global gameplay state.
 # ============================================================================
 
 scripted_gui = {
@@ -57,6 +58,8 @@ scripted_gui = {
 			}
 			acid_rain_world_close_click = { acid_rain_gui_close_event_details_view = yes }
 			acid_rain_world_motion_click = { acid_rain_gui_toggle_motion = yes }
+			acid_rain_world_back_click = { acid_rain_gui_close_event_details_view = yes }
+			acid_rain_world_details_click = { acid_rain_gui_open_event_log_details = yes }
 		}
 
 		triggers = {
@@ -65,6 +68,9 @@ scripted_gui = {
 				check_variable = { var = acid_rain_gui_view_generation value = global.acid_rain_generation_id compare = equals }
 			}
 			acid_rain_world_close_click_enabled = { always = yes }
+			acid_rain_world_back_click_enabled = { always = yes }
+			acid_rain_world_details_visible = { NOT = { has_country_flag = acid_rain_event_details_gui_open } }
+			acid_rain_world_details_click_enabled = { always = yes }
 			acid_rain_world_motion_click_enabled = {
 				has_country_flag = acid_rain_gui_window_open
 				check_variable = { global.acid_rain_generation_id > constant:acid_rain_runtime.zero }
