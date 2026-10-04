@@ -196,7 +196,7 @@ Disposition: `implemented`.
 ### Remaining risks recorded, not changed
 
 - The router's Evolution IV first-use candidate (`sov_nuclear_bombs_event_ai_has_first_use_candidate`) does not test bomber reach, while the selector gives unreachable states zero AI weight. If every candidate state lies outside the delivery ceiling, the AI holds the retaliation board without marking a target until the emergency ends. Disposition: `implemented` by R8 in the third pass below.
-- The AI reaches certified delivery crews only with ten deployed strategic bombers (D2). No Event 23 AI strategy raises Soviet strategic bomber production; the vanilla default ratio applies. Part 5 allows ("may") such a production shift. Disposition: `unresolved`; a bounded `ai_strategy` would need its own probability baseline once the MCP route works.
+- The AI reaches certified delivery crews only with ten deployed strategic bombers (D2). No Event 23 AI strategy raises Soviet strategic bomber production; the vanilla default ratio applies. Part 5 allows ("may") such a production shift. Disposition: `implemented` by R2-8 in Round 2 (the vanilla Soviet plan in fact sets a strategic bomber weight of 0 and the default plan excludes SOV).
 - A refunded vanilla raid leaves its booked device in the expended bucket while the native stockpile holds a surplus (D3 tolerance); it does not count as combat use or affect the achievements. Disposition: `accepted` under D3.
 
 ## Round 1 review, third pass (skeptical reviewer, 2026-10-05)
@@ -334,3 +334,10 @@ Before state: the vanilla values above with no Event 23 plan; no other country i
 Probability: one narrow `hoi4_probability_inspect` call (`ai_strategy_factor`, `source.path = common/ai_strategy/023_sov_nuclear_bombs_ai_strategy.txt`, `candidatePool` with the plan id before its rename to `sov_nuclear_bombs_ai_delivery_bombers`, no refresh) returned `INTERNAL_ERROR` with `artifactCount = 0`; it was not retried.
 Basis: D2, Part 5's allowance for a production shift, the lead's round 2 decision 5, and the vanilla precedents `SOV_bomber_production` and `SOV_unit_production`.
 Disposition: `implemented`; actual production and deployment behaviour `needs_live_game`; MCP compare `blocked` (R2-10).
+
+### R2-9. Readiness and integrity changes read tuning constants
+
+Finding: 23 `add_to_variable` lines in `common/scripted_effects/023_sov_nuclear_bombs_event_effects.txt` (audit, hardening, centralization, delegation, authentication, evacuation, test-failure investigation, technical certification, safety-veto overrule, held authorization, limited retaliation, reserve preservation, suspended release orders, sealed reserve, invited observers and arsenal reactivation) added literal readiness or integrity values, against CLAUDE.md 1.3.
+Every one already had a matching, unused key in `sov_nuclear_bombs_tuning` with the same value (`audit_integrity`, `harden_integrity`/`harden_readiness`, `centralize_*`, `delegate_*`, `authentication_*`, `evacuation_integrity`, `investigate_*`, `technical_*`, `veto_*`, `hold_integrity`, `limit_retaliation_readiness`, `reserve_integrity`, `suspend_readiness`, `seal_integrity`, `observers_integrity`, `reactivate_readiness`).
+Decision: each line reads its key; negative deltas are negative constant values added, never a unary minus on a token. A script mapped each line by its enclosing effect and asserted the key's value equals the literal it replaced, so no gameplay value changes; the clamps are untouched, and a grep for a literal readiness or integrity delta in the Event 23 effects returns nothing.
+Disposition: `implemented`.
