@@ -163,3 +163,11 @@ If no state qualifies, or the engine refuses the move, the capital stays at the 
 The failure flags are consumed after the preparedness aftermath, and the impact report and Event Details state the outcome.
 Basis: Part 2 fixes the coordinates and says peace, annexation and civil war never move the impact; this closes the resume packet's open capital question.
 The proposed `.4` rollback journal and publication-order changes are rejected as unneeded machinery: validity is checked before the physical phase, and the reentry guards already stop a duplicate resolution.
+
+## Main crater clearance
+
+Decision: after the measured building receipt, the main centre alone zeroes every province naval base, land fort and coastal fort with `set_building_level` over all provinces, and wrecks its remaining supply hubs and railways with `damage_building` and a full negative repair-speed modifier, mirroring `death_strip_current_state_buildings` in Event 010.
+Only levels that actually disappear are added once to the logistics (naval bases, supply hubs, railways) or strategic (forts) receipts.
+Ring and fragment profiles keep their fractional state-aggregate removal.
+New and queued construction in the crater stops through the existing wasteland category and the `asteroid_incoming_main_crater` modifier (no building slots and minus 100 percent construction speed), so no separate construction purge is added.
+Whether province buildings, wrecked railways and queued projects behave this way in the running game remains a live check.

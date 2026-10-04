@@ -13,6 +13,11 @@
 # this file.
 # ============================================================================
 
+# Native damage_building fields take literal values. The main crater wrecks
+# its remaining supply hubs and railways beyond repair, as Event 010 does.
+@asteroid_crater_wreck_damage = 999
+@asteroid_crater_wreck_repair_speed = -1
+
 # ============================================================================
 # TRANSACTION LIFECYCLE AND TARGET LOCK
 # ============================================================================
@@ -579,8 +584,9 @@ asteroid_incoming_prepare_selected_building_loss = {
 # the before/after receipt remains explicit at each supported building call
 # site so actual levels, rather than requested levels, are recorded. Native
 # removal takes a level count directly, avoiding a per-level loop ceiling.
-# Province building coverage requires exact province targeting and remains an
-# explicit native integration gap, not proven by the state aggregate reader.
+# Province buildings need exact province targeting: the main centre clears them
+# in asteroid_incoming_clear_main_crater_province_buildings, while ring states
+# keep this fractional state-aggregate removal.
 asteroid_incoming_remove_selected_building_levels = {
 	if = {
 		limit = {
@@ -1174,6 +1180,74 @@ asteroid_incoming_apply_building_receipt = {
 	asteroid_incoming_apply_selected_strategic_building_receipt = yes
 }
 
+# STATE SCOPE, main centre only, after the measured building receipt.
+# remove_building with state = covers state buildings, so province naval bases,
+# land forts and coastal forts and the rail network can survive it. This pass
+# zeroes every province naval base and fort and wrecks the remaining supply hubs
+# and railways beyond repair, mirroring Event 010. Only levels that actually
+# disappear enter the receipts, once: naval bases, supply hubs and railways as
+# logistics, forts as strategic.
+asteroid_incoming_clear_main_crater_province_buildings = {
+	set_temp_variable = { asteroid_incoming_crater_logistics_before = building_level@naval_base }
+	add_to_temp_variable = { asteroid_incoming_crater_logistics_before = building_level@supply_node }
+	add_to_temp_variable = { asteroid_incoming_crater_logistics_before = building_level@rail_way }
+	set_temp_variable = { asteroid_incoming_crater_strategic_before = building_level@bunker }
+	add_to_temp_variable = { asteroid_incoming_crater_strategic_before = building_level@coastal_bunker }
+	set_building_level = {
+		type = naval_base
+		level = 0
+		province = {
+			all_provinces = yes
+			level > 0
+		}
+	}
+	set_building_level = {
+		type = bunker
+		level = 0
+		province = {
+			all_provinces = yes
+			level > 0
+		}
+	}
+	set_building_level = {
+		type = coastal_bunker
+		level = 0
+		province = {
+			all_provinces = yes
+			level > 0
+		}
+	}
+	if = {
+		limit = { supply_node > constant:asteroid_incoming_runtime.zero }
+		damage_building = { type = supply_node damage = @asteroid_crater_wreck_damage repair_speed_modifier = @asteroid_crater_wreck_repair_speed }
+	}
+	if = {
+		limit = { rail_way > constant:asteroid_incoming_runtime.zero }
+		damage_building = { type = rail_way damage = @asteroid_crater_wreck_damage repair_speed_modifier = @asteroid_crater_wreck_repair_speed }
+	}
+	set_temp_variable = { asteroid_incoming_crater_logistics_lost = asteroid_incoming_crater_logistics_before }
+	subtract_from_temp_variable = { asteroid_incoming_crater_logistics_lost = building_level@naval_base }
+	subtract_from_temp_variable = { asteroid_incoming_crater_logistics_lost = building_level@supply_node }
+	subtract_from_temp_variable = { asteroid_incoming_crater_logistics_lost = building_level@rail_way }
+	clamp_temp_variable = {
+		var = asteroid_incoming_crater_logistics_lost
+		min = constant:asteroid_incoming_dust.minimum
+		max = asteroid_incoming_crater_logistics_before
+	}
+	set_temp_variable = { asteroid_incoming_crater_strategic_lost = asteroid_incoming_crater_strategic_before }
+	subtract_from_temp_variable = { asteroid_incoming_crater_strategic_lost = building_level@bunker }
+	subtract_from_temp_variable = { asteroid_incoming_crater_strategic_lost = building_level@coastal_bunker }
+	clamp_temp_variable = {
+		var = asteroid_incoming_crater_strategic_lost
+		min = constant:asteroid_incoming_dust.minimum
+		max = asteroid_incoming_crater_strategic_before
+	}
+	add_to_variable = { asteroid_incoming_state_logistics_levels_lost = asteroid_incoming_crater_logistics_lost }
+	add_to_variable = { asteroid_incoming_state_strategic_levels_lost = asteroid_incoming_crater_strategic_lost }
+	add_to_variable = { asteroid_incoming_state_building_levels_lost = asteroid_incoming_crater_logistics_lost }
+	add_to_variable = { asteroid_incoming_state_building_levels_lost = asteroid_incoming_crater_strategic_lost }
+}
+
 # STATE SCOPE. Applies one deduplicated profile. Optional parent-owned state
 # variables asteroid_incoming_state_capital_relocated and
 # asteroid_incoming_state_rescue_burden are preserved for the later country
@@ -1205,6 +1279,7 @@ asteroid_incoming_apply_state_transaction = {
 					compare = equals
 				}
 			}
+			asteroid_incoming_clear_main_crater_province_buildings = yes
 			set_state_flag = asteroid_incoming_main_crater
 			set_state_flag = asteroid_incoming_mineral_site
 			set_global_flag = asteroid_incoming_main_crater_registered
