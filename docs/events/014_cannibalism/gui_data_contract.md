@@ -76,9 +76,40 @@ The raid card reads the March Host's own receipt (`cannibalism_march_raid_target
 A receipt from an earlier actor generation of the same tag is not shown, and a controller whose actor generation changed since the strike is shown as a Host that no longer exists.
 Without a receipt the card says no raid was committed.
 
+## Revealed command window
+
+`cannibalism_revealed_command_window` has three pages: Overview, Loyalty and Targets.
+The pages are the presentation-only country flags `cannibalism_revealed_gui_loyalty_view` and `cannibalism_revealed_gui_targets_view`; Overview is open when neither is set, and `cannibalism_gui_clear_command_view` clears both on an incarnation reset.
+Overview keeps the global Larder, Network Reach, the integration count, the unification seal and, once eligible, the terminal mobilization line.
+The seal and the terminal line are shown on Overview only, so the list pages never sit under them.
+
+### Integrated warlord history
+
+The revealed host keeps nine aligned arrays: `cannibalism_integrated_history_generation`, `_slot`, `_name`, `_origin`, `_region`, `_personality`, `_origin_state`, `_disposition` and `_date`.
+`cannibalism_record_integrated_warlord_slot` appends one row per integrated actor generation, after `cannibalism_capture_current_integration_history_identity` reads the donor's generation and origin state in the donor's scope.
+The three writers are the unification host's own record, each absorbed warlord, and the primary Wendigo donor; a generation already in the history is not appended again.
+`cannibalism_ui_load_integrated_history_row` reads the row at the native list index `cannibalism_loyalty_index` only while all nine arrays have the same length, and a misaligned history shows "Record unavailable" instead of another row's values.
+Each row shows the warlord portrait, name, origin route, disposition and joining date, and the tooltip names the state where the warlord rose when it is known.
+`cannibalism_clear_integrated_history_and_targets` clears the history and the targets on an incarnation reset.
+
+### Surviving warlords
+
+Opening the Loyalty page runs `cannibalism_gui_rebuild_revealed_loyalty_view`, which fills `cannibalism_command_gui_warlord_entries` from the bounded `global.cannibalism_actor_countries` registry and stamps each listed warlord with `cannibalism_loyalty_listed_generation`.
+A row is current while the country exists, is still a warlord and has the same actor generation it was listed with; otherwise it reads "no longer stands as a warlord".
+The row shows the warlord's current answer to the revealed host: awaiting absorption, autonomous governor, defiant, challenger, or outside the command.
+
+### Continental targets
+
+`cannibalism_unified_record_continental_target` runs at the end of the six committed continental executors (front collapse, army cell seeding, global campaign, terror ultimatum, border incident and coalition hub strike).
+It inserts the target country, the kind (`cannibalism_continental_target_kind`), the commit date and the target's actor generation at the front of four aligned arrays and trims them to `cannibalism_continental_target_record.rolling_count` (three).
+`cannibalism_ui_load_continental_target_row` reads the row at `cannibalism_continental_index`.
+A target that was an Event 014 actor and whose actor generation changed since the order is shown as a Host that no longer exists, so a recycled tag never inherits an older strike.
+Without a committed operation the page shows one empty card.
+
 ## Icons and assets
 
 The dossier reuses existing sprites only: `GFX_cannibalism_network_country_card`, `GFX_cannibalism_network_state_card`, `GFX_cannibalism_network_target_frame`, `GFX_cannibalism_selected_target_overlay_animated` and its static fallback in `interface/014_cannibalism.gfx`, plus the vanilla `GFX_mini_bg` panel and `GFX_flag_small2`.
+The revealed command window reuses `GFX_cannibalism_continental_target_card` for each target card, the existing `GFX_portrait_<slot>_warlord_<region>` warlord portraits for loyalty rows, and the vanilla `GFX_sort_button_100x29` tab buttons and `GFX_mini_bg` row panels.
 No new icon is required.
 
 ## Future plans

@@ -829,6 +829,63 @@ cannibalism_ui_current_host_has_valid_raid_receipt = {
 	}
 }
 
+# Host COUNTRY scope. The revealed window's Overview page is open when no
+# other page flag is set.
+cannibalism_ui_revealed_overview_page_is_open = {
+	NOT = { has_country_flag = cannibalism_revealed_gui_loyalty_view }
+	NOT = { has_country_flag = cannibalism_revealed_gui_targets_view }
+}
+
+# Host COUNTRY scope. True while the nine integrated history arrays have the
+# same length.
+cannibalism_ui_integrated_history_is_aligned = {
+	check_variable = { var = cannibalism_integrated_history_slot^num value = cannibalism_integrated_history_generation^num compare = equals }
+	check_variable = { var = cannibalism_integrated_history_name^num value = cannibalism_integrated_history_generation^num compare = equals }
+	check_variable = { var = cannibalism_integrated_history_origin^num value = cannibalism_integrated_history_generation^num compare = equals }
+	check_variable = { var = cannibalism_integrated_history_region^num value = cannibalism_integrated_history_generation^num compare = equals }
+	check_variable = { var = cannibalism_integrated_history_personality^num value = cannibalism_integrated_history_generation^num compare = equals }
+	check_variable = { var = cannibalism_integrated_history_origin_state^num value = cannibalism_integrated_history_generation^num compare = equals }
+	check_variable = { var = cannibalism_integrated_history_disposition^num value = cannibalism_integrated_history_generation^num compare = equals }
+	check_variable = { var = cannibalism_integrated_history_date^num value = cannibalism_integrated_history_generation^num compare = equals }
+}
+
+# Host COUNTRY scope inside a history row. Input: the native list index
+# cannibalism_loyalty_index. Copies the aligned row into temporary values
+# for the history getters; it never changes the stored history.
+cannibalism_ui_load_integrated_history_row = {
+	cannibalism_ui_integrated_history_is_aligned = yes
+	check_variable = { cannibalism_loyalty_index < cannibalism_integrated_history_generation^num }
+	set_temp_variable = { cannibalism_ui_history_name = cannibalism_integrated_history_name^cannibalism_loyalty_index }
+	set_temp_variable = { cannibalism_ui_history_origin = cannibalism_integrated_history_origin^cannibalism_loyalty_index }
+	set_temp_variable = { cannibalism_ui_history_origin_state = cannibalism_integrated_history_origin_state^cannibalism_loyalty_index }
+	set_temp_variable = { cannibalism_ui_history_disposition = cannibalism_integrated_history_disposition^cannibalism_loyalty_index }
+	set_temp_variable = { cannibalism_ui_history_date = cannibalism_integrated_history_date^cannibalism_loyalty_index }
+}
+
+# COUNTRY scope of one live warlord row. False once the country died, stopped
+# being a warlord, or registered a new actor generation since it was listed.
+cannibalism_ui_live_warlord_row_is_current = {
+	exists = yes
+	is_cannibalism_warlord_country = yes
+	has_variable = cannibalism_actor_generation
+	has_variable = cannibalism_loyalty_listed_generation
+	check_variable = { var = cannibalism_loyalty_listed_generation value = cannibalism_actor_generation compare = equals }
+}
+
+# Host COUNTRY scope inside a continental target row. Input: the native list
+# index cannibalism_continental_index. Copies the aligned row into temporary
+# values for the target getters.
+cannibalism_ui_load_continental_target_row = {
+	check_variable = { var = cannibalism_continental_target_kind^num value = cannibalism_continental_target_country^num compare = equals }
+	check_variable = { var = cannibalism_continental_target_date^num value = cannibalism_continental_target_country^num compare = equals }
+	check_variable = { var = cannibalism_continental_target_generation^num value = cannibalism_continental_target_country^num compare = equals }
+	check_variable = { cannibalism_continental_index < cannibalism_continental_target_country^num }
+	set_temp_variable = { cannibalism_ui_target_country = cannibalism_continental_target_country^cannibalism_continental_index }
+	set_temp_variable = { cannibalism_ui_target_kind = cannibalism_continental_target_kind^cannibalism_continental_index }
+	set_temp_variable = { cannibalism_ui_target_date = cannibalism_continental_target_date^cannibalism_continental_index }
+	set_temp_variable = { cannibalism_ui_target_generation = cannibalism_continental_target_generation^cannibalism_continental_index }
+}
+
 # STATE or COUNTRY subject scope. True when any dossier record exists.
 cannibalism_ui_current_subject_has_any_record = {
 	OR = {

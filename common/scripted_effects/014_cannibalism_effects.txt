@@ -3414,6 +3414,7 @@ cannibalism_reset_current_country_incarnation_state = {
 	clear_variable = cannibalism_larder_effective_capacity
 	cannibalism_clear_all_current_country_mission_runtime = yes
 	cannibalism_gui_reset_current_viewer = yes
+	cannibalism_clear_integrated_history_and_targets = yes
 	cannibalism_clear_current_policy = yes
 	clr_country_flag = cannibalism_opening_policy_chosen
 	clr_country_flag = cannibalism_evolution_i_report_scheduled
@@ -7252,7 +7253,29 @@ cannibalism_gui_reset_current_viewer = {
 cannibalism_gui_clear_command_view = {
 	clr_country_flag = cannibalism_warlord_gui_states_view
 	clr_country_flag = cannibalism_revealed_gui_loyalty_view
+	clr_country_flag = cannibalism_revealed_gui_targets_view
 	clear_array = cannibalism_command_gui_state_entries
+	clear_array = cannibalism_command_gui_warlord_entries
+}
+
+# Viewer COUNTRY scope (the revealed host). Lists the surviving warlords when
+# the player opens the Loyalty page and marks each one with the actor
+# generation it had at listing time, so a reused tag reads as a new country.
+cannibalism_gui_rebuild_revealed_loyalty_view = {
+	clear_array = cannibalism_command_gui_warlord_entries
+	for_each_scope_loop = {
+		array = global.cannibalism_actor_countries
+		if = {
+			limit = {
+				exists = yes
+				is_cannibalism_warlord_country = yes
+				NOT = { tag = ROOT }
+				has_variable = cannibalism_actor_generation
+			}
+			set_variable = { cannibalism_loyalty_listed_generation = cannibalism_actor_generation }
+			ROOT = { add_to_array = { cannibalism_command_gui_warlord_entries = PREV } }
+		}
+	}
 }
 
 # Viewer COUNTRY scope (the Host). Lists every state the Host controls when
@@ -13058,7 +13081,44 @@ cannibalism_migrate_runtime_references_to_unified_country = {
 # Integrated warlord identity and characters
 # ---------------------------------------------------------------------------
 
+# DONOR COUNTRY scope, called by each integration path immediately before the
+# recipient records the donor. Output temps: cannibalism_integration_donor_generation
+# (0 without an actor generation) and cannibalism_integration_origin_state
+# (0 without a recorded origin state).
+cannibalism_capture_current_integration_history_identity = {
+	set_temp_variable = { cannibalism_integration_donor_generation = 0 }
+	set_temp_variable = { cannibalism_integration_origin_state = 0 }
+	if = {
+		limit = { has_variable = cannibalism_actor_generation }
+		set_temp_variable = { cannibalism_integration_donor_generation = cannibalism_actor_generation }
+	}
+	if = {
+		limit = { has_variable = cannibalism_warlord_origin_state }
+		set_temp_variable = { cannibalism_integration_origin_state = cannibalism_warlord_origin_state }
+	}
+}
+
+# RECIPIENT COUNTRY scope. Records the integrated slot disposition and appends
+# one immutable history row per donor actor generation. The nine history
+# arrays stay aligned: generation, slot, name, origin, region, personality,
+# origin state, disposition, and date. A generation already recorded is not
+# appended again, and rows survive the donor's annexation and slot reuse.
 cannibalism_record_integrated_warlord_slot = {
+	if = {
+		limit = {
+			check_variable = { cannibalism_integration_donor_generation > 0 }
+			NOT = { is_in_array = { array = cannibalism_integrated_history_generation value = cannibalism_integration_donor_generation } }
+		}
+		add_to_array = { array = cannibalism_integrated_history_generation value = cannibalism_integration_donor_generation }
+		add_to_array = { array = cannibalism_integrated_history_slot value = cannibalism_integration_slot_index }
+		add_to_array = { array = cannibalism_integrated_history_name value = cannibalism_integration_name_index }
+		add_to_array = { array = cannibalism_integrated_history_origin value = cannibalism_integration_origin }
+		add_to_array = { array = cannibalism_integrated_history_region value = cannibalism_integration_region }
+		add_to_array = { array = cannibalism_integrated_history_personality value = cannibalism_integration_personality }
+		add_to_array = { array = cannibalism_integrated_history_origin_state value = cannibalism_integration_origin_state }
+		add_to_array = { array = cannibalism_integrated_history_disposition value = cannibalism_integration_disposition }
+		add_to_array = { array = cannibalism_integrated_history_date value = global.date }
+	}
 	if = { limit = { check_variable = { cannibalism_integration_slot_index = constant:cannibalism_slot.cba } } set_country_flag = cannibalism_integrated_warlord_cba set_variable = { cannibalism_integrated_warlord_cba_disposition = cannibalism_integration_disposition } }
 	else_if = { limit = { check_variable = { cannibalism_integration_slot_index = constant:cannibalism_slot.cbb } } set_country_flag = cannibalism_integrated_warlord_cbb set_variable = { cannibalism_integrated_warlord_cbb_disposition = cannibalism_integration_disposition } }
 	else_if = { limit = { check_variable = { cannibalism_integration_slot_index = constant:cannibalism_slot.cbc } } set_country_flag = cannibalism_integrated_warlord_cbc set_variable = { cannibalism_integrated_warlord_cbc_disposition = cannibalism_integration_disposition } }
@@ -13307,6 +13367,7 @@ cannibalism_create_unified_country_from_selected_host = {
 			}
 			# Spread rows are validated before the reveal. After the public flag the
 			# constructor always completes; an unmigrated row is invalidated when due.
+			event_target:cannibalism_unification_host = { cannibalism_capture_current_integration_history_identity = yes }
 			CBL = {
 				cannibalism_apply_initial_larder_inheritance = yes
 				set_variable = { cannibalism_integration_name_index = cannibalism_inherited_warlord_name_index }
@@ -13512,6 +13573,7 @@ cannibalism_absorb_current_warlord_into_unified_host = {
 						set_variable = { cannibalism_integration_personality = cannibalism_inherited_warlord_personality }
 						set_variable = { cannibalism_integration_disposition = cannibalism_requested_warlord_disposition }
 						cannibalism_apply_absorbed_warlord_inheritance_to_unified_host = yes
+						event_target:cannibalism_absorbed_warlord = { cannibalism_capture_current_integration_history_identity = yes }
 						cannibalism_record_integrated_warlord_slot = yes
 						if = {
 							limit = {
@@ -15942,6 +16004,52 @@ cannibalism_unified_execute_silent_anchorage = {
 	cannibalism_unified_record_war_machine_operation = yes
 }
 
+# COUNTRY scope of the acting host, with event target
+# cannibalism_unified_decision_target set to the committed target country.
+# Input: temp cannibalism_continental_new_kind. Keeps the newest committed
+# targeted operations, newest first, up to
+# constant:cannibalism_continental_target_record.rolling_count rows in the
+# aligned target, kind, date and generation arrays.
+cannibalism_unified_record_continental_target = {
+	if = {
+		limit = { has_event_target = cannibalism_unified_decision_target }
+		set_temp_variable = { cannibalism_continental_new_generation = 0 }
+		if = {
+			limit = { event_target:cannibalism_unified_decision_target = { has_variable = cannibalism_actor_generation } }
+			set_temp_variable = { cannibalism_continental_new_generation = event_target:cannibalism_unified_decision_target.cannibalism_actor_generation }
+		}
+		add_to_array = { array = cannibalism_continental_target_country value = event_target:cannibalism_unified_decision_target index = 0 }
+		add_to_array = { array = cannibalism_continental_target_kind value = cannibalism_continental_new_kind index = 0 }
+		add_to_array = { array = cannibalism_continental_target_date value = global.date index = 0 }
+		add_to_array = { array = cannibalism_continental_target_generation value = cannibalism_continental_new_generation index = 0 }
+		while_loop_effect = {
+			limit = { check_variable = { cannibalism_continental_target_country^num > constant:cannibalism_continental_target_record.rolling_count } }
+			remove_from_array = { array = cannibalism_continental_target_country }
+			remove_from_array = { array = cannibalism_continental_target_kind }
+			remove_from_array = { array = cannibalism_continental_target_date }
+			remove_from_array = { array = cannibalism_continental_target_generation }
+		}
+	}
+}
+
+# COUNTRY scope. Clears a host's integrated warlord history and continental
+# target record when its incarnation resets.
+cannibalism_clear_integrated_history_and_targets = {
+	clear_array = cannibalism_integrated_history_generation
+	clear_array = cannibalism_integrated_history_slot
+	clear_array = cannibalism_integrated_history_name
+	clear_array = cannibalism_integrated_history_origin
+	clear_array = cannibalism_integrated_history_region
+	clear_array = cannibalism_integrated_history_personality
+	clear_array = cannibalism_integrated_history_origin_state
+	clear_array = cannibalism_integrated_history_disposition
+	clear_array = cannibalism_integrated_history_date
+	clear_array = cannibalism_continental_target_country
+	clear_array = cannibalism_continental_target_kind
+	clear_array = cannibalism_continental_target_date
+	clear_array = cannibalism_continental_target_generation
+}
+
 cannibalism_unified_execute_enemy_front_collapse = {
 	set_temp_variable = { cannibalism_current_cost = cannibalism_unified_enemy_front_support_cost }
 	cannibalism_pay_current_support_equipment_cost = yes
@@ -15969,6 +16077,8 @@ cannibalism_unified_execute_enemy_front_collapse = {
 	cannibalism_unified_focus_clamp_values = yes
 	cannibalism_unified_record_war_machine_operation = yes
 	cannibalism_unified_focus_refresh_terminal_route = yes
+	set_temp_variable = { cannibalism_continental_new_kind = constant:cannibalism_continental_target_kind.front_collapse }
+	cannibalism_unified_record_continental_target = yes
 }
 
 cannibalism_unified_execute_naval_operation = {
@@ -16046,6 +16156,8 @@ cannibalism_unified_execute_cell_operation = {
 	cannibalism_unified_focus_clamp_values = yes
 	cannibalism_unified_refresh_operational_profiles = yes
 	cannibalism_unified_focus_refresh_terminal_route = yes
+	set_temp_variable = { cannibalism_continental_new_kind = constant:cannibalism_continental_target_kind.cell_seeding }
+	cannibalism_unified_record_continental_target = yes
 }
 
 cannibalism_unified_execute_campaign_operation = {
@@ -16073,6 +16185,8 @@ cannibalism_unified_execute_campaign_operation = {
 	cannibalism_unified_focus_clamp_values = yes
 	cannibalism_unified_focus_refresh_terminal_route = yes
 	cannibalism_unified_refresh_operational_profiles = yes
+	set_temp_variable = { cannibalism_continental_new_kind = constant:cannibalism_continental_target_kind.campaign }
+	cannibalism_unified_record_continental_target = yes
 }
 
 cannibalism_unified_execute_terror_ultimatum = {
@@ -16097,6 +16211,8 @@ cannibalism_unified_execute_terror_ultimatum = {
 	cannibalism_unified_focus_clamp_values = yes
 	cannibalism_unified_focus_refresh_terminal_route = yes
 	cannibalism_unified_refresh_operational_profiles = yes
+	set_temp_variable = { cannibalism_continental_new_kind = constant:cannibalism_continental_target_kind.ultimatum }
+	cannibalism_unified_record_continental_target = yes
 }
 
 cannibalism_unified_execute_border_incident = {
@@ -16123,6 +16239,8 @@ cannibalism_unified_execute_border_incident = {
 	cannibalism_unified_focus_clamp_values = yes
 	cannibalism_unified_focus_refresh_terminal_route = yes
 	cannibalism_unified_refresh_operational_profiles = yes
+	set_temp_variable = { cannibalism_continental_new_kind = constant:cannibalism_continental_target_kind.border_incident }
+	cannibalism_unified_record_continental_target = yes
 }
 
 cannibalism_unified_execute_postwar_integration = {
@@ -16163,6 +16281,8 @@ cannibalism_unified_execute_counterwar_operation = {
 	add_to_variable = { cannibalism_world_hostility = cannibalism_unified_counterwar_relief }
 	cannibalism_unified_focus_clamp_values = yes
 	cannibalism_unified_record_counterwar_operation = yes
+	set_temp_variable = { cannibalism_continental_new_kind = constant:cannibalism_continental_target_kind.counterwar }
+	cannibalism_unified_record_continental_target = yes
 }
 
 cannibalism_unified_execute_counterwar_conversion = {
@@ -19767,6 +19887,7 @@ cannibalism_absorb_primary_warlord_donor_into_wendigo = {
 				set_variable = { cannibalism_integration_personality = cannibalism_inherited_warlord_personality }
 				set_variable = { cannibalism_integration_disposition = constant:cannibalism_warlord_disposition.host_commander }
 				cannibalism_apply_absorbed_warlord_inheritance_to_unified_host = yes
+				event_target:cannibalism_primary_warlord_donor = { cannibalism_capture_current_integration_history_identity = yes }
 				cannibalism_record_integrated_warlord_slot = yes
 				cannibalism_create_integrated_warlord_commander = yes
 			}

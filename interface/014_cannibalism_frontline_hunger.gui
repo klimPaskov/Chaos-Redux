@@ -241,6 +241,79 @@ guiTypes = {
 		iconType = { name = "cannibalism_ordinary_terminal_frame_animated" spriteType = "GFX_cannibalism_ordinary_terminal_frame_animated" position = { x = 16 y = 304 } }
 		iconType = { name = "cannibalism_ordinary_terminal_frame_static" spriteType = "GFX_cannibalism_ordinary_terminal_frame_static" position = { x = 16 y = 304 } }
 		instantTextBoxType = { name = "cannibalism_terminal_progress_text" position = { x = 26 y = 315 } font = "hoi_18mbs" text = "cannibalism.gui.terminal_progress" format = center maxWidth = 418 maxHeight = 28 fixedsize = yes pdx_tooltip = "cannibalism.gui.terminal_progress.tt" }
+
+		buttonType = { name = "cannibalism_revealed_tab_overview" position = { x = 18 y = 274 } spriteType = "GFX_sort_button_100x29" buttonFont = "hoi_16mbs" buttonText = "cannibalism.gui.tab.overview" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "cannibalism.gui.tab.revealed_overview.tt" scale = 0.82 }
+		buttonType = { name = "cannibalism_revealed_tab_loyalty" position = { x = 104 y = 274 } spriteType = "GFX_sort_button_100x29" buttonFont = "hoi_16mbs" buttonText = "cannibalism.gui.tab.loyalty" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "cannibalism.gui.tab.loyalty.tt" scale = 0.82 }
+		buttonType = { name = "cannibalism_revealed_tab_targets" position = { x = 190 y = 274 } spriteType = "GFX_sort_button_100x29" buttonFont = "hoi_16mbs" buttonText = "cannibalism.gui.tab.targets" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "cannibalism.gui.tab.targets.tt" scale = 0.82 }
+
+		# Loyalty page: integrated warlord history and surviving warlords.
+		instantTextBoxType = { name = "cannibalism_loyalty_integrated_heading" position = { x = 186 y = 50 } font = "hoi_16mbs" text = "cannibalism.gui.loyalty.integrated_heading" format = left maxWidth = 270 maxHeight = 18 fixedsize = yes }
+		containerWindowType = {
+			name = "cannibalism_loyalty_integrated_list_panel"
+			position = { x = 184 y = 70 }
+			size = { width = 282 height = 88 }
+			clipping = yes
+			verticalScrollbar = "right_vertical_slider"
+			scroll_wheel_factor = 40
+			smooth_scrolling = yes
+			background = { name = "Background" quadTextureSprite = "GFX_tiled_window_transparent" }
+			gridBoxType = { name = "cannibalism_loyalty_integrated_dynamic_list" position = { x = 0 y = 0 } size = { width = 258 height = 88 } slotsize = { width = 258 height = 44 } format = "UPPER_LEFT" max_slots_horizontal = 1 }
+		}
+		instantTextBoxType = { name = "cannibalism_loyalty_integrated_empty" position = { x = 196 y = 92 } font = "hoi_16mbs" text = "cannibalism.gui.loyalty.integrated_empty" format = left maxWidth = 250 maxHeight = 36 fixedsize = yes }
+		instantTextBoxType = { name = "cannibalism_loyalty_live_heading" position = { x = 186 y = 162 } font = "hoi_16mbs" text = "cannibalism.gui.loyalty.live_heading" format = left maxWidth = 270 maxHeight = 18 fixedsize = yes }
+		containerWindowType = {
+			name = "cannibalism_loyalty_live_list_panel"
+			position = { x = 184 y = 182 }
+			size = { width = 282 height = 88 }
+			clipping = yes
+			verticalScrollbar = "right_vertical_slider"
+			scroll_wheel_factor = 40
+			smooth_scrolling = yes
+			background = { name = "Background" quadTextureSprite = "GFX_tiled_window_transparent" }
+			gridBoxType = { name = "cannibalism_loyalty_live_dynamic_list" position = { x = 0 y = 0 } size = { width = 258 height = 88 } slotsize = { width = 258 height = 44 } format = "UPPER_LEFT" max_slots_horizontal = 1 }
+		}
+		instantTextBoxType = { name = "cannibalism_loyalty_live_empty" position = { x = 196 y = 204 } font = "hoi_16mbs" text = "cannibalism.gui.loyalty.live_empty" format = left maxWidth = 250 maxHeight = 36 fixedsize = yes }
+
+		# Targets page: the latest committed continental campaign targets.
+		containerWindowType = {
+			name = "cannibalism_continental_target_list_panel"
+			position = { x = 184 y = 50 }
+			size = { width = 282 height = 222 }
+			clipping = yes
+			background = { name = "Background" quadTextureSprite = "GFX_tiled_window_transparent" }
+			gridBoxType = { name = "cannibalism_continental_target_dynamic_list" position = { x = 0 y = 0 } size = { width = 278 height = 222 } slotsize = { width = 278 height = 74 } format = "UPPER_LEFT" max_slots_horizontal = 1 }
+		}
+		iconType = { name = "cannibalism_continental_target_empty_card" spriteType = "GFX_cannibalism_continental_target_card" position = { x = 184 y = 50 } }
+		instantTextBoxType = { name = "cannibalism_continental_target_empty" position = { x = 198 y = 58 } font = "hoi_16mbs" text = "cannibalism.gui.continental_target_empty" format = left maxWidth = 250 maxHeight = 54 fixedsize = yes }
+	}
+
+	# One integrated warlord in the revealed host's history.
+	containerWindowType = {
+		name = "cannibalism_loyalty_integrated_entry"
+		position = { x = 0 y = 0 }
+		size = { width = 258 height = 44 }
+		background = { name = "Background" quadTextureSprite = "GFX_mini_bg" }
+		iconType = { name = "cannibalism_loyalty_integrated_portrait" spriteType = "GFX_portrait_CBA_warlord_europe" position = { x = 4 y = 2 } scale = 0.19 }
+		instantTextBoxType = { name = "cannibalism_loyalty_integrated_entry_text" position = { x = 38 y = 5 } font = "hoi_16mbs" text = "cannibalism.gui.loyalty_integrated_entry" format = left maxWidth = 216 maxHeight = 34 fixedsize = yes pdx_tooltip = "cannibalism.gui.loyalty_integrated_entry.tt" }
+	}
+
+	# One surviving warlord and its current answer to the revealed host.
+	containerWindowType = {
+		name = "cannibalism_loyalty_live_entry"
+		position = { x = 0 y = 0 }
+		size = { width = 258 height = 44 }
+		background = { name = "Background" quadTextureSprite = "GFX_mini_bg" }
+		iconType = { name = "cannibalism_loyalty_live_portrait" spriteType = "GFX_portrait_CBA_warlord_europe" position = { x = 4 y = 2 } scale = 0.19 }
+		instantTextBoxType = { name = "cannibalism_loyalty_live_entry_text" position = { x = 38 y = 5 } font = "hoi_16mbs" text = "cannibalism.gui.loyalty_live_entry" format = left maxWidth = 216 maxHeight = 34 fixedsize = yes }
+	}
+
+	# One committed continental campaign target.
+	containerWindowType = {
+		name = "cannibalism_continental_target_entry"
+		position = { x = 0 y = 0 }
+		size = { width = 278 height = 74 }
+		iconType = { name = "cannibalism_continental_target_entry_card" spriteType = "GFX_cannibalism_continental_target_card" position = { x = 0 y = 0 } }
+		instantTextBoxType = { name = "cannibalism_continental_target_entry_text" position = { x = 14 y = 8 } font = "hoi_16mbs" text = "cannibalism.gui.continental_target" format = left maxWidth = 252 maxHeight = 54 fixedsize = yes pdx_tooltip = "cannibalism.gui.continental_target.tt" }
 	}
 
 	containerWindowType = {

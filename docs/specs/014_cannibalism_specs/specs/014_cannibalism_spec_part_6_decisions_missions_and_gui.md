@@ -619,6 +619,11 @@ After Hannibal's reveal:
 - continental target cards
 - world-end progress when eligible
 
+Disposition (audit finding E014-FINAL-03, revealed command window): implemented.
+Acceptance basis: the parent-approved 2026-10-04 Overview/Loyalty composition (`docs/plans/014_cannibalism_plans/subagent_handoffs/2026-10-04_gui_required_fields_layout.md`), extended by agent decision D8 in `docs/plans/014_cannibalism_plans/agent_decisions_2026-10-04.md` with a separate Targets page so the plural target cards have their own list.
+Implementation evidence: the Overview page keeps the final portrait, global Larder, Network Reach, integration count and terminal progress; the Loyalty page lists integrated warlords from the host's history and surviving warlords with their current answer; the Targets page shows the three latest committed continental targets (`docs/events/014_cannibalism/gui_data_contract.md`).
+In-game behaviour of populated lists remains for live verification.
+
 ### Wendigo transformation window
 
 - transformed portrait

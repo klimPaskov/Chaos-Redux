@@ -96,3 +96,22 @@ Decision:
 - The command windows keep refreshing every frame, without a `dirty` variable, so the live Larder, Frenzy and Alignment values never freeze.
 - The raid card uses the existing continental target card art instead of a second controlled-state card, so the strike record reads as a different kind of card from the state list.
 - The page flag is view state only and clears with the other view state on an incarnation reset.
+
+## D8. Revealed command window pages
+
+Disposition: `implemented`.
+
+Basis: audit finding E014-FINAL-03 (revealed part), the spec's plural "continental target cards", and the parent-approved 2026-10-04 Overview/Loyalty composition, whose layout handoff left open whether one last committed target satisfies the plural cards.
+Two loyalty lists and a target card do not fit the 282x222 panel beside the portrait without shrinking every row below readable size.
+
+Decision:
+
+- The window has three pages: Overview (the approved value area), Loyalty (the approved integrated and surviving lists) and Targets.
+- The Targets page keeps the three newest committed continental targets, newest first, through the `cannibalism_continental_target_record.rolling_count` constant; three cards fill the panel exactly, so the page needs no scrollbar.
+- Every committed executor records its target, not only the global campaign, because each of the six orders picks a country and pays for it.
+- The integrated history is written when a warlord is integrated, on the revealed host, keyed by actor generation so a repeated record cannot double a row; it clears on an incarnation reset with the targets.
+- Surviving warlord rows are stamped with the actor generation seen when the page opened, so a recycled tag reads as no longer a warlord instead of borrowing an older warlord's row.
+- The unification seal and terminal line are shown on Overview only, so the list pages never sit under them.
+- The page flags are view state only and clear with the other view state on an incarnation reset.
+
+Implementation evidence: `docs/events/014_cannibalism/gui_data_contract.md` and the MCP evidence in `subagent_handoffs/2026-10-04_command_windows_mcp_evidence.md`.
