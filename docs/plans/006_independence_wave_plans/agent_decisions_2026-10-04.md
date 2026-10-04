@@ -119,3 +119,13 @@ Admission:
 - FORM-11 remains the internal later-gate marker `independence_wave_don_form11_docket_open` with no carrier.
 
 Needs live game: a DON release with and without 238, the DHC interlock in both orders, the p39 force after a cavalry cleanup, and a scenario run that now reaches DON and MAC.
+
+## D6. Discard the stopped thread's Transcaucasus `has_prepared_*` triggers
+
+Disposition: `rejected` (the stopped-thread hunk); `implemented` (the validation wiring below).
+
+Basis: the lead's round-1 item 22.
+
+Decision: the uncommitted 192-line hunk in `common/scripted_triggers/006_independence_wave_transcaucasus_package_triggers.txt` defined `has_prepared_independence_wave_iw_070/071/072_package_setup`. Nothing referenced them, and each required `independence_wave_iw07x_setup_complete` and `independence_wave_package_setup_complete`, the very flags it would have to gate, so it could not be wired as written. The admitted ARM, GEO and AZR setups already gate `setup_complete` on their force and focus contracts, and final validation uses the committed `is_independence_wave_exact_package_iw_07x_runtime_ready` triggers. Reworking them to the IW-027 pattern would change the setup flow of three admitted packages without new gameplay value, so the hunk was discarded.
+
+The committed file still had four unreferenced triggers. The three `is_independence_wave_exact_package_iw_07x_runtime_ready` triggers now back `independence_wave_validate_transcaucasus_package`, so final validation also proves anchor ownership and control, the anchor capital, the current-generation force receipt and a live origin, matching the other admitted packages. `has_independence_wave_form16_commit_proof` duplicated checks that `independence_wave_form16_register_readiness` and the shared formable commit already perform and had no consumer, so it was removed. The file now has no unreferenced trigger.
