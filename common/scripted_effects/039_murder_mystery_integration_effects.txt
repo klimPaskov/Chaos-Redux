@@ -56,6 +56,32 @@ murder_mystery_prepare_random_event_fire = {
 	}
 }
 
+# Shared event-pool reason for Events Log rows. The caller resets
+# event_pool_candidate_unavailability_reason to none before the call.
+murder_mystery_evaluate_event_pool_unavailability = {
+	if = {
+		limit = {
+			OR = {
+				has_global_flag = murder_mystery_runtime_active
+				has_global_flag = murder_mystery_scenario_launch_in_progress
+			}
+		}
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.murder_mystery_active }
+	}
+	else_if = {
+		limit = { has_global_flag = murder_mystery_runtime_resolved }
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.murder_mystery_resolved }
+	}
+	else_if = {
+		limit = { has_global_flag = world_end }
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.murder_mystery_world_end }
+	}
+	else_if = {
+		limit = { NOT = { murder_mystery_has_any_eligible_host = yes } }
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.murder_mystery_host }
+	}
+}
+
 murder_mystery_triggerable_scenario_launch = {
 	if = {
 		limit = { murder_mystery_triggerable_scenario_can_launch = yes }

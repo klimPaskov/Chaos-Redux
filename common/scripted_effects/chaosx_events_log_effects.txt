@@ -400,6 +400,15 @@ events_log_set_default_actor_for_current_event = {
 		set_temp_variable = { events_log_default_has_actor = 1 }
 	}
 	else_if = {
+		limit = {
+			check_variable = { event_id = constant:murder_mystery_identity.event_id }
+			has_event_target = murder_mystery_prefire_host
+			event_target:murder_mystery_prefire_host = { exists = yes }
+		}
+		event_target:murder_mystery_prefire_host = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = constant:murder_mystery_value.one }
+	}
+	else_if = {
 		limit = { check_variable = { event_id = 38 } }
 		MLT = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
 		set_temp_variable = { events_log_default_has_actor = 1 }

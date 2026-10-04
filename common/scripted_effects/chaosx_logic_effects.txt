@@ -257,6 +257,7 @@ initialize_event_categories = {
 	add_to_array = { global.fire_once_events = 24 }  # HOI
 	add_to_array = { global.fire_once_events = 26 }
 	add_to_array = { global.fire_once_events = 38 }  # MALTA CRUSADERS
+	add_to_array = { global.fire_once_events = constant:murder_mystery_identity.event_id }  # MURDER MYSTERY
 	add_to_array = { global.fire_once_events = 45 }  # THIRD BALKAN WAR
 	add_to_array = { global.fire_once_events = 48 }  # BUL AMBITIONS
 	add_to_array = { global.fire_once_events = 51 }  # HEAT WAVE
@@ -298,7 +299,6 @@ initialize_event_categories = {
 	add_to_array = { global.repeatable_events = 35 }  # GREAT DEPRESSION
 	add_to_array = { global.repeatable_events = 36 }  # ALIEN SPACECRAFT
 	add_to_array = { global.repeatable_events = 37 }  # MYSTERIOUS POPULATION
-	add_to_array = { global.repeatable_events = 39 }  # MURDER MYSTERY
 	add_to_array = { global.repeatable_events = 40 }  # LAWRENCE OF ARABIA
 	add_to_array = { global.repeatable_events = 41 }  # DISEASE IN DIVISIONS
 	add_to_array = { global.repeatable_events = 42 }  # EQUIPMENT FROM HEAVENS
@@ -849,6 +849,10 @@ evaluate_event_pool_candidate_unavailability = {
 		else = {
 			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.asteroid_target_pool }
 		}
+	}
+	else_if = {
+		limit = { check_variable = { event_id = constant:murder_mystery_identity.event_id } }
+		murder_mystery_evaluate_event_pool_unavailability = yes
 	}
 
 	if = {
