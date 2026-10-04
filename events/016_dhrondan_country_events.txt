@@ -146,7 +146,23 @@ country_event = {
 				custom_effect_tooltip = dhrondan_partner_accord_covenant_accept_effect_tt
 			}
 		}
-		else = { custom_effect_tooltip = dhrondan_compact_accept_effect_tt }
+		else = {
+			custom_effect_tooltip = dhrondan_compact_accept_effect_tt
+			if = {
+				limit = { event_target:dhrondan_diplomatic_actor = { has_country_flag = dhrondan_right_to_depart_guaranteed } }
+				custom_effect_tooltip = dhrondan_compact_departure_terms_tt
+			}
+			if = {
+				limit = {
+					is_in_faction = no
+					event_target:dhrondan_diplomatic_actor = {
+						has_country_flag = dhrondan_two_world_federation_ready
+						is_faction_leader = yes
+					}
+				}
+				custom_effect_tooltip = dhrondan_compact_federation_terms_tt
+			}
+		}
 		hidden_effect = {
 			if = {
 				limit = { dhrondan_compact_response_can_commit = yes }
@@ -158,6 +174,7 @@ country_event = {
 					diplomatic_relation = { country = event_target:dhrondan_diplomatic_actor relation = non_aggression_pact active = yes }
 					add_opinion_modifier = { target = event_target:dhrondan_diplomatic_actor modifier = dhrondan_two_world_compact }
 					set_country_flag = dhrondan_two_world_compact_partner
+					dhrondan_apply_compact_focus_terms = yes
 					event_target:dhrondan_diplomatic_actor = {
 						add_opinion_modifier = { target = event_target:dhrondan_diplomatic_recipient modifier = dhrondan_two_world_compact }
 						set_country_flag = dhrondan_diplomatic_compact_concluded

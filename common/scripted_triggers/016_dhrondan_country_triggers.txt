@@ -54,7 +54,8 @@ dhrondan_is_covenant_regime = {
 	has_country_flag = dhrondan_covenant_route
 }
 
-# COUNTRY scope on DHR.
+# COUNTRY scope on DHR. After Offer a Shared Horizon, a disconnected enclave
+# that is already a core of D'Rhonda counts as supported without a bridge.
 dhrondan_all_disconnected_enclaves_supported = {
 	NOT = {
 		any_owned_state = {
@@ -62,6 +63,48 @@ dhrondan_all_disconnected_enclaves_supported = {
 			is_controlled_by = ROOT
 			is_in_home_area = no
 			NOT = { has_state_flag = dhrondan_enclave_supply_bridge_completed }
+			NOT = {
+				AND = {
+					ROOT = { has_country_flag = dhrondan_enclave_reconciliation_chosen }
+					is_core_of = ROOT
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY scope on DHR. Integration needs peace unless the Imperial Continuity
+# has codified wartime service.
+dhrondan_integration_war_rule_is_met = {
+	OR = {
+		has_war = no
+		AND = {
+			dhrondan_is_imperial_regime = yes
+			has_country_flag = dhrondan_imperial_service_codified
+		}
+	}
+}
+
+# COUNTRY scope on DHR. A reclamation demand needs perfected predictive
+# warfare or, under the Covenant, the chamber's debated mandate.
+dhrondan_reclamation_is_authorized = {
+	OR = {
+		dhrondan_focus_has_predictive_warfare = yes
+		AND = {
+			dhrondan_is_covenant_regime = yes
+			has_country_flag = dhrondan_military_submitted_to_debate
+		}
+	}
+}
+
+# COUNTRY scope on DHR. One Terrestrial Partner Accord, plus one more once the
+# Embassy Beyond the Stars is established.
+dhrondan_can_conclude_another_partner_accord = {
+	OR = {
+		NOT = { has_country_flag = dhrondan_terrestrial_partner_accord_concluded }
+		AND = {
+			has_country_flag = dhrondan_extraterrestrial_embassy_established
+			NOT = { has_country_flag = dhrondan_embassy_partner_accord_concluded }
 		}
 	}
 }
@@ -125,7 +168,7 @@ dhrondan_terrestrial_partner_accord_decision_is_ready = {
 	has_country_flag = dhrondan_terrestrial_partner_selection_open
 	has_war = no
 	NOT = { has_country_flag = dhrondan_diplomatic_offer_active }
-	NOT = { has_country_flag = dhrondan_terrestrial_partner_accord_concluded }
+	dhrondan_can_conclude_another_partner_accord = yes
 	OR = {
 		dhrondan_is_imperial_regime = yes
 		dhrondan_is_synod_regime = yes
@@ -182,7 +225,7 @@ dhrondan_integration_route_contract_is_ready = {
 dhrondan_reclamation_decision_can_complete = {
 	dhrondan_country_is_active = yes
 	dhrondan_world_order_claim_contract_is_ready = yes
-	dhrondan_focus_has_predictive_warfare = yes
+	dhrondan_reclamation_is_authorized = yes
 	has_country_flag = dhrondan_reclamation_declared
 	FROM = {
 		dhrondan_state_can_be_reclaimed = yes
@@ -208,7 +251,7 @@ dhrondan_integration_decision_can_complete = {
 	dhrondan_country_is_active = yes
 	dhrondan_integration_route_contract_is_ready = yes
 	has_country_flag = dhrondan_integration_started
-	has_war = no
+	dhrondan_integration_war_rule_is_met = yes
 	FROM = { dhrondan_state_can_be_integrated = yes }
 }
 
@@ -270,7 +313,7 @@ dhrondan_compact_response_is_valid = {
 				dhrondan_world_order_decisions_are_unlocked = yes
 				dhrondan_focus_has_access_map_exchange = yes
 				has_country_flag = dhrondan_terrestrial_partner_selection_open
-				NOT = { has_country_flag = dhrondan_terrestrial_partner_accord_concluded }
+				dhrondan_can_conclude_another_partner_accord = yes
 				has_war = no
 				is_subject = no
 				OR = {

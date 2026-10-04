@@ -289,3 +289,44 @@ Decision:
 
 Evidence: `common/scripted_effects/016_brilliant_scientist_foreign_effects.txt`, `common/scripted_triggers/016_brilliant_scientist_foreign_triggers.txt`, `common/raids/016_brilliant_scientist_portal_raids.txt`, `common/raids/016_brilliant_scientist_biological_raids.txt`, `common/decisions/016_brilliant_scientist_portal_containment_decisions.txt`, `common/scripted_effects/016_brilliant_scientist_effects.txt`, `common/scripted_triggers/016_brilliant_scientist_kruger_state_decision_triggers.txt`, `common/ideas/016_brilliant_scientist_countermeasure_ideas.txt`, `common/dynamic_modifiers/016_brilliant_scientist_countermeasure_modifiers.txt`, `common/script_constants/016_brilliant_scientist_foreign_constants.txt`, `common/scripted_localisation/016_brilliant_scientist_foreign_scripted_localisation.txt`, `events/016_brilliant_scientist_foreign_events.txt`, the foreign, aftermath, and shared raid localisation (two sealing-cost lines in `localisation/english/chaosx_raids_l_english.yml`), and `docs/events/016_brilliant_scientist/systems/foreign_operations.md`.
 Needs live game: the state-scope raid modifier resolving on the special-project facility raid's building target, the success-chance breakdown text, the variable-valued modifier lines, and the KRG-targeted spirit bonuses in combat.
+
+## D24. D'Rhondan regime focus rewards replaced with mechanics
+
+Disposition: implemented under the full-authority mandate as the round 2 lead's third item, under final completion contract line 237 (weak rewards replaced in place).
+
+Defect: thirteen regime focuses (the shared convention and four focuses in each of the Imperial, Synod, and Covenant routes) paid only Political Power, Stability, Command Power, or experience plus flags nothing read, so the three regimes played alike between their roots and capstones.
+
+Decision: each reward now changes a live D'Rhondan system, and each regime has its own character.
+
+- Shared: Convene the Two-World Throne underwrites the next paid landing (its 2,000 lasers return on success).
+- Imperial, coercive and expansionist: Restore the Ninth Diadem fortifies the border provinces of every owned landing state and of each later landing state; Bind the Landing Lords returns a 500-laser tithe per landing; Codify Imperial Service lets integration proceed during war; Crown the Enclave Empire cores every owned landing state at -2% stability each.
+- Synod, predictive and efficient: Audit Every Command Node shortens landing recovery by 6 days (floor 6); Elevate the First Calculants refunds half the Political Power of reclamation, bridge, and integration orders; Replace Decree with Prediction adds infrastructure to disconnected enclaves and a second level to every bridge; Enthrone the Synod builds a civilian factory in up to three landing states.
+- Covenant, consensual and population-based: Write the Dual Citizenship Code gives landing states a state modifier with non-core manpower and recruitable population; Elect the Landing Councils makes each integration raise recruits from the state's population and stability; Guarantee the Right to Depart makes compact partners grant military access and send manpower; Submit the Military to Debate lets the chamber authorize reclamation without the predictive capstone and doubles debated war-goal duration.
+
+Implementation choices:
+
+- Per-landing results run through one DHR hook, `dhrondan_apply_landing_dividends`, called from `dhrondan_record_successful_landing` while the landed state id is still set; recovery and descent time run through `dhrondan_adjust_landing_cooldown` and `dhrondan_adjust_landing_reservation`, called by the shared landing API only for DHR. Other API callers are unchanged.
+- Dual Citizenship is a state-scoped dynamic modifier, so no fourth national spirit exists; the political lifecycle is unchanged.
+- The unread flags `dhrondan_political_convention_complete` and `dhrondan_enclave_empire_crowned` are no longer set; every other flag these focuses set has a reader.
+- Focus IDs, positions, prerequisites, and AI weights are unchanged; decision AI weights are unchanged.
+
+Evidence: `common/national_focus/016_dhrondan_focus_tree.txt`, `common/scripted_effects/016_dhrondan_focus_effects.txt`, `common/scripted_triggers/016_dhrondan_country_triggers.txt`, `common/decisions/016_dhrondan_country_decisions.txt`, `common/scripted_effects/016_dhrondan_contact_effects.txt`, `common/scripted_effects/016_alien_infantry_api_effects.txt` and its `.md`, `events/016_dhrondan_country_events.txt`, `common/dynamic_modifiers/016_dhrondan_focus_modifiers.txt`, `common/script_constants/016_dhrondan_focus_constants.txt`, `common/scripted_localisation/016_dhrondan_country_scripted_localisation.txt`, the focus, country, and landing API localisation, and `docs/events/016_brilliant_scientist/systems/016_dhrondan_focus_tree.md` (Reward mechanics).
+
+## D25. D'Rhondan military, diplomacy, expansion, and crisis rewards replaced
+
+Disposition: implemented under the same mandate as the round 2 lead's fourth item.
+
+Defect: eleven support focuses paid flat Political Power, Command Power, Stability, War Support, or experience plus flags nothing read; the tree doc promised that the expansion lane would expose reclamation, integration, and world-order contracts, yet `dhrondan_imperial_reaches_claimed` and `dhrondan_two_world_federation_ready` had no consumer.
+
+Decision:
+
+- Laboratory: The Exoplanetary Materials Board opens a laser production line requesting three military factories at 50% starting efficiency. No lasers are granted outright.
+- Army: Train Human Signal Teams unlocks the Signal Company and shortens the landing reservation from 7 to 4 days; Rebuild the Expeditionary Cadres gives 5 army experience per successful landing; The Thousand-Branch Wargame advances the existing military lifecycle to Predictive Command early (Perfect Predictive Warfare keeps its tactics technology and reclamation authority); Delegate to the Field Calculants gives every army commander +1 Planning; The Foreseen Counterstroke shortens landing recovery by 4 days in wartime.
+- Diplomacy: Seed the Enclave Network gives 10 civilian and 10 army intel over every country holding a marked landing state; The Embassy Beyond the Stars adds a lasting opinion bond with neighbors and partners and allows one more Terrestrial Partner Accord (`dhrondan_can_conclude_another_partner_accord`).
+- Expansion: Restore the Imperial Reaches claims every marked landing state held by another country, feeding the existing Reclaim decision; Federate the Two Worlds founds the Two-World Federation faction and brings current and later Two-World Compact partners into it.
+- Crisis: Offer a Shared Horizon makes cored disconnected enclaves count as supported when resolving the enclave crisis, so integration and reconciliation reinforce each other while the cipher path still needs every bridge.
+
+The two state passes (enclave intelligence and imperial reaches) are one-time `every_state` passes filtered first on the landing-state flag; nothing periodic is added. The unread flags `dhrondan_exoplanetary_materials_board_active`, `dhrondan_field_calculants_delegated`, `dhrondan_enclave_intelligence_network_active`, and `dhrondan_imperial_reaches_claimed` are no longer set. Focus IDs, layout, and AI weights are unchanged, and no focus spirit is added.
+
+Probability evidence: no weighted surface changed, so no `hoi4.probability_inspect` call was made.
+Needs live game: land-fort placement on border provinces, the starting efficiency of the laser line, the federation faction under Deeper Factions (deprecated `create_faction`), the dual-citizenship state modifier, and the per-landing results in a real landing.

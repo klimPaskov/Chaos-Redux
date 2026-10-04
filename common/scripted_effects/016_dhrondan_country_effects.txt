@@ -276,6 +276,14 @@ dhrondan_clear_diplomatic_offer = {
 # COUNTRY scope on the consenting partner after the .49 receipt is revalidated.
 # Route effects are bilateral where the native effect is directional.
 dhrondan_complete_terrestrial_partner_accord = {
+	# A second accord, opened by the Embassy Beyond the Stars, is recorded
+	# before the shared concluded flag is set again.
+	event_target:dhrondan_diplomatic_actor = {
+		if = {
+			limit = { has_country_flag = dhrondan_terrestrial_partner_accord_concluded }
+			set_country_flag = dhrondan_embassy_partner_accord_concluded
+		}
+	}
 	set_country_flag = dhrondan_terrestrial_partner_accord_partner
 	if = {
 		limit = { event_target:dhrondan_diplomatic_actor = { dhrondan_is_imperial_regime = yes } }

@@ -290,3 +290,448 @@ dhrondan_focus_open_world_order = {
 dhrondan_focus_award_achievement_hook = {
 	set_country_flag = dhrondan_achievement_route_hook_ready
 }
+
+# ---------------------------------------------------------------------------
+# Regime, army, laboratory, diplomacy, expansion, and crisis focus mechanics
+# ---------------------------------------------------------------------------
+# Each reward below changes a live D'Rhondan system: the paid landing (price
+# through tithes and refunds, recovery, descent time, and per-landing results),
+# landing-state buildings and state modifiers, cores and claims, the three
+# sovereignty decisions, the Two-World Compact and partner accord, the army
+# lifecycle and commanders, laser production, and intelligence. Values live in
+# dhrondan_focus_mechanic and dhrondan_focus_mechanic_factor. Static fields
+# that reject constants use the file-scoped values below, which mirror
+# enclave_network_civilian_intel, enclave_network_army_intel,
+# field_calculant_planning, materials_board_laser_factories,
+# materials_board_laser_efficiency, and synod_industrial_sites.
+
+@dhr_focus_civilian_intel = 10
+@dhr_focus_army_intel = 10
+@dhr_focus_field_planning = 1
+@dhr_focus_laser_factories = 3
+@dhr_focus_laser_efficiency = 0.5
+@dhr_focus_synod_sites = 3
+
+# COUNTRY scope on DHR. Called by dhrondan_record_successful_landing after every
+# successful landing while var:dhrondan_landing_state_id names the landed state.
+dhrondan_apply_landing_dividends = {
+	if = {
+		limit = { tag = DHR }
+		if = {
+			limit = { has_country_flag = dhrondan_convention_landing_underwritten }
+			clr_country_flag = dhrondan_convention_landing_underwritten
+			add_equipment_to_stockpile = { type = alien_laser_weapon_equipment_1 amount = constant:alien_infantry_landing.reserve_equipment }
+		}
+		if = {
+			limit = {
+				has_country_flag = dhrondan_landing_lords_bound
+				dhrondan_is_imperial_regime = yes
+			}
+			add_equipment_to_stockpile = { type = alien_laser_weapon_equipment_1 amount = constant:dhrondan_focus_mechanic.landing_tithe_lasers }
+		}
+		if = {
+			limit = { has_country_flag = dhrondan_expeditionary_cadres_rebuilt }
+			army_experience = constant:dhrondan_focus_mechanic.cadre_army_experience_per_landing
+		}
+		if = {
+			limit = { has_variable = dhrondan_landing_state_id }
+			var:dhrondan_landing_state_id = {
+				if = {
+					limit = {
+						is_owned_by = PREV
+						PREV = {
+							has_country_flag = dhrondan_ninth_diadem_restored
+							dhrondan_is_imperial_regime = yes
+						}
+					}
+					dhrondan_fortify_landing_state = yes
+				}
+				if = {
+					limit = {
+						is_owned_by = PREV
+						PREV = {
+							has_country_flag = dhrondan_dual_citizenship_code_written
+							dhrondan_is_covenant_regime = yes
+						}
+					}
+					dhrondan_grant_dual_citizenship = yes
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY scope. Called by alien_infantry_apply_landing_cooldown for DHR after
+# the shared recovery ladder chose its tier in temp
+# alien_infantry_landing_cooldown_days.
+dhrondan_adjust_landing_cooldown = {
+	if = {
+		limit = {
+			has_country_flag = dhrondan_command_nodes_audited
+			dhrondan_is_synod_regime = yes
+		}
+		subtract_from_temp_variable = { alien_infantry_landing_cooldown_days = constant:dhrondan_focus_mechanic.audited_cooldown_reduction }
+	}
+	if = {
+		limit = {
+			has_country_flag = dhrondan_foreseen_counterstroke_prepared
+			has_war = yes
+		}
+		subtract_from_temp_variable = { alien_infantry_landing_cooldown_days = constant:dhrondan_focus_mechanic.wartime_cooldown_reduction }
+	}
+	clamp_temp_variable = { var = alien_infantry_landing_cooldown_days min = constant:dhrondan_focus_mechanic.minimum_landing_cooldown_days }
+}
+
+# COUNTRY scope. Called by both landing reservation entry points for DHR after
+# the reservation length is set and before the landing mission starts.
+dhrondan_adjust_landing_reservation = {
+	if = {
+		limit = {
+			has_country_flag = dhrondan_human_signal_teams_trained
+			check_variable = { alien_infantry_landing_reservation_days > constant:dhrondan_focus_mechanic.signal_reservation_days }
+		}
+		set_variable = { alien_infantry_landing_reservation_days = constant:dhrondan_focus_mechanic.signal_reservation_days }
+	}
+}
+
+# STATE scope on an owned landing state. Imperial strongholds.
+dhrondan_fortify_landing_state = {
+	add_building_construction = {
+		type = bunker
+		level = @dhr_focus_building_level
+		instant_build = yes
+		province = {
+			all_provinces = yes
+			limit_to_border = yes
+		}
+	}
+}
+
+# STATE scope on an owned landing state. Covenant dual citizenship.
+dhrondan_grant_dual_citizenship = {
+	if = {
+		limit = { NOT = { has_dynamic_modifier = { modifier = dhrondan_dual_citizenship_enclave } } }
+		add_dynamic_modifier = { modifier = dhrondan_dual_citizenship_enclave }
+	}
+}
+
+# COUNTRY scope on DHR. Input temp dhrondan_calculant_refund_cost: the Political
+# Power the completed sovereignty order cost. A Synod with elevated calculants
+# recovers the configured share.
+dhrondan_apply_calculant_refund = {
+	if = {
+		limit = {
+			dhrondan_is_synod_regime = yes
+			has_country_flag = dhrondan_first_calculants_elevated
+		}
+		custom_effect_tooltip = dhrondan_calculant_refund_tt
+		multiply_temp_variable = { dhrondan_calculant_refund_cost = constant:dhrondan_focus_mechanic_factor.calculant_refund_share }
+		add_political_power = dhrondan_calculant_refund_cost
+	}
+}
+
+# STATE scope (FROM of the integration decision) with DHR as ROOT. Covenant
+# councils turn a consensual integration into recruits and legitimacy.
+dhrondan_apply_council_integration = {
+	if = {
+		limit = {
+			ROOT = {
+				dhrondan_is_covenant_regime = yes
+				has_country_flag = dhrondan_landing_councils_elected
+			}
+		}
+		set_temp_variable = { dhrondan_council_manpower = state_population_k }
+		multiply_temp_variable = { dhrondan_council_manpower = constant:dhrondan_focus_mechanic.council_manpower_per_thousand }
+		ROOT = {
+			custom_effect_tooltip = dhrondan_council_integration_tt
+			add_manpower = dhrondan_council_manpower
+			add_stability = constant:dhrondan_focus_mechanic_factor.council_integration_stability
+		}
+	}
+}
+
+# COUNTRY scope on a partner accepting the Two-World Compact, with
+# event_target:dhrondan_diplomatic_actor as DHR.
+dhrondan_apply_compact_focus_terms = {
+	if = {
+		limit = { event_target:dhrondan_diplomatic_actor = { has_country_flag = dhrondan_right_to_depart_guaranteed } }
+		give_military_access = event_target:dhrondan_diplomatic_actor
+		event_target:dhrondan_diplomatic_actor = { add_manpower = constant:dhrondan_focus_mechanic.departure_manpower }
+	}
+	if = {
+		limit = {
+			is_in_faction = no
+			event_target:dhrondan_diplomatic_actor = {
+				has_country_flag = dhrondan_two_world_federation_ready
+				is_faction_leader = yes
+			}
+		}
+		event_target:dhrondan_diplomatic_actor = { add_to_faction = PREV }
+	}
+}
+
+dhrondan_focus_convene_two_world_throne = {
+	set_country_flag = dhrondan_convention_landing_underwritten
+	custom_effect_tooltip = DHR_convene_the_two_world_throne_effect
+}
+
+dhrondan_focus_restore_ninth_diadem = {
+	set_country_flag = dhrondan_ninth_diadem_restored
+	custom_effect_tooltip = DHR_restore_the_ninth_diadem_effect
+	hidden_effect = {
+		every_owned_state = {
+			limit = {
+				dhrondan_state_is_landing_site = yes
+				is_controlled_by = ROOT
+			}
+			dhrondan_fortify_landing_state = yes
+		}
+	}
+}
+
+dhrondan_focus_bind_landing_lords = {
+	set_country_flag = dhrondan_landing_lords_bound
+	custom_effect_tooltip = DHR_bind_the_landing_lords_effect
+}
+
+dhrondan_focus_codify_imperial_service = {
+	set_country_flag = dhrondan_imperial_service_codified
+	custom_effect_tooltip = DHR_codify_imperial_service_effect
+}
+
+dhrondan_focus_crown_enclave_empire = {
+	custom_effect_tooltip = DHR_crown_the_enclave_empire_effect
+	hidden_effect = {
+		set_temp_variable = { dhrondan_crowned_states = constant:dhrondan_value.zero }
+		every_owned_state = {
+			limit = {
+				dhrondan_state_is_landing_site = yes
+				is_controlled_by = ROOT
+				NOT = { is_core_of = ROOT }
+			}
+			add_core_of = ROOT
+			add_to_temp_variable = { dhrondan_crowned_states = constant:dhrondan_value.one }
+		}
+		multiply_temp_variable = { dhrondan_crowned_states = constant:dhrondan_focus_mechanic_factor.crown_stability_per_state }
+		add_stability = dhrondan_crowned_states
+	}
+}
+
+dhrondan_focus_audit_command_nodes = {
+	set_country_flag = dhrondan_command_nodes_audited
+	custom_effect_tooltip = DHR_audit_every_command_node_effect
+}
+
+dhrondan_focus_elevate_first_calculants = {
+	set_country_flag = dhrondan_first_calculants_elevated
+	custom_effect_tooltip = DHR_elevate_the_first_calculants_effect
+}
+
+dhrondan_focus_replace_decree_with_prediction = {
+	set_country_flag = dhrondan_decree_replaced_by_prediction
+	custom_effect_tooltip = DHR_replace_decree_with_prediction_effect
+	hidden_effect = {
+		every_owned_state = {
+			limit = {
+				dhrondan_state_is_landing_site = yes
+				is_controlled_by = ROOT
+				is_in_home_area = no
+				infrastructure < constant:dhrondan_decision_limit.maximum_infrastructure
+			}
+			add_building_construction = {
+				type = infrastructure
+				level = constant:dhrondan_decision_reward.infrastructure_levels
+				instant_build = yes
+			}
+		}
+	}
+}
+
+dhrondan_focus_enthrone_synod = {
+	custom_effect_tooltip = DHR_enthrone_the_synod_effect
+	hidden_effect = {
+		every_owned_state = {
+			random_select_amount = @dhr_focus_synod_sites
+			limit = {
+				dhrondan_state_is_landing_site = yes
+				is_controlled_by = ROOT
+				free_building_slots = {
+					building = industrial_complex
+					size > 0
+					include_locked = yes
+				}
+			}
+			add_extra_state_shared_building_slots = @dhr_focus_building_level
+			add_building_construction = {
+				type = industrial_complex
+				level = @dhr_focus_building_level
+				instant_build = yes
+			}
+		}
+	}
+}
+
+dhrondan_focus_write_dual_citizenship_code = {
+	set_country_flag = dhrondan_dual_citizenship_code_written
+	custom_effect_tooltip = DHR_write_the_dual_citizenship_code_effect
+	hidden_effect = {
+		every_owned_state = {
+			limit = {
+				dhrondan_state_is_landing_site = yes
+				is_controlled_by = ROOT
+			}
+			dhrondan_grant_dual_citizenship = yes
+		}
+	}
+}
+
+dhrondan_focus_elect_landing_councils = {
+	set_country_flag = dhrondan_landing_councils_elected
+	custom_effect_tooltip = DHR_elect_the_landing_councils_effect
+}
+
+dhrondan_focus_guarantee_right_to_depart = {
+	set_country_flag = dhrondan_right_to_depart_guaranteed
+	custom_effect_tooltip = DHR_guarantee_the_right_to_depart_effect
+}
+
+dhrondan_focus_submit_military_to_debate = {
+	set_country_flag = dhrondan_military_submitted_to_debate
+	custom_effect_tooltip = DHR_submit_the_military_to_debate_effect
+}
+
+dhrondan_focus_open_materials_board = {
+	custom_effect_tooltip = DHR_the_exoplanetary_materials_board_effect
+	hidden_effect = {
+		add_equipment_production = {
+			equipment = { type = alien_laser_weapon_equipment_1 }
+			requested_factories = @dhr_focus_laser_factories
+			efficiency = @dhr_focus_laser_efficiency
+		}
+	}
+}
+
+dhrondan_focus_train_signal_teams = {
+	set_country_flag = dhrondan_human_signal_teams_trained
+	if = { limit = { NOT = { has_tech = tech_support } } set_technology = { tech_support = 1 popup = no } }
+	if = { limit = { NOT = { has_tech = tech_signal_company } } set_technology = { tech_signal_company = 1 } }
+	custom_effect_tooltip = DHR_train_human_signal_teams_effect
+}
+
+dhrondan_focus_rebuild_expeditionary_cadres = {
+	set_country_flag = dhrondan_expeditionary_cadres_rebuilt
+	custom_effect_tooltip = DHR_rebuild_the_expeditionary_cadres_effect
+}
+
+dhrondan_focus_run_thousand_branch_wargame = {
+	dhrondan_focus_set_predictive_command = yes
+	custom_effect_tooltip = DHR_the_thousand_branch_wargame_effect
+}
+
+dhrondan_focus_delegate_field_calculants = {
+	custom_effect_tooltip = DHR_delegate_to_the_field_calculants_effect
+	hidden_effect = {
+		every_army_leader = { add_planning = @dhr_focus_field_planning }
+	}
+}
+
+dhrondan_focus_prepare_foreseen_counterstroke = {
+	set_country_flag = dhrondan_foreseen_counterstroke_prepared
+	custom_effect_tooltip = DHR_the_foreseen_counterstroke_effect
+}
+
+# One-time bounded pass over marked landing states. Each foreign owner of a
+# landing state yields intelligence once.
+dhrondan_focus_seed_enclave_network = {
+	custom_effect_tooltip = DHR_seed_the_enclave_network_effect
+	hidden_effect = {
+		every_state = {
+			limit = {
+				has_state_flag = dhrondan_landing_state
+				NOT = { is_owned_by = ROOT }
+			}
+			OWNER = {
+				if = {
+					limit = {
+						NOT = { tag = ROOT }
+						NOT = { has_country_flag = dhrondan_enclave_network_reported }
+					}
+					set_country_flag = { flag = dhrondan_enclave_network_reported days = 1 }
+					ROOT = {
+						add_intel = {
+							target = PREV
+							civilian_intel = @dhr_focus_civilian_intel
+							army_intel = @dhr_focus_army_intel
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+dhrondan_focus_establish_embassy = {
+	set_country_flag = dhrondan_extraterrestrial_embassy_established
+	custom_effect_tooltip = DHR_the_embassy_beyond_the_stars_effect
+	hidden_effect = {
+		every_neighbor_country = {
+			limit = { NOT = { has_war_with = ROOT } }
+			add_opinion_modifier = { target = ROOT modifier = dhrondan_extraterrestrial_embassy }
+			ROOT = { add_opinion_modifier = { target = PREV modifier = dhrondan_extraterrestrial_embassy } }
+		}
+		every_country = {
+			limit = {
+				OR = {
+					has_country_flag = dhrondan_two_world_compact_partner
+					has_country_flag = dhrondan_terrestrial_partner_accord_partner
+				}
+				NOT = { is_neighbor_of = ROOT }
+				NOT = { has_war_with = ROOT }
+			}
+			add_opinion_modifier = { target = ROOT modifier = dhrondan_extraterrestrial_embassy }
+			ROOT = { add_opinion_modifier = { target = PREV modifier = dhrondan_extraterrestrial_embassy } }
+		}
+	}
+}
+
+# One-time bounded pass over marked landing states lost to other countries.
+dhrondan_focus_restore_imperial_reaches = {
+	custom_effect_tooltip = DHR_restore_the_imperial_reaches_effect
+	hidden_effect = {
+		every_state = {
+			limit = {
+				has_state_flag = dhrondan_landing_state
+				NOT = { is_owned_by = ROOT }
+				NOT = { is_claimed_by = ROOT }
+			}
+			add_claim_by = ROOT
+		}
+	}
+}
+
+dhrondan_focus_federate_two_worlds = {
+	set_country_flag = dhrondan_two_world_federation_ready
+	custom_effect_tooltip = DHR_federate_the_two_worlds_effect
+	hidden_effect = {
+		if = {
+			limit = { is_in_faction = no }
+			create_faction = DHR_two_world_federation
+		}
+		if = {
+			limit = { is_faction_leader = yes }
+			every_country = {
+				limit = {
+					has_country_flag = dhrondan_two_world_compact_partner
+					is_in_faction = no
+					NOT = { has_war_with = ROOT }
+				}
+				ROOT = { add_to_faction = PREV }
+			}
+		}
+	}
+}
+
+dhrondan_focus_offer_shared_horizon = {
+	set_country_flag = dhrondan_enclave_reconciliation_chosen
+	custom_effect_tooltip = DHR_offer_a_shared_horizon_effect
+}
