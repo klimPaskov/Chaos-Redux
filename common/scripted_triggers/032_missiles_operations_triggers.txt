@@ -770,3 +770,44 @@ missiles_country_can_integrate_captured_site = {
 	has_variable = missiles_program_stage
 	check_variable = { var = missiles_program_stage value = constant:missiles_stage.guided compare = greater_than_or_equals }
 }
+
+# -----------------------------------------------------------------------------
+# Incident aftermath
+# -----------------------------------------------------------------------------
+# COUNTRY scope, called from this country's own decisions (ROOT = THIS).
+
+# The active incident is this country's own guidance failure: a breakup,
+# wrong-state hit, dud, neutral accident, or strike on its own territory.
+missiles_incident_is_own_guidance_failure = {
+	has_country_flag = missiles_incident_active
+	has_variable = missiles_last_incident_actor_id
+	check_variable = { var = missiles_last_incident_actor_id value = ROOT.id compare = equals }
+	OR = {
+		check_variable = { var = missiles_current_incident_type value = constant:missiles_incident_type.guidance_failure compare = equals }
+		check_variable = { var = missiles_current_incident_type value = constant:missiles_incident_type.neutral_accident compare = equals }
+		check_variable = { var = missiles_current_incident_type value = constant:missiles_incident_type.self_strike compare = equals }
+	}
+}
+
+# Denial is open only for this country's own neutral accident while the
+# attribution is not confirmed.
+missiles_incident_can_be_denied = {
+	missiles_neutral_incident_active = yes
+	has_variable = missiles_last_incident_actor_id
+	check_variable = { var = missiles_last_incident_actor_id value = ROOT.id compare = equals }
+	NOT = { check_variable = { var = missiles_last_incident_attribution value = constant:missiles_attribution.confirmed compare = equals } }
+}
+
+# Debris can be recovered when the failed missile came down in territory this
+# country or one of its faction partners controls.
+missiles_incident_debris_is_reachable = {
+	missiles_incident_is_own_guidance_failure = yes
+	NOT = { has_country_flag = missiles_debris_investigated }
+	has_variable = missiles_incident_state
+	var:missiles_incident_state = {
+		OR = {
+			is_controlled_by = ROOT
+			CONTROLLER = { is_in_faction_with = ROOT }
+		}
+	}
+}

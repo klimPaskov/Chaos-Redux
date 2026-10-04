@@ -4548,6 +4548,8 @@ missiles_record_operation_incident = {
 			}
 		}
 		set_country_flag = missiles_incident_active
+		clr_country_flag = missiles_incident_recovery_accelerated
+		clr_country_flag = missiles_debris_investigated
 		set_variable = { missiles_active_incident_id = missiles_current_incident_id }
 		set_variable = { missiles_last_incident_closed = constant:missiles_program_value.zero }
 		if = { limit = { has_variable = missiles_operation_impact_country } set_variable = { missiles_incident_victim = missiles_operation_impact_country } }
@@ -4566,6 +4568,10 @@ missiles_close_current_incident = {
 	set_variable = { missiles_active_incident_id = constant:missiles_program_value.zero }
 	clr_country_flag = missiles_neutral_incident_active
 	clr_country_flag = missiles_incident_inspected
+	# Accelerated recovery and debris investigation are once per incident; a
+	# recalibration stays armed until the next launch consumes it.
+	clr_country_flag = missiles_incident_recovery_accelerated
+	clr_country_flag = missiles_debris_investigated
 	clear_variable = missiles_incident_victim
 	clear_variable = missiles_incident_state
 	if = { limit = { NOT = { has_country_flag = missiles_site_repair_active } } clear_variable = missiles_incident_site }
@@ -4608,6 +4614,11 @@ missiles_deny_incident_responsibility = {
 		}
 		set_country_flag = missiles_neutral_incident_denied
 		set_variable = { missiles_last_denial_date = global.date }
+		# The challenged record stays disputed until evidence confirms it.
+		if = {
+			limit = { NOT = { check_variable = { var = missiles_last_incident_attribution value = constant:missiles_attribution.confirmed compare = equals } } }
+			set_variable = { missiles_last_incident_attribution = constant:missiles_attribution.disputed }
+		}
 		missiles_close_current_incident = yes
 	}
 }
@@ -4627,6 +4638,8 @@ missiles_emergency_guidance_recalibration = {
 		limit = { has_country_flag = missiles_incident_active NOT = { has_country_flag = missiles_guidance_recalibrated_next_launch } }
 		set_country_flag = missiles_guidance_recalibrated_next_launch
 		set_variable = { missiles_last_emergency_recalibration_date = global.date }
+		subtract_from_variable = { missiles_launch_readiness = constant:missiles_program_value.five }
+		missiles_clamp_program_values = yes
 	}
 }
 

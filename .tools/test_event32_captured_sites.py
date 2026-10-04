@@ -91,7 +91,7 @@ class CapturedSiteResolution(unittest.TestCase):
             if ('NOT', [('has_country_flag', 'missiles_captured_site_unresolved')]) in visible or ('NOT', [('has_country_flag', 'missiles_captured_site_unresolved')]) in list(dict(body)['visible']):
                 continue
             incident.append(name)
-        # Four resolutions for the one focus state plus neutral-victim compensation.
+        # Four resolutions for the one focus state; every other incident action steps aside.
         self.assertLessEqual(len(incident), 6, incident)
         for route in RESOLUTIONS:
             self.assertIn(f'missiles_{route}_captured_site', incident)

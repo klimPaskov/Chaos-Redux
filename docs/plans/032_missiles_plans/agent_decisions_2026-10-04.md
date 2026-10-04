@@ -57,3 +57,13 @@ Disposition: `implemented` (source evidence; live behaviour `needs_live_game`).
 - Human operations view without a target: the target selector plus four maintenance actions, plus network restoration when severed, is at most six actions. Once a human opens the selector or picks a target, maintenance steps aside for selection and preparation.
 - `on_war_relation_added` refreshes the phases of ROOT and FROM when they own a program; `on_peace` refreshes the country making peace and clears an unfinished target choice (`missiles_clear_target` keeps the target of an operation already in preparation). No world iteration is added.
 - Replenishment, readiness, guidance, and launch-code effects refresh phases, and `missiles_resolve_warning_queue_receipt` refreshes phases instead of forcing the operations view, which previously put a peacetime country into the operations phase after a warning closed.
+
+## Item 7: incident aftermath decisions
+
+Disposition: `implemented` (source evidence; live behaviour `needs_live_game`).
+
+- Deny responsibility is offered only for this country's own neutral accident while attribution is not confirmed; it costs 25 political power (a genuinely political act, with `ai_hint_pp_cost`), applies the existing denial opinion modifier, records the incident as disputed, and closes it.
+- Emergency recalibration and debris investigation require this country's own guidance failure (breakup, wrong-state hit, dud, neutral accident, or self-strike). Debris additionally needs the impact state to be controlled by the country or a faction partner. Recalibration now also costs 5 Launch Readiness, as its tooltip and spec part 5 already state.
+- Once-per-incident rule: accelerated recovery and debris investigation reset when an incident opens or closes; recalibration stays armed until the next launch consumes it. Every action also has a native cooldown.
+- Budget: aftermath actions, compensation, and site suspension step aside while a captured site awaits resolution, and suspension steps aside during an own guidance failure, so the incident phase shows at most six actions.
+- Icons reuse the same-family Event 032 decision icons (readiness, compensation, guidance, and inspection).
