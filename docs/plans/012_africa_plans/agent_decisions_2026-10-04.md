@@ -416,3 +416,11 @@ Decisions:
 - Filters use vanilla ids: industry on provision and logistics (Continental Reserve, Final Council added), army on protection (Shelter, Relief, Sanctuary, Security Oaths added), war support on judgment (Reach Beyond the Coast added), annexation on Return of African Soil and No Sanctuary for Occupiers.
 
 MCP route evidence (2026-10-05): a narrow `hoi4_focus_inspect` of `africa_continental_focus_tree` after the change, revision `270767ed`, reports 301 focuses, 297 diagnostics, 62 crossings and 53 node intersections, unchanged, and no blocking diagnostic in this mod.
+
+## L31. The Gods super-event audio candidate is staged for the user
+
+Disposition: `blocked` (exact missing input: the user's permission to download one track).
+
+Basis: acceptance rows DOC-09 and DOC-10, decisions L5 and L17, the super-event skill's unique-track rule, and the lead's round 2 instruction that web research is allowed but a download is not.
+
+Decision: web research without any download identified John Bartmann's *Iyanetha* (CC0 1.0, Free Music Archive, 2:45, not instrumental, unused by any super-event) as the proposed track, with the United States Marine Band's public-domain *Aida* Grand March as the alternative. The record, the checks required at archive time and the wiring list are in `012_africa_gods_super_event_audio_candidate_2026-10-05.md`. Nothing is wired until the user permits the download and the track is archived; no silent, duplicate or synthesized cue is shipped.
