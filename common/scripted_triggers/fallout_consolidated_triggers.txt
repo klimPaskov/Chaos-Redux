@@ -3857,6 +3857,23 @@ fallout_manual_native_nuke_belongs_to_sweep = {
 	}
 }
 
+# Supported scope: COUNTRY. ROOT is the on_nuke_drop launcher. True for every
+# coordinator drop of the manual Fallout sweep while the sweep or its verifier
+# is open, including the final drop after the Chaos Meter observer has already
+# counted it. The sweep aggregate owns population, Deaths, famine and
+# migration for these strikes, so per-strike humanitarian work is skipped.
+fallout_manual_sweep_callback_window_is_open = {
+	has_global_flag = fallout_manual_scenario_active
+	has_global_flag = fallout_manual_sweep_active
+	has_global_flag = fallout_synthetic_strike_batch
+	OR = {
+		check_variable = { global.fallout_manual_status = constant:fallout_manual_status.sweeping }
+		check_variable = { global.fallout_manual_status = constant:fallout_manual_status.verifying }
+	}
+	has_country_flag = fallout_manual_synthetic_launcher
+	fallout_manual_current_country_is_coordinator = yes
+}
+
 # Supported scope: COUNTRY
 fallout_manual_batch_event_is_valid = {
 	has_global_flag = fallout_manual_scenario_active

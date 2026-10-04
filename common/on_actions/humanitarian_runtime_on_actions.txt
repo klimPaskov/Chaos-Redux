@@ -137,8 +137,12 @@ on_actions = {
 			ROOT = { save_event_target_as = humanitarian_corridor_nuke_launcher }
 			# Event 028 uses launch_nuke only as its asteroid map visual; the
 			# struck state carries a timed marker and receives no nuclear reports.
+			# Manual Fallout sweep strikes are accounted for by the sweep aggregate.
 			if = {
-				limit = { FROM = { NOT = { has_state_flag = asteroid_incoming_visual_strike_state } } }
+				limit = {
+					FROM = { NOT = { has_state_flag = asteroid_incoming_visual_strike_state } }
+					NOT = { fallout_manual_sweep_callback_window_is_open = yes }
+				}
 				FROM = {
 					humanitarian_corridor_handle_nuke_drop = yes
 					OWNER = { migration_show_report_nuclear_evacuation = yes }

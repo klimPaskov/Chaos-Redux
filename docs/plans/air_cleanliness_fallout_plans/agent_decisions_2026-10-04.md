@@ -61,3 +61,9 @@ Disposition: implemented (static review only).
 
 - The four major-arc stage consumers (Year Zero 401, Orchard Flowers 408, Skilled List 429, False Spring Losses 478) required `fallout_event_<id>_candidate_state_id` after the candidate review had cleared it. Their state target and pressure now persist until the next review. Orchard Flowers also initialised its target as a temporary variable that shadowed the stored target; it is now a normal variable. Their country and state triggers use PREV and OWNER instead of ROOT, because the arc consumer runs in the coordinator pass.
 - `fallout_event_schedule_selected_relationship_candidate` saved ROOT (the coordinator) as the bilateral partner. It now saves the partner registry country, so the Refugee Train pair can reserve its reciprocal rows.
+
+## A8. Manual sweep strikes skip the per-strike humanitarian hook
+
+Disposition: implemented. The tick-time gain is `needs_live_game`.
+
+The manual sweep aggregate already owns population, Deaths (reason 19), famine and migration for its 10,154 coordinator strikes, so the per-strike humanitarian corridor, nuclear evacuation report, famine pressure and migration pressure work in `common/on_actions/humanitarian_runtime_on_actions.txt` double-counted them and slowed the drop tick. Decision: `fallout_manual_sweep_callback_window_is_open` is true for every coordinator drop while the sweep or verifier is open. It deliberately omits the observed-versus-issued comparison, because the Chaos Meter observer in `chaosx_on_actions_chaos_meter.txt` loads first and has already counted the final strike when the humanitarian hook runs. The humanitarian hook skips its state block when the window is open. Ordinary nukes, Event 023 strikes and nukes by any other launcher keep their humanitarian handling. The edit in the humanitarian file is one added limit line.
