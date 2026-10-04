@@ -166,3 +166,77 @@ Fixture values are declared scenario inputs, not observed campaign state; the re
 ## Simplifications
 
 None in the window scope. The job-queue unit bug is reported, not fixed, by instruction.
+
+## Addendum 2026-10-04: delayed job queue date units
+
+Worker: parent-delegated gameplay fix (Event 013 files only).
+Disposition: implemented; live consumer validation pending with the user.
+Acceptance basis: the parent's brief of 2026-10-03 to fix the job-queue unit mismatch reported in section 2 above, keep every timing value, and correct the window's Report and Chain milestone dates.
+The "Job-queue date units" item under Remaining risks is resolved by this addendum.
+
+### Root cause, confirmed
+
+Date variables count one game hour as 0.00001 (offline wiki `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, Game variables section, lines 1458 to 1778, revision `62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4`, `date` row).
+`natural_disaster_enqueue_state_job` built `natural_disaster_job_desired_due_date` as `global.date + natural_disaster_job_delay_days`, so a delay of N days stored a due date about N x 11.4 years ahead.
+`chaosx.nr13.2` was still delayed by the right number of days, because `due - global.date` returned the raw day count, but `natural_disaster_process_due_job` only accepts jobs with `due <= global.date`, so no job could qualify and warnings, impacts, reports, follow-ups, and reassessments never ran.
+
+Save evidence from `save games/qa_scn007b.hoi4` (plain text, 1936.1.2.16, Operation Postern v1.19.2.0, player USA), read with `.agents/skills/chaos-redux-save-inspection/scripts/save_inspect.py` (`info`, then `flatten` with `--in countries`, `--in states`, and `--in variables`, each with `--match natural_disaster`, and `flatten --in countries/USA --match delayed_event`):
+- `variables/events_log_history_date_entries^0 = 607.59371` is the launch date, 1936.1.1.
+- USA `natural_disaster_job_due_date_entries` run from 609.59371 to 653.59371 and CAN from 610.59371 to 621.59371: the launch date plus whole numbers, so the first two-day job reads as 1958.10.31, the date seen live.
+- USA `delayed_event[3]` is `chaosx.nr13.2` with 0 days and 20 hours left at 1936.1.2.16, so it fires 48 hours after the enqueue; the worker wakes on time and finds nothing due.
+- USA `achievement_nd_barrage_expiry_date = 847.59371` (launch plus 240), so the Disaster Barrage deadline check in `chaosx.nr13.3` could never pass either.
+- Values such as `camp_occ_origin_ceiling_k = 1.91301` confirm that script variables keep five decimals, so a whole-day offset of 0.00024 is stored exactly.
+- State 357 holds `natural_disaster_schedule_date = 623.59371` and `natural_disaster_next_subevent_date = 624.59371`: the same-sequence day reservation had moved the impact one day after the displayed date.
+
+Delayed events count down in whole hours (`hours`, `days`, and `months` fields in each saved `delayed_event`), and the installed `documentation/effects_documentation.md` (`country_event`) adds `hours`, `days`, and `months` together, so a due date built as `global.date` plus N days matches the worker's wake time to the hour.
+The encoding is a linear hour count, so month lengths do not enter the conversion.
+
+### Fix
+
+Two Event 013 helpers in `common/scripted_effects/013_natural_disasters_effects.txt`, section "PERSISTENT DELAYED JOB QUEUE", work in place on the temp variable `natural_disaster_date_offset`:
+- `natural_disaster_convert_days_to_date_offset` multiplies days by `hours_per_day` and divides by `hours_per_date_unit`.
+- `natural_disaster_convert_date_offset_to_days` multiplies a date difference by `hours_per_date_unit`, rounds to whole hours, rounds up to whole days through `whole_day_ceiling_hours` and a modulo, and never returns less than zero, so a worker woken after that many days never runs before the due date.
+
+They are Event 013 helpers rather than shared dynamic effects because their constants live in the Event 013 tuning table; a shared date helper in `chaosx_dynamic_effects.txt` would be the natural follow-up for the other systems listed below.
+New constants in `natural_disaster_date`: `whole_day_ceiling_hours = 23` and `job_reservation_step_days = 1`, which replaces the former literal one-step conflict shift.
+No timing value changed.
+
+Converted sites:
+- `natural_disaster_enqueue_state_job`: the due date is `global.date` plus the converted delay; the `days =` delay of `chaosx.nr13.2` is the reserved due date converted back to days, then clamped to `minimum_job_delay_days` as before.
+- `natural_disaster_reserve_job_day`: a same-sequence conflict shifts the due date by one day in date units.
+- `natural_disaster_transfer_pending_jobs_for_state`: the new controller's `days =` delay is the remaining date difference converted back to whole days, rounded up.
+- `natural_disaster_activate_family_chain_mission`: `natural_disaster_chain_mission_extension` converts `chain_due_date - global.date` to days before subtracting `chain_mission_deadline_offset_days`.
+- `natural_disaster_apply_state_disruption`: `natural_disaster_modifier_expiry`, which is stored but not read.
+- `natural_disaster_achievement_begin_maximum_barrage`: `achievement_nd_barrage_expiry_date`, which `chaosx.nr13.3` compares with `global.date`.
+- `natural_disaster_schedule_warning_and_impact`: after the impact job is reserved, `natural_disaster_schedule_date` (or `natural_disaster_repeat_schedule_date` for a repeat strike) takes the impact job's reserved due date and the abnormal history row is refreshed, so the card, the window, and the impact agree when a reservation moved the impact.
+- `natural_disaster_schedule_reassessment_for_state`: `natural_disaster_next_reassessment` is the reassessment job's reserved due date.
+- `natural_disaster_configure_scheduled_state` and `natural_disaster_configure_repeated_impact` call the helper instead of repeating the conversion inline.
+- `natural_disaster_prepare_gui_urgency_score`: an unused default that added raw days to `global.date` is removed; the live-date branch already converts back to days.
+
+These consumers are unchanged and correct once their inputs are real dates: the `due <= global.date` selection in `natural_disaster_process_due_job`, `natural_disaster_release_job_day`, `natural_disaster_chain_due_date > global.date` in the transfer path, the earliest-due chain refill (`chain_due_sentinel = 100000` stays far above date values near 607 to 650), the report snapshot dates, and every `GetDateStringNoHour` consumer.
+
+Window Report and Chain milestones: `natural_disaster_report_due_date` and `natural_disaster_chain_due_date` copy the reserved job due date, so the history arrays, the GUI view arrays, the milestone tooltips, the timeline lines, and the report follow-up line print real dates without a GUI change.
+
+Localisation: `natural_disaster.gui.timeline.with_reassessment` held a raw line break inside its quoted value, which the game reported as "Invalid key name at line 568"; the two parts are joined with an escaped `\n`.
+The parent's uncommitted `chaosx.nr13.4.d` colour-code removal in the same file is kept and committed with it at the parent's request.
+
+### Verification
+
+- Numeric check of the helpers against the save values: an enqueue at 607.59371 with a two-day delay stores 607.59419 (1936.1.3) and converts back to 2 days; the 240-day barrage deadline stores 1936.8.29 instead of a year-4675 date; a transfer 30 hours before the due date waits 2 days, 24 hours before waits 1 day, and an overdue job waits 0 days.
+- HOI4 MCP gap: `hoi4.event_inspect` `state_flow` on `natural_disaster_job_due_date_entries` and on `achievement_nd_barrage_expiry_date` returned `ARTIFACT_STORAGE_LIMIT` for workspace `mod_chaos_redux_ea3b2d67c2c0`, so this change has no MCP event evidence; source review and the save inspection do not replace it.
+
+### Same pattern elsewhere (not edited)
+
+A repository scan for `set_variable = { X = global.date }` followed within five lines by `add_to_variable = { X = <day count> }` found the same candidate mistake outside Event 013.
+Examples are `event021_settlement_deadline`, `random_civil_war_sponsor_commitment_until`, and `event021_mediation_until` in `common/scripted_effects/021_random_civil_war_decision_effects.txt`, with further sites in `021_random_civil_war_effects.txt`, `021_random_civil_war_parent_effects.txt`, and `021_random_civil_war_evidence_effects.txt`.
+Other files with hits belong to Events 006, 014, 018, 019, 020, 027, 029, 031, 032, 033, and 042 and to the famine, migration, humanitarian corridor, and condemnation sanction systems.
+A site is harmful only where its value is compared with `global.date`, printed as a date, or turned back into a `days =` delay, so each owner should check the consumers.
+
+### Live retest checklist
+
+- Launch scenario #007 Disaster Barrage at maximum intensity: warnings appear on their warning day, impacts strike on the window's "Impact due" date, and reports arrive within the report delay.
+- The path window shows 1936 dates for the Due, Report, Chain, and Review milestones, and the card's scheduled impact matches the day the impact lands.
+- A forecast follow-up arrives on its Chain date, and its chain mission ends `chain_mission_deadline_offset_days` before that date.
+- Recovery reassessments fire on the Review date.
+- A state with a queued job that changes controller still delivers the job to the new controller on or after its due date.
+- The timeline tooltip with a reassessment shows two lines, and the line 568 startup error is gone.

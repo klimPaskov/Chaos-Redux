@@ -1382,8 +1382,12 @@ natural_disaster_resilience = {
 }
 
 # Date variables count one game hour as 0.00001 (Data structures wiki, Game
-# variables: date). Day offsets are converted through these two integers so no
-# five-decimal literal is needed.
+# variables: date). Day offsets are converted through these integers so no
+# five-decimal literal is needed. Every stored Event 013 due date, expiry, and
+# reassessment date uses this encoding so it compares directly with global.date.
+# whole_day_ceiling_hours is one hour less than a day: adding it before the
+# whole-day division rounds a partial day up, so a delayed worker never wakes
+# before the due date it serves.
 natural_disaster_date = {
 	schema = {
 		any_key = yes
@@ -1392,6 +1396,8 @@ natural_disaster_date = {
 
 	hours_per_day = 24
 	hours_per_date_unit = 100000
+	whole_day_ceiling_hours = 23
+	job_reservation_step_days = 1
 }
 
 natural_disaster_gui = {

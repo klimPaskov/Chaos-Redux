@@ -1717,8 +1717,41 @@ natural_disaster_resolve_sequence_count = {
 # ============================================================================
 # PERSISTENT DELAYED JOB QUEUE
 # ============================================================================
+# Stored due dates use the global.date encoding (one hour = 0.00001), so they
+# compare directly with global.date and print through GetDateString. Day
+# counts are converted with the two helpers below before they touch a date,
+# and date differences are converted back before they feed days = ... fields.
+
+# Any scope. Converts the day count held in temp variable
+# natural_disaster_date_offset, in place, into a date offset that can be added
+# to global.date or to a stored Event 013 date.
+natural_disaster_convert_days_to_date_offset = {
+	multiply_temp_variable = { natural_disaster_date_offset = constant:natural_disaster_date.hours_per_day }
+	divide_temp_variable = { natural_disaster_date_offset = constant:natural_disaster_date.hours_per_date_unit }
+}
+
+# Any scope. Converts the date difference held in temp variable
+# natural_disaster_date_offset (a stored date minus global.date), in place,
+# into whole days rounded up and never below zero, so a delayed event that
+# waits that many days fires on or after the stored date.
+natural_disaster_convert_date_offset_to_days = {
+	multiply_temp_variable = { natural_disaster_date_offset = constant:natural_disaster_date.hours_per_date_unit }
+	round_temp_variable = natural_disaster_date_offset
+	add_to_temp_variable = { natural_disaster_date_offset = constant:natural_disaster_date.whole_day_ceiling_hours }
+	set_temp_variable = { natural_disaster_date_offset_remainder = natural_disaster_date_offset }
+	modulo_temp_variable = { var = natural_disaster_date_offset_remainder value = constant:natural_disaster_date.hours_per_day }
+	subtract_from_temp_variable = { natural_disaster_date_offset = natural_disaster_date_offset_remainder }
+	divide_temp_variable = { natural_disaster_date_offset = constant:natural_disaster_date.hours_per_day }
+	clamp_temp_variable = {
+		var = natural_disaster_date_offset
+		min = 0
+	}
+}
 
 natural_disaster_reserve_job_day = {
+	set_temp_variable = { natural_disaster_date_offset = constant:natural_disaster_date.job_reservation_step_days }
+	natural_disaster_convert_days_to_date_offset = yes
+	set_temp_variable = { natural_disaster_job_reservation_step = natural_disaster_date_offset }
 	set_temp_variable = { natural_disaster_job_due_date = natural_disaster_job_desired_due_date }
 	set_temp_variable = { natural_disaster_job_day_conflict = 1 }
 	while_loop_effect = {
@@ -1746,7 +1779,7 @@ natural_disaster_reserve_job_day = {
 		}
 		if = {
 			limit = { check_variable = { natural_disaster_job_day_conflict > 0 } }
-			add_to_temp_variable = { natural_disaster_job_due_date = 1 }
+			add_to_temp_variable = { natural_disaster_job_due_date = natural_disaster_job_reservation_step }
 		}
 	}
 	add_to_array = {
@@ -1867,12 +1900,16 @@ natural_disaster_enqueue_state_job = {
 	set_temp_variable = { natural_disaster_job_skyfall_variant_snapshot = constant:natural_disaster_skyfall_variant.none }
 	set_temp_variable = { natural_disaster_job_path_basin_snapshot = constant:natural_disaster_path_basin.none }
 	natural_disaster_prepare_job_outcome_snapshot = yes
+	set_temp_variable = { natural_disaster_date_offset = natural_disaster_job_delay_days }
+	natural_disaster_convert_days_to_date_offset = yes
 	set_temp_variable = { natural_disaster_job_desired_due_date = global.date }
-	add_to_temp_variable = { natural_disaster_job_desired_due_date = natural_disaster_job_delay_days }
+	add_to_temp_variable = { natural_disaster_job_desired_due_date = natural_disaster_date_offset }
 	set_temp_variable = { natural_disaster_job_due_date = natural_disaster_job_desired_due_date }
 	natural_disaster_reserve_job_day = yes
-	set_temp_variable = { natural_disaster_job_effective_delay = natural_disaster_job_due_date }
-	subtract_from_temp_variable = { natural_disaster_job_effective_delay = global.date }
+	set_temp_variable = { natural_disaster_date_offset = natural_disaster_job_due_date }
+	subtract_from_temp_variable = { natural_disaster_date_offset = global.date }
+	natural_disaster_convert_date_offset_to_days = yes
+	set_temp_variable = { natural_disaster_job_effective_delay = natural_disaster_date_offset }
 	clamp_temp_variable = {
 		var = natural_disaster_job_effective_delay
 		min = constant:natural_disaster_threshold.minimum_job_delay_days
@@ -3695,10 +3732,9 @@ natural_disaster_configure_scheduled_state = {
 		clr_state_flag = natural_disaster_event012_weaponisation_pending
 		clear_variable = natural_disaster_event012_weaponisation_sequence_id
 	}
-	# Display date only; the delayed job queue keeps its own day counts.
+	# Display date; the queued impact job stores its own reserved due date.
 	set_temp_variable = { natural_disaster_date_offset = natural_disaster_schedule_delay }
-	multiply_temp_variable = { natural_disaster_date_offset = constant:natural_disaster_date.hours_per_day }
-	divide_temp_variable = { natural_disaster_date_offset = constant:natural_disaster_date.hours_per_date_unit }
+	natural_disaster_convert_days_to_date_offset = yes
 	set_variable = { natural_disaster_schedule_date = global.date }
 	add_to_variable = { natural_disaster_schedule_date = natural_disaster_date_offset }
 	set_variable = { natural_disaster_card_state = constant:natural_disaster_card_state.warning }
@@ -3805,8 +3841,7 @@ natural_disaster_configure_repeated_impact = {
 	set_variable = { natural_disaster_repeat_supply_scale = natural_disaster_call_supply_scale }
 	set_variable = { natural_disaster_repeat_caller_country = ROOT }
 	set_temp_variable = { natural_disaster_date_offset = natural_disaster_schedule_delay }
-	multiply_temp_variable = { natural_disaster_date_offset = constant:natural_disaster_date.hours_per_day }
-	divide_temp_variable = { natural_disaster_date_offset = constant:natural_disaster_date.hours_per_date_unit }
+	natural_disaster_convert_days_to_date_offset = yes
 	set_variable = { natural_disaster_repeat_schedule_date = global.date }
 	add_to_variable = { natural_disaster_repeat_schedule_date = natural_disaster_date_offset }
 	set_state_flag = natural_disaster_repeat_impact_scheduled
@@ -3888,6 +3923,16 @@ natural_disaster_schedule_warning_and_impact = {
 		set_temp_variable = { natural_disaster_job_type = constant:natural_disaster_job_type.impact }
 		set_temp_variable = { natural_disaster_job_delay_days = natural_disaster_schedule_delay }
 		natural_disaster_enqueue_state_job = yes
+		# A same-sequence job may already hold that day, so the impact can move
+		# to a later free day; the card shows the date the impact job holds.
+		if = {
+			limit = { check_variable = { natural_disaster_repeat_scheduled > 0 } }
+			set_variable = { natural_disaster_repeat_schedule_date = natural_disaster_job_due_date }
+		}
+		else = {
+			set_variable = { natural_disaster_schedule_date = natural_disaster_job_due_date }
+			natural_disaster_update_abnormal_history_record = yes
+		}
 	}
 }
 
@@ -5526,8 +5571,10 @@ natural_disaster_apply_state_disruption = {
 	set_variable = { natural_disaster_mod_repair = nd_state_mod_repair }
 	set_variable = { natural_disaster_mod_resources = nd_state_mod_resources }
 	natural_disaster_apply_family_disruption_modifier = yes
+	set_temp_variable = { natural_disaster_date_offset = nd_state_mod_days }
+	natural_disaster_convert_days_to_date_offset = yes
 	set_variable = { natural_disaster_modifier_expiry = global.date }
-	add_to_variable = { natural_disaster_modifier_expiry = nd_state_mod_days }
+	add_to_variable = { natural_disaster_modifier_expiry = natural_disaster_date_offset }
 }
 
 # State scope. Chooses the exact causal route listed by the expanded family
@@ -6667,8 +6714,10 @@ natural_disaster_activate_family_chain_mission = {
 		}
 		set_country_flag = natural_disaster_chain_mission_active
 		set_variable = { natural_disaster_chain_mission_state = PREV }
-		set_temp_variable = { natural_disaster_chain_mission_extension = PREV.natural_disaster_chain_due_date }
-		subtract_from_temp_variable = { natural_disaster_chain_mission_extension = global.date }
+		set_temp_variable = { natural_disaster_date_offset = PREV.natural_disaster_chain_due_date }
+		subtract_from_temp_variable = { natural_disaster_date_offset = global.date }
+		natural_disaster_convert_date_offset_to_days = yes
+		set_temp_variable = { natural_disaster_chain_mission_extension = natural_disaster_date_offset }
 		subtract_from_temp_variable = { natural_disaster_chain_mission_extension = constant:natural_disaster_aftermath.chain_mission_deadline_offset_days }
 		if = {
 			limit = { check_variable = { natural_disaster_chain_mission_extension < 0 } }
@@ -7303,14 +7352,10 @@ natural_disaster_release_special_state_missions = {
 }
 
 natural_disaster_schedule_reassessment_for_state = {
-	set_temp_variable = { natural_disaster_date_offset = natural_disaster_reassessment_delay }
-	multiply_temp_variable = { natural_disaster_date_offset = constant:natural_disaster_date.hours_per_day }
-	divide_temp_variable = { natural_disaster_date_offset = constant:natural_disaster_date.hours_per_date_unit }
-	set_variable = { natural_disaster_next_reassessment = global.date }
-	add_to_variable = { natural_disaster_next_reassessment = natural_disaster_date_offset }
 	set_temp_variable = { natural_disaster_job_type = constant:natural_disaster_job_type.reassessment }
 	set_temp_variable = { natural_disaster_job_delay_days = natural_disaster_reassessment_delay }
 	natural_disaster_enqueue_state_job = yes
+	set_variable = { natural_disaster_next_reassessment = natural_disaster_job_due_date }
 }
 
 # State scope. Commits the already selected presentation state.
@@ -7608,12 +7653,10 @@ natural_disaster_transfer_pending_jobs_for_state = {
 			remove_from_array = { array = natural_disaster_job_origin_medium_entries index = natural_disaster_transfer_job_index }
 			remove_from_array = { array = natural_disaster_job_skyfall_variant_entries index = natural_disaster_transfer_job_index }
 			remove_from_array = { array = natural_disaster_job_path_basin_entries index = natural_disaster_transfer_job_index }
-			set_temp_variable = { natural_disaster_transfer_job_delay = natural_disaster_transfer_job_due_date }
-			subtract_from_temp_variable = { natural_disaster_transfer_job_delay = global.date }
-			if = {
-				limit = { check_variable = { natural_disaster_transfer_job_delay < 0 } }
-				set_temp_variable = { natural_disaster_transfer_job_delay = 0 }
-			}
+			set_temp_variable = { natural_disaster_date_offset = natural_disaster_transfer_job_due_date }
+			subtract_from_temp_variable = { natural_disaster_date_offset = global.date }
+			natural_disaster_convert_date_offset_to_days = yes
+			set_temp_variable = { natural_disaster_transfer_job_delay = natural_disaster_date_offset }
 			event_target:natural_disaster_new_responsible_country = {
 				add_to_array = { array = natural_disaster_job_target_state_entries value = event_target:natural_disaster_transfer_state }
 				add_to_array = { array = natural_disaster_job_type_entries value = natural_disaster_transfer_job_type }
@@ -10844,8 +10887,10 @@ natural_disaster_achievement_begin_maximum_barrage = {
 	}
 	add_to_variable = { achievement_nd_barrage_attempt_id = 1 }
 	set_temp_variable = { nd_barrage_expiry_days = constant:natural_disaster_sequence.season_expiry_days }
+	set_temp_variable = { natural_disaster_date_offset = nd_barrage_expiry_days }
+	natural_disaster_convert_days_to_date_offset = yes
 	set_variable = { achievement_nd_barrage_expiry_date = global.date }
-	add_to_variable = { achievement_nd_barrage_expiry_date = nd_barrage_expiry_days }
+	add_to_variable = { achievement_nd_barrage_expiry_date = natural_disaster_date_offset }
 	country_event = { id = chaosx.nr13.3 days = nd_barrage_expiry_days }
 	natural_disaster_achievement_initialize_barrage_routes = yes
 	natural_disaster_achievement_check_operational_state = yes
@@ -11407,8 +11452,6 @@ natural_disaster_prepare_gui_urgency_score = {
 	set_temp_variable = { natural_disaster_gui_severity_urgency = global.natural_disaster_abnormal_history_severity_entries^natural_disaster_gui_candidate_record_index }
 	multiply_temp_variable = { natural_disaster_gui_severity_urgency = constant:natural_disaster_gui.urgency_severity_weight }
 	add_to_temp_variable = { natural_disaster_gui_candidate_urgency = natural_disaster_gui_severity_urgency }
-	set_temp_variable = { natural_disaster_gui_due_date = global.date }
-	add_to_temp_variable = { natural_disaster_gui_due_date = constant:natural_disaster_gui.urgency_date_horizon_days }
 	set_temp_variable = { natural_disaster_gui_has_live_date = 0 }
 	if = {
 		limit = {
