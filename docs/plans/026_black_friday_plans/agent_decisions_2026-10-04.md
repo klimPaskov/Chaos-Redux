@@ -364,3 +364,12 @@ A scan of every Event 005 decision with a custom cost text, following its comple
 No AI weight changes.
 
 Disposition: implemented (source). Live payment of one medium and one low decision, at full price and during a sale, is `needs_live_game`.
+
+## D23. Sale duration wording says the rest of the day
+
+Decision: the sale report, the Event Details status line, the Evolution I body, and the cost-source line say the discount lasts "for the rest of the day" instead of "until the next daily tick".
+
+Basis: the sale expires one day after activation (`active_duration_days`), and player-facing text describes the game, not its update loop.
+The Evo I catalog cell carries the same sentence, so its new wording is queued in `catalog_changes_pending.md`.
+
+Disposition: implemented.
