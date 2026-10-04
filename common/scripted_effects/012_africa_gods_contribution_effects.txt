@@ -1,0 +1,1217 @@
+# Event 012 Gods measured contribution and conduct receipts.
+# COUNTRY helpers; caller initialized bare temporary inputs and '= yes' calls.
+# This file never sends/debits material, closes a contract, launches an event, or scans countries.
+# Parent transaction owners integrate the public API documented in the adjacent markdown.
+# Representation checks use a conservative SOURCE-AUDIT domain, not verified native type limits.
+# Out-of-domain native evidence is retained and never silently floored, capped, or waived.
+
+# COUNTRY: internal native reader, initialized by capture owner. Fuel/manpower in k, all other kinds raw.
+# Armor has independent per-chassis captures, and its scalar slot is unused zero.
+gods_of_africa_read_contribution_native_stock = {
+	set_temp_variable = { gods_of_africa_native_stock = constant:gods_of_africa_value.zero }
+	if = {
+		limit = { check_variable = { gods_of_africa_native_stock_kind = constant:gods_of_africa_contribution_kind.infantry } }
+		set_temp_variable = { gods_of_africa_native_stock = num_equipment@infantry_equipment }
+	}
+	else_if = {
+		limit = { check_variable = { gods_of_africa_native_stock_kind = constant:gods_of_africa_contribution_kind.support } }
+		set_temp_variable = { gods_of_africa_native_stock = num_equipment@support_equipment }
+	}
+	else_if = {
+		limit = { check_variable = { gods_of_africa_native_stock_kind = constant:gods_of_africa_contribution_kind.trucks } }
+		set_temp_variable = { gods_of_africa_native_stock = num_equipment@motorized_equipment }
+	}
+	else_if = {
+		limit = { check_variable = { gods_of_africa_native_stock_kind = constant:gods_of_africa_contribution_kind.artillery } }
+		set_temp_variable = { gods_of_africa_native_stock = num_equipment@artillery_equipment }
+	}
+	else_if = {
+		limit = { check_variable = { gods_of_africa_native_stock_kind = constant:gods_of_africa_contribution_kind.armor } }
+		# Never aggregate full chassis pools. The capture owner retains each chassis separately.
+		set_temp_variable = { gods_of_africa_native_stock = constant:gods_of_africa_value.zero }
+	}
+	else_if = {
+		limit = { check_variable = { gods_of_africa_native_stock_kind = constant:gods_of_africa_contribution_kind.aircraft } }
+		set_temp_variable = { gods_of_africa_native_stock = num_equipment@fighter_equipment_1 }
+	}
+	else_if = {
+		limit = { check_variable = { gods_of_africa_native_stock_kind = constant:gods_of_africa_contribution_kind.fuel } }
+		set_temp_variable = { gods_of_africa_native_stock = fuel_k }
+	}
+	else_if = {
+		limit = { check_variable = { gods_of_africa_native_stock_kind = constant:gods_of_africa_contribution_kind.convoys } }
+		set_temp_variable = { gods_of_africa_native_stock = num_equipment@convoy_1 }
+	}
+	else_if = {
+		limit = { check_variable = { gods_of_africa_native_stock_kind = constant:gods_of_africa_contribution_kind.trains } }
+		set_temp_variable = { gods_of_africa_native_stock = num_equipment@train_equipment }
+	}
+	else_if = {
+		limit = { check_variable = { gods_of_africa_native_stock_kind = constant:gods_of_africa_contribution_kind.manpower } }
+		set_temp_variable = { gods_of_africa_native_stock = manpower_k }
+	}
+	else_if = {
+		limit = { check_variable = { gods_of_africa_native_stock_kind = constant:gods_of_africa_contribution_kind.emergency_pp } }
+		set_temp_variable = { gods_of_africa_native_stock = political_power }
+	}
+}
+
+
+# PARTICIPANT private armor snapshots. COUNTRY raw num_equipment only.
+gods_of_africa_capture_contribution_armor_before = {
+	if = {
+		limit = { check_variable = { gods_of_africa_material_transfer_receipt_kind = constant:gods_of_africa_contribution_kind.armor } }
+		set_variable = { gods_of_africa_material_transfer_source_light_before = num_equipment@light_tank_chassis }
+		set_variable = { gods_of_africa_material_transfer_source_medium_before = num_equipment@medium_tank_chassis }
+		set_variable = { gods_of_africa_material_transfer_source_heavy_before = num_equipment@heavy_tank_chassis }
+		set_variable = { gods_of_africa_material_transfer_source_modern_before = num_equipment@modern_tank_chassis }
+		set_variable = { gods_of_africa_material_transfer_source_super_heavy_before = num_equipment@super_heavy_tank_chassis }
+		set_variable = { gods_of_africa_material_transfer_source_amphibious_before = num_equipment@amphibious_tank_chassis }
+		var:gods_of_africa_material_transfer_receipt_receiver = {
+			set_temp_variable = { gods_of_africa_native_armor_snapshot = num_equipment@light_tank_chassis }
+			event_target:gods_of_africa_receipt_source = { set_variable = { gods_of_africa_material_transfer_receiver_light_before = gods_of_africa_native_armor_snapshot } }
+			set_temp_variable = { gods_of_africa_native_armor_snapshot = num_equipment@medium_tank_chassis }
+			event_target:gods_of_africa_receipt_source = { set_variable = { gods_of_africa_material_transfer_receiver_medium_before = gods_of_africa_native_armor_snapshot } }
+			set_temp_variable = { gods_of_africa_native_armor_snapshot = num_equipment@heavy_tank_chassis }
+			event_target:gods_of_africa_receipt_source = { set_variable = { gods_of_africa_material_transfer_receiver_heavy_before = gods_of_africa_native_armor_snapshot } }
+			set_temp_variable = { gods_of_africa_native_armor_snapshot = num_equipment@modern_tank_chassis }
+			event_target:gods_of_africa_receipt_source = { set_variable = { gods_of_africa_material_transfer_receiver_modern_before = gods_of_africa_native_armor_snapshot } }
+			set_temp_variable = { gods_of_africa_native_armor_snapshot = num_equipment@super_heavy_tank_chassis }
+			event_target:gods_of_africa_receipt_source = { set_variable = { gods_of_africa_material_transfer_receiver_super_heavy_before = gods_of_africa_native_armor_snapshot } }
+			set_temp_variable = { gods_of_africa_native_armor_snapshot = num_equipment@amphibious_tank_chassis }
+			event_target:gods_of_africa_receipt_source = { set_variable = { gods_of_africa_material_transfer_receiver_amphibious_before = gods_of_africa_native_armor_snapshot } }
+		}
+	}
+}
+
+gods_of_africa_capture_contribution_armor_after = {
+	if = {
+		limit = { check_variable = { gods_of_africa_material_transfer_receipt_kind = constant:gods_of_africa_contribution_kind.armor } }
+		set_variable = { gods_of_africa_material_transfer_source_light_after = num_equipment@light_tank_chassis }
+		set_variable = { gods_of_africa_material_transfer_source_medium_after = num_equipment@medium_tank_chassis }
+		set_variable = { gods_of_africa_material_transfer_source_heavy_after = num_equipment@heavy_tank_chassis }
+		set_variable = { gods_of_africa_material_transfer_source_modern_after = num_equipment@modern_tank_chassis }
+		set_variable = { gods_of_africa_material_transfer_source_super_heavy_after = num_equipment@super_heavy_tank_chassis }
+		set_variable = { gods_of_africa_material_transfer_source_amphibious_after = num_equipment@amphibious_tank_chassis }
+		var:gods_of_africa_material_transfer_receipt_receiver = {
+			set_temp_variable = { gods_of_africa_native_armor_snapshot = num_equipment@light_tank_chassis }
+			event_target:gods_of_africa_receipt_source = { set_variable = { gods_of_africa_material_transfer_receiver_light_after = gods_of_africa_native_armor_snapshot } }
+			set_temp_variable = { gods_of_africa_native_armor_snapshot = num_equipment@medium_tank_chassis }
+			event_target:gods_of_africa_receipt_source = { set_variable = { gods_of_africa_material_transfer_receiver_medium_after = gods_of_africa_native_armor_snapshot } }
+			set_temp_variable = { gods_of_africa_native_armor_snapshot = num_equipment@heavy_tank_chassis }
+			event_target:gods_of_africa_receipt_source = { set_variable = { gods_of_africa_material_transfer_receiver_heavy_after = gods_of_africa_native_armor_snapshot } }
+			set_temp_variable = { gods_of_africa_native_armor_snapshot = num_equipment@modern_tank_chassis }
+			event_target:gods_of_africa_receipt_source = { set_variable = { gods_of_africa_material_transfer_receiver_modern_after = gods_of_africa_native_armor_snapshot } }
+			set_temp_variable = { gods_of_africa_native_armor_snapshot = num_equipment@super_heavy_tank_chassis }
+			event_target:gods_of_africa_receipt_source = { set_variable = { gods_of_africa_material_transfer_receiver_super_heavy_after = gods_of_africa_native_armor_snapshot } }
+			set_temp_variable = { gods_of_africa_native_armor_snapshot = num_equipment@amphibious_tank_chassis }
+			event_target:gods_of_africa_receipt_source = { set_variable = { gods_of_africa_material_transfer_receiver_amphibious_after = gods_of_africa_native_armor_snapshot } }
+		}
+	}
+}
+
+# PARTICIPANT: differences first, bounded aggregation with explicit excess evidence.
+gods_of_africa_measure_contribution_armor_after = {
+	if = {
+		limit = { check_variable = { gods_of_africa_material_transfer_receipt_kind = constant:gods_of_africa_contribution_kind.armor } }
+		clr_country_flag = gods_of_africa_material_transfer_armor_excess
+		set_variable = { gods_of_africa_material_transfer_source_debit = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_material_transfer_source_light_delta = gods_of_africa_material_transfer_source_light_before }
+		subtract_from_variable = { gods_of_africa_material_transfer_source_light_delta = gods_of_africa_material_transfer_source_light_after }
+		clamp_variable = { var = gods_of_africa_material_transfer_source_light_delta min = constant:gods_of_africa_value.zero }
+		set_temp_variable = { gods_of_africa_native_armor_room = gods_of_africa_material_transfer_receipt_requested }
+		subtract_from_temp_variable = { gods_of_africa_native_armor_room = gods_of_africa_material_transfer_source_debit }
+		if = {
+			limit = { check_variable = { gods_of_africa_material_transfer_source_light_delta > gods_of_africa_native_armor_room } }
+			set_country_flag = gods_of_africa_material_transfer_armor_excess
+		}
+		set_temp_variable = { gods_of_africa_native_armor_actual = gods_of_africa_material_transfer_source_light_delta }
+		clamp_temp_variable = { var = gods_of_africa_native_armor_actual max = gods_of_africa_native_armor_room }
+		add_to_variable = { gods_of_africa_material_transfer_source_debit = gods_of_africa_native_armor_actual }
+		set_variable = { gods_of_africa_material_transfer_source_medium_delta = gods_of_africa_material_transfer_source_medium_before }
+		subtract_from_variable = { gods_of_africa_material_transfer_source_medium_delta = gods_of_africa_material_transfer_source_medium_after }
+		clamp_variable = { var = gods_of_africa_material_transfer_source_medium_delta min = constant:gods_of_africa_value.zero }
+		set_temp_variable = { gods_of_africa_native_armor_room = gods_of_africa_material_transfer_receipt_requested }
+		subtract_from_temp_variable = { gods_of_africa_native_armor_room = gods_of_africa_material_transfer_source_debit }
+		if = {
+			limit = { check_variable = { gods_of_africa_material_transfer_source_medium_delta > gods_of_africa_native_armor_room } }
+			set_country_flag = gods_of_africa_material_transfer_armor_excess
+		}
+		set_temp_variable = { gods_of_africa_native_armor_actual = gods_of_africa_material_transfer_source_medium_delta }
+		clamp_temp_variable = { var = gods_of_africa_native_armor_actual max = gods_of_africa_native_armor_room }
+		add_to_variable = { gods_of_africa_material_transfer_source_debit = gods_of_africa_native_armor_actual }
+		set_variable = { gods_of_africa_material_transfer_source_heavy_delta = gods_of_africa_material_transfer_source_heavy_before }
+		subtract_from_variable = { gods_of_africa_material_transfer_source_heavy_delta = gods_of_africa_material_transfer_source_heavy_after }
+		clamp_variable = { var = gods_of_africa_material_transfer_source_heavy_delta min = constant:gods_of_africa_value.zero }
+		set_temp_variable = { gods_of_africa_native_armor_room = gods_of_africa_material_transfer_receipt_requested }
+		subtract_from_temp_variable = { gods_of_africa_native_armor_room = gods_of_africa_material_transfer_source_debit }
+		if = {
+			limit = { check_variable = { gods_of_africa_material_transfer_source_heavy_delta > gods_of_africa_native_armor_room } }
+			set_country_flag = gods_of_africa_material_transfer_armor_excess
+		}
+		set_temp_variable = { gods_of_africa_native_armor_actual = gods_of_africa_material_transfer_source_heavy_delta }
+		clamp_temp_variable = { var = gods_of_africa_native_armor_actual max = gods_of_africa_native_armor_room }
+		add_to_variable = { gods_of_africa_material_transfer_source_debit = gods_of_africa_native_armor_actual }
+		set_variable = { gods_of_africa_material_transfer_source_modern_delta = gods_of_africa_material_transfer_source_modern_before }
+		subtract_from_variable = { gods_of_africa_material_transfer_source_modern_delta = gods_of_africa_material_transfer_source_modern_after }
+		clamp_variable = { var = gods_of_africa_material_transfer_source_modern_delta min = constant:gods_of_africa_value.zero }
+		set_temp_variable = { gods_of_africa_native_armor_room = gods_of_africa_material_transfer_receipt_requested }
+		subtract_from_temp_variable = { gods_of_africa_native_armor_room = gods_of_africa_material_transfer_source_debit }
+		if = {
+			limit = { check_variable = { gods_of_africa_material_transfer_source_modern_delta > gods_of_africa_native_armor_room } }
+			set_country_flag = gods_of_africa_material_transfer_armor_excess
+		}
+		set_temp_variable = { gods_of_africa_native_armor_actual = gods_of_africa_material_transfer_source_modern_delta }
+		clamp_temp_variable = { var = gods_of_africa_native_armor_actual max = gods_of_africa_native_armor_room }
+		add_to_variable = { gods_of_africa_material_transfer_source_debit = gods_of_africa_native_armor_actual }
+		set_variable = { gods_of_africa_material_transfer_source_super_heavy_delta = gods_of_africa_material_transfer_source_super_heavy_before }
+		subtract_from_variable = { gods_of_africa_material_transfer_source_super_heavy_delta = gods_of_africa_material_transfer_source_super_heavy_after }
+		clamp_variable = { var = gods_of_africa_material_transfer_source_super_heavy_delta min = constant:gods_of_africa_value.zero }
+		set_temp_variable = { gods_of_africa_native_armor_room = gods_of_africa_material_transfer_receipt_requested }
+		subtract_from_temp_variable = { gods_of_africa_native_armor_room = gods_of_africa_material_transfer_source_debit }
+		if = {
+			limit = { check_variable = { gods_of_africa_material_transfer_source_super_heavy_delta > gods_of_africa_native_armor_room } }
+			set_country_flag = gods_of_africa_material_transfer_armor_excess
+		}
+		set_temp_variable = { gods_of_africa_native_armor_actual = gods_of_africa_material_transfer_source_super_heavy_delta }
+		clamp_temp_variable = { var = gods_of_africa_native_armor_actual max = gods_of_africa_native_armor_room }
+		add_to_variable = { gods_of_africa_material_transfer_source_debit = gods_of_africa_native_armor_actual }
+		set_variable = { gods_of_africa_material_transfer_source_amphibious_delta = gods_of_africa_material_transfer_source_amphibious_before }
+		subtract_from_variable = { gods_of_africa_material_transfer_source_amphibious_delta = gods_of_africa_material_transfer_source_amphibious_after }
+		clamp_variable = { var = gods_of_africa_material_transfer_source_amphibious_delta min = constant:gods_of_africa_value.zero }
+		set_temp_variable = { gods_of_africa_native_armor_room = gods_of_africa_material_transfer_receipt_requested }
+		subtract_from_temp_variable = { gods_of_africa_native_armor_room = gods_of_africa_material_transfer_source_debit }
+		if = {
+			limit = { check_variable = { gods_of_africa_material_transfer_source_amphibious_delta > gods_of_africa_native_armor_room } }
+			set_country_flag = gods_of_africa_material_transfer_armor_excess
+		}
+		set_temp_variable = { gods_of_africa_native_armor_actual = gods_of_africa_material_transfer_source_amphibious_delta }
+		clamp_temp_variable = { var = gods_of_africa_native_armor_actual max = gods_of_africa_native_armor_room }
+		add_to_variable = { gods_of_africa_material_transfer_source_debit = gods_of_africa_native_armor_actual }
+		set_variable = { gods_of_africa_material_transfer_receiver_credit = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_material_transfer_receiver_light_delta = gods_of_africa_material_transfer_receiver_light_after }
+		subtract_from_variable = { gods_of_africa_material_transfer_receiver_light_delta = gods_of_africa_material_transfer_receiver_light_before }
+		clamp_variable = { var = gods_of_africa_material_transfer_receiver_light_delta min = constant:gods_of_africa_value.zero }
+		set_temp_variable = { gods_of_africa_native_armor_room = gods_of_africa_material_transfer_receipt_requested }
+		subtract_from_temp_variable = { gods_of_africa_native_armor_room = gods_of_africa_material_transfer_receiver_credit }
+		if = {
+			limit = { check_variable = { gods_of_africa_material_transfer_receiver_light_delta > gods_of_africa_native_armor_room } }
+			set_country_flag = gods_of_africa_material_transfer_armor_excess
+		}
+		set_temp_variable = { gods_of_africa_native_armor_actual = gods_of_africa_material_transfer_receiver_light_delta }
+		clamp_temp_variable = { var = gods_of_africa_native_armor_actual max = gods_of_africa_native_armor_room }
+		add_to_variable = { gods_of_africa_material_transfer_receiver_credit = gods_of_africa_native_armor_actual }
+		set_variable = { gods_of_africa_material_transfer_receiver_medium_delta = gods_of_africa_material_transfer_receiver_medium_after }
+		subtract_from_variable = { gods_of_africa_material_transfer_receiver_medium_delta = gods_of_africa_material_transfer_receiver_medium_before }
+		clamp_variable = { var = gods_of_africa_material_transfer_receiver_medium_delta min = constant:gods_of_africa_value.zero }
+		set_temp_variable = { gods_of_africa_native_armor_room = gods_of_africa_material_transfer_receipt_requested }
+		subtract_from_temp_variable = { gods_of_africa_native_armor_room = gods_of_africa_material_transfer_receiver_credit }
+		if = {
+			limit = { check_variable = { gods_of_africa_material_transfer_receiver_medium_delta > gods_of_africa_native_armor_room } }
+			set_country_flag = gods_of_africa_material_transfer_armor_excess
+		}
+		set_temp_variable = { gods_of_africa_native_armor_actual = gods_of_africa_material_transfer_receiver_medium_delta }
+		clamp_temp_variable = { var = gods_of_africa_native_armor_actual max = gods_of_africa_native_armor_room }
+		add_to_variable = { gods_of_africa_material_transfer_receiver_credit = gods_of_africa_native_armor_actual }
+		set_variable = { gods_of_africa_material_transfer_receiver_heavy_delta = gods_of_africa_material_transfer_receiver_heavy_after }
+		subtract_from_variable = { gods_of_africa_material_transfer_receiver_heavy_delta = gods_of_africa_material_transfer_receiver_heavy_before }
+		clamp_variable = { var = gods_of_africa_material_transfer_receiver_heavy_delta min = constant:gods_of_africa_value.zero }
+		set_temp_variable = { gods_of_africa_native_armor_room = gods_of_africa_material_transfer_receipt_requested }
+		subtract_from_temp_variable = { gods_of_africa_native_armor_room = gods_of_africa_material_transfer_receiver_credit }
+		if = {
+			limit = { check_variable = { gods_of_africa_material_transfer_receiver_heavy_delta > gods_of_africa_native_armor_room } }
+			set_country_flag = gods_of_africa_material_transfer_armor_excess
+		}
+		set_temp_variable = { gods_of_africa_native_armor_actual = gods_of_africa_material_transfer_receiver_heavy_delta }
+		clamp_temp_variable = { var = gods_of_africa_native_armor_actual max = gods_of_africa_native_armor_room }
+		add_to_variable = { gods_of_africa_material_transfer_receiver_credit = gods_of_africa_native_armor_actual }
+		set_variable = { gods_of_africa_material_transfer_receiver_modern_delta = gods_of_africa_material_transfer_receiver_modern_after }
+		subtract_from_variable = { gods_of_africa_material_transfer_receiver_modern_delta = gods_of_africa_material_transfer_receiver_modern_before }
+		clamp_variable = { var = gods_of_africa_material_transfer_receiver_modern_delta min = constant:gods_of_africa_value.zero }
+		set_temp_variable = { gods_of_africa_native_armor_room = gods_of_africa_material_transfer_receipt_requested }
+		subtract_from_temp_variable = { gods_of_africa_native_armor_room = gods_of_africa_material_transfer_receiver_credit }
+		if = {
+			limit = { check_variable = { gods_of_africa_material_transfer_receiver_modern_delta > gods_of_africa_native_armor_room } }
+			set_country_flag = gods_of_africa_material_transfer_armor_excess
+		}
+		set_temp_variable = { gods_of_africa_native_armor_actual = gods_of_africa_material_transfer_receiver_modern_delta }
+		clamp_temp_variable = { var = gods_of_africa_native_armor_actual max = gods_of_africa_native_armor_room }
+		add_to_variable = { gods_of_africa_material_transfer_receiver_credit = gods_of_africa_native_armor_actual }
+		set_variable = { gods_of_africa_material_transfer_receiver_super_heavy_delta = gods_of_africa_material_transfer_receiver_super_heavy_after }
+		subtract_from_variable = { gods_of_africa_material_transfer_receiver_super_heavy_delta = gods_of_africa_material_transfer_receiver_super_heavy_before }
+		clamp_variable = { var = gods_of_africa_material_transfer_receiver_super_heavy_delta min = constant:gods_of_africa_value.zero }
+		set_temp_variable = { gods_of_africa_native_armor_room = gods_of_africa_material_transfer_receipt_requested }
+		subtract_from_temp_variable = { gods_of_africa_native_armor_room = gods_of_africa_material_transfer_receiver_credit }
+		if = {
+			limit = { check_variable = { gods_of_africa_material_transfer_receiver_super_heavy_delta > gods_of_africa_native_armor_room } }
+			set_country_flag = gods_of_africa_material_transfer_armor_excess
+		}
+		set_temp_variable = { gods_of_africa_native_armor_actual = gods_of_africa_material_transfer_receiver_super_heavy_delta }
+		clamp_temp_variable = { var = gods_of_africa_native_armor_actual max = gods_of_africa_native_armor_room }
+		add_to_variable = { gods_of_africa_material_transfer_receiver_credit = gods_of_africa_native_armor_actual }
+		set_variable = { gods_of_africa_material_transfer_receiver_amphibious_delta = gods_of_africa_material_transfer_receiver_amphibious_after }
+		subtract_from_variable = { gods_of_africa_material_transfer_receiver_amphibious_delta = gods_of_africa_material_transfer_receiver_amphibious_before }
+		clamp_variable = { var = gods_of_africa_material_transfer_receiver_amphibious_delta min = constant:gods_of_africa_value.zero }
+		set_temp_variable = { gods_of_africa_native_armor_room = gods_of_africa_material_transfer_receipt_requested }
+		subtract_from_temp_variable = { gods_of_africa_native_armor_room = gods_of_africa_material_transfer_receiver_credit }
+		if = {
+			limit = { check_variable = { gods_of_africa_material_transfer_receiver_amphibious_delta > gods_of_africa_native_armor_room } }
+			set_country_flag = gods_of_africa_material_transfer_armor_excess
+		}
+		set_temp_variable = { gods_of_africa_native_armor_actual = gods_of_africa_material_transfer_receiver_amphibious_delta }
+		clamp_temp_variable = { var = gods_of_africa_native_armor_actual max = gods_of_africa_native_armor_room }
+		add_to_variable = { gods_of_africa_material_transfer_receiver_credit = gods_of_africa_native_armor_actual }
+	}
+}
+
+# HOST: call only at the owned Evolution III activation, never from a global-flag observer.
+gods_of_africa_bind_contribution_campaign = {
+	if = {
+		limit = {
+			check_variable = { gods_of_africa_campaign_activation_owned = constant:gods_of_africa_value.one }
+			has_event_target = africa_host
+			tag = event_target:africa_host
+			exists = yes
+			has_country_flag = africa_host_commit_completed
+			has_country_flag = africa_unifier_host
+			has_variable = africa_host_generation
+			has_variable = africa_origin_host_id
+			has_global_flag = africa_evolution_iii_logged
+			NOT = { has_country_flag = gods_of_africa_final_settlement_committed }
+		}
+		set_variable = { gods_of_africa_contribution_campaign_generation = africa_host_generation }
+		set_variable = { gods_of_africa_contribution_campaign_origin_id = africa_origin_host_id }
+		set_country_flag = gods_of_africa_contribution_campaign_active
+	}
+	set_temp_variable = { gods_of_africa_campaign_activation_owned = constant:gods_of_africa_value.zero }
+}
+
+# PARTICIPANT: issue-time proof of this immutable contract's original emergency band.
+gods_of_africa_freeze_contract_emergency_proof = {
+	if = {
+		limit = {
+			gods_of_africa_contribution_sender_is_current = yes
+			gods_of_africa_contribution_contract_is_current = yes
+			has_variable = gods_of_africa_demand_band
+			NOT = { has_country_flag = gods_of_africa_contract_emergency_proof_frozen }
+		}
+		set_country_flag = gods_of_africa_contract_emergency_proof_frozen
+		clr_country_flag = gods_of_africa_contract_emergency_qualified
+		set_variable = { gods_of_africa_contract_emergency_host = gods_of_africa_demand_host }
+		set_variable = { gods_of_africa_contract_emergency_host_id = gods_of_africa_demand_host_id }
+		set_variable = { gods_of_africa_contract_emergency_generation = gods_of_africa_contract_ledger_generation }
+		set_variable = { gods_of_africa_contract_emergency_origin_id = gods_of_africa_contract_ledger_origin_id }
+		set_variable = { gods_of_africa_contract_emergency_contract_id = gods_of_africa_contract_ledger_id }
+		set_variable = { gods_of_africa_contract_emergency_band = gods_of_africa_demand_band }
+		if = {
+			limit = {
+				check_variable = { gods_of_africa_contract_emergency_band = constant:gods_of_africa_demand.emergency_band }
+				event_target:africa_host = { gods_of_africa_contribution_host_has_emergency_need = yes }
+			}
+			set_country_flag = gods_of_africa_contract_emergency_qualified
+		}
+	}
+}
+
+gods_of_africa_clear_contract_emergency_proof = {
+	clr_country_flag = gods_of_africa_contract_emergency_proof_frozen
+	clr_country_flag = gods_of_africa_contract_emergency_qualified
+	clear_variable = gods_of_africa_contract_emergency_host
+	clear_variable = gods_of_africa_contract_emergency_host_id
+	clear_variable = gods_of_africa_contract_emergency_generation
+	clear_variable = gods_of_africa_contract_emergency_origin_id
+	clear_variable = gods_of_africa_contract_emergency_contract_id
+	clear_variable = gods_of_africa_contract_emergency_band
+}
+
+# PARTICIPANT preflight: only native receiver fuel room, no assumed PP cap.
+# Headroom output is k. Begin preserves the exact native owner request.
+gods_of_africa_preflight_contribution_fuel = {
+	set_variable = { gods_of_africa_contribution_fuel_headroom_k = constant:gods_of_africa_value.zero }
+	if = {
+		limit = { gods_of_africa_contribution_sender_is_current = yes }
+		save_event_target_as = gods_of_africa_receipt_source
+		event_target:africa_host = {
+			set_temp_variable = { gods_of_africa_native_fuel_room = max_fuel_k }
+			subtract_from_temp_variable = { gods_of_africa_native_fuel_room = fuel_k }
+			clamp_temp_variable = { var = gods_of_africa_native_fuel_room min = constant:gods_of_africa_value.zero }
+			event_target:gods_of_africa_receipt_source = {
+				set_variable = { gods_of_africa_contribution_fuel_headroom_k = gods_of_africa_native_fuel_room }
+			}
+		}
+	}
+}
+
+# PARTICIPANT: freeze owner permission and native BEFORE values immediately before transfer.
+gods_of_africa_begin_material_transfer = {
+	clr_country_flag = gods_of_africa_material_transfer_begin_ready
+	clr_country_flag = gods_of_africa_material_transfer_completion_consumed
+	set_temp_variable = { gods_of_africa_contribution_request_fraction = gods_of_africa_contribution_requested }
+	modulo_temp_variable = { gods_of_africa_contribution_request_fraction = constant:gods_of_africa_value.one }
+	clr_country_flag = gods_of_africa_material_transfer_sequence_allocation_unresolved
+	set_temp_variable = { gods_of_africa_contribution_sequence_fraction = gods_of_africa_material_transfer_sequence }
+	modulo_temp_variable = { gods_of_africa_contribution_sequence_fraction = constant:gods_of_africa_value.one }
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = gods_of_africa_material_transfer_sequence }
+				NOT = { check_variable = { gods_of_africa_contribution_sequence_fraction = constant:gods_of_africa_value.zero } }
+				check_variable = { gods_of_africa_material_transfer_sequence < constant:gods_of_africa_value.zero }
+				check_variable = { gods_of_africa_material_transfer_sequence > constant:gods_of_africa_contribution_representation.sequence_preincrement_ceiling }
+			}
+		}
+		set_country_flag = gods_of_africa_material_transfer_sequence_allocation_unresolved
+	}
+
+	if = {
+		limit = {
+			gods_of_africa_contribution_sender_is_current = yes
+			gods_of_africa_contribution_inputs_are_owned = yes
+			has_variable = gods_of_africa_material_transfer_sequence
+			has_variable = gods_of_africa_last_consumed_material_transfer_id
+			check_variable = { gods_of_africa_contribution_sequence_fraction = constant:gods_of_africa_value.zero }
+			check_variable = { var = gods_of_africa_material_transfer_sequence value = constant:gods_of_africa_value.zero compare = greater_than_or_equals }
+			check_variable = { var = gods_of_africa_material_transfer_sequence value = constant:gods_of_africa_contribution_representation.sequence_preincrement_ceiling compare = less_than_or_equals }
+			NOR = {
+				has_country_flag = gods_of_africa_material_transfer_prepared
+				has_country_flag = gods_of_africa_material_transfer_receipt_pending
+			}
+		}
+		clr_country_flag = gods_of_africa_material_transfer_precision_blocked
+		if = {
+			limit = {
+				NOT = { check_variable = { gods_of_africa_contribution_kind = constant:gods_of_africa_contribution_kind.emergency_pp } }
+				NOT = { check_variable = { gods_of_africa_contribution_request_fraction = constant:gods_of_africa_value.zero } }
+			}
+			set_country_flag = gods_of_africa_material_transfer_precision_blocked
+		}
+		clr_country_flag = gods_of_africa_material_transfer_audit_domain_unresolved
+		clr_country_flag = gods_of_africa_material_transfer_full_match
+		clr_country_flag = gods_of_africa_material_transfer_mismatch
+		set_variable = { gods_of_africa_material_transfer_actual_amount = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_material_transfer_source_debit = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_material_transfer_receiver_credit = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_material_transfer_output_kind = gods_of_africa_contribution_kind }
+		set_variable = { gods_of_africa_material_transfer_output_requested = gods_of_africa_contribution_requested }
+		save_event_target_as = gods_of_africa_receipt_source
+		set_variable = { gods_of_africa_material_transfer_receipt_source = THIS }
+		set_variable = { gods_of_africa_material_transfer_receipt_receiver = event_target:africa_host }
+		set_variable = { gods_of_africa_material_transfer_receipt_source_id = THIS.id }
+		set_variable = { gods_of_africa_material_transfer_receipt_receiver_id = event_target:africa_host.id }
+		set_variable = { gods_of_africa_material_transfer_receipt_host_generation = event_target:africa_host.africa_host_generation }
+		set_variable = { gods_of_africa_material_transfer_receipt_origin_id = event_target:africa_host.africa_origin_host_id }
+		if = {
+			limit = { check_variable = { gods_of_africa_contribution_voluntary = constant:gods_of_africa_value.zero } }
+			set_variable = { gods_of_africa_material_transfer_receipt_receiver = gods_of_africa_demand_host }
+			set_variable = { gods_of_africa_material_transfer_receipt_receiver_id = gods_of_africa_demand_host_id }
+			set_variable = { gods_of_africa_material_transfer_receipt_origin_id = gods_of_africa_demand_origin_host_id }
+			set_variable = { gods_of_africa_material_transfer_receipt_host_generation = gods_of_africa_contract_ledger_generation }
+		}
+		set_variable = { gods_of_africa_material_transfer_receipt_contract_id = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_material_transfer_receipt_kind = gods_of_africa_contribution_kind }
+		set_variable = { gods_of_africa_material_transfer_receipt_requested = gods_of_africa_contribution_requested }
+		set_variable = { gods_of_africa_material_transfer_receipt_day = global.num_days }
+		set_variable = { gods_of_africa_material_transfer_receipt_epoch = gods_of_africa_participant_authority_epoch }
+		set_variable = { gods_of_africa_material_transfer_receipt_emit_kind = gods_of_africa_contribution_native_emit_kind }
+		if = {
+			limit = { check_variable = { gods_of_africa_contribution_requested > constant:gods_of_africa_contribution_representation.ceiling } }
+			set_country_flag = gods_of_africa_material_transfer_audit_domain_unresolved
+		}
+		set_variable = { gods_of_africa_material_transfer_receipt_requested_native = gods_of_africa_contribution_requested }
+		if = {
+			limit = {
+				gods_of_africa_contribution_kind_uses_k = yes
+				NOT = { has_country_flag = gods_of_africa_material_transfer_precision_blocked }
+				check_variable = { var = gods_of_africa_material_transfer_receipt_requested value = constant:gods_of_africa_contribution_representation.ceiling compare = less_than_or_equals }
+			}
+			multiply_variable = { gods_of_africa_material_transfer_receipt_requested_native = constant:gods_of_africa_contribution_measure.k_per_native }
+		}
+		set_temp_variable = { gods_of_africa_native_stock_kind = gods_of_africa_contribution_kind }
+		set_temp_variable = { gods_of_africa_native_stock = constant:gods_of_africa_value.zero }
+		gods_of_africa_read_contribution_native_stock = yes
+		set_variable = { gods_of_africa_material_transfer_receipt_source_before = gods_of_africa_native_stock }
+		var:gods_of_africa_material_transfer_receipt_receiver = {
+			gods_of_africa_read_contribution_native_stock = yes
+			event_target:gods_of_africa_receipt_source = {
+				set_variable = { gods_of_africa_material_transfer_receipt_receiver_before = gods_of_africa_native_stock }
+			}
+		}
+		clr_country_flag = gods_of_africa_material_receipt_voluntary
+		clr_country_flag = gods_of_africa_material_receipt_emergency
+		clr_country_flag = gods_of_africa_material_receipt_campaign
+		if = {
+			limit = { check_variable = { gods_of_africa_contribution_voluntary = constant:gods_of_africa_value.one } }
+			set_country_flag = gods_of_africa_material_receipt_voluntary
+		}
+		else = {
+			set_variable = { gods_of_africa_material_transfer_receipt_contract_id = gods_of_africa_contract_ledger_id }
+		}
+		if = {
+			limit = { gods_of_africa_contribution_emergency_is_proven = yes }
+			set_country_flag = gods_of_africa_material_receipt_emergency
+		}
+		if = {
+			limit = {
+				NOT = { check_variable = { gods_of_africa_contribution_kind = constant:gods_of_africa_contribution_kind.emergency_pp } }
+				gods_of_africa_contribution_campaign_is_proven = yes
+			}
+			set_country_flag = gods_of_africa_material_receipt_campaign
+		}
+		gods_of_africa_preflight_contribution_fuel = yes
+		set_temp_variable = { gods_of_africa_native_source_minimum = gods_of_africa_material_transfer_receipt_requested }
+		if = {
+			limit = {
+				has_country_flag = gods_of_africa_material_receipt_voluntary
+				check_variable = { gods_of_africa_material_transfer_receipt_kind = constant:gods_of_africa_contribution_kind.infantry }
+			}
+			set_temp_variable = { gods_of_africa_native_source_minimum = constant:gods_of_africa_contribution_voluntary.infantry_capacity }
+		}
+		gods_of_africa_capture_contribution_armor_before = yes
+		if = {
+			limit = { NOT = { gods_of_africa_contribution_before_reads_are_representable = yes } }
+			set_country_flag = gods_of_africa_material_transfer_audit_domain_unresolved
+		}
+		if = {
+			limit = {
+				gods_of_africa_contribution_native_source_is_sufficient = yes
+				OR = {
+					has_country_flag = gods_of_africa_material_transfer_audit_domain_unresolved
+					has_country_flag = gods_of_africa_material_transfer_precision_blocked
+					NOT = { check_variable = { gods_of_africa_contribution_kind = constant:gods_of_africa_contribution_kind.fuel } }
+					check_variable = { var = gods_of_africa_contribution_fuel_headroom_k value = gods_of_africa_material_transfer_receipt_requested_native compare = greater_than_or_equals }
+				}
+			}
+			# Reserve a unique monotonic ID. Abandoned reservations leave gaps, never reuse.
+			add_to_variable = { gods_of_africa_material_transfer_sequence = constant:gods_of_africa_value.one }
+			set_variable = { gods_of_africa_material_transfer_receipt_id = gods_of_africa_material_transfer_sequence }
+			set_country_flag = gods_of_africa_material_transfer_prepared
+			set_country_flag = gods_of_africa_material_transfer_emission_permitted
+			set_country_flag = gods_of_africa_material_transfer_begin_ready
+		}
+		else = { gods_of_africa_clear_material_transfer_work = yes }
+	}
+}
+
+# PARTICIPANT: recorder is only entered with a completed native-delta envelope.
+gods_of_africa_record_paid_contribution = {
+	set_temp_variable = { gods_of_africa_receipt_amount_fraction = gods_of_africa_material_transfer_receipt_amount }
+	modulo_temp_variable = { gods_of_africa_receipt_amount_fraction = constant:gods_of_africa_value.one }
+	set_temp_variable = { gods_of_africa_receipt_quantity_k = constant:gods_of_africa_value.zero }
+	if = {
+		limit = { check_variable = { gods_of_africa_receipt_amount_fraction = constant:gods_of_africa_value.zero } }
+		set_temp_variable = { gods_of_africa_receipt_quantity_k = gods_of_africa_material_transfer_receipt_amount }
+		multiply_temp_variable = { gods_of_africa_receipt_quantity_k = constant:gods_of_africa_contribution_measure.k_per_native }
+	}
+	set_temp_variable = { gods_of_africa_receipt_counter_room = constant:gods_of_africa_contribution_representation.ceiling }
+	subtract_from_temp_variable = { gods_of_africa_receipt_counter_room = gods_of_africa_receipt_quantity_k }
+	set_temp_variable = { gods_of_africa_receipt_pp_room = constant:gods_of_africa_contribution_representation.ceiling }
+	subtract_from_temp_variable = { gods_of_africa_receipt_pp_room = gods_of_africa_material_transfer_receipt_amount }
+	if = {
+		limit = {
+			gods_of_africa_material_transfer_identity_is_current = yes
+			has_country_flag = gods_of_africa_material_transfer_receipt_pending
+			has_country_flag = gods_of_africa_material_transfer_measured
+			has_variable = gods_of_africa_material_transfer_receipt_amount
+			gods_of_africa_contribution_accumulation_is_representable = yes
+		}
+		# Prospective writes were checked before consumption. Zero delivery consumes once.
+		clr_country_flag = gods_of_africa_material_transfer_receipt_pending
+		set_variable = { gods_of_africa_last_consumed_material_transfer_id = gods_of_africa_material_transfer_receipt_id }
+		set_variable = { gods_of_africa_material_transfer_actual_amount = gods_of_africa_material_transfer_receipt_amount }
+		set_country_flag = gods_of_africa_material_transfer_completion_consumed
+		if = {
+			limit = { check_variable = { gods_of_africa_material_transfer_receipt_kind = constant:gods_of_africa_contribution_kind.infantry } }
+			add_to_variable = { gods_of_africa_paid_infantry_k = gods_of_africa_receipt_quantity_k }
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_voluntary }
+				add_to_variable = { gods_of_africa_voluntary_paid_infantry_k = gods_of_africa_receipt_quantity_k }
+			}
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_campaign }
+				add_to_variable = { gods_of_africa_campaign_paid_infantry_k = gods_of_africa_receipt_quantity_k }
+			}
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_emergency }
+				add_to_variable = { gods_of_africa_emergency_paid_infantry_k = gods_of_africa_receipt_quantity_k }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { gods_of_africa_material_transfer_receipt_kind = constant:gods_of_africa_contribution_kind.support } }
+			add_to_variable = { gods_of_africa_paid_support_k = gods_of_africa_receipt_quantity_k }
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_voluntary }
+				add_to_variable = { gods_of_africa_voluntary_paid_support_k = gods_of_africa_receipt_quantity_k }
+			}
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_campaign }
+				add_to_variable = { gods_of_africa_campaign_paid_support_k = gods_of_africa_receipt_quantity_k }
+			}
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_emergency }
+				add_to_variable = { gods_of_africa_emergency_paid_support_k = gods_of_africa_receipt_quantity_k }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { gods_of_africa_material_transfer_receipt_kind = constant:gods_of_africa_contribution_kind.trucks } }
+			add_to_variable = { gods_of_africa_paid_trucks_k = gods_of_africa_receipt_quantity_k }
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_voluntary }
+				add_to_variable = { gods_of_africa_voluntary_paid_trucks_k = gods_of_africa_receipt_quantity_k }
+			}
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_campaign }
+				add_to_variable = { gods_of_africa_campaign_paid_trucks_k = gods_of_africa_receipt_quantity_k }
+			}
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_emergency }
+				add_to_variable = { gods_of_africa_emergency_paid_trucks_k = gods_of_africa_receipt_quantity_k }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { gods_of_africa_material_transfer_receipt_kind = constant:gods_of_africa_contribution_kind.artillery } }
+			add_to_variable = { gods_of_africa_paid_artillery_k = gods_of_africa_receipt_quantity_k }
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_voluntary }
+				add_to_variable = { gods_of_africa_voluntary_paid_artillery_k = gods_of_africa_receipt_quantity_k }
+			}
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_campaign }
+				add_to_variable = { gods_of_africa_campaign_paid_artillery_k = gods_of_africa_receipt_quantity_k }
+			}
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_emergency }
+				add_to_variable = { gods_of_africa_emergency_paid_artillery_k = gods_of_africa_receipt_quantity_k }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { gods_of_africa_material_transfer_receipt_kind = constant:gods_of_africa_contribution_kind.armor } }
+			add_to_variable = { gods_of_africa_paid_armor_k = gods_of_africa_receipt_quantity_k }
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_voluntary }
+				add_to_variable = { gods_of_africa_voluntary_paid_armor_k = gods_of_africa_receipt_quantity_k }
+			}
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_campaign }
+				add_to_variable = { gods_of_africa_campaign_paid_armor_k = gods_of_africa_receipt_quantity_k }
+			}
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_emergency }
+				add_to_variable = { gods_of_africa_emergency_paid_armor_k = gods_of_africa_receipt_quantity_k }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { gods_of_africa_material_transfer_receipt_kind = constant:gods_of_africa_contribution_kind.aircraft } }
+			add_to_variable = { gods_of_africa_paid_aircraft_k = gods_of_africa_receipt_quantity_k }
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_voluntary }
+				add_to_variable = { gods_of_africa_voluntary_paid_aircraft_k = gods_of_africa_receipt_quantity_k }
+			}
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_campaign }
+				add_to_variable = { gods_of_africa_campaign_paid_aircraft_k = gods_of_africa_receipt_quantity_k }
+			}
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_emergency }
+				add_to_variable = { gods_of_africa_emergency_paid_aircraft_k = gods_of_africa_receipt_quantity_k }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { gods_of_africa_material_transfer_receipt_kind = constant:gods_of_africa_contribution_kind.fuel } }
+			add_to_variable = { gods_of_africa_paid_fuel_k = gods_of_africa_receipt_quantity_k }
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_voluntary }
+				add_to_variable = { gods_of_africa_voluntary_paid_fuel_k = gods_of_africa_receipt_quantity_k }
+			}
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_campaign }
+				add_to_variable = { gods_of_africa_campaign_paid_fuel_k = gods_of_africa_receipt_quantity_k }
+			}
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_emergency }
+				add_to_variable = { gods_of_africa_emergency_paid_fuel_k = gods_of_africa_receipt_quantity_k }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { gods_of_africa_material_transfer_receipt_kind = constant:gods_of_africa_contribution_kind.convoys } }
+			add_to_variable = { gods_of_africa_paid_convoys_k = gods_of_africa_receipt_quantity_k }
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_voluntary }
+				add_to_variable = { gods_of_africa_voluntary_paid_convoys_k = gods_of_africa_receipt_quantity_k }
+			}
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_campaign }
+				add_to_variable = { gods_of_africa_campaign_paid_convoys_k = gods_of_africa_receipt_quantity_k }
+			}
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_emergency }
+				add_to_variable = { gods_of_africa_emergency_paid_convoys_k = gods_of_africa_receipt_quantity_k }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { gods_of_africa_material_transfer_receipt_kind = constant:gods_of_africa_contribution_kind.trains } }
+			add_to_variable = { gods_of_africa_paid_trains_k = gods_of_africa_receipt_quantity_k }
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_voluntary }
+				add_to_variable = { gods_of_africa_voluntary_paid_trains_k = gods_of_africa_receipt_quantity_k }
+			}
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_campaign }
+				add_to_variable = { gods_of_africa_campaign_paid_trains_k = gods_of_africa_receipt_quantity_k }
+			}
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_emergency }
+				add_to_variable = { gods_of_africa_emergency_paid_trains_k = gods_of_africa_receipt_quantity_k }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { gods_of_africa_material_transfer_receipt_kind = constant:gods_of_africa_contribution_kind.manpower } }
+			add_to_variable = { gods_of_africa_paid_manpower_k = gods_of_africa_receipt_quantity_k }
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_voluntary }
+				add_to_variable = { gods_of_africa_voluntary_paid_manpower_k = gods_of_africa_receipt_quantity_k }
+			}
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_campaign }
+				add_to_variable = { gods_of_africa_campaign_paid_manpower_k = gods_of_africa_receipt_quantity_k }
+			}
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_emergency }
+				add_to_variable = { gods_of_africa_emergency_paid_manpower_k = gods_of_africa_receipt_quantity_k }
+			}
+		}
+		else_if = {
+			limit = {
+				check_variable = { gods_of_africa_material_transfer_receipt_kind = constant:gods_of_africa_contribution_kind.emergency_pp }
+				has_country_flag = gods_of_africa_material_receipt_emergency
+			}
+			add_to_variable = { gods_of_africa_emergency_paid_pp = gods_of_africa_material_transfer_receipt_amount }
+		}
+		gods_of_africa_clear_material_transfer_work = yes
+	}
+	else_if = {
+		limit = {
+			has_country_flag = gods_of_africa_material_transfer_receipt_pending
+			has_country_flag = gods_of_africa_material_transfer_measured
+		}
+		set_country_flag = gods_of_africa_material_receipt_representation_blocked
+		set_country_flag = gods_of_africa_material_transaction_unresolved
+		clr_country_flag = gods_of_africa_material_transfer_emission_permitted
+	}
+}
+
+# Same typed envelope; PP is never routed through a material quantity field.
+gods_of_africa_record_paid_emergency_aid = {
+	gods_of_africa_record_paid_contribution = yes
+}
+
+# PARTICIPANT: immediately after the same owned transfer, before its work or contract clears.
+gods_of_africa_complete_material_transfer = {
+	clr_country_flag = gods_of_africa_material_transfer_completion_consumed
+	clr_country_flag = gods_of_africa_material_transfer_begin_ready
+	if = {
+		limit = {
+			gods_of_africa_material_transfer_identity_is_current = yes
+			NOR = {
+				has_country_flag = gods_of_africa_material_transfer_measured
+				has_country_flag = gods_of_africa_material_transfer_native_capture_attempted
+			}
+		}
+		save_event_target_as = gods_of_africa_receipt_source
+		set_temp_variable = { gods_of_africa_native_stock_kind = gods_of_africa_material_transfer_receipt_kind }
+		set_temp_variable = { gods_of_africa_native_stock = constant:gods_of_africa_value.zero }
+		gods_of_africa_read_contribution_native_stock = yes
+		set_variable = { gods_of_africa_material_transfer_receipt_source_after = gods_of_africa_native_stock }
+		var:gods_of_africa_material_transfer_receipt_receiver = {
+			gods_of_africa_read_contribution_native_stock = yes
+			event_target:gods_of_africa_receipt_source = {
+				set_variable = { gods_of_africa_material_transfer_receipt_receiver_after = gods_of_africa_native_stock }
+			}
+		}
+		gods_of_africa_capture_contribution_armor_after = yes
+		set_country_flag = gods_of_africa_material_transfer_native_capture_attempted
+		if = {
+			limit = {
+				gods_of_africa_contribution_before_reads_are_representable = yes
+				gods_of_africa_contribution_after_reads_are_representable = yes
+				check_variable = { var = gods_of_africa_material_transfer_receipt_requested value = constant:gods_of_africa_contribution_representation.ceiling compare = less_than_or_equals }
+			}
+			set_variable = { gods_of_africa_material_transfer_source_debit = gods_of_africa_material_transfer_receipt_source_before }
+			subtract_from_variable = { gods_of_africa_material_transfer_source_debit = gods_of_africa_material_transfer_receipt_source_after }
+			clamp_variable = { var = gods_of_africa_material_transfer_source_debit min = constant:gods_of_africa_value.zero }
+			set_variable = { gods_of_africa_material_transfer_receiver_credit = gods_of_africa_material_transfer_receipt_receiver_after }
+			subtract_from_variable = { gods_of_africa_material_transfer_receiver_credit = gods_of_africa_material_transfer_receipt_receiver_before }
+			clamp_variable = { var = gods_of_africa_material_transfer_receiver_credit min = constant:gods_of_africa_value.zero }
+			gods_of_africa_measure_contribution_armor_after = yes
+			if = {
+				limit = {
+					gods_of_africa_contribution_kind_uses_k = yes
+					has_country_flag = gods_of_africa_material_transfer_precision_blocked
+				}
+				set_variable = { gods_of_africa_material_transfer_source_debit_native = gods_of_africa_material_transfer_source_debit }
+				set_variable = { gods_of_africa_material_transfer_receiver_credit_native = gods_of_africa_material_transfer_receiver_credit }
+				clear_variable = gods_of_africa_material_transfer_receipt_amount
+				set_country_flag = gods_of_africa_material_transfer_measured
+				set_country_flag = gods_of_africa_material_transfer_receipt_pending
+				set_country_flag = gods_of_africa_material_receipt_representation_blocked
+				set_country_flag = gods_of_africa_material_transaction_unresolved
+				clr_country_flag = gods_of_africa_material_transfer_emission_permitted
+			}
+			else = {
+				set_variable = { gods_of_africa_material_transfer_receipt_amount = gods_of_africa_material_transfer_receipt_requested_native }
+				clamp_variable = { var = gods_of_africa_material_transfer_receipt_amount min = constant:gods_of_africa_value.zero max = gods_of_africa_material_transfer_source_debit }
+				clamp_variable = { var = gods_of_africa_material_transfer_receipt_amount max = gods_of_africa_material_transfer_receiver_credit }
+				if = {
+					limit = {
+						has_country_flag = gods_of_africa_material_receipt_emergency
+						NOT = { gods_of_africa_contribution_emergency_is_proven = yes }
+					}
+					clr_country_flag = gods_of_africa_material_receipt_emergency
+				}
+				if = {
+					limit = {
+						check_variable = { gods_of_africa_material_transfer_source_debit = gods_of_africa_material_transfer_receipt_requested_native }
+						check_variable = { gods_of_africa_material_transfer_receiver_credit = gods_of_africa_material_transfer_receipt_requested_native }
+						NOT = { has_country_flag = gods_of_africa_material_transfer_armor_excess }
+						OR = {
+							NOT = { check_variable = { gods_of_africa_material_transfer_receipt_kind = constant:gods_of_africa_contribution_kind.emergency_pp } }
+							has_country_flag = gods_of_africa_material_receipt_emergency
+						}
+					}
+					set_country_flag = gods_of_africa_material_transfer_full_match
+				}
+				else = {
+					set_country_flag = gods_of_africa_material_transfer_mismatch
+				}
+				set_variable = { gods_of_africa_material_transfer_source_debit_native = gods_of_africa_material_transfer_source_debit }
+				set_variable = { gods_of_africa_material_transfer_receiver_credit_native = gods_of_africa_material_transfer_receiver_credit }
+				if = {
+					limit = { gods_of_africa_contribution_kind_uses_k = yes }
+					multiply_variable = { gods_of_africa_material_transfer_receipt_amount = constant:gods_of_africa_contribution_measure.native_per_k }
+					clamp_variable = { var = gods_of_africa_material_transfer_source_debit max = gods_of_africa_material_transfer_receipt_requested_native }
+					clamp_variable = { var = gods_of_africa_material_transfer_receiver_credit max = gods_of_africa_material_transfer_receipt_requested_native }
+					multiply_variable = { gods_of_africa_material_transfer_source_debit = constant:gods_of_africa_contribution_measure.native_per_k }
+					multiply_variable = { gods_of_africa_material_transfer_receiver_credit = constant:gods_of_africa_contribution_measure.native_per_k }
+				}
+				set_variable = { gods_of_africa_material_transfer_actual_amount = gods_of_africa_material_transfer_receipt_amount }
+				set_country_flag = gods_of_africa_material_transfer_measured
+				set_country_flag = gods_of_africa_material_transfer_receipt_pending
+				# A short or unequal delivery is still measured: the recorder credits the
+				# common delivered amount once and keeps the mismatch flag as evidence.
+				# The contract owner keeps the undelivered remainder owed, so a short
+				# transfer never locks the participant out of later payments.
+				gods_of_africa_record_paid_contribution = yes
+			}
+		}
+		else = {
+			set_country_flag = gods_of_africa_material_transfer_receipt_pending
+			set_country_flag = gods_of_africa_material_transfer_native_read_blocked
+			set_country_flag = gods_of_africa_material_transaction_unresolved
+			clr_country_flag = gods_of_africa_material_transfer_emission_permitted
+		}
+	}
+	else_if = {
+		limit = { has_country_flag = gods_of_africa_material_transfer_prepared }
+		# Identity drift is not a zero-delivery receipt. Keep the snapshots for owner recovery.
+		clr_country_flag = gods_of_africa_material_transfer_emission_permitted
+		set_country_flag = gods_of_africa_material_transfer_mismatch
+		set_country_flag = gods_of_africa_material_transaction_unresolved
+	}
+}
+
+# Internal clear: preserves output native amounts, full/mismatch and unresolved diagnostics.
+gods_of_africa_clear_material_transfer_work = {
+	if = {
+		limit = {
+			NOR = {
+				has_country_flag = gods_of_africa_material_receipt_representation_blocked
+				has_country_flag = gods_of_africa_material_transfer_native_read_blocked
+			}
+		}
+		clr_country_flag = gods_of_africa_material_transfer_begin_ready
+		clr_country_flag = gods_of_africa_material_transfer_native_capture_attempted
+		clr_country_flag = gods_of_africa_material_transfer_armor_excess
+		clr_country_flag = gods_of_africa_material_transfer_prepared
+		clr_country_flag = gods_of_africa_material_transfer_emission_permitted
+		clr_country_flag = gods_of_africa_material_transfer_measured
+		clr_country_flag = gods_of_africa_material_transfer_receipt_pending
+		clr_country_flag = gods_of_africa_material_receipt_voluntary
+		clr_country_flag = gods_of_africa_material_receipt_campaign
+		clr_country_flag = gods_of_africa_material_receipt_emergency
+		clear_variable = gods_of_africa_material_transfer_receipt_id
+		clear_variable = gods_of_africa_material_transfer_receipt_kind
+		clear_variable = gods_of_africa_material_transfer_receipt_requested
+		clear_variable = gods_of_africa_material_transfer_receipt_amount
+		clear_variable = gods_of_africa_material_transfer_receipt_source
+		clear_variable = gods_of_africa_material_transfer_receipt_receiver
+		clear_variable = gods_of_africa_material_transfer_receipt_source_id
+		clear_variable = gods_of_africa_material_transfer_receipt_receiver_id
+		clear_variable = gods_of_africa_material_transfer_receipt_host_generation
+		clear_variable = gods_of_africa_material_transfer_receipt_origin_id
+		clear_variable = gods_of_africa_material_transfer_receipt_contract_id
+		clear_variable = gods_of_africa_material_transfer_receipt_day
+		clear_variable = gods_of_africa_material_transfer_receipt_source_before
+		clear_variable = gods_of_africa_material_transfer_receipt_receiver_before
+		clear_variable = gods_of_africa_material_transfer_receipt_source_after
+		clear_variable = gods_of_africa_material_transfer_receipt_receiver_after
+		clear_variable = gods_of_africa_material_transfer_receipt_epoch
+		clear_variable = gods_of_africa_material_transfer_receipt_emit_kind
+		clear_variable = gods_of_africa_material_transfer_receipt_requested_native
+		clear_variable = gods_of_africa_material_transfer_source_light_before
+		clear_variable = gods_of_africa_material_transfer_source_light_after
+		clear_variable = gods_of_africa_material_transfer_source_light_delta
+		clear_variable = gods_of_africa_material_transfer_receiver_light_before
+		clear_variable = gods_of_africa_material_transfer_receiver_light_after
+		clear_variable = gods_of_africa_material_transfer_receiver_light_delta
+		clear_variable = gods_of_africa_material_transfer_source_medium_before
+		clear_variable = gods_of_africa_material_transfer_source_medium_after
+		clear_variable = gods_of_africa_material_transfer_source_medium_delta
+		clear_variable = gods_of_africa_material_transfer_receiver_medium_before
+		clear_variable = gods_of_africa_material_transfer_receiver_medium_after
+		clear_variable = gods_of_africa_material_transfer_receiver_medium_delta
+		clear_variable = gods_of_africa_material_transfer_source_heavy_before
+		clear_variable = gods_of_africa_material_transfer_source_heavy_after
+		clear_variable = gods_of_africa_material_transfer_source_heavy_delta
+		clear_variable = gods_of_africa_material_transfer_receiver_heavy_before
+		clear_variable = gods_of_africa_material_transfer_receiver_heavy_after
+		clear_variable = gods_of_africa_material_transfer_receiver_heavy_delta
+		clear_variable = gods_of_africa_material_transfer_source_modern_before
+		clear_variable = gods_of_africa_material_transfer_source_modern_after
+		clear_variable = gods_of_africa_material_transfer_source_modern_delta
+		clear_variable = gods_of_africa_material_transfer_receiver_modern_before
+		clear_variable = gods_of_africa_material_transfer_receiver_modern_after
+		clear_variable = gods_of_africa_material_transfer_receiver_modern_delta
+		clear_variable = gods_of_africa_material_transfer_source_super_heavy_before
+		clear_variable = gods_of_africa_material_transfer_source_super_heavy_after
+		clear_variable = gods_of_africa_material_transfer_source_super_heavy_delta
+		clear_variable = gods_of_africa_material_transfer_receiver_super_heavy_before
+		clear_variable = gods_of_africa_material_transfer_receiver_super_heavy_after
+		clear_variable = gods_of_africa_material_transfer_receiver_super_heavy_delta
+		clear_variable = gods_of_africa_material_transfer_source_amphibious_before
+		clear_variable = gods_of_africa_material_transfer_source_amphibious_after
+		clear_variable = gods_of_africa_material_transfer_source_amphibious_delta
+		clear_variable = gods_of_africa_material_transfer_receiver_amphibious_before
+		clear_variable = gods_of_africa_material_transfer_receiver_amphibious_after
+		clear_variable = gods_of_africa_material_transfer_receiver_amphibious_delta
+	}
+}
+
+# Explicit parent recovery only: never forgive a debit or initialize counters.
+gods_of_africa_abandon_pending_material_transfer = {
+	clr_country_flag = gods_of_africa_material_transfer_begin_ready
+	if = {
+		limit = {
+			gods_of_africa_material_transfer_identity_is_current = yes
+			has_country_flag = gods_of_africa_material_transfer_prepared
+			NOR = {
+				has_country_flag = gods_of_africa_material_transfer_measured
+				has_country_flag = gods_of_africa_material_transfer_receipt_pending
+				has_country_flag = gods_of_africa_material_receipt_representation_blocked
+				has_country_flag = gods_of_africa_material_transfer_native_capture_attempted
+				has_country_flag = gods_of_africa_material_transfer_mismatch
+			}
+		}
+		set_country_flag = gods_of_africa_material_transaction_unresolved
+		set_country_flag = gods_of_africa_material_transfer_mismatch
+		set_variable = { gods_of_africa_material_transfer_gap_id = gods_of_africa_material_transfer_receipt_id }
+		set_variable = { gods_of_africa_material_transfer_gap_host_id = gods_of_africa_material_transfer_receipt_receiver_id }
+		set_variable = { gods_of_africa_material_transfer_gap_generation = gods_of_africa_material_transfer_receipt_host_generation }
+		set_variable = { gods_of_africa_material_transfer_gap_origin_id = gods_of_africa_material_transfer_receipt_origin_id }
+		set_variable = { gods_of_africa_material_transfer_gap_epoch = gods_of_africa_material_transfer_receipt_epoch }
+		set_variable = { gods_of_africa_last_consumed_material_transfer_id = gods_of_africa_material_transfer_receipt_id }
+		gods_of_africa_clear_material_transfer_work = yes
+	}
+}
+
+# PARTICIPANT: direct bounded observation for current or explicitly inherited history.
+gods_of_africa_refresh_grading_conduct = {
+	if = {
+		limit = { gods_of_africa_grading_conduct_can_observe = yes }
+		save_event_target_as = gods_of_africa_conduct_participant
+		event_target:africa_host = { save_event_target_as = gods_of_africa_conduct_host }
+		set_variable = { gods_of_africa_conduct_host = event_target:gods_of_africa_conduct_host }
+		set_variable = { gods_of_africa_conduct_host_id = event_target:gods_of_africa_conduct_host.id }
+		set_variable = { gods_of_africa_conduct_host_generation = event_target:gods_of_africa_conduct_host.africa_host_generation }
+		set_variable = { gods_of_africa_conduct_origin_id = event_target:gods_of_africa_conduct_host.africa_origin_host_id }
+		set_variable = { gods_of_africa_observed_host_core_count = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_owned_host_core_count = constant:gods_of_africa_value.zero }
+		every_controlled_state = {
+			limit = {
+				is_on_continent = africa
+				is_core_of = event_target:gods_of_africa_conduct_host
+			}
+			set_temp_variable = { gods_of_africa_observed_core_id = THIS.id }
+			event_target:gods_of_africa_conduct_participant = {
+				add_to_variable = { gods_of_africa_observed_host_core_count = constant:gods_of_africa_value.one }
+				if = {
+					limit = { NOT = { is_in_array = { array = gods_of_africa_occupied_core_state_ids value = gods_of_africa_observed_core_id } } }
+					add_to_array = { array = gods_of_africa_occupied_core_state_ids value = gods_of_africa_observed_core_id }
+				}
+			}
+		}
+		every_owned_state = {
+			limit = {
+				is_on_continent = africa
+				is_core_of = event_target:gods_of_africa_conduct_host
+			}
+			event_target:gods_of_africa_conduct_participant = {
+				add_to_variable = { gods_of_africa_owned_host_core_count = constant:gods_of_africa_value.one }
+			}
+		}
+		if = {
+			limit = { has_war_with = event_target:gods_of_africa_conduct_host }
+			if = {
+				limit = {
+					OR = {
+						NOT = { has_country_flag = gods_of_africa_war_observation_active }
+						NOT = { has_variable = gods_of_africa_war_observation_host_id }
+						NOT = { check_variable = { gods_of_africa_war_observation_host_id = gods_of_africa_conduct_host_id } }
+					}
+				}
+				add_to_variable = { gods_of_africa_war_count = constant:gods_of_africa_value.one }
+			}
+			set_variable = { gods_of_africa_war_observation_host_id = gods_of_africa_conduct_host_id }
+			set_country_flag = gods_of_africa_war_observation_active
+			set_country_flag = gods_of_africa_prior_war
+			set_country_flag = gods_of_africa_war_floor
+			set_country_flag = gods_of_africa_unresolved_major_offense
+		}
+		else = {
+			clr_country_flag = gods_of_africa_war_observation_active
+			clr_country_flag = gods_of_africa_war_floor
+		}
+		if = {
+			limit = {
+				OR = {
+					check_variable = { gods_of_africa_observed_host_core_count > constant:gods_of_africa_value.zero }
+					check_variable = { gods_of_africa_owned_host_core_count > constant:gods_of_africa_value.zero }
+				}
+			}
+			set_country_flag = gods_of_africa_territory_floor
+			set_country_flag = gods_of_africa_unresolved_major_offense
+		}
+		else = { clr_country_flag = gods_of_africa_territory_floor }
+		if = {
+			limit = { check_variable = { gods_of_africa_observed_host_core_count > constant:gods_of_africa_value.zero } }
+			set_country_flag = gods_of_africa_prior_occupation
+		}
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = gods_of_africa_defiant
+					has_country_flag = gods_of_africa_permanent_opt_out
+				}
+			}
+			set_country_flag = gods_of_africa_prior_defiance
+			set_country_flag = gods_of_africa_unresolved_major_offense
+		}
+		# No treaty write: generic offender/protection markers prove no participant promise.
+		gods_of_africa_measure_grading_wrath_floor = yes
+	}
+	else = { set_country_flag = gods_of_africa_grading_conduct_unresolved }
+}
+
+# PARTICIPANT: maximum, never sequentially overwrite a stronger applicable floor.
+gods_of_africa_measure_grading_wrath_floor = {
+	if = {
+		limit = { gods_of_africa_grading_conduct_can_observe = yes }
+		set_variable = { gods_of_africa_grading_wrath_floor = constant:gods_of_africa_value.minimum_wrath }
+		if = {
+			limit = { has_country_flag = gods_of_africa_war_floor }
+			clamp_variable = { var = gods_of_africa_grading_wrath_floor min = constant:gods_of_africa_wrath.floor_war }
+		}
+		if = {
+			limit = { has_country_flag = gods_of_africa_territory_floor }
+			clamp_variable = { var = gods_of_africa_grading_wrath_floor min = constant:gods_of_africa_wrath.floor_territory }
+		}
+		if = {
+			limit = { has_country_flag = gods_of_africa_unresolved_treaty_break }
+			clamp_variable = { var = gods_of_africa_grading_wrath_floor min = constant:gods_of_africa_wrath.floor_broken_treaty }
+		}
+		if = {
+			limit = { has_country_flag = gods_of_africa_defiant }
+			clamp_variable = { var = gods_of_africa_grading_wrath_floor min = constant:gods_of_africa_wrath.floor_defiant }
+		}
+		if = {
+			limit = { has_country_flag = gods_of_africa_recent_extreme_punishment }
+			clamp_variable = { var = gods_of_africa_grading_wrath_floor min = constant:gods_of_africa_wrath.floor_recent_extreme }
+		}
+		if = {
+			limit = { has_variable = gods_of_africa_wrath }
+			clamp_variable = { var = gods_of_africa_wrath min = gods_of_africa_grading_wrath_floor max = constant:gods_of_africa_value.maximum_wrath }
+		}
+	}
+}
+
+# PARTICIPANT: parent passes the selected real STATE as a bare caller-initialized temp.
+gods_of_africa_begin_core_return = {
+	clr_country_flag = gods_of_africa_core_return_begin_ready
+	if = {
+		limit = {
+			gods_of_africa_grading_conduct_can_observe = yes
+			gods_of_africa_contribution_contract_is_current = yes
+			has_variable = gods_of_africa_payment_family
+			check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.territory }
+			has_variable = gods_of_africa_return_state
+			NOT = { has_country_flag = gods_of_africa_core_return_pending }
+			var:gods_of_africa_return_state = {
+				is_on_continent = africa
+				is_core_of = event_target:africa_host
+				OR = { is_owned_by = PREV is_controlled_by = PREV }
+			}
+		}
+		save_event_target_as = gods_of_africa_return_participant
+		set_variable = { gods_of_africa_core_return_state = gods_of_africa_return_state }
+		set_variable = { gods_of_africa_core_return_host = gods_of_africa_demand_host }
+		set_variable = { gods_of_africa_core_return_host_id = gods_of_africa_demand_host_id }
+		set_variable = { gods_of_africa_core_return_generation = event_target:africa_host.africa_host_generation }
+		set_variable = { gods_of_africa_core_return_origin_id = event_target:africa_host.africa_origin_host_id }
+		set_variable = { gods_of_africa_core_return_contract_id = gods_of_africa_contract_ledger_id }
+		set_variable = { gods_of_africa_core_return_day = global.num_days }
+		clr_country_flag = gods_of_africa_core_return_before_owned
+		clr_country_flag = gods_of_africa_core_return_before_controlled
+		var:gods_of_africa_core_return_state = {
+			set_temp_variable = { gods_of_africa_return_state_id = THIS.id }
+			if = {
+				limit = { is_owned_by = event_target:gods_of_africa_return_participant }
+				event_target:gods_of_africa_return_participant = { set_country_flag = gods_of_africa_core_return_before_owned }
+			}
+			if = {
+				limit = { is_controlled_by = event_target:gods_of_africa_return_participant }
+				event_target:gods_of_africa_return_participant = { set_country_flag = gods_of_africa_core_return_before_controlled }
+			}
+		}
+		set_variable = { gods_of_africa_core_return_state_id = gods_of_africa_return_state_id }
+		set_country_flag = gods_of_africa_core_return_pending
+		set_country_flag = gods_of_africa_core_return_begin_ready
+	}
+}
+
+# PARTICIPANT: selected STATE has actually become both owned and controlled by that host.
+gods_of_africa_complete_core_return = {
+	clr_country_flag = gods_of_africa_core_return_recorded
+	clr_country_flag = gods_of_africa_core_return_begin_ready
+	if = {
+		limit = {
+			gods_of_africa_grading_conduct_can_observe = yes
+			has_country_flag = gods_of_africa_core_return_pending
+			has_variable = gods_of_africa_core_return_state
+			has_variable = gods_of_africa_core_return_state_id
+			has_variable = gods_of_africa_core_return_host
+			check_variable = { gods_of_africa_core_return_host = event_target:africa_host }
+			check_variable = { gods_of_africa_core_return_host_id = event_target:africa_host.id }
+			check_variable = { gods_of_africa_core_return_generation = event_target:africa_host.africa_host_generation }
+			check_variable = { gods_of_africa_core_return_origin_id = event_target:africa_host.africa_origin_host_id }
+			check_variable = { gods_of_africa_core_return_day = global.num_days }
+			gods_of_africa_contribution_contract_is_current = yes
+			check_variable = { gods_of_africa_core_return_contract_id = gods_of_africa_contract_ledger_id }
+			OR = {
+				has_country_flag = gods_of_africa_core_return_before_owned
+				has_country_flag = gods_of_africa_core_return_before_controlled
+			}
+			var:gods_of_africa_core_return_state = {
+				check_variable = { PREV.gods_of_africa_core_return_state_id = THIS.id }
+				is_on_continent = africa
+				is_core_of = event_target:africa_host
+				is_owned_by = event_target:africa_host
+				is_controlled_by = event_target:africa_host
+			}
+		}
+		clr_country_flag = gods_of_africa_core_return_pending
+		if = {
+			limit = { NOT = { is_in_array = { array = gods_of_africa_returned_core_state_ids value = gods_of_africa_core_return_state_id } } }
+			add_to_array = { array = gods_of_africa_returned_core_state_ids value = gods_of_africa_core_return_state_id }
+			set_country_flag = gods_of_africa_core_return_recorded
+		}
+		gods_of_africa_clear_core_return_work = yes
+		gods_of_africa_refresh_grading_conduct = yes
+	}
+	else_if = {
+		limit = { has_country_flag = gods_of_africa_core_return_pending }
+		set_country_flag = gods_of_africa_grading_conduct_unresolved
+		# Retain failed/stale return snapshots for explicit owner recovery.
+	}
+}
+
+gods_of_africa_clear_core_return_work = {
+	clr_country_flag = gods_of_africa_core_return_pending
+	clr_country_flag = gods_of_africa_core_return_before_owned
+	clr_country_flag = gods_of_africa_core_return_before_controlled
+	clear_variable = gods_of_africa_core_return_state
+	clear_variable = gods_of_africa_core_return_state_id
+	clear_variable = gods_of_africa_core_return_host
+	clear_variable = gods_of_africa_core_return_host_id
+	clear_variable = gods_of_africa_core_return_generation
+	clear_variable = gods_of_africa_core_return_origin_id
+	clear_variable = gods_of_africa_core_return_contract_id
+	clear_variable = gods_of_africa_core_return_day
+}
+
+# PARTICIPANT, inside actual host-acceptance callback AFTER unique paid acceptance receipt.
+# Parent must observe before acceptance as well; no current war/core land may be waived.
+gods_of_africa_resolve_accepted_grading_conduct = {
+	gods_of_africa_refresh_grading_conduct = yes
+	if = {
+		limit = {
+			gods_of_africa_contribution_sender_is_current = yes
+			ROOT = { tag = event_target:africa_host }
+			has_country_flag = gods_of_africa_reparations_paid
+			has_country_flag = gods_of_africa_reconciliation_offer_pending
+			has_variable = gods_of_africa_reconciliation_offer_sequence
+			has_variable = gods_of_africa_last_accepted_reconciliation_sequence
+			has_variable = gods_of_africa_last_accepted_reconciliation_generation
+			has_variable = gods_of_africa_last_accepted_reconciliation_origin_id
+			has_variable = gods_of_africa_last_accepted_reconciliation_day
+			check_variable = { gods_of_africa_last_accepted_reconciliation_sequence = gods_of_africa_reconciliation_offer_sequence }
+			check_variable = { gods_of_africa_last_accepted_reconciliation_generation = event_target:africa_host.africa_host_generation }
+			check_variable = { gods_of_africa_last_accepted_reconciliation_origin_id = event_target:africa_host.africa_origin_host_id }
+			check_variable = { gods_of_africa_last_accepted_reconciliation_day = global.num_days }
+			NOT = { has_war_with = event_target:africa_host }
+			check_variable = { gods_of_africa_observed_host_core_count = constant:gods_of_africa_value.zero }
+			check_variable = { gods_of_africa_owned_host_core_count = constant:gods_of_africa_value.zero }
+			NOR = {
+				has_country_flag = gods_of_africa_grading_conduct_unresolved
+				has_country_flag = gods_of_africa_core_return_pending
+			}
+		}
+		clr_country_flag = gods_of_africa_unresolved_major_offense
+		clr_country_flag = gods_of_africa_unresolved_treaty_break
+		clr_country_flag = gods_of_africa_broken_treaty
+		clr_country_flag = gods_of_africa_war_floor
+		clr_country_flag = gods_of_africa_territory_floor
+		# Parent acceptance owner clears current defiance and resets recovery counters.
+	}
+}
+
+# PARTICIPANT inside gods_of_africa_transfer_payment. The caller sets the bare
+# temp gods_of_africa_payment_receipt_kind to the native branch it is about to
+# emit and sends only when gods_of_africa_material_transfer_begin_ready is set.
+gods_of_africa_begin_payment_receipt = {
+	set_temp_variable = { gods_of_africa_contribution_kind = gods_of_africa_payment_receipt_kind }
+	set_temp_variable = { gods_of_africa_contribution_native_emit_kind = gods_of_africa_payment_receipt_kind }
+	set_temp_variable = { gods_of_africa_contribution_requested = gods_of_africa_payment_amount }
+	set_temp_variable = { gods_of_africa_contribution_voluntary = constant:gods_of_africa_value.zero }
+	gods_of_africa_begin_material_transfer = yes
+}
+
+# PARTICIPANT inside gods_of_africa_offer_voluntary_aid: the same contract with
+# the voluntary flag and the frozen aid amount.
+gods_of_africa_begin_voluntary_receipt = {
+	set_temp_variable = { gods_of_africa_contribution_kind = gods_of_africa_payment_receipt_kind }
+	set_temp_variable = { gods_of_africa_contribution_native_emit_kind = gods_of_africa_payment_receipt_kind }
+	set_temp_variable = { gods_of_africa_contribution_requested = gods_of_africa_aid_amount }
+	set_temp_variable = { gods_of_africa_contribution_voluntary = constant:gods_of_africa_value.one }
+	gods_of_africa_begin_material_transfer = yes
+}
+
+# PARTICIPANT immediately after the native send, inside the same effect.
+# Publishes the measured delivery in the normal gods_of_africa_payment_delivered
+# field. It stays zero when nothing was measured, so no contract or aid record
+# is ever credited from a requested amount.
+gods_of_africa_complete_payment_receipt = {
+	gods_of_africa_complete_material_transfer = yes
+	set_variable = { gods_of_africa_payment_delivered = constant:gods_of_africa_value.zero }
+	if = {
+		limit = { has_country_flag = gods_of_africa_material_transfer_completion_consumed }
+		set_variable = { gods_of_africa_payment_delivered = gods_of_africa_material_transfer_actual_amount }
+	}
+}

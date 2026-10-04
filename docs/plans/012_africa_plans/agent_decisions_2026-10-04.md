@@ -37,7 +37,7 @@ Live check (`needs_live_game`): divisions spawned by Actions 74-76 and the focus
 
 ## L3. Contribution helper package is adopted, not rewritten
 
-Disposition: `accepted and queued` until the callers are wired.
+Disposition: `implemented` (callers wired; native transfer semantics remain `needs_live_game`).
 
 Basis: the stopped thread's uncommitted contribution package implements the accepted measured-receipt design; a second recorder would duplicate its definition names.
 
@@ -47,6 +47,15 @@ Decision:
 - F4: amounts are integral by construction (`gods_of_africa_floor_equipment_amount` and whole-unit partial payments).
 - No lifetime caps. Per-type stockpiles above the native getter's range are a live-game check, not a gameplay cap.
 - Voluntary aid keeps its 500 shipment, 1000 capacity gate, and cooldown.
+
+Implementation choices taken under this decision:
+
+- A measured short or unequal delivery is an accounted outcome, not an unresolved transaction: the delivered amount is credited once, the undelivered remainder stays owed on the contract, and the mismatch flag is kept as evidence.
+  The adopted package had marked such a delivery unresolved, which would have blocked every later payment of that participant.
+- A fuel payment is limited to Africa's free tank space before it is sent, so no participant loses fuel that Africa cannot store; the smaller shipment is a partial payment.
+- A partly delivered accepted substitute becomes the contract terms instead of being rolled back, so delivered substitute goods are never lost.
+- Family 13 records emergency political power only under the frozen, still-current emergency proof; every other political family fulfils its contract without material credit.
+- Temporary helper inputs are read by value; `has_variable` is not used on temporary variables, because the offline wiki warns that temporary-variable presence across scripted-effect boundaries is unreliable.
 
 ## L4. A treaty breach is the breach of an owned agreement
 

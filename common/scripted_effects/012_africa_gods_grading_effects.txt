@@ -6,7 +6,6 @@ gods_of_africa_initialize_grading_ledger = {
 	if = {
 		limit = {
 			exists = yes
-			has_variable = gods_of_africa_grading_first_genuine_history
 			check_variable = { gods_of_africa_grading_first_genuine_history = constant:gods_of_africa_value.one }
 			NOT = { has_country_flag = gods_of_africa_grading_ledger_initialized }
 			NOT = { has_variable = gods_of_africa_demands_issued }
@@ -115,7 +114,7 @@ gods_of_africa_floor_temporary_value = {
 	# Caller owns input/output storage; round then correct an upward rounding.
 	set_temp_variable = { gods_of_africa_floor_output = constant:gods_of_africa_value.zero }
 	if = {
-		limit = { exists = yes has_variable = gods_of_africa_floor_input }
+		limit = { exists = yes }
 		set_temp_variable = { gods_of_africa_floor_output = gods_of_africa_floor_input }
 		round_temp_variable = gods_of_africa_floor_output
 		if = {
@@ -130,9 +129,6 @@ gods_of_africa_normalize_paid_quantity_milli = {
 	if = {
 		limit = {
 			exists = yes
-			has_variable = gods_of_africa_normalize_paid_k
-			has_variable = gods_of_africa_normalize_denominator
-			has_variable = gods_of_africa_normalize_bound_milli
 			check_variable = { gods_of_africa_normalize_denominator > constant:gods_of_africa_value.zero }
 			check_variable = { gods_of_africa_normalize_bound_milli > constant:gods_of_africa_value.zero }
 		}
